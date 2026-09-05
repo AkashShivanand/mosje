@@ -9,7 +9,7 @@ import { linearScale, niceTicks } from "./internal/scales";
 import { seriesColor, categoricalColor, CHART_INK } from "./internal/palette";
 import { formatIndian } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
-import type { ChartMultiSeries } from "./types";
+import { withheldLabel, type ChartMultiSeries, type ChartSeries, type ChartWithheld } from "./types";
 
 export interface LineChartProps extends ChartMultiSeries, ChartStateProps {
   title: string;
@@ -28,6 +28,11 @@ export interface LineChartProps extends ChartMultiSeries, ChartStateProps {
 /**
  * MoSJE / SAMAVESH LineChart — multi-series line/area with an at-x tooltip
  * guide. Absorbs PM-AJAY `LineArea` and SMILE `ActivityLine`/`MonthlyPerf`.
+ *
+ * A WITHHELD POINT IS A GAP, NOT A ZERO. `ChartSeries.withheld` names the
+ * indices with no figure; the line breaks around them rather than dropping to
+ * the baseline, a hollow dashed marker sits where the point would be, and the
+ * tooltip and the table say why.
  */
 export function LineChart({
   labels,
@@ -68,8 +73,17 @@ export function LineChart({
       </ChartFrame>
     );
 
+  const withheldAt = (s: ChartSeries, i: number): ChartWithheld | undefined => s.withheld?.[i];
+  const valueAt = (s: ChartSeries, i: number): number | null =>
+    withheldAt(s, i) ? null : (s.data[i] ?? 0);
+  const cellText = (s: ChartSeries, i: number): string => {
+    const w = withheldAt(s, i);
+    return w ? withheldLabel(w) : valueFormat(s.data[i] ?? 0);
+  };
+
   const colors = series.map((s, i) => seriesColor(s.color, i));
-  const rawMax = Math.max(1, ...series.flatMap((s) => s.data));
+  const known = series.flatMap((s) => s.data.filter((_, i) => !withheldAt(s, i)));
+  const rawMax = Math.max(1, ...known);
   const ticks = niceTicks(0, rawMax);
   const vMax = ticks[ticks.length - 1] ?? rawMax;
 
@@ -86,10 +100,34 @@ export function LineChart({
   const y = linearScale([0, vMax], [height - padB, padT]);
   const dots = showDots ?? n <= 16;
 
-  const linePath = (data: number[]) =>
-    data.map((v, i) => `${i === 0 ? "M" : "L"} ${xAt(i).toFixed(2)} ${y(v).toFixed(2)}`).join(" ");
-  const areaPath = (data: number[]) =>
-    `${linePath(data)} L ${xAt(n - 1).toFixed(2)} ${height - padB} L ${xAt(0).toFixed(2)} ${height - padB} Z`;
+  /** Contiguous runs of known points — the line breaks at every withheld index. */
+  const runs = (s: ChartSeries): number[][] => {
+    const out: number[][] = [];
+    let run: number[] = [];
+    for (let i = 0; i < n; i++) {
+      if (valueAt(s, i) === null) {
+        if (run.length) out.push(run);
+        run = [];
+      } else run.push(i);
+    }
+    if (run.length) out.push(run);
+    return out;
+  };
+  const linePath = (s: ChartSeries) =>
+    runs(s)
+      .map((run) =>
+        run.map((i, k) => `${k === 0 ? "M" : "L"} ${xAt(i).toFixed(2)} ${y(valueAt(s, i) ?? 0).toFixed(2)}`).join(" "),
+      )
+      .join(" ");
+  const areaPath = (s: ChartSeries) =>
+    runs(s)
+      .map((run) => {
+        const first = run[0] ?? 0;
+        const last = run[run.length - 1] ?? 0;
+        const top = run.map((i, k) => `${k === 0 ? "M" : "L"} ${xAt(i).toFixed(2)} ${y(valueAt(s, i) ?? 0).toFixed(2)}`).join(" ");
+        return `${top} L ${xAt(last).toFixed(2)} ${height - padB} L ${xAt(first).toFixed(2)} ${height - padB} Z`;
+      })
+      .join(" ");
 
   const tooltipAt = (i: number) => (
     <>
@@ -97,26 +135,32 @@ export function LineChart({
       {series.map((s, si) => (
         <div key={s.name} className="ds-chart__tooltip-row">
           <span className="ds-chart__tooltip-swatch" style={{ backgroundColor: colors[si] }} />
-          {`${s.name}: ${valueFormat(s.data[i] ?? 0)}`}
+          {`${s.name}: ${cellText(s, i)}`}
         </div>
       ))}
     </>
   );
 
+  const latest = (s: ChartSeries): string => {
+    for (let i = n - 1; i >= 0; i--) if (valueAt(s, i) !== null) return valueFormat(s.data[i] ?? 0);
+    return "no figure";
+  };
+
   return (
     <ChartFrame
       marksAreFocusable
       title={title}
-      summary={series.map((s) => `${s.name}: ${valueFormat(s.data[s.data.length - 1] ?? 0)} latest`).join(", ")}
+      summary={series.map((s) => `${s.name}: ${latest(s)} latest`).join(", ")}
       viewBox={`0 0 ${width} ${height}`}
       className={className}
       canvasRef={canvasRef}
       overlay={<ChartTooltip tip={tip} />}
+      onDismiss={hide}
       legend={series.length > 1 ? <Legend items={series.map((s, i) => ({ label: s.name, color: colors[i] ?? categoricalColor(i) }))} /> : undefined}
       caption={caption}
       table={{
         columns: ["Point", ...series.map((s) => s.name)],
-        rows: labels.map((l, li) => [l, ...series.map((s) => s.data[li] ?? 0)]),
+        rows: labels.map((l, li) => [l, ...series.map((s) => (withheldAt(s, li) ? cellText(s, li) : (s.data[li] ?? 0)))]),
       }}
       tableView={tableView}
     >
@@ -128,7 +172,7 @@ export function LineChart({
       )}
 
       {series.map((s, si) =>
-        area || s.fill ? <path key={`a-${s.name}`} d={areaPath(s.data)} fill={colors[si]} opacity={0.12} /> : null,
+        area || s.fill ? <path key={`a-${s.name}`} d={areaPath(s)} fill={colors[si]} opacity={0.12} /> : null,
       )}
       {series.map((s, si) => (
         /* `pathLength={1}` normalises the line to a unit length so one
@@ -139,7 +183,7 @@ export function LineChart({
           key={`l-${s.name}`}
           className="ds-chart__line-draw"
           pathLength={1}
-          d={linePath(s.data)}
+          d={linePath(s)}
           fill="none"
           stroke={colors[si]}
           strokeWidth={2}
@@ -153,17 +197,31 @@ export function LineChart({
       )}
       {dots &&
         series.map((s, si) =>
-          s.data.map((v, i) => (
-            <circle
-              key={`d-${si}-${i}`}
-              cx={xAt(i)}
-              cy={y(v)}
-              r={active === i ? 4 : 2.5}
-              fill="var(--sa-bg-neutral-base)"
-              stroke={colors[si]}
-              strokeWidth={2}
-            />
-          )),
+          labels.map((_, i) => {
+            const v = valueAt(s, i);
+            return v === null ? (
+              /* The gap, marked: a hollow dashed ring at the baseline says "a
+                 point belongs here and there is no figure", which a plain
+                 break in the line could not. */
+              <circle
+                key={`w-${si}-${i}`}
+                cx={xAt(i)}
+                cy={height - padB}
+                r={3.5}
+                className="ds-chart__mark--withheld"
+              />
+            ) : (
+              <circle
+                key={`d-${si}-${i}`}
+                cx={xAt(i)}
+                cy={y(v)}
+                r={active === i ? 4 : 2.5}
+                fill="var(--sa-bg-neutral-base)"
+                stroke={colors[si]}
+                strokeWidth={2}
+              />
+            );
+          }),
         )}
 
       {/* Invisible per-x hit areas — mouse + keyboard. */}
@@ -180,7 +238,7 @@ export function LineChart({
             fill="transparent"
             tabIndex={0}
             role="img"
-            aria-label={`${label}: ${series.map((s) => `${s.name} ${valueFormat(s.data[i] ?? 0)}`).join(", ")}`}
+            aria-label={`${label}: ${series.map((s) => `${s.name} ${cellText(s, i)}`).join(", ")}`}
             onPointerMove={(e) => {
               setActive(i);
               show(tooltipAt(i), e.clientX, e.clientY);
@@ -192,7 +250,8 @@ export function LineChart({
             onFocus={() => {
               setActive(i);
               const r = canvasRef.current?.getBoundingClientRect();
-              if (r) show(tooltipAt(i), r.left + (cx / width) * r.width, r.top + (y(series[0]?.data[i] ?? 0) / height) * r.height);
+              const first = series[0] ? valueAt(series[0], i) : null;
+              if (r) show(tooltipAt(i), r.left + (cx / width) * r.width, r.top + (y(first ?? 0) / height) * r.height);
             }}
             onBlur={() => {
               setActive(null);

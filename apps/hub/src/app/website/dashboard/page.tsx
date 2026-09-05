@@ -59,14 +59,14 @@ export default function DashboardPage() {
                 className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm"
               >
                 <div className="flex items-start justify-between">
-                  <span className="text-[28px] font-bold leading-tight text-primary-dark">
+                  <span className="text-headline-3 tabular-nums text-primary-dark">
                     {value}
                   </span>
                   <span className="rounded-lg bg-surface-muted p-2 text-primary">
                     <Icon name={iconName} size={20} aria-hidden="true" />
                   </span>
                 </div>
-                <p className="mt-2 text-sm text-ink-muted">{label}</p>
+                <p className="mt-2 text-body-2 text-ink-muted">{label}</p>
               </div>
             ))}
           </div>
@@ -75,14 +75,14 @@ export default function DashboardPage() {
           <div className="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
             {/* Scheme-wise disbursement */}
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-semibold text-primary-dark">
+              <h2 className="text-title-1 text-primary-dark">
                 Scheme-wise Disbursement
               </h2>
-              <p className="mt-1 text-xs text-gray-500">Cumulative, current financial year (illustrative)</p>
+              <p className="mt-1 text-body-3 text-gray-500">Cumulative, current financial year (illustrative)</p>
               <ul className="mt-5 space-y-4">
                 {SCHEME_DISBURSEMENT.map(({ label, value, percent }) => (
                   <li key={label}>
-                    <div className="flex items-baseline justify-between text-sm">
+                    <div className="flex items-baseline justify-between text-body-2">
                       <span className="font-medium text-ink">{label}</span>
                       <span className="text-ink-muted">{value}</span>
                     </div>
@@ -101,14 +101,14 @@ export default function DashboardPage() {
 
             {/* Beneficiaries by category */}
             <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-              <h2 className="text-lg font-semibold text-primary-dark">
+              <h2 className="text-title-1 text-primary-dark">
                 Beneficiaries by Category
               </h2>
-              <p className="mt-1 text-xs text-gray-500">Cumulative coverage across schemes (illustrative)</p>
+              <p className="mt-1 text-body-3 text-gray-500">Cumulative coverage across schemes (illustrative)</p>
               <ul className="mt-5 space-y-4">
                 {BENEFICIARIES_BY_CATEGORY.map(({ label, value, percent }) => (
                   <li key={label}>
-                    <div className="flex items-baseline justify-between text-sm">
+                    <div className="flex items-baseline justify-between text-body-2">
                       <span className="font-medium text-ink">{label}</span>
                       <span className="text-ink-muted">{value}</span>
                     </div>
@@ -126,7 +126,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          <p className="mt-6 text-xs text-gray-500">
+          <p className="mt-6 text-body-3 text-gray-500">
             All figures shown are illustrative and for demonstration purposes only.
           </p>
         </div>

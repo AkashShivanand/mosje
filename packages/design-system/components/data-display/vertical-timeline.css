@@ -29,7 +29,7 @@
 
   .sa-vertical-timeline {
     position: relative;
-    border-left: 2px solid var(--sa-bg-brand-primary-subtle);
+    border-left: var(--sa-stroke-2) solid var(--sa-bg-brand-primary-subtle);
     margin-left: var(--sa-stack-12);
     padding-bottom: var(--sa-padding-16);
   }
@@ -67,11 +67,11 @@
   .sa-vertical-timeline-item__content {
     position: relative;
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-16);
     padding: var(--sa-padding-24);
     box-shadow: var(--sa-elevation-card);
-    transition: box-shadow 150ms ease;
+    transition: box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .sa-vertical-timeline-item__content:hover {
@@ -88,14 +88,16 @@
 
   .sa-vertical-timeline-item__title {
     font-size: var(--sa-type-body-1-size);
-    font-weight: 700;
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
     padding-right: var(--sa-padding-16);
   }
 
   .sa-vertical-timeline-item__date {
     font-size: var(--sa-type-body-2-size);
-    font-weight: 700;
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-brand-primary-base);
     background-color: var(--sa-bg-brand-primary-subtler);
     padding: var(--sa-padding-4) var(--sa-padding-12);
@@ -106,7 +108,7 @@
   .sa-vertical-timeline-item__body {
     color: var(--sa-text-neutral-base);
     font-size: var(--sa-type-body-2-size);
-    line-height: 1.625;
+    line-height: var(--sa-type-body-2-lh);
   }
 
   @media (min-width: 640px) {

@@ -93,8 +93,7 @@
     color: var(--sa-text-neutral-inverse);
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 500;
-    letter-spacing: 0.5px;
+    font-weight: var(--sa-font-weight-medium);
   }
 
   .sa-siteheader__logo {
@@ -105,7 +104,7 @@
   .sa-siteheader__title {
     color: var(--sa-text-neutral-inverse);
     font-size: var(--sa-type-headline-1-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     /*
      * The PAIRED leading, not a ratio. `line-height: 1.2` looked correct and was
      * wrong everywhere except one width: headline-1 is 40/48 at desktop, so
@@ -130,7 +129,7 @@
    * resolve, which is the same white.
    */
   .sa-siteheader__lead {
-    border-inline-start: 4px solid var(--sa-text-neutral-inverse);
+    border-inline-start: var(--sa-stroke-4) solid var(--sa-text-neutral-inverse);
     padding-inline-start: var(--sa-padding-24);
     color: var(--sa-text-neutral-inverse);
     font-size: var(--sa-type-body-1-size);
@@ -142,7 +141,6 @@
      * happens to match one surface is not a binding, it is a coincidence.
      */
     line-height: var(--sa-type-body-1-lh);
-    letter-spacing: 0.5px;
   }
 
   .sa-siteheader__actions {

@@ -16,6 +16,7 @@ import {
   SiteHeaderNavyPreview,
   SiteHeaderPreview,
 } from "./header-preview";
+import { SiteHeaderArrangementsPreview } from "./header-arrangements";
 
 export const metadata: Metadata = {
   title: "Navbar (Header) — Design System",
@@ -176,7 +177,12 @@ export default function SiteHeaderPage(): React.JSX.Element {
       status="Beta"
       summary="The masthead of every SAMAVESH property is one component. Three tiers — accessibility bar, brand row, navigation row — with three variants chosen by a single prop, and a scroll condense that keeps the National Emblem on the same left edge throughout."
       figma={{ node: "siteHeader" }}
-      specimen={<SiteHeaderPreview />}
+      specimen={
+        <div className="cdp-stack">
+          <SiteHeaderPreview />
+          <SiteHeaderArrangementsPreview />
+        </div>
+      }
       propsFrom="SiteHeaderProps"
       a11y={A11Y}
       whenToUse={{
@@ -390,7 +396,8 @@ export default function SiteHeaderPage(): React.JSX.Element {
                 ["1024 and up", "The navigation row is shown, with dropdowns and mega-menus"],
                 ["Below 1024", "The navigation row collapses; a trigger in the brand row opens NavSheet"],
                 ["Below 900", "The search field hides; the condensed bar keeps a search icon"],
-                ["Below 768", "Co-branding marks hide, and the account name and email hide, leaving the avatar"],
+                ["Below 768", "Co-branding marks hide; BETA moves onto the Government of India line; the account name, email and caret hide and the avatar steps to 40; on a portal every control on the row is 40; with a sidebar toggle the sheet trigger is not rendered and search lives at the head of the drawer (SidebarNav header); without one the search field waits behind a 40px button that opens it on its own row"],
+                ["Below 768, accessibility bar", "Font size leaves for the sheet and the widget; accessibility and language stay as 44px icon controls; the skip link shows on the first Tab press"],
                 [
                   "Below the tablet anchor",
                   "Text size, accessibility options and language move into the sheet's accessibility section",
@@ -398,10 +405,20 @@ export default function SiteHeaderPage(): React.JSX.Element {
               ]}
             />
             <p>
-              Content is centred on <code>--sa-container-page</code>, the same variable the page
-              content below the header uses. Leave <code>maxWidth</code> unset: passing a number
-              re-introduces the misalignment the default exists to prevent, which put the National
-              Emblem twenty pixels outside the content column on wide viewports until August 2026.
+              The website header is contained: content is centred on <code>--sa-container-page</code>,
+              the same variable the page content below the header uses. Leave <code>maxWidth</code>
+              unset: passing a number re-introduces the misalignment the default exists to prevent,
+              which put the National Emblem twenty pixels outside the content column on wide
+              viewports until August 2026.
+            </p>
+            <p>
+              The portal header is fluid: no cap, and every row pads with the page margin,
+              <code>--sa-grid-margin-page</code> — 16, 24 from 768 and 32 from 1920 — so the
+              masthead runs edge to edge with the portal beneath it. Figma draws both on a 1440
+              frame: Navbar/Website caps each row at container/page and Navbar/Portal lets each row
+              fill, and both bind their side padding to grid/margin/page. The accessibility bar,
+              brand row, navigation row and condensed bar all read the same token, which is what
+              keeps the flag, the emblem and the first navigation entry on one edge.
             </p>
           </section>
 
@@ -446,7 +463,7 @@ export default function SiteHeaderPage(): React.JSX.Element {
             <h2 id="cdp-example" className="cdp__h2">
               Example
             </h2>
-            <CodeBlock>{`import { SiteHeader } from "@mosje/design-system";
+            <CodeBlock>{`import { SiteHeader, SAMAVESH_COBRAND } from "@mosje/design-system";
 
 // Website — search, a Login CTA, and mega-menu navigation
 <SiteHeader
@@ -456,7 +473,7 @@ export default function SiteHeaderPage(): React.JSX.Element {
   emblemSrc={emblem}
   brandLines={{ org: "Government of India", ministry: "…", department: "…" }}
   search={{ placeholder: "Search schemes and services", onSearch: runSearch }}
-  cobranding={[{ src: digitalIndia, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 40 }]}
+  cobranding={[{ src: digitalIndia, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 40 }, SAMAVESH_COBRAND]}
   nav={NAV}
   actions={<a href="/login">Login</a>}
 />;

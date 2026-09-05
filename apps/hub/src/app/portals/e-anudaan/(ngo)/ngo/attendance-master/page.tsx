@@ -74,8 +74,8 @@ export default function AttendanceMasterPage() {
   return (
     <div className="space-y-5">
       <header>
-        <h1 className="text-2xl font-bold text-ink">Attendance Master</h1>
-        <p className="mt-1 text-sm text-ink-muted">Monthly attendance for {projectLabel}.</p>
+        <h1 className="text-headline-1 text-ink">Attendance Master</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">Monthly attendance for {projectLabel}.</p>
       </header>
 
       <FormField label="Scheme / Project" id="master-project">
@@ -115,7 +115,7 @@ export default function AttendanceMasterPage() {
           </ChartCard>
 
           <section className="rounded-xl border border-line bg-surface p-5">
-            <h2 className="text-base font-bold text-ink">Recent Attendance Records</h2>
+            <h2 className="text-title-2 text-ink">Recent Attendance Records</h2>
             <ReturnsTable rows={rows.slice(0, 5)} caption="Recent attendance records" />
           </section>
         </div>
@@ -124,7 +124,7 @@ export default function AttendanceMasterPage() {
       {tab === 1 && (
         <section className="space-y-3 rounded-xl border border-line bg-surface p-5">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-base font-bold text-ink">Monthly Attendance Returns</h2>
+            <h2 className="text-title-2 text-ink">Monthly Attendance Returns</h2>
             <Badge status="info">{submitted} months</Badge>
           </div>
           <ReturnsTable rows={rows} caption="Monthly attendance returns" withAction />
@@ -133,12 +133,12 @@ export default function AttendanceMasterPage() {
 
       {tab === 2 && (
         <section className="space-y-3 rounded-xl border border-line bg-surface p-5">
-          <h2 className="text-base font-bold text-ink">Attendance History (submitted)</h2>
+          <h2 className="text-title-2 text-ink">Attendance History (submitted)</h2>
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[34rem] text-sm">
+            <table className="w-full min-w-[34rem] text-body-2">
               <caption className="sr-only">Attendance history</caption>
               <thead>
-                <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-muted">
+                <tr className="border-b border-line text-left text-label-3 uppercase text-ink-muted">
                   <th scope="col" className="pb-2 pr-3 font-medium">Month</th>
                   <th scope="col" className="pb-2 pr-3 font-medium">FY</th>
                   <th scope="col" className="pb-2 pr-3 font-medium">Avg %</th>
@@ -176,10 +176,10 @@ function ReturnsTable({
 }) {
   return (
     <div className="mt-4 overflow-x-auto">
-      <table className="w-full min-w-[34rem] text-sm">
+      <table className="w-full min-w-[34rem] text-body-2">
         <caption className="sr-only">{caption}</caption>
         <thead>
-          <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-muted">
+          <tr className="border-b border-line text-left text-label-3 uppercase text-ink-muted">
             <th scope="col" className="pb-2 pr-3 font-medium">Month</th>
             <th scope="col" className="pb-2 pr-3 font-medium">Beneficiaries</th>
             <th scope="col" className="pb-2 pr-3 font-medium">Avg Present</th>

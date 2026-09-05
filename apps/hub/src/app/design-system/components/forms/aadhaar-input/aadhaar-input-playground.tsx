@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { AadhaarInput, FormField } from "@mosje/design-system";
+import { AadhaarInput, FormField, Checkbox } from "@mosje/design-system";
 
 export function AadhaarInputPlayground() {
   const [aadhaar, setAadhaar] = React.useState("");
@@ -20,32 +20,11 @@ export function AadhaarInputPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={mask} 
-            onChange={(e) => setMask(e.target.checked)} 
-          />
-          <strong>Mask when blurred</strong>
-        </label>
+        <Checkbox label="Mask when blurred" size="sm" checked={mask} onCheckedChange={setMask} />
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={invalid} 
-            onChange={(e) => setInvalid(e.target.checked)} 
-          />
-          <strong>Simulate external error</strong>
-        </label>
+        <Checkbox label="Simulate external error" size="sm" checked={invalid} onCheckedChange={setInvalid} />
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={disabled} 
-            onChange={(e) => setDisabled(e.target.checked)} 
-          />
-          <strong>Disabled</strong>
-        </label>
+        <Checkbox label="Disabled" size="sm" checked={disabled} onCheckedChange={setDisabled} />
       </div>
 
       <div style={{ width: "100%", maxWidth: "320px" }}>
@@ -67,7 +46,7 @@ export function AadhaarInputPlayground() {
         </FormField>
       </div>
       
-      <div style={{ marginTop: "var(--sa-stack-16)", padding: "var(--sa-padding-16)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-8)", fontSize: "14px", fontFamily: "monospace" }}>
+      <div style={{ marginTop: "var(--sa-stack-16)", padding: "var(--sa-padding-16)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-8)", fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)", fontFamily: "var(--sa-font-mono)" }}>
         <strong>Internal State (Raw Digits):</strong> &quot;{aadhaar}&quot;
       </div>
     </div>

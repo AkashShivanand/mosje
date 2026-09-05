@@ -40,8 +40,8 @@ export default function WelfarePage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-ink">Welfare &amp; Benefits</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">Welfare &amp; Benefits</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           Schemes available to certified transgender persons under the SMILE umbrella.
         </p>
       </div>
@@ -52,10 +52,10 @@ export default function WelfarePage() {
             <span className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-navy/10 text-navy">
               <Icon name={iconName} />
             </span>
-            <h2 className="text-lg font-semibold text-ink">{title}</h2>
-            <p className="mt-2 text-sm text-ink-muted">{desc}</p>
-            <p className="mt-3 text-xs text-ink-hint">
-              <span className="font-semibold uppercase tracking-wide">Eligibility:</span> {eligibility}
+            <h2 className="text-title-1 text-ink">{title}</h2>
+            <p className="mt-2 text-body-2 text-ink-muted">{desc}</p>
+            <p className="mt-3 text-body-3 text-ink-hint">
+              <span className="text-label-3 uppercase">Eligibility:</span> {eligibility}
             </p>
             <div className="mt-5">
               <Button variant="outline" onClick={() => toast(`${title} — ${cta}: demo action, no real submission is made.`, "info")}>

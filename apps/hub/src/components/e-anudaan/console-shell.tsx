@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { SidebarNav, SiteHeader } from "@mosje/design-system";
+import { SidebarNav, SiteHeader, OrgLogo } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ROLES } from "@/lib/e-anudaan/roles";
 
@@ -19,7 +19,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
   const role = isOfficer ? ROLES[state.session!] : null;
 
   React.useEffect(() => {
-    if (hydrated && !isOfficer) router.replace("/portals/e-anudaan/login");
+    if (hydrated && !isOfficer) router.replace("/portals/e-anudaan/login?role=officer");
   }, [hydrated, isOfficer, router]);
 
   if (!hydrated || !role) return null;
@@ -32,7 +32,8 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
         emblemSrc="/images/emblem.svg"
         brandLines={{
           org: "Government of India",
-          department: "Ministry of Social Justice & Empowerment",
+          ministry: "Ministry of Social Justice & Empowerment",
+          department: "Department of Social Justice & Empowerment",
         }}
         beta
         onToggleNav={() => setCollapsed(!collapsed)}
@@ -53,7 +54,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
             danger: true,
             onSelect: () => {
               logout();
-              router.push("/portals/e-anudaan/login");
+              router.push("/portals/e-anudaan/login?role=officer");
             },
           },
         ]}
@@ -61,12 +62,12 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
 
       <div className="flex flex-1 items-stretch">
         <SidebarNav
+          identity={{ name: "E-Anudaan", expansion: "Grant-in-Aid Management", mark: <OrgLogo path="/portals/e-anudaan" />, href: "/portals/e-anudaan" }}
           groups={[{ items: role.nav }]}
           pathname={pathname}
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
-          showCollapseControl
-          className="sticky top-0 hidden max-h-[100dvh] shrink-0 overflow-y-auto md:flex md:flex-col"
+          className="hidden shrink-0 md:flex md:flex-col"
         />
         <main id="main" className="min-w-0 flex-1 bg-surface-muted px-4 py-6 lg:px-8">
           {children}

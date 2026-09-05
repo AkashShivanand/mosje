@@ -22,7 +22,7 @@ export function ScopeBanner() {
   return (
     <div className="flex flex-wrap items-center gap-md rounded-md border border-primary-100 bg-primary-50/50 px-md py-sm text-label-2">
       <span
-        className="inline-flex items-center gap-xs rounded-full bg-primary px-sm py-0.5 font-semibold uppercase tracking-[0.06em] text-white shadow-xs"
+        className="inline-flex items-center gap-xs rounded-full bg-primary px-sm py-0.5 text-label-3 uppercase text-white shadow-xs"
         aria-label={`Signed in as ${ROLE_LABELS[account.role]}`}
       >
         <Icon name="verified_user" size={12} aria-hidden />

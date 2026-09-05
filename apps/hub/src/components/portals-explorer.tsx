@@ -191,7 +191,7 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
               <button
                 type="button"
                 onClick={() => setQuery("")}
-                className="text-neutral-subtle hover:text-ink text-xs p-1 flex items-center justify-center rounded-full"
+                className="text-neutral-subtle hover:text-ink p-1 flex items-center justify-center rounded-full"
                 aria-label="Clear search"
               >
                 <Icon name="close" size={16} />
@@ -263,8 +263,8 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
         ) : (
           <div className="p-12 text-center bg-surface rounded-2xl border border-neutral-subtle mb-10 shadow-sm">
             <Icon name="search_off" size={48} className="text-neutral-subtle mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-ink">No Portals Match Your Filters</h3>
-            <p className="text-sm text-neutral-subtle mt-1 max-w-md mx-auto">
+            <h3 className="text-title-1 text-ink">No Portals Match Your Filters</h3>
+            <p className="text-body-2 text-neutral-subtle mt-1 max-w-md mx-auto">
               We could not find any portals matching &ldquo;{query}&rdquo; in this category. Try resetting your search or selecting &ldquo;All Portals&rdquo;.
             </p>
             <button

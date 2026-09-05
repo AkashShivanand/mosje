@@ -32,7 +32,7 @@
     padding: var(--sa-padding-16);
     font-family: var(--sa-font-latin);
     background-color: var(--sa-bg-neutral-subtler);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-12);
   }
 
@@ -44,7 +44,7 @@
     margin: 0;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -56,12 +56,12 @@
 
   .ds-declaration__lead {
     margin: 0 0 var(--sa-padding-4);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
   .ds-declaration__statement ul {
-    padding-left: var(--sa-padding-20);
+    padding-inline-start: var(--sa-padding-20);
     margin: 0;
   }
 
@@ -73,20 +73,13 @@
      was the smallest target on the page at 20px tall. Give the whole row the
      44px touch floor so it is the easiest thing to hit, not the hardest. */
   .ds-declaration .ds-checkbox {
-    align-items: center;
-    min-height: 44px;
+    min-block-size: var(--sa-target-comfortable);
     padding: var(--sa-padding-4) 0;
     cursor: pointer;
   }
 
-  .ds-declaration .ds-checkbox__control {
-    display: inline-flex;
-    align-items: center;
-    align-self: center;
-  }
-
   .ds-declaration__confirm {
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 

@@ -39,6 +39,17 @@ const actual = resolveContract(cssText);
  * from this list — the compat layer was retargeted, not renamed.
  */
 const RENAMES = {
+  // 2026-09-04 — THE MOTION PRIMITIVES WERE VALUE-NAMED AND BEHAVIOUR-NAMED (foundations
+  // rebuild). Durations follow the spacing/radius rule that a rung's name IS its value —
+  // `fast/base/slow` said nothing a reader could check, and the ladder grew from three
+  // steps to ten. Easings take Material 3's vocabulary so a designer and a developer say
+  // the same word: out -> decelerate, in -> accelerate, inOut -> standard, outStrong ->
+  // emphasized. Value-preserving by construction: the curves and the three durations are
+  // untouched; the source shape moved to DTCG `cubicBezier` arrays and a custom transform
+  // projects them back to the identical string. Tier 1, hidden, zero app consumers by
+  // tier-discipline. PROVEN here against the un-regenerated fixture, then rebaselined and
+  // deleted per the note above — `git show` this commit for the seven entries.
+
   // 2026-08-26 — THE FONT WEIGHTS MOVED FROM TIER 1 TO TIER 2, so `--sa-ref-font-weight-*`
   // becomes `--sa-font-weight-*`. Not cosmetic: a Figma text style has to NAME a cut, and
   // while the only cut in the system was a Tier-1 reference, all 24 Noto Sans styles bound a
@@ -177,6 +188,24 @@ const RENAMES = {
  * `overlay/brand/hover` at 8%, so the value lives in one place instead of two.
  */
 const REMOVED = {
+  // 2026-09-04 — THE TIER-1 Z LADDER WAS RETIRED (foundations rebuild, layering). It was
+  // UX4G/Bootstrap's 1000–1090 transcribed verbatim, and it matched nothing the estate
+  // renders: components stack at 20/30/60/70/90 inside their own contexts, the floating
+  // rails at 1000/1010, the statutory panel at 999999 and the demo dock at 2147483000.
+  // Layering is now authored ONCE, as Tier-2 `z/*`, with that real ladder. There was
+  // nothing for a primitive to be an alias target of.
+  //
+  // ZERO CONSUMERS, verified before deletion: `git grep -- --sa-ref-z-` outside the token
+  // package returns nothing, and in Figma the eight `ref/z/*` variables carried EMPTY scopes
+  // from the day they were pushed — offered in no picker, so nothing could have bound them.
+  "--sa-ref-z-dropdown": "retired with the Bootstrap ladder; layering is z/dropdown (100)",
+  "--sa-ref-z-sticky": "retired; z/sticky (200)",
+  "--sa-ref-z-fixed": "retired; z/fixed (300)",
+  "--sa-ref-z-offcanvas": "retired; a side sheet is z/modal (500) on z/overlay (400)",
+  "--sa-ref-z-modal-backdrop": "retired; z/overlay (400)",
+  "--sa-ref-z-modal-base": "retired; z/modal (500)",
+  "--sa-ref-z-popover": "retired; z/popover (600)",
+  "--sa-ref-z-toast": "retired; z/toast (700)",
   // 2026-08-18 — the AccessibilityBar adopted the shared `Divider` component, which was
   // built the same day. Figma had instanced a `Divider` master inside the bar from the
   // start; the code hand-rolled a styled <span> because no Divider existed in the design
@@ -730,15 +759,28 @@ test("the sheet stays flat, so the resolver cannot silently mis-parse it", () =>
   // something subtly wrong, and this whole contract would go quietly green on garbage.
   // Cheaper to forbid the shape than to make the parser clever: if the generator ever
   // needs an at-rule, that is the moment to reach for a real CSS parser here.
-  const atRules = [...cssText.matchAll(/^\s*@[a-z-]+/gim)].map((m) => m[0].trim());
+  //
+  // 2026-09-04 — the generator now needs exactly ONE at-rule: the reduced-motion block that
+  // collapses every motion intent's duration (foundations rebuild, motion). Rather than a
+  // full CSS parser, `css-resolve.mjs` hoists that block's inner selectors into flat
+  // `@media (…) :root` contexts on their own `motion` axis, and this test pins the shape it
+  // hoists: the reduced-motion query and nothing else, so a second at-rule still trips it.
+  const atRules = [...cssText.matchAll(/^\s*@[a-z-]+[^{]*/gim)].map((m) => m[0].trim());
 
   assert.deepEqual(
     atRules,
-    [],
-    `dist/tokens.css now contains at-rules (${atRules.join(", ")}). test/lib/css-resolve.mjs ` +
-      `parses flat blocks only — teach it to nest before allowing these, or the visual contract ` +
-      `silently stops meaning anything.`,
+    ["@media (prefers-reduced-motion: reduce)"],
+    `dist/tokens.css contains at-rules the resolver does not hoist (${atRules.join(", ")}). ` +
+      `test/lib/css-resolve.mjs hoists only the reduced-motion block — teach it the new ` +
+      `shape before allowing it, or the visual contract silently stops meaning anything.`,
   );
+
+  const reduced = actual["@media (prefers-reduced-motion: reduce) :root"];
+  assert.ok(reduced, "the reduced-motion block was not hoisted into its own context");
+  const collapsed = Object.entries(reduced).filter(([, v]) => v === "0.01ms").map(([k]) => k);
+  assert.ok(collapsed.includes("--sa-motion-enter-duration"), "enter/duration does not collapse under reduced motion");
+  assert.ok(!collapsed.includes("--sa-motion-loading-spin"), "loading/spin must NOT collapse — a stopped spinner reads as a frozen page");
+  assert.equal(reduced["--sa-motion-instant-duration"], "0ms", "instant is already zero and stays authored, not collapsed");
 });
 
 test("no var() chain dead-ends or loops in any context", () => {

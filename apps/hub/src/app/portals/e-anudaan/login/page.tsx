@@ -1,104 +1,137 @@
 "use client";
 
+// DS Audit: PortalLoginTemplate ✅ existing · useToast ✅ existing. Nothing is
+// hand-rolled here any more — the two bespoke pages this replaces carried their
+// own tabs, their own captcha and their own forgot-password rows.
+
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Button, FormField, Input, PasswordInput, PortalLoginShell, useToast, type DemoFillDetail } from "@mosje/design-system";
-import { roleByLoginId } from "@/lib/e-anudaan/roles";
+import {
+  PortalLoginTemplate,
+  useToast,
+  type DemoFillDetail,
+  type LoginSubmitPayload,
+  type PortalLoginConfig,
+} from "@mosje/design-system";
+import { ROLES, roleByLoginId } from "@/lib/e-anudaan/roles";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 
 const BASE = "/portals/e-anudaan";
 
-export default function EAnudaanOfficerLoginPage() {
+/**
+ * ONE login for both of E-Anudaan's audiences, as the Portal Login Template
+ * draws it: the audiences are role tabs on one page, not two pages.
+ *
+ * The live deployment runs the NGO and officer surfaces as two apps on two
+ * hosts, and this portal used to mirror that with `/sign-in` for NGOs and
+ * `/login` for officers — two hand-built forms that agreed on nothing, one of
+ * them with a distorted-character captcha the estate has retired. Both routes
+ * still resolve: `/sign-in` and the old landing page redirect here with the
+ * role in the URL, so every link that ever went out keeps working.
+ *
+ * Roles map onto the estate's three audiences: the NGO is an `organisation`,
+ * every Ministry grade — Programme Division, Integrated Finance Division, the
+ * Programme Director and the PMU field officer — is an `officer`, told apart
+ * by the mobile number they sign in with rather than by a tab each.
+ */
+const CONFIG: PortalLoginConfig = {
+  portalId: "e-anudaan",
+  portalName: "E-Anudaan",
+  changeHref: "/portals",
+  defaultRoleId: "ngo",
+  brandAssets: {
+    emblemSrc: `${BASE}/brand/national-emblem.svg`,
+    digitalIndiaSrc: `${BASE}/brand/digital-india.svg`,
+    samaveshLogoSrc: `${BASE}/brand/samavesh-logo.svg`,
+  },
+  roles: [
+    {
+      id: "ngo",
+      audience: "organisation",
+      label: "NGO",
+      description:
+        "Voluntary organisations applying for grant-in-aid under SHRESHTA Mode 2, AVYAY, NAPDDR and SMILE.",
+      authModeOptions: [
+        { mode: "password", label: "Credentials" },
+        { mode: "darpan", label: "DARPAN ID" },
+      ],
+      defaultMode: "password",
+    },
+    {
+      id: "officer",
+      audience: "officer",
+      label: "Ministry Officer",
+      description:
+        "Programme Division, Integrated Finance Division, the Programme Director and PMU field officers.",
+      authModes: ["password"],
+    },
+  ],
+  links: {
+    termsHref: "/website/terms-conditions",
+    privacyHref: "/website/privacy-policy",
+  },
+};
+
+export default function EAnudaanLoginPage() {
   const router = useRouter();
   const { login } = useEAnudaan();
   const { toast } = useToast();
-  const [mobile, setMobile] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [error, setError] = React.useState<string | null>(null);
+  // Set only by the demo console: choosing an NGO account on the officer tab
+  // (or the reverse) moves the reader to the tab that account can sign in on.
+  // Left undefined otherwise, so the URL's `?role=` keeps deciding.
+  const [roleId, setRoleId] = React.useState<string | undefined>(undefined);
 
   React.useEffect(() => {
     const handler = (e: Event) => {
-      const { id, password: pw } = (e as CustomEvent<DemoFillDetail>).detail;
-      setMobile(id);
-      setPassword(pw);
+      const { id } = (e as CustomEvent<DemoFillDetail>).detail;
+      const role = roleByLoginId(id);
+      setRoleId(role?.id === "ngo" ? "ngo" : "officer");
+      setError(null);
     };
     window.addEventListener("demo:fill", handler);
     return () => window.removeEventListener("demo:fill", handler);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const role = roleByLoginId(mobile);
-    if (!role || role.id === "ngo") {
-      toast("That mobile number is not a registered officer account.", "error");
+  const handleSubmit = (payload: LoginSubmitPayload) => {
+    const id = (payload.credentials.username ?? "").trim();
+    setError(null);
+
+    if (payload.roleId === "officer") {
+      const role = roleByLoginId(id);
+      if (!role || role.id === "ngo") {
+        setError("That mobile number is not a registered officer account.");
+        return;
+      }
+      login(role.id);
+      router.push(role.home);
       return;
     }
-    login(role.id);
-    router.push(role.home);
+
+    if (payload.authMode === "darpan") {
+      if (!id) {
+        setError("Enter your NGO-DARPAN Unique ID.");
+        return;
+      }
+    } else if (id.toUpperCase() !== ROLES.ngo.loginId) {
+      setError("Unknown username or login ID for this demo.");
+      return;
+    }
+    login("ngo");
+    router.push(ROLES.ngo.home);
   };
 
   return (
-    <PortalLoginShell
-      emblemSrc={`${BASE}/brand/national-emblem.svg`}
-      digitalIndiaSrc={`${BASE}/brand/digital-india.svg`}
-      samaveshLogoSrc={`${BASE}/brand/samavesh-logo.svg`}
-      signingInto="E-Anudaan"
-      changeHref="/portals"
-      tabs={[]}
-      onFooterLinkClick={(link) => {
-        toast(`Viewing ${link} policy.`, "info");
+    <PortalLoginTemplate
+      config={CONFIG}
+      roleId={roleId}
+      onRoleChange={() => {
+        setRoleId(undefined);
+        setError(null);
       }}
-    >
-      <h2 className="mb-6 text-2xl font-bold text-ink">Log in to your account</h2>
-
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
-        <FormField label="Mobile Number" id="mobile_number">
-          {(control) => (
-            <Input
-              {...control}
-              type="tel"
-              inputMode="numeric"
-              maxLength={10}
-              required
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
-              placeholder="Enter your mobile number"
-            />
-          )}
-        </FormField>
-
-        <div>
-          <div className="mb-1.5 flex items-center justify-between">
-            <label htmlFor="password" className="text-sm font-semibold text-ink">
-              Password
-            </label>
-            <a
-              href="#forgot-password"
-              onClick={(e) => {
-                e.preventDefault();
-                toast("Please contact system admin to reset officer password.", "info");
-              }}
-              className="text-xs font-semibold text-primary hover:underline"
-            >
-              Forgot Password?
-            </a>
-          </div>
-          <PasswordInput
-            id="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
-          />
-        </div>
-
-        <Button type="submit" className="mt-2 w-full">
-          Log In
-        </Button>
-      </form>
-
-      <p className="mt-4 text-xs text-ink-muted">
-        Demonstration portal on mock data. Open the demo console (bottom-left) to fill an officer role.
-      </p>
-    </PortalLoginShell>
+      error={error}
+      onSubmit={handleSubmit}
+      onFooterLinkClick={(link) => toast(`Viewing ${link} policy.`, "info")}
+    />
   );
 }

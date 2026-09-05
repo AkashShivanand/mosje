@@ -48,7 +48,7 @@ export function KpiCard({ spec }: { spec: KpiSpec }) {
         <div className="min-w-0 space-y-1">
           <div
             className={cn(
-              "text-label-3 font-semibold uppercase tracking-[0.08em] md:tracking-[0.1em]",
+              "text-label-3 uppercase",
               spec.labelColor,
             )}
           >
@@ -56,7 +56,7 @@ export function KpiCard({ spec }: { spec: KpiSpec }) {
           </div>
           <div
             aria-live="polite"
-            className="text-num-lg font-bold tabular-nums leading-none text-ink md:text-num-xl"
+            className="text-headline-2 tabular-nums text-ink"
           >
             {value}
           </div>
@@ -71,7 +71,7 @@ export function KpiCard({ spec }: { spec: KpiSpec }) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-xs text-label-3 md:text-label-2">
+      <div className="flex items-center justify-between gap-xs text-label-2">
         <div className="hidden truncate text-ink-hint sm:block">
           {spec.meta ?? "All-time · all states"}
         </div>

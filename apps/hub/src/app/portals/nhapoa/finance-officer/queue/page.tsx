@@ -47,18 +47,18 @@ export default function DisbursementQueuePage() {
       <SearchInput placeholder="Search by ID, citizen name, category…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
 
       <div className="mb-5 flex flex-wrap gap-2">
-        <span className="rounded-lg border border-navy bg-navy px-4 py-2 text-sm font-semibold text-white">All ({queue.length})</span>
-        <span className="rounded-lg border border-line px-4 py-2 text-sm font-semibold text-ink-muted">Ready ({queue.length})</span>
-        <span className="rounded-lg border border-line px-4 py-2 text-sm font-semibold text-ink-muted">On Hold (0)</span>
+        <span className="rounded-lg border border-navy bg-navy px-4 py-2 text-label-1 font-semibold text-white">All ({queue.length})</span>
+        <span className="rounded-lg border border-line px-4 py-2 text-label-1 font-semibold text-ink-muted">Ready ({queue.length})</span>
+        <span className="rounded-lg border border-line px-4 py-2 text-label-1 font-semibold text-ink-muted">On Hold (0)</span>
       </div>
 
       {filtered.length === 0 ? (
-        <Card className="px-6 py-16 text-center text-sm text-ink-muted">No cases awaiting disbursement.</Card>
+        <Card className="px-6 py-16 text-center text-body-2 text-ink-muted">No cases awaiting disbursement.</Card>
       ) : (
         <div className="overflow-x-auto rounded-2xl border border-line bg-white shadow-card">
-          <table className="w-full min-w-[800px] text-left text-sm">
+          <table className="w-full min-w-[800px] text-left text-body-2">
             <thead>
-              <tr className="border-b border-line text-xs uppercase tracking-wide text-ink-hint">
+              <tr className="border-b border-line text-label-3 uppercase text-ink-hint">
                 <th className="px-5 py-3.5 font-semibold">Grievance ID</th>
                 <th className="px-5 py-3.5 font-semibold">Citizen / Role</th>
                 <th className="px-5 py-3.5 font-semibold">Category</th>
@@ -71,12 +71,12 @@ export default function DisbursementQueuePage() {
             <tbody className="divide-y divide-line">
               {filtered.map((c) => (
                 <tr key={c.id} className="hover:bg-surface-muted/60">
-                  <td className="px-5 py-4 font-mono text-xs font-semibold text-navy">{c.refNo}</td>
-                  <td className="px-5 py-4"><div className="font-medium text-ink">{c.complainant.name}</div><div className="text-xs text-ink-hint">{c.complainantRole}</div></td>
+                  <td className="px-5 py-4 font-mono text-body-3 font-semibold text-navy">{c.refNo}</td>
+                  <td className="px-5 py-4"><div className="font-medium text-ink">{c.complainant.name}</div><div className="text-body-3 text-ink-hint">{c.complainantRole}</div></td>
                   <td className="px-5 py-4 max-w-[200px]"><span className="line-clamp-2 text-ink">{c.category}</span></td>
                   <td className="px-5 py-4 text-ink-muted">{fmtDate(c.timeline.find((t) => t.status === "APPROVED")?.at ?? c.createdAt)}</td>
                   <td className="px-5 py-4 font-semibold text-ink">{fmtINR(c.reliefAmount)}</td>
-                  <td className="px-5 py-4"><span className="inline-flex rounded-full bg-approve-bg px-2.5 py-0.5 text-xs font-semibold text-approve-fg">Ready</span></td>
+                  <td className="px-5 py-4"><span className="inline-flex rounded-full bg-approve-bg px-2.5 py-0.5 text-label-2 font-semibold text-approve-fg">Ready</span></td>
                   <td className="px-5 py-4 text-right"><Button onClick={() => openProcess(c)}><Icon name="account_balance_wallet" size={16} /> Process</Button></td>
                 </tr>
               ))}
@@ -104,14 +104,14 @@ export default function DisbursementQueuePage() {
         {done ? (
           <div className="py-4 text-center">
             <Icon name="check_circle" size={48} className="mx-auto text-approve" />
-            <p className="mt-3 text-sm text-ink-muted">Relief disbursed for <span className="font-mono font-semibold text-ink">{done.ref}</span>. The case is now closed.</p>
-            <p className="mt-3 rounded-lg bg-surface-muted px-4 py-2 font-mono text-sm font-bold text-navy">Txn: {done.txn}</p>
+            <p className="mt-3 text-body-2 text-ink-muted">Relief disbursed for <span className="font-mono font-semibold text-ink">{done.ref}</span>. The case is now closed.</p>
+            <p className="mt-3 rounded-lg bg-surface-muted px-4 py-2 font-mono text-title-3 text-navy">Txn: {done.txn}</p>
           </div>
         ) : proc ? (
-          <div className="space-y-4 text-sm">
+          <div className="space-y-4 text-body-2">
             <div className="rounded-lg bg-surface-muted px-4 py-3">
               <p className="text-ink">{proc.category}</p>
-              <p className="mt-0.5 text-xs text-ink-hint">{proc.complainant.name} · {proc.district}, {proc.state}</p>
+              <p className="mt-0.5 text-body-3 text-ink-hint">{proc.complainant.name} · {proc.district}, {proc.state}</p>
             </div>
             <Field label="Beneficiary" required><TextInput value={beneficiary} onChange={(e) => setBeneficiary(e.target.value)} placeholder="Beneficiary name" /></Field>
             <Field label="Sanction Amount (₹)" required><TextInput inputMode="numeric" value={amount} onChange={(e) => setAmount(e.target.value.replace(/\D/g, ""))} placeholder="e.g. 425000" /></Field>

@@ -14,7 +14,7 @@ export function AdminLogin() {
 
   return (
     <main className="flex min-h-screen flex-col bg-surface-muted">
-      <div className="bg-primary py-3 text-center text-[13px] text-white">
+      <div className="bg-primary py-3 text-center text-body-2 text-white">
         Government of India · Ministry of Social Justice &amp; Empowerment
       </div>
 
@@ -22,8 +22,8 @@ export function AdminLogin() {
         <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col items-center text-center">
             <Image src="/website/images/National-Emblem-logo.svg" alt="National Emblem of India" width={32} height={52} className="h-16 w-auto" />
-            <h1 className="mt-4 text-[22px] font-bold text-ink">Admin Login</h1>
-            <p className="mt-1 text-[14px] text-ink-muted">
+            <h1 className="mt-4 text-headline-3 text-ink">Admin Login</h1>
+            <p className="mt-1 text-body-2 text-ink-muted">
               Department of Social Justice &amp; Empowerment
             </p>
           </div>
@@ -69,7 +69,7 @@ export function AdminLogin() {
             </Button>
           </form>
 
-          <Link href="/website" className="mt-6 flex items-center justify-center gap-1.5 text-[14px] text-primary hover:underline">
+          <Link href="/website" className="mt-6 flex items-center justify-center gap-1.5 text-label-1 text-primary hover:underline">
             <Icon name="arrow_back" size={16} />
             Back to website
           </Link>

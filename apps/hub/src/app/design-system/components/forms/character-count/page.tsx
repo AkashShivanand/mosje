@@ -51,6 +51,7 @@ const A11Y: A11yItem[] = [
     level: "GIGW",
     status: "verified",
     evidence:
+      // ds-exempt(code-sample): the Devanagari word is a measured input in an evidence note, quoted as data, not rendered as Hindi copy
       "`countCharacters` walks grapheme clusters with `Intl.Segmenter`. Measured in a browser 2026-09-03: \"नमस्ते\" is 6 to `String.length` and 3 to this, and \"👍🏽\" is 4 to `String.length` and 1 to this.",
     description:
       "A count that uses `String.length` tells a Hindi speaker their word is longer than it is, and cuts a Devanagari cluster in half if it is also used to enforce a limit.",

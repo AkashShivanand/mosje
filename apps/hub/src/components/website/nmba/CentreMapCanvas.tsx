@@ -58,10 +58,10 @@ function ClusterLayer({
       const meta = CENTRE_TYPE_META[c.type];
       const m = L.marker([c.lat, c.lng], { icon: makeIcon(meta.color, selectedKey === centreKey(c)) });
       m.bindPopup(
-        `<div style="max-width:230px"><p style="font-weight:600;margin:0;color:var(--sa-text-neutral-bolder)">${esc(c.name)}</p>` +
-          `<p style="margin:var(--sa-stack-2) 0 0;font-size:12px;font-weight:600;color:${meta.color}">${c.type} · ${esc(meta.label)}</p>` +
-          `<p style="margin:var(--sa-stack-4) 0 0;font-size:12px;color:var(--sa-text-neutral-subtle)">${esc(c.address)}</p>` +
-          `<p style="margin:var(--sa-stack-2) 0 0;font-size:12px;color:var(--sa-text-neutral-subtle)">${esc(c.district)}, ${esc(c.state)}</p></div>`,
+        `<div style="max-width:230px"><p style="font-weight:var(--sa-font-weight-semibold);margin:0;color:var(--sa-text-neutral-bolder)">${esc(c.name)}</p>` +
+          `<p style="margin:var(--sa-stack-2) 0 0;font-size:var(--sa-type-body-3-size);line-height:var(--sa-type-body-3-lh);font-weight:var(--sa-font-weight-semibold);color:${meta.color}">${c.type} · ${esc(meta.label)}</p>` +
+          `<p style="margin:var(--sa-stack-4) 0 0;font-size:var(--sa-type-body-3-size);line-height:var(--sa-type-body-3-lh);color:var(--sa-text-neutral-subtle)">${esc(c.address)}</p>` +
+          `<p style="margin:var(--sa-stack-2) 0 0;font-size:var(--sa-type-body-3-size);line-height:var(--sa-type-body-3-lh);color:var(--sa-text-neutral-subtle)">${esc(c.district)}, ${esc(c.state)}</p></div>`,
       );
       m.on("click", () => onSelect(c));
       group.addLayer(m);

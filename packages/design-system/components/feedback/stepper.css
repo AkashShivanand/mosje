@@ -70,16 +70,17 @@
     width: 32px;
     height: 32px;
     border-radius: var(--sa-shape-full);
-    border: 2px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-2) solid var(--sa-border-neutral-subtle);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-subtle);
-    font-size: 13px;
-    font-weight: 700;
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-stepper__num {
-    line-height: 1;
+    line-height: var(--sa-type-label-1-lh);
   }
 
   .ds-stepper__item.is-done .ds-stepper__marker {
@@ -111,9 +112,9 @@
 
   .ds-stepper__label {
     font-size: var(--sa-type-body-3-size);
-    font-weight: 600;
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
-    line-height: 1.3;
     /*
      * A gutter, so two long labels in adjacent columns cannot touch and read as one word. An
      * eight-step wizard at ~800px gives each column roughly 100px, and "Justification" ran
@@ -139,9 +140,9 @@
   }
 
   .ds-stepper__desc {
-    font-size: 12px;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
     color: var(--sa-text-neutral-subtle);
-    line-height: 1.3;
   }
 
   .ds-stepper__sr {
@@ -190,7 +191,7 @@
       overflow: visible;
       clip: auto;
       white-space: normal;
-      font-weight: 700;
+      font-weight: var(--sa-font-weight-semibold);
     }
   }
 
@@ -200,7 +201,8 @@
       display: none;
     }
     .ds-stepper__label {
-      font-size: 11px;
+      font-size: var(--sa-type-label-2-size);
+      line-height: var(--sa-type-label-2-lh);
     }
 
     /*
@@ -221,7 +223,7 @@
     }
 
     .ds-stepper__item.is-current .ds-stepper__label {
-      font-weight: 700;
+      font-weight: var(--sa-font-weight-semibold);
     }
   }
 }

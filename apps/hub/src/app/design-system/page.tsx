@@ -20,11 +20,11 @@ export default function WelcomePage(): React.JSX.Element {
             interactive design-system components instead of a flat image. */}
         <HeroShowcase />
 
-        <p style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 400, color: "var(--sa-color-text-default)", maxWidth: "60ch", lineHeight: 1.5, marginBottom: "var(--sa-padding-20)" }}>
+        <p style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: "var(--sa-font-weight-regular)", color: "var(--sa-color-text-default)", maxWidth: "var(--sa-container-measure)", lineHeight: "var(--sa-type-headline-2-lh)", marginBottom: "var(--sa-padding-20)" }}>
           The shared visual and interaction language for the <strong>Ministry of Social Justice &amp; Empowerment</strong> digital estate.
         </p>
-        <p style={{ fontSize: "var(--sa-type-body-1-size)", color: "var(--sa-color-text-muted)", maxWidth: "64ch", lineHeight: "var(--sa-type-body-1-lh)" }}>
-          SAMAVESH (समावेश, &ldquo;inclusion / bringing together&rdquo;) ensures every citizen-facing website and portal — from the main DoSJE site to PM-AJAY, SMILE, and 20+ scheme portals — looks, feels, and works consistently. One system, one standard, serving every team.
+        <p style={{ fontSize: "var(--sa-type-body-1-size)", color: "var(--sa-color-text-muted)", maxWidth: "var(--sa-container-measure)", lineHeight: "var(--sa-type-body-1-lh)" }}>
+          SAMAVESH (<span lang="hi">समावेश</span>, &ldquo;inclusion / bringing together&rdquo;) ensures every citizen-facing website and portal — from the main DoSJE site to PM-AJAY, SMILE, and 20+ scheme portals — looks, feels, and works consistently. One system, one standard, serving every team.
         </p>
 
         <div style={{ display: "flex", gap: "var(--sa-stack-12)", marginTop: "var(--sa-stack-24)", flexWrap: "wrap" }}>
@@ -76,7 +76,7 @@ export default function WelcomePage(): React.JSX.Element {
       {/* ── For each audience ── */}
       <section style={{ marginTop: "var(--sa-section-56)" }} id="for-designers">
         <span className="home-kicker">Design</span>
-        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-stack-16)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
+        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: "var(--sa-font-weight-semibold)", marginBottom: "var(--sa-stack-16)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
           For Designers
         </h2>
         <p style={{ color: "var(--sa-text-neutral-subtle)", marginBottom: "var(--sa-padding-20)", lineHeight: "var(--sa-type-body-1-lh)" }}>
@@ -94,7 +94,7 @@ export default function WelcomePage(): React.JSX.Element {
               href={card.href}
               className="docs-welcome-card"
             >
-              <div style={{ fontWeight: 600, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-8)" }}>{card.title}</div>
+              <div style={{ fontWeight: "var(--sa-font-weight-semibold)", color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-8)" }}>{card.title}</div>
               <div style={{ fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-muted)" }}>{card.desc}</div>
             </a>
           ))}
@@ -103,7 +103,7 @@ export default function WelcomePage(): React.JSX.Element {
 
       <section style={{ marginTop: "var(--sa-section-56)" }} id="for-developers">
         <span className="home-kicker">Develop</span>
-        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-stack-16)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
+        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: "var(--sa-font-weight-semibold)", marginBottom: "var(--sa-stack-16)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
           For Developers
         </h2>
         <p style={{ color: "var(--sa-text-neutral-subtle)", marginBottom: "var(--sa-padding-20)", lineHeight: "var(--sa-type-body-1-lh)" }}>
@@ -127,7 +127,7 @@ export default function WelcomePage(): React.JSX.Element {
             { title: "Works without Tailwind", desc: "Design system tokens are plain CSS variables — no framework dependency." },
           ].map((item) => (
             <div key={item.title} style={{ fontSize: "var(--sa-type-body-2-size)" }}>
-              <div style={{ fontWeight: 600, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-4)" }}>✓ {item.title}</div>
+              <div style={{ fontWeight: "var(--sa-font-weight-semibold)", color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-4)" }}>✓ {item.title}</div>
               <div style={{ color: "var(--sa-text-neutral-subtle)" }}>{item.desc}</div>
             </div>
           ))}
@@ -136,7 +136,7 @@ export default function WelcomePage(): React.JSX.Element {
 
       <section style={{ marginTop: "var(--sa-section-56)" }} id="for-ai-agents">
         <span className="home-kicker">Automate</span>
-        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-stack-16)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
+        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: "var(--sa-font-weight-semibold)", marginBottom: "var(--sa-stack-16)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
           For AI Agents
         </h2>
         <p style={{ color: "var(--sa-text-neutral-subtle)", marginBottom: "var(--sa-padding-20)", lineHeight: "var(--sa-type-body-1-lh)" }}>
@@ -148,7 +148,7 @@ export default function WelcomePage(): React.JSX.Element {
             { title: "llms.txt", desc: "A compiled navigation map for agents to traverse the docs.", href: "/design-system/llms.txt" },
           ].map((card) => (
             <a key={card.title} href={card.href} className="docs-welcome-card">
-              <div style={{ fontWeight: 600, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-8)" }}>{card.title}</div>
+              <div style={{ fontWeight: "var(--sa-font-weight-semibold)", color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-8)" }}>{card.title}</div>
               <div style={{ fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-muted)" }}>{card.desc}</div>
             </a>
           ))}
@@ -157,7 +157,7 @@ export default function WelcomePage(): React.JSX.Element {
 
       <section style={{ marginTop: "var(--sa-section-56)" }} id="white-label">
         <span className="home-kicker">Extend</span>
-        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-stack-16)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
+        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: "var(--sa-font-weight-semibold)", marginBottom: "var(--sa-stack-16)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
           White-label your portal
         </h2>
         <p style={{ color: "var(--sa-text-neutral-subtle)", marginBottom: "var(--sa-padding-20)", lineHeight: "var(--sa-type-body-1-lh)" }}>
@@ -169,7 +169,7 @@ export default function WelcomePage(): React.JSX.Element {
             { title: "Contrast-gating", desc: "CI checks ensure new brand ramps clear WCAG AA automatically.", href: "#" },
           ].map((card) => (
             <a key={card.title} href={card.href} className="docs-welcome-card">
-              <div style={{ fontWeight: 600, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-8)" }}>{card.title}</div>
+              <div style={{ fontWeight: "var(--sa-font-weight-semibold)", color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-8)" }}>{card.title}</div>
               <div style={{ fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-color-text-muted)" }}>{card.desc}</div>
             </a>
           ))}
@@ -178,7 +178,7 @@ export default function WelcomePage(): React.JSX.Element {
 
       <section style={{ marginTop: "var(--sa-section-56)" }}>
         <span className="home-kicker">Library</span>
-        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, marginBottom: "var(--sa-padding-20)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
+        <h2 style={{ fontSize: "var(--sa-type-headline-2-size)", fontWeight: "var(--sa-font-weight-semibold)", marginBottom: "var(--sa-padding-20)", scrollMarginTop: "var(--docs-anchor-offset)" }}>
           What&apos;s available
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "var(--sa-stack-12)" }}>

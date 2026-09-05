@@ -32,21 +32,21 @@ export default function SchemeDetail() {
         <Card>
           <CardHeader><CardTitle>Budget</CardTitle></CardHeader>
           <CardBody>
-            <div className="text-display-5 font-bold text-ink">{formatINR(scheme.budget, true)}</div>
+            <div className="text-headline-2 tabular-nums text-ink">{formatINR(scheme.budget, true)}</div>
             <div className="text-body-3 text-ink-muted">Sanctioned for FY 2025–26</div>
           </CardBody>
         </Card>
         <Card>
           <CardHeader><CardTitle>Utilised</CardTitle></CardHeader>
           <CardBody>
-            <div className="text-display-5 font-bold text-ink">{formatINR(scheme.utilised, true)}</div>
+            <div className="text-headline-2 tabular-nums text-ink">{formatINR(scheme.utilised, true)}</div>
             <div className="text-body-3 text-ink-muted">{pct}% of sanctioned budget</div>
           </CardBody>
         </Card>
         <Card>
           <CardHeader><CardTitle>Reach</CardTitle></CardHeader>
           <CardBody>
-            <div className="text-display-5 font-bold text-ink">{scheme.beneficiaries.toLocaleString("en-IN")}</div>
+            <div className="text-headline-2 tabular-nums text-ink">{scheme.beneficiaries.toLocaleString("en-IN")}</div>
             <div className="text-body-3 text-ink-muted">Across {scheme.states} states / UTs</div>
           </CardBody>
         </Card>

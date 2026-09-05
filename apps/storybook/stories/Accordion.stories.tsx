@@ -104,9 +104,7 @@ export const BureauList: Story = {
         <AccordionItem key={b.title} title={b.title}>
           <ul style={{ margin: 0, paddingInlineStart: "1.25rem", display: "grid", gap: "0.5rem" }}>
             {b.items.map((item) => (
-              <li key={item} style={{ lineHeight: 1.6 }}>
-                {item}
-              </li>
+              <li key={item}>{item}</li>
             ))}
           </ul>
         </AccordionItem>
@@ -127,9 +125,7 @@ export const FirstItemOpen: Story = {
         <AccordionItem key={b.title} title={b.title} defaultOpen={i === 0}>
           <ul style={{ margin: 0, paddingInlineStart: "1.25rem", display: "grid", gap: "0.5rem" }}>
             {b.items.map((item) => (
-              <li key={item} style={{ lineHeight: 1.6 }}>
-                {item}
-              </li>
+              <li key={item}>{item}</li>
             ))}
           </ul>
         </AccordionItem>
@@ -150,9 +146,7 @@ export const MultipleOpen: Story = {
         <AccordionItem key={b.title} title={b.title} defaultOpen>
           <ul style={{ margin: 0, paddingInlineStart: "1.25rem", display: "grid", gap: "0.5rem" }}>
             {b.items.map((item) => (
-              <li key={item} style={{ lineHeight: 1.6 }}>
-                {item}
-              </li>
+              <li key={item}>{item}</li>
             ))}
           </ul>
         </AccordionItem>

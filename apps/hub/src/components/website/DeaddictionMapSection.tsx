@@ -29,11 +29,11 @@ export function DeaddictionMapSection() {
         <div className="text-center">
           <h2
             id="map-section-heading"
-            className="text-[28px] sm:text-[32px] font-semibold leading-tight text-primary-dark"
+            className="text-headline-2 text-primary-dark"
           >
             Find a De-addiction Centre Near You
           </h2>
-          <p className="mt-2 text-[15px] sm:text-[16px] text-ink-muted">
+          <p className="mt-2 text-body-1 text-ink-muted">
             {PUBLISHED_TOTAL} Nasha Mukti Kendras across India.
           </p>
         </div>

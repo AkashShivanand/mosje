@@ -72,12 +72,12 @@ function ResultRow({ entry, index }: { entry: WebsiteSearchEntry; index: number 
         </span>
         <span className="min-w-0">
           <span className="mb-1 flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-surface-muted px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-ink-muted">
+            <span className="rounded-full bg-surface-muted px-2 py-0.5 text-label-3 uppercase text-ink-muted">
               {facetLabel(entry.type)}
             </span>
-            <span className="text-xs text-ink-muted">{entry.section}</span>
+            <span className="text-body-3 text-ink-muted">{entry.section}</span>
             {entry.updated && (
-              <span className="text-xs text-ink-muted">
+              <span className="text-body-3 text-ink-muted">
                 · {new Date(entry.updated).toLocaleDateString("en-GB", {
                   day: "2-digit",
                   month: "short",
@@ -86,7 +86,7 @@ function ResultRow({ entry, index }: { entry: WebsiteSearchEntry; index: number 
               </span>
             )}
           </span>
-          <span className="block text-base font-semibold text-ink group-hover:text-primary group-hover:underline">
+          <span className="block text-title-2 text-ink group-hover:text-primary group-hover:underline">
             {entry.title}
             {external && (
               <>
@@ -97,7 +97,7 @@ function ResultRow({ entry, index }: { entry: WebsiteSearchEntry; index: number 
             )}
           </span>
           {entry.description && (
-            <span className="mt-1 block line-clamp-2 text-sm leading-relaxed text-ink-muted">
+            <span className="mt-1 block line-clamp-2 text-body-2 text-ink-muted">
               {entry.description}
             </span>
           )}
@@ -115,7 +115,7 @@ function SuggestionChips({ terms }: { terms: string[] }) {
         <li key={term}>
           <Link
             href={`/website/search?q=${encodeURIComponent(term)}`}
-            className="inline-block rounded-full border border-gray-200 bg-white px-4 py-1.5 text-sm font-semibold text-ink-muted transition hover:border-primary/40 hover:text-primary"
+            className="inline-block rounded-full border border-gray-200 bg-white px-4 py-1.5 text-label-1 text-ink-muted transition hover:border-primary/40 hover:text-primary"
           >
             {term}
           </Link>
@@ -168,12 +168,12 @@ function WaysOut({ assistant }: { assistant: boolean }) {
         >
           <Icon name={card.icon} size={24} className="mb-2 text-primary" />
           <span className="block font-semibold text-ink">{card.title}</span>
-          <span className="mt-1 block text-sm text-ink-muted">{card.body}</span>
+          <span className="mt-1 block text-body-2 text-ink-muted">{card.body}</span>
         </Link>
       ))}
     </div>
     {assistant && (
-      <p className="mt-4 flex items-start gap-2 text-sm text-ink-muted">
+      <p className="mt-4 flex items-start gap-2 text-body-2 text-ink-muted">
         <Icon name="support_agent" size={20} className="shrink-0 text-primary" />
         <span>
           Samajik Sahayak, the assistant, is in the bottom-right corner of this page.
@@ -230,9 +230,9 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               gets to show what it holds. */}
           {!hasQuery && !tooShort && (
             <div className="mx-auto mt-10 max-w-3xl">
-              <h2 className="mb-3 text-lg font-bold text-ink">Popular searches</h2>
+              <h2 className="mb-3 text-headline-2 text-ink">Popular searches</h2>
               <SuggestionChips terms={POPULAR_SEARCHES} />
-              <p className="mt-8 text-sm text-ink-muted">
+              <p className="mt-8 text-body-2 text-ink-muted">
                 This search covers {index.length.toLocaleString("en-IN")}{" "}
                 schemes, organisations, documents, officials and pages. Try a word you
                 would use yourself — &ldquo;school money&rdquo; finds scholarships.
@@ -244,7 +244,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           {/* ── Query too short — a prompt, not an error ─────────────────────── */}
           {tooShort && (
             <div className="mx-auto mt-10 max-w-3xl">
-              <p className="text-base text-ink">
+              <p className="text-body-1 text-ink">
                 Keep typing — a search needs at least {MIN_QUERY_LENGTH} letters.
               </p>
               <div className="mt-6">
@@ -256,12 +256,12 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
           {/* ── No results ──────────────────────────────────────────────────── */}
           {noResults && (
             <div className="mx-auto mt-10 max-w-3xl">
-              <h2 className="text-xl font-bold text-ink">
+              <h2 className="text-headline-2 text-ink">
                 No results for <span className="text-primary">{query}</span>
               </h2>
 
               {outcome.didYouMean && (
-                <p className="mt-3 text-base text-ink">
+                <p className="mt-3 text-body-1 text-ink">
                   Did you mean{" "}
                   <Link
                     href={`/website/search?q=${encodeURIComponent(outcome.didYouMean)}`}
@@ -275,7 +275,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
               {outcome.nearest.length > 0 && (
                 <div className="mt-6">
-                  <h3 className="mb-2 text-sm font-bold uppercase tracking-wide text-ink-muted">
+                  <h3 className="mb-2 text-label-3 uppercase text-ink-muted">
                     Closest matches
                   </h3>
                   <ul className="rounded-xl border border-gray-200 bg-white px-5">
@@ -297,7 +297,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                   filtered result set can be shared and the back button undoes it.
                   [DBIM 9.iv] */}
               <nav aria-label="Filter results by category" className="lg:pt-1">
-                <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-ink-muted">
+                <h2 className="mb-3 text-label-3 uppercase text-ink-muted">
                   Filter
                 </h2>
                 <ul className="flex flex-wrap gap-2 lg:flex-col lg:gap-1">
@@ -305,14 +305,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                     <Link
                       href={urlFor(query, null, 1)}
                       aria-current={type === null ? "true" : undefined}
-                      className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition ${
+                      className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-label-1 transition ${
                         type === null
                           ? "bg-primary text-white"
                           : "text-ink-muted hover:bg-surface-muted hover:text-ink"
                       }`}
                     >
                       <span>All</span>
-                      <span className="text-xs opacity-80">{outcome.totalAllTypes}</span>
+                      <span className="text-body-3 tabular-nums opacity-80">{outcome.totalAllTypes}</span>
                     </Link>
                   </li>
                   {outcome.facets.map((facet) => (
@@ -321,7 +321,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                         href={urlFor(query, facet.type, 1)}
                         aria-current={type === facet.type ? "true" : undefined}
                         aria-disabled={facet.count === 0 ? "true" : undefined}
-                        className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-sm font-semibold transition ${
+                        className={`flex items-center justify-between gap-3 rounded-lg px-3 py-2 text-label-1 transition ${
                           type === facet.type
                             ? "bg-primary text-white"
                             : facet.count === 0
@@ -330,7 +330,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                         }`}
                       >
                         <span>{facet.label}</span>
-                        <span className="text-xs opacity-80">{facet.count}</span>
+                        <span className="text-body-3 tabular-nums opacity-80">{facet.count}</span>
                       </Link>
                     </li>
                   ))}
@@ -341,7 +341,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                 {/* The count and the query, echoed back — so the reader can see
                     what was actually searched for, typo and all. */}
                 <p
-                  className="mb-1 text-base text-ink"
+                  className="mb-1 text-body-1 text-ink"
                   role="status"
                   aria-live="polite"
                 >
@@ -351,14 +351,14 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                   {type && <> in {facetLabel(type)}</>}
                 </p>
                 {outcome.totalPages > 1 && (
-                  <p className="mb-4 text-sm text-ink-muted">
+                  <p className="mb-4 text-body-2 text-ink-muted">
                     Page {outcome.page} of {outcome.totalPages}
                   </p>
                 )}
 
                 {outcome.total === 0 ? (
                   <div className="rounded-xl border border-gray-200 bg-surface-muted p-6">
-                    <p className="text-base text-ink">
+                    <p className="text-body-1 text-ink">
                       No {type ? facetLabel(type).toLowerCase() : "results"} match{" "}
                       <strong>{query}</strong>, but other categories do.
                     </p>

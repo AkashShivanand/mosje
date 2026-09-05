@@ -18,7 +18,7 @@ export function NotificationsView({ role }: { role: RoleId }) {
       {items.length === 0 ? (
         <Card className="flex flex-col items-center justify-center px-6 py-20 text-center">
           <Icon name="notifications_off" size={40} className="text-ink-hint" />
-          <p className="mt-4 text-sm font-semibold text-ink">You&apos;re all caught up.</p>
+          <p className="mt-4 text-title-3 text-ink">You&apos;re all caught up.</p>
         </Card>
       ) : (
         <div className="space-y-3">
@@ -37,11 +37,11 @@ export function NotificationsView({ role }: { role: RoleId }) {
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <p className="text-sm font-semibold text-ink">{n.title}</p>
+                  <p className="text-title-3 text-ink">{n.title}</p>
                   {!n.read && <span className="h-2 w-2 rounded-full bg-saffron" />}
                 </div>
-                <p className="mt-0.5 text-sm text-ink-muted">{n.body}</p>
-                <p className="mt-1 text-xs text-ink-hint">{new Date(n.at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</p>
+                <p className="mt-0.5 text-body-2 text-ink-muted">{n.body}</p>
+                <p className="mt-1 text-body-3 text-ink-hint">{new Date(n.at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}</p>
               </div>
             </button>
           ))}

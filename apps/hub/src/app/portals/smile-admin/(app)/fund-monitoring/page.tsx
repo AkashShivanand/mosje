@@ -56,8 +56,8 @@ export default function FundMonitoringPage() {
           <Card key={c.label}>
             <CardBody className="flex items-center justify-between p-lg">
               <div>
-                <div className="text-label-2 uppercase tracking-wide text-ink-muted">{c.label}</div>
-                <div className="mt-xs text-headline-3 font-bold text-ink">{formatINR(c.value, true)}</div>
+                <div className="text-label-3 uppercase text-ink-muted">{c.label}</div>
+                <div className="mt-xs text-headline-3 tabular-nums text-ink">{formatINR(c.value, true)}</div>
               </div>
               <div className={`grid h-12 w-12 place-items-center rounded-md ${c.tone}`}>
                 <Icon name="account_balance_wallet" />
@@ -83,7 +83,7 @@ export default function FundMonitoringPage() {
             <tbody>
               {SANCTION_ORDERS.map((o) => (
                 <TR key={o.id}>
-                  <TD className="font-mono text-body-3">{o.id}</TD>
+                  <TD className="font-mono text-body-2">{o.id}</TD>
                   <TD>{o.scheme}</TD>
                   <TD>{o.state}</TD>
                   <TD className="text-right tabular-nums">{formatINR(o.amount, true)}</TD>

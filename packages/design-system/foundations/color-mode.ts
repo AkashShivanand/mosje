@@ -43,7 +43,7 @@ export const COLOR_MODES: readonly ColorMode[] = [
 /**
  * DBIM's six primary colour groups, as brands — a CONFORMANCE PREVIEW, not shipping options.
  *
- * Kept OUT of `COLOR_MODES` deliberately, exactly as `UX4G_COLOR_MODES` is. `COLOR_MODES` is
+ * Kept OUT of `COLOR_MODES` deliberately. `COLOR_MODES` is
  * the estate's own brand axis and anything listed there reads as a supported choice; these
  * exist so DBIM conformance can be demonstrated in the running app rather than argued about,
  * and the UI that offers them has to say so. `DemoDock`'s Colour tab renders them under their
@@ -81,8 +81,6 @@ export const DBIM_COLOR_MODES: readonly ColorMode[] = [
 export const LEGACY_COLOR_MODE_IDS: Readonly<Record<string, string>> = {
   "blue-light": "blue",
   "blue-dark": "navy",
-  "ux4g-light": "ux4g",
-  "ux4g-dark": "ux4gdeep",
   // `dbim` shipped earlier on 2026-08-11 as the single DBIM brand, when Blue was the only
   // group implemented. Renamed when the other five landed and a bare `dbim` became the odd id
   // out beside `dbim-burgundy`, `dbim-purple`, … Migrated here so a persisted cookie resolves,
@@ -90,25 +88,9 @@ export const LEGACY_COLOR_MODE_IDS: Readonly<Record<string, string>> = {
   dbim: "dbim-blue",
 } as const;
 
-/**
- * UX4G 3.0's own palette, as two extra peer modes.
- *
- * These are NOT in `COLOR_MODES` on purpose: they only render correctly in an app that
- * also imports `@mosje/design-system/ux4g.css`, which is opt-in. Offering them in a
- * switcher UI in an app that has not loaded that stylesheet would show a mode that does
- * nothing. An app that HAS loaded it opts in explicitly, by reading `useColorMode()` and
- * rendering its own control over the combined list:
- *
- *   const { mode, setMode } = useColorMode();
- *   [...COLOR_MODES, ...UX4G_COLOR_MODES].map((m) => <button onClick={() => setMode(m.id)} />)
- *
- * They exist so UX4G conformance can be demonstrated by flipping one attribute rather
- * than argued about — the MoSJE default (primary, per DBIM) is unchanged either way.
- */
-export const UX4G_COLOR_MODES: readonly ColorMode[] = [
-  { id: "ux4g", label: "UX4G Violet", swatch: "#6a4eff" },
-  { id: "ux4gdeep", label: "UX4G Deep", swatch: "#4a2bc2" },
-] as const;
+// The two UX4G palette modes (`ux4g`, `ux4gdeep`) were removed on 2026-09-04 together with the
+// `--ux4g-*` parity stylesheet that defined them: nothing in the estate imported it, so the
+// modes never rendered anywhere. Conformance is measured by tools/ux4g-conformance instead.
 
 export type ColorModeId = (typeof COLOR_MODES)[number]["id"];
 
@@ -124,7 +106,6 @@ export function isColorMode(value: string | null | undefined): boolean {
   return (
     !!value &&
     (COLOR_MODES.some((m) => m.id === value) ||
-      UX4G_COLOR_MODES.some((m) => m.id === value) ||
       DBIM_COLOR_MODES.some((m) => m.id === value))
   );
 }

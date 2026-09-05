@@ -14,7 +14,15 @@ const hashOf = (href: string) => {
   return i === -1 ? "" : href.slice(i);
 };
 
-export function SidebarNav(): React.JSX.Element {
+/**
+ * The documentation site's own left navigation — groups of pages with a quick
+ * filter, hash-anchor tracking and badges. It is NOT the design system's
+ * SidebarNav (the portal rail): that one has a route-driven current state,
+ * icons on every item and a collapsed mode, none of which a docs index needs.
+ * It was named SidebarNav until 2026-09-05, which made a grep for hand-rolled
+ * rails report the docs chrome as one.
+ */
+export function DocsNav(): React.JSX.Element {
   const pathname = usePathname() ?? "";
   const [currentHash, setCurrentHash] = React.useState("");
   const [filterQuery, setFilterQuery] = React.useState("");

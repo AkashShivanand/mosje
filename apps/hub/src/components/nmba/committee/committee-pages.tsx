@@ -33,8 +33,8 @@ function ReportsScreen() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-ink">Consolidated Report</h1>
-      <p className="mt-1 mb-6 text-sm text-ink-muted">{subtitle}</p>
+      <h1 className="text-headline-1 text-ink">Consolidated Report</h1>
+      <p className="mt-1 mb-6 text-body-2 text-ink-muted">{subtitle}</p>
       <div className="mb-6">
         <CoveragePanel records={scoped} session={session} />
       </div>

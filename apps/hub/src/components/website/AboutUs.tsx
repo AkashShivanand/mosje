@@ -66,10 +66,10 @@ export function AboutUs() {
       <div className="sa-container py-12 md:py-16">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 className="text-[32px] font-semibold leading-tight text-primary-dark">
+            <h2 className="text-headline-2 text-primary-dark">
               About Us
             </h2>
-            <p className="mt-5 text-[16px] leading-relaxed text-ink-muted">
+            <p className="mt-5 text-body-1 text-ink-muted">
               The Department of Social Justice &amp; Empowerment (DoSJE) is
               mandated to ensure the empowerment and welfare of India&apos;s most
               vulnerable groups, including Scheduled Castes, OBCs, Senior
@@ -78,7 +78,7 @@ export function AboutUs() {
               and economic development, ensuring their inclusion despite
               challenges like the lack of updated demographic data.
             </p>
-            <blockquote className="mt-6 border-l-4 border-saffron bg-saffron/10 p-4 rounded-r-lg italic text-[15px] leading-relaxed text-ink">
+            <blockquote className="mt-6 border-l-4 border-saffron bg-saffron/10 p-4 rounded-r-lg italic text-body-1 text-ink">
               “The Ministry of Social Justice &amp; Empowerment works to uplift India&apos;s most vulnerable communities through targeted initiatives, inclusive growth, and compassionate governance.”
             </blockquote>
 
@@ -103,21 +103,21 @@ export function AboutUs() {
             <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
               <Link
                 href="/website/whos-who"
-                className="flex items-center justify-between rounded-lg border border-border bg-surface p-3 text-sm font-semibold text-ink transition hover:border-primary hover:text-primary"
+                className="flex items-center justify-between rounded-lg border border-border bg-surface p-3 text-label-1 text-ink transition hover:border-primary hover:text-primary"
               >
                 <span>Our Team</span>
                 <Icon name="chevron_right" size={16} />
               </Link>
               <Link
                 href="/website/about-us"
-                className="flex items-center justify-between rounded-lg border border-border bg-surface p-3 text-sm font-semibold text-ink transition hover:border-primary hover:text-primary"
+                className="flex items-center justify-between rounded-lg border border-border bg-surface p-3 text-label-1 text-ink transition hover:border-primary hover:text-primary"
               >
                 <span>Our Ministry</span>
                 <Icon name="chevron_right" size={16} />
               </Link>
               <Link
                 href="/website/annual-reports"
-                className="flex items-center justify-between rounded-lg border border-border bg-surface p-3 text-sm font-semibold text-ink transition hover:border-primary hover:text-primary"
+                className="flex items-center justify-between rounded-lg border border-border bg-surface p-3 text-label-1 text-ink transition hover:border-primary hover:text-primary"
               >
                 <span>Our Reports</span>
                 <Icon name="chevron_right" size={16} />
@@ -140,10 +140,10 @@ export function AboutUs() {
                 className="mx-auto h-[140px] w-[140px] flex-shrink-0 rounded-full border-4 border-white bg-white object-cover shadow-sm sm:mx-0"
               />
               <div className="mt-4 text-center sm:mt-0 sm:text-left">
-                <h3 className="text-[22px] font-medium text-ink">
+                <h3 className="text-title-1 text-ink">
                   {ministers[0].name}
                 </h3>
-                <p className="mt-1 text-[15px] leading-snug text-ink-muted">
+                <p className="mt-1 text-body-1 text-ink-muted">
                   {ministers[0].designation}
                 </p>
               </div>
@@ -163,10 +163,10 @@ export function AboutUs() {
                     height={140}
                     className="h-[140px] w-[140px] rounded-lg object-cover"
                   />
-                  <h3 className="mt-4 text-[18px] font-medium text-ink">
+                  <h3 className="mt-4 text-title-2 text-ink">
                     {minister.name}
                   </h3>
-                  <p className="mt-1 text-[14px] leading-snug text-ink-muted">
+                  <p className="mt-1 text-body-2 text-ink-muted">
                     {minister.designation}
                   </p>
                 </div>
@@ -180,13 +180,13 @@ export function AboutUs() {
             <dl className="grid flex-1 grid-cols-1 divide-y divide-white/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
               {stats.map((stat) => (
                 <div key={stat.label} className="px-4 py-4 sm:px-6 sm:py-2">
-                  <dt className="text-[11px] font-semibold uppercase tracking-wide text-white/75">
+                  <dt className="text-label-3 uppercase text-white/75">
                     {stat.label}
                   </dt>
-                  <dd className="mt-1.5 text-[30px] font-bold leading-none text-white sm:text-[36px]">
+                  <dd className="mt-1.5 text-headline-2 tabular-nums text-white">
                     {stat.value}
                   </dd>
-                  <dd className="mt-1.5 text-[12px] leading-snug text-white/70">
+                  <dd className="mt-1.5 text-body-3 text-white/70">
                     {stat.caption}
                   </dd>
                 </div>

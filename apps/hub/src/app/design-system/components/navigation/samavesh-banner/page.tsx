@@ -25,7 +25,7 @@ const sectionStyle: React.CSSProperties = {
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)",
   lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
+  fontWeight: "var(--sa-font-weight-bold)",
   color: "var(--sa-text-neutral-base)",
   marginBottom: "var(--sa-stack-16)",
   paddingBottom: "var(--sa-padding-8)",
@@ -35,8 +35,8 @@ const h2Style: React.CSSProperties = {
 const proseStyle: React.CSSProperties = {
   color: "var(--sa-text-neutral-subtle)",
   fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
+  lineHeight: "var(--sa-type-body-1-lh)",
+  maxWidth: "var(--sa-container-measure)",
 };
 
 /**
@@ -83,6 +83,91 @@ const SPECIMEN_PORTALS = [
   },
 ];
 
+const eyebrowStyle: React.CSSProperties = {
+  fontSize: "var(--sa-type-label-3-size)",
+  lineHeight: "var(--sa-type-label-3-lh)",
+  textTransform: "uppercase",
+  color: "var(--sa-text-brand-primary-base)",
+  margin: "0 0 var(--sa-stack-8)",
+};
+
+const closedFrameStyle: React.CSSProperties = {
+  borderRadius: "var(--sa-shape-16)",
+  border: "1px solid var(--sa-border-neutral-subtle)",
+  backgroundColor: "var(--sa-bg-neutral-base)",
+  overflow: "hidden",
+};
+
+const openFrameStyle: React.CSSProperties = {
+  ...closedFrameStyle,
+  overflow: "visible",
+  // ds-exempt(demo-geometry): room for the OPEN drawer, as the interactive
+  // specimen above reserves it — see the note there.
+  paddingBottom: "420px",
+};
+
+/**
+ * The same list the Figma page's arrangements section draws: two of the text
+ * properties, then the four props Figma has no property for. `sticky` is
+ * behaviour and is not drawn; the interactive specimen above shows the drawer
+ * open under no masthead.
+ */
+const ARRANGEMENTS: {
+  id: string;
+  eyebrow: string;
+  caption: string;
+  open: boolean;
+  props: React.ComponentProps<typeof SamaveshBanner>;
+}[] = [
+  {
+    id: "subline",
+    eyebrow: "subline · two lines",
+    caption:
+      "A subline that outgrows one line wraps and the band grows with it; the seal, the wordmark and the Explore control keep their places.",
+    open: false,
+    props: {
+      subline:
+        "Single Access Mechanism for All Verticals of Empowerment & Social Harmony — one sign-in for every scheme and service of the Department of Social Justice & Empowerment, Government of India",
+    },
+  },
+  {
+    id: "filtered",
+    eyebrow: "drawerTitle · portals filtered",
+    caption:
+      "portals narrows the drawer to the portals a page is for, and drawerTitle names that set. The category chips appear only when the cards span more than one category.",
+    open: true,
+    props: {
+      defaultOpen: true,
+      drawerTitle: "Portals for Organisations and Implementing Agencies",
+      portals: SPECIMEN_PORTALS.slice(2),
+    },
+  },
+  {
+    id: "empty",
+    eyebrow: "code only · emptyLabel",
+    caption:
+      "emptyLabel is the sentence the drawer shows when the registry lists nothing live. The heading stays; the sentence replaces the grid, so the drawer reads as an answer rather than a broken page.",
+    open: true,
+    props: { defaultOpen: true, portals: [] },
+  },
+  {
+    id: "prompt",
+    eyebrow: 'code only · viewAllPrompt=""',
+    caption:
+      "An empty viewAllPrompt drops the question and leaves the link; viewAllLabel is its wording and viewAllHref its target.",
+    open: true,
+    props: { defaultOpen: true, portals: SPECIMEN_PORTALS, viewAllPrompt: "" },
+  },
+  {
+    id: "explore",
+    eyebrow: "code only · exploreLabel",
+    caption:
+      "exploreLabel renames the control that opens the drawer. Keep it a single word that names what opens; it is a toggle, not a navigation.",
+    open: false,
+    props: { exploreLabel: "Portals" },
+  },
+];
+
 export default function SamaveshBannerDocPage(): React.JSX.Element {
   return (
     <article
@@ -106,7 +191,8 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
           <h1
             style={{
               fontSize: "var(--sa-type-display-1-size)",
-              fontWeight: 800,
+              lineHeight: "var(--sa-type-display-1-lh)",
+              fontWeight: "var(--sa-font-weight-medium)",
               color: "var(--sa-text-neutral-base)",
               margin: 0,
             }}
@@ -175,6 +261,30 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
             sticky={false}
             portals={SPECIMEN_PORTALS}
           />
+        </div>
+      </section>
+
+      {/* ── Arrangements ── */}
+      <section style={sectionStyle} aria-labelledby="arrangements-heading">
+        <h2 id="arrangements-heading" style={h2Style}>
+          Arrangements
+        </h2>
+        <p style={proseStyle}>
+          The props the master grid cannot show, each on a live band. The Figma page&apos;s
+          arrangements section draws the same set.
+        </p>
+        <div style={{ display: "grid", gap: "var(--sa-stack-32)", marginTop: "var(--sa-stack-24)" }}>
+          {ARRANGEMENTS.map((a) => (
+            <div key={a.id}>
+              <p style={eyebrowStyle}>{a.eyebrow}</p>
+              <div style={a.open ? openFrameStyle : closedFrameStyle}>
+                <SamaveshBanner sticky={false} {...a.props} />
+              </div>
+              <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)", fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)" }}>
+                {a.caption}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -374,13 +484,13 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
               <p
                 style={{
                   fontSize: "var(--sa-type-label-1-size)",
-                  fontWeight: 600,
+                  fontWeight: "var(--sa-font-weight-semibold)",
                   color: "var(--sa-text-neutral-base)",
                   margin: "0 0 var(--sa-stack-8)",
                 }}
               >
                 <code>tone=&quot;{tone}&quot;</code>{" "}
-                <span style={{ fontWeight: 400, color: "var(--sa-text-neutral-subtle)" }}>{note}</span>
+                <span style={{ fontWeight: "var(--sa-font-weight-regular)", color: "var(--sa-text-neutral-subtle)" }}>{note}</span>
               </p>
               <div style={{ borderRadius: "var(--sa-shape-16)", border: "1px solid var(--sa-border-neutral-subtle)", overflow: "hidden" }}>
                 <SamaveshBanner tone={tone} sticky={false} portals={SPECIMEN_PORTALS} />

@@ -16,6 +16,10 @@ import { AccountMenu, Icon } from "@mosje/design-system";
  * `avatarSrc` is optional: without it, initials are derived from `name`. That
  * fallback is the normal case here — government portals rarely hold a
  * photograph of the officer, and an anonymous silhouette identifies nobody.
+ * The avatar is a rounded square, the estate's shape for a person in the masthead.
+ *
+ * The trigger shows the **role** under the name; the **email** appears inside the
+ * menu head with both. When a portal passes no role, the address stands in.
  *
  * `role` is worth filling in wherever the same person can hold different
  * jurisdictions. "Sunita Deshmukh" alone does not tell an officer whether they
@@ -24,6 +28,11 @@ import { AccountMenu, Icon } from "@mosje/design-system";
  *
  * Built with the same outside-click and Escape handling as `AppSwitcher`, so
  * the design system keeps zero runtime dependencies.
+ *
+ * `avatarSize` is 48 in the resting brand row and **40 inside the condensed
+ * bar**, where every control is 40 — `SiteHeader` passes it; a consumer rarely
+ * needs to. At 48 the avatar, not the bar's own min-height, decided the height,
+ * and a phone measured 64 against a designed 56.
  *
  * Lifecycle: **Stable**.
  */
@@ -116,4 +125,18 @@ export const RoleDisambiguation: Story = {
 /** Name only — legitimate, but it says the least of any variant. */
 export const NameOnly: Story = {
   args: { account: { name: "Sunita Deshmukh" } },
+};
+
+/**
+ * The condensed bar's size. `SiteHeader` passes `avatarSize={40}` once the
+ * masthead has condensed, so the block sits at the same 40px as the search
+ * button and the sheet trigger beside it. Shown here against the 48 default.
+ */
+export const InCondensedBar: Story = {
+  render: (args) => (
+    <div style={{ display: "grid", gap: 24, justifyItems: "end" }}>
+      <AccountMenu {...args} avatarSize={48} />
+      <AccountMenu {...args} avatarSize={40} />
+    </div>
+  ),
 };

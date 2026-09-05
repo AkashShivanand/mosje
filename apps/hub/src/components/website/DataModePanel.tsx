@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { RadioGroup, Toggle } from "@mosje/design-system";
 import { useDataMode } from "@/lib/data-mode/context";
 import type { DataMode, PreviewState } from "@/lib/data-mode/types";
 import "./data-mode.css";
@@ -71,26 +72,15 @@ export function DataModePanel() {
   return (
     <div className="dm-panel">
       <section className="dm-panel__group">
-        <h3 className="dm-panel__legend">Data source</h3>
-        <div className="dm-panel__opts" role="radiogroup" aria-label="Data source">
-          {OPTIONS.map((o) => (
-            <label
-              key={o.id}
-              className={`dm-panel__opt${mode === o.id ? " is-on" : ""}`}
-            >
-              <input
-                type="radio"
-                name={name}
-                value={o.id}
-                checked={mode === o.id}
-                onChange={() => setMode(o.id)}
-                className="dm-panel__radio"
-              />
-              <span className="dm-panel__dot" aria-hidden />
-              <span className="dm-panel__opt-label">{o.label}</span>
-            </label>
-          ))}
-        </div>
+        <RadioGroup
+          className="dm-panel__opts"
+          legend="Data source"
+          name={name}
+          size="sm"
+          options={OPTIONS.map((o) => ({ value: o.id, label: o.label }))}
+          value={mode}
+          onChange={(v) => setMode(v as DataMode)}
+        />
         {/* Keyed so the crossfade replays on every change: the line is the
             answer to the click, and a silent swap reads as nothing happening. */}
         <p key={active.id} className="dm-panel__explain">
@@ -99,24 +89,11 @@ export function DataModePanel() {
       </section>
 
       <section className="dm-panel__group">
-        <label className="dm-panel__switch">
-          <input
-            type="checkbox"
-            checked={marks}
-            onChange={(e) => setMarks(e.target.checked)}
-            className="dm-panel__switch-input"
-          />
-          <span className="dm-panel__track" aria-hidden>
-            <span className="dm-panel__knob" />
-          </span>
-          <span className="dm-panel__switch-body">
-            <span className="dm-panel__opt-label">Show data marks</span>
-            <span className="dm-panel__hint">
+        <Toggle size="small" checked={marks} onChange={(e) => setMarks(e.target.checked)} label="Show data marks" />
+        <p className="dm-panel__hint">
               A <b>Live</b> or <b>Illustrative</b> badge on every card. Off so the
               page reads as the finished service.
-            </span>
-          </span>
-        </label>
+            </p>
       </section>
 
       <section className="dm-panel__group">

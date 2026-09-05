@@ -10,6 +10,20 @@ material, gaps G1–G11).
 
 ---
 
+## Status 2026-09-05
+
+Audited against the live file and `main`. Where things stand:
+
+| Phase | State |
+|---|---|
+| 0 | The BotCheck change reached main by cherry-pick (PR #315); `ds/login-figma-pass` was never opened as a PR and is retired. C1 and C2 from the companion audit are fixed on main (PR #317). |
+| 1 | 1.1 done — captcha hidden in every variant, `Auth / BotCheck` part exists · 1.3 done, then corrected on 2026-09-05: the 375-wide variants HUG their content rather than clip at 812 · 1.4 partial — `Log In` and `Verify and Log In` are drawn, `Send OTP` is not, and the method tabs still read "Login with …" beside a button reading "Log In". |
+| 2 | Page order restored and the Component record authored on 2026-09-05. The per-portal flow sections a designer composed on the page are kept as a numbered section: they are examples, not sets. |
+| 3 | Re-pinned. `claims.json` expects eight and COUNTS the master (`kind: "figma"`, live only), because a pin that only compared three strings certified "six" for two days. |
+| 4 | Shell renamed to `PortalLoginShell`. `PortalList` still has no Device axis; the four part defects are unverified since 2026-09-02. |
+| new | **`Auth / LoginHero`, 2026-09-05** — the desktop hero column as one component: Photograph swap, exposed Signing Into bar, footer boolean. The shell's desktop variant nests it. Code still draws the column inline in `PortalLoginShell` with different copy and no photograph; on the record. |
+| drift | `CredentialRecovery` and `RecoveryFormCard` were built in Figma on 2026-09-04 against this plan's own deferral. Five organisms now have no code. Recorded, and `ds-documentation-standard.md` §1 now requires the record entry in the same session. |
+
 ## 0. What this branch already closed
 
 | Gap | State |
@@ -120,3 +134,37 @@ the handoff shows no step indicator at all where the library has a full `Stepper
 
 `OrganisationCard`, `PortalList` and `AuthFormCard` exist in Figma and in no code barrel —
 that is the code half of G6, and it is what the Figma pass must not get ahead of.
+
+## Status 2026-09-05 — evening pass (seven asks)
+
+| Ask | Done |
+|---|---|
+| Use the existing Bot Check | The page's local `Auth / BotCheck` (two text nodes) is gone; its four instances are the Forms page's `BotCheck` set, `Mode=Invisible, Status=Failed`. Code already used `BotCheck`. |
+| Reuse the Portal Card for organisation rows | `Auth / OrganisationCard` is retired; `Auth / PortalList` composes the library's `Portal Card`. The master was refined first: code and name on the 16px body styles, the mark's inner ring removed. Code's `PortalCard` name moved to the same 16px style. |
+| SSOButton logo | Figma corrected by hand. Code now ships the Brand page's `DigiLocker` component exported at 3× as `digilocker-mark.png`, and `SSOButton` draws it by default (`DIGILOCKER_MARK_SRC`). |
+| Portal list to the handoff reference (56693:11506) | 400 wide, saffron-tinted ground, six count chips (selected one on `bg/status/success/bold`, which the library Chip lacks as a tone), cards in the reference order. |
+| Mobile template to the handoff (56693:9331) | `Auth / SigningIntoBar` and `Auth / LoginHero` are `Device` sets; the shell's Mobile variant nests `Navbar/Portal` Mobile and `LoginHero` Mobile. Code's `PortalLoginShell` renders the same band and strip below `lg`. |
+| Clean the page | Duplicate E-Anudaan flows (copies of SMILE with the SMILE photograph) removed; sections refitted; section 5 named as the SMILE handoff. |
+| Portal Hero as a blank slot | The master's slot is the hero's own brand ground with a faint image glyph; the SMILE photograph is kept as a reference rectangle in section 5. Code's `heroImageSrc` has no default any more; the docs specimen passes `smile-transgender.jpg`. |
+
+Still open: `PortalList`, `AuthFormCard`, `RecoveryFormCard` and `CredentialRecovery` have no
+code; per-portal photographs; the library `Chip` has no Success tone.
+
+## Status 2026-09-06 — template verified against the SMILE handoff (section 5)
+
+Compared `PortalLoginTemplate` Desktop/Password and Desktop/OTP with `SMILE-Transgender | Citizen`
+(56693:4742, 56693:5001), `| Admin` (56693:5266) and `| Garima Greh` (56693:5757).
+
+| Gap found | Resolution |
+|---|---|
+| Heading drawn at three sizes — 24/32 in the library, 16/24 in code, 20/28 in the handoff | Both on Headline/headline-5 (20/28); the rule under it hidden, as the handoff hides it |
+| DigiLocker card: library 68 tall with a 32 mark and 14/12 copy; handoff 76 tall, 40 mark, 16/13 copy | Both on 16/20 padding, 40 mark, body-1-semibold title, body-2 subtitle |
+| Library AuthFormCard draws a "Your role" select that no handoff frame and no code path has | `Show role select` defaults to off and is off on every template and shell instance |
+| Library OTP variant was a bare "Verify your Phone Number" card; the handoff keeps the login heading, role tabs, DigiLocker block and method tabs around the masked row and code boxes | OTP variant rebuilt to the handoff; code's OTP mode is now two steps — Send OTP as the primary action, then MaskedContactRow, OtpInput, ResendTimer and Verify and Log In |
+| Code spaced fields at 14px; library at 16 | Code on 16 |
+| Handoff spaces field groups at 24 and sets the divider label at 13px | Left: 24 is looser than every other form on the estate, and 13 is off the type ramp; both surfaces stay on 16 and body-3 |
+| Handoff Garima Greh draws a distorted-character captcha | Deliberate divergence, recorded on BotCheck: the estate ships the invisible/checkbox check |
+| The template accepts no DemoDock prefill, so a portal adopting it lost the demo console's "Use" | Template listens for `demo:fill` |
+
+E-Anudaan is the first portal on the merged login: NGO and Ministry Officer are role tabs on
+`/portals/e-anudaan/login`; `/sign-in` and the old landing redirect there with the role in the URL.

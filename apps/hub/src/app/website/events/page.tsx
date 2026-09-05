@@ -86,21 +86,21 @@ export default function EventsPage() {
                     height={240}
                     className="h-48 w-full object-cover"
                   />
-                  <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1 text-[12px] font-semibold text-white">
+                  <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1 text-label-2 text-white">
                     <Icon name="calendar_month" size={14} aria-hidden="true" />
                     {event.date}
                   </span>
                 </div>
                 <div className="flex flex-1 flex-col p-5">
-                  <h2 className="text-[17px] font-semibold leading-snug text-primary-dark">
+                  <h2 className="text-title-2 text-primary-dark">
                     {event.title}
                   </h2>
-                  <p className="mt-2 flex-1 text-[14px] leading-relaxed text-ink-muted">
+                  <p className="mt-2 flex-1 text-body-2 text-ink-muted">
                     {event.excerpt}
                   </p>
                   <Link
                     href={`/website/events/${event.slug}`}
-                    className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-semibold text-saffron hover:underline"
+                    className="mt-4 inline-flex items-center gap-1.5 text-label-1 text-saffron hover:underline"
                   >
                     Read More
                     <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-0.5" aria-hidden="true" />

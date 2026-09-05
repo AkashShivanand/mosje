@@ -32,8 +32,8 @@ export default function NgoNotificationsPage() {
     <div className="space-y-5">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-ink">Notifications</h1>
-          <p className="mt-1 text-sm text-ink-muted">{unread} unread</p>
+          <h1 className="text-headline-1 text-ink">Notifications</h1>
+          <p className="mt-1 text-body-2 text-ink-muted">{unread} unread</p>
         </div>
         {unread > 0 && (
           <Button appearance="outlined" onClick={markAllNotificationsRead}>
@@ -56,15 +56,15 @@ export default function NgoNotificationsPage() {
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="font-semibold text-ink">{n.title}</p>
-                  <p className="mt-1 text-sm text-ink-muted">{n.body}</p>
-                  <p className="mt-2 text-xs text-ink-hint">{formatStamp(n.at)}</p>
+                  <p className="mt-1 text-body-2 text-ink-muted">{n.body}</p>
+                  <p className="mt-2 text-body-3 text-ink-hint">{formatStamp(n.at)}</p>
                 </div>
                 <div className="flex shrink-0 items-center gap-2">
                   {!n.read && <Badge status="info">New</Badge>}
                   {n.applicationId && (
                     <Link
                       href={`/portals/e-anudaan/ngo/my-applications/${encodeURIComponent(n.applicationId)}`}
-                      className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+                      className="flex items-center gap-1 text-label-2 font-semibold text-primary hover:underline"
                     >
                       Open <span aria-hidden="true">→</span>
                     </Link>

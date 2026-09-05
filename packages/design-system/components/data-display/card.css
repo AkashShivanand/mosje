@@ -33,7 +33,7 @@
     display: flex;
     flex-direction: column;
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid transparent;
+    border: var(--sa-stroke-1) solid transparent;
     border-radius: var(--sa-cmp-card-radius);
     color: var(--sa-text-neutral-bolder);
     font-family: var(--sa-font-latin);
@@ -117,7 +117,7 @@
     margin: 0;
     font-size: var(--sa-type-title-1-size);
     line-height: var(--sa-type-title-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -125,7 +125,7 @@
     margin: 0;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 400;
+    font-weight: var(--sa-font-weight-regular);
     color: var(--sa-text-neutral-subtle);
   }
 }

@@ -137,7 +137,7 @@
     margin: 0;
     font-size: var(--sa-type-headline-5-size);
     line-height: var(--sa-type-headline-5-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     /* #1e2124 against the handoff's #1f2428 — the same ink to within a point per
        channel. It was `bolder` (#0e1114), which is near-black and made the four
        figures heavier than the H1 in the band above them. */
@@ -155,7 +155,6 @@
     margin-top: auto;
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    letter-spacing: 0.5px;
     /* #3a3d41 against the handoff's #343a40 — the same grey to within a few
        points, and 10.9:1 on white. It shared `base` with the value above it, so
        the pair had no tonal hierarchy at all: the label competed with the figure

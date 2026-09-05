@@ -120,7 +120,7 @@ export function WorklistTable({
             aria-label="Search applications"
           />
         </div>
-        <p className="text-sm text-ink-muted">
+        <p className="text-body-2 text-ink-muted">
           Showing {filtered.length} of {rows.length}
         </p>
       </div>

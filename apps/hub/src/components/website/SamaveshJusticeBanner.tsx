@@ -82,10 +82,10 @@ export function SamaveshJusticeBanner() {
                 className="h-[44px] w-auto sm:h-[60px] lg:h-[6.29cqw]"
               />
               <div>
-                <p className="text-[18px] font-bold leading-tight tracking-[0.01em] text-ink sm:text-[21px] lg:text-[1.89cqw]">
+                <p className="text-title-1 text-ink">
                   SAMAVESH
                 </p>
-                <p className="mt-0.5 text-[10px] leading-[1.45] text-ink-muted sm:text-[11px] lg:text-[0.94cqw]">
+                <p className="mt-0.5 text-body-3 text-ink-muted">
                   Social Justice and Marginalised Advancement
                   <br />
                   Vistaar of Empowerment Services Hub.
@@ -95,12 +95,12 @@ export function SamaveshJusticeBanner() {
 
             <h2
               id="samavesh-banner-heading"
-              className="mt-2 text-[26px] font-bold leading-[1.12] tracking-[-0.01em] text-ink sm:text-[32px] lg:mt-[0.63cqw] lg:text-[3.3cqw]"
+              className="mt-2 text-display-5 font-display text-ink lg:mt-[0.63cqw]"
             >
               Justice. Equality. Dignity.
             </h2>
 
-            <p className="mt-1.5 text-[14px] leading-[1.4] text-ink-muted sm:text-[15px] lg:text-[1.34cqw]">
+            <p className="mt-1.5 text-body-1 text-ink-muted">
               SAMAVESH brings every social justice service into one trusted, transparent portal.
             </p>
 

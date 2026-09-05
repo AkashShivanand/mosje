@@ -91,7 +91,7 @@
       ImportantLinks is 1002 and the assistant launcher 1010, and neither should
       be covered by a panel the reader opened from the top of the page.
     */
-    z-index: 30;
+    z-index: var(--sa-z-dropdown);
     font-family: inherit;
   }
 
@@ -232,7 +232,7 @@
   /* Bar height and badge diameter are component geometry, not spacing steps. */
   :root[data-sa-header-condensed] .ds-samavesh-banner--sticky.ds-samavesh-banner--open
     .ds-samavesh-banner__container {
-    min-height: 48px;
+    min-height: var(--sa-control-height-lg);
   }
 
   :root[data-sa-header-condensed] .ds-samavesh-banner--sticky.ds-samavesh-banner--open
@@ -348,8 +348,8 @@
   .ds-samavesh-banner__title {
     font-size: var(--sa-type-headline-3-size);
     line-height: var(--sa-type-headline-3-lh);
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: var(--sa-type-caps-tracking);
     color: var(--_band-ink);
     white-space: nowrap;
   }
@@ -380,7 +380,7 @@
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
     color: var(--_band-ink-muted);
-    font-weight: 400;
+    font-weight: var(--sa-font-weight-regular);
   }
 
   @media (min-width: 768px) {
@@ -411,7 +411,7 @@
     color: var(--sa-color-text-onPrimary);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     padding: var(--sa-padding-8) var(--sa-padding-16);
     border-radius: var(--sa-shape-8);
     border: none;
@@ -574,7 +574,7 @@
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    border-bottom: 2px solid var(--sa-color-brand-saffron);
+    border-bottom: var(--sa-stroke-2) solid var(--sa-color-brand-saffron);
   }
 
   /*
@@ -647,10 +647,9 @@
   .ds-samavesh-banner__drawer-heading {
     font-size: var(--sa-type-title-1-size);
     line-height: var(--sa-type-title-1-lh);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-color-status-successStrong);
     margin-block: 0 var(--sa-stack-20);
-    letter-spacing: -0.01em;
   }
 
   @media (min-width: 1024px) {
@@ -671,7 +670,7 @@
 
   .ds-samavesh-banner__count {
     margin-left: var(--sa-inline-6);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     opacity: 0.7;
   }
 
@@ -806,7 +805,7 @@
     gap: var(--sa-inline-6);
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-brand-samavesh-green);
     text-decoration: none;
     padding: var(--sa-padding-4) var(--sa-padding-6);

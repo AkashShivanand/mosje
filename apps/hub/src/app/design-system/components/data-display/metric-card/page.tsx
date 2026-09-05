@@ -62,7 +62,7 @@ export default function MetricCardPage(): React.JSX.Element {
       name="Metric Card"
       status="Stable"
       summary="States one figure, what it counts, and how it has moved against a named baseline. It keeps its height whether the figure has arrived or not, so a row of them does not reflow."
-      figma={{ absent: "Not yet published in the Figma library." }}
+      figma={{ node: "chartsMetricCard" }}
       specimen={<MetricCardSpecimen />}
       propsFrom="MetricCardProps"
       a11y={A11Y}
@@ -133,6 +133,49 @@ export default function MetricCardPage(): React.JSX.Element {
               it is what supplies the spoken &ldquo;Increase&rdquo; or &ldquo;Decrease&rdquo; that stops
               the trend resting on colour. Leave it <code>flat</code> where a change is not meaningful
               rather than pointing it in a flattering direction.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-five">
+            <h2 id="cdp-five" className="cdp__h2">
+              Five Readings of One Number
+            </h2>
+            <p>
+              The visualisation specification names five genuine variants of showing one number,
+              separated by what else the reader needs. They are props on this one card, not five
+              cards:
+            </p>
+            <ul>
+              <li>
+                <strong>Bare value</strong> — <code>label</code> and <code>value</code>. Formatting
+                is the whole component.
+              </li>
+              <li>
+                <strong>Value with comparison</strong> — <code>changeValue</code> against a named{" "}
+                <code>changeLabel</code>.
+              </li>
+              <li>
+                <strong>Value with trend</strong> — a <code>Sparkline</code> in <code>aside</code>.
+                It is decorative there; the figure carries the meaning.
+              </li>
+              <li>
+                <strong>Value against target</strong> — <code>progress</code> with a{" "}
+                <code>max</code> and, where one exists, a <code>target</code>. It is a bar, not a
+                second number, because the reader&rsquo;s question is how far there is to go.
+              </li>
+              <li>
+                <strong>Value with status</strong> — <code>status</code> for the words and{" "}
+                <code>tone</code> for the colour. The chip is what lets the tint be a tint.
+              </li>
+            </ul>
+            <p>
+              <code>detail</code> prints the numerator and denominator behind a rate, and{" "}
+              <code>provenance</code> prints where the figure came from. Both are dropped, with the
+              change indicator, whenever there is no figure to describe.
+            </p>
+            <p>
+              A tone is a claim. On this estate red means breached and green means on track, so
+              set <code>tone</code> only against a rule the scheme has stated — the queue&rsquo;s
+              &ldquo;due soon&rdquo; and &ldquo;overdue&rdquo; tiles, not the first card in a row.
             </p>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-format">

@@ -29,8 +29,8 @@ export default function PortalFeedbackPage() {
               <div className="flex gap-3">
                 <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-navy/10 text-navy"><Icon name="chat" size={16} /></span>
                 <div>
-                  <p className="text-sm font-semibold text-ink">{f.name}</p>
-                  <p className="mt-0.5 text-sm text-ink-muted">{f.text}</p>
+                  <p className="text-title-3 text-ink">{f.name}</p>
+                  <p className="mt-0.5 text-body-2 text-ink-muted">{f.text}</p>
                 </div>
               </div>
               <div className="flex shrink-0 items-center gap-2">
@@ -40,7 +40,7 @@ export default function PortalFeedbackPage() {
                       earned stars use the filled variant instead. */}
                   {Array.from({ length: 5 }).map((_, s) => <Icon name="star" size={14} key={s} fill={s < f.rating} className={s < f.rating ? "text-saffron" : "text-line"} />)}
                 </span>
-                <span className="text-xs text-ink-hint">{f.when}</span>
+                <span className="text-body-3 text-ink-hint">{f.when}</span>
               </div>
             </div>
           </Card>

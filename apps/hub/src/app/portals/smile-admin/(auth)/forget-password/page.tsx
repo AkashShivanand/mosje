@@ -12,7 +12,7 @@ export default function ForgetPasswordPage() {
     <div className="space-y-lg">
       <Link
         href="/portals/smile-admin/login"
-        className="inline-flex items-center gap-xs text-body-3 font-semibold text-ink-muted hover:text-primary"
+        className="inline-flex items-center gap-xs text-label-1 text-ink-muted hover:text-primary"
       >
         <Icon name="arrow_back" size={16} /> Back to sign in
       </Link>
@@ -22,7 +22,7 @@ export default function ForgetPasswordPage() {
           <Icon name="key" size={20} />
         </div>
         <div className="space-y-xs">
-          <h1 className="text-headline-2 font-bold tracking-tight text-ink">
+          <h1 className="text-headline-1 text-ink">
             Reset your password
           </h1>
           <p className="text-body-2 text-ink-muted">
@@ -38,9 +38,9 @@ export default function ForgetPasswordPage() {
             <span className="grid h-9 w-9 place-items-center rounded-full bg-success-600 text-white">
               <Icon name="check_circle" size={20} />
             </span>
-            <div className="text-title-2 font-semibold text-success-600">OTP sent</div>
+            <div className="text-title-2 text-success-600">OTP sent</div>
           </div>
-          <p className="text-body-3 text-ink">
+          <p className="text-body-2 text-ink">
             We&apos;ve sent a one-time password to{" "}
             <span className="font-semibold">
               +91 {mobile.slice(0, 2)}••••{mobile.slice(-4)}

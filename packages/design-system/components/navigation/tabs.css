@@ -114,9 +114,9 @@
     position: absolute;
     z-index: 0;
     pointer-events: none;
-    transition: transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-      width var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-      height var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    transition: transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      width var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      height var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   /* Underline — a 2px mark on the bottom edge. */
@@ -188,10 +188,10 @@
     color: var(--sa-text-neutral-subtle);
     font-size: var(--ds-tabs-type-size);
     line-height: var(--ds-tabs-type-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     cursor: pointer;
-    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-      color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   /* Enclosed tabs share the track evenly; an open list is content-width, which is
@@ -366,7 +366,7 @@
      is a utility switching state, not a showpiece. */
   @media (prefers-reduced-motion: no-preference) {
     .ds-tabpanel {
-      animation: ds-tabpanel-fade-in var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+      animation: ds-tabpanel-fade-in var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
     }
 
     @keyframes ds-tabpanel-fade-in {
@@ -557,8 +557,8 @@
     background: transparent;
     color: var(--sa-icon-neutral-subtle);
     cursor: pointer;
-    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-      color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-tabs__more:hover {
@@ -594,7 +594,7 @@
        tablist can realistically be inside and below Lightbox and Tooltip, so a
        tooltip on a menu item still wins. Matching the existing practice rather
        than minting the estate's first z token in a tabs change. */
-    z-index: 70;
+    z-index: var(--sa-z-popover);
     display: flex;
     flex-direction: column;
     /* HUGS its content — a menu of tab labels has no natural minimum, and §1
@@ -621,7 +621,7 @@
     color: var(--sa-text-neutral-base);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-align: left;
     cursor: pointer;
   }

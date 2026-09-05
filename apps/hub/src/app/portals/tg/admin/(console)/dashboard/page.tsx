@@ -107,7 +107,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* SLA legend */}
-      <div className="mb-3 flex flex-wrap items-center gap-4 text-xs text-ink-muted">
+      <div className="mb-3 flex flex-wrap items-center gap-4 text-body-3 text-ink-muted">
         <span className="flex items-center gap-1.5"><SlaBadge daysLeft={-1} /> — SLA breached (past due date)</span>
         <span className="flex items-center gap-1.5"><SlaBadge daysLeft={5} /> — Due soon (≤ 7 days left)</span>
         <span className="flex items-center gap-1.5"><SlaBadge daysLeft={20} /> — Within SLA</span>

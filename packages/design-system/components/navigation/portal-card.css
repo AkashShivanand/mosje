@@ -55,7 +55,7 @@
     padding: var(--sa-padding-16);
     width: 100%;
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-color-secondaryScale-500);
+    border: var(--sa-stroke-1) solid var(--sa-color-secondaryScale-500);
     border-radius: var(--sa-shape-20);
     text-decoration: none;
     color: var(--sa-color-text-default);
@@ -107,7 +107,7 @@
     grid doing its job rather than a bug.
   */
   .ds-portal-card--compact .ds-portal-card__name {
-    min-height: calc(2 * var(--sa-type-body-2-lh));
+    min-height: calc(2 * var(--sa-type-body-1-lh));
   }
 
   .ds-portal-card--detailed {
@@ -225,15 +225,19 @@
   .ds-portal-card__code {
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-color-secondaryScale-600);
-    letter-spacing: 0.01em;
   }
 
+  /* Code and name share the 16px body size — the Portal List reference
+     (`56693:11506`) sets both at 16/24 and lets WEIGHT carry the hierarchy,
+     semibold saffron over regular ink. A 14px name under a 16px code read as
+     two unrelated lines; the Figma master was rebound to the same pair on
+     2026-09-05. */
   .ds-portal-card__name {
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
-    font-weight: 500;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-color-text-default);
   }
 
@@ -289,19 +293,19 @@
     gap: var(--sa-inline-12);
     margin-top: auto;
     padding-top: var(--sa-padding-12);
-    border-top: 1px solid var(--sa-border-neutral-subtle);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   /* The category is a LABEL, not a badge. A pill here would read as a status —
      which is exactly what the retired "Live Portal" / "Under Onboarding" badges
      did, on a directory where every entry is now live and the badge said nothing. */
   .ds-portal-card__category {
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--sa-type-caps-tracking);
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -315,7 +319,7 @@
     flex-shrink: 0;
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-color-secondaryScale-600);
   }
 

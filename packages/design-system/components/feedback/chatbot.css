@@ -141,11 +141,11 @@
      * it is a reaction, not a choice. There is no --sa-z-* scale in the DS yet;
      * the house convention is a literal with a comment, as in tooltip.css.
      */
-    z-index: 1010;
+    z-index: var(--sa-z-launcher);
   }
 
   .ds-chatbot[data-state="open"] {
-    z-index: 2147483001;
+    z-index: var(--sa-z-top);
   }
 
   .ds-chatbot--fixed {
@@ -403,7 +403,7 @@
     position: absolute;
     inset: 0;
     border-radius: var(--sa-shape-full);
-    border: 2px solid var(--sa-bg-brand-primary-bolder);
+    border: var(--sa-stroke-2) solid var(--sa-bg-brand-primary-bolder);
     pointer-events: none;
   }
 
@@ -664,7 +664,7 @@
      * launcher: a wide ambient shadow alone reads as fog, not as an object
      * sitting above the page.
      */
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     /* The border would otherwise be ADDED to the 400x719 the design specifies,
        making the panel 402x721 and pushing the expanded height 2px past the
        viewport cap it is supposed to respect. The package sets no global reset,
@@ -725,7 +725,7 @@
     justify-content: space-between;
     gap: var(--sa-inline-8);
     padding: var(--sa-padding-16);
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   /*
@@ -805,7 +805,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     /* The title outranks the subtitle beneath it, so it cannot be the same ink.
        Both were `muted`, which left the header with no hierarchy at all — the
        Devanagari name read as equal in weight to the invitation above it. */
@@ -921,7 +921,7 @@
     /* Regular. `Body/body-1` is a Regular style and the master uses it as one;
        500 was making every message read a shade heavier than the system's own
        body text, which is the opposite of what a transcript wants. */
-    font-weight: 400;
+    font-weight: var(--sa-font-weight-regular);
     overflow-wrap: anywhere;
   }
 
@@ -1084,7 +1084,7 @@
     /* 8/12 puts the control at 36px against the mock's 38 — on the 4px grid the
        Spacing page insists on, and comfortably over the 24px WCAG 2.2 minimum. */
     padding: var(--sa-padding-8) var(--sa-padding-12);
-    border: 1px solid transparent;
+    border: var(--sa-stroke-1) solid transparent;
     border-radius: var(--sa-shape-8);
     /* The mock's #EFE8FF lavender is not a SAMAVESH colour and nothing in the
        ramp resolves near it. The pale brand tint is the same ROLE — a quiet
@@ -1146,7 +1146,7 @@
   @media (prefers-reduced-motion: reduce) {
     .ds-chatbot__panel,
     .ds-chatbot__panel[data-state="open"] {
-      transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+      transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
     }
 
     .ds-chatbot__panel[data-state="closed"] {
@@ -1170,7 +1170,7 @@
     .ds-chatbot__launcher[data-state="open"] .ds-chatbot__close {
       transform: none;
       filter: none;
-      transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+      transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
     }
 
     .ds-chatbot__log {
@@ -1181,7 +1181,7 @@
        they never start. What needs saying here is the two that would otherwise
        animate a SIZE change — expanding, and the measured corner offset. */
     .ds-chatbot__panel[data-expanded] {
-      transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+      transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
     }
 
     .ds-chatbot__icon-btn,
@@ -1199,7 +1199,7 @@
   .ds-chatbot__footer {
     flex: none;
     padding: var(--sa-padding-12) var(--sa-padding-16) var(--sa-padding-16);
-    border-top: 1px solid var(--sa-border-neutral-subtle);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     background: var(--sa-bg-neutral-base);
   }
 
@@ -1265,7 +1265,7 @@
      * estate-wide blast radius; it is recorded in chatbot.md rather than
      * smuggled in here.
      */
-    border: 1px solid var(--sa-border-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-full);
     background: var(--sa-bg-neutral-base);
     cursor: text;

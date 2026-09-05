@@ -25,8 +25,8 @@ export type LedgerEntry = { token: string; measured?: number; implied?: number; 
 export type Section = { id: string; title: string };
 
 export const META = {
-  "translucentTokens": 136,
-  "alphaSteps": 13,
+  "translucentTokens": 140,
+  "alphaSteps": 15,
   "ramps": 8,
   "brands": 2,
   "rungs": 6,
@@ -39,10 +39,10 @@ export const META = {
     "neutralScale"
   ],
   "worstChartSeries": 4.58,
-  "modesMeasured": 10,
+  "modesMeasured": 8,
   "cvdSafeSeries": 9,
   "worstCvdSeriesPair": 8.2,
-  "rolesMeasured": 46,
+  "rolesMeasured": 47,
   "rolesBelowFloor": 0,
   "generatedFrom": "packages/tokens/dist/tokens.css"
 } as const;
@@ -2463,6 +2463,20 @@ export const ALPHA_SCALE = [
     "figma": "alpha/100",
     "value": "1",
     "use": "Opaque — a sentinel so a binding can be switched off without unbinding."
+  },
+  {
+    "step": null,
+    "css": "--sa-alpha-disabled",
+    "figma": "alpha/disabled",
+    "value": "0.48",
+    "use": ""
+  },
+  {
+    "step": null,
+    "css": "--sa-alpha-muted",
+    "figma": "alpha/muted",
+    "value": "0.64",
+    "use": ""
   }
 ] as const;
 
@@ -2541,7 +2555,7 @@ export const TRANSLUCENT = [
   },
   {
     "group": "Scrim, washes and rules",
-    "count": 4,
+    "count": 8,
     "examples": [
       {
         "token": "border/neutral/inverse/subtle",
@@ -2556,10 +2570,10 @@ export const TRANSLUCENT = [
         "css": "--sa-overlay-neutral-boldest"
       },
       {
-        "token": "overlay/brand/hover",
-        "base": "color/neutralScale/0",
-        "alpha": "alpha/8",
-        "css": "--sa-overlay-brand-hover"
+        "token": "overlay/neutral/hover",
+        "base": "color/neutralScale/800",
+        "alpha": "alpha/4",
+        "css": "--sa-overlay-neutral-hover"
       }
     ]
   }
@@ -2589,16 +2603,16 @@ export const LAYERS = [
 ] as const;
 
 export const SLOT_COUNTS = {
-  "border": 16,
-  "bg": 48,
+  "border": 17,
+  "bg": 53,
   "text": 22,
   "icon": 15,
   "cmp": 296,
-  "focus": 1,
-  "overlay": 3,
+  "focus": 2,
+  "overlay": 7,
   "chart": 38,
   "layer": 8,
-  "on": 46
+  "on": 51
 } as const;
 
 export const RETIRED = [
@@ -4150,194 +4164,6 @@ export const MODES: readonly Mode[] = [
         "pass": null
       }
     ]
-  },
-  {
-    "id": "ux4g",
-    "kind": "UX4G mode",
-    "roles": [
-      {
-        "token": "text/status/success/base",
-        "value": "#046a38",
-        "against": "bg/neutral/subtler",
-        "ratio": 6.44,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "text/status/error/base",
-        "value": "#aa2d30",
-        "against": "bg/neutral/subtler",
-        "ratio": 6.43,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "text/status/warning/base",
-        "value": "#8b5e00",
-        "against": "bg/neutral/subtler",
-        "ratio": 5.44,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "text/status/info/base",
-        "value": "#006d85",
-        "against": "bg/neutral/subtler",
-        "ratio": 5.71,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "text/brand/primary/base",
-        "value": "#4a2bc2",
-        "against": "bg/neutral/subtler",
-        "ratio": 8.33,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "text/link/brand/default",
-        "value": "#4a2bc2",
-        "against": "bg/neutral/subtler",
-        "ratio": 8.33,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "border/neutral/bolder/default",
-        "value": "#6f757d",
-        "against": "bg/neutral/subtler",
-        "ratio": 4.45,
-        "floor": 3,
-        "pass": true
-      },
-      {
-        "token": "focus/ring",
-        "value": "#0373df",
-        "against": "bg/neutral/base",
-        "ratio": 4.64,
-        "floor": 3,
-        "pass": true
-      },
-      {
-        "token": "on/bg/brand/primary/bolder",
-        "value": "#ffffff",
-        "against": "bg/brand/primary/bolder",
-        "ratio": 8.69,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "on/bg/status/warning/bold",
-        "value": "#1e2124",
-        "against": "bg/status/warning/bold",
-        "ratio": 6.89,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "text/neutral/disabled",
-        "value": "#8e949c",
-        "against": "bg/neutral/disabled",
-        "ratio": 2.81,
-        "floor": 0,
-        "pass": null
-      }
-    ]
-  },
-  {
-    "id": "ux4gdeep",
-    "kind": "UX4G mode",
-    "roles": [
-      {
-        "token": "text/status/success/base",
-        "value": "#046a38",
-        "against": "bg/neutral/subtler",
-        "ratio": 6.44,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "text/status/error/base",
-        "value": "#aa2d30",
-        "against": "bg/neutral/subtler",
-        "ratio": 6.43,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "text/status/warning/base",
-        "value": "#8b5e00",
-        "against": "bg/neutral/subtler",
-        "ratio": 5.44,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "text/status/info/base",
-        "value": "#006d85",
-        "against": "bg/neutral/subtler",
-        "ratio": 5.71,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "text/brand/primary/base",
-        "value": "#3d239f",
-        "against": "bg/neutral/subtler",
-        "ratio": 10.37,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "text/link/brand/default",
-        "value": "#3d239f",
-        "against": "bg/neutral/subtler",
-        "ratio": 10.37,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "border/neutral/bolder/default",
-        "value": "#6f757d",
-        "against": "bg/neutral/subtler",
-        "ratio": 4.45,
-        "floor": 3,
-        "pass": true
-      },
-      {
-        "token": "focus/ring",
-        "value": "#0373df",
-        "against": "bg/neutral/base",
-        "ratio": 4.64,
-        "floor": 3,
-        "pass": true
-      },
-      {
-        "token": "on/bg/brand/primary/bolder",
-        "value": "#ffffff",
-        "against": "bg/brand/primary/bolder",
-        "ratio": 10.83,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "on/bg/status/warning/bold",
-        "value": "#1e2124",
-        "against": "bg/status/warning/bold",
-        "ratio": 6.89,
-        "floor": 4.5,
-        "pass": true
-      },
-      {
-        "token": "text/neutral/disabled",
-        "value": "#8e949c",
-        "against": "bg/neutral/disabled",
-        "ratio": 2.81,
-        "floor": 0,
-        "pass": null
-      }
-    ]
   }
 ];
 
@@ -4392,6 +4218,17 @@ export const ROLE_CONTRAST: readonly RoleContrast[] = [
     "value": "#54585e",
     "onWhite": 7.16,
     "onMuted": 6.27,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/neutral/selected",
+    "role": "border",
+    "value": "#0373df",
+    "onWhite": 4.64,
+    "onMuted": 4.07,
     "floor": 3,
     "ground": "both",
     "aaa": false,

@@ -13,7 +13,7 @@ import {
   type PropDef,
 } from "@/components/design-system/docs-kit";
 
-import { TabsContentSpecimen, TabsDemo, TabsSizeSpecimen, TabsSpecimen } from "./tabs-demo";
+import { TabsArrangementsSpecimen, TabsContentSpecimen, TabsDemo, TabsSizeSpecimen, TabsSpecimen } from "./tabs-demo";
 
 export const metadata: Metadata = {
   title: "Tabs — Design System",
@@ -145,7 +145,12 @@ export default function TabsPage(): React.JSX.Element {
       status="Beta"
       summary="Accessible tabbed navigation for non-linear sections a reader revisits in any order — a clinical record, a settings panel, a multi-facet detail view. It implements the WAI-ARIA Tabs pattern with automatic activation, a roving tabindex, and a polite live-region announcement."
       figma={{ node: "tabs" }}
-      specimen={<TabsDemo />}
+      specimen={
+        <div style={{ display: "grid", gap: "var(--sa-stack-24)" }}>
+          <TabsDemo />
+          <TabsArrangementsSpecimen />
+        </div>
+      }
       propsFrom="TabsProps"
       a11y={A11Y}
       whenToUse={{

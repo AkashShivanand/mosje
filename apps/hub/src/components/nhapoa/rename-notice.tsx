@@ -42,20 +42,20 @@ export function RenameNotice() {
         </Button>
       }
     >
-      <div className="space-y-4 text-sm text-ink-muted">
+      <div className="space-y-4 text-body-2 text-ink-muted">
         <div className="rounded-xl bg-surface-muted p-4 text-center">
-          <p className="text-xs font-medium uppercase tracking-wider text-ink-hint">
+          <p className="text-label-3 uppercase text-ink-hint">
             {RENAME.oldName}
           </p>
-          <p className="mt-1 text-xs text-ink-hint">is now</p>
-          <p className="mt-1 text-2xl font-bold text-navy">
-            {RENAME.newNameHi} <span className="tracking-tight">{RENAME.newName}</span>
+          <p className="mt-1 text-body-3 text-ink-hint">is now</p>
+          <p className="mt-1 text-headline-4 text-navy">
+            <span lang="hi">{RENAME.newNameHi}</span> {RENAME.newName}
           </p>
         </div>
         <p>
           The helpline is the same — <span className="font-semibold text-ink">same team,
           same number</span>. Only the name has changed, to <span className="font-semibold text-ink">
-          {RENAME.newNameHi} ({RENAME.newName})</span>, meaning <em>support</em>.
+          <span lang="hi">{RENAME.newNameHi}</span> ({RENAME.newName})</span>, meaning <em>support</em>.
         </p>
         <p className="rounded-lg border border-line bg-white px-3 py-2 text-ink">
           24&times;7 Helpline:{" "}

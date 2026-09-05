@@ -14,7 +14,7 @@ const columns = [
     header: "Type",
     render: (row: PledgeReport) => (
       <span
-        className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+        className={`rounded-full px-2 py-0.5 text-label-2 font-semibold ${
           row.pledgeType === "e-pledge"
             ? "bg-approve/10 text-approve"
             : "bg-await/10 text-await"
@@ -50,8 +50,8 @@ export default function PledgeReportsPage() {
   return (
     <AdminShell>
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-ink">All Pledge Reports</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">All Pledge Reports</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           {PLEDGE_REPORTS_TOTAL} total pledges registered
         </p>
       </div>

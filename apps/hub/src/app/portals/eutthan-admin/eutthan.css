@@ -145,8 +145,9 @@ button {
 
 .top-actions {
   gap: var(--sa-inline-12);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--sa-type-label-1-size);
+  line-height: var(--sa-type-label-1-lh);
+  font-weight: var(--sa-font-weight-medium);
 }
 
 .top-actions button {
@@ -162,8 +163,9 @@ button {
 
 .goi-link {
   gap: var(--sa-inline-2);
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--sa-type-label-1-size);
+  line-height: var(--sa-type-label-1-lh);
+  font-weight: var(--sa-font-weight-medium);
 }
 
 .divider {
@@ -224,8 +226,9 @@ button {
 
 .brand-meta {
   gap: var(--sa-inline-8);
-  font-size: 12px;
-  font-weight: 500;
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
+  font-weight: var(--sa-font-weight-medium);
 }
 
 .beta {
@@ -236,16 +239,18 @@ button {
   border-radius: var(--sa-shape-2);
   color: var(--sa-text-neutral-bolder);
   background: var(--yellow);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
+  font-weight: var(--sa-font-weight-semibold);
+  letter-spacing: var(--sa-type-caps-tracking);
+  text-transform: uppercase;
 }
 
 .brand-block h1 {
   margin: var(--sa-stack-4) 0 0;
   color: var(--text);
-  font-size: 20px;
-  line-height: 24px;
+  font-size: var(--sa-type-headline-4-size);
+  line-height: var(--sa-type-headline-4-lh);
 }
 
 .profile {
@@ -259,14 +264,15 @@ button {
 
 .profile strong {
   color: var(--text);
-  font-size: 18px;
-  line-height: 24px;
+  font-size: var(--sa-type-title-2-size);
+  line-height: var(--sa-type-title-2-lh);
 }
 
 .profile small {
   margin-top: var(--sa-stack-2);
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
 }
 
 .avatar {
@@ -278,49 +284,20 @@ button {
   border-radius: var(--radius-md);
   color: var(--primary-800);
   background: var(--primary-100);
-  font-size: 18px;
-  font-weight: 700;
+  font-size: var(--sa-type-title-2-size);
+  line-height: var(--sa-type-title-2-lh);
+  font-weight: var(--sa-font-weight-bold);
 }
 
 .workspace {
   display: grid;
-  grid-template-columns: 288px minmax(0, 1fr);
+  grid-template-columns: var(--sa-layout-sidebar-width) minmax(0, 1fr);
 }
 
-.sidebar {
-  position: sticky;
-  top: 134px;
-  display: flex;
-  height: calc(100dvh - 134px);
-  flex-direction: column;
-  gap: var(--sa-stack-8);
-  overflow-y: auto;
+/* The rail is the design system's SidebarNav; it pins itself under the
+   masthead. This only draws the dividing line. */
+.eu-sidebar {
   border-right: 1px solid var(--stroke-300);
-  padding: var(--sa-padding-8) var(--sa-padding-12) var(--sa-padding-24);
-  background: var(--surface-muted);
-}
-
-.nav-item {
-  display: grid;
-  grid-template-columns: 24px 1fr auto;
-  min-height: 48px;
-  align-items: center;
-  gap: var(--sa-stack-8);
-  border-radius: var(--radius-xl);
-  padding: var(--sa-padding-12) var(--sa-padding-12);
-  color: var(--text);
-  font-size: 14px;
-  line-height: 20px;
-}
-
-.nav-item.active {
-  color: var(--primary);
-  background: var(--primary-50);
-  font-weight: 700;
-}
-
-.nav-caret {
-  justify-self: end;
 }
 
 .subnav {
@@ -333,7 +310,8 @@ button {
   border-radius: var(--radius-md);
   padding: var(--sa-padding-8) var(--sa-padding-8);
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: var(--sa-type-label-1-size);
+  line-height: var(--sa-type-label-1-lh);
 }
 
 .subnav a.active {
@@ -356,9 +334,9 @@ button {
 .page-title {
   margin: 0;
   color: var(--text);
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 36px;
+  font-size: var(--sa-type-headline-2-size);
+  line-height: var(--sa-type-headline-2-lh);
+  font-weight: var(--sa-font-weight-semibold);
 }
 
 .summary-grid {
@@ -388,17 +366,18 @@ button {
 .stat-card span {
   display: block;
   color: var(--text-muted);
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 20px;
+  font-size: var(--sa-type-label-1-size);
+  line-height: var(--sa-type-label-1-lh);
+  font-weight: var(--sa-font-weight-bold);
 }
 
 .summary-card strong {
   display: block;
   margin-top: var(--sa-stack-12);
   color: var(--primary-800);
-  font-size: 32px;
-  line-height: 40px;
+  font-size: var(--sa-type-headline-2-size);
+  line-height: var(--sa-type-headline-2-lh);
+  font-variant-numeric: tabular-nums;
 }
 
 .primary-value {
@@ -428,9 +407,9 @@ button {
 .form-card h3 {
   margin: 0;
   color: var(--text);
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 24px;
+  font-size: var(--sa-type-title-2-size);
+  line-height: var(--sa-type-title-2-lh);
+  font-weight: var(--sa-font-weight-semibold);
 }
 
 .select-button,
@@ -465,8 +444,9 @@ button {
   display: block;
   margin-top: var(--sa-stack-16);
   color: var(--primary-800);
-  font-size: 28px;
-  line-height: 36px;
+  font-size: var(--sa-type-headline-2-size);
+  line-height: var(--sa-type-headline-2-lh);
+  font-variant-numeric: tabular-nums;
 }
 
 .chart-panel {
@@ -511,8 +491,8 @@ button {
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: 13px;
-  line-height: 18px;
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
 }
 
 .legend li {
@@ -554,8 +534,9 @@ button {
   gap: var(--sa-inline-8);
   border-radius: var(--radius-md);
   padding: var(--sa-padding-8) var(--sa-padding-16);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--sa-type-label-1-size);
+  line-height: var(--sa-type-label-1-lh);
+  font-weight: var(--sa-font-weight-semibold);
 }
 
 .primary-button {
@@ -621,15 +602,15 @@ td {
 th {
   color: var(--text);
   background: var(--surface-muted);
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 20px;
+  font-size: var(--sa-type-title-3-size);
+  line-height: var(--sa-type-title-3-lh);
+  font-weight: var(--sa-font-weight-semibold);
 }
 
 td {
   color: var(--text);
-  font-size: 14px;
-  line-height: 22px;
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
 }
 
 tr.selected-row td {
@@ -659,8 +640,9 @@ tr.selected-row td {
   border-radius: var(--radius-lg);
   padding: var(--sa-padding-4) var(--sa-padding-12);
   color: var(--sa-text-neutral-inverse);
-  font-size: 13px;
-  font-weight: 700;
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
+  font-weight: var(--sa-font-weight-bold);
 }
 
 .badge.success {
@@ -723,7 +705,8 @@ tr.selected-row td {
 
 .page-size {
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
 }
 
 .page-size button {
@@ -772,8 +755,9 @@ tr.selected-row td {
   display: grid;
   gap: var(--sa-stack-8);
   color: var(--text);
-  font-size: 14px;
-  font-weight: 700;
+  font-size: var(--sa-type-label-1-size);
+  line-height: var(--sa-type-label-1-lh);
+  font-weight: var(--sa-font-weight-bold);
 }
 
 .field input,
@@ -816,26 +800,28 @@ tr.selected-row td {
 }
 
 .login-portal-name {
-  font-size: 42px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
+  font-family: var(--sa-font-display);
+  font-size: var(--sa-type-display-3-size);
+  line-height: var(--sa-type-display-3-lh);
+  letter-spacing: var(--sa-type-display-3-tracking);
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-text-neutral-inverse);
   margin-bottom: var(--sa-stack-12);
 }
 
 .login-ministry-name {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: var(--sa-type-title-2-size);
+  line-height: var(--sa-type-title-2-lh);
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--on-navy-90);
-  line-height: 1.5;
   margin-bottom: var(--sa-stack-12);
 }
 
 .login-tagline {
-  font-size: 13px;
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
   color: var(--on-navy-65);
   margin-bottom: var(--sa-stack-32);
-  line-height: 1.6;
 }
 
 .login-gov-tag {
@@ -844,10 +830,10 @@ tr.selected-row td {
   border: 1px solid var(--on-navy-35);
   border-radius: var(--sa-shape-full);
   padding: var(--sa-padding-4) var(--sa-padding-16);
-  font-size: 12px;
-  font-weight: 600;
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--on-navy-80);
-  letter-spacing: 0.3px;
 }
 
 .login-right {
@@ -865,14 +851,16 @@ tr.selected-row td {
 .login-form-title {
   margin: 0 0 var(--sa-stack-8);
   color: var(--text-strong);
-  font-size: 28px;
-  font-weight: 800;
+  font-size: var(--sa-type-headline-3-size);
+  line-height: var(--sa-type-headline-3-lh);
+  font-weight: var(--sa-font-weight-semibold);
 }
 
 .login-form-subtitle {
   margin: 0;
   color: var(--text-muted);
-  font-size: 14px;
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
 }
 
 .login-error-box {
@@ -882,7 +870,8 @@ tr.selected-row td {
   background: var(--danger-wash);
   border: 1px solid var(--danger-wash-bd);
   color: var(--danger);
-  font-size: 14px;
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
 }
 
 @media (max-width: 768px) {
@@ -916,7 +905,6 @@ tr.selected-row td {
     width: 100%;
     justify-content: center;
     gap: var(--sa-inline-8);
-    font-size: 12px;
   }
 
   .masthead {
@@ -926,16 +914,11 @@ tr.selected-row td {
     padding: var(--sa-padding-16) var(--sa-padding-24);
   }
 
-  .brand-block h1 {
-    font-size: 19px;
-    line-height: 28px;
-  }
-
   .workspace {
     display: block;
   }
 
-  .sidebar {
+  .eu-sidebar {
     display: none;
   }
 
@@ -974,16 +957,8 @@ tr.selected-row td {
     white-space: nowrap;
   }
 
-  .page-title {
-    font-size: 26px;
-  }
-
   .summary-card {
     padding: var(--sa-padding-24);
-  }
-
-  .summary-card strong {
-    font-size: 30px;
   }
 
   .panel-head {
@@ -1018,8 +993,9 @@ tr.selected-row td {
 
 .map-tab {
   padding: var(--sa-padding-8) var(--sa-padding-24);
-  font-size: 14px;
-  font-weight: 600;
+  font-size: var(--sa-type-label-1-size);
+  line-height: var(--sa-type-label-1-lh);
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--text-muted);
   border-bottom: 2px solid transparent;
   margin-bottom: -2px;
@@ -1069,8 +1045,9 @@ tr.selected-row td {
   border-radius: var(--radius-md);
   background: white;
   color: var(--text);
-  font-size: 13px;
-  font-weight: 500;
+  font-size: var(--sa-type-label-1-size);
+  line-height: var(--sa-type-label-1-lh);
+  font-weight: var(--sa-font-weight-medium);
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
 }
@@ -1111,8 +1088,9 @@ tr.selected-row td {
 
 .data-card .panel-head h3 {
   margin: 0;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--sa-type-title-2-size);
+  line-height: var(--sa-type-title-2-lh);
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--text-strong);
 }
 
@@ -1135,9 +1113,10 @@ tr.selected-row td {
   background: var(--stroke-50);
 }
 .demo-creds-header {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
+  font-weight: var(--sa-font-weight-semibold);
+  letter-spacing: var(--sa-type-caps-tracking);
   text-transform: uppercase;
   color: var(--text-muted);
   margin-bottom: var(--sa-stack-8);
@@ -1154,23 +1133,24 @@ tr.selected-row td {
   cursor: pointer;
   text-align: left;
   width: 100%;
-  font-size: 13px;
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
   color: var(--text);
   transition: border-color 0.15s, background 0.15s;
 }
 .demo-creds-row:hover { border-color: var(--primary); background: var(--primary-50); }
 .demo-role-tag {
-  font-size: 11px; font-weight: 600;
+  font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-text-neutral-inverse); background: var(--primary);
   padding: var(--sa-padding-2) var(--sa-padding-6); border-radius: var(--sa-shape-4); flex-shrink: 0;
 }
-.demo-username { font-family: monospace; font-size: 12px; color: var(--text-strong); flex-shrink: 0; }
-.demo-pin { font-family: monospace; font-size: 12px; color: var(--text-muted); margin-left: auto; }
+.demo-username { font-family: var(--sa-font-mono); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--text-strong); flex-shrink: 0; }
+.demo-pin { font-family: var(--sa-font-mono); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--text-muted); margin-left: auto; }
 /* Accessible skip link for eUtthan authenticated shell */
 .eu-skip-link {
   position: absolute; top: -100%; left: 0;
   padding: var(--sa-padding-8) var(--sa-padding-16); background: var(--primary); color: var(--sa-text-neutral-inverse);
-  font-size: 14px; font-weight: 600; z-index: 9999;
+  font-size: var(--sa-type-label-1-size); line-height: var(--sa-type-label-1-lh); font-weight: var(--sa-font-weight-semibold); z-index: 9999;
   border-bottom-right-radius: var(--radius-md);
 }
 .eu-skip-link:focus { top: 0; }

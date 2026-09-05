@@ -16,9 +16,9 @@
   }
 
   .ds-filter-select__label {
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
   }
 
@@ -30,7 +30,7 @@
     width: 100%;
     /* 40px, the dashboard filter height — and comfortably past the 24×24 floor
        of WCAG 2.2 AA 2.5.8. */
-    min-height: 40px;
+    min-height: var(--sa-control-height-md);
     padding: var(--sa-padding-8) var(--sa-padding-12);
     /*
      * 3.06:1 against the page. `border-neutral-base` measures 1.66 and is right
@@ -38,7 +38,7 @@
      * 1.4.11 puts at 3:1, and the axe suite's own component page is where that
      * was caught.
      */
-    border: 1px solid var(--sa-border-neutral-bolder-default);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-8);
     background: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-base);
@@ -82,7 +82,7 @@
        the label's own line box rather than by a guessed number. */
     top: calc(100% + var(--sa-stack-4));
     left: 0;
-    z-index: 20;
+    z-index: var(--sa-z-dropdown);
     width: 100%;
     min-width: max-content;
     /* Paged by scrolling rather than by height: a district list is forty long,
@@ -90,7 +90,7 @@
     max-height: 280px;
     overflow-y: auto;
     padding: var(--sa-padding-4);
-    border: 1px solid var(--sa-border-neutral-bolder-default);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-8);
     background: var(--sa-bg-neutral-base);
     box-shadow: var(--sa-elevation-modal);
@@ -138,7 +138,7 @@
   /* The SELECTED option — what the filter is set to. Weight, not colour alone
      (WCAG 1.4.1); `aria-selected` carries it for assistive technology. */
   .ds-filter-select__option.is-selected {
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
   }
 
   .ds-filter-select__option.is-disabled {

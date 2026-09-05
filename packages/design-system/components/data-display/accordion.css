@@ -36,11 +36,11 @@
 
   .sa-accordion-item {
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-12);
     overflow: hidden;
     box-shadow: var(--sa-elevation-card);
-    transition: box-shadow 150ms ease;
+    transition: box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .sa-accordion-item:hover {
@@ -60,7 +60,7 @@
     text-align: left;
     cursor: pointer;
     border: 0;
-    transition: background-color 150ms ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .sa-accordion-item__trigger:hover {
@@ -77,21 +77,22 @@
   }
 
   .sa-accordion-item__title {
-    font-size: var(--sa-type-body-2-size);
-    font-weight: 700;
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
   .sa-accordion-item__icon {
     color: var(--sa-text-neutral-subtle);
     flex-shrink: 0;
-    transition: transform 200ms ease;
+    transition: transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
   }
 
   .sa-accordion-item__content {
     padding: var(--sa-padding-16) var(--sa-padding-20);
     background-color: var(--sa-bg-neutral-base);
-    border-top: 1px solid var(--sa-border-neutral-subtle);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     color: var(--sa-text-neutral-base);
   }
 

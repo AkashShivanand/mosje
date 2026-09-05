@@ -17,8 +17,8 @@ export default function PdQueriesPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold text-ink">PD Queries</h1>
-        <p className="mt-1 text-sm text-ink-muted">Files you have queried back down the chain, and files queried to you.</p>
+        <h1 className="text-headline-1 text-ink">PD Queries</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">Files you have queried back down the chain, and files queried to you.</p>
       </div>
       <WorklistTable
         rows={rows}

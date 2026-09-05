@@ -14,8 +14,8 @@ export default function FinanceRejectedPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold text-ink">Finance Rejected</h1>
-        <p className="mt-1 text-sm text-ink-muted">Applications rejected or returned by the Integrated Finance Division.</p>
+        <h1 className="text-headline-1 text-ink">Finance Rejected</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">Applications rejected or returned by the Integrated Finance Division.</p>
       </div>
       <WorklistTable
         rows={rows}

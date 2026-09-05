@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Alert, Button, Checkbox, FormField, Icon, Input, Radio, Select, Textarea, type SelectOption, type StepperStep } from "@mosje/design-system";
+import { Alert, Button, Checkbox, FormField, Icon, Input, RadioGroup, Select, Textarea, type SelectOption, type StepperStep } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { FormSection, FormCard } from "@/components/nmba/treatment-centre/tc-form";
@@ -458,12 +458,12 @@ export function OdicBeneficiaryForm({
       noValidate
     >
       <div>
-        <h1 className="text-xl font-bold text-ink">
+        <h1 className="text-headline-1 text-ink">
           {kind === "Outreach"
             ? "Outreach Beneficiary Registration"
             : "ODIC Client / Beneficiary Registration"}
         </h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <p className="mt-1 text-body-2 text-ink-muted">
           Fields marked <span aria-hidden="true">*</span>
           <span className="sr-only">with an asterisk</span> are required.
         </p>
@@ -570,8 +570,8 @@ export function OdicBeneficiaryForm({
                 {drugRows.map((row, i) => (
                   <li key={row._key} className="rounded-xl border border-line bg-surface-muted/50 p-4 sm:p-5">
                     <div className="mb-4 flex items-center justify-between gap-2">
-                      <span className="inline-flex items-center gap-2 text-sm font-semibold text-navy">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-xs font-bold text-navy" aria-hidden="true">{i + 1}</span>
+                      <span className="inline-flex items-center gap-2 text-title-3 text-navy">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-label-2 font-bold text-navy" aria-hidden="true">{i + 1}</span>
                         Drug {i + 1}
                       </span>
                       {drugRows.length > 1 && (
@@ -579,7 +579,7 @@ export function OdicBeneficiaryForm({
                           type="button"
                           onClick={() => setDrugRows((prev) => prev.filter((_, idx) => idx !== i))}
                           aria-label={`Remove drug ${i + 1}`}
-                          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
+                          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-label-2 font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
                         >
                           <Icon name="delete" size={14} aria-hidden /> Remove
                         </button>
@@ -595,24 +595,26 @@ export function OdicBeneficiaryForm({
                       <FormField label="Reason of Substance Abuse" required error={errors.has(`row${i}.reason`) ? "Required." : undefined}>
                         {(c) => <Select {...c} value={row.reason} onChange={(e) => updateDrugRow(i, { reason: e.target.value })} placeholder="Select Reason" options={INITIATION_REASONS} />}
                       </FormField>
-                      <fieldset className="m-0 flex flex-col gap-1.5 border-0 p-0">
-                        <legend className="p-0 text-sm font-medium text-ink">Use in Last 3 Month <span className="ds-field__required" aria-hidden="true">*</span></legend>
-                        <div className="flex gap-4 pt-1.5">
-                          {YES_NO.map((o) => (
-                            <Radio key={o.value} name={`used3m-${row._key}`} value={o.value} checked={row.usedLast3Months === o.value} onChange={() => updateDrugRow(i, { usedLast3Months: o.value as "Yes" | "No" })} label={o.label} />
-                          ))}
-                        </div>
-                        {errors.has(`row${i}.use3m`) && <p className="text-xs font-medium text-danger-fg">Required.</p>}
-                      </fieldset>
-                      <fieldset className="m-0 flex flex-col gap-1.5 border-0 p-0">
-                        <legend className="p-0 text-sm font-medium text-ink">Daily / Near Daily Use <span className="ds-field__required" aria-hidden="true">*</span></legend>
-                        <div className="flex gap-4 pt-1.5">
-                          {YES_NO.map((o) => (
-                            <Radio key={o.value} name={`daily-${row._key}`} value={o.value} checked={row.dailyUse === o.value} onChange={() => updateDrugRow(i, { dailyUse: o.value as "Yes" | "No" })} label={o.label} />
-                          ))}
-                        </div>
-                        {errors.has(`row${i}.daily`) && <p className="text-xs font-medium text-danger-fg">Required.</p>}
-                      </fieldset>
+                      <RadioGroup
+                        legend="Use in Last 3 Month"
+                        name={`used3m-${row._key}`}
+                        required
+                        orientation="horizontal"
+                        options={YES_NO}
+                        value={row.usedLast3Months || undefined}
+                        onChange={(v) => updateDrugRow(i, { usedLast3Months: v as "Yes" | "No" })}
+                        error={errors.has(`row${i}.use3m`) ? "Select Yes or No." : undefined}
+                      />
+                      <RadioGroup
+                        legend="Daily / Near Daily Use"
+                        name={`daily-${row._key}`}
+                        required
+                        orientation="horizontal"
+                        options={YES_NO}
+                        value={row.dailyUse || undefined}
+                        onChange={(v) => updateDrugRow(i, { dailyUse: v as "Yes" | "No" })}
+                        error={errors.has(`row${i}.daily`) ? "Select Yes or No." : undefined}
+                      />
                       <FormField label="Duration of regular use (months)" required error={errors.has(`row${i}.duration`) ? "Required." : undefined}>
                         {(c) => <Input {...c} type="number" min={0} value={row.durationMonths} onChange={(e) => updateDrugRow(i, { durationMonths: e.target.value })} placeholder="Months" />}
                       </FormField>
@@ -705,7 +707,7 @@ export function OdicBeneficiaryForm({
                   {(c) => <Input {...c} type="number" min={0} value={f.avgExpenditure} onChange={(e) => set("avgExpenditure")(e.target.value)} placeholder="₹ amount" invalid={errors.has("avgExpenditure")} />}
                 </FormField>
                 <div className="flex flex-col gap-1.5">
-                  <span id="money-source-label" className="text-sm font-medium text-ink">
+                  <span id="money-source-label" className="text-label-1 text-ink">
                     Source of money for drugs (rupees) <span className="ds-field__required">*</span>
                     <span className="ml-1 font-normal text-ink-muted">(select all that apply)</span>
                   </span>
@@ -726,7 +728,7 @@ export function OdicBeneficiaryForm({
                       />
                     ))}
                   </div>
-                  {errors.has("moneySource") && <p className="text-xs font-medium text-danger-fg">Select at least one source.</p>}
+                  {errors.has("moneySource") && <p className="text-label-2 text-danger-fg">Select at least one source.</p>}
                 </div>
                 <FormField label="Ever apprehended by police for drug-related offense" required error={err("everApprehended")}>
                   {(c) => <Select {...c} value={f.everApprehended} onChange={(e) => set("everApprehended")(e.target.value)} placeholder="Select" options={YES_NO_NR} invalid={errors.has("everApprehended")} />}
@@ -746,7 +748,7 @@ export function OdicBeneficiaryForm({
             <FormCard title="Intervention Provided">
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-1.5">
-                  <span id="intervention-label" className="text-sm font-medium text-ink">
+                  <span id="intervention-label" className="text-label-1 text-ink">
                     Intervention Provided during the Visit <span className="ds-field__required">*</span>
                   </span>
                   <div
@@ -766,7 +768,7 @@ export function OdicBeneficiaryForm({
                       />
                     ))}
                   </div>
-                  {errors.has("interventionTypes") && <p className="text-xs font-medium text-danger-fg">Select at least one intervention.</p>}
+                  {errors.has("interventionTypes") && <p className="text-label-2 text-danger-fg">Select at least one intervention.</p>}
                 </div>
 
                 <div className="ds-form-section__grid ds-form-section__grid--2">
@@ -798,7 +800,7 @@ export function OdicBeneficiaryForm({
         {step === 3 && (
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-3">
-              <p className="text-sm text-ink-muted">
+              <p className="text-body-2 text-ink-muted">
                 Review the details below, then submit. Use the quick links or{" "}
                 <span className="font-semibold text-ink">Back</span> to make changes.
               </p>
@@ -812,7 +814,7 @@ export function OdicBeneficiaryForm({
                     key={j.to}
                     type="button"
                     onClick={() => jumpTo(j.to)}
-                    className="inline-flex items-center gap-1 rounded-lg border border-line bg-white px-3 py-1.5 text-xs font-semibold text-navy hover:bg-black/5"
+                    className="inline-flex items-center gap-1 rounded-lg border border-line bg-white px-3 py-1.5 text-label-2 font-semibold text-navy hover:bg-black/5"
                   >
                     <Icon name="edit" size={12} aria-hidden /> {j.label}
                   </button>

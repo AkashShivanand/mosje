@@ -32,6 +32,11 @@
  *                 than numbers: "WCAG 2.2", "Inverse subtle", "body-2".
  *   • `source`  — require (or forbid) a pattern in a source file, so a claim about
  *                 BEHAVIOUR is tied to the line that implements it.
+ *   • `figma`   — count a node's CHILDREN in the live file (a component set's variants),
+ *                 so a claim about the master is checked against the master and not
+ *                 against another sentence. Live-only: it needs `--verify-figma`.
+ *                 Added 2026-09-05 after the login page said "six variants" for two days
+ *                 while the master had eight and every pin agreed with the page.
  *
  * WHICH DIRECTION IT CATCHES. Offline, on every PR, it catches the common case: the code
  * moves and Figma is left behind. The reverse — someone edits the Figma page and this
@@ -104,6 +109,7 @@ const norm = (s) => s.replace(/\s+/g, " ").trim();
 // ── Evaluate ────────────────────────────────────────────────────────────────
 const failures = [];
 const resolvedReport = [];
+const liveOnly = [];
 
 for (const claim of manifest.claims) {
   const text = norm(claim.figma ?? "");
@@ -167,6 +173,9 @@ for (const claim of manifest.claims) {
           hint: a.hint,
         });
       }
+    } else if (a.kind === "figma") {
+      // Evaluated in verifyFigma(); offline it cannot be read and is not pretended to pass.
+      if (!VERIFY_FIGMA) liveOnly.push(where);
     } else {
       failures.push({ where, why: `unknown assertion kind "${a.kind}"` });
     }
@@ -222,7 +231,10 @@ async function verifyFigma() {
     console.log("  · --verify-figma skipped: FIGMA_ACCESS_TOKEN not set.");
     return [];
   }
-  const ids = manifest.claims.map((c) => c.node).join(",");
+  const figmaAsserts = manifest.claims.flatMap((c) =>
+    (c.expect ?? []).filter((a) => a.kind === "figma").map((a) => ({ claim: c, a })),
+  );
+  const ids = [...new Set([...manifest.claims.map((c) => c.node), ...figmaAsserts.map((x) => x.a.node)])].join(",");
   const url = `https://api.figma.com/v1/files/${manifest.file}/nodes?ids=${encodeURIComponent(ids)}`;
   const res = await fetch(url, { headers: { "X-Figma-Token": token } });
   if (!res.ok) throw new Error(`Figma API ${res.status} ${res.statusText}`);
@@ -241,6 +253,15 @@ async function verifyFigma() {
         figmaNow: norm(doc.characters ?? ""),
         snapshot: norm(claim.figma ?? ""),
       });
+    }
+  }
+  for (const { claim, a } of figmaAsserts) {
+    const doc = body.nodes?.[a.node]?.document;
+    const where = `${claim.where} (${claim.node}) → ${a.node}`;
+    if (!doc) { drift.push({ where, why: `figma assertion: node ${a.node} not found in the file` }); continue; }
+    const n = Array.isArray(doc.children) ? doc.children.length : 0;
+    if (a.children !== undefined && n !== a.children) {
+      drift.push({ where, why: `${doc.name} has ${n} children in the live file, but the page claims ${a.children}`, hint: a.hint });
     }
   }
   if (SYNC && drift.length) {
@@ -303,4 +324,4 @@ if (figmaDrift.length) {
 }
 
 if (failures.length || figmaDrift.length) process.exit(1);
-console.log("✔ every recorded Figma claim still matches the code.");
+console.log("✔ every recorded Figma claim still matches the code." + (liveOnly.length ? ` (${liveOnly.length} figma-count assertion(s) need --verify-figma)` : ""));

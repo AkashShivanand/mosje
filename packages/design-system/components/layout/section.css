@@ -44,9 +44,9 @@
   .ds-section-title__eyebrow {
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);
   }
 
@@ -59,10 +59,10 @@
   .ds-section-title__heading {
     margin: 0;
     font-family: var(--sa-font-latin);
-    font-size: var(--sa-type-headline-5-size);
-    line-height: var(--sa-type-headline-5-lh);
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-size: var(--sa-type-headline-4-size);
+    line-height: var(--sa-type-headline-4-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: var(--sa-type-heading-tracking);
     color: var(--sa-text-neutral-base);
   }
 
@@ -76,8 +76,9 @@
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-neutral-subtler);
     box-shadow: inset 0 0 0 1px var(--sa-border-neutral-subtle);
-    font-size: var(--sa-type-label-3-size);
-    font-weight: 600;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
     font-variant-numeric: tabular-nums;
     color: var(--sa-text-neutral-subtle);
   }

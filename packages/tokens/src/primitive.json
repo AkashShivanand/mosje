@@ -632,63 +632,81 @@
           "$value": "#170000"
         }
       }
-    }
+    },
+    "$description": "Tier 1 colour ramps: the status hues (green, red, amber, info), the neutral greys, and the DBIM conformance palettes. PRIVATE: app code binds the semantic roles (bg/*, text/*, border/*, icon/*), which carry the contrast contract and follow the brand. Brand-identity ramps live in brands/<id>/brand.json."
   },
   "space": {
     "0": {
-      "$value": "0px"
+      "$value": "0px",
+      "$description": "No space — the rung a padding or gap aliases when a variant removes it, so the property stays bound rather than deleted."
     },
     "2": {
-      "$value": "2px"
+      "$value": "2px",
+      "$description": "2px — hairline separation: a badge from its glyph, a focus ring's offset (`focus/offset`)."
     },
     "4": {
-      "$value": "4px"
+      "$value": "4px",
+      "$description": "4px — the tightest inner gap: icon to label inside a chip, the gap between stacked pills."
     },
     "6": {
       "$value": "6px",
       "$description": "UX4G 3.0 space-3. Added 2026-08-18."
     },
     "8": {
-      "$value": "8px"
+      "$value": "8px",
+      "$description": "8px — the base unit. A control's inner gap (`density/control/gap`), a label to its field, `target/spacing` between adjacent targets."
     },
     "12": {
-      "$value": "12px"
+      "$value": "12px",
+      "$description": "12px — compact padding: dense table cells and compact controls (`density/control/padding/x` compact)."
     },
     "16": {
-      "$value": "16px"
+      "$value": "16px",
+      "$description": "16px — the default inline padding of a control and the mobile page margin (`grid/margin/mobile`)."
     },
     "20": {
-      "$value": "20px"
+      "$value": "20px",
+      "$description": "20px — card padding at the compact end, and the gap between a card's header and body."
     },
     "24": {
-      "$value": "24px"
+      "$value": "24px",
+      "$description": "24px — the grid gutter (`grid/gutter`), the tablet page margin, and default card padding."
     },
     "32": {
-      "$value": "32px"
+      "$value": "32px",
+      "$description": "32px — the desktop-wide page margin (`grid/margin/desktop`) and the inner padding of a section band."
     },
     "40": {
-      "$value": "40px"
+      "$value": "40px",
+      "$description": "40px — the gap between related blocks inside a section on a portal page."
     },
     "48": {
-      "$value": "48px"
+      "$value": "48px",
+      "$description": "48px — the default gap between page sections (`section/48`) on the website."
     },
     "56": {
-      "$value": "56px"
+      "$value": "56px",
+      "$description": "56px — a section gap for a page with a hero above it, so the hero reads as its own band."
     },
     "64": {
-      "$value": "64px"
+      "$value": "64px",
+      "$description": "64px — the vertical padding of a hero or a login panel gutter (`layout/login/panel/gutter`)."
     },
     "72": {
-      "$value": "72px"
+      "$value": "72px",
+      "$description": "72px — the generous section gap used between website home-page bands."
     },
     "80": {
-      "$value": "80px"
+      "$value": "80px",
+      "$description": "80px — the widest routine section gap; above this the page reads as separate pages."
     },
     "120": {
-      "$value": "120px"
+      "$value": "120px",
+      "$description": "120px — the top and bottom inset of a full-bleed hero band."
     },
     "360": {
-      "$value": "360px"
+      "$value": "360px",
+      "$description": "360px — the fixed inset the login hero's content column sits behind; the one rung that is a layout offset, not a gap."
     },
     "$description": "Spacing ladder, VALUE-NAMED: `space/16` is 16px. Renamed from T-shirt labels on 2026-08-18. Two reasons, both measured. (1) A T-shirt ramp has no slot between two adjacent rungs, so every insertion forces a rename of everything above it — that happened twice in one day (inline gained 24, padding needed 6). A numeric ladder absorbs any step for free. (2) The Tier-2 families each mapped the SAME label to a DIFFERENT value — `l` was 16 in inline, 24 in stack, 20 in padding and 56 in section — which is inherited verbatim from UX4G 3.0 and is the single most confusing thing about the old scale. UX4G's own primitive ramp is numeric (space-1..16), so numbering here is MORE consistent with UX4G, not less. UX4G parity is unaffected: the --ux4g-* layer is emitted independently and never reads these names. 6px is new — UX4G ships it as space-3 and 400 padding properties in the Figma library needed it.",
     "$type": "dimension"
@@ -755,54 +773,16 @@
         "$value": "\"Material Symbols Rounded\", sans-serif"
       }
     },
-    "size": {
-      "11": {
-        "$value": "{size.11}"
-      },
-      "12": {
-        "$value": "{size.12}"
-      },
-      "14": {
-        "$value": "{size.14}"
-      },
-      "16": {
-        "$value": "{size.16}"
-      },
-      "20": {
-        "$value": "{size.20}"
-      },
-      "22": {
-        "$value": "{size.22}"
-      },
-      "48": {
-        "$value": "{size.48}"
-      },
-      "$description": "Legacy flat scale. New code should use font.role.* for the responsive role system.",
-      "$type": "dimension"
-    },
     "lineHeight": {
-      "16": {
-        "$value": "{size.16}"
-      },
-      "20": {
-        "$value": "{size.20}"
-      },
-      "24": {
-        "$value": "{size.24}"
-      },
-      "28": {
-        "$value": "{size.28}"
-      },
-      "56": {
-        "$value": "{size.56}"
-      },
-      "$type": "dimension",
-      "devanagari": {
-        "$value": "1.7"
+      "$type": "number",
+      "$description": "Leading is a property of a role, not a primitive: every type/<role>/lh is authored beside its size. The one thing here is the Devanagari OFFSET the build derives each role's lhDevanagari from. The numeric flat ramp (font.lineHeight.16…56) that used to sit beside it was retired 2026-09-04, and the flat unitless 1.7 that followed it on the same day — one line height for every Hindi block, which undid the scale and which Figma read as 1.7px.",
+      "devanagariOffset": {
+        "$value": "0.2",
+        "$description": "Extra leading Devanagari takes over the same role's Latin leading, as a fraction of the size: the script hangs from the शिरोरेखा and stacks vowel signs above and below, so it needs a fixed share of its size in extra vertical room at any size — not a different rhythm. lhDevanagari = lh + 0.2 × size, rounded UP to the 4px grid: body-1 16/24 → 28, headline-1 40/48 → 56, display-1 80/88 → 104. A ratio, not a length: never bind it in Figma — bind the role's lhDevanagari."
       }
     },
     "role": {
-      "$description": "Two-surface responsive type role scale (Portal DS naming: hyphenated roles). Each size/lh/para carries mosje.type website/portal min+max bounds (min at 360px viewport, max at 1280px). The formatter emits --sa-type-ROLE-size/lh/para as clamp(min, fluid, max): Website in :root, Portal under data-surface=portal. $value is the Website desktop fallback.",
+      "$description": "Two-surface responsive type role scale (Portal DS naming: hyphenated roles). Each size/lh/para carries mosje.type website/portal min+max bounds (min at 360px viewport, max at 1280px). The formatter emits --sa-type-ROLE-size/lh/para as clamp(min, fluid, max): Website in :root, Portal under data-surface=portal. $value is the Website desktop fallback. RE-CUT 2026-09-04: Title, Body and Label are IDENTICAL on both surfaces (the productive core is shared, as Carbon's productive set is), only Display and Headline differ by surface; every size is on the 16-step ramp 12·14·16·18·20·22·24·28·32·36·40·48·56·64·72·80 (36 is DBIM §4's desktop H1, UX4G's Display/XS, and the phone bound of display-2), every line height on the 4px grid, leading ratios rise monotonically as size falls (display 1.10→1.20, headline 1.20→1.50), body is 1.5 on both surfaces, and nothing renders below 12px (UX4G 3.0 §2 minimum; label-3 is the CAPS role at 12/16 with type/caps/tracking). The 13px and 15px stops the old Portal ramp carried are gone.",
       "display": {
         "1": {
           "size": {
@@ -821,7 +801,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "The largest thing on the estate — one per hero, never for document structure. Website 40 → 80 / 48 → 88 (1.10 desktop, 1.20 phone); Portal 40 → 56 / 48 → 64. Tracking −0.015em."
           },
           "lh": {
             "$type": "dimension",
@@ -830,7 +811,7 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "44px",
+                    "min": "48px",
                     "max": "88px"
                   },
                   "portal": {
@@ -839,7 +820,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for display-1. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -857,7 +839,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for display-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "2": {
@@ -877,7 +860,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Campaign hero. Website 36 → 72 / 44 → 80; Portal 32 → 48 / 40 → 56. 36 is DBIM §4's desktop H1 and the reason the ramp carries it. Tracking −0.015em."
           },
           "lh": {
             "$type": "dimension",
@@ -886,7 +870,7 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "40px",
+                    "min": "44px",
                     "max": "80px"
                   },
                   "portal": {
@@ -895,7 +879,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for display-2. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -913,7 +898,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for display-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "3": {
@@ -933,7 +919,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "The website home page's own hero size. Website 32 → 64 / 40 → 72; Portal 28 → 40 / 36 → 48. Tracking −0.01em."
           },
           "lh": {
             "$type": "dimension",
@@ -942,7 +929,7 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "36px",
+                    "min": "40px",
                     "max": "72px"
                   },
                   "portal": {
@@ -951,7 +938,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for display-3. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -969,7 +957,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for display-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "4": {
@@ -989,7 +978,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Section hero, banner headline. Website 28 → 56 / 36 → 64; Portal 24 → 32 / 32 → 40. Tracking −0.01em."
           },
           "lh": {
             "$type": "dimension",
@@ -998,7 +988,7 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "32px",
+                    "min": "36px",
                     "max": "64px"
                   },
                   "portal": {
@@ -1007,7 +997,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for display-4. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1025,7 +1016,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for display-4: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "5": {
@@ -1036,16 +1028,17 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "26px",
+                    "min": "24px",
                     "max": "48px"
                   },
                   "portal": {
-                    "min": "22px",
+                    "min": "24px",
                     "max": "28px"
                   }
                 }
               }
-            }
+            },
+            "$description": "Small hero — a login panel wordmark, a campaign strip. Website 24 → 48 / 32 → 56; Portal 24 → 28 / 32 → 36. Tracking −0.005em."
           },
           "lh": {
             "$type": "dimension",
@@ -1054,16 +1047,17 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "28px",
+                    "min": "32px",
                     "max": "56px"
                   },
                   "portal": {
-                    "min": "28px",
+                    "min": "32px",
                     "max": "36px"
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for display-5. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1081,7 +1075,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for display-5: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "6": {
@@ -1092,7 +1087,7 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "24px",
+                    "min": "22px",
                     "max": "40px"
                   },
                   "portal": {
@@ -1101,7 +1096,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "The smallest display size, one step above headline-1 so a hero and a page title never share a size. Website 22 → 40 / 28 → 48 (1.20, on DBIM's floor); Portal 20 → 24 / 28 → 32. Tracking 0."
           },
           "lh": {
             "$type": "dimension",
@@ -1119,7 +1115,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for display-6. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1137,9 +1134,11 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for display-6: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
-        }
+        },
+        "$description": "Display — hero and campaign headings, on the optical Display cut (Noto Sans Display, drawn for 40–80px so its spacing does not read loose at that size). Medium 500: a display heading carries presence by size, not weight. Website is expressive (80 → 40), Portal is restrained (56 → 24). Leading tightens as size grows, 1.20 at display-6 to 1.10 at display-1 — DBIM §4's 1.2 floor is departed from here on record (deviation register T3), because 1.2 at 80px opens a two-line hero into separate lines. Tracking is negative from one em rule per rung so the two surfaces track alike per pixel of type."
       },
       "headline": {
         "1": {
@@ -1159,7 +1158,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "The page h1, one per page. Website 28 → 40 / 36 → 48; Portal 24 → 32 / 32 → 40. Leading 1.20 at desktop: the tightest a structural heading is allowed."
           },
           "lh": {
             "$type": "dimension",
@@ -1168,7 +1168,7 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "32px",
+                    "min": "36px",
                     "max": "48px"
                   },
                   "portal": {
@@ -1177,7 +1177,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for headline-1. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1195,7 +1196,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for headline-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "2": {
@@ -1215,7 +1217,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Section h2. Website 24 → 32 / 32 → 40; Portal 20 → 28 / 28 → 36. Leading 1.25."
           },
           "lh": {
             "$type": "dimension",
@@ -1224,7 +1227,7 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "28px",
+                    "min": "32px",
                     "max": "40px"
                   },
                   "portal": {
@@ -1233,7 +1236,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for headline-2. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1251,7 +1255,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for headline-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "3": {
@@ -1271,17 +1276,18 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Sub-section h3. Website 22 → 28 / 28 → 36; Portal 18 → 24 / 24 → 32. Was 28/32 (1.14) — tighter than the h2 above it — until the 2026-09-04 re-cut; now 1.29."
           },
           "lh": {
             "$type": "dimension",
-            "$value": "32px",
+            "$value": "36px",
             "$extensions": {
               "mosje": {
                 "type": {
                   "website": {
                     "min": "28px",
-                    "max": "32px"
+                    "max": "36px"
                   },
                   "portal": {
                     "min": "24px",
@@ -1289,7 +1295,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for headline-3. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1307,7 +1314,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for headline-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "4": {
@@ -1327,17 +1335,18 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "h4, and the SectionTitle component. Website 20 → 24 / 28 → 32; Portal 16 → 20 / 24 → 28. Leading 1.33."
           },
           "lh": {
             "$type": "dimension",
-            "$value": "28px",
+            "$value": "32px",
             "$extensions": {
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "24px",
-                    "max": "28px"
+                    "min": "28px",
+                    "max": "32px"
                   },
                   "portal": {
                     "min": "24px",
@@ -1345,7 +1354,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for headline-4. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1363,7 +1373,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for headline-4: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "5": {
@@ -1378,30 +1389,32 @@
                     "max": "20px"
                   },
                   "portal": {
-                    "min": "15px",
+                    "min": "16px",
                     "max": "18px"
                   }
                 }
               }
-            }
+            },
+            "$description": "h5, minor heading. Website 18 → 20 / 24 → 28; Portal 16 → 18 / 24. Leading 1.40. 18 rather than DBIM's 16 so an h5 does not share the body size."
           },
           "lh": {
             "$type": "dimension",
-            "$value": "24px",
+            "$value": "28px",
             "$extensions": {
               "mosje": {
                 "type": {
                   "website": {
                     "min": "24px",
-                    "max": "24px"
+                    "max": "28px"
                   },
                   "portal": {
-                    "min": "20px",
+                    "min": "24px",
                     "max": "24px"
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for headline-5. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1419,7 +1432,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for headline-5: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "6": {
@@ -1434,30 +1448,32 @@
                     "max": "16px"
                   },
                   "portal": {
-                    "min": "14px",
+                    "min": "16px",
                     "max": "16px"
                   }
                 }
               }
-            }
+            },
+            "$description": "h6, the smallest heading: body size, semibold, body leading. 16 / 24 on both surfaces (1.50). Distinguished from body-1 by weight (600 vs 400) and from title-2 by its element."
           },
           "lh": {
             "$type": "dimension",
-            "$value": "20px",
+            "$value": "24px",
             "$extensions": {
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "20px",
-                    "max": "20px"
+                    "min": "24px",
+                    "max": "24px"
                   },
                   "portal": {
-                    "min": "20px",
+                    "min": "24px",
                     "max": "24px"
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for headline-6. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1475,9 +1491,11 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for headline-6: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
-        }
+        },
+        "$description": "Headline — document structure, h1 to h6. SemiBold 600, never 700: bold at these sizes on Noto Sans closes the counters and 700 is reserved for inline emphasis and KPI numerals. Leading rises as size falls — 1.20 at headline-1 to 1.50 at headline-6 — so every headline sits inside DBIM §4's 1.2–1.5 band and a smaller heading is never set tighter than the larger one above it. The website ramp is one step above DBIM's 36/24/20 (deviation register T1) because a six-level outline needs the intermediate steps; the portal ramp is one step above DBIM's mobile ladder."
       },
       "title": {
         "1": {
@@ -1492,12 +1510,13 @@
                     "max": "22px"
                   },
                   "portal": {
-                    "min": "16px",
-                    "max": "20px"
+                    "min": "18px",
+                    "max": "22px"
                   }
                 }
               }
-            }
+            },
+            "$description": "Card, panel and dialog title. 18 → 22 / 24 → 28 on both surfaces (1.27). 22 sits between headline-4 (24) and headline-5 (20) on purpose: a title is not a heading level."
           },
           "lh": {
             "$type": "dimension",
@@ -1515,7 +1534,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for title-1. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1533,7 +1553,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for title-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "2": {
@@ -1548,12 +1569,13 @@
                     "max": "16px"
                   },
                   "portal": {
-                    "min": "15px",
-                    "max": "18px"
+                    "min": "16px",
+                    "max": "16px"
                   }
                 }
               }
-            }
+            },
+            "$description": "List-item title, small card title, table caption. 16 / 24 (1.50) — body-1's metrics at 600, so a title and its body align line for line."
           },
           "lh": {
             "$type": "dimension",
@@ -1566,12 +1588,13 @@
                     "max": "24px"
                   },
                   "portal": {
-                    "min": "20px",
+                    "min": "24px",
                     "max": "24px"
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for title-2. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1589,7 +1612,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for title-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "3": {
@@ -1605,11 +1629,12 @@
                   },
                   "portal": {
                     "min": "14px",
-                    "max": "16px"
+                    "max": "14px"
                   }
                 }
               }
-            }
+            },
+            "$description": "Dense table header, compact list title. 14 / 20 (1.43) — body-2's metrics at 600."
           },
           "lh": {
             "$type": "dimension",
@@ -1623,11 +1648,12 @@
                   },
                   "portal": {
                     "min": "20px",
-                    "max": "24px"
+                    "max": "20px"
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for title-3. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1645,9 +1671,11 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for title-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
-        }
+        },
+        "$description": "Title — the name of a thing: a card, a panel, a dialog, a table, a list item. SemiBold 600 since 2026-09-04 (was Medium): a title and the paragraph under it are now two weight steps apart, not one, so hierarchy does not rest on a single step. Identical on both surfaces — a card reads the same wherever it sits (the productive core is shared, as Carbon's productive type set is)."
       },
       "body": {
         "1": {
@@ -1662,12 +1690,13 @@
                     "max": "16px"
                   },
                   "portal": {
-                    "min": "14px",
+                    "min": "16px",
                     "max": "16px"
                   }
                 }
               }
-            }
+            },
+            "$description": "The reading size. 16 / 24 (1.50) everywhere, including phones: a citizen's paragraph is never smaller than the form field it explains."
           },
           "lh": {
             "$type": "dimension",
@@ -1680,12 +1709,13 @@
                     "max": "24px"
                   },
                   "portal": {
-                    "min": "20px",
+                    "min": "24px",
                     "max": "24px"
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for body-1. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1703,7 +1733,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for body-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "2": {
@@ -1718,12 +1749,13 @@
                     "max": "14px"
                   },
                   "portal": {
-                    "min": "13px",
+                    "min": "14px",
                     "max": "14px"
                   }
                 }
               }
-            }
+            },
+            "$description": "Secondary text, help text, table cells. 14 / 20 (1.43)."
           },
           "lh": {
             "$type": "dimension",
@@ -1741,7 +1773,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for body-2. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1759,7 +1792,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for body-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "3": {
@@ -1775,11 +1809,12 @@
                   },
                   "portal": {
                     "min": "12px",
-                    "max": "13px"
+                    "max": "12px"
                   }
                 }
               }
-            }
+            },
+            "$description": "Captions, timestamps, legal, footnotes. 12 / 16 (1.33). The floor: UX4G 3.0 §2 calls 12px the minimum usable size and nothing in SAMAVESH renders below it."
           },
           "lh": {
             "$type": "dimension",
@@ -1792,12 +1827,13 @@
                     "max": "16px"
                   },
                   "portal": {
-                    "min": "20px",
-                    "max": "20px"
+                    "min": "16px",
+                    "max": "16px"
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for body-3. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1815,9 +1851,11 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for body-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
-        }
+        },
+        "$description": "Body — running text. Regular 400, leading 1.5 at the reading size on both surfaces (WCAG 1.4.8 and DBIM §4 iii). Identical on the website and in portals since 2026-09-04: the old Portal ramp dropped paragraphs to 14px on phones while the inputs beside them held 16px, and carried a 13px stop the contract bans. Tracking 0: Noto Sans is drawn with the spacing body text needs. Each size has a SemiBold companion text style for emphasis — never Bold."
       },
       "label": {
         "1": {
@@ -1837,7 +1875,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Form labels, button text, tabs, navigation items. 14 / 20 (1.43) — the UX4G Label/L size, one step below body-1 so a label sits under the value it names."
           },
           "lh": {
             "$type": "dimension",
@@ -1855,7 +1894,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for label-1. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1873,7 +1913,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for label-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "2": {
@@ -1893,7 +1934,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Badges, chips, small controls. 12 / 16 (1.33). The floor size at Medium."
           },
           "lh": {
             "$type": "dimension",
@@ -1911,7 +1953,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for label-2. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1929,27 +1972,29 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for label-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "3": {
           "size": {
             "$type": "dimension",
-            "$value": "11px",
+            "$value": "12px",
             "$extensions": {
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "11px",
-                    "max": "11px"
+                    "min": "12px",
+                    "max": "12px"
                   },
                   "portal": {
-                    "min": "11px",
-                    "max": "11px"
+                    "min": "12px",
+                    "max": "12px"
                   }
                 }
               }
-            }
+            },
+            "$description": "The CAPS role — overlines and eyebrows of 1–3 words, always uppercase, always with type/caps/tracking (+0.06em). 12 / 16, Medium. Moved from 11px on 2026-09-04: the estate renders nothing below 12. Uppercase anywhere else is a defect the type gate reports."
           },
           "lh": {
             "$type": "dimension",
@@ -1967,7 +2012,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for label-3. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1985,77 +2031,82 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for label-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
-        }
+        },
+        "$description": "Label — controls, badges and captions that are scanned, not read. Medium 500: one step above body so a label reads as a label beside a value without shouting. Identical on both surfaces."
       }
     },
     "tracking": {
-      "$description": "Letter-spacing (Portal DS naming). Website tracking is 0; Portal display tiers use negative tracking that scales with the fluid size. mosje.type website/portal min+max (px).",
+      "$description": "Letter-spacing (Portal DS naming). Display tiers carry negative tracking on BOTH surfaces, derived from one em rule per rung (display-1/2 −0.015em, 3/4 −0.01em, 5 −0.005em, 6 zero) against each surface's own size bounds, so the two surfaces track alike per pixel of type. Heading, title, body and label are zero: Noto Sans is drawn with the spacing they need. `caps` is the one positive value, for the 12px uppercase label role. mosje.type website/portal min+max (px).",
       "display": {
         "1": {
           "$type": "dimension",
-          "$value": "0px",
+          "$value": "-1.2px",
           "$extensions": {
             "mosje": {
               "type": {
                 "website": {
-                  "min": "0px",
-                  "max": "0px"
+                  "min": "-0.6px",
+                  "max": "-1.2px"
                 },
                 "portal": {
-                  "min": "-0.8px",
-                  "max": "-1.12px"
+                  "min": "-0.6px",
+                  "max": "-0.84px"
                 }
               }
             }
-          }
+          },
+          "$description": "Display-1 letter-spacing, −0.015em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero."
         },
         "2": {
           "$type": "dimension",
-          "$value": "0px",
+          "$value": "-1.08px",
           "$extensions": {
             "mosje": {
               "type": {
                 "website": {
-                  "min": "0px",
-                  "max": "0px"
+                  "min": "-0.54px",
+                  "max": "-1.08px"
                 },
                 "portal": {
-                  "min": "-0.64px",
-                  "max": "-0.96px"
+                  "min": "-0.48px",
+                  "max": "-0.72px"
                 }
               }
             }
-          }
+          },
+          "$description": "Display-2 letter-spacing, −0.015em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero."
         },
         "3": {
           "$type": "dimension",
-          "$value": "0px",
+          "$value": "-0.64px",
           "$extensions": {
             "mosje": {
               "type": {
                 "website": {
-                  "min": "0px",
-                  "max": "0px"
+                  "min": "-0.32px",
+                  "max": "-0.64px"
                 },
                 "portal": {
-                  "min": "-0.42px",
-                  "max": "-0.6px"
+                  "min": "-0.28px",
+                  "max": "-0.4px"
                 }
               }
             }
-          }
+          },
+          "$description": "Display-3 letter-spacing, −0.01em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero."
         },
         "4": {
           "$type": "dimension",
-          "$value": "0px",
+          "$value": "-0.56px",
           "$extensions": {
             "mosje": {
               "type": {
                 "website": {
-                  "min": "0px",
-                  "max": "0px"
+                  "min": "-0.28px",
+                  "max": "-0.56px"
                 },
                 "portal": {
                   "min": "-0.24px",
@@ -2063,25 +2114,27 @@
                 }
               }
             }
-          }
+          },
+          "$description": "Display-4 letter-spacing, −0.01em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero."
         },
         "5": {
           "$type": "dimension",
-          "$value": "0px",
+          "$value": "-0.24px",
           "$extensions": {
             "mosje": {
               "type": {
                 "website": {
-                  "min": "0px",
-                  "max": "0px"
+                  "min": "-0.12px",
+                  "max": "-0.24px"
                 },
                 "portal": {
-                  "min": "-0.22px",
-                  "max": "-0.28px"
+                  "min": "-0.12px",
+                  "max": "-0.14px"
                 }
               }
             }
-          }
+          },
+          "$description": "Display-5 letter-spacing, −0.005em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero."
         },
         "6": {
           "$type": "dimension",
@@ -2099,7 +2152,8 @@
                 }
               }
             }
-          }
+          },
+          "$description": "Display-6 letter-spacing, 0 of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero."
         }
       },
       "heading": {
@@ -2118,7 +2172,8 @@
               }
             }
           }
-        }
+        },
+        "$description": "Headline tier tracking: zero. Noto Sans at 16–40px is drawn with the spacing a heading needs; negative tracking here closes counters and hurts Devanagari."
       },
       "title": {
         "$type": "dimension",
@@ -2136,7 +2191,8 @@
               }
             }
           }
-        }
+        },
+        "$description": "Title tier tracking: zero."
       },
       "body": {
         "$type": "dimension",
@@ -2154,7 +2210,8 @@
               }
             }
           }
-        }
+        },
+        "$description": "Body tracking: zero. Positive tracking on running text lowers reading speed; WCAG 1.4.12 requires the reader's own override to survive, which zero tracking makes trivial."
       },
       "label": {
         "$type": "dimension",
@@ -2172,73 +2229,216 @@
               }
             }
           }
+        },
+        "$description": "Label tracking: zero for mixed-case labels. Uppercase labels are the label-3 role and take type/caps/tracking instead."
+      },
+      "caps": {
+        "$type": "dimension",
+        "$value": "0.72px",
+        "$description": "Tracking for the CAPS label role (label-3, 12px, uppercase): +0.06em, which at 12px is 0.72px. The only positive tracking in the system; uppercase without it is a defect the type gate reports.",
+        "$extensions": {
+          "mosje": {
+            "type": {
+              "website": {
+                "min": "0.72px",
+                "max": "0.72px"
+              },
+              "portal": {
+                "min": "0.72px",
+                "max": "0.72px"
+              }
+            }
+          }
         }
       }
-    }
+    },
+    "$description": "Tier 1 typography: the families by script (latin, devanagari, display, mono, icon), the Devanagari leading offset, the 21 type roles (display · headline · title · body · label, each with size, line height and paragraph spacing, fluid between the website and portal surfaces) and the tracking per tier. Emitted as the Tier-2 --sa-type-* scale; bind a role's text style, never a raw step."
   },
   "shadow": {
-    "$description": "Elevation ramp. none→xl is a 6-level superset of UX4G 3.0's 5-level l0…l4, and keeps the SAMAVESH convention of tinting toward ink (rgba(31,36,40,·)) rather than UX4G's flat black — tinted shadows read as depth instead of dirt on a light gov surface. sm/md fill the gap that previously jumped xs→lg. The ink is GENERATED by build/brand-ramps.mjs from neutral/800 — the body ink these are tinted toward — so it cannot drift from it again. Geometry stays authored here; only the rgb is derived.",
+    "$description": "Tier 1 elevation ramp as DTCG composite shadows (an array of layers, each carrying color, offsetX, offsetY, blur and spread), so a layer can be read by the Figma effect-style writer and the docs without parsing CSS. none→xl is a 6-level superset of UX4G 3.0's 5-level l0…l4, tinted toward ink rather than UX4G's flat black — tinted shadows read as depth instead of dirt on a light government surface. The ink is GENERATED by build/brand-ramps.mjs from neutral/800 — the body ink these are tinted toward — so it cannot drift from it again. Geometry stays authored here; only the rgb is derived.",
     "$type": "shadow",
     "none": {
-      "$value": "none"
+      "$value": [],
+      "$description": "No effect. Bind it deliberately to reset an elevation something else applied. Colour is neutral/800 (the body ink) at the stated alpha, retinted by build/brand-ramps.mjs; geometry is authored here."
     },
     "xs": {
-      "$value": "0 2px 3px 1px rgba(30, 33, 36, 0.12)",
-      "$extensions": {
-        "mosje": {}
-      }
+      "$value": [
+        {
+          "color": "rgba(30, 33, 36, 0.12)",
+          "offsetX": "0px",
+          "offsetY": "2px",
+          "blur": "3px",
+          "spread": "1px"
+        }
+      ],
+      "$description": "One tight layer at 12% — a card resting on the page. Enough to separate, not enough to float. Colour is neutral/800 (the body ink) at the stated alpha, retinted by build/brand-ramps.mjs; geometry is authored here."
     },
     "sm": {
-      "$value": "0 4px 6px -1px rgba(30, 33, 36, 0.10), 0 2px 4px -2px rgba(30, 33, 36, 0.06)",
-      "$extensions": {
-        "mosje": {}
-      }
+      "$value": [
+        {
+          "color": "rgba(30, 33, 36, 0.10)",
+          "offsetX": "0px",
+          "offsetY": "4px",
+          "blur": "6px",
+          "spread": "-1px"
+        },
+        {
+          "color": "rgba(30, 33, 36, 0.06)",
+          "offsetX": "0px",
+          "offsetY": "2px",
+          "blur": "4px",
+          "spread": "-2px"
+        }
+      ],
+      "$description": "Two layers, 10% + 6% — a surface lifted on interaction. The second layer is the contact shadow that stops the lift reading as a cut-out. Colour is neutral/800 (the body ink) at the stated alpha, retinted by build/brand-ramps.mjs; geometry is authored here."
     },
     "md": {
-      "$value": "0 8px 12px -3px rgba(30, 33, 36, 0.09), 0 3px 5px -2px rgba(30, 33, 36, 0.05)",
-      "$extensions": {
-        "mosje": {}
-      }
+      "$value": [
+        {
+          "color": "rgba(30, 33, 36, 0.09)",
+          "offsetX": "0px",
+          "offsetY": "8px",
+          "blur": "12px",
+          "spread": "-3px"
+        },
+        {
+          "color": "rgba(30, 33, 36, 0.05)",
+          "offsetX": "0px",
+          "offsetY": "3px",
+          "blur": "5px",
+          "spread": "-2px"
+        }
+      ],
+      "$description": "Two layers, 9% + 5% — a menu or popover. Larger offset, lower alpha: higher surfaces cast softer, wider shadows. Colour is neutral/800 (the body ink) at the stated alpha, retinted by build/brand-ramps.mjs; geometry is authored here."
     },
     "lg": {
-      "$value": "0 12px 16px -4px rgba(30, 33, 36, 0.08), 0 4px 6px -2px rgba(30, 33, 36, 0.03)",
-      "$extensions": {
-        "mosje": {}
-      }
+      "$value": [
+        {
+          "color": "rgba(30, 33, 36, 0.08)",
+          "offsetX": "0px",
+          "offsetY": "12px",
+          "blur": "16px",
+          "spread": "-4px"
+        },
+        {
+          "color": "rgba(30, 33, 36, 0.03)",
+          "offsetX": "0px",
+          "offsetY": "4px",
+          "blur": "6px",
+          "spread": "-2px"
+        }
+      ],
+      "$description": "Two layers, 8% + 3% — a dialog. Softest per-layer alpha in the ramp; the scrim behind it does the suppressing. Colour is neutral/800 (the body ink) at the stated alpha, retinted by build/brand-ramps.mjs; geometry is authored here."
     },
     "xl": {
-      "$value": "0 24px 48px -12px rgba(30, 33, 36, 0.18)",
-      "$extensions": {
-        "mosje": {}
-      }
+      "$value": [
+        {
+          "color": "rgba(30, 33, 36, 0.18)",
+          "offsetX": "0px",
+          "offsetY": "24px",
+          "blur": "48px",
+          "spread": "-12px"
+        }
+      ],
+      "$description": "One wide layer at 18% — a toast. Heavier than lg on purpose: it arrives unannounced and has to be found without a scrim. Colour is neutral/800 (the body ink) at the stated alpha, retinted by build/brand-ramps.mjs; geometry is authored here."
+    },
+    "inset": {
+      "$value": [
+        {
+          "color": "rgba(30, 33, 36, 0.08)",
+          "offsetX": "0px",
+          "offsetY": "1px",
+          "blur": "2px",
+          "spread": "0px",
+          "inset": true
+        }
+      ],
+      "$description": "The one INSET shadow — a shallow well, 1px down and 2px of blur at 8% ink, drawn inside the surface. For a pressed well, an inset track, a field that reads as a recess. Retinted per brand like every other shadow layer."
     }
   },
   "motion": {
-    "$description": "Duration + easing primitives for transitions and animations.",
+    "$description": "Tier 1 motion primitives: a value-named duration ladder and five named easing curves. Value-named like space and radius, so a rung's name IS its value (Polaris names durations the same way). Nothing in app code binds these — bind a motion/<intent> pair, which carries the duration AND the easing that belongs to it.",
     "duration": {
-      "fast": {
+      "0": {
+        "$value": "0ms"
+      },
+      "50": {
+        "$value": "50ms"
+      },
+      "100": {
+        "$value": "100ms"
+      },
+      "150": {
         "$value": "150ms"
       },
-      "base": {
+      "200": {
+        "$value": "200ms"
+      },
+      "250": {
         "$value": "250ms"
       },
-      "slow": {
+      "300": {
+        "$value": "300ms"
+      },
+      "400": {
         "$value": "400ms"
-      }
+      },
+      "500": {
+        "$value": "500ms"
+      },
+      "700": {
+        "$value": "700ms"
+      },
+      "$type": "duration",
+      "$description": "Milliseconds. 0 is the reduced-motion floor and the instant intent; 50–150 is direct feedback (a press, a hover, a colour change) — the band Material 3 calls short; 200–300 is something arriving, leaving or resizing — medium; 400–500 is a deliberate, attention-carrying move — long; 700 is the ceiling, for a full-page or skeleton fade. Anything longer reads as lag on a government form."
     },
     "easing": {
-      "out": {
-        "$value": "cubic-bezier(0, 0, 0.2, 1)"
+      "$type": "cubicBezier",
+      "$description": "Named by BEHAVIOUR, following Material 3's vocabulary, so a designer and a developer say the same word: decelerate for things arriving, accelerate for things leaving, standard for a move the reader watches, emphasized for a surface the reader opened, linear for progress and spinners only. The curves are the same four the estate shipped since 2026-06 plus linear; only the names moved (out → decelerate, in → accelerate, inOut → standard, outStrong → emphasized).",
+      "linear": {
+        "$value": [
+          0,
+          0,
+          1,
+          1
+        ],
+        "$description": "Constant rate. Progress bars, spinners and anything that measures time. Never for an element that moves — a linear move reads as mechanical."
       },
-      "in": {
-        "$value": "cubic-bezier(0.4, 0, 1, 1)"
+      "accelerate": {
+        "$value": [
+          0.4,
+          0,
+          1,
+          1
+        ],
+        "$description": "Starts slow, leaves fast. Things LEAVING the screen: they get out of the way and the eye does not follow them out. Material 3 standard-accelerate."
       },
-      "inOut": {
-        "$value": "cubic-bezier(0.4, 0, 0.2, 1)"
+      "decelerate": {
+        "$value": [
+          0,
+          0,
+          0.2,
+          1
+        ],
+        "$description": "Arrives fast, settles gently. Things ENTERING the screen and any colour, border or shadow change on hover — the change is over before the reader looks for it. Material 3 standard-decelerate."
       },
-      "outStrong": {
-        "$value": "cubic-bezier(0.22, 1, 0.36, 1)",
-        "$description": "Exponential ease-out. The built-in decelerate curve is too weak to read as intentional on a large surface: it leaves the gate slowly, which is the exact moment the reader is watching. This leaves fast and settles, so a panel reads as arriving under its own momentum rather than being played back at a fixed rate. Use it for anything the reader opens."
+      "standard": {
+        "$value": [
+          0.4,
+          0,
+          0.2,
+          1
+        ],
+        "$description": "Eases at both ends. A move the reader is meant to watch — an element changing place or size on the same screen. Material 3 standard."
+      },
+      "emphasized": {
+        "$value": [
+          0.22,
+          1,
+          0.36,
+          1
+        ],
+        "$description": "Exponential ease-out. Most of the distance is covered in the first third, so a large surface reads as arriving under its own momentum rather than being played back at a fixed rate. For anything the reader opened — a drawer, a panel, a disclosure — and for press feedback."
       }
     }
   },
@@ -2260,7 +2460,9 @@
       },
       "xl": {
         "$value": "4px"
-      }
+      },
+      "$type": "dimension",
+      "$description": "Tier 1 stroke widths in px. The group carries its own $type because Style Dictionary merges this tree with the semantic `border` colour roles — the nearest ancestor wins, and a width must never inherit `color`."
     }
   },
   "opacity": {
@@ -2305,36 +2507,6 @@
     },
     "$description": "Opacity scale — thirteen steps, ONE ladder, derived from what the estate's translucent tokens use plus the two roles it will foreseeably need: 0 (transparent), 4 (hairline and faint lift on a dark surface), 8–48 in eights (the six wash and overlay tiers), 64 and 72 (disabled and secondary ink on a dark surface), 80 and 88 (pressed and hover fill of an inverse button), 100 (opaque). Rationalised 2026-09-04 from UX4G 3.0's fourteen steps plus ten estate one-offs: 5, 20, 25, 60, 75, 90 had zero consumers anywhere in the estate; 3, 10, 30, 45, 50, 70, 84, 92 each served one or two tokens and now sit on the ladder (3→4, 10→8, 30→32, 45→48, 50→48, 70→72, 84→80, 92→88). The UX4G parity stylesheet carries UX4G's own values as literals, so nothing UX4G publishes is lost; the divergence is recorded in docs/audit/2026-09-04-colour-system-audit-and-redesign.md §16. Consumers bind the Tier-2 `alpha/*` aliases, never this scale.",
     "$type": "number"
-  },
-  "z": {
-    "$description": "Named stacking order. UX4G 3.0's z-index ladder verbatim — these numbers are Bootstrap's, which UX4G inherited and which third-party CSS in the estate already assumes, so diverging would put our modals under someone else's.",
-    "$type": "number",
-    "dropdown": {
-      "$value": "1000"
-    },
-    "sticky": {
-      "$value": "1020"
-    },
-    "fixed": {
-      "$value": "1030"
-    },
-    "offcanvas": {
-      "$value": "1040"
-    },
-    "modal": {
-      "backdrop": {
-        "$value": "1050"
-      },
-      "base": {
-        "$value": "1060"
-      }
-    },
-    "popover": {
-      "$value": "1070"
-    },
-    "toast": {
-      "$value": "1090"
-    }
   },
   "size": {
     "8": {
@@ -2448,10 +2620,14 @@
     "$description": "Viewport anchors. These are not decoration: `clamp()` interpolates type between mobile and desktop, and Figma's Type modes sample the same curve at all three. The numbers were duplicated as literals in two build files until 2026-08-10 — this is now their one source.",
     "$type": "dimension",
     "mobile": {
-      "$value": "360px"
+      "$value": "360px",
+      "$description": "The narrowest width the estate designs for. Every page is built here first (mobile-first) and only gains columns above it.",
+      "$type": "dimension"
     },
     "tablet": {
-      "$value": "768px"
+      "$value": "768px",
+      "$description": "Where the page margin steps from 16 to 24 and two-column layouts become possible.",
+      "$type": "dimension"
     },
     "laptop": {
       "$value": "1024px",
@@ -2459,11 +2635,14 @@
       "$description": "The third anchor, and the one the ladder was missing. Between tablet (768) and desktop (1280) sat a 512px void with no token in it — which is where iPad landscape, 11-13\" laptops and every half-screen window on a 2K monitor live. Anything needing to change at 1024 had to hardcode it or round to one of the neighbours. Matches Tailwind's `lg`, so the token and the utility variant used across this estate finally agree. Viewport anchor. The ladder follows Material 3's window size classes, which are derived from measured device distribution rather than from one framework's grid: compact <600, medium 600-839, expanded 840-1199, large 1200-1599, extra-large >=1600. UX4G publishes the two content widths but no breakpoints at all, so there is nothing to diverge FROM here; where its guidance and interface quality met, quality won, per .claude/rules/standards-precedence.md. Recorded in docs/guidelines/README.md."
     },
     "desktop": {
-      "$value": "1280px"
+      "$value": "1280px",
+      "$description": "Where the sidebar and content sit side by side and the page cap of 1200 engages.",
+      "$type": "dimension"
     },
     "desktopXl": {
       "$value": "1440px",
-      "$description": "Where the content cap widens from `container/content` (1200) to `container/contentXl` (1320). 1768 -> 1600 -> 1440 over 2026-08-24, each step decided by measuring the page rather than by citing a ladder. 1768 was abandoned because a 1728-wide viewport carried 264px of margin each side against 1768's own 224px — margins NARROWING as the screen grew. 1600 (Material 3's extra-large window class) was then abandoned because it left the ladder's WEAKEST POINT sitting on its most common viewport: at 1536 — 1920 at 125% Windows scaling, the single most common desktop width — content held only 75% of the screen, worse than at 1280 (90%) and worse than at 1600 (78%). 1440 fixes the range that carries the most users: 1440 goes 80% -> 88%, 1512 76% -> 84%, 1536 75% -> 83%. Nothing at 1600 and above changes. THE FLOOR THAT WAS DROPPED, deliberately: earlier notes held that 1440 must stay on the 1200 cap because UX4G says '1200px desktop'. UX4G publishes no breakpoints at all, so it never fixed where desktop ends; and `.claude/rules/standards-precedence.md` puts interface quality above it, which is the whole point of that rule. Recorded as divergence #6 in docs/guidelines/README.md. It also makes the code agree with the Handoff, whose Home frame draws a 1320 container on a 1440 artboard — the frame was right and the note calling it wrong has been withdrawn. Not part of the type curve — `clamp()` still tops out at 1280, so this anchor resizes no glyph."
+      "$description": "Where the content cap widens from `container/content` (1200) to `container/contentXl` (1320). 1768 -> 1600 -> 1440 over 2026-08-24, each step decided by measuring the page rather than by citing a ladder. 1768 was abandoned because a 1728-wide viewport carried 264px of margin each side against 1768's own 224px — margins NARROWING as the screen grew. 1600 (Material 3's extra-large window class) was then abandoned because it left the ladder's WEAKEST POINT sitting on its most common viewport: at 1536 — 1920 at 125% Windows scaling, the single most common desktop width — content held only 75% of the screen, worse than at 1280 (90%) and worse than at 1600 (78%). 1440 fixes the range that carries the most users: 1440 goes 80% -> 88%, 1512 76% -> 84%, 1536 75% -> 83%. Nothing at 1600 and above changes. THE FLOOR THAT WAS DROPPED, deliberately: earlier notes held that 1440 must stay on the 1200 cap because UX4G says '1200px desktop'. UX4G publishes no breakpoints at all, so it never fixed where desktop ends; and `.claude/rules/standards-precedence.md` puts interface quality above it, which is the whole point of that rule. Recorded as divergence #6 in docs/guidelines/README.md. It also makes the code agree with the Handoff, whose Home frame draws a 1320 container on a 1440 artboard — the frame was right and the note calling it wrong has been withdrawn. Not part of the type curve — `clamp()` still tops out at 1280, so this anchor resizes no glyph.",
+      "$type": "dimension"
     },
     "desktopWide": {
       "$value": "1920px",

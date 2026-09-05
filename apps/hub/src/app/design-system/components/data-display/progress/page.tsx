@@ -55,7 +55,7 @@ export default function ProgressPage(): React.JSX.Element {
       name="Progress"
       status="Stable"
       summary="A labelled horizontal bar for one figure against a maximum. It keeps its row height in every state, which is what makes it the right mark inside a list where a gauge or a donut would not fit."
-      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      figma={{ node: "chartsChart" }}
       specimen={<ProgressSpecimen />}
       propsFrom="ProgressProps"
       a11y={A11Y}

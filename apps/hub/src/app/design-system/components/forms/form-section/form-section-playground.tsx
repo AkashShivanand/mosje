@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { FormSection, FormField, Input } from "@mosje/design-system";
+import { FormSection, FormField, Input, Checkbox } from "@mosje/design-system";
 
 export function FormSectionPlayground() {
   const [columns, setColumns] = React.useState<1 | 2 | 3>(2);
@@ -18,7 +18,7 @@ export function FormSectionPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
           <strong>Columns:</strong>
           <select 
             value={columns} 
@@ -31,14 +31,7 @@ export function FormSectionPlayground() {
           </select>
         </label>
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={hasDescription} 
-            onChange={(e) => setHasDescription(e.target.checked)} 
-          />
-          <strong>Include description</strong>
-        </label>
+        <Checkbox label="Include description" size="sm" checked={hasDescription} onCheckedChange={setHasDescription} />
       </div>
 
       <div style={{ width: "100%" }}>

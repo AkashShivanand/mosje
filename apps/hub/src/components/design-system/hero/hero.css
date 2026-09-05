@@ -85,8 +85,9 @@
   align-items: center;
   gap: var(--sa-stack-8);
   font-size: var(--sa-type-label-3-size);
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  line-height: var(--sa-type-label-3-lh);
+  font-weight: var(--sa-font-weight-semibold);
+  letter-spacing: var(--sa-type-caps-tracking);
   text-transform: uppercase;
   color: var(--sa-text-neutral-subtle);
   margin-bottom: var(--sa-stack-12);
@@ -106,10 +107,11 @@
 }
 
 .hero-wordmark {
-  font-size: clamp(2.75rem, 1.2rem + 5vw, 5rem);
-  font-weight: 800;
-  line-height: 0.92;
-  letter-spacing: -0.02em;
+  font-family: var(--sa-font-display);
+  font-size: var(--sa-type-display-1-size);
+  font-weight: var(--sa-font-weight-displayMedium);
+  line-height: var(--sa-type-display-1-lh);
+  letter-spacing: var(--sa-type-display-1-tracking);
   /* Solid token colour is the base, so the wordmark is legible even if the
      clipped gradient never paints. #4f46e5 (Tailwind indigo-600) used to be the
      second stop — an off-palette literal on the design system's own homepage,
@@ -139,9 +141,9 @@
 }
 
 .hero-devanagari {
-  font-size: clamp(1.5rem, 0.9rem + 2.4vw, 2.75rem);
-  font-weight: 600;
-  line-height: 1.1;
+  font-size: var(--sa-type-headline-1-size);
+  font-weight: var(--sa-font-weight-semibold);
+  line-height: var(--sa-type-headline-1-lh);
   color: var(--sa-text-neutral-base);
   opacity: 0.85;
   margin: 0;
@@ -152,7 +154,7 @@
   line-height: var(--sa-type-body-1-lh);
   color: var(--sa-text-neutral-subtle);
   margin-top: var(--sa-stack-16);
-  max-width: 38ch;
+  max-width: var(--sa-container-measure);
 }
 
 /* ── Component wall panel ── */
@@ -182,8 +184,9 @@
   gap: var(--sa-stack-8);
   padding: var(--sa-padding-4) var(--sa-padding-12) var(--sa-padding-4) var(--sa-padding-8);
   font-size: var(--sa-type-label-3-size);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  line-height: var(--sa-type-label-3-lh);
+  font-weight: var(--sa-font-weight-semibold);
+  letter-spacing: var(--sa-type-label-tracking);
   color: var(--sa-text-neutral-base);
   background: var(--sa-bg-neutral-base);
   border: 1px solid var(--sa-border-neutral-subtle);

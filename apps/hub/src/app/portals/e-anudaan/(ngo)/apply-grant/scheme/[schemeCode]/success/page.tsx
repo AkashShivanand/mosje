@@ -65,8 +65,8 @@ export default function ApplySuccessPage() {
         </div>
 
         <div className="space-y-2">
-          <h1 className="text-2xl font-bold text-status-success">Application Submitted Successfully!</h1>
-          <p className="mx-auto max-w-md text-sm text-ink-muted">
+          <h1 className="text-headline-1 text-status-success">Application Submitted Successfully!</h1>
+          <p className="mx-auto max-w-md text-body-2 text-ink-muted">
             Your application has been submitted to the Ministry for review. You will receive portal,
             email and SMS updates at every stage of the process.
           </p>
@@ -74,31 +74,31 @@ export default function ApplySuccessPage() {
 
         {reference && (
           <div className="space-y-3 rounded-lg border border-status-success/30 bg-status-success/5 p-5">
-            <p className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
+            <p className="text-label-3 uppercase text-ink-muted">
               Your reference number
             </p>
             <div className="flex flex-wrap items-center justify-center gap-2">
-              <code className="rounded-md border border-line bg-surface px-3 py-1.5 text-sm font-bold text-ink">
+              <code className="rounded-md border border-line bg-surface px-3 py-1.5 text-body-2 font-bold text-ink">
                 {reference}
               </code>
               <Button appearance="text" size="sm" onClick={copy} aria-label="Copy reference number">
                 <Icon name="content_copy" size={16} aria-hidden />
               </Button>
             </div>
-            <p className="text-xs text-ink-muted">
+            <p className="text-body-3 text-ink-muted">
               Please save this Reference Number for future reference.
             </p>
 
             <dl className="grid gap-4 border-t border-line pt-4 sm:grid-cols-2">
               <div>
-                <dt className="text-xs font-semibold uppercase tracking-wide text-ink-muted">Routed to</dt>
-                <dd className="mt-0.5 text-sm font-medium text-ink">Ministry — Programme Division</dd>
+                <dt className="text-label-3 uppercase text-ink-muted">Routed to</dt>
+                <dd className="mt-0.5 text-body-2 font-medium text-ink">Ministry — Programme Division</dd>
               </div>
               <div>
-                <dt className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
+                <dt className="text-label-3 uppercase text-ink-muted">
                   Estimated timeline
                 </dt>
-                <dd className="mt-0.5 text-sm font-medium text-ink">30 days (standard process)</dd>
+                <dd className="mt-0.5 text-body-2 font-medium text-ink">30 days (standard process)</dd>
               </div>
             </dl>
           </div>
@@ -106,7 +106,7 @@ export default function ApplySuccessPage() {
       </section>
 
       <section className="space-y-4 rounded-xl border-l-4 border-l-primary border border-line bg-surface p-6 shadow-xs">
-        <h2 className="text-base font-bold text-ink">What Happens Next?</h2>
+        <h2 className="text-title-2 text-ink">What Happens Next?</h2>
         <ul className="space-y-4">
           {NEXT_STEPS.map((s) => (
             <li key={s.title} className="flex gap-3">
@@ -114,8 +114,8 @@ export default function ApplySuccessPage() {
                 <Icon name={s.icon} size={20} className="text-primary" aria-hidden />
               </span>
               <div>
-                <p className="text-sm font-semibold text-ink">{s.title}</p>
-                <p className="mt-0.5 text-sm text-ink-muted">{s.body}</p>
+                <p className="text-body-2 font-semibold text-ink">{s.title}</p>
+                <p className="mt-0.5 text-body-2 text-ink-muted">{s.body}</p>
               </div>
             </li>
           ))}
@@ -135,7 +135,7 @@ export default function ApplySuccessPage() {
       </div>
 
       {!reference && (
-        <p className="text-center text-sm text-ink-muted">
+        <p className="text-center text-body-2 text-ink-muted">
           No submitted application found for this scheme.{" "}
           <button type="button" className="underline" onClick={() => router.push("/portals/e-anudaan/apply-grant")}>
             Start a new application

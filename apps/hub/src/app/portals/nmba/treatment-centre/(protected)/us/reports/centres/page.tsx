@@ -104,7 +104,7 @@ export default function USCentresReportPage() {
         <button
           type="button"
           onClick={() => setDrillDownCentre(r)}
-          className="rounded bg-navy/10 px-2.5 py-1 text-xs font-semibold text-navy hover:bg-navy/20"
+          className="rounded bg-navy/10 px-2.5 py-1 text-label-2 font-semibold text-navy hover:bg-navy/20"
         >
           View Roster
         </button>
@@ -144,14 +144,14 @@ export default function USCentresReportPage() {
           size="lg"
         >
           <div className="flex flex-col gap-4">
-            <p className="text-sm text-ink-muted">
+            <p className="text-body-2 text-ink-muted">
               Showing active beneficiaries/patients registered between <span className="font-semibold text-ink">{startDate}</span> and <span className="font-semibold text-ink">{endDate}</span>.
             </p>
 
             <div className="overflow-x-auto rounded-lg border border-line bg-white">
-              <table className="min-w-full text-sm">
+              <table className="min-w-full text-body-2">
                 <thead>
-                  <tr className="bg-surface-muted text-left text-xs font-semibold uppercase tracking-wide text-ink-muted border-b border-line">
+                  <tr className="bg-surface-muted text-left text-label-3 uppercase text-ink-muted border-b border-line">
                     <th className="px-4 py-2">S.No</th>
                     <th className="px-4 py-2">Reg. Number</th>
                     <th className="px-4 py-2">Patient Name</th>
@@ -172,7 +172,7 @@ export default function USCentresReportPage() {
                         <td className="px-4 py-2 text-ink font-medium">{row.name}</td>
                         <td className="px-4 py-2 text-ink-muted">{row.date}</td>
                         <td className="px-4 py-2">
-                          <span className={`inline-flex items-center rounded px-2 py-0.5 text-xs font-semibold ${
+                          <span className={`inline-flex items-center rounded px-2 py-0.5 text-label-2 font-semibold ${
                             row.status === "Completed" ? "bg-green-100 text-green-800" :
                             row.status === "In Progress" ? "bg-yellow-100 text-yellow-800" : "bg-gray-100 text-gray-800"
                           }`}>

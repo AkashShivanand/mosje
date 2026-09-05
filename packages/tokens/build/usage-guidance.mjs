@@ -178,7 +178,26 @@ function colourGuidance(slots, path) {
 }
 
 /** Non-colour groups and everything else that earns a sentence. */
+/** One sentence per motion INTENT — the "when would I reach for this" a designer needs. */
+const MOTION_INTENT = {
+  instant: "Use when a state must change with NO animation — a checkbox tick, a radio dot, anything that is true the moment it is set",
+  hover: "Use for a colour, border or shadow responding to the pointer — the commonest transition in the estate",
+  press: "Use for press feedback — a button's translate, an icon nudge, a card's lift",
+  focus: "Use on the focus ring so it appears the instant focus lands (WCAG 2.4.7); never fade a ring in",
+  enter: "Use for something ARRIVING — a menu, a toast, a panel's content",
+  exit: "Use for something LEAVING — faster than entering, because the reader has finished with it",
+  expand: "Use for a surface growing in place — an accordion, a drawer widening, a row revealing detail",
+  collapse: "Use for the same surface shrinking back",
+  emphasis: "Use for a deliberate, attention-carrying move — a count rolling up, a chart mark drawing in; reserve it",
+  reveal: "Use for a surface the reader DELIBERATELY OPENED — a side sheet, a disclosure panel, the SAMAVESH banner",
+  page: "Use for a whole view changing — a route, a wizard step, a skeleton giving way to content",
+  loading: "Use for indeterminate progress",
+  stagger: "Use for cascading a list in",
+};
+
 function groupGuidance(path) {
+  if (path[0] === "z") return Z_USE[path[1]] ? `${Z_USE[path[1]]} Code-only: write \`z-index: var(--sa-z-${path[1]})\`; never a literal, and never a value between two rungs.` : null;
+  if (path[0] === "alpha" && ALPHA_INTENT[path[1]]) return ALPHA_INTENT[path[1]];
   const [head, ...rest] = path;
   const key = rest.join("/");
 
@@ -215,12 +234,12 @@ function groupGuidance(path) {
     return rest[0] === "radius"
       ? "Use for the corner radius of an interactive control — buttons, inputs, selects. One radius keeps controls a family."
       : "Use for the border width of an interactive control.";
-  if (head === "motion" && ["enter", "exit", "emphasis", "reveal", "press"].includes(rest[0]))
-    return rest[0] === "enter" ? `Use for something ARRIVING — the ${rest[1]} half of the pair. Entering decelerates and may take its time.`
-      : rest[0] === "exit" ? `Use for something LEAVING — the ${rest[1]} half of the pair. Leaving accelerates and gets out of the way.`
-      : rest[0] === "reveal" ? `Use for a surface the reader DELIBERATELY OPENED — a drawer, a disclosure panel — the ${rest[1]} half of the pair. Slower than a plain enter because it is a large area and the reader is watching it, and on the strong curve so it decelerates into place rather than easing in at a constant rate.`
-      : rest[0] === "press" ? `Use for FEEDBACK — a press, a hover lift, an icon nudge — the ${rest[1]} half of the pair. Short on purpose: past about 200ms a press stops confirming the interface heard you and starts looking like a delay.`
-      : `Use for a deliberate, attention-carrying move — the ${rest[1]} half of the pair. Reserve it; everything cannot be emphasis.`;
+  if (head === "motion" && MOTION_INTENT[rest[0]]) {
+    const half = rest[1] === "duration" ? "duration" : rest[1] === "easing" ? "easing" : rest[1];
+    if (rest[0] === "stagger") return rest[1] === "step" ? "Use as the delay between neighbours when a list cascades in. Bind on transition-delay, multiplied by the item's index, and stop at stagger/max." : "Use as the number of items that cascade individually before the rest arrive together — so a long list never keeps the reader waiting.";
+    if (rest[0] === "loading") return rest[1] === "spin" ? "Use for one revolution of a spinner. Linear, and NOT collapsed under reduced motion — slow it instead; a spinner that stops reads as a frozen page." : rest[1] === "pulse" ? "Use for one breath of a skeleton shimmer. Exempt from reduced motion for the same reason as spin." : "Use as the easing of any indeterminate progress — linear, because it measures time.";
+    return `${MOTION_INTENT[rest[0]]} — the ${half} half of the pair. Bind both halves together; a duration without its easing is half a decision.`;
+  }
   if (head === "focus" && (rest[0] === "width" || rest[0] === "offset"))
     return `Use for the focus ring’s ${rest[0]}. The ring’s colour was tokenised long before its geometry, so this was hardcoded — WCAG 2.4.7 governs all three.`;
   if (head === "focus") return "Use for the focus indicator. WCAG 2.4.7 makes this non-optional — never suppress it, and never substitute a colour with less contrast.";
@@ -287,8 +306,10 @@ export function guidanceFor(path, tier, parse) {
   // them are where the choice belongs.
   if (path[0] === "color") {
     if (path[1] === "transparent") return `Use for a translucent ${path[2]} wash at ${path[3]}% — for overlays and hover states, not as a text colour.`;
-    return "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.";
+    return paletteStepGuidance(path);
   }
+
+  // (palette rungs are described by paletteStepGuidance below)
 
   // MARK colours. The sentence a designer needs here is a warning, not a "use when": the risk
   // is not picking the wrong step, it is painting interface furniture with a logo's colour —
@@ -366,6 +387,30 @@ const SHAPE_GUIDANCE = {
  * it — a designer reaching for it is almost always setting the opacity of a colour variable's
  * alias, which is the one place Figma lets a number variable drive a colour.
  */
+/** The two whole-element opacities that carry a MEANING rather than a number. */
+export const ALPHA_INTENT = {
+  disabled: "Use as a disabled control's whole-element opacity (48%). Prefer the opaque disabled ink for text alone; use this where a whole control dims. Bind as layer opacity; in CSS it is --sa-alpha-disabled.",
+  muted: "Use for an enabled but de-emphasised element (64%) — an inactive tab's icon, a secondary illustration. Bind as layer opacity; in CSS it is --sa-alpha-muted.",
+};
+/** The layering ladder, one sentence per rung. Code-only — see z/* in semantic.json. */
+export const Z_USE = {
+  base: "Use to reset a stacking context something else raised — in flow, z 0.",
+  raised: "Use for one step above siblings INSIDE the same component — a floating label, a selected tab. Local order, not a layer.",
+  dropdown: "Use for a menu, listbox or date grid opened from a control.",
+  sticky: "Use for a header, toolbar or table head that stays put while content scrolls under it.",
+  fixed: "Use for chrome pinned to the viewport — the masthead, a bottom bar.",
+  overlay: "Use for the scrim behind a modal or side sheet.",
+  modal: "Use for a dialog or side sheet that owns the screen.",
+  popover: "Use for a popover, combobox list or date picker opened from INSIDE a modal.",
+  toast: "Use for toasts and notifications — above modals, so a confirmation is readable while a dialog is open.",
+  tooltip: "Use for tooltips — above everything the reader can interact with.",
+  rail: "Use for the right-wall rail and its occupants.",
+  launcher: "Use for closed launchers in the bottom-right corner rail — under the statutory accessibility panel, deliberately.",
+  statutory: "The UX4G accessibility panel's own value. Never bind it to anything SAMAVESH draws; it exists so nothing is placed above it by accident.",
+  demo: "Use for demo scaffolding only — the DemoDock. Retire with the dock.",
+  top: "Use for the one layer above the dock — a panel the citizen deliberately summoned (the open chatbot).",
+};
+
 export const ALPHA_USE = {
   "0": "Fully transparent — the resting fill of an outlined button on a brand surface.",
   "4": "Hairline or the faintest lift on a dark surface: the code specimen's border and titlebar strip.",
@@ -382,6 +427,7 @@ export const ALPHA_USE = {
   "100": "Opaque — a sentinel so a binding can be switched off without unbinding.",
 };
 function alphaGuidance(step) {
+  if (ALPHA_INTENT[step]) return ALPHA_INTENT[step];
   const use = ALPHA_USE[step];
   if (!use) throw new Error(`alpha/${step} is not on the ladder — add its role to ALPHA_USE or do not add the step`);
   return `${use} Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/${step}); never type the percentage. In CSS it is --sa-alpha-${step}, and every translucent token already resolves as color-mix() over it.`;
@@ -395,12 +441,39 @@ export function primitivePointer(path) {
   if (head === "font") return fontPointer(path);
   if (head === "radius") return `${path[1] === "full" ? "Fully-rounded sentinel" : path[1] + "px raw radius step, value-named"}. TIER 1 — hidden from publishing and banned in app code. Bind \`shape/${path[1]}\` instead, which resolves here.`;
   if (head === "opacity") return `Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind \`alpha/${path[1]}\` instead, which resolves here.`;
-  if (head === "motion" || head === "blur") return `Raw ${head} step.`;
+  if (head === "motion") return path[1] === "duration"
+    ? `${path[2]}ms raw duration step, value-named. TIER 1 — bind a motion/<intent> pair instead; the intent carries the easing that belongs to this duration.`
+    : `The ${path[2]} easing curve. TIER 1 — bind a motion/<intent> pair instead, which pairs it with its duration.`;
+  if (head === "blur") return "Raw blur step. TIER 1 — bind blur/subtle…strong instead.";
   // `border` was the one primitive group with no pointer, so all five ref/border/width/*
   // shipped to Figma with an EMPTY description — the only variables in the library that had
   // none. A missing case here is silent: guidanceFor returns null and the exporter writes "".
   if (head === "border") return "Raw border-width step. Prefer `control/border/width`, which says what the edge is for and follows the control, rather than binding a raw width.";
   if (head === "z") return "Stacking order. Code-only — Figma has no canvas property for z-index.";
-  if (head === "breakpoint") return "Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.";
+  if (head === "breakpoint") return `Viewport anchor: the ${path[1]} width at which the layout changes. A media query cannot read a variable, so nothing binds this — the Viewport collection's modes carry what it SELECTS (container/page, grid/margin/page). Documented on /design-system/foundations/breakpoints.`;
   return null;
+}
+
+/**
+ * A palette rung's sentence names the RUNG, not just the ramp. Ninety rungs used to share one
+ * sentence, which told a designer nothing about which of eleven steps they were holding.
+ * The bands follow how the semantic layer actually binds the ramp: the light tints carry
+ * subtle surfaces, the middle carries borders and icons, 500–600 is the key fill, and the
+ * dark end is ink on light surfaces. Palette is hidden from publishing; the sentence still
+ * matters, because this library's own components bind rungs directly.
+ */
+export function paletteStepGuidance(path) {
+  const scale = String(path[1] ?? "").replace(/Scale$/, "");
+  const step = Number(path[2]);
+  const family = scale === "neutral" ? "the neutral (ink and surface) ramp" : `the ${scale} ramp`;
+  let band;
+  if (!Number.isFinite(step)) band = "";
+  else if (step === 0) band = "white — the page surface and the ink on bold fills.";
+  else if (step <= 100) band = "a tint for subtle surfaces (`bg/*/subtler`, `bg/*/subtle`) and washes.";
+  else if (step <= 300) band = "a light border, divider or disabled fill rung (`border/*/subtle`, `bg/*/disabled`).";
+  else if (step <= 400) band = "the icon and secondary-border rung on light surfaces.";
+  else if (step <= 600) band = "the key fill — `bg/*/bold` buttons and their hover; white text passes AA on 600.";
+  else if (step <= 800) band = "text and icon ink on light surfaces (`text/*/base`, `text/*/bolder`), and the pressed fill.";
+  else band = "the deepest ink and inverse surfaces (`bg/neutral/inverse`, tooltip grounds).";
+  return `Step ${path[2]} of ${family}: ${band} Bind a semantic role where one exists — it carries the measured contrast; reach for the rung only inside this library's own components.`;
 }

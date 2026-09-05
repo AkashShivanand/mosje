@@ -46,13 +46,13 @@ export function UserMenu({
         onClick={() => setOpen((o) => !o)}
         className="flex items-center gap-2.5 rounded-lg px-1 py-1 hover:bg-black/5"
       >
-        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-navy-100 text-sm font-bold text-navy">
+        <span className="flex h-10 w-10 items-center justify-center rounded-full bg-navy-100 text-title-3 text-navy">
           {initials}
         </span>
-        <span className="hidden text-left leading-tight sm:block">
-          <span className="block text-sm font-semibold text-ink">{user.name}</span>
+        <span className="hidden text-left sm:block">
+          <span className="block text-title-3 text-ink">{user.name}</span>
           {(user.role || user.email) && (
-            <span className="block text-xs text-ink-muted">{user.role ?? user.email}</span>
+            <span className="block text-body-3 text-ink-muted">{user.role ?? user.email}</span>
           )}
         </span>
       </button>
@@ -65,7 +65,7 @@ export function UserMenu({
           {showProfile && (
             <Link
               href="/portals/scw/admin/profile"
-              className="flex items-center gap-2 px-4 py-2.5 text-sm text-ink-muted hover:bg-black/5"
+              className="flex items-center gap-2 px-4 py-2.5 text-label-1 text-ink-muted hover:bg-black/5"
             >
               <Icon name="settings" size={16} />
               Profile Settings
@@ -73,7 +73,7 @@ export function UserMenu({
           )}
           <Link
             href="/portals/scw/login"
-            className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50"
+            className="flex items-center gap-2 px-4 py-2.5 text-label-1 text-red-600 hover:bg-red-50"
           >
             <Icon name="logout" size={16} />
             Logout

@@ -49,13 +49,13 @@
      * Local prefix, not `--ds-`: that namespace is a deprecated GLOBAL alias
      * and a component-local variable must not sit inside it.
      */
-    --metric-card-value-line: 32px;
+    --metric-card-value-line: var(--sa-type-headline-3-lh);
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-4);
     padding: var(--sa-padding-20);
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-cmp-card-radius);
     box-shadow: var(--sa-elevation-raised);
   }
@@ -75,18 +75,19 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-subtle);
   }
 
   .ds-metric-card__value {
     margin-top: var(--sa-padding-4);
     font-family: var(--sa-font-latin);
-    font-size: 24px;
+    font-size: var(--sa-type-headline-3-size);
     line-height: var(--metric-card-value-line);
-    font-weight: 700;
+    /* 700, not 600: the figure is a KPI numeral, not a heading. */
+    font-weight: var(--sa-font-weight-bold);
+    font-variant-numeric: tabular-nums;
     color: var(--sa-text-neutral-bolder);
-    letter-spacing: -0.01em;
   }
 
   .ds-metric-card__icon {
@@ -119,7 +120,7 @@
      */
     line-height: var(--sa-type-body-2-lh);
     min-height: var(--metric-card-value-line);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     letter-spacing: normal;
     color: var(--sa-text-neutral-subtle);
   }
@@ -154,8 +155,8 @@
 
   /* ── Size variants ── */
   .ds-metric-card--sm .ds-metric-card__value {
-    font-size: 20px;
-    line-height: 28px;
+    font-size: var(--sa-type-headline-4-size);
+    line-height: var(--sa-type-headline-4-lh);
   }
 
   .ds-metric-card--sm .ds-metric-card__icon {
@@ -170,9 +171,9 @@
     gap: var(--sa-stack-4);
     margin-top: var(--sa-padding-8);
     font-family: var(--sa-font-latin);
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-metric-card__change--up   { color: var(--sa-text-status-success-base); }
@@ -186,16 +187,92 @@
     gap: var(--sa-stack-4);
     padding: var(--sa-padding-2) var(--sa-padding-8);
     border-radius: var(--sa-shape-full);
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 16px;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
   }
   .ds-metric-card__pill--up   { background-color: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
   .ds-metric-card__pill--down { background-color: var(--sa-bg-status-error-base);  color: var(--sa-text-status-error-base); }
   .ds-metric-card__suffix {
     margin-left: var(--sa-padding-8);
-    font-size: 12px;
-    font-weight: 500;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── The second reading under the figure ── */
+  .ds-metric-card__detail {
+    margin-top: var(--sa-padding-4);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Top-right: status chip, sparkline, icon — in that order ── */
+  .ds-metric-card__side {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    flex: 0 0 auto;
+  }
+  .ds-metric-card__aside {
+    display: flex;
+    align-items: center;
+    max-width: 96px;
+  }
+  .ds-metric-card__status {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--sa-padding-2) var(--sa-padding-8);
+    border-radius: var(--sa-shape-full);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    /* label-3 is the 12px uppercase overline role — the same treatment the Figma
+       master's Label/label-3 style carries, so the chip reads identically. */
+    text-transform: uppercase;
+    letter-spacing: var(--sa-type-caps-tracking);
+    white-space: nowrap;
+    background-color: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-neutral-base);
+  }
+  .ds-metric-card__status--info    { background-color: var(--sa-bg-status-info-subtler);    color: var(--sa-text-status-info-base); }
+  .ds-metric-card__status--success { background-color: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
+  .ds-metric-card__status--warning { background-color: var(--sa-bg-status-warning-subtler); color: var(--sa-text-status-warning-base); }
+  .ds-metric-card__status--danger  { background-color: var(--sa-bg-status-error-subtler);   color: var(--sa-text-status-error-base); }
+
+  /* ── Toned tile: border, label and figure take the status ink; the ground
+        stays a tint, never a fill, so the figure keeps its contrast. ── */
+  .ds-metric-card--tone-info    { border-color: var(--sa-border-status-info-base);    background-color: var(--sa-bg-status-info-subtler); }
+  .ds-metric-card--tone-success { border-color: var(--sa-border-status-success-base); background-color: var(--sa-bg-status-success-subtler); }
+  .ds-metric-card--tone-warning { border-color: var(--sa-border-status-warning-base); background-color: var(--sa-bg-status-warning-subtler); }
+  .ds-metric-card--tone-danger  { border-color: var(--sa-border-status-error-base);   background-color: var(--sa-bg-status-error-subtler); }
+  .ds-metric-card--tone-info .ds-metric-card__label,
+  .ds-metric-card--tone-info .ds-metric-card__value    { color: var(--sa-text-status-info-bolder); }
+  .ds-metric-card--tone-success .ds-metric-card__label,
+  .ds-metric-card--tone-success .ds-metric-card__value { color: var(--sa-text-status-success-bolder); }
+  .ds-metric-card--tone-warning .ds-metric-card__label,
+  .ds-metric-card--tone-warning .ds-metric-card__value { color: var(--sa-text-status-warning-bolder); }
+  .ds-metric-card--tone-danger .ds-metric-card__label,
+  .ds-metric-card--tone-danger .ds-metric-card__value  { color: var(--sa-text-status-error-bolder); }
+
+  /* ── The figure against its target ── */
+  .ds-metric-card__progress {
+    margin-top: var(--sa-padding-12);
+  }
+  .ds-metric-card__provenance {
+    margin-top: var(--sa-padding-8);
+  }
+
+  @media print {
+    .ds-metric-card {
+      box-shadow: none;
+      break-inside: avoid;
+    }
+    .ds-metric-card__value--loading { animation: none; }
   }
 }

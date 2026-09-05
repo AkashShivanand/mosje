@@ -1,0 +1,112 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css — see design-system-architecture.md §2a. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     SAMAVESH — Radio circle. The shared root, text, hit area and states are in
+     selection-control.css; this file draws only the circle and its dot.
+     ============================================================================ */
+  .ds-radio__circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--_box);
+    block-size: var(--_box);
+    border: var(--sa-control-selection-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    transition:
+      border-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+      background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
+
+  .ds-radio__dot {
+    inline-size: var(--_dot);
+    block-size: var(--_dot);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-brand-primary-bolder);
+    transform: scale(0);
+    transition: transform var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+  }
+
+  /* hover */
+  .ds-selection__input:hover:not(:disabled, [aria-readonly="true"]) ~ .ds-selection__visual .ds-radio__circle {
+    border-color: var(--sa-border-brand-primary-base);
+  }
+
+  /* active */
+  .ds-selection__input:active:not(:disabled, [aria-readonly="true"]) ~ .ds-selection__visual .ds-radio__circle {
+    border-color: var(--sa-border-brand-primary-base);
+    background-color: var(--sa-bg-brand-primary-subtler);
+  }
+
+  /* checked */
+  .ds-selection__input:checked ~ .ds-selection__visual .ds-radio__circle {
+    border-color: var(--sa-border-brand-primary-base);
+  }
+
+  .ds-selection__input:checked ~ .ds-selection__visual .ds-radio__dot {
+    transform: scale(1);
+  }
+
+  /* invalid */
+  .ds-radio[data-invalid] .ds-radio__circle {
+    border-color: var(--sa-border-status-error-bolder);
+  }
+
+  .ds-radio[data-invalid] .ds-radio__dot {
+    background-color: var(--sa-bg-status-error-bolder);
+  }
+
+  /* read-only */
+  .ds-radio[data-readonly] .ds-radio__circle {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  /* disabled — tokened, not an opacity */
+  .ds-radio[data-disabled] .ds-radio__circle {
+    background-color: var(--sa-bg-neutral-subtle);
+    border-color: var(--sa-border-neutral-subtle);
+  }
+
+  .ds-radio[data-disabled] .ds-radio__dot {
+    background-color: var(--sa-text-neutral-disabled);
+  }
+}
+
+@layer components {
+  @media (forced-colors: active) {
+    .ds-radio__circle {
+      border-color: ButtonText;
+      background-color: Canvas;
+    }
+
+    .ds-selection__input:checked ~ .ds-selection__visual .ds-radio__circle {
+      border-color: Highlight;
+    }
+
+    .ds-radio__dot {
+      background-color: Highlight;
+    }
+
+    .ds-radio[data-disabled] .ds-radio__circle {
+      border-color: GrayText;
+    }
+
+    .ds-radio[data-disabled] .ds-radio__dot {
+      background-color: GrayText;
+    }
+
+    /* See checkbox.css: the error colour has no forced-colours equivalent, so the circle keeps
+       the system edge and the group's error text carries the state. */
+    .ds-radio[data-invalid] .ds-radio__circle {
+      border-color: ButtonText;
+    }
+
+    .ds-radio[data-invalid] .ds-radio__dot {
+      background-color: Highlight;
+    }
+  }
+}

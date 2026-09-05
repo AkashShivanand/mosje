@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Alert, Button, FormField, Icon, Input, Radio, Select, Textarea, type SelectOption, type StepperStep } from "@mosje/design-system";
+import { Alert, Button, FormField, Icon, Input, RadioGroup, Select, Textarea, type SelectOption, type StepperStep } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { FormSection, FormCard } from "@/components/nmba/treatment-centre/tc-form";
@@ -342,8 +342,8 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
       noValidate
     >
       <div>
-        <h1 className="text-xl font-bold text-ink">Outreach Patient Registration</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">Outreach Patient Registration</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           Fields marked <span aria-hidden="true">*</span>
           <span className="sr-only">with an asterisk</span> are required.
         </p>
@@ -418,8 +418,8 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
                 {drugRows.map((row, i) => (
                   <li key={row._key} className="rounded-xl border border-line bg-surface-muted/50 p-4 sm:p-5">
                     <div className="mb-4 flex items-center justify-between gap-2">
-                      <span className="inline-flex items-center gap-2 text-sm font-semibold text-navy">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-xs font-bold text-navy" aria-hidden="true">{i + 1}</span>
+                      <span className="inline-flex items-center gap-2 text-title-3 text-navy">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-label-2 font-bold text-navy" aria-hidden="true">{i + 1}</span>
                         Substance {i + 1}
                       </span>
                       {drugRows.length > 1 && (
@@ -427,7 +427,7 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
                           type="button"
                           onClick={() => setDrugRows((prev) => prev.filter((_, idx) => idx !== i))}
                           aria-label={`Remove substance ${i + 1}`}
-                          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
+                          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-label-2 font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
                         >
                           <Icon name="delete" size={14} aria-hidden /> Remove
                         </button>
@@ -443,24 +443,26 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
                       <FormField label="Duration of Regular Use (months)" required error={errors.has(`row${i}.duration`) ? "Required." : undefined}>
                         {(c) => <Input {...c} type="number" min={0} value={row.durationMonths} onChange={(e) => updateDrugRow(i, { durationMonths: e.target.value })} placeholder="Months" />}
                       </FormField>
-                      <fieldset className="m-0 flex flex-col gap-1.5 border-0 p-0">
-                        <legend className="p-0 text-sm font-medium text-ink">Use in Last 3 Month <span className="ds-field__required" aria-hidden="true">*</span></legend>
-                        <div className="flex gap-4 pt-1.5">
-                          {YES_NO.map((o) => (
-                            <Radio key={o.value} name={`used3m-${row._key}`} value={o.value} checked={row.usedLast3Months === o.value} onChange={() => updateDrugRow(i, { usedLast3Months: o.value as "Yes" | "No" })} label={o.label} />
-                          ))}
-                        </div>
-                        {errors.has(`row${i}.use3m`) && <p className="text-xs font-medium text-danger-fg">Required.</p>}
-                      </fieldset>
-                      <fieldset className="m-0 flex flex-col gap-1.5 border-0 p-0">
-                        <legend className="p-0 text-sm font-medium text-ink">Daily / Near Daily Use <span className="ds-field__required" aria-hidden="true">*</span></legend>
-                        <div className="flex gap-4 pt-1.5">
-                          {YES_NO.map((o) => (
-                            <Radio key={o.value} name={`daily-${row._key}`} value={o.value} checked={row.dailyUse === o.value} onChange={() => updateDrugRow(i, { dailyUse: o.value as "Yes" | "No" })} label={o.label} />
-                          ))}
-                        </div>
-                        {errors.has(`row${i}.daily`) && <p className="text-xs font-medium text-danger-fg">Required.</p>}
-                      </fieldset>
+                      <RadioGroup
+                        legend="Use in Last 3 Month"
+                        name={`used3m-${row._key}`}
+                        required
+                        orientation="horizontal"
+                        options={YES_NO}
+                        value={row.usedLast3Months || undefined}
+                        onChange={(v) => updateDrugRow(i, { usedLast3Months: v as "Yes" | "No" })}
+                        error={errors.has(`row${i}.use3m`) ? "Select Yes or No." : undefined}
+                      />
+                      <RadioGroup
+                        legend="Daily / Near Daily Use"
+                        name={`daily-${row._key}`}
+                        required
+                        orientation="horizontal"
+                        options={YES_NO}
+                        value={row.dailyUse || undefined}
+                        onChange={(v) => updateDrugRow(i, { dailyUse: v as "Yes" | "No" })}
+                        error={errors.has(`row${i}.daily`) ? "Select Yes or No." : undefined}
+                      />
                     </div>
                   </li>
                 ))}
@@ -517,27 +519,16 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
         {/* ── Step 2: Brief Intervention & Referral ───────────────────────── */}
         {step === 2 && (
           <FormSection title="Brief Intervention & Referral" columns={1}>
-            <div className="flex flex-col gap-1.5">
-              <span className="text-sm font-medium text-ink">
-                Was any Brief Intervention Given? <span className="ds-field__required" aria-hidden="true">*</span>
-              </span>
-              <fieldset className="m-0 border-0 p-0">
-                <legend className="sr-only">Was any Brief Intervention Given?</legend>
-                <div className="flex gap-4 pt-1.5">
-                  {YES_NO.map((o) => (
-                    <Radio
-                      key={o.value}
-                      name="briefInterventionGiven"
-                      value={o.value}
-                      checked={f.briefInterventionGiven === o.value}
-                      onChange={() => set("briefInterventionGiven")(o.value)}
-                      label={o.label}
-                    />
-                  ))}
-                </div>
-              </fieldset>
-              {errors.has("briefInterventionGiven") && <p className="text-xs font-medium text-danger-fg">This field is required.</p>}
-            </div>
+            <RadioGroup
+              legend="Was any Brief Intervention Given?"
+              name="briefInterventionGiven"
+              required
+              orientation="horizontal"
+              options={YES_NO}
+              value={f.briefInterventionGiven || undefined}
+              onChange={(v) => set("briefInterventionGiven")(v)}
+              error={errors.has("briefInterventionGiven") ? "Select Yes or No." : undefined}
+            />
 
             {f.briefInterventionGiven === "Yes" && (
               <FormField label="Brief Intervention Details" required error={err("briefInterventionDetails")}>
@@ -560,7 +551,7 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
         {step === 3 && (
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-3">
-              <p className="text-sm text-ink-muted">
+              <p className="text-body-2 text-ink-muted">
                 Review the details below, then submit. Use the quick links or{" "}
                 <span className="font-semibold text-ink">Back</span> to make changes.
               </p>
@@ -574,7 +565,7 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
                     key={j.to}
                     type="button"
                     onClick={() => jumpTo(j.to)}
-                    className="inline-flex items-center gap-1 rounded-lg border border-line bg-white px-3 py-1.5 text-xs font-semibold text-navy hover:bg-black/5"
+                    className="inline-flex items-center gap-1 rounded-lg border border-line bg-white px-3 py-1.5 text-label-2 font-semibold text-navy hover:bg-black/5"
                   >
                     <Icon name="edit" size={12} aria-hidden /> {j.label}
                   </button>

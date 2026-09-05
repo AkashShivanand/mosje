@@ -12,6 +12,91 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-05 · System version: v0.55.0 (EVERY PORTAL RAIL NAMES ITS PORTAL. All
+  shells pass SidebarNav an identity — name, the department's full name, the registry mark, the
+  portal's home — as the Figma master defaults to; the rail's own collapse control is off wherever
+  the masthead toggles it; check:sidebar-adoption requires the identity. The rail pins itself under the masthead at --sa-header-stuck and carries no ground of its own, as the handoff draws it.)
+
+  Last reviewed: 2026-09-05 · System version: v0.54.0 (THE FOLLOW-UPS THE AUDIT LEFT OPEN
+  ARE CLOSED — the withheld-figure contract reaches line, pie, donut and heatmap; the Figma
+  Metric Card gains Size and an Icon swap, Chart Card its Restricted and Offline states, Map
+  of India its Bubble and Point kinds with bound state fills, a documentation frame and a
+  record; Legend and Tooltip have Code Connect templates; the UX4G Chart.js set is deleted
+  (zero instances in the library or the handoff file). See the changelog.) v0.53.0 (THE PORTAL DASHBOARDS DRAW FOUR
+  THINGS THE CHART LAYER DID NOT HAVE — read across sixteen handoff screens on ten portal
+  pages: a ranked bar list (now `RankedBarList` + `InlineBar`), a metric against its
+  target and with its status (`MetricCard` gains `progress`, `status`, `tone`, `detail`,
+  `aside`, `provenance`; `Progress` gains `target` and `tone`), a highlighted current
+  period and a reference line on `BarChart`, and provenance that travels with the data
+  (`DataProvenance`, `ProvenanceLine`). The spec's withheld-figure contract is built —
+  `ChartWithheld` on datum and series, hatched, spoken, excluded from totals — and its
+  accessibility contract is now a keyboard model: one Tab stop per chart, arrows between
+  marks, Escape closes the tooltip, and a print stylesheet on every chart. In Figma the
+  Charts & Graphs page is rebuilt in the house style with bound masters and a component
+  record; the UX4G Chart.js import is renamed legacy. See the changelog.)
+
+  Last reviewed: 2026-09-05 · System version: v0.52.0 (EVERY PORTAL RAIL IS SidebarNav. Six
+  shells that drew their own rail — NMBA admin, public and treatment centre, Eutthan, PM-AJAY,
+  SMILE's mobile drawer — render the design system's, from the nav data they already had; a
+  group may now have no page of its own (href optional when it has children); the docs site's
+  own left nav is DocsNav, not a second SidebarNav; check:sidebar-adoption keeps it so.)
+
+  Last reviewed: 2026-09-05 · System version: v0.51.0 (THE SIDEBAR IS ONE COMPONENT AGAIN AND GOES THREE
+  LEVELS DEEP. The SAMAVESH Sidebar sets were rebuilt in place — same keys — with Focused, Disabled,
+  a collapsed-group flyout, a visible collapse control, group labels, a footer slot, and level 3;
+  active ink is bolder (7.75:1 Blue / 15.15:1 Navy), hover is neutral, the Portal DS copies are deprecated, and
+  SidebarNav renders the same three levels with a real flyout — see the changelog.)
+
+  Last reviewed: 2026-09-05 · System version: v0.50.0 (THE FOUNDATION GAPS WERE CLOSED. A
+  five-field audit of the live Figma library found the value checksums equal while description,
+  codeSyntax, scopes and hiddenFromPublishing had drifted on hundreds of variables; the exporter
+  now hides by LIBRARY-name tier (ref/* and all of Palette), Palette carries five explicit colour
+  scopes, the weight rows are STRING, an alias-through-alpha no longer flattens, and the parity
+  record hashes all five fields — the Plugin API's own HTML-entity encoding of descriptions is
+  decoded before comparing. Thirty-two tokens the benchmark systems carry were added with a
+  consumer each: neutral state fills and layers, the selected border, the two-tone focus ring,
+  control heights, aspect ratios, icon fill, avatar sizes, chip/dialog/tooltip radii and the
+  inset elevation. 594 literal font-weights bind the weight tokens. Figma: one focus/ring style
+  (per-tone rings and legacy Shadows/* retired after an 83-page scan), eight token-bound grid
+  styles, four new Component record frames, the Motion and Effects frames rewritten to the
+  shipped vocabulary. Two ratchets: check:breakpoints and check:token-consumers.)
+
+  Last reviewed: 2026-09-04 · System version: v0.49.0 (THE FOUNDATIONS WERE REBUILT TO A
+  BENCHMARK SHAPE. Motion is twelve intents on a value-named ten-step ladder with five
+  behaviour-named curves, and reduced motion is emitted ONCE at the token layer; layering is a
+  fifteen-rung z ladder authored in Tier 2 and code-only (the Bootstrap primitive ladder nothing
+  consumed is gone); opacity gained the two intents the DS actually uses (disabled, muted);
+  shadows are DTCG composites; every semantic group carries a $type and a description; the
+  stroke, z and motion tokens were bound across 60 DS stylesheets (126 edges, 21 layers, 145
+  transitions). Documentation: one template — FoundationDocPage — for all 19 foundation pages,
+  eight of them new (Brand, Breakpoints, Sizing, Stroke, Layering, Opacity, Interaction States,
+  Content & Localisation), every table generated, a gate (check:foundations) with no baseline.
+  Figma: every variable carries name, description, narrowest scopes, codeSyntax and
+  hiddenFromPublishing per .claude/rules/figma-variables-standard.md.)
+
+  Last reviewed: 2026-09-04 · System version: v0.48.0 (THREE TYPE SCALES WERE IN PRODUCTION —
+  the token scale, a static px scale in globals.css and stock Tailwind, invisible to the gate;
+  the scale is re-cut, Tailwind is bound to the 21 roles and nothing else, Heading and Text
+  are the primitives, nothing renders below 12px, and the deviations from DBIM/UX4G are
+  recorded — see the changelog.) v0.41.0 (TYPOGRAPHY WAS THE LAST TOKEN
+  FAMILY WITH NO GATE, AND IT COST 562 LITERAL FONT SIZES — 224 of them off the 15-step
+  ramp, 13px alone 71 times, plus 100 raw letter-spacings against 10 tracking tokens, a
+  second hand-maintained type scale in globals.css, and a component shipping
+  `var(--sa-type-body-4-size)`, a token that has never existed and that CSS drops in
+  silence. `npm run check:type-linkage` is a per-file ratchet over size, leading
+  (including UNITLESS ratios, which no px-grep can see), tracking and family; new debt
+  fails the build and debt that shrinks without a re-baseline fails too, so the backlog
+  only goes down. It shares one parser with ds-linkage via tools/ds-linkage/regions.mjs
+  rather than growing a second copy. Alongside: ds-linkage went from 6 scopes to all 23
+  and the estate was cleared 867 → 0, on 693 token bindings and 76 role-named palette
+  entries, with each portal's own palette declared under a new `portal-palette`
+  exemption and registered as divergence 9. Two precision bugs in ds-linkage itself were
+  fixed — it mis-attributed the property of every bare numeric, which had been hiding 96
+  real findings including 12 in these docs, and its --json truncated when piped. And
+  Figma parity became a MEASUREMENT: all 115 Type variables were read live and diffed
+  against the emitted clamps at 360/768/1280px on both surfaces, 438 of 438 name-by-mode
+  pairs identical.)
+
   Last reviewed: 2026-09-04 · System version: v0.47.0 (EVERY TRANSLUCENT TOKEN IS A REFERENCE
   PLUS AN OPACITY REFERENCE. Figma can alias a colour and keep a separate, variable-bound
   opacity, so the 136 rgba() literals — 48 overlay tiers, scrim, inverse rules, inverse button
@@ -101,25 +186,6 @@
   PM-AJAY's rail is 304px and "India › Andaman and Nicobar Islands" does not fit it,
   and `wrap={false}` keeps a fixed-width rail on one line so its height does not
   change as the reader drills.)
-
-  Last reviewed: 2026-09-01 · System version: v0.41.0 (TYPOGRAPHY WAS THE LAST TOKEN
-  FAMILY WITH NO GATE, AND IT COST 562 LITERAL FONT SIZES — 224 of them off the 15-step
-  ramp, 13px alone 71 times, plus 100 raw letter-spacings against 10 tracking tokens, a
-  second hand-maintained type scale in globals.css, and a component shipping
-  `var(--sa-type-body-4-size)`, a token that has never existed and that CSS drops in
-  silence. `npm run check:type-linkage` is a per-file ratchet over size, leading
-  (including UNITLESS ratios, which no px-grep can see), tracking and family; new debt
-  fails the build and debt that shrinks without a re-baseline fails too, so the backlog
-  only goes down. It shares one parser with ds-linkage via tools/ds-linkage/regions.mjs
-  rather than growing a second copy. Alongside: ds-linkage went from 6 scopes to all 23
-  and the estate was cleared 867 → 0, on 693 token bindings and 76 role-named palette
-  entries, with each portal's own palette declared under a new `portal-palette`
-  exemption and registered as divergence 9. Two precision bugs in ds-linkage itself were
-  fixed — it mis-attributed the property of every bare numeric, which had been hiding 96
-  real findings including 12 in these docs, and its --json truncated when piped. And
-  Figma parity became a MEASUREMENT: all 115 Type variables were read live and diffed
-  against the emitted clamps at 360/768/1280px on both surfaces, 438 of 438 name-by-mode
-  pairs identical.)
 
   Last reviewed: 2026-08-31 · System version: v0.40.0 (A BRUTAL AUDIT OF THE SAMAVESH
   PATTERN FOUND TWO LIVE ACCESSIBILITY FAILURES, ONE OF THEM SELF-INFLICTED. Escape
@@ -394,6 +460,10 @@
   `dbim-*` modes has nothing brand-varying to say there — and giving the scrim DBIM inks
   promoted it out of single-mode Color into Palette as a new variable whose two modes were
   identical. Both now key on `navy` specifically.)
+
+  **Every control in the condensed bar is 40px** (2026-09-05): the sidebar toggle, the sheet trigger, the search button, the account avatar (`AccountMenu avatarSize={40}`) and whatever the consumer passes as `actions` — the slot holds links and buttons at 40, so pass `Button size="default"`. The home link is a 40×40 target around the 20px emblem, emblem on the left edge; it was the bare 20×32 glyph, under WCAG 2.5.8. **The identity in the bar is `BrandLockup` compact** — emblem 32, Government of India · Ministry on one muted 12px row, the Department at 14 beneath (DBIM 5.2 makes none of the three optional) — wherever the inline nav is not on the row: every portal, and the website below 1024 or once its nav has moved to the sheet. Emblem-only where the nav needs the width and below 768. Figma: `Navbar/BrandLockup` `Size=Condensed`.
+
+  **The phone row, on a portal (2026-09-05):** one control per side — the 48px sidebar toggle leads, a 40px avatar trails — and nothing else is laid out. BETA stays and moves onto the first line beside Government of India, so the stack is three rows; the two small lines go to subtle ink at regular weight so the department is the only bold black line. A portal that has both a sidebar toggle and a `nav` shows one menu control on a phone: the sidebar toggle; the sheet is desktop-only there. The bar's flag defaults to the hub-root asset, so no shell ships a government bar without the national mark. On a portal without a sidebar, search waits behind a 40px button in the row and opens on its own row on tap (Escape closes), because a 56px field under a two-line lockup pushed a portal's page start past 300px; on a portal with a sidebar the button is not drawn and search lives at the head of the drawer (`SidebarNav header`), so a phone shows one door to each room; the website keeps its full-width field, since search is that site's navigation fallback. **The accessibility bar below 768** keeps the mark and two 44px icon controls, accessibility and language; the font stepper moves to the sheet and the widget, and the skip link shows on the first Tab press.
 
   System version: v0.16.1 (THE CHART PALETTE NOW SAYS WHICH OF ITS
   VALUES ARE COPIES AND WHICH ARE CHOICES, per group, because the difference was not guessable
@@ -850,90 +920,113 @@ already been removed.*
 
 ### D. Typography
 
-- **Typeface**: Noto Sans (`var(--ds-font-sans)`) — non-negotiable across all English interfaces. Devanagari/Hindi uses `--sa-font-devanagari`.
-- **Which faces are actually loaded** (`apps/hub` root layout — a token that names a font nobody loads renders as a system fallback, which is how Hindi silently lost its typeface):
-  - `Noto Sans`, subsets `latin` + `devanagari`, weights 400/500/600/700. One superfamily covers both scripts; `unicode-range` means the Devanagari file is fetched only by pages that contain Devanagari.
-  - `Noto Sans Display`, subset `latin`, weight 500 — the optical Display cut, for the 40–80px Display ramp only.
-  - **No monospace webfont**, by choice — see the mono rule below.
-- **The Display cut is addressed differently in each medium.** Noto Sans ships two cuts of one design: the text cut is drawn for 12–24px, and at 80px its open spacing reads as loose. CSS loads the cut as a **separate family** (`"Noto Sans Display"` + `font-weight: 500`); Figma exposes it as a **style of Noto Sans** (`Display Medium`), because Figma's style axis conflates cut and weight into one string. So `font/display` says `Noto Sans` in Figma and `"Noto Sans Display", …` in CSS — deliberately, not a drift. The `Display/display-1…6` text styles bind `font/display` and `font/weight/displayMedium`, which is the one weight the build special-cases: 500 would otherwise project to the style `Medium`, a real cut on the wrong drawing.
-  - **Latin only.** `Noto Sans Display` has no Devanagari subset and `Noto Sans Devanagari` has no Display cut — the pairing does not exist in Noto. A Hindi display heading falls through the stack to Noto Sans, which is correct; the alternative is no glyphs.
-- **Numbers are NOT a job for monospace.** Use `font-variant-numeric: tabular-nums` on Noto Sans: digits get equal width so a column of amounts, counts or reference numbers aligns and can be scanned down, while staying in the same typeface as the text beside them. Switching a column to a mono face is the clumsier fix and reads as a different design. Already applied in `DataTable`, the Aadhaar/PAN field, charts, the SLA indicator and `Section`.
-- **`--ds-font-mono` is for CODE AND TECHNICAL STRINGS ONLY** — token names, CSS snippets, file paths in these docs. It is a **system stack** (`ui-monospace` → SF Mono / Cascadia / Roboto Mono), deliberately not a webfont: mono appears only on documentation pages, and a download on every page to style sample code is a poor trade for a low-bandwidth government audience. The Figma variable is hidden from publishing, because "whatever mono the device has" has no single Figma family.
-- **Line Length**: Body text and prose containers max-width `65ch`–`75ch` (`max-w-prose`). Never wider.
-- **Fluid type**: Every role is `clamp(min, fluid, max)` — `min` at a 360px viewport, `max` at 1280px. No type media queries. Two surfaces (`data-surface`) supply different min/max: **Website** (expressive) vs **Portal** (dense).
-- **NEVER TYPE A FONT SIZE, LEADING, TRACKING OR FAMILY.** `npm run check:type-linkage` is a per-file ratchet and any NEW literal fails the build — in a stylesheet, in a Tailwind arbitrary value (`text-[13px]`), or as a bare numeric in a style object (`fontSize: 13`, which React turns into px and no grep for "px" can find). Bind the size AND its paired leading in the same rule: a `--ds-type-<role>-size` without its `-lh` is half a binding, and it is the half that only shows up between breakpoints — `line-height: 1.2` on `headline-1` renders 48px at desktop, which is exactly right, and 39.98px at tablet where the token says 39.10. A size the 21-role scale cannot express is a DESIGN question, not a binding one: the answer is `body-2` at 14 or `body-3` at 12, never a 22nd size invented for one card, and nothing may render below 11px (`label-3`). A deliberate specimen declares itself: `/* ds-exempt(specimen): why */`.
-- **Text Wrapping**: Use `text-wrap: balance` on `h1`–`h3`; `text-wrap: pretty` on paragraphs to eliminate orphans.
+- **Typeface**: Noto Sans — non-negotiable across all English interfaces (`--sa-font-latin`).
+  Devanagari/Hindi is Noto Sans's own Devanagari subset (`--sa-font-devanagari`), applied by
+  `lang="hi"`. The 40–80px Display roles use the optical **Noto Sans Display** cut
+  (`--sa-font-display`), Latin only — a Hindi display heading falls through to Noto Sans.
+- **Which faces are loaded** (`apps/hub` root layout): Noto Sans Latin 400/500/600/700
+  (preloaded), Noto Sans Devanagari 400/500/600/700 (**not** preloaded — lazy through
+  `unicode-range`, so an English page never downloads it; it was 99 KB on every page until
+  2026-09-04), Noto Sans Display 500 Latin. No monospace webfont: `--sa-font-mono` is a
+  system stack for code and token names in the docs only.
+- **The two primitives.** `<Heading level={1..6} variant?>` and `<Text as? variant?>` are the
+  only way a page asks for type. A Heading's level is the outline and is required; its role
+  defaults from the level (h1 → headline-1 … h6 → headline-6) and `variant` departs from it
+  (a hero at `display-3`, a card h3 at `title-1`). A Text is a body, label or title role;
+  `measure` caps it at the measure token, `flow` spaces consecutive paragraphs with the role's
+  paragraph-spacing token, `numeric` sets tabular figures, `lang="hi"` switches face and leading.
+  `SectionTitle` (headline-4) composes them for a section heading with an eyebrow, count and
+  actions. In Tailwind the same roles are `text-<role>` (size + leading + tracking + weight in
+  one class; display roles add `font-display`), `tracking-caps`, `max-w-measure`.
+- **There is no other typography.** `globals.css` clears Tailwind's stock `text-xs…6xl`,
+  `leading-*`, `tracking-*` and the thin/light/extrabold/black weights, so they produce no
+  CSS; `npm run check:type-linkage` reports every raw size, leading, tracking, family, a
+  stock or static utility, a weight outside 400–700, and a file that writes Devanagari
+  without `lang="hi"`. Nothing renders below 12px. A size the 21-role scale cannot express is
+  a DESIGN question — the answer is a neighbouring role, never a 22nd size.
+- **Weights.** Display 500 (on the Display cut), Headline 600, Title 600, Body 400, Label 500.
+  700 is inline emphasis and KPI numerals only. 800 and 900 do not exist — they were
+  browser-synthesised bold against a font that loads 400–700.
+- **Case and tracking.** Uppercase is the `label-3` role only (12px, +0.06em
+  `--sa-type-caps-tracking`), for 1–3-word overlines. Display roles carry negative tracking
+  from one em rule per rung (−0.015em at display-1/2, −0.01em at 3/4, −0.005em at 5) on
+  both surfaces; every other tier is zero.
+- **Numbers are NOT a job for monospace.** `font-variant-numeric: tabular-nums` (Text's
+  `numeric`) aligns a column of figures in the same face as the text beside them.
+- **Line length**: the measure token `--sa-container-measure` (36rem ≈ 68 characters, in
+  rem so a raised default font size keeps the character count). `.ds-prose`, `Text measure`
+  and `max-w-measure` all bind it; nothing is wider.
+- **Fluid type**: every role is `clamp(min@360px, fluid, max@1280px)` in rem. Two surfaces
+  (`data-surface`): **Website** (expressive) and **Portal** (dense) differ ONLY in the Display
+  and Headline tiers; Title, Body and Label are identical on both, so a card, a form and a
+  table read the same wherever they sit.
+- **Text wrapping**: `h1`–`h3` balance and `p`, `li`, `dd`, `figcaption` are `pretty`, from one
+  `@layer base` rule in the hub and inside the primitives.
+- **Standards**: DBIM §4, GIGW 5.2 and UX4G §2 are followed except where
+  `docs/audit/typography-deviation-register.md` records why not (headline sizes one step
+  above DBIM's ladder, display leading below 1.2, no 18px body). `packages/tokens/test/
+  type-scale.test.mjs` asserts the floor, the ramp, the 4px grid, the leading band, the
+  monotonic ratio, and the loaded weights on every build.
 
 ### E. Type Scale Reference
 
-**21 responsive roles** with **hyphenated Portal-DS names** (`display-1…6`, `headline-1…6`, `title-1…3`,
-`body-1…3`, `label-1…3`), each exposed with four fluid properties:
-`--ds-type-<role>-size`, `-lh` (line-height), `-para` (paragraph-spacing), `-tracking` (letter-spacing),
-plus friendly aliases `--ds-text-<role>` / `--ds-leading-<role>`. Letter-spacing is also grouped for non-display
-tiers: `--ds-type-{heading,title,body,label}-tracking`. Values differ by **surface** — the table shows desktop
-(`max`) size; both surfaces scale fluidly to their 360px `min`. Full min/max tables live in
-`packages/tokens/src/primitive.json` (`font.role.*` + `font.tracking.*`) and
-`docs/specs/samavesh-typography-unification-spec.md`. Names match the SAMAVESH Figma library 1:1, and so do the VALUES: all 115 Type variables were read
-live from the library on 2026-09-01 and diffed against the emitted `clamp()`s evaluated at 360 / 768 /
-1280px on both surfaces — **438 of 438** name-by-mode pairs identical, including the fluid tablet
-midpoints, which are samples of a linear interpolation and can only agree if the whole curve does.
+**21 responsive roles** in five tiers — `display-1…6`, `headline-1…6`, `title-1…3`,
+`body-1…3`, `label-1…3` — each with four fluid properties: `--sa-type-<role>-size`,
+`-lh` (line-height), `-para` (paragraph-spacing), `-tracking` (letter-spacing; grouped for
+the non-display tiers as `--sa-type-{heading,title,body,label}-tracking`, plus
+`--sa-type-caps-tracking`). Re-cut 2026-09-04: every size on the 16-step ramp
+12·14·16·18·20·22·24·28·32·36·40·48·56·64·72·80, every line height on the 4px grid, leading
+ratios rising as size falls (display 1.10 → 1.20, headline 1.20 → 1.50, body 1.50), and the
+13px and 15px stops the old Portal ramp carried are gone. Source of truth:
+`packages/tokens/src/primitive.json` (`font.role.*`, `font.tracking.*`); the generated
+`typography-data.ts` feeds the docs page, and Figma's six Type modes (Website/Portal ×
+Desktop/Tablet/Mobile) sample the same clamp() at 1280/768/360px, rounded to whole pixels.
 
-| Role (sample) | Canonical token | Website max | Portal max | Weight | When to use |
-|------|---------------|:-----------:|:----------:|--------|-------------|
-| Display 1 | `--ds-type-display-1-size` | 80px | 56px | 500 | Hero headings only |
-| Headline 1 | `--ds-type-headline-1-size` | 40px | 32px | 600 | Major section headings |
-| Title 1 | `--ds-type-title-1-size` | 22px | 20px | 500 | Section headings, page titles |
-| Body 1 | `--ds-type-body-1-size` | 16px | 16px | 400 | Standard body text |
-| Body 2 | `--ds-type-body-2-size` | 14px | 14px | 400 | Secondary text, table cells |
-| Label 1 | `--ds-type-label-1-size` | 14px | 14px | 500 | Input labels, button text |
-| Label 3 | `--ds-type-label-3-size` | 11px | 11px | 500 | Table headers, caps labels |
+| Role | Website max / min | Portal max / min | Leading (web) | Weight | Use |
+|---|:--:|:--:|:--:|:--:|---|
+| display-1 | 80 / 40 | 56 / 40 | 88 (1.10) | 500 | Hero only |
+| display-3 | 64 / 32 | 40 / 28 | 72 (1.13) | 500 | Campaign hero |
+| display-6 | 40 / 22 | 24 / 20 | 48 (1.20) | 500 | Small hero |
+| headline-1 | 40 / 28 | 32 / 24 | 48 (1.20) | 600 | The page h1 |
+| headline-2 | 32 / 24 | 28 / 20 | 40 (1.25) | 600 | Section h2 |
+| headline-3 | 28 / 22 | 24 / 18 | 36 (1.29) | 600 | Sub-section |
+| headline-4 | 24 / 20 | 20 / 16 | 32 (1.33) | 600 | `SectionTitle` |
+| headline-5 | 20 / 18 | 18 / 16 | 28 (1.40) | 600 | Minor heading |
+| headline-6 | 16 | 16 | 24 (1.50) | 600 | Smallest heading |
+| title-1 | 22 / 18 | same | 28 (1.27) | 600 | Card, panel, dialog title |
+| title-2 | 16 | same | 24 (1.50) | 600 | List-item title |
+| title-3 | 14 | same | 20 (1.43) | 600 | Dense table header |
+| body-1 | 16 | same | 24 (1.50) | 400 | Running text |
+| body-2 | 14 | same | 20 (1.43) | 400 | Secondary, table cells |
+| body-3 | 12 | same | 16 (1.33) | 400 | Captions, timestamps |
+| label-1 | 14 | same | 20 (1.43) | 500 | Form labels, buttons |
+| label-2 | 12 | same | 16 (1.33) | 500 | Badges, chips |
+| label-3 | 12 | same | 16 (1.33) | 500 caps | Overlines, +0.06em |
 
-> **Surface selection:** the website & hub render the Website scale (default); portals set `data-surface="portal"`
-> on `<html>` to get the Portal scale. Legacy aliases (`--ds-text-display`, `--ds-text-title-1`, …) still resolve and
-> inherit the active surface automatically.
-
-> ### ⚠ The table above names `--ds-type-<role>-*`. It does **not** describe `--ds-text-<role>`.
+> **Every role carries its reasoning.** The size leaf's `$description` in `primitive.json` says why the
+> value is what it is (the ratio, the standard, the measurement) and the same text is each `type/*`
+> Figma variable's description and the docs page's "Why these values" section. The Figma library holds
+> exactly the 104 Type variables the code defines: the ten `deprecated/type/*` shadows and the retired
+> `ref/font/family/heading|body` were deleted on 2026-09-04 after a full-file consumer scan and a
+> rebinding pass, together with 28 colour, space and border orphans.
 >
-> Three families of typography variable exist, and only the first two agree with this table:
->
-> | Family | Example | Relationship to the table |
-> |---|---|---|
-> | **Canonical roles** | `--ds-type-title-1-size` | ✅ Exactly the table. **Use these.** |
-> | Unhyphenated aliases | `--ds-text-title1` | ✅ 1:1 with the role of the same name |
-> | **Hyphenated legacy aliases** | `--ds-text-title-1` | ❌ **Named for the pre-Portal-DS scale** |
->
-> The hyphenated family is mapped to whichever role reproduces each alias's
-> *historical rendered value*, so its names deliberately do not line up:
-> `--ds-text-title-1` is the **headline-2** role (24→32px), not Title 1 (20/22px);
-> `--ds-text-title-2` is Title 1.
->
-> **RETIRED 2026-08-12.** The whole `--ds-*` layer, including this hyphenated family,
-> was deleted from the build — see the retirement note later in this document. The
-> paragraphs above are kept as the record of a hazard that no longer exists, because
-> the reasoning still applies to any alias family: read the resolved value, not the name.
->
-> For the record, measured against the generated `tokens.css` on 2026-08-11 before
-> deletion: **precisely two of the nine hyphenated aliases misled** — `title-1` and
-> `title-2`. The other seven (`display`, `headline`, `body-1/2/3`, `label-1/3`) resolved
-> to the role they named. `--ds-text-title-3` and `--ds-text-label-2` never existed at all.
-> Those values are frozen in
-> `packages/tokens/test/legacy-snapshot.json` and asserted on every build — re-pointing
-> one at its same-named role silently resizes every legacy callsite in the estate.
->
-> **This has caused four separate bugs**, all the same mistake — reading the alias
-> name instead of its resolved size: `CardTitle` painted at 32–40px; the docs portal's
-> `h2` rendered *smaller* than its `h3`; twelve docs pages set a 40px lead against a
-> 24px line-height; and `zone-unavailable` still carries a `22px` fallback for a token
-> that resolves to 32px.
->
-> **Rule: in new code reference `--ds-type-<role>-size` / `-lh`.** Reach for a
-> `--ds-text-*` alias only to keep an existing callsite compiling, and check its
-> resolved value first. Guarded by `packages/tokens/test/type-alias-parity.test.mjs`.
+> **Rule: in code use `<Heading>` / `<Text>` or `text-<role>`; in a stylesheet bind
+> `--sa-type-<role>-size` AND `-lh` in the same rule.** The retired `--ds-*` alias layer
+> (removed 2026-08-12) is gone from code; its hazard record lives in
+> `docs/rules-rationale/CLAUDE-md-full-2026-08-20.md`.
 
 ### F. Bilingual (English + Hindi) Usage
 
 - Wrap inline Hindi text: `<span lang="hi">समावेश</span>` — always set the `lang` attribute.
 - Apply Devanagari font: `font-family: var(--sa-font-devanagari)` on the `lang="hi"` element.
+- **Leading is per role, never a flat ratio.** Every role carries `--sa-type-<role>-lhDevanagari`
+  (Figma `type/<tier>/<n>/lhDevanagari`): the Latin leading plus a fifth of the size, rounded
+  UP to the 4px grid, derived by the token build from `ref/font/lineHeight/devanagariOffset`
+  (0.2). Body-1 is 16/24 Latin and 16/28 Hindi; headline-1 40/48 and 40/56; display-1 80/88 and
+  80/104. `<Text lang="hi">` and `<Heading lang="hi">` take it for you; an INLINE Hindi run keeps
+  the surrounding line's leading. `--sa-leading-devanagari` is body-1's, for a block with no
+  role. The unitless 1.7 this replaced (2026-09-04) applied to every role, so a 40px Hindi
+  headline sat at 68px, and Figma read it as 1.7px — it could never be bound.
 - **Never use italic on Devanagari** — the script has no italic tradition; slanting degrades legibility.
 - Page `lang` attribute must be `lang="en"` with `lang="hi"` on individual Hindi strings (not the reverse).
 - Hindi text with no explicit size set will inherit from the English scale — this is intentional.
@@ -1023,6 +1116,19 @@ on 1536, the most common desktop width. Recorded in `docs/guidelines/README.md`.
 media query is unavailable (an inline style, for instance — it is how `SiteHeader` caps its
 own column).
 
+**Two layouts, one margin ladder (2026-09-05).** The website is **contained**: every row of every
+section sits in `.sa-container`, which is the three-step cap and the margin ladder together. Portals
+are **fluid**: no cap at all, only the margin ladder, so a portal's masthead, page header and content
+run edge to edge with `--sa-grid-margin-page` on each side — 16, 24 from 768, 32 from 1920. Figma
+draws both on a 1440 frame: `Navbar/Website` caps each row at `container/page` (1320 there) and
+`Navbar/Portal` lets each row fill, and both bind their side padding to `grid/margin/page` with the
+variant pinned to its Viewport mode. In code the same split is `SiteHeader variant="website"` (cap
+and margin) against `variant="portal"` (margin only), and `Container size="full"` is the fluid column
+for anything else on a portal. **A new component asks which surface it is on and binds accordingly**:
+`.sa-container` on the website, `--sa-grid-margin-page` on a portal — never a `padding/*` rung that
+happens to equal the margin. The masthead and the accessibility bar carried exactly that: a literal
+16 / 24 / 32 per breakpoint that agreed with the ladder at three widths and disagreed with it at 1920.
+
 > A container is a **cap**, not a width. `grid/margin/*` (16 mobile / 24 tablet / 32 desktop)
 > is a **floor** that wins on narrower viewports, so the effective column is
 > `min(container, viewport − 2 × margin)`.
@@ -1058,7 +1164,7 @@ no store, no router, no redirect.
 
 | Component | Use it for | Never |
 | --- | --- | --- |
-| `Container` | the centred content column; applies the cap **and** the side margin | adding your own `px-*` — the margin is already there |
+| `Container` | the centred content column; applies the cap **and** the side margin. `size="full"` is the portal's fluid column — margin, no cap | adding your own `px-*` — the margin is already there |
 | `Grid` / `GridItem` | page-level column layouts; `span={{ base, md, lg }}` | a simple wrapping row of cards — flex is simpler |
 | `Band` | a website section: full-bleed tone + rhythm around a `Container` | a portal page — portal content is fluid, not banded |
 | `PageHeader` | the title + meta + actions row a portal page opens with | a heading *inside* a page — that is `SectionTitle` |
@@ -1126,11 +1232,10 @@ graph TD
 ### A. State Definitions
 
 1. **Normal** — Default idle state using standard semantic tokens.
-2. **Hover** — `150ms` CSS transition (`var(--ds-duration-fast)`) with exponential ease-out (`var(--ds-easing-out)`). **Banned:** Linear or bouncy spring transitions.
+2. **Hover** — the `motion/hover` pair: `var(--sa-motion-hover-duration) var(--sa-motion-hover-easing)` (150ms, decelerate) on colour, border and shadow. **Banned:** Linear or bouncy spring transitions, and a bare duration without its easing.
 3. **Active** — Immediate visual feedback on press: scale `0.97` or slight background darkening. Confirms action register.
-4. **Focus** — `2px solid var(--ds-primary-ring)` with `2px` outline-offset. Contrast ratio against its surrounding background must be ≥ 4.5:1. Never suppress focus outlines.
-5. **Disabled** — Opacity `0.4`. Add `pointer-events: none`, `tabindex="-1"`, `aria-disabled="true"`. **Do not use** a neutral flat fill only — combine it with reduced opacity.
-   *(There is no `--ds-opacity-disabled` token yet — the value is currently hardcoded at call sites. An `opacity` scale lands in Phase 2 of the token-architecture spec.)*
+4. **Focus** — `outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset)` (2px, solid key colour, 2px offset), applied with the `motion/focus` pair — instantly. Drawn as an OUTLINE, never only a box-shadow (forced-colors mode discards shadows). Contrast against its surrounding background must be ≥ 3:1 (WCAG 2.4.11); the key colour measures 4.5:1 on white. Never suppress focus outlines.
+5. **Disabled** — `opacity: var(--sa-alpha-disabled)` (48%) on the whole control, `text/neutral/disabled` (an opaque ink) for text alone, a neutral fill never a washed intent colour, and `motion/instant` so nothing animates. Add `aria-disabled="true"` (prefer it over `disabled` where the control must stay discoverable). The reason it is disabled is said in copy beside it, never inferred from grey.
 6. **Loading/Skeleton** — While data is fetching, render `<Loader />` or a skeleton placeholder using `--ds-surface-muted` with a CSS shimmer animation. Never leave an empty container with no loading signal.
 7. **Error** — Persistent state (unlike Disabled, the user must actively correct it). Show a `var(--sa-border-status-error-base)` border + inline error message in `var(--sa-text-status-error-base)` below the control. Error text requires `role="alert"` or `aria-describedby` linkage, and the border alone must never be the only error signal (WCAG 1.4.1).
 
@@ -1459,6 +1564,58 @@ editable and reads the remaining match count after each keystroke. It refuses
 unmatched text on blur — a box reading "Bankuraa" over a form value of "" is how a
 district goes missing between the screen and the database.
 
+**A ranking or a breakdown with the figure printed per row: use `<RankedBarList>`.**
+"Top States by Pledges", "SLA Compliance by District", "Category Distribution",
+"District-wise Fund Utilisation" — the most-drawn chart across sixteen portal dashboard
+handoffs (2026-09-05) and, until then, the one the layer did not have, so portals reached
+for a `BarChart` with the axis it does not need or hand-rolled a div. It is a label, a
+figure and a thin bar per row: the figure is the reading, the bar is the aid, and the
+ordered list is the accessible form — the bar is `aria-hidden` because the text beside it
+already says the number. Pin `max={100}` for a percentage or the highest row draws at full
+width and reads as "complete". A tone is set only through `tone` or a `toneFor` rule the
+scheme has actually stated, and the caption names the threshold: green means on track on
+this estate, and the first row in a ranking is not "good". It PAGES with `pageSize` and
+never scrolls inside its card. `<InlineBar>` is the same bar alone for a `DataTable` cell
+beside a printed figure; give it a `label` only where the figure is not already printed.
+
+**One number, five readings: `<MetricCard>` carries all five.** Bare value; value with
+a change against a named `changeLabel`; value with its trend (a `Sparkline` in `aside`,
+decorative because the figure carries the meaning); value against a target (`progress`
+with a `max` and a `target` — a bar, not a second number, because the reader's question
+is how far there is to go); and value with a status (`status` for the words, `tone` for
+the colour — the chip is what lets the tint be a tint). `detail` prints the numerator and
+denominator behind a rate. A `tone` is a claim: set it only against a rule the scheme has
+stated — the queue's "due soon" and "overdue" tiles — never on the first card in a row.
+`<Progress>` takes the same `target`, `targetLabel` and `tone`, and `compact` drops its
+label row where the surface already prints the label.
+
+**Provenance travels with the data.** `DataProvenance` — source, as-of date, status — is
+a field on the data, not a caption someone types, and `<ChartCard provenance>` and
+`<MetricCard provenance>` print it as one muted `<ProvenanceLine>` and drop it whenever
+the card has nothing to show. It is the one line of self-description
+`ui-restraint-and-copy.md` permits; feed diagnostics still go to the audit doc.
+
+**A withheld figure is not a zero.** `ChartDatum.withheld` and `ChartSeries.withheld`
+carry "suppressed" or "not reported" with a reason. `BarChart` draws a hatched stub, never
+a bar; `LineChart` breaks the line and marks the gap with a hollow dashed ring at the
+baseline; `PieChart` and `DonutChart` leave the category out of the total, keep it in the
+legend and the table with its reason, and say the shares are of the published total;
+`Heatmap` takes a `ChartWithheld` in place of a number and hatches the cell. In every one
+the tooltip and the screen-reader table print `withheldLabel()` and the value is excluded
+from every domain and stack. `RankedBarList` sorts a withheld row last and hatches its
+track. Health and census data arrive this way routinely, and the workaround a
+contract without it produces is a literal "—" in the data that breaks every scale.
+
+**Every chart is one Tab stop.** `ChartFrame` roves: Tab enters at the first (or last
+visited) mark, the arrow keys move between marks, Home and End jump to the ends, and
+Escape dismisses the tooltip without moving focus (`onDismiss`, which every chart with a
+tooltip passes). A thirty-bar chart used to be thirty Tab stops. `BarChart` also takes
+`highlightIndex` — the current period keeps its colour and the rest drop to
+`chart/seq/300`, with "current" spoken in the summary — and `target`, a dashed reference
+line that joins the axis domain so it is never drawn off the plot. Every chart, card and
+metric tile has a print stylesheet: tooltips and toggles go, the screen-reader table
+becomes the printed table with a repeating header, and a card never splits across a page.
+
 **Reporting a figure against its target: use `<BulletChart>`.** Sanctioned against
 released, released against utilised, places created against places filled — this is
 the shape of almost every number the department publishes, and drawn as two bars it
@@ -1569,28 +1726,87 @@ component consumed it, so `Card` was drawn at a raw `--sa-shape-8` and `MetricCa
 `--sa-shape-12` — already drifted apart. Both now bind the component token, so it is load-bearing
 rather than decorative. **Bind `var(--sa-cmp-card-radius)` on a card surface, not a shape rung.**
 
-### Elevation (Shadow) Tokens
+### Elevation Tokens — six ROLES, chosen by what the surface is
 
-A 6-level ramp — a superset of UX4G 3.0's 5-level `l0…l4`. SAMAVESH tints toward ink
-(`rgba(31,36,40,·)`) rather than UX4G's flat black: on a light government surface a tinted
-shadow reads as depth, a black one reads as dirt.
+Bind a role, never a ramp step. The Tier-1 ramp (`ref/shadow/none…xl`) is a superset of
+UX4G 3.0's five-level `l0…l4`, authored as DTCG composite shadows and tinted toward
+`neutral/800` (the body ink, retinted by the build) rather than UX4G's flat black: on a light
+government surface a tinted shadow reads as depth, a black one as dirt. Each role also names
+the layering rung it sits on. Figma carries these as effect styles, not variables.
+Documented at `/design-system/foundations/elevation`; values are generated, never typed.
 
-| Token | Usage |
-|-------|-------|
-| `--ds-shadow-none` | Flat surfaces, resetting an inherited shadow |
-| `--ds-shadow-xs` | Inputs, small cards |
-| `--ds-shadow-sm` | Raised cards, hovered list rows |
-| `--ds-shadow-md` | Popovers, tooltips, sticky headers |
-| `--ds-shadow-lg` | Dropdowns, floating panels |
-| `--ds-shadow-xl` | Modals, drawers |
-
-### Motion Tokens
-
-| Token | Value | Usage |
+| Token | Layer | Usage |
 |-------|-------|-------|
-| `--ds-duration-fast` | `150ms` | Hover state transitions |
-| `--ds-duration-base` | `250ms` | Panel open/close |
-| `--ds-duration-slow` | `400ms` | Page-level transitions |
+| `--sa-elevation-flat` | `z/base` | Deliberately no shadow — resets an inherited elevation |
+| `--sa-elevation-card` | `z/base` | A card or panel resting on the page |
+| `--sa-elevation-raised` | `z/raised` | A surface lifted on interaction — a hovered card, a parted sticky bar |
+| `--sa-elevation-dropdown` | `z/dropdown` | A menu, select or popover opened from a control |
+| `--sa-elevation-modal` | `z/modal` | A dialog or side sheet, paired with the scrim |
+| `--sa-elevation-toast` | `z/toast` | A toast — the heaviest step, because it has no scrim |
+
+### Motion Tokens — twelve INTENTS, each a duration + easing pair
+
+You never pick a duration. Bind `--sa-motion-<intent>-duration` WITH
+`--sa-motion-<intent>-easing`; a duration without its easing is half a decision. The Tier-1
+ladder beneath (`ref/motion/duration/0…700`, value-named; `ref/motion/easing/linear ·
+accelerate · decelerate · standard · emphasized`, behaviour-named per Material 3) is private.
+`tokens.css` emits ONE `@media (prefers-reduced-motion: reduce)` block collapsing every
+intent's duration to `0.01ms` — components bind the pair and need no query of their own.
+`instant` is already zero and `loading` is exempt (a stopped spinner reads as a frozen page).
+Documented at `/design-system/foundations/motion`.
+
+| Intent | Duration | Easing | Use |
+|--------|----------|--------|-----|
+| `instant` | 0ms | linear | A state that must not animate — a tick, a dot; the reduced-motion floor |
+| `hover` | 150ms | decelerate | Colour, border or shadow responding to the pointer |
+| `press` | 150ms | emphasized | Press feedback — a translate, an icon nudge |
+| `focus` | 0ms | linear | The focus ring appears instantly (WCAG 2.4.7) |
+| `enter` | 250ms | decelerate | Something arriving |
+| `exit` | 150ms | accelerate | Something leaving |
+| `expand` | 250ms | standard | A surface growing in place |
+| `collapse` | 200ms | standard | The same surface shrinking |
+| `emphasis` | 400ms | standard | A deliberate, attention-carrying move — reserve it |
+| `reveal` | 400ms | emphasized | A surface the reader opened — a drawer, a panel |
+| `page` | 300ms | standard | A whole view changing |
+| `loading` | spin 1000ms · pulse 700ms | linear | Indeterminate progress — exempt from reduced motion |
+| `stagger` | step 45ms · max 8 | — | Cascading a list in |
+
+### Layering Tokens — the z ladder, code-only
+
+The ONLY `z-index` values app code may write. Tier 2, authored literally (a primitive would
+have nothing to alias), and not exported to Figma because a canvas has no z-axis. Steps of 100
+leave room for local order; inside a component's own stacking context use `z/raised` (1) or a
+literal 2 at most. `statutory`, `demo` and `top` are RESERVED. Every elevation role names
+its rung (table above). Documented at `/design-system/foundations/layering`.
+
+| Token | Value | Use |
+|-------|-------|-----|
+| `--sa-z-base` | 0 | In flow; resets a raised context |
+| `--sa-z-raised` | 1 | One step above siblings inside the same component |
+| `--sa-z-dropdown` | 100 | Menu, listbox, date grid opened from a control |
+| `--sa-z-sticky` | 200 | Sticky header, toolbar, table head |
+| `--sa-z-fixed` | 300 | Viewport-pinned chrome |
+| `--sa-z-overlay` | 400 | The scrim behind a modal |
+| `--sa-z-modal` | 500 | Dialog or side sheet |
+| `--sa-z-popover` | 600 | A popover opened from inside a modal |
+| `--sa-z-toast` | 700 | Toasts — readable over a dialog |
+| `--sa-z-tooltip` | 800 | Tooltips |
+| `--sa-z-rail` | 1000 | The right-wall rail and its occupants |
+| `--sa-z-launcher` | 1010 | Closed corner launchers — under the statutory panel |
+| `--sa-z-statutory` | 999999 | RESERVED — the UX4G accessibility panel's own value |
+| `--sa-z-demo` | 2147483000 | RESERVED — the DemoDock |
+| `--sa-z-top` | 2147483001 | RESERVED — the one panel above the dock (the open chatbot) |
+
+### Opacity and Stroke Tokens
+
+- **Opacity:** `--sa-alpha-<0…100>`, a thirteen-step ladder (0 · 4 · 8 · 16 · 24 · 32 · 40 · 48 ·
+  64 · 72 · 80 · 88 · 100), plus two INTENTS for a layer's own opacity — `--sa-alpha-disabled`
+  (48%) and `--sa-alpha-muted` (64%). A translucent COLOUR is never an alpha alone: it is a
+  colour reference plus an alpha reference (`color/transparent/*`, `overlay/*`).
+  `/design-system/foundations/opacity`.
+- **Stroke:** `--sa-stroke-0…4`, value-named widths; `--sa-control-border-width` for every
+  form control; `--sa-focus-width` (2px) for the ring. Write `border: var(--sa-stroke-1) solid …`,
+  never `1px solid`. `/design-system/foundations/stroke`.
 
 ---
 
@@ -1765,7 +1981,7 @@ one. Each segment still meets 24×24 on its own, which the size ladder guarantee
 **Purpose**: The binding wrapper that associates label, help, control, hint, status message and
 character count, and owns every accessibility decision the field stack makes.  
 **Rules**:
-- Every `<Input>`, `<Select>`, `<Textarea>`, `<Checkbox>`, `<Radio>`, `<Toggle>` **must** be wrapped in `<FormField>`.
+- Every `<Input>`, `<Select>`, `<Textarea>` **must** be wrapped in `<FormField>`. `<Checkbox>`, `<Radio>` and `<Toggle>` carry their own label and description wiring and are NOT wrapped; a set goes in `<RadioGroup>` / `<CheckboxGroup>`.
 - FormField auto-generates `htmlFor` / `aria-describedby` linkage. Do not bypass it.
 - Layout order is **label → help → control → hint → message → count** (the hint renders *below*
   the control so inputs stay aligned across grid rows, which is also where UX4G's Input master
@@ -1883,15 +2099,21 @@ replacement for `CaptchaField`, and the component a new portal reaches for.
   from a self-hosted proof-of-work token, a honeypot and rate limiting. The component
   appears only when the check has FAILED — a form that silently refuses to submit is the
   worst of the three outcomes. `checkbox` adds one deliberate gesture, which is not a
-  cognitive function test and is therefore permitted. `challenge` is the legacy
-  distorted-characters test and is **deprecated**.
+  cognitive function test and is therefore permitted. **There is no third mode.** A
+  `challenge` mode carrying the legacy distorted-characters test shipped here for one day
+  and was removed on 2026-09-03: it is a cognitive function test by construction, so it
+  could never meet 3.3.8, and offering it from the component a new portal reaches for is
+  how a conformance failure is inherited by default. `CaptchaField` — Deprecated — remains
+  for the one legacy backend that can issue nothing else.
 - **`helpHref` is REQUIRED, and that is the whole design.** A proof-of-work or reputation
   check has no accessible workaround of its own: a citizen on a shared connection, an
   older device that fails the work factor, or a screen reader that cannot complete the
   gesture is simply locked out with no way to identify themselves as a person. The link is
   the alternative **WCAG 2.2 3.3.8** asks for, and making it optional is how it goes
   missing from the one portal that needed it. `PortalLoginTemplate` enforces the same rule
-  one level up: no route, no check at all.
+  one level up: no route, no check at all. Required is not always shown: the link renders in
+  every `challenge` state (a sensory barrier) and in every mode once the check has failed;
+  an idle checkbox carries nothing beneath it.
 - **There is deliberately NO audio mode, reversing earlier advice in this file.** Measured:
   bots solve audio challenges **over 85%** of the time while only **31.2%** of them get
   three-person agreement among people; a blind citizen takes **65s** against 9.8s for the
@@ -1902,7 +2124,7 @@ replacement for `CaptchaField`, and the component a new portal reaches for.
   solves the same problem but sends every visitor's signals to another company. Self-hosted
   proof-of-work (ALTCHA / Cap, SHA-256) keeps it inside the estate, which also means no
   cookie and no consent banner. The estate's order of preference is: nothing, then
-  `invisible`, then `checkbox`, then `challenge`.
+  `invisible`, then `checkbox`. There is no fourth step.
 - **It cannot enforce anything.** The component renders the presentation and the escape
   hatch; whether a request is refused is entirely server-side, and a bot never runs this
   code.
@@ -1986,9 +2208,24 @@ Docs: `/design-system/components/sla-progress`.
 #### Textarea
 **Purpose**: Multi-line text entry. Auto-resizes up to a max-height.
 
-#### Checkbox / Radio / Toggle
-**Purpose**: Boolean and group selection controls.  
-**Rule**: Always wrap in `<FormField>` with a descriptive label. `Toggle` is for immediate-effect settings (e.g. notifications on/off), not for form submission.
+#### Checkbox / Radio
+**Purpose**: The selection controls. `Checkbox` — any number from a set, or one option on/off; `Radio` — exactly one of a mutually exclusive set. Both are a real native `<input>` sized to the touch target beside a drawn box or circle; nothing about keyboard, focus or grouping is re-implemented.
+**Shared props**: `label`, `hideLabel`, `description` (via `aria-describedby`, never in the name), `invalid`, `readOnly`, `required`, `size` (`sm` 16 · `md` 20 · `lg` 24 — hit area 24 · 44 · 48), `labelPlacement` (`end` | `start`), `variant` (`default` | `card`), `cardLayout` (`compact` | `detailed` — the detailed tile has an icon tile, `meta` and a trailing control), `icon` and `meta` (card), `checked` / `defaultChecked`, `onChange`, `onCheckedChange`. Checkbox adds `indeterminate` and `error`; Radio adds `name` and `value` (required).
+**Groups**: `RadioGroup` / `CheckboxGroup` — `legend` (REQUIRED; `hideLegend` to hide it), `options[{ value, label, description, disabled, icon, meta, reveal, exclusive }]`, `hint`, `error`, `invalid`, `required`, `disabled` (native fieldset), `readOnly`, `size`, `labelPlacement`, `variant`, `cardLayout`, `orientation`, `value` / `defaultValue`, `onChange`. `CheckboxGroup` adds `name` (posted on every box), `selectAll` and `exclusiveDivider`. `RadioGroup` is `role="radiogroup"` so `aria-required` / `aria-invalid` are permitted on it; a checkbox group is role `group`, so each box carries its own `aria-invalid`.
+**Tokens**: `--sa-control-selection-size-*`, `-glyph-*`, `-dot-*`, `-border-width` (2px), `-radius` (4px), `-gap`; targets from `--sa-target-min|comfortable|spacious`; motion from `--sa-motion-press-*` / `--sa-motion-exit-*`.
+**Rules**:
+- **Never pre-check a consent, declaration or opt-in** (`defaultChecked`/`checked` true). UX4G §7 prohibits it; a citizen who did not act did not agree. The Figma masters default to Off for the same reason.
+- **A set answering ONE question goes in a group.** The singles label themselves; only the group's `<fieldset>`/`<legend>` names the question (WCAG 1.3.1, 3.3.2). Do not hand-roll the fieldset, and do not add `tabIndex` to a radio.
+- **`description` is a description.** It is linked through `aria-describedby` and sits outside the `<label>`. Do not put a paragraph in `label`.
+- **`readOnly` is not `disabled`.** Read-only keeps the tab stop and the submitted value; disabled removes both and tells the reader they did something wrong.
+- **No `aria-checked` on a native checkbox** — the DOM `indeterminate` property is what exposes the mixed state. Style off `data-state`.
+- **Radio has no `error` prop.** The error belongs to the question, i.e. the group. Radios are laid out vertically; up to six options are radios rather than a dropdown (DBIM B.xi).
+- **A "none of the above" is an `exclusive` option**, after an "or" divider — not an empty selection the reader has to infer.
+- Do not wrap these in `<FormField>`: they carry their own label, description and error wiring.
+
+#### Toggle
+**Purpose**: An on/off setting that applies immediately (`role="switch"`). Not for form submission — if flipping it needs a Save button, it is a Checkbox.
+**Props**: `checked` + `onChange` (controlled), `label`, `size` (`default` | `small`).
 
 #### Chip
 **Purpose**: Compact filter badge. Used for multi-select filter groups.
@@ -3032,8 +3269,8 @@ path via `findDemoAccounts`, and whether Sign in renders via `isLoginRoute`),
 estate-wide by `NEXT_PUBLIC_DEMO_TOOLS`: absent or anything but the exact
 string `"false"` means visible; `"false"` removes it entirely, which is the
 correct state for a genuinely public deployment. Open/close and swatch
-selection are animated in CSS only, using `--ds-duration-*`/`--ds-easing-*`
-tokens, and collapse to instant under `prefers-reduced-motion`. The FAB's
+selection are animated in CSS only, using the `--sa-motion-<intent>-*` pairs,
+and collapse to instant under `prefers-reduced-motion` at the token layer. The FAB's
 `FlaskIcon` is driven from `demo-dock.css` by custom property, not by React
 state — hover/focus starts the bubbles, `aria-expanded="true"` speeds them
 up and raises the liquid, so the FAB reports whether the dock is open even
@@ -3438,3 +3675,14 @@ Whenever a new component is added, a token contract is updated, or a page patter
 1. Update this `design.md` (Component Catalogue and/or relevant section).
 2. Bump the `Last reviewed` date in the HTML comment header.
 3. Run `npm run dev` (repo root, port 3007) and verify the change renders at `/design-system/resources/design-context`.
+
+### Names that look like tokens and are not
+
+Thirty custom properties in the `--sa-` namespace are **runtime hooks**, not tokens: `--sa-btn-fill/ink/edge/ring`
+(Button's public override layer), `--sa-hdr-abar-h`, `--sa-header-bottom/pinned/stuck` (measured by the masthead),
+`--sa-grid-cols`, `--sa-grid-row-gap`, `--sa-span-base/md/lg` (layout grid utilities), `--sa-reveal-delay`,
+`--sa-font-scale` (the accessibility bar's live scale), `--sa-wall-rail-top`, `--sa-corner-rail-bottom`,
+`--sa-wall-clearance`, `--sa-action-banner-*`, `--sa-ticker-*`. They are set by JavaScript or by a consumer and
+read with an inline fallback; none is declared in `tokens.css`, and `check:dangling-vars` knows them as such.
+Do not add a token with one of these names, and do not treat one of them as a design decision — the decision
+is the fallback beside it.

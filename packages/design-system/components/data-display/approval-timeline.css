@@ -65,7 +65,7 @@
     width: 14px;
     height: 14px;
     background-color: var(--sa-bg-neutral-base);
-    border: 3px solid var(--sa-border-neutral-base);
+    border: var(--sa-stroke-3) solid var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-full);
   }
 
@@ -101,12 +101,12 @@
     margin: 0;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
   .ds-timeline__action--pending {
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-subtle);
   }
 

@@ -147,14 +147,14 @@ export default function ResourcesPage(): React.JSX.Element {
                     borderRadius: "var(--sa-shape-6)",
                     background: "var(--sa-bg-brand-primary-subtler)",
                     color: "var(--sa-text-brand-primary-base)",
-                    fontSize: 18,
+                    fontSize: "var(--sa-icon-size-20)",
                   }}
                 >
                   {link.icon}
                 </span>
                 <span
                   style={{
-                    fontWeight: 600,
+                    fontWeight: "var(--sa-font-weight-semibold)",
                     color: "var(--sa-text-neutral-base)",
                     fontSize: "var(--sa-type-body-1-size)",
                   }}

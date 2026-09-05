@@ -122,28 +122,31 @@
   .ds-chart__pie-slice {
     stroke: var(--sa-bg-neutral-base);
     stroke-width: 2;
-    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   /* ── Axis + grid + value text ────────────────────────────────────────────── */
   .ds-chart__axis {
-    font-size: 10px;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
     fill: var(--sa-chart-axis);
   }
   .ds-chart__value {
-    font-size: 10px;
-    font-weight: 600;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
     fill: var(--sa-icon-neutral-base);
   }
   .ds-chart__axis-title {
-    font-size: 11px;
-    font-weight: 600;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
     fill: var(--sa-icon-neutral-subtle);
   }
 
   /* ── Interactive marks (bars, points, slices, regions) ───────────────────── */
   .ds-chart__mark {
-    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
     cursor: default;
   }
   .ds-chart__mark:hover {
@@ -221,7 +224,7 @@
     */
     min-height: 32px;
     padding: var(--sa-padding-4) var(--sa-padding-12);
-    border: 1px solid var(--sa-border-brand-primary-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-brand-primary-base);
     border-radius: var(--sa-shape-full);
     /*
       ON IS SELECTED, NOT MERELY FILLED.
@@ -240,8 +243,8 @@
     background-color: var(--sa-bg-brand-primary-base);
     cursor: pointer;
     transition:
-      background-color 160ms ease-out,
-      border-color 160ms ease-out;
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   /*
@@ -323,7 +326,8 @@
   }
 
   .ds-chart__scale-end {
-    line-height: 1;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
   }
 
   .ds-chart__ramp {
@@ -393,27 +397,27 @@
     color: var(--sa-text-neutral-base);
   }
   .ds-chart__legend-pct {
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
   }
 
   /* ── Tooltip ─────────────────────────────────────────────────────────────── */
   .ds-chart__tooltip {
     position: absolute;
-    z-index: 10;
+    z-index: var(--sa-z-dropdown);
     transform: translate(-50%, calc(-100% - 12px));
     padding: var(--sa-padding-8) var(--sa-padding-12);
     border-radius: var(--sa-shape-6);
     background: var(--sa-chart-tooltipBg);
     color: var(--sa-chart-tooltipInk);
     font-size: var(--sa-type-body-3-size);
-    line-height: 1.35;
+    line-height: var(--sa-type-body-3-lh);
     white-space: nowrap;
     pointer-events: none;
     box-shadow: var(--sa-elevation-modal);
   }
   .ds-chart__tooltip-title {
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
   .ds-chart__tooltip-row {
     display: flex;
@@ -429,12 +433,16 @@
 
   /* ── Progress + gauge centre text ────────────────────────────────────────── */
   .ds-chart__center-value {
-    font-size: 22px;
-    font-weight: 700;
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    /* 700, not 600: this is a KPI numeral, not a heading. */
+    font-weight: var(--sa-font-weight-bold);
+    font-variant-numeric: tabular-nums;
     fill: var(--sa-icon-neutral-base);
   }
   .ds-chart__center-sub {
-    font-size: 11px;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
     fill: var(--sa-icon-neutral-subtle);
   }
 
@@ -442,7 +450,7 @@
   .ds-chart__region {
     stroke: var(--sa-chart-regionStroke);
     stroke-width: 0.5;
-    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
     cursor: default;
   }
   .ds-chart__region:hover {
@@ -509,11 +517,11 @@
   }
   .ds-progress__label {
     color: var(--sa-text-neutral-base);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
   }
   .ds-progress__value {
     color: var(--sa-text-neutral-subtle);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     font-variant-numeric: tabular-nums;
   }
   .ds-progress__track {
@@ -599,14 +607,14 @@
   }
   .ds-funnel__value {
     font-size: var(--sa-type-body-3-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
     font-variant-numeric: tabular-nums;
   }
 
   /* ── Heatmap ─────────────────────────────────────────────────────────────── */
   .ds-chart__cell {
-    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
   .ds-chart__cell:hover {
     opacity: 0.82;
@@ -659,7 +667,7 @@
     display: block;
     width: 100%;
     height: 100%;
-    border-bottom: 1px solid var(--sa-chart-grid);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-chart-grid);
     background-image: repeating-linear-gradient(
       to right,
       var(--sa-chart-regionEmpty) 0 8%,
@@ -675,7 +683,7 @@
     50% { opacity: 1; }
   }
   .ds-chart__retry {
-    border: 1px solid var(--sa-border-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-8);
     background: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-base);
@@ -683,7 +691,7 @@
     font: inherit;
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     cursor: pointer;
     /* 2.5.8 Target Size (Minimum) is 24; this clears it with room for a coarse pointer. */
     min-height: 32px;
@@ -731,7 +739,7 @@
     background: transparent;
     color: var(--sa-text-brand-primary-bolder);
     font-size: var(--sa-type-body-3-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-decoration: underline;
     text-underline-offset: 0.2em;
     cursor: pointer;
@@ -768,17 +776,112 @@
   .ds-chart__table th,
   .ds-chart__table td {
     padding: var(--sa-padding-4) var(--sa-padding-8);
-    border-block-end: 1px solid var(--sa-border-neutral-subtle);
+    border-block-end: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     text-align: start;
     white-space: nowrap;
   }
 
   .ds-chart__table th {
     color: var(--sa-text-neutral-bolder);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-chart__table td {
     color: var(--sa-text-neutral-base);
+  }
+
+  /* ── Reference line: a target, an average, a ceiling ─────────────────────
+     Dashed in the axis ink so it is never mistaken for a series. */
+  .ds-chart__target {
+    stroke: var(--sa-chart-axis);
+    stroke-width: 1.5;
+    stroke-dasharray: 5 4;
+    fill: none;
+  }
+  .ds-chart__target-label {
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-label-3-size);
+    font-weight: 600;
+    fill: var(--sa-chart-axis);
+  }
+
+  /* ── A withheld figure: a hatched stub, never a zero-height bar ──────────
+     The stub keeps the category's place on the axis; the hatch says "there is
+     no figure here", which a gap could not. */
+  .ds-chart__mark--withheld {
+    fill: none;
+    stroke: var(--sa-chart-axis);
+    stroke-width: 1;
+    stroke-dasharray: 2 2;
+  }
+
+  /* ── Progress: target tick, scale row, status tones, compact ────────────── */
+  .ds-progress__track {
+    position: relative;
+  }
+  .ds-progress__target {
+    position: absolute;
+    top: -2px;
+    bottom: -2px;
+    width: 2px;
+    margin-left: -1px;
+    background-color: var(--sa-chart-axis);
+    border-radius: var(--sa-shape-full);
+  }
+  .ds-progress__scale {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--sa-padding-4);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    color: var(--sa-text-neutral-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+  .ds-progress__fill--neutral { background-color: var(--sa-chart-cat-1); }
+  .ds-progress__fill--info    { background-color: var(--sa-text-status-info-base); }
+  .ds-progress__fill--success { background-color: var(--sa-text-status-success-base); }
+  .ds-progress__fill--warning { background-color: var(--sa-text-status-warning-base); }
+  .ds-progress__fill--danger  { background-color: var(--sa-text-status-error-base); }
+
+  /* ── Print — government charts get printed and PDF'd ─────────────────────
+     Tooltips and the table toggle go; the screen-reader table becomes the
+     printed table, with its header repeating across pages; the plot keeps its
+     ink. `.claude/rules/data-state-completeness.md` and the visualisation spec
+     §07 both ask for exactly this. */
+  @media print {
+    .ds-chart__tooltip,
+    .ds-chart__tabletoggle,
+    .ds-chart__retry { display: none !important; }
+    .ds-chart { break-inside: avoid; }
+    .ds-chart__svg,
+    .ds-chart__mark,
+    .ds-progress__fill,
+    /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- `exact` is a keyword, not a colour */
+    .ds-funnel__bar { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .ds-chart > table.ds-sr-only {
+      position: static;
+      width: 100%;
+      height: auto;
+      margin: var(--sa-padding-12) 0 0;
+      overflow: visible;
+      clip: auto;
+      white-space: normal;
+      border-collapse: collapse;
+      font-size: var(--sa-type-body-3-size);
+    }
+    .ds-chart > table.ds-sr-only caption {
+      text-align: start;
+      font-weight: 600;
+      padding-block-end: var(--sa-padding-4);
+    }
+    .ds-chart > table.ds-sr-only thead { display: table-header-group; }
+    .ds-chart > table.ds-sr-only th,
+    .ds-chart > table.ds-sr-only td {
+      padding: var(--sa-padding-4) var(--sa-padding-8);
+      border-block-end: 1px solid var(--sa-border-neutral-subtle);
+      text-align: start;
+    }
+    .ds-chart__skeleton-bars,
+    .ds-progress__track--indeterminate { animation: none; }
   }
 }

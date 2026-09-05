@@ -607,153 +607,161 @@ export const tokens = {
       "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace",
       "icon": "\"Material Symbols Rounded\", sans-serif"
     },
-    "size": {
-      "11": "0.6875rem",
-      "12": "0.75rem",
-      "14": "0.875rem",
-      "16": "1rem",
-      "20": "1.25rem",
-      "22": "1.375rem",
-      "48": "3rem"
-    },
     "lineHeight": {
-      "16": "1rem",
-      "20": "1.25rem",
-      "24": "1.5rem",
-      "28": "1.75rem",
-      "56": "3.5rem",
-      "devanagari": "1.7"
+      "devanagariOffset": "0.2"
     },
     "role": {
       "display": {
         "1": {
           "size": "80px",
           "lh": "88px",
-          "para": "32px"
+          "para": "32px",
+          "lhDevanagari": "104px"
         },
         "2": {
           "size": "72px",
           "lh": "80px",
-          "para": "32px"
+          "para": "32px",
+          "lhDevanagari": "96px"
         },
         "3": {
           "size": "64px",
           "lh": "72px",
-          "para": "24px"
+          "para": "24px",
+          "lhDevanagari": "88px"
         },
         "4": {
           "size": "56px",
           "lh": "64px",
-          "para": "24px"
+          "para": "24px",
+          "lhDevanagari": "76px"
         },
         "5": {
           "size": "48px",
           "lh": "56px",
-          "para": "20px"
+          "para": "20px",
+          "lhDevanagari": "68px"
         },
         "6": {
           "size": "40px",
           "lh": "48px",
-          "para": "20px"
+          "para": "20px",
+          "lhDevanagari": "56px"
         }
       },
       "headline": {
         "1": {
           "size": "40px",
           "lh": "48px",
-          "para": "24px"
+          "para": "24px",
+          "lhDevanagari": "56px"
         },
         "2": {
           "size": "32px",
           "lh": "40px",
-          "para": "24px"
+          "para": "24px",
+          "lhDevanagari": "48px"
         },
         "3": {
           "size": "28px",
-          "lh": "32px",
-          "para": "20px"
+          "lh": "36px",
+          "para": "20px",
+          "lhDevanagari": "44px"
         },
         "4": {
           "size": "24px",
-          "lh": "28px",
-          "para": "20px"
+          "lh": "32px",
+          "para": "20px",
+          "lhDevanagari": "40px"
         },
         "5": {
           "size": "20px",
-          "lh": "24px",
-          "para": "16px"
+          "lh": "28px",
+          "para": "16px",
+          "lhDevanagari": "32px"
         },
         "6": {
           "size": "16px",
-          "lh": "20px",
-          "para": "16px"
+          "lh": "24px",
+          "para": "16px",
+          "lhDevanagari": "28px"
         }
       },
       "title": {
         "1": {
           "size": "22px",
           "lh": "28px",
-          "para": "20px"
+          "para": "20px",
+          "lhDevanagari": "36px"
         },
         "2": {
           "size": "16px",
           "lh": "24px",
-          "para": "16px"
+          "para": "16px",
+          "lhDevanagari": "28px"
         },
         "3": {
           "size": "14px",
           "lh": "20px",
-          "para": "16px"
+          "para": "16px",
+          "lhDevanagari": "24px"
         }
       },
       "body": {
         "1": {
           "size": "16px",
           "lh": "24px",
-          "para": "16px"
+          "para": "16px",
+          "lhDevanagari": "28px"
         },
         "2": {
           "size": "14px",
           "lh": "20px",
-          "para": "12px"
+          "para": "12px",
+          "lhDevanagari": "24px"
         },
         "3": {
           "size": "12px",
           "lh": "16px",
-          "para": "12px"
+          "para": "12px",
+          "lhDevanagari": "20px"
         }
       },
       "label": {
         "1": {
           "size": "14px",
           "lh": "20px",
-          "para": "12px"
+          "para": "12px",
+          "lhDevanagari": "24px"
         },
         "2": {
           "size": "12px",
           "lh": "16px",
-          "para": "8px"
+          "para": "8px",
+          "lhDevanagari": "20px"
         },
         "3": {
-          "size": "11px",
+          "size": "12px",
           "lh": "16px",
-          "para": "8px"
+          "para": "8px",
+          "lhDevanagari": "20px"
         }
       }
     },
     "tracking": {
       "display": {
-        "1": "0px",
-        "2": "0px",
-        "3": "0px",
-        "4": "0px",
-        "5": "0px",
+        "1": "-1.2px",
+        "2": "-1.08px",
+        "3": "-0.64px",
+        "4": "-0.56px",
+        "5": "-0.24px",
         "6": "0px"
       },
       "heading": "0px",
       "title": "0px",
       "body": "0px",
-      "label": "0px"
+      "label": "0px",
+      "caps": "0.72px"
     },
     "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif",
     "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
@@ -775,19 +783,44 @@ export const tokens = {
     "sm": "0 4px 6px -1px rgba(30, 33, 36, 0.10), 0 2px 4px -2px rgba(30, 33, 36, 0.06)",
     "md": "0 8px 12px -3px rgba(30, 33, 36, 0.09), 0 3px 5px -2px rgba(30, 33, 36, 0.05)",
     "lg": "0 12px 16px -4px rgba(30, 33, 36, 0.08), 0 4px 6px -2px rgba(30, 33, 36, 0.03)",
-    "xl": "0 24px 48px -12px rgba(30, 33, 36, 0.18)"
+    "xl": "0 24px 48px -12px rgba(30, 33, 36, 0.18)",
+    "inset": "inset 0 1px 2px 0 rgba(30, 33, 36, 0.08)"
   },
   "motion": {
     "duration": {
-      "fast": "150ms",
-      "base": "250ms",
-      "slow": "400ms"
+      "0": "0ms",
+      "50": "50ms",
+      "100": "100ms",
+      "150": "150ms",
+      "200": "200ms",
+      "250": "250ms",
+      "300": "300ms",
+      "400": "400ms",
+      "500": "500ms",
+      "700": "700ms"
     },
     "easing": {
-      "out": "cubic-bezier(0, 0, 0.2, 1)",
-      "in": "cubic-bezier(0.4, 0, 1, 1)",
-      "inOut": "cubic-bezier(0.4, 0, 0.2, 1)",
-      "outStrong": "cubic-bezier(0.22, 1, 0.36, 1)"
+      "linear": "cubic-bezier(0, 0, 1, 1)",
+      "accelerate": "cubic-bezier(0.4, 0, 1, 1)",
+      "decelerate": "cubic-bezier(0, 0, 0.2, 1)",
+      "standard": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "emphasized": "cubic-bezier(0.22, 1, 0.36, 1)"
+    },
+    "instant": {
+      "duration": "0ms",
+      "easing": "cubic-bezier(0, 0, 1, 1)"
+    },
+    "hover": {
+      "duration": "150ms",
+      "easing": "cubic-bezier(0, 0, 0.2, 1)"
+    },
+    "press": {
+      "duration": "150ms",
+      "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+    },
+    "focus": {
+      "duration": "0ms",
+      "easing": "cubic-bezier(0, 0, 1, 1)"
     },
     "enter": {
       "duration": "250ms",
@@ -797,6 +830,14 @@ export const tokens = {
       "duration": "150ms",
       "easing": "cubic-bezier(0.4, 0, 1, 1)"
     },
+    "expand": {
+      "duration": "250ms",
+      "easing": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    "collapse": {
+      "duration": "200ms",
+      "easing": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
     "emphasis": {
       "duration": "400ms",
       "easing": "cubic-bezier(0.4, 0, 0.2, 1)"
@@ -805,9 +846,18 @@ export const tokens = {
       "duration": "400ms",
       "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
     },
-    "press": {
-      "duration": "150ms",
-      "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+    "page": {
+      "duration": "300ms",
+      "easing": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    "loading": {
+      "spin": "1000ms",
+      "pulse": "700ms",
+      "easing": "cubic-bezier(0, 0, 1, 1)"
+    },
+    "stagger": {
+      "step": "45ms",
+      "max": 8
     }
   },
   "border": {
@@ -828,7 +878,8 @@ export const tokens = {
       "inverse": {
         "default": "#ffffff",
         "subtle": "#ffffff"
-      }
+      },
+      "selected": "#0373df"
     },
     "brand": {
       "primary": {
@@ -869,18 +920,6 @@ export const tokens = {
     "80": "0.8",
     "88": "0.88",
     "100": "1"
-  },
-  "z": {
-    "dropdown": "1000",
-    "sticky": "1020",
-    "fixed": "1030",
-    "offcanvas": "1040",
-    "modal": {
-      "backdrop": "1050",
-      "base": "1060"
-    },
-    "popover": "1070",
-    "toast": "1090"
   },
   "size": {
     "8": "0.5rem",
@@ -960,12 +999,17 @@ export const tokens = {
     }
   },
   "leading": {
-    "devanagari": "1.7"
+    "devanagari": "28px"
   },
   "bg": {
     "neutral": {
       "base": "#ffffff",
       "subtler": "#eef0f3",
+      "hover": "#eef0f3",
+      "active": "#dcdee1",
+      "selected": "#ecf4ff",
+      "readonly": "#eef0f3",
+      "loading": "#eef0f3",
       "subtle": "#dcdee1",
       "bold": "#c6c9cd",
       "inverse": "#0e1114",
@@ -1083,11 +1127,16 @@ export const tokens = {
   "focus": {
     "ring": "#0373df",
     "width": "2px",
-    "offset": "2px"
+    "offset": "2px",
+    "ringInner": "#ffffff"
   },
   "overlay": {
     "neutral": {
-      "boldest": "#1e2124"
+      "boldest": "#1e2124",
+      "hover": "#1e2124",
+      "active": "#1e2124",
+      "focus": "#1e2124",
+      "drag": "#1e2124"
     },
     "brand": {
       "hover": "#ffffff",
@@ -1243,7 +1292,12 @@ export const tokens = {
         "base": "#1e2124",
         "subtler": "#1e2124",
         "subtle": "#1e2124",
-        "bold": "#1e2124"
+        "bold": "#1e2124",
+        "hover": "#1e2124",
+        "active": "#1e2124",
+        "selected": "#1e2124",
+        "readonly": "#1e2124",
+        "loading": "#1e2124"
       },
       "brand": {
         "primary": {
@@ -1317,6 +1371,10 @@ export const tokens = {
       "48": "3rem",
       "64": "4rem"
     },
+    "fill": {
+      "outline": 0,
+      "filled": 1
+    },
     "neutral": {
       "base": "#1e2124",
       "subtle": "#3a3d41",
@@ -1350,6 +1408,7 @@ export const tokens = {
     }
   },
   "container": {
+    "measure": "36rem",
     "sm": "540px",
     "md": "720px",
     "lg": "960px",
@@ -1393,7 +1452,9 @@ export const tokens = {
       "minHeight": "118px"
     },
     "sidebar": {
-      "width": "300px"
+      "width": "300px",
+      "collapsedWidth": "88px",
+      "flyoutWidth": "240px"
     },
     "login": {
       "hero": {
@@ -1424,12 +1485,40 @@ export const tokens = {
     "raised": "0 4px 6px -1px rgba(30, 33, 36, 0.10), 0 2px 4px -2px rgba(30, 33, 36, 0.06)",
     "dropdown": "0 8px 12px -3px rgba(30, 33, 36, 0.09), 0 3px 5px -2px rgba(30, 33, 36, 0.05)",
     "modal": "0 12px 16px -4px rgba(30, 33, 36, 0.08), 0 4px 6px -2px rgba(30, 33, 36, 0.03)",
-    "toast": "0 24px 48px -12px rgba(30, 33, 36, 0.18)"
+    "toast": "0 24px 48px -12px rgba(30, 33, 36, 0.18)",
+    "inset": "inset 0 1px 2px 0 rgba(30, 33, 36, 0.08)"
   },
   "control": {
     "radius": "8px",
     "border": {
       "width": "1px"
+    },
+    "selection": {
+      "size": {
+        "sm": "1rem",
+        "md": "1.25rem",
+        "lg": "1.5rem"
+      },
+      "glyph": {
+        "sm": "0.75rem",
+        "md": "1rem",
+        "lg": "1.25rem"
+      },
+      "dot": {
+        "sm": "0.5rem",
+        "md": "10px",
+        "lg": "0.75rem"
+      },
+      "border": {
+        "width": "2px"
+      },
+      "radius": "4px",
+      "gap": "8px"
+    },
+    "height": {
+      "sm": "2rem",
+      "md": "2.5rem",
+      "lg": "3rem"
     }
   },
   "shape": {
@@ -1466,7 +1555,32 @@ export const tokens = {
     "72": "0.72",
     "80": "0.8",
     "88": "0.88",
-    "100": "1"
+    "100": "1",
+    "disabled": "0.48",
+    "muted": "0.64"
+  },
+  "z": {
+    "base": 0,
+    "raised": 1,
+    "dropdown": 100,
+    "sticky": 200,
+    "fixed": 300,
+    "overlay": 400,
+    "modal": 500,
+    "popover": 600,
+    "toast": 700,
+    "tooltip": 800,
+    "rail": 1000,
+    "launcher": 1010,
+    "statutory": 999999,
+    "demo": 2147483000,
+    "top": 2147483001
+  },
+  "aspect": {
+    "square": 1,
+    "video": 1.777778,
+    "photo": 1.333333,
+    "portrait": 0.75
   },
   "button": {
     "primary": {
@@ -1501,6 +1615,23 @@ export const tokens = {
   },
   "divider": {
     "width": "1px"
+  },
+  "avatar": {
+    "size": {
+      "xs": "1.5rem",
+      "sm": "2rem",
+      "md": "2.5rem",
+      "lg": "3rem"
+    }
+  },
+  "chip": {
+    "radius": "8px"
+  },
+  "dialog": {
+    "radius": "12px"
+  },
+  "tooltip": {
+    "radius": "6px"
   },
   "action": {
     "brand": {

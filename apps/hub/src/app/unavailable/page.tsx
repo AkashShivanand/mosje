@@ -42,18 +42,18 @@ export default async function UnavailablePage({
           <Icon name="visibility_off" />
         </span>
 
-        <h1 className="mt-6 text-2xl font-bold tracking-tight text-ink">
+        <h1 className="mt-6 text-headline-1 text-ink">
           {name ? `${name} is not currently available` : "Not currently available"}
         </h1>
 
-        <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+        <p className="mt-3 text-body-2 text-ink-muted">
           This part of the estate has been switched off for now. It has not been
           removed — the link will start working again when it is switched back
           on.
         </p>
 
         {isAdmin && (
-          <p className="mt-4 rounded-lg border border-dashed border-border bg-surface-muted px-4 py-3 text-xs leading-relaxed text-ink-muted">
+          <p className="mt-4 rounded-lg border border-dashed border-border bg-surface-muted px-4 py-3 text-body-3 text-ink-muted">
             You are signed in as an administrator, so you can still open this
             destination directly. This page is what everyone else sees. Change
             it under{" "}
@@ -70,14 +70,14 @@ export default async function UnavailablePage({
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
             href="/portals"
-            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-on-primary transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-label-1 font-semibold text-on-primary transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             Browse the portals
             <Icon name="arrow_forward" size={16} aria-hidden="true" />
           </Link>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-sm font-semibold text-ink transition-colors hover:border-border-strong hover:bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-4 py-2.5 text-label-1 font-semibold text-ink transition-colors hover:border-border-strong hover:bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             Back to the estate
           </Link>

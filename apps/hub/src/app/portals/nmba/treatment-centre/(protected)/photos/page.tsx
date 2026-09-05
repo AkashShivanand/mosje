@@ -349,15 +349,9 @@ function GalleryCard({
 
         {/* Selection checkbox */}
         {selectMode && (
-          <label className="absolute left-2 top-2 z-10 flex cursor-pointer items-center justify-center rounded-md bg-white/90 p-0.5 shadow">
-            <input
-              type="checkbox"
-              checked={selected}
-              onChange={onToggleSelect}
-              className="h-4 w-4 accent-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1"
-              aria-label={`Select ${photo.caption}`}
-            />
-          </label>
+          <span className="absolute left-2 top-2 z-10 flex items-center justify-center rounded-md bg-white/90 p-0.5 shadow">
+            <Checkbox size="sm" hideLabel label={`Select ${photo.caption}`} checked={selected} onChange={onToggleSelect} />
+          </span>
         )}
 
         {/* Type + featured chips */}
@@ -369,7 +363,7 @@ function GalleryCard({
             </span>
           )}
           {isVideo && (
-            <span className="flex items-center gap-1 rounded-full bg-black/65 px-2 py-0.5 text-[10px] font-semibold text-white shadow">
+            <span className="flex items-center gap-1 rounded-full bg-black/65 px-2 py-0.5 text-label-2 font-semibold text-white shadow">
               <Icon name="videocam" size={12} /> Video
             </span>
           )}
@@ -388,10 +382,10 @@ function GalleryCard({
 
       {/* Caption + meta */}
       <figcaption className="flex flex-1 flex-col gap-1.5 p-3">
-        <p className="line-clamp-2 text-sm font-semibold text-ink" title={photo.caption}>{photo.caption}</p>
+        <p className="line-clamp-2 text-title-3 text-ink" title={photo.caption}>{photo.caption}</p>
         <div className="mt-auto flex items-center justify-between gap-2 pt-1">
           <Badge status={CATEGORY_TONE[photo.category]} size="sm">{photo.category}</Badge>
-          <span className="shrink-0 text-[11px] text-ink-hint">{fmtDate(photo.date)}</span>
+          <span className="shrink-0 text-body-3 text-ink-hint">{fmtDate(photo.date)}</span>
         </div>
       </figcaption>
     </figure>
@@ -417,13 +411,7 @@ function GalleryRow({
       }`}
     >
       {selectMode && (
-        <input
-          type="checkbox"
-          checked={selected}
-          onChange={onToggleSelect}
-          className="ml-1 h-4 w-4 shrink-0 accent-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1"
-          aria-label={`Select ${photo.caption}`}
-        />
+        <Checkbox className="ml-1 shrink-0" size="sm" hideLabel label={`Select ${photo.caption}`} checked={selected} onChange={onToggleSelect} />
       )}
       <button
         type="button"
@@ -442,7 +430,7 @@ function GalleryRow({
       </button>
 
       <div className="min-w-0 flex-1">
-        <p className="flex items-center gap-1.5 truncate text-sm font-semibold text-ink" title={photo.caption}>
+        <p className="flex items-center gap-1.5 truncate text-title-3 text-ink" title={photo.caption}>
           {photo.featured && (
             <>
               <Icon name="star" size={14} className="shrink-0 text-yellow" fill aria-hidden />
@@ -451,7 +439,7 @@ function GalleryRow({
           )}
           {photo.caption}
         </p>
-        <div className="mt-1 flex flex-wrap items-center gap-2 text-[11px] text-ink-hint">
+        <div className="mt-1 flex flex-wrap items-center gap-2 text-body-3 text-ink-hint">
           <Badge status={CATEGORY_TONE[photo.category]} size="sm">{photo.category}</Badge>
           <span>{fmtDate(photo.date)}</span>
           {photo.uploadedBy && <span className="hidden sm:inline">· {photo.uploadedBy}</span>}
@@ -478,8 +466,8 @@ function StatTile({ icon: iconName, label, value }: { icon: string; label: strin
         <Icon name={iconName} size={20} />
       </span>
       <div className="min-w-0">
-        <p className="text-lg font-bold leading-none text-navy">{value}</p>
-        <p className="mt-1 truncate text-[11px] font-medium text-ink-muted">{label}</p>
+        <p className="text-headline-4 tabular-nums text-navy">{value}</p>
+        <p className="mt-1 truncate text-label-2 text-ink-muted">{label}</p>
       </div>
     </div>
   );
@@ -624,15 +612,15 @@ export default function CenterPhotosPage() {
             <Icon name="collections" size={20} />
           </span>
           <div>
-            <h1 className="text-lg font-bold leading-tight">Centre Photo Gallery</h1>
-            <p className="text-xs text-white/70">{session.centerName}</p>
+            <h1 className="text-headline-1">Centre Photo Gallery</h1>
+            <p className="text-body-3 text-white/70">{session.centerName}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
           <Button
             appearance={selectMode ? "inverse" : "inverseOutlined"}
             onClick={() => { setSelectMode((s) => !s); setSelectedIds(new Set()); }}
-            className="inline-flex items-center gap-2 text-sm font-semibold"
+            className="inline-flex items-center gap-2"
           >
             {selectMode ? <><Icon name="close" size={16} /> Done</> : <><Icon name="check_box" size={16} /> Select</>}
           </Button>
@@ -642,7 +630,7 @@ export default function CenterPhotosPage() {
             <Button
               appearance="inverse"
               onClick={() => setUploadOpen(true)}
-              className="inline-flex items-center gap-2 text-sm font-semibold"
+              className="inline-flex items-center gap-2"
             >
               <Icon name="add" size={16} /> Upload Photos
             </Button>
@@ -745,18 +733,18 @@ export default function CenterPhotosPage() {
             <button
               type="button"
               onClick={toggleSelectAll}
-              className="text-sm font-semibold text-navy hover:underline"
+              className="text-label-1 font-semibold text-navy hover:underline"
             >
               {allVisibleSelected ? "Clear selection" : "Select all"}
             </button>
-            <span className="text-sm text-ink-muted">{selectedIds.size} selected</span>
+            <span className="text-body-2 text-ink-muted">{selectedIds.size} selected</span>
           </div>
           <div className="flex items-center gap-2">
             <Button
               appearance="outlined"
               disabled={selectedIds.size === 0}
               onClick={() => { visible.filter((p) => selectedIds.has(p.id)).forEach(download); }}
-              className="inline-flex items-center gap-1.5 text-sm"
+              className="inline-flex items-center gap-1.5"
             >
               <Icon name="download" size={16} /> Download
             </Button>
@@ -764,7 +752,7 @@ export default function CenterPhotosPage() {
               variant="danger"
               disabled={selectedIds.size === 0}
               onClick={() => setDeleteIds([...selectedIds])}
-              className="inline-flex items-center gap-1.5 text-sm"
+              className="inline-flex items-center gap-1.5"
             >
               <Icon name="delete" size={16} /> Delete
             </Button>
@@ -806,7 +794,7 @@ export default function CenterPhotosPage() {
       )}
 
       {visible.length > 0 && (
-        <p className="text-xs text-ink-hint">
+        <p className="text-body-3 text-ink-hint">
           Showing {visible.length} of {photos.length} item{photos.length !== 1 ? "s" : ""}
           {activeCategory !== "All" ? ` in ${activeCategory}` : ""}. Uploads are held in this session only (demo).
         </p>
@@ -834,7 +822,7 @@ export default function CenterPhotosPage() {
           </>
         }
       >
-        <p className="text-sm text-ink">
+        <p className="text-body-2 text-ink">
           {deleteIds && deleteIds.length > 1
             ? <>Delete <strong>{deleteIds.length}</strong> selected items from the gallery? This cannot be undone.</>
             : <>Delete this item from the gallery? This action cannot be undone.</>}

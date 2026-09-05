@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { AccountPrompt, AuthDivider, ConsentLine, SSOButton } from "./auth-parts";
+import { AccountPrompt, AuthDivider, ConsentLine, MaskedContactRow, ResendTimer, SSOButton } from "./auth-parts";
+import type { DemoFillDetail } from "../../demo/demo-fab";
 // DS Audit: every control below already existed in the barrel and every one was
 // hand-rolled in this file instead — 77 arbitrary-value Tailwind classes wrapping
 // `var(--sa-*)`, 8 raw inputs, 8 raw labels, 6 raw buttons and a raw select, with
@@ -21,7 +22,7 @@ import { Input } from "../forms/input";
 import { OtpInput } from "../forms/otp-input";
 import { PasswordInput } from "../forms/password-input";
 import { Select } from "../forms/select";
-import { Tabs } from "../navigation/tabs";
+import { TabPanel, Tabs } from "../navigation/tabs";
 import "./portal-login-template.css";
 import { PortalLoginShell, PortalLoginTab } from "./portal-login-shell";
 import { portalLoginUrl, roleFromUrl } from "./portal-login-url";
@@ -105,6 +106,27 @@ export interface PortalLoginTemplateProps {
    * first-level headings and a screen-reader user loses the outline.
    */
   headingLevel?: 1 | 2 | 3;
+}
+
+/** The credential fields, as the tabpanel of the method tabs when those are drawn. */
+function ModeFields({
+  asPanel,
+  idBase,
+  tabId,
+  children,
+}: {
+  asPanel: boolean;
+  idBase: string;
+  tabId: string;
+  children: React.ReactNode;
+}): React.JSX.Element {
+  return asPanel ? (
+    <TabPanel idBase={idBase} tabId={tabId}>
+      {children}
+    </TabPanel>
+  ) : (
+    <>{children}</>
+  );
 }
 
 export function PortalLoginTemplate({
@@ -191,20 +213,6 @@ export function PortalLoginTemplate({
   const [password, setPassword] = React.useState("");
   const [mobile, setMobile] = React.useState("");
   const [otp, setOtp] = React.useState("");
-  const [captchaInput, setCaptchaInput] = React.useState("");
-
-  // Captcha code generator
-  const [captchaCode, setCaptchaCode] = React.useState("7K9P2");
-  const generateCaptcha = React.useCallback(() => {
-    const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
-    let code = "";
-    for (let i = 0; i < 5; i++) {
-      code += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    setCaptchaCode(code);
-    setCaptchaInput("");
-  }, []);
-
   // Resolved PER ROLE, portal default second, off last. The handoff asks a
   // Garima Greh organisation for a captcha and asks the same portal's citizen
   // for none, so the answer belongs to the tab rather than to the portal.
@@ -232,9 +240,12 @@ export function PortalLoginTemplate({
    * The mode defaults to `invisible`: the server decides from a self-hosted
    * proof-of-work token, a honeypot and rate limiting, and the citizen sees
    * nothing unless it fails. The distorted-characters test this file used to draw
-   * is `BotCheck`'s deprecated `challenge` mode — bots solve the audio form of it
-   * over 85% of the time while only 31.2% of audio challenges get three-person
-   * agreement among people, so it protected nothing and excluded many.
+   * no longer exists on the estate's recommended path at all: bots solve the audio
+   * form of it over 85% of the time while only 31.2% of audio challenges get
+   * three-person agreement among people, so it protected nothing and excluded
+   * many. `BotCheck` was cut back to `invisible` and `checkbox` on 2026-09-03; a
+   * legacy backend that can issue nothing else reaches for the deprecated
+   * `CaptchaField` directly and records why in the change that does it.
    */
   /*
    * The check runs REAL proof-of-work in the browser — SHA-256 over a random
@@ -259,16 +270,30 @@ export function PortalLoginTemplate({
         status={check.status}
         helpHref={botCheckHelpHref}
         onVerify={check.solve}
-        challenge={{ type: "text", characters: captchaCode }}
-        value={captchaInput}
-        onValueChange={setCaptchaInput}
-        onRefresh={generateCaptcha}
       />
     ) : null;
 
   // OTP resend timer state
   const [otpTimer, setOtpTimer] = React.useState(30);
   const [otpSent, setOtpSent] = React.useState(false);
+
+  /*
+   * DemoDock prefill. Every hand-built login on the estate listened for this
+   * event itself; a portal that adopts the template lost the demo console's
+   * "Use" button until this existed. The id lands in whichever identifier the
+   * active mode reads — the username field, or the mobile field for OTP.
+   */
+  React.useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<DemoFillDetail>).detail;
+      if (!detail) return;
+      setUsername(detail.id);
+      setPassword(detail.password);
+      setMobile(detail.id.replace(/\D/g, "").slice(-10));
+    };
+    window.addEventListener("demo:fill", handler);
+    return () => window.removeEventListener("demo:fill", handler);
+  }, []);
 
   React.useEffect(() => {
     if (otpSent && otpTimer > 0) {
@@ -317,6 +342,13 @@ export function PortalLoginTemplate({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // The OTP form is two steps, and the primary action IS the first step: the
+    // handoff (`56693:4742`) draws one full-width "Send OTP" under the
+    // identifier, then the masked row, the code boxes and "Verify and Log In".
+    if (activeAuthMode === "otp" && !otpSent) {
+      handleSendOtp();
+      return;
+    }
     if (!onSubmit) return;
 
     onSubmit({
@@ -330,7 +362,6 @@ export function PortalLoginTemplate({
         pin: activeAuthMode === "pin" ? password : undefined,
         mobile,
         otp,
-        captcha: captchaInput,
       },
       // The proof-of-work receipt, where a check ran. A server verifies this;
       // see `useBotCheck` for what it must check and why a token it did not
@@ -343,10 +374,11 @@ export function PortalLoginTemplate({
   const tabs: PortalLoginTab[] = config.roles.map((r) => ({
     label: r.label,
     // A real link, so middle-click and "copy link address" both land on this tab.
-    href: portalLoginUrl(
-      typeof window === "undefined" ? "" : window.location.pathname,
-      r.id,
-    ),
+    // RELATIVE — a bare query string resolves against the page's own path in
+    // every browser, so the server and the client render the same href. It used
+    // to read `window.location.pathname` on the client and "" on the server,
+    // which is a hydration mismatch on every page that uses the template.
+    href: portalLoginUrl("", r.id),
     active: r.id === activeRoleId,
     onClick: (e) => handleRoleChange(r.id, e),
   }));
@@ -440,7 +472,7 @@ export function PortalLoginTemplate({
                 options={authOptions.map((o) => ({
                   value: o.mode,
                   label: o.label,
-                  hint: o.description,
+                  description: o.description,
                 }))}
               />
             )}
@@ -465,9 +497,19 @@ export function PortalLoginTemplate({
           </div>
         )}
 
+        {/* The mode's fields are the tab panel the method tabs point at. Without
+            it every tab's aria-controls named an id that did not exist — axe
+            aria-valid-attr-value, critical, caught by the production build and
+            not by the dev server. Radio and dropdown selectors are not tablists
+            and get no panel. */}
+        <ModeFields
+          asPanel={authOptions.length > 1 && selectorType === "segmented"}
+          idBase={`${templateId}-method`}
+          tabId={activeAuthMode}
+        >
         {/* ── PASSWORD ─────────────────────────────────────────────────────── */}
         {activeAuthMode === "password" && (
-          <div className="space-y-3.5 pt-1">
+          <div className="space-y-4 pt-1">
             <FormField label="Username / Email / Mobile" required>
               {(control) => (
                 <Input
@@ -504,7 +546,7 @@ export function PortalLoginTemplate({
         {/* NOS is PIN-only. Same anatomy as password, so the identifier field is
             deliberately identical — only the secret and its recovery link differ. */}
         {activeAuthMode === "pin" && (
-          <div className="space-y-3.5 pt-1">
+          <div className="space-y-4 pt-1">
             <FormField label="Username / Email / Mobile" required>
               {(control) => (
                 <Input
@@ -542,7 +584,7 @@ export function PortalLoginTemplate({
             organisation record is "Pre-filled from your login / NGO-Darpan", so
             the identity arrives with the login rather than being typed later. */}
         {activeAuthMode === "darpan" && (
-          <div className="space-y-3.5 pt-1">
+          <div className="space-y-4 pt-1">
             <FormField
               label="NGO-DARPAN Unique ID"
               hint="The identifier issued by NITI Aayog, e.g. LGN/0000/0000000"
@@ -577,11 +619,18 @@ export function PortalLoginTemplate({
         )}
 
         {/* ── MOBILE OTP ───────────────────────────────────────────────────── */}
+        {/* Two steps, as the handoff draws them (`56693:4742` → `56693:5001`):
+            the identifier alone with "Send OTP" as the primary action, then the
+            masked destination with its Edit route, the six boxes, the resend
+            timer and "Verify and Log In". It used to be one step with a small
+            outlined Send button beside the field and the timer inside it — none
+            of which is in the drawing, though every part of the drawing was
+            already exported by this package. */}
         {activeAuthMode === "otp" && (
-          <div className="space-y-3.5 pt-1">
-            <FormField label="Registered Mobile Number" required>
-              {(control) => (
-                <div className="flex gap-2">
+          <div className="space-y-4 pt-1">
+            {!otpSent ? (
+              <FormField label="Registered Mobile Number" required>
+                {(control) => (
                   <Input
                     {...control}
                     type="tel"
@@ -591,47 +640,51 @@ export function PortalLoginTemplate({
                     value={mobile}
                     onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
                     placeholder="10-digit mobile number"
-                    className="flex-1"
-                  />
-                  <Button
-                    type="button"
-                    appearance="outlined"
-                    onClick={handleSendOtp}
-                    disabled={mobile.length < 10 || (otpSent && otpTimer > 0)}
-                  >
-                    {otpSent && otpTimer > 0 ? `${otpTimer}s` : otpSent ? "Resend" : "Send OTP"}
-                  </Button>
-                </div>
-              )}
-            </FormField>
-
-            {otpSent && (
-              <FormField
-                label="6-Digit Verification OTP"
-                hint={`OTP sent to +91 ${mobile}. Valid for 10 minutes.`}
-                required
-              >
-                {(control) => (
-                  <OtpInput
-                    aria-describedby={control["aria-describedby"]}
-                    invalid={control.invalid}
-                    label="One-time password"
-                    value={otp}
-                    onValueChange={setOtp}
                   />
                 )}
               </FormField>
+            ) : (
+              <>
+                <MaskedContactRow
+                  channel="phone"
+                  maskedValue={`+91 ${mobile.slice(0, 2)}\u2022\u2022\u2022\u2022${mobile.slice(-4)}`}
+                  onEdit={() => {
+                    setOtpSent(false);
+                    setOtp("");
+                  }}
+                />
+                <FormField label="Enter OTP" required>
+                  {(control) => (
+                    <OtpInput
+                      aria-describedby={control["aria-describedby"]}
+                      invalid={control.invalid}
+                      label="One-time password"
+                      value={otp}
+                      onValueChange={setOtp}
+                    />
+                  )}
+                </FormField>
+                <ResendTimer secondsRemaining={otpTimer} onResend={handleSendOtp} />
+              </>
             )}
           </div>
         )}
+        </ModeFields>
 
         {/* Additional Configurable Fields */}
         {config.extraFields}
 
         {/* Submit. Unconditional: every mode this form draws is a credential
-            form with something to submit. */}
-        <Button type="submit" loading={loading} className="mt-4 w-full">
-          Log In
+            form with something to submit. On the OTP form the same button is
+            first "Send OTP" and then "Verify and Log In" — one primary action per
+            step, never two buttons. */}
+        <Button
+          type="submit"
+          loading={loading}
+          disabled={activeAuthMode === "otp" && !otpSent && mobile.length < 10}
+          className="mt-4 w-full"
+        >
+          {activeAuthMode === "otp" ? (otpSent ? "Verify and Log In" : "Send OTP") : "Log In"}
         </Button>
 
         {/* GIGW requires the consent disclosure, and the reference carries it

@@ -1,0 +1,172 @@
+/* Brand & White-Labelling foundation — the pack, the swap and the modes, drawn.
+   Every value is a token. Mode tiles repaint through a nested data-brand island
+   (design.md §A, "Brand islands"), so no hex is typed here. */
+@layer theme, base, components, utilities;
+@layer components {
+  /* ── 01 The pack: one row per token family ─────────────────────────── */
+  .br-pack {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+  }
+  .br-pack__row {
+    display: grid;
+    grid-template-columns: 5ch minmax(0, 28ch) 1fr;
+    gap: var(--sa-inline-16);
+    align-items: baseline;
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-layer-1);
+    border: var(--sa-stroke-1) solid var(--sa-layer-border-1);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+  .br-pack__row--moves {
+    background: var(--sa-bg-brand-primary-subtler);
+    border-color: var(--sa-border-brand-primary-base);
+  }
+  .br-pack__count {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-bolder);
+    text-align: right;
+  }
+  .br-pack__path {
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-brand-primary-base);
+    overflow-wrap: anywhere;
+  }
+  .br-pack__use {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  /* ── 02 The swap: what moves beside what stays ─────────────────────── */
+  .br-swap {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--sa-inline-16);
+    align-items: start;
+  }
+  .br-swap__col {
+    padding: var(--sa-padding-16);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .br-swap__col--moves {
+    background: var(--sa-bg-brand-primary-subtler);
+  }
+  .br-swap__title {
+    margin: 0 0 var(--sa-stack-8);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+  }
+  .br-swap__col--moves .br-swap__title {
+    color: var(--sa-text-brand-primary-base);
+  }
+  .br-swap__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  /* ── 03 The modes: one tile per data-brand block, painted by its own island ── */
+  .br-modes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--sa-inline-12);
+  }
+  .br-mode {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-12);
+    border-radius: var(--sa-shape-12);
+    border: var(--sa-stroke-1) solid var(--sa-layer-border-1);
+    /* The island: these two resolve inside the tile's own data-brand block. */
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-color-text-default);
+  }
+  .br-mode--code-only {
+    border-style: dashed;
+  }
+  .br-mode__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sa-inline-12);
+  }
+  .br-mode__id {
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-brand-primary-base);
+  }
+  .br-mode__reach {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+    white-space: nowrap;
+  }
+  .br-mode__primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--sa-target-comfortable);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-color-action-primary-default);
+    color: var(--sa-color-text-onPrimary);
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+  .br-mode__status {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--sa-inline-4);
+  }
+  .br-mode__status span {
+    display: block;
+    height: var(--sa-stack-16);
+    border-radius: var(--sa-shape-4);
+  }
+  .br-mode__status .is-success { background: var(--sa-color-status-success); }
+  .br-mode__status .is-warning { background: var(--sa-color-status-warning); }
+  .br-mode__status .is-danger { background: var(--sa-color-status-danger); }
+  .br-mode__status .is-info { background: var(--sa-color-status-info); }
+  .br-mode__ink {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-color-text-default);
+  }
+
+  /* ── 04 The gate: the pairings table ───────────────────────────────── */
+  .br-gate td:last-child {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  @media (max-width: 767px) {
+    .br-pack__row {
+      grid-template-columns: 1fr;
+      gap: var(--sa-stack-4);
+    }
+    .br-pack__count {
+      text-align: left;
+    }
+  }
+}

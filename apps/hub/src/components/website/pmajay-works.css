@@ -191,7 +191,7 @@
     padding: var(--sa-padding-2) var(--sa-padding-4);
     border-radius: var(--sa-shape-4);
     color: var(--sa-text-brand-primary-base);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     cursor: pointer;
   }
 
@@ -201,13 +201,13 @@
 
   .pmw__crumb:disabled {
     color: var(--sa-text-neutral-subtle);
-    font-weight: 400;
+    font-weight: var(--sa-font-weight-regular);
     cursor: default;
   }
 
   .pmw__crumb--here {
     color: var(--sa-text-neutral-base);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     padding: var(--sa-padding-2) var(--sa-padding-4);
   }
 
@@ -262,7 +262,7 @@
     margin: 0;
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
 
@@ -520,7 +520,7 @@
     padding: 0;
     font: inherit;
     color: var(--sa-text-brand-primary-base);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-decoration: underline;
     cursor: pointer;
   }
@@ -696,8 +696,9 @@
     margin-bottom: var(--sa-stack-4);
     border-bottom: 1px solid var(--sa-border-neutral-subtle);
     font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);
   }
 
@@ -1105,7 +1106,7 @@
        padding, not the type size, is what carries it there. */
     padding-block: var(--sa-padding-4);
     font-size: var(--sa-type-body-3-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-brand-primary-base);
   }
 

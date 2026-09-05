@@ -175,7 +175,8 @@
     "layout-literal",
     "optical",
     "portal-palette",
-    "raster-canvas"
+    "raster-canvas",
+    "hindi-source"
   ],
   "minReasonChars": 12,
   "allowedLengths": [

@@ -5,7 +5,7 @@ export function Table({ className, ...props }: React.HTMLAttributes<HTMLTableEle
   return (
     <div className="overflow-x-auto">
       <table
-        className={cn("w-full border-separate border-spacing-0 text-body-3", className)}
+        className={cn("w-full border-separate border-spacing-0 text-body-2", className)}
         {...props}
       />
     </div>
@@ -21,7 +21,7 @@ export function THead({
       className={cn(
         "[&_th]:sticky [&_th]:top-0 [&_th]:z-10",
         "bg-neutral-50/90 backdrop-blur",
-        "text-label-3 uppercase tracking-[0.08em] text-ink-muted",
+        "text-label-3 uppercase text-ink-muted",
         className,
       )}
       {...props}

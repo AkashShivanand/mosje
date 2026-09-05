@@ -23,22 +23,29 @@
 //   Device            -> deliberatelyOmitted. Figma-only: in code these are CSS
 //                        breakpoints, not a prop. Pinning one would freeze the
 //                        masthead at a width and break the drawer below 1024px.
-//   State             -> deliberatelyOmitted. Figma-only. In CODE this is no longer
-//                        the lockup shrink Figma draws (brand row 100 -> 88 by hiding
-//                        the ministry line, retired 2026-08-27 after measuring 146 ->
-//                        134 on the live portal). `collapseOnScroll` now swaps the
-//                        three tiers for one 65px bar, 200 -> 65 desktop and 258 -> 57
-//                        mobile. It defaults ON wherever the header is sticky, and
-//                        `sticky` now defaults ON for every variant. The accessibility
-//                        bar still does not collapse — it scrolls away, because the
-//                        header pins at a negative offset equal to its height.
+//   State             -> deliberatelyOmitted. A scroll state, not a prop. Since
+//                        2026-09-05 the Figma `On Scroll` variants draw what the code
+//                        renders: `collapseOnScroll` swaps the three tiers for ONE
+//                        64px bar (56 on a phone) — emblem, controls, a 40px search
+//                        IconButton, the CTA — with the accessibility bar scrolled
+//                        away above it. (Until then Figma drew the retired lockup
+//                        shrink, 146 -> 134, that code dropped on 2026-08-27.) It
+//                        defaults ON wherever the header is sticky, and `sticky`
+//                        defaults ON for every variant.
+//   Menu              -> onToggleNav present. The property was published as
+//                        "Show Menu" and READ as "Show Menu" here until 2026-09-05,
+//                        while the master had long since called it "Menu" — the
+//                        parity fixture carried the stale name, so the gate agreed
+//                        with the template and both disagreed with Figma.
+//   Profile           -> `account` present (the name / email block and avatar).
 import figma from "figma";
 
 const instance = figma.selectedInstance;
 
-const showMenu = instance.getBoolean("Show Menu#55783:0");
+const showMenu = instance.getBoolean("Menu#55783:0");
 const search = instance.getBoolean("Search#2210:0");
 const login = instance.getBoolean("Login Signup#2198:4");
+const profile = instance.getBoolean("Profile#56716:0");
 
 export default {
   example: figma.code`<SiteHeader
@@ -53,7 +60,7 @@ export default {
   ${search ? figma.code`search={{ placeholder: "Search…", onSearch: (q) => router.push(\`/search?q=\${q}\`) }}` : ""}
   ${login ? figma.code`actions={<a href="/login">Login</a>}` : ""}
   cobranding={[{ src: digitalIndia, alt: "Digital India", height: 40 }]}
-  account={{ name: "…", email: "…" }}
+  ${profile ? figma.code`account={{ name: "…", email: "…" }}` : "/* Profile off — no account block */"}
   nav={NAV}
 />`,
   imports: ['import { SiteHeader } from "@mosje/design-system"'],

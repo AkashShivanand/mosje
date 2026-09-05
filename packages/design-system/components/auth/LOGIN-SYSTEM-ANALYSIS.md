@@ -395,7 +395,7 @@ The build list dropped from 12 components to 11.
 | 2 | `Auth / SSOButton` | `55438:727` | 4 |
 | 2 | `Auth / AccountPrompt` | `55438:739` | 2 |
 | 2 | `Auth / OrganisationCard` | `55439:730` | 2 |
-| 2 | `Auth / SigningIntoBar` | `55439:749` | 2 tones |
+| 2 | `Auth / SigningIntoBar` | `55439:731` | 1 — the Tone set (55439:749) was dissolved 2026-09-04; the component is the on-hero drawing |
 | 2 | `Auth / PortalList` | `55444:709` | the canonical 9 |
 | 3 | `Auth / AuthFormCard` | `55447:923` | 4 steps |
 | 3 | `Auth / PortalAuthShell` | `55450:1134` | 2 devices |

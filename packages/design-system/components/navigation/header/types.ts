@@ -88,6 +88,12 @@ export interface BrandLines {
   ministry?: string;
   /** e.g. "Department of Social Justice & Empowerment" (bold, primary line). */
   department: string;
+  /**
+   * The department's Hindi name, rendered after `department` in its own
+   * `lang="hi"` span so a screen reader voices it in Hindi and the Devanagari face
+   * applies. Keep `department` English-only — it is also the link's accessible name.
+   */
+  departmentHi?: string;
 }
 
 /** A trailing brand mark (Digital India, SAMAVESH, …). */

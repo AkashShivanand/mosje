@@ -202,6 +202,7 @@ export function IndiaBubbleMap({
       className={className}
       canvasRef={canvasRef}
       overlay={<ChartTooltip tip={tip} />}
+      onDismiss={hide}
       table={{
         columns: ["State", title],
         rows: [...data].sort((a, b) => b.value - a.value).map((d) => [d.state, d.value]),

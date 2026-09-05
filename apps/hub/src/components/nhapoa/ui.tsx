@@ -21,7 +21,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-navy/40 disabled:opacity-60",
+        "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-label-1 font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-navy/40 disabled:opacity-60",
         variants[variant],
         className,
       )}
@@ -44,7 +44,7 @@ export function StatusPill({ status }: { status: CaseStatus }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold",
+        "inline-flex items-center rounded-full px-3 py-1 text-label-2 font-semibold",
         TONE_CLASSES[meta.tone] ?? TONE_CLASSES.muted,
       )}
     >
@@ -68,8 +68,8 @@ export function PageHeader({
   return (
     <div className={cn("mb-6 flex items-start justify-between gap-4", className)}>
       <div>
-        <h1 className="text-2xl font-bold text-ink">{title}</h1>
-        {subtitle && <p className="mt-1 text-sm text-ink-muted">{subtitle}</p>}
+        <h1 className="text-headline-1 text-ink">{title}</h1>
+        {subtitle && <p className="mt-1 text-body-2 text-ink-muted">{subtitle}</p>}
       </div>
       {action}
     </div>
@@ -109,8 +109,8 @@ export function StatTile({
   };
   return (
     <Card className="p-5">
-      <div className="text-xs font-medium uppercase tracking-wide text-ink-hint">{label}</div>
-      <div className={cn("mt-2 text-3xl font-bold", accents[accent])}>{value}</div>
+      <div className="text-label-3 uppercase text-ink-hint">{label}</div>
+      <div className={cn("mt-2 text-headline-2 font-bold tabular-nums", accents[accent])}>{value}</div>
     </Card>
   );
 }
@@ -135,7 +135,7 @@ export function SearchInput({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="w-full rounded-lg border border-line bg-white py-2.5 pl-10 pr-3 text-sm text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
+        className="w-full rounded-lg border border-line bg-white py-2.5 pl-10 pr-3 text-body-2 text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
       />
     </div>
   );
@@ -153,7 +153,7 @@ export function DataTable({
 }) {
   return (
     <div className={cn("overflow-x-auto rounded-2xl border border-line bg-white shadow-card", className)}>
-      <table className="w-full min-w-[640px] text-left text-sm">
+      <table className="w-full min-w-[640px] text-left text-body-2">
         <thead>
           <tr className="border-b border-line text-ink-muted">
             {columns.map((c) => (
@@ -173,8 +173,8 @@ export function DataTable({
 export function EmptyState({ title, hint }: { title: string; hint?: string }) {
   return (
     <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-line bg-white/60 px-6 py-16 text-center">
-      <div className="text-sm font-semibold text-ink">{title}</div>
-      {hint && <div className="mt-1 text-xs text-ink-hint">{hint}</div>}
+      <div className="text-title-3 text-ink">{title}</div>
+      {hint && <div className="mt-1 text-body-3 text-ink-hint">{hint}</div>}
     </div>
   );
 }
@@ -193,7 +193,7 @@ export function Field({
 }) {
   return (
     <label className={cn("block", className)}>
-      <span className="mb-1.5 block text-sm font-medium text-ink">
+      <span className="mb-1.5 block text-label-1 text-ink">
         {label}
         {required && <span className="ml-0.5 text-red-500">*</span>}
       </span>
@@ -217,7 +217,7 @@ export function Fieldset({
 }) {
   return (
     <fieldset className={cn("min-w-0", className)}>
-      <legend className="mb-1.5 block text-sm font-medium text-ink">
+      <legend className="mb-1.5 block text-label-1 text-ink">
         {legend}
         {required && <span className="ml-0.5 text-red-500">*</span>}
       </legend>
@@ -231,7 +231,7 @@ export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
     <input
       {...props}
       className={cn(
-        "w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15",
+        "w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-body-2 text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15",
         props.className,
       )}
     />
@@ -240,7 +240,7 @@ export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
 
 export function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="mb-5 text-xs font-bold uppercase tracking-wide text-ink-hint">{children}</h2>
+    <h2 className="mb-5 text-label-3 uppercase text-ink-hint">{children}</h2>
   );
 }
 
@@ -263,7 +263,7 @@ export function Stepper({
               <div
                 aria-hidden="true"
                 className={cn(
-                  "flex h-9 w-9 items-center justify-center rounded-full text-sm font-semibold",
+                  "flex h-9 w-9 items-center justify-center rounded-full text-label-1 font-semibold",
                   done
                     ? "bg-approve text-white"
                     : active
@@ -275,8 +275,8 @@ export function Stepper({
               </div>
               <span
                 className={cn(
-                  "mt-2 max-w-[8rem] text-xs leading-tight sm:text-sm",
-                  active ? "font-bold text-navy" : done ? "text-ink" : "text-ink-hint",
+                  "mt-2 max-w-[8rem] text-label-2",
+                  active ? "font-semibold text-navy" : done ? "text-ink" : "text-ink-hint",
                 )}
               >
                 <span className="sr-only">Step {i + 1} of {steps.length}{active ? ", current" : done ? ", completed" : ""}: </span>
@@ -299,7 +299,7 @@ export function Textarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement
     <textarea
       {...props}
       className={cn(
-        "w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15",
+        "w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-body-2 text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15",
         props.className,
       )}
     />
@@ -320,7 +320,7 @@ export function Select({
     <div className={cn("relative", className)}>
       <select
         {...props}
-        className="w-full appearance-none rounded-lg border border-line bg-white px-3.5 py-2.5 pr-9 text-sm text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
+        className="w-full appearance-none rounded-lg border border-line bg-white px-3.5 py-2.5 pr-9 text-body-2 text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
       >
         {placeholder && <option value="">{placeholder}</option>}
         {options.map((o) => (
@@ -330,54 +330,6 @@ export function Select({
         ))}
       </select>
       <Icon name="keyboard_arrow_down" size={16} className="pointer-events-none absolute right-3 top-1/2  -translate-y-1/2 text-ink-hint" />
-    </div>
-  );
-}
-
-/* ---------------------------------------------------------------- Checkbox */
-export function Checkbox({
-  label,
-  className,
-  ...props
-}: React.InputHTMLAttributes<HTMLInputElement> & { label: React.ReactNode }) {
-  return (
-    <label className={cn("flex cursor-pointer items-start gap-2.5 text-sm text-ink", className)}>
-      <input
-        type="checkbox"
-        {...props}
-        className="mt-0.5 h-4 w-4 shrink-0 rounded border-line text-navy focus:ring-navy/30"
-      />
-      <span>{label}</span>
-    </label>
-  );
-}
-
-/* ------------------------------------------------------------- RadioRow */
-export function RadioRow({
-  name,
-  options,
-  value,
-  onChange,
-}: {
-  name: string;
-  options: readonly string[];
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  return (
-    <div className="flex flex-wrap gap-x-6 gap-y-2">
-      {options.map((o) => (
-        <label key={o} className="flex cursor-pointer items-center gap-2 text-sm text-ink">
-          <input
-            type="radio"
-            name={name}
-            checked={value === o}
-            onChange={() => onChange(o)}
-            className="h-4 w-4 text-navy focus:ring-navy/30"
-          />
-          {o}
-        </label>
-      ))}
     </div>
   );
 }

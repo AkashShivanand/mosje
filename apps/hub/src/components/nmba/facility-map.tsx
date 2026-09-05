@@ -106,8 +106,8 @@ export function FacilityMap({ facilities, className, mini = false, legendCollaps
             <Popup>
               <div className="max-w-[220px]">
                 <p className="font-semibold text-ink">{f.name}</p>
-                <p className="mt-0.5 text-xs text-ink-muted">{FACILITY_LABELS[f.type]}</p>
-                <p className="mt-1 text-xs text-ink-muted">{f.address}</p>
+                <p className="mt-0.5 text-body-3 text-ink-muted">{FACILITY_LABELS[f.type]}</p>
+                <p className="mt-1 text-body-3 text-ink-muted">{f.address}</p>
               </div>
             </Popup>
           </Marker>
@@ -117,12 +117,12 @@ export function FacilityMap({ facilities, className, mini = false, legendCollaps
       {/* Legend */}
       <div className="absolute bottom-4 right-4 z-[400] rounded-lg border border-line bg-white/95 p-3 shadow-pop backdrop-blur-sm">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-xs font-semibold text-ink">Legend</span>
+          <span className="text-label-2 font-semibold text-ink">Legend</span>
           {legendCollapsible && (
             <button
               onClick={() => setLegendOpen((o) => !o)}
               aria-label={legendOpen ? "Minimize legend" : "Expand legend"}
-              className="text-xs text-ink-muted hover:text-ink"
+              className="text-label-2 text-ink-muted hover:text-ink"
             >
               {legendOpen ? "−" : "+"}
             </button>
@@ -137,7 +137,7 @@ export function FacilityMap({ facilities, className, mini = false, legendCollaps
                   style={{ background: FACILITY_COLORS[type] }}
                   aria-hidden
                 />
-                <span className="text-[10px] leading-tight text-ink-muted">{label}</span>
+                <span className="text-body-3 text-ink-muted">{label}</span>
               </li>
             ))}
           </ul>

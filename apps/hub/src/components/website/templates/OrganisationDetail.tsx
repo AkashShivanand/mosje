@@ -744,21 +744,21 @@ export function OrganisationDetail({
             <div className="inline-flex rounded-lg p-1 bg-surface-muted border border-neutral-subtle gap-1">
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-surface text-ink font-semibold text-[13px] shadow-sm"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-surface text-ink text-label-1 shadow-sm"
               >
                 <Icon name="image" size={16} className="text-primary-base" />
                 <span>All Photos</span>
               </button>
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-ink-subtle hover:text-ink font-medium text-[13px] transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-ink-subtle hover:text-ink text-label-1 transition-colors"
               >
                 <Icon name="movie" size={16} />
                 <span>Videos</span>
               </button>
               <button
                 type="button"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-ink-subtle hover:text-ink font-medium text-[13px] transition-colors"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-ink-subtle hover:text-ink text-label-1 transition-colors"
               >
                 <Icon name="event" size={16} />
                 <span>Events</span>
@@ -804,11 +804,11 @@ export function OrganisationDetail({
               {som.offices.map((office) => (
                 <li key={office.name} className="orgd__state-card">
                   <div className="flex items-center justify-between w-full">
-                    <span className="font-semibold text-ink text-[15px]">{office.name}</span>
+                    <span className="text-title-2 text-ink">{office.name}</span>
                     <Icon name="chevron_right" size={20} className="text-neutral-subtle" />
                   </div>
                   {office.address && (
-                    <p className="text-[13px] text-neutral-subtle mt-1">{office.address}</p>
+                    <p className="text-body-2 text-neutral-subtle mt-1">{office.address}</p>
                   )}
                 </li>
               ))}
@@ -887,7 +887,7 @@ export function OrganisationDetail({
                   href={h.url}
                   external
                   variant="standalone"
-                  className="px-3.5 py-1.5 rounded-full border border-neutral-subtle bg-surface hover:bg-surface-muted text-[13px] font-medium text-ink transition-colors"
+                  className="px-3.5 py-1.5 rounded-full border border-neutral-subtle bg-surface hover:bg-surface-muted text-label-1 text-ink transition-colors"
                   iconLeft={<BrandGlyph name={h.platform} size={16} />}
                 >
                   {h.handle}
@@ -905,11 +905,11 @@ export function OrganisationDetail({
                         <BrandGlyph name={post.platform} size={20} />
                       </div>
                       <div>
-                        <p className="text-[13px] font-bold text-ink leading-tight m-0">{post.author}</p>
-                        <p className="text-[11px] text-neutral-subtle leading-tight m-0">{post.handle}</p>
+                        <p className="text-title-3 text-ink m-0">{post.author}</p>
+                        <p className="text-body-3 text-neutral-subtle m-0">{post.handle}</p>
                       </div>
                     </div>
-                    <span className="text-[11px] text-neutral-subtle">{post.date}</span>
+                    <span className="text-body-3 text-neutral-subtle">{post.date}</span>
                   </div>
                   <p className="orgd__social-text">{post.content}</p>
                   {post.image && (
@@ -918,7 +918,7 @@ export function OrganisationDetail({
                     </div>
                   )}
                   {(post.likes || post.shares) && (
-                    <div className="flex items-center gap-4 pt-3 border-t border-neutral-subtle text-[12px] text-neutral-subtle mt-auto">
+                    <div className="flex items-center gap-4 pt-3 border-t border-neutral-subtle text-body-3 text-neutral-subtle mt-auto">
                       {post.likes && (
                         <span className="flex items-center gap-1">
                           <Icon name="favorite" size={16} className="text-danger-base" /> {post.likes}
@@ -959,45 +959,45 @@ export function OrganisationDetail({
             <div className="orgd__contact-grid">
               {contact.address != null && (
                 <div className="orgd__contact-card">
-                  <div className="flex items-center gap-2 text-primary-dark font-semibold text-[15px]">
+                  <div className="flex items-center gap-2 text-primary-dark text-title-2">
                     <Icon name="location_on" size={20} />
                     <span>Headquarters</span>
                   </div>
-                  <p className="text-[14px] text-ink leading-relaxed m-0">{contact.address}</p>
+                  <p className="text-body-2 text-ink m-0">{contact.address}</p>
                 </div>
               )}
               {contact.supportPhone != null && (
                 <div className="orgd__contact-card">
-                  <div className="flex items-center gap-2 text-primary-dark font-semibold text-[15px]">
+                  <div className="flex items-center gap-2 text-primary-dark text-title-2">
                     <Icon name="call" size={20} />
                     <span>Telephone / Helpline</span>
                   </div>
-                  <p className="text-[14px] text-ink m-0">
+                  <p className="text-body-2 text-ink m-0">
                     <a href={`tel:${contact.supportPhone.replace(/[^+\d]/g, "")}`} className="text-link hover:underline">
                       {contact.supportPhone}
                     </a>
                   </p>
                   {contact.supportHours != null && (
-                    <span className="text-[12px] text-ink-subtle">{contact.supportHours}</span>
+                    <span className="text-body-3 text-ink-subtle">{contact.supportHours}</span>
                   )}
                 </div>
               )}
               {contact.supportEmail != null && (
                 <div className="orgd__contact-card">
-                  <div className="flex items-center gap-2 text-primary-dark font-semibold text-[15px]">
+                  <div className="flex items-center gap-2 text-primary-dark text-title-2">
                     <Icon name="mail" size={20} />
                     <span>Official Email</span>
                   </div>
-                  <p className="text-[14px] text-ink m-0">{contact.supportEmail}</p>
+                  <p className="text-body-2 text-ink m-0">{contact.supportEmail}</p>
                 </div>
               )}
               {contact.regionalOffices != null && (
                 <div className="orgd__contact-card">
-                  <div className="flex items-center gap-2 text-primary-dark font-semibold text-[15px]">
+                  <div className="flex items-center gap-2 text-primary-dark text-title-2">
                     <Icon name="domain" size={20} />
                     <span>State & Regional Offices</span>
                   </div>
-                  <p className="text-[14px] text-ink leading-relaxed m-0">{contact.regionalOffices}</p>
+                  <p className="text-body-2 text-ink m-0">{contact.regionalOffices}</p>
                 </div>
               )}
             </div>

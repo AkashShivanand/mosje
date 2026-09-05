@@ -51,8 +51,8 @@
     gap: var(--sa-stack-12);
     padding: var(--sa-padding-12);
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-subtle);
-    border-left: 4px solid var(--_color);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-left: var(--sa-stroke-4) solid var(--_color);
     border-radius: var(--sa-shape-8);
     box-shadow: var(--sa-elevation-modal);
     font-family: var(--sa-font-latin);
@@ -109,7 +109,7 @@
     margin: 0;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -148,7 +148,7 @@
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
-    transition: background-color 0.15s ease, color 0.15s ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
   .ds-alert__close:hover {
     background-color: color-mix(in srgb, var(--sa-color-text-default) 8%, transparent);
@@ -195,7 +195,7 @@
     width: var(--_loader-size);
     height: var(--_loader-size);
     border-radius: var(--sa-shape-full);
-    border: 3px solid color-mix(in srgb, var(--_loader-color) 22%, transparent);
+    border: var(--sa-stroke-3) solid color-mix(in srgb, var(--_loader-color) 22%, transparent);
     border-top-color: var(--_loader-color);
     animation: ds-spin 0.7s linear infinite;
   }
@@ -250,7 +250,7 @@
     margin: 0;
     font-size: var(--sa-type-headline-1-size);
     line-height: var(--sa-type-headline-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -275,17 +275,22 @@
      Combine: .ds-avatar + .ds-avatar--<shape>
      Shapes: circular | rounded   (size set inline via width/height)
      ============================================================================ */
+  /* THE GROUND IS THE BRAND TINT, AS THE MASTER DRAWS IT. Figma's Avatar paints
+     initials on bg/brand/primary/subtler in text/brand/primary/bolder (5.9:1) with
+     a Label weight; this rendered a grey disc with bold black letters — a
+     different component in everything but name, and the one thing on a portal
+     masthead that did not look like the library. 2026-09-05. */
   .ds-avatar {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     flex: 0 0 auto;
     overflow: hidden;
-    background-color: var(--sa-bg-neutral-subtler);
-    color: var(--sa-text-neutral-bolder);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-brand-primary-bolder);
     font-family: var(--sa-font-latin);
-    font-weight: 600;
-    line-height: 1;
+    font-weight: var(--sa-font-weight-medium);
+    line-height: var(--sa-type-label-1-lh);
     user-select: none;
   }
 
@@ -303,9 +308,12 @@
     display: block;
   }
 
+  /* Was `font-size: 40%` — a percentage of the INHERITED size, not of the avatar, so
+     initials in a 40px avatar rendered at about 6px. A role, with the caps tracking. */
   .ds-avatar__initials {
-    font-size: 40%;
-    letter-spacing: 0.02em;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
   }
 
@@ -315,7 +323,7 @@
     justify-content: center;
     width: 100%;
     height: 100%;
-    color: var(--sa-text-neutral-subtle);
+    color: var(--sa-text-brand-primary-bolder);
   }
 }
 

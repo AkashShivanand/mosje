@@ -2,30 +2,6 @@
    Every value here is a token. A colour page that hardcodes a colour is self-refuting — and
    this one did, until 2026-08-12: 88 hex literals, 14 of which matched no token in the system. */
 
-/* ── at a glance ─────────────────────────────────────────────── */
-.color-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--sa-stack-16);
-  margin-bottom: var(--sa-stack-24);
-}
-.color-stat__n {
-  font-size: var(--sa-type-display-6-size);
-  font-weight: 600;
-  color: var(--sa-color-primaryScale-600);
-  line-height: 1.1;
-}
-.color-stat__label {
-  font-size: var(--sa-type-title-3-size);
-  color: var(--sa-text-neutral-subtle);
-  font-weight: 500;
-}
-.color-stat__note {
-  margin: var(--sa-stack-4) 0 0;
-  font-size: var(--sa-type-body-3-size);
-  color: var(--sa-text-neutral-subtle);
-}
-
 /* ── brand switcher ──────────────────────────────────────────── */
 .color-brandbar {
   padding: var(--sa-padding-16);
@@ -36,7 +12,7 @@
 .color-brandbar__label {
   display: block;
   font-size: var(--sa-type-label-2-size);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-text-neutral-base);
   margin-bottom: var(--sa-stack-8);
 }
@@ -84,7 +60,7 @@
 .color-anatomy__name {
   display: block;
   font-size: var(--sa-type-headline-3-size);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   margin-bottom: var(--sa-stack-16);
   color: var(--sa-text-neutral-subtle);
 }
@@ -99,7 +75,9 @@
 .color-anatomy__part-label {
   display: block;
   font-size: var(--sa-type-label-3-size);
-  letter-spacing: 0.06em;
+  line-height: var(--sa-type-label-3-lh);
+  letter-spacing: var(--sa-type-caps-tracking);
+  text-transform: uppercase;
   color: var(--sa-text-neutral-subtle);
 }
 .color-anatomy__part code {
@@ -144,7 +122,7 @@
   font-size: var(--sa-type-label-3-size);
   color: var(--sa-text-neutral-subtle);
 }
-.color-ramp__step { font-weight: 600; color: var(--sa-text-neutral-base) !important; margin-top: var(--sa-stack-4); }
+.color-ramp__step { font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-base) !important; margin-top: var(--sa-stack-4); }
 .color-ramp__anchor { color: var(--sa-color-primaryScale-600) !important; }
 
 /* ── ink pairings ────────────────────────────────────────────── */
@@ -156,7 +134,7 @@
   border-radius: var(--sa-shape-8);
   border: 1px solid var(--sa-border-neutral-subtle);
 }
-.color-pair__rung { display: block; font-weight: 600; font-size: var(--sa-type-body-2-size); }
+.color-pair__rung { display: block; font-weight: var(--sa-font-weight-semibold); font-size: var(--sa-type-body-2-size); }
 .color-pair__ratio { display: block; font-size: var(--sa-type-label-2-size); }
 .color-pair__note { display: block; font-size: var(--sa-type-label-3-size); opacity: 0.8; }
 
@@ -182,7 +160,7 @@
   background: var(--sa-bg-neutral-subtler);
   min-width: 180px;
 }
-.color-state__link { display: block; font-weight: 600; font-size: var(--sa-type-body-2-size); }
+.color-state__link { display: block; font-weight: var(--sa-font-weight-semibold); font-size: var(--sa-type-body-2-size); }
 .color-state__name { font-size: var(--sa-type-label-3-size); color: var(--sa-text-neutral-subtle); }
 
 .color-layers { display: flex; flex-direction: column; gap: var(--sa-stack-4); }
@@ -208,6 +186,16 @@
 }
 .color-alpha__label { min-width: 170px; font-size: var(--sa-type-label-2-size); }
 .color-alpha__chip { flex: 1; height: 40px; border-radius: var(--sa-shape-6); }
+.color-alpha-group { display: grid; gap: var(--sa-stack-4); }
+.color-alpha-group .color-alpha { margin-bottom: 0; }
+.color-alpha[data-family="neutral"],
+.color-alpha[data-family="primary"] { background: var(--sa-bg-neutral-subtle); }
+.color-alpha[data-family="neutral"] .color-alpha__label,
+.color-alpha[data-family="primary"] .color-alpha__label { color: var(--sa-text-neutral-subtle); }
+.color-alpha[data-family="white"],
+.color-alpha--scale { background: var(--sa-bg-brand-primary-bolder); }
+.color-alpha[data-family="white"] .color-alpha__label,
+.color-alpha--scale .color-alpha__label { color: var(--sa-on-bg-brand-primary-bolder); }
 
 /* ── origin + charts ─────────────────────────────────────────── */
 .color-origin { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--sa-inline-12); }
@@ -232,56 +220,12 @@
   .color-brandbar__option { transition: none; }
 }
 
-/* ── 2026-09-04 redesign — section numbers, the on-page nav, the status matrix, the specimens,
-   the colour-vision rows and the modes table. Every value is a token. ─────────────────── */
-.color-section { position: relative; }
-.color-section__num {
-  display: block;
-  font-size: var(--sa-type-label-3-size);
-  letter-spacing: 0.08em;
-  font-weight: 600;
-  color: var(--sa-text-brand-primary-base);
-  margin-bottom: var(--sa-stack-4);
-}
-.color-toc {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  margin: var(--sa-stack-16) 0 0;
-  padding: var(--sa-padding-8) 0;
-  background: var(--sa-bg-neutral-base);
-  border-bottom: 1px solid var(--sa-border-neutral-subtle);
-}
-.color-toc__list {
-  display: flex;
-  gap: var(--sa-inline-8);
-  overflow-x: auto;
-  list-style: none;
-  margin: 0;
-  padding: 0 0 var(--sa-padding-4);
-  scrollbar-width: thin;
-}
-.color-toc__link {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sa-inline-4);
-  white-space: nowrap;
-  padding: var(--sa-padding-4) var(--sa-padding-12);
-  border-radius: var(--sa-shape-full);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  background: var(--sa-bg-neutral-subtler);
-  color: var(--sa-text-neutral-base);
-  font-size: var(--sa-type-label-2-size);
-  text-decoration: none;
-}
-.color-toc__link:hover { border-color: var(--sa-border-neutral-bolder-default); }
-.color-toc__link:focus-visible { outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset); }
-.color-toc__num { font-weight: 600; color: var(--sa-text-brand-primary-base); }
-
+/* ── 2026-09-04 redesign — the status matrix, the specimens, the colour-vision rows and the
+   modes table. Every value is a token. ─────────────────────────────────────────────────── */
 .color-ramp__l { color: var(--sa-text-neutral-subtler) !important; }
 
 .color-ladders { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: var(--sa-inline-16); }
-.color-ladders__cap { text-align: left; font-weight: 600; padding-bottom: var(--sa-padding-4); color: var(--sa-text-neutral-base); }
+.color-ladders__cap { text-align: left; font-weight: var(--sa-font-weight-semibold); padding-bottom: var(--sa-padding-4); color: var(--sa-text-neutral-base); }
 
 /* the class a figure earns */
 .color-pass {
@@ -296,7 +240,7 @@
   color: var(--sa-text-neutral-base);
   white-space: nowrap;
 }
-.color-pass__ratio { font-weight: 600; }
+.color-pass__ratio { font-weight: var(--sa-font-weight-semibold); }
 .color-pass__class { color: var(--sa-text-neutral-subtle); }
 .color-pass--aaa { background: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-bolder); }
 .color-pass--aaa .color-pass__class { color: inherit; }
@@ -317,7 +261,7 @@
 .color-matrix__meaning { margin: var(--sa-stack-8) 0 0; font-size: var(--sa-type-body-3-size); color: var(--sa-text-neutral-subtle); }
 .color-matrix__pairs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
 .color-matrix__pair { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "label pass" "use pass" "tokens tokens"; gap: 0 var(--sa-inline-12); padding: var(--sa-padding-12) var(--sa-padding-16); }
-.color-matrix__pair-label { grid-area: label; font-weight: 600; font-size: var(--sa-type-body-2-size); }
+.color-matrix__pair-label { grid-area: label; font-weight: var(--sa-font-weight-semibold); font-size: var(--sa-type-body-2-size); }
 .color-matrix__pair-use { grid-area: use; font-size: var(--sa-type-body-3-size); opacity: 0.85; }
 .color-matrix__pair-tokens { grid-area: tokens; font-size: var(--sa-type-label-3-size); opacity: 0.8; margin-top: var(--sa-stack-4); }
 .color-matrix__pair .color-pass { grid-area: pass; align-self: center; background: var(--sa-bg-neutral-base); color: var(--sa-text-neutral-base); }
@@ -346,8 +290,10 @@
 .color-example__title { margin: 0; padding: var(--sa-padding-16) var(--sa-padding-16) 0; font-size: var(--sa-type-title-1-size); }
 .color-example__note { margin: var(--sa-stack-8) 0 0; padding: 0 var(--sa-padding-16); font-size: var(--sa-type-body-3-size); color: var(--sa-text-neutral-subtle); }
 .color-example__stage { margin: var(--sa-stack-16) var(--sa-padding-16) var(--sa-padding-16); padding: var(--sa-padding-16); border-radius: var(--sa-shape-8); background: var(--sa-bg-neutral-subtler); display: flex; flex-direction: column; gap: var(--sa-stack-12); flex: 1; }
-.color-example__label { font-size: var(--sa-type-label-2-size); font-weight: 600; }
+.color-example__label { font-size: var(--sa-type-label-2-size); font-weight: var(--sa-font-weight-semibold); }
 .color-example__msg { margin: 0; font-size: var(--sa-type-body-3-size); }
+.color-example__msg--error { color: var(--sa-text-status-error-base); }
+.color-example__msg--success { color: var(--sa-text-status-success-base); }
 .color-example__row { display: flex; flex-wrap: wrap; gap: var(--sa-inline-8); }
 .color-example__actions { display: flex; flex-wrap: wrap; gap: var(--sa-inline-8); }
 .color-example__bars { display: flex; align-items: flex-end; gap: var(--sa-inline-8); height: 120px; padding: var(--sa-padding-8) var(--sa-padding-8) 0; background: var(--sa-bg-neutral-base); border-radius: var(--sa-shape-6); border-bottom: 1px solid var(--sa-chart-axis); }
@@ -360,8 +306,8 @@
 .color-cvd__set { padding: var(--sa-padding-16); border-radius: var(--sa-shape-12); background: var(--sa-bg-neutral-subtler); }
 .color-cvd__title { margin: 0 0 var(--sa-stack-12); font-size: var(--sa-type-title-1-size); }
 .color-cvd__table { display: flex; flex-direction: column; gap: var(--sa-stack-4); }
-.color-cvd__row { display: grid; grid-template-columns: minmax(180px, 1.4fr) repeat(4, 1fr); gap: var(--sa-inline-8); align-items: center; }
-.color-cvd__row--head span { font-size: var(--sa-type-label-3-size); letter-spacing: 0.04em; text-transform: uppercase; color: var(--sa-text-neutral-subtle); }
+.color-cvd__row { display: grid; grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(0, 1fr)); gap: var(--sa-inline-8); align-items: center; }
+.color-cvd__row--head span { font-size: var(--sa-type-label-3-size); letter-spacing: 0.04em; text-transform: uppercase; color: var(--sa-text-neutral-subtle); overflow-wrap: anywhere; }
 .color-cvd__label code { font-size: var(--sa-type-label-3-size); }
 .color-cvd__sw { display: block; height: 32px; border-radius: var(--sa-shape-4); border: 1px solid var(--sa-border-neutral-subtle); }
 .color-cvd__worst { display: flex; flex-wrap: wrap; gap: var(--sa-inline-16); margin: var(--sa-stack-12) 0 0; }
@@ -374,7 +320,7 @@
 .color-modes__table { margin: 0; min-width: 1100px; }
 .color-modes__table th:first-child, .color-modes__table td:first-child { position: sticky; left: 0; background: var(--sa-bg-neutral-base); z-index: 1; }
 .color-modes__table td { font-size: var(--sa-type-label-3-size); white-space: nowrap; }
-.color-modes__kind { display: block; font-size: var(--sa-type-label-3-size); font-weight: 400; color: var(--sa-text-neutral-subtle); text-transform: none; }
+.color-modes__kind { display: block; font-size: var(--sa-type-label-3-size); font-weight: var(--sa-font-weight-regular); color: var(--sa-text-neutral-subtle); text-transform: none; }
 .color-modes__cell { display: inline-block; width: 12px; height: 12px; border-radius: var(--sa-shape-4); border: 1px solid var(--sa-border-neutral-subtle); margin-right: var(--sa-inline-4); vertical-align: middle; }
 
 /* roles */
@@ -386,6 +332,80 @@
 /* ── Alpha ladder (section 21) ─────────────────────────────────────────── */
 .color-alpha--scale { flex-wrap: wrap; }
 .color-alpha__chip--labelled { display: grid; place-items: center; min-width: var(--sa-target-min); }
-.color-alpha__step { font-size: var(--sa-type-label-3-size); line-height: var(--sa-type-label-3-lh); font-weight: 600; }
+.color-alpha__step { font-size: var(--sa-type-label-3-size); line-height: var(--sa-type-label-3-lh); font-weight: var(--sa-font-weight-semibold); }
+.color-alpha__step[data-ink="dark"] { color: var(--sa-text-neutral-base); }
+.color-alpha__step[data-ink="light"] { color: var(--sa-on-bg-brand-primary-bolder); }
 .color-example__list { margin: 0; padding-left: var(--sa-inline-16); display: grid; gap: var(--sa-stack-4); }
 .color-example__list code { font-size: var(--sa-type-body-3-size); }
+
+/* ── 2026-09-04 — onto FoundationDocPage ──────────────────────────────────────────────────
+   The template's prose rules (.fdp__section-body p / li / ul / h3) are written for running
+   text and outrank a single class. The blocks below are specimens, not prose, so each one is
+   re-asserted at two classes with the value it had. Every value is a token. */
+.fdp__section-body .color-lede { max-width: var(--fdp-measure); color: var(--sa-text-neutral-subtle); }
+.fdp__section-body .color-note {
+  max-width: var(--fdp-measure);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+/* minmax(0, 1fr), not the default auto track: a ramp strip's min-content is thirteen cells wide,
+   and an auto track grows to hold it instead of letting the strip scroll inside its panel */
+.color-ramps,
+.color-pairs-set { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--sa-stack-16); }
+.color-ramps .color-ramp,
+.color-pairs-set .color-pairs { margin-bottom: 0; }
+
+/* small copy inside a panel */
+.fdp__section-body :is(.color-anatomy__part, .color-tier, .color-slot, .color-origin__card, .color-chart-scale) p,
+.fdp__section-body :is(.color-brandbar__hint, .color-matrix__meaning, .color-example__note, .color-example__msg) {
+  max-width: none;
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+.fdp__section-body .color-example__msg--error { color: var(--sa-text-status-error-base); }
+.fdp__section-body .color-example__msg--success { color: var(--sa-text-status-success-base); }
+.fdp__section-body p.color-example__label {
+  max-width: none;
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
+}
+
+/* panel headings */
+.fdp__section-body .color-ramp__name { margin: 0; font-size: var(--sa-type-headline-5-size); line-height: var(--sa-type-headline-5-lh); }
+.fdp__section-body .color-pairs__label { margin: 0 0 var(--sa-stack-4); font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); }
+.fdp__section-body .color-matrix__title { margin: 0; font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); color: var(--_ink); }
+.fdp__section-body .color-example__title { margin: 0; font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); }
+.fdp__section-body .color-cvd__title { margin: 0 0 var(--sa-stack-12); font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); }
+.fdp__section-body .color-origin__card h3 { margin: 0 0 var(--sa-stack-4); font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); }
+.fdp__section-body .color-chart-scale h3 { margin: 0; font-size: var(--sa-type-title-2-size); line-height: var(--sa-type-title-2-lh); }
+
+/* lists that are specimens */
+.fdp__section-body .color-matrix__pairs { padding: 0; }
+.fdp__section-body .color-matrix__pair { max-width: none; }
+.fdp__section-body .color-matrix__pair + .color-matrix__pair { margin-top: 0; }
+.fdp__section-body .color-example__list { padding-left: var(--sa-inline-16); }
+.fdp__section-body .color-example__list li { max-width: none; }
+.fdp__section-body .color-example__list li + li { margin-top: 0; }
+
+/* code that sits ON a fill inherits the fill's measured ink; the template's grey code chip
+   would put a second ground under it */
+.fdp__section-body .color-alpha__label,
+.fdp__section-body .color-matrix__pair-tokens code,
+.fdp__section-body .color-layer code {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+
+/* the standards register's clause column: a citation is not broken mid-word */
+.fdp:has(.color-anatomy) .fdp__standards td:first-child code {
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+.fdp__section-body .color-alpha[data-family="neutral"] .color-alpha__label,
+.fdp__section-body .color-alpha[data-family="primary"] .color-alpha__label { color: var(--sa-text-neutral-subtle); }
+.fdp__section-body .color-alpha[data-family="white"] .color-alpha__label,
+.fdp__section-body .color-alpha--scale .color-alpha__label { color: var(--sa-on-bg-brand-primary-bolder); }

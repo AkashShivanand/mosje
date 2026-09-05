@@ -1,0 +1,73 @@
+/* Layering foundation — the ladder, drawn. Every value is a token. */
+@layer theme, base, components, utilities;
+@layer components {
+  .ly-ladder {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+  }
+  .ly-rung {
+    display: grid;
+    grid-template-columns: 12ch 16ch 1fr;
+    gap: var(--sa-inline-16);
+    align-items: baseline;
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-layer-1);
+    border: var(--sa-stroke-1) solid var(--sa-layer-border-1);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+  .ly-rung--chrome {
+    background: var(--sa-bg-brand-primary-subtler);
+    border-color: var(--sa-border-brand-primary-base);
+  }
+  .ly-rung--reserved {
+    background: var(--sa-bg-status-warning-subtler);
+    border-color: var(--sa-border-status-warning-base);
+  }
+  .ly-rung__value {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-bolder);
+    text-align: right;
+  }
+  .ly-rung__name {
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-brand-primary-base);
+  }
+  .ly-rung__use {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+  .ly-pairs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--sa-inline-12);
+  }
+  .ly-pair {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-neutral-subtle);
+  }
+  @media (max-width: 767px) {
+    .ly-rung {
+      grid-template-columns: 1fr;
+      gap: var(--sa-stack-4);
+    }
+    .ly-rung__value {
+      text-align: left;
+    }
+  }
+}

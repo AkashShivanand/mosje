@@ -2,7 +2,7 @@
 
 /* PM-AJAY Dashboard — app shell: routing, filters, drill-down scaling, responsive stage. */
 
-import { useState, useMemo, useRef, useLayoutEffect, Fragment, type CSSProperties } from "react";
+import { useState, useMemo, useRef, useEffect, useLayoutEffect, Fragment, type CSSProperties } from "react";
 import { Navbar } from "@/components/pm-ajay/shell/navbar";
 import { Sidebar, DrillDownFilters, DashboardFooter, type Filters } from "./ui";
 import { VIEW_COMPONENTS, type LevelRow } from "./views";
@@ -132,6 +132,15 @@ export function DashboardApp() {
     history.replaceState(null, "", "#" + v);
     window.scrollTo({ top: 0 });
   };
+  // The rail's items are `#<view>` links, so a click arrives as a hash change.
+  useEffect(() => {
+    const onHash = () => {
+      setView(initialView());
+      window.scrollTo({ top: 0 });
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
 
   const scope = filters.state === "All India" ? null : STATES.find((s) => s.name === filters.state) || null;
   const district =
@@ -199,7 +208,7 @@ export function DashboardApp() {
       >
         <Navbar />
         <div className="pm-body">
-          <Sidebar view={view} setView={goto} />
+          <Sidebar view={view} />
           <div className="pm-content">
             <div className="pm-head">
               <nav className="pm-crumbs" aria-label="Breadcrumb">

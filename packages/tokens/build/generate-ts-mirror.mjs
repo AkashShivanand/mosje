@@ -93,6 +93,14 @@ const RADIUS = {
 };
 
 const SHADOW = { xs: "--sa-elevation-card", lg: "--sa-elevation-modal", xl: "--sa-elevation-toast" };
+// 2026-09-04 foundations rebuild — the mirror used to expose three of six elevations and no
+// motion, layering, opacity or breakpoint at all, so a TS consumer (a chart, a Framer Motion
+// variant, a portal's layout hook) had to hard-code the number it could not import.
+const ELEVATION = ["flat", "card", "raised", "dropdown", "modal", "toast"];
+const MOTION_INTENTS = ["instant", "hover", "press", "focus", "enter", "exit", "expand", "collapse", "emphasis", "reveal", "page"];
+const Z = ["base", "raised", "dropdown", "sticky", "fixed", "overlay", "modal", "popover", "toast", "tooltip", "rail", "launcher", "statutory", "demo", "top"];
+const BREAKPOINT = ["mobile", "tablet", "laptop", "desktop", "desktopXl", "desktopWide"];
+const ALPHA = ["disabled", "muted"];
 
 /**
  * Type roles, as `{ size, leading }` only.
@@ -141,6 +149,16 @@ function main() {
   const colors = Object.fromEntries(Object.entries(COLORS).map(([k, v]) => [k, take(v)]));
   const radius = Object.fromEntries(Object.entries(RADIUS).map(([k, v]) => [k, take(v)]));
   const shadow = Object.fromEntries(Object.entries(SHADOW).map(([k, v]) => [k, take(v)]));
+  const elevation = Object.fromEntries(ELEVATION.map((k) => [k, take(`--sa-elevation-${k}`)]));
+  const ms = (v) => Number(String(v).replace("ms", ""));
+  const motion = Object.fromEntries(
+    MOTION_INTENTS.map((k) => [k, { duration: ms(take(`--sa-motion-${k}-duration`)), easing: take(`--sa-motion-${k}-easing`) }]),
+  );
+  motion.loading = { spin: ms(take("--sa-motion-loading-spin")), pulse: ms(take("--sa-motion-loading-pulse")), easing: take("--sa-motion-loading-easing") };
+  motion.stagger = { step: ms(take("--sa-motion-stagger-step")), max: Number(take("--sa-motion-stagger-max")) };
+  const z = Object.fromEntries(Z.map((k) => [k, Number(take(`--sa-z-${k}`))]));
+  const breakpoint = Object.fromEntries(BREAKPOINT.map((k) => [k, Number(String(take(`--sa-ref-breakpoint-${k}`)).replace("px", ""))]));
+  const alpha = Object.fromEntries(ALPHA.map((k) => [k, Number(take(`--sa-alpha-${k}`))]));
   // Read the icon scale straight out of the stylesheet. Listing the steps here would be a
   // second place to forget when the scale moves — which is exactly how the docs page that
   // documented only 16/20/24 fell three steps behind the tokens.
@@ -153,7 +171,12 @@ function main() {
   );
 
   const typography = Object.fromEntries(
-    TYPE_ROLES.map((r) => [camel(r), { size: take(`--sa-type-${TYPE_TOKEN[r]}-size`), leading: take(`--sa-type-${TYPE_TOKEN[r]}-lh`) }]),
+    TYPE_ROLES.map((r) => [camel(r), {
+      size: take(`--sa-type-${TYPE_TOKEN[r]}-size`),
+      leading: take(`--sa-type-${TYPE_TOKEN[r]}-lh`),
+      // A Hindi block at this role: same size, the derived Devanagari leading.
+      leadingDevanagari: take(`--sa-type-${TYPE_TOKEN[r]}-lhDevanagari`),
+    }]),
   );
 
   if (missing.length) {
@@ -213,7 +236,35 @@ export const iconSize = {
 ${obj(iconSize)}
 } as const;
 
-export const tokens = { colors, radius, fontFamily, typography, shadow, iconSize } as const;
+/** The six elevation roles, as the box-shadow strings tokens.css renders. */
+export const elevation = {
+${obj(elevation)}
+} as const;
+
+/** Motion by intent: duration in MILLISECONDS (a number, for Framer Motion / GSAP / setTimeout)
+    and the easing as a CSS cubic-bezier() string. Under prefers-reduced-motion the CSS custom
+    properties collapse to 0.01ms; a JS consumer must check matchMedia itself — these literals
+    do not. */
+export const motion = {
+${obj(motion)}
+} as const;
+
+/** The layering ladder. z.statutory, z.demo and z.top are RESERVED — never assign them. */
+export const z = {
+${obj(z)}
+} as const;
+
+/** Viewport anchors in CSS px, for matchMedia() and container queries in JS. */
+export const breakpoint = {
+${obj(breakpoint)}
+} as const;
+
+/** Whole-element opacity intents, 0–1. */
+export const alpha = {
+${obj(alpha)}
+} as const;
+
+export const tokens = { colors, radius, fontFamily, typography, shadow, elevation, motion, z, breakpoint, alpha, iconSize } as const;
 export default tokens;
 `;
 

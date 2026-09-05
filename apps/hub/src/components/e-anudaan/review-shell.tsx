@@ -60,10 +60,10 @@ export function ReviewShell({ appId }: { appId: string }) {
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-ink">
+          <h1 className="text-headline-1 text-ink">
             {role.shortLabel} Review — {app.id}
           </h1>
-          <p className="mt-1 text-sm text-ink-muted">
+          <p className="mt-1 text-body-2 text-ink-muted">
             {gradeTitle} · {app.schemeCode === "SHRESHTA_M2" ? "SHRESHTA Mode-2" : app.schemeCode}
           </p>
         </div>
@@ -102,7 +102,7 @@ export function ReviewShell({ appId }: { appId: string }) {
             ]}
           />
         ) : (
-          <p className="text-sm text-ink-muted">No sanction recorded for this project yet.</p>
+          <p className="text-body-2 text-ink-muted">No sanction recorded for this project yet.</p>
         )}
       </Panel>
 
@@ -124,11 +124,11 @@ export function ReviewShell({ appId }: { appId: string }) {
         lead="Formal notices to the NGO requiring a written explanation. Issued by the SO and above; shown here for your reference."
       >
         {app.showCauseNotices.length === 0 ? (
-          <p className="text-sm text-ink-muted">No show cause notice has been issued on this application.</p>
+          <p className="text-body-2 text-ink-muted">No show cause notice has been issued on this application.</p>
         ) : (
           <ul className="space-y-2">
             {app.showCauseNotices.map((n) => (
-              <li key={n.id} className="text-sm text-ink">
+              <li key={n.id} className="text-body-2 text-ink">
                 {n.grounds} <span className="text-ink-muted">· {formatDate(n.issuedAt)}</span>
               </li>
             ))}
@@ -161,7 +161,7 @@ export function ReviewShell({ appId }: { appId: string }) {
       {/* IFD grades only. */}
       {role.caps.includes("scheduleInspection") && (
         <Panel title="Online Inspection — BharatVC">
-          <p className="text-sm text-ink-muted">
+          <p className="text-body-2 text-ink-muted">
             Schedule a video inspection of the institution with the applicant.
           </p>
           <div className="mt-3">
@@ -173,13 +173,13 @@ export function ReviewShell({ appId }: { appId: string }) {
       )}
 
       <Panel title="Officer Supporting Documents (0)">
-        <p className="text-sm text-ink-muted">No supporting documents uploaded yet.</p>
+        <p className="text-body-2 text-ink-muted">No supporting documents uploaded yet.</p>
       </Panel>
 
       {/* ── Your Action ────────────────────────────────────────────────────── */}
       <Panel title="Your Action">
         {actions.length === 0 ? (
-          <p className="text-sm text-ink-muted">
+          <p className="text-body-2 text-ink-muted">
             This application is not with you — it currently sits with{" "}
             <strong>{statusLabel(app)}</strong>. You are viewing it read-only.
           </p>
@@ -196,7 +196,7 @@ export function ReviewShell({ appId }: { appId: string }) {
                 />
               )}
             </FormField>
-            <p className="mt-2 text-xs text-ink-muted">
+            <p className="mt-2 text-body-3 text-ink-muted">
               PDF / JPG / PNG, ≤ 5 MB. Attached to your forward, deficiency, or in-file-query remark.
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
@@ -226,8 +226,8 @@ export function ReviewShell({ appId }: { appId: string }) {
 function Panel({ title, lead, children }: { title: string; lead?: string; children: React.ReactNode }) {
   return (
     <section className="rounded-xl border border-line bg-surface p-5">
-      <h2 className="text-base font-semibold text-ink">{title}</h2>
-      {lead && <p className="mt-1 text-sm text-ink-muted">{lead}</p>}
+      <h2 className="text-headline-6 text-ink">{title}</h2>
+      {lead && <p className="mt-1 text-body-2 text-ink-muted">{lead}</p>}
       <div className="mt-4">{children}</div>
     </section>
   );
@@ -238,8 +238,8 @@ function Facts({ items }: { items: [string, string][] }) {
     <dl className="grid gap-x-8 gap-y-3 sm:grid-cols-2">
       {items.map(([k, v]) => (
         <div key={k} className="flex items-baseline justify-between gap-4 border-b border-line pb-2">
-          <dt className="text-sm text-ink-muted">{k}</dt>
-          <dd className="text-sm font-semibold text-ink">{v}</dd>
+          <dt className="text-body-2 text-ink-muted">{k}</dt>
+          <dd className="text-body-2 font-semibold text-ink">{v}</dd>
         </div>
       ))}
     </dl>
@@ -284,8 +284,8 @@ function DocGroup({
   return (
     <div>
       <div className="mb-3">
-        <span className="text-sm font-semibold text-navy">{label}</span>{" "}
-        <span className="text-xs text-ink-muted">{hint}</span>
+        <span className="text-label-1 font-semibold text-navy">{label}</span>{" "}
+        <span className="text-body-3 text-ink-muted">{hint}</span>
       </div>
       <div className="grid gap-3">
         {docs.map((d) => (
@@ -294,7 +294,7 @@ function DocGroup({
             <div className="flex-1">
               <span className="font-medium text-ink">{d.title}</span>
               {!d.optional && <span className="text-danger"> *</span>}
-              {d.conditional && <span className="block text-xs text-ink-muted">{d.conditional}</span>}
+              {d.conditional && <span className="block text-body-3 text-ink-muted">{d.conditional}</span>}
               {d.reUploadedThisYear && (
                 <Badge status="warning" size="sm" className="mt-1">
                   Permanent · re-uploaded this year · verify
@@ -321,7 +321,7 @@ function DocGroup({
               {d.fileName ? (
                 <span className="inline-flex items-center gap-1 text-navy hover:underline cursor-pointer">
                   <Icon name="download" size={20} aria-hidden />
-                  <span className="md:sr-only text-sm font-medium">Download</span>
+                  <span className="md:sr-only text-label-1">Download</span>
                 </span>
               ) : (
                 <span className="text-ink-hint">—</span>

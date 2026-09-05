@@ -22,8 +22,7 @@ import {
   Select,
   Tabs,
   Textarea,
-  useToast,
-} from "@mosje/design-system";
+  useToast, Checkbox } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ngoApplications } from "@/lib/e-anudaan/selectors";
 import {
@@ -76,8 +75,8 @@ export default function WeeklyAttendancePage() {
   return (
     <div className="space-y-5">
       <header>
-        <h1 className="text-2xl font-bold text-ink">Attendance</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">Attendance</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           Maintain your beneficiary &amp; employee roster and submit a whole week of attendance at
           once.
         </p>
@@ -167,7 +166,7 @@ function WeekGrid({
               <Input {...control} type="date" value={anyDay} onChange={(e) => setAnyDay(e.target.value)} />
             )}
           </FormField>
-          <p className="mt-1 text-sm font-semibold text-ink">
+          <p className="mt-1 text-body-2 font-semibold text-ink">
             {formatWeekLabel(new Date(anyDay))}
           </p>
         </div>
@@ -203,7 +202,7 @@ function WeekGrid({
         <Button appearance="outlined" size="sm" onClick={() => markAll(false)}>
           Mark all Absent
         </Button>
-        <span className="flex items-center gap-1.5 text-xs text-ink-muted">
+        <span className="flex items-center gap-1.5 text-body-3 text-ink-muted">
           <span className="inline-block h-3 w-3 rounded-sm border border-line bg-status-success/70" aria-hidden />
           Present
           <span className="ml-3 inline-block h-3 w-3 rounded-sm border border-line bg-surface" aria-hidden />
@@ -219,10 +218,10 @@ function WeekGrid({
       ) : (
         <>
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[38rem] text-sm">
+            <table className="w-full min-w-[38rem] text-body-2">
               <caption className="sr-only">Weekly attendance grid</caption>
               <thead>
-                <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-muted">
+                <tr className="border-b border-line text-left text-label-3 uppercase text-ink-muted">
                   <th scope="col" className="pb-2 pr-3 font-medium">Name</th>
                   {WEEK_DAYS.map((d) => (
                     <th key={d} scope="col" className="pb-2 pr-3 font-medium">
@@ -237,11 +236,12 @@ function WeekGrid({
                     <td className="py-2 pr-3 text-ink">{p.name}</td>
                     {WEEK_DAYS.map((d) => (
                       <td key={d} className="py-2 pr-3">
-                        <input
-                          type="checkbox"
-                          aria-label={`${p.name} present on ${d}`}
+                        <Checkbox
+                          size="sm"
+                          hideLabel
+                          label={`${p.name} present on ${d}`}
                           checked={marks[key(p.id, d)] ?? false}
-                          onChange={(e) => setMarks({ ...marks, [key(p.id, d)]: e.target.checked })}
+                          onCheckedChange={(on) => setMarks({ ...marks, [key(p.id, d)]: on })}
                         />
                       </td>
                     ))}
@@ -285,7 +285,7 @@ function BeneficiaryRoster({
   return (
     <section className="space-y-4 rounded-xl border border-line bg-surface p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-ink-muted">
+        <p className="text-body-2 text-ink-muted">
           <strong className="text-ink">{active.length} active beneficiaries</strong> · {inactive.length} deactivated
         </p>
         <Button appearance="outlined" onClick={() => setOpen(true)}>
@@ -321,10 +321,10 @@ function RosterTable({
 }) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[52rem] text-sm">
+      <table className="w-full min-w-[52rem] text-body-2">
         <caption className="sr-only">Beneficiary roster</caption>
         <thead>
-          <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-muted">
+          <tr className="border-b border-line text-left text-label-3 uppercase text-ink-muted">
             {["Full Name", "Gender", "Category", "ID Type", "ID Number", "Mobile", "Date of Birth", "Parent / Guardian", "Status"].map((h) => (
               <th key={h} scope="col" className="pb-2 pr-3 font-medium">
                 {h}
@@ -463,7 +463,7 @@ function AddBeneficiaryModal({
               />
             )}
           </FormField>
-          <p className="mt-1 text-xs text-ink-hint">{f.remarks.length} / 255 characters</p>
+          <p className="mt-1 text-body-3 text-ink-hint">{f.remarks.length} / 255 characters</p>
         </div>
       </div>
     </Modal>
@@ -500,7 +500,7 @@ function EmployeeRoster({
   return (
     <section className="space-y-4 rounded-xl border border-line bg-surface p-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-ink-muted">
+        <p className="text-body-2 text-ink-muted">
           <strong className="text-ink">{employees.length} active employees</strong>
         </p>
         <Button appearance="outlined" onClick={() => setOpen(true)}>
@@ -515,10 +515,10 @@ function EmployeeRoster({
         />
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[28rem] text-sm">
+          <table className="w-full min-w-[28rem] text-body-2">
             <caption className="sr-only">Employee roster</caption>
             <thead>
-              <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-muted">
+              <tr className="border-b border-line text-left text-label-3 uppercase text-ink-muted">
                 <th scope="col" className="pb-2 pr-3 font-medium">Full Name</th>
                 <th scope="col" className="pb-2 pr-3 font-medium">Designation</th>
                 <th scope="col" className="pb-2 pr-3 font-medium">Mobile</th>

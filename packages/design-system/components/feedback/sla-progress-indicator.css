@@ -78,7 +78,7 @@
   .ds-sla__label {
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
     min-inline-size: 0;
     overflow-wrap: anywhere;
@@ -87,7 +87,7 @@
   .ds-sla__summary {
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sla-ink);
     white-space: nowrap;
   }
@@ -163,8 +163,9 @@
     display: grid;
     place-items: center;
     font-size: var(--sa-type-title-1-size);
-    line-height: 1;
-    font-weight: 700;
+    line-height: var(--sa-type-title-1-lh);
+    /* 700, not 600: a KPI numeral, not a heading. */
+    font-weight: var(--sa-font-weight-bold);
     font-variant-numeric: tabular-nums;
     color: var(--sla-ink);
   }
@@ -185,7 +186,7 @@
     align-items: center;
     gap: var(--sa-inline-4);
     padding: var(--sa-padding-2) var(--sa-padding-8);
-    border: 1px solid var(--sla-soft);
+    border: var(--sa-stroke-1) solid var(--sla-soft);
     border-radius: var(--sa-shape-full);
     background: var(--sa-bg-neutral-base);
     max-inline-size: 100%;
@@ -204,7 +205,7 @@
   .ds-sla--badge .ds-sla__label {
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-subtle);
     white-space: nowrap;
     overflow: hidden;

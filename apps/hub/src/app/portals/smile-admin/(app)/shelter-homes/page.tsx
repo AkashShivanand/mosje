@@ -58,7 +58,7 @@ export default function ShelterHomesPage() {
                   <div className="truncate text-body-1 font-semibold text-ink">
                     {s.name}
                   </div>
-                  <div className="font-mono text-label-3 text-ink-hint">
+                  <div className="font-mono text-body-2 text-ink-hint">
                     {s.id} · {s.state} / {s.district}
                   </div>
                 </div>
@@ -66,7 +66,7 @@ export default function ShelterHomesPage() {
                   {s.status}
                 </Badge>
               </div>
-              <div className="grid grid-cols-2 gap-sm border-t border-stroke-100 pt-sm text-label-3">
+              <div className="grid grid-cols-2 gap-sm border-t border-stroke-100 pt-sm text-body-3">
                 <div className="space-y-0.5">
                   <div className="text-ink-hint">Manager</div>
                   <div className="truncate font-semibold text-ink">{s.manager}</div>
@@ -79,7 +79,7 @@ export default function ShelterHomesPage() {
                 </div>
               </div>
               <div>
-                <div className="mb-xs flex items-center justify-between text-label-3">
+                <div className="mb-xs flex items-center justify-between text-body-3">
                   <span className="text-ink-hint">Occupancy</span>
                   <span className="font-mono font-semibold text-ink">{occPct}%</span>
                 </div>
@@ -124,7 +124,7 @@ export default function ShelterHomesPage() {
                 <TR key={s.id}>
                   <TD>
                     <div className="font-semibold text-ink">{s.name}</div>
-                    <div className="font-mono text-label-3 text-ink-hint">{s.id}</div>
+                    <div className="font-mono text-body-2 text-ink-hint">{s.id}</div>
                   </TD>
                   <TD>
                     {s.state}{" "}

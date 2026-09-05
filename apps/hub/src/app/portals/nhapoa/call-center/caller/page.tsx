@@ -32,13 +32,13 @@ export default function CallerPage() {
             <div className="flex items-center gap-3">
               <span className="grid h-10 w-10 place-items-center rounded-full bg-navy/10 text-navy"><Icon name="person" size={20} /></span>
               <div>
-                <p className="text-sm font-bold text-ink">{result.known ? "Existing caller" : "New caller"}</p>
-                <p className="text-xs text-ink-muted">{result.known ? `${result.cases} grievance(s) on record for +91 ${mobile}` : `No prior records for +91 ${mobile} — create by registering a grievance.`}</p>
+                <p className="text-title-3 text-ink">{result.known ? "Existing caller" : "New caller"}</p>
+                <p className="text-body-3 text-ink-muted">{result.known ? `${result.cases} grievance(s) on record for +91 ${mobile}` : `No prior records for +91 ${mobile} — create by registering a grievance.`}</p>
               </div>
             </div>
             <div className="mt-4 flex gap-2">
-              <Link href="/portals/nhapoa/call-center/register-grievance" className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-800"><Icon name="note_add" size={16} /> Register Grievance</Link>
-              <Link href="/portals/nhapoa/call-center/query" className="inline-flex items-center gap-2 rounded-lg border border-navy/30 px-4 py-2 text-sm font-semibold text-navy hover:bg-navy/5">Log a Query</Link>
+              <Link href="/portals/nhapoa/call-center/register-grievance" className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2 text-label-1 font-semibold text-white hover:bg-navy-800"><Icon name="note_add" size={16} /> Register Grievance</Link>
+              <Link href="/portals/nhapoa/call-center/query" className="inline-flex items-center gap-2 rounded-lg border border-navy/30 px-4 py-2 text-label-1 font-semibold text-navy hover:bg-navy/5">Log a Query</Link>
             </div>
           </div>
         )}

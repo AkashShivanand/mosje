@@ -31,7 +31,7 @@
     width: 100%;
     height: 1rem;
     border-radius: var(--sa-shape-6);
-    background-color: var(--sa-bg-neutral-subtler);
+    background-color: var(--sa-bg-neutral-loading);
     background-image: linear-gradient(
       90deg,
       transparent 0%,
@@ -93,6 +93,6 @@
 
   .ds-skeleton-row > td {
     padding: var(--sa-padding-12) var(--sa-padding-16);
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 }

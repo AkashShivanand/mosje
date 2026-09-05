@@ -168,3 +168,62 @@ export const WithCaption: Story = {
 export const NoData: Story = {
   args: { data: [], title: "Beneficiaries verified by district" },
 };
+
+/**
+ * The CURRENT period keeps its colour; every other bar drops to the sequential
+ * ramp's light rung, and "current" is spoken in the summary so the emphasis
+ * does not rest on colour. `highlightIndex` is the index into `data`.
+ */
+export const HighlightedPeriod: Story = {
+  args: {
+    title: "Monthly submissions, FY 2025–26",
+    data: [
+      { label: "Oct", value: 1_820 },
+      { label: "Nov", value: 2_140 },
+      { label: "Dec", value: 1_260 },
+      { label: "Jan", value: 2_610 },
+      { label: "Feb", value: 1_180 },
+      { label: "Mar", value: 1_940 },
+    ],
+    highlightIndex: 5,
+  },
+};
+
+/**
+ * A reference line — a `target`, a national average, a sanctioned ceiling — in
+ * the axis ink, dashed so it is never read as a series. It joins the axis
+ * domain, so it is always inside the plot; `targetLabel` names it.
+ */
+export const WithTarget: Story = {
+  args: {
+    title: "SLA compliance by district, %",
+    orientation: "horizontal",
+    showValues: true,
+    valueFormat: (n: number) => `${n}%`,
+    data: [
+      { label: "Kanpur", value: 94 },
+      { label: "Lucknow", value: 88 },
+      { label: "Agra", value: 83 },
+      { label: "Varanasi", value: 79 },
+      { label: "Meerut", value: 71 },
+    ],
+    target: 90,
+    targetLabel: "Target 90%",
+  },
+};
+
+/**
+ * A WITHHELD figure is not a zero. The stub is hatched in the axis ink, the
+ * tooltip and the table say why, and the cell is excluded from the domain.
+ */
+export const WithheldFigure: Story = {
+  args: {
+    title: "Beneficiaries by district",
+    data: [
+      { label: "Nagpur", value: 4_120 },
+      { label: "Pune", value: 3_870 },
+      { label: "Wardha", value: 0, withheld: { kind: "suppressed", reason: "cell count below 5" } },
+      { label: "Nashik", value: 2_410 },
+    ],
+  },
+};

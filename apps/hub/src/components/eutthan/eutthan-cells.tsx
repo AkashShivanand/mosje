@@ -194,7 +194,7 @@ export function Pagination({ total }: { total: number }) {
         {total > 20 && <button type="button">3</button>}
         <button type="button" aria-label="Next page">&rsaquo;</button>
       </div>
-      <span style={{ fontSize: 13, color: "var(--text-muted)" }}>
+      <span style={{ fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)", color: "var(--text-muted)" }}>
         {total} total
       </span>
     </nav>

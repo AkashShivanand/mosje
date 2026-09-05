@@ -18,7 +18,12 @@ SAMAVESH is a white-label government design system. A component must work flawle
   primitive from component code — `npm test -w @mosje/tokens` fails the build if you do.
 - Stylelint (`npm run lint:css`) actively enforces this and will block commits with hardcoded colors.
 - Spacing uses `--sa-padding-*` / `--sa-stack-*` / `--sa-inline-*`, radius `--sa-shape-*`,
-  and type `--sa-type-*-size`. Font weight has no token — write the number, as button.css does.
+  and type `--sa-type-*-size`. Font weight is `--sa-font-weight-{light,regular,medium,semibold,bold,displayMedium}`
+  (Tier 2 since 2026-08-26; this line said "no token" until 2026-09-05 while 530 declarations typed the number).
+- **The one Tier-1 name an app may write:** `apps/hub/src/app/globals.css` re-declares the three
+  `--sa-ref-font-family-*` stacks so the webfont variable `next/font` injects leads the stack. It is a
+  declaration, not a consumption, only the app knows what it loads, and the comment beside it says
+  so. Nothing else in `apps/**` or `components/**` may name a `--sa-ref-*`.
 
 ## 2a. Cascade layers (why a utility can override a component)
 

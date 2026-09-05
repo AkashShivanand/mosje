@@ -13,6 +13,14 @@
 //
 // PROPERTY COVERAGE
 //   Sidebar -> expanded   (Expanded ⇒ true ⇒ menu_open · Collapsed ⇒ false ⇒ menu)
+//   Size    -> deliberatelyOmitted. Large (48) in the resting brand row, Default (40)
+//              in the condensed bar — decided by WHERE the control sits, in CSS
+//              (`.ds-hdr-cond__toggle`), never by a prop. Added to the master
+//              2026-09-05 so the condensed bar could be drawn at the code's size.
+//   State   -> deliberatelyOmitted. Hover / Focused / Pressed are the nested
+//              IconButton's states surfaced on the toggle so a screen can show a
+//              hovered or pressed trigger. In code they are :hover, :focus-visible
+//              and :active — a caller cannot set "hovered".
 import figma from "figma";
 
 const instance = figma.selectedInstance;

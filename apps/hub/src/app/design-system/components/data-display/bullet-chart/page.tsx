@@ -52,7 +52,7 @@ export default function BulletChartPage(): React.JSX.Element {
       name="Bullet Chart"
       status="Beta"
       summary="A measure against its target, on one line: the value as a bar, the target as a tick across it, and the department's own thresholds as quiet bands behind. It is the shape of almost every figure this department reports."
-      figma={{ absent: "Not yet drawn in the Figma library. The chart catalogue is authored in code first." }}
+      figma={{ node: "chartsChart" }}
       specimen={<BulletChartSpecimen />}
       propsFrom="BulletChartProps"
       a11y={A11Y}

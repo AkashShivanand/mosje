@@ -699,3 +699,24 @@ palette so the gains are locked in; the three worst-cases above are the document
 the nine-series guarantee, not an oversight, and the branch's own `chart-palette.test.mjs`
 ratchets pin the safe-range figures (CVD ≥ 8.2, normal ≥ 13.4) that this gate's all-pairs
 scope does not distinguish.
+
+### The bindings, verified — and the API shape nobody had named
+
+All 136 alias-plus-opacity bindings are in the library. 104 were made by hand in the variable
+panel; verification read each one back and, on a probe node in Blue and in Navy, resolved it
+to its base at the expected alpha, then changed the base colour and watched the wash follow
+(accent at 8 % went magenta with the base; the scrim went cyan with neutral 800) before
+restoring both exactly. The remaining 32 — the fully transparent resting fills at `alpha/0` —
+were then written through the API.
+
+What made that possible: Figma stores the binding not as an alias with an opacity field but as
+a **variable expression**, `COMPOSE_COLOR(base alias, alpha alias)`, and `setValueForMode`
+accepts that shape. Every earlier attempt had placed the opacity on the alias object, which is
+what the help page implies and what the API rejects; the read-back after the hand bindings is
+what revealed the real shape. The exporter's comment now records it, so the next translucent
+token can be pushed rather than listed.
+
+The Palette companion `overlay/neutral/boldest` — a brand-aware duplicate the exporter no
+longer generates — held the scrim's expression while the Color variable merely aliased it. The
+Color variable now holds the expression directly; a sweep found no consumer of the companion,
+and it was removed (Palette 164 → 163). Read back: Palette 3e9cf2bd:326, Color a700e8b6:494.

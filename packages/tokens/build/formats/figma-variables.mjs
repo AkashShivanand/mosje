@@ -128,12 +128,15 @@ function breakpoints(tokens) {
 function fluidAt(min, max, viewport, wmin, wmax) {
   if (min === max) return min;
   const t = (viewport - wmin) / (wmax - wmin);
-  return Math.round((min + (max - min) * Math.min(1, Math.max(0, t))) * 100) / 100;
+  const sampled = min + (max - min) * Math.min(1, Math.max(0, t));
+  // A Tablet sample is a DESIGN value, not a measurement: it lands in a text style a
+  // designer lays out with. Until 2026-09-04 it was kept to two decimals — display-1 at
+  // 57.74px, its leading 63.51 — which is a size no one would ever author and which put
+  // the Tablet mode off the grid the documentation promises. Whole pixels; tracking
+  // (sub-pixel by nature) keeps one decimal.
+  return Math.abs(sampled) < 4 ? Math.round(sampled * 10) / 10 : Math.round(sampled);
 }
 
-const TITLE_EXCEPTIONS = { bg: "Background", hc: "HC", ux4g: "UX4G" };
-const titleCase = (seg) =>
-  TITLE_EXCEPTIONS[seg] ?? (/^\d/.test(seg) ? seg : seg.charAt(0).toUpperCase() + seg.slice(1));
 
 /** Ramp path segment → the folder the library already uses. */
 const RAMP_FOLDER = {
@@ -197,7 +200,10 @@ function collectionFor(path, tier, type) {
   // designer should bind to. Both belong in the Radius collection — the tier stays legible in
   // the variable name (`ref/radius/md` vs `shape/md`), exactly as it does in CSS.
   if (head === "radius" || head === "shape") return "Radius";
-  if (head === "opacity" || head === "z") return "Static";
+  if (head === "opacity") return "Static";
+  // `z/*` is code-only — Figma has no z-axis property, so a variable for it is noise in the
+  // panel. Routed to null so it lands in `unmapped` with the reason below (exclusionReason).
+  if (head === "z") return null;
   // Tier-2 opacity. Sits with the Tier-1 `ref/opacity/*` it aliases, so a designer binding a
   // colour variable's opacity finds `alpha/8` and `ref/opacity/8` in one collection and picks
   // the Tier-2 one — the same pairing as `shape`/`ref/radius` and `stroke`/`ref/border/width`.
@@ -246,7 +252,12 @@ function collectionFor(path, tier, type) {
   if (head === "container") return "Static";
   if (head === "focus" && (rest[0] === "width" || rest[0] === "offset")) return "Static";
   if (head === "icon" && rest[0] === "size") return "Space";
-  if (head === "control") return rest[0] === "radius" ? "Radius" : "Static";
+  // `aspect/*` and `icon/fill/*` are numbers no canvas property can bind (Figma has no
+  // aspect-ratio and no font-variation axis on a variable). Static, scope-less, described.
+  if (head === "aspect" || (head === "icon" && rest[0] === "fill")) return "Static";
+  // `control/radius` and `control/selection/radius` are corners; everything else under
+  // `control` — border weights, the selection box, glyph, dot and gap — is a Static measurement.
+  if (head === "control") return path[path.length - 1] === "radius" ? "Radius" : "Static";
   // Same class as the two above: `badge` is a COLOUR root, so the status dot's DIAMETER —
   // a measurement, bound to WIDTH_HEIGHT — went to the Color collection purely because of
   // whose namespace it sits in. Caught on the run that added it (2026-08-17), which is the
@@ -365,10 +376,31 @@ const COLOR_RE = /^(#|rgba?\(|hsla?\()/i;
 const DIMENSION_RE = /^(-?\d*\.?\d+)(px|rem|em|ms|s|%)?$/;
 
 /** Infer the Figma type. 517 tokens carry no DTCG `$type`, so this cannot depend on it. */
+/** Parse a DTCG cubicBezier — the authored [x1, y1, x2, y2] or the projected CSS string. */
+export function bezierOf(raw) {
+  if (Array.isArray(raw) && raw.length === 4 && raw.every((n) => typeof n === "number")) return raw;
+  const m = /cubic-bezier\(([^)]+)\)/.exec(String(raw));
+  if (!m) return null;
+  const pts = m[1].split(",").map((s) => Number(s.trim()));
+  return pts.length === 4 && pts.every((n) => Number.isFinite(n)) ? pts : null;
+}
+
 export function figmaTypeOf(token) {
   const declared = token.$type ?? token.original?.$type;
   if (declared === "color") return { type: "COLOR" };
   if (declared === "fontFamily") return { type: "STRING" };
+  // Figma's NATIVE motion types (Plugin API resolvedType TIMING | EASING, probed live on
+  // 2026-09-04 — the bundled typings that listed only four types were stale). A duration is
+  // a TIMING in milliseconds; a curve is an EASING carrying its cubic-bezier control points.
+  // Figma Motion binds them directly, so a designer animates with the token, not a copy.
+  if (declared === "duration") {
+    const m = /^(-?\d*\.?\d+)(ms|s)?$/.exec(String(val(token) ?? "").trim());
+    if (m) return { type: "TIMING", number: m[2] === "s" ? parseFloat(m[1]) * 1000 : parseFloat(m[1]) };
+  }
+  if (declared === "cubicBezier") {
+    const b = bezierOf(val(token));
+    if (b) return { type: "EASING", bezier: b };
+  }
   const v = String(val(token) ?? "");
   if (COLOR_RE.test(v)) return { type: "COLOR" };
   const m = DIMENSION_RE.exec(v.trim());
@@ -387,7 +419,13 @@ export function figmaTypeOf(token) {
 function brandValue(token, brand) {
   const ext = token.original?.$extensions?.mosje ?? {};
   if (brand === "Navy" && ext.colorModes?.navy !== undefined) return ext.colorModes.navy;
-  return token.original?.$value ?? token.original?.value ?? val(token);
+  const raw = token.original?.$value ?? token.original?.value ?? val(token);
+  // DTCG cubicBezier is authored as [x1, y1, x2, y2]; Figma holds the CSS string (a STRING
+  // variable), which is also what the value-parity checksum was recorded against.
+  if (Array.isArray(raw) && raw.length === 4 && raw.every((n) => typeof n === "number")) {
+    return `cubic-bezier(${raw.join(", ")})`;
+  }
+  return raw;
 }
 
 /**
@@ -482,11 +520,20 @@ const FIGMA_OPACITY_SCALE = 100;
  *     opacity: { type: "ALIAS", collection: "Static", name: "alpha/8" },
  *     fallback: { type: "COLOR", value: "rgba(4, 106, 56, 0.08)" } }
  *
- * `fallback` is the composited literal, for a writer that cannot express the binding: the
- * Plugin API this estate pushes through (apiVersion 1.0.0, 2026-09-04) rejects every shape of
- * opacity on a VariableAlias, so the push script writes the fallback and the binding is made
- * in the Figma UI. `figma-value-parity` compares the INTENDED value, so the library reads as a
- * known difference until it is.
+ * HOW FIGMA STORES IT, learned 2026-09-04 from a read-back after the bindings were made in
+ * the UI: not as an alias with an opacity field but as a VARIABLE EXPRESSION —
+ *
+ *   { type: "VARIABLE_EXPRESSION", expressionFunction: "COMPOSE_COLOR",
+ *     expressionArguments: [ { type: "VARIABLE_ALIAS", id: <base> }, { type: "VARIABLE_ALIAS", id: <alpha> } ] }
+ *
+ * — and `setValueForMode` ACCEPTS that shape (probed on a temporary variable), so a push can
+ * write the binding itself; the 32 alpha/0 resting fills were written that way. Every earlier
+ * attempt had put the opacity ON the alias object, which is what the help page implies and
+ * what the API rejects. A read-back normalises an expression as `->base@->alpha/N`, which is
+ * exactly what normValue produces for this payload shape, so the two halves of
+ * figma-value-parity agree once the library holds the expressions.
+ *
+ * `fallback` is the composited literal, kept for any writer that cannot express the binding.
  */
 function applyAlpha(valuesByMode, alphaRef, nameByPath, resolvedByPath, tokenByPath) {
   const alphaKey = alphaRef.trim().slice(1, -1);
@@ -563,6 +610,11 @@ function encodeValue(raw, token, nameByPath, resolvedByPath, selfTarget) {
     const resolved = resolvedByPath.get(key);
     if (resolved !== undefined) raw = resolved;
   }
+  // DTCG cubicBezier is authored as [x1, y1, x2, y2]; Figma holds the CSS string as a STRING
+  // variable — the form the value-parity record was made against.
+  if (Array.isArray(raw) && raw.length === 4 && raw.every((n) => typeof n === "number")) {
+    raw = `cubic-bezier(${raw.join(", ")})`;
+  }
   const t = figmaTypeOf({ ...token, $value: raw, original: { $value: raw, $type: token.original?.$type } });
   // WEIGHT IS CHECKED BEFORE FLOAT, because a CSS weight IS a number and would otherwise be
   // projected as one. Figma has no numeric weight: a text style selects a cut by STYLE NAME,
@@ -571,6 +623,11 @@ function encodeValue(raw, token, nameByPath, resolvedByPath, selfTarget) {
     return { type: "STRING", value: figmaFontStyle(raw, token.path?.[2]) };
   }
   if (t.type === "FLOAT") return { type: "FLOAT", value: t.number, unit: t.unit };
+  if (t.type === "TIMING") return { type: "TIMING", value: t.number };
+  if (t.type === "EASING") {
+    const [x1, y1, x2, y2] = t.bezier;
+    return { type: "EASING", value: { x1, y1, x2, y2 } };
+  }
   if (token.path?.[0] === "font" && token.path?.[1] === "family") {
     return { type: t.type, value: primaryFontFamily(raw) };
   }
@@ -730,6 +787,11 @@ function applyContractNotes(payload) {
  * (apiVersion 1.0.0) can READ that value but rejects it on write, so the push keeps whatever
  * the UI set on those thirteen variables and reports the skip.
  */
+/** Published visibility follows the name a designer sees, not the file the token came from. */
+export function isHiddenName(figmaName, collection) {
+  return figmaName.startsWith("ref/") || collection === "Palette";
+}
+
 export function scopesFor(path, tier, type, figmaName) {
   // Keyed on the LIBRARY name, not the source path: `font/role/display/1/size` is Tier-1 in
   // the source but publishes as the Tier-2 `type/display/1/size`, and a component token's
@@ -750,7 +812,9 @@ export function scopesFor(path, tier, type, figmaName) {
       // The Tier-2 scales and overlay tiers are the bindable palette; a Palette-collection
       // companion of a role token (color/text/disabled) keeps its role's scope.
       if (rest[0] === "text") return ["TEXT_FILL"];
-      return ["ALL_FILLS", "STROKE_COLOR", "EFFECT_COLOR"];
+      // Every colour scope named, never `ALL_FILLS` — the wildcard the standard says not to
+      // ship. A palette rung may legitimately be any of the five; it is still five, not "all".
+      return ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR", "EFFECT_COLOR"];
     }
     if (head === "cmp") {
       if (/text|label|ink/i.test(tail)) return ["TEXT_FILL"];
@@ -764,14 +828,22 @@ export function scopesFor(path, tier, type, figmaName) {
     return ["FONT_FAMILY"];
   }
   if (type === "STRING") return [];
+  // Timing and Easing are bound by Figma Motion by TYPE; they take no property scope.
+  if (type === "TIMING" || type === "EASING") return [];
   // FLOAT
+  if (head === "aspect" || (head === "icon" && rest[0] === "fill")) return [];
   if (head === "alpha") return ["OPACITY", "COLOR_OPACITY"];
   if (head === "shape" || tail === "radius") return ["CORNER_RADIUS"];
-  if (head === "stroke" || (head === "control" && rest[0] === "border") || head === "focus") return ["STROKE_FLOAT"];
+  if (head === "stroke" || (head === "control" && rest.includes("border")) || head === "focus") return ["STROKE_FLOAT"];
+  // `control/selection/gap` is the box-to-label gap — a GAP, like the spacing ladder.
+  if (head === "control" && tail === "gap") return ["GAP"];
   if (head === "blur") return ["EFFECT_FLOAT"];
   if (head === "type" || head === "leading") {
     if (tail === "size") return ["FONT_SIZE"];
-    if (tail === "lh" || head === "leading") return ["LINE_HEIGHT"];
+    // `lhDevanagari` is the Hindi block's line height at the same size — a pixel value like
+    // `lh`, so it binds. (The OFFSET it is derived from is a ratio and lives under ref/font,
+    // scoped to nothing, precisely so it cannot be bound as 0.2px.)
+    if (tail === "lh" || tail === "lhDevanagari" || head === "leading") return ["LINE_HEIGHT"];
     if (tail === "tracking") return ["LETTER_SPACING"];
     if (tail === "para") return ["PARAGRAPH_SPACING"];
     return [];
@@ -808,6 +880,9 @@ export function exclusionReason(path, tier) {
   }
   if (head === "shadow" || head === "elevation") {
     return "Figma models shadows as EFFECT STYLES, not variables — exported separately";
+  }
+  if (head === "z") {
+    return "code-only — Figma has no z-axis property, so layering cannot be bound on a canvas";
   }
   if (head === "code") {
     // Deliberate, not an oversight. code/* is the chrome around a CODE SPECIMEN in the web
@@ -888,7 +963,12 @@ export function buildPayload(dictionary) {
     seen.add(key);
 
     const collection = collections[target.collection];
-    const { type } = figmaTypeOf(token);
+    // A weight is a STRING in Figma (a cut is addressed by style name — see figmaFontStyle), so
+    // the row's type must say so too. The value encoder already did; the row did not, and the
+    // payload shipped `type: "FLOAT"` over "SemiBold" for six variables until 2026-09-05.
+    const { type } = token.path?.[0] === "font" && token.path?.[1] === "weight"
+      ? { type: "STRING" }
+      : figmaTypeOf(token);
     const fluid = token.original?.$extensions?.mosje?.type;
 
     const valuesByMode = {};
@@ -905,6 +985,20 @@ export function buildPayload(dictionary) {
         if (override !== undefined) {
           raw = override;
         } else {
+          // A Tier-2 colour that references ANOTHER Tier-2 colour carrying its own alpha
+          // (`cmp/accessibilityBar/hoverBg` -> `overlay/brand/hover`, which is neutral/0 at
+          // alpha/8) aliases THAT variable, not the rung beneath it. Following the chain to the
+          // Palette dropped the alpha: the payload said `->color/neutralScale/0` — opaque white —
+          // for a wash the library correctly holds as `->overlay/brand/hover`. Found 2026-09-05
+          // as the one remaining Color value difference between payload and library.
+          const rawRef = token.original?.$value ?? token.original?.value;
+          const refKey = typeof rawRef === "string" && /^\{[^}]+\}$/.test(rawRef.trim()) ? rawRef.trim().slice(1, -1) : null;
+          const refTarget = refKey ? nameByPath.get(refKey) : null;
+          const refToken = refKey ? tokenByPath.get(refKey) : null;
+          if (refTarget?.collection === "Color" && refToken?.original?.$extensions?.mosje?.alpha && !token.original?.$extensions?.mosje?.alpha) {
+            valuesByMode[mode] = { type: "ALIAS", collection: "Color", name: refTarget.name };
+            continue;
+          }
           // Light (and any theme with no override): alias the brand-aware Color variable so
           // Blue/Navy still flows through. Falling back to a literal would drop the brand.
           const brandAware = brandAwareAlias(token, tokenByPath, colorByUnderlying, nameByPath);
@@ -992,6 +1086,13 @@ export function buildPayload(dictionary) {
       ...(description ? { description } : {}),
       codeSyntax: { WEB: `var(${emittedCssName(token, tier)})` },
       scopes: scopesFor(token.path, tier, type, target.name),
+      // .claude/rules/figma-variables-standard.md §4: a Tier-1 primitive exists only to be
+      // aliased, so consumers never see it; the semantic and component tiers publish. Keyed on
+      // the LIBRARY name, like scopesFor: `font/role/*` is Tier-1 in the source but publishes
+      // as the Tier-2 `type/*` a text style binds, and a designer may bind it too. Palette is
+      // Tier 1 by role — the brand ramps every Color role aliases — and hides whole, so a
+      // consuming file sees the semantic layer and nothing beneath it.
+      hiddenFromPublishing: isHiddenName(target.name, target.collection),
       status: live?.[target.collection]?.includes(target.name) ? "existing" : "new",
       $extensions: { "in.gov.mosje.tier": tier, "in.gov.mosje.source": token.filePath },
     });
@@ -1033,6 +1134,8 @@ export function buildPayload(dictionary) {
         `Brand-aware source for Theme::${name}. Generated because that token’s light value is ` +
         `a literal that differs between Blue and Navy; without it the Navy brand is lost.`,
       codeSyntax: { WEB: `var(${toCssName(token.path, tierOfFile(token.filePath))})` },
+      scopes: scopesFor(token.path, tierOfFile(token.filePath), "COLOR", name),
+      hiddenFromPublishing: isHiddenName(name, "Palette"),
     });
   }
 
@@ -1045,11 +1148,14 @@ export function buildPayload(dictionary) {
   const payload = {
     $schema: "samavesh-figma-variables/2",
     $description:
-      "GENERATED by @mosje/tokens, targeted at the live SAMAVESH library's seven collections. " +
-      "Variables are keyed by the name the library already uses; `status` says whether an " +
-      "import adds or updates. Colour is split across two collections: Color carries the BRAND " +
-      "axis (Blue|Navy) and Theme is the single-mode semantic layer that aliases into it. " +
-      "See spec §8.4.",
+      "GENERATED by @mosje/tokens, targeted at the live SAMAVESH library's nine collections " +
+      "(Space, Palette, Color, Type, Radius, Motion, Density, Static, Viewport). Variables are " +
+      "keyed by the name the library already uses; `status` says whether an import adds or " +
+      "updates. Colour is split across two collections: Palette carries the BRAND axis " +
+      "(Blue|Navy) and Color is the single-mode semantic layer that aliases into it. Every " +
+      "variable carries the five fields .claude/rules/figma-variables-standard.md requires: " +
+      "name = DTCG path, description, narrowest true scopes, codeSyntax.WEB, and " +
+      "hiddenFromPublishing by the tier of the LIBRARY name (ref/* and all of Palette hide). See spec §8.4.",
     counts,
     unmapped,
     collections: Object.values(collections).filter((c) => c.variables.length),

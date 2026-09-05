@@ -52,6 +52,9 @@ export const NOT_COMPONENTS = new Set([
   // a component. `check:org-logos` is what actually guards this registry.
   "ORG_LOGOS", "ORG_LOGO_FALLBACK", "PORTAL_ORG_LOGOS",
   "SAMAVESH_MARK", "SAMAVESH_MARK_VECTOR", "NATIONAL_EMBLEM", "NATIONAL_EMBLEM_INVERSE",
+  // The masthead's SAMAVESH cobrand — a BrandMark value, documented on the SiteHeader
+  // page where it is rendered live, not a component of its own.
+  "SAMAVESH_COBRAND",
   "orgLogoSrc", "portalLogoSrc", "portalLabel", "portalSummary", "portalCategoriesIn",
   // The four portals SamaveshBanner features by default, and the helper that
   // reads each one's build status out of DEFAULT_APPS. A data array and a pure
@@ -148,6 +151,14 @@ export const DOCUMENTED_BY = {
   ReviewSection: "Wizard", ReviewItem: "Wizard",
   SkeletonText: "Skeleton", SkeletonRow: "Skeleton",
   ChartTooltip: "Legend",
+  // The ranked list's bar alone, for a table cell. Its page shows it inside a
+  // DataTable column and its story renders it in a table; on its own it is a
+  // 6px track with nothing to say.
+  InlineBar: "RankedBarList",
+  // Source · as of · status. Rendered by ChartCard and MetricCard through their
+  // `provenance` prop; the Chart Card page carries the section on when a card
+  // prints one and when it must not.
+  ProvenanceLine: "ChartCard",
   AccordionItem: "Accordion", VerticalTimelineItem: "VerticalTimeline",
   // The GROUPED form of each selection control. A reader asking "how do I
   // group radios" goes to the Radio page, not to a separate route — the

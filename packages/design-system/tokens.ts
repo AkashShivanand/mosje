@@ -51,15 +51,15 @@ export const fontFamily = {
 
 /** Named type styles. Fluid: `size`/`leading` are clamp() or rem strings, not px numbers. */
 export const typography = {
-  display: { size: "clamp(2.5rem, calc(1.5217rem + 4.348vw), 5rem)", leading: "clamp(2.75rem, calc(1.6739rem + 4.783vw), 5.5rem)" },
-  title1: { size: "clamp(1.5rem, calc(1.3043rem + 0.87vw), 2rem)", leading: "clamp(1.75rem, calc(1.4565rem + 1.304vw), 2.5rem)" },
-  headline: { size: "clamp(1.75rem, calc(1.4565rem + 1.304vw), 2.5rem)", leading: "clamp(2rem, calc(1.6087rem + 1.739vw), 3rem)" },
-  title2: { size: "clamp(1.125rem, calc(1.0272rem + 0.435vw), 1.375rem)", leading: "clamp(1.5rem, calc(1.4022rem + 0.435vw), 1.75rem)" },
-  body1: { size: "1rem", leading: "1.5rem" },
-  body2: { size: "0.875rem", leading: "1.25rem" },
-  body3: { size: "0.75rem", leading: "1rem" },
-  label1: { size: "0.875rem", leading: "1.25rem" },
-  label3: { size: "0.6875rem", leading: "1rem" },
+  display: { size: "clamp(2.5rem, calc(1.5217rem + 4.348vw), 5rem)", leading: "clamp(3rem, calc(2.0217rem + 4.348vw), 5.5rem)", leadingDevanagari: "clamp(3.5rem, calc(2.3261rem + 5.217vw), 6.5rem)" },
+  title1: { size: "clamp(1.5rem, calc(1.3043rem + 0.87vw), 2rem)", leading: "clamp(2rem, calc(1.8043rem + 0.87vw), 2.5rem)", leadingDevanagari: "clamp(2.5rem, calc(2.3043rem + 0.87vw), 3rem)" },
+  headline: { size: "clamp(1.75rem, calc(1.4565rem + 1.304vw), 2.5rem)", leading: "clamp(2.25rem, calc(1.9565rem + 1.304vw), 3rem)", leadingDevanagari: "clamp(2.75rem, calc(2.4565rem + 1.304vw), 3.5rem)" },
+  title2: { size: "clamp(1.125rem, calc(1.0272rem + 0.435vw), 1.375rem)", leading: "clamp(1.5rem, calc(1.4022rem + 0.435vw), 1.75rem)", leadingDevanagari: "clamp(1.75rem, calc(1.5543rem + 0.87vw), 2.25rem)" },
+  body1: { size: "1rem", leading: "1.5rem", leadingDevanagari: "1.75rem" },
+  body2: { size: "0.875rem", leading: "1.25rem", leadingDevanagari: "1.5rem" },
+  body3: { size: "0.75rem", leading: "1rem", leadingDevanagari: "1.25rem" },
+  label1: { size: "0.875rem", leading: "1.25rem", leadingDevanagari: "1.5rem" },
+  label3: { size: "0.75rem", leading: "1rem", leadingDevanagari: "1.25rem" },
 } as const;
 
 export const shadow = {
@@ -81,5 +81,70 @@ export const iconSize = {
   px64: 64,
 } as const;
 
-export const tokens = { colors, radius, fontFamily, typography, shadow, iconSize } as const;
+/** The six elevation roles, as the box-shadow strings tokens.css renders. */
+export const elevation = {
+  flat: "none",
+  card: "0 2px 3px 1px rgba(30, 33, 36, 0.12)",
+  raised: "0 4px 6px -1px rgba(30, 33, 36, 0.10), 0 2px 4px -2px rgba(30, 33, 36, 0.06)",
+  dropdown: "0 8px 12px -3px rgba(30, 33, 36, 0.09), 0 3px 5px -2px rgba(30, 33, 36, 0.05)",
+  modal: "0 12px 16px -4px rgba(30, 33, 36, 0.08), 0 4px 6px -2px rgba(30, 33, 36, 0.03)",
+  toast: "0 24px 48px -12px rgba(30, 33, 36, 0.18)",
+} as const;
+
+/** Motion by intent: duration in MILLISECONDS (a number, for Framer Motion / GSAP / setTimeout)
+    and the easing as a CSS cubic-bezier() string. Under prefers-reduced-motion the CSS custom
+    properties collapse to 0.01ms; a JS consumer must check matchMedia itself — these literals
+    do not. */
+export const motion = {
+  instant: { duration: 0, easing: "cubic-bezier(0, 0, 1, 1)" },
+  hover: { duration: 150, easing: "cubic-bezier(0, 0, 0.2, 1)" },
+  press: { duration: 150, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+  focus: { duration: 0, easing: "cubic-bezier(0, 0, 1, 1)" },
+  enter: { duration: 250, easing: "cubic-bezier(0, 0, 0.2, 1)" },
+  exit: { duration: 150, easing: "cubic-bezier(0.4, 0, 1, 1)" },
+  expand: { duration: 250, easing: "cubic-bezier(0.4, 0, 0.2, 1)" },
+  collapse: { duration: 200, easing: "cubic-bezier(0.4, 0, 0.2, 1)" },
+  emphasis: { duration: 400, easing: "cubic-bezier(0.4, 0, 0.2, 1)" },
+  reveal: { duration: 400, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+  page: { duration: 300, easing: "cubic-bezier(0.4, 0, 0.2, 1)" },
+  loading: { spin: 1000, pulse: 700, easing: "cubic-bezier(0, 0, 1, 1)" },
+  stagger: { step: 45, max: 8 },
+} as const;
+
+/** The layering ladder. z.statutory, z.demo and z.top are RESERVED — never assign them. */
+export const z = {
+  base: 0,
+  raised: 1,
+  dropdown: 100,
+  sticky: 200,
+  fixed: 300,
+  overlay: 400,
+  modal: 500,
+  popover: 600,
+  toast: 700,
+  tooltip: 800,
+  rail: 1000,
+  launcher: 1010,
+  statutory: 999999,
+  demo: 2147483000,
+  top: 2147483001,
+} as const;
+
+/** Viewport anchors in CSS px, for matchMedia() and container queries in JS. */
+export const breakpoint = {
+  mobile: 360,
+  tablet: 768,
+  laptop: 1024,
+  desktop: 1280,
+  desktopXl: 1440,
+  desktopWide: 1920,
+} as const;
+
+/** Whole-element opacity intents, 0–1. */
+export const alpha = {
+  disabled: 0.48,
+  muted: 0.64,
+} as const;
+
+export const tokens = { colors, radius, fontFamily, typography, shadow, elevation, motion, z, breakpoint, alpha, iconSize } as const;
 export default tokens;

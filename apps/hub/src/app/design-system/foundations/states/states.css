@@ -1,0 +1,126 @@
+/* Interaction States foundation — one control in every state, built only from tokens. */
+@layer theme, base, components, utilities;
+@layer components {
+  .is-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+  .is-matrix th,
+  .is-matrix td {
+    text-align: left;
+    vertical-align: top;
+    padding: var(--sa-padding-12);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+  .is-matrix thead th {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-subtle);
+    border-bottom-color: var(--sa-border-neutral-base);
+  }
+  .is-matrix tbody th code {
+    color: var(--sa-text-brand-primary-base);
+  }
+  .is-specimens {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-16);
+    padding: var(--sa-padding-32);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .is-btn {
+    min-height: var(--sa-target-comfortable);
+    padding: var(--sa-padding-8) var(--sa-padding-20);
+    border: var(--sa-control-border-width) solid transparent;
+    border-radius: var(--sa-control-radius);
+    background: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-bolder);
+    font: inherit;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+    cursor: pointer;
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+  }
+  .is-btn:hover {
+    background: var(--sa-bg-brand-primary-boldest);
+  }
+  .is-btn:active {
+    transform: translateY(var(--sa-stack-2));
+  }
+  .is-btn:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+    transition-duration: var(--sa-motion-focus-duration);
+  }
+  .is-btn--selected {
+    background: var(--sa-bg-brand-primary-bold);
+    color: var(--sa-on-bg-brand-primary-bold);
+    border-color: var(--sa-border-brand-primary-base);
+  }
+  .is-btn:disabled {
+    background: var(--sa-bg-neutral-subtle);
+    color: var(--sa-text-neutral-disabled);
+    opacity: var(--sa-alpha-disabled);
+    cursor: not-allowed;
+    transition: none;
+  }
+  .is-link {
+    color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
+    text-underline-offset: var(--sa-stack-2);
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+  }
+  .is-link--visited,
+  .is-link:visited {
+    color: var(--sa-text-link-visited-default);
+  }
+  .is-link:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+}
+
+/* ── State layers, the inset well and the two-tone ring — specimens bound to their tokens ── */
+@layer components {
+  .st-layer { position: relative; isolation: isolate; }
+  .st-layer::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+  .st-layer--hover::after { background: var(--sa-overlay-neutral-hover); }
+  .st-layer--active::after { background: var(--sa-overlay-neutral-active); }
+  .st-layer--focus::after { background: var(--sa-overlay-neutral-focus); }
+  .st-layer--drag::after { background: var(--sa-overlay-neutral-drag); box-shadow: var(--sa-elevation-raised); }
+  .st-surface--hover { background: var(--sa-bg-neutral-hover); color: var(--sa-on-bg-neutral-hover); }
+  .st-surface--active { background: var(--sa-bg-neutral-active); color: var(--sa-on-bg-neutral-active); }
+  .st-surface--selected { background: var(--sa-bg-neutral-selected); border-color: var(--sa-border-neutral-selected); color: var(--sa-on-bg-neutral-selected); }
+  .st-surface--readonly { background: var(--sa-bg-neutral-readonly); color: var(--sa-on-bg-neutral-readonly); }
+  .st-surface--loading { background: var(--sa-bg-neutral-loading); color: var(--sa-on-bg-neutral-loading); }
+  .st-well { box-shadow: var(--sa-elevation-inset); }
+  .st-ring--two-tone:focus-visible {
+    box-shadow: 0 0 0 var(--sa-focus-offset) var(--sa-focus-ringInner);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* forced-colors mode does not paint box-shadow, so the inner ring is not drawn there;
+     the outline IS painted, and Highlight is the system's own focus colour. */
+  @media (forced-colors: active) {
+    .st-ring--two-tone:focus-visible {
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
+    }
+  }
+}
+
+/* ── The brand state layers, on a brand surface — the counterpart of the neutral pair above ── */
+@layer components {
+  .st-layer--brand-hover::after { background: var(--sa-overlay-brand-hover); }
+  .st-layer--brand-active::after { background: var(--sa-overlay-brand-active); }
+}

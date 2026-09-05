@@ -5,6 +5,7 @@ import { makeRetier, retierCss } from "./formats/retier.mjs";
 import { figmaVariables } from "./formats/figma-variables.mjs";
 import { tierOfFile, toCssName } from "./grammar.mjs";
 import { addDbimBrandModes } from "./dbim-brand-modes.mjs";
+import { addDevanagariLeading } from "./devanagari-leading.mjs";
 
 /**
  * Wrap a CSS format so every `var(--sa-…)` it emits carries the referent's tier marker
@@ -49,6 +50,16 @@ StyleDictionary.registerPreprocessor({
     addDbimBrandModes(dictionary);
     return dictionary;
   },
+});
+
+/**
+ * Every role's Devanagari line height, derived from its Latin leading and the offset primitive
+ * instead of authored 21 times. See `build/devanagari-leading.mjs` for the rule and why the flat
+ * 1.7 it replaces was wrong on both surfaces and unusable in Figma.
+ */
+StyleDictionary.registerPreprocessor({
+  name: "mosje/devanagari-leading",
+  preprocessor: (dictionary) => addDevanagariLeading(dictionary),
 });
 
 StyleDictionary.registerFormat({
@@ -143,7 +154,44 @@ StyleDictionary.registerFormat({
 
 // NB: no fontFamily/css — font-family tokens are authored in final CSS form (double-quoted)
 // and must pass through verbatim to match the legacy contract. No size/rem — px is preserved.
-const TRANSFORMS = ["attribute/cti", "name/kebab", "color/css"];
+/**
+ * DTCG composite types → CSS strings, in exactly the shape the estate already shipped.
+ *
+ * `cubicBezier` is authored as the four-number array the spec defines and projected as
+ * `cubic-bezier(x1, y1, x2, y2)`; `shadow` is authored as an array of layer objects and
+ * projected as the comma-joined `box-shadow` shorthand with a bare `0` for a zero offset.
+ * Style Dictionary v4 ships transforms for both, but its shorthand spacing differs from the
+ * strings the visual contract pins — these two exist so the source could change shape
+ * without a single rendered pixel moving (`visual-contract.test.mjs` proves it).
+ */
+const px0 = (v) => (/^0(px|rem|em)?$/.test(String(v).trim()) ? "0" : String(v));
+StyleDictionary.registerTransform({
+  name: "mosje/cubic-bezier-css",
+  type: "value",
+  filter: (t) => t.$type === "cubicBezier" || t.type === "cubicBezier",
+  transform: (t) => {
+    const v = t.$value ?? t.value;
+    return Array.isArray(v) ? `cubic-bezier(${v.join(", ")})` : v;
+  },
+});
+StyleDictionary.registerTransform({
+  name: "mosje/shadow-css",
+  type: "value",
+  filter: (t) => t.$type === "shadow" || t.type === "shadow",
+  transform: (t) => {
+    const v = t.$value ?? t.value;
+    if (typeof v === "string") return v;
+    const layers = Array.isArray(v) ? v : [v];
+    if (!layers.length) return "none";
+    // Every layer in the ramp carries an explicit spread (a bare "0" when none), so the
+    // projection is fixed-arity: x y blur spread colour.
+    return layers
+      .map((l) => `${l.inset ? "inset " : ""}${px0(l.offsetX)} ${px0(l.offsetY)} ${px0(l.blur)} ${px0(l.spread ?? "0")} ${l.color}`)
+      .join(", ");
+  },
+});
+
+const TRANSFORMS = ["attribute/cti", "name/kebab", "color/css", "mosje/cubic-bezier-css", "mosje/shadow-css"];
 
 // White-label: the active brand pack supplies the brand-identity primitives
 // (color.primaryRamp / saffron / navy / yellow). Default brand is MoSJE.
@@ -151,7 +199,7 @@ const TRANSFORMS = ["attribute/cti", "name/kebab", "color/css"];
 const BRAND = process.env.BRAND || "mosje";
 
 const sd = new StyleDictionary({
-  preprocessors: ["mosje/dbim-brands"],
+  preprocessors: ["mosje/dbim-brands", "mosje/devanagari-leading"],
   source: [`brands/${BRAND}/brand.json`, "src/primitive.json", "src/semantic.json", "src/system.generated.json", "src/component.json", "src/component.generated.json"],
   platforms: {
     css: {
@@ -160,7 +208,6 @@ const sd = new StyleDictionary({
       files: [
         { destination: "tokens.css", format: "css/legacy-ds" },
         { destination: "tokens-tailwind.css", format: "css/tailwind-v4" },
-        { destination: "ux4g.css", format: "css/ux4g-parity" },
       ],
     },
     ts: {
@@ -189,8 +236,16 @@ const sd = new StyleDictionary({
       buildPath: "../design-system/",
       files: [
         { destination: "tokens.css", format: "css/legacy-ds" },
-        { destination: "ux4g.css", format: "css/ux4g-parity" },
       ],
+    },
+    // The `--ux4g-*` parity mapping is a MEASUREMENT artifact for tools/ux4g-conformance, not a
+    // shipped stylesheet: nothing in the estate ever imported `@mosje/design-system/ux4g.css`,
+    // so since 2026-09-04 it is built into the tool's own folder (gitignored) and read only by
+    // measure.mjs. Removing the shipped copy is what let the flat `font.size.*` ramp go.
+    ux4gConformance: {
+      transforms: TRANSFORMS,
+      buildPath: "../../tools/ux4g-conformance/",
+      files: [{ destination: "parity.generated.css", format: "css/ux4g-parity" }],
     },
     // Generate the portal Tailwind v3 preset straight into @mosje/config, so portals keep
     // importing "@mosje/config/tailwind-preset" with no extra package resolution.
@@ -222,6 +277,7 @@ if (BRAND === "mosje") {
   // Typography's numbers were hand-typed too — 168 of them, correct on the day they were
   // checked and with no way of staying that way. Same fix, before the same failure.
   await import("./generate-typography-docs-data.mjs");
+  await import("./generate-foundation-docs-data.mjs");
 }
 
 console.log(`✓ @mosje/tokens built (brand: ${BRAND})`);

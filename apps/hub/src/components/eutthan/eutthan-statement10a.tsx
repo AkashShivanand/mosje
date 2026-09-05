@@ -19,7 +19,7 @@ export function Statement10APage() {
               style={{
                 margin: "var(--sa-stack-4) 0 0",
                 color: "var(--text-muted)",
-                fontSize: 14,
+                fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)",
               }}
             >
               {screen.subtitle}
@@ -53,8 +53,8 @@ export function Statement10APage() {
             <span
               id="s10a-fy-label"
               style={{
-                fontSize: 12,
-                fontWeight: 700,
+                fontSize: "var(--sa-type-label-2-size)", lineHeight: "var(--sa-type-label-2-lh)",
+                fontWeight: "var(--sa-font-weight-bold)",
                 color: "var(--text-muted)",
               }}
             >
@@ -72,8 +72,8 @@ export function Statement10APage() {
             <span
               id="s10a-ministry-label"
               style={{
-                fontSize: 12,
-                fontWeight: 700,
+                fontSize: "var(--sa-type-label-2-size)", lineHeight: "var(--sa-type-label-2-lh)",
+                fontWeight: "var(--sa-font-weight-bold)",
                 color: "var(--text-muted)",
               }}
             >

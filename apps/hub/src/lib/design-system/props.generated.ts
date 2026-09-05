@@ -121,7 +121,7 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "language",
-        "type": "{ label?: string; onClick?: () => void } | false",
+        "type": "{ label?: string; /** BCP-47 tag of the LABEL's own language (e.g. \"hi\" for हिंदी) so a screen reader voices it correctly. */ lang?: string; onClick?: () => void } | false",
         "required": false,
         "default": "{ label: \"English\" }",
         "description": "Language selector. Pass `false` to hide."
@@ -131,7 +131,7 @@ export const GENERATED_PROPS = {
         "type": "AccessibilityBarLayout = \"narrow\" | \"wide\" | \"page\" | \"fluid\"",
         "required": false,
         "default": "\"wide\"",
-        "description": "Content-container width: narrow (720) · wide (flat 1200) · page (1200/1320/1440 ladder) · fluid (full-bleed)."
+        "description": "Content-container width: narrow (720) · wide (flat 1200) · page (1200/1320/1440 ladder) · fluid (full-bleed). Every preset pads with `--sa-grid-margin-page` — the same margin ladder `.sa-container` applies — so the bar's content edge always meets the rows beneath it. `fluid` is the portal's layout (`Navbar/Portal` in Figma: rows fill the 1440 frame, margin only); `page` is the website's (`Navbar/Website`: rows cap at `container/page`)."
       },
       {
         "name": "maxWidth",
@@ -207,7 +207,7 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "language",
-        "type": "{ label?: string; onClick?: () => void } | false",
+        "type": "{ label?: string; lang?: string; onClick?: () => void } | false",
         "required": false,
         "default": "{ label: \"English\" }",
         "description": "Language selector. Pass `false` to hide."
@@ -255,6 +255,13 @@ export const GENERATED_PROPS = {
         "type": "HeaderAccount",
         "required": true,
         "description": ""
+      },
+      {
+        "name": "avatarSize",
+        "type": "40 | 48",
+        "required": false,
+        "default": "48",
+        "description": "Avatar size. 48 in the resting brand row; `SiteHeader` passes 40 inside the condensed bar, whose every control is 40 — at 48 the avatar, not the bar's min-height, decided the height, and a phone measured 64 against a designed 56. Figma: Navbar/Portal On Scroll carries Avatar Size=Large - 40px."
       },
       {
         "name": "className",
@@ -833,6 +840,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "highlightIndex",
+        "type": "number",
+        "required": false,
+        "description": "The one category the reader is looking at — the current month in a monthly trend. That bar keeps its colour and every other bar drops to the sequential ramp's light rung, so the comparison reads at a glance. It is named in the summary sentence, so a screen reader is told which bar is current rather than left to infer it from colour."
+      },
+      {
         "name": "labels",
         "type": "string[]",
         "required": false,
@@ -882,6 +895,19 @@ export const GENERATED_PROPS = {
         "type": "\"toggle\" | \"sr-only\"",
         "required": false,
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "target",
+        "type": "number",
+        "required": false,
+        "description": "A reference value drawn as a dashed line across the plot, in the same units as the bars — a target, a national average, a sanctioned ceiling. It joins the axis domain so it is always inside the plot."
+      },
+      {
+        "name": "targetLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Target N\"",
+        "description": "Text at the line."
       },
       {
         "name": "textured",
@@ -967,12 +993,6 @@ export const GENERATED_PROPS = {
         "description": "Where a citizen goes when the check will not pass them. **Required, and deliberately not optional.** A network-reputation or proof-of-work check has no accessible workaround of its own: a citizen on a shared connection, a screen reader that cannot complete the gesture, or an older device that fails the work factor is simply stuck. This link is the alternative WCAG 2.2 3.3.8 asks for, and making it optional is how it gets dropped from the one portal that needed it."
       },
       {
-        "name": "challenge",
-        "type": "| { type: \"image\"; src: string; alt?: string }\n    | { type: \"text\"; characters: string }",
-        "required": false,
-        "description": "`challenge` mode — what the server issued."
-      },
-      {
         "name": "className",
         "type": "string",
         "required": false,
@@ -1020,21 +1040,9 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "mode",
-        "type": "BotCheckMode = \"invisible\" | \"checkbox\" | \"challenge\"",
+        "type": "BotCheckMode = \"invisible\" | \"checkbox\"",
         "required": false,
         "default": "\"invisible\"",
-        "description": ""
-      },
-      {
-        "name": "onRefresh",
-        "type": "() => void",
-        "required": false,
-        "description": "`challenge` mode — asks for a new challenge. It MUST also clear `value`."
-      },
-      {
-        "name": "onValueChange",
-        "type": "(next: string) => void",
-        "required": false,
         "description": ""
       },
       {
@@ -1044,25 +1052,11 @@ export const GENERATED_PROPS = {
         "description": "`checkbox` mode — the citizen's gesture."
       },
       {
-        "name": "placeholder",
-        "type": "string",
-        "required": false,
-        "default": "\"Enter the characters\"",
-        "description": "`challenge` mode placeholder."
-      },
-      {
         "name": "status",
         "type": "BotCheckStatus = \"idle\" | \"verifying\" | \"verified\" | \"failed\"",
         "required": false,
         "default": "\"idle\"",
         "description": ""
-      },
-      {
-        "name": "value",
-        "type": "string",
-        "required": false,
-        "default": "\"\"",
-        "description": "`challenge` mode — the typed answer. Controlled."
       }
     ]
   },
@@ -1704,6 +1698,12 @@ export const GENERATED_PROPS = {
         "description": "The one action that would resolve the state in front of the reader. Drawn as a button; omit where nothing the reader can do would help."
       },
       {
+        "name": "provenance",
+        "type": "DataProvenance",
+        "required": false,
+        "description": "Where the figures came from — printed as one muted line beneath the body, and dropped with the footer whenever the card has nothing to show, because a source line under \"This could not be loaded\" is describing figures that are not there."
+      },
+      {
         "name": "retryLabel",
         "type": "string",
         "required": false,
@@ -1818,7 +1818,13 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "Set when the chart puts `tabIndex` on its marks. `role=\"img\"` exposes the SVG as ONE atomic node and prunes everything under it from the accessibility tree — which is right for a static chart whose accessible equivalent is the screen-reader table, and wrong the moment a mark becomes focusable. Nine charts here put `tabIndex={0}` and an `aria-label` on every bar, point, cell or region; inside `role=\"img\"` those labels are pruned, so a keyboard reader tabbed through thirty stops that announced nothing at all. `role=\"group\"` keeps the accessible name from `<title>`/`<desc>` and lets the marks' own labels through. It is not a full traversal model — arrow-key roving across marks is still to build, and the pages say so — but a named stop is strictly better than a nameless one."
+        "description": "Set when the chart puts `tabIndex` on its marks. `role=\"img\"` exposes the SVG as ONE atomic node and prunes everything under it from the accessibility tree — which is right for a static chart whose accessible equivalent is the screen-reader table, and wrong the moment a mark becomes focusable. Nine charts here put `tabIndex={0}` and an `aria-label` on every bar, point, cell or region; inside `role=\"img\"` those labels are pruned, so a keyboard reader tabbed through thirty stops that announced nothing at all. `role=\"group\"` keeps the accessible name from `<title>`/`<desc>` and lets the marks' own labels through. It also switches on the frame's KEYBOARD MODEL. The marks form one roving tab stop: Tab enters the chart at the first (or last-visited) mark, the arrow keys move between marks, Home and End jump to the ends, and Escape dismisses the tooltip without moving focus (see `onDismiss`). Before this a thirty-bar chart was thirty Tab stops, which is not a traversal model but a wall."
+      },
+      {
+        "name": "onDismiss",
+        "type": "() => void",
+        "required": false,
+        "description": "Called on Escape while a mark has focus. Charts pass their tooltip controller's `hide`, so a keyboard reader can close the tooltip and stay where they are — `onBlur` alone would make them leave the chart to do it."
       },
       {
         "name": "onRetry",
@@ -2147,13 +2153,7 @@ export const GENERATED_PROPS = {
         "name": "legend",
         "type": "React.ReactNode",
         "required": true,
-        "description": "The group's own question, rendered as a `<legend>`. This is the whole reason the component exists — see the note below. It is required, and it is not decorative."
-      },
-      {
-        "name": "onChange",
-        "type": "(value: string[]) => void",
-        "required": true,
-        "description": ""
+        "description": "The group's own question, rendered as a `<legend>`. Required, and not decorative — see the note on `GroupShell`."
       },
       {
         "name": "options",
@@ -2162,10 +2162,11 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
-        "name": "value",
-        "type": "string[]",
-        "required": true,
-        "description": ""
+        "name": "cardLayout",
+        "type": "SelectionCardLayout = \"compact\" | \"detailed\"",
+        "required": false,
+        "default": "\"compact\"",
+        "description": "With `variant=\"card\"`: `detailed` for scheme tiles, `compact` for a short list."
       },
       {
         "name": "className",
@@ -2174,10 +2175,35 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "defaultValue",
+        "type": "string[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": "Native `<fieldset disabled>` — every option, no per-option plumbing."
+      },
+      {
         "name": "error",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Error message; sets the group's invalid state and is announced."
+        "description": "Error message; sets the invalid state and is announced after the options."
+      },
+      {
+        "name": "exclusiveDivider",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"or\"",
+        "description": "Text of the divider before the exclusive option."
+      },
+      {
+        "name": "hideLegend",
+        "type": "boolean",
+        "required": false,
+        "description": "Visually hides the legend. It is still a legend, and still the group's name."
       },
       {
         "name": "hint",
@@ -2195,7 +2221,26 @@ export const GENERATED_PROPS = {
         "name": "invalid",
         "type": "boolean",
         "required": false,
-        "description": "Sets the invalid state without a message, so spreading `FormField`'s render-prop object onto a group degrades rather than breaks. Prefer `error`."
+        "description": "Invalid state without a message, so `FormField`'s render-prop object degrades rather than breaks. Prefer `error`."
+      },
+      {
+        "name": "labelPlacement",
+        "type": "SelectionLabelPlacement = \"end\" | \"start\"",
+        "required": false,
+        "default": "\"end\"",
+        "description": ""
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": false,
+        "description": "Posted on every box, so a plain `<form>` submit carries the selection. Also prefixes the option ids."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: string[]) => void",
+        "required": false,
+        "description": ""
       },
       {
         "name": "orientation",
@@ -2205,14 +2250,39 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
         "name": "required",
         "type": "boolean",
         "required": false,
         "description": ""
       },
       {
+        "name": "selectAll",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Label of a \"select all\" parent rendered above the options — checked when every enabled option is, indeterminate when only some are."
+      },
+      {
+        "name": "size",
+        "type": "SelectionSize = \"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string[]",
+        "required": false,
+        "description": ""
+      },
+      {
         "name": "variant",
-        "type": "\"default\" | \"card\"",
+        "type": "SelectionVariant = \"default\" | \"card\"",
         "required": false,
         "default": "\"default\"",
         "description": "`card` renders each option as a selectable card."
@@ -2224,29 +2294,120 @@ export const GENERATED_PROPS = {
     "inheritsNative": true,
     "props": [
       {
-        "name": "checked",
-        "type": "boolean",
-        "required": true,
-        "description": "Controlled checked state."
+        "name": "cardLayout",
+        "type": "SelectionCardLayout = \"compact\" | \"detailed\"",
+        "required": false,
+        "default": "\"compact\"",
+        "description": "Card variant only. `detailed` is the scheme tile: icon tile, title, description, meta, control trailing."
       },
       {
-        "name": "onChange",
-        "type": "React.ChangeEventHandler<HTMLInputElement>",
-        "required": true,
-        "description": "Change handler — receives the native input event."
+        "name": "checked",
+        "type": "boolean",
+        "required": false,
+        "description": "Controlled state. Omit it to let the control hold its own, seeded by `defaultChecked`."
+      },
+      {
+        "name": "defaultChecked",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Initial state for the uncontrolled form. Never `true` for a consent or declaration — UX4G §7 prohibits pre-checked consent boxes, and DBIM B.xii expects an explicit act."
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Secondary line, linked through `aria-describedby`."
+      },
+      {
+        "name": "error",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Error message. Rendered after the control with `role=\"alert\"`, sets `aria-invalid`, and joins `aria-describedby`. Write it as [Problem] + [Solution] (UX4G §7)."
+      },
+      {
+        "name": "hideLabel",
+        "type": "boolean",
+        "required": false,
+        "description": "Keeps `label` as the accessible name but removes it from view."
+      },
+      {
+        "name": "icon",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Leading glyph, card variant only. Pass an `<Icon>` — `size={40}` in the detailed layout."
       },
       {
         "name": "indeterminate",
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "Render the indeterminate (mixed) state."
+        "description": "The mixed state a \"select all\" parent shows when only some children are selected. Orthogonal to `checked`: the DOM property is set, the box draws a dash, and a click still yields `checked = true`, as the native control does."
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "description": "Invalid styling without a message — for a group that owns the message."
       },
       {
         "name": "label",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Optional text label rendered beside the box (associated via htmlFor/id)."
+        "description": ""
+      },
+      {
+        "name": "labelPlacement",
+        "type": "SelectionLabelPlacement = \"end\" | \"start\"",
+        "required": false,
+        "default": "\"end\"",
+        "description": ""
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One fact to choose by — the target group, the fee, the timeline. Card variant; joins `aria-describedby`."
+      },
+      {
+        "name": "onChange",
+        "type": "React.ChangeEventHandler<HTMLInputElement>",
+        "required": false,
+        "description": "Native change event, kept for every existing call site."
+      },
+      {
+        "name": "onCheckedChange",
+        "type": "(checked: boolean) => void",
+        "required": false,
+        "description": "The next checked value, after `onChange`. The convenience most callers actually want."
+      },
+      {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Announced as read-only and kept in the tab order, but cannot be changed. NOT `disabled`: a disabled control leaves the tab order and the submitted form, and tells the reader they did something wrong."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "size",
+        "type": "SelectionSize = \"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "variant",
+        "type": "SelectionVariant = \"default\" | \"card\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": ""
       }
     ]
   },
@@ -4149,15 +4310,52 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "HeadingProps": {
+    "source": "packages/design-system/components/layout/text.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "level",
+        "type": "HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6",
+        "required": true,
+        "description": "The heading ELEMENT (h1–h6) — the document outline, never a size. Required."
+      },
+      {
+        "name": "measure",
+        "type": "boolean",
+        "required": false,
+        "description": "Cap the line length at the measure (≈68 characters)."
+      },
+      {
+        "name": "tone",
+        "type": "TextTone = \"base\" | \"subtle\" | \"inverse\" | \"brand\" | \"inherit\"",
+        "required": false,
+        "default": "\"base\"",
+        "description": "Ink."
+      },
+      {
+        "name": "variant",
+        "type": "DisplayRole | HeadlineRole | TitleRole",
+        "required": false,
+        "description": "The type role. Defaults from `level` (h1 → headline-1 … h6 → headline-6)."
+      }
+    ]
+  },
   "HeatmapProps": {
     "source": "packages/design-system/components/data-display/charts/heatmap.tsx",
     "inheritsNative": false,
     "props": [
       {
         "name": "matrix",
-        "type": "number[][]",
+        "type": "HeatmapCell[][]",
         "required": true,
-        "description": "Row-major values: matrix[y][x]."
+        "description": "Row-major values: matrix[y][x]. A cell may be a `ChartWithheld` instead of a number — it is then drawn as a hatched, empty cell, named in the tooltip and the table with its reason, and left out of the colour scale's domain."
       },
       {
         "name": "title",
@@ -4720,6 +4918,49 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
+        "name": "valueFormat",
+        "type": "ValueFormat",
+        "required": false,
+        "default": "formatIndian",
+        "description": ""
+      }
+    ]
+  },
+  "InlineBarProps": {
+    "source": "packages/design-system/components/data-display/charts/ranked-bar-list.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "max",
+        "type": "number",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "number",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Give the bar an accessible name ONLY where the figure is not already printed beside it. In a table cell that also prints \"78%\", the bar is a repeat and stays hidden from assistive technology."
+      },
+      {
+        "name": "tone",
+        "type": "StatusTone = \"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+        "required": false,
+        "description": ""
       },
       {
         "name": "valueFormat",
@@ -5474,6 +5715,12 @@ export const GENERATED_PROPS = {
         "description": "Descriptor label (small, muted)."
       },
       {
+        "name": "aside",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A slot beside the label for the shape of the figure over time — a `Sparkline`. The sparkline is decorative here because the figure carries the meaning; leave its `label` unset."
+      },
+      {
         "name": "changeDirection",
         "type": "MetricCardChange = \"up\" | \"down\" | \"flat\"",
         "required": false,
@@ -5493,6 +5740,12 @@ export const GENERATED_PROPS = {
         "description": "Optional delta shown in a tinted pill before `changeLabel` (e.g. \"12%\"). When set with a non-flat direction, the arrow + this value render as a success/danger pill and `changeLabel` becomes a muted suffix — matching the SAMAVESH KPI card. Omit for the legacy inline-text treatment."
       },
       {
+        "name": "detail",
+        "type": "string",
+        "required": false,
+        "description": "A second reading under the figure — the numerator and denominator behind a rate (\"90 / 883\"), or the window a count covers (\"Feb – May 2026\")."
+      },
+      {
         "name": "icon",
         "type": "React.ReactNode",
         "required": false,
@@ -5506,6 +5759,18 @@ export const GENERATED_PROPS = {
         "description": "The figure is still arriving. The tile keeps its exact height and shimmers where the value will be, so a row of six does not reflow when they land."
       },
       {
+        "name": "progress",
+        "type": "MetricCardProgress",
+        "required": false,
+        "description": "The figure read against a ceiling and, where one exists, a target. This is the spec's \"value against target\" variant: it is a bar, not a second number, because the reader's question is how far there is to go."
+      },
+      {
+        "name": "provenance",
+        "type": "DataProvenance",
+        "required": false,
+        "description": "Where the figure came from, printed as one muted line under the tile."
+      },
+      {
         "name": "size",
         "type": "MetricCardSize = \"sm\" | \"md\"",
         "required": false,
@@ -5517,6 +5782,18 @@ export const GENERATED_PROPS = {
         "type": "CardStateKind = \"empty\" | \"no-results\" | \"not-published\" | \"error\" | \"restricted\" | \"offline\"",
         "required": false,
         "description": "Why there is no figure. Uses `CardState`'s own words, so a tile and the chart beside it describe one failed request with one sentence. `loading` wins where both are given: a card cannot be waiting AND finished."
+      },
+      {
+        "name": "status",
+        "type": "{ label: string; tone?: StatusTone }",
+        "required": false,
+        "description": "A status chip beside the label — \"On target\", \"≤ 80%\". The chip carries the words a tone alone would not, which is what lets `tone` be colour."
+      },
+      {
+        "name": "tone",
+        "type": "StatusTone = \"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+        "required": false,
+        "description": "A STATUS tone for the whole tile — the \"Due Soon\" amber and \"Overdue\" red cards of an application queue. It tints the border, the label and the figure. Set it only against a stated rule; a red figure on a government page means breached, and the reader will act on it."
       },
       {
         "name": "value",
@@ -5742,7 +6019,7 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "language",
-        "type": "{ label?: string; onClick?: () => void } | false",
+        "type": "{ label?: string; /** BCP-47 tag of the LABEL's own language (e.g. \"hi\" for हिंदी) so a screen reader voices it correctly. */ lang?: string; onClick?: () => void } | false",
         "required": false,
         "description": ""
       },
@@ -6323,6 +6600,12 @@ export const GENERATED_PROPS = {
         "description": "Optional content below form area (e.g. Portal Switcher Grid)"
       },
       {
+        "name": "heroImageSrc",
+        "type": "string",
+        "required": false,
+        "description": "The photograph behind the desktop hero — the Figma organism's `Portal Hero` slot. Drawn as a background so a phone, which never shows the column, never downloads it. Decorative: it carries no text and sits under an alpha mask that leaves a solid band on the left for the lockup and the Signing Into bar. NO DEFAULT, deliberately. The slot is blank until the portal supplies its own photograph, and a blank slot is the solid brand column — the same thing the library's master draws with nothing dropped into it. The shell used to default to the SMILE-Transgender photograph, which put one scheme's classroom behind every other scheme's sign-in."
+      },
+      {
         "name": "onFooterLinkClick",
         "type": "(link: \"privacy\" | \"contact\" | \"about\") => void",
         "required": false,
@@ -6445,7 +6728,14 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "default": "\"var(--sa-chart-cat-1)\"",
-        "description": "Bar colour (defaults to primary series colour)."
+        "description": "Bar colour (defaults to primary series colour). Ignored when `tone` is set."
+      },
+      {
+        "name": "compact",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Drop the label row. The bar keeps its accessible name; use this where the label is already printed by the surface that holds the bar — a metric tile whose heading is the label, or a table cell whose row is."
       },
       {
         "name": "filterLabel",
@@ -6486,16 +6776,53 @@ export const GENERATED_PROPS = {
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
       },
       {
+        "name": "target",
+        "type": "number",
+        "required": false,
+        "description": "A target, in the same units as `value`. Drawn as a tick on the track with a scale row beneath it (\"0% … Target 90%\"), so the bar is read against what it is meant to reach rather than against 100%."
+      },
+      {
+        "name": "targetLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Target N%\"",
+        "description": "Text for the target end of the scale row."
+      },
+      {
         "name": "textured",
         "type": "boolean",
         "required": false,
         "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       },
       {
+        "name": "tone",
+        "type": "StatusTone = \"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+        "required": false,
+        "description": "A STATUS ink for the fill — on track, at risk, breached. Only set it where the caller has a stated threshold; a green bar is a claim that the figure is good, and the reader will take it as one."
+      },
+      {
         "name": "value",
         "type": "number",
         "required": false,
         "description": "The figure, 0–`max`. **Optional**: a bar with no figure is a real state, and it is not zero. This used to be required, so a caller with nothing to show had one honest option — pass `0` — and the bar then rendered a confident empty track reading `0%`, with `aria-valuenow={0}` telling a screen reader the same thing. \"The department reports nought per cent\" and \"no figure has been published\" are different sentences, and one of them was being said for both."
+      }
+    ]
+  },
+  "ProvenanceLineProps": {
+    "source": "packages/design-system/components/dashboard/provenance.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "provenance",
+        "type": "DataProvenance",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
       }
     ]
   },
@@ -6507,7 +6834,7 @@ export const GENERATED_PROPS = {
         "name": "legend",
         "type": "React.ReactNode",
         "required": true,
-        "description": "The group's own question, rendered as a `<legend>`. This is the whole reason the component exists — see the note below. It is required, and it is not decorative."
+        "description": "The group's own question, rendered as a `<legend>`. Required, and not decorative — see the note on `GroupShell`."
       },
       {
         "name": "name",
@@ -6516,22 +6843,17 @@ export const GENERATED_PROPS = {
         "description": "Binds the options into one group. Required by the native control."
       },
       {
-        "name": "onChange",
-        "type": "(value: string) => void",
-        "required": true,
-        "description": ""
-      },
-      {
         "name": "options",
         "type": "ControlGroupOption[]",
         "required": true,
         "description": ""
       },
       {
-        "name": "value",
-        "type": "string",
-        "required": true,
-        "description": ""
+        "name": "cardLayout",
+        "type": "SelectionCardLayout = \"compact\" | \"detailed\"",
+        "required": false,
+        "default": "\"compact\"",
+        "description": "With `variant=\"card\"`: `detailed` for scheme tiles, `compact` for a short list."
       },
       {
         "name": "className",
@@ -6540,10 +6862,28 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "defaultValue",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": "Native `<fieldset disabled>` — every option, no per-option plumbing."
+      },
+      {
         "name": "error",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Error message; sets the group's invalid state and is announced."
+        "description": "Error message; sets the invalid state and is announced after the options."
+      },
+      {
+        "name": "hideLegend",
+        "type": "boolean",
+        "required": false,
+        "description": "Visually hides the legend. It is still a legend, and still the group's name."
       },
       {
         "name": "hint",
@@ -6561,7 +6901,20 @@ export const GENERATED_PROPS = {
         "name": "invalid",
         "type": "boolean",
         "required": false,
-        "description": "Sets the invalid state without a message, so spreading `FormField`'s render-prop object onto a group degrades rather than breaks. Prefer `error`."
+        "description": "Invalid state without a message, so `FormField`'s render-prop object degrades rather than breaks. Prefer `error`."
+      },
+      {
+        "name": "labelPlacement",
+        "type": "SelectionLabelPlacement = \"end\" | \"start\"",
+        "required": false,
+        "default": "\"end\"",
+        "description": ""
+      },
+      {
+        "name": "onChange",
+        "type": "(value: string) => void",
+        "required": false,
+        "description": ""
       },
       {
         "name": "orientation",
@@ -6571,14 +6924,33 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
         "name": "required",
         "type": "boolean",
         "required": false,
         "description": ""
       },
       {
+        "name": "size",
+        "type": "SelectionSize = \"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": false,
+        "description": "`undefined` means nothing selected. The group never invents a default; see the docs."
+      },
+      {
         "name": "variant",
-        "type": "\"default\" | \"card\"",
+        "type": "SelectionVariant = \"default\" | \"card\"",
         "required": false,
         "default": "\"default\"",
         "description": "`card` renders each option as a selectable card."
@@ -6590,22 +6962,10 @@ export const GENERATED_PROPS = {
     "inheritsNative": true,
     "props": [
       {
-        "name": "checked",
-        "type": "boolean",
-        "required": true,
-        "description": "Controlled checked state."
-      },
-      {
         "name": "name",
         "type": "string",
         "required": true,
-        "description": "Radio group name — required to bind options into one group."
-      },
-      {
-        "name": "onChange",
-        "type": "React.ChangeEventHandler<HTMLInputElement>",
-        "required": true,
-        "description": "Change handler — receives the native input event."
+        "description": "Binds the options into one native group. Required: without it there is no group."
       },
       {
         "name": "value",
@@ -6614,23 +6974,206 @@ export const GENERATED_PROPS = {
         "description": "This option's value."
       },
       {
+        "name": "cardLayout",
+        "type": "SelectionCardLayout = \"compact\" | \"detailed\"",
+        "required": false,
+        "default": "\"compact\"",
+        "description": "Card variant only. `detailed` is the scheme tile: icon tile, title, description, meta, control trailing."
+      },
+      {
+        "name": "checked",
+        "type": "boolean",
+        "required": false,
+        "description": "Controlled state. Omit it to let the browser own the group's selection."
+      },
+      {
+        "name": "defaultChecked",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
         "name": "description",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Secondary text shown under the label in the \"card\" variant."
+        "description": "Secondary line, linked through `aria-describedby`."
+      },
+      {
+        "name": "hideLabel",
+        "type": "boolean",
+        "required": false,
+        "description": "Keeps `label` as the accessible name but removes it from view."
+      },
+      {
+        "name": "icon",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Leading glyph, card variant only. Pass an `<Icon>` — `size={40}` in the detailed layout."
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "description": "Invalid styling without a message — for a group that owns the message."
       },
       {
         "name": "label",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Optional text label rendered beside the circle (associated via htmlFor/id)."
+        "description": ""
+      },
+      {
+        "name": "labelPlacement",
+        "type": "SelectionLabelPlacement = \"end\" | \"start\"",
+        "required": false,
+        "default": "\"end\"",
+        "description": ""
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One fact to choose by — the target group, the fee, the timeline. Card variant; joins `aria-describedby`."
+      },
+      {
+        "name": "onChange",
+        "type": "React.ChangeEventHandler<HTMLInputElement>",
+        "required": false,
+        "description": "Native change event, kept for every existing call site."
+      },
+      {
+        "name": "onCheckedChange",
+        "type": "(checked: boolean) => void",
+        "required": false,
+        "description": "Fires with `true` when this option becomes the selection."
+      },
+      {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Announced as read-only and kept in the tab order, but cannot be changed. NOT `disabled`: a disabled control leaves the tab order and the submitted form, and tells the reader they did something wrong."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "size",
+        "type": "SelectionSize = \"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
       },
       {
         "name": "variant",
-        "type": "\"default\" | \"card\"",
+        "type": "SelectionVariant = \"default\" | \"card\"",
         "required": false,
         "default": "\"default\"",
-        "description": "Visual variant. \"default\" = inline circle + label. \"card\" = a full selectable card (Portal DS Radio Card) with optional description."
+        "description": ""
+      }
+    ]
+  },
+  "RankedBarListProps": {
+    "source": "packages/design-system/components/data-display/charts/ranked-bar-list.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "items",
+        "type": "RankedBarItem[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "Accessible name of the list."
+      },
+      {
+        "name": "caption",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filterLabel",
+        "type": "string",
+        "required": false,
+        "description": "Named on `\"no-results\"` so the reader can undo the filter they applied."
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "description": "Pin the ceiling every bar is drawn against. Defaults to the largest value in the list, which is right for a ranking and wrong for a percentage — pass `100` so a 58% bar is drawn at 58% of the track, not at full width because it happens to be the highest."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Offered on `\"error\"`. A feed being down is an expected state with a retry, not an exception."
+      },
+      {
+        "name": "pageSize",
+        "type": "number",
+        "required": false,
+        "description": "Rows per page. A list longer than this PAGES — it never scrolls inside its card, because on a phone a reader flicking the page down lands in the list and moves the list instead (`data-state-completeness.md` §4)."
+      },
+      {
+        "name": "showRank",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Number the rows. On by default for a ranking; off for a breakdown."
+      },
+      {
+        "name": "sort",
+        "type": "\"desc\" | \"asc\" | \"none\"",
+        "required": false,
+        "default": "\"desc\"",
+        "description": "How the rows are ordered. Withheld rows always sort last."
+      },
+      {
+        "name": "state",
+        "type": "ChartState = \"loading\" | \"empty\" | \"no-results\" | \"not-published\" | \"error\" | \"restricted\" | \"offline\"",
+        "required": false,
+        "description": "What to render INSTEAD of the marks. Omit for the populated state. `\"loading\"` draws a skeleton at the chart's own aspect ratio, so the layout does not jump when the figures land. `\"no-results\"` is deliberately separate from `\"empty\"`: \"the feed published nothing\" and \"your filter excluded everything\" are different sentences with different remedies, and a chart that renders one for both is lying about one of them."
+      },
+      {
+        "name": "tableView",
+        "type": "\"toggle\" | \"sr-only\"",
+        "required": false,
+        "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
+        "name": "toneFor",
+        "type": "(item: RankedBarItem, index: number) => StatusTone",
+        "required": false,
+        "description": "Derive a tone from the row — the threshold rule, stated once."
+      },
+      {
+        "name": "valueFormat",
+        "type": "ValueFormat",
+        "required": false,
+        "default": "formatIndian",
+        "description": ""
       }
     ]
   },
@@ -6723,7 +7266,8 @@ export const GENERATED_PROPS = {
         "name": "markSrc",
         "type": "string",
         "required": false,
-        "description": "The provider's mark as an image path. Wins over `mark`."
+        "default": "DIGILOCKER_MARK_SRC",
+        "description": "The provider's mark as an image path. Wins over `mark`. Defaults to the estate's own DigiLocker mark (`digilocker-mark.png` in the hub's design-system public folder) — the library's Brand-page `DigiLocker` component, 40×40, exported at 3×, the same asset the Figma `Auth / SSOButton` draws. A portal that hands off to another provider passes its own; nothing on the estate should draw the fallback glyph for DigiLocker any more."
       },
       {
         "name": "subtitle",
@@ -7135,6 +7679,88 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "SelectionCommonProps": {
+    "source": "packages/design-system/components/forms/selection-control.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "cardLayout",
+        "type": "SelectionCardLayout = \"compact\" | \"detailed\"",
+        "required": false,
+        "default": "\"compact\"",
+        "description": "Card variant only. `detailed` is the scheme tile: icon tile, title, description, meta, control trailing."
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Secondary line, linked through `aria-describedby`."
+      },
+      {
+        "name": "hideLabel",
+        "type": "boolean",
+        "required": false,
+        "description": "Keeps `label` as the accessible name but removes it from view."
+      },
+      {
+        "name": "icon",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Leading glyph, card variant only. Pass an `<Icon>` — `size={40}` in the detailed layout."
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "description": "Invalid styling without a message — for a group that owns the message."
+      },
+      {
+        "name": "label",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "labelPlacement",
+        "type": "SelectionLabelPlacement = \"end\" | \"start\"",
+        "required": false,
+        "default": "\"end\"",
+        "description": ""
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One fact to choose by — the target group, the fee, the timeline. Card variant; joins `aria-describedby`."
+      },
+      {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "description": "Announced as read-only and kept in the tab order, but cannot be changed. NOT `disabled`: a disabled control leaves the tab order and the submitted form, and tells the reader they did something wrong."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "size",
+        "type": "SelectionSize = \"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "variant",
+        "type": "SelectionVariant = \"default\" | \"card\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": ""
+      }
+    ]
+  },
   "SeriesProps": {
     "source": "packages/design-system/components/brand/illustration/primitives.tsx",
     "inheritsNative": false,
@@ -7260,7 +7886,7 @@ export const GENERATED_PROPS = {
         "name": "pathname",
         "type": "string",
         "required": true,
-        "description": "Current route path — used to derive active states"
+        "description": "Current route path — the ONLY source of the active state."
       },
       {
         "name": "className",
@@ -7272,19 +7898,38 @@ export const GENERATED_PROPS = {
         "name": "collapsed",
         "type": "boolean",
         "required": false,
-        "description": "Controlled collapsed state"
+        "description": "Controlled collapsed state."
       },
       {
         "name": "footer",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Optional content pinned to the sidebar footer"
+        "description": "Optional content pinned to the foot (mirrors Figma `Show Footer`)."
+      },
+      {
+        "name": "header",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Optional content pinned to the head, rendered only below the laptop anchor (1024) — where the rail is a drawer. A portal's search lives here on a phone: the masthead shows no search button when it has a sidebar toggle, so the drawer is the one place to look. From 1024 up the masthead's own field is on the row and this slot is not drawn."
       },
       {
         "name": "id",
         "type": "string",
         "required": false,
-        "description": "DOM id for the <aside>. Pass it when a header toggle points at this sidebar with `aria-controls` — an aria-controls that names nothing is worse than none at all."
+        "description": "DOM id for the root. Pass it when a header toggle points at this sidebar with `aria-controls` — an aria-controls that names nothing is worse than none at all."
+      },
+      {
+        "name": "identity",
+        "type": "SidebarNavIdentity",
+        "required": false,
+        "description": "The portal identity at the head of the rail (mirrors Figma `Show Identity`, on by default there). Omit on a login screen: PortalLoginShell already names the portal."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "`${identity.name} navigation`, or \"Portal navigation\" without an identity",
+        "description": "Accessible name of the navigation landmark."
       },
       {
         "name": "onCollapsedChange",
@@ -7296,7 +7941,7 @@ export const GENERATED_PROPS = {
         "name": "showCollapseControl",
         "type": "boolean",
         "required": false,
-        "description": "Show a drag-handle control on the right edge of the sidebar (mirrors Figma `showControl` prop). Requires `onCollapsedChange`."
+        "description": "Show the rail's own collapse control (mirrors Figma `Show Control` on the identity block, off by default). With an `identity` it sits in that row — trailing when expanded, beneath the mark when collapsed; without one it takes a 48px row at the top. The portal masthead's toggle drives the same state, so pass this only in a shell without that toggle. Requires `onCollapsedChange`."
       }
     ]
   },
@@ -7496,7 +8141,7 @@ export const GENERATED_PROPS = {
         "name": "actions",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Trailing CTA (e.g. a Login or Apply Online button)."
+        "description": "Trailing CTA (e.g. a Login or Apply Online button). In the condensed bar every link or button in this slot is held at the bar's 40px control height, so pass `Button size=\"default\"` (40) — a 32 or 36 would be stretched, a 48 squeezed."
       },
       {
         "name": "beta",
@@ -7541,7 +8186,7 @@ export const GENERATED_PROPS = {
         "name": "govLink",
         "type": "{ href: string; label: string; flagSrc?: string }",
         "required": false,
-        "default": "{ href: \"https://india.gov.in/\", label: \"Government of India\" }",
+        "default": "{ href: \"https://india.gov.in/\", label: \"Government of India\", flagSrc: \"/images/Indian-Flag.svg\" }",
         "description": "Top-left \"Government of India\" link."
       },
       {
@@ -7553,7 +8198,7 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "language",
-        "type": "{ label?: string; onClick?: () => void }",
+        "type": "{ label?: string; lang?: string; onClick?: () => void }",
         "required": false,
         "default": "{ label: \"English\" }",
         "description": "Language selector."
@@ -7562,7 +8207,7 @@ export const GENERATED_PROPS = {
         "name": "maxWidth",
         "type": "number",
         "required": false,
-        "description": "Content max-width in px. Overrides the estate container for this header only. Leave unset. The default is `--sa-container-page` — UX4G 3.0's two-step content container (1200 desktop / 1320 desktop XL), the same variable the page content below the header uses. Passing a number here re-introduces the misalignment this default exists to prevent: until 13 August 2026 this defaulted to a hardcoded 1320 while every website section capped at 1280, so the emblem sat 20px outside the content column on wide viewports."
+        "description": "Content max-width in px. Overrides the estate container for this header only. Leave unset. The default is `--sa-container-page` — UX4G 3.0's two-step content container (1200 desktop / 1320 desktop XL), the same variable the page content below the header uses. Passing a number here re-introduces the misalignment this default exists to prevent: until 13 August 2026 this defaulted to a hardcoded 1320 while every website section capped at 1280, so the emblem sat 20px outside the content column on wide viewports. TWO LAYOUTS, ONE MARGIN. `variant=\"website\"` is CONTAINED — the cap above plus the margin ladder, exactly `.sa-container`. `variant=\"portal\"` is FLUID — no cap, the margin ladder only, so the rows run edge to edge and `maxWidth` is ignored. Figma draws both on a 1440 frame: `Navbar/Website` caps each row at `container/page` (1320 there) and `Navbar/Portal` lets each row fill; both pad with `grid/margin/page`. Every row's inline padding here is `--sa-grid-margin-page` (16 · 24 from 768 · 32 from 1920) for the same reason — it was a literal 16/24 per breakpoint until 2026-09-05, which agreed with the ladder everywhere except 1920 and up."
       },
       {
         "name": "nav",
@@ -8179,6 +8824,63 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"enclosed\"",
         "description": "Open list or filled track."
+      }
+    ]
+  },
+  "TextProps": {
+    "source": "packages/design-system/components/layout/text.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "as",
+        "type": "TextElement = \"p\" | \"span\" | \"div\" | \"small\" | \"strong\" | \"em\" | \"li\" | \"dd\" | \"dt\" | \"figcaption\" | \"label\" | \"legend\" | \"caption\" | \"time\"",
+        "required": false,
+        "default": "\"p\"",
+        "description": "The element."
+      },
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "flow",
+        "type": "boolean",
+        "required": false,
+        "description": "Paragraph rhythm: consecutive `flow` Text blocks are separated by the role's paragraph-spacing token. Opt in, so a Text inside a flex or grid gap does not double up."
+      },
+      {
+        "name": "lang",
+        "type": "string",
+        "required": false,
+        "description": "Passed straight to the element. Set `\"hi\"` on every Devanagari run — it switches the face and the leading."
+      },
+      {
+        "name": "measure",
+        "type": "boolean",
+        "required": false,
+        "description": "Cap the line length at the measure (≈68 characters)."
+      },
+      {
+        "name": "numeric",
+        "type": "boolean",
+        "required": false,
+        "description": "Tabular numerals, for figures that line up in a column."
+      },
+      {
+        "name": "tone",
+        "type": "TextTone = \"base\" | \"subtle\" | \"inverse\" | \"brand\" | \"inherit\"",
+        "required": false,
+        "default": "\"base\"",
+        "description": "Ink."
+      },
+      {
+        "name": "variant",
+        "type": "BodyRole | LabelRole | TitleRole",
+        "required": false,
+        "default": "\"body-1\"",
+        "description": "The type role."
       }
     ]
   },

@@ -2,11 +2,9 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { IconButton } from "../actions/icon-button";
 import { Loader } from "../feedback/loader";
 import { Icon } from "../utilities/icon";
 import { Checkbox } from "./checkbox";
-import { Input } from "./input";
 import "./auth-fields.css";
 
 /**
@@ -20,11 +18,15 @@ import "./auth-fields.css";
  * - `checkbox` — one deliberate act ("I am not a robot"). Not a cognitive
  *   function test, so WCAG 2.2 3.3.8 permits it; use it where the server wants a
  *   human gesture on top of the invisible signal.
- * - `challenge` — the legacy distorted-characters test. **Deprecated.** It is
- *   both the least accessible and the least effective option; see the component
- *   docstring for the measurements.
+ *
+ * There is no third mode. A `challenge` mode carrying the legacy
+ * distorted-characters test shipped here for one day and was removed on
+ * 2026-09-03: it is a cognitive function test by construction, so it could never
+ * meet 3.3.8, and offering it from the component a new portal reaches for is how
+ * a conformance failure is inherited by default. The one legacy backend that can
+ * issue nothing else uses the deprecated `CaptchaField` directly and records why.
  */
-export type BotCheckMode = "invisible" | "checkbox" | "challenge";
+export type BotCheckMode = "invisible" | "checkbox";
 
 /** Where the server has got to. `idle` and `verifying` are not the same thing. */
 export type BotCheckStatus = "idle" | "verifying" | "verified" | "failed";
@@ -49,15 +51,6 @@ export interface BotCheckProps {
   helpLabel?: string;
   /** `checkbox` mode — the citizen's gesture. */
   onVerify?: () => void;
-  /** `challenge` mode — what the server issued. */
-  challenge?:
-    | { type: "image"; src: string; alt?: string }
-    | { type: "text"; characters: string };
-  /** `challenge` mode — the typed answer. Controlled. */
-  value?: string;
-  onValueChange?: (next: string) => void;
-  /** `challenge` mode — asks for a new challenge. It MUST also clear `value`. */
-  onRefresh?: () => void;
   /** Shown when the check failed. A red border on its own is not an error. */
   error?: string;
   /**
@@ -79,8 +72,6 @@ export interface BotCheckProps {
    * @default "I am not a robot"
    */
   gestureLabel?: string;
-  /** `challenge` mode placeholder. @default "Enter the characters" */
-  placeholder?: string;
   disabled?: boolean;
   id?: string;
   className?: string;
@@ -127,7 +118,8 @@ const DEFAULT_GESTURE = "I am not a robot";
  *    a decision a Government of India property should take deliberately rather
  *    than by importing a script.
  * 3. **`checkbox`** — where the server wants a human gesture as well.
- * 4. **`challenge`** — only where a legacy backend can issue nothing else.
+ *
+ * There is no fourth step.
  *
  * ## What this component can and cannot do
  *
@@ -148,14 +140,9 @@ export function BotCheck({
   helpHref,
   helpLabel = DEFAULT_HELP,
   onVerify,
-  challenge,
-  value = "",
-  onValueChange,
-  onRefresh,
   error,
   label = "Security check",
   gestureLabel = DEFAULT_GESTURE,
-  placeholder = "Enter the characters",
   disabled = false,
   id,
   className,
@@ -168,11 +155,14 @@ export function BotCheck({
   const verifying = status === "verifying";
   const verified = status === "verified";
 
-  // The escape hatch. Rendered wherever the check is visible, and whenever it
-  // has failed — including in `invisible` mode, which is the one case where the
-  // citizen has no other way to understand why the form will not go through.
-  // It sits OUTSIDE the card, because a route out of a failed check should not
-  // be drawn inside the thing that failed.
+  // The escape hatch. Not optional, but not always shown: it renders in every
+  // mode once the check has failed — including `invisible`, where it is the one
+  // way the citizen can learn why the form will not go through. An idle checkbox
+  // needs no escape route: it is one deliberate act, not a cognitive test
+  // (SC 3.3.8), and a link beneath it would be noise. It sits OUTSIDE the card,
+  // because a route out of a failed check should not be drawn inside the thing
+  // that failed.
+  const showHelp = failed;
   const escape = (
     <a className="ds-botcheck__help" href={helpHref}>
       {helpLabel}
@@ -235,7 +225,7 @@ export function BotCheck({
       aria-label={label}
     >
       {children}
-      {escape}
+      {showHelp ? escape : null}
     </div>
   );
 
@@ -246,62 +236,17 @@ export function BotCheck({
     return shell("ds-botcheck--invisible", card(null));
   }
 
-  if (mode === "checkbox") {
-    return shell(
-      "ds-botcheck--checkbox",
-      card(
-        <Checkbox
-          id={fieldId}
-          checked={verified}
-          disabled={disabled || verifying}
-          label={gestureLabel}
-          aria-describedby={describedBy}
-          onChange={() => onVerify?.()}
-        />,
-      ),
-    );
-  }
-
-  // `challenge` — deprecated. Kept so a legacy backend is not a blocker, and
-  // deliberately last so nobody reaches it by accident.
+  // `checkbox` — the only mode that draws while idle: one deliberate act.
   return shell(
-    "ds-botcheck--challenge",
+    "ds-botcheck--checkbox",
     card(
-      <div className="ds-botcheck__row">
-        {challenge?.type === "image" ? (
-          <span className="ds-botcheck__challenge">
-            <img src={challenge.src} alt={challenge.alt ?? "Security check image"} />
-          </span>
-        ) : (
-          <span
-            className="ds-botcheck__challenge"
-            role="img"
-            aria-label="Security check characters"
-          >
-            {challenge?.type === "text" ? challenge.characters : ""}
-          </span>
-        )}
-        <IconButton
-          type="button"
-          variant="neutral"
-          appearance="outlined"
-          size="lg"
-          onClick={onRefresh}
-          disabled={disabled}
-          aria-label="Get a new security check. This clears anything you have typed."
-          icon={<Icon name="refresh" size={24} aria-hidden />}
-        />
-      </div>,
-      <Input
+      <Checkbox
         id={fieldId}
-        aria-label={label}
-        placeholder={placeholder}
-        value={value}
-        disabled={disabled}
-        invalid={failed}
-        autoComplete="off"
+        checked={verified}
+        disabled={disabled || verifying}
+        label={gestureLabel}
         aria-describedby={describedBy}
-        onChange={(e) => onValueChange?.(e.target.value)}
+        onChange={() => onVerify?.()}
       />,
     ),
   );

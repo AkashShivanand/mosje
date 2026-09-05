@@ -1,6 +1,6 @@
 "use client";
 
-import { SiteHeader, type SiteHeaderProps } from "@mosje/design-system";
+import { SiteHeader, type SiteHeaderProps, SAMAVESH_COBRAND } from "@mosje/design-system";
 
 const BASE = "/portals/nhapoa";
 
@@ -35,7 +35,9 @@ export function NhapoaHeader({
       brandLines={{
         org: "Government of India",
         ministry: "National Helpline Against Atrocities",
-        department: "SAMBAL संबल",
+        department: "SAMBAL",
+        // ds-exempt(hindi-source): SiteHeader renders departmentHi inside its own <span lang="hi">
+        departmentHi: "संबल",
       }}
       beta
       skipTo="#main"
@@ -43,7 +45,7 @@ export function NhapoaHeader({
       language={{ label: "English" }}
       cobranding={[
         { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 36 },
-        { src: `${BASE}/brand/samavesh-logo.svg`, alt: "SAMAVESH", height: 40 },
+        SAMAVESH_COBRAND,
       ]}
       account={account}
       accountMenu={accountMenu}

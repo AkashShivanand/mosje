@@ -55,15 +55,15 @@ export function Organisations() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
           {/* ---- Left: heading, narrative ---- */}
           <div className="lg:col-span-4">
-            <h2 className="text-[32px] font-semibold leading-tight text-primary-dark">
+            <h2 className="text-headline-2 text-primary-dark">
               Our Organisations
             </h2>
             {/* This subtitle belongs here. It was rendering under Activity
                 Corner, where it described the wrong section [WEB-N-03/T-04]. */}
-            <p className="mt-1 text-[15px] font-medium text-ink-muted">
+            <p className="mt-1 text-label-1 text-ink-muted">
               Explore our affiliated bodies
             </p>
-            <p className="mt-4 text-[16px] leading-relaxed text-ink-muted">
+            <p className="mt-4 text-body-1 text-ink-muted">
               The Ministry of Social Justice and Empowerment works through key
               organisations that drive social inclusion, economic empowerment, and
               equal opportunity across India.
@@ -76,7 +76,7 @@ export function Organisations() {
               {NARRATIVE.map((claim) => (
                 <li
                   key={claim}
-                  className="text-[14px] italic leading-snug text-ink-muted marker:text-primary/60"
+                  className="text-body-2 italic text-ink-muted marker:text-primary/60"
                 >
                   {claim}
                 </li>
@@ -96,7 +96,7 @@ export function Organisations() {
                     aria-pressed={isActive}
                     onClick={() => setActiveCategory(cat.key)}
                     className={cn(
-                      "rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+                      "rounded-full px-4 py-1.5 text-label-1 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
                       isActive
                         ? "bg-primary text-white shadow-sm"
                         : // Outlined BLUE when inactive, per the design — the
@@ -137,7 +137,7 @@ export function Organisations() {
                           />
                         </span>
                       )}
-                      <h3 className="min-w-0 flex-1 text-[14px] font-medium leading-snug text-ink transition-colors group-hover:text-primary">
+                      <h3 className="min-w-0 flex-1 text-title-2 text-ink transition-colors group-hover:text-primary">
                         {org.name}
                       </h3>
                       <Icon

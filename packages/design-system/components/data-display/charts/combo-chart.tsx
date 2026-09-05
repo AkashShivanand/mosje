@@ -121,6 +121,7 @@ export function ComboChart({
       className={className}
       canvasRef={canvasRef}
       overlay={<ChartTooltip tip={tip} />}
+      onDismiss={hide}
       legend={
         <Legend
           items={[

@@ -29,7 +29,7 @@
     position: fixed;
     bottom: 24px;
     right: 24px;
-    z-index: 60;
+    z-index: var(--sa-z-dropdown);
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-8);
@@ -43,7 +43,7 @@
     min-width: 280px;
     max-width: 24rem;
     padding: var(--sa-padding-12) var(--sa-padding-16);
-    border: 1px solid transparent;
+    border: var(--sa-stroke-1) solid transparent;
     border-radius: var(--sa-shape-12);
     box-shadow: var(--sa-elevation-modal);
     background-color: var(--sa-bg-neutral-base);
@@ -58,7 +58,7 @@
     flex: 1;
     margin: 0;
     font-size: var(--sa-type-body-3-size);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-base);
   }
 
@@ -71,7 +71,7 @@
     border-radius: var(--sa-shape-4);
     background: transparent;
     color: var(--sa-text-neutral-subtle);
-    transition: color 0.12s ease;
+    transition: color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-toast__close:hover { color: var(--sa-text-neutral-base); }

@@ -15,7 +15,7 @@ export default function ReportsPage() {
     <div className="flex min-h-screen flex-col bg-surface-muted">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-4 focus:top-4 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-on-primary"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-4 focus:top-4 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-label-1 focus:font-semibold focus:text-on-primary"
       >
         Skip to main content
       </a>
@@ -27,7 +27,7 @@ export default function ReportsPage() {
         <div className="border-b border-border bg-surface">
           <div className="sa-container pb-8 pt-10">
             <nav aria-label="Breadcrumb" className="mb-6">
-              <ol className="flex items-center gap-2 text-sm text-ink-muted">
+              <ol className="flex items-center gap-2 text-body-2 text-ink-muted">
                 <li>
                   <Link href="/" className="hover:text-primary hover:underline">
                     Home
@@ -40,10 +40,10 @@ export default function ReportsPage() {
               </ol>
             </nav>
 
-            <h1 className="text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+            <h1 className="text-headline-1 text-ink">
               QC &amp; Audit Reports
             </h1>
-            <p className="mt-3 max-w-2xl text-base leading-relaxed text-ink-muted">
+            <p className="mt-3 max-w-measure text-body-1 text-ink-muted">
               Design quality control, accessibility and audit reports for the
               MoSJE digital estate.
             </p>

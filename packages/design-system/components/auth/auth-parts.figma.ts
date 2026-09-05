@@ -1,4 +1,4 @@
-// url=<SAMAVESH>?node-id=55439-749
+// url=<SAMAVESH>?node-id=57464-12739
 // source=packages/design-system/components/auth/auth-parts.tsx
 // component=SigningIntoBar
 //
@@ -8,9 +8,22 @@
 // carries the rules as well as the snippet.
 // See .claude/rules/component-authoring.md §12.
 //
-// PROPERTY COVERAGE — both Figma properties are accounted for:
-//   Tone         -> `tone` ("On hero" -> "hero", "On surface" -> "surface")
+// PROPERTY COVERAGE — the set's properties are accounted for:
 //   Portal name  -> `portalName`
+//   Device       -> not a prop. On 2026-09-05 the master became a Device set
+//                   (Desktop | Mobile) so the LoginHero's Mobile variant could
+//                   nest the 44px-mark, small-button strip the handoff draws.
+//                   The code component is the desktop bar; the phone strip is
+//                   drawn by PortalLoginShell's `ds-plogin-hero-mobile__bar`,
+//                   which is why the Device axis maps to nothing here.
+//
+// TONE IS FIXED TO `hero`, AND THAT IS WHAT FIGMA DRAWS. The master used to be a
+// two-variant set (`Tone = On hero | On surface`, node 55439-749). On 2026-09-04
+// the login-template Figma pass dissolved it to the single hero-tone component
+// this file now points at, because the bar has only ever been placed at the foot
+// of the hero. So the snippet states `tone="hero"` — the surface the drawing was
+// made for — and `tone="surface"` is CODE-ONLY: use it when the bar sits on an
+// ordinary page background, and know that Figma has no drawing of that state.
 //
 // TONE FOLLOWS THE SURFACE, NOT THE BRAND. `hero` sits over the photograph
 // scrim, `surface` over any ordinary background. Getting it backwards is the
@@ -48,26 +61,21 @@
 // `.claude/rules/component-authoring.md` §12a: never invent a code prop; if none
 // fits, omit it and say why.
 //
-// CAVEAT, stated rather than glossed: this template has no Figma fixture
-// (`check:code-connect` reports it as unverified), so whether the Figma
-// component carries a logo layer could not be confirmed from the recorded
-// snapshot. If capturing the fixture later shows a logo property, map it to a
-// real asset then — do not restore the dead path.
+// The fixture (tools/code-connect-parity/figma-properties.json, captured
+// 2026-09-04) confirms the master exposes ONE property, `Portal name`; the
+// `org-logo` layer is not a property, so there is nothing to map `logoSrc` to.
+// If a logo property is added later, map it to a real asset — do not restore
+// the dead path.
 import figma from "figma";
 
 const instance = figma.selectedInstance;
-
-const tone = instance.getEnum("Tone", {
-  "On hero": "hero",
-  "On surface": "surface",
-});
 
 const portalName = instance.getString("Portal name");
 
 export default {
   example: figma.code`<SigningIntoBar
   portalName="${portalName}"
-  tone="${tone}"
+  tone="hero"
   onChange={openPortalPicker}
 />`,
   imports: ['import { SigningIntoBar } from "@mosje/design-system"'],

@@ -301,7 +301,7 @@ export default async function OrganisationDetailPage({
               href={qa.href}
               target={isExternal ? "_blank" : undefined}
               rel={isExternal ? "noreferrer" : undefined}
-              className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[13px] font-semibold transition-all shadow-sm ${
+              className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-label-1 transition-all shadow-sm ${
                 qa.variant === "primary"
                   ? "bg-white text-[var(--sa-color-primaryScale-600)] hover:bg-white/90 shadow-md font-bold"
                   : qa.variant === "danger"
@@ -327,7 +327,7 @@ export default async function OrganisationDetailPage({
         variant="primary"
         appearance="filled"
         size="sm"
-        className="text-xs px-4 py-2"
+        className="text-label-2 px-4 py-2"
       >
         Visit Official Portal
       </Button>
@@ -346,7 +346,7 @@ export default async function OrganisationDetailPage({
               {org.sections.map((s, i) => (
                 <section key={s.heading ?? i} className="mb-8">
                   {s.heading && slugify(s.heading) !== slugify(org.title) && (
-                    <h2 id={slugify(s.heading)} className="text-[28px] font-semibold text-primary-dark pb-2 mb-6 scroll-mt-28">
+                    <h2 id={slugify(s.heading)} className="text-headline-2 text-primary-dark pb-2 mb-6 scroll-mt-28">
                       {s.heading}
                     </h2>
                   )}
@@ -354,7 +354,7 @@ export default async function OrganisationDetailPage({
                     dangerouslySetInnerHTML={{
                       __html: withAssetBasePath(trimRedundantOpening(s.html)),
                     }}
-                    className="leading-relaxed text-ink text-[16px]"
+                    className="text-body-1 text-ink"
                   />
                 </section>
               ))}
@@ -440,7 +440,7 @@ export default async function OrganisationDetailPage({
                     {s.heading && slugify(s.heading) !== slugify(org.title) && (
                       <h2
                         id={slugify(s.heading)}
-                        className="text-[22px] md:text-[26px] font-semibold text-primary-dark pb-3 mb-6 border-b border-neutral-subtle scroll-mt-28"
+                        className="text-headline-2 text-primary-dark pb-3 mb-6 border-b border-neutral-subtle scroll-mt-28"
                       >
                         {s.heading}
                       </h2>
@@ -449,7 +449,7 @@ export default async function OrganisationDetailPage({
                       dangerouslySetInnerHTML={{
                         __html: withAssetBasePath(trimRedundantOpening(s.html)),
                       }}
-                      className="gov-prose text-ink text-[16px] leading-relaxed max-w-none"
+                      className="gov-prose text-ink max-w-none"
                     />
                   </section>
                 ))}

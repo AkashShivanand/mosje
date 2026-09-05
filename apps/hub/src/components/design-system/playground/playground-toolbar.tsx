@@ -55,6 +55,7 @@ export function PlaygroundToolbar({
               className={`pg-toggle${lang === "hi" ? " is-active" : ""}`}
               onClick={() => onLangChange("hi")}
               title="हिन्दी (Devanagari specimen)"
+              lang="hi"
             >
               हिन्दी
             </button>

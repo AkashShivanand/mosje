@@ -158,7 +158,7 @@ export default function PersonsPage() {
           <Icon name="tune" size={16} />
           Filters
           {activeFilterCount > 0 ? (
-            <span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1 text-label-3 font-bold text-white">
+            <span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-primary px-1 text-label-2 text-white">
               {activeFilterCount}
             </span>
           ) : null}
@@ -309,10 +309,10 @@ export default function PersonsPage() {
               <Icon name="visibility" size={20} aria-hidden />
             </div>
             <div className="space-y-1">
-              <h3 className="text-title-2 font-semibold text-ink">
+              <h3 className="text-title-2 text-ink">
                 No beneficiaries found
               </h3>
-              <p className="text-body-3 text-ink-muted">
+              <p className="text-body-2 text-ink-muted">
                 {anyFilterActive
                   ? "Try widening your search or clear the filters."
                   : "There are no beneficiaries in this scope yet."}
@@ -333,7 +333,7 @@ export default function PersonsPage() {
             >
               <div className="flex items-start justify-between gap-sm">
                 <div className="min-w-0 space-y-0.5">
-                  <div className="flex items-center gap-xs text-label-3 text-ink-hint">
+                  <div className="flex items-center gap-xs text-body-3 text-ink-hint">
                     <span className="tabular-nums">
                       {(idx + 1).toString().padStart(2, "0")}
                     </span>
@@ -351,7 +351,7 @@ export default function PersonsPage() {
                   {b.status.replace(/_/g, " ")}
                 </Badge>
               </div>
-              <div className="mt-sm grid grid-cols-3 gap-sm border-t border-stroke-100 pt-sm text-label-3">
+              <div className="mt-sm grid grid-cols-3 gap-sm border-t border-stroke-100 pt-sm text-body-3">
                 <div>
                   <div className="text-ink-hint">Age</div>
                   <div className="font-semibold tabular-nums text-ink">{b.age}</div>
@@ -397,10 +397,10 @@ export default function PersonsPage() {
                       <Icon name="visibility" size={20} aria-hidden />
                     </div>
                     <div className="space-y-1">
-                      <h3 className="text-title-2 font-semibold text-ink">
+                      <h3 className="text-title-2 text-ink">
                         No beneficiaries found
                       </h3>
-                      <p className="text-body-3 text-ink-muted">
+                      <p className="text-body-2 text-ink-muted">
                         {anyFilterActive
                           ? "Try widening the search term or clearing one of the active filters."
                           : "There are no beneficiaries available for this scope yet."}
@@ -420,7 +420,7 @@ export default function PersonsPage() {
                   <TD className="tabular-nums text-ink-hint">
                     {(idx + 1).toString().padStart(2, "0")}
                   </TD>
-                  <TD className="font-mono text-body-3 text-ink-muted">{b.id}</TD>
+                  <TD className="font-mono text-body-2 text-ink-muted">{b.id}</TD>
                   <TD>
                     <Link
                       href={`/portals/smile-admin/persons/${b.id}`}
@@ -503,7 +503,7 @@ export default function PersonsPage() {
         aria-label="Pagination"
         className="flex items-center justify-between gap-sm rounded-lg border border-stroke-200 bg-white px-md py-sm shadow-xs md:hidden"
       >
-        <span className="text-label-3 text-ink-muted">
+        <span className="text-body-3 text-ink-muted">
           {filtered.length === 0 ? (
             "0 records"
           ) : (

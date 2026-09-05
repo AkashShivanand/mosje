@@ -107,7 +107,7 @@ export default function WhosWhoPage() {
           <section key={group.title} className="space-y-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-neutral-200 pb-3">
               <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
+                <h2 className="text-headline-2 text-neutral-900">
                   {group.title}
                 </h2>
                 <div className="mt-1.5 h-1 w-12 bg-primary rounded-full" />
@@ -115,7 +115,7 @@ export default function WhosWhoPage() {
 
               <Link
                 href={group.viewAllHref}
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary-dark transition-colors self-start sm:self-auto px-3 py-1.5 rounded-lg border border-primary/30 bg-blue-50/50 hover:bg-blue-50"
+                className="inline-flex items-center gap-1.5 text-label-1 text-primary hover:text-primary-dark transition-colors self-start sm:self-auto px-3 py-1.5 rounded-lg border border-primary/30 bg-blue-50/50 hover:bg-blue-50"
               >
                 View All
                 <Icon name="chevron_right" size={16} />
@@ -140,7 +140,7 @@ export default function WhosWhoPage() {
                         />
                       </div>
                     ) : (
-                      <div className="h-14 w-14 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-primary font-bold text-sm shrink-0">
+                      <div className="h-14 w-14 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-primary text-label-1 shrink-0">
                         {official.name
                           .replace(/^(Shri|Smt|Dr\.|Mr\.|Ms\.)\s+/i, "")
                           .slice(0, 2)
@@ -148,16 +148,16 @@ export default function WhosWhoPage() {
                       </div>
                     )}
                     <div className="min-w-0 flex-1">
-                      <h3 className="text-base font-bold text-neutral-900 leading-snug">
+                      <h3 className="text-title-2 text-neutral-900">
                         {official.name}
                       </h3>
-                      <p className="mt-0.5 text-xs font-semibold text-primary">
+                      <p className="mt-0.5 text-label-2 text-primary">
                         {official.designation}
                       </p>
                     </div>
                   </div>
 
-                  <div className="space-y-2 pt-2 border-t border-neutral-100 text-xs text-neutral-600">
+                  <div className="space-y-2 pt-2 border-t border-neutral-100 text-body-3 text-neutral-600">
                     {official.room && (
                       <div className="flex items-center gap-2">
                         <Icon name="home" size={16} className="text-neutral-400 shrink-0" />
@@ -197,8 +197,8 @@ export default function WhosWhoPage() {
         {/* Telephone directories */}
         <section className="space-y-4">
           <div>
-            <h2 className="text-2xl font-bold text-neutral-900">Telephone Directories</h2>
-            <p className="mt-1 text-sm text-neutral-600">
+            <h2 className="text-headline-2 text-neutral-900">Telephone Directories</h2>
+            <p className="mt-1 text-body-2 text-neutral-600">
               Full contact lists for the Ministry, its divisions and its associated
               organisations — name, designation, intercom, telephone and email.
             </p>
@@ -211,10 +211,10 @@ export default function WhosWhoPage() {
                   className="flex h-full items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
                 >
                   <span className="min-w-0">
-                    <span className="block text-sm font-semibold text-neutral-900">
+                    <span className="block text-title-3 text-neutral-900">
                       {entry.label}
                     </span>
-                    <span className="mt-0.5 block text-xs text-neutral-500">
+                    <span className="mt-0.5 block text-body-3 text-neutral-500">
                       {entry.kind}
                     </span>
                   </span>
@@ -233,8 +233,8 @@ export default function WhosWhoPage() {
         {/* Need Support Callout */}
         <section className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
           <div className="space-y-1 text-center sm:text-left">
-            <h3 className="text-xl font-bold text-neutral-900">Need Support?</h3>
-            <p className="text-sm text-neutral-600">
+            <h3 className="text-title-1 text-neutral-900">Need Support?</h3>
+            <p className="text-body-2 text-neutral-600">
               Reach out to us and we will get back to you!
             </p>
           </div>

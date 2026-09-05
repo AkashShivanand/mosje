@@ -1,6 +1,6 @@
 "use client";
 
-import { SiteHeader, Divider, type SiteHeaderProps } from "@mosje/design-system";
+import { SiteHeader, Divider, type SiteHeaderProps, SAMAVESH_COBRAND } from "@mosje/design-system";
 
 const BASE = "/portals/scw";
 
@@ -34,7 +34,8 @@ export function ScwHeader({
       emblemSrc={`${BASE}/brand/national-emblem.svg`}
       brandLines={{
         org: "Government of India",
-        department: "Ministry of Social Justice & Empowerment",
+        ministry: "Ministry of Social Justice & Empowerment",
+        department: "Department of Social Justice & Empowerment",
       }}
       beta
       skipTo="#main"
@@ -42,7 +43,7 @@ export function ScwHeader({
       language={{ label: "English" }}
       cobranding={[
         { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 36 },
-        { src: `${BASE}/brand/samavesh-logo.svg`, alt: "SAMAVESH", height: 40 },
+        SAMAVESH_COBRAND,
       ]}
       account={account}
       accountMenu={accountMenu}
@@ -58,7 +59,7 @@ export function ScwHeader({
 export function Ux4gFooter() {
   return (
     <footer className="border-t border-line bg-navy-950 text-white">
-      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-xs">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-body-3">
         <span>© 2026 - Copyright UX4G. All rights reserved. Powered by NeGD | MeitY Government of India ® 2026 UX4G</span>
         <div className="flex items-center gap-3">
           <a href="#" className="hover:underline">Terms &amp; Conditions</a>

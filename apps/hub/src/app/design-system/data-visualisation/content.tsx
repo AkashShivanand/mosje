@@ -18,6 +18,7 @@ import {
   MetricCard,
   PieChart,
   Progress,
+  RankedBarList,
   ScatterChart,
   Sparkline,
   categoricalColor,
@@ -59,7 +60,7 @@ export function DataVisualisationContent(): React.JSX.Element {
             marginBottom: "var(--sa-stack-12)",
           }}
         >
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 500, lineHeight: 1.1 }}>
+          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: "var(--sa-font-weight-medium)", lineHeight: "var(--sa-type-display-1-lh)" }}>
             Data Visualisation
           </h1>
           <StatusBadge status="Beta" />
@@ -67,10 +68,10 @@ export function DataVisualisationContent(): React.JSX.Element {
         <p
           style={{
             fontSize: "var(--sa-type-headline-2-size)",
-            fontWeight: 400,
+            fontWeight: "var(--sa-font-weight-regular)",
             color: "var(--sa-color-text-default)",
-            maxWidth: "60ch",
-            lineHeight: 1.5,
+            maxWidth: "var(--sa-container-measure)",
+            lineHeight: "var(--sa-type-headline-2-lh)",
           }}
         >
           Every chart, metric, table and container in one place — rendered live, so a
@@ -276,7 +277,7 @@ export function DataVisualisationContent(): React.JSX.Element {
             <span
               style={{
                 fontSize: "var(--sa-type-headline-1-size)",
-                fontWeight: 600,
+                fontWeight: "var(--sa-font-weight-semibold)",
                 fontVariantNumeric: "tabular-nums",
               }}
             >
@@ -299,9 +300,22 @@ export function DataVisualisationContent(): React.JSX.Element {
         >
           <div style={{ display: "grid", gap: "var(--sa-stack-16)" }}>
             <Progress label="Scholarships disbursed" value={89} showValue />
-            <Progress label="PM-AJAY utilisation" value={79} showValue />
+            <Progress label="PM-AJAY utilisation" value={79} showValue target={85} />
             <Progress label="NSFDC utilisation" value={84} showValue color={categoricalColor(4)} />
           </div>
+        </Specimen>
+
+        <Specimen
+          name="Ranked list"
+          answers="Which categories lead, and by how much — with the figure printed per row and the bar as the aid."
+          notFor="Several series across the same categories; that is a grouped bar chart."
+        >
+          <RankedBarList
+            title="Scheme coverage rate by state, ranked"
+            items={STATE_COVERAGE.slice(0, 6).map((s) => ({ label: s.state, value: s.value }))}
+            max={100}
+            valueFormat={(n) => `${n}%`}
+          />
         </Specimen>
       </SpecimenGrid>
 
@@ -340,7 +354,7 @@ export function DataVisualisationContent(): React.JSX.Element {
 
         <Specimen
           name="Value against target"
-          answers="A bounded measure with a denominator that matters."
+          answers="A bounded measure with a denominator that matters — drawn as a bar, because the reader's question is how far there is to go."
         >
           <MetricCard
             label="Fund utilisation"
@@ -348,6 +362,23 @@ export function DataVisualisationContent(): React.JSX.Element {
             changeValue="−4 pts"
             changeDirection="down"
             changeLabel="vs FY 2024–25"
+            progress={{ value: 79, max: 100, target: 85, targetLabel: "Target 85%" }}
+          />
+        </Specimen>
+
+        <Specimen
+          name="Value with status"
+          answers="A figure the scheme has judged against a stated threshold. The chip carries the words; the tone carries the colour."
+          notFor="A tone with no stated rule. Red means breached on this estate."
+        >
+          <MetricCard
+            label="Overdue applications"
+            value="54"
+            tone="danger"
+            status={{ label: "Above limit", tone: "danger" }}
+            changeValue="14.5%"
+            changeDirection="up"
+            changeLabel="vs last month"
           />
         </Specimen>
 
@@ -427,8 +458,12 @@ export function DataVisualisationContent(): React.JSX.Element {
       </p>
 
       <SpecimenGrid>
-        <Specimen name="Chart card — populated" answers="The normal case: a titled frame with a subtitle carrying the as-of date.">
-          <ChartCard title="Applications cleared" subtitle="Monthly, FY 2025–26">
+        <Specimen name="Chart card — populated" answers="The normal case: a titled frame, and one provenance line naming the source and the as-of date.">
+          <ChartCard
+            title="Applications cleared"
+            subtitle="Monthly, FY 2025–26"
+            provenance={{ source: "Scheme MIS, Department of Social Justice and Empowerment", asOf: "2026-08-27" }}
+          >
             <LineChart
               title="Applications cleared, monthly"
               labels={THROUGHPUT.labels}

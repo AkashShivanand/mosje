@@ -85,6 +85,7 @@ export function exportToPDF<Row>({
 <head>
 <meta charset="utf-8" />
 <title>${escapeHtml(title)} — SMILE Admin Export</title>
+  /* ds-exempt-start(third-party): a standalone print/export window that never loads tokens.css, so a var() here resolves to nothing; sizes are the print sheet's own */
 <style>
   * { box-sizing: border-box; }
   body {
@@ -127,6 +128,7 @@ export function exportToPDF<Row>({
     tr { page-break-inside: avoid; }
   }
 </style>
+  /* ds-exempt-end */
 </head>
 <body>
   <header>

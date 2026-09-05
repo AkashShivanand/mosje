@@ -16,8 +16,21 @@
  */
 
 /** Strip comments and split the sheet into `{ selector, decls }` in document order. */
+/**
+ * Hoist the ONE at-rule the generator emits. `@media (prefers-reduced-motion: reduce) {
+ * :root { … } }` becomes a flat block whose selector is `@media (…) :root`, so the
+ * resolver treats it as its own context on its own axis instead of reading the inner
+ * `:root` as a second root that overrides every duration. Anything else nested is left
+ * alone and caught by the flat-sheet test.
+ */
+function hoistAtRules(css) {
+  return css.replace(/@media\s*([^{]+?)\s*\{((?:[^{}]*\{[^{}]*\})*)\s*\}/g, (_, cond, inner) =>
+    inner.replace(/([^{}]+)\{([^{}]*)\}/g, (__, sel, decls) => `@media ${cond.trim()} ${sel.trim()} {${decls}}`),
+  );
+}
+
 function parseBlocks(css) {
-  const stripped = css.replace(/\/\*[\s\S]*?\*\//g, "");
+  const stripped = hoistAtRules(css.replace(/\/\*[\s\S]*?\*\//g, ""));
   const blocks = [];
   const blockRe = /([^{}]+)\{([^{}]*)\}/g;
   let match;
@@ -104,6 +117,9 @@ const normalise = (value) => value.replace(/\s+/g, " ").trim();
  */
 function axisOf(selector) {
   if (selector === ":root") return "root";
+  // The reader's OS preference — an independent switch like brand or density, set by the
+  // person rather than the page. Hoisted from the at-rule by parseBlocks.
+  if (/^@media \(prefers-reduced-motion/.test(selector)) return "motion";
   if (/data-theme/.test(selector)) return "theme";
   if (/data-brand|data-color-mode/.test(selector)) return "brand";
   if (/data-density/.test(selector)) return "density";

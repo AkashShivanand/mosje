@@ -129,17 +129,19 @@ export const DEMO_ACCOUNTS: readonly DemoAccountSet[] = [
       { role: "Call Centre Operator", id: "ankitSharma", password: "Demo@123" },
     ],
   },
-  // E-Anudaan has two audiences on one portal. The base entry serves the officer
-  // console (/login and everything under /dashboard); the three more specific
-  // prefixes below win by longest-prefix match on the NGO surfaces.
+  // E-Anudaan has two audiences on ONE login (role tabs, since 2026-09-06). The
+  // base entry lists every account the login page accepts; the two more
+  // specific prefixes below win by longest-prefix match on the NGO surfaces,
+  // where only the NGO's own account makes sense.
   //
   // These are the DEMO portal's own credentials on the estate's standard
   // Demo@123 — deliberately NOT the live dev passwords, which live only in the
   // gitignored tools/design-audit/projects/e-anudaan/secrets.json.
   {
     path: "/portals/e-anudaan",
-    idLabel: "Mobile",
+    idLabel: "Mobile / Login ID",
     accounts: [
+      { role: "NGO Applicant", id: "LGN3712", password: "Demo@123" },
       { role: "ASO — Programme Division", id: "9200000801", password: "Demo@123" },
       { role: "SO — Programme Division", id: "9200000802", password: "Demo@123" },
       { role: "US — Programme Division", id: "9200000803", password: "Demo@123" },
@@ -153,11 +155,6 @@ export const DEMO_ACCOUNTS: readonly DemoAccountSet[] = [
       { role: "Programme Director", id: "9200000811", password: "Demo@123" },
       { role: "PMU Field Officer", id: "9200000812", password: "Demo@123" },
     ],
-  },
-  {
-    path: "/portals/e-anudaan/sign-in",
-    idLabel: "Login ID",
-    accounts: [{ role: "NGO Applicant", id: "LGN3712", password: "Demo@123" }],
   },
   {
     path: "/portals/e-anudaan/ngo",

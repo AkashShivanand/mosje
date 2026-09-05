@@ -34,9 +34,9 @@ export default function UsersPage() {
       <SearchInput placeholder="Search by name, username, role…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
 
       <div className="overflow-x-auto rounded-2xl border border-line bg-white shadow-card">
-        <table className="w-full min-w-[760px] text-left text-sm">
+        <table className="w-full min-w-[760px] text-left text-body-2">
           <thead>
-            <tr className="border-b border-line text-xs uppercase tracking-wide text-ink-hint">
+            <tr className="border-b border-line text-label-3 uppercase text-ink-hint">
               <th className="px-5 py-3.5 font-semibold">Name / ID</th>
               <th className="px-5 py-3.5 font-semibold">Role</th>
               <th className="px-5 py-3.5 font-semibold">District / State</th>
@@ -47,11 +47,11 @@ export default function UsersPage() {
           <tbody className="divide-y divide-line">
             {rows.map((u) => (
               <tr key={u.id} className="hover:bg-surface-muted/60">
-                <td className="px-5 py-4"><div className="font-medium text-ink">{u.name}</div><div className="font-mono text-xs text-ink-hint">{u.username}</div></td>
+                <td className="px-5 py-4"><div className="font-medium text-ink">{u.name}</div><div className="font-mono text-body-3 text-ink-hint">{u.username}</div></td>
                 <td className="px-5 py-4 text-ink">{ROLES[u.role as Exclude<RoleId, "citizen">]?.label ?? u.role}</td>
                 <td className="px-5 py-4 text-ink-muted">{[u.district, u.state].filter(Boolean).join(", ") || "—"}</td>
-                <td className="px-5 py-4"><span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${u.active ? "bg-approve-bg text-approve-fg" : "bg-slate-100 text-slate-500"}`}>{u.active ? "Active" : "Disabled"}</span></td>
-                <td className="px-5 py-4 text-right"><button type="button" onClick={() => toggleUser(u.id)} className="rounded-lg border border-line px-3 py-1.5 text-xs font-semibold text-navy hover:bg-navy/5">{u.active ? "Disable" : "Enable"}</button></td>
+                <td className="px-5 py-4"><span className={`inline-flex rounded-full px-2.5 py-0.5 text-label-2 font-semibold ${u.active ? "bg-approve-bg text-approve-fg" : "bg-slate-100 text-slate-500"}`}>{u.active ? "Active" : "Disabled"}</span></td>
+                <td className="px-5 py-4 text-right"><button type="button" onClick={() => toggleUser(u.id)} className="rounded-lg border border-line px-3 py-1.5 text-label-2 font-semibold text-navy hover:bg-navy/5">{u.active ? "Disable" : "Enable"}</button></td>
               </tr>
             ))}
           </tbody>

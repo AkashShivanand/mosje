@@ -75,8 +75,15 @@ export interface AccessibilityBarProps {
    */
   onAccessibility?: () => void;
   /** Language selector. Pass `false` to hide. @default { label: "English" } */
-  language?: { label?: string; onClick?: () => void } | false;
-  /** Content-container width: narrow (720) · wide (flat 1200) · page (1200/1320/1440 ladder) · fluid (full-bleed). @default "wide" */
+  language?: { label?: string; /** BCP-47 tag of the LABEL's own language (e.g. "hi" for हिंदी) so a screen reader voices it correctly. */ lang?: string; onClick?: () => void } | false;
+  /**
+   * Content-container width: narrow (720) · wide (flat 1200) · page (1200/1320/1440 ladder) ·
+   * fluid (full-bleed). Every preset pads with `--sa-grid-margin-page` — the same margin
+   * ladder `.sa-container` applies — so the bar's content edge always meets the rows beneath
+   * it. `fluid` is the portal's layout (`Navbar/Portal` in Figma: rows fill the 1440 frame,
+   * margin only); `page` is the website's (`Navbar/Website`: rows cap at `container/page`).
+   * @default "wide"
+   */
   layout?: AccessibilityBarLayout;
   /**
    * Explicit content-container max-width (px), overriding the `layout` preset.

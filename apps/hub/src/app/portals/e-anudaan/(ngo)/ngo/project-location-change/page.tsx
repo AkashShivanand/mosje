@@ -73,8 +73,8 @@ export default function ProjectLocationChangePage() {
   return (
     <div className="mx-auto max-w-2xl space-y-5">
       <header>
-        <h1 className="text-2xl font-bold text-ink">Project Location Change</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">Project Location Change</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           Request a change to the location of one of your projects. The concerned officer is
           notified and will examine your request.
         </p>
@@ -107,7 +107,7 @@ export default function ProjectLocationChangePage() {
               />
             )}
           </FormField>
-          <p className="mt-1 text-xs text-ink-hint">
+          <p className="mt-1 text-body-3 text-ink-hint">
             {location.length} / {MAX} characters
           </p>
         </div>
@@ -137,7 +137,7 @@ export default function ProjectLocationChangePage() {
               />
             )}
           </FormField>
-          <p className="mt-1 text-xs text-ink-hint">
+          <p className="mt-1 text-body-3 text-ink-hint">
             {reason.length} / {MAX} characters
           </p>
         </div>

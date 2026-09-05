@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ErrorView, type ErrorViewKind } from "@mosje/design-system";
+import { ErrorView, type ErrorViewKind, Checkbox } from "@mosje/design-system";
 
 export function ErrorViewPlayground() {
   const [kind, setKind] = React.useState<ErrorViewKind>("404");
@@ -11,7 +11,7 @@ export function ErrorViewPlayground() {
   return (
     <div className="flex flex-col gap-6">
       {/* Interactive Controls */}
-      <div className="flex flex-wrap items-center gap-4 p-4 rounded-xl bg-surface-subtle border border-neutral-subtle text-sm">
+      <div className="flex flex-wrap items-center gap-4 p-4 rounded-xl bg-surface-subtle border border-neutral-subtle text-body-2">
         <div className="flex items-center gap-2">
           <label htmlFor="preset-select" className="font-semibold text-ink">
             Preset Kind:
@@ -20,7 +20,7 @@ export function ErrorViewPlayground() {
             id="preset-select"
             value={kind}
             onChange={(e) => setKind(e.target.value as ErrorViewKind)}
-            className="px-3 py-1.5 rounded-lg border border-neutral-subtle bg-surface text-ink text-sm"
+            className="px-3 py-1.5 rounded-lg border border-neutral-subtle bg-surface text-ink text-label-1"
           >
             <option value="404">404 · Page Not Found</option>
             <option value="500">500 · Server Error</option>
@@ -29,25 +29,9 @@ export function ErrorViewPlayground() {
           </select>
         </div>
 
-        <label className="flex items-center gap-2 cursor-pointer text-ink">
-          <input
-            type="checkbox"
-            checked={showSearch}
-            onChange={(e) => setShowSearch(e.target.checked)}
-            className="rounded border-neutral-subtle"
-          />
-          <span>Include Search Bar</span>
-        </label>
+        <Checkbox label="Include Search Bar" size="sm" checked={showSearch} onCheckedChange={setShowSearch} />
 
-        <label className="flex items-center gap-2 cursor-pointer text-ink">
-          <input
-            type="checkbox"
-            checked={showDiagnostics}
-            onChange={(e) => setShowDiagnostics(e.target.checked)}
-            className="rounded border-neutral-subtle"
-          />
-          <span>Include Error Diagnostics</span>
-        </label>
+        <Checkbox label="Include Error Diagnostics" size="sm" checked={showDiagnostics} onCheckedChange={setShowDiagnostics} />
       </div>
 
       {/* Live Preview Container */}

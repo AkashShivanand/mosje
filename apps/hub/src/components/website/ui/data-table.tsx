@@ -108,14 +108,14 @@ export function DataTable({
             aria-label={searchPlaceholder}
           />
         </div>
-        <p className="hidden whitespace-nowrap text-[13px] text-gray-500 sm:block">
+        <p className="hidden whitespace-nowrap text-body-2 text-gray-500 sm:block">
           {sorted.length} {sorted.length === 1 ? "record" : "records"}
         </p>
       </div>
 
       {/* Table */}
       <div className="overflow-x-auto rounded-lg border border-gray-200">
-        <table className="w-full border-collapse text-[14px]">
+        <table className="w-full border-collapse text-body-2">
           <caption className="sr-only">{caption}</caption>
           <thead>
             <tr className="bg-primary text-white">
@@ -176,17 +176,17 @@ export function DataTable({
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={current === 1}
-            className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-300 px-3 text-[14px] disabled:opacity-40 enabled:hover:bg-surface-muted"
+            className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-300 px-3 text-label-1 disabled:opacity-40 enabled:hover:bg-surface-muted"
           >
             <Icon name="keyboard_arrow_left" size={16} /> Prev
           </button>
-          <span className="px-2 text-[14px] text-ink-muted" aria-current="page">
+          <span className="px-2 text-body-2 text-ink-muted" aria-current="page">
             Page {current} of {totalPages}
           </span>
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={current === totalPages}
-            className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-300 px-3 text-[14px] disabled:opacity-40 enabled:hover:bg-surface-muted"
+            className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-300 px-3 text-label-1 disabled:opacity-40 enabled:hover:bg-surface-muted"
           >
             Next <Icon name="keyboard_arrow_right" size={16} />
           </button>

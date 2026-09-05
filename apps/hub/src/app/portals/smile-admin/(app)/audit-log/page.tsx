@@ -55,14 +55,14 @@ export default function AuditPage() {
           >
             <div className="flex items-start justify-between gap-sm">
               <div className="min-w-0 space-y-0.5">
-                <div className="font-mono text-label-3 text-ink-hint">
+                <div className="font-mono text-body-2 text-ink-hint">
                   {e.timestamp}
                 </div>
                 <div className="text-body-2 text-ink">
                   <span className="font-semibold">{e.actor}</span>
                   <span className="text-ink-muted"> {e.action}</span>
                 </div>
-                <div className="break-all font-mono text-label-3 text-ink-muted">
+                <div className="break-all font-mono text-body-2 text-ink-muted">
                   {e.target}
                 </div>
               </div>
@@ -70,7 +70,7 @@ export default function AuditPage() {
                 {e.result}
               </Badge>
             </div>
-            <div className="mt-sm border-t border-stroke-100 pt-sm font-mono text-label-3 text-ink-hint">
+            <div className="mt-sm border-t border-stroke-100 pt-sm font-mono text-body-2 text-ink-hint">
               IP {e.ip}
             </div>
           </li>
@@ -93,11 +93,11 @@ export default function AuditPage() {
           <tbody>
             {entries.map((e) => (
               <TR key={e.id}>
-                <TD className="font-mono text-body-3 text-ink-muted">{e.timestamp}</TD>
+                <TD className="font-mono text-body-2 text-ink-muted">{e.timestamp}</TD>
                 <TD className="font-semibold">{e.actor}</TD>
                 <TD>{e.action}</TD>
-                <TD className="font-mono text-body-3 text-ink-muted">{e.target}</TD>
-                <TD className="font-mono text-body-3 text-ink-hint">{e.ip}</TD>
+                <TD className="font-mono text-body-2 text-ink-muted">{e.target}</TD>
+                <TD className="font-mono text-body-2 text-ink-hint">{e.ip}</TD>
                 <TD>
                   <Badge status={statusTone(e.result)} dot>
                     {e.result}

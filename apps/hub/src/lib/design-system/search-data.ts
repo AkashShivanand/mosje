@@ -799,6 +799,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     iconName: "sync",
   },
   {
+    title: "Ranked Bar List",
+    section: "Data Display",
+    href: "/design-system/components/data-display/ranked-bar-list",
+    keywords: "ranked bar list top states ranking breakdown progress list inline bar table cell sla compliance",
+    description: "A label, a figure and a thin bar per row — the ranking and breakdown list, paged rather than scrolled.",
+    type: "component",
+    iconName: "sort",
+  },
+  {
     title: "Scatter Chart",
     section: "Data Display",
     href: "/design-system/components/data-display/scatter-chart",

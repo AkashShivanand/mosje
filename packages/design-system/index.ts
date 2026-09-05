@@ -159,8 +159,12 @@ export type {
 export { Label } from "./components/forms/label";
 export type { LabelProps } from "./components/forms/label";
 export { Checkbox } from "./components/forms/checkbox";
+export type { CheckboxProps } from "./components/forms/checkbox";
 export { Radio } from "./components/forms/radio";
+export type { RadioProps } from "./components/forms/radio";
+export type { SelectionSize, SelectionLabelPlacement, SelectionVariant, SelectionCardLayout, CheckboxState } from "./components/forms/selection-types";
 export { Toggle } from "./components/forms/toggle";
+export type { ToggleProps, ToggleSize } from "./components/forms/toggle";
 export { Search } from "./components/forms/search";
 export type { SearchProps, SearchSize, SearchSuggestion } from "./components/forms/search";
 export { Chip } from "./components/forms/chip";
@@ -257,7 +261,12 @@ export type {
 export type { FactStripProps, FactStripItem } from "./components/data-display/fact-strip";
 
 export { MetricCard } from "./components/data-display/metric-card";
-export type { MetricCardProps, MetricCardSize, MetricCardChange } from "./components/data-display/metric-card";
+export type {
+  MetricCardProps,
+  MetricCardSize,
+  MetricCardChange,
+  MetricCardProgress,
+} from "./components/data-display/metric-card";
 // ---- Forms: FilterSelect ----------------------------------------------------
 // The compact dashboard filter, as a real listbox. `Select` remains the answer
 // for a FORM field — it is a native `<select>`, which every assistive technology
@@ -330,12 +339,27 @@ export {
   SmallMultiples,
   texturedColor,
   CHART_TEXTURE_COUNT,
+  RankedBarList,
+  InlineBar,
+  withheldLabel,
 } from "./components/data-display/charts";
+// RankedBarList (above) is the most-drawn chart in the portal handoffs — a label,
+// a figure and a thin bar per row — and InlineBar is its bar alone, for a table
+// cell. withheldLabel is a resolver: the spoken form of a withheld figure. The
+// comment sits OUTSIDE the export block because the Storybook gates split that
+// block on commas and would read a comment as a name.
 export type {
   ChartDatum,
   ChartSeries,
   ChartMultiSeries,
   ChartTable,
+  ChartWithheld,
+  ChartWithheldKind,
+  DataProvenance,
+  StatusTone,
+  RankedBarListProps,
+  RankedBarItem,
+  InlineBarProps,
   BarChartProps,
   LineChartProps,
   AreaChartProps,
@@ -372,6 +396,9 @@ export type {
 // ---- Components: Dashboard composition ---------------------------------------
 export { ChartCard } from "./components/dashboard/chart-card";
 export type { ChartCardProps } from "./components/dashboard/chart-card";
+// Source · as of · status — the one line of self-description a card may carry.
+export { ProvenanceLine, formatAsOf } from "./components/dashboard/provenance";
+export type { ProvenanceLineProps } from "./components/dashboard/provenance";
 // What a card shows when it has nothing to draw — six reasons, one family,
 // drawn in the chart vocabulary rather than borrowed from an icon set. And the
 // loading placeholder that wears the shape of what is coming.
@@ -406,6 +433,7 @@ export type {
 } from "./components/utilities/accessibility-bar";
 
 // Navbar — SiteHeader (the SAMAVESH Navbar: Website + Portal variants, 3-tier).
+export { SAMAVESH_COBRAND } from "./components/navigation/header/samavesh-cobrand";
 export {
   SiteHeader,
   BrandLockup,
@@ -438,7 +466,7 @@ export type {
 export { Link } from "./components/navigation/link";
 export type { LinkProps, LinkVariant, LinkSize, LinkTone } from "./components/navigation/link";
 
-// Sidebar — portal app-shell left navigation (Figma: sidebar/type-1).
+// Sidebar — portal app-shell left navigation (Figma: SAMAVESH › Sidebar, 4286:428).
 export { ContentNav } from "./components/navigation/content-nav";
 export type {
   ContentNavProps,
@@ -458,6 +486,8 @@ export type {
   SidebarNavGroup,
   SidebarNavItem,
   SidebarNavChild,
+  SidebarNavLeaf,
+  SidebarNavIdentity,
 } from "./components/navigation/sidebar";
 export type {
   SiteHeaderProps,
@@ -538,6 +568,26 @@ export type {
 // content changes per portal (logo paths, signing-into name, tabs, form).
 export { SectionTitle } from "./components/layout/section";
 export type { SectionTitleProps } from "./components/layout/section";
+
+// ---- Components: Text primitives ------------------------------------------
+// Heading binds an h1–h6 to one of the 21 type roles (the role defaults from the
+// level); Text binds a run of copy to a body, label or title role. Neither sets a
+// size, leading, tracking or weight of its own — the tokens do — so they are the
+// same on every surface and are the only way a page should ask for type.
+export { Heading, Text } from "./components/layout/text";
+export type {
+  HeadingProps,
+  HeadingLevel,
+  TextProps,
+  TextElement,
+  TextTone,
+  TypeRole,
+  DisplayRole,
+  HeadlineRole,
+  TitleRole,
+  BodyRole,
+  LabelRole,
+} from "./components/layout/text";
 
 // ---- Components: Layout (the page skeleton) ---------------------------------
 // Primitives compose the content column; templates compose the page. All are

@@ -54,8 +54,8 @@ export default function RoleEditPage() {
               </select>
             </div>
             <div className="rounded-md bg-primary-50/60 p-md">
-              <div className="text-label-2 uppercase tracking-wide text-ink-muted">Granted permissions</div>
-              <div className="text-display-5 font-bold text-primary">{totalGranted}</div>
+              <div className="text-label-3 uppercase text-ink-muted">Granted permissions</div>
+              <div className="text-headline-2 tabular-nums text-primary">{totalGranted}</div>
             </div>
           </CardBody>
         </Card>
@@ -63,7 +63,7 @@ export default function RoleEditPage() {
         <Card>
           <CardHeader>
             <CardTitle>Permission matrix</CardTitle>
-            <span className="inline-flex items-center gap-xs rounded-xs bg-primary-50 px-sm py-1 text-label-3 font-semibold text-primary">
+            <span className="inline-flex items-center gap-xs rounded-xs bg-primary-50 px-sm py-1 text-label-2 text-primary">
               <Icon name="verified_user" size={12} /> {totalGranted} granted
             </span>
           </CardHeader>
@@ -71,9 +71,9 @@ export default function RoleEditPage() {
             {matrix.map((group, gi) => (
               <div key={group.group} className="overflow-hidden rounded-md border border-stroke-200">
                 <header className="flex items-center justify-between bg-neutral-50 px-md py-sm">
-                  <div className="text-label-1 font-semibold uppercase tracking-wide text-ink-muted">{group.group}</div>
+                  <div className="text-label-3 uppercase text-ink-muted">{group.group}</div>
                   <button
-                    className="text-label-3 font-semibold text-info hover:underline"
+                    className="text-label-1 text-info-600 hover:underline"
                     onClick={() => {
                       const allOn = group.permissions.every((p) => p.granted);
                       const next = matrix.map((g, idx) =>
@@ -89,8 +89,8 @@ export default function RoleEditPage() {
                   {group.permissions.map((p, pi) => (
                     <li key={p.key} className="flex items-center justify-between gap-md px-md py-sm">
                       <div>
-                        <div className="text-body-3 font-semibold text-ink">{p.label}</div>
-                        <div className="font-mono text-label-3 text-ink-muted">{p.key}</div>
+                        <div className="text-label-1 text-ink">{p.label}</div>
+                        <div className="font-mono text-body-2 text-ink-muted">{p.key}</div>
                       </div>
                       <Checkbox
                         checked={p.granted}

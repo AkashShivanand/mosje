@@ -35,7 +35,7 @@ export default function StaffListPage() {
       action={
         <Link
           href="/portals/nmba/treatment-centre/staff/new"
-          className="inline-flex items-center rounded-lg bg-white px-4 py-2 text-sm font-semibold text-navy hover:bg-slate-100"
+          className="inline-flex items-center rounded-lg bg-white px-4 py-2 text-label-1 font-semibold text-navy hover:bg-slate-100"
         >
           + Add Staff
         </Link>

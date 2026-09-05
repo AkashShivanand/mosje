@@ -1,0 +1,187 @@
+/* Illustration foundation — specimens. The drawings are the Illustration component,
+   rendered live from scenes.tsx; the ink swatches bind the same four tokens the
+   component's own stylesheet binds, so the page cannot show an ink it does not ship. */
+@layer theme, base, components, utilities;
+@layer components {
+  /* One column floor, derived from the largest tier's own width so the page owns no
+     width of its own: a sheet cell is as wide as a hero drawing is tall. */
+  .ill-tiers,
+  .ill-sheet,
+  .ill-inks,
+  .ill-strokes {
+    --ill-cell-min: calc(var(--sa-icon-size-64) * 3);
+  }
+
+  /* ── 01 The three tiers ──────────────────────────────────────────────── */
+  .ill-tiers {
+    display: grid;
+    gap: var(--sa-stack-16);
+  }
+  .ill-tiers__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-24);
+    padding: var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .ill-tiers__art {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--ill-cell-min);
+  }
+  .ill-tiers__name {
+    margin: 0;
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .ill-tiers__size,
+  .ill-tiers__use {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+  .ill-tiers__size {
+    font-family: var(--sa-font-mono);
+  }
+
+  /* ── 02 Stroke weights ───────────────────────────────────────────────── */
+  .ill-strokes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--ill-cell-min), 100%), 1fr));
+    gap: var(--sa-inline-16);
+  }
+  .ill-stroke {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-20);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .ill-stroke__rule {
+    display: block;
+    width: 100%;
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-text-neutral-subtle);
+  }
+  /* The three weights, each a stroke token so the rule drawn is the value named. */
+  .ill-stroke__rule--hairline { height: var(--sa-stroke-2); }
+  .ill-stroke__rule--ink { height: var(--sa-stroke-3); }
+  .ill-stroke__rule--mass { height: var(--sa-stroke-4); }
+  .ill-stroke__name {
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .ill-stroke__use {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── 03 The four ink layers ──────────────────────────────────────────── */
+  .ill-inks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--ill-cell-min), 100%), 1fr));
+    gap: var(--sa-inline-16);
+  }
+  .ill-ink {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+  }
+  .ill-ink__swatch {
+    display: block;
+    height: var(--sa-icon-size-40);
+    border-radius: var(--sa-shape-8);
+  }
+  /* Each swatch binds the token its layer binds in illustration.css — by name, not by
+     value, so the page and the component cannot disagree. */
+  .ill-ink__swatch--ground { background: var(--sa-border-neutral-base); }
+  .ill-ink__swatch--ghost { background: var(--sa-border-neutral-subtle); }
+  .ill-ink__swatch--ink { background: var(--sa-text-neutral-subtle); }
+  .ill-ink__swatch--accent { background: var(--sa-bg-brand-primary-bolder); }
+  .ill-ink__name {
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .ill-ink__token {
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-brand-primary-base);
+  }
+  .ill-ink__use {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── 05 The set ──────────────────────────────────────────────────────── */
+  .ill-sheet {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--ill-cell-min), 100%), 1fr));
+    gap: var(--sa-inline-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .ill-sheet__cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+    text-align: center;
+  }
+  .ill-sheet__name {
+    margin: 0;
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-bolder);
+  }
+  .ill-sheet__alt {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── 06 Primitives ───────────────────────────────────────────────────── */
+  .ill-primitives {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .ill-primitives code {
+    display: inline-block;
+    padding: var(--sa-padding-4) var(--sa-padding-12);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-neutral-bolder);
+  }
+}

@@ -10,7 +10,8 @@
 //
 // REBUILT 2026-09-02. The set was re-cut IN PLACE (node id and key preserved,
 // every instance link intact) from `Device × Step` = 8 variants to
-// `Device × Auth Method` = 6.
+// `Device × Auth Method` = 6, and on 2026-09-03 to `Device × Auth Method` = 8
+// when DARPAN was reinstated (see below).
 //
 // WHY THE `Step` AXIS WENT. It conflated two unlike things: `Credentials` and
 // `OTP` are ways of proving identity, while `Reset` and `Success` are stages of

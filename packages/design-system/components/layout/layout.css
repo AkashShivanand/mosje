@@ -99,7 +99,7 @@
     margin: 0;
     font-size: var(--sa-type-headline-1-size);
     line-height: var(--sa-type-headline-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
   .sa-page-header__meta {
@@ -138,7 +138,7 @@
     }
     .sa-app-shell__sidebar {
       display: block;
-      border-right: 1px solid var(--sa-border-neutral-subtle);
+      border-right: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
       background: var(--sa-bg-neutral-base);
     }
   }

@@ -32,10 +32,10 @@ export default function NmbaPlacementPreview() {
       {/* Review-only control bar */}
       <div className="sticky top-0 z-[1000] border-b border-border-ds bg-white/95 backdrop-blur">
         <div className="sa-container flex flex-wrap items-center gap-3 py-2.5">
-          <span className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
+          <span className="text-label-3 uppercase text-ink-muted">
             NMBA placement preview
           </span>
-          <div className="flex overflow-hidden rounded-lg border border-border-ds text-sm font-semibold">
+          <div className="flex overflow-hidden rounded-lg border border-border-ds text-label-1">
             {OPTIONS.map((o) => (
               <button
                 key={o.id}
@@ -52,7 +52,7 @@ export default function NmbaPlacementPreview() {
               </button>
             ))}
           </div>
-          <span className="text-xs text-ink-muted">
+          <span className="text-body-3 text-ink-muted">
             {OPTIONS.find((o) => o.id === option)?.note}
           </span>
         </div>

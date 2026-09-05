@@ -28,7 +28,7 @@
   .ds-modal__backdrop {
     position: fixed;
     inset: 0;
-    z-index: 50;
+    z-index: var(--sa-z-dropdown);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -41,7 +41,7 @@
     max-height: calc(100vh - 32px);
     overflow-y: auto;
     background-color: var(--sa-bg-neutral-base);
-    border-radius: var(--sa-shape-12);
+    border-radius: var(--sa-cmp-dialog-radius);
     box-shadow: var(--sa-elevation-toast);
     font-family: var(--sa-font-latin);
   }
@@ -61,7 +61,8 @@
   .ds-modal__title {
     margin: 0;
     font-size: var(--sa-type-title-1-size);
-    font-weight: 700;
+    line-height: var(--sa-type-title-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
 
@@ -77,7 +78,7 @@
     border-radius: var(--sa-shape-6);
     background: transparent;
     color: var(--sa-text-neutral-subtle);
-    transition: background-color 0.12s ease, color 0.12s ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-modal__close:hover {

@@ -16,8 +16,8 @@ export default function VerifyOtpPage() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-surface-muted px-4 py-12">
       <div className="w-full max-w-md rounded-2xl border border-line bg-white p-8 shadow-card">
-        <h1 className="text-xl font-bold text-ink">Verify OTP</h1>
-        <p className="mt-1 mb-6 text-sm text-ink-muted">
+        <h1 className="text-headline-3 text-ink">Verify OTP</h1>
+        <p className="mt-1 mb-6 text-body-2 text-ink-muted">
           Enter the 6-digit code sent to your registered mobile number.
         </p>
         <form
@@ -34,16 +34,15 @@ export default function VerifyOtpPage() {
               value={otp}
               onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
               placeholder="••••••"
-              className="tracking-[0.5em]"
             />
           </Field>
-          {status === "ok" && <p className="text-sm font-medium text-approve-fg">Verified successfully.</p>}
-          {status === "err" && <p className="text-sm font-medium text-reject-fg">Enter a valid 6-digit code.</p>}
+          {status === "ok" && <p className="text-body-2 font-medium text-approve-fg">Verified successfully.</p>}
+          {status === "err" && <p className="text-body-2 font-medium text-reject-fg">Enter a valid 6-digit code.</p>}
           <Button type="submit" className="w-full">
             Verify
           </Button>
         </form>
-        <Link href="/portals/nhapoa/login" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-navy hover:underline">
+        <Link href="/portals/nhapoa/login" className="mt-6 inline-flex items-center gap-2 text-label-1 font-semibold text-navy hover:underline">
           <Icon name="arrow_back" size={16} /> Back to login
         </Link>
       </div>

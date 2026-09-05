@@ -163,7 +163,7 @@ export default function RoadmapPage(): React.JSX.Element {
                   <h2
                     style={{
                       fontSize: "var(--sa-type-headline-2-size)",
-                      fontWeight: 700,
+                      fontWeight: "var(--sa-font-weight-bold)",
                       color: "var(--sa-text-neutral-base)",
                     }}
                   >
@@ -172,7 +172,7 @@ export default function RoadmapPage(): React.JSX.Element {
                   <span
                     style={{
                       fontSize: "var(--sa-type-body-3-size)",
-                      fontWeight: 600,
+                      fontWeight: "var(--sa-font-weight-semibold)",
                       color: TONE[col.tone].ink,
                       background: TONE[col.tone].chip,
                       padding: "var(--sa-padding-2) var(--sa-padding-8)",
@@ -201,10 +201,11 @@ export default function RoadmapPage(): React.JSX.Element {
                     {group.heading ? (
                       <div
                         style={{
-                          fontSize: "var(--sa-type-body-3-size)",
-                          fontWeight: 700,
+                          fontSize: "var(--sa-type-label-3-size)",
+                          lineHeight: "var(--sa-type-label-3-lh)",
+                          fontWeight: "var(--sa-font-weight-bold)",
                           textTransform: "uppercase",
-                          letterSpacing: "0.04em",
+                          letterSpacing: "var(--sa-type-caps-tracking)",
                           color: "var(--sa-text-neutral-subtle)",
                           marginBottom: "var(--sa-stack-8)",
                         }}
@@ -239,7 +240,7 @@ export default function RoadmapPage(): React.JSX.Element {
                             style={{
                               flexShrink: 0,
                               color: TONE[col.tone].chip,
-                              fontWeight: 700,
+                              fontWeight: "var(--sa-font-weight-bold)",
                             }}
                           >
                             {col.tone === "now" ? "✓" : "•"}

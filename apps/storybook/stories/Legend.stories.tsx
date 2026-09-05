@@ -326,7 +326,7 @@ export const SwatchKinds: Story = {
           { label: "Grant-in-Aid", value: "not mapped", color: divergingColor(0) },
         ]}
       />
-      <p style={{ margin: 0, fontSize: 12, opacity: 0.7 }}>
+      <p style={{ margin: 0, fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)", opacity: 0.7 }}>
         Ramp, dots and solid in one legend — each key drawn the way its series is.
       </p>
     </div>

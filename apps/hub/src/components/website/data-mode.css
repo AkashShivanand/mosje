@@ -72,84 +72,19 @@
     margin: 0;
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 700;
-    letter-spacing: 0.06em;
+    font-weight: var(--sa-font-weight-bold);
+    letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
     color: var(--sa-text-neutral-subtle);
   }
 
-  /* ── Data source: three rows, hairline-divided, one tinted ──────────────── */
+  /* ── Data source ─────────────────────────────────────────────────────────
+     The three options are a RadioGroup from the design system (2026-09-04);
+     the hand-rolled radiogroup, dot and tinted rows it replaced lived here. */
 
   .dm-panel__opts {
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-8);
-    overflow: hidden;
-  }
-
-  .dm-panel__opt {
-    display: flex;
-    align-items: center;
-    gap: var(--sa-inline-8);
-    padding: var(--sa-padding-8) var(--sa-padding-12);
-    cursor: pointer;
-    /* Response lands on the press, not the release. */
-    transition: background-color 0.12s ease;
-  }
-
-  .dm-panel__opt + .dm-panel__opt {
-    border-top: 1px solid var(--sa-border-neutral-subtle);
-  }
-
-  .dm-panel__opt:hover {
-    background-color: var(--sa-bg-neutral-subtler);
-  }
-
-  .dm-panel__opt.is-on {
-    background-color: var(--sa-bg-brand-primary-base);
-  }
-
-  .dm-panel__opt:focus-within {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: calc(var(--sa-focus-offset) * -1);
-  }
-
-  /* The native input is the control; this is its face. Keeping the input in
-     the accessibility tree rather than rebuilding a radio out of divs. */
-  .dm-panel__radio {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .dm-panel__dot {
-    flex: 0 0 auto;
-    width: 14px;
-    height: 14px;
-    border: 1.5px solid var(--sa-border-neutral-base);
-    border-radius: var(--sa-shape-full);
-    background-color: var(--sa-bg-neutral-base);
-    box-shadow: inset 0 0 0 0 var(--sa-color-action-primary-default);
-    transition:
-      box-shadow 0.18s cubic-bezier(0.22, 0.61, 0.36, 1),
-      border-color 0.18s ease;
-  }
-
-  /* An inset ring grown from nothing, rather than a child element faded in:
-     one property, no layout, and it reads as the dot filling. */
-  .dm-panel__opt.is-on .dm-panel__dot {
-    border-color: var(--sa-color-action-primary-default);
-    box-shadow: inset 0 0 0 4px var(--sa-color-action-primary-default);
-  }
-
-  .dm-panel__opt-label {
-    font-size: var(--sa-type-body-3-size);
-    line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
-    color: var(--sa-text-neutral-bolder);
   }
 
   /* Only the SELECTED option explains itself. Three blurbs at once was 400px
@@ -175,68 +110,8 @@
     }
   }
 
-  /* ── The marks switch ───────────────────────────────────────────────────── */
+  /* ── The marks switch is the design system's Toggle (2026-09-04) ─────── */
 
-  .dm-panel__switch {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--sa-inline-12);
-    cursor: pointer;
-  }
-
-  .dm-panel__switch-input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .dm-panel__track {
-    position: relative;
-    flex: 0 0 auto;
-    width: 34px;
-    height: 20px;
-    margin-top: var(--sa-stack-2);
-    border-radius: var(--sa-shape-full);
-    background-color: var(--sa-bg-neutral-subtle);
-    transition: background-color 0.18s ease;
-  }
-
-  .dm-panel__knob {
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    width: 16px;
-    height: 16px;
-    border-radius: var(--sa-shape-full);
-    background-color: var(--sa-bg-neutral-base);
-    box-shadow: 0 1px 2px var(--shadow-ambient-22);
-    /* Slight overshoot: the knob is thrown, and a thrown thing settles. The
-       only place on this panel that bounces, because it is the only control
-       that physically travels. */
-    transition: transform 0.24s cubic-bezier(0.34, 1.4, 0.64, 1);
-  }
-
-  .dm-panel__switch-input:checked + .dm-panel__track {
-    background-color: var(--sa-color-action-primary-default);
-  }
-
-  .dm-panel__switch-input:checked + .dm-panel__track .dm-panel__knob {
-    transform: translateX(14px);
-  }
-
-  .dm-panel__switch-input:focus-visible + .dm-panel__track {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
-  }
-
-  .dm-panel__switch-body {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-2);
-    min-width: 0;
-  }
 
   .dm-panel__hint {
     margin: 0;
@@ -261,7 +136,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
     cursor: pointer;
     transition:
@@ -305,8 +180,8 @@
   .dm-panel__sub-label {
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 700;
-    letter-spacing: 0.06em;
+    font-weight: var(--sa-font-weight-bold);
+    letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
     color: var(--sa-text-neutral-subtle);
   }
@@ -329,7 +204,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
     cursor: pointer;
     transition:
@@ -364,10 +239,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .dm-panel__opt,
-    .dm-panel__dot,
-    .dm-panel__track,
-    .dm-panel__knob,
     .dm-panel__chip {
       transition: none;
     }
@@ -401,6 +272,6 @@
   }
 
   .dm-banner b {
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
   }
 }

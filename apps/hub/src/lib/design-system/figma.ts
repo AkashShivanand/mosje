@@ -16,9 +16,11 @@ export const FIGMA_NODES = {
   // ── Foundations ──
   color: "2140:295913", // "Color Styles"
   typography: "2140:295912", // "Text Styles"
-  spacing: "2140:295915", // "Layout Grid"
-  shape: "55623:696", // "Radius — Documentation" on the Radius page (55623:695), added
-  //                          2026-08-18 between Spacing and Motion in the FOUNDATION run
+  spacing: "55596:695", // "Spacing" — its own page since 2026-08-18; linked here from 2026-09-05
+  layout: "2140:295915", // "Layout Grid"
+  shape: "55623:695", // the Radius page. Was the Documentation frame's id (55623:696), which
+  //                          stopped resolving when the frame was rebuilt on 2026-09-04 — a page
+  //                          id survives a rebuild, a frame id does not (found 2026-09-05)
   elevation: "2140:295914", // "Effects"
   iconography: "2316:246", // "Iconography" — the Icon component, bespoke marks,
   //                              emblems, org logos and the documentation, all on one page
@@ -34,6 +36,22 @@ export const FIGMA_NODES = {
   density: "4170:695", // "Density" (authored from @mosje/tokens)
 
   // ── Components ──
+  /* "Charts & Graphs" — the data-visualisation page, rebuilt 2026-09-05 in the
+     house style. `chartsDoc` is its `— Documentation` frame; the masters
+     (Metric Card, Chart Card, Ranked Bar Row, Chart, Legend, Tooltip) sit in
+     numbered sections beneath it, and the UX4G Chart.js import that used to be
+     the whole page is kept as a renamed legacy set until its instances are
+     migrated. `mapOfIndia` is the sibling page the choropleth lives on. */
+  charts: "2840:10801",
+  chartsDoc: "57411:15871",
+  chartsMetricCard: "57414:15871", // `Metric Card` set — Reading 5 × Tone 3
+  chartsChartCard: "57418:15985", // `Chart Card` set — State 6
+  chartsChart: "57417:15992", // `Chart` set — Type 15, the foundational chart types at 480×280
+  chartsRankedList: "57420:15961", // `Ranked Bar List` — five `Ranked Bar Row` (57420:15960) instances
+  chartsLegend: "57420:16040", // `Legend` set — Swatch 3
+  chartsTooltip: "57420:16041",
+  mapOfIndia: "6803:290942", // the page
+  mapOfIndiaDoc: "57437:750", // "Map of India — Documentation", authored 2026-09-05; the `IndiaMap` set (6803:291103) beneath it carries Kind = Choropleth | Choropleth · hover | Bubble | Point
   buttons: "2141:296705",
   /* "Button Group" — authored 2026-09-03, page inserted between Buttons and Close
      Button. The component had existed in code with no Figma counterpart at all, so a
@@ -86,9 +104,9 @@ export const FIGMA_NODES = {
   requiredFieldsLegend: "56792:50506", // the Required Fields Legend set, authored 2026-09-03
   card: "2141:296707",
   badges: "2141:296703",
-  checkbox: "2141:296710",
+  checkbox: "15:664", // the Checkbox set. The entry pointed at the PAGE (2141:296710) until 2026-09-04
   chips: "2141:296709",
-  radio: "2141:323876",
+  radio: "18:791", // the Radio set. The entry pointed at the PAGE (2141:323876) until 2026-09-04
   search: "2141:323878",
   toggle: "2141:323883",
   dropdown: "2141:296718", // Select
@@ -133,7 +151,7 @@ export const FIGMA_NODES = {
   accessibilityBar: "55065-33766",
   accountMenu: "56046-4113",
   accountMenuItem: "56040-4083",
-  authParts: "55439-749",
+  authParts: "57464-12739", // the SigningIntoBar Device set (2026-09-05); its Tone set (55439-749) was dissolved 2026-09-04
   brandLockup: "4235-3652",
   divider: "55061-700",
   dropdownItem: "4299-1940",
@@ -151,10 +169,16 @@ export const FIGMA_NODES = {
   tabs: "55489-870",
   tabsMore: "55514-848",
   ticker: "56159-903",
-  // Named on the Sidebar page itself, which said the node existed and that this
-  // estate had not registered it — an absence statement that told the reader
-  // where to go and then refused to take them.
-  portalSidebar: "4208-740",
+  // Sidebar page — rebuilt 2026-09-05. The three pre-existing sets were mutated in
+  // place, so 4286-* ids are the originals; the rest are new that day.
+  portalSidebar: "4286-428",
+  sidebarItem: "4286-285",
+  sidebarSubItem: "4286-361",
+  sidebarLeaf: "57129-1097",
+  sidebarGroupLabel: "57137-1189",
+  sidebarCollapseControl: "57137-1199",
+  sidebarFlyout: "57137-1200",
+  sidebarIdentity: "57262-1829",
 } as const;
 
 export type FigmaNode = keyof typeof FIGMA_NODES;

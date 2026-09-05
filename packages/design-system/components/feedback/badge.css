@@ -35,7 +35,7 @@
     justify-content: center;
     gap: var(--sa-stack-4);
     font-family: var(--sa-font-latin);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     white-space: nowrap;
     border-radius: var(--sa-shape-full);
     background-color: var(--_bg);
@@ -81,8 +81,8 @@
   .ds-badge--sm {
     min-height: 18px;
     padding: var(--sa-padding-2) var(--sa-padding-8);
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
   }
 
   .ds-badge--lg {

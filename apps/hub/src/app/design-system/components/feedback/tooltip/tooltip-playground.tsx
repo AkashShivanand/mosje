@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Tooltip, Button } from "@mosje/design-system";
+import { Tooltip, Button, Checkbox } from "@mosje/design-system";
 
 export function TooltipPlayground() {
   const [side, setSide] = React.useState<"top" | "bottom" | "left" | "right">("top");
@@ -20,7 +20,7 @@ export function TooltipPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", alignSelf: "flex-start" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
           <strong>Side:</strong>
           <select 
             value={side} 
@@ -34,7 +34,7 @@ export function TooltipPlayground() {
           </select>
         </label>
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
           <strong>Delay (ms):</strong>
           <input 
             type="number" 
@@ -44,14 +44,7 @@ export function TooltipPlayground() {
           />
         </label>
 
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={duplicatesTriggerName} 
-            onChange={(e) => setDuplicatesTriggerName(e.target.checked)} 
-          />
-          <strong>Duplicates trigger name</strong>
-        </label>
+        <Checkbox label="Duplicates trigger name" size="sm" checked={duplicatesTriggerName} onCheckedChange={setDuplicatesTriggerName} />
       </div>
 
       <div style={{ margin: "var(--sa-stack-40) 0" }}>

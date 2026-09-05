@@ -7,6 +7,7 @@
  */
 
 import { readFileSync } from "node:fs";
+import { addDevanagariLeading } from "./devanagari-leading.mjs";
 
 const here = (p) => new URL(p, import.meta.url).pathname;
 
@@ -23,6 +24,11 @@ export function index() {
   const out = [];
   for (const rel of SOURCES) {
     const json = JSON.parse(readFileSync(here("../" + rel), "utf8"));
+    // "Authored" means the source AFTER the build's own derivations: the 21 per-role
+    // `lhDevanagari` leaves are made by a preprocessor from the offset primitive, and a test
+    // that read the raw file counted them as invented. The rule lives in one function; the
+    // index applies it exactly as the build does.
+    if (rel.endsWith("src/primitive.json")) addDevanagariLeading(json);
     walk(json, [], rel, out);
   }
   return out;

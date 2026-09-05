@@ -60,8 +60,12 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /* Underlined, not colour-only: the links sit inside a sentence, and WCAG 1.4.1
+     (axe `link-in-text-block`) needs a cue that survives a monochrome display.
+     The offset was already here for an underline nothing ever drew. */
   .ds-auth-consent a {
     color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
     text-underline-offset: 2px;
   }
 
@@ -83,13 +87,13 @@
   }
 
   .ds-auth-resend__count {
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
     font-variant-numeric: tabular-nums;
   }
 
   .ds-auth-resend__action {
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-link-brand-default);
     background: none;
     border: 0;
@@ -126,7 +130,7 @@
     display: block;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
 
@@ -134,7 +138,7 @@
     flex: none;
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-link-brand-default);
     background: none;
     border: 0;
@@ -155,7 +159,9 @@
     align-items: center;
     gap: var(--sa-inline-12);
     width: 100%;
-    padding: var(--sa-padding-16);
+    /* 16/20, title 16 semibold over a 14 subtitle: the handoff's card
+       (`56693:4742`, 390 × 76), which the Figma `Auth / SSOButton` now draws too. */
+    padding: var(--sa-padding-16) var(--sa-padding-20);
     border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
     border-radius: var(--sa-control-radius);
     background-color: var(--sa-bg-neutral-base);
@@ -184,9 +190,9 @@
 
   .ds-auth-sso__title {
     display: block;
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-brand-primary-base);
   }
 
@@ -194,8 +200,8 @@
 
   .ds-auth-sso__subtitle {
     display: block;
-    font-size: var(--sa-type-body-3-size);
-    line-height: var(--sa-type-body-3-lh);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
     color: var(--sa-text-neutral-subtle);
   }
 
@@ -204,8 +210,9 @@
 
   /* A partner's mark is artwork, not a glyph: it is sized on the icon scale but
      keeps its own aspect, because squashing DigiLocker's mark to a square is a
-     misuse of somebody else's brand. 40 tall draws 43 wide from the shipped
-     asset, which is the handoff's own logo slot. */
+     misuse of somebody else's brand. The shipped asset is the library's own
+     `DigiLocker` component (Brand page, 40×40 with the art inside it) exported
+     at 3×, so 40 tall is the exact box the Figma `Auth / SSOButton` draws. */
   .ds-auth-sso__markimg {
     display: block;
     height: var(--sa-icon-size-40);
@@ -260,14 +267,14 @@
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: var(--sa-type-caps-tracking);
   }
 
   .ds-auth-signing__name {
     display: block;
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-auth-signing__change {
@@ -322,7 +329,7 @@
     min-height: var(--sa-target-comfortable);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-link-brand-default);
     text-underline-offset: 2px;
   }

@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Ticker, buttonClasses } from "@mosje/design-system";
+import { Ticker, buttonClasses, Checkbox } from "@mosje/design-system";
 
 const ITEMS = [
   {
@@ -37,14 +37,7 @@ export function TickerPlayground(): React.JSX.Element {
   const [vertical, setVertical] = React.useState(false);
   const [singleItem, setSingleItem] = React.useState(false);
   const [withDates, setWithDates] = React.useState(true);
-
-  const controlStyle: React.CSSProperties = {
-    display: "flex",
-    gap: "var(--sa-inline-8)",
-    alignItems: "center",
-    fontSize: "var(--sa-type-body-2-size)",
-    color: "var(--sa-text-neutral-base)",
-  };
+  const [twoRows, setTwoRows] = React.useState(false);
 
   return (
     <div
@@ -65,30 +58,13 @@ export function TickerPlayground(): React.JSX.Element {
           padding: "var(--sa-padding-24) var(--sa-padding-24) 0",
         }}
       >
-        <label style={controlStyle}>
-          <input type="checkbox" checked={twoLine} onChange={(e) => setTwoLine(e.target.checked)} />
-          <strong>Two-line items</strong>
-        </label>
-        <label style={controlStyle}>
-          <input type="checkbox" checked={withAction} onChange={(e) => setWithAction(e.target.checked)} />
-          <strong>View All action</strong>
-        </label>
-        <label style={controlStyle}>
-          <input type="checkbox" checked={autoplay} onChange={(e) => setAutoplay(e.target.checked)} />
-          <strong>Autoplay</strong>
-        </label>
-        <label style={controlStyle}>
-          <input type="checkbox" checked={vertical} onChange={(e) => setVertical(e.target.checked)} />
-          <strong>Panel (vertical scroll)</strong>
-        </label>
-        <label style={controlStyle}>
-          <input type="checkbox" checked={singleItem} onChange={(e) => setSingleItem(e.target.checked)} />
-          <strong>Too short to move (controls go)</strong>
-        </label>
-        <label style={controlStyle}>
-          <input type="checkbox" checked={withDates} onChange={(e) => setWithDates(e.target.checked)} />
-          <strong>Dates</strong>
-        </label>
+        <Checkbox label="Two-line items" size="sm" checked={twoLine} onCheckedChange={setTwoLine} />
+        <Checkbox label="View All action" size="sm" checked={withAction} onCheckedChange={setWithAction} />
+        <Checkbox label="Autoplay" size="sm" checked={autoplay} onCheckedChange={setAutoplay} />
+        <Checkbox label="Panel (vertical scroll)" size="sm" checked={vertical} onCheckedChange={setVertical} />
+        <Checkbox label="Too short to move (controls go)" size="sm" checked={singleItem} onCheckedChange={setSingleItem} />
+        <Checkbox label="Dates" size="sm" checked={withDates} onCheckedChange={setWithDates} />
+        <Checkbox label="Two rows (panel)" size="sm" checked={twoRows} onCheckedChange={setTwoRows} />
       </div>
 
       <Ticker
@@ -109,6 +85,7 @@ export function TickerPlayground(): React.JSX.Element {
           };
         })}
         orientation={vertical ? "vertical" : "horizontal"}
+        rows={vertical && twoRows ? 2 : undefined}
         autoplay={autoplay}
         action={
           withAction ? (

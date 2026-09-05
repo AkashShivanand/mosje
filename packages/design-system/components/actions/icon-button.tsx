@@ -80,9 +80,13 @@ export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
         className={cn("ds-icon-btn", shape === "circle" && "ds-icon-btn--circle", className)}
         {...rest}
       >
-        <span className="ds-btn__icon" aria-hidden="true">
-          {icon}
-        </span>
+        {/* While loading, the Button draws its spinner and this glyph would sit on top of
+            it; the spinner IS the icon until the work is done. The name stays. */}
+        {rest.loading ? null : (
+          <span className="ds-btn__icon" aria-hidden="true">
+            {icon}
+          </span>
+        )}
       </Button>
     );
 

@@ -50,7 +50,7 @@
      id alone. Matching on `#uw-widget-custom-trigger` is what survived the v1.15
      → v3.28 upgrade, and is the more stable hook to keep using. */
   #uw-widget-custom-trigger span {
-    font-family: "Noto Sans", sans-serif !important;
+    font-family: var(--sa-font-latin) !important;
   }
 
   /* Centre the shortcut label on the trigger ICON, in both trigger states.

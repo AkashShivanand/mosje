@@ -467,3 +467,23 @@ export const ExportOptions: Story = {
     </div>
   ),
 };
+
+/**
+ * Provenance travels WITH the data. `provenance` prints one muted line under
+ * the body — source, as-of date, status — and drops it, with the footer,
+ * whenever the card has nothing to show.
+ */
+export const WithProvenance: Story = {
+  render: (args) => (
+    <div style={{ maxWidth: 560 }}>
+      <ChartCard
+        {...args}
+        title="Applications cleared"
+        subtitle="Monthly, FY 2025–26"
+        provenance={{ source: "Scheme MIS, Department of Social Justice and Empowerment", asOf: "2026-08-27", status: "provisional" }}
+      >
+        <p style={{ margin: 0 }}>Chart body</p>
+      </ChartCard>
+    </div>
+  ),
+};

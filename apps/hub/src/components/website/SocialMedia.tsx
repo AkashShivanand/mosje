@@ -178,10 +178,10 @@ export function SocialMedia() {
     <section className="bg-surface-muted py-12 md:py-16">
       <div className="sa-container">
         <div>
-          <h2 className="text-[28px] sm:text-[32px] font-semibold leading-tight text-primary-dark">
+          <h2 className="text-headline-2 text-primary-dark">
             Explore our Social Media Platforms
           </h2>
-          <p className="mt-2 text-[15px] sm:text-[16px] text-ink-muted">
+          <p className="mt-2 text-body-1 text-ink-muted">
             Stay connected with the Department of Social Justice &amp; Empowerment across our official channels.
           </p>
         </div>
@@ -205,7 +205,7 @@ export function SocialMedia() {
                 aria-label={tab.name}
                 aria-pressed={isActive}
                 className={cn(
-                  "flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-xs font-semibold transition sm:px-6 sm:text-sm",
+                  "flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-label-1 transition sm:px-6",
                   isActive
                     ? "bg-primary text-white shadow-xs"
                     : "text-ink-muted hover:text-ink"
@@ -240,10 +240,10 @@ export function SocialMedia() {
                     />
                   </span>
                   <div className="min-w-0">
-                    <span className="block text-[13px] font-semibold leading-tight text-ink line-clamp-2">
+                    <span className="block text-title-3 text-ink line-clamp-2">
                       {currentTab.accountName}
                     </span>
-                    <span className="block text-[11px] text-ink-muted">
+                    <span className="block text-body-3 text-ink-muted">
                       {post.date}
                     </span>
                   </div>
@@ -258,7 +258,7 @@ export function SocialMedia() {
               {/* Caption BEFORE the image — the design's order. The build put
                   the image first and the text under it [WEB-S-02]. */}
               <div className="flex flex-1 flex-col px-5">
-                <p className="text-xs leading-snug text-ink line-clamp-3 sm:text-sm">
+                <p className="text-body-2 text-ink line-clamp-3">
                   {post.caption}
                 </p>
                 <div className="relative mt-3 aspect-[16/9] w-full overflow-hidden rounded-lg border border-gray-150">
@@ -279,7 +279,7 @@ export function SocialMedia() {
                   {post.metrics.map((metric) => (
                     <span
                       key={metric.label}
-                      className="flex items-center gap-1 text-[11px] text-ink-muted"
+                      className="flex items-center gap-1 text-body-3 text-ink-muted"
                     >
                       <Icon name={metric.icon} size={16} aria-hidden />
                       {metric.value}
@@ -291,7 +291,7 @@ export function SocialMedia() {
                   href={currentTab.profileUrl}
                   external
                   variant="standalone"
-                  className="text-[11px] font-semibold text-primary-dark"
+                  className="text-label-2 text-primary-dark"
                   iconLeft={<Icon name="share" size={16} aria-hidden />}
                 >
                   Share

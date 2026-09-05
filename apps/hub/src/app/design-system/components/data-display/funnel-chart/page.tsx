@@ -81,7 +81,7 @@ export default function FunnelChartPage(): React.JSX.Element {
       name="Funnel Chart"
       status="Beta"
       summary="Draws the stages of one workflow top to bottom, each bar as wide as its share of the first stage, with the carry-through percentage beside it. It answers where a process loses its volume."
-      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      figma={{ node: "chartsChart" }}
       specimen={<FunnelChartSpecimen />}
       propsFrom="FunnelChartProps"
       props={STAGE}

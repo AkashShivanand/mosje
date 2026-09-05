@@ -75,7 +75,7 @@ export function SubmissionsTable({
               {r.reporter}
               {/* The kind is context, not the headline — it sits under the name
                   at a lower weight rather than competing as its own column. */}
-              <span className="mt-0.5 block truncate text-xs font-normal text-ink-muted">
+              <span className="mt-0.5 block truncate text-body-3 text-ink-muted">
                 {r.kind}
               </span>
             </Link>

@@ -1,0 +1,355 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css — see design-system-architecture.md §2a. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     SAMAVESH — Selection control, the half Checkbox and Radio share
+     One root, one size ladder, one state matrix. checkbox.css draws the box,
+     radio.css the circle; nothing else is duplicated between them.
+     Zero raw lengths and zero raw durations: selection-css.spec.ts fails if one appears.
+     ============================================================================ */
+
+  /* Defined here as well as in forms.css: every component stylesheet is its own root, and
+     a hidden legend or label must be hidden on a page that loads only this one. */
+  .ds-sr-only {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ── Size ladder ──────────────────────────────────────────────────────────
+     The BOX follows control/selection/size; the HIT AREA follows target/*.
+     sm 16 in a 24 target · md 20 in 44 · lg 24 in 48. */
+  .ds-selection {
+    --_box: var(--sa-control-selection-size-md);
+    --_glyph: var(--sa-control-selection-glyph-md);
+    --_dot: var(--sa-control-selection-dot-md);
+    --_target: var(--sa-target-comfortable);
+
+    position: relative;
+    display: inline-grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    column-gap: var(--sa-control-selection-gap);
+    align-items: start;
+    min-block-size: var(--_target);
+    font-family: var(--sa-font-latin);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-selection[data-size="sm"] {
+    --_box: var(--sa-control-selection-size-sm);
+    --_glyph: var(--sa-control-selection-glyph-sm);
+    --_dot: var(--sa-control-selection-dot-sm);
+    --_target: var(--sa-target-min);
+  }
+
+  .ds-selection[data-size="lg"] {
+    --_box: var(--sa-control-selection-size-lg);
+    --_glyph: var(--sa-control-selection-glyph-lg);
+    --_dot: var(--sa-control-selection-dot-lg);
+    --_target: var(--sa-target-spacious);
+  }
+
+  /* Label before the control. The grid columns swap; the DOM order does not, so a screen
+     reader still meets the control first. */
+  .ds-selection[data-label-placement="start"] {
+    grid-template-columns: minmax(0, 1fr) max-content;
+  }
+
+  .ds-selection[data-label-placement="start"] .ds-selection__control {
+    order: 2;
+  }
+
+  /* ── The control cell ─────────────────────────────────────────────────── */
+  .ds-selection__control {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--_box);
+    min-block-size: var(--_target);
+  }
+
+  /* The real input IS the hit area: a target/* square centred on the box, invisible but
+     hit-testable and focusable. No pseudo-element, no synthetic click — a citizen tapping
+     beside a md box lands on the input itself. */
+  .ds-selection__input {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    inline-size: var(--_target);
+    block-size: var(--_target);
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+    translate: -50% -50%;
+    z-index: 1;
+  }
+
+  .ds-selection__visual {
+    display: inline-flex;
+    inline-size: var(--_box);
+    block-size: var(--_box);
+  }
+
+  /* ── Text ─────────────────────────────────────────────────────────────── */
+  .ds-selection__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--sa-stack-2);
+    min-block-size: var(--_target);
+    min-inline-size: 0;
+  }
+
+  .ds-selection__label {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ds-selection__required {
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  .ds-selection__description {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* The message spans both columns, under the control it describes. */
+  .ds-selection__error {
+    grid-column: 1 / -1;
+    margin: var(--sa-stack-4) 0 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  /* ── State matrix (shared cells; the box/circle rules live beside each shape) ──
+     default · hover · active · focus-visible · checked · invalid · read-only · disabled */
+  /* The ring is drawn on the box or circle itself, never on the wrapper span: an outline
+     follows the element's own border-radius, and the wrapper has none, so a ring on it drew
+     square corners around a rounded box and a circle. */
+  .ds-selection__input:focus-visible ~ .ds-selection__visual > * {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-selection[data-readonly] .ds-selection__input,
+  .ds-selection[data-readonly] .ds-selection__label {
+    cursor: default;
+  }
+
+  .ds-selection[data-disabled],
+  .ds-selection[data-disabled] .ds-selection__input,
+  .ds-selection[data-disabled] .ds-selection__label {
+    cursor: not-allowed;
+  }
+
+  .ds-selection[data-disabled] .ds-selection__label,
+  .ds-selection[data-disabled] .ds-selection__description {
+    color: var(--sa-text-neutral-disabled);
+  }
+
+  /* ── Card variant ─────────────────────────────────────────────────────────
+     The whole tile is the target: the input stretches to the tile's edges, so a tap on
+     the description lands on the control. The description stays OUT of the label, so it
+     is a description, not part of the name. */
+  .ds-selection--card {
+    grid-template-columns: max-content minmax(0, 1fr);
+    align-items: start;
+    column-gap: var(--sa-inline-12);
+    padding: var(--sa-padding-16);
+    background: var(--sa-bg-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-cmp-card-radius);
+    cursor: pointer;
+    transition:
+      border-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+      background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
+
+  .ds-selection--card[data-variant="card"] .ds-selection__control {
+    position: static;
+  }
+
+  .ds-selection--card .ds-selection__input {
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    translate: none;
+  }
+
+  .ds-selection--card:has(.ds-selection__icon) {
+    grid-template-columns: max-content max-content minmax(0, 1fr);
+  }
+
+  .ds-selection__icon {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--_target);
+    color: var(--sa-text-brand-primary-base);
+  }
+
+  .ds-selection--card .ds-selection__label {
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .ds-selection--card .ds-selection__error {
+    grid-column: 1 / -1;
+  }
+
+  .ds-selection--card:hover:not([data-disabled], [data-readonly]) {
+    border-color: var(--sa-border-neutral-selected);
+    background: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-selection--card[data-state="checked"],
+  .ds-selection--card[data-state="checked"]:hover {
+    border-color: var(--sa-border-brand-primary-base);
+    background: var(--sa-bg-brand-primary-subtler);
+  }
+
+  .ds-selection--card[data-invalid] {
+    border-color: var(--sa-border-status-error-bolder);
+  }
+
+  .ds-selection--card:focus-within {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* On the card the ring is on the tile, so the inner visual does not draw a second one. */
+  .ds-selection--card .ds-selection__input:focus-visible ~ .ds-selection__visual > * {
+    outline: none;
+  }
+
+  .ds-selection--card[data-disabled] {
+    background: var(--sa-bg-neutral-subtle);
+    border-color: var(--sa-border-neutral-subtle);
+    cursor: not-allowed;
+  }
+
+  .ds-selection--card[data-readonly] {
+    cursor: default;
+  }
+
+  .ds-selection__meta {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    letter-spacing: var(--sa-type-label-tracking);
+    color: var(--sa-text-neutral-base);
+  }
+
+  /* ── Detailed card ────────────────────────────────────────────────────────
+     The scheme tile: a 64px icon tile, title, description and meta, with the control
+     trailing on the right so the left edge stays with the content. The Figma
+     `Layout=Detailed` variants are the reference; this follows them. */
+  .ds-selection--card-detailed {
+    grid-template-columns: minmax(0, 1fr) max-content; /* body · control */
+    column-gap: var(--sa-inline-24);
+    padding: var(--sa-padding-24);
+  }
+
+  /* Three tracks ONLY when the tile is there (Figma `Show Icon`). Declared
+     unconditionally, a tile-less card put the body in the icon track. */
+  .ds-selection--card-detailed:has(.ds-selection__icon) {
+    grid-template-columns: max-content minmax(0, 1fr) max-content; /* tile · body · control */
+  }
+
+  .ds-selection--card-detailed .ds-selection__control {
+    order: 3;
+  }
+
+  .ds-selection--card-detailed .ds-selection__icon {
+    order: 1;
+    inline-size: var(--sa-icon-size-64);
+    block-size: var(--sa-icon-size-64);
+    min-block-size: 0;
+    justify-content: center;
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-brand-primary-base);
+    color: var(--sa-icon-brand-primary-base);
+    transition:
+      background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+      color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
+
+  .ds-selection--card-detailed[data-state="checked"] .ds-selection__icon {
+    background: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-bolder);
+  }
+
+  .ds-selection--card-detailed[data-disabled] .ds-selection__icon {
+    background: var(--sa-bg-neutral-subtle);
+    color: var(--sa-text-neutral-disabled);
+  }
+
+  .ds-selection--card-detailed .ds-selection__body {
+    order: 2;
+    gap: var(--sa-stack-4);
+    justify-content: flex-start;
+  }
+
+  .ds-selection--card-detailed .ds-selection__label {
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-selection--card-detailed .ds-selection__description {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .ds-selection--card-detailed .ds-selection__meta {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+  }
+}
+
+@layer components {
+  /* Forced colours paints no background at all, so the checked fill above vanishes and only
+     the glyph carries the state. Paint the state in the system's own pair, and the ring in
+     Highlight (an outline IS painted there; a shadow is not). */
+  @media (forced-colors: active) {
+    .ds-selection__input:focus-visible ~ .ds-selection__visual > *,
+    .ds-selection--card:focus-within {
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
+    }
+
+    .ds-selection--card[data-state="checked"] {
+      border-color: Highlight;
+    }
+
+    .ds-selection[data-disabled] .ds-selection__label,
+    .ds-selection[data-disabled] .ds-selection__description {
+      color: GrayText;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-selection,
+    .ds-selection * {
+      transition: none;
+    }
+  }
+}

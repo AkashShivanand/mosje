@@ -22,7 +22,7 @@ export function UserShell({
           ) : (
             <Link
               href="/portals/scw/login"
-              className="rounded-lg px-4 py-2 text-sm font-semibold text-ink-muted hover:bg-black/5"
+              className="rounded-lg px-4 py-2 text-label-1 text-ink-muted hover:bg-black/5"
             >
               Login
             </Link>

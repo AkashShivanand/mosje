@@ -104,7 +104,7 @@ export default function SurveysPage() {
           >
             <div className="flex items-start justify-between gap-sm">
               <div className="min-w-0 space-y-0.5">
-                <div className="text-label-3 font-semibold uppercase tracking-[0.08em] text-ink-hint">
+                <div className="text-label-3 uppercase text-ink-hint">
                   #{s.sno.toString().padStart(2, "0")}
                 </div>
                 <div className="truncate text-body-1 font-semibold text-ink">
@@ -124,7 +124,7 @@ export default function SurveysPage() {
                 </Badge>
               )}
             </div>
-            <div className="space-y-0.5 border-t border-stroke-100 pt-sm text-label-3">
+            <div className="space-y-0.5 border-t border-stroke-100 pt-sm text-body-3">
               <div>
                 <span className="text-ink-hint">IA: </span>
                 <span className="font-medium text-ink">{s.ia ?? "Unassigned"}</span>

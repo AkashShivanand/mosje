@@ -51,24 +51,24 @@ export default async function AdminLoginPage({
             height={39}
             className="estate-emblem h-9 w-auto"
           />
-          <span className="flex flex-col border-l border-border pl-3.5 leading-none">
-            <span className="text-[15px] font-bold tracking-tight text-ink">MoSJE</span>
-            <span className="mt-1.5 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-ink-muted">
+          <span className="flex flex-col border-l border-border pl-3.5">
+            <span className="text-title-2 text-ink">MoSJE</span>
+            <span className="mt-1.5 text-label-3 uppercase text-ink-muted">
               Hub administration
             </span>
           </span>
         </div>
 
         <div className="mt-7 rounded-xl border border-border bg-surface p-7 shadow-xs">
-          <h1 className="text-lg font-bold tracking-tight text-ink">Sign in</h1>
-          <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+          <h1 className="text-headline-3 text-ink">Sign in</h1>
+          <p className="mt-1.5 text-body-2 text-ink-muted">
             Settings for the deployed prototype.
           </p>
 
           <AdminLoginForm action={submitAdminLogin} invalid={error === "1"} />
         </div>
 
-        <p className="mt-6 text-center text-xs leading-relaxed text-ink-hint">
+        <p className="mt-6 text-center text-body-3 text-ink-hint">
           This is not the review password. Ask the maintainer if you need access.
         </p>
       </div>

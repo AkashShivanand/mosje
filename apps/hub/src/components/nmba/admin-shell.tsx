@@ -1,11 +1,9 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Icon, SideSheet, SiteHeader } from "@mosje/design-system";
+import { Icon, SidebarNav, SideSheet, SiteHeader, SAMAVESH_COBRAND, type SidebarNavGroup, type SidebarNavItem, OrgLogo } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
-import { cn } from "@/lib/nmba/utils";
 import { usePortalSession } from "@/lib/nmba/committee/session-context";
 import { PORTAL_SESSION_COOKIE, roleLabel } from "@/lib/nmba/committee/session";
 import { tiersForRole } from "@/lib/nmba/committee/scope";
@@ -84,9 +82,12 @@ export function AdminShell({ children }: AdminShellProps) {
   ];
   const massPledgeItems = massPledgeNavFor(session.role);
 
-  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
-  const napddrActive = pathname.startsWith("/portals/nmba/admin/napddr");
-  const [napddrOpen, setNapddrOpen] = React.useState(napddrActive);
+  // Close the drawer when the route changes — a render-time sync, not an effect.
+  const [lastPath, setLastPath] = React.useState(pathname);
+  if (pathname !== lastPath) {
+    setLastPath(pathname);
+    setMobileNavOpen(false);
+  }
 
   const handleLogout = () => {
     document.cookie = `${PORTAL_SESSION_COOKIE}=; max-age=0; path=/`;
@@ -101,143 +102,26 @@ export function AdminShell({ children }: AdminShellProps) {
   };
 
   /**
-   * One nav definition, rendered twice: in the persistent sidebar and in the
-   * mobile drawer. `compact` is the icon-only sidebar state; the drawer always
-   * passes false because there is room for labels there.
+   * One nav definition, rendered twice by the design system's SidebarNav: in
+   * the persistent rail and in the mobile drawer. Admin keeps the full portal
+   * nav with the NAPDDR committees as a collapsible group — a group with no
+   * page of its own, so it carries no href; State/District officers get the
+   * NAPDDR pages as a labelled section instead (admin-only items are hidden
+   * for them). Mass Pledge has something for every role, so that section is
+   * never conditional on role, only its items are.
    */
-  const renderNav = (compact: boolean, onNavigate?: () => void) => (
-    <nav aria-label="Portal navigation" className="flex flex-col gap-1 px-3">
-      {/* Admin keeps the full portal nav; State/District officers get the
-          NAPDDR flow only (admin-only items are hidden for them). */}
-      {isAdmin &&
-        ADMIN_NAV.map(({ label, href, icon: iconName }) => {
-          const active = isActive(href);
-          return (
-            <Link
-              key={href}
-              href={href}
-              onClick={onNavigate}
-              title={compact ? label : undefined}
-              aria-current={active ? "page" : undefined}
-              className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
-                active
-                  ? "bg-brandwash font-semibold text-navy"
-                  : "text-ink-muted hover:bg-black/5"
-              )}
-            >
-              <Icon name={iconName} className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
-              {!compact && <span className="leading-tight">{label}</span>}
-            </Link>
-          );
-        })}
-
-      {isAdmin ? (
-        <>
-          {/* NAPDDR Three-Tier Committee — collapsible group */}
-          <button
-            type="button"
-            onClick={() => setNapddrOpen((o) => !o)}
-            title="NAPDDR — National Action Plan for Drug Demand Reduction"
-            aria-expanded={napddrOpen}
-            className={cn(
-              "mt-1 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
-              napddrActive ? "font-semibold text-navy" : "text-ink-muted hover:bg-black/5"
-            )}
-          >
-            <Icon name="account_balance" className={cn("h-5 w-5 shrink-0", napddrActive && "text-navy")} />
-            {!compact && (
-              <>
-                <span className="leading-tight">NAPDDR Three-Tier Committee</span>
-                <Icon name="keyboard_arrow_down" className={cn("ml-auto h-4 w-4 transition-transform", napddrOpen && "rotate-180")} />
-              </>
-            )}
-          </button>
-          {napddrOpen && !compact && (
-            <div className="ml-3 flex flex-col gap-1 border-l border-line pl-3">
-              {napddrItems.map(({ label, href, icon: iconName }) => {
-                const active = isActive(href);
-                return (
-                  <Link
-                    key={href}
-                    href={href}
-              onClick={onNavigate}
-                    aria-current={active ? "page" : undefined}
-                    className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
-                      active ? "bg-brandwash font-semibold text-navy" : "text-ink-muted hover:bg-black/5"
-                    )}
-                  >
-                    <Icon name={iconName} className={cn("h-4 w-4 shrink-0", active && "text-navy")} />
-                    <span className="leading-tight">{label}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-        </>
-      ) : (
-        showNapddr && (
-        <>
-          {!compact && (
-            <p
-              className="px-3 pb-1 pt-1 text-xs font-semibold uppercase tracking-wide text-ink-hint"
-              title="National Action Plan for Drug Demand Reduction"
-            >
-              NAPDDR Three-Tier Committee
-            </p>
-          )}
-          {napddrItems.map(({ label, href, icon: iconName }) => {
-            const active = isActive(href);
-            return (
-              <Link
-                key={href}
-                href={href}
-              onClick={onNavigate}
-                title={compact ? label : undefined}
-                aria-current={active ? "page" : undefined}
-                className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
-                  active ? "bg-brandwash font-semibold text-navy" : "text-ink-muted hover:bg-black/5"
-                )}
-              >
-                <Icon name={iconName} className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
-                {!compact && <span className="leading-tight">{label}</span>}
-              </Link>
-            );
-          })}
-        </>
-        )
-      )}
-
-      {/* Mass Pledge — 18 August 2026. Every role has something here, so
-          this section is never conditional on role, only its items are. */}
-      {!compact && (
-        <p className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-ink-hint">
-          Mass Pledge · 18 Aug 2026
-        </p>
-      )}
-      {massPledgeItems.map(({ label, href, icon: iconName }) => {
-        const active = isActive(href);
-        return (
-          <Link
-            key={href}
-            href={href}
-            onClick={onNavigate}
-            title={compact ? label : undefined}
-            aria-current={active ? "page" : undefined}
-            className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
-              active ? "bg-brandwash font-semibold text-navy" : "text-ink-muted hover:bg-black/5"
-            )}
-          >
-            <Icon name={iconName} className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
-            {!compact && <span className="leading-tight">{label}</span>}
-          </Link>
-        );
-      })}
-    </nav>
-  );
+  const groups: SidebarNavGroup[] = [];
+  if (isAdmin) {
+    const napddr: SidebarNavItem = {
+      label: "NAPDDR Three-Tier Committee",
+      icon: "account_balance",
+      children: napddrItems.map(({ label, href }) => ({ label, href })),
+    };
+    groups.push({ items: [...ADMIN_NAV, napddr] });
+  } else if (showNapddr) {
+    groups.push({ label: "NAPDDR Three-Tier Committee", items: napddrItems });
+  }
+  groups.push({ label: "Mass Pledge · 18 Aug 2026", items: massPledgeItems });
 
   return (
     <div className="min-h-screen bg-surface-muted">
@@ -254,7 +138,7 @@ export function AdminShell({ children }: AdminShellProps) {
         }}
         cobranding={[
           { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 34 },
-          { src: `${BASE}/brand/samavesh-logo.svg`, alt: "SAMAVESH", height: 40 },
+          SAMAVESH_COBRAND,
         ]}
         language={{
           label: "English",
@@ -279,23 +163,16 @@ export function AdminShell({ children }: AdminShellProps) {
       <div className="flex">
         {/* Sidebar — persistent from lg up. Below that it would eat most of a
             phone screen, so it moves into a drawer instead. */}
-        <aside
-          className={cn(
-            "sticky top-0 hidden min-h-[calc(100vh-8rem)] shrink-0 border-r border-line bg-white py-5 transition-all lg:block",
-            collapsed ? "w-[68px]" : "w-[260px]"
-          )}
-        >
-          {renderNav(collapsed)}
-          <div className={cn("mt-4 flex px-3", collapsed ? "justify-center" : "justify-start")}>
-            <button
-              onClick={() => setCollapsed((c) => !c)}
-              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-              className="flex h-11 w-11 items-center justify-center rounded-full border border-line text-ink-muted hover:bg-black/5"
-            >
-              <Icon name="keyboard_double_arrow_left" className={cn("h-4 w-4 transition-transform", collapsed && "rotate-180")} />
-            </button>
-          </div>
-        </aside>
+        <SidebarNav
+          identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" />, href: "/portals/nmba/admin/dashboard" }}
+          groups={groups}
+          pathname={pathname}
+          collapsed={collapsed}
+          onCollapsedChange={setCollapsed}
+          showCollapseControl
+          label="Portal navigation"
+          className="hidden shrink-0 border-r border-line lg:flex lg:flex-col"
+        />
 
         {/* Main */}
         <main id="main-content" className="min-w-0 flex-1 px-4 py-5 sm:px-6 lg:px-10 lg:py-7">
@@ -303,7 +180,7 @@ export function AdminShell({ children }: AdminShellProps) {
           <button
             type="button"
             onClick={() => setMobileNavOpen(true)}
-            className="mb-5 inline-flex h-11 items-center gap-2 rounded-lg border border-line bg-white px-4 text-sm font-semibold text-ink transition-colors hover:bg-black/5 lg:hidden"
+            className="mb-5 inline-flex h-11 items-center gap-2 rounded-lg border border-line bg-white px-4 text-label-1 font-semibold text-ink transition-colors hover:bg-black/5 lg:hidden"
           >
             <Icon name="menu" size={20} aria-hidden="true" />
             Menu
@@ -319,7 +196,7 @@ export function AdminShell({ children }: AdminShellProps) {
         side="left"
         size="sm"
       >
-        {renderNav(false, () => setMobileNavOpen(false))}
+        <SidebarNav identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" />, href: "/portals/nmba/admin/dashboard" }} groups={groups} pathname={pathname} label="Portal navigation" className="w-auto" />
       </SideSheet>
 
       {/* AppSwitcher FAB is rendered once globally in the root layout. */}

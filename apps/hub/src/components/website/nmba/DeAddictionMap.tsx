@@ -168,7 +168,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
             type="button"
             onClick={locate}
             disabled={locating}
-            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-[14px] font-semibold text-white transition-colors hover:bg-primary-dark disabled:opacity-70"
+            className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-label-1 text-white transition-colors hover:bg-primary-dark disabled:opacity-70"
           >
             {locating ? <Icon name="progress_activity" size={16} className="animate-spin" aria-hidden /> : <Icon name="my_location" size={16} aria-hidden />}
             {locating ? "Locating…" : "Use my location"}
@@ -181,7 +181,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
             onClick={() => setType("")}
             aria-pressed={type === ""}
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
+              "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-label-2 transition-colors",
               type === "" ? "bg-primary text-white" : "bg-surface-muted text-ink-muted hover:bg-primary/10 hover:text-primary-dark",
             )}
           >
@@ -197,7 +197,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
                 aria-pressed={active}
                 title={CENTRE_TYPE_META[t].label}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
+                  "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-label-2 transition-colors",
                   active ? "bg-primary text-white" : "bg-surface-muted text-ink-muted hover:bg-primary/10 hover:text-primary-dark",
                 )}
               >
@@ -207,7 +207,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
             );
           })}
         </div>
-        {locError && <p className="mt-2 text-[12px] text-danger">{locError}</p>}
+        {locError && <p className="mt-2 text-body-3 text-danger">{locError}</p>}
       </div>
 
       {/* Split view: list + sticky map */}
@@ -226,7 +226,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
           )}
         >
           <div className="flex items-center justify-between border-b border-gray-100 px-4 py-2.5">
-            <span className="text-[13px] font-semibold text-ink">
+            <span className="text-title-3 text-ink">
               {filtered.length} centre{filtered.length === 1 ? "" : "s"}
               {userLoc && filtered.length > 0 && " · nearest first"}
             </span>
@@ -241,7 +241,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
                   setUserLoc(null);
                   setSelected(null);
                 }}
-                className="inline-flex items-center gap-1 text-[12px] font-medium text-primary hover:text-primary-dark"
+                className="inline-flex items-center gap-1 text-label-2 text-primary hover:text-primary-dark"
               >
                 <Icon name="close" size={12} /> Reset
               </button>
@@ -249,7 +249,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
           </div>
 
           {filtered.length === 0 ? (
-            <p className="px-4 py-10 text-center text-[13px] text-ink-muted">
+            <p className="px-4 py-10 text-center text-body-2 text-ink-muted">
               No centres match. Try a wider filter, or call the helpline.
             </p>
           ) : (
@@ -277,18 +277,18 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
                       <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: meta.color }} aria-hidden />
                       <span className="min-w-0 flex-1">
                         <span className="flex items-center gap-2">
-                          <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-ink">{c.name}</span>
+                          <span className="min-w-0 flex-1 truncate text-title-3 text-ink">{c.name}</span>
                           {dist !== undefined && (
-                            <span className="shrink-0 text-[11px] font-semibold text-primary">
+                            <span className="shrink-0 text-label-2 text-primary">
                               {dist < 1 ? "<1 km" : `${Math.round(dist)} km`}
                             </span>
                           )}
                         </span>
-                        <span className="mt-0.5 block text-[12px] font-medium" style={{ color: meta.color }}>
+                        <span className="mt-0.5 block text-label-2" style={{ color: meta.color }}>
                           {c.type}
                         </span>
-                        <span className="mt-0.5 block truncate text-[12px] text-ink-muted">{c.address}</span>
-                        <span className="mt-0.5 block text-[12px] text-ink-muted">
+                        <span className="mt-0.5 block truncate text-body-3 text-ink-muted">{c.address}</span>
+                        <span className="mt-0.5 block text-body-3 text-ink-muted">
                           {c.district}, {c.state}
                         </span>
                         {active && (
@@ -297,7 +297,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
                             external
                             variant="standalone"
                             onClick={(e) => e.stopPropagation()}
-                            className="mt-1.5 text-[12px] font-semibold"
+                            className="mt-1.5 text-label-2"
                             iconLeft={<Icon name="navigation" size={12} aria-hidden />}
                           >
                             Get directions
@@ -309,7 +309,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
                 );
               })}
               {filtered.length > LIST_CAP && (
-                <li className="px-4 py-2.5 text-center text-[12px] text-ink-muted">
+                <li className="px-4 py-2.5 text-center text-body-3 text-ink-muted">
                   Showing nearest {LIST_CAP} — refine to narrow down.
                 </li>
               )}
@@ -322,8 +322,8 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
             className="flex items-center gap-2.5 border-t border-gray-200 bg-white px-4 py-3 transition-colors hover:bg-surface-muted"
           >
             <Icon name="call" size={16} className="shrink-0 text-primary" aria-hidden />
-            <span className="text-[12px] text-ink-muted">24×7 Helpline</span>
-            <span className="ml-auto text-[16px] font-bold tracking-tight text-primary-dark">{HELPLINE}</span>
+            <span className="text-body-3 text-ink-muted">24×7 Helpline</span>
+            <span className="ml-auto text-title-2 tabular-nums text-primary-dark">{HELPLINE}</span>
           </a>
         </div>
 
@@ -347,7 +347,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
         </div>
       </div>
 
-      <p className="mt-3 text-center text-[12px] text-ink-muted">
+      <p className="mt-3 text-center text-body-3 text-ink-muted">
         {PLOTTABLE_CENTRES.length} centres plotted, of {TOTAL_CENTRES} geo-tagged and {PUBLISHED_TOTAL}{" "}
         published nationwide. Source: Nasha Mukt Bharat Abhiyaan.
       </p>

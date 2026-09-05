@@ -49,6 +49,8 @@ function parseColour(raw) {
  * payload and `24` in the library. Comparing those raw would report every rem token as drifted.
  */
 export function normValue(val) {
+  // A live read-back normalises Figma's COMPOSE_COLOR expression (base alias, alpha alias)
+  // to exactly this string — "->base@->alpha/N" — which is how the checksums can agree.
   // An alias that carries its own opacity is a different value from the bare alias: the
   // checksum has to move when the binding is made in Figma, or the parity gate could not tell
   // "alias at 8%" from "alias at 100%".
@@ -58,6 +60,12 @@ export function normValue(val) {
     if (!c) return "COLOR?" + val.value;
     const hx = "#" + [c.r, c.g, c.b].map((x) => Math.round(x).toString(16).padStart(2, "0")).join("");
     return hx + (c.a < 1 ? "@" + c.a.toFixed(4) : "");
+  }
+  if (val.type === "TIMING") return String(Math.round(val.value * 10000) / 10000);
+  if (val.type === "EASING") {
+    const r = (n) => Math.round(n * 10000) / 10000;
+    const b = val.value;
+    return `bezier(${r(b.x1)},${r(b.y1)},${r(b.x2)},${r(b.y2)})`;
   }
   if (val.type === "FLOAT") {
     const n = val.unit === "rem" ? val.value * 16 : val.value;
@@ -85,6 +93,34 @@ export function collectionValueChecksums(payload) {
       }
     }
     out[c.name] = checksum(entries);
+  }
+  return out;
+}
+
+/**
+ * The OTHER four fields the standard requires on every variable — and the ones the value
+ * checksum was blind to. On 2026-09-05 a live read found 253 descriptions HTML-escaped, five
+ * codeSyntax lines naming CSS variables that do not exist, visibility disagreeing on 164
+ * variables and the wildcard `ALL_FILLS` on all 138 Palette rungs — with every value checksum
+ * equal. One checksum per field per collection, over `name=value` entries, so a drift in any
+ * field moves exactly one number and says which field it was.
+ *
+ * Scopes skip TIMING and EASING: they cannot be set (Figma reports `ALL_SCOPES` on read and
+ * the payload emits `[]`), so comparing them would report a difference that is not one.
+ * Library-only variables (the `ref/viewport/*` canvas widths) are excluded by the reader,
+ * not here — the payload does not carry them, so they never enter the payload side.
+ */
+export function collectionFieldChecksums(payload) {
+  const out = {};
+  for (const c of payload.collections) {
+    const desc = [], web = [], scopes = [], hidden = [];
+    for (const v of c.variables) {
+      desc.push(`${v.name}=${v.description ?? ""}`);
+      web.push(`${v.name}=${v.codeSyntax?.WEB ?? ""}`);
+      if (v.type !== "TIMING" && v.type !== "EASING") scopes.push(`${v.name}=${[...(v.scopes ?? [])].sort().join("+")}`);
+      hidden.push(`${v.name}=${v.hiddenFromPublishing ? 1 : 0}`);
+    }
+    out[c.name] = { description: checksum(desc), codeSyntax: checksum(web), scopes: checksum(scopes), hidden: checksum(hidden) };
   }
   return out;
 }

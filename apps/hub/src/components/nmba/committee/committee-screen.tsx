@@ -34,7 +34,7 @@ import type { CommitteeTier } from "@/lib/nmba/committee/types";
 
 function ScopeChip({ label }: { label: string }) {
   return (
-    <span className="inline-flex items-center rounded-full bg-brandwash px-2.5 py-0.5 text-xs font-semibold text-navy">
+    <span className="inline-flex items-center rounded-full bg-brandwash px-2.5 py-0.5 text-label-2 font-semibold text-navy">
       {label}
     </span>
   );
@@ -59,7 +59,7 @@ export function CommitteeTierScreen({ tier }: { tier: CommitteeTier }) {
   if (!tiersForRole(session.role).includes(tier)) {
     return (
       <div>
-        <h1 className="text-xl font-bold text-ink">{heading}</h1>
+        <h1 className="text-headline-1 text-ink">{heading}</h1>
         <div className="mt-6">
           <EmptyState
             title="Not available for your role"
@@ -115,10 +115,10 @@ export function CommitteeTierScreen({ tier }: { tier: CommitteeTier }) {
     <div className="mb-6 flex flex-wrap items-start justify-between gap-3">
       <div>
         <div className="flex flex-wrap items-center gap-2">
-          <h1 className="text-xl font-bold text-ink">{heading}</h1>
+          <h1 className="text-headline-1 text-ink">{heading}</h1>
           <ScopeChip label={scopeLabel} />
         </div>
-        <p className="mt-1 text-sm text-ink-muted">{description}</p>
+        <p className="mt-1 text-body-2 text-ink-muted">{description}</p>
       </div>
       {canAdd && !isSingleTier && (
         <Button iconLeft={<Icon name="add" size={16} />} onClick={() => setAddOpen(true)}>

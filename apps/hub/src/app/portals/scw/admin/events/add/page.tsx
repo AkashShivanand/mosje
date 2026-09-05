@@ -1,9 +1,13 @@
+"use client";
+
+import * as React from "react";
 import Link from "next/link";
 import { Button, Card, Field, Select, TextInput } from "@/components/scw/ui";
 import { INDIAN_STATES } from "@/lib/scw/states";
-import { Icon } from "@mosje/design-system";
+import { DeclarationCheckbox, Icon } from "@mosje/design-system";
 
 export default function AddEventPage() {
+  const [declared, setDeclared] = React.useState(false);
   return (
     <div>
       <div className="mb-6 flex items-center gap-3">
@@ -14,7 +18,7 @@ export default function AddEventPage() {
         >
           <Icon name="arrow_back" size={20} />
         </Link>
-        <h1 className="text-2xl font-bold text-ink">Add New Event</h1>
+        <h1 className="text-headline-1 text-ink">Add New Event</h1>
       </div>
 
       <Card className="p-6 sm:p-8">
@@ -48,7 +52,7 @@ export default function AddEventPage() {
             <textarea
               rows={3}
               placeholder="Enter full address"
-              className="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
+              className="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-body-2 text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
             />
           </Field>
 
@@ -58,7 +62,7 @@ export default function AddEventPage() {
             </Field>
             <Field label="Mobile Number" required>
               <div className="flex">
-                <span className="inline-flex items-center rounded-l-lg border border-r-0 border-line bg-brandwash px-3 text-sm text-ink-muted">
+                <span className="inline-flex items-center rounded-l-lg border border-r-0 border-line bg-brandwash px-3 text-body-2 text-ink-muted">
                   +91
                 </span>
                 <TextInput
@@ -73,16 +77,9 @@ export default function AddEventPage() {
             </Field>
           </div>
 
-          <label className="flex items-start gap-3 text-sm text-ink">
-            <input
-              type="checkbox"
-              className="mt-0.5 h-4 w-4 rounded border-line text-navy focus:ring-navy/30"
-            />
-            <span>
-              I hereby declare that the information given above is correct and true to
-              the best of my knowledge.
-            </span>
-          </label>
+          <DeclarationCheckbox checked={declared} onChange={setDeclared}>
+            <p>The information given above is correct and true to the best of my knowledge.</p>
+          </DeclarationCheckbox>
 
           <div className="flex items-center justify-end gap-3 border-t border-line pt-6">
             <Button type="button" variant="ghost">

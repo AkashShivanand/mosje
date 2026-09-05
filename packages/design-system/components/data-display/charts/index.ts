@@ -9,8 +9,21 @@ export { texturedColor, CHART_TEXTURE_COUNT } from "./internal/texture";
    ============================================================================ */
 
 // Shared types
-export type { ChartDatum, ChartSeries, ChartMultiSeries, ChartTable } from "./types";
-export { CHART_CATEGORICAL_SAFE_CAP } from "./types";
+export type {
+  ChartDatum,
+  ChartSeries,
+  ChartMultiSeries,
+  ChartTable,
+  ChartWithheld,
+  ChartWithheldKind,
+  DataProvenance,
+  StatusTone,
+} from "./types";
+export { CHART_CATEGORICAL_SAFE_CAP, withheldLabel } from "./types";
+
+// The ranked list — label, figure, thin bar — and its bar alone for a table cell.
+export { RankedBarList, InlineBar } from "./ranked-bar-list";
+export type { RankedBarListProps, RankedBarItem, InlineBarProps } from "./ranked-bar-list";
 
 // Core charts
 export { PieChart } from "./pie-chart";

@@ -33,7 +33,7 @@ export function FeedbackBar({
       }}
     >
       <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)" }}>
-        <span style={{ fontSize: "var(--sa-type-body-2-size)", fontWeight: 600, color: "var(--sa-text-neutral-base)" }}>
+        <span style={{ fontSize: "var(--sa-type-body-2-size)", fontWeight: "var(--sa-font-weight-semibold)", color: "var(--sa-text-neutral-base)" }}>
           Was this page helpful?
         </span>
         {feedbackGiven ? (

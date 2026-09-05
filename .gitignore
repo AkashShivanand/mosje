@@ -98,3 +98,6 @@ dist/
 # engine on demand — one careless `git add` from landing in the history. Ignored,
 # never deleted: the corpus is the local input to `tools/design-audit`.
 docs/audit_screenshots/
+
+# UX4G conformance mapping — a build output of @mosje/tokens, read only by tools/ux4g-conformance/measure.mjs
+tools/ux4g-conformance/parity.generated.css

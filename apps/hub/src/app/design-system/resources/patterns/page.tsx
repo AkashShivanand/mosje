@@ -31,7 +31,7 @@ const sectionStyle: React.CSSProperties = {
 };
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
-  fontWeight: 700,
+  fontWeight: "var(--sa-font-weight-bold)",
   color: "var(--sa-text-neutral-base)",
   marginBottom: "var(--sa-stack-16)",
   paddingBottom: "var(--sa-padding-8)",
@@ -39,7 +39,7 @@ const h2Style: React.CSSProperties = {
 };
 const h3Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 600,
+  fontWeight: "var(--sa-font-weight-semibold)",
   color: "var(--sa-text-neutral-base)",
   marginTop: "var(--sa-stack-24)",
   marginBottom: "var(--sa-stack-8)",
@@ -47,8 +47,8 @@ const h3Style: React.CSSProperties = {
 const proseStyle: React.CSSProperties = {
   color: "var(--sa-text-neutral-subtle)",
   fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
+  lineHeight: "var(--sa-type-body-1-lh)",
+  maxWidth: "var(--sa-container-measure)",
 };
 const preStyle: React.CSSProperties = {
   background: "var(--sa-bg-neutral-subtler)",
@@ -58,7 +58,7 @@ const preStyle: React.CSSProperties = {
   fontSize: "var(--sa-type-body-3-size)",
   fontFamily: "var(--sa-font-mono)",
   overflowX: "auto",
-  lineHeight: 1.7,
+  lineHeight: "var(--sa-type-body-3-lh)",
   color: "var(--sa-text-neutral-base)",
 };
 
@@ -124,7 +124,7 @@ export default function PatternsPage(): React.JSX.Element {
             }}
           >
             <div style={{ width: 24, height: 24, borderRadius: "50%", background: "color-mix(in oklab, var(--sa-on-bg-brand-primary-bolder) 30%, transparent)" }} />
-            <span style={{ color: "var(--sa-on-bg-brand-primary-bolder)", fontWeight: 700, fontSize: "var(--sa-type-body-1-size)" }}>
+            <span style={{ color: "var(--sa-on-bg-brand-primary-bolder)", fontWeight: "var(--sa-font-weight-bold)", fontSize: "var(--sa-type-body-1-size)" }}>
               PM-AJAY — Dashboard
             </span>
             <div style={{ marginLeft: "auto", display: "flex", gap: "var(--sa-inline-8)" }}>
@@ -259,10 +259,11 @@ export default function PatternsPage(): React.JSX.Element {
                                 textAlign: "left",
                                 padding: "var(--sa-padding-8) var(--sa-padding-12)",
                                 color: "var(--sa-text-neutral-subtle)",
-                                fontWeight: 700,
+                                fontWeight: "var(--sa-font-weight-bold)",
                                 fontSize: "var(--sa-type-label-3-size)",
+                                lineHeight: "var(--sa-type-label-3-lh)",
                                 textTransform: "uppercase",
-                                letterSpacing: "0.06em",
+                                letterSpacing: "var(--sa-type-caps-tracking)",
                               }}
                             >
                               {col}
@@ -354,7 +355,7 @@ export default function PatternsPage(): React.JSX.Element {
               type: "do",
               preview: (
                 <div style={{ fontSize: "var(--sa-type-body-2-size)", textAlign: "center" }}>
-                  <div style={{ fontWeight: 700, color: "var(--sa-color-status-success)" }}>4 MetricCards</div>
+                  <div style={{ fontWeight: "var(--sa-font-weight-bold)", color: "var(--sa-color-status-success)" }}>4 MetricCards</div>
                   <div style={{ color: "var(--sa-text-neutral-subtle)" }}>in equal-width columns</div>
                 </div>
               ),
@@ -364,7 +365,7 @@ export default function PatternsPage(): React.JSX.Element {
               type: "dont",
               preview: (
                 <div style={{ fontSize: "var(--sa-type-body-2-size)", textAlign: "center" }}>
-                  <div style={{ fontWeight: 700, color: "var(--sa-color-status-danger)" }}>8 MetricCards</div>
+                  <div style={{ fontWeight: "var(--sa-font-weight-bold)", color: "var(--sa-color-status-danger)" }}>8 MetricCards</div>
                   <div style={{ color: "var(--sa-text-neutral-subtle)" }}>cramped in one row</div>
                 </div>
               ),
@@ -418,13 +419,13 @@ export default function PatternsPage(): React.JSX.Element {
             <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)" }}>
               <div style={{ width: 48, height: 48, borderRadius: "50%", background: "color-mix(in oklab, var(--sa-on-bg-brand-primary-bolder) 20%, transparent)", flexShrink: 0 }} />
               <div>
-                <div style={{ color: "var(--sa-on-bg-brand-primary-bolder)", fontWeight: 700, fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)" }}>PM-AJAY</div>
+                <div style={{ color: "var(--sa-on-bg-brand-primary-bolder)", fontWeight: "var(--sa-font-weight-bold)", fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)" }}>PM-AJAY</div>
                 <div style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-bolder) 70%, transparent)", fontSize: "var(--sa-type-body-3-size)" }}>
                   Ministry of Social Justice & Empowerment
                 </div>
               </div>
             </div>
-            <p style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-bolder) 85%, transparent)", fontSize: "var(--sa-type-body-2-size)", lineHeight: 1.6 }}>
+            <p style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-bolder) 85%, transparent)", fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)" }}>
               PM Anudaan for Jobs and Aspirations for Youth — one portal for all beneficiary management.
             </p>
           </div>
@@ -439,7 +440,7 @@ export default function PatternsPage(): React.JSX.Element {
               gap: "var(--sa-stack-16)",
             }}
           >
-            <h2 style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", fontWeight: 700, color: "var(--sa-color-text-default)", margin: 0 }}>
+            <h2 style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", fontWeight: "var(--sa-font-weight-bold)", color: "var(--sa-color-text-default)", margin: 0 }}>
               Sign in
             </h2>
             {/* Tab pills */}
@@ -544,13 +545,13 @@ export default function PatternsPage(): React.JSX.Element {
             />
           </div>
           <div style={{ padding: "var(--sa-padding-20)", display: "flex", flexDirection: "column", gap: "var(--sa-padding-16)" }}>
-            <h3 style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", fontWeight: 700, color: "var(--sa-color-text-default)", margin: 0 }}>
+            <h3 style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", fontWeight: "var(--sa-font-weight-bold)", color: "var(--sa-color-text-default)", margin: 0 }}>
               Address Details
             </h3>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--sa-stack-16)" }}>
               {["Street / Village", "District", "State", "PIN Code"].map((label) => (
                 <div key={label}>
-                  <label style={{ display: "block", fontSize: "var(--sa-type-label-1-size)", fontWeight: 600, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-4)" }}>
+                  <label style={{ display: "block", fontSize: "var(--sa-type-label-1-size)", fontWeight: "var(--sa-font-weight-semibold)", color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-4)" }}>
                     {label}
                   </label>
                   <div
@@ -751,7 +752,7 @@ export default function PatternsPage(): React.JSX.Element {
                   <div style={{ marginBottom: "var(--sa-stack-8)", color: "var(--sa-text-neutral-subtle)" }}>
                     <Icon name="assignment" size={32} aria-hidden="true" />
                   </div>
-                  <div style={{ fontWeight: 700, color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-4)" }}>No applications yet</div>
+                  <div style={{ fontWeight: "var(--sa-font-weight-bold)", color: "var(--sa-color-text-default)", marginBottom: "var(--sa-stack-4)" }}>No applications yet</div>
                   <div style={{ fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-muted)", marginBottom: "var(--sa-stack-12)" }}>Add your first application to get started.</div>
                   <Button variant="primary" appearance="filled" size="sm">Add application</Button>
                 </div>

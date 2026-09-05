@@ -1,6 +1,16 @@
 "use client";
 import * as React from "react";
-import { Textarea } from "@mosje/design-system";
+import { Textarea, Checkbox } from "@mosje/design-system";
+
+const stack: React.CSSProperties = { display: "grid", gap: "var(--sa-stack-12)" };
+const eyebrow: React.CSSProperties = {
+  margin: 0,
+  fontSize: "var(--sa-type-label-3-size)",
+  lineHeight: "var(--sa-type-label-3-lh)",
+  letterSpacing: "var(--sa-type-label-tracking)",
+  textTransform: "uppercase",
+  color: "var(--sa-text-neutral-subtle)",
+};
 
 export function TextareaPlayground() {
   const [invalid, setInvalid] = React.useState(false);
@@ -19,25 +29,11 @@ export function TextareaPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={invalid} 
-            onChange={(e) => setInvalid(e.target.checked)} 
-          />
-          <strong>Invalid (Error State)</strong>
-        </label>
+        <Checkbox label="Invalid (Error State)" size="sm" checked={invalid} onCheckedChange={setInvalid} />
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={disabled} 
-            onChange={(e) => setDisabled(e.target.checked)} 
-          />
-          <strong>Disabled</strong>
-        </label>
+        <Checkbox label="Disabled" size="sm" checked={disabled} onCheckedChange={setDisabled} />
 
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
           <strong>Rows:</strong>
           <input 
             type="number" 
@@ -55,6 +51,16 @@ export function TextareaPlayground() {
           rows={rows}
           placeholder="Enter your message here..."
         />
+      </div>
+
+      <div style={stack}>
+        <p style={eyebrow}>Arrangements the master grid does not show</p>
+        <Textarea size="sm" rows={2} defaultValue="Documents received by post on 12 March." aria-label="Note" />
+        <Textarea size="xl" rows={3} placeholder="Statement of the applicant" aria-label="Statement of the applicant" />
+        <Textarea status="warning" rows={3} defaultValue="The applicant resides with her grandmother in a rented room in Ward 14 and has no earning member in the household since March 2025. The school has waived the tuition; the hostel fee remains outstanding." aria-label="Reason for appeal, near the limit" />
+        <Textarea status="success" rows={2} defaultValue="Order No. 1142 of 2026, dated 3 March 2026." aria-label="Reason for appeal, accepted" />
+        <Textarea readOnly rows={2} defaultValue="Income certificate not issued by the competent authority." aria-label="Grounds of rejection, read-only" />
+        <Textarea autoResize maxRows={6} rows={2} defaultValue="The applicant resides with her grandmother in a rented room in Ward 14 and has no earning member in the household since March 2025. The school has waived the tuition; the hostel fee remains outstanding." aria-label="Statement of the applicant, growing with the text" />
       </div>
     </div>
   );

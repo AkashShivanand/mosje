@@ -30,7 +30,7 @@ export function ListingPage({
     <PageLayout {...hero}>
       <section>
         <div className="sa-container py-10 md:py-12">
-          {intro && <div className="gov-prose mb-6 max-w-3xl">{intro}</div>}
+          {intro && <div className="gov-prose mb-6 max-w-measure">{intro}</div>}
           <DataTable
             caption={hero.title}
             columns={columns}

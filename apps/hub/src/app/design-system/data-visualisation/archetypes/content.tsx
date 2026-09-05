@@ -56,7 +56,7 @@ function Archetype({
         id={id}
         style={{
           fontSize: "var(--sa-type-headline-3-size)",
-          fontWeight: 600,
+          fontWeight: "var(--sa-font-weight-semibold)",
           margin: "0 0 var(--sa-stack-8) 0",
           scrollMarginTop: "var(--sa-section-48)",
         }}
@@ -104,7 +104,7 @@ export function ArchetypesContent(): React.JSX.Element {
             marginBottom: "var(--sa-stack-12)",
           }}
         >
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 500, lineHeight: 1.1 }}>
+          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: "var(--sa-font-weight-medium)", lineHeight: "var(--sa-type-display-1-lh)" }}>
             Dashboard Archetypes
           </h1>
           <StatusBadge status="Beta" />
@@ -112,10 +112,10 @@ export function ArchetypesContent(): React.JSX.Element {
         <p
           style={{
             fontSize: "var(--sa-type-headline-2-size)",
-            fontWeight: 400,
+            fontWeight: "var(--sa-font-weight-regular)",
             color: "var(--sa-color-text-default)",
-            maxWidth: "60ch",
-            lineHeight: 1.5,
+            maxWidth: "var(--sa-container-measure)",
+            lineHeight: "var(--sa-type-headline-2-lh)",
           }}
         >
           Five boards that cover most of what a department needs to show. Start from one
@@ -303,7 +303,7 @@ export function ArchetypesContent(): React.JSX.Element {
                       <span
                         style={{
                           fontSize: "var(--sa-type-body-3-size)",
-                          fontWeight: 600,
+                          fontWeight: "var(--sa-font-weight-semibold)",
                           fontVariantNumeric: "tabular-nums",
                           minWidth: "3ch",
                           textAlign: "right",

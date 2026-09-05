@@ -51,7 +51,7 @@ export function ReportView({ records, scopeLabel, hideColumns = [] }: ReportView
       </div>
 
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-        <p className="text-sm text-ink-muted">
+        <p className="text-body-2 text-ink-muted">
           Scope: <strong className="text-ink">{scopeLabel}</strong>
         </p>
         <div className="flex gap-2">

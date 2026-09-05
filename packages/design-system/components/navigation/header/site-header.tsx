@@ -54,7 +54,7 @@ export interface SiteHeaderProps {
   /** Accessibility-statement page (GIGW-required). @default "/accessibility-statement" */
   accessibilityHref?: string;
   /** Language selector. @default { label: "English" } */
-  language?: { label?: string; onClick?: () => void };
+  language?: { label?: string; lang?: string; onClick?: () => void };
 
   // ── Brand row ──
   /** National Emblem image URL (basePath-aware). */
@@ -106,7 +106,11 @@ export interface SiteHeaderProps {
   account?: HeaderAccount;
   /** Account dropdown items. When provided, the account block opens a menu. */
   accountMenu?: AccountMenuItem[];
-  /** Trailing CTA (e.g. a Login or Apply Online button). */
+  /**
+   * Trailing CTA (e.g. a Login or Apply Online button). In the condensed bar every
+   * link or button in this slot is held at the bar's 40px control height, so pass
+   * `Button size="default"` (40) — a 32 or 36 would be stretched, a 48 squeezed.
+   */
   actions?: React.ReactNode;
 
   // ── Nav row ──
@@ -122,6 +126,16 @@ export interface SiteHeaderProps {
    * misalignment this default exists to prevent: until 13 August 2026 this
    * defaulted to a hardcoded 1320 while every website section capped at 1280,
    * so the emblem sat 20px outside the content column on wide viewports.
+   *
+   * TWO LAYOUTS, ONE MARGIN. `variant="website"` is CONTAINED — the cap above
+   * plus the margin ladder, exactly `.sa-container`. `variant="portal"` is
+   * FLUID — no cap, the margin ladder only, so the rows run edge to edge and
+   * `maxWidth` is ignored. Figma draws both on a 1440 frame: `Navbar/Website`
+   * caps each row at `container/page` (1320 there) and `Navbar/Portal` lets
+   * each row fill; both pad with `grid/margin/page`. Every row's inline padding
+   * here is `--sa-grid-margin-page` (16 · 24 from 768 · 32 from 1920) for the
+   * same reason — it was a literal 16/24 per breakpoint until 2026-09-05, which
+   * agreed with the ladder everywhere except 1920 and up.
    */
   maxWidth?: number;
   /**
@@ -191,7 +205,12 @@ export interface SiteHeaderProps {
  */
 export function SiteHeader({
   variant,
-  govLink = { href: "https://india.gov.in/", label: "Government of India" },
+  /* THE FLAG IS NOT OPTIONAL. Two of eleven shells passed one; the other nine
+     rendered a government bar with no national mark on it, and the two surfaces
+     did not agree on what the bar was. The default points at the hub-root copy
+     (`apps/hub/public/images/Indian-Flag.svg`), which every zone can load on the
+     single origin. A shell may still pass its own. */
+  govLink = { href: "https://india.gov.in/", label: "Government of India", flagSrc: "/images/Indian-Flag.svg" },
   skipTo = "#main-content",
   accessibilityToolbar = true,
   onAccessibility,
@@ -235,6 +254,9 @@ export function SiteHeader({
   const [morphing, setMorphing] = React.useState(false);
   /** The condensed bar's search, expanded in place over the nav. */
   const [condSearchOpen, setCondSearchOpen] = React.useState(false);
+  /** The portal's phone search, disclosed under the brand row on tap. */
+  const [mobileSearchOpen, setMobileSearchOpen] = React.useState(false);
+  const mobileSearchRef = React.useRef<HTMLInputElement>(null);
   /** The condensed nav has run out of room; fall back to the sheet. */
   const [navOverflows, setNavOverflows] = React.useState(false);
   const headerRef = React.useRef<HTMLElement>(null);
@@ -245,12 +267,24 @@ export function SiteHeader({
   const morphRef = React.useRef<HTMLDivElement>(null);
   const restFaceRef = React.useRef<HTMLDivElement>(null);
   const condFaceRef = React.useRef<HTMLDivElement>(null);
-  // Default to 100% for portal app-shells so the brand row aligns with full-width topbar,
-  // or default to estate container variable for static website headers.
+  // Portal = FLUID (no cap; the rows pad with --sa-grid-margin-page and run edge to
+  // edge, as Navbar/Portal's rows fill their 1440 frame). Website = CONTAINED on the
+  // same cap the page below binds. See the `maxWidth` docstring above.
   const inner = {
     maxWidth: maxWidth ?? (isPortal ? "100%" : "var(--sa-container-page)"),
   } as React.CSSProperties;
   const hasNav = !!nav && nav.length > 0;
+  /**
+   * ONE MENU CONTROL ON A PHONE. A portal that has a sidebar (`onToggleNav`) and a
+   * top-level `nav` used to show two menu-shaped controls below 1024 — the sidebar
+   * toggle leading and the sheet trigger trailing — with nothing to tell a reader
+   * which opened what. The rule: on a portal the sidebar is the navigation surface
+   * below the laptop anchor, and the nav row is a desktop affordance. The sheet
+   * and its trigger are not rendered when the sidebar is there; the portal's
+   * sidebar carries the same top-level entries. The website has no sidebar, so
+   * its sheet is unaffected.
+   */
+  const showSheet = hasNav && !(isPortal && onToggleNav);
   const drawerId = React.useId();
   const condensed = wantsScrollCollapse && scrolled;
 
@@ -585,6 +619,10 @@ export function SiteHeader({
     if (condSearchOpen) condSearchRef.current?.focus({ preventScroll: true });
   }, [condSearchOpen]);
 
+  React.useEffect(() => {
+    if (mobileSearchOpen) mobileSearchRef.current?.focus({ preventScroll: true });
+  }, [mobileSearchOpen]);
+
   /**
    * When the nav stops fitting the condensed bar, hand it to the sheet.
    *
@@ -710,11 +748,15 @@ export function SiteHeader({
     /* A `search` LANDMARK, which the masthead's own field never was — it rendered
        as a bare `<div class="ds-search">`, so landmark navigation could not reach
        the primary search box on any page in the estate. [GIGW 3.0 §9] */
-    <search className="ds-hdr-searchfield">
+    <search className={cn("ds-hdr-searchfield", isPortal && mobileSearchOpen && "is-open")}>
       <Search
+        ref={isPortal ? mobileSearchRef : undefined}
         className="ds-hdr-searchfield__field"
         size="lg"
         value={query}
+        onKeyDown={(e) => {
+          if (e.key === "Escape" && isPortal) setMobileSearchOpen(false);
+        }}
         onChange={(e) => {
           setQuery(e.target.value);
           search.onQueryChange?.(e.target.value);
@@ -736,7 +778,7 @@ export function SiteHeader({
      Emblem, nav, search, CTA — one row. The emblem holds the same left edge it
      occupies at rest; see `collapseOnScroll` for why that is not negotiable. */
   const condensedBar = (
-    <div className="ds-hdr-cond">
+    <div className={cn("ds-hdr-cond", !hasNav && "is-navless")}>
       <div className="ds-hdr-cond__in" style={inner} ref={condInRef}>
         {/* The app-shell sidebar toggle. It lives in the brand row at rest, and
             leaving it out of this bar meant a portal lost the control for its own
@@ -751,13 +793,26 @@ export function SiteHeader({
           />
         )}
 
-        <a
-          className="ds-hdr-cond__home"
+        {/* IDENTITY, NOT JUST THE EMBLEM. The bar is 64px and on a portal most
+            of it was empty: the nav lives in the sidebar, so nothing followed a
+            20px emblem until the profile block a thousand pixels away — the
+            department's name had left the page. ALL THREE LINES ride with the
+            emblem — Government of India and the Ministry on one muted 12px line,
+            the Department at 14 beneath — because DBIM 5.2 makes none of them
+            optional, and 36px of type sits inside the bar's 48. They show wherever
+            the inline nav is not on this row (every portal, and the website below
+            1024 or once its nav has moved to the sheet), and stay off where the
+            nav needs the width. Emblem-only below 768.
+            Figma: Navbar/BrandLockup Size=Condensed inside the On Scroll bars. */}
+        <BrandLockup
+          className="ds-hdr-cond__lockup"
+          emblemSrc={emblemSrc}
+          emblemAlt={emblemAlt}
+          lines={brandLines}
           href={homeHref}
-          aria-label={`${brandLines.department} — home`}
-        >
-          <img className="ds-hdr-cond__emblem" src={emblemSrc} alt={emblemAlt ?? ""} />
-        </a>
+          compact
+          textHiddenOnMobile
+        />
 
         {condSearchOpen && search ? (
           <search className="ds-hdr-cond__searchfield">
@@ -807,11 +862,12 @@ export function SiteHeader({
           </button>
         )}
 
-        {account && <AccountMenu account={account} items={accountMenu} />}
+        {/* 40, not the brand row's 48: at 48 the avatar decided the bar's height. */}
+        {account && <AccountMenu account={account} items={accountMenu} avatarSize={40} />}
 
         <span className="ds-hdr-brand__actions">{actions}</span>
 
-        {hasNav && (
+        {showSheet && (
           <SheetToggle
             open={drawerOpen}
             onOpen={() => setDrawerOpen(true)}
@@ -878,11 +934,36 @@ export function SiteHeader({
 
               {isCompact && navRow}
 
+              {/* THE PORTAL'S PHONE SEARCH IS DISCLOSED, NOT LAID OUT. On the website
+                  the field takes a full row under the lockup because search is that
+                  site's navigation fallback. A portal navigates by its sidebar, and
+                  a 56px field under a two-line lockup pushed the page start past
+                  300px on a phone. Below 768 the field waits behind a 40px button in
+                  the row — the same control the condensed bar uses — and opens on
+                  its own row on tap; Escape closes it. Nothing renders here from 768
+                  up, where the field is on the row as before.
+                  AND NOT WHEN THERE IS A SIDEBAR. A portal that has one opens a drawer
+                  on a phone, and search lives at the head of that drawer (SidebarNav
+                  `header`); a search button beside the toggle would be a second door
+                  to the same room, and the 52px it costs is the difference between an
+                  identity that wraps to two lines and one that wraps to four. */}
+              {isPortal && search && !onToggleNav && (
+                <button
+                  type="button"
+                  className="ds-hdr-brand__searchbtn"
+                  aria-label={mobileSearchOpen ? "Close search" : (search.placeholder ?? "Search")}
+                  aria-expanded={mobileSearchOpen}
+                  onClick={() => setMobileSearchOpen((o) => !o)}
+                >
+                  <Icon name={mobileSearchOpen ? "close" : "search"} size={24} />
+                </button>
+              )}
+
               {account && <AccountMenu account={account} items={accountMenu} />}
 
               <span className="ds-hdr-brand__actions">{actions}</span>
 
-              {hasNav && (
+              {showSheet && (
                 <SheetToggle
                   open={drawerOpen}
                   onOpen={() => setDrawerOpen(true)}
@@ -918,7 +999,7 @@ export function SiteHeader({
          and the markup stable across the condense. */}
       {!isCompact && (
         <AccessibilityBar
-          govLink={govLink}
+          govLink={{ flagSrc: "/images/Indian-Flag.svg", ...govLink }}
           skipTo={skipTo}
           showSkip
           fontSize
@@ -971,7 +1052,7 @@ export function SiteHeader({
 
 
       {/* ── Mobile navigation (Figma Navbar/NavSheet) ── */}
-      {hasNav && (
+      {showSheet && (
         <NavSheet
           id={drawerId}
           open={drawerOpen}

@@ -68,7 +68,7 @@
      resolves to on an empty wall, so the first paint lands where the rail
      will stay on most of the estate rather than jumping into place. */
   top: var(--sa-wall-rail-top, calc(50% - 76px));
-  z-index: 2147483000;
+  z-index: var(--sa-z-demo);
   font-family: var(--sa-font-latin);
 }
 
@@ -225,9 +225,9 @@
   border-radius: var(--sa-shape-6);
   background-color: var(--sa-bg-neutral-inverse);
   color: var(--sa-text-neutral-inverse);
-  font-size: var(--sa-type-label-3-size);
-  line-height: var(--sa-type-label-3-lh);
-  font-weight: 600;
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
+  font-weight: var(--sa-font-weight-semibold);
   white-space: nowrap;
   opacity: 0;
   transform: translateY(-50%) translateX(4px);
@@ -596,9 +596,9 @@
 
 .ds-demodock__title {
   font-size: var(--sa-type-title-1-size);
-  font-weight: 700;
+  line-height: var(--sa-type-title-1-lh);
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-text-neutral-base);
-  line-height: 1.2;
 }
 
 .ds-demodock__current {
@@ -615,7 +615,7 @@
 }
 
 .ds-demodock__current-name {
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-text-neutral-bolder);
 }
 
@@ -872,7 +872,7 @@
 .ds-demodock__swatch-label {
   font-size: var(--sa-type-body-3-size);
   line-height: var(--sa-type-body-3-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-text-neutral-base);
 }
 
@@ -888,7 +888,8 @@
   border-radius: var(--sa-shape-6);
   background-color: var(--sa-bg-neutral-base);
   font-family: var(--sa-font-latin);
-  font-size: 0.9em;
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
 }
 
 /* ── DBIM conformance previews ──────────────────────────────────────────
@@ -963,7 +964,7 @@
   margin: 0;
   font-size: var(--sa-type-label-1-size);
   line-height: var(--sa-type-label-1-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-text-neutral-base);
 }
 
@@ -977,9 +978,9 @@
   color: var(--sa-text-neutral-subtle);
   font-size: var(--sa-type-label-3-size);
   line-height: var(--sa-type-label-3-lh);
-  font-weight: 500;
+  font-weight: var(--sa-font-weight-medium);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--sa-type-caps-tracking);
 }
 
 .ds-demodock__colour-subnote {

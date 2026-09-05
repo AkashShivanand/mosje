@@ -59,15 +59,15 @@
     font-size: var(--sa-type-headline-2-size);
     line-height: var(--sa-type-headline-2-lh);
     font-variant-numeric: tabular-nums;
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-align: center;
     color: var(--sa-text-neutral-base);
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-8);
     transition:
-      border-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-      box-shadow var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
     -webkit-appearance: none;
     appearance: none;
   }
@@ -84,7 +84,7 @@
 
   .ds-otp__box:disabled {
     cursor: not-allowed;
-    opacity: 0.5;
+    opacity: var(--sa-alpha-disabled);
     background-color: var(--sa-bg-neutral-subtler);
   }
 

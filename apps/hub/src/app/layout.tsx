@@ -30,9 +30,33 @@ import "@mosje/design-system/icons.css";
  */
 const notoSans = Noto_Sans({
   variable: "--font-noto-sans",
-  subsets: ["latin", "devanagari"],
+  subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   display: "swap",
+});
+
+/**
+ * The Devanagari subset is a SECOND loader, and the reason is one attribute: `preload`.
+ *
+ * With `subsets: ["latin", "devanagari"]` on one loader, next/font emits a preload link for
+ * EVERY listed subset, and a `<link rel="preload">` is fetched unconditionally — it does not
+ * consult the `unicode-range` that would otherwise defer the file until Devanagari appears.
+ * Measured 2026-09-04: the 99 KB Devanagari file was the largest asset preloaded on every
+ * English-only page, two-thirds of the 148 KB preload set, on a service designed for
+ * low-bandwidth audiences. The comment above it said the opposite.
+ *
+ * Split, the Latin face keeps its preload and the Devanagari face lazy-loads through its
+ * unicode-range: a Hindi page fetches it on first paint of Hindi text (one round trip,
+ * swapped in over the metric-matched fallback, so no layout shift), an English page never
+ * does. Both variables go into the family stack in globals.css, Latin first, so a glyph the
+ * Latin face lacks falls to the Devanagari face and a glyph both lack falls to the system.
+ */
+const notoSansDevanagari = Noto_Sans({
+  variable: "--font-noto-devanagari",
+  subsets: ["devanagari"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+  preload: false,
 });
 
 /**
@@ -122,7 +146,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       lang="en-IN"
-      className={`${notoSans.variable} ${notoSansDisplay.variable} h-full antialiased`}
+      className={`${notoSans.variable} ${notoSansDevanagari.variable} ${notoSansDisplay.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

@@ -29,8 +29,8 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Accessibility",
     "section": "Foundations",
     "href": "/design-system/foundations/accessibility",
-    "keywords": "accessibility foundations wcag 2.1 aa + gigw the four pour principles the accessibility widget what it provides how to integrate behaviour &amp; theming checklist for designers checklist for developers baseline requirements how to test built-in by default src tokens wcag accessibility",
-    "description": "The accessibility baseline for SAMAVESH — WCAG 2.1 AA + GIGW, the POUR principles, and practical checklists for designers and developers.",
+    "keywords": "accessibility foundations  Perceivable Operable Understandable Robust Contrast & invert Dark / light mode Bigger text Text spacing Line height Dyslexia-friendly font Highlight links Hide images Bigger cursor Screen reader tokens wcag accessibility",
+    "description": "The accessibility baseline for SAMAVESH — WCAG 2.1 AA + GIGW, the POUR principles, the one accessibility widget for the estate, and the checklists for designers and developers.",
     "type": "foundation",
     "badge": "Stable",
     "iconName": "accessibility"
@@ -198,6 +198,16 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Brand & White-Labelling",
+    "section": "Foundations",
+    "href": "/design-system/foundations/brand",
+    "keywords": "brand & white-labelling foundations   tokens wcag accessibility",
+    "description": "The brand pack contract — one file of identity primitives that re-skins SAMAVESH for another government body, what a swap changes and what it never touches, the two published brands and the code-only DBIM modes, and the contrast gate an inaccessible brand cannot pass.",
+    "type": "foundation",
+    "badge": "Stable",
+    "iconName": "palette"
+  },
+  {
     "title": "Brand Glyph — Design System",
     "section": "Utilities",
     "href": "/design-system/components/utilities/brand-glyph",
@@ -223,6 +233,16 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The trail showing where a page sits, with the current page as the last, non-interactive crumb.",
     "type": "component",
     "iconName": "navigation"
+  },
+  {
+    "title": "Breakpoints",
+    "section": "Foundations",
+    "href": "/design-system/foundations/breakpoints",
+    "keywords": "breakpoints foundations   tokens wcag accessibility",
+    "description": "Six viewport anchors — 360 · 768 · 1024 · 1280 · 1440 · 1920 — what each one selects, why a media query cannot read a token, and how Figma",
+    "type": "foundation",
+    "badge": "Stable",
+    "iconName": "palette"
   },
   {
     "title": "Bullet Chart — Design System",
@@ -309,7 +329,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Chart Card — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/dashboard/chart-card",
-    "keywords": "chart card — design system auth & dashboard six reasons a card has nothing to draw the skeleton promises the shape a card that cannot show its data must not talk about its data example what a screen reader hears  tokens wcag accessibility",
+    "keywords": "chart card — design system auth & dashboard six reasons a card has nothing to draw the skeleton promises the shape provenance travels with the data a card that cannot show its data must not talk about its data example what a screen reader hears  tokens wcag accessibility",
     "description": "The titled container a dashboard chart sits in. It owns the header, the grid span, the download control and every state the chart can be in — loading, empty, filtered to nothing, failed.",
     "type": "component",
     "iconName": "bar_chart"
@@ -345,8 +365,8 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Checkbox — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/checkbox",
-    "keywords": "checkbox — design system forms & inputs example keyboard  tokens wcag accessibility",
-    "description": "A checkbox selects one or more items from a set, or turns a single option on or off. Supports the mixed state a “select all” control needs.",
+    "keywords": "checkbox — design system forms & inputs anatomy sizes states do and don&apos;t example card variant keyboard  tokens wcag accessibility",
+    "description": "A checkbox selects one or more items from a set, or turns a single option on or off. Three sizes, an error state, a description, read-only, a card variant, and a group with select-all and an exclusive option.",
     "type": "component",
     "iconName": "edit_note"
   },
@@ -364,7 +384,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "section": "Foundations",
     "href": "/design-system/foundations/color",
     "keywords": "color — foundations foundations   tokens wcag accessibility",
-    "description": "Colour is never the only carrier of meaning. Pair it with an icon, a label, a pattern or a position.",
+    "description": "Eight ramps, two brands, every ink pairing measured against the ground it sits on, in the worst of eight modes, and re-measured through three colour-vision deficiencies.",
     "type": "foundation",
     "badge": "Stable",
     "iconName": "palette"
@@ -413,6 +433,16 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The centred content column. Applies the estate content cap and the responsive side margin together, because they are one rule.",
     "type": "component",
     "iconName": "view_quilt"
+  },
+  {
+    "title": "Content & Localisation",
+    "section": "Foundations",
+    "href": "/design-system/foundations/content-localisation",
+    "keywords": "content & localisation foundations   tokens wcag accessibility",
+    "description": "How copy is written across the SAMAVESH estate — the Government of India register, Title Case, what never goes on a screen — and how Hindi is marked, faced and leaded by one attribute, with the parts of localisation that are not yet built stated plainly.",
+    "type": "foundation",
+    "badge": "Stable",
+    "iconName": "palette"
   },
   {
     "title": "Content Nav — Design System",
@@ -517,8 +547,8 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Density",
     "section": "Foundations",
     "href": "/design-system/foundations/density",
-    "keywords": "density foundations side by side when to use compact when not to use compact target size how to activate it tokens  tokens wcag accessibility",
-    "description": "Comfortable and compact density modes — how SAMAVESH adapts control sizing for spacious public forms and data-dense portals.",
+    "keywords": "density foundations   tokens wcag accessibility",
+    "description": "Comfortable and compact — the two density modes SAMAVESH ships, the eight tokens that move between them, and the 24px target floor compact never drops below.",
     "type": "foundation",
     "badge": "Stable",
     "iconName": "palette"
@@ -563,8 +593,8 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Elevation",
     "section": "Foundations",
     "href": "/design-system/foundations/elevation",
-    "keywords": "elevation foundations the three levels when to use each tokens guidance  tokens wcag accessibility",
-    "description": "Shadow tokens that give SAMAVESH surfaces a sense of depth — from pressed controls to floating modals.",
+    "keywords": "elevation foundations   tokens wcag accessibility",
+    "description": "Six shadow roles that say what a surface is — flat, card, raised, dropdown, modal, toast — tinted toward the body ink and paired one-to-one with the layering ladder.",
     "type": "foundation",
     "badge": "Stable",
     "iconName": "layers"
@@ -733,6 +763,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "view_quilt"
   },
   {
+    "title": "Heading — Design System",
+    "section": "Layout",
+    "href": "/design-system/components/layout/heading",
+    "keywords": "heading — design system layout level is the outline, variant is the size  tokens wcag accessibility",
+    "description": "An h1–h6 bound to one type role. The level is the document outline; the role defaults from it.",
+    "type": "component",
+    "iconName": "view_quilt"
+  },
+  {
     "title": "Heatmap — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/heatmap",
@@ -763,7 +802,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Iconography",
     "section": "Foundations",
     "href": "/design-system/foundations/iconography",
-    "keywords": "iconography foundations one component, any icon the {icon_catalogue.length} icons in the starter set seven sizes — dbim&rsquo;s four, plus what interface work needs weight 300 is the style named light almost nothing needs to be a vector an icon is never the only signal the figma property is the code prop  tokens wcag accessibility",
+    "keywords": "iconography foundations   tokens wcag accessibility",
     "description": "The SAMAVESH icon system — one component holding any Material Symbols Rounded glyph, at weight 300, on a seven-step size scale.",
     "type": "foundation",
     "badge": "Stable",
@@ -782,7 +821,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Illustration",
     "section": "Foundations",
     "href": "/design-system/foundations/illustration",
-    "keywords": "illustration foundations three tiers, one geometry why no illustration here depicts a person four ink layers the set adding a scene Spot Scene Hero tokens wcag accessibility",
+    "keywords": "illustration foundations  Spot Scene Hero Ground Ghost Ink Accent tokens wcag accessibility",
     "description": "The SAMAVESH drawn language — one geometry at three sizes, four tokenised ink layers, and the reason no illustration in this estate depicts a person.",
     "type": "foundation",
     "badge": "Stable",
@@ -825,6 +864,16 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Interaction States",
+    "section": "Foundations",
+    "href": "/design-system/foundations/states",
+    "keywords": "interaction states foundations   tokens wcag accessibility",
+    "description": "The seven states a control can be in — default, hover, active, focus, selected, disabled, visited — and for each one which colour rung, which motion pair, which opacity and which ring it binds, so every component answers a press the same way.",
+    "type": "foundation",
+    "badge": "Stable",
+    "iconName": "palette"
+  },
+  {
     "title": "KPI Row — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/dashboard/kpi-row",
@@ -843,11 +892,21 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Layering",
+    "section": "Foundations",
+    "href": "/design-system/foundations/layering",
+    "keywords": "layering foundations   tokens wcag accessibility",
+    "description": "The z-index ladder — fifteen named rungs that say what sits above what across the SAMAVESH estate, from the page to the statutory accessibility panel, and the only values app code may write.",
+    "type": "foundation",
+    "badge": "Stable",
+    "iconName": "palette"
+  },
+  {
     "title": "Layout Grid",
     "section": "Foundations",
     "href": "/design-system/foundations/layout-grid",
     "keywords": "layout grid foundations   tokens wcag accessibility",
-    "description": "The SAMAVESH page container — a three-step cap with a margin ladder that steps with the cap, so content width only ever grows.",
+    "description": "The SAMAVESH page container — twelve columns, a 24px gutter, a three-step cap and a margin ladder that steps with the cap, so content width only ever grows.",
     "type": "foundation",
     "badge": "Stable",
     "iconName": "grid_view"
@@ -937,7 +996,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Metric Card — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/metric-card",
-    "keywords": "metric card — design system data display a figure that has not arrived the change needs a baseline format the figure before you pass it example what a screen reader gets  tokens wcag accessibility",
+    "keywords": "metric card — design system data display a figure that has not arrived the change needs a baseline five readings of one number format the figure before you pass it example what a screen reader gets  tokens wcag accessibility",
     "description": "One headline figure with its label and, where there is one, the change against a stated baseline — with real states for a figure that has not arrived.",
     "type": "component",
     "iconName": "bar_chart"
@@ -955,8 +1014,8 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Motion",
     "section": "Foundations",
     "href": "/design-system/foundations/motion",
-    "keywords": "motion foundations the five pairs duration scale easing live demo reduced motion tokens guidance  tokens wcag accessibility",
-    "description": "Duration and easing for SAMAVESH — purposeful, fast and respectful of reduced-motion preferences.",
+    "keywords": "motion foundations   tokens wcag accessibility",
+    "description": "Motion by intent for SAMAVESH — twelve named pairs of duration and easing, a value-named ladder beneath them, and reduced motion handled once at the token layer.",
     "type": "foundation",
     "badge": "Stable",
     "iconName": "animation"
@@ -978,6 +1037,16 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The SAMAVESH Navbar — one component, three variants. Three tiers: accessibility bar, brand row, navigation row, with a scroll condense that keeps the emblem on the same left edge.",
     "type": "component",
     "iconName": "navigation"
+  },
+  {
+    "title": "Opacity",
+    "section": "Foundations",
+    "href": "/design-system/foundations/opacity",
+    "keywords": "opacity foundations   tokens wcag accessibility",
+    "description": "One thirteen-step opacity ladder, two named intents, and the rule that a translucent colour is always a colour reference plus an alpha reference — never a baked hex.",
+    "type": "foundation",
+    "badge": "Stable",
+    "iconName": "palette"
   },
   {
     "title": "Org Logo — Design System",
@@ -1111,10 +1180,19 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Radio — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/radio",
-    "keywords": "radio — design system forms & inputs radio cards example keyboard  tokens wcag accessibility",
-    "description": "A radio button for choosing exactly one option from a mutually exclusive set, in an inline variant and a full selectable card variant.",
+    "keywords": "radio — design system forms & inputs anatomy radio cards do and don&apos;t a single option keyboard  tokens wcag accessibility",
+    "description": "A radio button for choosing exactly one option from a mutually exclusive set. Three sizes, a description, read-only, a card variant, and a group that names the question, carries the error and reveals a follow-up.",
     "type": "component",
     "iconName": "edit_note"
+  },
+  {
+    "title": "Ranked Bar List — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/ranked-bar-list",
+    "keywords": "ranked bar list — design system data display the figure is the reading; the bar is the aid a tone is a claim about the figure it pages; it never scrolls inside its card a withheld figure keeps its row example what a screen reader gets InlineBar tokens wcag accessibility",
+    "description": "A label, a figure and a thin bar per row — the ranking and breakdown list every portal dashboard draws, paged rather than scrolled, with the figure as the reading and the bar as the aid.",
+    "type": "component",
+    "iconName": "bar_chart"
   },
   {
     "title": "Required Fields Legend — Design System",
@@ -1156,7 +1234,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "SAMAVESH Banner — Design System",
     "section": "Navigation",
     "href": "/design-system/components/navigation/samavesh-banner",
-    "keywords": "samavesh banner — design system navigation interactive specimen implementation & guidelines overview & principles usage guidelines installation & import props reference code example wcag 2.2 aa & gigw 3.0 compliance band tones, and why the default fails contrast on purpose component props Senior Citizens Welfare Nasha Mukt Bharat Abhiyaan National Commission for Scheduled Castes National SC Finance & Development Corporation tokens wcag accessibility",
+    "keywords": "samavesh banner — design system navigation interactive specimen arrangements implementation & guidelines overview & principles usage guidelines installation & import props reference code example wcag 2.2 aa & gigw 3.0 compliance band tones, and why the default fails contrast on purpose component props Senior Citizens Welfare Nasha Mukt Bharat Abhiyaan National Commission for Scheduled Castes National SC Finance & Development Corporation tokens wcag accessibility",
     "description": "Top identity banner and portal discovery drawer implementing Figma node 7116:33784 & 7298:29968.",
     "type": "component",
     "badge": "New",
@@ -1220,8 +1298,8 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Shape",
     "section": "Foundations",
     "href": "/design-system/foundations/shape",
-    "keywords": "shape foundations how shape works the ladder choosing a rung prefer a role token pills and circles tokens do &amp; don&apos;t  tokens wcag accessibility",
-    "description": "The SAMAVESH corner-radius ladder — twelve value-named rungs plus a fully-rounded sentinel, shared by every MoSJE site and portal.",
+    "keywords": "shape foundations   tokens wcag accessibility",
+    "description": "The SAMAVESH corner-radius ladder — value-named rungs, one fully-rounded sentinel, and the role tokens a component binds instead of a rung.",
     "type": "foundation",
     "badge": "Stable",
     "iconName": "rounded_corner"
@@ -1239,8 +1317,8 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Sidebar Nav — Design System",
     "section": "Navigation",
     "href": "/design-system/components/navigation/sidebar-nav",
-    "keywords": "sidebar nav — design system navigation   tokens wcag accessibility",
-    "description": "The portal app-shell left navigation.",
+    "keywords": "sidebar nav — design system navigation  groups[].label items[].icon items[].badge items[].children children[].children *.disabled tokens wcag accessibility",
+    "description": "The portal app-shell left navigation, three levels deep.",
     "type": "component",
     "iconName": "navigation"
   },
@@ -1290,6 +1368,16 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "view_quilt"
   },
   {
+    "title": "Sizing",
+    "section": "Foundations",
+    "href": "/design-system/foundations/sizing",
+    "keywords": "sizing foundations   tokens wcag accessibility",
+    "description": "The shared dimension ladder in rem, the seven icon sizes that alias it, and the four pointer-target sizes named for the authority each one satisfies — WCAG 2.5.8, WCAG 2.5.5, Material and the gap between targets.",
+    "type": "foundation",
+    "badge": "Stable",
+    "iconName": "palette"
+  },
+  {
     "title": "Skeleton — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/skeleton",
@@ -1329,8 +1417,8 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Spacing",
     "section": "Foundations",
     "href": "/design-system/foundations/spacing",
-    "keywords": "spacing foundations how spacing works the scale four families, one ladder tokens do &amp; don&apos;t inline stack padding section tokens wcag accessibility",
-    "description": "The SAMAVESH spacing scale — an 8px base grid that keeps layout rhythm consistent across every MoSJE site and portal.",
+    "keywords": "spacing foundations   tokens wcag accessibility",
+    "description": "The SAMAVESH spacing ladder — multiples of 8 with a 4px half-step below 24, value-named in four families, shared by every MoSJE site and portal.",
     "type": "foundation",
     "badge": "Stable",
     "iconName": "palette"
@@ -1363,6 +1451,16 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "notifications"
   },
   {
+    "title": "Stroke",
+    "section": "Foundations",
+    "href": "/design-system/foundations/stroke",
+    "keywords": "stroke foundations   tokens wcag accessibility",
+    "description": "Border widths as a value-named ladder — stroke/0 to stroke/4 — the hairline every rule and edge takes, the control border that follows every field, and the focus ring that must never be thinner than 2px.",
+    "type": "foundation",
+    "badge": "Stable",
+    "iconName": "palette"
+  },
+  {
     "title": "Tabs — Design System",
     "section": "Navigation",
     "href": "/design-system/components/navigation/tabs",
@@ -1379,6 +1477,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The Tabs / More trigger and its menu. Internal to Tabs: it appears only when a horizontal row cannot show every tab, and lists all of them.",
     "type": "component",
     "iconName": "navigation"
+  },
+  {
+    "title": "Text — Design System",
+    "section": "Layout",
+    "href": "/design-system/components/layout/text",
+    "keywords": "text — design system layout the role is the job, not the size  tokens wcag accessibility",
+    "description": "A run of copy bound to a body, label or title role. Never sets a size of its own.",
+    "type": "component",
+    "iconName": "view_quilt"
   },
   {
     "title": "Textarea — Design System",
@@ -1429,7 +1536,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Typography",
     "section": "Foundations",
     "href": "/design-system/foundations/typography",
-    "keywords": "typography foundations why two typefaces line height for indic scripts do &amp; don&rsquo;t the rules, and where each one comes from the alias family that lied, and why it is gone non-negotiable, because these are government services where these numbers come from  tokens wcag accessibility",
+    "keywords": "typography foundations where these numbers come from non-negotiable, because these are government services  tokens wcag accessibility",
     "description": "SAMAVESH typography — one 21-role scale rendered on two surfaces (Website, Portal), fluid across every viewport, and drawn for both English and हिन्दी.",
     "type": "foundation",
     "badge": "Stable",

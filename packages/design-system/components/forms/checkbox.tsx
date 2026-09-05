@@ -1,112 +1,156 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "../../utils/cn";
-import "./controls.css";
+
+import { useControllableState } from "../../utils/use-controllable-state";
+import { SelectionControl, readOnlyHandlers, type SelectionCommonProps } from "./selection-control";
+import type { CheckboxState } from "./selection-types";
+import "./checkbox.css";
 
 export interface CheckboxProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
-  /** Controlled checked state. */
-  checked: boolean;
-  /** Render the indeterminate (mixed) state. @default false */
+  extends
+    SelectionCommonProps,
+    Omit<
+      React.InputHTMLAttributes<HTMLInputElement>,
+      "type" | "size" | "checked" | "defaultChecked" | "onChange" | "readOnly" | "required"
+    > {
+  /** Controlled state. Omit it to let the control hold its own, seeded by `defaultChecked`. */
+  checked?: boolean;
+  /**
+   * Initial state for the uncontrolled form. Never `true` for a consent or declaration —
+   * UX4G §7 prohibits pre-checked consent boxes, and DBIM B.xii expects an explicit act.
+   * @default false
+   */
+  defaultChecked?: boolean;
+  /**
+   * The mixed state a "select all" parent shows when only some children are selected.
+   * Orthogonal to `checked`: the DOM property is set, the box draws a dash, and a click
+   * still yields `checked = true`, as the native control does.
+   * @default false
+   */
   indeterminate?: boolean;
-  /** Optional text label rendered beside the box (associated via htmlFor/id). */
-  label?: React.ReactNode;
-  /** Change handler — receives the native input event. */
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  /**
+   * Error message. Rendered after the control with `role="alert"`, sets `aria-invalid`,
+   * and joins `aria-describedby`. Write it as [Problem] + [Solution] (UX4G §7).
+   */
+  error?: React.ReactNode;
+  /** Native change event, kept for every existing call site. */
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  /** The next checked value, after `onChange`. The convenience most callers actually want. */
+  onCheckedChange?: (checked: boolean) => void;
 }
 
 /**
- * MoSJE / UX4G Checkbox atom.
+ * SAMAVESH Checkbox — any number of items from a set, or one option on or off.
  *
- * A real `<input type="checkbox">` (visually hidden) paired with a styled box,
- * so it is fully keyboard- and screen-reader-accessible. Supports an
- * indeterminate (mixed) visual state.
+ * A real `<input type="checkbox">`, visually hidden but sized to the touch target, beside a
+ * drawn box. Nothing about keyboard, focus or grouping is re-implemented.
+ *
+ * Rules:
+ * 1. Never pre-check a consent or declaration (`defaultChecked`/`checked` true) — UX4G §7.
+ * 2. `description` is linked through `aria-describedby`; it is never part of the name.
+ * 3. `readOnly` is not `disabled`: it keeps the tab stop and the submitted value.
+ * 4. Several boxes answering ONE question go in `CheckboxGroup`, which supplies the
+ *    `<fieldset>`/`<legend>` that names the question.
  */
-export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  function Checkbox(
-    {
-      checked,
-      indeterminate = false,
-      disabled = false,
-      label,
-      id,
-      className,
-      onChange,
-      ...rest
-    },
-    forwardedRef,
-  ) {
-    const innerRef = React.useRef<HTMLInputElement>(null);
-
-    // Merge the forwarded ref with the local one.
-    React.useImperativeHandle(forwardedRef, () => innerRef.current!, []);
-
-    // `indeterminate` is a DOM-only property — sync it on every render.
-    React.useEffect(() => {
-      if (innerRef.current) {
-        innerRef.current.indeterminate = indeterminate;
-      }
-    }, [indeterminate]);
-
-    const reactId = React.useId();
-    const inputId = id ?? reactId;
-
-    return (
-      <span
-        className={cn("ds-checkbox", disabled && "ds-checkbox--disabled", className)}
-      >
-        <span className="ds-checkbox__control">
-          <input
-            ref={innerRef}
-            id={inputId}
-            type="checkbox"
-            className="ds-checkbox__input"
-            checked={checked}
-            disabled={disabled}
-            onChange={onChange}
-            aria-checked={indeterminate ? "mixed" : checked}
-            {...rest}
-          />
-          <span className="ds-checkbox__box" aria-hidden="true">
-            {indeterminate ? (
-              <svg
-                className="ds-checkbox__mark"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3.5 8h9"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
-            ) : (
-              <svg
-                className="ds-checkbox__mark"
-                viewBox="0 0 16 16"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M13 4.5 6.5 11.5 3 8"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            )}
-          </span>
-        </span>
-        {label != null && (
-          <label htmlFor={inputId} className="ds-checkbox__label">
-            {label}
-          </label>
-        )}
-      </span>
-    );
+export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
+  {
+    checked,
+    defaultChecked = false,
+    indeterminate = false,
+    disabled = false,
+    readOnly = false,
+    required = false,
+    invalid,
+    label,
+    hideLabel,
+    description,
+    error,
+    size,
+    labelPlacement,
+    variant,
+    cardLayout,
+    meta,
+    icon,
+    id,
+    className,
+    onChange,
+    onCheckedChange,
+    onClick,
+    onKeyDown,
+    ...rest
   },
-);
+  forwardedRef,
+) {
+  const innerRef = React.useRef<HTMLInputElement>(null);
+  React.useImperativeHandle(forwardedRef, () => innerRef.current!, []);
+
+  const [isChecked, setChecked] = useControllableState<boolean>(checked, defaultChecked);
+
+  // `indeterminate` is a DOM property with no attribute. Setting it is what exposes the
+  // `mixed` state to assistive technology — every current engine maps it — so there is no
+  // `aria-checked` here: ARIA-in-HTML says authors must not set it on a native checkbox.
+  React.useEffect(() => {
+    if (innerRef.current) innerRef.current.indeterminate = indeterminate;
+  }, [indeterminate]);
+
+  const reactId = React.useId();
+  const inputId = id ?? reactId;
+  const state: CheckboxState = indeterminate ? "indeterminate" : isChecked ? "checked" : "unchecked";
+
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    if (readOnly) return;
+    onChange?.(event);
+    setChecked(event.target.checked);
+    onCheckedChange?.(event.target.checked);
+  };
+
+  return (
+    <SelectionControl
+      kind="checkbox"
+      inputId={inputId}
+      state={state}
+      disabled={disabled}
+      readOnly={readOnly}
+      required={required}
+      invalid={invalid}
+      size={size}
+      labelPlacement={labelPlacement}
+      variant={variant}
+      cardLayout={cardLayout}
+      meta={meta}
+      icon={icon}
+      label={label}
+      hideLabel={hideLabel}
+      description={description}
+      error={error}
+      className={className}
+      inputRef={innerRef}
+      visual={
+        <span className="ds-checkbox__box">
+          {indeterminate ? (
+            <svg className="ds-checkbox__mark" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3.5 8h9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          ) : (
+            <svg className="ds-checkbox__mark" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M13 4.5 6.5 11.5 3 8"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
+        </span>
+      }
+      inputProps={{
+        ...rest,
+        checked: isChecked,
+        onChange: handleChange,
+        ...readOnlyHandlers(readOnly, onClick, onKeyDown),
+      }}
+    />
+  );
+});

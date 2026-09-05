@@ -12,13 +12,13 @@ export default function PledgeFormPage() {
     <UserShell>
       {/* Banner */}
       <div className="scw-login-panel relative overflow-hidden rounded-2xl px-8 py-10 text-white">
-        <p className="text-sm font-medium text-white/75">
+        <p className="text-label-1 text-white/75">
           Government of India / Department of Social Justice &amp; Empowerment
         </p>
-        <h1 className="mt-3 text-4xl font-bold tracking-tight">
+        <h1 className="mt-3 text-display-5 font-display">
           Ageing with <span className="text-saffron">DIGNITY</span>
         </h1>
-        <p className="mt-3 text-lg font-semibold text-white/90">
+        <p className="mt-3 text-title-1 text-white/90">
           Call Toll-Free - 14567
         </p>
       </div>
@@ -62,7 +62,7 @@ export default function PledgeFormPage() {
           <div className="mt-2 flex items-center justify-between gap-3 sm:col-span-2">
             <Link
               href="/portals/scw/epledge"
-              className="rounded-lg border border-navy/30 px-4 py-2.5 text-sm font-semibold text-navy transition-colors hover:bg-navy/5"
+              className="rounded-lg border border-navy/30 px-4 py-2.5 text-label-1 text-navy transition-colors hover:bg-navy/5"
             >
               Back
             </Link>

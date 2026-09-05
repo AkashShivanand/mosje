@@ -38,7 +38,7 @@
        row it sits in runs at — pinned to body-2 it rendered 14px inside a 12px
        colophon and stood out for no reason. */
     font-size: inherit;
-    line-height: 1.4;
+    line-height: inherit;
     color: var(--ds-footer-ink-muted, currentColor);
   }
 
@@ -57,7 +57,7 @@
        Weight 500, not 600: it sits in a row with the copyright and the
        last-updated date and has no business being heavier than either. */
     font-variant-numeric: tabular-nums;
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--ds-footer-ink-muted, currentColor);
     /* Reserve the widest plausible figure so the first tick cannot reflow the row. */
     min-width: 7ch;

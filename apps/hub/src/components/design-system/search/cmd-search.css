@@ -6,9 +6,10 @@
   position: fixed;
   inset: 0;
   background: var(--sa-overlay-neutral-boldest);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 9000;
+  backdrop-filter: blur(var(--sa-blur-soft));
+  -webkit-backdrop-filter: blur(var(--sa-blur-soft));
+  /* The palette owns the screen like a dialog: modal, on its own scrim. */
+  z-index: var(--sa-z-modal);
   display: flex;
   align-items: flex-start;
   justify-content: center;
@@ -132,7 +133,7 @@
   border: 1px solid transparent;
   background: transparent;
   font-size: var(--sa-type-label-2-size);
-  font-weight: 500;
+  font-weight: var(--sa-font-weight-medium);
   color: var(--sa-text-neutral-subtle);
   cursor: pointer;
   white-space: nowrap;
@@ -148,7 +149,7 @@
   background: var(--sa-bg-neutral-base);
   color: var(--sa-text-brand-primary-bolder);
   border-color: var(--sa-border-neutral-subtle);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   box-shadow: 0 1px 2px color-mix(in oklab, var(--sa-border-neutral-bolder-default) 10%, transparent);
 }
 
@@ -176,9 +177,10 @@
 .cmd-results__section-title {
   padding: var(--sa-padding-8) var(--sa-padding-12) var(--sa-padding-4);
   font-size: var(--sa-type-label-3-size);
-  font-weight: 600;
+  line-height: var(--sa-type-label-3-lh);
+  font-weight: var(--sa-font-weight-semibold);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--sa-type-caps-tracking);
   color: var(--sa-text-neutral-subtle);
 }
 
@@ -235,7 +237,7 @@
 
 .cmd-result__label {
   font-size: var(--sa-type-body-2-size);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-text-neutral-base);
 }
 
@@ -244,11 +246,11 @@
 }
 
 .cmd-result__badge {
-  font-size: 11px;
-  line-height: 1;
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
   padding: var(--sa-padding-2) var(--sa-padding-6);
   border-radius: var(--sa-shape-full);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
 }
 
 .cmd-result__badge--stable {
@@ -304,7 +306,7 @@
 .cmd-highlight {
   background: color-mix(in oklab, var(--sa-bg-brand-primary-subtler) 75%, transparent);
   color: var(--sa-text-brand-primary-bolder);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   border-radius: var(--sa-shape-2);
   padding: 0 var(--sa-padding-2);
 }
@@ -400,6 +402,6 @@
 
 .cmd-footer__count {
   font-size: var(--sa-type-label-3-size);
-  font-weight: 500;
+  font-weight: var(--sa-font-weight-medium);
 }
 

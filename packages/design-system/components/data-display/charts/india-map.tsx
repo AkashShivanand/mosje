@@ -99,6 +99,7 @@ export function IndiaMap({
       className={className}
       canvasRef={canvasRef}
       overlay={<ChartTooltip tip={tip} />}
+      onDismiss={hide}
       legend={
         <ul className="ds-chart__legend ds-chart__legend--horizontal" aria-hidden="true">
           <li className="ds-chart__legend-item">

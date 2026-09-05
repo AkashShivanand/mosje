@@ -8,8 +8,8 @@ import { Icon } from "@mosje/design-system";
 function Field({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-xs font-medium uppercase tracking-wide text-ink-hint">{label}</dt>
-      <dd className="mt-0.5 text-sm text-ink">{value || "—"}</dd>
+      <dt className="text-label-3 uppercase text-ink-hint">{label}</dt>
+      <dd className="mt-0.5 text-body-2 text-ink">{value || "—"}</dd>
     </div>
   );
 }
@@ -32,11 +32,11 @@ export function RecordSummary({ record }: { record: CommitteeRecord }) {
   return (
     <div>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-lg border border-success/30 bg-success/5 px-3 py-2">
-        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-success-fg">
+        <span className="inline-flex items-center gap-1.5 text-title-3 text-success-fg">
           <Icon name="check_circle" size={16} />
           Registered
         </span>
-        <span className="font-mono text-xs text-ink-muted">Ref: {referenceCode(record)}</span>
+        <span className="font-mono text-body-3 text-ink-muted">Ref: {referenceCode(record)}</span>
       </div>
       <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Field label="State" value={record.state} />
@@ -61,8 +61,8 @@ export function RecordSummary({ record }: { record: CommitteeRecord }) {
       </dl>
       <div className="mt-4 flex items-center gap-2 rounded-lg border border-line bg-surface-muted px-3 py-2.5">
         <Icon name="description" size={16} className="shrink-0 text-navy" />
-        <span className="truncate text-sm text-ink">{record.notification.name}</span>
-        <span className="ml-auto shrink-0 text-xs text-ink-hint">
+        <span className="truncate text-body-2 text-ink">{record.notification.name}</span>
+        <span className="ml-auto shrink-0 text-body-3 text-ink-hint">
           {record.notification.blobUrl ? "Uploaded this session" : "On file · re-upload to view"}
         </span>
       </div>

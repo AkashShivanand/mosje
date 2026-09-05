@@ -31,62 +31,30 @@ export const NAV: NavGroup[] = [
   },
   {
     "title": "Foundations",
+    // Dependency order, not alphabetical (INFORMATION-ARCHITECTURE.md §1): what a reader must
+    // know first comes first — accessibility and brand before colour, colour before type, the
+    // grid before what sits on it, the surface (shape · stroke · elevation · layering · opacity)
+    // before how it moves, and states last because they bind every foundation above.
     "items": [
-      {
-        "label": "Accessibility",
-        "href": "/design-system/foundations/accessibility",
-        "badge": "Stable"
-      },
-      {
-        "label": "Color",
-        "href": "/design-system/foundations/color",
-        "badge": "Stable"
-      },
-      {
-        "label": "Density",
-        "href": "/design-system/foundations/density",
-        "badge": "Stable"
-      },
-      {
-        "label": "Elevation",
-        "href": "/design-system/foundations/elevation",
-        "badge": "Stable"
-      },
-      {
-        "label": "Iconography",
-        "href": "/design-system/foundations/iconography",
-        "badge": "Beta"
-      },
-      {
-        "label": "Illustration",
-        "href": "/design-system/foundations/illustration",
-        "badge": "New"
-      },
-      {
-        "label": "Layout Grid",
-        "href": "/design-system/foundations/layout-grid",
-        "badge": "New"
-      },
-      {
-        "label": "Motion",
-        "href": "/design-system/foundations/motion",
-        "badge": "Beta"
-      },
-      {
-        "label": "Shape",
-        "href": "/design-system/foundations/shape",
-        "badge": "Stable"
-      },
-      {
-        "label": "Spacing",
-        "href": "/design-system/foundations/spacing",
-        "badge": "Stable"
-      },
-      {
-        "label": "Typography",
-        "href": "/design-system/foundations/typography",
-        "badge": "Stable"
-      }
+      { "label": "Accessibility", "href": "/design-system/foundations/accessibility", "badge": "Stable" },
+      { "label": "Brand & White-Labelling", "href": "/design-system/foundations/brand", "badge": "New" },
+      { "label": "Color", "href": "/design-system/foundations/color", "badge": "Stable" },
+      { "label": "Typography", "href": "/design-system/foundations/typography", "badge": "Stable" },
+      { "label": "Iconography", "href": "/design-system/foundations/iconography", "badge": "Beta" },
+      { "label": "Illustration", "href": "/design-system/foundations/illustration", "badge": "New" },
+      { "label": "Layout Grid", "href": "/design-system/foundations/layout-grid", "badge": "New" },
+      { "label": "Breakpoints", "href": "/design-system/foundations/breakpoints", "badge": "New" },
+      { "label": "Spacing", "href": "/design-system/foundations/spacing", "badge": "Stable" },
+      { "label": "Sizing", "href": "/design-system/foundations/sizing", "badge": "New" },
+      { "label": "Shape", "href": "/design-system/foundations/shape", "badge": "Stable" },
+      { "label": "Stroke", "href": "/design-system/foundations/stroke", "badge": "New" },
+      { "label": "Elevation", "href": "/design-system/foundations/elevation", "badge": "Stable" },
+      { "label": "Layering", "href": "/design-system/foundations/layering", "badge": "New" },
+      { "label": "Opacity", "href": "/design-system/foundations/opacity", "badge": "New" },
+      { "label": "Motion", "href": "/design-system/foundations/motion", "badge": "Stable" },
+      { "label": "Interaction States", "href": "/design-system/foundations/states", "badge": "New" },
+      { "label": "Density", "href": "/design-system/foundations/density", "badge": "Stable" },
+      { "label": "Content & Localisation", "href": "/design-system/foundations/content-localisation", "badge": "Alpha" }
     ]
   },
   {
@@ -555,6 +523,11 @@ export const NAV: NavGroup[] = [
         "label": "Progress",
         "href": "/design-system/components/data-display/progress",
         "badge": "Stable"
+      },
+      {
+        "label": "Ranked Bar List",
+        "href": "/design-system/components/data-display/ranked-bar-list",
+        "badge": "New"
       },
       {
         "label": "Scatter Chart",

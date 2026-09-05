@@ -359,9 +359,9 @@
         {
           "kind": "source",
           "file": "packages/design-system/components/actions/button.css",
-          "pattern": "\\.ds-btn--sm \\{[^}]*min-height: 32px",
+          "pattern": "\\.ds-btn--sm \\{[^}]*min-height: var\\(--sa-control-height-sm\\)",
           "flags": "s",
-          "hint": "sm is 32px. This page said sm 'meets the 44px height requirement' in three places, including inside the accessibility checklist, until 2026-08-25. The regex names min-height deliberately: `height: 32px` also matches `min-height: 32px`, so the looser pattern would keep passing if the fix were ever reverted."
+          "hint": "sm is 32px. This page said sm 'meets the 44px height requirement' in three places, including inside the accessibility checklist, until 2026-08-25. The regex names min-height deliberately: `height: 32px` also matches `min-height: 32px`, so the looser pattern would keep passing if the fix were ever reverted. Since 2026-09-05 the height binds control/height/sm (32px) rather than typing 32; the token assertion beside this one keeps the number honest."
         },
         {
           "kind": "source",
@@ -369,6 +369,11 @@
           "pattern": "\\.ds-btn--lg \\{[^}]*min-height: 48px",
           "flags": "s",
           "hint": "lg is the only size reaching 44."
+        },
+        {
+          "kind": "token",
+          "token": "--sa-control-height-sm",
+          "hint": "sm is 32px — the token the stylesheet binds."
         }
       ]
     },
@@ -604,7 +609,7 @@
     {
       "node": "55400:1552",
       "where": "PortalLoginTemplate — Documentation › 02 Properties › Device",
-      "figma": "variant → no code prop. Desktop is 1440 × 960 and Mobile 375 × 1138, where 1138 is the scroll height rather than a viewport. The React component is responsive in CSS, so the axis exists only to pin a breakpoint on the canvas. Tablet uses the Mobile variant by decision.",
+      "figma": "variant → no code prop. Desktop is 1440 × 960. Mobile is 375 wide and hugs its content, so its height follows the form rather than a viewport; a phone's fold sits at 812 and the rest scrolls. The React component is responsive in CSS, so the axis exists only to pin a breakpoint on the canvas. Tablet uses the Mobile variant by decision.",
       "expect": [
         {
           "kind": "source",
@@ -622,6 +627,12 @@
         {
           "kind": "text",
           "value": "no code prop"
+        },
+        {
+          "kind": "text",
+          "value": "1138",
+          "absent": true,
+          "hint": "375 × 1138 was the master's mobile geometry before decision 1 (2026-09-03) settled on a 375-wide frame that hugs. The number must not come back."
         }
       ]
     },
@@ -651,17 +662,29 @@
     {
       "node": "55401:1489",
       "where": "PortalLoginTemplate — Documentation › 03 Variants › lead",
-      "figma": "Six variants ship: two devices by three authentication methods. The role and the selector style ride on nested instances, so the three specimens below are all reachable without adding a single variant.",
+      "figma": "Eight variants ship: two devices by four authentication methods — Password, OTP, PIN and DARPAN. The role and the selector style ride on nested instances, so the three specimens below are all reachable without adding a single variant.",
       "expect": [
         {
           "kind": "source",
           "file": "packages/design-system/components/auth/portal-login-template.figma.ts",
-          "pattern": "Device × Auth Method` = 6",
-          "hint": "The set was re-cut in place from Device × Step = 8 to Device × Auth Method = 6. If that arithmetic changes, this section's three specimens and its title change with it."
+          "pattern": "Device × Auth Method` = 8",
+          "hint": "The set is Device (2) × Auth Method (4). If that arithmetic changes, this section's title, its specimens and the Code Connect comment change with it."
         },
         {
           "kind": "text",
-          "value": "Six variants ship"
+          "value": "Eight variants ship"
+        },
+        {
+          "kind": "text",
+          "value": "Six variants",
+          "absent": true,
+          "hint": "The page said six for two days after DARPAN was reinstated and the master had eight — while this gate stayed green, because the pin was written from the page rather than from the master."
+        },
+        {
+          "kind": "figma",
+          "node": "55397:1364",
+          "children": 8,
+          "hint": "Counted from the master itself, not from the prose. A pin that only compares three strings with each other can certify a wrong number; this one reads the set."
         }
       ]
     },
@@ -694,7 +717,7 @@
     {
       "node": "55402:1870",
       "where": "PortalLoginTemplate — Documentation › 06 Behaviour › PIN entry",
-      "figma": "The PIN field takes digits only and renders masked. Its reveal control is PasswordInput's, not a hand-rolled one — the template drew its own Show/Hide button until 2026-09-03. Recovery is Forgot PIN rather than the password link, because a portal that signs in on a PIN has no password to reset.",
+      "figma": "The PIN field takes digits only and renders masked. Its reveal control is PasswordInput's, not a hand-rolled one — the template drew its own Show/Hide button until 2026-09-03. Recovery is Forgot PIN rather than a password link, because a portal that signs in on a PIN has no password to reset.",
       "expect": [
         {
           "kind": "source",
@@ -839,6 +862,534 @@
           "value": "Not yet publishable",
           "absent": true,
           "hint": "The page claimed Code Connect needed a Developer seat this estate did not have. @figma/code-connect v2 is installed and the templates resolve; only publishing needs the token."
+        }
+      ]
+    },
+    {
+      "node": "57046:986",
+      "where": "Checkbox — Documentation › hero › 45 variants",
+      "figma": "45",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "45"
+        },
+        {
+          "kind": "source",
+          "file": "tools/code-connect-parity/figma-properties.json",
+          "pattern": "\"nodeId\": \"15:664\"[\\s\\S]*?\"Size\"[\\s\\S]*?\"Small\",\\s*\"Medium\",\\s*\"Large\"[\\s\\S]*?\"Checked\"[\\s\\S]*?\"Off\",\\s*\"On\",\\s*\"Indeterminate\"[\\s\\S]*?\"State\"[\\s\\S]*?\"Enabled\",\\s*\"Hover\",\\s*\"Focused\",\\s*\"Pressed\",\\s*\"Disabled\"",
+          "hint": "45 = Size 3 x Checked 3 x State 5; the fixture records every axis. If an axis grows or shrinks, this number is wrong."
+        }
+      ]
+    },
+    {
+      "node": "57046:1001",
+      "where": "Checkbox — Documentation › hero › 12 tokens",
+      "figma": "12",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "12"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/tokens.css",
+          "pattern": "--sa-control-selection-size-sm:[\\s\\S]*?--sa-control-selection-size-md:[\\s\\S]*?--sa-control-selection-size-lg:[\\s\\S]*?--sa-control-selection-glyph-sm:[\\s\\S]*?--sa-control-selection-glyph-md:[\\s\\S]*?--sa-control-selection-glyph-lg:[\\s\\S]*?--sa-control-selection-dot-sm:[\\s\\S]*?--sa-control-selection-dot-md:[\\s\\S]*?--sa-control-selection-dot-lg:[\\s\\S]*?--sa-control-selection-border-width:[\\s\\S]*?--sa-control-selection-radius:[\\s\\S]*?--sa-control-selection-gap:",
+          "hint": "All twelve control/selection/* declarations, in ladder order: size, glyph and dot at sm/md/lg, then border/width, radius and gap. A thirteenth would make the hero's 12 a lie; this pattern only proves the twelve exist, so count when adding one."
+        }
+      ]
+    },
+    {
+      "node": "57046:1006",
+      "where": "Checkbox — Documentation › hero › 2px edge",
+      "figma": "2",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "2"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-control-selection-border-width",
+          "hint": "2px, up from a raw 1.5px; aliases border.width.md."
+        }
+      ]
+    },
+    {
+      "node": "57046:1011",
+      "where": "Checkbox — Documentation › hero › 0 raw values",
+      "figma": "0",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "0"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/forms/selection-css.test.ts",
+          "pattern": "has no raw px outside comments",
+          "hint": "The stylesheet test fails the build on any raw px or duration in the selection stylesheets."
+        }
+      ]
+    },
+    {
+      "node": "57046:1428",
+      "where": "Checkbox — Documentation › 05 Accessibility › 2.5.8 Target size",
+      "figma": "The hit area is 24 at sm, 44 at md, 48 at lg, measured in the browser. The default meets the AA minimum without its label and UX4G's 44×44 touch recommendation.",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-target-min"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-target-comfortable"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-target-spacious"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/forms/selection-control.css",
+          "pattern": "--_target: var\\(--sa-target-comfortable\\)",
+          "hint": "md rows take target/comfortable (44); sm target/min (24); lg target/spacious (48)."
+        }
+      ]
+    },
+    {
+      "node": "57046:1431",
+      "where": "Checkbox — Documentation › 05 Accessibility › 1.4.11 Contrast and focus",
+      "figma": "A 2px edge in border/neutral/base, 7.16:1 on white. The focus ring is a solid outline in focus/ring, painted in Highlight under forced colours, where the checked fill is also painted. selection-css.test.ts.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/tokens/dist/figma.variables.json",
+          "pattern": "Contrast 7\\.16:1 vs bg/neutral/base",
+          "hint": "The ratio is measured at build time into border/neutral/base's Figma description; if the rung moves, the measured ratio moves and this claim fails."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/forms/checkbox.css",
+          "pattern": "background-color: Highlight",
+          "hint": "The checked fill is painted in the system colour under forced colours."
+        }
+      ]
+    },
+    {
+      "node": "57048:1136",
+      "where": "Radio — Documentation › hero › 30 variants",
+      "figma": "30",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "30"
+        },
+        {
+          "kind": "source",
+          "file": "tools/code-connect-parity/figma-properties.json",
+          "pattern": "\"nodeId\": \"18:791\"[\\s\\S]*?\"Size\"[\\s\\S]*?\"Small\",\\s*\"Medium\",\\s*\"Large\"[\\s\\S]*?\"Checked\"[\\s\\S]*?\"Off\",\\s*\"On\"\\s*\\][\\s\\S]*?\"State\"[\\s\\S]*?\"Enabled\",\\s*\"Hover\",\\s*\"Focused\",\\s*\"Pressed\",\\s*\"Disabled\"",
+          "hint": "30 = Size 3 x Checked 2 x State 5."
+        }
+      ]
+    },
+    {
+      "node": "57048:1141",
+      "where": "Radio — Documentation › hero › 40 card variants",
+      "figma": "40",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "40"
+        },
+        {
+          "kind": "source",
+          "file": "tools/code-connect-parity/figma-properties.json",
+          "pattern": "\"nodeId\": \"55530:2932\"[\\s\\S]*?\"Layout\"[\\s\\S]*?\"Compact\",\\s*\"Detailed\"[\\s\\S]*?\"Control\"[\\s\\S]*?\"Radio\",\\s*\"Checkbox\"[\\s\\S]*?\"Checked\"[\\s\\S]*?\"Off\",\\s*\"On\"[\\s\\S]*?\"State\"[\\s\\S]*?\"Enabled\",\\s*\"Hover\",\\s*\"Focused\",\\s*\"Pressed\",\\s*\"Disabled\"",
+          "hint": "40 = Layout 2 x Control 2 x Checked 2 x State 5."
+        }
+      ]
+    },
+    {
+      "node": "57048:1146",
+      "where": "Radio — Documentation › hero › 4 group variants",
+      "figma": "4",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "4"
+        },
+        {
+          "kind": "source",
+          "file": "tools/code-connect-parity/figma-properties.json",
+          "pattern": "\"nodeId\": \"57035:929\"[\\s\\S]*?\"Orientation\"[\\s\\S]*?\"Vertical\",\\s*\"Horizontal\"[\\s\\S]*?\"Layout\"[\\s\\S]*?\"Default\",\\s*\"Card\"",
+          "hint": "4 = Orientation 2 x Layout 2."
+        }
+      ]
+    },
+    {
+      "node": "57048:1505",
+      "where": "Radio — Documentation › 05 Accessibility › 2.5.8 Target size",
+      "figma": "The hit area is 24 at sm, 44 at md, 48 at lg; the card stretches the input to the tile's edges. The default meets the AA minimum without its label.",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-target-comfortable"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/forms/selection-control.css",
+          "pattern": "\\.ds-selection--card \\.ds-selection__input \\{[^}]*inset: 0",
+          "flags": "s",
+          "hint": "On the card the input stretches to the tile's edges."
+        }
+      ]
+    },
+    {
+      "node": "57048:1508",
+      "where": "Radio — Documentation › 05 Accessibility › 1.4.11 Contrast and focus",
+      "figma": "A 2px edge in border/neutral/base, 7.16:1 on white; the dot is bg/brand/primary/bolder. The focus ring is a solid outline in focus/ring; under forced colours the selected edge and dot are painted in Highlight.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/tokens/dist/figma.variables.json",
+          "pattern": "Contrast 7\\.16:1 vs bg/neutral/base",
+          "hint": "The ratio is measured at build time into border/neutral/base's Figma description; if the rung moves, the measured ratio moves and this claim fails."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/forms/radio.css",
+          "pattern": "\\.ds-radio__dot \\{\\s*background-color: Highlight",
+          "flags": "s",
+          "hint": "The dot is painted in the system colour under forced colours."
+        }
+      ]
+    },
+    {
+      "node": "57072:896",
+      "where": "Selection Card — Documentation › hero › 40 variants",
+      "figma": "40",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "40"
+        },
+        {
+          "kind": "source",
+          "file": "tools/code-connect-parity/figma-properties.json",
+          "pattern": "\"nodeId\": \"55530:2932\"[\\s\\S]*?\"Layout\"[\\s\\S]*?\"Compact\",\\s*\"Detailed\"[\\s\\S]*?\"Control\"[\\s\\S]*?\"Radio\",\\s*\"Checkbox\"[\\s\\S]*?\"Checked\"[\\s\\S]*?\"Off\",\\s*\"On\"[\\s\\S]*?\"State\"[\\s\\S]*?\"Enabled\",\\s*\"Hover\",\\s*\"Focused\",\\s*\"Pressed\",\\s*\"Disabled\"",
+          "hint": "40 = Layout 2 x Control 2 x Checked 2 x State 5."
+        }
+      ]
+    },
+    {
+      "node": "57072:906",
+      "where": "Selection Card — Documentation › hero › 8 properties",
+      "figma": "8",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "8"
+        },
+        {
+          "kind": "source",
+          "file": "tools/code-connect-parity/figma-properties.json",
+          "pattern": "\"nodeId\": \"55530:2932\"[\\s\\S]*?\"Icon\": \\{[\\s\\S]*?\"Title\": \\{[\\s\\S]*?\"Description\": \\{[\\s\\S]*?\"Meta\": \\{[\\s\\S]*?\"Invalid\": \\{[\\s\\S]*?\"Show Icon\": \\{[\\s\\S]*?\"Show Description\": \\{[\\s\\S]*?\"Show Meta\": \\{[\\s\\S]*?\"Layout\": \\{",
+          "hint": "Eight non-variant properties before the four axes: Icon, Title, Description, Meta, Invalid, Show Icon, Show Description, Show Meta."
+        }
+      ]
+    },
+    {
+      "node": "57072:911",
+      "where": "Selection Card — Documentation › hero › 44px minimum target",
+      "figma": "44",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-target-comfortable",
+          "hint": "The tile's minimum height is the comfortable target."
+        }
+      ]
+    },
+    {
+      "node": "57072:916",
+      "where": "Selection Card — Documentation › hero › 12px corner",
+      "figma": "12",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-cmp-card-radius",
+          "hint": "Every card in the estate binds cmp/card/radius."
+        }
+      ]
+    },
+    {
+      "node": "57072:921",
+      "where": "Selection Card — Documentation › hero › 0 raw values",
+      "figma": "0",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "0"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/forms/selection-css.test.ts",
+          "pattern": "has no raw px outside comments"
+        }
+      ]
+    },
+    {
+      "node": "55597:702",
+      "where": "Spacing — Documentation › 01 Anatomy › padding / 16",
+      "figma": "padding / 16",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-padding-16",
+          "hint": "The anatomy specimen names the 16 rung; if padding/16 ever stops being 16px the label lies."
+        }
+      ]
+    },
+    {
+      "node": "55637:735",
+      "where": "Radius — Documentation › 03 Ladder › shape/12",
+      "figma": "12px",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-shape-12",
+          "hint": "Value-named ladder: the label IS the value."
+        }
+      ]
+    },
+    {
+      "node": "56797:752",
+      "where": "Motion — Documentation › Hero › fastest",
+      "figma": "150ms",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "150ms"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/tokens.css",
+          "pattern": "--sa-motion-hover-duration: 150ms;",
+          "hint": "The fastest non-zero intent duration; hover, press and exit share it. Durations are not lengths, so this is pinned by source rather than by token."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/tokens.css",
+          "pattern": "--sa-motion-exit-duration: 150ms;"
+        }
+      ]
+    },
+    {
+      "node": "56797:757",
+      "where": "Motion — Documentation › Hero › slowest",
+      "figma": "400ms",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "400ms"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/tokens.css",
+          "pattern": "--sa-motion-emphasis-duration: 400ms;"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/tokens.css",
+          "pattern": "--sa-motion-reveal-duration: 400ms;",
+          "hint": "Emphasis and reveal share the slowest step."
+        }
+      ]
+    },
+    {
+      "node": "56799:50579",
+      "where": "Density — Documentation › 01 Axis › control height comfortable",
+      "figma": "40px",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-density-control-height",
+          "hint": "Comfortable mode is the base value; Compact is the $extensions override the checker cannot see."
+        }
+      ]
+    },
+    {
+      "node": "56793:50553",
+      "where": "Effects — Documentation › 03 Focus › The tokens behind it",
+      "figma": "focus/ring is primaryScale/500 (#0373DF), opaque. focus/width takes border/width/md (2px) and focus/offset takes space/2 (2px) — so the ring changes with the scale rather than on its own. The old per-tone rings drew 4px at 48% and matched nothing in code.",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-focus-width"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-focus-offset"
+        },
+        {
+          "kind": "text",
+          "value": "#0373DF"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "outline: var\\(--sa-focus-width\\) solid var\\(--sa-focus-ring\\)",
+          "hint": "The Figma ring reproduces the code's outline; if the code stops drawing it this way the frame must follow."
+        }
+      ]
+    },
+    {
+      "node": "55314:1083",
+      "where": "Layout Grid — Documentation › Hero › columns",
+      "figma": "A 24px gutter, at every breakpoint.",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-grid-gutter"
+        }
+      ]
+    },
+    {
+      "node": "55314:1086",
+      "where": "Layout Grid — Documentation › Hero › container",
+      "figma": "1200",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-container-content",
+          "hint": "The desktop cap. Moved 1280 -> 1200 on 2026-08-13; the frame must move with it."
+        }
+      ]
+    },
+    {
+      "node": "55314:1103",
+      "where": "Layout Grid — Documentation › Hero › breakpoints",
+      "figma": "360 · 768 · 1024 · 1280 · 1440 · 1920.",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-ref-breakpoint-mobile"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-ref-breakpoint-tablet"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-ref-breakpoint-laptop"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-ref-breakpoint-desktop"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-ref-breakpoint-desktopXl"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-ref-breakpoint-desktopWide",
+          "hint": "The six-rung ladder, stated once on the frame."
+        }
+      ]
+    },
+    {
+      "node": "54958:767",
+      "where": "Typography — Documentation › Tiers › body-1 meta",
+      "figma": "16 / 24 on both surfaces · Regular 400 · leading 1.5",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-type-body-1-size"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-type-body-1-lh",
+          "hint": "The reading size, fixed on both surfaces."
+        }
+      ]
+    },
+    {
+      "node": "54955:754",
+      "where": "Typography — Documentation › Hero › label-3 specimen caption",
+      "figma": "label-3 · 12px",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-type-label-3-size",
+          "hint": "Said 11px until 2026-09-05, a day after the role moved to 12."
+        }
+      ]
+    },
+    {
+      "node": "54989:776",
+      "where": "Color — Documentation › 02 Tiers › Tier 1",
+      "figma": "Palette collection · 138 variables · modes Blue and Navy · hidden from publishing",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "138 variables"
+        },
+        {
+          "kind": "source",
+          "file": "packages/tokens/dist/figma.variables.json",
+          "pattern": "\"Palette\":\\s*\\{\\s*\"total\":\\s*138",
+          "flags": "s",
+          "hint": "The payload's Palette count; the frame said 164 until 2026-09-05."
+        },
+        {
+          "kind": "source",
+          "file": "packages/tokens/build/formats/figma-variables.mjs",
+          "pattern": "collection === \"Palette\"",
+          "hint": "Palette hides whole — isHiddenName()."
+        }
+      ]
+    },
+    {
+      "node": "54989:781",
+      "where": "Color — Documentation › 02 Tiers › Tier 2",
+      "figma": "Color collection · 197 semantic variables",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "197 semantic"
+        }
+      ]
+    },
+    {
+      "node": "55064:33588",
+      "where": "Iconography — Documentation › Sizes › size-24",
+      "figma": "24px",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-icon-size-24",
+          "hint": "The default <Icon> size."
+        }
+      ]
+    },
+    {
+      "node": "57287:61473",
+      "where": "Auth / LoginHero › strapline",
+      "figma": "Single Access Mechanism for All Verticals of Empowerment & Social Harmony — one unified gateway for every social justice service in India.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-shell.tsx",
+          "pattern": "Single Access Mechanism for All Verticals of Empowerment &amp; Social Harmony\\s+— one unified gateway for every social justice service in India\\.",
+          "hint": "The hero's strapline is ONE sentence in Figma and in code. It was two for a week — the master expanded the acronym, the shell described a platform — and a designer and a developer read different copy on the same column."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-hero.css",
+          "pattern": "transparent 0%,\\s+color-mix\\(in srgb, currentColor 50%, transparent\\) 50%,\\s+currentColor 70%",
+          "hint": "The mask stops transcribe the Figma alpha mask (57287:61362): α0 → α0.5 at 50% → α1 at 70%, left to right. Change one side and the band the text sits on differs between the library and the estate."
         }
       ]
     }

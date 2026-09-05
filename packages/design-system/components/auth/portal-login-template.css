@@ -6,10 +6,14 @@
   /* The form column's own type. It used to be four Tailwind utilities and an
      arbitrary `text-[var(--sa-color-primaryScale-800)]`, which is a token
      reference that no token gate can see. */
+  /* Headline/headline-5, 20/28 — the size the handoff gives "Log in to your
+     account" (`56693:4742`), and the one the Figma AuthFormCard was rebound to
+     on 2026-09-05. It was title-2 here and headline-4 in the library, so three
+     surfaces drew three sizes of the same heading. */
   .ds-plogin__title {
-    font-size: var(--sa-type-title-2-size);
-    line-height: var(--sa-type-title-2-lh);
-    font-weight: 700;
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -39,7 +43,7 @@
   .ds-plogin__labelrow a {
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-link-brand-default);
     text-underline-offset: 2px;
   }
@@ -83,7 +87,7 @@
     border-radius: var(--sa-shape-8);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-align: center;
     color: var(--sa-text-neutral-subtle);
   }

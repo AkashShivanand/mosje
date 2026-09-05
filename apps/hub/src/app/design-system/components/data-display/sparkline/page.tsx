@@ -54,7 +54,7 @@ export default function SparklinePage(): React.JSX.Element {
       name="Sparkline"
       status="Beta"
       summary="A small line with no axes, showing the shape of a recent trend beside the figure it belongs to. It is read for direction and volatility, never for a value."
-      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      figma={{ node: "chartsChart" }}
       specimen={<SparklineSpecimen />}
       propsFrom="SparklineProps"
       a11y={A11Y}
