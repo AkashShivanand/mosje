@@ -12,6 +12,7 @@ import {
 } from "@/components/design-system/docs-kit";
 
 import { PortalLoginTemplateSpecimen } from "./portal-login-template-specimen";
+import { PortalLoginTemplateArrangements } from "./portal-login-template-arrangements";
 
 export const metadata: Metadata = {
   title: "Portal Login Template — Design System",
@@ -87,7 +88,12 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
       status="Stable"
       summary="A whole portal login page built from one configuration object. It declares the role tabs, each role's authentication modes and the credential fields, and renders them inside Portal Login Shell — so a portal describes who signs in rather than building a login page."
       figma={{ node: "portalLoginTemplate" }}
-      specimen={<PortalLoginTemplateSpecimen />}
+      specimen={
+        <div className="cdp-stack">
+          <PortalLoginTemplateSpecimen />
+          <PortalLoginTemplateArrangements />
+        </div>
+      }
       propsFrom="PortalLoginTemplateProps"
       props={HELPER_PROPS}
       a11y={A11Y}

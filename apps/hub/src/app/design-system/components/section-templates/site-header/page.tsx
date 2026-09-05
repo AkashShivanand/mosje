@@ -16,6 +16,7 @@ import {
   SiteHeaderNavyPreview,
   SiteHeaderPreview,
 } from "./header-preview";
+import { SiteHeaderArrangementsPreview } from "./header-arrangements";
 
 export const metadata: Metadata = {
   title: "Navbar (Header) — Design System",
@@ -176,7 +177,12 @@ export default function SiteHeaderPage(): React.JSX.Element {
       status="Beta"
       summary="The masthead of every SAMAVESH property is one component. Three tiers — accessibility bar, brand row, navigation row — with three variants chosen by a single prop, and a scroll condense that keeps the National Emblem on the same left edge throughout."
       figma={{ node: "siteHeader" }}
-      specimen={<SiteHeaderPreview />}
+      specimen={
+        <div className="cdp-stack">
+          <SiteHeaderPreview />
+          <SiteHeaderArrangementsPreview />
+        </div>
+      }
       propsFrom="SiteHeaderProps"
       a11y={A11Y}
       whenToUse={{

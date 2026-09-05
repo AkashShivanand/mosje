@@ -32,9 +32,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.110.0",
+    version: "v0.111.0",
     date: "2026-09-05",
     current: true,
+    changes: [
+      { kind: "Added", text: "THE LAST FIVE COMPONENT PAGES DRAW THEIR ARRANGEMENTS, AND THE BASELINE IS EMPTY. Modal (10 cells: each size on its scrim and on a phone, a title that wraps, a long body, one action, a destructive one, hideClose and an omitted footer). Tables (11: registers assembled from the Row, Table and Cell sets — header over rows, the selectable register, each cell type beside its neighbours — then sortable, the pager with page sizes, the fixed-size footer, emptyLabel and caption). Navbar (16: every boolean on both mastheads, the lockup, the account menu and its items; Active and Hover items inside a live masthead; the phone's sheet open; the toggle's two states; the bar's own language and accessibility properties; actions and brandDivider). SAMAVESH Banner (7: a subline that wraps, the drawer retitled over a shorter list, a card Selected; sticky under the condensed masthead, emptyLabel, an empty viewAllPrompt, exploreLabel). Portal Login Template (13: the form card's seven booleans down to the smallest form, the OTP form after its cooldown, the dual prompt, the Signing Into bar with a portal's mark; error, loading and roleId). Each web page renders the same set — the Modal playground opens every arrangement, the DataTable and SAMAVESH Banner pages add specimens, and the Navbar and Portal Login Template pages gain a switch strip on a live instance. check:figma-arrangements now holds every component page and its baseline may only stay empty." },
+      { kind: "Fixed", text: "SIX MASTER DEFECTS FOUND BY DRAWING THE LAST FIVE. The Modal's header drew a kebab (⋮) where the close control belongs, its Cancel was a red outlined button, its title could not wrap (a plain frame, not auto-layout) and its copy was lorem ipsum — now a library Icon close, a Neutral outlined Cancel, a title that wraps beside the control, and departmental copy. The Table header row was UX4G violet, which the estate does not adopt, with raw black rules on every row type, and the Checkbox row drew a rectangle where the library Checkbox belongs — now bg/neutral/base, border/neutral/subtle and a Checkbox instance. The Navbar's search placeholder was clipped at the field's width." },
+    ],
+  },
+  {
+    version: "v0.110.0",
+    date: "2026-09-05",
+    current: false,
     changes: [
       { kind: "Added", text: "UTILITIES AND FEEDBACK DRAW THEIR ARRANGEMENTS. Accessibility Bar (10 cells: each control switched off, a portal's own labels, tablet and mobile; layout=\"page\" with maxWidth, device=\"auto\" and the control callbacks as code-only), Divider (6: the rule at work between blocks, between controls and on the brand ground in both inverse tones; length and decorative as code-only), Chatbot (9: the two switches, a portal's own title, note and placeholder; the replies, placement and open state, notices and timing as code-only) and Ticker (12: the label, each breakpoint and direction, the Row, Action and Control sub-parts in every property and state on the strip's ground; rows, autoplay with interval, height, icon, labelAs and linkAs as code-only). Each opens with the three-panel key. The Accessibility Bar, Chatbot and Ticker web specimens render the same set. The arrangements baseline drops from nine pages to five" },
       { kind: "Fixed", text: "THE CHATBOT OPENED TO AN EMPTY LOG IN DEVELOPMENT. Strict Mode runs the scripted-opening effect twice; the first run's timers were cleared on teardown and the greeted guard stopped the second run from scheduling them, so the greeting never arrived on the docs page. The effect hands the guard back when torn down before the greeting lands. Production was unaffected; found by drawing the arrangements" },
