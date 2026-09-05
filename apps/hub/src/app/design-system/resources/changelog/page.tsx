@@ -32,9 +32,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.105.0",
+    version: "v0.106.0",
     date: "2026-09-05",
     current: true,
+    changes: [
+      { kind: "Changed", text: "THE BOT CHECK'S HELP LINK APPEARS WHERE THE CHECK CAN DEFEAT SOMEONE, NOT EVERYWHERE. Always in Challenge mode, because distorted characters are a sensory barrier and nobody should have to fail before finding the way round them; in Checkbox and Invisible modes once the check has failed. An idle checkbox is one deliberate act, not a cognitive test, and a link beneath it was noise. helpHref stays required. Code, the Figma master's nine variants and the documentation say the same thing, asserted in bot-check.spec.tsx" },
+      { kind: "Fixed", text: "BOT CHECK'S CHECKBOX MODE IN FIGMA SAT ITS LABEL 56PX FROM THE BOX. The nested Checkbox kept an empty 36px body beside its hidden label and the row added 12 more; the label now sits 8px from the box, as in code. Every instance in the library follows" },
+    ],
+  },
+  {
+    version: "v0.105.0",
+    date: "2026-09-05",
+    current: false,
     changes: [
       { kind: "Added", text: "FORMS & INPUTS DRAW THEIR ARRANGEMENTS. Input Field (25 cells: every slot alone and together, a size and a state beside a property, a label and a value that wrap, and the three states only code can draw), Input Area (18), Select (16, with the Filter set that appearance=\"filter\" reaches), OTP Input (9, with the Box sub-part in every state) and Bot Check (10, each text property in use and failure in every mode). The Textarea, Select and OTP Input web playgrounds render the same set. The arrangements baseline drops from twenty pages to sixteen" },
     ],

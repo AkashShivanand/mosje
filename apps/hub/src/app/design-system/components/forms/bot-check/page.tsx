@@ -328,6 +328,13 @@ export default function BotCheckPage(): React.JSX.Element {
               the one portal that needed it.
             </p>
             <p>
+              Required is not the same as always shown. The link renders in every{" "}
+              <code>challenge</code> state, because distorted characters are a sensory barrier and
+              nobody should have to fail before finding the way round them, and in every mode once
+              the check has failed. An idle checkbox is one deliberate act, not a cognitive test, so
+              nothing sits beneath it until something goes wrong.
+            </p>
+            <p>
               <code>PortalLoginTemplate</code> enforces the same rule one level up: a role can ask
               for a check, but if neither <code>botCheck.helpHref</code> nor the portal&apos;s help
               route is set, <strong>no check renders at all</strong>. A dead end is worse than no

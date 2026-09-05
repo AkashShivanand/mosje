@@ -168,11 +168,16 @@ export function BotCheck({
   const verifying = status === "verifying";
   const verified = status === "verified";
 
-  // The escape hatch. Rendered wherever the check is visible, and whenever it
-  // has failed — including in `invisible` mode, which is the one case where the
-  // citizen has no other way to understand why the form will not go through.
-  // It sits OUTSIDE the card, because a route out of a failed check should not
-  // be drawn inside the thing that failed.
+  // The escape hatch. Not optional, but not always shown: it renders in every
+  // `challenge` state, because distorted characters are a sensory barrier and
+  // nobody should have to fail before finding the way round them; and in every
+  // mode once the check has failed — including `invisible`, where it is the one
+  // way the citizen can learn why the form will not go through. An idle checkbox
+  // needs no escape route: it is one deliberate act, not a cognitive test
+  // (SC 3.3.8), and a link beneath it would be noise. It sits OUTSIDE the card,
+  // because a route out of a failed check should not be drawn inside the thing
+  // that failed.
+  const showHelp = failed || mode === "challenge";
   const escape = (
     <a className="ds-botcheck__help" href={helpHref}>
       {helpLabel}
@@ -235,7 +240,7 @@ export function BotCheck({
       aria-label={label}
     >
       {children}
-      {escape}
+      {showHelp ? escape : null}
     </div>
   );
 
