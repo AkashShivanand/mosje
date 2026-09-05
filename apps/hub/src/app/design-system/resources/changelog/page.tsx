@@ -32,9 +32,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.108.0",
+    version: "v0.109.0",
     date: "2026-09-05",
     current: true,
+    changes: [
+      { kind: "Added", text: "NAVIGATION DRAWS ITS ARRANGEMENTS. Tabs (14 cells: overflow, no divider, the enclosed track, the vertical axis, and the nested Tab's icon, badge, disabled state, rail and pill indicators, large size and a label too long to be a tab; ariaLabel, idBase and active/onChange as code-only), Portal Card (10: both variants selected, long names, a six-letter code; org, external, the detailed card's texts and href with path as code-only) and Sidebar (15: a badge, a group open with three and five children, the collapsed dot, active and disabled, the ancestor on the active path, the flyout, the last leaf, the group label in both modes, the rail with its control and footer and collapsed; pathname, collapsed with onCollapsedChange and a badge count as code-only). Each opens with the three-panel key. The Tabs and Sidebar web specimens render the same set. The arrangements baseline drops from twelve pages to nine" },
+      { kind: "Fixed", text: "THE PORTAL CARD'S DETAILED VARIANTS IGNORED THEIR CODE AND NAME. In the Figma master, the two Detailed variants' code and name text layers were not bound to the set's Code and Name properties, so every detailed instance in the library read “SCW · Senior Citizens Welfare” whatever it was set to. Bound now; found by drawing the detailed cells" },
+    ],
+  },
+  {
+    version: "v0.108.0",
+    date: "2026-09-05",
+    current: false,
     changes: [
       { kind: "Added", text: "ACTIONS DRAW THEIR ARRANGEMENTS. Button (15 cells: each icon slot with a glyph that fits the action, loading on both prominences, a size, an intent, a tone and a state beside a glyph, a label that is too long, and fullWidth, href with external and download, nowrap and preserveFocus as code-only), Icon Button (11, the inverse pair on its ground, aria-label, tooltip, the circle, loading and href), Button Group (9, with real actions in every group and align and aria-label as code-only) and Link (10, including a link inside its sentence, iconLeft with download, and mailto). Each section opens with the three-panel key. The Icon Button, Button Group and Link web specimens render the same set. The arrangements baseline drops from sixteen pages to twelve" },
       { kind: "Fixed", text: "FOUR DEFECTS FOUND BY DRAWING THE ACTIONS. Inverse outlined and text buttons painted their label navy-on-navy (they took the blue that sits on a white inverse fill; they now take the secondary-inverse ink, and IconButton inherits it); Link tone=\"inverse\" was unreadable for the same reason; Link size=\"sm\" and \"lg\" rendered identically because label-1 and body-2 are both 14px, so the standalone ramp is now body-2, body-1, title-1; and a loading IconButton drew its spinner over its glyph. Asserted in link-css.test.ts and icon-button.spec.tsx" },
