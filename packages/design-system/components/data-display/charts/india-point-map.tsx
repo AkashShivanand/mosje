@@ -437,6 +437,7 @@ export function IndiaPointMap({
       canvasRef={canvasRef}
       svgRef={svgRef}
       overlay={<ChartTooltip tip={tip} />}
+      onDismiss={hide}
       legend={legend}
       table={table}
       tableView={tableView}

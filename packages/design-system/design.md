@@ -12,6 +12,19 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-05 · System version: v0.53.0 (THE PORTAL DASHBOARDS DRAW FOUR
+  THINGS THE CHART LAYER DID NOT HAVE — read across sixteen handoff screens on ten portal
+  pages: a ranked bar list (now `RankedBarList` + `InlineBar`), a metric against its
+  target and with its status (`MetricCard` gains `progress`, `status`, `tone`, `detail`,
+  `aside`, `provenance`; `Progress` gains `target` and `tone`), a highlighted current
+  period and a reference line on `BarChart`, and provenance that travels with the data
+  (`DataProvenance`, `ProvenanceLine`). The spec's withheld-figure contract is built —
+  `ChartWithheld` on datum and series, hatched, spoken, excluded from totals — and its
+  accessibility contract is now a keyboard model: one Tab stop per chart, arrows between
+  marks, Escape closes the tooltip, and a print stylesheet on every chart. In Figma the
+  Charts & Graphs page is rebuilt in the house style with bound masters and a component
+  record; the UX4G Chart.js import is renamed legacy. See the changelog.)
+
   Last reviewed: 2026-09-05 · System version: v0.52.0 (EVERY PORTAL RAIL IS SidebarNav. Six
   shells that drew their own rail — NMBA admin, public and treatment centre, Eutthan, PM-AJAY,
   SMILE's mobile drawer — render the design system's, from the nav data they already had; a
@@ -1540,6 +1553,54 @@ this is a real text input whose focus never leaves, so a screen reader announces
 editable and reads the remaining match count after each keystroke. It refuses
 unmatched text on blur — a box reading "Bankuraa" over a form value of "" is how a
 district goes missing between the screen and the database.
+
+**A ranking or a breakdown with the figure printed per row: use `<RankedBarList>`.**
+"Top States by Pledges", "SLA Compliance by District", "Category Distribution",
+"District-wise Fund Utilisation" — the most-drawn chart across sixteen portal dashboard
+handoffs (2026-09-05) and, until then, the one the layer did not have, so portals reached
+for a `BarChart` with the axis it does not need or hand-rolled a div. It is a label, a
+figure and a thin bar per row: the figure is the reading, the bar is the aid, and the
+ordered list is the accessible form — the bar is `aria-hidden` because the text beside it
+already says the number. Pin `max={100}` for a percentage or the highest row draws at full
+width and reads as "complete". A tone is set only through `tone` or a `toneFor` rule the
+scheme has actually stated, and the caption names the threshold: green means on track on
+this estate, and the first row in a ranking is not "good". It PAGES with `pageSize` and
+never scrolls inside its card. `<InlineBar>` is the same bar alone for a `DataTable` cell
+beside a printed figure; give it a `label` only where the figure is not already printed.
+
+**One number, five readings: `<MetricCard>` carries all five.** Bare value; value with
+a change against a named `changeLabel`; value with its trend (a `Sparkline` in `aside`,
+decorative because the figure carries the meaning); value against a target (`progress`
+with a `max` and a `target` — a bar, not a second number, because the reader's question
+is how far there is to go); and value with a status (`status` for the words, `tone` for
+the colour — the chip is what lets the tint be a tint). `detail` prints the numerator and
+denominator behind a rate. A `tone` is a claim: set it only against a rule the scheme has
+stated — the queue's "due soon" and "overdue" tiles — never on the first card in a row.
+`<Progress>` takes the same `target`, `targetLabel` and `tone`, and `compact` drops its
+label row where the surface already prints the label.
+
+**Provenance travels with the data.** `DataProvenance` — source, as-of date, status — is
+a field on the data, not a caption someone types, and `<ChartCard provenance>` and
+`<MetricCard provenance>` print it as one muted `<ProvenanceLine>` and drop it whenever
+the card has nothing to show. It is the one line of self-description
+`ui-restraint-and-copy.md` permits; feed diagnostics still go to the audit doc.
+
+**A withheld figure is not a zero.** `ChartDatum.withheld` and `ChartSeries.withheld`
+carry "suppressed" or "not reported" with a reason. `BarChart` draws a hatched stub, never
+a bar; the tooltip and the screen-reader table print `withheldLabel()`; the value is
+excluded from every domain and stack. `RankedBarList` sorts a withheld row last and
+hatches its track. Health and census data arrive this way routinely, and the workaround a
+contract without it produces is a literal "—" in the data that breaks every scale.
+
+**Every chart is one Tab stop.** `ChartFrame` roves: Tab enters at the first (or last
+visited) mark, the arrow keys move between marks, Home and End jump to the ends, and
+Escape dismisses the tooltip without moving focus (`onDismiss`, which every chart with a
+tooltip passes). A thirty-bar chart used to be thirty Tab stops. `BarChart` also takes
+`highlightIndex` — the current period keeps its colour and the rest drop to
+`chart/seq/300`, with "current" spoken in the summary — and `target`, a dashed reference
+line that joins the axis domain so it is never drawn off the plot. Every chart, card and
+metric tile has a print stylesheet: tooltips and toggles go, the screen-reader table
+becomes the printed table with a repeating header, and a card never splits across a page.
 
 **Reporting a figure against its target: use `<BulletChart>`.** Sanctioned against
 released, released against utilised, places created against places filled — this is

@@ -3,11 +3,71 @@
    The superset data shapes every chart in the catalogue accepts.
    ============================================================================ */
 
+/**
+ * Why a figure is ABSENT although its category exists.
+ *
+ * Health and census data routinely arrives as "<5, suppressed", "provisional"
+ * or "not reported". A contract that cannot say so gets worked around on the
+ * first real dataset — the workaround is always a literal "—" in the data,
+ * which then breaks every scale. A withheld figure renders as a hatched gap,
+ * never as zero; it appears in the screen-reader table with its reason as
+ * text; and it is excluded from any total.
+ */
+export type ChartWithheldKind = "suppressed" | "not-reported";
+export interface ChartWithheld {
+  kind: ChartWithheldKind;
+  /** e.g. "cell count below 5" — shown in the tooltip and the table, never invented. */
+  reason?: string;
+}
+
+/** The spoken and printed form of a withheld figure. One place, so every chart says it the same way. */
+export const withheldLabel = (w: ChartWithheld): string => {
+  const head = w.kind === "suppressed" ? "Suppressed" : "Not reported";
+  return w.reason ? `${head} (${w.reason})` : head;
+};
+
+/**
+ * Where a figure came from. A government figure without it is unusable in a
+ * deck, so it travels WITH the data rather than being typed into a caption.
+ * `ChartCard` and `MetricCard` print it as one muted line — the one piece of
+ * self-description `ui-restraint-and-copy.md` permits.
+ */
+export interface DataProvenance {
+  /** "PM-AJAY MIS, Department of Social Justice and Empowerment" */
+  source: string;
+  /** ISO date the figures were current on. */
+  asOf: string;
+  /** Omit for final. Provisional and revised figures are labelled as such. */
+  status?: "final" | "provisional" | "revised";
+  note?: string;
+}
+
+/**
+ * The five semantic tones a data surface may carry. They map to the estate's
+ * STATUS inks, never to the categorical chart ramp — in government reporting
+ * green and red mean on-track and breached, so a tone is a claim about the
+ * figure and is only set where the caller has a stated threshold for it.
+ */
+export type StatusTone = "neutral" | "info" | "success" | "warning" | "danger";
+
 /** Single categorical datum. `color` is optional → backward compatible. */
-export type ChartDatum = { label: string; value: number; color?: string };
+export type ChartDatum = {
+  label: string;
+  /** Ignored where `withheld` is set — the category exists, the figure does not. */
+  value: number;
+  color?: string;
+  withheld?: ChartWithheld;
+};
 
 /** A named numeric series aligned to a shared `labels` axis. */
-export type ChartSeries = { name: string; data: number[]; color?: string; fill?: boolean };
+export type ChartSeries = {
+  name: string;
+  data: number[];
+  color?: string;
+  fill?: boolean;
+  /** Withheld cells, keyed by label index. The matching `data[i]` is ignored. */
+  withheld?: Record<number, ChartWithheld>;
+};
 
 /** Multi-series shape used by bar (grouped/stacked), line, area and combo charts. */
 export type ChartMultiSeries = { labels: string[]; series: ChartSeries[] };

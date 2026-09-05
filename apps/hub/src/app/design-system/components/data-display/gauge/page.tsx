@@ -55,7 +55,7 @@ export default function GaugePage(): React.JSX.Element {
       name="Gauge"
       status="Beta"
       summary="Draws one figure against a scale as an arc, with the value printed in the middle. It is for the single number a dashboard is judged on — a compliance rate, an occupancy, a utilisation."
-      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      figma={{ node: "chartsChart" }}
       specimen={<GaugeSpecimen />}
       propsFrom="GaugeProps"
       a11y={A11Y}

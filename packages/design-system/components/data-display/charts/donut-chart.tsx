@@ -96,6 +96,7 @@ export function DonutChart(props: DonutChartProps) {
         className={className}
         canvasRef={canvasRef}
         overlay={<ChartTooltip tip={tip} />}
+        onDismiss={hide}
         legend={
           <Legend
             orientation="vertical"

@@ -3,6 +3,8 @@ import { cn } from "../../utils/cn";
 import { ChartExport, type ChartExportFormat } from "./chart-export";
 import { CardState, actionForState, type CardStateKind } from "./card-state";
 import { CardSkeleton, type CardSkeletonShape } from "./card-skeleton";
+import { ProvenanceLine } from "./provenance";
+import type { DataProvenance } from "../data-display/charts/types";
 import "./dashboard.css";
 
 export interface ChartCardProps
@@ -60,6 +62,13 @@ export interface ChartCardProps
    */
   skeleton?: CardSkeletonShape;
   footer?: React.ReactNode;
+  /**
+   * Where the figures came from — printed as one muted line beneath the body,
+   * and dropped with the footer whenever the card has nothing to show, because
+   * a source line under "This could not be loaded" is describing figures that
+   * are not there.
+   */
+  provenance?: DataProvenance;
   className?: string;
   children?: React.ReactNode;
 }
@@ -89,6 +98,7 @@ export function ChartCard({
   retryLabel,
   skeleton = "bars",
   footer,
+  provenance,
   className,
   children,
   style: styleProp,
@@ -164,6 +174,9 @@ export function ChartCard({
           children
         )}
       </div>
+      {provenance && settled && (
+        <ProvenanceLine className="ds-chart-card__provenance" provenance={provenance} />
+      )}
       {footer && settled && (
         <footer className="ds-chart-card__footer">{footer}</footer>
       )}

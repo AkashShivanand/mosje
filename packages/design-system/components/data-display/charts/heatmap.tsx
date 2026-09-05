@@ -81,6 +81,7 @@ export function Heatmap({
       className={className}
       canvasRef={canvasRef}
       overlay={<ChartTooltip tip={tip} />}
+      onDismiss={hide}
       table={{
         columns: ["Row", ...xLabels],
         rows: yLabels.map((yl, yi) => [yl, ...xLabels.map((_, xi) => matrix[yi]?.[xi] ?? 0)]),

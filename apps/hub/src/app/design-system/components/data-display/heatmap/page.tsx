@@ -55,7 +55,7 @@ export default function HeatmapPage(): React.JSX.Element {
       name="Heatmap"
       status="Beta"
       summary="Crosses two categorical axes and shades each cell by its value, so concentration and absence are visible before any figure is read. It is the catalogue's chart for “where is this happening”."
-      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      figma={{ node: "chartsChart" }}
       specimen={<HeatmapSpecimen />}
       propsFrom="HeatmapProps"
       a11y={A11Y}

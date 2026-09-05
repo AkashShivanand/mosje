@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Icon, MetricCard } from "@mosje/design-system";
+import { Icon, MetricCard, Sparkline } from "@mosje/design-system";
 
 /**
  * **MetricCard** — one number that matters, with its trend.
@@ -147,4 +147,79 @@ export const InlineChangeText: Story = {
 /** No icon — legitimate when the label already carries the meaning. */
 export const WithoutIcon: Story = {
   args: { icon: undefined },
+};
+
+/**
+ * The figure against its target. `progress` draws the bar, the tick and the
+ * scale row; the reader's question is how far there is to go, and a second
+ * number would not answer it.
+ */
+export const AgainstATarget: Story = {
+  args: {
+    label: "Utilisation of release",
+    value: "79.0%",
+    changeValue: "1.6 pts",
+    changeDirection: "down",
+    changeLabel: "utilised ÷ released",
+    icon: undefined,
+    progress: { value: 79, max: 100, target: 85, targetLabel: "Target 85%" },
+  },
+};
+
+/**
+ * A status chip carries the WORDS; `tone` carries the colour. The chip is what
+ * lets the tint be a tint — a red figure with no words is a claim the reader
+ * has to guess at.
+ */
+export const WithStatus: Story = {
+  args: {
+    label: "Hotspots covered",
+    value: "10.2%",
+    detail: "90 of 883 surveyed",
+    status: { label: "Below target", tone: "danger" },
+    changeValue: undefined,
+    changeLabel: undefined,
+    icon: undefined,
+    progress: { value: 90, max: 883, target: 883 },
+  },
+};
+
+/** The queue's "due soon" and "overdue" tiles: a tone is set only against a stated rule. */
+export const Toned: Story = {
+  render: (args) => (
+    <div style={{ display: "grid", gap: 16, gridTemplateColumns: "repeat(2, minmax(0, 1fr))", width: 640 }}>
+      <MetricCard {...args} icon={undefined} label="Due soon" value="24" tone="warning" changeValue="5.4%" changeDirection="up" changeLabel="vs last month" />
+      <MetricCard {...args} icon={undefined} label="Overdue applications" value="54" tone="danger" changeValue="14.5%" changeDirection="up" changeLabel="vs last month" />
+    </div>
+  ),
+};
+
+/** Where the figure came from, as one muted line. Dropped with the change indicator when there is no figure. */
+export const WithProvenance: Story = {
+  args: {
+    label: "Resolved cases",
+    value: "31,200",
+    detail: "75% resolution rate",
+    changeValue: undefined,
+    changeLabel: undefined,
+    icon: undefined,
+    provenance: { source: "NHAPOA MIS", asOf: "2026-08-31", status: "provisional" },
+  },
+};
+
+/**
+ * The figure WITH ITS TREND: a `Sparkline` in `aside`. It is decorative there —
+ * no label, no axis — because the figure and its change carry the meaning; the
+ * shape only says which way it has been going.
+ */
+export const WithTrend: Story = {
+  args: {
+    label: "Total allocation",
+    value: "₹9,250 Cr",
+    changeValue: "4.2%",
+    changeDirection: "up",
+    changeLabel: "FY budget",
+    icon: undefined,
+    aside: <Sparkline data={[7_800, 8_100, 8_400, 8_650, 8_900, 9_050, 9_250]} width={72} height={24} />,
+  },
 };

@@ -525,6 +525,11 @@ export const NAV: NavGroup[] = [
         "badge": "Stable"
       },
       {
+        "label": "Ranked Bar List",
+        "href": "/design-system/components/data-display/ranked-bar-list",
+        "badge": "New"
+      },
+      {
         "label": "Scatter Chart",
         "href": "/design-system/components/data-display/scatter-chart",
         "badge": "Beta"

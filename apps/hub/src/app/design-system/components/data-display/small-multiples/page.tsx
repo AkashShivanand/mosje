@@ -52,7 +52,7 @@ export default function SmallMultiplesPage(): React.JSX.Element {
       name="Small Multiples"
       status="Beta"
       summary="The same chart drawn once per category, on one shared scale. It is what to use when a series count has outgrown what colour can carry — position and a caption identify each panel, so no hue is needed at all."
-      figma={{ absent: "Not yet drawn in the Figma library. The chart catalogue is authored in code first." }}
+      figma={{ node: "chartsDoc" }}
       specimen={<SmallMultiplesSpecimen />}
       propsFrom="SmallMultiplesProps"
       a11y={A11Y}

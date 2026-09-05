@@ -261,7 +261,12 @@ export type {
 export type { FactStripProps, FactStripItem } from "./components/data-display/fact-strip";
 
 export { MetricCard } from "./components/data-display/metric-card";
-export type { MetricCardProps, MetricCardSize, MetricCardChange } from "./components/data-display/metric-card";
+export type {
+  MetricCardProps,
+  MetricCardSize,
+  MetricCardChange,
+  MetricCardProgress,
+} from "./components/data-display/metric-card";
 // ---- Forms: FilterSelect ----------------------------------------------------
 // The compact dashboard filter, as a real listbox. `Select` remains the answer
 // for a FORM field — it is a native `<select>`, which every assistive technology
@@ -334,12 +339,27 @@ export {
   SmallMultiples,
   texturedColor,
   CHART_TEXTURE_COUNT,
+  RankedBarList,
+  InlineBar,
+  withheldLabel,
 } from "./components/data-display/charts";
+// RankedBarList (above) is the most-drawn chart in the portal handoffs — a label,
+// a figure and a thin bar per row — and InlineBar is its bar alone, for a table
+// cell. withheldLabel is a resolver: the spoken form of a withheld figure. The
+// comment sits OUTSIDE the export block because the Storybook gates split that
+// block on commas and would read a comment as a name.
 export type {
   ChartDatum,
   ChartSeries,
   ChartMultiSeries,
   ChartTable,
+  ChartWithheld,
+  ChartWithheldKind,
+  DataProvenance,
+  StatusTone,
+  RankedBarListProps,
+  RankedBarItem,
+  InlineBarProps,
   BarChartProps,
   LineChartProps,
   AreaChartProps,
@@ -376,6 +396,9 @@ export type {
 // ---- Components: Dashboard composition ---------------------------------------
 export { ChartCard } from "./components/dashboard/chart-card";
 export type { ChartCardProps } from "./components/dashboard/chart-card";
+// Source · as of · status — the one line of self-description a card may carry.
+export { ProvenanceLine, formatAsOf } from "./components/dashboard/provenance";
+export type { ProvenanceLineProps } from "./components/dashboard/provenance";
 // What a card shows when it has nothing to draw — six reasons, one family,
 // drawn in the chart vocabulary rather than borrowed from an icon set. And the
 // loading placeholder that wears the shape of what is coming.

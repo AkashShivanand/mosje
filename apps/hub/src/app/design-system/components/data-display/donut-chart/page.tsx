@@ -55,7 +55,7 @@ export default function DonutChartPage(): React.JSX.Element {
       name="Donut Chart"
       status="Beta"
       summary="A ring with the total in the middle. In its segmented form it shows how a whole divides; in its progress form it shows one figure against a target, with an optional tick where the target sits."
-      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      figma={{ node: "chartsChart" }}
       specimen={<DonutChartSpecimen />}
       propsFrom="DonutChartProps"
       a11y={A11Y}

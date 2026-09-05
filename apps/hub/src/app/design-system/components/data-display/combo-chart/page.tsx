@@ -63,7 +63,7 @@ export default function ComboChartPage(): React.JSX.Element {
       name="Combo Chart"
       status="Beta"
       summary="Bars and a line over the same categories, each read against its own y axis. It is the chart for a count and a rate that belong together but do not share a scale."
-      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      figma={{ node: "chartsChart" }}
       specimen={<ComboChartSpecimen />}
       propsFrom="ComboChartProps"
       a11y={A11Y}

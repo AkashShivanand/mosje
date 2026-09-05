@@ -329,7 +329,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Chart Card — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/dashboard/chart-card",
-    "keywords": "chart card — design system auth & dashboard six reasons a card has nothing to draw the skeleton promises the shape a card that cannot show its data must not talk about its data example what a screen reader hears  tokens wcag accessibility",
+    "keywords": "chart card — design system auth & dashboard six reasons a card has nothing to draw the skeleton promises the shape provenance travels with the data a card that cannot show its data must not talk about its data example what a screen reader hears  tokens wcag accessibility",
     "description": "The titled container a dashboard chart sits in. It owns the header, the grid span, the download control and every state the chart can be in — loading, empty, filtered to nothing, failed.",
     "type": "component",
     "iconName": "bar_chart"
@@ -996,7 +996,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Metric Card — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/metric-card",
-    "keywords": "metric card — design system data display a figure that has not arrived the change needs a baseline format the figure before you pass it example what a screen reader gets  tokens wcag accessibility",
+    "keywords": "metric card — design system data display a figure that has not arrived the change needs a baseline five readings of one number format the figure before you pass it example what a screen reader gets  tokens wcag accessibility",
     "description": "One headline figure with its label and, where there is one, the change against a stated baseline — with real states for a figure that has not arrived.",
     "type": "component",
     "iconName": "bar_chart"
@@ -1184,6 +1184,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A radio button for choosing exactly one option from a mutually exclusive set. Three sizes, a description, read-only, a card variant, and a group that names the question, carries the error and reveals a follow-up.",
     "type": "component",
     "iconName": "edit_note"
+  },
+  {
+    "title": "Ranked Bar List — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/ranked-bar-list",
+    "keywords": "ranked bar list — design system data display the figure is the reading; the bar is the aid a tone is a claim about the figure it pages; it never scrolls inside its card a withheld figure keeps its row example what a screen reader gets InlineBar tokens wcag accessibility",
+    "description": "A label, a figure and a thin bar per row — the ranking and breakdown list every portal dashboard draws, paged rather than scrolled, with the figure as the reading and the bar as the aid.",
+    "type": "component",
+    "iconName": "bar_chart"
   },
   {
     "title": "Required Fields Legend — Design System",
