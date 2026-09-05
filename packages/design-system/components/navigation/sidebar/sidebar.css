@@ -151,7 +151,6 @@
   }
 
   .ds-sidebar__row:hover:not(.is-active, .is-disabled),
-  .ds-sidebar__row.is-ancestor:hover,
   .ds-sidebar__row.is-open:not(.is-active) {
     background: var(--sa-bg-neutral-subtler);
   }
@@ -161,10 +160,9 @@
     color: var(--sa-text-brand-primary-bolder);
   }
 
-  /* An ANCESTOR of the current page — a group that contains it — takes the
-     bolder ink but no tint. The tint marks one page; the ink and the drawn
-     connector carry the route to it. */
-  .ds-sidebar__row.is-ancestor,
+  /* A level-2 group on the way to the current page takes the bolder ink but no
+     tint: the level-1 holder and the page itself are tinted, the route between
+     them is ink and the drawn connector. */
   .ds-sidebar__sub-row.is-ancestor {
     color: var(--sa-text-brand-primary-bolder);
   }
@@ -180,8 +178,7 @@
     color: var(--sa-icon-neutral-base);
   }
 
-  .ds-sidebar__row.is-active .ds-sidebar__icon,
-  .ds-sidebar__row.is-ancestor .ds-sidebar__icon { color: var(--sa-icon-brand-primary-bolder); }
+  .ds-sidebar__row.is-active .ds-sidebar__icon { color: var(--sa-icon-brand-primary-bolder); }
   .ds-sidebar__row.is-disabled .ds-sidebar__icon { color: var(--sa-icon-neutral-disabled); }
 
   .ds-sidebar__label,
@@ -233,41 +230,47 @@
      the rail), arm to the pill at 16 (56 in the rail). */
   .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-16); }
 
-  /* Elbow: from the parent's edge (the list begins exactly where the parent
-     row ends; only the list's stack/4 padding sits between) → row centre (22
-     of a 44 row) → into the pill. It never enters the pill above. Where a
-     sibling's tail already covers the gap the two overlap by the same 1px
-     line, which is invisible. Neutral: the tree is structure, not signal. */
+  /* The trunk runs STRAIGHT THROUGH every entry: from the parent's edge (the
+     list begins where the parent row ends; only the list's stack/4 padding sits
+     between) down past the row into the next entry, bridging the stack/4 gap.
+     The last entry's trunk stops at its row centre. Bending the trunk into the
+     arm left a 6px notch at every branch; a tree's trunk does not bend. */
   .ds-sidebar__sub::before {
     content: "";
     position: absolute;
     left: 24px; /* 16px left of the level-2 pill at inline/40 — the handoff's geometry */
     top: calc(-1 * var(--sa-stack-4));
-    width: 16px; /* the arm, to the pill's edge */
-    height: calc(22px + var(--sa-stack-4));
-    border-left: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-bottom-left-radius: var(--sa-shape-6);
-  }
-
-  .ds-sidebar__sub--l3::before {
-    left: 0; /* the nested list starts at the rail's 40; the trunk is 16px left of the pill at 56 */
-  }
-
-  /* Tail: row centre → next sibling, across the gap. Absent on the last entry. */
-  .ds-sidebar__sub::after {
-    content: "";
-    position: absolute;
-    left: 24px;
-    top: 22px;
     bottom: calc(-1 * var(--sa-stack-4));
     width: var(--sa-cmp-divider-width);
     background: var(--sa-border-neutral-subtle);
   }
 
-  .ds-sidebar__sub--l3::after { left: 0; }
+  .ds-sidebar__sub:last-child::before {
+    bottom: auto;
+    height: calc(22px + var(--sa-stack-4)); /* to the centre of a 44px row */
+  }
 
-  .ds-sidebar__sub:last-child::after { content: none; }
+  /* The elbow branches OFF the trunk: a shape/6 arc from 16 to the row centre
+     at 22, then a 16px arm into the pill. It overlays the straight trunk. */
+  .ds-sidebar__sub::after {
+    content: "";
+    position: absolute;
+    left: 24px;
+    top: 16px;
+    width: 16px;
+    height: 6px;
+    border-left: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-bottom-left-radius: var(--sa-shape-6);
+  }
+
+  /* A level-3 list nests inside its level-2 entry, which already indents by
+     inline/40, so the leaf adds only the remaining inline/16 to land at 56; its
+     connector coordinates are relative to that nested list (0 here = 40 in the
+     rail). */
+  .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-16); }
+  .ds-sidebar__sub--l3::before,
+  .ds-sidebar__sub--l3::after { left: 0; }
 
   /*
    * The path to the current page. One SVG per list, drawn over the neutral
@@ -287,6 +290,7 @@
     height: 100%;
     overflow: visible;
     pointer-events: none;
+    z-index: 1; /* above the entries' neutral connectors, so the drawn route is unbroken where they coincide */
   }
 
   .ds-sidebar__path path {

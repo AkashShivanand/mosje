@@ -112,7 +112,8 @@ const RowLink = React.forwardRef<HTMLElement, RowLinkProps>(function RowLink(
  */
 export function activePathD(trunkX: number, y: number): string {
   const r = 6;
-  return `M ${trunkX} 0 V ${y - r} Q ${trunkX} ${y} ${trunkX + r} ${y} H ${trunkX + 16}`;
+  // trunk straight to the row centre, then the branch: arc off the trunk into the arm
+  return `M ${trunkX} 0 V ${y} M ${trunkX} ${y - r} Q ${trunkX} ${y} ${trunkX + r} ${y} H ${trunkX + 16}`;
 }
 
 /**
@@ -366,12 +367,13 @@ function MainItem({
   const anchorRef = React.useRef<HTMLButtonElement>(null);
   const listRef = React.useRef<HTMLUListElement>(null);
 
-  // The tint marks the one current page; a group that merely CONTAINS it takes
-  // the bolder ink without the tint, and the drawn connector carries the route.
+  // The level-1 item that holds the current page is tinted, as the page is: the
+  // rail reads "you are in Applications, at Under Review". Inside the group the
+  // tint appears once more, on the page; a level-2 group on the way takes the
+  // ink without the tint, and the drawn connector carries the route between.
   const rowClass = cn(
     "ds-sidebar__row",
-    selfActive && "is-active",
-    active && !selfActive && "is-ancestor",
+    active && "is-active",
     item.disabled && "is-disabled",
   );
   const badgeText = item.badge != null ? `${item.badge} pending` : null;
@@ -549,8 +551,8 @@ export function warnOversizedGroups(groups: SidebarNavGroup[]): string[] {
  *   neutral; the path to the current page is drawn in brand on navigation.
  * - `pathname` is the only source of the current state, at every level: the
  *   longest matching href is the one current page (tinted), so a portal's root
- *   item does not light up on every route; the groups that contain it take the
- *   bolder ink without the tint.
+ *   item does not light up on every route. The level-1 item holding it is
+ *   tinted too; a level-2 group on the way takes the bolder ink without tint.
  * - In the collapsed rail a group opens a flyout listing its level-2 pages;
  *   a leaf shows its label as a tooltip; a badge count becomes a dot.
  * - Group labels are the accessible name of their `role="group"`, in both modes.
