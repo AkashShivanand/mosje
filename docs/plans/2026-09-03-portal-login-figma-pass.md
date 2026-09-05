@@ -10,6 +10,20 @@ material, gaps G1–G11).
 
 ---
 
+## Status 2026-09-05
+
+Audited against the live file and `main`. Where things stand:
+
+| Phase | State |
+|---|---|
+| 0 | The BotCheck change reached main by cherry-pick (PR #315); `ds/login-figma-pass` was never opened as a PR and is retired. C1 and C2 from the companion audit are fixed on main (PR #317). |
+| 1 | 1.1 done — captcha hidden in every variant, `Auth / BotCheck` part exists · 1.3 done, then corrected on 2026-09-05: the 375-wide variants HUG their content rather than clip at 812 · 1.4 partial — `Log In` and `Verify and Log In` are drawn, `Send OTP` is not, and the method tabs still read "Login with …" beside a button reading "Log In". |
+| 2 | Page order restored and the Component record authored on 2026-09-05. The per-portal flow sections a designer composed on the page are kept as a numbered section: they are examples, not sets. |
+| 3 | Re-pinned. `claims.json` expects eight and COUNTS the master (`kind: "figma"`, live only), because a pin that only compared three strings certified "six" for two days. |
+| 4 | Shell renamed to `PortalLoginShell`. `PortalList` still has no Device axis; the four part defects are unverified since 2026-09-02. |
+| new | **`Auth / LoginHero`, 2026-09-05** — the desktop hero column as one component: Photograph swap, exposed Signing Into bar, footer boolean. The shell's desktop variant nests it. Code still draws the column inline in `PortalLoginShell` with different copy and no photograph; on the record. |
+| drift | `CredentialRecovery` and `RecoveryFormCard` were built in Figma on 2026-09-04 against this plan's own deferral. Five organisms now have no code. Recorded, and `ds-documentation-standard.md` §1 now requires the record entry in the same session. |
+
 ## 0. What this branch already closed
 
 | Gap | State |
