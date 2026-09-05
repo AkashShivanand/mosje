@@ -94,3 +94,27 @@ export function AccessibilityBarFontSizePreview(): React.JSX.Element {
     </Frame>
   );
 }
+
+/**
+ * Arrangements the master grid does not show: the bar forced to the mobile breakpoint
+ * (icons only), a narrow layout, and the controls switched off one at a time — the
+ * single-language portal, and the portal whose widget is mounted elsewhere.
+ */
+export function AccessibilityBarArrangementsPreview(): React.JSX.Element {
+  return (
+    <div style={{ display: "grid", gap: "var(--sa-stack-16)" }}>
+      <div style={{ maxWidth: 412 }}>
+        <Frame>
+          <AccessibilityBar device="mobile" layout="fluid" govLink={GOV_LINK} accessibilityHref="#" language={{ label: "English" }} />
+        </Frame>
+      </div>
+      <Frame>
+        <AccessibilityBar layout="narrow" govLink={GOV_LINK} accessibilityHref="#" language={false} fontSize={false} />
+      </Frame>
+      <Frame>
+        <AccessibilityBar layout="fluid" govLink={GOV_LINK} accessibilityHref="#" showSkip={false} language={{ label: "हिंदी", lang: "hi" }} />
+      </Frame>
+    </div>
+  );
+}
+
