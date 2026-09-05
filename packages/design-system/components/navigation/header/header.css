@@ -252,7 +252,9 @@
 
   /* Portal collapse / menu toggle (far left).
      Figma: Navbar/MenuToggle = IconButton Size=Large, Type=Outlined — 48x48,
-     radius 8, 1px neutral border, 32px glyph. Identical to the mobile SheetToggle,
+     radius 8, 1px neutral border, 24px glyph — the IconButton's own icon size at both
+     48 and 40. It carried a 32px glyph until 2026-09-05; Figma's icon slot could not
+     centre a 32 in a 24 box and the glyph sat 2px right and 4px low. Identical to the mobile SheetToggle,
      deliberately: one hamburger look across the estate.
 
      It was a bare 40x40 with a 24px glyph — the only control in the brand row with
@@ -324,6 +326,74 @@
     .ds-hdr-brand__in {
       gap: var(--sa-stack-16);
     }
+
+    /* THE PHONE ROW HAS ONE CONTROL PER SIDE, AND THEY ARE NOT EQUALS. The
+       leading 48px toggle is where you go; the trailing avatar is who you are.
+       At 48 the avatar made two equal squares fight for the eye; at 40 the toggle
+       reads as the control and the avatar as the badge. `Avatar` sizes itself
+       from `--sa-cmp-avatar-size-lg` on its own element, so the token is re-pointed
+       here rather than the width overridden. Figma: Portal Mobile, Avatar
+       Size=Large - 40px. */
+    .ds-hdr-brand__in .ds-hdr-account__avatar {
+      --sa-cmp-avatar-size-lg: var(--sa-cmp-avatar-size-md);
+    }
+
+    /* BETA costs a whole line on a phone. At 412px the department already wraps
+       to two lines; the badge added 20px above them, and it tells a phone reader
+       nothing a desktop reader does not already know. Off below 768, on the
+       resting row only — the sheet's own lockup keeps it. Figma: Show beta off
+       on both Mobile masters. */
+    .ds-hdr-brand__in .ds-hdr-lockup .ds-hdr-badge {
+      display: none;
+    }
+
+    /* The portal's field waits behind the button until tapped. */
+    .ds-hdr[data-variant="portal"] .ds-hdr-searchfield:not(.is-open) {
+      display: none;
+    }
+
+    /* THE IDENTITY NEVER BECOMES A COLUMN. With a zero basis the lockup takes
+       whatever the controls leave, and a portal that carries a sidebar toggle,
+       a search button, an account and a sheet trigger on one 380px row left it
+       120px — one word per line, twelve lines tall. Below this width the
+       trailing controls wrap to a second line instead, which is the lesser evil:
+       a second row of controls is still a masthead; a twelve-line lockup is not. */
+    .ds-hdr-brand__lockup {
+      min-width: 180px;
+    }
+
+    /* Two classes, deliberately: the base rule below sets `display: none` and is
+       later in the file, so a one-class rule here would lose to it. */
+    .ds-hdr-brand__in .ds-hdr-brand__searchbtn {
+      display: inline-grid;
+    }
+  }
+
+  /* The portal's phone search button: the condensed bar's 40px outlined control,
+     in the resting row, shown only below 768 (the rule above turns it on). */
+  .ds-hdr-brand__searchbtn {
+    display: none;
+    place-items: center;
+    height: 40px;
+    width: 40px;
+    flex: 0 0 auto;
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: transparent;
+    color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
+    cursor: pointer;
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .ds-hdr-brand__searchbtn:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
+  }
+
+  .ds-hdr-brand__searchbtn:active {
+    transform: scale(0.96);
   }
 
   /* Trailing zone */
@@ -400,41 +470,9 @@
      estate already has in the footer. [DBIM 5.4] */
   @media (max-width: 1023px) {
     .ds-hdr-cobrand,
-    .ds-hdr-cobrand-link,
-    .ds-hdr-cobrand-lockup {
+    .ds-hdr-cobrand-link {
       display: none;
     }
-  }
-
-  /* The SAMAVESH lockup: mark, name, expansion — Figma `Cobranding › SAMAVESH`.
-     Both lines sit on Body/body-3, the estate's 12px floor; the master drew them at
-     11 and 7 and the stack fitted in 40. At 12/16 the expansion takes two lines in a
-     15rem measure, so the lockup is 48 tall and centres on the 40px mark. */
-  .ds-hdr-cobrand-lockup {
-    --ds-hdr-cobrand-measure: 15rem;
-
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-8);
-    flex: 0 0 auto;
-  }
-
-  .ds-hdr-cobrand-lockup__text {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-2);
-    max-inline-size: var(--ds-hdr-cobrand-measure);
-    font-size: var(--sa-type-body-3-size);
-    line-height: var(--sa-type-body-3-lh);
-  }
-
-  .ds-hdr-cobrand-lockup__title {
-    font-weight: var(--sa-font-weight-semibold);
-    color: var(--sa-text-neutral-base);
-  }
-
-  .ds-hdr-cobrand-lockup__sub {
-    color: var(--sa-text-neutral-subtle);
   }
 
   /* [DBIM 5.6] Hyperlinked logos, the same treatment the footer gives its credits:
@@ -464,10 +502,15 @@
      [DBIM 4.4.iv] "Mouse hover must prompt a noticeable change in clickable items"
      — it had a hover ground already, but no pressed state and no open state, so
      the control looked identical whether its menu was open or shut. */
+  /* 4 above and below, 12 at the sides. At 4 all round the hover ground hugged the
+     name so tightly that the text sat on the pill's edge; 12 gives the words the
+     same breathing room the avatar's circle already had. The height is unchanged
+     — 48 + 8 in the brand row, 40 + 8 in the condensed bar's 48 — so nothing
+     grows; only the ground widens. Figma: Navbar/AccountMenu, every state. */
   .ds-hdr-account.is-button {
     border: none;
     background: transparent;
-    padding: var(--sa-padding-4);
+    padding: var(--sa-padding-4) var(--sa-padding-12);
     border-radius: var(--sa-shape-8);
     cursor: pointer;
     transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
@@ -570,7 +613,9 @@
 
   /* Mobile drawer toggle.
      Figma: Navbar/* mobile CTA = IconButton Size=Large, Type=Outlined — 48x48,
-     radius 8, 1px neutral border, 32px glyph. */
+     radius 8, 1px neutral border, 24px glyph — the IconButton's own icon size at both
+     48 and 40. It carried a 32px glyph until 2026-09-05; Figma's icon slot could not
+     centre a 32 in a 24 box and the glyph sat 2px right and 4px low. */
   .ds-hdr-burger {
     display: inline-grid;
     place-items: center;
@@ -1278,7 +1323,7 @@
 
   /* The compact bar's drawer trigger appears below the inline nav's breakpoint. */
   /* The compact bar's trigger is the SAME control as everywhere else — IconButton
-     Large Outlined, 48x48, 32px glyph. It used to be overridden here to a bare 40px
+     Large Outlined, 48x48, 24px glyph. It used to be overridden here to a bare 40px
      icon with `border: none`, which is the container-less form the rest of the
      masthead moved away from; it survived only because the compact variant was added
      after that pass and has no Figma master to check against. It has one now

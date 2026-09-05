@@ -1392,19 +1392,6 @@
           "hint": "The mask stops transcribe the Figma alpha mask (57287:61362): α0 → α0.5 at 50% → α1 at 70%, left to right. Change one side and the band the text sits on differs between the library and the estate."
         }
       ]
-    },
-    {
-      "node": "4235:3304",
-      "where": "Navbar/Portal › Device=Desktop › Cobranding › SAMAVESH › subtitle",
-      "figma": "Single Access Mechanism for All Verticals  of Empowerment & Social Harmony",
-      "expect": [
-        {
-          "kind": "source",
-          "file": "packages/design-system/components/navigation/header/samavesh-cobrand.ts",
-          "pattern": "subtitle: \"Single Access Mechanism for All Verticals of Empowerment & Social Harmony\"",
-          "hint": "The SAMAVESH cobrand's expansion is one sentence in the Navbar master and in SAMAVESH_COBRAND. The master carried it at 7px, unstyled, for weeks; it is Body/body-3 on both sides since 2026-09-05."
-        }
-      ]
     }
   ],
   "tokenTables": [
