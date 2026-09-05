@@ -203,6 +203,7 @@ function ChildEntry({
 }) {
   const id = React.useId();
   const active = childActive(current, child);
+  const selfCurrent = current === child.href;
   const [open, toggle] = useDisclosure(active);
   const listRef = React.useRef<HTMLUListElement>(null);
   if (!child.children?.length) {
@@ -218,7 +219,8 @@ function ChildEntry({
         disabled={child.disabled}
         className={cn(
           "ds-sidebar__sub-row ds-sidebar__sub-row--group",
-          active && "is-active",
+          selfCurrent && "is-active",
+          active && !selfCurrent && "is-ancestor",
           child.disabled && "is-disabled",
         )}
         onClick={toggle}
@@ -233,7 +235,7 @@ function ChildEntry({
       </button>
       {open && (
         <ul id={id} ref={listRef} className="ds-sidebar__list ds-sidebar__list--l3">
-          <ActivePath listRef={listRef} trunkX={40} current={current} />
+          <ActivePath listRef={listRef} trunkX={0} current={current} />
           {child.children.map((leaf) => (
             <LeafRow key={leaf.href} leaf={leaf} current={current} level={3} />
           ))}
@@ -364,9 +366,12 @@ function MainItem({
   const anchorRef = React.useRef<HTMLButtonElement>(null);
   const listRef = React.useRef<HTMLUListElement>(null);
 
+  // The tint marks the one current page; a group that merely CONTAINS it takes
+  // the bolder ink without the tint, and the drawn connector carries the route.
   const rowClass = cn(
     "ds-sidebar__row",
-    active && "is-active",
+    selfActive && "is-active",
+    active && !selfActive && "is-ancestor",
     item.disabled && "is-disabled",
   );
   const badgeText = item.badge != null ? `${item.badge} pending` : null;
@@ -543,8 +548,9 @@ export function warnOversizedGroups(groups: SidebarNavGroup[]): string[] {
  *   level-3 leaves under a level-2 group. Nothing nests further. Connectors are
  *   neutral; the path to the current page is drawn in brand on navigation.
  * - `pathname` is the only source of the current state, at every level: the
- *   longest matching href is the one current page, so a portal's root item
- *   does not light up on every route.
+ *   longest matching href is the one current page (tinted), so a portal's root
+ *   item does not light up on every route; the groups that contain it take the
+ *   bolder ink without the tint.
  * - In the collapsed rail a group opens a flyout listing its level-2 pages;
  *   a leaf shows its label as a tooltip; a badge count becomes a dot.
  * - Group labels are the accessible name of their `role="group"`, in both modes.

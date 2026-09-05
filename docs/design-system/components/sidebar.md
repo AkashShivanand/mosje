@@ -42,6 +42,7 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
 | Rest | `text/neutral/base`, `icon/neutral/base` (stroke glyph), chevron `icon/neutral/subtle` |
 | Hover | `bg/neutral/subtler` |
 | Current | `bg/brand/primary/base` with `text/brand/primary/bolder`, `icon/brand/primary/bolder`, filled glyph |
+| Ancestor of the current page | `text/brand/primary/bolder`, `icon/brand/primary/bolder`, no tint (Figma `State=Ancestor` on Group items) |
 | Disabled | `text/neutral/disabled`, `icon/neutral/disabled` |
 | Focus | `focus/ring` at `focus/width`, offset `focus/offset`; ring radius `shape/20` (L1) / `shape/12` (L2, L3) |
 | Badge | count: the library Badge (primary, solid) · dot: `cmp/badge/dotSizeLg` in the Badge's fill `cmp/button/primary/bg` |
@@ -69,6 +70,10 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
    own elbow and a tail, and a `Continues` boolean (off on the last entry) removes the tail.
    An open level-2 group extends its tail past its level-3 children so the trunk is unbroken.
    The elbow begins exactly at the parent's edge and never enters the pill above it.
+14. **Ancestors take the ink, not the tint.** Three tinted pills on a three-level route made the
+    rail heavy and said "you are in three places". The current page alone is tinted; the groups
+    that contain it take `text/brand/primary/bolder` and the bolder icon, and the drawn
+    connector carries the route. In Figma this is `State=Ancestor`, on Group items only.
 13. **Connectors are neutral; the path to the current page is drawn.** A brand tint on every
     connector made the tree noisy before anything was active. At rest the tree is
     `border/neutral/subtle` — structure, not signal. The connector from a group down to the

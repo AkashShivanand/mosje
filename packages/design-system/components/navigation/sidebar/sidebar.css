@@ -151,12 +151,21 @@
   }
 
   .ds-sidebar__row:hover:not(.is-active, .is-disabled),
+  .ds-sidebar__row.is-ancestor:hover,
   .ds-sidebar__row.is-open:not(.is-active) {
     background: var(--sa-bg-neutral-subtler);
   }
 
   .ds-sidebar__row.is-active {
     background: var(--sa-bg-brand-primary-base);
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  /* An ANCESTOR of the current page — a group that contains it — takes the
+     bolder ink but no tint. The tint marks one page; the ink and the drawn
+     connector carry the route to it. */
+  .ds-sidebar__row.is-ancestor,
+  .ds-sidebar__sub-row.is-ancestor {
     color: var(--sa-text-brand-primary-bolder);
   }
 
@@ -171,7 +180,8 @@
     color: var(--sa-icon-neutral-base);
   }
 
-  .ds-sidebar__row.is-active .ds-sidebar__icon { color: var(--sa-icon-brand-primary-bolder); }
+  .ds-sidebar__row.is-active .ds-sidebar__icon,
+  .ds-sidebar__row.is-ancestor .ds-sidebar__icon { color: var(--sa-icon-brand-primary-bolder); }
   .ds-sidebar__row.is-disabled .ds-sidebar__icon { color: var(--sa-icon-neutral-disabled); }
 
   .ds-sidebar__label,
@@ -193,7 +203,8 @@
 
   .ds-sidebar__row:hover .ds-sidebar__chevron,
   .ds-sidebar__sub-row:hover .ds-sidebar__chevron { color: var(--sa-icon-neutral-base); }
-  .is-active .ds-sidebar__chevron { color: var(--sa-icon-brand-primary-bolder); }
+  .is-active .ds-sidebar__chevron,
+  .is-ancestor .ds-sidebar__chevron { color: var(--sa-icon-brand-primary-bolder); }
   .is-disabled .ds-sidebar__chevron { color: var(--sa-icon-neutral-disabled); }
 
   /* ── Levels 2 and 3 ─────────────────────────────────────────────────────────── */
@@ -216,7 +227,11 @@
     padding-left: var(--sa-inline-40);
   }
 
-  .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-56); }
+  /* A level-3 list nests inside its level-2 entry, which already indents by
+     inline/40, so the leaf adds only the remaining inline/16 to land at 56. Its
+     connector coordinates are relative to that nested list: trunk at 0 (40 in
+     the rail), arm to the pill at 16 (56 in the rail). */
+  .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-16); }
 
   /* Elbow: from the parent's edge (the list begins exactly where the parent
      row ends; only the list's stack/4 padding sits between) → row centre (22
@@ -236,7 +251,7 @@
   }
 
   .ds-sidebar__sub--l3::before {
-    left: 40px; /* 16px left of the level-3 pill at inline/56 */
+    left: 0; /* the nested list starts at the rail's 40; the trunk is 16px left of the pill at 56 */
   }
 
   /* Tail: row centre → next sibling, across the gap. Absent on the last entry. */
@@ -250,7 +265,7 @@
     background: var(--sa-border-neutral-subtle);
   }
 
-  .ds-sidebar__sub--l3::after { left: 40px; }
+  .ds-sidebar__sub--l3::after { left: 0; }
 
   .ds-sidebar__sub:last-child::after { content: none; }
 
