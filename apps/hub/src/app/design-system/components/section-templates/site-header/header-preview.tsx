@@ -152,6 +152,7 @@ export function SiteHeaderNavyPreview(): React.JSX.Element {
         onToggleNav={() => setNavExpanded((v) => !v)}
         navExpanded={navExpanded}
         language={{ label: "English" }}
+        search={{ placeholder: "Search applications" }}
         account={{ name: "Officer Name", email: "officer@gov.in", role: "State Nodal Officer" }}
         accountMenu={[
           { label: "Profile", onSelect: () => {} },

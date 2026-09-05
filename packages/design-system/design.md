@@ -434,6 +434,8 @@
 
   **Every control in the condensed bar is 40px** (2026-09-05): the sidebar toggle, the sheet trigger, the search button, the account avatar (`AccountMenu avatarSize={40}`) and whatever the consumer passes as `actions` — the slot holds links and buttons at 40, so pass `Button size="default"`. The home link is a 40×40 target around the 20px emblem, emblem on the left edge; it was the bare 20×32 glyph, under WCAG 2.5.8. **The identity in the bar is `BrandLockup` compact** — emblem 32, Government of India · Ministry on one muted 12px row, the Department at 14 beneath (DBIM 5.2 makes none of the three optional) — wherever the inline nav is not on the row: every portal, and the website below 1024 or once its nav has moved to the sheet. Emblem-only where the nav needs the width and below 768. Figma: `Navbar/BrandLockup` `Size=Condensed`.
 
+  **The phone row, on a portal (2026-09-05):** one control per side — the 48px sidebar toggle leads, a 40px avatar trails — and nothing else is laid out. BETA is off below 768. Search waits behind a 40px button in the row and opens on its own row on tap (Escape closes), because a 56px field under a two-line lockup pushed a portal's page start past 300px; the website keeps its full-width field, since search is that site's navigation fallback. **The accessibility bar below 768** keeps the mark and two 44px icon controls, accessibility and language; the font stepper moves to the sheet and the widget, and the skip link shows on the first Tab press.
+
   System version: v0.16.1 (THE CHART PALETTE NOW SAYS WHICH OF ITS
   VALUES ARE COPIES AND WHICH ARE CHOICES, per group, because the difference was not guessable
   and the copies had rotted. `chart/div/*` — the diverging scale for signed data — was seven
