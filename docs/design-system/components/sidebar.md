@@ -37,31 +37,37 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
 | Level-1 row | `padding/12` × `padding/16`, gap `inline/8`, radius `shape/16`, min-height `target/spacious` (48) |
 | Level-2 / 3 row | `padding/12` × `padding/8`, radius `shape/8`, min-height `target/comfortable` (44) |
 | Indent | level 2 `inline/40` · level 3 `inline/56` · flyout `inline/0` |
-| Guide line | `cmp/divider/width` in `border/neutral/subtle`, at 27px (icon centre) and 47px (level-2 label) |
+| Connector | elbow `shape/6`, `stroke/1`, tail `cmp/divider/width`, all in `bg/brand/primary/subtler`; trunk at 27px (icon centre) for level 2, 47px (level-2 label) for level 3 |
 | Type | level 1 `Label/label-1` · levels 2–3 `Body/body-2` · group label `Label/label-3` · flyout title `Title/title-3` |
 | Rest | `text/neutral/base`, `icon/neutral/base`, chevron `icon/neutral/subtle` |
 | Hover | `bg/neutral/subtler` |
 | Current | `bg/brand/primary/base` with `text/brand/primary/bolder`, `icon/brand/primary/bolder` |
 | Disabled | `text/neutral/disabled`, `icon/neutral/disabled` |
 | Focus | `focus/ring` at `focus/width`, offset `focus/offset`; ring radius `shape/20` (L1) / `shape/12` (L2, L3) |
-| Badge | count: `bg/status/info/bolder` on `on/bg/brand/primary/bolder` · dot: `cmp/badge/dotSizeLg` |
+| Badge | count: the library Badge (primary, solid) · dot: `cmp/badge/dotSizeLg` in the Badge's fill `cmp/button/primary/bg` |
 | Flyout | `shape/12`, `stroke/1` `border/neutral/subtle`, `elevation/dropdown`, `z/popover` |
 | Motion | hover `motion/hover/*` · rail width `motion/collapse/*` |
 
 ## Decisions recorded (with the reason)
 
-1. **Active ink is `bolder`, not `base`.** `text/brand/primary/base` on `bg/brand/primary/base`
-   measures 4.19:1 in Blue mode and fails WCAG 1.4.3 at 14px; `bolder` is 5.74:1. Both Figma
-   libraries still bound `base`; the code had already moved. Now the master agrees.
+1. **Active ink is `bolder`, not `base`.** Measured from the library on 2026-09-05: `bolder` on
+   `bg/brand/primary/base` is 7.75:1 in Blue and 15.15:1 in Navy; `base` is 5.74:1 / 12.05:1.
+   Both pass AA today. The audit's "4.19:1" came from the code comment written when
+   `text/brand/primary/base` was still `#0373DF`; the colour-system redesign had since moved it
+   to `#005EB9`, and the old masters bound a remote `Text/Primary` from the Portal DS library
+   rather than either. Bolder is kept because the code already used it and the current row
+   should be the darkest ink on the rail, not because base fails.
 2. **Hover is neutral.** The previous master painted hover in the same brand tint as Active, so
    moving the mouse over the rail made every row look like the current page.
 3. **Item gap is `stack/4`, down from `stack/12`.** Material 3, Carbon and USWDS all list
    navigation items with 0–4px between rows; 12px on a ten-item rail cost 108px and read as
    a list of cards rather than one navigation.
-4. **Levels 2 and 3 indent under the parent's text and carry a single guide line per level,
-   not elbows.** Elbows need first/middle/last variants (nine of the old set's variants were
-   exactly that) and get busy at three levels. USWDS and GitHub's tree views use indentation
-   plus a guide; that pattern needs no position variants.
+4. **Levels 2 and 3 indent under the parent's text and keep the handoff's elbow connector.**
+   The first rebuild tried a plain guide line per level; the owner preferred the original
+   elbow, and it was right — the elbow says "this belongs to that" where a bare line only says
+   "there is depth". The elbow no longer needs first/middle/last variants: each entry draws its
+   own elbow and a tail, and a `Continues` boolean (off on the last entry) removes the tail.
+   An open level-2 group extends its tail past its level-3 children so the trunk is unbroken.
 5. **Focused is a boolean, not a State value.** It composes with every state (a keyboard user's
    current item is Active and Focused), the same decision `Tabs / Tab` made.
 6. **Group children are exposed nested instances, not a slot.** The Plugin API in this runtime

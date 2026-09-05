@@ -27,11 +27,11 @@
        rail padding          padding/16 · item gap stack/4 · region gap stack/12
        level-1 row           padding/12 × padding/16 · shape/16 · min target/spacious (48)
        level-2 / 3 row       padding/12 × padding/8 · shape/8 · min target/comfortable (44)
-       level-2 / 3 indent    inline/40 · inline/56, with a cmp/divider/width guide line
+       level-2 / 3 indent    inline/40 · inline/56, elbow connector shape/6 in bg/brand/primary/subtler
        flyout                layout/sidebar/flyoutWidth (240) · shape/12 · elevation/dropdown
      Colour: rest text|icon/neutral/base; hover bg/neutral/subtler; current bg/brand/primary/base
-     with text|icon/brand/primary/BOLDER — base measures 4.19:1 on that ground in Blue mode
-     and fails AA at 14px; bolder is 5.74:1. Disabled text|icon/neutral/disabled.
+     with text|icon/brand/primary/BOLDER — 7.75:1 in Blue mode, 15.15:1 in Navy (measured from
+     the library 2026-09-05; base is 5.74:1 / 12.05:1, also AA). Disabled text|icon/neutral/disabled.
      ============================================================================= */
 
   .ds-sr-only {
@@ -181,21 +181,8 @@
     white-space: nowrap;
   }
 
-  .ds-sidebar__badge {
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: var(--sa-icon-size-20);
-    height: var(--sa-icon-size-20);
-    padding: 0 var(--sa-padding-4);
-    border-radius: var(--sa-shape-full);
-    background: var(--sa-bg-status-info-bolder);
-    color: var(--sa-on-bg-brand-primary-bolder);
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
-  }
+  /* The count is the library Badge (primary, solid); this only keeps it from shrinking. */
+  .ds-sidebar__badge { flex-shrink: 0; }
 
   .ds-sidebar__chevron {
     flex-shrink: 0;
@@ -211,10 +198,14 @@
 
   /*
    * A level-2 entry indents by inline/40 so its label sits under the level-1
-   * label (16 padding + 24 icon + 8 gap = 48, minus the row's own 8 padding).
-   * A level-3 leaf indents by inline/56. One guide line per level runs the full
-   * height of the entry — under the icon's centre for level 2, under the level-2
-   * label for level 3 — so a long open group stays legible without elbows.
+   * label (16 padding + 24 icon + 8 gap = 48, minus the row's own 8 padding);
+   * a level-3 leaf indents by inline/56. Each entry draws its own connector in
+   * the handoff's style: an elbow from the top of the row to its centre that
+   * curves into the pill, and a tail that continues down to the next sibling,
+   * bridging the stack/4 gap. The last entry has no tail, so the trunk ends at
+   * its elbow. A level-2 group's tail runs the height of its open children, so
+   * the trunk stays beside the level-3 rows. The colour is the pale brand tint
+   * the handoff used, one rung up so it survives a low-contrast panel.
    */
   .ds-sidebar__sub {
     position: relative;
@@ -225,21 +216,42 @@
 
   .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-56); }
 
-  .ds-sidebar__sub::before,
-  .ds-sidebar__sub--l3::after {
+  /* Elbow: top of the row → row centre (22 of a 44 row) → into the pill. */
+  .ds-sidebar__sub::before {
     content: "";
     position: absolute;
+    left: 27px; /* icon centre: padding/16 + icon/size/24 ÷ 2, less the line's own width */
     top: 0;
-    bottom: 0;
-    width: var(--sa-cmp-divider-width);
-    background: var(--sa-border-neutral-subtle);
+    width: 12px; /* to the pill's edge at inline/40, less the line */
+    height: 22px;
+    border-left: var(--sa-stroke-1) solid var(--sa-bg-brand-primary-subtler);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-bg-brand-primary-subtler);
+    border-bottom-left-radius: var(--sa-shape-6);
   }
 
-  .ds-sidebar__sub::before { left: 27px; }   /* icon centre: padding/16 + icon/size/24 ÷ 2, less the line's own width */
-  .ds-sidebar__sub--l3::after { left: 47px; } /* level-2 label start (48) less the line's own width */
+  .ds-sidebar__sub--l3::before {
+    left: 47px; /* level-2 label start (48), less the line */
+    width: 8px; /* to the level-3 pill at inline/56 */
+  }
+
+  /* Tail: row centre → next sibling, across the gap. Absent on the last entry. */
+  .ds-sidebar__sub::after {
+    content: "";
+    position: absolute;
+    left: 27px;
+    top: 22px;
+    bottom: calc(-1 * var(--sa-stack-4));
+    width: var(--sa-cmp-divider-width);
+    background: var(--sa-bg-brand-primary-subtler);
+  }
+
+  .ds-sidebar__sub--l3::after { left: 47px; }
+
+  .ds-sidebar__sub:last-child::after { content: none; }
 
   .ds-sidebar__sub--flyout { padding-left: 0; }
-  .ds-sidebar__sub--flyout::before { content: none; }
+  .ds-sidebar__sub--flyout::before,
+  .ds-sidebar__sub--flyout::after { content: none; }
 
   .ds-sidebar__sub-row {
     display: flex;
@@ -293,7 +305,7 @@
     width: var(--sa-cmp-badge-dotSizeLg);
     height: var(--sa-cmp-badge-dotSizeLg);
     border-radius: var(--sa-shape-full);
-    background: var(--sa-bg-status-info-bolder);
+    background: var(--sa-cmp-button-primary-bg); /* the fill the library Badge (and its Figma master) binds */
   }
 
   /* ── Flyout (collapsed group) ───────────────────────────────────────────────── */

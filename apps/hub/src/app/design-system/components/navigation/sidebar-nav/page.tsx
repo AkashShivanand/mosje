@@ -67,7 +67,7 @@ const A11Y: A11yItem[] = [
     level: "AA",
     status: "verified",
     evidence:
-      "Current text and icon bind text|icon/brand/primary/bolder on bg/brand/primary/base: 5.74:1 in Blue mode. The base ink measured 4.19:1 and was removed.",
+      "Current text and icon bind text|icon/brand/primary/bolder on bg/brand/primary/base: 7.75:1 in Blue mode and 15.15:1 in Navy, measured from the library on 2026-09-05. Every other ink on the rail clears 10:1; disabled is 3.06:1 by design.",
     description: "The current page is readable in both brand modes.",
   },
   {

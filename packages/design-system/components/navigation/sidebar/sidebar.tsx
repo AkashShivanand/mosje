@@ -4,6 +4,7 @@ import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
 import { IconButton } from "../../actions/icon-button";
+import { Badge } from "../../feedback/badge";
 import { Tooltip } from "../../feedback/tooltip";
 import type {
   SidebarNavProps,
@@ -341,10 +342,18 @@ function MainItem({
     );
   }
 
+  // The library Badge, solid primary — the same fill the Figma master's nested
+  // Badge binds — rather than a local pill that would drift from it.
   const badge = item.badge != null && (
-    <span className="ds-sidebar__badge" aria-label={badgeText ?? undefined}>
+    <Badge
+      status="primary"
+      emphasis="solid"
+      size="sm"
+      className="ds-sidebar__badge"
+      aria-label={badgeText ?? undefined}
+    >
       {item.badge}
-    </span>
+    </Badge>
   );
 
   if (!hasChildren) {
