@@ -15,10 +15,10 @@ export function Specimen(): React.JSX.Element {
     <div style={{ display: "flex", minHeight: "36rem" }}>
       <SidebarNav
         identity={{
-          name: "SCW",
-          expansion: "Senior Citizens' Welfare",
-          mark: <OrgLogo org="scw" size="md" />,
-          href: "/portals/scw",
+          name: "NOS",
+          expansion: "National Overseas Scholarship",
+          mark: <OrgLogo org="nos" size="md" />,
+          href: "/portals/nos",
         }}
         pathname="/portals/scw/applications/track/review"
         collapsed={collapsed}
