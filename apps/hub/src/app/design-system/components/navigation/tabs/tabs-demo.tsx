@@ -70,6 +70,7 @@ export function TabsSpecimen({
   track?: TabTrack;
   orientation?: TabOrientation;
   divider?: boolean;
+  overflow?: boolean;
 }): React.JSX.Element {
   const [active, setActive] = React.useState(start);
   const idBase = React.useId();
@@ -112,3 +113,24 @@ export function TabsContentSpecimen(): React.JSX.Element {
     />
   );
 }
+
+/** Arrangements the master grid does not show: overflow, the vertical axis, the rail, no divider. */
+export function TabsArrangementsSpecimen(): React.JSX.Element {
+  const many: TabDef[] = [
+    { id: "details", label: "Details" },
+    { id: "documents", label: "Documents", badge: true },
+    { id: "history", label: "History" },
+    { id: "remarks", label: "Remarks" },
+    { id: "payments", label: "Payments" },
+    { id: "audit", label: "Audit Trail" },
+  ];
+  return (
+    <div style={{ display: "grid", gap: "var(--sa-stack-24)" }}>
+      <TabsSpecimen label="Application sections, overflowing" tabs={many} overflow width={360} />
+      <TabsSpecimen label="Form sections" orientation="vertical" indicator="rail" tabs={[{ id: "personal", label: "Personal Details" }, { id: "address", label: "Address" }, { id: "documents", label: "Documents" }]} />
+      <TabsSpecimen label="Filter" orientation="vertical" track="enclosed" indicator="pill" divider={false} tabs={[{ id: "all", label: "All" }, { id: "pending", label: "Pending" }, { id: "closed", label: "Closed" }]} />
+      <TabsSpecimen label="Sections without a divider" divider={false} />
+    </div>
+  );
+}
+
