@@ -1,6 +1,21 @@
 # Data Visualisation System — Design Specification
 
-> **Status:** design, pre-implementation. Supersedes nothing; this is the first
+> **Status, 2026-09-05:** in implementation. Audited against sixteen portal
+> dashboard handoffs (`docs/audit/data-visualisation-system-audit-2026-09-05.md`).
+> Built since this document was written: the withheld-figure contract of §03
+> (`ChartWithheld`, in `BarChart` first per the migration order in §01);
+> provenance as data (`DataProvenance`, `ProvenanceLine`); all five metric
+> readings of §05 on `MetricCard`; the keyboard model and print stylesheet of
+> §07; `RankedBarList` — the one chart the handoffs draw most and this document
+> did not list; and the Figma half — a `Charts & Graphs` page in the house style
+> with bound masters for Metric Card, Chart Card, Ranked Bar Row, Chart (15
+> types), Legend and Tooltip, four Code Connect templates, and a component
+> record naming what is still open. Not yet built: the `viz-core` scene
+> extraction and D3 swap of §01, the alias token layer and dark values of §04,
+> the coordination contract and archetype templates of §06, and suppression in
+> every chart beyond bar. The Recharts drift of §01 step 1 no longer exists.
+>
+> **Original status:** design, pre-implementation. Supersedes nothing; this is the first
 > specification for the visualisation layer that already exists in
 > `packages/design-system/components/data-display/charts/`.
 >

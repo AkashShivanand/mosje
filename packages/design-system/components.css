@@ -58,6 +58,7 @@
 @import "./components/data-display/approval-timeline.css";
 @import "./components/data-display/card.css";
 @import "./components/data-display/charts/charts.css";
+@import "./components/data-display/charts/ranked-bar-list.css";
 @import "./components/data-display/charts/small-multiples.css";
 @import "./components/data-display/data-table.css";
 @import "./components/data-display/document-library.css";

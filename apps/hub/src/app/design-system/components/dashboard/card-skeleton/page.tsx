@@ -26,7 +26,7 @@ export default function Page(): React.JSX.Element {
       name="Card Skeleton"
       status="Stable"
       summary="A shaped loading placeholder. Every shape shimmers on the same clock and staggers on the same 90ms step, so a dashboard of six loading cards reads as one page arriving rather than six independent spinners."
-      figma={{ absent: "A loading state; not a separate Figma node." }}
+      figma={{ node: "chartsChartCard" }}
       specimen={<Specimen />}
       propsFrom="CardSkeletonProps"
       a11y={A11Y}

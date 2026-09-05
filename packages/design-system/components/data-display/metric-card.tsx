@@ -1,10 +1,24 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { cardStateCopy, type CardStateKind } from "../dashboard/card-state";
+import { ProvenanceLine } from "../dashboard/provenance";
+import { Progress } from "./charts/progress";
+import type { DataProvenance, StatusTone } from "./charts/types";
 import "./metric-card.css";
 
 export type MetricCardSize = "sm" | "md";
 export type MetricCardChange = "up" | "down" | "flat";
+
+/** A bounded reading — the figure against the ceiling it is meant to reach. */
+export interface MetricCardProgress {
+  value: number;
+  /** The denominator. Required: a target with no ceiling is not bounded. */
+  max: number;
+  /** The target, in the same units as `value`. Drawn as a tick on the track. */
+  target?: number;
+  /** Text for the target end of the scale row. @default "Target N%" */
+  targetLabel?: string;
+}
 
 export interface MetricCardProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Descriptor label (small, muted). */
@@ -46,6 +60,37 @@ export interface MetricCardProps extends React.HTMLAttributes<HTMLDivElement> {
   changeDirection?: MetricCardChange;
   /** Control density. @default "md" */
   size?: MetricCardSize;
+  /**
+   * A STATUS tone for the whole tile — the "Due Soon" amber and "Overdue" red
+   * cards of an application queue. It tints the border, the label and the
+   * figure. Set it only against a stated rule; a red figure on a government
+   * page means breached, and the reader will act on it.
+   */
+  tone?: StatusTone;
+  /**
+   * A second reading under the figure — the numerator and denominator behind a
+   * rate ("90 / 883"), or the window a count covers ("Feb – May 2026").
+   */
+  detail?: string;
+  /**
+   * A status chip beside the label — "On target", "≤ 80%". The chip carries
+   * the words a tone alone would not, which is what lets `tone` be colour.
+   */
+  status?: { label: string; tone?: StatusTone };
+  /**
+   * The figure read against a ceiling and, where one exists, a target. This is
+   * the spec's "value against target" variant: it is a bar, not a second
+   * number, because the reader's question is how far there is to go.
+   */
+  progress?: MetricCardProgress;
+  /**
+   * A slot beside the label for the shape of the figure over time — a
+   * `Sparkline`. The sparkline is decorative here because the figure carries
+   * the meaning; leave its `label` unset.
+   */
+  aside?: React.ReactNode;
+  /** Where the figure came from, printed as one muted line under the tile. */
+  provenance?: DataProvenance;
 }
 
 /** Screen-reader text so trend direction isn't conveyed by colour/arrow alone (WCAG 1.4.1 / 1.1.1). */
@@ -79,6 +124,13 @@ const CHANGE_ARROWS: Record<MetricCardChange, React.ReactNode> = {
  * Shows a label + a large formatted value + an optional icon badge and optional
  * change indicator. Styled via `.ds-metric-card*` semantic CSS classes that
  * reference design tokens (--sa-*). No Tailwind, no hardcoded values.
+ *
+ * Five readings of one number, from `docs/superpowers/specs/2026-08-27-data-visualisation-system-design.md` §05:
+ * a bare value; a value with a change against a named baseline (`changeValue`
+ * + `changeLabel`); a value with its trend (`aside`); a value against a target
+ * (`progress`); and a value with a status (`status`, `tone`). The publishable
+ * rule for where the tile stops: it becomes a chart the moment the reader has
+ * to compare more than two numbers.
  */
 export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
   function MetricCard(
@@ -92,6 +144,12 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
       changeValue,
       changeDirection = "flat",
       size = "md",
+      tone,
+      detail,
+      status,
+      progress,
+      aside,
+      provenance,
       className,
       ...rest
     },
@@ -109,11 +167,17 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
        old `${label}: ${value}` announced "Total beneficiaries: —" whenever a
        call site had nothing, which is a punctuation mark read as a figure. */
     const spoken = loading ? "Loading" : (copy?.title ?? value ?? "Not reported");
+    const spokenStatus = settled && status ? `, ${status.label}` : "";
     return (
       <div
         ref={ref}
-        className={cn("ds-metric-card", size !== "md" && `ds-metric-card--${size}`, className)}
-        aria-label={`${label}: ${spoken}`}
+        className={cn(
+          "ds-metric-card",
+          size !== "md" && `ds-metric-card--${size}`,
+          tone && tone !== "neutral" && `ds-metric-card--tone-${tone}`,
+          className,
+        )}
+        aria-label={`${label}: ${spoken}${spokenStatus}`}
         {...(loading ? { "aria-busy": true } : {})}
         {...rest}
       >
@@ -135,12 +199,28 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
             ) : (
               <div className="ds-metric-card__value">{value ?? "—"}</div>
             )}
+            {settled && detail != null && <div className="ds-metric-card__detail">{detail}</div>}
           </div>
-          {icon != null && (
-            <div className="ds-metric-card__icon" aria-hidden="true">
-              {icon}
+          {(settled && status) || icon != null || (settled && aside != null) ? (
+            <div className="ds-metric-card__side">
+              {settled && status && (
+                <span
+                  className={cn(
+                    "ds-metric-card__status",
+                    `ds-metric-card__status--${status.tone ?? "neutral"}`,
+                  )}
+                >
+                  {status.label}
+                </span>
+              )}
+              {settled && aside != null && <div className="ds-metric-card__aside">{aside}</div>}
+              {icon != null && (
+                <div className="ds-metric-card__icon" aria-hidden="true">
+                  {icon}
+                </div>
+              )}
             </div>
-          )}
+          ) : null}
         </div>
         {/* SUPPRESSED WHERE THERE IS NO FIGURE. "+12% vs last month" under "This
             could not be loaded" is indistinguishable from a live finding — the
@@ -162,6 +242,21 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
               {changeLabel}
             </div>
           )
+        )}
+        {settled && progress && (
+          <Progress
+            className="ds-metric-card__progress"
+            compact
+            label={label}
+            value={progress.value}
+            max={progress.max}
+            target={progress.target}
+            targetLabel={progress.targetLabel}
+            tone={tone}
+          />
+        )}
+        {settled && provenance && (
+          <ProvenanceLine className="ds-metric-card__provenance" provenance={provenance} />
         )}
       </div>
     );

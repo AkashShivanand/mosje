@@ -990,5 +990,85 @@
     "deliberatelyOmitted": [
       "Menu"
     ]
+  },
+  "MetricCard": {
+    "nodeId": "57414:15871",
+    "captured": "2026-09-05",
+    "note": "15 variants = Reading 5 x Tone 3, authored 2026-09-05 on the rebuilt Charts & Graphs page. Reading is not a prop: each reading is a different set of props on the one MetricCard, so the template switches the emitted fragment on it. Tone=Neutral is the absence of `tone`.",
+    "properties": {
+      "Reading": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Value",
+          "Change",
+          "Trend",
+          "Target",
+          "Status"
+        ]
+      },
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Neutral",
+          "Warning",
+          "Danger"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "ChartCard": {
+    "nodeId": "57418:15985",
+    "captured": "2026-09-05",
+    "note": "6 variants = State 6. Restricted and Offline exist in code (CardState) and are not drawn: they share the Empty layout with different words.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Populated",
+          "Loading",
+          "Empty",
+          "No results",
+          "Error",
+          "Not published"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "RankedBarList": {
+    "nodeId": "57420:15961",
+    "captured": "2026-09-05",
+    "note": "A composition of five Ranked Bar Row instances (Tone 4 x Rank 2 on the row set, 57420:15960). The list itself carries no properties; rows are overridden per instance and the code takes them as data.",
+    "properties": {},
+    "deliberatelyOmitted": []
+  },
+  "BarChart": {
+    "nodeId": "57417:15992",
+    "captured": "2026-09-05",
+    "note": "15 variants = Type 15 - every foundational chart type at 480x280 in one set. The template maps Type to the React component that draws it; three of the options are BarChart with orientation/variant.",
+    "properties": {
+      "Type": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Bar",
+          "Bar horizontal",
+          "Bar stacked",
+          "Line",
+          "Area",
+          "Donut",
+          "Pie",
+          "Gauge",
+          "Funnel",
+          "Heatmap",
+          "Scatter",
+          "Sparkline",
+          "Progress",
+          "Bullet",
+          "Combo"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
   }
 }

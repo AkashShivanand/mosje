@@ -94,7 +94,7 @@ export default function ScatterChartPage(): React.JSX.Element {
       name="Scatter Chart"
       status="Beta"
       summary="Plots two measured quantities against each other, one mark per record, so the reader sees the spread and whether the two move together. It is the catalogue's chart for distribution rather than comparison."
-      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      figma={{ node: "chartsChart" }}
       specimen={<ScatterChartSpecimen />}
       propsFrom="ScatterChartProps"
       props={SHAPES}

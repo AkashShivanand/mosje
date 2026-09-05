@@ -840,6 +840,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "highlightIndex",
+        "type": "number",
+        "required": false,
+        "description": "The one category the reader is looking at — the current month in a monthly trend. That bar keeps its colour and every other bar drops to the sequential ramp's light rung, so the comparison reads at a glance. It is named in the summary sentence, so a screen reader is told which bar is current rather than left to infer it from colour."
+      },
+      {
         "name": "labels",
         "type": "string[]",
         "required": false,
@@ -889,6 +895,19 @@ export const GENERATED_PROPS = {
         "type": "\"toggle\" | \"sr-only\"",
         "required": false,
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "target",
+        "type": "number",
+        "required": false,
+        "description": "A reference value drawn as a dashed line across the plot, in the same units as the bars — a target, a national average, a sanctioned ceiling. It joins the axis domain so it is always inside the plot."
+      },
+      {
+        "name": "targetLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Target N\"",
+        "description": "Text at the line."
       },
       {
         "name": "textured",
@@ -1679,6 +1698,12 @@ export const GENERATED_PROPS = {
         "description": "The one action that would resolve the state in front of the reader. Drawn as a button; omit where nothing the reader can do would help."
       },
       {
+        "name": "provenance",
+        "type": "DataProvenance",
+        "required": false,
+        "description": "Where the figures came from — printed as one muted line beneath the body, and dropped with the footer whenever the card has nothing to show, because a source line under \"This could not be loaded\" is describing figures that are not there."
+      },
+      {
         "name": "retryLabel",
         "type": "string",
         "required": false,
@@ -1793,7 +1818,13 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "Set when the chart puts `tabIndex` on its marks. `role=\"img\"` exposes the SVG as ONE atomic node and prunes everything under it from the accessibility tree — which is right for a static chart whose accessible equivalent is the screen-reader table, and wrong the moment a mark becomes focusable. Nine charts here put `tabIndex={0}` and an `aria-label` on every bar, point, cell or region; inside `role=\"img\"` those labels are pruned, so a keyboard reader tabbed through thirty stops that announced nothing at all. `role=\"group\"` keeps the accessible name from `<title>`/`<desc>` and lets the marks' own labels through. It is not a full traversal model — arrow-key roving across marks is still to build, and the pages say so — but a named stop is strictly better than a nameless one."
+        "description": "Set when the chart puts `tabIndex` on its marks. `role=\"img\"` exposes the SVG as ONE atomic node and prunes everything under it from the accessibility tree — which is right for a static chart whose accessible equivalent is the screen-reader table, and wrong the moment a mark becomes focusable. Nine charts here put `tabIndex={0}` and an `aria-label` on every bar, point, cell or region; inside `role=\"img\"` those labels are pruned, so a keyboard reader tabbed through thirty stops that announced nothing at all. `role=\"group\"` keeps the accessible name from `<title>`/`<desc>` and lets the marks' own labels through. It also switches on the frame's KEYBOARD MODEL. The marks form one roving tab stop: Tab enters the chart at the first (or last-visited) mark, the arrow keys move between marks, Home and End jump to the ends, and Escape dismisses the tooltip without moving focus (see `onDismiss`). Before this a thirty-bar chart was thirty Tab stops, which is not a traversal model but a wall."
+      },
+      {
+        "name": "onDismiss",
+        "type": "() => void",
+        "required": false,
+        "description": "Called on Escape while a mark has focus. Charts pass their tooltip controller's `hide`, so a keyboard reader can close the tooltip and stay where they are — `onBlur` alone would make them leave the chart to do it."
       },
       {
         "name": "onRetry",
@@ -4897,6 +4928,49 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "InlineBarProps": {
+    "source": "packages/design-system/components/data-display/charts/ranked-bar-list.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "max",
+        "type": "number",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "number",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "Give the bar an accessible name ONLY where the figure is not already printed beside it. In a table cell that also prints \"78%\", the bar is a repeat and stays hidden from assistive technology."
+      },
+      {
+        "name": "tone",
+        "type": "StatusTone = \"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "valueFormat",
+        "type": "ValueFormat",
+        "required": false,
+        "default": "formatIndian",
+        "description": ""
+      }
+    ]
+  },
   "InputProps": {
     "source": "packages/design-system/components/forms/input.tsx",
     "inheritsNative": true,
@@ -5641,6 +5715,12 @@ export const GENERATED_PROPS = {
         "description": "Descriptor label (small, muted)."
       },
       {
+        "name": "aside",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A slot beside the label for the shape of the figure over time — a `Sparkline`. The sparkline is decorative here because the figure carries the meaning; leave its `label` unset."
+      },
+      {
         "name": "changeDirection",
         "type": "MetricCardChange = \"up\" | \"down\" | \"flat\"",
         "required": false,
@@ -5660,6 +5740,12 @@ export const GENERATED_PROPS = {
         "description": "Optional delta shown in a tinted pill before `changeLabel` (e.g. \"12%\"). When set with a non-flat direction, the arrow + this value render as a success/danger pill and `changeLabel` becomes a muted suffix — matching the SAMAVESH KPI card. Omit for the legacy inline-text treatment."
       },
       {
+        "name": "detail",
+        "type": "string",
+        "required": false,
+        "description": "A second reading under the figure — the numerator and denominator behind a rate (\"90 / 883\"), or the window a count covers (\"Feb – May 2026\")."
+      },
+      {
         "name": "icon",
         "type": "React.ReactNode",
         "required": false,
@@ -5673,6 +5759,18 @@ export const GENERATED_PROPS = {
         "description": "The figure is still arriving. The tile keeps its exact height and shimmers where the value will be, so a row of six does not reflow when they land."
       },
       {
+        "name": "progress",
+        "type": "MetricCardProgress",
+        "required": false,
+        "description": "The figure read against a ceiling and, where one exists, a target. This is the spec's \"value against target\" variant: it is a bar, not a second number, because the reader's question is how far there is to go."
+      },
+      {
+        "name": "provenance",
+        "type": "DataProvenance",
+        "required": false,
+        "description": "Where the figure came from, printed as one muted line under the tile."
+      },
+      {
         "name": "size",
         "type": "MetricCardSize = \"sm\" | \"md\"",
         "required": false,
@@ -5684,6 +5782,18 @@ export const GENERATED_PROPS = {
         "type": "CardStateKind = \"empty\" | \"no-results\" | \"not-published\" | \"error\" | \"restricted\" | \"offline\"",
         "required": false,
         "description": "Why there is no figure. Uses `CardState`'s own words, so a tile and the chart beside it describe one failed request with one sentence. `loading` wins where both are given: a card cannot be waiting AND finished."
+      },
+      {
+        "name": "status",
+        "type": "{ label: string; tone?: StatusTone }",
+        "required": false,
+        "description": "A status chip beside the label — \"On target\", \"≤ 80%\". The chip carries the words a tone alone would not, which is what lets `tone` be colour."
+      },
+      {
+        "name": "tone",
+        "type": "StatusTone = \"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+        "required": false,
+        "description": "A STATUS tone for the whole tile — the \"Due Soon\" amber and \"Overdue\" red cards of an application queue. It tints the border, the label and the figure. Set it only against a stated rule; a red figure on a government page means breached, and the reader will act on it."
       },
       {
         "name": "value",
@@ -6619,7 +6729,14 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "default": "\"var(--sa-chart-cat-1)\"",
-        "description": "Bar colour (defaults to primary series colour)."
+        "description": "Bar colour (defaults to primary series colour). Ignored when `tone` is set."
+      },
+      {
+        "name": "compact",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Drop the label row. The bar keeps its accessible name; use this where the label is already printed by the surface that holds the bar — a metric tile whose heading is the label, or a table cell whose row is."
       },
       {
         "name": "filterLabel",
@@ -6660,16 +6777,53 @@ export const GENERATED_PROPS = {
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
       },
       {
+        "name": "target",
+        "type": "number",
+        "required": false,
+        "description": "A target, in the same units as `value`. Drawn as a tick on the track with a scale row beneath it (\"0% … Target 90%\"), so the bar is read against what it is meant to reach rather than against 100%."
+      },
+      {
+        "name": "targetLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Target N%\"",
+        "description": "Text for the target end of the scale row."
+      },
+      {
         "name": "textured",
         "type": "boolean",
         "required": false,
         "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       },
       {
+        "name": "tone",
+        "type": "StatusTone = \"neutral\" | \"info\" | \"success\" | \"warning\" | \"danger\"",
+        "required": false,
+        "description": "A STATUS ink for the fill — on track, at risk, breached. Only set it where the caller has a stated threshold; a green bar is a claim that the figure is good, and the reader will take it as one."
+      },
+      {
         "name": "value",
         "type": "number",
         "required": false,
         "description": "The figure, 0–`max`. **Optional**: a bar with no figure is a real state, and it is not zero. This used to be required, so a caller with nothing to show had one honest option — pass `0` — and the bar then rendered a confident empty track reading `0%`, with `aria-valuenow={0}` telling a screen reader the same thing. \"The department reports nought per cent\" and \"no figure has been published\" are different sentences, and one of them was being said for both."
+      }
+    ]
+  },
+  "ProvenanceLineProps": {
+    "source": "packages/design-system/components/dashboard/provenance.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "provenance",
+        "type": "DataProvenance",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
       }
     ]
   },
@@ -6921,6 +7075,105 @@ export const GENERATED_PROPS = {
         "type": "SelectionVariant = \"default\" | \"card\"",
         "required": false,
         "default": "\"default\"",
+        "description": ""
+      }
+    ]
+  },
+  "RankedBarListProps": {
+    "source": "packages/design-system/components/data-display/charts/ranked-bar-list.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "items",
+        "type": "RankedBarItem[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "Accessible name of the list."
+      },
+      {
+        "name": "caption",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filterLabel",
+        "type": "string",
+        "required": false,
+        "description": "Named on `\"no-results\"` so the reader can undo the filter they applied."
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "description": "Pin the ceiling every bar is drawn against. Defaults to the largest value in the list, which is right for a ranking and wrong for a percentage — pass `100` so a 58% bar is drawn at 58% of the track, not at full width because it happens to be the highest."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Offered on `\"error\"`. A feed being down is an expected state with a retry, not an exception."
+      },
+      {
+        "name": "pageSize",
+        "type": "number",
+        "required": false,
+        "description": "Rows per page. A list longer than this PAGES — it never scrolls inside its card, because on a phone a reader flicking the page down lands in the list and moves the list instead (`data-state-completeness.md` §4)."
+      },
+      {
+        "name": "showRank",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Number the rows. On by default for a ranking; off for a breakdown."
+      },
+      {
+        "name": "sort",
+        "type": "\"desc\" | \"asc\" | \"none\"",
+        "required": false,
+        "default": "\"desc\"",
+        "description": "How the rows are ordered. Withheld rows always sort last."
+      },
+      {
+        "name": "state",
+        "type": "ChartState = \"loading\" | \"empty\" | \"no-results\" | \"not-published\" | \"error\" | \"restricted\" | \"offline\"",
+        "required": false,
+        "description": "What to render INSTEAD of the marks. Omit for the populated state. `\"loading\"` draws a skeleton at the chart's own aspect ratio, so the layout does not jump when the figures land. `\"no-results\"` is deliberately separate from `\"empty\"`: \"the feed published nothing\" and \"your filter excluded everything\" are different sentences with different remedies, and a chart that renders one for both is lying about one of them."
+      },
+      {
+        "name": "tableView",
+        "type": "\"toggle\" | \"sr-only\"",
+        "required": false,
+        "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
+        "name": "toneFor",
+        "type": "(item: RankedBarItem, index: number) => StatusTone",
+        "required": false,
+        "description": "Derive a tone from the row — the threshold rule, stated once."
+      },
+      {
+        "name": "valueFormat",
+        "type": "ValueFormat",
+        "required": false,
+        "default": "formatIndian",
         "description": ""
       }
     ]

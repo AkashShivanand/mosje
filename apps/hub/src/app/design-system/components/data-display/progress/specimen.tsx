@@ -10,6 +10,11 @@ export function ProgressSpecimen(): React.JSX.Element {
     <div className="cdp-stack">
       <Progress value={65} label="Application Form Progress" />
       <Progress value={1240} max={1800} label="Hostel Places Occupied" />
+      {/* A figure against a target: the tick is the target, the scale row
+          names it, and the tone is set only because the scheme states the
+          threshold — 90% is the SLA compliance target. */}
+      <Progress value={76} target={90} label="SLA Compliance — National Average" tone="warning" />
+      <Progress value={91} target={90} label="SLA Compliance — Tamil Nadu" tone="success" />
       <Progress label="Places Occupied — figure not yet published" />
       <ChartStates
         filterLabel="state filter"
