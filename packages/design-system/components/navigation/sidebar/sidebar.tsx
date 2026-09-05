@@ -287,7 +287,11 @@ function MainItem({
   const badgeText = item.badge != null ? `${item.badge} pending` : null;
   const name = badgeText ? `${item.label}, ${badgeText}` : item.label;
 
-  const icon = <Icon name={item.icon} size={24} className="ds-sidebar__icon" aria-hidden />;
+  // The current page's icon is the FILLED glyph — Material's own selected-state
+  // convention, and the one signal that survives at every rail width.
+  const icon = (
+    <Icon name={item.icon} size={24} fill={active} className="ds-sidebar__icon" aria-hidden />
+  );
   const dot = item.badge != null && <span className="ds-sidebar__dot" aria-hidden />;
 
   if (collapsed && !hasChildren) {
