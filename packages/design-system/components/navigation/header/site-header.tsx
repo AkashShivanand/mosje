@@ -751,7 +751,7 @@ export function SiteHeader({
      Emblem, nav, search, CTA — one row. The emblem holds the same left edge it
      occupies at rest; see `collapseOnScroll` for why that is not negotiable. */
   const condensedBar = (
-    <div className="ds-hdr-cond">
+    <div className={cn("ds-hdr-cond", !hasNav && "is-navless")}>
       <div className="ds-hdr-cond__in" style={inner} ref={condInRef}>
         {/* The app-shell sidebar toggle. It lives in the brand row at rest, and
             leaving it out of this bar meant a portal lost the control for its own
@@ -766,13 +766,23 @@ export function SiteHeader({
           />
         )}
 
-        <a
-          className="ds-hdr-cond__home"
+        {/* IDENTITY, NOT JUST THE EMBLEM. The bar is 64px and on a portal most
+            of it was empty: the nav lives in the sidebar, so nothing followed a
+            20px emblem until the profile block a thousand pixels away — the
+            department's name had left the page. The department line rides with
+            the emblem wherever the inline nav is not on this row (every portal,
+            and the website below 1024 or once its nav has moved to the sheet),
+            and stays off where the nav needs the width. Emblem-only below 768.
+            Figma: Navbar/BrandLockup Size=Condensed inside the On Scroll bars. */}
+        <BrandLockup
+          className="ds-hdr-cond__lockup"
+          emblemSrc={emblemSrc}
+          emblemAlt={emblemAlt}
+          lines={{ department: brandLines.department, departmentHi: brandLines.departmentHi }}
           href={homeHref}
-          aria-label={`${brandLines.department} — home`}
-        >
-          <img className="ds-hdr-cond__emblem" src={emblemSrc} alt={emblemAlt ?? ""} />
-        </a>
+          compact
+          textHiddenOnMobile
+        />
 
         {condSearchOpen && search ? (
           <search className="ds-hdr-cond__searchfield">
