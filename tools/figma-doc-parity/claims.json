@@ -609,7 +609,7 @@
     {
       "node": "55400:1552",
       "where": "PortalLoginTemplate — Documentation › 02 Properties › Device",
-      "figma": "variant → no code prop. Desktop is 1440 × 960 and Mobile 375 × 1138, where 1138 is the scroll height rather than a viewport. The React component is responsive in CSS, so the axis exists only to pin a breakpoint on the canvas. Tablet uses the Mobile variant by decision.",
+      "figma": "variant → no code prop. Desktop is 1440 × 960. Mobile is 375 wide and hugs its content, so its height follows the form rather than a viewport; a phone's fold sits at 812 and the rest scrolls. The React component is responsive in CSS, so the axis exists only to pin a breakpoint on the canvas. Tablet uses the Mobile variant by decision.",
       "expect": [
         {
           "kind": "source",
@@ -627,6 +627,12 @@
         {
           "kind": "text",
           "value": "no code prop"
+        },
+        {
+          "kind": "text",
+          "value": "1138",
+          "absent": true,
+          "hint": "375 × 1138 was the master's mobile geometry before decision 1 (2026-09-03) settled on a 375-wide frame that hugs. The number must not come back."
         }
       ]
     },
@@ -656,17 +662,29 @@
     {
       "node": "55401:1489",
       "where": "PortalLoginTemplate — Documentation › 03 Variants › lead",
-      "figma": "Six variants ship: two devices by three authentication methods. The role and the selector style ride on nested instances, so the three specimens below are all reachable without adding a single variant.",
+      "figma": "Eight variants ship: two devices by four authentication methods — Password, OTP, PIN and DARPAN. The role and the selector style ride on nested instances, so the three specimens below are all reachable without adding a single variant.",
       "expect": [
         {
           "kind": "source",
           "file": "packages/design-system/components/auth/portal-login-template.figma.ts",
-          "pattern": "Device × Auth Method` = 6",
-          "hint": "The set was re-cut in place from Device × Step = 8 to Device × Auth Method = 6. If that arithmetic changes, this section's three specimens and its title change with it."
+          "pattern": "Device × Auth Method` = 8",
+          "hint": "The set is Device (2) × Auth Method (4). If that arithmetic changes, this section's title, its specimens and the Code Connect comment change with it."
         },
         {
           "kind": "text",
-          "value": "Six variants ship"
+          "value": "Eight variants ship"
+        },
+        {
+          "kind": "text",
+          "value": "Six variants",
+          "absent": true,
+          "hint": "The page said six for two days after DARPAN was reinstated and the master had eight — while this gate stayed green, because the pin was written from the page rather than from the master."
+        },
+        {
+          "kind": "figma",
+          "node": "55397:1364",
+          "children": 8,
+          "hint": "Counted from the master itself, not from the prose. A pin that only compares three strings with each other can certify a wrong number; this one reads the set."
         }
       ]
     },

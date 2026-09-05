@@ -38,6 +38,14 @@ anyone browsing the library. The web page's playground renders the same set.
 `npm run check:figma-arrangements` gates it: a baseline of the component pages
 still without the section, which may only shrink.
 
+**A set with no code counterpart is recorded as Figma-only on the Component record in
+the same session it is built.** The login page grew `Auth / CredentialRecovery` and
+`Auth / RecoveryFormCard` on 2026-09-04 while the plan for that page said Figma must not
+get ahead of the code; with `OrganisationCard`, `PortalList` and `AuthFormCard` that
+made five organisms a designer can compose and no developer can build from the barrel.
+Build the code, or write the gap down where the next maintainer will find it — the
+record — but do not leave it to an audit to discover.
+
 **Masters live inside a numbered section, never loose at the page root.** Loose
 component sets are how the Brand page ended up numbering its sections 2 and 3 with
 no 1 — the section that would have held them was never made, and a later pass
