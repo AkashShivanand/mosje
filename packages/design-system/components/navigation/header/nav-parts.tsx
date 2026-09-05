@@ -76,7 +76,7 @@ export function MenuToggle({
     >
       <Icon
         name="menu_open"
-        size={32}
+        size={24}
         className={cn(!expanded && "ds-hdr-brand__toggle-flip")}
       />
     </button>
@@ -115,7 +115,7 @@ export function SheetToggle({
       aria-controls={controlsId}
       onClick={onOpen}
     >
-      <Icon name="menu" size={32} />
+      <Icon name="menu" size={24} />
     </button>
   );
 }
