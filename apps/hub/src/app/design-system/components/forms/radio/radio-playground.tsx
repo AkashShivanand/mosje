@@ -59,7 +59,13 @@ export function RadioPlayground(): React.JSX.Element {
       </div>
 
       <div style={stack}>
-        <p style={eyebrow}>Card variant</p>
+        <p style={eyebrow}>Card variant, detailed — the scheme tile</p>
+        <Radio variant="card" cardLayout="detailed" icon={<Icon name="workspace_premium" size={40} />} name="ds-scheme" value="napddr" checked={plan === "napddr"} onChange={() => setPlan("napddr")} label="NAPDDR - National Action Plan for Drug Demand Reduction" description="Prevention, treatment, rehabilitation, social-reintegration and aftercare for persons affected by substance abuse across vulnerable districts." meta="Target: Persons affected by substance abuse" />
+        <Radio variant="card" cardLayout="detailed" icon={<Icon name="workspace_premium" size={40} />} name="ds-scheme" value="avyay" checked={plan === "avyay"} onChange={() => setPlan("avyay")} label="AVYAY - Atal Vayo Abhyuday Yojana" description="An umbrella scheme covering Integrated Programme for Senior Citizens (IPSrC), maintenance of Old Age Homes / Continuous Care Homes, Rashtriya Vayoshri Yojana, and Silver Economy support." meta="Target: Senior citizens" />
+      </div>
+
+      <div style={stack}>
+        <p style={eyebrow}>Card variant, compact</p>
         <Radio
           variant="card"
           icon={<Icon name="schedule" />}

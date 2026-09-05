@@ -68,6 +68,20 @@ describe("Checkbox", () => {
     expect(out).toContain('id="c-description"');
   });
 
+  it("detailed card: meta joins aria-describedby, sits outside the label, and the layout reaches the root", () => {
+    const out = html(<Checkbox id="c" label="NAPDDR" description="Prevention and treatment." meta="Target: Persons affected by substance abuse" variant="card" cardLayout="detailed" />);
+    expect(out).toContain('data-card-layout="detailed"');
+    expect(out).toContain("ds-selection--card-detailed");
+    expect(out).toContain('aria-describedby="c-description c-meta"');
+    const label = out.match(/<label[^>]*>([\s\S]*?)<\/label>/)?.[1] ?? "";
+    expect(label).not.toContain("Target:");
+  });
+
+  it("meta is ignored outside the card variant, and compact is the default card layout", () => {
+    expect(html(<Checkbox label="A" meta="x" />)).not.toContain("-meta");
+    expect(html(<Checkbox label="A" variant="card" />)).toContain('data-card-layout="compact"');
+  });
+
   it("uncontrolled: defaultChecked seeds the state", () => {
     expect(html(<Checkbox label="A" defaultChecked />)).toContain('data-state="checked"');
   });

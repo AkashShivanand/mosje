@@ -26,6 +26,7 @@ export function CheckboxPlayground(): React.JSX.Element {
   const [agreed, setAgreed] = React.useState(false);
   const [claims, setClaims] = React.useState<string[]>(["hostel"]);
   const [docs, setDocs] = React.useState<string[]>([]);
+  const [report, setReport] = React.useState<string[]>(["napddr"]);
 
   return (
     <div style={panel}>
@@ -66,6 +67,34 @@ export function CheckboxPlayground(): React.JSX.Element {
           icon={<Icon name="school" />}
           label="Post-Matric Scholarship"
           description="Class XI upwards, including degree and professional courses."
+        />
+      </div>
+
+      <div style={stack}>
+        <p style={eyebrow}>Card variant, detailed — the scheme tile, several at once</p>
+        <CheckboxGroup
+          legend="Schemes Covered by the Report"
+          name="report"
+          variant="card"
+          cardLayout="detailed"
+          value={report}
+          onChange={setReport}
+          options={[
+            {
+              value: "napddr",
+              label: "NAPDDR - National Action Plan for Drug Demand Reduction",
+              description: "Prevention, treatment, rehabilitation, social-reintegration and aftercare for persons affected by substance abuse across vulnerable districts.",
+              meta: "Target: Persons affected by substance abuse",
+              icon: <Icon name="workspace_premium" size={40} />,
+            },
+            {
+              value: "avyay",
+              label: "AVYAY - Atal Vayo Abhyuday Yojana",
+              description: "An umbrella scheme covering Integrated Programme for Senior Citizens (IPSrC), maintenance of Old Age Homes / Continuous Care Homes, Rashtriya Vayoshri Yojana, and Silver Economy support.",
+              meta: "Target: Senior citizens",
+              icon: <Icon name="workspace_premium" size={40} />,
+            },
+          ]}
         />
       </div>
 

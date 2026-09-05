@@ -69,6 +69,8 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
     size,
     labelPlacement,
     variant,
+    cardLayout,
+    meta,
     icon,
     id,
     className,
@@ -115,6 +117,8 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(functi
       size={size}
       labelPlacement={labelPlacement}
       variant={variant}
+      cardLayout={cardLayout}
+      meta={meta}
       icon={icon}
       label={label}
       hideLabel={hideLabel}

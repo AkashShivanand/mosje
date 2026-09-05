@@ -8,15 +8,16 @@
 // carries the rules as well as the snippet.
 // See .claude/rules/component-authoring.md §12.
 //
-// PROPERTY COVERAGE — the one Figma property is accounted for:
+// PROPERTY COVERAGE — the master's one Figma property is accounted for:
 //   Portal name  -> `portalName`
 //
-// TONE HAS NO FIGMA PROPERTY SINCE 2026-09-04. The component set with a Tone axis
-// (55439:749, "On hero" | "On surface") was dissolved in the library; what remains is
-// the single component 55439:731, drawn on the hero scrim. So the snippet emits
-// tone="hero" as a constant — that is what the Figma master IS — and a developer
-// placing the bar on an ordinary surface changes it to "surface" in code. When the
-// library regains a Tone axis, restore the getEnum mapping here.
+// TONE IS FIXED TO `hero`, AND THAT IS WHAT FIGMA DRAWS. The master used to be a
+// two-variant set (`Tone = On hero | On surface`, node 55439-749). On 2026-09-04
+// the login-template Figma pass dissolved it to the single hero-tone component
+// this file now points at, because the bar has only ever been placed at the foot
+// of the hero. So the snippet states `tone="hero"` — the surface the drawing was
+// made for — and `tone="surface"` is CODE-ONLY: use it when the bar sits on an
+// ordinary page background, and know that Figma has no drawing of that state.
 //
 // TONE FOLLOWS THE SURFACE, NOT THE BRAND. `hero` sits over the photograph
 // scrim, `surface` over any ordinary background. Getting it backwards is the
@@ -54,11 +55,11 @@
 // `.claude/rules/component-authoring.md` §12a: never invent a code prop; if none
 // fits, omit it and say why.
 //
-// CAVEAT, stated rather than glossed: this template has no Figma fixture
-// (`check:code-connect` reports it as unverified), so whether the Figma
-// component carries a logo layer could not be confirmed from the recorded
-// snapshot. If capturing the fixture later shows a logo property, map it to a
-// real asset then — do not restore the dead path.
+// The fixture (tools/code-connect-parity/figma-properties.json, captured
+// 2026-09-04) confirms the master exposes ONE property, `Portal name`; the
+// `org-logo` layer is not a property, so there is nothing to map `logoSrc` to.
+// If a logo property is added later, map it to a real asset — do not restore
+// the dead path.
 import figma from "figma";
 
 const instance = figma.selectedInstance;

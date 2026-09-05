@@ -157,6 +157,14 @@ export default function RadioPage(): React.JSX.Element {
               through a service rather than values in a field — a payment method, an application type, a mode
               of submission — and on a phone, because the whole tile is the target.
             </p>
+            <p>
+              It has two layouts. <code>cardLayout=&quot;compact&quot;</code>, the default, puts the control first
+              with a 24px glyph and one line of description, for a short list whose names say enough.{" "}
+              <code>cardLayout=&quot;detailed&quot;</code> is the scheme tile: a tinted 64px icon tile, a title, a
+              fuller description, a <code>meta</code> fact to choose by such as the target group, and the
+              control trailing on the right so the left edge stays with the content. Do not mix the two in
+              one group.
+            </p>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-dodont">
             <h2 id="cdp-dodont" className="cdp__h2">

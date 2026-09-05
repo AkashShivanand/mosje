@@ -34,6 +34,17 @@ describe("Radio", () => {
     expect(out).not.toContain("disabled");
   });
 
+  it("detailed card: meta joins aria-describedby after the description, sits outside the label, and the layout reaches the root", () => {
+    const out = html(
+      <Radio id="r" name="scheme" value="napddr" label="NAPDDR" description="Prevention and treatment." meta="Target: Persons affected by substance abuse" variant="card" cardLayout="detailed" />,
+    );
+    expect(out).toContain('data-card-layout="detailed"');
+    expect(out).toContain('aria-describedby="r-description r-meta"');
+    expect(out).toMatch(/<span[^>]*id="r-meta"[^>]*>Target: Persons affected by substance abuse<\/span>/);
+    expect(out).not.toMatch(/<label[^>]*>[^<]*Target:/);
+    expect(html(<Radio name="s" value="a" label="A" meta="x" />)).not.toContain("-meta");
+  });
+
   it("has no error prop: the error belongs to the group", () => {
     // @ts-expect-error — error is not a RadioProps member
     const out = html(<Radio name="n" value="v" label="A" error="x" />);

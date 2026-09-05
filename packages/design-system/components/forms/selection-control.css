@@ -249,6 +249,80 @@
   .ds-selection--card[data-readonly] {
     cursor: default;
   }
+
+  .ds-selection__meta {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    letter-spacing: var(--sa-type-label-tracking);
+    color: var(--sa-text-neutral-base);
+  }
+
+  /* ── Detailed card ────────────────────────────────────────────────────────
+     The scheme tile: a 64px icon tile, title, description and meta, with the control
+     trailing on the right so the left edge stays with the content. The Figma
+     `Layout=Detailed` variants are the reference; this follows them. */
+  .ds-selection--card-detailed {
+    grid-template-columns: minmax(0, 1fr) max-content; /* body · control */
+    column-gap: var(--sa-inline-24);
+    padding: var(--sa-padding-24);
+  }
+
+  /* Three tracks ONLY when the tile is there (Figma `Show Icon`). Declared
+     unconditionally, a tile-less card put the body in the icon track. */
+  .ds-selection--card-detailed:has(.ds-selection__icon) {
+    grid-template-columns: max-content minmax(0, 1fr) max-content; /* tile · body · control */
+  }
+
+  .ds-selection--card-detailed .ds-selection__control {
+    order: 3;
+  }
+
+  .ds-selection--card-detailed .ds-selection__icon {
+    order: 1;
+    inline-size: var(--sa-icon-size-64);
+    block-size: var(--sa-icon-size-64);
+    min-block-size: 0;
+    justify-content: center;
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-brand-primary-base);
+    color: var(--sa-icon-brand-primary-base);
+    transition:
+      background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+      color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
+
+  .ds-selection--card-detailed[data-state="checked"] .ds-selection__icon {
+    background: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-bolder);
+  }
+
+  .ds-selection--card-detailed[data-disabled] .ds-selection__icon {
+    background: var(--sa-bg-neutral-subtle);
+    color: var(--sa-text-neutral-disabled);
+  }
+
+  .ds-selection--card-detailed .ds-selection__body {
+    order: 2;
+    gap: var(--sa-stack-4);
+    justify-content: flex-start;
+  }
+
+  .ds-selection--card-detailed .ds-selection__label {
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-selection--card-detailed .ds-selection__description {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .ds-selection--card-detailed .ds-selection__meta {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+  }
 }
 
 @layer components {
