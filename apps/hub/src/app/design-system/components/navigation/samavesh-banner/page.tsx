@@ -25,7 +25,7 @@ const sectionStyle: React.CSSProperties = {
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)",
   lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
+  fontWeight: "var(--sa-font-weight-bold)",
   color: "var(--sa-text-neutral-base)",
   marginBottom: "var(--sa-stack-16)",
   paddingBottom: "var(--sa-padding-8)",
@@ -107,7 +107,7 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
             style={{
               fontSize: "var(--sa-type-display-1-size)",
               lineHeight: "var(--sa-type-display-1-lh)",
-              fontWeight: 500,
+              fontWeight: "var(--sa-font-weight-medium)",
               color: "var(--sa-text-neutral-base)",
               margin: 0,
             }}
@@ -375,13 +375,13 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
               <p
                 style={{
                   fontSize: "var(--sa-type-label-1-size)",
-                  fontWeight: 600,
+                  fontWeight: "var(--sa-font-weight-semibold)",
                   color: "var(--sa-text-neutral-base)",
                   margin: "0 0 var(--sa-stack-8)",
                 }}
               >
                 <code>tone=&quot;{tone}&quot;</code>{" "}
-                <span style={{ fontWeight: 400, color: "var(--sa-text-neutral-subtle)" }}>{note}</span>
+                <span style={{ fontWeight: "var(--sa-font-weight-regular)", color: "var(--sa-text-neutral-subtle)" }}>{note}</span>
               </p>
               <div style={{ borderRadius: "var(--sa-shape-16)", border: "1px solid var(--sa-border-neutral-subtle)", overflow: "hidden" }}>
                 <SamaveshBanner tone={tone} sticky={false} portals={SPECIMEN_PORTALS} />

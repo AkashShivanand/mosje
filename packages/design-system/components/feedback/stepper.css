@@ -75,7 +75,7 @@
     color: var(--sa-text-neutral-subtle);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
@@ -113,7 +113,7 @@
   .ds-stepper__label {
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
     /*
      * A gutter, so two long labels in adjacent columns cannot touch and read as one word. An
@@ -191,7 +191,7 @@
       overflow: visible;
       clip: auto;
       white-space: normal;
-      font-weight: 600;
+      font-weight: var(--sa-font-weight-semibold);
     }
   }
 
@@ -223,7 +223,7 @@
     }
 
     .ds-stepper__item.is-current .ds-stepper__label {
-      font-weight: 600;
+      font-weight: var(--sa-font-weight-semibold);
     }
   }
 }

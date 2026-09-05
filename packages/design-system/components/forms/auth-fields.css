@@ -74,7 +74,7 @@
   .ds-pwmeter__level {
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-pwmeter__level--none   { color: var(--sa-text-neutral-subtle); }

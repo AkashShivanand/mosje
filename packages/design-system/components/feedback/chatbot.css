@@ -805,7 +805,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     /* The title outranks the subtitle beneath it, so it cannot be the same ink.
        Both were `muted`, which left the header with no hierarchy at all — the
        Devanagari name read as equal in weight to the invitation above it. */
@@ -921,7 +921,7 @@
     /* Regular. `Body/body-1` is a Regular style and the master uses it as one;
        500 was making every message read a shade heavier than the system's own
        body text, which is the opposite of what a transcript wants. */
-    font-weight: 400;
+    font-weight: var(--sa-font-weight-regular);
     overflow-wrap: anywhere;
   }
 

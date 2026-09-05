@@ -57,7 +57,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-bolder);
     background-color: var(--sa-bg-neutral-base);
     border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);

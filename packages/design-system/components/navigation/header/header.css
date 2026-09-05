@@ -99,16 +99,14 @@
     display: none;
   }
 
-  /* Font weight is written as a NUMBER here, and that is the house rule rather
-     than an oversight: there is no Tier-2 weight token, and `--sa-ref-*` is a
-     Tier-1 primitive that `tier-discipline.test.mjs` forbids app code to
-     reference — it fails the build. `button.css` writes `font-weight: 500` for
-     the same reason. */
+  /* Font weight binds the Tier-2 weight token. This comment said "there is no
+     Tier-2 weight token" until 2026-09-05 — `font/weight/*` has been Tier 2 since
+     2026-08-26, and the rule that quoted this comment was corrected the same day. */
   .ds-hdr-lockup__org {
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
     letter-spacing: var(--sa-type-label-tracking);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-base);
   }
 
@@ -116,7 +114,7 @@
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
     letter-spacing: var(--sa-type-label-tracking);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-base);
   }
 
@@ -124,7 +122,7 @@
     font-size: var(--sa-type-headline-5-size);
     line-height: var(--sa-type-headline-5-lh);
     letter-spacing: var(--sa-type-heading-tracking);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
 
@@ -144,7 +142,7 @@
     align-self: flex-start;
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-color-neutralScale-1000);
@@ -510,7 +508,7 @@
   .ds-hdr-account__name {
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
 
@@ -614,7 +612,7 @@
     border-radius: var(--sa-shape-4);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-base);
   }
 
@@ -651,7 +649,7 @@
 
   .ds-hdr-nav__link.is-active {
     color: var(--sa-text-brand-primary-base);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   /* THE INDICATOR WAS PAINTED IN THE TINT, NOT THE BRAND BLUE.
@@ -834,7 +832,7 @@
     border-radius: var(--sa-shape-8);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-brand-primary-base);
     text-decoration: none;
   }
@@ -866,7 +864,7 @@
     padding: 0 var(--sa-padding-12);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     text-transform: uppercase;
     letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);
@@ -940,7 +938,7 @@
   .ds-hdr-mega-item__abbr {
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh, 24px);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-base);
   }
 
@@ -1048,7 +1046,7 @@
     display: block;
     padding: var(--sa-padding-12) var(--sa-padding-16);
     font-size: var(--sa-type-body-2-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
     text-decoration: none;
   }
@@ -1116,7 +1114,7 @@
 
   .ds-hdr-acct__menu-name {
     font-size: var(--sa-type-body-2-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
 
@@ -1712,7 +1710,7 @@
 
   .ds-navsheet__link.is-active {
     color: var(--sa-text-brand-primary-base);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-navsheet__caret {
@@ -1773,7 +1771,7 @@
     padding: 0 var(--sa-padding-12);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     text-transform: uppercase;
     letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);

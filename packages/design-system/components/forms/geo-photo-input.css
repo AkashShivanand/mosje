@@ -111,7 +111,7 @@
   .ds-geophoto__dropzone-prompt {
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -160,7 +160,7 @@
     padding: var(--sa-padding-4) var(--sa-padding-8);
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     border-radius: var(--sa-shape-8);
     backdrop-filter: blur(3px);
   }
@@ -227,7 +227,7 @@
     height: 100%;
     font-family: inherit;
     font-size: var(--sa-type-body-3-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
     cursor: pointer;
     background-color: var(--sa-bg-neutral-base);

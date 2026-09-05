@@ -72,7 +72,7 @@
     margin: 0;
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
     color: var(--sa-text-neutral-subtle);
@@ -136,7 +136,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
     cursor: pointer;
     transition:
@@ -180,7 +180,7 @@
   .dm-panel__sub-label {
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
     color: var(--sa-text-neutral-subtle);
@@ -204,7 +204,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
     cursor: pointer;
     transition:
@@ -272,6 +272,6 @@
   }
 
   .dm-banner b {
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
   }
 }

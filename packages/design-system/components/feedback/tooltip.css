@@ -40,7 +40,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     text-align: left;
     box-shadow: var(--sa-elevation-dropdown);
     /* The bubble must never swallow a click meant for the UI beneath it; the

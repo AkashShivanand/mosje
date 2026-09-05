@@ -35,7 +35,7 @@
     justify-content: center;
     gap: var(--sa-stack-4);
     font-family: var(--sa-font-latin);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     white-space: nowrap;
     border-radius: var(--sa-shape-full);
     background-color: var(--_bg);

@@ -42,7 +42,7 @@
     margin: 0;
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
     color: var(--sa-text-brand-primary-base);
@@ -51,7 +51,7 @@
     margin: 0;
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
   .ico-card__body {
@@ -120,7 +120,7 @@
   .ico-specimen__label {
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-bolder);
   }
   .ico-specimen__meta,
@@ -133,7 +133,7 @@
   .ico-specimen__meta--standard,
   .ico-specimen__label--standard {
     color: var(--sa-text-brand-primary-base);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   /* ── The catalogue browser (icon-catalogue.tsx) ───────────────────────── */

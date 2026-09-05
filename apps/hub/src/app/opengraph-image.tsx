@@ -102,7 +102,7 @@ export default async function OpenGraphImage() {
               display: "flex",
               marginTop: 36,
               fontSize: 24,
-              fontWeight: 600,
+              fontWeight: "var(--sa-font-weight-semibold)",
               letterSpacing: 3,
               textTransform: "uppercase",
               color: colors.inkMuted,
@@ -116,7 +116,7 @@ export default async function OpenGraphImage() {
               display: "flex",
               marginTop: 12,
               fontSize: 64,
-              fontWeight: 700,
+              fontWeight: "var(--sa-font-weight-bold)",
               lineHeight: 1.1,
               color: colors.navy,
             }}

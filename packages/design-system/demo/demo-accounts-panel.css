@@ -38,7 +38,7 @@
   padding-bottom: 0.375rem;
   font-size: var(--sa-type-label-2-size);
   line-height: var(--sa-type-label-2-lh);
-  font-weight: 500;
+  font-weight: var(--sa-font-weight-medium);
   color: var(--sa-text-neutral-subtle);
 }
 
@@ -60,7 +60,7 @@
 .ds-demo-accounts__role {
   font-size: var(--sa-type-title-3-size);
   line-height: var(--sa-type-title-3-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-text-neutral-bolder);
   margin-bottom: 0.375rem;
 }
@@ -113,7 +113,7 @@
 .ds-demo-accounts__use {
   font-size: var(--sa-type-label-2-size);
   line-height: var(--sa-type-label-2-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-text-brand-primary-base);
   padding: 0.125rem 0.5rem;
   border-radius: 0.25rem;
@@ -149,7 +149,7 @@
 }
 
 .ds-demo-accounts__shared .ds-demo-accounts__pw {
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-text-neutral-base);
 }
 

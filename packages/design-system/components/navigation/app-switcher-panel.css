@@ -64,7 +64,7 @@
     /* A text monogram, not an icon glyph: it takes a type role. */
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -80,7 +80,7 @@
   .ds-appsw__current-name {
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
 
@@ -172,7 +172,7 @@
     padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-4);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
     color: var(--sa-text-neutral-subtle);
@@ -224,7 +224,7 @@
     color: var(--sa-text-brand-primary-base);
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -250,7 +250,7 @@
 
   .ds-appsw__item-name {
     font-size: var(--sa-type-body-2-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
     white-space: nowrap;
     overflow: hidden;
@@ -263,7 +263,7 @@
     margin-inline-start: 5px;
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-subtle);
   }
 
@@ -285,7 +285,7 @@
     flex: 0 0 auto;
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     border-radius: var(--sa-shape-6);
     padding: var(--sa-padding-2) var(--sa-padding-4);
   }

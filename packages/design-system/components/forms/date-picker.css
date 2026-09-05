@@ -31,7 +31,7 @@
     color: var(--sa-text-neutral-bolder);
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-datepicker__required {
@@ -152,7 +152,7 @@
     color: var(--sa-text-neutral-bolder);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-datepicker__weekdays,
@@ -196,7 +196,7 @@
   .ds-datepicker__day.is-selected {
     background: var(--sa-bg-brand-primary-bolder);
     color: var(--sa-text-neutral-inverse);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
   }
 
   .ds-datepicker__day.is-blocked {

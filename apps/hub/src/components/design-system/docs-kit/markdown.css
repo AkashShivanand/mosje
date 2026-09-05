@@ -19,10 +19,10 @@
 .markdown-body h3,
 .markdown-body h4 {
   color: var(--sa-text-neutral-base);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   scroll-margin-top: var(--docs-anchor-offset);
 }
-.markdown-body h1 { font-size: var(--sa-type-display-1-size); font-weight: 500; line-height: var(--sa-type-display-1-lh); margin: 0 0 var(--sa-stack-16); }
+.markdown-body h1 { font-size: var(--sa-type-display-1-size); font-weight: var(--sa-font-weight-medium); line-height: var(--sa-type-display-1-lh); margin: 0 0 var(--sa-stack-16); }
 .markdown-body h2 {
   font-size: var(--sa-type-headline-2-size);
   line-height: var(--sa-type-headline-2-lh);
@@ -38,7 +38,7 @@
 .markdown-body a { color: var(--sa-text-link-brand-default); text-decoration: none; }
 .markdown-body a:hover { text-decoration: underline; }
 
-.markdown-body strong { font-weight: 600; color: var(--sa-text-neutral-bolder); }
+.markdown-body strong { font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-bolder); }
 
 .markdown-body ul,
 .markdown-body ol { margin: 0 0 var(--sa-stack-16); padding-left: var(--sa-padding-24); max-width: var(--sa-container-measure); }
@@ -86,7 +86,7 @@
   border-bottom: 2px solid var(--sa-border-neutral-base);
   font-size: var(--sa-type-label-3-size);
   line-height: var(--sa-type-label-3-lh);
-  font-weight: 700;
+  font-weight: var(--sa-font-weight-bold);
   text-transform: uppercase;
   letter-spacing: var(--sa-type-caps-tracking);
   color: var(--sa-text-neutral-subtle);

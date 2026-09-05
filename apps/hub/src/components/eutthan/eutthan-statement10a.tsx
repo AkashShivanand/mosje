@@ -54,7 +54,7 @@ export function Statement10APage() {
               id="s10a-fy-label"
               style={{
                 fontSize: "var(--sa-type-label-2-size)", lineHeight: "var(--sa-type-label-2-lh)",
-                fontWeight: 700,
+                fontWeight: "var(--sa-font-weight-bold)",
                 color: "var(--text-muted)",
               }}
             >
@@ -73,7 +73,7 @@ export function Statement10APage() {
               id="s10a-ministry-label"
               style={{
                 fontSize: "var(--sa-type-label-2-size)", lineHeight: "var(--sa-type-label-2-lh)",
-                fontWeight: 700,
+                fontWeight: "var(--sa-font-weight-bold)",
                 color: "var(--text-muted)",
               }}
             >

@@ -20,7 +20,7 @@
     color: var(--sa-text-neutral-bolder);
     font-size: var(--sa-type-title-3-size);
     line-height: var(--sa-type-title-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-control-group__required {
@@ -84,7 +84,7 @@
     color: var(--sa-text-neutral-subtle);
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-transform: uppercase;
   }
 
@@ -105,6 +105,6 @@
     color: var(--sa-text-status-error-bolder);
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 }

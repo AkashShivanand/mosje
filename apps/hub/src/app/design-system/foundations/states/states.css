@@ -17,7 +17,7 @@
   .is-matrix thead th {
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
     border-bottom-color: var(--sa-border-neutral-base);
   }
@@ -43,7 +43,7 @@
     font: inherit;
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     cursor: pointer;
     transition:
       background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),

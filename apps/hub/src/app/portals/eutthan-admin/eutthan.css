@@ -147,7 +147,7 @@ button {
   gap: var(--sa-inline-12);
   font-size: var(--sa-type-label-1-size);
   line-height: var(--sa-type-label-1-lh);
-  font-weight: 500;
+  font-weight: var(--sa-font-weight-medium);
 }
 
 .top-actions button {
@@ -165,7 +165,7 @@ button {
   gap: var(--sa-inline-2);
   font-size: var(--sa-type-label-1-size);
   line-height: var(--sa-type-label-1-lh);
-  font-weight: 500;
+  font-weight: var(--sa-font-weight-medium);
 }
 
 .divider {
@@ -228,7 +228,7 @@ button {
   gap: var(--sa-inline-8);
   font-size: var(--sa-type-label-2-size);
   line-height: var(--sa-type-label-2-lh);
-  font-weight: 500;
+  font-weight: var(--sa-font-weight-medium);
 }
 
 .beta {
@@ -241,7 +241,7 @@ button {
   background: var(--yellow);
   font-size: var(--sa-type-label-3-size);
   line-height: var(--sa-type-label-3-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   letter-spacing: var(--sa-type-caps-tracking);
   text-transform: uppercase;
 }
@@ -286,7 +286,7 @@ button {
   background: var(--primary-100);
   font-size: var(--sa-type-title-2-size);
   line-height: var(--sa-type-title-2-lh);
-  font-weight: 700;
+  font-weight: var(--sa-font-weight-bold);
 }
 
 .workspace {
@@ -323,7 +323,7 @@ button {
 .nav-item.active {
   color: var(--primary);
   background: var(--primary-50);
-  font-weight: 700;
+  font-weight: var(--sa-font-weight-bold);
 }
 
 .nav-caret {
@@ -366,7 +366,7 @@ button {
   color: var(--text);
   font-size: var(--sa-type-headline-2-size);
   line-height: var(--sa-type-headline-2-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
 }
 
 .summary-grid {
@@ -398,7 +398,7 @@ button {
   color: var(--text-muted);
   font-size: var(--sa-type-label-1-size);
   line-height: var(--sa-type-label-1-lh);
-  font-weight: 700;
+  font-weight: var(--sa-font-weight-bold);
 }
 
 .summary-card strong {
@@ -439,7 +439,7 @@ button {
   color: var(--text);
   font-size: var(--sa-type-title-2-size);
   line-height: var(--sa-type-title-2-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
 }
 
 .select-button,
@@ -566,7 +566,7 @@ button {
   padding: var(--sa-padding-8) var(--sa-padding-16);
   font-size: var(--sa-type-label-1-size);
   line-height: var(--sa-type-label-1-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
 }
 
 .primary-button {
@@ -634,7 +634,7 @@ th {
   background: var(--surface-muted);
   font-size: var(--sa-type-title-3-size);
   line-height: var(--sa-type-title-3-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
 }
 
 td {
@@ -672,7 +672,7 @@ tr.selected-row td {
   color: var(--sa-text-neutral-inverse);
   font-size: var(--sa-type-label-2-size);
   line-height: var(--sa-type-label-2-lh);
-  font-weight: 700;
+  font-weight: var(--sa-font-weight-bold);
 }
 
 .badge.success {
@@ -787,7 +787,7 @@ tr.selected-row td {
   color: var(--text);
   font-size: var(--sa-type-label-1-size);
   line-height: var(--sa-type-label-1-lh);
-  font-weight: 700;
+  font-weight: var(--sa-font-weight-bold);
 }
 
 .field input,
@@ -834,7 +834,7 @@ tr.selected-row td {
   font-size: var(--sa-type-display-3-size);
   line-height: var(--sa-type-display-3-lh);
   letter-spacing: var(--sa-type-display-3-tracking);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-text-neutral-inverse);
   margin-bottom: var(--sa-stack-12);
 }
@@ -842,7 +842,7 @@ tr.selected-row td {
 .login-ministry-name {
   font-size: var(--sa-type-title-2-size);
   line-height: var(--sa-type-title-2-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--on-navy-90);
   margin-bottom: var(--sa-stack-12);
 }
@@ -862,7 +862,7 @@ tr.selected-row td {
   padding: var(--sa-padding-4) var(--sa-padding-16);
   font-size: var(--sa-type-label-2-size);
   line-height: var(--sa-type-label-2-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--on-navy-80);
 }
 
@@ -883,7 +883,7 @@ tr.selected-row td {
   color: var(--text-strong);
   font-size: var(--sa-type-headline-3-size);
   line-height: var(--sa-type-headline-3-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
 }
 
 .login-form-subtitle {
@@ -1025,7 +1025,7 @@ tr.selected-row td {
   padding: var(--sa-padding-8) var(--sa-padding-24);
   font-size: var(--sa-type-label-1-size);
   line-height: var(--sa-type-label-1-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--text-muted);
   border-bottom: 2px solid transparent;
   margin-bottom: -2px;
@@ -1077,7 +1077,7 @@ tr.selected-row td {
   color: var(--text);
   font-size: var(--sa-type-label-1-size);
   line-height: var(--sa-type-label-1-lh);
-  font-weight: 500;
+  font-weight: var(--sa-font-weight-medium);
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
 }
@@ -1120,7 +1120,7 @@ tr.selected-row td {
   margin: 0;
   font-size: var(--sa-type-title-2-size);
   line-height: var(--sa-type-title-2-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--text-strong);
 }
 
@@ -1145,7 +1145,7 @@ tr.selected-row td {
 .demo-creds-header {
   font-size: var(--sa-type-label-3-size);
   line-height: var(--sa-type-label-3-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   letter-spacing: var(--sa-type-caps-tracking);
   text-transform: uppercase;
   color: var(--text-muted);
@@ -1170,7 +1170,7 @@ tr.selected-row td {
 }
 .demo-creds-row:hover { border-color: var(--primary); background: var(--primary-50); }
 .demo-role-tag {
-  font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: 600;
+  font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-text-neutral-inverse); background: var(--primary);
   padding: var(--sa-padding-2) var(--sa-padding-6); border-radius: var(--sa-shape-4); flex-shrink: 0;
 }
@@ -1180,7 +1180,7 @@ tr.selected-row td {
 .eu-skip-link {
   position: absolute; top: -100%; left: 0;
   padding: var(--sa-padding-8) var(--sa-padding-16); background: var(--primary); color: var(--sa-text-neutral-inverse);
-  font-size: var(--sa-type-label-1-size); line-height: var(--sa-type-label-1-lh); font-weight: 600; z-index: 9999;
+  font-size: var(--sa-type-label-1-size); line-height: var(--sa-type-label-1-lh); font-weight: var(--sa-font-weight-semibold); z-index: 9999;
   border-bottom-right-radius: var(--radius-md);
 }
 .eu-skip-link:focus { top: 0; }

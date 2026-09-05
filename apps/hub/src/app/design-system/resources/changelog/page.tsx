@@ -1918,7 +1918,7 @@ export default function ChangelogPage(): React.JSX.Element {
                 <h2
                   style={{
                     fontSize: "var(--sa-type-headline-2-size)",
-                    fontWeight: 700,
+                    fontWeight: "var(--sa-font-weight-bold)",
                     color: "var(--sa-text-neutral-base)",
                   }}
                 >
@@ -1936,7 +1936,7 @@ export default function ChangelogPage(): React.JSX.Element {
                   <span
                     style={{
                       fontSize: "var(--sa-type-body-3-size)",
-                      fontWeight: 600,
+                      fontWeight: "var(--sa-font-weight-semibold)",
                       color: "var(--sa-on-bg-brand-primary-bolder)",
                       background: "var(--sa-bg-brand-primary-bolder)",
                       padding: "var(--sa-padding-2) var(--sa-padding-8)",
@@ -1974,7 +1974,7 @@ export default function ChangelogPage(): React.JSX.Element {
                         minWidth: 64,
                         textAlign: "center",
                         fontSize: "var(--sa-type-body-3-size)",
-                        fontWeight: 700,
+                        fontWeight: "var(--sa-font-weight-bold)",
                         color: "var(--sa-on-bg-brand-primary-bolder)",
                         background: KIND_COLOR[change.kind],
                         padding: "var(--sa-padding-2) var(--sa-padding-8)",

@@ -321,7 +321,7 @@
     padding: var(--sa-padding-8) var(--sa-padding-32) var(--sa-padding-8) var(--sa-padding-16);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     border-radius: var(--sa-shape-full);
     /* The filter pill was the faintest control in the estate at 1.35:1. A
        "hairline" is a look, not a licence — it is still the boundary that says
@@ -399,7 +399,7 @@
      rather than in the muted tone an icon takes. */
   .ds-input-shell__affix {
     color: var(--sa-text-neutral-bolder);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     white-space: nowrap;
   }
 
@@ -503,7 +503,7 @@
   .ds-field__label {
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-base);
   }
 
@@ -516,7 +516,7 @@
      screen reader should say, because there is no `optional` attribute for it
      to announce the way `required` announces the other side. */
   .ds-field__optional {
-    font-weight: 400;
+    font-weight: var(--sa-font-weight-regular);
     color: var(--sa-text-neutral-subtle);
   }
 
@@ -567,7 +567,7 @@
     gap: var(--sa-inline-4);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
   }
 
   /* Every status message colour is taken from the -base status text token,
@@ -594,7 +594,7 @@
 
   .ds-field__count--over {
     color: var(--sa-text-status-error-base);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
   }
 
   .ds-field-legend {

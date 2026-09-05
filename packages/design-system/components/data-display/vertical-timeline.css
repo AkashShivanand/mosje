@@ -89,7 +89,7 @@
   .sa-vertical-timeline-item__title {
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
     padding-right: var(--sa-padding-16);
   }
@@ -97,7 +97,7 @@
   .sa-vertical-timeline-item__date {
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-brand-primary-base);
     background-color: var(--sa-bg-brand-primary-subtler);
     padding: var(--sa-padding-4) var(--sa-padding-12);
