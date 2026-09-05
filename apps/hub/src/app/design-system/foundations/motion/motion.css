@@ -1,0 +1,127 @@
+/* Motion foundation — specimens. Every duration and easing here is the TOKEN, never a
+   number: the page that documents motion is the last place a literal may appear.
+   The reduced-motion behaviour is not written here either — tokens.css collapses every
+   intent's duration at the token layer, so these specimens honour the preference by
+   construction (and that is the claim the page makes). */
+@layer theme, base, components, utilities;
+@layer components {
+  .mo-intents {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--sa-inline-16);
+  }
+  .mo-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+  }
+  .mo-card__name {
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-brand-primary-base);
+  }
+  .mo-card__pair {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+  .mo-card__stage {
+    position: relative;
+    height: var(--sa-target-spacious);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-subtler);
+    overflow: hidden;
+  }
+  .mo-card__dot {
+    position: absolute;
+    top: var(--sa-padding-8);
+    left: var(--sa-padding-8);
+    width: var(--sa-icon-size-32);
+    height: var(--sa-icon-size-32);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-brand-primary-bolder);
+  }
+  /* Each specimen binds ITS intent's pair. The property each animates is the one the
+     intent is for: hover recolours, press scales, enter/exit fade, expand grows. */
+  .mo-card--hover .mo-card__dot { transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing); }
+  .mo-card--hover:hover .mo-card__dot,
+  .mo-card--hover:focus-within .mo-card__dot { background: var(--sa-bg-brand-secondary-bolder); }
+
+  .mo-card--press .mo-card__dot { transition: transform var(--sa-motion-press-duration) var(--sa-motion-press-easing); }
+  .mo-card--press:active .mo-card__dot { transform: scale(0.9); }
+
+  .mo-card--enter .mo-card__dot { opacity: 0; transform: translateY(var(--sa-stack-8)); transition: opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing), transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing); }
+  .mo-card--enter:hover .mo-card__dot,
+  .mo-card--enter:focus-within .mo-card__dot { opacity: 1; transform: none; }
+
+  .mo-card--exit .mo-card__dot { transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing), transform var(--sa-motion-exit-duration) var(--sa-motion-exit-easing); }
+  .mo-card--exit:hover .mo-card__dot,
+  .mo-card--exit:focus-within .mo-card__dot { opacity: 0; transform: translateY(calc(-1 * var(--sa-stack-8))); }
+
+  .mo-card--expand .mo-card__dot { transition: width var(--sa-motion-expand-duration) var(--sa-motion-expand-easing); }
+  .mo-card--expand:hover .mo-card__dot,
+  .mo-card--expand:focus-within .mo-card__dot { width: calc(100% - 2 * var(--sa-padding-8)); }
+
+  .mo-card--collapse .mo-card__dot { width: calc(100% - 2 * var(--sa-padding-8)); transition: width var(--sa-motion-collapse-duration) var(--sa-motion-collapse-easing); }
+  .mo-card--collapse:hover .mo-card__dot,
+  .mo-card--collapse:focus-within .mo-card__dot { width: var(--sa-icon-size-32); }
+
+  .mo-card--emphasis .mo-card__dot { transition: transform var(--sa-motion-emphasis-duration) var(--sa-motion-emphasis-easing); }
+  .mo-card--emphasis:hover .mo-card__dot,
+  .mo-card--emphasis:focus-within .mo-card__dot { transform: translateX(calc(100% + var(--sa-inline-40))); }
+
+  .mo-card--reveal .mo-card__dot { transform: translateX(calc(-100% - var(--sa-inline-8))); transition: transform var(--sa-motion-reveal-duration) var(--sa-motion-reveal-easing); }
+  .mo-card--reveal:hover .mo-card__dot,
+  .mo-card--reveal:focus-within .mo-card__dot { transform: none; }
+
+  .mo-card--page .mo-card__dot { opacity: 0; transition: opacity var(--sa-motion-page-duration) var(--sa-motion-page-easing); }
+  .mo-card--page:hover .mo-card__dot,
+  .mo-card--page:focus-within .mo-card__dot { opacity: 1; }
+
+  .mo-card--instant .mo-card__dot { transition: background-color var(--sa-motion-instant-duration) var(--sa-motion-instant-easing); }
+  .mo-card--instant:hover .mo-card__dot,
+  .mo-card--instant:focus-within .mo-card__dot { background: var(--sa-bg-status-success-bolder); }
+
+  .mo-card--loading .mo-card__dot { border-radius: var(--sa-shape-full); animation: mo-spin var(--sa-motion-loading-spin) var(--sa-motion-loading-easing) infinite; }
+  @keyframes mo-spin { to { transform: rotate(360deg); } }
+  .mo-card--loading .mo-card__dot::after {
+    content: "";
+    position: absolute;
+    inset: var(--sa-padding-4);
+    border-radius: var(--sa-shape-full);
+    border: var(--sa-stroke-2) solid var(--sa-border-neutral-inverse-subtle);
+    border-top-color: var(--sa-border-neutral-inverse-default);
+  }
+
+  /* Stagger: eight bars, delay = index × step, capped at max. */
+  .mo-stagger { display: flex; gap: var(--sa-inline-8); align-items: flex-end; height: var(--sa-icon-size-64); }
+  .mo-stagger__bar { flex: 1; height: 100%; border-radius: var(--sa-shape-4); background: var(--sa-bg-brand-primary-bolder); transform: scaleY(0.2); transform-origin: bottom; transition: transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing); }
+  .mo-stagger:hover .mo-stagger__bar,
+  .mo-stagger:focus-within .mo-stagger__bar { transform: none; }
+  .mo-stagger__bar:nth-child(2) { transition-delay: calc(1 * var(--sa-motion-stagger-step)); }
+  .mo-stagger__bar:nth-child(3) { transition-delay: calc(2 * var(--sa-motion-stagger-step)); }
+  .mo-stagger__bar:nth-child(4) { transition-delay: calc(3 * var(--sa-motion-stagger-step)); }
+  .mo-stagger__bar:nth-child(5) { transition-delay: calc(4 * var(--sa-motion-stagger-step)); }
+  .mo-stagger__bar:nth-child(6) { transition-delay: calc(5 * var(--sa-motion-stagger-step)); }
+  .mo-stagger__bar:nth-child(7) { transition-delay: calc(6 * var(--sa-motion-stagger-step)); }
+  .mo-stagger__bar:nth-child(n + 8) { transition-delay: calc(7 * var(--sa-motion-stagger-step)); }
+
+  /* Easing curves, drawn from the token so the page cannot show a curve it does not ship. */
+  .mo-curves { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: var(--sa-inline-16); }
+  .mo-curve { display: flex; flex-direction: column; gap: var(--sa-stack-8); padding: var(--sa-padding-16); border-radius: var(--sa-shape-12); background: var(--sa-bg-neutral-subtler); }
+  .mo-curve svg { width: 100%; aspect-ratio: 1; overflow: visible; }
+  .mo-curve path { fill: none; stroke: var(--sa-border-brand-primary-base); stroke-width: 2; }
+  .mo-curve line { stroke: var(--sa-border-neutral-base); stroke-width: 1; }
+  .mo-curve__name { font-family: var(--sa-font-mono); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-bolder); }
+  .mo-curve__value { font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); }
+
+  .mo-ladder { display: flex; flex-direction: column; gap: var(--sa-stack-8); }
+  .mo-ladder__row { display: grid; grid-template-columns: 6ch 1fr; align-items: center; gap: var(--sa-inline-16); font-variant-numeric: tabular-nums; font-size: var(--sa-type-body-3-size); color: var(--sa-text-neutral-subtle); }
+  .mo-ladder__bar { height: var(--sa-stack-12); border-radius: var(--sa-shape-2); background: var(--sa-bg-brand-primary-bold); }
+}

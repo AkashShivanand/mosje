@@ -38,7 +38,7 @@
      * 1.4.11 puts at 3:1, and the axe suite's own component page is where that
      * was caught.
      */
-    border: 1px solid var(--sa-border-neutral-bolder-default);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-8);
     background: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-base);
@@ -82,7 +82,7 @@
        the label's own line box rather than by a guessed number. */
     top: calc(100% + var(--sa-stack-4));
     left: 0;
-    z-index: 20;
+    z-index: var(--sa-z-dropdown);
     width: 100%;
     min-width: max-content;
     /* Paged by scrolling rather than by height: a district list is forty long,
@@ -90,7 +90,7 @@
     max-height: 280px;
     overflow-y: auto;
     padding: var(--sa-padding-4);
-    border: 1px solid var(--sa-border-neutral-bolder-default);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-8);
     background: var(--sa-bg-neutral-base);
     box-shadow: var(--sa-elevation-modal);

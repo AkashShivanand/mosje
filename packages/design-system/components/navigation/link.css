@@ -26,8 +26,8 @@
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;
     transition:
-      color 0.15s ease,
-      text-decoration-color 0.15s ease;
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      text-decoration-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   /* An icon inside a link is inline-flex so it sits on the text baseline rather than

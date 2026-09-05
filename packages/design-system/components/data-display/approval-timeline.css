@@ -65,7 +65,7 @@
     width: 14px;
     height: 14px;
     background-color: var(--sa-bg-neutral-base);
-    border: 3px solid var(--sa-border-neutral-base);
+    border: var(--sa-stroke-3) solid var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-full);
   }
 

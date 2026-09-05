@@ -6,9 +6,10 @@
   position: fixed;
   inset: 0;
   background: var(--sa-overlay-neutral-boldest);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  z-index: 9000;
+  backdrop-filter: blur(var(--sa-blur-soft));
+  -webkit-backdrop-filter: blur(var(--sa-blur-soft));
+  /* The palette owns the screen like a dialog: modal, on its own scrim. */
+  z-index: var(--sa-z-modal);
   display: flex;
   align-items: flex-start;
   justify-content: center;

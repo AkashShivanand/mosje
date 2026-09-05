@@ -54,7 +54,7 @@
        the page gains a horizontal scrollbar. Found when a DataTable was placed
        inside a ChartCard on a narrow viewport. */
     min-width: 0;
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-12);
   }
 
@@ -79,7 +79,7 @@
   /* Header — white, sentence-case, medium weight (matches Figma, not shouty). */
   .ds-table__head {
     background-color: var(--sa-bg-neutral-base);
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   .ds-table__th {
@@ -91,8 +91,8 @@
   }
 
   .ds-table__row {
-    border-top: 1px solid var(--sa-border-neutral-subtle);
-    transition: background-color 0.12s ease;
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   /* Brandwash row-hover (light-blue) with navy text — the Figma selected/hover state. */
@@ -153,7 +153,7 @@
     font-weight: 600;
     background: transparent;
     color: var(--sa-text-neutral-subtle);
-    transition: background-color 0.12s ease, color 0.12s ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-table__pagesize-btn:hover {
@@ -182,11 +182,11 @@
     height: 36px;
     min-width: 36px;
     border-radius: var(--sa-shape-6);
-    border: 1px solid transparent;
+    border: var(--sa-stroke-1) solid transparent;
     background: transparent;
     color: var(--sa-text-neutral-subtle);
     font-weight: 600;
-    transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-table__page-nav:hover:not(:disabled),

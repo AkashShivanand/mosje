@@ -26,7 +26,7 @@ export type Section = { id: string; title: string };
 
 export const META = {
   "translucentTokens": 136,
-  "alphaSteps": 13,
+  "alphaSteps": 15,
   "ramps": 8,
   "brands": 2,
   "rungs": 6,
@@ -2463,6 +2463,20 @@ export const ALPHA_SCALE = [
     "figma": "alpha/100",
     "value": "1",
     "use": "Opaque — a sentinel so a binding can be switched off without unbinding."
+  },
+  {
+    "step": null,
+    "css": "--sa-alpha-disabled",
+    "figma": "alpha/disabled",
+    "value": "0.48",
+    "use": ""
+  },
+  {
+    "step": null,
+    "css": "--sa-alpha-muted",
+    "figma": "alpha/muted",
+    "value": "0.64",
+    "use": ""
   }
 ] as const;
 

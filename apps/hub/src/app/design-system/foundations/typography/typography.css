@@ -218,3 +218,88 @@
 .ty-tier__roles dt { font-family: var(--sa-font-mono); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); }
 .ty-tier__roles dd { margin: 0; font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-subtle); }
 @media (width < 640px) { .ty-tier__roles { grid-template-columns: 1fr; } }
+
+/* ── 2026-09-04 — onto FoundationDocPage ──────────────────────────────────────────────────
+   The template's prose rules (.fdp__section-body p / li / ul / h3) are written for running
+   text and outrank a single class; the lab, the standards list and the tier cards are
+   specimens, so each is re-asserted at two classes with the value it had. Every value is a
+   token. The Indic comparison and the Do/Don't code previews were inline styles on the page;
+   they are bound here now. */
+.ty-lab__block + .ty-lab__block { margin-top: var(--sa-section-32); }
+.fdp__section-body .ty-lab__h3 {
+  margin: 0 0 var(--sa-stack-8);
+  font-size: var(--sa-type-headline-4-size);
+  line-height: var(--sa-type-headline-4-lh);
+  font-weight: 600;
+}
+.fdp__section-body .ty-lead { max-width: var(--fdp-measure); color: var(--sa-text-neutral-subtle); }
+.fdp__section-body .ty-hint {
+  max-width: var(--fdp-measure);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+.fdp__section-body .ty-std__title,
+.fdp__section-body .ty-tier__name {
+  margin: 0 0 var(--sa-stack-8);
+  font-size: var(--sa-type-title-1-size);
+  line-height: var(--sa-type-title-1-lh);
+}
+.fdp__section-body .ty-std { margin-top: var(--sa-padding-20); }
+.fdp__section-body .ty-std__list { padding: 0; }
+.fdp__section-body .ty-std__item { max-width: none; font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); }
+.fdp__section-body .ty-std__item + .ty-std__item { margin-top: 0; }
+.fdp__section-body .ty-tier__why { color: var(--sa-text-neutral-subtle); }
+.fdp__section-body .ty-tier__roles dd { max-width: none; }
+.fdp__section-body .ty-why { margin: 0; }
+
+/* Indic line-height comparison cards */
+.ty-indic-compare { margin-top: 0; }
+.ty-indic-card {
+  border: var(--sa-stroke-1) solid var(--sa-border-status-error-base);
+  border-radius: var(--sa-shape-8);
+  overflow: hidden;
+}
+.ty-indic-card__head {
+  padding: var(--sa-padding-12) var(--sa-padding-16);
+  border-bottom: var(--sa-stroke-1) solid var(--sa-border-status-error-base);
+  background: var(--sa-bg-status-error-subtler);
+  color: var(--sa-text-status-error-base);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  font-weight: 600;
+}
+.ty-indic-card[data-tone="success"] { border-color: var(--sa-border-status-success-base); }
+.ty-indic-card[data-tone="success"] .ty-indic-card__head {
+  border-bottom-color: var(--sa-border-status-success-base);
+  background: var(--sa-bg-status-success-subtler);
+  color: var(--sa-text-status-success-base);
+}
+.fdp__section-body .ty-indic-card__text {
+  max-width: none;
+  margin: 0;
+  padding: var(--sa-padding-20);
+  font-family: var(--sa-font-devanagari);
+  font-size: var(--sa-type-body-1-size);
+  color: var(--sa-text-neutral-base);
+}
+
+/* Do / Don't code previews */
+.ty-code {
+  font-family: var(--sa-font-mono);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-base);
+  text-align: left;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+/* the standards register's clause column: a citation is not broken mid-word */
+.fdp:has(.ty-lab__block) .fdp__standards td:first-child code {
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+
+/* Provenance, on the Tokens tab */
+.fdp__section-body .ty-provenance p { max-width: var(--fdp-measure); }

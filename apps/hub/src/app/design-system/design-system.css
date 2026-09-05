@@ -143,7 +143,9 @@ code:not([class]) {
   position: absolute;
   top: -100%;
   left: var(--sa-inline-16);
-  z-index: 9999;
+  /* Above every layer a reader can interact with — a skip link that hides behind
+     the masthead is no skip link. */
+  z-index: var(--sa-z-tooltip);
   padding: var(--sa-padding-8) var(--sa-padding-16);
   background: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);

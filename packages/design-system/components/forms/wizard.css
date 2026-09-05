@@ -46,7 +46,7 @@
 
   .ds-wizard__stepper {
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-12);
     padding: var(--sa-padding-20);
   }
@@ -64,13 +64,13 @@
     justify-content: space-between;
     gap: var(--sa-stack-12);
     padding-top: var(--sa-padding-20);
-    border-top: 1px solid var(--sa-border-neutral-subtle);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   /* Review summary. */
   .ds-review-section {
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-12);
     padding: var(--sa-padding-20);
   }

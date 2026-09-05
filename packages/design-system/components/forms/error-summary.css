@@ -7,7 +7,7 @@
      a whole block overwhelms the messages it is meant to frame, and the rule
      carries the signal at 3:1 without relying on the ground. */
   .ds-error-summary {
-    border-inline-start: 4px solid var(--sa-border-status-error-base);
+    border-inline-start: var(--sa-stroke-4) solid var(--sa-border-status-error-base);
     border-radius: var(--sa-shape-8);
     background: var(--sa-bg-status-error-base);
     padding: var(--sa-padding-16);
@@ -70,7 +70,7 @@
      reads as one thing. */
   @media (forced-colors: active) {
     .ds-error-summary {
-      border: 1px solid CanvasText;
+      border: var(--sa-stroke-1) solid CanvasText;
       border-inline-start-width: 4px;
     }
   }

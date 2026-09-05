@@ -51,8 +51,8 @@
     gap: var(--sa-stack-12);
     padding: var(--sa-padding-12);
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-subtle);
-    border-left: 4px solid var(--_color);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-left: var(--sa-stroke-4) solid var(--_color);
     border-radius: var(--sa-shape-8);
     box-shadow: var(--sa-elevation-modal);
     font-family: var(--sa-font-latin);
@@ -148,7 +148,7 @@
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
-    transition: background-color 0.15s ease, color 0.15s ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
   .ds-alert__close:hover {
     background-color: color-mix(in srgb, var(--sa-color-text-default) 8%, transparent);
@@ -195,7 +195,7 @@
     width: var(--_loader-size);
     height: var(--_loader-size);
     border-radius: var(--sa-shape-full);
-    border: 3px solid color-mix(in srgb, var(--_loader-color) 22%, transparent);
+    border: var(--sa-stroke-3) solid color-mix(in srgb, var(--_loader-color) 22%, transparent);
     border-top-color: var(--_loader-color);
     animation: ds-spin 0.7s linear infinite;
   }

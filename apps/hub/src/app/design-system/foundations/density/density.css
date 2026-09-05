@@ -1,0 +1,141 @@
+/* Density foundation — the side-by-side demo. Every measurement that the density axis
+   moves is bound to its density token, so the compact panel is the SAME markup under a
+   `data-density="compact"` wrapper and draws whatever the build resolves; the page never
+   types a compact height into the demo. */
+@layer theme, base, components, utilities;
+@layer components {
+  .de-demo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(28ch, 1fr));
+    gap: var(--sa-inline-24);
+  }
+  .de-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+    padding: var(--sa-padding-24);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .de-panel__title {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+  .de-panel__meta {
+    font-weight: 400;
+    color: var(--sa-text-neutral-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+  /* The gap between the control group and the row group is the section token. */
+  .de-controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-density-control-gap);
+  }
+  .de-button,
+  .de-input,
+  .de-select {
+    box-sizing: border-box;
+    height: var(--sa-density-control-height);
+    padding: 0 var(--sa-density-control-padding-x);
+    border-radius: var(--sa-control-radius);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+  .de-button {
+    border: none;
+    background: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-bolder);
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .de-input,
+  .de-select {
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
+  }
+  .de-rows {
+    margin: var(--sa-density-section-gap) 0 0;
+    padding: 0;
+    list-style: none;
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+  }
+  .de-row {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    min-height: var(--sa-density-row-height);
+    padding: var(--sa-density-row-padding-y) var(--sa-density-row-padding-x);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+  }
+  .de-row + .de-row {
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  .de-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+  .de-table__caption {
+    caption-side: bottom;
+    padding-top: var(--sa-padding-12);
+    text-align: left;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+  .de-table th,
+  .de-table td {
+    text-align: left;
+    vertical-align: top;
+    padding: var(--sa-padding-12);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+  .de-table th {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-subtle);
+    border-bottom-color: var(--sa-border-neutral-base);
+  }
+  .de-table__num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .de-when {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(28ch, 1fr));
+    gap: var(--sa-inline-24);
+  }
+  .de-when__col {
+    padding: var(--sa-padding-20);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .de-when__col h3 {
+    margin-top: 0;
+  }
+
+  .de-code {
+    margin: 0;
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-subtler);
+    overflow-x: auto;
+  }
+  .de-code code {
+    background: none;
+    padding: 0;
+  }
+}

@@ -361,7 +361,7 @@
 .docs-scrim {
   position: fixed;
   inset: 0;
-  z-index: 40;
+  z-index: var(--sa-z-overlay);
   background: var(--sa-overlay-neutral-boldest);
   -webkit-backdrop-filter: blur(1px);
   backdrop-filter: blur(1px);
@@ -386,7 +386,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 50;
+    z-index: var(--sa-z-modal);
     width: min(86vw, 320px);
     height: 100dvh;
     transform: translateX(-100%);
@@ -568,7 +568,7 @@
   position: fixed;
   bottom: var(--sa-stack-24);
   right: var(--sa-inline-20);
-  z-index: 30;
+  z-index: var(--sa-z-fixed);
 }
 
 .docs-mobile-toc-btn {
@@ -594,7 +594,7 @@
 .docs-mobile-toc-scrim {
   position: fixed;
   inset: 0;
-  z-index: 100;
+  z-index: var(--sa-z-overlay);
   background: var(--sa-overlay-neutral-boldest);
   -webkit-backdrop-filter: blur(2px);
   backdrop-filter: blur(2px);

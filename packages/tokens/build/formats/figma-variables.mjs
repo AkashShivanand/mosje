@@ -137,9 +137,6 @@ function fluidAt(min, max, viewport, wmin, wmax) {
   return Math.abs(sampled) < 4 ? Math.round(sampled * 10) / 10 : Math.round(sampled);
 }
 
-const TITLE_EXCEPTIONS = { bg: "Background", hc: "HC", ux4g: "UX4G" };
-const titleCase = (seg) =>
-  TITLE_EXCEPTIONS[seg] ?? (/^\d/.test(seg) ? seg : seg.charAt(0).toUpperCase() + seg.slice(1));
 
 /** Ramp path segment → the folder the library already uses. */
 const RAMP_FOLDER = {
@@ -203,7 +200,10 @@ function collectionFor(path, tier, type) {
   // designer should bind to. Both belong in the Radius collection — the tier stays legible in
   // the variable name (`ref/radius/md` vs `shape/md`), exactly as it does in CSS.
   if (head === "radius" || head === "shape") return "Radius";
-  if (head === "opacity" || head === "z") return "Static";
+  if (head === "opacity") return "Static";
+  // `z/*` is code-only — Figma has no z-axis property, so a variable for it is noise in the
+  // panel. Routed to null so it lands in `unmapped` with the reason below (exclusionReason).
+  if (head === "z") return null;
   // Tier-2 opacity. Sits with the Tier-1 `ref/opacity/*` it aliases, so a designer binding a
   // colour variable's opacity finds `alpha/8` and `ref/opacity/8` in one collection and picks
   // the Tier-2 one — the same pairing as `shape`/`ref/radius` and `stroke`/`ref/border/width`.
@@ -373,10 +373,31 @@ const COLOR_RE = /^(#|rgba?\(|hsla?\()/i;
 const DIMENSION_RE = /^(-?\d*\.?\d+)(px|rem|em|ms|s|%)?$/;
 
 /** Infer the Figma type. 517 tokens carry no DTCG `$type`, so this cannot depend on it. */
+/** Parse a DTCG cubicBezier — the authored [x1, y1, x2, y2] or the projected CSS string. */
+export function bezierOf(raw) {
+  if (Array.isArray(raw) && raw.length === 4 && raw.every((n) => typeof n === "number")) return raw;
+  const m = /cubic-bezier\(([^)]+)\)/.exec(String(raw));
+  if (!m) return null;
+  const pts = m[1].split(",").map((s) => Number(s.trim()));
+  return pts.length === 4 && pts.every((n) => Number.isFinite(n)) ? pts : null;
+}
+
 export function figmaTypeOf(token) {
   const declared = token.$type ?? token.original?.$type;
   if (declared === "color") return { type: "COLOR" };
   if (declared === "fontFamily") return { type: "STRING" };
+  // Figma's NATIVE motion types (Plugin API resolvedType TIMING | EASING, probed live on
+  // 2026-09-04 — the bundled typings that listed only four types were stale). A duration is
+  // a TIMING in milliseconds; a curve is an EASING carrying its cubic-bezier control points.
+  // Figma Motion binds them directly, so a designer animates with the token, not a copy.
+  if (declared === "duration") {
+    const m = /^(-?\d*\.?\d+)(ms|s)?$/.exec(String(val(token) ?? "").trim());
+    if (m) return { type: "TIMING", number: m[2] === "s" ? parseFloat(m[1]) * 1000 : parseFloat(m[1]) };
+  }
+  if (declared === "cubicBezier") {
+    const b = bezierOf(val(token));
+    if (b) return { type: "EASING", bezier: b };
+  }
   const v = String(val(token) ?? "");
   if (COLOR_RE.test(v)) return { type: "COLOR" };
   const m = DIMENSION_RE.exec(v.trim());
@@ -395,7 +416,13 @@ export function figmaTypeOf(token) {
 function brandValue(token, brand) {
   const ext = token.original?.$extensions?.mosje ?? {};
   if (brand === "Navy" && ext.colorModes?.navy !== undefined) return ext.colorModes.navy;
-  return token.original?.$value ?? token.original?.value ?? val(token);
+  const raw = token.original?.$value ?? token.original?.value ?? val(token);
+  // DTCG cubicBezier is authored as [x1, y1, x2, y2]; Figma holds the CSS string (a STRING
+  // variable), which is also what the value-parity checksum was recorded against.
+  if (Array.isArray(raw) && raw.length === 4 && raw.every((n) => typeof n === "number")) {
+    return `cubic-bezier(${raw.join(", ")})`;
+  }
+  return raw;
 }
 
 /**
@@ -580,6 +607,11 @@ function encodeValue(raw, token, nameByPath, resolvedByPath, selfTarget) {
     const resolved = resolvedByPath.get(key);
     if (resolved !== undefined) raw = resolved;
   }
+  // DTCG cubicBezier is authored as [x1, y1, x2, y2]; Figma holds the CSS string as a STRING
+  // variable — the form the value-parity record was made against.
+  if (Array.isArray(raw) && raw.length === 4 && raw.every((n) => typeof n === "number")) {
+    raw = `cubic-bezier(${raw.join(", ")})`;
+  }
   const t = figmaTypeOf({ ...token, $value: raw, original: { $value: raw, $type: token.original?.$type } });
   // WEIGHT IS CHECKED BEFORE FLOAT, because a CSS weight IS a number and would otherwise be
   // projected as one. Figma has no numeric weight: a text style selects a cut by STYLE NAME,
@@ -588,6 +620,11 @@ function encodeValue(raw, token, nameByPath, resolvedByPath, selfTarget) {
     return { type: "STRING", value: figmaFontStyle(raw, token.path?.[2]) };
   }
   if (t.type === "FLOAT") return { type: "FLOAT", value: t.number, unit: t.unit };
+  if (t.type === "TIMING") return { type: "TIMING", value: t.number };
+  if (t.type === "EASING") {
+    const [x1, y1, x2, y2] = t.bezier;
+    return { type: "EASING", value: { x1, y1, x2, y2 } };
+  }
   if (token.path?.[0] === "font" && token.path?.[1] === "family") {
     return { type: t.type, value: primaryFontFamily(raw) };
   }
@@ -781,6 +818,8 @@ export function scopesFor(path, tier, type, figmaName) {
     return ["FONT_FAMILY"];
   }
   if (type === "STRING") return [];
+  // Timing and Easing are bound by Figma Motion by TYPE; they take no property scope.
+  if (type === "TIMING" || type === "EASING") return [];
   // FLOAT
   if (head === "alpha") return ["OPACITY", "COLOR_OPACITY"];
   if (head === "shape" || tail === "radius") return ["CORNER_RADIUS"];
@@ -830,6 +869,9 @@ export function exclusionReason(path, tier) {
   }
   if (head === "shadow" || head === "elevation") {
     return "Figma models shadows as EFFECT STYLES, not variables — exported separately";
+  }
+  if (head === "z") {
+    return "code-only — Figma has no z-axis property, so layering cannot be bound on a canvas";
   }
   if (head === "code") {
     // Deliberate, not an oversight. code/* is the chrome around a CODE SPECIMEN in the web
@@ -1014,6 +1056,9 @@ export function buildPayload(dictionary) {
       ...(description ? { description } : {}),
       codeSyntax: { WEB: `var(${emittedCssName(token, tier)})` },
       scopes: scopesFor(token.path, tier, type, target.name),
+      // .claude/rules/figma-variables-standard.md §4: a Tier-1 primitive exists only to be
+      // aliased, so consumers never see it; the semantic and component tiers publish.
+      hiddenFromPublishing: tier === "ref",
       status: live?.[target.collection]?.includes(target.name) ? "existing" : "new",
       $extensions: { "in.gov.mosje.tier": tier, "in.gov.mosje.source": token.filePath },
     });
@@ -1067,11 +1112,14 @@ export function buildPayload(dictionary) {
   const payload = {
     $schema: "samavesh-figma-variables/2",
     $description:
-      "GENERATED by @mosje/tokens, targeted at the live SAMAVESH library's seven collections. " +
-      "Variables are keyed by the name the library already uses; `status` says whether an " +
-      "import adds or updates. Colour is split across two collections: Color carries the BRAND " +
-      "axis (Blue|Navy) and Theme is the single-mode semantic layer that aliases into it. " +
-      "See spec §8.4.",
+      "GENERATED by @mosje/tokens, targeted at the live SAMAVESH library's nine collections " +
+      "(Space, Palette, Color, Type, Radius, Motion, Density, Static, Viewport). Variables are " +
+      "keyed by the name the library already uses; `status` says whether an import adds or " +
+      "updates. Colour is split across two collections: Palette carries the BRAND axis " +
+      "(Blue|Navy) and Color is the single-mode semantic layer that aliases into it. Every " +
+      "variable carries the five fields .claude/rules/figma-variables-standard.md requires: " +
+      "name = DTCG path, description, narrowest true scopes, codeSyntax.WEB, and " +
+      "hiddenFromPublishing by tier. See spec §8.4.",
     counts,
     unmapped,
     collections: Object.values(collections).filter((c) => c.variables.length),

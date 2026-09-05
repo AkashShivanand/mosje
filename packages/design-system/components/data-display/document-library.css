@@ -29,7 +29,7 @@
     flex-direction: column;
     gap: var(--sa-stack-8);
     padding: var(--sa-padding-16);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-12);
     background-color: var(--sa-bg-neutral-base);
   }

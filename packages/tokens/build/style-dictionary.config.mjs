@@ -154,7 +154,44 @@ StyleDictionary.registerFormat({
 
 // NB: no fontFamily/css — font-family tokens are authored in final CSS form (double-quoted)
 // and must pass through verbatim to match the legacy contract. No size/rem — px is preserved.
-const TRANSFORMS = ["attribute/cti", "name/kebab", "color/css"];
+/**
+ * DTCG composite types → CSS strings, in exactly the shape the estate already shipped.
+ *
+ * `cubicBezier` is authored as the four-number array the spec defines and projected as
+ * `cubic-bezier(x1, y1, x2, y2)`; `shadow` is authored as an array of layer objects and
+ * projected as the comma-joined `box-shadow` shorthand with a bare `0` for a zero offset.
+ * Style Dictionary v4 ships transforms for both, but its shorthand spacing differs from the
+ * strings the visual contract pins — these two exist so the source could change shape
+ * without a single rendered pixel moving (`visual-contract.test.mjs` proves it).
+ */
+const px0 = (v) => (/^0(px|rem|em)?$/.test(String(v).trim()) ? "0" : String(v));
+StyleDictionary.registerTransform({
+  name: "mosje/cubic-bezier-css",
+  type: "value",
+  filter: (t) => t.$type === "cubicBezier" || t.type === "cubicBezier",
+  transform: (t) => {
+    const v = t.$value ?? t.value;
+    return Array.isArray(v) ? `cubic-bezier(${v.join(", ")})` : v;
+  },
+});
+StyleDictionary.registerTransform({
+  name: "mosje/shadow-css",
+  type: "value",
+  filter: (t) => t.$type === "shadow" || t.type === "shadow",
+  transform: (t) => {
+    const v = t.$value ?? t.value;
+    if (typeof v === "string") return v;
+    const layers = Array.isArray(v) ? v : [v];
+    if (!layers.length) return "none";
+    // Every layer in the ramp carries an explicit spread (a bare "0" when none), so the
+    // projection is fixed-arity: x y blur spread colour.
+    return layers
+      .map((l) => `${px0(l.offsetX)} ${px0(l.offsetY)} ${px0(l.blur)} ${px0(l.spread ?? "0")} ${l.color}`)
+      .join(", ");
+  },
+});
+
+const TRANSFORMS = ["attribute/cti", "name/kebab", "color/css", "mosje/cubic-bezier-css", "mosje/shadow-css"];
 
 // White-label: the active brand pack supplies the brand-identity primitives
 // (color.primaryRamp / saffron / navy / yellow). Default brand is MoSJE.
@@ -240,6 +277,7 @@ if (BRAND === "mosje") {
   // Typography's numbers were hand-typed too — 168 of them, correct on the day they were
   // checked and with no way of staying that way. Same fix, before the same failure.
   await import("./generate-typography-docs-data.mjs");
+  await import("./generate-foundation-docs-data.mjs");
 }
 
 console.log(`✓ @mosje/tokens built (brand: ${BRAND})`);

@@ -86,19 +86,24 @@ exception, and it is a measurement, never a mutation.
 
 ## Layering
 
-There is no `--sa-z-*` scale yet; the house convention is a literal with a
-comment explaining it.
+**Since 2026-09-04 there IS a `--sa-z-*` ladder, and it is the only z-index app code
+may write.** Fifteen Tier-2 rungs in `packages/tokens/src/semantic.json` (`z/*`),
+documented at `/design-system/foundations/layering`; a literal z-index above 2 is now
+a defect, and `tools/foundation-page-standard` plus the DS adoption pass bound the
+21 the design system carried. The chrome rungs below are the ones this rule cares
+about; the product rungs (dropdown 100 … tooltip 800) live on the foundation page.
 
-| Layer | Value | |
-|---|---|---|
-| demo dock | 2147483000 | demo scaffolding, and the reason the number below is grotesque |
-| chatbot, **open** | 2147483001 | the citizen deliberately summoned it; nothing decorative covers it |
-| UX4G accessibility panel | 999999 | statutory |
-| Important Links | 1002 | |
-| chatbot, **closed** | 1010 | a launcher only needs to beat product chrome — and it stays UNDER the accessibility panel, because a chat launcher has no business sitting on a statutory control |
+| Layer | Token | Value | |
+|---|---|---|---|
+| demo dock | `--sa-z-demo` | 2147483000 | demo scaffolding, and the reason the number below is grotesque — RESERVED |
+| chatbot, **open** | `--sa-z-top` | 2147483001 | the citizen deliberately summoned it; nothing decorative covers it — RESERVED |
+| UX4G accessibility panel | `--sa-z-statutory` | 999999 | statutory, third-party — RESERVED, never bound to anything SAMAVESH draws |
+| Important Links, the wall rail | `--sa-z-rail` | 1000 | (was a literal 1002) |
+| chatbot, **closed** | `--sa-z-launcher` | 1010 | a launcher only needs to beat product chrome — and it stays UNDER the accessibility panel, because a chat launcher has no business sitting on a statutory control |
 
 **Closed sits below the accessibility panel and open sits above everything.** That
-split is deliberate; do not collapse it to one blanket maximum.
+split is deliberate; do not collapse it to one blanket maximum. Inside a component's
+own stacking context, `--sa-z-raised` (1) and a literal 2 are local order, not layering.
 
 ## Narrow viewports
 

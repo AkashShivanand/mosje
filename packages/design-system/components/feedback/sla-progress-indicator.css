@@ -186,7 +186,7 @@
     align-items: center;
     gap: var(--sa-inline-4);
     padding: var(--sa-padding-2) var(--sa-padding-8);
-    border: 1px solid var(--sla-soft);
+    border: var(--sa-stroke-1) solid var(--sla-soft);
     border-radius: var(--sa-shape-full);
     background: var(--sa-bg-neutral-base);
     max-inline-size: 100%;

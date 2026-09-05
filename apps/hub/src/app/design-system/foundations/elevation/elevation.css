@@ -1,0 +1,85 @@
+/* Elevation foundation — specimens. The shadow on each card is the TOKEN's resolved value,
+   passed through from the generated data; nothing here authors a shadow. */
+@layer theme, base, components, utilities;
+@layer components {
+  .el-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--sa-inline-32);
+    padding: var(--sa-padding-32);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .el-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-20);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+  .el-card__name {
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-brand-primary-base);
+  }
+  .el-card__meta {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+  }
+  .el-card__use {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+  .el-ramp {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+  }
+  .el-ramp__row {
+    display: grid;
+    grid-template-columns: var(--sa-icon-size-64) 1fr;
+    gap: var(--sa-inline-24);
+    align-items: center;
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .el-ramp__chip {
+    width: var(--sa-icon-size-64);
+    height: var(--sa-icon-size-40);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+  }
+  .el-ramp__name,
+  .el-ramp__value {
+    display: block;
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    background: none;
+    padding: 0;
+  }
+  .el-ramp__name {
+    color: var(--sa-text-neutral-bolder);
+  }
+  .el-ramp__value {
+    color: var(--sa-text-neutral-subtle);
+    overflow-wrap: anywhere;
+  }
+  /* The "don't" specimen: a text shadow, shown to be refused. */
+  .el-text-shadow {
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+    text-shadow: var(--sa-elevation-modal);
+  }
+}

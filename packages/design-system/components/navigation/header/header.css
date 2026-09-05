@@ -175,7 +175,7 @@
      <body> and escapes this context entirely rather than bidding higher inside it. */
   .ds-hdr {
     position: relative;
-    z-index: 900;
+    z-index: var(--sa-z-modal);
     width: 100%;
     background-color: var(--sa-bg-neutral-base);
     font-family: var(--sa-font-latin);
@@ -262,7 +262,7 @@
     width: 48px;
     flex: 0 0 auto;
     padding: var(--sa-padding-8);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-8);
     background: transparent;
     color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
@@ -273,7 +273,7 @@
        appears to lag its own cursor. It is also the wrong half of the pair: a
        hover is as much an arrival as a departure, and `exit` was being used for
        both directions of every one of these. Four of them read this way. */
-    transition: background-color var(--sa-motion-exit-duration) ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -433,7 +433,7 @@
     padding: var(--sa-padding-4);
     border-radius: var(--sa-shape-8);
     cursor: pointer;
-    transition: background-color var(--sa-motion-exit-duration) ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -466,7 +466,7 @@
   .ds-hdr-account__caret {
     flex: 0 0 auto;
     color: var(--sa-text-neutral-subtle);
-    transition: transform var(--sa-motion-exit-duration) ease;
+    transition: transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-hdr-account.is-open .ds-hdr-account__caret {
@@ -541,12 +541,12 @@
     width: 48px;
     flex: 0 0 auto;
     padding: var(--sa-padding-8);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-8);
     background: transparent;
     color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
     cursor: pointer;
-    transition: background-color var(--sa-motion-exit-duration) ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -564,8 +564,8 @@
   /* ── Tier 3: Navigation row (UX4G / Portal: bordered, items justify-between) ── */
   .ds-hdr-nav {
     display: none;
-    border-top: 1px solid var(--sa-border-neutral-subtle);
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     background-color: var(--sa-bg-neutral-base);
   }
 
@@ -624,7 +624,7 @@
     padding-right: var(--sa-padding-8);
     text-decoration: none;
     cursor: pointer;
-    transition: color var(--sa-motion-exit-duration) ease, background-color var(--sa-motion-exit-duration) ease;
+    transition: color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -687,7 +687,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-    z-index: 50;
+    z-index: var(--sa-z-dropdown);
     /* Figma Navbar/NavDropdown Device=Desktop and =Tablet are both 240 wide. */
     min-width: 240px;
   }
@@ -696,7 +696,7 @@
     margin-top: var(--sa-padding-2);
     padding: var(--sa-padding-8) 0;
     list-style: none;
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-8);
     background-color: var(--sa-bg-neutral-base);
     box-shadow: var(--sa-elevation-modal);
@@ -787,7 +787,7 @@
     gap: var(--sa-stack-24) var(--sa-stack-24);
     margin-top: var(--sa-padding-2);
     padding: var(--sa-padding-24) var(--sa-padding-12);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-20);
     background-color: var(--sa-bg-neutral-base);
     box-shadow: var(--sa-elevation-modal);
@@ -822,7 +822,7 @@
     flex: 1 0 100%;
     margin-top: var(--sa-stack-8);
     padding-top: var(--sa-padding-8);
-    border-top: 1px solid var(--sa-border-neutral-subtle);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   .ds-hdr-nav__overview {
@@ -857,7 +857,7 @@
   .ds-hdr-nav__drop .ds-hdr-nav__overview {
     margin: var(--sa-stack-8) var(--sa-padding-8) 0;
     padding: var(--sa-padding-8) var(--sa-padding-8);
-    border-top: 1px solid var(--sa-border-neutral-subtle);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: 0;
   }
 
@@ -902,7 +902,7 @@
     padding: var(--sa-padding-12) var(--sa-padding-20) var(--sa-padding-12) var(--sa-padding-12);
     border-radius: var(--sa-shape-16);
     text-decoration: none;
-    transition: background-color var(--sa-motion-exit-duration) ease, box-shadow var(--sa-motion-exit-duration) ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-hdr-mega-item__logo {
@@ -914,7 +914,7 @@
     padding: var(--sa-padding-2);
     border-radius: var(--sa-shape-6);
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     overflow: hidden;
   }
 
@@ -963,7 +963,7 @@
     flex: 0 0 auto;
     opacity: 0;
     color: var(--sa-text-neutral-subtle);
-    transition: opacity var(--sa-motion-exit-duration) ease;
+    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   /* Figma State=Hover carries a 1px stroke and NO effect; the elevation that used
@@ -1026,7 +1026,7 @@
 
   /* Mobile drawer */
   .ds-hdr-drawer {
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     background-color: var(--sa-bg-neutral-base);
   }
 
@@ -1092,14 +1092,14 @@
     position: absolute;
     inset-inline-end: 0;
     top: calc(100% + 8px);
-    z-index: 50;
+    z-index: var(--sa-z-dropdown);
     min-width: 240px;
     max-width: min(320px, calc(100vw - var(--sa-inline-32)));
     max-height: min(70vh, 32rem);
     overflow-y: auto;
     overscroll-behavior: contain;
     padding: var(--sa-padding-4);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-8);
     background-color: var(--sa-bg-neutral-base);
     box-shadow: var(--sa-elevation-dropdown);
@@ -1197,7 +1197,7 @@
      Everything else — dropdowns, the mobile drawer, focus treatment — is shared
      with the website and portal variants, because it is the same component. */
   .ds-hdr[data-variant="compact"] {
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   .ds-hdr[data-variant="compact"] .ds-hdr-brand__in {
@@ -1278,7 +1278,7 @@
   .ds-hdr-drawer__actions {
     display: flex;
     padding: var(--sa-padding-16) var(--sa-padding-24);
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   @media (min-width: 1024px) {
@@ -1315,8 +1315,8 @@
   .ds-hdr-cond__iconbtn,
   .ds-hdr-cond__toggle {
     transition:
-      background-color var(--sa-motion-exit-duration) ease,
-      transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-hdr-brand__toggle:active,
@@ -1403,7 +1403,7 @@
      this is the version where it is the name. */
   .ds-hdr-cond {
     background-color: var(--sa-bg-neutral-base);
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   .ds-hdr-cond__in {
@@ -1461,12 +1461,12 @@
     height: 40px;
     width: 40px;
     flex: 0 0 auto;
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-8);
     background: transparent;
     color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
     cursor: pointer;
-    transition: background-color var(--sa-motion-exit-duration) ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -1586,7 +1586,7 @@
   .ds-navsheet__scrim {
     position: fixed;
     inset: 0;
-    z-index: 1100;
+    z-index: var(--sa-z-overlay);
     /* The estate's one scrim token — same as Modal and SideSheet. */
     background-color: var(--sa-overlay-neutral-boldest);
   }
@@ -1595,7 +1595,7 @@
     position: fixed;
     inset-block: 0;
     inset-inline-end: 0;
-    z-index: 1101;
+    z-index: var(--sa-z-modal);
     width: min(344px, 100vw);
     display: flex;
     flex-direction: column;
@@ -1620,12 +1620,12 @@
     justify-content: space-between;
     gap: var(--sa-stack-12);
     padding: var(--sa-padding-16);
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   .ds-navsheet__search {
     padding: var(--sa-padding-16) var(--sa-padding-24);
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   /* Lockup inside the sheet — read straight off Figma's header (55327:3503).
@@ -1662,7 +1662,7 @@
     background: transparent;
     color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
     cursor: pointer;
-    transition: background-color var(--sa-motion-exit-duration) ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -1674,7 +1674,7 @@
   .ds-navsheet__actions {
     display: flex;
     padding: var(--sa-padding-16) var(--sa-padding-24);
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   .ds-navsheet__list {
@@ -1684,7 +1684,7 @@
   }
 
   .ds-navsheet__row {
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   .ds-navsheet__link {
@@ -1835,7 +1835,7 @@
     .ds-hdr {
       position: static !important;
       box-shadow: none;
-      border-bottom: 1px solid var(--sa-border-neutral-base);
+      border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
     }
 
     .ds-hdr .sa-abar,

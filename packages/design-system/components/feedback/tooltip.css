@@ -31,7 +31,7 @@
     /* Above every overlay in the DS so a tooltip inside a Modal (50) or a
        Lightbox (80) is not painted behind it. There is no --sa-z-* scale yet;
        the DS convention is a literal, so keep this in step with those files. */
-    z-index: 90;
+    z-index: var(--sa-z-tooltip);
     max-width: 16rem;
     padding: var(--sa-padding-8) var(--sa-padding-12);
     border-radius: var(--sa-shape-6);
@@ -48,7 +48,7 @@
        which still fires with pointer-events auto. Keep auto — `none` would break
        WCAG 1.4.13 "hoverable". */
     pointer-events: auto;
-    animation: ds-tooltip-in 120ms ease-out;
+    animation: ds-tooltip-in var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   @keyframes ds-tooltip-in {

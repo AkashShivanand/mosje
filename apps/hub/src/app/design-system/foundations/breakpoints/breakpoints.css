@@ -1,0 +1,43 @@
+/* Breakpoints foundation — the anchors drawn to scale. Bar width is data-driven. */
+@layer theme, base, components, utilities;
+@layer components {
+  .bp-ladder {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+  }
+  .bp-row {
+    display: grid;
+    grid-template-columns: 1fr 22ch;
+    gap: var(--sa-inline-16);
+    align-items: center;
+  }
+  .bp-row__bar {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+    min-width: 14ch;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-6);
+    background: var(--sa-bg-brand-primary-subtle);
+    color: var(--sa-on-bg-brand-primary-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-variant-numeric: tabular-nums;
+  }
+  .bp-row__label {
+    font-weight: 500;
+  }
+  .bp-row__selects {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+  @media (max-width: 767px) {
+    .bp-row {
+      grid-template-columns: 1fr;
+      gap: var(--sa-stack-4);
+    }
+  }
+}

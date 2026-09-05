@@ -13,3 +13,5 @@ export * from "./docs-tabs";
 export * from "./feedback-bar";
 export * from "./chart-states";
 export * from "./component-doc-page";
+export * from "./foundation-doc-page";
+export * from "./foundation-token-table";

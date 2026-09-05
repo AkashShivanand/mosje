@@ -74,7 +74,7 @@
     font-size: var(--sa-type-body-3-size);
     color: color-mix(in srgb, var(--sa-on-bg-brand-primary-bolder) 82%, transparent);
     text-decoration: none;
-    transition: color 0.15s ease;
+    transition: color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-footer__link:hover {

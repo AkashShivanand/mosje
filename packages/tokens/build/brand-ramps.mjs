@@ -758,8 +758,17 @@ function main() {
   for (const rung of Object.keys(primitive.shadow)) {
     if (rung.startsWith("$")) continue;
     const t = primitive.shadow[rung];
-    if (typeof t.$value !== "string" || !t.$value.includes("rgba(")) continue;
-    t.$value = retintRgba(t.$value, neutrals.neutral[800]);
+    // DTCG composite form since 2026-09-04: an array of layers, each with its own colour.
+    if (Array.isArray(t.$value)) {
+      for (const layer of t.$value) {
+        if (typeof layer.color === "string" && layer.color.includes("rgba(")) {
+          layer.color = retintRgba(layer.color, neutrals.neutral[800]);
+        }
+      }
+    } else {
+      if (typeof t.$value !== "string" || !t.$value.includes("rgba(")) continue;
+      t.$value = retintRgba(t.$value, neutrals.neutral[800]);
+    }
     // Clear any per-brand override a previous run wrote — see the note above.
     if (t.$extensions?.mosje?.colorModes) delete t.$extensions.mosje.colorModes;
   }

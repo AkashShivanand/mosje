@@ -78,13 +78,13 @@
     padding: var(--sa-padding-24) var(--sa-padding-16);
     text-align: center;
     background-color: var(--sa-bg-neutral-base);
-    border: 2px dashed var(--sa-border-neutral-base);
+    border: var(--sa-stroke-2) dashed var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-12);
     cursor: pointer;
     transition:
-      border-color 0.15s ease,
-      background-color 0.15s ease,
-      box-shadow 0.15s ease;
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-geophoto__dropzone:hover:not(:disabled),
@@ -136,7 +136,7 @@
     position: relative;
     overflow: hidden;
     background-color: var(--sa-bg-neutral-subtler);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-8);
     aspect-ratio: 4 / 3;
   }
@@ -199,7 +199,7 @@
     background-color: var(--sa-overlay-neutral-boldest);
     border: 0;
     border-radius: var(--sa-shape-full);
-    transition: background-color 0.15s ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-geophoto__remove:hover {
@@ -231,12 +231,12 @@
     color: var(--sa-text-neutral-subtle);
     cursor: pointer;
     background-color: var(--sa-bg-neutral-base);
-    border: 2px dashed var(--sa-border-neutral-base);
+    border: var(--sa-stroke-2) dashed var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-8);
     transition:
-      border-color 0.15s ease,
-      color 0.15s ease,
-      background-color 0.15s ease;
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-geophoto__add:hover:not(:disabled),

@@ -138,7 +138,7 @@
     }
     .sa-app-shell__sidebar {
       display: block;
-      border-right: 1px solid var(--sa-border-neutral-subtle);
+      border-right: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
       background: var(--sa-bg-neutral-base);
     }
   }

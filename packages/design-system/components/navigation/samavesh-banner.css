@@ -91,7 +91,7 @@
       ImportantLinks is 1002 and the assistant launcher 1010, and neither should
       be covered by a panel the reader opened from the top of the page.
     */
-    z-index: 30;
+    z-index: var(--sa-z-dropdown);
     font-family: inherit;
   }
 
@@ -574,7 +574,7 @@
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    border-bottom: 2px solid var(--sa-color-brand-saffron);
+    border-bottom: var(--sa-stroke-2) solid var(--sa-color-brand-saffron);
   }
 
   /*

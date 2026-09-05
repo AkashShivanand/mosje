@@ -68,7 +68,7 @@
      resolves to on an empty wall, so the first paint lands where the rail
      will stay on most of the estate rather than jumping into place. */
   top: var(--sa-wall-rail-top, calc(50% - 76px));
-  z-index: 2147483000;
+  z-index: var(--sa-z-demo);
   font-family: var(--sa-font-latin);
 }
 

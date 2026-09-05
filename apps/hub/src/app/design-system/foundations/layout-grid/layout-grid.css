@@ -1,0 +1,110 @@
+/* Layout Grid foundation — specimens. The ladder diagram's segment widths are the token
+   values as a share of each viewport anchor, set inline from the generated rows; every
+   other measurement here is a token. */
+@layer theme, base, components, utilities;
+@layer components {
+  .lg-formula {
+    margin: 0;
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-subtler);
+    overflow-x: auto;
+  }
+  .lg-formula code {
+    background: none;
+    padding: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .lg-viz {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-20);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .lg-viz__row {
+    display: grid;
+    grid-template-columns: 12ch 1fr 6ch;
+    align-items: center;
+    gap: var(--sa-inline-16);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+  .lg-viz__mode {
+    color: var(--sa-text-neutral-bolder);
+  }
+  .lg-viz__track {
+    display: flex;
+    height: var(--sa-icon-size-24);
+    border-radius: var(--sa-shape-4);
+    overflow: hidden;
+    background: var(--sa-bg-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+  .lg-viz__seg {
+    display: block;
+    height: 100%;
+  }
+  .lg-viz__seg--outside {
+    background: var(--sa-bg-neutral-base);
+  }
+  .lg-viz__seg--margin {
+    background: var(--sa-bg-brand-primary-subtle);
+  }
+  .lg-viz__seg--content {
+    background: var(--sa-bg-brand-primary-bolder);
+  }
+  .lg-viz__content {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .lg-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+  .lg-table th,
+  .lg-table td {
+    text-align: left;
+    vertical-align: top;
+    padding: var(--sa-padding-12);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+  .lg-table th {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-subtle);
+    border-bottom-color: var(--sa-border-neutral-base);
+  }
+  .lg-table__num {
+    font-variant-numeric: tabular-nums;
+  }
+  .lg-table__note {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* Twelve columns, separated by the gutter token — the grid drawn with its own gap. */
+  .lg-cols {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--sa-grid-gutter);
+    padding: var(--sa-padding-20);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .lg-cols__col {
+    display: block;
+    height: var(--sa-icon-size-64);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-bg-brand-primary-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-brand-primary-base);
+  }
+}

@@ -347,7 +347,7 @@
      distinction at 1.28:1, it was a smudge. */
 
   .ds-sitefooter__statutory {
-    border-top: 1px solid var(--ds-footer-rule);
+    border-top: var(--sa-stroke-1) solid var(--ds-footer-rule);
   }
 
   .ds-sitefooter__statutory .ds-sitefooter__in {
@@ -413,7 +413,7 @@
     flex-wrap: wrap;
     gap: var(--sa-stack-8) var(--sa-padding-20);
     padding-top: var(--sa-padding-16);
-    border-top: 1px solid color-mix(in srgb, var(--ds-footer-rule) 55%, transparent);
+    border-top: var(--sa-stroke-1) solid color-mix(in srgb, var(--ds-footer-rule) 55%, transparent);
   }
 
   .ds-sitefooter__inline {

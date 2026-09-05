@@ -70,13 +70,13 @@
     width: 32px;
     height: 32px;
     border-radius: var(--sa-shape-full);
-    border: 2px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-2) solid var(--sa-border-neutral-subtle);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-subtle);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
     font-weight: 600;
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-stepper__num {
