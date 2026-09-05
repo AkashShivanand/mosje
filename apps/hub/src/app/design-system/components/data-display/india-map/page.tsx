@@ -76,7 +76,7 @@ export default function IndiaMapPage(): React.JSX.Element {
       name="India Map"
       status="Beta"
       summary="Shades each state and union territory of India by its figure, with a legend for the ramp and a hidden table of every value. It answers where a scheme reaches, at the level the department reports."
-      figma={{ node: "mapOfIndia" }}
+      figma={{ node: "mapOfIndiaDoc" }}
       specimen={<IndiaMapSpecimen />}
       propsFrom="IndiaMapProps"
       props={DATUM}

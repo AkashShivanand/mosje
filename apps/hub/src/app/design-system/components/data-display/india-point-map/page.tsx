@@ -26,7 +26,7 @@ export default function Page(): React.JSX.Element {
       name="India Point Map"
       status="Beta"
       summary="Real coordinates on the national outline, at whichever grain the data can honestly support — hex bins where points are dense, bubbles where they are aggregated, pins where each one matters."
-      figma={{ node: "mapOfIndia" }}
+      figma={{ node: "mapOfIndiaDoc" }}
       specimen={<Specimen />}
       propsFrom="IndiaPointMapProps"
       a11y={A11Y}

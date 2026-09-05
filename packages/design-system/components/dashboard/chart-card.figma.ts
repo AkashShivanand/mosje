@@ -7,9 +7,9 @@ const instance = figma.selectedInstance;
 
 /**
  * Figma `State` → `loading` or `state`. Populated is the absence of both.
- * The Figma set draws six of the eight states the code carries — Restricted
- * and Offline share the Empty layout with different words — and the mapping is
- * exhaustive over what is drawn.
+ * The Figma set draws all eight states the code carries, and the mapping is
+ * exhaustive — `check:code-connect` fails if the set grows an option this
+ * mapping does not name.
  */
 const state = instance.getEnum("State", {
   Populated: "",
@@ -18,6 +18,8 @@ const state = instance.getEnum("State", {
   "No results": "no-results",
   Error: "error",
   "Not published": "not-published",
+  Restricted: "restricted",
+  Offline: "offline",
 });
 
 export default {
@@ -27,7 +29,7 @@ export default {
       subtitle="Monthly, FY 2025–26"
       ${state === "loading" ? "loading" : ""}
       ${state && state !== "loading" ? figma.code`state="${state}"` : ""}
-      ${state === "error" || state === "no-results" ? figma.code`onRetry={refetch}` : ""}
+      ${state === "error" || state === "no-results" || state === "offline" ? figma.code`onRetry={refetch}` : ""}
       ${state === "no-results" ? figma.code`filterLabel="state filter"` : ""}
       ${state ? "" : figma.code`exportable provenance={{ source: "Scheme MIS", asOf: "2026-08-27" }}`}
     >

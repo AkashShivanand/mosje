@@ -4,11 +4,11 @@ import * as React from "react";
 import { ChartFrame, type ChartState, type ChartStateProps } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
-import { categoricalColor } from "./internal/palette";
+import { categoricalColor, CHART_INK } from "./internal/palette";
 import { ringPath, polarToCartesian } from "./internal/geometry";
 import { formatIndian, formatPercent } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
-import type { ChartDatum } from "./types";
+import { withheldLabel, type ChartDatum } from "./types";
 
 interface DonutBase extends ChartStateProps {
   title: string;
@@ -74,12 +74,19 @@ export function DonutChart(props: DonutChartProps) {
   );
 
   if (isSegments(props)) {
-    const total = props.data.reduce((s, d) => s + d.value, 0);
+    /*
+     * A WITHHELD CATEGORY HAS NO SEGMENT. It is left out of the total — a total
+     * summed over a suppressed count is a partial total and the summary says
+     * so — and it keeps its place in the legend and the table, with its reason.
+     */
+    const shown = props.data.filter((d) => !d.withheld);
+    const withheld = props.data.filter((d) => d.withheld);
+    const total = shown.reduce((s, d) => s + d.value, 0);
     const resolved = state ?? (total === 0 ? "empty" : undefined);
     if (resolved) return stateFrame(resolved);
 
     let cursor = 0;
-    const segs = props.data.map((d, i) => {
+    const segs = shown.map((d, i) => {
       const start = (cursor / total) * 360;
       cursor += d.value;
       const end = (cursor / total) * 360;
@@ -91,7 +98,11 @@ export function DonutChart(props: DonutChartProps) {
       <ChartFrame
         marksAreFocusable
         title={title}
-        summary={segs.map((s) => `${s.label} ${formatPercent(s.pct)}`).join(", ")}
+        summary={[
+          ...segs.map((s) => `${s.label} ${formatPercent(s.pct)}`),
+          ...withheld.map((d) => `${d.label} ${withheldLabel(d.withheld!).toLowerCase()}`),
+          ...(withheld.length ? ["shares are of the published total"] : []),
+        ].join(", ")}
         viewBox={`0 0 ${SIZE} ${SIZE}`}
         className={className}
         canvasRef={canvasRef}
@@ -100,12 +111,18 @@ export function DonutChart(props: DonutChartProps) {
         legend={
           <Legend
             orientation="vertical"
-            items={segs.map((s) => ({ label: s.label, color: s.color, value: formatPercent(s.pct) }))}
+            items={[
+              ...segs.map((s) => ({ label: s.label, color: s.color, value: formatPercent(s.pct) })),
+              ...withheld.map((d) => ({ label: d.label, color: CHART_INK.axis, value: "—" })),
+            ]}
           />
         }
         table={{
           columns: ["Category", "Count", "Share"],
-          rows: segs.map((s) => [s.label, s.value, formatPercent(s.pct)]),
+          rows: [
+            ...segs.map((s) => [s.label, s.value, formatPercent(s.pct)]),
+            ...withheld.map((d) => [d.label, withheldLabel(d.withheld!), "—"]),
+          ],
         }}
         tableView={tableView}
       >

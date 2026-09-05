@@ -994,7 +994,7 @@
   "MetricCard": {
     "nodeId": "57414:15871",
     "captured": "2026-09-05",
-    "note": "15 variants = Reading 5 x Tone 3, authored 2026-09-05 on the rebuilt Charts & Graphs page. Reading is not a prop: each reading is a different set of props on the one MetricCard, so the template switches the emitted fragment on it. Tone=Neutral is the absence of `tone`.",
+    "note": "30 variants = Reading 5 x Tone 3 x Size 2, plus Show icon and an Icon swap of the library Icon (24 at Medium, 20 at Small) — the code's `size` and `icon`. Reading is not a prop: each reading is a different set of props on the one MetricCard.",
     "properties": {
       "Reading": {
         "type": "VARIANT",
@@ -1013,6 +1013,19 @@
           "Warning",
           "Danger"
         ]
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Medium",
+          "Small"
+        ]
+      },
+      "Show icon": {
+        "type": "BOOLEAN"
+      },
+      "Icon": {
+        "type": "INSTANCE_SWAP"
       }
     },
     "deliberatelyOmitted": []
@@ -1020,7 +1033,7 @@
   "ChartCard": {
     "nodeId": "57418:15985",
     "captured": "2026-09-05",
-    "note": "6 variants = State 6. Restricted and Offline exist in code (CardState) and are not drawn: they share the Empty layout with different words.",
+    "note": "8 variants = State 8 — the full CardState family, Restricted and Offline added 2026-09-05.",
     "properties": {
       "State": {
         "type": "VARIANT",
@@ -1030,7 +1043,9 @@
           "Empty",
           "No results",
           "Error",
-          "Not published"
+          "Not published",
+          "Restricted",
+          "Offline"
         ]
       }
     },
@@ -1069,6 +1084,28 @@
         ]
       }
     },
+    "deliberatelyOmitted": []
+  },
+  "Legend": {
+    "nodeId": "57420:16040",
+    "captured": "2026-09-05",
+    "properties": {
+      "Swatch": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Solid",
+          "Ramp",
+          "Dots"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "ChartTooltip": {
+    "nodeId": "57420:16041",
+    "captured": "2026-09-05",
+    "note": "A single component with no properties; the rows are data.",
+    "properties": {},
     "deliberatelyOmitted": []
   }
 }

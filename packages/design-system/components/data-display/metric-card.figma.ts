@@ -30,12 +30,29 @@ const tone = instance.getEnum("Tone", {
   Danger: "danger",
 });
 
+/** Figma `Size` → `size`. Medium is the default and is not emitted. */
+const size = instance.getEnum("Size", {
+  Medium: "",
+  Small: "sm",
+});
+
+/**
+ * Figma `Show icon` + `Icon` → `icon`. The badge holds a library Icon instance;
+ * its template resolves to the `<Icon name="…" />` the code takes. Hidden badge,
+ * no prop — the code draws no badge when `icon` is absent.
+ */
+const showIcon = instance.getBoolean("Show icon");
+const iconInstance = instance.getInstanceSwap("Icon");
+const iconCode = iconInstance && iconInstance.type === "INSTANCE" ? iconInstance.executeTemplate().example : undefined;
+
 export default {
   example: figma.code`
     <MetricCard
       label="Utilisation of Release"
       value="79.0%"
       ${tone ? figma.code`tone="${tone}"` : ""}
+      ${size ? figma.code`size="${size}"` : ""}
+      ${showIcon && iconCode ? figma.code`icon={${iconCode}}` : ""}
       ${reading === "change" || reading === "target" || reading === "trend" ? figma.code`changeValue="1.6 pts" changeDirection="down" changeLabel="utilised ÷ released"` : ""}
       ${reading === "trend" ? figma.code`aside={<Sparkline data={series} width={72} height={24} />}` : ""}
       ${reading === "target" ? figma.code`progress={{ value: 79, max: 100, target: 85, targetLabel: "Target 85%" }}` : ""}

@@ -32,9 +32,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.114.0",
+    version: "v0.115.0",
     date: "2026-09-05",
     current: true,
+    changes: [
+      { kind: "Added", text: "THE WITHHELD-FIGURE CONTRACT REACHES EVERY CHART FAMILY. `LineChart` breaks the line at a withheld index and marks the gap with a hollow dashed ring at the baseline; `PieChart` and `DonutChart` leave a withheld category out of the total, keep it in the legend and the table with its reason, and say in the summary that the shares are of the published total; `Heatmap` takes a `ChartWithheld` in place of a number (`HeatmapCell`) and hatches the cell, leaving it out of the ramp's domain. In all of them the tooltip and the screen-reader table print `withheldLabel()`" },
+      { kind: "Changed", text: "THE FIGMA MASTERS CLOSE THE GAPS THE COMPONENT RECORD NAMED. Metric Card gains Size = Medium | Small (the smaller figure style, a 32 badge, a 20 icon) and `Show icon` + `Icon` — an instance swap of the library Icon — thirty variants, none overflowing its bounds. Chart Card draws Restricted and Offline, so all eight CardState kinds are in the set. Map of India gains Kind = Bubble and Kind = Point, every state fill is now bound (chart/seq/* on the choropleth, chart/regionEmpty elsewhere, chart/regionStroke on every stroke), and the page carries a `— Documentation` frame with six counted stats and a `— Component record`" },
+      { kind: "Removed", text: "THE UX4G CHART.JS SET IS GONE. A scan of the library and of all twelve handoff pages found zero instances of `Chart (legacy UX4G Chart.js — retire)` or its 96 variants, so the legacy section — the set, three old frames and seventeen loose labels — was deleted rather than kept" },
+      { kind: "Added", text: "Code Connect for `Legend` (Swatch → the items' `swatch`) and `ChartTooltip`, and the Chart Card and Metric Card templates follow their new axes; six fixtures gate them" },
+    ],
+  },
+  {
+    version: "v0.114.0",
+    date: "2026-09-05",
     changes: [
       { kind: "Added", text: "`RankedBarList` AND `InlineBar` — THE MOST-DRAWN CHART IN THE PORTAL HANDOFFS, AND THE ONE THE LAYER DID NOT HAVE. Sixteen dashboard, report and monitoring screens across ten portal pages were read on 2026-09-05; “Top States by Pledges”, “SLA Compliance by District”, “Category Distribution” and “District-wise Fund Utilisation” are all one component: a label, a figure and a thin bar per row, drawn against a shared ceiling. The figure is the reading and the bar is the aid, so the bar is aria-hidden and the ordered list is the accessible form. It pages with `pageSize` and never scrolls inside its card; a tone is set only through a stated threshold and the caption names it; a withheld row sorts last and hatches its track. `InlineBar` is the same bar alone for a Data Table cell" },
       { kind: "Added", text: "`MetricCard` CARRIES ALL FIVE READINGS OF ONE NUMBER the visualisation specification names. `progress` draws the figure against its `max` and `target` as a bar with a tick and a scale row (“0% … Target 85%”); `status` is a chip that carries the words and `tone` the colour — border, ground, label and figure take the status ink, as the queue’s “due soon” and “overdue” tiles do; `detail` prints the numerator and denominator behind a rate; `aside` holds a Sparkline beside the label; `provenance` prints where the figure came from. Every one of them is dropped, with the change indicator, whenever there is no figure. `Progress` takes the same `target`, `targetLabel` and `tone`, plus `compact` for a surface that already prints the label; the target is spoken in aria-valuetext" },

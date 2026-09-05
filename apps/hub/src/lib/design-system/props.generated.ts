@@ -4353,9 +4353,9 @@ export const GENERATED_PROPS = {
     "props": [
       {
         "name": "matrix",
-        "type": "number[][]",
+        "type": "HeatmapCell[][]",
         "required": true,
-        "description": "Row-major values: matrix[y][x]."
+        "description": "Row-major values: matrix[y][x]. A cell may be a `ChartWithheld` instead of a number — it is then drawn as a hatched, empty cell, named in the tooltip and the table with its reason, and left out of the colour scale's domain."
       },
       {
         "name": "title",

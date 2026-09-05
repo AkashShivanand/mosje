@@ -50,7 +50,8 @@ export const FIGMA_NODES = {
   chartsRankedList: "57420:15961", // `Ranked Bar List` — five `Ranked Bar Row` (57420:15960) instances
   chartsLegend: "57420:16040", // `Legend` set — Swatch 3
   chartsTooltip: "57420:16041",
-  mapOfIndia: "6803:290942",
+  mapOfIndia: "6803:290942", // the page
+  mapOfIndiaDoc: "57437:750", // "Map of India — Documentation", authored 2026-09-05; the `IndiaMap` set (6803:291103) beneath it carries Kind = Choropleth | Choropleth · hover | Bubble | Point
   buttons: "2141:296705",
   /* "Button Group" — authored 2026-09-03, page inserted between Buttons and Close
      Button. The component had existed in code with no Figma counterpart at all, so a
