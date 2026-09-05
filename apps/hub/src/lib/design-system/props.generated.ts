@@ -6603,8 +6603,7 @@ export const GENERATED_PROPS = {
         "name": "heroImageSrc",
         "type": "string",
         "required": false,
-        "default": "\"/portals/login-hero/samavesh-default.jpg\"",
-        "description": "The photograph behind the desktop hero — the Figma organism's `Photograph` swap. Drawn as a background so a phone, which never shows the column, never downloads it. Defaults to the estate's SAMAVESH photograph (1200px JPEG, 262 KB, exported from the library on 2026-09-05); a portal passes its own. Decorative: it carries no text and sits under an alpha mask that leaves a solid band on the left for the lockup and the Signing Into bar."
+        "description": "The photograph behind the desktop hero — the Figma organism's `Portal Hero` slot. Drawn as a background so a phone, which never shows the column, never downloads it. Decorative: it carries no text and sits under an alpha mask that leaves a solid band on the left for the lockup and the Signing Into bar. NO DEFAULT, deliberately. The slot is blank until the portal supplies its own photograph, and a blank slot is the solid brand column — the same thing the library's master draws with nothing dropped into it. The shell used to default to the SMILE-Transgender photograph, which put one scheme's classroom behind every other scheme's sign-in."
       },
       {
         "name": "onFooterLinkClick",
@@ -7267,7 +7266,8 @@ export const GENERATED_PROPS = {
         "name": "markSrc",
         "type": "string",
         "required": false,
-        "description": "The provider's mark as an image path. Wins over `mark`."
+        "default": "DIGILOCKER_MARK_SRC",
+        "description": "The provider's mark as an image path. Wins over `mark`. Defaults to the estate's own DigiLocker mark (`digilocker-mark.png` in the hub's design-system public folder) — the library's Brand-page `DigiLocker` component, 40×40, exported at 3×, the same asset the Figma `Auth / SSOButton` draws. A portal that hands off to another provider passes its own; nothing on the estate should draw the fallback glyph for DigiLocker any more."
       },
       {
         "name": "subtitle",

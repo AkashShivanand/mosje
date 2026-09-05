@@ -134,3 +134,18 @@ the handoff shows no step indicator at all where the library has a full `Stepper
 
 `OrganisationCard`, `PortalList` and `AuthFormCard` exist in Figma and in no code barrel —
 that is the code half of G6, and it is what the Figma pass must not get ahead of.
+
+## Status 2026-09-05 — evening pass (seven asks)
+
+| Ask | Done |
+|---|---|
+| Use the existing Bot Check | The page's local `Auth / BotCheck` (two text nodes) is gone; its four instances are the Forms page's `BotCheck` set, `Mode=Invisible, Status=Failed`. Code already used `BotCheck`. |
+| Reuse the Portal Card for organisation rows | `Auth / OrganisationCard` is retired; `Auth / PortalList` composes the library's `Portal Card`. The master was refined first: code and name on the 16px body styles, the mark's inner ring removed. Code's `PortalCard` name moved to the same 16px style. |
+| SSOButton logo | Figma corrected by hand. Code now ships the Brand page's `DigiLocker` component exported at 3× as `digilocker-mark.png`, and `SSOButton` draws it by default (`DIGILOCKER_MARK_SRC`). |
+| Portal list to the handoff reference (56693:11506) | 400 wide, saffron-tinted ground, six count chips (selected one on `bg/status/success/bold`, which the library Chip lacks as a tone), cards in the reference order. |
+| Mobile template to the handoff (56693:9331) | `Auth / SigningIntoBar` and `Auth / LoginHero` are `Device` sets; the shell's Mobile variant nests `Navbar/Portal` Mobile and `LoginHero` Mobile. Code's `PortalLoginShell` renders the same band and strip below `lg`. |
+| Clean the page | Duplicate E-Anudaan flows (copies of SMILE with the SMILE photograph) removed; sections refitted; section 5 named as the SMILE handoff. |
+| Portal Hero as a blank slot | The master's slot is the hero's own brand ground with a faint image glyph; the SMILE photograph is kept as a reference rectangle in section 5. Code's `heroImageSrc` has no default any more; the docs specimen passes `smile-transgender.jpg`. |
+
+Still open: `PortalList`, `AuthFormCard`, `RecoveryFormCard` and `CredentialRecovery` have no
+code; per-portal photographs; the library `Chip` has no Success tone.

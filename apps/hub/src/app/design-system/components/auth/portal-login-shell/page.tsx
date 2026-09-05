@@ -27,23 +27,23 @@ const A11Y: A11yItem[] = [
     criterion: "1.3.1 Info and Relationships",
     level: "A",
     description:
-      "The hero column is `aria-hidden`, because it is decorative branding a screen-reader user would otherwise hear before reaching the form. The footer is a `<nav>` with its own accessible name.",
+      "The hero's SAMAVESH lockup is `aria-hidden`, because it is decorative branding a screen-reader user would otherwise hear before reaching the form; the Signing Into strip beside it is content and stays exposed, so the reader is told which portal this is. The footer is a `<nav>` with its own accessible name.",
   },
   {
     criterion: "2.4.3 Focus Order",
     level: "A",
     description:
-      "The form container carries `tabIndex={-1}` so the skip link can move focus into it. The hero, being aria-hidden and containing no controls, is skipped entirely.",
+      "The form container carries `tabIndex={-1}` so the skip link can move focus into it. The only control ahead of the form is the Signing Into strip's Change link, which is the one thing a reader on the wrong portal needs first.",
   },
   {
     criterion: "1.4.3 Contrast (Minimum)",
     level: "AA",
-    description: "White content on the hero's primaryScale-900 gradient and on the active tab's primaryScale-800 pill both clear AA.",
+    description: "White content on the hero's brand ground and on the active tab's pill both clear AA. On a phone the identity band puts dark ink on the light brand tint, which clears AA in both brand modes.",
   },
   {
     criterion: "1.4.10 Reflow",
     level: "AA",
-    description: "The hero is hidden below the large breakpoint and the right panel becomes the whole page, so the layout reads as one column at 320px.",
+    description: "Below the large breakpoint the hero column gives way to the organism's Mobile variant — the SAMAVESH band and the Signing Into strip stacked above the form — so the page reads as one column at 320px without losing the portal's name.",
   },
   {
     criterion: "1.4.4 Resize Text",
@@ -96,15 +96,20 @@ export default function PortalLoginShellPage(): React.JSX.Element {
             </h2>
             <p>
               The layout is four bands: the utility bar, the brand header, a two-column body — a
-              58% hero and a 42% panel — and the footer. Everything in that list is the
-              shell&rsquo;s. The only thing the caller supplies inside the frame is the form, plus
-              an optional block beneath it.
+              64% hero and a 36% panel, 922 of 1440 — and the footer. Everything in that list is
+              the shell&rsquo;s. The only thing the caller supplies inside the frame is the form,
+              plus an optional block beneath it. On a phone the hero column becomes the
+              organism&rsquo;s Mobile variant: the SAMAVESH band on the light brand ground, then the
+              Signing Into strip, stacked above the form.
             </p>
             <p>
               What changes per portal is small and declared: the three brand asset paths, the name
-              in the &ldquo;Signing Into&rdquo; strip, the tab labels, and the form. What does not
-              change is everything else, which is the point — a citizen who has signed into one
-              MoSJE portal should recognise the next one before they read a word of it.
+              in the &ldquo;Signing Into&rdquo; strip, the tab labels, the form, and the photograph
+              behind the hero. The photograph slot is blank until a portal supplies its own — a
+              blank slot is the solid brand column, in the library and here — so no scheme signs
+              in behind another scheme&rsquo;s picture. What does not change is everything else,
+              which is the point — a citizen who has signed into one MoSJE portal should recognise
+              the next one before they read a word of it.
             </p>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-hero">

@@ -125,4 +125,82 @@
   .ds-plogin-hero__eyebrow {
     text-transform: uppercase;
   }
+
+  /* ── Device=Mobile ──────────────────────────────────────────────────────────
+     The organism's phone variant: an identity band, then the Signing Into strip.
+     Transcribed from the handoff's `Sign In — Login Form / Mobile` (56693:9331):
+     band 24/16 padding, 16 gap, seal 76 on a light brand ground; strip 16 padding,
+     12 gap, 44 mark, on the hero's own ground, with a 132px disc at 8% bleeding
+     off the top-right corner. */
+  .ds-plogin-hero-mobile {
+    --ds-plogin-hero-mark-sm: 68px; /* Figma: the seal inside a 4px white ring = 76 */
+    --ds-plogin-hero-disc: 132px; /* Figma: Ellipse 1, 132 × 132 at x 284, y −32 of 375 */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ds-plogin-hero-mobile__band {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+    padding: var(--sa-padding-24) var(--sa-padding-16);
+    background-color: var(--sa-bg-brand-primary-base);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-plogin-hero-mobile__ring {
+    display: inline-flex;
+    flex: none;
+    padding: var(--sa-padding-4);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .ds-plogin-hero-mobile__ring img {
+    display: block;
+    inline-size: var(--ds-plogin-hero-mark-sm);
+    block-size: var(--ds-plogin-hero-mark-sm);
+    border-radius: var(--sa-shape-full);
+  }
+
+  .ds-plogin-hero-mobile__title {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-inline-size: 0;
+  }
+
+  .ds-plogin-hero-mobile__strap {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-plogin-hero-mobile__bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-16);
+    overflow: hidden;
+    background-color: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-boldest);
+  }
+
+  /* The decorative disc. Drawn in currentColor so it follows the strip's ink in
+     every brand mode, and at the handoff's 8% so it never competes with text. */
+  .ds-plogin-hero-mobile__bar::after {
+    content: "";
+    position: absolute;
+    inset-block-start: calc(-1 * var(--sa-padding-32));
+    inset-inline-end: calc(-1 * var(--sa-padding-40));
+    inline-size: var(--ds-plogin-hero-disc);
+    block-size: var(--ds-plogin-hero-disc);
+    border-radius: var(--sa-shape-full);
+    background-color: currentColor;
+    opacity: 0.08;
+    pointer-events: none;
+  }
+
+  .ds-plogin-hero-mobile__bar > * {
+    position: relative;
+  }
 }
