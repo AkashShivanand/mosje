@@ -32,9 +32,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.104.0",
+    date: "2026-09-05",
+    current: true,
+    changes: [
+      { kind: "Added", text: "EVERY PROPERTY IS DRAWN, NOT ONLY THE AXES. A property that can only be found by toggling it in the properties panel does not exist for anyone browsing the library, so every component page now ends in an ARRANGEMENTS section \u2014 every non-variant property switched on, every group arrangement, and every code-only state composed from live instances and named. Checkbox carries twenty-two cells, Radio twenty-one and Selection Card seventeen, the Selection Card variants section shows all forty variants on both layouts, and the Checkbox and Radio web playgrounds render the same set. The rule is in figma-documentation-style.md" },
+      { kind: "Fixed", text: "A DISABLED GROUP LOOKED ENABLED. `<fieldset disabled>` disabled the inputs, but the drawn box and circle read data-disabled from their own root, so a disabled CheckboxGroup or RadioGroup showed every option at full strength. Found by drawing the state; the group now passes disabled to each option, asserted in control-group.spec.tsx" },
+      { kind: "Fixed", text: "THE HORIZONTAL CARD GROUPS ALTERNATED FIXED AND FILL TILES in both Figma masters, which collapsed every second tile to a sliver inside a wrapping row. Every tile in the Horizontal + Card variant of Checkbox Group and Radio Group is now the same half-width, so they sit two to a row and wrap" },
+    ],
+  },
+  {
     version: "v0.103.0",
     date: "2026-09-04",
-    current: true,
+    current: false,
     changes: [
       { kind: "Changed", text: "MOTION IS TWELVE INTENTS ON A VALUE-NAMED LADDER, AND REDUCED MOTION IS HANDLED ONCE. The five pairs (enter · exit · emphasis · reveal · press) left components with no name for the commonest transition in the estate — a colour responding to the pointer — so seven of them paired an exit duration with an enter easing and 85 more typed a millisecond. There are now twelve: instant · hover · press · focus · enter · exit · expand · collapse · emphasis · reveal · page · loading, plus stagger (45ms step, max 8). The Tier-1 ladder beneath is value-named (0 · 50 · 100 · 150 · 200 · 250 · 300 · 400 · 500 · 700, like space and radius) and the five curves are named by behaviour in Material 3's vocabulary (linear · accelerate · decelerate · standard · emphasized) — the same four curves as before plus linear, renamed: out → decelerate, in → accelerate, inOut → standard, outStrong → emphasized. tokens.css emits ONE @media (prefers-reduced-motion: reduce) block collapsing every intent's duration to 0.01ms, so a component that binds a pair honours the preference without its own query; instant is already zero and loading is exempt because a stopped spinner reads as a frozen page. Easings are authored as DTCG cubicBezier arrays and shadows as DTCG composite objects; two custom transforms project them to byte-identical CSS, proven by the visual contract." },
       { kind: "Added", text: "LAYERING — THE Z LADDER THE ESTATE ACTUALLY RENDERS. The Tier-1 z ladder was UX4G/Bootstrap's 1000–1090 transcribed verbatim, had zero consumers, and the floating-element rule said 'there is no --sa-z-* scale yet' while components stacked at 20, 30, 60, 70, 90, 1010, 999999 and 2147483000. Fifteen Tier-2 rungs now name that reality: base 0 · raised 1 · dropdown 100 · sticky 200 · fixed 300 · overlay 400 · modal 500 · popover 600 · toast 700 · tooltip 800 · rail 1000 · launcher 1010, and three RESERVED — statutory 999999 (the UX4G panel's own value), demo 2147483000, top 2147483001. Code-only, deliberately not exported to Figma (a canvas has no z-axis), and every elevation role names its rung. 21 z-index literals in the DS were bound." },

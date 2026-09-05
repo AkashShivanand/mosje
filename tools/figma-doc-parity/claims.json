@@ -972,18 +972,18 @@
     },
     {
       "node": "57048:1141",
-      "where": "Radio — Documentation › hero › 20 card variants",
-      "figma": "20",
+      "where": "Radio — Documentation › hero › 40 card variants",
+      "figma": "40",
       "expect": [
         {
           "kind": "text",
-          "value": "20"
+          "value": "40"
         },
         {
           "kind": "source",
           "file": "tools/code-connect-parity/figma-properties.json",
-          "pattern": "\"nodeId\": \"55530:2932\"[\\s\\S]*?\"Control\"[\\s\\S]*?\"Radio\",\\s*\"Checkbox\"[\\s\\S]*?\"Checked\"[\\s\\S]*?\"Off\",\\s*\"On\"[\\s\\S]*?\"State\"[\\s\\S]*?\"Enabled\",\\s*\"Hover\",\\s*\"Focused\",\\s*\"Pressed\",\\s*\"Disabled\"",
-          "hint": "20 = Control 2 x Checked 2 x State 5."
+          "pattern": "\"nodeId\": \"55530:2932\"[\\s\\S]*?\"Layout\"[\\s\\S]*?\"Compact\",\\s*\"Detailed\"[\\s\\S]*?\"Control\"[\\s\\S]*?\"Radio\",\\s*\"Checkbox\"[\\s\\S]*?\"Checked\"[\\s\\S]*?\"Off\",\\s*\"On\"[\\s\\S]*?\"State\"[\\s\\S]*?\"Enabled\",\\s*\"Hover\",\\s*\"Focused\",\\s*\"Pressed\",\\s*\"Disabled\"",
+          "hint": "40 = Layout 2 x Control 2 x Checked 2 x State 5."
         }
       ]
     },

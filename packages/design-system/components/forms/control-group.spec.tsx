@@ -36,6 +36,9 @@ describe("RadioGroup", () => {
   it("disabled renders a native disabled fieldset; hideLegend keeps a legend", () => {
     const out = html(<RadioGroup legend="Q" name="q" options={OPTS} disabled hideLegend />);
     expect(out).toMatch(/<fieldset[^>]*disabled=""/);
+    // The fieldset disables the inputs, but the drawn box reads data-disabled on its root —
+    // so the group must pass disabled down, or every option looks enabled while it is not.
+    expect(out.match(/data-disabled/g)?.length).toBe(OPTS.length);
     expect(out).toMatch(/<legend class="ds-control-group__legend ds-sr-only">Q/);
   });
 

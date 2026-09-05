@@ -30,6 +30,16 @@ Then:
 **Agents & tokens used:** which model(s) or helper agents did the work, and an
 approximate token cost for the task.
 
+**Before → after, visually (MANDATORY wherever the change can be seen).** If a change is
+visible anywhere — a screen, a component, a Figma page, a documentation frame, a chart —
+the summary carries a picture pair, not only the table. **Capture the before FIRST**, before
+touching anything, and save it; a before reconstructed afterwards is not a before. Capture
+the after from the same place at the same size. Present them side by side, labelled, one
+pair per visible change, as one composed image or one self-contained HTML page, with the
+table beside them: the pictures show what changed, the table says how and why. Where no
+before exists (a new page), say so and show the after alone. Something the user cannot see
+is a change they cannot judge.
+
 Rules for the table:
 - **Every change gets a row.** If it was worth doing, it is worth one line. A change
   left out of the summary is a change the user cannot review.
