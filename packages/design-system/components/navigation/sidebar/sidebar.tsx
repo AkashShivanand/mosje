@@ -3,221 +3,412 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
+import { IconButton } from "../../actions/icon-button";
+import { Tooltip } from "../../feedback/tooltip";
 import type {
   SidebarNavProps,
   SidebarNavItem,
   SidebarNavChild,
+  SidebarNavLeaf,
 } from "./types";
 import "./sidebar.css";
 
-// ── Internal: chevron SVG ────────────────────────────────────────────────────
+// ── Active-state derivation — one expression, used by every level ────────────
 
-function ChevronDown({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden
-    >
-      <path
-        d="M4 6l4 4 4-4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
+const isCurrent = (pathname: string, href: string): boolean =>
+  pathname === href || pathname.startsWith(href + "/");
+
+const leafActive = (pathname: string, leaf: SidebarNavLeaf): boolean =>
+  isCurrent(pathname, leaf.href);
+
+const childActive = (pathname: string, child: SidebarNavChild): boolean =>
+  isCurrent(pathname, child.href) ||
+  (child.children?.some((l) => leafActive(pathname, l)) ?? false);
+
+const itemActive = (pathname: string, item: SidebarNavItem): boolean =>
+  isCurrent(pathname, item.href) ||
+  (item.children?.some((c) => childActive(pathname, c)) ?? false);
+
+/**
+ * Opens a group when something inside it BECOMES current — on the transition,
+ * not on every render — so the reader can still fold a group whose child is
+ * the current page.
+ */
+function useDisclosure(activeNow: boolean): [boolean, () => void] {
+  const [open, setOpen] = React.useState(activeNow);
+  const [prev, setPrev] = React.useState(activeNow);
+  if (prev !== activeNow) {
+    setPrev(activeNow);
+    if (activeNow) setOpen(true);
+  }
+  return [open, () => setOpen((o) => !o)];
 }
 
-// ── Internal: resize handle SVG ─────────────────────────────────────────────
+// ── A page row: a real link, or — disabled — a named, non-operable span ──────
 
-function HandleIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      width="16"
-      height="48"
-      viewBox="0 0 16 48"
-      fill="none"
-      aria-hidden
-    >
-      {/* Subtle pill grip */}
-      <rect x="7" y="18" width="2" height="12" rx="1" fill="currentColor" opacity=".4" />
-      {/* Arrow hints */}
-      <path
-        d="M5 22l-2 2 2 2M11 22l2 2-2 2"
-        stroke="currentColor"
-        strokeWidth="1.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        opacity=".5"
-      />
-    </svg>
-  );
-}
+type RowLinkProps = React.ComponentPropsWithoutRef<"a"> & {
+  href: string;
+  disabled?: boolean;
+};
 
-// ── Internal: child item ─────────────────────────────────────────────────────
-
-function ChildItem({
-  child,
-  pathname,
-  isLast,
-}: {
-  child: SidebarNavChild;
-  pathname: string;
-  isLast: boolean;
-}) {
-  const isActive =
-    pathname === child.href || pathname.startsWith(child.href + "/");
-
-  return (
-    <li className={cn("ds-sidebar__child", isLast && "is-last")}>
-      <a
-        href={child.href}
-        aria-current={isActive ? "page" : undefined}
-        className={cn("ds-sidebar__child-label", isActive && "is-active")}
+/**
+ * A disabled page is still listed, so a reader learns it exists, but it is not
+ * a link: an anchor without an href is neither navigable nor focusable, and
+ * jsx-a11y rightly refuses it. The span keeps the row's name and styling.
+ */
+const RowLink = React.forwardRef<HTMLElement, RowLinkProps>(function RowLink(
+  { href, disabled, children, ...rest },
+  ref,
+) {
+  if (disabled) {
+    return (
+      <span
+        ref={ref as React.Ref<HTMLSpanElement>}
+        role="link"
+        aria-disabled="true"
+        {...(rest as React.ComponentPropsWithoutRef<"span">)}
       >
-        {child.label}
-      </a>
+        {children}
+      </span>
+    );
+  }
+  return (
+    <a ref={ref as React.Ref<HTMLAnchorElement>} href={href} {...rest}>
+      {children}
+    </a>
+  );
+});
+
+// ── Level 3 ──────────────────────────────────────────────────────────────────
+
+function LeafRow({
+  leaf,
+  pathname,
+  level,
+}: {
+  leaf: SidebarNavLeaf;
+  pathname: string;
+  level: 2 | 3;
+}) {
+  const active = leafActive(pathname, leaf);
+  return (
+    <li className={cn("ds-sidebar__sub", `ds-sidebar__sub--l${level}`)}>
+      <RowLink
+        href={leaf.href}
+        disabled={leaf.disabled}
+        aria-current={active ? "page" : undefined}
+        className={cn(
+          "ds-sidebar__sub-row",
+          active && "is-active",
+          leaf.disabled && "is-disabled",
+        )}
+      >
+        <span className="ds-sidebar__sub-label">{leaf.label}</span>
+      </RowLink>
     </li>
   );
 }
 
-// ── Internal: main nav item ──────────────────────────────────────────────────
+// ── Level 2 — a leaf, or a group of level-3 leaves ───────────────────────────
+
+function ChildEntry({
+  child,
+  pathname,
+}: {
+  child: SidebarNavChild;
+  pathname: string;
+}) {
+  const id = React.useId();
+  const active = childActive(pathname, child);
+  const [open, toggle] = useDisclosure(active);
+  if (!child.children?.length) {
+    return <LeafRow leaf={child} pathname={pathname} level={2} />;
+  }
+  return (
+    <li className="ds-sidebar__sub ds-sidebar__sub--l2">
+      <button
+        type="button"
+        aria-expanded={open}
+        aria-controls={id}
+        aria-disabled={child.disabled || undefined}
+        disabled={child.disabled}
+        className={cn(
+          "ds-sidebar__sub-row ds-sidebar__sub-row--group",
+          active && "is-active",
+          child.disabled && "is-disabled",
+        )}
+        onClick={toggle}
+      >
+        <span className="ds-sidebar__sub-label">{child.label}</span>
+        <Icon
+          name={open ? "expand_less" : "expand_more"}
+          size={20}
+          className="ds-sidebar__chevron"
+          aria-hidden
+        />
+      </button>
+      {open && (
+        <ul id={id} className="ds-sidebar__list ds-sidebar__list--l3">
+          {child.children.map((leaf) => (
+            <LeafRow key={leaf.href} leaf={leaf} pathname={pathname} level={3} />
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+}
+
+// ── Collapsed-rail flyout for a group ────────────────────────────────────────
+
+function Flyout({
+  item,
+  pathname,
+  anchor,
+  id,
+  onClose,
+}: {
+  item: SidebarNavItem;
+  pathname: string;
+  anchor: HTMLElement | null;
+  id: string;
+  onClose: () => void;
+}) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [pos, setPos] = React.useState<{ top: number; left: number } | null>(null);
+
+  React.useLayoutEffect(() => {
+    if (!anchor) return;
+    const r = anchor.getBoundingClientRect();
+    setPos({ top: r.top, left: r.right });
+    ref.current?.querySelector<HTMLElement>("a:not([aria-disabled])")?.focus();
+  }, [anchor]);
+
+  React.useEffect(() => {
+    const onDown = (e: MouseEvent) => {
+      const t = e.target as Node;
+      if (ref.current?.contains(t) || anchor?.contains(t)) return;
+      onClose();
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        onClose();
+        anchor?.focus();
+      }
+    };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    window.addEventListener("scroll", onClose, true);
+    window.addEventListener("resize", onClose);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+      window.removeEventListener("scroll", onClose, true);
+      window.removeEventListener("resize", onClose);
+    };
+  }, [anchor, onClose]);
+
+  return (
+    <div
+      ref={ref}
+      id={id}
+      role="group"
+      aria-label={item.label}
+      className="ds-sidebar__flyout"
+      style={pos ? { top: pos.top, left: pos.left } : { visibility: "hidden" }}
+      onBlur={(e) => {
+        const next = e.relatedTarget as Node | null;
+        if (next && (ref.current?.contains(next) || anchor?.contains(next))) return;
+        onClose();
+      }}
+    >
+      <div className="ds-sidebar__flyout-title">{item.label}</div>
+      <ul className="ds-sidebar__list">
+        {(item.children ?? []).map((c) => {
+          const active = childActive(pathname, c);
+          return (
+            <li key={c.href} className="ds-sidebar__sub ds-sidebar__sub--flyout">
+              <RowLink
+                href={c.href}
+                disabled={c.disabled}
+                aria-current={active ? "page" : undefined}
+                className={cn(
+                  "ds-sidebar__sub-row",
+                  active && "is-active",
+                  c.disabled && "is-disabled",
+                )}
+                onClick={onClose}
+              >
+                <span className="ds-sidebar__sub-label">{c.label}</span>
+              </RowLink>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+// ── Level 1 ──────────────────────────────────────────────────────────────────
 
 function MainItem({
   item,
   pathname,
   collapsed,
+  flyoutOpen,
+  onFlyoutToggle,
+  onFlyoutClose,
 }: {
   item: SidebarNavItem;
   pathname: string;
   collapsed: boolean;
+  flyoutOpen: boolean;
+  onFlyoutToggle: () => void;
+  onFlyoutClose: () => void;
 }) {
+  const id = React.useId();
   const hasChildren = Boolean(item.children?.length);
+  const selfActive = isCurrent(pathname, item.href);
+  const active = itemActive(pathname, item);
+  const [open, toggle] = useDisclosure(active);
+  const anchorRef = React.useRef<HTMLButtonElement>(null);
 
-  const isSelfActive =
-    pathname === item.href || pathname.startsWith(item.href + "/");
-  const isChildActive =
-    hasChildren &&
-    item.children!.some(
-      (c) => pathname === c.href || pathname.startsWith(c.href + "/")
+  const rowClass = cn(
+    "ds-sidebar__row",
+    active && "is-active",
+    item.disabled && "is-disabled",
+  );
+  const badgeText = item.badge != null ? `${item.badge} pending` : null;
+  const name = badgeText ? `${item.label}, ${badgeText}` : item.label;
+
+  const icon = <Icon name={item.icon} size={24} className="ds-sidebar__icon" aria-hidden />;
+  const dot = item.badge != null && <span className="ds-sidebar__dot" aria-hidden />;
+
+  if (collapsed && !hasChildren) {
+    return (
+      <li>
+        <Tooltip content={item.label} side="right" duplicatesTriggerName>
+          <RowLink
+            href={item.href}
+            disabled={item.disabled}
+            aria-label={name}
+            aria-current={selfActive ? "page" : undefined}
+            className={rowClass}
+          >
+            {icon}
+            {dot}
+          </RowLink>
+        </Tooltip>
+      </li>
     );
-  const highlighted = isSelfActive || isChildActive;
-
-  const [open, setOpen] = React.useState(highlighted);
-
-  /**
-   * Opens the group when a child BECOMES active — on the transition, not on
-   * every render, so the reader can still collapse a group whose child is the
-   * current page. Same trigger as the effect it replaces; the difference is that
-   * the group no longer renders collapsed for one frame before springing open.
-   */
-  const [prevChildActive, setPrevChildActive] = React.useState(isChildActive);
-  if (prevChildActive !== isChildActive) {
-    setPrevChildActive(isChildActive);
-    if (isChildActive) setOpen(true);
   }
 
-  const rowClass = cn("ds-sidebar__main-row", highlighted && "is-active");
-
-  // Collapsed mode: icon-only with tooltip via title
   if (collapsed) {
     return (
-      <div className="ds-sidebar__main-item">
-        <a
-          href={hasChildren ? undefined : item.href}
-          title={item.label}
-          aria-label={item.label}
-          aria-current={isSelfActive ? "page" : undefined}
-          className={rowClass}
-          {...(hasChildren
-            ? { role: "button", onClick: () => setOpen((o) => !o) }
-            : {})}
-        >
-          <Icon name={item.icon} className="ds-sidebar__icon" aria-hidden />
-        </a>
-      </div>
+      <li>
+        <Tooltip content={item.label} side="right" duplicatesTriggerName disabled={flyoutOpen}>
+          <button
+            ref={anchorRef}
+            type="button"
+            aria-label={name}
+            aria-haspopup="true"
+            aria-expanded={flyoutOpen}
+            aria-controls={flyoutOpen ? id : undefined}
+            aria-disabled={item.disabled || undefined}
+            disabled={item.disabled}
+            className={cn(rowClass, flyoutOpen && "is-open")}
+            onClick={onFlyoutToggle}
+          >
+            {icon}
+            {dot}
+          </button>
+        </Tooltip>
+        {flyoutOpen && (
+          <Flyout
+            item={item}
+            pathname={pathname}
+            anchor={anchorRef.current}
+            id={id}
+            onClose={onFlyoutClose}
+          />
+        )}
+      </li>
     );
   }
 
-  // Expanded mode — leaf item (no children)
+  const badge = item.badge != null && (
+    <span className="ds-sidebar__badge" aria-label={badgeText ?? undefined}>
+      {item.badge}
+    </span>
+  );
+
   if (!hasChildren) {
     return (
-      <div className="ds-sidebar__main-item">
-        <a
+      <li>
+        <RowLink
           href={item.href}
-          aria-current={isSelfActive ? "page" : undefined}
+          disabled={item.disabled}
+          aria-current={selfActive ? "page" : undefined}
           className={rowClass}
         >
-          <Icon name={item.icon} className="ds-sidebar__icon" aria-hidden />
+          {icon}
           <span className="ds-sidebar__label">{item.label}</span>
-          {item.badge != null && (
-            <span className="ds-sidebar__badge" aria-label={`${item.badge} notifications`}>
-              {item.badge}
-            </span>
-          )}
-        </a>
-      </div>
+          {badge}
+        </RowLink>
+      </li>
     );
   }
 
-  // Expanded mode — group with children
-  const groupId = `ds-sidebar-group-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
-
   return (
-    <div className="ds-sidebar__main-item">
+    <li>
       <button
         type="button"
         aria-expanded={open}
-        aria-controls={groupId}
+        aria-controls={id}
+        aria-disabled={item.disabled || undefined}
+        disabled={item.disabled}
         className={rowClass}
-        onClick={() => setOpen((o) => !o)}
+        onClick={toggle}
       >
-        <Icon name={item.icon} className="ds-sidebar__icon" aria-hidden />
+        {icon}
         <span className="ds-sidebar__label">{item.label}</span>
-        {item.badge != null && (
-          <span className="ds-sidebar__badge" aria-label={`${item.badge} notifications`}>
-            {item.badge}
-          </span>
-        )}
-        <ChevronDown
-          className={cn("ds-sidebar__chevron", open && "is-open")}
+        {badge}
+        <Icon
+          name={open ? "expand_less" : "expand_more"}
+          size={20}
+          className="ds-sidebar__chevron"
+          aria-hidden
         />
       </button>
       {open && (
-        <ul id={groupId} className="ds-sidebar__subnav">
-          {item.children!.map((child, i) => (
-            <ChildItem
-              key={child.href}
-              child={child}
-              pathname={pathname}
-              isLast={i === item.children!.length - 1}
-            />
+        <ul id={id} className="ds-sidebar__list ds-sidebar__list--l2">
+          {item.children!.map((c) => (
+            <ChildEntry key={c.href} child={c} pathname={pathname} />
           ))}
         </ul>
       )}
-    </div>
+    </li>
   );
 }
 
 // ── Public: SidebarNav ───────────────────────────────────────────────────────
 
 /**
- * SidebarNav — portal app-shell left navigation.
+ * SidebarNav — the portal app-shell left navigation.
  *
- * Figma source: SAMAVESH DS › Side Navigation › sidebar/sidebar-nav (4208:740)
- * Mirrors Portal DS › sidebar/type-1 (8190:16300).
+ * Figma source: SAMAVESH DS › Sidebar › `Sidebar` (4286:428), with
+ * `Sidebar/Item · Level 1` (4286:285), `Sidebar/Item · Level 2` (4286:361),
+ * `Sidebar/Item · Level 3`, `Sidebar/GroupLabel`, `Sidebar/CollapseControl`
+ * and `Sidebar/Flyout`.
  *
- * - Expanded (300px) / Collapsed (88px) modes.
- * - Two-level hierarchy: top-level items + optional collapsible children with
- *   a curved-connector visual matching the Figma design.
- * - Token-driven: `--sa-color-primaryScale-50` active bg, `--sa-color-action-primary-default` active text.
- * - Optional collapse-control drag handle (showCollapseControl).
+ * - Expanded (`layout/sidebar/width`, 300) and collapsed
+ *   (`layout/sidebar/collapsedWidth`, 88) modes.
+ * - Three levels: a level-1 item with an icon; level-2 entries under a group;
+ *   level-3 leaves under a level-2 group. Nothing nests further.
+ * - `pathname` is the only source of the current state, at every level.
+ * - In the collapsed rail a group opens a flyout listing its level-2 pages;
+ *   a leaf shows its label as a tooltip; a badge count becomes a dot.
+ * - Group labels are the accessible name of their `role="group"`, in both modes.
  *
  * @example
  * ```tsx
@@ -238,56 +429,78 @@ export function SidebarNav({
   onCollapsedChange,
   showCollapseControl = false,
   footer,
+  label = "Portal navigation",
   className,
   id,
 }: SidebarNavProps): React.JSX.Element {
+  const [openFlyout, setOpenFlyout] = React.useState<string | null>(null);
+  const closeFlyout = React.useCallback(() => setOpenFlyout(null), []);
+  // A flyout belongs to the collapsed rail; expanding closes it.
+  React.useEffect(() => {
+    if (!collapsed) setOpenFlyout(null);
+  }, [collapsed]);
+  const baseId = React.useId();
+
   return (
     <aside
       id={id}
-      className={cn(
-        "ds-sidebar",
-        collapsed ? "is-collapsed" : "is-expanded",
-        className
-      )}
-      aria-label="Portal navigation"
+      className={cn("ds-sidebar", collapsed ? "is-collapsed" : "is-expanded", className)}
     >
-      <nav className="ds-sidebar__nav" aria-label="Main navigation">
-        {groups.map((group, gi) => (
-          <div key={gi} className="ds-sidebar__group">
-            {group.label && !collapsed && (
-              <div className="ds-sidebar__group-label" aria-hidden>
-                {group.label}
-              </div>
-            )}
-            <ul className="ds-sidebar__group-items">
-              {group.items.map((item) => (
-                <li key={item.href}>
+      <nav className="ds-sidebar__nav" aria-label={label}>
+        {groups.map((group, gi) => {
+          const labelId = group.label ? `${baseId}-g${gi}` : undefined;
+          return (
+            <div
+              key={gi}
+              className="ds-sidebar__group"
+              role={group.label ? "group" : undefined}
+              aria-labelledby={labelId}
+            >
+              {group.label && (
+                <div
+                  id={labelId}
+                  className={cn("ds-sidebar__group-label", collapsed && "ds-sr-only")}
+                >
+                  {group.label}
+                </div>
+              )}
+              <ul className="ds-sidebar__list">
+                {group.items.map((item) => (
                   <MainItem
+                    key={item.href}
                     item={item}
                     pathname={pathname}
                     collapsed={collapsed}
+                    flyoutOpen={openFlyout === item.href}
+                    onFlyoutToggle={() =>
+                      setOpenFlyout((cur) => (cur === item.href ? null : item.href))
+                    }
+                    onFlyoutClose={closeFlyout}
                   />
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+                ))}
+              </ul>
+            </div>
+          );
+        })}
       </nav>
 
       {footer && <div className="ds-sidebar__footer">{footer}</div>}
 
       {showCollapseControl && onCollapsedChange && (
-        <button
-          type="button"
-          className="ds-sidebar__control"
-          onClick={() => onCollapsedChange(!collapsed)}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          title={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-        >
-          <div className="ds-sidebar__control-line" aria-hidden />
-          <HandleIcon className="ds-sidebar__control-handle" />
-          <div className="ds-sidebar__control-line" aria-hidden />
-        </button>
+        <div className="ds-sidebar__control">
+          <IconButton
+            icon={<Icon name={collapsed ? "left_panel_open" : "left_panel_close"} size={24} />}
+            aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
+            aria-expanded={!collapsed}
+            aria-controls={id}
+            variant="neutral"
+            appearance="text"
+            size="md"
+            tooltip
+            tooltipSide="right"
+            onClick={() => onCollapsedChange(!collapsed)}
+          />
+        </div>
       )}
     </aside>
   );

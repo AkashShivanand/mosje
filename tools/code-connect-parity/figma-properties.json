@@ -914,5 +914,30 @@
       }
     },
     "deliberatelyOmitted": []
+  },
+  "SidebarNav": {
+    "nodeId": "4286:428",
+    "captured": "2026-09-05",
+    "properties": {
+      "Menu": {
+        "type": "SLOT"
+      },
+      "Show Control": {
+        "type": "BOOLEAN"
+      },
+      "Show Footer": {
+        "type": "BOOLEAN"
+      },
+      "Mode": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Expanded",
+          "Collapsed"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Menu"
+    ]
   }
 }

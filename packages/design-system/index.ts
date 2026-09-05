@@ -442,7 +442,7 @@ export type {
 export { Link } from "./components/navigation/link";
 export type { LinkProps, LinkVariant, LinkSize, LinkTone } from "./components/navigation/link";
 
-// Sidebar — portal app-shell left navigation (Figma: sidebar/type-1).
+// Sidebar — portal app-shell left navigation (Figma: SAMAVESH › Sidebar, 4286:428).
 export { ContentNav } from "./components/navigation/content-nav";
 export type {
   ContentNavProps,
@@ -462,6 +462,7 @@ export type {
   SidebarNavGroup,
   SidebarNavItem,
   SidebarNavChild,
+  SidebarNavLeaf,
 } from "./components/navigation/sidebar";
 export type {
   SiteHeaderProps,

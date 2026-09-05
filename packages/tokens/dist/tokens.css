@@ -923,6 +923,8 @@
   --sa-layout-masthead-minHeight: 72px;
   --sa-layout-chrome-minHeight: 118px;
   --sa-layout-sidebar-width: 300px;
+  --sa-layout-sidebar-collapsedWidth: 88px;
+  --sa-layout-sidebar-flyoutWidth: 240px;
   --sa-layout-login-hero-width: 922px;
   --sa-layout-login-panel-width: 518px;
   --sa-layout-login-panel-gutter: 64px;

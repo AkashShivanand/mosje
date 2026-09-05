@@ -12,7 +12,11 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-09-04 · System version: v0.49.0 (THE FOUNDATIONS WERE REBUILT TO A
+  Last reviewed: 2026-09-05 · System version: v0.50.0 (THE SIDEBAR IS ONE COMPONENT AGAIN AND GOES THREE
+  LEVELS DEEP. The SAMAVESH Sidebar sets were rebuilt in place — same keys — with Focused, Disabled,
+  a collapsed-group flyout, a visible collapse control, group labels, a footer slot, and level 3;
+  active ink is bolder (5.74:1), hover is neutral, the Portal DS copies are deprecated, and
+  SidebarNav renders the same three levels with a real flyout — see the changelog.) v0.49.0 (THE FOUNDATIONS WERE REBUILT TO A
   BENCHMARK SHAPE. Motion is twelve intents on a value-named ten-step ladder with five
   behaviour-named curves, and reduced motion is emitted ONCE at the token layer; layering is a
   fifteen-rung z ladder authored in Tier 2 and code-only (the Bootstrap primitive ladder nothing
