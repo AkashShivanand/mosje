@@ -106,5 +106,51 @@
       "$value": "{border.width.sm}",
       "$description": "Divider thickness — the hairline. Bound to the component's WIDTH or HEIGHT depending on orientation, not to a stroke, which is why it needs a WIDTH_HEIGHT scope that control/border/width does not carry."
     }
+  },
+  "avatar": {
+    "$description": "Avatar sizes — the four the component renders, each aliasing a size rung. Avatar is a Tier-3 owner because its sizes are its own API (size 24, 32, 40 or 48) rather than a shared ladder.",
+    "size": {
+      "$type": "dimension",
+      "xs": {
+        "$value": "{size.24}",
+        "$description": "24px — inline beside body text, in a comment header or a dense list."
+      },
+      "sm": {
+        "$value": "{size.32}",
+        "$description": "32px — a table cell or a compact card."
+      },
+      "md": {
+        "$value": "{size.40}",
+        "$description": "40px — the default: a card header, the account block in the masthead."
+      },
+      "lg": {
+        "$value": "{size.48}",
+        "$description": "48px — a profile card or a comment thread's author."
+      }
+    }
+  },
+  "chip": {
+    "$description": "Chip — the filter and selection pill.",
+    "radius": {
+      "$type": "dimension",
+      "$value": "{shape.8}",
+      "$description": "The chip's corner at rest — the system default control shape, shape/8. The pill variant takes shape/full in the stylesheet."
+    }
+  },
+  "dialog": {
+    "$description": "Dialog (Modal) — the surface that owns the screen.",
+    "radius": {
+      "$type": "dimension",
+      "$value": "{shape.12}",
+      "$description": "The dialog's corner — shape/12, the ‘cards and panels’ rung; a dialog is a panel that has come forward."
+    }
+  },
+  "tooltip": {
+    "$description": "Tooltip.",
+    "radius": {
+      "$type": "dimension",
+      "$value": "{shape.6}",
+      "$description": "The tooltip's corner — shape/6, one step tighter than a control because the surface is small and a large curve would eat its padding."
+    }
   }
 }

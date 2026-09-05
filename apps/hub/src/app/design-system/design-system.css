@@ -73,10 +73,10 @@ body { min-height: 100vh; overflow-x: hidden; }
    than Title 1 — was RETIRED on 2026-08-12 with the rest of the `--ds-*` vocabulary.
    Every name below is now a canonical `--sa-type-<role>-*` token that means the role
    it says. */
-h1 { font-size: var(--sa-type-display-1-size); line-height: var(--sa-type-display-1-lh); font-weight: 500; }
-h2 { font-size: var(--sa-type-headline-2-size); line-height: var(--sa-type-headline-2-lh); font-weight: 600; }
-h3 { font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); font-weight: 600; }
-h4 { font-size: var(--sa-type-headline-6-size); line-height: var(--sa-type-headline-6-lh); font-weight: 600; }
+h1 { font-size: var(--sa-type-display-1-size); line-height: var(--sa-type-display-1-lh); font-weight: var(--sa-font-weight-medium); }
+h2 { font-size: var(--sa-type-headline-2-size); line-height: var(--sa-type-headline-2-lh); font-weight: var(--sa-font-weight-semibold); }
+h3 { font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); font-weight: var(--sa-font-weight-semibold); }
+h4 { font-size: var(--sa-type-headline-6-size); line-height: var(--sa-type-headline-6-lh); font-weight: var(--sa-font-weight-semibold); }
 
 /* Long inline code / pre must scroll, never widen the page on mobile. */
 pre { overflow-x: auto; max-width: 100%; }
@@ -150,7 +150,7 @@ code:not([class]) {
   background: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);
   border-radius: var(--sa-shape-6);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   transition: top 0.1s;
 }
 .skip-link:focus { top: var(--sa-stack-16); }
@@ -162,7 +162,7 @@ code:not([class]) {
   gap: var(--sa-stack-8);
   font-size: var(--sa-type-label-3-size);
   line-height: var(--sa-type-label-3-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   letter-spacing: var(--sa-type-caps-tracking);
   text-transform: uppercase;
   /* 4.07:1 → 5.57:1. Gov-blue as TEXT, at 11px uppercase with 0.1em tracking —
@@ -251,7 +251,7 @@ code:not([class]) {
 }
 .home-stat__value {
   font-size: var(--sa-type-headline-2-size);
-  font-weight: 700;
+  font-weight: var(--sa-font-weight-bold);
   line-height: var(--sa-type-headline-2-lh);
   letter-spacing: var(--sa-type-heading-tracking);
   color: var(--sa-text-neutral-bolder, var(--sa-text-neutral-base));

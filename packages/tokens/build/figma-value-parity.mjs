@@ -96,3 +96,31 @@ export function collectionValueChecksums(payload) {
   }
   return out;
 }
+
+/**
+ * The OTHER four fields the standard requires on every variable — and the ones the value
+ * checksum was blind to. On 2026-09-05 a live read found 253 descriptions HTML-escaped, five
+ * codeSyntax lines naming CSS variables that do not exist, visibility disagreeing on 164
+ * variables and the wildcard `ALL_FILLS` on all 138 Palette rungs — with every value checksum
+ * equal. One checksum per field per collection, over `name=value` entries, so a drift in any
+ * field moves exactly one number and says which field it was.
+ *
+ * Scopes skip TIMING and EASING: they cannot be set (Figma reports `ALL_SCOPES` on read and
+ * the payload emits `[]`), so comparing them would report a difference that is not one.
+ * Library-only variables (the `ref/viewport/*` canvas widths) are excluded by the reader,
+ * not here — the payload does not carry them, so they never enter the payload side.
+ */
+export function collectionFieldChecksums(payload) {
+  const out = {};
+  for (const c of payload.collections) {
+    const desc = [], web = [], scopes = [], hidden = [];
+    for (const v of c.variables) {
+      desc.push(`${v.name}=${v.description ?? ""}`);
+      web.push(`${v.name}=${v.codeSyntax?.WEB ?? ""}`);
+      if (v.type !== "TIMING" && v.type !== "EASING") scopes.push(`${v.name}=${[...(v.scopes ?? [])].sort().join("+")}`);
+      hidden.push(`${v.name}=${v.hiddenFromPublishing ? 1 : 0}`);
+    }
+    out[c.name] = { description: checksum(desc), codeSyntax: checksum(web), scopes: checksum(scopes), hidden: checksum(hidden) };
+  }
+  return out;
+}

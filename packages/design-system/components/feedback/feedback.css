@@ -109,7 +109,7 @@
     margin: 0;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -250,7 +250,7 @@
     margin: 0;
     font-size: var(--sa-type-headline-1-size);
     line-height: var(--sa-type-headline-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -284,7 +284,7 @@
     background-color: var(--sa-bg-neutral-subtler);
     color: var(--sa-text-neutral-bolder);
     font-family: var(--sa-font-latin);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     line-height: var(--sa-type-label-1-lh);
     user-select: none;
   }

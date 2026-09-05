@@ -79,7 +79,7 @@ const px = (v) => {
 export function parseShadow(css) {
   if (Array.isArray(css)) {
     return css.map((l) => ({
-      type: "DROP_SHADOW",
+      type: l.inset ? "INNER_SHADOW" : "DROP_SHADOW",
       color: parseColor(l.color),
       offset: { x: px(l.offsetX), y: px(l.offsetY) },
       radius: px(l.blur),
@@ -96,13 +96,14 @@ export function parseShadow(css) {
     const cm = /(rgba?\([^)]*\)|#[0-9a-fA-F]{3,8})/.exec(layer);
     if (!cm) throw new Error(`shadow: layer has no colour: ${JSON.stringify(layer)}`);
     const color = parseColor(cm[1]);
-    const lengths = layer.replace(cm[1], "").trim().split(/\s+/).filter(Boolean);
+    const inset = /\binset\b/.test(layer);
+    const lengths = layer.replace(cm[1], "").replace(/\binset\b/, "").trim().split(/\s+/).filter(Boolean);
     if (lengths.length < 3) {
       throw new Error(`shadow: layer needs x, y and blur — got ${JSON.stringify(layer)}`);
     }
     const [x, y, blur, spread] = lengths;
     return {
-      type: "DROP_SHADOW",
+      type: inset ? "INNER_SHADOW" : "DROP_SHADOW",
       color,
       offset: { x: px(x), y: px(y) },
       radius: px(blur),
@@ -126,4 +127,5 @@ export const ELEVATION = [
   ["dropdown", "md", "Use for a menu, select or popover opened from a control. It must read as above the page without competing with a modal."],
   ["modal", "lg", "Use for a dialog or side sheet that owns the screen. Pair it with the scrim (`overlay/neutral/boldest`) — the shadow separates, the scrim suppresses."],
   ["toast", "xl", "Use for a toast or notification that floats above everything. The heaviest step, because it appears unannounced and has to be found."],
+  ["inset", "inset", "Use for a surface that sits BELOW the page — a pressed well, a slider track, a recessed input. The only inset step; every other elevation lifts."],
 ];

@@ -58,7 +58,7 @@
     flex: 1;
     margin: 0;
     font-size: var(--sa-type-body-3-size);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-base);
   }
 

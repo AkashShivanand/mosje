@@ -20,7 +20,7 @@
      ============================================================================ */
   .ds-icon-btn {
     padding: 0;
-    aspect-ratio: 1;
+    aspect-ratio: var(--sa-aspect-square);
   }
 
   /* Square, using the SAME rungs as the size ladder in button.css so the two cannot

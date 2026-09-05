@@ -98,7 +98,7 @@
   .ds-gallery__dropzone-prompt {
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-base);
   }
 
@@ -119,7 +119,7 @@
   .ds-gallery__item {
     position: relative;
     margin: 0;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: var(--sa-aspect-photo);
     border-radius: var(--sa-shape-8);
     overflow: hidden;
     background-color: var(--sa-bg-neutral-subtler);
@@ -203,7 +203,7 @@
     align-items: center;
     justify-content: center;
     gap: var(--sa-stack-8);
-    aspect-ratio: 4 / 3;
+    aspect-ratio: var(--sa-aspect-photo);
     padding: var(--sa-padding-8);
     background-color: var(--sa-bg-neutral-base);
     border: var(--sa-stroke-2) dashed var(--sa-border-neutral-base);
@@ -237,7 +237,7 @@
 
   .ds-gallery__add-label {
     font-size: var(--sa-type-body-3-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   /* ---- Footer row ---- */
@@ -255,7 +255,7 @@
 
   .ds-gallery__count {
     font-size: var(--sa-type-body-3-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     font-variant-numeric: tabular-nums;
     color: var(--sa-text-neutral-subtle);
   }

@@ -78,7 +78,7 @@
   .el-text-shadow {
     font-size: var(--sa-type-headline-3-size);
     line-height: var(--sa-type-headline-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
     text-shadow: var(--sa-elevation-modal);
   }

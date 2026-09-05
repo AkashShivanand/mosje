@@ -188,7 +188,7 @@
     color: var(--sa-text-neutral-subtle);
     font-size: var(--ds-tabs-type-size);
     line-height: var(--ds-tabs-type-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     cursor: pointer;
     transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
       color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
@@ -621,7 +621,7 @@
     color: var(--sa-text-neutral-base);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-align: left;
     cursor: pointer;
   }

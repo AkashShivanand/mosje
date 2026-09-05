@@ -45,3 +45,12 @@
     font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0;
   }
 }
+
+/* ── Aspect ratios, bound — the four media wells the estate draws ── */
+@layer components {
+  .sz-aspect { display: block; width: 100%; background: var(--sa-bg-neutral-subtle); border-radius: var(--sa-shape-8); }
+  .sz-aspect--square { aspect-ratio: var(--sa-aspect-square); }
+  .sz-aspect--video { aspect-ratio: var(--sa-aspect-video); }
+  .sz-aspect--photo { aspect-ratio: var(--sa-aspect-photo); }
+  .sz-aspect--portrait { aspect-ratio: var(--sa-aspect-portrait); }
+}

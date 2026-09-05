@@ -61,7 +61,7 @@
   .lang-dialog__native {
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
   }
 
   .lang-dialog__english {

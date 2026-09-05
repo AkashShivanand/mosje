@@ -189,13 +189,13 @@ export function Donut({
           justifyContent: "center",
         }}
       >
-        <div style={{ fontWeight: 600, fontSize: "var(--sa-type-headline-3-size)", lineHeight: "var(--sa-type-headline-3-lh)", fontVariantNumeric: "tabular-nums", color: C.ink }}>
+        <div style={{ fontWeight: "var(--sa-font-weight-semibold)", fontSize: "var(--sa-type-headline-3-size)", lineHeight: "var(--sa-type-headline-3-lh)", fontVariantNumeric: "tabular-nums", color: C.ink }}>
           {center != null ? center : pct + "%"}
         </div>
         {sub && (
           <div
             style={{
-              fontWeight: 500,
+              fontWeight: "var(--sa-font-weight-medium)",
               fontSize: "var(--sa-type-label-3-size)",
               lineHeight: "var(--sa-type-label-3-lh)",
               color: C.muted,

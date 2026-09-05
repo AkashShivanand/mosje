@@ -30,7 +30,7 @@ export default function OpacityPage(): React.JSX.Element {
       status="New"
       since="0.49.0"
       summary="Opacity in SAMAVESH is one ladder of thirteen steps and two intents that name the only whole-element opacities the estate uses. A translucent colour is never an opacity on its own: it is a colour reference plus an alpha reference, so the brand can move under it and Figma can bind both halves."
-      figma={{ node: "color" }}
+      figma={{ node: "elevation" }}
       glance={[
         { value: ladder.length, label: "ladder steps", note: "0 · 4 · 8 · 16 · 24 · 32 · 40 · 48 · 64 · 72 · 80 · 88 · 100" },
         { value: intents.length, label: "intents", note: "disabled · muted" },

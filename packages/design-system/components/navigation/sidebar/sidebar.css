@@ -50,7 +50,7 @@
   }
 
   .ds-sidebar.is-expanded  { width: 300px; } /* 268px content + 2×16px padding */
-  .ds-sidebar.is-collapsed { width: 88px;  } /* 56px icon row + 2×16px padding — Portal DS spec */
+  .ds-sidebar.is-collapsed { width: var(--sa-layout-sidebar-collapsedWidth); } /* 88px: 56px icon row + 2×16px padding — Portal DS spec */
 
   /* ── Navigation ─────────────────────────────────────────────────────────────── */
 
@@ -79,7 +79,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);
@@ -141,7 +141,7 @@
      live portal rather than against the documentation, which never renders an
      ACTIVE row. `bolder` is 5.74:1 on the same ground. */
   .ds-sidebar__main-row.is-active {
-    background: var(--sa-color-primaryScale-50);
+    background: var(--sa-bg-neutral-selected);
     color: var(--sa-text-brand-primary-bolder);
   }
 
@@ -175,7 +175,7 @@
     color: var(--sa-on-bg-brand-primary-bolder);
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   /* Chevron */
@@ -221,7 +221,7 @@
     top: 0;
     width: 1px;
     height: 100%;
-    background: var(--sa-color-primaryScale-50);
+    background: var(--sa-bg-neutral-selected);
   }
 
   /* Last child: line stops at the corner elbow */
@@ -275,7 +275,7 @@
 
   /* Same ground, same measurement, same fix as the main row above. */
   .ds-sidebar__child-label.is-active {
-    background: var(--sa-color-primaryScale-50);
+    background: var(--sa-bg-neutral-selected);
     color: var(--sa-text-brand-primary-bolder);
     opacity: 1;
   }

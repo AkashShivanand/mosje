@@ -155,6 +155,21 @@ test("no collection is asked to express an axis it has no modes for", () => {
     }
   }
 
+  // Brand delegated through an alias is NOT lost — directly into Palette, or through another
+  // Color variable that itself reaches Palette (`cmp/accessibilityBar/hoverBg` ->
+  // `overlay/brand/hover` -> `color/neutralScale/0`). Since 2026-09-05 a Tier-2 colour that
+  // references a Tier-2 colour carrying its own alpha aliases THAT variable rather than the
+  // rung beneath it, so the chain is one hop longer and still brand-aware.
+  const byKey = new Map(allVars.map((x) => [`${x.collection}::${x.name}`, x]));
+  function delegatesBrand(v, depth = 0) {
+    if (depth > 8) return false;
+    const d = v.valuesByMode.Default;
+    if (!d || d.type !== "ALIAS") return false;
+    if (d.collection === "Palette") return true;
+    const next = byKey.get(`${d.collection}::${d.name}`);
+    return next ? delegatesBrand(next, depth + 1) : false;
+  }
+
   const lost = [];
   for (const v of allVars) {
     const axes = axesOf(v.path.replace(/\//g, "."));
@@ -166,9 +181,7 @@ test("no collection is asked to express an axis it has no modes for", () => {
       // Brand delegated through an alias is NOT lost: a Theme token whose Light value
       // aliases into Color resolves per brand mode, because Color carries that axis. Only a
       // literal actually drops it.
-      if (needed === "brand" && v.valuesByMode.Default?.type === "ALIAS" && v.valuesByMode.Default.collection === "Palette") {
-        continue;
-      }
+      if (needed === "brand" && delegatesBrand(v)) continue;
       // A Color variable that some Theme variable ALIASES is a brand source: appearance is
       // expressed by the Theme tokens pointing at it, so the theme axis is not lost here.
       // Matching by name would miss it — `color/text/disabled` lands as `Palette::color/text/disabled`

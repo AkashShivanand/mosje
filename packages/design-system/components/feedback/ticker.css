@@ -215,7 +215,7 @@
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
     letter-spacing: var(--sa-type-title-tracking);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     white-space: nowrap;
   }
 
@@ -609,7 +609,7 @@
     font-size: var(--sa-type-title-3-size);
     line-height: var(--sa-type-title-3-lh);
     letter-spacing: var(--sa-type-title-tracking);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     text-wrap: pretty;
   }
 

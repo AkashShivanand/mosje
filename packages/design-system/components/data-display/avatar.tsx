@@ -3,6 +3,14 @@ import { cn } from "../../utils/cn";
 import "../feedback/feedback.css";
 
 export type AvatarSize = 24 | 32 | 40 | 48;
+
+/** Maps the numeric size to its `cmp/avatar/size/*` token name. */
+const AVATAR_SIZE_TOKEN: Record<AvatarSize, string> = {
+  24: "var(--sa-cmp-avatar-size-xs)",
+  32: "var(--sa-cmp-avatar-size-sm)",
+  40: "var(--sa-cmp-avatar-size-md)",
+  48: "var(--sa-cmp-avatar-size-lg)",
+};
 export type AvatarShape = "circular" | "rounded";
 
 export interface AvatarProps
@@ -52,9 +60,12 @@ export const Avatar = React.forwardRef<HTMLSpanElement, AvatarProps>(
     },
     ref,
   ) {
+    // Sizes bind the cmp/avatar/size tokens; the numeric prop stays the API and is the
+    // fallback for a stylesheet that has not loaded the token sheet.
+    const sizeVar = AVATAR_SIZE_TOKEN[size].replace(")", `, ${size}px)`);
     const sizeStyle: React.CSSProperties = {
-      width: size,
-      height: size,
+      width: sizeVar,
+      height: sizeVar,
       ...style,
     };
 

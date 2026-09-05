@@ -112,7 +112,7 @@ function Marker({
         background: "var(--sa-bg-brand-primary-bolder)",
         color: "var(--sa-on-bg-brand-primary-bolder)",
         fontSize: "var(--sa-type-label-3-size)",
-        fontWeight: 700,
+        fontWeight: "var(--sa-font-weight-bold)",
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",

@@ -137,7 +137,7 @@
     margin: 0;
     font-size: var(--sa-type-headline-5-size);
     line-height: var(--sa-type-headline-5-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     /* #1e2124 against the handoff's #1f2428 — the same ink to within a point per
        channel. It was `bolder` (#0e1114), which is near-black and made the four
        figures heavier than the H1 in the band above them. */

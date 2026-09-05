@@ -67,7 +67,7 @@
     border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);
@@ -100,7 +100,7 @@
        levels still read as different. */
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-base);
     text-decoration: none;
   }
@@ -134,7 +134,7 @@
   .ds-content-nav__link--current:hover {
     background-color: var(--sa-bg-brand-primary-bolder);
     color: var(--sa-text-neutral-inverse);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-content-nav__link--current .ds-content-nav__chevron {

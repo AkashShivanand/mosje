@@ -79,7 +79,7 @@
   .sa-accordion-item__title {
     font-size: var(--sa-type-title-3-size);
     line-height: var(--sa-type-title-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 

@@ -83,13 +83,13 @@
   }
 
   .ds-auth-resend__count {
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
     font-variant-numeric: tabular-nums;
   }
 
   .ds-auth-resend__action {
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-link-brand-default);
     background: none;
     border: 0;
@@ -126,7 +126,7 @@
     display: block;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
 
@@ -134,7 +134,7 @@
     flex: none;
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-link-brand-default);
     background: none;
     border: 0;
@@ -186,7 +186,7 @@
     display: block;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-brand-primary-base);
   }
 
@@ -267,7 +267,7 @@
     display: block;
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-auth-signing__change {
@@ -322,7 +322,7 @@
     min-height: var(--sa-target-comfortable);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-link-brand-default);
     text-underline-offset: 2px;
   }

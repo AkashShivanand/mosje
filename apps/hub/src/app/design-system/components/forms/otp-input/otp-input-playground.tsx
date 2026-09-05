@@ -51,7 +51,7 @@ export function OtpInputPlayground() {
       </div>
 
       <div style={{ width: "100%", maxWidth: "400px" }}>
-        <p style={{ margin: "0 0 var(--sa-stack-8) 0", fontSize: "var(--sa-type-title-3-size)", lineHeight: "var(--sa-type-title-3-lh)", fontWeight: 600 }}>Enter OTP</p>
+        <p style={{ margin: "0 0 var(--sa-stack-8) 0", fontSize: "var(--sa-type-title-3-size)", lineHeight: "var(--sa-type-title-3-lh)", fontWeight: "var(--sa-font-weight-semibold)" }}>Enter OTP</p>
         <OtpInput 
           value={value}
           onValueChange={setValue}

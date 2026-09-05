@@ -25,7 +25,7 @@
     line-height: var(--sa-type-body-2-lh);
   }
   .cl-ban__class {
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
   .cl-ban__example {
@@ -108,7 +108,7 @@
     border-color: var(--sa-border-brand-primary-base);
   }
   .cl-lang__native {
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
   .cl-lang__meta {

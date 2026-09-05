@@ -243,7 +243,7 @@
     color: var(--sa-text-neutral-subtle);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
   }
@@ -286,7 +286,7 @@
   .ds-search__option-label {
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-search__option-desc {
@@ -304,7 +304,7 @@
   .ds-search__mark {
     background-color: var(--sa-bg-brand-primary-subtle);
     color: var(--sa-text-neutral-bolder);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     border-radius: var(--sa-shape-2);
   }
 

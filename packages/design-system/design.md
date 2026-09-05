@@ -12,6 +12,20 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-05 · System version: v0.50.0 (THE FOUNDATION GAPS WERE CLOSED. A
+  five-field audit of the live Figma library found the value checksums equal while description,
+  codeSyntax, scopes and hiddenFromPublishing had drifted on hundreds of variables; the exporter
+  now hides by LIBRARY-name tier (ref/* and all of Palette), Palette carries five explicit colour
+  scopes, the weight rows are STRING, an alias-through-alpha no longer flattens, and the parity
+  record hashes all five fields — the Plugin API's own HTML-entity encoding of descriptions is
+  decoded before comparing. Thirty-two tokens the benchmark systems carry were added with a
+  consumer each: neutral state fills and layers, the selected border, the two-tone focus ring,
+  control heights, aspect ratios, icon fill, avatar sizes, chip/dialog/tooltip radii and the
+  inset elevation. 594 literal font-weights bind the weight tokens. Figma: one focus/ring style
+  (per-tone rings and legacy Shadows/* retired after an 83-page scan), eight token-bound grid
+  styles, four new Component record frames, the Motion and Effects frames rewritten to the
+  shipped vocabulary. Two ratchets: check:breakpoints and check:token-consumers.)
+
   Last reviewed: 2026-09-04 · System version: v0.49.0 (THE FOUNDATIONS WERE REBUILT TO A
   BENCHMARK SHAPE. Motion is twelve intents on a value-named ten-step ladder with five
   behaviour-named curves, and reduced motion is emitted ONCE at the token layer; layering is a
@@ -3553,3 +3567,14 @@ Whenever a new component is added, a token contract is updated, or a page patter
 1. Update this `design.md` (Component Catalogue and/or relevant section).
 2. Bump the `Last reviewed` date in the HTML comment header.
 3. Run `npm run dev` (repo root, port 3007) and verify the change renders at `/design-system/resources/design-context`.
+
+### Names that look like tokens and are not
+
+Thirty custom properties in the `--sa-` namespace are **runtime hooks**, not tokens: `--sa-btn-fill/ink/edge/ring`
+(Button's public override layer), `--sa-hdr-abar-h`, `--sa-header-bottom/pinned/stuck` (measured by the masthead),
+`--sa-grid-cols`, `--sa-grid-row-gap`, `--sa-span-base/md/lg` (layout grid utilities), `--sa-reveal-delay`,
+`--sa-font-scale` (the accessibility bar's live scale), `--sa-wall-rail-top`, `--sa-corner-rail-bottom`,
+`--sa-wall-clearance`, `--sa-action-banner-*`, `--sa-ticker-*`. They are set by JavaScript or by a consumer and
+read with an inline fallback; none is declared in `tokens.css`, and `check:dangling-vars` knows them as such.
+Do not add a token with one of these names, and do not treat one of them as a design decision — the decision
+is the fallback beside it.

@@ -80,7 +80,7 @@
   .lg-table th {
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
     border-bottom-color: var(--sa-border-neutral-base);
   }

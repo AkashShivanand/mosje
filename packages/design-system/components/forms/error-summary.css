@@ -27,7 +27,7 @@
     color: var(--sa-text-status-error-bolder);
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-error-summary__list {
@@ -46,7 +46,7 @@
     color: var(--sa-text-status-error-bolder);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-decoration: underline;
     text-underline-offset: 0.2em;
     /* 24px is the WCAG 2.2 AA target floor (2.5.8); the block display plus this
