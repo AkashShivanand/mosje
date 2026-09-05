@@ -247,7 +247,7 @@
 
   .ds-sidebar__sub:last-child::before {
     bottom: auto;
-    height: calc(22px + var(--sa-stack-4)); /* to the centre of a 44px row */
+    height: calc(16px + var(--sa-stack-4)); /* to where the arc leaves the trunk, not to the row centre — a trunk that ran on to 22 left a stub beside the curve */
   }
 
   /* The elbow branches OFF the trunk: a shape/6 arc from 16 to the row centre

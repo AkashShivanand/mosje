@@ -112,8 +112,9 @@ const RowLink = React.forwardRef<HTMLElement, RowLinkProps>(function RowLink(
  */
 export function activePathD(trunkX: number, y: number): string {
   const r = 6;
-  // trunk straight to the row centre, then the branch: arc off the trunk into the arm
-  return `M ${trunkX} 0 V ${y} M ${trunkX} ${y - r} Q ${trunkX} ${y} ${trunkX + r} ${y} H ${trunkX + 16}`;
+  // The route runs down the trunk and turns INTO the page: it ends where the arc
+  // leaves the trunk. The neutral trunk beneath continues straight on its own.
+  return `M ${trunkX} 0 V ${y - r} Q ${trunkX} ${y} ${trunkX + r} ${y} H ${trunkX + 16}`;
 }
 
 /**
