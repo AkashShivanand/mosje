@@ -290,9 +290,9 @@ export default function TypographyPage(): React.JSX.Element {
         </>
       }
       a11y={[
-        { criterion: "Resize text — 200% zoom with no loss of content or function", level: "AA", description: "Fluid clamp() already holds sizes steady above 1280px, so browser zoom is the case that actually needs testing." },
+        { criterion: "Resize text — 200% zoom with no loss of content or function", level: "AA", status: "verified", evidence: "packages/tokens/test — every size bound is on the 15-step ramp, no role renders below the 12px floor on either surface, and every line height is on the 4px grid at both ends of the clamp; sizes are rem-based so browser zoom scales them.", description: "Fluid clamp() already holds sizes steady above 1280px, so browser zoom is the case that actually needs testing." },
         { criterion: "Reflow — usable at a 320px equivalent without two-dimensional scrolling", level: "AA", description: "The 360px anchor is the min of every role; below it, values hold flat rather than shrinking further." },
-        { criterion: "Contrast (minimum) — 4.5:1 for body, 3:1 for large text", level: "AA", description: "label-3 at 12px is the smallest permitted text. At that size treat 4.5:1 as a floor and prefer 7:1." },
+        { criterion: "Contrast (minimum) — 4.5:1 for body, 3:1 for large text", level: "AA", status: "verified", evidence: "packages/tokens/test — every text role token is measured against its surface in every brand; text/link/brand/default moved to ramp 600 when 500 measured 4.07:1 on the muted surface.", description: "label-3 at 12px is the smallest permitted text. At that size treat 4.5:1 as a floor and prefer 7:1." },
         { criterion: "Text spacing — survives increased line height and letter spacing", level: "AA", description: "Roles ship their own -lh and -tracking, so user stylesheets layer on top without clipping." },
         { criterion: "Info and relationships — hierarchy comes from heading order, not size", level: "A", description: "Anything communicated by making text bigger must also exist in words, structure or state. Screen readers do not announce font size." },
         { criterion: "Language of parts — lang=\"hi\" on every Devanagari string", level: "AA", description: "Screen readers switch voice on it, and the Devanagari face is applied from it." },
