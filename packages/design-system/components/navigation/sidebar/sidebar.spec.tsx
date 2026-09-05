@@ -2,7 +2,7 @@ import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { SidebarNav, resolveCurrent, warnOversizedGroups } from "./sidebar";
+import { SidebarNav, activePathD, resolveCurrent, warnOversizedGroups } from "./sidebar";
 import type { SidebarNavGroup } from "./types";
 
 const html = (el: React.ReactElement): string => renderToStaticMarkup(el);
@@ -52,9 +52,17 @@ describe("SidebarNav", () => {
     expect(resolveCurrent(GROUPS, "/p")).toBe("/p");
     expect(resolveCurrent(GROUPS, "/p/applications")).toBe("/p/applications");
     expect(resolveCurrent(GROUPS, "/elsewhere")).toBeNull();
-    // the ancestors are open and highlighted, not current
+    // the ancestors are open and highlighted, not current; each list marks the entry on the path
     expect(out).toContain('aria-expanded="true"');
+    expect(out.match(/data-active="true"/g)?.length).toBe(2); // Track Applications (level 2) and Under Review (level 3)
     expect(out.match(/is-active/g)?.length).toBeGreaterThanOrEqual(3);
+  });
+
+  it("draws the path to the current page with the connector's own geometry", () => {
+    // first level-2 row: list padding 4, row centre 22 → y 26; trunk at 24, 16px arm to the pill at 40
+    expect(activePathD(24, 26)).toBe("M 24 0 V 20 Q 24 26 30 26 H 40");
+    // third row (two 44px rows and two 4px gaps above): 4 + 96 + 22
+    expect(activePathD(40, 122)).toBe("M 40 0 V 116 Q 40 122 46 122 H 56");
   });
 
   it("names a labelled section as a group, and hides the label only visually when collapsed", () => {

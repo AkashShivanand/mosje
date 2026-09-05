@@ -103,6 +103,65 @@ const RowLink = React.forwardRef<HTMLElement, RowLinkProps>(function RowLink(
   );
 });
 
+// ── The drawn path to the current page ───────────────────────────────────────
+
+/**
+ * The connector from the list's parent edge to the entry whose row centre is
+ * at `y`: trunk at `trunkX`, a shape/6 corner, a 16px arm into the pill —
+ * the same geometry `.ds-sidebar__sub::before` draws for every entry.
+ */
+export function activePathD(trunkX: number, y: number): string {
+  const r = 6;
+  return `M ${trunkX} 0 V ${y - r} Q ${trunkX} ${y} ${trunkX + r} ${y} H ${trunkX + 16}`;
+}
+
+/**
+ * Draws, in brand, the connector from the list's parent edge down to the
+ * current entry's centre and into its pill — over the neutral tree the CSS
+ * draws for every entry. Geometry mirrors `.ds-sidebar__sub::before`: trunk
+ * 16px left of the pill, 16px arm, shape/6 corner, row centre at 22.
+ *
+ * The path remounts (`key`) when the current page changes, so the
+ * `@starting-style` dash offset re-runs the draw. Measured, not computed from
+ * row counts, because an open level-2 group changes the rows above.
+ */
+function ActivePath({
+  listRef,
+  trunkX,
+  current,
+}: {
+  listRef: React.RefObject<HTMLUListElement | null>;
+  trunkX: number;
+  current: string | null;
+}) {
+  const [d, setD] = React.useState<string | null>(null);
+  // A passive effect, deliberately: this component is a CHILD of the list it
+  // measures, and React attaches a parent's ref after its children's layout
+  // effects have run — a layout effect here saw a null ref and never drew.
+  React.useEffect(() => {
+    const ul = listRef.current;
+    if (!ul) return;
+    const measure = () => {
+      const li = ul.querySelector<HTMLElement>(':scope > li[data-active="true"]');
+      if (!li) {
+        setD(null);
+        return;
+      }
+      setD(activePathD(trunkX, li.offsetTop + 22)); // 22: the centre of a 44px row
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(ul);
+    return () => ro.disconnect();
+  }, [listRef, trunkX, current]);
+  if (!d) return null;
+  return (
+    <svg className="ds-sidebar__path" aria-hidden focusable="false">
+      <path key={`${current}:${d}`} d={d} pathLength={1} />
+    </svg>
+  );
+}
+
 // ── Level 3 ──────────────────────────────────────────────────────────────────
 
 function LeafRow({
@@ -116,7 +175,7 @@ function LeafRow({
 }) {
   const active = leafActive(current, leaf);
   return (
-    <li className={cn("ds-sidebar__sub", `ds-sidebar__sub--l${level}`)}>
+    <li className={cn("ds-sidebar__sub", `ds-sidebar__sub--l${level}`)} data-active={active || undefined}>
       <RowLink
         href={leaf.href}
         disabled={leaf.disabled}
@@ -145,11 +204,12 @@ function ChildEntry({
   const id = React.useId();
   const active = childActive(current, child);
   const [open, toggle] = useDisclosure(active);
+  const listRef = React.useRef<HTMLUListElement>(null);
   if (!child.children?.length) {
     return <LeafRow leaf={child} current={current} level={2} />;
   }
   return (
-    <li className="ds-sidebar__sub ds-sidebar__sub--l2">
+    <li className="ds-sidebar__sub ds-sidebar__sub--l2" data-active={active || undefined}>
       <button
         type="button"
         aria-expanded={open}
@@ -172,7 +232,8 @@ function ChildEntry({
         />
       </button>
       {open && (
-        <ul id={id} className="ds-sidebar__list ds-sidebar__list--l3">
+        <ul id={id} ref={listRef} className="ds-sidebar__list ds-sidebar__list--l3">
+          <ActivePath listRef={listRef} trunkX={40} current={current} />
           {child.children.map((leaf) => (
             <LeafRow key={leaf.href} leaf={leaf} current={current} level={3} />
           ))}
@@ -301,6 +362,7 @@ function MainItem({
   const active = itemActive(current, item);
   const [open, toggle] = useDisclosure(active);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
+  const listRef = React.useRef<HTMLUListElement>(null);
 
   const rowClass = cn(
     "ds-sidebar__row",
@@ -422,7 +484,8 @@ function MainItem({
         />
       </button>
       {open && (
-        <ul id={id} className="ds-sidebar__list ds-sidebar__list--l2">
+        <ul id={id} ref={listRef} className="ds-sidebar__list ds-sidebar__list--l2">
+          <ActivePath listRef={listRef} trunkX={24} current={current} />
           {item.children!.map((c) => (
             <ChildEntry key={c.href} child={c} current={current} />
           ))}
@@ -477,7 +540,8 @@ export function warnOversizedGroups(groups: SidebarNavGroup[]): string[] {
  * - Expanded (`layout/sidebar/width`, 300) and collapsed
  *   (`layout/sidebar/collapsedWidth`, 88) modes.
  * - Three levels: a level-1 item with an icon; level-2 entries under a group;
- *   level-3 leaves under a level-2 group. Nothing nests further.
+ *   level-3 leaves under a level-2 group. Nothing nests further. Connectors are
+ *   neutral; the path to the current page is drawn in brand on navigation.
  * - `pathname` is the only source of the current state, at every level: the
  *   longest matching href is the one current page, so a portal's root item
  *   does not light up on every route.

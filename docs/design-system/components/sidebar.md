@@ -37,7 +37,7 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
 | Level-1 row | `padding/12` × `padding/16`, gap `inline/8`, radius `shape/16`, min-height `target/spacious` (48) |
 | Level-2 / 3 row | `padding/12` × `padding/8`, radius `shape/8`, min-height `target/comfortable` (44) |
 | Indent | level 2 `inline/40` · level 3 `inline/56` · flyout `inline/0` |
-| Connector | trunk 16px left of the pill (24 for level 2, 40 for level 3), 16px arm, elbow `shape/6`, `stroke/1`, tail `cmp/divider/width`, all in `bg/brand/primary/subtler` |
+| Connector | trunk 16px left of the pill (24 for level 2, 40 for level 3), 16px arm, elbow `shape/6`, `stroke/1`, tail `cmp/divider/width`, `border/neutral/subtle` at rest; the path to the current page in `border/brand/primary/base`, drawn with `motion/reveal` |
 | Type | level 1 `Label/label-1` · levels 2–3 `Body/body-2` · group label `Label/label-3` · flyout title `Title/title-3` |
 | Rest | `text/neutral/base`, `icon/neutral/base` (stroke glyph), chevron `icon/neutral/subtle` |
 | Hover | `bg/neutral/subtler` |
@@ -68,6 +68,17 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
    "there is depth". The elbow no longer needs first/middle/last variants: each entry draws its
    own elbow and a tail, and a `Continues` boolean (off on the last entry) removes the tail.
    An open level-2 group extends its tail past its level-3 children so the trunk is unbroken.
+   The elbow begins exactly at the parent's edge and never enters the pill above it.
+13. **Connectors are neutral; the path to the current page is drawn.** A brand tint on every
+    connector made the tree noisy before anything was active. At rest the tree is
+    `border/neutral/subtle` — structure, not signal. The connector from a group down to the
+    current page is `border/brand/primary/base`, and in code it draws itself on navigation
+    (`stroke-dashoffset` over `motion/reveal`, 400ms with the strong ease-out; instant under
+    reduced motion) so the eye is led to the page rather than shown it. In Figma the same
+    path is `Active Path=Yes` on the entries above the current page, brand on the Active
+    variant. References: Linear's project tree and Mintlify's docs nav both keep the tree
+    neutral and move one brand indicator to the current item; the drawn line is the
+    tree-shaped version of that indicator.
 5. **Focused is a boolean, not a State value.** It composes with every state (a keyboard user's
    current item is Active and Focused), the same decision `Tabs / Tab` made.
 6. **Group children are exposed nested instances, not a slot.** The Plugin API in this runtime

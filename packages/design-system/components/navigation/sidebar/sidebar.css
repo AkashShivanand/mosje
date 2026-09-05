@@ -27,7 +27,9 @@
        rail padding          padding/16 · item gap stack/4 · region gap stack/12
        level-1 row           padding/12 × padding/16 · shape/16 · min target/spacious (48)
        level-2 / 3 row       padding/12 × padding/8 · shape/8 · min target/comfortable (44)
-       level-2 / 3 indent    inline/40 · inline/56; elbow trunk 16px left of the pill, 16px arm, shape/6, bg/brand/primary/subtler
+       level-2 / 3 indent    inline/40 · inline/56; elbow trunk 16px left of the pill, 16px arm, shape/6,
+                           border/neutral/subtle at rest; the path to the current page drawn in
+                           border/brand/primary/base (motion/reveal)
        flyout                layout/sidebar/flyoutWidth (240) · shape/12 · elevation/dropdown
      Colour: rest text|icon/neutral/base; hover bg/neutral/subtler; current bg/brand/primary/base
      with text|icon/brand/primary/BOLDER — 7.75:1 in Blue mode, 15.15:1 in Navy (measured from
@@ -216,19 +218,20 @@
 
   .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-56); }
 
-  /* Elbow: from the parent's edge (through the list's stack/4 padding and the
-     stack/4 row gap, so the trunk meets the row above) → row centre (22 of a
-     44 row) → into the pill. Where a sibling's tail already covers the gap the
-     two overlap by the same 1px line, which is invisible. */
+  /* Elbow: from the parent's edge (the list begins exactly where the parent
+     row ends; only the list's stack/4 padding sits between) → row centre (22
+     of a 44 row) → into the pill. It never enters the pill above. Where a
+     sibling's tail already covers the gap the two overlap by the same 1px
+     line, which is invisible. Neutral: the tree is structure, not signal. */
   .ds-sidebar__sub::before {
     content: "";
     position: absolute;
     left: 24px; /* 16px left of the level-2 pill at inline/40 — the handoff's geometry */
-    top: calc(-1 * (var(--sa-stack-4) + var(--sa-stack-4)));
+    top: calc(-1 * var(--sa-stack-4));
     width: 16px; /* the arm, to the pill's edge */
-    height: calc(22px + var(--sa-stack-4) + var(--sa-stack-4));
-    border-left: var(--sa-stroke-1) solid var(--sa-bg-brand-primary-subtler);
-    border-bottom: var(--sa-stroke-1) solid var(--sa-bg-brand-primary-subtler);
+    height: calc(22px + var(--sa-stack-4));
+    border-left: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-bottom-left-radius: var(--sa-shape-6);
   }
 
@@ -244,12 +247,49 @@
     top: 22px;
     bottom: calc(-1 * var(--sa-stack-4));
     width: var(--sa-cmp-divider-width);
-    background: var(--sa-bg-brand-primary-subtler);
+    background: var(--sa-border-neutral-subtle);
   }
 
   .ds-sidebar__sub--l3::after { left: 40px; }
 
   .ds-sidebar__sub:last-child::after { content: none; }
+
+  /*
+   * The path to the current page. One SVG per list, drawn over the neutral
+   * tree from the parent's edge down to the current entry's centre and into
+   * its pill, in brand. It remounts when the current page changes and draws
+   * itself with a stroke-dashoffset transition — a line being drawn leads the
+   * eye to the page; a flash would only point at it. Reduced motion shows the
+   * finished line at once.
+   */
+  .ds-sidebar__list { position: relative; }
+
+  .ds-sidebar__path {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 56px;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .ds-sidebar__path path {
+    fill: none;
+    stroke: var(--sa-border-brand-primary-base);
+    stroke-width: var(--sa-stroke-1);
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset var(--sa-motion-reveal-duration) var(--sa-motion-reveal-easing);
+
+    @starting-style {
+      stroke-dashoffset: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-sidebar__path path { transition: none; }
+  }
 
   .ds-sidebar__sub--flyout { padding-left: 0; }
   .ds-sidebar__sub--flyout::before,
