@@ -83,8 +83,9 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
     current page is `border/brand/primary/base`, and in code it draws itself on navigation
     (`stroke-dashoffset` over `motion/reveal`, 400ms with the strong ease-out; instant under
     reduced motion) so the eye is led to the page rather than shown it. In Figma the same
-    path is `Active Path=Yes` on the entries above the current page, brand on the Active
-    variant. References: Linear's project tree and Mintlify's docs nav both keep the tree
+    path is `Active Path=Yes` on the entries above the current page — it paints their trunk
+    segments only, never their arm, because the route passes them without branching in — and
+    the Active variant's own trunk-top and elbow are brand. References: Linear's project tree and Mintlify's docs nav both keep the tree
     neutral and move one brand indicator to the current item; the drawn line is the
     tree-shaped version of that indicator.
 5. **Focused is a boolean, not a State value.** It composes with every state (a keyboard user's
