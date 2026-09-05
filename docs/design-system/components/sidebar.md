@@ -85,12 +85,9 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
 10. **Level-2 and level-3 rows are 44px** (`target/comfortable`), matching Figma; code had
     drifted to 40.
 11. **The current page's icon is filled.** Code passes `fill` to `Icon` (the Material Symbols
-    FILL axis). Figma cannot drive a variable-font axis and no filled Material Symbols instance
-    is installed, so the Active variants set the nested glyph to `Material Icons Round`, the
-    filled ancestor of the same ligature names — at weight 400 against the stroke's 300, and
-    only for glyphs that exist in the legacy set. Installing the static Material Symbols
-    Rounded Filled fonts lets this become a `Fill` property on the Icon master instead of an
-    override; that is the proper fix and is recorded on the Component record.
+    FILL axis). In Figma the nested glyph carries the library text style `Icon/24/Filled` on
+    every Active variant and `Icon/24/Outline` elsewhere — the two styles the Iconography page
+    already publishes. Never switch the font family to fake a fill; the style holds the axis.
 
 ## Benchmark
 
@@ -115,4 +112,3 @@ items, 20 child items). They are to be migrated screen by screen, one at a time,
 - Publish the SAMAVESH library after this pass (a script cannot publish).
 - `AppShell` adoption by the eight portal shells, one per PR, so the drawer below tablet is real.
 - Storybook and Playwright coverage of the flyout and the three-level tree.
-- Install the static Material Symbols Rounded Filled fonts and give the Icon master a `Fill` property, replacing the Material Icons Round override on the six Active variants.
