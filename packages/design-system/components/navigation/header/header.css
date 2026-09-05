@@ -432,10 +432,15 @@
      [DBIM 4.4.iv] "Mouse hover must prompt a noticeable change in clickable items"
      — it had a hover ground already, but no pressed state and no open state, so
      the control looked identical whether its menu was open or shut. */
+  /* 4 above and below, 12 at the sides. At 4 all round the hover ground hugged the
+     name so tightly that the text sat on the pill's edge; 12 gives the words the
+     same breathing room the avatar's circle already had. The height is unchanged
+     — 48 + 8 in the brand row, 40 + 8 in the condensed bar's 48 — so nothing
+     grows; only the ground widens. Figma: Navbar/AccountMenu, every state. */
   .ds-hdr-account.is-button {
     border: none;
     background: transparent;
-    padding: var(--sa-padding-4);
+    padding: var(--sa-padding-4) var(--sa-padding-12);
     border-radius: var(--sa-shape-8);
     cursor: pointer;
     transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
