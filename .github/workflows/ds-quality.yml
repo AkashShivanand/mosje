@@ -289,6 +289,37 @@ jobs:
           fi
           exit $code
 
+      # A property that can only be discovered by toggling it in the properties panel
+      # does not exist for anyone browsing the library, so every component page must end
+      # in an ARRANGEMENTS section that draws every property switched on, every group
+      # arrangement and every code-only state (figma-documentation-style.md). The
+      # baseline lists the pages that do not carry it yet and may only shrink; this half
+      # asks whether that list is well-formed.
+      - name: Figma arrangements — the baseline of pages without the section is coherent
+        run: npm run check:figma-arrangements
+
+      # The live half reads each documentation frame and derives the same list. A page
+      # missing the section that the baseline does not name fails; a page that gained it
+      # fails until the baseline is re-captured, so progress is recorded, not spent.
+      # Same guard and same exit-code split as the live index parity above.
+      - name: Figma arrangements — every component page outside the baseline draws them
+        env:
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$FIGMA_ACCESS_TOKEN" ]; then
+            echo "::warning::FIGMA_ACCESS_TOKEN unavailable (fork PR, or secret not set) — skipping the live arrangements check. check:figma-arrangements still ran."
+            exit 0
+          fi
+          set +e
+          npm run check:figma-arrangements:live
+          code=$?
+          set -e
+          if [ $code -eq 2 ]; then
+            echo "::warning::Live arrangements check could not run (Figma API or token problem, exit 2) — not treated as drift."
+            exit 0
+          fi
+          exit $code
+
 
       # Publishing is the other half. A mapping that PARSES is not a mapping that
       # PUBLISHES, so PRs dry-run it: a template that would fail to publish fails the PR

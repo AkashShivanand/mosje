@@ -59,7 +59,7 @@
     font-size: var(--sa-type-headline-2-size);
     line-height: var(--sa-type-headline-2-lh);
     font-variant-numeric: tabular-nums;
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-align: center;
     color: var(--sa-text-neutral-base);
     background-color: var(--sa-bg-neutral-base);

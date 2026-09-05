@@ -53,7 +53,12 @@
        open). Typography: this branch's body-2 correction. Both are wanted — neither
        side is dropped. */
     gap: var(--sa-inline-16);
-    padding: var(--sa-padding-2) var(--sa-padding-32);
+    /* Side padding is the PAGE MARGIN, whatever the layout: Figma binds the bar's
+       Container to grid/margin/page on every Layout variant, and the masthead rows
+       under it pad the same token. It was a literal 32 until 2026-09-05 — 8px wider
+       than the rows beneath it, so the flag sat 8px inside the emblem's edge on the
+       website at every desktop width (measured 92 against 84 at 1440). */
+    padding: var(--sa-padding-2) var(--sa-grid-margin-page);
     /* Body/body-2 — 14/20. It was label-2 (12/16) until 2026-08-19, which was a real
        divergence and not a rounding one: the master sets Body/body-2 on both links, so
        every label in the bar rendered two pixels small against the design. It is also the
@@ -77,12 +82,12 @@
      between tiers that `SiteHeader.maxWidth` was made to stop between the
      masthead and the page. */
   .sa-abar.layout-page   .sa-abar__in { max-width: var(--sa-container-page); }
-  /* Fluid is full-bleed: edge padding only. Figma uses padding/2xl (32) from tablet
-     up and padding/m (16) on mobile — matching its Device axis with a media query. */
-  .sa-abar.layout-fluid .sa-abar__in { max-width: none; padding-inline: var(--sa-padding-16); }
-  @media (min-width: 768px) {
-    .sa-abar.layout-fluid .sa-abar__in { padding-inline: var(--sa-padding-32); }
-  }
+  /* Fluid is full-bleed: no cap, the margin ladder only. This is the PORTAL's
+     layout — Navbar/Portal's rows fill their 1440 frame in Figma — and the ladder
+     (16 · 24 from 768 · 32 from 1920) comes from the base rule above. The 16/32
+     media-query pair that used to sit here restated Figma's old literals and
+     disagreed with the desktop master once it moved to grid/margin/page (24). */
+  .sa-abar.layout-fluid .sa-abar__in { max-width: none; }
 
   /* ── Device axis (Figma: Mobile · Tablet · Desktop · Desktop XL) ──────────────
      On Mobile the master collapses the right-hand cluster — font size, accessibility
@@ -116,7 +121,7 @@
     color: inherit;
     /* Regular, not 500 — the master's Body/body-2 is Regular, and the bar was rendering
        the one label that should be quietest as the heaviest thing in it. */
-    font-weight: 400;
+    font-weight: var(--sa-font-weight-regular);
     /* NO RESTING UNDERLINE (removed 2026-08-19, design decision). The master has none.
        The affordance is not lost: it underlines on hover and on focus, which is the same
        treatment the skip link beside it already uses — so the two links in this bar now
@@ -161,7 +166,7 @@
   /* Label/label-1 — same 14/20 as the links, but Medium. The one weight difference the
      master actually specifies, and it is what stops the language selector reading as a
      third link rather than a control. */
-  .sa-abar__icbtn.has-text { font-weight: 500; }
+  .sa-abar__icbtn.has-text { font-weight: var(--sa-font-weight-medium); }
 
   .sa-abar__skip { color: inherit; text-decoration: none; }
   .sa-abar__skip:hover { text-decoration: underline; }
@@ -199,7 +204,7 @@
   .sa-abar__fsbtn.is-current {
     min-width: var(--sa-cmp-accessibilityBar-pillSize);
     height: var(--sa-cmp-accessibilityBar-pillSize);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
   .sa-abar__fsbtn:disabled { opacity: var(--sa-alpha-disabled); cursor: default; }
 
@@ -367,7 +372,7 @@
     margin: 0 0 var(--sa-stack-8);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);

@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-import { collectionValueChecksums, normValue } from "../build/figma-value-parity.mjs";
+import { collectionValueChecksums, collectionFieldChecksums, normValue } from "../build/figma-value-parity.mjs";
 
 /**
  * Spec §8.5, the half that was missing — do the LIBRARY and the CODE agree on VALUES?
@@ -95,4 +95,53 @@ test("normValue converts the units Figma actually stores", () => {
   assert.equal(normValue({ type: "COLOR", value: "#0373DF" }), "#0373df");
   assert.equal(normValue({ type: "COLOR", value: "rgba(3, 115, 223, 0.48)" }), "#0373df@0.4800");
   assert.equal(normValue({ type: "STRING", value: "Noto Sans" }), "Noto Sans");
+});
+
+/**
+ * The five-field half, added 2026-09-05. Same contract as the value checksums: `payload` is
+ * what the build produces, `figmaObserved` a verified read, and the two must agree unless a
+ * `knownDifference` says why. Recorded per FIELD so the failure names the field.
+ */
+const FIELDS = ["description", "codeSyntax", "scopes", "hidden"];
+
+test("no description, codeSyntax, scope or visibility change without the Figma record being refreshed", () => {
+  const record = live.$fieldChecksums;
+  assert.ok(record?.payload, "reference/figma-live.json has no $fieldChecksums block — re-record it");
+  const now = collectionFieldChecksums(payload);
+  const drift = [];
+  for (const [collection, sums] of Object.entries(now)) {
+    for (const f of FIELDS) {
+      const was = record.payload[collection]?.[f];
+      if (was === undefined) { drift.push(`${collection}.${f} — not in the record`); continue; }
+      if (was !== sums[f]) drift.push(`${collection}.${f}\n      recorded: ${was}\n      now     : ${sums[f]}`);
+    }
+  }
+  assert.deepEqual(drift, [],
+    `${drift.length} field checksum(s) moved since the library was last reconciled:\n    ${drift.join("\n    ")}\n\n` +
+    `A description, code-syntax line, scope set or publishing flag changed in the build. Push it to Figma, ` +
+    `read the library back, and re-record $fieldChecksums. Do NOT just update the record.`);
+});
+
+test("the library's five fields are recorded as matching the payload, except where documented", () => {
+  const { payload: want, figmaObserved: have, knownDifference = {} } = live.$fieldChecksums;
+  const unexplained = [];
+  for (const collection of Object.keys(want)) {
+    for (const f of FIELDS) {
+      if (want[collection][f] === have[collection]?.[f]) continue;
+      if (knownDifference[`${collection}.${f}`]) continue;
+      unexplained.push(`${collection}.${f} — payload ${want[collection][f]} vs library ${have[collection]?.[f]}`);
+    }
+  }
+  assert.deepEqual(unexplained, [],
+    `${unexplained.length} field(s) differ from the library with no recorded reason. Push them, or add a ` +
+    `$fieldChecksums.knownDifference["<Collection>.<field>"] entry saying WHY.`);
+});
+
+test("every field knownDifference is a real difference, not a stale excuse", () => {
+  const { payload: want, figmaObserved: have, knownDifference = {} } = live.$fieldChecksums;
+  const stale = Object.keys(knownDifference).filter((k) => !k.startsWith("$")).filter((k) => {
+    const [c, f] = k.split(".");
+    return want[c]?.[f] === have[c]?.[f];
+  });
+  assert.deepEqual(stale, [], `${stale.length} field knownDifference entry(s) now agree with the library — delete them`);
 });

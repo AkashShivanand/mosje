@@ -306,8 +306,10 @@ export function guidanceFor(path, tier, parse) {
   // them are where the choice belongs.
   if (path[0] === "color") {
     if (path[1] === "transparent") return `Use for a translucent ${path[2]} wash at ${path[3]}% — for overlays and hover states, not as a text colour.`;
-    return "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.";
+    return paletteStepGuidance(path);
   }
+
+  // (palette rungs are described by paletteStepGuidance below)
 
   // MARK colours. The sentence a designer needs here is a warning, not a "use when": the risk
   // is not picking the wrong step, it is painting interface furniture with a logo's colour —
@@ -450,4 +452,28 @@ export function primitivePointer(path) {
   if (head === "z") return "Stacking order. Code-only — Figma has no canvas property for z-index.";
   if (head === "breakpoint") return `Viewport anchor: the ${path[1]} width at which the layout changes. A media query cannot read a variable, so nothing binds this — the Viewport collection's modes carry what it SELECTS (container/page, grid/margin/page). Documented on /design-system/foundations/breakpoints.`;
   return null;
+}
+
+/**
+ * A palette rung's sentence names the RUNG, not just the ramp. Ninety rungs used to share one
+ * sentence, which told a designer nothing about which of eleven steps they were holding.
+ * The bands follow how the semantic layer actually binds the ramp: the light tints carry
+ * subtle surfaces, the middle carries borders and icons, 500–600 is the key fill, and the
+ * dark end is ink on light surfaces. Palette is hidden from publishing; the sentence still
+ * matters, because this library's own components bind rungs directly.
+ */
+export function paletteStepGuidance(path) {
+  const scale = String(path[1] ?? "").replace(/Scale$/, "");
+  const step = Number(path[2]);
+  const family = scale === "neutral" ? "the neutral (ink and surface) ramp" : `the ${scale} ramp`;
+  let band;
+  if (!Number.isFinite(step)) band = "";
+  else if (step === 0) band = "white — the page surface and the ink on bold fills.";
+  else if (step <= 100) band = "a tint for subtle surfaces (`bg/*/subtler`, `bg/*/subtle`) and washes.";
+  else if (step <= 300) band = "a light border, divider or disabled fill rung (`border/*/subtle`, `bg/*/disabled`).";
+  else if (step <= 400) band = "the icon and secondary-border rung on light surfaces.";
+  else if (step <= 600) band = "the key fill — `bg/*/bold` buttons and their hover; white text passes AA on 600.";
+  else if (step <= 800) band = "text and icon ink on light surfaces (`text/*/base`, `text/*/bolder`), and the pressed fill.";
+  else band = "the deepest ink and inverse surfaces (`bg/neutral/inverse`, tooltip grounds).";
+  return `Step ${path[2]} of ${family}: ${band} Bind a semantic role where one exists — it carries the measured contrast; reach for the rung only inside this library's own components.`;
 }

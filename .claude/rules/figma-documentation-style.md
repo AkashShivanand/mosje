@@ -105,6 +105,79 @@ gap `12`–`20`.
   as a label on the neutral card. Never fill the whole panel with a status tint;
   the coloured label carries the signal. (Same restraint the linkage rule states.)
 
+### The arrangements section — every property switched on, drawn
+
+**A property that can only be discovered by toggling it in the properties
+panel does not exist for anyone browsing the library.** A designer scanning a
+page sees the variant grid — the axes at rest — and assumes that what the grid
+does not draw, the system does not offer. Then the feature gets rebuilt by hand
+in a portal file, or a stakeholder reports it missing.
+
+So every component page carries a section, conventionally the last, whose
+title is a claim of the shape *"Every property switched on, and the states
+only code can draw"* (`NN / ARRANGEMENTS`). It holds three grids of cells, and
+a cell is a panel (`bg/neutral/subtler`, radius 12, padding 24) with a
+**`Label/label-3` eyebrow naming the property recipe** (`SHOW DESCRIPTION ·
+REQUIRED · INVALID`), a live instance on a `bg/neutral/base` specimen ground,
+and a one-line `Body/body-3` caption saying what the reader should notice.
+
+**The section opens with a three-panel key**, before any grid, because a label
+is not an explanation: *Properties switched* (what a cell is, and that the
+specimen is a live instance whose values the panel shows), *Edges and
+arrangements* (why the grid cannot show these), and *Code only — what it means,
+and what to do* (the React component has the prop, Figma has no property for
+it; the cell is composed from library instances to show the intent; a designer
+places the nearest variant and names the prop in the handoff note; no Figma
+property is invented). A reader who lands on a `CODE ONLY` eyebrow must be one
+panel away from knowing what it asks of them.
+
+**Audit the cells at cell scale before calling the section done.** A section
+screenshot at 1680px hides a clipped label, a value pushed to mid-field by an
+affix that fills, or a placeholder left reading "Placeholder". Screenshot each
+grid at least 1400px wide, read every specimen, and fix what is wrong **in the
+master** when the master is the cause — a cell that looks wrong is usually a
+master that is wrong. Then check the PAGE: a documentation frame that grew has
+pushed nothing aside, so the Component record and the numbered sections below
+it must be moved down (200px apart) or they overlap.
+
+1. **Every non-variant property, switched.** Each boolean ON where the default
+   is off (and OFF where it is on), each text property with real estate copy,
+   each instance swap with a second glyph — and the combinations that change
+   the arrangement: all booleans at once, a state × a boolean (`Disabled · On ·
+   Show Description`), a size × a boolean, a long label that wraps.
+2. **Every nested and group arrangement.** Orientation, layout, the optional
+   rows (`Show Item 5`, `Show Select All`, `Show Exclusive Option`), the error
+   and hint states, and a nested override worth knowing (a parent checkbox
+   set to Indeterminate; tiles inside a group switched to Detailed).
+3. **Every code-only state, drawn from instances and named.** `readOnly`,
+   `labelPlacement="start"`, `hideLabel`, a single control's `error`, a group's
+   `disabled`, a conditional `reveal` — anything the template declares "not
+   modelled". The eyebrow reads `CODE ONLY · <prop>` in `text/neutral/subtle`,
+   the specimen is composed from library instances (never a drawn fake), and
+   the caption names the prop and what it does, so the designer knows to ask
+   for it rather than concluding it cannot be had.
+
+**This binds every component page, the ones already written included.** The
+three selection pages carry it; the other twenty are listed in
+`tools/figma-arrangements/baseline.json`, and **`npm run check:figma-arrangements`
+is the gate**: the live half (`:live`, on `FIGMA_ACCESS_TOKEN`) reads every
+documentation frame, fails a page that lacks the section and is not in the
+baseline, and fails a page that gained it until `:sync` re-captures the smaller
+baseline. The list may only shrink. A foundation page (tokens, not properties)
+is outside its scope.
+
+The variant section (`03 / VARIANTS`) still shows the axes; this section shows
+everything the axes do not. **The count in its description is counted** —
+"nineteen arrangements, six of them code-only" — and the web page's playground
+renders the same set, so a developer reading the code docs and a designer
+reading the library see one list.
+
+Added 2026-09-05, after the Selection Card page shipped with a variants
+section that said "twenty", drew eight, and never showed the Detailed layout
+it had just gained — and after `Show Description`, `Required`, `Invalid`,
+`Show Select All` and the exclusive option were switchable on every selection
+master and drawn on none of their pages.
+
 ### Closing footnote
 
 Most sections end with an unpanelled `Body/body-2` or `Body/body-3` in
@@ -159,6 +232,9 @@ This is not decoration; it is the reason the Colour page reads as authoritative.
       880-wide `Body/body-1`
 - [ ] Content blocks at 1440; panels `bg/neutral/subtler`, radius 12, padding 28
 - [ ] Section titles are claims, not nouns
+- [ ] An `NN / ARRANGEMENTS` section draws every non-variant property switched,
+      every group arrangement, and every code-only state — counted, captioned,
+      built from live instances
 - [ ] Every number is counted or measured, and its enforcement is named
 - [ ] No defect notes, remediation history, dates or attribution on the page
 - [ ] A sibling `<Topic> — Component record` frame exists outside the

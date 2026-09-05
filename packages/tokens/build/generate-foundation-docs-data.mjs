@@ -83,7 +83,7 @@ for (const rel of SOURCES) {
 /* ── the families, in the order the nav presents them ── */
 const FAMILIES = {
   spacing:     (p) => p[0] === "space" || ["inline", "stack", "padding", "section"].includes(p[0]),
-  sizing:      (p) => p[0] === "size" || (p[0] === "icon" && p[1] === "size") || p[0] === "target",
+  sizing:      (p) => p[0] === "size" || (p[0] === "icon" && p[1] === "size") || (p[0] === "icon" && p[1] === "fill") || p[0] === "target" || (p[0] === "control" && p[1] === "height") || p[0] === "aspect" || (p[0] === "cmp" && p[1] === "avatar"),
   shape:       (p) => p[0] === "radius" || p[0] === "shape" || (p[0] === "control" && p[1] === "radius") || (p[0] === "cmp" && p.at(-1) === "radius"),
   stroke:      (p) => (p[0] === "border" && p[1] === "width") || p[0] === "stroke" || (p[0] === "control" && p[1] === "border"),
   elevation:   (p) => p[0] === "shadow" || p[0] === "elevation",
@@ -92,7 +92,8 @@ const FAMILIES = {
   motion:      (p) => p[0] === "motion",
   breakpoints: (p) => p[0] === "breakpoint" || p[0] === "container" || p[0] === "grid",
   density:     (p) => p[0] === "density",
-  states:      (p) => p[0] === "focus" || p[0] === "overlay" || (p[0] === "alpha" && ["disabled", "muted"].includes(p[1])),
+  states:      (p) => p[0] === "focus" || p[0] === "overlay" || (p[0] === "alpha" && ["disabled", "muted"].includes(p[1])) || ((p[0] === "bg" || p[0] === "border") && p[1] === "neutral" && ["hover", "active", "selected", "readonly", "loading"].includes(p.at(-1))),
+  brand:       (p) => p[0] === "brand",
   layout:      (p) => p[0] === "layout",
 };
 

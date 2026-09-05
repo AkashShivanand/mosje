@@ -30,6 +30,16 @@ Then:
 **Agents & tokens used:** which model(s) or helper agents did the work, and an
 approximate token cost for the task.
 
+**Before → after, visually (MANDATORY wherever the change can be seen).** If a change is
+visible anywhere — a screen, a component, a Figma page, a documentation frame, a chart —
+the summary carries a picture pair, not only the table. **Capture the before FIRST**, before
+touching anything, and save it; a before reconstructed afterwards is not a before. Capture
+the after from the same place at the same size. Present them side by side, labelled, one
+pair per visible change, as one composed image or one self-contained HTML page, with the
+table beside them: the pictures show what changed, the table says how and why. Where no
+before exists (a new page), say so and show the after alone. Something the user cannot see
+is a change they cannot judge.
+
 Rules for the table:
 - **Every change gets a row.** If it was worth doing, it is worth one line. A change
   left out of the summary is a change the user cannot review.
@@ -188,6 +198,10 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
   content only ever grows: **1152 → 1272 → 1376**. The `≥1768px` this line used to name was a
   retired anchor, and it was never UX4G's. Bind to `.sa-container` and add no `px-*` of your
   own — it owns the cap *and* the responsive margin.
+  **Portals are fluid, the website is contained** (2026-09-05): a portal surface takes no cap and
+  pads with `--sa-grid-margin-page`; the website takes `.sa-container`. Figma draws both on a 1440
+  frame — `Navbar/Portal` rows fill, `Navbar/Website` rows cap at `container/page` — and every new
+  component binds the same way. A restated 16/24/32 where the margin token belongs is a defect.
 - **AI design contract:** read `packages/design-system/design.md` before building or
   changing UI. Its companions `AGENTS.md` and `/design-system/llms.txt` stay in sync →
   `.claude/rules/design-system.md`.

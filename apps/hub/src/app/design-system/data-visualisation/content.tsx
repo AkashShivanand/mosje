@@ -59,7 +59,7 @@ export function DataVisualisationContent(): React.JSX.Element {
             marginBottom: "var(--sa-stack-12)",
           }}
         >
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 500, lineHeight: "var(--sa-type-display-1-lh)" }}>
+          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: "var(--sa-font-weight-medium)", lineHeight: "var(--sa-type-display-1-lh)" }}>
             Data Visualisation
           </h1>
           <StatusBadge status="Beta" />
@@ -67,7 +67,7 @@ export function DataVisualisationContent(): React.JSX.Element {
         <p
           style={{
             fontSize: "var(--sa-type-headline-2-size)",
-            fontWeight: 400,
+            fontWeight: "var(--sa-font-weight-regular)",
             color: "var(--sa-color-text-default)",
             maxWidth: "var(--sa-container-measure)",
             lineHeight: "var(--sa-type-headline-2-lh)",
@@ -276,7 +276,7 @@ export function DataVisualisationContent(): React.JSX.Element {
             <span
               style={{
                 fontSize: "var(--sa-type-headline-1-size)",
-                fontWeight: 600,
+                fontWeight: "var(--sa-font-weight-semibold)",
                 fontVariantNumeric: "tabular-nums",
               }}
             >

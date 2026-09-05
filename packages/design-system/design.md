@@ -12,11 +12,27 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-09-05 · System version: v0.50.0 (THE SIDEBAR IS ONE COMPONENT AGAIN AND GOES THREE
+  Last reviewed: 2026-09-05 · System version: v0.51.0 (THE SIDEBAR IS ONE COMPONENT AGAIN AND GOES THREE
   LEVELS DEEP. The SAMAVESH Sidebar sets were rebuilt in place — same keys — with Focused, Disabled,
   a collapsed-group flyout, a visible collapse control, group labels, a footer slot, and level 3;
   active ink is bolder (7.75:1 Blue / 15.15:1 Navy), hover is neutral, the Portal DS copies are deprecated, and
-  SidebarNav renders the same three levels with a real flyout — see the changelog.) v0.49.0 (THE FOUNDATIONS WERE REBUILT TO A
+  SidebarNav renders the same three levels with a real flyout — see the changelog.)
+
+  Last reviewed: 2026-09-05 · System version: v0.50.0 (THE FOUNDATION GAPS WERE CLOSED. A
+  five-field audit of the live Figma library found the value checksums equal while description,
+  codeSyntax, scopes and hiddenFromPublishing had drifted on hundreds of variables; the exporter
+  now hides by LIBRARY-name tier (ref/* and all of Palette), Palette carries five explicit colour
+  scopes, the weight rows are STRING, an alias-through-alpha no longer flattens, and the parity
+  record hashes all five fields — the Plugin API's own HTML-entity encoding of descriptions is
+  decoded before comparing. Thirty-two tokens the benchmark systems carry were added with a
+  consumer each: neutral state fills and layers, the selected border, the two-tone focus ring,
+  control heights, aspect ratios, icon fill, avatar sizes, chip/dialog/tooltip radii and the
+  inset elevation. 594 literal font-weights bind the weight tokens. Figma: one focus/ring style
+  (per-tone rings and legacy Shadows/* retired after an 83-page scan), eight token-bound grid
+  styles, four new Component record frames, the Motion and Effects frames rewritten to the
+  shipped vocabulary. Two ratchets: check:breakpoints and check:token-consumers.)
+
+  Last reviewed: 2026-09-04 · System version: v0.49.0 (THE FOUNDATIONS WERE REBUILT TO A
   BENCHMARK SHAPE. Motion is twelve intents on a value-named ten-step ladder with five
   behaviour-named curves, and reduced motion is emitted ONCE at the token layer; layering is a
   fifteen-rung z ladder authored in Tier 2 and code-only (the Bootstrap primitive ladder nothing
@@ -415,6 +431,8 @@
   `dbim-*` modes has nothing brand-varying to say there — and giving the scrim DBIM inks
   promoted it out of single-mode Color into Palette as a new variable whose two modes were
   identical. Both now key on `navy` specifically.)
+
+  **Every control in the condensed bar is 40px** (2026-09-05): the sidebar toggle, the sheet trigger, the search button, the account avatar (`AccountMenu avatarSize={40}`) and whatever the consumer passes as `actions` — the slot holds links and buttons at 40, so pass `Button size="default"`. The home link is a 40×40 target around the 20px emblem, emblem on the left edge; it was the bare 20×32 glyph, under WCAG 2.5.8.
 
   System version: v0.16.1 (THE CHART PALETTE NOW SAYS WHICH OF ITS
   VALUES ARE COPIES AND WHICH ARE CHOICES, per group, because the difference was not guessable
@@ -1067,6 +1085,19 @@ on 1536, the most common desktop width. Recorded in `docs/guidelines/README.md`.
 media query is unavailable (an inline style, for instance — it is how `SiteHeader` caps its
 own column).
 
+**Two layouts, one margin ladder (2026-09-05).** The website is **contained**: every row of every
+section sits in `.sa-container`, which is the three-step cap and the margin ladder together. Portals
+are **fluid**: no cap at all, only the margin ladder, so a portal's masthead, page header and content
+run edge to edge with `--sa-grid-margin-page` on each side — 16, 24 from 768, 32 from 1920. Figma
+draws both on a 1440 frame: `Navbar/Website` caps each row at `container/page` (1320 there) and
+`Navbar/Portal` lets each row fill, and both bind their side padding to `grid/margin/page` with the
+variant pinned to its Viewport mode. In code the same split is `SiteHeader variant="website"` (cap
+and margin) against `variant="portal"` (margin only), and `Container size="full"` is the fluid column
+for anything else on a portal. **A new component asks which surface it is on and binds accordingly**:
+`.sa-container` on the website, `--sa-grid-margin-page` on a portal — never a `padding/*` rung that
+happens to equal the margin. The masthead and the accessibility bar carried exactly that: a literal
+16 / 24 / 32 per breakpoint that agreed with the ladder at three widths and disagreed with it at 1920.
+
 > A container is a **cap**, not a width. `grid/margin/*` (16 mobile / 24 tablet / 32 desktop)
 > is a **floor** that wins on narrower viewports, so the effective column is
 > `min(container, viewport − 2 × margin)`.
@@ -1102,7 +1133,7 @@ no store, no router, no redirect.
 
 | Component | Use it for | Never |
 | --- | --- | --- |
-| `Container` | the centred content column; applies the cap **and** the side margin | adding your own `px-*` — the margin is already there |
+| `Container` | the centred content column; applies the cap **and** the side margin. `size="full"` is the portal's fluid column — margin, no cap | adding your own `px-*` — the margin is already there |
 | `Grid` / `GridItem` | page-level column layouts; `span={{ base, md, lg }}` | a simple wrapping row of cards — flex is simpler |
 | `Band` | a website section: full-bleed tone + rhythm around a `Container` | a portal page — portal content is fluid, not banded |
 | `PageHeader` | the title + meta + actions row a portal page opens with | a heading *inside* a page — that is `SectionTitle` |
@@ -1993,7 +2024,9 @@ replacement for `CaptchaField`, and the component a new portal reaches for.
   gesture is simply locked out with no way to identify themselves as a person. The link is
   the alternative **WCAG 2.2 3.3.8** asks for, and making it optional is how it goes
   missing from the one portal that needed it. `PortalLoginTemplate` enforces the same rule
-  one level up: no route, no check at all.
+  one level up: no route, no check at all. Required is not always shown: the link renders in
+  every `challenge` state (a sensory barrier) and in every mode once the check has failed;
+  an idle checkbox carries nothing beneath it.
 - **There is deliberately NO audio mode, reversing earlier advice in this file.** Measured:
   bots solve audio challenges **over 85%** of the time while only **31.2%** of them get
   three-person agreement among people; a blind citizen takes **65s** against 9.8s for the
@@ -3555,3 +3588,14 @@ Whenever a new component is added, a token contract is updated, or a page patter
 1. Update this `design.md` (Component Catalogue and/or relevant section).
 2. Bump the `Last reviewed` date in the HTML comment header.
 3. Run `npm run dev` (repo root, port 3007) and verify the change renders at `/design-system/resources/design-context`.
+
+### Names that look like tokens and are not
+
+Thirty custom properties in the `--sa-` namespace are **runtime hooks**, not tokens: `--sa-btn-fill/ink/edge/ring`
+(Button's public override layer), `--sa-hdr-abar-h`, `--sa-header-bottom/pinned/stuck` (measured by the masthead),
+`--sa-grid-cols`, `--sa-grid-row-gap`, `--sa-span-base/md/lg` (layout grid utilities), `--sa-reveal-delay`,
+`--sa-font-scale` (the accessibility bar's live scale), `--sa-wall-rail-top`, `--sa-corner-rail-bottom`,
+`--sa-wall-clearance`, `--sa-action-banner-*`, `--sa-ticker-*`. They are set by JavaScript or by a consumer and
+read with an inline fallback; none is declared in `tokens.css`, and `check:dangling-vars` knows them as such.
+Do not add a token with one of these names, and do not treat one of them as a design decision — the decision
+is the fallback beside it.

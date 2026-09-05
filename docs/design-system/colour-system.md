@@ -61,14 +61,14 @@ the ink chosen for it BY MEASUREMENT in the worst brand, not by assumption.
 
 | mode | on/* pairings | below AA (4.5:1) |
 |---|---|---|
-| blue | 46 | none |
-| navy | 46 | none |
-| dbim-blue | 46 | none |
-| dbim-burgundy | 46 | none |
-| dbim-purple | 46 | none |
-| dbim-green | 46 | `brand-primary-bolder` 4.32 |
-| dbim-chrome-yellow | 46 | none |
-| dbim-cinnamon-red | 46 | none |
+| blue | 51 | none |
+| navy | 51 | none |
+| dbim-blue | 51 | none |
+| dbim-burgundy | 51 | none |
+| dbim-purple | 51 | none |
+| dbim-green | 51 | `brand-primary-bolder` 4.32 |
+| dbim-chrome-yellow | 51 | none |
+| dbim-cinnamon-red | 51 | none |
 
 **The estate's own brands have no shortfall at all.** Every `on/*` foreground is AA-readable on the fill it names in both Blue and Navy. The last two — `status-error-bolder` at 4.40:1 and `status-warning-bolder` at 4.46:1 — closed on 2026-08-11 when the danger and warning ramps were re-anchored at the rung their lightness says (400 and 300, not 500), taking those rungs to 6.68:1 and 5.68:1.
 

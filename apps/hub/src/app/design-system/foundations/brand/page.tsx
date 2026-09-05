@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FOUNDATIONS } from "@/lib/design-system/foundations-data.generated";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -360,7 +361,7 @@ export default function BrandPage(): React.JSX.Element {
           ),
         },
       ]}
-      tokens={[]}
+      tokens={FOUNDATIONS.brand.tokens}
       tokensIntro={
         <>
           The {PACK_TOTAL} primitives a pack supplies are Tier 1 — <code>color.primaryRamp.*</code>,{" "}

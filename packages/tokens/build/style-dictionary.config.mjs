@@ -186,7 +186,7 @@ StyleDictionary.registerTransform({
     // Every layer in the ramp carries an explicit spread (a bare "0" when none), so the
     // projection is fixed-arity: x y blur spread colour.
     return layers
-      .map((l) => `${px0(l.offsetX)} ${px0(l.offsetY)} ${px0(l.blur)} ${px0(l.spread ?? "0")} ${l.color}`)
+      .map((l) => `${l.inset ? "inset " : ""}${px0(l.offsetX)} ${px0(l.offsetY)} ${px0(l.blur)} ${px0(l.spread ?? "0")} ${l.color}`)
       .join(", ");
   },
 });

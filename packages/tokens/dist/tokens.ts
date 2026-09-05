@@ -783,7 +783,8 @@ export const tokens = {
     "sm": "0 4px 6px -1px rgba(30, 33, 36, 0.10), 0 2px 4px -2px rgba(30, 33, 36, 0.06)",
     "md": "0 8px 12px -3px rgba(30, 33, 36, 0.09), 0 3px 5px -2px rgba(30, 33, 36, 0.05)",
     "lg": "0 12px 16px -4px rgba(30, 33, 36, 0.08), 0 4px 6px -2px rgba(30, 33, 36, 0.03)",
-    "xl": "0 24px 48px -12px rgba(30, 33, 36, 0.18)"
+    "xl": "0 24px 48px -12px rgba(30, 33, 36, 0.18)",
+    "inset": "inset 0 1px 2px 0 rgba(30, 33, 36, 0.08)"
   },
   "motion": {
     "duration": {
@@ -877,7 +878,8 @@ export const tokens = {
       "inverse": {
         "default": "#ffffff",
         "subtle": "#ffffff"
-      }
+      },
+      "selected": "#0373df"
     },
     "brand": {
       "primary": {
@@ -1003,6 +1005,11 @@ export const tokens = {
     "neutral": {
       "base": "#ffffff",
       "subtler": "#eef0f3",
+      "hover": "#eef0f3",
+      "active": "#dcdee1",
+      "selected": "#ecf4ff",
+      "readonly": "#eef0f3",
+      "loading": "#eef0f3",
       "subtle": "#dcdee1",
       "bold": "#c6c9cd",
       "inverse": "#0e1114",
@@ -1120,11 +1127,16 @@ export const tokens = {
   "focus": {
     "ring": "#0373df",
     "width": "2px",
-    "offset": "2px"
+    "offset": "2px",
+    "ringInner": "#ffffff"
   },
   "overlay": {
     "neutral": {
-      "boldest": "#1e2124"
+      "boldest": "#1e2124",
+      "hover": "#1e2124",
+      "active": "#1e2124",
+      "focus": "#1e2124",
+      "drag": "#1e2124"
     },
     "brand": {
       "hover": "#ffffff",
@@ -1280,7 +1292,12 @@ export const tokens = {
         "base": "#1e2124",
         "subtler": "#1e2124",
         "subtle": "#1e2124",
-        "bold": "#1e2124"
+        "bold": "#1e2124",
+        "hover": "#1e2124",
+        "active": "#1e2124",
+        "selected": "#1e2124",
+        "readonly": "#1e2124",
+        "loading": "#1e2124"
       },
       "brand": {
         "primary": {
@@ -1353,6 +1370,10 @@ export const tokens = {
       "40": "2.5rem",
       "48": "3rem",
       "64": "4rem"
+    },
+    "fill": {
+      "outline": 0,
+      "filled": 1
     },
     "neutral": {
       "base": "#1e2124",
@@ -1464,7 +1485,8 @@ export const tokens = {
     "raised": "0 4px 6px -1px rgba(30, 33, 36, 0.10), 0 2px 4px -2px rgba(30, 33, 36, 0.06)",
     "dropdown": "0 8px 12px -3px rgba(30, 33, 36, 0.09), 0 3px 5px -2px rgba(30, 33, 36, 0.05)",
     "modal": "0 12px 16px -4px rgba(30, 33, 36, 0.08), 0 4px 6px -2px rgba(30, 33, 36, 0.03)",
-    "toast": "0 24px 48px -12px rgba(30, 33, 36, 0.18)"
+    "toast": "0 24px 48px -12px rgba(30, 33, 36, 0.18)",
+    "inset": "inset 0 1px 2px 0 rgba(30, 33, 36, 0.08)"
   },
   "control": {
     "radius": "8px",
@@ -1492,6 +1514,11 @@ export const tokens = {
       },
       "radius": "4px",
       "gap": "8px"
+    },
+    "height": {
+      "sm": "2rem",
+      "md": "2.5rem",
+      "lg": "3rem"
     }
   },
   "shape": {
@@ -1549,6 +1576,12 @@ export const tokens = {
     "demo": 2147483000,
     "top": 2147483001
   },
+  "aspect": {
+    "square": 1,
+    "video": 1.777778,
+    "photo": 1.333333,
+    "portrait": 0.75
+  },
   "button": {
     "primary": {
       "bg": "#0373df",
@@ -1582,6 +1615,23 @@ export const tokens = {
   },
   "divider": {
     "width": "1px"
+  },
+  "avatar": {
+    "size": {
+      "xs": "1.5rem",
+      "sm": "2rem",
+      "md": "2.5rem",
+      "lg": "3rem"
+    }
+  },
+  "chip": {
+    "radius": "8px"
+  },
+  "dialog": {
+    "radius": "12px"
+  },
+  "tooltip": {
+    "radius": "6px"
   },
   "action": {
     "brand": {

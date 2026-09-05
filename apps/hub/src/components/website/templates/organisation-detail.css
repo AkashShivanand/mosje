@@ -144,7 +144,7 @@
   .orgd__card-title {
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -164,7 +164,7 @@
     gap: var(--sa-inline-6);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-link-brand-default);
   }
 
@@ -207,7 +207,7 @@
     margin: 0;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -219,7 +219,7 @@
     gap: var(--sa-inline-6);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-link-brand-default);
     text-decoration: none;
   }
@@ -288,7 +288,7 @@
     margin: 0 var(--sa-padding-20) var(--sa-padding-20);
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -304,7 +304,7 @@
     margin: 0 0 var(--sa-stack-12);
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -368,7 +368,7 @@
     background-color: var(--sa-bg-neutral-subtler);
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-transform: uppercase;
     letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);
@@ -381,7 +381,7 @@
   }
 
   .orgd__table tbody th {
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -544,14 +544,14 @@
     background-color: var(--sa-bg-brand-primary-base);
     color: var(--sa-text-brand-primary-base);
     font-size: var(--sa-type-label-3-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .orgd__leader-name {
     margin: 0 0 var(--sa-stack-4);
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -596,7 +596,7 @@
     margin: 0;
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -618,7 +618,7 @@
     margin-block-end: var(--sa-stack-12);
     color: var(--sa-text-neutral-bolder);
     font-size: var(--sa-type-body-2-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   /* ── Featured Links / Pills ─────────────────────────────────────────────── */
@@ -639,7 +639,7 @@
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-bolder);
     font-size: var(--sa-type-body-3-size);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     text-decoration: none;
     transition: all 150ms ease;
   }
@@ -718,7 +718,7 @@
     margin: 0;
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
     text-wrap: balance;
   }
@@ -782,7 +782,7 @@
     color: var(--sa-text-brand-primary-bolder);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-transform: uppercase;
   }
 
@@ -834,7 +834,7 @@
     margin: 0;
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -880,14 +880,14 @@
   .orgd__date-day {
     font-size: var(--sa-type-title-1-size);
     line-height: var(--sa-type-title-1-lh);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     color: var(--sa-text-brand-primary-bolder);
   }
 
   .orgd__date-month {
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-brand-primary-bolder);
     text-transform: uppercase;
     margin-top: var(--sa-stack-2);
@@ -905,7 +905,7 @@
     margin: 0;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -926,7 +926,7 @@
     align-items: center;
     gap: var(--sa-inline-4);
     font-size: var(--sa-type-label-2-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-link-brand-default);
     text-decoration: none;
   }

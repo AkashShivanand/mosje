@@ -74,7 +74,7 @@
   .ds-pwmeter__level {
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-pwmeter__level--none   { color: var(--sa-text-neutral-subtle); }
@@ -132,7 +132,7 @@
     cursor: pointer;
   }
 
-  .ds-captcha__refresh:hover { background-color: var(--sa-bg-neutral-subtler); }
+  .ds-captcha__refresh:hover { background-color: var(--sa-bg-neutral-hover); }
 
   .ds-captcha__refresh:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);

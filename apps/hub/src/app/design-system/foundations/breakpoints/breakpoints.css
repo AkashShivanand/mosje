@@ -26,7 +26,7 @@
     font-variant-numeric: tabular-nums;
   }
   .bp-row__label {
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
   }
   .bp-row__selects {
     font-size: var(--sa-type-body-3-size);

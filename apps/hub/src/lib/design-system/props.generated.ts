@@ -131,7 +131,7 @@ export const GENERATED_PROPS = {
         "type": "AccessibilityBarLayout = \"narrow\" | \"wide\" | \"page\" | \"fluid\"",
         "required": false,
         "default": "\"wide\"",
-        "description": "Content-container width: narrow (720) · wide (flat 1200) · page (1200/1320/1440 ladder) · fluid (full-bleed)."
+        "description": "Content-container width: narrow (720) · wide (flat 1200) · page (1200/1320/1440 ladder) · fluid (full-bleed). Every preset pads with `--sa-grid-margin-page` — the same margin ladder `.sa-container` applies — so the bar's content edge always meets the rows beneath it. `fluid` is the portal's layout (`Navbar/Portal` in Figma: rows fill the 1440 frame, margin only); `page` is the website's (`Navbar/Website`: rows cap at `container/page`)."
       },
       {
         "name": "maxWidth",
@@ -255,6 +255,13 @@ export const GENERATED_PROPS = {
         "type": "HeaderAccount",
         "required": true,
         "description": ""
+      },
+      {
+        "name": "avatarSize",
+        "type": "40 | 48",
+        "required": false,
+        "default": "48",
+        "description": "Avatar size. 48 in the resting brand row; `SiteHeader` passes 40 inside the condensed bar, whose every control is 40 — at 48 the avatar, not the bar's min-height, decided the height, and a phone measured 64 against a designed 56. Figma: Navbar/Portal On Scroll carries Avatar Size=Large - 40px."
       },
       {
         "name": "className",
@@ -7900,7 +7907,7 @@ export const GENERATED_PROPS = {
         "name": "actions",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Trailing CTA (e.g. a Login or Apply Online button)."
+        "description": "Trailing CTA (e.g. a Login or Apply Online button). In the condensed bar every link or button in this slot is held at the bar's 40px control height, so pass `Button size=\"default\"` (40) — a 32 or 36 would be stretched, a 48 squeezed."
       },
       {
         "name": "beta",
@@ -7966,7 +7973,7 @@ export const GENERATED_PROPS = {
         "name": "maxWidth",
         "type": "number",
         "required": false,
-        "description": "Content max-width in px. Overrides the estate container for this header only. Leave unset. The default is `--sa-container-page` — UX4G 3.0's two-step content container (1200 desktop / 1320 desktop XL), the same variable the page content below the header uses. Passing a number here re-introduces the misalignment this default exists to prevent: until 13 August 2026 this defaulted to a hardcoded 1320 while every website section capped at 1280, so the emblem sat 20px outside the content column on wide viewports."
+        "description": "Content max-width in px. Overrides the estate container for this header only. Leave unset. The default is `--sa-container-page` — UX4G 3.0's two-step content container (1200 desktop / 1320 desktop XL), the same variable the page content below the header uses. Passing a number here re-introduces the misalignment this default exists to prevent: until 13 August 2026 this defaulted to a hardcoded 1320 while every website section capped at 1280, so the emblem sat 20px outside the content column on wide viewports. TWO LAYOUTS, ONE MARGIN. `variant=\"website\"` is CONTAINED — the cap above plus the margin ladder, exactly `.sa-container`. `variant=\"portal\"` is FLUID — no cap, the margin ladder only, so the rows run edge to edge and `maxWidth` is ignored. Figma draws both on a 1440 frame: `Navbar/Website` caps each row at `container/page` (1320 there) and `Navbar/Portal` lets each row fill; both pad with `grid/margin/page`. Every row's inline padding here is `--sa-grid-margin-page` (16 · 24 from 768 · 32 from 1920) for the same reason — it was a literal 16/24 per breakpoint until 2026-09-05, which agreed with the ladder everywhere except 1920 and up."
       },
       {
         "name": "nav",

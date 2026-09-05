@@ -58,7 +58,7 @@
     color: var(--sa-on-bg-brand-primary-bolder);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
   }
   .op-intent p {
     margin: 0;

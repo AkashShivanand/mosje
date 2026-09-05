@@ -29,6 +29,15 @@ Every component page holds, in this order and nothing else at the top level:
    A catalogue of defects already fixed is not a record; it is archaeology.
 3. **Numbered sections `N · <name>`** holding the published sets, starting at **1**.
 
+The documentation frame's last section is the **arrangements** section
+(`figma-documentation-style.md` § "The arrangements section"): every non-variant
+property switched on, every group arrangement, every code-only state, drawn from
+live instances and captioned. The variant grid shows the axes; this shows the
+rest, because a property only visible in the properties panel is invisible to
+anyone browsing the library. The web page's playground renders the same set.
+`npm run check:figma-arrangements` gates it: a baseline of the component pages
+still without the section, which may only shrink.
+
 **Masters live inside a numbered section, never loose at the page root.** Loose
 component sets are how the Brand page ended up numbering its sections 2 and 3 with
 no 1 — the section that would have held them was never made, and a later pass

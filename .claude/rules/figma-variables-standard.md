@@ -49,7 +49,7 @@ correctly — the record is the evidence.)
 | `FLOAT` | space, size, radius, stroke width, opacity, blur, font size / weight / leading / tracking / paragraph spacing, container, breakpoint, counts (`stagger/max`) | `GAP` `WIDTH_HEIGHT` `CORNER_RADIUS` `STROKE_FLOAT` `EFFECT_FLOAT` `OPACITY` `FONT_SIZE` `FONT_WEIGHT` `LINE_HEIGHT` `LETTER_SPACING` `PARAGRAPH_SPACING` `PARAGRAPH_INDENT` `TEXT_CONTENT` |
 | `STRING` | font family, font style NAME | `FONT_FAMILY` `FONT_STYLE` `TEXT_CONTENT` |
 | `BOOLEAN` | component options only (`Component Options` collection) — never a token | layer visibility, boolean variant properties |
-| **`TIMING`** | every **duration** — `ref/motion/duration/*`, `motion/<intent>/duration`, `loading/spin`, `loading/pulse`, `stagger/step` | Figma Motion binds it by TYPE (animation duration and delay). **Scopes cannot be set** — `variable.scopes = …` throws `Cannot set scopes on this variable type` |
+| **`TIMING`** | every **duration** — `ref/motion/duration/*`, `motion/<intent>/duration`, `loading/spin`, `loading/pulse`, `stagger/step` | Figma Motion binds it by TYPE (animation duration and delay). **Scopes cannot be set** — `variable.scopes = …` throws `Cannot set scopes on this variable type`; a read reports `ALL_SCOPES`, and the payload emits `scopes: []`. The parity checksum skips scopes on these two types for that reason |
 | **`EASING`** | every **curve** — `ref/motion/easing/*`, `motion/<intent>/easing` | Figma Motion binds it by TYPE (presets and keyframes). No scopes, as above |
 
 Value shapes the API takes: a `TIMING` value is a number in **milliseconds**
@@ -101,9 +101,31 @@ colour reference PLUS an `{alpha.N}` reference rather than a baked hex8.
 |---|---|
 | **name** | the DTCG path joined with `/`, tier-prefixed for `ref` and `cmp` only (`grammar.mjs`) |
 | **description** | the `$description` from source, or the sentence `usage-guidance.mjs` derives — never empty. `figma-variables.mjs` writes an empty description when guidance is silent; that is a bug to fix in the guidance module, not in Figma |
-| **scopes** | the narrowest set that is true (§2). `ALL_SCOPES` never. Empty ONLY for values nothing on the canvas can bind (breakpoint), with the reason in the description; TIMING and EASING have no scopes property at all |
+| **scopes** | the narrowest set that is true (§2). `ALL_SCOPES` and `ALL_FILLS` never — Palette's 138 rungs carried `ALL_FILLS` until 2026-09-05 and now name the five colour scopes. Empty for a hidden `ref/*` primitive (it exists to be aliased, so no picker should offer it) and for values nothing on the canvas can bind (breakpoint), with the reason in the description; TIMING and EASING cannot take a scope at all (§2) |
 | **codeSyntax.WEB** | `var(--sa-…)`, the projected CSS name, so Dev Mode shows the line a developer types. ANDROID / iOS are set only when a native platform consumes the token — the estate has none, so they stay unset rather than invented |
-| **hiddenFromPublishing** | `true` for every `ref/*` primitive and every value that only exists to be aliased; `false` for the semantic and component tiers. Consumers must see the semantic layer and nothing beneath it |
+| **hiddenFromPublishing** | `true` for every `ref/*` primitive, for the whole **Palette** collection (Tier 1 by role — the brand ramps every Color role aliases — though its names carry no `ref/` prefix), and for every value that only exists to be aliased; `false` for the semantic and component tiers. Judged on the **library name**, never on the source file's tier: `font/role/*` is Tier 1 in the source but publishes as the Tier-2 `type/*` a designer may bind, and the exporter hid all 80 of them by source tier until 2026-09-05 while the library showed them. `isHiddenName()` in `figma-variables.mjs` is the one rule; consumers must see the semantic layer and nothing beneath it |
+
+## 4a. Descriptions come back HTML-encoded — decode before you compare
+
+The Plugin API stores an apostrophe as `&#39;` and an ampersand as `&amp;` and reads them
+back that way (probed 2026-09-05: `v.description = "a designer's"` reads back
+`a designer&#39;s` in the same script). Figma's own panels render the entities, so a designer
+sees the apostrophe; a script that compares raw text does not. Two consequences:
+
+- **Never write an already-encoded string.** A push that copied a read-back description
+  produced `&amp;#39;` — visible as literal `&#39;` in the panel — on six variables.
+- **Decode before hashing.** The field checksums in `figma-value-parity.mjs` and every
+  read-back script decode `&#39; &quot; &gt; &lt; &amp;` (in that order) before comparing a
+  description to the payload. A raw read never equals the payload and never will.
+
+## 4b. Five fields, five checksums
+
+The value checksum guards `name|mode|value`. On 2026-09-05 it was equal in every collection
+while 479 descriptions, five codeSyntax lines, 138 scope sets and 164 publishing flags had
+drifted. `collectionFieldChecksums()` now hashes description, codeSyntax, scopes and hidden per
+collection into `reference/figma-live.json` `$fieldChecksums`, with the same
+payload / figmaObserved / knownDifference contract as the values — so a push that changes any
+field fails the test until the library is read back and re-recorded.
 
 ## 5. Aliasing
 

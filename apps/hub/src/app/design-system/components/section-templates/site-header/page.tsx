@@ -398,10 +398,20 @@ export default function SiteHeaderPage(): React.JSX.Element {
               ]}
             />
             <p>
-              Content is centred on <code>--sa-container-page</code>, the same variable the page
-              content below the header uses. Leave <code>maxWidth</code> unset: passing a number
-              re-introduces the misalignment the default exists to prevent, which put the National
-              Emblem twenty pixels outside the content column on wide viewports until August 2026.
+              The website header is contained: content is centred on <code>--sa-container-page</code>,
+              the same variable the page content below the header uses. Leave <code>maxWidth</code>
+              unset: passing a number re-introduces the misalignment the default exists to prevent,
+              which put the National Emblem twenty pixels outside the content column on wide
+              viewports until August 2026.
+            </p>
+            <p>
+              The portal header is fluid: no cap, and every row pads with the page margin,
+              <code>--sa-grid-margin-page</code> — 16, 24 from 768 and 32 from 1920 — so the
+              masthead runs edge to edge with the portal beneath it. Figma draws both on a 1440
+              frame: Navbar/Website caps each row at container/page and Navbar/Portal lets each row
+              fill, and both bind their side padding to grid/margin/page. The accessibility bar,
+              brand row, navigation row and condensed bar all read the same token, which is what
+              keeps the flag, the emblem and the first navigation entry on one edge.
             </p>
           </section>
 

@@ -114,7 +114,7 @@
      rail is 304px and "India › Andaman and Nicobar Islands" does not fit it. */
   .ds-breadcrumb__current {
     color: var(--sa-text-neutral-base);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-breadcrumb__current .ds-breadcrumb__text {

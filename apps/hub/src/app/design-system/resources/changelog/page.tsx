@@ -32,13 +32,78 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.104.0",
+    version: "v0.111.0",
     date: "2026-09-05",
     current: true,
     changes: [
       { kind: "Changed", text: "THE SIDEBAR IS ONE COMPONENT AGAIN, AND IT GOES THREE LEVELS DEEP. The audit of 2026-09-05 found two libraries publishing `sidebar/type-1` (the handoff used the Portal DS copy, the code documented the SAMAVESH one), an active label bound to a REMOTE variable from the other library, a hover painted in the same tint as the current page, a collapse control that was an empty 308×790 frame, and no Focused, Disabled or collapsed-group variant anywhere. The SAMAVESH sets were rebuilt IN PLACE — same keys, every instance link kept — as `Sidebar` (Mode, Menu and Footer slots, Show Control, Show Footer), `Sidebar/Item · Level 1` (Mode × Type × Open × State, 24), `Sidebar/Item · Level 2` (Placement × Type × Open × Position × State, 32), and three new masters: `Sidebar/Item · Level 3`, `Sidebar/GroupLabel` and `Sidebar/CollapseControl`, plus `Sidebar/Flyout` for a collapsed group and `Sidebar/PortalIdentity` — the portal's mark, short name and full name at the head of the rail, the one place a signed-in user is told which of twenty portals they are in; it also hosts the rail's optional collapse control. Focused is a boolean, as on Tabs. Active ink is BOLDER (7.75:1 Blue, 15.15:1 Navy) with the FILLED glyph; hover is neutral; item gap is stack/4; levels 2 and 3 keep the handoff's elbow connector on every entry, branching off one straight trunk that never bends or breaks (`Position=Last` ends it) — neutral at rest, with the path to the current page drawn in brand on navigation. The level-1 item that holds the current page, a level-2 group on the way (`State=Ancestor`) and the page itself are all tinted, joined by the drawn line — ink-only on the group left the level-3 page looking cut off from its parents. Level 3 indents by inline/64, its trunk under the first letter of its parent's label. The Portal DS copies are ⛔-deprecated with a pointer; the handoff screens migrate later, one at a time." },
       { kind: "Added", text: "`SidebarNav` takes an `identity` ({ name, expansion, mark, href }) rendered at the head of the rail as a link home, naming the nav landmark; the collapse control sits in that row. It renders three levels: `items[].children[]` are level-2 entries and `children[].children[]` level-3 leaves, indented under the parent's text with the elbow connector, the last entry ending the trunk. Group labels are the accessible name of a `role=\"group\"` in both modes (they were `aria-hidden`). A collapsed group is a real `<button aria-haspopup>` that opens a flyout — focus moves in, Escape returns it, a click outside or a scroll closes it (it was an `<a>` with no href that toggled a hidden list). A collapsed leaf shows its label as a DS Tooltip; a badge count becomes a dot on the icon instead of vanishing. The rail's own collapse control is optional and off by default — the masthead's toggle drives the same state — and, where shown, is a visible IconButton in a 48px row at the top with a tooltip and `aria-expanded`, replacing the hover-only strip at the foot with a `col-resize` cursor. Five children per group is the design limit and seven the ceiling; `warnOversizedGroups` says so in development. `disabled` on any level. Tokens `layout/sidebar/collapsedWidth` (88) and `layout/sidebar/flyoutWidth` (240) join `layout/sidebar/width`, and the rail binds all three." },
       { kind: "Fixed", text: "THE PORTAL ROOT ITEM LIT UP ON EVERY PAGE. `SidebarNav` matched an item by path prefix, and a portal's root (`/portals/scw`) is a prefix of every route in it, so Dashboard was marked current alongside the real page. `resolveCurrent` now picks the single longest matching href at any level; ancestors open and highlight, nothing else does. Caught by the rail's first unit test. Level-2 and level-3 rows are 44px (`target/comfortable`), matching Figma — code had 40. The Figma registry pointed the Sidebar Nav page at node 4208-740, which did not exist; it points at 4286-428 and the page links to it. A Code Connect template for `SidebarNav` exists for the first time." },
+    ],
+  },
+  {
+    version: "v0.110.0",
+    date: "2026-09-05",
+    current: false,
+    changes: [
+      { kind: "Added", text: "UTILITIES AND FEEDBACK DRAW THEIR ARRANGEMENTS. Accessibility Bar (10 cells: each control switched off, a portal's own labels, tablet and mobile; layout=\"page\" with maxWidth, device=\"auto\" and the control callbacks as code-only), Divider (6: the rule at work between blocks, between controls and on the brand ground in both inverse tones; length and decorative as code-only), Chatbot (9: the two switches, a portal's own title, note and placeholder; the replies, placement and open state, notices and timing as code-only) and Ticker (12: the label, each breakpoint and direction, the Row, Action and Control sub-parts in every property and state on the strip's ground; rows, autoplay with interval, height, icon, labelAs and linkAs as code-only). Each opens with the three-panel key. The Accessibility Bar, Chatbot and Ticker web specimens render the same set. The arrangements baseline drops from nine pages to five" },
+      { kind: "Fixed", text: "THE CHATBOT OPENED TO AN EMPTY LOG IN DEVELOPMENT. Strict Mode runs the scripted-opening effect twice; the first run's timers were cleared on teardown and the greeted guard stopped the second run from scheduling them, so the greeting never arrived on the docs page. The effect hands the guard back when torn down before the greeting lands. Production was unaffected; found by drawing the arrangements" },
+    ],
+  },
+  {
+    version: "v0.109.0",
+    date: "2026-09-05",
+    current: false,
+    changes: [
+      { kind: "Added", text: "NAVIGATION DRAWS ITS ARRANGEMENTS. Tabs (14 cells: overflow, no divider, the enclosed track, the vertical axis, and the nested Tab's icon, badge, disabled state, rail and pill indicators, large size and a label too long to be a tab; ariaLabel, idBase and active/onChange as code-only), Portal Card (10: both variants selected, long names, a six-letter code; org, external, the detailed card's texts and href with path as code-only) and Sidebar (15: a badge, a group open with three and five children, the collapsed dot, active and disabled, the ancestor on the active path, the flyout, the last leaf, the group label in both modes, the rail with its control and footer and collapsed; pathname, collapsed with onCollapsedChange and a badge count as code-only). Each opens with the three-panel key. The Tabs and Sidebar web specimens render the same set. The arrangements baseline drops from twelve pages to nine" },
+      { kind: "Fixed", text: "THE PORTAL CARD'S DETAILED VARIANTS IGNORED THEIR CODE AND NAME. In the Figma master, the two Detailed variants' code and name text layers were not bound to the set's Code and Name properties, so every detailed instance in the library read “SCW · Senior Citizens Welfare” whatever it was set to. Bound now; found by drawing the detailed cells" },
+    ],
+  },
+  {
+    version: "v0.108.0",
+    date: "2026-09-05",
+    current: false,
+    changes: [
+      { kind: "Added", text: "ACTIONS DRAW THEIR ARRANGEMENTS. Button (15 cells: each icon slot with a glyph that fits the action, loading on both prominences, a size, an intent, a tone and a state beside a glyph, a label that is too long, and fullWidth, href with external and download, nowrap and preserveFocus as code-only), Icon Button (11, the inverse pair on its ground, aria-label, tooltip, the circle, loading and href), Button Group (9, with real actions in every group and align and aria-label as code-only) and Link (10, including a link inside its sentence, iconLeft with download, and mailto). Each section opens with the three-panel key. The Icon Button, Button Group and Link web specimens render the same set. The arrangements baseline drops from sixteen pages to twelve" },
+      { kind: "Fixed", text: "FOUR DEFECTS FOUND BY DRAWING THE ACTIONS. Inverse outlined and text buttons painted their label navy-on-navy (they took the blue that sits on a white inverse fill; they now take the secondary-inverse ink, and IconButton inherits it); Link tone=\"inverse\" was unreadable for the same reason; Link size=\"sm\" and \"lg\" rendered identically because label-1 and body-2 are both 14px, so the standalone ramp is now body-2, body-1, title-1; and a loading IconButton drew its spinner over its glyph. Asserted in link-css.test.ts and icon-button.spec.tsx" },
+    ],
+  },
+  {
+    version: "v0.107.0",
+    date: "2026-09-05",
+    current: false,
+    changes: [
+      { kind: "Changed", text: "THE BOT CHECK'S HELP LINK APPEARS WHERE THE CHECK CAN DEFEAT SOMEONE, NOT EVERYWHERE. Always in Challenge mode, because distorted characters are a sensory barrier and nobody should have to fail before finding the way round them; in Checkbox and Invisible modes once the check has failed. An idle checkbox is one deliberate act, not a cognitive test, and a link beneath it was noise. helpHref stays required. Code, the Figma master's nine variants and the documentation say the same thing, asserted in bot-check.spec.tsx" },
+      { kind: "Fixed", text: "BOT CHECK'S CHECKBOX MODE IN FIGMA SAT ITS LABEL 56PX FROM THE BOX. The nested Checkbox kept an empty 36px body beside its hidden label and the row added 12 more; the label now sits 8px from the box, as in code. Every instance in the library follows" },
+    ],
+  },
+  {
+    version: "v0.106.0",
+    date: "2026-09-05",
+    current: false,
+    changes: [
+      { kind: "Added", text: "FORMS & INPUTS DRAW THEIR ARRANGEMENTS. Input Field (25 cells: every slot alone and together, a size and a state beside a property, a label and a value that wrap, and the three states only code can draw), Input Area (18), Select (16, with the Filter set that appearance=\"filter\" reaches), OTP Input (9, with the Box sub-part in every state) and Bot Check (10, each text property in use and failure in every mode). The Textarea, Select and OTP Input web playgrounds render the same set. The arrangements baseline drops from twenty pages to sixteen" },
+    ],
+  },
+  {
+    version: "v0.105.0",
+    date: "2026-09-05",
+    current: false,
+    changes: [
+      { kind: "Fixed", text: "FIGMA AND CODE AGREE ON ALL FIVE FIELDS, AND A GATE NOW SAYS SO. The value checksum in the parity record was equal in every collection while 479 descriptions, five code-syntax lines, 138 scope sets and 164 publishing flags had drifted unseen. The exporter hides by LIBRARY-name tier (ref/* and the whole Palette collection), Palette carries the five explicit colour scopes instead of ALL_FILLS, the six font/weight rows are STRING/FONT_STYLE, and a Tier-2 colour that references a Tier-2 colour with its own alpha aliases that variable instead of the opaque rung beneath it — the accessibility bar's two washes were the one value the library held right and the payload wrong. The library was corrected in place (347 variables, 479 descriptions, one rename) and read back byte-equal; collectionFieldChecksums hashes description, codeSyntax, scopes and hidden per collection into the record. The Plugin API stores an apostrophe as &#39; and reads it back that way — a property of Figma, decoded before comparing, not a push defect." },
+      { kind: "Added", text: "THIRTY-TWO FOUNDATION TOKENS THE BENCHMARK SYSTEMS CARRY, EACH WITH A CONSUMER. bg/neutral/{hover, active, selected, readonly, loading} with their on/* inks; border/neutral/selected; overlay/neutral/{hover, active, focus, drag} as alias + alpha; focus/ringInner for the two-tone ring; control/height/{sm, md, lg} (32 · 40 · 48); aspect/{square, video, photo, portrait}; icon/fill/{outline, filled}; cmp/avatar/size/{xs, sm, md, lg}; cmp/{chip, dialog, tooltip}/radius; elevation/inset, the one INNER_SHADOW. The sidebar's current page, the read-only field, the skeleton, the checked selection card, four neutral hovers, the photo wells, the icon button, Button, FilterSelect, Pagination, the SAMAVESH Banner, Avatar, Chip, Modal and Tooltip bind them. Grammar gained the states drag · readonly · loading, the group aspect and the components avatar · chip · dialog · tooltip." },
+      { kind: "Changed", text: "594 LITERAL FONT-WEIGHTS BIND --sa-font-weight-*. Six weight tokens had been Tier 2 since 2026-08-26 while the architecture rule said none existed and 531 CSS declarations and 63 inline styles typed the number. No rendered weight changed. Two ratchets joined the check: check:breakpoints holds the off-ladder @media literal count (43) and check:token-consumers holds the zero-consumer Tier-2 count per family (448) — both may only fall." },
+      { kind: "Changed", text: "THE FIGMA LIBRARY CARRIES ONE FOCUS RING AND A TOKEN-BOUND GRID SET. Focus States/Primary was renamed focus/ring in place and retuned to the code's ring (a 2px spread in focus/ringInner under 4px in focus/ring, bound); its five per-tone siblings and the six legacy Shadows/* styles were removed after an 83-page scan found their 37 and 0 consumers. Sixteen grid styles became eight bound to grid/columns, grid/gutter and the margin rungs; Grid/Desktop (120) and Grid/Desktop XL (224) had matched no token. Four Component record frames were built (Typography, Color, Layout Grid, Iconography); the Motion frame was rewritten to the twelve intents and the Effects frame to one ring; 61 unstyled texts on the Typography frame and 127 literal paddings, gaps and radii on the Color and Brand frames were bound; two Code text styles exist. The Shape and Stroke pages linked a Figma node that no longer resolved; every foundation page now links a page that exists, and check:figma-docs carries claims on nine foundation frames." },
+    ],
+  },
+  {
+    version: "v0.104.0",
+    date: "2026-09-05",
+    current: false,
+    changes: [
+      { kind: "Added", text: "EVERY PROPERTY IS DRAWN, NOT ONLY THE AXES. A property that can only be found by toggling it in the properties panel does not exist for anyone browsing the library, so every component page now ends in an ARRANGEMENTS section \u2014 every non-variant property switched on, every group arrangement, and every code-only state composed from live instances and named. Checkbox carries twenty-two cells, Radio twenty-one and Selection Card seventeen, the Selection Card variants section shows all forty variants on both layouts, and the Checkbox and Radio web playgrounds render the same set. The rule is in figma-documentation-style.md" },
+      { kind: "Fixed", text: "A DISABLED GROUP LOOKED ENABLED. `<fieldset disabled>` disabled the inputs, but the drawn box and circle read data-disabled from their own root, so a disabled CheckboxGroup or RadioGroup showed every option at full strength. Found by drawing the state; the group now passes disabled to each option, asserted in control-group.spec.tsx" },
+      { kind: "Fixed", text: "THE HORIZONTAL CARD GROUPS ALTERNATED FIXED AND FILL TILES in both Figma masters, which collapsed every second tile to a sliver inside a wrapping row. Every tile in the Horizontal + Card variant of Checkbox Group and Radio Group is now the same half-width, so they sit two to a row and wrap" },
     ],
   },
   {
@@ -1918,7 +1983,7 @@ export default function ChangelogPage(): React.JSX.Element {
                 <h2
                   style={{
                     fontSize: "var(--sa-type-headline-2-size)",
-                    fontWeight: 700,
+                    fontWeight: "var(--sa-font-weight-bold)",
                     color: "var(--sa-text-neutral-base)",
                   }}
                 >
@@ -1936,7 +2001,7 @@ export default function ChangelogPage(): React.JSX.Element {
                   <span
                     style={{
                       fontSize: "var(--sa-type-body-3-size)",
-                      fontWeight: 600,
+                      fontWeight: "var(--sa-font-weight-semibold)",
                       color: "var(--sa-on-bg-brand-primary-bolder)",
                       background: "var(--sa-bg-brand-primary-bolder)",
                       padding: "var(--sa-padding-2) var(--sa-padding-8)",
@@ -1974,7 +2039,7 @@ export default function ChangelogPage(): React.JSX.Element {
                         minWidth: 64,
                         textAlign: "center",
                         fontSize: "var(--sa-type-body-3-size)",
-                        fontWeight: 700,
+                        fontWeight: "var(--sa-font-weight-bold)",
                         color: "var(--sa-on-bg-brand-primary-bolder)",
                         background: KIND_COLOR[change.kind],
                         padding: "var(--sa-padding-2) var(--sa-padding-8)",

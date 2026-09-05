@@ -41,7 +41,7 @@
     max-height: calc(100vh - 32px);
     overflow-y: auto;
     background-color: var(--sa-bg-neutral-base);
-    border-radius: var(--sa-shape-12);
+    border-radius: var(--sa-cmp-dialog-radius);
     box-shadow: var(--sa-elevation-toast);
     font-family: var(--sa-font-latin);
   }
@@ -62,7 +62,7 @@
     margin: 0;
     font-size: var(--sa-type-title-1-size);
     line-height: var(--sa-type-title-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
 

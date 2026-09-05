@@ -57,7 +57,7 @@
        Weight 500, not 600: it sits in a row with the copyright and the
        last-updated date and has no business being heavier than either. */
     font-variant-numeric: tabular-nums;
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--ds-footer-ink-muted, currentColor);
     /* Reserve the widest plausible figure so the first tick cannot reflow the row. */
     min-width: 7ch;

@@ -948,8 +948,8 @@ export default function ColorPage(): React.JSX.Element {
       tokensExtra={provenance}
       a11y={[
         { criterion: "1.4.1 Use of colour", level: "A", description: "Colour is never the only carrier of meaning. Pair it with an icon, a label, a pattern or a position." },
-        { criterion: "1.4.3 Contrast (minimum)", level: "AA", description: `4.5:1 for body text, 3:1 for large text. Every on/* pair clears the first; the worst measures ${META.worstInkPair}:1.` },
-        { criterion: "1.4.11 Non-text contrast", level: "AA", description: "3:1 for borders, icons, focus rings, chart series and any control boundary someone must find." },
+        { criterion: "1.4.3 Contrast (minimum)", level: "AA", status: "verified", evidence: "packages/tokens/test — every --sa-on-* is AA-readable on its own fill in every brand; the published number matches the measurement to the digit; no variable claims to MEET a threshold it does not meet.", description: `4.5:1 for body text, 3:1 for large text. Every on/* pair clears the first; the worst measures ${META.worstInkPair}:1.` },
+        { criterion: "1.4.11 Non-text contrast", level: "AA", status: "verified", evidence: "packages/tokens/test — the prominence contract measures every fill and border rung against its surface in every brand (PROMINENCE_CONTRACT, ≥3:1 for bold fills and control boundaries) and the contrast record must match the build.", description: "3:1 for borders, icons, focus rings, chart series and any control boundary someone must find." },
         { criterion: "1.4.12 Text spacing", level: "AA", description: "Colour choices must survive 200% zoom and user stylesheets." },
         { criterion: "Dark & high contrast", level: "GIGW", description: "Owned entirely by the UX4G accessibility widget, not by a token axis. Do not build a second mechanism." },
         { criterion: "forced-colors: active", level: "GIGW", description: "Windows High Contrast replaces the palette wholesale — keep meaning in markup and icons." },

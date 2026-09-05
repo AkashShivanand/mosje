@@ -5,6 +5,34 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versions track
 
 ---
 
+## [0.7.5] — 2026-09-05
+
+### Fixed
+- **`Chatbot` opened to an empty log in development.** React Strict Mode runs the scripted-opening effect twice; the first run's timers were cleared by the unmount cleanup and the `greeted` guard then stopped the second run from scheduling them, so the greeting never arrived. The effect now hands the guard back when torn down before the greeting lands. Production builds were unaffected. Found by drawing the arrangements section on the docs page.
+
+## [0.7.4] — 2026-09-05
+
+### Fixed
+- **Inverse outlined and text buttons painted their label navy-on-navy.** `.ds-btn--inverseOutlined` and `.ds-btn--inverseText` took `--_c-inv-on`, the brand blue that sits on the filled inverse button's white ground; they now take the secondary-inverse ink. `IconButton` inherits the fix.
+- **`Link` `tone="inverse"` was unreadable on the brand ground** for the same reason; it now uses the secondary-inverse ink. Asserted in link-css.test.ts.
+- **`Link` `size="sm"` and `size="lg"` rendered identically** (label-1 and body-2 are both 14px). The standalone ramp is body-2 / body-1 / title-1: 14 → 16 → 18-and-up.
+- **`IconButton` `loading` drew the spinner over the glyph.** The glyph gives way to the spinner; the name and `aria-busy` stay. Asserted in icon-button.spec.tsx.
+
+All four were found by drawing the arrangements sections for the Actions group.
+
+## [0.7.3] — 2026-09-05
+
+### Changed
+- **`BotCheck` shows its help link where the check can defeat someone, not everywhere.** Always in `challenge` mode (distorted characters are a sensory barrier), and in every mode once the check has failed. An idle, verifying or verified checkbox no longer carries "Cannot complete this check?" beneath it. `helpHref` stays required. Asserted in bot-check.spec.tsx; the Figma master's nine variants match.
+
+### Fixed
+- **`BotCheck` checkbox mode in Figma:** the nested Checkbox kept a 36px empty body beside its hidden label, so the gesture label sat 56px from the box; it now sits 8px from it, as in code.
+
+## [0.7.2] — 2026-09-05
+
+### Fixed
+- **A disabled `CheckboxGroup` or `RadioGroup` now paints every option disabled.** The native `<fieldset disabled>` disabled the inputs, but the drawn box and circle read `data-disabled` from their own root, so the options looked enabled while they were not. The group passes `disabled` down to each option; asserted in control-group.spec.tsx.
+
 ## [0.7.1] — 2026-09-04
 
 ### Added

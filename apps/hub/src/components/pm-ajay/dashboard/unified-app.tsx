@@ -434,7 +434,7 @@ export function UnifiedDashboard() {
                 <h1>PM-AJAY Programme Dashboard</h1>
                 <p className="sub">
                   Funds, scheme delivery and compliance — at a glance for{" "}
-                  <b style={{ color: "var(--pm-slate)", fontWeight: 600 }}>{scopeFull}</b>
+                  <b style={{ color: "var(--pm-slate)", fontWeight: "var(--sa-font-weight-semibold)" }}>{scopeFull}</b>
                 </p>
               </div>
               <div className="ud-toolbar-r">
