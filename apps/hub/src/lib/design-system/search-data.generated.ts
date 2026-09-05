@@ -1225,7 +1225,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "SAMAVESH Banner — Design System",
     "section": "Navigation",
     "href": "/design-system/components/navigation/samavesh-banner",
-    "keywords": "samavesh banner — design system navigation interactive specimen implementation & guidelines overview & principles usage guidelines installation & import props reference code example wcag 2.2 aa & gigw 3.0 compliance band tones, and why the default fails contrast on purpose component props Senior Citizens Welfare Nasha Mukt Bharat Abhiyaan National Commission for Scheduled Castes National SC Finance & Development Corporation tokens wcag accessibility",
+    "keywords": "samavesh banner — design system navigation interactive specimen arrangements implementation & guidelines overview & principles usage guidelines installation & import props reference code example wcag 2.2 aa & gigw 3.0 compliance band tones, and why the default fails contrast on purpose component props Senior Citizens Welfare Nasha Mukt Bharat Abhiyaan National Commission for Scheduled Castes National SC Finance & Development Corporation tokens wcag accessibility",
     "description": "Top identity banner and portal discovery drawer implementing Figma node 7116:33784 & 7298:29968.",
     "type": "component",
     "badge": "New",
