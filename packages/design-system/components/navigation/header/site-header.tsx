@@ -769,16 +769,19 @@ export function SiteHeader({
         {/* IDENTITY, NOT JUST THE EMBLEM. The bar is 64px and on a portal most
             of it was empty: the nav lives in the sidebar, so nothing followed a
             20px emblem until the profile block a thousand pixels away — the
-            department's name had left the page. The department line rides with
-            the emblem wherever the inline nav is not on this row (every portal,
-            and the website below 1024 or once its nav has moved to the sheet),
-            and stays off where the nav needs the width. Emblem-only below 768.
+            department's name had left the page. ALL THREE LINES ride with the
+            emblem — Government of India and the Ministry on one muted 12px line,
+            the Department at 14 beneath — because DBIM 5.2 makes none of them
+            optional, and 36px of type sits inside the bar's 48. They show wherever
+            the inline nav is not on this row (every portal, and the website below
+            1024 or once its nav has moved to the sheet), and stay off where the
+            nav needs the width. Emblem-only below 768.
             Figma: Navbar/BrandLockup Size=Condensed inside the On Scroll bars. */}
         <BrandLockup
           className="ds-hdr-cond__lockup"
           emblemSrc={emblemSrc}
           emblemAlt={emblemAlt}
-          lines={{ department: brandLines.department, departmentHi: brandLines.departmentHi }}
+          lines={brandLines}
           href={homeHref}
           compact
           textHiddenOnMobile
