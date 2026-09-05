@@ -34,7 +34,8 @@ export function ScwHeader({
       emblemSrc={`${BASE}/brand/national-emblem.svg`}
       brandLines={{
         org: "Government of India",
-        department: "Ministry of Social Justice & Empowerment",
+        ministry: "Ministry of Social Justice & Empowerment",
+        department: "Department of Social Justice & Empowerment",
       }}
       beta
       skipTo="#main"

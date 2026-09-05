@@ -30,7 +30,8 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
         emblemSrc="/images/emblem.svg"
         brandLines={{
           org: "Government of India",
-          department: "Ministry of Social Justice & Empowerment",
+          ministry: "Ministry of Social Justice & Empowerment",
+          department: "Department of Social Justice & Empowerment",
         }}
         beta
         onToggleNav={() => setCollapsed(!collapsed)}
