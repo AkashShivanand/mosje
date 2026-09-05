@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
-import { SiteHeader, SidebarNav, Icon, type AccountMenuItem, type SidebarNavGroup } from "@mosje/design-system";
+import { SiteHeader, SidebarNav, Icon, type AccountMenuItem, type SidebarNavGroup, OrgLogo } from "@mosje/design-system";
 import { type NavItem } from "@/lib/eutthan/portal-data";
 import { portalLink } from "./eutthan-shared";
 
@@ -78,5 +78,13 @@ function toGroups(navItems: NavItem[]): SidebarNavGroup[] {
 export function Sidebar({ navItems }: { navItems: NavItem[] }) {
   const pathname = usePathname() ?? "";
   const groups = useMemo(() => toGroups(navItems), [navItems]);
-  return <SidebarNav groups={groups} pathname={pathname} label="Main navigation" className="eu-sidebar" />;
+  return (
+    <SidebarNav
+      identity={{ name: "E-Utthan", expansion: "DAPSC Allocation & Progress Tracker", mark: <OrgLogo path="/portals/eutthan-admin" />, href: portalLink("/dashboard") }}
+      groups={groups}
+      pathname={pathname}
+      label="Main navigation"
+      className="eu-sidebar"
+    />
+  );
 }

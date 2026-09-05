@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { SidebarNav, SiteHeader } from "@mosje/design-system";
+import { SidebarNav, SiteHeader, OrgLogo } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ROLES } from "@/lib/e-anudaan/roles";
 
@@ -54,12 +54,12 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
 
       <div className="flex">
         <SidebarNav
+          identity={{ name: "E-Anudaan", expansion: "Grant-in-Aid Management", mark: <OrgLogo path="/portals/e-anudaan" />, href: "/portals/e-anudaan/ngo" }}
           groups={[{ items: role.nav }]}
           pathname={pathname}
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
-          showCollapseControl
-          className="sticky top-0 hidden h-screen shrink-0 md:flex md:flex-col"
+          className="hidden shrink-0 md:flex md:flex-col"
         />
         <main id="main" className="min-w-0 flex-1 bg-surface-muted px-4 py-6 lg:px-8">
           {children}

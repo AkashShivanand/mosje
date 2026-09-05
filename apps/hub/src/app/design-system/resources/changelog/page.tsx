@@ -32,9 +32,17 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.115.0",
+    version: "v0.116.0",
     date: "2026-09-05",
     current: true,
+    changes: [
+      { kind: "Changed", text: "EVERY PORTAL RAIL NAMES ITS PORTAL. The Figma `Sidebar` opens with the PortalIdentity block by default and carries no control of its own because the masthead toggle drives it; the code rails had shipped without an identity, and four of them (e-Anudaan's two shells, NHAPOA admin, TG admin) drew the rail's own collapse control under a masthead that already had one — the difference a reviewer saw on e-Anudaan's My Action Queue. Every shell now passes `identity` (name, the department's full name, the registry mark, the portal's home), the duplicate controls are gone, SMILE's drawer lost its second brand header in favour of the rail's, and `check:sidebar-adoption` fails a rendered SidebarNav without an identity." },
+      { kind: "Fixed", text: "THE RAIL HID ITS FIRST ROWS UNDER THE MASTHEAD. Shells pinned it with `sticky top-0`, a utility that wins the cascade over the component, so it stuck at 0 beneath a 134px sticky masthead. `.ds-sidebar` is now sticky by construction at `--sa-header-stuck`, the offset SiteHeader publishes, and no taller than the viewport below it; shells pass no positioning utilities. The rail also lost its `bg/neutral/base` ground in Figma and code — every handoff rail sits on the page canvas, and the fill read as a white panel on the portals' muted page." },
+    ],
+  },
+  {
+    version: "v0.115.0",
+    date: "2026-09-05",
     changes: [
       { kind: "Added", text: "THE WITHHELD-FIGURE CONTRACT REACHES EVERY CHART FAMILY. `LineChart` breaks the line at a withheld index and marks the gap with a hollow dashed ring at the baseline; `PieChart` and `DonutChart` leave a withheld category out of the total, keep it in the legend and the table with its reason, and say in the summary that the shares are of the published total; `Heatmap` takes a `ChartWithheld` in place of a number (`HeatmapCell`) and hatches the cell, leaving it out of the ramp's domain. In all of them the tooltip and the screen-reader table print `withheldLabel()`" },
       { kind: "Changed", text: "THE FIGMA MASTERS CLOSE THE GAPS THE COMPONENT RECORD NAMED. Metric Card gains Size = Medium | Small (the smaller figure style, a 32 badge, a 20 icon) and `Show icon` + `Icon` — an instance swap of the library Icon — thirty variants, none overflowing its bounds. Chart Card draws Restricted and Offline, so all eight CardState kinds are in the set. Map of India gains Kind = Bubble and Kind = Point, every state fill is now bound (chart/seq/* on the choropleth, chart/regionEmpty elsewhere, chart/regionStroke on every stroke), and the page carries a `— Documentation` frame with six counted stats and a `— Component record`" },

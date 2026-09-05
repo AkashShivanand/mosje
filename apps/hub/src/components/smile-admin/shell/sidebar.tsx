@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { SidebarNav } from "@mosje/design-system";
+import { SidebarNav, OrgLogo } from "@mosje/design-system";
 import { navForRole } from "@/lib/smile-admin/nav";
 import { useApp } from "@/store/smile-admin/app-context";
 
@@ -30,12 +30,13 @@ export function Sidebar() {
   return (
     <SidebarNav
       id="smile-admin-sidebar"
+      identity={{ name: "SMILE", expansion: "Beggary Rehabilitation Portal", mark: <OrgLogo path="/portals/smile-admin" />, href: "/portals/smile-admin/dashboard" }}
       groups={groups}
       pathname={pathname}
       collapsed={sidebarCollapsed}
       onCollapsedChange={setSidebarCollapsed}
       footer={<StatusFooter collapsed={sidebarCollapsed} />}
-      className="sticky top-[136px] hidden h-[calc(100dvh-136px-32px)] shrink-0 self-start border-r border-stroke-200 md:flex md:flex-col"
+      className="hidden shrink-0 border-r border-stroke-200 md:flex md:flex-col"
     />
   );
 }

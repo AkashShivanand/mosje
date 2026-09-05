@@ -50,13 +50,27 @@
 
   /* ── Container ─────────────────────────────────────────────────────────────── */
 
+  /* The rail sits on the page canvas with NO ground of its own — every handoff
+     rail is drawn that way, and the Figma master matches (fill removed
+     2026-09-05; until then it read as a white panel on the portals' muted page).
+     The flyout and the mobile drawer float, so they keep their own grounds.
+
+     It is STICKY by construction: it pins under the masthead at
+     `--sa-header-stuck`, the offset SiteHeader publishes for exactly this,
+     and never taller than what is left of the viewport below it, so a long
+     menu scrolls inside `.ds-sidebar__nav` rather than the page. A shell adds
+     no `sticky`/`top-*`/`h-*` utilities of its own — those won the cascade
+     over this block and pinned the rail at 0, under a 134px masthead, which
+     hid its first rows. */
   .ds-sidebar {
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-12);
-    background: var(--sa-bg-neutral-base);
     padding: var(--sa-padding-16);
-    position: relative;
+    position: sticky;
+    top: var(--sa-header-stuck, 0); /* 0 when no masthead is sticky */
+    align-self: flex-start;
+    max-height: calc(100dvh - var(--sa-header-stuck, 0px)); /* stylelint-disable-line length-zero-no-unit -- calc subtracts a length, so the fallback must carry a unit */
     overflow: hidden;
     transition: width var(--sa-motion-collapse-duration) var(--sa-motion-collapse-easing);
   }
@@ -80,6 +94,7 @@
   .ds-sidebar__group {
     display: flex;
     flex-direction: column;
+    gap: var(--sa-stack-4); /* label to first row — the same stack/4 the Figma Menu keeps between every child */
   }
 
   .ds-sidebar__group + .ds-sidebar__group {

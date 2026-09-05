@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Footer, Icon, SidebarNav, SideSheet, SiteHeader, SAMAVESH_COBRAND, type SidebarNavChild, type SidebarNavGroup, type SidebarNavItem } from "@mosje/design-system";
+import { Footer, Icon, SidebarNav, SideSheet, SiteHeader, SAMAVESH_COBRAND, type SidebarNavChild, type SidebarNavGroup, type SidebarNavItem, OrgLogo } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCSession } from "@/lib/nmba/treatment-centre/session-context";
 import { TC_SESSION_COOKIE } from "@/lib/nmba/treatment-centre/roles";
@@ -112,12 +112,13 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
             opens it as a drawer. */}
         <SidebarNav
           id="tc-sidebar"
+          identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" />, href: "/portals/nmba/treatment-centre/dashboard" }}
           groups={groups}
           pathname={pathname}
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
           label={`${session.role} navigation`}
-          className="sticky top-[var(--tc-header-h)] hidden h-[calc(100vh-var(--tc-header-h))] shrink-0 border-r border-line lg:flex lg:flex-col"
+          className="hidden shrink-0 border-r border-line lg:flex lg:flex-col"
         />
 
         {/* Main */}
@@ -127,7 +128,7 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
       </div>
 
       <SideSheet open={mobileOpen && isMobile} onClose={() => setMobileOpen(false)} title="Navigation" side="left" size="sm">
-        <SidebarNav groups={groups} pathname={pathname} label={`${session.role} navigation`} className="w-auto" />
+        <SidebarNav identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" />, href: "/portals/nmba/treatment-centre/dashboard" }} groups={groups} pathname={pathname} label={`${session.role} navigation`} className="w-auto" />
       </SideSheet>
 
       <Footer />

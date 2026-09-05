@@ -6,7 +6,7 @@ import { navForRole } from "@/lib/smile-admin/nav";
 import { useApp } from "@/store/smile-admin/app-context";
 import { cn, initials } from "@/lib/smile-admin/utils";
 import { ROLE_LABELS } from "@/lib/smile-admin/roles";
-import { Icon, SidebarNav } from "@mosje/design-system";
+import { Icon, OrgLogo, SidebarNav } from "@mosje/design-system";
 
 export function MobileNav() {
   const pathname = usePathname();
@@ -45,7 +45,7 @@ export function MobileNav() {
   return (
     <div
       className={cn(
-        "fixed inset-0 z-50 md:hidden",
+        "fixed inset-0 z-(--sa-z-modal) md:hidden", // above the sticky masthead (z/sticky), as a drawer must be
         mobileNavOpen ? "pointer-events-auto" : "pointer-events-none",
       )}
       aria-hidden={!mobileNavOpen}
@@ -71,24 +71,14 @@ export function MobileNav() {
           mobileNavOpen ? "translate-x-0" : "-translate-x-full",
         )}
       >
-        {/* Header */}
-        <div className="flex items-center gap-md border-b border-stroke-200 bg-primary px-lg py-md text-white">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-white/10 ring-1 ring-inset ring-white/20">
-            <span className="text-label-2 font-bold">MoSJE</span>
-          </div>
-          <div className="min-w-0">
-            <div className="text-label-3 uppercase text-white/70">
-              SMILE Admin
-            </div>
-            <div className="truncate text-body-2 font-semibold">
-              Ministry of Social Justice
-            </div>
-          </div>
+        {/* Close — the portal is named by the rail's identity block below, not by a
+            second header; the masthead above the drawer already carries the Ministry. */}
+        <div className="flex items-center justify-end border-b border-stroke-200 px-sm py-sm">
           <button
             type="button"
             aria-label="Close menu"
             onClick={() => setMobileNavOpen(false)}
-            className="ml-auto grid h-9 w-9 shrink-0 place-items-center rounded-md text-white/80 hover:bg-white/10"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-md text-ink-muted hover:bg-neutral-50"
           >
             <Icon name="close" size={20} />
           </button>
@@ -111,6 +101,7 @@ export function MobileNav() {
 
         {/* Nav — the same SidebarNav the desktop rail renders, at drawer width. */}
         <SidebarNav
+          identity={{ name: "SMILE", expansion: "Beggary Rehabilitation Portal", mark: <OrgLogo path="/portals/smile-admin" />, href: "/portals/smile-admin/dashboard" }}
           groups={groups}
           pathname={pathname}
           label="Main navigation"

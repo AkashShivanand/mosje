@@ -12,6 +12,11 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-05 · System version: v0.55.0 (EVERY PORTAL RAIL NAMES ITS PORTAL. All
+  shells pass SidebarNav an identity — name, the department's full name, the registry mark, the
+  portal's home — as the Figma master defaults to; the rail's own collapse control is off wherever
+  the masthead toggles it; check:sidebar-adoption requires the identity. The rail pins itself under the masthead at --sa-header-stuck and carries no ground of its own, as the handoff draws it.)
+
   Last reviewed: 2026-09-05 · System version: v0.54.0 (THE FOLLOW-UPS THE AUDIT LEFT OPEN
   ARE CLOSED — the withheld-figure contract reaches line, pie, donut and heatmap; the Figma
   Metric Card gains Size and an Icon swap, Chart Card its Restricted and Offline states, Map

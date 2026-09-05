@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname } from "next/navigation";
-import { SidebarNav, Divider } from "@mosje/design-system";
+import { SidebarNav, Divider, OrgLogo } from "@mosje/design-system";
 import { NhapoaHeader } from "./gov-chrome";
 
 const CITIZEN_NAV = [
@@ -23,12 +23,13 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
       <NhapoaHeader />
       <div className="flex flex-1">
         <SidebarNav
+          identity={{ name: "SAMBAL", expansion: "National Helpline Against Atrocities", mark: <OrgLogo path="/portals/nhapoa" />, href: "/portals/nhapoa" }}
           groups={[{ items: CITIZEN_NAV }]}
           pathname={pathname}
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
           showCollapseControl
-          className="sticky top-0 hidden h-[calc(100vh-5.75rem)] shrink-0 md:flex md:flex-col"
+          className="hidden shrink-0 md:flex md:flex-col"
         />
         <main id="main" className="min-w-0 flex-1 bg-surface-muted px-4 py-8 sm:px-6 lg:px-10">
           <div className="mx-auto max-w-5xl">{children}</div>

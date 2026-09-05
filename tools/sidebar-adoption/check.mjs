@@ -38,6 +38,7 @@ function* walk(dir) {
 }
 
 const offenders = [];
+const missingIdentity = [];
 let scanned = 0;
 for (const scope of SCOPES) {
   for (const f of walk(join(ROOT, scope))) {
@@ -52,12 +53,21 @@ for (const scope of SCOPES) {
     const sideNav = /<nav\b[^>]*className="[^"]*\b(side|sidebar|rail)\b/i.test(src);
     const rail = navigatingAside || namedNav || sideNav;
     if (!rail) continue;
-    if (/SidebarNav\b[^]*from "@mosje\/design-system"/.test(src) && /<SidebarNav\b/.test(src)) continue;
+    if (/SidebarNav\b[^]*from "@mosje\/design-system"/.test(src) && /<SidebarNav\b/.test(src)) {
+      // The rail names its portal: every rendered SidebarNav in portal code carries an identity.
+      if (!/identity=/.test(src)) missingIdentity.push(rel);
+      continue;
+    }
     if (ALLOW.has(rel)) continue;
     offenders.push(rel);
   }
 }
 
+if (missingIdentity.length) {
+  console.error(`✖ sidebar adoption: ${missingIdentity.length} file(s) render SidebarNav without an identity — the rail is the one place a signed-in user is told which portal they are in:`);
+  for (const o of missingIdentity) console.error(`  · ${o}`);
+  process.exit(1);
+}
 if (offenders.length) {
   console.error(`✖ sidebar adoption: ${offenders.length} file(s) draw a rail or drawer without the design system's SidebarNav:`);
   for (const o of offenders) console.error(`  · ${o}`);
