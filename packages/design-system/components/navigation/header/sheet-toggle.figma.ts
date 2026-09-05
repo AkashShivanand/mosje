@@ -13,6 +13,9 @@
 //   Size -> deliberatelyOmitted. Large (48) beside the resting brand row, Default
 //           (40) in the condensed bar and as the overflow trigger — CSS decides by
 //           placement (`.ds-hdr-cond .ds-hdr-burger`). Added 2026-09-05.
+//   State -> deliberatelyOmitted. Hover / Focused / Pressed are the nested
+//            IconButton's states, surfaced so a screen can show a pressed trigger;
+//            in code they are :hover, :focus-visible and :active.
 import figma from "figma";
 
 export default {

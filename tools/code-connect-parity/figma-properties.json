@@ -125,10 +125,20 @@
           "Large",
           "Default"
         ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused",
+          "Pressed"
+        ]
       }
     },
     "deliberatelyOmitted": [
-      "Size"
+      "Size",
+      "State"
     ]
   },
   "SheetToggle": {
@@ -141,10 +151,20 @@
           "Large",
           "Default"
         ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused",
+          "Pressed"
+        ]
       }
     },
     "deliberatelyOmitted": [
-      "Size"
+      "Size",
+      "State"
     ]
   },
   "NavItemLink": {
