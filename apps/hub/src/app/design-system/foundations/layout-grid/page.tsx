@@ -68,7 +68,7 @@ export default function LayoutGridPage(): React.JSX.Element {
       // The Figma page is "Layout Grid" (2140:295915). FIGMA_NODES registers it under the key
       // `spacing`, because that page has carried both the Space collection and the grid since
       // the library was imported; the key names the page's first occupant, not this foundation.
-      figma={{ node: "spacing" }}
+      figma={{ node: "layout" }}
       glance={[
         { value: capSteps.length, label: "cap steps", note: capSteps.join(" → ") },
         { value: margins.length, label: "margin rungs", note: margins.map((m) => px(m.value)).join(" / ") },

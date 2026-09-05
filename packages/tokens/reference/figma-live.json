@@ -1743,7 +1743,8 @@
       "Shadows/shadow-md": "GEOMETRY differs — superseded by elevation/dropdown",
       "Shadows/shadow-lg": "colour differs only — superseded by elevation/modal",
       "Shadows/shadow-xl": "colour differs only — superseded by elevation/toast",
-      "Shadows/shadow-2xl": "ORPHAN — no token behind it; the code ramp stops at shadow.xl"
+      "Shadows/shadow-2xl": "ORPHAN — no token behind it; the code ramp stops at shadow.xl",
+      "$status": "RETIRED 2026-09-05 — see retired2026_09_05"
     },
     "focus": {
       "note": "Six `Focus States/*` effect styles. Unlike the shadows these are in GOOD shape — every one binds its colour to `color/transparent/<family>/48`, so they follow the brand and cannot rot into a literal. They shipped with no description at all, which is now fixed; each says which intent it belongs to and carries the geometry caveat below.",
@@ -1756,6 +1757,24 @@
         "Focus States/Warning - Active Shadow": "bound to color/transparent/warning/48",
         "Focus States/Neutral - Active Shadow": "bound to color/transparent/neutral/48"
       }
+    },
+    "retired2026_09_05": {
+      "note": "2026-09-05 — the six `Shadows/shadow-*` styles and the six `Focus States/* - Active Shadow` styles were removed. Evidence: an 83-page, ~100,000-node scan of THIS file found zero consumers of any Shadows/* style and 176 consumers of the Focus States set (139 Primary, 19 Success, 13 Danger, 3 Neutral, 1 Secondary, 1 Warning). Consuming files could not be scanned — the Plugin API sees one file — so this is the library-only evidence the 2026-09-03 note said was insufficient; the decision to proceed rests on what deletion does downstream: a consumer keeps the effect VALUES on every node (Figma detaches, it does not strip), so nothing restyles, and the only loss is the style link on a set of shadows that already disagreed with the tokens. Focus was consolidated, not deleted: `Focus States/Primary - Active Shadow` was renamed `focus/ring` in place (all 139 bindings kept) and retuned to the code's ring — a 2px spread in bg/neutral/base under a 4px spread in focus/ring, i.e. outline focus/width offset focus/offset — with colours and the inner spread bound to variables; the 37 Success/Danger/Neutral/Secondary/Warning consumers were repointed to it before their styles were removed, because the code draws ONE ring colour on every control (button.css :focus-visible) and a per-tone ring was a Figma-only divergence.",
+      "removed": [
+        "Shadows/shadow-xs",
+        "Shadows/shadow-s",
+        "Shadows/shadow-md",
+        "Shadows/shadow-lg",
+        "Shadows/shadow-xl",
+        "Shadows/shadow-2xl",
+        "Focus States/Primary - Active Shadow (renamed focus/ring)",
+        "Focus States/Secondary - Active Shadow",
+        "Focus States/Success - Active Shadow",
+        "Focus States/Danger - Active Shadow",
+        "Focus States/Warning - Active Shadow",
+        "Focus States/Neutral - Active Shadow"
+      ],
+      "gridStyles": "The same day the sixteen layout-grid styles became eight: Grid/{Mobile,Tablet,Desktop,Desktop XL,Desktop Wide} bound to grid/columns, grid/gutter and grid/margin/{mobile,tablet,tablet,tablet,desktop}, and Container Fixed/{1200,1320,1440}px bound to grid/columns and grid/gutter. Grid/Desktop (offset 120) and Grid/Desktop XL (224) matched no token; the Bootstrap containers 540/720/960/1140 and every fluid variant had zero consumers except 1140 (4 frames on Footer, repointed to 1200)."
     }
   },
   "$valueChecksums": {
