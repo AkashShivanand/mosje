@@ -216,14 +216,17 @@
 
   .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-56); }
 
-  /* Elbow: top of the row → row centre (22 of a 44 row) → into the pill. */
+  /* Elbow: from the parent's edge (through the list's stack/4 padding and the
+     stack/4 row gap, so the trunk meets the row above) → row centre (22 of a
+     44 row) → into the pill. Where a sibling's tail already covers the gap the
+     two overlap by the same 1px line, which is invisible. */
   .ds-sidebar__sub::before {
     content: "";
     position: absolute;
     left: 27px; /* icon centre: padding/16 + icon/size/24 ÷ 2, less the line's own width */
-    top: 0;
+    top: calc(-1 * (var(--sa-stack-4) + var(--sa-stack-4)));
     width: 12px; /* to the pill's edge at inline/40, less the line */
-    height: 22px;
+    height: calc(22px + var(--sa-stack-4) + var(--sa-stack-4));
     border-left: var(--sa-stroke-1) solid var(--sa-bg-brand-primary-subtler);
     border-bottom: var(--sa-stroke-1) solid var(--sa-bg-brand-primary-subtler);
     border-bottom-left-radius: var(--sa-shape-6);
