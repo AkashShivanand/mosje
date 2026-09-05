@@ -645,7 +645,7 @@
   /* The email is the first thing to go — the name identifies the session, the
      address only confirms it. Below `laptop` the block is name + avatar + caret. */
   @media (max-width: 1023px) {
-    .ds-hdr-account__email {
+    .ds-hdr-account__role {
       display: none;
     }
   }
@@ -653,7 +653,7 @@
   /* A long name must never push the masthead wider. Truncated in the trigger,
      given in full by `title` and repeated unabridged in the menu header. */
   .ds-hdr-account__name,
-  .ds-hdr-account__email {
+  .ds-hdr-account__role {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -667,11 +667,16 @@
     color: var(--sa-text-neutral-base);
   }
 
-  .ds-hdr-account__email {
-    font-size: var(--sa-type-body-3-size);
-    line-height: var(--sa-type-body-3-lh);
+  /* Label/label-2 in subtle ink — the same voice as the masthead's small lines,
+     so the trigger reads name-then-qualifier the way the lockup reads
+     department-then-ministry. Figma: Navbar/AccountMenu › Role. */
+  .ds-hdr-account__role {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-subtle);
   }
+
 
   /* This used to be a hand-rolled 48px rounded square — inside the design system
      that exports `Avatar`. It is the DS component now, at size 48 and CIRCULAR:
@@ -1245,37 +1250,72 @@
     position: relative;
   }
 
-  /* Logical inset so it anchors correctly in RTL. Capped against the viewport so a
-     long role line or a narrow window cannot push it off-screen, and capped in
-     height so a portal with many actions scrolls instead of running past the fold. */
+  /* THE MENU ARRIVES FROM ITS TRIGGER. It used to appear in one frame at 240px
+     with 4px of padding and 12px items — a list, not a menu. Now: it scales in
+     from the top-right corner it hangs from (a popover's origin is its trigger,
+     never its centre), 250ms on a strong ease-out so the first frame already
+     moves, opacity and transform only, and no exit — it unmounts, and a menu
+     closed by Escape must not linger. `@starting-style` gives the entry without
+     a mounted flag. Reduced motion keeps the fade and drops the movement.
+     Logical inset so it anchors correctly in RTL; capped against the viewport so a
+     long role line or a narrow window cannot push it off-screen, and in height so
+     a portal with many actions scrolls instead of running past the fold. */
   .ds-hdr-acct__menu {
     position: absolute;
     inset-inline-end: 0;
-    top: calc(100% + 8px);
+    top: calc(100% + var(--sa-padding-8));
     z-index: var(--sa-z-dropdown);
-    min-width: 240px;
+    min-width: 264px;
     max-width: min(320px, calc(100vw - var(--sa-inline-32)));
     max-height: min(70vh, 32rem);
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: var(--sa-padding-4);
+    padding: var(--sa-padding-8);
     border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-8);
+    border-radius: var(--sa-shape-12);
     background-color: var(--sa-bg-neutral-base);
     box-shadow: var(--sa-elevation-dropdown);
+    transform-origin: top right;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition:
+      opacity var(--sa-motion-enter-duration) cubic-bezier(0.23, 1, 0.32, 1),
+      transform var(--sa-motion-enter-duration) cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  @starting-style {
+    .ds-hdr-acct__menu {
+      opacity: 0;
+      transform: translateY(calc(-1 * var(--sa-padding-4))) scale(0.96);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    @starting-style {
+      .ds-hdr-acct__menu {
+        transform: none;
+      }
+    }
   }
 
   .ds-hdr-acct__menu-list {
     display: flex;
     flex-direction: column;
+    gap: var(--sa-stack-2);
   }
 
+  /* Who this menu belongs to: name, role, email — three lines, three weights,
+     so the eye lands on the name and reads down. */
   .ds-hdr-acct__menu-head {
-    padding: var(--sa-padding-8) var(--sa-padding-12);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+    padding: var(--sa-padding-12);
   }
 
   .ds-hdr-acct__menu-name {
-    font-size: var(--sa-type-body-2-size);
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
     font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
@@ -1283,39 +1323,60 @@
   .ds-hdr-acct__menu-role {
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-hdr-acct__menu-email {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .ds-hdr-acct__menu-sep {
     height: 1px;
-    margin: var(--sa-padding-4) 0;
+    margin: var(--sa-padding-4) 0 var(--sa-padding-8);
     background-color: var(--sa-border-neutral-subtle);
   }
 
+  /* 40px rows, 14px labels, 20px glyphs — a menu the hand can land on and the
+     eye can read, not the 12px list it was. Hover and focus tint the row and the
+     text together on a 150ms ease so the ground does not lag the pointer;
+     keyboard focus adds the estate's ring inside the row so a sighted keyboard
+     user can tell focus from hover. */
   .ds-hdr-acct__menu-item {
     display: flex;
     align-items: center;
-    gap: var(--sa-stack-8);
+    gap: var(--sa-stack-12);
     width: 100%;
+    min-height: 40px;
     padding: var(--sa-padding-8) var(--sa-padding-12);
     border: none;
-    border-radius: var(--sa-shape-6);
+    border-radius: var(--sa-shape-8);
     background: transparent;
-    font-size: var(--sa-type-body-3-size);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-base);
     text-align: left;
     cursor: pointer;
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-hdr-acct__menu-item:focus-visible {
-    outline: none;
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
     background-color: var(--sa-bg-brand-primary-subtler);
     color: var(--sa-text-brand-primary-base);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .ds-hdr-acct__menu-item:hover {
-      outline: none;
       background-color: var(--sa-bg-brand-primary-subtler);
       color: var(--sa-text-brand-primary-base);
     }
@@ -1339,15 +1400,21 @@
 
   .ds-hdr-acct__menu-icon {
     display: inline-flex;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
+    color: var(--sa-icon-neutral-subtle, var(--sa-text-neutral-subtle));
   }
 
   .ds-hdr-acct__menu-icon svg {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
   }
 
+  .ds-hdr-acct__menu-item:hover .ds-hdr-acct__menu-icon,
+  .ds-hdr-acct__menu-item:focus-visible .ds-hdr-acct__menu-icon,
+  .ds-hdr-acct__menu-item.is-danger .ds-hdr-acct__menu-icon {
+    color: inherit;
+  }
 
   /* ── Compact variant ────────────────────────────────────────────────────────
      A single-tier 64px bar for internal index / gate surfaces that are NOT public

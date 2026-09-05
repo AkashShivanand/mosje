@@ -162,7 +162,12 @@ export function AccountMenu({
     <Avatar
       className="ds-hdr-account__avatar"
       size={avatarSize}
-      shape="circular"
+      /* A ROUNDED SQUARE, not a circle. This masthead's institutions are square
+         (the emblem, the co-brand marks), its controls are outlined squares, and
+         its person is the rounded square between them — the shape the estate used
+         before a pass made it circular to match Avatar's default. Figma:
+         Navbar/AccountMenu, Avatar Shape=Rectangular. */
+      shape="rounded"
       src={account.avatarSrc}
       alt=""
       initials={initials(account.name)}
@@ -174,9 +179,14 @@ export function AccountMenu({
       <span className="ds-hdr-account__name" title={account.name}>
         {account.name}
       </span>
-      {account.email && (
-        <span className="ds-hdr-account__email" title={account.email}>
-          {account.email}
+      {/* THE ROLE, NOT THE EMAIL, UNDER THE NAME. An officer's role is what
+          decides what they may approve, and in these portals one person holds
+          different jurisdictions — the address confirms nothing the name did not.
+          The email moves inside the menu head, with the name and role. When a
+          portal passes no role the address stands in, so the line is never empty. */}
+      {(account.role ?? account.email) && (
+        <span className="ds-hdr-account__role" title={account.role ?? account.email}>
+          {account.role ?? account.email}
         </span>
       )}
     </span>
@@ -227,6 +237,9 @@ export function AccountMenu({
             <div className="ds-hdr-acct__menu-name">{account.name}</div>
             {account.role && (
               <div className="ds-hdr-acct__menu-role">{account.role}</div>
+            )}
+            {account.email && (
+              <div className="ds-hdr-acct__menu-email">{account.email}</div>
             )}
           </div>
 
