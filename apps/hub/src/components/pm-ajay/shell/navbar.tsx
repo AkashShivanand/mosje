@@ -5,7 +5,7 @@
    "Website" / public-brand variant) so the National Emblem lockup, GoI utility
    bar, and Government marks stay in lockstep with the rest of the estate. */
 
-import { SiteHeader } from "@mosje/design-system";
+import { SiteHeader, SAMAVESH_COBRAND } from "@mosje/design-system";
 
 // next/public assets are served under the portal basePath; the shared DS renders
 // a plain <img>, so srcs are prefixed explicitly.
@@ -32,7 +32,7 @@ export function Navbar() {
       language={{ label: "English" }}
       cobranding={[
         { src: `${IMG_BASE}/images/digital-india-logo.svg`, alt: "Digital India — Power To Empower", href: "https://www.digitalindia.gov.in/", height: 40 },
-        { src: `${IMG_BASE}/images/samavesh.png`, alt: "SAMAVESH", height: 44 },
+        SAMAVESH_COBRAND,
       ]}
     />
   );

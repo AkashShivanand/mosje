@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Footer, Icon, SidebarNav, SideSheet, SiteHeader, type SidebarNavChild, type SidebarNavGroup, type SidebarNavItem } from "@mosje/design-system";
+import { Footer, Icon, SidebarNav, SideSheet, SiteHeader, SAMAVESH_COBRAND, type SidebarNavChild, type SidebarNavGroup, type SidebarNavItem } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCSession } from "@/lib/nmba/treatment-centre/session-context";
 import { TC_SESSION_COOKIE } from "@/lib/nmba/treatment-centre/roles";
@@ -87,7 +87,7 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
         }}
         cobranding={[
           { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 34 },
-          { src: `${BASE}/brand/samavesh-logo.svg`, alt: "SAMAVESH", height: 40 },
+          SAMAVESH_COBRAND,
         ]}
         onToggleNav={() => (isMobile ? setMobileOpen((o) => !o) : setCollapsed((c) => !c))}
         navExpanded={isMobile ? mobileOpen : !collapsed}
