@@ -36,7 +36,7 @@ export function Sidebar() {
       collapsed={sidebarCollapsed}
       onCollapsedChange={setSidebarCollapsed}
       footer={<StatusFooter collapsed={sidebarCollapsed} />}
-      className="sticky top-[136px] hidden h-[calc(100dvh-136px-32px)] shrink-0 self-start border-r border-stroke-200 md:flex md:flex-col"
+      className="hidden shrink-0 border-r border-stroke-200 md:flex md:flex-col"
     />
   );
 }

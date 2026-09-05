@@ -76,7 +76,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
           onCollapsedChange={setCollapsed}
           showCollapseControl
           label="Main navigation"
-          className="sticky top-0 hidden h-[calc(100vh-8rem)] shrink-0 border-r border-line md:flex md:flex-col"
+          className="hidden shrink-0 border-r border-line md:flex md:flex-col"
         />
 
         {/* Main content */}

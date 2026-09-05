@@ -57,7 +57,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           pathname={pathname}
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
-          className="sticky top-0 hidden h-[calc(100vh-5.75rem)] shrink-0 md:flex md:flex-col"
+          className="hidden shrink-0 md:flex md:flex-col"
         />
         <main id="main" className="min-w-0 flex-1 bg-surface-muted px-6 py-7 lg:px-10">
           {children}

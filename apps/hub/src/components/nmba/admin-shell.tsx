@@ -171,7 +171,7 @@ export function AdminShell({ children }: AdminShellProps) {
           onCollapsedChange={setCollapsed}
           showCollapseControl
           label="Portal navigation"
-          className="sticky top-0 hidden min-h-[calc(100vh-8rem)] shrink-0 border-r border-line lg:flex lg:flex-col"
+          className="hidden shrink-0 border-r border-line lg:flex lg:flex-col"
         />
 
         {/* Main */}

@@ -39,7 +39,7 @@ export function Sidebar({ items, home = "/portals/scw" }: { items: NavItem[]; ho
       collapsed={collapsed}
       onCollapsedChange={setCollapsed}
       showCollapseControl
-      className="sticky top-0 hidden h-[calc(100vh-5.75rem)] shrink-0 md:flex md:flex-col"
+      className="hidden shrink-0 md:flex md:flex-col"
     />
   );
 }

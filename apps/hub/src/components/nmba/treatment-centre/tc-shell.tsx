@@ -118,7 +118,7 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
           label={`${session.role} navigation`}
-          className="sticky top-[var(--tc-header-h)] hidden h-[calc(100vh-var(--tc-header-h))] shrink-0 border-r border-line lg:flex lg:flex-col"
+          className="hidden shrink-0 border-r border-line lg:flex lg:flex-col"
         />
 
         {/* Main */}

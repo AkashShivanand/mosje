@@ -294,12 +294,9 @@ button {
   grid-template-columns: var(--sa-layout-sidebar-width) minmax(0, 1fr);
 }
 
-/* The rail is the design system's SidebarNav (it owns its own padding, rows
-   and connectors); this only pins it beside the content under the masthead. */
+/* The rail is the design system's SidebarNav; it pins itself under the
+   masthead. This only draws the dividing line. */
 .eu-sidebar {
-  position: sticky;
-  top: 134px;
-  height: calc(100dvh - 134px);
   border-right: 1px solid var(--stroke-300);
 }
 

@@ -66,7 +66,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
           pathname={pathname}
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
-          className="sticky top-0 hidden max-h-[100dvh] shrink-0 overflow-y-auto md:flex md:flex-col"
+          className="hidden shrink-0 md:flex md:flex-col"
         />
         <main id="main" className="min-w-0 flex-1 bg-surface-muted px-4 py-6 lg:px-8">
           {children}

@@ -181,3 +181,13 @@ items, 20 child items). They are to be migrated screen by screen, one at a time,
     `identity` (name, the department's full name from the portal's own metadata title, the
     registry mark, the portal's home), four shells dropped `showCollapseControl`, and
     `check:sidebar-adoption` fails a rendered SidebarNav without an identity.
+
+19. **The rail is sticky by construction, pinned under the masthead, and has no ground of its
+    own.** Shells had been adding `sticky top-0 h-[…]` utilities, which win the cascade over the
+    component and pinned the rail at 0 — under a 134px sticky masthead, hiding its first rows.
+    `.ds-sidebar` now pins to `--sa-header-stuck`, the offset SiteHeader publishes, and caps its
+    height to what is left of the viewport, so a long menu scrolls inside the rail. And it carries
+    no fill: every handoff rail sits on the page canvas, and the Figma master had drifted to
+    `bg/neutral/base`, which read as a white panel on the portals' muted page. Master and code
+    both dropped it on 2026-09-05; the flyout and the mobile drawer keep their grounds because
+    they float.

@@ -37,6 +37,7 @@ const RELEASES: Release[] = [
     current: true,
     changes: [
       { kind: "Changed", text: "EVERY PORTAL RAIL NAMES ITS PORTAL. The Figma `Sidebar` opens with the PortalIdentity block by default and carries no control of its own because the masthead toggle drives it; the code rails had shipped without an identity, and four of them (e-Anudaan's two shells, NHAPOA admin, TG admin) drew the rail's own collapse control under a masthead that already had one — the difference a reviewer saw on e-Anudaan's My Action Queue. Every shell now passes `identity` (name, the department's full name, the registry mark, the portal's home), the duplicate controls are gone, SMILE's drawer lost its second brand header in favour of the rail's, and `check:sidebar-adoption` fails a rendered SidebarNav without an identity." },
+      { kind: "Fixed", text: "THE RAIL HID ITS FIRST ROWS UNDER THE MASTHEAD. Shells pinned it with `sticky top-0`, a utility that wins the cascade over the component, so it stuck at 0 beneath a 134px sticky masthead. `.ds-sidebar` is now sticky by construction at `--sa-header-stuck`, the offset SiteHeader publishes, and no taller than the viewport below it; shells pass no positioning utilities. The rail also lost its `bg/neutral/base` ground in Figma and code — every handoff rail sits on the page canvas, and the fill read as a white panel on the portals' muted page." },
     ],
   },
   {
