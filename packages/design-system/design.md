@@ -426,6 +426,8 @@
   promoted it out of single-mode Color into Palette as a new variable whose two modes were
   identical. Both now key on `navy` specifically.)
 
+  **Every control in the condensed bar is 40px** (2026-09-05): the sidebar toggle, the sheet trigger, the search button, the account avatar (`AccountMenu avatarSize={40}`) and whatever the consumer passes as `actions` — the slot holds links and buttons at 40, so pass `Button size="default"`. The home link is a 40×40 target around the 20px emblem, emblem on the left edge; it was the bare 20×32 glyph, under WCAG 2.5.8.
+
   System version: v0.16.1 (THE CHART PALETTE NOW SAYS WHICH OF ITS
   VALUES ARE COPIES AND WHICH ARE CHOICES, per group, because the difference was not guessable
   and the copies had rotted. `chart/div/*` — the diverging scale for signed data — was seven

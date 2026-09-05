@@ -106,7 +106,11 @@ export interface SiteHeaderProps {
   account?: HeaderAccount;
   /** Account dropdown items. When provided, the account block opens a menu. */
   accountMenu?: AccountMenuItem[];
-  /** Trailing CTA (e.g. a Login or Apply Online button). */
+  /**
+   * Trailing CTA (e.g. a Login or Apply Online button). In the condensed bar every
+   * link or button in this slot is held at the bar's 40px control height, so pass
+   * `Button size="default"` (40) — a 32 or 36 would be stretched, a 48 squeezed.
+   */
   actions?: React.ReactNode;
 
   // ── Nav row ──
@@ -818,7 +822,8 @@ export function SiteHeader({
           </button>
         )}
 
-        {account && <AccountMenu account={account} items={accountMenu} />}
+        {/* 40, not the brand row's 48: at 48 the avatar decided the bar's height. */}
+        {account && <AccountMenu account={account} items={accountMenu} avatarSize={40} />}
 
         <span className="ds-hdr-brand__actions">{actions}</span>
 

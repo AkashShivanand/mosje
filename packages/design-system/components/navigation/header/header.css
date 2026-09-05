@@ -1435,10 +1435,20 @@
     }
   }
 
+  /* A 40x40 TARGET around a 20px-wide emblem. The glyph is 20x32 (17x28 on a
+     phone), and until 2026-09-05 the link was exactly that box — under the 24x24
+     WCAG 2.5.8 asks of a pointer target, with the nav 16px away so the spacing
+     exception did not apply. The box is now the bar's control size and the emblem
+     keeps the LEFT edge (`justify-content: flex-start`), so it still lands on the
+     page margin where it sits at rest; the extra reach goes right, into the gap.
+     Figma: the `Home` frame in every On Scroll variant, 40 minimum on both axes. */
   .ds-hdr-cond__home {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     flex: 0 0 auto;
+    min-width: 40px;
+    min-height: 40px;
     border-radius: var(--sa-shape-4);
     text-decoration: none;
   }
@@ -1502,6 +1512,20 @@
     height: 40px;
     width: 40px;
     padding: var(--sa-padding-4);
+  }
+
+  /* THE ACTIONS SLOT TAKES THE BAR'S CONTROL HEIGHT TOO. `actions` is consumer
+     markup, and three portals shipped three heights into the same 64px row —
+     32, 36 and 40 — beside a 40px search button (measured 2026-09-05: nmba, scw,
+     nhapoa). One row, one control height: every link or button in the slot is
+     40 here, whatever size the consumer chose for the resting masthead. Pass
+     `Button size="default"` (40) and nothing is stretched or squeezed. */
+  .ds-hdr-cond .ds-hdr-brand__actions :is(a, button) {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    min-height: 40px;
   }
 
   /* Search expands IN PLACE, over the nav, rather than sending the reader back to
