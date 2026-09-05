@@ -138,6 +138,15 @@ and a one-line `Body/body-3` caption saying what the reader should notice.
    the caption names the prop and what it does, so the designer knows to ask
    for it rather than concluding it cannot be had.
 
+**This binds every component page, the ones already written included.** The
+three selection pages carry it; the other twenty are listed in
+`tools/figma-arrangements/baseline.json`, and **`npm run check:figma-arrangements`
+is the gate**: the live half (`:live`, on `FIGMA_ACCESS_TOKEN`) reads every
+documentation frame, fails a page that lacks the section and is not in the
+baseline, and fails a page that gained it until `:sync` re-captures the smaller
+baseline. The list may only shrink. A foundation page (tokens, not properties)
+is outside its scope.
+
 The variant section (`03 / VARIANTS`) still shows the axes; this section shows
 everything the axes do not. **The count in its description is counted** —
 "nineteen arrangements, six of them code-only" — and the web page's playground
