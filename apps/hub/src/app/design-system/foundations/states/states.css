@@ -108,6 +108,15 @@
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
   }
+
+  /* forced-colors mode does not paint box-shadow, so the inner ring is not drawn there;
+     the outline IS painted, and Highlight is the system's own focus colour. */
+  @media (forced-colors: active) {
+    .st-ring--two-tone:focus-visible {
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
+    }
+  }
 }
 
 /* ── The brand state layers, on a brand surface — the counterpart of the neutral pair above ── */
