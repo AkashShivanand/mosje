@@ -32,9 +32,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.112.0",
+    version: "v0.113.0",
     date: "2026-09-05",
     current: true,
+    changes: [
+      { kind: "Changed", text: "EVERY PORTAL RAIL IS `SidebarNav`. Six shells drew their own — NMBA's admin, public and treatment-centre shells, Eutthan, PM-AJAY's dashboard and SMILE's mobile drawer — each with a private list of links, its own active state, hover, indent and collapse control, and each already drifted from the others and from Figma. All six now render the design system's rail from the same nav data they had; the mobile drawers host the same component inside `SideSheet`. Given up: PM-AJAY's per-item sub-labels and the treatment centre's icons below level 1, neither of which the rail draws. `npm run check:sidebar-adoption` fails any portal file that renders a navigating `<aside>` or a `<nav>` named \"navigation\" without it." },
+      { kind: "Added", text: "A GROUP MAY HAVE NO PAGE OF ITS OWN. `href` is optional on a level-1 item and a level-2 entry that has `children`: the row only opens and closes, it is highlighted when a page inside it is current, and in the collapsed rail its flyout lists the pages (for a level-2 group without a page, beneath its name — the one case the flyout goes a level deeper). This is what NMBA's committee group and the treatment-centre registers needed; giving such a group its first child's href lit two rows for one page." },
+      { kind: "Changed", text: "THE DOCUMENTATION SITE'S LEFT NAVIGATION IS `DocsNav`. It was a second component named `SidebarNav` with a filter, hash-anchor tracking and no icons — not the portal rail — and the shared name made every grep for hand-rolled rails report the docs chrome." },
+    ],
+  },
+  {
+    version: "v0.112.0",
+    date: "2026-09-05",
+    current: false,
     changes: [
       { kind: "Added", text: "THE LAST FIVE COMPONENT PAGES DRAW THEIR ARRANGEMENTS, AND THE BASELINE IS EMPTY. Modal (10 cells: each size on its scrim and on a phone, a title that wraps, a long body, one action, a destructive one, hideClose and an omitted footer). Tables (11: registers assembled from the Row, Table and Cell sets — header over rows, the selectable register, each cell type beside its neighbours — then sortable, the pager with page sizes, the fixed-size footer, emptyLabel and caption). Navbar (16: every boolean on both mastheads, the lockup, the account menu and its items; Active and Hover items inside a live masthead; the phone's sheet open; the toggle's two states; the bar's own language and accessibility properties; actions and brandDivider). SAMAVESH Banner (7: a subline that wraps, the drawer retitled over a shorter list, a card Selected; sticky under the condensed masthead, emptyLabel, an empty viewAllPrompt, exploreLabel). Portal Login Template (13: the form card's seven booleans down to the smallest form, the OTP form after its cooldown, the dual prompt, the Signing Into bar with a portal's mark; error, loading and roleId). Each web page renders the same set — the Modal playground opens every arrangement, the DataTable and SAMAVESH Banner pages add specimens, and the Navbar and Portal Login Template pages gain a switch strip on a live instance. check:figma-arrangements now holds every component page and its baseline may only stay empty." },
       { kind: "Fixed", text: "SIX MASTER DEFECTS FOUND BY DRAWING THE LAST FIVE. The Modal's header drew a kebab (⋮) where the close control belongs, its Cancel was a red outlined button, its title could not wrap (a plain frame, not auto-layout) and its copy was lorem ipsum — now a library Icon close, a Neutral outlined Cancel, a title that wraps beside the control, and departmental copy. The Table header row was UX4G violet, which the estate does not adopt, with raw black rules on every row type, and the Checkbox row drew a rectangle where the library Checkbox belongs — now bg/neutral/base, border/neutral/subtle and a Checkbox instance. The Navbar's search placeholder was clipped at the field's width." },

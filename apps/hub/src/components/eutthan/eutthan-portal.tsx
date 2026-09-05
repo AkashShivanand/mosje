@@ -134,7 +134,7 @@ export default function EutthanPortal() {
         onLogout={handleLogout}
       />
       <div className="workspace">
-        <Sidebar navItems={navItems} path={path} />
+        <Sidebar navItems={navItems} />
         <main id="eu-main-content" className="content" tabIndex={-1}>
           {renderContent()}
         </main>

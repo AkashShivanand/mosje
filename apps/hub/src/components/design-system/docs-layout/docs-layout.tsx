@@ -2,7 +2,7 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { SidebarNav } from "./sidebar-nav";
+import { DocsNav } from "./sidebar-nav";
 import { DocsHeader } from "./docs-header";
 import { OnThisPage } from "./on-this-page";
 import { CmdSearch } from "@/components/design-system/search/cmd-search";
@@ -93,7 +93,7 @@ export function DocsLayout({ children }: DocsLayoutProps): React.JSX.Element {
               <div className="docs-sidebar__tagline">Design System</div>
             </div>
           </Link>
-          <SidebarNav />
+          <DocsNav />
         </aside>
         {navOpen && (
           <div
