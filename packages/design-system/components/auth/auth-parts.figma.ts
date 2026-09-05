@@ -1,4 +1,4 @@
-// url=<SAMAVESH>?node-id=55439-731
+// url=<SAMAVESH>?node-id=57464-12739
 // source=packages/design-system/components/auth/auth-parts.tsx
 // component=SigningIntoBar
 //
@@ -8,8 +8,14 @@
 // carries the rules as well as the snippet.
 // See .claude/rules/component-authoring.md §12.
 //
-// PROPERTY COVERAGE — the master's one Figma property is accounted for:
+// PROPERTY COVERAGE — the set's properties are accounted for:
 //   Portal name  -> `portalName`
+//   Device       -> not a prop. On 2026-09-05 the master became a Device set
+//                   (Desktop | Mobile) so the LoginHero's Mobile variant could
+//                   nest the 44px-mark, small-button strip the handoff draws.
+//                   The code component is the desktop bar; the phone strip is
+//                   drawn by PortalLoginShell's `ds-plogin-hero-mobile__bar`,
+//                   which is why the Device axis maps to nothing here.
 //
 // TONE IS FIXED TO `hero`, AND THAT IS WHAT FIGMA DRAWS. The master used to be a
 // two-variant set (`Tone = On hero | On surface`, node 55439-749). On 2026-09-04

@@ -957,14 +957,27 @@
     "deliberatelyOmitted": []
   },
   "SigningIntoBar": {
-    "nodeId": "55439:731",
-    "captured": "2026-09-04",
+    "nodeId": "57464:12739",
+    "captured": "2026-09-05",
     "properties": {
       "Portal name": {
         "type": "TEXT"
+      },
+      "Instance": {
+        "type": "INSTANCE_SWAP"
+      },
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Mobile"
+        ]
       }
     },
-    "deliberatelyOmitted": []
+    "deliberatelyOmitted": [
+      "Instance",
+      "Device"
+    ]
   },
   "SidebarNav": {
     "nodeId": "4286:428",

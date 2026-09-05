@@ -208,8 +208,9 @@
 
   /* A partner's mark is artwork, not a glyph: it is sized on the icon scale but
      keeps its own aspect, because squashing DigiLocker's mark to a square is a
-     misuse of somebody else's brand. 40 tall draws 43 wide from the shipped
-     asset, which is the handoff's own logo slot. */
+     misuse of somebody else's brand. The shipped asset is the library's own
+     `DigiLocker` component (Brand page, 40×40 with the art inside it) exported
+     at 3×, so 40 tall is the exact box the Figma `Auth / SSOButton` draws. */
   .ds-auth-sso__markimg {
     display: block;
     height: var(--sa-icon-size-40);

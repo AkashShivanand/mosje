@@ -192,6 +192,13 @@ export function MaskedContactRow({
  * SSOButton
  * ------------------------------------------------------------------------- */
 
+/**
+ * The DigiLocker mark the SSO card draws when no other provider's mark is
+ * passed — the library's Brand-page `DigiLocker` component exported at 3×, so
+ * the card in the estate and the `Auth / SSOButton` in Figma carry one asset.
+ */
+export const DIGILOCKER_MARK_SRC = "/design-system/digilocker-mark.png";
+
 export interface SSOButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "title"> {
   /** @default "Continue with DigiLocker" */
   title?: string;
@@ -204,7 +211,16 @@ export interface SSOButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButt
    * redirect itself in `onClick`.
    */
   href?: string;
-  /** The provider's mark as an image path. Wins over `mark`. */
+  /**
+   * The provider's mark as an image path. Wins over `mark`.
+   *
+   * Defaults to the estate's own DigiLocker mark (`digilocker-mark.png` in the
+   * hub's design-system public folder) — the library's Brand-page `DigiLocker`
+   * component, 40×40, exported at 3×, the same asset the Figma
+   * `Auth / SSOButton` draws. A portal that hands off to another
+   * provider passes its own; nothing on the estate should draw the fallback
+   * glyph for DigiLocker any more.
+   */
   markSrc?: string;
   /** The provider's mark as a node. Falls back to a Material Symbols glyph. */
   mark?: React.ReactNode;
@@ -232,7 +248,7 @@ export function SSOButton({
   title = "Continue with DigiLocker",
   subtitle = "Secured Government Login",
   href,
-  markSrc,
+  markSrc = DIGILOCKER_MARK_SRC,
   mark,
   className,
   ...rest

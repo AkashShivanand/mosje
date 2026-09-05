@@ -40,6 +40,10 @@ export function PortalLoginShellSpecimen(): React.JSX.Element {
       signingInto="Nasha Mukt Bharat Abhiyaan"
       changeHref="#"
       tabs={tabs}
+      // The Portal Hero slot is BLANK by default; the specimen fills it so the
+      // reader sees what a portal's own photograph does to the column. This is
+      // the library's SMILE-Transgender reference photograph, not NMBA's.
+      heroImageSrc="/portals/login-hero/smile-transgender.jpg"
     >
       <form
         onSubmit={(event) => {

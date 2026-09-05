@@ -107,7 +107,7 @@
     grid doing its job rather than a bug.
   */
   .ds-portal-card--compact .ds-portal-card__name {
-    min-height: calc(2 * var(--sa-type-body-2-lh));
+    min-height: calc(2 * var(--sa-type-body-1-lh));
   }
 
   .ds-portal-card--detailed {
@@ -229,9 +229,14 @@
     color: var(--sa-color-secondaryScale-600);
   }
 
+  /* Code and name share the 16px body size — the Portal List reference
+     (`56693:11506`) sets both at 16/24 and lets WEIGHT carry the hierarchy,
+     semibold saffron over regular ink. A 14px name under a 16px code read as
+     two unrelated lines; the Figma master was rebound to the same pair on
+     2026-09-05. */
   .ds-portal-card__name {
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
     font-weight: var(--sa-font-weight-medium);
     color: var(--sa-color-text-default);
   }
