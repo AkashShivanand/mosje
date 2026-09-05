@@ -153,10 +153,16 @@ export const FIGMA_NODES = {
   tabs: "55489-870",
   tabsMore: "55514-848",
   ticker: "56159-903",
-  // Named on the Sidebar page itself, which said the node existed and that this
-  // estate had not registered it — an absence statement that told the reader
-  // where to go and then refused to take them.
-  portalSidebar: "4208-740",
+  // Sidebar page — rebuilt 2026-09-05. The three pre-existing sets were mutated in
+  // place, so 4286-* ids are the originals; the rest are new that day.
+  portalSidebar: "4286-428",
+  sidebarItem: "4286-285",
+  sidebarSubItem: "4286-361",
+  sidebarLeaf: "57129-1097",
+  sidebarGroupLabel: "57137-1189",
+  sidebarCollapseControl: "57137-1199",
+  sidebarFlyout: "57137-1200",
+  sidebarIdentity: "57262-1829",
 } as const;
 
 export type FigmaNode = keyof typeof FIGMA_NODES;

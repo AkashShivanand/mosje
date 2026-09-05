@@ -14,52 +14,65 @@
  * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
  * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
  * `display: flex` outranked `.hidden`.
- *
- * The layer order is established by `@import "tailwindcss"` in the app's globals.css
- * (theme, base, components, utilities). Naming that layer here joins it rather than creating
- * a new one, so these rules sit below utilities exactly as component CSS should.
  */
 @layer components {
   /* =============================================================================
      Sidebar Navigation — SAMAVESH Design System
-     Figma: SAMAVESH DS › Side Navigation › sidebar/sidebar-nav (node 4208:740)
-     Mirrors Portal DS › sidebar/type-1 (node 8190:16300)
+     Figma: SAMAVESH DS › Sidebar › `Sidebar` (4286:428), `Sidebar/Item · Level 1`
+     (4286:285), `Sidebar/Item · Level 2` (4286:361), `Sidebar/Item · Level 3`,
+     `Sidebar/GroupLabel`, `Sidebar/CollapseControl`, `Sidebar/Flyout`.
 
-     Token mapping (Figma → DS):
-       --primary/50      → --sa-color-primaryScale-50   (active bg; resolves #e8f2fd in light mode)
-       --text/primary    → --sa-color-action-primary-default      (active text)
-       --text/dark       → --sa-color-text-default          (default text)
-       --radius-xl (16px)→ --sa-shape-16
-       --radius-md  (8px) → --sa-shape-8
-       --spacing-lg(16px)→ --sa-stack-16   (px / sidebar padding)
-       --spacing-md(12px)→ --sa-stack-12   (py / item gap)
-       --spacing-sm (8px)→ --sa-stack-8   (subnav py / connector control)
-       --spacing-2xl(24px→ --sa-stack-24  (subnav px — Portal DS: paddingLeft/Right: 24)
+     Geometry, from the tokens the Figma masters bind:
+       rail width            layout/sidebar/width (300) · layout/sidebar/collapsedWidth (88)
+       rail padding          padding/16 · item gap stack/4 · region gap stack/12
+       level-1 row           padding/12 × padding/16 · shape/16 · min target/spacious (48)
+       level-2 / 3 row       padding/12 × padding/8 · shape/8 · min target/comfortable (44)
+       level-2 / 3 indent    inline/40 · inline/64; elbow trunk 16px left of the pill, 16px arm, shape/6,
+                           border/neutral/subtle at rest; the path to the current page drawn in
+                           border/brand/primary/base (motion/reveal)
+       flyout                layout/sidebar/flyoutWidth (240) · shape/12 · elevation/dropdown
+     Colour: rest text|icon/neutral/base; hover bg/neutral/subtler; current bg/brand/primary/base
+     with text|icon/brand/primary/BOLDER — 7.75:1 in Blue mode, 15.15:1 in Navy (measured from
+     the library 2026-09-05; base is 5.74:1 / 12.05:1, also AA). Disabled text|icon/neutral/disabled.
      ============================================================================= */
+
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
   /* ── Container ─────────────────────────────────────────────────────────────── */
 
   .ds-sidebar {
     display: flex;
     flex-direction: column;
+    gap: var(--sa-stack-12);
     background: var(--sa-bg-neutral-base);
-    padding: var(--sa-padding-16); /* 16px — Figma: --spacing-lg */
+    padding: var(--sa-padding-16);
     position: relative;
     overflow: hidden;
-    transition: width var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+    transition: width var(--sa-motion-collapse-duration) var(--sa-motion-collapse-easing);
   }
 
-  .ds-sidebar.is-expanded  { width: 300px; } /* 268px content + 2×16px padding */
-  .ds-sidebar.is-collapsed { width: var(--sa-layout-sidebar-collapsedWidth); } /* 88px: 56px icon row + 2×16px padding — Portal DS spec */
+  .ds-sidebar.is-expanded  { width: var(--sa-layout-sidebar-width); }
+  .ds-sidebar.is-collapsed { width: var(--sa-layout-sidebar-collapsedWidth); }
 
   /* ── Navigation ─────────────────────────────────────────────────────────────── */
 
   .ds-sidebar__nav {
     flex: 1 1 auto;
-    overflow: hidden auto; /* x hidden, y scrolls */
+    min-height: 0;
+    overflow: hidden auto; /* x hidden, y scrolls when a role has more pages than the viewport */
     display: flex;
     flex-direction: column;
-    gap: var(--sa-stack-12); /* 12px — Figma: --spacing-md between items */
+    gap: var(--sa-stack-4);
   }
 
   /* ── Group ──────────────────────────────────────────────────────────────────── */
@@ -67,11 +80,11 @@
   .ds-sidebar__group {
     display: flex;
     flex-direction: column;
-    gap: 0;
   }
 
   .ds-sidebar__group + .ds-sidebar__group {
-    padding-top: var(--sa-padding-12);
+    margin-top: var(--sa-stack-8);
+    padding-top: var(--sa-stack-8);
     border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
@@ -79,38 +92,42 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: var(--sa-font-weight-semibold);
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);
-    padding: 0 var(--sa-padding-16) var(--sa-padding-8);
+    padding: var(--sa-padding-12) var(--sa-padding-16) var(--sa-padding-8);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .ds-sidebar__group-items {
+  /* ── Lists ──────────────────────────────────────────────────────────────────── */
+
+  .ds-sidebar__list {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--sa-stack-12); /* 12px */
+    gap: var(--sa-stack-4);
   }
 
-  /* ── Main item ──────────────────────────────────────────────────────────────── */
-
-  .ds-sidebar__main-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+  .ds-sidebar__list--l2,
+  .ds-sidebar__list--l3 {
+    padding-top: var(--sa-stack-4);
   }
 
-  /* The clickable row: used as both <a> (leaf) and <button> (group toggle) */
-  .ds-sidebar__main-row {
+  /* ── Level 1 row: <a> for a page, <button> for a group ─────────────────────── */
+
+  .ds-sidebar__row {
     display: flex;
     align-items: center;
-    gap: var(--sa-stack-8);
+    gap: var(--sa-inline-8);
     width: 100%;
-    padding: var(--sa-padding-12) var(--sa-padding-16); /* 12px 16px — Figma: py-md px-lg */
-    border-radius: var(--sa-shape-16); /* 16px */
+    min-height: var(--sa-target-spacious);
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border-radius: var(--sa-shape-16);
     border: none;
     background: transparent;
     cursor: pointer;
@@ -118,42 +135,59 @@
     color: var(--sa-text-neutral-base);
     text-decoration: none;
     font-family: var(--sa-font-latin);
-    font-size: var(--sa-type-label-1-size); /* Figma: font-size/body-2 — same size; a nav item is a label */
+    font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
+    font-weight: 500;
+    position: relative;
     transition:
       background var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
       color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
-  .ds-sidebar__main-row:focus-visible {
+  .ds-sidebar__row:focus-visible,
+  .ds-sidebar__sub-row:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
   }
 
-  .ds-sidebar__main-row:hover:not(.is-active) {
+  .ds-sidebar__row:hover:not(.is-active, .is-disabled),
+  .ds-sidebar__row.is-open:not(.is-active) {
     background: var(--sa-bg-neutral-subtler);
   }
 
-
-  /* BOLDER, NOT BASE. `text/brand/primary/base` is gov-blue #0373DF, and on the
-     pale `primaryScale/50` ground this row uses it measures 4.19:1 — below the
-     4.5:1 that 14px normal-weight text needs. Found by running axe against a
-     live portal rather than against the documentation, which never renders an
-     ACTIVE row. `bolder` is 5.74:1 on the same ground. */
-  .ds-sidebar__main-row.is-active {
-    background: var(--sa-bg-neutral-selected);
+  .ds-sidebar__row.is-active {
+    background: var(--sa-bg-brand-primary-base);
     color: var(--sa-text-brand-primary-bolder);
   }
 
-  /* Icon */
-  .ds-sidebar__icon {
-    flex-shrink: 0;
-    width: 24px;
-    height: 24px;
+  /* A level-2 group on the way to the current page takes the bolder ink but no
+     tint: the level-1 holder and the page itself are tinted, the route between
+     them is ink and the drawn connector. */
+  /* The level-2 group on the way to the current page is tinted like it — the
+     route from the level-1 holder down to the page reads as tinted rows joined
+     by the drawn line. Ink-only was tried and the level-3 page looked cut off
+     from its parents (decision 14). */
+  .ds-sidebar__sub-row.is-ancestor {
+    background: var(--sa-bg-brand-primary-base);
+    color: var(--sa-text-brand-primary-bolder);
   }
 
-  /* Label */
-  .ds-sidebar__label {
+  .ds-sidebar__row.is-disabled,
+  .ds-sidebar__sub-row.is-disabled {
+    color: var(--sa-text-neutral-disabled);
+    cursor: not-allowed;
+  }
+
+  .ds-sidebar__icon {
+    flex-shrink: 0;
+    color: var(--sa-icon-neutral-base);
+  }
+
+  .ds-sidebar__row.is-active .ds-sidebar__icon { color: var(--sa-icon-brand-primary-bolder); }
+  .ds-sidebar__row.is-disabled .ds-sidebar__icon { color: var(--sa-icon-neutral-disabled); }
+
+  .ds-sidebar__label,
+  .ds-sidebar__sub-label {
     flex: 1 1 0;
     min-width: 0;
     overflow: hidden;
@@ -161,142 +195,212 @@
     white-space: nowrap;
   }
 
-  /* Badge */
-  .ds-sidebar__badge {
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 20px;
-    height: 20px;
-    padding: 0 var(--sa-padding-4);
-    border-radius: var(--sa-shape-full);
-    background: var(--sa-bg-status-info-bolder);
-    color: var(--sa-on-bg-brand-primary-bolder);
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    font-weight: var(--sa-font-weight-semibold);
-  }
+  /* The count is the library Badge (primary, solid); this only keeps it from shrinking. */
+  .ds-sidebar__badge { flex-shrink: 0; }
 
-  /* Chevron */
   .ds-sidebar__chevron {
     flex-shrink: 0;
-    opacity: 0.6;
-    transition: transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+    color: var(--sa-icon-neutral-subtle);
   }
 
-  .ds-sidebar__chevron.is-open {
-    transform: rotate(180deg);
-  }
+  .ds-sidebar__row:hover .ds-sidebar__chevron,
+  .ds-sidebar__sub-row:hover .ds-sidebar__chevron { color: var(--sa-icon-neutral-base); }
+  .is-active .ds-sidebar__chevron,
+  .is-ancestor .ds-sidebar__chevron { color: var(--sa-icon-brand-primary-bolder); }
+  .is-disabled .ds-sidebar__chevron { color: var(--sa-icon-neutral-disabled); }
 
-  /* ── Sub-navigation (children) ──────────────────────────────────────────────── */
-
-  .ds-sidebar__subnav {
-    list-style: none;
-    margin: 0;
-    padding: var(--sa-padding-8) var(--sa-padding-24);
-    /* 8px top/bottom, 24px left+right — Portal DS: Children paddingLeft:24 paddingRight:24 paddingTop:8 paddingBottom:8 */
-  }
+  /* ── Levels 2 and 3 ─────────────────────────────────────────────────────────── */
 
   /*
-   * Each child item has a connector drawn via ::before (vertical line) and
-   * ::after (curved bottom-left corner). The connector colour matches the
-   * active-bg token so it is always in sync with the brand colour mode.
-   *
-   * Layout: 16px gutter (connector area) | flex-1 label
+   * A level-2 entry indents by inline/40 so its label sits under the level-1
+   * label (16 padding + 24 icon + 8 gap = 48, minus the row's own 8 padding);
+   * a level-3 leaf indents by inline/64, its trunk under the first letter of its parent's label. Each entry draws its own connector in
+   * the handoff's style: an elbow from the top of the row to its centre that
+   * curves into the pill, and a tail that continues down to the next sibling,
+   * bridging the stack/4 gap. The last entry has no tail, so the trunk ends at
+   * its elbow. A level-2 group's tail runs the height of its open children, so
+   * the trunk stays beside the level-3 rows. The colour is the pale brand tint
+   * the handoff used, one rung up so it survives a low-contrast panel.
    */
-  .ds-sidebar__child {
+  .ds-sidebar__sub {
     position: relative;
     display: flex;
-    align-items: center;
-    min-height: 40px; /* Figma: h-[40px] */
-    padding-left: var(--sa-padding-16); /* connector visual width */
+    flex-direction: column;
+    padding-left: var(--sa-inline-40);
   }
 
-  /* Vertical line — full height, continues to next sibling */
-  .ds-sidebar__child::before {
-    content: '';
+  /* The handoff's connector, on EVERY entry: one straight trunk 16px left of
+     the pill runs from the parent's edge (the list begins where the parent row
+     ends; only the list's stack/4 padding sits between) down through each row
+     and across the stack/4 gap into the next; each entry branches OFF it with a
+     shape/6 elbow that leaves the trunk at 16 and turns into the pill at the
+     row centre, 22, then a 16px arm. The trunk never bends and never stops
+     under an arc — bending it left a notch at every branch, and stopping it
+     where the arc leaves it (then resuming below) left a hole beside the
+     curve. Only the LAST entry ends the trunk, at 16, where its elbow takes
+     over. Neutral throughout; the route to the current page is drawn over it
+     in brand by the SVG below. */
+  .ds-sidebar__sub::before {
+    content: "";
     position: absolute;
-    left: 0;
-    top: 0;
-    width: 1px;
-    height: 100%;
-    background: var(--sa-bg-neutral-selected);
+    left: 24px; /* 16px left of the level-2 pill at inline/40 — the handoff's geometry */
+    top: calc(-1 * var(--sa-stack-4));
+    bottom: calc(-1 * var(--sa-stack-4));
+    width: var(--sa-cmp-divider-width);
+    background: var(--sa-border-neutral-subtle);
   }
 
-  /* Last child: line stops at the corner elbow */
-  .ds-sidebar__child:last-child::before {
-    height: calc(50% - 6px);
+  .ds-sidebar__sub:last-child::before {
+    bottom: auto;
+    height: calc(16px + var(--sa-stack-4)); /* to where the elbow leaves the trunk */
   }
 
-  /* Curved elbow connector — Portal DS: Radius 16×8px at y=12 within 40px child */
-  .ds-sidebar__child::after {
-    content: '';
+  .ds-sidebar__sub::after {
+    content: "";
     position: absolute;
-    left: 0;
-    top: calc(50% - 8px);
+    left: 24px;
+    top: 16px;
     width: 16px;
-    height: 8px;
-    border-left: var(--sa-stroke-1) solid var(--sa-color-primaryScale-50);
-    border-bottom: var(--sa-stroke-1) solid var(--sa-color-primaryScale-50);
-    border-bottom-left-radius: 6px;
+    height: 6px;
+    border-left: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-bottom-left-radius: var(--sa-shape-6);
   }
 
-  /* Child label / link */
-  .ds-sidebar__child-label {
-    flex: 1 1 0;
+  /* A level-3 list nests inside its level-2 entry, which already indents by
+     inline/40, so the leaf adds the remaining inline/24 to land at 64. That puts
+     its trunk at 48 — under the first letter of its parent's label (40 + the
+     row's padding/8) — so the level-3 tree visibly hangs from the word it
+     belongs to. Coordinates are relative to the nested list: trunk at 8 (48 in
+     the rail), the arm reaching the pill at 24 (64 in the rail). */
+  .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-24); }
+  .ds-sidebar__sub--l3::before,
+  .ds-sidebar__sub--l3::after { left: 8px; }
+
+  /*
+   * The path to the current page. One SVG per list, drawn over the neutral
+   * tree from the parent's edge down to the current entry's centre and into
+   * its pill, in brand. It remounts when the current page changes and draws
+   * itself with a stroke-dashoffset transition — a line being drawn leads the
+   * eye to the page; a flash would only point at it. Reduced motion shows the
+   * finished line at once.
+   */
+  .ds-sidebar__list { position: relative; }
+
+  .ds-sidebar__path {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--sa-inline-64); /* wide enough for the longest route: the level-2 trunk at 24 plus its 16px arm, or the nested level-3 trunk at 8 plus 16 */
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 1; /* above the entries' neutral connectors, so the drawn route is unbroken where they coincide */
+  }
+
+  .ds-sidebar__path path {
+    fill: none;
+    stroke: var(--sa-border-brand-primary-base);
+    stroke-width: var(--sa-stroke-1);
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset var(--sa-motion-reveal-duration) var(--sa-motion-reveal-easing);
+
+    @starting-style {
+      stroke-dashoffset: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-sidebar__path path { transition: none; }
+  }
+
+  .ds-sidebar__sub--flyout { padding-left: 0; }
+  .ds-sidebar__sub--flyout::before,
+  .ds-sidebar__sub--flyout::after { content: none; }
+
+  .ds-sidebar__sub-row {
     display: flex;
     align-items: center;
-    padding: var(--sa-padding-8) var(--sa-padding-12); /* 8px 12px — Figma: py-sm px-md */
-    border-radius: var(--sa-shape-8); /* 8px */
-    font-family: var(--sa-font-latin);
-    font-size: var(--sa-type-label-1-size);
-    line-height: var(--sa-type-label-1-lh);
+    gap: var(--sa-inline-8);
+    width: 100%;
+    min-height: var(--sa-target-comfortable);
+    padding: var(--sa-padding-12) var(--sa-padding-8);
+    border-radius: var(--sa-shape-8);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
     color: var(--sa-text-neutral-base);
-    opacity: 0.8;
     text-decoration: none;
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 400;
     transition:
       background var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
-      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
-      opacity var(--sa-motion-exit-duration);
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
-  .ds-sidebar__child-label:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
-    opacity: 1;
-  }
-
-  .ds-sidebar__child-label:hover:not(.is-active) {
+  .ds-sidebar__sub-row:hover:not(.is-active, .is-ancestor, .is-disabled) {
     background: var(--sa-bg-neutral-subtler);
-    opacity: 1;
   }
 
-
-  /* Same ground, same measurement, same fix as the main row above. */
-  .ds-sidebar__child-label.is-active {
-    background: var(--sa-bg-neutral-selected);
+  .ds-sidebar__sub-row.is-active {
+    background: var(--sa-bg-brand-primary-base);
     color: var(--sa-text-brand-primary-bolder);
-    opacity: 1;
   }
 
-  /* ── Collapsed state ────────────────────────────────────────────────────────── */
+  /* ── Collapsed rail ─────────────────────────────────────────────────────────── */
 
-  .ds-sidebar.is-collapsed .ds-sidebar__main-row {
+  .ds-sidebar.is-collapsed .ds-sidebar__row {
     gap: 0;
-    padding: var(--sa-padding-12) var(--sa-padding-16);
     justify-content: center;
   }
 
-  .ds-sidebar.is-collapsed .ds-sidebar__label,
-  .ds-sidebar.is-collapsed .ds-sidebar__badge,
-  .ds-sidebar.is-collapsed .ds-sidebar__chevron,
-  .ds-sidebar.is-collapsed .ds-sidebar__subnav,
-  .ds-sidebar.is-collapsed .ds-sidebar__group-label {
-    display: none;
+  .ds-sidebar.is-collapsed .ds-sidebar__group + .ds-sidebar__group {
+    margin-top: var(--sa-stack-8);
+    padding-top: var(--sa-stack-8);
   }
 
-  /* ── Footer ─────────────────────────────────────────────────────────────────── */
+  /* A count has nowhere to sit in a 56px row; the signal survives as a dot on the icon. */
+  .ds-sidebar__dot {
+    position: absolute;
+    top: var(--sa-padding-8);
+    right: var(--sa-padding-12);
+    width: var(--sa-cmp-badge-dotSizeLg);
+    height: var(--sa-cmp-badge-dotSizeLg);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-cmp-button-primary-bg); /* the fill the library Badge (and its Figma master) binds */
+  }
+
+  /* ── Flyout (collapsed group) ───────────────────────────────────────────────── */
+
+  .ds-sidebar__flyout {
+    position: fixed;
+    margin-left: var(--sa-inline-4);
+    width: var(--sa-layout-sidebar-flyoutWidth);
+    padding: var(--sa-padding-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    background: var(--sa-bg-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    box-shadow: var(--sa-elevation-dropdown);
+    z-index: var(--sa-z-popover); /* above the sticky rail and the page, below modals */
+  }
+
+  .ds-sidebar__flyout-title {
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+    padding: var(--sa-padding-8) var(--sa-padding-8) var(--sa-padding-4);
+  }
+
+  /* ── Footer and control ────────────────────────────────────────────────────── */
 
   .ds-sidebar__footer {
     flex-shrink: 0;
@@ -305,51 +409,99 @@
     margin-top: auto;
   }
 
-  /* ── Resize / collapse control ──────────────────────────────────────────────── */
+  /* ── Portal identity ─────────────────────────────────────────────────────── */
   /*
-   * Vertical drag-handle on the right edge (Figma: .control / showControl=true).
-   * Appears on sidebar hover to avoid visual clutter.
+   * Which portal the user is in: mark, short name, expansion, a link home. The
+   * masthead carries the Ministry and the estate; this is the one place the
+   * portal is named, so it heads every rail. Collapsed: the mark alone, the
+   * name as tooltip and accessible label.
    */
-  .ds-sidebar__control {
-    position: absolute;
-    top: 0;
-    right: -8px;
-    bottom: 0;
-    width: 16px;
+  .ds-sidebar__identity {
+    flex-shrink: 0;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    cursor: col-resize;
-    padding: var(--sa-padding-8) 0;
-    z-index: 1;
-    opacity: 0;
-    transition: opacity var(--sa-motion-exit-duration);
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-8) 0 var(--sa-padding-12);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
-  .ds-sidebar__control:focus-visible {
-    opacity: 1;
+  .ds-sidebar__identity.is-collapsed {
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+  }
+
+  .ds-sidebar__identity-link {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    min-width: 0;
+    flex: 1 1 0;
+    color: inherit;
+    text-decoration: none;
+    border-radius: var(--sa-shape-8);
+  }
+
+  .ds-sidebar__identity.is-collapsed .ds-sidebar__identity-link { flex: 0 0 auto; }
+
+  .ds-sidebar__identity-link:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
   }
 
-  .ds-sidebar:hover .ds-sidebar__control {
-    opacity: 1;
-  }
-
-  .ds-sidebar__control-line {
-    flex: 1 1 0;
-    min-height: 0;
-    width: 1px;
-    background: var(--sa-border-neutral-subtle);
-  }
-
-  .ds-sidebar__control-handle {
+  .ds-sidebar__identity-mark {
     flex-shrink: 0;
-    width: 16px;
-    height: 48px;
-    color: var(--sa-text-neutral-subtle);
+    display: inline-flex;
+    width: var(--sa-icon-size-40);
+    height: var(--sa-icon-size-40);
   }
+
+  /* The registry mark comes in 32 / 48 / 56; the identity row draws it at 40,
+     the size the Figma master binds (icon/size/40). */
+  .ds-sidebar__identity-mark > .ds-org-logo {
+    width: var(--sa-icon-size-40);
+    height: var(--sa-icon-size-40);
+  }
+
+  .ds-sidebar__identity-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+    min-width: 0;
+  }
+
+  .ds-sidebar__identity-name {
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-sidebar__identity-expansion {
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  /* ── Collapse control (without an identity) ────────────────────────────────── */
+  /* The rail's own collapse control — shown only where the masthead has no
+     toggle — sits at the TOP, a 48px row above the first item: right-aligned
+     when expanded, centred when collapsed. Never at the foot, which is below
+     the fold on a laptop. With an identity it sits in that row instead. */
+  .ds-sidebar__control {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--sa-padding-4);
+  }
+
+  .ds-sidebar.is-collapsed .ds-sidebar__control { justify-content: center; }
 }
