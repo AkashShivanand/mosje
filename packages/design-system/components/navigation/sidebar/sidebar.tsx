@@ -616,6 +616,7 @@ export function SidebarNav({
   showCollapseControl = false,
   identity,
   footer,
+  header,
   label,
   className,
   id,
@@ -679,6 +680,7 @@ export function SidebarNav({
         control && <div className="ds-sidebar__control">{control}</div>
       )}
 
+      {header && <div className="ds-sidebar__header">{header}</div>}
       <nav className="ds-sidebar__nav" aria-label={navLabel}>
         {groups.map((group, gi) => {
           const labelId = group.label ? `${baseId}-g${gi}` : undefined;

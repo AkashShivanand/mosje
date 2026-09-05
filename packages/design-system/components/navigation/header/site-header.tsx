@@ -205,7 +205,12 @@ export interface SiteHeaderProps {
  */
 export function SiteHeader({
   variant,
-  govLink = { href: "https://india.gov.in/", label: "Government of India" },
+  /* THE FLAG IS NOT OPTIONAL. Two of eleven shells passed one; the other nine
+     rendered a government bar with no national mark on it, and the two surfaces
+     did not agree on what the bar was. The default points at the hub-root copy
+     (`apps/hub/public/images/Indian-Flag.svg`), which every zone can load on the
+     single origin. A shell may still pass its own. */
+  govLink = { href: "https://india.gov.in/", label: "Government of India", flagSrc: "/images/Indian-Flag.svg" },
   skipTo = "#main-content",
   accessibilityToolbar = true,
   onAccessibility,
@@ -269,6 +274,17 @@ export function SiteHeader({
     maxWidth: maxWidth ?? (isPortal ? "100%" : "var(--sa-container-page)"),
   } as React.CSSProperties;
   const hasNav = !!nav && nav.length > 0;
+  /**
+   * ONE MENU CONTROL ON A PHONE. A portal that has a sidebar (`onToggleNav`) and a
+   * top-level `nav` used to show two menu-shaped controls below 1024 — the sidebar
+   * toggle leading and the sheet trigger trailing — with nothing to tell a reader
+   * which opened what. The rule: on a portal the sidebar is the navigation surface
+   * below the laptop anchor, and the nav row is a desktop affordance. The sheet
+   * and its trigger are not rendered when the sidebar is there; the portal's
+   * sidebar carries the same top-level entries. The website has no sidebar, so
+   * its sheet is unaffected.
+   */
+  const showSheet = hasNav && !(isPortal && onToggleNav);
   const drawerId = React.useId();
   const condensed = wantsScrollCollapse && scrolled;
 
@@ -851,7 +867,7 @@ export function SiteHeader({
 
         <span className="ds-hdr-brand__actions">{actions}</span>
 
-        {hasNav && (
+        {showSheet && (
           <SheetToggle
             open={drawerOpen}
             onOpen={() => setDrawerOpen(true)}
@@ -925,8 +941,13 @@ export function SiteHeader({
                   300px on a phone. Below 768 the field waits behind a 40px button in
                   the row — the same control the condensed bar uses — and opens on
                   its own row on tap; Escape closes it. Nothing renders here from 768
-                  up, where the field is on the row as before. */}
-              {isPortal && search && (
+                  up, where the field is on the row as before.
+                  AND NOT WHEN THERE IS A SIDEBAR. A portal that has one opens a drawer
+                  on a phone, and search lives at the head of that drawer (SidebarNav
+                  `header`); a search button beside the toggle would be a second door
+                  to the same room, and the 52px it costs is the difference between an
+                  identity that wraps to two lines and one that wraps to four. */}
+              {isPortal && search && !onToggleNav && (
                 <button
                   type="button"
                   className="ds-hdr-brand__searchbtn"
@@ -942,7 +963,7 @@ export function SiteHeader({
 
               <span className="ds-hdr-brand__actions">{actions}</span>
 
-              {hasNav && (
+              {showSheet && (
                 <SheetToggle
                   open={drawerOpen}
                   onOpen={() => setDrawerOpen(true)}
@@ -978,7 +999,7 @@ export function SiteHeader({
          and the markup stable across the condense. */}
       {!isCompact && (
         <AccessibilityBar
-          govLink={govLink}
+          govLink={{ flagSrc: "/images/Indian-Flag.svg", ...govLink }}
           skipTo={skipTo}
           showSkip
           fontSize
@@ -1031,7 +1052,7 @@ export function SiteHeader({
 
 
       {/* ── Mobile navigation (Figma Navbar/NavSheet) ── */}
-      {hasNav && (
+      {showSheet && (
         <NavSheet
           id={drawerId}
           open={drawerOpen}
