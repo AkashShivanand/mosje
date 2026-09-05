@@ -86,6 +86,7 @@
 @import "./components/brand/illustration/illustration.css";
 @import "./components/brand/org-logo.css";
 @import "./components/auth/auth-parts.css";
+@import "./components/auth/portal-login-hero.css";
 @import "./components/auth/portal-login-template.css";
 @import "./components/utilities/accessibility-bar.css";
 @import "./components/utilities/live-region.css";

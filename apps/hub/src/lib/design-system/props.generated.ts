@@ -6490,6 +6490,13 @@ export const GENERATED_PROPS = {
         "description": "Optional content below form area (e.g. Portal Switcher Grid)"
       },
       {
+        "name": "heroImageSrc",
+        "type": "string",
+        "required": false,
+        "default": "\"/portals/login-hero/samavesh-default.jpg\"",
+        "description": "The photograph behind the desktop hero — the Figma organism's `Photograph` swap. Drawn as a background so a phone, which never shows the column, never downloads it. Defaults to the estate's SAMAVESH photograph (1200px JPEG, 262 KB, exported from the library on 2026-09-05); a portal passes its own. Decorative: it carries no text and sits under an alpha mask that leaves a solid band on the left for the lockup and the Signing Into bar."
+      },
+      {
         "name": "onFooterLinkClick",
         "type": "(link: \"privacy\" | \"contact\" | \"about\") => void",
         "required": false,

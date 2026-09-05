@@ -1373,6 +1373,25 @@
           "hint": "The default <Icon> size."
         }
       ]
+    },
+    {
+      "node": "57287:61473",
+      "where": "Auth / LoginHero › strapline",
+      "figma": "Single Access Mechanism for All Verticals of Empowerment & Social Harmony — one unified gateway for every social justice service in India.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-shell.tsx",
+          "pattern": "Single Access Mechanism for All Verticals of Empowerment &amp; Social Harmony\\s+— one unified gateway for every social justice service in India\\.",
+          "hint": "The hero's strapline is ONE sentence in Figma and in code. It was two for a week — the master expanded the acronym, the shell described a platform — and a designer and a developer read different copy on the same column."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-hero.css",
+          "pattern": "transparent 0%,\\s+color-mix\\(in srgb, currentColor 50%, transparent\\) 50%,\\s+currentColor 70%",
+          "hint": "The mask stops transcribe the Figma alpha mask (57287:61362): α0 → α0.5 at 50% → α1 at 70%, left to right. Change one side and the band the text sits on differs between the library and the estate."
+        }
+      ]
     }
   ],
   "tokenTables": [

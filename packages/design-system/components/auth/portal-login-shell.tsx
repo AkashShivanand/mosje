@@ -8,6 +8,7 @@
  *
  * What changes per portal:
  *   - `emblemSrc`, `digitalIndiaSrc`, `samaveshLogoSrc` — asset paths from the portal's /public
+ *   - `heroImageSrc` — the portal's photograph behind the hero (Figma: the Photograph swap)
  *   - `signingInto` — the scheme/portal name shown in the hero's "SIGNING INTO" strip
  *   - `tabs` — tab labels and hrefs (e.g. Admin + Patient Monitoring for NMBA)
  *   - `children` — the form content (heading, fields, submit button)
@@ -23,10 +24,14 @@ import * as React from "react";
 import { Divider } from "../layout/divider";
 import { AccessibilityBar } from "../utilities/accessibility-bar";
 import { BrandLockup } from "../navigation/header/brand-lockup";
+import { Button } from "../actions/button";
+import { OrgLogo } from "../brand/org-logo";
+import { Icon } from "../utilities/icon";
 // The chrome rows use the estate content container, so the emblem lines up with
 // the same column every other page uses. Previously max-w-screen-2xl (1536).
 import "../../foundations/layout.css";
 import "./portal-login-template.css";
+import "./portal-login-hero.css";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -49,6 +54,15 @@ export interface PortalLoginShellProps {
   digitalIndiaSrc: string;
   /** SAMAVESH circular logo URL */
   samaveshLogoSrc: string;
+  /**
+   * The photograph behind the desktop hero — the Figma organism's `Photograph`
+   * swap. Drawn as a background so a phone, which never shows the column, never
+   * downloads it. Defaults to the estate's SAMAVESH photograph (1200px JPEG,
+   * 262 KB, exported from the library on 2026-09-05); a portal passes its own.
+   * Decorative: it carries no text and sits under an alpha mask that leaves a
+   * solid band on the left for the lockup and the Signing Into bar.
+   */
+  heroImageSrc?: string;
 
   // ── "SIGNING INTO" strip at the bottom of the hero ────────────────────────
   /** Portal / scheme name, e.g. "Nasha Mukt Bharat Abhiyaan" */
@@ -75,6 +89,7 @@ export function PortalLoginShell({
   emblemSrc = "/brand/national-emblem.svg",
   digitalIndiaSrc = "/brand/digital-india.svg",
   samaveshLogoSrc = "/brand/samavesh-logo.svg",
+  heroImageSrc = "/portals/login-hero/samavesh-default.jpg",
   signingInto,
   changeHref = "/",
   tabs,
@@ -140,81 +155,66 @@ export function PortalLoginShell({
       {/* ── Two-column body ──────────────────────────────────────────────────── */}
       <div className="flex flex-1">
 
-        {/* Left hero — desktop only */}
-        <div
-          className="relative hidden flex-col lg:flex lg:w-[58%]"
-          style={{
-            background:
-              "linear-gradient(155deg, var(--sa-color-primaryScale-900) 0%, var(--sa-color-primaryScale-900) 38%, "
-              + "var(--sa-color-primaryScale-800) 64%, var(--sa-color-primaryScale-900) 100%)",
-          }}
-        >
+        {/* Left hero — desktop only. One construction with the Figma organism
+            `Auth / LoginHero`: the photograph under an alpha mask that leaves a
+            solid band on the left, the SAMAVESH lockup on that band, and the
+            Signing Into bar over a bottom scrim. The rules are in
+            portal-login-hero.css beside the Figma node ids they transcribe. */}
+        {/* 922 of 1440 — the handoff's hero/form split, which the Figma master draws. */}
+        <div className="ds-plogin-hero hidden lg:flex lg:w-[64.03%]">
+          <div
+            className="ds-plogin-hero__photo"
+            aria-hidden="true"
+            style={{ backgroundImage: `url("${heroImageSrc}")` }}
+          />
+
           {/*
-            Hero content — decorative, so hidden from assistive technology. The
+            Lockup — decorative, so hidden from assistive technology. The
             `aria-hidden` used to sit on the whole column, which also hid the
             "Signing Into" strip below: a screen-reader user was never told which
             portal they were signing into, and the strip's Change link was a
             focusable control inside a hidden subtree (axe `aria-hidden-focus`,
             WCAG 4.1.2). Only the lockup is decorative; the strip is content.
           */}
-          <div
-            className="flex flex-1 flex-col items-center justify-center px-12 py-16 text-center text-white"
-            aria-hidden="true"
-          >
-            <img
-              src={samaveshLogoSrc}
-              alt=""
-              className="mb-6 h-24 w-24 rounded-full"
-              style={{ boxShadow: "0 0 0 4px color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 20%, transparent)" }}
-            />
-            <p className="text-headline-2">SAMAVESH</p>
-            <p lang="hi" className="mt-1.5 font-medium" style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 80%, transparent)" }}>समावेश</p>
-            <div className="mx-auto mt-6 h-px w-14" style={{ background: "var(--sa-color-secondaryScale-400)" }} />
-            <p className="mt-6 text-headline-4" style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 90%, transparent)" }}>
-              Justice. Equality. Dignity.
-            </p>
-            <p className="mt-4 max-w-xs text-body-2" style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 55%, transparent)" }}>
-              A unified digital platform for social welfare schemes under the Ministry of Social
-              Justice &amp; Empowerment, Government of India.
-            </p>
+          <div className="ds-plogin-hero__body" aria-hidden="true">
+            <div className="ds-plogin-hero__head">
+              <span className="ds-plogin-hero__ring">
+                <img src={samaveshLogoSrc} alt="" />
+              </span>
+              <div>
+                <p className="text-display-4">SAMAVESH</p>
+                <p lang="hi" className="ds-plogin-hero__muted text-headline-3">समावेश</p>
+              </div>
+            </div>
+            <div className="ds-plogin-hero__rule" />
+            <div className="ds-plogin-hero__subtitle">
+              <p className="text-headline-3">Justice. Equality. Dignity.</p>
+              {/* The department's own expansion of SAMAVESH — the same sentence the
+                  Figma master carries, so a designer and a developer read one strapline. */}
+              <p className="ds-plogin-hero__muted text-body-1">
+                Single Access Mechanism for All Verticals of Empowerment &amp; Social Harmony
+                — one unified gateway for every social justice service in India.
+              </p>
+            </div>
           </div>
 
-          {/* SIGNING INTO strip */}
-          <div
-            className="border-t px-8 py-4"
-            style={{
-              background: "color-mix(in oklab, var(--sa-color-primaryScale-900) 65%, transparent)",
-              borderColor: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 10%, transparent)",
-            }}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <img src={samaveshLogoSrc} alt="" className="h-8 w-8 rounded-full border border-white/20 bg-white/10 p-0.5" />
-                <div>
-                  <p
-                    className="text-label-3 uppercase font-semibold"
-                    style={{
-                      color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 70%, transparent)",
-                    }}
-                  >
-                    Signing Into
-                  </p>
-                  <p className="mt-0.5 text-title-3 text-white">
-                    {signingInto}
-                  </p>
-                </div>
+          {/* SIGNING INTO bar — content, not decoration */}
+          <div className="ds-plogin-hero__footer">
+            <div className="ds-plogin-hero__bar">
+              <OrgLogo size="lg" />
+              <div className="ds-plogin-hero__bar-text">
+                <p className="ds-plogin-hero__eyebrow ds-plogin-hero__muted text-label-2">Signing Into</p>
+                <p className="text-title-1">{signingInto}</p>
               </div>
-              <a
+              <Button
                 href={changeHref}
-                className="flex items-center gap-1.5 rounded-full px-3.5 py-1 text-label-2 font-semibold transition hover:bg-white/10"
-                style={{
-                  border: "1px solid color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 25%, transparent)",
-                  color: "var(--sa-on-bg-brand-primary-boldest)",
-                }}
+                variant="neutral"
+                appearance="outlined"
+                tone="inverse"
+                iconLeft={<Icon name="swap_horiz" size={16} aria-hidden />}
               >
-                <span aria-hidden="true">⇄</span>
-                <span>Change</span>
-              </a>
+                Change
+              </Button>
             </div>
           </div>
         </div>

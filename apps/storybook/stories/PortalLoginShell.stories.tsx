@@ -69,6 +69,9 @@ const meta = {
     emblemSrc: asset("Emblem", 48, 64),
     digitalIndiaSrc: asset("Digital India", 120, 44),
     samaveshLogoSrc: asset("SAMAVESH", 64, 64),
+    // The photograph behind the hero — the Figma Photograph swap. Left at the default
+    // here so the story shows what a portal gets without passing one.
+    heroImageSrc: "/portals/login-hero/samavesh-default.jpg",
     signingInto: "Nasha Mukt Bharat Abhiyaan",
     changeHref: "/",
     tabs: [

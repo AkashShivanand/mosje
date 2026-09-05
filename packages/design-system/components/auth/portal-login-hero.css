@@ -1,0 +1,128 @@
+/* Declare the order before using it — see auth-parts.css for why. */
+@layer theme, base, components, utilities;
+
+/*
+ * The desktop login hero, transcribed from the Figma organism `Auth / LoginHero`
+ * (57351:12278) so the two are ONE construction rather than two drawings:
+ *
+ *   column     fill `bg/brand/primary/bolder`        → --sa-bg-brand-primary-bolder
+ *   photograph a box 814 of 922 wide, right-aligned  → inset-inline-start 11.71%
+ *              under an ALPHA mask (57287:61362) whose stops read, left to right,
+ *              α0 at 0% · α0.5 at 50% · α1 at 70%    → the mask-image below
+ *   footer     scrim α1 at the bottom → α0.16 at the top of a 144px band
+ *
+ * The mask is the accessibility of this column. The white lockup, strapline and
+ * "Signing Into" bar sit on the solid band the mask leaves at the left, so their
+ * contrast is the band's, never the photograph's. Move the text right of 50% and
+ * that guarantee is gone.
+ *
+ * Only the mask's ALPHA is read, so `currentColor` is the opaque stop (the tabs
+ * overflow fade uses the same convention) and no colour literal is needed.
+ */
+@layer components {
+  .ds-plogin-hero {
+    --ds-plogin-hero-measure: 382px; /* Figma: text column inside 64px paddings */
+    --ds-plogin-hero-mark: 84px; /* Figma: the seal inside a 4px white ring = 92 */
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-boldest);
+  }
+
+  .ds-plogin-hero__photo {
+    position: absolute;
+    inset: 0 0 0 11.71%;
+    background-position: center;
+    background-size: cover;
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      color-mix(in srgb, currentColor 50%, transparent) 50%,
+      currentColor 70%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      color-mix(in srgb, currentColor 50%, transparent) 50%,
+      currentColor 70%
+    );
+  }
+
+  .ds-plogin-hero__body {
+    position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--sa-stack-24);
+    max-inline-size: calc(var(--ds-plogin-hero-measure) + 2 * var(--sa-padding-64));
+    padding: var(--sa-padding-64);
+  }
+
+  .ds-plogin-hero__head {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+  }
+
+  .ds-plogin-hero__ring {
+    display: inline-flex;
+    flex: none;
+    padding: var(--sa-padding-4);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .ds-plogin-hero__ring img {
+    display: block;
+    inline-size: var(--ds-plogin-hero-mark);
+    block-size: var(--ds-plogin-hero-mark);
+    border-radius: var(--sa-shape-full);
+  }
+
+  .ds-plogin-hero__rule {
+    block-size: var(--sa-stack-4);
+    border-radius: var(--sa-shape-4);
+    background-color: var(--sa-color-secondaryScale-400);
+  }
+
+  .ds-plogin-hero__subtitle {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+  }
+
+  /* Figma draws the secondary lines at 80% opacity of Text/Light; so does this. */
+  .ds-plogin-hero__muted {
+    opacity: 0.8;
+  }
+
+  .ds-plogin-hero__footer {
+    position: relative;
+    padding: 0 var(--sa-padding-64) var(--sa-padding-64);
+    background: linear-gradient(
+      to top,
+      var(--sa-bg-brand-primary-bolder),
+      color-mix(in oklab, var(--sa-bg-brand-primary-bolder) 16%, transparent)
+    );
+  }
+
+  .ds-plogin-hero__bar {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    padding-block-start: var(--sa-padding-24);
+  }
+
+  .ds-plogin-hero__bar-text {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
+  .ds-plogin-hero__eyebrow {
+    text-transform: uppercase;
+  }
+}
