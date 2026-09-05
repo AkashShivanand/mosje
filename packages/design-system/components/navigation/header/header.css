@@ -252,7 +252,9 @@
 
   /* Portal collapse / menu toggle (far left).
      Figma: Navbar/MenuToggle = IconButton Size=Large, Type=Outlined — 48x48,
-     radius 8, 1px neutral border, 32px glyph. Identical to the mobile SheetToggle,
+     radius 8, 1px neutral border, 24px glyph — the IconButton's own icon size at both
+     48 and 40. It carried a 32px glyph until 2026-09-05; Figma's icon slot could not
+     centre a 32 in a 24 box and the glyph sat 2px right and 4px low. Identical to the mobile SheetToggle,
      deliberately: one hamburger look across the estate.
 
      It was a bare 40x40 with a 24px glyph — the only control in the brand row with
@@ -543,7 +545,9 @@
 
   /* Mobile drawer toggle.
      Figma: Navbar/* mobile CTA = IconButton Size=Large, Type=Outlined — 48x48,
-     radius 8, 1px neutral border, 32px glyph. */
+     radius 8, 1px neutral border, 24px glyph — the IconButton's own icon size at both
+     48 and 40. It carried a 32px glyph until 2026-09-05; Figma's icon slot could not
+     centre a 32 in a 24 box and the glyph sat 2px right and 4px low. */
   .ds-hdr-burger {
     display: inline-grid;
     place-items: center;
@@ -1251,7 +1255,7 @@
 
   /* The compact bar's drawer trigger appears below the inline nav's breakpoint. */
   /* The compact bar's trigger is the SAME control as everywhere else — IconButton
-     Large Outlined, 48x48, 32px glyph. It used to be overridden here to a bare 40px
+     Large Outlined, 48x48, 24px glyph. It used to be overridden here to a bare 40px
      icon with `border: none`, which is the container-less form the rest of the
      masthead moved away from; it survived only because the compact variant was added
      after that pass and has no Figma master to check against. It has one now
