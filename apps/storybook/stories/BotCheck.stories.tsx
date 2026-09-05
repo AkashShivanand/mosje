@@ -28,7 +28,7 @@ const meta = {
   component: BotCheck,
   args: { helpHref: "/website/contact-us" },
   argTypes: {
-    mode: { control: "inline-radio", options: ["invisible", "checkbox", "challenge"] },
+    mode: { control: "inline-radio", options: ["invisible", "checkbox"] },
     status: { control: "inline-radio", options: ["idle", "verifying", "verified", "failed"] },
     helpHref: { control: "text" },
     helpLabel: { control: "text" },
@@ -116,6 +116,11 @@ export const Checkbox: Story = {
  *
  * Override `gestureLabel` for a portal whose register differs, or to translate
  * it. Keep it short: it sits on one line beside the box at every width.
+ *
+ * `id` is set here so the surrounding form can point its own `<label for>` at
+ * the checkbox — pass it whenever the check sits inside a form that labels its
+ * fields itself, and let it default otherwise so two instances on one page
+ * cannot collide.
  */
 export const CustomWording: Story = {
   render: (args) => {
@@ -125,42 +130,10 @@ export const CustomWording: Story = {
         {...args}
         mode="checkbox"
         status={status}
+        id="bot-check-anti-spam"
         label="Anti-spam check"
         gestureLabel="I am a person, not an automated script"
         onVerify={() => setStatus("verified")}
-      />
-    );
-  },
-};
-
-/**
- * **`challenge` — deprecated.** Shown so the mode is documented, not so it is
- * chosen. It is the least accessible option and the least effective one; the
- * component's own docstring carries the measurements.
- *
- * `onRefresh` must also clear `value` — a new challenge with the previous answer
- * still typed in reads as though the reader's input was accepted.
- *
- * `placeholder` overrides the default "Enter the characters" and applies to this
- * mode only; the other two have no field to place text in. `id` is set here so
- * the surrounding form can point its own `<label for>` at the input — pass it
- * whenever the check sits inside a form that labels its fields itself, and let it
- * default otherwise so two instances on one page cannot collide.
- */
-export const ChallengeDeprecated: Story = {
-  render: (args) => {
-    const [value, setValue] = React.useState("");
-    return (
-      <BotCheck
-        {...args}
-        mode="challenge"
-        status="idle"
-        id="bot-check-challenge"
-        placeholder="Type the six characters shown"
-        challenge={{ type: "text", characters: "K7QN2M" }}
-        value={value}
-        onValueChange={setValue}
-        onRefresh={() => setValue("")}
       />
     );
   },

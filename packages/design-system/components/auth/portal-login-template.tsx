@@ -191,20 +191,6 @@ export function PortalLoginTemplate({
   const [password, setPassword] = React.useState("");
   const [mobile, setMobile] = React.useState("");
   const [otp, setOtp] = React.useState("");
-  const [captchaInput, setCaptchaInput] = React.useState("");
-
-  // Captcha code generator
-  const [captchaCode, setCaptchaCode] = React.useState("7K9P2");
-  const generateCaptcha = React.useCallback(() => {
-    const chars = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
-    let code = "";
-    for (let i = 0; i < 5; i++) {
-      code += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    setCaptchaCode(code);
-    setCaptchaInput("");
-  }, []);
-
   // Resolved PER ROLE, portal default second, off last. The handoff asks a
   // Garima Greh organisation for a captcha and asks the same portal's citizen
   // for none, so the answer belongs to the tab rather than to the portal.
@@ -232,9 +218,12 @@ export function PortalLoginTemplate({
    * The mode defaults to `invisible`: the server decides from a self-hosted
    * proof-of-work token, a honeypot and rate limiting, and the citizen sees
    * nothing unless it fails. The distorted-characters test this file used to draw
-   * is `BotCheck`'s deprecated `challenge` mode — bots solve the audio form of it
-   * over 85% of the time while only 31.2% of audio challenges get three-person
-   * agreement among people, so it protected nothing and excluded many.
+   * no longer exists on the estate's recommended path at all: bots solve the audio
+   * form of it over 85% of the time while only 31.2% of audio challenges get
+   * three-person agreement among people, so it protected nothing and excluded
+   * many. `BotCheck` was cut back to `invisible` and `checkbox` on 2026-09-03; a
+   * legacy backend that can issue nothing else reaches for the deprecated
+   * `CaptchaField` directly and records why in the change that does it.
    */
   /*
    * The check runs REAL proof-of-work in the browser — SHA-256 over a random
@@ -259,10 +248,6 @@ export function PortalLoginTemplate({
         status={check.status}
         helpHref={botCheckHelpHref}
         onVerify={check.solve}
-        challenge={{ type: "text", characters: captchaCode }}
-        value={captchaInput}
-        onValueChange={setCaptchaInput}
-        onRefresh={generateCaptcha}
       />
     ) : null;
 
@@ -330,7 +315,6 @@ export function PortalLoginTemplate({
         pin: activeAuthMode === "pin" ? password : undefined,
         mobile,
         otp,
-        captcha: captchaInput,
       },
       // The proof-of-work receipt, where a check ran. A server verifies this;
       // see `useBotCheck` for what it must check and why a token it did not

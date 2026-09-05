@@ -974,12 +974,6 @@ export const GENERATED_PROPS = {
         "description": "Where a citizen goes when the check will not pass them. **Required, and deliberately not optional.** A network-reputation or proof-of-work check has no accessible workaround of its own: a citizen on a shared connection, a screen reader that cannot complete the gesture, or an older device that fails the work factor is simply stuck. This link is the alternative WCAG 2.2 3.3.8 asks for, and making it optional is how it gets dropped from the one portal that needed it."
       },
       {
-        "name": "challenge",
-        "type": "| { type: \"image\"; src: string; alt?: string }\n    | { type: \"text\"; characters: string }",
-        "required": false,
-        "description": "`challenge` mode — what the server issued."
-      },
-      {
         "name": "className",
         "type": "string",
         "required": false,
@@ -1027,21 +1021,9 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "mode",
-        "type": "BotCheckMode = \"invisible\" | \"checkbox\" | \"challenge\"",
+        "type": "BotCheckMode = \"invisible\" | \"checkbox\"",
         "required": false,
         "default": "\"invisible\"",
-        "description": ""
-      },
-      {
-        "name": "onRefresh",
-        "type": "() => void",
-        "required": false,
-        "description": "`challenge` mode — asks for a new challenge. It MUST also clear `value`."
-      },
-      {
-        "name": "onValueChange",
-        "type": "(next: string) => void",
-        "required": false,
         "description": ""
       },
       {
@@ -1051,25 +1033,11 @@ export const GENERATED_PROPS = {
         "description": "`checkbox` mode — the citizen's gesture."
       },
       {
-        "name": "placeholder",
-        "type": "string",
-        "required": false,
-        "default": "\"Enter the characters\"",
-        "description": "`challenge` mode placeholder."
-      },
-      {
         "name": "status",
         "type": "BotCheckStatus = \"idle\" | \"verifying\" | \"verified\" | \"failed\"",
         "required": false,
         "default": "\"idle\"",
         "description": ""
-      },
-      {
-        "name": "value",
-        "type": "string",
-        "required": false,
-        "default": "\"\"",
-        "description": "`challenge` mode — the typed answer. Controlled."
       }
     ]
   },

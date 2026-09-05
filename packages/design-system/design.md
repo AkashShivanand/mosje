@@ -2016,8 +2016,12 @@ replacement for `CaptchaField`, and the component a new portal reaches for.
   from a self-hosted proof-of-work token, a honeypot and rate limiting. The component
   appears only when the check has FAILED — a form that silently refuses to submit is the
   worst of the three outcomes. `checkbox` adds one deliberate gesture, which is not a
-  cognitive function test and is therefore permitted. `challenge` is the legacy
-  distorted-characters test and is **deprecated**.
+  cognitive function test and is therefore permitted. **There is no third mode.** A
+  `challenge` mode carrying the legacy distorted-characters test shipped here for one day
+  and was removed on 2026-09-03: it is a cognitive function test by construction, so it
+  could never meet 3.3.8, and offering it from the component a new portal reaches for is
+  how a conformance failure is inherited by default. `CaptchaField` — Deprecated — remains
+  for the one legacy backend that can issue nothing else.
 - **`helpHref` is REQUIRED, and that is the whole design.** A proof-of-work or reputation
   check has no accessible workaround of its own: a citizen on a shared connection, an
   older device that fails the work factor, or a screen reader that cannot complete the
@@ -2037,7 +2041,7 @@ replacement for `CaptchaField`, and the component a new portal reaches for.
   solves the same problem but sends every visitor's signals to another company. Self-hosted
   proof-of-work (ALTCHA / Cap, SHA-256) keeps it inside the estate, which also means no
   cookie and no consent banner. The estate's order of preference is: nothing, then
-  `invisible`, then `checkbox`, then `challenge`.
+  `invisible`, then `checkbox`. There is no fourth step.
 - **It cannot enforce anything.** The component renders the presentation and the escape
   hatch; whether a request is refused is entirely server-side, and a bot never runs this
   code.

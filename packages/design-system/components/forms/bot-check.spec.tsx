@@ -16,11 +16,6 @@ describe("BotCheck — the help link", () => {
   it("appears once a checkbox check has failed", () => {
     expect(html(<BotCheck mode="checkbox" status="failed" helpHref="/help" />)).toMatch(HELP);
   });
-  it("is always present in challenge mode, because the characters are a sensory barrier", () => {
-    for (const status of ["idle", "verifying", "verified", "failed"] as const) {
-      expect(html(<BotCheck mode="challenge" status={status} helpHref="/help" challenge={{ type: "text", characters: "7K4M9P" }} />)).toMatch(HELP);
-    }
-  });
   it("in invisible mode draws nothing until it fails, and then draws the link", () => {
     expect(html(<BotCheck mode="invisible" status="idle" helpHref="/help" />)).toBe("");
     expect(html(<BotCheck mode="invisible" status="failed" helpHref="/help" />)).toMatch(HELP);

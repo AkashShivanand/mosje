@@ -148,8 +148,8 @@
   /* ── BotCheck ─────────────────────────────────────────────────────────────
      The estate's replacement for a captcha. `invisible` renders nothing at all
      unless the check failed, so most of these rules only ever apply to the
-     deprecated `challenge` mode and to the escape hatch, which every mode
-     carries. */
+     `checkbox` gesture, the failed state and the escape hatch. There is no
+     characters test here and no rule for one. */
 
   .ds-botcheck {
     display: flex;
@@ -243,59 +243,6 @@
 
   .ds-botcheck__card[data-status="verified"] .ds-botcheck__status {
     color: var(--sa-text-status-success-base);
-  }
-
-  .ds-botcheck__row {
-    display: flex;
-    align-items: center;
-    gap: var(--sa-inline-8);
-  }
-
-  /* The challenge glyph needs the full width, so the mark moves above it rather
-     than fighting it for the row. */
-  .ds-botcheck--challenge .ds-botcheck__main {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .ds-botcheck--challenge .ds-botcheck__mark {
-    order: -1;
-    align-self: flex-start;
-  }
-
-  .ds-botcheck--challenge .ds-botcheck__control {
-    display: block;
-  }
-
-  .ds-botcheck__challenge {
-    display: flex;
-    flex: 1 1 auto;
-    align-items: center;
-    justify-content: center;
-    padding: var(--sa-padding-12) var(--sa-padding-16);
-    border-radius: var(--sa-control-radius);
-    background-color: var(--sa-bg-neutral-subtle);
-    color: var(--sa-text-neutral-base);
-    font-size: var(--sa-type-title-2-size);
-    line-height: var(--sa-type-title-2-lh);
-    letter-spacing: 0.12em;
-    user-select: none;
-  }
-
-  .ds-botcheck__challenge img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-  }
-
-  /* The refresh control has NO rules here. It is the library `IconButton`, which
-     already owns the square shape, the border, the radius, the hover and the
-     focus ring — this file used to restate every one of them on a bare
-     `<button>`, which is how a control drifts away from the other 494 buttons
-     in the estate. `flex: none` is the only thing the ROW needs to say about
-     it, and that belongs to the row. */
-  .ds-botcheck__row > .ds-btn {
-    flex: none;
   }
 
   .ds-botcheck__help:focus-visible {
