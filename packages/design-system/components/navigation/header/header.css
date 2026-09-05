@@ -219,7 +219,14 @@
     text-decoration: underline;
   }
 
-  /* ── Tier 2: Brand row (UX4G / Portal: white, 12px py, 24px px, gap 24) ── */
+  /* ── Tier 2: Brand row (UX4G / Portal: white, 12px py, page margin px, gap 24) ──
+     THE SIDE PADDING IS THE PAGE MARGIN, NOT A RUNG. Figma binds every masthead
+     row's Container to grid/margin/page — Navbar/Website caps the row at
+     container/page on top of it, Navbar/Portal lets it fill — so the row's content
+     edge is the page's content edge on both surfaces at every width: 16, 24 from
+     768, 32 from 1920. It was a literal 24 (16 below 768) until 2026-09-05, which
+     matched the ladder at every rung but the last: at 1920 and up the page stepped
+     to 32 and the masthead stayed at 24, 8px out of line with everything under it. */
   .ds-hdr-brand {
     background-color: var(--sa-bg-neutral-base);
   }
@@ -229,7 +236,7 @@
     display: flex;
     align-items: center;
     gap: var(--sa-stack-24);
-    padding: var(--sa-padding-12) var(--sa-padding-24);
+    padding: var(--sa-padding-12) var(--sa-grid-margin-page);
   }
 
   /* Wrapping is ON only below `breakpoint/tablet`, where the search field takes a
@@ -311,11 +318,11 @@
       line-height: var(--sa-type-title-3-lh);
     }
 
-    /* 16 not 24 on both axes here: on a 375px screen the row's own inset was
-       costing the identity almost 30px of the width it needed to stop wrapping. */
+    /* Gap 16 not 24 here: on a 375px screen the row's inset was costing the
+       identity almost 30px of the width it needed to stop wrapping. The side
+       padding needs no override — grid/margin/page is already 16 below 768. */
     .ds-hdr-brand__in {
       gap: var(--sa-stack-16);
-      padding-inline: var(--sa-padding-16);
     }
   }
 
@@ -579,13 +586,18 @@
      more common government pattern (GOV.UK, USWDS, Canada.ca) and would survive a
      changing item count better, but that is a design decision the frame has already
      made deliberately; it is not a defect to fix in code. */
+  /* The nav row's Container pads grid/margin/page in Figma, exactly like the brand
+     row above it, and each NavItem carries its own 12px — so the first entry's
+     HOVER GROUND starts on the emblem's left edge and its label sits 12px inside
+     it. This padded 12 until 2026-09-05, which put the label on the emblem's edge
+     and the hover ground 12px OUTSIDE the column the rest of the masthead keeps. */
   .ds-hdr-nav__list {
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--sa-stack-40);
-    padding: 0 var(--sa-padding-12);
+    padding: 0 var(--sa-grid-margin-page);
     list-style: none;
   }
 
@@ -1404,27 +1416,39 @@
     border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
+  /* Side padding is the page margin, as on the resting rows — the condensed bar
+     keeps the same content edge the masthead had, so nothing jumps sideways when
+     it condenses. */
   .ds-hdr-cond__in {
     margin: 0 auto;
     display: flex;
     align-items: center;
     gap: var(--sa-stack-16);
     min-height: 56px;
-    padding: var(--sa-padding-8) var(--sa-padding-16);
+    padding: var(--sa-padding-8) var(--sa-grid-margin-page);
   }
 
   @media (min-width: 768px) {
     .ds-hdr-cond__in {
       min-height: 64px;
-      padding-inline: var(--sa-padding-24);
       gap: var(--sa-stack-16);
     }
   }
 
+  /* A 40x40 TARGET around a 20px-wide emblem. The glyph is 20x32 (17x28 on a
+     phone), and until 2026-09-05 the link was exactly that box — under the 24x24
+     WCAG 2.5.8 asks of a pointer target, with the nav 16px away so the spacing
+     exception did not apply. The box is now the bar's control size and the emblem
+     keeps the LEFT edge (`justify-content: flex-start`), so it still lands on the
+     page margin where it sits at rest; the extra reach goes right, into the gap.
+     Figma: the `Home` frame in every On Scroll variant, 40 minimum on both axes. */
   .ds-hdr-cond__home {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
     flex: 0 0 auto;
+    min-width: 40px;
+    min-height: 40px;
     border-radius: var(--sa-shape-4);
     text-decoration: none;
   }
@@ -1488,6 +1512,20 @@
     height: 40px;
     width: 40px;
     padding: var(--sa-padding-4);
+  }
+
+  /* THE ACTIONS SLOT TAKES THE BAR'S CONTROL HEIGHT TOO. `actions` is consumer
+     markup, and three portals shipped three heights into the same 64px row —
+     32, 36 and 40 — beside a 40px search button (measured 2026-09-05: nmba, scw,
+     nhapoa). One row, one control height: every link or button in the slot is
+     40 here, whatever size the consumer chose for the resting masthead. Pass
+     `Button size="default"` (40) and nothing is stretched or squeezed. */
+  .ds-hdr-cond .ds-hdr-brand__actions :is(a, button) {
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    min-height: 40px;
   }
 
   /* Search expands IN PLACE, over the nav, rather than sending the reader back to

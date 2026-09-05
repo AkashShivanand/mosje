@@ -69,7 +69,7 @@
   },
   "SiteHeader": {
     "nodeId": "4235:3169",
-    "captured": "2026-08-22",
+    "captured": "2026-09-05",
     "properties": {
       "Login Signup#2198:4": {
         "type": "BOOLEAN",
@@ -78,10 +78,6 @@
       "Search#2210:0": {
         "type": "BOOLEAN",
         "defaultValue": false
-      },
-      "Show Menu#55783:0": {
-        "type": "BOOLEAN",
-        "defaultValue": true
       },
       "Device": {
         "type": "VARIANT",
@@ -97,6 +93,14 @@
           "Default",
           "On Scroll"
         ]
+      },
+      "Menu#55783:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Profile#56716:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
       }
     },
     "deliberatelyOmitted": [
@@ -106,7 +110,7 @@
   },
   "MenuToggle": {
     "nodeId": "55783:4565",
-    "captured": "2026-08-22",
+    "captured": "2026-09-05",
     "properties": {
       "Sidebar": {
         "type": "VARIANT",
@@ -114,19 +118,38 @@
           "Expanded",
           "Collapsed"
         ]
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Large",
+          "Default"
+        ]
       }
     },
-    "deliberatelyOmitted": []
+    "deliberatelyOmitted": [
+      "Size"
+    ]
   },
   "SheetToggle": {
-    "nodeId": "55798:4566",
-    "captured": "2026-08-22",
-    "properties": {},
-    "deliberatelyOmitted": []
+    "nodeId": "57295:59399",
+    "captured": "2026-09-05",
+    "properties": {
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Large",
+          "Default"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Size"
+    ]
   },
   "NavItemLink": {
     "nodeId": "2065:292757",
-    "captured": "2026-08-22",
+    "captured": "2026-09-05",
     "properties": {
       "Label#2065:0": {
         "type": "TEXT",
@@ -154,11 +177,19 @@
           "False",
           "True"
         ]
+      },
+      "Density": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Condensed"
+        ]
       }
     },
     "deliberatelyOmitted": [
-      "Type",
-      "State"
+      "Density",
+      "State",
+      "Type"
     ]
   },
   "NavDropdown": {

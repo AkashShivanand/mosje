@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 
 import "./layout-grid.css";
-import { Callout, DoDont, FoundationDocPage } from "@/components/design-system/docs-kit/index";
+import { Callout, DoDont, FoundationDocPage, MatrixTable } from "@/components/design-system/docs-kit/index";
 import { FOUNDATIONS } from "@/lib/design-system/foundations-data.generated";
 
 export const metadata: Metadata = {
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 /*
- * DS Audit: FoundationDocPage ✅ · Callout ✅ · DoDont ✅
+ * DS Audit: FoundationDocPage ✅ · Callout ✅ · DoDont ✅ · MatrixTable ✅
  * Every number on this page is the shipped value, read from foundations-data.generated.ts:
  * the cap rungs from container/content | contentXl | contentWide, the margin rungs from
  * grid/margin/mobile | tablet | desktop, the columns and gutter from grid/*. The viewport
@@ -114,6 +114,31 @@ export default function LayoutGridPage(): React.JSX.Element {
                 bind <code>--sa-container-page</code> directly. It is the resolved cap at the
                 current window size; the three rungs beneath it are fixed at every size and are not what a page skeleton binds.
               </p>
+            </>
+          ),
+        },
+        {
+          id: "surfaces",
+          keyword: "SURFACES",
+          title: "The Website Is Contained, a Portal Is Fluid",
+          description:
+            "Two layouts share one margin ladder. The website caps every row at the container and pads with the page margin — that is .sa-container. A portal takes no cap at all: its masthead, page header and content run edge to edge with the same page margin on each side. Figma draws both on a 1440 frame, and a new component asks which surface it is on before it sizes anything.",
+          content: (
+            <>
+              <MatrixTable
+                caption="What each surface binds"
+                columns={["Surface", "Cap", "Side margin", "In code", "In Figma"]}
+                rows={[
+                  ["Website", "container/page — 1200 · 1320 · 1440", "grid/margin/page", ".sa-container · SiteHeader variant=\"website\"", "Navbar/Website — each row's Container caps at container/page"],
+                  ["Portal", "none", "grid/margin/page", "--sa-grid-margin-page · SiteHeader variant=\"portal\" · Container size=\"full\"", "Navbar/Portal — each row fills the 1440 frame"],
+                ]}
+              />
+              <Callout type="warning" title="A padding rung that equals the margin is still a literal">
+                padding/16, padding/24 and padding/32 match the margin ladder at three widths and miss it at
+                the fourth. Bind grid/margin/page — in CSS <code>--sa-grid-margin-page</code> — and pin a
+                Figma variant to its Viewport mode so the value resolves on its own. The masthead and the
+                accessibility bar carried the literals until September 2026, and sat 8px apart at 1920.
+              </Callout>
             </>
           ),
         },
