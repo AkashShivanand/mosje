@@ -65,7 +65,7 @@ export default function CitizenSignInPage() {
         Skip to sign-in form
       </a>
       <aside className="relative hidden flex-col justify-center bg-navy p-12 text-white md:flex md:w-1/2">
-        <Image src="/portals/tg/brand/national-emblem-white.svg" alt="National Emblem" width={44} height={62} className="h-16 w-auto" />
+        <Image src="/portals/tg/brand/national-emblem-white.svg" alt="National Emblem" width={40} height={65} className="h-16 w-auto" />
         <h1 className="mt-6 text-headline-3">National Portal for Transgender Persons</h1>
         <p className="mt-3 text-body-1 text-white/85">Apply for and track your Certificate of Identity</p>
         <div className="my-6 h-1 w-64 rounded bg-saffron" />

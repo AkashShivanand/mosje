@@ -21,7 +21,7 @@ export function AdminLogin() {
       <div className="flex flex-1 items-center justify-center px-4 py-12">
         <div className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-8 shadow-sm">
           <div className="flex flex-col items-center text-center">
-            <Image src="/website/images/National-Emblem-logo.svg" alt="National Emblem of India" width={48} height={62} className="h-16 w-auto" />
+            <Image src="/website/images/National-Emblem-logo.svg" alt="National Emblem of India" width={32} height={52} className="h-16 w-auto" />
             <h1 className="mt-4 text-headline-3 text-ink">Admin Login</h1>
             <p className="mt-1 text-body-2 text-ink-muted">
               Department of Social Justice &amp; Empowerment
