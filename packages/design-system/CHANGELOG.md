@@ -5,6 +5,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versions track
 
 ---
 
+## [0.7.2] — 2026-09-05
+
+### Fixed
+- **A disabled `CheckboxGroup` or `RadioGroup` now paints every option disabled.** The native `<fieldset disabled>` disabled the inputs, but the drawn box and circle read `data-disabled` from their own root, so the options looked enabled while they were not. The group passes `disabled` down to each option; asserted in control-group.spec.tsx.
+
 ## [0.7.1] — 2026-09-04
 
 ### Added

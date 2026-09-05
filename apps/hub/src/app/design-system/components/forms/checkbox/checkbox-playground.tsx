@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Checkbox, CheckboxGroup, Icon } from "@mosje/design-system";
+import { Checkbox, CheckboxGroup, Icon, Input } from "@mosje/design-system";
 
 const panel: React.CSSProperties = {
   padding: "var(--sa-padding-32)",
@@ -130,6 +130,51 @@ export function CheckboxPlayground(): React.JSX.Element {
             { value: "income", label: "Income certificate" },
             { value: "aadhaar", label: "Aadhaar card" },
             { value: "none", label: "None of these", exclusive: true },
+          ]}
+        />
+      </div>
+
+      <div style={stack}>
+        <p style={eyebrow}>Arrangements the master grid does not show</p>
+        <Checkbox size="sm" label="Include archived records" description="Records closed before April 2024." />
+        <Checkbox label="I agree to the conditions of the scheme" invalid />
+        <Checkbox label="Row 14 selected" hideLabel />
+        <CheckboxGroup
+          legend="Days Available"
+          name="days"
+          orientation="horizontal"
+          options={[
+            { value: "mon", label: "Monday" },
+            { value: "tue", label: "Tuesday" },
+            { value: "wed", label: "Wednesday" },
+            { value: "thu", label: "Thursday" },
+          ]}
+        />
+        <CheckboxGroup
+          legend="Assistance Applied For"
+          name="locked"
+          disabled
+          defaultValue={["hostel"]}
+          hint="Locked after submission."
+          options={[
+            { value: "hostel", label: "Hostel Accommodation" },
+            { value: "scholarship", label: "Post-Matric Scholarship" },
+            { value: "device", label: "Assistive Device" },
+          ]}
+        />
+        <CheckboxGroup
+          legend="Other Support Received"
+          name="support"
+          defaultValue={["state"]}
+          options={[
+            { value: "central", label: "Central scheme" },
+            {
+              value: "state",
+              label: "State scheme",
+              reveal: <Input aria-label="Name of the state scheme" placeholder="As printed on the sanction letter" />,
+            },
+            { value: "ngo", label: "NGO support" },
+            { value: "none", label: "None", exclusive: true },
           ]}
         />
       </div>

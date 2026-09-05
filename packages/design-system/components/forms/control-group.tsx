@@ -239,7 +239,7 @@ export const RadioGroup = React.forwardRef<HTMLFieldSetElement, RadioGroupProps>
               name={name}
               value={o.value}
               checked={selected}
-              disabled={o.disabled}
+              disabled={disabled || o.disabled}
               readOnly={readOnly}
               invalid={error != null || invalid}
               label={o.label}
@@ -301,7 +301,7 @@ export const CheckboxGroup = React.forwardRef<HTMLFieldSetElement, CheckboxGroup
           name={name}
           value={o.value}
           checked={isOn}
-          disabled={o.disabled}
+          disabled={disabled || o.disabled}
           readOnly={readOnly}
           invalid={isInvalid}
           label={o.label}

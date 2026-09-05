@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Icon, Radio } from "@mosje/design-system";
+import { Icon, Radio, RadioGroup } from "@mosje/design-system";
 
 const panel: React.CSSProperties = {
   padding: "var(--sa-padding-32)",
@@ -85,6 +85,35 @@ export function RadioPlayground(): React.JSX.Element {
           onChange={() => setPlan("tatkal")}
           label="Tatkal (Expedited)"
           description="Processed within 3 to 5 working days. A premium processing fee applies."
+        />
+      </div>
+
+      <div style={stack}>
+        <p style={eyebrow}>Arrangements the master grid does not show</p>
+        <Radio name="ds-arr-sm" value="a" size="sm" label="Include archived records" description="Records closed before April 2024." />
+        <Radio name="ds-arr-lg" value="b" size="lg" label="Send me updates by SMS" description="Standard rates apply." />
+        <Radio name="ds-arr-hide" value="c" label="Row 14 selected" hideLabel />
+        <RadioGroup
+          legend="Mode of Payment"
+          name="ds-pay"
+          orientation="horizontal"
+          options={[
+            { value: "dbt", label: "Direct Benefit Transfer" },
+            { value: "cheque", label: "Cheque" },
+            { value: "cash", label: "Cash" },
+          ]}
+        />
+        <RadioGroup
+          legend="Category of the Applicant"
+          name="ds-locked"
+          disabled
+          defaultValue="sc"
+          hint="Locked after submission."
+          options={[
+            { value: "sc", label: "Scheduled Caste" },
+            { value: "obc", label: "Other Backward Class" },
+            { value: "ews", label: "Economically Weaker Section" },
+          ]}
         />
       </div>
     </div>
