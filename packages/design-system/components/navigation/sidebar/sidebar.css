@@ -291,7 +291,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 56px;
+    width: var(--sa-inline-64); /* wide enough for the longest route: the level-2 trunk at 24 plus its 16px arm, or the nested level-3 trunk at 8 plus 16 */
     height: 100%;
     overflow: visible;
     pointer-events: none;
