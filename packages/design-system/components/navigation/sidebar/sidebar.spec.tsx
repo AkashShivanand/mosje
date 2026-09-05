@@ -118,6 +118,32 @@ describe("SidebarNav", () => {
     expect(collapsed).toContain('aria-label="NOS home"');
   });
 
+  it("lets a group have no page of its own: its row only toggles, and its flyout lists the pages", () => {
+    const groups: SidebarNavGroup[] = [
+      {
+        items: [
+          {
+            label: "NAPDDR Three-Tier Committee",
+            icon: "account_balance",
+            children: [
+              { label: "State-Level Committee", href: "/p/napddr/state" },
+              { label: "Registers", children: [{ label: "Block Register", href: "/p/napddr/block/register" }] },
+            ],
+          },
+        ],
+      },
+    ];
+    const out = html(<SidebarNav groups={groups} pathname="/p/napddr/state" />);
+    expect(out.match(/aria-current="page"/g)?.length).toBe(1);
+    expect(out).toContain('aria-expanded="true"');
+    expect(out).not.toMatch(/href=""/);
+    expect(resolveCurrent(groups, "/p/napddr/block/register")).toBe("/p/napddr/block/register");
+    // collapsed: the group is a flyout trigger, not a link to nowhere
+    const collapsed = html(<SidebarNav groups={groups} pathname="/p/napddr/state" collapsed />);
+    expect(collapsed).toMatch(/<button[^>]*aria-haspopup="true"/);
+    expect(collapsed).not.toContain('href=""');
+  });
+
   it("warns once in development when a group has more than seven children, and still renders it", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     const big: SidebarNavGroup[] = [

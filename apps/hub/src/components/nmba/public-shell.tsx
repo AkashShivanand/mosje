@@ -3,8 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SiteHeader, Icon, buttonClasses } from "@mosje/design-system";
-import { cn } from "@/lib/nmba/utils";
+import { SiteHeader, SidebarNav, Icon, buttonClasses } from "@mosje/design-system";
 
 const BASE = "/portals/nmba";
 
@@ -21,9 +20,6 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = React.useState(false);
   const [lang, setLang] = React.useState("English");
-
-  const isActive = (href: string) =>
-    href === BASE ? pathname === BASE || pathname === `${BASE}/` : pathname.startsWith(href);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -72,45 +68,15 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       />
 
       <div className="flex flex-1">
-        {/* Sidebar */}
-        <aside
-          className={cn(
-            "sticky top-0 hidden h-[calc(100vh-8rem)] shrink-0 border-r border-line bg-white py-5 transition-all md:block",
-            collapsed ? "w-[68px]" : "w-[220px]"
-          )}
-        >
-          <nav aria-label="Main navigation" className="flex flex-col gap-1 px-3">
-            {NAV_ITEMS.map(({ label, href, icon: iconName }) => {
-              const active = isActive(href);
-              return (
-                <Link
-                  key={href}
-                  href={href}
-                  title={collapsed ? label : undefined}
-                  aria-current={active ? "page" : undefined}
-                  className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-label-1 transition-colors",
-                    active
-                      ? "bg-brandwash font-semibold text-navy"
-                      : "text-ink-muted hover:bg-black/5"
-                  )}
-                >
-                  <Icon name={iconName} className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
-                  {!collapsed && <span className="truncate">{label}</span>}
-                </Link>
-              );
-            })}
-          </nav>
-          <div className={cn("mt-4 flex px-3", collapsed ? "justify-center" : "justify-start")}>
-            <button
-              onClick={() => setCollapsed((c) => !c)}
-              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-line text-ink-muted hover:bg-black/5"
-            >
-              <Icon name="keyboard_double_arrow_left" className={cn("h-4 w-4 transition-transform", collapsed && "rotate-180")} />
-            </button>
-          </div>
-        </aside>
+        <SidebarNav
+          groups={[{ items: NAV_ITEMS }]}
+          pathname={pathname}
+          collapsed={collapsed}
+          onCollapsedChange={setCollapsed}
+          showCollapseControl
+          label="Main navigation"
+          className="sticky top-0 hidden h-[calc(100vh-8rem)] shrink-0 border-r border-line md:flex md:flex-col"
+        />
 
         {/* Main content */}
         <main id="main-content" className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-8">

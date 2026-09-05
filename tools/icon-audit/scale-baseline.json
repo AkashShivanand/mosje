@@ -15,7 +15,7 @@
     "page, re-run --update-baseline in the same change."
   ],
   "totals": {
-    "offScale": 197,
+    "offScale": 193,
     "classSized": 4
   },
   "files": {
@@ -237,10 +237,6 @@
     },
     "apps/hub/src/components/eutthan/eutthan-physical.tsx": {
       "offScale": 3,
-      "classSized": 0
-    },
-    "apps/hub/src/components/eutthan/eutthan-shell.tsx": {
-      "offScale": 4,
       "classSized": 0
     },
     "apps/hub/src/components/eutthan/eutthan-statement10a.tsx": {

@@ -34,9 +34,9 @@ export function resolveCurrent(groups: SidebarNavGroup[], pathname: string): str
   };
   for (const g of groups) {
     for (const item of g.items) {
-      consider(item.href);
+      if (item.href) consider(item.href);
       for (const c of item.children ?? []) {
-        consider(c.href);
+        if (c.href) consider(c.href);
         for (const l of c.children ?? []) consider(l.href);
       }
     }
@@ -48,10 +48,23 @@ const leafActive = (current: string | null, leaf: SidebarNavLeaf): boolean =>
   current === leaf.href;
 
 const childActive = (current: string | null, child: SidebarNavChild): boolean =>
-  current === child.href || (child.children?.some((l) => leafActive(current, l)) ?? false);
+  (child.href != null && current === child.href) ||
+  (child.children?.some((l) => leafActive(current, l)) ?? false);
 
 const itemActive = (current: string | null, item: SidebarNavItem): boolean =>
-  current === item.href || (item.children?.some((c) => childActive(current, c)) ?? false);
+  (item.href != null && current === item.href) ||
+  (item.children?.some((c) => childActive(current, c)) ?? false);
+
+/**
+ * An entry that should be a link but was given no page. Rendered as a named,
+ * non-operable row rather than an anchor to nowhere — the same shape a
+ * disabled page takes — so the authoring error is visible, not a broken link.
+ */
+const asLeaf = (node: { label: string; href?: string; disabled?: boolean }): SidebarNavLeaf => ({
+  label: node.label,
+  href: node.href ?? "",
+  disabled: node.disabled || node.href == null,
+});
 
 /**
  * Opens a group when something inside it BECOMES current — on the transition,
@@ -207,11 +220,11 @@ function ChildEntry({
 }) {
   const id = React.useId();
   const active = childActive(current, child);
-  const selfCurrent = current === child.href;
+  const selfCurrent = child.href != null && current === child.href;
   const [open, toggle] = useDisclosure(active);
   const listRef = React.useRef<HTMLUListElement>(null);
   if (!child.children?.length) {
-    return <LeafRow leaf={child} current={current} level={2} />;
+    return <LeafRow leaf={asLeaf(child)} current={current} level={2} />;
   }
   return (
     <li className="ds-sidebar__sub ds-sidebar__sub--l2" data-active={active || undefined}>
@@ -320,24 +333,40 @@ function Flyout({
     >
       <div className="ds-sidebar__flyout-title">{item.label}</div>
       <ul className="ds-sidebar__list">
-        {(item.children ?? []).map((c) => {
-          const active = childActive(current, c);
-          return (
-            <li key={c.href} className="ds-sidebar__sub ds-sidebar__sub--flyout">
-              <RowLink
-                href={c.href}
-                disabled={c.disabled}
-                aria-current={active ? "page" : undefined}
-                className={cn(
-                  "ds-sidebar__sub-row",
-                  active && "is-active",
-                  c.disabled && "is-disabled",
-                )}
-                onClick={onClose}
-              >
-                <span className="ds-sidebar__sub-label">{c.label}</span>
-              </RowLink>
-            </li>
+        {(item.children ?? []).flatMap((c) => {
+          // The flyout lists one level: a level-2 group is a link to its own
+          // page. A group with NO page of its own would make its leaves
+          // unreachable from the collapsed rail, so those are listed beneath
+          // its name instead — the one case the flyout goes a level deeper.
+          const rows: { key: string; label: string; href: string; disabled?: boolean; active: boolean; heading?: boolean }[] =
+            c.href == null && c.children?.length
+              ? [
+                  { key: `h:${c.label}`, label: c.label, href: "", active: false, heading: true },
+                  ...c.children.map((l) => ({ key: l.href, label: l.label, href: l.href, disabled: l.disabled, active: leafActive(current, l) })),
+                ]
+              : [{ key: c.href ?? c.label, label: c.label, href: c.href ?? "", disabled: c.disabled || c.href == null, active: childActive(current, c) }];
+          return rows.map((r) =>
+            r.heading ? (
+              <li key={r.key} className="ds-sidebar__sub ds-sidebar__sub--flyout" role="presentation">
+                <span className="ds-sidebar__flyout-group">{r.label}</span>
+              </li>
+            ) : (
+              <li key={r.key} className="ds-sidebar__sub ds-sidebar__sub--flyout">
+                <RowLink
+                  href={r.href}
+                  disabled={r.disabled}
+                  aria-current={r.active ? "page" : undefined}
+                  className={cn(
+                    "ds-sidebar__sub-row",
+                    r.active && "is-active",
+                    r.disabled && "is-disabled",
+                  )}
+                  onClick={onClose}
+                >
+                  <span className="ds-sidebar__sub-label">{r.label}</span>
+                </RowLink>
+              </li>
+            ),
           );
         })}
       </ul>
@@ -364,7 +393,8 @@ function MainItem({
 }) {
   const id = React.useId();
   const hasChildren = Boolean(item.children?.length);
-  const selfActive = current === item.href;
+  const selfActive = item.href != null && current === item.href;
+  const leaf = asLeaf(item);
   const active = itemActive(current, item);
   const [open, toggle] = useDisclosure(active);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
@@ -394,8 +424,8 @@ function MainItem({
       <li>
         <Tooltip content={item.label} side="right" duplicatesTriggerName>
           <RowLink
-            href={item.href}
-            disabled={item.disabled}
+            href={leaf.href}
+            disabled={leaf.disabled}
             aria-label={name}
             aria-current={selfActive ? "page" : undefined}
             className={rowClass}
@@ -459,8 +489,8 @@ function MainItem({
     return (
       <li>
         <RowLink
-          href={item.href}
-          disabled={item.disabled}
+          href={leaf.href}
+          disabled={leaf.disabled}
           aria-current={selfActive ? "page" : undefined}
           className={rowClass}
         >
@@ -497,7 +527,7 @@ function MainItem({
         <ul id={id} ref={listRef} className="ds-sidebar__list ds-sidebar__list--l2">
           <ActivePath listRef={listRef} trunkX={24} current={current} />
           {item.children!.map((c) => (
-            <ChildEntry key={c.href} child={c} current={current} />
+            <ChildEntry key={c.href ?? c.label} child={c} current={current} />
           ))}
         </ul>
       )}
@@ -670,14 +700,15 @@ export function SidebarNav({
               <ul className="ds-sidebar__list">
                 {group.items.map((item) => (
                   <MainItem
-                    key={item.href}
+                    key={item.href ?? item.label}
                     item={item}
                     current={current}
                     collapsed={collapsed}
-                    flyoutOpen={openFlyout === item.href}
-                    onFlyoutToggle={() =>
-                      setOpenFlyout((cur) => (cur === item.href ? null : item.href))
-                    }
+                    flyoutOpen={openFlyout === (item.href ?? item.label)}
+                    onFlyoutToggle={() => {
+                      const key = item.href ?? item.label;
+                      setOpenFlyout((cur) => (cur === key ? null : key));
+                    }}
                     onFlyoutClose={closeFlyout}
                   />
                 ))}

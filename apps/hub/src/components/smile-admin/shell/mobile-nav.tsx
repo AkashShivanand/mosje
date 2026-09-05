@@ -1,13 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { navForRole } from "@/lib/smile-admin/nav";
 import { useApp } from "@/store/smile-admin/app-context";
 import { cn, initials } from "@/lib/smile-admin/utils";
 import { ROLE_LABELS } from "@/lib/smile-admin/roles";
-import { Icon } from "@mosje/design-system";
+import { Icon, SidebarNav } from "@mosje/design-system";
 
 export function MobileNav() {
   const pathname = usePathname();
@@ -110,51 +109,13 @@ export function MobileNav() {
           </div>
         </div>
 
-        {/* Nav */}
-        <nav className="flex-1 overflow-y-auto px-sm py-md">
-          {groups.map((group, gi) => (
-            <div key={gi} className="mb-md">
-              {group.label ? (
-                <div className="px-md pb-1 pt-md text-label-3 uppercase text-ink-hint">
-                  {group.label}
-                </div>
-              ) : null}
-              <ul className="space-y-0.5">
-                {group.items.map((item) => {
-                  const active =
-                    pathname === item.href ||
-                    (item.href !== "/portals/smile-admin/dashboard" && pathname.startsWith(item.href));
-                  const iconName = item.icon;
-                  return (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        aria-current={active ? "page" : undefined}
-                        className={cn(
-                          "relative flex min-h-[44px] items-center gap-md rounded-md px-md py-2 text-body-2 font-medium transition-colors",
-                          active
-                            ? "bg-primary-50 text-primary"
-                            : "text-ink-muted hover:bg-neutral-50 hover:text-ink",
-                        )}
-                      >
-                        <Icon name={iconName} aria-hidden className={cn( "h-4 w-4 shrink-0", active ? "text-primary" : "text-ink-hint", )} />
-                        <span className="flex-1 truncate">{item.label}</span>
-                        {item.badge ? (
-                          <span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-danger px-1 text-label-2 text-white">
-                            {item.badge}
-                          </span>
-                        ) : null}
-                        {active && (
-                          <span className="absolute inset-y-1 left-0 w-[3px] rounded-r-full bg-primary" />
-                        )}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          ))}
-        </nav>
+        {/* Nav — the same SidebarNav the desktop rail renders, at drawer width. */}
+        <SidebarNav
+          groups={groups}
+          pathname={pathname}
+          label="Main navigation"
+          className="min-h-0 w-auto flex-1"
+        />
 
         {/* Footer */}
         <div className="border-t border-stroke-100 bg-neutral-50/50 px-sm py-md">

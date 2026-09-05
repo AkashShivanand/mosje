@@ -29,7 +29,7 @@
     "ci:clean": "node tools/local-ci/run.mjs --clean",
     "clean": "node tools/clean/run.mjs",
     "check:case": "node tools/local-ci/case-audit.mjs",
-    "check": "npm run check:hub && npm run check:hub-tests && npm run check:search-index && npm run check:docs-search && npm run check:dangling-vars && npm run check:docs-links && npm run check:website-links && npm run check:org-anchors && npm run check:docs-routes && npm run check:figma-docs && npm run check:figma-index && npm run check:figma-arrangements && npm run check:docs-data && npm run check:ds-linkage && npm run check:type-linkage && npm run check:icon-scale && npm run check:space-linkage && npm run check:radius-linkage && npm run check:code-connect && npm run check:chart-slots && npm run check:chrome && npm run check:org-logos && npm run check:ds-pages && npm run check:foundations && npm run check:breakpoints && npm run check:token-consumers && npm run check:props && npm run check:docs-coverage && npm run check:shadow-ui && npm run check:components-css && npm run check:storybook && npm run check:storybook:parity && npm run check:changelog && npm run check:design-context && npm run check:a11y-evidence && npm run check:chart-palette && npm run check:button-hooks && npm run check:figma-effects && npm run check:ds-lint",
+    "check": "npm run check:hub && npm run check:hub-tests && npm run check:search-index && npm run check:docs-search && npm run check:dangling-vars && npm run check:docs-links && npm run check:website-links && npm run check:org-anchors && npm run check:docs-routes && npm run check:figma-docs && npm run check:figma-index && npm run check:figma-arrangements && npm run check:docs-data && npm run check:ds-linkage && npm run check:type-linkage && npm run check:icon-scale && npm run check:space-linkage && npm run check:radius-linkage && npm run check:code-connect && npm run check:chart-slots && npm run check:chrome && npm run check:org-logos && npm run check:ds-pages && npm run check:foundations && npm run check:breakpoints && npm run check:token-consumers && npm run check:props && npm run check:docs-coverage && npm run check:shadow-ui && npm run check:components-css && npm run check:storybook && npm run check:storybook:parity && npm run check:changelog && npm run check:design-context && npm run check:a11y-evidence && npm run check:chart-palette && npm run check:button-hooks && npm run check:figma-effects && npm run check:ds-lint && npm run check:sidebar-adoption",
     "check:docs-search": "node scripts/build-docs-search-index.mjs --check",
     "build:docs-search": "node scripts/build-docs-search-index.mjs",
     "check:changelog": "node scripts/check-changelog-freshness.mjs",
@@ -118,7 +118,8 @@
     "check:figma-effects": "node tools/figma-effects/check.mjs",
     "check:foundations": "node tools/foundation-page-standard/check.mjs",
     "check:breakpoints": "node tools/breakpoint-ladder/check.mjs",
-    "check:token-consumers": "node tools/token-consumers/check.mjs"
+    "check:token-consumers": "node tools/token-consumers/check.mjs",
+    "check:sidebar-adoption": "node tools/sidebar-adoption/check.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
