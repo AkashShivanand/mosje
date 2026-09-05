@@ -55,9 +55,12 @@ weeks stale, which made the payload's `status` call 104 existing variables new).
 - Four `— Component record` frames built (Typography, Color, Layout Grid, Iconography) to the
   house shape, bound throughout, with SOURCES panels. Three frames renamed to match their
   pages; Brand page reordered Documentation → record → sections.
-- Binding audit: Typography 61 unstyled prose texts → styles (Code/label-2); Colour 105 of
-  111 literals bound (6 × 3px chip radii remain: no rung is 3); Brand 22 of 29 bound (28→24,
-  10→12 snaps; 7 fractional values from scaled instances left); Iconography 7 code texts styled.
+- Binding audit: Typography 61 unstyled prose texts → styles (Code/label-2); Colour 111 of
+  111 literals bound (the six 3px chip radii on the categorical bars snapped to shape/4 — 3 is
+  not a rung); Brand 29 of 29 bound (28→24, 10→12 and the hero's 88→80 snaps; the seven
+  fractional values were a rescale artefact on the NMBA variant of the org-logo master —
+  7.142857 padding and 17.857 gap — bound to padding/8 and inline/16, with no artwork exceeding
+  its tile afterwards); Iconography 7 code texts styled. All ten frames now read zero literals.
 - Stale facts corrected: Typography `11px` → `12px`; Color tier counts 164/176/296 →
   138/197/296; Motion frame rewritten to the twelve intents (rows added for hover, focus,
   instant, expand, collapse, page, loading); Effects frame to one ring and no retired styles.
@@ -90,9 +93,8 @@ weeks stale, which made the payload's `status` call 104 existing variables new).
 
 ## 6. Left open
 
-- 6 × 3px chip radii on the Colour frame; 7 fractional paddings/gaps on Brand (scaled
-  instances); `Container Fixed/1200/1320/1440` centred grids bind count and gutter but their
-  column width is arithmetic Figma cannot bind.
+- `Container Fixed/1200/1320/1440` centred grids bind count and gutter but their column width
+  is arithmetic Figma cannot bind.
 - Media queries off the ladder (43); `pm-ajay.css`, the `demo/*` folder and the hub's border,
   motion, shadow and opacity literals — counted in the gap audit, ratcheted, not yet migrated.
 - Devanagari text styles in Figma (21 would be needed) — recorded on the Typography record.
