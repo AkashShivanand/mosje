@@ -535,6 +535,8 @@ export {
   PORTAL_CATEGORIES,
   deriveAbbr,
   filterApps,
+  isLiveEntry,
+  liveEntries,
   matchActivePath,
 } from "./components/navigation/app-switcher-utils";
 export type { AppEntry } from "./components/navigation/app-switcher-utils";
