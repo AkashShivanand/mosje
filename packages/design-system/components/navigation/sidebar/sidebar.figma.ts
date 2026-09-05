@@ -8,9 +8,12 @@
 // .claude/rules/component-authoring.md §12.
 //
 // PROPERTY COVERAGE — three Figma properties are mapped; one is declared omitted:
-//   Mode         -> collapsed            (Expanded = false | Collapsed = true)
-//   Show Control -> showCollapseControl  (the control also needs onCollapsedChange)
-//   Show Footer  -> footer               (a slot in Figma, a ReactNode in code)
+//   Mode          -> collapsed   (Expanded = false | Collapsed = true)
+//   Show Identity -> identity    (Sidebar/PortalIdentity at the head; its Name, Expansion
+//                                 and Mark become the identity object's fields. The rail's
+//                                 collapse control lives on THAT nested instance as Show
+//                                 Control, mapped to showCollapseControl here.)
+//   Show Footer   -> footer      (a slot in Figma, a ReactNode in code)
 //   Menu         -> OMITTED, deliberately. The Menu slot holds Sidebar/Item · Level 1 and
 //                   Sidebar/GroupLabel instances. In code that whole tree is the `groups`
 //                   prop — plain data: groups[].items[], each item with children (level 2),
@@ -33,21 +36,25 @@ const collapsed = instance.getEnum("Mode", {
   Collapsed: "true",
 });
 
-const showControl = instance.getBoolean("Show Control");
+const showIdentity = instance.getBoolean("Show Identity");
 const showFooter = instance.getBoolean("Show Footer");
 
-const footerLine = showFooter ? "\n  footer={<StatusFooter />}" : "";
-const controlLine = showControl
-  ? "\n  showCollapseControl\n  onCollapsedChange={setCollapsed}"
+const identityLine = showIdentity
+  ? '\n  identity={{ name: "NOS", expansion: "National Overseas Scholarship", mark: <OrgLogo org="nos" size="md" />, href: "/portals/nos" }}'
   : "";
+const footerLine = showFooter ? "\n  footer={<StatusFooter />}" : "";
+// The collapse control is a property of the nested Sidebar/PortalIdentity; the
+// masthead's Navbar/MenuToggle is the default control, so it is off unless a
+// shell has no masthead toggle.
+const controlLine = "";
 
 export default {
   example: figma.code`<SidebarNav
   groups={navGroups}
   pathname={pathname}
-  collapsed={${collapsed}}${controlLine}${footerLine}
+  collapsed={${collapsed}}${identityLine}${controlLine}${footerLine}
 />`,
-  imports: ['import { SidebarNav } from "@mosje/design-system"'],
+  imports: ['import { SidebarNav, OrgLogo } from "@mosje/design-system"'],
   id: "sidebar-nav",
   metadata: { nestable: false },
 };

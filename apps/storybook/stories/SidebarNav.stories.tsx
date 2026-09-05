@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Button, SidebarNav } from "@mosje/design-system";
+import { Button, OrgLogo, SidebarNav } from "@mosje/design-system";
 
 /**
  * **SidebarNav** — the portal app-shell left navigation.
@@ -21,6 +21,10 @@ import { Button, SidebarNav } from "@mosje/design-system";
  * rail's own at the top for a shell without one, and renders nothing without
  * the handler. In the collapsed
  * rail a group opens a flyout, a leaf shows a tooltip, and a badge becomes a dot.
+ *
+ * `identity` names the portal at the head of the rail — the masthead carries the
+ * Ministry and the estate, this is the one place the portal is named. Omit it on
+ * a login screen, which names the portal already.
  *
  * Three levels. An item with `children` becomes a disclosure group of level-2
  * entries; a level-2 entry with `children` becomes a group of level-3 leaves.
@@ -79,6 +83,12 @@ const meta = {
   component: SidebarNav,
   args: {
     groups: GROUPS,
+    identity: {
+      name: "NMBA",
+      expansion: "Nasha Mukt Bharat Abhiyaan",
+      mark: <OrgLogo org="nmba" size="md" />,
+      href: "/portals/nmba/admin",
+    },
     pathname: "/portals/nmba/admin/mass-pledge/reports/weekly",
     collapsed: false,
     showCollapseControl: false,
@@ -88,6 +98,7 @@ const meta = {
     collapsed: { control: "boolean" },
     showCollapseControl: { control: "boolean" },
     groups: { control: false },
+    identity: { control: false },
     footer: { control: false },
     onCollapsedChange: { control: false },
   },

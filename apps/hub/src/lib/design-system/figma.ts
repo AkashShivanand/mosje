@@ -160,6 +160,7 @@ export const FIGMA_NODES = {
   sidebarGroupLabel: "57137-1189",
   sidebarCollapseControl: "57137-1199",
   sidebarFlyout: "57137-1200",
+  sidebarIdentity: "57262-1829",
 } as const;
 
 export type FigmaNode = keyof typeof FIGMA_NODES;

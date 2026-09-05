@@ -1,11 +1,12 @@
 "use client";
 
-import { SidebarNav } from "@mosje/design-system";
+import { OrgLogo, SidebarNav } from "@mosje/design-system";
 import * as React from "react";
 
 /**
- * The specimen shows every level and both modes: a group open to level 3, a
- * badge, a labelled second group, and the collapse control. Toggle the control
+ * The specimen shows every level and both modes: the portal identity at the
+ * head with the collapse control in its row, a group open to level 3, a badge,
+ * and a labelled second group. Toggle the control
  * to see the count become a dot and the group become a flyout.
  */
 export function Specimen(): React.JSX.Element {
@@ -13,6 +14,12 @@ export function Specimen(): React.JSX.Element {
   return (
     <div style={{ display: "flex", minHeight: "36rem" }}>
       <SidebarNav
+        identity={{
+          name: "SCW",
+          expansion: "Senior Citizens' Welfare",
+          mark: <OrgLogo org="scw" size="md" />,
+          href: "/portals/scw",
+        }}
         pathname="/portals/scw/applications/track/review"
         collapsed={collapsed}
         onCollapsedChange={setCollapsed}

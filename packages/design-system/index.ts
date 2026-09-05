@@ -463,6 +463,7 @@ export type {
   SidebarNavItem,
   SidebarNavChild,
   SidebarNavLeaf,
+  SidebarNavIdentity,
 } from "./components/navigation/sidebar";
 export type {
   SiteHeaderProps,

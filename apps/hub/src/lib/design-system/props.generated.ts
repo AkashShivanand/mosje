@@ -7669,7 +7669,7 @@ export const GENERATED_PROPS = {
         "name": "footer",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Optional content pinned above the control (mirrors Figma `Show Footer`)."
+        "description": "Optional content pinned to the foot (mirrors Figma `Show Footer`)."
       },
       {
         "name": "id",
@@ -7678,10 +7678,16 @@ export const GENERATED_PROPS = {
         "description": "DOM id for the root. Pass it when a header toggle points at this sidebar with `aria-controls` — an aria-controls that names nothing is worse than none at all."
       },
       {
+        "name": "identity",
+        "type": "SidebarNavIdentity",
+        "required": false,
+        "description": "The portal identity at the head of the rail (mirrors Figma `Show Identity`, on by default there). Omit on a login screen: PortalLoginShell already names the portal."
+      },
+      {
         "name": "label",
         "type": "string",
         "required": false,
-        "default": "\"Portal navigation\"",
+        "default": "`${identity.name} navigation`, or \"Portal navigation\" without an identity",
         "description": "Accessible name of the navigation landmark."
       },
       {
@@ -7694,7 +7700,7 @@ export const GENERATED_PROPS = {
         "name": "showCollapseControl",
         "type": "boolean",
         "required": false,
-        "description": "Show the rail's own collapse control — a 48px row at the TOP of the rail (mirrors the Figma `Show Control` property, off by default). The portal masthead's toggle drives the same state, so pass this only in a shell without that toggle. Requires `onCollapsedChange`."
+        "description": "Show the rail's own collapse control (mirrors Figma `Show Control` on the identity block, off by default). With an `identity` it sits in that row — trailing when expanded, beneath the mark when collapsed; without one it takes a 48px row at the top. The portal masthead's toggle drives the same state, so pass this only in a shell without that toggle. Requires `onCollapsedChange`."
       }
     ]
   },

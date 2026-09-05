@@ -19,12 +19,13 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
 
 | Part | Figma | Code |
 |---|---|---|
-| Rail | `Sidebar` — Mode, Menu slot, Footer slot, Show Control, Show Footer | `SidebarNav` root `<aside>` with one `<nav aria-label>` |
+| Rail | `Sidebar` — Mode, Show Identity, Menu slot, Footer slot, Show Footer | `SidebarNav` root `<aside>` with one `<nav aria-label>` |
+| Portal identity | `Sidebar/PortalIdentity` — Mode, Mark (org-logo swap), Name, Expansion, Show Expansion, Show Control, Show Divider | `identity` prop `{ name, expansion, mark, href }`; names the nav landmark |
 | Level-1 item | `Sidebar/Item · Level 1` — Mode × Type (Leaf/Group) × Open × State, Focused, Show Badge, Icon swap, Label, Show Child 2–5 | `groups[].items[]` — `<a>` for a page, `<button aria-expanded>` for a group |
 | Level-2 entry | `Sidebar/Item · Level 2` — Placement (Inline/Flyout) × Type × Open × State, Focused, Label, Show Child 2–4 | `items[].children[]` |
 | Level-3 leaf | `Sidebar/Item · Level 3` — State, Focused, Label | `children[].children[]` |
 | Group label | `Sidebar/GroupLabel` — Mode × Show Divider, Label | `groups[].label` → `role="group" aria-labelledby` |
-| Collapse control | `Sidebar/CollapseControl` — Mode, nested IconButton exposed; shown by `Show Control` (off by default) at the top | rendered at the top when `showCollapseControl && onCollapsedChange` |
+| Collapse control | `Sidebar/CollapseControl` — Mode, nested IconButton exposed; lives in `Sidebar/PortalIdentity` behind its `Show Control` (off by default) | rendered in the identity row, or a 48px top row without one, when `showCollapseControl && onCollapsedChange` |
 | Flyout | `Sidebar/Flyout` — Title, Item 1–5 (Level 2, Placement=Flyout) | rendered for a collapsed group on click |
 
 ## Token map
@@ -72,6 +73,14 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
    The trunk runs straight through every entry from the parent's edge; the elbow is a 6px arc
    and 16px arm that branch off it. Bending the trunk into the arm had left a 6px notch at every
    branch, visible at 4×.
+15. **The rail names its portal.** The masthead carries the Ministry and the SAMAVESH mark;
+    nothing else said which of twenty portals a signed-in user was in, and SAMBAL solved it with
+    a loose 300×96 frame above the rail on every screen. `Sidebar/PortalIdentity` makes that a
+    master: an org-logo mark at 40, the short name (`Title/title-3`), the department's full
+    name (`Body/body-3`, two lines), a link home, the rail's collapse control as its trailing
+    slot; collapsed keeps the mark and moves the name to a tooltip. GOV.UK's service name and
+    Atlassian's product header are the precedents. Off on login screens, which name the portal
+    already.
 14. **The level-1 holder is tinted; a level-2 group on the way is ink only.** The rail reads "you
     are in Applications, at Under Review": the level-1 item that holds the current page and the
     page itself are tinted, a level-2 group between them takes `text/brand/primary/bolder`
@@ -139,4 +148,5 @@ items, 20 child items). They are to be migrated screen by screen, one at a time,
 
 - Publish the SAMAVESH library after this pass (a script cannot publish).
 - `AppShell` adoption by the eight portal shells, one per PR, so the drawer below tablet is real.
+- Give every portal shell an `identity` (name, expansion, org-logo, home) — the block is built; the twenty configs are not.
 - Storybook and Playwright coverage of the flyout and the three-level tree.

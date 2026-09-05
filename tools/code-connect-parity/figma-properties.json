@@ -922,7 +922,7 @@
       "Menu": {
         "type": "SLOT"
       },
-      "Show Control": {
+      "Show Identity": {
         "type": "BOOLEAN"
       },
       "Show Footer": {

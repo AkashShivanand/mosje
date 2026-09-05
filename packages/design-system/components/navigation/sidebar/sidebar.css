@@ -250,6 +250,19 @@
     height: calc(16px + var(--sa-stack-4)); /* to where the arc leaves the trunk, not to the row centre — a trunk that ran on to 22 left a stub beside the curve */
   }
 
+  /* Where the brand route branches into an entry (the current page, or a group
+     on the way), the neutral trunk should not hug the brand arc: it is blank
+     from 16 to 22 and resumes at the arc's foot. Same colour elsewhere, so
+     the plain tree stays one continuous line. */
+  .ds-sidebar__sub[data-active]:not(:last-child)::before {
+    background: linear-gradient(
+      to bottom,
+      var(--sa-border-neutral-subtle) 0 calc(16px + var(--sa-stack-4)),
+      transparent calc(16px + var(--sa-stack-4)) calc(22px + var(--sa-stack-4)),
+      var(--sa-border-neutral-subtle) calc(22px + var(--sa-stack-4))
+    );
+  }
+
   /* The elbow branches OFF the trunk: a shape/6 arc from 16 to the row centre
      at 22, then a 16px arm into the pill. It overlays the straight trunk. */
   .ds-sidebar__sub::after {
@@ -404,10 +417,93 @@
     margin-top: auto;
   }
 
+  /* ── Portal identity ─────────────────────────────────────────────────────── */
+  /*
+   * Which portal the user is in: mark, short name, expansion, a link home. The
+   * masthead carries the Ministry and the estate; this is the one place the
+   * portal is named, so it heads every rail. Collapsed: the mark alone, the
+   * name as tooltip and accessible label.
+   */
+  .ds-sidebar__identity {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-8) 0 var(--sa-padding-12);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  .ds-sidebar__identity.is-collapsed {
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+  }
+
+  .ds-sidebar__identity-link {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    min-width: 0;
+    flex: 1 1 0;
+    color: inherit;
+    text-decoration: none;
+    border-radius: var(--sa-shape-8);
+  }
+
+  .ds-sidebar__identity.is-collapsed .ds-sidebar__identity-link { flex: 0 0 auto; }
+
+  .ds-sidebar__identity-link:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-sidebar__identity-mark {
+    flex-shrink: 0;
+    display: inline-flex;
+    width: var(--sa-icon-size-40);
+    height: var(--sa-icon-size-40);
+  }
+
+  /* The registry mark comes in 32 / 48 / 56; the identity row draws it at 40,
+     the size the Figma master binds (icon/size/40). */
+  .ds-sidebar__identity-mark > .ds-org-logo {
+    width: var(--sa-icon-size-40);
+    height: var(--sa-icon-size-40);
+  }
+
+  .ds-sidebar__identity-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+    min-width: 0;
+  }
+
+  .ds-sidebar__identity-name {
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-sidebar__identity-expansion {
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  /* ── Collapse control (without an identity) ────────────────────────────────── */
   /* The rail's own collapse control — shown only where the masthead has no
      toggle — sits at the TOP, a 48px row above the first item: right-aligned
      when expanded, centred when collapsed. Never at the foot, which is below
-     the fold on a laptop. */
+     the fold on a laptop. With an identity it sits in that row instead. */
   .ds-sidebar__control {
     flex-shrink: 0;
     display: flex;

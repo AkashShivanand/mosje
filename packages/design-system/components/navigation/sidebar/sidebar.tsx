@@ -557,8 +557,10 @@ export function warnOversizedGroups(groups: SidebarNavGroup[]): string[] {
  * - In the collapsed rail a group opens a flyout listing its level-2 pages;
  *   a leaf shows its label as a tooltip; a badge count becomes a dot.
  * - Group labels are the accessible name of their `role="group"`, in both modes.
- * - The rail's own collapse control is optional and sits at the TOP; the portal
- *   masthead's toggle drives the same state and is the default control.
+ * - `identity` names the portal at the head of the rail — the masthead carries
+ *   the Ministry and the estate, this is the one place the portal is named. The
+ *   rail's own collapse control is optional and lives in that row (or a 48px
+ *   top row without an identity); the masthead's toggle is the default control.
  * - Five children per group is the design limit and seven the ceiling; past
  *   seven, development warns and the rail still renders.
  *
@@ -580,11 +582,31 @@ export function SidebarNav({
   collapsed = false,
   onCollapsedChange,
   showCollapseControl = false,
+  identity,
   footer,
-  label = "Portal navigation",
+  label,
   className,
   id,
 }: SidebarNavProps): React.JSX.Element {
+  const navLabel = label ?? (identity ? `${identity.name} navigation` : "Portal navigation");
+  // The rail's own collapse control: inside the identity row when there is one,
+  // otherwise a 48px row at the top. Only with a handler — a control that does
+  // nothing is worse than none.
+  const control =
+    showCollapseControl && onCollapsedChange ? (
+      <IconButton
+        icon={<Icon name={collapsed ? "left_panel_open" : "left_panel_close"} size={24} />}
+        aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
+        aria-expanded={!collapsed}
+        aria-controls={id}
+        variant="neutral"
+        appearance="text"
+        size="md"
+        tooltip
+        tooltipSide="right"
+        onClick={() => onCollapsedChange(!collapsed)}
+      />
+    ) : null;
   warnOversizedGroups(groups);
   const current = resolveCurrent(groups, pathname);
   const [openFlyout, setOpenFlyout] = React.useState<string | null>(null);
@@ -600,23 +622,32 @@ export function SidebarNav({
       id={id}
       className={cn("ds-sidebar", collapsed ? "is-collapsed" : "is-expanded", className)}
     >
-      {showCollapseControl && onCollapsedChange && (
-        <div className="ds-sidebar__control">
-          <IconButton
-            icon={<Icon name={collapsed ? "left_panel_open" : "left_panel_close"} size={24} />}
-            aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
-            aria-expanded={!collapsed}
-            aria-controls={id}
-            variant="neutral"
-            appearance="text"
-            size="md"
-            tooltip
-            tooltipSide="right"
-            onClick={() => onCollapsedChange(!collapsed)}
-          />
+      {identity ? (
+        <div className={cn("ds-sidebar__identity", collapsed && "is-collapsed")}>
+          {collapsed ? (
+            <Tooltip content={identity.name} side="right" duplicatesTriggerName>
+              <a href={identity.href} className="ds-sidebar__identity-link" aria-label={`${identity.name} home`}>
+                <span className="ds-sidebar__identity-mark">{identity.mark}</span>
+              </a>
+            </Tooltip>
+          ) : (
+            <a href={identity.href} className="ds-sidebar__identity-link" aria-label={`${identity.name} home`}>
+              <span className="ds-sidebar__identity-mark">{identity.mark}</span>
+              <span className="ds-sidebar__identity-text">
+                <span className="ds-sidebar__identity-name">{identity.name}</span>
+                {identity.expansion && (
+                  <span className="ds-sidebar__identity-expansion">{identity.expansion}</span>
+                )}
+              </span>
+            </a>
+          )}
+          {control}
         </div>
+      ) : (
+        control && <div className="ds-sidebar__control">{control}</div>
       )}
-      <nav className="ds-sidebar__nav" aria-label={label}>
+
+      <nav className="ds-sidebar__nav" aria-label={navLabel}>
         {groups.map((group, gi) => {
           const labelId = group.label ? `${baseId}-g${gi}` : undefined;
           return (

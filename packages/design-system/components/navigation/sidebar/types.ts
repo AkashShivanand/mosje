@@ -52,6 +52,23 @@ export interface SidebarNavItem {
   disabled?: boolean;
 }
 
+/**
+ * Which portal the signed-in user is in. The masthead carries the Ministry and
+ * the estate; this block at the head of the rail is the one place the PORTAL
+ * is named. Rendered as a link to the portal's home; in the collapsed rail the
+ * mark stands alone and the name travels as its tooltip and accessible label.
+ */
+export interface SidebarNavIdentity {
+  /** Short name, Title Case — "NOS", "SAMBAL". No version string here. */
+  name: string;
+  /** The department's own full name, two lines at most. */
+  expansion?: string;
+  /** The mark — an `<OrgLogo>` from the registry, never a pasted image. */
+  mark: React.ReactNode;
+  /** The portal's home route. */
+  href: string;
+}
+
 export interface SidebarNavGroup {
   /**
    * Optional section label. Read by assistive technology as the group's name
@@ -76,15 +93,26 @@ export interface SidebarNavProps {
   collapsed?: boolean;
   onCollapsedChange?: (collapsed: boolean) => void;
   /**
-   * Show the rail's own collapse control — a 48px row at the TOP of the rail
-   * (mirrors the Figma `Show Control` property, off by default). The portal
-   * masthead's toggle drives the same state, so pass this only in a shell
-   * without that toggle. Requires `onCollapsedChange`.
+   * Show the rail's own collapse control (mirrors Figma `Show Control` on the
+   * identity block, off by default). With an `identity` it sits in that row —
+   * trailing when expanded, beneath the mark when collapsed; without one it
+   * takes a 48px row at the top. The portal masthead's toggle drives the same
+   * state, so pass this only in a shell without that toggle. Requires
+   * `onCollapsedChange`.
    */
   showCollapseControl?: boolean;
-  /** Optional content pinned above the control (mirrors Figma `Show Footer`). */
+  /**
+   * The portal identity at the head of the rail (mirrors Figma `Show Identity`,
+   * on by default there). Omit on a login screen: PortalLoginShell already
+   * names the portal.
+   */
+  identity?: SidebarNavIdentity;
+  /** Optional content pinned to the foot (mirrors Figma `Show Footer`). */
   footer?: React.ReactNode;
-  /** Accessible name of the navigation landmark. @default "Portal navigation" */
+  /**
+   * Accessible name of the navigation landmark.
+   * @default `${identity.name} navigation`, or "Portal navigation" without an identity
+   */
   label?: string;
   className?: string;
 }
