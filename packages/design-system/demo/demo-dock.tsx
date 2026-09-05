@@ -775,12 +775,23 @@ export function DemoDock({
             </div>
 
             <div className="ds-demodock__tabs">
+              {/* An UNDERLINE strip on no track, at the small size. The enclosed
+                  pill was a filled segmented control tall enough to read as
+                  content — three destinations wearing more chrome than the
+                  credentials list below them, in a panel whose header already
+                  spent 135px before anything useful appeared. The rail's doors
+                  carry the same active state alongside, so the strip does not
+                  need to shout it. */}
               <Tabs
                 tabs={tabs}
                 active={activeTab}
                 onChange={setActiveTab}
                 idBase={idBase}
                 ariaLabel={label}
+                size="s"
+                track="none"
+                indicator="underline"
+                divider={false}
               />
             </div>
           </div>

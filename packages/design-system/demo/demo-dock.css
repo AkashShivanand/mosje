@@ -513,7 +513,7 @@
    an unstyled dialog. ── */
 .ds-demodock__header {
   flex: 0 0 auto;
-  padding: 14px 14px 10px;
+  padding: var(--sa-padding-12) var(--sa-padding-12) 0;
   background: linear-gradient(
     to bottom,
     var(--sa-bg-neutral-subtler),
@@ -524,16 +524,16 @@
 
 .ds-demodock__header-row {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: var(--sa-inline-8);
+  margin-bottom: var(--sa-stack-8);
 }
 
 .ds-demodock__title-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--sa-inline-8);
   min-width: 0;
 }
 
@@ -542,16 +542,16 @@
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: var(--sa-shape-6);
   background-color: var(--sa-bg-brand-primary-subtler);
   color: var(--sa-text-brand-primary-base);
 }
 
 .ds-demodock__badge .ds-flask {
-  width: 17px;
-  height: 17px;
+  width: 15px;
+  height: 15px;
 }
 
 /* ── Flask state ─────────────────────────────────────────────────────────
@@ -594,9 +594,12 @@
   min-width: 0;
 }
 
+/* `title-3`, not `title-1`. This is a utility console, not a page: the
+   panel's own name was set two steps larger than the role names in the list
+   it exists to show, so the heaviest thing on screen was the word "Demo". */
 .ds-demodock__title {
-  font-size: var(--sa-type-title-1-size);
-  line-height: var(--sa-type-title-1-lh);
+  font-size: var(--sa-type-title-3-size);
+  line-height: var(--sa-type-title-3-lh);
   font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-text-neutral-base);
 }
@@ -657,7 +660,7 @@
    reaches. Now the tabs size to their labels instead of filling the width,
    and the rail carries the active state alongside. ── */
 .ds-demodock__tabs {
-  margin-top: 2px;
+  margin-top: 0;
 }
 
 .ds-demodock__tabs [role="tablist"] {
@@ -667,7 +670,11 @@
 .ds-demodock__tabs [role="tab"] {
   flex: 0 0 auto;
   min-width: 0;
-  padding-inline: var(--sa-padding-16);
+  padding-inline: var(--sa-padding-8);
+}
+
+.ds-demodock__tabs [role="tab"]:first-child {
+  padding-inline-start: 0;
 }
 
 /* ── Body (the only scrolling region). `--cmp-demodock-content-floor` (set
