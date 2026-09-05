@@ -148,10 +148,19 @@ export function PortalLoginShell({
               "linear-gradient(155deg, var(--sa-color-primaryScale-900) 0%, var(--sa-color-primaryScale-900) 38%, "
               + "var(--sa-color-primaryScale-800) 64%, var(--sa-color-primaryScale-900) 100%)",
           }}
-          aria-hidden="true"
         >
-          {/* Hero content */}
-          <div className="flex flex-1 flex-col items-center justify-center px-12 py-16 text-center text-white">
+          {/*
+            Hero content — decorative, so hidden from assistive technology. The
+            `aria-hidden` used to sit on the whole column, which also hid the
+            "Signing Into" strip below: a screen-reader user was never told which
+            portal they were signing into, and the strip's Change link was a
+            focusable control inside a hidden subtree (axe `aria-hidden-focus`,
+            WCAG 4.1.2). Only the lockup is decorative; the strip is content.
+          */}
+          <div
+            className="flex flex-1 flex-col items-center justify-center px-12 py-16 text-center text-white"
+            aria-hidden="true"
+          >
             <img
               src={samaveshLogoSrc}
               alt=""

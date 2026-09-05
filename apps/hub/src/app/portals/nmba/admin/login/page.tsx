@@ -10,7 +10,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/nmba/toast";
-import { Alert, Button, FormField, Icon, Input, PortalLoginShell, type DemoFillDetail } from "@mosje/design-system";
+import { Alert, Button, FormField, Icon, Input, PasswordInput, PortalLoginShell, type DemoFillDetail } from "@mosje/design-system";
 import { accountFromMobile } from "@/lib/nmba/committee/masters";
 import { massPledgeAccountFromMobile } from "@/lib/nmba/mass-pledge/masters";
 import { PORTAL_SESSION_COOKIE, encodeSession } from "@/lib/nmba/committee/session";
@@ -37,7 +37,6 @@ export default function AdminLoginPage() {
   const { toast } = useToast();
   const [mobile, setMobile] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [showPw, setShowPw] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
 
@@ -122,26 +121,16 @@ export default function AdminLoginPage() {
                 Forgot password?
               </button>
             </div>
-            <div className="relative">
-              <Input
-                id="password"
-                type={showPw ? "text" : "password"}
-                required
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                invalid={!!error}
-                style={{ paddingRight: "var(--sa-padding-40)" }}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPw((s) => !s)}
-                aria-label={showPw ? "Hide password" : "Show password"}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-hint hover:text-ink"
-              >
-                {showPw ? <Icon name="visibility_off" size={16} /> : <Icon name="visibility" size={16} />}
-              </button>
-            </div>
+            {/* DS Audit: PasswordInput ✅ existing — its reveal control clears WCAG 2.2
+                2.5.8 (24 × 24); the hand-rolled 16px button here did not. */}
+            <PasswordInput
+              id="password"
+              required
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              invalid={!!error}
+            />
           </div>
 
           {error && (

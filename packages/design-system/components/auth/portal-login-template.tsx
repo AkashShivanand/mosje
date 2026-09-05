@@ -21,7 +21,7 @@ import { Input } from "../forms/input";
 import { OtpInput } from "../forms/otp-input";
 import { PasswordInput } from "../forms/password-input";
 import { Select } from "../forms/select";
-import { Tabs } from "../navigation/tabs";
+import { TabPanel, Tabs } from "../navigation/tabs";
 import "./portal-login-template.css";
 import { PortalLoginShell, PortalLoginTab } from "./portal-login-shell";
 import { portalLoginUrl, roleFromUrl } from "./portal-login-url";
@@ -105,6 +105,27 @@ export interface PortalLoginTemplateProps {
    * first-level headings and a screen-reader user loses the outline.
    */
   headingLevel?: 1 | 2 | 3;
+}
+
+/** The credential fields, as the tabpanel of the method tabs when those are drawn. */
+function ModeFields({
+  asPanel,
+  idBase,
+  tabId,
+  children,
+}: {
+  asPanel: boolean;
+  idBase: string;
+  tabId: string;
+  children: React.ReactNode;
+}): React.JSX.Element {
+  return asPanel ? (
+    <TabPanel idBase={idBase} tabId={tabId}>
+      {children}
+    </TabPanel>
+  ) : (
+    <>{children}</>
+  );
 }
 
 export function PortalLoginTemplate({
@@ -449,6 +470,16 @@ export function PortalLoginTemplate({
           </div>
         )}
 
+        {/* The mode's fields are the tab panel the method tabs point at. Without
+            it every tab's aria-controls named an id that did not exist — axe
+            aria-valid-attr-value, critical, caught by the production build and
+            not by the dev server. Radio and dropdown selectors are not tablists
+            and get no panel. */}
+        <ModeFields
+          asPanel={authOptions.length > 1 && selectorType === "segmented"}
+          idBase={`${templateId}-method`}
+          tabId={activeAuthMode}
+        >
         {/* ── PASSWORD ─────────────────────────────────────────────────────── */}
         {activeAuthMode === "password" && (
           <div className="space-y-3.5 pt-1">
@@ -608,6 +639,7 @@ export function PortalLoginTemplate({
             )}
           </div>
         )}
+        </ModeFields>
 
         {/* Additional Configurable Fields */}
         {config.extraFields}

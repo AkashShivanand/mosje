@@ -136,6 +136,26 @@ const ROUTES: { name: string; path: string }[] = [
   { name: "the nmba portal", path: "/portals/nmba" },
   { name: "the pm-ajay portal", path: "/portals/pm-ajay" },
   { name: "the smile-admin portal", path: "/portals/smile-admin" },
+  /*
+    LOGIN ROUTES — added 2026-09-05. The suite watched every portal landing and
+    NOT ONE login page, so `PortalLoginShell` shipped an `aria-hidden` column
+    with a focusable Change link inside it on four live routes, green throughout.
+    All ten login routes are here, plus the two docs pages that render the
+    template and the shell as specimens. Desktop viewport: the hero column is
+    `hidden lg:flex`, so anything below 1024px never exercises it.
+  */
+  { name: "e-anudaan login", path: "/portals/e-anudaan/login" },
+  { name: "e-anudaan sign-in", path: "/portals/e-anudaan/sign-in" },
+  { name: "nmba admin login", path: "/portals/nmba/admin/login" },
+  { name: "nmba treatment-centre otp login", path: "/portals/nmba/treatment-centre/login-otp" },
+  { name: "nhapoa login", path: "/portals/nhapoa/login" },
+  { name: "scw login", path: "/portals/scw/login" },
+  { name: "tg admin login", path: "/portals/tg/admin/login" },
+  { name: "tg citizen sign-in", path: "/portals/tg/citizen/sign-in" },
+  { name: "pm-ajay login", path: "/portals/pm-ajay/login" },
+  { name: "smile-admin login", path: "/portals/smile-admin/login" },
+  { name: "the login template docs page", path: "/design-system/components/auth/portal-login-template" },
+  { name: "the login shell docs page", path: "/design-system/components/auth/portal-login-shell" },
 ];
 
 for (const route of ROUTES) {
