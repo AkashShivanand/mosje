@@ -2,7 +2,7 @@ import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { SidebarNav, warnOversizedGroups } from "./sidebar";
+import { SidebarNav, resolveCurrent, warnOversizedGroups } from "./sidebar";
 import type { SidebarNavGroup } from "./types";
 
 const html = (el: React.ReactElement): string => renderToStaticMarkup(el);
@@ -46,6 +46,12 @@ describe("SidebarNav", () => {
     expect(out).toContain("ds-sidebar__list--l3");
     expect(out.match(/aria-current="page"/g)?.length).toBe(1);
     expect(out).toMatch(/Under Review<\/span><\/a>/);
+    // the portal root ("/p") is a prefix of every route and must NOT be current here
+    expect(out).not.toMatch(/aria-current="page"[^>]*>[^<]*<[^>]*>[^<]*<\/[^>]*><span[^>]*>Dashboard/);
+    expect(resolveCurrent(GROUPS, "/p/applications/track/review")).toBe("/p/applications/track/review");
+    expect(resolveCurrent(GROUPS, "/p")).toBe("/p");
+    expect(resolveCurrent(GROUPS, "/p/applications")).toBe("/p/applications");
+    expect(resolveCurrent(GROUPS, "/elsewhere")).toBeNull();
     // the ancestors are open and highlighted, not current
     expect(out).toContain('aria-expanded="true"');
     expect(out.match(/is-active/g)?.length).toBeGreaterThanOrEqual(3);

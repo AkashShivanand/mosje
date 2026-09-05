@@ -8,6 +8,7 @@ import { Badge } from "../../feedback/badge";
 import { Tooltip } from "../../feedback/tooltip";
 import type {
   SidebarNavProps,
+  SidebarNavGroup,
   SidebarNavItem,
   SidebarNavChild,
   SidebarNavLeaf,
@@ -16,19 +17,41 @@ import "./sidebar.css";
 
 // ── Active-state derivation — one expression, used by every level ────────────
 
-const isCurrent = (pathname: string, href: string): boolean =>
+const matches = (pathname: string, href: string): boolean =>
   pathname === href || pathname.startsWith(href + "/");
 
-const leafActive = (pathname: string, leaf: SidebarNavLeaf): boolean =>
-  isCurrent(pathname, leaf.href);
+/**
+ * ONE current page per rail. A prefix match alone is not enough: a portal's
+ * root item ("/portals/scw") is a prefix of every route in the portal and lit
+ * up on every page. The current page is therefore the LONGEST href that
+ * matches the pathname, at whatever level it sits; ancestors of that page are
+ * open and highlighted, and nothing else is.
+ */
+export function resolveCurrent(groups: SidebarNavGroup[], pathname: string): string | null {
+  let best: string | null = null;
+  const consider = (href: string) => {
+    if (matches(pathname, href) && (best === null || href.length > best.length)) best = href;
+  };
+  for (const g of groups) {
+    for (const item of g.items) {
+      consider(item.href);
+      for (const c of item.children ?? []) {
+        consider(c.href);
+        for (const l of c.children ?? []) consider(l.href);
+      }
+    }
+  }
+  return best;
+}
 
-const childActive = (pathname: string, child: SidebarNavChild): boolean =>
-  isCurrent(pathname, child.href) ||
-  (child.children?.some((l) => leafActive(pathname, l)) ?? false);
+const leafActive = (current: string | null, leaf: SidebarNavLeaf): boolean =>
+  current === leaf.href;
 
-const itemActive = (pathname: string, item: SidebarNavItem): boolean =>
-  isCurrent(pathname, item.href) ||
-  (item.children?.some((c) => childActive(pathname, c)) ?? false);
+const childActive = (current: string | null, child: SidebarNavChild): boolean =>
+  current === child.href || (child.children?.some((l) => leafActive(current, l)) ?? false);
+
+const itemActive = (current: string | null, item: SidebarNavItem): boolean =>
+  current === item.href || (item.children?.some((c) => childActive(current, c)) ?? false);
 
 /**
  * Opens a group when something inside it BECOMES current — on the transition,
@@ -84,14 +107,14 @@ const RowLink = React.forwardRef<HTMLElement, RowLinkProps>(function RowLink(
 
 function LeafRow({
   leaf,
-  pathname,
+  current,
   level,
 }: {
   leaf: SidebarNavLeaf;
-  pathname: string;
+  current: string | null;
   level: 2 | 3;
 }) {
-  const active = leafActive(pathname, leaf);
+  const active = leafActive(current, leaf);
   return (
     <li className={cn("ds-sidebar__sub", `ds-sidebar__sub--l${level}`)}>
       <RowLink
@@ -114,16 +137,16 @@ function LeafRow({
 
 function ChildEntry({
   child,
-  pathname,
+  current,
 }: {
   child: SidebarNavChild;
-  pathname: string;
+  current: string | null;
 }) {
   const id = React.useId();
-  const active = childActive(pathname, child);
+  const active = childActive(current, child);
   const [open, toggle] = useDisclosure(active);
   if (!child.children?.length) {
-    return <LeafRow leaf={child} pathname={pathname} level={2} />;
+    return <LeafRow leaf={child} current={current} level={2} />;
   }
   return (
     <li className="ds-sidebar__sub ds-sidebar__sub--l2">
@@ -151,7 +174,7 @@ function ChildEntry({
       {open && (
         <ul id={id} className="ds-sidebar__list ds-sidebar__list--l3">
           {child.children.map((leaf) => (
-            <LeafRow key={leaf.href} leaf={leaf} pathname={pathname} level={3} />
+            <LeafRow key={leaf.href} leaf={leaf} current={current} level={3} />
           ))}
         </ul>
       )}
@@ -163,13 +186,13 @@ function ChildEntry({
 
 function Flyout({
   item,
-  pathname,
+  current,
   anchor,
   id,
   onClose,
 }: {
   item: SidebarNavItem;
-  pathname: string;
+  current: string | null;
   anchor: HTMLElement | null;
   id: string;
   onClose: () => void;
@@ -231,7 +254,7 @@ function Flyout({
       <div className="ds-sidebar__flyout-title">{item.label}</div>
       <ul className="ds-sidebar__list">
         {(item.children ?? []).map((c) => {
-          const active = childActive(pathname, c);
+          const active = childActive(current, c);
           return (
             <li key={c.href} className="ds-sidebar__sub ds-sidebar__sub--flyout">
               <RowLink
@@ -259,14 +282,14 @@ function Flyout({
 
 function MainItem({
   item,
-  pathname,
+  current,
   collapsed,
   flyoutOpen,
   onFlyoutToggle,
   onFlyoutClose,
 }: {
   item: SidebarNavItem;
-  pathname: string;
+  current: string | null;
   collapsed: boolean;
   flyoutOpen: boolean;
   onFlyoutToggle: () => void;
@@ -274,8 +297,8 @@ function MainItem({
 }) {
   const id = React.useId();
   const hasChildren = Boolean(item.children?.length);
-  const selfActive = isCurrent(pathname, item.href);
-  const active = itemActive(pathname, item);
+  const selfActive = current === item.href;
+  const active = itemActive(current, item);
   const [open, toggle] = useDisclosure(active);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
 
@@ -336,7 +359,7 @@ function MainItem({
         {flyoutOpen && (
           <Flyout
             item={item}
-            pathname={pathname}
+            current={current}
             anchor={anchorRef.current}
             id={id}
             onClose={onFlyoutClose}
@@ -401,7 +424,7 @@ function MainItem({
       {open && (
         <ul id={id} className="ds-sidebar__list ds-sidebar__list--l2">
           {item.children!.map((c) => (
-            <ChildEntry key={c.href} child={c} pathname={pathname} />
+            <ChildEntry key={c.href} child={c} current={current} />
           ))}
         </ul>
       )}
@@ -418,7 +441,7 @@ const warned = new Set<string>();
  * A group past seven children is two groups, or a list that belongs on the
  * section's own page. Material caps a rail at seven; every group in the portal
  * handoff has five or fewer. The rail still renders it — a role's data must
- * never break navigation — but development says where the real fix is.
+ * never break navigation — but a one-time warning says where the real fix is.
  */
 export function warnOversizedGroups(groups: SidebarNavGroup[]): string[] {
   const offenders: string[] = [];
@@ -428,14 +451,15 @@ export function warnOversizedGroups(groups: SidebarNavGroup[]): string[] {
       for (const c of item.children ?? []) if ((c.children?.length ?? 0) > 7) offenders.push(c.label);
     }
   }
-  if (process.env.NODE_ENV !== "production") {
-    for (const label of offenders) {
-      if (warned.has(label)) continue;
-      warned.add(label);
-      console.warn(
-        `SidebarNav: "${label}" has more than seven children. Five is the design limit and seven the ceiling — split the group or move the list onto the section's own page.`,
-      );
-    }
+  // Same shape as selection-control.tsx: the once-flag is the guard, not
+  // NODE_ENV — the package has no Node types, and a warning that fires once per
+  // label is cheap wherever it runs.
+  for (const label of offenders) {
+    if (warned.has(label)) continue;
+    warned.add(label);
+    console.warn(
+      `SidebarNav: "${label}" has more than seven children. Five is the design limit and seven the ceiling — split the group or move the list onto the section's own page.`,
+    );
   }
   return offenders;
 }
@@ -454,7 +478,9 @@ export function warnOversizedGroups(groups: SidebarNavGroup[]): string[] {
  *   (`layout/sidebar/collapsedWidth`, 88) modes.
  * - Three levels: a level-1 item with an icon; level-2 entries under a group;
  *   level-3 leaves under a level-2 group. Nothing nests further.
- * - `pathname` is the only source of the current state, at every level.
+ * - `pathname` is the only source of the current state, at every level: the
+ *   longest matching href is the one current page, so a portal's root item
+ *   does not light up on every route.
  * - In the collapsed rail a group opens a flyout listing its level-2 pages;
  *   a leaf shows its label as a tooltip; a badge count becomes a dot.
  * - Group labels are the accessible name of their `role="group"`, in both modes.
@@ -487,6 +513,7 @@ export function SidebarNav({
   id,
 }: SidebarNavProps): React.JSX.Element {
   warnOversizedGroups(groups);
+  const current = resolveCurrent(groups, pathname);
   const [openFlyout, setOpenFlyout] = React.useState<string | null>(null);
   const closeFlyout = React.useCallback(() => setOpenFlyout(null), []);
   // A flyout belongs to the collapsed rail; expanding closes it.
@@ -539,7 +566,7 @@ export function SidebarNav({
                   <MainItem
                     key={item.href}
                     item={item}
-                    pathname={pathname}
+                    current={current}
                     collapsed={collapsed}
                     flyoutOpen={openFlyout === item.href}
                     onFlyoutToggle={() =>

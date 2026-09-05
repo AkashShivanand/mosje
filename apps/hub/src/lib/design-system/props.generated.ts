@@ -7694,7 +7694,7 @@ export const GENERATED_PROPS = {
         "name": "showCollapseControl",
         "type": "boolean",
         "required": false,
-        "description": "Show the collapse control at the foot of the rail (mirrors the Figma `Show Control` property). Requires `onCollapsedChange`."
+        "description": "Show the rail's own collapse control — a 48px row at the TOP of the rail (mirrors the Figma `Show Control` property, off by default). The portal masthead's toggle drives the same state, so pass this only in a shell without that toggle. Requires `onCollapsedChange`."
       }
     ]
   },
