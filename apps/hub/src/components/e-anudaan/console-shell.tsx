@@ -19,7 +19,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
   const role = isOfficer ? ROLES[state.session!] : null;
 
   React.useEffect(() => {
-    if (hydrated && !isOfficer) router.replace("/portals/e-anudaan/login");
+    if (hydrated && !isOfficer) router.replace("/portals/e-anudaan/login?role=officer");
   }, [hydrated, isOfficer, router]);
 
   if (!hydrated || !role) return null;
@@ -54,7 +54,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
             danger: true,
             onSelect: () => {
               logout();
-              router.push("/portals/e-anudaan/login");
+              router.push("/portals/e-anudaan/login?role=officer");
             },
           },
         ]}

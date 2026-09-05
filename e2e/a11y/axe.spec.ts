@@ -144,8 +144,8 @@ const ROUTES: { name: string; path: string }[] = [
     template and the shell as specimens. Desktop viewport: the hero column is
     `hidden lg:flex`, so anything below 1024px never exercises it.
   */
-  { name: "e-anudaan login", path: "/portals/e-anudaan/login" },
-  { name: "e-anudaan sign-in", path: "/portals/e-anudaan/sign-in" },
+  { name: "e-anudaan login — NGO tab", path: "/portals/e-anudaan/login?role=ngo" },
+  { name: "e-anudaan login — officer tab", path: "/portals/e-anudaan/login?role=officer" },
   { name: "nmba admin login", path: "/portals/nmba/admin/login" },
   { name: "nmba treatment-centre otp login", path: "/portals/nmba/treatment-centre/login-otp" },
   { name: "nhapoa login", path: "/portals/nhapoa/login" },

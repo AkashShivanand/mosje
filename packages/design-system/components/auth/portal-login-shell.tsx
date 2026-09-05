@@ -263,8 +263,12 @@ export function PortalLoginShell({
               `style={{ background: "var(--sa-…)" }}` objects, which no token gate
               can see and no brand mode can re-bind, and `rounded-full` where the
               reference draws a rounded rectangle. */}
+          {/* Column metrics follow the Figma shell's form column: 32 above the
+              tabs, 64 at the sides on desktop, 16 on a phone (`55449:905`,
+              `56693:9331`). The column used to centre the form vertically,
+              which floated it away from the tabs pinned at the top. */}
           {tabs && tabs.length > 0 && (
-            <div className="px-6 pb-0 pt-5">
+            <div className="px-4 pt-8 lg:px-16">
               <div className="ds-plogin__roletabs" role="tablist" aria-label="Portal login type">
                 {tabs.map((tab) => (
                   <a
@@ -283,7 +287,7 @@ export function PortalLoginShell({
           )}
 
           {/* Form area */}
-          <div className="flex flex-1 flex-col items-center justify-center px-6 py-6">
+          <div className="flex flex-1 flex-col items-center px-4 py-6 lg:px-16">
             <div id="login-form" className="w-full max-w-sm" tabIndex={-1}>
               {children}
             </div>

@@ -149,3 +149,22 @@ that is the code half of G6, and it is what the Figma pass must not get ahead of
 
 Still open: `PortalList`, `AuthFormCard`, `RecoveryFormCard` and `CredentialRecovery` have no
 code; per-portal photographs; the library `Chip` has no Success tone.
+
+## Status 2026-09-06 — template verified against the SMILE handoff (section 5)
+
+Compared `PortalLoginTemplate` Desktop/Password and Desktop/OTP with `SMILE-Transgender | Citizen`
+(56693:4742, 56693:5001), `| Admin` (56693:5266) and `| Garima Greh` (56693:5757).
+
+| Gap found | Resolution |
+|---|---|
+| Heading drawn at three sizes — 24/32 in the library, 16/24 in code, 20/28 in the handoff | Both on Headline/headline-5 (20/28); the rule under it hidden, as the handoff hides it |
+| DigiLocker card: library 68 tall with a 32 mark and 14/12 copy; handoff 76 tall, 40 mark, 16/13 copy | Both on 16/20 padding, 40 mark, body-1-semibold title, body-2 subtitle |
+| Library AuthFormCard draws a "Your role" select that no handoff frame and no code path has | `Show role select` defaults to off and is off on every template and shell instance |
+| Library OTP variant was a bare "Verify your Phone Number" card; the handoff keeps the login heading, role tabs, DigiLocker block and method tabs around the masked row and code boxes | OTP variant rebuilt to the handoff; code's OTP mode is now two steps — Send OTP as the primary action, then MaskedContactRow, OtpInput, ResendTimer and Verify and Log In |
+| Code spaced fields at 14px; library at 16 | Code on 16 |
+| Handoff spaces field groups at 24 and sets the divider label at 13px | Left: 24 is looser than every other form on the estate, and 13 is off the type ramp; both surfaces stay on 16 and body-3 |
+| Handoff Garima Greh draws a distorted-character captcha | Deliberate divergence, recorded on BotCheck: the estate ships the invisible/checkbox check |
+| The template accepts no DemoDock prefill, so a portal adopting it lost the demo console's "Use" | Template listens for `demo:fill` |
+
+E-Anudaan is the first portal on the merged login: NGO and Ministry Officer are role tabs on
+`/portals/e-anudaan/login`; `/sign-in` and the old landing redirect there with the role in the URL.
