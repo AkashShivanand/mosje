@@ -1077,6 +1077,19 @@ on 1536, the most common desktop width. Recorded in `docs/guidelines/README.md`.
 media query is unavailable (an inline style, for instance — it is how `SiteHeader` caps its
 own column).
 
+**Two layouts, one margin ladder (2026-09-05).** The website is **contained**: every row of every
+section sits in `.sa-container`, which is the three-step cap and the margin ladder together. Portals
+are **fluid**: no cap at all, only the margin ladder, so a portal's masthead, page header and content
+run edge to edge with `--sa-grid-margin-page` on each side — 16, 24 from 768, 32 from 1920. Figma
+draws both on a 1440 frame: `Navbar/Website` caps each row at `container/page` (1320 there) and
+`Navbar/Portal` lets each row fill, and both bind their side padding to `grid/margin/page` with the
+variant pinned to its Viewport mode. In code the same split is `SiteHeader variant="website"` (cap
+and margin) against `variant="portal"` (margin only), and `Container size="full"` is the fluid column
+for anything else on a portal. **A new component asks which surface it is on and binds accordingly**:
+`.sa-container` on the website, `--sa-grid-margin-page` on a portal — never a `padding/*` rung that
+happens to equal the margin. The masthead and the accessibility bar carried exactly that: a literal
+16 / 24 / 32 per breakpoint that agreed with the ladder at three widths and disagreed with it at 1920.
+
 > A container is a **cap**, not a width. `grid/margin/*` (16 mobile / 24 tablet / 32 desktop)
 > is a **floor** that wins on narrower viewports, so the effective column is
 > `min(container, viewport − 2 × margin)`.
@@ -1112,7 +1125,7 @@ no store, no router, no redirect.
 
 | Component | Use it for | Never |
 | --- | --- | --- |
-| `Container` | the centred content column; applies the cap **and** the side margin | adding your own `px-*` — the margin is already there |
+| `Container` | the centred content column; applies the cap **and** the side margin. `size="full"` is the portal's fluid column — margin, no cap | adding your own `px-*` — the margin is already there |
 | `Grid` / `GridItem` | page-level column layouts; `span={{ base, md, lg }}` | a simple wrapping row of cards — flex is simpler |
 | `Band` | a website section: full-bleed tone + rhythm around a `Container` | a portal page — portal content is fluid, not banded |
 | `PageHeader` | the title + meta + actions row a portal page opens with | a heading *inside* a page — that is `SectionTitle` |
