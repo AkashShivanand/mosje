@@ -3862,29 +3862,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "300px",
         "figma": "Space · layout/sidebar/width",
         "excluded": null,
-        "description": "The portal sidebar's expanded width. Genuinely fixed: the nav labels are known copy, and a fluid sidebar would move the content edge on every route. Its inner padding is `padding/16`, leaving a 268 item column; items are `target/spacious` (48) tall. Below the tablet breakpoint the sidebar is not narrowed — it becomes a drawer."
-      },
-      {
-        "path": "layout/sidebar/collapsedWidth",
-        "tier": "sys",
-        "type": "dimension",
-        "css": "--sa-layout-sidebar-collapsedWidth",
-        "value": "88px",
-        "raw": "88px",
-        "figma": "Space · layout/sidebar/collapsedWidth",
-        "excluded": null,
-        "description": "The portal sidebar's collapsed width: a 56 icon row plus `padding/16` each side. Fixed for the same reason as `width` — the content edge must not move between routes. Below the tablet breakpoint the rail is a drawer, never this width."
-      },
-      {
-        "path": "layout/sidebar/flyoutWidth",
-        "tier": "sys",
-        "type": "dimension",
-        "css": "--sa-layout-sidebar-flyoutWidth",
-        "value": "240px",
-        "raw": "240px",
-        "figma": "Space · layout/sidebar/flyoutWidth",
-        "excluded": null,
-        "description": "Width of the panel a collapsed rail opens beside a Group item to list its level-2 pages. Fixed so the panel does not resize with its longest label."
+        "description": "The portal sidebar's expanded width. Genuinely fixed: the nav labels are known copy, and a fluid sidebar would move the content edge on every route. Its inner padding is `padding/m` (16), leaving a 268 item column; items are `target/spacious` (48) tall. Below the tablet breakpoint the sidebar is not narrowed — it becomes a drawer."
       },
       {
         "path": "layout/sidebar/collapsedWidth",
