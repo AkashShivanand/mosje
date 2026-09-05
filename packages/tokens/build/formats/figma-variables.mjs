@@ -784,6 +784,11 @@ function applyContractNotes(payload) {
  * (apiVersion 1.0.0) can READ that value but rejects it on write, so the push keeps whatever
  * the UI set on those thirteen variables and reports the skip.
  */
+/** Published visibility follows the name a designer sees, not the file the token came from. */
+export function isHiddenName(figmaName, collection) {
+  return figmaName.startsWith("ref/") || collection === "Palette";
+}
+
 export function scopesFor(path, tier, type, figmaName) {
   // Keyed on the LIBRARY name, not the source path: `font/role/display/1/size` is Tier-1 in
   // the source but publishes as the Tier-2 `type/display/1/size`, and a component token's
@@ -804,7 +809,9 @@ export function scopesFor(path, tier, type, figmaName) {
       // The Tier-2 scales and overlay tiers are the bindable palette; a Palette-collection
       // companion of a role token (color/text/disabled) keeps its role's scope.
       if (rest[0] === "text") return ["TEXT_FILL"];
-      return ["ALL_FILLS", "STROKE_COLOR", "EFFECT_COLOR"];
+      // Every colour scope named, never `ALL_FILLS` — the wildcard the standard says not to
+      // ship. A palette rung may legitimately be any of the five; it is still five, not "all".
+      return ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR", "EFFECT_COLOR"];
     }
     if (head === "cmp") {
       if (/text|label|ink/i.test(tail)) return ["TEXT_FILL"];
@@ -952,7 +959,12 @@ export function buildPayload(dictionary) {
     seen.add(key);
 
     const collection = collections[target.collection];
-    const { type } = figmaTypeOf(token);
+    // A weight is a STRING in Figma (a cut is addressed by style name — see figmaFontStyle), so
+    // the row's type must say so too. The value encoder already did; the row did not, and the
+    // payload shipped `type: "FLOAT"` over "SemiBold" for six variables until 2026-09-05.
+    const { type } = token.path?.[0] === "font" && token.path?.[1] === "weight"
+      ? { type: "STRING" }
+      : figmaTypeOf(token);
     const fluid = token.original?.$extensions?.mosje?.type;
 
     const valuesByMode = {};
@@ -969,6 +981,20 @@ export function buildPayload(dictionary) {
         if (override !== undefined) {
           raw = override;
         } else {
+          // A Tier-2 colour that references ANOTHER Tier-2 colour carrying its own alpha
+          // (`cmp/accessibilityBar/hoverBg` -> `overlay/brand/hover`, which is neutral/0 at
+          // alpha/8) aliases THAT variable, not the rung beneath it. Following the chain to the
+          // Palette dropped the alpha: the payload said `->color/neutralScale/0` — opaque white —
+          // for a wash the library correctly holds as `->overlay/brand/hover`. Found 2026-09-05
+          // as the one remaining Color value difference between payload and library.
+          const rawRef = token.original?.$value ?? token.original?.value;
+          const refKey = typeof rawRef === "string" && /^\{[^}]+\}$/.test(rawRef.trim()) ? rawRef.trim().slice(1, -1) : null;
+          const refTarget = refKey ? nameByPath.get(refKey) : null;
+          const refToken = refKey ? tokenByPath.get(refKey) : null;
+          if (refTarget?.collection === "Color" && refToken?.original?.$extensions?.mosje?.alpha && !token.original?.$extensions?.mosje?.alpha) {
+            valuesByMode[mode] = { type: "ALIAS", collection: "Color", name: refTarget.name };
+            continue;
+          }
           // Light (and any theme with no override): alias the brand-aware Color variable so
           // Blue/Navy still flows through. Falling back to a literal would drop the brand.
           const brandAware = brandAwareAlias(token, tokenByPath, colorByUnderlying, nameByPath);
@@ -1057,8 +1083,12 @@ export function buildPayload(dictionary) {
       codeSyntax: { WEB: `var(${emittedCssName(token, tier)})` },
       scopes: scopesFor(token.path, tier, type, target.name),
       // .claude/rules/figma-variables-standard.md §4: a Tier-1 primitive exists only to be
-      // aliased, so consumers never see it; the semantic and component tiers publish.
-      hiddenFromPublishing: tier === "ref",
+      // aliased, so consumers never see it; the semantic and component tiers publish. Keyed on
+      // the LIBRARY name, like scopesFor: `font/role/*` is Tier-1 in the source but publishes
+      // as the Tier-2 `type/*` a text style binds, and a designer may bind it too. Palette is
+      // Tier 1 by role — the brand ramps every Color role aliases — and hides whole, so a
+      // consuming file sees the semantic layer and nothing beneath it.
+      hiddenFromPublishing: isHiddenName(target.name, target.collection),
       status: live?.[target.collection]?.includes(target.name) ? "existing" : "new",
       $extensions: { "in.gov.mosje.tier": tier, "in.gov.mosje.source": token.filePath },
     });
@@ -1100,6 +1130,8 @@ export function buildPayload(dictionary) {
         `Brand-aware source for Theme::${name}. Generated because that token’s light value is ` +
         `a literal that differs between Blue and Navy; without it the Navy brand is lost.`,
       codeSyntax: { WEB: `var(${toCssName(token.path, tierOfFile(token.filePath))})` },
+      scopes: scopesFor(token.path, tierOfFile(token.filePath), "COLOR", name),
+      hiddenFromPublishing: isHiddenName(name, "Palette"),
     });
   }
 
@@ -1119,7 +1151,7 @@ export function buildPayload(dictionary) {
       "(Blue|Navy) and Color is the single-mode semantic layer that aliases into it. Every " +
       "variable carries the five fields .claude/rules/figma-variables-standard.md requires: " +
       "name = DTCG path, description, narrowest true scopes, codeSyntax.WEB, and " +
-      "hiddenFromPublishing by tier. See spec §8.4.",
+      "hiddenFromPublishing by the tier of the LIBRARY name (ref/* and all of Palette hide). See spec §8.4.",
     counts,
     unmapped,
     collections: Object.values(collections).filter((c) => c.variables.length),

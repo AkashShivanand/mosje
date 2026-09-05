@@ -50,7 +50,7 @@
   }
 
   .ds-sidebar.is-expanded  { width: 300px; } /* 268px content + 2×16px padding */
-  .ds-sidebar.is-collapsed { width: 88px;  } /* 56px icon row + 2×16px padding — Portal DS spec */
+  .ds-sidebar.is-collapsed { width: var(--sa-layout-sidebar-collapsedWidth); } /* 88px: 56px icon row + 2×16px padding — Portal DS spec */
 
   /* ── Navigation ─────────────────────────────────────────────────────────────── */
 

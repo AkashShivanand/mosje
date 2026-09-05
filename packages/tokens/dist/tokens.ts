@@ -1431,7 +1431,9 @@ export const tokens = {
       "minHeight": "118px"
     },
     "sidebar": {
-      "width": "300px"
+      "width": "300px",
+      "collapsedWidth": "88px",
+      "flyoutWidth": "240px"
     },
     "login": {
       "hero": {

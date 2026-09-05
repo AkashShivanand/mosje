@@ -637,59 +637,76 @@
   },
   "space": {
     "0": {
-      "$value": "0px"
+      "$value": "0px",
+      "$description": "No space — the rung a padding or gap aliases when a variant removes it, so the property stays bound rather than deleted."
     },
     "2": {
-      "$value": "2px"
+      "$value": "2px",
+      "$description": "2px — hairline separation: a badge from its glyph, a focus ring's offset (`focus/offset`)."
     },
     "4": {
-      "$value": "4px"
+      "$value": "4px",
+      "$description": "4px — the tightest inner gap: icon to label inside a chip, the gap between stacked pills."
     },
     "6": {
       "$value": "6px",
       "$description": "UX4G 3.0 space-3. Added 2026-08-18."
     },
     "8": {
-      "$value": "8px"
+      "$value": "8px",
+      "$description": "8px — the base unit. A control's inner gap (`density/control/gap`), a label to its field, `target/spacing` between adjacent targets."
     },
     "12": {
-      "$value": "12px"
+      "$value": "12px",
+      "$description": "12px — compact padding: dense table cells and compact controls (`density/control/padding/x` compact)."
     },
     "16": {
-      "$value": "16px"
+      "$value": "16px",
+      "$description": "16px — the default inline padding of a control and the mobile page margin (`grid/margin/mobile`)."
     },
     "20": {
-      "$value": "20px"
+      "$value": "20px",
+      "$description": "20px — card padding at the compact end, and the gap between a card's header and body."
     },
     "24": {
-      "$value": "24px"
+      "$value": "24px",
+      "$description": "24px — the grid gutter (`grid/gutter`), the tablet page margin, and default card padding."
     },
     "32": {
-      "$value": "32px"
+      "$value": "32px",
+      "$description": "32px — the desktop-wide page margin (`grid/margin/desktop`) and the inner padding of a section band."
     },
     "40": {
-      "$value": "40px"
+      "$value": "40px",
+      "$description": "40px — the gap between related blocks inside a section on a portal page."
     },
     "48": {
-      "$value": "48px"
+      "$value": "48px",
+      "$description": "48px — the default gap between page sections (`section/48`) on the website."
     },
     "56": {
-      "$value": "56px"
+      "$value": "56px",
+      "$description": "56px — a section gap for a page with a hero above it, so the hero reads as its own band."
     },
     "64": {
-      "$value": "64px"
+      "$value": "64px",
+      "$description": "64px — the vertical padding of a hero or a login panel gutter (`layout/login/panel/gutter`)."
     },
     "72": {
-      "$value": "72px"
+      "$value": "72px",
+      "$description": "72px — the generous section gap used between website home-page bands."
     },
     "80": {
-      "$value": "80px"
+      "$value": "80px",
+      "$description": "80px — the widest routine section gap; above this the page reads as separate pages."
     },
     "120": {
-      "$value": "120px"
+      "$value": "120px",
+      "$description": "120px — the top and bottom inset of a full-bleed hero band."
     },
     "360": {
-      "$value": "360px"
+      "$value": "360px",
+      "$description": "360px — the fixed inset the login hero's content column sits behind; the one rung that is a layout offset, not a gap."
     },
     "$description": "Spacing ladder, VALUE-NAMED: `space/16` is 16px. Renamed from T-shirt labels on 2026-08-18. Two reasons, both measured. (1) A T-shirt ramp has no slot between two adjacent rungs, so every insertion forces a rename of everything above it — that happened twice in one day (inline gained 24, padding needed 6). A numeric ladder absorbs any step for free. (2) The Tier-2 families each mapped the SAME label to a DIFFERENT value — `l` was 16 in inline, 24 in stack, 20 in padding and 56 in section — which is inherited verbatim from UX4G 3.0 and is the single most confusing thing about the old scale. UX4G's own primitive ramp is numeric (space-1..16), so numbering here is MORE consistent with UX4G, not less. UX4G parity is unaffected: the --ux4g-* layer is emitted independently and never reads these names. 6px is new — UX4G ships it as space-3 and 400 padding properties in the Figma library needed it.",
     "$type": "dimension"

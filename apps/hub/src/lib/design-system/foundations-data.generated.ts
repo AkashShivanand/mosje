@@ -43,7 +43,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "0px",
         "figma": "Space · ref/space/0",
         "excluded": null,
-        "description": ""
+        "description": "No space — the rung a padding or gap aliases when a variant removes it, so the property stays bound rather than deleted."
       },
       {
         "path": "space/2",
@@ -54,7 +54,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "2px",
         "figma": "Space · ref/space/2",
         "excluded": null,
-        "description": ""
+        "description": "2px — hairline separation: a badge from its glyph, a focus ring's offset (`focus/offset`)."
       },
       {
         "path": "space/4",
@@ -65,7 +65,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "4px",
         "figma": "Space · ref/space/4",
         "excluded": null,
-        "description": ""
+        "description": "4px — the tightest inner gap: icon to label inside a chip, the gap between stacked pills."
       },
       {
         "path": "space/6",
@@ -87,7 +87,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "8px",
         "figma": "Space · ref/space/8",
         "excluded": null,
-        "description": ""
+        "description": "8px — the base unit. A control's inner gap (`density/control/gap`), a label to its field, `target/spacing` between adjacent targets."
       },
       {
         "path": "space/12",
@@ -98,7 +98,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "12px",
         "figma": "Space · ref/space/12",
         "excluded": null,
-        "description": ""
+        "description": "12px — compact padding: dense table cells and compact controls (`density/control/padding/x` compact)."
       },
       {
         "path": "space/16",
@@ -109,7 +109,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "16px",
         "figma": "Space · ref/space/16",
         "excluded": null,
-        "description": ""
+        "description": "16px — the default inline padding of a control and the mobile page margin (`grid/margin/mobile`)."
       },
       {
         "path": "space/20",
@@ -120,7 +120,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "20px",
         "figma": "Space · ref/space/20",
         "excluded": null,
-        "description": ""
+        "description": "20px — card padding at the compact end, and the gap between a card's header and body."
       },
       {
         "path": "space/24",
@@ -131,7 +131,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "24px",
         "figma": "Space · ref/space/24",
         "excluded": null,
-        "description": ""
+        "description": "24px — the grid gutter (`grid/gutter`), the tablet page margin, and default card padding."
       },
       {
         "path": "space/32",
@@ -142,7 +142,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "32px",
         "figma": "Space · ref/space/32",
         "excluded": null,
-        "description": ""
+        "description": "32px — the desktop-wide page margin (`grid/margin/desktop`) and the inner padding of a section band."
       },
       {
         "path": "space/40",
@@ -153,7 +153,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "40px",
         "figma": "Space · ref/space/40",
         "excluded": null,
-        "description": ""
+        "description": "40px — the gap between related blocks inside a section on a portal page."
       },
       {
         "path": "space/48",
@@ -164,7 +164,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "48px",
         "figma": "Space · ref/space/48",
         "excluded": null,
-        "description": ""
+        "description": "48px — the default gap between page sections (`section/48`) on the website."
       },
       {
         "path": "space/56",
@@ -175,7 +175,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "56px",
         "figma": "Space · ref/space/56",
         "excluded": null,
-        "description": ""
+        "description": "56px — a section gap for a page with a hero above it, so the hero reads as its own band."
       },
       {
         "path": "space/64",
@@ -186,7 +186,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "64px",
         "figma": "Space · ref/space/64",
         "excluded": null,
-        "description": ""
+        "description": "64px — the vertical padding of a hero or a login panel gutter (`layout/login/panel/gutter`)."
       },
       {
         "path": "space/72",
@@ -197,7 +197,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "72px",
         "figma": "Space · ref/space/72",
         "excluded": null,
-        "description": ""
+        "description": "72px — the generous section gap used between website home-page bands."
       },
       {
         "path": "space/80",
@@ -208,7 +208,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "80px",
         "figma": "Space · ref/space/80",
         "excluded": null,
-        "description": ""
+        "description": "80px — the widest routine section gap; above this the page reads as separate pages."
       },
       {
         "path": "space/120",
@@ -219,7 +219,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "120px",
         "figma": "Space · ref/space/120",
         "excluded": null,
-        "description": ""
+        "description": "120px — the top and bottom inset of a full-bleed hero band."
       },
       {
         "path": "space/360",
@@ -230,7 +230,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "360px",
         "figma": "Space · ref/space/360",
         "excluded": null,
-        "description": ""
+        "description": "360px — the fixed inset the login hero's content column sits behind; the one rung that is a layout offset, not a gap."
       },
       {
         "path": "inline/0",
@@ -900,7 +900,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
       "cmp": 0,
       "figma": 78,
       "codeOnly": 0,
-      "described": 61
+      "described": 78
     }
   },
   "sizing": {
@@ -1156,7 +1156,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{size.16}",
         "figma": "Space · icon/size/16",
         "excluded": null,
-        "description": "Use for a 16 icon. Bind a step rather than a raw number, so icons stay in proportion when the scale moves."
+        "description": "16px — inline with body-2 and label text, and inside a chip."
       },
       {
         "path": "icon/size/20",
@@ -1178,7 +1178,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{size.24}",
         "figma": "Space · icon/size/24",
         "excluded": null,
-        "description": "Use for a 24 icon. Bind a step rather than a raw number, so icons stay in proportion when the scale moves."
+        "description": "24px — the default: buttons, list rows, the masthead menu."
       },
       {
         "path": "icon/size/32",
@@ -1189,7 +1189,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{size.32}",
         "figma": "Space · icon/size/32",
         "excluded": null,
-        "description": "Use for a 32 icon. Bind a step rather than a raw number, so icons stay in proportion when the scale moves."
+        "description": "32px — a card or tile glyph."
       },
       {
         "path": "icon/size/40",
@@ -1200,7 +1200,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{size.40}",
         "figma": "Space · icon/size/40",
         "excluded": null,
-        "description": "Use for a 40 icon. Bind a step rather than a raw number, so icons stay in proportion when the scale moves."
+        "description": "40px — a portal card's leading mark."
       },
       {
         "path": "icon/size/48",
@@ -1211,7 +1211,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{size.48}",
         "figma": "Space · icon/size/48",
         "excluded": null,
-        "description": "Use for a 48 icon. Bind a step rather than a raw number, so icons stay in proportion when the scale moves."
+        "description": "48px — a hero or section-head glyph."
       },
       {
         "path": "icon/size/64",
@@ -1222,7 +1222,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{size.64}",
         "figma": "Space · icon/size/64",
         "excluded": null,
-        "description": "Use for a 64 icon. Bind a step rather than a raw number, so icons stay in proportion when the scale moves."
+        "description": "64px — the mark in an empty state or illustration tile."
       },
       {
         "path": "target/min",
@@ -2266,7 +2266,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.0}",
         "figma": "Static · alpha/0",
         "excluded": null,
-        "description": "Fully transparent — the resting fill of an outlined button on a brand surface. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/0); never type the percentage. In CSS it is --sa-alpha-0, and every translucent token already resolves as color-mix() over it."
+        "description": "0% — fully transparent — the resting state of a fade. Aliases `opacity/0`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/4",
@@ -2277,7 +2277,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.4}",
         "figma": "Static · alpha/4",
         "excluded": null,
-        "description": "Hairline or the faintest lift on a dark surface: the code specimen's border and titlebar strip. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/4); never type the percentage. In CSS it is --sa-alpha-4, and every translucent token already resolves as color-mix() over it."
+        "description": "4% — the faintest wash — a hover tint on a neutral surface. Aliases `opacity/4`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/8",
@@ -2288,7 +2288,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.8}",
         "figma": "Static · alpha/8",
         "excluded": null,
-        "description": "Hover wash on a brand or neutral surface, and the lightest overlay tier. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/8); never type the percentage. In CSS it is --sa-alpha-8, and every translucent token already resolves as color-mix() over it."
+        "description": "8% — the faintest wash — a hover tint on a neutral surface. Aliases `opacity/8`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/16",
@@ -2299,7 +2299,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.16}",
         "figma": "Static · alpha/16",
         "excluded": null,
-        "description": "Pressed/selected wash on a brand surface, and the second overlay tier. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/16); never type the percentage. In CSS it is --sa-alpha-16, and every translucent token already resolves as color-mix() over it."
+        "description": "16% — a visible wash — pressed and selected tints, the overlay behind a popover. Aliases `opacity/16`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/24",
@@ -2310,7 +2310,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.24}",
         "figma": "Static · alpha/24",
         "excluded": null,
-        "description": "Third overlay tier; the disabled border of a secondary inverse button. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/24); never type the percentage. In CSS it is --sa-alpha-24, and every translucent token already resolves as color-mix() over it."
+        "description": "24% — a visible wash — pressed and selected tints, the overlay behind a popover. Aliases `opacity/24`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/32",
@@ -2321,7 +2321,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.32}",
         "figma": "Static · alpha/32",
         "excluded": null,
-        "description": "Fourth overlay tier; a stronger hairline on a dark surface. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/32); never type the percentage. In CSS it is --sa-alpha-32, and every translucent token already resolves as color-mix() over it."
+        "description": "32% — a strong wash or a disabled element (`alpha/disabled` is 48). Aliases `opacity/32`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/40",
@@ -2332,7 +2332,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.40}",
         "figma": "Static · alpha/40",
         "excluded": null,
-        "description": "The quieter inverse rule (border/neutral/inverse/subtle) and a disabled inverse fill. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/40); never type the percentage. In CSS it is --sa-alpha-40, and every translucent token already resolves as color-mix() over it."
+        "description": "40% — a strong wash or a disabled element (`alpha/disabled` is 48). Aliases `opacity/40`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/48",
@@ -2343,7 +2343,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.48}",
         "figma": "Static · alpha/48",
         "excluded": null,
-        "description": "The strongest overlay tier, the modal scrim, and the resting label on a dark titlebar. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/48); never type the percentage. In CSS it is --sa-alpha-48, and every translucent token already resolves as color-mix() over it."
+        "description": "48% — a strong wash or a disabled element (`alpha/disabled` is 48). Aliases `opacity/48`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/64",
@@ -2354,7 +2354,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.64}",
         "figma": "Static · alpha/64",
         "excluded": null,
-        "description": "Disabled ink on a dark or brand surface. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/64); never type the percentage. In CSS it is --sa-alpha-64, and every translucent token already resolves as color-mix() over it."
+        "description": "64% — a de-emphasised but readable element (`alpha/muted` is 64). Aliases `opacity/64`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/72",
@@ -2365,7 +2365,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.72}",
         "figma": "Static · alpha/72",
         "excluded": null,
-        "description": "Secondary ink on a dark or brand surface — an interactive titlebar label. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/72); never type the percentage. In CSS it is --sa-alpha-72, and every translucent token already resolves as color-mix() over it."
+        "description": "72% — a de-emphasised but readable element (`alpha/muted` is 64). Aliases `opacity/72`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/80",
@@ -2376,7 +2376,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.80}",
         "figma": "Static · alpha/80",
         "excluded": null,
-        "description": "Pressed fill of a primary inverse button. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/80); never type the percentage. In CSS it is --sa-alpha-80, and every translucent token already resolves as color-mix() over it."
+        "description": "80% — a scrim or near-opaque surface. Aliases `opacity/80`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/88",
@@ -2387,7 +2387,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.88}",
         "figma": "Static · alpha/88",
         "excluded": null,
-        "description": "Hover fill of a primary inverse button. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/88); never type the percentage. In CSS it is --sa-alpha-88, and every translucent token already resolves as color-mix() over it."
+        "description": "88% — a scrim or near-opaque surface. Aliases `opacity/88`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/100",
@@ -2398,7 +2398,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.100}",
         "figma": "Static · alpha/100",
         "excluded": null,
-        "description": "Opaque — a sentinel so a binding can be switched off without unbinding. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/100); never type the percentage. In CSS it is --sa-alpha-100, and every translucent token already resolves as color-mix() over it."
+        "description": "100% — fully opaque — the resting state of an element that fades in. Aliases `opacity/100`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/disabled",
@@ -2996,7 +2996,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "540px",
         "figma": "Static · container/sm",
         "excluded": null,
-        "description": "Use as the container max-width at the sm breakpoint."
+        "description": "540px — UX4G 3.0's Bootstrap container step, carried for parity with the standard. The estate's own content column is `container/page`; use this rung only where a UX4G component is transcribed as published."
       },
       {
         "path": "container/md",
@@ -3007,7 +3007,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "720px",
         "figma": "Static · container/md",
         "excluded": null,
-        "description": "Use as the container max-width at the md breakpoint."
+        "description": "720px — UX4G 3.0's Bootstrap container step, carried for parity with the standard. The estate's own content column is `container/page`; use this rung only where a UX4G component is transcribed as published."
       },
       {
         "path": "container/lg",
@@ -3018,7 +3018,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "960px",
         "figma": "Static · container/lg",
         "excluded": null,
-        "description": "Use as the container max-width at the lg breakpoint."
+        "description": "960px — UX4G 3.0's Bootstrap container step, carried for parity with the standard. The estate's own content column is `container/page`; use this rung only where a UX4G component is transcribed as published."
       },
       {
         "path": "container/xl",
@@ -3029,7 +3029,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "1140px",
         "figma": "Static · container/xl",
         "excluded": null,
-        "description": "Use as the container max-width at the xl breakpoint."
+        "description": "1140px — UX4G 3.0's Bootstrap container step, carried for parity with the standard. The estate's own content column is `container/page`; use this rung only where a UX4G component is transcribed as published."
       },
       {
         "path": "container/2xl",
@@ -3308,7 +3308,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{border.width.md}",
         "figma": "Static · focus/width",
         "excluded": null,
-        "description": "Use for the focus ring’s width. The ring’s colour was tokenised long before its geometry, so this was hardcoded — WCAG 2.4.7 governs all three."
+        "description": "The ring's thickness — `border/width/md` (2px). WCAG 2.4.13 asks for a 2px perimeter at minimum; this is that minimum, not a decoration."
       },
       {
         "path": "focus/offset",
@@ -3319,7 +3319,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{space.2}",
         "figma": "Static · focus/offset",
         "excluded": null,
-        "description": "Use for the focus ring’s offset. The ring’s colour was tokenised long before its geometry, so this was hardcoded — WCAG 2.4.7 governs all three."
+        "description": "The gap between the control's edge and the ring — `space/2`, so the ring never covers the control's own border and the two stay distinguishable."
       },
       {
         "path": "overlay/neutral/boldest",
@@ -3500,6 +3500,28 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "description": "The portal sidebar's expanded width. Genuinely fixed: the nav labels are known copy, and a fluid sidebar would move the content edge on every route. Its inner padding is `padding/m` (16), leaving a 268 item column; items are `target/spacious` (48) tall. Below the tablet breakpoint the sidebar is not narrowed — it becomes a drawer."
       },
       {
+        "path": "layout/sidebar/collapsedWidth",
+        "tier": "sys",
+        "type": "dimension",
+        "css": "--sa-layout-sidebar-collapsedWidth",
+        "value": "88px",
+        "raw": "88px",
+        "figma": "Space · layout/sidebar/collapsedWidth",
+        "excluded": null,
+        "description": "The portal sidebar's collapsed width: a 56px icon row plus 16px padding each side. Fixed for the same reason as `layout/sidebar/width` — the content edge must not move between routes. Below the tablet breakpoint the rail is a drawer, never this width."
+      },
+      {
+        "path": "layout/sidebar/flyoutWidth",
+        "tier": "sys",
+        "type": "dimension",
+        "css": "--sa-layout-sidebar-flyoutWidth",
+        "value": "240px",
+        "raw": "240px",
+        "figma": "Space · layout/sidebar/flyoutWidth",
+        "excluded": null,
+        "description": "Width of the panel a collapsed rail opens beside a Group item to list its level-2 pages. Fixed so the panel does not resize with its longest label."
+      },
+      {
         "path": "layout/login/hero/width",
         "tier": "sys",
         "type": "dimension",
@@ -3567,13 +3589,13 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
       }
     ],
     "stats": {
-      "total": 16,
+      "total": 18,
       "ref": 0,
-      "sys": 16,
+      "sys": 18,
       "cmp": 0,
-      "figma": 16,
+      "figma": 18,
       "codeOnly": 0,
-      "described": 16
+      "described": 18
     }
   }
 };
