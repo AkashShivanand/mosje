@@ -1435,38 +1435,101 @@
     }
   }
 
-  /* A 40x40 TARGET around a 20px-wide emblem. The glyph is 20x32 (17x28 on a
-     phone), and until 2026-09-05 the link was exactly that box — under the 24x24
-     WCAG 2.5.8 asks of a pointer target, with the nav 16px away so the spacing
-     exception did not apply. The box is now the bar's control size and the emblem
-     keeps the LEFT edge (`justify-content: flex-start`), so it still lands on the
-     page margin where it sits at rest; the extra reach goes right, into the gap.
-     Figma: the `Home` frame in every On Scroll variant, 40 minimum on both axes. */
-  .ds-hdr-cond__home {
-    display: flex;
-    align-items: center;
+  /* THE IDENTITY IN THE BAR is the BrandLockup, compact: emblem plus the
+     department line. It was a bare 20px emblem until 2026-09-05, and on a portal
+     — where the nav is in the sidebar, not on this row — that left a 64px bar
+     that was mostly nothing between a glyph and the profile block.
+
+     A 40x40 TARGET at minimum: the glyph alone is 20x32 (17x28 on a phone), under
+     the 24x24 WCAG 2.5.8 asks of a pointer target. The emblem keeps the LEFT
+     edge, so it still lands on the page margin where it sits at rest.
+     Figma: the `Home` frame in every On Scroll variant, 40 minimum on both axes,
+     holding Navbar/BrandLockup Size=Condensed where the text shows. */
+  .ds-hdr-cond__lockup {
     justify-content: flex-start;
     flex: 0 0 auto;
+    gap: var(--sa-stack-12);
     min-width: 40px;
     min-height: 40px;
     border-radius: var(--sa-shape-4);
-    text-decoration: none;
   }
 
-  .ds-hdr-cond__home:focus-visible {
+  .ds-hdr-cond__lockup:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
     outline-offset: var(--sa-focus-offset);
   }
 
-  .ds-hdr-cond__emblem {
+  /* 28 on a phone, 32 from tablet up — a rung below `.is-compact`'s 44, because
+     this row is 64 and the resting compact bar is 68. `.is-compact` is repeated
+     in the selector on purpose: the compact rule is three classes deep, and a
+     two-class override lost to it — measured 27x44 in a bar designed for 32. */
+  .ds-hdr-cond__lockup.is-compact .ds-hdr-lockup__emblem {
     height: 28px;
-    width: auto;
-    display: block;
   }
 
   @media (min-width: 768px) {
-    .ds-hdr-cond__emblem {
+    .ds-hdr-cond__lockup.is-compact .ds-hdr-lockup__emblem {
       height: 32px;
+    }
+  }
+
+  /* TWO ROWS, THREE NAMES. The resting lockup stacks Government of India, the
+     Ministry and the Department on three rows; here the first two share one muted
+     12px row, separated by a middle dot, and the Department takes the second at
+     14. 16 + 20 = 36px of type in a 48px bar. Nothing wraps: a bar that grows to
+     fit a wrapped name is a bar that jumps on scroll. The department line alone
+     was the first cut (2026-09-05); DBIM 5.2 treats none of the three as
+     optional, and the bar had the room. */
+  /* A GRID, not a wrapping flex row: a wrapping flex box measures its
+     max-content width as every item on ONE line — 727px here — and the bar laid
+     the lockup out at that width. Two max-content columns for the small row and
+     a full-width department line measure as the widest row, 411. */
+  .ds-hdr-cond__lockup .ds-hdr-lockup__lines {
+    grid-template-columns: max-content max-content;
+    align-items: baseline;
+    column-gap: var(--sa-inline-8);
+  }
+
+  .ds-hdr-cond__lockup .ds-hdr-lockup__org,
+  .ds-hdr-cond__lockup .ds-hdr-lockup__ministry {
+    color: var(--sa-text-neutral-subtle);
+    white-space: nowrap;
+  }
+
+  .ds-hdr-cond__lockup .ds-hdr-lockup__org + .ds-hdr-lockup__ministry::before {
+    content: "·";
+    margin-inline-end: var(--sa-inline-8);
+  }
+
+  .ds-hdr-cond__lockup .ds-hdr-lockup__dept {
+    grid-column: 1 / -1;
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    white-space: nowrap;
+  }
+
+  /* WHEN THE NAME SHOWS. Off by default, because on the website at 1024 and up
+     the inline nav needs the width (seven entries are 831px at 1440). On where
+     the nav is not on this row: every portal (`is-navless` — its nav is the
+     sidebar), the website between 768 and 1023 (the nav is a sheet there), and
+     the website at any width once the nav has overflowed to the sheet. Below 768
+     `is-hidden-mobile` keeps it off on every surface. The overflow measurement
+     counts the lockup's laid-out width, so showing the name once the nav has
+     left cannot pull the nav back: the room it would need only grows. */
+  .ds-hdr-cond__lockup .ds-hdr-lockup__lines {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .ds-hdr-cond.is-navless .ds-hdr-cond__lockup .ds-hdr-lockup__lines,
+    .ds-hdr[data-nav-overflow="true"] .ds-hdr-cond__lockup .ds-hdr-lockup__lines {
+      display: grid;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .ds-hdr-cond__lockup .ds-hdr-lockup__lines {
+      display: grid;
     }
   }
 
