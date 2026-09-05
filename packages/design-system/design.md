@@ -12,7 +12,12 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-09-05 · System version: v0.53.0 (THE PORTAL DASHBOARDS DRAW FOUR
+  Last reviewed: 2026-09-05 · System version: v0.54.0 (THE FOLLOW-UPS THE AUDIT LEFT OPEN
+  ARE CLOSED — the withheld-figure contract reaches line, pie, donut and heatmap; the Figma
+  Metric Card gains Size and an Icon swap, Chart Card its Restricted and Offline states, Map
+  of India its Bubble and Point kinds with bound state fills, a documentation frame and a
+  record; Legend and Tooltip have Code Connect templates; the UX4G Chart.js set is deleted
+  (zero instances in the library or the handoff file). See the changelog.) v0.53.0 (THE PORTAL DASHBOARDS DRAW FOUR
   THINGS THE CHART LAYER DID NOT HAVE — read across sixteen handoff screens on ten portal
   pages: a ranked bar list (now `RankedBarList` + `InlineBar`), a metric against its
   target and with its status (`MetricCard` gains `progress`, `status`, `tone`, `detail`,
@@ -1587,9 +1592,13 @@ the card has nothing to show. It is the one line of self-description
 
 **A withheld figure is not a zero.** `ChartDatum.withheld` and `ChartSeries.withheld`
 carry "suppressed" or "not reported" with a reason. `BarChart` draws a hatched stub, never
-a bar; the tooltip and the screen-reader table print `withheldLabel()`; the value is
-excluded from every domain and stack. `RankedBarList` sorts a withheld row last and
-hatches its track. Health and census data arrive this way routinely, and the workaround a
+a bar; `LineChart` breaks the line and marks the gap with a hollow dashed ring at the
+baseline; `PieChart` and `DonutChart` leave the category out of the total, keep it in the
+legend and the table with its reason, and say the shares are of the published total;
+`Heatmap` takes a `ChartWithheld` in place of a number and hatches the cell. In every one
+the tooltip and the screen-reader table print `withheldLabel()` and the value is excluded
+from every domain and stack. `RankedBarList` sorts a withheld row last and hatches its
+track. Health and census data arrive this way routinely, and the workaround a
 contract without it produces is a literal "—" in the data that breaks every scale.
 
 **Every chart is one Tab stop.** `ChartFrame` roves: Tab enters at the first (or last

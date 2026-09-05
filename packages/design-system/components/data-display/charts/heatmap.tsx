@@ -6,12 +6,20 @@ import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
 import { sequentialColor, divergingColor } from "./internal/palette";
 import { formatIndian } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
+import { withheldLabel, type ChartWithheld } from "./types";
+
+/** A cell is a figure, or the reason there is none. */
+export type HeatmapCell = number | ChartWithheld;
 
 export interface HeatmapProps extends ChartStateProps {
   xLabels: string[];
   yLabels: string[];
-  /** Row-major values: matrix[y][x]. */
-  matrix: number[][];
+  /**
+   * Row-major values: matrix[y][x]. A cell may be a `ChartWithheld` instead of
+   * a number — it is then drawn as a hatched, empty cell, named in the tooltip
+   * and the table with its reason, and left out of the colour scale's domain.
+   */
+  matrix: HeatmapCell[][];
   title: string;
   valueFormat?: ValueFormat;
   /** "sequential" (default) ramps low→high; "diverging" centres on the midpoint. */
@@ -22,6 +30,8 @@ export interface HeatmapProps extends ChartStateProps {
 const CELL = 34;
 const GUT_L = 96;
 const GUT_T = 26;
+
+const isWithheld = (c: HeatmapCell | undefined): c is ChartWithheld => typeof c === "object" && c !== null;
 
 /** MoSJE / SAMAVESH Heatmap — token-driven matrix using the sequential ramp. */
 export function Heatmap({
@@ -39,6 +49,7 @@ export function Heatmap({
 }: HeatmapProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const flat = matrix.flat();
+  const known = flat.filter((c): c is number => typeof c === "number");
   // One expression, resolved before the colour ramp or the axes read anything.
   const resolved = state ?? (flat.length === 0 ? "empty" : undefined);
   if (resolved)
@@ -60,23 +71,28 @@ export function Heatmap({
       </ChartFrame>
     );
 
-  const min = Math.min(...flat);
-  const max = Math.max(...flat);
+  const min = known.length ? Math.min(...known) : 0;
+  const max = known.length ? Math.max(...known) : 0;
   const span = max - min || 1;
   const mid = (max + min) / 2;
   const half = Math.max(Math.abs(max - mid), Math.abs(min - mid)) || 1;
 
   const colorFor = (v: number) =>
     scale === "diverging" ? divergingColor((v - mid) / half) : sequentialColor((v - min) / span);
+  const cellText = (c: HeatmapCell | undefined): string =>
+    isWithheld(c) ? withheldLabel(c) : valueFormat(typeof c === "number" ? c : 0);
 
   const width = GUT_L + xLabels.length * CELL;
   const height = GUT_T + yLabels.length * CELL;
+  const withheldCount = flat.length - known.length;
 
   return (
     <ChartFrame
       marksAreFocusable
       title={title}
-      summary={`${yLabels.length}×${xLabels.length} matrix, values ${valueFormat(min)}–${valueFormat(max)}`}
+      summary={`${yLabels.length}×${xLabels.length} matrix, values ${valueFormat(min)}–${valueFormat(max)}${
+        withheldCount ? `, ${withheldCount} cell${withheldCount === 1 ? "" : "s"} withheld` : ""
+      }`}
       viewBox={`0 0 ${width} ${height}`}
       className={className}
       canvasRef={canvasRef}
@@ -84,7 +100,13 @@ export function Heatmap({
       onDismiss={hide}
       table={{
         columns: ["Row", ...xLabels],
-        rows: yLabels.map((yl, yi) => [yl, ...xLabels.map((_, xi) => matrix[yi]?.[xi] ?? 0)]),
+        rows: yLabels.map((yl, yi) => [
+          yl,
+          ...xLabels.map((_, xi) => {
+            const c = matrix[yi]?.[xi];
+            return isWithheld(c) ? withheldLabel(c) : typeof c === "number" ? c : 0;
+          }),
+        ]),
       }}
       tableView={tableView}
     >
@@ -100,7 +122,16 @@ export function Heatmap({
       ))}
       {yLabels.map((yl, yi) =>
         xLabels.map((xl, xi) => {
-          const v = matrix[yi]?.[xi] ?? 0;
+          const c = matrix[yi]?.[xi];
+          const withheld = isWithheld(c);
+          const v = typeof c === "number" ? c : 0;
+          const text = cellText(c);
+          const tooltip = (
+            <>
+              <div className="ds-chart__tooltip-title">{`${yl} · ${xl}`}</div>
+              <div>{text}</div>
+            </>
+          );
           return (
             <rect
               key={`${yi}-${xi}`}
@@ -109,32 +140,18 @@ export function Heatmap({
               width={CELL - 2}
               height={CELL - 2}
               rx={3}
-              fill={colorFor(v)}
-              className="ds-chart__cell"
+              /* A withheld cell is hatched and unfilled — it keeps its place in
+                 the grid and cannot be read as the lowest rung of the ramp. */
+              fill={withheld ? undefined : colorFor(v)}
+              className={withheld ? "ds-chart__cell ds-chart__mark--withheld" : "ds-chart__cell"}
               tabIndex={0}
               role="img"
-              aria-label={`${yl}, ${xl}: ${valueFormat(v)}`}
-              onPointerMove={(e) =>
-                show(
-                  <>
-                    <div className="ds-chart__tooltip-title">{`${yl} · ${xl}`}</div>
-                    <div>{valueFormat(v)}</div>
-                  </>,
-                  e.clientX,
-                  e.clientY,
-                )
-              }
+              aria-label={`${yl}, ${xl}: ${text}`}
+              onPointerMove={(e) => show(tooltip, e.clientX, e.clientY)}
               onPointerLeave={hide}
               onFocus={(e) => {
                 const r = e.currentTarget.getBoundingClientRect();
-                show(
-                  <>
-                    <div className="ds-chart__tooltip-title">{`${yl} · ${xl}`}</div>
-                    <div>{valueFormat(v)}</div>
-                  </>,
-                  r.left + r.width / 2,
-                  r.top,
-                );
+                show(tooltip, r.left + r.width / 2, r.top);
               }}
               onBlur={hide}
             />

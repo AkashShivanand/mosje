@@ -111,24 +111,21 @@ match it.
 
 ## 5. What remains open
 
-Recorded on the Component record and repeated here so it is findable from the
-repository:
+Closed in the follow-up pass the same day: the legacy set (deleted — zero
+instances anywhere), the map's bubble and point kinds with a documentation frame
+and record, Restricted and Offline card states, the Metric Card's Size axis and
+icon slot, suppression in line, pie, donut and heatmap, and Code Connect for
+Legend and Tooltip. Still open, recorded on the two Component records:
 
-1. **Legacy set still has instances.** Swap each for a `Chart` variant, then
-   delete the set and its seventeen loose labels.
-2. **Map of India** — draw the bubble and point variants, give the page a
-   documentation frame, and the boundary set needs legal review before the
-   repository is public (spec §08).
-3. **Restricted and Offline** card states are not drawn.
-4. **Metric Card** has no Size axis and no icon slot in Figma.
-5. **Charts are drawn at one size**; the size ladder (chart → sparkline → metric
-   → table row) is stated, not drawn.
-6. **Dark values** are deferred to release (spec §04).
-7. **Legend and Tooltip** have no Code Connect template.
-8. **Suppression is built in `BarChart` only.** Line, donut, heatmap and the maps
-   still take plain numbers; the migration order in spec §01 says bar first.
-9. **Storybook static build** (`apps/hub/public/storybook`) was not rebuilt in
-   this pass; the source gates pass.
+1. **The boundary paths need a legal review** before the repository is public
+   (spec §08). Cannot be resolved in code.
+2. **Hex bins are code-only** on the point map; the master draws pins.
+3. **No Code Connect template for the three map components** — one template
+   switching on `Kind`, with a fixture.
+4. **Charts are drawn at one size**; the size ladder is stated, not drawn.
+5. **Dark values** are deferred to release (spec §04).
+6. **The library must be PUBLISHED** from Figma for the handoff file to see the
+   new masters; the Plugin API cannot publish.
 
 ## 6. Gates run
 

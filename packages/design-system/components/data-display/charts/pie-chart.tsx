@@ -2,10 +2,10 @@ import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
-import { categoricalColor } from "./internal/palette";
+import { categoricalColor, CHART_INK } from "./internal/palette";
 import { arcPath } from "./internal/geometry";
 import { formatPercent } from "./internal/format";
-import type { ChartDatum } from "./types";
+import { withheldLabel, type ChartDatum } from "./types";
 
 export interface PieChartProps extends ChartStateProps {
   data: ChartDatum[];
@@ -15,9 +15,16 @@ export interface PieChartProps extends ChartStateProps {
 /**
  * MoSJE / SAMAVESH PieChart — dependency-free SVG pie with a side legend and a
  * screen-reader data table. **Backward-compatible API** (`{ data, title }`).
+ *
+ * A WITHHELD CATEGORY HAS NO SLICE. It is left out of the total — a total
+ * summed over a suppressed count is a partial total and is labelled as one —
+ * and it keeps its place in the legend and the table, with its reason, so the
+ * reader knows the category exists and the figure does not.
  */
 export function PieChart({ data, title, state, onRetry, filterLabel, tableView }: PieChartProps) {
-  const total = data.reduce((sum, d) => sum + d.value, 0);
+  const shown = data.filter((d) => !d.withheld);
+  const withheld = data.filter((d) => d.withheld);
+  const total = shown.reduce((sum, d) => sum + d.value, 0);
   // One expression. `state` wins where the caller gave one — a zero total says
   // nothing about whether the feed was asked, failed, or was filtered away.
   const resolved = state ?? (total === 0 ? "empty" : undefined);
@@ -36,7 +43,7 @@ export function PieChart({ data, title, state, onRetry, filterLabel, tableView }
     );
 
   let cursor = 0;
-  const slices = data.map((d, i) => {
+  const slices = shown.map((d, i) => {
     const start = (cursor / total) * 360;
     cursor += d.value;
     const end = (cursor / total) * 360;
@@ -44,7 +51,11 @@ export function PieChart({ data, title, state, onRetry, filterLabel, tableView }
     return { ...d, start, end, color, pct: (d.value / total) * 100 };
   });
 
-  const summary = slices.map((s) => `${s.label} ${formatPercent(s.pct)}`).join(", ");
+  const summary = [
+    ...slices.map((s) => `${s.label} ${formatPercent(s.pct)}`),
+    ...withheld.map((d) => `${d.label} ${withheldLabel(d.withheld!).toLowerCase()}`),
+    ...(withheld.length ? ["shares are of the published total"] : []),
+  ].join(", ");
 
   return (
     <ChartFrame
@@ -55,12 +66,18 @@ export function PieChart({ data, title, state, onRetry, filterLabel, tableView }
       legend={
         <Legend
           orientation="vertical"
-          items={slices.map((s) => ({ label: s.label, color: s.color, value: formatPercent(s.pct) }))}
+          items={[
+            ...slices.map((s) => ({ label: s.label, color: s.color, value: formatPercent(s.pct) })),
+            ...withheld.map((d) => ({ label: d.label, color: CHART_INK.axis, value: "—" })),
+          ]}
         />
       }
       table={{
         columns: ["Category", "Count", "Share"],
-        rows: slices.map((s) => [s.label, s.value, formatPercent(s.pct)]),
+        rows: [
+          ...slices.map((s) => [s.label, s.value, formatPercent(s.pct)]),
+          ...withheld.map((d) => [d.label, withheldLabel(d.withheld!), "—"]),
+        ],
       }}
       tableView={tableView}
     >
