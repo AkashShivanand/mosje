@@ -32,9 +32,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.109.0",
+    version: "v0.110.0",
     date: "2026-09-05",
     current: true,
+    changes: [
+      { kind: "Added", text: "UTILITIES AND FEEDBACK DRAW THEIR ARRANGEMENTS. Accessibility Bar (10 cells: each control switched off, a portal's own labels, tablet and mobile; layout=\"page\" with maxWidth, device=\"auto\" and the control callbacks as code-only), Divider (6: the rule at work between blocks, between controls and on the brand ground in both inverse tones; length and decorative as code-only), Chatbot (9: the two switches, a portal's own title, note and placeholder; the replies, placement and open state, notices and timing as code-only) and Ticker (12: the label, each breakpoint and direction, the Row, Action and Control sub-parts in every property and state on the strip's ground; rows, autoplay with interval, height, icon, labelAs and linkAs as code-only). Each opens with the three-panel key. The Accessibility Bar, Chatbot and Ticker web specimens render the same set. The arrangements baseline drops from nine pages to five" },
+      { kind: "Fixed", text: "THE CHATBOT OPENED TO AN EMPTY LOG IN DEVELOPMENT. Strict Mode runs the scripted-opening effect twice; the first run's timers were cleared on teardown and the greeted guard stopped the second run from scheduling them, so the greeting never arrived on the docs page. The effect hands the guard back when torn down before the greeting lands. Production was unaffected; found by drawing the arrangements" },
+    ],
+  },
+  {
+    version: "v0.109.0",
+    date: "2026-09-05",
+    current: false,
     changes: [
       { kind: "Added", text: "NAVIGATION DRAWS ITS ARRANGEMENTS. Tabs (14 cells: overflow, no divider, the enclosed track, the vertical axis, and the nested Tab's icon, badge, disabled state, rail and pill indicators, large size and a label too long to be a tab; ariaLabel, idBase and active/onChange as code-only), Portal Card (10: both variants selected, long names, a six-letter code; org, external, the detailed card's texts and href with path as code-only) and Sidebar (15: a badge, a group open with three and five children, the collapsed dot, active and disabled, the ancestor on the active path, the flyout, the last leaf, the group label in both modes, the rail with its control and footer and collapsed; pathname, collapsed with onCollapsedChange and a badge count as code-only). Each opens with the three-panel key. The Tabs and Sidebar web specimens render the same set. The arrangements baseline drops from twelve pages to nine" },
       { kind: "Fixed", text: "THE PORTAL CARD'S DETAILED VARIANTS IGNORED THEIR CODE AND NAME. In the Figma master, the two Detailed variants' code and name text layers were not bound to the set's Code and Name properties, so every detailed instance in the library read “SCW · Senior Citizens Welfare” whatever it was set to. Bound now; found by drawing the detailed cells" },

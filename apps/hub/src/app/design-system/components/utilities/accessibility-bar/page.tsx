@@ -10,11 +10,7 @@ import {
   type A11yItem,
 } from "@/components/design-system/docs-kit";
 
-import {
-  AccessibilityBarFontSizePreview,
-  AccessibilityBarNavyPreview,
-  AccessibilityBarPreview,
-} from "./accessibility-bar-preview";
+import { AccessibilityBarFontSizePreview, AccessibilityBarNavyPreview, AccessibilityBarPreview, AccessibilityBarArrangementsPreview } from "./accessibility-bar-preview";
 
 export const metadata: Metadata = {
   title: "Accessibility Bar — Design System",
@@ -90,7 +86,12 @@ export default function AccessibilityBarPage(): React.JSX.Element {
       status="Stable"
       summary="The thin band above the masthead on every government property — the Government of India link on the left, and on the right the controls that open every page: skip to content, text size, accessibility and language. It is the accessibility surface itself, so every control is keyboard-operable and announced."
       figma={{ node: "accessibility" }}
-      specimen={<AccessibilityBarPreview />}
+      specimen={
+        <div style={{ display: "grid", gap: "var(--sa-stack-16)" }}>
+          <AccessibilityBarPreview />
+          <AccessibilityBarArrangementsPreview />
+        </div>
+      }
       propsFrom="AccessibilityBarProps"
       a11y={A11Y}
       whenToUse={{

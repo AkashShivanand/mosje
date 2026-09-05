@@ -5,6 +5,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versions track
 
 ---
 
+## [0.7.5] — 2026-09-05
+
+### Fixed
+- **`Chatbot` opened to an empty log in development.** React Strict Mode runs the scripted-opening effect twice; the first run's timers were cleared by the unmount cleanup and the `greeted` guard then stopped the second run from scheduling them, so the greeting never arrived. The effect now hands the guard back when torn down before the greeting lands. Production builds were unaffected. Found by drawing the arrangements section on the docs page.
+
 ## [0.7.4] — 2026-09-05
 
 ### Fixed

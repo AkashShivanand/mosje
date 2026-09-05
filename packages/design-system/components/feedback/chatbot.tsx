@@ -333,15 +333,29 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
   React.useEffect(() => {
     if (!open || controlledTranscript || greeted.current) return;
     greeted.current = true;
+    let landed = false;
 
-    after(OPENING_BEAT_MS, () => setOwnTyping(true));
-    after(OPENING_BEAT_MS + typingDelayMs, () => {
+    const t1 = after(OPENING_BEAT_MS, () => setOwnTyping(true));
+    const t2 = after(OPENING_BEAT_MS + typingDelayMs, () => {
+      landed = true;
       setOwnTyping(false);
       setOwnMessages([{ id: nextId(), from: "bot", text: greeting }]);
     });
     // The suggestions land a beat after the message they belong to, so the
     // eye reads "here is the answer" before "here is what you can ask".
-    after(OPENING_BEAT_MS + typingDelayMs + 320, () => setRepliesShown(true));
+    const t3 = after(OPENING_BEAT_MS + typingDelayMs + 320, () => setRepliesShown(true));
+
+    // STRICT MODE RUNS THIS EFFECT TWICE. The first run's timers were cleared by the
+    // unmount cleanup below, and `greeted` then stopped the second run from
+    // scheduling them again — so in development the panel opened to an empty log
+    // and the greeting never arrived. Found the day the arrangements section was
+    // drawn on the docs page. If the greeting has not landed when the effect is
+    // torn down, hand the flag back so the re-run can script the opening itself.
+    return () => {
+      if (landed) return;
+      [t1, t2, t3].forEach(window.clearTimeout);
+      greeted.current = false;
+    };
   }, [open, controlledTranscript, greeting, typingDelayMs, after]);
 
   /* -- keep the suggestion set in step when the prop changes -------------- */

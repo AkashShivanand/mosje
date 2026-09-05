@@ -39,6 +39,7 @@ const OPENING = [
 export function ChatbotPlayground(): React.JSX.Element {
   const [composer, setComposer] = React.useState(true);
   const [subtitle, setSubtitle] = React.useState(true);
+  const [note, setNote] = React.useState(true);
 
   return (
     <div
@@ -54,6 +55,7 @@ export function ChatbotPlayground(): React.JSX.Element {
       <div style={{ display: "flex", gap: "var(--sa-inline-24)", flexWrap: "wrap" }}>
         <Checkbox label="Composer" size="sm" checked={composer} onCheckedChange={setComposer} />
         <Checkbox label="Devanagari subtitle" size="sm" checked={subtitle} onCheckedChange={setSubtitle} />
+        <Checkbox label="Note under the log" size="sm" checked={note} onCheckedChange={setNote} />
       </div>
 
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -61,6 +63,8 @@ export function ChatbotPlayground(): React.JSX.Element {
           placement="inline"
           defaultOpen
           composer={composer}
+          note={note ? "Samajik Sahayak points you to the right portal. It cannot see your application." : ""}
+          restartNotice="Your earlier conversation was cleared when you ended the chat."
           subtitle={subtitle ? undefined : ""}
           greeting="This is an assistant for the Ministry of Social Justice. How can I help you?"
           quickReplies={OPENING}

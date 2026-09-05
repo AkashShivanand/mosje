@@ -37,6 +37,7 @@ export function TickerPlayground(): React.JSX.Element {
   const [vertical, setVertical] = React.useState(false);
   const [singleItem, setSingleItem] = React.useState(false);
   const [withDates, setWithDates] = React.useState(true);
+  const [twoRows, setTwoRows] = React.useState(false);
 
   return (
     <div
@@ -63,6 +64,7 @@ export function TickerPlayground(): React.JSX.Element {
         <Checkbox label="Panel (vertical scroll)" size="sm" checked={vertical} onCheckedChange={setVertical} />
         <Checkbox label="Too short to move (controls go)" size="sm" checked={singleItem} onCheckedChange={setSingleItem} />
         <Checkbox label="Dates" size="sm" checked={withDates} onCheckedChange={setWithDates} />
+        <Checkbox label="Two rows (panel)" size="sm" checked={twoRows} onCheckedChange={setTwoRows} />
       </div>
 
       <Ticker
@@ -83,6 +85,7 @@ export function TickerPlayground(): React.JSX.Element {
           };
         })}
         orientation={vertical ? "vertical" : "horizontal"}
+        rows={vertical && twoRows ? 2 : undefined}
         autoplay={autoplay}
         action={
           withAction ? (
