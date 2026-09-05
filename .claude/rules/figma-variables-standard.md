@@ -33,10 +33,15 @@ is a variable it binds.
 
 `createVariable(name, collection, type)` accepts
 `'BOOLEAN' | 'COLOR' | 'FLOAT' | 'STRING' | 'TIMING' | 'EASING'` (probed live on
-2026-09-04, apiVersion 1.0.0). The Plugin API typings bundled with the `figma-use` skill
-listed only the first four, and the first Motion push shipped durations as `FLOAT` and
-curves as `STRING` on that authority — 41 variables that had to be recreated the same
-day. **A typings file is a claim; a one-line `createVariable` probe is evidence.**
+2026-09-04, apiVersion 1.0.0). The first Motion push was written against the Plugin API
+typings bundled with Figma's own `figma-use` skill and read them as listing only the
+first four, so it shipped durations as `FLOAT` and curves as `STRING` — 41 variables
+that had to be recreated the same day. Re-read on 2026-09-05, that bundle lists all six
+and documents `TIMING` and `EASING`; whether it was refreshed in between or misread the
+first time cannot be told now, and it does not matter: **a typings file is a claim; a
+one-line `createVariable` probe is evidence.** (The same bundle describes a `TIMING`
+value as seconds; the probe and the parity record work in milliseconds and read back
+correctly — the record is the evidence.)
 
 | Type | Token families | Binds to (scopes) |
 |---|---|---|
