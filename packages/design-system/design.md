@@ -2003,7 +2003,9 @@ replacement for `CaptchaField`, and the component a new portal reaches for.
   gesture is simply locked out with no way to identify themselves as a person. The link is
   the alternative **WCAG 2.2 3.3.8** asks for, and making it optional is how it goes
   missing from the one portal that needed it. `PortalLoginTemplate` enforces the same rule
-  one level up: no route, no check at all.
+  one level up: no route, no check at all. Required is not always shown: the link renders in
+  every `challenge` state (a sensory barrier) and in every mode once the check has failed;
+  an idle checkbox carries nothing beneath it.
 - **There is deliberately NO audio mode, reversing earlier advice in this file.** Measured:
   bots solve audio challenges **over 85%** of the time while only **31.2%** of them get
   three-person agreement among people; a blind citizen takes **65s** against 9.8s for the

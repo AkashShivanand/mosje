@@ -121,6 +121,25 @@ a cell is a panel (`bg/neutral/subtler`, radius 12, padding 24) with a
 REQUIRED · INVALID`), a live instance on a `bg/neutral/base` specimen ground,
 and a one-line `Body/body-3` caption saying what the reader should notice.
 
+**The section opens with a three-panel key**, before any grid, because a label
+is not an explanation: *Properties switched* (what a cell is, and that the
+specimen is a live instance whose values the panel shows), *Edges and
+arrangements* (why the grid cannot show these), and *Code only — what it means,
+and what to do* (the React component has the prop, Figma has no property for
+it; the cell is composed from library instances to show the intent; a designer
+places the nearest variant and names the prop in the handoff note; no Figma
+property is invented). A reader who lands on a `CODE ONLY` eyebrow must be one
+panel away from knowing what it asks of them.
+
+**Audit the cells at cell scale before calling the section done.** A section
+screenshot at 1680px hides a clipped label, a value pushed to mid-field by an
+affix that fills, or a placeholder left reading "Placeholder". Screenshot each
+grid at least 1400px wide, read every specimen, and fix what is wrong **in the
+master** when the master is the cause — a cell that looks wrong is usually a
+master that is wrong. Then check the PAGE: a documentation frame that grew has
+pushed nothing aside, so the Component record and the numbered sections below
+it must be moved down (200px apart) or they overlap.
+
 1. **Every non-variant property, switched.** Each boolean ON where the default
    is off (and OFF where it is on), each text property with real estate copy,
    each instance swap with a second glyph — and the combinations that change

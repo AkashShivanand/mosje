@@ -5,6 +5,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versions track
 
 ---
 
+## [0.7.3] — 2026-09-05
+
+### Changed
+- **`BotCheck` shows its help link where the check can defeat someone, not everywhere.** Always in `challenge` mode (distorted characters are a sensory barrier), and in every mode once the check has failed. An idle, verifying or verified checkbox no longer carries "Cannot complete this check?" beneath it. `helpHref` stays required. Asserted in bot-check.spec.tsx; the Figma master's nine variants match.
+
+### Fixed
+- **`BotCheck` checkbox mode in Figma:** the nested Checkbox kept a 36px empty body beside its hidden label, so the gesture label sat 56px from the box; it now sits 8px from it, as in code.
+
 ## [0.7.2] — 2026-09-05
 
 ### Fixed

@@ -32,9 +32,26 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.105.0",
+    version: "v0.107.0",
     date: "2026-09-05",
     current: true,
+    changes: [
+      { kind: "Changed", text: "THE BOT CHECK'S HELP LINK APPEARS WHERE THE CHECK CAN DEFEAT SOMEONE, NOT EVERYWHERE. Always in Challenge mode, because distorted characters are a sensory barrier and nobody should have to fail before finding the way round them; in Checkbox and Invisible modes once the check has failed. An idle checkbox is one deliberate act, not a cognitive test, and a link beneath it was noise. helpHref stays required. Code, the Figma master's nine variants and the documentation say the same thing, asserted in bot-check.spec.tsx" },
+      { kind: "Fixed", text: "BOT CHECK'S CHECKBOX MODE IN FIGMA SAT ITS LABEL 56PX FROM THE BOX. The nested Checkbox kept an empty 36px body beside its hidden label and the row added 12 more; the label now sits 8px from the box, as in code. Every instance in the library follows" },
+    ],
+  },
+  {
+    version: "v0.106.0",
+    date: "2026-09-05",
+    current: false,
+    changes: [
+      { kind: "Added", text: "FORMS & INPUTS DRAW THEIR ARRANGEMENTS. Input Field (25 cells: every slot alone and together, a size and a state beside a property, a label and a value that wrap, and the three states only code can draw), Input Area (18), Select (16, with the Filter set that appearance=\"filter\" reaches), OTP Input (9, with the Box sub-part in every state) and Bot Check (10, each text property in use and failure in every mode). The Textarea, Select and OTP Input web playgrounds render the same set. The arrangements baseline drops from twenty pages to sixteen" },
+    ],
+  },
+  {
+    version: "v0.105.0",
+    date: "2026-09-05",
+    current: false,
     changes: [
       { kind: "Fixed", text: "FIGMA AND CODE AGREE ON ALL FIVE FIELDS, AND A GATE NOW SAYS SO. The value checksum in the parity record was equal in every collection while 479 descriptions, five code-syntax lines, 138 scope sets and 164 publishing flags had drifted unseen. The exporter hides by LIBRARY-name tier (ref/* and the whole Palette collection), Palette carries the five explicit colour scopes instead of ALL_FILLS, the six font/weight rows are STRING/FONT_STYLE, and a Tier-2 colour that references a Tier-2 colour with its own alpha aliases that variable instead of the opaque rung beneath it — the accessibility bar's two washes were the one value the library held right and the payload wrong. The library was corrected in place (347 variables, 479 descriptions, one rename) and read back byte-equal; collectionFieldChecksums hashes description, codeSyntax, scopes and hidden per collection into the record. The Plugin API stores an apostrophe as &#39; and reads it back that way — a property of Figma, decoded before comparing, not a push defect." },
       { kind: "Added", text: "THIRTY-TWO FOUNDATION TOKENS THE BENCHMARK SYSTEMS CARRY, EACH WITH A CONSUMER. bg/neutral/{hover, active, selected, readonly, loading} with their on/* inks; border/neutral/selected; overlay/neutral/{hover, active, focus, drag} as alias + alpha; focus/ringInner for the two-tone ring; control/height/{sm, md, lg} (32 · 40 · 48); aspect/{square, video, photo, portrait}; icon/fill/{outline, filled}; cmp/avatar/size/{xs, sm, md, lg}; cmp/{chip, dialog, tooltip}/radius; elevation/inset, the one INNER_SHADOW. The sidebar's current page, the read-only field, the skeleton, the checked selection card, four neutral hovers, the photo wells, the icon button, Button, FilterSelect, Pagination, the SAMAVESH Banner, Avatar, Chip, Modal and Tooltip bind them. Grammar gained the states drag · readonly · loading, the group aspect and the components avatar · chip · dialog · tooltip." },
