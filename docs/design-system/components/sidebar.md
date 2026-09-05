@@ -22,8 +22,8 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
 | Rail | `Sidebar` — Mode, Show Identity, Menu slot, Footer slot, Show Footer | `SidebarNav` root `<aside>` with one `<nav aria-label>` |
 | Portal identity | `Sidebar/PortalIdentity` — Mode, Mark (org-logo swap), Name, Expansion, Show Expansion, Show Control, Show Divider | `identity` prop `{ name, expansion, mark, href }`; names the nav landmark |
 | Level-1 item | `Sidebar/Item · Level 1` — Mode × Type (Leaf/Group) × Open × State, Focused, Show Badge, Icon swap, Label, Show Child 2–5 | `groups[].items[]` — `<a>` for a page, `<button aria-expanded>` for a group |
-| Level-2 entry | `Sidebar/Item · Level 2` — Placement (Inline/Flyout) × Type × Open × State, Focused, Label, Show Child 2–4 | `items[].children[]` |
-| Level-3 leaf | `Sidebar/Item · Level 3` — State, Focused, Label | `children[].children[]` |
+| Level-2 entry | `Sidebar/Item · Level 2` — Placement (Inline/Flyout) × Type × Open × Position (Middle/Last) × State, Focused, Active Path, Label, Show Child 2–4 | `items[].children[]` |
+| Level-3 leaf | `Sidebar/Item · Level 3` — Position × State, Focused, Active Path, Label | `children[].children[]` |
 | Group label | `Sidebar/GroupLabel` — Mode × Show Divider, Label | `groups[].label` → `role="group" aria-labelledby` |
 | Collapse control | `Sidebar/CollapseControl` — Mode, nested IconButton exposed; lives in `Sidebar/PortalIdentity` behind its `Show Control` (off by default) | rendered in the identity row, or a 48px top row without one, when `showCollapseControl && onCollapsedChange` |
 | Flyout | `Sidebar/Flyout` — Title, Item 1–5 (Level 2, Placement=Flyout) | rendered for a collapsed group on click |
@@ -38,7 +38,7 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
 | Level-1 row | `padding/12` × `padding/16`, gap `inline/8`, radius `shape/16`, min-height `target/spacious` (48) |
 | Level-2 / 3 row | `padding/12` × `padding/8`, radius `shape/8`, min-height `target/comfortable` (44) |
 | Indent | level 2 `inline/40` · level 3 `inline/56` · flyout `inline/0` |
-| Connector | trunk 16px left of the pill (24 for level 2, 40 for level 3), 16px arm, elbow `shape/6`, `stroke/1`, tail `cmp/divider/width`, `border/neutral/subtle` at rest; the path to the current page in `border/brand/primary/base`, drawn with `motion/reveal` |
+| Connector | trunk 16px left of the pill (24 for level 2, 40 for level 3); middle entries a straight trunk and a 16px tee arm, the last entry the trunk to 16 and a `shape/6` elbow; all `cmp/divider/width` in `border/neutral/subtle`; the path to the current page in `border/brand/primary/base`, drawn with `motion/reveal` |
 | Type | level 1 `Label/label-1` · levels 2–3 `Body/body-2` · group label `Label/label-3` · flyout title `Title/title-3` |
 | Rest | `text/neutral/base`, `icon/neutral/base` (stroke glyph), chevron `icon/neutral/subtle` |
 | Hover | `bg/neutral/subtler` |
@@ -64,15 +64,14 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
 3. **Item gap is `stack/4`, down from `stack/12`.** Material 3, Carbon and USWDS all list
    navigation items with 0–4px between rows; 12px on a ten-item rail cost 108px and read as
    a list of cards rather than one navigation.
-4. **Levels 2 and 3 indent under the parent's text and keep the handoff's elbow connector.**
-   The first rebuild tried a plain guide line per level; the owner preferred the original
-   elbow, and it was right — the elbow says "this belongs to that" where a bare line only says
-   "there is depth". The elbow no longer needs first/middle/last variants: each entry draws its
-   own elbow and a tail, and a `Continues` boolean (off on the last entry) removes the tail.
-   An open level-2 group extends its tail past its level-3 children so the trunk is unbroken.
-   The trunk runs straight through every entry from the parent's edge; the elbow is a 6px arc
-   and 16px arm that branch off it. Bending the trunk into the arm had left a 6px notch at every
-   branch, visible at 4×.
+4. **Levels 2 and 3 indent under the parent's text with the tree-view connector: a straight tee
+   in the middle of a list, the handoff's rounded elbow at its end.** Three rounds of zoomed review
+   showed that a curve leaving a continuing trunk is a tangent join, and every way of drawing it
+   reads as a gap, an overlap or a stub at high zoom. Reserving the curve for the last entry,
+   where the trunk genuinely turns, removes the artifact by construction — the convention every
+   file tree uses. In Figma this is `Position=Middle | Last` on Level 2 and Level 3 (replacing the
+   `Continues` boolean); in code it is `:last-child`. An open level-2 group in the middle carries
+   the trunk past its level-3 children.
 15. **The rail names its portal.** The masthead carries the Ministry and the SAMAVESH mark;
     nothing else said which of twenty portals a signed-in user was in, and SAMBAL solved it with
     a loose 300×96 frame above the rail on every screen. `Sidebar/PortalIdentity` makes that a

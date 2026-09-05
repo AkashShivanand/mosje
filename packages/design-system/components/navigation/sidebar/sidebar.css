@@ -230,6 +230,54 @@
      the rail), arm to the pill at 16 (56 in the rail). */
   .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-16); }
 
+  /* The tree-view convention: a MIDDLE entry has a straight trunk running
+     through the row and the gap below it, and a straight tee arm into the pill
+     at the row centre; the LAST entry's trunk stops at 16 and turns into the
+     pill with a shape/6 elbow. A curve on a continuing trunk is a tangent join
+     that reads as a gap or an overlap at any zoom — so the curve is reserved
+     for the end, where the trunk genuinely turns. Neutral throughout. */
+  .ds-sidebar__sub::before {
+    content: "";
+    position: absolute;
+    left: 24px; /* 16px left of the level-2 pill at inline/40 — the handoff's geometry */
+    top: calc(-1 * var(--sa-stack-4));
+    bottom: calc(-1 * var(--sa-stack-4));
+    width: var(--sa-cmp-divider-width);
+    background: var(--sa-border-neutral-subtle);
+  }
+
+  /* Middle: the tee arm. */
+  .ds-sidebar__sub::after {
+    content: "";
+    position: absolute;
+    left: 24px;
+    top: 22px; /* the centre of a 44px row */
+    width: 16px;
+    height: var(--sa-cmp-divider-width);
+    background: var(--sa-border-neutral-subtle);
+  }
+
+  /* Last: the trunk ends where the elbow leaves it, and the arm is the elbow. */
+  .ds-sidebar__sub:last-child::before {
+    bottom: auto;
+    height: calc(16px + var(--sa-stack-4));
+  }
+
+  .ds-sidebar__sub:last-child::after {
+    top: 16px;
+    height: 6px;
+    background: none;
+    border-left: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-bottom-left-radius: var(--sa-shape-6);
+  }
+
+  /* A level-3 list nests inside its level-2 entry, which already indents by
+     inline/40, so the leaf adds only the remaining inline/16 to land at 56. Its
+     connector coordinates are relative to that nested list: trunk at 0 (40 in
+     the rail), arm to the pill at 16 (56 in the rail). */
+  .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-16); }
+
   /* The trunk runs STRAIGHT THROUGH every entry: from the parent's edge (the
      list begins where the parent row ends; only the list's stack/4 padding sits
      between) down past the row into the next entry, bridging the stack/4 gap.
@@ -250,18 +298,6 @@
     height: calc(16px + var(--sa-stack-4)); /* to where the arc leaves the trunk, not to the row centre — a trunk that ran on to 22 left a stub beside the curve */
   }
 
-  /* Where the brand route branches into an entry (the current page, or a group
-     on the way), the neutral trunk should not hug the brand arc: it is blank
-     from 16 to 22 and resumes at the arc's foot. Same colour elsewhere, so
-     the plain tree stays one continuous line. */
-  .ds-sidebar__sub[data-active]:not(:last-child)::before {
-    background: linear-gradient(
-      to bottom,
-      var(--sa-border-neutral-subtle) 0 calc(16px + var(--sa-stack-4)),
-      transparent calc(16px + var(--sa-stack-4)) calc(22px + var(--sa-stack-4)),
-      var(--sa-border-neutral-subtle) calc(22px + var(--sa-stack-4))
-    );
-  }
 
   /* The elbow branches OFF the trunk: a shape/6 arc from 16 to the row centre
      at 22, then a 16px arm into the pill. It overlays the straight trunk. */

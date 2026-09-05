@@ -110,11 +110,14 @@ const RowLink = React.forwardRef<HTMLElement, RowLinkProps>(function RowLink(
  * at `y`: trunk at `trunkX`, a shape/6 corner, a 16px arm into the pill —
  * the same geometry `.ds-sidebar__sub::before` draws for every entry.
  */
-export function activePathD(trunkX: number, y: number): string {
+export function activePathD(trunkX: number, y: number, last: boolean): string {
   const r = 6;
-  // The route runs down the trunk and turns INTO the page: it ends where the arc
-  // leaves the trunk. The neutral trunk beneath continues straight on its own.
-  return `M ${trunkX} 0 V ${y - r} Q ${trunkX} ${y} ${trunkX + r} ${y} H ${trunkX + 16}`;
+  // The route runs down the trunk and turns INTO the page. In the middle of a
+  // list that is a tee at the row centre — the neutral trunk continues beneath;
+  // at the end of a list the trunk itself turns, with the elbow.
+  return last
+    ? `M ${trunkX} 0 V ${y - r} Q ${trunkX} ${y} ${trunkX + r} ${y} H ${trunkX + 16}`
+    : `M ${trunkX} 0 V ${y} H ${trunkX + 16}`;
 }
 
 /**
@@ -149,7 +152,7 @@ function ActivePath({
         setD(null);
         return;
       }
-      setD(activePathD(trunkX, li.offsetTop + 22)); // 22: the centre of a 44px row
+      setD(activePathD(trunkX, li.offsetTop + 22, li.nextElementSibling === null)); // 22: the centre of a 44px row
     };
     measure();
     const ro = new ResizeObserver(measure);
