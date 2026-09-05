@@ -282,55 +282,6 @@ export function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-/* ----------------------------------------------------------------- Stepper */
-export function Stepper({
-  steps,
-  current,
-}: {
-  steps: string[];
-  current: number; // 0-indexed active step
-}) {
-  return (
-    <nav aria-label="Form progress" className="flex items-start">
-      {steps.map((label, i) => {
-        const done = i < current;
-        const active = i === current;
-        return (
-          <React.Fragment key={label}>
-            <div className="flex min-w-0 flex-col items-center text-center" aria-current={active ? "step" : undefined}>
-              <div
-                aria-hidden="true"
-                className={cn(
-                  "flex h-9 w-9 items-center justify-center rounded-full text-label-1 font-semibold",
-                  done
-                    ? "bg-approve text-white"
-                    : active
-                      ? "border-2 border-navy text-navy"
-                      : "border border-line bg-white text-ink-hint",
-                )}
-              >
-                {done ? "✓" : i + 1}
-              </div>
-              <span
-                className={cn(
-                  "mt-2 max-w-[8rem] text-label-2",
-                  active ? "font-bold text-navy" : done ? "text-ink" : "text-ink-hint",
-                )}
-              >
-                <span className="sr-only">Step {i + 1} of {steps.length}{active ? ", current" : done ? ", completed" : ""}: </span>
-                {label}
-              </span>
-            </div>
-            {i < steps.length - 1 && (
-              <div aria-hidden="true" className={cn("mt-4 h-0.5 flex-1", done ? "bg-approve" : "bg-line")} />
-            )}
-          </React.Fragment>
-        );
-      })}
-    </nav>
-  );
-}
-
 /* ---------------------------------------------------------------- Textarea */
 export function Textarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return (

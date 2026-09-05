@@ -1633,6 +1633,14 @@ export const tokens = {
   "tooltip": {
     "radius": "6px"
   },
+  "stepper": {
+    "node": {
+      "md": "2rem",
+      "sm": "1.5rem"
+    },
+    "track": "1px",
+    "dot": "0.5rem"
+  },
   "action": {
     "brand": {
       "primary": {

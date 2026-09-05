@@ -7,68 +7,86 @@
 @layer theme, base, components, utilities;
 
 /*
- * Wrapped in `@layer components` so Tailwind's utilities can override it.
- *
- * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
- * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
- * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
- * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
- * `display: flex` outranked `.hidden`.
- *
- * The layer order is established by `@import "tailwindcss"` in the app's globals.css
- * (theme, base, components, utilities). Naming that layer here joins it rather than creating
- * a new one, so these rules sit below utilities exactly as component CSS should.
+ * Wrapped in `@layer components` so Tailwind's utilities can override it. Every one of these
+ * stylesheets is imported from its own .tsx, so the bundler treats each as a separate CSS
+ * root; unlayered, a plain class selector here would beat any utility a consumer wrote.
  */
 @layer components {
   /* ============================================================================
      MoSJE / SAMAVESH — Stepper
-     Horizontal multi-step progress: done (green ✓) · current (navy) · upcoming.
+
+     Anatomy, in UX4G's vocabulary (Design Specifications, Stepper, UX4G 3.0):
+       Label Header · Supporting Helper Text · Connector Track ·
+       Current Step Node · Step Node
+
+     Five states — upcoming · current · complete · error · disabled — across two
+     orientations, two sizes and two label placements, plus the compact bar the
+     row collapses to when it is too narrow to draw a label per stage.
      ============================================================================ */
 
   .ds-stepper {
+    /* Local geometry, resolved once from the component's Tier-3 tokens so every
+       rule below reads one value rather than restating a number. */
+    --ds-stepper-node: var(--sa-cmp-stepper-node-md);
+    --ds-stepper-gap: var(--sa-stack-8);
+
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-stepper[data-size="sm"] {
+    --ds-stepper-node: var(--sa-cmp-stepper-node-sm);
+    --ds-stepper-gap: var(--sa-stack-4);
+  }
+
+  /* Declared here as well as in the components that already carry it, because a
+     stylesheet must be correct on its own — Stepper renders the hidden state text
+     whether or not Wizard's stylesheet happens to have been loaded first. */
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .ds-stepper__list {
     display: flex;
     align-items: flex-start;
     margin: 0;
     padding: 0;
     list-style: none;
-    font-family: var(--sa-font-latin);
   }
 
   .ds-stepper__item {
     position: relative;
     display: flex;
     flex: 1 1 0;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--sa-stack-8);
-    text-align: center;
     min-width: 0;
   }
 
-  /* Connector line — sits between this marker and the previous one. */
-  .ds-stepper__line {
-    position: absolute;
-    top: 15px; /* vertical centre of the 32px marker */
-    right: 50%;
-    left: -50%;
-    height: 2px;
-    background-color: var(--sa-border-neutral-subtle);
-  }
-
-  .ds-stepper__item.is-done .ds-stepper__line,
-  .ds-stepper__item.is-current .ds-stepper__line {
-    background-color: var(--sa-color-status-success);
-  }
-
-  /* Marker circle. */
-  .ds-stepper__marker {
-    position: relative;
-    z-index: 1;
+  .ds-stepper__static,
+  .ds-stepper__button {
     display: flex;
     align-items: center;
+    gap: var(--ds-stepper-gap);
+    min-width: 0;
+  }
+
+  /* ── The step node ─────────────────────────────────────────────────────── */
+
+  .ds-stepper__marker {
+    position: relative;
+    z-index: var(--sa-z-raised);
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: var(--ds-stepper-node);
+    height: var(--ds-stepper-node);
     border-radius: var(--sa-shape-full);
     border: var(--sa-stroke-2) solid var(--sa-border-neutral-subtle);
     background-color: var(--sa-bg-neutral-base);
@@ -76,14 +94,23 @@
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
     font-weight: var(--sa-font-weight-semibold);
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .ds-stepper[data-size="sm"] .ds-stepper__marker {
+    border-width: var(--sa-stroke-1);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
   }
 
   .ds-stepper__num {
     line-height: var(--sa-type-label-1-lh);
   }
 
-  .ds-stepper__item.is-done .ds-stepper__marker {
+  .ds-stepper__item.is-complete .ds-stepper__marker {
     background-color: var(--sa-color-status-success);
     border-color: var(--sa-border-status-success-base);
     color: var(--sa-on-bg-brand-primary-bolder);
@@ -93,21 +120,41 @@
     background-color: var(--sa-bg-brand-primary-bolder);
     border-color: var(--sa-border-brand-primary-base);
     color: var(--sa-on-bg-brand-primary-bolder);
-    box-shadow: 0 0 0 4px var(--sa-color-primaryScale-50);
+    box-shadow: 0 0 0 var(--sa-stroke-4) var(--sa-color-primaryScale-50);
   }
 
-  /* Labels. */
+  .ds-stepper__item.is-error .ds-stepper__marker {
+    background-color: var(--sa-bg-status-error-bolder);
+    border-color: var(--sa-border-status-error-base);
+    color: var(--sa-on-bg-status-error-bolder);
+  }
+
+  .ds-stepper__item.is-disabled .ds-stepper__marker {
+    background-color: var(--sa-bg-neutral-subtler);
+    border-color: var(--sa-border-neutral-subtle);
+    color: var(--sa-icon-neutral-disabled);
+  }
+
+  /* ── The connector track ───────────────────────────────────────────────── */
+
+  .ds-stepper__line {
+    position: absolute;
+    background-color: var(--sa-border-neutral-subtle);
+  }
+
+  /* A track that leaves a finished stage is the path already walked. */
+  .ds-stepper__item.is-complete .ds-stepper__line {
+    background-color: var(--sa-color-status-success);
+  }
+
+  /* ── Labels ────────────────────────────────────────────────────────────── */
+
   .ds-stepper__text {
     display: flex;
     flex-direction: column;
     gap: var(--sa-padding-2);
-    /*
-     * The item is a centred flex column, so this box would otherwise size to its own content and
-     * spill past the item on both sides — which is how, at eight steps, "Infrastructure,"
-     * overlapped "Justification". Constrain it to the column and let the label wrap instead.
-     */
-    max-width: 100%;
     min-width: 0;
+    max-width: 100%;
   }
 
   .ds-stepper__label {
@@ -115,28 +162,28 @@
     line-height: var(--sa-type-body-3-lh);
     font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
-    /*
-     * A gutter, so two long labels in adjacent columns cannot touch and read as one word. An
-     * eight-step wizard at ~800px gives each column roughly 100px, and "Justification" ran
-     * straight into "Infrastructure," with nothing between them. The ≤640px rule below hides
-     * non-current labels outright; this covers the range above it, where they all still show.
-     */
-    padding-inline: var(--sa-padding-2);
-    /*
-     * Hold the label inside its own column. Without the max-width the label box grows wider than
-     * the column, and because the column is centre-aligned it spills equally both ways: at eight
-     * steps "Infrastructure," overlapped "Justification" by 8px and the two read as one word.
-     * Constrained, the long label wraps instead — which is what the multi-line labels already do.
-     */
     max-width: 100%;
+  }
+
+  .ds-stepper[data-size="sm"] .ds-stepper__label {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
   }
 
   .ds-stepper__item.is-current .ds-stepper__label {
     color: var(--sa-text-brand-primary-base);
   }
 
-  .ds-stepper__item.is-done .ds-stepper__label {
+  .ds-stepper__item.is-complete .ds-stepper__label {
     color: var(--sa-text-neutral-base);
+  }
+
+  .ds-stepper__item.is-error .ds-stepper__label {
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  .ds-stepper__item.is-disabled .ds-stepper__label {
+    color: var(--sa-text-neutral-subtler);
   }
 
   .ds-stepper__desc {
@@ -145,85 +192,467 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  .ds-stepper__sr {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: calc(-1 * var(--sa-padding-2));
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+  .ds-stepper[data-size="sm"] .ds-stepper__desc {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+  }
+
+  /* ── Horizontal, label beneath the node — the default ──────────────────── */
+
+  /*
+   * Equal columns, content centred — the geometry every `stepper/type-2` instance
+   * in the MoSJE handoff is drawn on (six stages across 1152 = 192 each, seven
+   * across 1303 = 186 each). Centring in the column, rather than anchoring the
+   * node to the column's left edge, is what gives a two-word label the whole
+   * column to wrap inside.
+   */
+  .ds-stepper[data-orientation="horizontal"][data-label-placement="bottom"]
+    .ds-stepper__static,
+  .ds-stepper[data-orientation="horizontal"][data-label-placement="bottom"]
+    .ds-stepper__button {
+    flex-direction: column;
+    width: 100%;
+    text-align: center;
   }
 
   /*
-   * An eight-step wizard is crowded long before the 640px break below. At ~800px each column is
-   * about 76px, which is narrower than "Infrastructure," — the label then either overlaps its
-   * neighbour or breaks mid-word ("Organisatio n Details"). Neither is acceptable, so above 640px
-   * the same treatment the narrow rule uses applies once a stepper carries eight or more steps:
-   * show the current label, keep the rest in the DOM for assistive technology.
-   *
-   * `:first-child:nth-last-child(n + 8)` matches the first item only when eight or more exist;
-   * the sibling combinator carries that to the others.
+   * `width: 100%`, not `max-width` — and this is the whole of the overlap bug.
+   * The text box is the cross-axis child of a centred flex column, so its width
+   * is content-based and it happily grows past its column: at six stages on a
+   * 768px tablet "Company Information" was drawn straight through "Product /
+   * Service". Bounded to the column, the label wraps instead.
    */
-  @media (min-width: 641px) and (max-width: 900px) {
-    .ds-stepper__item:first-child:nth-last-child(n + 8) .ds-stepper__label,
-    .ds-stepper__item:first-child:nth-last-child(n + 8) ~ .ds-stepper__item .ds-stepper__label {
+  .ds-stepper[data-orientation="horizontal"][data-label-placement="bottom"]
+    .ds-stepper__text {
+    align-items: center;
+    width: 100%;
+    overflow-wrap: break-word;
+  }
+
+  /*
+   * A gutter, so two long labels in adjacent columns cannot touch and read as one
+   * word. At eight stages across ~800px each column is about 100px, and
+   * "Justification" ran straight into "Infrastructure," with nothing between them.
+   */
+  .ds-stepper[data-orientation="horizontal"][data-label-placement="bottom"]
+    .ds-stepper__label,
+  .ds-stepper[data-orientation="horizontal"][data-label-placement="bottom"]
+    .ds-stepper__desc {
+    padding-inline: var(--sa-padding-4);
+  }
+
+  /* From this node's right edge to the next node's left edge: half a column out,
+     less the node's radius at each end. */
+  .ds-stepper[data-orientation="horizontal"][data-label-placement="bottom"]
+    .ds-stepper__line {
+    top: calc((var(--ds-stepper-node) - var(--sa-cmp-stepper-track)) / 2);
+    left: calc(50% + var(--ds-stepper-node) / 2);
+    right: calc(var(--ds-stepper-node) / 2 - 50%);
+    height: var(--sa-cmp-stepper-track);
+  }
+
+  /* ── Horizontal, label beside the node — UX4G's "Label after" ──────────── */
+
+  .ds-stepper[data-orientation="horizontal"][data-label-placement="right"]
+    .ds-stepper__item {
+    align-items: center;
+    /* The node and its label take what they need; the slack in the row goes to
+       the track, not to the label — an equal-column split here would leave the
+       last stage's label stranded in the middle of an empty column. */
+    flex: 1 1 auto;
+  }
+
+  .ds-stepper[data-orientation="horizontal"][data-label-placement="right"]
+    .ds-stepper__item:last-child {
+    flex: 0 1 auto;
+  }
+
+  /*
+   * `0 0 auto`, not `0 1 auto` — the node and its label must not shrink. The track
+   * beside them takes `flex: 1 1 0`, and a shrinkable sibling loses that argument:
+   * at four stages in a 568px row the text box was squeezed to 64px and
+   * "Infrastructure" (83px) was clipped mid-word with no ellipsis and no wrap. The
+   * track shrinks to its own min-width first, and below that the row collapses.
+   */
+  .ds-stepper[data-orientation="horizontal"][data-label-placement="right"]
+    .ds-stepper__static,
+  .ds-stepper[data-orientation="horizontal"][data-label-placement="right"]
+    .ds-stepper__button {
+    flex: 0 0 auto;
+  }
+
+  /*
+   * Here the track is laid out in flow rather than positioned: it takes whatever
+   * width is left in the row after the node and its label, which is what keeps a
+   * long label from being drawn over it.
+   */
+  .ds-stepper[data-orientation="horizontal"][data-label-placement="right"]
+    .ds-stepper__line {
+    position: static;
+    /* Basis 0 so every segment gets the same share of the row's slack — with a
+       basis of its own, a stage with a two-line label drew a visibly shorter
+       track than its neighbours. */
+    flex: 1 1 0;
+    min-width: var(--sa-inline-16);
+    height: var(--sa-cmp-stepper-track);
+    margin-inline: var(--sa-inline-12);
+  }
+
+  /* ── Vertical ──────────────────────────────────────────────────────────── */
+
+  .ds-stepper[data-orientation="vertical"] .ds-stepper__list {
+    flex-direction: column;
+  }
+
+  .ds-stepper[data-orientation="vertical"] .ds-stepper__item {
+    flex: 0 0 auto;
+    padding-block-end: var(--sa-stack-20);
+  }
+
+  .ds-stepper[data-orientation="vertical"] .ds-stepper__item:last-child {
+    padding-block-end: 0;
+  }
+
+  .ds-stepper[data-orientation="vertical"] .ds-stepper__static,
+  .ds-stepper[data-orientation="vertical"] .ds-stepper__button {
+    align-items: flex-start;
+  }
+
+  .ds-stepper[data-orientation="vertical"] .ds-stepper__line {
+    top: var(--ds-stepper-node);
+    bottom: 0;
+    left: calc((var(--ds-stepper-node) - var(--sa-cmp-stepper-track)) / 2);
+    width: var(--sa-cmp-stepper-track);
+  }
+
+  /* ── The interactive stage ─────────────────────────────────────────────── */
+
+  .ds-stepper__button {
+    appearance: none;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-align: inherit;
+    cursor: pointer;
+    border-radius: var(--sa-shape-8);
+  }
+
+  .ds-stepper__button:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-stepper__button:hover .ds-stepper__label {
+    text-decoration: underline;
+  }
+
+  /* ── The compact bar ───────────────────────────────────────────────────── */
+
+  /*
+   * A second rendering of the same list, for a viewport too narrow to draw a
+   * label per stage. It replaces the two rules that used to CLIP the labels of
+   * every stage but the current one — which took the names of the remaining
+   * stages away from a reader on a phone and left them four bare numbers.
+   * Hidden by default; the queries below are the only thing that shows it.
+   */
+  .ds-stepper__compact {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-12);
+    padding-block: var(--sa-padding-8);
+  }
+
+  .ds-stepper__compact-copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-2);
+    margin: 0;
+    min-width: 0;
+  }
+
+  .ds-stepper__compact-count {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-neutral-subtle);
+    text-transform: uppercase;
+    letter-spacing: var(--sa-type-caps-tracking);
+  }
+
+  .ds-stepper__compact-label {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-brand-primary-base);
+  }
+
+  .ds-stepper__dots {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--sa-inline-4);
+  }
+
+  .ds-stepper__dot {
+    width: var(--sa-cmp-stepper-dot);
+    height: var(--sa-cmp-stepper-dot);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-border-neutral-subtle);
+  }
+
+  .ds-stepper__dot.is-complete {
+    background-color: var(--sa-color-status-success);
+  }
+
+  .ds-stepper__dot.is-current {
+    background-color: var(--sa-bg-brand-primary-bolder);
+    /* The current stage is the one the reader is looking for, so it is longer as
+       well as darker — the dot row must not rely on hue alone (WCAG 1.4.1). */
+    width: var(--sa-inline-20);
+    border-radius: var(--sa-shape-full);
+  }
+
+  .ds-stepper__dot.is-error {
+    background-color: var(--sa-bg-status-error-bolder);
+  }
+
+  /*
+   * Collapse the row.
+   *
+   * The trigger is a CONTAINER query, not a media query, because how much room a
+   * stepper has is a property of its own column: the SCW registration screen at a
+   * 768px viewport gives this row 354px, and six stages in 354px is 59px each. The
+   * viewport query this replaced called that comfortable and drew "Company
+   * Information" through "Product / Service".
+   *
+   * A container query cannot multiply, so the threshold — `steps × 104px`, the
+   * MIN_COLUMN_PX named in stepper.tsx — is enumerated per step count. Twelve
+   * stages is the ceiling the component documents; beyond it the row stays
+   * expanded, which is the honest failure for a case the component says not to
+   * build.
+   *
+   * The thresholds are written for the `md` node. At `sm` the type is smaller, so
+   * these collapse a little earlier than strictly necessary — which is the safe
+   * direction to be wrong in.
+   */
+  .ds-stepper {
+    container-type: inline-size;
+    container-name: ds-stepper;
+  }
+
+  @container ds-stepper (max-width: 207px) {
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="2"]
+      .ds-stepper__list {
       position: absolute;
       width: 1px;
       height: 1px;
       padding: 0;
       overflow: hidden;
-      clip: rect(0, 0, 0, 0);
+      clip-path: inset(50%);
       white-space: nowrap;
-      border: 0;
     }
 
-    .ds-stepper__item:first-child:nth-last-child(n + 8).is-current .ds-stepper__label,
-    .ds-stepper__item:first-child:nth-last-child(n + 8)
-      ~ .ds-stepper__item.is-current
-      .ds-stepper__label {
-      position: static;
-      width: auto;
-      height: auto;
-      padding-inline: var(--sa-padding-2);
-      overflow: visible;
-      clip: auto;
-      white-space: normal;
-      font-weight: var(--sa-font-weight-semibold);
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="2"]
+      .ds-stepper__compact {
+      display: flex;
     }
   }
 
-  /* On narrow screens, hide step descriptions and shrink labels. */
-  @media (max-width: 640px) {
-    .ds-stepper__desc {
-      display: none;
-    }
-    .ds-stepper__label {
-      font-size: var(--sa-type-label-2-size);
-      line-height: var(--sa-type-label-2-lh);
-    }
-
-    /*
-     * Show only the CURRENT step's label. A seven-step wizard on a 375px screen gives each
-     * column about 48px, and multi-word labels then overlap into an unreadable run
-     * ("ApplicatiOnganisatioProjeErtfrastructure…"). The other labels stay in the DOM, merely
-     * clipped, so screen readers and the Stepper's own live region still announce every step.
-     */
-    .ds-stepper__item:not(.is-current) .ds-stepper__label {
+  @container ds-stepper (max-width: 311px) {
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="3"]
+      .ds-stepper__list {
       position: absolute;
       width: 1px;
       height: 1px;
       padding: 0;
       overflow: hidden;
-      clip: rect(0, 0, 0, 0);
+      clip-path: inset(50%);
       white-space: nowrap;
-      border: 0;
     }
 
-    .ds-stepper__item.is-current .ds-stepper__label {
-      font-weight: var(--sa-font-weight-semibold);
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="3"]
+      .ds-stepper__compact {
+      display: flex;
+    }
+  }
+
+  @container ds-stepper (max-width: 415px) {
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="4"]
+      .ds-stepper__list {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="4"]
+      .ds-stepper__compact {
+      display: flex;
+    }
+  }
+
+  @container ds-stepper (max-width: 519px) {
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="5"]
+      .ds-stepper__list {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="5"]
+      .ds-stepper__compact {
+      display: flex;
+    }
+  }
+
+  @container ds-stepper (max-width: 623px) {
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="6"]
+      .ds-stepper__list {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="6"]
+      .ds-stepper__compact {
+      display: flex;
+    }
+  }
+
+  @container ds-stepper (max-width: 727px) {
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="7"]
+      .ds-stepper__list {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="7"]
+      .ds-stepper__compact {
+      display: flex;
+    }
+  }
+
+  @container ds-stepper (max-width: 831px) {
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="8"]
+      .ds-stepper__list {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="8"]
+      .ds-stepper__compact {
+      display: flex;
+    }
+  }
+
+  @container ds-stepper (max-width: 935px) {
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="9"]
+      .ds-stepper__list {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="9"]
+      .ds-stepper__compact {
+      display: flex;
+    }
+  }
+
+  @container ds-stepper (max-width: 1039px) {
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="10"]
+      .ds-stepper__list {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="10"]
+      .ds-stepper__compact {
+      display: flex;
+    }
+  }
+
+  @container ds-stepper (max-width: 1143px) {
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="11"]
+      .ds-stepper__list {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="11"]
+      .ds-stepper__compact {
+      display: flex;
+    }
+  }
+
+  @container ds-stepper (max-width: 1247px) {
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="12"]
+      .ds-stepper__list {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .ds-stepper[data-collapse="auto"][data-orientation="horizontal"][data-steps="12"]
+      .ds-stepper__compact {
+      display: flex;
+    }
+  }
+
+  /* Supporting Helper Text is an elaboration, never the only place a stage is
+     named, so it is the first thing to go when the row tightens. */
+  @container ds-stepper (max-width: 900px) {
+    .ds-stepper[data-orientation="horizontal"] .ds-stepper__desc {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-stepper__marker {
+      transition: none;
     }
   }
 }

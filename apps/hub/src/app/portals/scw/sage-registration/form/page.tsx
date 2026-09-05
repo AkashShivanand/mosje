@@ -7,18 +7,17 @@ import {
   Card,
   DataTable,
   Field,
-  Stepper,
   TextInput,
 } from "@/components/scw/ui";
-import { Icon } from "@mosje/design-system";
+import { Icon, Stepper } from "@mosje/design-system";
 
 const STEPS = [
-  "Company Information",
-  "Product / Service",
-  "Team & Founders",
-  "Financial & Investors",
-  "Achievements",
-  "Review & Submit",
+  { label: "Company Information" },
+  { label: "Product / Service" },
+  { label: "Team & Founders" },
+  { label: "Financial & Investors" },
+  { label: "Achievements" },
+  { label: "Review & Submit" },
 ];
 
 /* ----------------------------------------------------------- helpers */
@@ -293,7 +292,6 @@ function StepReviewSubmit() {
 /* ----------------------------------------------------------- page */
 export default function SageRegistrationFormPage() {
   const [step, setStep] = React.useState(0);
-  const done = Array.from({ length: step }, (_, i) => i);
   const isLast = step === STEPS.length - 1;
 
   return (
@@ -309,7 +307,7 @@ export default function SageRegistrationFormPage() {
         </div>
 
         <div className="mt-8">
-          <Stepper steps={STEPS} current={step} done={done} />
+          <Stepper steps={STEPS} current={step} ariaLabel="Registration progress" />
         </div>
 
         <div className="mt-10">
