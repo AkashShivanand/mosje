@@ -80,6 +80,7 @@
   .ds-sidebar__group {
     display: flex;
     flex-direction: column;
+    gap: var(--sa-stack-4); /* label to first row — the same stack/4 the Figma Menu keeps between every child */
   }
 
   .ds-sidebar__group + .ds-sidebar__group {
