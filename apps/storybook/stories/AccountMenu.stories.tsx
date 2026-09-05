@@ -16,6 +16,10 @@ import { AccountMenu, Icon } from "@mosje/design-system";
  * `avatarSrc` is optional: without it, initials are derived from `name`. That
  * fallback is the normal case here — government portals rarely hold a
  * photograph of the officer, and an anonymous silhouette identifies nobody.
+ * The avatar is a rounded square, the estate's shape for a person in the masthead.
+ *
+ * The trigger shows the **role** under the name; the **email** appears inside the
+ * menu head with both. When a portal passes no role, the address stands in.
  *
  * `role` is worth filling in wherever the same person can hold different
  * jurisdictions. "Sunita Deshmukh" alone does not tell an officer whether they
