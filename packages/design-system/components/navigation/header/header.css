@@ -400,9 +400,41 @@
      estate already has in the footer. [DBIM 5.4] */
   @media (max-width: 1023px) {
     .ds-hdr-cobrand,
-    .ds-hdr-cobrand-link {
+    .ds-hdr-cobrand-link,
+    .ds-hdr-cobrand-lockup {
       display: none;
     }
+  }
+
+  /* The SAMAVESH lockup: mark, name, expansion — Figma `Cobranding › SAMAVESH`.
+     Both lines sit on Body/body-3, the estate's 12px floor; the master drew them at
+     11 and 7 and the stack fitted in 40. At 12/16 the expansion takes two lines in a
+     15rem measure, so the lockup is 48 tall and centres on the 40px mark. */
+  .ds-hdr-cobrand-lockup {
+    --ds-hdr-cobrand-measure: 15rem;
+
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    flex: 0 0 auto;
+  }
+
+  .ds-hdr-cobrand-lockup__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+    max-inline-size: var(--ds-hdr-cobrand-measure);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .ds-hdr-cobrand-lockup__title {
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-hdr-cobrand-lockup__sub {
+    color: var(--sa-text-neutral-subtle);
   }
 
   /* [DBIM 5.6] Hyperlinked logos, the same treatment the footer gives its credits:

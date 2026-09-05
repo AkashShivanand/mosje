@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Footer, Icon, SiteHeader } from "@mosje/design-system";
+import { Footer, Icon, SiteHeader, SAMAVESH_COBRAND } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { cn } from "@/lib/nmba/utils";
 import { useTCSession } from "@/lib/nmba/treatment-centre/session-context";
@@ -205,7 +205,7 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
         }}
         cobranding={[
           { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 34 },
-          { src: `${BASE}/brand/samavesh-logo.svg`, alt: "SAMAVESH", height: 40 },
+          SAMAVESH_COBRAND,
         ]}
         onToggleNav={() => setMobileOpen((o) => !o)}
         navExpanded={mobileOpen}

@@ -462,7 +462,7 @@ export default function SiteHeaderPage(): React.JSX.Element {
             <h2 id="cdp-example" className="cdp__h2">
               Example
             </h2>
-            <CodeBlock>{`import { SiteHeader } from "@mosje/design-system";
+            <CodeBlock>{`import { SiteHeader, SAMAVESH_COBRAND } from "@mosje/design-system";
 
 // Website — search, a Login CTA, and mega-menu navigation
 <SiteHeader
@@ -472,7 +472,7 @@ export default function SiteHeaderPage(): React.JSX.Element {
   emblemSrc={emblem}
   brandLines={{ org: "Government of India", ministry: "…", department: "…" }}
   search={{ placeholder: "Search schemes and services", onSearch: runSearch }}
-  cobranding={[{ src: digitalIndia, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 40 }]}
+  cobranding={[{ src: digitalIndia, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 40 }, SAMAVESH_COBRAND]}
   nav={NAV}
   actions={<a href="/login">Login</a>}
 />;

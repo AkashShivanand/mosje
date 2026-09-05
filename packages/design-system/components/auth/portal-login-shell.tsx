@@ -28,6 +28,7 @@
  */
 
 import * as React from "react";
+import { SAMAVESH_COBRAND } from "../navigation/header/samavesh-cobrand";
 import { SiteHeader } from "../navigation/header/site-header";
 import { Button } from "../actions/button";
 import { OrgLogo } from "../brand/org-logo";
@@ -125,10 +126,7 @@ export function PortalLoginShell({
         }}
         beta
         homeHref="/"
-        cobranding={[
-          { src: digitalIndiaSrc, alt: "Digital India" },
-          { src: samaveshLogoSrc, alt: "SAMAVESH" },
-        ]}
+        cobranding={[{ src: digitalIndiaSrc, alt: "Digital India" }, SAMAVESH_COBRAND]}
       />
 
       {/* ── Two-column body ──────────────────────────────────────────────────── */}

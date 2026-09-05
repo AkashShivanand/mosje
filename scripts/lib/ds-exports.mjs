@@ -52,6 +52,9 @@ export const NOT_COMPONENTS = new Set([
   // a component. `check:org-logos` is what actually guards this registry.
   "ORG_LOGOS", "ORG_LOGO_FALLBACK", "PORTAL_ORG_LOGOS",
   "SAMAVESH_MARK", "SAMAVESH_MARK_VECTOR", "NATIONAL_EMBLEM", "NATIONAL_EMBLEM_INVERSE",
+  // The masthead's SAMAVESH cobrand — a BrandMark value, documented on the SiteHeader
+  // page where it is rendered live, not a component of its own.
+  "SAMAVESH_COBRAND",
   "orgLogoSrc", "portalLogoSrc", "portalLabel", "portalSummary", "portalCategoriesIn",
   // The four portals SamaveshBanner features by default, and the helper that
   // reads each one's build status out of DEFAULT_APPS. A data array and a pure

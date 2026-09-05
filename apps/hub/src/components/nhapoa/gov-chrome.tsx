@@ -1,6 +1,6 @@
 "use client";
 
-import { SiteHeader, type SiteHeaderProps } from "@mosje/design-system";
+import { SiteHeader, type SiteHeaderProps, SAMAVESH_COBRAND } from "@mosje/design-system";
 
 const BASE = "/portals/nhapoa";
 
@@ -45,7 +45,7 @@ export function NhapoaHeader({
       language={{ label: "English" }}
       cobranding={[
         { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 36 },
-        { src: `${BASE}/brand/samavesh-logo.svg`, alt: "SAMAVESH", height: 40 },
+        SAMAVESH_COBRAND,
       ]}
       account={account}
       accountMenu={accountMenu}

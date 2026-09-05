@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Icon, SideSheet, SiteHeader } from "@mosje/design-system";
+import { Icon, SideSheet, SiteHeader, SAMAVESH_COBRAND } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { cn } from "@/lib/nmba/utils";
 import { usePortalSession } from "@/lib/nmba/committee/session-context";
@@ -254,7 +254,7 @@ export function AdminShell({ children }: AdminShellProps) {
         }}
         cobranding={[
           { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 34 },
-          { src: `${BASE}/brand/samavesh-logo.svg`, alt: "SAMAVESH", height: 40 },
+          SAMAVESH_COBRAND,
         ]}
         language={{
           label: "English",

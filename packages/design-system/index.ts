@@ -410,6 +410,7 @@ export type {
 } from "./components/utilities/accessibility-bar";
 
 // Navbar — SiteHeader (the SAMAVESH Navbar: Website + Portal variants, 3-tier).
+export { SAMAVESH_COBRAND } from "./components/navigation/header/samavesh-cobrand";
 export {
   SiteHeader,
   BrandLockup,

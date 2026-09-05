@@ -147,7 +147,10 @@ const meta = {
     accessibilityToolbar: true,
     cobranding: [
       { src: asset("Digital India", 120, 44), alt: "Digital India", height: 44 },
-      { src: asset("SAMAVESH", 60, 44), alt: "SAMAVESH", height: 44 },
+      // A mark with `title` and `subtitle` renders as a lockup — the SAMAVESH cobrand.
+      // `SAMAVESH_COBRAND` from the barrel is the ready-made value; the placeholder
+      // asset stands in for the mark here.
+      { src: asset("SAMAVESH", 44, 44), alt: "", title: "SAMAVESH", subtitle: "Single Access Mechanism for All Verticals of Empowerment & Social Harmony", height: 40 },
     ],
   },
   argTypes: {

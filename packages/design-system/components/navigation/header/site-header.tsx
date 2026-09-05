@@ -884,8 +884,23 @@ export function SiteHeader({
             {searchField}
 
             <div className="ds-hdr-brand__trailing">
-              {marks.map((m) =>
-                m.href ? (
+              {marks.map((m) => {
+                /* A mark with a title is a LOCKUP — mark + name + expansion, as the
+                   Figma Navbar draws SAMAVESH. It stayed a bare image in code for
+                   three weeks while every portal pasted its own mark at its own
+                   height; the lockup is the estate's, so it comes from one value. */
+                const visual = m.title ? (
+                  <span className="ds-hdr-cobrand-lockup">
+                    <img className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
+                    <span className="ds-hdr-cobrand-lockup__text">
+                      <span className="ds-hdr-cobrand-lockup__title">{m.title}</span>
+                      {m.subtitle && <span className="ds-hdr-cobrand-lockup__sub">{m.subtitle}</span>}
+                    </span>
+                  </span>
+                ) : (
+                  <img className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
+                );
+                return m.href ? (
                   /* [DBIM 5.6] Hyperlinked logos — the same treatment the footer
                      gives its credits. `href` has been in `BrandMark` all along and
                      was never read, so Digital India sat in every public masthead as
@@ -897,13 +912,13 @@ export function SiteHeader({
                     target="_blank"
                     rel="noreferrer"
                   >
-                    <img className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
+                    {visual}
                     <span className="ds-hdr-sr"> (opens in a new window)</span>
                   </a>
                 ) : (
-                  <img key={m.src} className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
-                ),
-              )}
+                  <React.Fragment key={m.src}>{visual}</React.Fragment>
+                );
+              })}
 
               {isCompact && navRow}
 

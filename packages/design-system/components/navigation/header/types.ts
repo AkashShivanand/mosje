@@ -99,10 +99,19 @@ export interface BrandLines {
 /** A trailing brand mark (Digital India, SAMAVESH, …). */
 export interface BrandMark {
   src: string;
+  /** The mark's name. Pass `""` when `title` carries it, or a screen reader hears it twice. */
   alt: string;
   href?: string;
   /** Rendered height in px (width auto). @default 44 */
   height?: number;
+  /**
+   * A text lockup beside the mark — the SAMAVESH cobrand is the mark, its name and
+   * the expansion of the acronym, as the Figma Navbar draws it (`Cobranding › SAMAVESH`).
+   * Both lines render at Body/body-3, the estate's 12px floor; the master drew them at
+   * 11 and 7 until 2026-09-05. `SAMAVESH_COBRAND` is the ready-made value.
+   */
+  title?: string;
+  subtitle?: string;
 }
 
 /**
