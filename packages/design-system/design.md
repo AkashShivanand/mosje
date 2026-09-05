@@ -12,6 +12,12 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-05 · System version: v0.51.0 (THE SIDEBAR IS ONE COMPONENT AGAIN AND GOES THREE
+  LEVELS DEEP. The SAMAVESH Sidebar sets were rebuilt in place — same keys — with Focused, Disabled,
+  a collapsed-group flyout, a visible collapse control, group labels, a footer slot, and level 3;
+  active ink is bolder (7.75:1 Blue / 15.15:1 Navy), hover is neutral, the Portal DS copies are deprecated, and
+  SidebarNav renders the same three levels with a real flyout — see the changelog.)
+
   Last reviewed: 2026-09-05 · System version: v0.50.0 (THE FOUNDATION GAPS WERE CLOSED. A
   five-field audit of the live Figma library found the value checksums equal while description,
   codeSyntax, scopes and hiddenFromPublishing had drifted on hundreds of variables; the exporter

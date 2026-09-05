@@ -4,4 +4,6 @@ export type {
   SidebarNavGroup,
   SidebarNavItem,
   SidebarNavChild,
+  SidebarNavLeaf,
+  SidebarNavIdentity,
 } from "./types";

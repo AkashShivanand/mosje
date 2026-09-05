@@ -7658,7 +7658,7 @@ export const GENERATED_PROPS = {
         "name": "pathname",
         "type": "string",
         "required": true,
-        "description": "Current route path — used to derive active states"
+        "description": "Current route path — the ONLY source of the active state."
       },
       {
         "name": "className",
@@ -7670,19 +7670,32 @@ export const GENERATED_PROPS = {
         "name": "collapsed",
         "type": "boolean",
         "required": false,
-        "description": "Controlled collapsed state"
+        "description": "Controlled collapsed state."
       },
       {
         "name": "footer",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Optional content pinned to the sidebar footer"
+        "description": "Optional content pinned to the foot (mirrors Figma `Show Footer`)."
       },
       {
         "name": "id",
         "type": "string",
         "required": false,
-        "description": "DOM id for the <aside>. Pass it when a header toggle points at this sidebar with `aria-controls` — an aria-controls that names nothing is worse than none at all."
+        "description": "DOM id for the root. Pass it when a header toggle points at this sidebar with `aria-controls` — an aria-controls that names nothing is worse than none at all."
+      },
+      {
+        "name": "identity",
+        "type": "SidebarNavIdentity",
+        "required": false,
+        "description": "The portal identity at the head of the rail (mirrors Figma `Show Identity`, on by default there). Omit on a login screen: PortalLoginShell already names the portal."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "`${identity.name} navigation`, or \"Portal navigation\" without an identity",
+        "description": "Accessible name of the navigation landmark."
       },
       {
         "name": "onCollapsedChange",
@@ -7694,7 +7707,7 @@ export const GENERATED_PROPS = {
         "name": "showCollapseControl",
         "type": "boolean",
         "required": false,
-        "description": "Show a drag-handle control on the right edge of the sidebar (mirrors Figma `showControl` prop). Requires `onCollapsedChange`."
+        "description": "Show the rail's own collapse control (mirrors Figma `Show Control` on the identity block, off by default). With an `identity` it sits in that row — trailing when expanded, beneath the mark when collapsed; without one it takes a 48px row at the top. The portal masthead's toggle drives the same state, so pass this only in a shell without that toggle. Requires `onCollapsedChange`."
       }
     ]
   },

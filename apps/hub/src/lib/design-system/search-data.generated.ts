@@ -1308,8 +1308,8 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Sidebar Nav — Design System",
     "section": "Navigation",
     "href": "/design-system/components/navigation/sidebar-nav",
-    "keywords": "sidebar nav — design system navigation   tokens wcag accessibility",
-    "description": "The portal app-shell left navigation.",
+    "keywords": "sidebar nav — design system navigation  groups[].label items[].icon items[].badge items[].children children[].children *.disabled tokens wcag accessibility",
+    "description": "The portal app-shell left navigation, three levels deep.",
     "type": "component",
     "iconName": "navigation"
   },
