@@ -586,9 +586,13 @@
     border-color: var(--sa-cmp-action-brand-primary-inverse-active-bg);
   }
 
+  /* THE INK IS THE SECONDARY-INVERSE TEXT (white), NOT `--_c-inv-on`. `--_c-inv-on` is
+     the brand blue that sits on the filled inverse button's white ground; on a
+     transparent button over the brand ground it painted the label navy-on-navy.
+     Found the day the arrangements sections drew the inverse pair on its ground. */
   .ds-btn--inverseOutlined {
     background-color: transparent;
-    color: var(--_c-inv-on);
+    color: var(--_inv-ink);
     border-color: var(--_c-inv-edge);
   }
 
@@ -608,7 +612,7 @@
      secondary one, which is the same white. Figma binds it identically. */
   .ds-btn--inverseText {
     background-color: transparent;
-    color: var(--_c-inv-on);
+    color: var(--_inv-ink);
     border-color: transparent;
   }
 

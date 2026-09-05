@@ -73,17 +73,20 @@
     text-decoration-line: underline;
   }
 
+  /* A ramp that actually climbs: 14 → 16 → 18-and-up. It used to read label-1 / body-1 /
+     body-2, and label-1 and body-2 are both 14px — so "small" and "large" rendered
+     identically, found the day the arrangements section drew them side by side. */
   .ds-link--standalone.ds-link--sm {
-    font-size: var(--sa-type-label-1-size);
-    line-height: var(--sa-type-label-1-lh);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
   }
   .ds-link--standalone.ds-link--md {
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
   }
   .ds-link--standalone.ds-link--lg {
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
   }
 
   /* --------------------------------------------------------------------------
@@ -121,12 +124,15 @@
   /* --------------------------------------------------------------------------
      Tone: inverse — on a solid brand surface
      -------------------------------------------------------------------------- */
+  /* The INK on a brand ground is the secondary-inverse text — the same rung the outlined
+     and text buttons use there. primary-inverse-text is the brand blue that sits on a
+     white inverse fill, and painted a link navy-on-navy. */
   .ds-link--inverse {
-    color: var(--sa-cmp-action-brand-primary-inverse-default-text);
+    color: var(--sa-cmp-action-brand-secondary-inverse-default-text);
   }
   .ds-link--inverse:hover,
   .ds-link--inverse:active {
-    color: var(--sa-cmp-action-brand-primary-inverse-hover-text);
+    color: var(--sa-cmp-action-brand-secondary-inverse-hover-text);
   }
   .ds-link--inverse:focus-visible {
     outline-color: color-mix(in oklab, var(--sa-bg-neutral-base) 55%, transparent);

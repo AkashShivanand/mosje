@@ -32,9 +32,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.107.0",
+    version: "v0.108.0",
     date: "2026-09-05",
     current: true,
+    changes: [
+      { kind: "Added", text: "ACTIONS DRAW THEIR ARRANGEMENTS. Button (15 cells: each icon slot with a glyph that fits the action, loading on both prominences, a size, an intent, a tone and a state beside a glyph, a label that is too long, and fullWidth, href with external and download, nowrap and preserveFocus as code-only), Icon Button (11, the inverse pair on its ground, aria-label, tooltip, the circle, loading and href), Button Group (9, with real actions in every group and align and aria-label as code-only) and Link (10, including a link inside its sentence, iconLeft with download, and mailto). Each section opens with the three-panel key. The Icon Button, Button Group and Link web specimens render the same set. The arrangements baseline drops from sixteen pages to twelve" },
+      { kind: "Fixed", text: "FOUR DEFECTS FOUND BY DRAWING THE ACTIONS. Inverse outlined and text buttons painted their label navy-on-navy (they took the blue that sits on a white inverse fill; they now take the secondary-inverse ink, and IconButton inherits it); Link tone=\"inverse\" was unreadable for the same reason; Link size=\"sm\" and \"lg\" rendered identically because label-1 and body-2 are both 14px, so the standalone ramp is now body-2, body-1, title-1; and a loading IconButton drew its spinner over its glyph. Asserted in link-css.test.ts and icon-button.spec.tsx" },
+    ],
+  },
+  {
+    version: "v0.107.0",
+    date: "2026-09-05",
+    current: false,
     changes: [
       { kind: "Changed", text: "THE BOT CHECK'S HELP LINK APPEARS WHERE THE CHECK CAN DEFEAT SOMEONE, NOT EVERYWHERE. Always in Challenge mode, because distorted characters are a sensory barrier and nobody should have to fail before finding the way round them; in Checkbox and Invisible modes once the check has failed. An idle checkbox is one deliberate act, not a cognitive test, and a link beneath it was noise. helpHref stays required. Code, the Figma master's nine variants and the documentation say the same thing, asserted in bot-check.spec.tsx" },
       { kind: "Fixed", text: "BOT CHECK'S CHECKBOX MODE IN FIGMA SAT ITS LABEL 56PX FROM THE BOX. The nested Checkbox kept an empty 36px body beside its hidden label and the row added 12 more; the label now sits 8px from the box, as in code. Every instance in the library follows" },

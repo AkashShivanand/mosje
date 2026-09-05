@@ -5,6 +5,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versions track
 
 ---
 
+## [0.7.4] — 2026-09-05
+
+### Fixed
+- **Inverse outlined and text buttons painted their label navy-on-navy.** `.ds-btn--inverseOutlined` and `.ds-btn--inverseText` took `--_c-inv-on`, the brand blue that sits on the filled inverse button's white ground; they now take the secondary-inverse ink. `IconButton` inherits the fix.
+- **`Link` `tone="inverse"` was unreadable on the brand ground** for the same reason; it now uses the secondary-inverse ink. Asserted in link-css.test.ts.
+- **`Link` `size="sm"` and `size="lg"` rendered identically** (label-1 and body-2 are both 14px). The standalone ramp is body-2 / body-1 / title-1: 14 → 16 → 18-and-up.
+- **`IconButton` `loading` drew the spinner over the glyph.** The glyph gives way to the spinner; the name and `aria-busy` stay. Asserted in icon-button.spec.tsx.
+
+All four were found by drawing the arrangements sections for the Actions group.
+
 ## [0.7.3] — 2026-09-05
 
 ### Changed
