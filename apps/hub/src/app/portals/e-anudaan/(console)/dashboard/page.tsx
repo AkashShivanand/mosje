@@ -13,7 +13,7 @@ export default function EAnudaanDashboardIndex() {
   React.useEffect(() => {
     if (!hydrated) return;
     const role = state.session && state.session !== "ngo" ? ROLES[state.session] : null;
-    router.replace(role ? role.home : "/portals/e-anudaan/login");
+    router.replace(role ? role.home : "/portals/e-anudaan/login?role=officer");
   }, [hydrated, state.session, router]);
 
   return null;

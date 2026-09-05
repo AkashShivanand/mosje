@@ -17,7 +17,7 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
   const role = ROLES.ngo;
 
   React.useEffect(() => {
-    if (hydrated && !isNgo) router.replace("/portals/e-anudaan/sign-in");
+    if (hydrated && !isNgo) router.replace("/portals/e-anudaan/login?role=ngo");
   }, [hydrated, isNgo, router]);
 
   if (!hydrated || !isNgo) return null;
@@ -46,7 +46,7 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
             danger: true,
             onSelect: () => {
               logout();
-              router.push("/portals/e-anudaan/sign-in");
+              router.push("/portals/e-anudaan/login?role=ngo");
             },
           },
         ]}

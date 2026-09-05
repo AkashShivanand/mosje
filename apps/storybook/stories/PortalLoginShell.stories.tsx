@@ -71,7 +71,7 @@ const meta = {
     samaveshLogoSrc: asset("SAMAVESH", 64, 64),
     // The photograph behind the hero — the Figma Photograph swap. Left at the default
     // here so the story shows what a portal gets without passing one.
-    heroImageSrc: "/portals/login-hero/samavesh-default.jpg",
+    heroImageSrc: "/portals/login-hero/smile-transgender.jpg",
     signingInto: "Nasha Mukt Bharat Abhiyaan",
     changeHref: "/",
     tabs: [

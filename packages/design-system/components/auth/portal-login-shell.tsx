@@ -5,7 +5,10 @@
  *
  * Layout: the SAMAVESH Navbar in its Portal variant (accessibility bar + masthead,
  *   no nav row, no search, no account) → two columns: left hero (LoginHero, 922 of
- *   1440) + right panel (tabs + form).
+ *   1440) + right panel (tabs + form). Below the large breakpoint the hero column
+ *   gives way to the LoginHero's Mobile variant — the SAMAVESH identity band on a
+ *   light brand ground, then the Signing Into strip — stacked above the form, as
+ *   the handoff draws it (`56693:9331`, Sign In — Login Form / Mobile).
  *
  *   The navbar is ONE component, `SiteHeader`, as the Figma shell nests ONE
  *   `Navbar/Portal` instance (2026-09-05). It used to be an AccessibilityBar and a
@@ -15,7 +18,9 @@
  *
  * What changes per portal:
  *   - `emblemSrc`, `digitalIndiaSrc`, `samaveshLogoSrc` — asset paths from the portal's /public
- *   - `heroImageSrc` — the portal's photograph behind the hero (Figma: the Photograph swap)
+ *   - `heroImageSrc` — the portal's photograph behind the hero (Figma: the Portal Hero
+ *     slot). BLANK by default: with no photograph the column is the solid brand
+ *     ground, exactly as the library master renders an empty slot.
  *   - `signingInto` — the scheme/portal name shown in the hero's "SIGNING INTO" strip
  *   - `tabs` — tab labels and hrefs (e.g. Admin + Patient Monitoring for NMBA)
  *   - `children` — the form content (heading, fields, submit button)
@@ -61,12 +66,16 @@ export interface PortalLoginShellProps {
   /** SAMAVESH circular logo URL */
   samaveshLogoSrc: string;
   /**
-   * The photograph behind the desktop hero — the Figma organism's `Photograph`
-   * swap. Drawn as a background so a phone, which never shows the column, never
-   * downloads it. Defaults to the estate's SAMAVESH photograph (1200px JPEG,
-   * 262 KB, exported from the library on 2026-09-05); a portal passes its own.
-   * Decorative: it carries no text and sits under an alpha mask that leaves a
-   * solid band on the left for the lockup and the Signing Into bar.
+   * The photograph behind the desktop hero — the Figma organism's `Portal Hero`
+   * slot. Drawn as a background so a phone, which never shows the column, never
+   * downloads it. Decorative: it carries no text and sits under an alpha mask
+   * that leaves a solid band on the left for the lockup and the Signing Into bar.
+   *
+   * NO DEFAULT, deliberately. The slot is blank until the portal supplies its
+   * own photograph, and a blank slot is the solid brand column — the same thing
+   * the library's master draws with nothing dropped into it. The shell used to
+   * default to the SMILE-Transgender photograph, which put one scheme's
+   * classroom behind every other scheme's sign-in.
    */
   heroImageSrc?: string;
 
@@ -95,7 +104,7 @@ export function PortalLoginShell({
   emblemSrc = "/brand/national-emblem.svg",
   digitalIndiaSrc = "/brand/digital-india.svg",
   samaveshLogoSrc = "/brand/samavesh-logo.svg",
-  heroImageSrc = "/portals/login-hero/samavesh-default.jpg",
+  heroImageSrc,
   signingInto,
   changeHref = "/",
   tabs,
@@ -139,11 +148,15 @@ export function PortalLoginShell({
             portal-login-hero.css beside the Figma node ids they transcribe. */}
         {/* 922 of 1440 — the handoff's hero/form split, which the Figma master draws. */}
         <div className="ds-plogin-hero hidden lg:flex lg:w-[64.03%]">
-          <div
-            className="ds-plogin-hero__photo"
-            aria-hidden="true"
-            style={{ backgroundImage: `url("${heroImageSrc}")` }}
-          />
+          {/* The Portal Hero slot. Rendered only when a portal has a photograph;
+              an empty slot is the column's own ground, in the library and here. */}
+          {heroImageSrc ? (
+            <div
+              className="ds-plogin-hero__photo"
+              aria-hidden="true"
+              style={{ backgroundImage: `url("${heroImageSrc}")` }}
+            />
+          ) : null}
 
           {/*
             Lockup — decorative, so hidden from assistive technology. The
@@ -199,6 +212,43 @@ export function PortalLoginShell({
         {/* Right panel */}
         <div className="flex flex-1 flex-col" style={{ background: "var(--sa-bg-neutral-base)" }}>
 
+          {/* Phone identity — the Figma organism's `Device=Mobile` variant. The
+              SAMAVESH band on a light brand ground, then the Signing Into strip
+              on the hero's own ground with the decorative disc bleeding off its
+              right edge, as the handoff draws them (`56693:9335`, `56693:9563`).
+              Hidden from the large breakpoint up, where the hero column carries
+              both. */}
+          <div className="ds-plogin-hero-mobile lg:hidden">
+            <div className="ds-plogin-hero-mobile__band" aria-hidden="true">
+              <span className="ds-plogin-hero-mobile__ring">
+                <img src={samaveshLogoSrc} alt="" />
+              </span>
+              <div className="ds-plogin-hero-mobile__title">
+                <p className="text-headline-3">SAMAVESH</p>
+                <p className="ds-plogin-hero-mobile__strap text-body-2">
+                  Single Access Mechanism for All Verticals of Empowerment &amp; Social Harmony
+                </p>
+              </div>
+            </div>
+            <div className="ds-plogin-hero-mobile__bar">
+              <OrgLogo size="md" />
+              <div className="ds-plogin-hero__bar-text">
+                <p className="ds-plogin-hero__eyebrow ds-plogin-hero__muted text-label-2">Signing Into</p>
+                <p className="text-title-2">{signingInto}</p>
+              </div>
+              <Button
+                href={changeHref}
+                size="sm"
+                variant="neutral"
+                appearance="outlined"
+                tone="inverse"
+                iconLeft={<Icon name="swap_horiz" size={16} aria-hidden />}
+              >
+                Change
+              </Button>
+            </div>
+          </div>
+
           {/* ROLE TABS.
               Deliberately NOT the DS `Tabs` component, and the reason is in the
               markup: these are real `<a href>`s, so middle-click, "copy link
@@ -213,8 +263,12 @@ export function PortalLoginShell({
               `style={{ background: "var(--sa-…)" }}` objects, which no token gate
               can see and no brand mode can re-bind, and `rounded-full` where the
               reference draws a rounded rectangle. */}
+          {/* Column metrics follow the Figma shell's form column: 32 above the
+              tabs, 64 at the sides on desktop, 16 on a phone (`55449:905`,
+              `56693:9331`). The column used to centre the form vertically,
+              which floated it away from the tabs pinned at the top. */}
           {tabs && tabs.length > 0 && (
-            <div className="px-6 pb-0 pt-5">
+            <div className="px-4 pt-8 lg:px-16">
               <div className="ds-plogin__roletabs" role="tablist" aria-label="Portal login type">
                 {tabs.map((tab) => (
                   <a
@@ -233,7 +287,7 @@ export function PortalLoginShell({
           )}
 
           {/* Form area */}
-          <div className="flex flex-1 flex-col items-center justify-center px-6 py-6">
+          <div className="flex flex-1 flex-col items-center px-4 py-6 lg:px-16">
             <div id="login-form" className="w-full max-w-sm" tabIndex={-1}>
               {children}
             </div>

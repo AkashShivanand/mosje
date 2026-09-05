@@ -151,7 +151,7 @@ export const FIGMA_NODES = {
   accessibilityBar: "55065-33766",
   accountMenu: "56046-4113",
   accountMenuItem: "56040-4083",
-  authParts: "55439-731", // the SigningIntoBar component; its Tone set (55439-749) was dissolved 2026-09-04
+  authParts: "57464-12739", // the SigningIntoBar Device set (2026-09-05); its Tone set (55439-749) was dissolved 2026-09-04
   brandLockup: "4235-3652",
   divider: "55061-700",
   dropdownItem: "4299-1940",
