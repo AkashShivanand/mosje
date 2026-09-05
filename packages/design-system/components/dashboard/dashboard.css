@@ -71,7 +71,7 @@
     margin: 0;
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
   .ds-chart-card__subtitle {
@@ -125,7 +125,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
     cursor: pointer;
     /* Feedback on the press, not the release: the press is when the reader acted. */
@@ -210,7 +210,7 @@
   }
   .ds-filter-bar__title {
     font-size: var(--sa-type-body-2-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
   .ds-filter-bar__controls {
@@ -239,7 +239,7 @@
     border-radius: var(--sa-shape-6);
     font-family: inherit;
     font-size: var(--sa-type-body-3-size);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-subtle);
     cursor: pointer;
     transition: background var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
@@ -320,7 +320,7 @@
     line-height: var(--sa-type-label-3-lh);
     letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     /* `subtler` is 4.65:1 only on white; the menu ground is bg/neutral/base, which is white. */
     color: var(--sa-text-neutral-subtler);
   }
@@ -358,13 +358,13 @@
     flex-direction: column;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-chart-export__item-hint {
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 400;
+    font-weight: var(--sa-font-weight-regular);
     color: var(--sa-text-neutral-subtle);
   }
 

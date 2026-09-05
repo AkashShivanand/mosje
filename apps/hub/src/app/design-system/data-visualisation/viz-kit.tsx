@@ -11,7 +11,7 @@ import * as React from "react";
 
 export const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
-  fontWeight: 600,
+  fontWeight: "var(--sa-font-weight-semibold)",
   marginBottom: "var(--sa-stack-8)",
   scrollMarginTop: "var(--sa-section-48)",
 };
@@ -73,7 +73,7 @@ export function Specimen({
         <h3
           style={{
             fontSize: "var(--sa-type-label-1-size)",
-            fontWeight: 600,
+            fontWeight: "var(--sa-font-weight-semibold)",
             margin: "0 0 var(--sa-stack-8) 0",
           }}
         >

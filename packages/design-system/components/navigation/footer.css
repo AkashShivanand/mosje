@@ -49,7 +49,7 @@
   }
 
   .ds-footer__copy strong {
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     color: var(--sa-on-bg-brand-primary-bolder);
   }
 

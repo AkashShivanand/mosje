@@ -41,7 +41,7 @@ export default function BreakpointsPage(): React.JSX.Element {
       status="New"
       since="0.49.0"
       summary="A breakpoint is a viewport width at which the layout changes. SAMAVESH has six, and they are anchors rather than a grid of their own: each one selects a content cap and a page margin. Every page is built for the narrowest first and gains columns above it."
-      figma={{ node: "spacing" }}
+      figma={{ node: "layout" }}
       glance={[
         { value: sorted.length, label: "anchors", note: `${sorted[0]?.value} to ${sorted.at(-1)?.value}` },
         { value: "3", label: "content caps", note: "1200 · 1320 · 1440" },

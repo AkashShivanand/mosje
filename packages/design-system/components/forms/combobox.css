@@ -31,7 +31,7 @@
     color: var(--sa-text-neutral-bolder);
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-combobox__required {
@@ -141,7 +141,7 @@
     box-shadow: inset 3px 0 0 0 var(--sa-border-brand-primary-base);
   }
 
-  .ds-combobox__option.is-selected { font-weight: 700; }
+  .ds-combobox__option.is-selected { font-weight: var(--sa-font-weight-bold); }
 
   .ds-combobox__option.is-disabled {
     color: var(--sa-text-neutral-subtle);

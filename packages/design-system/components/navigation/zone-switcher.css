@@ -53,7 +53,7 @@
     color: var(--sa-text-neutral-base);
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-2-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     cursor: pointer;
     box-shadow: var(--sa-elevation-modal);
     transition: border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);

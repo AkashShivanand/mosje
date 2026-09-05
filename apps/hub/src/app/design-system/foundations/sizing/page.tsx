@@ -33,7 +33,7 @@ export default function SizingPage(): React.JSX.Element {
       status="New"
       since="0.49.0"
       summary="Sizing is the width and height of a thing rather than the space around it. SAMAVESH keeps one dimension ladder in rem — so a raised browser font size scales an icon with its label — and two role families on top of it: icon sizes, and pointer targets named for the standard each one meets."
-      figma={{ node: "iconography" }}
+      figma={{ node: "spacing" }}
       glance={[
         { value: ladder.length, label: "ladder steps", note: `${pxOf(ladder[0]!)}px to ${pxOf(ladder.at(-1)!)}px, in rem` },
         { value: icons.length, label: "icon sizes", note: "16 · 20 · 24 · 32 · 40 · 48 · 64" },

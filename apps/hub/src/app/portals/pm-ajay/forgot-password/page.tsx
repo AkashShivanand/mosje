@@ -44,7 +44,7 @@ export default function ForgotPasswordPage() {
 
             <Link
               href={`${BASE}/login`}
-              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "var(--sa-inline-8)", height: 44, background: "var(--sa-color-brand-navy)", color: "var(--sa-color-text-onPrimary)", borderRadius: "var(--sa-shape-8)", fontWeight: 600, fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)", textDecoration: "none" }}
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "var(--sa-inline-8)", height: 44, background: "var(--sa-color-brand-navy)", color: "var(--sa-color-text-onPrimary)", borderRadius: "var(--sa-shape-8)", fontWeight: "var(--sa-font-weight-semibold)", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)", textDecoration: "none" }}
             >
               <span className="material-symbols-rounded" style={{ fontSize: 18 }}>arrow_back</span>
               Back to Sign-In

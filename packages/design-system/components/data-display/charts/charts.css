@@ -134,13 +134,13 @@
   .ds-chart__value {
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     fill: var(--sa-icon-neutral-base);
   }
   .ds-chart__axis-title {
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     fill: var(--sa-icon-neutral-subtle);
   }
 
@@ -397,7 +397,7 @@
     color: var(--sa-text-neutral-base);
   }
   .ds-chart__legend-pct {
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
   }
 
@@ -417,7 +417,7 @@
     box-shadow: var(--sa-elevation-modal);
   }
   .ds-chart__tooltip-title {
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
   .ds-chart__tooltip-row {
     display: flex;
@@ -436,7 +436,7 @@
     font-size: var(--sa-type-title-1-size);
     line-height: var(--sa-type-title-1-lh);
     /* 700, not 600: this is a KPI numeral, not a heading. */
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     font-variant-numeric: tabular-nums;
     fill: var(--sa-icon-neutral-base);
   }
@@ -517,11 +517,11 @@
   }
   .ds-progress__label {
     color: var(--sa-text-neutral-base);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
   }
   .ds-progress__value {
     color: var(--sa-text-neutral-subtle);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     font-variant-numeric: tabular-nums;
   }
   .ds-progress__track {
@@ -607,7 +607,7 @@
   }
   .ds-funnel__value {
     font-size: var(--sa-type-body-3-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
     font-variant-numeric: tabular-nums;
   }
@@ -691,7 +691,7 @@
     font: inherit;
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     cursor: pointer;
     /* 2.5.8 Target Size (Minimum) is 24; this clears it with room for a coarse pointer. */
     min-height: 32px;
@@ -739,7 +739,7 @@
     background: transparent;
     color: var(--sa-text-brand-primary-bolder);
     font-size: var(--sa-type-body-3-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-decoration: underline;
     text-underline-offset: 0.2em;
     cursor: pointer;
@@ -783,7 +783,7 @@
 
   .ds-chart__table th {
     color: var(--sa-text-neutral-bolder);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-chart__table td {

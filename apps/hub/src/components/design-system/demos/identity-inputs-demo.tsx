@@ -85,7 +85,7 @@ export function IdentityInputsDemo(): React.JSX.Element {
           style={{
             margin: "0 0 var(--sa-stack-8)",
             fontSize: "var(--sa-type-label-1-size)",
-            fontWeight: 600,
+            fontWeight: "var(--sa-font-weight-semibold)",
             color: "var(--sa-text-neutral-base)",
           }}
         >

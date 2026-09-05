@@ -25,7 +25,7 @@ export type LedgerEntry = { token: string; measured?: number; implied?: number; 
 export type Section = { id: string; title: string };
 
 export const META = {
-  "translucentTokens": 136,
+  "translucentTokens": 140,
   "alphaSteps": 15,
   "ramps": 8,
   "brands": 2,
@@ -42,7 +42,7 @@ export const META = {
   "modesMeasured": 8,
   "cvdSafeSeries": 9,
   "worstCvdSeriesPair": 8.2,
-  "rolesMeasured": 46,
+  "rolesMeasured": 47,
   "rolesBelowFloor": 0,
   "generatedFrom": "packages/tokens/dist/tokens.css"
 } as const;
@@ -2555,7 +2555,7 @@ export const TRANSLUCENT = [
   },
   {
     "group": "Scrim, washes and rules",
-    "count": 4,
+    "count": 8,
     "examples": [
       {
         "token": "border/neutral/inverse/subtle",
@@ -2570,10 +2570,10 @@ export const TRANSLUCENT = [
         "css": "--sa-overlay-neutral-boldest"
       },
       {
-        "token": "overlay/brand/hover",
-        "base": "color/neutralScale/0",
-        "alpha": "alpha/8",
-        "css": "--sa-overlay-brand-hover"
+        "token": "overlay/neutral/hover",
+        "base": "color/neutralScale/800",
+        "alpha": "alpha/4",
+        "css": "--sa-overlay-neutral-hover"
       }
     ]
   }
@@ -2603,16 +2603,16 @@ export const LAYERS = [
 ] as const;
 
 export const SLOT_COUNTS = {
-  "border": 16,
-  "bg": 48,
+  "border": 17,
+  "bg": 53,
   "text": 22,
   "icon": 15,
   "cmp": 296,
-  "focus": 1,
-  "overlay": 3,
+  "focus": 2,
+  "overlay": 7,
   "chart": 38,
   "layer": 8,
-  "on": 46
+  "on": 51
 } as const;
 
 export const RETIRED = [
@@ -4218,6 +4218,17 @@ export const ROLE_CONTRAST: readonly RoleContrast[] = [
     "value": "#54585e",
     "onWhite": 7.16,
     "onMuted": 6.27,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/neutral/selected",
+    "role": "border",
+    "value": "#0373df",
+    "onWhite": 4.64,
+    "onMuted": 4.07,
     "floor": 3,
     "ground": "both",
     "aaa": false,

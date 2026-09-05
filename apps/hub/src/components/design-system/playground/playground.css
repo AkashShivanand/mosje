@@ -27,7 +27,7 @@
   font-size: var(--sa-type-label-3-size);
   line-height: var(--sa-type-label-3-lh);
   color: var(--sa-text-neutral-subtle);
-  font-weight: 700;
+  font-weight: var(--sa-font-weight-bold);
   text-transform: uppercase;
   letter-spacing: var(--sa-type-caps-tracking);
   margin-right: auto;
@@ -77,7 +77,7 @@
 }
 
 .pg-control { display: flex; flex-direction: column; gap: var(--sa-stack-4); }
-.pg-control__label { font-size: var(--sa-type-label-3-size); font-weight: 600; color: var(--sa-text-neutral-subtle); }
+.pg-control__label { font-size: var(--sa-type-label-3-size); font-weight: var(--sa-font-weight-semibold); color: var(--sa-text-neutral-subtle); }
 .pg-control__input {
   height: 32px;
   border: 1px solid var(--sa-border-neutral-base);

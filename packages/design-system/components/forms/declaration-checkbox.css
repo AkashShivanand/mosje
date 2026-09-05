@@ -44,7 +44,7 @@
     margin: 0;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -56,7 +56,7 @@
 
   .ds-declaration__lead {
     margin: 0 0 var(--sa-padding-4);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -79,7 +79,7 @@
   }
 
   .ds-declaration__confirm {
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 

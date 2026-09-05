@@ -86,7 +86,7 @@
   gap: var(--sa-stack-8);
   font-size: var(--sa-type-label-3-size);
   line-height: var(--sa-type-label-3-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   letter-spacing: var(--sa-type-caps-tracking);
   text-transform: uppercase;
   color: var(--sa-text-neutral-subtle);
@@ -142,7 +142,7 @@
 
 .hero-devanagari {
   font-size: var(--sa-type-headline-1-size);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   line-height: var(--sa-type-headline-1-lh);
   color: var(--sa-text-neutral-base);
   opacity: 0.85;
@@ -185,7 +185,7 @@
   padding: var(--sa-padding-4) var(--sa-padding-12) var(--sa-padding-4) var(--sa-padding-8);
   font-size: var(--sa-type-label-3-size);
   line-height: var(--sa-type-label-3-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   letter-spacing: var(--sa-type-label-tracking);
   color: var(--sa-text-neutral-base);
   background: var(--sa-bg-neutral-base);

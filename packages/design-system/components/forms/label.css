@@ -34,7 +34,7 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
 
@@ -45,7 +45,7 @@
   }
 
   .ds-label__hint {
-    font-weight: 400;
+    font-weight: var(--sa-font-weight-regular);
     color: var(--sa-text-neutral-subtle);
   }
 

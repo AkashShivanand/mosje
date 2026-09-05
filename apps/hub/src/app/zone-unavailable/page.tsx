@@ -59,7 +59,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           style={{
             fontSize: "var(--sa-type-headline-2-size)",
             lineHeight: "var(--sa-type-headline-2-lh)",
-            fontWeight: 600,
+            fontWeight: "var(--sa-font-weight-semibold)",
             color: "var(--sa-text-neutral-base, #1f2428)",
             marginBottom: "var(--sa-stack-8, 8px)",
           }}
@@ -91,7 +91,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           <div
             style={{
               fontSize: "var(--sa-type-label-3-size, 11px)",
-              fontWeight: 700,
+              fontWeight: "var(--sa-font-weight-bold)",
               textTransform: "uppercase",
               letterSpacing: "0.06em",
               color: "var(--sa-text-neutral-subtle, #343a40)",
@@ -114,7 +114,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
           <div
             style={{
               fontSize: "var(--sa-type-label-3-size, 11px)",
-              fontWeight: 700,
+              fontWeight: "var(--sa-font-weight-bold)",
               textTransform: "uppercase",
               letterSpacing: "0.06em",
               color: "var(--sa-text-neutral-subtle, #343a40)",
@@ -145,7 +145,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               borderRadius: "var(--sa-shape-6, 6px)",
               background: "var(--sa-color-action-primary-default, #0373df)",
               color: "var(--sa-on-bg-brand-primary-bolder, #fff)",
-              fontWeight: 600,
+              fontWeight: "var(--sa-font-weight-semibold)",
               fontSize: "var(--sa-type-body-2-size, 14px)",
               textDecoration: "none",
             }}
@@ -161,7 +161,7 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
               borderRadius: "var(--sa-shape-6, 6px)",
               border: "1px solid var(--sa-border-neutral-base, #e2e6ea)",
               color: "var(--sa-text-neutral-base, #1f2428)",
-              fontWeight: 600,
+              fontWeight: "var(--sa-font-weight-semibold)",
               fontSize: "var(--sa-type-body-2-size, 14px)",
               textDecoration: "none",
             }}

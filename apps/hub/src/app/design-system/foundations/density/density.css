@@ -21,11 +21,11 @@
     margin: 0;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
   .de-panel__meta {
-    font-weight: 400;
+    font-weight: var(--sa-font-weight-regular);
     color: var(--sa-text-neutral-subtle);
     font-variant-numeric: tabular-nums;
   }
@@ -50,7 +50,7 @@
     border: none;
     background: var(--sa-bg-brand-primary-bolder);
     color: var(--sa-on-bg-brand-primary-bolder);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     cursor: pointer;
   }
   .de-input,
@@ -105,7 +105,7 @@
   .de-table th {
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
     border-bottom-color: var(--sa-border-neutral-base);
   }

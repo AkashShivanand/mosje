@@ -167,7 +167,7 @@
 .gov-prose h2 {
   color: var(--primary-dark);
   font-size: var(--sa-type-headline-4-size);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   line-height: var(--sa-type-headline-4-lh);
   margin-top: var(--sa-stack-32);
 }
@@ -175,14 +175,14 @@
   color: var(--ink);
   font-size: var(--sa-type-headline-5-size);
   line-height: var(--sa-type-headline-5-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   margin-top: var(--sa-stack-24);
 }
 .gov-prose h4 {
   color: var(--primary-dark);
   font-size: var(--sa-type-headline-6-size);
   line-height: var(--sa-type-headline-6-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   margin-top: var(--sa-stack-20);
 }
 .gov-prose p { color: var(--ink-muted); }
@@ -191,7 +191,7 @@
 .gov-prose ul { list-style: disc; padding-left: var(--sa-padding-24); }
 .gov-prose ol { list-style: decimal; padding-left: var(--sa-padding-24); }
 .gov-prose li { margin-top: var(--sa-stack-6); }
-.gov-prose strong { color: var(--ink); font-weight: 600; }
+.gov-prose strong { color: var(--ink); font-weight: var(--sa-font-weight-semibold); }
 .gov-prose hr { border-color: var(--sa-border-neutral-base); margin: var(--sa-stack-24) 0; }
 
 /* ── Tables inside prose (WCAG 2.2 AA compliant, design token responsive tables) ── */
@@ -212,7 +212,7 @@
   background-color: var(--sa-bg-neutral-subtler);
   font-size: var(--sa-type-label-2-size);
   line-height: var(--sa-type-label-2-lh);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   text-transform: uppercase;
   letter-spacing: var(--sa-type-caps-tracking);
   color: var(--sa-text-neutral-bolder);
@@ -247,7 +247,7 @@
 .gov-prose table a {
   color: var(--sa-text-link-brand-default);
   text-decoration: none;
-  font-weight: 500;
+  font-weight: var(--sa-font-weight-medium);
   display: inline-flex;
   align-items: center;
   gap: var(--sa-inline-4);
@@ -294,7 +294,7 @@
   font-size: var(--sa-type-headline-3-size);
   line-height: var(--sa-type-headline-3-lh);
   letter-spacing: var(--sa-type-heading-tracking);
-  font-weight: 600;
+  font-weight: var(--sa-font-weight-semibold);
   color: var(--sa-color-action-primary-hover);
   margin-top: 0;
   /* Figma 51858:48299 puts a 24px gap between the heading and the copy. The

@@ -24,7 +24,7 @@ const sectionStyle: React.CSSProperties = {
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)",
   lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
+  fontWeight: "var(--sa-font-weight-bold)",
   color: "var(--sa-text-neutral-base)",
   marginBottom: "var(--sa-stack-16)",
   paddingBottom: "var(--sa-padding-8)",
@@ -44,7 +44,7 @@ export default function PortalCardPage() {
     <article className="docs-article">
       <header>
         <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", lineHeight: "var(--sa-type-display-1-lh)", fontWeight: 500, color: "var(--sa-text-neutral-base)", margin: 0 }}>
+          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", lineHeight: "var(--sa-type-display-1-lh)", fontWeight: "var(--sa-font-weight-medium)", color: "var(--sa-text-neutral-base)", margin: 0 }}>
             Portal Card
           </h1>
           <StatusBadge status="New" />

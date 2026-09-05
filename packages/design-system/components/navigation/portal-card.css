@@ -225,14 +225,14 @@
   .ds-portal-card__code {
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-color-secondaryScale-600);
   }
 
   .ds-portal-card__name {
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-color-text-default);
   }
 
@@ -297,7 +297,7 @@
   .ds-portal-card__category {
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
     text-transform: uppercase;
     letter-spacing: var(--sa-type-caps-tracking);
@@ -314,7 +314,7 @@
     flex-shrink: 0;
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-color-secondaryScale-600);
   }
 

@@ -82,7 +82,7 @@
     color: var(--sa-text-neutral-bolder);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
   }
@@ -93,7 +93,7 @@
     margin: var(--sa-stack-12) 0 var(--sa-stack-8);
     font-size: var(--sa-type-headline-2-size);
     line-height: var(--sa-type-headline-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
     text-wrap: balance;
   }
@@ -173,7 +173,7 @@
     margin: 0 0 var(--sa-stack-20);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
     text-transform: uppercase;
     letter-spacing: var(--sa-type-caps-tracking);
@@ -243,7 +243,7 @@
     margin: 0 0 var(--sa-stack-6);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
     display: flex;
     align-items: center;
@@ -274,7 +274,7 @@
   .ds-error-view__details-summary {
     padding: var(--sa-padding-12) var(--sa-padding-16);
     font-size: var(--sa-type-label-2-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-subtle);
     cursor: pointer;
     user-select: none;

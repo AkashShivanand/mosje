@@ -32,9 +32,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.104.0",
+    version: "v0.105.0",
     date: "2026-09-05",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "FIGMA AND CODE AGREE ON ALL FIVE FIELDS, AND A GATE NOW SAYS SO. The value checksum in the parity record was equal in every collection while 479 descriptions, five code-syntax lines, 138 scope sets and 164 publishing flags had drifted unseen. The exporter hides by LIBRARY-name tier (ref/* and the whole Palette collection), Palette carries the five explicit colour scopes instead of ALL_FILLS, the six font/weight rows are STRING/FONT_STYLE, and a Tier-2 colour that references a Tier-2 colour with its own alpha aliases that variable instead of the opaque rung beneath it — the accessibility bar's two washes were the one value the library held right and the payload wrong. The library was corrected in place (347 variables, 479 descriptions, one rename) and read back byte-equal; collectionFieldChecksums hashes description, codeSyntax, scopes and hidden per collection into the record. The Plugin API stores an apostrophe as &#39; and reads it back that way — a property of Figma, decoded before comparing, not a push defect." },
+      { kind: "Added", text: "THIRTY-TWO FOUNDATION TOKENS THE BENCHMARK SYSTEMS CARRY, EACH WITH A CONSUMER. bg/neutral/{hover, active, selected, readonly, loading} with their on/* inks; border/neutral/selected; overlay/neutral/{hover, active, focus, drag} as alias + alpha; focus/ringInner for the two-tone ring; control/height/{sm, md, lg} (32 · 40 · 48); aspect/{square, video, photo, portrait}; icon/fill/{outline, filled}; cmp/avatar/size/{xs, sm, md, lg}; cmp/{chip, dialog, tooltip}/radius; elevation/inset, the one INNER_SHADOW. The sidebar's current page, the read-only field, the skeleton, the checked selection card, four neutral hovers, the photo wells, the icon button, Button, FilterSelect, Pagination, the SAMAVESH Banner, Avatar, Chip, Modal and Tooltip bind them. Grammar gained the states drag · readonly · loading, the group aspect and the components avatar · chip · dialog · tooltip." },
+      { kind: "Changed", text: "594 LITERAL FONT-WEIGHTS BIND --sa-font-weight-*. Six weight tokens had been Tier 2 since 2026-08-26 while the architecture rule said none existed and 531 CSS declarations and 63 inline styles typed the number. No rendered weight changed. Two ratchets joined the check: check:breakpoints holds the off-ladder @media literal count (43) and check:token-consumers holds the zero-consumer Tier-2 count per family (448) — both may only fall." },
+      { kind: "Changed", text: "THE FIGMA LIBRARY CARRIES ONE FOCUS RING AND A TOKEN-BOUND GRID SET. Focus States/Primary was renamed focus/ring in place and retuned to the code's ring (a 2px spread in focus/ringInner under 4px in focus/ring, bound); its five per-tone siblings and the six legacy Shadows/* styles were removed after an 83-page scan found their 37 and 0 consumers. Sixteen grid styles became eight bound to grid/columns, grid/gutter and the margin rungs; Grid/Desktop (120) and Grid/Desktop XL (224) had matched no token. Four Component record frames were built (Typography, Color, Layout Grid, Iconography); the Motion frame was rewritten to the twelve intents and the Effects frame to one ring; 61 unstyled texts on the Typography frame and 127 literal paddings, gaps and radii on the Color and Brand frames were bound; two Code text styles exist. The Shape and Stroke pages linked a Figma node that no longer resolved; every foundation page now links a page that exists, and check:figma-docs carries claims on nine foundation frames." },
+    ],
+  },
+  {
+    version: "v0.104.0",
+    date: "2026-09-05",
+    current: false,
     changes: [
       { kind: "Added", text: "EVERY PROPERTY IS DRAWN, NOT ONLY THE AXES. A property that can only be found by toggling it in the properties panel does not exist for anyone browsing the library, so every component page now ends in an ARRANGEMENTS section \u2014 every non-variant property switched on, every group arrangement, and every code-only state composed from live instances and named. Checkbox carries twenty-two cells, Radio twenty-one and Selection Card seventeen, the Selection Card variants section shows all forty variants on both layouts, and the Checkbox and Radio web playgrounds render the same set. The rule is in figma-documentation-style.md" },
       { kind: "Fixed", text: "A DISABLED GROUP LOOKED ENABLED. `<fieldset disabled>` disabled the inputs, but the drawn box and circle read data-disabled from their own root, so a disabled CheckboxGroup or RadioGroup showed every option at full strength. Found by drawing the state; the group now passes disabled to each option, asserted in control-group.spec.tsx" },
@@ -1918,7 +1929,7 @@ export default function ChangelogPage(): React.JSX.Element {
                 <h2
                   style={{
                     fontSize: "var(--sa-type-headline-2-size)",
-                    fontWeight: 700,
+                    fontWeight: "var(--sa-font-weight-bold)",
                     color: "var(--sa-text-neutral-base)",
                   }}
                 >
@@ -1936,7 +1947,7 @@ export default function ChangelogPage(): React.JSX.Element {
                   <span
                     style={{
                       fontSize: "var(--sa-type-body-3-size)",
-                      fontWeight: 600,
+                      fontWeight: "var(--sa-font-weight-semibold)",
                       color: "var(--sa-on-bg-brand-primary-bolder)",
                       background: "var(--sa-bg-brand-primary-bolder)",
                       padding: "var(--sa-padding-2) var(--sa-padding-8)",
@@ -1974,7 +1985,7 @@ export default function ChangelogPage(): React.JSX.Element {
                         minWidth: 64,
                         textAlign: "center",
                         fontSize: "var(--sa-type-body-3-size)",
-                        fontWeight: 700,
+                        fontWeight: "var(--sa-font-weight-bold)",
                         color: "var(--sa-on-bg-brand-primary-bolder)",
                         background: KIND_COLOR[change.kind],
                         padding: "var(--sa-padding-2) var(--sa-padding-8)",

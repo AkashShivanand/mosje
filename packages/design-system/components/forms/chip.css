@@ -57,11 +57,11 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 500;
+    font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-bolder);
     background-color: var(--sa-bg-neutral-base);
     border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
-    border-radius: var(--sa-shape-8);
+    border-radius: var(--sa-cmp-chip-radius);
     user-select: none;
     transition:
       background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),

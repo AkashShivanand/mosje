@@ -65,7 +65,7 @@
     font-size: var(--sa-type-headline-3-size);
     line-height: var(--sa-type-headline-3-lh);
     letter-spacing: var(--sa-type-heading-tracking);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-color-action-primary-hover);
   }
 
@@ -91,7 +91,7 @@
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
     letter-spacing: var(--sa-type-label-tracking);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     text-transform: uppercase;
     color: var(--sa-text-neutral-subtle);
   }
@@ -102,7 +102,7 @@
     font-size: var(--sa-type-display-2-size);
     line-height: var(--sa-type-display-2-lh);
     letter-spacing: var(--sa-type-display-2-tracking);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     color: var(--sa-color-action-primary-hover);
   }
 
@@ -163,7 +163,7 @@
   .sd-dash__ratio-label {
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -171,7 +171,7 @@
     font-size: var(--sa-type-title-3-size);
     line-height: var(--sa-type-title-3-lh);
     letter-spacing: var(--sa-type-title-tracking);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     color: var(--sa-color-action-primary-hover);
   }
 
@@ -260,7 +260,7 @@
     margin-top: var(--sa-stack-2);
     font-size: var(--sa-type-headline-4-size);
     line-height: var(--sa-type-headline-4-lh);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     color: var(--sa-text-neutral-bolder);
     font-variant-numeric: tabular-nums;
   }
@@ -283,7 +283,7 @@
 
   .sd-dash__caption strong {
     color: var(--sa-text-neutral-base);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   /* ── Ranked list under the map ─────────────────────────────────────────── */
@@ -316,7 +316,7 @@
   }
 
   .sd-dash__rank-row--on .sd-dash__rank-name {
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     color: var(--sa-color-action-primary-hover);
   }
 
@@ -330,7 +330,7 @@
   }
 
   .sd-dash__rank-value {
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     color: var(--sa-text-neutral-bolder);
     font-variant-numeric: tabular-nums;
   }
@@ -360,7 +360,7 @@
   .sd-dash__conv-label {
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
 
@@ -373,7 +373,7 @@
 
   .sd-dash__conv-figure b {
     color: var(--sa-text-neutral-bolder);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
   }
 
   /* The convergence rows live on a WHITE card, so they cannot borrow the hero's
@@ -419,7 +419,7 @@
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
     letter-spacing: var(--sa-type-title-tracking);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     color: var(--sa-color-action-primary-hover);
   }
 
@@ -454,7 +454,7 @@
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
     letter-spacing: var(--sa-type-title-tracking);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     color: var(--sa-text-neutral-bolder);
     font-variant-numeric: tabular-nums;
   }
@@ -617,7 +617,7 @@
     font-size: var(--sa-type-title-1-size);
     line-height: var(--sa-type-title-1-lh);
     letter-spacing: var(--sa-type-title-tracking);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     color: var(--sa-color-action-primary-hover);
   }
 
@@ -644,7 +644,7 @@
   .sd-aside__row dt {
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 400;
+    font-weight: var(--sa-font-weight-regular);
     color: var(--sa-text-neutral-subtle);
   }
 
@@ -652,7 +652,7 @@
     margin: var(--sa-stack-2) 0 0;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -668,7 +668,7 @@
     margin: 0 0 var(--sa-stack-12);
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
-    font-weight: 700;
+    font-weight: var(--sa-font-weight-bold);
     letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
     color: var(--sa-text-neutral-subtle);
@@ -718,7 +718,7 @@
        something a citizen is meant to click. */
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     /* The default link blue lands at 4.19:1 here, under the 4.5:1 AA floor for
        body text. This is the same hue several steps darker, at 7.75:1. */
     color: var(--sa-color-action-primary-hover);

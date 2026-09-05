@@ -29,7 +29,7 @@ export interface FoundationFamily {
   stats: { total: number; ref: number; sys: number; cmp: number; figma: number; codeOnly: number; described: number };
 }
 
-export type FoundationKey = "spacing" | "sizing" | "shape" | "stroke" | "elevation" | "layering" | "opacity" | "motion" | "breakpoints" | "density" | "states" | "layout";
+export type FoundationKey = "spacing" | "sizing" | "shape" | "stroke" | "elevation" | "layering" | "opacity" | "motion" | "breakpoints" | "density" | "states" | "brand" | "layout";
 
 export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
   "spacing": {
@@ -43,7 +43,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "0px",
         "figma": "Space · ref/space/0",
         "excluded": null,
-        "description": ""
+        "description": "No space — the rung a padding or gap aliases when a variant removes it, so the property stays bound rather than deleted."
       },
       {
         "path": "space/2",
@@ -54,7 +54,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "2px",
         "figma": "Space · ref/space/2",
         "excluded": null,
-        "description": ""
+        "description": "2px — hairline separation: a badge from its glyph, a focus ring's offset (`focus/offset`)."
       },
       {
         "path": "space/4",
@@ -65,7 +65,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "4px",
         "figma": "Space · ref/space/4",
         "excluded": null,
-        "description": ""
+        "description": "4px — the tightest inner gap: icon to label inside a chip, the gap between stacked pills."
       },
       {
         "path": "space/6",
@@ -87,7 +87,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "8px",
         "figma": "Space · ref/space/8",
         "excluded": null,
-        "description": ""
+        "description": "8px — the base unit. A control's inner gap (`density/control/gap`), a label to its field, `target/spacing` between adjacent targets."
       },
       {
         "path": "space/12",
@@ -98,7 +98,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "12px",
         "figma": "Space · ref/space/12",
         "excluded": null,
-        "description": ""
+        "description": "12px — compact padding: dense table cells and compact controls (`density/control/padding/x` compact)."
       },
       {
         "path": "space/16",
@@ -109,7 +109,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "16px",
         "figma": "Space · ref/space/16",
         "excluded": null,
-        "description": ""
+        "description": "16px — the default inline padding of a control and the mobile page margin (`grid/margin/mobile`)."
       },
       {
         "path": "space/20",
@@ -120,7 +120,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "20px",
         "figma": "Space · ref/space/20",
         "excluded": null,
-        "description": ""
+        "description": "20px — card padding at the compact end, and the gap between a card's header and body."
       },
       {
         "path": "space/24",
@@ -131,7 +131,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "24px",
         "figma": "Space · ref/space/24",
         "excluded": null,
-        "description": ""
+        "description": "24px — the grid gutter (`grid/gutter`), the tablet page margin, and default card padding."
       },
       {
         "path": "space/32",
@@ -142,7 +142,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "32px",
         "figma": "Space · ref/space/32",
         "excluded": null,
-        "description": ""
+        "description": "32px — the desktop-wide page margin (`grid/margin/desktop`) and the inner padding of a section band."
       },
       {
         "path": "space/40",
@@ -153,7 +153,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "40px",
         "figma": "Space · ref/space/40",
         "excluded": null,
-        "description": ""
+        "description": "40px — the gap between related blocks inside a section on a portal page."
       },
       {
         "path": "space/48",
@@ -164,7 +164,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "48px",
         "figma": "Space · ref/space/48",
         "excluded": null,
-        "description": ""
+        "description": "48px — the default gap between page sections (`section/48`) on the website."
       },
       {
         "path": "space/56",
@@ -175,7 +175,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "56px",
         "figma": "Space · ref/space/56",
         "excluded": null,
-        "description": ""
+        "description": "56px — a section gap for a page with a hero above it, so the hero reads as its own band."
       },
       {
         "path": "space/64",
@@ -186,7 +186,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "64px",
         "figma": "Space · ref/space/64",
         "excluded": null,
-        "description": ""
+        "description": "64px — the vertical padding of a hero or a login panel gutter (`layout/login/panel/gutter`)."
       },
       {
         "path": "space/72",
@@ -197,7 +197,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "72px",
         "figma": "Space · ref/space/72",
         "excluded": null,
-        "description": ""
+        "description": "72px — the generous section gap used between website home-page bands."
       },
       {
         "path": "space/80",
@@ -208,7 +208,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "80px",
         "figma": "Space · ref/space/80",
         "excluded": null,
-        "description": ""
+        "description": "80px — the widest routine section gap; above this the page reads as separate pages."
       },
       {
         "path": "space/120",
@@ -219,7 +219,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "120px",
         "figma": "Space · ref/space/120",
         "excluded": null,
-        "description": ""
+        "description": "120px — the top and bottom inset of a full-bleed hero band."
       },
       {
         "path": "space/360",
@@ -230,7 +230,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "360px",
         "figma": "Space · ref/space/360",
         "excluded": null,
-        "description": ""
+        "description": "360px — the fixed inset the login hero's content column sits behind; the one rung that is a layout offset, not a gap."
       },
       {
         "path": "inline/0",
@@ -900,7 +900,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
       "cmp": 0,
       "figma": 78,
       "codeOnly": 0,
-      "described": 61
+      "described": 78
     }
   },
   "sizing": {
@@ -1156,7 +1156,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{size.16}",
         "figma": "Space · icon/size/16",
         "excluded": null,
-        "description": "Use for a 16 icon. Bind a step rather than a raw number, so icons stay in proportion when the scale moves."
+        "description": "16px — inline with body-2 and label text, and inside a chip."
       },
       {
         "path": "icon/size/20",
@@ -1178,7 +1178,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{size.24}",
         "figma": "Space · icon/size/24",
         "excluded": null,
-        "description": "Use for a 24 icon. Bind a step rather than a raw number, so icons stay in proportion when the scale moves."
+        "description": "24px — the default: buttons, list rows, the masthead menu."
       },
       {
         "path": "icon/size/32",
@@ -1189,7 +1189,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{size.32}",
         "figma": "Space · icon/size/32",
         "excluded": null,
-        "description": "Use for a 32 icon. Bind a step rather than a raw number, so icons stay in proportion when the scale moves."
+        "description": "32px — a card or tile glyph."
       },
       {
         "path": "icon/size/40",
@@ -1200,7 +1200,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{size.40}",
         "figma": "Space · icon/size/40",
         "excluded": null,
-        "description": "Use for a 40 icon. Bind a step rather than a raw number, so icons stay in proportion when the scale moves."
+        "description": "40px — a portal card's leading mark."
       },
       {
         "path": "icon/size/48",
@@ -1211,7 +1211,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{size.48}",
         "figma": "Space · icon/size/48",
         "excluded": null,
-        "description": "Use for a 48 icon. Bind a step rather than a raw number, so icons stay in proportion when the scale moves."
+        "description": "48px — a hero or section-head glyph."
       },
       {
         "path": "icon/size/64",
@@ -1222,7 +1222,29 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{size.64}",
         "figma": "Space · icon/size/64",
         "excluded": null,
-        "description": "Use for a 64 icon. Bind a step rather than a raw number, so icons stay in proportion when the scale moves."
+        "description": "64px — the mark in an empty state or illustration tile."
+      },
+      {
+        "path": "icon/fill/outline",
+        "tier": "sys",
+        "type": "number",
+        "css": "--sa-icon-fill-outline",
+        "value": "0",
+        "raw": "0",
+        "figma": "Static · icon/fill/outline",
+        "excluded": null,
+        "description": "FILL 0 — the outlined default."
+      },
+      {
+        "path": "icon/fill/filled",
+        "tier": "sys",
+        "type": "number",
+        "css": "--sa-icon-fill-filled",
+        "value": "1",
+        "raw": "1",
+        "figma": "Static · icon/fill/filled",
+        "excluded": null,
+        "description": "FILL 1 — the filled form of the same glyph, for a selected or active state."
       },
       {
         "path": "target/min",
@@ -1267,16 +1289,93 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "figma": "Space · target/spacing",
         "excluded": null,
         "description": "Minimum gap BETWEEN adjacent targets — Material 3's 8dp separation. It is also what makes WCAG 2.5.8's spacing exception reachable: separation, not size, is what stops a 24px target being mis-tapped."
+      },
+      {
+        "path": "control/height/sm",
+        "tier": "sys",
+        "type": "dimension",
+        "css": "--sa-control-height-sm",
+        "value": "2rem",
+        "raw": "{size.32}",
+        "figma": "Static · control/height/sm",
+        "excluded": null,
+        "description": "32px — compact controls, filter chips, table toolbars. Below WCAG 2.5.8's 24px floor only if the target has no spacing exception; give it target/spacing between neighbours."
+      },
+      {
+        "path": "control/height/md",
+        "tier": "sys",
+        "type": "dimension",
+        "css": "--sa-control-height-md",
+        "value": "2.5rem",
+        "raw": "{size.40}",
+        "figma": "Static · control/height/md",
+        "excluded": null,
+        "description": "40px — the default control height, and what density/control/height resolves to in Comfortable."
+      },
+      {
+        "path": "control/height/lg",
+        "tier": "sys",
+        "type": "dimension",
+        "css": "--sa-control-height-lg",
+        "value": "3rem",
+        "raw": "{size.48}",
+        "figma": "Static · control/height/lg",
+        "excluded": null,
+        "description": "48px — touch-first controls and primary actions on a phone; clears WCAG 2.5.5 (44px) and Material's 48dp on its own."
+      },
+      {
+        "path": "aspect/square",
+        "tier": "sys",
+        "type": "number",
+        "css": "--sa-aspect-square",
+        "value": "1",
+        "raw": "1",
+        "figma": "Static · aspect/square",
+        "excluded": null,
+        "description": "1:1 — avatars, icon buttons, thumbnail tiles."
+      },
+      {
+        "path": "aspect/video",
+        "tier": "sys",
+        "type": "number",
+        "css": "--sa-aspect-video",
+        "value": "1.777778",
+        "raw": "1.777778",
+        "figma": "Static · aspect/video",
+        "excluded": null,
+        "description": "16:9 — embedded video and hero media."
+      },
+      {
+        "path": "aspect/photo",
+        "tier": "sys",
+        "type": "number",
+        "css": "--sa-aspect-photo",
+        "value": "1.333333",
+        "raw": "1.333333",
+        "figma": "Static · aspect/photo",
+        "excluded": null,
+        "description": "4:3 — the photo well in the geo-tagged photo and media-gallery inputs, the ratio a phone camera writes."
+      },
+      {
+        "path": "aspect/portrait",
+        "tier": "sys",
+        "type": "number",
+        "css": "--sa-aspect-portrait",
+        "value": "0.75",
+        "raw": "0.75",
+        "figma": "Static · aspect/portrait",
+        "excluded": null,
+        "description": "3:4 — a portrait photograph or an identity-document image."
       }
     ],
     "stats": {
-      "total": 33,
+      "total": 42,
       "ref": 22,
-      "sys": 11,
+      "sys": 20,
       "cmp": 0,
-      "figma": 33,
+      "figma": 42,
       "codeOnly": 0,
-      "described": 33
+      "described": 42
     }
   },
   "shape": {
@@ -1770,6 +1869,17 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "description": "One wide layer at 18% — a toast. Heavier than lg on purpose: it arrives unannounced and has to be found without a scrim. Colour is neutral/800 (the body ink) at the stated alpha, retinted by build/brand-ramps.mjs; geometry is authored here."
       },
       {
+        "path": "shadow/inset",
+        "tier": "ref",
+        "type": "shadow",
+        "css": "--sa-ref-shadow-inset",
+        "value": "inset 0 1px 2px 0 rgba(30, 33, 36, 0.08)",
+        "raw": "[{\"color\":\"rgba(30, 33, 36, 0.08)\",\"offsetX\":\"0px\",\"offsetY\":\"1px\",\"blur\":\"2px\",\"spread\":\"0px\",\"inset\":true}]",
+        "figma": null,
+        "excluded": "Figma models shadows as EFFECT STYLES, not variables — exported separately",
+        "description": "The one INSET shadow — a shallow well, 1px down and 2px of blur at 8% ink, drawn inside the surface. For a pressed well, an inset track, a field that reads as a recess. Retinted per brand like every other shadow layer."
+      },
+      {
         "path": "elevation/flat",
         "tier": "sys",
         "type": "shadow",
@@ -1834,16 +1944,27 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "figma": null,
         "excluded": "Figma models shadows as EFFECT STYLES, not variables — exported separately",
         "description": "Use for a toast. Pick by WHAT THE SURFACE IS, not by how deep the shadow looks — that is what keeps two dropdowns from disagreeing."
+      },
+      {
+        "path": "elevation/inset",
+        "tier": "sys",
+        "type": "shadow",
+        "css": "--sa-elevation-inset",
+        "value": "inset 0 1px 2px 0 rgba(30, 33, 36, 0.08)",
+        "raw": "{shadow.inset}",
+        "figma": null,
+        "excluded": "Figma models shadows as EFFECT STYLES, not variables — exported separately",
+        "description": "Use for a surface that sits BELOW the page — a pressed well, a slider track, a recessed input. The only inset step; every other elevation lifts. Figma models it as the INNER_SHADOW effect style elevation/inset."
       }
     ],
     "stats": {
-      "total": 12,
-      "ref": 6,
-      "sys": 6,
+      "total": 14,
+      "ref": 7,
+      "sys": 7,
       "cmp": 0,
       "figma": 0,
-      "codeOnly": 12,
-      "described": 12
+      "codeOnly": 14,
+      "described": 14
     }
   },
   "layering": {
@@ -2266,7 +2387,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.0}",
         "figma": "Static · alpha/0",
         "excluded": null,
-        "description": "Fully transparent — the resting fill of an outlined button on a brand surface. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/0); never type the percentage. In CSS it is --sa-alpha-0, and every translucent token already resolves as color-mix() over it."
+        "description": "0% — fully transparent — the resting state of a fade. Aliases `opacity/0`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/4",
@@ -2277,7 +2398,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.4}",
         "figma": "Static · alpha/4",
         "excluded": null,
-        "description": "Hairline or the faintest lift on a dark surface: the code specimen's border and titlebar strip. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/4); never type the percentage. In CSS it is --sa-alpha-4, and every translucent token already resolves as color-mix() over it."
+        "description": "4% — the faintest wash — a hover tint on a neutral surface. Aliases `opacity/4`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/8",
@@ -2288,7 +2409,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.8}",
         "figma": "Static · alpha/8",
         "excluded": null,
-        "description": "Hover wash on a brand or neutral surface, and the lightest overlay tier. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/8); never type the percentage. In CSS it is --sa-alpha-8, and every translucent token already resolves as color-mix() over it."
+        "description": "8% — the faintest wash — a hover tint on a neutral surface. Aliases `opacity/8`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/16",
@@ -2299,7 +2420,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.16}",
         "figma": "Static · alpha/16",
         "excluded": null,
-        "description": "Pressed/selected wash on a brand surface, and the second overlay tier. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/16); never type the percentage. In CSS it is --sa-alpha-16, and every translucent token already resolves as color-mix() over it."
+        "description": "16% — a visible wash — pressed and selected tints, the overlay behind a popover. Aliases `opacity/16`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/24",
@@ -2310,7 +2431,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.24}",
         "figma": "Static · alpha/24",
         "excluded": null,
-        "description": "Third overlay tier; the disabled border of a secondary inverse button. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/24); never type the percentage. In CSS it is --sa-alpha-24, and every translucent token already resolves as color-mix() over it."
+        "description": "24% — a visible wash — pressed and selected tints, the overlay behind a popover. Aliases `opacity/24`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/32",
@@ -2321,7 +2442,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.32}",
         "figma": "Static · alpha/32",
         "excluded": null,
-        "description": "Fourth overlay tier; a stronger hairline on a dark surface. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/32); never type the percentage. In CSS it is --sa-alpha-32, and every translucent token already resolves as color-mix() over it."
+        "description": "32% — a strong wash or a disabled element (`alpha/disabled` is 48). Aliases `opacity/32`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/40",
@@ -2332,7 +2453,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.40}",
         "figma": "Static · alpha/40",
         "excluded": null,
-        "description": "The quieter inverse rule (border/neutral/inverse/subtle) and a disabled inverse fill. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/40); never type the percentage. In CSS it is --sa-alpha-40, and every translucent token already resolves as color-mix() over it."
+        "description": "40% — a strong wash or a disabled element (`alpha/disabled` is 48). Aliases `opacity/40`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/48",
@@ -2343,7 +2464,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.48}",
         "figma": "Static · alpha/48",
         "excluded": null,
-        "description": "The strongest overlay tier, the modal scrim, and the resting label on a dark titlebar. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/48); never type the percentage. In CSS it is --sa-alpha-48, and every translucent token already resolves as color-mix() over it."
+        "description": "48% — a strong wash or a disabled element (`alpha/disabled` is 48). Aliases `opacity/48`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/64",
@@ -2354,7 +2475,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.64}",
         "figma": "Static · alpha/64",
         "excluded": null,
-        "description": "Disabled ink on a dark or brand surface. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/64); never type the percentage. In CSS it is --sa-alpha-64, and every translucent token already resolves as color-mix() over it."
+        "description": "64% — a de-emphasised but readable element (`alpha/muted` is 64). Aliases `opacity/64`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/72",
@@ -2365,7 +2486,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.72}",
         "figma": "Static · alpha/72",
         "excluded": null,
-        "description": "Secondary ink on a dark or brand surface — an interactive titlebar label. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/72); never type the percentage. In CSS it is --sa-alpha-72, and every translucent token already resolves as color-mix() over it."
+        "description": "72% — a de-emphasised but readable element (`alpha/muted` is 64). Aliases `opacity/72`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/80",
@@ -2376,7 +2497,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.80}",
         "figma": "Static · alpha/80",
         "excluded": null,
-        "description": "Pressed fill of a primary inverse button. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/80); never type the percentage. In CSS it is --sa-alpha-80, and every translucent token already resolves as color-mix() over it."
+        "description": "80% — a scrim or near-opaque surface. Aliases `opacity/80`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/88",
@@ -2387,7 +2508,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.88}",
         "figma": "Static · alpha/88",
         "excluded": null,
-        "description": "Hover fill of a primary inverse button. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/88); never type the percentage. In CSS it is --sa-alpha-88, and every translucent token already resolves as color-mix() over it."
+        "description": "88% — a scrim or near-opaque surface. Aliases `opacity/88`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/100",
@@ -2398,7 +2519,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{opacity.100}",
         "figma": "Static · alpha/100",
         "excluded": null,
-        "description": "Opaque — a sentinel so a binding can be switched off without unbinding. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/100); never type the percentage. In CSS it is --sa-alpha-100, and every translucent token already resolves as color-mix() over it."
+        "description": "100% — fully opaque — the resting state of an element that fades in. Aliases `opacity/100`; bind it to a colour alias's opacity for a wash, or to a layer's opacity for emphasis. Where the intent has a name (`alpha/disabled`, `alpha/muted`) use that instead."
       },
       {
         "path": "alpha/disabled",
@@ -2996,7 +3117,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "540px",
         "figma": "Static · container/sm",
         "excluded": null,
-        "description": "Use as the container max-width at the sm breakpoint."
+        "description": "540px — UX4G 3.0's Bootstrap container step, carried for parity with the standard. The estate's own content column is `container/page`; use this rung only where a UX4G component is transcribed as published."
       },
       {
         "path": "container/md",
@@ -3007,7 +3128,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "720px",
         "figma": "Static · container/md",
         "excluded": null,
-        "description": "Use as the container max-width at the md breakpoint."
+        "description": "720px — UX4G 3.0's Bootstrap container step, carried for parity with the standard. The estate's own content column is `container/page`; use this rung only where a UX4G component is transcribed as published."
       },
       {
         "path": "container/lg",
@@ -3018,7 +3139,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "960px",
         "figma": "Static · container/lg",
         "excluded": null,
-        "description": "Use as the container max-width at the lg breakpoint."
+        "description": "960px — UX4G 3.0's Bootstrap container step, carried for parity with the standard. The estate's own content column is `container/page`; use this rung only where a UX4G component is transcribed as published."
       },
       {
         "path": "container/xl",
@@ -3029,7 +3150,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "1140px",
         "figma": "Static · container/xl",
         "excluded": null,
-        "description": "Use as the container max-width at the xl breakpoint."
+        "description": "1140px — UX4G 3.0's Bootstrap container step, carried for parity with the standard. The estate's own content column is `container/page`; use this rung only where a UX4G component is transcribed as published."
       },
       {
         "path": "container/2xl",
@@ -3289,6 +3410,72 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
   "states": {
     "tokens": [
       {
+        "path": "bg/neutral/hover",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-bg-neutral-hover",
+        "value": "#eef0f3",
+        "raw": "{color.neutralScale.50}",
+        "figma": "Color · bg/neutral/hover",
+        "excluded": null,
+        "description": "The neutral hover wash — a row, a menu item, a plain icon button responding to the pointer. Same rung as bg/neutral/subtler by design: hover on a neutral surface is one step of tint, not a new colour. Bind this, not subtler, so a hover can be retuned without moving every quiet surface."
+      },
+      {
+        "path": "bg/neutral/active",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-bg-neutral-active",
+        "value": "#dcdee1",
+        "raw": "{color.neutralScale.100}",
+        "figma": "Color · bg/neutral/active",
+        "excluded": null,
+        "description": "The neutral pressed wash — one step past hover, held while the pointer is down or the row is being acted on. Pairs with bg/neutral/hover the way overlay/brand/active pairs with overlay/brand/hover."
+      },
+      {
+        "path": "bg/neutral/selected",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-bg-neutral-selected",
+        "value": "#ecf4ff",
+        "raw": "{color.primaryScale.50}",
+        "figma": "Color · bg/neutral/selected",
+        "excluded": null,
+        "description": "The selected row, item or navigation entry — the brand's lightest tint, so selection reads as ‘chosen’ rather than ‘hovered’ even on a neutral list. The sidebar's current page and a data table's chosen row bind it. Selected is a STATE the reader set; hover is one the pointer set."
+      },
+      {
+        "path": "bg/neutral/readonly",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-bg-neutral-readonly",
+        "value": "#eef0f3",
+        "raw": "{color.neutralScale.50}",
+        "figma": "Color · bg/neutral/readonly",
+        "excluded": null,
+        "description": "A read-only field's ground: quieter than an editable field, and NOT the disabled fill — the value is the point and stays readable and selectable. forms.css binds it on [readonly] inputs."
+      },
+      {
+        "path": "bg/neutral/loading",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-bg-neutral-loading",
+        "value": "#eef0f3",
+        "raw": "{color.neutralScale.50}",
+        "figma": "Color · bg/neutral/loading",
+        "excluded": null,
+        "description": "The resting fill of a loading skeleton, under the shimmer — a surface in its LOADING state. Its own role so a skeleton can be retuned without touching the surfaces it stands in for; motion/loading/pulse carries the shimmer's timing."
+      },
+      {
+        "path": "border/neutral/selected",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-border-neutral-selected",
+        "value": "#0373df",
+        "raw": "{color.primaryScale.500}",
+        "figma": "Color · border/neutral/selected",
+        "excluded": null,
+        "description": "The edge of a selected control — a checked selection card, a chosen chip, a current tab's rail. Brand 500, the same rung as focus/ring, so ‘selected’ and ‘focused’ share a colour and differ by geometry (a ring stands off the control; this edge is the control's own)."
+      },
+      {
         "path": "focus/ring",
         "tier": "sys",
         "type": "color",
@@ -3308,7 +3495,7 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{border.width.md}",
         "figma": "Static · focus/width",
         "excluded": null,
-        "description": "Use for the focus ring’s width. The ring’s colour was tokenised long before its geometry, so this was hardcoded — WCAG 2.4.7 governs all three."
+        "description": "The ring's thickness — `border/width/md` (2px). WCAG 2.4.13 asks for a 2px perimeter at minimum; this is that minimum, not a decoration."
       },
       {
         "path": "focus/offset",
@@ -3319,7 +3506,18 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "raw": "{space.2}",
         "figma": "Static · focus/offset",
         "excluded": null,
-        "description": "Use for the focus ring’s offset. The ring’s colour was tokenised long before its geometry, so this was hardcoded — WCAG 2.4.7 governs all three."
+        "description": "The gap between the control's edge and the ring — `space/2`, so the ring never covers the control's own border and the two stay distinguishable."
+      },
+      {
+        "path": "focus/ringInner",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-focus-ringInner",
+        "value": "#ffffff",
+        "raw": "{color.neutralScale.0}",
+        "figma": "Color · focus/ringInner",
+        "excluded": null,
+        "description": "The inner ring of a two-tone focus indicator — white, laid between the control and focus/ring so the ring stays visible on a brand or dark surface where blue-on-blue would vanish (WCAG 2.4.13 asks for 3:1 against adjacent colours). In CSS: box-shadow 0 0 0 focus/offset focus/ringInner, then the outline; in Figma the focus/ring effect style binds its inner spread to it."
       },
       {
         "path": "overlay/neutral/boldest",
@@ -3331,6 +3529,50 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "figma": "Color · overlay/neutral/boldest",
         "excluded": null,
         "description": "The scrim behind a modal — the brand's neutral 800 at alpha/48, as a REFERENCE plus an OPACITY reference. Until 2026-09-04 this was an rgba() literal with six hand-authored DBIM copies, because a literal in the single-mode Color collection is frozen at whatever brand was current when it was typed — and Navy once inherited the Blue neutral (#1E2124 for #1E2024) without anyone seeing it. Figma can now alias a colour and keep a separate opacity, so the copies are gone: the scrim follows neutralScale/800 through Blue, Navy and every DBIM mode by construction."
+      },
+      {
+        "path": "overlay/neutral/hover",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-overlay-neutral-hover",
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-4) * 100%), transparent)",
+        "raw": "{color.neutralScale.800}",
+        "figma": "Color · overlay/neutral/hover",
+        "excluded": null,
+        "description": "State layer for hover on a NEUTRAL surface — ink at 4%, laid over whatever the surface is. Material 3's hover layer; the brand counterpart is overlay/brand/hover. Use where a surface must keep its own colour under the interaction (an image tile, a coloured card) and bg/neutral/hover would replace it."
+      },
+      {
+        "path": "overlay/neutral/active",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-overlay-neutral-active",
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-8) * 100%), transparent)",
+        "raw": "{color.neutralScale.800}",
+        "figma": "Color · overlay/neutral/active",
+        "excluded": null,
+        "description": "State layer for pressed on a neutral surface — ink at 8%. One step past hover, like every pressed state in the system."
+      },
+      {
+        "path": "overlay/neutral/focus",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-overlay-neutral-focus",
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-16) * 100%), transparent)",
+        "raw": "{color.neutralScale.800}",
+        "figma": "Color · overlay/neutral/focus",
+        "excluded": null,
+        "description": "State layer for a focused surface that has no ring of its own — a focused list row, a focused card — ink at 16%. The ring (focus/ring) remains the primary focus indicator; this is the tint beneath it, never a replacement."
+      },
+      {
+        "path": "overlay/neutral/drag",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-overlay-neutral-drag",
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-8) * 100%), transparent)",
+        "raw": "{color.neutralScale.800}",
+        "figma": "Color · overlay/neutral/drag",
+        "excluded": null,
+        "description": "State layer for a surface being dragged — ink at 8%, with elevation/raised. A dragged row is lifted and tinted so it reads as detached from the list beneath it."
       },
       {
         "path": "overlay/brand/hover",
@@ -3375,16 +3617,139 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "figma": "Static · alpha/muted",
         "excluded": null,
         "description": "An enabled but de-emphasised element — an inactive tab's icon, a secondary illustration, a placeholder mark. Still readable: 64% of the body ink on white measures above 4.5:1."
+      },
+      {
+        "path": "border/neutral/bolder/hover",
+        "tier": "sys",
+        "type": "",
+        "css": "--sa-border-neutral-bolder-hover",
+        "value": "#54585e",
+        "raw": "{color.border.controlHover}",
+        "figma": "Color · border/neutral/bolder/hover",
+        "excluded": null,
+        "description": "Use for the visible edge of an interactive control, such as an input or a checkbox."
       }
     ],
     "stats": {
-      "total": 8,
+      "total": 20,
       "ref": 0,
-      "sys": 8,
+      "sys": 20,
       "cmp": 0,
-      "figma": 8,
+      "figma": 20,
       "codeOnly": 0,
-      "described": 8
+      "described": 20
+    }
+  },
+  "brand": {
+    "tokens": [
+      {
+        "path": "brand/samavesh/ink",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-ink",
+        "value": "#1f2428",
+        "raw": "#1f2428",
+        "figma": "Static · brand/samavesh/ink",
+        "excluded": null,
+        "description": "The wordmark's own ink. NOT `text/neutral/base` (#1E2124) — close enough to pass a glance, far enough to be a defect."
+      },
+      {
+        "path": "brand/samavesh/blue",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-blue",
+        "value": "#06038d",
+        "raw": "#06038d",
+        "figma": "Static · brand/samavesh/blue",
+        "excluded": null,
+        "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`)."
+      },
+      {
+        "path": "brand/samavesh/green",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-green",
+        "value": "#046a38",
+        "raw": "#046a38",
+        "figma": "Static · brand/samavesh/green",
+        "excluded": null,
+        "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`)."
+      },
+      {
+        "path": "brand/samavesh/orange",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-orange",
+        "value": "#ff671f",
+        "raw": "#ff671f",
+        "figma": "Static · brand/samavesh/orange",
+        "excluded": null,
+        "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`)."
+      },
+      {
+        "path": "brand/samavesh/saffron",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-saffron",
+        "value": "#ed8a1d",
+        "raw": "#ed8a1d",
+        "figma": "Static · brand/samavesh/saffron",
+        "excluded": null,
+        "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`)."
+      },
+      {
+        "path": "brand/samavesh/navy",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-navy",
+        "value": "#003366",
+        "raw": "#003366",
+        "figma": "Static · brand/samavesh/navy",
+        "excluded": null,
+        "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`)."
+      },
+      {
+        "path": "brand/samavesh/white",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-white",
+        "value": "#ffffff",
+        "raw": "#ffffff",
+        "figma": "Static · brand/samavesh/white",
+        "excluded": null,
+        "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`)."
+      },
+      {
+        "path": "brand/samavesh/black",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-black",
+        "value": "#000000",
+        "raw": "#000000",
+        "figma": "Static · brand/samavesh/black",
+        "excluded": null,
+        "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`)."
+      },
+      {
+        "path": "brand/digilocker/purple",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-digilocker-purple",
+        "value": "#5330e6",
+        "raw": "#5330e6",
+        "figma": "Static · brand/digilocker/purple",
+        "excluded": null,
+        "description": "DigiLocker's own purple, for the DigiLocker lockup only. A partner's colour is theirs, so it is a constant here and never a role."
+      }
+    ],
+    "stats": {
+      "total": 9,
+      "ref": 0,
+      "sys": 9,
+      "cmp": 0,
+      "figma": 9,
+      "codeOnly": 0,
+      "described": 9
     }
   },
   "layout": {
@@ -3500,6 +3865,28 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "description": "The portal sidebar's expanded width. Genuinely fixed: the nav labels are known copy, and a fluid sidebar would move the content edge on every route. Its inner padding is `padding/m` (16), leaving a 268 item column; items are `target/spacious` (48) tall. Below the tablet breakpoint the sidebar is not narrowed — it becomes a drawer."
       },
       {
+        "path": "layout/sidebar/collapsedWidth",
+        "tier": "sys",
+        "type": "dimension",
+        "css": "--sa-layout-sidebar-collapsedWidth",
+        "value": "88px",
+        "raw": "88px",
+        "figma": "Space · layout/sidebar/collapsedWidth",
+        "excluded": null,
+        "description": "The portal sidebar's collapsed width: a 56px icon row plus 16px padding each side. Fixed for the same reason as `layout/sidebar/width` — the content edge must not move between routes. Below the tablet breakpoint the rail is a drawer, never this width."
+      },
+      {
+        "path": "layout/sidebar/flyoutWidth",
+        "tier": "sys",
+        "type": "dimension",
+        "css": "--sa-layout-sidebar-flyoutWidth",
+        "value": "240px",
+        "raw": "240px",
+        "figma": "Space · layout/sidebar/flyoutWidth",
+        "excluded": null,
+        "description": "Width of the panel a collapsed rail opens beside a Group item to list its level-2 pages. Fixed so the panel does not resize with its longest label."
+      },
+      {
         "path": "layout/login/hero/width",
         "tier": "sys",
         "type": "dimension",
@@ -3567,13 +3954,13 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
       }
     ],
     "stats": {
-      "total": 16,
+      "total": 18,
       "ref": 0,
-      "sys": 16,
+      "sys": 18,
       "cmp": 0,
-      "figma": 16,
+      "figma": 18,
       "codeOnly": 0,
-      "described": 16
+      "described": 18
     }
   }
 };

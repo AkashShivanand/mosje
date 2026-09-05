@@ -178,7 +178,7 @@
   }
 
   .ds-sitefooter__org--lead {
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--ds-footer-ink);
   }
 
@@ -218,7 +218,7 @@
   .ds-sitefooter__colhead {
     margin: 0 0 var(--sa-stack-16);
     font-size: var(--sa-type-title-2-size);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     line-height: var(--sa-type-title-2-lh);
     color: var(--ds-footer-ink);
   }

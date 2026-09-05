@@ -154,7 +154,7 @@ export default function ResourcesPage(): React.JSX.Element {
                 </span>
                 <span
                   style={{
-                    fontWeight: 600,
+                    fontWeight: "var(--sa-font-weight-semibold)",
                     color: "var(--sa-text-neutral-base)",
                     fontSize: "var(--sa-type-body-1-size)",
                   }}
