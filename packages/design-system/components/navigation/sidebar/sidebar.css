@@ -27,7 +27,7 @@
        rail padding          padding/16 · item gap stack/4 · region gap stack/12
        level-1 row           padding/12 × padding/16 · shape/16 · min target/spacious (48)
        level-2 / 3 row       padding/12 × padding/8 · shape/8 · min target/comfortable (44)
-       level-2 / 3 indent    inline/40 · inline/56; elbow trunk 16px left of the pill, 16px arm, shape/6,
+       level-2 / 3 indent    inline/40 · inline/64; elbow trunk 16px left of the pill, 16px arm, shape/6,
                            border/neutral/subtle at rest; the path to the current page drawn in
                            border/brand/primary/base (motion/reveal)
        flyout                layout/sidebar/flyoutWidth (240) · shape/12 · elevation/dropdown
@@ -163,7 +163,12 @@
   /* A level-2 group on the way to the current page takes the bolder ink but no
      tint: the level-1 holder and the page itself are tinted, the route between
      them is ink and the drawn connector. */
+  /* The level-2 group on the way to the current page is tinted like it — the
+     route from the level-1 holder down to the page reads as tinted rows joined
+     by the drawn line. Ink-only was tried and the level-3 page looked cut off
+     from its parents (decision 14). */
   .ds-sidebar__sub-row.is-ancestor {
+    background: var(--sa-bg-brand-primary-base);
     color: var(--sa-text-brand-primary-bolder);
   }
 
@@ -209,7 +214,7 @@
   /*
    * A level-2 entry indents by inline/40 so its label sits under the level-1
    * label (16 padding + 24 icon + 8 gap = 48, minus the row's own 8 padding);
-   * a level-3 leaf indents by inline/56. Each entry draws its own connector in
+   * a level-3 leaf indents by inline/64, its trunk under the first letter of its parent's label. Each entry draws its own connector in
    * the handoff's style: an elbow from the top of the row to its centre that
    * curves into the pill, and a tail that continues down to the next sibling,
    * bridging the stack/4 gap. The last entry has no tail, so the trunk ends at
@@ -263,12 +268,14 @@
   }
 
   /* A level-3 list nests inside its level-2 entry, which already indents by
-     inline/40, so the leaf adds only the remaining inline/16 to land at 56; its
-     connector coordinates are relative to that nested list (0 here = 40 in the
-     rail, the arm reaching the pill at 16 = 56). */
-  .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-16); }
+     inline/40, so the leaf adds the remaining inline/24 to land at 64. That puts
+     its trunk at 48 — under the first letter of its parent's label (40 + the
+     row's padding/8) — so the level-3 tree visibly hangs from the word it
+     belongs to. Coordinates are relative to the nested list: trunk at 8 (48 in
+     the rail), the arm reaching the pill at 24 (64 in the rail). */
+  .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-24); }
   .ds-sidebar__sub--l3::before,
-  .ds-sidebar__sub--l3::after { left: 0; }
+  .ds-sidebar__sub--l3::after { left: 8px; }
 
   /*
    * The path to the current page. One SVG per list, drawn over the neutral
@@ -335,7 +342,7 @@
       color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
-  .ds-sidebar__sub-row:hover:not(.is-active, .is-disabled) {
+  .ds-sidebar__sub-row:hover:not(.is-active, .is-ancestor, .is-disabled) {
     background: var(--sa-bg-neutral-subtler);
   }
 

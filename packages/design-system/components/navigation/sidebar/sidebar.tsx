@@ -239,7 +239,7 @@ function ChildEntry({
       </button>
       {open && (
         <ul id={id} ref={listRef} className="ds-sidebar__list ds-sidebar__list--l3">
-          <ActivePath listRef={listRef} trunkX={0} current={current} />
+          <ActivePath listRef={listRef} trunkX={8} current={current} />
           {child.children.map((leaf) => (
             <LeafRow key={leaf.href} leaf={leaf} current={current} level={3} />
           ))}

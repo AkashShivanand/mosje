@@ -37,13 +37,13 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
 | Rail padding · region gap · item gap | `padding/16` · `stack/12` · `stack/4`; control row `padding/4` (48) |
 | Level-1 row | `padding/12` × `padding/16`, gap `inline/8`, radius `shape/16`, min-height `target/spacious` (48) |
 | Level-2 / 3 row | `padding/12` × `padding/8`, radius `shape/8`, min-height `target/comfortable` (44) |
-| Indent | level 2 `inline/40` · level 3 `inline/56` · flyout `inline/0` |
-| Connector | one straight trunk 16px left of the pill (24 for level 2, 40 for level 3), `cmp/divider/width`; every entry branches off it with a `shape/6` elbow leaving the trunk at 16 into the pill at the row centre, 16px arm; the last entry ends the trunk at its elbow; all `border/neutral/subtle`; the path to the current page in `border/brand/primary/base`, drawn with `motion/reveal` |
+| Indent | level 2 `inline/40` · level 3 `inline/64` (its trunk under the first letter of the parent's label) · flyout `inline/0` |
+| Connector | one straight trunk 16px left of the pill (24 for level 2, 48 for level 3), `cmp/divider/width`; every entry branches off it with a `shape/6` elbow leaving the trunk at 16 into the pill at the row centre, 16px arm; the last entry ends the trunk at its elbow; all `border/neutral/subtle`; the path to the current page in `border/brand/primary/base`, drawn with `motion/reveal` |
 | Type | level 1 `Label/label-1` · levels 2–3 `Body/body-2` · group label `Label/label-3` · flyout title `Title/title-3` |
 | Rest | `text/neutral/base`, `icon/neutral/base` (stroke glyph), chevron `icon/neutral/subtle` |
 | Hover | `bg/neutral/subtler` |
 | Current | `bg/brand/primary/base` with `text/brand/primary/bolder`, `icon/brand/primary/bolder`, filled glyph |
-| Level-2 group on the way to the current page | `text/brand/primary/bolder`, no tint (Figma `State=Ancestor`, Level 2 Group only); the level-1 holder is tinted like the page |
+| Level-2 group on the way to the current page | the same tint and `text/brand/primary/bolder` as the current page (Figma `State=Ancestor`, Level 2 Group only), so the route from the level-1 holder to the page reads as tinted rows joined by the drawn line |
 | Disabled | `text/neutral/disabled`, `icon/neutral/disabled` |
 | Focus | `focus/ring` at `focus/width`, offset `focus/offset`; ring radius `shape/20` (L1) / `shape/12` (L2, L3) |
 | Badge | count: the library Badge (primary, solid) · dot: `cmp/badge/dotSizeLg` in the Badge's fill `cmp/button/primary/bg` |
@@ -82,11 +82,16 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
     slot; collapsed keeps the mark and moves the name to a tooltip. GOV.UK's service name and
     Atlassian's product header are the precedents. Off on login screens, which name the portal
     already.
-14. **The level-1 holder is tinted; a level-2 group on the way is ink only.** The rail reads "you
-    are in Applications, at Under Review": the level-1 item that holds the current page and the
-    page itself are tinted, a level-2 group between them takes `text/brand/primary/bolder`
-    without the tint, and the drawn connector carries the route. In Figma the level-2 case is
-    `State=Ancestor` (Group items only); level 1 uses Active.
+14. **Every row on the route is tinted: the level-1 holder, the level-2 group on the way, the
+    page.** Ink-only on the level-2 group was tried first (bolder ink, no tint) and reviewed at
+    zoom: with the ancestor untinted, the level-3 page read as cut off from its parents — the
+    drawn line arrives at the ancestor's edge and restarts under its label, and nothing bridged
+    the jump. Two fixes were mocked side by side: threading the route through the ancestor's
+    edge into level 3, or tinting the ancestor. Tint was chosen (2026-09-05): the surface bridges
+    the gap and the three rows read as one route. In Figma this is `State=Ancestor` (Group items
+    only) carrying `bg/brand/primary/base`; level 1 uses Active. The level-3 list indents by
+    `inline/64` — 24 more than its parent, not 16 — so its trunk falls at 48, under the first
+    letter of the parent's label, and the level-3 tree visibly hangs from the word it belongs to.
 13. **Connectors are neutral; the path to the current page is drawn.** A brand tint on every
     connector made the tree noisy before anything was active. At rest the tree is
     `border/neutral/subtle` — structure, not signal. The connector from a group down to the

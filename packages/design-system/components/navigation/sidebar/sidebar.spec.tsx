@@ -63,9 +63,9 @@ describe("SidebarNav", () => {
   it("draws the path to the current page with the connector's own geometry", () => {
     // first level-2 row: list padding 4, row centre 22 → y 26; trunk at 24, the elbow leaves it at 20 and meets the arm at 26, reaching the pill at 40
     expect(activePathD(24, 26)).toBe("M 24 0 V 20 Q 24 26 30 26 H 40");
-    // a level-3 list is nested inside its level-2 entry's 40px indent, so its trunk is at 0 in that list
-    // (40 in the rail) and the arm reaches the pill at 16 (56 in the rail); third row: 4 + 96 + 22
-    expect(activePathD(0, 122)).toBe("M 0 0 V 116 Q 0 122 6 122 H 16");
+    // a level-3 list is nested inside its level-2 entry's 40px indent, so its trunk is at 8 in that list
+    // (48 in the rail, under the parent label's first letter) and the arm reaches the pill at 24 (64 in the rail); third row: 4 + 96 + 22
+    expect(activePathD(8, 122)).toBe("M 8 0 V 116 Q 8 122 14 122 H 24");
   });
 
   it("names a labelled section as a group, and hides the label only visually when collapsed", () => {
