@@ -224,65 +224,17 @@
     padding-left: var(--sa-inline-40);
   }
 
-  /* A level-3 list nests inside its level-2 entry, which already indents by
-     inline/40, so the leaf adds only the remaining inline/16 to land at 56. Its
-     connector coordinates are relative to that nested list: trunk at 0 (40 in
-     the rail), arm to the pill at 16 (56 in the rail). */
-  .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-16); }
-
-  /* The tree-view convention: a MIDDLE entry has a straight trunk running
-     through the row and the gap below it, and a straight tee arm into the pill
-     at the row centre; the LAST entry's trunk stops at 16 and turns into the
-     pill with a shape/6 elbow. A curve on a continuing trunk is a tangent join
-     that reads as a gap or an overlap at any zoom — so the curve is reserved
-     for the end, where the trunk genuinely turns. Neutral throughout. */
-  .ds-sidebar__sub::before {
-    content: "";
-    position: absolute;
-    left: 24px; /* 16px left of the level-2 pill at inline/40 — the handoff's geometry */
-    top: calc(-1 * var(--sa-stack-4));
-    bottom: calc(-1 * var(--sa-stack-4));
-    width: var(--sa-cmp-divider-width);
-    background: var(--sa-border-neutral-subtle);
-  }
-
-  /* Middle: the tee arm. */
-  .ds-sidebar__sub::after {
-    content: "";
-    position: absolute;
-    left: 24px;
-    top: 22px; /* the centre of a 44px row */
-    width: 16px;
-    height: var(--sa-cmp-divider-width);
-    background: var(--sa-border-neutral-subtle);
-  }
-
-  /* Last: the trunk ends where the elbow leaves it, and the arm is the elbow. */
-  .ds-sidebar__sub:last-child::before {
-    bottom: auto;
-    height: calc(16px + var(--sa-stack-4));
-  }
-
-  .ds-sidebar__sub:last-child::after {
-    top: 16px;
-    height: 6px;
-    background: none;
-    border-left: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-bottom-left-radius: var(--sa-shape-6);
-  }
-
-  /* A level-3 list nests inside its level-2 entry, which already indents by
-     inline/40, so the leaf adds only the remaining inline/16 to land at 56. Its
-     connector coordinates are relative to that nested list: trunk at 0 (40 in
-     the rail), arm to the pill at 16 (56 in the rail). */
-  .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-16); }
-
-  /* The trunk runs STRAIGHT THROUGH every entry: from the parent's edge (the
-     list begins where the parent row ends; only the list's stack/4 padding sits
-     between) down past the row into the next entry, bridging the stack/4 gap.
-     The last entry's trunk stops at its row centre. Bending the trunk into the
-     arm left a 6px notch at every branch; a tree's trunk does not bend. */
+  /* The handoff's connector, on EVERY entry: one straight trunk 16px left of
+     the pill runs from the parent's edge (the list begins where the parent row
+     ends; only the list's stack/4 padding sits between) down through each row
+     and across the stack/4 gap into the next; each entry branches OFF it with a
+     shape/6 elbow that leaves the trunk at 16 and turns into the pill at the
+     row centre, 22, then a 16px arm. The trunk never bends and never stops
+     under an arc — bending it left a notch at every branch, and stopping it
+     where the arc leaves it (then resuming below) left a hole beside the
+     curve. Only the LAST entry ends the trunk, at 16, where its elbow takes
+     over. Neutral throughout; the route to the current page is drawn over it
+     in brand by the SVG below. */
   .ds-sidebar__sub::before {
     content: "";
     position: absolute;
@@ -295,12 +247,9 @@
 
   .ds-sidebar__sub:last-child::before {
     bottom: auto;
-    height: calc(16px + var(--sa-stack-4)); /* to where the arc leaves the trunk, not to the row centre — a trunk that ran on to 22 left a stub beside the curve */
+    height: calc(16px + var(--sa-stack-4)); /* to where the elbow leaves the trunk */
   }
 
-
-  /* The elbow branches OFF the trunk: a shape/6 arc from 16 to the row centre
-     at 22, then a 16px arm into the pill. It overlays the straight trunk. */
   .ds-sidebar__sub::after {
     content: "";
     position: absolute;
@@ -316,7 +265,7 @@
   /* A level-3 list nests inside its level-2 entry, which already indents by
      inline/40, so the leaf adds only the remaining inline/16 to land at 56; its
      connector coordinates are relative to that nested list (0 here = 40 in the
-     rail). */
+     rail, the arm reaching the pill at 16 = 56). */
   .ds-sidebar__sub--l3 { padding-left: var(--sa-inline-16); }
   .ds-sidebar__sub--l3::before,
   .ds-sidebar__sub--l3::after { left: 0; }
