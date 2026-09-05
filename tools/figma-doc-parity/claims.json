@@ -359,9 +359,9 @@
         {
           "kind": "source",
           "file": "packages/design-system/components/actions/button.css",
-          "pattern": "\\.ds-btn--sm \\{[^}]*min-height: 32px",
+          "pattern": "\\.ds-btn--sm \\{[^}]*min-height: var\\(--sa-control-height-sm\\)",
           "flags": "s",
-          "hint": "sm is 32px. This page said sm 'meets the 44px height requirement' in three places, including inside the accessibility checklist, until 2026-08-25. The regex names min-height deliberately: `height: 32px` also matches `min-height: 32px`, so the looser pattern would keep passing if the fix were ever reverted."
+          "hint": "sm is 32px. This page said sm 'meets the 44px height requirement' in three places, including inside the accessibility checklist, until 2026-08-25. The regex names min-height deliberately: `height: 32px` also matches `min-height: 32px`, so the looser pattern would keep passing if the fix were ever reverted. Since 2026-09-05 the height binds control/height/sm (32px) rather than typing 32; the token assertion beside this one keeps the number honest."
         },
         {
           "kind": "source",
@@ -369,6 +369,11 @@
           "pattern": "\\.ds-btn--lg \\{[^}]*min-height: 48px",
           "flags": "s",
           "hint": "lg is the only size reaching 44."
+        },
+        {
+          "kind": "token",
+          "token": "--sa-control-height-sm",
+          "hint": "sm is 32px — the token the stylesheet binds."
         }
       ]
     },
