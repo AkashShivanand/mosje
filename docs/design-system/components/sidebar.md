@@ -156,3 +156,19 @@ items, 20 child items). They are to be migrated screen by screen, one at a time,
 - `AppShell` adoption by the eight portal shells, one per PR, so the drawer below tablet is real.
 - Give every portal shell an `identity` (name, expansion, org-logo, home) — the block is built; the twenty configs are not.
 - Storybook and Playwright coverage of the flyout and the three-level tree.
+
+16. **A group may have no page of its own.** `href` is optional on a level-1 item and a level-2
+    entry that carries `children`. The row then only opens and closes; it is highlighted when a
+    page inside it is current; in the collapsed rail its flyout lists the pages, and for a
+    level-2 group without a page the flyout lists them beneath its name — the one case the
+    flyout goes a level deeper, because otherwise those pages would be unreachable from the
+    collapsed rail. Giving such a group its first child's href, as Eutthan's data did, lit two
+    rows for one page. Needed by NMBA's committee group and the treatment-centre registers.
+
+17. **Every portal rail is this component, and a gate says so.** On 2026-09-05 six shells drew
+    their own rail (NMBA admin, public and treatment centre, Eutthan, PM-AJAY, SMILE's mobile
+    drawer), each drifted from the others and from Figma. All six now render `SidebarNav` from
+    the nav data they had; drawers host it inside `SideSheet`. `npm run check:sidebar-adoption`
+    fails a portal file that renders a navigating `<aside>` or a `<nav>` named "navigation"
+    without it; an allowlist names the files that are neither, with a reason each. Given up in
+    the migration: PM-AJAY's per-item sub-labels and the treatment centre's icons below level 1.

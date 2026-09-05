@@ -54,8 +54,12 @@
  *   BarCell        Progress         No. Progress owns its own label row; this is
  *                                   a bare track plus a right-aligned figure
  *                                   sized to a table cell.
- *   Sidebar        SidebarNav       No. This carries an account footer, a
- *                                   sign-out control and per-item badge counts.
+ *   Sidebar        SidebarNav       YES, since 2026-09-05. The three reasons it
+ *                                   was not — an account footer, a sign-out
+ *                                   control, per-item badge counts — are the
+ *                                   rail's footer slot and badge prop now. The
+ *                                   one thing given up is the per-item
+ *                                   sub-label ("Secretary / JS overview").
  *   pillClass      —                Not a component. A pure helper.
  *
  * FOUR NAMES WERE THE ACTIVE HAZARD, and renaming them is what this change
@@ -79,8 +83,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
-import Link from "next/link";
-import { Badge, type BadgeStatus } from "@mosje/design-system";
+import { Badge, SidebarNav, type BadgeStatus, type SidebarNavGroup } from "@mosje/design-system";
 import { Sparkline } from "./charts";
 import { useAuth } from "@/store/pm-ajay/auth-context";
 import {
@@ -379,72 +382,49 @@ export function DrillDownFilters({
 }
 
 /* ---- Sidebar ---- */
-export function Sidebar({ view, setView }: { view: ViewId; setView: (v: ViewId) => void }) {
+/**
+ * The design system's rail. The dashboards are views of one page switched by
+ * the URL hash, so each item's href is a bare `#<view>` — a same-document
+ * navigation whatever the path's trailing slash — and the "pathname" the rail
+ * matches against is the same shape; the Unified Dashboard is a real route.
+ * The account chip and sign-out ride in the rail's footer slot.
+ */
+export function Sidebar({ view }: { view: ViewId }) {
   const { account, signOut } = useAuth();
+  const groups: SidebarNavGroup[] = [
+    {
+      label: "Dashboards",
+      items: VIEWS.map((v) => ({ label: v.label, href: `#${v.id}`, icon: v.icon, badge: v.badge })),
+    },
+    { items: [{ label: "Unified Dashboard", href: `${BASE}/unified`, icon: "dashboard_customize" }] },
+  ];
   return (
-    <nav className="pm-side" aria-label="Dashboards">
-      <div className="pm-side-title" id="pm-nav-h">
-        Dashboards
-      </div>
-      <ul className="pm-nav" aria-labelledby="pm-nav-h">
-        {VIEWS.map((v) => (
-          <li key={v.id}>
-            <button
-              type="button"
-              className={"pm-nav-item" + (v.id === view ? " active" : "")}
-              aria-current={v.id === view ? "page" : undefined}
-              onClick={() => setView(v.id as ViewId)}
-            >
-              <span className="material-symbols-rounded ic" aria-hidden="true">
-                {v.icon}
-              </span>
-              <span className="lab">
-                {v.label}
-                <span className="sub">{v.sub}</span>
-              </span>
-              {v.badge && (
-                <span className="pm-badge-count" aria-label={`${v.badge} items need attention`}>
-                  {v.badge}
-                </span>
-              )}
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      {/* Unified Programme Dashboard link */}
-      <div className="pm-side-unified">
-        <Link href={`${BASE}/unified`} className="pm-nav-item unified-link">
-          <span className="material-symbols-rounded ic" aria-hidden="true">dashboard_customize</span>
-          <span className="lab">
-            Unified Dashboard
-            <span className="sub">All 60 indicators</span>
-          </span>
-          <span className="material-symbols-rounded" aria-hidden="true" style={{ fontSize: 14, marginLeft: "auto", opacity: 0.5 }}>
-            open_in_new
-          </span>
-        </Link>
-      </div>
-
-      <div className="pm-side-foot">
-        <div className="av" aria-hidden="true">
-          {account?.avatar ?? "??"}
+    <SidebarNav
+      groups={groups}
+      pathname={`#${view}`}
+      label="Dashboards"
+      className="pm-side"
+      footer={
+        <div className="pm-side-foot">
+          <div className="av" aria-hidden="true">
+            {account?.avatar ?? "??"}
+          </div>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div className="nm">{account?.name ?? "—"}</div>
+            <div className="rl">{account?.designation ?? ""}</div>
+          </div>
+          <button
+            type="button"
+            className="pm-signout-btn"
+            onClick={signOut}
+            aria-label="Sign out"
+            title="Sign out"
+          >
+            <span className="material-symbols-rounded" aria-hidden="true">logout</span>
+          </button>
         </div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div className="nm">{account?.name ?? "—"}</div>
-          <div className="rl">{account?.designation ?? ""}</div>
-        </div>
-        <button
-          type="button"
-          className="pm-signout-btn"
-          onClick={signOut}
-          aria-label="Sign out"
-          title="Sign out"
-        >
-          <span className="material-symbols-rounded" aria-hidden="true">logout</span>
-        </button>
-      </div>
-    </nav>
+      }
+    />
   );
 }
 

@@ -291,43 +291,16 @@ button {
 
 .workspace {
   display: grid;
-  grid-template-columns: 288px minmax(0, 1fr);
+  grid-template-columns: var(--sa-layout-sidebar-width) minmax(0, 1fr);
 }
 
-.sidebar {
+/* The rail is the design system's SidebarNav (it owns its own padding, rows
+   and connectors); this only pins it beside the content under the masthead. */
+.eu-sidebar {
   position: sticky;
   top: 134px;
-  display: flex;
   height: calc(100dvh - 134px);
-  flex-direction: column;
-  gap: var(--sa-stack-8);
-  overflow-y: auto;
   border-right: 1px solid var(--stroke-300);
-  padding: var(--sa-padding-8) var(--sa-padding-12) var(--sa-padding-24);
-  background: var(--surface-muted);
-}
-
-.nav-item {
-  display: grid;
-  grid-template-columns: 24px 1fr auto;
-  min-height: 48px;
-  align-items: center;
-  gap: var(--sa-stack-8);
-  border-radius: var(--radius-xl);
-  padding: var(--sa-padding-12) var(--sa-padding-12);
-  color: var(--text);
-  font-size: var(--sa-type-label-1-size);
-  line-height: var(--sa-type-label-1-lh);
-}
-
-.nav-item.active {
-  color: var(--primary);
-  background: var(--primary-50);
-  font-weight: var(--sa-font-weight-bold);
-}
-
-.nav-caret {
-  justify-self: end;
 }
 
 .subnav {
@@ -948,7 +921,7 @@ tr.selected-row td {
     display: block;
   }
 
-  .sidebar {
+  .eu-sidebar {
     display: none;
   }
 

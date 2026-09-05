@@ -18,7 +18,13 @@ export interface SidebarNavLeaf {
  */
 export interface SidebarNavChild {
   label: string;
-  href: string;
+  /**
+   * The entry's own page. Required for a leaf. A level-2 GROUP may omit it when
+   * the group has no page of its own — its row then only opens and closes, and
+   * it is highlighted when one of its leaves is current. Never give a group the
+   * href of its first child: two entries with one href are two current pages.
+   */
+  href?: string;
   disabled?: boolean;
   /** Level-3 pages. */
   children?: SidebarNavLeaf[];
@@ -26,7 +32,14 @@ export interface SidebarNavChild {
 
 export interface SidebarNavItem {
   label: string;
-  href: string;
+  /**
+   * The item's own page. Required for a leaf. A GROUP may omit it when the
+   * group has no page of its own (NMBA's "NAPDDR Three-Tier Committee", the
+   * treatment-centre registers): its row then only opens and closes, in the
+   * collapsed rail its flyout lists the pages, and it is highlighted when one
+   * of them is current.
+   */
+  href?: string;
   /**
    * Material Symbols Rounded name, rendered through the DS `<Icon>` —
    * e.g. `"dashboard"`, `"group"`, `"location_on"`.

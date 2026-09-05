@@ -12,6 +12,12 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-05 · System version: v0.52.0 (EVERY PORTAL RAIL IS SidebarNav. Six
+  shells that drew their own rail — NMBA admin, public and treatment centre, Eutthan, PM-AJAY,
+  SMILE's mobile drawer — render the design system's, from the nav data they already had; a
+  group may now have no page of its own (href optional when it has children); the docs site's
+  own left nav is DocsNav, not a second SidebarNav; check:sidebar-adoption keeps it so.)
+
   Last reviewed: 2026-09-05 · System version: v0.51.0 (THE SIDEBAR IS ONE COMPONENT AGAIN AND GOES THREE
   LEVELS DEEP. The SAMAVESH Sidebar sets were rebuilt in place — same keys — with Focused, Disabled,
   a collapsed-group flyout, a visible collapse control, group labels, a footer slot, and level 3;

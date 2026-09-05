@@ -400,6 +400,19 @@
     padding: var(--sa-padding-8) var(--sa-padding-8) var(--sa-padding-4);
   }
 
+  /* A level-2 group with no page of its own: its name heads its pages inside
+     the flyout, in the group label's voice — a heading, not a row. */
+  .ds-sidebar__flyout-group {
+    display: block;
+    padding: var(--sa-padding-8) var(--sa-padding-8) var(--sa-padding-4);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+  }
+
   /* ── Footer and control ────────────────────────────────────────────────────── */
 
   .ds-sidebar__footer {
