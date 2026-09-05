@@ -32,9 +32,17 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.104.0",
+    version: "v0.105.0",
     date: "2026-09-05",
     current: true,
+    changes: [
+      { kind: "Added", text: "FORMS & INPUTS DRAW THEIR ARRANGEMENTS. Input Field (25 cells: every slot alone and together, a size and a state beside a property, a label and a value that wrap, and the three states only code can draw), Input Area (18), Select (16, with the Filter set that appearance=\"filter\" reaches), OTP Input (9, with the Box sub-part in every state) and Bot Check (10, each text property in use and failure in every mode). The Textarea, Select and OTP Input web playgrounds render the same set. The arrangements baseline drops from twenty pages to sixteen" },
+    ],
+  },
+  {
+    version: "v0.104.0",
+    date: "2026-09-05",
+    current: false,
     changes: [
       { kind: "Added", text: "EVERY PROPERTY IS DRAWN, NOT ONLY THE AXES. A property that can only be found by toggling it in the properties panel does not exist for anyone browsing the library, so every component page now ends in an ARRANGEMENTS section \u2014 every non-variant property switched on, every group arrangement, and every code-only state composed from live instances and named. Checkbox carries twenty-two cells, Radio twenty-one and Selection Card seventeen, the Selection Card variants section shows all forty variants on both layouts, and the Checkbox and Radio web playgrounds render the same set. The rule is in figma-documentation-style.md" },
       { kind: "Fixed", text: "A DISABLED GROUP LOOKED ENABLED. `<fieldset disabled>` disabled the inputs, but the drawn box and circle read data-disabled from their own root, so a disabled CheckboxGroup or RadioGroup showed every option at full strength. Found by drawing the state; the group now passes disabled to each option, asserted in control-group.spec.tsx" },
