@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal , Select} from "@mosje/design-system";
-import { PortalPageHeader, SearchInput, Button, Field, TextInput } from "@/components/nhapoa/ui";
+import { Icon, Modal, Select, Button } from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Field, TextInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { ROLES } from "@/lib/nhapoa/roles";
 import type { RoleId } from "@/lib/nhapoa/store/types";
@@ -63,7 +63,7 @@ export default function UsersPage() {
         onClose={() => setOpen(false)}
         size="sm"
         title="Create New User"
-        footer={<div className="flex justify-end gap-2"><Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button><Button onClick={submit} disabled={!name || !username || !roleLabel}>Create User</Button></div>}
+        footer={<div className="flex justify-end gap-2"><Button appearance="outlined" onClick={() => setOpen(false)}>Cancel</Button><Button onClick={submit} disabled={!name || !username || !roleLabel}>Create User</Button></div>}
       >
         <div className="space-y-4">
           <Field label="Full Name" required><TextInput value={name} onChange={(e) => setName(e.target.value)} placeholder="Officer name" /></Field>

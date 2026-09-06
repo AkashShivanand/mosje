@@ -3,10 +3,9 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { DEMO_CITIZEN } from "@/lib/tg/store/seed";
-import { Icon , EmptyState, Card} from "@mosje/design-system";
+import { Icon, EmptyState, Card, Button } from "@mosje/design-system";
 
 export default function CertificatePage() {
   const { state, hydrated } = useTg();
@@ -45,7 +44,7 @@ export default function CertificatePage() {
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
             <Button><Icon name="download" size={16} /> Download Certificate</Button>
-            <Button variant="outline"><Icon name="badge" size={16} /> Download ID Card</Button>
+            <Button appearance="outlined"><Icon name="badge" size={16} /> Download ID Card</Button>
           </div>
         </Card>
 

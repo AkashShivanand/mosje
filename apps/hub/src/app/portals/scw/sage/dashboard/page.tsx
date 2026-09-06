@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { UserShell } from "@/components/scw/user-shell";
-import { Button } from "@/components/scw/ui";
-import { Icon , Card} from "@mosje/design-system";
+import { Icon, Card, Button } from "@mosje/design-system";
 
 export default function SageDashboardPage() {
   return (
@@ -46,7 +45,7 @@ export default function SageDashboardPage() {
           {/* Footer action */}
           <div className="mt-8 flex justify-end">
             <Link href="/portals/scw/sage-registration/form">
-              <Button variant="outline">View Details</Button>
+              <Button appearance="outlined">View Details</Button>
             </Link>
           </div>
         </Card>

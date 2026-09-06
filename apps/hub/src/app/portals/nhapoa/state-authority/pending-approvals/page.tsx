@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal , Textarea, Card} from "@mosje/design-system";
-import { PortalPageHeader, SearchInput, Button, Field, TextInput, StatusPill } from "@/components/nhapoa/ui";
+import { Icon, Modal, Textarea, Card, Button } from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Field, TextInput, StatusPill } from "@/components/nhapoa/ui";
 import { SlaPill, PriorityBadge } from "@/components/nhapoa/case-views";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtDate, fmtINR, priorityOf } from "@/lib/nhapoa/case-helpers";
@@ -53,7 +53,7 @@ export default function PendingApprovalsPage() {
       <PortalPageHeader
         title="Pending Approvals"
         meta={`${pending.length} case${pending.length === 1 ? "" : "s"} submitted by DM/DC Offices awaiting your decision`}
-        actions={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>}
+        actions={<Button appearance="outlined"><Icon name="download" size={16} /> Export</Button>}
       />
 
       <SearchInput placeholder="Search by ID, citizen name, category…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
@@ -107,9 +107,9 @@ export default function PendingApprovalsPage() {
         title={review ? `Review ${review.refNo}` : ""}
         footer={
           <div className="flex w-full items-center justify-between gap-2">
-            <Button variant="outline" onClick={() => setReview(null)}>Cancel</Button>
+            <Button appearance="outlined" onClick={() => setReview(null)}>Cancel</Button>
             <div className="flex gap-2">
-              <Button variant="danger" onClick={() => { setDecision("sendback"); }}><Icon name="undo" size={16} /> Send Back</Button>
+              <Button variant="danger" appearance="outlined" onClick={() => { setDecision("sendback"); }}><Icon name="undo" size={16} /> Send Back</Button>
               <Button onClick={() => { setDecision("approve"); }}><Icon name="check_circle" size={16} /> Approve</Button>
             </div>
           </div>

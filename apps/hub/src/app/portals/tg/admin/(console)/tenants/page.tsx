@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal , EmptyState} from "@mosje/design-system";
-import { PortalPageHeader, SearchInput, Button, Field, TextInput, Table } from "@/components/tg/ui";
+import { Icon, Modal, EmptyState, Button } from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Field, TextInput, Table } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import type { TenantRecord } from "@/lib/tg/store/types";
 
@@ -50,7 +50,7 @@ export default function TenantsPage() {
         title="Add New Tenant"
         footer={
           <>
-            <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button variant="neutral" appearance="text" onClick={() => setOpen(false)}>Cancel</Button>
             <Button type="submit" form="add-tenant-form">Add Tenant</Button>
           </>
         }

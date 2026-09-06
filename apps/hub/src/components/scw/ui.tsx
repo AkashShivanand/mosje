@@ -7,55 +7,6 @@ import { Icon,
 } from "@mosje/design-system";
 
 /* ----------------------------------------------------------------- Buttons */
-/**
- * This portal's button.
- *
- * IT SHOULD BE the design system's `Button`, and it is not yet, for two reasons
- * that were measured rather than assumed on 6 September 2026:
- *
- * 1. BRAND. Inside this portal `--sa-bg-brand-primary-bolder` resolves to
- *    #005eb9, while this button draws Tailwind `navy`, #13366b. Adopting the
- *    system's today would turn every filled button in this portal gov-blue.
- *    `ds/portal-navy-default` (#335) sets the brand mode that makes the swap
- *    correct; it should land first.
- * 2. SAFFRON. The system's `variant` is primary | success | danger | neutral —
- *    it cannot express the estate's secondary brand. The tokens exist and are
- *    good (`bg/brand/secondary/bolder` is #c34700 with white on it, better
- *    contrast than the #b8500f used here), so the fix is a `secondary` variant
- *    on the system's Button, not a className override.
- *
- * Everything else about this component is already the system's job: the focus
- * ring, the disabled treatment, the icon slots, the loading state it does not
- * have.
- */
-export function Button({
-  variant = "primary",
-  className,
-  ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "outline" | "ghost" | "danger" | "saffron";
-}) {
-  const variants: Record<string, string> = {
-    primary: "bg-navy text-white hover:bg-navy-800",
-    outline: "border border-navy/30 text-navy hover:bg-navy/5",
-    ghost: "text-ink-muted hover:bg-black/5",
-    danger: "border border-red-400 text-red-600 hover:bg-red-50",
-    // saffron-600, NOT the bare `saffron` (#ec6a1f): white on that measures
-    // 3.15:1 and fails WCAG 1.4.3 for the button's 14px label. saffron-600
-    // #b8500f is 5.01:1. Hover deepens rather than repeating the rest state.
-    saffron: "bg-saffron-600 text-white hover:bg-saffron-dark",
-  };
-  return (
-    <button
-      className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-label-1 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-navy/40 disabled:opacity-60",
-        variants[variant],
-        className
-      )}
-      {...props}
-    />
-  );
-}
 
 /* ------------------------------------------------------------- StatusPill */
 export function StatusPill({ status }: { status: AppStatus | string }) {

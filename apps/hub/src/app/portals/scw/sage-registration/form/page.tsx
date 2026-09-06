@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, TableShell, Field, TextInput } from "@/components/scw/ui";
-import { Icon, Stepper, Card } from "@mosje/design-system";
+import { TableShell, Field, TextInput } from "@/components/scw/ui";
+import { Icon, Stepper, Card, Button } from "@mosje/design-system";
 
 const STEPS = [
   { label: "Company Information" },
@@ -314,15 +314,14 @@ export default function SageRegistrationFormPage() {
         </div>
 
         <div className="mt-10 flex items-center justify-between border-t border-line pt-6">
-          <Button
-            variant="outline"
+          <Button appearance="outlined"
             disabled={step === 0}
             onClick={() => setStep((s) => Math.max(0, s - 1))}
           >
             ← Back
           </Button>
           {!isLast && (
-            <Button variant="primary" onClick={() => setStep((s) => Math.min(STEPS.length - 1, s + 1))}>
+            <Button onClick={() => setStep((s) => Math.min(STEPS.length - 1, s + 1))}>
               Next →
             </Button>
           )}

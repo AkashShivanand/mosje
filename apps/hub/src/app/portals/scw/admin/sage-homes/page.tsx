@@ -1,14 +1,7 @@
-import {
-  Button,
-  TableShell,
-  PeriodFilter,
-  StaticPager,
-  PortalPageHeader,
-  SearchInput,
-} from "@/components/scw/ui";
+import { TableShell, PeriodFilter, StaticPager, PortalPageHeader, SearchInput } from "@/components/scw/ui";
 import { FACILITY_TYPES, IPSRC_HOMES, IPSRC_TOTAL } from "@/lib/scw/mock-data";
 import { INDIAN_STATES } from "@/lib/scw/states";
-import { Icon } from "@mosje/design-system";
+import { Icon, Button } from "@mosje/design-system";
 
 const COLUMNS = [
   { key: "ngo", label: "NGO Name" },
@@ -25,7 +18,7 @@ export default function SageHomesPage() {
       <PortalPageHeader
         title="IPSrC Homes"
         actions={
-          <Button variant="primary">
+          <Button>
             <Icon name="add" size={16} />
             Add New
           </Button>

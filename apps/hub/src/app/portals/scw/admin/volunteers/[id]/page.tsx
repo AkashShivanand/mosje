@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Button, FieldGrid, SectionEyebrow } from "@/components/scw/ui";
+import { FieldGrid, SectionEyebrow } from "@/components/scw/ui";
 import { VOLUNTEER_DETAIL } from "@/lib/scw/mock-data";
-import { Icon , Card} from "@mosje/design-system";
+import { Icon, Card, Button } from "@mosje/design-system";
 
 export default async function VolunteerDetailPage({
   params,
@@ -42,8 +42,8 @@ export default async function VolunteerDetailPage({
           <h1 className="text-headline-1 text-ink">{v.name}</h1>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="danger">Reject</Button>
-          <Button variant="outline">Approve</Button>
+          <Button variant="danger" appearance="outlined">Reject</Button>
+          <Button appearance="outlined">Approve</Button>
         </div>
       </div>
 

@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Button, Field, TextInput } from "@/components/scw/ui";
-import { Icon } from "@mosje/design-system";
+import { Field, TextInput } from "@/components/scw/ui";
+import { Icon, Button } from "@mosje/design-system";
 
 /**
  * The destination of the "Forgot Password?" link on the SCW login form, which

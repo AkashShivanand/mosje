@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Modal } from "@mosje/design-system";
-import { Button } from "@/components/nhapoa/ui";
+import { Modal, Button } from "@mosje/design-system";
 import { RENAME, RENAME_KEYS, campaignActive } from "@/lib/nhapoa/rename-campaign";
 
 /**

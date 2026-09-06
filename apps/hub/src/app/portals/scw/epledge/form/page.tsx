@@ -1,9 +1,9 @@
 import * as React from "react";
 import Link from "next/link";
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, Field, TextInput } from "@/components/scw/ui";
+import { Field, TextInput } from "@/components/scw/ui";
 import { INDIAN_STATES } from "@/lib/scw/states";
-import { Icon , Select, Card} from "@mosje/design-system";
+import { Icon, Select, Card, Button } from "@mosje/design-system";
 
 const GENDERS = ["Male", "Female", "Transgender"] as const;
 

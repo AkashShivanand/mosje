@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Button, Field, TextInput } from "@/components/nhapoa/ui";
-import { DeclarationCheckbox, RadioGroup, Textarea, Stepper, Select, Card } from "@mosje/design-system";
+import { Field, TextInput } from "@/components/nhapoa/ui";
+import { DeclarationCheckbox, RadioGroup, Textarea, Stepper, Select, Card, Button } from "@mosje/design-system";
 import { GRIEVANCE_TYPES, SUBMISSION_ROLES } from "@/lib/nhapoa/citizen-data";
 import { STATES, DISTRICTS } from "@/lib/nhapoa/store/seed";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
@@ -172,7 +172,7 @@ export function GrievanceWizard({
                 <div className="flex gap-2">
                   <TextInput inputMode="numeric" maxLength={10} value={d.idMobile} onChange={(e) => set("idMobile", e.target.value.replace(/\D/g, ""))} placeholder="Enter 10-digit Mobile Number" />
                   {!d.otpVerified ? (
-                    <Button type="button" variant="outline" onClick={() => setOtpSent(true)} disabled={!/^\d{10}$/.test(d.idMobile)}>
+                    <Button type="button" appearance="outlined" onClick={() => setOtpSent(true)} disabled={!/^\d{10}$/.test(d.idMobile)}>
                       {otpSent ? "Verify" : "Send OTP"}
                     </Button>
                   ) : (
@@ -252,7 +252,7 @@ export function GrievanceWizard({
         )}
 
         <div className="mt-8 flex items-center justify-between border-t border-line pt-6">
-          <Button type="button" variant="outline" onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0}>
+          <Button type="button" appearance="outlined" onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0}>
             <Icon name="arrow_back" size={16} /> Back
           </Button>
           {step < 4 ? (

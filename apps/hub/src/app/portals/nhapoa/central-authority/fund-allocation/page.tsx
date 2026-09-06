@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal , Select, Card} from "@mosje/design-system";
-import { PortalPageHeader, StatTile, Button, Field, TextInput } from "@/components/nhapoa/ui";
+import { Icon, Modal, Select, Card, Button } from "@mosje/design-system";
+import { PortalPageHeader, StatTile, Field, TextInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
 import { STATES, SCHEMES } from "@/lib/nhapoa/store/seed";
@@ -44,7 +44,7 @@ export default function FundAllocationPage() {
       <PortalPageHeader
         title="Fund Allocation Dashboard"
         meta="SAMBAL budget allocation and utilization"
-        actions={<div className="flex gap-2"><Button variant="outline"><Icon name="download" size={16} /> Export</Button><Button onClick={() => setOpen(true)}><Icon name="add" size={16} /> New Allocation</Button></div>}
+        actions={<div className="flex gap-2"><Button appearance="outlined"><Icon name="download" size={16} /> Export</Button><Button onClick={() => setOpen(true)}><Icon name="add" size={16} /> New Allocation</Button></div>}
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -82,7 +82,7 @@ export default function FundAllocationPage() {
         size="sm"
         title={done ? "Allocation created" : "New Fund Allocation"}
         footer={done ? <Button onClick={reset}>Done</Button> : (
-          <div className="flex justify-end gap-2"><Button variant="outline" onClick={reset}>Cancel</Button><Button onClick={submit} disabled={!aState || !scheme || !amount}>Allocate</Button></div>
+          <div className="flex justify-end gap-2"><Button appearance="outlined" onClick={reset}>Cancel</Button><Button onClick={submit} disabled={!aState || !scheme || !amount}>Allocate</Button></div>
         )}
       >
         {done ? (

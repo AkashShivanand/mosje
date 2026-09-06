@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { PortalPageHeader, SearchInput, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, SearchInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtDate, fmtINR } from "@/lib/nhapoa/case-helpers";
-import { Icon , Card} from "@mosje/design-system";
+import { Icon, Card, Button } from "@mosje/design-system";
 
 export default function TransactionsPage() {
   const { state } = useNhapoa();
@@ -16,7 +16,7 @@ export default function TransactionsPage() {
       <PortalPageHeader
         title="Transaction Log"
         meta="All fund disbursements — non-editable reconciliation record"
-        actions={<div className="flex gap-2"><Button variant="outline"><Icon name="description" size={16} /> PDF</Button><Button variant="outline"><Icon name="table_chart" size={16} /> Excel</Button></div>}
+        actions={<div className="flex gap-2"><Button appearance="outlined"><Icon name="description" size={16} /> PDF</Button><Button appearance="outlined"><Icon name="table_chart" size={16} /> Excel</Button></div>}
       />
       <SearchInput placeholder="Search by ID, citizen name, category…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
       {txns.length === 0 ? (

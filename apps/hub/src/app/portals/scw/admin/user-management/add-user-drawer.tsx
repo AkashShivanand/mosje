@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Field, TextInput } from "@/components/scw/ui";
+import { Field, TextInput } from "@/components/scw/ui";
 import { INDIAN_STATES } from "@/lib/scw/states";
-import { Icon , Select} from "@mosje/design-system";
+import { Icon, Select, Button } from "@mosje/design-system";
 
 const ROLES = ["Nodal Officer", "Admin"];
 
@@ -12,7 +12,7 @@ export function AddUserDrawer() {
 
   return (
     <>
-      <Button variant="primary" onClick={() => setOpen(true)}>
+      <Button onClick={() => setOpen(true)}>
         <Icon name="add" size={16} />
         Add User
       </Button>
@@ -64,7 +64,7 @@ export function AddUserDrawer() {
             </div>
 
             <footer className="border-t border-line px-6 py-4">
-              <Button variant="primary" className="w-full">
+              <Button className="w-full">
                 Add User
               </Button>
             </footer>

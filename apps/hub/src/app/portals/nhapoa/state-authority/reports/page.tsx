@@ -1,9 +1,9 @@
 "use client";
 
-import { PortalPageHeader, StatTile, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { CASE_STATUS_META, type CaseStatus } from "@/lib/nhapoa/store/types";
-import { Icon , Card} from "@mosje/design-system";
+import { Icon, Card, Button } from "@mosje/design-system";
 
 const ROWS: CaseStatus[] = ["PENDING_APPROVAL", "APPROVED", "SENT_BACK", "DISBURSED", "CLOSED"];
 
@@ -12,7 +12,7 @@ export default function SAReportsPage() {
   const count = (s: CaseStatus) => state.cases.filter((c) => c.status === s).length;
   return (
     <div>
-      <PortalPageHeader title="State Reports" meta="Approval activity across your jurisdiction" actions={<Button variant="outline"><Icon name="download" size={16} /> Export PDF</Button>} />
+      <PortalPageHeader title="State Reports" meta="Approval activity across your jurisdiction" actions={<Button appearance="outlined"><Icon name="download" size={16} /> Export PDF</Button>} />
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatTile label="Pending Approval" value={count("PENDING_APPROVAL")} accent="await" />
         <StatTile label="Approved" value={count("APPROVED") + count("DISBURSED") + count("CLOSED")} accent="approve" />

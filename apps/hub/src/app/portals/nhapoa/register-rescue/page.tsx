@@ -3,11 +3,11 @@
 import * as React from "react";
 import Link from "next/link";
 import { CitizenShell } from "@/components/nhapoa/citizen-shell";
-import { Button, Field, TextInput } from "@/components/nhapoa/ui";
+import { Field, TextInput } from "@/components/nhapoa/ui";
 import { RESCUE_GENDERS } from "@/lib/nhapoa/citizen-data";
 import { STATES, DISTRICTS } from "@/lib/nhapoa/store/seed";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
-import { Icon , Textarea, Select, Card} from "@mosje/design-system";
+import { Icon, Textarea, Select, Card, Button } from "@mosje/design-system";
 
 export default function RegisterRescuePage() {
   const { createRescue } = useNhapoa();
@@ -66,7 +66,7 @@ export default function RegisterRescuePage() {
             <div className="flex gap-2">
               <TextInput inputMode="numeric" maxLength={10} value={mobile} onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))} placeholder="Enter 10-digit Mobile Number" />
               {!verified ? (
-                <Button type="button" variant="outline" onClick={() => (otpSent ? setVerified(true) : setOtpSent(true))} disabled={!/^\d{10}$/.test(mobile)}>
+                <Button type="button" appearance="outlined" onClick={() => (otpSent ? setVerified(true) : setOtpSent(true))} disabled={!/^\d{10}$/.test(mobile)}>
                   {otpSent ? "Verify" : "Send OTP"}
                 </Button>
               ) : (

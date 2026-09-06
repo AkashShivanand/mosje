@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal , Select, Card} from "@mosje/design-system";
-import { PortalPageHeader, SearchInput, Button, Field, TextInput } from "@/components/nhapoa/ui";
+import { Icon, Modal, Select, Card, Button } from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Field, TextInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtDate, fmtINR } from "@/lib/nhapoa/case-helpers";
 import type { Case } from "@/lib/nhapoa/store/types";
@@ -41,7 +41,7 @@ export default function DisbursementQueuePage() {
       <PortalPageHeader
         title="Disbursement Queue"
         meta={`${queue.length} state-approved case${queue.length === 1 ? "" : "s"} ready for sanction`}
-        actions={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>}
+        actions={<Button appearance="outlined"><Icon name="download" size={16} /> Export</Button>}
       />
 
       <SearchInput placeholder="Search by ID, citizen name, category…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
@@ -95,7 +95,7 @@ export default function DisbursementQueuePage() {
             <Button onClick={() => setProc(null)}>Done</Button>
           ) : (
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setProc(null)}>Cancel</Button>
+              <Button appearance="outlined" onClick={() => setProc(null)}>Cancel</Button>
               <Button onClick={disburse} disabled={!amount || !beneficiary}><Icon name="check_circle" size={16} /> Confirm Disbursement</Button>
             </div>
           )

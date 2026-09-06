@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Button, Field, TextInput, SectionEyebrow, cnField } from "@/components/tg/ui";
+import { Field, TextInput, SectionEyebrow, cnField } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { DEMO_CITIZEN } from "@/lib/tg/store/seed";
 import {
@@ -14,7 +14,7 @@ import {
   ID_PROOF_TYPES,
 } from "@/lib/tg/states";
 import type { ApplicantDetails, ApplicationType, AppDocument } from "@/lib/tg/store/types";
-import { Icon, RadioGroup , Stepper, Select, Card} from "@mosje/design-system";
+import { Icon, RadioGroup, Stepper, Select, Card, Button } from "@mosje/design-system";
 
 type Phase = "type" | "method" | "manual" | "form" | "done";
 
@@ -149,7 +149,7 @@ export default function ApplyPage() {
           </p>
         </div>
         <div className="mt-6 flex items-center justify-between">
-          <Button variant="ghost" onClick={() => { setViaDigiLocker(true); setPhase("form"); }}>
+          <Button variant="neutral" appearance="text" onClick={() => { setViaDigiLocker(true); setPhase("form"); }}>
             I prefer to try DigiLocker again later
           </Button>
           <Button onClick={() => setPhase("form")}>Continue to Enter Details <Icon name="arrow_forward" size={16} /></Button>
@@ -242,7 +242,7 @@ export default function ApplyPage() {
           </section>
 
           <div className="flex items-center justify-between border-t border-line pt-5">
-            <Button variant="ghost" onClick={() => setPhase("method")}><Icon name="arrow_back" size={16} /> Back</Button>
+            <Button variant="neutral" appearance="text" onClick={() => setPhase("method")}><Icon name="arrow_back" size={16} /> Back</Button>
             <Button onClick={() => setStep(1)} disabled={!canNextBasic}>Save and Continue <Icon name="arrow_forward" size={16} /></Button>
           </div>
         </Card>
@@ -267,7 +267,7 @@ export default function ApplyPage() {
           </div>
 
           <div className="flex items-center justify-between border-t border-line pt-5">
-            <Button variant="ghost" onClick={() => setStep(0)}><Icon name="arrow_back" size={16} /> Back</Button>
+            <Button variant="neutral" appearance="text" onClick={() => setStep(0)}><Icon name="arrow_back" size={16} /> Back</Button>
             <Button onClick={() => setStep(2)} disabled={!docsComplete}>Save and Review <Icon name="arrow_forward" size={16} /></Button>
           </div>
         </Card>
@@ -309,7 +309,7 @@ export default function ApplyPage() {
           </div>
 
           <div className="flex items-center justify-between border-t border-line pt-5">
-            <Button variant="ghost" onClick={() => setStep(1)}><Icon name="arrow_back" size={16} /> Back</Button>
+            <Button variant="neutral" appearance="text" onClick={() => setStep(1)}><Icon name="arrow_back" size={16} /> Back</Button>
             <Button onClick={submit}>Submit Application <Icon name="check_circle" size={16} /></Button>
           </div>
         </Card>

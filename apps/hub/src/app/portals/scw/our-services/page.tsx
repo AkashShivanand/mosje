@@ -1,8 +1,8 @@
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, PortalPageHeader, SearchInput } from "@/components/scw/ui";
+import { PortalPageHeader, SearchInput } from "@/components/scw/ui";
 import { FACILITIES, FACILITY_LEGEND } from "@/lib/scw/mock-data";
 import { cn } from "@/lib/scw/utils";
-import { Icon , Card} from "@mosje/design-system";
+import { Icon, Card, Button } from "@mosje/design-system";
 
 export default function OurServicesPage() {
   return (

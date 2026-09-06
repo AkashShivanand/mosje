@@ -1,13 +1,7 @@
 import Link from "next/link";
-import {
-  Button,
-  TableShell,
-  StaticPager,
-  PortalPageHeader,
-  SearchInput,
-} from "@/components/scw/ui";
+import { TableShell, StaticPager, PortalPageHeader, SearchInput } from "@/components/scw/ui";
 import { EVENTS, EVENTS_TOTAL } from "@/lib/scw/mock-data";
-import { Icon } from "@mosje/design-system";
+import { Icon, Button } from "@mosje/design-system";
 
 const COLUMNS = [
   { key: "sno", label: "S.No" },
@@ -26,7 +20,7 @@ export default function EventsPage() {
         title="Events"
         actions={
           <Link href="/portals/scw/admin/events/add">
-            <Button variant="primary">
+            <Button>
               <Icon name="add" size={16} />
               Add New
             </Button>

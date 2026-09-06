@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Badge, Icon, Modal , EmptyState, Select} from "@mosje/design-system";
-import { PortalPageHeader, SearchInput, Button, Field, TextInput, Table } from "@/components/tg/ui";
+import { Badge, Icon, Modal, EmptyState, Select, Button } from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Field, TextInput, Table } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { STATES } from "@/lib/tg/states";
 import type { UserRecord } from "@/lib/tg/store/types";
@@ -70,7 +70,7 @@ export default function UsersPage() {
         title="Add User"
         footer={
           <>
-            <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button variant="neutral" appearance="text" onClick={() => setOpen(false)}>Cancel</Button>
             <Button type="submit" form="add-user-form">Add User</Button>
           </>
         }

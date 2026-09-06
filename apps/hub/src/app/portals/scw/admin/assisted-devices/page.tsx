@@ -1,11 +1,6 @@
-import {
-  Button,
-  TableShell,
-  StaticPager,
-  PortalPageHeader,
-} from "@/components/scw/ui";
+import { TableShell, StaticPager, PortalPageHeader } from "@/components/scw/ui";
 import { ASSISTED_DEVICES, DEVICES_TOTAL } from "@/lib/scw/mock-data";
-import { Badge, Icon } from "@mosje/design-system";
+import { Badge, Icon, Button } from "@mosje/design-system";
 
 const COLUMNS = [
   { key: "title", label: "Title" },
@@ -20,7 +15,7 @@ export default function AssistedDevicesPage() {
       <PortalPageHeader
         title="RVY Assisted Devices"
         actions={
-          <Button variant="primary">
+          <Button>
             <Icon name="add" size={16} />
             Add New
           </Button>

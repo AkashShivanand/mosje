@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Badge, Icon, Modal , Textarea, EmptyState, Select, Card} from "@mosje/design-system";
-import { Button, Field, TextInput } from "@/components/tg/ui";
+import { Badge, Icon, Modal, Textarea, EmptyState, Select, Card, Button } from "@mosje/design-system";
+import { Field, TextInput } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { GRIEVANCE_CATEGORIES } from "@/lib/tg/states";
 import type { Grievance } from "@/lib/tg/store/types";
@@ -69,7 +69,7 @@ export default function GrievancesPage() {
         title="Raise a Grievance"
         footer={
           <>
-            <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button variant="neutral" appearance="text" onClick={() => setOpen(false)}>Cancel</Button>
             <Button type="submit" form="grievance-form">Submit</Button>
           </>
         }

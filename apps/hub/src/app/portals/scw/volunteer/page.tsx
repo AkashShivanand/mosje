@@ -2,11 +2,11 @@
 
 import * as React from "react";
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, Field, TextInput } from "@/components/scw/ui";
+import { Field, TextInput } from "@/components/scw/ui";
 import { INDIAN_STATES } from "@/lib/scw/states";
 import { VOLUNTEER_INTERESTS } from "@/lib/scw/mock-data";
 import { cn } from "@/lib/scw/utils";
-import { Checkbox, CheckboxGroup, RadioGroup , Select, Card} from "@mosje/design-system";
+import { Checkbox, CheckboxGroup, RadioGroup, Select, Card, Button } from "@mosje/design-system";
 
 const GENDERS = ["Male", "Female", "Transgender"] as const;
 type VolunteerKind = "individual" | "organisation";
@@ -107,7 +107,7 @@ export default function VolunteerRegistrationPage() {
 
           {/* Footer actions */}
           <div className={cn("flex items-center justify-end gap-3 pt-2")}>
-            <Button type="button" variant="outline">
+            <Button type="button" appearance="outlined">
               Cancel
             </Button>
             <Button type="submit">Save and Continue</Button>

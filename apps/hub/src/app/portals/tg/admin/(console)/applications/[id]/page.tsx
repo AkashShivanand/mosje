@@ -3,8 +3,8 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { Icon, Modal , Textarea, Card} from "@mosje/design-system";
-import { Button, StatusPill, SlaBadge, cnField } from "@/components/tg/ui";
+import { Icon, Modal, Textarea, Card, Button } from "@mosje/design-system";
+import { StatusPill, SlaBadge, cnField } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { ROLES } from "@/lib/tg/roles";
 import { canTransition, ROLE_ACTS_ON, type Stage } from "@/lib/tg/store/types";
@@ -101,8 +101,8 @@ export default function ApplicationDetailPage() {
         </div>
         {canReview && (
           <div className="flex flex-wrap gap-2">
-            <Button variant="danger" onClick={() => setAction("reject")}>Reject</Button>
-            <Button variant="outline" onClick={() => setAction("correction")}>Request Correction</Button>
+            <Button variant="danger" appearance="outlined" onClick={() => setAction("reject")}>Reject</Button>
+            <Button appearance="outlined" onClick={() => setAction("correction")}>Request Correction</Button>
             {canApprove && (
               <Button onClick={() => setAction("approve")}>
                 {app.stage === "DM_REVIEW" ? <Icon name="verified_user" size={16} /> : <Icon name="check_circle" size={16} />}
@@ -248,7 +248,7 @@ export default function ApplicationDetailPage() {
         title={fwd?.label ?? "Approve"}
         footer={
           <>
-            <Button variant="ghost" onClick={() => setAction(null)}>Cancel</Button>
+            <Button variant="neutral" appearance="text" onClick={() => setAction(null)}>Cancel</Button>
             <Button onClick={() => fwd && run(fwd.to)}>Confirm</Button>
           </>
         }
@@ -270,8 +270,8 @@ export default function ApplicationDetailPage() {
         title="Request Correction"
         footer={
           <>
-            <Button variant="ghost" onClick={() => setAction(null)}>Cancel</Button>
-            <Button variant="outline" onClick={() => run("CORRECTION_REQUESTED", "Correction requested")}>Send back to applicant</Button>
+            <Button variant="neutral" appearance="text" onClick={() => setAction(null)}>Cancel</Button>
+            <Button appearance="outlined" onClick={() => run("CORRECTION_REQUESTED", "Correction requested")}>Send back to applicant</Button>
           </>
         }
       >
@@ -288,8 +288,8 @@ export default function ApplicationDetailPage() {
         title="Reject Application"
         footer={
           <>
-            <Button variant="ghost" onClick={() => setAction(null)}>Cancel</Button>
-            <Button variant="danger" onClick={() => run("REJECTED", "Application rejected")}>Confirm Rejection</Button>
+            <Button variant="neutral" appearance="text" onClick={() => setAction(null)}>Cancel</Button>
+            <Button variant="danger" appearance="outlined" onClick={() => run("REJECTED", "Application rejected")}>Confirm Rejection</Button>
           </>
         }
       >
@@ -303,7 +303,7 @@ export default function ApplicationDetailPage() {
       {/* After a terminal action, offer to return */}
       {!canReview && (
         <div className="mt-6 text-center">
-          <Button variant="outline" onClick={() => router.push("/portals/tg/admin/dashboard")}>Back to Dashboard</Button>
+          <Button appearance="outlined" onClick={() => router.push("/portals/tg/admin/dashboard")}>Back to Dashboard</Button>
         </div>
       )}
     </div>

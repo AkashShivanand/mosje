@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Icon , Card} from "@mosje/design-system";
+import { Icon, Card, Button } from "@mosje/design-system";
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, SectionEyebrow } from "@/components/scw/ui";
+import { SectionEyebrow } from "@/components/scw/ui";
 
 type ServiceCard = {
   /** Material Symbols Rounded glyph name (snake_case). */
@@ -145,7 +145,7 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-          <Button variant="saffron" className="w-full shrink-0 sm:w-auto">
+          <Button className="scw-cta-helpline w-full shrink-0 sm:w-auto">
             <Icon name="call" size={18} aria-hidden />
             Call Toll-Free 14567
           </Button>

@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal } from "@mosje/design-system";
-import { PortalPageHeader, SearchInput, Button, Field, TextInput } from "@/components/nhapoa/ui";
+import { Icon, Modal, Button } from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Field, TextInput } from "@/components/nhapoa/ui";
 import { Checkbox } from "@mosje/design-system";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
@@ -74,7 +74,7 @@ export default function CategoriesPage() {
         onClose={() => setOpen(false)}
         size="sm"
         title="Add Category"
-        footer={<div className="flex justify-end gap-2"><Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button><Button onClick={submit} disabled={!name}>Add Category</Button></div>}
+        footer={<div className="flex justify-end gap-2"><Button appearance="outlined" onClick={() => setOpen(false)}>Cancel</Button><Button onClick={submit} disabled={!name}>Add Category</Button></div>}
       >
         <div className="space-y-4">
           <Field label="Category label" required><TextInput value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Interfering with rights over water" /></Field>

@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { BarChart, FilterBar, Icon, KpiRow , Select} from "@mosje/design-system";
-import { PortalPageHeader, SearchInput, StatusPill, SlaBadge, Button, Table } from "@/components/tg/ui";
+import { BarChart, FilterBar, Icon, KpiRow, Select, Button } from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, StatusPill, SlaBadge, Table } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { ROLES } from "@/lib/tg/roles";
 import { kpisForRole, queueForRole, byState, approvalRateByState } from "@/lib/tg/selectors";
@@ -99,7 +99,7 @@ export default function AdminDashboardPage() {
             onChange={(e) => setQuery(e.target.value)}
             className="w-72"
           />
-          <Button variant="outline">
+          <Button appearance="outlined">
             <Icon name="download" size={16} />
             Export
           </Button>

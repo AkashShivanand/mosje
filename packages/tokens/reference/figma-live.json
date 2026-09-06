@@ -1654,6 +1654,7 @@
     "container/narrow",
     "container/wide",
     "control/border/width",
+    "control/track",
     "control/selection/size/sm",
     "control/selection/size/md",
     "control/selection/size/lg",
@@ -1829,7 +1830,7 @@
       "Radius": "23d36c78:31",
       "Motion": "4ff49255:42",
       "Density": "b2baae79:16",
-      "Static": "18a9692c:95",
+      "Static": "8f0b86ec:96",
       "Viewport": "2f223056:12"
     },
     "figmaObserved": {
@@ -1840,7 +1841,7 @@
       "Radius": "23d36c78:31",
       "Motion": "4ff49255:42",
       "Density": "b2baae79:16",
-      "Static": "18a9692c:95",
+      "Static": "8f0b86ec:96",
       "Viewport": "2f223056:12"
     },
     "knownDifference": {
