@@ -16,6 +16,7 @@
 @import "./components/actions/icon-button.css";
 @import "./components/actions/menu.css";
 @import "./components/forms/auth-fields.css";
+@import "./components/forms/biometric-capture.css";
 @import "./components/forms/checkbox.css";
 @import "./components/forms/chip.css";
 @import "./components/forms/combobox.css";
@@ -61,6 +62,7 @@
 @import "./components/data-display/accordion.css";
 @import "./components/data-display/approval-timeline.css";
 @import "./components/data-display/card.css";
+@import "./components/data-display/carousel.css";
 @import "./components/data-display/charts/charts.css";
 @import "./components/data-display/charts/ranked-bar-list.css";
 @import "./components/data-display/charts/small-multiples.css";
@@ -81,6 +83,7 @@
 @import "./components/feedback/badge.css";
 @import "./components/feedback/chatbot.css";
 @import "./components/feedback/error-view.css";
+@import "./components/feedback/feedback-widget.css";
 @import "./components/feedback/feedback.css";
 @import "./components/feedback/lightbox.css";
 @import "./components/feedback/modal.css";

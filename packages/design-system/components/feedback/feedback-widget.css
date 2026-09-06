@@ -1,0 +1,162 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Feedback widget
+     "Was this page useful?" in three states: ask, comment, acknowledge.
+     ============================================================================ */
+
+  .ds-feedback {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    border: var(--sa-cmp-divider-width) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-subtle);
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-feedback__ask {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .ds-feedback__question {
+    padding: 0;
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .ds-feedback__verdicts {
+    display: flex;
+    gap: var(--sa-inline-8);
+  }
+
+  .ds-feedback__verdict {
+    min-width: var(--sa-control-height-lg);
+    height: var(--sa-control-height-md);
+    padding: 0 var(--sa-padding-16);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-radius);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    font-family: inherit;
+    font-size: var(--sa-type-label-1-size);
+    cursor: pointer;
+  }
+
+  .ds-feedback__verdict:hover {
+    background-color: var(--sa-bg-neutral-hover);
+  }
+
+  /* Chosen carries a heavier edge and semibold ink as well as its fill: the two
+     buttons are Yes and No, and a reader who cannot distinguish the fill must
+     still be able to see which one they pressed (WCAG 1.4.1). */
+  .ds-feedback__verdict--chosen {
+    border-color: var(--sa-border-neutral-selected);
+    box-shadow: inset 0 0 0 var(--sa-control-border-width) var(--sa-border-neutral-selected);
+    background-color: var(--sa-bg-neutral-selected);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .ds-feedback__verdict:focus-visible,
+  .ds-feedback__send:focus-visible,
+  .ds-feedback__textarea:focus-visible,
+  .ds-feedback__help:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-feedback__more {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+  }
+
+  .ds-feedback__label {
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .ds-feedback__note {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+  }
+
+  .ds-feedback__textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-radius);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    font-family: inherit;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    resize: vertical;
+  }
+
+  .ds-feedback__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-16);
+  }
+
+  .ds-feedback__send {
+    height: var(--sa-control-height-md);
+    padding: 0 var(--sa-padding-20);
+    border: 0;
+    border-radius: var(--sa-control-radius);
+    background-color: var(--sa-cmp-button-primary-bg);
+    color: var(--sa-cmp-button-primary-text);
+    font-family: inherit;
+    font-size: var(--sa-type-label-1-size);
+    font-weight: var(--sa-font-weight-medium);
+    cursor: pointer;
+  }
+
+  .ds-feedback__send:hover:not(:disabled) {
+    background-color: var(--sa-cmp-button-primary-bgHover);
+  }
+
+  .ds-feedback__send:disabled {
+    background-color: var(--sa-bg-neutral-disabled);
+    color: var(--sa-text-neutral-disabled);
+    cursor: progress;
+  }
+
+  .ds-feedback__help {
+    color: var(--sa-text-link-brand-default);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    text-decoration: underline;
+  }
+
+  .ds-feedback__thanks {
+    margin: 0;
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+}

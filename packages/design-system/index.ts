@@ -174,6 +174,12 @@ export type { RadioProps } from "./components/forms/radio";
 export type { SelectionSize, SelectionLabelPlacement, SelectionVariant, SelectionCardLayout, CheckboxState } from "./components/forms/selection-types";
 export { Toggle } from "./components/forms/toggle";
 export { RangeSlider, Slider } from "./components/forms/slider";
+export { BiometricCapture } from "./components/forms/biometric-capture";
+export type {
+  BiometricCaptureProps,
+  BiometricModality,
+  BiometricState,
+} from "./components/forms/biometric-capture";
 export { TimePicker } from "./components/forms/time-picker";
 export type { TimePickerProps } from "./components/forms/time-picker";
 export { TimeSlot } from "./components/forms/time-slot";
@@ -220,6 +226,12 @@ export { Skeleton, SkeletonText, SkeletonRow } from "./components/feedback/skele
 export type { SkeletonProps } from "./components/feedback/skeleton";
 export { Tooltip } from "./components/feedback/tooltip";
 export type { TooltipProps, TooltipSide } from "./components/feedback/tooltip";
+export { FeedbackWidget } from "./components/feedback/feedback-widget";
+export type {
+  FeedbackSubmission,
+  FeedbackVerdict,
+  FeedbackWidgetProps,
+} from "./components/feedback/feedback-widget";
 export { Popover } from "./components/feedback/popover";
 export type { PopoverApi, PopoverProps } from "./components/feedback/popover";
 export { EmptyState } from "./components/feedback/empty-state";
@@ -281,6 +293,8 @@ export type {
   DescriptionItem,
   DescriptionListProps,
 } from "./components/data-display/description-list";
+export { Carousel } from "./components/data-display/carousel";
+export type { CarouselProps } from "./components/data-display/carousel";
 export { Figure } from "./components/data-display/figure";
 export type { FigureProps, FigureRatio } from "./components/data-display/figure";
 export { ListGroup, ListRow } from "./components/data-display/list-group";

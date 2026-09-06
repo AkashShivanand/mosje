@@ -982,6 +982,67 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "BiometricCaptureProps": {
+    "source": "packages/design-system/components/forms/biometric-capture.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "consent",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The consent sentence shown before capture. Under the DPDP Act 2023 a biometric is personal data and the citizen is told what is taken and why BEFORE it is taken, not after."
+      },
+      {
+        "name": "fallbackHref",
+        "type": "string",
+        "required": true,
+        "description": "Where to go instead. **Required, and required for a reason**: biometric capture fails for worn fingerprints, for cataracts, for a reader that is not plugged in, and for anyone using this on a phone. A screen with no way past it stops the citizen's application, not the department's."
+      },
+      {
+        "name": "modality",
+        "type": "BiometricModality = \"fingerprint\" | \"iris\" | \"face\"",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onCapture",
+        "type": "() => void",
+        "required": true,
+        "description": "Start or retry a capture. Not called in `capturing`, `captured` or `unavailable`."
+      },
+      {
+        "name": "state",
+        "type": "BiometricState = \"idle\" | \"capturing\" | \"captured\" | \"failed\" | \"unavailable\"",
+        "required": true,
+        "description": "The current state. This component draws it; it never drives the device."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "failureReason",
+        "type": "string",
+        "required": false,
+        "description": "Why it failed, in the words a person at the counter can act on: \"The finger was lifted too early\", not a device code. Shown only in `failed`."
+      },
+      {
+        "name": "fallbackLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Verify another way\"",
+        "description": ""
+      },
+      {
+        "name": "subject",
+        "type": "string",
+        "required": false,
+        "description": "Whose biometrics these are, named — \"Sunita Devi\". Announced with the region."
+      }
+    ]
+  },
   "BotCheckProps": {
     "source": "packages/design-system/components/forms/bot-check.tsx",
     "inheritsNative": false,
@@ -1550,6 +1611,51 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "Overrides the standard headline. Say what is true, not that something is missing."
+      }
+    ]
+  },
+  "CarouselProps": {
+    "source": "packages/design-system/components/data-display/carousel.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The slides. Each child becomes one slide and is labelled \"N of M\" for assistive technology, so pass the content only — no wrapper of your own."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the carousel — \"Departmental announcements\". Required: a carousel announced only as \"carousel\" tells a screen-reader user nothing about what is rotating past them."
+      },
+      {
+        "name": "autoPlay",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Rotate on a timer. **Off by default, and it should usually stay off.** WCAG 2.2.2 requires anything moving for more than five seconds to be pausable, which the pause button provides — but the deeper problem is that a citizen reading slide two does not get to finish it. Turn it on only for decorative content nobody has to read."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "interval",
+        "type": "number",
+        "required": false,
+        "default": "7",
+        "description": "Seconds between slides when `autoPlay` is on."
+      },
+      {
+        "name": "showDots",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Show the dot indicators under the track."
       }
     ]
   },
@@ -3559,6 +3665,51 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "Pull the card up so it straddles the band above it — the treatment used under a page hero. Requires the band above to have room; on its own in a plain section, leave it off."
+      }
+    ]
+  },
+  "FeedbackWidgetProps": {
+    "source": "packages/design-system/components/feedback/feedback-widget.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "onSubmit",
+        "type": "(submission: FeedbackSubmission) => void | Promise<void>",
+        "required": true,
+        "description": "Called when the reader sends. Returning a promise keeps the button in its sending state until it settles."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "helpHref",
+        "type": "string",
+        "required": false,
+        "description": "Where a citizen should go if they wanted help rather than to leave a comment. **Always supply it.** A feedback box is where grievances land when the page offers nowhere else, and an unanswered grievance is worse than no box at all."
+      },
+      {
+        "name": "helpLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Report a problem or contact the department\"",
+        "description": ""
+      },
+      {
+        "name": "question",
+        "type": "string",
+        "required": false,
+        "default": "\"Was this page useful?\"",
+        "description": "The question. Keep it about THIS page — a citizen can answer \"did this page tell you what you came for\" and cannot answer \"how are we doing\"."
+      },
+      {
+        "name": "thanks",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"Thank you. Your response has been recorded.\"",
+        "description": "Shown after sending. Say what happens next, or say that nothing does — \"We read every response\" is a promise; \"This is not a way to contact the department\" is the truth a citizen needs before they type a grievance here."
       }
     ]
   },

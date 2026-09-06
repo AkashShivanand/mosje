@@ -189,6 +189,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Biometric Capture — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/biometric-capture",
+    "keywords": "biometric capture — design system forms & inputs it draws states; it never touches a device the alternative is required, and always visible consent before, not after a failure reason a person can act on example wcag 3.3.8, from the other direction  tokens wcag accessibility",
+    "description": "The capture surface for a fingerprint, iris scan or photograph — five designed states, a consent line shown before capture, and a required alternative route.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Bot Check — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/bot-check",
@@ -306,6 +315,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "What a card shows when it has no figures to show.",
     "type": "component",
     "iconName": "lock"
+  },
+  {
+    "title": "Carousel — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/carousel",
+    "keywords": "carousel — design system data display auto-rotation is off, and should stay off everything essential lives outside it too the track is the source of truth example moving is announced the dots are buttons, not tabs  tokens wcag accessibility",
+    "description": "A band of slides the reader moves through, with auto-rotation off by default and a pause control whenever it is on.",
+    "type": "component",
+    "iconName": "bar_chart"
   },
   {
     "title": "Changelog",
@@ -643,6 +661,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The row of standing facts under a page hero.",
     "type": "component",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "Feedback Widget — Design System",
+    "section": "Feedback & Status",
+    "href": "/design-system/components/feedback/feedback-widget",
+    "keywords": "feedback widget — design system feedback & status the verdict first, then the comment it is not a contact form say not to type personal information acknowledge honestly example focus follows the field that appears  tokens wcag accessibility",
+    "description": "“Was this page useful?” — the page-level feedback control GIGW expects, in three states: the question, the comment, and the acknowledgement.",
+    "type": "component",
+    "iconName": "notifications"
   },
   {
     "title": "Field Policy Provider — Design System",

@@ -2500,6 +2500,17 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - `layout="inline"`'s term column is `18ch`, not a pixel width, so it grows with the reader's font size instead of clipping the label at 200% zoom.
 - Not a `DataTable`: a table is for records the reader compares across columns, this is for the fields of one record.
 
+#### Carousel
+**Purpose**: a band of slides the reader moves through — announcements, photographs, a handful of promotional cards.
+**Props**: `children` (each child becomes one slide) · `label` (**required**) · `autoPlay` (default **false**) · `interval` · `showDots`
+**Rules**:
+- **Auto-rotation is OFF by default and the default should be respected.** A carousel that moves on its own takes the sentence a citizen is reading away mid-sentence, and it does that most to the slowest readers. WCAG 2.2.2 is met when it is on — pause control, halts on hover and on focus, disabled outright under `prefers-reduced-motion` — but meeting the criterion is not the same as it being a good idea.
+- **Everything essential must ALSO exist outside the carousel.** Slides two onwards are in practice unread: they sit behind an interaction most people never perform.
+- **The scroll-snap track is the source of truth for position.** The component reads the track's scroll offset back, so a swipe and a button press cannot disagree about which slide is current.
+- Moving by button announces "Slide N of M" through a **visually hidden** live region — the dots already show the position, and printing it again on screen is the interface narrating itself.
+- **The dots are buttons with `aria-current`, NOT tabs.** A tablist promises panels that stay put and a roving arrow-key model; claiming the role without the behaviour is worse than not claiming it.
+- Arrows take the full control height and each dot draws an 8px mark inside a 32px button — the mark is small, the target is not.
+
 #### Figure
 **Purpose**: an image and its caption, as ONE thing.
 **Props**: `children` (the image element, the caller's) · `caption` · `credit` · `ratio` (`auto | square | video | photo | portrait`) · `fit` (`cover | contain`) · `bordered`
@@ -2510,6 +2521,17 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - `fit="cover"` crops to fill: correct for a photograph. `fit="contain"` fits the whole image: correct for a logo, a certificate or a scan, where a crop removes the seal, the signature or the reference number that put the scan on the page. `ratio="auto"` locks nothing — for a diagram or a screenshot, where any crop removes information.
 - **`credit` is content, not a nicety.** A departmental photograph with no attribution is one nobody can check.
 - It imports no image library, so `next/image` works through it and it still renders in Storybook.
+
+#### BiometricCapture
+**Purpose**: the screen a citizen looks at while a fingerprint, iris scan or photograph is taken — the enrolment step in SMILE and the Transgender portal.
+**Props**: `modality` (`fingerprint | iris | face`) · `state` (`idle | capturing | captured | failed | unavailable`) · `onCapture` · `subject` · `failureReason` · `consent` (**required**) · `fallbackHref` (**required**) · `fallbackLabel`
+**Rules**:
+- **It draws states; it never touches a device.** Reading a scanner is the portal's job through whatever RD service the centre has, and that varies per deployment. What is shared is the surface and its five states.
+- **`unavailable` is a DESIGNED state, not an error.** An unplugged reader and a citizen on a phone are ordinary and common; both are told plainly and sent to the alternative rather than shown a button that cannot work.
+- **`fallbackHref` is REQUIRED, and the link shows in every state including success.** Biometric capture fails for worn fingerprints, cataracts, manual labourers and the elderly — most often for exactly the citizens these schemes serve. A screen with no way past it does not stop the department; it stops the application. Hiding the way out until something fails makes failure the only way to find it. WCAG 3.3.8 asks the same from the other direction. A recommendation is followed by whoever read it; a required prop is followed by everyone.
+- **Consent BEFORE capture, not after** (DPDP Act 2023): what is taken, what it is checked against, and whether the department keeps it. It drops away once captured, when it would be a record rather than a notice.
+- **A failure reason a person at the counter can act on** — "The finger was lifted too early", never a device code.
+- One live region for all five states, so a change is announced once; every state changes the SENTENCE as well as the fill. Under reduced motion the capturing pulse becomes a steady ring rather than vanishing — it carries meaning, so removing it would remove information.
 
 #### TimePicker
 **Purpose**: a typed 24-hour time field, with a list of times as the SECOND way in.
@@ -2553,6 +2575,16 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - The trigger must be a single focusable element that forwards a ref. A hover-only tooltip is unreachable by keyboard and unavailable on touch.
 - Never put essential information here and nowhere else — tooltips do not exist for touch users.
 - Renders through a portal at `--sa-z-tooltip` (800), above Modal (500) and Popover (600), so an ancestor's `overflow: hidden` cannot clip it. Placement is the shared engine in `foundations/anchor.ts`, not a private copy.
+
+#### FeedbackWidget
+**Purpose**: "Was this page useful?" — the page-level feedback control GIGW expects, in three states: ask, comment, acknowledge.
+**Props**: `question` · `onSubmit({ verdict, comment })` · `thanks` · `helpHref` · `helpLabel`
+**Rules**:
+- **The comment box appears only AFTER a verdict.** Asking for a verdict and a paragraph at once gets neither; most readers answer a two-button question in passing and never open a text field. Taking the click first captures the useful signal even when nobody types. Focus moves into the box when it appears.
+- **It is deliberately NOT a contact form.** A feedback box on a page with no visible way to reach the department becomes where grievances are filed, and a grievance filed into an analytics endpoint is never answered — worse than having no box. `helpHref` is how that is prevented; supply it on every page.
+- **The box says not to type personal information.** A free-text field on a government page collects Aadhaar numbers and bank details unless it says not to, because people reasonably assume a box on a departmental page reaches the department.
+- **Acknowledge honestly.** "We read every response" is a promise. Where it is not true, say what is: "Responses are counted but not read individually, and the department cannot reply here."
+- Ask about THIS page. Nobody can answer "how are we doing" from a page about hostel grants.
 
 #### Popover
 **Purpose**: A non-modal `dialog` anchored to a trigger, holding content the reader can **act on** — a filter, a row's actions, guidance with a link in it.

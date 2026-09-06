@@ -138,8 +138,9 @@
         },
         {
           "ux4g": "Feedback",
-          "status": "missing",
-          "note": "Star-rating capture."
+          "status": "exact",
+          "note": "Verdict first, comment second, acknowledgement third. Carries the required route to real help, so the box does not become an unanswered grievance channel.",
+          "samavesh": "FeedbackWidget"
         },
         {
           "ux4g": "Modal",
@@ -196,7 +197,9 @@
         },
         {
           "ux4g": "Carousel",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Carousel",
+          "note": "Auto-rotation is OFF by default; the pause control, hover/focus suspension and prefers-reduced-motion handling are all present when it is on."
         },
         {
           "ux4g": "Chip",
@@ -330,7 +333,9 @@
         },
         {
           "ux4g": "Biometric Capture",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "BiometricCapture",
+          "note": "Five designed states including `unavailable`. Draws the surface only — device access belongs to the portal. `fallbackHref` and `consent` are required props."
         }
       ]
     }
