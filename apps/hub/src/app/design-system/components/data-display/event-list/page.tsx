@@ -42,7 +42,7 @@ export default function EventListPage(): React.JSX.Element {
       name="Event List"
       status="Stable"
       summary="A dated, attributed record of things that happened. Used directly it is the activity log and the audit trail; Comment Thread and Notification Centre are composed from it, so all three read the same."
-      figma={{ absent: "Master pending in the SAMAVESH library — tracked on the component record." }}
+      figma={{ node: "eventList" }}
       specimen={<EventPlayground />}
       propsFrom="EventListProps"
       a11y={A11Y}

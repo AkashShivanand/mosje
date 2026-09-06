@@ -120,6 +120,11 @@ export const FIGMA_NODES = {
   // Rebuilt 2026-09-06 to match the code, with the UX4G/Material imports they
   // superseded renamed "⛔ … (deprecated)" and left in place, because instances
   // may exist. The department chose the code's model in each case.
+  // Built 6 September 2026, alongside the code. Each id is the page's
+  // — Documentation frame, which is where a designer should land.
+  languageSwitcher: "57597:737",
+  inlineEdit: "57599:772",
+  eventList: "57600:48772",
   popover: "2141:323874",
   // The page was called "Dropdown" until 2026-09-06. "Dropdown" means both a
   // select and a menu across the industry, and this estate needs the

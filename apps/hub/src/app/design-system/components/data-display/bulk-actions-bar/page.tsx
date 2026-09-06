@@ -43,7 +43,7 @@ export default function BulkActionsBarPage(): React.JSX.Element {
       name="Bulk Actions Bar"
       status="Stable"
       summary="The strip that appears when rows are selected. It announces the count politely, always offers a way to clear the selection, and sits in the flow rather than floating over the last row of the table."
-      figma={{ absent: "Master pending in the SAMAVESH library — tracked on the component record." }}
+      figma={{ absent: "No master in the SAMAVESH library yet — the gap, and the order the seventeen are being closed in, are recorded in docs/audit/design-system-completeness-2026-09-06.md." }}
       specimen={<BulkPlayground />}
       propsFrom="BulkActionsBarProps"
       a11y={A11Y}

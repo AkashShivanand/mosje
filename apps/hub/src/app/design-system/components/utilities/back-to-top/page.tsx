@@ -42,7 +42,7 @@ export default function BackToTopPage(): React.JSX.Element {
       name="Back to Top"
       status="Stable"
       summary="The control that returns a reader to the top of a long page. It sits at the top of the corner rail because it comes and goes, and it moves focus as well as the scroll position."
-      figma={{ absent: "Master pending in the SAMAVESH library — tracked on the component record." }}
+      figma={{ absent: "No master in the SAMAVESH library yet — the gap, and the order the seventeen are being closed in, are recorded in docs/audit/design-system-completeness-2026-09-06.md." }}
       specimen={<BackToTopPlayground />}
       propsFrom="BackToTopProps"
       a11y={A11Y}

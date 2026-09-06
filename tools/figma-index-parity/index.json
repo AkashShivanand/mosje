@@ -3,7 +3,7 @@
   "indexPage": "56757:725",
   "indexFrame": "56757:726",
   "capturedOn": "2026-09-06",
-  "statLine": "71 pages · 201 components · counted 6 September 2026",
+  "statLine": "74 pages · 204 components · counted 6 September 2026",
   "statuses": [
     "Ready",
     "Published",
@@ -60,6 +60,7 @@
     "Color Picker",
     "Date-Time Picker",
     "Input Field",
+    "Inline Edit",
     "Input Area",
     "Select",
     "OTP Input",
@@ -73,6 +74,7 @@
     "Biometric Capture",
     "Accordion",
     "Breadcrumbs",
+    "Language Switcher",
     "Menu",
     "Pagination",
     "Portal Card",
@@ -95,6 +97,7 @@
     "Charts & Graphs",
     "Comment",
     "Description List",
+    "Event List",
     "Figure",
     "List",
     "Map of India",
@@ -216,7 +219,7 @@
     },
     {
       "name": "Forms & Inputs",
-      "stated": 16,
+      "stated": 17,
       "cards": [
         {
           "name": "Input Field",
@@ -297,12 +300,17 @@
           "name": "Biometric Capture",
           "status": "Ready",
           "linked": true
+        },
+        {
+          "name": "Inline Edit",
+          "status": "Ready",
+          "linked": true
         }
       ]
     },
     {
       "name": "Navigation",
-      "stated": 7,
+      "stated": 8,
       "cards": [
         {
           "name": "Tabs",
@@ -336,6 +344,11 @@
         },
         {
           "name": "Portal Card",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Language Switcher",
           "status": "Ready",
           "linked": true
         }
@@ -410,7 +423,7 @@
     },
     {
       "name": "Data Display",
-      "stated": 10,
+      "stated": 11,
       "cards": [
         {
           "name": "Card",
@@ -459,6 +472,11 @@
         },
         {
           "name": "Figure",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Event List",
           "status": "Ready",
           "linked": true
         }

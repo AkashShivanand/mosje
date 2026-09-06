@@ -50,7 +50,7 @@ export default function LanguageSwitcherPage(): React.JSX.Element {
       name="Language Switcher"
       status="Stable"
       summary="The languages a page is published in, offered as links. Each is written in its own language and carries its own lang attribute; the one being read is rendered as text, because a link to the page you are already on is a control that does nothing."
-      figma={{ absent: "Master pending in the SAMAVESH library — tracked on the component record." }}
+      figma={{ node: "languageSwitcher" }}
       specimen={<LanguagePlayground />}
       propsFrom="LanguageSwitcherProps"
       a11y={A11Y}

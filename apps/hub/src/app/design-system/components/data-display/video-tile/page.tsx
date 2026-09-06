@@ -42,7 +42,7 @@ export default function VideoTilePage(): React.JSX.Element {
       name="Video Tile"
       status="Stable"
       summary="One camera or one recording, with the four states a feed is actually in. The video element is the browser's; what this adds is the states and the words for each."
-      figma={{ absent: "Master pending in the SAMAVESH library — tracked on the component record." }}
+      figma={{ absent: "No master in the SAMAVESH library yet — the gap, and the order the seventeen are being closed in, are recorded in docs/audit/design-system-completeness-2026-09-06.md." }}
       specimen={<VideoPlayground />}
       propsFrom="VideoTileProps"
       a11y={A11Y}

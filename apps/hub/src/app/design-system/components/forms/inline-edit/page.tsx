@@ -50,7 +50,7 @@ export default function InlineEditPage(): React.JSX.Element {
       name="Inline Edit"
       status="Stable"
       summary="A recorded value that can be corrected in place. The save is confirmed, never optimistic: the value on screen changes only once the write has resolved."
-      figma={{ absent: "Master pending in the SAMAVESH library — tracked on the component record." }}
+      figma={{ node: "inlineEdit" }}
       specimen={<EditPlayground />}
       propsFrom="InlineEditProps"
       a11y={A11Y}
