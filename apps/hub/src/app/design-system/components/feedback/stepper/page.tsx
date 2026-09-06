@@ -65,7 +65,7 @@ const A11Y: A11yItem[] = [
     status: "verified",
     evidence: "Rendered under prefers-reduced-motion: reduce.",
     description:
-      "Under a reduced-motion preference the colour and the filled track still arrive, they simply do not travel: the node's cross-fade and the connector's growth are both removed, and the completed track is drawn at full length rather than scaled into place. Colour and spread carry the meaning; the travel is decoration.",
+      "Under a reduced-motion preference the colour and the filled track still arrive, they simply do not travel: the node's cross-fade, the connector's growth and the compact bar's widening dot are all removed, and the completed track is drawn at full length rather than scaled into place. Colour, spread and the pill's width carry the meaning; the travel is decoration. The dot still widens, because width is what separates the current stage from the rest without relying on hue.",
   },
   {
     criterion: "1.4.10 Reflow",
@@ -250,14 +250,26 @@ export default function StepperPage(): React.JSX.Element {
                 hover timing, so the circle reads as one object changing rather than three
                 properties changing at once. 150ms.
               </li>
+              <li>
+                <strong>On a phone, the compact bar&apos;s current dot widens into a pill</strong>{" "}
+                as the one behind it narrows back to a dot. It is the same indicator, drawn for
+                a narrow row, and it is the one most citizens see. 150ms.
+              </li>
             </ul>
             <p>
-              Both durations are the motion tokens — <code>--sa-motion-enter-duration</code> and{" "}
-              <code>--sa-motion-hover-duration</code> — on the estate&apos;s decelerating easing,
-              so the movement starts at once and settles rather than easing in. Nothing here is a
-              keyframe: they are transitions, which means a reader who advances two stages
-              quickly gets the second movement retargeted from wherever the first had reached,
-              instead of a restart.
+              Every duration is a motion token — <code>--sa-motion-enter-duration</code>,{" "}
+              <code>--sa-motion-exit-duration</code> and <code>--sa-motion-hover-duration</code>{" "}
+              — on the estate&apos;s decelerating easing, so a movement starts at once and settles
+              rather than easing in. Nothing here is a keyframe: they are transitions, which means
+              a reader who advances two stages quickly gets the second movement retargeted from
+              wherever the first had reached, instead of a restart.
+            </p>
+            <p>
+              <strong>Arriving and leaving are not timed the same.</strong> The ring and the
+              filled track grow on the entry curve and retract on the exit one — 250ms in, 150ms
+              out. Arriving at a stage is the stepper settling on an answer; leaving one is the
+              stepper obeying a Back it was just given, and a system responding should be quicker
+              than a system arriving. Both curves are already in the token set for exactly this.
             </p>
             <p>
               Under <code>prefers-reduced-motion</code> the colour and the filled track still{" "}
