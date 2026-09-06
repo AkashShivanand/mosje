@@ -453,6 +453,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Comment Thread — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/comment-thread",
+    "keywords": "comment thread — design system data display oldest first there is no edit control a closed thread says so the counter waits until it matters  tokens wcag accessibility",
+    "description": "The remarks officers leave on a case — Event List plus a composer, read oldest first, with no edit control because a remark that can change after another officer has acted on it is not a record.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "Consent Line — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/auth/consent-line",
@@ -670,6 +679,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The full-page state for 404, 500, 403 and maintenance: what happened, a way back, a search, and the destinations most citizens were looking for.",
     "type": "component",
     "iconName": "notifications"
+  },
+  {
+    "title": "Event List — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/event-list",
+    "keywords": "event list — design system data display one object, three views it does not sort a note is never truncated a system action says &ldquo;system&rdquo;  tokens wcag accessibility",
+    "description": "A dated, attributed record of things that happened — the activity log and the audit trail, and the base the comment thread and the notification centre are composed from.",
+    "type": "component",
+    "iconName": "bar_chart"
   },
   {
     "title": "Fact Strip — Design System",
@@ -1136,6 +1154,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The SAMAVESH Navbar — one component, three variants. Three tiers: accessibility bar, brand row, navigation row, with a scroll condense that keeps the emblem on the same left edge.",
     "type": "component",
     "iconName": "navigation"
+  },
+  {
+    "title": "Notification Centre — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/notification-centre",
+    "keywords": "notification centre — design system data display the same sentence in both places mark all as read appears only when it can do something it does not place itself  tokens wcag accessibility",
+    "description": "The panel behind the bell — what has happened that this officer has not seen, rendered as Event List grouped by day so a notification and the same entry in the audit log read identically.",
+    "type": "component",
+    "iconName": "bar_chart"
   },
   {
     "title": "Number Input — Design System",

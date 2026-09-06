@@ -2542,6 +2542,37 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **Every action names its own FILE** — "Remove income-certificate.pdf" in the accessible name, "Remove" on screen. Twelve attachments otherwise produce twelve identical "Remove"s for anyone moving by button.
 - Every state renders its own WORD; colour only tints the word already there.
 
+#### EventList
+**Purpose**: a dated, attributed record of things that happened. Used directly it IS the activity log and the audit trail; `CommentThread` and `NotificationCentre` are composed from it.
+**Props**: `events` (`{ id, at, actor?, actorRole?, action, subject?, note?, icon?, tone?, unread?, href? }[]`) · `label` (**required**) · `emptyText` · `grouping` (`none` | `day`) · `unreadLabel`
+**Rules**:
+- **One object, three views.** A comment, an audit entry and a notification are the same thing — *someone did something to something, at a time, and may have said why*. Three components would produce three vocabularies for one object, and then a portal's audit log and its notification panel disagree about what an actor is.
+- **It does NOT sort.** The order it is handed is the order it renders. A log is newest-first; a thread is oldest-first. The caller knows which; the component does not.
+- **A note is never truncated.** On a departmental record the reason an application was returned is the most important text on the screen.
+- **`unread` is a WORD before it is a dot.** The row carries a visually hidden `unreadLabel`; the coloured dot is `aria-hidden`.
+- **A system action says "System".** An empty actor column reads as missing data, which on an audit trail is the worst thing it could read as.
+- Not for an approval chain with a fixed vocabulary of steps — that is `ApprovalTimeline`.
+
+#### CommentThread
+**Purpose**: the remarks officers leave on a case — NHAPOA clarifications, NOS scrutiny notes.
+**Props**: `comments` (`{ id, at, author?, authorRole?, body, unread? }[]`) · `label` (**required**) · `onSubmit` · `composerLabel` · `submitLabel` · `closedReason` · `maxLength` · `emptyText`
+**Rules**:
+- **Oldest first.** A thread is a conversation and is read downward; a log is newest-first. Getting this backwards is the most common defect in the pattern and is invisible until someone tries to follow the exchange.
+- **There is no edit control, and there will not be one.** On a departmental record a remark that can change after another officer has acted on it is not a record. A correction is a new remark.
+- **A closed thread SAYS it is closed.** `closedReason` replaces the composer with the reason; hiding the box silently is how a reader concludes the page failed to load.
+- **The character count waits until four-fifths of the limit.** From the first keystroke it is a number nobody needs, and on a live region it would announce on every keypress.
+- Without `onSubmit` the composer is not rendered at all.
+
+#### NotificationCentre
+**Purpose**: the panel behind the bell — what has happened that this officer has not seen.
+**Props**: `notifications` (`EventItem[]`, newest first) · `label` · `onMarkAllRead` · `markAllLabel` · `emptyText`
+**Rules**:
+- **The same sentence in both places.** It renders `EventList` grouped by day, so a notification and the entry on the case read identically and an officer is not matching two differently-worded summaries of one event.
+- **The unread count is announced politely** in a live region, so a screen-reader user learns three things arrived without opening the panel and counting.
+- **"Mark all as read" appears only when something is unread.** A control that does nothing most of the time is ignored on the day it matters.
+- **It does not place itself.** There is no floating variant: both bottom corners and the right wall are spoken for (`floating-element-placement.md`), so whatever opens the panel decides where it sits.
+- Empty is a GOOD state and reads like one — "Nothing new. You are up to date."
+
 #### LanguageSwitcher
 **Purpose**: the languages a page is published in, offered as links. GIGW 3.0 makes a bilingual estate an obligation, so most pages on this estate carry one.
 **Props**: `languages` (`{ code, label, href }[]`) · `current` · `label` (default "Language") · `currentLabel` (default "Current language")

@@ -1,0 +1,65 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  .ds-thread {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+  }
+
+  .ds-thread__composer {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+  }
+
+  .ds-thread__label {
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-thread__input {
+    inline-size: 100%;
+    padding: var(--sa-padding-12);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-radius);
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    resize: vertical;
+  }
+
+  .ds-thread__input:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-thread__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-12);
+  }
+
+  .ds-thread__count {
+    margin: 0;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* A closed thread states its reason where the box used to be. */
+  .ds-thread__closed {
+    margin: 0;
+    padding: var(--sa-padding-12);
+    border: var(--sa-control-border-width) dashed var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-control-radius);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+}

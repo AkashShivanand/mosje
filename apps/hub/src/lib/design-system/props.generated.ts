@@ -2894,6 +2894,70 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "CommentThreadProps": {
+    "source": "packages/design-system/components/data-display/comment-thread.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "comments",
+        "type": "ThreadComment[]",
+        "required": true,
+        "description": "Remarks, oldest first — a thread is read downward, unlike a log."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Accessible name for the thread. Required."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "closedReason",
+        "type": "string",
+        "required": false,
+        "description": "Why no further remarks can be added. Present means the composer is replaced by this sentence — a closed thread that simply hides its box leaves the reader wondering whether the page is broken."
+      },
+      {
+        "name": "composerLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Add a remark\"",
+        "description": ""
+      },
+      {
+        "name": "emptyText",
+        "type": "string",
+        "required": false,
+        "default": "\"No remarks on this application yet.\"",
+        "description": ""
+      },
+      {
+        "name": "maxLength",
+        "type": "number",
+        "required": false,
+        "default": "1000",
+        "description": "The most characters a remark may hold. The count is shown from 80% onward, not from the first keystroke."
+      },
+      {
+        "name": "onSubmit",
+        "type": "(text: string) => void",
+        "required": false,
+        "description": "Called with the trimmed text when a remark is submitted."
+      },
+      {
+        "name": "submitLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Post remark\"",
+        "description": ""
+      }
+    ]
+  },
   "ConsentLineProps": {
     "source": "packages/design-system/components/auth/auth-parts.tsx",
     "inheritsNative": false,
@@ -3726,6 +3790,51 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "DEFAULT_WAYFINDING",
         "description": "Wayfinding recommendation cards. Defaults to MoSJE standard internal destinations."
+      }
+    ]
+  },
+  "EventListProps": {
+    "source": "packages/design-system/components/data-display/event-list.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "events",
+        "type": "EventItem[]",
+        "required": true,
+        "description": "Events, newest first. The component does not sort — the order is the caller's claim."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Accessible name for the list. Required: \"Audit log\", \"Recent activity\"."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "emptyText",
+        "type": "string",
+        "required": false,
+        "default": "\"No activity recorded yet.\"",
+        "description": "What to say when there is nothing. An audit log with no entries is a real answer, not a broken panel."
+      },
+      {
+        "name": "grouping",
+        "type": "\"none\" | \"day\"",
+        "required": false,
+        "default": "\"none\"",
+        "description": "`\"day\"` puts a dated heading above each day's entries — the right shape for a long log. `\"none\"` prints the full stamp on every row."
+      },
+      {
+        "name": "unreadLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Unread\"",
+        "description": "Announced beside an entry the reader has not seen."
       }
     ]
   },
@@ -6632,6 +6741,51 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "The query, owned by `SiteHeader`. The sheet used to hold its own, so whatever the reader had typed in the masthead vanished the moment they opened the menu."
+      }
+    ]
+  },
+  "NotificationCentreProps": {
+    "source": "packages/design-system/components/data-display/notification-centre.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "notifications",
+        "type": "EventItem[]",
+        "required": true,
+        "description": "Notifications, newest first. The same shape every other event surface uses."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "emptyText",
+        "type": "string",
+        "required": false,
+        "default": "\"Nothing new. You are up to date.\"",
+        "description": ""
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "\"Notifications\"",
+        "description": "The panel's heading, and its accessible name."
+      },
+      {
+        "name": "markAllLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Mark all as read\"",
+        "description": ""
+      },
+      {
+        "name": "onMarkAllRead",
+        "type": "() => void",
+        "required": false,
+        "description": "Offered only when something is unread."
       }
     ]
   },

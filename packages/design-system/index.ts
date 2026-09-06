@@ -307,6 +307,12 @@ export type { FileItem, FileListProps, FileState } from "./components/data-displ
 export type { CarouselProps } from "./components/data-display/carousel";
 export { Figure } from "./components/data-display/figure";
 export type { FigureProps, FigureRatio } from "./components/data-display/figure";
+export { EventList } from "./components/data-display/event-list";
+export type { EventListProps, EventItem, EventTone } from "./components/data-display/event-list";
+export { CommentThread } from "./components/data-display/comment-thread";
+export type { CommentThreadProps, ThreadComment } from "./components/data-display/comment-thread";
+export { NotificationCentre } from "./components/data-display/notification-centre";
+export type { NotificationCentreProps } from "./components/data-display/notification-centre";
 export { ListGroup, ListRow } from "./components/data-display/list-group";
 export type {
   ListGroupProps,
