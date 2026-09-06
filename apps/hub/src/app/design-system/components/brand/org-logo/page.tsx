@@ -149,7 +149,7 @@ export default function OrgLogoPage(): React.JSX.Element {
               </p>
             </Callout>
             <Callout type="warning" title="A mark path written anywhere else fails the build">
-              <code>npm run check:org-logos</code> is a per-file ratchet: 99 literals across 48
+              <code>npm run check:org-logos</code> is a per-file ratchet: 83 literals across 39
               files are frozen as declared debt. A new file that writes one fails, a baselined file
               that grows fails, and one that shrinks also fails &mdash; telling you to re-baseline,
               so one surface&rsquo;s cleanup cannot be spent silently on another&rsquo;s

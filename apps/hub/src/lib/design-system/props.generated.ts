@@ -6876,6 +6876,13 @@ export const GENERATED_PROPS = {
         "description": "One line on what the portal does. `detailed` only."
       },
       {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false\n\n**`aria-disabled`, never the native attribute and never omission.** The card\nstays in the DOM, stays focusable and keeps its name, so a screen-reader user\nlearns the portal exists and that it is closed to them. Removing it instead\ntells them nothing; a natively disabled control drops out of the tab order,\nwhich tells them nothing either. Same reasoning as `Tabs`.\n\nThe `href` is dropped rather than kept-and-prevented, so middle-click and\n\"copy link address\" cannot reach a portal the reader has no route into.\n\nA disabled card owes the reader a REASON somewhere nearby — this component\ncannot know it, so say it in the surrounding copy. A card that is simply\ngreyed with no explanation reads as a bug.",
+        "description": "The portal exists but this reader cannot open it — no permission, or not yet live."
+      },
+      {
         "name": "external",
         "type": "boolean",
         "required": false,

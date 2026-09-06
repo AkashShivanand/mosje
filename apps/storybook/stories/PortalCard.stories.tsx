@@ -188,3 +188,58 @@ export const DetailedGrid: Story = {
     </ul>
   ),
 };
+
+/**
+ * DISABLED — the portal exists, this reader cannot open it.
+ *
+ * `aria-disabled`, never the native attribute and never omission: the card stays
+ * in the DOM, stays focusable and keeps its name, so a screen-reader user learns
+ * the portal is there and that it is closed to them. The `href` is dropped rather
+ * than kept-and-prevented, so middle-click and "copy link address" cannot reach a
+ * portal the reader has no route into.
+ *
+ * A disabled card owes the reader a REASON. This component cannot know it — say
+ * it in the surrounding copy, or the card just reads as a bug.
+ */
+export const Disabled: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: 16, maxWidth: 360 }}>
+      <PortalCard
+        code="SCW"
+        name="Senior Citizens Welfare"
+        href="/portals/scw"
+        path="/portals/scw"
+      />
+      <PortalCard
+        code="NOS"
+        name="National Overseas Scholarship"
+        href="/portals/nos"
+        path="/portals/nos"
+        disabled
+      />
+      <p style={{ margin: 0, fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-text-neutral-subtle)" }}>
+        National Overseas Scholarship opens for applications in June.
+      </p>
+    </div>
+  ),
+};
+
+/**
+ * Selected AND disabled — the portal you are in, which you cannot re-enter from
+ * here. The 2px rule and the check survive the mute, because they are what say
+ * *which* card this is.
+ */
+export const SelectedAndDisabled: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: 16, maxWidth: 360 }}>
+      <PortalCard
+        code="SCW"
+        name="Senior Citizens Welfare"
+        href="/portals/scw"
+        path="/portals/scw"
+        selected
+        disabled
+      />
+    </div>
+  ),
+};

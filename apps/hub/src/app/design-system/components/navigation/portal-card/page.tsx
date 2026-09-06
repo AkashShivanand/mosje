@@ -89,6 +89,18 @@ export default function PortalCardPage() {
               selected
             />
           </li>
+          {/* DISABLED — the portal exists, this reader cannot open it. Rendered
+              here beside a normal card so the mute is legible as a difference
+              rather than as a rendering fault. */}
+          <li style={{ display: "flex" }}>
+            <PortalCard
+              code="NOS"
+              name="National Overseas Scholarship"
+              href="/portals/nos"
+              org="nos"
+              disabled
+            />
+          </li>
           {/* The `external` cue, which no live portal exercises yet — so without a
               specimen here nobody would see it until the first one shipped. */}
           <li style={{ display: "flex" }}>
@@ -182,17 +194,29 @@ export default function PortalCardPage() {
               content: (
                 <section style={sectionStyle}>
                   <h2 id="example" style={h2Style}>Code Example</h2>
+                  {/* CORRECTED 2026-09-06: this example passed `logoSrc` and
+                      `planned`, NEITHER of which is a prop on this component. The
+                      mark comes from the route through the OrgLogo registry, and a
+                      portal the reader cannot open is `disabled`. A documentation
+                      page is believed because it looks authoritative. */}
                   <CodeBlock>{`<ul>
   <li>
     <PortalCard
       code="SCW"
       name="Senior Citizens Welfare"
       href="/portals/scw"
-      logoSrc="/design-system/org-logos/scw.png"
+      path="/portals/scw"
     />
   </li>
   <li>
-    <PortalCard code="NOS" name="National Overseas Scholarship" planned />
+    {/* The portal exists; this reader cannot open it. Say why nearby. */}
+    <PortalCard
+      code="NOS"
+      name="National Overseas Scholarship"
+      href="/portals/nos"
+      path="/portals/nos"
+      disabled
+    />
   </li>
 </ul>`}</CodeBlock>
                 </section>
