@@ -547,3 +547,73 @@ Two defects were found by doing the work rather than by reading it: a `"use
 client"` directive pushed below an import, which only the production build
 catches, and the SCW volunteer form's gender select carrying
 `placeholder="Male"` — a placeholder that is also one of its own options.
+
+---
+
+## Addendum 8 — the last three, and a naming decision reversed (6 September 2026)
+
+**Shadow UI is zero: 0 collisions in 0 files.** The three that remained above —
+`Button` in tg, scw and nhapoa, 127 call sites — are migrated. Neither of the
+two blockers recorded in Addendum 7 was resolved the way that addendum proposed,
+and the second reversal is the part worth keeping.
+
+### Brand — resolved by #335, and measured rather than assumed
+
+`ds/portal-navy-default` (#335) is merged, so a portal route now carries
+`data-brand="navy"` by default. Re-measured in the browser after the merge:
+`--sa-bg-brand-primary-bolder` resolves to `#003366` inside a portal, which is
+the navy the local buttons were drawing by hand. Every filled button on the six
+portal surfaces checked renders `rgb(0, 51, 102)`. The swap is therefore
+colour-preserving, which is the only reason it was safe to make in one pass.
+
+### Saffron — the proposed fix was wrong, and the name is why
+
+Addendum 7 proposed adding a `secondary` variant to the design system's Button.
+That would have been a defect. **`cmp/action/brand/secondary/*` already exists in
+the token contract and already means the OUTLINED treatment** — it is what
+`appearance="outlined"` resolves through, in code and in the Figma master. A
+filled saffron variant under the same word would give `secondary` two meanings
+in the same component, on both surfaces at once.
+
+So no variant was added. Naming the estate's secondary brand on the Button is a
+decision for a designer, not one to take in passing during a migration, and the
+Button's API is unchanged. SCW's one genuinely saffron call to action — the
+helpline — keeps its colour through a named rule in `scw.css` bound to the
+published tokens:
+
+```css
+[data-portal="scw"] .scw-cta-helpline {
+  background-color: var(--sa-bg-brand-secondary-bolder);
+  border-color: var(--sa-bg-brand-secondary-bolder);
+  color: var(--sa-on-bg-brand-secondary-bolder);
+}
+```
+
+Measured live at `rgb(195, 71, 0)` on white — the token value, not the literal
+the local button had been carrying.
+
+### The prop mapping
+
+| local | design system |
+|---|---|
+| `variant="primary"` | the default |
+| `variant="secondary"` | `appearance="outlined"` — the system's own reading of the word |
+| `variant="ghost"` | `appearance="text"` |
+
+### The merge, and the one thing it owes
+
+`packages/tokens/reference/figma-live.json` conflicted with `main`. Resolved by
+the rule already used for `$fieldChecksums`: **each collection's record comes
+from the branch that moved that collection.** `Static` is this branch's
+(`8f0b86ec:96`) because this branch created `control/track` and read the library
+back; `Space` and `Palette` are main's, which rebased the primary tiers. The
+merge had also dropped `control/track` from the name list; it is restored.
+
+A first attempt resolved the checksums without the name list and the build
+reported `control/track` as new — the value gate caught it, which is what the
+gate is for.
+
+**Owed:** a single fresh read across `Palette`, `Space` and `Static` at the next
+library sync. Each collection's record is currently true, but no one observation
+covers all three at once, and that is a weaker guarantee than the file usually
+carries.
