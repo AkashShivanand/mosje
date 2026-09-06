@@ -347,11 +347,20 @@ the focus management, the number formatting — is already decided.
 
 | Gate | Asserts |
 |---|---|
-| `check:screen-templates` | Every template proves all seven states in its stories |
-| `check:template-adoption` | Shrink-only ratchet over the 265 pages, modelled on `check:sidebar-adoption` |
+| **`check:template-adoption`** | **Live.** A shrink-only ratchet over every portal page and shell |
 | `check:ds-pages` | Each template's documentation page carries all six elements |
 | `check:docs-coverage` | Every exported template has a page |
 | `check:props` | Descriptor types are generated, never hand-written |
 
 The adoption ratchet is the one that matters. It is the difference between `SidebarNav`
 at 100% and `AppShell` at 0%.
+
+**Where it stands, 6 September 2026:** `67 / 279` portal files composed from a template,
+**212 declared in the baseline**. The baseline may only shrink — a new page that assembles
+a screen by hand fails, and a baselined file that starts using a template also fails until
+the baseline is re-recorded in the same change, so one page's migration cannot be spent
+silently on another page's regression.
+
+Both failure modes were exercised by breaking them deliberately before the gate was
+trusted, per the estate's standing rule that a check nobody has watched fail is not a
+check.

@@ -200,9 +200,16 @@ export function WorklistScreen<T extends Record<string, unknown>>({
           message the body is already giving in full. */}
       {status === "ready" ? (
         <p className="sa-screen__count">
-          {activeFilterCount > 0
-            ? `Showing ${shown.toLocaleString("en-IN")} of ${matched.toLocaleString("en-IN")} in the register.`
-            : `${shown.toLocaleString("en-IN")} in the register.`}
+          {/* Three sentences, and which one is true is decided by the numbers
+              rather than by the filter flag alone. A set that is smaller than
+              the register is worth saying so even when the reader did not
+              narrow it — that is the case a server-paged or sampled list is in,
+              and saying only "20 in the register" there would be false. */}
+          {shown === matched
+            ? `${shown.toLocaleString("en-IN")} in the register.`
+            : activeFilterCount > 0
+              ? `Showing ${shown.toLocaleString("en-IN")} of ${matched.toLocaleString("en-IN")}, filtered.`
+              : `Showing ${shown.toLocaleString("en-IN")} of ${matched.toLocaleString("en-IN")}.`}
         </p>
       ) : null}
 

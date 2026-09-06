@@ -102,6 +102,14 @@ import {
  * can send anyone to, and the estate's 265 existing pages prove people otherwise
  * reach for `useState`.
  *
+ * `sidebarOpen` and `onSidebarOpenChange` on `PortalPage` control the mobile
+ * drawer, and a real portal should pass the **`header` render-prop** instead of
+ * either: given a function, `PortalPage` hands the masthead a `PortalNavState`
+ * whose `toggle` collapses the rail above the tablet anchor and opens the drawer
+ * below it. One button, two meanings, decided once. The two props remain for a
+ * caller that needs to drive the drawer from somewhere other than the masthead;
+ * left alone, the drawer manages itself, which is what a story wants.
+ *
  * `headingLevel` is on all four screen templates and defaults to 1, because a
  * portal screen has exactly one `<h1>` and the template's title is it. Drop it
  * to 2 only where the template is rendered inside a page that already has one —

@@ -36,7 +36,15 @@ people must remember is a rule most pages break; a shape they cannot avoid is no
 
 **The estate has already proved the mechanism.** `SidebarNav` is at 100% adoption
 across 407 files because `check:sidebar-adoption` ratchets it. `AppShell` had no
-gate and sat at zero. Templates ship with a gate for that reason.
+gate and sat at zero. Templates ship with a gate for that reason:
+
+```bash
+npm run check:template-adoption            # in `npm run check`, so CI runs it
+npm run check:template-adoption:baseline   # after migrating, in the same change
+```
+
+At 6 September 2026 it stands at **67 / 279 composed, 212 in the baseline**. The
+list may only shrink.
 
 ## 2. The rule
 

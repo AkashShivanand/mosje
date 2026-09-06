@@ -8008,9 +8008,9 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "header",
-        "type": "React.ReactNode",
+        "type": "React.ReactNode | ((nav: PortalNavState) => React.ReactNode)",
         "required": true,
-        "description": "The masthead. Pass `<SiteHeader variant=\"portal\" … />`."
+        "description": "The masthead. Pass `<SiteHeader variant=\"portal\" … />`. Pass a FUNCTION to let it drive the rail: it receives {@link PortalNavState} and should wire `navExpanded={nav.open}` and `onToggleNav={nav.toggle}`. A plain node still works for a masthead with no menu button."
       },
       {
         "name": "portal",
@@ -8063,6 +8063,12 @@ export const GENERATED_PROPS = {
         "description": "The rail's groups, before role filtering. Omit for a portal with no rail."
       },
       {
+        "name": "onSidebarOpenChange",
+        "type": "(open: boolean) => void",
+        "required": false,
+        "description": ""
+      },
+      {
         "name": "pathname",
         "type": "string",
         "required": false,
@@ -8075,6 +8081,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "Render a skeleton instead of `children`, while the app hydrates."
+      },
+      {
+        "name": "sidebarOpen",
+        "type": "boolean",
+        "required": false,
+        "description": "Whether the mobile navigation drawer is open. **Controlled when you pass it, and you almost always should**: the masthead carries the menu button, the masthead is a slot, and a drawer the header cannot open is a drawer a citizen on a phone cannot reach. Pass the same state to `SiteHeader`'s `navExpanded` / `onToggleNav` and to this. Left uncontrolled it still works — the rail's own controls drive it — which is what a story or a specimen wants."
       }
     ]
   },
