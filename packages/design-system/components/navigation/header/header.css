@@ -231,6 +231,23 @@
     background-color: var(--sa-bg-neutral-base);
   }
 
+  /* PORTAL: THE BRAND ROW CLOSES WITH A LINE. Figma's Navbar/Portal Default variants
+     carry a 1px border/neutral/subtle stroke on the masthead's bottom edge
+     (2026-09-06, all three devices, weight bound to stroke/1). A portal usually has
+     no navigation row, so without it the white brand row ran straight into a white
+     page with nothing to say where the chrome ended. The website does not need it —
+     its navigation row draws its own top border directly under the brand row — and a
+     portal that DOES pass `nav` drops that row's top border so the two lines never
+     stack into 2px. The condensed bar draws the same line for itself (`.ds-hdr-cond`),
+     so the edge is there in both states. */
+  .ds-hdr[data-variant="portal"] .ds-hdr-brand {
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  .ds-hdr[data-variant="portal"] .ds-hdr-nav {
+    border-top: 0;
+  }
+
   .ds-hdr-brand__in {
     margin: 0 auto;
     display: flex;
