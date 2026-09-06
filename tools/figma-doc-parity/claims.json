@@ -1334,7 +1334,7 @@
       "expect": [
         {
           "kind": "text",
-          "value": "138 variables"
+          "value": "139 variables"
         },
         {
           "kind": "source",
