@@ -43,7 +43,7 @@ export default function SplitButtonPage(): React.JSX.Element {
       name="Split Button"
       status="Stable"
       summary="One default action with its alternatives one press away. It is two real buttons joined by ButtonGroup — never one control that behaves differently depending on which half was hit."
-      figma={{ absent: "No master in the SAMAVESH library yet — the gap, and the order the seventeen are being closed in, are recorded in docs/audit/design-system-completeness-2026-09-06.md." }}
+      figma={{ node: "splitButton" }}
       specimen={<SplitPlayground />}
       propsFrom="SplitButtonProps"
       a11y={A11Y}

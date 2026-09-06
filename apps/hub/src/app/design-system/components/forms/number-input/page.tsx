@@ -43,7 +43,7 @@ export default function NumberInputPage(): React.JSX.Element {
       name="Number Input"
       status="Stable"
       summary="A quantity, an amount, a count. It is a text field carrying role=spinbutton rather than input type=number, because the native control silently discards what it cannot parse — including the way amounts are written in India."
-      figma={{ absent: "No master in the SAMAVESH library yet — the gap, and the order the seventeen are being closed in, are recorded in docs/audit/design-system-completeness-2026-09-06.md." }}
+      figma={{ node: "numberInput" }}
       specimen={<NumberPlayground />}
       propsFrom="NumberInputProps"
       a11y={A11Y}

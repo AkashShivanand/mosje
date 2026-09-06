@@ -43,7 +43,7 @@ export default function FileListPage(): React.JSX.Element {
       name="File List"
       status="Stable"
       summary="The attachments on an application — what has been uploaded, what state each one is in, and what can be done about it. It is a list of states, not a list of names."
-      figma={{ absent: "No master in the SAMAVESH library yet — the gap, and the order the seventeen are being closed in, are recorded in docs/audit/design-system-completeness-2026-09-06.md." }}
+      figma={{ node: "fileList" }}
       specimen={<FilePlayground />}
       propsFrom="FileListProps"
       a11y={A11Y}

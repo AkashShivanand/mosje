@@ -42,7 +42,7 @@ export default function NotificationCentrePage(): React.JSX.Element {
       name="Notification Centre"
       status="Stable"
       summary="The panel behind the bell — what has happened that this officer has not seen. It renders Event List grouped by day, so a notification and the same entry on the case itself read identically."
-      figma={{ absent: "No master in the SAMAVESH library yet — the gap, and the order the seventeen are being closed in, are recorded in docs/audit/design-system-completeness-2026-09-06.md." }}
+      figma={{ absent: "No master, deliberately — this is Event List's row grouped by day, and a second row style for it is how one object acquires two vocabularies. The decision is recorded on Event List's component record in the SAMAVESH library." }}
       specimen={<NoticePlayground />}
       propsFrom="NotificationCentreProps"
       a11y={A11Y}

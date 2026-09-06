@@ -122,6 +122,18 @@ export const FIGMA_NODES = {
   // may exist. The department chose the code's model in each case.
   // Built 6 September 2026, alongside the code. Each id is the page's
   // — Documentation frame, which is where a designer should land.
+  numberInput: "57605:772",
+  dateRangePicker: "57613:799",
+  signaturePad: "57621:774",
+  splitButton: "57606:764",
+  backToTop: "57608:747",
+  bulkActionsBar: "57609:761",
+  fileList: "57611:777",
+  tree: "57614:785",
+  transferList: "57616:832",
+  scheduleGrid: "57618:800",
+  videoTile: "57620:781",
+  cookieConsent: "57622:780",
   languageSwitcher: "57597:737",
   inlineEdit: "57599:772",
   eventList: "57600:48772",

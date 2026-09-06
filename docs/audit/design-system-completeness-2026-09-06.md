@@ -331,3 +331,69 @@ Each of these is a deliberate deferral with a stated reason, not an omission.
   extends-resolution only followed base interfaces whose names end in `Props`, so it
   reported four declared Slider props as undeclared. Both fixed; the gate was then
   broken deliberately to confirm it still fails.
+
+
+---
+
+## Addendum 4 — the patterns and the masters, both closed (6 September 2026)
+
+### Condition 2 is now met by building, not by recording
+
+All nineteen patterns from §4 ship from the barrel. The eleven that Addendum 3
+recorded as deferred were built the same day:
+
+`EventList` · `CommentThread` · `NotificationCentre` · `DateRangePicker` ·
+`InlineEdit` · `Tree` · `TransferList` · `ScheduleGrid` · `VideoTile` ·
+`SignaturePad` · `CookieConsent`.
+
+Three of the deferrals turned out to be answerable rather than blocked, and the
+answers are the interesting part:
+
+| Recorded as | What it turned out to be |
+|---|---|
+| Comment Thread, Audit Log and Notification Centre are three components | **One object seen three ways.** `EventList` is the row; the other two compose it. There is no second row style, and their Figma pages are deliberately absent for the same reason. |
+| Inline Edit is blocked on a product decision — optimistic or confirmed | **Confirmed, and not configurable.** An optimistic edit that reverts on failure is a data-integrity problem on a departmental record. |
+| Signature Pad is blocked on a legal answer | **Still blocked, and now unavoidably so.** `declaration` is a required prop, so a form cannot ship without the Department writing down what is attested to; and the typed alternative cannot be switched off, because drawing is a drag. |
+
+One deferral was wrong on its facts. The audit said the estate sets no optional
+cookie and so should not have a `CookieConsent` at all — while the website has
+been shipping its own hand-rolled banner throughout. The shadow-UI gate caught it
+the moment the barrel gained the name. The component now tells a **notice** from
+a **choice**, and the website's banner is that component rather than a copy of it.
+
+### Condition 5 — fourteen Figma masters, and two deliberate absences
+
+Every component that should have a master now has one, each on its own page with
+a documentation frame and a component record, each carded on the Index with a
+real preview and a status derived from the page:
+
+`LanguageSwitcher` · `InlineEdit` · `EventList` · `NumberInput` · `SplitButton` ·
+`BackToTop` · `BulkActionsBar` · `FileList` · `DateRangePicker` · `Tree` ·
+`TransferList` · `ScheduleGrid` · `VideoTile` · `SignaturePad` · `CookieConsent`.
+
+`CommentThread` and `NotificationCentre` have none, deliberately, and their web
+pages say so with the reason rather than pointing at an audit.
+
+The library went from 74 content pages to 86 and from 204 published components to
+216. Fifty-three component pages now carry a documentation frame with an
+arrangements section, against forty-one before this pass.
+
+### What drawing the masters caught
+
+Five divergences between the drawing and the running code, none of which an
+inspection of either half alone would have found:
+
+- the language links were not underlined at rest;
+- the Event List action word was regular where the code sets it semibold;
+- the Bulk Actions Bar's *Return for correction* had lost its warning tone;
+- a File List specimen described a photograph as an income certificate;
+- a Transfer List specimen claimed six mapped districts while drawing two.
+
+### What is left
+
+| Item | State |
+|---|---|
+| Code Connect templates for the fifteen new masters | Not written. Each component record says so. |
+| Shadow UI | 37 collisions in 14 files. Three portals still ship their own Button, Card and Stepper. |
+| `DatePicker` and `Button` sets | Both predate the rebuild, and two new masters draw their own halves rather than instancing them. Each record names the swap that should follow. |
+| Whether the package may leave the monorepo | `private: true`. The department's call, not a technical one. |

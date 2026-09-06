@@ -50,7 +50,7 @@ export default function TransferListPage(): React.JSX.Element {
       name="Transfer List"
       status="Stable"
       summary="Two lists and the traffic between them — Surveyor Mappings, Roles & Permissions. Each side is a list of checkboxes, because a transfer list has no WAI-ARIA pattern and inventing a keyboard model is worse than using controls every reader already knows."
-      figma={{ absent: "No master in the SAMAVESH library yet — the gap, and the order the seventeen are being closed in, are recorded in docs/audit/design-system-completeness-2026-09-06.md." }}
+      figma={{ node: "transferList" }}
       specimen={<TransferPlayground />}
       propsFrom="TransferListProps"
       a11y={A11Y}

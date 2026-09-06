@@ -42,7 +42,7 @@ export default function CookieConsentPage(): React.JSX.Element {
       name="Cookie Consent"
       status="Stable"
       summary="The cookie decision. Where every category is required it renders a notice with one acknowledgement; where some are optional it renders a real choice, with rejecting exactly as easy as accepting."
-      figma={{ absent: "No master in the SAMAVESH library yet — the gap, and the order the seventeen are being closed in, are recorded in docs/audit/design-system-completeness-2026-09-06.md." }}
+      figma={{ node: "cookieConsent" }}
       specimen={<CookiesPlayground />}
       propsFrom="CookieConsentProps"
       a11y={A11Y}

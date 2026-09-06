@@ -50,7 +50,7 @@ export default function DateRangePickerPage(): React.JSX.Element {
       name="Date Range Picker"
       status="Stable"
       summary="A period — the two dates a report, a filter or a sanction window runs between. It is two Date Pickers in a named group plus the presets a dashboard actually uses, never a second calendar implementation."
-      figma={{ absent: "No master in the SAMAVESH library yet — the gap, and the order the seventeen are being closed in, are recorded in docs/audit/design-system-completeness-2026-09-06.md." }}
+      figma={{ node: "dateRangePicker" }}
       specimen={<RangePlayground />}
       propsFrom="DateRangePickerProps"
       a11y={A11Y}

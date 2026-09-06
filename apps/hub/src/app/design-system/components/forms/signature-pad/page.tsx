@@ -42,7 +42,7 @@ export default function SignaturePadPage(): React.JSX.Element {
       name="Signature Pad"
       status="Stable"
       summary="A signature on a consent form, given by drawing or by typing. The typed alternative is not optional and cannot be switched off."
-      figma={{ absent: "No master in the SAMAVESH library yet — the gap, and the order the seventeen are being closed in, are recorded in docs/audit/design-system-completeness-2026-09-06.md." }}
+      figma={{ node: "signaturePad" }}
       specimen={<SignPlayground />}
       propsFrom="SignaturePadProps"
       a11y={A11Y}
