@@ -12,7 +12,7 @@ import { ActivityCorner } from "@/components/website/ActivityCorner";
 import { SocialMedia } from "@/components/website/SocialMedia";
 import { SupportSection } from "@/components/website/SupportSection";
 import { LogoStrip } from "@/components/website/LogoStrip";
-import { SiteFooter } from "@/components/website/SiteFooter";
+import { WebsiteSiteFooter } from "@/components/website/SiteFooter";
 import { ImportantLinks } from "@/components/website/ImportantLinks";
 import { WebsiteCookieNotice } from "@/components/website/cookie-notice";
 import { resolveCookieBannerEnabled } from "@/lib/cookie-banner/resolve";
@@ -42,7 +42,7 @@ export default async function Home() {
         <SupportSection />
         <LogoStrip />
       </main>
-      <SiteFooter />
+      <WebsiteSiteFooter />
       <ImportantLinks />
       {/* Switched off from /admin/portals while the banner is redesigned. */}
       {cookieBanner && <WebsiteCookieNotice />}

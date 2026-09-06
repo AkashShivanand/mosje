@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HubSiteHeader } from "@/components/hub-site-header";
-import { SiteFooter } from "@/components/site-footer";
+import { HubFooter } from "@/components/site-footer";
 import auditRaw from "@/data/scw-audit.json";
 import { Icon } from "@mosje/design-system";
 
@@ -197,7 +197,7 @@ export default function ScwReportPage() {
         </div>
       </main>
 
-      <SiteFooter />
+      <HubFooter />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { Header } from "@/components/website/Header";
 import { WebsiteSamaveshBanner } from "@/components/website/website-samavesh-banner";
-import { SiteFooter } from "@/components/website/SiteFooter";
+import { WebsiteSiteFooter } from "@/components/website/SiteFooter";
 import { ImportantLinks } from "@/components/website/ImportantLinks";
 import { ErrorView } from "@mosje/design-system";
 
@@ -25,7 +25,7 @@ export default function WebsiteNotFound() {
           />
         </div>
       </main>
-      <SiteFooter />
+      <WebsiteSiteFooter />
       <ImportantLinks />
     </>
   );

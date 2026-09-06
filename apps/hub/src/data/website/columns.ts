@@ -1,7 +1,7 @@
-import type { DataTableColumn } from "@/components/website/ui/data-table";
+import type { ListingTableColumn } from "@/components/website/ui/data-table";
 
 /** T2 — document/listing table columns (Title, Organisation, Year, Size, Date, Action). */
-export const documentColumns: DataTableColumn[] = [
+export const documentColumns: ListingTableColumn[] = [
   { key: "title", label: "Title", sortable: true, align: "left", className: "min-w-[260px] font-medium text-ink" },
   { key: "org", label: "Organisation", sortable: true, align: "center" },
   { key: "year", label: "Year", sortable: true, align: "center" },
@@ -11,21 +11,21 @@ export const documentColumns: DataTableColumn[] = [
 ];
 
 /** T2 — shared document-listing columns (Title, Published, Action) for the 10 document pages. */
-export const documentListColumns: DataTableColumn[] = [
+export const documentListColumns: ListingTableColumn[] = [
   { key: "title", label: "Title", sortable: true, align: "left", className: "min-w-[360px] font-medium text-ink" },
   { key: "date", label: "Published", sortable: true, align: "center", className: "min-w-[120px]" },
   { key: "action", label: "Action", align: "center", type: "link", hrefKey: "href", linkLabel: "View" },
 ];
 
 /** T2 — simpler listing (Title, Date, Action) for notices/circulars/policies. */
-export const noticeColumns: DataTableColumn[] = [
+export const noticeColumns: ListingTableColumn[] = [
   { key: "title", label: "Title", sortable: true, align: "left", className: "min-w-[320px] font-medium text-ink" },
   { key: "date", label: "Published", sortable: true, align: "center" },
   { key: "action", label: "Action", align: "center", type: "link", hrefKey: "href", linkLabel: "View" },
 ];
 
 /** T3 — directory/contacts table columns. */
-export const directoryColumns: DataTableColumn[] = [
+export const directoryColumns: ListingTableColumn[] = [
   { key: "sno", label: "S.No.", align: "center" },
   { key: "name", label: "Name", sortable: true, align: "left", className: "min-w-[180px] font-medium text-ink" },
   { key: "designation", label: "Designation", sortable: true, align: "left", className: "min-w-[200px]" },
@@ -36,7 +36,7 @@ export const directoryColumns: DataTableColumn[] = [
 ];
 
 /** T3 — grant document listings (Title, Published, Size, Action). */
-export const grantDocumentColumns: DataTableColumn[] = [
+export const grantDocumentColumns: ListingTableColumn[] = [
   { key: "sno", label: "S.No.", align: "center" },
   { key: "title", label: "Title", sortable: true, align: "left", className: "min-w-[380px] font-medium text-ink" },
   { key: "date", label: "Published", sortable: true, align: "center", className: "min-w-[120px]" },
@@ -51,7 +51,7 @@ export const grantDocumentColumns: DataTableColumn[] = [
  * wording, not a file, and inventing a "View" link with nothing behind it would be worse
  * than showing none.
  */
-export const ngoEnforcementColumns: DataTableColumn[] = [
+export const ngoEnforcementColumns: ListingTableColumn[] = [
   { key: "sno", label: "S.No.", align: "center" },
   { key: "name", label: "Name of the NGO", sortable: true, align: "left", className: "min-w-[320px] font-medium text-ink" },
   { key: "action", label: "Action Taken by the Ministry", align: "left", className: "min-w-[280px]" },

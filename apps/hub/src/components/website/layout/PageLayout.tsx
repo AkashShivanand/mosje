@@ -1,6 +1,6 @@
 import { Header } from "@/components/website/Header";
 import { WebsiteSamaveshBanner } from "@/components/website/website-samavesh-banner";
-import { SiteFooter } from "@/components/website/SiteFooter";
+import { WebsiteSiteFooter } from "@/components/website/SiteFooter";
 import { ImportantLinks } from "@/components/website/ImportantLinks";
 import { PageHero, type PageHeroProps } from "./PageHero";
 
@@ -29,7 +29,7 @@ export function PageLayout({
         {children}
       </main>
       {/* [DBIM 5.6] The footer's "Last Updated On" must be the respective page's date. */}
-      <SiteFooter lastUpdated={hero.lastUpdated} />
+      <WebsiteSiteFooter lastUpdated={hero.lastUpdated} />
       <ImportantLinks />
     </>
   );

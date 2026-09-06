@@ -1,7 +1,7 @@
 "use client";
 
 import { tableScreens } from "@/lib/eutthan/portal-data";
-import { CellContent, Pagination } from "./eutthan-cells";
+import { CellContent, StaticPager } from "./eutthan-cells";
 import { Icon } from "@mosje/design-system";
 
 export function PfmsLogsPage() {
@@ -76,7 +76,7 @@ export function PfmsLogsPage() {
             </tbody>
           </table>
         </div>
-        <Pagination total={screen.totalItems} />
+        <StaticPager total={screen.totalItems} />
       </div>
     </div>
   );

@@ -1,7 +1,4 @@
 {
-  "apps/hub/src/components/eutthan/eutthan-cells.tsx": [
-    "Pagination"
-  ],
   "apps/hub/src/components/nhapoa/ui.tsx": [
     "Button",
     "Card",
@@ -19,12 +16,6 @@
     "Select",
     "Stepper"
   ],
-  "apps/hub/src/components/site-footer.tsx": [
-    "SiteFooter"
-  ],
-  "apps/hub/src/components/smile-admin/shell/footer.tsx": [
-    "Footer"
-  ],
   "apps/hub/src/components/tg/ui.tsx": [
     "Button",
     "Card",
@@ -32,11 +23,5 @@
     "Select",
     "Stepper",
     "Textarea"
-  ],
-  "apps/hub/src/components/website/SiteFooter.tsx": [
-    "SiteFooter"
-  ],
-  "apps/hub/src/components/website/ui/data-table.tsx": [
-    "DataTable"
   ]
 }

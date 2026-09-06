@@ -13,7 +13,7 @@ import { RecentDocuments } from "@/components/website/RecentDocuments";
 import { ActivityCorner } from "@/components/website/ActivityCorner";
 import { SocialMedia } from "@/components/website/SocialMedia";
 import { LogoStrip } from "@/components/website/LogoStrip";
-import { SiteFooter } from "@/components/website/SiteFooter";
+import { WebsiteSiteFooter } from "@/components/website/SiteFooter";
 import { NashaMuktBharat } from "@/components/website/nmba/NashaMuktBharat";
 
 type Option = "A" | "B" | "C";
@@ -82,7 +82,7 @@ export default function NmbaPlacementPreview() {
         <SocialMedia />
         <LogoStrip />
       </main>
-      <SiteFooter />
+      <WebsiteSiteFooter />
     </>
   );
 }

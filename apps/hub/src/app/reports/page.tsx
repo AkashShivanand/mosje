@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { HubSiteHeader } from "@/components/hub-site-header";
-import { SiteFooter } from "@/components/site-footer";
+import { HubFooter } from "@/components/site-footer";
 import { ReportsExplorer } from "@/components/reports-explorer";
 
 export const metadata: Metadata = {
@@ -55,7 +55,7 @@ export default function ReportsPage() {
         </div>
       </main>
 
-      <SiteFooter />
+      <HubFooter />
     </div>
   );
 }

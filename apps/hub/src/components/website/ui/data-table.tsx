@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { Icon, Link, Search } from "@mosje/design-system";
 
-export interface DataTableColumn {
+export interface ListingTableColumn {
   key: string;
   label: string;
   sortable?: boolean;
@@ -20,7 +20,7 @@ export interface DataTableColumn {
   className?: string;
 }
 
-function Cell({ col, row }: { col: DataTableColumn; row: Record<string, unknown> }) {
+function Cell({ col, row }: { col: ListingTableColumn; row: Record<string, unknown> }) {
   if (col.render) return <>{col.render(row[col.key], row)}</>;
   if (col.type === "link") {
     const href = String(row[col.hrefKey ?? "href"] ?? "#");
@@ -39,9 +39,9 @@ function Cell({ col, row }: { col: DataTableColumn; row: Record<string, unknown>
   return <>{String(row[col.key] ?? "")}</>;
 }
 
-export interface DataTableProps {
+export interface ListingTableProps {
   caption: string;
-  columns: DataTableColumn[];
+  columns: ListingTableColumn[];
   rows: Record<string, unknown>[];
   searchKeys?: string[];
   searchPlaceholder?: string;
@@ -51,14 +51,27 @@ export interface DataTableProps {
 type SortDir = "asc" | "desc";
 
 /** Accessible, searchable, sortable, paginated table (WCAG 2.1 AA + DBIM table conventions). */
-export function DataTable({
+/**
+ * The website's listing table — searchable, sortable, paginated.
+ *
+ * It is NOT the design system's `DataTable`, and it cannot be until that
+ * component gains a SERIALISABLE cell type. The website's listing pages are
+ * server components: `data/website/columns.ts` is imported by a server page, so
+ * a column cannot carry a `render` function, which is the design system's only
+ * escape hatch. Hence `type: "link"` with `hrefKey` and `linkLabel` — a
+ * declarative cell a server page can describe.
+ *
+ * Give the design system's table a declarative cell type and this becomes a
+ * composition of `Search` and `DataTable` rather than a second implementation.
+ */
+export function ListingTable({
   caption,
   columns,
   rows,
   searchKeys,
   searchPlaceholder = "Search…",
   pageSize = 10,
-}: DataTableProps) {
+}: ListingTableProps) {
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<SortDir>("asc");

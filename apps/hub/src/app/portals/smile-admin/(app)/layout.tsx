@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Header } from "@/components/smile-admin/shell/header";
 import { Sidebar } from "@/components/smile-admin/shell/sidebar";
-import { Footer } from "@/components/smile-admin/shell/footer";
+import { SmileFooter } from "@/components/smile-admin/shell/footer";
 import { MobileNav } from "@/components/smile-admin/shell/mobile-nav";
 import { useApp } from "@/store/smile-admin/app-context";
 
@@ -54,7 +54,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
       </div>
-      <Footer />
+      <SmileFooter />
       <MobileNav />
     </div>
   );

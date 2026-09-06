@@ -1,6 +1,6 @@
 import { Icon } from "@mosje/design-system";
 import { HubSiteHeader } from "@/components/hub-site-header";
-import { SiteFooter } from "@/components/site-footer";
+import { HubFooter } from "@/components/site-footer";
 import { EstateField } from "@/components/estate-field";
 import { resolvePortals } from "@/lib/registry/resolve";
 
@@ -181,7 +181,7 @@ export default async function HomePage() {
         </section>
       </main>
 
-      <SiteFooter />
+      <HubFooter />
     </div>
   );
 }

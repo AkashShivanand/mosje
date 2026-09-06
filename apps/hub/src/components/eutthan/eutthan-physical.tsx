@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { portalLink } from "./eutthan-shared";
 import { tableScreens } from "@/lib/eutthan/portal-data";
-import { Pagination } from "./eutthan-cells";
+import { StaticPager } from "./eutthan-cells";
 import { Icon } from "@mosje/design-system";
 
 export function PhysicalProgressPage() {
@@ -78,7 +78,7 @@ export function PhysicalProgressPage() {
             </tbody>
           </table>
         </div>
-        <Pagination total={0} />
+        <StaticPager total={0} />
       </div>
     </div>
   );
