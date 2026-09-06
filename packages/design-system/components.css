@@ -32,6 +32,7 @@
 @import "./components/forms/label.css";
 @import "./components/forms/media-gallery-input.css";
 @import "./components/forms/media-upload.css";
+@import "./components/forms/number-input.css";
 @import "./components/forms/password-input.css";
 @import "./components/forms/radio.css";
 @import "./components/forms/search.css";
@@ -101,6 +102,7 @@
 @import "./components/auth/portal-login-hero.css";
 @import "./components/auth/portal-login-template.css";
 @import "./components/utilities/accessibility-bar.css";
+@import "./components/utilities/back-to-top.css";
 @import "./components/utilities/live-region.css";
 @import "./components/utilities/ux4g-accessibility-widget.css";
 @import "./demo/demo-accounts-panel.css";

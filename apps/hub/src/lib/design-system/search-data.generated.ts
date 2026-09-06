@@ -162,6 +162,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Back to Top — Design System",
+    "section": "Utilities",
+    "href": "/design-system/components/utilities/back-to-top",
+    "keywords": "back to top — design system utilities why it sits at the top of the stack it moves focus, not just the page why 2.4.3 is not on the checklist absent until it is useful example motion is asked about at the moment of the press  tokens wcag accessibility",
+    "description": "The control that returns a reader to the top of a long page. It sits at the top of the corner rail and moves focus as well as the scroll position.",
+    "type": "component",
+    "iconName": "build"
+  },
+  {
     "title": "Badge — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/badge",
@@ -1102,6 +1111,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "navigation"
   },
   {
+    "title": "Number Input — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/number-input",
+    "keywords": "number input — design system forms & inputs empty is not zero committing on blur, and forgiving separators the steppers are never the only route example the spinbutton contract  tokens wcag accessibility",
+    "description": "A quantity, amount or count. A text field carrying role=spinbutton rather than input type=number, which silently discards what it cannot parse.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Opacity",
     "section": "Foundations",
     "href": "/design-system/foundations/opacity",
@@ -1512,6 +1530,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A small, axis-free line showing the shape of a recent trend, sized to sit inside a table row, a card corner or a metric.",
     "type": "component",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "Split Button — Design System",
+    "section": "Actions",
+    "href": "/design-system/components/actions/split-button",
+    "keywords": "split button — design system actions two buttons, not one it draws no seam of its own only where there is a default example two controls need two names  tokens wcag accessibility",
+    "description": "One default action with its alternatives one press away — two real buttons joined by ButtonGroup, never one control that behaves differently depending on which half was hit.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "SSO Button — Design System",

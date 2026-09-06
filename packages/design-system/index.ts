@@ -48,6 +48,8 @@ export type { StickyRangeOptions, StickyState } from "./foundations/sticky-range
 // ---- Components: Icon -------------------------------------------------------
 // Material Symbols Rounded, weight 300 — the official icon system for all MoSJE apps.
 // Load the font once in your app root: import "@mosje/design-system/icons.css"
+export { BackToTop } from "./components/utilities/back-to-top";
+export type { BackToTopProps } from "./components/utilities/back-to-top";
 export { Icon } from "./components/utilities/icon";
 export type { IconProps } from "./components/utilities/icon";
 
@@ -71,6 +73,8 @@ export { IconButton } from "./components/actions/icon-button";
 export type { IconButtonProps } from "./components/actions/icon-button";
 export { ButtonGroup } from "./components/actions/button-group";
 export { Menu } from "./components/actions/menu";
+export { SplitButton } from "./components/actions/split-button";
+export type { SplitButtonProps } from "./components/actions/split-button";
 export type {
   MenuEntry,
   MenuItem,
@@ -180,6 +184,8 @@ export type {
   BiometricModality,
   BiometricState,
 } from "./components/forms/biometric-capture";
+export { NumberInput } from "./components/forms/number-input";
+export type { NumberInputProps } from "./components/forms/number-input";
 export { TimePicker } from "./components/forms/time-picker";
 export type { TimePickerProps } from "./components/forms/time-picker";
 export { TimeSlot } from "./components/forms/time-slot";

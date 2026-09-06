@@ -717,6 +717,32 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "BackToTopProps": {
+    "source": "packages/design-system/components/utilities/back-to-top.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "\"Back to top\"",
+        "description": ""
+      },
+      {
+        "name": "showAfter",
+        "type": "number",
+        "required": false,
+        "default": "800",
+        "description": "How far down the page it appears, in pixels. Below this the control is not rendered at all — a control that does nothing is a control in the way."
+      }
+    ]
+  },
   "BadgeProps": {
     "source": "packages/design-system/components/feedback/badge.tsx",
     "inheritsNative": true,
@@ -6475,6 +6501,120 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "NumberInputProps": {
+    "source": "packages/design-system/components/forms/number-input.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Always visible. A number field with only a placeholder is a guess."
+      },
+      {
+        "name": "onValueChange",
+        "type": "(value: number | null) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "number | null",
+        "required": true,
+        "description": "The value, or `null` when the field is empty. Empty is not zero."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false,
+        "description": "Shown under the field, and announced."
+      },
+      {
+        "name": "hideSteppers",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Hide the increment and decrement buttons."
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Sets the error state without a message, so spreading FormField's object degrades rather than breaks."
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "min",
+        "type": "number",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "precision",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Decimal places the value is held and shown to."
+      },
+      {
+        "name": "prefix",
+        "type": "string",
+        "required": false,
+        "description": "Rendered inside the field before the number — \"₹\". Decorative; the label carries the meaning."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "step",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": "How much the steppers and the arrow keys move."
+      },
+      {
+        "name": "suffix",
+        "type": "string",
+        "required": false,
+        "description": "Rendered inside the field after the number — \"%\", \"km\". Decorative."
+      }
+    ]
+  },
   "OrgLogoProps": {
     "source": "packages/design-system/components/brand/org-logo.tsx",
     "inheritsNative": true,
@@ -9387,6 +9527,69 @@ export const GENERATED_PROPS = {
         "type": "number",
         "required": false,
         "default": "96",
+        "description": ""
+      }
+    ]
+  },
+  "SplitButtonProps": {
+    "source": "packages/design-system/components/actions/split-button.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The default action's label — the one most people want."
+      },
+      {
+        "name": "items",
+        "type": "MenuEntry[]",
+        "required": true,
+        "description": "The alternatives, offered from the attached trigger."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the pair and the menu — \"Approve this application\". Required for the same reason `Menu`'s and `ButtonGroup`'s are: an unnamed group announces four loose buttons, and an unnamed menu says nothing about what has opened."
+      },
+      {
+        "name": "onClick",
+        "type": "() => void",
+        "required": true,
+        "description": "Called when the default action is chosen."
+      },
+      {
+        "name": "onSelect",
+        "type": "(id: string) => void",
+        "required": true,
+        "description": "Called with the chosen alternative's `id`."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "size",
+        "type": "ButtonProps[\"size\"]",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "variant",
+        "type": "ButtonProps[\"variant\"]",
+        "required": false,
+        "default": "\"primary\"",
         "description": ""
       }
     ]

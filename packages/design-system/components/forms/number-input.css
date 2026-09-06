@@ -1,0 +1,141 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Number input
+     A text field carrying role="spinbutton", with optional affixes and steppers.
+     ============================================================================ */
+
+  .ds-number {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-number__label {
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .ds-number__required {
+    margin-inline-start: var(--sa-inline-4);
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  .ds-number__hint {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+  }
+
+  .ds-number__control {
+    display: flex;
+    align-items: stretch;
+    margin-block-start: var(--sa-stack-4);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-radius);
+    background-color: var(--sa-bg-neutral-base);
+    /* The ring goes on the WRAPPER, not the input: the affixes and the steppers
+       are inside the field's visible boundary, and a ring around the input alone
+       would draw a box inside a box. */
+    overflow: hidden;
+  }
+
+  .ds-number__control:focus-within {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-number__control--error {
+    border-color: var(--sa-border-status-error-base);
+  }
+
+  .ds-number__control--disabled {
+    background-color: var(--sa-bg-neutral-disabled);
+  }
+
+  .ds-number__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: var(--sa-control-height-md);
+    padding: 0 var(--sa-padding-12);
+    border: 0;
+    background: transparent;
+    color: var(--sa-text-neutral-bolder);
+    font-family: inherit;
+    font-size: var(--sa-type-body-2-size);
+    /* Figures are columns; tabular stops the field jittering as it is typed and
+       lines amounts up when several sit in a row. */
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .ds-number__input:focus-visible {
+    outline: none;
+  }
+
+  .ds-number__input:disabled {
+    color: var(--sa-text-neutral-disabled);
+    cursor: not-allowed;
+  }
+
+  .ds-number__affix {
+    display: inline-flex;
+    align-items: center;
+    padding-inline: var(--sa-padding-12);
+    background-color: var(--sa-bg-neutral-subtle);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    white-space: nowrap;
+  }
+
+  .ds-number__steppers {
+    display: flex;
+    flex-direction: column;
+    border-inline-start: var(--sa-cmp-divider-width) solid var(--sa-border-neutral-subtle);
+  }
+
+  .ds-number__step {
+    flex: 1 1 0;
+    width: var(--sa-control-height-sm);
+    padding: 0;
+    border: 0;
+    border-block-end: var(--sa-cmp-divider-width) solid var(--sa-border-neutral-subtle);
+    background-color: var(--sa-bg-neutral-subtle);
+    color: var(--sa-text-neutral-base);
+    font-family: inherit;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    cursor: pointer;
+  }
+
+  .ds-number__step:last-child {
+    border-block-end: 0;
+  }
+
+  .ds-number__step:hover:not(:disabled) {
+    background-color: var(--sa-bg-neutral-hover);
+  }
+
+  .ds-number__step:disabled {
+    color: var(--sa-text-neutral-disabled);
+    cursor: not-allowed;
+  }
+
+  .ds-number__error {
+    margin: 0;
+    color: var(--sa-text-status-error-bolder);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+  }
+}

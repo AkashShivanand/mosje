@@ -1906,6 +1906,16 @@ option sound like the normal one. All 76 instances survived, verified after the 
 **Still divergent, recorded not hidden**: the Figma set has **no intent axis and no `Tone`**, so
 a `danger` or inverse icon button cannot be drawn even though the code supports both.
 
+#### SplitButton
+**Purpose**: one default action with its alternatives one press away — "Approve", beside a trigger offering "Approve with remarks".
+**Props**: `children` (the default action's label) · `onClick` · `items` (`MenuEntry[]`) · `onSelect(id)` · `label` (**required**) · `variant` · `size` · `disabled`
+**Rules**:
+- **It is TWO buttons, not one.** The default action activates on Enter and Space; the trigger is a separate control with its own name and its own `aria-expanded`. Merging them into one control that behaves differently depending on which half was hit is how this pattern is usually built, and it is unusable from a keyboard — there is no key press for "the right-hand eighth of this button".
+- **It draws NO seam of its own.** It composes `ButtonGroup attached`, so the join, the collapsed inner corners and the group's role and name are the ones the estate already publishes and cannot drift from them.
+- **Only where there IS a default.** The wide half is the easy half; where the alternatives are equally likely, putting one there makes it the path of least resistance — on a screen where an officer approves or rejects a citizen's application, that is a thumb on the scale. Use `Menu` when no option is obvious.
+- **Two controls need two names.** The trigger derives its own from the default action's label ("More ways to approve"), so a screen reader never hears the same string twice.
+- Disabling disables BOTH halves. A live menu beside a dead action is a trap.
+
 #### Menu
 **Purpose**: the WAI-ARIA menu-button pattern — a trigger opens a list of **commands**, focus lands on the first, and the arrow keys move between them. The dense-table `⋮` is the shape it was built for.
 **Props**: `items` (`MenuItem` or `{ kind: "separator", label? }`) · `label` (**required**) · `onSelect(id)` · `side` · `align` (default `end`) · `sideOffset` · `open`/`onOpenChange` · `disabled`. An item carries `id`, `label`, `icon?`, `description?`, `kind?` (`action | radio | checkbox`), `checked?`, `tone?` (`neutral | warning | danger`), `disabled?`.
@@ -1936,6 +1946,16 @@ buttons into one segmented control (no gap, collapsed seams, rounded only at the
 switcher, a date range. Never for unrelated actions: attaching Save to Delete tells the
 reader they are the same kind of thing, and puts the destructive one a pixel from the safe
 one. Each segment still meets 24×24 on its own, which the size ladder guarantees.
+
+#### BackToTop
+**Purpose**: returns a reader to the top of a long page. One MIS report on this estate is 12,796px tall.
+**Props**: `showAfter` (px, default 800) · `label` (default "Back to top")
+**Rules**:
+- **It sits at the TOP of the corner stack**, and the rail orders by PERMANENCE, not importance: the accessibility widget anchors the corner (statutory, never goes away), the chat launcher sits above it, and this — which comes and goes on scroll — sits above both. At the bottom it would slide the two controls that most need muscle memory up and down the page on every scroll. See `.claude/rules/floating-element-placement.md`; this component is the case that rule anticipated.
+- **It moves FOCUS, not just the scroll position.** Scrolling to the top leaves a keyboard reader's focus half a page down, so the next Tab returns them and the button appears to have done nothing. It focuses `main`, adding `tabindex="-1"` only if absent and removing it again.
+- **Absent until useful.** Below `showAfter` it renders NOTHING — not hidden, not faded. On a phone the corner is expensive: three occupants plus the inset take 268px of the right edge.
+- Carries `data-sa-corner-occupant` and reads `--sa-corner-rail-bottom` rather than hard-coding an offset — both added WITH the control, not after an overlap is reported.
+- `prefers-reduced-motion` is read at the moment of the press, not captured at mount, so someone who changes the setting mid-session gets the new answer on the next press.
 
 #### Icon
 **Purpose**: **Material Symbols Rounded** — the official SAMAVESH icon system.  
@@ -2532,6 +2552,17 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **Consent BEFORE capture, not after** (DPDP Act 2023): what is taken, what it is checked against, and whether the department keeps it. It drops away once captured, when it would be a record rather than a notice.
 - **A failure reason a person at the counter can act on** — "The finger was lifted too early", never a device code.
 - One live region for all five states, so a change is announced once; every state changes the SENTENCE as well as the fill. Under reduced motion the capturing pulse becomes a steady ring rather than vanishing — it carries meaning, so removing it would remove information.
+
+#### NumberInput
+**Purpose**: a quantity, an amount, a count — a figure the system stores as a number.
+**Props**: `label` (**required**) · `value` (`number | null`) · `onValueChange` · `min` · `max` · `step` · `precision` · `prefix` · `suffix` · `hint` · `error` · `invalid` · `required` · `disabled` · `hideSteppers` · `id`
+**Rules**:
+- **NOT `<input type="number">`.** The native control SILENTLY DISCARDS what it cannot parse, so a citizen typing "1,50,000" — the way an amount is written in India — submits an empty field and is told nothing. It also changes the value on a mouse wheel over a focused field. This is a text field carrying `role="spinbutton"` with the ARIA value properties: everything the native control reports, none of the behaviour that harms.
+- **EMPTY IS NOT ZERO.** `value` is `number | null` and a cleared field reports `null`. A form storing zero for "the applicant did not answer" has invented a figure, and on a grant application that figure is money. `aria-valuenow` is absent when empty, for the same reason.
+- **Commits on BLUR**, never on keystroke — "1," is not a number and is also not empty. Spaces and commas are stripped before parsing; unparseable text restores the last good value.
+- **The steppers are never the only route.** `hideSteppers` removes them and the field still works — nobody enters ₹4,50,000 by pressing an arrow. Where shown they are `aria-hidden` and `tabIndex={-1}`: the spinbutton role already advertises the arrow keys, and announcing both says the same thing twice.
+- Figures are `tabular-nums` and right-aligned, so a column of amounts lines up and the field does not jitter as it is typed.
+- Identifiers that happen to be digits — Aadhaar, PIN code, a reference — are `Input`, not this. Arithmetic on them is meaningless.
 
 #### TimePicker
 **Purpose**: a typed 24-hour time field, with a list of times as the SECOND way in.
