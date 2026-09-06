@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader, Card } from "@/components/nhapoa/ui";
 import { cn } from "@/lib/nhapoa/utils";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import type { RoleId } from "@/lib/nhapoa/store/types";
@@ -14,7 +14,7 @@ export function NotificationsView({ role }: { role: RoleId }) {
 
   return (
     <div>
-      <PageHeader title="Notifications" subtitle={`${unread} unread · ${items.length} total`} />
+      <PortalPageHeader title="Notifications" meta={`${unread} unread · ${items.length} total`} />
       {items.length === 0 ? (
         <Card className="flex flex-col items-center justify-center px-6 py-20 text-center">
           <Icon name="notifications_off" size={40} className="text-ink-hint" />

@@ -1,12 +1,12 @@
 "use client";
 
-import { PageHeader, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader, Card } from "@/components/nhapoa/ui";
 import { Icon } from "@mosje/design-system";
 
 export default function DOClarificationsPage() {
   return (
     <div>
-      <PageHeader title="Clarifications" subtitle="0 clarifications · 0 citizen responses requiring your action" />
+      <PortalPageHeader title="Clarifications" meta="0 clarifications · 0 citizen responses requiring your action" />
       <Card className="flex flex-col items-center justify-center px-6 py-20 text-center">
         <Icon name="feedback" size={40} className="text-ink-hint" />
         <p className="mt-4 text-title-3 text-ink">No open clarifications.</p>

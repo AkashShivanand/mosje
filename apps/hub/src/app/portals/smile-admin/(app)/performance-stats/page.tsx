@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { GenderDonut, MonthlyPerf, ShelterStateBars } from "@/components/smile-admin/dashboard/charts";
 import { ScopeBanner } from "@/components/smile-admin/shell/scope-banner";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
@@ -35,7 +35,7 @@ export default function PerformanceStatsPage() {
 
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Reports & Analytics" }, { label: "Performance Statistics" }]}
         eyebrow="Reports & analytics"
         title="Performance Statistics"

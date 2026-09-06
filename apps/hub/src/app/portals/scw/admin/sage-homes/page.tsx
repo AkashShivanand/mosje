@@ -3,7 +3,7 @@ import {
   DataTable,
   PeriodFilter,
   Pagination,
-  PageHeader,
+  PortalPageHeader,
   SearchInput,
 } from "@/components/scw/ui";
 import { FACILITY_TYPES, IPSRC_HOMES, IPSRC_TOTAL } from "@/lib/scw/mock-data";
@@ -22,9 +22,9 @@ const COLUMNS = [
 export default function SageHomesPage() {
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="IPSrC Homes"
-        action={
+        actions={
           <Button variant="primary">
             <Icon name="add" size={16} />
             Add New

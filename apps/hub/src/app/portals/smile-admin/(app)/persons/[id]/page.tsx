@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { statusTone } from "@/lib/smile-admin/status-tone";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { BENEFICIARIES } from "@/lib/smile-admin/mock-data";
 import { Badge, Button, Card, CardBody, CardHeader, CardTitle, Icon, buttonClasses } from "@mosje/design-system";
 
@@ -22,7 +22,7 @@ export default function PersonDetail() {
 
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Beneficiaries", href: "/portals/smile-admin/persons" }, { label: "Beneficiary List", href: "/portals/smile-admin/persons" }, { label: person.name }]}
         title={person.name}
         subtitle={`Beneficiary ID · ${person.id}`}

@@ -3,7 +3,7 @@ import {
   Button,
   DataTable,
   Pagination,
-  PageHeader,
+  PortalPageHeader,
   SearchInput,
 } from "@/components/scw/ui";
 import { EVENTS, EVENTS_TOTAL } from "@/lib/scw/mock-data";
@@ -22,9 +22,9 @@ const COLUMNS = [
 export default function EventsPage() {
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="Events"
-        action={
+        actions={
           <Link href="/portals/scw/admin/events/add">
             <Button variant="primary">
               <Icon name="add" size={16} />

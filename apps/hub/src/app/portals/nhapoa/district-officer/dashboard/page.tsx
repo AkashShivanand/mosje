@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { PageHeader, StatTile, Card, StatusPill } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile, Card, StatusPill } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { doQueue, priorityOf } from "@/lib/nhapoa/case-helpers";
 import { CASE_STATUS_META, type CaseStatus } from "@/lib/nhapoa/store/types";
@@ -26,7 +26,7 @@ export default function DODashboard() {
 
   return (
     <div>
-      <PageHeader title="Dashboard" subtitle={`Here's your case overview for today — ${today}`} />
+      <PortalPageHeader title="Dashboard" meta={`Here's your case overview for today — ${today}`} />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile label="Assigned Cases" value={queue.length} />

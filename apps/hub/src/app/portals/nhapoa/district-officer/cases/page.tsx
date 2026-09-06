@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader, SearchInput, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, SearchInput, Button } from "@/components/nhapoa/ui";
 import { CaseTable } from "@/components/nhapoa/case-views";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { doQueue } from "@/lib/nhapoa/case-helpers";
@@ -35,10 +35,10 @@ export default function DOCasesPage() {
 
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="My Cases"
-        subtitle={`${queue.length} cases assigned to your district`}
-        action={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>}
+        meta={`${queue.length} cases assigned to your district`}
+        actions={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>}
       />
 
       <SearchInput placeholder="Search by ID, citizen name, category…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
 import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
@@ -20,7 +20,7 @@ export default function SurveyLocationsPage() {
   const totalSurveyors = rows.reduce((s, r) => s + r.surveyors, 0);
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Field Operations" }, { label: "Survey Locations" }]}
         title="Survey Locations"
         subtitle="Hotspots and outreach points where surveyors actively log beneficiary identifications."

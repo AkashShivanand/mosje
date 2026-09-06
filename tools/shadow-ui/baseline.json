@@ -7,7 +7,6 @@
     "Card",
     "DataTable",
     "EmptyState",
-    "PageHeader",
     "Select",
     "Stepper",
     "Textarea"
@@ -16,7 +15,6 @@
     "Button",
     "Card",
     "DataTable",
-    "PageHeader",
     "Pagination",
     "Select",
     "Stepper"
@@ -27,14 +25,10 @@
   "apps/hub/src/components/smile-admin/shell/footer.tsx": [
     "Footer"
   ],
-  "apps/hub/src/components/smile-admin/shell/page-header.tsx": [
-    "PageHeader"
-  ],
   "apps/hub/src/components/tg/ui.tsx": [
     "Button",
     "Card",
     "EmptyState",
-    "PageHeader",
     "Select",
     "Stepper",
     "Textarea"

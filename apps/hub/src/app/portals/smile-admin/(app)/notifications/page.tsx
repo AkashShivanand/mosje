@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { statusTone } from "@/lib/smile-admin/status-tone";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
 import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { NOTIFICATIONS, type Notification } from "@/lib/smile-admin/mock-data";
@@ -11,7 +11,7 @@ import { Badge, Icon, buttonClasses } from "@mosje/design-system";
 export default function NotificationsPage() {
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Communications" }, { label: "Notifications" }]}
         eyebrow="Communications"
         title="Notifications"

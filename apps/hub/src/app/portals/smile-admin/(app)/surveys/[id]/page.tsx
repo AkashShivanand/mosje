@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { SURVEY_LOCATIONS } from "@/lib/smile-admin/mock-data";
 import { formatNumber } from "@/lib/smile-admin/utils";
 import { Badge, Button, Card, CardBody, CardHeader, CardTitle, Icon, buttonClasses } from "@mosje/design-system";
@@ -14,7 +14,7 @@ export default function SurveyLocationDetailPage() {
 
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[
           { label: "Survey Operations" },
           { label: "Survey Locations", href: "/portals/smile-admin/surveys" },

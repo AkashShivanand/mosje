@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Badge, Icon, Modal } from "@mosje/design-system";
-import { PageHeader, SearchInput, Button, Field, TextInput, Select, Table, EmptyState } from "@/components/tg/ui";
+import { PortalPageHeader, SearchInput, Button, Field, TextInput, Select, Table, EmptyState } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { STATES } from "@/lib/tg/states";
 import type { UserRecord } from "@/lib/tg/store/types";
@@ -55,9 +55,9 @@ export default function UsersPage() {
 
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="User Management"
-        action={<Button onClick={() => setOpen(true)}><Icon name="person_add" size={16} /> Add User</Button>}
+        actions={<Button onClick={() => setOpen(true)}><Icon name="person_add" size={16} /> Add User</Button>}
       />
       <div className="mb-4 max-w-md">
         <SearchInput placeholder="Search for Users" value={query} onChange={(e) => setQuery(e.target.value)} />

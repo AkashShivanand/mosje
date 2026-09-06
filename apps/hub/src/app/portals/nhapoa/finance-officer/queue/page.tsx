@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Icon, Modal } from "@mosje/design-system";
-import { PageHeader, SearchInput, Button, Card, Field, TextInput, Select } from "@/components/nhapoa/ui";
+import { PortalPageHeader, SearchInput, Button, Card, Field, TextInput, Select } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtDate, fmtINR } from "@/lib/nhapoa/case-helpers";
 import type { Case } from "@/lib/nhapoa/store/types";
@@ -38,10 +38,10 @@ export default function DisbursementQueuePage() {
 
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="Disbursement Queue"
-        subtitle={`${queue.length} state-approved case${queue.length === 1 ? "" : "s"} ready for sanction`}
-        action={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>}
+        meta={`${queue.length} state-approved case${queue.length === 1 ? "" : "s"} ready for sanction`}
+        actions={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>}
       />
 
       <SearchInput placeholder="Search by ID, citizen name, category…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />

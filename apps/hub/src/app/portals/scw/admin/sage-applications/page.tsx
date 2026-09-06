@@ -3,7 +3,7 @@ import {
   DataTable,
   PeriodFilter,
   Pagination,
-  PageHeader,
+  PortalPageHeader,
   SearchInput,
   StatusPill,
 } from "@/components/scw/ui";
@@ -21,9 +21,9 @@ const COLUMNS = [
 export default function SageApplicationsPage() {
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="SAGE Applications"
-        action={<PeriodFilter options={PERIODS} defaultLabel="All" className="w-44" />}
+        actions={<PeriodFilter options={PERIODS} defaultLabel="All" className="w-44" />}
       />
 
       <div className="mb-4">

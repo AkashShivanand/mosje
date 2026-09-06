@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader, Card, StatTile } from "@/components/nhapoa/ui";
+import { PortalPageHeader, Card, StatTile } from "@/components/nhapoa/ui";
 import { Icon } from "@mosje/design-system";
 
 // Portal feedback (captured feedback surface — representative entries).
@@ -16,7 +16,7 @@ export default function PortalFeedbackPage() {
   const avg = (FEEDBACK.reduce((s, f) => s + f.rating, 0) / FEEDBACK.length).toFixed(1);
   return (
     <div>
-      <PageHeader title="Feedbacks" subtitle="Citizen feedback on the SAMBAL portal" />
+      <PortalPageHeader title="Feedbacks" meta="Citizen feedback on the SAMBAL portal" />
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatTile label="Total Feedback" value={FEEDBACK.length} />
         <StatTile label="Average Rating" value={`${avg} / 5`} accent="approve" />

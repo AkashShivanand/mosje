@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader, StatTile, Card, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile, Card, Button } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { Icon } from "@mosje/design-system";
 
@@ -23,7 +23,7 @@ export default function SchemePerformancePage() {
 
   return (
     <div>
-      <PageHeader title="Scheme Performance Analytics" subtitle="Beneficiaries, categories and submission roles" action={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>} />
+      <PortalPageHeader title="Scheme Performance Analytics" meta="Beneficiaries, categories and submission roles" actions={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>} />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile label="Total Beneficiaries" value={state.cases.length} />

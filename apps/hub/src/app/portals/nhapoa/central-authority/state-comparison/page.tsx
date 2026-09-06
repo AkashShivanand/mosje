@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader, StatTile, Card, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile, Card, Button } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { Icon } from "@mosje/design-system";
 
@@ -24,7 +24,7 @@ export default function StateComparisonPage() {
 
   return (
     <div>
-      <PageHeader title="State Comparison Dashboard" subtitle="Performance comparison across all states" action={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>} />
+      <PortalPageHeader title="State Comparison Dashboard" meta="Performance comparison across all states" actions={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>} />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile label="Highest Grievance Volume" value={highestVol ? `${highestVol.total}` : "0"} />

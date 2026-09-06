@@ -1,5 +1,5 @@
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, Card, PageHeader, SearchInput } from "@/components/scw/ui";
+import { Button, Card, PortalPageHeader, SearchInput } from "@/components/scw/ui";
 import { FACILITIES, FACILITY_LEGEND } from "@/lib/scw/mock-data";
 import { cn } from "@/lib/scw/utils";
 import { Icon } from "@mosje/design-system";
@@ -7,7 +7,7 @@ import { Icon } from "@mosje/design-system";
 export default function OurServicesPage() {
   return (
     <UserShell>
-      <PageHeader title="Our Services" />
+      <PortalPageHeader title="Our Services" />
       <p className="-mt-4 mb-6 text-body-2 text-ink-muted">
         Browse public welfare programs, residential facilities, and caregiving services available in
         your region.

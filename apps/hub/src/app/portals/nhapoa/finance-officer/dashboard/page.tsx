@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { PageHeader, StatTile, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile, Card } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
 import { Icon } from "@mosje/design-system";
@@ -14,7 +14,7 @@ export default function FODashboard() {
 
   return (
     <div>
-      <PageHeader title="Finance Dashboard" subtitle="State-approved cases ready for sanction and disbursement" />
+      <PortalPageHeader title="Finance Dashboard" meta="State-approved cases ready for sanction and disbursement" />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile label="Cases in Queue" value={queue.length} accent="await" />

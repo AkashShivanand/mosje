@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { statusTone } from "@/lib/smile-admin/status-tone";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
 import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
@@ -27,7 +27,7 @@ export default function SurveyorMappedPage() {
 
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Field Operations" }, { label: "Surveyor Mappings" }]}
         eyebrow="Field operations"
         title="Surveyor Mappings"

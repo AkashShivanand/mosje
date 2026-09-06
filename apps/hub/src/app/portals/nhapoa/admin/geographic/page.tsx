@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader, Card } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 
 export default function GeographicPage() {
@@ -26,7 +26,7 @@ export default function GeographicPage() {
 
   return (
     <div>
-      <PageHeader title="Geographic View" subtitle="District intensity and state-wise distribution" />
+      <PortalPageHeader title="Geographic View" meta="District intensity and state-wise distribution" />
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card className="p-6">
           <h2 className="text-title-2 text-ink">District Grievance Intensity</h2>

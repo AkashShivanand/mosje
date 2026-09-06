@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { PageHeader, StatTile, Card, StatusPill } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile, Card, StatusPill } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { Icon } from "@mosje/design-system";
 
@@ -14,7 +14,7 @@ export default function SADashboard() {
 
   return (
     <div>
-      <PageHeader title="State Authority Dashboard" subtitle="Approval decisions across your jurisdiction" />
+      <PortalPageHeader title="State Authority Dashboard" meta="Approval decisions across your jurisdiction" />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile label="Pending Approvals" value={pending.length} accent="await" />

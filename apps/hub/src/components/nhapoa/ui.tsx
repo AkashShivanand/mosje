@@ -1,7 +1,10 @@
 import * as React from "react";
 import { cn } from "@/lib/nhapoa/utils";
 import { CASE_STATUS_META, type CaseStatus } from "@/lib/nhapoa/store/types";
-import { Icon } from "@mosje/design-system";
+import { Icon,
+  PageHeader as DsPageHeader,
+  type PageHeaderProps,
+} from "@mosje/design-system";
 
 /* ----------------------------------------------------------------- Buttons */
 export function Button({
@@ -54,26 +57,18 @@ export function StatusPill({ status }: { status: CaseStatus }) {
 }
 
 /* ------------------------------------------------------------- PageHeader */
-export function PageHeader({
-  title,
-  subtitle,
-  action,
-  className,
-}: {
-  title: string;
-  subtitle?: string;
-  action?: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={cn("mb-6 flex items-start justify-between gap-4", className)}>
-      <div>
-        <h1 className="text-headline-1 text-ink">{title}</h1>
-        {subtitle && <p className="mt-1 text-body-2 text-ink-muted">{subtitle}</p>}
-      </div>
-      {action}
-    </div>
-  );
+/**
+ * The page's opening row — the design system's `PageHeader` with this portal's
+ * page rhythm.
+ *
+ * The heading block itself is the system's, so it receives the system's fixes:
+ * the type roles, the wrap-rather-than-truncate behaviour, the actions that fall
+ * below the title on a narrow viewport. What is this portal's is the space under
+ * it, which is why the wrapper exists at all — and why it does not carry the
+ * system's name.
+ */
+export function PortalPageHeader({ className, ...props }: PageHeaderProps) {
+  return <DsPageHeader {...props} className={cn("mb-6", className)} />;
 }
 
 /* ------------------------------------------------------------ SectionCard */

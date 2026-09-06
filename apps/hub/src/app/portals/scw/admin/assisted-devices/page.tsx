@@ -2,7 +2,7 @@ import {
   Button,
   DataTable,
   Pagination,
-  PageHeader,
+  PortalPageHeader,
 } from "@/components/scw/ui";
 import { ASSISTED_DEVICES, DEVICES_TOTAL } from "@/lib/scw/mock-data";
 import { Badge, Icon } from "@mosje/design-system";
@@ -17,9 +17,9 @@ const COLUMNS = [
 export default function AssistedDevicesPage() {
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="RVY Assisted Devices"
-        action={
+        actions={
           <Button variant="primary">
             <Icon name="add" size={16} />
             Add New

@@ -3,7 +3,7 @@ import {
   DataTable,
   PeriodFilter,
   Pagination,
-  PageHeader,
+  PortalPageHeader,
   SearchInput,
   StatusPill,
 } from "@/components/scw/ui";
@@ -23,7 +23,7 @@ const COLUMNS = [
 export default function VolunteersPage() {
   return (
     <div>
-      <PageHeader title="Volunteers" />
+      <PortalPageHeader title="Volunteers" />
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row">
         <SearchInput placeholder="Search volunteers..." className="flex-1" />

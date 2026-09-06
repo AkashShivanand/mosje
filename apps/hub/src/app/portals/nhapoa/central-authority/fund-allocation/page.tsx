@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Icon, Modal } from "@mosje/design-system";
-import { PageHeader, StatTile, Card, Button, Field, Select, TextInput } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile, Card, Button, Field, Select, TextInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
 import { STATES, SCHEMES } from "@/lib/nhapoa/store/seed";
@@ -41,10 +41,10 @@ export default function FundAllocationPage() {
 
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="Fund Allocation Dashboard"
-        subtitle="SAMBAL budget allocation and utilization"
-        action={<div className="flex gap-2"><Button variant="outline"><Icon name="download" size={16} /> Export</Button><Button onClick={() => setOpen(true)}><Icon name="add" size={16} /> New Allocation</Button></div>}
+        meta="SAMBAL budget allocation and utilization"
+        actions={<div className="flex gap-2"><Button variant="outline"><Icon name="download" size={16} /> Export</Button><Button onClick={() => setOpen(true)}><Icon name="add" size={16} /> New Allocation</Button></div>}
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

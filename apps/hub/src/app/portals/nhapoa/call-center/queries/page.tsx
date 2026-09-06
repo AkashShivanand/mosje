@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { PageHeader, Card, SearchInput } from "@/components/nhapoa/ui";
+import { PortalPageHeader, Card, SearchInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtDate } from "@/lib/nhapoa/case-helpers";
 import { Icon } from "@mosje/design-system";
@@ -14,10 +14,10 @@ export default function QueryLogPage() {
 
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="Query Log"
-        subtitle={`${state.queries.length} quer${state.queries.length === 1 ? "y" : "ies"} logged (latest first)`}
-        action={<Link href="/portals/nhapoa/call-center/query" className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2.5 text-label-1 font-semibold text-white hover:bg-navy-800"><Icon name="add" size={16} /> Log a query</Link>}
+        meta={`${state.queries.length} quer${state.queries.length === 1 ? "y" : "ies"} logged (latest first)`}
+        actions={<Link href="/portals/nhapoa/call-center/query" className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2.5 text-label-1 font-semibold text-white hover:bg-navy-800"><Icon name="add" size={16} /> Log a query</Link>}
       />
       <SearchInput placeholder="Search by caller mobile or subject…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
       {rows.length === 0 ? (

@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader, Card, StatTile, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, Card, StatTile, Button } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { Icon } from "@mosje/design-system";
 
@@ -15,7 +15,7 @@ export default function AdminReportsPage() {
   const { state } = useNhapoa();
   return (
     <div>
-      <PageHeader title="Reports & Export" subtitle="Generate and export portal-wide reports" />
+      <PortalPageHeader title="Reports & Export" meta="Generate and export portal-wide reports" />
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatTile label="Total Grievances" value={state.cases.length} />
         <StatTile label="System Users" value={state.users.length} accent="await" />

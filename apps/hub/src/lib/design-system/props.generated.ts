@@ -7278,6 +7278,12 @@ export const GENERATED_PROPS = {
         "description": "Heading level. Leave at 1: a portal page has exactly one `<h1>` and this is it. Drop to 2 only when this sits inside a page that already has one."
       },
       {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A short uppercase kicker above the title — the scheme, the module, the section this page sits in. It is not a heading and carries no level: it qualifies the title rather than competing with it."
+      },
+      {
         "name": "headingId",
         "type": "string",
         "required": false,

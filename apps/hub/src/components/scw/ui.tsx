@@ -1,7 +1,10 @@
 import * as React from "react";
 import { cn } from "@/lib/scw/utils";
 import type { AppStatus } from "@/lib/scw/types";
-import { Icon } from "@mosje/design-system";
+import { Icon,
+  PageHeader as DsPageHeader,
+  type PageHeaderProps,
+} from "@mosje/design-system";
 
 /* ----------------------------------------------------------------- Buttons */
 export function Button({
@@ -54,21 +57,18 @@ export function StatusPill({ status }: { status: AppStatus | string }) {
 }
 
 /* ------------------------------------------------------------- PageHeader */
-export function PageHeader({
-  title,
-  action,
-  className,
-}: {
-  title: string;
-  action?: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={cn("mb-6 flex items-center justify-between gap-4", className)}>
-      <h1 className="text-headline-1 text-ink">{title}</h1>
-      {action}
-    </div>
-  );
+/**
+ * The page's opening row — the design system's `PageHeader` with this portal's
+ * page rhythm.
+ *
+ * The heading block itself is the system's, so it receives the system's fixes:
+ * the type roles, the wrap-rather-than-truncate behaviour, the actions that fall
+ * below the title on a narrow viewport. What is this portal's is the space under
+ * it, which is why the wrapper exists at all — and why it does not carry the
+ * system's name.
+ */
+export function PortalPageHeader({ className, ...props }: PageHeaderProps) {
+  return <DsPageHeader {...props} className={cn("mb-6", className)} />;
 }
 
 /* ------------------------------------------------------------ SectionCard */

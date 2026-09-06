@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { STATES } from "@/lib/smile-admin/states";
 import { ROLE_LABELS } from "@/lib/smile-admin/roles";
 import { Button, Card, CardBody, CardHeader, CardTitle, Checkbox, Icon, Input, Label, buttonClasses } from "@mosje/design-system";
@@ -15,7 +15,7 @@ export default function OnboardPage() {
 
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Access Control" }, { label: "Users", href: "/portals/smile-admin/users" }, { label: "Onboard user" }]}
         title="Onboard user"
         subtitle="Invite a state, district or field-operations user to the SMILE portal."

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { PageHeader, Card, Button, Field, TextInput, Textarea } from "@/components/nhapoa/ui";
+import { PortalPageHeader, Card, Button, Field, TextInput, Textarea } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { Icon } from "@mosje/design-system";
 
@@ -21,7 +21,7 @@ export default function QueryPage() {
   if (done) {
     return (
       <div>
-        <PageHeader title="Query (FTR)" subtitle="Log a first-time-resolution query." />
+        <PortalPageHeader title="Query (FTR)" meta="Log a first-time-resolution query." />
         <Card className="max-w-xl p-8 text-center">
           <Icon name="check_circle" size={48} className="mx-auto text-approve" />
           <p className="mt-3 text-title-3 text-ink">Query logged</p>
@@ -37,7 +37,7 @@ export default function QueryPage() {
 
   return (
     <div>
-      <PageHeader title="Query (FTR)" subtitle="Log a first-time-resolution query from a caller." />
+      <PortalPageHeader title="Query (FTR)" meta="Log a first-time-resolution query from a caller." />
       <Card className="max-w-xl p-6">
         <div className="space-y-4">
           <Field label="Caller mobile"><TextInput inputMode="numeric" maxLength={10} value={mobile} onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))} placeholder="10-digit mobile (optional)" /></Field>

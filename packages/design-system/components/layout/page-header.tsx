@@ -3,6 +3,12 @@ import { cn } from "../../utils/cn";
 import "./layout.css";
 
 export interface PageHeaderProps extends React.HTMLAttributes<HTMLElement> {
+  /**
+   * A short uppercase kicker above the title — the scheme, the module, the
+   * section this page sits in. It is not a heading and carries no level: it
+   * qualifies the title rather than competing with it.
+   */
+  eyebrow?: React.ReactNode;
   /** The page title. Rendered as the page's `<h1>` unless `as` says otherwise. */
   title: string;
   /** Supporting line under the title — "Last updated: 27 Jan 2026, 03:05 pm". */
@@ -30,6 +36,7 @@ export interface PageHeaderProps extends React.HTMLAttributes<HTMLElement> {
  * heading is not the page's subject, reach for that instead.
  */
 export function PageHeader({
+  eyebrow,
   title,
   meta,
   actions,
@@ -42,6 +49,7 @@ export function PageHeader({
   return (
     <header className={cn("sa-page-header", className)} {...rest}>
       <div className="sa-page-header__text">
+        {eyebrow ? <p className="sa-page-header__eyebrow">{eyebrow}</p> : null}
         <Heading id={headingId} className="sa-page-header__title">
           {title}
         </Heading>

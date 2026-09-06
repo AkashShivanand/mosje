@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader, Card, Button, Field, TextInput, StatusPill } from "@/components/nhapoa/ui";
+import { PortalPageHeader, Card, Button, Field, TextInput, StatusPill } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { CASE_STATUS_META, type Case } from "@/lib/nhapoa/store/types";
 import { Icon } from "@mosje/design-system";
@@ -18,7 +18,7 @@ export default function CallCenterTrackPage() {
 
   return (
     <div>
-      <PageHeader title="Track Status" subtitle="Track a grievance by token on behalf of the caller." />
+      <PortalPageHeader title="Track Status" meta="Track a grievance by token on behalf of the caller." />
       <Card className="max-w-xl p-6">
         <Field label="Grievance token" required>
           <div className="flex gap-2">

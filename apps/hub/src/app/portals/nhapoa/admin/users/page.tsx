@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Icon, Modal } from "@mosje/design-system";
-import { PageHeader, SearchInput, Button, Field, TextInput, Select } from "@/components/nhapoa/ui";
+import { PortalPageHeader, SearchInput, Button, Field, TextInput, Select } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { ROLES } from "@/lib/nhapoa/roles";
 import type { RoleId } from "@/lib/nhapoa/store/types";
@@ -30,7 +30,7 @@ export default function UsersPage() {
 
   return (
     <div>
-      <PageHeader title="User Management" subtitle="Create and manage system users" action={<Button onClick={() => setOpen(true)}><Icon name="person_add" size={16} /> Create New User</Button>} />
+      <PortalPageHeader title="User Management" meta="Create and manage system users" actions={<Button onClick={() => setOpen(true)}><Icon name="person_add" size={16} /> Create New User</Button>} />
       <SearchInput placeholder="Search by name, username, role…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
 
       <div className="overflow-x-auto rounded-2xl border border-line bg-white shadow-card">

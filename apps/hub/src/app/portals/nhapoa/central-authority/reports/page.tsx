@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader, Card, StatTile, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, Card, StatTile, Button } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
 import { Icon } from "@mosje/design-system";
@@ -19,7 +19,7 @@ export default function CAReportsPage() {
 
   return (
     <div>
-      <PageHeader title="Reports & Export" subtitle="Generate national-level reports for review and audit" />
+      <PortalPageHeader title="Reports & Export" meta="Generate national-level reports for review and audit" />
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatTile label="Total Grievances" value={state.cases.length} />
         <StatTile label="Funds Allocated" value={fmtINR(allocated)} />

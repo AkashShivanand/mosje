@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader, StatTile, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile, Button } from "@/components/nhapoa/ui";
 import { SimpleCaseTable } from "@/components/nhapoa/case-views";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { slaDaysLeft } from "@/lib/nhapoa/case-helpers";
@@ -16,7 +16,7 @@ export default function AdminSlaMonitorPage() {
 
   return (
     <div>
-      <PageHeader title="SLA Monitor" subtitle="National SLA compliance and escalation queue" action={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>} />
+      <PortalPageHeader title="SLA Monitor" meta="National SLA compliance and escalation queue" actions={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>} />
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile label="On Track" value={onTrack} accent="approve" />
         <StatTile label="Near Deadline (≤5 days)" value={near} accent="await" />

@@ -40,6 +40,13 @@ import {
  * already has an `h1`; `headingId` lets a region point `aria-labelledby` at it.
  * Use `SectionTitle` instead when the heading labels a section rather than the
  * page.
+ *
+ * `eyebrow` is a short uppercase kicker above the title — the scheme, the
+ * module, the section this page sits in. It is not a heading and carries no
+ * level: it qualifies the title rather than competing with it, so a screen
+ * reader still meets exactly one `h1` on the page. Reach for it where the title
+ * alone is ambiguous ("Applications" in which scheme?), and leave it out where
+ * the title already says everything.
  */
 const meta = {
   title: "Layout/Page templates",
@@ -88,6 +95,24 @@ export const PageHeaderRow: Story = {
   render: (args) => (
     <div style={{ padding: "var(--sa-padding-24)" }}>
       <PageHeader {...args} actions={<Button>Submit Activity</Button>} />
+    </div>
+  ),
+};
+
+/**
+ * With an eyebrow. "Applications" on its own does not say which scheme's
+ * applications; the kicker answers that without adding a second heading.
+ */
+export const PageHeaderWithEyebrow: Story = {
+  render: (args) => (
+    <div style={{ padding: "var(--sa-padding-24)" }}>
+      <PageHeader
+        {...args}
+        eyebrow="Pre-Matric Scholarship"
+        title="Applications"
+        meta="1,284 applications · 96 awaiting scrutiny"
+        actions={<Button>Export</Button>}
+      />
     </div>
   ),
 };

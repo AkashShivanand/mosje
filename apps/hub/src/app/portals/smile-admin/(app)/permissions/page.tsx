@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { PERMISSION_MATRIX } from "@/lib/smile-admin/mock-data";
 import { Badge, Card, CardBody, CardHeader, CardTitle, Checkbox, Icon } from "@mosje/design-system";
@@ -17,7 +17,7 @@ export default function PermissionsPage() {
 
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Access Control" }, { label: "Permissions" }]}
         title="Permissions catalog"
         subtitle="Master list of every capability across the SMILE programme. Group them into roles on the Roles page."

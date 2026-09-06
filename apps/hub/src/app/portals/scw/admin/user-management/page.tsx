@@ -1,7 +1,7 @@
 import {
   DataTable,
   Pagination,
-  PageHeader,
+  PortalPageHeader,
   SearchInput,
 } from "@/components/scw/ui";
 import { ADMIN_USERS, USERS_TOTAL } from "@/lib/scw/mock-data";
@@ -19,7 +19,7 @@ const COLUMNS = [
 export default function UserManagementPage() {
   return (
     <div>
-      <PageHeader title="User Management" action={<AddUserDrawer />} />
+      <PortalPageHeader title="User Management" actions={<AddUserDrawer />} />
 
       <div className="mb-4">
         <SearchInput placeholder="Search for users by name, mobile number or email" />

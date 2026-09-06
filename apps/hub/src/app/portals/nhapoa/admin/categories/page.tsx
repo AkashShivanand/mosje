@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Icon, Modal } from "@mosje/design-system";
-import { PageHeader, SearchInput, Button, Field, TextInput } from "@/components/nhapoa/ui";
+import { PortalPageHeader, SearchInput, Button, Field, TextInput } from "@/components/nhapoa/ui";
 import { Checkbox } from "@mosje/design-system";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
@@ -28,10 +28,10 @@ export default function CategoriesPage() {
 
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="Grievance Categories"
-        subtitle="Configure the nature options on the citizen wizard and the SLA window for each category"
-        action={<Button onClick={() => setOpen(true)}><Icon name="add" size={16} /> Add Category</Button>}
+        meta="Configure the nature options on the citizen wizard and the SLA window for each category"
+        actions={<Button onClick={() => setOpen(true)}><Icon name="add" size={16} /> Add Category</Button>}
       />
 
       <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
