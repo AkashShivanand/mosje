@@ -3,7 +3,7 @@
   "indexPage": "56757:725",
   "indexFrame": "56757:726",
   "capturedOn": "2026-09-06",
-  "statLine": "67 pages · 197 components · counted 6 September 2026",
+  "statLine": "71 pages · 201 components · counted 6 September 2026",
   "statuses": [
     "Ready",
     "Published",
@@ -66,12 +66,14 @@
     "Bot Check",
     "Radio",
     "Selection Card",
-    "Range Slider",
+    "Slider",
     "Search",
     "Toggle",
+    "Time Slot",
+    "Biometric Capture",
     "Accordion",
     "Breadcrumbs",
-    "Dropdown",
+    "Menu",
     "Pagination",
     "Portal Card",
     "Stepper",
@@ -92,6 +94,8 @@
     "Card",
     "Charts & Graphs",
     "Comment",
+    "Description List",
+    "Figure",
     "List",
     "Map of India",
     "Tables",
@@ -212,7 +216,7 @@
     },
     {
       "name": "Forms & Inputs",
-      "stated": 14,
+      "stated": 16,
       "cards": [
         {
           "name": "Input Field",
@@ -271,17 +275,27 @@
         },
         {
           "name": "Date-Time Picker",
-          "status": "Published",
+          "status": "Ready",
           "linked": true
         },
         {
-          "name": "Range Slider",
-          "status": "Published",
+          "name": "Slider",
+          "status": "Ready",
           "linked": true
         },
         {
           "name": "Color Picker",
           "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Time Slot",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Biometric Capture",
+          "status": "Ready",
           "linked": true
         }
       ]
@@ -306,8 +320,8 @@
           "linked": true
         },
         {
-          "name": "Dropdown",
-          "status": "Published",
+          "name": "Menu",
+          "status": "Ready",
           "linked": true
         },
         {
@@ -363,7 +377,7 @@
         },
         {
           "name": "Feedback Widget",
-          "status": "Published",
+          "status": "Ready",
           "linked": true
         }
       ]
@@ -384,7 +398,7 @@
         },
         {
           "name": "Popover",
-          "status": "Published",
+          "status": "Ready",
           "linked": true
         },
         {
@@ -396,7 +410,7 @@
     },
     {
       "name": "Data Display",
-      "stated": 8,
+      "stated": 10,
       "cards": [
         {
           "name": "Card",
@@ -410,7 +424,7 @@
         },
         {
           "name": "List",
-          "status": "Published",
+          "status": "Ready",
           "linked": true
         },
         {
@@ -436,6 +450,16 @@
         {
           "name": "Comment",
           "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Description List",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Figure",
+          "status": "Ready",
           "linked": true
         }
       ]
@@ -487,7 +511,7 @@
         },
         {
           "name": "Carousel",
-          "status": "Published",
+          "status": "Ready",
           "linked": true
         },
         {
