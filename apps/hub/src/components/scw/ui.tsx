@@ -260,60 +260,6 @@ export function SectionTitle({ children }: { children: React.ReactNode }) {
   );
 }
 
-/* ----------------------------------------------------------------- Stepper */
-export function Stepper({
-  steps,
-  current,
-  done = [],
-}: {
-  steps: string[];
-  current: number;
-  done?: number[];
-}) {
-  return (
-    <div className="flex items-start">
-      {steps.map((label, i) => {
-        const isDone = done.includes(i);
-        const isActive = i === current;
-        return (
-          <React.Fragment key={label}>
-            <div className="flex w-full flex-col items-center text-center">
-              <div
-                className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-full text-label-2",
-                  isDone
-                    ? "bg-approve text-white"
-                    : isActive
-                      ? "bg-navy text-white"
-                      : "border border-line bg-white text-ink-hint"
-                )}
-              >
-                {isDone ? "✓" : i + 1}
-              </div>
-              <span
-                className={cn(
-                  "mt-2 max-w-[7rem] text-body-3",
-                  isActive ? "font-semibold text-ink" : "text-ink-hint"
-                )}
-              >
-                {label}
-              </span>
-            </div>
-            {i < steps.length - 1 && (
-              <div
-                className={cn(
-                  "mt-4 h-0.5 w-full flex-1",
-                  isDone ? "bg-approve" : "bg-line"
-                )}
-              />
-            )}
-          </React.Fragment>
-        );
-      })}
-    </div>
-  );
-}
-
 /* ------------------------------------------------------------- Form atoms */
 export function Field({
   label,
