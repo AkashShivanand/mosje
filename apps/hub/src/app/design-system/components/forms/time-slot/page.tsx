@@ -60,7 +60,7 @@ export default function TimeSlotPage(): React.JSX.Element {
       name="Time Slot"
       status="Stable"
       summary="A grid of bookable windows — the shape behind a daily programme, an event, and any appointment a citizen has to choose. It is a radio group built from real radios, so the keyboard model and the single-choice constraint are the browser's."
-      figma={{ absent: "Master pending in the SAMAVESH library — tracked on the component record." }}
+      figma={{ node: "timeSlot" }}
       specimen={<TimeSlotPlayground />}
       propsFrom="TimeSlotProps"
       a11y={A11Y}

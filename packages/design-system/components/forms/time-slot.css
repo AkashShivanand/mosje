@@ -139,8 +139,8 @@
 
   .ds-slot__meta {
     color: var(--sa-text-neutral-subtle);
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
     font-weight: var(--sa-font-weight-regular);
   }
 

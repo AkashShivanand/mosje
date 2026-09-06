@@ -97,8 +97,8 @@
   .ds-feedback__note {
     margin: 0;
     color: var(--sa-text-neutral-subtle);
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
   }
 
   .ds-feedback__textarea {

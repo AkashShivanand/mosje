@@ -2,8 +2,8 @@
   "file": "3FF5l0SMNIwdpZrKkeyPTm",
   "indexPage": "56757:725",
   "indexFrame": "56757:726",
-  "capturedOn": "2026-09-05",
-  "statLine": "67 pages · 204 components · counted 5 September 2026",
+  "capturedOn": "2026-09-06",
+  "statLine": "71 pages · 201 components · counted 6 September 2026",
   "statuses": [
     "Ready",
     "Published",
@@ -69,6 +69,8 @@
     "Range Slider",
     "Search",
     "Toggle",
+    "Time Slot",
+    "Biometric Capture",
     "Accordion",
     "Breadcrumbs",
     "Dropdown",
@@ -92,6 +94,8 @@
     "Card",
     "Charts & Graphs",
     "Comment",
+    "Description List",
+    "Figure",
     "List",
     "Map of India",
     "Tables",
@@ -212,7 +216,7 @@
     },
     {
       "name": "Forms & Inputs",
-      "stated": 14,
+      "stated": 16,
       "cards": [
         {
           "name": "Input Field",
@@ -283,6 +287,16 @@
           "name": "Color Picker",
           "status": "Published",
           "linked": true
+        },
+        {
+          "name": "Time Slot",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Biometric Capture",
+          "status": "Ready",
+          "linked": true
         }
       ]
     },
@@ -317,7 +331,7 @@
         },
         {
           "name": "Stepper",
-          "status": "Published",
+          "status": "Ready",
           "linked": true
         },
         {
@@ -396,7 +410,7 @@
     },
     {
       "name": "Data Display",
-      "stated": 8,
+      "stated": 10,
       "cards": [
         {
           "name": "Card",
@@ -436,6 +450,16 @@
         {
           "name": "Comment",
           "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Description List",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Figure",
+          "status": "Ready",
           "linked": true
         }
       ]

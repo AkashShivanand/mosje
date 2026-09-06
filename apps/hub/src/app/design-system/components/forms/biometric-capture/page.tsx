@@ -55,7 +55,7 @@ export default function BiometricCapturePage(): React.JSX.Element {
       name="Biometric Capture"
       status="Stable"
       summary="The screen a citizen looks at while a fingerprint, iris scan or photograph is taken. It draws five states and never touches a device — reading a scanner belongs to the portal, and varies per deployment."
-      figma={{ absent: "Master pending in the SAMAVESH library — tracked on the component record." }}
+      figma={{ node: "biometricCapture" }}
       specimen={<BiometricPlayground />}
       propsFrom="BiometricCaptureProps"
       a11y={A11Y}

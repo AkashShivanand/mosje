@@ -69,7 +69,7 @@ export default function DescriptionListPage(): React.JSX.Element {
       name="Description List"
       status="Stable"
       summary="A set of recorded facts about one thing — the label-and-value grid every application-detail screen is mostly made of. It renders a real <dl>, so each value is announced together with the field it belongs to."
-      figma={{ absent: "Master pending in the SAMAVESH library — tracked on the component record." }}
+      figma={{ node: "descriptionList" }}
       specimen={
         <div
           style={{

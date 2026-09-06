@@ -45,7 +45,7 @@ export default function FigurePage(): React.JSX.Element {
       name="Figure"
       status="Stable"
       summary="An image and its caption as one thing. The figure and figcaption pairing is what associates the two — a caption in a sibling paragraph is read as the next paragraph, with nothing to say it describes the picture."
-      figma={{ absent: "Master pending in the SAMAVESH library — tracked on the component record." }}
+      figma={{ node: "figure" }}
       specimen={
         <div
           style={{

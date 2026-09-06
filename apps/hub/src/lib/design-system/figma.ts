@@ -103,6 +103,20 @@ export const FIGMA_NODES = {
   characterCount: "56792:50500", // the Character Count set, authored 2026-09-03
   requiredFieldsLegend: "56792:50506", // the Required Fields Legend set, authored 2026-09-03
   card: "2141:296707",
+  // "Description List" — created 2026-09-06 between Comment and List, holding the
+  // ROW master (8 variants), its documentation frame and its component record.
+  // The grid that arranges rows is code-only and is recorded as open item 01.
+  descriptionList: "57518:737",
+  // "Figure" — created 2026-09-06 after Description List. Ten variants (Ratio ×
+  // Fit); the image itself is a slot the caller fills, which is why the master
+  // draws an empty framed rectangle.
+  figure: "57524:789",
+  // "Time Slot" — created 2026-09-06 after Toggle. The master is one bookable
+  // window; the fieldset and the auto-filling grid are code-only.
+  timeSlot: "57526:737",
+  // "Biometric Capture" — created 2026-09-06 after Time Slot. Fifteen variants
+  // (State × Modality), each drawing the alternative route.
+  biometricCapture: "57530:737",
   badges: "2141:296703",
   checkbox: "15:664", // the Checkbox set. The entry pointed at the PAGE (2141:296710) until 2026-09-04
   chips: "2141:296709",
