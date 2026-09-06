@@ -94,10 +94,18 @@
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
     font-weight: var(--sa-font-weight-semibold);
+    /*
+     * The ring is declared at zero spread and transparent on EVERY marker, so
+     * becoming current animates a spread the browser can interpolate. Declaring
+     * it only on `.is-current` would give the transition nothing to start from
+     * and the ring would snap.
+     */
+    box-shadow: 0 0 0 0 transparent;
     transition:
       background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
       border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
-      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      box-shadow var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
   }
 
   .ds-stepper[data-size="sm"] .ds-stepper__marker {
@@ -139,12 +147,37 @@
 
   .ds-stepper__line {
     position: absolute;
+    overflow: hidden;
     background-color: var(--sa-border-neutral-subtle);
   }
 
-  /* A track that leaves a finished stage is the path already walked. */
-  .ds-stepper__item.is-complete .ds-stepper__line {
+  /*
+   * A track that leaves a finished stage is the path already walked, and it
+   * DRAWS itself in the direction the applicant travelled rather than changing
+   * colour all at once. Scaling an overlay keeps this on the compositor — the
+   * whole animation is one transform, no width or colour is interpolated.
+   */
+  .ds-stepper__line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
     background-color: var(--sa-color-status-success);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+  }
+
+  .ds-stepper[data-orientation="vertical"] .ds-stepper__line::after {
+    transform: scaleY(0);
+    transform-origin: center top;
+  }
+
+  .ds-stepper__item.is-complete .ds-stepper__line::after {
+    transform: scaleX(1);
+  }
+
+  .ds-stepper[data-orientation="vertical"] .ds-stepper__item.is-complete .ds-stepper__line::after {
+    transform: scaleY(1);
   }
 
   /* ── Labels ────────────────────────────────────────────────────────────── */
@@ -650,9 +683,33 @@
     }
   }
 
+  /*
+   * Reduced motion means fewer and gentler animations, not none: the ring and the
+   * filled track still ARRIVE, they simply do not travel. Colour and spread are
+   * comprehension, the scale is decoration.
+   */
   @media (prefers-reduced-motion: reduce) {
     .ds-stepper__marker {
       transition: none;
+    }
+
+    .ds-stepper__line::after {
+      transition: none;
+      transform: scaleX(0);
+    }
+
+    .ds-stepper__item.is-complete .ds-stepper__line::after {
+      transform: scaleX(1);
+    }
+
+    .ds-stepper[data-orientation="vertical"] .ds-stepper__line::after {
+      transform: scaleY(0);
+    }
+
+    .ds-stepper[data-orientation="vertical"]
+      .ds-stepper__item.is-complete
+      .ds-stepper__line::after {
+      transform: scaleY(1);
     }
   }
 }
