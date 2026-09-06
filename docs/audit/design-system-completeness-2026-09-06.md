@@ -139,3 +139,61 @@ Against the six-dimension NN/g model:
 
 Coverage and adoption are the two axes to move. Everything else is already at or above the
 level of the systems it is benchmarked against.
+
+---
+
+# Addendum, same day — the Figma library is not empty where the code is new
+
+The audit above assumed the thirteen components added in this pass had no Figma
+counterpart, and every documentation page said "master pending". **That was
+wrong for seven of them, and wrong in the more dangerous direction: a master
+exists and disagrees with the code.**
+
+Read from the live library (`3FF5l0SMNIwdpZrKkeyPTm`, 6 September 2026).
+
+| Code component | Library page | What is actually there | Verdict |
+|---|---|---|---|
+| `Popover` | Popover | `popover` — a UX4G import, 16 variants: Direction × Title × Auto width | **Disagrees.** Direction ≈ `side`, Auto width ≈ `matchTriggerWidth`; no `align`; "Title" is not a prop here; the name is lowercase, off the house convention |
+| `Menu` | Dropdown | `Dropdown` 84 variants + `Dropdown / MenuItem` 7 | **Different name, different contract.** The code is the WAI-ARIA menu BUTTON; "Dropdown" in this library is the select-shaped import |
+| `Slider` / `RangeSlider` | Range Slider | `RangeSlider` 20 variants, properties Label / Left control / Right control | **Half present.** No single-thumb `Slider` master at all; property names do not match |
+| `TimePicker` | Date-Time Picker | `TimePicker`, `TimePicker / Item`, `TimePicker / Trigger` | **Present, unverified.** Predates the component; whether it expresses the 24-hour typed field is unchecked |
+| `ListGroup` / `ListRow` | List | `List / Item` — a Material-style set of **200+ variants** (Condition × Leading × Trailing × State) | **Disagrees substantially.** The code takes a deliberately simpler position on what a row is |
+| `Carousel` | Carousel | Five hardcoded `Slide N/Desktop` frames + Light/Dark control sets | **A mockup, not a component** |
+| `FeedbackWidget` | Feedback Widget | `FeedbackWidget / Modal` + `.FeedbackEmojis` (five-point) | **A different product.** An emoji modal, against this component's Yes/No + comment, which is what GIGW asks for |
+| `DescriptionList` | — | nothing | Genuinely absent |
+| `Figure` | — | nothing | Genuinely absent |
+| `TimeSlot` | — | nothing | Genuinely absent |
+| `BiometricCapture` | — | nothing | Genuinely absent |
+
+## Why this matters more than an empty page would
+
+An empty page is a gap: everyone can see it and nobody is misled. A page holding
+a component that **shares a name with the code and behaves differently** is the
+condition this estate's own rules were written to prevent — a designer places
+`popover`, a developer builds `Popover`, and neither discovers the disagreement
+until a review.
+
+The thirteen documentation pages have been corrected: the seven that falsely said
+"master pending" now state what is actually on the page and how it differs. A
+sentence naming the divergence is more use than a link to a master that is not
+what the code does — which is why they still do not link.
+
+## What has to happen next, in order
+
+1. **Decide, per component, which side is right.** Four of the seven are
+   decisions rather than drawing tasks: whether the estate's feedback control is
+   an emoji modal or a Yes/No question, whether a list row carries 200 variants
+   or 8, whether the menu is called Menu or Dropdown, and whether Popover keeps
+   "Title" as an axis.
+2. **Rebuild the agreed masters in the house style** — numbered sections, bound
+   variables, a `— Documentation` frame and a `— Component record`, per
+   `.claude/rules/ds-documentation-standard.md`.
+3. **Create the four genuinely-absent pages**, and card them on the Index in the
+   same session — `.claude/rules/figma-library-index.md` gates this, and
+   `npm run check:figma-index:sync` re-captures the snapshot.
+4. **Only then** write the Code Connect templates. A template pointing at a
+   master that disagrees with the code publishes the disagreement.
+
+None of this was attempted in this pass. A half-finished Figma restructure is
+worse than none: the Index rule exists because this library went stale twice in
+two days, and a rushed pass with pages added and no cards is exactly that failure.

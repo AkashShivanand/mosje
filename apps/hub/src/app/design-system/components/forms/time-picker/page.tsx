@@ -60,7 +60,10 @@ export default function TimePickerPage(): React.JSX.Element {
       name="Time Picker"
       status="Stable"
       summary="A typed 24-hour time field, with a list of times as the second way in. The value is always HH:MM, and the format is stated rather than left to the browser."
-      figma={{ absent: "Master pending in the SAMAVESH library — tracked on the component record." }}
+      figma={{
+        absent:
+          "Masters exist on the library's Date-Time Picker page — TimePicker, TimePicker / Item and TimePicker / Trigger — predating this component. Whether they express the 24-hour typed field documented here has not been checked; that is an open item.",
+      }}
       specimen={<TimePickerPlayground />}
       propsFrom="TimePickerProps"
       a11y={A11Y}

@@ -55,7 +55,10 @@ export default function CarouselPage(): React.JSX.Element {
       name="Carousel"
       status="Stable"
       summary="A band of slides the reader moves through. Auto-rotation is off by default, and when it is on it stops on hover, on focus, under reduced motion, and on a pause control."
-      figma={{ absent: "Master pending in the SAMAVESH library — tracked on the component record." }}
+      figma={{
+        absent:
+          "What is on the library's Carousel page is a MOCKUP, not a component: five hardcoded \"Slide N/Desktop\" frames with light and dark control sets. A real master matching this API has still to be drawn.",
+      }}
       specimen={<CarouselPlayground />}
       propsFrom="CarouselProps"
       a11y={A11Y}

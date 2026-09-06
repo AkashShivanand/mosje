@@ -69,7 +69,10 @@ export default function PopoverPage(): React.JSX.Element {
       name="Popover"
       status="Stable"
       summary="A dismissible panel anchored to a trigger, holding content the reader can interact with. Unlike a tooltip it takes focus, so the controls inside it can actually be reached; unlike a modal it leaves the page operable behind it."
-      figma={{ absent: "Master pending in the SAMAVESH library — tracked on the component record." }}
+      figma={{
+        absent:
+          "A master exists and DISAGREES. The library's Popover page carries a UX4G-imported set named `popover` (16 variants: Direction × Title × Auto width). Direction maps to `side` and Auto width to `matchTriggerWidth`, but there is no `align`, \"Title\" is not a prop here, and the name is off the house convention. Reconciling it is an open item.",
+      }}
       specimen={<PopoverPlayground />}
       propsFrom="PopoverProps"
       a11y={A11Y}
