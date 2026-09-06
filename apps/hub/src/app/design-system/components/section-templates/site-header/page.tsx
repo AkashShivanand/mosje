@@ -274,6 +274,12 @@ export default function SiteHeaderPage(): React.JSX.Element {
                   "Navigation inline",
                 ],
                 ["Navigation row", "Its own tier", "Optional — usually a left sidebar instead", "Inline in the brand row"],
+                [
+                  "Bottom edge",
+                  "The navigation row's own 1px border",
+                  "A 1px subtle line under the brand row, so the chrome ends where the page begins",
+                  "None — the bar is the whole masthead",
+                ],
                 ["Sticky", "On", "On", "On"],
                 ["Scroll condense", "On", "On", "Never — it is one 64px tier already"],
                 ["Used by", "The dosje website", "PM-AJAY, SMILE Admin, NMBA", "The hub landing, /portals, /reports"],
