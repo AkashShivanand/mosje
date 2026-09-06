@@ -1,4 +1,4 @@
-// url=<SAMAVESH>?node-id=57533-47217
+// url=<SAMAVESH>?node-id=57551-49844
 // source=packages/design-system/components/feedback/stepper.tsx
 // component=Stepper
 import figma from "figma";
@@ -22,12 +22,20 @@ const instance = figma.selectedInstance;
  */
 
 /**
+ * Figma `Orientation` → `orientation`. Exhaustive.
+ *
+ * Three stages is the floor the U.S. Web Design System sets and this component
+ * adopts — below three, the page heading already says everything. Nine is the
+ * longest flow the MoSJE handoff draws, on E-Anudaan's grant application.
+ */
+const orientation = instance.getEnum("Orientation", {
+  Horizontal: "horizontal",
+  Vertical: "vertical",
+});
+
+/**
  * Figma `Steps` → the length of the `steps` array. Exhaustive: all 7 options
  * mapped, 3 through 9.
- *
- * Three is the floor the U.S. Web Design System sets and this component adopts —
- * below three, the page heading already says everything. Nine is the longest
- * flow the MoSJE handoff draws, on E-Anudaan's grant application.
  */
 const steps = instance.getEnum("Steps", {
   "3": `[
@@ -94,13 +102,14 @@ const steps = instance.getEnum("Steps", {
  * representative picture, not a value: the stage a citizen is on is decided by
  * the form at runtime. Emitting a literal would invite someone to hard-code it.
  *
- * `orientation`, `size`, `labelPlacement` and `collapse` are likewise unmapped:
- * the Row publishes only a stage count. A designer wanting the vertical, compact
+ * `size`, `labelPlacement` and `collapse` are unmapped: the Row publishes an
+ * orientation and a stage count, and nothing else the component takes. A designer wanting the vertical, compact
  * or label-beside arrangement places the stage masters and says so in the handoff
  * note — see the arrangements section on the component's Figma page.
  */
 export default figma.code`<Stepper
   ariaLabel="Application progress"
   current={step}
+  orientation="${orientation}"
   steps={${steps}}
 />`;

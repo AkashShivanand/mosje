@@ -1085,10 +1085,17 @@
     ]
   },
   "Stepper": {
-    "nodeId": "57533:47217",
+    "nodeId": "57551:49844",
     "captured": "2026-09-06",
-    "note": "Stepper / Row — the whole stepper, 7 variants, one per stage count. Published 2026-09-06 because the template previously mapped Stepper / Horizontal, which publishes one STAGE and so emitted a snippet for a component the barrel does not export. That node id was also the set misnamed since the UX4G 2.0 fork (its connector runs downward, so it is the vertical stage); both sets were renamed in place the same day, keys intact.",
+    "note": "Stepper / Row — the whole stepper, 14 variants (Orientation 2 x Steps 7). Rebuilt 2026-09-06 as the top of a three-layer family: Stepper / Node (marker) -> Stepper / Stage (node, half-track each side, labels) -> Stepper / Row. The earlier 7-variant Row and the two inherited stage masters are superseded; the masters are kept and marked because instances still resolve against them.",
     "properties": {
+      "Orientation": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Horizontal",
+          "Vertical"
+        ]
+      },
       "Steps": {
         "type": "VARIANT",
         "variantOptions": [
