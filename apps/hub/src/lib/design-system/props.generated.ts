@@ -6089,6 +6089,13 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "An explicit source, for a mark that is not in the registry yet. Reach for this ONLY while adding one — it is the escape hatch the registry exists to make unnecessary, and `check:org-logos` reports every use so they cannot accumulate quietly."
+      },
+      {
+        "name": "tile",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "The estate's standard tile — white ground, hairline rule, 8px radius — around the mark. Off, the mark sits bare on whatever it is placed on: the rail's portal identity draws it that way, as the handoff did. The artwork keeps its inset either way, so a mark never touches the edge of its box. Mirrors the Figma `Tile` boolean."
       }
     ]
   },
@@ -7947,7 +7954,7 @@ export const GENERATED_PROPS = {
         "name": "showCollapseControl",
         "type": "boolean",
         "required": false,
-        "description": "Show the rail's own collapse control (mirrors Figma `Show Control` on the identity block, off by default). With an `identity` it sits in that row — trailing when expanded, beneath the mark when collapsed; without one it takes a 48px row at the top. The portal masthead's toggle drives the same state, so pass this only in a shell without that toggle. Requires `onCollapsedChange`."
+        "description": "Show the rail's own collapse control: a 48px row at the top, rendered ONLY when there is no `identity`. The portal masthead's toggle is where the rail is collapsed (`SiteHeader.onToggleNav`); a control beside the brand competed with the name and had no room on SAMBAL, so the identity never hosts one. Pass this only in a shell with neither a masthead toggle nor an identity. Requires `onCollapsedChange`."
       }
     ]
   },

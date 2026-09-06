@@ -37,7 +37,7 @@
 //                        while the master had long since called it "Menu" — the
 //                        parity fixture carried the stale name, so the gate agreed
 //                        with the template and both disagreed with Figma.
-//   Profile           -> `account` present (the name / email block and avatar).
+//   Profile           -> `account` present (the name / role block and avatar).
 import figma from "figma";
 
 const instance = figma.selectedInstance;

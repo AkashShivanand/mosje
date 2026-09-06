@@ -231,6 +231,23 @@
     background-color: var(--sa-bg-neutral-base);
   }
 
+  /* PORTAL: THE BRAND ROW CLOSES WITH A LINE. Figma's Navbar/Portal Default variants
+     carry a 1px border/neutral/subtle stroke on the masthead's bottom edge
+     (2026-09-06, all three devices, weight bound to stroke/1). A portal usually has
+     no navigation row, so without it the white brand row ran straight into a white
+     page with nothing to say where the chrome ended. The website does not need it —
+     its navigation row draws its own top border directly under the brand row — and a
+     portal that DOES pass `nav` drops that row's top border so the two lines never
+     stack into 2px. The condensed bar draws the same line for itself (`.ds-hdr-cond`),
+     so the edge is there in both states. */
+  .ds-hdr[data-variant="portal"] .ds-hdr-brand {
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  .ds-hdr[data-variant="portal"] .ds-hdr-nav {
+    border-top: 0;
+  }
+
   .ds-hdr-brand__in {
     margin: 0 auto;
     display: flex;
@@ -442,8 +459,40 @@
     }
   }
 
-  /* The portal's phone search button: the condensed bar's 40px outlined control,
-     in the resting row, shown only below 768 (the rule above turns it on). */
+  /* BELOW 1024 A PORTAL'S SEARCH FIELD WAITS BEHIND ITS BUTTON, NOT ONLY BELOW 768.
+     Between 768 and 1023 the row is `nowrap` and a portal that carries a toggle, a
+     260px field and an account left the identity its 168px minimum: the department
+     name wrapped ONE WORD PER LINE and the brand row stood 308px tall (seen on the
+     Navbar docs page, whose preview column is ~800 wide). Figma's Navbar/Portal
+     Tablet variant shows no field at all. So the phone behaviour extends to the
+     whole tablet range: the field hides, the 40px button shows, and — because the
+     row cannot wrap here — an OPENED field drops to its own full-width line under
+     the row instead of squeezing the identity again. A portal with a sidebar
+     (`onToggleNav`) renders no button, and its field simply hides: search lives at
+     the head of the sidebar drawer below 1024 (SidebarNav `header`). */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .ds-hdr[data-variant="portal"] .ds-hdr-searchfield:not(.is-open) {
+      display: none;
+    }
+
+    .ds-hdr[data-variant="portal"] .ds-hdr-brand__in .ds-hdr-brand__searchbtn {
+      display: inline-grid;
+    }
+
+    .ds-hdr[data-variant="portal"] .ds-hdr-brand__in:has(.ds-hdr-searchfield.is-open) {
+      flex-wrap: wrap;
+    }
+
+    .ds-hdr[data-variant="portal"] .ds-hdr-searchfield.is-open {
+      order: 10;
+      flex: 1 1 100%;
+      max-width: none;
+      margin-block-start: var(--sa-stack-8);
+    }
+  }
+
+  /* The portal's search button: the condensed bar's 40px outlined control, in the
+     resting row, shown only below 1024 (the rules above turn it on). */
   .ds-hdr-brand__searchbtn {
     display: none;
     place-items: center;

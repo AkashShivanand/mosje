@@ -12,6 +12,11 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-05 · System version: v0.56.0 (THE RAIL'S IDENTITY IS THE HANDOFF'S: the
+  SAMAVESH saffron wash across the rail, a bare 56 mark, the full name to three lines; OrgLogo's
+  tile is a property; the masthead is the one place the rail collapses and the identity hosts
+  no control.)
+
   Last reviewed: 2026-09-05 · System version: v0.55.0 (EVERY PORTAL RAIL NAMES ITS PORTAL. All
   shells pass SidebarNav an identity — name, the department's full name, the registry mark, the
   portal's home — as the Figma master defaults to; the rail's own collapse control is off wherever

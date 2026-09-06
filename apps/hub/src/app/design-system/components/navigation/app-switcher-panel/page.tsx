@@ -68,7 +68,10 @@ const A11Y: A11yItem[] = [
     criterion: "2.4.4 Link Purpose (In Context)",
     level: "A",
     description:
-      "Each row's accessible name carries the organisation's short code and its full name, so a link is not announced as a bare abbreviation.",
+      "Each row's accessible name is the destination's full name and its description, never an abbreviation. The organisation's mark carries an empty alt because the name sits beside it in real text [WCAG H67], so a screen reader is not told the organisation twice.",
+    status: "verified",
+    evidence:
+      "Read from the rendered panel: the link's text is the name plus the description, and the OrgLogo image resolves to alt=\"\". The two-letter monogram it replaced was aria-hidden, so nothing announced was lost.",
   },
   {
     criterion: "1.3.1 Info and Relationships",
@@ -177,6 +180,13 @@ export default function AppSwitcherPanelPage(): React.JSX.Element {
               directory preserve registry order without sorting. Within each category, live
               entries come before planned ones — a built portal left marked planned is a finished
               service nobody can find.
+            </p>
+            <p>
+              <strong>The panel lists what ships.</strong> An entry the registry marks planned is
+              not rendered at all — not as a greyed row and not badged &ldquo;soon&rdquo;. The
+              test is <code>isLiveEntry</code>, shared with the portals gateway and the SAMAVESH
+              banner drawer, so the three surfaces that read this registry cannot disagree about
+              which portals exist.
             </p>
             <p>
               A hidden entry is a runtime state, not a code value: the hub&apos;s proxy rewrites a

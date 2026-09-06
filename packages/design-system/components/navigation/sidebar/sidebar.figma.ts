@@ -10,9 +10,8 @@
 // PROPERTY COVERAGE — three Figma properties are mapped; one is declared omitted:
 //   Mode          -> collapsed   (Expanded = false | Collapsed = true)
 //   Show Identity -> identity    (Sidebar/PortalIdentity at the head; its Name, Expansion
-//                                 and Mark become the identity object's fields. The rail's
-//                                 collapse control lives on THAT nested instance as Show
-//                                 Control, mapped to showCollapseControl here.)
+//                                 and Mark become the identity object's fields. No control
+//                                 lives there: the masthead's toggle collapses the rail.)
 //   Show Footer   -> footer      (a slot in Figma, a ReactNode in code)
 //   Menu         -> OMITTED, deliberately. The Menu slot holds Sidebar/Item · Level 1 and
 //                   Sidebar/GroupLabel instances. In code that whole tree is the `groups`

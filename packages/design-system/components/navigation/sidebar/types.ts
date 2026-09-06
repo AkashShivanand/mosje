@@ -76,7 +76,7 @@ export interface SidebarNavIdentity {
   name: string;
   /** The department's own full name, two lines at most. */
   expansion?: string;
-  /** The mark — an `<OrgLogo>` from the registry, never a pasted image. */
+  /** The mark — an `<OrgLogo tile={false}>` from the registry, never a pasted image; the wash is its ground. */
   mark: React.ReactNode;
   /** The portal's home route. */
   href: string;
@@ -106,12 +106,12 @@ export interface SidebarNavProps {
   collapsed?: boolean;
   onCollapsedChange?: (collapsed: boolean) => void;
   /**
-   * Show the rail's own collapse control (mirrors Figma `Show Control` on the
-   * identity block, off by default). With an `identity` it sits in that row —
-   * trailing when expanded, beneath the mark when collapsed; without one it
-   * takes a 48px row at the top. The portal masthead's toggle drives the same
-   * state, so pass this only in a shell without that toggle. Requires
-   * `onCollapsedChange`.
+   * Show the rail's own collapse control: a 48px row at the top, rendered ONLY
+   * when there is no `identity`. The portal masthead's toggle is where the rail
+   * is collapsed (`SiteHeader.onToggleNav`); a control beside the brand competed
+   * with the name and had no room on SAMBAL, so the identity never hosts one.
+   * Pass this only in a shell with neither a masthead toggle nor an identity.
+   * Requires `onCollapsedChange`.
    */
   showCollapseControl?: boolean;
   /**

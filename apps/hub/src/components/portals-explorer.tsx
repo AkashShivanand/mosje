@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import {
   Icon,
+  isLiveEntry,
   PortalCard,
   portalLabel,
   portalSummary,
@@ -54,9 +55,11 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
       if (portal.group !== "Portals") return false;
 
       // LIVE ONLY. The registry is the single source of what exists, exactly as
-      // it is for the banner drawer — so a portal cannot be listed here and be
-      // unreachable, which is the failure that shipped a 404 on every page.
-      if ((portal.status ?? "live") !== "live") return false;
+      // it is for the banner drawer and the app switcher — so a portal cannot be
+      // listed here and be unreachable, which is the failure that shipped a 404
+      // on every page. All three now ask `isLiveEntry` rather than each writing
+      // its own version of the test.
+      if (!isLiveEntry(portal)) return false;
 
       // Category filter
       if (category !== "all" && portal.category !== category) {
@@ -125,7 +128,7 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
   }, [portals]);
 
   const liveCount = portals.filter(
-    (p) => p.group === "Portals" && (p.status ?? "live") === "live",
+    (p) => p.group === "Portals" && isLiveEntry(p),
   ).length;
 
 

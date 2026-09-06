@@ -126,6 +126,8 @@ export function AdminShell({ children }: AdminShellProps) {
   return (
     <div className="min-h-screen bg-surface-muted">
       <SiteHeader
+        onToggleNav={() => setCollapsed((c) => !c)}
+        navExpanded={!collapsed}
         homeHref={BASE}
         variant="portal"
         sticky
@@ -164,12 +166,11 @@ export function AdminShell({ children }: AdminShellProps) {
         {/* Sidebar — persistent from lg up. Below that it would eat most of a
             phone screen, so it moves into a drawer instead. */}
         <SidebarNav
-          identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" />, href: "/portals/nmba/admin/dashboard" }}
+          identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" tile={false} />, href: "/portals/nmba/admin/dashboard" }}
           groups={groups}
           pathname={pathname}
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
-          showCollapseControl
           label="Portal navigation"
           className="hidden shrink-0 border-r border-line lg:flex lg:flex-col"
         />
@@ -196,7 +197,7 @@ export function AdminShell({ children }: AdminShellProps) {
         side="left"
         size="sm"
       >
-        <SidebarNav identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" />, href: "/portals/nmba/admin/dashboard" }} groups={groups} pathname={pathname} label="Portal navigation" className="w-auto" />
+        <SidebarNav identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" tile={false} />, href: "/portals/nmba/admin/dashboard" }} groups={groups} pathname={pathname} label="Portal navigation" className="w-auto" />
       </SideSheet>
 
       {/* AppSwitcher FAB is rendered once globally in the root layout. */}

@@ -456,15 +456,27 @@
   /*
    * Which portal the user is in: mark, short name, expansion, a link home. The
    * masthead carries the Ministry and the estate; this is the one place the
-   * portal is named, so it heads every rail. Collapsed: the mark alone, the
-   * name as tooltip and accessible label.
+   * portal is named, so it heads every rail.
+   *
+   * It carries the SAMAVESH wash the handoff gave it (2026-09-05): a saffron
+   * fade — bg/brand/secondary/base, the handoff's saffron at 8% over white, to
+   * nothing — across the FULL width of
+   * the rail, so it bleeds through the rail's padding with negative margins and
+   * pads itself by padding/16. The mark is the registry OrgLogo at 56, bare
+   * (`tile={false}`): the wash is its ground. Collapsed, the mark alone at 40.
+   *
+   * No collapse control lives here. The masthead toggles the rail; a second
+   * control beside the brand competed with the name and, on SAMBAL, had no
+   * room at all. Decision 21 in the spec.
    */
   .ds-sidebar__identity {
     flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: var(--sa-inline-12);
-    padding: var(--sa-padding-8) 0 var(--sa-padding-12);
+    margin: calc(-1 * var(--sa-padding-16)) calc(-1 * var(--sa-padding-16)) 0;
+    padding: var(--sa-padding-16);
+    background: linear-gradient(to bottom, var(--sa-bg-brand-secondary-base), transparent);
     border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
@@ -494,13 +506,18 @@
   .ds-sidebar__identity-mark {
     flex-shrink: 0;
     display: inline-flex;
-    width: var(--sa-icon-size-40);
-    height: var(--sa-icon-size-40);
   }
 
-  /* The registry mark comes in 32 / 48 / 56; the identity row draws it at 40,
-     the size the Figma master binds (icon/size/40). */
+  /* The registry mark is drawn at the org-logo's natural 56 here, bare — the
+     handoff's size and the OrgLogo `lg` tile, component geometry rather than a
+     spacing step (see org-logo.css). Collapsed, icon/size/40 fits the column. */
   .ds-sidebar__identity-mark > .ds-org-logo {
+    width: 56px;
+    height: 56px;
+  }
+
+  .ds-sidebar.is-collapsed .ds-sidebar__identity-mark,
+  .ds-sidebar.is-collapsed .ds-sidebar__identity-mark > .ds-org-logo {
     width: var(--sa-icon-size-40);
     height: var(--sa-icon-size-40);
   }
@@ -516,13 +533,15 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-title-3-size);
     line-height: var(--sa-type-title-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
+  /* The department's full name, up to three lines: SAMBAL's runs to three at
+     this measure, and cutting a department's own name short is not an option. */
   .ds-sidebar__identity-expansion {
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-3-size);
@@ -530,15 +549,15 @@
     color: var(--sa-text-neutral-subtle);
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     overflow: hidden;
   }
 
   /* ── Collapse control (without an identity) ────────────────────────────────── */
-  /* The rail's own collapse control — shown only where the masthead has no
-     toggle — sits at the TOP, a 48px row above the first item: right-aligned
-     when expanded, centred when collapsed. Never at the foot, which is below
-     the fold on a laptop. With an identity it sits in that row instead. */
+  /* The rail's own collapse control — only for a shell with NO masthead toggle
+     and no identity — sits at the TOP, a 48px row above the first item:
+     right-aligned when expanded, centred when collapsed. Never at the foot,
+     which is below the fold on a laptop, and never beside the identity. */
   .ds-sidebar__control {
     flex-shrink: 0;
     display: flex;

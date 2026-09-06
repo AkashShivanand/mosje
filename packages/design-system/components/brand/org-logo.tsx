@@ -45,6 +45,14 @@ export interface OrgLogoProps extends React.HTMLAttributes<HTMLSpanElement> {
   /** Tile size. 32 / 48 / 56px. @default "md" */
   size?: OrgLogoSize;
   /**
+   * The estate's standard tile — white ground, hairline rule, 8px radius — around
+   * the mark. Off, the mark sits bare on whatever it is placed on: the rail's
+   * portal identity draws it that way, as the handoff did. The artwork keeps its
+   * inset either way, so a mark never touches the edge of its box. Mirrors the
+   * Figma `Tile` boolean. @default true
+   */
+  tile?: boolean;
+  /**
    * The organisation's name, for the accessible name.
    *
    * OMIT IT — and that is the normal case. A mark sitting beside the org's name
@@ -60,7 +68,9 @@ export interface OrgLogoProps extends React.HTMLAttributes<HTMLSpanElement> {
  *
  * The tile is part of the component, not the caller's job: white ground, hairline
  * rule, 8px radius, the mark contained rather than cropped. Four surfaces drew
- * that tile by hand with three different radii before this existed.
+ * that tile by hand with three different radii before this existed. Where a
+ * surface supplies its own ground — the rail's portal identity on its saffron
+ * wash — `tile={false}` leaves the mark bare; the inset stays.
  *
  * ```tsx
  * <OrgLogo path="/portals/scw" />          // by route — what the registry gives you
@@ -69,7 +79,7 @@ export interface OrgLogoProps extends React.HTMLAttributes<HTMLSpanElement> {
  * ```
  */
 export const OrgLogo = React.forwardRef<HTMLSpanElement, OrgLogoProps>(
-  function OrgLogo({ org, path, src, size = "md", name, className, ...rest }, ref) {
+  function OrgLogo({ org, path, src, size = "md", tile = true, name, className, ...rest }, ref) {
     /*
      * An explicit `org` MUST beat a derived `path`. `PortalCard` passes
      * `path={path ?? href}` and `href` is REQUIRED, so the path branch was
@@ -81,7 +91,7 @@ export const OrgLogo = React.forwardRef<HTMLSpanElement, OrgLogoProps>(
     return (
       <span
         ref={ref}
-        className={cn("ds-org-logo", `ds-org-logo--${size}`, className)}
+        className={cn("ds-org-logo", `ds-org-logo--${size}`, !tile && "ds-org-logo--plain", className)}
         {...rest}
       >
         <img src={resolved} alt={name ?? ""} loading="lazy" decoding="async" />

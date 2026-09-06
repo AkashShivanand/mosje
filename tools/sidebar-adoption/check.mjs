@@ -39,6 +39,7 @@ function* walk(dir) {
 
 const offenders = [];
 const missingIdentity = [];
+const ownControl = [];
 let scanned = 0;
 for (const scope of SCOPES) {
   for (const f of walk(join(ROOT, scope))) {
@@ -56,6 +57,8 @@ for (const scope of SCOPES) {
     if (/SidebarNav\b[^]*from "@mosje\/design-system"/.test(src) && /<SidebarNav\b/.test(src)) {
       // The rail names its portal: every rendered SidebarNav in portal code carries an identity.
       if (!/identity=/.test(src)) missingIdentity.push(rel);
+      // The masthead toggles the rail. A rail drawing its own control beside the brand competed with the name.
+      if (/showCollapseControl/.test(src)) ownControl.push(rel);
       continue;
     }
     if (ALLOW.has(rel)) continue;
@@ -66,6 +69,11 @@ for (const scope of SCOPES) {
 if (missingIdentity.length) {
   console.error(`✖ sidebar adoption: ${missingIdentity.length} file(s) render SidebarNav without an identity — the rail is the one place a signed-in user is told which portal they are in:`);
   for (const o of missingIdentity) console.error(`  · ${o}`);
+  process.exit(1);
+}
+if (ownControl.length) {
+  console.error(`✖ sidebar adoption: ${ownControl.length} file(s) pass showCollapseControl — the masthead toggles the rail (SiteHeader.onToggleNav); the rail draws no control of its own beside the brand:`);
+  for (const o of ownControl) console.error(`  · ${o}`);
   process.exit(1);
 }
 if (offenders.length) {

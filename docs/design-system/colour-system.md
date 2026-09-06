@@ -66,13 +66,11 @@ the ink chosen for it BY MEASUREMENT in the worst brand, not by assumption.
 | dbim-blue | 51 | none |
 | dbim-burgundy | 51 | none |
 | dbim-purple | 51 | none |
-| dbim-green | 51 | `brand-primary-bolder` 4.32 |
+| dbim-green | 51 | none |
 | dbim-chrome-yellow | 51 | none |
 | dbim-cinnamon-red | 51 | none |
 
-**The estate's own brands have no shortfall at all.** Every `on/*` foreground is AA-readable on the fill it names in both Blue and Navy. The last two — `status-error-bolder` at 4.40:1 and `status-warning-bolder` at 4.46:1 — closed on 2026-08-11 when the danger and warning ramps were re-anchored at the rung their lightness says (400 and 300, not 500), taking those rungs to 6.68:1 and 5.68:1.
-
-The remaining row is DBIM's, and it is left alone deliberately: `dbim-green`'s `brand-primary-bolder` is DBIM's OWN published shade 2 (#2D8686), and DBIM's own rule 4 asks that "colour usage must ensure accessibility of digital platform". Correcting it would mean shipping a colour DBIM never issued under DBIM's name, at which point the preview stops previewing anything. It is a finding about the palette, reported rather than smoothed over — and it is one reason an organisation picking a DBIM group should pick a different one.
+**The estate's own brands have no shortfall at all.** Every `on/*` foreground is AA-readable on the fill it names in both Blue and Navy. The last two — `status-error-bolder` at 4.40:1 and `status-warning-bolder` at 4.46:1 — closed on 2026-08-11 when the danger and warning ramps were re-anchored at the rung their lightness says (400 and 300, not 500), taking those rungs to 6.68:1 and 5.68:1. The DBIM previews are clean too.
 
 ## Hue separation
 
