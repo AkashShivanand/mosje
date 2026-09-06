@@ -211,3 +211,17 @@ items, 20 child items). They are to be migrated screen by screen, one at a time,
     passes `showCollapseControl`. The prop survives only for a shell with neither a masthead toggle
     nor an identity, where it draws a 48px row above the first item. In Figma, `Show Control` is
     removed from PortalIdentity.
+
+22. **The divider between rail and content belongs to the rail's COLUMN, and runs to the bottom.**
+    Shells drew it as a `border-r` on the rail, but the rail is sticky and no taller than the
+    viewport, so the line stopped where the rail stopped and vanished as the page scrolled. It is
+    neither the rail's nor the content's: it is the seam between them, so `SidebarNav` now renders a
+    column (`.ds-sidebar-column`, as wide as the rail, stretched to the full height of the shell's
+    row, carrying `border/neutral/subtle` at `stroke/1`) with the sticky rail inside it. The Figma
+    `Sidebar` master carries the same right stroke. Shells pass no border of their own; their layout
+    classes (hidden below `md`) land on the column.
+
+23. **The wash is `color/transparent/secondary/8`, and its far stop is raw by necessity.** A bound
+    gradient stop takes its variable's alpha, so a fade bound at both ends rendered as a solid block in
+    Figma. The near stop binds the 8% saffron token the handoff used; the far stop is a raw transparent
+    of the same hue, the one literal the master carries, recorded in its description.

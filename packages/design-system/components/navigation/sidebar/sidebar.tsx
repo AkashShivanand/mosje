@@ -651,9 +651,14 @@ export function SidebarNav({
   const baseId = React.useId();
 
   return (
+    // The COLUMN stretches to the full height of the shell's row and carries the
+    // hairline between rail and content, so the line runs to the bottom edge
+    // however far the page scrolls; the rail inside it pins under the masthead.
+    // A shell's layout classes (hidden below md, shrink-0) belong to the column.
+    <div className={cn("ds-sidebar-column", collapsed ? "is-collapsed" : "is-expanded", className)}>
     <aside
       id={id}
-      className={cn("ds-sidebar", collapsed ? "is-collapsed" : "is-expanded", className)}
+      className={cn("ds-sidebar", collapsed ? "is-collapsed" : "is-expanded")}
     >
       {identity ? (
         <div className={cn("ds-sidebar__identity", collapsed && "is-collapsed")}>
@@ -722,5 +727,6 @@ export function SidebarNav({
       {footer && <div className="ds-sidebar__footer">{footer}</div>}
 
     </aside>
+    </div>
   );
 }

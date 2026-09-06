@@ -12,6 +12,10 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-06 · System version: v0.57.0 (THE RAIL OWNS ITS DIVIDER: SidebarNav renders a
+  full-height column that carries the hairline between rail and content, so it runs to the bottom
+  edge on scroll; the identity wash binds color/transparent/secondary/8 in Figma and code.)
+
   Last reviewed: 2026-09-05 · System version: v0.56.0 (THE RAIL'S IDENTITY IS THE HANDOFF'S: the
   SAMAVESH saffron wash across the rail, a bare 56 mark, the full name to three lines; OrgLogo's
   tile is a property; the masthead is the one place the rail collapses and the identity hosts

@@ -32,9 +32,17 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.118.0",
+    date: "2026-09-06",
+    current: true,
+    changes: [
+      { kind: "Fixed", text: "THE DIVIDER BESIDE THE RAIL VANISHED ON SCROLL. Shells drew it as a border on the rail, which is sticky and never taller than the viewport, so the line stopped where the rail stopped. `SidebarNav` now renders a column as wide as the rail, stretched to the full height of the shell's row, that owns the hairline (`border/neutral/subtle`, `stroke/1`); the sticky rail sits inside it, and the line runs to the bottom edge however far the page scrolls. Shells pass no border of their own; the Figma `Sidebar` master carries the same right stroke." },
+      { kind: "Fixed", text: "THE IDENTITY WASH RENDERED SOLID IN FIGMA. A bound gradient stop takes its variable's alpha, so a fade bound at both ends was a flat block. The near stop binds `color/transparent/secondary/8`, the handoff's 8% saffron, in Figma and code alike; the far stop is a raw transparent of the same hue, the one literal the master carries." },
+    ],
+  },
+  {
     version: "v0.117.0",
     date: "2026-09-05",
-    current: true,
     changes: [
       { kind: "Changed", text: "THE RAIL'S IDENTITY BLOCK IS THE HANDOFF'S AGAIN. The SAMAVESH wash — `bg/brand/secondary/base`, the handoff's saffron at 8% over white, fading to nothing — across the full width of the rail, padding/16, the registry mark bare at 56 (40 collapsed), the department's full name free to run to three lines. Redrawn in the Figma master and in code from the handoff's original block. The collapse control is gone from the identity: the masthead toggles the rail everywhere, the five shells that still drew their own now wire `SiteHeader.onToggleNav`, and `check:sidebar-adoption` fails a portal shell that passes `showCollapseControl`." },
       { kind: "Added", text: "`OrgLogo` TAKES `tile`. Ground, hairline and radius are a property now (`tile`, default on; the Figma `Tile` boolean), so a surface that supplies its own ground — the rail's identity on its wash — switches the tile off instead of drawing a mark by hand. The artwork keeps its inset either way." },
