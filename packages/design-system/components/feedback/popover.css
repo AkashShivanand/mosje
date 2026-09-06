@@ -1,0 +1,79 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Popover
+     A non-modal dialog anchored to a trigger. Portalled and `position: fixed`
+     from JS-measured coordinates, so no ancestor overflow can clip it.
+     ============================================================================ */
+
+  .ds-popover {
+    position: fixed;
+    /* Below a Modal (500) and below a Tooltip (800): a popover must not cover a
+       modal that owns the screen, and a tooltip describing a control INSIDE the
+       popover has to sit above it. */
+    z-index: var(--sa-z-popover);
+    box-sizing: border-box;
+    /* A readable measure without pinning a width — the panel hugs short content
+       and wraps long content rather than becoming a column of two words. */
+    min-width: 12rem;
+    max-width: min(22rem, calc(100vw - var(--sa-padding-32)));
+    /* Long panels scroll themselves rather than growing past the viewport. The
+       ceiling leaves room for the anchor gap and both viewport margins. */
+    max-height: calc(100vh - var(--sa-padding-64));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--sa-padding-16);
+    border: var(--sa-cmp-divider-width) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-dialog-radius);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-base);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    text-align: left;
+    box-shadow: var(--sa-elevation-dropdown);
+    animation: ds-popover-in var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  /* The panel itself takes focus when it holds no focusable control, so it must
+     show a ring — an invisible focus is a WCAG 2.4.7 failure, and this is the
+     one case where the focused element is the container. */
+  .ds-popover:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  @keyframes ds-popover-in {
+    from {
+      opacity: 0;
+      transform: translateY(2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-popover {
+      animation: none;
+    }
+  }
+
+  /* Side modifiers tag the RESOLVED placement in the DOM — the side asked for is
+     not always the side used. Consumers style against them; the offset itself is
+     applied inline so the flip logic and the paint cannot disagree. */
+  .ds-popover--top,
+  .ds-popover--bottom,
+  .ds-popover--left,
+  .ds-popover--right {
+    /* placement handled by inline top/left */
+  }
+}

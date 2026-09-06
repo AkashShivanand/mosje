@@ -2473,7 +2473,19 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - Meets WCAG 1.4.13: Escape dismisses it without moving focus, the bubble itself is hoverable, and it never times out on its own.
 - The trigger must be a single focusable element that forwards a ref. A hover-only tooltip is unreachable by keyboard and unavailable on touch.
 - Never put essential information here and nowhere else — tooltips do not exist for touch users.
-- Renders through a portal at `z-index: 90`, above Modal (50) and Lightbox (80), so an ancestor's `overflow: hidden` cannot clip it.
+- Renders through a portal at `--sa-z-tooltip` (800), above Modal (500) and Popover (600), so an ancestor's `overflow: hidden` cannot clip it. Placement is the shared engine in `foundations/anchor.ts`, not a private copy.
+
+#### Popover
+**Purpose**: A non-modal `dialog` anchored to a trigger, holding content the reader can **act on** — a filter, a row's actions, guidance with a link in it.
+**Props**: `content` (node, or a function receiving `{ close }`), `label` (**required**), `side`, `align` (default `start`), `sideOffset`, `open`/`defaultOpen`/`onOpenChange`, `disabled`, `matchTriggerWidth`
+**Rules**:
+- **It is not a Tooltip, and the difference is structural.** A tooltip opens on hover, holds no controls and is announced through `aria-describedby`. Content that opens on hover cannot be tabbed into, so a link or a button inside a tooltip is unreachable by keyboard and invisible on touch. If the panel holds something to act on, it is a Popover.
+- **It is not a Modal.** Non-modal by design: the page behind stays operable, and the panel must therefore never trap focus. Tab past the last control closes it and focus carries on into the page.
+- **`label` is required** — a dialog with no accessible name is announced as "dialog" and tells a screen-reader user nothing about what just opened. Making it required means no unnamed panel can reach a citizen.
+- Escape closes and **returns focus to the trigger**; a pointer-down outside closes without moving focus, because focus already belongs to whatever was clicked.
+- Placement is the shared engine in `foundations/anchor.ts` — measured after mount, flipped once when the preferred side would overflow, clamped on both axes against an 8px viewport margin. `align` defaults to `start`: a panel whose leading edge lines up with its trigger reads as belonging to it.
+- Renders through a portal at `--sa-z-popover` (600): below Modal-owned screens' own stacking and below Tooltip (800), so a tooltip describing a control **inside** the panel still sits above it.
+- Width hugs content between 12rem and 22rem. `matchTriggerWidth` is for a picker that belongs to one field, not for a panel of arbitrary content.
 
 #### Stepper
 **Purpose**: Displays progress through a multi-step form or process.  

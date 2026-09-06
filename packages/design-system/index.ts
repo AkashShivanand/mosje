@@ -197,6 +197,8 @@ export { Skeleton, SkeletonText, SkeletonRow } from "./components/feedback/skele
 export type { SkeletonProps } from "./components/feedback/skeleton";
 export { Tooltip } from "./components/feedback/tooltip";
 export type { TooltipProps, TooltipSide } from "./components/feedback/tooltip";
+export { Popover } from "./components/feedback/popover";
+export type { PopoverApi, PopoverProps } from "./components/feedback/popover";
 export { EmptyState } from "./components/feedback/empty-state";
 export { ErrorView } from "./components/feedback/error-view";
 export type {

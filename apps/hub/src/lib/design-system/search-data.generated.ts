@@ -1131,6 +1131,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Popover — Design System",
+    "section": "Feedback & Status",
+    "href": "/design-system/components/feedback/popover",
+    "keywords": "popover — design system feedback & status why this is not a tooltip placement the panel&apos;s edge width example non-modal, and why that decides the keyboard model the label is required touch  tokens wcag accessibility",
+    "description": "A non-modal dialog anchored to a trigger, holding content the reader can interact with. Escape closes it and returns focus; Tab out closes it without trapping.",
+    "type": "component",
+    "iconName": "notifications"
+  },
+  {
     "title": "Portal Card — Design System",
     "section": "Navigation",
     "href": "/design-system/components/navigation/portal-card",

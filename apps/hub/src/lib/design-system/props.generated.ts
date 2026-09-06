@@ -6467,6 +6467,90 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "PopoverProps": {
+    "source": "packages/design-system/components/feedback/popover.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactElement",
+        "required": true,
+        "description": "The trigger. Must be a single element that can hold a ref and an `onClick` — a `<button>` or a DS component that forwards its ref. A non-focusable trigger makes the panel unreachable by keyboard."
+      },
+      {
+        "name": "content",
+        "type": "React.ReactNode | ((api: PopoverApi) => React.ReactNode)",
+        "required": true,
+        "description": "The panel's contents. Pass a function to receive `close`, which is what a panel with its own confirm or cancel button needs."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "The panel's accessible name, announced when focus enters it. Required: a dialog with no name is announced as \"dialog\" and tells a screen-reader user nothing about what just opened."
+      },
+      {
+        "name": "align",
+        "type": "AnchorAlign = \"start\" | \"center\" | \"end\"",
+        "required": false,
+        "default": "\"start\"",
+        "description": "Cross-axis alignment. `start` by default, not `center`: a panel whose left edge lines up with its trigger reads as belonging to it."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "defaultOpen",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Initial open state when uncontrolled."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Prevent opening without unmounting the trigger."
+      },
+      {
+        "name": "matchTriggerWidth",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Constrain the panel's width to the trigger's. Use it for a picker that belongs to a field; leave it off for a panel of arbitrary content."
+      },
+      {
+        "name": "onOpenChange",
+        "type": "(open: boolean) => void",
+        "required": false,
+        "description": "Called on every open and close, in both controlled and uncontrolled use."
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "required": false,
+        "description": "Controlled open state. Pair with `onOpenChange`."
+      },
+      {
+        "name": "side",
+        "type": "AnchorSide = \"top\" | \"bottom\" | \"left\" | \"right\"",
+        "required": false,
+        "default": "\"bottom\"",
+        "description": "Preferred side. Flips automatically when there is no room."
+      },
+      {
+        "name": "sideOffset",
+        "type": "number",
+        "required": false,
+        "default": "8",
+        "description": "Gap between the trigger and the panel, in px."
+      }
+    ]
+  },
   "PortalCardProps": {
     "source": "packages/design-system/components/navigation/portal-card.tsx",
     "inheritsNative": true,
