@@ -26,19 +26,17 @@ export const USER_NAV: NavItem[] = [
   { label: "Our Services", href: "/portals/scw/our-services", icon: "support" },
 ];
 
-/** Portal-local Sidebar — wraps DS SidebarNav with SCW-specific nav arrays. */
-export function Sidebar({ items, home = "/portals/scw" }: { items: NavItem[]; home?: string }) {
+/** Portal-local Sidebar — wraps DS SidebarNav with SCW-specific nav arrays. Collapsed state is owned by the shell, whose masthead toggles it. */
+export function Sidebar({ items, home = "/portals/scw", collapsed = false, onCollapsedChange }: { items: NavItem[]; home?: string; collapsed?: boolean; onCollapsedChange?: (c: boolean) => void }) {
   const pathname = usePathname();
-  const [collapsed, setCollapsed] = React.useState(false);
 
   return (
     <SidebarNav
-      identity={{ name: "SCW", expansion: "Senior Citizens Welfare", mark: <OrgLogo path="/portals/scw" />, href: home }}
+      identity={{ name: "SCW", expansion: "Senior Citizens Welfare", mark: <OrgLogo path="/portals/scw" tile={false} />, href: home }}
       groups={[{ items }]}
       pathname={pathname}
       collapsed={collapsed}
-      onCollapsedChange={setCollapsed}
-      showCollapseControl
+      onCollapsedChange={onCollapsedChange}
       className="hidden shrink-0 md:flex md:flex-col"
     />
   );

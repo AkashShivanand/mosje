@@ -62,7 +62,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
 
       <div className="flex flex-1 items-stretch">
         <SidebarNav
-          identity={{ name: "E-Anudaan", expansion: "Grant-in-Aid Management", mark: <OrgLogo path="/portals/e-anudaan" />, href: "/portals/e-anudaan" }}
+          identity={{ name: "E-Anudaan", expansion: "Grant-in-Aid Management", mark: <OrgLogo path="/portals/e-anudaan" tile={false} />, href: "/portals/e-anudaan" }}
           groups={[{ items: role.nav }]}
           pathname={pathname}
           collapsed={collapsed}
