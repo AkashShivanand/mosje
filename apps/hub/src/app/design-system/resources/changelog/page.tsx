@@ -32,9 +32,17 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.122.0",
+    version: "v0.123.0",
     date: "2026-09-06",
     current: true,
+    changes: [
+      { kind: "Added", text: "THE STEPPER'S SPECIMEN ADVANCES BY HAND, AND CAN BE SLOWED DOWN. A still specimen cannot show the part of this component a reader most often takes on trust — what happens between two stages — so the specimen at the top of the page is now a playground: Back, Next Stage, and a slow-motion switch that multiplies the two motion tokens by eight on the specimen alone, so the curve is legible rather than merely present. A new section names the three movements a stage change actually is — the connector filling along its length, the ring growing out of the node, and the fill, border and numeral cross-fading together — with the token each one's duration comes from" },
+      { kind: "Fixed", text: "THE STEPPER CLAIMED TO HAVE ONE ANIMATION WHEN IT HAS THREE. The accessibility page asserted, against WCAG 2.3.3, that \"the node's colour transition is removed under a reduced-motion preference — it is the only motion the component has\". The rebuild had added the ring and the connector fill; the checklist row was never updated. It now describes what reduced motion actually does: the colour and the filled track still arrive, they simply do not travel. A compliance row that names the wrong behaviour is worse than one that names none, because a reviewer stops looking" },
+    ],
+  },
+  {
+    version: "v0.122.0",
+    date: "2026-09-06",
     changes: [
       { kind: "Changed", text: "THE PRIMARY TRANSPARENCY TIERS FOLLOW THE LIBRARY. `color/transparent/primary/8…48` alias `primaryScale/600` (#005EB9 in Blue, navy 600 in Navy), which is what the Figma library has bound them to since the eleventh parity read. The payload had said `primaryScale/500` since the tiers became references on 2026-09-04, and the 0-tier work recorded the six-entry difference rather than settle it. It is settled by moving the code to the library, not the library to the code: `build/brand-ramps.mjs` BASE, `semantic.json`, the alpha-bindings record and the visual-contract fixture all read 600, the Palette value checksums are byte-equal again with nothing written to Figma, and `knownDifference.Palette` is deleted. Nothing in the estate consumes the six tiers yet, so no surface changes colour; the foundation page's tier cards now state the rung the library states" },
     ],
