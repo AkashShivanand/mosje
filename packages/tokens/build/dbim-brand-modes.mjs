@@ -354,33 +354,41 @@ export function addDbimBrandModes(tree) {
       }
 
       /*
-       * NO `on/bg/*` INK OVERRIDE, AND THAT IS A DECISION RATHER THAN AN OMISSION.
+       * INK ON ITS ONE FILL. `on/bg/<path>` is the foreground for `bg/<path>` and for nothing
+       * else, so it can be chosen by measuring that fill.
        *
-       * One pairing is still short: dbim-green's `on/bg/brand/primary/bolder` is white on
-       * `bg/brand/primary/bolder` #2d8686 at 4.32:1. Both routes to repairing it are closed,
-       * and each was tried and measured before being ruled out:
+       * THE TEST IS THE TOKEN'S OWN CURRENT INK, not white. An earlier version asked "does
+       * white fail here?", which is a different question and got a different answer: on
+       * `bg/neutral/base` white fails trivially — the surface is white — so it rewrote the ink
+       * of every light surface in all six brands, for no defect.
        *
-       *   FLIPPING THE INK to Deep Earthy Brown is right for the fill this token NAMES and
-       *   wrong for the fill it often HAS. `bg/brand/primary/bolder` resolves through
-       *   `color.primaryScale.600`, which a portal repaints: on the NMBA login the button is
-       *   the portal's navy #036 with white on it. A brand-level ink override reaches that
-       *   button while the portal's fill stays navy, which measured 1.6:1 on a live login
-       *   screen. The design system cannot know, at brand level, what a surface will repaint.
-       *
-       *   DARKENING THE FILL to rung 700 is right and does not survive emission. The brand
-       *   block re-asserts every alias whose source moved, so `bg/brand/primary/bolder` is
-       *   re-emitted as `var(--sa-color-primaryScale-600)` after the pin and the later
-       *   declaration wins. Teaching the closure to skip a token the block already declares
-       *   looks like the fix and is not: several tokens are deliberately declared with a base
-       *   value that the closure then rebuilds — `overlay/neutral/boldest` is one, and
-       *   skipping it turned a 48% color-mix into a solid colour in the SHIPPING blue brand.
-       *
-       * So it stays in `dbim-contrast.test.mjs`'s baseline, as one measured entry with its
-       * reason, rather than being repaired by a change that breaks something a reader can
-       * actually reach. Fixing it properly means giving the emitter a notion of a PINNED
-       * value that re-assertion may not overwrite, which is a change to how every brand is
-       * emitted and belongs on its own.
+       * THIS IS ONLY SAFE BECAUSE EVERY BRAND NOW DECLARES EVERY BRAND-VARYING TOKEN. The
+       * first attempt at this put Deep Earthy Brown on the NMBA login button at 1.6:1, and
+       * the reason was not the ink: the portal login renders inside a `data-brand="navy"`
+       * island, navy did not declare this token, and so the DBIM ink leaked in from the
+       * ambient page while the fill stayed navy. `legacy-ds-css.mjs` now emits every
+       * brand-varying token in every brand block, so an island cannot inherit a foreground
+       * whose background it has replaced.
        */
+      const fillPath = path.startsWith("on.bg.") ? path.slice(3) : null;
+      if (!fillPath) return;
+      for (const { brand } of Object.values(DBIM_GROUPS)) {
+        const fill = resolveForBrand(fillPath, brand);
+        const ink = resolveForBrand(path, brand);
+        if (!fill || !ink || contrast(ink, fill) >= AA) continue;
+        const better = [
+          { ref: "{text.neutral.inverse}", hex: "#ffffff" },
+          { ref: "{color.dbimInk}", hex: DBIM_INK },
+        ]
+          .map((c) => ({ ...c, ratio: contrast(c.hex, fill) }))
+          .filter((c) => c.ratio >= AA)
+          .sort((a, b) => b.ratio - a.ratio)[0];
+        // Neither ink clears AA — leave it, so the gate reports a fill no foreground can sit
+        // on rather than silently picking the least bad one.
+        if (!better) continue;
+        setInk(node, brand, better.ref, `${path} → ${better.ref} on ${fill} (${better.ratio.toFixed(2)}:1)`);
+      }
+      return;
     }
 
     for (const key of Object.keys(node)) {

@@ -113,26 +113,20 @@ const BRANDS = [
 /**
  * Known AA failures, frozen. `<brand> :: <pairing label>`.
  *
- * It held eight. Seven are repaired — see `dbim-brand-modes.mjs`, which now chooses the
- * button FILL and the badge INK by measuring instead of inheriting `:root`.
+ * EMPTY — all eight are repaired, and none of them by loosening a threshold.
  *
- * The one that remains is here because both repairs for it are unsafe, and each was tried
- * and measured before being ruled out. Flipping the ink is right for the fill the token
- * NAMES and wrong for the fill it often HAS — a portal repaints `primaryScale`, so the
- * override reached the NMBA login button and put dark ink on the portal's navy at 1.6:1.
- * Darkening the fill is right and does not survive emission: the brand block's alias
- * re-assertion re-emits the token afterwards and the later declaration wins. The full
- * reasoning, including why teaching the closure to skip declared tokens breaks the shipping
- * blue brand, is in `dbim-brand-modes.mjs`.
+ * Seven went when `dbim-brand-modes.mjs` started deriving the button FILL and the badge INK
+ * by measurement instead of inheriting `:root`. The eighth needed a fix one level down:
+ * dbim-green's `on/bg/brand/primary/bolder` could not take dark ink while a
+ * `data-brand="navy"` island — which is what every portal login shell is — was able to
+ * inherit that ink from the ambient page while keeping its own navy fill. Every brand block
+ * now declares every brand-varying token, so nothing leaks across a nested island.
  *
  * Anything appearing here again is a real AA failure a reader can reach from the Colour tab.
  * Add an entry only with the measurement and the reason beside it; never to make a red build
  * green.
  */
-const BASELINE = new Set([
-  // white on bg/brand/primary/bolder #2d8686 — 4.32:1, needs 4.5
-  "dbim-green :: on/bg/brand/primary/bolder",
-]);
+const BASELINE = new Set([]);
 
 test("every DBIM conformance brand is MEASURED, and its failures are the declared ones", () => {
   const seen = new Set();

@@ -623,6 +623,50 @@ function summarise(problems) {
   return `\n  ${shown}${rest}`;
 }
 
+test("every brand block declares every brand-varying token, so a nested island cannot leak", () => {
+  /*
+   * A custom property substitutes at the element where it is DECLARED. A token a brand block
+   * omits is therefore inherited from whatever brand ENCLOSES it — fine at :root, wrong the
+   * moment brands nest, which they do: every portal login shell renders inside a
+   * `data-brand="navy"` island, and design.md documents an island of any brand inside a page
+   * of any other as supported.
+   *
+   * Measured on 2026-09-06, before this was enforced: blue declared all 579 brand-varying
+   * tokens, each DBIM brand 533, and NAVY ONLY 374 — so a navy island inside a DBIM page
+   * inherited 205 DBIM values, every status colour among them. It surfaced as the NMBA login
+   * button rendering Deep Earthy Brown on its own navy at 1.6:1, and it was found by
+   * measuring that button rather than by reading the sheet.
+   */
+  const css = cssText.replace(/\/\*[\s\S]*?\*\//g, "");
+  const declared = new Map();
+  for (const m of css.matchAll(/([^{}]+)\{([^}]*)\}/g)) {
+    const names = [...m[2].matchAll(/(--[A-Za-z0-9-]+)\s*:/g)].map((d) => d[1]);
+    for (const sel of m[1].split(",").map((x) => x.trim())) {
+      if (!sel.startsWith('[data-brand=')) continue;
+      const set = declared.get(sel) ?? new Set();
+      names.forEach((n) => set.add(n));
+      declared.set(sel, set);
+    }
+  }
+
+  assert.ok(declared.size >= 3, "no [data-brand] blocks found — the sheet shape changed");
+
+  const union = new Set();
+  for (const names of declared.values()) for (const n of names) union.add(n);
+
+  const gaps = [...declared.entries()]
+    .map(([sel, names]) => [sel, [...union].filter((n) => !names.has(n))])
+    .filter(([, missing]) => missing.length > 0)
+    .map(([sel, missing]) => `${sel} omits ${missing.length}: ${missing.slice(0, 4).join(", ")}${missing.length > 4 ? " …" : ""}`);
+
+  assert.deepEqual(
+    gaps,
+    [],
+    "\nthese brand blocks omit tokens other brands declare, so a nested island of them " +
+      "inherits the ambient brand for those tokens:\n  " + gaps.join("\n  "),
+  );
+});
+
 test("every selector context in the fixture is still emitted", () => {
   const missing = Object.keys(expected).filter((sel) => !(sel in actual));
   assert.deepEqual(
