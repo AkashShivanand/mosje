@@ -1,4 +1,4 @@
-// url=<SAMAVESH>?node-id=2106-856
+// url=<SAMAVESH>?node-id=57533-47217
 // source=packages/design-system/components/feedback/stepper.tsx
 // component=Stepper
 import figma from "figma";
@@ -6,73 +6,101 @@ import figma from "figma";
 const instance = figma.selectedInstance;
 
 /**
- * The library's masters publish ONE STAGE; the React component is the WHOLE
- * stepper. So a selected instance is a step, and the snippet this emits is a
- * complete `<Stepper>` with that step's state applied to a representative row —
- * not a `<Step>`, because no such export exists and inventing one in a snippet
- * is how a developer ends up building a component the design system does not
- * have.
+ * Mapped to `Stepper / Row` — the WHOLE stepper.
  *
- * The gap is recorded as open item 01 on `Stepper — Component record`. When a
- * `Stepper / Row` wrapper is published, this template maps that instead.
+ * It used to map `Stepper / Horizontal`, which publishes one STAGE, so the
+ * snippet a designer got in Dev Mode described a component the barrel does not
+ * export. Worse, the node it named was the set that had been misnamed since the
+ * UX4G 2.0 fork: its connector runs downward, so it is the vertical stage. Both
+ * were fixed on 2026-09-06 — the sets were renamed in place, keys intact, and
+ * `Stepper / Row` was published so there is something to map that matches what
+ * the code actually is.
+ *
+ * The stage masters keep no mapping of their own. A stage has no code
+ * counterpart to emit: passing one to `<Stepper>` would be a `steps` array of
+ * length one, which the component's own documentation tells you not to build.
  */
-const label = instance.getString("Stepper Title") ?? "Stage";
 
 /**
- * Figma `State` → `StepStatus`. Exhaustive: all 5 options mapped.
+ * Figma `Steps` → the length of the `steps` array. Exhaustive: all 7 options
+ * mapped, 3 through 9.
  *
- * The vocabularies differ by name and match one for one by meaning — Figma reads
- * `Incomplete` where the code reads `upcoming`, and `Completed` where the code
- * reads `complete`. Renaming the Figma values was deliberately deferred, because
- * a variant value string is what an instance binds to; the mapping lives here
- * instead, which is the only place both sides are visible at once.
- *
- * `Disabled` was added to both masters on 2026-09-06. Before that the code had
- * five states and Figma had four, so a designer had no way to draw a stage the
- * applicant cannot open yet.
+ * Three is the floor the U.S. Web Design System sets and this component adopts —
+ * below three, the page heading already says everything. Nine is the longest
+ * flow the MoSJE handoff draws, on E-Anudaan's grant application.
  */
-const status = instance.getEnum("State", {
-  Current: "current",
-  Completed: "complete",
-  Incomplete: "upcoming",
-  Error: "error",
-  Disabled: "disabled",
+const steps = instance.getEnum("Steps", {
+  "3": `[
+    { label: "Personal Details" },
+    { label: "Income & Caste" },
+    { label: "Review & Submit" },
+  ]`,
+  "4": `[
+    { label: "Personal Details" },
+    { label: "Income & Caste" },
+    { label: "Bank Account" },
+    { label: "Review & Submit" },
+  ]`,
+  "5": `[
+    { label: "Personal Details" },
+    { label: "Income & Caste" },
+    { label: "Bank Account" },
+    { label: "Documents" },
+    { label: "Review & Submit" },
+  ]`,
+  "6": `[
+    { label: "Organisation Details" },
+    { label: "Project Details" },
+    { label: "Infrastructure" },
+    { label: "Grant Sought" },
+    { label: "Document Uploads" },
+    { label: "Review & Submit" },
+  ]`,
+  "7": `[
+    { label: "Organisation Details" },
+    { label: "Project Details" },
+    { label: "Infrastructure" },
+    { label: "Beneficiaries" },
+    { label: "Grant Sought" },
+    { label: "Document Uploads" },
+    { label: "Review & Submit" },
+  ]`,
+  "8": `[
+    { label: "Organisation Details" },
+    { label: "Project Details" },
+    { label: "Infrastructure" },
+    { label: "Beneficiaries" },
+    { label: "Grant Sought" },
+    { label: "Declarations" },
+    { label: "Document Uploads" },
+    { label: "Review & Submit" },
+  ]`,
+  "9": `[
+    { label: "Organisation Details" },
+    { label: "Project Details" },
+    { label: "Infrastructure" },
+    { label: "Beneficiaries" },
+    { label: "Grant Sought" },
+    { label: "Declarations" },
+    { label: "Bank Account" },
+    { label: "Document Uploads" },
+    { label: "Review & Submit" },
+  ]`,
 });
 
 /**
- * Figma `Label Position` → `labelPlacement`. Present only on the vertical
- * master, so it is read defensively.
+ * `current` is NOT read from the design, and that is deliberate. The Row's
+ * default arrangement — first stage complete, second current — is a
+ * representative picture, not a value: the stage a citizen is on is decided by
+ * the form at runtime. Emitting a literal would invite someone to hard-code it.
  *
- * The code accepts this on the horizontal orientation only — a vertical stepper
- * always puts the label beside the node, because a label beneath a node in a
- * vertical stack collides with the next node. The component enforces that
- * itself, so a `Bottom` read from the vertical master is correctly ignored.
+ * `orientation`, `size`, `labelPlacement` and `collapse` are likewise unmapped:
+ * the Row publishes only a stage count. A designer wanting the vertical, compact
+ * or label-beside arrangement places the stage masters and says so in the handoff
+ * note — see the arrangements section on the component's Figma page.
  */
-const labelPlacement = instance.getEnum("Label Position", {
-  Right: "right",
-  Bottom: "bottom",
-});
-
-/**
- * `Type` (With Step Numbers | No Step Number) is NOT mapped, and that is
- * deliberate. The code draws a number for every stage that is not complete,
- * failed or unavailable, and a glyph for the three that are — there is no prop
- * that suppresses the numeral. A designer reaching for `No Step Number` wants a
- * dot-marked flow, which this component does not offer; the request belongs in
- * the handoff note, not in an invented prop.
- *
- * `Horizontal Line` is not mapped either: the code decides whether a stage draws
- * a connector track from its position in `steps`, so the last stage never has
- * one and no earlier stage can lose one.
- */
-
 export default figma.code`<Stepper
   ariaLabel="Application progress"
-  current={1}
-  labelPlacement="${labelPlacement}"
-  steps={[
-    { label: "Organisation Details" },
-    { label: "${label}", status: "${status}" },
-    { label: "Review & Submit" },
-  ]}
+  current={step}
+  steps={${steps}}
 />`;

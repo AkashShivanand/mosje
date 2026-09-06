@@ -2495,6 +2495,7 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - Geometry comes from `cmp/stepper/node/{md,sm}`, `cmp/stepper/track` (1px, as measured in the handoff) and `cmp/stepper/dot`.
 - **A recorded divergence:** GOV.UK advises testing a form without a progress indicator and prefers a "Question 3 of 9" caption; UX4G and the MoSJE handoff both specify a stepper. The estate ships the stepper, and the compact bar answers the mobile half of that objection.
 - Used with `<Wizard>`, which owns the live region and the focus move on stage change.
+- **In Figma, place `Stepper / Row`** — the whole stepper, seven variants, one per stage count from three to nine, with equal columns by construction. `Stepper / Horizontal` and `Stepper / Vertical` publish a single STAGE and exist to be composed. Those two were named the wrong way round from the UX4G 2.0 fork until 2026-09-06 (the connector's rotation proves which is which; only the horizontal one carries `Label Position`), and Figma drew `State=Current` as a green in-progress arc while the code fills the node — both corrected, with the code taken as authoritative.
 
 #### Tabs / TabPanel
 **Purpose**: Accessible tabbed navigation for **non-linear** sections the user revisits in any order (vs `<Wizard>`, which is a linear stepper).  
