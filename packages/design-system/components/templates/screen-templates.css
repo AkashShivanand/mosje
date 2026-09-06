@@ -1,0 +1,246 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and Preflight's `* { padding: 0 }` then outranks
+   every component rule in the estate. Repeating the statement is harmless — the first wins. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     SAMAVESH — screen templates
+     ============================================================================
+     Tier B of the three-tier model in docs/design-system/screen-templates.md.
+     These stylesheets lay out SLOTS. They never style the components dropped
+     into those slots — a template that restyles a DataTable is a template that
+     has forked the design system.
+
+     Every measurement here is FILL or HUG. The one fixed dimension in the whole
+     layer is the sidebar width, and it is a token with two values.
+     ========================================================================== */
+
+
+  /* ---- ScreenBody -----------------------------------------------------------
+     The state branch. It carries no visual of its own: at `ready` it is a plain
+     wrapper, and at every other state its child is an EmptyState or a skeleton
+     that already knows how to look. */
+  .sa-screen-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-24);
+    min-width: 0;
+  }
+
+  /* ---- Skeletons ------------------------------------------------------------
+     One shimmer clock for the whole screen. Six placeholders on six clocks read
+     as six things loading independently; on one clock they read as one page
+     arriving, which is what is actually happening. */
+  .sa-screen-skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-8);
+  }
+
+  .sa-screen-skeleton--cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--sa-padding-360), 1fr));
+    gap: var(--sa-padding-16);
+  }
+
+  .sa-screen-skeleton--form { gap: var(--sa-padding-20); }
+
+  .sa-screen-skeleton__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-8);
+  }
+
+
+  /* ---- PortalPage -----------------------------------------------------------
+     Tier A. It contributes exactly one thing of its own — the sidebar width —
+     and delegates the rest to AppShell, which already gets the grid right.
+
+     TWO widths, not five. The handoff draws 300, 88, 268, 260 and 280; only the
+     first two are decisions and the other three are drift, all inside SHRESHTA.
+     See docs/audit/figma-handoff-defects-2026-09-06.md §2.1. */
+  .sa-portal-page[data-rail="collapsed"] {
+    --sa-layout-sidebar-width: var(--sa-layout-sidebar-collapsedWidth);
+  }
+
+
+  /* ---- Screen scaffold ------------------------------------------------------
+     Every Tier-B template opens with the same three-part stack: the page header,
+     an optional notice region, then the body. Sharing it is what makes two
+     screens in two portals sit on the same baseline. */
+  .sa-screen {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-24);
+    min-width: 0;
+  }
+
+  /* Notices stack tighter than sections do: two alerts are one region, not two. */
+  .sa-screen__notices {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-12);
+  }
+
+  /* The count line under a filter bar. It is the screen's answer to "how much of
+     the register am I looking at?", which is the question a filter creates. */
+  .sa-screen__count {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+
+  /* ---- WorklistScreen -------------------------------------------------------
+     Filters, table, pager. The table is never put in a scroll region: a reader
+     flicking the page down on a phone would move the list instead of the page.
+     `data-state-completeness.md` §4 bans it, so wide tables collapse to cards
+     rather than scrolling sideways inside a card. */
+  .sa-worklist { display: contents; }
+
+  /* Filters flow across and wrap, rather than stacking. A DS form control is a
+     block at full width, so a plain flex row gives one filter per line and a
+     three-filter bar three rows deep above the table.
+     ds-exempt(layout-literal): 200 is the comfortable minimum for a select
+     showing a scheme name — a measurement of the controls, not a spacing rung,
+     and the ladder has no 200. Widths are advisory under
+     documentation-ds-linkage.md for exactly this reason. */
+  .sa-worklist__toolbar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--sa-padding-12);
+    width: 100%;
+  }
+
+  /* Below the tablet anchor the table becomes a card list. Priority-1 columns
+     become the card's title and subtitle; the rest become label/value rows.
+     This is the answer to a question the handoff never asked — it draws no
+     mobile version of any application screen (9 of 9 mobile frames are auth). */
+  /* A real <ul>, because it is a list of records and a screen reader should be
+     told how many. Its own list styling is reset here rather than left to the
+     app's reset: the design system must render correctly in Storybook and in a
+     consumer that has no Preflight, and the browser default indented every card
+     40px past the page heading. */
+  .sa-worklist__cards {
+    display: none;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (max-width: 767px) {
+    .sa-worklist__table { display: none; }
+    .sa-worklist__cards {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sa-padding-12);
+    }
+  }
+
+  .sa-worklist__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-8);
+    padding: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+  }
+
+  .sa-worklist__card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sa-padding-8);
+  }
+
+  .sa-worklist__card-title {
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .sa-worklist__card-pairs {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--sa-padding-4) var(--sa-padding-12);
+    font-size: var(--sa-type-body-2-size);
+  }
+
+  .sa-worklist__card-label { color: var(--sa-text-neutral-subtle); }
+  .sa-worklist__card-value { color: var(--sa-text-neutral-base); }
+
+  .sa-worklist__card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-padding-8);
+    padding-top: var(--sa-padding-8);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+
+  /* ---- RecordScreen ---------------------------------------------------------
+     A summary strip, then tabbed detail. The tabs are real routes, so a reader
+     can send someone a link to the Documents tab and have them arrive there. */
+  .sa-record { display: contents; }
+
+  .sa-record__summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-padding-24);
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+  }
+
+  .sa-record__fact { display: flex; flex-direction: column; gap: var(--sa-padding-2); }
+
+  .sa-record__fact-label {
+    font-size: var(--sa-type-label-2-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .sa-record__fact-value {
+    font-size: var(--sa-type-body-1-size);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+
+  /* ---- WizardScreen ---------------------------------------------------------
+     ONE stepper treatment. The handoff draws two — AVYAY/NAPDDR one way,
+     SHRESHTA and Grant-in-Aid another — and a citizen applying to two schemes
+     should not meet two different progress bars for the same act. */
+  .sa-wizard { display: contents; }
+
+  .sa-wizard__stepper {
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+  }
+
+  .sa-wizard__step-meta {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+  }
+
+
+  /* ---- OverviewScreen -------------------------------------------------------
+     Figures, then charts, then context, then what happened recently. The order
+     is the reader's: how much, how it is going, who I am, what just moved. */
+  .sa-overview { display: contents; }
+
+  .sa-overview__pair {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sa-padding-16);
+  }
+
+  @media (min-width: 1024px) {
+    .sa-overview__pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+}

@@ -3723,7 +3723,77 @@ consolidation spec §7 for the full root-cause writeup).
 
 ## 8. Page Patterns
 
-These are the approved page-level scaffolds. Do not deviate from these layouts without a documented reason.
+**Since 2026-09-06 these scaffolds have CODE.** `§8a` below is the shipped template
+layer; the sketches that follow it are the older prose and remain accurate as
+descriptions of what the templates render. Where the two disagree, the code wins.
+
+### 8a. Screen templates — the layer above components
+
+Three tiers. You write Tier C.
+
+| Tier | What | Export |
+|---|---|---|
+| A — chrome | masthead · rail · content column · footer | `PortalPage` |
+| B — the screen | one page archetype, owning all seven states | `<Something>Screen` |
+| C — the descriptor | a typed object. This is the only part you write | props |
+
+**Why it exists.** Measured 2026-09-06, before it was built: 265 portal pages, 29,087
+lines, `PageHeader` used in **zero** of them, `AppShell` in **zero**, sixteen hand-rolled
+shells (none importing `AppShell`), and **236 of 265 pages handling none of loading,
+empty or error** — 89% in breach of `data-state-completeness.md`, because obeying it by
+hand costs four extra branches on every page. `SidebarNav` sits at 100% adoption across
+407 files because a gate ratchets it; `AppShell` had no gate and sat at zero.
+
+**Pick from the data, not from a picture.** One record read-only → `RecordScreen`.
+Editable, over eight fields or a statutory stage → `WizardScreen`. Many records the
+reader acts on → `WorklistScreen`. Many records aggregated into figures →
+`OverviewScreen`. The closed set of eighteen, the full decision table and the eight
+easily-confused pairs are in **`docs/design-system/screen-templates.md`**.
+
+**`PortalPage`** composes `AppShell` and adds the four things the sixteen shells each
+wired differently: `data-portal` for the palette re-bind, the rail's **two** widths
+(300 expanded / 88 collapsed — the handoff draws five and three are drift), role-filtered
+navigation (`PortalRole` is `public · citizen · organisation · officer · admin`), and the
+mobile drawer, closed on route change. Hiding a nav item is **not** authorisation.
+
+**`ScreenBody`** is why the states are structural. Every template routes content through
+it, so no code path renders rows without having decided what happens when there are none.
+Six branches — `idle · loading · error · empty · filtered · ready` — resolved **once** by
+`resolveScreenState`, which is the "one request, one answer" rule in a function. It
+branches the RENDER, never the hooks. `partial` is not a branch (it is `ready` plus a
+provenance chip); `too much` is not a branch (it is a required pager).
+
+**Every string is a prop.** `ScreenStateCopy` holds all ten sentences and `screenCopy()`
+merges a portal's two or three over the defaults. A sentence baked into a template cannot
+be translated, and GIGW requires the estate to be bilingual.
+
+**`WorklistScreen`** is the largest gap closed: 43 pages use `DataTable`, the handoff
+draws no list screen at all, and `Pagination` appears in 1 of 265 pages. `WorklistColumn`
+adds `priority` — 1 becomes the mobile card's title, 2 a label/value pair, 3 is dropped —
+which is how a twelve-column table survives a phone the handoff never drew. **`rows` is
+every matching row, not one page**, and `registerTotal` is for the count line only: handing
+`DataTable` a bigger number than its array drew seven pages over five records.
+
+**`WizardScreen`** covers 22 of the handoff's 44 screens at 3, 6 and 7 steps, and ships
+**one** stepper treatment where the handoff draws two. It wraps `Wizard` and adds the page:
+title, the composed step meta line, the draft banner (both flavours, one shape, switched by
+`resumed`) and notices.
+
+**`OverviewScreen`** cannot enforce its own two most important rules, so they are stated on
+its page: a ratio takes both halves **from one source** (mixing them published a `138%`),
+and a figure the register does not publish is left **off** the design rather than shown as
+"Not yet reported". `kpisLoading` is a count, not a boolean, so the row holds its shape.
+
+**Divergences from the handoff are deliberate and recorded** in
+`docs/audit/figma-handoff-defects-2026-09-06.md`: two rail widths not five, two content
+measures not ten, one stepper not two, one chooser design not three, and a mobile form for
+every archetype where the handoff draws none (9 of its 9 mobile frames are auth).
+
+---
+
+### The older scaffolds
+
+Do not deviate from these layouts without a documented reason.
 
 ### Dashboard Scaffold (Portal)
 
