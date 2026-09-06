@@ -1229,6 +1229,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Overview Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/overview-screen",
+    "keywords": "overview screen — design system getting started the order is the reader&rsquo;s two rules this template cannot enforce each panel owns its own states example numbers are read aloud  tokens wcag accessibility",
+    "description": "Many records aggregated into figures: a KPI row, a pair of chart cards, context panels and a recent list.",
+    "type": "component",
+    "iconName": "widgets"
+  },
+  {
     "title": "Page Header — Design System",
     "section": "Layout",
     "href": "/design-system/components/layout/page-header",
@@ -1330,6 +1339,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "lock"
   },
   {
+    "title": "Portal Page — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/portal-page",
+    "keywords": "portal page — design system getting started it replaces sixteen shells two rail widths, and only two five roles, and hiding is not authorisation example the skip link must agree with mainid E-Anudaan tokens wcag accessibility",
+    "description": "The only chrome a signed-in portal screen needs: masthead, rail, content column, footer — resolved from the portal and the viewer",
+    "type": "component",
+    "iconName": "widgets"
+  },
+  {
     "title": "Profile Card — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/profile-card",
@@ -1364,6 +1382,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A label, a figure and a thin bar per row — the ranking and breakdown list every portal dashboard draws, paged rather than scrolled, with the figure as the reading and the bar as the aid.",
     "type": "component",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "Record Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/record-screen",
+    "keywords": "record screen — design system getting started keep a tab that has nothing in it four to six facts, then a description list example omit what this reader may not do  tokens wcag accessibility",
+    "description": "One record, read-only: a summary strip of headline facts, then tabbed detail.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Required Fields Legend — Design System",
@@ -1428,6 +1455,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A timetable — Garima Greh",
     "type": "component",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "Screen Body — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/screen-body",
+    "keywords": "screen body — design system getting started six branches, not seven it branches the render, never the hooks example every string is a prop, and that is deliberate  tokens wcag accessibility",
+    "description": "The state branch every screen template routes through: idle, loading, error, empty, filtered to nothing, and populated.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Search — Design System",
@@ -1838,6 +1874,24 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The shared multi-step form shell: a stepper, the current step",
     "type": "component",
     "iconName": "edit_note"
+  },
+  {
+    "title": "Wizard Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/wizard-screen",
+    "keywords": "wizard screen — design system getting started three to seven steps, one treatment the draft banner has two flavours and one shape a step taller than the viewport example two guards the template cannot install  tokens wcag accessibility",
+    "description": "One record entered in stages: the page title, the step meta line, the draft banner and the stepper — around the shared Wizard.",
+    "type": "component",
+    "iconName": "widgets"
+  },
+  {
+    "title": "Worklist Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/worklist-screen",
+    "keywords": "worklist screen — design system getting started why this template exists priority is how a twelve-column table survives a phone selection spans the whole matching set both forms page, and they page together two counts, kept apart example two things the template cannot do for you  tokens wcag accessibility",
+    "description": "Many records the reader acts on: filters, table, bulk actions and a pager, with all seven states owned by the template.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Zone Switcher — Design System",

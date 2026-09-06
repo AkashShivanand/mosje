@@ -1,27 +1,18 @@
 "use client";
 
-import { ROLES } from "@/lib/e-anudaan/roles";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { sanctionedApps } from "@/lib/e-anudaan/selectors";
-import { WorklistTable } from "@/components/e-anudaan/worklist-table";
+import { ApplicationList } from "@/components/e-anudaan/application-list";
 
 export default function PdSanctionedPage() {
   const { state } = useEAnudaan();
-  const role = state.session ? ROLES[state.session] : null;
-  if (!role) return null;
-  const rows = sanctionedApps(state);
-
   return (
-    <div className="space-y-5">
-      <div>
-        <h1 className="text-headline-1 text-ink">Sanctioned Applications</h1>
-        <p className="mt-1 text-body-2 text-ink-muted">Sanction Register — every application with a sanction order.</p>
-      </div>
-      <WorklistTable
-        rows={rows}
-        variant="sanctioned"
-        caption="Sanctioned Applications"
-      />
-    </div>
+    <ApplicationList
+      variant="sanctioned"
+      title="Sanctioned Applications"
+      description="Sanction Register — every application with a sanction order."
+      rows={sanctionedApps(state)}
+      exportable
+    />
   );
 }

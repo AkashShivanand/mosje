@@ -7267,6 +7267,124 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "OverviewScreenProps": {
+    "source": "packages/design-system/components/templates/overview-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "The page's `<h1>`. The handoff greets the reader — *\"Good afternoon, harijan\"*. That is the caller's string, not this template's: a greeting is time- and name-dependent, and a template that composed one would be guessing at both."
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "filters",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Filter controls — the period selector, the state picker."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": "Heading level for the page title. Leave at 1: a portal screen has exactly one `<h1>` and this is it. Drop to 2 when the template is rendered INSIDE a page that already has one — a documentation specimen, or a screen body embedded in another screen. Same contract as `PortalLoginTemplate.headingLevel`, and the reason it exists: measuring a documentation page found two `<h1>`s, because the specimen is a live template rather than a picture of one."
+      },
+      {
+        "name": "kpis",
+        "type": "(MetricCardProps & { key?: React.Key })[]",
+        "required": false,
+        "description": "The headline figures. Four is the drawn count and a good ceiling. Passed as data rather than nodes so `KpiRow` can hold the row's shape while they arrive — its `loading` is a **count**, not a boolean, precisely so a dashboard does not move everything below it when the figures land."
+      },
+      {
+        "name": "kpisLoading",
+        "type": "number",
+        "required": false,
+        "description": "How many figures are still coming. Holds the row's shape."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "\"Last updated 14 August 2026 at 1:34 pm\"."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "panels",
+        "type": "React.ReactNode[]",
+        "required": false,
+        "description": "Cards, in reading order: how it is going, then who I am, then what moved. Pass `ChartCard`s — each owns its own loading, empty, error, retry and provenance, so this template does not second-guess them. Two per row above 1024px."
+      },
+      {
+        "name": "recent",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The \"Recent …\" table or list, full width under the panels."
+      }
+    ]
+  },
   "PageHeaderProps": {
     "source": "packages/design-system/components/layout/page-header.tsx",
     "inheritsNative": true,
@@ -7878,6 +7996,100 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "PortalPageProps": {
+    "source": "packages/design-system/components/templates/portal-page.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The screen. One Tier-B template."
+      },
+      {
+        "name": "header",
+        "type": "React.ReactNode | ((nav: PortalNavState) => React.ReactNode)",
+        "required": true,
+        "description": "The masthead. Pass `<SiteHeader variant=\"portal\" … />`. Pass a FUNCTION to let it drive the rail: it receives {@link PortalNavState} and should wire `navExpanded={nav.open}` and `onToggleNav={nav.toggle}`. A plain node still works for a masthead with no menu button."
+      },
+      {
+        "name": "portal",
+        "type": "string",
+        "required": true,
+        "description": "The portal's slug. Sets `data-portal`, which is how the estate re-binds a portal's palette — see the contract at the top of `apps/hub/src/app/globals.css`."
+      },
+      {
+        "name": "role",
+        "type": "PortalRole = \"public\" | \"citizen\" | \"organisation\" | \"officer\" | \"admin\"",
+        "required": true,
+        "description": "The viewer's role. Filters the rail and is published as `data-role`."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "defaultCollapsed",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Start with the rail collapsed to its 88px icon rail. **Two widths exist and only two.** The handoff draws 300, 88, 268, 260 and 280 for one page type; only the first two are decisions and the other three are drift, all inside SHRESHTA. See `docs/audit/figma-handoff-defects-2026-09-06.md` §2.1."
+      },
+      {
+        "name": "footer",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A slim footer under the body row."
+      },
+      {
+        "name": "identity",
+        "type": "SidebarNavIdentity",
+        "required": false,
+        "description": "The organisation block at the top of the rail."
+      },
+      {
+        "name": "mainId",
+        "type": "string",
+        "required": false,
+        "default": "\"main\"",
+        "description": "`id` for the `<main>`, and the skip link's target."
+      },
+      {
+        "name": "nav",
+        "type": "PortalNavGroup[]",
+        "required": false,
+        "description": "The rail's groups, before role filtering. Omit for a portal with no rail."
+      },
+      {
+        "name": "onSidebarOpenChange",
+        "type": "(open: boolean) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "pathname",
+        "type": "string",
+        "required": false,
+        "default": "\"\"",
+        "description": "The current path, for the rail's active state."
+      },
+      {
+        "name": "pending",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Render a skeleton instead of `children`, while the app hydrates."
+      },
+      {
+        "name": "sidebarOpen",
+        "type": "boolean",
+        "required": false,
+        "description": "Whether the mobile navigation drawer is open. **Controlled when you pass it, and you almost always should**: the masthead carries the menu button, the masthead is a slot, and a drawer the header cannot open is a drawer a citizen on a phone cannot reach. Pass the same state to `SiteHeader`'s `navExpanded` / `onToggleNav` and to this. Left uncontrolled it still works — the rail's own controls drive it — which is what a story or a specimen wants."
+      }
+    ]
+  },
   "ProfileCardProps": {
     "source": "packages/design-system/components/data-display/profile-card.tsx",
     "inheritsNative": true,
@@ -8476,6 +8688,130 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "RecordScreenProps": {
+    "source": "packages/design-system/components/templates/record-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "tabs",
+        "type": "RecordTab[]",
+        "required": true,
+        "description": "The tabs. Keep a tab whose content is empty — **show its empty state**. Removing it moves every tab to its right and breaks a link someone sent."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "The record's name, as the register holds it."
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Actions on the record. Omit the ones this role may not perform."
+      },
+      {
+        "name": "activeTab",
+        "type": "string",
+        "required": false,
+        "description": "The open tab's id. Drive it from the URL so a tab can be linked to."
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "breadcrumb",
+        "type": "{ label: string; href?: string }[]",
+        "required": false,
+        "description": "Where this record sits. Omit only at the top of a section."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "facts",
+        "type": "RecordFact[]",
+        "required": false,
+        "description": "The headline facts. Four to six; beyond that it is a description list."
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": "Heading level for the page title. Leave at 1: a portal screen has exactly one `<h1>` and this is it. Drop to 2 when the template is rendered INSIDE a page that already has one — a documentation specimen, or a screen body embedded in another screen. Same contract as `PortalLoginTemplate.headingLevel`, and the reason it exists: measuring a documentation page found two `<h1>`s, because the specimen is a live template rather than a picture of one."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onTabChange",
+        "type": "(id: string) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "status",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A status `Badge`, an SLA indicator — whatever states where the record is."
+      }
+    ]
+  },
   "RequiredFieldsLegendProps": {
     "source": "packages/design-system/components/forms/field-policy.tsx",
     "inheritsNative": false,
@@ -8827,6 +9163,62 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"Nothing is scheduled for this period.\"",
         "description": ""
+      }
+    ]
+  },
+  "ScreenBodyProps": {
+    "source": "packages/design-system/components/templates/screen-body.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The populated screen. Rendered only at `ready`."
+      },
+      {
+        "name": "status",
+        "type": "ScreenStatus = \"idle\" | \"loading\" | \"error\" | \"empty\" | \"filtered\" | \"ready\"",
+        "required": true,
+        "description": "The one resolved status. See {@link resolveScreenState }."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": "Words for every state. Defaults to the estate's; pass overrides per portal."
+      },
+      {
+        "name": "emptyAction",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "An action offered from the `empty` state — \"Add the first record\"."
+      },
+      {
+        "name": "onClearFilters",
+        "type": "() => void",
+        "required": false,
+        "description": "Called when the reader clears their filters, from the `filtered` state."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Called when the reader presses **Try again**. Omit and no retry is offered."
+      },
+      {
+        "name": "skeleton",
+        "type": "SkeletonShape = \"table\" | \"cards\" | \"form\" | \"detail\"",
+        "required": false,
+        "default": "\"table\"",
+        "description": "What the skeleton looks like. It must be **the shape of the result** — a spinner in a void tells the reader nothing about what is coming, and a skeleton of the wrong shape moves the page when the data lands."
       }
     ]
   },
@@ -11176,6 +11568,340 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"Submit\"",
         "description": "Label for the final submit button."
+      }
+    ]
+  },
+  "WizardScreenProps": {
+    "source": "packages/design-system/components/templates/wizard-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The current step's fields. `FormSection`s."
+      },
+      {
+        "name": "current",
+        "type": "number",
+        "required": true,
+        "description": "0-based index of the step being filled. Owned by the parent form."
+      },
+      {
+        "name": "onBack",
+        "type": "() => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onNext",
+        "type": "() => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onSubmit",
+        "type": "() => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "steps",
+        "type": "StepperStep[]",
+        "required": true,
+        "description": "The steps. Three to seven is the drawn range — NAPDDR 3, SHRESHTA 6, AVYAY 7 — and `Stepper` collapses rather than overflowing beyond that."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "The scheme or application's name. Title Case."
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": "Words for every state. Override the two your register words differently."
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One line saying what the whole form is for."
+      },
+      {
+        "name": "draft",
+        "type": "WizardDraft",
+        "required": false,
+        "description": "A draft banner, where one is saved."
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false,
+        "description": "The validation summary, shown above the actions and focused on failure. A sentence, not a field list: `ErrorSummary` renders the per-field detail."
+      },
+      {
+        "name": "errorRef",
+        "type": "React.Ref<HTMLDivElement>",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": "Heading level for the page title. Leave at 1: a portal screen has exactly one `<h1>` and this is it. Drop to 2 when the template is rendered INSIDE a page that already has one — a documentation specimen, or a screen body embedded in another screen. Same contract as `PortalLoginTemplate.headingLevel`, and the reason it exists: measuring a documentation page found two `<h1>`s, because the specimen is a live template rather than a picture of one."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "nextLabel",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "notices",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Anything else the step must say before the fields — an auto-populate notice."
+      },
+      {
+        "name": "onCancel",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Retry, offered from the error state."
+      },
+      {
+        "name": "submitLabel",
+        "type": "string",
+        "required": false,
+        "description": ""
+      }
+    ]
+  },
+  "WorklistScreenProps": {
+    "source": "packages/design-system/components/templates/worklist-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "columns",
+        "type": "WorklistColumn<T>[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "getRowId",
+        "type": "(row: T) => string",
+        "required": true,
+        "description": "Stable id per row, for selection."
+      },
+      {
+        "name": "rows",
+        "type": "T[]",
+        "required": true,
+        "description": "**Every row that matches the current filters**, not one page of them. `DataTable` pages client-side, so it must hold the whole matching set. A server-paged list therefore does not belong here — give it every match, or page on the server and drive `DataTable` yourself."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "The page's `<h1>`. Title Case."
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Primary and secondary actions for the page, not for a row."
+      },
+      {
+        "name": "activeFilterCount",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "How many filters the reader has set. Drives the `filtered` empty state."
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "bulkActions",
+        "type": "BulkAction[]",
+        "required": false,
+        "description": "What can be done to a selection. Empty or omitted hides the bar."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": "Words for every state. Override the two your register words differently."
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "emptyAction",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Offered from the empty state — \"Add the first record\"."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Kicker over the title — the scheme, the module this list sits in."
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "filters",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Filter controls. Drop DS form controls straight in."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": "Heading level for the page title. Leave at 1: a portal screen has exactly one `<h1>` and this is it. Drop to 2 when the template is rendered INSIDE a page that already has one — a documentation specimen, or a screen body embedded in another screen. Same contract as `PortalLoginTemplate.headingLevel`, and the reason it exists: measuring a documentation page found two `<h1>`s, because the specimen is a live template rather than a picture of one."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The line under it — a count, a last-updated stamp."
+      },
+      {
+        "name": "noun",
+        "type": "string",
+        "required": false,
+        "default": "\"record\"",
+        "description": "What one row is called, for the selection bar."
+      },
+      {
+        "name": "onBulkAction",
+        "type": "(id: string) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onClearFilters",
+        "type": "() => void",
+        "required": false,
+        "description": "Clears them. Offered from the filtered-to-nothing state."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Retry, offered from the error state."
+      },
+      {
+        "name": "onSelectionChange",
+        "type": "(ids: string[]) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "pluralNoun",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "registerTotal",
+        "type": "number",
+        "required": false,
+        "description": "How large the register is **before** the reader's filters — used for the count line only, never for the pager. The pager always counts `rows`. Handing `DataTable` a bigger number than the array it holds is the \"one request, one answer\" defect in miniature: a total of 68 against 5 rows drew a pager offering seven pages, six of them empty, while the table showed five records. Found by rendering it."
+      },
+      {
+        "name": "rowActions",
+        "type": "(row: T) => React.ReactNode",
+        "required": false,
+        "description": "Row-level actions. Rendered in the last column and on the card."
+      },
+      {
+        "name": "selectedIds",
+        "type": "string[]",
+        "required": false,
+        "description": "Currently selected row ids. Omit to switch selection off entirely."
       }
     ]
   },

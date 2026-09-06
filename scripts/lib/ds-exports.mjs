@@ -89,6 +89,13 @@ export const NOT_COMPONENTS = new Set([
   // coordinates through them, and the projection is verified against the
   // outlines it must agree with.
   "INDIA_LAT_RANGE", "INDIA_LON_RANGE", "INDIA_HEX_RADIUS", "INDIA_STATE_BOXES",
+  // The screen templates' default English. An object of sentences — same
+  // category as DEFAULT_FIELD_COPY above, and there for the same reason: GIGW
+  // requires the estate to be bilingual, so a template must not bake a sentence
+  // into its markup. It has no visual form, so no story and no page; the
+  // contract it satisfies is documented on every *Screen page, which is what
+  // reads it, and `screenCopy()` is how a portal overrides two of ten.
+  "DEFAULT_SCREEN_COPY",
   // Types (exported via `export type`, but belt and braces)
   "ColorMode", "ColorModeId", "ColorModeProviderProps", "ColorModeSwitcherProps",
 ]);

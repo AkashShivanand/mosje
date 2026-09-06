@@ -848,3 +848,40 @@ export {
 } from "./components/navigation/app-switcher-utils";
 export type { PortalCategory } from "./components/navigation/app-switcher-utils";
 export { portalLoginUrl } from "./components/auth/portal-login-url";
+
+// ---- Components: Screen templates (Tier A + Tier B) -------------------------
+// The layer above components. `PortalPage` is the chrome; each `*Screen` is one
+// page archetype that takes a descriptor and OWNS the seven states of
+// `.claude/rules/data-state-completeness.md` by construction.
+//
+// It exists because the estate had 132 components and no template layer: 265
+// portal pages, `PageHeader` used in ZERO of them, `AppShell` in zero, sixteen
+// hand-rolled shells, and 236 of 265 pages handling none of loading, empty or
+// error. A rule people must remember is a rule 89% of pages break; a shape they
+// cannot avoid is not.
+//
+// Catalogue and the decision table that picks between them:
+// docs/design-system/screen-templates.md
+export { PortalPage, navForRole } from "./components/templates/portal-page";
+export type {
+  PortalPageProps,
+  PortalRole,
+  PortalNavItem,
+  PortalNavGroup,
+} from "./components/templates/portal-page";
+export { ScreenBody } from "./components/templates/screen-body";
+export type { ScreenBodyProps, SkeletonShape } from "./components/templates/screen-body";
+export { resolveScreenState, screenCopy, DEFAULT_SCREEN_COPY } from "./components/templates/screen-state";
+export type {
+  ScreenStatus,
+  ScreenStateInput,
+  ScreenStateCopy,
+} from "./components/templates/screen-state";
+export { WorklistScreen } from "./components/templates/worklist-screen";
+export type { WorklistScreenProps, WorklistColumn } from "./components/templates/worklist-screen";
+export { RecordScreen } from "./components/templates/record-screen";
+export type { RecordScreenProps, RecordTab, RecordFact } from "./components/templates/record-screen";
+export { WizardScreen } from "./components/templates/wizard-screen";
+export type { WizardScreenProps, WizardDraft } from "./components/templates/wizard-screen";
+export { OverviewScreen } from "./components/templates/overview-screen";
+export type { OverviewScreenProps } from "./components/templates/overview-screen";
