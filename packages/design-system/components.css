@@ -62,6 +62,7 @@
 @import "./components/layout/text.css";
 @import "./components/data-display/accordion.css";
 @import "./components/data-display/approval-timeline.css";
+@import "./components/data-display/bulk-actions-bar.css";
 @import "./components/data-display/card.css";
 @import "./components/data-display/carousel.css";
 @import "./components/data-display/charts/charts.css";
@@ -72,6 +73,7 @@
 @import "./components/data-display/document-library.css";
 @import "./components/data-display/fact-strip.css";
 @import "./components/data-display/figure.css";
+@import "./components/data-display/file-list.css";
 @import "./components/data-display/list-group.css";
 @import "./components/data-display/metric-card.css";
 @import "./components/data-display/profile-card.css";

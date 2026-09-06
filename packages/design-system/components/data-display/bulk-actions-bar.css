@@ -1,0 +1,100 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Bulk actions bar
+     Appears above a table when rows are selected. It sits in the FLOW, never
+     pinned over the viewport, so it cannot cover the row the reader was about
+     to act on.
+     ============================================================================ */
+
+  .ds-bulk {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-16);
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-selected);
+    border-radius: var(--sa-cmp-card-radius);
+    /* The selected ground, so the bar reads as belonging to the selection rather
+       than as a second toolbar. */
+    background-color: var(--sa-bg-neutral-selected);
+    color: var(--sa-text-neutral-bolder);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .ds-bulk__count {
+    font-weight: var(--sa-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-bulk__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    /* Pushes the actions away from the count and the clear control to the end,
+       so the destructive ones are never adjacent to "Clear selection". */
+    margin-inline-start: auto;
+  }
+
+  .ds-bulk__action {
+    min-height: var(--sa-control-height-sm);
+    padding: 0 var(--sa-padding-12);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-radius);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    font-family: inherit;
+    font-size: var(--sa-type-label-1-size);
+    cursor: pointer;
+  }
+
+  .ds-bulk__action:hover:not(:disabled) {
+    background-color: var(--sa-bg-neutral-hover);
+  }
+
+  .ds-bulk__action:disabled {
+    color: var(--sa-text-neutral-disabled);
+    cursor: not-allowed;
+  }
+
+  /* Tone colours the LABEL and the edge, never a resting fill: a filled red
+     button in a bar that appeared on its own is easy to press by accident. */
+  .ds-bulk__action--warning {
+    border-color: var(--sa-border-status-warning-base);
+    color: var(--sa-text-status-warning-bolder);
+  }
+
+  .ds-bulk__action--danger {
+    border-color: var(--sa-border-status-error-base);
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  .ds-bulk__link,
+  .ds-bulk__clear {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--sa-text-link-brand-default);
+    font-family: inherit;
+    font-size: var(--sa-type-label-1-size);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .ds-bulk__action:focus-visible,
+  .ds-bulk__link:focus-visible,
+  .ds-bulk__clear:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+}

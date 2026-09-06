@@ -299,7 +299,11 @@ export type {
   DescriptionItem,
   DescriptionListProps,
 } from "./components/data-display/description-list";
+export { BulkActionsBar } from "./components/data-display/bulk-actions-bar";
+export type { BulkAction, BulkActionsBarProps } from "./components/data-display/bulk-actions-bar";
 export { Carousel } from "./components/data-display/carousel";
+export { FileList } from "./components/data-display/file-list";
+export type { FileItem, FileListProps, FileState } from "./components/data-display/file-list";
 export type { CarouselProps } from "./components/data-display/carousel";
 export { Figure } from "./components/data-display/figure";
 export type { FigureProps, FigureRatio } from "./components/data-display/figure";

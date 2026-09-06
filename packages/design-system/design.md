@@ -2520,6 +2520,28 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - `layout="inline"`'s term column is `18ch`, not a pixel width, so it grows with the reader's font size instead of clipping the label at 200% zoom.
 - Not a `DataTable`: a table is for records the reader compares across columns, this is for the fields of one record.
 
+#### BulkActionsBar
+**Purpose**: the strip that appears when table rows are selected — *Withdrawn Applications*, *Pending Approvals*, *Beneficiary List*.
+**Props**: `count` · `noun` (singular) · `pluralNoun` · `actions` (`{ id, label, icon?, tone?, disabled? }[]`) · `onAction` · `onClear` · `total` · `onSelectAll`
+**Rules**:
+- **The count is ANNOUNCED, not just drawn.** Selecting rows changes nothing a screen reader notices: the checkbox says "checked" and the page never says how many are selected or that a toolbar has appeared. The bar is `role="status"` `aria-live="polite"` — POLITE, because the reader is selecting deliberately and an assertive announcement would interrupt every click.
+- **Clearing is ALWAYS offered.** Forty rows selected by an accidental shift-click need one control to undo, not forty. It sits at the opposite end from anything destructive.
+- **It does NOT float.** A bar pinned over the viewport covers the last row of the table — on a phone, very often the row the reader was about to act on. It sits in the flow above the table and the page grows to hold it.
+- **The noun belongs to the PAGE.** "3 applications selected" and "3 records selected" are different sentences. `noun` is singular and the bar pluralises; pass `pluralNoun` where "s" is wrong.
+- Tone colours the label and the border, never a resting fill: a filled red button in a bar that appeared on its own is easy to press by accident.
+- At `count={0}` it renders NOTHING — not an empty strip.
+
+#### FileList
+**Purpose**: the attachments on an application — what is uploaded, what state each is in, and what can be done about it.
+**Props**: `files` (`{ id, name, size?, kind?, state?, progress?, error?, href? }[]`) · `label` (**required**) · `onRemove` · `onRetry`
+**Rules**:
+- **It is a list of STATES, not a list of names.** An attachment here is uploading, then scanning, then attached — or failed. A row showing only a filename tells the citizen nothing about whether the department has received it, which is the only question they have.
+- **`scanning` is a real state.** Departmental uploads are virus-scanned before they count as received; a file that reads "attached" and is rejected an hour later is worse than one that says it is being checked.
+- **The filename is NEVER rewritten or clipped.** A citizen recognises their own document by the name they gave it; a sanitised or ellipsised name makes them doubt they uploaded the right thing. Long names wrap.
+- **A failure says what to DO.** "The file is larger than 5 MB. Reduce it and upload again" is actionable; "Upload failed" sends the citizen back to a counter.
+- **Every action names its own FILE** — "Remove income-certificate.pdf" in the accessible name, "Remove" on screen. Twelve attachments otherwise produce twelve identical "Remove"s for anyone moving by button.
+- Every state renders its own WORD; colour only tints the word already there.
+
 #### Carousel
 **Purpose**: a band of slides the reader moves through — announcements, photographs, a handful of promotional cards.
 **Props**: `children` (each child becomes one slide) · `label` (**required**) · `autoPlay` (default **false**) · `interval` · `showDots`

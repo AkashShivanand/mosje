@@ -1278,6 +1278,66 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "BulkActionsBarProps": {
+    "source": "packages/design-system/components/data-display/bulk-actions-bar.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "actions",
+        "type": "BulkAction[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": true,
+        "description": "How many rows are selected. At `0` the bar renders nothing."
+      },
+      {
+        "name": "noun",
+        "type": "string",
+        "required": true,
+        "description": "The noun, singular — \"application\", \"beneficiary\". The bar pluralises it, because \"3 applications selected\" and \"3 records selected\" are different sentences and only the page knows which is true."
+      },
+      {
+        "name": "onAction",
+        "type": "(id: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onClear",
+        "type": "() => void",
+        "required": true,
+        "description": "Clears the selection. Always offered — a selection with no way out is a trap."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onSelectAll",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "pluralNoun",
+        "type": "string",
+        "required": false,
+        "description": "Plural of `noun`, where adding \"s\" is wrong — \"entries\" for \"entry\"."
+      },
+      {
+        "name": "total",
+        "type": "number",
+        "required": false,
+        "description": "How many rows exist in total. When given and larger than `count`, the bar offers to extend the selection to all of them."
+      }
+    ]
+  },
   "BulletChartProps": {
     "source": "packages/design-system/components/data-display/charts/bullet-chart.tsx",
     "inheritsNative": false,
@@ -3872,6 +3932,42 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"auto\"",
         "description": "Lock the frame to a ratio and crop the image to fill it. `auto` (default) lets the image set its own height, which is right for a diagram or a screenshot where cropping would remove information."
+      }
+    ]
+  },
+  "FileListProps": {
+    "source": "packages/design-system/components/data-display/file-list.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "files",
+        "type": "FileItem[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the list — \"Documents attached to this application\". Required: a bare list of filenames tells a screen-reader user how many of what."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRemove",
+        "type": "(id: string) => void",
+        "required": false,
+        "description": "Offered on every row when given. Omit for a read-only list."
+      },
+      {
+        "name": "onRetry",
+        "type": "(id: string) => void",
+        "required": false,
+        "description": "Offered on failed rows when given."
       }
     ]
   },

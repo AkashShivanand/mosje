@@ -263,6 +263,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "palette"
   },
   {
+    "title": "Bulk Actions Bar — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/bulk-actions-bar",
+    "keywords": "bulk actions bar — design system data display the count is announced, not just drawn clearing is always offered it does not float the noun is the page&apos;s to give example where the destructive action sits  tokens wcag accessibility",
+    "description": "The strip that appears when rows are selected. It announces the count politely, always offers a way to clear, and sits in the flow rather than floating over the table.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "Bullet Chart — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/bullet-chart",
@@ -695,6 +704,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "href": "/design-system/components/data-display/figure",
     "keywords": "figure — design system data display a caption is not alt text why 1.1.1 is not on the checklist cover crops; contain does not credit example why the markup matters  tokens wcag accessibility",
     "description": "An image and its caption as one thing, using real figure and figcaption markup so the caption is associated with the picture rather than read as the next paragraph.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
+    "title": "File List — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/file-list",
+    "keywords": "file list — design system data display a list of states, not a list of names the filename is never rewritten a failure says what to do example every action names its own file  tokens wcag accessibility",
+    "description": "The attachments on an application: what has been uploaded, what state each one is in, and what can be done about it. A list of states, not a list of names.",
     "type": "component",
     "iconName": "bar_chart"
   },
