@@ -1,8 +1,8 @@
 "use client";
 
-import { PageHeader, Card, StatTile, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
-import { Icon } from "@mosje/design-system";
+import { Icon, Card, Button } from "@mosje/design-system";
 
 const REPORTS = [
   { name: "National Grievance Register", desc: "Every grievance with status, SLA and officer" },
@@ -15,7 +15,7 @@ export default function AdminReportsPage() {
   const { state } = useNhapoa();
   return (
     <div>
-      <PageHeader title="Reports & Export" subtitle="Generate and export portal-wide reports" />
+      <PortalPageHeader title="Reports & Export" meta="Generate and export portal-wide reports" />
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatTile label="Total Grievances" value={state.cases.length} />
         <StatTile label="System Users" value={state.users.length} accent="await" />
@@ -29,8 +29,8 @@ export default function AdminReportsPage() {
               <div><p className="text-title-3 text-ink">{r.name}</p><p className="mt-0.5 text-body-3 text-ink-muted">{r.desc}</p></div>
             </div>
             <div className="flex shrink-0 gap-1.5">
-              <Button variant="outline" className="px-2.5"><Icon name="description" size={16} /></Button>
-              <Button variant="outline" className="px-2.5"><Icon name="table_chart" size={16} /></Button>
+              <Button appearance="outlined" className="px-2.5"><Icon name="description" size={16} /></Button>
+              <Button appearance="outlined" className="px-2.5"><Icon name="table_chart" size={16} /></Button>
             </div>
           </Card>
         ))}

@@ -45,355 +45,6 @@
     },
     "deliberatelyOmitted": []
   },
-  "Divider": {
-    "nodeId": "55061:700",
-    "captured": "2026-08-18",
-    "properties": {
-      "Orientation": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Vertical",
-          "Horizontal"
-        ]
-      },
-      "Tone": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "Inverse",
-          "Inverse subtle"
-        ]
-      }
-    },
-    "deliberatelyOmitted": []
-  },
-  "SiteHeader": {
-    "nodeId": "4235:3169",
-    "captured": "2026-09-05",
-    "properties": {
-      "Login Signup#2198:4": {
-        "type": "BOOLEAN",
-        "defaultValue": false
-      },
-      "Search#2210:0": {
-        "type": "BOOLEAN",
-        "defaultValue": false
-      },
-      "Device": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Desktop",
-          "Tablet",
-          "Mobile"
-        ]
-      },
-      "State": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "On Scroll"
-        ]
-      },
-      "Menu#55783:0": {
-        "type": "BOOLEAN",
-        "defaultValue": true
-      },
-      "Profile#56716:0": {
-        "type": "BOOLEAN",
-        "defaultValue": true
-      }
-    },
-    "deliberatelyOmitted": [
-      "Device",
-      "State"
-    ]
-  },
-  "MenuToggle": {
-    "nodeId": "55783:4565",
-    "captured": "2026-09-05",
-    "properties": {
-      "Sidebar": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Expanded",
-          "Collapsed"
-        ]
-      },
-      "Size": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Large",
-          "Default"
-        ]
-      },
-      "State": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "Hover",
-          "Focused",
-          "Pressed"
-        ]
-      }
-    },
-    "deliberatelyOmitted": [
-      "Size",
-      "State"
-    ]
-  },
-  "SheetToggle": {
-    "nodeId": "57295:59399",
-    "captured": "2026-09-05",
-    "properties": {
-      "Size": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Large",
-          "Default"
-        ]
-      },
-      "State": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "Hover",
-          "Focused",
-          "Pressed"
-        ]
-      }
-    },
-    "deliberatelyOmitted": [
-      "Size",
-      "State"
-    ]
-  },
-  "NavItemLink": {
-    "nodeId": "2065:292757",
-    "captured": "2026-09-05",
-    "properties": {
-      "Label#2065:0": {
-        "type": "TEXT",
-        "defaultValue": "Label"
-      },
-      "Type": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "Dropdown"
-        ]
-      },
-      "State": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "Focused",
-          "Hover",
-          "Disabled"
-        ]
-      },
-      "Active": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "False",
-          "True"
-        ]
-      },
-      "Density": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "Condensed"
-        ]
-      }
-    },
-    "deliberatelyOmitted": [
-      "Density",
-      "State",
-      "Type"
-    ]
-  },
-  "NavDropdown": {
-    "nodeId": "4300:1950",
-    "captured": "2026-08-22",
-    "properties": {
-      "Device": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Desktop",
-          "Tablet",
-          "Mobile"
-        ]
-      }
-    },
-    "deliberatelyOmitted": [
-      "Device"
-    ]
-  },
-  "DropdownItem": {
-    "nodeId": "4299:1940",
-    "captured": "2026-08-22",
-    "properties": {
-      "State": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "Hover",
-          "Focused",
-          "Disabled"
-        ]
-      },
-      "Active": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "False",
-          "True"
-        ]
-      }
-    },
-    "deliberatelyOmitted": [
-      "State"
-    ]
-  },
-  "MegaMenu": {
-    "nodeId": "4268:914",
-    "captured": "2026-08-22",
-    "properties": {
-      "Device": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Desktop",
-          "Mobile",
-          "Tablet"
-        ]
-      }
-    },
-    "deliberatelyOmitted": [
-      "Device"
-    ]
-  },
-  "MegaMenuItem": {
-    "nodeId": "4258:33604",
-    "captured": "2026-08-22",
-    "properties": {
-      "Org logo#4359:0": {
-        "type": "INSTANCE_SWAP",
-        "defaultValue": "4273:696"
-      },
-      "State": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "Hover",
-          "Focused",
-          "Disabled"
-        ]
-      },
-      "Active": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "False",
-          "True"
-        ]
-      }
-    },
-    "deliberatelyOmitted": [
-      "Org logo#4359:0",
-      "State"
-    ]
-  },
-  "NavSheet": {
-    "nodeId": "55327:3503",
-    "captured": "2026-08-22",
-    "properties": {
-      "State": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Expanded",
-          "Default",
-          "Mega"
-        ]
-      }
-    },
-    "deliberatelyOmitted": [
-      "State"
-    ]
-  },
-  "BrandLockup": {
-    "nodeId": "4235:3652",
-    "captured": "2026-08-24",
-    "properties": {
-      "Show beta#4512:0": {
-        "type": "BOOLEAN",
-        "defaultValue": true
-      },
-      "Show org#56059:0": {
-        "type": "BOOLEAN",
-        "defaultValue": true
-      },
-      "Show ministry#56059:7": {
-        "type": "BOOLEAN",
-        "defaultValue": true
-      },
-      "Device": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Mobile",
-          "Tablet",
-          "Desktop"
-        ]
-      },
-      "Size": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "Compact"
-        ]
-      }
-    },
-    "deliberatelyOmitted": [
-      "Device"
-    ]
-  },
-  "Chatbot": {
-    "nodeId": "55826:37003",
-    "captured": "2026-08-23",
-    "note": "variantOptions is recorded exactly as Figma reports it. That is a stored registration order, not the canvas order and not the lifecycle order — the canvas reads Closed, Typing, Greeting, Transcript, and two attempts to rewrite the option list (child reorder, temp-rename cycle) both no-op'd. Order is cosmetic here; the gate only checks that every value is mapped.",
-    "properties": {
-      "State": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Greeting",
-          "Closed",
-          "Typing",
-          "Transcript"
-        ]
-      },
-      "Title": {
-        "type": "TEXT",
-        "defaultValue": "Chat with us"
-      },
-      "Subtitle": {
-        "type": "TEXT",
-        "defaultValue": "सामाजिक सहायक"
-      },
-      "Note": {
-        "type": "TEXT",
-        "defaultValue": "Samajik Sahayak follows a fixed script. It cannot see your application or your personal data."
-      },
-      "Placeholder": {
-        "type": "TEXT",
-        "defaultValue": "Type something…"
-      },
-      "Show subtitle": {
-        "type": "BOOLEAN",
-        "defaultValue": true
-      },
-      "Show composer": {
-        "type": "BOOLEAN",
-        "defaultValue": true
-      }
-    }
-  },
   "AccountMenu": {
     "nodeId": "56046:4113",
     "captured": "2026-09-06",
@@ -465,41 +116,68 @@
       "State"
     ]
   },
-  "Ticker": {
-    "nodeId": "56159:903",
-    "captured": "2026-08-25",
+  "BarChart": {
+    "nodeId": "57417:15992",
+    "captured": "2026-09-05",
+    "note": "15 variants = Type 15 - every foundational chart type at 480x280 in one set. The template maps Type to the React component that draws it; three of the options are BarChart with orientation/variant.",
     "properties": {
-      "Label": {
-        "type": "TEXT"
-      },
-      "Breakpoint": {
+      "Type": {
         "type": "VARIANT",
         "variantOptions": [
-          "Desktop",
+          "Bar",
+          "Bar horizontal",
+          "Bar stacked",
+          "Line",
+          "Area",
+          "Donut",
+          "Pie",
+          "Gauge",
+          "Funnel",
+          "Heatmap",
+          "Scatter",
+          "Sparkline",
+          "Progress",
+          "Bullet",
+          "Combo"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "BrandLockup": {
+    "nodeId": "4235:3652",
+    "captured": "2026-08-24",
+    "properties": {
+      "Show beta#4512:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show org#56059:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show ministry#56059:7": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Mobile",
           "Tablet",
-          "Mobile"
+          "Desktop"
         ]
       },
-      "Motion": {
+      "Size": {
         "type": "VARIANT",
         "variantOptions": [
-          "Playing A",
-          "Playing B",
-          "Paused A",
-          "Paused B"
-        ]
-      },
-      "Direction": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Horizontal",
-          "Vertical"
+          "Default",
+          "Compact"
         ]
       }
     },
     "deliberatelyOmitted": [
-      "Breakpoint",
-      "Motion"
+      "Device"
     ]
   },
   "Button": {
@@ -569,58 +247,6 @@
       }
     }
   },
-  "IconButton": {
-    "nodeId": "3:3497",
-    "captured": "2026-09-03",
-    "note": "360 variants = Size 3 x Sub-type 3 x State 5 x Type 4 x Tone 2. Type was added 2026-09-03 (before it, a danger icon button could not be drawn at all) and Tone the same day (the code supported tone=\"inverse\" and the set could not express it). Every surface and glyph binds a Tier-3 cmp/action/* token; the Text sub-type borrows the secondary inverse family because no tertiary inverse family exists, which is the same choice button.css makes for inverseText.",
-    "properties": {
-      "Change Icon": {
-        "type": "INSTANCE_SWAP"
-      },
-      "Size": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "Large",
-          "Small"
-        ]
-      },
-      "Sub-type": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Text",
-          "Outlined",
-          "Filled"
-        ]
-      },
-      "State": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "Hover",
-          "Pressed",
-          "Focused",
-          "Disabled"
-        ]
-      },
-      "Type": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Primary",
-          "Success",
-          "Danger",
-          "Neutral"
-        ]
-      },
-      "Tone": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "Inverse"
-        ]
-      }
-    }
-  },
   "ButtonGroup": {
     "nodeId": "56793:1214",
     "captured": "2026-09-03",
@@ -642,42 +268,71 @@
       }
     }
   },
-  "Link": {
-    "nodeId": "2723:1598",
-    "captured": "2026-09-03",
-    "note": "36 variants = Size 3 x Variant 2 x State 6. The set had lived on the Buttons page since the library was imported from UX4G with NO code counterpart — published, findable and unbuildable, which is what 194 hand-rolled brand-coloured anchors across the hub are made of. Before this date it painted a raw #155dfc (not a SAMAVESH colour), carried no underline at rest on any variant, and had no Label property, so the text could not be edited from the panel. `External` was added on review the same day: the open-in-new glyph is a visible affordance a designer must be able to place, and leaving it to code alone meant a government estate's commonest link could not be drawn.",
+  "ChartCard": {
+    "nodeId": "57418:15985",
+    "captured": "2026-09-05",
+    "note": "8 variants = State 8 — the full CardState family, Restricted and Offline added 2026-09-05.",
     "properties": {
-      "Label": {
-        "type": "TEXT"
-      },
-      "Size": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "Large",
-          "Small"
-        ]
-      },
-      "Variant": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Inline",
-          "Standalone"
-        ]
-      },
       "State": {
         "type": "VARIANT",
         "variantOptions": [
-          "Default",
-          "Hover",
-          "Pressed",
-          "Focused",
-          "Disabled",
-          "Visited"
+          "Populated",
+          "Loading",
+          "Empty",
+          "No results",
+          "Error",
+          "Not published",
+          "Restricted",
+          "Offline"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "ChartTooltip": {
+    "nodeId": "57420:16041",
+    "captured": "2026-09-05",
+    "note": "A single component with no properties; the rows are data.",
+    "properties": {},
+    "deliberatelyOmitted": []
+  },
+  "Chatbot": {
+    "nodeId": "55826:37003",
+    "captured": "2026-08-23",
+    "note": "variantOptions is recorded exactly as Figma reports it. That is a stored registration order, not the canvas order and not the lifecycle order — the canvas reads Closed, Typing, Greeting, Transcript, and two attempts to rewrite the option list (child reorder, temp-rename cycle) both no-op'd. Order is cosmetic here; the gate only checks that every value is mapped.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Greeting",
+          "Closed",
+          "Typing",
+          "Transcript"
         ]
       },
-      "External": {
-        "type": "BOOLEAN"
+      "Title": {
+        "type": "TEXT",
+        "defaultValue": "Chat with us"
+      },
+      "Subtitle": {
+        "type": "TEXT",
+        "defaultValue": "सामाजिक सहायक"
+      },
+      "Note": {
+        "type": "TEXT",
+        "defaultValue": "Samajik Sahayak follows a fixed script. It cannot see your application or your personal data."
+      },
+      "Placeholder": {
+        "type": "TEXT",
+        "defaultValue": "Type something…"
+      },
+      "Show subtitle": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show composer": {
+        "type": "BOOLEAN",
+        "defaultValue": true
       }
     }
   },
@@ -733,6 +388,418 @@
     },
     "deliberatelyOmitted": []
   },
+  "CheckboxGroup": {
+    "nodeId": "57040:770",
+    "captured": "2026-09-04",
+    "note": "4 variants = Orientation 2 x Layout 2. Created 2026-09-04. Adds a select-all row over a Divider and an exclusive option after an OR divider, each on its own boolean; the item rows are exposed nested Checkbox / Selection Card instances.",
+    "properties": {
+      "Legend": {
+        "type": "TEXT"
+      },
+      "Hint": {
+        "type": "TEXT"
+      },
+      "Error": {
+        "type": "TEXT"
+      },
+      "Select All": {
+        "type": "TEXT"
+      },
+      "Show Hint": {
+        "type": "BOOLEAN"
+      },
+      "Show Error": {
+        "type": "BOOLEAN"
+      },
+      "Required": {
+        "type": "BOOLEAN"
+      },
+      "Show Select All": {
+        "type": "BOOLEAN"
+      },
+      "Show Exclusive Option": {
+        "type": "BOOLEAN"
+      },
+      "Show Item 3": {
+        "type": "BOOLEAN"
+      },
+      "Show Item 4": {
+        "type": "BOOLEAN"
+      },
+      "Show Item 5": {
+        "type": "BOOLEAN"
+      },
+      "Show Item 6": {
+        "type": "BOOLEAN"
+      },
+      "Orientation": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Vertical",
+          "Horizontal"
+        ]
+      },
+      "Layout": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Card"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Divider": {
+    "nodeId": "55061:700",
+    "captured": "2026-08-18",
+    "properties": {
+      "Orientation": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Vertical",
+          "Horizontal"
+        ]
+      },
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Inverse",
+          "Inverse subtle"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "DropdownItem": {
+    "nodeId": "4299:1940",
+    "captured": "2026-08-22",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused",
+          "Disabled"
+        ]
+      },
+      "Active": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "False",
+          "True"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "State"
+    ]
+  },
+  "IconButton": {
+    "nodeId": "3:3497",
+    "captured": "2026-09-03",
+    "note": "360 variants = Size 3 x Sub-type 3 x State 5 x Type 4 x Tone 2. Type was added 2026-09-03 (before it, a danger icon button could not be drawn at all) and Tone the same day (the code supported tone=\"inverse\" and the set could not express it). Every surface and glyph binds a Tier-3 cmp/action/* token; the Text sub-type borrows the secondary inverse family because no tertiary inverse family exists, which is the same choice button.css makes for inverseText.",
+    "properties": {
+      "Change Icon": {
+        "type": "INSTANCE_SWAP"
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Large",
+          "Small"
+        ]
+      },
+      "Sub-type": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Text",
+          "Outlined",
+          "Filled"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Pressed",
+          "Focused",
+          "Disabled"
+        ]
+      },
+      "Type": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Primary",
+          "Success",
+          "Danger",
+          "Neutral"
+        ]
+      },
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Inverse"
+        ]
+      }
+    }
+  },
+  "Legend": {
+    "nodeId": "57420:16040",
+    "captured": "2026-09-05",
+    "properties": {
+      "Swatch": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Solid",
+          "Ramp",
+          "Dots"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Link": {
+    "nodeId": "2723:1598",
+    "captured": "2026-09-03",
+    "note": "36 variants = Size 3 x Variant 2 x State 6. The set had lived on the Buttons page since the library was imported from UX4G with NO code counterpart — published, findable and unbuildable, which is what 194 hand-rolled brand-coloured anchors across the hub are made of. Before this date it painted a raw #155dfc (not a SAMAVESH colour), carried no underline at rest on any variant, and had no Label property, so the text could not be edited from the panel. `External` was added on review the same day: the open-in-new glyph is a visible affordance a designer must be able to place, and leaving it to code alone meant a government estate's commonest link could not be drawn.",
+    "properties": {
+      "Label": {
+        "type": "TEXT"
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Large",
+          "Small"
+        ]
+      },
+      "Variant": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Inline",
+          "Standalone"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Pressed",
+          "Focused",
+          "Disabled",
+          "Visited"
+        ]
+      },
+      "External": {
+        "type": "BOOLEAN"
+      }
+    }
+  },
+  "MegaMenu": {
+    "nodeId": "4268:914",
+    "captured": "2026-08-22",
+    "properties": {
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Mobile",
+          "Tablet"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Device"
+    ]
+  },
+  "MegaMenuItem": {
+    "nodeId": "4258:33604",
+    "captured": "2026-08-22",
+    "properties": {
+      "Org logo#4359:0": {
+        "type": "INSTANCE_SWAP",
+        "defaultValue": "4273:696"
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused",
+          "Disabled"
+        ]
+      },
+      "Active": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "False",
+          "True"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Org logo#4359:0",
+      "State"
+    ]
+  },
+  "MenuToggle": {
+    "nodeId": "55783:4565",
+    "captured": "2026-09-05",
+    "properties": {
+      "Sidebar": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Expanded",
+          "Collapsed"
+        ]
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Large",
+          "Default"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused",
+          "Pressed"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Size",
+      "State"
+    ]
+  },
+  "MetricCard": {
+    "nodeId": "57414:15871",
+    "captured": "2026-09-05",
+    "note": "30 variants = Reading 5 x Tone 3 x Size 2, plus Show icon and an Icon swap of the library Icon (24 at Medium, 20 at Small) — the code's `size` and `icon`. Reading is not a prop: each reading is a different set of props on the one MetricCard.",
+    "properties": {
+      "Reading": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Value",
+          "Change",
+          "Trend",
+          "Target",
+          "Status"
+        ]
+      },
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Neutral",
+          "Warning",
+          "Danger"
+        ]
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Medium",
+          "Small"
+        ]
+      },
+      "Show icon": {
+        "type": "BOOLEAN"
+      },
+      "Icon": {
+        "type": "INSTANCE_SWAP"
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "NavDropdown": {
+    "nodeId": "4300:1950",
+    "captured": "2026-08-22",
+    "properties": {
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Tablet",
+          "Mobile"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Device"
+    ]
+  },
+  "NavItemLink": {
+    "nodeId": "2065:292757",
+    "captured": "2026-09-05",
+    "properties": {
+      "Label#2065:0": {
+        "type": "TEXT",
+        "defaultValue": "Label"
+      },
+      "Type": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Dropdown"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Focused",
+          "Hover",
+          "Disabled"
+        ]
+      },
+      "Active": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "False",
+          "True"
+        ]
+      },
+      "Density": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Condensed"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Density",
+      "State",
+      "Type"
+    ]
+  },
+  "NavSheet": {
+    "nodeId": "55327:3503",
+    "captured": "2026-08-22",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Expanded",
+          "Default",
+          "Mega"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "State"
+    ]
+  },
   "Radio": {
     "nodeId": "18:791",
     "captured": "2026-09-04",
@@ -762,69 +829,6 @@
           "Small",
           "Medium",
           "Large"
-        ]
-      },
-      "Checked": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Off",
-          "On"
-        ]
-      },
-      "State": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Enabled",
-          "Hover",
-          "Focused",
-          "Pressed",
-          "Disabled"
-        ]
-      }
-    },
-    "deliberatelyOmitted": []
-  },
-  "SelectionCard": {
-    "nodeId": "55530:2932",
-    "captured": "2026-09-04",
-    "note": "40 variants = Layout 2 x Control 2 x Checked 2 x State 5. Layout=Detailed (icon tile, title, description, Meta, control trailing) is the designer's reference layout restored on 2026-09-04; Compact is the short-list tile. Meta and Show Meta added the same day. Renamed in place from radio-card; one set serves Checkbox variant=card and Radio variant=card.",
-    "properties": {
-      "Icon": {
-        "type": "INSTANCE_SWAP"
-      },
-      "Title": {
-        "type": "TEXT"
-      },
-      "Description": {
-        "type": "TEXT"
-      },
-      "Meta": {
-        "type": "TEXT"
-      },
-      "Invalid": {
-        "type": "BOOLEAN"
-      },
-      "Show Icon": {
-        "type": "BOOLEAN"
-      },
-      "Show Description": {
-        "type": "BOOLEAN"
-      },
-      "Show Meta": {
-        "type": "BOOLEAN"
-      },
-      "Layout": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Compact",
-          "Detailed"
-        ]
-      },
-      "Control": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Radio",
-          "Checkbox"
         ]
       },
       "Checked": {
@@ -899,88 +903,100 @@
     },
     "deliberatelyOmitted": []
   },
-  "CheckboxGroup": {
-    "nodeId": "57040:770",
+  "RankedBarList": {
+    "nodeId": "57420:15961",
+    "captured": "2026-09-05",
+    "note": "A composition of five Ranked Bar Row instances (Tone 4 x Rank 2 on the row set, 57420:15960). The list itself carries no properties; rows are overridden per instance and the code takes them as data.",
+    "properties": {},
+    "deliberatelyOmitted": []
+  },
+  "SelectionCard": {
+    "nodeId": "55530:2932",
     "captured": "2026-09-04",
-    "note": "4 variants = Orientation 2 x Layout 2. Created 2026-09-04. Adds a select-all row over a Divider and an exclusive option after an OR divider, each on its own boolean; the item rows are exposed nested Checkbox / Selection Card instances.",
+    "note": "40 variants = Layout 2 x Control 2 x Checked 2 x State 5. Layout=Detailed (icon tile, title, description, Meta, control trailing) is the designer's reference layout restored on 2026-09-04; Compact is the short-list tile. Meta and Show Meta added the same day. Renamed in place from radio-card; one set serves Checkbox variant=card and Radio variant=card.",
     "properties": {
-      "Legend": {
+      "Icon": {
+        "type": "INSTANCE_SWAP"
+      },
+      "Title": {
         "type": "TEXT"
       },
-      "Hint": {
+      "Description": {
         "type": "TEXT"
       },
-      "Error": {
+      "Meta": {
         "type": "TEXT"
       },
-      "Select All": {
-        "type": "TEXT"
-      },
-      "Show Hint": {
+      "Invalid": {
         "type": "BOOLEAN"
       },
-      "Show Error": {
+      "Show Icon": {
         "type": "BOOLEAN"
       },
-      "Required": {
+      "Show Description": {
         "type": "BOOLEAN"
       },
-      "Show Select All": {
+      "Show Meta": {
         "type": "BOOLEAN"
-      },
-      "Show Exclusive Option": {
-        "type": "BOOLEAN"
-      },
-      "Show Item 3": {
-        "type": "BOOLEAN"
-      },
-      "Show Item 4": {
-        "type": "BOOLEAN"
-      },
-      "Show Item 5": {
-        "type": "BOOLEAN"
-      },
-      "Show Item 6": {
-        "type": "BOOLEAN"
-      },
-      "Orientation": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Vertical",
-          "Horizontal"
-        ]
       },
       "Layout": {
         "type": "VARIANT",
         "variantOptions": [
-          "Default",
-          "Card"
+          "Compact",
+          "Detailed"
+        ]
+      },
+      "Control": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Radio",
+          "Checkbox"
+        ]
+      },
+      "Checked": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Off",
+          "On"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Enabled",
+          "Hover",
+          "Focused",
+          "Pressed",
+          "Disabled"
         ]
       }
     },
     "deliberatelyOmitted": []
   },
-  "SigningIntoBar": {
-    "nodeId": "57464:12739",
+  "SheetToggle": {
+    "nodeId": "57295:59399",
     "captured": "2026-09-05",
     "properties": {
-      "Portal name": {
-        "type": "TEXT"
-      },
-      "Instance": {
-        "type": "INSTANCE_SWAP"
-      },
-      "Device": {
+      "Size": {
         "type": "VARIANT",
         "variantOptions": [
-          "Desktop",
-          "Mobile"
+          "Large",
+          "Default"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused",
+          "Pressed"
         ]
       }
     },
     "deliberatelyOmitted": [
-      "Instance",
-      "Device"
+      "Size",
+      "State"
     ]
   },
   "SidebarNav": {
@@ -1008,20 +1024,319 @@
       "Menu"
     ]
   },
-  "MetricCard": {
-    "nodeId": "57414:15871",
+  "SigningIntoBar": {
+    "nodeId": "57464:12739",
     "captured": "2026-09-05",
-    "note": "30 variants = Reading 5 x Tone 3 x Size 2, plus Show icon and an Icon swap of the library Icon (24 at Medium, 20 at Small) — the code's `size` and `icon`. Reading is not a prop: each reading is a different set of props on the one MetricCard.",
     "properties": {
-      "Reading": {
+      "Portal name": {
+        "type": "TEXT"
+      },
+      "Instance": {
+        "type": "INSTANCE_SWAP"
+      },
+      "Device": {
         "type": "VARIANT",
         "variantOptions": [
-          "Value",
-          "Change",
-          "Trend",
-          "Target",
-          "Status"
+          "Desktop",
+          "Mobile"
         ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Instance",
+      "Device"
+    ]
+  },
+  "SiteHeader": {
+    "nodeId": "4235:3169",
+    "captured": "2026-09-05",
+    "properties": {
+      "Login Signup#2198:4": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Search#2210:0": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Tablet",
+          "Mobile"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "On Scroll"
+        ]
+      },
+      "Menu#55783:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Profile#56716:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      }
+    },
+    "deliberatelyOmitted": [
+      "Device",
+      "State"
+    ]
+  },
+  "Stepper": {
+    "nodeId": "57551:49844",
+    "captured": "2026-09-06",
+    "note": "Stepper / Row — the whole stepper, 14 variants (Orientation 2 x Steps 7). Rebuilt 2026-09-06 as the top of a three-layer family: Stepper / Node (marker) -> Stepper / Stage (node, half-track each side, labels) -> Stepper / Row. The earlier 7-variant Row and the two inherited stage masters are superseded; the masters are kept and marked because instances still resolve against them. The Size axis was added on 2026-09-06 across all three layers (Node 30 variants, Stage 60, Row 28), closing the record item that had the code taking size while Figma published one size.",
+    "properties": {
+      "Orientation": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Horizontal",
+          "Vertical"
+        ]
+      },
+      "Steps": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9"
+        ]
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Large",
+          "Compact"
+        ]
+      }
+    }
+  },
+  "Ticker": {
+    "nodeId": "56159:903",
+    "captured": "2026-08-25",
+    "properties": {
+      "Label": {
+        "type": "TEXT"
+      },
+      "Breakpoint": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Tablet",
+          "Mobile"
+        ]
+      },
+      "Motion": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Playing A",
+          "Playing B",
+          "Paused A",
+          "Paused B"
+        ]
+      },
+      "Direction": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Horizontal",
+          "Vertical"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Breakpoint",
+      "Motion"
+    ]
+  },
+  "DescriptionList": {
+    "nodeId": "57520:769",
+    "captured": "2026-09-06",
+    "note": "Figma publishes the row; code publishes the list. Read from the Plugin API on 6 September 2026.",
+    "properties": {
+      "Term": {
+        "type": "TEXT"
+      },
+      "Value": {
+        "type": "TEXT"
+      },
+      "Show hint": {
+        "type": "BOOLEAN"
+      },
+      "Layout": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Stacked",
+          "Inline"
+        ]
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Md",
+          "Sm"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Recorded",
+          "Not recorded"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Figure": {
+    "nodeId": "57524:850",
+    "captured": "2026-09-06",
+    "properties": {
+      "Caption": {
+        "type": "TEXT"
+      },
+      "Credit": {
+        "type": "TEXT"
+      },
+      "Show credit": {
+        "type": "BOOLEAN"
+      },
+      "Ratio": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Auto",
+          "Square",
+          "Video",
+          "Photo",
+          "Portrait"
+        ]
+      },
+      "Fit": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Cover",
+          "Contain"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "TimeSlot": {
+    "nodeId": "57526:770",
+    "captured": "2026-09-06",
+    "note": "Figma publishes the slot; code publishes the radio group.",
+    "properties": {
+      "Time": {
+        "type": "TEXT"
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Available",
+          "Selected",
+          "Full",
+          "Closed"
+        ]
+      },
+      "Capacity": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Shown",
+          "Hidden"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "BiometricCapture": {
+    "nodeId": "57530:873",
+    "captured": "2026-09-06",
+    "note": "consent and fallbackHref are required in code and are deliberately not Figma properties — a capture with neither must not be buildable.",
+    "properties": {
+      "Subject": {
+        "type": "TEXT"
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Idle",
+          "Capturing",
+          "Captured",
+          "Failed",
+          "Unavailable"
+        ]
+      },
+      "Modality": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Fingerprint",
+          "Iris",
+          "Face"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Popover": {
+    "nodeId": "57538:857",
+    "captured": "2026-09-06",
+    "properties": {
+      "Title": {
+        "type": "TEXT"
+      },
+      "Show title": {
+        "type": "BOOLEAN"
+      },
+      "Content": {
+        "type": "TEXT"
+      },
+      "Side": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Bottom",
+          "Top",
+          "Left",
+          "Right"
+        ]
+      },
+      "Align": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Start",
+          "Center",
+          "End"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Menu": {
+    "nodeId": "57541:4628",
+    "captured": "2026-09-06",
+    "note": "Figma publishes the item; code publishes the menu.",
+    "properties": {
+      "Label": {
+        "type": "TEXT"
+      },
+      "Description": {
+        "type": "TEXT"
+      },
+      "Show description": {
+        "type": "BOOLEAN"
+      },
+      "Show icon": {
+        "type": "BOOLEAN"
+      },
+      "Show tick": {
+        "type": "BOOLEAN"
       },
       "Tone": {
         "type": "VARIANT",
@@ -1031,98 +1346,411 @@
           "Danger"
         ]
       },
-      "Size": {
+      "State": {
         "type": "VARIANT",
         "variantOptions": [
-          "Medium",
-          "Small"
+          "Default",
+          "Hover",
+          "Disabled"
         ]
-      },
-      "Show icon": {
-        "type": "BOOLEAN"
-      },
-      "Icon": {
-        "type": "INSTANCE_SWAP"
       }
     },
     "deliberatelyOmitted": []
   },
-  "ChartCard": {
-    "nodeId": "57418:15985",
-    "captured": "2026-09-05",
-    "note": "8 variants = State 8 — the full CardState family, Restricted and Offline added 2026-09-05.",
+  "ListRow": {
+    "nodeId": "57542:3311",
+    "captured": "2026-09-06",
+    "properties": {
+      "Eyebrow": {
+        "type": "TEXT"
+      },
+      "Title": {
+        "type": "TEXT"
+      },
+      "Description": {
+        "type": "TEXT"
+      },
+      "Show eyebrow": {
+        "type": "BOOLEAN"
+      },
+      "Show description": {
+        "type": "BOOLEAN"
+      },
+      "Show leading": {
+        "type": "BOOLEAN"
+      },
+      "Kind": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Link",
+          "Button",
+          "Static"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Selected",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "FeedbackWidget": {
+    "nodeId": "57539:1051",
+    "captured": "2026-09-06",
+    "note": "The four variants are four steps of one internal sequence; the component walks it itself, so there is no state prop to map the axis onto.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Ask",
+          "Comment (yes)",
+          "Comment (no)",
+          "Sent"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Slider": {
+    "nodeId": "57547:48756",
+    "captured": "2026-09-06",
+    "properties": {
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Md",
+          "Sm"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "RangeSlider": {
+    "nodeId": "57547:48771",
+    "captured": "2026-09-06",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "TimePicker": {
+    "nodeId": "57547:2631",
+    "captured": "2026-09-06",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Closed",
+          "Open",
+          "Error",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Carousel": {
+    "nodeId": "57548:1159",
+    "captured": "2026-09-06",
+    "note": "Figma publishes the controls; code publishes the carousel. Current is read so the template can be checked against the master, but it maps to no prop — the component holds its own position.",
+    "properties": {
+      "Autoplay": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Off",
+          "On"
+        ]
+      },
+      "Current": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "LanguageSwitcher": {
+    "nodeId": "57596:752",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "Reading": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "English",
+          "हिन्दी"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "InlineEdit": {
+    "nodeId": "57599:770",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Reading",
+          "Not recorded",
+          "Editing",
+          "Failed"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "EventList": {
+    "nodeId": "57600:48770",
+    "captured": "2026-09-06",
+    "note": "Figma publishes the row; code publishes the list.",
+    "properties": {
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Neutral",
+          "Info",
+          "Success",
+          "Warning",
+          "Danger"
+        ]
+      },
+      "Note": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "true",
+          "false"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "NumberInput": {
+    "nodeId": "57605:770",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Empty",
+          "Error",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "SplitButton": {
+    "nodeId": "57606:762",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Primary",
+          "Danger"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "BackToTop": {
+    "nodeId": "57608:745",
+    "captured": "2026-09-06",
+    "note": "Label is whether the words are drawn — the component decides that from the viewport, so it maps to no prop.",
+    "properties": {
+      "Label": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Shown",
+          "Hidden"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "BulkActionsBar": {
+    "nodeId": "57609:759",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "Select all": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Hidden",
+          "Shown"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "FileList": {
+    "nodeId": "57611:775",
+    "captured": "2026-09-06",
+    "note": "Figma publishes the row; code publishes the list.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Attached",
+          "Scanning",
+          "Uploading",
+          "Failed"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "DateRangePicker": {
+    "nodeId": "57613:797",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Preset",
+          "Inverted"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Tree": {
+    "nodeId": "57614:783",
+    "captured": "2026-09-06",
+    "note": "Figma publishes the node; code publishes the tree. Level is drawn as indent and derived in code.",
+    "properties": {
+      "Kind": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Branch closed",
+          "Branch open",
+          "Leaf"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Selected",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "TransferList": {
+    "nodeId": "57616:830",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Ticked",
+          "Nothing left"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "ScheduleGrid": {
+    "nodeId": "57618:798",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
     "properties": {
       "State": {
         "type": "VARIANT",
         "variantOptions": [
           "Populated",
-          "Loading",
-          "Empty",
-          "No results",
-          "Error",
-          "Not published",
-          "Restricted",
+          "Empty"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "VideoTile": {
+    "nodeId": "57620:779",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Live",
+          "Recorded",
+          "Connecting",
           "Offline"
         ]
       }
     },
     "deliberatelyOmitted": []
   },
-  "RankedBarList": {
-    "nodeId": "57420:15961",
-    "captured": "2026-09-05",
-    "note": "A composition of five Ranked Bar Row instances (Tone 4 x Rank 2 on the row set, 57420:15960). The list itself carries no properties; rows are overridden per instance and the code takes them as data.",
-    "properties": {},
-    "deliberatelyOmitted": []
-  },
-  "BarChart": {
-    "nodeId": "57417:15992",
-    "captured": "2026-09-05",
-    "note": "15 variants = Type 15 - every foundational chart type at 480x280 in one set. The template maps Type to the React component that draws it; three of the options are BarChart with orientation/variant.",
+  "SignaturePad": {
+    "nodeId": "57621:772",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
     "properties": {
-      "Type": {
+      "State": {
         "type": "VARIANT",
         "variantOptions": [
-          "Bar",
-          "Bar horizontal",
-          "Bar stacked",
-          "Line",
-          "Area",
-          "Donut",
-          "Pie",
-          "Gauge",
-          "Funnel",
-          "Heatmap",
-          "Scatter",
-          "Sparkline",
-          "Progress",
-          "Bullet",
-          "Combo"
+          "Not signed",
+          "Signed by drawing",
+          "Signed by typing"
         ]
       }
     },
     "deliberatelyOmitted": []
   },
-  "Legend": {
-    "nodeId": "57420:16040",
-    "captured": "2026-09-05",
+  "CookieConsent": {
+    "nodeId": "57622:778",
+    "captured": "2026-09-06",
+    "note": "Kind is derived from the categories rather than passed in.",
     "properties": {
-      "Swatch": {
+      "Kind": {
         "type": "VARIANT",
         "variantOptions": [
-          "Solid",
-          "Ramp",
-          "Dots"
+          "Notice",
+          "Choice",
+          "Choices"
         ]
       }
     },
-    "deliberatelyOmitted": []
-  },
-  "ChartTooltip": {
-    "nodeId": "57420:16041",
-    "captured": "2026-09-05",
-    "note": "A single component with no properties; the rows are data.",
-    "properties": {},
     "deliberatelyOmitted": []
   }
 }

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { statusTone } from "@/lib/smile-admin/status-tone";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { MonthlyPerf } from "@/components/smile-admin/dashboard/charts";
 import { PERF_MONTHLY, SCHEMES } from "@/lib/smile-admin/mock-data";
 import { formatINR } from "@/lib/smile-admin/utils";
@@ -17,7 +17,7 @@ export default function SchemeDetail() {
 
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Field Operations" }, { label: "Beggary Schemes", href: "/portals/smile-admin/beggary-schemes" }, { label: scheme.name }]}
         title={scheme.name}
         subtitle={`${scheme.type} · ${scheme.states} states · ${scheme.beneficiaries.toLocaleString("en-IN")} beneficiaries`}

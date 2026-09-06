@@ -152,5 +152,29 @@
       "$value": "{shape.6}",
       "$description": "The tooltip's corner — shape/6, one step tighter than a control because the surface is small and a large curve would eat its padding."
     }
+  },
+  "stepper": {
+    "$description": "Stepper — the multi-stage progress track. Tier-3 because the node diameter and the connector thickness are the component’s own API (a size rung and a hairline), not a shared ladder any other component reads.",
+    "node": {
+      "$type": "dimension",
+      "md": {
+        "$value": "{size.32}",
+        "$description": "32px — the default node, matching the handoff’s 32px Step Type row and clearing the 24px minimum target once its 8px column gutter is counted."
+      },
+      "sm": {
+        "$value": "{size.24}",
+        "$description": "24px — UX4G’s Compact size, for a side panel or a dense administrative flow."
+      }
+    },
+    "track": {
+      "$type": "dimension",
+      "$value": "{border.width.sm}",
+      "$description": "The connector track between two nodes — a hairline. Measured at 1px on every stepper/type-2 instance in the MoSJE handoff; the code drew 2px until 2026-09-06."
+    },
+    "dot": {
+      "$type": "dimension",
+      "$value": "{size.8}",
+      "$description": "One marker in the compact bar’s dot row, the form the track takes when the viewport is too narrow to draw a labelled node per stage."
+    }
   }
 }

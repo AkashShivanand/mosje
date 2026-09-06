@@ -369,12 +369,13 @@
   --sa-color-infoScale-800: #003e4d;
   --sa-color-infoScale-900: #002933;
   --sa-color-infoScale-950: #00151b;
-  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-8) * 100%), transparent);
-  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-16) * 100%), transparent);
-  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-24) * 100%), transparent);
-  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-32) * 100%), transparent);
-  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-40) * 100%), transparent);
-  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-8) * 100%), transparent);
+  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-16) * 100%), transparent);
+  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-24) * 100%), transparent);
+  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-32) * 100%), transparent);
+  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-40) * 100%), transparent);
+  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-secondary-0: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-0) * 100%), transparent);
   --sa-color-transparent-secondary-8: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-color-transparent-secondary-16: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-16) * 100%), transparent);
   --sa-color-transparent-secondary-24: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-24) * 100%), transparent);
@@ -978,6 +979,7 @@
   --sa-control-height-sm: 2rem;
   --sa-control-height-md: 2.5rem;
   --sa-control-height-lg: 3rem;
+  --sa-control-track: 0.5rem;
   --sa-shape-0: 0px;
   --sa-shape-2: 2px;
   --sa-shape-4: 4px;
@@ -1056,6 +1058,10 @@
   --sa-cmp-chip-radius: var(--sa-shape-8);
   --sa-cmp-dialog-radius: var(--sa-shape-12);
   --sa-cmp-tooltip-radius: var(--sa-shape-6);
+  --sa-cmp-stepper-node-md: var(--sa-ref-size-32);
+  --sa-cmp-stepper-node-sm: var(--sa-ref-size-24);
+  --sa-cmp-stepper-track: var(--sa-ref-border-width-sm);
+  --sa-cmp-stepper-dot: var(--sa-ref-size-8);
   --sa-cmp-action-brand-primary-default-bg: var(--sa-color-primaryScale-600);
   --sa-cmp-action-brand-primary-default-text: var(--sa-color-neutralScale-0);
   --sa-cmp-action-brand-primary-default-border: var(--sa-color-primaryScale-600);
@@ -1581,12 +1587,13 @@
   --sa-on-bg-brand-primary-bolder: #ffffff;
 
   /* re-resolve every alias whose source changed in this block */
-  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-8) * 100%), transparent);
-  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-16) * 100%), transparent);
-  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-24) * 100%), transparent);
-  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-32) * 100%), transparent);
-  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-40) * 100%), transparent);
-  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-8) * 100%), transparent);
+  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-16) * 100%), transparent);
+  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-24) * 100%), transparent);
+  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-32) * 100%), transparent);
+  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-40) * 100%), transparent);
+  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-secondary-0: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-0) * 100%), transparent);
   --sa-color-transparent-secondary-8: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-color-transparent-secondary-16: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-16) * 100%), transparent);
   --sa-color-transparent-secondary-24: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-24) * 100%), transparent);
@@ -2168,12 +2175,13 @@
   --sa-on-bg-brand-primary-bolder: #ffffff;
 
   /* re-resolve every alias whose source changed in this block */
-  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-8) * 100%), transparent);
-  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-16) * 100%), transparent);
-  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-24) * 100%), transparent);
-  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-32) * 100%), transparent);
-  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-40) * 100%), transparent);
-  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-8) * 100%), transparent);
+  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-16) * 100%), transparent);
+  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-24) * 100%), transparent);
+  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-32) * 100%), transparent);
+  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-40) * 100%), transparent);
+  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-secondary-0: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-0) * 100%), transparent);
   --sa-color-transparent-secondary-8: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-color-transparent-secondary-16: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-16) * 100%), transparent);
   --sa-color-transparent-secondary-24: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-24) * 100%), transparent);
@@ -2756,12 +2764,13 @@
   --sa-on-bg-brand-primary-bolder: #ffffff;
 
   /* re-resolve every alias whose source changed in this block */
-  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-8) * 100%), transparent);
-  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-16) * 100%), transparent);
-  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-24) * 100%), transparent);
-  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-32) * 100%), transparent);
-  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-40) * 100%), transparent);
-  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-8) * 100%), transparent);
+  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-16) * 100%), transparent);
+  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-24) * 100%), transparent);
+  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-32) * 100%), transparent);
+  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-40) * 100%), transparent);
+  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-secondary-0: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-0) * 100%), transparent);
   --sa-color-transparent-secondary-8: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-color-transparent-secondary-16: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-16) * 100%), transparent);
   --sa-color-transparent-secondary-24: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-24) * 100%), transparent);
@@ -3342,12 +3351,13 @@
   --sa-on-bg-brand-primary-bolder: #ffffff;
 
   /* re-resolve every alias whose source changed in this block */
-  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-8) * 100%), transparent);
-  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-16) * 100%), transparent);
-  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-24) * 100%), transparent);
-  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-32) * 100%), transparent);
-  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-40) * 100%), transparent);
-  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-8) * 100%), transparent);
+  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-16) * 100%), transparent);
+  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-24) * 100%), transparent);
+  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-32) * 100%), transparent);
+  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-40) * 100%), transparent);
+  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-secondary-0: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-0) * 100%), transparent);
   --sa-color-transparent-secondary-8: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-color-transparent-secondary-16: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-16) * 100%), transparent);
   --sa-color-transparent-secondary-24: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-24) * 100%), transparent);
@@ -3928,12 +3938,13 @@
   --sa-on-bg-brand-primary-bolder: #ffffff;
 
   /* re-resolve every alias whose source changed in this block */
-  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-8) * 100%), transparent);
-  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-16) * 100%), transparent);
-  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-24) * 100%), transparent);
-  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-32) * 100%), transparent);
-  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-40) * 100%), transparent);
-  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-8) * 100%), transparent);
+  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-16) * 100%), transparent);
+  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-24) * 100%), transparent);
+  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-32) * 100%), transparent);
+  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-40) * 100%), transparent);
+  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-secondary-0: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-0) * 100%), transparent);
   --sa-color-transparent-secondary-8: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-color-transparent-secondary-16: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-16) * 100%), transparent);
   --sa-color-transparent-secondary-24: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-24) * 100%), transparent);
@@ -4514,12 +4525,13 @@
   --sa-on-bg-brand-primary-bolder: var(--sa-ref-color-dbimInk);
 
   /* re-resolve every alias whose source changed in this block */
-  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-8) * 100%), transparent);
-  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-16) * 100%), transparent);
-  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-24) * 100%), transparent);
-  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-32) * 100%), transparent);
-  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-40) * 100%), transparent);
-  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-8) * 100%), transparent);
+  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-16) * 100%), transparent);
+  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-24) * 100%), transparent);
+  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-32) * 100%), transparent);
+  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-40) * 100%), transparent);
+  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-secondary-0: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-0) * 100%), transparent);
   --sa-color-transparent-secondary-8: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-color-transparent-secondary-16: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-16) * 100%), transparent);
   --sa-color-transparent-secondary-24: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-24) * 100%), transparent);
@@ -5100,12 +5112,13 @@
   --sa-on-bg-brand-primary-bolder: #ffffff;
 
   /* re-resolve every alias whose source changed in this block */
-  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-8) * 100%), transparent);
-  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-16) * 100%), transparent);
-  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-24) * 100%), transparent);
-  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-32) * 100%), transparent);
-  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-40) * 100%), transparent);
-  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-8) * 100%), transparent);
+  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-16) * 100%), transparent);
+  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-24) * 100%), transparent);
+  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-32) * 100%), transparent);
+  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-40) * 100%), transparent);
+  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-secondary-0: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-0) * 100%), transparent);
   --sa-color-transparent-secondary-8: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-color-transparent-secondary-16: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-16) * 100%), transparent);
   --sa-color-transparent-secondary-24: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-24) * 100%), transparent);
@@ -5686,12 +5699,13 @@
   --sa-on-bg-brand-primary-bolder: #ffffff;
 
   /* re-resolve every alias whose source changed in this block */
-  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-8) * 100%), transparent);
-  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-16) * 100%), transparent);
-  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-24) * 100%), transparent);
-  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-32) * 100%), transparent);
-  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-40) * 100%), transparent);
-  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-primary-8: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-8) * 100%), transparent);
+  --sa-color-transparent-primary-16: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-16) * 100%), transparent);
+  --sa-color-transparent-primary-24: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-24) * 100%), transparent);
+  --sa-color-transparent-primary-32: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-32) * 100%), transparent);
+  --sa-color-transparent-primary-40: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-40) * 100%), transparent);
+  --sa-color-transparent-primary-48: color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-color-transparent-secondary-0: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-0) * 100%), transparent);
   --sa-color-transparent-secondary-8: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-color-transparent-secondary-16: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-16) * 100%), transparent);
   --sa-color-transparent-secondary-24: color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-24) * 100%), transparent);

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams, notFound, useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { PERMISSION_MATRIX, ROLES } from "@/lib/smile-admin/mock-data";
 import { Button, Card, CardBody, CardHeader, CardTitle, Checkbox, Icon, Input, Label, buttonClasses } from "@mosje/design-system";
 
@@ -24,7 +24,7 @@ export default function RoleEditPage() {
 
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Access Control" }, { label: "Roles", href: "/portals/smile-admin/roles" }, { label: role.name }]}
         title={`Edit · ${role.name}`}
         subtitle="Adjust scope and permissions for this role. Changes propagate after audit approval."

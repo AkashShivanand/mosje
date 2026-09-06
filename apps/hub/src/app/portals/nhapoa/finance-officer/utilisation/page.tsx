@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader, StatTile, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
+import { Card } from "@mosje/design-system";
 
 export default function UtilisationPage() {
   const { state } = useNhapoa();
@@ -26,7 +27,7 @@ export default function UtilisationPage() {
 
   return (
     <div>
-      <PageHeader title="Fund Utilisation Report" subtitle="Reconciliation-ready disbursement analytics" />
+      <PortalPageHeader title="Fund Utilisation Report" meta="Reconciliation-ready disbursement analytics" />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile label="Total Sanctioned" value={fmtINR(sanctioned)} />

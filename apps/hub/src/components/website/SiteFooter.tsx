@@ -200,7 +200,15 @@ export interface SiteFooterProps {
   lastUpdated?: string;
 }
 
-export function SiteFooter({ lastUpdated }: SiteFooterProps = {}) {
+/**
+ * The website's statutory footer — the design system's `SiteFooter` with this
+ * site's content, and the support banner that sits above it.
+ *
+ * It does not carry the system's name because it is not the system's component:
+ * an import of `SiteFooter` on the website used to resolve to either this or the
+ * component it wraps, silently.
+ */
+export function WebsiteSiteFooter({ lastUpdated }: SiteFooterProps = {}) {
   return (
     <>
       {/* The support CTA is an ActionBanner on a light band ABOVE the footer,

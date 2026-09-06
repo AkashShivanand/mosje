@@ -7,6 +7,17 @@ export interface DataTableColumn<T> {
   key: string;
   /** Column header text. */
   header: string;
+  /**
+   * Render this instead of `header` in the `<th>` — a select-all checkbox, an
+   * icon, a unit note under the label.
+   *
+   * `header` stays a required STRING even when this is set, and is not
+   * redundant: the sort live-region announces "sorted by {header}, ascending",
+   * and a node interpolated into that template stringifies to `[object Object]`
+   * for the one user who cannot see the column at all. So the node is the
+   * picture and `header` is the name.
+   */
+  headerNode?: React.ReactNode;
   /** Custom cell renderer; falls back to `String(row[key])`. */
   render?: (row: T) => React.ReactNode;
   /** Extra class on the cell (e.g. an alignment utility from the host app). */
@@ -200,7 +211,7 @@ export function DataTable<T extends Record<string, unknown>>({
                 if (!col.sortable) {
                   return (
                     <th key={col.key} scope="col" className={cn("ds-table__th", col.className)}>
-                      {col.header}
+                      {col.headerNode ?? col.header}
                     </th>
                   );
                 }
@@ -227,7 +238,7 @@ export function DataTable<T extends Record<string, unknown>>({
                       className="ds-table__sort"
                       onClick={() => setSort(col.key)}
                     >
-                      {col.header}
+                      {col.headerNode ?? col.header}
                       <span className="ds-table__sort-mark" aria-hidden="true">
                         {active ? (sort.direction === "asc" ? "↑" : "↓") : "↕"}
                       </span>

@@ -1,9 +1,9 @@
 "use client";
 
-import { PageHeader, Card, StatTile, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
-import { Icon } from "@mosje/design-system";
+import { Icon, Card, Button } from "@mosje/design-system";
 
 export default function CAReportsPage() {
   const { state } = useNhapoa();
@@ -19,7 +19,7 @@ export default function CAReportsPage() {
 
   return (
     <div>
-      <PageHeader title="Reports & Export" subtitle="Generate national-level reports for review and audit" />
+      <PortalPageHeader title="Reports & Export" meta="Generate national-level reports for review and audit" />
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatTile label="Total Grievances" value={state.cases.length} />
         <StatTile label="Funds Allocated" value={fmtINR(allocated)} />
@@ -33,8 +33,8 @@ export default function CAReportsPage() {
               <div><p className="text-title-3 text-ink">{r.name}</p><p className="mt-0.5 text-body-3 text-ink-muted">{r.desc}</p></div>
             </div>
             <div className="flex shrink-0 gap-1.5">
-              <Button variant="outline" className="px-2.5"><Icon name="description" size={16} /></Button>
-              <Button variant="outline" className="px-2.5"><Icon name="table_chart" size={16} /></Button>
+              <Button appearance="outlined" className="px-2.5"><Icon name="description" size={16} /></Button>
+              <Button appearance="outlined" className="px-2.5"><Icon name="table_chart" size={16} /></Button>
             </div>
           </Card>
         ))}

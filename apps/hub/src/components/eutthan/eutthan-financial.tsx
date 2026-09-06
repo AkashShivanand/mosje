@@ -1,7 +1,7 @@
 "use client";
 
 import { tableScreens } from "@/lib/eutthan/portal-data";
-import { Pagination } from "./eutthan-cells";
+import { StaticPager } from "./eutthan-cells";
 import { Icon } from "@mosje/design-system";
 
 export function FinancialSummaryPage() {
@@ -59,7 +59,7 @@ export function FinancialSummaryPage() {
             </tbody>
           </table>
         </div>
-        <Pagination total={screen.totalItems} />
+        <StaticPager total={screen.totalItems} />
       </div>
     </div>
   );

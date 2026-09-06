@@ -496,7 +496,13 @@ function toDtcg(ramp, steps = STEPS) {
 
 /* ------------------------------------------------------------------ alpha tiers */
 
-/** The overlay percentages, unchanged since the tiers were introduced. */
+/**
+ * The overlay percentages, unchanged since the tiers were introduced. A 0 tier — the far end of
+ * a fade — is NOT generated for every family: check:token-consumers refuses a token nothing
+ * binds, so `color/transparent/<family>/0` is added by hand to a family together with its
+ * consumer (secondary first, 2026-09-06, for the rail's identity wash). In Figma a bound
+ * gradient stop takes its variable's alpha, which is why "transparent" has to be a variable.
+ */
 const ALPHA_STEPS = [8, 16, 24, 32, 40, 48];
 
 /** `#rrggbb` + percent -> `rgba(r, g, b, 0.pp)`, in the exact spelling the tokens already use. */
@@ -538,13 +544,14 @@ export function buildAlphaTiers() {
   // family -> the Tier-2 scale rung the wash is cut from. A REFERENCE, never a hex: the wash
   // follows its base through Blue, Navy and every DBIM mode by construction, so the
   // `colorModes.navy` copies this function used to write are gone (they existed only because
-  // an rgba() literal cannot follow a brand). `primary` reads the 500 rung, which is the key
-  // colour in Blue (#0373DF) and navy 500 in Navy — the hand-picked navy 600 it carried before
-  // differs from that by less than 1 dE at the 8–48% the tiers are used at. `secondary` and
+  // an rgba() literal cannot follow a brand). `primary` reads the 600 rung (#005EB9 in Blue),
+  // which is what the Figma library binds the six primary tiers to — the payload said 500 from
+  // 2026-09-04 until 2026-09-06, the library said 600, and the decision was to follow the
+  // library rather than push 500 over it. At 8–48% the two differ by well under 1 dE. `secondary` and
   // `accent` are SAMAVESH logo colours and do not vary by brand; `accent` reads rung 600
   // because that is where India Green itself sits since 2026-09-04.
   const BASE = {
-    primary: "{color.primaryScale.500}",
+    primary: "{color.primaryScale.600}",
     secondary: "{color.secondaryScale.400}",
     accent: "{color.accentScale.600}",
     neutral: "{color.neutralScale.800}",

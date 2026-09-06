@@ -254,8 +254,18 @@
     flex-wrap: wrap;
     align-items: center;
     gap: var(--sa-stack-8);
-    margin-left: auto;
   }
+
+  /* Push the controls to the trailing edge ONLY when a title holds the leading
+     one. Unconditionally, a title-less bar rendered its controls hard right over
+     a band of empty tint — which is what a worklist's filter row is, since the
+     page's own `PageHeader` already carries the heading. */
+  .ds-filter-bar__title + .ds-filter-bar__controls { margin-left: auto; }
+
+  /* With no title the controls ARE the bar, so they take its width. Without
+     this they size to content inside the flex row, and a caller laying its
+     filters out on a grid gets one column however wide the bar is. */
+  .ds-filter-bar > .ds-filter-bar__controls:only-child { flex: 1 1 auto; }
 
   /* ── SegmentedControl ────────────────────────────────────────────────────── */
   .ds-segmented {

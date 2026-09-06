@@ -95,6 +95,17 @@
     gap: var(--sa-padding-16);
   }
   .sa-page-header__text { display: flex; flex-direction: column; gap: var(--sa-stack-4); }
+  /* The kicker is not a heading — it qualifies the title, so it carries no
+     level and no landmark, only the label role's own casing. */
+  .sa-page-header__eyebrow {
+    margin: 0;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: var(--sa-type-label-tracking);
+    text-transform: uppercase;
+    color: var(--sa-text-brand-primary-base);
+  }
   .sa-page-header__title {
     margin: 0;
     font-size: var(--sa-type-headline-1-size);

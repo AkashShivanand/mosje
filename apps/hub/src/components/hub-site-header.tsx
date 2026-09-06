@@ -17,7 +17,7 @@ import { SITE_NAV } from "./site-nav-items";
  * `current` highlights the active nav item; pass the matching href (or "/" for
  * the landing gate).
  */
-export function SiteHeader({ current }: { current?: string }) {
+export function HubSiteHeader({ current }: { current?: string }) {
   const nav: NavItem[] = SITE_NAV.map((item) => ({
     label: item.label,
     href: item.href,

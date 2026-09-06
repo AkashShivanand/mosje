@@ -1,0 +1,112 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  .ds-video {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    margin: 0;
+  }
+
+  .ds-video__frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background: var(--sa-bg-neutral-subtle);
+  }
+
+  .ds-video__media {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Offline is a sentence, not a dark rectangle: a black tile is
+     indistinguishable from a page that failed to load. */
+  .ds-video__placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-stack-8);
+    block-size: 100%;
+    padding: var(--sa-padding-16);
+    text-align: center;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-video__placeholderText {
+    margin: 0;
+    max-inline-size: 28rem;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .ds-video__badge {
+    position: absolute;
+    inset-block-start: var(--sa-padding-8);
+    inset-inline-start: var(--sa-padding-8);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    margin: 0;
+    padding-inline: var(--sa-padding-8);
+    min-block-size: var(--sa-target-min);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-bg-neutral-base);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-video__badge.is-live { color: var(--sa-text-status-error-bolder); border-color: var(--sa-border-status-error-base); }
+  .ds-video__badge.is-offline { color: var(--sa-text-neutral-subtle); }
+  .ds-video__badge.is-connecting { color: var(--sa-text-status-warning-bolder); border-color: var(--sa-border-status-warning-base); }
+
+  /* Decoration on top of the word, never instead of it. */
+  .ds-video__dot {
+    inline-size: var(--sa-stack-8);
+    block-size: var(--sa-stack-8);
+    border-radius: var(--sa-shape-full);
+    background: currentColor;
+  }
+
+  .ds-video__caption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--sa-inline-8);
+  }
+
+  .ds-video__label {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-video__detail {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-video__alt {
+    margin-inline-start: auto;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .ds-video__alt:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+}

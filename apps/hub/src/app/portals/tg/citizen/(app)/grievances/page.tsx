@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Badge, Icon, Modal } from "@mosje/design-system";
-import { Card, Button, Field, TextInput, Textarea, Select, EmptyState } from "@/components/tg/ui";
+import { Badge, Icon, Modal, Textarea, EmptyState, Select, Card, Button } from "@mosje/design-system";
+import { Field, TextInput } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { GRIEVANCE_CATEGORIES } from "@/lib/tg/states";
 import type { Grievance } from "@/lib/tg/store/types";
@@ -43,7 +43,7 @@ export default function GrievancesPage() {
       </div>
 
       {state.grievances.length === 0 ? (
-        <EmptyState title="No grievances yet" hint="Raise a grievance if you need help with your application." />
+        <EmptyState title="No grievances yet" description="Raise a grievance if you need help with your application." />
       ) : (
         <div className="space-y-3">
           {state.grievances.map((g) => (
@@ -69,7 +69,7 @@ export default function GrievancesPage() {
         title="Raise a Grievance"
         footer={
           <>
-            <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button variant="neutral" appearance="text" onClick={() => setOpen(false)}>Cancel</Button>
             <Button type="submit" form="grievance-form">Submit</Button>
           </>
         }
@@ -79,7 +79,7 @@ export default function GrievancesPage() {
             <TextInput value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} required />
           </Field>
           <Field label="Category">
-            <Select options={GRIEVANCE_CATEGORIES} value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} />
+            <Select options={[...GRIEVANCE_CATEGORIES].map((value) => ({ value, label: value }))} value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} />
           </Field>
           <Field label="Details" required>
             <Textarea rows={4} value={form.detail} onChange={(e) => setForm({ ...form, detail: e.target.value })} required />

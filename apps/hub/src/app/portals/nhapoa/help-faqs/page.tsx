@@ -3,10 +3,9 @@
 import * as React from "react";
 import Link from "next/link";
 import { CitizenShell } from "@/components/nhapoa/citizen-shell";
-import { Card } from "@/components/nhapoa/ui";
 import { cn } from "@/lib/nhapoa/utils";
 import { FAQS, FAQ_CATEGORIES } from "@/lib/nhapoa/citizen-data";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 export default function HelpFaqsPage() {
   const [cat, setCat] = React.useState<(typeof FAQ_CATEGORIES)[number]>("All");

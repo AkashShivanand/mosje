@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Card, Button } from "@/components/tg/ui";
-import { Icon, useToast } from "@mosje/design-system";
+import { Icon, useToast, Card, Button } from "@mosje/design-system";
 
 const SCHEMES = [
   {
@@ -58,7 +57,7 @@ export default function WelfarePage() {
               <span className="text-label-3 uppercase">Eligibility:</span> {eligibility}
             </p>
             <div className="mt-5">
-              <Button variant="outline" onClick={() => toast(`${title} — ${cta}: demo action, no real submission is made.`, "info")}>
+              <Button appearance="outlined" onClick={() => toast(`${title} — ${cta}: demo action, no real submission is made.`, "info")}>
                 {cta} <Icon name="open_in_new" size={16} />
               </Button>
             </div>

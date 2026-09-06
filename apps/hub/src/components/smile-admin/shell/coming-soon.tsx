@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import type { Crumb } from "./breadcrumbs";
 import { EmptyState, Icon, buttonClasses } from "@mosje/design-system";
 
@@ -18,7 +18,7 @@ export function ComingSoon({
 }) {
   return (
     <div className="space-y-lg">
-      <PageHeader title={title} subtitle={subtitle} breadcrumbs={breadcrumbs} />
+      <SmilePageHeader title={title} subtitle={subtitle} breadcrumbs={breadcrumbs} />
       <EmptyState
         icon={<Icon name="build" size={28} />}
         title="Module under construction"

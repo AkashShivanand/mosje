@@ -1,0 +1,114 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* A region at the foot of the page, not a modal: a citizen looking for a
+     scheme deadline should not have to answer a cookie question first. */
+  .ds-cookies {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-20);
+    border-block-start: var(--sa-control-selection-border-width) solid var(--sa-border-neutral-selected);
+    background: var(--sa-bg-neutral-base);
+  }
+
+  /* A real banner is pinned to the foot of the viewport. It carries
+     `data-sa-corner-occupant` so the accessibility widget and the chat launcher
+     lift clear of it, and it does not itself move — consent comes before a chat
+     widget on a government site. */
+  .ds-cookies--fixed {
+    position: fixed;
+    inset-inline: 0;
+    inset-block-end: 0;
+    z-index: var(--sa-z-rail);
+    box-shadow: var(--sa-elevation-toast);
+  }
+
+  .ds-cookies__title {
+    margin: 0;
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-cookies__body {
+    margin: 0;
+    max-inline-size: 60ch;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-cookies__link {
+    color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .ds-cookies__link:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-cookies__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-cookies__row {
+    padding: var(--sa-padding-12);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-control-radius);
+  }
+
+  .ds-cookies__rowHead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+  }
+
+  .ds-cookies__rowLabel {
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-cookies__required {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-cookies__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    min-block-size: var(--sa-target-min);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-cookies__rowText {
+    margin: var(--sa-stack-4) 0 0;
+    max-inline-size: 60ch;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-cookies__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-8);
+  }
+}

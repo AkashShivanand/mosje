@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Badge, Icon, Modal } from "@mosje/design-system";
-import { PageHeader, SearchInput, Button, Field, TextInput, Select, Table, EmptyState } from "@/components/tg/ui";
+import { Badge, Icon, Modal, EmptyState, Select, Button } from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Field, TextInput, Table } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { STATES } from "@/lib/tg/states";
 import type { UserRecord } from "@/lib/tg/store/types";
@@ -22,7 +22,7 @@ export default function UsersPage() {
 
   if (!hydrated) return null;
   if (state.session !== "central-admin")
-    return <EmptyState title="Access restricted" hint="Only the Central Admin can manage users." />;
+    return <EmptyState title="Access restricted" description="Only the Central Admin can manage users." />;
 
   const rows = state.users.filter((u) =>
     [u.name, u.email, u.mobile, u.role, u.jurisdiction].some((v) => v.toLowerCase().includes(query.toLowerCase())),
@@ -55,9 +55,9 @@ export default function UsersPage() {
 
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="User Management"
-        action={<Button onClick={() => setOpen(true)}><Icon name="person_add" size={16} /> Add User</Button>}
+        actions={<Button onClick={() => setOpen(true)}><Icon name="person_add" size={16} /> Add User</Button>}
       />
       <div className="mb-4 max-w-md">
         <SearchInput placeholder="Search for Users" value={query} onChange={(e) => setQuery(e.target.value)} />
@@ -70,7 +70,7 @@ export default function UsersPage() {
         title="Add User"
         footer={
           <>
-            <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button variant="neutral" appearance="text" onClick={() => setOpen(false)}>Cancel</Button>
             <Button type="submit" form="add-user-form">Add User</Button>
           </>
         }
@@ -80,10 +80,10 @@ export default function UsersPage() {
           <Field label="Mobile Number" required><TextInput inputMode="numeric" maxLength={10} value={form.mobile} onChange={(e) => setForm({ ...form, mobile: e.target.value })} required /></Field>
           <Field label="Email Address" required><TextInput type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required /></Field>
           <Field label="Role">
-            <Select options={ROLE_OPTIONS} value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} />
+            <Select options={[...ROLE_OPTIONS].map((value) => ({ value, label: value }))} value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} />
           </Field>
           <Field label="Jurisdiction (State)">
-            <Select options={STATES} value={form.jurisdiction} onChange={(e) => setForm({ ...form, jurisdiction: e.target.value })} />
+            <Select options={[...STATES].map((value) => ({ value, label: value }))} value={form.jurisdiction} onChange={(e) => setForm({ ...form, jurisdiction: e.target.value })} />
           </Field>
         </form>
       </Modal>

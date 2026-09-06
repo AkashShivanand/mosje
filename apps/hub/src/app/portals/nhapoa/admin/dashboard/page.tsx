@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader, StatTile, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { CASE_STATUS_META, type CaseStatus } from "@/lib/nhapoa/store/types";
+import { Card } from "@mosje/design-system";
 
 const FUNNEL: CaseStatus[] = ["SUBMITTED", "ASSIGNED", "UNDER_INVESTIGATION", "PENDING_APPROVAL", "APPROVED", "DISBURSED", "CLOSED"];
 
@@ -22,7 +23,7 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <PageHeader title="System Overview" subtitle="Real-time SAMBAL portal monitoring" />
+      <PortalPageHeader title="System Overview" meta="Real-time SAMBAL portal monitoring" />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile label="Total Grievances" value={total} />

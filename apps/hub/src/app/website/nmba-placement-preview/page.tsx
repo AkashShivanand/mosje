@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Header } from "@/components/website/Header";
-import { SamaveshBanner } from "@/components/website/SamaveshBanner";
+import { WebsiteSamaveshBanner } from "@/components/website/website-samavesh-banner";
 import { HeroCarousel } from "@/components/website/HeroCarousel";
 import { LatestUpdates } from "@/components/website/LatestUpdates";
 import { AboutUs } from "@/components/website/AboutUs";
@@ -13,7 +13,7 @@ import { RecentDocuments } from "@/components/website/RecentDocuments";
 import { ActivityCorner } from "@/components/website/ActivityCorner";
 import { SocialMedia } from "@/components/website/SocialMedia";
 import { LogoStrip } from "@/components/website/LogoStrip";
-import { SiteFooter } from "@/components/website/SiteFooter";
+import { WebsiteSiteFooter } from "@/components/website/SiteFooter";
 import { NashaMuktBharat } from "@/components/website/nmba/NashaMuktBharat";
 
 type Option = "A" | "B" | "C";
@@ -59,7 +59,7 @@ export default function NmbaPlacementPreview() {
       </div>
 
       <Header />
-      <SamaveshBanner />
+      <WebsiteSamaveshBanner />
       <main id="main-content" className="flex-1">
         <HeroCarousel />
 
@@ -82,7 +82,7 @@ export default function NmbaPlacementPreview() {
         <SocialMedia />
         <LogoStrip />
       </main>
-      <SiteFooter />
+      <WebsiteSiteFooter />
     </>
   );
 }

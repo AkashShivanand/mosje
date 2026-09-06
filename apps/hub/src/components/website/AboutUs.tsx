@@ -180,13 +180,13 @@ export function AboutUs() {
             <dl className="grid flex-1 grid-cols-1 divide-y divide-white/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
               {stats.map((stat) => (
                 <div key={stat.label} className="px-4 py-4 sm:px-6 sm:py-2">
-                  <dt className="text-label-3 uppercase text-white/75">
+                  <dt className="text-label-3 uppercase text-white">
                     {stat.label}
                   </dt>
                   <dd className="mt-1.5 text-headline-2 tabular-nums text-white">
                     {stat.value}
                   </dd>
-                  <dd className="mt-1.5 text-body-3 text-white/70">
+                  <dd className="mt-1.5 text-body-3 text-white">
                     {stat.caption}
                   </dd>
                 </div>

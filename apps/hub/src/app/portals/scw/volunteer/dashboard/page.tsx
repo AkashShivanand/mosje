@@ -1,15 +1,9 @@
 import Link from "next/link";
 import { UserShell } from "@/components/scw/user-shell";
-import {
-  Button,
-  Card,
-  PeriodFilter,
-  Pagination,
-  SearchInput,
-} from "@/components/scw/ui";
+import { PeriodFilter, StaticPager, SearchInput } from "@/components/scw/ui";
 import { EVENTS, EVENTS_TOTAL } from "@/lib/scw/mock-data";
 import { INDIAN_STATES } from "@/lib/scw/states";
-import { Icon } from "@mosje/design-system";
+import { Icon, Card, Button } from "@mosje/design-system";
 
 export default function VolunteerDashboardPage() {
   return (
@@ -81,7 +75,7 @@ export default function VolunteerDashboardPage() {
                         {ev.address}
                       </div>
                     </div>
-                    <Button variant="primary" className="shrink-0">
+                    <Button className="shrink-0">
                       View Details
                     </Button>
                   </div>
@@ -89,7 +83,7 @@ export default function VolunteerDashboardPage() {
               ))}
             </div>
 
-            <Pagination total={EVENTS_TOTAL} totalPages={24} />
+            <StaticPager total={EVENTS_TOTAL} totalPages={24} />
           </div>
 
           {/* RIGHT rail */}
@@ -131,7 +125,7 @@ export default function VolunteerDashboardPage() {
               <p className="mt-2 text-body-2 text-ink-muted">
                 The National Helpline provides guidance and field intervention 7 days a week.
               </p>
-              <Button variant="saffron" className="mt-4 w-full">
+              <Button className="scw-cta-helpline mt-4 w-full">
                 <Icon name="call" size={16} />
                 Call Toll-Free 14567
               </Button>

@@ -3,8 +3,8 @@
 import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Divider, Icon, type DemoFillDetail } from "@mosje/design-system";
-import { Button, Field, TextInput } from "@/components/tg/ui";
+import { Divider, Icon, type DemoFillDetail, Button } from "@mosje/design-system";
+import { Field, TextInput } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 
 /**
@@ -120,7 +120,7 @@ export default function CitizenSignInPage() {
           <div className="my-6 flex items-center gap-3 text-body-3 text-ink-hint">
             <Divider className="flex-1" /> OR <Divider className="flex-1" />
           </div>
-          <Button type="button" variant="outline" className="w-full" onClick={signIn}>
+          <Button type="button" appearance="outlined" className="w-full" onClick={signIn}>
             Continue with DigiLocker
           </Button>
 

@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal } from "@mosje/design-system";
-import { PageHeader, StatTile, Card, Button, Field, Select, TextInput } from "@/components/nhapoa/ui";
+import { Icon, Modal, Select, Card, Button } from "@mosje/design-system";
+import { PortalPageHeader, StatTile, Field, TextInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
 import { STATES, SCHEMES } from "@/lib/nhapoa/store/seed";
@@ -41,10 +41,10 @@ export default function FundAllocationPage() {
 
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="Fund Allocation Dashboard"
-        subtitle="SAMBAL budget allocation and utilization"
-        action={<div className="flex gap-2"><Button variant="outline"><Icon name="download" size={16} /> Export</Button><Button onClick={() => setOpen(true)}><Icon name="add" size={16} /> New Allocation</Button></div>}
+        meta="SAMBAL budget allocation and utilization"
+        actions={<div className="flex gap-2"><Button appearance="outlined"><Icon name="download" size={16} /> Export</Button><Button onClick={() => setOpen(true)}><Icon name="add" size={16} /> New Allocation</Button></div>}
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -82,15 +82,15 @@ export default function FundAllocationPage() {
         size="sm"
         title={done ? "Allocation created" : "New Fund Allocation"}
         footer={done ? <Button onClick={reset}>Done</Button> : (
-          <div className="flex justify-end gap-2"><Button variant="outline" onClick={reset}>Cancel</Button><Button onClick={submit} disabled={!aState || !scheme || !amount}>Allocate</Button></div>
+          <div className="flex justify-end gap-2"><Button appearance="outlined" onClick={reset}>Cancel</Button><Button onClick={submit} disabled={!aState || !scheme || !amount}>Allocate</Button></div>
         )}
       >
         {done ? (
           <div className="py-4 text-center"><Icon name="check_circle" size={48} className="mx-auto text-approve" /><p className="mt-3 text-body-2 text-ink-muted">{fmtINR(Number(amount))} allocated to <span className="font-semibold text-ink">{aState}</span> for {scheme}.</p></div>
         ) : (
           <div className="space-y-4">
-            <Field label="State" required><Select options={STATES} placeholder="Select State" value={aState} onChange={(e) => setAState(e.target.value)} /></Field>
-            <Field label="Scheme" required><Select options={SCHEMES} placeholder="Select Scheme" value={scheme} onChange={(e) => setScheme(e.target.value)} /></Field>
+            <Field label="State" required><Select options={[...STATES].map((value) => ({ value, label: value }))} placeholder="Select State" value={aState} onChange={(e) => setAState(e.target.value)} /></Field>
+            <Field label="Scheme" required><Select options={[...SCHEMES].map((value) => ({ value, label: value }))} placeholder="Select Scheme" value={scheme} onChange={(e) => setScheme(e.target.value)} /></Field>
             <Field label="Allocation Amount (₹)" required><TextInput inputMode="numeric" value={amount} onChange={(e) => setAmount(e.target.value.replace(/\D/g, ""))} placeholder="e.g. 25000000" /></Field>
           </div>
         )}

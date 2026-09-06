@@ -17,8 +17,17 @@ const LINKS = [
   { label: "Administration", href: "/admin" },
 ] as const;
 
-/** Shared estate footer for the gate pages. */
-export function SiteFooter() {
+/**
+ * The hub's own footer — the index surfaces at `/`, `/portals` and `/reports`.
+ *
+ * It is NOT the design system's `SiteFooter`, which is the statutory website
+ * footer (organisation block, policy links, credits, lineage), nor its `Footer`,
+ * which is the portal app-shell's slim navy band. This is a third thing: a light
+ * two-tier footer for internal wayfinding. If the estate decides it wants one
+ * footer rather than three, the design system needs a light variant of `Footer`
+ * — that is a design decision, not a rename.
+ */
+export function HubFooter() {
   const year = 2026;
   return (
     <footer className="border-t border-border bg-surface">

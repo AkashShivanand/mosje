@@ -89,6 +89,13 @@ export const NOT_COMPONENTS = new Set([
   // coordinates through them, and the projection is verified against the
   // outlines it must agree with.
   "INDIA_LAT_RANGE", "INDIA_LON_RANGE", "INDIA_HEX_RADIUS", "INDIA_STATE_BOXES",
+  // The screen templates' default English. An object of sentences — same
+  // category as DEFAULT_FIELD_COPY above, and there for the same reason: GIGW
+  // requires the estate to be bilingual, so a template must not bake a sentence
+  // into its markup. It has no visual form, so no story and no page; the
+  // contract it satisfies is documented on every *Screen page, which is what
+  // reads it, and `screenCopy()` is how a portal overrides two of ten.
+  "DEFAULT_SCREEN_COPY",
   // Types (exported via `export type`, but belt and braces)
   "ColorMode", "ColorModeId", "ColorModeProviderProps", "ColorModeSwitcherProps",
 ]);
@@ -145,6 +152,17 @@ export const DOCUMENTED_BY = {
   MenuToggle: "SiteHeader", SheetToggle: "SiteHeader", NavItemLink: "SiteHeader",
   NavDropdown: "SiteHeader", DropdownItem: "SiteHeader", MegaMenu: "SiteHeader",
   MegaMenuItem: "SiteHeader",
+  // The list's row. It is never used outside a ListGroup — a row on its own is
+  // an <li> with no list — and the comparison that actually matters (link when
+  // it goes somewhere, button when it does something, plain text when neither)
+  // only reads as a comparison when the three sit in one list on one page.
+  // The two-thumb slider. It shares every prop, every token and the whole
+  // keyboard model with Slider, and the ONE thing worth documenting about it —
+  // that it is two real range inputs rather than one track with two dots, so
+  // each thumb has its own name and its own announced value — only reads as a
+  // comparison beside the single-thumb control it differs from.
+  RangeSlider: "Slider",
+  ListRow: "ListGroup",
   CardHeader: "Card", CardBody: "Card", CardFooter: "Card",
   CardTitle: "Card", CardSubtitle: "Card",
   TabPanel: "Tabs",

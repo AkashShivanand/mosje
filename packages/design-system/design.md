@@ -12,7 +12,23 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-09-06 · System version: v0.57.0 (THE CREDENTIAL MODE IS A SLOT, NOT AN
+  Last reviewed: 2026-09-06 · System version: v0.62.0 (THE LOGIN SHELL BINDS THE FOUR LAYOUT
+  TOKENS THAT EXISTED FOR IT. `--sa-layout-login-{hero,panel}-width`, `-panel-gutter` and
+  `-content-width` were published and consumed by nothing; the shell restated the geometry as
+  `lg:w-[64.03%]`, `lg:px-16` and `max-w-sm`. `max-w-sm` is 384 against the design's 390, so the
+  card sat three pixels inside the role-tab row it is meant to share an edge with (measured: tabs
+  x=986 w=390, card x=989 w=384), and the tab row's 44px of track padding was what made two
+  credential-mode labels of 185 and 183 overflow a 390 column. Both halves read the token now and
+  both measure 986/390; the gap from the role tabs to the heading is the frame's 32, not 24. The
+  credential-mode switch is an open list with an underline, which the Figma master already drew
+  and the code had drifted from — Figma was right, code was wrong. OrgLogo's `tile` boolean is
+  GONE: the ground is the `.ds-org-tile` class, applied by the container that wants one, so the
+  four surfaces that used to draw a tile by hand share one definition. E-Anudaan's
+  `forgot-password` route exists — it was a 404 for one commit, because the link was added to
+  match the handoff and the page was not — and the design system gained `IdentifierFields`, the
+  identifier-alone stack that `scw`, `nhapoa` and `pm-ajay` had each re-implemented.)
+
+  Last reviewed: 2026-09-06 · System version: v0.61.0 (THE CREDENTIAL MODE IS A SLOT, NOT AN
   AXIS. `Auth / AuthFormCard` carried an `Auth Method` variant axis — Password, OTP, PIN, DARPAN —
   in which SEVEN of the card's eight regions were identical across all four drawings: PIN differed
   from Password by a field label and a link's wording, DARPAN by one control being visible instead
@@ -27,6 +43,27 @@
   department's own screen draws — DARPAN ID + PAN Number, no password, no security check — with the
   PAN arriving as `credentials.pan` rather than as `credentials.password`. The bot check moved from
   the card into the password and PIN stacks, because it guards a typed secret.)
+
+  Last reviewed: 2026-09-06 · System version: v0.60.0 (THE STEPPER'S MOTION IS FINISHED AT BOTH
+  ENDS: the compact bar's current dot animates at all (it snapped, on the surface most citizens
+  use), and the ring and connector now grow on the entry curve and retract on the exit one,
+  using the exit token the system had published and nothing was consuming.)
+
+  Last reviewed: 2026-09-06 · System version: v0.59.0 (THE STEPPER'S SIZE AXIS REACHES FIGMA:
+  Size = Large | Compact on Node, Stage and Row, mapping to size="md" | "sm", so UX4G's Compact
+  can be drawn and not only specified. Compact's description uses Body/body-3, one pixel above
+  the stylesheet, because label-3 is this library's caps style.)
+
+  Last reviewed: 2026-09-06 · System version: v0.58.0 (THE RAIL OWNS ITS DIVIDER: SidebarNav renders a
+  full-height column that carries the hairline between rail and content, so it runs to the bottom
+  edge on scroll; the identity wash binds color/transparent/secondary/8 in Figma and code.)
+  Last reviewed: 2026-09-06 · System version: v0.57.0 (THE STEPPER IS REBUILT AND THE THREE
+  COPIES OF IT ARE GONE. Five states (error and disabled are new), two orientations, two sizes,
+  the label under the node or beside it, and opt-in return-to-a-stage. Below about 104px a column
+  it collapses to UX4G's compact bar — counter, current stage, dot row — with the full ordered
+  list still in the accessibility tree, replacing two CSS rules that clipped the labels
+  themselves. The trigger is a container query, because the row's room is a property of its own
+  column and not of the viewport. tg, nhapoa and scw now import it instead of re-implementing it.)
 
   Last reviewed: 2026-09-05 · System version: v0.56.0 (THE RAIL'S IDENTITY IS THE HANDOFF'S: the
   SAMAVESH saffron wash across the rail, a bare 56 mark, the full name to three lines; OrgLogo's
@@ -825,7 +862,7 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 
 | Axis | Attribute | Values | Meaning |
 | :--- | :--- | :--- | :--- |
-| **Brand** | `data-brand` | `blue` (default), `navy` | Two peer brand palettes, BOTH on light surfaces. Renamed from `blue-light`/`blue-dark` on 2026-08-07: those read as appearance themes, which they never were. **Since 2026-08-11 a brand swap changes the PRIMARY ramp and the neutral greys, and nothing else** — `blue` anchors `#0373DF` at rung 500, `navy` anchors `#003366` at rung **600** (the rung its lightness says, not the rung convention expects). Verified against the built stylesheet on 2026-08-12: `primaryScale` differs in 11 of 11 rungs, `neutralScale` in 10 of 13, and every other ramp is byte-identical across the two brands. The neutral re-lock is a systemic guarantee that the grey follows the brand's hue, **not a visible change** — at 8-bit precision the two brands' greys differ by ≤1 per channel at most rungs, so do not describe them to a stakeholder as "warm" versus "cool". `#162F6A` is **not** navy: it is DBIM Blue, which exists only as a code-only conformance preview. **Secondary (India Saffron `#FF671F`) and accent (India Green `#046A38`) are brand-INVARIANT**: both are SAMAVESH logo colours, so they are constants of the identity rather than variants of it. Navy used to swap secondary to green, which landed it 1.00:1 from the success colour — see the changelog for audit C-02. |
+| **Brand** | `data-brand` | `blue` (website & docs default), `navy` (**portal default since 2026-09-06**) | Two peer brand palettes, BOTH on light surfaces. Renamed from `blue-light`/`blue-dark` on 2026-08-07: those read as appearance themes, which they never were. **Since 2026-08-11 a brand swap changes the PRIMARY ramp and the neutral greys, and nothing else** — `blue` anchors `#0373DF` at rung 500, `navy` anchors `#003366` at rung **600** (the rung its lightness says, not the rung convention expects). Verified against the built stylesheet on 2026-08-12: `primaryScale` differs in 11 of 11 rungs, `neutralScale` in 10 of 13, and every other ramp is byte-identical across the two brands. The neutral re-lock is a systemic guarantee that the grey follows the brand's hue, **not a visible change** — at 8-bit precision the two brands' greys differ by ≤1 per channel at most rungs, so do not describe them to a stakeholder as "warm" versus "cool". `#162F6A` is **not** navy: it is DBIM Blue, which exists only as a code-only conformance preview. **Secondary (India Saffron `#FF671F`) and accent (India Green `#046A38`) are brand-INVARIANT**: both are SAMAVESH logo colours, so they are constants of the identity rather than variants of it. Navy used to swap secondary to green, which landed it 1.00:1 from the success colour — see the changelog for audit C-02. |
 | ~~Appearance~~ | ~~`data-theme`~~ | **REMOVED 2026-08-10** | Dark and high-contrast are owned entirely by the UX4G accessibility widget, which applies its own `.dark-mode` class to `<html>` and never read `data-theme`. This axis was a second, parallel mechanism nothing consumed. The token source still carries the overrides (unemitted) so it can be revived deliberately — see `docs/superpowers/records/2026-08-10-figma-theme-dark-hc-removed.md`. |
 | **Density** | `data-density` | `comfortable` (default/unset), `compact` | Controls padding, heights, and spatial density. |
 | **Surface** | `data-surface` | `website` (default/unset), `portal` | Selects the **typography scale**. `website` = the expressive editorial ramp (display-1 ≈ 80px); `portal` = the dense functional ramp (display-1 ≈ 56px). Same role token names in both; only the `--ds-type-*` values differ. Set `data-surface="portal"` on portal `<html>` roots; the website/hub stay default. Maps 1:1 to the SAMAVESH Figma `Website` / `Portal` type modes. |
@@ -843,6 +880,33 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 > switch that does nothing. Opt in explicitly:
 > `<ColorModeSwitcher modes={[...COLOR_MODES, ...UX4G_COLOR_MODES]} />`.
 > The MoSJE default stays the primary blue `#0373DF`, as DBIM requires.
+
+**Which brand a surface OPENS in is a property of the route, not of the estate.**
+`defaultColorModeForPath` maps `/portals/**` to `navy` and everything else to
+`blue`; `BRAND_BY_ROUTE` is the one array the inline no-flash `<head>` script and
+the provider both read, so first paint and hydration cannot reach different
+answers. It is a **default, not a lock** — a brand chosen in the demo dock is
+persisted and outranks it on every route, so the Colour tab keeps working inside
+a portal instead of being a control that appears usable and does nothing.
+
+Two consequences worth knowing:
+
+- **The cookie is now written only by a deliberate choice.** `ColorModeProvider`
+  used to call `applyColorMode(readColorModeCookie())` on mount, which handed
+  every visitor a cookie recording a choice nobody had made — after which "has a
+  cookie" could not mean "chose", and any per-route default would be stamped out
+  by the first page anyone happened to land on. The mount path now passes
+  `persist: false`, and `hasChosenColorMode()` reads the cookie's PRESENCE rather
+  than its value, because `blue` is both the estate default and a real choice.
+- **`smile-admin` and `nmba` no longer pin `data-brand="navy"` on a wrapper.**
+  The route default covers them, and keeping the wrappers would have made those
+  two the only portals the switcher could not reach.
+
+The path is resolved on the CLIENT — `RouteColorModeProvider` reads `usePathname`
+— never during a server render. The root layout sits above every route in the
+estate, so a server-side read would make all of them dynamic for the sake of one
+attribute; it is also what lets the brand follow a client-side navigation from
+the website into a portal, where the `<head>` script never runs again.
 
 > **Tip:** Nested brand "islands" (e.g. a navy portal shell inside the blue hub) must be explicitly scoped with a nested `[data-brand]` element. To prevent a flash on initial render, initialize the attribute with the exported `colorModeInitScript()`.
 
@@ -1927,6 +1991,28 @@ option sound like the normal one. All 76 instances survived, verified after the 
 **Still divergent, recorded not hidden**: the Figma set has **no intent axis and no `Tone`**, so
 a `danger` or inverse icon button cannot be drawn even though the code supports both.
 
+#### SplitButton
+**Purpose**: one default action with its alternatives one press away — "Approve", beside a trigger offering "Approve with remarks".
+**Props**: `children` (the default action's label) · `onClick` · `items` (`MenuEntry[]`) · `onSelect(id)` · `label` (**required**) · `variant` · `size` · `disabled`
+**Rules**:
+- **It is TWO buttons, not one.** The default action activates on Enter and Space; the trigger is a separate control with its own name and its own `aria-expanded`. Merging them into one control that behaves differently depending on which half was hit is how this pattern is usually built, and it is unusable from a keyboard — there is no key press for "the right-hand eighth of this button".
+- **It draws NO seam of its own.** It composes `ButtonGroup attached`, so the join, the collapsed inner corners and the group's role and name are the ones the estate already publishes and cannot drift from them.
+- **Only where there IS a default.** The wide half is the easy half; where the alternatives are equally likely, putting one there makes it the path of least resistance — on a screen where an officer approves or rejects a citizen's application, that is a thumb on the scale. Use `Menu` when no option is obvious.
+- **Two controls need two names.** The trigger derives its own from the default action's label ("More ways to approve"), so a screen reader never hears the same string twice.
+- Disabling disables BOTH halves. A live menu beside a dead action is a trap.
+
+#### Menu
+**Purpose**: the WAI-ARIA menu-button pattern — a trigger opens a list of **commands**, focus lands on the first, and the arrow keys move between them. The dense-table `⋮` is the shape it was built for.
+**Props**: `items` (`MenuItem` or `{ kind: "separator", label? }`) · `label` (**required**) · `onSelect(id)` · `side` · `align` (default `end`) · `sideOffset` · `open`/`onOpenChange` · `disabled`. An item carries `id`, `label`, `icon?`, `description?`, `kind?` (`action | radio | checkbox`), `checked?`, `tone?` (`neutral | warning | danger`), `disabled?`.
+**Rules**:
+- **Menu, Popover and Select are not interchangeable.** `Select` edits a field's value and submits with the form; `Popover` is a dialog holding arbitrary controls; a Menu offers commands. Substituting one for another is not a styling decision — a menu used as a form control produces a value a screen reader never announced and a form that never carries it.
+- **The trigger may be icon-only; the items may not.** This is where the estate puts the actions whose icons are not universal, so an icon-only item reintroduces the discoverability problem the menu was added to solve. `icon` is decorative and sits beside the label.
+- **A disabled item keeps `aria-disabled` and stays in the menu**, skipped by the arrow keys. Never the native `disabled` attribute: it removes the item from the accessibility tree, so a screen-reader user does not learn the action exists — worse than learning it is unavailable. Put the reason in `description`.
+- **Tone colours the label and the hover fill, never a resting fill.** A row filled with red reads as an alert about something that already happened, not an action still available. `danger` is for the one action that cannot be undone.
+- The keyboard model is the pattern in full — Down/Up wrap, Home/End, **type-ahead**, Enter/Space choose, Escape closes and returns focus, Tab closes without cycling, Down opens a closed trigger. Type-ahead is the part usually left out, and it is what keeps a menu of a dozen actions usable without a mouse.
+- **One tab stop.** Items carry `tabIndex={-1}` and focus roves; a menu whose every item were tabbable would put twelve stops between the reader and the next control.
+- Rows bind `--sa-control-height-md` (40px) and fill the menu's width, clearing WCAG 2.2 §2.5.8's 24×24 on both axes. Portalled at `--sa-z-dropdown` on the shared engine in `foundations/anchor.ts`, so a table's overflow cannot clip it and the menu follows its row when the table scrolls — which three of the four hand-rolled menus in this estate got wrong.
+
 #### ButtonGroup
 **Purpose**: related actions kept together **and kept apart**. It gives the row a
 `role="group"` and a required name, so a screen reader announces "Record actions, group"
@@ -1945,6 +2031,16 @@ buttons into one segmented control (no gap, collapsed seams, rounded only at the
 switcher, a date range. Never for unrelated actions: attaching Save to Delete tells the
 reader they are the same kind of thing, and puts the destructive one a pixel from the safe
 one. Each segment still meets 24×24 on its own, which the size ladder guarantees.
+
+#### BackToTop
+**Purpose**: returns a reader to the top of a long page. One MIS report on this estate is 12,796px tall.
+**Props**: `showAfter` (px, default 800) · `label` (default "Back to top")
+**Rules**:
+- **It sits at the TOP of the corner stack**, and the rail orders by PERMANENCE, not importance: the accessibility widget anchors the corner (statutory, never goes away), the chat launcher sits above it, and this — which comes and goes on scroll — sits above both. At the bottom it would slide the two controls that most need muscle memory up and down the page on every scroll. See `.claude/rules/floating-element-placement.md`; this component is the case that rule anticipated.
+- **It moves FOCUS, not just the scroll position.** Scrolling to the top leaves a keyboard reader's focus half a page down, so the next Tab returns them and the button appears to have done nothing. It focuses `main`, adding `tabindex="-1"` only if absent and removing it again.
+- **Absent until useful.** Below `showAfter` it renders NOTHING — not hidden, not faded. On a phone the corner is expensive: three occupants plus the inset take 268px of the right edge.
+- Carries `data-sa-corner-occupant` and reads `--sa-corner-rail-bottom` rather than hard-coding an offset — both added WITH the control, not after an overlap is reported.
+- `prefers-reduced-motion` is read at the moment of the press, not captured at mount, so someone who changes the setting mid-session gets the new answer on the next press.
 
 #### Icon
 **Purpose**: **Material Symbols Rounded** — the official SAMAVESH icon system.  
@@ -2228,6 +2324,17 @@ Docs: `/design-system/components/sla-progress`.
 **Purpose**: Dropdown value selector.  
 **Props**: `options: SelectOption[]`, `placeholder`, `disabled`, `error`
 
+#### Slider / RangeSlider
+**Purpose**: a bounded numeric choice where the reader cares about ROUGHLY WHERE rather than exactly what — a fund band in a filter, a radius, a span of years.
+**Props**: `value` · `onValueChange` · `min` · `max` · `step` · `disabled` · `size` (`md` | `sm`) · `marks` · `formatValue` · `showValue`. `RangeSlider` takes `value: [from, to]` and `label`, plus `fromLabel` / `toLabel`.
+**Rules**:
+- **It is a real `<input type="range">`, and that is not a shortcut.** The native control carries the whole keyboard model (arrows, Page Up/Down, Home/End), announces its value and bounds, and is the one form control assistive technology and mobile browsers both handle correctly. A div with a draggable dot reimplements the visible half only.
+- **Never the only way to enter a number that matters.** WCAG 2.5.7's no-drag alternative is satisfied by the arrow keys, but an applicant who knows the grant is ₹4,50,000 should type it. Pair with a number field wherever the exact figure is the point; use the slider alone only for a coarse filter.
+- **`formatValue` whenever the value has a unit.** It drives the readout AND `aria-valuetext`: "40" and "₹ 40,000" are not the same information. Marks are three or four anchors, never one per step — a mark per step is a ruler nobody reads.
+- **`RangeSlider` is TWO real range inputs overlaid**, not one track with two dots, so each thumb is a genuine slider with its own name, keyboard model and announced value. Names derive from `label` — "Grant amount, minimum" / "…, maximum" — because two controls both announced as "slider" are indistinguishable. The pair is kept in order by CLAMPING, never swapping: a thumb that changes identity mid-drag cannot be followed by eye and cannot be described to a screen-reader user at all.
+- **The focus ring goes on the THUMB**, not the input box. A ring around a 600px row says the row is focused, not which handle is held — which on the range variant is the only thing the reader needs.
+- The rail binds `--sa-control-track`, added with this component. ONE value for both sizes: `size` changes the thumb, and thinning the rail under a smaller thumb makes the target look smaller than it is.
+
 #### Textarea
 **Purpose**: Multi-line text entry. Auto-resizes up to a max-height.
 
@@ -2493,6 +2600,247 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - Always `aria-hidden`; it is decorative. Put `aria-busy` or a `<LiveRegion>` announcement on the surrounding region instead.
 - The shimmer is suppressed under `prefers-reduced-motion`; the muted surface still reads as "pending".
 
+#### DescriptionList
+**Purpose**: a set of recorded facts about ONE thing — the label-and-value grid that every *Application Detail*, *Beneficiary View* and *Review & Submit* screen in the estate is mostly made of.
+**Props**: `items` (`{ term, value, wide?, hint? }[]`) · `columns` (1 | 2 | 3, default 2) · `layout` (`stacked` | `inline`) · `size` (`md` | `sm`) · `divided` · `emptyText` (default "Not recorded")
+**Rules**:
+- **It renders a real `<dl>`, and that is the whole reason to reach for it.** The same grid built from `<div>`s reads to a screen reader as an undifferentiated run of text — "Date of Birth 12 March 1994 District Bankura Status Pending" — with nothing to say where one fact ends and the next begins. On a record of twenty fields that is unusable.
+- **An unrecorded value is a DESIGNED state.** `null`, `undefined` and an empty string all render `emptyText`. It is real text, never a dash alone: a screen reader announces "—" as nothing at all, which makes an unanswered field and a broken page identical to anyone not looking at the screen.
+- A field that should not appear at all when empty is left OUT of `items` by the caller — "does not apply" and "not answered" are different statements, and choosing between them belongs to the page.
+- **The grid is one column below the estate's 768 step whatever `columns` says.** Two columns of label-and-value on a narrow screen puts four words on each line — and 768 is the breakpoint ladder's own value, not a number chosen for this component. Set `wide` on any item whose value wraps — an address, a reason for return.
+- `layout="inline"`'s term column is `18ch`, not a pixel width, so it grows with the reader's font size instead of clipping the label at 200% zoom.
+- Not a `DataTable`: a table is for records the reader compares across columns, this is for the fields of one record.
+
+#### BulkActionsBar
+**Purpose**: the strip that appears when table rows are selected — *Withdrawn Applications*, *Pending Approvals*, *Beneficiary List*.
+**Props**: `count` · `noun` (singular) · `pluralNoun` · `actions` (`{ id, label, icon?, tone?, disabled? }[]`) · `onAction` · `onClear` · `total` · `onSelectAll`
+**Rules**:
+- **The count is ANNOUNCED, not just drawn.** Selecting rows changes nothing a screen reader notices: the checkbox says "checked" and the page never says how many are selected or that a toolbar has appeared. The bar is `role="status"` `aria-live="polite"` — POLITE, because the reader is selecting deliberately and an assertive announcement would interrupt every click.
+- **Clearing is ALWAYS offered.** Forty rows selected by an accidental shift-click need one control to undo, not forty. It sits at the opposite end from anything destructive.
+- **It does NOT float.** A bar pinned over the viewport covers the last row of the table — on a phone, very often the row the reader was about to act on. It sits in the flow above the table and the page grows to hold it.
+- **The noun belongs to the PAGE.** "3 applications selected" and "3 records selected" are different sentences. `noun` is singular and the bar pluralises; pass `pluralNoun` where "s" is wrong.
+- Tone colours the label and the border, never a resting fill: a filled red button in a bar that appeared on its own is easy to press by accident.
+- At `count={0}` it renders NOTHING — not an empty strip.
+
+#### FileList
+**Purpose**: the attachments on an application — what is uploaded, what state each is in, and what can be done about it.
+**Props**: `files` (`{ id, name, size?, kind?, state?, progress?, error?, href? }[]`) · `label` (**required**) · `onRemove` · `onRetry`
+**Rules**:
+- **It is a list of STATES, not a list of names.** An attachment here is uploading, then scanning, then attached — or failed. A row showing only a filename tells the citizen nothing about whether the department has received it, which is the only question they have.
+- **`scanning` is a real state.** Departmental uploads are virus-scanned before they count as received; a file that reads "attached" and is rejected an hour later is worse than one that says it is being checked.
+- **The filename is NEVER rewritten or clipped.** A citizen recognises their own document by the name they gave it; a sanitised or ellipsised name makes them doubt they uploaded the right thing. Long names wrap.
+- **A failure says what to DO.** "The file is larger than 5 MB. Reduce it and upload again" is actionable; "Upload failed" sends the citizen back to a counter.
+- **Every action names its own FILE** — "Remove income-certificate.pdf" in the accessible name, "Remove" on screen. Twelve attachments otherwise produce twelve identical "Remove"s for anyone moving by button.
+- Every state renders its own WORD; colour only tints the word already there.
+
+#### DateRangePicker
+**Purpose**: a period — the two dates a report, a filter or a sanction window runs between. Built from two `DatePicker`s, never a second calendar.
+**Props**: `label` (**required**) · `value` (`{ from, to }`, ISO) · `onChange` · `fromLabel` · `toLabel` · `min` · `max` · `presets` (`{ id, label, from, to }[]`) · `hint` · `error` · `required` · `disabled`
+**Rules**:
+- **An inverted period is REPORTED, never silently swapped.** Swapping means the report runs over a period nobody asked for and the reader cannot tell.
+- **Each end bounds the other**, so the inverted state is reachable only by typing — which is exactly when a message is the right answer.
+- **A preset is a real button carrying `aria-pressed`**, not a dropdown: "Last 30 days" is one press, and behind a select it is three on the control a dashboard's reader uses most.
+- **Both ends carry the group's name** — "From — Period", not "From". Two period filters on one page otherwise offer four fields with two names between them.
+- The group is a `fieldset`/`legend`; the ordering message is `role="alert"`.
+
+#### InlineEdit
+**Purpose**: a recorded value corrected in place — Master Settings, a beneficiary's district, a scheme's contact number.
+**Props**: `label` (**required**) · `value` · `onSave` · `emptyText` · `hint` · `maxLength` · `readOnlyReason` · `disabled`
+**Rules**:
+- **The save is CONFIRMED, never optimistic, and there is no prop to change that.** An optimistic edit that reverts on failure is a data-integrity problem on a departmental record: the officer who watched the value change has no reason to look again.
+- **A failed write keeps what was typed.** Losing the text is the second defect after losing the write.
+- **The trigger names its field** — "Edit District" to a screen reader, "Edit" on screen. Seventeen settings otherwise offer seventeen identical buttons.
+- **Escape cancels, Enter saves**, and focus returns to the trigger rather than the top of the document.
+- **A read-only value says WHY.** A missing button is a puzzle; "This application was approved on 4 September 2026" is an answer.
+- Not for several values that change together, and not for a value chosen from a list — both are forms.
+
+#### ScheduleGrid
+**Purpose**: a timetable — Garima Greh's daily programme, an attendance week, a district's camp calendar.
+**Props**: `columns` · `rows` (each `{ id, label, sublabel? }`) · `entries` (`{ id, columnId, rowId, title, detail?, tone?, href? }[]`) · `caption` (**required, visible**) · `emptyText`
+**Rules**:
+- **It is a REAL `<table>`, and that is the whole design.** Built from divs, a screen reader reads a stream of session titles with no way to say which day or hour any of them is in. With row and column headers the same entry is announced as "Monday, 09:00 to 10:30, Literacy class".
+- **The caption is visible and required.** "Daily programme" and "Attendance, week of 1 September" are different tables that look identical.
+- **An empty CELL is empty** — no dash, nothing to read. An empty SCHEDULE says so in a sentence rather than drawing a grid of nothing.
+- **It scrolls in its own labelled region with a tab stop**, never inside a card: a scrolling box with no tab stop cannot be reached without a pointer.
+- Tone colours the entry's leading rule only; a grid of coloured blocks is unreadable.
+- An entry with no `href` is a record, not a control.
+
+#### VideoTile
+**Purpose**: one camera or one recording, with the four states a feed is actually in.
+**Props**: `label` (**required**) · `src` · `poster` · `captions` (`{ src, srcLang, label }`) · `state` (`live` | `recorded` | `connecting` | `offline`) · `offlineReason` · `caption` · `alternativeHref` · `alternativeLabel`
+**Rules**:
+- **Never autoplay, never with sound, and no prop to change it.** A wall of nine tiles that all start playing is nine audio streams and a page that cannot be read.
+- **Offline is a SENTENCE, not a black rectangle.** "The camera has not reported since 04:20 today" is something an officer can act on; a dark tile is indistinguishable from a page that failed to load.
+- **"Live" is a WORD**; the red dot is `aria-hidden` decoration on top of it.
+- **The text alternative is a PROP.** WCAG 1.2.1 asks for one; making it part of the API means its absence is visible at the call site rather than found in an audit.
+- **`captions` renders a real `<track kind="captions">`, on by default.** WCAG 1.2.2 requires captions on recorded speech, and a caption file is the only form a viewer can switch on. A live feed has none, which is why the text alternative is a separate prop rather than a substitute.
+- The `<video>` element is the browser's — its controls are keyboard-operable and every reader already knows them.
+
+#### Tree
+**Purpose**: a hierarchy a reader walks — Master Data, Map Ministry & Schemes, Roles & Permissions.
+**Props**: `nodes` (`{ id, label, children?, disabled?, meta? }[]`) · `label` (**required**) · `selectedId` · `onSelect` · `expandedIds` · `onExpandedChange` · `defaultExpandedIds` · `emptyText`
+**Rules**:
+- **One tab stop, not one per node.** A roving `tabIndex`; the arrow keys move inside. A tree of two hundred nodes that is two hundred tab stops is a keyboard trap in everything but name.
+- **Right expands then descends; Left collapses then ascends.** Home and End reach the ends; `*` expands every sibling. That is the WAI-ARIA pattern's own behaviour, not an approximation of it.
+- **Type-ahead with a buffer that clears after a pause**, so "ba" finds Bankura and a later "n" starts afresh.
+- **`aria-level`, `aria-setsize`, `aria-posinset` on every node.** Without them a tree is announced as a flat list and the shape — the whole reason to use one — is lost.
+- **A disabled node keeps `aria-disabled` and stays reachable.** The native attribute would teach a reader the branch does not exist.
+- Only for a REAL hierarchy whose shape matters. Two levels is a list with headings, and it is easier to use.
+
+#### TransferList
+**Purpose**: two lists and the traffic between them — Surveyor Mappings, Roles & Permissions.
+**Props**: `items` · `selectedIds` · `onChange` · `label` (**required**) · `availableLabel` · `selectedLabel` · `emptyAvailableText` · `emptySelectedText` · `disabled`
+**Rules**:
+- **Each side is a list of CHECKBOXES, deliberately.** There is no WAI-ARIA pattern for a transfer list; the usual implementation invents a multi-select listbox keyboard model that readers must learn and that almost nobody finishes. A checkbox needs no new keys.
+- **The count is in the LEGEND** — "Available districts (4)" — so it is part of the group's name rather than a number read at some unrelated moment.
+- **The move buttons promise a number** — "Add 3", not "Add" — and are disabled when nothing is ticked.
+- **What moved is announced** in a polite live region: on a two-panel control the change is exactly what a screen-reader user cannot see.
+- `items` plus `selectedIds`, never two arrays — the caller keeps one list, the component splits it.
+- Not where ORDER matters; this control cannot express one.
+
+#### EventList
+**Purpose**: a dated, attributed record of things that happened. Used directly it IS the activity log and the audit trail; `CommentThread` and `NotificationCentre` are composed from it.
+**Props**: `events` (`{ id, at, actor?, actorRole?, action, subject?, note?, icon?, tone?, unread?, href? }[]`) · `label` (**required**) · `emptyText` · `grouping` (`none` | `day`) · `unreadLabel`
+**Rules**:
+- **One object, three views.** A comment, an audit entry and a notification are the same thing — *someone did something to something, at a time, and may have said why*. Three components would produce three vocabularies for one object, and then a portal's audit log and its notification panel disagree about what an actor is.
+- **It does NOT sort.** The order it is handed is the order it renders. A log is newest-first; a thread is oldest-first. The caller knows which; the component does not.
+- **A note is never truncated.** On a departmental record the reason an application was returned is the most important text on the screen.
+- **`unread` is a WORD before it is a dot.** The row carries a visually hidden `unreadLabel`; the coloured dot is `aria-hidden`.
+- **A system action says "System".** An empty actor column reads as missing data, which on an audit trail is the worst thing it could read as.
+- Not for an approval chain with a fixed vocabulary of steps — that is `ApprovalTimeline`.
+
+#### CommentThread
+**Purpose**: the remarks officers leave on a case — NHAPOA clarifications, NOS scrutiny notes.
+**Props**: `comments` (`{ id, at, author?, authorRole?, body, unread? }[]`) · `label` (**required**) · `onSubmit` · `composerLabel` · `submitLabel` · `closedReason` · `maxLength` · `emptyText`
+**Rules**:
+- **Oldest first.** A thread is a conversation and is read downward; a log is newest-first. Getting this backwards is the most common defect in the pattern and is invisible until someone tries to follow the exchange.
+- **There is no edit control, and there will not be one.** On a departmental record a remark that can change after another officer has acted on it is not a record. A correction is a new remark.
+- **A closed thread SAYS it is closed.** `closedReason` replaces the composer with the reason; hiding the box silently is how a reader concludes the page failed to load.
+- **The character count waits until four-fifths of the limit.** From the first keystroke it is a number nobody needs, and on a live region it would announce on every keypress.
+- Without `onSubmit` the composer is not rendered at all.
+
+#### NotificationCentre
+**Purpose**: the panel behind the bell — what has happened that this officer has not seen.
+**Props**: `notifications` (`EventItem[]`, newest first) · `label` · `onMarkAllRead` · `markAllLabel` · `emptyText`
+**Rules**:
+- **The same sentence in both places.** It renders `EventList` grouped by day, so a notification and the entry on the case read identically and an officer is not matching two differently-worded summaries of one event.
+- **The unread count is announced politely** in a live region, so a screen-reader user learns three things arrived without opening the panel and counting.
+- **"Mark all as read" appears only when something is unread.** A control that does nothing most of the time is ignored on the day it matters.
+- **It does not place itself.** There is no floating variant: both bottom corners and the right wall are spoken for (`floating-element-placement.md`), so whatever opens the panel decides where it sits.
+- Empty is a GOOD state and reads like one — "Nothing new. You are up to date."
+
+#### SignaturePad
+**Purpose**: a signature on a consent form, given by drawing or by typing.
+**Props**: `declaration` (**required**) · `label` (**required**) · `value` (`{ method, value } | null`) · `onChange` · `typedLabel` · `clearLabel` · `disabled`
+**Rules**:
+- **The typed alternative cannot be switched off.** WCAG 2.2 §2.5.7 requires a single-pointer path that is not a drag, and drawing a signature is a drag by definition. A pad that only draws excludes every reader using a keyboard, a switch or a head pointer.
+- **The component does not decide what counts as consent.** `declaration` is required, so a form cannot ship without the Department having written down what is being attested to.
+- **The declaration sits ABOVE the pad.** A citizen who signs and then reads is a citizen who did not read.
+- **Clearing is always available and clears the VALUE**, not just the picture. A signature nobody can withdraw is not consent.
+- The stroke is captured at device resolution and its ink is read from the canvas's own token-bound colour, never a literal.
+
+#### CookieConsent
+**Purpose**: the choice a citizen makes about non-essential cookies.
+**Props**: `categories` (`{ id, label, description, required? }[]`) · `accepted` · `onDecide` · `title` · `description` (**required**) · `policyHref` (**required**) · `policyLabel` · `acceptAllLabel` · `rejectLabel` · `saveLabel` · `acknowledgeLabel` · `placement` (`fixed` | `inline`)
+**Rules**:
+- **A NOTICE and a CHOICE are different things, and the component tells them apart.** Where every category is `required` there is nothing to consent to, so it renders one acknowledgement instead of "Accept all" / "Reject optional" against an empty set. That is the form the website's banner takes today; the moment a portal adds analytics the same component becomes a real choice.
+- **Fixed by default, and it does not yield.** It carries `data-sa-corner-occupant` so the accessibility widget and the chat launcher lift clear, and it does NOT read the corner rail itself — consent comes before a chat widget on a government site.
+- **Rejecting is as easy as accepting**: both are buttons of equal weight in the same row, in the first view.
+- **Optional categories start OFF, and there is no prop to pre-tick them.** A pre-ticked box is not consent.
+- **A required category shows as required**, never as a toggle that cannot move.
+- **It is a region at the foot of the page, not a modal.** A citizen looking for a scheme deadline should not have to answer a cookie question first.
+- `onDecide` always receives the required ids, whatever the reader chose.
+
+#### LanguageSwitcher
+**Purpose**: the languages a page is published in, offered as links. GIGW 3.0 makes a bilingual estate an obligation, so most pages on this estate carry one.
+**Props**: `languages` (`{ code, label, href }[]`) · `current` · `label` (default "Language") · `currentLabel` (default "Current language")
+**Rules**:
+- **Each option is written in ITS OWN language** — "हिन्दी", never "Hindi". The reader this control exists for is the one who cannot read the language the page is currently in, and a list written in that language is unreadable to exactly them.
+- **Each option carries its own `lang`** (and `hreflang` on the links). Without it a screen reader pronounces the Devanagari with an English voice, which is noise rather than a word — WCAG 3.1.2.
+- **The language being read is NOT a link.** It renders as text with `aria-current` and a visually hidden "Current language:". A link to the page you are already on does nothing, and it is the option a reader is most likely to press.
+- **Real links, never a select or a script-only switch.** The Hindi page has its own address, so it can be shared, bookmarked, indexed and opened in a new tab.
+- **`label` and `currentLabel` follow the page, not the option** — they name the control, so a Hindi reader is told in Hindi which language they are on.
+- More than about four languages is not a switcher. Twenty-two scheduled languages is a page of its own, linked from here.
+- The rule between options is DRAWN, not typed: a "|" character is read aloud as "vertical bar" between every language.
+
+#### Carousel
+**Purpose**: a band of slides the reader moves through — announcements, photographs, a handful of promotional cards.
+**Props**: `children` (each child becomes one slide) · `label` (**required**) · `autoPlay` (default **false**) · `interval` · `showDots`
+**Rules**:
+- **Auto-rotation is OFF by default and the default should be respected.** A carousel that moves on its own takes the sentence a citizen is reading away mid-sentence, and it does that most to the slowest readers. WCAG 2.2.2 is met when it is on — pause control, halts on hover and on focus, disabled outright under `prefers-reduced-motion` — but meeting the criterion is not the same as it being a good idea.
+- **Everything essential must ALSO exist outside the carousel.** Slides two onwards are in practice unread: they sit behind an interaction most people never perform.
+- **The scroll-snap track is the source of truth for position.** The component reads the track's scroll offset back, so a swipe and a button press cannot disagree about which slide is current.
+- Moving by button announces "Slide N of M" through a **visually hidden** live region — the dots already show the position, and printing it again on screen is the interface narrating itself.
+- **The dots are buttons with `aria-current`, NOT tabs.** A tablist promises panels that stay put and a roving arrow-key model; claiming the role without the behaviour is worse than not claiming it.
+- Arrows take the full control height and each dot draws an 8px mark inside a 32px button — the mark is small, the target is not.
+
+#### Figure
+**Purpose**: an image and its caption, as ONE thing.
+**Props**: `children` (the image element, the caller's) · `caption` · `credit` · `ratio` (`auto | square | video | photo | portrait`) · `fit` (`cover | contain`) · `bordered`
+**Rules**:
+- **The `<figure>`/`<figcaption>` pairing is the whole reason to use it.** A caption in a sibling `<p>` is read as the next paragraph, so a screen-reader user meets a sentence with nothing to say it describes the picture they just passed — six images, six unattached sentences.
+- **It does not accept an `alt` prop and never will.** Only the caller knows what the picture is doing on the page; the same photograph is decorative beside a heading and load-bearing on an evidence screen. The alt goes on the image element passed in.
+- **A caption is not alt text.** The caption is read by everyone; the alt stands in for the picture when it cannot be seen. Where the two would say the same thing the image is decorative and its `alt` is empty — repeating the caption announces it twice.
+- `fit="cover"` crops to fill: correct for a photograph. `fit="contain"` fits the whole image: correct for a logo, a certificate or a scan, where a crop removes the seal, the signature or the reference number that put the scan on the page. `ratio="auto"` locks nothing — for a diagram or a screenshot, where any crop removes information.
+- **`credit` is content, not a nicety.** A departmental photograph with no attribution is one nobody can check.
+- It imports no image library, so `next/image` works through it and it still renders in Storybook.
+
+#### BiometricCapture
+**Purpose**: the screen a citizen looks at while a fingerprint, iris scan or photograph is taken — the enrolment step in SMILE and the Transgender portal.
+**Props**: `modality` (`fingerprint | iris | face`) · `state` (`idle | capturing | captured | failed | unavailable`) · `onCapture` · `subject` · `failureReason` · `consent` (**required**) · `fallbackHref` (**required**) · `fallbackLabel`
+**Rules**:
+- **It draws states; it never touches a device.** Reading a scanner is the portal's job through whatever RD service the centre has, and that varies per deployment. What is shared is the surface and its five states.
+- **`unavailable` is a DESIGNED state, not an error.** An unplugged reader and a citizen on a phone are ordinary and common; both are told plainly and sent to the alternative rather than shown a button that cannot work.
+- **`fallbackHref` is REQUIRED, and the link shows in every state including success.** Biometric capture fails for worn fingerprints, cataracts, manual labourers and the elderly — most often for exactly the citizens these schemes serve. A screen with no way past it does not stop the department; it stops the application. Hiding the way out until something fails makes failure the only way to find it. WCAG 3.3.8 asks the same from the other direction. A recommendation is followed by whoever read it; a required prop is followed by everyone.
+- **Consent BEFORE capture, not after** (DPDP Act 2023): what is taken, what it is checked against, and whether the department keeps it. It drops away once captured, when it would be a record rather than a notice.
+- **A failure reason a person at the counter can act on** — "The finger was lifted too early", never a device code.
+- One live region for all five states, so a change is announced once; every state changes the SENTENCE as well as the fill. Under reduced motion the capturing pulse becomes a steady ring rather than vanishing — it carries meaning, so removing it would remove information.
+
+#### NumberInput
+**Purpose**: a quantity, an amount, a count — a figure the system stores as a number.
+**Props**: `label` (**required**) · `value` (`number | null`) · `onValueChange` · `min` · `max` · `step` · `precision` · `prefix` · `suffix` · `hint` · `error` · `invalid` · `required` · `disabled` · `hideSteppers` · `id`
+**Rules**:
+- **NOT `<input type="number">`.** The native control SILENTLY DISCARDS what it cannot parse, so a citizen typing "1,50,000" — the way an amount is written in India — submits an empty field and is told nothing. It also changes the value on a mouse wheel over a focused field. This is a text field carrying `role="spinbutton"` with the ARIA value properties: everything the native control reports, none of the behaviour that harms.
+- **EMPTY IS NOT ZERO.** `value` is `number | null` and a cleared field reports `null`. A form storing zero for "the applicant did not answer" has invented a figure, and on a grant application that figure is money. `aria-valuenow` is absent when empty, for the same reason.
+- **Commits on BLUR**, never on keystroke — "1," is not a number and is also not empty. Spaces and commas are stripped before parsing; unparseable text restores the last good value.
+- **The steppers are never the only route.** `hideSteppers` removes them and the field still works — nobody enters ₹4,50,000 by pressing an arrow. Where shown they are `aria-hidden` and `tabIndex={-1}`: the spinbutton role already advertises the arrow keys, and announcing both says the same thing twice.
+- Figures are `tabular-nums` and right-aligned, so a column of amounts lines up and the field does not jitter as it is typed.
+- Identifiers that happen to be digits — Aadhaar, PIN code, a reference — are `Input`, not this. Arithmetic on them is meaningless.
+
+#### TimePicker
+**Purpose**: a typed 24-hour time field, with a list of times as the SECOND way in.
+**Props**: `label` (**required**) · `value` (canonical `HH:MM`) · `onChange` · `min` · `max` · `step` (default 30) · `hint` · `error` · `invalid` · `required` · `disabled` · `id`
+**Rules**:
+- **`<input type="time">` is rejected, for the same reason `DatePicker` rejects `<input type="date">`.** Its rendering — and critically, 12-hour versus 24-hour display — belongs to the browser and the OS, so one government form shows "2:00 PM" to one citizen and "14:00" to the next with no way to correct it. Every published departmental schedule on this estate is 24-hour, and a form that cannot state its own time format will collect wrong times.
+- **Forgiving about punctuation, strict about ambiguity — they are different things.** `9:05`, `09.05` and `0905` all commit as `09:05`, on BLUR and never on keystroke, so a half-typed time is never read as a wrong one. **`9:5` is REFUSED, not guessed**: it could be 09:05 or 09:50, and a form that quietly picks one records the wrong time without telling anybody. Unparseable text restores the last good value rather than leaving characters that will fail on submit.
+- **`min`/`max` govern the LIST, not the field.** A citizen reporting when something happened is not choosing from an offer; refusing 03:14 because the office opens at 09:30 would stop the form recording what it was asked to record. Validate bounds on submit and say so.
+- **Focus never leaves the field.** The list is presentational, takes no `tabIndex`, and the arrows move an `aria-activedescendant` marker — so typing keeps working while it is open, and a list that unmounts cannot strand a keyboard reader at `<body>`.
+- **Enter chooses; Space deliberately does not.** Space is a printable character in a field someone is typing into; stealing it makes the space bar break intermittently.
+- **Active and selected are drawn differently** — a fill for where the arrows are, a tick and heavier ink for the field's value. A list marking only one leaves a keyboard reader unable to tell what Enter would do.
+- Where the times are a FIXED, bookable set, use `TimeSlot` — it is a radio group and shows capacity.
+
+#### TimeSlot
+**Purpose**: a grid of bookable windows — a daily programme, an event, any appointment a citizen chooses.
+**Props**: `groups` (`{ label, slots }[]`, slot = `{ id, label, remaining?, disabled?, unavailableReason? }`) · `value` · `onChange` · `label` (**required**) · `description` · `name`
+**Rules**:
+- **Built from real `<input type="radio">`**, visually replaced by their labels. That gives the arrow keys, the single-choice constraint, form submission and the "3 of 12" announcement for free. A grid of buttons with a `selected` class has none of it and has to rebuild every one. The input is hidden by OPACITY, never `display: none`, which would take it out of the tab order and leave a grid nobody can operate.
+- **A full slot stays on the page.** "10:30 is taken" and "there is no 10:30" are different facts, and a citizen deciding when to travel needs the first. `remaining: 0` renders full; `disabled` + `unavailableReason` covers a holiday or a closed centre.
+- **Omit `remaining` where capacity is not published.** Inventing "6 left" puts a number on a government page with no source behind it.
+- **This uses native `disabled` where `Menu` refuses it, and the reason is specific**: a radio group SELECTS ON ARROW, so an `aria-disabled` slot would be chosen the moment the arrow key landed on it. `disabled` is what makes the arrow keys step over it; the label and its reason stay in the tree either way.
+- Slots bind `--sa-control-height-lg` (48px) and the grid is `auto-fill` at 7.5rem, so it goes six across on a desktop and two on a phone with no breakpoint of its own. A citizen taps these outdoors — WCAG 2.2 §2.5.8's 24×24 is the floor, not the goal.
+- Selection is a heavier border and a semibold label as well as a fill; unavailable is a dashed edge plus a word. Never colour alone (WCAG 1.4.1).
+
+#### ListGroup / ListRow
+**Purpose**: a real `<ul>` of rows — leading slot, text block, trailing slot. The surface behind "recent applications", notifications, documents and search results.
+**Props**: `ListGroup`: `divided` (default true) · `bordered` · `size` · `aria-label`. `ListRow`: `title` · `description` · `eyebrow` · `leading` · `trailing` · `href` · `onClick` · `selected` · `disabled`.
+**Rules**:
+- **List or table is decided by what the reader does next.** If they will pick one row and open it, it is a list. If they will read down a column, it is a `DataTable`. Reaching for a table because the data has fields produces twelve columns on a phone; reaching for a list because it looks lighter produces a comparison the reader cannot make.
+- **The WHOLE row is the target**, never the title inside it. A 40px link in a 600px row is a target most people miss and everyone with a tremor misses; WCAG 2.2 §2.5.8's 24×24 is the floor, not the goal.
+- **A row is a link when it goes somewhere and a button when it does something.** Never both, and a row that is neither stays plain text rather than becoming a `div` with a click handler. A second action beside the row's own goes in `trailing` as its own control — a button nested in a link is invalid HTML and a target whose behaviour depends on which pixel was hit.
+- **Selection carries an inset leading rule as well as a fill**, plus `aria-current="page"` on a link or `aria-pressed` on a button. Colour alone fails WCAG 1.4.1, and the fill vanishes in forced-colors mode where the rule survives.
+- A disabled row **stays in the list** with `aria-disabled`. "Bank passbook — not yet uploaded" is information; removing the row leaves the reader to notice an absence.
+- **Long lists are PAGED, never scrolled inside their card** — on a phone a reader flicking the page down lands in the list and moves the list instead.
+
 #### Tooltip
 **Purpose**: A short hint revealed on hover **and** focus.  
 **Props**: `content`, `side` (`top|bottom|left|right`, auto-flips), `sideOffset`, `delay`, `disabled`  
@@ -2500,11 +2848,44 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - Meets WCAG 1.4.13: Escape dismisses it without moving focus, the bubble itself is hoverable, and it never times out on its own.
 - The trigger must be a single focusable element that forwards a ref. A hover-only tooltip is unreachable by keyboard and unavailable on touch.
 - Never put essential information here and nowhere else — tooltips do not exist for touch users.
-- Renders through a portal at `z-index: 90`, above Modal (50) and Lightbox (80), so an ancestor's `overflow: hidden` cannot clip it.
+- Renders through a portal at `--sa-z-tooltip` (800), above Modal (500) and Popover (600), so an ancestor's `overflow: hidden` cannot clip it. Placement is the shared engine in `foundations/anchor.ts`, not a private copy.
+
+#### FeedbackWidget
+**Purpose**: "Was this page useful?" — the page-level feedback control GIGW expects, in three states: ask, comment, acknowledge.
+**Props**: `question` · `onSubmit({ verdict, comment })` · `thanks` · `helpHref` · `helpLabel`
+**Rules**:
+- **The comment box appears only AFTER a verdict.** Asking for a verdict and a paragraph at once gets neither; most readers answer a two-button question in passing and never open a text field. Taking the click first captures the useful signal even when nobody types. Focus moves into the box when it appears.
+- **It is deliberately NOT a contact form.** A feedback box on a page with no visible way to reach the department becomes where grievances are filed, and a grievance filed into an analytics endpoint is never answered — worse than having no box. `helpHref` is how that is prevented; supply it on every page.
+- **The box says not to type personal information.** A free-text field on a government page collects Aadhaar numbers and bank details unless it says not to, because people reasonably assume a box on a departmental page reaches the department.
+- **Acknowledge honestly.** "We read every response" is a promise. Where it is not true, say what is: "Responses are counted but not read individually, and the department cannot reply here."
+- Ask about THIS page. Nobody can answer "how are we doing" from a page about hostel grants.
+
+#### Popover
+**Purpose**: A non-modal `dialog` anchored to a trigger, holding content the reader can **act on** — a filter, a row's actions, guidance with a link in it.
+**Props**: `content` (node, or a function receiving `{ close }`), `label` (**required**), `side`, `align` (default `start`), `sideOffset`, `open`/`defaultOpen`/`onOpenChange`, `disabled`, `matchTriggerWidth`
+**Rules**:
+- **It is not a Tooltip, and the difference is structural.** A tooltip opens on hover, holds no controls and is announced through `aria-describedby`. Content that opens on hover cannot be tabbed into, so a link or a button inside a tooltip is unreachable by keyboard and invisible on touch. If the panel holds something to act on, it is a Popover.
+- **It is not a Modal.** Non-modal by design: the page behind stays operable, and the panel must therefore never trap focus. Tab past the last control closes it and focus carries on into the page.
+- **`label` is required** — a dialog with no accessible name is announced as "dialog" and tells a screen-reader user nothing about what just opened. Making it required means no unnamed panel can reach a citizen.
+- Escape closes and **returns focus to the trigger**; a pointer-down outside closes without moving focus, because focus already belongs to whatever was clicked.
+- Placement is the shared engine in `foundations/anchor.ts` — measured after mount, flipped once when the preferred side would overflow, clamped on both axes against an 8px viewport margin. `align` defaults to `start`: a panel whose leading edge lines up with its trigger reads as belonging to it.
+- Renders through a portal at `--sa-z-popover` (600): below Modal-owned screens' own stacking and below Tooltip (800), so a tooltip describing a control **inside** the panel still sits above it.
+- Width hugs content between 12rem and 22rem. `matchTriggerWidth` is for a picker that belongs to one field, not for a panel of arbitrary content.
 
 #### Stepper
-**Purpose**: Displays progress through a multi-step form or process.  
-**Rule**: Used with `<Wizard>`. Steps must show completed, current, and upcoming states.
+**Purpose**: Progress through a multi-stage form — which stages are done, which one the applicant is on, which failed validation, and how many remain.  
+**Props**: `steps` (`StepperStep[]`) · `current` · `ariaLabel` · `orientation` (`horizontal` | `vertical`) · `size` (`md` | `sm`) · `labelPlacement` (`bottom` | `right`, horizontal only) · `collapse` (`auto` | `never`) · `onStepSelect`. `StepperStep` carries `label`, `description?` and `status?` (`complete` | `error` | `disabled` | `upcoming`).  
+**Rules**:
+- **Five states, one derivation.** Everything before `current` is complete, `current` is current, everything after is upcoming. A step may override with `error`, `disabled` or an out-of-order `complete`; **`current` may never be overridden** — the index is what the form already knows. One expression resolves the state and the node, label, track, hidden text and compact counter all read it, so the stepper cannot disagree with itself.
+- **Never colour alone.** Each state carries a glyph — tick, alert mark, lock, or the number — and visually hidden text (`(completed)`, `(current step)`, `(has errors)`, `(not yet available)`, `(upcoming)`).
+- **It is a display of position, not navigation.** `onStepSelect` is opt-in and makes buttons only of stages that are `complete` or `error`; upcoming and disabled stages stay static text, so a control is never drawn that cannot be used. Ordinary tab order, no roving tabindex.
+- **Below about 104px a column it collapses to the compact bar** — a counter, the current stage's name, a dot row — with the full `<ol>` still in the accessibility tree. The trigger is a **container query** keyed on `data-steps`, not a viewport media query: the SCW registration screen gives the row 354px at a 768px viewport, and a viewport query called that comfortable. `collapse="never"` opts out.
+- **Fewer than three stages: do not use one** (USWDS's floor). More than about nine and the count stops reassuring.
+- Geometry comes from `cmp/stepper/node/{md,sm}`, `cmp/stepper/track` (1px, as measured in the handoff) and `cmp/stepper/dot`.
+- **A recorded divergence:** GOV.UK advises testing a form without a progress indicator and prefers a "Question 3 of 9" caption; UX4G and the MoSJE handoff both specify a stepper. The estate ships the stepper, and the compact bar answers the mobile half of that objection.
+- Used with `<Wizard>`, which owns the live region and the focus move on stage change.
+- **Figma carries the `Size` axis since 2026-09-06** — `Large` maps to `md`, `Compact` to `sm` — on all three layers, so a compact stepper can be drawn rather than only specified. One divergence is recorded rather than hidden: the stylesheet drops the compact description to `label-3`'s SIZE, but `Label/label-3` is this library's CAPS style, so Figma uses `Body/body-3` there and the helper text is one pixel larger instead of uppercase.
+- **In Figma, place `Stepper / Row`** — the whole stepper, seven variants, one per stage count from three to nine, with equal columns by construction. `Stepper / Horizontal` and `Stepper / Vertical` publish a single STAGE and exist to be composed. Those two were named the wrong way round from the UX4G 2.0 fork until 2026-09-06 (the connector's rotation proves which is which; only the horizontal one carries `Label Position`), and Figma drew `State=Current` as a green in-progress arc while the code fills the node — both corrected, with the code taken as authoritative.
 
 #### Tabs / TabPanel
 **Purpose**: Accessible tabbed navigation for **non-linear** sections the user revisits in any order (vs `<Wizard>`, which is a linear stepper).  
@@ -3426,7 +3807,77 @@ consolidation spec §7 for the full root-cause writeup).
 
 ## 8. Page Patterns
 
-These are the approved page-level scaffolds. Do not deviate from these layouts without a documented reason.
+**Since 2026-09-06 these scaffolds have CODE.** `§8a` below is the shipped template
+layer; the sketches that follow it are the older prose and remain accurate as
+descriptions of what the templates render. Where the two disagree, the code wins.
+
+### 8a. Screen templates — the layer above components
+
+Three tiers. You write Tier C.
+
+| Tier | What | Export |
+|---|---|---|
+| A — chrome | masthead · rail · content column · footer | `PortalPage` |
+| B — the screen | one page archetype, owning all seven states | `<Something>Screen` |
+| C — the descriptor | a typed object. This is the only part you write | props |
+
+**Why it exists.** Measured 2026-09-06, before it was built: 265 portal pages, 29,087
+lines, `PageHeader` used in **zero** of them, `AppShell` in **zero**, sixteen hand-rolled
+shells (none importing `AppShell`), and **236 of 265 pages handling none of loading,
+empty or error** — 89% in breach of `data-state-completeness.md`, because obeying it by
+hand costs four extra branches on every page. `SidebarNav` sits at 100% adoption across
+407 files because a gate ratchets it; `AppShell` had no gate and sat at zero.
+
+**Pick from the data, not from a picture.** One record read-only → `RecordScreen`.
+Editable, over eight fields or a statutory stage → `WizardScreen`. Many records the
+reader acts on → `WorklistScreen`. Many records aggregated into figures →
+`OverviewScreen`. The closed set of eighteen, the full decision table and the eight
+easily-confused pairs are in **`docs/design-system/screen-templates.md`**.
+
+**`PortalPage`** composes `AppShell` and adds the four things the sixteen shells each
+wired differently: `data-portal` for the palette re-bind, the rail's **two** widths
+(300 expanded / 88 collapsed — the handoff draws five and three are drift), role-filtered
+navigation (`PortalRole` is `public · citizen · organisation · officer · admin`), and the
+mobile drawer, closed on route change. Hiding a nav item is **not** authorisation.
+
+**`ScreenBody`** is why the states are structural. Every template routes content through
+it, so no code path renders rows without having decided what happens when there are none.
+Six branches — `idle · loading · error · empty · filtered · ready` — resolved **once** by
+`resolveScreenState`, which is the "one request, one answer" rule in a function. It
+branches the RENDER, never the hooks. `partial` is not a branch (it is `ready` plus a
+provenance chip); `too much` is not a branch (it is a required pager).
+
+**Every string is a prop.** `ScreenStateCopy` holds all ten sentences and `screenCopy()`
+merges a portal's two or three over the defaults. A sentence baked into a template cannot
+be translated, and GIGW requires the estate to be bilingual.
+
+**`WorklistScreen`** is the largest gap closed: 43 pages use `DataTable`, the handoff
+draws no list screen at all, and `Pagination` appears in 1 of 265 pages. `WorklistColumn`
+adds `priority` — 1 becomes the mobile card's title, 2 a label/value pair, 3 is dropped —
+which is how a twelve-column table survives a phone the handoff never drew. **`rows` is
+every matching row, not one page**, and `registerTotal` is for the count line only: handing
+`DataTable` a bigger number than its array drew seven pages over five records.
+
+**`WizardScreen`** covers 22 of the handoff's 44 screens at 3, 6 and 7 steps, and ships
+**one** stepper treatment where the handoff draws two. It wraps `Wizard` and adds the page:
+title, the composed step meta line, the draft banner (both flavours, one shape, switched by
+`resumed`) and notices.
+
+**`OverviewScreen`** cannot enforce its own two most important rules, so they are stated on
+its page: a ratio takes both halves **from one source** (mixing them published a `138%`),
+and a figure the register does not publish is left **off** the design rather than shown as
+"Not yet reported". `kpisLoading` is a count, not a boolean, so the row holds its shape.
+
+**Divergences from the handoff are deliberate and recorded** in
+`docs/audit/figma-handoff-defects-2026-09-06.md`: two rail widths not five, two content
+measures not ten, one stepper not two, one chooser design not three, and a mobile form for
+every archetype where the handoff draws none (9 of its 9 mobile frames are auth).
+
+---
+
+### The older scaffolds
+
+Do not deviate from these layouts without a documented reason.
 
 ### Dashboard Scaffold (Portal)
 

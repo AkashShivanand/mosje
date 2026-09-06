@@ -1,4 +1,16 @@
 export type ActivityRow = {
+  /**
+   * The activity's record number in the campaign's Management Information
+   * System.
+   *
+   * Added 2026-09-06. The register carries genuine duplicates — two "Nukkad
+   * Natak, Skits and Play" entries in Datia on the same date, differing only by
+   * participant counts — so no combination of the other fields identifies a row.
+   * A worklist that offers selection needs a stable id, and React needs one for
+   * a key; composing one from the visible fields produced duplicates on the
+   * first render.
+   */
+  id: string;
   state: string;
   district: string;
   activity: string;

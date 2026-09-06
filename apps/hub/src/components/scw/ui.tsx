@@ -1,37 +1,12 @@
 import * as React from "react";
 import { cn } from "@/lib/scw/utils";
 import type { AppStatus } from "@/lib/scw/types";
-import { Icon } from "@mosje/design-system";
+import { Icon,
+  PageHeader as DsPageHeader,
+  type PageHeaderProps,
+} from "@mosje/design-system";
 
 /* ----------------------------------------------------------------- Buttons */
-export function Button({
-  variant = "primary",
-  className,
-  ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "outline" | "ghost" | "danger" | "saffron";
-}) {
-  const variants: Record<string, string> = {
-    primary: "bg-navy text-white hover:bg-navy-800",
-    outline: "border border-navy/30 text-navy hover:bg-navy/5",
-    ghost: "text-ink-muted hover:bg-black/5",
-    danger: "border border-red-400 text-red-600 hover:bg-red-50",
-    // saffron-600, NOT the bare `saffron` (#ec6a1f): white on that measures
-    // 3.15:1 and fails WCAG 1.4.3 for the button's 14px label. saffron-600
-    // #b8500f is 5.01:1. Hover deepens rather than repeating the rest state.
-    saffron: "bg-saffron-600 text-white hover:bg-saffron-dark",
-  };
-  return (
-    <button
-      className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-label-1 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-navy/40 disabled:opacity-60",
-        variants[variant],
-        className
-      )}
-      {...props}
-    />
-  );
-}
 
 /* ------------------------------------------------------------- StatusPill */
 export function StatusPill({ status }: { status: AppStatus | string }) {
@@ -54,37 +29,21 @@ export function StatusPill({ status }: { status: AppStatus | string }) {
 }
 
 /* ------------------------------------------------------------- PageHeader */
-export function PageHeader({
-  title,
-  action,
-  className,
-}: {
-  title: string;
-  action?: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={cn("mb-6 flex items-center justify-between gap-4", className)}>
-      <h1 className="text-headline-1 text-ink">{title}</h1>
-      {action}
-    </div>
-  );
+/**
+ * The page's opening row — the design system's `PageHeader` with this portal's
+ * page rhythm.
+ *
+ * The heading block itself is the system's, so it receives the system's fixes:
+ * the type roles, the wrap-rather-than-truncate behaviour, the actions that fall
+ * below the title on a narrow viewport. What is this portal's is the space under
+ * it, which is why the wrapper exists at all — and why it does not carry the
+ * system's name.
+ */
+export function PortalPageHeader({ className, ...props }: PageHeaderProps) {
+  return <DsPageHeader {...props} className={cn("mb-6", className)} />;
 }
 
 /* ------------------------------------------------------------ SectionCard */
-export function Card({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className={cn("rounded-2xl border border-line bg-white shadow-card", className)}>
-      {children}
-    </div>
-  );
-}
 
 /* ------------------------------------------------------------ SearchInput */
 export function SearchInput({
@@ -141,7 +100,16 @@ export function PeriodFilter({
 }
 
 /* ------------------------------------------------------------- Pagination */
-export function Pagination({
+/**
+ * The pager drawn under a prototype table.
+ *
+ * It is NOT the design system's `Pagination`. It has no `page` and no change
+ * handler, because these screens hold one fixed page of mock rows — a real pager
+ * here would render page numbers that go nowhere, which is worse than a control
+ * that plainly does not move. It becomes the system's `Pagination` the day these
+ * screens page real rows.
+ */
+export function StaticPager({
   total,
   pageSize = 10,
   totalPages,
@@ -212,7 +180,18 @@ function PageBtn({
 }
 
 /* --------------------------------------------------------------- DataTable */
-export function DataTable({
+/**
+ * A table SHELL — it draws the frame and the header row, and the caller renders
+ * its own `<tr>`s inside it.
+ *
+ * It is NOT the design system's `DataTable`, which owns the rows: it takes
+ * `data` and `total` and pages them itself. Adopting that here is a real
+ * migration of eight screens, and it carries a product decision with it — these
+ * screens pass a headline total (356 volunteers) over ten mock rows, and the
+ * system's table would page the ten it actually has. That is a question about
+ * what the prototype should demonstrate, not about which component to import.
+ */
+export function TableShell({
   columns,
   children,
   className,
@@ -254,63 +233,17 @@ export function FieldGrid({ items }: { items: [string, string][] }) {
   );
 }
 
-export function SectionTitle({ children }: { children: React.ReactNode }) {
+/**
+ * An uppercase kicker above a block of content.
+ *
+ * It is NOT the design system's `SectionTitle`, which is a section header with a
+ * title, an optional description and a place for actions. This renders the
+ * kicker alone, which is why it no longer carries that name — an import of
+ * `SectionTitle` in this portal used to resolve to either one, silently.
+ */
+export function SectionEyebrow({ children }: { children: React.ReactNode }) {
   return (
     <h2 className="mb-5 text-label-3 uppercase text-ink-hint">{children}</h2>
-  );
-}
-
-/* ----------------------------------------------------------------- Stepper */
-export function Stepper({
-  steps,
-  current,
-  done = [],
-}: {
-  steps: string[];
-  current: number;
-  done?: number[];
-}) {
-  return (
-    <div className="flex items-start">
-      {steps.map((label, i) => {
-        const isDone = done.includes(i);
-        const isActive = i === current;
-        return (
-          <React.Fragment key={label}>
-            <div className="flex w-full flex-col items-center text-center">
-              <div
-                className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-full text-label-2",
-                  isDone
-                    ? "bg-approve text-white"
-                    : isActive
-                      ? "bg-navy text-white"
-                      : "border border-line bg-white text-ink-hint"
-                )}
-              >
-                {isDone ? "✓" : i + 1}
-              </div>
-              <span
-                className={cn(
-                  "mt-2 max-w-[7rem] text-body-3",
-                  isActive ? "font-semibold text-ink" : "text-ink-hint"
-                )}
-              >
-                {label}
-              </span>
-            </div>
-            {i < steps.length - 1 && (
-              <div
-                className={cn(
-                  "mt-4 h-0.5 w-full flex-1",
-                  isDone ? "bg-approve" : "bg-line"
-                )}
-              />
-            )}
-          </React.Fragment>
-        );
-      })}
-    </div>
   );
 }
 
@@ -349,29 +282,3 @@ export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   );
 }
 
-export function Select({
-  options,
-  placeholder,
-  className,
-}: {
-  options: readonly string[];
-  placeholder: string;
-  className?: string;
-}) {
-  return (
-    <div className={cn("relative", className)}>
-      <select
-        defaultValue=""
-        className="w-full appearance-none rounded-lg border border-line bg-white px-3.5 py-2.5 pr-9 text-body-2 text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
-      >
-        <option value="" disabled>
-          {placeholder}
-        </option>
-        {options.map((o) => (
-          <option key={o}>{o}</option>
-        ))}
-      </select>
-      <Icon name="keyboard_arrow_down" size={16} className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-ink-hint" />
-    </div>
-  );
-}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { STATES } from "@/lib/smile-admin/states";
 import { Button, Card, CardBody, CardHeader, CardTitle, Icon, Input, Label, buttonClasses } from "@mosje/design-system";
 
@@ -10,7 +10,7 @@ export default function NewLocationPage() {
   const [form, setForm] = useState({ name: "", state: "", district: "", pincode: "", type: "Traffic Signal", lat: "", lng: "" });
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Field Operations" }, { label: "Survey Locations", href: "/portals/smile-admin/survey-locations" }, { label: "New" }]}
         title="Add survey location"
         subtitle="Register a new outreach hotspot for surveyor mapping."

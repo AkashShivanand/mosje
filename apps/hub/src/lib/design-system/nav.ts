@@ -747,6 +747,22 @@ export const NAV: NavGroup[] = [
     ]
   },
   {
+    // The layer ABOVE components: Tier A chrome, then one template per page
+    // archetype. Ordered by how a screen gets built, not alphabetically — the
+    // chrome first, the state contract that every template routes through
+    // second, then the four templates themselves.
+    // Catalogue and decision table: docs/design-system/screen-templates.md
+    "title": "Screen Templates",
+    "items": [
+      { "label": "Portal Page", "href": "/design-system/components/templates/portal-page", "badge": "Beta" },
+      { "label": "Screen Body", "href": "/design-system/components/templates/screen-body", "badge": "Beta" },
+      { "label": "Overview Screen", "href": "/design-system/components/templates/overview-screen", "badge": "Beta" },
+      { "label": "Worklist Screen", "href": "/design-system/components/templates/worklist-screen", "badge": "Beta" },
+      { "label": "Record Screen", "href": "/design-system/components/templates/record-screen", "badge": "Beta" },
+      { "label": "Wizard Screen", "href": "/design-system/components/templates/wizard-screen", "badge": "Beta" }
+    ]
+  },
+  {
     "title": "Patterns",
     "items": [
       {

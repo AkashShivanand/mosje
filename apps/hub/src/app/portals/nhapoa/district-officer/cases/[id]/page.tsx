@@ -3,8 +3,8 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { Icon, Modal } from "@mosje/design-system";
-import { Card, StatusPill, Button, Textarea, Field } from "@/components/nhapoa/ui";
+import { Icon, Modal, Textarea, Card, Button } from "@mosje/design-system";
+import { StatusPill, Field } from "@/components/nhapoa/ui";
 import { SlaPill, PriorityBadge } from "@/components/nhapoa/case-views";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { doActionsFor, fmtDate, fmtINR } from "@/lib/nhapoa/case-helpers";
@@ -62,7 +62,7 @@ export default function CaseDetailPage() {
           <p className="mt-1 text-body-2 text-ink-muted">{c.type} · {c.category} · {c.district}, {c.state}</p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" onClick={() => setClarifyOpen(true)}><Icon name="feedback" size={16} /> Raise Clarification</Button>
+          <Button appearance="outlined" onClick={() => setClarifyOpen(true)}><Icon name="feedback" size={16} /> Raise Clarification</Button>
           {actions.map((a) => (
             <Button key={a.to} onClick={() => setAction(a)}>{a.label}</Button>
           ))}
@@ -131,7 +131,7 @@ export default function CaseDetailPage() {
         title={action?.label ?? ""}
         footer={
           <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => setAction(null)}>Cancel</Button>
+            <Button appearance="outlined" onClick={() => setAction(null)}>Cancel</Button>
             <Button onClick={confirmAction}>Confirm</Button>
           </div>
         }
@@ -150,7 +150,7 @@ export default function CaseDetailPage() {
         title="Raise Clarification"
         footer={
           <div className="flex justify-end gap-2">
-            <Button variant="outline" onClick={() => setClarifyOpen(false)}>Cancel</Button>
+            <Button appearance="outlined" onClick={() => setClarifyOpen(false)}>Cancel</Button>
             <Button onClick={() => { setClarifyOpen(false); setNote(""); }}>Send to Citizen</Button>
           </div>
         }

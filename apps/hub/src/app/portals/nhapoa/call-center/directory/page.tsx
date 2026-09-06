@@ -1,10 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader, Card, SearchInput } from "@/components/nhapoa/ui";
+import { PortalPageHeader, SearchInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { ROLES } from "@/lib/nhapoa/roles";
 import type { RoleId } from "@/lib/nhapoa/store/types";
+import { Card } from "@mosje/design-system";
 
 export default function DirectoryPage() {
   const { state } = useNhapoa();
@@ -22,7 +23,7 @@ export default function DirectoryPage() {
 
   return (
     <div>
-      <PageHeader title="Directory Search" subtitle={`${officers.length} officers across all states`} />
+      <PortalPageHeader title="Directory Search" meta={`${officers.length} officers across all states`} />
       <SearchInput placeholder="Name, username or role (e.g. Nodal, SHO)…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
       {rows.length === 0 ? (
         <Card className="px-6 py-16 text-center text-body-2 text-ink-muted">No officers match your search.</Card>

@@ -803,6 +803,32 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "BackToTopProps": {
+    "source": "packages/design-system/components/utilities/back-to-top.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "\"Back to top\"",
+        "description": ""
+      },
+      {
+        "name": "showAfter",
+        "type": "number",
+        "required": false,
+        "default": "800",
+        "description": "How far down the page it appears, in pixels. Below this the control is not rendered at all — a control that does nothing is a control in the way."
+      }
+    ]
+  },
   "BadgeProps": {
     "source": "packages/design-system/components/feedback/badge.tsx",
     "inheritsNative": true,
@@ -1068,6 +1094,67 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "BiometricCaptureProps": {
+    "source": "packages/design-system/components/forms/biometric-capture.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "consent",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The consent sentence shown before capture. Under the DPDP Act 2023 a biometric is personal data and the citizen is told what is taken and why BEFORE it is taken, not after."
+      },
+      {
+        "name": "fallbackHref",
+        "type": "string",
+        "required": true,
+        "description": "Where to go instead. **Required, and required for a reason**: biometric capture fails for worn fingerprints, for cataracts, for a reader that is not plugged in, and for anyone using this on a phone. A screen with no way past it stops the citizen's application, not the department's."
+      },
+      {
+        "name": "modality",
+        "type": "BiometricModality = \"fingerprint\" | \"iris\" | \"face\"",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onCapture",
+        "type": "() => void",
+        "required": true,
+        "description": "Start or retry a capture. Not called in `capturing`, `captured` or `unavailable`."
+      },
+      {
+        "name": "state",
+        "type": "BiometricState = \"idle\" | \"capturing\" | \"captured\" | \"failed\" | \"unavailable\"",
+        "required": true,
+        "description": "The current state. This component draws it; it never drives the device."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "failureReason",
+        "type": "string",
+        "required": false,
+        "description": "Why it failed, in the words a person at the counter can act on: \"The finger was lifted too early\", not a device code. Shown only in `failed`."
+      },
+      {
+        "name": "fallbackLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Verify another way\"",
+        "description": ""
+      },
+      {
+        "name": "subject",
+        "type": "string",
+        "required": false,
+        "description": "Whose biometrics these are, named — \"Sunita Devi\". Announced with the region."
+      }
+    ]
+  },
   "BotCheckProps": {
     "source": "packages/design-system/components/forms/bot-check.tsx",
     "inheritsNative": false,
@@ -1274,6 +1361,66 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "true",
         "description": "Whether the trail may run onto a second line when it does not fit. `true` (the default) is right in a page-width container, where truncating a long page title would hide the one crumb the reader most needs. Pass `false` inside a FIXED-WIDTH rail, where a second line would change the panel's height every time the reader drills. Either way the current crumb ellipsises rather than overflowing."
+      }
+    ]
+  },
+  "BulkActionsBarProps": {
+    "source": "packages/design-system/components/data-display/bulk-actions-bar.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "actions",
+        "type": "BulkAction[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": true,
+        "description": "How many rows are selected. At `0` the bar renders nothing."
+      },
+      {
+        "name": "noun",
+        "type": "string",
+        "required": true,
+        "description": "The noun, singular — \"application\", \"beneficiary\". The bar pluralises it, because \"3 applications selected\" and \"3 records selected\" are different sentences and only the page knows which is true."
+      },
+      {
+        "name": "onAction",
+        "type": "(id: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onClear",
+        "type": "() => void",
+        "required": true,
+        "description": "Clears the selection. Always offered — a selection with no way out is a trap."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onSelectAll",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "pluralNoun",
+        "type": "string",
+        "required": false,
+        "description": "Plural of `noun`, where adding \"s\" is wrong — \"entries\" for \"entry\"."
+      },
+      {
+        "name": "total",
+        "type": "number",
+        "required": false,
+        "description": "How many rows exist in total. When given and larger than `count`, the bar offers to extend the selection to all of them."
       }
     ]
   },
@@ -1636,6 +1783,51 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "Overrides the standard headline. Say what is true, not that something is missing."
+      }
+    ]
+  },
+  "CarouselProps": {
+    "source": "packages/design-system/components/data-display/carousel.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The slides. Each child becomes one slide and is labelled \"N of M\" for assistive technology, so pass the content only — no wrapper of your own."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the carousel — \"Departmental announcements\". Required: a carousel announced only as \"carousel\" tells a screen-reader user nothing about what is rotating past them."
+      },
+      {
+        "name": "autoPlay",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Rotate on a timer. **Off by default, and it should usually stay off.** WCAG 2.2.2 requires anything moving for more than five seconds to be pausable, which the pause button provides — but the deeper problem is that a citizen reading slide two does not get to finish it. Turn it on only for decorative content nobody has to read."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "interval",
+        "type": "number",
+        "required": false,
+        "default": "7",
+        "description": "Seconds between slides when `autoPlay` is on."
+      },
+      {
+        "name": "showDots",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Show the dot indicators under the track."
       }
     ]
   },
@@ -2591,6 +2783,12 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "Mode resolved on the server (from the cookie) to avoid a flash."
+      },
+      {
+        "name": "routeDefault",
+        "type": "string",
+        "required": false,
+        "description": "The brand this surface opens in when nobody has chosen one — from `defaultColorModeForPath`. A chosen mode always outranks it. Passed in rather than derived here so this package stays framework-agnostic: the hub reads the path with `usePathname` and hands the answer down, which is also what lets the brand follow a client-side navigation from the website into a portal, where the inline `<head>` script never runs again."
       }
     ]
   },
@@ -2788,6 +2986,70 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "CommentThreadProps": {
+    "source": "packages/design-system/components/data-display/comment-thread.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "comments",
+        "type": "ThreadComment[]",
+        "required": true,
+        "description": "Remarks, oldest first — a thread is read downward, unlike a log."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Accessible name for the thread. Required."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "closedReason",
+        "type": "string",
+        "required": false,
+        "description": "Why no further remarks can be added. Present means the composer is replaced by this sentence — a closed thread that simply hides its box leaves the reader wondering whether the page is broken."
+      },
+      {
+        "name": "composerLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Add a remark\"",
+        "description": ""
+      },
+      {
+        "name": "emptyText",
+        "type": "string",
+        "required": false,
+        "default": "\"No remarks on this application yet.\"",
+        "description": ""
+      },
+      {
+        "name": "maxLength",
+        "type": "number",
+        "required": false,
+        "default": "1000",
+        "description": "The most characters a remark may hold. The count is shown from 80% onward, not from the first keystroke."
+      },
+      {
+        "name": "onSubmit",
+        "type": "(text: string) => void",
+        "required": false,
+        "description": "Called with the trimmed text when a remark is submitted."
+      },
+      {
+        "name": "submitLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Post remark\"",
+        "description": ""
+      }
+    ]
+  },
   "ConsentLineProps": {
     "source": "packages/design-system/components/auth/auth-parts.tsx",
     "inheritsNative": false,
@@ -2869,6 +3131,97 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "true",
         "description": "Stick to the viewport as the reader scrolls the sections."
+      }
+    ]
+  },
+  "CookieConsentProps": {
+    "source": "packages/design-system/components/feedback/cookie-consent.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "accepted",
+        "type": "string[]",
+        "required": true,
+        "description": "The ids the reader has already accepted."
+      },
+      {
+        "name": "categories",
+        "type": "CookieCategory[]",
+        "required": true,
+        "description": "The categories this site actually sets. If the only entry is a required one, do not render this component at all — see the note on the component."
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": true,
+        "description": "The paragraph above the choices, in the department's words. Required."
+      },
+      {
+        "name": "onDecide",
+        "type": "(accepted: string[]) => void",
+        "required": true,
+        "description": "Called with the accepted ids. Required categories are always included."
+      },
+      {
+        "name": "policyHref",
+        "type": "string",
+        "required": true,
+        "description": "Address of the full cookie or privacy statement. Required."
+      },
+      {
+        "name": "acceptAllLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Accept all\"",
+        "description": ""
+      },
+      {
+        "name": "acknowledgeLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Continue\"",
+        "description": "Shown instead of the choices when EVERY category is required — there is nothing to consent to, so the reader acknowledges a notice rather than being offered a decision they do not have."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "placement",
+        "type": "\"fixed\" | \"inline\"",
+        "required": false,
+        "default": "\"fixed\"",
+        "description": "`\"fixed\"` pins it to the foot of the viewport, which is what a real banner does; `\"inline\"` renders it in the flow, which is what a specimen or a settings page wants. Fixed marks itself as a corner occupant so the accessibility widget and the chat launcher lift clear of it."
+      },
+      {
+        "name": "policyLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Read the cookie statement\"",
+        "description": ""
+      },
+      {
+        "name": "rejectLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Reject optional cookies\"",
+        "description": ""
+      },
+      {
+        "name": "saveLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Save my choices\"",
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "default": "\"Cookies on this site\"",
+        "description": ""
       }
     ]
   },
@@ -3089,6 +3442,92 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "DateRangePickerProps": {
+    "source": "packages/design-system/components/forms/date-range-picker.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "The group's name — \"Period\", \"Sanction date\". Always visible."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: DateRange) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "DateRange",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false,
+        "description": "Shown under the group and announced. Overrides the component's own ordering message."
+      },
+      {
+        "name": "fromLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"From\"",
+        "description": ""
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "max",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "min",
+        "type": "string",
+        "required": false,
+        "description": "ISO bounds applied to both ends. A date outside them cannot be typed or chosen."
+      },
+      {
+        "name": "presets",
+        "type": "DateRangePreset[]",
+        "required": false,
+        "description": "Named spans offered above the fields. A dashboard's period filter is chosen from a preset far more often than it is typed."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "toLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"To\"",
+        "description": ""
+      }
+    ]
+  },
   "DeclarationCheckboxProps": {
     "source": "packages/design-system/components/forms/declaration-checkbox.tsx",
     "inheritsNative": false,
@@ -3263,6 +3702,53 @@ export const GENERATED_PROPS = {
         "type": "(id: string, password: string, extra?: Record<string, unknown>) => void",
         "required": false,
         "description": "Called when the \"Use\" button is clicked. When provided, replaces the global `demo:fill` CustomEvent dispatch — useful when DemoFab is co-located with the login form."
+      }
+    ]
+  },
+  "DescriptionListProps": {
+    "source": "packages/design-system/components/data-display/description-list.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "items",
+        "type": "DescriptionItem[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "columns",
+        "type": "1 | 2 | 3",
+        "required": false,
+        "default": "2",
+        "description": "Columns at the widest breakpoint. The grid steps down to one column below the estate's 768 breakpoint whatever this says, because two columns of label-and-value on a narrow screen puts four words on each line."
+      },
+      {
+        "name": "divided",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Draw a hairline under every row. Use it for a long single-column list."
+      },
+      {
+        "name": "emptyText",
+        "type": "string",
+        "required": false,
+        "default": "\"Not recorded\"",
+        "description": "What to show where nothing was recorded. It is real text, not a dash alone: a screen reader announces \"—\" as nothing at all, so a blank field and an unanswered one become indistinguishable."
+      },
+      {
+        "name": "layout",
+        "type": "\"stacked\" | \"inline\"",
+        "required": false,
+        "default": "\"stacked\"",
+        "description": "`stacked` puts the term above the value — the default, and the right choice for a grid of many short fields. `inline` puts the term in a fixed leading column, which reads better for a short single-column list."
+      },
+      {
+        "name": "size",
+        "type": "\"md\" | \"sm\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
       }
     ]
   },
@@ -3618,6 +4104,51 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "EventListProps": {
+    "source": "packages/design-system/components/data-display/event-list.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "events",
+        "type": "EventItem[]",
+        "required": true,
+        "description": "Events, newest first. The component does not sort — the order is the caller's claim."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Accessible name for the list. Required: \"Audit log\", \"Recent activity\"."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "emptyText",
+        "type": "string",
+        "required": false,
+        "default": "\"No activity recorded yet.\"",
+        "description": "What to say when there is nothing. An audit log with no entries is a real answer, not a broken panel."
+      },
+      {
+        "name": "grouping",
+        "type": "\"none\" | \"day\"",
+        "required": false,
+        "default": "\"none\"",
+        "description": "`\"day\"` puts a dated heading above each day's entries — the right shape for a long log. `\"none\"` prints the full stamp on every row."
+      },
+      {
+        "name": "unreadLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Unread\"",
+        "description": "Announced beside an entry the reader has not seen."
+      }
+    ]
+  },
   "FactStripProps": {
     "source": "packages/design-system/components/data-display/fact-strip.tsx",
     "inheritsNative": true,
@@ -3640,6 +4171,51 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "Pull the card up so it straddles the band above it — the treatment used under a page hero. Requires the band above to have room; on its own in a plain section, leave it off."
+      }
+    ]
+  },
+  "FeedbackWidgetProps": {
+    "source": "packages/design-system/components/feedback/feedback-widget.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "onSubmit",
+        "type": "(submission: FeedbackSubmission) => void | Promise<void>",
+        "required": true,
+        "description": "Called when the reader sends. Returning a promise keeps the button in its sending state until it settles."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "helpHref",
+        "type": "string",
+        "required": false,
+        "description": "Where a citizen should go if they wanted help rather than to leave a comment. **Always supply it.** A feedback box is where grievances land when the page offers nowhere else, and an unanswered grievance is worse than no box at all."
+      },
+      {
+        "name": "helpLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Report a problem or contact the department\"",
+        "description": ""
+      },
+      {
+        "name": "question",
+        "type": "string",
+        "required": false,
+        "default": "\"Was this page useful?\"",
+        "description": "The question. Keep it about THIS page — a citizen can answer \"did this page tell you what you came for\" and cannot answer \"how are we doing\"."
+      },
+      {
+        "name": "thanks",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"Thank you. Your response has been recorded.\"",
+        "description": "Shown after sending. Say what happens next, or say that nothing does — \"We read every response\" is a promise; \"This is not a way to contact the department\" is the truth a citizen needs before they type a grievance here."
       }
     ]
   },
@@ -3731,6 +4307,87 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"required\"",
         "description": "How this form marks mandatory and optional fields."
+      }
+    ]
+  },
+  "FigureProps": {
+    "source": "packages/design-system/components/data-display/figure.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The image itself. Pass a `next/image` element from the app, or a plain `<img>` — this component does not import an image library, so it stays usable in Storybook, in the docs site and in a portal alike."
+      },
+      {
+        "name": "bordered",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Round the frame and draw a hairline around it."
+      },
+      {
+        "name": "caption",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The visible caption. It is a real `<figcaption>`, so assistive technology associates it with the image rather than reading it as the next paragraph."
+      },
+      {
+        "name": "credit",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Where the picture came from — a directorate, a photographer, a scheme report. Rendered under the caption in small print. A departmental photograph with no attribution is a photograph nobody can check, and on a government page the source is part of the content."
+      },
+      {
+        "name": "fit",
+        "type": "\"cover\" | \"contain\"",
+        "required": false,
+        "default": "\"cover\"",
+        "description": "How the image sits inside a locked ratio. `cover` crops to fill — correct for a photograph. `contain` fits the whole image and leaves ground around it — correct for a logo, a certificate or a scanned document, where a crop would remove the thing being shown."
+      },
+      {
+        "name": "ratio",
+        "type": "FigureRatio = \"auto\" | \"square\" | \"video\" | \"photo\" | \"portrait\"",
+        "required": false,
+        "default": "\"auto\"",
+        "description": "Lock the frame to a ratio and crop the image to fill it. `auto` (default) lets the image set its own height, which is right for a diagram or a screenshot where cropping would remove information."
+      }
+    ]
+  },
+  "FileListProps": {
+    "source": "packages/design-system/components/data-display/file-list.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "files",
+        "type": "FileItem[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the list — \"Documents attached to this application\". Required: a bare list of filenames tells a screen-reader user how many of what."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRemove",
+        "type": "(id: string) => void",
+        "required": false,
+        "description": "Offered on every row when given. Omit for a read-only list."
+      },
+      {
+        "name": "onRetry",
+        "type": "(id: string) => void",
+        "required": false,
+        "description": "Offered on failed rows when given."
       }
     ]
   },
@@ -5160,6 +5817,67 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "InlineEditProps": {
+    "source": "packages/design-system/components/forms/inline-edit.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "What the value is. Always visible — a value with no label is a number on a page."
+      },
+      {
+        "name": "onSave",
+        "type": "(value: string) => void | Promise<void>",
+        "required": true,
+        "description": "Called with the trimmed text when the reader commits. Return a promise and the control stays busy until it settles; reject and the reader keeps what they typed."
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "description": "The stored value. The component never changes this itself."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "emptyText",
+        "type": "string",
+        "required": false,
+        "default": "\"Not recorded\"",
+        "description": "What to show when the value is empty."
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "required": false,
+        "description": "One line under the field while editing."
+      },
+      {
+        "name": "maxLength",
+        "type": "number",
+        "required": false,
+        "description": "Longest permitted value."
+      },
+      {
+        "name": "readOnlyReason",
+        "type": "string",
+        "required": false,
+        "description": "The field is present but cannot be edited — a decided record, say."
+      }
+    ]
+  },
   "InputProps": {
     "source": "packages/design-system/components/forms/input.tsx",
     "inheritsNative": true,
@@ -5286,6 +6004,44 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "description": "Appends a required marker (`*`) after the text."
+      }
+    ]
+  },
+  "LanguageSwitcherProps": {
+    "source": "packages/design-system/components/navigation/language-switcher.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "current",
+        "type": "string",
+        "required": true,
+        "description": "The BCP-47 tag of the language currently being read."
+      },
+      {
+        "name": "languages",
+        "type": "LanguageOption[]",
+        "required": true,
+        "description": "The languages this page is published in, in the order they are offered."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "currentLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Current language\"",
+        "description": "Announced beside the language being read, for a reader who cannot see that it is not a link."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "\"Language\"",
+        "description": "The accessible name of the group. Written in the CURRENT language, because it names the control rather than any one option."
       }
     ]
   },
@@ -5538,6 +6294,113 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"inline\"",
         "description": ""
+      }
+    ]
+  },
+  "ListGroupProps": {
+    "source": "packages/design-system/components/data-display/list-group.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The rows. Use `ListRow`; anything else must render an `<li>` itself."
+      },
+      {
+        "name": "aria-label",
+        "type": "string",
+        "required": false,
+        "description": "The list's accessible name. Required when the list is not already under a heading that names it — a bare list of rows announced as \"list, 12 items\" tells a screen-reader user how many of what."
+      },
+      {
+        "name": "bordered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Border and radius around the whole list, making it a panel."
+      },
+      {
+        "name": "divided",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Hairline between rows."
+      },
+      {
+        "name": "size",
+        "type": "\"md\" | \"sm\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      }
+    ]
+  },
+  "ListRowProps": {
+    "source": "packages/design-system/components/data-display/list-group.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The row's own line — the thing the reader is looking for."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One or two lines under the title."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Present but not choosable. Keeps `aria-disabled` rather than removing the row."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Small print above the title — a reference number, a date, a category."
+      },
+      {
+        "name": "href",
+        "type": "string",
+        "required": false,
+        "description": "Makes the whole row a link. A row is a link when it goes somewhere and a button when it does something; it is never both, and a row that is neither stays plain text rather than becoming a `div` with a click handler."
+      },
+      {
+        "name": "leading",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Icon, avatar or organisation mark before the text. Decorative."
+      },
+      {
+        "name": "onClick",
+        "type": "() => void",
+        "required": false,
+        "description": "Makes the whole row a button. Ignored when `href` is set."
+      },
+      {
+        "name": "selected",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks the row as the current one. Sets `aria-current` on a link."
+      },
+      {
+        "name": "trailing",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Status, count or action at the end of the row."
       }
     ]
   },
@@ -5860,6 +6723,82 @@ export const GENERATED_PROPS = {
         "type": "NavOverview",
         "required": false,
         "description": "The parent entry's own page, rendered as a closing row."
+      }
+    ]
+  },
+  "MenuProps": {
+    "source": "packages/design-system/components/actions/menu.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactElement",
+        "required": true,
+        "description": "The trigger. A `<button>` or a DS component that forwards its ref."
+      },
+      {
+        "name": "items",
+        "type": "MenuEntry[]",
+        "required": true,
+        "description": "The items, in the order they are offered."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "The menu's accessible name, announced when focus enters it. Required for the same reason `Popover`'s is: an unnamed menu tells a screen-reader user nothing about what has just opened."
+      },
+      {
+        "name": "onSelect",
+        "type": "(id: string) => void",
+        "required": true,
+        "description": "Called with the chosen item's `id`. The menu closes and focus returns to the trigger."
+      },
+      {
+        "name": "align",
+        "type": "AnchorAlign = \"start\" | \"center\" | \"end\"",
+        "required": false,
+        "default": "\"end\"",
+        "description": "Cross-axis alignment."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Prevent opening without unmounting the trigger."
+      },
+      {
+        "name": "onOpenChange",
+        "type": "(open: boolean) => void",
+        "required": false,
+        "description": "Called on every open and close."
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "required": false,
+        "description": "Controlled open state. Pair with `onOpenChange`."
+      },
+      {
+        "name": "side",
+        "type": "AnchorSide = \"top\" | \"bottom\" | \"left\" | \"right\"",
+        "required": false,
+        "default": "\"bottom\"",
+        "description": "Preferred side. Flips automatically when there is no room."
+      },
+      {
+        "name": "sideOffset",
+        "type": "number",
+        "required": false,
+        "default": "4",
+        "description": "Gap between the trigger and the menu, in px."
       }
     ]
   },
@@ -6238,6 +7177,165 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "NotificationCentreProps": {
+    "source": "packages/design-system/components/data-display/notification-centre.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "notifications",
+        "type": "EventItem[]",
+        "required": true,
+        "description": "Notifications, newest first. The same shape every other event surface uses."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "emptyText",
+        "type": "string",
+        "required": false,
+        "default": "\"Nothing new. You are up to date.\"",
+        "description": ""
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "\"Notifications\"",
+        "description": "The panel's heading, and its accessible name."
+      },
+      {
+        "name": "markAllLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Mark all as read\"",
+        "description": ""
+      },
+      {
+        "name": "onMarkAllRead",
+        "type": "() => void",
+        "required": false,
+        "description": "Offered only when something is unread."
+      }
+    ]
+  },
+  "NumberInputProps": {
+    "source": "packages/design-system/components/forms/number-input.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Always visible. A number field with only a placeholder is a guess."
+      },
+      {
+        "name": "onValueChange",
+        "type": "(value: number | null) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "number | null",
+        "required": true,
+        "description": "The value, or `null` when the field is empty. Empty is not zero."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false,
+        "description": "Shown under the field, and announced."
+      },
+      {
+        "name": "hideSteppers",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Hide the increment and decrement buttons."
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Sets the error state without a message, so spreading FormField's object degrades rather than breaks."
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "min",
+        "type": "number",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "precision",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Decimal places the value is held and shown to."
+      },
+      {
+        "name": "prefix",
+        "type": "string",
+        "required": false,
+        "description": "Rendered inside the field before the number — \"₹\". Decorative; the label carries the meaning."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "step",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": "How much the steppers and the arrow keys move."
+      },
+      {
+        "name": "suffix",
+        "type": "string",
+        "required": false,
+        "description": "Rendered inside the field after the number — \"%\", \"km\". Decorative."
+      }
+    ]
+  },
   "OrgLogoProps": {
     "source": "packages/design-system/components/brand/org-logo.tsx",
     "inheritsNative": true,
@@ -6437,6 +7535,124 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "OverviewScreenProps": {
+    "source": "packages/design-system/components/templates/overview-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "The page's `<h1>`. The handoff greets the reader — *\"Good afternoon, harijan\"*. That is the caller's string, not this template's: a greeting is time- and name-dependent, and a template that composed one would be guessing at both."
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "filters",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Filter controls — the period selector, the state picker."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": "Heading level for the page title. Leave at 1: a portal screen has exactly one `<h1>` and this is it. Drop to 2 when the template is rendered INSIDE a page that already has one — a documentation specimen, or a screen body embedded in another screen. Same contract as `PortalLoginTemplate.headingLevel`, and the reason it exists: measuring a documentation page found two `<h1>`s, because the specimen is a live template rather than a picture of one."
+      },
+      {
+        "name": "kpis",
+        "type": "(MetricCardProps & { key?: React.Key })[]",
+        "required": false,
+        "description": "The headline figures. Four is the drawn count and a good ceiling. Passed as data rather than nodes so `KpiRow` can hold the row's shape while they arrive — its `loading` is a **count**, not a boolean, precisely so a dashboard does not move everything below it when the figures land."
+      },
+      {
+        "name": "kpisLoading",
+        "type": "number",
+        "required": false,
+        "description": "How many figures are still coming. Holds the row's shape."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "\"Last updated 14 August 2026 at 1:34 pm\"."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "panels",
+        "type": "React.ReactNode[]",
+        "required": false,
+        "description": "Cards, in reading order: how it is going, then who I am, then what moved. Pass `ChartCard`s — each owns its own loading, empty, error, retry and provenance, so this template does not second-guess them. Two per row above 1024px."
+      },
+      {
+        "name": "recent",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The \"Recent …\" table or list, full width under the panels."
+      }
+    ]
+  },
   "PageHeaderProps": {
     "source": "packages/design-system/components/layout/page-header.tsx",
     "inheritsNative": true,
@@ -6459,6 +7675,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "1",
         "description": "Heading level. Leave at 1: a portal page has exactly one `<h1>` and this is it. Drop to 2 only when this sits inside a page that already has one."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A short uppercase kicker above the title — the scheme, the module, the section this page sits in. It is not a heading and carries no level: it qualifies the title rather than competing with it."
       },
       {
         "name": "headingId",
@@ -6889,6 +8111,96 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "PopoverProps": {
+    "source": "packages/design-system/components/feedback/popover.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactElement",
+        "required": true,
+        "description": "The trigger. Must be a single element that can hold a ref and an `onClick` — a `<button>` or a DS component that forwards its ref. A non-focusable trigger makes the panel unreachable by keyboard."
+      },
+      {
+        "name": "content",
+        "type": "React.ReactNode | ((api: PopoverApi) => React.ReactNode)",
+        "required": true,
+        "description": "The panel's contents. Pass a function to receive `close`, which is what a panel with its own confirm or cancel button needs."
+      },
+      {
+        "name": "align",
+        "type": "AnchorAlign = \"start\" | \"center\" | \"end\"",
+        "required": false,
+        "default": "\"start\"",
+        "description": "Cross-axis alignment. `start` by default, not `center`: a panel whose left edge lines up with its trigger reads as belonging to it."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "defaultOpen",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Initial open state when uncontrolled."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Prevent opening without unmounting the trigger."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "The panel's accessible name when there is no visible `title`. One of the two is required: a dialog with no name is announced as \"dialog\" and tells a screen-reader user nothing about what has just opened."
+      },
+      {
+        "name": "matchTriggerWidth",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Constrain the panel's width to the trigger's. Use it for a picker that belongs to a field; leave it off for a panel of arbitrary content."
+      },
+      {
+        "name": "onOpenChange",
+        "type": "(open: boolean) => void",
+        "required": false,
+        "description": "Called on every open and close, in both controlled and uncontrolled use."
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "required": false,
+        "description": "Controlled open state. Pair with `onOpenChange`."
+      },
+      {
+        "name": "side",
+        "type": "AnchorSide = \"top\" | \"bottom\" | \"left\" | \"right\"",
+        "required": false,
+        "default": "\"bottom\"",
+        "description": "Preferred side. Flips automatically when there is no room."
+      },
+      {
+        "name": "sideOffset",
+        "type": "number",
+        "required": false,
+        "default": "8",
+        "description": "Gap between the trigger and the panel, in px."
+      },
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A visible heading at the top of the panel. When given it becomes the panel's accessible name through `aria-labelledby`, which is better than an invisible one: the name a screen reader announces is then the same string every other reader can see, and the two cannot drift apart. Give a title to any panel holding more than a sentence. Omit it for a short passage of guidance, where a heading would be longer than the content."
+      }
+    ]
+  },
   "PortalCardProps": {
     "source": "packages/design-system/components/navigation/portal-card.tsx",
     "inheritsNative": true,
@@ -7168,6 +8480,100 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "Force the active role, overriding both the URL and `config.defaultRoleId`. For a caller that already knows who is arriving — a route that only officers reach, say. Leave it unset to let the URL decide."
+      }
+    ]
+  },
+  "PortalPageProps": {
+    "source": "packages/design-system/components/templates/portal-page.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The screen. One Tier-B template."
+      },
+      {
+        "name": "header",
+        "type": "React.ReactNode | ((nav: PortalNavState) => React.ReactNode)",
+        "required": true,
+        "description": "The masthead. Pass `<SiteHeader variant=\"portal\" … />`. Pass a FUNCTION to let it drive the rail: it receives {@link PortalNavState} and should wire `navExpanded={nav.open}` and `onToggleNav={nav.toggle}`. A plain node still works for a masthead with no menu button."
+      },
+      {
+        "name": "portal",
+        "type": "string",
+        "required": true,
+        "description": "The portal's slug. Sets `data-portal`, which is how the estate re-binds a portal's palette — see the contract at the top of `apps/hub/src/app/globals.css`."
+      },
+      {
+        "name": "role",
+        "type": "PortalRole = \"public\" | \"citizen\" | \"organisation\" | \"officer\" | \"admin\"",
+        "required": true,
+        "description": "The viewer's role. Filters the rail and is published as `data-role`."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "defaultCollapsed",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Start with the rail collapsed to its 88px icon rail. **Two widths exist and only two.** The handoff draws 300, 88, 268, 260 and 280 for one page type; only the first two are decisions and the other three are drift, all inside SHRESHTA. See `docs/audit/figma-handoff-defects-2026-09-06.md` §2.1."
+      },
+      {
+        "name": "footer",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A slim footer under the body row."
+      },
+      {
+        "name": "identity",
+        "type": "SidebarNavIdentity",
+        "required": false,
+        "description": "The organisation block at the top of the rail."
+      },
+      {
+        "name": "mainId",
+        "type": "string",
+        "required": false,
+        "default": "\"main\"",
+        "description": "`id` for the `<main>`, and the skip link's target."
+      },
+      {
+        "name": "nav",
+        "type": "PortalNavGroup[]",
+        "required": false,
+        "description": "The rail's groups, before role filtering. Omit for a portal with no rail."
+      },
+      {
+        "name": "onSidebarOpenChange",
+        "type": "(open: boolean) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "pathname",
+        "type": "string",
+        "required": false,
+        "default": "\"\"",
+        "description": "The current path, for the rail's active state."
+      },
+      {
+        "name": "pending",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Render a skeleton instead of `children`, while the app hydrates."
+      },
+      {
+        "name": "sidebarOpen",
+        "type": "boolean",
+        "required": false,
+        "description": "Whether the mobile navigation drawer is open. **Controlled when you pass it, and you almost always should**: the masthead carries the menu button, the masthead is a slot, and a drawer the header cannot open is a drawer a citizen on a phone cannot reach. Pass the same state to `SiteHeader`'s `navExpanded` / `onToggleNav` and to this. Left uncontrolled it still works — the rail's own controls drive it — which is what a story or a specimen wants."
       }
     ]
   },
@@ -7572,6 +8978,104 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "RangeSliderProps": {
+    "source": "packages/design-system/components/forms/slider.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the pair — \"Grant amount\". Each thumb takes its own name from this plus `fromLabel` / `toLabel`, so a screen reader says \"Grant amount, minimum\" rather than \"slider\" twice."
+      },
+      {
+        "name": "onValueChange",
+        "type": "(value: [number, number]) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "[number, number]",
+        "required": true,
+        "description": "Controlled `[from, to]`. The component keeps them ordered."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "formatValue",
+        "type": "(value: number) => string",
+        "required": false,
+        "description": "How a value is written out, for the readout and for the thumb's spoken value. Pass one whenever the number has a unit — \"₹ 4,50,000\" and \"450000\" are not the same information."
+      },
+      {
+        "name": "fromLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"minimum\"",
+        "description": ""
+      },
+      {
+        "name": "marks",
+        "type": "SliderMark[]",
+        "required": false,
+        "description": "Ticks under the track. Keep them few — a mark every step turns the track into a ruler nobody reads. Three or four is usually the whole story."
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "default": "100",
+        "description": ""
+      },
+      {
+        "name": "min",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": ""
+      },
+      {
+        "name": "showValue",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Show the current range beside the track."
+      },
+      {
+        "name": "size",
+        "type": "\"md\" | \"sm\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "step",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "toLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"maximum\"",
+        "description": ""
+      }
+    ]
+  },
   "RankedBarListProps": {
     "source": "packages/design-system/components/data-display/charts/ranked-bar-list.tsx",
     "inheritsNative": false,
@@ -7668,6 +9172,130 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "formatIndian",
         "description": ""
+      }
+    ]
+  },
+  "RecordScreenProps": {
+    "source": "packages/design-system/components/templates/record-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "tabs",
+        "type": "RecordTab[]",
+        "required": true,
+        "description": "The tabs. Keep a tab whose content is empty — **show its empty state**. Removing it moves every tab to its right and breaks a link someone sent."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "The record's name, as the register holds it."
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Actions on the record. Omit the ones this role may not perform."
+      },
+      {
+        "name": "activeTab",
+        "type": "string",
+        "required": false,
+        "description": "The open tab's id. Drive it from the URL so a tab can be linked to."
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "breadcrumb",
+        "type": "{ label: string; href?: string }[]",
+        "required": false,
+        "description": "Where this record sits. Omit only at the top of a section."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "facts",
+        "type": "RecordFact[]",
+        "required": false,
+        "description": "The headline facts. Four to six; beyond that it is a description list."
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": "Heading level for the page title. Leave at 1: a portal screen has exactly one `<h1>` and this is it. Drop to 2 when the template is rendered INSIDE a page that already has one — a documentation specimen, or a screen body embedded in another screen. Same contract as `PortalLoginTemplate.headingLevel`, and the reason it exists: measuring a documentation page found two `<h1>`s, because the specimen is a live template rather than a picture of one."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onTabChange",
+        "type": "(id: string) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "status",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A status `Badge`, an SLA indicator — whatever states where the record is."
       }
     ]
   },
@@ -7979,6 +9607,105 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": ""
+      }
+    ]
+  },
+  "ScheduleGridProps": {
+    "source": "packages/design-system/components/data-display/schedule-grid.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "caption",
+        "type": "string",
+        "required": true,
+        "description": "The table's caption. Required, and visible — a schedule with no title is a grid of words."
+      },
+      {
+        "name": "columns",
+        "type": "ScheduleAxis[]",
+        "required": true,
+        "description": "The columns, left to right — usually days."
+      },
+      {
+        "name": "entries",
+        "type": "ScheduleEntry[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "rows",
+        "type": "ScheduleAxis[]",
+        "required": true,
+        "description": "The rows, top to bottom — usually time slots."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "emptyText",
+        "type": "string",
+        "required": false,
+        "default": "\"Nothing is scheduled for this period.\"",
+        "description": ""
+      }
+    ]
+  },
+  "ScreenBodyProps": {
+    "source": "packages/design-system/components/templates/screen-body.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The populated screen. Rendered only at `ready`."
+      },
+      {
+        "name": "status",
+        "type": "ScreenStatus = \"idle\" | \"loading\" | \"error\" | \"empty\" | \"filtered\" | \"ready\"",
+        "required": true,
+        "description": "The one resolved status. See {@link resolveScreenState }."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": "Words for every state. Defaults to the estate's; pass overrides per portal."
+      },
+      {
+        "name": "emptyAction",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "An action offered from the `empty` state — \"Add the first record\"."
+      },
+      {
+        "name": "onClearFilters",
+        "type": "() => void",
+        "required": false,
+        "description": "Called when the reader clears their filters, from the `filtered` state."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Called when the reader presses **Try again**. Omit and no retry is offered."
+      },
+      {
+        "name": "skeleton",
+        "type": "SkeletonShape = \"table\" | \"cards\" | \"form\" | \"detail\"",
+        "required": false,
+        "default": "\"table\"",
+        "description": "What the skeleton looks like. It must be **the shape of the result** — a spinner in a void tells the reader nothing about what is coming, and a skeleton of the wrong shape moves the page when the data lands."
       }
     ]
   },
@@ -8436,6 +10163,62 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "description": "Show the rail's own collapse control: a 48px row at the top, rendered ONLY when there is no `identity`. The portal masthead's toggle is where the rail is collapsed (`SiteHeader.onToggleNav`); a control beside the brand competed with the name and had no room on SAMBAL, so the identity never hosts one. Pass this only in a shell with neither a masthead toggle nor an identity. Requires `onCollapsedChange`."
+      }
+    ]
+  },
+  "SignaturePadProps": {
+    "source": "packages/design-system/components/forms/signature-pad.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "declaration",
+        "type": "string",
+        "required": true,
+        "description": "The declaration the signature attests to, in the department's words. It is REQUIRED, because a signature with no stated declaration attests to nothing and the design system must not invent the wording."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Whose signature this is — \"Signature of the applicant\". Required."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: SignatureValue | null) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "SignatureValue | null",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "clearLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Clear\"",
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "typedLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Type your full name instead\"",
+        "description": ""
       }
     ]
   },
@@ -9031,6 +10814,96 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "SliderProps": {
+    "source": "packages/design-system/components/forms/slider.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "onValueChange",
+        "type": "(value: number) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "number",
+        "required": true,
+        "description": "Controlled value."
+      },
+      {
+        "name": "aria-label",
+        "type": "string",
+        "required": false,
+        "description": "The control's accessible name. Required unless `aria-labelledby` points at a visible label — a slider announced as \"slider, 40\" says nothing about what is at 40."
+      },
+      {
+        "name": "aria-labelledby",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "formatValue",
+        "type": "(value: number) => string",
+        "required": false,
+        "description": "How a value is written out, for the readout and for the thumb's spoken value. Pass one whenever the number has a unit — \"₹ 4,50,000\" and \"450000\" are not the same information."
+      },
+      {
+        "name": "marks",
+        "type": "SliderMark[]",
+        "required": false,
+        "description": "Ticks under the track. Keep them few — a mark every step turns the track into a ruler nobody reads. Three or four is usually the whole story."
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "default": "100",
+        "description": ""
+      },
+      {
+        "name": "min",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": ""
+      },
+      {
+        "name": "showValue",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Show the current value beside the track."
+      },
+      {
+        "name": "size",
+        "type": "\"md\" | \"sm\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "step",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": ""
+      }
+    ]
+  },
   "SmallMultiplesProps": {
     "source": "packages/design-system/components/data-display/charts/small-multiples.tsx",
     "inheritsNative": false,
@@ -9181,6 +11054,69 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "SplitButtonProps": {
+    "source": "packages/design-system/components/actions/split-button.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The default action's label — the one most people want."
+      },
+      {
+        "name": "items",
+        "type": "MenuEntry[]",
+        "required": true,
+        "description": "The alternatives, offered from the attached trigger."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the pair and the menu — \"Approve this application\". Required for the same reason `Menu`'s and `ButtonGroup`'s are: an unnamed group announces four loose buttons, and an unnamed menu says nothing about what has opened."
+      },
+      {
+        "name": "onClick",
+        "type": "() => void",
+        "required": true,
+        "description": "Called when the default action is chosen."
+      },
+      {
+        "name": "onSelect",
+        "type": "(id: string) => void",
+        "required": true,
+        "description": "Called with the chosen alternative's `id`."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "size",
+        "type": "ButtonProps[\"size\"]",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "variant",
+        "type": "ButtonProps[\"variant\"]",
+        "required": false,
+        "default": "\"primary\"",
+        "description": ""
+      }
+    ]
+  },
   "StepperProps": {
     "source": "packages/design-system/components/feedback/stepper.tsx",
     "inheritsNative": true,
@@ -9189,13 +11125,13 @@ export const GENERATED_PROPS = {
         "name": "current",
         "type": "number",
         "required": true,
-        "description": "0-based index of the active step. Steps before it render as completed."
+        "description": "0-based index of the active stage. Earlier stages default to complete."
       },
       {
         "name": "steps",
         "type": "StepperStep[]",
         "required": true,
-        "description": "The ordered steps."
+        "description": "The ordered stages."
       },
       {
         "name": "ariaLabel",
@@ -9203,6 +11139,40 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"Progress\"",
         "description": "Accessible name for the progress list."
+      },
+      {
+        "name": "collapse",
+        "type": "\"auto\" | \"never\"",
+        "required": false,
+        "default": "\"auto\"",
+        "description": "Whether the row may collapse to the compact bar — a counter, the current stage's name and a row of dots — when it is too narrow to draw every label. `never` keeps the full row at every width."
+      },
+      {
+        "name": "labelPlacement",
+        "type": "\"bottom\" | \"right\"",
+        "required": false,
+        "default": "\"bottom\"",
+        "description": "Label beside the marker rather than beneath it. Horizontal only."
+      },
+      {
+        "name": "onStepSelect",
+        "type": "(index: number) => void",
+        "required": false,
+        "description": "Opt in to letting the applicant return to a stage. Only stages that are complete or in error become buttons; upcoming and disabled stages stay static text, so a control is never drawn that cannot be used."
+      },
+      {
+        "name": "orientation",
+        "type": "\"horizontal\" | \"vertical\"",
+        "required": false,
+        "default": "\"horizontal\"",
+        "description": "Stack the stages down the page instead of across it."
+      },
+      {
+        "name": "size",
+        "type": "\"md\" | \"sm\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "`sm` is UX4G's Compact size — for side panels and dense flows."
       }
     ]
   },
@@ -9516,6 +11486,142 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "TimePickerProps": {
+    "source": "packages/design-system/components/forms/time-picker.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Always visible. A time field with only a placeholder is a guess."
+      },
+      {
+        "name": "onChange",
+        "type": "(hhmm: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "description": "Canonical 24-hour `HH:MM`. Empty string when unset."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false,
+        "description": "Shown under the field, and announced."
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Sets the error state without a message, so spreading `FormField`'s render-prop object onto this component degrades rather than breaks. A message is still better — prefer `error`."
+      },
+      {
+        "name": "max",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "min",
+        "type": "string",
+        "required": false,
+        "description": "Canonical `HH:MM` bounds. A time outside them cannot be chosen from the list."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "step",
+        "type": "number",
+        "required": false,
+        "default": "30",
+        "description": "Minutes between the times offered in the list. The field itself still accepts any minute — the step governs the shortcut, not the value."
+      }
+    ]
+  },
+  "TimeSlotProps": {
+    "source": "packages/design-system/components/forms/time-slot.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "groups",
+        "type": "TimeSlotGroup[]",
+        "required": true,
+        "description": "The windows on offer, in the order they occur."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the whole set — \"Appointment time\". Required: a grid of times with no name tells a screen-reader user twenty numbers and not what they are for."
+      },
+      {
+        "name": "onChange",
+        "type": "(id: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string | null",
+        "required": true,
+        "description": "The chosen slot's `id`, or `null`."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false,
+        "description": "One line under the group name, where a rule applies to the whole set."
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": false,
+        "description": "The form field name, so the choice submits without JavaScript."
+      }
+    ]
+  },
   "ToggleProps": {
     "source": "packages/design-system/components/forms/toggle.tsx",
     "inheritsNative": true,
@@ -9606,6 +11712,137 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "TransferListProps": {
+    "source": "packages/design-system/components/data-display/transfer-list.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "items",
+        "type": "TransferItem[]",
+        "required": true,
+        "description": "Every item, on either side. The component splits them by `selectedIds`."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the pair as a whole — \"Surveyor mappings\". Required."
+      },
+      {
+        "name": "onChange",
+        "type": "(ids: string[]) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "selectedIds",
+        "type": "string[]",
+        "required": true,
+        "description": "The ids currently on the right."
+      },
+      {
+        "name": "availableLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Available\"",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "emptyAvailableText",
+        "type": "string",
+        "required": false,
+        "default": "\"Nothing left to add.\"",
+        "description": ""
+      },
+      {
+        "name": "emptySelectedText",
+        "type": "string",
+        "required": false,
+        "default": "\"Nothing selected yet.\"",
+        "description": ""
+      },
+      {
+        "name": "selectedLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Selected\"",
+        "description": ""
+      }
+    ]
+  },
+  "TreeProps": {
+    "source": "packages/design-system/components/data-display/tree.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Accessible name for the tree. Required."
+      },
+      {
+        "name": "nodes",
+        "type": "TreeNode[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "defaultExpandedIds",
+        "type": "string[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "emptyText",
+        "type": "string",
+        "required": false,
+        "default": "\"Nothing to show.\"",
+        "description": ""
+      },
+      {
+        "name": "expandedIds",
+        "type": "string[]",
+        "required": false,
+        "description": "Controlled expansion. Leave out and the tree manages its own."
+      },
+      {
+        "name": "onExpandedChange",
+        "type": "(ids: string[]) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onSelect",
+        "type": "(id: string) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "selectedId",
+        "type": "string",
+        "required": false,
+        "description": "The selected node's id."
+      }
+    ]
+  },
   "UX4GAccessibilityWidgetProps": {
     "source": "packages/design-system/components/utilities/ux4g-accessibility-widget.tsx",
     "inheritsNative": false,
@@ -9640,6 +11877,74 @@ export const GENERATED_PROPS = {
         "name": "date",
         "type": "React.ReactNode",
         "required": false,
+        "description": ""
+      }
+    ]
+  },
+  "VideoTileProps": {
+    "source": "packages/design-system/components/data-display/video-tile.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "What this camera or recording shows — \"Dormitory corridor\", \"Camp at Bankura\". Required."
+      },
+      {
+        "name": "alternativeHref",
+        "type": "string",
+        "required": false,
+        "description": "Address of a text alternative — a transcript, or the log the recording belongs to. Required by WCAG 1.2.1 for recorded material, and the component makes it a prop rather than an afterthought."
+      },
+      {
+        "name": "alternativeLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Transcript and log\"",
+        "description": ""
+      },
+      {
+        "name": "caption",
+        "type": "string",
+        "required": false,
+        "description": "A line under the tile — a location, a time, a warden's name."
+      },
+      {
+        "name": "captions",
+        "type": "{ src: string; srcLang: string; label: string }",
+        "required": false,
+        "description": "A captions file for a recording — WebVTT. Supply it wherever one exists; WCAG 1.2.2 requires captions on recorded speech, and a caption file is the only form of them a viewer can turn on."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "offlineReason",
+        "type": "string",
+        "required": false,
+        "description": "Why the tile is offline, in the department's words — \"The camera has not reported since 04:20 today.\" A black rectangle is not an answer."
+      },
+      {
+        "name": "poster",
+        "type": "string",
+        "required": false,
+        "description": "Still shown before playback starts."
+      },
+      {
+        "name": "src",
+        "type": "string",
+        "required": false,
+        "description": "The stream or file. Omitted for `connecting` and `offline`, where there is nothing to play."
+      },
+      {
+        "name": "state",
+        "type": "VideoTileState = \"live\" | \"recorded\" | \"connecting\" | \"offline\"",
+        "required": false,
+        "default": "\"recorded\"",
         "description": ""
       }
     ]
@@ -9750,6 +12055,340 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"Submit\"",
         "description": "Label for the final submit button."
+      }
+    ]
+  },
+  "WizardScreenProps": {
+    "source": "packages/design-system/components/templates/wizard-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The current step's fields. `FormSection`s."
+      },
+      {
+        "name": "current",
+        "type": "number",
+        "required": true,
+        "description": "0-based index of the step being filled. Owned by the parent form."
+      },
+      {
+        "name": "onBack",
+        "type": "() => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onNext",
+        "type": "() => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onSubmit",
+        "type": "() => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "steps",
+        "type": "StepperStep[]",
+        "required": true,
+        "description": "The steps. Three to seven is the drawn range — NAPDDR 3, SHRESHTA 6, AVYAY 7 — and `Stepper` collapses rather than overflowing beyond that."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "The scheme or application's name. Title Case."
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": "Words for every state. Override the two your register words differently."
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One line saying what the whole form is for."
+      },
+      {
+        "name": "draft",
+        "type": "WizardDraft",
+        "required": false,
+        "description": "A draft banner, where one is saved."
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false,
+        "description": "The validation summary, shown above the actions and focused on failure. A sentence, not a field list: `ErrorSummary` renders the per-field detail."
+      },
+      {
+        "name": "errorRef",
+        "type": "React.Ref<HTMLDivElement>",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": "Heading level for the page title. Leave at 1: a portal screen has exactly one `<h1>` and this is it. Drop to 2 when the template is rendered INSIDE a page that already has one — a documentation specimen, or a screen body embedded in another screen. Same contract as `PortalLoginTemplate.headingLevel`, and the reason it exists: measuring a documentation page found two `<h1>`s, because the specimen is a live template rather than a picture of one."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "nextLabel",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "notices",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Anything else the step must say before the fields — an auto-populate notice."
+      },
+      {
+        "name": "onCancel",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Retry, offered from the error state."
+      },
+      {
+        "name": "submitLabel",
+        "type": "string",
+        "required": false,
+        "description": ""
+      }
+    ]
+  },
+  "WorklistScreenProps": {
+    "source": "packages/design-system/components/templates/worklist-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "columns",
+        "type": "WorklistColumn<T>[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "getRowId",
+        "type": "(row: T) => string",
+        "required": true,
+        "description": "Stable id per row, for selection."
+      },
+      {
+        "name": "rows",
+        "type": "T[]",
+        "required": true,
+        "description": "**Every row that matches the current filters**, not one page of them. `DataTable` pages client-side, so it must hold the whole matching set. A server-paged list therefore does not belong here — give it every match, or page on the server and drive `DataTable` yourself."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "The page's `<h1>`. Title Case."
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Primary and secondary actions for the page, not for a row."
+      },
+      {
+        "name": "activeFilterCount",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "How many filters the reader has set. Drives the `filtered` empty state."
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "bulkActions",
+        "type": "BulkAction[]",
+        "required": false,
+        "description": "What can be done to a selection. Empty or omitted hides the bar."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": "Words for every state. Override the two your register words differently."
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "emptyAction",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Offered from the empty state — \"Add the first record\"."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Kicker over the title — the scheme, the module this list sits in."
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "filters",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Filter controls. Drop DS form controls straight in."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": "Heading level for the page title. Leave at 1: a portal screen has exactly one `<h1>` and this is it. Drop to 2 when the template is rendered INSIDE a page that already has one — a documentation specimen, or a screen body embedded in another screen. Same contract as `PortalLoginTemplate.headingLevel`, and the reason it exists: measuring a documentation page found two `<h1>`s, because the specimen is a live template rather than a picture of one."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The line under it — a count, a last-updated stamp."
+      },
+      {
+        "name": "noun",
+        "type": "string",
+        "required": false,
+        "default": "\"record\"",
+        "description": "What one row is called, for the selection bar."
+      },
+      {
+        "name": "onBulkAction",
+        "type": "(id: string) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onClearFilters",
+        "type": "() => void",
+        "required": false,
+        "description": "Clears them. Offered from the filtered-to-nothing state."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Retry, offered from the error state."
+      },
+      {
+        "name": "onSelectionChange",
+        "type": "(ids: string[]) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "pluralNoun",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "registerTotal",
+        "type": "number",
+        "required": false,
+        "description": "How large the register is **before** the reader's filters — used for the count line only, never for the pager. The pager always counts `rows`. Handing `DataTable` a bigger number than the array it holds is the \"one request, one answer\" defect in miniature: a total of 68 against 5 rows drew a pager offering seven pages, six of them empty, while the table showed five records. Found by rendering it."
+      },
+      {
+        "name": "rowActions",
+        "type": "(row: T) => React.ReactNode",
+        "required": false,
+        "description": "Row-level actions. Rendered in the last column and on the card."
+      },
+      {
+        "name": "selectedIds",
+        "type": "string[]",
+        "required": false,
+        "description": "Currently selected row ids. Omit to switch selection off entirely."
       }
     ]
   },

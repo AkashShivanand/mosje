@@ -1,0 +1,80 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  .ds-tree {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: var(--sa-padding-8);
+    list-style: none;
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background: var(--sa-bg-neutral-base);
+  }
+
+  .ds-tree__item {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    min-block-size: var(--sa-control-height-sm);
+    padding-inline-end: var(--sa-padding-8);
+    border-radius: var(--sa-shape-4);
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    cursor: pointer;
+  }
+
+  .ds-tree__item:hover:not(.is-disabled) {
+    background: var(--sa-bg-neutral-hover);
+  }
+
+  .ds-tree__item:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
+  }
+
+  /* Selected is marked by a leading rule as well as a fill: colour alone would
+     fail 1.4.1, and the rule survives forced-colors mode. */
+  .ds-tree__item.is-selected {
+    background: var(--sa-bg-neutral-selected);
+    box-shadow: inset var(--sa-control-selection-border-width) 0 0 0 var(--sa-border-neutral-selected);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .ds-tree__item.is-disabled {
+    color: var(--sa-text-neutral-disabled);
+    cursor: not-allowed;
+  }
+
+  .ds-tree__twist {
+    display: inline-flex;
+    inline-size: var(--sa-inline-20);
+    justify-content: center;
+    color: var(--sa-text-neutral-subtle);
+    flex-shrink: 0;
+  }
+
+  .ds-tree__label {
+    overflow-wrap: anywhere;
+  }
+
+  .ds-tree__meta {
+    margin-inline-start: auto;
+    padding-inline-start: var(--sa-padding-8);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-subtle);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .ds-tree__empty {
+    margin: 0;
+    padding: var(--sa-padding-24);
+    border: var(--sa-control-border-width) dashed var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+}

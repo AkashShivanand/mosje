@@ -1,34 +1,13 @@
 import * as React from "react";
 import { cn } from "@/lib/nhapoa/utils";
 import { CASE_STATUS_META, type CaseStatus } from "@/lib/nhapoa/store/types";
-import { Icon } from "@mosje/design-system";
+import { Icon,
+  PageHeader as DsPageHeader,
+  type PageHeaderProps,
+  Card,
+} from "@mosje/design-system";
 
 /* ----------------------------------------------------------------- Buttons */
-export function Button({
-  variant = "primary",
-  className,
-  ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: "primary" | "outline" | "ghost" | "danger" | "saffron";
-}) {
-  const variants: Record<string, string> = {
-    primary: "bg-navy text-white hover:bg-navy-800",
-    outline: "border border-navy/30 text-navy hover:bg-navy/5",
-    ghost: "text-ink-muted hover:bg-black/5",
-    danger: "border border-reject text-reject hover:bg-reject-bg",
-    saffron: "bg-saffron-600 text-white hover:bg-saffron-600/90",
-  };
-  return (
-    <button
-      className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-label-1 font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-navy/40 disabled:opacity-60",
-        variants[variant],
-        className,
-      )}
-      {...props}
-    />
-  );
-}
 
 /* ------------------------------------------------------------- StatusPill */
 const TONE_CLASSES: Record<string, string> = {
@@ -54,42 +33,21 @@ export function StatusPill({ status }: { status: CaseStatus }) {
 }
 
 /* ------------------------------------------------------------- PageHeader */
-export function PageHeader({
-  title,
-  subtitle,
-  action,
-  className,
-}: {
-  title: string;
-  subtitle?: string;
-  action?: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={cn("mb-6 flex items-start justify-between gap-4", className)}>
-      <div>
-        <h1 className="text-headline-1 text-ink">{title}</h1>
-        {subtitle && <p className="mt-1 text-body-2 text-ink-muted">{subtitle}</p>}
-      </div>
-      {action}
-    </div>
-  );
+/**
+ * The page's opening row — the design system's `PageHeader` with this portal's
+ * page rhythm.
+ *
+ * The heading block itself is the system's, so it receives the system's fixes:
+ * the type roles, the wrap-rather-than-truncate behaviour, the actions that fall
+ * below the title on a narrow viewport. What is this portal's is the space under
+ * it, which is why the wrapper exists at all — and why it does not carry the
+ * system's name.
+ */
+export function PortalPageHeader({ className, ...props }: PageHeaderProps) {
+  return <DsPageHeader {...props} className={cn("mb-6", className)} />;
 }
 
 /* ------------------------------------------------------------ SectionCard */
-export function Card({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className={cn("rounded-2xl border border-line bg-white shadow-card", className)}>
-      {children}
-    </div>
-  );
-}
 
 /* --------------------------------------------------------------- StatTile */
 export function StatTile({
@@ -141,43 +99,8 @@ export function SearchInput({
   );
 }
 
-/* --------------------------------------------------------------- DataTable */
-export function DataTable({
-  columns,
-  children,
-  className,
-}: {
-  columns: { key: string; label: string; className?: string }[];
-  children: React.ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={cn("overflow-x-auto rounded-2xl border border-line bg-white shadow-card", className)}>
-      <table className="w-full min-w-[640px] text-left text-body-2">
-        <thead>
-          <tr className="border-b border-line text-ink-muted">
-            {columns.map((c) => (
-              <th key={c.key} scope="col" className={cn("px-6 py-4 font-semibold", c.className)}>
-                {c.label}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-line">{children}</tbody>
-      </table>
-    </div>
-  );
-}
 
 /* -------------------------------------------------------------- EmptyState */
-export function EmptyState({ title, hint }: { title: string; hint?: string }) {
-  return (
-    <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-line bg-white/60 px-6 py-16 text-center">
-      <div className="text-title-3 text-ink">{title}</div>
-      {hint && <div className="mt-1 text-body-3 text-ink-hint">{hint}</div>}
-    </div>
-  );
-}
 
 /* ------------------------------------------------------------- Form atoms */
 export function Field({
@@ -238,99 +161,21 @@ export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   );
 }
 
-export function SectionTitle({ children }: { children: React.ReactNode }) {
+/**
+ * An uppercase kicker above a block of content.
+ *
+ * It is NOT the design system's `SectionTitle`, which is a section header with a
+ * title, an optional description and a place for actions. This renders the
+ * kicker alone, which is why it no longer carries that name — an import of
+ * `SectionTitle` in this portal used to resolve to either one, silently.
+ */
+export function SectionEyebrow({ children }: { children: React.ReactNode }) {
   return (
     <h2 className="mb-5 text-label-3 uppercase text-ink-hint">{children}</h2>
   );
 }
 
-/* ----------------------------------------------------------------- Stepper */
-export function Stepper({
-  steps,
-  current,
-}: {
-  steps: string[];
-  current: number; // 0-indexed active step
-}) {
-  return (
-    <nav aria-label="Form progress" className="flex items-start">
-      {steps.map((label, i) => {
-        const done = i < current;
-        const active = i === current;
-        return (
-          <React.Fragment key={label}>
-            <div className="flex min-w-0 flex-col items-center text-center" aria-current={active ? "step" : undefined}>
-              <div
-                aria-hidden="true"
-                className={cn(
-                  "flex h-9 w-9 items-center justify-center rounded-full text-label-1 font-semibold",
-                  done
-                    ? "bg-approve text-white"
-                    : active
-                      ? "border-2 border-navy text-navy"
-                      : "border border-line bg-white text-ink-hint",
-                )}
-              >
-                {done ? "✓" : i + 1}
-              </div>
-              <span
-                className={cn(
-                  "mt-2 max-w-[8rem] text-label-2",
-                  active ? "font-semibold text-navy" : done ? "text-ink" : "text-ink-hint",
-                )}
-              >
-                <span className="sr-only">Step {i + 1} of {steps.length}{active ? ", current" : done ? ", completed" : ""}: </span>
-                {label}
-              </span>
-            </div>
-            {i < steps.length - 1 && (
-              <div aria-hidden="true" className={cn("mt-4 h-0.5 flex-1", done ? "bg-approve" : "bg-line")} />
-            )}
-          </React.Fragment>
-        );
-      })}
-    </nav>
-  );
-}
-
 /* ---------------------------------------------------------------- Textarea */
-export function Textarea(props: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return (
-    <textarea
-      {...props}
-      className={cn(
-        "w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-body-2 text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15",
-        props.className,
-      )}
-    />
-  );
-}
 
 /* ---------------------------------------------------- Select (controlled) */
-export function Select({
-  options,
-  placeholder,
-  className,
-  ...props
-}: React.SelectHTMLAttributes<HTMLSelectElement> & {
-  options: readonly string[];
-  placeholder?: string;
-}) {
-  return (
-    <div className={cn("relative", className)}>
-      <select
-        {...props}
-        className="w-full appearance-none rounded-lg border border-line bg-white px-3.5 py-2.5 pr-9 text-body-2 text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
-      >
-        {placeholder && <option value="">{placeholder}</option>}
-        {options.map((o) => (
-          <option key={o} value={o}>
-            {o}
-          </option>
-        ))}
-      </select>
-      <Icon name="keyboard_arrow_down" size={16} className="pointer-events-none absolute right-3 top-1/2  -translate-y-1/2 text-ink-hint" />
-    </div>
-  );
-}
 

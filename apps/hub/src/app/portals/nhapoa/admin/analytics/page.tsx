@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader, Card, StatTile } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { CASE_STATUS_META, type CaseStatus } from "@/lib/nhapoa/store/types";
+import { Card } from "@mosje/design-system";
 
 export default function AnalyticsPage() {
   const { state } = useNhapoa();
@@ -24,7 +25,7 @@ export default function AnalyticsPage() {
 
   return (
     <div>
-      <PageHeader title="Grievance Analytics" subtitle="Category and status distribution across the portal" />
+      <PortalPageHeader title="Grievance Analytics" meta="Category and status distribution across the portal" />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatTile label="Total Grievances" value={state.cases.length} />
         <StatTile label="Distinct Categories" value={byCat.length} accent="await" />

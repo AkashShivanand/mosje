@@ -10,12 +10,12 @@ Every Palette variable takes the SAME binding in both modes (Blue and Navy); the
 
 | # | Variable | Base (alias) | Alpha (opacity) | Done |
 |---|---|---|---|---|
-| 1 | `color/transparent/primary/8` | `color/primaryScale/500` | `alpha/8` | ☑ |
-| 2 | `color/transparent/primary/16` | `color/primaryScale/500` | `alpha/16` | ☑ |
-| 3 | `color/transparent/primary/24` | `color/primaryScale/500` | `alpha/24` | ☑ |
-| 4 | `color/transparent/primary/32` | `color/primaryScale/500` | `alpha/32` | ☑ |
-| 5 | `color/transparent/primary/40` | `color/primaryScale/500` | `alpha/40` | ☑ |
-| 6 | `color/transparent/primary/48` | `color/primaryScale/500` | `alpha/48` | ☑ |
+| 1 | `color/transparent/primary/8` | `color/primaryScale/600` | `alpha/8` | ☑ |
+| 2 | `color/transparent/primary/16` | `color/primaryScale/600` | `alpha/16` | ☑ |
+| 3 | `color/transparent/primary/24` | `color/primaryScale/600` | `alpha/24` | ☑ |
+| 4 | `color/transparent/primary/32` | `color/primaryScale/600` | `alpha/32` | ☑ |
+| 5 | `color/transparent/primary/40` | `color/primaryScale/600` | `alpha/40` | ☑ |
+| 6 | `color/transparent/primary/48` | `color/primaryScale/600` | `alpha/48` | ☑ |
 | 7 | `color/transparent/secondary/8` | `color/secondaryScale/400` | `alpha/8` | ☑ |
 | 8 | `color/transparent/secondary/16` | `color/secondaryScale/400` | `alpha/16` | ☑ |
 | 9 | `color/transparent/secondary/24` | `color/secondaryScale/400` | `alpha/24` | ☑ |

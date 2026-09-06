@@ -176,7 +176,16 @@ export function CellContent({
   return <>{val || "—"}</>;
 }
 
-export function Pagination({ total }: { total: number }) {
+/**
+ * The pager drawn under a prototype table.
+ *
+ * It is NOT the design system's `Pagination`, and adopting that here would make
+ * things worse rather than better: these screens hold one fixed page of mock
+ * rows, so a real pager would render page numbers that go nowhere — a control
+ * that looks like it works and does not. It becomes the system's `Pagination`
+ * the day these screens page real rows, and not before.
+ */
+export function StaticPager({ total }: { total: number }) {
   return (
     <nav aria-label="Pagination" className="pagination">
       <div className="page-size">

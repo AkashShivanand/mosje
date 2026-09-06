@@ -1,0 +1,142 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Carousel
+     A scroll-snap track with real buttons. The track is the source of truth for
+     position, so a swipe and a button press cannot disagree.
+     ============================================================================ */
+
+  .ds-carousel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-carousel__viewport {
+    overflow: hidden;
+    border-radius: var(--sa-cmp-card-radius);
+  }
+
+  .ds-carousel__track {
+    display: flex;
+    gap: var(--sa-inline-16);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    /* The native bar is redundant beside the dots and the arrows, and it makes
+       the band look like a scrolling region rather than a set of slides. The
+       track stays scrollable — this hides the bar, it does not disable it. */
+    scrollbar-width: none;
+  }
+
+  .ds-carousel__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ds-carousel__slide {
+    flex: 0 0 100%;
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .ds-carousel__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-inline-8);
+  }
+
+  .ds-carousel__arrow,
+  .ds-carousel__play {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* The full control height rather than the 24x24 floor: these are the only
+       way most readers reach slide two. */
+    min-width: var(--sa-control-height-md);
+    height: var(--sa-control-height-md);
+    padding: 0 var(--sa-padding-12);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-radius);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    font-family: inherit;
+    font-size: var(--sa-type-label-1-size);
+    cursor: pointer;
+  }
+
+  .ds-carousel__arrow:hover,
+  .ds-carousel__play:hover {
+    background-color: var(--sa-bg-neutral-hover);
+  }
+
+  .ds-carousel__arrow:focus-visible,
+  .ds-carousel__play:focus-visible,
+  .ds-carousel__dot:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-carousel__dots {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+  }
+
+  /* The dot is small; its TARGET is not. Padding carries the hit area past
+     WCAG 2.2 2.5.8's 24x24 while the mark itself stays a dot. */
+  .ds-carousel__dot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-control-height-sm);
+    height: var(--sa-control-height-sm);
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .ds-carousel__dot::before {
+    content: "";
+    width: var(--sa-cmp-badge-dotSizeLg);
+    height: var(--sa-cmp-badge-dotSizeLg);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-full);
+    background-color: transparent;
+  }
+
+  /* Current is a filled dot AND a heavier edge, so the state survives a monochrome
+     rendering and forced-colors mode — colour alone would fail WCAG 1.4.1. */
+  .ds-carousel__dot--current::before {
+    border-color: var(--sa-border-neutral-selected);
+    background-color: var(--sa-bg-brand-primary-bolder);
+  }
+
+  /* The position is announced, not shown — the dots already show it, and a
+     second copy on screen is the interface narrating itself. */
+  .ds-carousel__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-carousel__track {
+      scroll-behavior: auto;
+    }
+  }
+}

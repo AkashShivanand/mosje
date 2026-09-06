@@ -103,6 +103,57 @@ export const FIGMA_NODES = {
   characterCount: "56792:50500", // the Character Count set, authored 2026-09-03
   requiredFieldsLegend: "56792:50506", // the Required Fields Legend set, authored 2026-09-03
   card: "2141:296707",
+  // "Description List" — created 2026-09-06 between Comment and List, holding the
+  // ROW master (8 variants), its documentation frame and its component record.
+  // The grid that arranges rows is code-only and is recorded as open item 01.
+  descriptionList: "57518:737",
+  // "Figure" — created 2026-09-06 after Description List. Ten variants (Ratio ×
+  // Fit); the image itself is a slot the caller fills, which is why the master
+  // draws an empty framed rectangle.
+  figure: "57524:789",
+  // "Time Slot" — created 2026-09-06 after Toggle. The master is one bookable
+  // window; the fieldset and the auto-filling grid are code-only.
+  timeSlot: "57526:737",
+  // "Biometric Capture" — created 2026-09-06 after Time Slot. Fifteen variants
+  // (State × Modality), each drawing the alternative route.
+  biometricCapture: "57530:737",
+  // Rebuilt 2026-09-06 to match the code, with the UX4G/Material imports they
+  // superseded renamed "⛔ … (deprecated)" and left in place, because instances
+  // may exist. The department chose the code's model in each case.
+  // Built 6 September 2026, alongside the code. Each id is the page's
+  // — Documentation frame, which is where a designer should land.
+  numberInput: "57605:772",
+  dateRangePicker: "57613:799",
+  signaturePad: "57621:774",
+  splitButton: "57606:764",
+  backToTop: "57608:747",
+  bulkActionsBar: "57609:761",
+  fileList: "57611:777",
+  tree: "57614:785",
+  transferList: "57616:832",
+  scheduleGrid: "57618:800",
+  videoTile: "57620:781",
+  cookieConsent: "57622:780",
+  languageSwitcher: "57597:737",
+  inlineEdit: "57599:772",
+  eventList: "57600:48772",
+  popover: "2141:323874",
+  // The page was called "Dropdown" until 2026-09-06. "Dropdown" means both a
+  // select and a menu across the industry, and this estate needs the
+  // distinction: one edits a field's value, the other performs an action.
+  menu: "2141:296718",
+  listGroup: "2141:323867",
+  feedbackWidget: "3989:33663",
+  // Rebuilt 2026-09-06, same pass. The page was "Range Slider" until then and
+  // held only the two-thumb master; the library had no single-thumb Slider at
+  // all. Both are published here now.
+  slider: "2179:67252",
+  // The UX4G three-column scroller showing 00:00:00 is deprecated in place; the
+  // typed 24-hour field is section 2 of the Date-Time Picker page.
+  timePicker: "2141:296716",
+  // Was five hardcoded "Slide N/Desktop" frames — a mockup of one carousel.
+  // Slides are consumer content; the design system owns the control row.
+  carousel: "2141:296708",
   badges: "2141:296703",
   checkbox: "15:664", // the Checkbox set. The entry pointed at the PAGE (2141:296710) until 2026-09-04
   chips: "2141:296709",
@@ -128,6 +179,15 @@ export const FIGMA_NODES = {
   /* Navigation — page "Portal Card" between Pagination and Stepper, matching
      where the component lives in code. Status (Live|Planned). */
   portalCard: "56486:832",
+  /* "Stepper" — the PAGE id, rebuilt in the house style on 2026-09-06. The page
+     had been carried unchanged from the UX4G 2.0 fork since the library was
+     created: two component sets, four loose example components and three stray
+     frames, with no Documentation frame, no Component record and no numbered
+     sections — and no entry here at all, so the docs page had been declaring the
+     component "Not yet published in the Figma library" while it sat in it.
+     The page id is recorded rather than a frame id, because a page id survives a
+     rebuild and a frame id does not — the lesson `shape` above was taught. */
+  stepper: "2106:2",
   loader: "2141:323879",
   avatars: "2141:296702",
   emptyState: "2141:296719",

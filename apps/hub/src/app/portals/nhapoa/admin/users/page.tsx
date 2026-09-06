@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal } from "@mosje/design-system";
-import { PageHeader, SearchInput, Button, Field, TextInput, Select } from "@/components/nhapoa/ui";
+import { Icon, Modal, Select, Button } from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Field, TextInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { ROLES } from "@/lib/nhapoa/roles";
 import type { RoleId } from "@/lib/nhapoa/store/types";
@@ -30,7 +30,7 @@ export default function UsersPage() {
 
   return (
     <div>
-      <PageHeader title="User Management" subtitle="Create and manage system users" action={<Button onClick={() => setOpen(true)}><Icon name="person_add" size={16} /> Create New User</Button>} />
+      <PortalPageHeader title="User Management" meta="Create and manage system users" actions={<Button onClick={() => setOpen(true)}><Icon name="person_add" size={16} /> Create New User</Button>} />
       <SearchInput placeholder="Search by name, username, role…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
 
       <div className="overflow-x-auto rounded-2xl border border-line bg-white shadow-card">
@@ -63,12 +63,12 @@ export default function UsersPage() {
         onClose={() => setOpen(false)}
         size="sm"
         title="Create New User"
-        footer={<div className="flex justify-end gap-2"><Button variant="outline" onClick={() => setOpen(false)}>Cancel</Button><Button onClick={submit} disabled={!name || !username || !roleLabel}>Create User</Button></div>}
+        footer={<div className="flex justify-end gap-2"><Button appearance="outlined" onClick={() => setOpen(false)}>Cancel</Button><Button onClick={submit} disabled={!name || !username || !roleLabel}>Create User</Button></div>}
       >
         <div className="space-y-4">
           <Field label="Full Name" required><TextInput value={name} onChange={(e) => setName(e.target.value)} placeholder="Officer name" /></Field>
           <Field label="Username" required><TextInput value={username} onChange={(e) => setUsername(e.target.value)} placeholder="e.g. ba.newofficer" /></Field>
-          <Field label="Role" required><Select options={ROLE_OPTIONS} placeholder="Select role" value={roleLabel} onChange={(e) => setRoleLabel(e.target.value)} /></Field>
+          <Field label="Role" required><Select options={[...ROLE_OPTIONS].map((value) => ({ value, label: value }))} placeholder="Select role" value={roleLabel} onChange={(e) => setRoleLabel(e.target.value)} /></Field>
           <Field label="District / State"><TextInput value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="e.g. Lucknow" /></Field>
         </div>
       </Modal>

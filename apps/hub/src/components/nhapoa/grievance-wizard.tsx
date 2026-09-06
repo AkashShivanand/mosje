@@ -2,15 +2,21 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Button, Field, TextInput, Textarea, Select, Stepper, Card } from "@/components/nhapoa/ui";
-import { DeclarationCheckbox, RadioGroup } from "@mosje/design-system";
+import { Field, TextInput } from "@/components/nhapoa/ui";
+import { DeclarationCheckbox, RadioGroup, Textarea, Stepper, Select, Card, Button } from "@mosje/design-system";
 import { GRIEVANCE_TYPES, SUBMISSION_ROLES } from "@/lib/nhapoa/citizen-data";
 import { STATES, DISTRICTS } from "@/lib/nhapoa/store/seed";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import type { CaseType, CaseSource, ComplainantRole } from "@/lib/nhapoa/store/types";
 import { Icon } from "@mosje/design-system";
 
-const STEPS = ["Grievance Registration", "Informer Details", "Victim Details", "Grievance Details", "Review & Submit"];
+const STEPS = [
+  { label: "Grievance Registration" },
+  { label: "Informer Details" },
+  { label: "Victim Details" },
+  { label: "Grievance Details" },
+  { label: "Review & Submit" },
+];
 /** Material Symbols name per submission role. */
 const ROLE_ICON = { Informer: "visibility", Victim: "person", NGO: "group" } as const;
 
@@ -122,7 +128,7 @@ export function GrievanceWizard({
 
   return (
     <>
-      <div className="mb-8"><Stepper steps={STEPS} current={step} /></div>
+      <div className="mb-8"><Stepper steps={STEPS} current={step} ariaLabel="Grievance progress" /></div>
 
       <Card className="p-6 sm:p-8">
         {step === 0 && (
@@ -166,7 +172,7 @@ export function GrievanceWizard({
                 <div className="flex gap-2">
                   <TextInput inputMode="numeric" maxLength={10} value={d.idMobile} onChange={(e) => set("idMobile", e.target.value.replace(/\D/g, ""))} placeholder="Enter 10-digit Mobile Number" />
                   {!d.otpVerified ? (
-                    <Button type="button" variant="outline" onClick={() => setOtpSent(true)} disabled={!/^\d{10}$/.test(d.idMobile)}>
+                    <Button type="button" appearance="outlined" onClick={() => setOtpSent(true)} disabled={!/^\d{10}$/.test(d.idMobile)}>
                       {otpSent ? "Verify" : "Send OTP"}
                     </Button>
                   ) : (
@@ -188,8 +194,8 @@ export function GrievanceWizard({
           <StepForm source={source} title="Informer Details" desc="Details of the person filing this grievance.">
             <Field label="Full Name" required><TextInput value={d.infName} onChange={(e) => set("infName", e.target.value)} placeholder="Enter full name" /></Field>
             <Field label="Mobile" required><TextInput inputMode="numeric" maxLength={10} value={d.infMobile} onChange={(e) => set("infMobile", e.target.value.replace(/\D/g, ""))} placeholder="10-digit mobile" /></Field>
-            <Field label="State" required><Select options={STATES} placeholder="Select State" value={d.infState} onChange={(e) => { set("infState", e.target.value); set("infDistrict", ""); }} /></Field>
-            <Field label="District"><Select options={districtsFor(d.infState)} placeholder="Select District" value={d.infDistrict} onChange={(e) => set("infDistrict", e.target.value)} /></Field>
+            <Field label="State" required><Select options={[...STATES].map((value) => ({ value, label: value }))} placeholder="Select State" value={d.infState} onChange={(e) => { set("infState", e.target.value); set("infDistrict", ""); }} /></Field>
+            <Field label="District"><Select options={[...districtsFor(d.infState)].map((value) => ({ value, label: value }))} placeholder="Select District" value={d.infDistrict} onChange={(e) => set("infDistrict", e.target.value)} /></Field>
             <Field label="Address" className="sm:col-span-2"><Textarea rows={2} value={d.infAddress} onChange={(e) => set("infAddress", e.target.value)} placeholder="Street, landmark, locality" /></Field>
           </StepForm>
         )}
@@ -204,9 +210,9 @@ export function GrievanceWizard({
 
         {step === 3 && (
           <StepForm source={source} title="Grievance Details" desc="Describe the incident and its category.">
-            <Field label="Category (nature of atrocity)" required className="sm:col-span-2"><Select options={categoryOptions} placeholder="Select category" value={d.category} onChange={(e) => set("category", e.target.value)} /></Field>
-            <Field label="State" required><Select options={STATES} placeholder="Select State" value={d.incState} onChange={(e) => { set("incState", e.target.value); set("incDistrict", ""); }} /></Field>
-            <Field label="District"><Select options={districtsFor(d.incState)} placeholder="Select District" value={d.incDistrict} onChange={(e) => set("incDistrict", e.target.value)} /></Field>
+            <Field label="Category (nature of atrocity)" required className="sm:col-span-2"><Select options={[...categoryOptions].map((value) => ({ value, label: value }))} placeholder="Select category" value={d.category} onChange={(e) => set("category", e.target.value)} /></Field>
+            <Field label="State" required><Select options={[...STATES].map((value) => ({ value, label: value }))} placeholder="Select State" value={d.incState} onChange={(e) => { set("incState", e.target.value); set("incDistrict", ""); }} /></Field>
+            <Field label="District"><Select options={[...districtsFor(d.incState)].map((value) => ({ value, label: value }))} placeholder="Select District" value={d.incDistrict} onChange={(e) => set("incDistrict", e.target.value)} /></Field>
             <Field label="Incident Location"><TextInput value={d.incLocation} onChange={(e) => set("incLocation", e.target.value)} placeholder="Village / street / landmark" /></Field>
             <Field label="Incident Date" required><TextInput type="date" value={d.incDate} onChange={(e) => set("incDate", e.target.value)} /></Field>
             <Field label="Description" required className="sm:col-span-2"><Textarea rows={4} value={d.description} onChange={(e) => set("description", e.target.value)} placeholder="Describe what happened in your own words" /></Field>
@@ -246,7 +252,7 @@ export function GrievanceWizard({
         )}
 
         <div className="mt-8 flex items-center justify-between border-t border-line pt-6">
-          <Button type="button" variant="outline" onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0}>
+          <Button type="button" appearance="outlined" onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0}>
             <Icon name="arrow_back" size={16} /> Back
           </Button>
           {step < 4 ? (

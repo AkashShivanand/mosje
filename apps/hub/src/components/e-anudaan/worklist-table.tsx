@@ -2,7 +2,14 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Badge, DataTable, Icon, Search, type DataTableColumn } from "@mosje/design-system";
+import {
+  Badge,
+  DataTable,
+  Icon,
+  Search,
+  type DataTableColumn,
+  type WorklistColumn,
+} from "@mosje/design-system";
 import type { GrantApplication } from "@/lib/e-anudaan/types";
 import { formatDate, formatGrant, statusTone } from "@/lib/e-anudaan/selectors";
 import { statusLabel } from "@/lib/e-anudaan/workflow";
@@ -16,6 +23,90 @@ export type WorklistVariant = "queue" | "explorer" | "sanctioned" | "rejected" |
  * same anatomy (toolbar with search, a "Showing n of m" count, and a link-style action in the
  * last cell). Column headers are transcribed verbatim from the captures.
  */
+/**
+ * The five column sets, lifted out of the component so `ApplicationList` can
+ * render the same columns through `WorklistScreen` without a second copy.
+ *
+ * `priority` decides what survives on a phone: 1 becomes the card's title, 2 a
+ * label/value pair, 3 is dropped. Column headers are transcribed verbatim from
+ * the captures; the priorities are ours, because the handoff draws no mobile
+ * version of any of these screens.
+ */
+export function worklistColumns(
+  variant: WorklistVariant,
+  opts: { reviewBase?: string } = {},
+): WorklistColumn<GrantApplication>[] {
+  const { reviewBase } = opts;
+
+  const action = (row: GrantApplication): React.ReactNode =>
+    reviewBase ? (
+      <Link
+        href={`${reviewBase}/${encodeURIComponent(row.id)}`}
+        className="inline-flex items-center gap-1 font-semibold text-navy hover:underline"
+      >
+        <Icon name="open_in_new" size={16} aria-hidden />
+        {variant === "queue" || variant === "explorer" ? "Review" : "View"}
+      </Link>
+    ) : (
+      <span className="text-ink-hint">—</span>
+    );
+
+  const status = (row: GrantApplication): React.ReactNode => (
+    <Badge status={statusTone(row.status)}>{statusLabel(row)}</Badge>
+  );
+
+  const SETS: Record<WorklistVariant, WorklistColumn<GrantApplication>[]> = {
+    queue: [
+      { key: "id", header: "GIA ID", priority: 3 },
+      { key: "projectLabel", header: "NGO", priority: 1 },
+      { key: "schemeCode", header: "Scheme", priority: 2 },
+      { key: "type", header: "Type", priority: 3, render: () => "—" },
+      { key: "financialYear", header: "FY", priority: 2 },
+      { key: "total", header: "Requested", priority: 2, render: (r) => formatGrant(r.total) },
+      { key: "status", header: "Status", priority: 2, render: status },
+      { key: "action", header: "Action", priority: 3, render: action },
+    ],
+    explorer: [
+      { key: "id", header: "GIA ID", priority: 3 },
+      { key: "projectLabel", header: "NGO", priority: 1 },
+      { key: "financialYear", header: "FY", priority: 2 },
+      { key: "instalment", header: "Instalment", priority: 3, render: () => "—" },
+      { key: "total", header: "Requested", priority: 2, render: (r) => formatGrant(r.total) },
+      { key: "status", header: "Status", priority: 2, render: status },
+      { key: "action", header: "Action", priority: 3, render: action },
+    ],
+    sanctioned: [
+      { key: "id", header: "GIA ID", priority: 3 },
+      { key: "projectLabel", header: "NGO", priority: 1 },
+      { key: "financialYear", header: "FY", priority: 2 },
+      { key: "sanctioned", header: "Sanctioned", priority: 2, render: (r) => (r.sanction ? formatGrant(r.sanction.total) : "—") },
+      { key: "sanctionDate", header: "Sanction Date", priority: 2, render: (r) => (r.sanction ? formatDate(r.sanction.sanctionedAt) : "—") },
+      { key: "orderNo", header: "Order No.", priority: 3, render: (r) => r.sanction?.orderNo ?? "—" },
+      { key: "status", header: "Status", priority: 2, render: status },
+      { key: "action", header: "Action", priority: 3, render: action },
+    ],
+    rejected: [
+      { key: "id", header: "GIA ID", priority: 3 },
+      { key: "projectLabel", header: "NGO", priority: 1 },
+      { key: "schemeCode", header: "Scheme", priority: 2 },
+      { key: "where", header: "State / District", priority: 2, render: (r) => r.projectLabel.split("—")[1]?.trim() ?? "—" },
+      { key: "returnedOn", header: "Returned On", priority: 2, render: (r) => formatDate(r.updatedAt) },
+      { key: "reason", header: "Reason", priority: 3, render: (r) => r.audit[r.audit.length - 1]?.remarks ?? "—" },
+      { key: "action", header: "Action", priority: 3, render: action },
+    ],
+    forwarded: [
+      { key: "id", header: "GIA ID", priority: 3 },
+      { key: "projectLabel", header: "NGO Name", priority: 1 },
+      { key: "schemeCode", header: "Scheme", priority: 2 },
+      { key: "forwardedOn", header: "Forwarded On", priority: 2, render: (r) => formatDate(r.updatedAt) },
+      { key: "status", header: "Current Status", priority: 2, render: status },
+      { key: "action", header: "Action", priority: 3, render: action },
+    ],
+  };
+
+  return SETS[variant];
+}
+
 export function WorklistTable({
   rows,
   variant = "queue",

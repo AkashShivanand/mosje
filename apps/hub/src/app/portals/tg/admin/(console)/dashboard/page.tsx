@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { BarChart, FilterBar, Icon, KpiRow } from "@mosje/design-system";
-import { PageHeader, Select, SearchInput, StatusPill, SlaBadge, Button, Table } from "@/components/tg/ui";
+import { BarChart, FilterBar, Icon, KpiRow, Select, Button } from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, StatusPill, SlaBadge, Table } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { ROLES } from "@/lib/tg/roles";
 import { kpisForRole, queueForRole, byState, approvalRateByState } from "@/lib/tg/selectors";
@@ -53,7 +53,7 @@ export default function AdminDashboardPage() {
 
   return (
     <div>
-      <PageHeader title="Welcome to the Dashboard" subtitle="Overview of TG Certificate Application processing" />
+      <PortalPageHeader title="Welcome to the Dashboard" meta="Overview of TG Certificate Application processing" />
 
       <div className="mb-6">
         <KpiRow items={kpis} />
@@ -86,7 +86,7 @@ export default function AdminDashboardPage() {
           {isAdmin && (
             <Select
               aria-label="Filter by state"
-              options={STATES}
+              options={[...STATES].map((value) => ({ value, label: value }))}
               placeholder="State"
               value={stateFilter}
               onChange={(e) => setStateFilter(e.target.value)}
@@ -99,7 +99,7 @@ export default function AdminDashboardPage() {
             onChange={(e) => setQuery(e.target.value)}
             className="w-72"
           />
-          <Button variant="outline">
+          <Button appearance="outlined">
             <Icon name="download" size={16} />
             Export
           </Button>

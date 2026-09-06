@@ -4,6 +4,12 @@ import * as React from "react";
 import { createPortal } from "react-dom";
 import { cn } from "../../utils/cn";
 import { mergeRefs } from "../../utils/merge-refs";
+import {
+  computeAnchorCoords,
+  resolveAnchorSide,
+  useAnchoredPosition,
+  type AnchorCoords,
+} from "../../foundations/anchor";
 import "./tooltip.css";
 
 export type TooltipSide = "top" | "bottom" | "left" | "right";
@@ -40,11 +46,7 @@ export interface TooltipProps {
   children: React.ReactElement;
 }
 
-interface Coords {
-  top: number;
-  left: number;
-  side: TooltipSide;
-}
+type Coords = AnchorCoords;
 
 /**
  * Flip to the opposite side when the preferred one would overflow the viewport.
@@ -57,20 +59,7 @@ export function resolveSide(
   bubble: DOMRect,
   offset: number,
 ): TooltipSide {
-  const fits = {
-    top: trigger.top - bubble.height - offset >= 0,
-    bottom: trigger.bottom + bubble.height + offset <= window.innerHeight,
-    left: trigger.left - bubble.width - offset >= 0,
-    right: trigger.right + bubble.width + offset <= window.innerWidth,
-  };
-  if (fits[preferred]) return preferred;
-  const opposite: Record<TooltipSide, TooltipSide> = {
-    top: "bottom",
-    bottom: "top",
-    left: "right",
-    right: "left",
-  };
-  return fits[opposite[preferred]] ? opposite[preferred] : preferred;
+  return resolveAnchorSide(preferred, trigger, bubble, offset);
 }
 
 /** Exported for unit tests only — not re-exported from the package barrel. */
@@ -80,37 +69,7 @@ export function computeCoords(
   side: TooltipSide,
   offset: number,
 ): Coords {
-  let top = 0;
-  let left = 0;
-  switch (side) {
-    case "top":
-      top = trigger.top - bubble.height - offset;
-      left = trigger.left + trigger.width / 2 - bubble.width / 2;
-      break;
-    case "bottom":
-      top = trigger.bottom + offset;
-      left = trigger.left + trigger.width / 2 - bubble.width / 2;
-      break;
-    case "left":
-      top = trigger.top + trigger.height / 2 - bubble.height / 2;
-      left = trigger.left - bubble.width - offset;
-      break;
-    case "right":
-      top = trigger.top + trigger.height / 2 - bubble.height / 2;
-      left = trigger.right + offset;
-      break;
-  }
-  // Keep the bubble inside the viewport on the cross axis.
-  const margin = 8;
-  left = Math.min(
-    Math.max(margin, left),
-    window.innerWidth - bubble.width - margin,
-  );
-  top = Math.min(
-    Math.max(margin, top),
-    window.innerHeight - bubble.height - margin,
-  );
-  return { top, left, side };
+  return computeAnchorCoords(trigger, bubble, side, offset, "center");
 }
 
 /**
@@ -143,7 +102,6 @@ export function Tooltip({
   children,
 }: TooltipProps): React.JSX.Element {
   const [open, setOpen] = React.useState(false);
-  const [coords, setCoords] = React.useState<Coords | null>(null);
   const triggerRef = React.useRef<HTMLElement>(null);
   const bubbleRef = React.useRef<HTMLDivElement>(null);
   const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(
@@ -175,28 +133,16 @@ export function Tooltip({
 
   React.useEffect(() => () => clearTimeout(timer.current), []);
 
-  // Measure after the bubble is in the DOM, then again on scroll/resize so the
-  // bubble tracks a trigger inside a scrolling table.
-  React.useLayoutEffect(() => {
-    if (!open) {
-      setCoords(null);
-      return;
-    }
-    const place = () => {
-      const t = triggerRef.current?.getBoundingClientRect();
-      const b = bubbleRef.current?.getBoundingClientRect();
-      if (!t || !b) return;
-      const resolved = resolveSide(side, t, b, sideOffset);
-      setCoords(computeCoords(t, b, resolved, sideOffset));
-    };
-    place();
-    window.addEventListener("scroll", place, true);
-    window.addEventListener("resize", place);
-    return () => {
-      window.removeEventListener("scroll", place, true);
-      window.removeEventListener("resize", place);
-    };
-  }, [open, side, sideOffset]);
+  // One placement engine for every anchored panel in the estate; see
+  // foundations/anchor.ts. A tooltip points AT its trigger, so it centres.
+  const coords = useAnchoredPosition({
+    open,
+    side,
+    align: "center",
+    offset: sideOffset,
+    triggerRef,
+    panelRef: bubbleRef,
+  });
 
   // WCAG 1.4.13 "dismissible" — Escape closes without moving focus.
   React.useEffect(() => {

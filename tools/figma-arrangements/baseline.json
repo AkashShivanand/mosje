@@ -1,6 +1,6 @@
 {
   "$comment": "Component pages whose documentation frame has no `NN / ARRANGEMENTS` section yet. tools/figma-arrangements/check.mjs --verify-figma derives the same list from the live file and fails if this one is stale in either direction; it may only shrink. Re-capture with check:figma-arrangements:sync.",
   "file": "3FF5l0SMNIwdpZrKkeyPTm",
-  "capturedOn": "2026-09-05",
+  "capturedOn": "2026-09-06",
   "missing": []
 }

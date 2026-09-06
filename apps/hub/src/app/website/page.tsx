@@ -1,5 +1,5 @@
 import { Header } from "@/components/website/Header";
-import { SamaveshBanner } from "@/components/website/SamaveshBanner";
+import { WebsiteSamaveshBanner } from "@/components/website/website-samavesh-banner";
 import { HeroCarousel } from "@/components/website/HeroCarousel";
 import { AboutUs } from "@/components/website/AboutUs";
 import { Offerings } from "@/components/website/Offerings";
@@ -12,9 +12,9 @@ import { ActivityCorner } from "@/components/website/ActivityCorner";
 import { SocialMedia } from "@/components/website/SocialMedia";
 import { SupportSection } from "@/components/website/SupportSection";
 import { LogoStrip } from "@/components/website/LogoStrip";
-import { SiteFooter } from "@/components/website/SiteFooter";
+import { WebsiteSiteFooter } from "@/components/website/SiteFooter";
 import { ImportantLinks } from "@/components/website/ImportantLinks";
-import { CookieConsent } from "@/components/website/CookieConsent";
+import { WebsiteCookieNotice } from "@/components/website/cookie-notice";
 import { resolveCookieBannerEnabled } from "@/lib/cookie-banner/resolve";
 
 export default async function Home() {
@@ -27,7 +27,7 @@ export default async function Home() {
       <Header />
       {/* Site-wide chrome, so it sits BETWEEN the header and <main>. Inside <main>
           its drawer heading is an <h2> that lands above the page's own <h1>. */}
-      <SamaveshBanner />
+      <WebsiteSamaveshBanner />
       <main id="main-content" className="flex-1">
         <HeroCarousel />
         <AboutUs />
@@ -42,10 +42,10 @@ export default async function Home() {
         <SupportSection />
         <LogoStrip />
       </main>
-      <SiteFooter />
+      <WebsiteSiteFooter />
       <ImportantLinks />
       {/* Switched off from /admin/portals while the banner is redesigned. */}
-      {cookieBanner && <CookieConsent />}
+      {cookieBanner && <WebsiteCookieNotice />}
     </>
   );
 }

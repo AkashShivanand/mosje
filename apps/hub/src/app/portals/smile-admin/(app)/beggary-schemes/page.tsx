@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { statusTone } from "@/lib/smile-admin/status-tone";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
 import { SCHEMES, type Scheme } from "@/lib/smile-admin/mock-data";
@@ -18,7 +18,7 @@ export default function SchemesPage() {
   );
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Field Operations" }, { label: "Beggary Schemes" }]}
         eyebrow="Field operations"
         title="Beggary schemes"

@@ -84,7 +84,6 @@ export function Sidebar({ navItems }: { navItems: NavItem[] }) {
       groups={groups}
       pathname={pathname}
       label="Main navigation"
-      className="eu-sidebar"
     />
   );
 }

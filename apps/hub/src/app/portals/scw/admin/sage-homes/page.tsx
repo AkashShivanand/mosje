@@ -1,14 +1,7 @@
-import {
-  Button,
-  DataTable,
-  PeriodFilter,
-  Pagination,
-  PageHeader,
-  SearchInput,
-} from "@/components/scw/ui";
+import { TableShell, PeriodFilter, StaticPager, PortalPageHeader, SearchInput } from "@/components/scw/ui";
 import { FACILITY_TYPES, IPSRC_HOMES, IPSRC_TOTAL } from "@/lib/scw/mock-data";
 import { INDIAN_STATES } from "@/lib/scw/states";
-import { Icon } from "@mosje/design-system";
+import { Icon, Button } from "@mosje/design-system";
 
 const COLUMNS = [
   { key: "ngo", label: "NGO Name" },
@@ -22,10 +15,10 @@ const COLUMNS = [
 export default function SageHomesPage() {
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="IPSrC Homes"
-        action={
-          <Button variant="primary">
+        actions={
+          <Button>
             <Icon name="add" size={16} />
             Add New
           </Button>
@@ -54,7 +47,7 @@ export default function SageHomesPage() {
         />
       </div>
 
-      <DataTable columns={COLUMNS}>
+      <TableShell columns={COLUMNS}>
         {IPSRC_HOMES.map((h) => (
           <tr key={h.ngo}>
             <td className="max-w-[16rem] truncate px-6 py-4 font-medium text-ink">
@@ -78,9 +71,9 @@ export default function SageHomesPage() {
             </td>
           </tr>
         ))}
-      </DataTable>
+      </TableShell>
 
-      <Pagination total={IPSRC_TOTAL} totalPages={74} />
+      <StaticPager total={IPSRC_TOTAL} totalPages={74} />
     </div>
   );
 }

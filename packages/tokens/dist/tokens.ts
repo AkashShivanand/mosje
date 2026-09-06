@@ -454,14 +454,15 @@ export const tokens = {
     },
     "transparent": {
       "primary": {
-        "8": "#0373df",
-        "16": "#0373df",
-        "24": "#0373df",
-        "32": "#0373df",
-        "40": "#0373df",
-        "48": "#0373df"
+        "8": "#005eb9",
+        "16": "#005eb9",
+        "24": "#005eb9",
+        "32": "#005eb9",
+        "40": "#005eb9",
+        "48": "#005eb9"
       },
       "secondary": {
+        "0": "#ff671f",
         "8": "#ff671f",
         "16": "#ff671f",
         "24": "#ff671f",
@@ -1519,7 +1520,8 @@ export const tokens = {
       "sm": "2rem",
       "md": "2.5rem",
       "lg": "3rem"
-    }
+    },
+    "track": "0.5rem"
   },
   "shape": {
     "0": "0px",
@@ -1632,6 +1634,14 @@ export const tokens = {
   },
   "tooltip": {
     "radius": "6px"
+  },
+  "stepper": {
+    "node": {
+      "md": "2rem",
+      "sm": "1.5rem"
+    },
+    "track": "1px",
+    "dot": "0.5rem"
   },
   "action": {
     "brand": {

@@ -12,7 +12,8 @@ import { DrillDownFilters, Status, DashboardFooter, pillClass, type Filters } fr
 // basePath is applied automatically by Next.js to <Link>/<Image>/router —
 // keep in-app paths basePath-relative (empty prefix) so it is not doubled.
 const BASE = "/portals/pm-ajay";
-import { Donut, Funnel, LineArea, Sparkline, C } from "./charts";
+import { Sparkline } from "@mosje/design-system";
+import { Donut, Funnel, LineArea, C } from "./charts";
 import {
   FY,
   FY_FACTOR,
@@ -46,13 +47,13 @@ const deltaOf = (kp: Kpi) => {
 const arrow = (d: string) => (d === "up" ? "trending_up" : d === "down" ? "trending_down" : "trending_flat");
 const barColor = (u: number) => (u >= 84 ? C.green : u >= 70 ? "var(--pm-accent)" : u >= 50 ? C.amber : C.red);
 
-function sparkDom(kpi: Kpi): { domainMin?: number; domainMax?: number } {
+function sparkDom(kpi: Kpi): { min?: number; max?: number } {
   const d = kpi.spark || [];
   if (!d.length) return {};
   const mx = Math.max(...d);
-  if (kpi.type === "percent" || kpi.type === "special") return { domainMin: 0, domainMax: 100 };
-  if (kpi.type === "days") return { domainMin: 0, domainMax: mx * 1.35 };
-  return { domainMin: 0, domainMax: mx * 1.12 };
+  if (kpi.type === "percent" || kpi.type === "special") return { min: 0, max: 100 };
+  if (kpi.type === "days") return { min: 0, max: mx * 1.35 };
+  return { min: 0, max: mx * 1.12 };
 }
 
 function TargetMeter({ kpi, compact }: { kpi: Kpi; compact?: boolean }) {
@@ -126,7 +127,7 @@ function RibbonStat({ kpi, sp }: { kpi: Kpi; sp: boolean }) {
     <div className="ud-stat">
       <div className="ud-stat-top">
         <span className="lab">{kpi.label}</span>
-        {sp && kpi.spark && <Sparkline data={kpi.spark} color={sparkColor} w={66} h={24} {...sparkDom(kpi)} />}
+        {sp && kpi.spark && <Sparkline data={kpi.spark} color={sparkColor} width={66} height={24} {...sparkDom(kpi)} />}
       </div>
       <div className="val">
         {prefix}{kpi.value}{kpi.unit && <span className="u">{kpi.unit}</span>}
@@ -219,7 +220,16 @@ function SchemeMod({
   );
 }
 
-function Alert({
+/**
+ * A row in the dashboard's alert list — an icon tile, a title, a line of detail,
+ * a "when" chip, and the whole row as the target.
+ *
+ * It is NOT the design system's `Alert`, which is a status banner: one message
+ * about the page you are on, with an optional dismiss. This is a list item that
+ * navigates. It kept the name `Alert` until 6 September 2026, which meant an
+ * import of `Alert` in this dashboard resolved to either one silently.
+ */
+function AlertRow({
   tone, icon, title, desc, when, onOpen,
 }: {
   tone: "red" | "amber"; icon: string; title: string; desc: string; when: string; onOpen?: () => void;
@@ -251,7 +261,7 @@ function KPICell({ kpi, src }: { kpi: Kpi; src?: string }) {
     <div className="ud-kpi">
       <div className="ud-kpi-h">
         <div className="lab">{kpi.label}</div>
-        {kpi.spark && <Sparkline data={kpi.spark} color={sparkColor} w={60} h={22} {...sparkDom(kpi)} />}
+        {kpi.spark && <Sparkline data={kpi.spark} color={sparkColor} width={60} height={22} {...sparkDom(kpi)} />}
       </div>
       <div className="val">{prefix}{kpi.value}{kpi.unit && <span className="u">{kpi.unit}</span>}</div>
       <div className="foot">
@@ -567,10 +577,10 @@ export function UnifiedDashboard() {
                     <div className="ud-tile-h"><span className="t"><span className="material-symbols-rounded" aria-hidden="true">notifications_active</span>Requires Attention</span><span className="ud-count" title="Top 4 flags — click any to open its indicator group">Top 4 · click to open</span></div>
                     <div className="ud-tile-b">
                       <div className="ud-alerts">
-                        <Alert tone="red" icon="priority_high" title="9 States below 50% utilization" desc="Bihar, Jharkhand, Chhattisgarh & 6 more" when="Action" onOpen={() => openGroup("financial")} />
-                        <Alert tone="amber" icon="description" title="412 UCs pending over 90 days" desc="₹612 Cr next installment blocked" when="14 d" onOpen={() => openGroup("governance")} />
-                        <Alert tone="amber" icon="event_busy" title="86 projects overdue" desc="Hostel & GIA · avg 47-day slip" when="Review" onOpen={() => openGroup("governance")} />
-                        <Alert tone="amber" icon="gavel" title="214 audit observations open" desc="Pending closure across schemes" when="Track" onOpen={() => openGroup("governance")} />
+                        <AlertRow tone="red" icon="priority_high" title="9 States below 50% utilization" desc="Bihar, Jharkhand, Chhattisgarh & 6 more" when="Action" onOpen={() => openGroup("financial")} />
+                        <AlertRow tone="amber" icon="description" title="412 UCs pending over 90 days" desc="₹612 Cr next installment blocked" when="14 d" onOpen={() => openGroup("governance")} />
+                        <AlertRow tone="amber" icon="event_busy" title="86 projects overdue" desc="Hostel & GIA · avg 47-day slip" when="Review" onOpen={() => openGroup("governance")} />
+                        <AlertRow tone="amber" icon="gavel" title="214 audit observations open" desc="Pending closure across schemes" when="Track" onOpen={() => openGroup("governance")} />
                       </div>
                     </div>
                   </div>

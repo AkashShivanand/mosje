@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { statusTone } from "@/lib/smile-admin/status-tone";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { SANCTION_ORDERS, SCHEMES, type SanctionOrder } from "@/lib/smile-admin/mock-data";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
@@ -16,7 +16,7 @@ export default function FundMonitoringPage() {
   );
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Reports & Analytics" }, { label: "Fund Monitoring" }]}
         eyebrow="Reports & analytics"
         title="Fund Monitoring"

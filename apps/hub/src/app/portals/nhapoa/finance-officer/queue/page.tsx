@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal } from "@mosje/design-system";
-import { PageHeader, SearchInput, Button, Card, Field, TextInput, Select } from "@/components/nhapoa/ui";
+import { Icon, Modal, Select, Card, Button } from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Field, TextInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtDate, fmtINR } from "@/lib/nhapoa/case-helpers";
 import type { Case } from "@/lib/nhapoa/store/types";
@@ -38,10 +38,10 @@ export default function DisbursementQueuePage() {
 
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="Disbursement Queue"
-        subtitle={`${queue.length} state-approved case${queue.length === 1 ? "" : "s"} ready for sanction`}
-        action={<Button variant="outline"><Icon name="download" size={16} /> Export</Button>}
+        meta={`${queue.length} state-approved case${queue.length === 1 ? "" : "s"} ready for sanction`}
+        actions={<Button appearance="outlined"><Icon name="download" size={16} /> Export</Button>}
       />
 
       <SearchInput placeholder="Search by ID, citizen name, category…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
@@ -95,7 +95,7 @@ export default function DisbursementQueuePage() {
             <Button onClick={() => setProc(null)}>Done</Button>
           ) : (
             <div className="flex justify-end gap-2">
-              <Button variant="outline" onClick={() => setProc(null)}>Cancel</Button>
+              <Button appearance="outlined" onClick={() => setProc(null)}>Cancel</Button>
               <Button onClick={disburse} disabled={!amount || !beneficiary}><Icon name="check_circle" size={16} /> Confirm Disbursement</Button>
             </div>
           )
@@ -115,7 +115,7 @@ export default function DisbursementQueuePage() {
             </div>
             <Field label="Beneficiary" required><TextInput value={beneficiary} onChange={(e) => setBeneficiary(e.target.value)} placeholder="Beneficiary name" /></Field>
             <Field label="Sanction Amount (₹)" required><TextInput inputMode="numeric" value={amount} onChange={(e) => setAmount(e.target.value.replace(/\D/g, ""))} placeholder="e.g. 425000" /></Field>
-            <Field label="Disbursement Mode"><Select options={MODES} value={mode} onChange={(e) => setMode(e.target.value)} /></Field>
+            <Field label="Disbursement Mode"><Select options={[...MODES].map((value) => ({ value, label: value }))} value={mode} onChange={(e) => setMode(e.target.value)} /></Field>
           </div>
         ) : null}
       </Modal>

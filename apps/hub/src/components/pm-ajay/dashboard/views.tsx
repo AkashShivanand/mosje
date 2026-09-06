@@ -14,7 +14,8 @@ import {
   type Column,
   type Filters,
 } from "./ui";
-import { Donut, HBars, VBars, Funnel, Legend, C } from "./charts";
+import { Legend } from "@mosje/design-system";
+import { Donut, HBars, VBars, Funnel, C } from "./charts";
 import {
   STATES,
   MONTHS,

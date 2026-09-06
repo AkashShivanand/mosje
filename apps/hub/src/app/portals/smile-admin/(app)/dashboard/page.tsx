@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { ScopeBanner } from "@/components/smile-admin/shell/scope-banner";
 import { DateRangeChips } from "@/components/smile-admin/dashboard/date-range-chips";
 import { KpiCard, KPI_ICONS, type KpiSpec } from "@/components/smile-admin/dashboard/kpi-card";
@@ -121,7 +121,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         eyebrow="Programme overview"
         title="Programme Overview"
         subtitle="Support For Marginalised Individuals For Livelihood &amp; Enterprise"

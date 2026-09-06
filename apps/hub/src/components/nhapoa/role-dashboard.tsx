@@ -1,7 +1,9 @@
 "use client";
 
+import { Card } from "@mosje/design-system";
+
 import * as React from "react";
-import { PageHeader, StatTile, Card } from "./ui";
+import { PortalPageHeader, StatTile } from "./ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { ROLES } from "@/lib/nhapoa/roles";
 import { CASE_STATUS_META, type CaseStatus, type RoleId } from "@/lib/nhapoa/store/types";
@@ -30,9 +32,9 @@ export function RoleDashboard({ roleId }: { roleId: Exclude<RoleId, "citizen"> }
 
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title={`${role.label} Dashboard`}
-        subtitle="NHAPOA administration · live counts from the shared case store"
+        meta="NHAPOA administration · live counts from the shared case store"
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">

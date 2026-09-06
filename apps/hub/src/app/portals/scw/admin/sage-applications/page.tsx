@@ -1,9 +1,9 @@
 import Link from "next/link";
 import {
-  DataTable,
+  TableShell,
   PeriodFilter,
-  Pagination,
-  PageHeader,
+  StaticPager,
+  PortalPageHeader,
   SearchInput,
   StatusPill,
 } from "@/components/scw/ui";
@@ -21,16 +21,16 @@ const COLUMNS = [
 export default function SageApplicationsPage() {
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="SAGE Applications"
-        action={<PeriodFilter options={PERIODS} defaultLabel="All" className="w-44" />}
+        actions={<PeriodFilter options={PERIODS} defaultLabel="All" className="w-44" />}
       />
 
       <div className="mb-4">
         <SearchInput placeholder="Search by organisation..." />
       </div>
 
-      <DataTable columns={COLUMNS}>
+      <TableShell columns={COLUMNS}>
         {SAGE_APPLICATIONS.map((a) => (
           <tr key={a.id}>
             <td className="max-w-[22rem] truncate px-6 py-4 font-medium text-ink">
@@ -50,9 +50,9 @@ export default function SageApplicationsPage() {
             </td>
           </tr>
         ))}
-      </DataTable>
+      </TableShell>
 
-      <Pagination total={SAGE_TOTAL} totalPages={41} />
+      <StaticPager total={SAGE_TOTAL} totalPages={41} />
     </div>
   );
 }

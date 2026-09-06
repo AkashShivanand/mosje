@@ -211,3 +211,22 @@ items, 20 child items). They are to be migrated screen by screen, one at a time,
     passes `showCollapseControl`. The prop survives only for a shell with neither a masthead toggle
     nor an identity, where it draws a 48px row above the first item. In Figma, `Show Control` is
     removed from PortalIdentity.
+
+22. **The divider between rail and content belongs to the rail's COLUMN, and runs to the bottom.**
+    Shells drew it as a `border-r` on the rail, but the rail is sticky and no taller than the
+    viewport, so the line stopped where the rail stopped and vanished as the page scrolled. It is
+    neither the rail's nor the content's: it is the seam between them, so `SidebarNav` now renders a
+    column (`.ds-sidebar-column`, as wide as the rail, stretched to the full height of the shell's
+    row, carrying `border/neutral/subtle` at `stroke/1`) with the sticky rail inside it. The Figma
+    `Sidebar` master carries the same right stroke. Shells pass no border of their own; their layout
+    classes (hidden below `md`) land on the column.
+
+23. **The wash is `color/transparent/secondary/8` fading to `color/transparent/secondary/0`, both
+    stops bound.** A bound gradient stop takes its variable's alpha, so a fade bound at both ends to
+    the 8% tier rendered as a solid block in Figma, and a raw transparent far stop was briefly used.
+    A raw value is not acceptable anywhere on this estate, so the transparent family gained a 0 tier for the
+    secondary wash (`color/transparent/secondary/0`: the far end of a fade, never a fill), created in
+    the Palette collection as COMPOSE_COLOR(base, alpha/0) and consumed in code as
+    `--sa-color-transparent-secondary-0`. A 0 tier is added to a family together with its consumer,
+    because `check:token-consumers` refuses a token nothing binds. The handoff's 8% saffron and its vanishing point are now the
+    same two tokens in Figma and in CSS.

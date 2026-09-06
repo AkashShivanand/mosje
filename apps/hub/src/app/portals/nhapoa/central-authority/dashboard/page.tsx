@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader, StatTile, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
+import { Card } from "@mosje/design-system";
 
 export default function CADashboard() {
   const { state } = useNhapoa();
@@ -19,7 +20,7 @@ export default function CADashboard() {
 
   return (
     <div>
-      <PageHeader title="Central Authority Dashboard" subtitle="SAMBAL scheme overview across all states" />
+      <PortalPageHeader title="Central Authority Dashboard" meta="SAMBAL scheme overview across all states" />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile label="Total Grievances" value={total} />

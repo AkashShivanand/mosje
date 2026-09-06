@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { PageHeader, Card } from "@/components/nhapoa/ui";
-import { Icon } from "@mosje/design-system";
+import { PortalPageHeader } from "@/components/nhapoa/ui";
+import { Icon , Card} from "@mosje/design-system";
 
 const ACTIONS = [
   { href: "/portals/nhapoa/call-center/caller", icon: "call", title: "Look up caller", desc: "Look up or create the caller record from their mobile." },
@@ -21,7 +21,7 @@ const PROCESS = [
 export default function CallCenterDashboard() {
   return (
     <div>
-      <PageHeader title="Call-Centre Dashboard" subtitle="Handle caller requests — register grievances, log queries, and search the directory." />
+      <PortalPageHeader title="Call-Centre Dashboard" meta="Handle caller requests — register grievances, log queries, and search the directory." />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {ACTIONS.map(({ href, icon: iconName, title, desc }) => (

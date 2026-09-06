@@ -2,23 +2,16 @@
 
 import * as React from "react";
 import { UserShell } from "@/components/scw/user-shell";
-import {
-  Button,
-  Card,
-  DataTable,
-  Field,
-  Stepper,
-  TextInput,
-} from "@/components/scw/ui";
-import { Icon } from "@mosje/design-system";
+import { TableShell, Field, TextInput } from "@/components/scw/ui";
+import { Icon, Stepper, Card, Button } from "@mosje/design-system";
 
 const STEPS = [
-  "Company Information",
-  "Product / Service",
-  "Team & Founders",
-  "Financial & Investors",
-  "Achievements",
-  "Review & Submit",
+  { label: "Company Information" },
+  { label: "Product / Service" },
+  { label: "Team & Founders" },
+  { label: "Financial & Investors" },
+  { label: "Achievements" },
+  { label: "Review & Submit" },
 ];
 
 /* ----------------------------------------------------------- helpers */
@@ -158,7 +151,7 @@ function StepProductService() {
   return (
     <section>
       <GroupTitle>Product / Service List</GroupTitle>
-      <DataTable
+      <TableShell
         columns={[
           { key: "name", label: "Product/Service Name" },
           { key: "year", label: "Launch Year" },
@@ -178,7 +171,7 @@ function StepProductService() {
             </button>
           </td>
         </tr>
-      </DataTable>
+      </TableShell>
     </section>
   );
 }
@@ -187,7 +180,7 @@ function StepTeamFounders() {
   return (
     <section>
       <GroupTitle>Member List</GroupTitle>
-      <DataTable
+      <TableShell
         columns={[
           { key: "name", label: "Name" },
           { key: "designation", label: "Designation" },
@@ -213,7 +206,7 @@ function StepTeamFounders() {
             </button>
           </td>
         </tr>
-      </DataTable>
+      </TableShell>
     </section>
   );
 }
@@ -293,7 +286,6 @@ function StepReviewSubmit() {
 /* ----------------------------------------------------------- page */
 export default function SageRegistrationFormPage() {
   const [step, setStep] = React.useState(0);
-  const done = Array.from({ length: step }, (_, i) => i);
   const isLast = step === STEPS.length - 1;
 
   return (
@@ -309,7 +301,7 @@ export default function SageRegistrationFormPage() {
         </div>
 
         <div className="mt-8">
-          <Stepper steps={STEPS} current={step} done={done} />
+          <Stepper steps={STEPS} current={step} ariaLabel="Registration progress" />
         </div>
 
         <div className="mt-10">
@@ -322,15 +314,14 @@ export default function SageRegistrationFormPage() {
         </div>
 
         <div className="mt-10 flex items-center justify-between border-t border-line pt-6">
-          <Button
-            variant="outline"
+          <Button appearance="outlined"
             disabled={step === 0}
             onClick={() => setStep((s) => Math.max(0, s - 1))}
           >
             ← Back
           </Button>
           {!isLast && (
-            <Button variant="primary" onClick={() => setStep((s) => Math.min(STEPS.length - 1, s + 1))}>
+            <Button onClick={() => setStep((s) => Math.min(STEPS.length - 1, s + 1))}>
               Next →
             </Button>
           )}

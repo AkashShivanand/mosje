@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
+import { HubSiteHeader } from "@/components/hub-site-header";
+import { HubFooter } from "@/components/site-footer";
 import auditRaw from "@/data/scw-audit.json";
 import { Icon } from "@mosje/design-system";
 
@@ -78,7 +78,7 @@ export default function ScwReportPage() {
       >
         Skip to main content
       </a>
-      <SiteHeader current="/reports" />
+      <HubSiteHeader current="/reports" />
 
       <main id="main-content" className="flex-1">
         <div className="border-b border-border bg-surface">
@@ -197,7 +197,7 @@ export default function ScwReportPage() {
         </div>
       </main>
 
-      <SiteFooter />
+      <HubFooter />
     </div>
   );
 }

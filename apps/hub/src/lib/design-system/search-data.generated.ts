@@ -93,7 +93,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Alert — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/alert",
-    "keywords": "alert — design system feedback & status the four statuses anatomy example how it is announced  tokens wcag accessibility",
+    "keywords": "alert — design system feedback & status the draft banner is this component the four statuses anatomy example how it is announced  tokens wcag accessibility",
     "description": "A standing message about the state of the page or the task: a status colour, an icon, a title and a sentence. It stays until the condition changes or the reader dismisses it.",
     "type": "component",
     "iconName": "notifications"
@@ -171,6 +171,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Back to Top — Design System",
+    "section": "Utilities",
+    "href": "/design-system/components/utilities/back-to-top",
+    "keywords": "back to top — design system utilities why it sits at the top of the stack it moves focus, not just the page why 2.4.3 is not on the checklist absent until it is useful example motion is asked about at the moment of the press  tokens wcag accessibility",
+    "description": "The control that returns a reader to the top of a long page. It sits at the top of the corner rail and moves focus as well as the scroll position.",
+    "type": "component",
+    "iconName": "build"
+  },
+  {
     "title": "Badge — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/badge",
@@ -196,6 +205,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "Vertical columns or horizontal bars comparing a figure across states, districts and scheme categories, in one series or several.",
     "type": "component",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "Biometric Capture — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/biometric-capture",
+    "keywords": "biometric capture — design system forms & inputs it draws states; it never touches a device the alternative is required, and always visible consent before, not after a failure reason a person can act on example wcag 3.3.8, from the other direction  tokens wcag accessibility",
+    "description": "The capture surface for a fingerprint, iris scan or photograph — five designed states, a consent line shown before capture, and a required alternative route.",
+    "type": "component",
+    "iconName": "edit_note"
   },
   {
     "title": "Bot Check — Design System",
@@ -252,6 +270,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "type": "foundation",
     "badge": "Stable",
     "iconName": "palette"
+  },
+  {
+    "title": "Bulk Actions Bar — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/bulk-actions-bar",
+    "keywords": "bulk actions bar — design system data display the count is announced, not just drawn clearing is always offered it does not float the noun is the page&apos;s to give example where the destructive action sits  tokens wcag accessibility",
+    "description": "The strip that appears when rows are selected. It announces the count politely, always offers a way to clear, and sits in the flow rather than floating over the table.",
+    "type": "component",
+    "iconName": "bar_chart"
   },
   {
     "title": "Bullet Chart — Design System",
@@ -315,6 +342,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "What a card shows when it has no figures to show.",
     "type": "component",
     "iconName": "lock"
+  },
+  {
+    "title": "Carousel — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/carousel",
+    "keywords": "carousel — design system data display auto-rotation is off, and should stay off everything essential lives outside it too the track is the source of truth example moving is announced the dots are buttons, not tabs  tokens wcag accessibility",
+    "description": "A band of slides the reader moves through, with auto-rotation off by default and a pause control whenever it is on.",
+    "type": "component",
+    "iconName": "bar_chart"
   },
   {
     "title": "Changelog",
@@ -426,6 +462,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Comment Thread — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/comment-thread",
+    "keywords": "comment thread — design system data display oldest first there is no edit control a closed thread says so the counter waits until it matters  tokens wcag accessibility",
+    "description": "The remarks officers leave on a case — Event List plus a composer, read oldest first, with no edit control because a remark that can change after another officer has acted on it is not a record.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "Consent Line — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/auth/consent-line",
@@ -472,6 +517,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "menu_book"
   },
   {
+    "title": "Cookie Consent — Design System",
+    "section": "Feedback & Status",
+    "href": "/design-system/components/feedback/cookie-consent",
+    "keywords": "cookie consent — design system feedback & status a notice and a choice are different things fixed by default, and it does not yield rejecting is as easy as accepting optional categories start off a required category says so  tokens wcag accessibility",
+    "description": "The cookie decision — a notice where every cookie is necessary, a choice where some are not. Every rule in it answers a dark pattern.",
+    "type": "component",
+    "iconName": "notifications"
+  },
+  {
     "title": "Dashboard Archetypes",
     "section": "Data Visualisation",
     "href": "/design-system/data-visualisation/archetypes",
@@ -513,6 +567,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "href": "/design-system/components/forms/date-picker",
     "keywords": "date picker — design system forms & inputs example  tokens wcag accessibility",
     "description": "A typed date field in dd/mm/yyyy, with a calendar as the second way in. The text input is the primary control.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
+    "title": "Date Range Picker — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/date-range-picker",
+    "keywords": "date range picker — design system forms & inputs an inverted period is reported, never swapped each end bounds the other a preset is a button, not a dropdown both ends carry the group&rsquo;s name  tokens wcag accessibility",
+    "description": "A period — the two dates a report, a filter or a sanction window runs between. Two Date Pickers in a named group, with the presets a dashboard actually uses.",
     "type": "component",
     "iconName": "edit_note"
   },
@@ -561,6 +624,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "type": "foundation",
     "badge": "Stable",
     "iconName": "palette"
+  },
+  {
+    "title": "Description List — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/description-list",
+    "keywords": "description list — design system data display an unrecorded value is a designed state columns, and when to go wide example  tokens wcag accessibility",
+    "description": "The label-and-value grid every application-detail screen is made of, rendered as a real <dl> so each value is announced with the field it belongs to.",
+    "type": "component",
+    "iconName": "bar_chart"
   },
   {
     "title": "Design tokens",
@@ -636,6 +708,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "notifications"
   },
   {
+    "title": "Event List — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/event-list",
+    "keywords": "event list — design system data display one object, three views it does not sort a note is never truncated a system action says &ldquo;system&rdquo;  tokens wcag accessibility",
+    "description": "A dated, attributed record of things that happened — the activity log and the audit trail, and the base the comment thread and the notification centre are composed from.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "Fact Strip — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/fact-strip",
@@ -645,6 +726,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Feedback Widget — Design System",
+    "section": "Feedback & Status",
+    "href": "/design-system/components/feedback/feedback-widget",
+    "keywords": "feedback widget — design system feedback & status the verdict first, then the comment it is not a contact form say not to type personal information acknowledge honestly example focus follows the field that appears  tokens wcag accessibility",
+    "description": "“Was this page useful?” — the page-level feedback control GIGW expects, in three states: the question, the comment, and the acknowledgement.",
+    "type": "component",
+    "iconName": "notifications"
+  },
+  {
     "title": "Field Policy Provider — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/field-policy-provider",
@@ -652,6 +742,24 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "Sets whether a form marks its mandatory fields or its optional ones, for every field beneath it, and prints the sentence that explains the mark.",
     "type": "component",
     "iconName": "edit_note"
+  },
+  {
+    "title": "Figure — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/figure",
+    "keywords": "figure — design system data display a caption is not alt text why 1.1.1 is not on the checklist cover crops; contain does not credit example why the markup matters  tokens wcag accessibility",
+    "description": "An image and its caption as one thing, using real figure and figcaption markup so the caption is associated with the picture rather than read as the next paragraph.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
+    "title": "File List — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/file-list",
+    "keywords": "file list — design system data display a list of states, not a list of names the filename is never rewritten a failure says what to do example every action names its own file  tokens wcag accessibility",
+    "description": "The attachments on an application: what has been uploaded, what state each one is in, and what can be done about it. A list of states, not a list of names.",
+    "type": "component",
+    "iconName": "bar_chart"
   },
   {
     "title": "Filter Bar — Design System",
@@ -864,6 +972,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Inline Edit — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/inline-edit",
+    "keywords": "inline edit — design system forms & inputs confirmed, never optimistic — and not configurable a failed write keeps what was typed the trigger names its field a read-only value says why  tokens wcag accessibility",
+    "description": "A recorded value corrected in place. The save is confirmed, never optimistic — on a departmental record an edit that shows before it is written is a data-integrity problem wearing a performance improvement.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Input — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/input",
@@ -899,6 +1016,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A standalone label element for controls that are not wrapped in a Form Field, matching the Form Field label exactly.",
     "type": "component",
     "iconName": "edit_note"
+  },
+  {
+    "title": "Language Switcher — Design System",
+    "section": "Navigation",
+    "href": "/design-system/components/navigation/language-switcher",
+    "keywords": "language switcher — design system navigation each language names itself the language being read is not a link real links, not a select the group&rsquo;s name follows the page  tokens wcag accessibility",
+    "description": "The languages a page is published in, offered as links — each written in its own language, each carrying its own lang attribute, and the one being read rendered as text rather than a link to itself.",
+    "type": "component",
+    "iconName": "navigation"
   },
   {
     "title": "Layering",
@@ -957,6 +1083,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "navigation"
   },
   {
+    "title": "List Group — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/list-group",
+    "keywords": "list group — design system data display list or table the whole row is the target length example link, button, or neither selection is not only a colour a disabled row stays in the list ListRow tokens wcag accessibility",
+    "description": "A real <ul> of rows with a leading slot, a text block and a trailing slot — the surface behind recent items, notifications, documents and search results.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "Live Region — Design System",
     "section": "Utilities",
     "href": "/design-system/components/utilities/live-region",
@@ -1000,6 +1135,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A single-file dropzone with a click target, drag and drop, an inline preview, and client-side type and size checks.",
     "type": "component",
     "iconName": "edit_note"
+  },
+  {
+    "title": "Menu — Design System",
+    "section": "Actions",
+    "href": "/design-system/components/actions/menu",
+    "keywords": "menu — design system actions menu, popover, select — choosing between them every item carries visible text tone colours the label, not the row placement example a disabled item is still announced type-ahead one tab stop  tokens wcag accessibility",
+    "description": "The WAI-ARIA menu-button pattern: a trigger opens a list of commands, focus moves onto the first, and the arrow keys move between them.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Metric Card — Design System",
@@ -1048,6 +1192,24 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "navigation"
   },
   {
+    "title": "Notification Centre — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/notification-centre",
+    "keywords": "notification centre — design system data display the same sentence in both places mark all as read appears only when it can do something it does not place itself  tokens wcag accessibility",
+    "description": "The panel behind the bell — what has happened that this officer has not seen, rendered as Event List grouped by day so a notification and the same entry in the audit log read identically.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
+    "title": "Number Input — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/number-input",
+    "keywords": "number input — design system forms & inputs empty is not zero committing on blur, and forgiving separators the steppers are never the only route example the spinbutton contract  tokens wcag accessibility",
+    "description": "A quantity, amount or count. A text field carrying role=spinbutton rather than input type=number, which silently discards what it cannot parse.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Opacity",
     "section": "Foundations",
     "href": "/design-system/foundations/opacity",
@@ -1074,6 +1236,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "Six separate boxes for a one-time password, with paste, SMS autofill, arrow-key movement and a numbered box for every digit.",
     "type": "component",
     "iconName": "edit_note"
+  },
+  {
+    "title": "Overview Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/overview-screen",
+    "keywords": "overview screen — design system getting started the order is the reader&rsquo;s two rules this template cannot enforce each panel owns its own states example numbers are read aloud  tokens wcag accessibility",
+    "description": "Many records aggregated into figures: a KPI row, a pair of chart cards, context panels and a recent list.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Page Header — Design System",
@@ -1140,6 +1311,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Popover — Design System",
+    "section": "Feedback & Status",
+    "href": "/design-system/components/feedback/popover",
+    "keywords": "popover — design system feedback & status why this is not a tooltip placement the panel&apos;s edge width example non-modal, and why that decides the keyboard model the label is required touch  tokens wcag accessibility",
+    "description": "A non-modal dialog anchored to a trigger, holding content the reader can interact with. Escape closes it and returns focus; Tab out closes it without trapping.",
+    "type": "component",
+    "iconName": "notifications"
+  },
+  {
     "title": "Portal Card — Design System",
     "section": "Navigation",
     "href": "/design-system/components/navigation/portal-card",
@@ -1177,6 +1357,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "lock"
   },
   {
+    "title": "Portal Page — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/portal-page",
+    "keywords": "portal page — design system getting started it replaces sixteen shells two rail widths, and only two five roles, and hiding is not authorisation example the skip link must agree with mainid E-Anudaan tokens wcag accessibility",
+    "description": "The only chrome a signed-in portal screen needs: masthead, rail, content column, footer — resolved from the portal and the viewer",
+    "type": "component",
+    "iconName": "widgets"
+  },
+  {
     "title": "Profile Card — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/profile-card",
@@ -1211,6 +1400,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A label, a figure and a thin bar per row — the ranking and breakdown list every portal dashboard draws, paged rather than scrolled, with the figure as the reading and the bar as the aid.",
     "type": "component",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "Record Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/record-screen",
+    "keywords": "record screen — design system getting started keep a tab that has nothing in it four to six facts, then a description list example omit what this reader may not do  tokens wcag accessibility",
+    "description": "One record, read-only: a summary strip of headline facts, then tabbed detail.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Required Fields Legend — Design System",
@@ -1266,6 +1464,24 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "Plots one measured quantity against another, one mark per record, for distribution and correlation across districts or units.",
     "type": "component",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "Schedule Grid — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/schedule-grid",
+    "keywords": "schedule grid — design system data display a real table is the whole design the caption is visible and required an empty cell is empty it scrolls in its own region, not inside a card  tokens wcag accessibility",
+    "description": "A timetable — Garima Greh",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
+    "title": "Screen Body — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/screen-body",
+    "keywords": "screen body — design system getting started six branches, not seven it branches the render, never the hooks example every string is a prop, and that is deliberate  tokens wcag accessibility",
+    "description": "The state branch every screen template routes through: idle, loading, error, empty, filtered to nothing, and populated.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Search — Design System",
@@ -1350,6 +1566,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "navigation"
   },
   {
+    "title": "Signature Pad — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/signature-pad",
+    "keywords": "signature pad — design system forms & inputs the typed path cannot be switched off the component does not decide what counts as consent the declaration sits above the pad clearing is always available  tokens wcag accessibility",
+    "description": "A signature given by drawing or by typing. The typed alternative cannot be switched off — drawing is a drag, and WCAG 2.2 requires a single-pointer path that is not one.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Signing Into Bar — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/auth/signing-into-bar",
@@ -1423,6 +1648,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "notifications"
   },
   {
+    "title": "Slider — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/slider",
+    "keywords": "slider — design system forms & inputs it is a real range input never the only way to enter a number that matters a number without its unit is not the information the range variant is two real sliders example the ring goes on the thumb two sliders need two names RangeSlider tokens wcag accessibility",
+    "description": "A bounded numeric choice built on a real <input type=\\",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Small Multiples — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/small-multiples",
@@ -1451,6 +1685,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Split Button — Design System",
+    "section": "Actions",
+    "href": "/design-system/components/actions/split-button",
+    "keywords": "split button — design system actions two buttons, not one it draws no seam of its own only where there is a default example two controls need two names  tokens wcag accessibility",
+    "description": "One default action with its alternatives one press away — two real buttons joined by ButtonGroup, never one control that behaves differently depending on which half was hit.",
+    "type": "component",
+    "iconName": "widgets"
+  },
+  {
     "title": "SSO Button — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/auth/sso-button",
@@ -1463,8 +1706,8 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Stepper — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/stepper",
-    "keywords": "stepper — design system feedback & status three states, derived writing the labels example keyboard what a screen reader hears  tokens wcag accessibility",
-    "description": "Horizontal progress through a multi-step form: which stages are complete, which one the applicant is on, and how many remain.",
+    "keywords": "stepper — design system feedback & status anatomy five states, one derivation advancing a stage is three movements, not a redraw what happens when the row is too narrow writing the labels arrangements example letting the applicant go back keyboard what a screen reader hears steps[].label steps[].description steps[].status tokens wcag accessibility",
+    "description": "Progress through a multi-stage form: which stages are complete, which one the applicant is on, which one failed validation, and how many remain.",
     "type": "component",
     "iconName": "notifications"
   },
@@ -1524,6 +1767,24 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "notifications"
   },
   {
+    "title": "Time Picker — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/time-picker",
+    "keywords": "time picker — design system forms & inputs strict about the value, forgiving about the typing bounds govern the list, not the field example focus never leaves the field enter chooses; space does not active and selected are different  tokens wcag accessibility",
+    "description": "A typed 24-hour time field with a list of times as the second way in, rejecting input type=time because its 12- or 24-hour display belongs to the browser.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
+    "title": "Time Slot — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/time-slot",
+    "keywords": "time slot — design system forms & inputs built from real radios a full slot stays on the page the grid reflows itself example the set needs a name  tokens wcag accessibility",
+    "description": "A grid of bookable windows, built from real radio inputs so the keyboard model, the single-choice constraint and form submission are the browser",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Toast — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/toast",
@@ -1549,6 +1810,24 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A hint bubble on hover and focus, meeting WCAG 1.4.13: dismissible with Escape, hoverable, and persistent until the reader leaves it.",
     "type": "component",
     "iconName": "notifications"
+  },
+  {
+    "title": "Transfer List — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/transfer-list",
+    "keywords": "transfer list — design system data display checkboxes, deliberately the count is part of the name the buttons promise a number what moved is announced  tokens wcag accessibility",
+    "description": "Two lists and the traffic between them. Each side is a list of checkboxes, deliberately — there is no WAI-ARIA pattern for a transfer list, and inventing a keyboard model is worse than using controls every reader already knows.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
+    "title": "Tree — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/tree",
+    "keywords": "tree — design system data display one tab stop, not one per node two keys doing two things each the shape is announced, not only drawn type-ahead, and a buffer that clears a disabled branch is still reachable  tokens wcag accessibility",
+    "description": "A hierarchy a reader walks, built to the WAI-ARIA tree pattern rather than approximated — one tab stop, arrow keys that expand and descend, type-ahead, and the level and position on every node.",
+    "type": "component",
+    "iconName": "bar_chart"
   },
   {
     "title": "Typography",
@@ -1579,6 +1858,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Video Tile — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/video-tile",
+    "keywords": "video tile — design system data display never autoplay, never with sound offline is a sentence, not a black rectangle &ldquo;live&rdquo; is written the text alternative is a prop  tokens wcag accessibility",
+    "description": "One camera or one recording, with the four states a feed is actually in — and the words for each, because a dark rectangle is not an answer.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "Visitor Counter — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/visitor-counter",
@@ -1604,6 +1892,24 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The shared multi-step form shell: a stepper, the current step",
     "type": "component",
     "iconName": "edit_note"
+  },
+  {
+    "title": "Wizard Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/wizard-screen",
+    "keywords": "wizard screen — design system getting started three to seven steps, one treatment the draft banner has two flavours and one shape a step taller than the viewport example two guards the template cannot install  tokens wcag accessibility",
+    "description": "One record entered in stages: the page title, the step meta line, the draft banner and the stepper — around the shared Wizard.",
+    "type": "component",
+    "iconName": "widgets"
+  },
+  {
+    "title": "Worklist Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/worklist-screen",
+    "keywords": "worklist screen — design system getting started why this template exists priority is how a twelve-column table survives a phone selection spans the whole matching set both forms page, and they page together two counts, kept apart example two things the template cannot do for you  tokens wcag accessibility",
+    "description": "Many records the reader acts on: filters, table, bulk actions and a pager, with all seven states owned by the template.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Zone Switcher — Design System",

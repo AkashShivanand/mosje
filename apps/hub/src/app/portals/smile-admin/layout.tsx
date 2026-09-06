@@ -24,13 +24,11 @@ export const metadata: Metadata = {
 // attributes, so both move to a wrapper — the selectors are attribute-based and
 // the custom properties inherit, so the cascade is identical.
 //
-// data-brand="navy" was smile-admin's own fixed brand ramp (its GoI
-// navy identity), set via its own standalone ColorModeProvider initialMode — it
-// was never user-togglable inside smile-admin (no switcher was rendered there).
-// The hub's estate-wide ColorModeProvider now owns the html-level, user-switchable
-// mode; setting the same attribute again on this closer wrapper overrides it for
-// smile-admin's subtree only, preserving its permanent navy identity without
-// affecting the estate-wide toggle elsewhere.
+// data-brand is NOT set here any more. Navy came from a hand-written wrapper on
+// this one portal; since 2026-09-06 it comes from the route default in
+// `defaultColorModeForPath` — every path under /portals/ opens navy. Pinning it
+// here as well would make this the one portal the estate's Colour tab cannot
+// reach, which is the "control that looks usable and isn't" pattern.
 //
 // data-portal="smile-admin" binds this subtree to smile-admin's Tailwind palette.
 // The hub runs a single Tailwind build, so the utility names are global but the
@@ -38,7 +36,7 @@ export const metadata: Metadata = {
 // smile-admin.css.
 export default function SmileAdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div data-portal="smile-admin" data-brand="navy" data-surface="portal">
+    <div data-portal="smile-admin" data-surface="portal">
       <AppProvider>{children}</AppProvider>
     </div>
   );
