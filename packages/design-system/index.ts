@@ -174,6 +174,8 @@ export type { RadioProps } from "./components/forms/radio";
 export type { SelectionSize, SelectionLabelPlacement, SelectionVariant, SelectionCardLayout, CheckboxState } from "./components/forms/selection-types";
 export { Toggle } from "./components/forms/toggle";
 export { RangeSlider, Slider } from "./components/forms/slider";
+export { TimePicker } from "./components/forms/time-picker";
+export type { TimePickerProps } from "./components/forms/time-picker";
 export { TimeSlot } from "./components/forms/time-slot";
 export type {
   TimeSlotGroup,

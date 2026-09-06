@@ -9569,6 +9569,94 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "TimePickerProps": {
+    "source": "packages/design-system/components/forms/time-picker.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Always visible. A time field with only a placeholder is a guess."
+      },
+      {
+        "name": "onChange",
+        "type": "(hhmm: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "description": "Canonical 24-hour `HH:MM`. Empty string when unset."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false,
+        "description": "Shown under the field, and announced."
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Sets the error state without a message, so spreading `FormField`'s render-prop object onto this component degrades rather than breaks. A message is still better — prefer `error`."
+      },
+      {
+        "name": "max",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "min",
+        "type": "string",
+        "required": false,
+        "description": "Canonical `HH:MM` bounds. A time outside them cannot be chosen from the list."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "step",
+        "type": "number",
+        "required": false,
+        "default": "30",
+        "description": "Minutes between the times offered in the list. The field itself still accepts any minute — the step governs the shortcut, not the value."
+      }
+    ]
+  },
   "TimeSlotProps": {
     "source": "packages/design-system/components/forms/time-slot.tsx",
     "inheritsNative": false,

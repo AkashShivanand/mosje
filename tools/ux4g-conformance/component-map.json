@@ -32,7 +32,9 @@
         },
         {
           "ux4g": "Time Picker",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "TimePicker",
+          "note": "Typed 24-hour field with a listbox of times. `<input type=\"time\">` is deliberately not used: its 12- vs 24-hour rendering belongs to the browser, and a government form that cannot state its own time format collects wrong times."
         },
         {
           "ux4g": "File Upload",

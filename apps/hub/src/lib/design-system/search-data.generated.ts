@@ -1560,6 +1560,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "notifications"
   },
   {
+    "title": "Time Picker — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/time-picker",
+    "keywords": "time picker — design system forms & inputs strict about the value, forgiving about the typing bounds govern the list, not the field example focus never leaves the field enter chooses; space does not active and selected are different  tokens wcag accessibility",
+    "description": "A typed 24-hour time field with a list of times as the second way in, rejecting input type=time because its 12- or 24-hour display belongs to the browser.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Time Slot — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/time-slot",

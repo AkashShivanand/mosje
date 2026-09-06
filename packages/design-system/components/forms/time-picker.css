@@ -1,0 +1,164 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Time Picker
+     A typed 24-hour field with a listbox of times as the second way in. The
+     list is portalled and fixed-positioned on the shared anchoring engine.
+     ============================================================================ */
+
+  .ds-timepicker {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-timepicker__label {
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .ds-timepicker__required {
+    margin-inline-start: var(--sa-inline-4);
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  .ds-timepicker__hint {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+  }
+
+  .ds-timepicker__control {
+    display: flex;
+    align-items: stretch;
+    gap: var(--sa-inline-4);
+    margin-block-start: var(--sa-stack-4);
+  }
+
+  .ds-timepicker__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    box-sizing: border-box;
+    height: var(--sa-control-height-md);
+    padding: 0 var(--sa-padding-12);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-radius);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    font-family: inherit;
+    font-size: var(--sa-type-body-2-size);
+    /* A time is columns of digits; tabular figures stop the field jittering as
+       the citizen types. */
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-timepicker__input:focus-visible,
+  .ds-timepicker__trigger:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-timepicker__input--error {
+    border-color: var(--sa-border-status-error-base);
+  }
+
+  .ds-timepicker__input:disabled,
+  .ds-timepicker__trigger:disabled {
+    background-color: var(--sa-bg-neutral-disabled);
+    color: var(--sa-text-neutral-disabled);
+    cursor: not-allowed;
+  }
+
+  .ds-timepicker__trigger {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Square on the field's own height, so it clears WCAG 2.2 2.5.8 without a
+       size of its own to keep in step. */
+    width: var(--sa-control-height-md);
+    height: var(--sa-control-height-md);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-radius);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-body-1-size);
+    cursor: pointer;
+  }
+
+  .ds-timepicker__trigger:hover:not(:disabled) {
+    background-color: var(--sa-bg-neutral-hover);
+  }
+
+  .ds-timepicker__error {
+    margin: 0;
+    color: var(--sa-text-status-error-bolder);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+  }
+
+  .ds-timepicker__list {
+    position: fixed;
+    /* A field's own list sits on the dropdown rung — under a Modal, which may
+       contain the field, and under a Tooltip describing a control inside it. */
+    z-index: var(--sa-z-dropdown);
+    box-sizing: border-box;
+    min-width: 8rem;
+    /* Twelve rows before it scrolls: enough to see the shape of a day without
+       the list becoming the page. */
+    max-height: calc(var(--sa-control-height-sm) * 12);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--sa-padding-4);
+    border: var(--sa-cmp-divider-width) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-dropdown);
+  }
+
+  .ds-timepicker__list:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
+  }
+
+  .ds-timepicker__option {
+    display: flex;
+    align-items: center;
+    min-height: var(--sa-control-height-sm);
+    padding: 0 var(--sa-padding-12);
+    border-radius: var(--sa-shape-6);
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-body-2-size);
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+  }
+
+  /* The ACTIVE option is where the arrow keys are; the SELECTED one is the
+     field's value. They are different states and are drawn differently — a list
+     that marks only one of them leaves a keyboard reader unable to tell what
+     pressing Enter would do. */
+  .ds-timepicker__option--active {
+    background-color: var(--sa-bg-neutral-hover);
+  }
+
+  .ds-timepicker__option--selected {
+    color: var(--sa-text-brand-primary-bolder);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .ds-timepicker__option--selected::after {
+    content: "✓";
+    margin-inline-start: auto;
+  }
+}

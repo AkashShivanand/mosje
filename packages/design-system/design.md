@@ -2511,6 +2511,18 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **`credit` is content, not a nicety.** A departmental photograph with no attribution is one nobody can check.
 - It imports no image library, so `next/image` works through it and it still renders in Storybook.
 
+#### TimePicker
+**Purpose**: a typed 24-hour time field, with a list of times as the SECOND way in.
+**Props**: `label` (**required**) · `value` (canonical `HH:MM`) · `onChange` · `min` · `max` · `step` (default 30) · `hint` · `error` · `invalid` · `required` · `disabled` · `id`
+**Rules**:
+- **`<input type="time">` is rejected, for the same reason `DatePicker` rejects `<input type="date">`.** Its rendering — and critically, 12-hour versus 24-hour display — belongs to the browser and the OS, so one government form shows "2:00 PM" to one citizen and "14:00" to the next with no way to correct it. Every published departmental schedule on this estate is 24-hour, and a form that cannot state its own time format will collect wrong times.
+- **Forgiving about punctuation, strict about ambiguity — they are different things.** `9:05`, `09.05` and `0905` all commit as `09:05`, on BLUR and never on keystroke, so a half-typed time is never read as a wrong one. **`9:5` is REFUSED, not guessed**: it could be 09:05 or 09:50, and a form that quietly picks one records the wrong time without telling anybody. Unparseable text restores the last good value rather than leaving characters that will fail on submit.
+- **`min`/`max` govern the LIST, not the field.** A citizen reporting when something happened is not choosing from an offer; refusing 03:14 because the office opens at 09:30 would stop the form recording what it was asked to record. Validate bounds on submit and say so.
+- **Focus never leaves the field.** The list is presentational, takes no `tabIndex`, and the arrows move an `aria-activedescendant` marker — so typing keeps working while it is open, and a list that unmounts cannot strand a keyboard reader at `<body>`.
+- **Enter chooses; Space deliberately does not.** Space is a printable character in a field someone is typing into; stealing it makes the space bar break intermittently.
+- **Active and selected are drawn differently** — a fill for where the arrows are, a tick and heavier ink for the field's value. A list marking only one leaves a keyboard reader unable to tell what Enter would do.
+- Where the times are a FIXED, bookable set, use `TimeSlot` — it is a radio group and shows capacity.
+
 #### TimeSlot
 **Purpose**: a grid of bookable windows — a daily programme, an event, any appointment a citizen chooses.
 **Props**: `groups` (`{ label, slots }[]`, slot = `{ id, label, remaining?, disabled?, unavailableReason? }`) · `value` · `onChange` · `label` (**required**) · `description` · `name`
