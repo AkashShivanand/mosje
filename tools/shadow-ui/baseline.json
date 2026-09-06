@@ -1,7 +1,4 @@
 {
-  "apps/hub/src/app/portals/scw/admin/assisted-devices/page.tsx": [
-    "Toggle"
-  ],
   "apps/hub/src/components/eutthan/eutthan-cells.tsx": [
     "Pagination"
   ],

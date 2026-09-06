@@ -4,9 +4,8 @@ import {
   Pagination,
   PageHeader,
 } from "@/components/scw/ui";
-import { cn } from "@/lib/scw/utils";
 import { ASSISTED_DEVICES, DEVICES_TOTAL } from "@/lib/scw/mock-data";
-import { Icon } from "@mosje/design-system";
+import { Badge, Icon } from "@mosje/design-system";
 
 const COLUMNS = [
   { key: "title", label: "Title" },
@@ -14,26 +13,6 @@ const COLUMNS = [
   { key: "active", label: "Is Active" },
   { key: "actions", label: "Actions" },
 ];
-
-function Toggle({ on }: { on: boolean }) {
-  return (
-    <span
-      role="switch"
-      aria-checked={on}
-      className={cn(
-        "inline-flex h-6 w-11 items-center rounded-full p-0.5 transition-colors",
-        on ? "bg-navy" : "bg-line"
-      )}
-    >
-      <span
-        className={cn(
-          "h-5 w-5 rounded-full bg-white shadow transition-transform",
-          on ? "translate-x-5" : "translate-x-0"
-        )}
-      />
-    </span>
-  );
-}
 
 export default function AssistedDevicesPage() {
   return (
@@ -58,7 +37,9 @@ export default function AssistedDevicesPage() {
               <span className="line-clamp-1 block max-w-[28rem]">{d.description}</span>
             </td>
             <td className="px-6 py-4">
-              <Toggle on={d.active} />
+              <Badge status={d.active ? "success" : "neutral"}>
+                {d.active ? "Active" : "Inactive"}
+              </Badge>
             </td>
             <td className="px-6 py-4">
               <button
