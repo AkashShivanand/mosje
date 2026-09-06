@@ -393,7 +393,7 @@ inspection of either half alone would have found:
 
 | Item | State |
 |---|---|
-| Code Connect templates for the fifteen new masters | Not written. Each component record says so. |
+| Code Connect templates for the fifteen new masters | **Written**, each with a recorded fixture, so `check:code-connect` verifies rather than reports them. The component records still say "not published"; that line is now stale on all fifteen and is corrected in the next Figma pass. |
 | Shadow UI | 37 collisions in 14 files. Three portals still ship their own Button, Card and Stepper. |
 | `DatePicker` and `Button` sets | Both predate the rebuild, and two new masters draw their own halves rather than instancing them. Each record names the swap that should follow. |
 | Whether the package may leave the monorepo | `private: true`. The department's call, not a technical one. |

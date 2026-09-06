@@ -1452,5 +1452,268 @@
       }
     },
     "deliberatelyOmitted": []
+  },
+  "LanguageSwitcher": {
+    "nodeId": "57596:752",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "Reading": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "English",
+          "हिन्दी"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "InlineEdit": {
+    "nodeId": "57599:770",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Reading",
+          "Not recorded",
+          "Editing",
+          "Failed"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "EventList": {
+    "nodeId": "57600:48770",
+    "captured": "2026-09-06",
+    "note": "Figma publishes the row; code publishes the list.",
+    "properties": {
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Neutral",
+          "Info",
+          "Success",
+          "Warning",
+          "Danger"
+        ]
+      },
+      "Note": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "true",
+          "false"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "NumberInput": {
+    "nodeId": "57605:770",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Empty",
+          "Error",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "SplitButton": {
+    "nodeId": "57606:762",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Primary",
+          "Danger"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "BackToTop": {
+    "nodeId": "57608:745",
+    "captured": "2026-09-06",
+    "note": "Label is whether the words are drawn — the component decides that from the viewport, so it maps to no prop.",
+    "properties": {
+      "Label": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Shown",
+          "Hidden"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "BulkActionsBar": {
+    "nodeId": "57609:759",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "Select all": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Hidden",
+          "Shown"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "FileList": {
+    "nodeId": "57611:775",
+    "captured": "2026-09-06",
+    "note": "Figma publishes the row; code publishes the list.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Attached",
+          "Scanning",
+          "Uploading",
+          "Failed"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "DateRangePicker": {
+    "nodeId": "57613:797",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Preset",
+          "Inverted"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Tree": {
+    "nodeId": "57614:783",
+    "captured": "2026-09-06",
+    "note": "Figma publishes the node; code publishes the tree. Level is drawn as indent and derived in code.",
+    "properties": {
+      "Kind": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Branch closed",
+          "Branch open",
+          "Leaf"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Selected",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "TransferList": {
+    "nodeId": "57616:830",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Ticked",
+          "Nothing left"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "ScheduleGrid": {
+    "nodeId": "57618:798",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Populated",
+          "Empty"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "VideoTile": {
+    "nodeId": "57620:779",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Live",
+          "Recorded",
+          "Connecting",
+          "Offline"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "SignaturePad": {
+    "nodeId": "57621:772",
+    "captured": "2026-09-06",
+    "note": "Built 6 September 2026 alongside the code. The set publishes variants only — every non-variant option in this component is data the caller supplies, not a Figma property.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Not signed",
+          "Signed by drawing",
+          "Signed by typing"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "CookieConsent": {
+    "nodeId": "57622:778",
+    "captured": "2026-09-06",
+    "note": "Kind is derived from the categories rather than passed in.",
+    "properties": {
+      "Kind": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Notice",
+          "Choice",
+          "Choices"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
   }
 }
