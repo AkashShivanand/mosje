@@ -1,6 +1,6 @@
 {
-  "$description": "UX4G Design System 3.0's published component set (59, from ux4g.gov.in/components) mapped to SAMAVESH. `status` is one of: exact (SAMAVESH ships an equivalent), partial (exists but not exported as a shared component, or covered only as a variant), missing (no equivalent). `samavesh` names the export in @mosje/design-system. Keep this file honest \u2014 it feeds the coverage figure in the weekly UX4G report.",
-  "$reviewed": "2026-08-06",
+  "$description": "UX4G Design System 3.0's published component set (59, from ux4g.gov.in/components) mapped to SAMAVESH. `status` is one of: exact (SAMAVESH ships an equivalent), partial (exists but not exported as a shared component, or covered only as a variant), missing (no equivalent). `samavesh` names the export in @mosje/design-system. Keep this file honest — it feeds the coverage figure in the weekly UX4G report.",
+  "$reviewed": "2026-09-06",
   "categories": {
     "form": {
       "label": "Form Elements",
@@ -12,9 +12,8 @@
         },
         {
           "ux4g": "Icon Button",
-          "status": "partial",
-          "samavesh": "Button",
-          "note": "Icon-only rendering is a Button prop, not a distinct component."
+          "status": "exact",
+          "samavesh": "IconButton"
         },
         {
           "ux4g": "Checkbox",
@@ -23,11 +22,13 @@
         },
         {
           "ux4g": "Combobox",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Combobox"
         },
         {
           "ux4g": "Date Picker",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "DatePicker"
         },
         {
           "ux4g": "Time Picker",
@@ -145,8 +146,8 @@
         },
         {
           "ux4g": "Progress Indicators",
-          "status": "partial",
-          "samavesh": "charts/progress",
+          "status": "exact",
+          "samavesh": "Progress",
           "note": "Exists in the charts layer, not as a general feedback component."
         },
         {
@@ -163,7 +164,8 @@
         },
         {
           "ux4g": "Tooltip",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Tooltip"
         }
       ]
     },
@@ -172,7 +174,8 @@
       "components": [
         {
           "ux4g": "Accordion",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Accordion"
         },
         {
           "ux4g": "Avatar",
@@ -201,7 +204,8 @@
         },
         {
           "ux4g": "Divider",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Divider"
         },
         {
           "ux4g": "Horizontal Status Pipeline",
@@ -257,7 +261,8 @@
       "components": [
         {
           "ux4g": "Breadcrumb",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Breadcrumb"
         },
         {
           "ux4g": "Footer",
@@ -266,11 +271,13 @@
         },
         {
           "ux4g": "Link",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Link"
         },
         {
           "ux4g": "Mega Menu",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "MegaMenu"
         },
         {
           "ux4g": "Mobile App Header",
@@ -285,8 +292,8 @@
         },
         {
           "ux4g": "Pagination",
-          "status": "partial",
-          "samavesh": "DataTable",
+          "status": "exact",
+          "samavesh": "Pagination",
           "note": "Implemented inside DataTable; not exported for reuse."
         },
         {
