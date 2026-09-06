@@ -1120,5 +1120,337 @@
     "note": "A single component with no properties; the rows are data.",
     "properties": {},
     "deliberatelyOmitted": []
+  },
+  "DescriptionList": {
+    "nodeId": "57520:769",
+    "captured": "2026-09-06",
+    "note": "Figma publishes the row; code publishes the list. Read from the Plugin API on 6 September 2026.",
+    "properties": {
+      "Term": {
+        "type": "TEXT"
+      },
+      "Value": {
+        "type": "TEXT"
+      },
+      "Show hint": {
+        "type": "BOOLEAN"
+      },
+      "Layout": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Stacked",
+          "Inline"
+        ]
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Md",
+          "Sm"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Recorded",
+          "Not recorded"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Figure": {
+    "nodeId": "57524:850",
+    "captured": "2026-09-06",
+    "properties": {
+      "Caption": {
+        "type": "TEXT"
+      },
+      "Credit": {
+        "type": "TEXT"
+      },
+      "Show credit": {
+        "type": "BOOLEAN"
+      },
+      "Ratio": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Auto",
+          "Square",
+          "Video",
+          "Photo",
+          "Portrait"
+        ]
+      },
+      "Fit": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Cover",
+          "Contain"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "TimeSlot": {
+    "nodeId": "57526:770",
+    "captured": "2026-09-06",
+    "note": "Figma publishes the slot; code publishes the radio group.",
+    "properties": {
+      "Time": {
+        "type": "TEXT"
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Available",
+          "Selected",
+          "Full",
+          "Closed"
+        ]
+      },
+      "Capacity": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Shown",
+          "Hidden"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "BiometricCapture": {
+    "nodeId": "57530:873",
+    "captured": "2026-09-06",
+    "note": "consent and fallbackHref are required in code and are deliberately not Figma properties — a capture with neither must not be buildable.",
+    "properties": {
+      "Subject": {
+        "type": "TEXT"
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Idle",
+          "Capturing",
+          "Captured",
+          "Failed",
+          "Unavailable"
+        ]
+      },
+      "Modality": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Fingerprint",
+          "Iris",
+          "Face"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Popover": {
+    "nodeId": "57538:857",
+    "captured": "2026-09-06",
+    "properties": {
+      "Title": {
+        "type": "TEXT"
+      },
+      "Show title": {
+        "type": "BOOLEAN"
+      },
+      "Content": {
+        "type": "TEXT"
+      },
+      "Side": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Bottom",
+          "Top",
+          "Left",
+          "Right"
+        ]
+      },
+      "Align": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Start",
+          "Center",
+          "End"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Menu": {
+    "nodeId": "57541:4628",
+    "captured": "2026-09-06",
+    "note": "Figma publishes the item; code publishes the menu.",
+    "properties": {
+      "Label": {
+        "type": "TEXT"
+      },
+      "Description": {
+        "type": "TEXT"
+      },
+      "Show description": {
+        "type": "BOOLEAN"
+      },
+      "Show icon": {
+        "type": "BOOLEAN"
+      },
+      "Show tick": {
+        "type": "BOOLEAN"
+      },
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Neutral",
+          "Warning",
+          "Danger"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "ListRow": {
+    "nodeId": "57542:3311",
+    "captured": "2026-09-06",
+    "properties": {
+      "Eyebrow": {
+        "type": "TEXT"
+      },
+      "Title": {
+        "type": "TEXT"
+      },
+      "Description": {
+        "type": "TEXT"
+      },
+      "Show eyebrow": {
+        "type": "BOOLEAN"
+      },
+      "Show description": {
+        "type": "BOOLEAN"
+      },
+      "Show leading": {
+        "type": "BOOLEAN"
+      },
+      "Kind": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Link",
+          "Button",
+          "Static"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Selected",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "FeedbackWidget": {
+    "nodeId": "57539:1051",
+    "captured": "2026-09-06",
+    "note": "The four variants are four steps of one internal sequence; the component walks it itself, so there is no state prop to map the axis onto.",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Ask",
+          "Comment (yes)",
+          "Comment (no)",
+          "Sent"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Slider": {
+    "nodeId": "57547:48756",
+    "captured": "2026-09-06",
+    "properties": {
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Md",
+          "Sm"
+        ]
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "RangeSlider": {
+    "nodeId": "57547:48771",
+    "captured": "2026-09-06",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "TimePicker": {
+    "nodeId": "57547:2631",
+    "captured": "2026-09-06",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Closed",
+          "Open",
+          "Error",
+          "Disabled"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
+  },
+  "Carousel": {
+    "nodeId": "57548:1159",
+    "captured": "2026-09-06",
+    "note": "Figma publishes the controls; code publishes the carousel. Current is read so the template can be checked against the master, but it maps to no prop — the component holds its own position.",
+    "properties": {
+      "Autoplay": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Off",
+          "On"
+        ]
+      },
+      "Current": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ]
+      }
+    },
+    "deliberatelyOmitted": []
   }
 }

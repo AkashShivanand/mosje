@@ -89,7 +89,12 @@ for (const file of templates) {
 
   // 5 — enum mappings are populated.
   for (const m of src.matchAll(/getEnum\(\s*["']([^"']+)["']\s*,\s*\{([\s\S]*?)\}\s*\)/g)) {
-    const keys = [...m[2].matchAll(/["']?([\w .-]+)["']?\s*:/g)].map((k) => k[1].trim()).filter(Boolean);
+    // A QUOTED key may hold anything — `"Comment (yes)"` is a real Figma variant value,
+    // and the old `[\w .-]+` class could not see a parenthesis, so the gate reported a
+    // mapped variant as unmapped. Quoted keys are read whole; bare keys stay identifiers.
+    const keys = [...m[2].matchAll(/["']([^"']+)["']\s*:|([A-Za-z_$][\w$]*)\s*:/g)]
+      .map((k) => (k[1] ?? k[2] ?? "").trim())
+      .filter(Boolean);
     if (keys.length === 0) fail(rel, `getEnum("${m[1]}") has an empty mapping — every variant value must be listed`);
   }
 
@@ -146,7 +151,10 @@ for (const file of templates) {
       if (!def.variantOptions) continue;
       const m = src.match(new RegExp(`getEnum\\(\\s*["']${name}["']\\s*,\\s*\\{([\\s\\S]*?)\\}\\s*\\)`));
       if (!m) continue;
-      const mapped = new Set([...m[1].matchAll(/["']?([\w .-]+)["']?\s*:/g)].map((k) => k[1].trim()));
+      // Same quoted-key rule as check 5 — see the comment there.
+      const mapped = new Set(
+        [...m[1].matchAll(/["']([^"']+)["']\s*:|([A-Za-z_$][\w$]*)\s*:/g)].map((k) => (k[1] ?? k[2] ?? "").trim()),
+      );
       for (const v of def.variantOptions) {
         if (!mapped.has(v)) fail(rel, `getEnum("${name}") does not map variant "${v}" — it would emit undefined`);
       }

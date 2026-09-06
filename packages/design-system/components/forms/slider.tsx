@@ -9,7 +9,7 @@ export interface SliderMark {
   label: string;
 }
 
-interface SliderBase {
+interface SliderBaseProps {
   min?: number;
   max?: number;
   /** @default 1 */
@@ -31,7 +31,7 @@ interface SliderBase {
   className?: string;
 }
 
-export interface SliderProps extends SliderBase {
+export interface SliderProps extends SliderBaseProps {
   /** Controlled value. */
   value: number;
   onValueChange: (value: number) => void;
@@ -46,7 +46,7 @@ export interface SliderProps extends SliderBase {
   showValue?: boolean;
 }
 
-export interface RangeSliderProps extends SliderBase {
+export interface RangeSliderProps extends SliderBaseProps {
   /** Controlled `[from, to]`. The component keeps them ordered. */
   value: [number, number];
   onValueChange: (value: [number, number]) => void;

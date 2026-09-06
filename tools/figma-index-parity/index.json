@@ -275,12 +275,12 @@
         },
         {
           "name": "Date-Time Picker",
-          "status": "Published",
+          "status": "Ready",
           "linked": true
         },
         {
           "name": "Slider",
-          "status": "Published",
+          "status": "Ready",
           "linked": true
         },
         {
@@ -321,7 +321,7 @@
         },
         {
           "name": "Menu",
-          "status": "Published",
+          "status": "Ready",
           "linked": true
         },
         {
@@ -377,7 +377,7 @@
         },
         {
           "name": "Feedback Widget",
-          "status": "Published",
+          "status": "Ready",
           "linked": true
         }
       ]
@@ -398,7 +398,7 @@
         },
         {
           "name": "Popover",
-          "status": "Published",
+          "status": "Ready",
           "linked": true
         },
         {
@@ -424,7 +424,7 @@
         },
         {
           "name": "List",
-          "status": "Published",
+          "status": "Ready",
           "linked": true
         },
         {
@@ -511,7 +511,7 @@
         },
         {
           "name": "Carousel",
-          "status": "Published",
+          "status": "Ready",
           "linked": true
         },
         {
