@@ -83,8 +83,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { Badge, SidebarNav, type BadgeStatus, type SidebarNavGroup, OrgLogo } from "@mosje/design-system";
-import { Sparkline } from "./charts";
+import { Badge, SidebarNav, Sparkline, type BadgeStatus, type SidebarNavGroup, OrgLogo } from "@mosje/design-system";
 import { useAuth } from "@/store/pm-ajay/auth-context";
 import {
   STATES,
@@ -139,7 +138,7 @@ export function KpiCard({
       <div className="pm-kpi-top">
         <div className="pm-kpi-label">{kpi.label}</div>
         {showSpark && kpi.spark && (
-          <Sparkline data={kpi.spark} color={sparkColor} w={hero ? 88 : 72} h={hero ? 30 : 26} />
+          <Sparkline data={kpi.spark} color={sparkColor} width={hero ? 88 : 72} height={hero ? 30 : 26} />
         )}
       </div>
       <div className="pm-kpi-value">

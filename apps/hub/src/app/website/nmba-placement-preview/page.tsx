@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Header } from "@/components/website/Header";
-import { SamaveshBanner } from "@/components/website/SamaveshBanner";
+import { WebsiteSamaveshBanner } from "@/components/website/website-samavesh-banner";
 import { HeroCarousel } from "@/components/website/HeroCarousel";
 import { LatestUpdates } from "@/components/website/LatestUpdates";
 import { AboutUs } from "@/components/website/AboutUs";
@@ -59,7 +59,7 @@ export default function NmbaPlacementPreview() {
       </div>
 
       <Header />
-      <SamaveshBanner />
+      <WebsiteSamaveshBanner />
       <main id="main-content" className="flex-1">
         <HeroCarousel />
 

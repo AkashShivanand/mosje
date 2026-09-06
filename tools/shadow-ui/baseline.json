@@ -12,13 +12,6 @@
     "Stepper",
     "Textarea"
   ],
-  "apps/hub/src/components/pm-ajay/dashboard/charts.tsx": [
-    "Legend",
-    "Sparkline"
-  ],
-  "apps/hub/src/components/pm-ajay/dashboard/unified-app.tsx": [
-    "Alert"
-  ],
   "apps/hub/src/components/scw/ui.tsx": [
     "Button",
     "Card",
@@ -30,9 +23,6 @@
   ],
   "apps/hub/src/components/site-footer.tsx": [
     "SiteFooter"
-  ],
-  "apps/hub/src/components/site-header.tsx": [
-    "SiteHeader"
   ],
   "apps/hub/src/components/smile-admin/shell/footer.tsx": [
     "Footer"
@@ -48,12 +38,6 @@
     "Select",
     "Stepper",
     "Textarea"
-  ],
-  "apps/hub/src/components/website/layout/Breadcrumb.tsx": [
-    "Breadcrumb"
-  ],
-  "apps/hub/src/components/website/SamaveshBanner.tsx": [
-    "SamaveshBanner"
   ],
   "apps/hub/src/components/website/SiteFooter.tsx": [
     "SiteFooter"

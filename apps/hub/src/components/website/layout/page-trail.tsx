@@ -26,7 +26,7 @@ export type Crumb = Pick<BreadcrumbItem, "label" | "href">;
  * Organisations" are mega-menu categories with no route behind them, and 64
  * pages pass one as a middle crumb.
  */
-export function Breadcrumb({ items }: { items: Crumb[] }) {
+export function PageTrail({ items }: { items: Crumb[] }) {
   return (
     <DSBreadcrumb
       linkAs={Link}

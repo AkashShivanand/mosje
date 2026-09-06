@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteHeader } from "@/components/site-header";
+import { HubSiteHeader } from "@/components/hub-site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ReportsExplorer } from "@/components/reports-explorer";
 
@@ -20,7 +20,7 @@ export default function ReportsPage() {
         Skip to main content
       </a>
 
-      <SiteHeader current="/reports" />
+      <HubSiteHeader current="/reports" />
 
       <main id="main-content" className="flex-1">
         {/* Header band */}

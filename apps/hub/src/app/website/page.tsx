@@ -1,5 +1,5 @@
 import { Header } from "@/components/website/Header";
-import { SamaveshBanner } from "@/components/website/SamaveshBanner";
+import { WebsiteSamaveshBanner } from "@/components/website/website-samavesh-banner";
 import { HeroCarousel } from "@/components/website/HeroCarousel";
 import { AboutUs } from "@/components/website/AboutUs";
 import { Offerings } from "@/components/website/Offerings";
@@ -27,7 +27,7 @@ export default async function Home() {
       <Header />
       {/* Site-wide chrome, so it sits BETWEEN the header and <main>. Inside <main>
           its drawer heading is an <h2> that lands above the page's own <h1>. */}
-      <SamaveshBanner />
+      <WebsiteSamaveshBanner />
       <main id="main-content" className="flex-1">
         <HeroCarousel />
         <AboutUs />

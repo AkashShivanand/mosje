@@ -53,64 +53,6 @@ function SrData({
   );
 }
 
-/* ---- Sparkline (decorative; KPI value carries the meaning) ---- */
-export function Sparkline({
-  data,
-  color = C.blue,
-  w = 88,
-  h = 30,
-  fill = true,
-  domainMin,
-  domainMax,
-}: {
-  data: number[] | null;
-  color?: string;
-  w?: number;
-  h?: number;
-  fill?: boolean;
-  domainMin?: number;
-  domainMax?: number;
-}) {
-  const id = "sp" + useId().replace(/:/g, "");
-  if (!data || data.length < 2) return null;
-  const pad = 2,
-    min = domainMin != null ? domainMin : Math.min(...data),
-    max = domainMax != null ? domainMax : Math.max(...data),
-    rng = max - min || 1;
-  const pts = data.map<[number, number]>((v, i) => [
-    pad + (i / (data.length - 1)) * (w - pad * 2),
-    h - pad - ((v - min) / rng) * (h - pad * 2),
-  ]);
-  const line = pts
-    .map((p, i) => (i ? "L" : "M") + p[0].toFixed(1) + " " + p[1].toFixed(1))
-    .join(" ");
-  const area =
-    `M${(pts[0]?.[0] ?? 0).toFixed(1)} ${h} ` +
-    pts.map((p) => "L" + p[0].toFixed(1) + " " + p[1].toFixed(1)).join(" ") +
-    ` L${(pts.at(-1)?.[0] ?? 0).toFixed(1)} ${h} Z`;
-  return (
-    <svg
-      width={w}
-      height={h}
-      viewBox={`0 0 ${w} ${h}`}
-      aria-hidden="true"
-      focusable="false"
-      style={{ display: "block", flex: "none" }}
-    >
-      {fill && (
-        <defs>
-          <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor={color} stopOpacity="0.16" />
-            <stop offset="1" stopColor={color} stopOpacity="0" />
-          </linearGradient>
-        </defs>
-      )}
-      {fill && <path d={area} fill={`url(#${id})`} />}
-      <path d={line} fill="none" stroke={color} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 /* ---- Donut (with optional target marker) ---- */
 export function Donut({
   pct,
@@ -542,18 +484,3 @@ export function Funnel({ stages, caption }: { stages: Stage[]; caption?: string 
   );
 }
 
-export function Legend({ items }: { items: { label: string; color: string }[] }) {
-  return (
-    <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap" } as CSSProperties} aria-hidden="true">
-      {items.map((it, i) => (
-        <div
-          key={i}
-          style={{ display: "inline-flex", alignItems: "center", gap: "var(--sa-inline-6)", font: "400 12px/1 var(--font-sans)", color: C.muted }}
-        >
-          <span style={{ width: 10, height: 10, borderRadius: "var(--sa-shape-2)", background: it.color, flex: "none" }} />
-          {it.label}
-        </div>
-      ))}
-    </div>
-  );
-}
