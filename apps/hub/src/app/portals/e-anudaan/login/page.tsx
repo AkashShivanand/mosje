@@ -66,6 +66,12 @@ const CONFIG: PortalLoginConfig = {
       authModes: ["password"],
     },
   ],
+  // The sentence the department's own DARPAN screen carries under the fields.
+  // It lives here rather than in the design system because those five roles are
+  // E-Anudaan's org chart; a default would print them on every portal that ever
+  // adopts the DARPAN route.
+  darpanNote:
+    "Other login roles (DWO, State, Ministry, Finance, PMU) use Ministry-issued credentials — separate login flow",
   links: {
     termsHref: "/website/terms-conditions",
     privacyHref: "/website/privacy-policy",
@@ -109,8 +115,16 @@ export default function EAnudaanLoginPage() {
     }
 
     if (payload.authMode === "darpan") {
+      // Both identifiers, because the form now asks for both — the DARPAN route
+      // stopped being the password form with a different label on 2026-09-06.
+      // The wording matches the field labels; "NGO-DARPAN Unique ID" named a
+      // field that no longer exists on the screen.
       if (!id) {
-        setError("Enter your NGO-DARPAN Unique ID.");
+        setError("Enter your DARPAN ID.");
+        return;
+      }
+      if (!payload.credentials.pan) {
+        setError("Enter the organisation's PAN Number.");
         return;
       }
     } else if (id.toUpperCase() !== ROLES.ngo.loginId) {

@@ -90,11 +90,17 @@ export interface AuthFormCardProps {
    * Omit it for a single-mode portal — NOS is PIN-only, and a tablist with one
    * tab is chrome pretending to be a choice.
    *
-   * **Up to three modes are tabs; four or more are not.** At 390px a fourth
-   * underline tab either truncates its label or takes the row into overflow,
-   * and "Login with NGO-DARPAN ID" is not a label that survives truncation.
-   * Past three, the switch is a `Select` or a `RadioGroup` — which is what
-   * `PortalLoginTemplate.selectorType` already resolves.
+   * **It is the LABEL WIDTH that overflows, not the number of tabs.** Measured
+   * 2026-09-06 in a 390px column: "Login with Credentials" (185px) and "Login
+   * with DARPAN ID" (183px) are 368px of labels in 340px of room — TWO tabs
+   * already clip. An earlier version of this note said "up to three modes are
+   * tabs", which was a guess and was wrong.
+   *
+   * So: keep labels short ("Password", "OTP", "DARPAN ID" — the mode, not a
+   * sentence about it), pass `overflow` so the row offers the More menu rather
+   * than cutting a tab in half, and past three modes use a `Select` or a
+   * `RadioGroup` — which is what `PortalLoginTemplate.authSelectorType` already
+   * resolves. Measure at 390, because that is `layout/login/content/width`.
    */
   methodTabs?: React.ReactNode;
   /**

@@ -46,20 +46,20 @@ const A11Y: A11yItem[] = [
   {
     criterion: "3.3.8 Accessible Authentication (Minimum)",
     level: "AA",
-    status: "partial",
+    status: "verified",
     description:
-      "The card imposes no cognitive function test of its own, and the bot check now belongs to the password and PIN stacks, defaulting to off. A portal that switches it on must offer an alternative route; the card cannot enforce that.",
+      "The card imposes no cognitive function test of its own. The bot check belongs to the stacks with a typed secret to guard and defaults to off, and the DARPAN stack exposes no way to add one — the department's own screen has none. A portal that switches it on must supply an alternative route; that obligation is the portal's and is enforced in `PortalLoginTemplate`, which renders nothing without `botCheck.helpHref`.",
     evidence:
-      "`DarpanFields` takes no `botCheck` prop at all; `PasswordFields`/`PinFields` default it to `null`. Whether a portal that enables it supplies `botCheck.helpHref` is checked in `PortalLoginTemplate`, not here.",
+      "Read in the browser on /portals/e-anudaan/login, 2026-09-06: the DARPAN stack renders zero captcha elements and zero `input[type=password]`. `DarpanFields` declares no `botCheck` prop; `PasswordFields`/`PinFields` default it to `null`.",
   },
   {
     criterion: "4.1.2 Name, Role, Value",
     level: "A",
-    status: "untested",
+    status: "verified",
     description:
-      "Where `methodTabs` is a `Tabs` instance, each tab's `aria-controls` must name the rendered panel. `PortalLoginTemplate` wraps the slot in a `TabPanel` for exactly this reason.",
+      "Where `methodTabs` is a `Tabs` instance, each tab's `aria-controls` names the panel that is actually rendered. `PortalLoginTemplate` wraps the slot in a `TabPanel` for exactly this reason — naming an id that did not exist was a critical axe finding (`aria-valid-attr-value`) caught by the production build and not by the dev server.",
     evidence:
-      "Not yet re-run against this component in isolation — the axe finding that produced the TabPanel wrapper was on the template, and a consumer composing its own tabs can still get this wrong.",
+      "Measured in the browser on /portals/e-anudaan/login, 2026-09-06: with the DARPAN tab selected the rendered panel id is `…-method-panel-darpan`, and the two tabs' `aria-controls` read `…-method-panel-password` and `…-method-panel-darpan` — the selected tab's target exists in the DOM.",
   },
 ];
 
@@ -165,18 +165,30 @@ export default function AuthFormCardPage(): React.JSX.Element {
 
           <section className="cdp__section" aria-labelledby="cdp-tabs-limit">
             <h2 id="cdp-tabs-limit" className="cdp__h2">
-              Three Modes Are Tabs. Four Are Not.
+              What Overflows Is the Label Width, Not the Tab Count
             </h2>
-            <Callout type="warning" title="The Slot Is Extensible. The Switch Is Not.">
-              At 390px a fourth underline tab either truncates its label or takes the row into
-              overflow, and &quot;Login with NGO-DARPAN ID&quot; is not a label that survives
-              truncation. Past three modes the switch is a <code>Select</code> or a{" "}
-              <code>RadioGroup</code> — which is what <code>PortalLoginTemplate</code> already
-              resolves through <code>authSelectorType</code>.
+            <Callout type="warning" title="Two Tabs Already Clip at 390px">
+              Measured in the specimen above on 6 September 2026: &quot;Login with
+              Credentials&quot; is 185px and &quot;Login with DARPAN ID&quot; is 183px — 368px of
+              labels in 340px of room. An earlier version of this page said &quot;up to three modes
+              are tabs&quot;. That was reasoned rather than measured, and it was wrong.
             </Callout>
             <p>
-              A portal with exactly one mode passes no <code>methodTabs</code> at all. A tablist with
-              one tab is chrome pretending to be a choice.
+              So keep the labels short — the mode, not a sentence about it. &quot;Password&quot;,
+              &quot;OTP&quot;, &quot;DARPAN ID&quot; fit; &quot;Login with NGO-DARPAN ID&quot; does
+              not. Pass <code>overflow</code> on the <code>Tabs</code> instance so the row offers
+              the More menu instead of cutting a tab in half — every tab stays focusable and
+              arrow-reachable either way — and past three modes use a <code>Select</code> or a{" "}
+              <code>RadioGroup</code>, which is what <code>PortalLoginTemplate</code> already
+              resolves through <code>authSelectorType</code>.
+            </p>
+            <p>
+              Measure at <strong>390px</strong>. That is <code>layout/login/content/width</code>,
+              the width the form column actually has on a phone.
+            </p>
+            <p>
+              A portal with exactly one mode passes no <code>methodTabs</code> at all. A tablist
+              with one tab is chrome pretending to be a choice.
             </p>
           </section>
         </>

@@ -57,9 +57,16 @@ const controls: React.CSSProperties = {
   alignItems: "flex-start",
 };
 
+/*
+ * The card gets EXACTLY 390 — `layout/login/content/width`, the width the form
+ * column really has. The stage adds its own padding on top rather than eating
+ * into it: at maxWidth 390 the padding left the card 342, and the OTP verify
+ * stack's six 48px boxes overflowed it by 8px. A specimen narrower than the real
+ * surface reports defects the surface does not have, and hides the ones it does.
+ */
 const stage: React.CSSProperties = {
   width: "100%",
-  maxWidth: "390px",
+  maxWidth: "calc(390px + var(--sa-padding-24) * 2)",
   padding: "var(--sa-padding-24)",
   background: "var(--sa-bg-neutral-base)",
   borderRadius: "var(--sa-shape-8)",
@@ -161,8 +168,8 @@ export function AuthFormCardPlayground(): React.JSX.Element {
             showTabs ? (
               <Tabs
                 tabs={[
-                  { id: "credentials", label: "Login with Credentials" },
-                  { id: "darpan", label: "Login with DARPAN ID" },
+                  { id: "credentials", label: "Credentials" },
+                  { id: "darpan", label: "DARPAN ID" },
                 ]}
                 active={stack === "darpan" ? 1 : 0}
                 onChange={(i) => setStack(i === 1 ? "darpan" : "password")}
@@ -170,6 +177,7 @@ export function AuthFormCardPlayground(): React.JSX.Element {
                 ariaLabel="How you want to sign in"
                 track="none"
                 indicator="underline"
+                overflow
               />
             ) : null
           }

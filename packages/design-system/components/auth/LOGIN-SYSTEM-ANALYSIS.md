@@ -994,10 +994,19 @@ submitted by a button reading "Log In".
 
 ### The limit that is now written down
 
-**Up to three credential modes are tabs. Four or more are not.** At 390px a fourth
-underline tab truncates or overflows, and "Login with NGO-DARPAN ID" does not survive
-truncation. The slot makes the *fields* extensible; it does not make the *switch*
-extensible, and pretending otherwise ships a broken tablist on a phone.
+**It is the label width that overflows, not the tab count** — and the first version of
+this note got that wrong. It said "up to three modes are tabs, four or more are not",
+which was reasoned rather than measured. Opening the docs page in a browser settled it:
+in a 390px column, "Login with Credentials" (185px) and "Login with DARPAN ID" (183px)
+are **368px of labels in 340px of room**, so **two** tabs already clip.
+
+So: keep labels short (the mode, not a sentence about it), pass `overflow` on the `Tabs`
+instance so the row offers the More menu rather than cutting a tab in half, and past
+three modes use a `Select` or a `RadioGroup`. Measure at 390 — that is
+`layout/login/content/width`.
+
+The slot makes the *fields* extensible; it does not make the *switch* extensible, and
+pretending otherwise ships a broken tablist on a phone.
 
 ### Deliberately NOT changed
 

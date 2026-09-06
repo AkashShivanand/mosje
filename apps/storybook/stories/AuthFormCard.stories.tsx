@@ -45,11 +45,13 @@ function Frame({
   action = "Log In",
   methodTabs = true,
   error,
+  footer,
 }: {
   credentialFields: React.ReactNode;
   action?: string;
   methodTabs?: boolean;
   error?: React.ReactNode;
+  footer?: React.ReactNode;
 }): React.JSX.Element {
   const tabsId = React.useId();
   return (
@@ -68,8 +70,8 @@ function Frame({
           methodTabs ? (
             <Tabs
               tabs={[
-                { id: "password", label: "Login with Password" },
-                { id: "otp", label: "Login with OTP" },
+                { id: "password", label: "Password" },
+                { id: "otp", label: "OTP" },
               ]}
               active={0}
               onChange={() => undefined}
@@ -77,6 +79,7 @@ function Frame({
               ariaLabel="How you want to sign in"
               track="none"
               indicator="underline"
+              overflow
             />
           ) : null
         }
@@ -88,6 +91,7 @@ function Frame({
         }
         consent={<ConsentLine termsHref="#terms" privacyHref="#privacy" />}
         accountPrompt={<AccountPrompt options={[{ label: "Create Account", href: "#register" }]} />}
+        footer={footer}
       />
     </div>
   );
@@ -251,6 +255,112 @@ export const WithError: Story = {
               password={s.secret ?? ""}
               onPasswordChange={(v) => set("secret", v)}
               forgotHref="#forgot"
+            />
+          }
+        />
+      )}
+    </Controlled>
+  ),
+};
+
+/**
+ * A portal renaming the fields it asks for.
+ *
+ * `identifierLabel`, `identifierPlaceholder`, `passwordLabel` and
+ * `passwordPlaceholder` exist so a portal can say "Employee Code" where the
+ * estate's default says "Username / Email / Mobile" — WITHOUT a new stack. Reach
+ * for a new stack only when the FIELDS differ, not when their wording does.
+ *
+ * `footer` is the card's last region, after the account prompt. It is where the
+ * help route goes; anything larger belongs on the page, not in the card.
+ */
+export const RelabelledForAPortal: Story = {
+  name: "Password — a portal's own wording",
+  render: () => (
+    <Controlled>
+      {(s, set) => (
+        <Frame
+          methodTabs={false}
+          footer={
+            <p style={{ textAlign: "center", fontSize: "var(--sa-type-body-3-size)" }}>
+              <a href="#help">Need Help?</a>
+            </p>
+          }
+          credentialFields={
+            <PasswordFields
+              identifier={s.id ?? ""}
+              onIdentifierChange={(v) => set("id", v)}
+              password={s.secret ?? ""}
+              onPasswordChange={(v) => set("secret", v)}
+              identifierLabel="Employee Code"
+              identifierPlaceholder="Enter the code on your identity card"
+              passwordLabel="Ministry Password"
+              passwordPlaceholder="Enter your Ministry password"
+              forgotHref="#forgot"
+            />
+          }
+        />
+      )}
+    </Controlled>
+  ),
+};
+
+/**
+ * A four-digit PIN.
+ *
+ * `length` drives the field's `maxLength` AND its placeholder, so the two cannot
+ * drift apart — a placeholder promising six digits over a field that accepts
+ * four is a defect a citizen discovers by being rejected.
+ */
+export const PinFourDigit: Story = {
+  name: "PIN — four digits",
+  render: () => (
+    <Controlled>
+      {(s, set) => (
+        <Frame
+          methodTabs={false}
+          credentialFields={
+            <PinFields
+              identifier={s.id ?? ""}
+              onIdentifierChange={(v) => set("id", v)}
+              pin={s.secret ?? ""}
+              onPinChange={(v) => set("secret", v)}
+              identifierLabel="Registered Mobile Number"
+              identifierPlaceholder="10-digit mobile number"
+              length={4}
+              forgotHref="#forgot"
+            />
+          }
+        />
+      )}
+    </Controlled>
+  ),
+};
+
+/**
+ * The code sent to an email rather than a phone.
+ *
+ * `channel` changes nothing visually — it documents intent, and it is what a
+ * reviewer reads to check the masking rule was applied to the right kind of
+ * value. An email masks its local part (`a•••••••s@gmail.com`); a phone keeps
+ * the last four.
+ */
+export const OtpVerifyEmail: Story = {
+  name: "OTP — verify, sent to email",
+  render: () => (
+    <Controlled>
+      {(s, set) => (
+        <Frame
+          action="Verify and Log In"
+          credentialFields={
+            <OtpVerifyFields
+              channel="email"
+              maskedValue="a•••••••s@gmail.com"
+              onEdit={() => undefined}
+              otp={s.otp ?? ""}
+              onOtpChange={(v) => set("otp", v)}
+              secondsRemaining={23}
+              onResend={() => undefined}
             />
           }
         />

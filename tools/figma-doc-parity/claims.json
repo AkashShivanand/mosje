@@ -586,23 +586,23 @@
     {
       "node": "55399:1367",
       "where": "PortalLoginTemplate — Documentation › hero › axes",
-      "figma": "Device (2) × Auth Method (4) — Password, OTP, PIN and NGO-DARPAN ID.",
+      "figma": "Device alone. How a portal signs people in is the nested form card's Credential fields slot, not an axis of the page.",
       "expect": [
         {
           "kind": "source",
-          "file": "packages/design-system/components/auth/portal-login-template.figma.ts",
-          "pattern": "Password: \"password\",[\\s\\S]{0,120}DARPAN: \"darpan\"",
-          "hint": "The Figma Auth Method axis maps 1:1 onto these four. A fifth value in the enum means the master needs a fifth variant, or the enum is wrong."
+          "file": "packages/design-system/components/auth/credential-fields.tsx",
+          "pattern": "export function PasswordFields[\\s\\S]*export function PinFields[\\s\\S]*export function DarpanFields[\\s\\S]*export function OtpRequestFields[\\s\\S]*export function OtpVerifyFields",
+          "hint": "The credential modes are STACKS now, not variant values. A sixth mode adds a sixth export here and no variant anywhere — if this list shrinks, a mode was deleted rather than moved."
         },
         {
           "kind": "source",
           "file": "packages/design-system/components/auth/types.ts",
           "pattern": "\\| \"darpan\"",
-          "hint": "Reinstated 2026-09-03. The master now carries Device × Auth Method = 8 variants including DARPAN, so code and Figma agree again."
+          "hint": "Reinstated 2026-09-03 and rebuilt from the department's own screen on 2026-09-06 — DARPAN ID + PAN Number, no password."
         },
         {
           "kind": "text",
-          "value": "Password, OTP, PIN and NGO-DARPAN ID"
+          "value": "Credential fields slot"
         }
       ]
     },
@@ -662,29 +662,29 @@
     {
       "node": "55401:1489",
       "where": "PortalLoginTemplate — Documentation › 03 Variants › lead",
-      "figma": "Eight variants ship: two devices by four authentication methods — Password, OTP, PIN and DARPAN. The role and the selector style ride on nested instances, so the three specimens below are all reachable without adding a single variant.",
+      "figma": "Two variants ship: one per device. Password, OTP, PIN and DARPAN were a second axis until 2026-09-06, when six of the eight variants turned out to differ only in the region between the method tabs and the button. That region is now the nested form card's Credential fields slot, so a fifth credential mode adds one small master and no variant at all.",
       "expect": [
         {
           "kind": "source",
-          "file": "packages/design-system/components/auth/portal-login-template.figma.ts",
-          "pattern": "Device × Auth Method` = 8",
-          "hint": "The set is Device (2) × Auth Method (4). If that arithmetic changes, this section's title, its specimens and the Code Connect comment change with it."
+          "file": "packages/design-system/components/auth/auth-form-card.figma.ts",
+          "pattern": "Credential fields    -> the `credentialFields` slot",
+          "hint": "The Code Connect template must keep saying the mode is a slot. If someone reintroduces an Auth Method enum here, the master has grown an axis back."
         },
         {
           "kind": "text",
-          "value": "Eight variants ship"
+          "value": "Two variants ship"
         },
         {
           "kind": "text",
-          "value": "Six variants",
+          "value": "Eight variants ship",
           "absent": true,
-          "hint": "The page said six for two days after DARPAN was reinstated and the master had eight — while this gate stayed green, because the pin was written from the page rather than from the master."
+          "hint": "The page said six for two days after DARPAN was reinstated and the master had eight, while this gate stayed green — the pin had been written from the page rather than from the master. It is now written from the master."
         },
         {
           "kind": "figma",
           "node": "55397:1364",
-          "children": 8,
-          "hint": "Counted from the master itself, not from the prose. A pin that only compares three strings with each other can certify a wrong number; this one reads the set."
+          "children": 2,
+          "hint": "Counted from the master itself, not from the prose. Device is the only axis; the credential mode rides on the nested form card's slot."
         }
       ]
     },
@@ -721,21 +721,21 @@
       "expect": [
         {
           "kind": "source",
-          "file": "packages/design-system/components/auth/portal-login-template.tsx",
+          "file": "packages/design-system/components/auth/credential-fields.tsx",
           "pattern": "inputMode=\"numeric\"",
           "hint": "Digits only — the field also strips non-digits on change, so a pasted value cannot smuggle letters in."
         },
         {
           "kind": "source",
-          "file": "packages/design-system/components/auth/portal-login-template.tsx",
+          "file": "packages/design-system/components/auth/credential-fields.tsx",
           "pattern": "Forgot PIN\\?",
           "hint": "A PIN portal has no password to reset, so the recovery link must not be the password one."
         },
         {
           "kind": "source",
-          "file": "packages/design-system/components/auth/portal-login-template.tsx",
-          "pattern": "<PasswordInput[\\s\\S]{0,400}6-digit PIN",
-          "hint": "The masked field's reveal control belongs to PasswordInput. It was hand-rolled here with its own Show/Hide button and its own aria-label, which is how one field ends up behaving unlike every other password field in the estate."
+          "file": "packages/design-system/components/auth/credential-fields.tsx",
+          "pattern": "<PasswordInput[\\s\\S]{0,400}digit PIN",
+          "hint": "The masked field's reveal control belongs to PasswordInput. It was hand-rolled here with its own Show/Hide button and its own aria-label, which is how one field ends up behaving unlike every other password field in the estate. The pattern dropped the literal \"6\" on 2026-09-06: PinFields took a `length` prop (default 6), so the placeholder is now a template literal."
         },
         {
           "kind": "text",
@@ -844,7 +844,7 @@
     {
       "node": "55403:1880",
       "where": "PortalLoginTemplate — Documentation › 08 Code Connect",
-      "figma": "Maps Device and Auth Method onto the React props and carries the rules a snippet cannot show. Published from the repo root with npm run figma:connect; npm run check:code-connect gates drift.",
+      "figma": "Maps Device and the credential stacks onto the React props and carries the rules a snippet cannot show. Published from the repo root with npm run figma:connect; npm run check:code-connect gates drift.",
       "expect": [
         {
           "kind": "source",

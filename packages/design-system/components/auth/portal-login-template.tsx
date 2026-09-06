@@ -509,6 +509,12 @@ export function PortalLoginTemplate({
             ariaLabel="How you want to sign in"
             track="enclosed"
             indicator="pill"
+            /* MEASURED 2026-09-06: two tabs reading "Login with Credentials" and
+               "Login with DARPAN ID" are 368px of labels in a 390px column — they
+               clip. It is not the COUNT that overflows, it is the label width, so
+               the row carries the More menu rather than silently cutting a tab in
+               half. Every tab stays focusable and arrow-reachable either way. */
+            overflow
           />
         )}
 

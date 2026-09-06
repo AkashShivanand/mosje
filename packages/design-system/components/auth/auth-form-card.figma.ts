@@ -46,10 +46,12 @@
 //                           recorded divergence — do not "fix" it by giving the
 //                           estate two places to draw a tablist.
 //
-// THREE MODES ARE TABS. FOUR ARE NOT. At 390px a fourth underline tab truncates
-// its label or takes the row into overflow, and "Login with NGO-DARPAN ID" does
-// not survive truncation. Past three modes the switch is a Select or a
-// RadioGroup — `PortalLoginTemplate.authSelectorType` already resolves that.
+// LABEL WIDTH OVERFLOWS, NOT TAB COUNT. Measured in a 390px column on
+// 2026-09-06: "Login with Credentials" (185px) + "Login with DARPAN ID" (183px)
+// = 368px of labels in 340px of room, so TWO tabs already clip. Keep labels
+// short — the mode, not a sentence about it — pass `overflow` so the row offers
+// the More menu instead of cutting a tab in half, and past three modes use a
+// Select or a RadioGroup (`PortalLoginTemplate.authSelectorType`).
 //
 // THE CHECK BELONGS TO THE STACK, NOT THIS CARD. It guards a typed secret, so
 // `PasswordFields` and `PinFields` take a `botCheck` node and `DarpanFields`
