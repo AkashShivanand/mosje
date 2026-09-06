@@ -9,6 +9,8 @@ import {
 } from "@/components/design-system/docs-kit";
 import { Stepper } from "@mosje/design-system";
 
+import { StepperPlayground } from "./stepper-playground";
+
 export const metadata: Metadata = {
   title: "Stepper — Design System",
   description:
@@ -63,7 +65,7 @@ const A11Y: A11yItem[] = [
     status: "verified",
     evidence: "Rendered under prefers-reduced-motion: reduce.",
     description:
-      "The node's colour transition is removed under a reduced-motion preference. It is the only motion the component has.",
+      "Under a reduced-motion preference the colour and the filled track still arrive, they simply do not travel: the node's cross-fade, the connector's growth and the compact bar's widening dot are all removed, and the completed track is drawn at full length rather than scaled into place. Colour, spread and the pill's width carry the meaning; the travel is decoration. The dot still widens, because width is what separates the current stage from the rest without relying on hue.",
   },
   {
     criterion: "1.4.10 Reflow",
@@ -134,18 +136,7 @@ export default function StepperPage(): React.JSX.Element {
       status="Stable"
       summary="Progress through a multi-stage form. It shows which stages are complete, which one the applicant is on, which one failed validation, and how many remain — so a long application does not feel unbounded."
       figma={{ node: "stepper" }}
-      specimen={
-        <Stepper
-          ariaLabel="Application progress"
-          current={1}
-          steps={[
-            { label: "Personal Details" },
-            { label: "Income & Caste" },
-            { label: "Bank Account" },
-            { label: "Review & Submit" },
-          ]}
-        />
-      }
+      specimen={<StepperPlayground />}
       propsFrom="StepperProps"
       props={STEP_PROPS}
       a11y={A11Y}
@@ -229,6 +220,61 @@ export default function StepperPage(): React.JSX.Element {
               text and the compact counter all read it. That is what stops a stepper disagreeing
               with itself — this estate has shipped a key reading zero above a map drawing
               nineteen thousand records, and the fix was the same one.
+            </p>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-motion">
+            <h2 id="cdp-motion" className="cdp__h2">
+              Advancing a Stage Is Three Movements, Not a Redraw
+            </h2>
+            <p>
+              A still specimen cannot show the part of this component a reader most often has
+              to take on trust, so the specimen at the top of this page advances by hand. Press{" "}
+              <strong>Next Stage</strong>, and turn <strong>Slow motion</strong> on to watch the
+              curve rather than the result.
+            </p>
+            <ul>
+              <li>
+                <strong>The connector fills along its length</strong> — an overlay scaled from
+                nothing to full width, left to right, or top to bottom when the stepper is
+                vertical. The green travels the path rather than appearing on it. 250ms.
+              </li>
+              <li>
+                <strong>The ring grows out of the node.</strong> It is declared on every node at
+                zero spread and fully transparent, so becoming current animates a spread the
+                browser can interpolate; declared only on the current node it would have nothing
+                to start from and would snap into place. 250ms.
+              </li>
+              <li>
+                <strong>Fill, border and numeral cross-fade together</strong> on the shorter
+                hover timing, so the circle reads as one object changing rather than three
+                properties changing at once. 150ms.
+              </li>
+              <li>
+                <strong>On a phone, the compact bar&apos;s current dot widens into a pill</strong>{" "}
+                as the one behind it narrows back to a dot. It is the same indicator, drawn for
+                a narrow row, and it is the one most citizens see. 150ms.
+              </li>
+            </ul>
+            <p>
+              Every duration is a motion token — <code>--sa-motion-enter-duration</code>,{" "}
+              <code>--sa-motion-exit-duration</code> and <code>--sa-motion-hover-duration</code>{" "}
+              — on the estate&apos;s decelerating easing, so a movement starts at once and settles
+              rather than easing in. Nothing here is a keyframe: they are transitions, which means
+              a reader who advances two stages quickly gets the second movement retargeted from
+              wherever the first had reached, instead of a restart.
+            </p>
+            <p>
+              <strong>Arriving and leaving are not timed the same.</strong> The ring and the
+              filled track grow on the entry curve and retract on the exit one — 250ms in, 150ms
+              out. Arriving at a stage is the stepper settling on an answer; leaving one is the
+              stepper obeying a Back it was just given, and a system responding should be quicker
+              than a system arriving. Both curves are already in the token set for exactly this.
+            </p>
+            <p>
+              Under <code>prefers-reduced-motion</code> the colour and the filled track still{" "}
+              <em>arrive</em> — they simply do not travel, and the slow-motion switch has nothing
+              to slow.
             </p>
           </section>
 

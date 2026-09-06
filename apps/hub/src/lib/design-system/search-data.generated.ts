@@ -1688,7 +1688,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Stepper — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/stepper",
-    "keywords": "stepper — design system feedback & status anatomy five states, one derivation what happens when the row is too narrow writing the labels arrangements example letting the applicant go back keyboard what a screen reader hears steps[].label steps[].description steps[].status tokens wcag accessibility",
+    "keywords": "stepper — design system feedback & status anatomy five states, one derivation advancing a stage is three movements, not a redraw what happens when the row is too narrow writing the labels arrangements example letting the applicant go back keyboard what a screen reader hears steps[].label steps[].description steps[].status tokens wcag accessibility",
     "description": "Progress through a multi-stage form: which stages are complete, which one the applicant is on, which one failed validation, and how many remain.",
     "type": "component",
     "iconName": "notifications"

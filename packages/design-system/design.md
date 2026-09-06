@@ -12,6 +12,11 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-06 · System version: v0.60.0 (THE STEPPER'S MOTION IS FINISHED AT BOTH
+  ENDS: the compact bar's current dot animates at all (it snapped, on the surface most citizens
+  use), and the ring and connector now grow on the entry curve and retract on the exit one,
+  using the exit token the system had published and nothing was consuming.)
+
   Last reviewed: 2026-09-06 · System version: v0.59.0 (THE STEPPER'S SIZE AXIS REACHES FIGMA:
   Size = Large | Compact on Node, Stage and Row, mapping to size="md" | "sm", so UX4G's Compact
   can be drawn and not only specified. Compact's description uses Body/body-3, one pixel above
