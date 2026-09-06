@@ -32,9 +32,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.119.0",
+    date: "2026-09-06",
+    current: true,
+    changes: [
+      { kind: "Changed", text: "EVERY PORTAL NOW OPENS IN NAVY, AND THE WEBSITE STILL OPENS IN BLUE. Which brand a surface opens in is a property of the ROUTE rather than of the estate: `defaultColorModeForPath` maps /portals/** to navy and everything else to blue, and `BRAND_BY_ROUTE` is the one array that both the inline no-flash head script and the provider read, so first paint and hydration cannot reach different answers. It is a default, not a lock — a brand chosen in the demo dock is persisted and outranks it on every route, so the Colour tab keeps working inside a portal instead of being a control that appears usable and does nothing. The path is read on the CLIENT and never during a server render: the root layout sits above every route in the estate, so a server-side read would make all of them dynamic for the sake of one attribute, and reading it client-side is also what lets the brand follow a client-side navigation from the website into a portal, where the head script never runs again" },
+      { kind: "Fixed", text: "THE COLOUR COOKIE RECORDED A CHOICE NOBODY HAD MADE. `ColorModeProvider` called `applyColorMode(readColorModeCookie())` on mount and `applyColorMode` writes the cookie, so every visitor was handed `mosje-color-mode=blue` on first paint whether or not they had ever opened the Colour tab. After that, having a cookie could not mean having chosen — and any per-route default would have been stamped out by whichever page a reader happened to land on first. The mount path passes `persist: false` now, and `hasChosenColorMode()` reads the cookie's PRESENCE rather than its value, because blue is both the estate default and a real choice a reader may have made on a portal" },
+      { kind: "Removed", text: "SMILE-ADMIN AND NMBA STOPPED PINNING THEIR OWN NAVY. Both carried a hand-written data-brand=\"navy\" on a wrapper div, described in each file as a permanent identity. The route default covers both, and keeping the wrappers would have made those two the only portals the estate's Colour tab could not reach — the closer attribute wins, so the switch would have done nothing visible on exactly the two portals that already looked right" },
+    ],
+  },
+  {
     version: "v0.116.0",
     date: "2026-09-05",
-    current: true,
     changes: [
       { kind: "Changed", text: "EVERY PORTAL RAIL NAMES ITS PORTAL. The Figma `Sidebar` opens with the PortalIdentity block by default and carries no control of its own because the masthead toggle drives it; the code rails had shipped without an identity, and four of them (e-Anudaan's two shells, NHAPOA admin, TG admin) drew the rail's own collapse control under a masthead that already had one — the difference a reviewer saw on e-Anudaan's My Action Queue. Every shell now passes `identity` (name, the department's full name, the registry mark, the portal's home), the duplicate controls are gone, SMILE's drawer lost its second brand header in favour of the rail's, and `check:sidebar-adoption` fails a rendered SidebarNav without an identity." },
       { kind: "Fixed", text: "THE RAIL HID ITS FIRST ROWS UNDER THE MASTHEAD. Shells pinned it with `sticky top-0`, a utility that wins the cascade over the component, so it stuck at 0 beneath a 134px sticky masthead. `.ds-sidebar` is now sticky by construction at `--sa-header-stuck`, the offset SiteHeader publishes, and no taller than the viewport below it; shells pass no positioning utilities. The rail also lost its `bg/neutral/base` ground in Figma and code — every handoff rail sits on the page canvas, and the fill read as a white panel on the portals' muted page." },

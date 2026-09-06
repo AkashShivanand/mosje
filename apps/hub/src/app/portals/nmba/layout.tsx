@@ -14,21 +14,18 @@ export const metadata: Metadata = {
 // so it moves to a wrapper — the selector is attribute-based and the custom
 // properties inherit, so the cascade is identical.
 //
-// data-brand="navy" was nmba's own fixed brand ramp (the deep-navy
-// #003366 SAMAVESH identity). Its standalone layout set PORTAL_DEFAULT_MODE =
-// "navy" on <html> and primed the cookie in an init script; nmba renders no
-// colour-mode control of its own (DemoDock's shared Colour tab is the only
-// one, estate-wide), so it was never user-togglable — a fixed identity, exactly
-// like smile-admin. The estate default is blue-light, so without this attribute
-// nmba silently renders in the wrong brand ramp. Setting it on this closer
-// wrapper overrides the hub's html-level mode for nmba's subtree only.
+// data-brand is NOT set here any more. Navy came from a hand-written wrapper on
+// this one portal; since 2026-09-06 it comes from the route default in
+// `defaultColorModeForPath` — every path under /portals/ opens navy. Pinning it
+// here as well would make this the one portal the estate's Colour tab cannot
+// reach, which is the "control that looks usable and isn't" pattern.
 //
 // data-portal="nmba" binds this subtree to nmba's Tailwind palette. The hub runs
 // a single Tailwind build, so the utility names are global but the values are
 // per-portal custom properties scoped by this attribute — see nmba.css.
 export default function NmbaLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div data-portal="nmba" data-brand="navy" data-surface="portal">
+    <div data-portal="nmba" data-surface="portal">
       <ToastProvider>{children}</ToastProvider>
     </div>
   );

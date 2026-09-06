@@ -2505,6 +2505,12 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "Mode resolved on the server (from the cookie) to avoid a flash."
+      },
+      {
+        "name": "routeDefault",
+        "type": "string",
+        "required": false,
+        "description": "The brand this surface opens in when nobody has chosen one — from `defaultColorModeForPath`. A chosen mode always outranks it. Passed in rather than derived here so this package stays framework-agnostic: the hub reads the path with `usePathname` and hands the answer down, which is also what lets the brand follow a client-side navigation from the website into a portal, where the inline `<head>` script never runs again."
       }
     ]
   },

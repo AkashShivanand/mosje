@@ -95,6 +95,41 @@ export const LEGACY_COLOR_MODE_IDS: Readonly<Record<string, string>> = {
 export type ColorModeId = (typeof COLOR_MODES)[number]["id"];
 
 export const DEFAULT_COLOR_MODE: string = COLOR_MODES[0]?.id ?? "blue";
+
+/**
+ * The brand a surface opens in when nobody has chosen one.
+ *
+ * A portal is navy and everything else is blue. This is a DEFAULT, not a lock:
+ * an explicit choice is persisted and outranks it everywhere, so the demo dock's
+ * Colour tab keeps working inside a portal rather than being a control that
+ * looks usable and does nothing.
+ *
+ * Kept as ONE expression that the inline no-flash script, the provider and any
+ * test all read, so the brand cannot be decided two ways and disagree with
+ * itself between first paint and hydration.
+ *
+ * `smile-admin` and `nmba` each carried a hand-written `data-brand="navy"`
+ * wrapper before this existed. Both are gone: the route default covers them, and
+ * a wrapper would have made those two the only portals the switcher could not
+ * reach.
+ */
+export const BRAND_BY_ROUTE: ReadonlyArray<{ prefix: string; brand: string }> = [
+  { prefix: "/portals/", brand: "navy" },
+] as const;
+
+/**
+ * Resolve the default brand for a path. Pure, and safe on both sides of the
+ * wire — it reads nothing but its argument.
+ */
+export function defaultColorModeForPath(pathname: string | null | undefined): string {
+  if (!pathname) return DEFAULT_COLOR_MODE;
+  for (const { prefix, brand } of BRAND_BY_ROUTE) {
+    if (pathname === prefix.replace(/\/$/, "") || pathname.startsWith(prefix)) {
+      return normalizeColorMode(brand);
+    }
+  }
+  return DEFAULT_COLOR_MODE;
+}
 export const COLOR_MODE_COOKIE = "mosje-color-mode";
 export const COLOR_MODE_ATTR = "data-brand";
 /** Kept only so callers can clear stale markup; the CSS still matches it. */
@@ -135,14 +170,37 @@ export function readColorModeCookie(): string {
   return colorModeFromCookieHeader(document.cookie);
 }
 
-/** Persist the mode to a cookie and apply it to `<html>` (client). */
-export function applyColorMode(mode: string): void {
+/**
+ * Apply the mode to `<html>`, and — unless told not to — persist it.
+ *
+ * `persist: false` matters more than it looks. The cookie is the record of a
+ * DELIBERATE choice, and it is the only thing that outranks the route default
+ * above. Until 2026-09-06 the provider called this on mount, so every visitor
+ * was handed a cookie recording a choice nobody had made — after which "has a
+ * cookie" could not mean "chose", and a per-route default would have been
+ * overwritten by the first paint on the first page anyone happened to land on.
+ */
+export function applyColorMode(
+  mode: string,
+  { persist = true }: { persist?: boolean } = {},
+): void {
   if (typeof document === "undefined") return;
   const normalized = normalizeColorMode(mode);
   document.documentElement.setAttribute(COLOR_MODE_ATTR, normalized);
+  if (!persist) return;
   document.cookie = `${COLOR_MODE_COOKIE}=${encodeURIComponent(
     normalized,
   )}; path=/; max-age=${COOKIE_MAX_AGE}; samesite=lax`;
+}
+
+/**
+ * Has a brand been chosen, as opposed to defaulted? Reads the cookie's presence,
+ * not its value — `blue` is both the estate default and a real choice a reader
+ * may have made on a portal, and the two have to stay tellable apart.
+ */
+export function hasChosenColorMode(): boolean {
+  if (typeof document === "undefined") return false;
+  return new RegExp(`(?:^|; )${COLOR_MODE_COOKIE}=`).test(document.cookie);
 }
 
 /**
@@ -161,5 +219,12 @@ export function colorModeInitScript(defaultMode: string = DEFAULT_COLOR_MODE): s
   // The legacy id map is inlined so a stale cookie does not paint the wrong brand for one
   // frame before React hydrates and corrects it.
   const legacy = JSON.stringify(LEGACY_COLOR_MODE_IDS);
-  return `(function(){try{var L=${legacy};var m=document.cookie.match(/(?:^|; )${COLOR_MODE_COOKIE}=([^;]+)/);var v=m?decodeURIComponent(m[1]):"${fallback}";v=L[v]||v;document.documentElement.setAttribute("${COLOR_MODE_ATTR}",v);}catch(e){}})();`;
+  // The route map is inlined for the same reason, and it is the SAME array
+  // `defaultColorModeForPath` walks — so first paint and hydration cannot reach
+  // different answers. Resolved from `location.pathname` in the browser rather
+  // than from the request on the server, because reading the path server-side
+  // would opt every route in the estate out of static generation for the sake of
+  // one attribute. Same reasoning as the data-mode provider.
+  const routes = JSON.stringify(BRAND_BY_ROUTE.map((r) => [r.prefix, r.brand]));
+  return `(function(){try{var L=${legacy};var R=${routes};var p=location.pathname;var d="${fallback}";for(var i=0;i<R.length;i++){if(p===R[i][0].replace(/\\/$/,"")||p.indexOf(R[i][0])===0){d=R[i][1];break;}}var m=document.cookie.match(/(?:^|; )${COLOR_MODE_COOKIE}=([^;]+)/);var v=m?decodeURIComponent(m[1]):d;v=L[v]||v;document.documentElement.setAttribute("${COLOR_MODE_ATTR}",v);}catch(e){}})();`;
 }

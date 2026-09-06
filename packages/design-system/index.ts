@@ -23,6 +23,8 @@ export type { ExifGps, DownscaleResult } from "./utils/geo-image";
 // ---- Foundations: color-mode (brand axis) -----------------------------------
 export {
   COLOR_MODES,
+  defaultColorModeForPath,
+  hasChosenColorMode,
   DEFAULT_COLOR_MODE,
   COLOR_MODE_COOKIE,
   COLOR_MODE_ATTR,

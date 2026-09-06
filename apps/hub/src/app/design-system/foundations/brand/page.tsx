@@ -92,8 +92,8 @@ const PACK_TOTAL = PACK.reduce((n, f) => n + f.count, 0);
  * packages/tokens/build/brand-ramps.mjs; `dbim` is the standing instruction in CLAUDE.md.
  */
 const MODES = [
-  { id: "blue", label: "Blue", reach: "Figma · default", note: `Gov-blue ${BLUE_KEY} anchored at rung 500.` },
-  { id: "navy", label: "Navy", reach: "Figma", note: `${NAVY_KEY} anchored at rung 600, the rung its lightness says.` },
+  { id: "blue", label: "Blue", reach: "Figma · default", note: `Gov-blue ${BLUE_KEY} anchored at rung 500. The brand the website and these pages open in.` },
+  { id: "navy", label: "Navy", reach: "Figma", note: `${NAVY_KEY} anchored at rung 600, the rung its lightness says. The brand every portal opens in, unless a reader has chosen otherwise.` },
   { id: "dbim", label: "DBIM Blue (transcription)", reach: "code-only", note: "DBIM's Blue primary palette, five numbered shades, verbatim." },
   { id: "dbim-blue", label: "DBIM · Blue", reach: "code-only", note: "Full conformance group." },
   { id: "dbim-burgundy", label: "DBIM · Burgundy", reach: "code-only", note: "Full conformance group." },
