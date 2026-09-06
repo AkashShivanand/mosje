@@ -553,6 +553,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Date Range Picker — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/date-range-picker",
+    "keywords": "date range picker — design system forms & inputs an inverted period is reported, never swapped each end bounds the other a preset is a button, not a dropdown both ends carry the group&rsquo;s name  tokens wcag accessibility",
+    "description": "A period — the two dates a report, a filter or a sanction window runs between. Two Date Pickers in a named group, with the presets a dashboard actually uses.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Declaration Checkbox — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/declaration-checkbox",
@@ -943,6 +952,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "Real coordinates on the national outline.",
     "type": "component",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "Inline Edit — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/inline-edit",
+    "keywords": "inline edit — design system forms & inputs confirmed, never optimistic — and not configurable a failed write keeps what was typed the trigger names its field a read-only value says why  tokens wcag accessibility",
+    "description": "A recorded value corrected in place. The save is confirmed, never optimistic — on a departmental record an edit that shows before it is written is a data-integrity problem wearing a performance improvement.",
+    "type": "component",
+    "iconName": "edit_note"
   },
   {
     "title": "Input — Design System",

@@ -22,6 +22,7 @@
 @import "./components/forms/combobox.css";
 @import "./components/forms/control-group.css";
 @import "./components/forms/date-picker.css";
+@import "./components/forms/date-range-picker.css";
 @import "./components/forms/declaration-checkbox.css";
 @import "./components/forms/error-summary.css";
 @import "./components/forms/filter-select.css";
@@ -29,6 +30,7 @@
 @import "./components/forms/forms.css";
 @import "./components/forms/geo-photo-input.css";
 @import "./components/forms/india-id.css";
+@import "./components/forms/inline-edit.css";
 @import "./components/forms/label.css";
 @import "./components/forms/media-gallery-input.css";
 @import "./components/forms/media-upload.css";

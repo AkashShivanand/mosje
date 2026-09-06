@@ -3217,6 +3217,92 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "DateRangePickerProps": {
+    "source": "packages/design-system/components/forms/date-range-picker.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "The group's name — \"Period\", \"Sanction date\". Always visible."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: DateRange) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "DateRange",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false,
+        "description": "Shown under the group and announced. Overrides the component's own ordering message."
+      },
+      {
+        "name": "fromLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"From\"",
+        "description": ""
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "max",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "min",
+        "type": "string",
+        "required": false,
+        "description": "ISO bounds applied to both ends. A date outside them cannot be typed or chosen."
+      },
+      {
+        "name": "presets",
+        "type": "DateRangePreset[]",
+        "required": false,
+        "description": "Named spans offered above the fields. A dashboard's period filter is chosen from a preset far more often than it is typed."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "toLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"To\"",
+        "description": ""
+      }
+    ]
+  },
   "DeclarationCheckboxProps": {
     "source": "packages/design-system/components/forms/declaration-checkbox.tsx",
     "inheritsNative": false,
@@ -5442,6 +5528,67 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "formatIndian",
         "description": ""
+      }
+    ]
+  },
+  "InlineEditProps": {
+    "source": "packages/design-system/components/forms/inline-edit.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "What the value is. Always visible — a value with no label is a number on a page."
+      },
+      {
+        "name": "onSave",
+        "type": "(value: string) => void | Promise<void>",
+        "required": true,
+        "description": "Called with the trimmed text when the reader commits. Return a promise and the control stays busy until it settles; reject and the reader keeps what they typed."
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "description": "The stored value. The component never changes this itself."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "emptyText",
+        "type": "string",
+        "required": false,
+        "default": "\"Not recorded\"",
+        "description": "What to show when the value is empty."
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "required": false,
+        "description": "One line under the field while editing."
+      },
+      {
+        "name": "maxLength",
+        "type": "number",
+        "required": false,
+        "description": "Longest permitted value."
+      },
+      {
+        "name": "readOnlyReason",
+        "type": "string",
+        "required": false,
+        "description": "The field is present but cannot be edited — a decided record, say."
       }
     ]
   },

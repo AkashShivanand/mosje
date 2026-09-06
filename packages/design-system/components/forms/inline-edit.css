@@ -1,0 +1,124 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  .ds-inline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--sa-inline-8);
+  }
+
+  .ds-inline--editing {
+    align-items: center;
+  }
+
+  .ds-inline__label {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-inline__value {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-bolder);
+    overflow-wrap: anywhere;
+  }
+
+  /* An unrecorded value says so in words, never as a dash. */
+  .ds-inline__value.is-empty {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-inline__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    min-block-size: var(--sa-target-min);
+    padding-inline: var(--sa-padding-8);
+    border: 0;
+    border-radius: var(--sa-shape-4);
+    background: transparent;
+    color: var(--sa-text-link-brand-default);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+    cursor: pointer;
+  }
+
+  .ds-inline__trigger:hover:not(:disabled) {
+    background: var(--sa-bg-neutral-hover);
+  }
+
+  .ds-inline__trigger:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-inline__trigger:disabled {
+    color: var(--sa-text-neutral-disabled);
+    cursor: not-allowed;
+  }
+
+  .ds-inline__readonly {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-inline__input {
+    flex: 1 1 12rem;
+    min-inline-size: 0;
+    min-block-size: var(--sa-control-height-sm);
+    padding-inline: var(--sa-padding-8);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-radius);
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .ds-inline__input:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-inline__input[aria-invalid="true"] {
+    border-color: var(--sa-border-status-error-base);
+  }
+
+  .ds-inline__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+  }
+
+  .ds-inline__msg {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-inline__msg.is-error {
+    color: var(--sa-text-status-error-bolder);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .ds-inline__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}

@@ -2542,6 +2542,27 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **Every action names its own FILE** — "Remove income-certificate.pdf" in the accessible name, "Remove" on screen. Twelve attachments otherwise produce twelve identical "Remove"s for anyone moving by button.
 - Every state renders its own WORD; colour only tints the word already there.
 
+#### DateRangePicker
+**Purpose**: a period — the two dates a report, a filter or a sanction window runs between. Built from two `DatePicker`s, never a second calendar.
+**Props**: `label` (**required**) · `value` (`{ from, to }`, ISO) · `onChange` · `fromLabel` · `toLabel` · `min` · `max` · `presets` (`{ id, label, from, to }[]`) · `hint` · `error` · `required` · `disabled`
+**Rules**:
+- **An inverted period is REPORTED, never silently swapped.** Swapping means the report runs over a period nobody asked for and the reader cannot tell.
+- **Each end bounds the other**, so the inverted state is reachable only by typing — which is exactly when a message is the right answer.
+- **A preset is a real button carrying `aria-pressed`**, not a dropdown: "Last 30 days" is one press, and behind a select it is three on the control a dashboard's reader uses most.
+- **Both ends carry the group's name** — "From — Period", not "From". Two period filters on one page otherwise offer four fields with two names between them.
+- The group is a `fieldset`/`legend`; the ordering message is `role="alert"`.
+
+#### InlineEdit
+**Purpose**: a recorded value corrected in place — Master Settings, a beneficiary's district, a scheme's contact number.
+**Props**: `label` (**required**) · `value` · `onSave` · `emptyText` · `hint` · `maxLength` · `readOnlyReason` · `disabled`
+**Rules**:
+- **The save is CONFIRMED, never optimistic, and there is no prop to change that.** An optimistic edit that reverts on failure is a data-integrity problem on a departmental record: the officer who watched the value change has no reason to look again.
+- **A failed write keeps what was typed.** Losing the text is the second defect after losing the write.
+- **The trigger names its field** — "Edit District" to a screen reader, "Edit" on screen. Seventeen settings otherwise offer seventeen identical buttons.
+- **Escape cancels, Enter saves**, and focus returns to the trigger rather than the top of the document.
+- **A read-only value says WHY.** A missing button is a puzzle; "This application was approved on 4 September 2026" is an answer.
+- Not for several values that change together, and not for a value chosen from a list — both are forms.
+
 #### EventList
 **Purpose**: a dated, attributed record of things that happened. Used directly it IS the activity log and the audit trail; `CommentThread` and `NotificationCentre` are composed from it.
 **Props**: `events` (`{ id, at, actor?, actorRole?, action, subject?, note?, icon?, tone?, unread?, href? }[]`) · `label` (**required**) · `emptyText` · `grouping` (`none` | `day`) · `unreadLabel`

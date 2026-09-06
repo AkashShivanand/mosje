@@ -340,6 +340,10 @@ export type {
 // and every mobile keyboard already knows. This is for a dashboard filter row,
 // where four portals hand-rolled a button-plus-listbox because a native select
 // cannot carry a hint beside an option or be styled at all on iOS.
+export { DateRangePicker } from "./components/forms/date-range-picker";
+export type { DateRangePickerProps, DateRange, DateRangePreset } from "./components/forms/date-range-picker";
+export { InlineEdit } from "./components/forms/inline-edit";
+export type { InlineEditProps } from "./components/forms/inline-edit";
 export { DatePicker } from "./components/forms/date-picker";
 export type { DatePickerProps } from "./components/forms/date-picker";
 export { Combobox } from "./components/forms/combobox";
