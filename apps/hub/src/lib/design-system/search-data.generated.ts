@@ -702,7 +702,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Form Field — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/form-field",
-    "keywords": "form field — design system forms & inputs making it yours language the render prop, in plain english example notes  tokens wcag accessibility",
+    "keywords": "form field — design system forms & inputs a control on the label row making it yours language the render prop, in plain english example notes  tokens wcag accessibility",
     "description": "The molecule that ties a control to its label, hint and error message, and wires every accessibility attribute through a render prop.",
     "type": "component",
     "iconName": "edit_note"

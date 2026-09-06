@@ -133,6 +133,43 @@ export default function FormFieldPage(): React.JSX.Element {
       ]}
       design={
         <>
+        <section className="cdp__section" aria-labelledby="cdp-label-action">
+          <h2 id="cdp-label-action" className="cdp__h2">
+            A Control on the Label Row
+          </h2>
+          <p>
+            <code>labelAction</code> puts a control at the far right of the label row —
+            &quot;Forgot Password?&quot; beside a Password label is the case it exists for. It is
+            where a citizen looks <em>before</em> they have failed rather than after.
+          </p>
+          <CodeBlock>{`<FormField
+  label="Password"
+  labelAction={<a href="/forgot-password">Forgot Password?</a>}
+  required
+>
+  {(control) => <PasswordInput {...control} autoComplete="current-password" />}
+</FormField>`}</CodeBlock>
+          <Callout type="warning" title="Never Put a Link Inside the Label">
+            Passing a <code>&lt;span&gt;</code> holding the label text and a floated{" "}
+            <code>&lt;a&gt;</code> as <code>label</code> puts an interactive element inside a{" "}
+            <code>&lt;label&gt;</code>, so a click near it moves focus to the field instead of
+            following the link. It also does not work: <code>.ds-field__label-row</code> is a flex
+            row, so the <code>&lt;label&gt;</code> inside it shrink-wraps to its own text — 186px in
+            a 340px field — and the float has only that to reach across. It shipped on the portal
+            login pages as &quot;Password *Forgot Password?&quot;, jammed together.
+          </Callout>
+          <p>
+            The action is pushed right with <code>margin-left: auto</code> rather than by making the
+            label fill the row. Filling the label would send a <code>labelHelp</code> toggle to the
+            far right on every field that has one, and a help disclosure belongs beside the thing it
+            explains. Nothing moves on a field that passes no action.
+          </p>
+          <p>
+            Keep it short, and make it a real link or button. Instructions are{" "}
+            <code>hint</code> or <code>labelHelp</code>, not this.
+          </p>
+        </section>
+
         <section className="cdp__section" aria-labelledby="cdp-customise">
           <h2 id="cdp-customise" className="cdp__h2">
             Making It Yours

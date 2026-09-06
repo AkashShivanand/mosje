@@ -507,6 +507,35 @@
     color: var(--sa-text-neutral-base);
   }
 
+  /* The label row's right-hand end — a recovery route, most often "Forgot
+     Password?" beside the Password label.
+
+     `margin-left: auto` rather than making the LABEL fill the row. Filling the
+     label would push a `labelHelp` toggle to the far right on every field that
+     has one, which is the wrong place for it: a help disclosure belongs beside
+     the thing it explains. This moves only the action, and only when one is
+     passed, so no existing field's layout changes. */
+  .ds-field__label-action {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .ds-field__label-action a,
+  .ds-field__label-action button {
+    color: var(--sa-text-link-brand-default);
+    text-underline-offset: 2px;
+  }
+
+  .ds-field__label-action a:focus-visible,
+  .ds-field__label-action button:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
   .ds-field__required {
     margin-left: var(--sa-padding-2);
     color: var(--sa-text-status-error-base);

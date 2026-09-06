@@ -10,17 +10,24 @@ import "./auth-form-card.css";
  *
  * ```
  *   ┌─────────────────────────────────┐
- *   │  Header        heading + lede   │  always
- *   │  Error         Alert            │  when the attempt failed
- *   │  SSO           DigiLocker + rule│  slot — the per-role handoff
- *   │  Method tabs   Tabs             │  slot — omitted when there is one mode
- *   │ ▸Credential fields              │  ◀── THE SLOT. Everything else is fixed.
- *   │  Primary action                 │  always
- *   │  Consent       GIGW disclosure  │  always
- *   │  Account prompt                 │  when the portal registers people
- *   │  Footer        Need Help?       │  optional
+ *   │  Header        heading + lede   │  always            ┐
+ *   │  Error         Alert            │  when it failed    │
+ *   │  SSO           DigiLocker + rule│  the handoff       │ 32 between
+ *   │  Method tabs   Tabs             │  omitted at 1 mode │ regions
+ *   │  ┌ Form ────────────────────┐   │                    │
+ *   │  │▸Credential fields        │   │ ◀── THE SLOT       │
+ *   │  │ Primary action           │   │  24 inside         │
+ *   │  │ Consent   GIGW disclosure│   │  the group         │
+ *   │  └──────────────────────────┘   │                    │
+ *   │  Account prompt                 │  +8 pad            │
+ *   │  Footer        Need Help?       │  optional          ┘
  *   └─────────────────────────────────┘
  * ```
+ *
+ * **The three gaps are a hierarchy, and they come from the master.** 32 between
+ * regions, 24 inside the form group, 16 between fields in a stack. It was a flat
+ * 16 throughout until the master was re-spaced on 2026-09-06, which made the
+ * submit read as another field and the account prompt read as part of the form.
  *
  * **Why this is one component and not four.** Until 2026-09-06 the Figma master
  * carried an `Auth Method` variant axis — `Password · OTP · PIN · DARPAN` — and
@@ -166,12 +173,16 @@ export function AuthFormCard({
       {sso}
       {methodTabs}
 
-      {credentialFields}
+      {/* The master's `Form` frame — fields, submit and consent as ONE region,
+          so the button belongs to the fields above it rather than floating
+          between them and the account prompt. */}
+      <div className="ds-authcard__form">
+        {credentialFields}
+        {primaryAction}
+        {consent}
+      </div>
 
-      <div className="ds-authcard__action">{primaryAction}</div>
-
-      {consent}
-      {accountPrompt}
+      {accountPrompt ? <div className="ds-authcard__prompt">{accountPrompt}</div> : null}
       {footer}
     </form>
   );

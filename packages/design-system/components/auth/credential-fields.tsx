@@ -53,32 +53,6 @@ function Stack({
   return <div className={cn("ds-authfields", className)}>{children}</div>;
 }
 
-/**
- * A field label with its recovery route on the same row.
- *
- * The reference (`56693:8704`) puts "Forgot Password?" on the label line rather
- * than under the input — where a citizen looks BEFORE they have failed rather
- * than after. Passed as `FormField`'s `label`, so associating it with the
- * control is still `FormField`'s job.
- */
-function LabelWithLink({
-  text,
-  href,
-  linkText,
-}: {
-  text: string;
-  href?: string;
-  linkText: string;
-}): React.JSX.Element {
-  if (!href) return <>{text}</>;
-  return (
-    <span className="ds-authfields__labelrow">
-      <span>{text}</span>
-      <a href={href}>{linkText}</a>
-    </span>
-  );
-}
-
 /* ---------------------------------------------------------------------------
  * PasswordFields
  * ------------------------------------------------------------------------- */
@@ -154,8 +128,8 @@ export function PasswordFields({
       </FormField>
 
       <FormField
-        label={<LabelWithLink text={passwordLabel} href={forgotHref} linkText="Forgot Password?" />}
-        labelText={passwordLabel}
+        label={passwordLabel}
+        labelAction={forgotHref ? <a href={forgotHref}>Forgot Password?</a> : undefined}
         required
       >
         {(control) => (
@@ -239,8 +213,8 @@ export function PinFields({
       </FormField>
 
       <FormField
-        label={<LabelWithLink text="PIN" href={forgotHref} linkText="Forgot PIN?" />}
-        labelText="PIN"
+        label="PIN"
+        labelAction={forgotHref ? <a href={forgotHref}>Forgot PIN?</a> : undefined}
         required
       >
         {(control) => (

@@ -1022,3 +1022,56 @@ Phase 7's "*The OTP variant has no role-tabs, SSO or account-prompt slots — de
 was **stale**. OTP had gained all three (`57482:*`) before this pass, so the shell was
 already invariant across all four variants. A written decision the file no longer reflected
 is the more dangerous of the two errors, because the next maintainer trusts it.
+
+---
+
+## Phase 8a — the master was re-spaced, and the label row was fixed for every form (2026-09-06)
+
+Two changes after the slot landed, both prompted by the human: spacing adjusted on the
+Figma master, and the label-alignment defect generalised out of the auth namespace.
+
+### The spacing hierarchy the master now carries
+
+Read back from `Auth / AuthFormCard` (`55445:778`) and implemented verbatim. Every value
+is bound to a Space variable in the file, so these are tokens, not measurements:
+
+| Where | Gap | Variable |
+|---|---|---|
+| Between the card's REGIONS — role tabs, header, handoff, method tabs, form group, account prompt | **32** | `stack/32` |
+| Inside the new **`Form`** frame — credential fields, submit, consent | **24** | `stack/24` |
+| Between fields in a credential stack | **16** | `stack/16` |
+| Heading over lede in the Header frame | **8** | `stack/8` |
+| Account prompt, additional top padding | **8** | `padding/8` |
+
+**The `Form` frame is the substantive change**, not the numbers. The submit and the consent
+line used to be siblings of the credential fields at card level, so at a flat 16 the button
+read as another field and the account prompt read as part of the form. Grouping them at 24
+inside a 32 rhythm says what the parts are: *this is the form; that is an aside*.
+
+Code matches: `.ds-authcard` 32, `.ds-authcard__form` 24, `.ds-authfields` 16,
+`.ds-authcard__header` 8, `.ds-authcard__prompt` 8 top. The stray `padding-top: 4` on the
+credential stack is gone — the master has none, and it was mine.
+
+### The label row, fixed for the whole estate rather than for auth
+
+The floated recovery link never reached the right edge: `.ds-field__label-row` is a flex
+row, so the `<label>` inside it shrink-wraps to its own text — 186px in a 340px field —
+and `float: right` had only that to work with. It shipped as **"Password \*Forgot
+Password?"**, jammed together, on the portal login pages.
+
+The first fix here was a `:has()` rule scoped to the auth stacks. That was a patch on a
+symptom. The defect is that a consumer was smuggling an `<a>` **inside** a `<label>`, which
+is also wrong on its own terms: clicking near an interactive element inside a label moves
+focus to the associated control instead of following the link.
+
+So `FormField` gained **`labelAction`** — a sibling of the label at the far right of the
+label row, pushed there with `margin-left: auto`.
+
+**Why `margin-left: auto` on the ACTION and not `flex: 1` on the LABEL.** Filling the label
+would push a `labelHelp` toggle to the far right on every field that has one, and a help
+disclosure belongs beside the thing it explains. The change is purely additive — one new
+class that exists only when an action is passed — so **no field without a `labelAction` can
+move**, which is the whole regression argument and is verifiable from the diff.
+
+`LabelWithLink` and `.ds-authfields__labelrow` are both deleted. Any form in the estate can
+now put a recovery route on a label row correctly.
