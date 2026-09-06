@@ -43,8 +43,17 @@ npm run check:template-adoption            # in `npm run check`, so CI runs it
 npm run check:template-adoption:baseline   # after migrating, in the same change
 ```
 
-At 6 September 2026 it stands at **67 / 279 composed, 212 in the baseline**. The
-list may only shrink.
+At 6 September 2026 it stands at **8 / 278 composed, 270 in the baseline**, and
+the list may only shrink.
+
+**That number was 67 for an hour, and the correction is the instructive part.**
+The gate's first version treated a short page that renders one component as
+conformant, on the reasoning that its screen lives in that component. It does —
+but nothing was then checking that component, so 59 pages across e-anudaan and
+nhapoa passed while their screens were hand-assembled one file sideways, and the
+gate could have been satisfied by moving code rather than composing it. It now
+resolves the delegate through its import and judges that instead. **A jump in
+this baseline means the scope widened; every other move must be downward.**
 
 ## 2. The rule
 

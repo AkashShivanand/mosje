@@ -24,9 +24,13 @@
  * template (`<SomethingScreen`), or `PortalLoginTemplate` for a login screen.
  *
  * A page that only *delegates* — one that renders a portal component and nothing
- * else — is not counted against the backlog, because its screen lives in that
- * component and will be found there. A page under 25 lines with no JSX of its own
- * beyond a single element is treated as delegating.
+ * else — is judged by THAT COMPONENT, not by itself. Twelve e-anudaan pages are
+ * seven lines each and render `<ActionQueue />`; the screen is in `action-queue.tsx`.
+ * Counting the page as conformant because it is short would let anyone satisfy
+ * this gate by moving a hand-assembled screen one file sideways, so the delegate
+ * is resolved through its import and checked instead. Where it cannot be
+ * resolved — a dynamic import, a component outside the hub — the page is left
+ * uncounted rather than blamed for something unreadable.
  *
  * ## The ratchet, in the shape the estate uses everywhere else
  *
@@ -74,10 +78,22 @@ function* walk(dir) {
  * assembling. Counting it as debt would send someone to a file with nothing in
  * it to fix.
  */
-function isDelegating(src) {
+function delegateOf(src) {
   const body = src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
-  const elements = body.match(/<[A-Z][A-Za-z0-9]*/g) ?? [];
-  return body.split("\n").filter((l) => l.trim()).length < 25 && elements.length <= 2;
+  const elements = [...new Set((body.match(/<([A-Z][A-Za-z0-9]*)/g) ?? []).map((m) => m.slice(1)))];
+  const short = body.split("\n").filter((l) => l.trim()).length < 25;
+  if (!short || elements.length !== 1) return null;
+  const name = elements[0];
+  // The import that supplied it. `@/` is apps/hub/src.
+  const imp = new RegExp(`import\\s*\\{[^}]*\\b${name}\\b[^}]*\\}\\s*from\\s*"([^"]+)"`).exec(body);
+  if (!imp) return { name, file: null };
+  const spec = imp[1];
+  if (!spec.startsWith("@/")) return { name, file: null };
+  for (const ext of [".tsx", "/index.tsx"]) {
+    const candidate = join(ROOT, "apps/hub/src", spec.slice(2) + ext);
+    if (existsSync(candidate)) return { name, file: candidate };
+  }
+  return { name, file: null };
 }
 
 /**
@@ -111,8 +127,20 @@ for (const f of walk(join(ROOT, PAGES_ROOT))) {
   if (!/\/page\.tsx$/.test(f)) continue;
   const rel = relative(ROOT, f);
   const src = readFileSync(f, "utf8");
-  const ok = SCREENS.test(src) || LOGIN.test(src) || isDelegating(src);
-  pages.push({ rel, ok });
+  if (SCREENS.test(src) || LOGIN.test(src)) {
+    pages.push({ rel, ok: true });
+    continue;
+  }
+  const delegate = delegateOf(src);
+  if (delegate) {
+    // Judged by the component it hands the screen to. A page that delegates to
+    // something unreadable from here is not counted either way.
+    if (!delegate.file) continue;
+    const target = readFileSync(delegate.file, "utf8");
+    pages.push({ rel, ok: SCREENS.test(target) || LOGIN.test(target) });
+    continue;
+  }
+  pages.push({ rel, ok: false });
 }
 
 for (const f of walk(join(ROOT, SHELLS_ROOT))) {
@@ -125,7 +153,20 @@ for (const f of walk(join(ROOT, SHELLS_ROOT))) {
 const offenders = [...pages, ...shells].filter((e) => !e.ok).map((e) => e.rel).sort();
 
 if (WRITE) {
-  writeFileSync(BASELINE, `${JSON.stringify({ unmigrated: offenders }, null, 2)}\n`);
+  const payload = {
+    /* Written into the file because the count JUMPED once for a reason that is
+       not backsliding, and the next reader deserves to know which kind of change
+       they are looking at. On 2026-09-06 it went 212 -> 270 when the gate learned
+       to follow a DELEGATING page to the component holding its screen: twelve
+       e-anudaan pages are seven lines each and render <ActionQueue />, and 59
+       pages across e-anudaan and nhapoa had been passing because their screens
+       lived one file sideways. The estate did not get worse; the measurement got
+       honest. Every later move of this number should be downward. */
+    $note:
+      "Shrink-only. A jump means the gate's scope widened — say why here when it does.",
+    unmigrated: offenders,
+  };
+  writeFileSync(BASELINE, `${JSON.stringify(payload, null, 2)}\n`);
   console.log(
     `✔ template adoption: baseline recorded — ${offenders.length} file(s) not yet on a template ` +
       `(${pages.length} page(s) and ${shells.length} shell(s) scanned).`,

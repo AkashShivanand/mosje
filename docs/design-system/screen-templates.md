@@ -355,11 +355,17 @@ the focus management, the number formatting — is already decided.
 The adoption ratchet is the one that matters. It is the difference between `SidebarNav`
 at 100% and `AppShell` at 0%.
 
-**Where it stands, 6 September 2026:** `67 / 279` portal files composed from a template,
-**212 declared in the baseline**. The baseline may only shrink — a new page that assembles
+**Where it stands, 6 September 2026:** `8 / 278` portal files composed from a template,
+**270 declared in the baseline**. The baseline may only shrink — a new page that assembles
 a screen by hand fails, and a baselined file that starts using a template also fails until
 the baseline is re-recorded in the same change, so one page's migration cannot be spent
 silently on another page's regression.
+
+**A page that delegates is judged by what it delegates to.** Twelve e-anudaan pages are
+seven lines each and render `<ActionQueue />`; the screen is in `action-queue.tsx`. The
+gate's first version counted such pages as conformant and checked nothing further, which
+would have let anyone satisfy it by moving a hand-assembled screen one file sideways —
+59 pages were passing that way. It now resolves the delegate through its import.
 
 Both failure modes were exercised by breaking them deliberately before the gate was
 trusted, per the estate's standing rule that a check nobody has watched fail is not a
