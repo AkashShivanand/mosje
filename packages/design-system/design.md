@@ -2563,6 +2563,28 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **A read-only value says WHY.** A missing button is a puzzle; "This application was approved on 4 September 2026" is an answer.
 - Not for several values that change together, and not for a value chosen from a list — both are forms.
 
+#### ScheduleGrid
+**Purpose**: a timetable — Garima Greh's daily programme, an attendance week, a district's camp calendar.
+**Props**: `columns` · `rows` (each `{ id, label, sublabel? }`) · `entries` (`{ id, columnId, rowId, title, detail?, tone?, href? }[]`) · `caption` (**required, visible**) · `emptyText`
+**Rules**:
+- **It is a REAL `<table>`, and that is the whole design.** Built from divs, a screen reader reads a stream of session titles with no way to say which day or hour any of them is in. With row and column headers the same entry is announced as "Monday, 09:00 to 10:30, Literacy class".
+- **The caption is visible and required.** "Daily programme" and "Attendance, week of 1 September" are different tables that look identical.
+- **An empty CELL is empty** — no dash, nothing to read. An empty SCHEDULE says so in a sentence rather than drawing a grid of nothing.
+- **It scrolls in its own labelled region with a tab stop**, never inside a card: a scrolling box with no tab stop cannot be reached without a pointer.
+- Tone colours the entry's leading rule only; a grid of coloured blocks is unreadable.
+- An entry with no `href` is a record, not a control.
+
+#### VideoTile
+**Purpose**: one camera or one recording, with the four states a feed is actually in.
+**Props**: `label` (**required**) · `src` · `poster` · `captions` (`{ src, srcLang, label }`) · `state` (`live` | `recorded` | `connecting` | `offline`) · `offlineReason` · `caption` · `alternativeHref` · `alternativeLabel`
+**Rules**:
+- **Never autoplay, never with sound, and no prop to change it.** A wall of nine tiles that all start playing is nine audio streams and a page that cannot be read.
+- **Offline is a SENTENCE, not a black rectangle.** "The camera has not reported since 04:20 today" is something an officer can act on; a dark tile is indistinguishable from a page that failed to load.
+- **"Live" is a WORD**; the red dot is `aria-hidden` decoration on top of it.
+- **The text alternative is a PROP.** WCAG 1.2.1 asks for one; making it part of the API means its absence is visible at the call site rather than found in an audit.
+- **`captions` renders a real `<track kind="captions">`, on by default.** WCAG 1.2.2 requires captions on recorded speech, and a caption file is the only form a viewer can switch on. A live feed has none, which is why the text alternative is a separate prop rather than a substitute.
+- The `<video>` element is the browser's — its controls are keyboard-operable and every reader already knows them.
+
 #### Tree
 **Purpose**: a hierarchy a reader walks — Master Data, Map Ministry & Schemes, Roles & Permissions.
 **Props**: `nodes` (`{ id, label, children?, disabled?, meta? }[]`) · `label` (**required**) · `selectedId` · `onSelect` · `expandedIds` · `onExpandedChange` · `defaultExpandedIds` · `emptyText`
@@ -2615,6 +2637,28 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **"Mark all as read" appears only when something is unread.** A control that does nothing most of the time is ignored on the day it matters.
 - **It does not place itself.** There is no floating variant: both bottom corners and the right wall are spoken for (`floating-element-placement.md`), so whatever opens the panel decides where it sits.
 - Empty is a GOOD state and reads like one — "Nothing new. You are up to date."
+
+#### SignaturePad
+**Purpose**: a signature on a consent form, given by drawing or by typing.
+**Props**: `declaration` (**required**) · `label` (**required**) · `value` (`{ method, value } | null`) · `onChange` · `typedLabel` · `clearLabel` · `disabled`
+**Rules**:
+- **The typed alternative cannot be switched off.** WCAG 2.2 §2.5.7 requires a single-pointer path that is not a drag, and drawing a signature is a drag by definition. A pad that only draws excludes every reader using a keyboard, a switch or a head pointer.
+- **The component does not decide what counts as consent.** `declaration` is required, so a form cannot ship without the Department having written down what is being attested to.
+- **The declaration sits ABOVE the pad.** A citizen who signs and then reads is a citizen who did not read.
+- **Clearing is always available and clears the VALUE**, not just the picture. A signature nobody can withdraw is not consent.
+- The stroke is captured at device resolution and its ink is read from the canvas's own token-bound colour, never a literal.
+
+#### CookieConsent
+**Purpose**: the choice a citizen makes about non-essential cookies.
+**Props**: `categories` (`{ id, label, description, required? }[]`) · `accepted` · `onDecide` · `title` · `description` (**required**) · `policyHref` (**required**) · `policyLabel` · `acceptAllLabel` · `rejectLabel` · `saveLabel` · `acknowledgeLabel` · `placement` (`fixed` | `inline`)
+**Rules**:
+- **A NOTICE and a CHOICE are different things, and the component tells them apart.** Where every category is `required` there is nothing to consent to, so it renders one acknowledgement instead of "Accept all" / "Reject optional" against an empty set. That is the form the website's banner takes today; the moment a portal adds analytics the same component becomes a real choice.
+- **Fixed by default, and it does not yield.** It carries `data-sa-corner-occupant` so the accessibility widget and the chat launcher lift clear, and it does NOT read the corner rail itself — consent comes before a chat widget on a government site.
+- **Rejecting is as easy as accepting**: both are buttons of equal weight in the same row, in the first view.
+- **Optional categories start OFF, and there is no prop to pre-tick them.** A pre-ticked box is not consent.
+- **A required category shows as required**, never as a toggle that cannot move.
+- **It is a region at the foot of the page, not a modal.** A citizen looking for a scheme deadline should not have to answer a cookie question first.
+- `onDecide` always receives the required ids, whatever the reader chose.
 
 #### LanguageSwitcher
 **Purpose**: the languages a page is published in, offered as links. GIGW 3.0 makes a bilingual estate an obligation, so most pages on this estate carry one.

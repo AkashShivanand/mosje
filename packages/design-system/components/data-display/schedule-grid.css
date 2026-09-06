@@ -1,0 +1,143 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  .ds-schedule {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+  }
+
+  /* Seven columns do not fit a phone. The scroll is on a labelled region with a
+     tab stop, which is what makes a horizontally scrolling table operable. */
+  .ds-schedule__scroll {
+    overflow-x: auto;
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background: var(--sa-bg-neutral-base);
+  }
+
+  .ds-schedule__scroll:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-schedule__table {
+    inline-size: 100%;
+    border-collapse: collapse;
+  }
+
+  .ds-schedule__caption {
+    margin: 0;
+    padding: var(--sa-padding-12);
+    text-align: start;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-schedule__colhead,
+  .ds-schedule__rowhead,
+  .ds-schedule__corner {
+    padding: var(--sa-padding-8);
+    border: var(--sa-cmp-divider-width) solid var(--sa-border-neutral-subtle);
+    background: var(--sa-bg-neutral-subtle);
+    text-align: start;
+    vertical-align: top;
+    white-space: nowrap;
+  }
+
+  .ds-schedule__colhead { min-inline-size: 9rem; }
+  .ds-schedule__rowhead { min-inline-size: 6rem; }
+
+  .ds-schedule__day,
+  .ds-schedule__slot {
+    display: block;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-schedule__date {
+    display: block;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-schedule__cell {
+    padding: var(--sa-padding-8);
+    border: var(--sa-cmp-divider-width) solid var(--sa-border-neutral-subtle);
+    vertical-align: top;
+  }
+
+  .ds-schedule__entry {
+    display: block;
+    padding: var(--sa-padding-8);
+    border-inline-start: var(--sa-control-selection-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-bg-neutral-subtle);
+    color: var(--sa-text-neutral-bolder);
+    text-decoration: none;
+  }
+
+  .ds-schedule__entry + .ds-schedule__entry {
+    margin-block-start: var(--sa-stack-4);
+  }
+
+  /* Tone marks the LEADING RULE, never a full fill: a grid of coloured blocks is
+     unreadable, and the rule survives forced-colors mode. */
+  .ds-schedule__entry.is-info { border-inline-start-color: var(--sa-border-status-info-base); }
+  .ds-schedule__entry.is-success { border-inline-start-color: var(--sa-border-status-success-base); }
+  .ds-schedule__entry.is-warning { border-inline-start-color: var(--sa-border-status-warning-base); }
+  .ds-schedule__entry.is-danger { border-inline-start-color: var(--sa-border-status-error-base); }
+
+  .ds-schedule__entry.is-link .ds-schedule__title {
+    color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .ds-schedule__entry.is-link:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-schedule__title {
+    display: block;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .ds-schedule__detail {
+    display: block;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-schedule__empty {
+    margin: 0;
+    padding: var(--sa-padding-24);
+    border: var(--sa-control-border-width) dashed var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-schedule__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}

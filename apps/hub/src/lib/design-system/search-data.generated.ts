@@ -508,6 +508,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "menu_book"
   },
   {
+    "title": "Cookie Consent — Design System",
+    "section": "Feedback & Status",
+    "href": "/design-system/components/feedback/cookie-consent",
+    "keywords": "cookie consent — design system feedback & status a notice and a choice are different things fixed by default, and it does not yield rejecting is as easy as accepting optional categories start off a required category says so  tokens wcag accessibility",
+    "description": "The cookie decision — a notice where every cookie is necessary, a choice where some are not. Every rule in it answers a dark pattern.",
+    "type": "component",
+    "iconName": "notifications"
+  },
+  {
     "title": "Dashboard Archetypes",
     "section": "Data Visualisation",
     "href": "/design-system/data-visualisation/archetypes",
@@ -1412,6 +1421,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Schedule Grid — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/schedule-grid",
+    "keywords": "schedule grid — design system data display a real table is the whole design the caption is visible and required an empty cell is empty it scrolls in its own region, not inside a card  tokens wcag accessibility",
+    "description": "A timetable — Garima Greh",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "Search — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/search",
@@ -1492,6 +1510,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The portal app-shell left navigation: a two-level hierarchy with expandable groups and a curved connector, in an expanded or icon-only collapsed mode.",
     "type": "component",
     "iconName": "navigation"
+  },
+  {
+    "title": "Signature Pad — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/signature-pad",
+    "keywords": "signature pad — design system forms & inputs the typed path cannot be switched off the component does not decide what counts as consent the declaration sits above the pad clearing is always available  tokens wcag accessibility",
+    "description": "A signature given by drawing or by typing. The typed alternative cannot be switched off — drawing is a drag, and WCAG 2.2 requires a single-pointer path that is not one.",
+    "type": "component",
+    "iconName": "edit_note"
   },
   {
     "title": "Signing Into Bar — Design System",
@@ -1773,6 +1800,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "href": "/design-system/components/data-display/vertical-timeline",
     "keywords": "vertical timeline — design system data display choose an order and keep it keep the entries short example what a screen reader gets VerticalTimeline children VerticalTimeline className tokens wcag accessibility",
     "description": "A dated sequence of entries down a single rail, for a scheme",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
+    "title": "Video Tile — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/video-tile",
+    "keywords": "video tile — design system data display never autoplay, never with sound offline is a sentence, not a black rectangle &ldquo;live&rdquo; is written the text alternative is a prop  tokens wcag accessibility",
+    "description": "One camera or one recording, with the four states a feed is actually in — and the words for each, because a dark rectangle is not an answer.",
     "type": "component",
     "iconName": "bar_chart"
   },

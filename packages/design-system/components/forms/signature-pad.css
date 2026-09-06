@@ -1,0 +1,86 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  .ds-sign {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    margin: 0;
+    padding: var(--sa-padding-16);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    min-inline-size: 0;
+  }
+
+  .ds-sign__legend {
+    padding-inline: var(--sa-padding-8);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-sign__declaration {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-sign__canvas {
+    inline-size: 100%;
+    block-size: 8rem;
+    border: var(--sa-control-border-width) dashed var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-radius);
+    background: var(--sa-bg-neutral-base);
+    /* The stroke colour is read from here by the canvas context, so the ink is
+       token-bound rather than a literal in the component. */
+    color: var(--sa-text-neutral-bolder);
+    touch-action: none;
+  }
+
+  .ds-sign__canvas:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-sign__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-8);
+  }
+
+  .ds-sign__typedLabel {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-sign__typed {
+    flex: 1 1 12rem;
+    min-inline-size: 0;
+    min-block-size: var(--sa-control-height-sm);
+    padding-inline: var(--sa-padding-8);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-radius);
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .ds-sign__typed:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-sign__state {
+    margin: 0;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+}

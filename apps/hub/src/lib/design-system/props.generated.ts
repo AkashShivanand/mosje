@@ -3042,6 +3042,97 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "CookieConsentProps": {
+    "source": "packages/design-system/components/feedback/cookie-consent.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "accepted",
+        "type": "string[]",
+        "required": true,
+        "description": "The ids the reader has already accepted."
+      },
+      {
+        "name": "categories",
+        "type": "CookieCategory[]",
+        "required": true,
+        "description": "The categories this site actually sets. If the only entry is a required one, do not render this component at all — see the note on the component."
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": true,
+        "description": "The paragraph above the choices, in the department's words. Required."
+      },
+      {
+        "name": "onDecide",
+        "type": "(accepted: string[]) => void",
+        "required": true,
+        "description": "Called with the accepted ids. Required categories are always included."
+      },
+      {
+        "name": "policyHref",
+        "type": "string",
+        "required": true,
+        "description": "Address of the full cookie or privacy statement. Required."
+      },
+      {
+        "name": "acceptAllLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Accept all\"",
+        "description": ""
+      },
+      {
+        "name": "acknowledgeLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Continue\"",
+        "description": "Shown instead of the choices when EVERY category is required — there is nothing to consent to, so the reader acknowledges a notice rather than being offered a decision they do not have."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "placement",
+        "type": "\"fixed\" | \"inline\"",
+        "required": false,
+        "default": "\"fixed\"",
+        "description": "`\"fixed\"` pins it to the foot of the viewport, which is what a real banner does; `\"inline\"` renders it in the flow, which is what a specimen or a settings page wants. Fixed marks itself as a corner occupant so the accessibility widget and the chat launcher lift clear of it."
+      },
+      {
+        "name": "policyLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Read the cookie statement\"",
+        "description": ""
+      },
+      {
+        "name": "rejectLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Reject optional cookies\"",
+        "description": ""
+      },
+      {
+        "name": "saveLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Save my choices\"",
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "default": "\"Cookies on this site\"",
+        "description": ""
+      }
+    ]
+  },
   "DashboardGridProps": {
     "source": "packages/design-system/components/dashboard/dashboard-grid.tsx",
     "inheritsNative": false,
@@ -8677,6 +8768,49 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "ScheduleGridProps": {
+    "source": "packages/design-system/components/data-display/schedule-grid.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "caption",
+        "type": "string",
+        "required": true,
+        "description": "The table's caption. Required, and visible — a schedule with no title is a grid of words."
+      },
+      {
+        "name": "columns",
+        "type": "ScheduleAxis[]",
+        "required": true,
+        "description": "The columns, left to right — usually days."
+      },
+      {
+        "name": "entries",
+        "type": "ScheduleEntry[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "rows",
+        "type": "ScheduleAxis[]",
+        "required": true,
+        "description": "The rows, top to bottom — usually time slots."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "emptyText",
+        "type": "string",
+        "required": false,
+        "default": "\"Nothing is scheduled for this period.\"",
+        "description": ""
+      }
+    ]
+  },
   "SearchProps": {
     "source": "packages/design-system/components/forms/search.tsx",
     "inheritsNative": true,
@@ -9131,6 +9265,62 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "description": "Show the rail's own collapse control (mirrors Figma `Show Control` on the identity block, off by default). With an `identity` it sits in that row — trailing when expanded, beneath the mark when collapsed; without one it takes a 48px row at the top. The portal masthead's toggle drives the same state, so pass this only in a shell without that toggle. Requires `onCollapsedChange`."
+      }
+    ]
+  },
+  "SignaturePadProps": {
+    "source": "packages/design-system/components/forms/signature-pad.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "declaration",
+        "type": "string",
+        "required": true,
+        "description": "The declaration the signature attests to, in the department's words. It is REQUIRED, because a signature with no stated declaration attests to nothing and the design system must not invent the wording."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Whose signature this is — \"Signature of the applicant\". Required."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: SignatureValue | null) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "SignatureValue | null",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "clearLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Clear\"",
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "typedLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Type your full name instead\"",
+        "description": ""
       }
     ]
   },
@@ -10755,6 +10945,74 @@ export const GENERATED_PROPS = {
         "name": "date",
         "type": "React.ReactNode",
         "required": false,
+        "description": ""
+      }
+    ]
+  },
+  "VideoTileProps": {
+    "source": "packages/design-system/components/data-display/video-tile.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "What this camera or recording shows — \"Dormitory corridor\", \"Camp at Bankura\". Required."
+      },
+      {
+        "name": "alternativeHref",
+        "type": "string",
+        "required": false,
+        "description": "Address of a text alternative — a transcript, or the log the recording belongs to. Required by WCAG 1.2.1 for recorded material, and the component makes it a prop rather than an afterthought."
+      },
+      {
+        "name": "alternativeLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Transcript and log\"",
+        "description": ""
+      },
+      {
+        "name": "caption",
+        "type": "string",
+        "required": false,
+        "description": "A line under the tile — a location, a time, a warden's name."
+      },
+      {
+        "name": "captions",
+        "type": "{ src: string; srcLang: string; label: string }",
+        "required": false,
+        "description": "A captions file for a recording — WebVTT. Supply it wherever one exists; WCAG 1.2.2 requires captions on recorded speech, and a caption file is the only form of them a viewer can turn on."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "offlineReason",
+        "type": "string",
+        "required": false,
+        "description": "Why the tile is offline, in the department's words — \"The camera has not reported since 04:20 today.\" A black rectangle is not an answer."
+      },
+      {
+        "name": "poster",
+        "type": "string",
+        "required": false,
+        "description": "Still shown before playback starts."
+      },
+      {
+        "name": "src",
+        "type": "string",
+        "required": false,
+        "description": "The stream or file. Omitted for `connecting` and `offline`, where there is nothing to play."
+      },
+      {
+        "name": "state",
+        "type": "VideoTileState = \"live\" | \"recorded\" | \"connecting\" | \"offline\"",
+        "required": false,
+        "default": "\"recorded\"",
         "description": ""
       }
     ]
