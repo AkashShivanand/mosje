@@ -1906,6 +1906,18 @@ option sound like the normal one. All 76 instances survived, verified after the 
 **Still divergent, recorded not hidden**: the Figma set has **no intent axis and no `Tone`**, so
 a `danger` or inverse icon button cannot be drawn even though the code supports both.
 
+#### Menu
+**Purpose**: the WAI-ARIA menu-button pattern — a trigger opens a list of **commands**, focus lands on the first, and the arrow keys move between them. The dense-table `⋮` is the shape it was built for.
+**Props**: `items` (`MenuItem` or `{ kind: "separator", label? }`) · `label` (**required**) · `onSelect(id)` · `side` · `align` (default `end`) · `sideOffset` · `open`/`onOpenChange` · `disabled`. An item carries `id`, `label`, `icon?`, `description?`, `kind?` (`action | radio | checkbox`), `checked?`, `tone?` (`neutral | warning | danger`), `disabled?`.
+**Rules**:
+- **Menu, Popover and Select are not interchangeable.** `Select` edits a field's value and submits with the form; `Popover` is a dialog holding arbitrary controls; a Menu offers commands. Substituting one for another is not a styling decision — a menu used as a form control produces a value a screen reader never announced and a form that never carries it.
+- **The trigger may be icon-only; the items may not.** This is where the estate puts the actions whose icons are not universal, so an icon-only item reintroduces the discoverability problem the menu was added to solve. `icon` is decorative and sits beside the label.
+- **A disabled item keeps `aria-disabled` and stays in the menu**, skipped by the arrow keys. Never the native `disabled` attribute: it removes the item from the accessibility tree, so a screen-reader user does not learn the action exists — worse than learning it is unavailable. Put the reason in `description`.
+- **Tone colours the label and the hover fill, never a resting fill.** A row filled with red reads as an alert about something that already happened, not an action still available. `danger` is for the one action that cannot be undone.
+- The keyboard model is the pattern in full — Down/Up wrap, Home/End, **type-ahead**, Enter/Space choose, Escape closes and returns focus, Tab closes without cycling, Down opens a closed trigger. Type-ahead is the part usually left out, and it is what keeps a menu of a dozen actions usable without a mouse.
+- **One tab stop.** Items carry `tabIndex={-1}` and focus roves; a menu whose every item were tabbable would put twelve stops between the reader and the next control.
+- Rows bind `--sa-control-height-md` (40px) and fill the menu's width, clearing WCAG 2.2 §2.5.8's 24×24 on both axes. Portalled at `--sa-z-dropdown` on the shared engine in `foundations/anchor.ts`, so a table's overflow cannot clip it and the menu follows its row when the table scrolls — which three of the four hand-rolled menus in this estate got wrong.
+
 #### ButtonGroup
 **Purpose**: related actions kept together **and kept apart**. It gives the row a
 `role="group"` and a required name, so a screen reader announces "Record actions, group"

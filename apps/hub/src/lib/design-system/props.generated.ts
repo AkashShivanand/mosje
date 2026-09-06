@@ -5674,6 +5674,82 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "MenuProps": {
+    "source": "packages/design-system/components/actions/menu.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactElement",
+        "required": true,
+        "description": "The trigger. A `<button>` or a DS component that forwards its ref."
+      },
+      {
+        "name": "items",
+        "type": "MenuEntry[]",
+        "required": true,
+        "description": "The items, in the order they are offered."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "The menu's accessible name, announced when focus enters it. Required for the same reason `Popover`'s is: an unnamed menu tells a screen-reader user nothing about what has just opened."
+      },
+      {
+        "name": "onSelect",
+        "type": "(id: string) => void",
+        "required": true,
+        "description": "Called with the chosen item's `id`. The menu closes and focus returns to the trigger."
+      },
+      {
+        "name": "align",
+        "type": "AnchorAlign = \"start\" | \"center\" | \"end\"",
+        "required": false,
+        "default": "\"end\"",
+        "description": "Cross-axis alignment."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Prevent opening without unmounting the trigger."
+      },
+      {
+        "name": "onOpenChange",
+        "type": "(open: boolean) => void",
+        "required": false,
+        "description": "Called on every open and close."
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "required": false,
+        "description": "Controlled open state. Pair with `onOpenChange`."
+      },
+      {
+        "name": "side",
+        "type": "AnchorSide = \"top\" | \"bottom\" | \"left\" | \"right\"",
+        "required": false,
+        "default": "\"bottom\"",
+        "description": "Preferred side. Flips automatically when there is no room."
+      },
+      {
+        "name": "sideOffset",
+        "type": "number",
+        "required": false,
+        "default": "4",
+        "description": "Gap between the trigger and the menu, in px."
+      }
+    ]
+  },
   "MenuToggleProps": {
     "source": "packages/design-system/components/navigation/header/nav-parts.tsx",
     "inheritsNative": false,

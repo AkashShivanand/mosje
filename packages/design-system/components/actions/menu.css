@@ -1,0 +1,174 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Menu
+     The WAI-ARIA menu-button panel. Portalled and `position: fixed` from
+     JS-measured coordinates, so a table's overflow cannot clip it.
+     ============================================================================ */
+
+  .ds-menu {
+    position: fixed;
+    /* A menu is chrome that hangs off a control, not a dialog: it sits on the
+       dropdown rung, below Modal (500) so a modal's own menus still resolve
+       above their modal by stacking context, not by number. */
+    z-index: var(--sa-z-dropdown);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-width: 11rem;
+    max-width: min(20rem, calc(100vw - var(--sa-padding-32)));
+    max-height: calc(100vh - var(--sa-padding-64));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--sa-padding-4);
+    border: var(--sa-cmp-divider-width) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-neutral-base);
+    font-family: var(--sa-font-latin);
+    box-shadow: var(--sa-elevation-dropdown);
+    animation: ds-menu-in var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @keyframes ds-menu-in {
+    from {
+      opacity: 0;
+      transform: translateY(2px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-menu {
+      animation: none;
+    }
+  }
+
+  .ds-menu__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sa-inline-12);
+    width: 100%;
+    /* WCAG 2.5.8 Target Size (Minimum) is 24x24. A menu row is a pointer target
+       in a dense table, so it is given the full control height rather than the
+       bare minimum — 24 is the floor, not the goal. */
+    min-height: var(--sa-control-height-md);
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border: 0;
+    border-radius: var(--sa-shape-6);
+    background: transparent;
+    color: var(--sa-text-neutral-base);
+    font-family: inherit;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ds-menu__item:hover {
+    background-color: var(--sa-bg-neutral-hover);
+  }
+
+  .ds-menu__item:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
+    background-color: var(--sa-bg-neutral-hover);
+  }
+
+  .ds-menu__item[aria-disabled="true"] {
+    color: var(--sa-text-neutral-disabled);
+    cursor: not-allowed;
+  }
+
+  .ds-menu__item[aria-disabled="true"]:hover {
+    background-color: transparent;
+  }
+
+  /* Tone colours the LABEL, never the row's fill. A filled danger row reads as
+     an alert that has already happened rather than an action available. */
+  .ds-menu__item--warning {
+    color: var(--sa-text-status-warning-bolder);
+  }
+
+  .ds-menu__item--danger {
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  .ds-menu__item--danger:hover,
+  .ds-menu__item--danger:focus-visible {
+    background-color: var(--sa-bg-status-error-base);
+  }
+
+  .ds-menu__item--warning:hover,
+  .ds-menu__item--warning:focus-visible {
+    background-color: var(--sa-bg-status-warning-base);
+  }
+
+  .ds-menu__icon {
+    flex: 0 0 auto;
+    /* Aligns the glyph's optical centre with the first line of the label rather
+       than with the whole two-line block. */
+    margin-block-start: var(--sa-padding-2);
+  }
+
+  .ds-menu__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .ds-menu__label {
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .ds-menu__description {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  /* The tick occupies its slot whether or not it is on, so a radio group's
+     labels do not shift left and right as the selection moves. */
+  .ds-menu__check {
+    flex: 0 0 auto;
+    margin-block-start: var(--sa-padding-2);
+    visibility: hidden;
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  .ds-menu__check--on {
+    visibility: visible;
+  }
+
+  .ds-menu__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    padding: var(--sa-padding-8) var(--sa-padding-12) var(--sa-padding-4);
+  }
+
+  .ds-menu__groupLabel {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    text-transform: uppercase;
+  }
+
+  .ds-menu__rule {
+    height: var(--sa-cmp-divider-width);
+    background-color: var(--sa-border-neutral-subtle);
+  }
+}

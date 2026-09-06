@@ -70,6 +70,15 @@ export type {
 export { IconButton } from "./components/actions/icon-button";
 export type { IconButtonProps } from "./components/actions/icon-button";
 export { ButtonGroup } from "./components/actions/button-group";
+export { Menu } from "./components/actions/menu";
+export type {
+  MenuEntry,
+  MenuItem,
+  MenuItemKind,
+  MenuItemTone,
+  MenuProps,
+  MenuSeparator,
+} from "./components/actions/menu";
 export type { ButtonGroupProps, ButtonGroupAlign } from "./components/actions/button-group";
 
 // ---- Components: Forms -------------------------------------------------------

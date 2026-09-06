@@ -993,6 +993,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Menu — Design System",
+    "section": "Actions",
+    "href": "/design-system/components/actions/menu",
+    "keywords": "menu — design system actions menu, popover, select — choosing between them every item carries visible text tone colours the label, not the row placement example a disabled item is still announced type-ahead one tab stop  tokens wcag accessibility",
+    "description": "The WAI-ARIA menu-button pattern: a trigger opens a list of commands, focus moves onto the first, and the arrow keys move between them.",
+    "type": "component",
+    "iconName": "widgets"
+  },
+  {
     "title": "Metric Card — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/metric-card",
