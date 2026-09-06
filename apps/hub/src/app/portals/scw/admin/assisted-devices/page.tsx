@@ -1,7 +1,7 @@
 import {
   Button,
-  DataTable,
-  Pagination,
+  TableShell,
+  StaticPager,
   PortalPageHeader,
 } from "@/components/scw/ui";
 import { ASSISTED_DEVICES, DEVICES_TOTAL } from "@/lib/scw/mock-data";
@@ -27,7 +27,7 @@ export default function AssistedDevicesPage() {
         }
       />
 
-      <DataTable columns={COLUMNS}>
+      <TableShell columns={COLUMNS}>
         {ASSISTED_DEVICES.map((d) => (
           <tr key={d.title}>
             <td className="max-w-[14rem] truncate px-6 py-4 font-medium text-ink">
@@ -51,9 +51,9 @@ export default function AssistedDevicesPage() {
             </td>
           </tr>
         ))}
-      </DataTable>
+      </TableShell>
 
-      <Pagination total={DEVICES_TOTAL} totalPages={23} />
+      <StaticPager total={DEVICES_TOTAL} totalPages={23} />
     </div>
   );
 }

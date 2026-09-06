@@ -1,8 +1,8 @@
 import {
   Button,
-  DataTable,
+  TableShell,
   PeriodFilter,
-  Pagination,
+  StaticPager,
   PortalPageHeader,
   SearchInput,
 } from "@/components/scw/ui";
@@ -54,7 +54,7 @@ export default function SageHomesPage() {
         />
       </div>
 
-      <DataTable columns={COLUMNS}>
+      <TableShell columns={COLUMNS}>
         {IPSRC_HOMES.map((h) => (
           <tr key={h.ngo}>
             <td className="max-w-[16rem] truncate px-6 py-4 font-medium text-ink">
@@ -78,9 +78,9 @@ export default function SageHomesPage() {
             </td>
           </tr>
         ))}
-      </DataTable>
+      </TableShell>
 
-      <Pagination total={IPSRC_TOTAL} totalPages={74} />
+      <StaticPager total={IPSRC_TOTAL} totalPages={74} />
     </div>
   );
 }

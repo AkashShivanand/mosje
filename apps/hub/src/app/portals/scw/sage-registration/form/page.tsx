@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, DataTable, Field, TextInput } from "@/components/scw/ui";
+import { Button, TableShell, Field, TextInput } from "@/components/scw/ui";
 import { Icon , Stepper, Card} from "@mosje/design-system";
 
 const STEPS = [
@@ -151,7 +151,7 @@ function StepProductService() {
   return (
     <section>
       <GroupTitle>Product / Service List</GroupTitle>
-      <DataTable
+      <TableShell
         columns={[
           { key: "name", label: "Product/Service Name" },
           { key: "year", label: "Launch Year" },
@@ -171,7 +171,7 @@ function StepProductService() {
             </button>
           </td>
         </tr>
-      </DataTable>
+      </TableShell>
     </section>
   );
 }
@@ -180,7 +180,7 @@ function StepTeamFounders() {
   return (
     <section>
       <GroupTitle>Member List</GroupTitle>
-      <DataTable
+      <TableShell
         columns={[
           { key: "name", label: "Name" },
           { key: "designation", label: "Designation" },
@@ -206,7 +206,7 @@ function StepTeamFounders() {
             </button>
           </td>
         </tr>
-      </DataTable>
+      </TableShell>
     </section>
   );
 }

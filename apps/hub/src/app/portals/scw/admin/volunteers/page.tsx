@@ -1,8 +1,8 @@
 import Link from "next/link";
 import {
-  DataTable,
+  TableShell,
   PeriodFilter,
-  Pagination,
+  StaticPager,
   PortalPageHeader,
   SearchInput,
   StatusPill,
@@ -35,7 +35,7 @@ export default function VolunteersPage() {
         />
       </div>
 
-      <DataTable columns={COLUMNS}>
+      <TableShell columns={COLUMNS}>
         {VOLUNTEERS.map((v) => (
           <tr key={v.id}>
             <td className="px-6 py-4 font-medium text-ink">{v.name}</td>
@@ -54,9 +54,9 @@ export default function VolunteersPage() {
             </td>
           </tr>
         ))}
-      </DataTable>
+      </TableShell>
 
-      <Pagination total={VOLUNTEERS_TOTAL} totalPages={36} />
+      <StaticPager total={VOLUNTEERS_TOTAL} totalPages={36} />
     </div>
   );
 }

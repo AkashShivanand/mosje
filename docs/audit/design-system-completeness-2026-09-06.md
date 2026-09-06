@@ -473,3 +473,77 @@ adopted it: 34 shadow-UI collisions remain, and closing them is portal work with
 its own visual audit, mapped in Addendum 5. Nor does it decide whether
 `@mosje/design-system` may leave the monorepo — the package is still
 `private: true`, and that is the department's call rather than a technical one.
+
+
+---
+
+## Addendum 7 — the shadow UI, migrated (6 September 2026)
+
+**34 to 3.** The three that remain are Button, one in each of tg, scw and nhapoa,
+and they are blocked on two things that were measured rather than assumed.
+
+### What was migrated — the local copy deleted, the system's adopted
+
+| Component | Where | What the migration cost |
+|---|---|---|
+| `Sparkline` | pm-ajay | `w`/`h` became `width`/`height`, `domainMin`/`domainMax` became `min`/`max`. The system's docstring already said it absorbs this one. |
+| `Legend` | pm-ajay | Nothing — it already took the `{ label, color }` items pm-ajay passed. |
+| `PageHeader` | tg, scw, nhapoa, smile-admin | The system gained `eyebrow`, which all four needed; `subtitle`→`meta`, `action`→`actions` at 54 call sites. |
+| `Textarea` | tg, nhapoa | Nothing — the system's extends the same HTML attributes. |
+| `EmptyState` | tg, nhapoa | `hint`→`description`. |
+| `Stepper` | tg, scw, nhapoa | `steps` mapped to `{ label }`. SCW's `done` array turned out to be exactly what the system derives from `current`, so it and the line computing it are gone. |
+| `Select` | tg, scw, nhapoa | A string array mapped to `{ value, label }` at 36 call sites. |
+| `Card` | tg, scw, nhapoa | Nothing at the call sites — the radius moved 16px → the card token's 12px. |
+| `DataTable` | nhapoa | Deleted. Nothing used it. |
+
+### What was renamed — because it was never a duplicate
+
+Nine components shared a design-system name while being a different thing. An
+import of that name resolved to either one silently, which is the defect the gate
+exists to catch; the fix is the name, and each now says in the file what it is
+and what it is not.
+
+`HubSiteHeader`, `WebsiteSamaveshBanner` and `PageTrail` already delegated to the
+component they shadowed. `AlertRow` is a notification row, not a status banner.
+`SectionEyebrow` (×3) is an uppercase kicker, not a section header. `HubFooter`
+and `SmileFooter` are light bands where the system ships a statutory footer and a
+navy one — **one light `Footer` variant in the design system would let all three
+converge, and that is a design decision for the department.** `StaticPager` (×2)
+is a prototype control over one fixed page of mock rows: a real pager there would
+render page numbers that go nowhere. `TableShell` draws a frame and lets the
+caller render its own rows, where the system's table owns them. `ListingTable`
+cannot become the system's until that table gains a **serialisable cell type** —
+the website's listing pages are server components, so a column cannot carry a
+`render` function.
+
+### The three that remain, and why
+
+`Button`, in tg, scw and nhapoa — 127 call sites.
+
+1. **Brand.** Measured in the browser on 6 September 2026: inside these portals
+   `--sa-bg-brand-primary-bolder` resolves to `#005eb9`, while the local button
+   draws Tailwind `navy`, `#13366b`. Adopting the system's today turns every
+   filled button in three portals gov-blue. `ds/portal-navy-default` (#335) sets
+   the brand mode that makes the swap correct, and should land first.
+2. **Saffron.** The system's `variant` is primary | success | danger | neutral —
+   it cannot express the estate's secondary brand, which two SCW buttons use. The
+   tokens exist and are better than the literal in use
+   (`bg/brand/secondary/bolder` is `#c34700` with white on it), so the fix is a
+   `secondary` variant on the system's Button, not a `className` override.
+
+Both reasons are recorded on the Button in each portal, where the next person
+will find them.
+
+### What the migration was checked against
+
+Landing pages for scw, nhapoa, tg, smile-admin, the website, eutthan and the hub
+were captured before the work and again after. All but one are pixel-identical;
+SCW's differs by 0.6%, which is the card radius moving to the token. The SCW
+Volunteers console, the SAGE registration form's stepper, the e-Pledge form's
+select and pm-ajay's Executive Summary were each checked in a browser with no
+page errors.
+
+Two defects were found by doing the work rather than by reading it: a `"use
+client"` directive pushed below an import, which only the production build
+catches, and the SCW volunteer form's gender select carrying
+`placeholder="Male"` — a placeholder that is also one of its own options.

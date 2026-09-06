@@ -1,8 +1,8 @@
 import Link from "next/link";
 import {
-  DataTable,
+  TableShell,
   PeriodFilter,
-  Pagination,
+  StaticPager,
   PortalPageHeader,
   SearchInput,
   StatusPill,
@@ -30,7 +30,7 @@ export default function SageApplicationsPage() {
         <SearchInput placeholder="Search by organisation..." />
       </div>
 
-      <DataTable columns={COLUMNS}>
+      <TableShell columns={COLUMNS}>
         {SAGE_APPLICATIONS.map((a) => (
           <tr key={a.id}>
             <td className="max-w-[22rem] truncate px-6 py-4 font-medium text-ink">
@@ -50,9 +50,9 @@ export default function SageApplicationsPage() {
             </td>
           </tr>
         ))}
-      </DataTable>
+      </TableShell>
 
-      <Pagination total={SAGE_TOTAL} totalPages={41} />
+      <StaticPager total={SAGE_TOTAL} totalPages={41} />
     </div>
   );
 }

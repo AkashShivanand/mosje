@@ -1,6 +1,6 @@
 import {
-  DataTable,
-  Pagination,
+  TableShell,
+  StaticPager,
   PortalPageHeader,
   SearchInput,
 } from "@/components/scw/ui";
@@ -25,7 +25,7 @@ export default function UserManagementPage() {
         <SearchInput placeholder="Search for users by name, mobile number or email" />
       </div>
 
-      <DataTable columns={COLUMNS}>
+      <TableShell columns={COLUMNS}>
         {ADMIN_USERS.map((u) => (
           <tr key={u.email}>
             <td className="px-6 py-4 font-medium text-ink">{u.name}</td>
@@ -50,9 +50,9 @@ export default function UserManagementPage() {
             </td>
           </tr>
         ))}
-      </DataTable>
+      </TableShell>
 
-      <Pagination total={USERS_TOTAL} totalPages={4} />
+      <StaticPager total={USERS_TOTAL} totalPages={4} />
     </div>
   );
 }

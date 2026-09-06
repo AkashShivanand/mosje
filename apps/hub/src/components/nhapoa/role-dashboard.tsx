@@ -1,5 +1,6 @@
-import { Card } from "@mosje/design-system";
 "use client";
+
+import { Card } from "@mosje/design-system";
 
 import * as React from "react";
 import { PortalPageHeader, StatTile } from "./ui";

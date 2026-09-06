@@ -7,6 +7,27 @@ import { Icon,
 } from "@mosje/design-system";
 
 /* ----------------------------------------------------------------- Buttons */
+/**
+ * This portal's button.
+ *
+ * IT SHOULD BE the design system's `Button`, and it is not yet, for two reasons
+ * that were measured rather than assumed on 6 September 2026:
+ *
+ * 1. BRAND. Inside this portal `--sa-bg-brand-primary-bolder` resolves to
+ *    #005eb9, while this button draws Tailwind `navy`, #13366b. Adopting the
+ *    system's today would turn every filled button in this portal gov-blue.
+ *    `ds/portal-navy-default` (#335) sets the brand mode that makes the swap
+ *    correct; it should land first.
+ * 2. SAFFRON. The system's `variant` is primary | success | danger | neutral —
+ *    it cannot express the estate's secondary brand. The tokens exist and are
+ *    good (`bg/brand/secondary/bolder` is #c34700 with white on it, better
+ *    contrast than the #b8500f used here), so the fix is a `secondary` variant
+ *    on the system's Button, not a className override.
+ *
+ * Everything else about this component is already the system's job: the focus
+ * ring, the disabled treatment, the icon slots, the loading state it does not
+ * have.
+ */
 export function Button({
   variant = "primary",
   className,
@@ -128,7 +149,16 @@ export function PeriodFilter({
 }
 
 /* ------------------------------------------------------------- Pagination */
-export function Pagination({
+/**
+ * The pager drawn under a prototype table.
+ *
+ * It is NOT the design system's `Pagination`. It has no `page` and no change
+ * handler, because these screens hold one fixed page of mock rows — a real pager
+ * here would render page numbers that go nowhere, which is worse than a control
+ * that plainly does not move. It becomes the system's `Pagination` the day these
+ * screens page real rows.
+ */
+export function StaticPager({
   total,
   pageSize = 10,
   totalPages,
@@ -199,7 +229,18 @@ function PageBtn({
 }
 
 /* --------------------------------------------------------------- DataTable */
-export function DataTable({
+/**
+ * A table SHELL — it draws the frame and the header row, and the caller renders
+ * its own `<tr>`s inside it.
+ *
+ * It is NOT the design system's `DataTable`, which owns the rows: it takes
+ * `data` and `total` and pages them itself. Adopting that here is a real
+ * migration of eight screens, and it carries a product decision with it — these
+ * screens pass a headline total (356 volunteers) over ten mock rows, and the
+ * system's table would page the ten it actually has. That is a question about
+ * what the prototype should demonstrate, not about which component to import.
+ */
+export function TableShell({
   columns,
   children,
   className,

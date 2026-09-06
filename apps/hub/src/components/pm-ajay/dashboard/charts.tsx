@@ -3,7 +3,7 @@
 /* PM-AJAY Dashboard — SVG chart primitives.
    Accessible: charts carry role="img" + aria-label; data charts ship an sr-only table. */
 
-import { useId, type CSSProperties, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 export const C = {
   navy:  "var(--sa-color-brand-navy)",

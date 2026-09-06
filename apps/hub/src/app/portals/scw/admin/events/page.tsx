@@ -1,8 +1,8 @@
 import Link from "next/link";
 import {
   Button,
-  DataTable,
-  Pagination,
+  TableShell,
+  StaticPager,
   PortalPageHeader,
   SearchInput,
 } from "@/components/scw/ui";
@@ -38,7 +38,7 @@ export default function EventsPage() {
         <SearchInput placeholder="Search by event title, organizer, state..." />
       </div>
 
-      <DataTable columns={COLUMNS}>
+      <TableShell columns={COLUMNS}>
         {EVENTS.map((e) => (
           <tr key={e.sno}>
             <td className="px-6 py-4 text-ink-muted">{e.sno}</td>
@@ -61,9 +61,9 @@ export default function EventsPage() {
             </td>
           </tr>
         ))}
-      </DataTable>
+      </TableShell>
 
-      <Pagination total={EVENTS_TOTAL} totalPages={24} />
+      <StaticPager total={EVENTS_TOTAL} totalPages={24} />
     </div>
   );
 }
