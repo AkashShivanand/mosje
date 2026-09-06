@@ -554,6 +554,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "palette"
   },
   {
+    "title": "Description List — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/description-list",
+    "keywords": "description list — design system data display an unrecorded value is a designed state columns, and when to go wide example  tokens wcag accessibility",
+    "description": "The label-and-value grid every application-detail screen is made of, rendered as a real <dl> so each value is announced with the field it belongs to.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "Design tokens",
     "section": "Resources",
     "href": "/design-system/resources/tokens",
@@ -946,6 +955,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "Text that takes the reader somewhere. A link changes location; a button performs an action.",
     "type": "component",
     "iconName": "navigation"
+  },
+  {
+    "title": "List Group — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/list-group",
+    "keywords": "list group — design system data display list or table the whole row is the target length example link, button, or neither selection is not only a colour a disabled row stays in the list ListRow tokens wcag accessibility",
+    "description": "A real <ul> of rows with a leading slot, a text block and a trailing slot — the surface behind recent items, notifications, documents and search results.",
+    "type": "component",
+    "iconName": "bar_chart"
   },
   {
     "title": "Live Region — Design System",

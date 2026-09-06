@@ -262,6 +262,16 @@ export type { ToastVariant } from "./components/feedback/toast";
 
 // ---- Components: Data display ------------------------------------------------
 export { Card, CardHeader, CardBody, CardFooter, CardTitle, CardSubtitle } from "./components/data-display/card";
+export { DescriptionList } from "./components/data-display/description-list";
+export type {
+  DescriptionItem,
+  DescriptionListProps,
+} from "./components/data-display/description-list";
+export { ListGroup, ListRow } from "./components/data-display/list-group";
+export type {
+  ListGroupProps,
+  ListRowProps,
+} from "./components/data-display/list-group";
 export { Avatar } from "./components/data-display/avatar";
 export { FactStrip } from "./components/data-display/fact-strip";
 export { DocumentLibrary } from "./components/data-display/document-library";

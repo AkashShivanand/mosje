@@ -2478,6 +2478,28 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - Always `aria-hidden`; it is decorative. Put `aria-busy` or a `<LiveRegion>` announcement on the surrounding region instead.
 - The shimmer is suppressed under `prefers-reduced-motion`; the muted surface still reads as "pending".
 
+#### DescriptionList
+**Purpose**: a set of recorded facts about ONE thing — the label-and-value grid that every *Application Detail*, *Beneficiary View* and *Review & Submit* screen in the estate is mostly made of.
+**Props**: `items` (`{ term, value, wide?, hint? }[]`) · `columns` (1 | 2 | 3, default 2) · `layout` (`stacked` | `inline`) · `size` (`md` | `sm`) · `divided` · `emptyText` (default "Not recorded")
+**Rules**:
+- **It renders a real `<dl>`, and that is the whole reason to reach for it.** The same grid built from `<div>`s reads to a screen reader as an undifferentiated run of text — "Date of Birth 12 March 1994 District Bankura Status Pending" — with nothing to say where one fact ends and the next begins. On a record of twenty fields that is unusable.
+- **An unrecorded value is a DESIGNED state.** `null`, `undefined` and an empty string all render `emptyText`. It is real text, never a dash alone: a screen reader announces "—" as nothing at all, which makes an unanswered field and a broken page identical to anyone not looking at the screen.
+- A field that should not appear at all when empty is left OUT of `items` by the caller — "does not apply" and "not answered" are different statements, and choosing between them belongs to the page.
+- **The grid is one column below the estate's 768 step whatever `columns` says.** Two columns of label-and-value on a narrow screen puts four words on each line — and 768 is the breakpoint ladder's own value, not a number chosen for this component. Set `wide` on any item whose value wraps — an address, a reason for return.
+- `layout="inline"`'s term column is `18ch`, not a pixel width, so it grows with the reader's font size instead of clipping the label at 200% zoom.
+- Not a `DataTable`: a table is for records the reader compares across columns, this is for the fields of one record.
+
+#### ListGroup / ListRow
+**Purpose**: a real `<ul>` of rows — leading slot, text block, trailing slot. The surface behind "recent applications", notifications, documents and search results.
+**Props**: `ListGroup`: `divided` (default true) · `bordered` · `size` · `aria-label`. `ListRow`: `title` · `description` · `eyebrow` · `leading` · `trailing` · `href` · `onClick` · `selected` · `disabled`.
+**Rules**:
+- **List or table is decided by what the reader does next.** If they will pick one row and open it, it is a list. If they will read down a column, it is a `DataTable`. Reaching for a table because the data has fields produces twelve columns on a phone; reaching for a list because it looks lighter produces a comparison the reader cannot make.
+- **The WHOLE row is the target**, never the title inside it. A 40px link in a 600px row is a target most people miss and everyone with a tremor misses; WCAG 2.2 §2.5.8's 24×24 is the floor, not the goal.
+- **A row is a link when it goes somewhere and a button when it does something.** Never both, and a row that is neither stays plain text rather than becoming a `div` with a click handler. A second action beside the row's own goes in `trailing` as its own control — a button nested in a link is invalid HTML and a target whose behaviour depends on which pixel was hit.
+- **Selection carries an inset leading rule as well as a fill**, plus `aria-current="page"` on a link or `aria-pressed` on a button. Colour alone fails WCAG 1.4.1, and the fill vanishes in forced-colors mode where the rule survives.
+- A disabled row **stays in the list** with `aria-disabled`. "Bank passbook — not yet uploaded" is information; removing the row leaves the reader to notice an absence.
+- **Long lists are PAGED, never scrolled inside their card** — on a phone a reader flicking the page down lands in the list and moves the list instead.
+
 #### Tooltip
 **Purpose**: A short hint revealed on hover **and** focus.  
 **Props**: `content`, `side` (`top|bottom|left|right`, auto-flips), `sideOffset`, `delay`, `disabled`  

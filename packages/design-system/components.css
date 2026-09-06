@@ -62,8 +62,10 @@
 @import "./components/data-display/charts/ranked-bar-list.css";
 @import "./components/data-display/charts/small-multiples.css";
 @import "./components/data-display/data-table.css";
+@import "./components/data-display/description-list.css";
 @import "./components/data-display/document-library.css";
 @import "./components/data-display/fact-strip.css";
+@import "./components/data-display/list-group.css";
 @import "./components/data-display/metric-card.css";
 @import "./components/data-display/profile-card.css";
 @import "./components/data-display/vertical-timeline.css";

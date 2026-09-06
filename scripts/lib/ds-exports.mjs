@@ -145,6 +145,11 @@ export const DOCUMENTED_BY = {
   MenuToggle: "SiteHeader", SheetToggle: "SiteHeader", NavItemLink: "SiteHeader",
   NavDropdown: "SiteHeader", DropdownItem: "SiteHeader", MegaMenu: "SiteHeader",
   MegaMenuItem: "SiteHeader",
+  // The list's row. It is never used outside a ListGroup — a row on its own is
+  // an <li> with no list — and the comparison that actually matters (link when
+  // it goes somewhere, button when it does something, plain text when neither)
+  // only reads as a comparison when the three sit in one list on one page.
+  ListRow: "ListGroup",
   CardHeader: "Card", CardBody: "Card", CardFooter: "Card",
   CardTitle: "Card", CardSubtitle: "Card",
   TabPanel: "Tabs",

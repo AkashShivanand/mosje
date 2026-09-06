@@ -3138,6 +3138,53 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "DescriptionListProps": {
+    "source": "packages/design-system/components/data-display/description-list.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "items",
+        "type": "DescriptionItem[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "columns",
+        "type": "1 | 2 | 3",
+        "required": false,
+        "default": "2",
+        "description": "Columns at the widest breakpoint. The grid steps down to one column below the estate's 768 breakpoint whatever this says, because two columns of label-and-value on a narrow screen puts four words on each line."
+      },
+      {
+        "name": "divided",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Draw a hairline under every row. Use it for a long single-column list."
+      },
+      {
+        "name": "emptyText",
+        "type": "string",
+        "required": false,
+        "default": "\"Not recorded\"",
+        "description": "What to show where nothing was recorded. It is real text, not a dash alone: a screen reader announces \"—\" as nothing at all, so a blank field and an unanswered one become indistinguishable."
+      },
+      {
+        "name": "layout",
+        "type": "\"stacked\" | \"inline\"",
+        "required": false,
+        "default": "\"stacked\"",
+        "description": "`stacked` puts the term above the value — the default, and the right choice for a grid of many short fields. `inline` puts the term in a fixed leading column, which reads better for a short single-column list."
+      },
+      {
+        "name": "size",
+        "type": "\"md\" | \"sm\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      }
+    ]
+  },
   "DividerProps": {
     "source": "packages/design-system/components/layout/divider.tsx",
     "inheritsNative": false,
@@ -5349,6 +5396,113 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"inline\"",
         "description": ""
+      }
+    ]
+  },
+  "ListGroupProps": {
+    "source": "packages/design-system/components/data-display/list-group.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The rows. Use `ListRow`; anything else must render an `<li>` itself."
+      },
+      {
+        "name": "aria-label",
+        "type": "string",
+        "required": false,
+        "description": "The list's accessible name. Required when the list is not already under a heading that names it — a bare list of rows announced as \"list, 12 items\" tells a screen-reader user how many of what."
+      },
+      {
+        "name": "bordered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Border and radius around the whole list, making it a panel."
+      },
+      {
+        "name": "divided",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Hairline between rows."
+      },
+      {
+        "name": "size",
+        "type": "\"md\" | \"sm\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      }
+    ]
+  },
+  "ListRowProps": {
+    "source": "packages/design-system/components/data-display/list-group.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The row's own line — the thing the reader is looking for."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One or two lines under the title."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Present but not choosable. Keeps `aria-disabled` rather than removing the row."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Small print above the title — a reference number, a date, a category."
+      },
+      {
+        "name": "href",
+        "type": "string",
+        "required": false,
+        "description": "Makes the whole row a link. A row is a link when it goes somewhere and a button when it does something; it is never both, and a row that is neither stays plain text rather than becoming a `div` with a click handler."
+      },
+      {
+        "name": "leading",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Icon, avatar or organisation mark before the text. Decorative."
+      },
+      {
+        "name": "onClick",
+        "type": "() => void",
+        "required": false,
+        "description": "Makes the whole row a button. Ignored when `href` is set."
+      },
+      {
+        "name": "selected",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Marks the row as the current one. Sets `aria-current` on a link."
+      },
+      {
+        "name": "trailing",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Status, count or action at the end of the row."
       }
     ]
   },
