@@ -221,7 +221,12 @@ items, 20 child items). They are to be migrated screen by screen, one at a time,
     `Sidebar` master carries the same right stroke. Shells pass no border of their own; their layout
     classes (hidden below `md`) land on the column.
 
-23. **The wash is `color/transparent/secondary/8`, and its far stop is raw by necessity.** A bound
-    gradient stop takes its variable's alpha, so a fade bound at both ends rendered as a solid block in
-    Figma. The near stop binds the 8% saffron token the handoff used; the far stop is a raw transparent
-    of the same hue, the one literal the master carries, recorded in its description.
+23. **The wash is `color/transparent/secondary/8` fading to `color/transparent/secondary/0`, both
+    stops bound.** A bound gradient stop takes its variable's alpha, so a fade bound at both ends to
+    the 8% tier rendered as a solid block in Figma, and a raw transparent far stop was briefly used.
+    A raw value is not acceptable anywhere on this estate, so the transparent family gained a 0 tier for the
+    secondary wash (`color/transparent/secondary/0`: the far end of a fade, never a fill), created in
+    the Palette collection as COMPOSE_COLOR(base, alpha/0) and consumed in code as
+    `--sa-color-transparent-secondary-0`. A 0 tier is added to a family together with its consumer,
+    because `check:token-consumers` refuses a token nothing binds. The handoff's 8% saffron and its vanishing point are now the
+    same two tokens in Figma and in CSS.
