@@ -166,6 +166,14 @@ export const DOCUMENTED_BY = {
   CardHeader: "Card", CardBody: "Card", CardFooter: "Card",
   CardTitle: "Card", CardSubtitle: "Card",
   TabPanel: "Tabs",
+  // THE CREDENTIAL STACKS. `AuthFormCard` is the component a consumer composes;
+  // these five are what go in its one slot, and none is used on its own. Its page
+  // is where the comparison lives — which stack carries a security check, which
+  // carries none and why, and that the OTP route is two stacks rather than one.
+  // Splitting that across five routes would put the comparison on none of them.
+  PasswordFields: "AuthFormCard", PinFields: "AuthFormCard",
+  DarpanFields: "AuthFormCard", IdentifierFields: "AuthFormCard",
+  OtpRequestFields: "AuthFormCard", OtpVerifyFields: "AuthFormCard",
   ReviewSection: "Wizard", ReviewItem: "Wizard",
   SkeletonText: "Skeleton", SkeletonRow: "Skeleton",
   ChartTooltip: "Legend",

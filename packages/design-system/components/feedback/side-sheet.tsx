@@ -26,7 +26,20 @@ export interface SideSheetProps {
    * users already expect, and navigation is the one case where breaking it
    * costs more than it gains.
    */
-  side?: "left" | "right";
+  /**
+   * **`"bottom"` is the Figma master's `Device=Mobile` drawing**: full width,
+   * anchored to the bottom edge, TOP corners rounded only, sliding up. Reach for
+   * it on a phone where the sheet is a CHOICE the reader is making — the portal
+   * picker is the case it exists for, because a thumb reaches the bottom of a
+   * phone and not the far edge.
+   *
+   * **It is a prop and not a breakpoint**, deliberately. Making mobile mean
+   * bottom automatically would turn every navigation drawer in the estate into a
+   * bottom sheet — `app-shell`, `tc-shell` and `admin-shell` all open this
+   * component as a rail on a phone, and a nav drawer belongs on the side it
+   * slides out of. The surface decides.
+   */
+  side?: "left" | "right" | "bottom";
   className?: string;
 }
 

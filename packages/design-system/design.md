@@ -12,6 +12,38 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-06 · System version: v0.62.0 (THE LOGIN SHELL BINDS THE FOUR LAYOUT
+  TOKENS THAT EXISTED FOR IT. `--sa-layout-login-{hero,panel}-width`, `-panel-gutter` and
+  `-content-width` were published and consumed by nothing; the shell restated the geometry as
+  `lg:w-[64.03%]`, `lg:px-16` and `max-w-sm`. `max-w-sm` is 384 against the design's 390, so the
+  card sat three pixels inside the role-tab row it is meant to share an edge with (measured: tabs
+  x=986 w=390, card x=989 w=384), and the tab row's 44px of track padding was what made two
+  credential-mode labels of 185 and 183 overflow a 390 column. Both halves read the token now and
+  both measure 986/390; the gap from the role tabs to the heading is the frame's 32, not 24. The
+  credential-mode switch is an open list with an underline, which the Figma master already drew
+  and the code had drifted from — Figma was right, code was wrong. OrgLogo's `tile` boolean is
+  GONE: the ground is the `.ds-org-tile` class, applied by the container that wants one, so the
+  four surfaces that used to draw a tile by hand share one definition. E-Anudaan's
+  `forgot-password` route exists — it was a 404 for one commit, because the link was added to
+  match the handoff and the page was not — and the design system gained `IdentifierFields`, the
+  identifier-alone stack that `scw`, `nhapoa` and `pm-ajay` had each re-implemented.)
+
+  Last reviewed: 2026-09-06 · System version: v0.61.0 (THE CREDENTIAL MODE IS A SLOT, NOT AN
+  AXIS. `Auth / AuthFormCard` carried an `Auth Method` variant axis — Password, OTP, PIN, DARPAN —
+  in which SEVEN of the card's eight regions were identical across all four drawings: PIN differed
+  from Password by a field label and a link's wording, DARPAN by one control being visible instead
+  of hidden, and the DARPAN variant bound none of the five booleans its siblings bound, so every
+  one of them silently did nothing there. The axis was asking two questions at once — what
+  identifies you, and how you prove it — so it grew multiplicatively; five identifiers against four
+  secrets is twenty clones of an eight-region card. The card is now ONE component with a
+  `Credential fields` instance-swap slot listing five `Auth / CredentialFields` masters as preferred
+  values, `PortalLoginTemplate` went from EIGHT variants to two (Device alone), and code gained
+  `AuthFormCard` plus `PasswordFields`, `PinFields`, `DarpanFields`, `OtpRequestFields` and
+  `OtpVerifyFields`. DARPAN stopped being a clone of the password form and became what the
+  department's own screen draws — DARPAN ID + PAN Number, no password, no security check — with the
+  PAN arriving as `credentials.pan` rather than as `credentials.password`. The bot check moved from
+  the card into the password and PIN stacks, because it guards a typed secret.)
+
   Last reviewed: 2026-09-06 · System version: v0.60.0 (THE STEPPER'S MOTION IS FINISHED AT BOTH
   ENDS: the compact bar's current dot animates at all (it snapped, on the surface most citizens
   use), and the ring and connector now grow on the entry curve and retract on the exit one,
@@ -231,7 +263,7 @@
   WAS EXTRACTED FOR. The same 16 marks sat in two byte-identical public directories
   while `organisation-details.ts` reached into three roots for them, so a mark
   replaced in one place stayed stale in the others. `OrgLogo` owns every path,
-  `check:org-logos` is a per-file ratchet over the 99 literals that remain, and
+  `check:org-logos` is a per-file ratchet over the 83 literals that remain, and
   design.md had specified this component as "when built" for weeks. `PortalCard`
   grew a `detailed` variant and the `/portals` directory adopted it — it had kept
   drawing its own card with a derived two-letter code where the department has an
@@ -2068,6 +2100,8 @@ character count, and owns every accessibility decision the field stack makes.
 **Rules**:
 - Every `<Input>`, `<Select>`, `<Textarea>` **must** be wrapped in `<FormField>`. `<Checkbox>`, `<Radio>` and `<Toggle>` carry their own label and description wiring and are NOT wrapped; a set goes in `<RadioGroup>` / `<CheckboxGroup>`.
 - FormField auto-generates `htmlFor` / `aria-describedby` linkage. Do not bypass it.
+- **A control on the label row is `labelAction`, NEVER a link inside `label`.** "Forgot Password?" beside the Password label is the case it exists for. Consumers used to pass a `<span>` holding the label text and a floated `<a>` as `label` — which puts an interactive element inside a `<label>`, so a click near it moves focus to the field instead of following the link, and the float never reached the right edge anyway: `.ds-field__label-row` is a flex row, so the `<label>` inside it shrink-wraps to its own text (186px in a 340px field). That shipped on the portal login pages as **"Password \*Forgot Password?"**, jammed together, and was found by opening the page rather than by any gate. `labelAction` renders as a SIBLING of the label, pushed right with `margin-left: auto` — so a `labelHelp` toggle stays beside the label where it belongs, and no field without an action moves at all.
+- **Keep a `labelAction` short, and make it a real link or button.** It is not a place for instructions; those are `hint` or `labelHelp`.
 - Layout order is **label → help → control → hint → message → count** (the hint renders *below*
   the control so inputs stay aligned across grid rows, which is also where UX4G's Input master
   draws its Caption). Every part is linked via `aria-describedby`.
@@ -2538,6 +2572,10 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 **Props**: `open`, `onClose`, `title`, `size` (`sm` 400 · `md` 480 · `lg` 560), `footer`
 **Rules**: `Escape` closes; focus trapped while open and restored on close; background scroll locked. Use a `<Modal>` for ≤5-field forms and confirmations; use `<SideSheet>` for 6+ fields, textareas, or upload flows.
 **Anchoring**: `side="right"` (default) for task panels; `side="left"` for navigation drawers, where the left edge is the convention users expect. Used by the NMBA admin shell below `lg` in place of the persistent sidebar.
+**`side="bottom"` is the Figma master's `Device=Mobile`** — full width, anchored to the bottom, **top corners only** (rounding all four makes it read as a floating card rather than a sheet anchored to an edge). Reach for it on a phone where the sheet is a CHOICE the reader is making and their thumb has to reach it; the portal picker is the case it exists for.
+- **It is a prop, not a breakpoint, and that is deliberate.** Making mobile mean bottom automatically would turn every navigation drawer in the estate into a bottom sheet — `app-shell`, `tc-shell` and `admin-shell` all open this component as a rail on a phone, and a nav drawer belongs on the side it slides out of.
+- **The panel floats; it is not flush to the edge.** Inset `--sa-padding-16` on every side with `--sa-shape-16` corners, taken from the master (432 wide including a 16 inset, so the visible panel is 400). Code was edge-flush and square until 2026-09-06.
+- **Two deliberate Figma↔code divergences, recorded on the master.** (1) The Figma rule "pair it with `Modal / Backdrop`, do not draw a scrim inside it" is a *drawing* rule — a Figma component cannot render a page-covering scrim. **The React component owns its backdrop**, because a consumer who forgets one ships a modal with no scrim and no click-outside. (2) `footer` is code-only; the master draws no footer region.
 
 
 #### Lightbox
@@ -3248,14 +3286,16 @@ and renders it only when `exportable`.
 - Every `<nav>` is labelled, the footer is named by a visually-hidden `<h2>`, and one focus ring is defined once for the subtree — do not add per-control rings.
 
 #### OrgLogo
-**Purpose**: An organisation or scheme mark in the estate's standard tile — and **the only place a mark's path is written**.
+**Purpose**: An organisation or scheme mark — **the mark and nothing else** — and **the only place a mark's path is written**.
 **Key props**: `path`, `org`, `size`, `name`, `src`
 **Also exports**: `ORG_LOGOS`, `PORTAL_ORG_LOGOS`, `orgLogoSrc`, `portalLogoSrc`, `SAMAVESH_MARK`, `SAMAVESH_MARK_VECTOR`, `NATIONAL_EMBLEM`, `NATIONAL_EMBLEM_INVERSE` — all from `org-logo-registry.ts`, which carries **no `"use client"`**
 **Rules**:
 - **NEVER write a mark's path anywhere else.** Before this existed the same 16 files sat in TWO byte-identical public directories — `/design-system/org-logos/` and `/website/images/org-logos/` — and `organisation-details.ts` reached into THREE roots for the same class of asset, one of them used by a single organisation. Nothing reconciled them, so a mark replaced in one place stayed stale in the others and nobody could say where "the others" were. `/design-system/org-logos/` is canonical: these are design-system assets and the website is a consumer of them, not their owner.
-- **`npm run check:org-logos` enforces it, as a RATCHET.** 99 literals across 48 files are frozen as declared debt; a new file that writes one fails, a baselined file that grows fails, and a baselined file that SHRINKS also fails — telling you to re-baseline, so one surface's cleanup cannot be spent silently on another's regression. Same shape as `check:storybook` and `check:radius-linkage`. An unavoidable literal declares itself: `// org-logo-exempt(portal-local): why`.
+- **`npm run check:org-logos` enforces it, as a RATCHET.** 83 literals across 39 files are frozen as declared debt (down from 99 across 48 on 2026-09-06, when a docs code example stopped writing a mark path); a new file that writes one fails, a baselined file that grows fails, and a baselined file that SHRINKS also fails — telling you to re-baseline, so one surface's cleanup cannot be spent silently on another's regression. Same shape as `check:storybook` and `check:radius-linkage`. An unavoidable literal declares itself: `// org-logo-exempt(portal-local): why`.
 - **Pass `path` or `org`, never a file.** `path` is a portal route and is the normal case, because a route is what the registry hands you. `src` exists only for a mark not yet in the registry and every use is reported by the gate.
-- **The tile belongs to the component.** White ground, hairline rule, `shape/8`, three sizes (32 / 48 / 56). Four surfaces drew it by hand at three different radii before this existed. Never re-draw it.
+- **The GROUND belongs to the CONTAINER, not the mark — changed 2026-09-06.** `OrgLogo` carried a `tile` boolean (white ground, hairline rule, `shape/8`) that was ON by default, and **seventeen of its twenty-six call sites had to switch it off**. A property most callers must remember to turn off is the wrong default and the wrong home for the decision, and in Figma it put a toggle on every instance of an 18-variant set.
+- **Where a mark needs a ground, put `.ds-org-tile` on the element that contains it.** ONE class, in `org-logo.css`, and it is one class for a reason: four surfaces drew this tile by hand at three different radii and two different sizes before any of it existed. Compose it — never re-derive a ground in a consumer's own stylesheet. `PortalCard` and `PortalLoginShell` are the two product surfaces that use it; the sidebar rail deliberately does not, because its SAMAVESH wash is the mark's ground there.
+- **Sizes are still the mark's** — 32 / 48 / 56, and the inset survives the tile's removal so a mark never touches the edge of its box.
 - **The mark is CONTAINED, never cropped.** `object-fit: contain`, always. A departmental crest with its edges cut off is a brand error, not a layout one.
 - **Leave `name` off.** A mark beside the org's name in real text is decorative and takes an empty alt [WCAG H67]; a name here makes a screen reader read the organisation twice. Pass one only where the mark stands alone.
 - **THE DATA AND THE RESOLVERS LIVE IN `org-logo-registry.ts`, WITH NO `"use client"`.** They are plain values that SERVER code needs — page metadata, an og:image, a server-rendered directory. In the component file a server component importing `ORG_LOGOS` got a client-reference proxy: `Object.keys()` returned `[]`, the documentation page's catalogue of every mark rendered as nothing, and no error appeared anywhere. The component re-exports them so callers see one module.
@@ -3267,6 +3307,10 @@ and renders it only when `exportable`.
 **Purpose**: One portal in a grid of them, in two densities. Used by the SAMAVESH banner drawer, the `/portals` directory, and the change-portal side sheet on a login page.
 **Key props**: `variant`, `code`, `name`, `href`, `path`, `org`, `description`, `category`, `ctaLabel`, `selected`, `external`
 **Rules**:
+- **Selected is not a state, which is why it is its own axis.** It is persistent — *this is the portal you are in* — while hover, pressed and disabled are momentary or conditional. Selected draws a **2px rule and a check, and does not tint the card**: a saffron→white wash sat under it until 2026-09-06 and was removed to match the Figma master, because the rule and the check already say "this one" and a third signal for one fact only put ink on a moving ground.
+- **Focus is a boolean, not a state value.** Focus can land on a card that is also hovered, pressed, selected or disabled, so it cannot share an axis with them — same shape as `Tabs / Tab`. The ring takes the DARKER `--sa-color-secondaryScale-600`, because a focus indicator owes 3:1 against both the card it surrounds and the page behind it.
+- **`disabled` keeps the card's border and its name.** The portal exists; this reader cannot open it. It renders `aria-disabled` with the `href` dropped — never the native attribute (which leaves the tab order) and never omission (which tells a screen-reader user nothing). **A disabled card owes a reason in the surrounding copy**; the component cannot know it, and a greyed card with no explanation reads as a bug.
+- **Hover is gated to `(hover: hover) and (pointer: fine)`; the press is not.** Ungated, `:hover` STICKS on a touchscreen — the card stays lifted after the tap. The press is the only feedback a touch reader gets and is deliberately ungated.
 - **TWO VARIANTS, ONE VISUAL LANGUAGE.** `compact` (default) is mark + code + name, for a reader who already knows which portal they want and is FINDING it. `detailed` adds description, category and an action, for a reader CHOOSING. The rule, ground, tile, saffron code and every shared measurement are identical between them — three surfaces show the same object, and a reader who learns to recognise it in one must recognise it in the others. Pick by which the reader is doing, never by how much space is going spare.
 - **`description` and `category` render on `detailed` ONLY.** `compact` ignores both rather than truncating them, so passing them to the wrong variant loses content silently.
 - **It is DUMB on purpose.** It takes strings and renders them. Which portals to show belongs to the caller reading the registry — a card that looked up its own status would put that query in three places.
@@ -3473,18 +3517,53 @@ matching the Figma "Navbar Portal" account.
 **Rule**: Never rebuild the login layout per-portal. Slot in portal-specific content: logo paths, portal name, tab configuration, form JSX.  
 **Slots**: `children` is the form. `extraContent` sits **below** the form inside the card and is for page-level content, not credentials — the portal switcher grid, a demo-data notice. A field placed in `extraContent` lands after the submit button, which is the wrong tab order.
 
-#### PortalLoginTemplate
-**Purpose**: A login page described by a **config object** instead of assembled by hand. Renders role tabs, the login-method selector and the right fields for each `PortalAuthMode` — `password`, `otp`, `pin` — and returns one `LoginSubmitPayload` (role + mode + credentials) from `onSubmit`.
+#### PortalList
+**Purpose**: The scrollable list of portals inside the change-portal picker — category filters over Compact `PortalCard`s. Mirrors `Auth / PortalList` (`55444:709`), which drops into `SideSheet`'s Content slot.
+**Props**: `apps`, `activePath`, `onSelect`, `filterable`, `includePlanned`
+**Rules**:
+- **There is no `PortalPicker` component.** The picker is `SideSheet` + this, which is the Figma master's own decision — a third name for the composition would add a word without adding a decision. `PortalLoginTemplate` composes it and wires it to the SIGNING INTO strip's Change control.
+- **Never write a portal's name here.** Labels come from `PORTAL_LABELS`, which exists because two surfaces gave different answers: the banner showed "PM-AJAY / Pradhan Mantri Anusuchit Jaati Abhyuday Yojana" while `/portals` showed "PM / PM-AJAY", leaking an internal admin label to citizens. A third copy re-opens exactly that.
+- **Never hand-write the list either.** `DEFAULT_APPS` owns whether a portal EXISTS, and a hand-kept copy of it once shipped a 404.
+- **Cards stay real `<a href>`s.** `onSelect` intercepts the click and is for a surface that must NOT navigate; the login picker omits it, so middle-click, "copy link address" and Enter all work and it survives JavaScript being off.
+- **The filter row hides itself when there is nothing to choose between.** With every live portal in one category it would read "All (8)" beside "Scheme Portals (8)" — two controls that do the same thing. Same rule as a one-tab tablist.
+- **Filtered-to-nothing is worded differently from empty**, and names the way back. "No portal is listed under Corporations" and "No portals are available to sign in to" have different remedies.
+- **`includePlanned` is OFF by default**: this list is a way IN, and a way in that mostly cannot be taken is a worse list. On, unopened portals are `disabled` cards.
 
-> **`darpan` and `aadhaar` were removed on 2026-08-17.** A full read of the Handoff — 69 auth screens across 10 pages — found no DARPAN and no Aadhaar screen in any portal. Both were invented from a written brief before the design file was available.
+#### AuthFormCard
+**Purpose**: The login form column — seven fixed regions and one slot. Heading, error, the DigiLocker handoff, the method tabs, **`credentialFields`**, the submit, the consent line, the account prompt.
+**Props**: `heading`, `headingLevel`, `description`, `error`, `sso`, `methodTabs`, `credentialFields`, `primaryAction`, `consent`, `accountPrompt`, `footer`, `onSubmit`
+**Rules**:
+- **Three gaps, and they are a hierarchy** — 32 between the card's regions, 24 inside the `Form` group (fields, submit, consent), 16 between fields in a credential stack, with a further 8 of top padding on the account prompt. Taken from the Figma master, where each is bound to `stack/32`, `stack/24`, `stack/16` and `padding/8`. It was a flat 16 throughout until the master was re-spaced on 2026-09-06, which made the submit read as another field and the account prompt read as part of the form.
+- **The submit and the consent line belong INSIDE the form group**, not beside it. `.ds-authcard__form` is that group; it is not the `<form>` element, which is the whole card. The name is the master's, so the two can be read side by side.
+- **The credential mode is a SLOT, never a variant or a prop on this card.** Adding a mode means writing a stack, not branching here. Until 2026-09-06 it was a four-value `Auth Method` axis in which PIN differed from Password by a field label and DARPAN by one hidden control — and because the axis conflated *what identifies you* with *how you prove it*, it grew multiplicatively rather than additively.
+- **It is the LABEL WIDTH that overflows, not the number of tabs.** Measured in a 390px column on 2026-09-06: "Login with Credentials" (185px) + "Login with DARPAN ID" (183px) = 368px of labels in 340px of room, so **TWO** tabs already clip. Keep labels short — the mode, not a sentence about it — pass `overflow` so the row offers the More menu instead of cutting a tab in half, and past three modes use `authSelectorType: "dropdown"` or `"radio"`. Measure at 390: that is `layout/login/content/width`.
+- **A single-mode portal passes no `methodTabs` at all.** A tablist with one tab is chrome pretending to be a choice.
+- **The role tabs are NOT this card's** — they belong to `PortalLoginShell`, which pins them at a breakpoint the card cannot see. The Figma master draws them inside the card's bounds because there they are simply the top of the column; that divergence is deliberate and recorded, not an oversight to be "fixed" by giving the estate two places to draw a tablist.
+- **Render one stack at a time; never hide the inactive one.** A hidden panel holding a `type="password"` input makes password managers offer to fill a field the reader cannot see.
+- Prefer `PortalLoginTemplate`. Compose this directly only when a portal needs anatomy the config object does not describe.
+
+#### CredentialFields — PasswordFields · PinFields · DarpanFields · OtpRequestFields · OtpVerifyFields
+**Purpose**: The five stacks that go in `AuthFormCard`'s slot. Each is controlled, stateless and shares one vertical rhythm, so swapping one for another cannot change the spacing around it.
+**Rules**:
+- **One slot, not two.** Identifier and secret are not split into separate slots: it would model the taxonomy more purely and offer combinations that cannot ship — this estate has no DARPAN-ID-plus-OTP route. Name the pairs that exist; do not generate the rest.
+- **`DarpanFields` is not the password form relabelled.** The department's own screen asks an organisation for **DARPAN ID + PAN Number** — two identifiers it holds on file — and for no password and no security check. It takes no `botCheck` prop at all.
+- **The bot check lives on the stacks with a typed secret** (`PasswordFields`, `PinFields`) and defaults to `null`. WCAG 2.2 3.3.8 forbids a cognitive function test without an alternative.
+- **OTP is TWO stacks, not one.** `OtpRequestFields` then `OtpVerifyFields` — the case a variant axis could not express without pretending a two-screen journey was one drawing. On an incorrect code pass `secondsRemaining={0}`.
+- **`autoComplete` is load-bearing.** `username`/`current-password` on the password stack so a manager fills it; `off` on a PIN and on a PAN, neither of which belongs in an autofill store.
+- State stays in `PortalLoginTemplate`. A stack that owned the submit payload would export authentication logic to twenty portal teams.
+
+#### PortalLoginTemplate
+**Purpose**: A login page described by a **config object** instead of assembled by hand. Renders role tabs, the login-method selector and the right credential stack for each `PortalAuthMode` — `password`, `otp`, `pin`, `darpan` — and returns one `LoginSubmitPayload` (role + mode + credentials) from `onSubmit`.
+
+> **`darpan` and `aadhaar` were removed on 2026-08-17; `darpan` came back on 2026-09-03.** The Handoff read — 69 auth screens across 10 pages — found neither, but E-Anudaan has no login screen in the Handoff at all, so its silence was never evidence either way. On 2026-09-06 the DARPAN stack was rebuilt from the department's own live screen: **DARPAN ID + PAN Number**, no password and no security check. It had until then been a copy of the password form, which is why the PAN — a public tax identifier — was arriving in the payload as `credentials.password`. `aadhaar` stays out; nothing has been produced for it.
 
 > **`digilocker` left the union on 2026-09-02.** It was never a mode of the credential form, and carrying it there made it one — the template rendered it as a fourth selectable method and suppressed the submit button while it was chosen, so the form had no way to be completed. It is now **`PortalRoleTab.digilocker`**, a per-role boolean that draws a card above the credentials divider with the form untouched beneath it. Nothing renders unless `config.links.digilockerHref` is set too, and the divider belongs to the card: no card, no divider.
 
-> **`pin` was added on 2026-09-02, and it is not a reinstatement of those two.** NOS is PIN-only and both its auth screens in the Handoff (`2436:15957`) are `Sign In Pin`, so the credential form has three modes. The Figma master was re-cut in place the same day — `Device × Step` (8 variants) became **`Device × Auth Method`** (Password · OTP · PIN, 6 variants) — because the old axis put `Credentials` and `OTP`, which are ways of proving identity, beside `Reset` and `Success`, which are stages of recovery. Recovery moved to `Auth / CredentialRecovery`; the component nodes were moved rather than re-created, so their keys and every instance link survived.  
+> **`pin` was added on 2026-09-02, and it is not a reinstatement of those two.** NOS is PIN-only and both its auth screens in the Handoff (`2436:15957`) are `Sign In Pin`, so the credential form has three modes. The Figma master was re-cut in place the same day — `Device × Step` (8 variants) became `Device × Auth Method` — because the old axis put `Credentials` and `OTP`, which are ways of proving identity, beside `Reset` and `Success`, which are stages of recovery. **That replacement axis is itself gone as of 2026-09-06**: it grew to four values, seven of the card's eight regions were identical across all of them, and the credential mode became a slot. The master is `Device` alone, two variants. Recovery moved to `Auth / CredentialRecovery`; the component nodes were moved rather than re-created, so their keys and every instance link survived.  
 **Props**: `config` (`PortalLoginConfig`), `onSubmit`, `loading`, `error`, `onFooterLinkClick`  
 **Rules**:
-- **The captcha is per ROLE, and OFF unless a role asks for it.** It resolves `role.captcha` ?? `config.captcha` ?? `false`, drawing the security-code field on the password and PIN forms. It belongs to the tab because that is how the Handoff uses it — SMILE-Transgender asks a Garima Greh organisation for a captcha and asks the same portal's citizen for none, and a portal-wide boolean can express neither without imposing it on the other. The fallback is `??` and not `||` so that a role setting `captcha: false` opts OUT of a portal-wide default rather than being read as unset. The default stays `false`: a captcha is a cognitive function test, and **WCAG 2.2 3.3.8 Accessible Authentication (AA)** forbids one without an alternative — switch it on only where that alternative exists, and say which in the same change. `Show captcha` on the Figma `Auth / AuthFormCard` defaults to `false` for the same reason.
-- **A PIN never leaves the component as `credentials.password`.** The PIN form reuses the password field's internal state, but the payload carries it as `credentials.pin`, so a consumer cannot mistake one secret for the other.
+- **The captcha is per ROLE, and OFF unless a role asks for it.** It resolves `role.captcha` ?? `config.captcha` ?? `false`, drawing the security-code field on the password and PIN forms. It belongs to the tab because that is how the Handoff uses it — SMILE-Transgender asks a Garima Greh organisation for a captcha and asks the same portal's citizen for none, and a portal-wide boolean can express neither without imposing it on the other. The fallback is `??` and not `||` so that a role setting `captcha: false` opts OUT of a portal-wide default rather than being read as unset. The default stays `false`: a captcha is a cognitive function test, and **WCAG 2.2 3.3.8 Accessible Authentication (AA)** forbids one without an alternative — switch it on only where that alternative exists, and say which in the same change. Since 2026-09-06 the check belongs to the **credential stack** rather than the card — `PasswordFields` and `PinFields` take a `botCheck` node, `DarpanFields` takes none at all — because it guards a typed secret, and a stack without one has nothing for it to protect. `Show captcha` on the Figma `Auth / CredentialFields / Identifier + Password` defaults to `false` for the same reason it does here.
+- **A PIN never leaves the component as `credentials.password`, and neither does a PAN.** The PIN form reuses the password field's internal state, but the payload carries it as `credentials.pin`; the DARPAN form sends `credentials.pan` and no password at all. A consumer must not be able to mistake one secret for another, and while the DARPAN form was a clone of the password form the PAN did arrive under that name — so the obvious implementation hashed a public registry number into a credentials table and compared it against nothing.
 - **Reach for this when the portal's login is one of the shapes the Handoff already describes** — which is most of them, and the reason it exists is that those shapes kept being re-typed per portal.
 - **Use `PortalLoginShell` directly when the form is genuinely bespoke** (an extra consent step, a non-standard identity provider). Forcing a one-off through a config object produces a worse page than composing it.
 - A single role hides the role tabs — a one-audience portal must not render a one-tab strip.

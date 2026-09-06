@@ -4,6 +4,7 @@ import {
   FieldPolicyProvider,
   FormField,
   Input,
+  PasswordInput,
   RequiredFieldsLegend,
   Select,
   Textarea,
@@ -257,5 +258,48 @@ export const NecessityAndStyling: Story = {
         </FormField>
       </div>
     </FieldPolicyProvider>
+  ),
+};
+
+/**
+ * `labelAction` puts a control at the FAR RIGHT of the label row — a recovery
+ * route, most often. "Forgot Password?" beside the Password label is the case it
+ * exists for: it is where a citizen looks BEFORE they have failed, not after.
+ *
+ * **Never put the link inside `label` instead.** An interactive element inside a
+ * `<label>` means a click near it moves focus to the field rather than following
+ * the link — and it does not even lay out correctly: `.ds-field__label-row` is a
+ * flex row, so the `<label>` shrink-wraps to its own text (186px in a 340px
+ * field) and a float has only that to reach across. That shipped on the portal
+ * login pages as "Password *Forgot Password?", jammed together.
+ *
+ * The action is pushed right with `margin-left: auto`, NOT by making the label
+ * fill the row — filling it would send a `labelHelp` toggle to the far right on
+ * every field that has one, and a help disclosure belongs beside the thing it
+ * explains. The second field below shows the two together.
+ */
+export const LabelAction: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: 16, maxWidth: 420 }}>
+      <FormField label="Username / Email / Mobile" required>
+        {(c) => <Input {...c} autoComplete="username" placeholder="Enter User ID" />}
+      </FormField>
+      <FormField
+        label="Password"
+        labelAction={<a href="#forgot">Forgot Password?</a>}
+        required
+      >
+        {(c) => (
+          <PasswordInput {...c} autoComplete="current-password" placeholder="Enter Password" />
+        )}
+      </FormField>
+      <FormField
+        label="Registration number"
+        labelHelp="Printed on the top right of your registration certificate."
+        labelAction={<a href="#lookup">Look it up</a>}
+      >
+        {(c) => <Input {...c} placeholder="e.g. DL/2018/0123456" />}
+      </FormField>
+    </div>
   ),
 };

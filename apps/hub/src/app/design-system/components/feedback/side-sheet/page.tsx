@@ -64,6 +64,7 @@ export default function SideSheetPage(): React.JSX.Element {
           "The reader benefits from seeing the list or table behind the panel — inspecting one application while the queue stays in view.",
           "A file-upload and preview flow, where the panel holds both the control and the result.",
           "A navigation drawer, anchored to the left edge, on a narrow viewport.",
+          "A choice the reader is making on a phone — `side=\"bottom\"` rises from the bottom edge, where a thumb reaches. The portal picker is the case it exists for.",
         ],
         avoid: [
           "The decision is short and irreversible — use a Modal, which is centred and reads as a stop.",

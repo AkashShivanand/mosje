@@ -147,8 +147,16 @@ that is the code half of G6, and it is what the Figma pass must not get ahead of
 | Clean the page | Duplicate E-Anudaan flows (copies of SMILE with the SMILE photograph) removed; sections refitted; section 5 named as the SMILE handoff. |
 | Portal Hero as a blank slot | The master's slot is the hero's own brand ground with a faint image glyph; the SMILE photograph is kept as a reference rectangle in section 5. Code's `heroImageSrc` has no default any more; the docs specimen passes `smile-transgender.jpg`. |
 
-Still open: `PortalList`, `AuthFormCard`, `RecoveryFormCard` and `CredentialRecovery` have no
-code; per-portal photographs; the library `Chip` has no Success tone.
+Still open: `PortalList`, `RecoveryFormCard` and `CredentialRecovery` have no code;
+per-portal photographs; the library `Chip` has no Success tone.
+
+**`AuthFormCard` closed on 2026-09-06** — and the row above it in this table, *"Library
+AuthFormCard draws a 'Your role' select that no handoff frame and no code path has"*, was
+closed by hiding the select rather than removing it. That was the wrong resolution: the
+hidden select was the ONLY difference between the Password and DARPAN variants, so leaving
+it in place is what let a whole variant exist to toggle one boolean. Both are gone —
+`Show role select` no longer exists and the credential mode is a slot. See
+`packages/design-system/components/auth/LOGIN-SYSTEM-ANALYSIS.md` § Phase 8.
 
 ## Status 2026-09-06 — template verified against the SMILE handoff (section 5)
 

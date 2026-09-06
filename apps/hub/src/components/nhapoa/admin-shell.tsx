@@ -64,7 +64,7 @@ export function AdminShell({
       identity={{
         name: "SAMBAL",
         expansion: "National Helpline Against Atrocities",
-        mark: <OrgLogo path="/portals/nhapoa" tile={false} />,
+        mark: <OrgLogo path="/portals/nhapoa" />,
         href: "/portals/nhapoa",
       }}
       pending={!hydrated || state.session === null}

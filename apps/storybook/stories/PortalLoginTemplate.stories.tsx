@@ -408,3 +408,16 @@ export const EmbeddedHeadingLevel: Story = {
     headingLevel: 2,
   },
 };
+
+/**
+ * `portalPicker={false}` — for a portal a reader arrived at deliberately and
+ * cannot swap out of.
+ *
+ * On (the default) the SIGNING INTO strip's Change control opens the
+ * change-portal side sheet, as the handoff draws it. Off, it falls back to a
+ * plain link to `config.changeHref`, which is where it went before the picker
+ * existed.
+ */
+export const WithoutPortalPicker: Story = {
+  args: { config: eAnudaan, deepLinkRole: false, portalPicker: false },
+};

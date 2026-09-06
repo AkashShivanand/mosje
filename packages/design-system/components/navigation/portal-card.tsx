@@ -75,6 +75,24 @@ export interface PortalCardProps
    * [WCAG 1.4.1].
    */
   selected?: boolean;
+  /**
+   * The portal exists but this reader cannot open it — no permission, or not yet
+   * live. @default false
+   *
+   * **`aria-disabled`, never the native attribute and never omission.** The card
+   * stays in the DOM, stays focusable and keeps its name, so a screen-reader user
+   * learns the portal exists and that it is closed to them. Removing it instead
+   * tells them nothing; a natively disabled control drops out of the tab order,
+   * which tells them nothing either. Same reasoning as `Tabs`.
+   *
+   * The `href` is dropped rather than kept-and-prevented, so middle-click and
+   * "copy link address" cannot reach a portal the reader has no route into.
+   *
+   * A disabled card owes the reader a REASON somewhere nearby — this component
+   * cannot know it, so say it in the surrounding copy. A card that is simply
+   * greyed with no explanation reads as a bug.
+   */
+  disabled?: boolean;
 }
 
 /**
@@ -105,6 +123,7 @@ export const PortalCard = React.forwardRef<HTMLAnchorElement, PortalCardProps>(
       category,
       ctaLabel = "Open portal",
       selected = false,
+      disabled = false,
       className,
       ...rest
     },
@@ -115,22 +134,33 @@ export const PortalCard = React.forwardRef<HTMLAnchorElement, PortalCardProps>(
     return (
       <a
         ref={ref}
-        href={href}
+        href={disabled ? undefined : href}
         className={cn(
           "ds-portal-card",
           `ds-portal-card--${variant}`,
           selected && "ds-portal-card--selected",
+          disabled && "ds-portal-card--disabled",
           className,
         )}
         target={external ? "_blank" : undefined}
         rel={external ? "noreferrer noopener" : undefined}
         aria-current={selected ? "true" : undefined}
+        aria-disabled={disabled || undefined}
+        /* No href when disabled, so middle-click and "copy link address" cannot
+           reach it either; tabIndex keeps it findable by keyboard regardless. */
+        tabIndex={disabled ? 0 : undefined}
         {...rest}
       >
         <span className="ds-portal-card__head">
-          {/* No alt: the org's name is in real text immediately beside it, so an
+          {/* The GROUND is the card's, not the mark's — `OrgLogo` stopped carrying
+              a tile on 2026-09-06. `.ds-org-tile` is the estate's one definition
+              of it; do not re-derive the ground in this component's stylesheet.
+
+              No alt: the org's name is in real text immediately beside it, so an
               alt here reads the organisation twice [WCAG H67]. */}
-          <OrgLogo path={path ?? href} org={org} size={detailed ? "lg" : "md"} />
+          <span className="ds-org-tile ds-portal-card__mark">
+            <OrgLogo path={path ?? href} org={org} size={detailed ? "lg" : "md"} />
+          </span>
 
           <span className="ds-portal-card__content">
             <span className="ds-portal-card__code">{code}</span>

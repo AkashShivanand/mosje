@@ -61,7 +61,7 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
       identity={{
         name: "SAMBAL",
         expansion: "National Helpline Against Atrocities",
-        mark: <OrgLogo path="/portals/nhapoa" tile={false} />,
+        mark: <OrgLogo path="/portals/nhapoa" />,
         href: "/portals/nhapoa",
       }}
       footer={<SambalFooter />}

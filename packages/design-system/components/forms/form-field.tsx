@@ -52,6 +52,7 @@ export interface FormFieldClassNames {
   labelRow?: string;
   label?: string;
   helpToggle?: string;
+  labelAction?: string;
   help?: string;
   hint?: string;
   message?: string;
@@ -76,6 +77,24 @@ export interface FormFieldProps {
    * be read at leisure.
    */
   labelHelp?: React.ReactNode;
+  /**
+   * A control at the FAR RIGHT of the label row — a recovery route, most often.
+   * "Forgot Password?" beside the Password label is the case this exists for:
+   * it is where a citizen looks BEFORE they have failed rather than after.
+   *
+   * **It is a SIBLING of the label, never a child of it.** Consumers used to
+   * pass a `<span>` containing the label text and a floated `<a>` as `label`,
+   * which put an interactive element inside a `<label>` — clicking near it
+   * moves focus to the field instead of following the link, and the float never
+   * reached the right edge anyway, because `.ds-field__label-row` is a flex row
+   * and the `<label>` inside it shrink-wraps to its own text (186px in a 340px
+   * field). That shipped on the portal login pages as "Password *Forgot
+   * Password?", jammed together. Pass the action here instead.
+   *
+   * Keep it short and make it a real link or button. It is NOT a place for
+   * instructions — those are `hint` or `labelHelp`.
+   */
+  labelAction?: React.ReactNode;
   /**
    * Hide the label visually while keeping it for assistive tech. Only correct
    * when a nearby heading already asks the question — never to save space.
@@ -165,6 +184,7 @@ export function FormField({
   id,
   hint,
   labelHelp,
+  labelAction,
   labelHidden = false,
   error,
   warning,
@@ -263,6 +283,15 @@ export function FormField({
             data-part="help-toggle"
           />
         )}
+
+        {/* Last in the row and pushed right by `margin-left: auto`, so a help
+            toggle still sits immediately beside the label. Rendered only when
+            asked for, so no existing field's layout moves. */}
+        {labelAction != null ? (
+          <span className={cn("ds-field__label-action", classNames?.labelAction)} data-part="label-action">
+            {labelAction}
+          </span>
+        ) : null}
       </div>
 
       {/* Rendered even when closed, and hidden with the `hidden` attribute, so

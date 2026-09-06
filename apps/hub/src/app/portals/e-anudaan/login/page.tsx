@@ -44,32 +44,79 @@ const CONFIG: PortalLoginConfig = {
     digitalIndiaSrc: `${BASE}/brand/digital-india.svg`,
     samaveshLogoSrc: `${BASE}/brand/samavesh-logo.svg`,
   },
+  /*
+   * FOLLOWING THE HANDOFF — `E-Anudaan | NGO` and `| Admin`, LOGIN &
+   * AUTHENTICATION (52368:232012) in MoSJE Portal — Handoff. Everything below
+   * that differs from the estate default is drawn there.
+   *
+   * The two roles ask for DIFFERENT identifiers, which is the whole reason
+   * `identifierLabel` exists: an NGO's username is issued with its registration,
+   * an officer signs in with their own mobile number. The generic
+   * "Username / Email / Mobile" asked both to guess.
+   *
+   * NO `description` on either role. The handoff draws a clean gap between "Log
+   * in to your account" and the first control; the sentences that used to sit
+   * there were ours, not the department's.
+   */
   roles: [
     {
       id: "ngo",
       audience: "organisation",
       label: "NGO",
-      description:
-        "Voluntary organisations applying for grant-in-aid under SHRESHTA Mode 2, AVYAY, NAPDDR and SMILE.",
+      identifierLabel: "Username",
+      identifierPlaceholder: "Enter your username",
+      // The handoff puts the DigiLocker card above the credentials divider on the
+      // NGO tab and on neither Officer screen — a per-role fact, not an audience one.
+      digilocker: true,
+      // "I am not a robot" with a Security check, drawn on all three NGO frames.
+      // Switched on here because the alternative WCAG 2.2 3.3.8 requires is
+      // real: `botCheck.helpHref` below routes a blocked applicant to a person.
+      captcha: true,
       authModeOptions: [
-        { mode: "password", label: "Credentials" },
-        { mode: "darpan", label: "DARPAN ID" },
+        { mode: "password", label: "Login with Credentials" },
+        { mode: "darpan", label: "Login with DARPAN ID" },
       ],
       defaultMode: "password",
     },
     {
       id: "officer",
+      // The handoff's tab reads "Officer", not "Ministry Officer".
+      label: "Officer",
       audience: "officer",
-      label: "Ministry Officer",
-      description:
-        "Programme Division, Integrated Finance Division, the Programme Director and PMU field officers.",
+      identifierLabel: "Mobile Number",
+      identifierPlaceholder: "Enter your mobile number",
+      // No DigiLocker, no method tabs, no security check: the Admin frames draw a
+      // mobile number, a password and the button, and nothing else.
       authModes: ["password"],
     },
   ],
+  // The sentence the department's own DARPAN screen carries under the fields.
+  // It lives here rather than in the design system because those five roles are
+  // E-Anudaan's org chart; a default would print them on every portal that ever
+  // adopts the DARPAN route.
+  darpanNote:
+    "Other login roles (DWO, State, Ministry, Finance, PMU) use Ministry-issued credentials — separate login flow",
   links: {
+    // Drawn on the label row of every password field in the handoff.
+    forgotPasswordHref: `${BASE}/forgot-password`,
+    // The DigiLocker card renders only when a role asks for it AND this is set;
+    // a CTA with nowhere to go is worse than no CTA.
+    digilockerHref: "https://digilocker.gov.in/",
     termsHref: "/website/terms-conditions",
     privacyHref: "/website/privacy-policy",
+    /*
+     * NO `helpFaqHref`. It renders a visible "Need Help?" line under the account
+     * prompt, and the handoff draws none. The bot check's own escape route is
+     * `botCheck.helpHref` below — a different thing, shown only inside the check,
+     * and the one WCAG 2.2 3.3.8 actually requires.
+     */
   },
+  /*
+   * The checkbox check the handoff draws, not the invisible default. Its
+   * `helpHref` is the alternative WCAG 2.2 3.3.8 requires — an applicant the
+   * check will not pass reaches a person rather than a dead end.
+   */
+  botCheck: { mode: "checkbox", helpHref: `${BASE}/help` },
 };
 
 export default function EAnudaanLoginPage() {
@@ -109,8 +156,16 @@ export default function EAnudaanLoginPage() {
     }
 
     if (payload.authMode === "darpan") {
+      // Both identifiers, because the form now asks for both — the DARPAN route
+      // stopped being the password form with a different label on 2026-09-06.
+      // The wording matches the field labels; "NGO-DARPAN Unique ID" named a
+      // field that no longer exists on the screen.
       if (!id) {
-        setError("Enter your NGO-DARPAN Unique ID.");
+        setError("Enter your DARPAN ID.");
+        return;
+      }
+      if (!payload.credentials.pan) {
+        setError("Enter the organisation's PAN Number.");
         return;
       }
     } else if (id.toUpperCase() !== ROLES.ngo.loginId) {

@@ -223,6 +223,16 @@ export const FIGMA_NODES = {
   navItemLink: "2065-292757",
   navSheet: "55327-3503",
   portalLoginTemplate: "55397-1364",
+  // Promoted out of its own variant set on 2026-09-06: it was Auth Method
+  // (Password/OTP/PIN/DARPAN) and is now one component with a Credential
+  // fields instance-swap slot, so the node is a COMPONENT, not a set.
+  authFormCard: "55445-778",
+  portalList: "55444-709",
+  credentialFieldsPassword: "57574-14697",
+  credentialFieldsPin: "57574-14737",
+  credentialFieldsDarpan: "57575-14794",
+  credentialFieldsOtpRequest: "57575-14833",
+  credentialFieldsOtpVerify: "57575-14856",
   sheetToggle: "55798-4566",
   siteHeader: "4235-3169",
   tab: "2316-353",

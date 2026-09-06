@@ -480,8 +480,11 @@
    * color/transparent/secondary/0, the same hue at zero (a fade's far end is a
    * token too; nothing on this estate is a literal) — across the FULL width of
    * the rail, so it bleeds through the rail's padding with negative margins and
-   * pads itself by padding/16. The mark is the registry OrgLogo at 56, bare
-   * (`tile={false}`): the wash is its ground. Collapsed, the mark alone at 40.
+   * pads itself by padding/16. The mark is the registry OrgLogo at 56, bare:
+   * the wash is its ground. Collapsed, the mark alone at 40. (This said
+   * `tile={false}` until 2026-09-06; OrgLogo has no `tile` prop any more — the
+   * ground moved to the `.ds-org-tile` class, applied where a container wants
+   * one, and the mark is bare by default.)
    *
    * No collapse control lives here. The masthead toggles the rail; a second
    * control beside the brand competed with the name and, on SAMBAL, had no

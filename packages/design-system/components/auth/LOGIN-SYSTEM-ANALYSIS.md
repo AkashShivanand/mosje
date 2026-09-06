@@ -913,3 +913,222 @@ chrome.
    `CaptchaField`. A DS-reuse defect, and a larger refactor than this change.
 5. The Figma documentation canvas and the `claims.json` pins for the new axis
    (`figma-code-sync.md`) are not done.
+
+---
+
+## Phase 8 — the credential mode was never an axis (2026-09-06)
+
+**Asked by the human:** *"Can we simplify it using slots? Instead of creating so many
+variants for login with password, PIN, otp, Darpan, or anything else that may come in
+future."*
+
+The answer was yes, and the evidence was worse than the question assumed.
+
+### What a layer-by-layer read of the four variants found
+
+`Auth / AuthFormCard` drew **eight regions**, and **seven were byte-identical across all
+four variants**: role tabs, header, the DigiLocker block, the method tabs, the primary
+action, the consent line, the account prompt. Only the region between the method tabs and
+the button changed.
+
+| Variant | The one differing region | Height |
+|---|---|---|
+| Password | `Fields{ Role select (hidden), Identifier, Password + Forgot }` | 152 |
+| PIN | `Fields{ Role select (hidden), Identifier, PIN + Forgot PIN }` | 152 |
+| DARPAN | `Fields{ Role select (VISIBLE), Identifier, Password + Forgot }` | 236 |
+| OTP | `Sent to · Code · Resend` | 132 |
+
+- **PIN vs Password** — identical structure, identical `Password field` instance. The
+  differences were a text label and a link reading "Forgot PIN". Both are TEXT properties.
+- **DARPAN vs Password** — identical structure. The only difference was `Role select`
+  being visible. `Show role select` already existed as a boolean.
+
+So **three of the four variants were already redundant** before any future mode arrived.
+
+### The taxonomy defect underneath it
+
+`Auth Method` held `Password · OTP · PIN · DARPAN`, which are not four values of one
+thing. Password, PIN and OTP answer *how do you prove it* — they are **secrets**. DARPAN
+answers *who are you* — it is an **identifier**. That is why the DARPAN variant was a
+clone of Password: it *was* Password with a different identifier.
+
+Two questions on one axis multiply. Five identifiers × four secrets = **20 variants** of an
+eight-region card — the same trap `FIGMA-SPEC.md` §2 caught at 90 variants and correctly
+refused. It came back through a different door.
+
+### A third defect the read turned up
+
+**The DARPAN variant bound none of the five booleans its siblings bound.** Every other
+variant carried `componentPropertyReferences` for `Show role tabs`, `Show DigiLocker`,
+`Show method tabs`, `Show consent` and `Show account prompt`. DARPAN carried none — so on
+that variant all five silently did nothing. It was cloned as geometry and never wired.
+That is the standing cost of a variant axis: each new variant must re-wire every property
+by hand, and this one was not.
+
+### What shipped
+
+**Figma.** `Auth / AuthFormCard` is one COMPONENT, not a set — the Password variant was
+promoted out and the set deleted once no live instance remained. It carries six
+properties: five booleans and **`Credential fields`**, an `INSTANCE_SWAP` whose
+`preferredValues` name all five stacks, so a designer picks from a menu rather than an
+open hole. Five masters were built under `Auth / CredentialFields /` in `3 · Parts`.
+`PortalLoginTemplate` went from **eight variants to two** — `Device` alone.
+
+**Code.** `AuthFormCard` and the five stacks are exported from the barrel. The four-armed
+conditional in `portal-login-template.tsx` became one `credentialFields` expression
+resolved once, which the button label and the submit branch both read — the previous code
+asked `activeAuthMode === "otp"` in four separate places, which is how DARPAN came to be
+submitted by a button reading "Log In".
+
+### Two corrections to what the estate believed
+
+1. **DARPAN is not the password form.** The department's own live screen asks for
+   **DARPAN ID + PAN Number** — two identifiers it holds on file — and for no password
+   and no security check. While it was a clone, the PAN arrived in `LoginSubmitPayload` as
+   `credentials.password`, so the obvious consumer implementation hashed a public tax
+   identifier into a credentials table. It is now `credentials.pan`, and `DarpanFields`
+   takes no `botCheck` prop at all.
+2. **The security check belongs to the stack.** It was a region of the card, which put it
+   on every mode including DARPAN, and left it at a stale `y=571` — below the primary
+   action in two of the four variants — hidden and never once rendered or looked at.
+
+### The limit that is now written down
+
+**It is the label width that overflows, not the tab count** — and the first version of
+this note got that wrong. It said "up to three modes are tabs, four or more are not",
+which was reasoned rather than measured. Opening the docs page in a browser settled it:
+in a 390px column, "Login with Credentials" (185px) and "Login with DARPAN ID" (183px)
+are **368px of labels in 340px of room**, so **two** tabs already clip.
+
+So: keep labels short (the mode, not a sentence about it), pass `overflow` on the `Tabs`
+instance so the row offers the More menu rather than cutting a tab in half, and past
+three modes use a `Select` or a `RadioGroup`. Measure at 390 — that is
+`layout/login/content/width`.
+
+The slot makes the *fields* extensible; it does not make the *switch* extensible, and
+pretending otherwise ships a broken tablist on a phone.
+
+### Deliberately NOT changed
+
+**The role tabs stay in `PortalLoginShell`.** Figma draws them as region 1 of the card
+because there they are simply the top of the right-hand column; in code the shell owns
+them and pins them at a breakpoint the card cannot see. Moving them would give the estate
+two places to draw a tablist, which is the failure this whole pass exists to remove.
+Recorded here rather than resolved.
+
+### Corrections to this document
+
+Phase 7's "*The OTP variant has no role-tabs, SSO or account-prompt slots — deliberate*"
+was **stale**. OTP had gained all three (`57482:*`) before this pass, so the shell was
+already invariant across all four variants. A written decision the file no longer reflected
+is the more dangerous of the two errors, because the next maintainer trusts it.
+
+---
+
+## Phase 8a — the master was re-spaced, and the label row was fixed for every form (2026-09-06)
+
+Two changes after the slot landed, both prompted by the human: spacing adjusted on the
+Figma master, and the label-alignment defect generalised out of the auth namespace.
+
+### The spacing hierarchy the master now carries
+
+Read back from `Auth / AuthFormCard` (`55445:778`) and implemented verbatim. Every value
+is bound to a Space variable in the file, so these are tokens, not measurements:
+
+| Where | Gap | Variable |
+|---|---|---|
+| Between the card's REGIONS — role tabs, header, handoff, method tabs, form group, account prompt | **32** | `stack/32` |
+| Inside the new **`Form`** frame — credential fields, submit, consent | **24** | `stack/24` |
+| Between fields in a credential stack | **16** | `stack/16` |
+| Heading over lede in the Header frame | **8** | `stack/8` |
+| Account prompt, additional top padding | **8** | `padding/8` |
+
+**The `Form` frame is the substantive change**, not the numbers. The submit and the consent
+line used to be siblings of the credential fields at card level, so at a flat 16 the button
+read as another field and the account prompt read as part of the form. Grouping them at 24
+inside a 32 rhythm says what the parts are: *this is the form; that is an aside*.
+
+Code matches: `.ds-authcard` 32, `.ds-authcard__form` 24, `.ds-authfields` 16,
+`.ds-authcard__header` 8, `.ds-authcard__prompt` 8 top. The stray `padding-top: 4` on the
+credential stack is gone — the master has none, and it was mine.
+
+### The label row, fixed for the whole estate rather than for auth
+
+The floated recovery link never reached the right edge: `.ds-field__label-row` is a flex
+row, so the `<label>` inside it shrink-wraps to its own text — 186px in a 340px field —
+and `float: right` had only that to work with. It shipped as **"Password \*Forgot
+Password?"**, jammed together, on the portal login pages.
+
+The first fix here was a `:has()` rule scoped to the auth stacks. That was a patch on a
+symptom. The defect is that a consumer was smuggling an `<a>` **inside** a `<label>`, which
+is also wrong on its own terms: clicking near an interactive element inside a label moves
+focus to the associated control instead of following the link.
+
+So `FormField` gained **`labelAction`** — a sibling of the label at the far right of the
+label row, pushed there with `margin-left: auto`.
+
+**Why `margin-left: auto` on the ACTION and not `flex: 1` on the LABEL.** Filling the label
+would push a `labelHelp` toggle to the far right on every field that has one, and a help
+disclosure belongs beside the thing it explains. The change is purely additive — one new
+class that exists only when an action is passed — so **no field without a `labelAction` can
+move**, which is the whole regression argument and is verifiable from the diff.
+
+`LabelWithLink` and `.ds-authfields__labelrow` are both deleted. Any form in the estate can
+now put a recovery route on a label row correctly.
+
+---
+
+## Phase 9 — E-Anudaan's login follows the Handoff (2026-09-06)
+
+Source: **MoSJE Portal — Handoff** (`evmNmlK8g4VYwJVu2FwSGV`), page `E-Anudaan`,
+section `LOGIN & AUTHENTICATION` (`52368:232012`) — four flows, sixteen frames.
+The 2026-09-03 note in `types.ts` saying "E-Anudaan has no login screen in the
+Handoff at all" was true of the SMILE page it searched; **these screens exist on
+E-Anudaan's own page**, and they are the reference now.
+
+### What the Handoff specifies, per role
+
+| | NGO | Officer |
+|---|---|---|
+| Tab label | `NGO` | **`Officer`** — not "Ministry Officer" |
+| Identifier | **Username** / "Enter your username" | **Mobile Number** / "Enter your mobile number" |
+| DigiLocker card + divider | **yes** | no |
+| Method tabs | `Login with Credentials` · `Login with DARPAN ID` | **none** |
+| Security check | **"I am not a robot" + Security check**, verified state drawn | none |
+| Role description under the heading | **none** | none |
+
+The two identifiers are why `PortalRoleTab.identifierLabel` was added: an NGO's
+username is issued with its registration, an officer signs in with their own
+mobile number, and the estate default "Username / Email / Mobile" asked both to
+guess which of the three their portal wanted.
+
+The DARPAN tab draws **DARPAN ID + PAN Number**, no password, no security check,
+and a `Continue with DARPAN` button — which is what Phase 8 had already built
+from the department's live screen, so the two sources agree.
+
+### Four places the shipped page deliberately differs, and why
+
+1. **The consent line stays.** The Handoff draws nothing under the button. GIGW
+   requires the disclosure and `ConsentLine`'s own docstring says changing it is
+   a legal decision rather than a design one, so a drawing that omits it does not
+   override it. Recorded rather than dropped.
+2. **The DARPAN roles note stays** — "Other login roles (DWO, State, Ministry,
+   Finance, PMU) use Ministry-issued credentials". It is on the department's LIVE
+   screen and not in this Handoff. It tells five roles they are on the wrong tab;
+   removing it to match a drawing would lose real guidance.
+3. **The submit button is NOT disabled on an empty form**, though the Handoff
+   draws it greyed. A disabled submit gives a keyboard user nothing to act on —
+   they tab to it, press Enter, and learn only that nothing happens. The fields
+   carry `required` and the portal reports what is missing on submit. This is the
+   one place the drawing was not followed, and it is a deliberate call.
+4. **No "Need Help?" line.** It had been switched on via `links.helpFaqHref`,
+   which renders a visible link the Handoff does not draw. The bot check's own
+   escape route is `botCheck.helpHref` — a different thing, shown only inside the
+   check, and the one WCAG 2.2 3.3.8 actually requires.
+
+### The check is a real one, with a real alternative
+
+`captcha: true` on the NGO role is only safe because `botCheck.helpHref` routes a
+blocked applicant to a person. WCAG 2.2 3.3.8 forbids a cognitive function test
+without an alternative, and the estate's default of OFF exists so that switching
+it on is a decision somebody makes and records. This is that record.

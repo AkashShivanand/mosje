@@ -89,7 +89,7 @@ const meta = {
     identity: {
       name: "NMBA",
       expansion: "Nasha Mukt Bharat Abhiyaan",
-      mark: <OrgLogo org="nmba" tile={false} />,
+      mark: <OrgLogo org="nmba" />,
       href: "/portals/nmba/admin",
     },
     pathname: "/portals/nmba/admin/mass-pledge/reports/weekly",

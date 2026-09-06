@@ -75,7 +75,7 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
         const matchCategory = (portal.category ?? "").toLowerCase().includes(q);
         // Search the CITIZEN-FACING pair too, or a reader typing the name they
         // can see ("SAMBAL", "e-Utthaan") finds nothing — the registry calls
-        // those "National Action Plan for Older Persons" and "E-Utthan Admin".
+        // those "SAMBAL" and "E-Utthan Admin".
         const label = portalLabel(portal);
         const matchLabel =
           label.short.toLowerCase().includes(q) || label.full.toLowerCase().includes(q);

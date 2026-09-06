@@ -130,6 +130,19 @@ export interface PortalRoleTab {
   defaultMode?: PortalAuthMode;
   /** Subtitle or help text displayed under the form heading for this role */
   description?: string;
+  /**
+   * What this role's identifier field is called. @default "Username / Email / Mobile"
+   *
+   * **It is per ROLE because the roles genuinely differ.** E-Anudaan's handoff
+   * asks an NGO for a "Username" and a Ministry officer for a "Mobile Number" on
+   * the same page — one is issued with the organisation's registration, the other
+   * is the officer's own number. A single estate-wide label is wrong for both, and
+   * the generic "Username / Email / Mobile" asks the reader to guess which of the
+   * three their portal actually wants.
+   */
+  identifierLabel?: string;
+  /** The placeholder under that label. Say what to type, not what the field is. */
+  identifierPlaceholder?: string;
 }
 
 /**
@@ -174,6 +187,17 @@ export interface LoginSubmitPayload {
     password?: string;
     /** Set only when `authMode === "pin"`. The PIN never arrives as `password`. */
     pin?: string;
+    /**
+     * The organisation's PAN. Set only when `authMode === "darpan"`, where it is
+     * the second identifier rather than a secret — the DARPAN route sends no
+     * `password` at all.
+     *
+     * It has its own name for the same reason `pin` does. While the DARPAN form
+     * was a clone of the password form it arrived as `password`, so a consumer
+     * doing the obvious thing hashed a public tax identifier into a credentials
+     * table and compared it against nothing.
+     */
+    pan?: string;
     mobile?: string;
     otp?: string;
   };
@@ -219,6 +243,19 @@ export interface PortalLoginConfig {
    * `Auth / AuthFormCard`.
    */
   captcha?: boolean;
+  /**
+   * The sentence under the DARPAN fields naming the roles that route does NOT
+   * serve — E-Anudaan's reads "Other login roles (DWO, State, Ministry, Finance,
+   * PMU) use Ministry-issued credentials — separate login flow".
+   *
+   * **Portal copy, so it has no default.** Those five roles are E-Anudaan's org
+   * chart; a default here would print them on every portal that ever adopts the
+   * DARPAN route. Omit it and nothing renders — which is correct for a portal
+   * whose DARPAN route serves everyone it shows.
+   *
+   * Ignored unless a role offers `darpan`.
+   */
+  darpanNote?: React.ReactNode;
   /** Brand asset path overrides */
   brandAssets?: PortalBrandAssets;
   /** Optional custom form fields or controls to inject */

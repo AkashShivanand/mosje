@@ -168,15 +168,42 @@
     border-width: 2px;
     box-shadow: var(--sa-elevation-card);
     padding: calc(var(--sa-padding-16) - 1px);
-    /* The reference washes the card from a pale saffron at the top to white —
-       enough to read as chosen, nowhere near enough to fight the code for
-       attention. Both stops are tokens; neither changes the ink's ground at the
-       point the text sits, which stays effectively white. */
-    background-image: linear-gradient(
-      180deg,
-      var(--sa-color-brand-saffronLight) 0%,
-      var(--sa-bg-neutral-base) 60%
-    );
+    /* NO WASH. A saffron-to-white gradient used to sit here; the Figma master
+       dropped it on 2026-09-06 and the code follows. The 2px rule and the check
+       already say "this one" — a tint on top of them is a third signal for one
+       piece of information, and it was the one that put ink on a moving ground. */
+  }
+
+  /*
+    DISABLED — the portal exists, this reader cannot open it.
+
+    Muted, not hidden, and it keeps its border: the card must still read as a
+    portal that is there, or a reader cannot tell "closed to me" from "gone". The
+    pointer is `not-allowed` and hover/press are switched off, because a card that
+    lifts under the cursor is promising something it will not do.
+
+    `--sa-alpha-disabled` on the CONTENT rather than the whole card, so the border
+    keeps its contrast — a faded outline on a white page is the one part that has
+    to survive for the card to read as a card at all.
+  */
+  .ds-portal-card--disabled {
+    cursor: not-allowed;
+    background-color: var(--sa-bg-neutral-disabled);
+  }
+
+  .ds-portal-card--disabled .ds-portal-card__head,
+  .ds-portal-card--disabled .ds-portal-card__desc,
+  .ds-portal-card--disabled .ds-portal-card__footer {
+    opacity: var(--sa-alpha-disabled);
+  }
+
+  .ds-portal-card--disabled:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .ds-portal-card--disabled:active {
+    transform: none;
   }
 
   .ds-portal-card--detailed.ds-portal-card--selected {

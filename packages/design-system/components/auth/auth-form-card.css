@@ -1,0 +1,67 @@
+/* Declare the order before using it — see auth-fields.css for why this line is
+   repeated in every component stylesheet. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* The column's rhythm, taken from the Figma master on 2026-09-06 after the
+     human re-spaced it there.
+
+     THREE gaps, not one, and they are a hierarchy:
+       32  between the card's REGIONS — role tabs, header, the handoff, the
+           method tabs, the form group, the account prompt
+       24  inside the form group — fields, submit, consent
+       16  between fields inside a credential stack (credential-fields.css)
+
+     It was a flat 16 everywhere until the master was re-spaced, which made the
+     submit read as another field and the account prompt read as part of the
+     form. The step down from 32 to 24 to 16 is what separates "a different part
+     of the page" from "the next thing in this form". */
+  .ds-authcard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-32);
+  }
+
+  /* Heading over lede at 8 — the master's Header frame (stack/8). */
+  .ds-authcard__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+  }
+
+  /* Headline/headline-5, 20/28 — the size the handoff gives "Log in to your
+     account" (`56693:4742`). It was title-2 in the template and headline-4 in
+     the library, so three surfaces drew three sizes of the same heading. */
+  .ds-authcard__title {
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-authcard__lede {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* The `Form` frame in the master: the credential fields, the submit and the
+     consent line as ONE region at 24, so the button belongs to the fields above
+     it rather than floating between them and the account prompt.
+
+     It is not the <form> element — the whole card is that. This is the group
+     inside it, and it carries the master's name so the two can be read
+     side by side. */
+  .ds-authcard__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-24);
+  }
+
+  /* The master pads the account prompt away from the form group by a further 8
+     on top of the card's 32 — it is the one region that is not part of signing
+     in, and it reads as an aside rather than a step. */
+  .ds-authcard__prompt {
+    padding-top: var(--sa-padding-8);
+  }
+}

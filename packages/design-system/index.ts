@@ -734,6 +734,33 @@ export type {
   AccountPromptOption,
   SigningIntoBarProps,
 } from "./components/auth/auth-parts";
+// The login form column, and the interchangeable stacks that fill its one slot.
+// Seven of the card's eight regions are the same whatever a portal signs in
+// with, so the credential mode is a SLOT rather than a variant axis — see
+// `auth-form-card.tsx` for what that replaced and why.
+// The list of portals inside the change-portal picker. There is deliberately no
+// `PortalPicker` component: the picker is `SideSheet` + this, and a third name
+// for that composition would add a word without adding a decision.
+export { PortalList } from "./components/auth/portal-list";
+export type { PortalListProps } from "./components/auth/portal-list";
+export { AuthFormCard } from "./components/auth/auth-form-card";
+export type { AuthFormCardProps } from "./components/auth/auth-form-card";
+export {
+  PasswordFields,
+  PinFields,
+  DarpanFields,
+  IdentifierFields,
+  OtpRequestFields,
+  OtpVerifyFields,
+} from "./components/auth/credential-fields";
+export type {
+  PasswordFieldsProps,
+  PinFieldsProps,
+  DarpanFieldsProps,
+  IdentifierFieldsProps,
+  OtpRequestFieldsProps,
+  OtpVerifyFieldsProps,
+} from "./components/auth/credential-fields";
 
 // ---- Components: Accessibility -----------------------------------------------
 // CANONICAL: the official Government of India (MeitY / UX4G) accessibility widget.

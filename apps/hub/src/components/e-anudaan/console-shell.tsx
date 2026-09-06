@@ -59,7 +59,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
       identity={{
         name: "E-Anudaan",
         expansion: "Grant-in-Aid Management",
-        mark: <OrgLogo path="/portals/e-anudaan" tile={false} />,
+        mark: <OrgLogo path="/portals/e-anudaan" />,
         href: "/portals/e-anudaan",
       }}
       pending={!hydrated || !role}

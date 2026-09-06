@@ -76,7 +76,7 @@ export interface SidebarNavIdentity {
   name: string;
   /** The department's own full name, two lines at most. */
   expansion?: string;
-  /** The mark — an `<OrgLogo tile={false}>` from the registry, never a pasted image; the wash is its ground. */
+  /** The mark — an `<OrgLogo>` from the registry, never a pasted image; the wash is its ground, so the mark stays bare (it carried no tile since 2026-09-06). */
   mark: React.ReactNode;
   /** The portal's home route. */
   href: string;

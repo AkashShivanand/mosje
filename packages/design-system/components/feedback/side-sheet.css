@@ -33,18 +33,44 @@
     background-color: var(--sa-overlay-neutral-boldest);
   }
 
+  /*
+    A FLOATING PANEL, NOT AN EDGE-FLUSH SLAB — the Figma master (55435:813) draws
+    Desktop as 432 wide with a 16 inset, so the visible panel is 400 and all four
+    corners are rounded. Code was flush to the edge with square corners until
+    2026-09-06; the master is the reference and the code follows it.
+
+    The inset is `--sa-padding-16`, matching the master's own inset token.
+  */
   .ds-sheet {
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
+    top: var(--sa-padding-16);
+    right: var(--sa-padding-16);
+    bottom: var(--sa-padding-16);
     display: flex;
     flex-direction: column;
     background-color: var(--sa-bg-neutral-base);
+    border-radius: var(--sa-shape-16);
+    overflow: hidden;
     box-shadow: -4px 0 32px color-mix(in oklab, var(--sa-text-neutral-bolder) 16%, transparent);
     z-index: var(--sa-z-popover);
     font-family: var(--sa-font-latin);
     animation: ds-sheet-in 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /*
+    BOTTOM — the master's Device=Mobile. Full width, anchored to the bottom, and
+    the TOP corners only: rounding all four makes it read as a floating card
+    rather than a sheet anchored to the edge, which is the master's rule 3.
+
+    It slides UP, not across, so the animation is overridden rather than reused.
+  */
+  .ds-sheet--bottom {
+    inset: auto 0 0;
+    width: 100%;
+    max-height: 85vh;
+    border-radius: var(--sa-shape-16) var(--sa-shape-16) 0 0;
+    box-shadow: 0 -4px 32px color-mix(in oklab, var(--sa-text-neutral-bolder) 16%, transparent);
+    animation: ds-sheet-up 0.22s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   @keyframes ds-sheet-in {
@@ -52,9 +78,20 @@
     to   { transform: translateX(0); }
   }
 
+  @keyframes ds-sheet-up {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+
   .ds-sheet--sm { width: min(400px, 100vw); }
   .ds-sheet--md { width: min(480px, 100vw); }
   .ds-sheet--lg { width: min(560px, 100vw); }
+
+  /* The width presets are edge-anchored geometry; a bottom sheet is full-bleed
+     and must win over whichever one the caller passed. */
+  .ds-sheet--bottom.ds-sheet--sm,
+  .ds-sheet--bottom.ds-sheet--md,
+  .ds-sheet--bottom.ds-sheet--lg { width: 100%; }
 
   .ds-sheet__header {
     flex-shrink: 0;
@@ -121,7 +158,7 @@
      where the left edge is the convention users already expect. */
   .ds-sheet--left {
     right: auto;
-    left: 0;
+    left: var(--sa-padding-16);
     box-shadow: 4px 0 32px color-mix(in oklab, var(--sa-text-neutral-bolder) 16%, transparent);
     animation-name: ds-sheet-in-left;
   }
@@ -131,7 +168,18 @@
     to   { transform: translateX(0); }
   }
 
+  /*
+    PRE-EXISTING GAP, closed 2026-09-06: this block named `.ds-sheet--left` only,
+    so the DEFAULT right-anchored slide was never disabled for a reader who asks
+    for reduced motion — the one variant that was covered is the one used least.
+    The base rule carries the animation, so the base rule is what has to be
+    named; the bottom sheet added the same day would have inherited the hole.
+  */
   @media (prefers-reduced-motion: reduce) {
-    .ds-sheet--left { animation: none; }
+    .ds-sheet,
+    .ds-sheet--left,
+    .ds-sheet--bottom {
+      animation: none;
+    }
   }
 }

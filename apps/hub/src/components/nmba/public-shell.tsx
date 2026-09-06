@@ -73,7 +73,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       identity={{
         name: "NMBA",
         expansion: "Nasha Mukt Bharat Abhiyaan",
-        mark: <OrgLogo path="/portals/nmba" tile={false} />,
+        mark: <OrgLogo path="/portals/nmba" />,
         href: BASE,
       }}
       /* A function, so the masthead drives the rail: above the tablet anchor its

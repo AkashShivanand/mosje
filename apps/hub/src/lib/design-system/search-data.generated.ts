@@ -144,6 +144,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "lock"
   },
   {
+    "title": "Auth Form Card — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/auth/auth-form-card",
+    "keywords": "auth form card — design system auth & dashboard why the credential mode is a slot the stacks that ship what overflows is the label width, not the tab count example adding a credential mode notes  tokens wcag accessibility",
+    "description": "The login form column: seven fixed regions and one slot. The credential mode is a swapped stack, not a variant of the card.",
+    "type": "component",
+    "iconName": "lock"
+  },
+  {
     "title": "Avatar — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/avatar",
@@ -801,7 +810,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Form Field — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/form-field",
-    "keywords": "form field — design system forms & inputs making it yours language the render prop, in plain english example notes  tokens wcag accessibility",
+    "keywords": "form field — design system forms & inputs a control on the label row making it yours language the render prop, in plain english example notes  tokens wcag accessibility",
     "description": "The molecule that ties a control to its label, hint and error message, and wires every accessibility attribute through a render prop.",
     "type": "component",
     "iconName": "edit_note"
@@ -1215,7 +1224,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "section": "Brand",
     "href": "/design-system/components/brand/org-logo",
     "keywords": "org logo — design system brand every mark the estate ships why one component owns every path figma parity, and what is still missing example  tokens wcag accessibility",
-    "description": "Organisation and scheme marks in the estate",
+    "description": "Organisation and scheme marks — and the only place a mark",
     "type": "component",
     "iconName": "widgets"
   },
@@ -1319,6 +1328,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "type": "component",
     "badge": "New",
     "iconName": "navigation"
+  },
+  {
+    "title": "Portal List — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/auth/portal-list",
+    "keywords": "portal list — design system auth & dashboard there is no picker component where the names come from the filter row disappears when it has nothing to do  tokens wcag accessibility",
+    "description": "The scrollable list of portals inside the change-portal picker: category filters over Portal Cards.",
+    "type": "component",
+    "iconName": "lock"
   },
   {
     "title": "Portal Login Shell — Design System",
