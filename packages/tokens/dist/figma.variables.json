@@ -4,8 +4,8 @@
   "counts": {
     "Space": {
       "total": 152,
-      "new": 4,
-      "existing": 148
+      "new": 0,
+      "existing": 152
     },
     "Palette": {
       "total": 138,
@@ -4052,7 +4052,7 @@
             "WIDTH_HEIGHT"
           ],
           "hiddenFromPublishing": false,
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.json"
@@ -4077,7 +4077,7 @@
             "WIDTH_HEIGHT"
           ],
           "hiddenFromPublishing": false,
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.json"
@@ -4102,7 +4102,7 @@
             "WIDTH_HEIGHT"
           ],
           "hiddenFromPublishing": false,
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.json"
@@ -4127,7 +4127,7 @@
             "WIDTH_HEIGHT"
           ],
           "hiddenFromPublishing": false,
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "cmp",
             "in.gov.mosje.source": "src/component.json"

@@ -267,7 +267,11 @@ export const GROUP = new Set([
 // divider only means anything on this bar's brand fill.
 export const COMPONENT = new Set(["action", "control", "spinner", "button", "card", "badge", "accessibilityBar", "divider",
   // 2026-09-05: the per-component shape roles and the avatar sizes the benchmark systems carry.
-  "avatar", "chip", "dialog", "tooltip"]);
+  "avatar", "chip", "dialog", "tooltip",
+  // 2026-09-06: `stepper` owns a node diameter, a connector-track thickness and a compact-bar dot.
+  // Tier 3 rather than Tier 2 because none of the three is a shared scale step: the 32/24 node is
+  // the component's own API, and a 1px track only means anything between two step nodes.
+  "stepper"]);
 export const INTENT = new Set(["brand", "success", "destructive", "neutral", "light"]);
 export const ACTION_VARIANT = new Set(["primary", "secondary", "tertiary", "tonal"]);
 /**
