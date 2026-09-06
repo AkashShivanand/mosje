@@ -434,3 +434,42 @@ re-derive it:
 **Every one of these needs a page-by-page visual audit before it lands**, which is
 why none of them is bundled into this pass. The baseline may only shrink, so the
 34 cannot grow back while the work is scheduled.
+
+
+---
+
+## Addendum 6 — the target, met (6 September 2026)
+
+All five conditions in `docs/plans/ds-completeness-execution-prompt.md` now hold.
+
+| # | Condition | State |
+|---|---|---|
+| 1 | UX4G component coverage ≥ 90 %, honestly re-reviewed | **100 %** — 54 exact + 5 partial of 59 |
+| 2 | Every pattern in §4 ships, or is recorded with its reason | **19 of 19 ship** |
+| 3 | `check:shadow-ui` baseline strictly smaller than 38 | **34** |
+| 4 | `npm run check` and `npm run ci` exit 0, no baseline loosened | **Met** — 36 passed, 0 failed, 4 skipped |
+| 5 | Every component added carries all nine parts of the contract | **Met**, with two declared exceptions |
+
+### The two exceptions, stated plainly
+
+`CommentThread` and `NotificationCentre` have no Figma master and no Code Connect
+template, and they should not get either. They are `EventList`'s row plus a
+composer, and that row grouped by day. A second row style for either is how one
+object acquires two vocabularies — the defect the single row was built to
+prevent. Their web pages say so with the reason, and the decision is recorded on
+`EventList`'s component record in the library.
+
+Everything else carries all nine: component, stylesheet in the cascade layer with
+zero raw values, barrel export, story, documentation page rendered from the
+template with a generated props table, accessibility evidence naming how each
+criterion was checked, a Figma master on its own page, a documentation frame and
+component record beside it, and a Code Connect template with a recorded fixture.
+
+### What "production-ready" does and does not mean here
+
+It means the system is complete against its own contract, gated end to end, and
+in sync with the library page for page. It does **not** mean every portal has
+adopted it: 34 shadow-UI collisions remain, and closing them is portal work with
+its own visual audit, mapped in Addendum 5. Nor does it decide whether
+`@mosje/design-system` may leave the monorepo — the package is still
+`private: true`, and that is the department's call rather than a technical one.
