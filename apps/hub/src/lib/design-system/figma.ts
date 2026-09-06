@@ -127,6 +127,16 @@ export const FIGMA_NODES = {
   menu: "2141:296718",
   listGroup: "2141:323867",
   feedbackWidget: "3989:33663",
+  // Rebuilt 2026-09-06, same pass. The page was "Range Slider" until then and
+  // held only the two-thumb master; the library had no single-thumb Slider at
+  // all. Both are published here now.
+  slider: "2179:67252",
+  // The UX4G three-column scroller showing 00:00:00 is deprecated in place; the
+  // typed 24-hour field is section 2 of the Date-Time Picker page.
+  timePicker: "2141:296716",
+  // Was five hardcoded "Slide N/Desktop" frames — a mockup of one carousel.
+  // Slides are consumer content; the design system owns the control row.
+  carousel: "2141:296708",
   badges: "2141:296703",
   checkbox: "15:664", // the Checkbox set. The entry pointed at the PAGE (2141:296710) until 2026-09-04
   chips: "2141:296709",

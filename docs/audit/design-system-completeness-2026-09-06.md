@@ -240,14 +240,27 @@ It is a `<p>`, not an `<h2>`: a popover can open anywhere on a page and cannot
 know what heading level it would be nesting under, and a wrong level is worse for
 someone navigating by headings than no heading at all.
 
+## The three that were work rather than decisions — now done
+
+| Component | What was found | What was done |
+|---|---|---|
+| `Slider` | The library had the two-thumb master and **no single-thumb slider at all**, with properties (Label / Left control / Right control) that match no API here | Page renamed `Range Slider` → `Slider`; `Slider` (4 variants) and `Range Slider` (2) built; the UX4G set deprecated |
+| `TimePicker` | Verified, and it **did** diverge: a three-column scroller showing `00:00:00` — seconds the estate's schedules do not use | `Time Picker` built (Closed, Open, Error, Disabled) matching the typed 24-hour field; the scroller and its trigger deprecated |
+| `Carousel` | Five hardcoded `Slide N/Desktop` frames — a mockup of one carousel | `Carousel / Controls` built (8 variants, Autoplay × Current); all nine mockup components deprecated |
+
+The TimePicker call extends the principle the department set on the other four
+rather than asking again: the code's model, standards first. It is flagged here
+so it can be reversed if that reading was wrong.
+
+**All thirteen components added in this work now link to a Figma master from
+their documentation page.** None says "master pending", and none says "a master
+exists and disagrees".
+
 ## What remains, precisely
 
-| Component | State |
+| Item | State |
 |---|---|
-| `Slider` | The library has the two-thumb `RangeSlider` and **no single-thumb master**. Not a decision — work. |
-| `Carousel` | Still five hardcoded `Slide N/Desktop` frames. A real master has still to be drawn. |
-| `TimePicker` | Masters exist on the Date-Time Picker page and predate the component. Whether they express the 24-hour typed field is **still unverified**. |
-| Documentation frames | The four rebuilt pages (Popover, Menu, List, Feedback Widget) carry masters and rules-bearing descriptions but **no `— Documentation` frame or `— Component record`**, so their Index status is correctly `Published` rather than `Ready`. |
+| Documentation frames | The **seven rebuilt** pages (Popover, Menu, List, Feedback Widget, Slider, Time Picker, Carousel) carry masters and rules-bearing descriptions but no `— Documentation` frame or `— Component record`, so their Index status is correctly `Published` rather than `Ready`. The four NEW pages have both. |
 | Code Connect | No `*.figma.ts` template has been written for any of the thirteen. Each component record says so, and says why it should wait. |
 
 The Index was recounted and re-synced in the same session, per

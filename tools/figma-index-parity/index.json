@@ -66,7 +66,7 @@
     "Bot Check",
     "Radio",
     "Selection Card",
-    "Range Slider",
+    "Slider",
     "Search",
     "Toggle",
     "Time Slot",
@@ -279,7 +279,7 @@
           "linked": true
         },
         {
-          "name": "Range Slider",
+          "name": "Slider",
           "status": "Published",
           "linked": true
         },

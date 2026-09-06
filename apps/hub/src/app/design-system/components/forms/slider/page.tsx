@@ -60,10 +60,7 @@ export default function SliderPage(): React.JSX.Element {
       name="Slider"
       status="Stable"
       summary="A bounded numeric choice for when the reader cares about roughly where rather than exactly what. It is a real range input, so the keyboard model and the announced value are the browser's own."
-      figma={{
-        absent:
-          "A master exists for the RANGE only. The library's Range Slider page carries a RangeSlider set of 20 variants with Label / Left control / Right control properties; there is no single-thumb Slider master, and the property names do not match this API.",
-      }}
+      figma={{ node: "slider" }}
       specimen={<SliderPlayground />}
       propsFrom="SliderProps"
       props={[
