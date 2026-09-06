@@ -8232,10 +8232,10 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "side",
-        "type": "\"left\" | \"right\"",
+        "type": "\"left\" | \"right\" | \"bottom\"",
         "required": false,
-        "default": "\"right\"\n\nUse `\"left\"` for navigation drawers — a left drawer is the convention\nusers already expect, and navigation is the one case where breaking it\ncosts more than it gains.",
-        "description": "Which edge the panel is anchored to."
+        "default": "\"right\"",
+        "description": "**`\"bottom\"` is the Figma master's `Device=Mobile` drawing**: full width, anchored to the bottom edge, TOP corners rounded only, sliding up. Reach for it on a phone where the sheet is a CHOICE the reader is making — the portal picker is the case it exists for, because a thumb reaches the bottom of a phone and not the far edge. **It is a prop and not a breakpoint**, deliberately. Making mobile mean bottom automatically would turn every navigation drawer in the estate into a bottom sheet — `app-shell`, `tc-shell` and `admin-shell` all open this component as a rail on a phone, and a nav drawer belongs on the side it slides out of. The surface decides."
       },
       {
         "name": "size",

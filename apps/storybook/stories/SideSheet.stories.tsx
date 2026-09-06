@@ -201,3 +201,37 @@ export const LeftNavigationDrawer: Story = {
     </SideSheet>
   ),
 };
+
+/**
+ * BOTTOM — the Figma master's `Device=Mobile` drawing.
+ *
+ * Full width, anchored to the bottom edge, TOP corners rounded only. Rounding all
+ * four would make it read as a floating card rather than a sheet anchored to the
+ * edge, which is the master's own rule.
+ *
+ * **It is a prop, not a breakpoint.** Making mobile mean bottom automatically
+ * would turn every navigation drawer in the estate into a bottom sheet —
+ * `app-shell`, `tc-shell` and `admin-shell` all open this component as a rail on
+ * a phone. Reach for `bottom` where the sheet is a CHOICE the reader is making
+ * and their thumb has to reach it; the portal picker is the case it exists for.
+ */
+export const BottomSheet: Story = {
+  render: function BottomSheetStory() {
+    const [open, setOpen] = React.useState(false);
+    return (
+      <div style={{ minHeight: 420 }}>
+        <Button onClick={() => setOpen(true)}>Choose a portal</Button>
+        <SideSheet
+          open={open}
+          onClose={() => setOpen(false)}
+          side="bottom"
+          title="Choose a portal to login"
+        >
+          <p style={{ padding: "var(--sa-padding-20)", margin: 0 }}>
+            On a phone this rises from the bottom edge, where a thumb reaches.
+          </p>
+        </SideSheet>
+      </div>
+    );
+  },
+};

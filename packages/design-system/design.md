@@ -2465,6 +2465,10 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 **Props**: `open`, `onClose`, `title`, `size` (`sm` 400 · `md` 480 · `lg` 560), `footer`
 **Rules**: `Escape` closes; focus trapped while open and restored on close; background scroll locked. Use a `<Modal>` for ≤5-field forms and confirmations; use `<SideSheet>` for 6+ fields, textareas, or upload flows.
 **Anchoring**: `side="right"` (default) for task panels; `side="left"` for navigation drawers, where the left edge is the convention users expect. Used by the NMBA admin shell below `lg` in place of the persistent sidebar.
+**`side="bottom"` is the Figma master's `Device=Mobile`** — full width, anchored to the bottom, **top corners only** (rounding all four makes it read as a floating card rather than a sheet anchored to an edge). Reach for it on a phone where the sheet is a CHOICE the reader is making and their thumb has to reach it; the portal picker is the case it exists for.
+- **It is a prop, not a breakpoint, and that is deliberate.** Making mobile mean bottom automatically would turn every navigation drawer in the estate into a bottom sheet — `app-shell`, `tc-shell` and `admin-shell` all open this component as a rail on a phone, and a nav drawer belongs on the side it slides out of.
+- **The panel floats; it is not flush to the edge.** Inset `--sa-padding-16` on every side with `--sa-shape-16` corners, taken from the master (432 wide including a 16 inset, so the visible panel is 400). Code was edge-flush and square until 2026-09-06.
+- **Two deliberate Figma↔code divergences, recorded on the master.** (1) The Figma rule "pair it with `Modal / Backdrop`, do not draw a scrim inside it" is a *drawing* rule — a Figma component cannot render a page-covering scrim. **The React component owns its backdrop**, because a consumer who forgets one ships a modal with no scrim and no click-outside. (2) `footer` is code-only; the master draws no footer region.
 
 
 #### Lightbox
