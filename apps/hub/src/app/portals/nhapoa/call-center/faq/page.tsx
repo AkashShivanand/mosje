@@ -1,10 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { PortalPageHeader, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader } from "@/components/nhapoa/ui";
 import { cn } from "@/lib/nhapoa/utils";
 import { FAQS } from "@/lib/nhapoa/citizen-data";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 export default function CallCenterFaqPage() {
   const [open, setOpen] = React.useState<number | null>(0);

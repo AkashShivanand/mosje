@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { PortalPageHeader, Card, Field, TextInput, Button } from "@/components/tg/ui";
-import { Checkbox , EmptyState} from "@mosje/design-system";
+import { PortalPageHeader, Field, TextInput, Button } from "@/components/tg/ui";
+import { Checkbox , EmptyState, Card} from "@mosje/design-system";
 import { useTg } from "@/lib/tg/store/store";
 import type { PasswordPolicy } from "@/lib/tg/store/types";
 import { Icon } from "@mosje/design-system";

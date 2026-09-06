@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { PortalPageHeader, StatTile, Card, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile, Button } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 export default function SchemePerformancePage() {
   const { state } = useNhapoa();

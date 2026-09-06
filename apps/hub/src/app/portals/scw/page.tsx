@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, Card, SectionEyebrow } from "@/components/scw/ui";
+import { Button, SectionEyebrow } from "@/components/scw/ui";
 
 type ServiceCard = {
   /** Material Symbols Rounded glyph name (snake_case). */

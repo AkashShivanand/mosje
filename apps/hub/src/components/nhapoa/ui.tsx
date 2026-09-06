@@ -5,6 +5,7 @@ import { Icon,
   PageHeader as DsPageHeader,
   type PageHeaderProps,
   Textarea,
+  Card,
 } from "@mosje/design-system";
 
 /* ----------------------------------------------------------------- Buttons */
@@ -73,19 +74,6 @@ export function PortalPageHeader({ className, ...props }: PageHeaderProps) {
 }
 
 /* ------------------------------------------------------------ SectionCard */
-export function Card({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className={cn("rounded-2xl border border-line bg-white shadow-card", className)}>
-      {children}
-    </div>
-  );
-}
 
 /* --------------------------------------------------------------- StatTile */
 export function StatTile({
@@ -245,30 +233,4 @@ export function SectionEyebrow({ children }: { children: React.ReactNode }) {
 /* ---------------------------------------------------------------- Textarea */
 
 /* ---------------------------------------------------- Select (controlled) */
-export function Select({
-  options,
-  placeholder,
-  className,
-  ...props
-}: React.SelectHTMLAttributes<HTMLSelectElement> & {
-  options: readonly string[];
-  placeholder?: string;
-}) {
-  return (
-    <div className={cn("relative", className)}>
-      <select
-        {...props}
-        className="w-full appearance-none rounded-lg border border-line bg-white px-3.5 py-2.5 pr-9 text-body-2 text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
-      >
-        {placeholder && <option value="">{placeholder}</option>}
-        {options.map((o) => (
-          <option key={o} value={o}>
-            {o}
-          </option>
-        ))}
-      </select>
-      <Icon name="keyboard_arrow_down" size={16} className="pointer-events-none absolute right-3 top-1/2  -translate-y-1/2 text-ink-hint" />
-    </div>
-  );
-}
 

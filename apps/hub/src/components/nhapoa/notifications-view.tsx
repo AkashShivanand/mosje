@@ -1,10 +1,10 @@
 "use client";
 
-import { PortalPageHeader, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader } from "@/components/nhapoa/ui";
 import { cn } from "@/lib/nhapoa/utils";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import type { RoleId } from "@/lib/nhapoa/store/types";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 /** Shared notifications list for any admin role. Reads role-scoped items from the store. */
 export function NotificationsView({ role }: { role: RoleId }) {

@@ -1,7 +1,7 @@
 "use client";
 
-import { PortalPageHeader, Card } from "@/components/nhapoa/ui";
-import { Icon } from "@mosje/design-system";
+import { PortalPageHeader } from "@/components/nhapoa/ui";
+import { Icon , Card} from "@mosje/design-system";
 
 const COLS = ["Citizen", "DM/DC", "SHO", "State", "Finance", "Central", "Call Ctr", "Admin"];
 

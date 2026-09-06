@@ -1,7 +1,8 @@
+import { Card } from "@mosje/design-system";
 "use client";
 
 import * as React from "react";
-import { PortalPageHeader, StatTile, Card } from "./ui";
+import { PortalPageHeader, StatTile } from "./ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { ROLES } from "@/lib/nhapoa/roles";
 import { CASE_STATUS_META, type CaseStatus, type RoleId } from "@/lib/nhapoa/store/types";

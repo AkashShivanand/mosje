@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import { CitizenShell } from "@/components/nhapoa/citizen-shell";
-import { Button, Field, TextInput, Card, StatusPill } from "@/components/nhapoa/ui";
+import { Button, Field, TextInput, StatusPill } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { CASE_STATUS_META, type Case } from "@/lib/nhapoa/store/types";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 export default function TrackStatusPage() {
   const { findByRef } = useNhapoa();

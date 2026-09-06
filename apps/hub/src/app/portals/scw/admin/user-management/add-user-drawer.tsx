@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Field, Select, TextInput } from "@/components/scw/ui";
+import { Button, Field, TextInput } from "@/components/scw/ui";
 import { INDIAN_STATES } from "@/lib/scw/states";
-import { Icon } from "@mosje/design-system";
+import { Icon , Select} from "@mosje/design-system";
 
 const ROLES = ["Nodal Officer", "Admin"];
 
@@ -53,13 +53,13 @@ export function AddUserDrawer() {
                 <TextInput type="tel" placeholder="Mobile Number" />
               </Field>
               <Field label="Select State">
-                <Select options={INDIAN_STATES} placeholder="Select State" />
+                <Select options={[...INDIAN_STATES].map((value) => ({ value, label: value }))} placeholder="Select State" />
               </Field>
               <Field label="Select District">
-                <Select options={[]} placeholder="Select District" />
+                <Select options={[].map((value) => ({ value, label: value }))} placeholder="Select District" />
               </Field>
               <Field label="Select Role">
-                <Select options={ROLES} placeholder="Select Role" />
+                <Select options={[...ROLES].map((value) => ({ value, label: value }))} placeholder="Select Role" />
               </Field>
             </div>
 

@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Card, StatusPill, Button } from "@/components/tg/ui";
+import { StatusPill, Button } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { DEMO_CITIZEN } from "@/lib/tg/store/seed";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 const WELFARE = [
   { icon: "school", title: "Scholarships", desc: "National scholarships for transgender students.", cta: "Apply Now" },

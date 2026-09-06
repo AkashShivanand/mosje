@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { UserShell } from "@/components/scw/user-shell";
-import { Card } from "@/components/scw/ui";
 import { PLEDGE_POINTS } from "@/lib/scw/mock-data";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 export default function EpledgePage() {
   return (

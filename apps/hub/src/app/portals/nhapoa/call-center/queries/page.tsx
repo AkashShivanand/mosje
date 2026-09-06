@@ -2,10 +2,10 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { PortalPageHeader, Card, SearchInput } from "@/components/nhapoa/ui";
+import { PortalPageHeader, SearchInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtDate } from "@/lib/nhapoa/case-helpers";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 export default function QueryLogPage() {
   const { state, resolveQuery } = useNhapoa();

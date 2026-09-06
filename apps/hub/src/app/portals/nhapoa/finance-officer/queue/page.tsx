@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal } from "@mosje/design-system";
-import { PortalPageHeader, SearchInput, Button, Card, Field, TextInput, Select } from "@/components/nhapoa/ui";
+import { Icon, Modal , Select, Card} from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Button, Field, TextInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtDate, fmtINR } from "@/lib/nhapoa/case-helpers";
 import type { Case } from "@/lib/nhapoa/store/types";
@@ -115,7 +115,7 @@ export default function DisbursementQueuePage() {
             </div>
             <Field label="Beneficiary" required><TextInput value={beneficiary} onChange={(e) => setBeneficiary(e.target.value)} placeholder="Beneficiary name" /></Field>
             <Field label="Sanction Amount (₹)" required><TextInput inputMode="numeric" value={amount} onChange={(e) => setAmount(e.target.value.replace(/\D/g, ""))} placeholder="e.g. 425000" /></Field>
-            <Field label="Disbursement Mode"><Select options={MODES} value={mode} onChange={(e) => setMode(e.target.value)} /></Field>
+            <Field label="Disbursement Mode"><Select options={[...MODES].map((value) => ({ value, label: value }))} value={mode} onChange={(e) => setMode(e.target.value)} /></Field>
           </div>
         ) : null}
       </Modal>

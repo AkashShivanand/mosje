@@ -1,10 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { PortalPageHeader, Card, SearchInput } from "@/components/nhapoa/ui";
+import { PortalPageHeader, SearchInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { ROLES } from "@/lib/nhapoa/roles";
 import type { RoleId } from "@/lib/nhapoa/store/types";
+import { Card } from "@mosje/design-system";
 
 export default function DirectoryPage() {
   const { state } = useNhapoa();

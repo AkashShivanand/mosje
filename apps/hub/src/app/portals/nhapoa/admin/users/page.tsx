@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal } from "@mosje/design-system";
-import { PortalPageHeader, SearchInput, Button, Field, TextInput, Select } from "@/components/nhapoa/ui";
+import { Icon, Modal , Select} from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Button, Field, TextInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { ROLES } from "@/lib/nhapoa/roles";
 import type { RoleId } from "@/lib/nhapoa/store/types";
@@ -68,7 +68,7 @@ export default function UsersPage() {
         <div className="space-y-4">
           <Field label="Full Name" required><TextInput value={name} onChange={(e) => setName(e.target.value)} placeholder="Officer name" /></Field>
           <Field label="Username" required><TextInput value={username} onChange={(e) => setUsername(e.target.value)} placeholder="e.g. ba.newofficer" /></Field>
-          <Field label="Role" required><Select options={ROLE_OPTIONS} placeholder="Select role" value={roleLabel} onChange={(e) => setRoleLabel(e.target.value)} /></Field>
+          <Field label="Role" required><Select options={[...ROLE_OPTIONS].map((value) => ({ value, label: value }))} placeholder="Select role" value={roleLabel} onChange={(e) => setRoleLabel(e.target.value)} /></Field>
           <Field label="District / State"><TextInput value={district} onChange={(e) => setDistrict(e.target.value)} placeholder="e.g. Lucknow" /></Field>
         </div>
       </Modal>

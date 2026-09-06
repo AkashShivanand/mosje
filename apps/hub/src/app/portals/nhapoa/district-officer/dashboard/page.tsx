@@ -2,11 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { PortalPageHeader, StatTile, Card, StatusPill } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile, StatusPill } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { doQueue, priorityOf } from "@/lib/nhapoa/case-helpers";
 import { CASE_STATUS_META, type CaseStatus } from "@/lib/nhapoa/store/types";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 const BREAKDOWN: CaseStatus[] = ["SUBMITTED", "ASSIGNED", "UNDER_INVESTIGATION", "PENDING_APPROVAL", "SENT_BACK"];
 

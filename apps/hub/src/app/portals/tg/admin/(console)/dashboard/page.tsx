@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { BarChart, FilterBar, Icon, KpiRow } from "@mosje/design-system";
-import { PortalPageHeader, Select, SearchInput, StatusPill, SlaBadge, Button, Table } from "@/components/tg/ui";
+import { BarChart, FilterBar, Icon, KpiRow , Select} from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, StatusPill, SlaBadge, Button, Table } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { ROLES } from "@/lib/tg/roles";
 import { kpisForRole, queueForRole, byState, approvalRateByState } from "@/lib/tg/selectors";
@@ -86,7 +86,7 @@ export default function AdminDashboardPage() {
           {isAdmin && (
             <Select
               aria-label="Filter by state"
-              options={STATES}
+              options={[...STATES].map((value) => ({ value, label: value }))}
               placeholder="State"
               value={stateFilter}
               onChange={(e) => setStateFilter(e.target.value)}

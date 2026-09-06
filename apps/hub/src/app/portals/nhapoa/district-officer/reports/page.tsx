@@ -1,10 +1,10 @@
 "use client";
 
-import { PortalPageHeader, Card, StatTile, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile, Button } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { doQueue } from "@/lib/nhapoa/case-helpers";
 import { CASE_STATUS_META, type CaseStatus } from "@/lib/nhapoa/store/types";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 const ROWS: CaseStatus[] = ["SUBMITTED", "ASSIGNED", "UNDER_INVESTIGATION", "PENDING_APPROVAL", "SENT_BACK"];
 

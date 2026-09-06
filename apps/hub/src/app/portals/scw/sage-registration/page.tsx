@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, Card } from "@/components/scw/ui";
-import { Checkbox } from "@mosje/design-system";
+import { Button } from "@/components/scw/ui";
+import { Checkbox , Card} from "@mosje/design-system";
 
 const ESSENTIAL_CRITERIA = [
   "Being incorporated or registered in India for less than ten years from its date of incorporation.",

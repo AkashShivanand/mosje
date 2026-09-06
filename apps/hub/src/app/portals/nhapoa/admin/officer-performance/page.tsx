@@ -1,9 +1,10 @@
 "use client";
 
-import { PortalPageHeader, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { ROLES } from "@/lib/nhapoa/roles";
 import type { RoleId } from "@/lib/nhapoa/store/types";
+import { Card } from "@mosje/design-system";
 
 const FIELD_ROLES: RoleId[] = ["district-officer", "sho", "state-authority", "finance-officer"];
 

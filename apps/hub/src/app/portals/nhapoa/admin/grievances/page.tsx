@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { PortalPageHeader, SearchInput, Card, StatusPill } from "@/components/nhapoa/ui";
+import { PortalPageHeader, SearchInput, StatusPill } from "@/components/nhapoa/ui";
 import { SlaPill, PriorityBadge } from "@/components/nhapoa/case-views";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
+import { Card } from "@mosje/design-system";
 
 export default function GrievanceMonitoringPage() {
   const { state } = useNhapoa();

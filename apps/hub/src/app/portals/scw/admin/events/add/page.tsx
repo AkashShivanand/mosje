@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Button, Card, Field, Select, TextInput } from "@/components/scw/ui";
+import { Button, Field, TextInput } from "@/components/scw/ui";
 import { INDIAN_STATES } from "@/lib/scw/states";
-import { DeclarationCheckbox, Icon } from "@mosje/design-system";
+import { DeclarationCheckbox, Icon , Select, Card} from "@mosje/design-system";
 
 export default function AddEventPage() {
   const [declared, setDeclared] = React.useState(false);
@@ -41,10 +41,10 @@ export default function AddEventPage() {
               <TextInput placeholder="Enter pincode" />
             </Field>
             <Field label="State" required>
-              <Select options={[...INDIAN_STATES]} placeholder="Select state" />
+              <Select options={[...INDIAN_STATES].map((value) => ({ value, label: value }))} placeholder="Select state" />
             </Field>
             <Field label="District" required>
-              <Select options={[]} placeholder="Select district" />
+              <Select options={[].map((value) => ({ value, label: value }))} placeholder="Select district" />
             </Field>
           </div>
 

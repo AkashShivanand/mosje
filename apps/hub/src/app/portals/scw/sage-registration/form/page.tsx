@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, Card, DataTable, Field, TextInput } from "@/components/scw/ui";
-import { Icon , Stepper} from "@mosje/design-system";
+import { Button, DataTable, Field, TextInput } from "@/components/scw/ui";
+import { Icon , Stepper, Card} from "@mosje/design-system";
 
 const STEPS = [
   "Company Information",

@@ -1,15 +1,9 @@
 import Link from "next/link";
 import { UserShell } from "@/components/scw/user-shell";
-import {
-  Button,
-  Card,
-  PeriodFilter,
-  Pagination,
-  SearchInput,
-} from "@/components/scw/ui";
+import { Button, PeriodFilter, Pagination, SearchInput } from "@/components/scw/ui";
 import { EVENTS, EVENTS_TOTAL } from "@/lib/scw/mock-data";
 import { INDIAN_STATES } from "@/lib/scw/states";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 export default function VolunteerDashboardPage() {
   return (

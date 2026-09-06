@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, Card } from "@/components/scw/ui";
-import { Icon } from "@mosje/design-system";
+import { Button } from "@/components/scw/ui";
+import { Icon , Card} from "@mosje/design-system";
 
 export default function SageDashboardPage() {
   return (

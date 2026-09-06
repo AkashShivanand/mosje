@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { PortalPageHeader, Card, StatTile } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { CASE_STATUS_META, type CaseStatus } from "@/lib/nhapoa/store/types";
+import { Card } from "@mosje/design-system";
 
 export default function AnalyticsPage() {
   const { state } = useNhapoa();

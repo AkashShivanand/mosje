@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Button, Field, TextInput, Select, Card } from "@/components/nhapoa/ui";
-import { DeclarationCheckbox, RadioGroup , Textarea, Stepper} from "@mosje/design-system";
+import { Button, Field, TextInput } from "@/components/nhapoa/ui";
+import { DeclarationCheckbox, RadioGroup , Textarea, Stepper, Select, Card} from "@mosje/design-system";
 import { GRIEVANCE_TYPES, SUBMISSION_ROLES } from "@/lib/nhapoa/citizen-data";
 import { STATES, DISTRICTS } from "@/lib/nhapoa/store/seed";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
@@ -188,8 +188,8 @@ export function GrievanceWizard({
           <StepForm source={source} title="Informer Details" desc="Details of the person filing this grievance.">
             <Field label="Full Name" required><TextInput value={d.infName} onChange={(e) => set("infName", e.target.value)} placeholder="Enter full name" /></Field>
             <Field label="Mobile" required><TextInput inputMode="numeric" maxLength={10} value={d.infMobile} onChange={(e) => set("infMobile", e.target.value.replace(/\D/g, ""))} placeholder="10-digit mobile" /></Field>
-            <Field label="State" required><Select options={STATES} placeholder="Select State" value={d.infState} onChange={(e) => { set("infState", e.target.value); set("infDistrict", ""); }} /></Field>
-            <Field label="District"><Select options={districtsFor(d.infState)} placeholder="Select District" value={d.infDistrict} onChange={(e) => set("infDistrict", e.target.value)} /></Field>
+            <Field label="State" required><Select options={[...STATES].map((value) => ({ value, label: value }))} placeholder="Select State" value={d.infState} onChange={(e) => { set("infState", e.target.value); set("infDistrict", ""); }} /></Field>
+            <Field label="District"><Select options={[...districtsFor(d.infState)].map((value) => ({ value, label: value }))} placeholder="Select District" value={d.infDistrict} onChange={(e) => set("infDistrict", e.target.value)} /></Field>
             <Field label="Address" className="sm:col-span-2"><Textarea rows={2} value={d.infAddress} onChange={(e) => set("infAddress", e.target.value)} placeholder="Street, landmark, locality" /></Field>
           </StepForm>
         )}
@@ -204,9 +204,9 @@ export function GrievanceWizard({
 
         {step === 3 && (
           <StepForm source={source} title="Grievance Details" desc="Describe the incident and its category.">
-            <Field label="Category (nature of atrocity)" required className="sm:col-span-2"><Select options={categoryOptions} placeholder="Select category" value={d.category} onChange={(e) => set("category", e.target.value)} /></Field>
-            <Field label="State" required><Select options={STATES} placeholder="Select State" value={d.incState} onChange={(e) => { set("incState", e.target.value); set("incDistrict", ""); }} /></Field>
-            <Field label="District"><Select options={districtsFor(d.incState)} placeholder="Select District" value={d.incDistrict} onChange={(e) => set("incDistrict", e.target.value)} /></Field>
+            <Field label="Category (nature of atrocity)" required className="sm:col-span-2"><Select options={[...categoryOptions].map((value) => ({ value, label: value }))} placeholder="Select category" value={d.category} onChange={(e) => set("category", e.target.value)} /></Field>
+            <Field label="State" required><Select options={[...STATES].map((value) => ({ value, label: value }))} placeholder="Select State" value={d.incState} onChange={(e) => { set("incState", e.target.value); set("incDistrict", ""); }} /></Field>
+            <Field label="District"><Select options={[...districtsFor(d.incState)].map((value) => ({ value, label: value }))} placeholder="Select District" value={d.incDistrict} onChange={(e) => set("incDistrict", e.target.value)} /></Field>
             <Field label="Incident Location"><TextInput value={d.incLocation} onChange={(e) => set("incLocation", e.target.value)} placeholder="Village / street / landmark" /></Field>
             <Field label="Incident Date" required><TextInput type="date" value={d.incDate} onChange={(e) => set("incDate", e.target.value)} /></Field>
             <Field label="Description" required className="sm:col-span-2"><Textarea rows={4} value={d.description} onChange={(e) => set("description", e.target.value)} placeholder="Describe what happened in your own words" /></Field>

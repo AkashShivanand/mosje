@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { PortalPageHeader, StatTile, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
+import { Card } from "@mosje/design-system";
 
 export default function CADashboard() {
   const { state } = useNhapoa();

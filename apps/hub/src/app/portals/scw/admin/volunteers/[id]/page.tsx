@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Button, Card, FieldGrid, SectionEyebrow } from "@/components/scw/ui";
+import { Button, FieldGrid, SectionEyebrow } from "@/components/scw/ui";
 import { VOLUNTEER_DETAIL } from "@/lib/scw/mock-data";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 export default async function VolunteerDetailPage({
   params,

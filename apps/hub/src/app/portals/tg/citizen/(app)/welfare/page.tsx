@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Card, Button } from "@/components/tg/ui";
-import { Icon, useToast } from "@mosje/design-system";
+import { Button } from "@/components/tg/ui";
+import { Icon, useToast , Card} from "@mosje/design-system";
 
 const SCHEMES = [
   {

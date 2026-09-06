@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Card, Button, Field, TextInput, Select, SectionEyebrow, cnField } from "@/components/tg/ui";
+import { Button, Field, TextInput, SectionEyebrow, cnField } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { DEMO_CITIZEN } from "@/lib/tg/store/seed";
 import {
@@ -14,7 +14,7 @@ import {
   ID_PROOF_TYPES,
 } from "@/lib/tg/states";
 import type { ApplicantDetails, ApplicationType, AppDocument } from "@/lib/tg/store/types";
-import { Icon, RadioGroup , Stepper} from "@mosje/design-system";
+import { Icon, RadioGroup , Stepper, Select, Card} from "@mosje/design-system";
 
 type Phase = "type" | "method" | "manual" | "form" | "done";
 
@@ -203,14 +203,14 @@ export default function ApplyPage() {
               <Field label="Full Legal Name" required><TextInput value={form.fullLegalName} onChange={(e) => set("fullLegalName", e.target.value)} placeholder="Name as per ID proof" /></Field>
               <Field label="Changed / Chosen Name" required><TextInput value={form.chosenName} onChange={(e) => set("chosenName", e.target.value)} placeholder="Name you want to be addressed by" /></Field>
               <Field label="Name to Print on Certificate">
-                <Select options={["Legal Name", "Chosen Name"]} value={form.nameToPrint === form.fullLegalName ? "Legal Name" : "Chosen Name"} onChange={(e) => set("nameToPrint", e.target.value === "Legal Name" ? form.fullLegalName : form.chosenName)} />
+                <Select options={["Legal Name", "Chosen Name"].map((value) => ({ value, label: value }))} value={form.nameToPrint === form.fullLegalName ? "Legal Name" : "Chosen Name"} onChange={(e) => set("nameToPrint", e.target.value === "Legal Name" ? form.fullLegalName : form.chosenName)} />
               </Field>
               <Field label="Date of Birth" required><TextInput type="date" value={form.dob} onChange={(e) => set("dob", e.target.value)} /></Field>
               <Field label="Gender (At Birth)">
-                <Select options={["Male", "Female"]} value={form.genderAtBirth} onChange={(e) => set("genderAtBirth", e.target.value as ApplicantDetails["genderAtBirth"])} />
+                <Select options={["Male", "Female"].map((value) => ({ value, label: value }))} value={form.genderAtBirth} onChange={(e) => set("genderAtBirth", e.target.value as ApplicantDetails["genderAtBirth"])} />
               </Field>
               <Field label="Gender Requested">
-                <Select options={["Transgender", "Male", "Female"]} value={form.genderRequested} onChange={(e) => set("genderRequested", e.target.value as ApplicantDetails["genderRequested"])} />
+                <Select options={["Transgender", "Male", "Female"].map((value) => ({ value, label: value }))} value={form.genderRequested} onChange={(e) => set("genderRequested", e.target.value as ApplicantDetails["genderRequested"])} />
               </Field>
               <Field label="Parent / Guardian Name" required><TextInput value={form.guardianName} onChange={(e) => set("guardianName", e.target.value)} placeholder="Father, Mother, or Guardian's Name" /></Field>
             </div>
@@ -219,9 +219,9 @@ export default function ApplyPage() {
           <section>
             <SectionEyebrow>Socio-Economic Background</SectionEyebrow>
             <div className="grid gap-4 sm:grid-cols-3">
-              <Field label="Educational Qualification"><Select options={EDUCATION_LEVELS} value={form.education} onChange={(e) => set("education", e.target.value)} /></Field>
-              <Field label="Caste Category"><Select options={CASTE_CATEGORIES} value={form.caste} onChange={(e) => set("caste", e.target.value)} /></Field>
-              <Field label="Annual Income"><Select options={INCOME_BANDS} value={form.annualIncome} onChange={(e) => set("annualIncome", e.target.value)} /></Field>
+              <Field label="Educational Qualification"><Select options={[...EDUCATION_LEVELS].map((value) => ({ value, label: value }))} value={form.education} onChange={(e) => set("education", e.target.value)} /></Field>
+              <Field label="Caste Category"><Select options={[...CASTE_CATEGORIES].map((value) => ({ value, label: value }))} value={form.caste} onChange={(e) => set("caste", e.target.value)} /></Field>
+              <Field label="Annual Income"><Select options={[...INCOME_BANDS].map((value) => ({ value, label: value }))} value={form.annualIncome} onChange={(e) => set("annualIncome", e.target.value)} /></Field>
             </div>
           </section>
 
@@ -233,8 +233,8 @@ export default function ApplyPage() {
                 <TextInput type="email" value={form.email} readOnly aria-readonly="true" className="bg-surface-muted text-ink-muted" />
                 <span className="mt-1 block text-body-3 text-ink-hint">Linked to your signed-in account.</span>
               </Field>
-              <Field label="State"><Select options={STATES} value={form.state} onChange={(e) => { set("state", e.target.value); set("district", STATE_DISTRICTS[e.target.value]?.[0] ?? ""); }} /></Field>
-              <Field label="District"><Select options={districts} value={form.district} onChange={(e) => set("district", e.target.value)} /></Field>
+              <Field label="State"><Select options={[...STATES].map((value) => ({ value, label: value }))} value={form.state} onChange={(e) => { set("state", e.target.value); set("district", STATE_DISTRICTS[e.target.value]?.[0] ?? ""); }} /></Field>
+              <Field label="District"><Select options={[...districts].map((value) => ({ value, label: value }))} value={form.district} onChange={(e) => set("district", e.target.value)} /></Field>
               <Field label="Pincode" required><TextInput inputMode="numeric" maxLength={6} value={form.pincode} onChange={(e) => set("pincode", e.target.value)} placeholder="6-digit Pincode" /></Field>
               <Field label="Full Address" required><TextInput value={form.address} onChange={(e) => set("address", e.target.value)} placeholder="House, Street, Locality" /></Field>
             </div>
@@ -256,7 +256,7 @@ export default function ApplyPage() {
           </div>
 
           <Field label="ID Proof Type" className="max-w-xs">
-            <Select options={ID_PROOF_TYPES} value={idProofType} onChange={(e) => setIdProofType(e.target.value)} />
+            <Select options={[...ID_PROOF_TYPES].map((value) => ({ value, label: value }))} value={idProofType} onChange={(e) => setIdProofType(e.target.value)} />
           </Field>
 
           <div className="grid gap-4 sm:grid-cols-2">

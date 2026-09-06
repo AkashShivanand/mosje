@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Button, Card, StatusPill } from "@/components/scw/ui";
+import { Button, StatusPill } from "@/components/scw/ui";
 import { SAGE_DETAIL } from "@/lib/scw/mock-data";
 import { DetailTabs } from "./detail-tabs";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 export default async function SageApplicationDetailPage({
   params,

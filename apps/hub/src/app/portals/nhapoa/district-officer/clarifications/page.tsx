@@ -1,7 +1,7 @@
 "use client";
 
-import { PortalPageHeader, Card } from "@/components/nhapoa/ui";
-import { Icon } from "@mosje/design-system";
+import { PortalPageHeader } from "@/components/nhapoa/ui";
+import { Icon , Card} from "@mosje/design-system";
 
 export default function DOClarificationsPage() {
   return (

@@ -3,11 +3,11 @@
 import * as React from "react";
 import Link from "next/link";
 import { CitizenShell } from "@/components/nhapoa/citizen-shell";
-import { Button, Field, TextInput, Select, Card } from "@/components/nhapoa/ui";
+import { Button, Field, TextInput } from "@/components/nhapoa/ui";
 import { RESCUE_GENDERS } from "@/lib/nhapoa/citizen-data";
 import { STATES, DISTRICTS } from "@/lib/nhapoa/store/seed";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
-import { Icon , Textarea} from "@mosje/design-system";
+import { Icon , Textarea, Select, Card} from "@mosje/design-system";
 
 export default function RegisterRescuePage() {
   const { createRescue } = useNhapoa();
@@ -60,7 +60,7 @@ export default function RegisterRescuePage() {
         <p className="mb-6 text-label-3 uppercase text-ink-hint">Rescue Details · all fields are mandatory</p>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <Field label="Name" required><TextInput value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter your name" /></Field>
-          <Field label="Gender"><Select options={RESCUE_GENDERS} placeholder="Select gender" value={gender} onChange={(e) => setGender(e.target.value)} /></Field>
+          <Field label="Gender"><Select options={[...RESCUE_GENDERS].map((value) => ({ value, label: value }))} placeholder="Select gender" value={gender} onChange={(e) => setGender(e.target.value)} /></Field>
 
           <Field label="Mobile No." required className="sm:col-span-2">
             <div className="flex gap-2">
@@ -83,8 +83,8 @@ export default function RegisterRescuePage() {
             </div>
           </div>
           <Field label="Pincode"><TextInput inputMode="numeric" maxLength={6} value={pincode} onChange={(e) => setPincode(e.target.value.replace(/\D/g, ""))} placeholder="6-digit Pincode" /></Field>
-          <Field label="State" required><Select options={STATES} placeholder="Select State" value={state} onChange={(e) => { setState(e.target.value); setDistrict(""); }} /></Field>
-          <Field label="District"><Select options={DISTRICTS[state] ?? ["District 1", "District 2"]} placeholder={state ? "Select District" : "Select state first"} value={district} onChange={(e) => setDistrict(e.target.value)} /></Field>
+          <Field label="State" required><Select options={[...STATES].map((value) => ({ value, label: value }))} placeholder="Select State" value={state} onChange={(e) => { setState(e.target.value); setDistrict(""); }} /></Field>
+          <Field label="District"><Select options={[...DISTRICTS[state] ?? ["District 1", "District 2"]].map((value) => ({ value, label: value }))} placeholder={state ? "Select District" : "Select state first"} value={district} onChange={(e) => setDistrict(e.target.value)} /></Field>
           <Field label="Full Address"><TextInput value={address} onChange={(e) => setAddress(e.target.value)} placeholder="Street, landmark, locality" /></Field>
 
           <Field label="Problem" required className="sm:col-span-2">

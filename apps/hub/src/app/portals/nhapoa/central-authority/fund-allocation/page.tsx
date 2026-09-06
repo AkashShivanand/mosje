@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal } from "@mosje/design-system";
-import { PortalPageHeader, StatTile, Card, Button, Field, Select, TextInput } from "@/components/nhapoa/ui";
+import { Icon, Modal , Select, Card} from "@mosje/design-system";
+import { PortalPageHeader, StatTile, Button, Field, TextInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
 import { STATES, SCHEMES } from "@/lib/nhapoa/store/seed";
@@ -89,8 +89,8 @@ export default function FundAllocationPage() {
           <div className="py-4 text-center"><Icon name="check_circle" size={48} className="mx-auto text-approve" /><p className="mt-3 text-body-2 text-ink-muted">{fmtINR(Number(amount))} allocated to <span className="font-semibold text-ink">{aState}</span> for {scheme}.</p></div>
         ) : (
           <div className="space-y-4">
-            <Field label="State" required><Select options={STATES} placeholder="Select State" value={aState} onChange={(e) => setAState(e.target.value)} /></Field>
-            <Field label="Scheme" required><Select options={SCHEMES} placeholder="Select Scheme" value={scheme} onChange={(e) => setScheme(e.target.value)} /></Field>
+            <Field label="State" required><Select options={[...STATES].map((value) => ({ value, label: value }))} placeholder="Select State" value={aState} onChange={(e) => setAState(e.target.value)} /></Field>
+            <Field label="Scheme" required><Select options={[...SCHEMES].map((value) => ({ value, label: value }))} placeholder="Select Scheme" value={scheme} onChange={(e) => setScheme(e.target.value)} /></Field>
             <Field label="Allocation Amount (₹)" required><TextInput inputMode="numeric" value={amount} onChange={(e) => setAmount(e.target.value.replace(/\D/g, ""))} placeholder="e.g. 25000000" /></Field>
           </div>
         )}

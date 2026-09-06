@@ -1,9 +1,9 @@
 "use client";
 
-import { PortalPageHeader, Card, StatTile, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile, Button } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 export default function CAReportsPage() {
   const { state } = useNhapoa();

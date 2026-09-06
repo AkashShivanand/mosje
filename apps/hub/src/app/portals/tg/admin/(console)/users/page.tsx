@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Badge, Icon, Modal , EmptyState} from "@mosje/design-system";
-import { PortalPageHeader, SearchInput, Button, Field, TextInput, Select, Table } from "@/components/tg/ui";
+import { Badge, Icon, Modal , EmptyState, Select} from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Button, Field, TextInput, Table } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { STATES } from "@/lib/tg/states";
 import type { UserRecord } from "@/lib/tg/store/types";
@@ -80,10 +80,10 @@ export default function UsersPage() {
           <Field label="Mobile Number" required><TextInput inputMode="numeric" maxLength={10} value={form.mobile} onChange={(e) => setForm({ ...form, mobile: e.target.value })} required /></Field>
           <Field label="Email Address" required><TextInput type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required /></Field>
           <Field label="Role">
-            <Select options={ROLE_OPTIONS} value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} />
+            <Select options={[...ROLE_OPTIONS].map((value) => ({ value, label: value }))} value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })} />
           </Field>
           <Field label="Jurisdiction (State)">
-            <Select options={STATES} value={form.jurisdiction} onChange={(e) => setForm({ ...form, jurisdiction: e.target.value })} />
+            <Select options={[...STATES].map((value) => ({ value, label: value }))} value={form.jurisdiction} onChange={(e) => setForm({ ...form, jurisdiction: e.target.value })} />
           </Field>
         </form>
       </Modal>

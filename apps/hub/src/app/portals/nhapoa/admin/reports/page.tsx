@@ -1,8 +1,8 @@
 "use client";
 
-import { PortalPageHeader, Card, StatTile, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile, Button } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 const REPORTS = [
   { name: "National Grievance Register", desc: "Every grievance with status, SLA and officer" },

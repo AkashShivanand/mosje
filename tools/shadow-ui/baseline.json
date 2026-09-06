@@ -1,20 +1,14 @@
 {
   "apps/hub/src/components/nhapoa/ui.tsx": [
     "Button",
-    "Card",
-    "DataTable",
-    "Select"
+    "DataTable"
   ],
   "apps/hub/src/components/scw/ui.tsx": [
     "Button",
-    "Card",
     "DataTable",
-    "Pagination",
-    "Select"
+    "Pagination"
   ],
   "apps/hub/src/components/tg/ui.tsx": [
-    "Button",
-    "Card",
-    "Select"
+    "Button"
   ]
 }

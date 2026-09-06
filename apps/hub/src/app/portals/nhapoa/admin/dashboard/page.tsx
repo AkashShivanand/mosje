@@ -1,9 +1,10 @@
 "use client";
 
 import * as React from "react";
-import { PortalPageHeader, StatTile, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { CASE_STATUS_META, type CaseStatus } from "@/lib/nhapoa/store/types";
+import { Card } from "@mosje/design-system";
 
 const FUNNEL: CaseStatus[] = ["SUBMITTED", "ASSIGNED", "UNDER_INVESTIGATION", "PENDING_APPROVAL", "APPROVED", "DISBURSED", "CLOSED"];
 

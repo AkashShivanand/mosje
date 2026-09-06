@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { PortalPageHeader, StatTile, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 export default function FODashboard() {
   const { state } = useNhapoa();

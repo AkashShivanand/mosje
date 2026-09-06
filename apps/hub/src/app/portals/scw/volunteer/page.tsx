@@ -2,11 +2,11 @@
 
 import * as React from "react";
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, Card, Field, Select, TextInput } from "@/components/scw/ui";
+import { Button, Field, TextInput } from "@/components/scw/ui";
 import { INDIAN_STATES } from "@/lib/scw/states";
 import { VOLUNTEER_INTERESTS } from "@/lib/scw/mock-data";
 import { cn } from "@/lib/scw/utils";
-import { Checkbox, CheckboxGroup, RadioGroup } from "@mosje/design-system";
+import { Checkbox, CheckboxGroup, RadioGroup , Select, Card} from "@mosje/design-system";
 
 const GENDERS = ["Male", "Female", "Transgender"] as const;
 type VolunteerKind = "individual" | "organisation";
@@ -42,7 +42,7 @@ export default function VolunteerRegistrationPage() {
               <TextInput type="text" placeholder="Enter your full name" />
             </Field>
             <Field label="Gender" required>
-              <Select options={GENDERS} placeholder="Male" />
+              <Select options={[...GENDERS].map((value) => ({ value, label: value }))} placeholder="Select gender" />
             </Field>
             <Field label="Date of Birth" required>
               <TextInput type="date" />
@@ -52,10 +52,10 @@ export default function VolunteerRegistrationPage() {
           {/* Row 2 */}
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             <Field label="State" required>
-              <Select options={INDIAN_STATES} placeholder="Select state" />
+              <Select options={[...INDIAN_STATES].map((value) => ({ value, label: value }))} placeholder="Select state" />
             </Field>
             <Field label="District" required>
-              <Select options={[]} placeholder="Select district" />
+              <Select options={[].map((value) => ({ value, label: value }))} placeholder="Select district" />
             </Field>
             <Field label="Pincode" required>
               <TextInput type="text" placeholder="Enter pincode" />
