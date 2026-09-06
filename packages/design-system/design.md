@@ -12,6 +12,11 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-06 · System version: v0.59.0 (THE STEPPER'S SIZE AXIS REACHES FIGMA:
+  Size = Large | Compact on Node, Stage and Row, mapping to size="md" | "sm", so UX4G's Compact
+  can be drawn and not only specified. Compact's description uses Body/body-3, one pixel above
+  the stylesheet, because label-3 is this library's caps style.)
+
   Last reviewed: 2026-09-06 · System version: v0.58.0 (THE RAIL OWNS ITS DIVIDER: SidebarNav renders a
   full-height column that carries the hairline between rail and content, so it runs to the bottom
   edge on scroll; the identity wash binds color/transparent/secondary/8 in Figma and code.)
@@ -2530,6 +2535,7 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - Geometry comes from `cmp/stepper/node/{md,sm}`, `cmp/stepper/track` (1px, as measured in the handoff) and `cmp/stepper/dot`.
 - **A recorded divergence:** GOV.UK advises testing a form without a progress indicator and prefers a "Question 3 of 9" caption; UX4G and the MoSJE handoff both specify a stepper. The estate ships the stepper, and the compact bar answers the mobile half of that objection.
 - Used with `<Wizard>`, which owns the live region and the focus move on stage change.
+- **Figma carries the `Size` axis since 2026-09-06** — `Large` maps to `md`, `Compact` to `sm` — on all three layers, so a compact stepper can be drawn rather than only specified. One divergence is recorded rather than hidden: the stylesheet drops the compact description to `label-3`'s SIZE, but `Label/label-3` is this library's CAPS style, so Figma uses `Body/body-3` there and the helper text is one pixel larger instead of uppercase.
 - **In Figma, place `Stepper / Row`** — the whole stepper, seven variants, one per stage count from three to nine, with equal columns by construction. `Stepper / Horizontal` and `Stepper / Vertical` publish a single STAGE and exist to be composed. Those two were named the wrong way round from the UX4G 2.0 fork until 2026-09-06 (the connector's rotation proves which is which; only the horizontal one carries `Label Position`), and Figma drew `State=Current` as a green in-progress arc while the code fills the node — both corrected, with the code taken as authoritative.
 
 #### Tabs / TabPanel

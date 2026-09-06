@@ -32,9 +32,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.120.0",
+    version: "v0.121.0",
     date: "2026-09-06",
     current: true,
+    changes: [
+      { kind: "Added", text: "THE STEPPER'S SIZE AXIS EXISTS IN FIGMA NOW, NOT ONLY IN CODE. The component has taken `size=\"md\" | \"sm\"` since it shipped while the library published one size, so UX4G's Compact could be specified in a handoff and never drawn. `Size = Large | Compact` is on all three layers — Node goes 15 variants to 30, Stage 30 to 60, Row 14 to 28 — and Compact is the four moves the stylesheet makes: a 24px node, a hairline ring rather than 2px, one rung down the type scale, and the tighter gap. Set it on the Row and every stage follows. Code Connect maps Large to md and Compact to sm, and the parity fixture is updated so the gate verifies all 28 Row variants" },
+      { kind: "Fixed", text: "CLONED FIGMA VARIANTS RENDERED THEIR DEFAULTS WHILE THE PANEL SHOWED THE RIGHT VALUE. A cloned variant does not carry its source's component-property references, so every new Compact variant had Title, Description and Step set correctly on the instance and bound to nothing — the panel read \"Stage 4\" and the canvas drew \"Stepper Title\". Caught by reading the rendered characters back rather than trusting that the writes reported success, and fixed by re-binding the references on all 30 cloned Stage variants and the 2 Node variants that draw a numeral" },
+      { kind: "Fixed", text: "COMPACT'S HELPER TEXT WAS SHOUTING. Applying `Label/label-3` to match the stylesheet's compact size set the description in uppercase, because label-3 is this library's caps style — the stylesheet borrows its SIZE, not its case. Compact uses `Body/body-3`, one pixel larger and in sentence case; the divergence is recorded on the component record rather than left for someone to rediscover" },
+    ],
+  },
+  {
+    version: "v0.120.0",
+    date: "2026-09-06",
     changes: [
       { kind: "Added", text: "A 0% TIER FOR THE SECONDARY WASH — `color/transparent/secondary/0`, the far end of a fade. The identity wash's vanishing point had been a raw transparent stop, because a bound gradient stop takes its variable's alpha and no token sat at zero. One variable, created in the Palette collection as COMPOSE_COLOR(secondaryScale/400, alpha/0) and emitted as `--sa-color-transparent-secondary-0` — one family only, because `check:token-consumers` refuses a token nothing binds; the wash now binds both of its stops in Figma and code, and the library record is re-read." },
       { kind: "Changed", text: "EVERY PORTAL NOW OPENS IN NAVY, AND THE WEBSITE STILL OPENS IN BLUE. Which brand a surface opens in is a property of the ROUTE rather than of the estate: `defaultColorModeForPath` maps /portals/** to navy and everything else to blue, and `BRAND_BY_ROUTE` is the one array that both the inline no-flash head script and the provider read, so first paint and hydration cannot reach different answers. It is a default, not a lock — a brand chosen in the demo dock is persisted and outranks it on every route, so the Colour tab keeps working inside a portal instead of being a control that appears usable and does nothing. The path is read on the CLIENT and never during a server render: the root layout sits above every route in the estate, so a server-side read would make all of them dynamic for the sake of one attribute, and reading it client-side is also what lets the brand follow a client-side navigation from the website into a portal, where the head script never runs again" },

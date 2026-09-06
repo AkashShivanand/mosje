@@ -1091,7 +1091,7 @@
   "Stepper": {
     "nodeId": "57551:49844",
     "captured": "2026-09-06",
-    "note": "Stepper / Row — the whole stepper, 14 variants (Orientation 2 x Steps 7). Rebuilt 2026-09-06 as the top of a three-layer family: Stepper / Node (marker) -> Stepper / Stage (node, half-track each side, labels) -> Stepper / Row. The earlier 7-variant Row and the two inherited stage masters are superseded; the masters are kept and marked because instances still resolve against them.",
+    "note": "Stepper / Row — the whole stepper, 14 variants (Orientation 2 x Steps 7). Rebuilt 2026-09-06 as the top of a three-layer family: Stepper / Node (marker) -> Stepper / Stage (node, half-track each side, labels) -> Stepper / Row. The earlier 7-variant Row and the two inherited stage masters are superseded; the masters are kept and marked because instances still resolve against them. The Size axis was added on 2026-09-06 across all three layers (Node 30 variants, Stage 60, Row 28), closing the record item that had the code taking size while Figma published one size.",
     "properties": {
       "Orientation": {
         "type": "VARIANT",
@@ -1110,6 +1110,13 @@
           "7",
           "8",
           "9"
+        ]
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Large",
+          "Compact"
         ]
       }
     }
