@@ -3,6 +3,53 @@
 @layer theme, base, components, utilities;
 
 @layer components {
+  /* ── The form column ──────────────────────────────────────────────────────
+     Four tokens exist for this layout — `--sa-layout-login-{hero,panel}-width`,
+     `--sa-layout-login-panel-gutter` and `--sa-layout-login-content-width` — and
+     until 2026-09-06 the shell used none of them, restating the geometry in
+     Tailwind as `lg:w-[64.03%]`, `lg:px-16` and `max-w-sm`.
+
+     `max-w-sm` is 384px. The design's column is 390. So the card sat 3px inside
+     the role-tab row directly above it, on the one surface in the estate where
+     two elements are meant to share an edge — measured, not eyeballed: tabs at
+     x=986 w=390, card at x=989 w=384. Six pixels is also exactly what pushed the
+     two credential-mode labels (185 + 183) past the row's usable width.
+
+     A number that merely EQUALS a token is a defect here (see
+     `documentation-ds-linkage.md`); a number that is 6px off one is a visible
+     misalignment as well. Both halves now read the token.
+
+     The cap engages only where the design's fixed column does. Below `lg` the
+     panel is the whole viewport, and a 390px cap on a 375px phone is not a cap.
+
+     The gutter is `__panel-pad`'s and this element adds NONE of its own. It
+     briefly did, and the two paddings stacked: on a phone the role-tab row came
+     out 400 wide against a 368 card — the same misalignment this change exists
+     to remove, reintroduced one breakpoint down. Caught by measuring at 375
+     rather than trusting that the desktop fix generalised. */
+  .ds-plogin__column {
+    width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    .ds-plogin__column { max-width: var(--sa-layout-login-content-width); }
+  }
+
+  /* The gutter between the panel's edge and its content. `--sa-padding-16` on a
+     phone, the design's 64 from `lg` — where the panel becomes the fixed
+     `--sa-layout-login-panel-width` and 518 − 2×64 is exactly the content width
+     above, so the two tokens are one decision rather than two that must agree. */
+  .ds-plogin__panel-pad {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-inline: var(--sa-padding-16);
+  }
+
+  @media (min-width: 1024px) {
+    .ds-plogin__panel-pad { padding-inline: var(--sa-layout-login-panel-gutter); }
+  }
+
   /* The identity-provider handoff and the rule under it, as one region of the
      card. It is a region rather than two loose children because the divider is
      the CARD's only if the button above it is: a rule reading "or sign in with

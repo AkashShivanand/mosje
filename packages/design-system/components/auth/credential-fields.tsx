@@ -70,7 +70,7 @@ export interface PasswordFieldsProps {
   identifierPlaceholder?: string;
   /** @default "Password" */
   passwordLabel?: string;
-  /** @default "Enter Password" */
+  /** @default "Enter your password" — the handoff's wording, and the shape every other placeholder here takes ("Enter your username"). */
   passwordPlaceholder?: string;
   /** Where "Forgot Password?" goes. Omit it and no link is drawn. */
   forgotHref?: string;
@@ -107,7 +107,7 @@ export function PasswordFields({
   identifierLabel = "Username / Email / Mobile",
   identifierPlaceholder = "Enter User ID or Registered Email",
   passwordLabel = "Password",
-  passwordPlaceholder = "Enter Password",
+  passwordPlaceholder = "Enter your password",
   forgotHref,
   botCheck = null,
   className,

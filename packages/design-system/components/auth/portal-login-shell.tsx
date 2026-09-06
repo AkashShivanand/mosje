@@ -325,8 +325,12 @@ export function PortalLoginShell({
               `56693:9331`). The column used to centre the form vertically,
               which floated it away from the tabs pinned at the top. */}
           {tabs && tabs.length > 0 && (
-            <div className="px-4 pt-8 lg:px-16">
-              <div className="ds-plogin__roletabs" role="tablist" aria-label="Portal login type">
+            <div className="ds-plogin__panel-pad pt-8">
+              <div
+                className="ds-plogin__column ds-plogin__roletabs"
+                role="tablist"
+                aria-label="Portal login type"
+              >
                 {tabs.map((tab) => (
                   <a
                     key={tab.href}
@@ -343,9 +347,11 @@ export function PortalLoginShell({
             </div>
           )}
 
-          {/* Form area */}
-          <div className="flex flex-1 flex-col items-center px-4 py-6 lg:px-16">
-            <div id="login-form" className="w-full max-w-sm" tabIndex={-1}>
+          {/* Form area. The 32 between the role tabs and the card's heading is the
+              design's (`52380:187221`: tabs end 271, heading 303) and was 24 —
+              `py-6` — until it was measured against the frame. */}
+          <div className="ds-plogin__panel-pad flex-1 pt-8 pb-6">
+            <div id="login-form" className="ds-plogin__column" tabIndex={-1}>
               {children}
             </div>
           </div>

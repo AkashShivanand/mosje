@@ -562,13 +562,27 @@ export function PortalLoginTemplate({
             onChange={(i) => setActiveAuthMode(authOptions[i]!.mode)}
             idBase={`${templateId}-method`}
             ariaLabel="How you want to sign in"
-            track="enclosed"
-            indicator="pill"
-            /* MEASURED 2026-09-06: two tabs reading "Login with Credentials" and
-               "Login with DARPAN ID" are 368px of labels in a 390px column — they
-               clip. It is not the COUNT that overflows, it is the label width, so
-               the row carries the More menu rather than silently cutting a tab in
-               half. Every tab stays focusable and arrow-reachable either way. */
+            /* The OPEN list with an underline, which is what the handoff draws
+               (`52380:187221`) and not what this rendered until 2026-09-06: a
+               filled `enclosed` track holding pills. Two reasons the handoff is
+               right. It reads as a switch between two views of the same form
+               rather than as two buttons competing with the submit below it —
+               and a filled track spends horizontal room on its own padding,
+               which this row cannot afford.
+
+               MEASURED 2026-09-06, and this is what settled it: "Login with
+               Credentials" is 185px and "Login with DARPAN ID" is 183px. In the
+               `enclosed` track that was 368px of labels in 340px of usable room
+               and both clipped; on the open list they have the column's full
+               384px and both fit with room to spare.
+
+               `overflow` stays regardless. It is not the COUNT that overflows,
+               it is the label width — a portal that writes a longer mode name,
+               or a reader who scales text up, gets the More menu rather than a
+               tab silently cut in half, and every tab stays focusable and
+               arrow-reachable either way. */
+            track="none"
+            indicator="underline"
             overflow
           />
         )}

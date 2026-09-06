@@ -6635,7 +6635,7 @@ export const GENERATED_PROPS = {
         "name": "passwordPlaceholder",
         "type": "string",
         "required": false,
-        "default": "\"Enter Password\"",
+        "default": "\"Enter your password\" — the handoff's wording, and the shape every other placeholder here takes (\"Enter your username\").",
         "description": ""
       }
     ]
