@@ -6910,12 +6910,6 @@ export const GENERATED_PROPS = {
         "description": "The panel's contents. Pass a function to receive `close`, which is what a panel with its own confirm or cancel button needs."
       },
       {
-        "name": "label",
-        "type": "string",
-        "required": true,
-        "description": "The panel's accessible name, announced when focus enters it. Required: a dialog with no name is announced as \"dialog\" and tells a screen-reader user nothing about what just opened."
-      },
-      {
         "name": "align",
         "type": "AnchorAlign = \"start\" | \"center\" | \"end\"",
         "required": false,
@@ -6941,6 +6935,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "Prevent opening without unmounting the trigger."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "description": "The panel's accessible name when there is no visible `title`. One of the two is required: a dialog with no name is announced as \"dialog\" and tells a screen-reader user nothing about what has just opened."
       },
       {
         "name": "matchTriggerWidth",
@@ -6974,6 +6974,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "8",
         "description": "Gap between the trigger and the panel, in px."
+      },
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A visible heading at the top of the panel. When given it becomes the panel's accessible name through `aria-labelledby`, which is better than an invisible one: the name a screen reader announces is then the same string every other reader can see, and the two cannot drift apart. Give a title to any panel holding more than a sentence. Omit it for a short passage of guidance, where a heading would be longer than the content."
       }
     ]
   },

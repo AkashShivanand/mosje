@@ -73,7 +73,7 @@
     "Biometric Capture",
     "Accordion",
     "Breadcrumbs",
-    "Dropdown",
+    "Menu",
     "Pagination",
     "Portal Card",
     "Stepper",
@@ -320,7 +320,7 @@
           "linked": true
         },
         {
-          "name": "Dropdown",
+          "name": "Menu",
           "status": "Published",
           "linked": true
         },

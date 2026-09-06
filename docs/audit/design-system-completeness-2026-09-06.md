@@ -197,3 +197,59 @@ what the code does — which is why they still do not link.
 None of this was attempted in this pass. A half-finished Figma restructure is
 worse than none: the Index rule exists because this library went stale twice in
 two days, and a rushed pass with pages added and no cards is exactly that failure.
+
+
+---
+
+# Second addendum, same day — the divergences were decided, and four were reconciled
+
+The four genuine forks in the addendum above were put to the department and
+answered. In every case the CODE's model was chosen, which is what
+`.claude/rules/standards-precedence.md` would predict: quality first, then DBIM,
+then GIGW, then UX4G — and each legacy master was a UX4G or Material import.
+
+| Divergence | Decision | What was done |
+|---|---|---|
+| Feedback Widget — emoji modal vs Yes/No question | **Keep the Yes/No question** | Master rebuilt to the code's four states. `FeedbackWidget / Modal`, `.FeedbackEmojis` and its Button renamed `⛔ … (deprecated)` |
+| Menu vs "Dropdown" | **Menu, and deprecate Dropdown** | Page renamed `Dropdown` → `Menu`; `Menu / Item` built (9 variants, Tone × State); the 84- and 7-variant imports deprecated |
+| List — 200+ variants vs slots | **The slot model** | `List Row` built (9 variants, Kind × State); `List / Item` and `List` deprecated |
+| Popover — legacy contract vs code | **Recreate the best, standards-based and reusable** | `Popover` built (12 variants, Side × Align) and, acting on "reusable in various use cases", the CODE gained an optional `title` |
+
+**Nothing was deleted.** Every superseded master keeps its node, is renamed with a
+`⛔` prefix, and carries a description saying what replaced it and why. Instances
+of them exist in the handoff file and elsewhere; deleting a published master
+breaks those silently, and a deprecation a designer can read is worth more than a
+tidy library.
+
+## The Popover title, and why the code changed rather than only the drawing
+
+"Recreate the best based on standards, and reusable in various use cases" is not
+satisfied by copying the code as it stood. The legacy set had a `Title` axis the
+code had no answer for, and a heading is a real need — Carbon, Polaris and
+Material all support one.
+
+So `Popover` gained an optional `title`, and it earns its place twice: it is a
+visible heading, and it becomes the panel's accessible name through
+`aria-labelledby`. That is better than the invisible `label` it replaces, because
+the string a screen reader announces is then the same string every other reader
+can see, and the two cannot drift apart. `label` remains for a short passage of
+guidance where a heading would be longer than the content; one of the two is
+always required.
+
+It is a `<p>`, not an `<h2>`: a popover can open anywhere on a page and cannot
+know what heading level it would be nesting under, and a wrong level is worse for
+someone navigating by headings than no heading at all.
+
+## What remains, precisely
+
+| Component | State |
+|---|---|
+| `Slider` | The library has the two-thumb `RangeSlider` and **no single-thumb master**. Not a decision — work. |
+| `Carousel` | Still five hardcoded `Slide N/Desktop` frames. A real master has still to be drawn. |
+| `TimePicker` | Masters exist on the Date-Time Picker page and predate the component. Whether they express the 24-hour typed field is **still unverified**. |
+| Documentation frames | The four rebuilt pages (Popover, Menu, List, Feedback Widget) carry masters and rules-bearing descriptions but **no `— Documentation` frame or `— Component record`**, so their Index status is correctly `Published` rather than `Ready`. |
+| Code Connect | No `*.figma.ts` template has been written for any of the thirteen. Each component record says so, and says why it should wait. |
+
+The Index was recounted and re-synced in the same session, per
+`.claude/rules/figma-library-index.md`: 71 content pages, 70 cards, both halves
+of the gate green.

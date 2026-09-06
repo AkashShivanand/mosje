@@ -25,11 +25,21 @@ export interface PopoverProps {
    */
   content: React.ReactNode | ((api: PopoverApi) => React.ReactNode);
   /**
-   * The panel's accessible name, announced when focus enters it. Required:
-   * a dialog with no name is announced as "dialog" and tells a screen-reader
-   * user nothing about what just opened.
+   * A visible heading at the top of the panel. When given it becomes the
+   * panel's accessible name through `aria-labelledby`, which is better than an
+   * invisible one: the name a screen reader announces is then the same string
+   * every other reader can see, and the two cannot drift apart.
+   *
+   * Give a title to any panel holding more than a sentence. Omit it for a short
+   * passage of guidance, where a heading would be longer than the content.
    */
-  label: string;
+  title?: React.ReactNode;
+  /**
+   * The panel's accessible name when there is no visible `title`. One of the
+   * two is required: a dialog with no name is announced as "dialog" and tells a
+   * screen-reader user nothing about what has just opened.
+   */
+  label?: string;
   /** Preferred side. Flips automatically when there is no room. @default "bottom" */
   side?: AnchorSide;
   /**
@@ -93,6 +103,7 @@ export interface PopoverProps {
  */
 export function Popover({
   content,
+  title,
   label,
   side = "bottom",
   align = "start",
@@ -112,6 +123,7 @@ export function Popover({
   const triggerRef = React.useRef<HTMLElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
   const panelId = React.useId();
+  const titleId = `${panelId}-title`;
 
   // Portals need a DOM node, which does not exist during SSR. Gate on a mounted
   // flag so the server and the first client render agree.
@@ -208,7 +220,10 @@ export function Popover({
             ref={panelRef}
             id={panelId}
             role="dialog"
-            aria-label={label}
+            // A visible heading names the panel where there is one, so the
+            // announced name and the seen name are the same string.
+            aria-labelledby={title ? titleId : undefined}
+            aria-label={title ? undefined : label}
             // Non-modal by design: the page behind stays operable, which is
             // what a filter panel or a row menu needs. A popover that has to
             // block the page is a Modal, and that component already exists.
@@ -234,6 +249,11 @@ export function Popover({
               setOpen(false);
             }}
           >
+            {title ? (
+              <p id={titleId} className="ds-popover__title">
+                {title}
+              </p>
+            ) : null}
             {typeof content === "function"
               ? content({ close: closeAndRestore })
               : content}

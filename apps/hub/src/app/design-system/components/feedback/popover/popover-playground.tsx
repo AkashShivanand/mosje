@@ -87,7 +87,7 @@ export function PopoverPlayground(): React.JSX.Element {
         </Popover>
 
         <Popover
-          label="Filter applications"
+          title="Filter applications"
           side={side}
           align={align}
           matchTriggerWidth={matchTriggerWidth}

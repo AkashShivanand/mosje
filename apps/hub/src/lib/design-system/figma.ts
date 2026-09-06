@@ -117,6 +117,16 @@ export const FIGMA_NODES = {
   // "Biometric Capture" — created 2026-09-06 after Time Slot. Fifteen variants
   // (State × Modality), each drawing the alternative route.
   biometricCapture: "57530:737",
+  // Rebuilt 2026-09-06 to match the code, with the UX4G/Material imports they
+  // superseded renamed "⛔ … (deprecated)" and left in place, because instances
+  // may exist. The department chose the code's model in each case.
+  popover: "2141:323874",
+  // The page was called "Dropdown" until 2026-09-06. "Dropdown" means both a
+  // select and a menu across the industry, and this estate needs the
+  // distinction: one edits a field's value, the other performs an action.
+  menu: "2141:296718",
+  listGroup: "2141:323867",
+  feedbackWidget: "3989:33663",
   badges: "2141:296703",
   checkbox: "15:664", // the Checkbox set. The entry pointed at the PAGE (2141:296710) until 2026-09-04
   chips: "2141:296709",

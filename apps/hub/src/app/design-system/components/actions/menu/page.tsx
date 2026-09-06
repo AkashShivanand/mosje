@@ -77,10 +77,7 @@ export default function MenuPage(): React.JSX.Element {
       name="Menu"
       status="Stable"
       summary="A trigger that opens a list of commands, implementing the WAI-ARIA menu-button pattern in full — roving focus, arrow keys, type-ahead, and a disabled item that stays announceable."
-      figma={{
-        absent:
-          "A master exists under a DIFFERENT NAME. The library calls this Dropdown (84 variants, plus Dropdown / MenuItem at 7) — a UX4G import. The code calls it Menu because it is the WAI-ARIA menu button rather than a select. Naming and contract are both open items.",
-      }}
+      figma={{ node: "menu" }}
       specimen={<MenuPlayground />}
       propsFrom="MenuProps"
       a11y={A11Y}

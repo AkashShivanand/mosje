@@ -26,6 +26,13 @@ import { Button, Checkbox, Popover, Select } from "@mosje/design-system";
  * — it is non-modal, so it must not trap; and `aria-expanded` on the trigger
  * reports the state without an announcement of its own.
  *
+ * `title` renders a visible heading and becomes the panel's accessible name —
+ * better than an invisible one, because the string a screen reader announces is
+ * then the same string everyone else can see and the two cannot drift apart.
+ * Give a title to any panel holding more than a sentence; use `label` on its
+ * own for a short passage of guidance, where a heading would be longer than the
+ * content. One of the two is always required.
+ *
  * Lifecycle: **Stable**.
  */
 const meta = {
@@ -77,7 +84,8 @@ export const Playground: Story = {};
  */
 export const WithControls: Story = {
   args: {
-    label: "Filter applications",
+    title: "Filter applications",
+    label: undefined,
     children: <Button appearance="outlined">Filter</Button>,
     content: ({ close }) => (
       <div style={{ display: "grid", gap: 12 }}>

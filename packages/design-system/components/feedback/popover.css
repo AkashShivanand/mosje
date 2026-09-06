@@ -42,6 +42,19 @@
     animation: ds-popover-in var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
+  /* The heading, where the panel has one. It is a <p> rather than an <h2>: a
+     popover can open anywhere on a page and cannot know what heading level it
+     would be nesting under, and a wrong level is worse for a screen-reader user
+     navigating by headings than no heading at all. It names the dialog through
+     aria-labelledby either way. */
+  .ds-popover__title {
+    margin: 0 0 var(--sa-stack-8);
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
   /* The panel itself takes focus when it holds no focusable control, so it must
      show a ring — an invisible focus is a WCAG 2.4.7 failure, and this is the
      one case where the focused element is the container. */

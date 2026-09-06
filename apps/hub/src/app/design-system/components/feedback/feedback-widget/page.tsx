@@ -53,10 +53,7 @@ export default function FeedbackWidgetPage(): React.JSX.Element {
       name="Feedback Widget"
       status="Stable"
       summary="“Was this page useful?” in three states: the question, the comment, and the acknowledgement. The comment box appears only after a verdict, so the useful signal is captured even when nobody types."
-      figma={{
-        absent:
-          "A master exists and is a DIFFERENT PRODUCT. The library's Feedback Widget page carries a modal with a five-point emoji rating; this component is a Yes/No verdict with an optional comment, which is what GIGW asks for. Which one the estate ships is a decision, not a drawing task.",
-      }}
+      figma={{ node: "feedbackWidget" }}
       specimen={<FeedbackPlayground />}
       propsFrom="FeedbackWidgetProps"
       a11y={A11Y}

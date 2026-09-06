@@ -68,10 +68,7 @@ export default function ListGroupPage(): React.JSX.Element {
       name="List Group"
       status="Stable"
       summary="A real <ul> of rows, each with a leading slot, a text block and a trailing slot. The whole row is the target, and a row is a link when it goes somewhere and a button when it does something."
-      figma={{
-        absent:
-          "A master exists and DISAGREES SUBSTANTIALLY. The library's List page carries a Material-style List / Item set of over 200 variants (Condition × Leading × Trailing × State). This component is deliberately simpler and takes a different position on what a row is. Reconciling them is an open item.",
-      }}
+      figma={{ node: "listGroup" }}
       specimen={
         <div style={SPECIMEN_WRAP}>
           <ListGroup bordered aria-label="Recent applications">
