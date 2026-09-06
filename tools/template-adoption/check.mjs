@@ -78,9 +78,28 @@ function* walk(dir) {
  * assembling. Counting it as debt would send someone to a file with nothing in
  * it to fix.
  */
+/**
+ * The file with its comments removed.
+ *
+ * Every test below runs against THIS, never the raw text. Testing the raw source
+ * meant a file could satisfy the gate with a COMMENT: a leftover
+ * `// was <WorklistScreen> before the rewrite`, a JSDoc example, or a
+ * `TODO: migrate to <WorklistScreen>` all matched, and the page was then recorded
+ * as composed while rendering nothing of the sort. Found in review, and it is the
+ * failure this estate names out loud — a gate that passes on a comment is worse
+ * than no gate, because the green tick is now evidence of nothing.
+ */
+function code(src) {
+  return src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+}
+
 function delegateOf(src) {
-  const body = src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
-  const elements = [...new Set((body.match(/<([A-Z][A-Za-z0-9]*)/g) ?? []).map((m) => m.slice(1)))];
+  const body = code(src);
+  /* Strip JSX type arguments first. `<WorklistScreen<GrantApplication> …>` is ONE
+     element, and counting the type parameter as a second made a short page that
+     renders a generic template inline read as hand-assembled. */
+  const withoutTypeArgs = body.replace(/<([A-Z][A-Za-z0-9]*)<[^>]*>/g, "<$1");
+  const elements = [...new Set((withoutTypeArgs.match(/<([A-Z][A-Za-z0-9]*)/g) ?? []).map((m) => m.slice(1)))];
   const short = body.split("\n").filter((l) => l.trim()).length < 25;
   if (!short || elements.length !== 1) return null;
   const name = elements[0];
@@ -127,7 +146,7 @@ for (const f of walk(join(ROOT, PAGES_ROOT))) {
   if (!/\/page\.tsx$/.test(f)) continue;
   const rel = relative(ROOT, f);
   const src = readFileSync(f, "utf8");
-  if (SCREENS.test(src) || LOGIN.test(src)) {
+  if (SCREENS.test(code(src)) || LOGIN.test(code(src))) {
     pages.push({ rel, ok: true });
     continue;
   }
@@ -136,7 +155,7 @@ for (const f of walk(join(ROOT, PAGES_ROOT))) {
     // Judged by the component it hands the screen to. A page that delegates to
     // something unreadable from here is not counted either way.
     if (!delegate.file) continue;
-    const target = readFileSync(delegate.file, "utf8");
+    const target = code(readFileSync(delegate.file, "utf8"));
     pages.push({ rel, ok: SCREENS.test(target) || LOGIN.test(target) });
     continue;
   }
@@ -147,7 +166,8 @@ for (const f of walk(join(ROOT, SHELLS_ROOT))) {
   const rel = relative(ROOT, f);
   const src = readFileSync(f, "utf8");
   if (!isShell(rel, src)) continue;
-  shells.push({ rel, ok: CHROME.test(src) || LOGIN.test(src) });
+  const body = code(src);
+  shells.push({ rel, ok: CHROME.test(body) || LOGIN.test(body) });
 }
 
 const offenders = [...pages, ...shells].filter((e) => !e.ok).map((e) => e.rel).sort();

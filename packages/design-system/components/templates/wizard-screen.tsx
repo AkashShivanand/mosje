@@ -7,6 +7,13 @@ import { Alert } from "../feedback/alert";
 import { Button } from "../actions/button";
 import { Wizard } from "../forms/wizard";
 import type { StepperStep } from "../feedback/stepper";
+import { ScreenBody } from "./screen-body";
+import {
+  DEFAULT_SCREEN_COPY,
+  resolveScreenState,
+  type ScreenStateCopy,
+  type ScreenStateInput,
+} from "./screen-state";
 import "./screen-templates.css";
 
 /**
@@ -29,7 +36,7 @@ export interface WizardDraft {
   onStartFresh?: () => void;
 }
 
-export interface WizardScreenProps {
+export interface WizardScreenProps extends ScreenStateInput {
   eyebrow?: React.ReactNode;
   /** The scheme or application's name. Title Case. */
   title: string;
@@ -79,6 +86,10 @@ export interface WizardScreenProps {
 
   /** The current step's fields. `FormSection`s. */
   children: React.ReactNode;
+  /** Retry, offered from the error state. */
+  onRetry?: () => void;
+  /** Words for every state. Override the two your register words differently. */
+  copy?: ScreenStateCopy;
   className?: string;
 }
 
@@ -118,9 +129,22 @@ export function WizardScreen({
   submitLabel,
   headingLevel = 1,
   children,
+  onRetry,
+  copy = DEFAULT_SCREEN_COPY,
   className,
+  ...state
 }: WizardScreenProps): React.JSX.Element {
   const step = steps[current];
+
+  /* A wizard has the seven states too, and this template did not own them until
+     review pointed out that its own rule says it must. The case is real: a
+     saved draft is FETCHED, and a wizard whose draft request is in flight or has
+     failed was otherwise back to the caller hand-rolling exactly the branches
+     this layer exists to remove.
+
+     The count is the step list — a wizard with no steps is a wizard whose
+     definition failed to load, which is `empty` rather than a blank stepper. */
+  const status = resolveScreenState({ ...state, count: steps.length });
 
   /* "Step 2 of 7 · Organisation Details. Fields marked * are mandatory."
      Assembled here so every scheme's wizard says it the same way — the handoff
@@ -131,7 +155,12 @@ export function WizardScreen({
 
   return (
     <div className={cn("sa-screen", "sa-wizard", className)}>
-      <PageHeader as={headingLevel} eyebrow={eyebrow} title={title} meta={description} />
+      <PageHeader
+        as={headingLevel}
+        eyebrow={eyebrow}
+        title={title}
+        meta={description}
+      />
 
       <div className="sa-screen__notices">
         {stepMeta ? <p className="sa-wizard__step-meta">{stepMeta}</p> : null}
@@ -152,8 +181,14 @@ export function WizardScreen({
                   </Button>
                 ) : null}
                 {draft.onStartFresh ? (
-                  <Button size="sm" appearance="outlined" onClick={draft.onStartFresh}>
-                    {draft.resumed ? "Start a fresh application" : "Start fresh"}
+                  <Button
+                    size="sm"
+                    appearance="outlined"
+                    onClick={draft.onStartFresh}
+                  >
+                    {draft.resumed
+                      ? "Start a fresh application"
+                      : "Start fresh"}
                   </Button>
                 ) : null}
               </>
@@ -169,19 +204,21 @@ export function WizardScreen({
       {/* Wizard owns the stepper, the focus move on step change, the live-region
           announcement and the Back / Continue / Submit row. Reimplementing any
           of that here would fork it. */}
-      <Wizard
-        steps={steps}
-        current={current}
-        onBack={onBack}
-        onNext={onNext}
-        onSubmit={onSubmit}
-        nextLabel={nextLabel}
-        submitLabel={submitLabel}
-        error={error}
-        errorRef={errorRef}
-      >
-        {children}
-      </Wizard>
+      <ScreenBody status={status} copy={copy} skeleton="form" onRetry={onRetry}>
+        <Wizard
+          steps={steps}
+          current={current}
+          onBack={onBack}
+          onNext={onNext}
+          onSubmit={onSubmit}
+          nextLabel={nextLabel}
+          submitLabel={submitLabel}
+          error={error}
+          errorRef={errorRef}
+        >
+          {children}
+        </Wizard>
+      </ScreenBody>
 
       {onCancel ? (
         <div>

@@ -11618,10 +11618,30 @@ export const GENERATED_PROPS = {
         "description": "The scheme or application's name. Title Case."
       },
       {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
         "name": "className",
         "type": "string",
         "required": false,
         "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": "Words for every state. Override the two your register words differently."
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
       },
       {
         "name": "description",
@@ -11654,11 +11674,24 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
         "name": "headingLevel",
         "type": "1 | 2",
         "required": false,
         "default": "1",
         "description": "Heading level for the page title. Leave at 1: a portal screen has exactly one `<h1>` and this is it. Drop to 2 when the template is rendered INSIDE a page that already has one — a documentation specimen, or a screen body embedded in another screen. Same contract as `PortalLoginTemplate.headingLevel`, and the reason it exists: measuring a documentation page found two `<h1>`s, because the specimen is a live template rather than a picture of one."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
       },
       {
         "name": "nextLabel",
@@ -11677,6 +11710,12 @@ export const GENERATED_PROPS = {
         "type": "() => void",
         "required": false,
         "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Retry, offered from the error state."
       },
       {
         "name": "submitLabel",

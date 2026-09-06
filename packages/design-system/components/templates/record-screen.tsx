@@ -125,12 +125,19 @@ export function RecordScreen({
     [tabs],
   );
 
-  /* One idBase, computed once. Two call sites deriving it separately is how the
-     two halves of an ARIA relationship drift apart. */
-  const idBase = React.useMemo(
-    () => `record-${title.replace(/\W+/g, "-").toLowerCase()}`,
-    [title],
-  );
+  /* One idBase, from `useId`, so the two halves of the ARIA relationship cannot
+     drift apart AND cannot collide.
+     
+     It was derived from the TITLE until review caught what `\W` does to a
+     non-Latin script: with no `u` flag every Devanagari character is a
+     "non-word" character and is stripped, so "आवेदन विवरण" and "पंजीकरण विवरण"
+     both slugged to `record--`. Two Hindi-titled records on one page would then
+     share an id and `aria-controls` would resolve to the wrong panel — the exact
+     defect the TabPanel change below fixed for the index case, reintroduced by
+     the fix itself. GIGW requires this estate to be bilingual, so a title is
+     never a safe id source. */
+  const reactId = React.useId();
+  const idBase = `record${reactId.replace(/:/g, "")}`;
 
   const handleChange = (index: number): void => {
     const next = tabs[index];
