@@ -662,6 +662,7 @@ export {
   PasswordFields,
   PinFields,
   DarpanFields,
+  IdentifierFields,
   OtpRequestFields,
   OtpVerifyFields,
 } from "./components/auth/credential-fields";
@@ -669,6 +670,7 @@ export type {
   PasswordFieldsProps,
   PinFieldsProps,
   DarpanFieldsProps,
+  IdentifierFieldsProps,
   OtpRequestFieldsProps,
   OtpVerifyFieldsProps,
 } from "./components/auth/credential-fields";

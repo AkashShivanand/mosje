@@ -428,3 +428,79 @@ export function OtpVerifyFields({
     </Stack>
   );
 }
+
+/* ---------------------------------------------------------------------------
+ * IdentifierFields
+ * ------------------------------------------------------------------------- */
+
+export interface IdentifierFieldsProps {
+  /** The username, mobile number or registration number the citizen is known by. */
+  identifier: string;
+  onIdentifierChange: (value: string) => void;
+  /** @default "Registered Mobile Number" */
+  label?: React.ReactNode;
+  placeholder?: string;
+  /**
+   * `inputMode` for the control. Pass `"numeric"` where the identifier can only
+   * be a mobile number, so a phone offers the number pad; leave it off where the
+   * field accepts a username too, because a numeric keypad cannot type letters.
+   */
+  inputMode?: "text" | "numeric";
+  /** A sentence under the field — what will be sent, or who may not use this route. */
+  note?: React.ReactNode;
+  /**
+   * What is wrong with what was typed, shown against the field itself.
+   *
+   * On the field rather than in the card's Alert because WCAG 3.3.1 asks for the
+   * error to be identified where the reader is, and because a card-level Alert
+   * repeating the field's own instruction is the same sentence twice.
+   */
+  error?: React.ReactNode;
+  className?: string;
+}
+
+/**
+ * The identifier ALONE — no secret, no check.
+ *
+ * The shape every credential-recovery step one takes, and the one stack the
+ * estate was missing: `scw`, `nhapoa` and `pm-ajay` each hand-rolled it in their
+ * own `forgot-password` page with portal-local controls, so three government
+ * pages asked the same question in three different layouts.
+ *
+ * It is also `OtpRequestFields` generalised — that one is fixed to a 10-digit
+ * mobile because an OTP has to reach a handset; this one accepts whatever the
+ * portal's register is keyed on. Neither is folded into the other: stripping
+ * non-digits is correct for a destination and wrong for a username.
+ *
+ * `autoComplete="username"` so a password manager offers the right entry, which
+ * is exactly the account the citizen is trying to recover.
+ */
+export function IdentifierFields({
+  identifier,
+  onIdentifierChange,
+  label = "Registered Mobile Number",
+  placeholder,
+  inputMode,
+  note,
+  error,
+  className,
+}: IdentifierFieldsProps): React.JSX.Element {
+  return (
+    <Stack className={className}>
+      <FormField label={label} error={error} required>
+        {(control) => (
+          <Input
+            {...control}
+            type="text"
+            inputMode={inputMode}
+            autoComplete="username"
+            value={identifier}
+            onChange={(e) => onIdentifierChange(e.target.value)}
+            placeholder={placeholder}
+          />
+        )}
+      </FormField>
+      {note ? <p className="ds-authfields__note">{note}</p> : null}
+    </Stack>
+  );
+}

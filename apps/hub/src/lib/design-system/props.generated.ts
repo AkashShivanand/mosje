@@ -4727,6 +4727,61 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "IdentifierFieldsProps": {
+    "source": "packages/design-system/components/auth/credential-fields.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "identifier",
+        "type": "string",
+        "required": true,
+        "description": "The username, mobile number or registration number the citizen is known by."
+      },
+      {
+        "name": "onIdentifierChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "What is wrong with what was typed, shown against the field itself. On the field rather than in the card's Alert because WCAG 3.3.1 asks for the error to be identified where the reader is, and because a card-level Alert repeating the field's own instruction is the same sentence twice."
+      },
+      {
+        "name": "inputMode",
+        "type": "\"text\" | \"numeric\"",
+        "required": false,
+        "description": "`inputMode` for the control. Pass `\"numeric\"` where the identifier can only be a mobile number, so a phone offers the number pad; leave it off where the field accepts a username too, because a numeric keypad cannot type letters."
+      },
+      {
+        "name": "label",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"Registered Mobile Number\"",
+        "description": ""
+      },
+      {
+        "name": "note",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A sentence under the field — what will be sent, or who may not use this route."
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "description": ""
+      }
+    ]
+  },
   "IllustrationProps": {
     "source": "packages/design-system/components/brand/illustration/illustration.tsx",
     "inheritsNative": false,

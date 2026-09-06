@@ -154,8 +154,8 @@ export const DOCUMENTED_BY = {
   // carries none and why, and that the OTP route is two stacks rather than one.
   // Splitting that across five routes would put the comparison on none of them.
   PasswordFields: "AuthFormCard", PinFields: "AuthFormCard",
-  DarpanFields: "AuthFormCard", OtpRequestFields: "AuthFormCard",
-  OtpVerifyFields: "AuthFormCard",
+  DarpanFields: "AuthFormCard", IdentifierFields: "AuthFormCard",
+  OtpRequestFields: "AuthFormCard", OtpVerifyFields: "AuthFormCard",
   ReviewSection: "Wizard", ReviewItem: "Wizard",
   SkeletonText: "Skeleton", SkeletonRow: "Skeleton",
   ChartTooltip: "Legend",
