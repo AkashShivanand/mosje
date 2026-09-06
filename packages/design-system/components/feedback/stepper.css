@@ -101,11 +101,22 @@
      * and the ring would snap.
      */
     box-shadow: 0 0 0 0 transparent;
+    /*
+     * The ring GROWS slowly and RETRACTS quickly, because arriving at a stage and
+     * leaving one are not the same event: arriving is the stepper settling on an
+     * answer, leaving is the stepper obeying a Back it was just given. A transition
+     * reads its duration from the state it is moving TO, so the pair below is all
+     * it takes — the base rule owns the exit, `.is-current` owns the entry. Both
+     * durations are the tokens the system already publishes for exactly this
+     * asymmetry; the component previously used the entry one in both directions.
+     */
+    --ds-stepper-ring-duration: var(--sa-motion-exit-duration);
+    --ds-stepper-ring-easing: var(--sa-motion-exit-easing);
     transition:
       background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
       border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
       color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
-      box-shadow var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+      box-shadow var(--ds-stepper-ring-duration) var(--ds-stepper-ring-easing);
   }
 
   .ds-stepper[data-size="sm"] .ds-stepper__marker {
@@ -125,6 +136,8 @@
   }
 
   .ds-stepper__item.is-current .ds-stepper__marker {
+    --ds-stepper-ring-duration: var(--sa-motion-enter-duration);
+    --ds-stepper-ring-easing: var(--sa-motion-enter-easing);
     background-color: var(--sa-bg-brand-primary-bolder);
     border-color: var(--sa-border-brand-primary-base);
     color: var(--sa-on-bg-brand-primary-bolder);
@@ -146,6 +159,8 @@
   /* ── The connector track ───────────────────────────────────────────────── */
 
   .ds-stepper__line {
+    --ds-stepper-fill-duration: var(--sa-motion-exit-duration);
+    --ds-stepper-fill-easing: var(--sa-motion-exit-easing);
     position: absolute;
     overflow: hidden;
     background-color: var(--sa-border-neutral-subtle);
@@ -164,12 +179,20 @@
     background-color: var(--sa-color-status-success);
     transform: scaleX(0);
     transform-origin: left center;
-    transition: transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+    /* Fills on the entry curve, empties on the exit one — see the ring above. The
+       properties are set on `.ds-stepper__line` and inherited here, because a
+       pseudo-element cannot be targeted by the state class on its own. */
+    transition: transform var(--ds-stepper-fill-duration) var(--ds-stepper-fill-easing);
   }
 
   .ds-stepper[data-orientation="vertical"] .ds-stepper__line::after {
     transform: scaleY(0);
     transform-origin: center top;
+  }
+
+  .ds-stepper__item.is-complete .ds-stepper__line {
+    --ds-stepper-fill-duration: var(--sa-motion-enter-duration);
+    --ds-stepper-fill-easing: var(--sa-motion-enter-easing);
   }
 
   .ds-stepper__item.is-complete .ds-stepper__line::after {
@@ -435,6 +458,21 @@
     height: var(--sa-cmp-stepper-dot);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-border-neutral-subtle);
+    /*
+     * This is the indicator most citizens actually see — the compact bar is what a
+     * phone gets — and it had no transition at all, so the current stage jumped
+     * from dot to pill in one frame while the wide row's node was carefully
+     * choreographed. That was backwards.
+     *
+     * `width` is a layout property, and the estate's default is to animate only
+     * transform and opacity. The exception is deliberate: growing a fully-rounded
+     * pill with `scaleX` squashes its corners into an ellipse, and there is no
+     * compositor-only way to widen one without distorting it. Five to nine 8px
+     * elements in a flex row cost nothing to lay out; a distorted pill is visible.
+     */
+    transition:
+      width var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-stepper__dot.is-complete {
@@ -690,6 +728,12 @@
    */
   @media (prefers-reduced-motion: reduce) {
     .ds-stepper__marker {
+      transition: none;
+    }
+
+    /* The pill still WIDENS — it just does not travel there. Width is the only
+       thing separating the current stage from the rest without relying on hue. */
+    .ds-stepper__dot {
       transition: none;
     }
 
