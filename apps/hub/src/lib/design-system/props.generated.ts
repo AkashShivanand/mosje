@@ -10590,6 +10590,137 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "TransferListProps": {
+    "source": "packages/design-system/components/data-display/transfer-list.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "items",
+        "type": "TransferItem[]",
+        "required": true,
+        "description": "Every item, on either side. The component splits them by `selectedIds`."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the pair as a whole — \"Surveyor mappings\". Required."
+      },
+      {
+        "name": "onChange",
+        "type": "(ids: string[]) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "selectedIds",
+        "type": "string[]",
+        "required": true,
+        "description": "The ids currently on the right."
+      },
+      {
+        "name": "availableLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Available\"",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "emptyAvailableText",
+        "type": "string",
+        "required": false,
+        "default": "\"Nothing left to add.\"",
+        "description": ""
+      },
+      {
+        "name": "emptySelectedText",
+        "type": "string",
+        "required": false,
+        "default": "\"Nothing selected yet.\"",
+        "description": ""
+      },
+      {
+        "name": "selectedLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Selected\"",
+        "description": ""
+      }
+    ]
+  },
+  "TreeProps": {
+    "source": "packages/design-system/components/data-display/tree.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Accessible name for the tree. Required."
+      },
+      {
+        "name": "nodes",
+        "type": "TreeNode[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "defaultExpandedIds",
+        "type": "string[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "emptyText",
+        "type": "string",
+        "required": false,
+        "default": "\"Nothing to show.\"",
+        "description": ""
+      },
+      {
+        "name": "expandedIds",
+        "type": "string[]",
+        "required": false,
+        "description": "Controlled expansion. Leave out and the tree manages its own."
+      },
+      {
+        "name": "onExpandedChange",
+        "type": "(ids: string[]) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onSelect",
+        "type": "(id: string) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "selectedId",
+        "type": "string",
+        "required": false,
+        "description": "The selected node's id."
+      }
+    ]
+  },
   "UX4GAccessibilityWidgetProps": {
     "source": "packages/design-system/components/utilities/ux4g-accessibility-widget.tsx",
     "inheritsNative": false,

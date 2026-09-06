@@ -307,6 +307,10 @@ export type { FileItem, FileListProps, FileState } from "./components/data-displ
 export type { CarouselProps } from "./components/data-display/carousel";
 export { Figure } from "./components/data-display/figure";
 export type { FigureProps, FigureRatio } from "./components/data-display/figure";
+export { Tree } from "./components/data-display/tree";
+export type { TreeProps, TreeNode } from "./components/data-display/tree";
+export { TransferList } from "./components/data-display/transfer-list";
+export type { TransferListProps, TransferItem } from "./components/data-display/transfer-list";
 export { EventList } from "./components/data-display/event-list";
 export type { EventListProps, EventItem, EventTone } from "./components/data-display/event-list";
 export { CommentThread } from "./components/data-display/comment-thread";

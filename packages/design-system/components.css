@@ -83,6 +83,8 @@
 @import "./components/data-display/metric-card.css";
 @import "./components/data-display/notification-centre.css";
 @import "./components/data-display/profile-card.css";
+@import "./components/data-display/transfer-list.css";
+@import "./components/data-display/tree.css";
 @import "./components/data-display/vertical-timeline.css";
 @import "./components/data-display/visitor-counter.css";
 @import "./components/dashboard/card-skeleton.css";

@@ -1731,6 +1731,24 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "notifications"
   },
   {
+    "title": "Transfer List — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/transfer-list",
+    "keywords": "transfer list — design system data display checkboxes, deliberately the count is part of the name the buttons promise a number what moved is announced  tokens wcag accessibility",
+    "description": "Two lists and the traffic between them. Each side is a list of checkboxes, deliberately — there is no WAI-ARIA pattern for a transfer list, and inventing a keyboard model is worse than using controls every reader already knows.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
+    "title": "Tree — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/tree",
+    "keywords": "tree — design system data display one tab stop, not one per node two keys doing two things each the shape is announced, not only drawn type-ahead, and a buffer that clears a disabled branch is still reachable  tokens wcag accessibility",
+    "description": "A hierarchy a reader walks, built to the WAI-ARIA tree pattern rather than approximated — one tab stop, arrow keys that expand and descend, type-ahead, and the level and position on every node.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "Typography",
     "section": "Foundations",
     "href": "/design-system/foundations/typography",

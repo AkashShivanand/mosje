@@ -2563,6 +2563,28 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **A read-only value says WHY.** A missing button is a puzzle; "This application was approved on 4 September 2026" is an answer.
 - Not for several values that change together, and not for a value chosen from a list — both are forms.
 
+#### Tree
+**Purpose**: a hierarchy a reader walks — Master Data, Map Ministry & Schemes, Roles & Permissions.
+**Props**: `nodes` (`{ id, label, children?, disabled?, meta? }[]`) · `label` (**required**) · `selectedId` · `onSelect` · `expandedIds` · `onExpandedChange` · `defaultExpandedIds` · `emptyText`
+**Rules**:
+- **One tab stop, not one per node.** A roving `tabIndex`; the arrow keys move inside. A tree of two hundred nodes that is two hundred tab stops is a keyboard trap in everything but name.
+- **Right expands then descends; Left collapses then ascends.** Home and End reach the ends; `*` expands every sibling. That is the WAI-ARIA pattern's own behaviour, not an approximation of it.
+- **Type-ahead with a buffer that clears after a pause**, so "ba" finds Bankura and a later "n" starts afresh.
+- **`aria-level`, `aria-setsize`, `aria-posinset` on every node.** Without them a tree is announced as a flat list and the shape — the whole reason to use one — is lost.
+- **A disabled node keeps `aria-disabled` and stays reachable.** The native attribute would teach a reader the branch does not exist.
+- Only for a REAL hierarchy whose shape matters. Two levels is a list with headings, and it is easier to use.
+
+#### TransferList
+**Purpose**: two lists and the traffic between them — Surveyor Mappings, Roles & Permissions.
+**Props**: `items` · `selectedIds` · `onChange` · `label` (**required**) · `availableLabel` · `selectedLabel` · `emptyAvailableText` · `emptySelectedText` · `disabled`
+**Rules**:
+- **Each side is a list of CHECKBOXES, deliberately.** There is no WAI-ARIA pattern for a transfer list; the usual implementation invents a multi-select listbox keyboard model that readers must learn and that almost nobody finishes. A checkbox needs no new keys.
+- **The count is in the LEGEND** — "Available districts (4)" — so it is part of the group's name rather than a number read at some unrelated moment.
+- **The move buttons promise a number** — "Add 3", not "Add" — and are disabled when nothing is ticked.
+- **What moved is announced** in a polite live region: on a two-panel control the change is exactly what a screen-reader user cannot see.
+- `items` plus `selectedIds`, never two arrays — the caller keeps one list, the component splits it.
+- Not where ORDER matters; this control cannot express one.
+
 #### EventList
 **Purpose**: a dated, attributed record of things that happened. Used directly it IS the activity log and the audit trail; `CommentThread` and `NotificationCentre` are composed from it.
 **Props**: `events` (`{ id, at, actor?, actorRole?, action, subject?, note?, icon?, tone?, unread?, href? }[]`) · `label` (**required**) · `emptyText` · `grouping` (`none` | `day`) · `unreadLabel`
