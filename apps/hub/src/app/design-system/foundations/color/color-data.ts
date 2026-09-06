@@ -2131,32 +2131,32 @@ export const ALPHA = [
       {
         "step": 8,
         "token": "color/transparent/primary/8",
-        "value": "color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-8) * 100%), transparent)"
+        "value": "color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-8) * 100%), transparent)"
       },
       {
         "step": 16,
         "token": "color/transparent/primary/16",
-        "value": "color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-16) * 100%), transparent)"
+        "value": "color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-16) * 100%), transparent)"
       },
       {
         "step": 24,
         "token": "color/transparent/primary/24",
-        "value": "color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-24) * 100%), transparent)"
+        "value": "color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-24) * 100%), transparent)"
       },
       {
         "step": 32,
         "token": "color/transparent/primary/32",
-        "value": "color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-32) * 100%), transparent)"
+        "value": "color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-32) * 100%), transparent)"
       },
       {
         "step": 40,
         "token": "color/transparent/primary/40",
-        "value": "color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-40) * 100%), transparent)"
+        "value": "color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-40) * 100%), transparent)"
       },
       {
         "step": 48,
         "token": "color/transparent/primary/48",
-        "value": "color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-48) * 100%), transparent)"
+        "value": "color-mix(in srgb, var(--sa-color-primaryScale-600) calc(var(--sa-alpha-48) * 100%), transparent)"
       }
     ]
   },
@@ -2487,19 +2487,19 @@ export const TRANSLUCENT = [
     "examples": [
       {
         "token": "color/transparent/primary/8",
-        "base": "color/primaryScale/500",
+        "base": "color/primaryScale/600",
         "alpha": "alpha/8",
         "css": "--sa-color-transparent-primary-8"
       },
       {
         "token": "color/transparent/primary/16",
-        "base": "color/primaryScale/500",
+        "base": "color/primaryScale/600",
         "alpha": "alpha/16",
         "css": "--sa-color-transparent-primary-16"
       },
       {
         "token": "color/transparent/primary/24",
-        "base": "color/primaryScale/500",
+        "base": "color/primaryScale/600",
         "alpha": "alpha/24",
         "css": "--sa-color-transparent-primary-24"
       }

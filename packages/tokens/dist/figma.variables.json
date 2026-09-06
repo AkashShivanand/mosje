@@ -7031,7 +7031,7 @@
             "Blue": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500",
+              "name": "color/primaryScale/600",
               "opacity": {
                 "type": "ALIAS",
                 "collection": "Static",
@@ -7039,13 +7039,13 @@
               },
               "fallback": {
                 "type": "COLOR",
-                "value": "rgba(3, 115, 223, 0.08)"
+                "value": "rgba(0, 94, 185, 0.08)"
               }
             },
             "Navy": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500",
+              "name": "color/primaryScale/600",
               "opacity": {
                 "type": "ALIAS",
                 "collection": "Static",
@@ -7053,7 +7053,7 @@
               },
               "fallback": {
                 "type": "COLOR",
-                "value": "rgba(34, 76, 125, 0.08)"
+                "value": "rgba(0, 51, 102, 0.08)"
               }
             }
           },
@@ -7083,7 +7083,7 @@
             "Blue": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500",
+              "name": "color/primaryScale/600",
               "opacity": {
                 "type": "ALIAS",
                 "collection": "Static",
@@ -7091,13 +7091,13 @@
               },
               "fallback": {
                 "type": "COLOR",
-                "value": "rgba(3, 115, 223, 0.16)"
+                "value": "rgba(0, 94, 185, 0.16)"
               }
             },
             "Navy": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500",
+              "name": "color/primaryScale/600",
               "opacity": {
                 "type": "ALIAS",
                 "collection": "Static",
@@ -7105,7 +7105,7 @@
               },
               "fallback": {
                 "type": "COLOR",
-                "value": "rgba(34, 76, 125, 0.16)"
+                "value": "rgba(0, 51, 102, 0.16)"
               }
             }
           },
@@ -7135,7 +7135,7 @@
             "Blue": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500",
+              "name": "color/primaryScale/600",
               "opacity": {
                 "type": "ALIAS",
                 "collection": "Static",
@@ -7143,13 +7143,13 @@
               },
               "fallback": {
                 "type": "COLOR",
-                "value": "rgba(3, 115, 223, 0.24)"
+                "value": "rgba(0, 94, 185, 0.24)"
               }
             },
             "Navy": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500",
+              "name": "color/primaryScale/600",
               "opacity": {
                 "type": "ALIAS",
                 "collection": "Static",
@@ -7157,7 +7157,7 @@
               },
               "fallback": {
                 "type": "COLOR",
-                "value": "rgba(34, 76, 125, 0.24)"
+                "value": "rgba(0, 51, 102, 0.24)"
               }
             }
           },
@@ -7187,7 +7187,7 @@
             "Blue": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500",
+              "name": "color/primaryScale/600",
               "opacity": {
                 "type": "ALIAS",
                 "collection": "Static",
@@ -7195,13 +7195,13 @@
               },
               "fallback": {
                 "type": "COLOR",
-                "value": "rgba(3, 115, 223, 0.32)"
+                "value": "rgba(0, 94, 185, 0.32)"
               }
             },
             "Navy": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500",
+              "name": "color/primaryScale/600",
               "opacity": {
                 "type": "ALIAS",
                 "collection": "Static",
@@ -7209,7 +7209,7 @@
               },
               "fallback": {
                 "type": "COLOR",
-                "value": "rgba(34, 76, 125, 0.32)"
+                "value": "rgba(0, 51, 102, 0.32)"
               }
             }
           },
@@ -7239,7 +7239,7 @@
             "Blue": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500",
+              "name": "color/primaryScale/600",
               "opacity": {
                 "type": "ALIAS",
                 "collection": "Static",
@@ -7247,13 +7247,13 @@
               },
               "fallback": {
                 "type": "COLOR",
-                "value": "rgba(3, 115, 223, 0.40)"
+                "value": "rgba(0, 94, 185, 0.40)"
               }
             },
             "Navy": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500",
+              "name": "color/primaryScale/600",
               "opacity": {
                 "type": "ALIAS",
                 "collection": "Static",
@@ -7261,7 +7261,7 @@
               },
               "fallback": {
                 "type": "COLOR",
-                "value": "rgba(34, 76, 125, 0.40)"
+                "value": "rgba(0, 51, 102, 0.40)"
               }
             }
           },
@@ -7291,7 +7291,7 @@
             "Blue": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500",
+              "name": "color/primaryScale/600",
               "opacity": {
                 "type": "ALIAS",
                 "collection": "Static",
@@ -7299,13 +7299,13 @@
               },
               "fallback": {
                 "type": "COLOR",
-                "value": "rgba(3, 115, 223, 0.48)"
+                "value": "rgba(0, 94, 185, 0.48)"
               }
             },
             "Navy": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500",
+              "name": "color/primaryScale/600",
               "opacity": {
                 "type": "ALIAS",
                 "collection": "Static",
@@ -7313,7 +7313,7 @@
               },
               "fallback": {
                 "type": "COLOR",
-                "value": "rgba(34, 76, 125, 0.48)"
+                "value": "rgba(0, 51, 102, 0.48)"
               }
             }
           },

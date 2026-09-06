@@ -32,9 +32,16 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.121.0",
+    version: "v0.122.0",
     date: "2026-09-06",
     current: true,
+    changes: [
+      { kind: "Changed", text: "THE PRIMARY TRANSPARENCY TIERS FOLLOW THE LIBRARY. `color/transparent/primary/8…48` alias `primaryScale/600` (#005EB9 in Blue, navy 600 in Navy), which is what the Figma library has bound them to since the eleventh parity read. The payload had said `primaryScale/500` since the tiers became references on 2026-09-04, and the 0-tier work recorded the six-entry difference rather than settle it. It is settled by moving the code to the library, not the library to the code: `build/brand-ramps.mjs` BASE, `semantic.json`, the alpha-bindings record and the visual-contract fixture all read 600, the Palette value checksums are byte-equal again with nothing written to Figma, and `knownDifference.Palette` is deleted. Nothing in the estate consumes the six tiers yet, so no surface changes colour; the foundation page's tier cards now state the rung the library states" },
+    ],
+  },
+  {
+    version: "v0.121.0",
+    date: "2026-09-06",
     changes: [
       { kind: "Added", text: "THE STEPPER'S SIZE AXIS EXISTS IN FIGMA NOW, NOT ONLY IN CODE. The component has taken `size=\"md\" | \"sm\"` since it shipped while the library published one size, so UX4G's Compact could be specified in a handoff and never drawn. `Size = Large | Compact` is on all three layers — Node goes 15 variants to 30, Stage 30 to 60, Row 14 to 28 — and Compact is the four moves the stylesheet makes: a 24px node, a hairline ring rather than 2px, one rung down the type scale, and the tighter gap. Set it on the Row and every stage follows. Code Connect maps Large to md and Compact to sm, and the parity fixture is updated so the gate verifies all 28 Row variants" },
       { kind: "Fixed", text: "CLONED FIGMA VARIANTS RENDERED THEIR DEFAULTS WHILE THE PANEL SHOWED THE RIGHT VALUE. A cloned variant does not carry its source's component-property references, so every new Compact variant had Title, Description and Step set correctly on the instance and bound to nothing — the panel read \"Stage 4\" and the canvas drew \"Stepper Title\". Caught by reading the rendered characters back rather than trusting that the writes reported success, and fixed by re-binding the references on all 30 cloned Stage variants and the 2 Node variants that draw a numeral" },
