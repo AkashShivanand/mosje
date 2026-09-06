@@ -102,16 +102,16 @@ describe("SidebarNav", () => {
     );
   });
 
-  it("names the portal at the head of the rail, links it home, and hosts the control", () => {
+  it("names the portal at the head of the rail, links it home, and never hosts the control", () => {
     const identity = { name: "NOS", expansion: "National Overseas Scholarship", mark: <span data-mark />, href: "/portals/nos" };
     const out = html(<SidebarNav groups={GROUPS} pathname="/p" identity={identity} showCollapseControl onCollapsedChange={() => {}} />);
     expect(out.indexOf("ds-sidebar__identity")).toBeLessThan(out.indexOf("ds-sidebar__nav"));
     expect(out).toMatch(/<a href="\/portals\/nos" class="ds-sidebar__identity-link" aria-label="NOS home"/);
     expect(out).toContain("National Overseas Scholarship");
     expect(out).toContain('aria-label="NOS navigation"');
-    // the control lives inside the identity row, not in its own row
+    // with an identity the rail draws no control at all — the masthead toggles it
     expect(out).not.toContain("ds-sidebar__control");
-    expect(out).toContain('aria-label="Collapse navigation"');
+    expect(out).not.toContain('aria-label="Collapse navigation"');
     const collapsed = html(<SidebarNav groups={GROUPS} pathname="/p" identity={identity} collapsed />);
     expect(collapsed).toContain("ds-sidebar__identity is-collapsed");
     expect(collapsed).not.toContain("National Overseas Scholarship");
