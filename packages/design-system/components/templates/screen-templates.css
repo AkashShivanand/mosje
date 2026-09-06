@@ -172,6 +172,17 @@
   .sa-worklist__card-label { color: var(--sa-text-neutral-subtle); }
   .sa-worklist__card-value { color: var(--sa-text-neutral-base); }
 
+  /* Only with the cards — above the tablet anchor the table has its own. */
+  .sa-worklist__cards-pager { display: none; }
+
+  @media (max-width: 767px) {
+    .sa-worklist__cards-pager {
+      display: flex;
+      justify-content: center;
+      padding-top: var(--sa-padding-16);
+    }
+  }
+
   .sa-worklist__card-actions {
     display: flex;
     flex-wrap: wrap;

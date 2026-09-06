@@ -1888,7 +1888,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Worklist Screen — Design System",
     "section": "Getting Started",
     "href": "/design-system/components/templates/worklist-screen",
-    "keywords": "worklist screen — design system getting started why this template exists priority is how a twelve-column table survives a phone two counts, kept apart example two things the template cannot do for you  tokens wcag accessibility",
+    "keywords": "worklist screen — design system getting started why this template exists priority is how a twelve-column table survives a phone selection spans the whole matching set both forms page, and they page together two counts, kept apart example two things the template cannot do for you  tokens wcag accessibility",
     "description": "Many records the reader acts on: filters, table, bulk actions and a pager, with all seven states owned by the template.",
     "type": "component",
     "iconName": "widgets"

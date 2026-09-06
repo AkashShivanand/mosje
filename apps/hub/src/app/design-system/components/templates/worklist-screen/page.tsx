@@ -117,6 +117,41 @@ export default function WorklistScreenPage(): React.JSX.Element {
             </p>
           </section>
 
+          <section className="cdp__section" aria-labelledby="cdp-selection">
+            <h2 id="cdp-selection" className="cdp__h2">Selection Spans the Whole Matching Set</h2>
+            <p>
+              Pass <code>onSelectionChange</code> and the template prepends a checkbox column
+              with a select-all in its header, and mirrors the box onto the mobile card. Pass{" "}
+              <code>bulkActions</code> too and the bar appears while anything is held.
+            </p>
+            <p>
+              The header box selects <strong>every row that matches the current filters</strong>,
+              not the visible page — <code>rows</code> is the whole matching set and{" "}
+              <code>DataTable</code> pages it internally, so the page&rsquo;s membership is not
+              knowable from here. That is why the bar is not also given{" "}
+              <code>onSelectAll</code>: two controls offering the same act, beside each other,
+              read as two different scopes when there is only one.
+            </p>
+            <Callout type="warning" title="An API you cannot reach is not an API">
+              This template shipped with <code>selectedIds</code>, <code>onSelectionChange</code>{" "}
+              and <code>bulkActions</code> and <em>no way to select a row</em>, so the bar could
+              never appear and <code>BulkActionsBar</code> had zero consumers estate-wide. Found
+              by a portal trying to use it.
+            </Callout>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-toomuch">
+            <h2 id="cdp-toomuch" className="cdp__h2">Both Forms Page, and They Page Together</h2>
+            <p>
+              The table pages through <code>DataTable</code>; the card list pages itself, at the
+              same size. They cannot share a pager because <code>DataTable</code> does not
+              publish which rows are on its page — and without a second one the phone rendered{" "}
+              <strong>all 126 rows as cards</strong> while the table beside it showed ten. That
+              is the &ldquo;too much&rdquo; state, and it is the half that gets skipped because
+              nobody scrolls a phone in review.
+            </p>
+          </section>
+
           <section className="cdp__section" aria-labelledby="cdp-counts">
             <h2 id="cdp-counts" className="cdp__h2">Two Counts, Kept Apart</h2>
             <p>

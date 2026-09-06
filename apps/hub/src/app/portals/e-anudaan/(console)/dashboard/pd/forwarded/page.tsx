@@ -3,25 +3,18 @@
 import { ROLES } from "@/lib/e-anudaan/roles";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { forwardedFor } from "@/lib/e-anudaan/selectors";
-import { WorklistTable } from "@/components/e-anudaan/worklist-table";
+import { ApplicationList } from "@/components/e-anudaan/application-list";
 
 export default function PdForwardedPage() {
   const { state } = useEAnudaan();
   const role = state.session ? ROLES[state.session] : null;
-  if (!role) return null;
-  const rows = forwardedFor(state, role.id);
 
   return (
-    <div className="space-y-5">
-      <div>
-        <h1 className="text-headline-1 text-ink">Forwarded Applications</h1>
-        <p className="mt-1 text-body-2 text-ink-muted">Forwarded Queue — applications you have moved up the chain.</p>
-      </div>
-      <WorklistTable
-        rows={rows}
-        variant="forwarded"
-        caption="Forwarded Applications"
-      />
-    </div>
+    <ApplicationList
+      variant="forwarded"
+      title="Forwarded Applications"
+      description="Forwarded Queue — applications you have moved up the chain."
+      rows={role ? forwardedFor(state, role.id) : []}
+    />
   );
 }
