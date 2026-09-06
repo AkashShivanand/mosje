@@ -1056,6 +1056,10 @@
   --sa-cmp-chip-radius: var(--sa-shape-8);
   --sa-cmp-dialog-radius: var(--sa-shape-12);
   --sa-cmp-tooltip-radius: var(--sa-shape-6);
+  --sa-cmp-stepper-node-md: var(--sa-ref-size-32);
+  --sa-cmp-stepper-node-sm: var(--sa-ref-size-24);
+  --sa-cmp-stepper-track: var(--sa-ref-border-width-sm);
+  --sa-cmp-stepper-dot: var(--sa-ref-size-8);
   --sa-cmp-action-brand-primary-default-bg: var(--sa-color-primaryScale-600);
   --sa-cmp-action-brand-primary-default-text: var(--sa-color-neutralScale-0);
   --sa-cmp-action-brand-primary-default-border: var(--sa-color-primaryScale-600);

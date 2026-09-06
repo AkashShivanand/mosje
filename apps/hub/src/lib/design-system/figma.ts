@@ -128,6 +128,15 @@ export const FIGMA_NODES = {
   /* Navigation — page "Portal Card" between Pagination and Stepper, matching
      where the component lives in code. Status (Live|Planned). */
   portalCard: "56486:832",
+  /* "Stepper" — the PAGE id, rebuilt in the house style on 2026-09-06. The page
+     had been carried unchanged from the UX4G 2.0 fork since the library was
+     created: two component sets, four loose example components and three stray
+     frames, with no Documentation frame, no Component record and no numbered
+     sections — and no entry here at all, so the docs page had been declaring the
+     component "Not yet published in the Figma library" while it sat in it.
+     The page id is recorded rather than a frame id, because a page id survives a
+     rebuild and a frame id does not — the lesson `shape` above was taught. */
+  stepper: "2106:2",
   loader: "2141:323879",
   avatars: "2141:296702",
   emptyState: "2141:296719",
