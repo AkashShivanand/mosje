@@ -3653,6 +3653,51 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "FigureProps": {
+    "source": "packages/design-system/components/data-display/figure.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The image itself. Pass a `next/image` element from the app, or a plain `<img>` — this component does not import an image library, so it stays usable in Storybook, in the docs site and in a portal alike."
+      },
+      {
+        "name": "bordered",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Round the frame and draw a hairline around it."
+      },
+      {
+        "name": "caption",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The visible caption. It is a real `<figcaption>`, so assistive technology associates it with the image rather than reading it as the next paragraph."
+      },
+      {
+        "name": "credit",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Where the picture came from — a directorate, a photographer, a scheme report. Rendered under the caption in small print. A departmental photograph with no attribution is a photograph nobody can check, and on a government page the source is part of the content."
+      },
+      {
+        "name": "fit",
+        "type": "\"cover\" | \"contain\"",
+        "required": false,
+        "default": "\"cover\"",
+        "description": "How the image sits inside a locked ratio. `cover` crops to fill — correct for a photograph. `contain` fits the whole image and leaves ground around it — correct for a logo, a certificate or a scanned document, where a crop would remove the thing being shown."
+      },
+      {
+        "name": "ratio",
+        "type": "FigureRatio = \"auto\" | \"square\" | \"video\" | \"photo\" | \"portrait\"",
+        "required": false,
+        "default": "\"auto\"",
+        "description": "Lock the frame to a ratio and crop the image to fill it. `auto` (default) lets the image set its own height, which is right for a diagram or a screenshot where cropping would remove information."
+      }
+    ]
+  },
   "FilterBarProps": {
     "source": "packages/design-system/components/dashboard/filter-bar.tsx",
     "inheritsNative": false,
@@ -9521,6 +9566,54 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "4",
         "description": "How many rows are visible at once. `vertical` only — it is what sets the panel's height. Ignored by `horizontal`, which is always one line."
+      }
+    ]
+  },
+  "TimeSlotProps": {
+    "source": "packages/design-system/components/forms/time-slot.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "groups",
+        "type": "TimeSlotGroup[]",
+        "required": true,
+        "description": "The windows on offer, in the order they occur."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the whole set — \"Appointment time\". Required: a grid of times with no name tells a screen-reader user twenty numbers and not what they are for."
+      },
+      {
+        "name": "onChange",
+        "type": "(id: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string | null",
+        "required": true,
+        "description": "The chosen slot's `id`, or `null`."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false,
+        "description": "One line under the group name, where a rule applies to the whole set."
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": false,
+        "description": "The form field name, so the choice submits without JavaScript."
       }
     ]
   },

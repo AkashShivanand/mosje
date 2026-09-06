@@ -90,6 +90,38 @@ export default function AlertPage(): React.JSX.Element {
       ]}
       design={
         <>
+          <section className="cdp__section" aria-labelledby="cdp-draft">
+            <h2 id="cdp-draft" className="cdp__h2">
+              The Draft Banner Is This Component
+            </h2>
+            <p>
+              UX4G 3.0 publishes a &ldquo;Draft Status Banner&rdquo; for the top of a part-finished
+              application — the strip that says the work was saved, when, and offers to resume or
+              discard it. SAMAVESH does not ship a second component for it, because this one already
+              is it: <code>status=&quot;info&quot;</code> carries the tone,{" "}
+              <code>timestamp</code> carries when it was saved, and <code>action</code> carries the
+              two controls.
+            </p>
+            <CodeBlock>{`<Alert
+  status="info"
+  title="Saved as a draft"
+  timestamp="3 September 2026, 11:04"
+  action={
+    <>
+      <Button appearance="text" onClick={resume}>Resume application</Button>
+      <Button appearance="text" onClick={discard}>Discard draft</Button>
+    </>
+  }
+>
+  Step 4 of 7 is complete. Nothing has been submitted to the department yet.
+</Alert>`}</CodeBlock>
+            <p>
+              A dedicated wrapper would add no capability and one more thing to keep in step — and
+              the first symptom of that is two banners on one estate with different padding. The
+              sentence inside it is doing the important work: an applicant who has saved a draft
+              needs to be told, plainly, that the department has not received anything yet.
+            </p>
+          </section>
           <section className="cdp__section" aria-labelledby="cdp-statuses">
             <h2 id="cdp-statuses" className="cdp__h2">
               The Four Statuses

@@ -174,6 +174,12 @@ export type { RadioProps } from "./components/forms/radio";
 export type { SelectionSize, SelectionLabelPlacement, SelectionVariant, SelectionCardLayout, CheckboxState } from "./components/forms/selection-types";
 export { Toggle } from "./components/forms/toggle";
 export { RangeSlider, Slider } from "./components/forms/slider";
+export { TimeSlot } from "./components/forms/time-slot";
+export type {
+  TimeSlotGroup,
+  TimeSlotOption,
+  TimeSlotProps,
+} from "./components/forms/time-slot";
 export type {
   RangeSliderProps,
   SliderMark,
@@ -273,6 +279,8 @@ export type {
   DescriptionItem,
   DescriptionListProps,
 } from "./components/data-display/description-list";
+export { Figure } from "./components/data-display/figure";
+export type { FigureProps, FigureRatio } from "./components/data-display/figure";
 export { ListGroup, ListRow } from "./components/data-display/list-group";
 export type {
   ListGroupProps,

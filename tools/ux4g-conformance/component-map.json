@@ -120,7 +120,9 @@
         },
         {
           "ux4g": "Draft Status Banner",
-          "status": "missing"
+          "status": "partial",
+          "samavesh": "Alert",
+          "note": "Composed rather than exported: Alert already carries `status`, `title`, `timestamp` and `action`, which is exactly a draft banner — \"Saved as draft\", when, and Resume/Discard. A dedicated wrapper would add no capability and one more thing to keep in step. The composition is documented on the Alert page."
         },
         {
           "ux4g": "Drawer",
@@ -217,8 +219,9 @@
         },
         {
           "ux4g": "Image",
-          "status": "missing",
-          "note": "Apps use next/image directly."
+          "status": "exact",
+          "note": "Apps use next/image directly.",
+          "samavesh": "Figure"
         },
         {
           "ux4g": "Journey Timeline",
@@ -253,7 +256,8 @@
         },
         {
           "ux4g": "Time Slot",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "TimeSlot"
         },
         {
           "ux4g": "Vertical Status Pipeline",

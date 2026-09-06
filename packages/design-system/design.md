@@ -2500,6 +2500,28 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - `layout="inline"`'s term column is `18ch`, not a pixel width, so it grows with the reader's font size instead of clipping the label at 200% zoom.
 - Not a `DataTable`: a table is for records the reader compares across columns, this is for the fields of one record.
 
+#### Figure
+**Purpose**: an image and its caption, as ONE thing.
+**Props**: `children` (the image element, the caller's) · `caption` · `credit` · `ratio` (`auto | square | video | photo | portrait`) · `fit` (`cover | contain`) · `bordered`
+**Rules**:
+- **The `<figure>`/`<figcaption>` pairing is the whole reason to use it.** A caption in a sibling `<p>` is read as the next paragraph, so a screen-reader user meets a sentence with nothing to say it describes the picture they just passed — six images, six unattached sentences.
+- **It does not accept an `alt` prop and never will.** Only the caller knows what the picture is doing on the page; the same photograph is decorative beside a heading and load-bearing on an evidence screen. The alt goes on the image element passed in.
+- **A caption is not alt text.** The caption is read by everyone; the alt stands in for the picture when it cannot be seen. Where the two would say the same thing the image is decorative and its `alt` is empty — repeating the caption announces it twice.
+- `fit="cover"` crops to fill: correct for a photograph. `fit="contain"` fits the whole image: correct for a logo, a certificate or a scan, where a crop removes the seal, the signature or the reference number that put the scan on the page. `ratio="auto"` locks nothing — for a diagram or a screenshot, where any crop removes information.
+- **`credit` is content, not a nicety.** A departmental photograph with no attribution is one nobody can check.
+- It imports no image library, so `next/image` works through it and it still renders in Storybook.
+
+#### TimeSlot
+**Purpose**: a grid of bookable windows — a daily programme, an event, any appointment a citizen chooses.
+**Props**: `groups` (`{ label, slots }[]`, slot = `{ id, label, remaining?, disabled?, unavailableReason? }`) · `value` · `onChange` · `label` (**required**) · `description` · `name`
+**Rules**:
+- **Built from real `<input type="radio">`**, visually replaced by their labels. That gives the arrow keys, the single-choice constraint, form submission and the "3 of 12" announcement for free. A grid of buttons with a `selected` class has none of it and has to rebuild every one. The input is hidden by OPACITY, never `display: none`, which would take it out of the tab order and leave a grid nobody can operate.
+- **A full slot stays on the page.** "10:30 is taken" and "there is no 10:30" are different facts, and a citizen deciding when to travel needs the first. `remaining: 0` renders full; `disabled` + `unavailableReason` covers a holiday or a closed centre.
+- **Omit `remaining` where capacity is not published.** Inventing "6 left" puts a number on a government page with no source behind it.
+- **This uses native `disabled` where `Menu` refuses it, and the reason is specific**: a radio group SELECTS ON ARROW, so an `aria-disabled` slot would be chosen the moment the arrow key landed on it. `disabled` is what makes the arrow keys step over it; the label and its reason stay in the tree either way.
+- Slots bind `--sa-control-height-lg` (48px) and the grid is `auto-fill` at 7.5rem, so it goes six across on a desktop and two on a phone with no breakpoint of its own. A citizen taps these outdoors — WCAG 2.2 §2.5.8's 24×24 is the floor, not the goal.
+- Selection is a heavier border and a semibold label as well as a fill; unavailable is a dashed edge plus a word. Never colour alone (WCAG 1.4.1).
+
 #### ListGroup / ListRow
 **Purpose**: a real `<ul>` of rows — leading slot, text block, trailing slot. The surface behind "recent applications", notifications, documents and search results.
 **Props**: `ListGroup`: `divided` (default true) · `bordered` · `size` · `aria-label`. `ListRow`: `title` · `description` · `eyebrow` · `leading` · `trailing` · `href` · `onClick` · `selected` · `disabled`.

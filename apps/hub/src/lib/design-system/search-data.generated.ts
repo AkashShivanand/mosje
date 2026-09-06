@@ -93,7 +93,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Alert — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/alert",
-    "keywords": "alert — design system feedback & status the four statuses anatomy example how it is announced  tokens wcag accessibility",
+    "keywords": "alert — design system feedback & status the draft banner is this component the four statuses anatomy example how it is announced  tokens wcag accessibility",
     "description": "A standing message about the state of the page or the task: a status colour, an icon, a title and a sentence. It stays until the condition changes or the reader dismisses it.",
     "type": "component",
     "iconName": "notifications"
@@ -652,6 +652,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "Sets whether a form marks its mandatory fields or its optional ones, for every field beneath it, and prints the sentence that explains the mark.",
     "type": "component",
     "iconName": "edit_note"
+  },
+  {
+    "title": "Figure — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/figure",
+    "keywords": "figure — design system data display a caption is not alt text why 1.1.1 is not on the checklist cover crops; contain does not credit example why the markup matters  tokens wcag accessibility",
+    "description": "An image and its caption as one thing, using real figure and figcaption markup so the caption is associated with the picture rather than read as the next paragraph.",
+    "type": "component",
+    "iconName": "bar_chart"
   },
   {
     "title": "Filter Bar — Design System",
@@ -1549,6 +1558,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "Recent announcements in two shapes: the full-bleed bar under the masthead, and the stacked panel that scrolls them.",
     "type": "component",
     "iconName": "notifications"
+  },
+  {
+    "title": "Time Slot — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/time-slot",
+    "keywords": "time slot — design system forms & inputs built from real radios a full slot stays on the page the grid reflows itself example the set needs a name  tokens wcag accessibility",
+    "description": "A grid of bookable windows, built from real radio inputs so the keyboard model, the single-choice constraint and form submission are the browser",
+    "type": "component",
+    "iconName": "edit_note"
   },
   {
     "title": "Toast — Design System",

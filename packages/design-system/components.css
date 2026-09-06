@@ -36,6 +36,7 @@
 @import "./components/forms/search.css";
 @import "./components/forms/selection-control.css";
 @import "./components/forms/slider.css";
+@import "./components/forms/time-slot.css";
 @import "./components/forms/toggle.css";
 @import "./components/forms/wizard.css";
 @import "./components/navigation/app-switcher-panel.css";
@@ -66,6 +67,7 @@
 @import "./components/data-display/description-list.css";
 @import "./components/data-display/document-library.css";
 @import "./components/data-display/fact-strip.css";
+@import "./components/data-display/figure.css";
 @import "./components/data-display/list-group.css";
 @import "./components/data-display/metric-card.css";
 @import "./components/data-display/profile-card.css";
