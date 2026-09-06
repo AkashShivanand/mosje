@@ -496,7 +496,13 @@ function toDtcg(ramp, steps = STEPS) {
 
 /* ------------------------------------------------------------------ alpha tiers */
 
-/** The overlay percentages, unchanged since the tiers were introduced. */
+/**
+ * The overlay percentages, unchanged since the tiers were introduced. A 0 tier — the far end of
+ * a fade — is NOT generated for every family: check:token-consumers refuses a token nothing
+ * binds, so `color/transparent/<family>/0` is added by hand to a family together with its
+ * consumer (secondary first, 2026-09-06, for the rail's identity wash). In Figma a bound
+ * gradient stop takes its variable's alpha, which is why "transparent" has to be a variable.
+ */
 const ALPHA_STEPS = [8, 16, 24, 32, 40, 48];
 
 /** `#rrggbb` + percent -> `rgba(r, g, b, 0.pp)`, in the exact spelling the tokens already use. */
