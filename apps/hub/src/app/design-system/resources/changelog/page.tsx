@@ -32,9 +32,16 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.120.0",
+    version: "v0.121.0",
     date: "2026-09-06",
     current: true,
+    changes: [
+      { kind: "Changed", text: "THE PRIMARY TRANSPARENCY TIERS FOLLOW THE LIBRARY. `color/transparent/primary/8…48` alias `primaryScale/600` (#005EB9 in Blue, navy 600 in Navy), which is what the Figma library has bound them to since the eleventh parity read. The payload had said `primaryScale/500` since the tiers became references on 2026-09-04, and the 0-tier work recorded the six-entry difference rather than settle it. It is settled by moving the code to the library, not the library to the code: `build/brand-ramps.mjs` BASE, `semantic.json`, the alpha-bindings record and the visual-contract fixture all read 600, the Palette value checksums are byte-equal again with nothing written to Figma, and `knownDifference.Palette` is deleted. Nothing in the estate consumes the six tiers yet, so no surface changes colour; the foundation page's tier cards now state the rung the library states" },
+    ],
+  },
+  {
+    version: "v0.120.0",
+    date: "2026-09-06",
     changes: [
       { kind: "Added", text: "A 0% TIER FOR THE SECONDARY WASH — `color/transparent/secondary/0`, the far end of a fade. The identity wash's vanishing point had been a raw transparent stop, because a bound gradient stop takes its variable's alpha and no token sat at zero. One variable, created in the Palette collection as COMPOSE_COLOR(secondaryScale/400, alpha/0) and emitted as `--sa-color-transparent-secondary-0` — one family only, because `check:token-consumers` refuses a token nothing binds; the wash now binds both of its stops in Figma and code, and the library record is re-read." },
       { kind: "Changed", text: "EVERY PORTAL NOW OPENS IN NAVY, AND THE WEBSITE STILL OPENS IN BLUE. Which brand a surface opens in is a property of the ROUTE rather than of the estate: `defaultColorModeForPath` maps /portals/** to navy and everything else to blue, and `BRAND_BY_ROUTE` is the one array that both the inline no-flash head script and the provider read, so first paint and hydration cannot reach different answers. It is a default, not a lock — a brand chosen in the demo dock is persisted and outranks it on every route, so the Colour tab keeps working inside a portal instead of being a control that appears usable and does nothing. The path is read on the CLIENT and never during a server render: the root layout sits above every route in the estate, so a server-side read would make all of them dynamic for the sake of one attribute, and reading it client-side is also what lets the brand follow a client-side navigation from the website into a portal, where the head script never runs again" },
