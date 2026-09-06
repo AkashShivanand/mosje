@@ -7392,6 +7392,104 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "RangeSliderProps": {
+    "source": "packages/design-system/components/forms/slider.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the pair — \"Grant amount\". Each thumb takes its own name from this plus `fromLabel` / `toLabel`, so a screen reader says \"Grant amount, minimum\" rather than \"slider\" twice."
+      },
+      {
+        "name": "onValueChange",
+        "type": "(value: [number, number]) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "[number, number]",
+        "required": true,
+        "description": "Controlled `[from, to]`. The component keeps them ordered."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "formatValue",
+        "type": "(value: number) => string",
+        "required": false,
+        "description": "How a value is written out, for the readout and for the thumb's spoken value. Pass one whenever the number has a unit — \"₹ 4,50,000\" and \"450000\" are not the same information."
+      },
+      {
+        "name": "fromLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"minimum\"",
+        "description": ""
+      },
+      {
+        "name": "marks",
+        "type": "SliderMark[]",
+        "required": false,
+        "description": "Ticks under the track. Keep them few — a mark every step turns the track into a ruler nobody reads. Three or four is usually the whole story."
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "default": "100",
+        "description": ""
+      },
+      {
+        "name": "min",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": ""
+      },
+      {
+        "name": "showValue",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Show the current range beside the track."
+      },
+      {
+        "name": "size",
+        "type": "\"md\" | \"sm\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "step",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "toLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"maximum\"",
+        "description": ""
+      }
+    ]
+  },
   "RankedBarListProps": {
     "source": "packages/design-system/components/data-display/charts/ranked-bar-list.tsx",
     "inheritsNative": false,
@@ -8847,6 +8945,96 @@ export const GENERATED_PROPS = {
         "type": "SlaVariant = \"circular\" | \"linear\" | \"badge\"",
         "required": false,
         "default": "\"linear\"",
+        "description": ""
+      }
+    ]
+  },
+  "SliderProps": {
+    "source": "packages/design-system/components/forms/slider.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "onValueChange",
+        "type": "(value: number) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "number",
+        "required": true,
+        "description": "Controlled value."
+      },
+      {
+        "name": "aria-label",
+        "type": "string",
+        "required": false,
+        "description": "The control's accessible name. Required unless `aria-labelledby` points at a visible label — a slider announced as \"slider, 40\" says nothing about what is at 40."
+      },
+      {
+        "name": "aria-labelledby",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "formatValue",
+        "type": "(value: number) => string",
+        "required": false,
+        "description": "How a value is written out, for the readout and for the thumb's spoken value. Pass one whenever the number has a unit — \"₹ 4,50,000\" and \"450000\" are not the same information."
+      },
+      {
+        "name": "marks",
+        "type": "SliderMark[]",
+        "required": false,
+        "description": "Ticks under the track. Keep them few — a mark every step turns the track into a ruler nobody reads. Three or four is usually the whole story."
+      },
+      {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "default": "100",
+        "description": ""
+      },
+      {
+        "name": "min",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": ""
+      },
+      {
+        "name": "showValue",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Show the current value beside the track."
+      },
+      {
+        "name": "size",
+        "type": "\"md\" | \"sm\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "step",
+        "type": "number",
+        "required": false,
+        "default": "1",
         "description": ""
       }
     ]

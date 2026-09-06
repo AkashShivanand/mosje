@@ -149,6 +149,12 @@ export const DOCUMENTED_BY = {
   // an <li> with no list — and the comparison that actually matters (link when
   // it goes somewhere, button when it does something, plain text when neither)
   // only reads as a comparison when the three sit in one list on one page.
+  // The two-thumb slider. It shares every prop, every token and the whole
+  // keyboard model with Slider, and the ONE thing worth documenting about it —
+  // that it is two real range inputs rather than one track with two dots, so
+  // each thumb has its own name and its own announced value — only reads as a
+  // comparison beside the single-thumb control it differs from.
+  RangeSlider: "Slider",
   ListRow: "ListGroup",
   CardHeader: "Card", CardBody: "Card", CardFooter: "Card",
   CardTitle: "Card", CardSubtitle: "Card",

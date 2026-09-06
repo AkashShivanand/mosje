@@ -173,6 +173,12 @@ export { Radio } from "./components/forms/radio";
 export type { RadioProps } from "./components/forms/radio";
 export type { SelectionSize, SelectionLabelPlacement, SelectionVariant, SelectionCardLayout, CheckboxState } from "./components/forms/selection-types";
 export { Toggle } from "./components/forms/toggle";
+export { RangeSlider, Slider } from "./components/forms/slider";
+export type {
+  RangeSliderProps,
+  SliderMark,
+  SliderProps,
+} from "./components/forms/slider";
 export type { ToggleProps, ToggleSize } from "./components/forms/toggle";
 export { Search } from "./components/forms/search";
 export type { SearchProps, SearchSize, SearchSuggestion } from "./components/forms/search";

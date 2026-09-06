@@ -79,7 +79,8 @@
         },
         {
           "ux4g": "Range Slider",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "RangeSlider"
         },
         {
           "ux4g": "Search",
@@ -88,7 +89,8 @@
         },
         {
           "ux4g": "Slider",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Slider"
         },
         {
           "ux4g": "Toggle",
@@ -142,7 +144,8 @@
         },
         {
           "ux4g": "Popover",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Popover"
         },
         {
           "ux4g": "Progress Indicators",
@@ -224,11 +227,14 @@
         },
         {
           "ux4g": "List",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "ListGroup"
         },
         {
           "ux4g": "Result List Row",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "ListRow",
+          "note": "One row of a ListGroup: eyebrow, title, description, leading and trailing slots. The whole row is the target."
         },
         {
           "ux4g": "Spinner",

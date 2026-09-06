@@ -35,6 +35,7 @@
 @import "./components/forms/radio.css";
 @import "./components/forms/search.css";
 @import "./components/forms/selection-control.css";
+@import "./components/forms/slider.css";
 @import "./components/forms/toggle.css";
 @import "./components/forms/wizard.css";
 @import "./components/navigation/app-switcher-panel.css";

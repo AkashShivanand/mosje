@@ -3327,6 +3327,11 @@
         "$value": "{size.48}",
         "$description": "48px — touch-first controls and primary actions on a phone; clears WCAG 2.5.5 (44px) and Material's 48dp on its own."
       }
+    },
+    "track": {
+      "$type": "dimension",
+      "$value": "{size.8}",
+      "$description": "The slider's rail. 8 is the smallest step on the size scale that still reads as a track rather than a hairline once a reader doubles their font size, and it lets the 20px thumb overlap it by six pixels on each side so the pair reads as one control. Deliberately ONE value rather than a per-size pair: Slider's size prop changes the THUMB, which is the part the reader grabs, and thinning the rail under a smaller thumb makes the target look smaller than it actually is."
     }
   },
   "shape": {

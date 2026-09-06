@@ -2217,6 +2217,17 @@ Docs: `/design-system/components/sla-progress`.
 **Purpose**: Dropdown value selector.  
 **Props**: `options: SelectOption[]`, `placeholder`, `disabled`, `error`
 
+#### Slider / RangeSlider
+**Purpose**: a bounded numeric choice where the reader cares about ROUGHLY WHERE rather than exactly what — a fund band in a filter, a radius, a span of years.
+**Props**: `value` · `onValueChange` · `min` · `max` · `step` · `disabled` · `size` (`md` | `sm`) · `marks` · `formatValue` · `showValue`. `RangeSlider` takes `value: [from, to]` and `label`, plus `fromLabel` / `toLabel`.
+**Rules**:
+- **It is a real `<input type="range">`, and that is not a shortcut.** The native control carries the whole keyboard model (arrows, Page Up/Down, Home/End), announces its value and bounds, and is the one form control assistive technology and mobile browsers both handle correctly. A div with a draggable dot reimplements the visible half only.
+- **Never the only way to enter a number that matters.** WCAG 2.5.7's no-drag alternative is satisfied by the arrow keys, but an applicant who knows the grant is ₹4,50,000 should type it. Pair with a number field wherever the exact figure is the point; use the slider alone only for a coarse filter.
+- **`formatValue` whenever the value has a unit.** It drives the readout AND `aria-valuetext`: "40" and "₹ 40,000" are not the same information. Marks are three or four anchors, never one per step — a mark per step is a ruler nobody reads.
+- **`RangeSlider` is TWO real range inputs overlaid**, not one track with two dots, so each thumb is a genuine slider with its own name, keyboard model and announced value. Names derive from `label` — "Grant amount, minimum" / "…, maximum" — because two controls both announced as "slider" are indistinguishable. The pair is kept in order by CLAMPING, never swapping: a thumb that changes identity mid-drag cannot be followed by eye and cannot be described to a screen-reader user at all.
+- **The focus ring goes on the THUMB**, not the input box. A ring around a 600px row says the row is focused, not which handle is held — which on the range variant is the only thing the reader needs.
+- The rail binds `--sa-control-track`, added with this component. ONE value for both sizes: `size` changes the thumb, and thinning the rail under a smaller thumb makes the target look smaller than it is.
+
 #### Textarea
 **Purpose**: Multi-line text entry. Auto-resizes up to a max-height.
 

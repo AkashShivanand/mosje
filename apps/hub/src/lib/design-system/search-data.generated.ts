@@ -1441,6 +1441,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "notifications"
   },
   {
+    "title": "Slider — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/slider",
+    "keywords": "slider — design system forms & inputs it is a real range input never the only way to enter a number that matters a number without its unit is not the information the range variant is two real sliders example the ring goes on the thumb two sliders need two names RangeSlider tokens wcag accessibility",
+    "description": "A bounded numeric choice built on a real <input type=\\",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Small Multiples — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/small-multiples",

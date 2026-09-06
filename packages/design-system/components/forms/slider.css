@@ -1,0 +1,221 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Slider and Range Slider
+     Native <input type="range">, restyled. The native control keeps the whole
+     keyboard model and the announced value; only the paint is ours.
+     ============================================================================ */
+
+  .ds-slider {
+    /* One rail height for both sizes: `size` changes the THUMB, which is what
+       the reader grabs, and thinning the rail under a smaller thumb makes the
+       target look smaller than it is. */
+    --ds-slider-track-h: var(--sa-control-track);
+    --ds-slider-thumb: var(--sa-control-selection-size-md);
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-slider--sm {
+    --ds-slider-thumb: var(--sa-control-selection-size-sm);
+  }
+
+  .ds-slider__track-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+  }
+
+  .ds-slider__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    /* The thumb needs room to sit on the track without the browser clipping it. */
+    height: var(--ds-slider-thumb);
+    margin: 0;
+    background: transparent;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+  }
+
+  .ds-slider__input:disabled {
+    cursor: not-allowed;
+  }
+
+  /* ── Track ──────────────────────────────────────────────────────────────── */
+
+  .ds-slider__input::-webkit-slider-runnable-track {
+    height: var(--ds-slider-track-h);
+    border-radius: var(--sa-shape-full);
+    /* The filled portion is painted here from --ds-slider-pct, so the fill and
+       the thumb are driven by one number and cannot drift apart. */
+    background:
+      linear-gradient(
+        to right,
+        var(--sa-bg-brand-primary-bolder) 0 var(--ds-slider-pct, 0%),
+        var(--sa-bg-neutral-active) var(--ds-slider-pct, 0%) 100%
+      );
+  }
+
+  .ds-slider__input::-moz-range-track {
+    height: var(--ds-slider-track-h);
+    border-radius: var(--sa-shape-full);
+    background:
+      linear-gradient(
+        to right,
+        var(--sa-bg-brand-primary-bolder) 0 var(--ds-slider-pct, 0%),
+        var(--sa-bg-neutral-active) var(--ds-slider-pct, 0%) 100%
+      );
+  }
+
+  /* ── Thumb ──────────────────────────────────────────────────────────────── */
+
+  .ds-slider__input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: var(--ds-slider-thumb);
+    height: var(--ds-slider-thumb);
+    margin-block-start: calc((var(--ds-slider-track-h) - var(--ds-slider-thumb)) / 2);
+    border: var(--sa-control-selection-border-width) solid var(--sa-bg-neutral-base);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-brand-primary-bolder);
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  .ds-slider__input::-moz-range-thumb {
+    width: var(--ds-slider-thumb);
+    height: var(--ds-slider-thumb);
+    border: var(--sa-control-selection-border-width) solid var(--sa-bg-neutral-base);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-brand-primary-bolder);
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  /* The ring goes on the THUMB, not the whole row: a focus ring drawn around a
+     600px-wide input tells the reader the row is focused and not which handle. */
+  .ds-slider__input:focus-visible {
+    outline: none;
+  }
+
+  .ds-slider__input:focus-visible::-webkit-slider-thumb {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-slider__input:focus-visible::-moz-range-thumb {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-slider--disabled .ds-slider__input::-webkit-slider-thumb {
+    background-color: var(--sa-bg-neutral-bold);
+  }
+
+  .ds-slider--disabled .ds-slider__input::-moz-range-thumb {
+    background-color: var(--sa-bg-neutral-bold);
+  }
+
+  /* ── Readout ────────────────────────────────────────────────────────────── */
+
+  .ds-slider__readout {
+    flex: 0 0 auto;
+    /* Reserves room for the widest value so the track does not shorten and
+       lengthen as the reader drags. */
+    min-width: 6ch;
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  /* ── Marks ──────────────────────────────────────────────────────────────── */
+
+  .ds-slider__marks {
+    position: relative;
+    height: var(--sa-type-label-3-lh);
+  }
+
+  .ds-slider__mark {
+    position: absolute;
+    transform: translateX(-50%);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    white-space: nowrap;
+  }
+
+  /* ── Range: two real inputs, overlaid ───────────────────────────────────── */
+
+  .ds-slider__pair {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: var(--ds-slider-thumb);
+  }
+
+  .ds-slider--range .ds-slider__pair .ds-slider__input {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: 0;
+    width: 100%;
+  }
+
+  /* The lower input paints the whole track and the band between the two thumbs;
+     the upper one paints nothing, so a single element owns the fill and the two
+     cannot disagree. */
+  .ds-slider--range .ds-slider__input--from::-webkit-slider-runnable-track {
+    background:
+      linear-gradient(
+        to right,
+        var(--sa-bg-neutral-active) 0 var(--ds-slider-from),
+        var(--sa-bg-brand-primary-bolder) var(--ds-slider-from) var(--ds-slider-to),
+        var(--sa-bg-neutral-active) var(--ds-slider-to) 100%
+      );
+  }
+
+  .ds-slider--range .ds-slider__input--from::-moz-range-track {
+    background:
+      linear-gradient(
+        to right,
+        var(--sa-bg-neutral-active) 0 var(--ds-slider-from),
+        var(--sa-bg-brand-primary-bolder) var(--ds-slider-from) var(--ds-slider-to),
+        var(--sa-bg-neutral-active) var(--ds-slider-to) 100%
+      );
+  }
+
+  .ds-slider--range .ds-slider__input--to::-webkit-slider-runnable-track {
+    background: transparent;
+  }
+
+  .ds-slider--range .ds-slider__input--to::-moz-range-track {
+    background: transparent;
+  }
+
+  /* The upper input sits on top so its thumb is grabbable, but its own track
+     must not swallow pointer events meant for the lower thumb. Only the thumbs
+     take the pointer. */
+  .ds-slider--range .ds-slider__pair .ds-slider__input {
+    pointer-events: none;
+  }
+
+  .ds-slider--range .ds-slider__input::-webkit-slider-thumb {
+    pointer-events: auto;
+  }
+
+  .ds-slider--range .ds-slider__input::-moz-range-thumb {
+    pointer-events: auto;
+  }
+}

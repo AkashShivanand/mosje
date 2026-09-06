@@ -38,9 +38,9 @@
       "existing": 8
     },
     "Static": {
-      "total": 95,
+      "total": 96,
       "new": 0,
-      "existing": 95
+      "existing": 96
     },
     "Viewport": {
       "total": 2,
@@ -33141,6 +33141,31 @@
           "description": "48px — touch-first controls and primary actions on a phone; clears WCAG 2.5.5 (44px) and Material's 48dp on its own.",
           "codeSyntax": {
             "WEB": "var(--sa-control-height-lg)"
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "hiddenFromPublishing": false,
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "control/track",
+          "path": "control/track",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "ref/size/8"
+            }
+          },
+          "description": "The slider's rail. 8 is the smallest step on the size scale that still reads as a track rather than a hairline once a reader doubles their font size, and it lets the 20px thumb overlap it by six pixels on each side so the pair reads as one control. Deliberately ONE value rather than a per-size pair: Slider's size prop changes the THUMB, which is the part the reader grabs, and thinning the rail under a smaller thumb makes the target look smaller than it actually is.",
+          "codeSyntax": {
+            "WEB": "var(--sa-control-track)"
           },
           "scopes": [
             "WIDTH_HEIGHT"
