@@ -112,7 +112,7 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
             opens it as a drawer. */}
         <SidebarNav
           id="tc-sidebar"
-          identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" />, href: "/portals/nmba/treatment-centre/dashboard" }}
+          identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" tile={false} />, href: "/portals/nmba/treatment-centre/dashboard" }}
           groups={groups}
           pathname={pathname}
           collapsed={collapsed}
@@ -128,7 +128,7 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
       </div>
 
       <SideSheet open={mobileOpen && isMobile} onClose={() => setMobileOpen(false)} title="Navigation" side="left" size="sm">
-        <SidebarNav identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" />, href: "/portals/nmba/treatment-centre/dashboard" }} groups={groups} pathname={pathname} label={`${session.role} navigation`} className="w-auto" />
+        <SidebarNav identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" tile={false} />, href: "/portals/nmba/treatment-centre/dashboard" }} groups={groups} pathname={pathname} label={`${session.role} navigation`} className="w-auto" />
       </SideSheet>
 
       <Footer />

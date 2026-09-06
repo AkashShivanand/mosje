@@ -10,6 +10,7 @@ import { SAMAVESH_MARK } from "../brand/org-logo-registry";
 import { buttonClasses } from "../actions/button";
 import {
   DEFAULT_APPS,
+  isLiveEntry,
   portalLabel,
   portalCategoriesIn,
   type PortalCategory,
@@ -56,7 +57,7 @@ export interface SamaveshBannerPortalItem {
  */
 export function liveSamaveshPortals(): SamaveshBannerPortalItem[] {
   return DEFAULT_APPS.filter(
-    (a) => a.group === "Portals" && a.status !== "planned",
+    (a) => a.group === "Portals" && isLiveEntry(a),
   ).map((a) => {
     const label = portalLabel(a);
     return {

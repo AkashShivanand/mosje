@@ -17,9 +17,8 @@ import { Button, OrgLogo, SidebarNav } from "@mosje/design-system";
  * needs one — in collapsed mode the icon is all that is left.
  *
  * Collapsing is controlled: `collapsed` plus `onCollapsedChange`. The portal
- * masthead's toggle is the default control; `showCollapseControl` adds the
- * rail's own at the top for a shell without one, and renders nothing without
- * the handler. In the collapsed
+ * masthead's toggle drives it; `showCollapseControl` adds the rail's own at the
+ * top only for a shell with neither masthead toggle nor identity. In the collapsed
  * rail a group opens a flyout, a leaf shows a tooltip, and a badge becomes a dot.
  *
  * `identity` names the portal at the head of the rail — the masthead carries the
@@ -90,7 +89,7 @@ const meta = {
     identity: {
       name: "NMBA",
       expansion: "Nasha Mukt Bharat Abhiyaan",
-      mark: <OrgLogo org="nmba" size="md" />,
+      mark: <OrgLogo org="nmba" tile={false} />,
       href: "/portals/nmba/admin",
     },
     pathname: "/portals/nmba/admin/mass-pledge/reports/weekly",
@@ -133,17 +132,17 @@ export const Collapsed: Story = {
   args: { collapsed: true },
 };
 
-/** Controlled collapse with the rail's own control at the top — only for a shell whose masthead has no toggle; the handler is required. */
-export const WithCollapseControl: Story = {
+/** Controlled collapse driven from outside, as a portal's masthead drives it; the button stands in for the masthead here. */
+export const Controlled: Story = {
   render: function Render(args) {
     const [collapsed, setCollapsed] = React.useState(false);
     return (
-      <SidebarNav
-        {...args}
-        collapsed={collapsed}
-        onCollapsedChange={setCollapsed}
-        showCollapseControl
-      />
+      <div style={{ display: "grid", gap: 16, justifyItems: "start" }}>
+        <Button size="sm" appearance="outlined" onClick={() => setCollapsed((c) => !c)}>
+          {collapsed ? "Expand the rail" : "Collapse the rail"}
+        </Button>
+        <SidebarNav {...args} collapsed={collapsed} onCollapsedChange={setCollapsed} />
+      </div>
     );
   },
 };

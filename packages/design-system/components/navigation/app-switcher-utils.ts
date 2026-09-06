@@ -47,6 +47,33 @@ export interface AppEntry {
   status?: "live" | "planned";
 }
 
+/**
+ * Does this entry get LISTED anywhere a person browses the estate?
+ *
+ * THE ONE EXPRESSION, and it is one on purpose. Three surfaces answer this
+ * question — the portals gateway, the SAMAVESH banner drawer, and the app
+ * switcher — and until 2026-09-06 each stated it in its own words: the gateway
+ * wrote `(status ?? "live") !== "live"` and excluded, the banner wrote
+ * `status !== "planned"` and included, and the switcher did not ask at all and
+ * rendered a "soon" row. They agreed by coincidence, not by construction, and a
+ * third status would have split them.
+ *
+ * A hand-kept copy of "which portals exist" is what shipped a 404 for NOS on
+ * every page of the website: one copy said live, the registry said planned. The
+ * rule is therefore derived here and imported, never restated.
+ *
+ * `hidden` never reaches this function — `applyRegistryOverrides` drops those
+ * before rendering, and the hub's proxy blocks their paths besides.
+ */
+export function isLiveEntry(entry: AppEntry): boolean {
+  return (entry.status ?? "live") === "live";
+}
+
+/** Every entry that gets listed, in registry order. See `isLiveEntry`. */
+export function liveEntries(entries: AppEntry[]): AppEntry[] {
+  return entries.filter(isLiveEntry);
+}
+
 /** Derive 2-letter icon abbreviation from an AppEntry. */
 export function deriveAbbr(entry: AppEntry): string {
   if (entry.abbr) return entry.abbr;

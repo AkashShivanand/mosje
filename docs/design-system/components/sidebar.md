@@ -191,3 +191,23 @@ items, 20 child items). They are to be migrated screen by screen, one at a time,
     `bg/neutral/base`, which read as a white panel on the portals' muted page. Master and code
     both dropped it on 2026-09-05; the flyout and the mobile drawer keep their grounds because
     they float.
+
+20. **The identity block carries the SAMAVESH wash, and the mark sits bare on it.** The handoff's
+    original identity (MoSJE Portal — Handoff, node 11184:102857) is a 300×96 block with padding 16,
+    a saffron fade — `bg/brand/secondary/base`, the handoff's saffron at 8% over white, to nothing, top to bottom — and the mark bare
+    at 56 with the name and the department's full name beside it. The library master and the code
+    now draw exactly that: the block bleeds to the rail's edges (negative margins in code, the
+    identity outside the rail's padding in Figma), the mark is the registry OrgLogo with its new
+    `tile` off (`Tile` boolean in Figma; the wash is its ground), 56 expanded and 40 collapsed, and
+    the expansion may run to three lines because SAMBAL's name needs them. Hairline, radius and
+    ground on OrgLogo are properties now, so a surface with its own ground can switch them off
+    instead of drawing a mark by hand.
+
+21. **The masthead collapses the rail; the identity never hosts a control.** A collapse control
+    beside the brand competed with the portal's name for the same 268px and, for SAMBAL's three-line
+    name, had no room at all. Every portal masthead already has `onToggleNav`, so the five shells
+    that still drew the rail's own control (SCW admin and user, NHAPOA citizen, NMBA admin and
+    public) now wire the masthead instead, and `check:sidebar-adoption` fails any portal shell that
+    passes `showCollapseControl`. The prop survives only for a shell with neither a masthead toggle
+    nor an identity, where it draws a 48px row above the first item. In Figma, `Show Control` is
+    removed from PortalIdentity.

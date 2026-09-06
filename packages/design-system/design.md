@@ -12,13 +12,18 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-09-06 · System version: v0.56.0 (THE STEPPER IS REBUILT AND THE THREE
+  Last reviewed: 2026-09-06 · System version: v0.57.0 (THE STEPPER IS REBUILT AND THE THREE
   COPIES OF IT ARE GONE. Five states (error and disabled are new), two orientations, two sizes,
   the label under the node or beside it, and opt-in return-to-a-stage. Below about 104px a column
   it collapses to UX4G's compact bar — counter, current stage, dot row — with the full ordered
   list still in the accessibility tree, replacing two CSS rules that clipped the labels
   themselves. The trigger is a container query, because the row's room is a property of its own
   column and not of the viewport. tg, nhapoa and scw now import it instead of re-implementing it.)
+
+  Last reviewed: 2026-09-05 · System version: v0.56.0 (THE RAIL'S IDENTITY IS THE HANDOFF'S: the
+  SAMAVESH saffron wash across the rail, a bare 56 mark, the full name to three lines; OrgLogo's
+  tile is a property; the masthead is the one place the rail collapses and the identity hosts
+  no control.)
 
   Last reviewed: 2026-09-05 · System version: v0.55.0 (EVERY PORTAL RAIL NAMES ITS PORTAL. All
   shells pass SidebarNav an identity — name, the department's full name, the registry mark, the

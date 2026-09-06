@@ -15,9 +15,14 @@ import { AppSwitcherPanel, DEFAULT_APPS, type AppEntry } from "@mosje/design-sys
  * **Use it** wherever a searchable jump-to-anywhere list over the estate
  * registry is the job. **Do not use it** as a primary in-portal navigation
  * menu — it has no notion of "current section within a portal", only
- * "current top-level zone", and every planned entry renders disabled with a
- * "soon" badge, which is the right treatment for a cross-estate switcher and
- * the wrong one for a portal's own sidebar (`SidebarNav` is that component).
+ * "current top-level zone", which is the wrong model for a portal's own
+ * sidebar (`SidebarNav` is that component).
+ *
+ * **It lists what SHIPS.** An entry the registry marks `planned` is not
+ * rendered at all — not as a greyed row, not badged "soon". The test is
+ * `isLiveEntry`, shared with the portals gateway and the SAMAVESH banner
+ * drawer, so the three cannot disagree about which portals exist. A switcher
+ * offering a destination that is not there is a control that does nothing.
  *
  * The panel does not scroll itself — `.ds-appsw__body` has no scroll box of
  * its own, so whatever mounts it (here, the story's own wrapper; in

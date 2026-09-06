@@ -76,13 +76,36 @@
      pill's left edge (18px padding + 2px margin + half of the 30px icon), which
      holds in both states because the icon tracks that edge. `translateX(-50%)`
      with a content-sized box then centres any label length on that point — no
-     dependency on the pill's width, and none on the string. */
+     dependency on the pill's width, and none on the string.
+
+     `!important` ON EVERY DECLARATION, AND IT IS LOAD-BEARING. The vendor marks
+     its own `left: 17px` and `right: 15px` `!important`, so an id selector does
+     not outrank them — but it does not mark `width` or `transform`, so those two
+     applied while the insets did not. Half a rule is worse here than none: the box
+     shrank to `max-content` and then shifted half its own width LEFT of the
+     vendor's 17px anchor, putting the label's centre 18.5px left of the icon it
+     labels. Measured on /portals/e-anudaan/login, one of the routes where the FAB
+     is actually visible — it is `display: none` wherever an AccessibilityBar
+     offers the entry instead, which is why this went unseen. These five
+     declarations win together or not at all.
+
+     THE VERTICAL PLACEMENT NEEDED FIXING TOO, and it is not a taste call: at
+     the vendor's `bottom: 12px` the label's line box STARTS one pixel above
+     the icon's bottom edge (icon 17.5→42.5 in the 70px pill, label 41.5→58),
+     so the two overlap and only the leading inside the line box keeps the
+     glyphs off the figure. The band below the icon is 27.5px and the line box
+     is 16.5px, so centring the label in that band puts 5.5px of air on each
+     side of it — `bottom: 6px`, rounded to a whole pixel. It stays clear of
+     the pill's bottom curve: at the label's own left and right edges (x 21 and
+     49 from the pill's left) the 35px-radius circle reaches y 67.1, and the
+     label's box bottom is 64. */
   #uw-widget-custom-trigger .ux4g-accessibility-short-key {
-    left: 35px;
-    right: auto;
-    width: max-content;
-    transform: translateX(-50%);
-    text-align: center;
+    left: 35px !important;
+    right: auto !important;
+    bottom: 6px !important;
+    width: max-content !important;
+    transform: translateX(-50%) !important;
+    text-align: center !important;
   }
 
   /* ---------------------------------------------------------------------------
