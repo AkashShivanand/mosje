@@ -48,6 +48,25 @@
     border: 0;
   }
 
+  /* ── Column ─────────────────────────────────────────────────────────────────── */
+  /* The rail's column: as wide as the rail, stretched to the full height of the
+     shell's row, and the owner of the hairline between rail and content. The
+     line used to be a shell's `border-r` on the rail itself; the rail is sticky
+     and no taller than the viewport, so the line stopped where the rail
+     stopped and vanished on scroll. It belongs to the column, which is neither
+     the rail nor the content — the seam between them. */
+  .ds-sidebar-column {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    align-self: stretch;
+    border-right: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    transition: width var(--sa-motion-collapse-duration) var(--sa-motion-collapse-easing);
+  }
+
+  .ds-sidebar-column.is-expanded  { width: var(--sa-layout-sidebar-width); }
+  .ds-sidebar-column.is-collapsed { width: var(--sa-layout-sidebar-collapsedWidth); }
+
   /* ── Container ─────────────────────────────────────────────────────────────── */
 
   /* The rail sits on the page canvas with NO ground of its own — every handoff
@@ -69,14 +88,12 @@
     padding: var(--sa-padding-16);
     position: sticky;
     top: var(--sa-header-stuck, 0); /* 0 when no masthead is sticky */
-    align-self: flex-start;
     max-height: calc(100dvh - var(--sa-header-stuck, 0px)); /* stylelint-disable-line length-zero-no-unit -- calc subtracts a length, so the fallback must carry a unit */
     overflow: hidden;
     transition: width var(--sa-motion-collapse-duration) var(--sa-motion-collapse-easing);
   }
 
-  .ds-sidebar.is-expanded  { width: var(--sa-layout-sidebar-width); }
-  .ds-sidebar.is-collapsed { width: var(--sa-layout-sidebar-collapsedWidth); }
+  .ds-sidebar { width: 100%; }
 
   /* ── Navigation ─────────────────────────────────────────────────────────────── */
 
@@ -456,15 +473,28 @@
   /*
    * Which portal the user is in: mark, short name, expansion, a link home. The
    * masthead carries the Ministry and the estate; this is the one place the
-   * portal is named, so it heads every rail. Collapsed: the mark alone, the
-   * name as tooltip and accessible label.
+   * portal is named, so it heads every rail.
+   *
+   * It carries the SAMAVESH wash the handoff gave it (2026-09-05): a saffron
+   * fade — color/transparent/secondary/8, the handoff's saffron at 8%, to
+   * color/transparent/secondary/0, the same hue at zero (a fade's far end is a
+   * token too; nothing on this estate is a literal) — across the FULL width of
+   * the rail, so it bleeds through the rail's padding with negative margins and
+   * pads itself by padding/16. The mark is the registry OrgLogo at 56, bare
+   * (`tile={false}`): the wash is its ground. Collapsed, the mark alone at 40.
+   *
+   * No collapse control lives here. The masthead toggles the rail; a second
+   * control beside the brand competed with the name and, on SAMBAL, had no
+   * room at all. Decision 21 in the spec.
    */
   .ds-sidebar__identity {
     flex-shrink: 0;
     display: flex;
     align-items: center;
     gap: var(--sa-inline-12);
-    padding: var(--sa-padding-8) 0 var(--sa-padding-12);
+    margin: calc(-1 * var(--sa-padding-16)) calc(-1 * var(--sa-padding-16)) 0;
+    padding: var(--sa-padding-16);
+    background: linear-gradient(to bottom, var(--sa-color-transparent-secondary-8), var(--sa-color-transparent-secondary-0));
     border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
@@ -494,13 +524,18 @@
   .ds-sidebar__identity-mark {
     flex-shrink: 0;
     display: inline-flex;
-    width: var(--sa-icon-size-40);
-    height: var(--sa-icon-size-40);
   }
 
-  /* The registry mark comes in 32 / 48 / 56; the identity row draws it at 40,
-     the size the Figma master binds (icon/size/40). */
+  /* The registry mark is drawn at the org-logo's natural 56 here, bare — the
+     handoff's size and the OrgLogo `lg` tile, component geometry rather than a
+     spacing step (see org-logo.css). Collapsed, icon/size/40 fits the column. */
   .ds-sidebar__identity-mark > .ds-org-logo {
+    width: 56px;
+    height: 56px;
+  }
+
+  .ds-sidebar.is-collapsed .ds-sidebar__identity-mark,
+  .ds-sidebar.is-collapsed .ds-sidebar__identity-mark > .ds-org-logo {
     width: var(--sa-icon-size-40);
     height: var(--sa-icon-size-40);
   }
@@ -516,13 +551,15 @@
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-title-3-size);
     line-height: var(--sa-type-title-3-lh);
-    font-weight: 600;
+    font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
+  /* The department's full name, up to three lines: SAMBAL's runs to three at
+     this measure, and cutting a department's own name short is not an option. */
   .ds-sidebar__identity-expansion {
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-3-size);
@@ -530,15 +567,15 @@
     color: var(--sa-text-neutral-subtle);
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     overflow: hidden;
   }
 
   /* ── Collapse control (without an identity) ────────────────────────────────── */
-  /* The rail's own collapse control — shown only where the masthead has no
-     toggle — sits at the TOP, a 48px row above the first item: right-aligned
-     when expanded, centred when collapsed. Never at the foot, which is below
-     the fold on a laptop. With an identity it sits in that row instead. */
+  /* The rail's own collapse control — only for a shell with NO masthead toggle
+     and no identity — sits at the TOP, a 48px row above the first item:
+     right-aligned when expanded, centred when collapsed. Never at the foot,
+     which is below the fold on a laptop, and never beside the identity. */
   .ds-sidebar__control {
     flex-shrink: 0;
     display: flex;

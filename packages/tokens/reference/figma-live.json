@@ -733,6 +733,10 @@
     "cmp/avatar/size/sm",
     "cmp/avatar/size/md",
     "cmp/avatar/size/lg",
+    "cmp/stepper/node/md",
+    "cmp/stepper/node/sm",
+    "cmp/stepper/track",
+    "cmp/stepper/dot",
     "ref/viewport/mobile",
     "ref/viewport/tablet",
     "ref/viewport/desktop",
@@ -876,7 +880,8 @@
     "color/transparent/white/24",
     "color/transparent/white/32",
     "color/transparent/white/40",
-    "color/transparent/white/48"
+    "color/transparent/white/48",
+    "color/transparent/secondary/0"
   ],
   "Type": [
     "ref/font/family/latin",
@@ -1649,7 +1654,6 @@
     "container/narrow",
     "container/wide",
     "control/border/width",
-    "control/track",
     "control/selection/size/sm",
     "control/selection/size/md",
     "control/selection/size/lg",
@@ -1816,31 +1820,31 @@
   "$valueChecksums": {
     "note": "Per-collection checksum over `name|mode|value`, computed by build/figma-value-parity.mjs. The rest of this file records NAMES, and every check built on it compares names — which is why the library could hold 13 component tokens bound to the wrong palette rung, a reverted webfont, and 54 fluid-type variables carrying the old tablet curve, all under the correct names, with nothing noticing. `payload` is what the build produces; `figmaObserved` is a verified read of the library. They are expected to be EQUAL, and figma-value-parity.test.mjs fails when the payload moves without this record being refreshed.",
     "recordedAt": "2026-09-06",
-    "$lastChange": "2026-09-06 (thirteenth read) — ONE TOKEN ADDED: control/track, the slider's rail, aliasing ref/size/8. It shipped with its consumer in the same change (Slider and RangeSlider bind var(--sa-control-track)) and was created in the library with all five fields — value alias, description, codeSyntax WEB, scopes WIDTH_HEIGHT, hiddenFromPublishing false. Read back from the live library: Static's value checksum and all four field checksums moved 95 -> 96 and agree with the payload exactly. No other collection moved. Previous entry: 2026-09-05 (twelfth read) — THIRTY-TWO FOUNDATION TOKENS ADDED, from the benchmark gaps the audit named: neutral state fills bg/neutral/{hover,active,selected,readonly,loading} with their on/* inks, border/neutral/selected, neutral state layers overlay/neutral/{hover,active,focus,drag} as alias+alpha, focus/ringInner (the two-tone ring), control/height/{sm,md,lg}, aspect/{square,video,photo,portrait}, icon/fill/{outline,filled}, cmp/avatar/size/{xs,sm,md,lg} and cmp/{chip,dialog,tooltip}/radius. Every one shipped with a consumer in the same change (check:token-consumers) and was created in the library with all five fields; the focus/ring effect style now binds its inner spread to focus/ringInner, and elevation/inset joined the effect styles as the one INNER_SHADOW. Read back: payload equals library on every value and every field in all nine collections. Previous entry: 2026-09-05 (eleventh read) — THE CORRECTIVE PUSH. A five-field audit found the value checksums equal while the other four fields the standard requires had drifted, unseen: 253 descriptions carried HTML entities (the Plugin API stores an apostrophe as &#39; and reads it back that way — a property of Figma, not of the push; six were DOUBLE-escaped from an earlier push of already-escaped text), 479 descriptions differed from the payload after decoding (Palette's 90 ramp rungs shared one sentence, the Type roles and alpha ladder had guidance the library predated), five codeSyntax lines named CSS variables that do not exist (two kebab-cased minHeight, three empty), hiddenFromPublishing disagreed on 164 variables (payload hid the type/* roles by SOURCE tier; the library hid the Palette ramps), all 138 Palette rungs carried ALL_FILLS, and the six font/weight rows declared FLOAT over STRING values. Exporter: hidden now follows the LIBRARY-name tier (ref/* and all of Palette), Palette carries the five explicit colour scopes, the weight rows are STRING/FONT_STYLE, and a Tier-2 colour referencing a Tier-2 colour with its own alpha aliases THAT variable (cmp/accessibilityBar/{hoverBg,pillBg} -> overlay/brand/*), which was the one remaining Color value difference. Library: 347 variables corrected in place, 479 descriptions rewritten from the payload, ref/viewport/desktop-xl renamed desktopXl. Two variables authored in the library during the audit (layout/sidebar/collapsedWidth 88, layout/sidebar/flyoutWidth 240) were brought into source rather than deleted. $fieldChecksums now records description, codeSyntax, scopes and hidden per collection; the reader decodes the API's entity encoding before hashing descriptions.",
+    "$lastChange": "2026-09-06 (merge) — TWO READS, one per collection. This branch moved Static (control/track) and ds/transparent-primary-600 moved Palette and Space; each collection's checksums are taken from the read that moved it, so neither read is discarded and none is invented. A single fresh read across all three is owed the next time the library is synced. ||| 2026-09-06 (thirteenth read) — ONE TOKEN ADDED: control/track, the slider's rail, aliasing ref/size/8. It shipped with its consumer in the same change (Slider and RangeSlider bind var(--sa-control-track)) and was created in the library with all five fields — value alias, description, codeSyntax WEB, scopes WIDTH_HEIGHT, hiddenFromPublishing false. Read back from the live library: Static's value checksum and all four field checksums moved 95 -> 96 and agree with the payload exactly. No other collection moved. Previous entry: 2026-09-05 (twelfth read) — THIRTY-TWO FOUNDATION TOKENS ADDED, from the benchmark gaps the audit named: neutral state fills bg/neutral/{hover,active,selected,readonly,loading} with their on/* inks, border/neutral/selected, neutral state layers overlay/neutral/{hover,active,focus,drag} as alias+alpha, focus/ringInner (the two-tone ring), control/height/{sm,md,lg}, aspect/{square,video,photo,portrait}, icon/fill/{outline,filled}, cmp/avatar/size/{xs,sm,md,lg} and cmp/{chip,dialog,tooltip}/radius. Every one shipped with a consumer in the same change (check:token-consumers) and was created in the library with all five fields; the focus/ring effect style now binds its inner spread to focus/ringInner, and elevation/inset joined the effect styles as the one INNER_SHADOW. Read back: payload equals library on every value and every field in all nine collections. Previous entry: 2026-09-05 (eleventh read) — THE CORRECTIVE PUSH. A five-field audit found the value checksums equal while the other four fields the standard requires had drifted, unseen: 253 descriptions carried HTML entities (the Plugin API stores an apostrophe as &#39; and reads it back that way — a property of Figma, not of the push; six were DOUBLE-escaped from an earlier push of already-escaped text), 479 descriptions differed from the payload after decoding (Palette's 90 ramp rungs shared one sentence, the Type roles and alpha ladder had guidance the library predated), five codeSyntax lines named CSS variables that do not exist (two kebab-cased minHeight, three empty), hiddenFromPublishing disagreed on 164 variables (payload hid the type/* roles by SOURCE tier; the library hid the Palette ramps), all 138 Palette rungs carried ALL_FILLS, and the six font/weight rows declared FLOAT over STRING values. Exporter: hidden now follows the LIBRARY-name tier (ref/* and all of Palette), Palette carries the five explicit colour scopes, the weight rows are STRING/FONT_STYLE, and a Tier-2 colour referencing a Tier-2 colour with its own alpha aliases THAT variable (cmp/accessibilityBar/{hoverBg,pillBg} -> overlay/brand/*), which was the one remaining Color value difference. Library: 347 variables corrected in place, 479 descriptions rewritten from the payload, ref/viewport/desktop-xl renamed desktopXl. Two variables authored in the library during the audit (layout/sidebar/collapsedWidth 88, layout/sidebar/flyoutWidth 240) were brought into source rather than deleted. $fieldChecksums now records description, codeSyntax, scopes and hidden per collection; the reader decodes the API's entity encoding before hashing descriptions. ||| 2026-09-06 (thirteenth read, Palette) — THE PRIMARY TIERS FOLLOW THE LIBRARY. color/transparent/primary/{8,16,24,32,40,48} now alias color/primaryScale/600 in the payload (build/brand-ramps.mjs BASE and semantic.json), as they already did in the library; the six-entry difference the twelfth read recorded in knownDifference.Palette is closed by changing the payload, not by pushing 500 over the library, on instruction. Palette value checksums are equal again (c547e79f:278) with nothing written to Figma; the four field checksums are unchanged. Previous: 2026-09-06 (twelfth read, Palette) — A 0% TIER FOR THE SECONDARY WASH. color/transparent/secondary/0 added to the payload (Palette 138 → 139 variables, 276 → 278 values) and created in the library — one family only, because check:token-consumers refuses a token nothing binds, and the rail's identity wash is the one consumer today — as COMPOSE_COLOR(base, alpha/0) with the payload's scopes, code syntax, description and visibility; the four field checksums are byte-equal after the push. The value halves DIFFER by six entries and knownDifference.Palette says why: the library's existing color/transparent/primary/8…48 alias primaryScale/600 while the payload aliases primaryScale/500 — a drift made in the library after the eleventh read, found by this read and deliberately not reconciled here (it is the primary/navy work's to settle, not the sidebar's). Previous: cmp/stepper/node/md · /node/sm · /track · /dot added to Space (152 → 156). Created in the library on 2026-09-06 and read back before this record moved: they resolve to 32, 24, 1 and 8px, aliasing ref/size/32, ref/size/24, ref/border/width/sm and ref/size/8.",
     "payload": {
-      "Space": "c0582dfd:148",
-      "Palette": "b65ee461:276",
+      "Space": "6d8b54fb:152",
+      "Palette": "c547e79f:278",
       "Color": "1eba00d1:509",
       "Type": "bf306572:678",
       "Radius": "23d36c78:31",
       "Motion": "4ff49255:42",
       "Density": "b2baae79:16",
-      "Static": "8f0b86ec:96",
+      "Static": "18a9692c:95",
       "Viewport": "2f223056:12"
     },
     "figmaObserved": {
-      "Space": "c0582dfd:148",
-      "Palette": "b65ee461:276",
+      "Space": "6d8b54fb:152",
+      "Palette": "c547e79f:278",
       "Color": "1eba00d1:509",
       "Type": "bf306572:678",
       "Radius": "23d36c78:31",
       "Motion": "4ff49255:42",
       "Density": "b2baae79:16",
-      "Static": "8f0b86ec:96",
+      "Static": "18a9692c:95",
       "Viewport": "2f223056:12"
     },
     "knownDifference": {
-      "$note": "Re-verified 2026-09-05 (eleventh read) after the corrective push. Every collection's value checksum is byte-equal between payload and library once the four library-only ref/viewport/* canvas widths are excluded from the read, which the reader now does explicitly — so there is no per-collection difference left to record. The read method normalises COMPOSE_COLOR expressions as `->base@->alpha/N`, TIMING as a number, EASING as bezier(x1,y1,x2,y2) to four decimals, and rem as px; it was validated by reproducing Motion, Static, Type, Density and Viewport byte-for-byte before any write.",
+      "$note": "Re-verified 2026-09-06 (thirteenth read) after the payload's primary tiers were rebased to primaryScale/600. Every collection's value checksum is byte-equal between payload and library once the four library-only ref/viewport/* canvas widths are excluded from the read, which the reader does explicitly — so there is no per-collection difference to record. The read method normalises COMPOSE_COLOR expressions as `->base@->alpha/N`, TIMING as a number, EASING as bezier(x1,y1,x2,y2) to four decimals, and rem as px; it was validated by reproducing Motion, Static, Type, Density and Viewport byte-for-byte before any write.",
       "$libraryOnly": "Space holds four variables the payload does not carry: ref/viewport/{mobile,tablet,desktop,desktopXl} (412 · 1024 · 1440 · 1768) — canvas widths a designer draws documentation frames at, bound as width on 14 frames, never projected from code. desktop-xl was renamed desktopXl on 2026-09-05 (grammar RULE 1, in place, bindings kept). The reader skips them; they are not a value difference."
     }
   },
@@ -2044,22 +2048,22 @@
       "text/link/brand/default": "Contrast 5.57:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: text (WCAG 1.4.3 AA)."
     }
   },
-  "$namesRefreshed": "2026-09-05 — every collection's name array re-derived from the eleventh live read (1,058 variables): the payload's names plus the four library-only ref/viewport/* canvas widths in Space. The arrays had been three weeks stale for Space (90 vs 146), Palette (164 vs 138) and Color (484 vs 493), which made the payload's `status` field call 104 existing Space variables new.",
+  "$namesRefreshed": "2026-09-06 — Palette re-derived after color/transparent/secondary/0 was pushed to the library and read back (138 → 139). 2026-09-06 — Space re-derived after the four cmp/stepper/* variables were pushed to the library and read back. 2026-09-05 — every collection's name array re-derived from the eleventh live read (1,058 variables): the payload's names plus the four library-only ref/viewport/* canvas widths in Space. The arrays had been three weeks stale for Space (90 vs 146), Palette (164 vs 138) and Color (484 vs 493), which made the payload's `status` field call 104 existing Space variables new.",
   "$fieldChecksums": {
     "$note": "Per-collection, per-FIELD checksums over `name=value` entries (build/figma-value-parity.mjs collectionFieldChecksums). Added 2026-09-05 because the value checksum alone let 253 escaped descriptions, five dead codeSyntax lines and 164 visibility disagreements sit under equal numbers. The reader excludes the library-only ref/viewport/* widths, skips scopes on TIMING/EASING (unsettable; Figma reports ALL_SCOPES) and decodes the Plugin API's HTML-entity encoding of descriptions (&#39; &amp; &quot; &gt; &lt;) before hashing — the API escapes on write and reads back escaped, so a raw read never equals the payload.",
     "recordedAt": "2026-09-06",
     "payload": {
       "Space": {
-        "description": "90c7e3c7:148",
-        "codeSyntax": "76cb8b8f:148",
-        "scopes": "81684c4a:148",
-        "hidden": "ad98fb5c:148"
+        "description": "5cff4d5:152",
+        "codeSyntax": "914c3faf:152",
+        "scopes": "c913a00d:152",
+        "hidden": "8ba01d5b:152"
       },
       "Palette": {
-        "description": "f144d4c6:138",
-        "codeSyntax": "9e064d6f:138",
-        "scopes": "e8d31ddf:138",
-        "hidden": "4302c77f:138"
+        "description": "bde2d59f:139",
+        "codeSyntax": "3d8dc5c1:139",
+        "scopes": "4d34a84a:139",
+        "hidden": "e07f0347:139"
       },
       "Color": {
         "description": "ede97696:509",
@@ -2106,16 +2110,16 @@
     },
     "figmaObserved": {
       "Space": {
-        "description": "90c7e3c7:148",
-        "codeSyntax": "76cb8b8f:148",
-        "scopes": "81684c4a:148",
-        "hidden": "ad98fb5c:148"
+        "description": "5cff4d5:152",
+        "codeSyntax": "914c3faf:152",
+        "scopes": "c913a00d:152",
+        "hidden": "8ba01d5b:152"
       },
       "Palette": {
-        "description": "f144d4c6:138",
-        "codeSyntax": "9e064d6f:138",
-        "scopes": "e8d31ddf:138",
-        "hidden": "4302c77f:138"
+        "description": "bde2d59f:139",
+        "codeSyntax": "3d8dc5c1:139",
+        "scopes": "4d34a84a:139",
+        "hidden": "e07f0347:139"
       },
       "Color": {
         "description": "ede97696:509",

@@ -227,6 +227,14 @@ export const legacyDsCss = {
 
     const themeMap = { light: mkBlock(), dark: mkBlock(), hc: mkBlock(), compact: mkBlock() };
     const colorModeMap = {};
+
+    // Every brand the dictionary knows about, the default one included. Collected in its own
+    // pass because a token seen early must be declared for a brand only introduced later.
+    const allBrands = new Set([DEFAULT_BRAND]);
+    for (const t of dictionary.allTokens) {
+      const modes = t.original?.$extensions?.mosje?.colorModes;
+      if (modes) for (const m of Object.keys(modes)) allBrands.add(m);
+    }
     for (const t of dictionary.allTokens) {
       const ext = t.original?.$extensions?.mosje;
       const name = cssNameFor(t);
@@ -244,21 +252,34 @@ export const legacyDsCss = {
         }
       }
       if (ext?.colorModes) {
-        for (const [mode, v] of Object.entries(ext.colorModes)) {
-          push((colorModeMap[mode] ??= mkBlock()), name, resolveRef(v));
+        /*
+         * EVERY BRAND DECLARES EVERY BRAND-VARYING TOKEN — not only the brands that override
+         * it. A custom property substitutes at the element where it is DECLARED, so a token
+         * a brand block omits is inherited from whatever brand encloses it. That is fine at
+         * :root and wrong the moment brands nest, which they do: the portal login shells
+         * render inside a `data-brand="navy"` island, and the estate supports an island of
+         * any brand inside a page of any other.
+         *
+         * This used to be done for the DEFAULT brand alone, with a comment explaining that
+         * without it "an explicit data-brand='blue' island inside an ambient navy page
+         * silently inherits the ambient brand". The reasoning was right and the scope was
+         * one brand too narrow. Measured before the change: blue declared all 579
+         * brand-varying tokens, each DBIM brand 533, and NAVY ONLY 374 — so a navy island
+         * inside a DBIM page inherited 205 DBIM values, every status colour among them.
+         * Found by measuring the NMBA login button, which is exactly such an island.
+         *
+         * `val(t)` is what :root already emits for this token, so a brand that does not
+         * override it declares the value it was inheriting anyway: no rendered value changes
+         * except inside a nested island, which is the defect being fixed.
+         */
+        for (const brand of allBrands) {
+          const v = ext.colorModes[brand];
+          push(
+            (colorModeMap[brand] ??= mkBlock()),
+            name,
+            v === undefined ? val(t) : resolveRef(v),
+          );
         }
-        // Every token that varies by brand also needs an explicit declaration for the
-        // DEFAULT brand ("blue") — not just the overrides above. Without this, blue never
-        // gets a [data-brand="blue"] block at all (colorModeMap has no "blue" key, because
-        // the source JSON encodes blue as the token's base $value rather than a colorModes
-        // override), so nothing can nest its way back to blue: an explicit
-        // data-brand="blue" island inside an ambient navy/ux4g page silently inherits the
-        // ambient brand instead of rendering blue. design.md documents nested brand islands
-        // as supported for every brand; this is what makes that true for the default one
-        // too. `val(t)` is exactly what :root already emits for this token (see the
-        // `lines` computation above) — this is a genuine ADDITION (a new selector), not a
-        // change to any existing value.
-        push((colorModeMap[DEFAULT_BRAND] ??= mkBlock()), name, val(t));
       }
     }
 

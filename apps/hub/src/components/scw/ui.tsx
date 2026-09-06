@@ -296,8 +296,6 @@ export function SectionEyebrow({ children }: { children: React.ReactNode }) {
   );
 }
 
-/* ----------------------------------------------------------------- Stepper */
-
 /* ------------------------------------------------------------- Form atoms */
 export function Field({
   label,

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import { ScwHeader } from "./gov-chrome";
 import { Sidebar, ADMIN_NAV } from "./sidebar";
@@ -5,9 +7,10 @@ import { UserMenu } from "./user-menu";
 
 /** Layout shell for the SCW Admin portal (scw-admin-uat). */
 export function AdminShell({ children }: { children: React.ReactNode }) {
+  const [collapsed, setCollapsed] = React.useState(false);
   return (
     <div className="min-h-screen">
-      <ScwHeader
+      <ScwHeader onToggleNav={() => setCollapsed((c) => !c)} navExpanded={!collapsed}
         actions={
           <UserMenu
             user={{ name: "Rajesh Pilli", role: "(Admin)", initials: "RP" }}

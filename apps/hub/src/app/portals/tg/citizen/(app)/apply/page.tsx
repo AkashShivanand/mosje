@@ -185,7 +185,7 @@ export default function ApplyPage() {
   return (
     <div className="mx-auto max-w-3xl">
       <div className="mb-8">
-        <Stepper steps={FORM_STEPS.map((s) => ({ label: s.label }))} current={step} />
+        <Stepper steps={FORM_STEPS} current={step} ariaLabel="Application progress" />
       </div>
 
       {step === 0 && (

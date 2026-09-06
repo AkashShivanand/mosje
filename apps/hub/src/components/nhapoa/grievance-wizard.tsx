@@ -3,14 +3,20 @@
 import * as React from "react";
 import Link from "next/link";
 import { Button, Field, TextInput } from "@/components/nhapoa/ui";
-import { DeclarationCheckbox, RadioGroup , Textarea, Stepper, Select, Card} from "@mosje/design-system";
+import { DeclarationCheckbox, RadioGroup, Textarea, Stepper, Select, Card } from "@mosje/design-system";
 import { GRIEVANCE_TYPES, SUBMISSION_ROLES } from "@/lib/nhapoa/citizen-data";
 import { STATES, DISTRICTS } from "@/lib/nhapoa/store/seed";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import type { CaseType, CaseSource, ComplainantRole } from "@/lib/nhapoa/store/types";
 import { Icon } from "@mosje/design-system";
 
-const STEPS = ["Grievance Registration", "Informer Details", "Victim Details", "Grievance Details", "Review & Submit"];
+const STEPS = [
+  { label: "Grievance Registration" },
+  { label: "Informer Details" },
+  { label: "Victim Details" },
+  { label: "Grievance Details" },
+  { label: "Review & Submit" },
+];
 /** Material Symbols name per submission role. */
 const ROLE_ICON = { Informer: "visibility", Victim: "person", NGO: "group" } as const;
 
@@ -122,7 +128,7 @@ export function GrievanceWizard({
 
   return (
     <>
-      <div className="mb-8"><Stepper steps={STEPS.map((label) => ({ label }))} current={step} /></div>
+      <div className="mb-8"><Stepper steps={STEPS} current={step} ariaLabel="Grievance progress" /></div>
 
       <Card className="p-6 sm:p-8">
         {step === 0 && (

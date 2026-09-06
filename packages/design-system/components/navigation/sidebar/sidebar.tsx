@@ -589,10 +589,10 @@ export function warnOversizedGroups(groups: SidebarNavGroup[]): string[] {
  * - In the collapsed rail a group opens a flyout listing its level-2 pages;
  *   a leaf shows its label as a tooltip; a badge count becomes a dot.
  * - Group labels are the accessible name of their `role="group"`, in both modes.
- * - `identity` names the portal at the head of the rail — the masthead carries
- *   the Ministry and the estate, this is the one place the portal is named. The
- *   rail's own collapse control is optional and lives in that row (or a 48px
- *   top row without an identity); the masthead's toggle is the default control.
+ * - `identity` names the portal at the head of the rail on the SAMAVESH wash —
+ *   the masthead carries the Ministry and the estate, this is the one place the
+ *   portal is named. The masthead's toggle collapses the rail; the rail's own
+ *   control exists only for a shell with neither masthead toggle nor identity.
  * - Five children per group is the design limit and seven the ceiling; past
  *   seven, development warns and the rail still renders.
  *
@@ -622,9 +622,9 @@ export function SidebarNav({
   id,
 }: SidebarNavProps): React.JSX.Element {
   const navLabel = label ?? (identity ? `${identity.name} navigation` : "Portal navigation");
-  // The rail's own collapse control: inside the identity row when there is one,
-  // otherwise a 48px row at the top. Only with a handler — a control that does
-  // nothing is worse than none.
+  // The rail's own collapse control: a 48px row at the top, only without an
+  // identity and only with a handler. Beside the brand it competed with the
+  // name and, on SAMBAL, had no room; the masthead is the one place to toggle.
   const control =
     showCollapseControl && onCollapsedChange ? (
       <IconButton
@@ -651,9 +651,14 @@ export function SidebarNav({
   const baseId = React.useId();
 
   return (
+    // The COLUMN stretches to the full height of the shell's row and carries the
+    // hairline between rail and content, so the line runs to the bottom edge
+    // however far the page scrolls; the rail inside it pins under the masthead.
+    // A shell's layout classes (hidden below md, shrink-0) belong to the column.
+    <div className={cn("ds-sidebar-column", collapsed ? "is-collapsed" : "is-expanded", className)}>
     <aside
       id={id}
-      className={cn("ds-sidebar", collapsed ? "is-collapsed" : "is-expanded", className)}
+      className={cn("ds-sidebar", collapsed ? "is-collapsed" : "is-expanded")}
     >
       {identity ? (
         <div className={cn("ds-sidebar__identity", collapsed && "is-collapsed")}>
@@ -674,7 +679,6 @@ export function SidebarNav({
               </span>
             </a>
           )}
-          {control}
         </div>
       ) : (
         control && <div className="ds-sidebar__control">{control}</div>
@@ -723,5 +727,6 @@ export function SidebarNav({
       {footer && <div className="ds-sidebar__footer">{footer}</div>}
 
     </aside>
+    </div>
   );
 }

@@ -399,11 +399,10 @@ export function Sidebar({ view }: { view: ViewId }) {
   ];
   return (
     <SidebarNav
-      identity={{ name: "PM-AJAY", expansion: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana", mark: <OrgLogo path="/portals/pm-ajay" />, href: BASE }}
+      identity={{ name: "PM-AJAY", expansion: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana", mark: <OrgLogo path="/portals/pm-ajay" tile={false} />, href: BASE }}
       groups={groups}
       pathname={`#${view}`}
       label="Dashboards"
-      className="pm-side"
       footer={
         <div className="pm-side-foot">
           <div className="av" aria-hidden="true">

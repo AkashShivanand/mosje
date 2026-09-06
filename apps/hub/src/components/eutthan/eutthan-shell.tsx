@@ -80,11 +80,10 @@ export function Sidebar({ navItems }: { navItems: NavItem[] }) {
   const groups = useMemo(() => toGroups(navItems), [navItems]);
   return (
     <SidebarNav
-      identity={{ name: "E-Utthan", expansion: "DAPSC Allocation & Progress Tracker", mark: <OrgLogo path="/portals/eutthan-admin" />, href: portalLink("/dashboard") }}
+      identity={{ name: "E-Utthan", expansion: "DAPSC Allocation & Progress Tracker", mark: <OrgLogo path="/portals/eutthan-admin" tile={false} />, href: portalLink("/dashboard") }}
       groups={groups}
       pathname={pathname}
       label="Main navigation"
-      className="eu-sidebar"
     />
   );
 }

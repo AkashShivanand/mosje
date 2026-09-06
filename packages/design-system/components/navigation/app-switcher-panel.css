@@ -54,22 +54,6 @@
     gap: var(--sa-stack-8);
   }
 
-  .ds-appsw__current-icon {
-    width: 30px;
-    height: 30px;
-    flex: 0 0 auto;
-    border-radius: var(--sa-shape-6);
-    background-color: var(--sa-bg-brand-primary-subtler);
-    color: var(--sa-text-brand-primary-base);
-    /* A text monogram, not an icon glyph: it takes a type role. */
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
   .ds-appsw__current-label {
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
@@ -205,39 +189,18 @@
   }
 
   /* Planned (non-interactive) */
-  .ds-appsw__item--planned {
-    opacity: 0.45;
-    cursor: default;
-  }
-
-  .ds-appsw__item--planned:hover {
-    background-color: transparent;
-  }
-
-  /* Icon */
-  .ds-appsw__item-icon {
-    width: 30px;
-    height: 30px;
+  /* ── The organisation's mark ─────────────────────────────────────────
+     `OrgLogo` brings its own tile — white ground, hairline, 8px radius, the
+     mark contained rather than cropped — so nothing here restates it. Both
+     rows used to draw a two-letter monogram of the entry's NAME in a brand
+     tint, which is a picture of a string rather than of an organisation, and
+     which put "NS", "NK" and "NB" three rows apart. ── */
+  .ds-appsw__mark {
     flex: 0 0 auto;
-    border-radius: var(--sa-shape-6);
-    background-color: var(--sa-bg-brand-primary-subtler);
-    color: var(--sa-text-brand-primary-base);
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 
-  .ds-appsw__item.is-active .ds-appsw__item-icon {
-    background-color: var(--sa-bg-brand-primary-bolder);
-    color: var(--sa-bg-neutral-base);
-  }
-
-  .ds-appsw__item--planned .ds-appsw__item-icon {
-    background-color: var(--sa-bg-neutral-subtler);
-    color: var(--sa-text-neutral-subtle);
+  .ds-appsw__item.is-active .ds-appsw__mark {
+    border-color: var(--sa-border-brand-primary-base);
   }
 
   /* Text stack */
@@ -281,34 +244,6 @@
   }
 
   /* Badges */
-  .ds-appsw__badge {
-    flex: 0 0 auto;
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    border-radius: var(--sa-shape-6);
-    padding: var(--sa-padding-2) var(--sa-padding-4);
-  }
-
-  .ds-appsw__badge--live {
-    background-color: var(--sa-bg-status-success-subtler);
-    color: var(--sa-text-status-success-base);
-  }
-
-  .ds-appsw__badge--soon {
-    background-color: var(--sa-bg-status-warning-base);
-    color: var(--sa-color-brand-saffronDark);
-  }
-
-  /* "In development" note shown below planned items in search */
-  .ds-appsw__planned-note {
-    padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-8);
-    font-size: var(--sa-type-body-3-size);
-    color: var(--sa-text-neutral-subtle);
-    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    text-align: center;
-  }
-
   /* Empty state */
   .ds-appsw__empty {
     padding: var(--sa-padding-20) var(--sa-padding-16);

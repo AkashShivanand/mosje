@@ -3,15 +3,15 @@
 import * as React from "react";
 import { UserShell } from "@/components/scw/user-shell";
 import { Button, TableShell, Field, TextInput } from "@/components/scw/ui";
-import { Icon , Stepper, Card} from "@mosje/design-system";
+import { Icon, Stepper, Card } from "@mosje/design-system";
 
 const STEPS = [
-  "Company Information",
-  "Product / Service",
-  "Team & Founders",
-  "Financial & Investors",
-  "Achievements",
-  "Review & Submit",
+  { label: "Company Information" },
+  { label: "Product / Service" },
+  { label: "Team & Founders" },
+  { label: "Financial & Investors" },
+  { label: "Achievements" },
+  { label: "Review & Submit" },
 ];
 
 /* ----------------------------------------------------------- helpers */
@@ -301,7 +301,7 @@ export default function SageRegistrationFormPage() {
         </div>
 
         <div className="mt-8">
-          <Stepper steps={STEPS.map((label) => ({ label }))} current={step} />
+          <Stepper steps={STEPS} current={step} ariaLabel="Registration progress" />
         </div>
 
         <div className="mt-10">

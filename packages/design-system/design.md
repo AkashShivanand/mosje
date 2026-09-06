@@ -12,6 +12,27 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-06 · System version: v0.59.0 (THE STEPPER'S SIZE AXIS REACHES FIGMA:
+  Size = Large | Compact on Node, Stage and Row, mapping to size="md" | "sm", so UX4G's Compact
+  can be drawn and not only specified. Compact's description uses Body/body-3, one pixel above
+  the stylesheet, because label-3 is this library's caps style.)
+
+  Last reviewed: 2026-09-06 · System version: v0.58.0 (THE RAIL OWNS ITS DIVIDER: SidebarNav renders a
+  full-height column that carries the hairline between rail and content, so it runs to the bottom
+  edge on scroll; the identity wash binds color/transparent/secondary/8 in Figma and code.)
+  Last reviewed: 2026-09-06 · System version: v0.57.0 (THE STEPPER IS REBUILT AND THE THREE
+  COPIES OF IT ARE GONE. Five states (error and disabled are new), two orientations, two sizes,
+  the label under the node or beside it, and opt-in return-to-a-stage. Below about 104px a column
+  it collapses to UX4G's compact bar — counter, current stage, dot row — with the full ordered
+  list still in the accessibility tree, replacing two CSS rules that clipped the labels
+  themselves. The trigger is a container query, because the row's room is a property of its own
+  column and not of the viewport. tg, nhapoa and scw now import it instead of re-implementing it.)
+
+  Last reviewed: 2026-09-05 · System version: v0.56.0 (THE RAIL'S IDENTITY IS THE HANDOFF'S: the
+  SAMAVESH saffron wash across the rail, a bare 56 mark, the full name to three lines; OrgLogo's
+  tile is a property; the masthead is the one place the rail collapses and the identity hosts
+  no control.)
+
   Last reviewed: 2026-09-05 · System version: v0.55.0 (EVERY PORTAL RAIL NAMES ITS PORTAL. All
   shells pass SidebarNav an identity — name, the department's full name, the registry mark, the
   portal's home — as the Figma master defaults to; the rail's own collapse control is off wherever
@@ -804,7 +825,7 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 
 | Axis | Attribute | Values | Meaning |
 | :--- | :--- | :--- | :--- |
-| **Brand** | `data-brand` | `blue` (default), `navy` | Two peer brand palettes, BOTH on light surfaces. Renamed from `blue-light`/`blue-dark` on 2026-08-07: those read as appearance themes, which they never were. **Since 2026-08-11 a brand swap changes the PRIMARY ramp and the neutral greys, and nothing else** — `blue` anchors `#0373DF` at rung 500, `navy` anchors `#003366` at rung **600** (the rung its lightness says, not the rung convention expects). Verified against the built stylesheet on 2026-08-12: `primaryScale` differs in 11 of 11 rungs, `neutralScale` in 10 of 13, and every other ramp is byte-identical across the two brands. The neutral re-lock is a systemic guarantee that the grey follows the brand's hue, **not a visible change** — at 8-bit precision the two brands' greys differ by ≤1 per channel at most rungs, so do not describe them to a stakeholder as "warm" versus "cool". `#162F6A` is **not** navy: it is DBIM Blue, which exists only as a code-only conformance preview. **Secondary (India Saffron `#FF671F`) and accent (India Green `#046A38`) are brand-INVARIANT**: both are SAMAVESH logo colours, so they are constants of the identity rather than variants of it. Navy used to swap secondary to green, which landed it 1.00:1 from the success colour — see the changelog for audit C-02. |
+| **Brand** | `data-brand` | `blue` (website & docs default), `navy` (**portal default since 2026-09-06**) | Two peer brand palettes, BOTH on light surfaces. Renamed from `blue-light`/`blue-dark` on 2026-08-07: those read as appearance themes, which they never were. **Since 2026-08-11 a brand swap changes the PRIMARY ramp and the neutral greys, and nothing else** — `blue` anchors `#0373DF` at rung 500, `navy` anchors `#003366` at rung **600** (the rung its lightness says, not the rung convention expects). Verified against the built stylesheet on 2026-08-12: `primaryScale` differs in 11 of 11 rungs, `neutralScale` in 10 of 13, and every other ramp is byte-identical across the two brands. The neutral re-lock is a systemic guarantee that the grey follows the brand's hue, **not a visible change** — at 8-bit precision the two brands' greys differ by ≤1 per channel at most rungs, so do not describe them to a stakeholder as "warm" versus "cool". `#162F6A` is **not** navy: it is DBIM Blue, which exists only as a code-only conformance preview. **Secondary (India Saffron `#FF671F`) and accent (India Green `#046A38`) are brand-INVARIANT**: both are SAMAVESH logo colours, so they are constants of the identity rather than variants of it. Navy used to swap secondary to green, which landed it 1.00:1 from the success colour — see the changelog for audit C-02. |
 | ~~Appearance~~ | ~~`data-theme`~~ | **REMOVED 2026-08-10** | Dark and high-contrast are owned entirely by the UX4G accessibility widget, which applies its own `.dark-mode` class to `<html>` and never read `data-theme`. This axis was a second, parallel mechanism nothing consumed. The token source still carries the overrides (unemitted) so it can be revived deliberately — see `docs/superpowers/records/2026-08-10-figma-theme-dark-hc-removed.md`. |
 | **Density** | `data-density` | `comfortable` (default/unset), `compact` | Controls padding, heights, and spatial density. |
 | **Surface** | `data-surface` | `website` (default/unset), `portal` | Selects the **typography scale**. `website` = the expressive editorial ramp (display-1 ≈ 80px); `portal` = the dense functional ramp (display-1 ≈ 56px). Same role token names in both; only the `--ds-type-*` values differ. Set `data-surface="portal"` on portal `<html>` roots; the website/hub stay default. Maps 1:1 to the SAMAVESH Figma `Website` / `Portal` type modes. |
@@ -822,6 +843,33 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 > switch that does nothing. Opt in explicitly:
 > `<ColorModeSwitcher modes={[...COLOR_MODES, ...UX4G_COLOR_MODES]} />`.
 > The MoSJE default stays the primary blue `#0373DF`, as DBIM requires.
+
+**Which brand a surface OPENS in is a property of the route, not of the estate.**
+`defaultColorModeForPath` maps `/portals/**` to `navy` and everything else to
+`blue`; `BRAND_BY_ROUTE` is the one array the inline no-flash `<head>` script and
+the provider both read, so first paint and hydration cannot reach different
+answers. It is a **default, not a lock** — a brand chosen in the demo dock is
+persisted and outranks it on every route, so the Colour tab keeps working inside
+a portal instead of being a control that appears usable and does nothing.
+
+Two consequences worth knowing:
+
+- **The cookie is now written only by a deliberate choice.** `ColorModeProvider`
+  used to call `applyColorMode(readColorModeCookie())` on mount, which handed
+  every visitor a cookie recording a choice nobody had made — after which "has a
+  cookie" could not mean "chose", and any per-route default would be stamped out
+  by the first page anyone happened to land on. The mount path now passes
+  `persist: false`, and `hasChosenColorMode()` reads the cookie's PRESENCE rather
+  than its value, because `blue` is both the estate default and a real choice.
+- **`smile-admin` and `nmba` no longer pin `data-brand="navy"` on a wrapper.**
+  The route default covers them, and keeping the wrappers would have made those
+  two the only portals the switcher could not reach.
+
+The path is resolved on the CLIENT — `RouteColorModeProvider` reads `usePathname`
+— never during a server render. The root layout sits above every route in the
+estate, so a server-side read would make all of them dynamic for the sake of one
+attribute; it is also what lets the brand follow a client-side navigation from
+the website into a portal, where the `<head>` script never runs again.
 
 > **Tip:** Nested brand "islands" (e.g. a navy portal shell inside the blue hub) must be explicitly scoped with a nested `[data-brand]` element. To prevent a flash on initial render, initialize the attribute with the exported `colorModeInitScript()`.
 
@@ -2782,8 +2830,19 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - Width hugs content between 12rem and 22rem. `matchTriggerWidth` is for a picker that belongs to one field, not for a panel of arbitrary content.
 
 #### Stepper
-**Purpose**: Displays progress through a multi-step form or process.  
-**Rule**: Used with `<Wizard>`. Steps must show completed, current, and upcoming states.
+**Purpose**: Progress through a multi-stage form — which stages are done, which one the applicant is on, which failed validation, and how many remain.  
+**Props**: `steps` (`StepperStep[]`) · `current` · `ariaLabel` · `orientation` (`horizontal` | `vertical`) · `size` (`md` | `sm`) · `labelPlacement` (`bottom` | `right`, horizontal only) · `collapse` (`auto` | `never`) · `onStepSelect`. `StepperStep` carries `label`, `description?` and `status?` (`complete` | `error` | `disabled` | `upcoming`).  
+**Rules**:
+- **Five states, one derivation.** Everything before `current` is complete, `current` is current, everything after is upcoming. A step may override with `error`, `disabled` or an out-of-order `complete`; **`current` may never be overridden** — the index is what the form already knows. One expression resolves the state and the node, label, track, hidden text and compact counter all read it, so the stepper cannot disagree with itself.
+- **Never colour alone.** Each state carries a glyph — tick, alert mark, lock, or the number — and visually hidden text (`(completed)`, `(current step)`, `(has errors)`, `(not yet available)`, `(upcoming)`).
+- **It is a display of position, not navigation.** `onStepSelect` is opt-in and makes buttons only of stages that are `complete` or `error`; upcoming and disabled stages stay static text, so a control is never drawn that cannot be used. Ordinary tab order, no roving tabindex.
+- **Below about 104px a column it collapses to the compact bar** — a counter, the current stage's name, a dot row — with the full `<ol>` still in the accessibility tree. The trigger is a **container query** keyed on `data-steps`, not a viewport media query: the SCW registration screen gives the row 354px at a 768px viewport, and a viewport query called that comfortable. `collapse="never"` opts out.
+- **Fewer than three stages: do not use one** (USWDS's floor). More than about nine and the count stops reassuring.
+- Geometry comes from `cmp/stepper/node/{md,sm}`, `cmp/stepper/track` (1px, as measured in the handoff) and `cmp/stepper/dot`.
+- **A recorded divergence:** GOV.UK advises testing a form without a progress indicator and prefers a "Question 3 of 9" caption; UX4G and the MoSJE handoff both specify a stepper. The estate ships the stepper, and the compact bar answers the mobile half of that objection.
+- Used with `<Wizard>`, which owns the live region and the focus move on stage change.
+- **Figma carries the `Size` axis since 2026-09-06** — `Large` maps to `md`, `Compact` to `sm` — on all three layers, so a compact stepper can be drawn rather than only specified. One divergence is recorded rather than hidden: the stylesheet drops the compact description to `label-3`'s SIZE, but `Label/label-3` is this library's CAPS style, so Figma uses `Body/body-3` there and the helper text is one pixel larger instead of uppercase.
+- **In Figma, place `Stepper / Row`** — the whole stepper, seven variants, one per stage count from three to nine, with equal columns by construction. `Stepper / Horizontal` and `Stepper / Vertical` publish a single STAGE and exist to be composed. Those two were named the wrong way round from the UX4G 2.0 fork until 2026-09-06 (the connector's rotation proves which is which; only the horizontal one carries `Label Position`), and Figma drew `State=Current` as a green in-progress arc while the code fills the node — both corrected, with the code taken as authoritative.
 
 #### Tabs / TabPanel
 **Purpose**: Accessible tabbed navigation for **non-linear** sections the user revisits in any order (vs `<Wizard>`, which is a linear stepper).  

@@ -30,13 +30,13 @@ export function Sidebar() {
   return (
     <SidebarNav
       id="smile-admin-sidebar"
-      identity={{ name: "SMILE", expansion: "Beggary Rehabilitation Portal", mark: <OrgLogo path="/portals/smile-admin" />, href: "/portals/smile-admin/dashboard" }}
+      identity={{ name: "SMILE", expansion: "Beggary Rehabilitation Portal", mark: <OrgLogo path="/portals/smile-admin" tile={false} />, href: "/portals/smile-admin/dashboard" }}
       groups={groups}
       pathname={pathname}
       collapsed={sidebarCollapsed}
       onCollapsedChange={setSidebarCollapsed}
       footer={<StatusFooter collapsed={sidebarCollapsed} />}
-      className="hidden shrink-0 border-r border-stroke-200 md:flex md:flex-col"
+      className="hidden md:flex"
     />
   );
 }

@@ -2697,6 +2697,12 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "Mode resolved on the server (from the cookie) to avoid a flash."
+      },
+      {
+        "name": "routeDefault",
+        "type": "string",
+        "required": false,
+        "description": "The brand this surface opens in when nobody has chosen one — from `defaultColorModeForPath`. A chosen mode always outranks it. Passed in rather than derived here so this package stays framework-agnostic: the hub reads the path with `usePathname` and hands the answer down, which is also what lets the brand follow a client-side navigation from the website into a portal, where the inline `<head>` script never runs again."
       }
     ]
   },
@@ -7175,6 +7181,13 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "An explicit source, for a mark that is not in the registry yet. Reach for this ONLY while adding one — it is the escape hatch the registry exists to make unnecessary, and `check:org-logos` reports every use so they cannot accumulate quietly."
+      },
+      {
+        "name": "tile",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "The estate's standard tile — white ground, hairline rule, 8px radius — around the mark. Off, the mark sits bare on whatever it is placed on: the rail's portal identity draws it that way, as the handoff did. The artwork keeps its inset either way, so a mark never touches the edge of its box. Mirrors the Figma `Tile` boolean."
       }
     ]
   },
@@ -9270,7 +9283,7 @@ export const GENERATED_PROPS = {
         "name": "showCollapseControl",
         "type": "boolean",
         "required": false,
-        "description": "Show the rail's own collapse control (mirrors Figma `Show Control` on the identity block, off by default). With an `identity` it sits in that row — trailing when expanded, beneath the mark when collapsed; without one it takes a 48px row at the top. The portal masthead's toggle drives the same state, so pass this only in a shell without that toggle. Requires `onCollapsedChange`."
+        "description": "Show the rail's own collapse control: a 48px row at the top, rendered ONLY when there is no `identity`. The portal masthead's toggle is where the rail is collapsed (`SiteHeader.onToggleNav`); a control beside the brand competed with the name and had no room on SAMBAL, so the identity never hosts one. Pass this only in a shell with neither a masthead toggle nor an identity. Requires `onCollapsedChange`."
       }
     ]
   },
@@ -10233,13 +10246,13 @@ export const GENERATED_PROPS = {
         "name": "current",
         "type": "number",
         "required": true,
-        "description": "0-based index of the active step. Steps before it render as completed."
+        "description": "0-based index of the active stage. Earlier stages default to complete."
       },
       {
         "name": "steps",
         "type": "StepperStep[]",
         "required": true,
-        "description": "The ordered steps."
+        "description": "The ordered stages."
       },
       {
         "name": "ariaLabel",
@@ -10247,6 +10260,40 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"Progress\"",
         "description": "Accessible name for the progress list."
+      },
+      {
+        "name": "collapse",
+        "type": "\"auto\" | \"never\"",
+        "required": false,
+        "default": "\"auto\"",
+        "description": "Whether the row may collapse to the compact bar — a counter, the current stage's name and a row of dots — when it is too narrow to draw every label. `never` keeps the full row at every width."
+      },
+      {
+        "name": "labelPlacement",
+        "type": "\"bottom\" | \"right\"",
+        "required": false,
+        "default": "\"bottom\"",
+        "description": "Label beside the marker rather than beneath it. Horizontal only."
+      },
+      {
+        "name": "onStepSelect",
+        "type": "(index: number) => void",
+        "required": false,
+        "description": "Opt in to letting the applicant return to a stage. Only stages that are complete or in error become buttons; upcoming and disabled stages stay static text, so a control is never drawn that cannot be used."
+      },
+      {
+        "name": "orientation",
+        "type": "\"horizontal\" | \"vertical\"",
+        "required": false,
+        "default": "\"horizontal\"",
+        "description": "Stack the stages down the page instead of across it."
+      },
+      {
+        "name": "size",
+        "type": "\"md\" | \"sm\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "`sm` is UX4G's Compact size — for side panels and dense flows."
       }
     ]
   },
