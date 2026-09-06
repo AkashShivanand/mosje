@@ -3,11 +3,12 @@
 import * as React from "react";
 import "./app-switcher-panel.css";
 import { cn } from "../../utils/cn";
+import { OrgLogo } from "../brand/org-logo";
 import {
   AppEntry,
   DEFAULT_APPS,
-  deriveAbbr,
   filterApps,
+  liveEntries,
   matchActivePath,
 } from "./app-switcher-utils";
 
@@ -116,7 +117,26 @@ export function AppSwitcherPanel({
     [apps, activeNormPath],
   );
 
-  const visibleApps = React.useMemo(() => filterApps(apps, query), [apps, query]);
+  /*
+   * LIVE ONLY, and it is the estate's rule rather than this panel's.
+   *
+   * The panel used to render every planned entry as a greyed row badged "soon",
+   * with a "This portal is in development" note under the group — thirteen of
+   * the registry's twenty-six portals. The two other surfaces that list the same
+   * registry had already stopped doing that: `/portals` lists what ships, and
+   * the SAMAVESH banner drawer cannot show a portal that does not exist. A
+   * switcher offering a destination that is not there is worse than either,
+   * because it is a control that does nothing.
+   *
+   * The test is `isLiveEntry`, shared with both of them, so a fourth surface
+   * cannot answer the question a fourth way.
+   */
+  const listedApps = React.useMemo(() => liveEntries(apps), [apps]);
+
+  const visibleApps = React.useMemo(
+    () => filterApps(listedApps, query),
+    [listedApps, query],
+  );
 
   // Group visible apps preserving registry order.
   const groups = React.useMemo(() => {
@@ -146,9 +166,16 @@ export function AppSwitcherPanel({
           <div className="ds-appsw__header-row">
             {/* Current app */}
             <div className="ds-appsw__current">
-              <span className="ds-appsw__current-icon" aria-hidden="true">
-                {currentApp ? deriveAbbr(currentApp) : "?"}
-              </span>
+              {/* The organisation's own mark, from the design system's registry
+                  — not a two-letter monogram of its name. A route with no mark
+                  of its own resolves to the State Emblem, which is the correct
+                  answer on a Government of India property rather than a
+                  placeholder: see `ORG_LOGO_FALLBACK`. */}
+              <OrgLogo
+                path={currentApp?.path ?? null}
+                size="sm"
+                className="ds-appsw__mark"
+              />
               <div>
                 <div className="ds-appsw__current-label">Currently in</div>
                 <div className="ds-appsw__current-name">
@@ -202,9 +229,6 @@ export function AppSwitcherPanel({
           </div>
         ) : (
           groups.map(({ group, items }) => {
-            const hasPlannedResults =
-              query.trim().length > 0 &&
-              items.some((a) => a.status === "planned");
             return (
               /* REAL LIST SEMANTICS. This was a div with role="list" whose first
                  child was the group label — not a listitem, which breaks the list
@@ -216,46 +240,9 @@ export function AppSwitcherPanel({
                 <div className="ds-appsw__group-label" id={`ds-appsw-g-${group}`}>{group}</div>
                 <ul className="ds-appsw__group" aria-labelledby={`ds-appsw-g-${group}`}>
                 {items.map((a) => {
-                  const abbr = deriveAbbr(a);
                   const normPath =
                     a.path === "/" ? "/" : a.path.replace(/\/$/, "");
                   const isActive = activeNormPath === normPath;
-                  const isPlanned = a.status === "planned";
-
-                  if (isPlanned) {
-                    return (
-                      /* NO `aria-disabled`. A planned row is not a control that has
-                         been switched off — it is a list item with no link in it, so
-                         there is nothing to disable and the attribute is not defined
-                         for `listitem`. Its status is carried by the "soon" badge and
-                         the note under the group, which is what actually gets read. */
-                      <li
-                        key={a.path}
-                        className="ds-appsw__item ds-appsw__item--planned"
-                        aria-label={`${a.name} — coming soon`}
-                      >
-                        <span
-                          className="ds-appsw__item-icon"
-                          aria-hidden="true"
-                        >
-                          {abbr}
-                        </span>
-                        <span className="ds-appsw__item-text">
-                          <span className="ds-appsw__item-name">
-                            {a.name}
-                          </span>
-                          {a.desc && (
-                            <span className="ds-appsw__item-desc">
-                              {a.desc}
-                            </span>
-                          )}
-                        </span>
-                        <span className="ds-appsw__badge ds-appsw__badge--soon">
-                          soon
-                        </span>
-                      </li>
-                    );
-                  }
 
                   return (
                     <li key={a.path}>
@@ -271,12 +258,7 @@ export function AppSwitcherPanel({
                       aria-current={isActive ? "page" : undefined}
                       onClick={() => onNavigate?.()}
                     >
-                      <span
-                        className="ds-appsw__item-icon"
-                        aria-hidden="true"
-                      >
-                        {abbr}
-                      </span>
+                      <OrgLogo path={a.path} size="sm" className="ds-appsw__mark" />
                       <span className="ds-appsw__item-text">
                         <span className="ds-appsw__item-name">
                           {a.name}
@@ -304,21 +286,17 @@ export function AppSwitcherPanel({
                           </span>
                         )}
                       </span>
-                      {group === "Portals" && (
-                        <span className="ds-appsw__badge ds-appsw__badge--live">
-                          live
-                        </span>
-                      )}
+                      {/* NO "live" BADGE. With planned entries no longer
+                          listed, live is the only state a row can be in, so the
+                          badge was a label every row wore and none was
+                          distinguished by — the same reasoning the portals
+                          gateway used when it dropped "Total 21 / Live 8 /
+                          Onboarding 13" for one figure. */}
                     </a>
                     </li>
                   );
                 })}
                 </ul>
-                {hasPlannedResults && (
-                  <div className="ds-appsw__planned-note">
-                    This portal is in development
-                  </div>
-                )}
               </div>
             );
           })

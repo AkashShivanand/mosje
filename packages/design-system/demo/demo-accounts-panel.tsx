@@ -6,8 +6,19 @@
  * DEMO-ONLY component. The credentials list shared by `DemoFab` and
  * `DemoDock` — one definition, so the two never drift apart. Renders one row
  * per account: the role on its own line (the longest field, so it doesn't
- * fight the rest of the row for space), then id / password / actions
- * aligned in a grid below it, with copy-to-clipboard and a "Use" button.
+ * fight the rest of the row for space) with the id beneath it, and a "Use"
+ * chip spanning both lines on the right. Copy-to-clipboard sits beside each
+ * value it copies.
+ *
+ * THE WHOLE ROW IS THE TARGET, and getting that right is the one subtle part.
+ * An overlaid transparent button covers the row; the visible content sits on
+ * top of it so the hover wash paints behind the text, and the content declares
+ * `pointer-events: none` so clicks fall through to the button underneath. The
+ * copy buttons take their pointer events back, because copying an id and using
+ * an account are different intents. Without that hand-off the content swallows
+ * every click and only the row's 10px padding strips remain clickable — which
+ * is exactly how this shipped, with hover and click working from a sliver at
+ * the bottom of each row.
  *
  * Default behaviour on "Use": dispatches a `demo:fill` CustomEvent so a login
  * page can prefill its form without prop-drilling — see `DemoFab`'s doc
@@ -138,13 +149,23 @@ export function DemoAccountsPanel({
           </button>
         </p>
       )}
+      {/* One caption for the list, laid out on the ROW grid so it sits over the
+          column it names. It used to be a three-track header aligned to an
+          id/password/actions grid that no longer exists. */}
       <div className="ds-demo-accounts__col-labels" aria-hidden="true">
-        <span>{idLabel}</span>
-        {!sharedPassword && <span>Password</span>}
+        <span className="ds-demo-accounts__data">
+          <span>{idLabel}</span>
+          {!sharedPassword && <span>Password</span>}
+        </span>
       </div>
       <ul className="ds-demo-accounts__list">
         {accounts.map((account) => (
           <li className="ds-demo-accounts__row" key={account.id}>
+            {/* The whole row is the target. It sits UNDER the content in z-order
+                so its hover wash paints behind the text rather than over it;
+                the content gives its pointer events back (see the stylesheet),
+                which is what makes the row clickable along its whole height
+                rather than only on the padding strips above and below. */}
             <button
               type="button"
               className="ds-demo-accounts__hit"
@@ -154,8 +175,8 @@ export function DemoAccountsPanel({
             {/* The role name is the longest field in the row, so it gets its
                 own line — cramming it into a fourth table column is what
                 forced the id/password/actions to fight for space. */}
-            <div className="ds-demo-accounts__role">{account.role}</div>
-            <div className="ds-demo-accounts__data">
+            <span className="ds-demo-accounts__role">{account.role}</span>
+            <span className="ds-demo-accounts__data">
               <span className="ds-demo-accounts__cell">
                 <span className="ds-sr-only">{idLabel}: </span>
                 <span className="ds-demo-accounts__id">{account.id}</span>
@@ -180,16 +201,16 @@ export function DemoAccountsPanel({
                   </button>
                 </span>
               )}
-              {/* The whole ROW is the target. `Use` was the thing a presenter
-                  came to click and was rendered as the smallest, lightest,
-                  right-most element on the row — the hierarchy inverted. It
-                  stays as the visible affordance; the row carries the hit
-                  area, so an 11px copy icon is no longer competing with the
-                  primary action for the same 38x22 of screen. */}
-              <span className="ds-demo-accounts__use" aria-hidden="true">
-                Use
-              </span>
-            </div>
+            </span>
+            {/* `Use` was the thing a presenter came to click and was rendered as
+                the smallest, lightest, right-most element on the row — the
+                hierarchy inverted. It is now a chip spanning both lines of the
+                row, so it reads as the action for the WHOLE account rather than
+                as a trailing word on the id line, and it fills in on hover. The
+                row carries the hit area; this is the affordance. */}
+            <span className="ds-demo-accounts__use" aria-hidden="true">
+              Use
+            </span>
           </li>
         ))}
       </ul>

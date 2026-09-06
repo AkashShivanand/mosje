@@ -3953,11 +3953,11 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "on/bg/brand/primary/bolder",
-        "value": "#ffffff",
+        "value": "#150202",
         "against": "bg/brand/primary/bolder",
-        "ratio": 4.32,
+        "ratio": 4.67,
         "floor": 4.5,
-        "pass": false
+        "pass": true
       },
       {
         "token": "on/bg/status/warning/bold",

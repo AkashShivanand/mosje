@@ -396,7 +396,7 @@
   },
   "AccountMenu": {
     "nodeId": "56046:4113",
-    "captured": "2026-08-25",
+    "captured": "2026-09-06",
     "properties": {
       "Name#56049:0": {
         "type": "TEXT",
@@ -410,7 +410,11 @@
         "type": "TEXT",
         "defaultValue": "State Nodal Officer"
       },
-      "Show email#56049:12": {
+      "Show role#56049:12": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show email#57553:0": {
         "type": "BOOLEAN",
         "defaultValue": true
       },
