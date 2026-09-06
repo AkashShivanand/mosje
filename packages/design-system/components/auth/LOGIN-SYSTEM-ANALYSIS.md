@@ -1075,3 +1075,60 @@ move**, which is the whole regression argument and is verifiable from the diff.
 
 `LabelWithLink` and `.ds-authfields__labelrow` are both deleted. Any form in the estate can
 now put a recovery route on a label row correctly.
+
+---
+
+## Phase 9 — E-Anudaan's login follows the Handoff (2026-09-06)
+
+Source: **MoSJE Portal — Handoff** (`evmNmlK8g4VYwJVu2FwSGV`), page `E-Anudaan`,
+section `LOGIN & AUTHENTICATION` (`52368:232012`) — four flows, sixteen frames.
+The 2026-09-03 note in `types.ts` saying "E-Anudaan has no login screen in the
+Handoff at all" was true of the SMILE page it searched; **these screens exist on
+E-Anudaan's own page**, and they are the reference now.
+
+### What the Handoff specifies, per role
+
+| | NGO | Officer |
+|---|---|---|
+| Tab label | `NGO` | **`Officer`** — not "Ministry Officer" |
+| Identifier | **Username** / "Enter your username" | **Mobile Number** / "Enter your mobile number" |
+| DigiLocker card + divider | **yes** | no |
+| Method tabs | `Login with Credentials` · `Login with DARPAN ID` | **none** |
+| Security check | **"I am not a robot" + Security check**, verified state drawn | none |
+| Role description under the heading | **none** | none |
+
+The two identifiers are why `PortalRoleTab.identifierLabel` was added: an NGO's
+username is issued with its registration, an officer signs in with their own
+mobile number, and the estate default "Username / Email / Mobile" asked both to
+guess which of the three their portal wanted.
+
+The DARPAN tab draws **DARPAN ID + PAN Number**, no password, no security check,
+and a `Continue with DARPAN` button — which is what Phase 8 had already built
+from the department's live screen, so the two sources agree.
+
+### Four places the shipped page deliberately differs, and why
+
+1. **The consent line stays.** The Handoff draws nothing under the button. GIGW
+   requires the disclosure and `ConsentLine`'s own docstring says changing it is
+   a legal decision rather than a design one, so a drawing that omits it does not
+   override it. Recorded rather than dropped.
+2. **The DARPAN roles note stays** — "Other login roles (DWO, State, Ministry,
+   Finance, PMU) use Ministry-issued credentials". It is on the department's LIVE
+   screen and not in this Handoff. It tells five roles they are on the wrong tab;
+   removing it to match a drawing would lose real guidance.
+3. **The submit button is NOT disabled on an empty form**, though the Handoff
+   draws it greyed. A disabled submit gives a keyboard user nothing to act on —
+   they tab to it, press Enter, and learn only that nothing happens. The fields
+   carry `required` and the portal reports what is missing on submit. This is the
+   one place the drawing was not followed, and it is a deliberate call.
+4. **No "Need Help?" line.** It had been switched on via `links.helpFaqHref`,
+   which renders a visible link the Handoff does not draw. The bot check's own
+   escape route is `botCheck.helpHref` — a different thing, shown only inside the
+   check, and the one WCAG 2.2 3.3.8 actually requires.
+
+### The check is a real one, with a real alternative
+
+`captcha: true` on the NGO role is only safe because `botCheck.helpHref` routes a
+blocked applicant to a person. WCAG 2.2 3.3.8 forbids a cognitive function test
+without an alternative, and the estate's default of OFF exists so that switching
+it on is a decision somebody makes and records. This is that record.

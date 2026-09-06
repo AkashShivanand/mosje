@@ -130,6 +130,19 @@ export interface PortalRoleTab {
   defaultMode?: PortalAuthMode;
   /** Subtitle or help text displayed under the form heading for this role */
   description?: string;
+  /**
+   * What this role's identifier field is called. @default "Username / Email / Mobile"
+   *
+   * **It is per ROLE because the roles genuinely differ.** E-Anudaan's handoff
+   * asks an NGO for a "Username" and a Ministry officer for a "Mobile Number" on
+   * the same page — one is issued with the organisation's registration, the other
+   * is the officer's own number. A single estate-wide label is wrong for both, and
+   * the generic "Username / Email / Mobile" asks the reader to guess which of the
+   * three their portal actually wants.
+   */
+  identifierLabel?: string;
+  /** The placeholder under that label. Say what to type, not what the field is. */
+  identifierPlaceholder?: string;
 }
 
 /**

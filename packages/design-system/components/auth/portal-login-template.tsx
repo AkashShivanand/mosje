@@ -493,6 +493,8 @@ export function PortalLoginTemplate({
             onIdentifierChange={setUsername}
             password={password}
             onPasswordChange={setPassword}
+            identifierLabel={activeRole?.identifierLabel}
+            identifierPlaceholder={activeRole?.identifierPlaceholder}
             forgotHref={config.links?.forgotPasswordHref}
             botCheck={botCheck}
           />
@@ -504,6 +506,8 @@ export function PortalLoginTemplate({
             onIdentifierChange={setUsername}
             pin={password}
             onPinChange={setPassword}
+            identifierLabel={activeRole?.identifierLabel}
+            identifierPlaceholder={activeRole?.identifierPlaceholder}
             forgotHref={config.links?.forgotPasswordHref}
             botCheck={botCheck}
           />
