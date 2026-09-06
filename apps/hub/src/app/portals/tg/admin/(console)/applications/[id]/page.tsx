@@ -3,8 +3,8 @@
 import * as React from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { Icon, Modal } from "@mosje/design-system";
-import { Button, Card, StatusPill, SlaBadge, Textarea, cnField } from "@/components/tg/ui";
+import { Icon, Modal , Textarea} from "@mosje/design-system";
+import { Button, Card, StatusPill, SlaBadge, cnField } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { ROLES } from "@/lib/tg/roles";
 import { canTransition, ROLE_ACTS_ON, type Stage } from "@/lib/tg/store/types";

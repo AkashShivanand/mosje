@@ -3,25 +3,18 @@
     "Button",
     "Card",
     "DataTable",
-    "EmptyState",
-    "Select",
-    "Stepper",
-    "Textarea"
+    "Select"
   ],
   "apps/hub/src/components/scw/ui.tsx": [
     "Button",
     "Card",
     "DataTable",
     "Pagination",
-    "Select",
-    "Stepper"
+    "Select"
   ],
   "apps/hub/src/components/tg/ui.tsx": [
     "Button",
     "Card",
-    "EmptyState",
-    "Select",
-    "Stepper",
-    "Textarea"
+    "Select"
   ]
 }

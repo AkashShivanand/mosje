@@ -2,15 +2,8 @@
 
 import * as React from "react";
 import { UserShell } from "@/components/scw/user-shell";
-import {
-  Button,
-  Card,
-  DataTable,
-  Field,
-  Stepper,
-  TextInput,
-} from "@/components/scw/ui";
-import { Icon } from "@mosje/design-system";
+import { Button, Card, DataTable, Field, TextInput } from "@/components/scw/ui";
+import { Icon , Stepper} from "@mosje/design-system";
 
 const STEPS = [
   "Company Information",
@@ -293,7 +286,6 @@ function StepReviewSubmit() {
 /* ----------------------------------------------------------- page */
 export default function SageRegistrationFormPage() {
   const [step, setStep] = React.useState(0);
-  const done = Array.from({ length: step }, (_, i) => i);
   const isLast = step === STEPS.length - 1;
 
   return (
@@ -309,7 +301,7 @@ export default function SageRegistrationFormPage() {
         </div>
 
         <div className="mt-8">
-          <Stepper steps={STEPS} current={step} done={done} />
+          <Stepper steps={STEPS.map((label) => ({ label }))} current={step} />
         </div>
 
         <div className="mt-10">

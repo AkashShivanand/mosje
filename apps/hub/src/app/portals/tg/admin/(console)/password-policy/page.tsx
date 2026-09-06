@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { PortalPageHeader, Card, Field, TextInput, Button, EmptyState } from "@/components/tg/ui";
-import { Checkbox } from "@mosje/design-system";
+import { PortalPageHeader, Card, Field, TextInput, Button } from "@/components/tg/ui";
+import { Checkbox , EmptyState} from "@mosje/design-system";
 import { useTg } from "@/lib/tg/store/store";
 import type { PasswordPolicy } from "@/lib/tg/store/types";
 import { Icon } from "@mosje/design-system";
@@ -11,7 +11,7 @@ export default function PasswordPolicyPage() {
   const { state, hydrated, updatePasswordPolicy } = useTg();
   if (!hydrated) return null;
   if (state.session !== "central-admin")
-    return <EmptyState title="Access restricted" hint="Only the Central Admin can edit the password policy." />;
+    return <EmptyState title="Access restricted" description="Only the Central Admin can edit the password policy." />;
   // The form initialises once from the (possibly restored) policy — no
   // setState-in-effect needed.
   return <PolicyForm initial={state.passwordPolicy} onSave={updatePasswordPolicy} />;

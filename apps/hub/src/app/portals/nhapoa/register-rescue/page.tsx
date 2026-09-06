@@ -3,11 +3,11 @@
 import * as React from "react";
 import Link from "next/link";
 import { CitizenShell } from "@/components/nhapoa/citizen-shell";
-import { Button, Field, TextInput, Textarea, Select, Card } from "@/components/nhapoa/ui";
+import { Button, Field, TextInput, Select, Card } from "@/components/nhapoa/ui";
 import { RESCUE_GENDERS } from "@/lib/nhapoa/citizen-data";
 import { STATES, DISTRICTS } from "@/lib/nhapoa/store/seed";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
-import { Icon } from "@mosje/design-system";
+import { Icon , Textarea} from "@mosje/design-system";
 
 export default function RegisterRescuePage() {
   const { createRescue } = useNhapoa();

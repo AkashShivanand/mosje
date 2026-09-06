@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Badge, Icon, Modal } from "@mosje/design-system";
-import { PortalPageHeader, SearchInput, Button, Field, TextInput, Select, Table, EmptyState } from "@/components/tg/ui";
+import { Badge, Icon, Modal , EmptyState} from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Button, Field, TextInput, Select, Table } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { STATES } from "@/lib/tg/states";
 import type { UserRecord } from "@/lib/tg/store/types";
@@ -22,7 +22,7 @@ export default function UsersPage() {
 
   if (!hydrated) return null;
   if (state.session !== "central-admin")
-    return <EmptyState title="Access restricted" hint="Only the Central Admin can manage users." />;
+    return <EmptyState title="Access restricted" description="Only the Central Admin can manage users." />;
 
   const rows = state.users.filter((u) =>
     [u.name, u.email, u.mobile, u.role, u.jurisdiction].some((v) => v.toLowerCase().includes(query.toLowerCase())),

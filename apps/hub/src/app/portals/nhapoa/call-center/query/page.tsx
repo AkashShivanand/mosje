@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { PortalPageHeader, Card, Button, Field, TextInput, Textarea } from "@/components/nhapoa/ui";
+import { PortalPageHeader, Card, Button, Field, TextInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
-import { Icon } from "@mosje/design-system";
+import { Icon , Textarea} from "@mosje/design-system";
 
 export default function QueryPage() {
   const { logQuery } = useNhapoa();

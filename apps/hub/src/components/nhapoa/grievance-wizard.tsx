@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Button, Field, TextInput, Textarea, Select, Stepper, Card } from "@/components/nhapoa/ui";
-import { DeclarationCheckbox, RadioGroup } from "@mosje/design-system";
+import { Button, Field, TextInput, Select, Card } from "@/components/nhapoa/ui";
+import { DeclarationCheckbox, RadioGroup , Textarea, Stepper} from "@mosje/design-system";
 import { GRIEVANCE_TYPES, SUBMISSION_ROLES } from "@/lib/nhapoa/citizen-data";
 import { STATES, DISTRICTS } from "@/lib/nhapoa/store/seed";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
@@ -122,7 +122,7 @@ export function GrievanceWizard({
 
   return (
     <>
-      <div className="mb-8"><Stepper steps={STEPS} current={step} /></div>
+      <div className="mb-8"><Stepper steps={STEPS.map((label) => ({ label }))} current={step} /></div>
 
       <Card className="p-6 sm:p-8">
         {step === 0 && (

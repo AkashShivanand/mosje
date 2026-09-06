@@ -2,16 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import {
-  Card,
-  Button,
-  Field,
-  TextInput,
-  Select,
-  Stepper,
-  SectionEyebrow,
-  cnField,
-} from "@/components/tg/ui";
+import { Card, Button, Field, TextInput, Select, SectionEyebrow, cnField } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { DEMO_CITIZEN } from "@/lib/tg/store/seed";
 import {
@@ -23,7 +14,7 @@ import {
   ID_PROOF_TYPES,
 } from "@/lib/tg/states";
 import type { ApplicantDetails, ApplicationType, AppDocument } from "@/lib/tg/store/types";
-import { Icon, RadioGroup } from "@mosje/design-system";
+import { Icon, RadioGroup , Stepper} from "@mosje/design-system";
 
 type Phase = "type" | "method" | "manual" | "form" | "done";
 
@@ -194,7 +185,7 @@ export default function ApplyPage() {
   return (
     <div className="mx-auto max-w-3xl">
       <div className="mb-8">
-        <Stepper steps={FORM_STEPS.map((s) => s.label)} current={step} />
+        <Stepper steps={FORM_STEPS.map((s) => ({ label: s.label }))} current={step} />
       </div>
 
       {step === 0 && (

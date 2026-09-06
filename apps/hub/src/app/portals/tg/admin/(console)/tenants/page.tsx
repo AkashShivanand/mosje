@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal } from "@mosje/design-system";
-import { PortalPageHeader, SearchInput, Button, Field, TextInput, Table, EmptyState } from "@/components/tg/ui";
+import { Icon, Modal , EmptyState} from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Button, Field, TextInput, Table } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import type { TenantRecord } from "@/lib/tg/store/types";
 
@@ -14,7 +14,7 @@ export default function TenantsPage() {
 
   if (!hydrated) return null;
   if (state.session !== "central-admin")
-    return <EmptyState title="Access restricted" hint="Only the Central Admin can manage tenants." />;
+    return <EmptyState title="Access restricted" description="Only the Central Admin can manage tenants." />;
 
   const rows = state.tenants.filter((t) =>
     [t.name, t.description].some((v) => v.toLowerCase().includes(query.toLowerCase())),
