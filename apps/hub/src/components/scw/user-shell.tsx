@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 import Link from "next/link";
 import { ScwHeader, Ux4gFooter } from "./gov-chrome";
@@ -13,9 +15,10 @@ export function UserShell({
   /** When present, the masthead shows the account menu; otherwise a Login button. */
   user?: AccountUser;
 }) {
+  const [collapsed, setCollapsed] = React.useState(false);
   return (
     <div className="flex min-h-screen flex-col">
-      <ScwHeader
+      <ScwHeader onToggleNav={() => setCollapsed((c) => !c)} navExpanded={!collapsed}
         actions={
           user ? (
             <UserMenu user={user} />
@@ -30,7 +33,7 @@ export function UserShell({
         }
       />
       <div className="flex flex-1">
-        <Sidebar items={USER_NAV} />
+        <Sidebar items={USER_NAV} collapsed={collapsed} onCollapsedChange={setCollapsed} />
         <main id="main" className="min-w-0 flex-1 px-4 py-6 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">{children}</div>
         </main>

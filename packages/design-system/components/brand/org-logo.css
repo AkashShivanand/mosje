@@ -46,6 +46,14 @@
     height: 56px;
   }
 
+  /* `tile={false}` — the Figma `Tile` boolean off. The mark sits bare on the
+     surface's own ground; only the inset survives, so it never touches an edge. */
+  .ds-org-logo--plain {
+    background-color: transparent;
+    border-color: transparent;
+    border-radius: 0;
+  }
+
   .ds-org-logo img {
     width: 100%;
     height: 100%;

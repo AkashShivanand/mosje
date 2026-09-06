@@ -24,6 +24,8 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen flex-col">
       <SiteHeader
+        onToggleNav={() => setCollapsed((c) => !c)}
+        navExpanded={!collapsed}
         homeHref={BASE}
         variant="portal"
         sticky
@@ -69,12 +71,11 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
       <div className="flex flex-1">
         <SidebarNav
-          identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" />, href: "/portals/nmba" }}
+          identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" tile={false} />, href: "/portals/nmba" }}
           groups={[{ items: NAV_ITEMS }]}
           pathname={pathname}
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
-          showCollapseControl
           label="Main navigation"
           className="hidden shrink-0 border-r border-line md:flex md:flex-col"
         />

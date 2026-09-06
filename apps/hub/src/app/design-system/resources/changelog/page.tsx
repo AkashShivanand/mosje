@@ -32,7 +32,7 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.117.0",
+    version: "v0.118.0",
     date: "2026-09-06",
     current: true,
     changes: [
@@ -50,6 +50,14 @@ const RELEASES: Release[] = [
       { kind: "Changed", text: "THE DEMO DOCK'S PANEL SPENDS ITS HEIGHT ON CONTENT. The title dropped from `title-1` to `title-3` (the panel's own name was set two steps larger than the role names in the list it exists to show), the badge from 32 to 28, and the tab strip from a filled segmented control to an underline strip at the small size on no track. The rail's doors already carry the same active state, so the strip does not need to shout it; the header is ~40px shorter and one more account fits without scrolling" },
       { kind: "Changed", text: "THE APP SWITCHER LISTS WHAT SHIPS, AND WEARS THE ORGANISATIONS' OWN MARKS. It rendered all thirteen planned portals as greyed rows badged \"soon\", with a \"This portal is in development\" note under the group — while the two other surfaces reading the same registry had already stopped: /portals lists what ships, and the SAMAVESH banner drawer cannot show a portal that does not exist. All three now ask one shared `isLiveEntry`, so a fourth cannot answer a fourth way; the gateway's `(status ?? \"live\") !== \"live\"` and the banner's `status !== \"planned\"` agreed by coincidence, not construction. The \"live\" badge went with them — with planned gone it was a label every row wore. Each row now draws `OrgLogo` from the marks registry instead of a two-letter monogram of its own NAME, which is a picture of a string rather than of an organisation and which put NS, NK and NB three rows apart; a route with no mark resolves to the State Emblem, which the registry documents as the correct answer on a Government of India property rather than a placeholder" },
       { kind: "Fixed", text: "THE ACCESSIBILITY WIDGET'S SHORTCUT LABEL SAT 18.5PX LEFT OF THE ICON IT LABELS, AND HALF OF THE RULE WAS THE CAUSE. The vendor marks its own `left` and `right` `!important` but not `width` or `transform`, so the reskin's `width: max-content` and `translateX(-50%)` applied while its `left: 35px` did not — the box shrank to its content and then shifted half its own width left of the vendor's 17px anchor, hanging off the pill. Every declaration in the rule is now `!important`, so they win together or not at all. The label also overlapped the icon's bottom edge by a pixel at the vendor's `bottom: 12px`; it is centred in the 27.5px band below the icon instead, at `bottom: 6px`, clear of the pill's bottom curve" },
+    ],
+  },
+  {
+    version: "v0.117.0",
+    date: "2026-09-05",
+    changes: [
+      { kind: "Changed", text: "THE RAIL'S IDENTITY BLOCK IS THE HANDOFF'S AGAIN. The SAMAVESH wash — `bg/brand/secondary/base`, the handoff's saffron at 8% over white, fading to nothing — across the full width of the rail, padding/16, the registry mark bare at 56 (40 collapsed), the department's full name free to run to three lines. Redrawn in the Figma master and in code from the handoff's original block. The collapse control is gone from the identity: the masthead toggles the rail everywhere, the five shells that still drew their own now wire `SiteHeader.onToggleNav`, and `check:sidebar-adoption` fails a portal shell that passes `showCollapseControl`." },
+      { kind: "Added", text: "`OrgLogo` TAKES `tile`. Ground, hairline and radius are a property now (`tile`, default on; the Figma `Tile` boolean), so a surface that supplies its own ground — the rail's identity on its wash — switches the tile off instead of drawing a mark by hand. The artwork keeps its inset either way." },
     ],
   },
   {
