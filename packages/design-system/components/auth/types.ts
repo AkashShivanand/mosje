@@ -158,6 +158,21 @@ export interface PortalBrandAssets {
   /** Optional portal-specific icon / seal path */
   portalLogoSrc?: string;
   /**
+   * The photograph behind the desktop hero — the Figma organism's `Portal Hero`
+   * slot, passed straight to `PortalLoginShell.heroImageSrc`.
+   *
+   * **It had no way through until 2026-09-07.** `PortalLoginShell` accepted a
+   * photograph from the day it was written, but this interface never carried
+   * one, so every portal built on `PortalLoginTemplate` — which is how a portal
+   * is supposed to build a login — got the empty slot and no means of filling
+   * it. E-Anudaan's hero was blank for that reason and not by choice.
+   *
+   * Still NO DEFAULT. An unset slot is the solid brand column, which is what the
+   * library master draws with nothing dropped in; defaulting it would put one
+   * scheme's photograph behind every other scheme's sign-in.
+   */
+  heroImageSrc?: string;
+  /**
    * DigiLocker's own mark, for the handoff card's logo slot.
    *
    * **Deliberately has no default, even though the estate now holds a copy.**

@@ -626,6 +626,10 @@ export function PortalLoginTemplate({
       emblemSrc={config.brandAssets?.emblemSrc || "/brand/national-emblem.svg"}
       digitalIndiaSrc={config.brandAssets?.digitalIndiaSrc || "/brand/digital-india.svg"}
       samaveshLogoSrc={config.brandAssets?.samaveshLogoSrc || "/brand/samavesh-logo.svg"}
+      /* No `||` fallback, unlike the three marks above: an absent photograph is
+         a real state the hero draws (the solid brand column), not a missing
+         asset to substitute for. */
+      heroImageSrc={config.brandAssets?.heroImageSrc}
       signingInto={config.portalName}
       changeHref={config.changeHref || "/"}
       onChangePortal={portalPicker ? () => setPickerOpen(true) : undefined}

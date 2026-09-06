@@ -73,6 +73,10 @@ export default function EAnudaanForgotPasswordPage(): React.JSX.Element {
       // pages move together, and splitting it would leave a portal whose sign-in
       // and password recovery load their emblem from different roots.
       samaveshLogoSrc={`${BASE}/brand/samavesh-logo.svg`}
+      /* The same photograph as the login page this is reached from. A recovery
+         step that drops the hero would read as a different site at the exact
+         moment a citizen is already unsure. */
+      heroImageSrc="/portals/login-hero/e-anudaan.jpg"
       signingInto="E-Anudaan"
       changeHref="/portals"
       /* No role tabs. Recovery is one route whichever tab the citizen came from,
@@ -112,7 +116,10 @@ export default function EAnudaanForgotPasswordPage(): React.JSX.Element {
           credentialFields={
             <IdentifierFields
               label="Username or Mobile Number"
-              placeholder="Enter your username or registered mobile number"
+              /* Short enough to fit the 390 column. "…or registered mobile
+                 number" clipped mid-word at "numb", and the label above already
+                 says which two it accepts. */
+              placeholder="Enter your username or mobile number"
               identifier={identifier}
               /* Clear the error as they type. A message that stays put while
                  the citizen fixes the thing it complains about reads as a

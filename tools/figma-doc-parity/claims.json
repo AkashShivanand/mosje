@@ -1388,8 +1388,8 @@
         {
           "kind": "source",
           "file": "packages/design-system/components/auth/portal-login-hero.css",
-          "pattern": "transparent 0%,\\s+color-mix\\(in srgb, currentColor 50%, transparent\\) 50%,\\s+currentColor 70%",
-          "hint": "The mask stops transcribe the Figma alpha mask (57287:61362): α0 → α0.5 at 50% → α1 at 70%, left to right. Change one side and the band the text sits on differs between the library and the estate."
+          "pattern": "transparent 16%,\\s+color-mix\\(in srgb, currentColor 50%, transparent\\) 60%,\\s+currentColor 100%",
+          "hint": "The mask stops transcribe the Figma alpha mask (57375:16783, isMask, 814 square): stored as α1 at 0, α0.5 at 0.4, α0 at 0.84 — which READS right to left, so in CSS they are 16%, 60% and 100%. Corrected 7 Sep 2026: this claim previously asserted 0% / 50% / 70%, which matched neither the stored stops nor the render — and the CSS matched the wrong claim, so the gate was green over a hero that was visibly brighter than the design. Settled by solving the per-pixel alpha out of Figma's own render of 52380:187221 against the known navy ground and the source photograph: measured 0.00 out to 15% across, 0.38 at half, 0.63 at 70%, 0.97 at the right edge — a straight ramp from 16% to 100%. Change one side and the band the text sits on differs between the library and the estate."
         }
       ]
     }
