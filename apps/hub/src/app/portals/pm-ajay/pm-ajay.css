@@ -266,9 +266,7 @@ body { background: var(--pm-stage-canvas); font-family: var(--font-sans); color:
 .pm-nav-logos .vline { width: 1px; height: 40px; background: var(--pm-line); }
 
 /* ---- Sidebar ---- */
-/* The rail is the design system's SidebarNav, which owns its rows, active
-   state and padding; this only draws the dividing line. */
-.pm-side { border-right: 1px solid var(--pm-line); }
+/* The rail is the design system's SidebarNav; its column draws the dividing line. */
 
 /* Sign-out button in sidebar footer */
 .pm-signout-btn {

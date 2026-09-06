@@ -404,7 +404,6 @@ export function Sidebar({ view }: { view: ViewId }) {
       groups={groups}
       pathname={`#${view}`}
       label="Dashboards"
-      className="pm-side"
       footer={
         <div className="pm-side-foot">
           <div className="av" aria-hidden="true">
