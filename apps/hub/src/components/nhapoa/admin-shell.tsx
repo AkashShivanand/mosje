@@ -52,7 +52,7 @@ export function AdminShell({
       />
       <div className="flex">
         <SidebarNav
-          identity={{ name: "SAMBAL", expansion: "National Helpline Against Atrocities", mark: <OrgLogo path="/portals/nhapoa" tile={false} />, href: "/portals/nhapoa" }}
+          identity={{ name: "SAMBAL", expansion: "National Helpline Against Atrocities", mark: <OrgLogo path="/portals/nhapoa" />, href: "/portals/nhapoa" }}
           groups={[{ items: role.nav }]}
           pathname={pathname}
           collapsed={collapsed}

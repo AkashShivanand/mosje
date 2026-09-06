@@ -23,7 +23,7 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
       <NhapoaHeader onToggleNav={() => setCollapsed(!collapsed)} navExpanded={!collapsed} />
       <div className="flex flex-1">
         <SidebarNav
-          identity={{ name: "SAMBAL", expansion: "National Helpline Against Atrocities", mark: <OrgLogo path="/portals/nhapoa" tile={false} />, href: "/portals/nhapoa" }}
+          identity={{ name: "SAMBAL", expansion: "National Helpline Against Atrocities", mark: <OrgLogo path="/portals/nhapoa" />, href: "/portals/nhapoa" }}
           groups={[{ items: CITIZEN_NAV }]}
           pathname={pathname}
           collapsed={collapsed}

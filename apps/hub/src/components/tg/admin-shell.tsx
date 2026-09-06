@@ -52,7 +52,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       />
       <div className="flex">
         <SidebarNav
-          identity={{ name: "TG Portal", expansion: "National Portal for Transgender Persons", mark: <OrgLogo path="/portals/tg" tile={false} />, href: "/portals/tg/admin" }}
+          identity={{ name: "TG Portal", expansion: "National Portal for Transgender Persons", mark: <OrgLogo path="/portals/tg" />, href: "/portals/tg/admin" }}
           groups={[{ items: role.nav }]}
           pathname={pathname}
           collapsed={collapsed}

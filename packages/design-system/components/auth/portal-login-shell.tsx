@@ -191,7 +191,10 @@ export function PortalLoginShell({
           {/* SIGNING INTO bar — content, not decoration */}
           <div className="ds-plogin-hero__footer">
             <div className="ds-plogin-hero__bar">
-              <OrgLogo size="lg" />
+              {/* The ground is the strip's — see `.ds-org-tile`. */}
+              <span className="ds-org-tile">
+                <OrgLogo size="lg" />
+              </span>
               <div className="ds-plogin-hero__bar-text">
                 <p className="ds-plogin-hero__eyebrow ds-plogin-hero__muted text-label-2">Signing Into</p>
                 <p className="text-title-1">{signingInto}</p>
@@ -231,7 +234,9 @@ export function PortalLoginShell({
               </div>
             </div>
             <div className="ds-plogin-hero-mobile__bar">
-              <OrgLogo size="md" />
+              <span className="ds-org-tile">
+                <OrgLogo size="md" />
+              </span>
               <div className="ds-plogin-hero__bar-text">
                 <p className="ds-plogin-hero__eyebrow ds-plogin-hero__muted text-label-2">Signing Into</p>
                 <p className="text-title-2">{signingInto}</p>

@@ -30,7 +30,7 @@ export function Sidebar() {
   return (
     <SidebarNav
       id="smile-admin-sidebar"
-      identity={{ name: "SMILE", expansion: "Beggary Rehabilitation Portal", mark: <OrgLogo path="/portals/smile-admin" tile={false} />, href: "/portals/smile-admin/dashboard" }}
+      identity={{ name: "SMILE", expansion: "Beggary Rehabilitation Portal", mark: <OrgLogo path="/portals/smile-admin" />, href: "/portals/smile-admin/dashboard" }}
       groups={groups}
       pathname={pathname}
       collapsed={sidebarCollapsed}

@@ -71,7 +71,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
       <div className="flex flex-1">
         <SidebarNav
-          identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" tile={false} />, href: "/portals/nmba" }}
+          identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" />, href: "/portals/nmba" }}
           groups={[{ items: NAV_ITEMS }]}
           pathname={pathname}
           collapsed={collapsed}

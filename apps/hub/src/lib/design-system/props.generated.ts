@@ -6217,13 +6217,6 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "An explicit source, for a mark that is not in the registry yet. Reach for this ONLY while adding one — it is the escape hatch the registry exists to make unnecessary, and `check:org-logos` reports every use so they cannot accumulate quietly."
-      },
-      {
-        "name": "tile",
-        "type": "boolean",
-        "required": false,
-        "default": "true",
-        "description": "The estate's standard tile — white ground, hairline rule, 8px radius — around the mark. Off, the mark sits bare on whatever it is placed on: the rail's portal identity draws it that way, as the handoff did. The artwork keeps its inset either way, so a mark never touches the edge of its box. Mirrors the Figma `Tile` boolean."
       }
     ]
   },

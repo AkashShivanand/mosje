@@ -1062,7 +1062,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "section": "Brand",
     "href": "/design-system/components/brand/org-logo",
     "keywords": "org logo — design system brand every mark the estate ships why one component owns every path figma parity, and what is still missing example  tokens wcag accessibility",
-    "description": "Organisation and scheme marks in the estate",
+    "description": "Organisation and scheme marks — and the only place a mark",
     "type": "component",
     "iconName": "widgets"
   },

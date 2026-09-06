@@ -2,11 +2,16 @@
 
 /* ============================================================================
    MoSJE / SAMAVESH — OrgLogo
-   An organisation or scheme mark in the estate's standard tile.
 
-   THE TILE BELONGS TO THE COMPONENT, not to the caller. Four surfaces drew it by
-   hand before this existed, at three different radii and two different tile
-   sizes, and each one re-derived the asset path as well.
+   THE MARK, AND ONLY THE MARK. Until 2026-09-06 this component carried the
+   estate's tile — white ground, hairline rule, 8px radius — behind every mark,
+   on by default. Seventeen of twenty-six call sites had to switch it off, which
+   is the signal that the ground was never the mark's decision.
+
+   The ground now lives in `.ds-org-tile` below, applied by whatever CONTAINS the
+   mark. One definition, so the reason the tile was introduced still holds: four
+   surfaces drew it by hand before it existed, at three different radii and two
+   different sizes. Compose this class; do not re-derive it.
 
    The marks are supplied artwork — a departmental crest, a scheme's own device —
    so they are CONTAINED, never cropped and never stretched. A government mark
@@ -20,13 +25,12 @@
     justify-content: center;
     flex-shrink: 0;
     overflow: hidden;
-    background-color: var(--sa-bg-neutral-base);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-8);
+    /* The inset survives the tile's removal: a mark never touches the edge of
+       its box, tiled or bare. */
     padding: var(--sa-padding-4);
   }
 
-  /* Tile sizes are component geometry, not spacing steps — the mark is a
+  /* Mark sizes are component geometry, not spacing steps — the mark is a
      fixed-size object like an avatar, and the three rungs are the three places
      the estate actually shows one: inline beside a label, on a card, and as the
      lead of a directory row. */
@@ -46,18 +50,28 @@
     height: 56px;
   }
 
-  /* `tile={false}` — the Figma `Tile` boolean off. The mark sits bare on the
-     surface's own ground; only the inset survives, so it never touches an edge. */
-  .ds-org-logo--plain {
-    background-color: transparent;
-    border-color: transparent;
-    border-radius: 0;
-  }
-
   .ds-org-logo img {
     width: 100%;
     height: 100%;
     /* CONTAIN, never cover. `cover` crops, and these are supplied marks. */
     object-fit: contain;
+  }
+
+  /* ── The estate's standard ground for a mark ────────────────────────────────
+     Put this on the element that CONTAINS an OrgLogo, where a mark needs to sit
+     on its own ground rather than on the surface's — a portal card, the login
+     shell's SIGNING INTO strip.
+
+     It is one class rather than a prop on the mark because the container is what
+     knows whether a ground is wanted. It is one class rather than each consumer's
+     own rule because three radii is what the estate had before any of this. */
+  .ds-org-tile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background-color: var(--sa-bg-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
   }
 }

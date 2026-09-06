@@ -14,7 +14,7 @@ import "./org-logo-docs.css";
 export const metadata: Metadata = {
   title: "Org Logo — Design System",
   description:
-    "Organisation and scheme marks in the estate's standard tile — and the only place a mark's path is written.",
+    "Organisation and scheme marks — and the only place a mark's path is written. The mark, not its ground.",
 };
 
 const A11Y: A11yItem[] = [
@@ -34,7 +34,7 @@ const A11Y: A11yItem[] = [
     criterion: "1.4.11 Non-text Contrast",
     level: "AA",
     description:
-      "The tile's hairline rule is --sa-border-neutral-subtle on white. It is decoration around supplied artwork rather than a control boundary or a meaningful graphic, so 1.4.11 does not apply to it.",
+      "The mark carries no ground of its own. Where a container adds one with `.ds-org-tile`, its hairline rule is --sa-border-neutral-subtle on white — decoration around supplied artwork rather than a control boundary or a meaningful graphic, so 1.4.11 does not apply to it.",
   },
 ];
 
@@ -45,7 +45,7 @@ export default function OrgLogoPage(): React.JSX.Element {
     <ComponentDocPage
       name="Org Logo"
       status="New"
-      summary="An organisation or scheme mark in the estate’s standard tile — and the only place a mark’s path is written. Seventeen marks, one canonical root, one gate."
+      summary="An organisation or scheme mark — and the only place a mark’s path is written. The mark and nothing else: a ground, where one is wanted, comes from the container. Seventeen marks, one canonical root, one gate."
       figma={{ node: "orgLogo" }}
       specimen={
         <div>
@@ -121,12 +121,33 @@ export default function OrgLogoPage(): React.JSX.Element {
               and the website is a consumer of them, not their owner.
             </p>
             <p>
-              The tile belongs to the component, not the caller: white ground, hairline rule, 8px
-              radius, the mark contained rather than cropped. Four surfaces drew that tile by hand
-              at three different radii before this existed. A departmental crest with its edges cut
-              off is a brand error, not a layout one &mdash; so <code>object-fit</code> is always{" "}
-              <code>contain</code>, never <code>cover</code>.
+              A departmental crest with its edges cut off is a brand error, not a layout one &mdash;
+              so <code>object-fit</code> is always <code>contain</code>, never <code>cover</code>,
+              and the mark keeps an inset so it never touches the edge of its box.
             </p>
+            <Callout type="info" title="The Ground Is the Container's, Not the Mark's">
+              <p>
+                Until 6 September 2026 this component drew the estate&apos;s tile &mdash; white
+                ground, hairline rule, 8px radius &mdash; behind every mark, <em>on by default</em>.
+                Seventeen of its twenty-six call sites had to switch it off. A property most callers
+                must remember to turn off is the wrong default and the wrong home for the decision.
+              </p>
+              <p>
+                Where a mark needs a ground, put <code>.ds-org-tile</code> on the element that
+                contains it. It is one class, in <code>org-logo.css</code>, and it is one class for
+                a reason: four surfaces drew this tile by hand before it existed, at three different
+                radii and two different sizes. Compose it &mdash; do not re-derive the ground in
+                your own stylesheet.
+              </p>
+              <CodeBlock>{`<span className="ds-org-tile">
+  <OrgLogo path="/portals/scw" size="md" />
+</span>`}</CodeBlock>
+              <p>
+                <code>PortalCard</code> and <code>PortalLoginShell</code> are the two product
+                surfaces that use it. The sidebar rail deliberately does not: its SAMAVESH wash is
+                the mark&apos;s ground there.
+              </p>
+            </Callout>
             <Callout type="warning" title="A mark path written anywhere else fails the build">
               <code>npm run check:org-logos</code> is a per-file ratchet: 99 literals across 48
               files are frozen as declared debt. A new file that writes one fails, a baselined file

@@ -45,14 +45,6 @@ export interface OrgLogoProps extends React.HTMLAttributes<HTMLSpanElement> {
   /** Tile size. 32 / 48 / 56px. @default "md" */
   size?: OrgLogoSize;
   /**
-   * The estate's standard tile — white ground, hairline rule, 8px radius — around
-   * the mark. Off, the mark sits bare on whatever it is placed on: the rail's
-   * portal identity draws it that way, as the handoff did. The artwork keeps its
-   * inset either way, so a mark never touches the edge of its box. Mirrors the
-   * Figma `Tile` boolean. @default true
-   */
-  tile?: boolean;
-  /**
    * The organisation's name, for the accessible name.
    *
    * OMIT IT — and that is the normal case. A mark sitting beside the org's name
@@ -64,22 +56,25 @@ export interface OrgLogoProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 /**
- * OrgLogo — an organisation or scheme mark in the estate's standard tile.
+ * OrgLogo — an organisation or scheme mark. The mark, and only the mark.
  *
- * The tile is part of the component, not the caller's job: white ground, hairline
- * rule, 8px radius, the mark contained rather than cropped. Four surfaces drew
- * that tile by hand with three different radii before this existed. Where a
- * surface supplies its own ground — the rail's portal identity on its saffron
- * wash — `tile={false}` leaves the mark bare; the inset stays.
+ * **THE GROUND IS NOT THE MARK'S BUSINESS — as of 2026-09-06.** This component
+ * carried a `tile` boolean (a white ground, hairline rule, 8px radius) which was
+ * on by default, so seventeen of the estate's twenty-six call sites had to switch
+ * it OFF. A property that most callers must remember to turn off is the wrong
+ * default and the wrong home for the decision.
  *
- * ```tsx
- * <OrgLogo path="/portals/scw" />          // by route — what the registry gives you
- * <OrgLogo org="nmba" size="lg" />         // by slug
- * <OrgLogo name="National Commission for Scheduled Castes" />  // emblem, standing alone
- * ```
+ * A mark that needs a ground gets one from its container, using the single
+ * `.ds-org-tile` class in `org-logo.css` — one definition, applied where the
+ * decision actually belongs. That matters: four surfaces drew this tile by hand
+ * before it existed, at three different radii and two different sizes, and
+ * `.ds-org-tile` is what stops that returning now the boolean is gone. Do NOT
+ * re-derive the ground in a consumer's own stylesheet.
+ *
+ * `PortalCard` and `PortalLoginShell` are the two product surfaces that use it.
  */
 export const OrgLogo = React.forwardRef<HTMLSpanElement, OrgLogoProps>(
-  function OrgLogo({ org, path, src, size = "md", tile = true, name, className, ...rest }, ref) {
+  function OrgLogo({ org, path, src, size = "md", name, className, ...rest }, ref) {
     /*
      * An explicit `org` MUST beat a derived `path`. `PortalCard` passes
      * `path={path ?? href}` and `href` is REQUIRED, so the path branch was
@@ -91,7 +86,7 @@ export const OrgLogo = React.forwardRef<HTMLSpanElement, OrgLogoProps>(
     return (
       <span
         ref={ref}
-        className={cn("ds-org-logo", `ds-org-logo--${size}`, !tile && "ds-org-logo--plain", className)}
+        className={cn("ds-org-logo", `ds-org-logo--${size}`, className)}
         {...rest}
       >
         <img src={resolved} alt={name ?? ""} loading="lazy" decoding="async" />

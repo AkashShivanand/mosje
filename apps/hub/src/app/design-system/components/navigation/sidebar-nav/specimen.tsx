@@ -44,7 +44,7 @@ const GROUPS = [
 const IDENTITY = {
   name: "NOS",
   expansion: "National Overseas Scholarship",
-  mark: <OrgLogo org="nos" tile={false} />,
+  mark: <OrgLogo org="nos" />,
   href: "/portals/nos",
 };
 

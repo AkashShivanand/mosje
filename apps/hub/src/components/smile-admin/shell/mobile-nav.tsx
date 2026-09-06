@@ -101,7 +101,7 @@ export function MobileNav() {
 
         {/* Nav — the same SidebarNav the desktop rail renders, at drawer width. */}
         <SidebarNav
-          identity={{ name: "SMILE", expansion: "Beggary Rehabilitation Portal", mark: <OrgLogo path="/portals/smile-admin" tile={false} />, href: "/portals/smile-admin/dashboard" }}
+          identity={{ name: "SMILE", expansion: "Beggary Rehabilitation Portal", mark: <OrgLogo path="/portals/smile-admin" />, href: "/portals/smile-admin/dashboard" }}
           groups={groups}
           pathname={pathname}
           label="Main navigation"

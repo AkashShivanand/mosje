@@ -2,7 +2,10 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { OrgLogo, ORG_LOGOS, type OrgSlug } from "@mosje/design-system";
 
 /**
- * **OrgLogo** — an organisation or scheme mark in the estate's standard tile.
+ * **OrgLogo** — an organisation or scheme mark. The mark and nothing else: it
+ * carried a `tile` boolean until 2026-09-06, on by default, which seventeen of
+ * twenty-six call sites had to switch off. A ground now comes from the container,
+ * via the single `.ds-org-tile` class — see the Tiled story below.
  *
  * **It is the only place a mark's path is written.** Before it existed the same
  * 16 files sat in two byte-identical public directories and `organisation-details.ts`
@@ -88,4 +91,28 @@ export const Catalogue: Story = {
  */
 export const EmblemFallback: Story = {
   render: () => <OrgLogo size="lg" name="Government of India" />,
+};
+
+/**
+ * A ground, where one is wanted, is the CONTAINER's.
+ *
+ * `.ds-org-tile` is the estate's one definition of it — white, hairline rule, 8px
+ * radius. Compose it; do not re-derive it in a consumer's own stylesheet, which
+ * is what four surfaces did (at three different radii) before any of this.
+ */
+export const Tiled: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap" }}>
+      <span className="ds-org-tile">
+        <OrgLogo path="/portals/scw" size="sm" />
+      </span>
+      <span className="ds-org-tile">
+        <OrgLogo path="/portals/nmba" size="md" />
+      </span>
+      <span className="ds-org-tile">
+        <OrgLogo path="/portals/e-anudaan" size="lg" />
+      </span>
+      <OrgLogo path="/portals/nmba" size="md" />
+    </div>
+  ),
 };

@@ -32,7 +32,7 @@ export function Sidebar({ items, home = "/portals/scw", collapsed = false, onCol
 
   return (
     <SidebarNav
-      identity={{ name: "SCW", expansion: "Senior Citizens Welfare", mark: <OrgLogo path="/portals/scw" tile={false} />, href: home }}
+      identity={{ name: "SCW", expansion: "Senior Citizens Welfare", mark: <OrgLogo path="/portals/scw" />, href: home }}
       groups={[{ items }]}
       pathname={pathname}
       collapsed={collapsed}

@@ -400,7 +400,7 @@ export function Sidebar({ view }: { view: ViewId }) {
   ];
   return (
     <SidebarNav
-      identity={{ name: "PM-AJAY", expansion: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana", mark: <OrgLogo path="/portals/pm-ajay" tile={false} />, href: BASE }}
+      identity={{ name: "PM-AJAY", expansion: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana", mark: <OrgLogo path="/portals/pm-ajay" />, href: BASE }}
       groups={groups}
       pathname={`#${view}`}
       label="Dashboards"

@@ -54,7 +54,7 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
 
       <div className="flex">
         <SidebarNav
-          identity={{ name: "E-Anudaan", expansion: "Grant-in-Aid Management", mark: <OrgLogo path="/portals/e-anudaan" tile={false} />, href: "/portals/e-anudaan/ngo" }}
+          identity={{ name: "E-Anudaan", expansion: "Grant-in-Aid Management", mark: <OrgLogo path="/portals/e-anudaan" />, href: "/portals/e-anudaan/ngo" }}
           groups={[{ items: role.nav }]}
           pathname={pathname}
           collapsed={collapsed}

@@ -128,9 +128,15 @@ export const PortalCard = React.forwardRef<HTMLAnchorElement, PortalCardProps>(
         {...rest}
       >
         <span className="ds-portal-card__head">
-          {/* No alt: the org's name is in real text immediately beside it, so an
+          {/* The GROUND is the card's, not the mark's — `OrgLogo` stopped carrying
+              a tile on 2026-09-06. `.ds-org-tile` is the estate's one definition
+              of it; do not re-derive the ground in this component's stylesheet.
+
+              No alt: the org's name is in real text immediately beside it, so an
               alt here reads the organisation twice [WCAG H67]. */}
-          <OrgLogo path={path ?? href} org={org} size={detailed ? "lg" : "md"} />
+          <span className="ds-org-tile ds-portal-card__mark">
+            <OrgLogo path={path ?? href} org={org} size={detailed ? "lg" : "md"} />
+          </span>
 
           <span className="ds-portal-card__content">
             <span className="ds-portal-card__code">{code}</span>
