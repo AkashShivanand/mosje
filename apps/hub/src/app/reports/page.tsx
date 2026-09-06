@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
+import { HubSiteHeader } from "@/components/hub-site-header";
+import { HubFooter } from "@/components/site-footer";
 import { ReportsExplorer } from "@/components/reports-explorer";
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function ReportsPage() {
         Skip to main content
       </a>
 
-      <SiteHeader current="/reports" />
+      <HubSiteHeader current="/reports" />
 
       <main id="main-content" className="flex-1">
         {/* Header band */}
@@ -55,7 +55,7 @@ export default function ReportsPage() {
         </div>
       </main>
 
-      <SiteFooter />
+      <HubFooter />
     </div>
   );
 }

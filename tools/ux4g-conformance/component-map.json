@@ -1,6 +1,6 @@
 {
-  "$description": "UX4G Design System 3.0's published component set (59, from ux4g.gov.in/components) mapped to SAMAVESH. `status` is one of: exact (SAMAVESH ships an equivalent), partial (exists but not exported as a shared component, or covered only as a variant), missing (no equivalent). `samavesh` names the export in @mosje/design-system. Keep this file honest \u2014 it feeds the coverage figure in the weekly UX4G report.",
-  "$reviewed": "2026-08-06",
+  "$description": "UX4G Design System 3.0's published component set (59, from ux4g.gov.in/components) mapped to SAMAVESH. `status` is one of: exact (SAMAVESH ships an equivalent), partial (exists but not exported as a shared component, or covered only as a variant), missing (no equivalent). `samavesh` names the export in @mosje/design-system. Keep this file honest — it feeds the coverage figure in the weekly UX4G report.",
+  "$reviewed": "2026-09-06",
   "categories": {
     "form": {
       "label": "Form Elements",
@@ -12,9 +12,8 @@
         },
         {
           "ux4g": "Icon Button",
-          "status": "partial",
-          "samavesh": "Button",
-          "note": "Icon-only rendering is a Button prop, not a distinct component."
+          "status": "exact",
+          "samavesh": "IconButton"
         },
         {
           "ux4g": "Checkbox",
@@ -23,15 +22,19 @@
         },
         {
           "ux4g": "Combobox",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Combobox"
         },
         {
           "ux4g": "Date Picker",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "DatePicker"
         },
         {
           "ux4g": "Time Picker",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "TimePicker",
+          "note": "Typed 24-hour field with a listbox of times. `<input type=\"time\">` is deliberately not used: its 12- vs 24-hour rendering belongs to the browser, and a government form that cannot state its own time format collects wrong times."
         },
         {
           "ux4g": "File Upload",
@@ -78,7 +81,8 @@
         },
         {
           "ux4g": "Range Slider",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "RangeSlider"
         },
         {
           "ux4g": "Search",
@@ -87,7 +91,8 @@
         },
         {
           "ux4g": "Slider",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Slider"
         },
         {
           "ux4g": "Toggle",
@@ -117,7 +122,9 @@
         },
         {
           "ux4g": "Draft Status Banner",
-          "status": "missing"
+          "status": "partial",
+          "samavesh": "Alert",
+          "note": "Composed rather than exported: Alert already carries `status`, `title`, `timestamp` and `action`, which is exactly a draft banner — \"Saved as draft\", when, and Resume/Discard. A dedicated wrapper would add no capability and one more thing to keep in step. The composition is documented on the Alert page."
         },
         {
           "ux4g": "Drawer",
@@ -131,8 +138,9 @@
         },
         {
           "ux4g": "Feedback",
-          "status": "missing",
-          "note": "Star-rating capture."
+          "status": "exact",
+          "note": "Verdict first, comment second, acknowledgement third. Carries the required route to real help, so the box does not become an unanswered grievance channel.",
+          "samavesh": "FeedbackWidget"
         },
         {
           "ux4g": "Modal",
@@ -141,12 +149,13 @@
         },
         {
           "ux4g": "Popover",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Popover"
         },
         {
           "ux4g": "Progress Indicators",
-          "status": "partial",
-          "samavesh": "charts/progress",
+          "status": "exact",
+          "samavesh": "Progress",
           "note": "Exists in the charts layer, not as a general feedback component."
         },
         {
@@ -163,7 +172,8 @@
         },
         {
           "ux4g": "Tooltip",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Tooltip"
         }
       ]
     },
@@ -172,7 +182,8 @@
       "components": [
         {
           "ux4g": "Accordion",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Accordion"
         },
         {
           "ux4g": "Avatar",
@@ -186,7 +197,9 @@
         },
         {
           "ux4g": "Carousel",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Carousel",
+          "note": "Auto-rotation is OFF by default; the pause control, hover/focus suspension and prefers-reduced-motion handling are all present when it is on."
         },
         {
           "ux4g": "Chip",
@@ -201,7 +214,8 @@
         },
         {
           "ux4g": "Divider",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Divider"
         },
         {
           "ux4g": "Horizontal Status Pipeline",
@@ -210,8 +224,9 @@
         },
         {
           "ux4g": "Image",
-          "status": "missing",
-          "note": "Apps use next/image directly."
+          "status": "exact",
+          "note": "Apps use next/image directly.",
+          "samavesh": "Figure"
         },
         {
           "ux4g": "Journey Timeline",
@@ -220,11 +235,14 @@
         },
         {
           "ux4g": "List",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "ListGroup"
         },
         {
           "ux4g": "Result List Row",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "ListRow",
+          "note": "One row of a ListGroup: eyebrow, title, description, leading and trailing slots. The whole row is the target."
         },
         {
           "ux4g": "Spinner",
@@ -243,7 +261,8 @@
         },
         {
           "ux4g": "Time Slot",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "TimeSlot"
         },
         {
           "ux4g": "Vertical Status Pipeline",
@@ -257,7 +276,8 @@
       "components": [
         {
           "ux4g": "Breadcrumb",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Breadcrumb"
         },
         {
           "ux4g": "Footer",
@@ -266,11 +286,13 @@
         },
         {
           "ux4g": "Link",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "Link"
         },
         {
           "ux4g": "Mega Menu",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "MegaMenu"
         },
         {
           "ux4g": "Mobile App Header",
@@ -285,8 +307,8 @@
         },
         {
           "ux4g": "Pagination",
-          "status": "partial",
-          "samavesh": "DataTable",
+          "status": "exact",
+          "samavesh": "Pagination",
           "note": "Implemented inside DataTable; not exported for reuse."
         },
         {
@@ -311,7 +333,9 @@
         },
         {
           "ux4g": "Biometric Capture",
-          "status": "missing"
+          "status": "exact",
+          "samavesh": "BiometricCapture",
+          "note": "Five designed states including `unavailable`. Draws the surface only — device access belongs to the portal. `fallbackHref` and `consent` are required props."
         }
       ]
     }

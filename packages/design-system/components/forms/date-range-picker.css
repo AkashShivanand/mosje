@@ -1,0 +1,86 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  .ds-daterange {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-inline-size: 0;
+  }
+
+  .ds-daterange__legend {
+    padding: 0;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-daterange__req {
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  .ds-daterange__presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+  }
+
+  /* A preset is a real button. Behind a dropdown "Last 30 days" costs three
+     presses on the control a dashboard's reader uses most. */
+  .ds-daterange__preset {
+    min-block-size: var(--sa-control-height-sm);
+    padding-inline: var(--sa-padding-12);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+    cursor: pointer;
+  }
+
+  .ds-daterange__preset:hover:not(:disabled) {
+    background: var(--sa-bg-neutral-hover);
+  }
+
+  .ds-daterange__preset:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* The chosen preset differs by border and fill AND carries aria-pressed, so it
+     is not signalled by colour alone. */
+  .ds-daterange__preset.is-active {
+    border-color: var(--sa-border-neutral-selected);
+    background: var(--sa-bg-neutral-selected);
+  }
+
+  .ds-daterange__preset:disabled {
+    color: var(--sa-text-neutral-disabled);
+    cursor: not-allowed;
+  }
+
+  .ds-daterange__fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-16);
+  }
+
+  .ds-daterange__msg {
+    margin: 0;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-daterange__msg.is-error {
+    color: var(--sa-text-status-error-bolder);
+    font-weight: var(--sa-font-weight-medium);
+  }
+}

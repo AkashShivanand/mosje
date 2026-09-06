@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Button, Field, TextInput } from "@/components/nhapoa/ui";
-import { Icon } from "@mosje/design-system";
+import { Field, TextInput } from "@/components/nhapoa/ui";
+import { Icon, Button } from "@mosje/design-system";
 
 /**
  * Mock OTP verify screen. Any 6-digit code is accepted (demo). Shown where the

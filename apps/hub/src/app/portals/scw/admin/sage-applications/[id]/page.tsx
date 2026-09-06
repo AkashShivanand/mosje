@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Button, Card, StatusPill } from "@/components/scw/ui";
+import { StatusPill } from "@/components/scw/ui";
 import { SAGE_DETAIL } from "@/lib/scw/mock-data";
 import { DetailTabs } from "./detail-tabs";
-import { Icon } from "@mosje/design-system";
+import { Icon, Card, Button } from "@mosje/design-system";
 
 export default async function SageApplicationDetailPage({
   params,
@@ -26,8 +26,8 @@ export default async function SageApplicationDetailPage({
           <StatusPill status={SAGE_DETAIL.status} />
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="danger">Reject</Button>
-          <Button variant="outline">Approve</Button>
+          <Button variant="danger" appearance="outlined">Reject</Button>
+          <Button appearance="outlined">Approve</Button>
         </div>
       </div>
 

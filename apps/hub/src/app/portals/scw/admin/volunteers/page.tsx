@@ -1,9 +1,9 @@
 import Link from "next/link";
 import {
-  DataTable,
+  TableShell,
   PeriodFilter,
-  Pagination,
-  PageHeader,
+  StaticPager,
+  PortalPageHeader,
   SearchInput,
   StatusPill,
 } from "@/components/scw/ui";
@@ -23,7 +23,7 @@ const COLUMNS = [
 export default function VolunteersPage() {
   return (
     <div>
-      <PageHeader title="Volunteers" />
+      <PortalPageHeader title="Volunteers" />
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row">
         <SearchInput placeholder="Search volunteers..." className="flex-1" />
@@ -35,7 +35,7 @@ export default function VolunteersPage() {
         />
       </div>
 
-      <DataTable columns={COLUMNS}>
+      <TableShell columns={COLUMNS}>
         {VOLUNTEERS.map((v) => (
           <tr key={v.id}>
             <td className="px-6 py-4 font-medium text-ink">{v.name}</td>
@@ -54,9 +54,9 @@ export default function VolunteersPage() {
             </td>
           </tr>
         ))}
-      </DataTable>
+      </TableShell>
 
-      <Pagination total={VOLUNTEERS_TOTAL} totalPages={36} />
+      <StaticPager total={VOLUNTEERS_TOTAL} totalPages={36} />
     </div>
   );
 }

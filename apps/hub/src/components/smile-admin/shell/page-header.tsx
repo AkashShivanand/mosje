@@ -1,7 +1,17 @@
+import { PageHeader as DsPageHeader } from "@mosje/design-system";
 import { Breadcrumbs, type Crumb } from "./breadcrumbs";
 import { cn } from "@/lib/smile-admin/utils";
 
-export function PageHeader({
+/**
+ * The page's opening block — a trail, the design system's `PageHeader`, and a
+ * row of page-level metadata beneath it.
+ *
+ * The title block is the system's, so it receives the system's fixes; what is
+ * smile-admin's is the trail above and the meta row below, neither of which the
+ * system models. That is also why this does not carry the system's name: an
+ * import of `PageHeader` here used to resolve to either one, silently.
+ */
+export function SmilePageHeader({
   eyebrow,
   title,
   subtitle,
@@ -21,24 +31,7 @@ export function PageHeader({
   return (
     <header className={cn("space-y-sm", className)}>
       {breadcrumbs ? <Breadcrumbs items={breadcrumbs} /> : null}
-      <div className="flex flex-wrap items-end justify-between gap-md">
-        <div className="min-w-0 space-y-xxs">
-          {eyebrow ? (
-            <div className="text-label-3 uppercase text-primary">
-              {eyebrow}
-            </div>
-          ) : null}
-          <h1 className="text-headline-1 text-ink">
-            {title}
-          </h1>
-          {subtitle ? (
-            <p className="max-w-measure text-body-2 text-ink-muted">{subtitle}</p>
-          ) : null}
-        </div>
-        {actions ? (
-          <div className="flex flex-wrap items-center gap-sm">{actions}</div>
-        ) : null}
-      </div>
+      <DsPageHeader eyebrow={eyebrow} title={title} meta={subtitle} actions={actions} />
       {meta ? <div className="flex flex-wrap items-center gap-md">{meta}</div> : null}
     </header>
   );

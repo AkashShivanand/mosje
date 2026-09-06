@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Icon, SitePageHeader } from "@mosje/design-system";
-import { Breadcrumb, type Crumb } from "./Breadcrumb";
+import { PageTrail, type Crumb } from "./page-trail";
 
 export interface PageHeroProps {
   title: string;
@@ -115,7 +115,7 @@ export function PageHero({
     <>
       <div className="bg-white border-b border-gray-100 relative z-20">
         <div className="sa-container py-3">
-          <Breadcrumb items={breadcrumb} />
+          <PageTrail items={breadcrumb} />
         </div>
       </div>
 

@@ -1,8 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Modal } from "@mosje/design-system";
-import { PageHeader, SearchInput, Button, Field, TextInput, Table, EmptyState } from "@/components/tg/ui";
+import { Icon, Modal, EmptyState, Button } from "@mosje/design-system";
+import { PortalPageHeader, SearchInput, Field, TextInput, Table } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import type { TenantRecord } from "@/lib/tg/store/types";
 
@@ -14,7 +14,7 @@ export default function TenantsPage() {
 
   if (!hydrated) return null;
   if (state.session !== "central-admin")
-    return <EmptyState title="Access restricted" hint="Only the Central Admin can manage tenants." />;
+    return <EmptyState title="Access restricted" description="Only the Central Admin can manage tenants." />;
 
   const rows = state.tenants.filter((t) =>
     [t.name, t.description].some((v) => v.toLowerCase().includes(query.toLowerCase())),
@@ -35,9 +35,9 @@ export default function TenantsPage() {
 
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="Tenant Management"
-        action={<Button onClick={() => setOpen(true)}><Icon name="apartment" size={16} /> Add New Tenant</Button>}
+        actions={<Button onClick={() => setOpen(true)}><Icon name="apartment" size={16} /> Add New Tenant</Button>}
       />
       <div className="mb-4 max-w-md">
         <SearchInput placeholder="Search for Tenants" value={query} onChange={(e) => setQuery(e.target.value)} />
@@ -50,7 +50,7 @@ export default function TenantsPage() {
         title="Add New Tenant"
         footer={
           <>
-            <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+            <Button variant="neutral" appearance="text" onClick={() => setOpen(false)}>Cancel</Button>
             <Button type="submit" form="add-tenant-form">Add Tenant</Button>
           </>
         }

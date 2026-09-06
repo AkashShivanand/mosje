@@ -1,9 +1,9 @@
 import * as React from "react";
 import Link from "next/link";
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, Card, Field, Select, TextInput } from "@/components/scw/ui";
+import { Field, TextInput } from "@/components/scw/ui";
 import { INDIAN_STATES } from "@/lib/scw/states";
-import { Icon } from "@mosje/design-system";
+import { Icon, Select, Card, Button } from "@mosje/design-system";
 
 const GENDERS = ["Male", "Female", "Transgender"] as const;
 
@@ -35,15 +35,15 @@ export default function PledgeFormPage() {
           </Field>
 
           <Field label="Gender" required>
-            <Select options={GENDERS} placeholder="Select Gender" />
+            <Select options={[...GENDERS].map((value) => ({ value, label: value }))} placeholder="Select Gender" />
           </Field>
 
           <Field label="State" required>
-            <Select options={INDIAN_STATES} placeholder="Select State" />
+            <Select options={[...INDIAN_STATES].map((value) => ({ value, label: value }))} placeholder="Select State" />
           </Field>
 
           <Field label="District" required>
-            <Select options={[]} placeholder="Select District" />
+            <Select options={[].map((value) => ({ value, label: value }))} placeholder="Select District" />
           </Field>
 
           <Field label="Pincode" required>

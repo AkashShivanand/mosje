@@ -1,0 +1,52 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Back to top
+     The TOP occupant of the bottom-right corner rail. It appears and disappears
+     on scroll, so anything below it would slide up and down the page — which is
+     why the permanent controls sit beneath it and never the other way round.
+     ============================================================================ */
+
+  .ds-back-to-top {
+    position: fixed;
+    /* 32px from the edge — the rail's resting inset, bound rather than typed. */
+    inset-inline-end: var(--sa-padding-32);
+    /* Written by useCornerRailOffset from LIVE occupancy of the rail. The
+       fallback is legitimate here and is the pattern chatbot.css already uses:
+       this property is set at RUNTIME by JavaScript, not emitted by the token
+       build, so there is a first paint before it exists. It falls back to the
+       same resting inset. */
+    bottom: var(--sa-corner-rail-bottom, var(--sa-padding-32));
+    z-index: var(--sa-z-launcher);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-control-height-lg);
+    height: var(--sa-control-height-lg);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    box-shadow: var(--sa-elevation-dropdown);
+    cursor: pointer;
+  }
+
+  .ds-back-to-top:hover {
+    background-color: var(--sa-bg-neutral-hover);
+  }
+
+  .ds-back-to-top:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+}

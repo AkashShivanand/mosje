@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { Button, Icon } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
-import type { Crumb } from "@/components/website/layout/Breadcrumb";
+import type { Crumb } from "@/components/website/layout/page-trail";
 
 export interface DocumentRecord {
   title: string;

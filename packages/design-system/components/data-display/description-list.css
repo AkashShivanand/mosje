@@ -1,0 +1,125 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Description List
+     The label-and-value grid that every application-detail screen is made of.
+     ============================================================================ */
+
+  .ds-dl {
+    display: grid;
+    gap: var(--sa-stack-16) var(--sa-inline-24);
+    margin: 0;
+    font-family: var(--sa-font-latin);
+    /* One column below the estate's 768 step whatever `columns` says: two
+       columns of label-and-value on a narrow screen puts four words on each
+       line. 768 is the ladder's own value, not a number chosen here. */
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .ds-dl--cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ds-dl--cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .ds-dl__row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    min-width: 0;
+  }
+
+  .ds-dl__row--wide {
+    grid-column: 1 / -1;
+  }
+
+  .ds-dl__term {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .ds-dl__value {
+    margin: 0;
+    /* Values are what the reader came for, so they carry the heavier weight —
+       the term is the quieter half of the pair. */
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+    /* A long unbroken reference number must wrap rather than widen the grid. */
+    overflow-wrap: anywhere;
+  }
+
+  /* Nothing recorded reads as quieter than a value, but it is still real text —
+     never a dash alone, which a screen reader announces as nothing at all.
+
+     It is NOT italic. The state is already carried twice — by the words and by
+     the quieter ink — and a third marker bought nothing while costing legibility
+     at 14px, which is where this sits. It also could not bind a published text
+     style in Figma, so removing it closed a code/Figma divergence before one
+     was created. */
+  .ds-dl__value--empty {
+    color: var(--sa-text-neutral-subtle);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .ds-dl__hint {
+    display: block;
+    margin-block-start: var(--sa-stack-2);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  /* `inline` puts the term in a fixed leading column. The column is sized in ch
+     rather than px so it grows with the reader's font size instead of clipping
+     the label at 200% zoom. */
+  .ds-dl--inline .ds-dl__row {
+    flex-direction: row;
+    align-items: baseline;
+    gap: var(--sa-inline-16);
+  }
+
+  .ds-dl--inline .ds-dl__term {
+    flex: 0 0 18ch;
+  }
+
+  .ds-dl--inline .ds-dl__value {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .ds-dl--sm .ds-dl__value {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+  }
+
+  .ds-dl--sm .ds-dl__term {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+  }
+
+  .ds-dl--sm {
+    gap: var(--sa-stack-12) var(--sa-inline-16);
+  }
+
+  .ds-dl--divided .ds-dl__row {
+    padding-block-end: var(--sa-padding-12);
+    border-block-end: var(--sa-cmp-divider-width) solid var(--sa-border-neutral-subtle);
+  }
+}

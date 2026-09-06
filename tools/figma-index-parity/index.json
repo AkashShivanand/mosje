@@ -3,7 +3,7 @@
   "indexPage": "56757:725",
   "indexFrame": "56757:726",
   "capturedOn": "2026-09-06",
-  "statLine": "71 pages · 201 components · counted 6 September 2026",
+  "statLine": "86 pages · 216 components · counted 6 September 2026",
   "statuses": [
     "Ready",
     "Published",
@@ -54,18 +54,23 @@
     "Button",
     "Icon Button",
     "Button Group",
+    "Split Button",
     "Link",
     "Checkbox",
     "Chips",
     "Color Picker",
     "Date-Time Picker",
+    "Date Range Picker",
     "Input Field",
+    "Inline Edit",
     "Input Area",
     "Select",
+    "Number Input",
     "OTP Input",
     "Bot Check",
     "Radio",
     "Selection Card",
+    "Signature Pad",
     "Slider",
     "Search",
     "Toggle",
@@ -73,6 +78,7 @@
     "Biometric Capture",
     "Accordion",
     "Breadcrumbs",
+    "Language Switcher",
     "Menu",
     "Pagination",
     "Portal Card",
@@ -82,6 +88,7 @@
     "Chatbot",
     "Empty State",
     "Feedback Widget",
+    "Cookie Consent",
     "Loader",
     "Progress Indicators",
     "Ticker",
@@ -91,15 +98,23 @@
     "Tooltip",
     "Avatars",
     "Badges",
+    "Bulk Actions Bar",
     "Card",
     "Charts & Graphs",
     "Comment",
     "Description List",
+    "Event List",
     "Figure",
     "List",
+    "File List",
     "Map of India",
+    "Tree",
+    "Transfer List",
+    "Schedule Grid",
+    "Video Tile",
     "Tables",
     "Accessibility Bar",
+    "Back to Top",
     "Cursor",
     "Divider",
     "Carousel",
@@ -190,7 +205,7 @@
     },
     {
       "name": "Actions",
-      "stated": 4,
+      "stated": 5,
       "cards": [
         {
           "name": "Button",
@@ -211,12 +226,17 @@
           "name": "Link",
           "status": "Ready",
           "linked": true
+        },
+        {
+          "name": "Split Button",
+          "status": "Ready",
+          "linked": true
         }
       ]
     },
     {
       "name": "Forms & Inputs",
-      "stated": 16,
+      "stated": 20,
       "cards": [
         {
           "name": "Input Field",
@@ -297,12 +317,32 @@
           "name": "Biometric Capture",
           "status": "Ready",
           "linked": true
+        },
+        {
+          "name": "Inline Edit",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Number Input",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Date Range Picker",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Signature Pad",
+          "status": "Ready",
+          "linked": true
         }
       ]
     },
     {
       "name": "Navigation",
-      "stated": 7,
+      "stated": 8,
       "cards": [
         {
           "name": "Tabs",
@@ -338,12 +378,17 @@
           "name": "Portal Card",
           "status": "Ready",
           "linked": true
+        },
+        {
+          "name": "Language Switcher",
+          "status": "Ready",
+          "linked": true
         }
       ]
     },
     {
       "name": "Feedback & Status",
-      "stated": 7,
+      "stated": 8,
       "cards": [
         {
           "name": "Alerts/Toasts",
@@ -379,6 +424,11 @@
           "name": "Feedback Widget",
           "status": "Ready",
           "linked": true
+        },
+        {
+          "name": "Cookie Consent",
+          "status": "Ready",
+          "linked": true
         }
       ]
     },
@@ -410,7 +460,7 @@
     },
     {
       "name": "Data Display",
-      "stated": 10,
+      "stated": 17,
       "cards": [
         {
           "name": "Card",
@@ -461,12 +511,47 @@
           "name": "Figure",
           "status": "Ready",
           "linked": true
+        },
+        {
+          "name": "Event List",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Bulk Actions Bar",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "File List",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Tree",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Transfer List",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Schedule Grid",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Video Tile",
+          "status": "Ready",
+          "linked": true
         }
       ]
     },
     {
       "name": "Utilities",
-      "stated": 3,
+      "stated": 4,
       "cards": [
         {
           "name": "Accessibility Bar",
@@ -481,6 +566,11 @@
         {
           "name": "Cursor",
           "status": "Reference",
+          "linked": true
+        },
+        {
+          "name": "Back to Top",
+          "status": "Ready",
           "linked": true
         }
       ]

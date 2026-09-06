@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { Button, Card, CardBody, CardHeader, CardTitle, Checkbox, Icon, Input, Label, buttonClasses } from "@mosje/design-system";
 
 export default function ComposePage() {
   const [form, setForm] = useState({ title: "", body: "", audience: "All states", channels: { sms: true, email: true, app: true } });
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Communications" }, { label: "Notifications", href: "/portals/smile-admin/notifications" }, { label: "Compose" }]}
         title="Compose notification"
         subtitle="Reach surveyors, IAs, nodal officers or all portal users in a single broadcast."

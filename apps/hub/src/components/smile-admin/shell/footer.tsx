@@ -1,4 +1,13 @@
-export function Footer() {
+/**
+ * smile-admin's footer — a light band with the copyright, the powered-by line
+ * and three policy links.
+ *
+ * It is NOT the design system's `Footer`, which is the slim navy app-shell band.
+ * Adopting that here would turn this footer dark, which is a redesign rather
+ * than a migration. See the note on the hub footer: one light variant in the
+ * design system would let all three converge.
+ */
+export function SmileFooter() {
   return (
     <footer className="mt-3xl border-t border-stroke-200 bg-white">
       <div className="mx-auto flex max-w-[1600px] flex-col items-start justify-between gap-sm px-md py-md text-body-3 text-ink-muted md:flex-row md:items-center md:px-lg">

@@ -19,7 +19,7 @@ export interface WebsiteSamaveshBannerProps extends SamaveshBannerProps {
  * Integrates the canonical @mosje/design-system SamaveshBanner with estate-wide
  * admin placement settings (All pages, All pages except organisation details, Only homepage).
  */
-export function SamaveshBanner({
+export function WebsiteSamaveshBanner({
   forceShow,
   ...props
 }: WebsiteSamaveshBannerProps) {

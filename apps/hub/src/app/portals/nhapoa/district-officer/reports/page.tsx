@@ -1,10 +1,10 @@
 "use client";
 
-import { PageHeader, Card, StatTile, Button } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { doQueue } from "@/lib/nhapoa/case-helpers";
 import { CASE_STATUS_META, type CaseStatus } from "@/lib/nhapoa/store/types";
-import { Icon } from "@mosje/design-system";
+import { Icon, Card, Button } from "@mosje/design-system";
 
 const ROWS: CaseStatus[] = ["SUBMITTED", "ASSIGNED", "UNDER_INVESTIGATION", "PENDING_APPROVAL", "SENT_BACK"];
 
@@ -15,10 +15,10 @@ export default function DOReportsPage() {
 
   return (
     <div>
-      <PageHeader
+      <PortalPageHeader
         title="My Reports"
-        subtitle="Case activity and disposal summary for your district"
-        action={<Button variant="outline"><Icon name="download" size={16} /> Export PDF</Button>}
+        meta="Case activity and disposal summary for your district"
+        actions={<Button appearance="outlined"><Icon name="download" size={16} /> Export PDF</Button>}
       />
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatTile label="Total Assigned" value={queue.length} />

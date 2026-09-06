@@ -1,16 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader } from "@/components/nhapoa/ui";
 import { cn } from "@/lib/nhapoa/utils";
 import { FAQS } from "@/lib/nhapoa/citizen-data";
-import { Icon } from "@mosje/design-system";
+import { Icon , Card} from "@mosje/design-system";
 
 export default function CallCenterFaqPage() {
   const [open, setOpen] = React.useState<number | null>(0);
   return (
     <div>
-      <PageHeader title="Help & FAQs" subtitle="Answer common caller questions about the SAMBAL grievance process." />
+      <PortalPageHeader title="Help & FAQs" meta="Answer common caller questions about the SAMBAL grievance process." />
       <div className="max-w-3xl space-y-3">
         {FAQS.map((f, i) => (
           <Card key={f.q} className="overflow-hidden">

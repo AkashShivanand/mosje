@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { Card, PeriodFilter, StatusPill } from "@/components/scw/ui";
+import { PeriodFilter, StatusPill } from "@/components/scw/ui";
 import {
   DASHBOARD_STATS,
   SAGE_APPLICATIONS,
   RECENT_ACTIVITY,
   VOLUNTEERS,
 } from "@/lib/scw/mock-data";
+import { Card } from "@mosje/design-system";
 
 const PERIODS = ["Last 7 Days", "Last 30 Days", "Last 90 Days"];
 

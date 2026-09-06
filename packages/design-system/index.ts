@@ -50,6 +50,8 @@ export type { StickyRangeOptions, StickyState } from "./foundations/sticky-range
 // ---- Components: Icon -------------------------------------------------------
 // Material Symbols Rounded, weight 300 — the official icon system for all MoSJE apps.
 // Load the font once in your app root: import "@mosje/design-system/icons.css"
+export { BackToTop } from "./components/utilities/back-to-top";
+export type { BackToTopProps } from "./components/utilities/back-to-top";
 export { Icon } from "./components/utilities/icon";
 export type { IconProps } from "./components/utilities/icon";
 
@@ -72,6 +74,17 @@ export type {
 export { IconButton } from "./components/actions/icon-button";
 export type { IconButtonProps } from "./components/actions/icon-button";
 export { ButtonGroup } from "./components/actions/button-group";
+export { Menu } from "./components/actions/menu";
+export { SplitButton } from "./components/actions/split-button";
+export type { SplitButtonProps } from "./components/actions/split-button";
+export type {
+  MenuEntry,
+  MenuItem,
+  MenuItemKind,
+  MenuItemTone,
+  MenuProps,
+  MenuSeparator,
+} from "./components/actions/menu";
 export type { ButtonGroupProps, ButtonGroupAlign } from "./components/actions/button-group";
 
 // ---- Components: Forms -------------------------------------------------------
@@ -166,6 +179,28 @@ export { Radio } from "./components/forms/radio";
 export type { RadioProps } from "./components/forms/radio";
 export type { SelectionSize, SelectionLabelPlacement, SelectionVariant, SelectionCardLayout, CheckboxState } from "./components/forms/selection-types";
 export { Toggle } from "./components/forms/toggle";
+export { RangeSlider, Slider } from "./components/forms/slider";
+export { BiometricCapture } from "./components/forms/biometric-capture";
+export type {
+  BiometricCaptureProps,
+  BiometricModality,
+  BiometricState,
+} from "./components/forms/biometric-capture";
+export { NumberInput } from "./components/forms/number-input";
+export type { NumberInputProps } from "./components/forms/number-input";
+export { TimePicker } from "./components/forms/time-picker";
+export type { TimePickerProps } from "./components/forms/time-picker";
+export { TimeSlot } from "./components/forms/time-slot";
+export type {
+  TimeSlotGroup,
+  TimeSlotOption,
+  TimeSlotProps,
+} from "./components/forms/time-slot";
+export type {
+  RangeSliderProps,
+  SliderMark,
+  SliderProps,
+} from "./components/forms/slider";
 export type { ToggleProps, ToggleSize } from "./components/forms/toggle";
 export { Search } from "./components/forms/search";
 export type { SearchProps, SearchSize, SearchSuggestion } from "./components/forms/search";
@@ -199,6 +234,14 @@ export { Skeleton, SkeletonText, SkeletonRow } from "./components/feedback/skele
 export type { SkeletonProps } from "./components/feedback/skeleton";
 export { Tooltip } from "./components/feedback/tooltip";
 export type { TooltipProps, TooltipSide } from "./components/feedback/tooltip";
+export { FeedbackWidget } from "./components/feedback/feedback-widget";
+export type {
+  FeedbackSubmission,
+  FeedbackVerdict,
+  FeedbackWidgetProps,
+} from "./components/feedback/feedback-widget";
+export { Popover } from "./components/feedback/popover";
+export type { PopoverApi, PopoverProps } from "./components/feedback/popover";
 export { EmptyState } from "./components/feedback/empty-state";
 export { ErrorView } from "./components/feedback/error-view";
 export type {
@@ -253,6 +296,42 @@ export type { ToastVariant } from "./components/feedback/toast";
 
 // ---- Components: Data display ------------------------------------------------
 export { Card, CardHeader, CardBody, CardFooter, CardTitle, CardSubtitle } from "./components/data-display/card";
+export { DescriptionList } from "./components/data-display/description-list";
+export type {
+  DescriptionItem,
+  DescriptionListProps,
+} from "./components/data-display/description-list";
+export { BulkActionsBar } from "./components/data-display/bulk-actions-bar";
+export type { BulkAction, BulkActionsBarProps } from "./components/data-display/bulk-actions-bar";
+export { Carousel } from "./components/data-display/carousel";
+export { FileList } from "./components/data-display/file-list";
+export type { FileItem, FileListProps, FileState } from "./components/data-display/file-list";
+export type { CarouselProps } from "./components/data-display/carousel";
+export { Figure } from "./components/data-display/figure";
+export type { FigureProps, FigureRatio } from "./components/data-display/figure";
+export { ScheduleGrid } from "./components/data-display/schedule-grid";
+export type { ScheduleGridProps, ScheduleEntry, ScheduleAxis } from "./components/data-display/schedule-grid";
+export { VideoTile } from "./components/data-display/video-tile";
+export type { VideoTileProps, VideoTileState } from "./components/data-display/video-tile";
+export { SignaturePad } from "./components/forms/signature-pad";
+export type { SignaturePadProps, SignatureValue } from "./components/forms/signature-pad";
+export { CookieConsent } from "./components/feedback/cookie-consent";
+export type { CookieConsentProps, CookieCategory } from "./components/feedback/cookie-consent";
+export { Tree } from "./components/data-display/tree";
+export type { TreeProps, TreeNode } from "./components/data-display/tree";
+export { TransferList } from "./components/data-display/transfer-list";
+export type { TransferListProps, TransferItem } from "./components/data-display/transfer-list";
+export { EventList } from "./components/data-display/event-list";
+export type { EventListProps, EventItem, EventTone } from "./components/data-display/event-list";
+export { CommentThread } from "./components/data-display/comment-thread";
+export type { CommentThreadProps, ThreadComment } from "./components/data-display/comment-thread";
+export { NotificationCentre } from "./components/data-display/notification-centre";
+export type { NotificationCentreProps } from "./components/data-display/notification-centre";
+export { ListGroup, ListRow } from "./components/data-display/list-group";
+export type {
+  ListGroupProps,
+  ListRowProps,
+} from "./components/data-display/list-group";
 export { Avatar } from "./components/data-display/avatar";
 export { FactStrip } from "./components/data-display/fact-strip";
 export { DocumentLibrary } from "./components/data-display/document-library";
@@ -275,6 +354,10 @@ export type {
 // and every mobile keyboard already knows. This is for a dashboard filter row,
 // where four portals hand-rolled a button-plus-listbox because a native select
 // cannot carry a hint beside an option or be styled at all on iOS.
+export { DateRangePicker } from "./components/forms/date-range-picker";
+export type { DateRangePickerProps, DateRange, DateRangePreset } from "./components/forms/date-range-picker";
+export { InlineEdit } from "./components/forms/inline-edit";
+export type { InlineEditProps } from "./components/forms/inline-edit";
 export { DatePicker } from "./components/forms/date-picker";
 export type { DatePickerProps } from "./components/forms/date-picker";
 export { Combobox } from "./components/forms/combobox";
@@ -465,6 +548,8 @@ export type {
 // Link — text that takes the reader somewhere. A link changes location; a button
 // performs an action. Added 2026-09-03; before it, 194 hand-rolled brand-coloured
 // anchors each decided their own colour, underline, focus ring and new-tab handling.
+export { LanguageSwitcher } from "./components/navigation/language-switcher";
+export type { LanguageSwitcherProps, LanguageOption } from "./components/navigation/language-switcher";
 export { Link } from "./components/navigation/link";
 export type { LinkProps, LinkVariant, LinkSize, LinkTone } from "./components/navigation/link";
 

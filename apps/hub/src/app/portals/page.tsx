@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/website/Header";
-import { SiteFooter } from "@/components/website/SiteFooter";
+import { WebsiteSiteFooter } from "@/components/website/SiteFooter";
 import { ImportantLinks } from "@/components/website/ImportantLinks";
 import { PortalsExplorer } from "@/components/portals-explorer";
 import { resolvePortals } from "@/lib/registry/resolve";
@@ -31,7 +31,7 @@ export default async function PortalsPage() {
       <main id="content" className="flex-1">
         <PortalsExplorer portals={portals} />
       </main>
-      <SiteFooter />
+      <WebsiteSiteFooter />
       <ImportantLinks />
     </>
   );

@@ -1520,7 +1520,8 @@ export const tokens = {
       "sm": "2rem",
       "md": "2.5rem",
       "lg": "3rem"
-    }
+    },
+    "track": "0.5rem"
   },
   "shape": {
     "0": "0px",

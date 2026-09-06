@@ -121,3 +121,23 @@ body {
 .scw-hero {
   background: linear-gradient(120deg, var(--color-herofrom) 0%, var(--scw-hero-mid) 55%, var(--color-heroto) 100%);
 }
+
+/* The elder helpline CTA — the one place SCW asks for the estate's SECONDARY
+   brand on a button.
+   The design system's Button has no variant for it, and `secondary` is not the
+   name to add: in the token vocabulary `cmp/action/brand/secondary` already
+   means the OUTLINED treatment of the brand action, so a `variant="secondary"`
+   would mean two things at once. Naming that axis is a design decision.
+   Until it is made, the colour is applied here and bound to the published
+   secondary tokens rather than to a literal — the local button it replaced
+   hard-coded #b8500f, and bg/brand/secondary/bolder is #c34700 with white on
+   it, which measures better. */
+[data-portal="scw"] .scw-cta-helpline {
+  background-color: var(--sa-bg-brand-secondary-bolder);
+  border-color: var(--sa-bg-brand-secondary-bolder);
+  color: var(--sa-on-bg-brand-secondary-bolder);
+}
+[data-portal="scw"] .scw-cta-helpline:hover:not(:disabled) {
+  background-color: var(--sa-bg-brand-secondary-boldest);
+  border-color: var(--sa-bg-brand-secondary-boldest);
+}

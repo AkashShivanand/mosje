@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import NextLink from "next/link";
 import { Card, Icon, Link, buttonClasses } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
-import type { Crumb } from "@/components/website/layout/Breadcrumb";
+import type { Crumb } from "@/components/website/layout/page-trail";
 import { cn } from "@/lib/website/utils";
 
 export interface SchemeItem {

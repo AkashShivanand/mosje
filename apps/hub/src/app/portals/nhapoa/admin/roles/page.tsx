@@ -1,7 +1,7 @@
 "use client";
 
-import { PageHeader, Card } from "@/components/nhapoa/ui";
-import { Icon } from "@mosje/design-system";
+import { PortalPageHeader } from "@/components/nhapoa/ui";
+import { Icon , Card} from "@mosje/design-system";
 
 const COLS = ["Citizen", "DM/DC", "SHO", "State", "Finance", "Central", "Call Ctr", "Admin"];
 
@@ -29,7 +29,7 @@ const MATRIX: [string, number[]][] = [
 export default function RolesPage() {
   return (
     <div>
-      <PageHeader title="Role Management" subtitle="RBAC permission matrix — least-privilege principle" />
+      <PortalPageHeader title="Role Management" meta="RBAC permission matrix — least-privilege principle" />
       <Card className="overflow-x-auto p-0">
         <table className="w-full min-w-[880px] text-left text-body-2">
           <thead>

@@ -1,7 +1,7 @@
 import {
-  DataTable,
-  Pagination,
-  PageHeader,
+  TableShell,
+  StaticPager,
+  PortalPageHeader,
   SearchInput,
 } from "@/components/scw/ui";
 import { ADMIN_USERS, USERS_TOTAL } from "@/lib/scw/mock-data";
@@ -19,13 +19,13 @@ const COLUMNS = [
 export default function UserManagementPage() {
   return (
     <div>
-      <PageHeader title="User Management" action={<AddUserDrawer />} />
+      <PortalPageHeader title="User Management" actions={<AddUserDrawer />} />
 
       <div className="mb-4">
         <SearchInput placeholder="Search for users by name, mobile number or email" />
       </div>
 
-      <DataTable columns={COLUMNS}>
+      <TableShell columns={COLUMNS}>
         {ADMIN_USERS.map((u) => (
           <tr key={u.email}>
             <td className="px-6 py-4 font-medium text-ink">{u.name}</td>
@@ -50,9 +50,9 @@ export default function UserManagementPage() {
             </td>
           </tr>
         ))}
-      </DataTable>
+      </TableShell>
 
-      <Pagination total={USERS_TOTAL} totalPages={4} />
+      <StaticPager total={USERS_TOTAL} totalPages={4} />
     </div>
   );
 }

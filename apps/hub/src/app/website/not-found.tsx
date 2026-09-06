@@ -1,6 +1,6 @@
 import { Header } from "@/components/website/Header";
-import { SamaveshBanner } from "@/components/website/SamaveshBanner";
-import { SiteFooter } from "@/components/website/SiteFooter";
+import { WebsiteSamaveshBanner } from "@/components/website/website-samavesh-banner";
+import { WebsiteSiteFooter } from "@/components/website/SiteFooter";
 import { ImportantLinks } from "@/components/website/ImportantLinks";
 import { ErrorView } from "@mosje/design-system";
 
@@ -8,7 +8,7 @@ export default function WebsiteNotFound() {
   return (
     <>
       <Header />
-      <SamaveshBanner />
+      <WebsiteSamaveshBanner />
       <main id="content" className="flex-1 bg-surface-base">
         <div className="py-12 md:py-16">
           <ErrorView
@@ -25,7 +25,7 @@ export default function WebsiteNotFound() {
           />
         </div>
       </main>
-      <SiteFooter />
+      <WebsiteSiteFooter />
       <ImportantLinks />
     </>
   );

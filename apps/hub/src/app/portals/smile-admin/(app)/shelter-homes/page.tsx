@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { statusTone } from "@/lib/smile-admin/status-tone";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
 import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
@@ -22,7 +22,7 @@ export default function ShelterHomesPage() {
 
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Beneficiaries" }, { label: "Shelter Homes" }]}
         eyebrow="Beneficiaries"
         title="Shelter homes"

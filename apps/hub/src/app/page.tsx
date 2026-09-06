@@ -1,6 +1,6 @@
 import { Icon } from "@mosje/design-system";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
+import { HubSiteHeader } from "@/components/hub-site-header";
+import { HubFooter } from "@/components/site-footer";
 import { EstateField } from "@/components/estate-field";
 import { resolvePortals } from "@/lib/registry/resolve";
 
@@ -64,7 +64,7 @@ export default async function HomePage() {
         Skip to main content
       </a>
 
-      <SiteHeader current="/" />
+      <HubSiteHeader current="/" />
 
       <main id="main-content" className="flex-1">
         {/* ── Hero ─────────────────────────────────────────────────────── */}
@@ -181,7 +181,7 @@ export default async function HomePage() {
         </section>
       </main>
 
-      <SiteFooter />
+      <HubFooter />
     </div>
   );
 }

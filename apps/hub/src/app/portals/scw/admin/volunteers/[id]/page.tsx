@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { Button, Card, FieldGrid, SectionTitle } from "@/components/scw/ui";
+import { FieldGrid, SectionEyebrow } from "@/components/scw/ui";
 import { VOLUNTEER_DETAIL } from "@/lib/scw/mock-data";
-import { Icon } from "@mosje/design-system";
+import { Icon, Card, Button } from "@mosje/design-system";
 
 export default async function VolunteerDetailPage({
   params,
@@ -42,19 +42,19 @@ export default async function VolunteerDetailPage({
           <h1 className="text-headline-1 text-ink">{v.name}</h1>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="danger">Reject</Button>
-          <Button variant="outline">Approve</Button>
+          <Button variant="danger" appearance="outlined">Reject</Button>
+          <Button appearance="outlined">Approve</Button>
         </div>
       </div>
 
       <Card className="space-y-10 p-6 sm:p-8">
         <section>
-          <SectionTitle>VOLUNTEER DETAILS</SectionTitle>
+          <SectionEyebrow>VOLUNTEER DETAILS</SectionEyebrow>
           <FieldGrid items={details} />
         </section>
 
         <section>
-          <SectionTitle>ADDRESS &amp; CONTACT</SectionTitle>
+          <SectionEyebrow>ADDRESS &amp; CONTACT</SectionEyebrow>
           <div className="mb-6">
             <div className="text-label-3 uppercase text-ink-hint">FULL ADDRESS</div>
             <div className="mt-1 text-body-2 text-ink">{v.address || "-"}</div>
@@ -63,7 +63,7 @@ export default async function VolunteerDetailPage({
         </section>
 
         <section>
-          <SectionTitle>AREAS OF INTEREST</SectionTitle>
+          <SectionEyebrow>AREAS OF INTEREST</SectionEyebrow>
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <div className="mb-2 text-label-3 uppercase text-ink-hint">INTERESTS</div>

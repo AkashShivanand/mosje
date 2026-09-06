@@ -1,6 +1,6 @@
 "use client";
 
-import { PageHeader, StatTile } from "@/components/nhapoa/ui";
+import { PortalPageHeader, StatTile } from "@/components/nhapoa/ui";
 import { CaseTable } from "@/components/nhapoa/case-views";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { doQueue, slaDaysLeft } from "@/lib/nhapoa/case-helpers";
@@ -15,7 +15,7 @@ export default function DOSlaPage() {
 
   return (
     <div>
-      <PageHeader title="SLA Monitor" subtitle="Track service level compliance across all assigned cases" />
+      <PortalPageHeader title="SLA Monitor" meta="Track service level compliance across all assigned cases" />
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatTile label="On Track" value={onTrack} accent="approve" />
         <StatTile label="Near Deadline (≤5 days)" value={near} accent="await" />

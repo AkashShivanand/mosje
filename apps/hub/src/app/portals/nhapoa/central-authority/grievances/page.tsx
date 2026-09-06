@@ -1,10 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { PageHeader, SearchInput, Card, StatusPill } from "@/components/nhapoa/ui";
+import { PortalPageHeader, SearchInput, StatusPill } from "@/components/nhapoa/ui";
 import { SlaPill, PriorityBadge } from "@/components/nhapoa/case-views";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtDate } from "@/lib/nhapoa/case-helpers";
+import { Card } from "@mosje/design-system";
 
 export default function NationalGrievancesPage() {
   const { state } = useNhapoa();
@@ -13,7 +14,7 @@ export default function NationalGrievancesPage() {
 
   return (
     <div>
-      <PageHeader title="National Grievances" subtitle={`${state.cases.length} grievances across all states`} />
+      <PortalPageHeader title="National Grievances" meta={`${state.cases.length} grievances across all states`} />
       <SearchInput placeholder="Search by grievance ID, citizen name, state…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
       {cases.length === 0 ? (
         <Card className="px-6 py-16 text-center text-body-2 text-ink-muted">No grievances match your search.</Card>

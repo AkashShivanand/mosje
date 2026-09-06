@@ -1,9 +1,10 @@
 "use client";
 
-import { PageHeader, Card } from "@/components/nhapoa/ui";
+import { PortalPageHeader } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { ROLES } from "@/lib/nhapoa/roles";
 import type { RoleId } from "@/lib/nhapoa/store/types";
+import { Card } from "@mosje/design-system";
 
 const FIELD_ROLES: RoleId[] = ["district-officer", "sho", "state-authority", "finance-officer"];
 
@@ -16,7 +17,7 @@ export default function OfficerPerformancePage() {
 
   return (
     <div>
-      <PageHeader title="Officer Performance" subtitle="Case handling across officers" />
+      <PortalPageHeader title="Officer Performance" meta="Case handling across officers" />
       <Card className="overflow-x-auto p-0">
         <table className="w-full min-w-[640px] text-left text-body-2">
           <thead>

@@ -2,9 +2,9 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { PageHeader, Card, Button, Field, TextInput } from "@/components/nhapoa/ui";
+import { PortalPageHeader, Field, TextInput } from "@/components/nhapoa/ui";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
-import { Icon } from "@mosje/design-system";
+import { Icon, Card, Button } from "@mosje/design-system";
 
 export default function CallerPage() {
   const { state } = useNhapoa();
@@ -18,7 +18,7 @@ export default function CallerPage() {
 
   return (
     <div>
-      <PageHeader title="Caller Details" subtitle="Look up or create the caller record from their mobile." />
+      <PortalPageHeader title="Caller Details" meta="Look up or create the caller record from their mobile." />
       <Card className="max-w-xl p-6">
         <Field label="Mobile" required>
           <div className="flex gap-2">

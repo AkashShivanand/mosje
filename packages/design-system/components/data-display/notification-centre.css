@@ -1,0 +1,32 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  .ds-notices {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+  }
+
+  .ds-notices__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--sa-inline-12);
+  }
+
+  .ds-notices__title {
+    margin: 0;
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-notices__count {
+    margin: 0;
+    margin-inline-end: auto;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+}

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, Card } from "@/components/scw/ui";
-import { Checkbox } from "@mosje/design-system";
+import { Checkbox, Card, Button } from "@mosje/design-system";
 
 const ESSENTIAL_CRITERIA = [
   "Being incorporated or registered in India for less than ten years from its date of incorporation.",
@@ -70,9 +69,9 @@ export default function SageRegistrationLandingPage() {
 
         {/* Footer */}
         <div className="mt-8 flex justify-end gap-3">
-          <Button variant="outline">Cancel</Button>
+          <Button appearance="outlined">Cancel</Button>
           <Link href="/portals/scw/sage-registration/form">
-            <Button variant="primary">Save and Continue</Button>
+            <Button>Save and Continue</Button>
           </Link>
         </div>
       </Card>

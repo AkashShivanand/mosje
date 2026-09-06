@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { statusTone } from "@/lib/smile-admin/status-tone";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
 import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
@@ -14,7 +14,7 @@ export default function AuditPage() {
   const entries = AUDIT_LOG.filter((e) => `${e.actor} ${e.action} ${e.target}`.toLowerCase().includes(search.toLowerCase()));
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "System" }, { label: "Audit Log" }]}
         eyebrow="System"
         title="Audit Log"

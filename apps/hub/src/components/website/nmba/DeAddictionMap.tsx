@@ -185,7 +185,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
               type === "" ? "bg-primary text-white" : "bg-surface-muted text-ink-muted hover:bg-primary/10 hover:text-primary-dark",
             )}
           >
-            All <span className={type === "" ? "text-white/70" : "text-ink"}>{TOTAL_CENTRES}</span>
+            All <span className={type === "" ? "text-white" : "text-ink"}>{TOTAL_CENTRES}</span>
           </button>
           {CENTRE_TYPE_ORDER.map((t) => {
             const active = type === t;
@@ -202,7 +202,7 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
                 )}
               >
                 <span className="h-2 w-2 rounded-full" style={{ background: CENTRE_TYPE_META[t].color }} aria-hidden />
-                {t} <span className={active ? "text-white/70" : "text-ink"}>{CENTRE_TYPE_META[t].count}</span>
+                {t} <span className={active ? "text-white" : "text-ink"}>{CENTRE_TYPE_META[t].count}</span>
               </button>
             );
           })}

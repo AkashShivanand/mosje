@@ -2,14 +2,8 @@
 
 import * as React from "react";
 import { UserShell } from "@/components/scw/user-shell";
-import {
-  Button,
-  Card,
-  DataTable,
-  Field,
-  TextInput,
-} from "@/components/scw/ui";
-import { Icon, Stepper } from "@mosje/design-system";
+import { TableShell, Field, TextInput } from "@/components/scw/ui";
+import { Icon, Stepper, Card, Button } from "@mosje/design-system";
 
 const STEPS = [
   { label: "Company Information" },
@@ -157,7 +151,7 @@ function StepProductService() {
   return (
     <section>
       <GroupTitle>Product / Service List</GroupTitle>
-      <DataTable
+      <TableShell
         columns={[
           { key: "name", label: "Product/Service Name" },
           { key: "year", label: "Launch Year" },
@@ -177,7 +171,7 @@ function StepProductService() {
             </button>
           </td>
         </tr>
-      </DataTable>
+      </TableShell>
     </section>
   );
 }
@@ -186,7 +180,7 @@ function StepTeamFounders() {
   return (
     <section>
       <GroupTitle>Member List</GroupTitle>
-      <DataTable
+      <TableShell
         columns={[
           { key: "name", label: "Name" },
           { key: "designation", label: "Designation" },
@@ -212,7 +206,7 @@ function StepTeamFounders() {
             </button>
           </td>
         </tr>
-      </DataTable>
+      </TableShell>
     </section>
   );
 }
@@ -320,15 +314,14 @@ export default function SageRegistrationFormPage() {
         </div>
 
         <div className="mt-10 flex items-center justify-between border-t border-line pt-6">
-          <Button
-            variant="outline"
+          <Button appearance="outlined"
             disabled={step === 0}
             onClick={() => setStep((s) => Math.max(0, s - 1))}
           >
             ← Back
           </Button>
           {!isLast && (
-            <Button variant="primary" onClick={() => setStep((s) => Math.min(STEPS.length - 1, s + 1))}>
+            <Button onClick={() => setStep((s) => Math.min(STEPS.length - 1, s + 1))}>
               Next →
             </Button>
           )}

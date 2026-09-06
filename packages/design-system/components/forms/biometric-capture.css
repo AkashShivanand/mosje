@@ -1,0 +1,166 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Biometric capture
+     The screen a citizen looks at while a fingerprint, iris or photograph is
+     taken. Five states, and no device access.
+     ============================================================================ */
+
+  .ds-biometric {
+    display: flex;
+    gap: var(--sa-inline-20);
+    align-items: flex-start;
+    padding: var(--sa-padding-20);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-biometric__stage {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-cmp-avatar-size-lg);
+    height: var(--sa-cmp-avatar-size-lg);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-subtle);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-biometric__glyph {
+    font-size: var(--sa-type-headline-3-size);
+    line-height: 1;
+  }
+
+  /* State is carried by the ground and the ink, never by colour alone — every
+     one of these also changes the sentence in the live region. */
+  .ds-biometric--capturing .ds-biometric__stage {
+    background-color: var(--sa-bg-brand-primary-base);
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  .ds-biometric--captured .ds-biometric__stage {
+    background-color: var(--sa-bg-status-success-base);
+    color: var(--sa-text-status-success-bolder);
+  }
+
+  .ds-biometric--failed .ds-biometric__stage {
+    background-color: var(--sa-bg-status-error-base);
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  .ds-biometric--unavailable .ds-biometric__stage {
+    background-color: var(--sa-bg-neutral-disabled);
+    color: var(--sa-text-neutral-disabled);
+  }
+
+  .ds-biometric__pulse {
+    position: absolute;
+    inset: 0;
+    border: var(--sa-control-selection-border-width) solid var(--sa-border-brand-primary-base);
+    border-radius: var(--sa-shape-full);
+    animation: ds-biometric-pulse var(--sa-motion-emphasis-duration) ease-in-out infinite;
+  }
+
+  @keyframes ds-biometric-pulse {
+    from {
+      opacity: 0.9;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(1.35);
+    }
+  }
+
+  /* A pulse that says "still reading" is the one piece of motion here that
+     carries meaning, so under reduced motion it becomes a steady ring rather
+     than disappearing — removing it would remove the information. */
+  @media (prefers-reduced-motion: reduce) {
+    .ds-biometric__pulse {
+      animation: none;
+      opacity: 1;
+    }
+  }
+
+  .ds-biometric__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    min-width: 0;
+  }
+
+  .ds-biometric__title {
+    margin: 0;
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .ds-biometric__message {
+    margin: 0;
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .ds-biometric--failed .ds-biometric__message {
+    color: var(--sa-text-status-error-bolder);
+    font-weight: var(--sa-font-weight-medium);
+  }
+
+  .ds-biometric__consent {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+  }
+
+  .ds-biometric__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-16);
+    margin-block-start: var(--sa-stack-4);
+  }
+
+  .ds-biometric__go {
+    height: var(--sa-control-height-md);
+    padding: 0 var(--sa-padding-20);
+    border: 0;
+    border-radius: var(--sa-control-radius);
+    background-color: var(--sa-cmp-button-primary-bg);
+    color: var(--sa-cmp-button-primary-text);
+    font-family: inherit;
+    font-size: var(--sa-type-label-1-size);
+    font-weight: var(--sa-font-weight-medium);
+    cursor: pointer;
+  }
+
+  .ds-biometric__go:hover {
+    background-color: var(--sa-cmp-button-primary-bgHover);
+  }
+
+  .ds-biometric__go:focus-visible,
+  .ds-biometric__fallback:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-biometric__fallback {
+    color: var(--sa-text-link-brand-default);
+    font-size: var(--sa-type-label-1-size);
+    text-decoration: underline;
+  }
+}

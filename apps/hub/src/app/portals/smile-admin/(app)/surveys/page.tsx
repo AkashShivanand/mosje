@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { PageHeader } from "@/components/smile-admin/shell/page-header";
+import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
@@ -54,7 +54,7 @@ export default function SurveysPage() {
 
   return (
     <div className="space-y-lg">
-      <PageHeader
+      <SmilePageHeader
         breadcrumbs={[{ label: "Survey Operations" }, { label: "Survey Locations" }]}
         eyebrow="Survey operations"
         title="Survey Locations"
