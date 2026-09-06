@@ -9,7 +9,7 @@ import {
   TextInput,
   Select,
   Stepper,
-  SectionTitle,
+  SectionEyebrow,
   cnField,
 } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
@@ -207,7 +207,7 @@ export default function ApplyPage() {
           </div>
 
           <section>
-            <SectionTitle>Self-Perceived Identity</SectionTitle>
+            <SectionEyebrow>Self-Perceived Identity</SectionEyebrow>
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Full Legal Name" required><TextInput value={form.fullLegalName} onChange={(e) => set("fullLegalName", e.target.value)} placeholder="Name as per ID proof" /></Field>
               <Field label="Changed / Chosen Name" required><TextInput value={form.chosenName} onChange={(e) => set("chosenName", e.target.value)} placeholder="Name you want to be addressed by" /></Field>
@@ -226,7 +226,7 @@ export default function ApplyPage() {
           </section>
 
           <section>
-            <SectionTitle>Socio-Economic Background</SectionTitle>
+            <SectionEyebrow>Socio-Economic Background</SectionEyebrow>
             <div className="grid gap-4 sm:grid-cols-3">
               <Field label="Educational Qualification"><Select options={EDUCATION_LEVELS} value={form.education} onChange={(e) => set("education", e.target.value)} /></Field>
               <Field label="Caste Category"><Select options={CASTE_CATEGORIES} value={form.caste} onChange={(e) => set("caste", e.target.value)} /></Field>
@@ -235,7 +235,7 @@ export default function ApplyPage() {
           </section>
 
           <section>
-            <SectionTitle>Address & Contact Information</SectionTitle>
+            <SectionEyebrow>Address & Contact Information</SectionEyebrow>
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Mobile Number" required><TextInput inputMode="numeric" maxLength={10} value={form.mobile} onChange={(e) => set("mobile", e.target.value)} placeholder="Enter 10-digit number" /></Field>
               <Field label="Email Address" required>
@@ -308,7 +308,7 @@ export default function ApplyPage() {
           ]} />
 
           <div>
-            <SectionTitle>Documents</SectionTitle>
+            <SectionEyebrow>Documents</SectionEyebrow>
             <ul className="space-y-1.5 text-body-2 text-ink">
               <li className="flex items-center gap-2"><Icon name="task" size={16} className="text-approve-fg" /> {idProofType}: {docs.idProof || "id-proof.pdf"}</li>
               <li className="flex items-center gap-2"><Icon name="task" size={16} className="text-approve-fg" /> Passport Photo: {docs.photo || "photo.jpg"}</li>

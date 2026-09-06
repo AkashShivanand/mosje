@@ -254,7 +254,15 @@ export function FieldGrid({ items }: { items: [string, string][] }) {
   );
 }
 
-export function SectionTitle({ children }: { children: React.ReactNode }) {
+/**
+ * An uppercase kicker above a block of content.
+ *
+ * It is NOT the design system's `SectionTitle`, which is a section header with a
+ * title, an optional description and a place for actions. This renders the
+ * kicker alone, which is why it no longer carries that name — an import of
+ * `SectionTitle` in this portal used to resolve to either one, silently.
+ */
+export function SectionEyebrow({ children }: { children: React.ReactNode }) {
   return (
     <h2 className="mb-5 text-label-3 uppercase text-ink-hint">{children}</h2>
   );

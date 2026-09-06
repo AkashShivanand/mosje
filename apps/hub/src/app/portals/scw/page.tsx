@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Icon } from "@mosje/design-system";
 import { UserShell } from "@/components/scw/user-shell";
-import { Button, Card, SectionTitle } from "@/components/scw/ui";
+import { Button, Card, SectionEyebrow } from "@/components/scw/ui";
 
 type ServiceCard = {
   /** Material Symbols Rounded glyph name (snake_case). */
@@ -153,7 +153,7 @@ export default function HomePage() {
 
         {/* Section 1 — Services for Senior Citizens */}
         <section>
-          <SectionTitle>Services for Senior Citizens</SectionTitle>
+          <SectionEyebrow>Services for Senior Citizens</SectionEyebrow>
           <div className="grid gap-6 md:grid-cols-3">
             {CITIZEN_SERVICES.map((s) => (
               <ServiceTile key={s.title} {...s} />
@@ -163,7 +163,7 @@ export default function HomePage() {
 
         {/* Section 2 — Get Involved & Partner */}
         <section>
-          <SectionTitle>Get Involved &amp; Partner</SectionTitle>
+          <SectionEyebrow>Get Involved &amp; Partner</SectionEyebrow>
           <div className="grid gap-6 md:grid-cols-3">
             {PARTNER_SERVICES.map((s) => (
               <ServiceTile key={s.title} {...s} />

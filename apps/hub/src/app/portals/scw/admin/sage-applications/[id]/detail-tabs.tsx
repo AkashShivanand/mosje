@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { FieldGrid, SectionTitle } from "@/components/scw/ui";
+import { FieldGrid, SectionEyebrow } from "@/components/scw/ui";
 import { cn } from "@/lib/scw/utils";
 
 type SageDetail = {
@@ -44,14 +44,14 @@ export function DetailTabs({ detail }: { detail: SageDetail }) {
 
       {active === "Company Information" && (
         <div>
-          <SectionTitle>COMPANY DETAILS</SectionTitle>
+          <SectionEyebrow>COMPANY DETAILS</SectionEyebrow>
           <FieldGrid items={detail.company} />
         </div>
       )}
 
       {active === "Product / Service" && (
         <div>
-          <SectionTitle>PRODUCT / SERVICE</SectionTitle>
+          <SectionEyebrow>PRODUCT / SERVICE</SectionEyebrow>
           <FieldGrid items={detail.product} />
         </div>
       )}
@@ -63,11 +63,11 @@ export function DetailTabs({ detail }: { detail: SageDetail }) {
       {active === "Financial & Investors" && (
         <div className="space-y-10">
           <div>
-            <SectionTitle>FINANCIAL INFORMATION</SectionTitle>
+            <SectionEyebrow>FINANCIAL INFORMATION</SectionEyebrow>
             <div className="text-body-2 text-ink-hint">No financial information.</div>
           </div>
           <div>
-            <SectionTitle>INVESTORS</SectionTitle>
+            <SectionEyebrow>INVESTORS</SectionEyebrow>
             <div className="overflow-x-auto rounded-xl border border-line">
               <table className="w-full min-w-[640px] text-left text-body-2">
                 <thead>
@@ -93,7 +93,7 @@ export function DetailTabs({ detail }: { detail: SageDetail }) {
 
       {active === "Achievements" && (
         <div>
-          <SectionTitle>AWARDS &amp; RECOGNITIONS</SectionTitle>
+          <SectionEyebrow>AWARDS &amp; RECOGNITIONS</SectionEyebrow>
           <div className="overflow-x-auto rounded-xl border border-line">
             <table className="w-full min-w-[480px] text-left text-body-2">
               <thead>

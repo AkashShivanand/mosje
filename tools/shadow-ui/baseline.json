@@ -8,7 +8,6 @@
     "DataTable",
     "EmptyState",
     "PageHeader",
-    "SectionTitle",
     "Select",
     "Stepper",
     "Textarea"
@@ -26,7 +25,6 @@
     "DataTable",
     "PageHeader",
     "Pagination",
-    "SectionTitle",
     "Select",
     "Stepper"
   ],
@@ -47,7 +45,6 @@
     "Card",
     "EmptyState",
     "PageHeader",
-    "SectionTitle",
     "Select",
     "Stepper",
     "Textarea"

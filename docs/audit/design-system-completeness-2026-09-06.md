@@ -394,6 +394,43 @@ inspection of either half alone would have found:
 | Item | State |
 |---|---|
 | Code Connect templates for the fifteen new masters | **Written**, each with a recorded fixture, so `check:code-connect` verifies rather than reports them. The component records still say "not published"; that line is now stale on all fifteen and is corrected in the next Figma pass. |
-| Shadow UI | 37 collisions in 14 files. Three portals still ship their own Button, Card and Stepper. |
+| Shadow UI | **34** collisions in 14 files, down from 37. Three of them were not duplicates at all — see below. |
 | `DatePicker` and `Button` sets | Both predate the rebuild, and two new masters draw their own halves rather than instancing them. Each record names the swap that should follow. |
 | Whether the package may leave the monorepo | `private: true`. The department's call, not a technical one. |
+
+
+---
+
+## Addendum 5 — the shadow UI, and what it actually is (6 September 2026)
+
+Three of the thirty-seven collisions were not duplicates. `tg`, `scw` and
+`nhapoa` each declared a `SectionTitle` that renders an uppercase kicker and
+nothing else — not the design system's section header, which carries a title, an
+optional description and a place for actions. An import of `SectionTitle` in
+those portals resolved to either one silently, which is precisely the defect the
+gate exists to name.
+
+They are now `SectionEyebrow`, with a comment at each definition saying what they
+are and what they are not. Three collisions removed, no pixel changed, and both
+affected pages verified in a browser at HTTP 200 with no page errors.
+
+### The remaining thirty-four are a migration, not a rename
+
+They are real duplicates, and closing them is portal work with real visual risk —
+98 call sites in `tg` alone. The mapping each one needs, so the next pass does not
+re-derive it:
+
+| Local component | Design-system equivalent | What the migration has to decide |
+|---|---|---|
+| `Button` (`primary` / `outline` / `ghost` / `danger` / `saffron`) | `Button` | The local axis is one string; the DS splits it into `variant` × `appearance` × `tone`. `saffron` has no DS equivalent — decide whether it becomes `variant="secondary"` or is retired. |
+| `Card` | `Card` | Slot-based in the DS; the local one takes props. Every call site changes shape. |
+| `Select` (`options: string[]`) | `Select` | The DS takes richer options. A string list has no value/label split, so labels and values are currently the same string. |
+| `Textarea` | `Textarea` | The local one is a bare styled textarea; the DS one carries the label and message. The surrounding `Field` wrapper is then redundant. |
+| `PageHeader` · `EmptyState` · `Pagination` · `DataTable` | same names in the DS | Close to drop-in; check the props table for each before assuming. |
+| `Stepper` | `Stepper` | The DS Stepper was rebuilt on `ds/stepper-rebuild`. Migrate after that lands, not before. |
+| `Alert` (pm-ajay), `Legend` / `Sparkline` (pm-ajay charts) | same names in the DS | pm-ajay is deliberately Tailwind-free; check the CSS contract before importing. |
+| `SiteHeader` · `SiteFooter` · `Breadcrumb` · `SamaveshBanner` · `Footer` | same names in the DS | Website and smile-admin chrome. Each is a whole page's frame; migrate one at a time with a visual audit. |
+
+**Every one of these needs a page-by-page visual audit before it lands**, which is
+why none of them is bundled into this pass. The baseline may only shrink, so the
+34 cannot grow back while the work is scheduled.
