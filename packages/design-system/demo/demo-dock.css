@@ -46,6 +46,12 @@
   --cmp-demodock-fold: 170ms;
   --cmp-demodock-panel-in: 190ms;
   --cmp-demodock-panel-out: 120ms;
+  /* The rail's ARRIVAL — see `.ds-demodock__rail`. Longer than the fold
+     because it is seen once per page load rather than on every pass of the
+     right edge, and delayed so it lands after the page itself has settled
+     rather than racing it. */
+  --cmp-demodock-enter: 420ms;
+  --cmp-demodock-enter-delay: 340ms;
 
   /* The height the wall rail must RESERVE when looking for a free slot. The
      rail is top-anchored and grows downward on unfold, so a slot sized to the
@@ -154,6 +160,56 @@
   outline-offset: -1px;
   box-shadow: var(--sa-elevation-modal);
   transition: box-shadow var(--cmp-demodock-fold) var(--cmp-demodock-ease);
+}
+
+/* ── The rail ARRIVES; it is not simply there ────────────────────────────
+   Demo scaffolding that is already on screen when the page paints reads as
+   part of the product. Sliding it in from behind the wall, a beat after the
+   page has settled, says what it is: something that came to the reader,
+   over the page, rather than a component of it.
+
+   `@starting-style` rather than a mounted flag, and that choice is the
+   whole reason this is four lines instead of a `useEffect`. It fires when
+   the element is INSERTED — once per page load, and again if the reader
+   moves from a route the dock is hidden on (`/`, `/gate`, `/admin`) to one
+   it is not, which is also an arrival. It does not fire on a re-render, so
+   opening the panel cannot replay it. A browser without support paints the
+   final state and skips the animation, which is the correct degradation for
+   an entrance.
+
+   TRAVEL IS 20px, NOT THE RAIL'S OWN WIDTH. Sliding a `position: fixed`
+   element fully past the right edge risks a horizontal scrollbar flashing
+   on the way in, and buys nothing: with the fade doing the work, a short
+   travel already reads as "from behind the wall". Only `transform` and
+   `opacity` move, so the whole thing stays on the compositor. ── */
+@media (prefers-reduced-motion: no-preference) {
+  .ds-demodock__rail {
+    transform: translateX(0);
+    opacity: 1;
+    transition:
+      box-shadow var(--cmp-demodock-fold) var(--cmp-demodock-ease),
+      transform var(--cmp-demodock-enter) var(--cmp-demodock-enter-delay) var(--cmp-demodock-ease),
+      opacity calc(var(--cmp-demodock-enter) - 120ms) var(--cmp-demodock-enter-delay) ease-out;
+
+    @starting-style {
+      transform: translateX(20px);
+      opacity: 0;
+    }
+  }
+}
+
+/* Reduced motion keeps the arrival — a widget that appears without warning
+   is the jarring change the preference exists to avoid — and drops the
+   movement, which is the part that causes trouble. */
+@media (prefers-reduced-motion: reduce) {
+  .ds-demodock__rail {
+    opacity: 1;
+    transition: opacity 240ms var(--cmp-demodock-enter-delay) ease-out;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
 }
 
 .ds-demodock__rail.is-open {
@@ -720,6 +776,26 @@
   gap: 8px;
 }
 
+/* ── The card, and its corner radius is DERIVED ──────────────────────────
+   Two rounded rectangles nested inside one another only look right when
+   they are CONCENTRIC: the outer radius equals the inner radius plus the
+   gap between them. Otherwise the corners run at different curvatures and
+   the gap visibly pinches at 45 degrees — the tell is subtle enough that
+   nobody names it and reliable enough that everybody sees it.
+
+   The tile is 6px. The inset around it is 6px. So the card is 12px, and
+   the padding is UNIFORM on the three sides the tile touches — it was
+   `8px 6px`, which meant the top gap and the side gaps disagreed and no
+   single outer radius could be concentric with both. The extra room the
+   label needs is added at the BOTTOM only, where the card wraps text and
+   there is no nested corner to match.
+
+   The card also has NO BORDER any more, and that is part of the same
+   arithmetic. A 1px border pushes the padding box in by another pixel, so
+   concentricity would need a 13px radius — a rung the shape ladder does
+   not have, and inventing one to serve a border that was redundant anyway
+   is the wrong trade. The tile's own ring says "selected"; the card does
+   not need to say it a second time. ── */
 .ds-demodock__swatch-option {
   display: flex;
   flex-direction: column;
@@ -727,29 +803,46 @@
   gap: 6px;
   width: 102px;
   min-height: 44px;
-  padding: 8px 6px;
-  border: 1px solid transparent;
-  border-radius: var(--sa-shape-8);
+  padding: 6px 6px 8px;
+  border: none;
+  border-radius: var(--sa-shape-12);
   background: transparent;
   cursor: pointer;
   text-align: center;
-  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-    border-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+  transition:
+    background-color 160ms var(--cmp-demodock-ease),
+    transform 160ms var(--cmp-demodock-ease);
 }
 
 .ds-demodock__swatch-option:hover {
   background-color: var(--sa-bg-neutral-subtler);
 }
 
-.ds-demodock__swatch-option.is-active {
-  border-color: var(--sa-border-neutral-subtle);
+/* Press feedback. A control that does not answer the press feels like it
+   did not hear it — and this one has a real cost to getting wrong, because
+   re-toning the page is the most-used action in a demo. */
+.ds-demodock__swatch-option:active {
+  transform: scale(0.97);
+}
+
+/* THE SELECTED CARD HAS NO GROUND OF ITS OWN. It used to take the same
+   tint as hover, which did two things wrong: it said "selected" a third
+   time after the ring and the check badge had already said it, and it drew
+   a card edge 2px outside the ring — close enough that the two read as
+   colliding at 3x. The ring belongs to the tile; the tint belongs to
+   hover; keeping them on separate elements is what stops them crowding.
+
+   Selection is now carried by the ring, the check badge and the label's
+   weight — one of which is not a colour, so the state survives WCAG 1.4.1
+   on its own. */
+.ds-demodock__swatch-option.is-active:hover {
   background-color: var(--sa-bg-neutral-subtler);
 }
 
 .ds-demodock__swatch-option:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-color-action-primary-default);
-    outline-offset: var(--sa-focus-offset);
-  }
+  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+  outline-offset: var(--sa-focus-offset);
+}
 
 /* ── Motif tile — a fixed-size (90×60px) miniature UI abstraction: a header
    bar, a content surface, an accent mark and a button shape. Carries its
@@ -780,19 +873,29 @@
   border-radius: var(--sa-shape-6);
 }
 
+/* A 1px lift is below the threshold at which anyone sees it — it was
+   costing a transition and buying nothing. 2px on the dock's own strong
+   curve reads as the tile coming forward. */
 @media (prefers-reduced-motion: no-preference) {
   .ds-demodock__motif {
-    transition: transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    transition: transform 160ms var(--cmp-demodock-ease);
   }
 
   .ds-demodock__swatch-option:hover .ds-demodock__motif,
   .ds-demodock__swatch-option:focus-visible .ds-demodock__motif {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
   }
 }
 
+/* The selected ring. Two spreads rather than a border, so the tile's own
+   box never changes size and the grid cannot reflow on selection. The
+   corners stay concentric for free: a spread shadow's radius grows WITH the
+   spread, so the 2px gap draws at 8px and the 2px ring at 10px against the
+   tile's 6px — which is the same rule the card above follows by hand. */
 .ds-demodock__swatch-option.is-active .ds-demodock__motif {
-  box-shadow: 0 0 0 2px var(--sa-bg-neutral-base), 0 0 0 4px var(--sa-color-action-primary-default);
+  box-shadow:
+    0 0 0 2px var(--sa-bg-neutral-base),
+    0 0 0 4px var(--sa-color-action-primary-default);
 }
 
 .ds-demodock__motif-bar {
@@ -833,11 +936,15 @@
   background-color: var(--sa-color-secondaryScale-500);
 }
 
+/* `shape/4`, not `shape/6`. At 11px tall a 6px radius is more than half
+   the height, so the shape rendered as a stadium — it read as a chip where
+   it is standing in for a BUTTON, which is the one mark in the motif that
+   tells you what the accent colour gets used on. */
 .ds-demodock__motif-button {
   align-self: flex-start;
   width: 35px;
   height: 11px;
-  border-radius: var(--sa-shape-6);
+  border-radius: var(--sa-shape-4);
   background-color: var(--sa-bg-brand-primary-bolder);
 }
 
@@ -854,20 +961,28 @@
   width: 20px;
   height: 20px;
   border: 2px solid var(--sa-bg-neutral-base);
-  border-radius: 50%;
+  /* `shape/full`, not a raw `50%`. On a square they render identically, but
+     50% is an ELLIPSE rule — it stops being a circle the moment the badge
+     is not square, and nothing here guarantees that it stays square. */
+  border-radius: var(--sa-shape-full);
   background-color: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);
 }
 
+/* From 0.8, not 0.6, and with a touch of overshoot. Nothing in the world
+   arrives from a sixth of its size; a badge that starts nearly formed and
+   settles past 1 reads as a thing landing rather than a thing inflating.
+   This is the one place in the dock a little bounce is right — it fires on
+   a deliberate choice the reader just made, not on a repeated action. */
 @media (prefers-reduced-motion: no-preference) {
   .ds-demodock__motif-check {
-    animation: ds-demodock-swatch-check var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    animation: ds-demodock-swatch-check 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   @keyframes ds-demodock-swatch-check {
     from {
       opacity: 0;
-      transform: scale(0.6);
+      transform: scale(0.8);
     }
     to {
       opacity: 1;
@@ -876,11 +991,21 @@
   }
 }
 
+/* The label carries selection too, in weight and ink rather than colour —
+   so the state survives a reader who cannot separate the ring from the
+   tile behind it [WCAG 1.4.1]. Every option was semibold before, which
+   meant the label said nothing at all. */
 .ds-demodock__swatch-label {
   font-size: var(--sa-type-body-3-size);
   line-height: var(--sa-type-body-3-lh);
+  font-weight: var(--sa-font-weight-medium);
+  color: var(--sa-text-neutral-subtle);
+  transition: color 160ms var(--cmp-demodock-ease);
+}
+
+.ds-demodock__swatch-option.is-active .ds-demodock__swatch-label {
   font-weight: var(--sa-font-weight-semibold);
-  color: var(--sa-text-neutral-base);
+  color: var(--sa-text-neutral-bolder);
 }
 
 .ds-demodock__colour-note {
