@@ -12,7 +12,7 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-09-06 · System version: v0.57.0 (THE RAIL OWNS ITS DIVIDER: SidebarNav renders a
+  Last reviewed: 2026-09-06 · System version: v0.58.0 (THE RAIL OWNS ITS DIVIDER: SidebarNav renders a
   full-height column that carries the hairline between rail and content, so it runs to the bottom
   edge on scroll; the identity wash binds color/transparent/secondary/8 in Figma and code.)
   Last reviewed: 2026-09-06 · System version: v0.57.0 (THE STEPPER IS REBUILT AND THE THREE
