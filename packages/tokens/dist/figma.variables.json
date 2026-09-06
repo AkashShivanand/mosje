@@ -8,9 +8,9 @@
       "existing": 152
     },
     "Palette": {
-      "total": 138,
+      "total": 139,
       "new": 0,
-      "existing": 138
+      "existing": 139
     },
     "Color": {
       "total": 509,
@@ -7320,6 +7320,58 @@
           "description": "Use for a translucent primary wash at 48% — for overlays and hover states, not as a text colour.",
           "codeSyntax": {
             "WEB": "var(--sa-color-transparent-primary-48)"
+          },
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "TEXT_FILL",
+            "STROKE_COLOR",
+            "EFFECT_COLOR"
+          ],
+          "hiddenFromPublishing": true,
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/transparent/secondary/0",
+          "path": "color/transparent/secondary/0",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/400",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 103, 31, 0.00)"
+              }
+            },
+            "Navy": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/400",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 103, 31, 0.00)"
+              }
+            }
+          },
+          "description": "The far end of a fade: secondary at 0%. A gradient that dissolves into nothing needs a bound stop of the SAME hue at zero alpha — in Figma a bound gradient stop takes its variable's alpha, so `transparent` has to be a variable too. Never used as a fill on its own.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-transparent-secondary-0)"
           },
           "scopes": [
             "FRAME_FILL",

@@ -477,7 +477,8 @@
    *
    * It carries the SAMAVESH wash the handoff gave it (2026-09-05): a saffron
    * fade — color/transparent/secondary/8, the handoff's saffron at 8%, to
-   * nothing — across the FULL width of
+   * color/transparent/secondary/0, the same hue at zero (a fade's far end is a
+   * token too; nothing on this estate is a literal) — across the FULL width of
    * the rail, so it bleeds through the rail's padding with negative margins and
    * pads itself by padding/16. The mark is the registry OrgLogo at 56, bare
    * (`tile={false}`): the wash is its ground. Collapsed, the mark alone at 40.
@@ -493,7 +494,7 @@
     gap: var(--sa-inline-12);
     margin: calc(-1 * var(--sa-padding-16)) calc(-1 * var(--sa-padding-16)) 0;
     padding: var(--sa-padding-16);
-    background: linear-gradient(to bottom, var(--sa-color-transparent-secondary-8), transparent);
+    background: linear-gradient(to bottom, var(--sa-color-transparent-secondary-8), var(--sa-color-transparent-secondary-0));
     border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 

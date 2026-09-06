@@ -25,7 +25,7 @@ export type LedgerEntry = { token: string; measured?: number; implied?: number; 
 export type Section = { id: string; title: string };
 
 export const META = {
-  "translucentTokens": 140,
+  "translucentTokens": 141,
   "alphaSteps": 15,
   "ramps": 8,
   "brands": 2,
@@ -2483,7 +2483,7 @@ export const ALPHA_SCALE = [
 export const TRANSLUCENT = [
   {
     "group": "Overlay tiers",
-    "count": 48,
+    "count": 49,
     "examples": [
       {
         "token": "color/transparent/primary/8",
