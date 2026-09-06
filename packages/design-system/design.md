@@ -2542,6 +2542,18 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **Every action names its own FILE** — "Remove income-certificate.pdf" in the accessible name, "Remove" on screen. Twelve attachments otherwise produce twelve identical "Remove"s for anyone moving by button.
 - Every state renders its own WORD; colour only tints the word already there.
 
+#### LanguageSwitcher
+**Purpose**: the languages a page is published in, offered as links. GIGW 3.0 makes a bilingual estate an obligation, so most pages on this estate carry one.
+**Props**: `languages` (`{ code, label, href }[]`) · `current` · `label` (default "Language") · `currentLabel` (default "Current language")
+**Rules**:
+- **Each option is written in ITS OWN language** — "हिन्दी", never "Hindi". The reader this control exists for is the one who cannot read the language the page is currently in, and a list written in that language is unreadable to exactly them.
+- **Each option carries its own `lang`** (and `hreflang` on the links). Without it a screen reader pronounces the Devanagari with an English voice, which is noise rather than a word — WCAG 3.1.2.
+- **The language being read is NOT a link.** It renders as text with `aria-current` and a visually hidden "Current language:". A link to the page you are already on does nothing, and it is the option a reader is most likely to press.
+- **Real links, never a select or a script-only switch.** The Hindi page has its own address, so it can be shared, bookmarked, indexed and opened in a new tab.
+- **`label` and `currentLabel` follow the page, not the option** — they name the control, so a Hindi reader is told in Hindi which language they are on.
+- More than about four languages is not a switcher. Twenty-two scheduled languages is a page of its own, linked from here.
+- The rule between options is DRAWN, not typed: a "|" character is read aloud as "vertical bar" between every language.
+
 #### Carousel
 **Purpose**: a band of slides the reader moves through — announcements, photographs, a handful of promotional cards.
 **Props**: `children` (each child becomes one slide) · `label` (**required**) · `autoPlay` (default **false**) · `interval` · `showDots`

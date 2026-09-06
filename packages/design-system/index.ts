@@ -524,6 +524,8 @@ export type {
 // Link — text that takes the reader somewhere. A link changes location; a button
 // performs an action. Added 2026-09-03; before it, 194 hand-rolled brand-coloured
 // anchors each decided their own colour, underline, focus ring and new-tab handling.
+export { LanguageSwitcher } from "./components/navigation/language-switcher";
+export type { LanguageSwitcherProps, LanguageOption } from "./components/navigation/language-switcher";
 export { Link } from "./components/navigation/link";
 export type { LinkProps, LinkVariant, LinkSize, LinkTone } from "./components/navigation/link";
 

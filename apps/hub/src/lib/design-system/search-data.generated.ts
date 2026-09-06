@@ -964,6 +964,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Language Switcher — Design System",
+    "section": "Navigation",
+    "href": "/design-system/components/navigation/language-switcher",
+    "keywords": "language switcher — design system navigation each language names itself the language being read is not a link real links, not a select the group&rsquo;s name follows the page  tokens wcag accessibility",
+    "description": "The languages a page is published in, offered as links — each written in its own language, each carrying its own lang attribute, and the one being read rendered as text rather than a link to itself.",
+    "type": "component",
+    "iconName": "navigation"
+  },
+  {
     "title": "Layering",
     "section": "Foundations",
     "href": "/design-system/foundations/layering",

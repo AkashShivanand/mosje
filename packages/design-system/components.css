@@ -47,6 +47,7 @@
 @import "./components/navigation/content-nav.css";
 @import "./components/navigation/footer.css";
 @import "./components/navigation/header/header.css";
+@import "./components/navigation/language-switcher.css";
 @import "./components/navigation/link.css";
 @import "./components/navigation/pagination.css";
 @import "./components/navigation/portal-card.css";

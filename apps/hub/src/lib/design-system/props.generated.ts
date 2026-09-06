@@ -5465,6 +5465,44 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "LanguageSwitcherProps": {
+    "source": "packages/design-system/components/navigation/language-switcher.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "current",
+        "type": "string",
+        "required": true,
+        "description": "The BCP-47 tag of the language currently being read."
+      },
+      {
+        "name": "languages",
+        "type": "LanguageOption[]",
+        "required": true,
+        "description": "The languages this page is published in, in the order they are offered."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "currentLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Current language\"",
+        "description": "Announced beside the language being read, for a reader who cannot see that it is not a link."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "\"Language\"",
+        "description": "The accessible name of the group. Written in the CURRENT language, because it names the control rather than any one option."
+      }
+    ]
+  },
   "LegendProps": {
     "source": "packages/design-system/components/data-display/charts/internal/legend.tsx",
     "inheritsNative": false,

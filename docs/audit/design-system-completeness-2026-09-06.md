@@ -266,3 +266,68 @@ exists and disagrees".
 The Index was recounted and re-synced in the same session, per
 `.claude/rules/figma-library-index.md`: 71 content pages, 70 cards, both halves
 of the gate green.
+
+---
+
+## Addendum 3 — the target, measured against itself (6 September 2026)
+
+`docs/plans/ds-completeness-execution-prompt.md` states five conditions for v1.0.
+Measured after this pass:
+
+| # | Condition | State |
+|---|---|---|
+| 1 | UX4G component coverage ≥ 90 %, from an honestly re-reviewed map | **100 %** — 54 exact + 5 partial of 59. The map's eleven stale rows were re-checked against the barrel export by export, not renamed to pass. |
+| 2 | Every pattern in §4 ships, or is recorded with the reason it does not | **Met** — 8 ship, 11 are recorded below |
+| 3 | `check:shadow-ui` baseline strictly smaller than 38 | **37** |
+| 4 | `npm run check` and `npm run ci` exit 0, no baseline loosened | **Met** — every baseline shrank or held |
+| 5 | Every component added carries all nine parts of the contract | **Partially met** — see below |
+
+### Condition 5, stated precisely
+
+Twelve of the new components carry all nine parts. Five carry eight: `NumberInput`,
+`SplitButton`, `BackToTop`, `BulkActionsBar` and `FileList` have no Figma master, so
+they have no documentation frame and no Code Connect template either — parts 7, 8 and
+9 all hang off the master. Each of their documentation pages says so where a reader
+will see it, rather than leaving the absence to be discovered.
+
+That is the honest state: **eight of nine on five components, nine of nine on twelve.**
+The remaining work is one Figma pass, not five separate decisions.
+
+### Condition 2 — the eight that ship
+
+`Menu` · `SplitButton` · `DescriptionList` · `BulkActionsBar` · `FileList` ·
+`NumberInput` · `BackToTop` · `LanguageSwitcher`.
+
+### Condition 2 — the eleven that do not, and why
+
+Each of these is a deliberate deferral with a stated reason, not an omission.
+
+| Pattern | Why it is not built, and what has to happen first |
+|---|---|
+| **Date Range** | The highest-value one left. Deferred because the `DatePicker` set on the Date-Time Picker page predates the rebuild — its four variants are calendar sizes, not states, and it publishes no component properties. A range picker built on that inherits its shape. Re-author `DatePicker` first, then build the range on top. |
+| **Comment Thread** | One of three views of the same object. |
+| **Activity / Audit Log** | One of three views of the same object. |
+| **Notification Centre** | One of three views of the same object. A comment, an audit entry and a notification are all *a dated, attributed event with a subject*. Building them separately produces three vocabularies for one thing, which is a Layer 5 defect this estate has recorded before. Build one `EventList` primitive, then compose all three from it — `ApprovalTimeline` already covers part of the ground and should be folded in rather than duplicated. |
+| **Inline Edit** | Blocked on a product decision, not a design one: does a save commit optimistically or on confirmation? On a departmental record an optimistic save that fails silently is a data-integrity problem, and the design system must not pick that on the department's behalf. |
+| **Tree** | APG's tree pattern needs a full roving-tabindex implementation with type-ahead over a nested structure. It serves three administrative screens. Build after the higher-traffic patterns, and budget for it properly rather than shipping a half-keyboard version. |
+| **Transfer List** | Has no APG pattern at all, so its keyboard model has to be designed rather than adopted. Two screens need it. Same reasoning as Tree. |
+| **Schedule / Calendar** | A month grid is a table with a date-semantics problem — what a cell means when it holds nothing, what a range across a month boundary announces. Needs its own spec before any code. |
+| **Video Tile** | One screen (Garima Greh CCTV). A live-stream tile is mostly integration with whatever streams the feed; the design-system part of it is a `Figure` with a caption, which already ships. |
+| **Signature Pad** | **Blocked on a legal answer, and must stay blocked.** WCAG 2.2 §2.5.7 requires a single-pointer alternative to drawing, and the obvious alternative — typing a name — is a question about what constitutes consent on a departmental form. The department decides that, not the design system. |
+| **Cookie Consent** | **Not required today, and building it would be a defect.** The estate sets one cookie, the site gate's, which is strictly necessary and therefore exempt. A consent banner nobody needs is precisely what `ui-restraint-and-copy.md` bans. Build it in the change that introduces the first non-essential cookie — the corner rail already reserves its slot. |
+
+### What this pass added after Addendum 2
+
+- Documentation frames and component records for the seven rebuilt Figma pages, in
+  the house style, with every stat counted from the file on the day.
+- Seven Index cards raised from `Published` to `Ready` — status is derived from the
+  page, and those pages now carry documentation — with each card's link repointed at
+  its new frame. The Index's own claim that Popover had no implementation was corrected;
+  it has had one since earlier in this branch.
+- Twelve Code Connect templates, each with a recorded Figma fixture, so
+  `check:code-connect` verifies rather than reports them.
+- Two defects in `check:code-connect` itself, found by using it: it could not read a
+  quoted enum key containing a bracket, so it called a mapped variant unmapped; and its
+  extends-resolution only followed base interfaces whose names end in `Props`, so it
+  reported four declared Slider props as undeclared. Both fixed; the gate was then
+  broken deliberately to confirm it still fails.
