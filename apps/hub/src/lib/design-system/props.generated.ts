@@ -8702,13 +8702,13 @@ export const GENERATED_PROPS = {
         "name": "current",
         "type": "number",
         "required": true,
-        "description": "0-based index of the active step. Steps before it render as completed."
+        "description": "0-based index of the active stage. Earlier stages default to complete."
       },
       {
         "name": "steps",
         "type": "StepperStep[]",
         "required": true,
-        "description": "The ordered steps."
+        "description": "The ordered stages."
       },
       {
         "name": "ariaLabel",
@@ -8716,6 +8716,40 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"Progress\"",
         "description": "Accessible name for the progress list."
+      },
+      {
+        "name": "collapse",
+        "type": "\"auto\" | \"never\"",
+        "required": false,
+        "default": "\"auto\"",
+        "description": "Whether the row may collapse to the compact bar — a counter, the current stage's name and a row of dots — when it is too narrow to draw every label. `never` keeps the full row at every width."
+      },
+      {
+        "name": "labelPlacement",
+        "type": "\"bottom\" | \"right\"",
+        "required": false,
+        "default": "\"bottom\"",
+        "description": "Label beside the marker rather than beneath it. Horizontal only."
+      },
+      {
+        "name": "onStepSelect",
+        "type": "(index: number) => void",
+        "required": false,
+        "description": "Opt in to letting the applicant return to a stage. Only stages that are complete or in error become buttons; upcoming and disabled stages stay static text, so a control is never drawn that cannot be used."
+      },
+      {
+        "name": "orientation",
+        "type": "\"horizontal\" | \"vertical\"",
+        "required": false,
+        "default": "\"horizontal\"",
+        "description": "Stack the stages down the page instead of across it."
+      },
+      {
+        "name": "size",
+        "type": "\"md\" | \"sm\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "`sm` is UX4G's Compact size — for side panels and dense flows."
       }
     ]
   },

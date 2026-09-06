@@ -8,10 +8,10 @@ import {
   Field,
   TextInput,
   Select,
-  Stepper,
   SectionTitle,
   cnField,
 } from "@/components/tg/ui";
+import { Stepper } from "@mosje/design-system";
 import { useTg } from "@/lib/tg/store/store";
 import { DEMO_CITIZEN } from "@/lib/tg/store/seed";
 import {
@@ -194,7 +194,7 @@ export default function ApplyPage() {
   return (
     <div className="mx-auto max-w-3xl">
       <div className="mb-8">
-        <Stepper steps={FORM_STEPS.map((s) => s.label)} current={step} />
+        <Stepper steps={FORM_STEPS} current={step} ariaLabel="Application progress" />
       </div>
 
       {step === 0 && (

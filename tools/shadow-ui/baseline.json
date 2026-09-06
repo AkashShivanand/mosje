@@ -13,7 +13,6 @@
     "PageHeader",
     "SectionTitle",
     "Select",
-    "Stepper",
     "Textarea"
   ],
   "apps/hub/src/components/pm-ajay/dashboard/charts.tsx": [
@@ -30,8 +29,7 @@
     "PageHeader",
     "Pagination",
     "SectionTitle",
-    "Select",
-    "Stepper"
+    "Select"
   ],
   "apps/hub/src/components/site-footer.tsx": [
     "SiteFooter"
@@ -52,7 +50,6 @@
     "PageHeader",
     "SectionTitle",
     "Select",
-    "Stepper",
     "Textarea"
   ],
   "apps/hub/src/components/website/layout/Breadcrumb.tsx": [
