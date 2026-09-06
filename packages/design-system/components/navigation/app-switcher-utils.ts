@@ -183,7 +183,16 @@ export const PORTAL_LABELS: Record<string, { short: string; full: string }> = {
   "/portals/smile-admin": { short: "SMILE", full: "Beggary Rehabilitation" },
   "/portals/e-anudaan": { short: "e-Anudaan", full: "Grant-in-Aid Management" },
   "/portals/eutthan-admin": { short: "e-Utthaan", full: "Scheme Administration" },
-  "/portals/nhapoa": { short: "SAMBAL", full: "National Action Plan for Older Persons" },
+  /*
+   * CORRECTED 2026-09-06. This read "National Action Plan for Older Persons",
+   * which is a DIFFERENT SCHEME — SAMBAL is the National Helpline Against
+   * Atrocities (formerly NHAA), for grievances, rescue and relief under the PoA
+   * Act. Eight places in the estate said so, including the portal's own citizen
+   * copy and the website's organisation record; this map was the outlier, and
+   * because it is the citizen-facing one the wrong scheme was showing on the
+   * SAMAVESH banner, the /portals directory and the change-portal picker.
+   */
+  "/portals/nhapoa": { short: "SAMBAL", full: "National Helpline Against Atrocities" },
   "/portals/nos": { short: "NOS", full: "National Overseas Scholarship" },
 };
 
