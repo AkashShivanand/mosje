@@ -37,19 +37,30 @@ import { contrast, PAIRINGS } from "./lib/contrast.mjs";
  * `dbimValueFor` only remaps `color.*` refs and `{text.neutral.inverse}` is a
  * semantic one.
  *
- * THE FIX, WRITTEN DOWN RATHER THAN GUESSED AT
- * --------------------------------------------
- * `addDbimBrandModes` should emit a per-group `on/bg/brand/primary/*` override
- * chosen by MEASURING the group's resolved rung — white where it clears AA,
- * `{color.dbimInk}` (Deep Earthy Brown #150202) where it does not. The
- * precedent is already in `DBIM_FUNCTIONAL`: Mustard Yellow's `bolder` fill
- * takes dark ink for exactly this reason. Doing it means rebuilding
- * `dist/tokens.css` and the Figma exports, so it is deliberately NOT bundled
- * with an unrelated UI change — see the baseline below.
+ * THE REPAIR — and it needed TWO shapes, not one
+ * ----------------------------------------------
+ * The first plan was "choose the ink by measuring the fill" everywhere. That is
+ * right for `on/bg/<path>`, which is the foreground for `bg/<path>` and for
+ * nothing else — and it is WRONG for `color.text.onPrimary`, which is the label
+ * for BOTH `action.primary.default` and `action.primary.hover`. Hover is
+ * deliberately darker, so an ink dark enough for a light default fails on it.
+ * There, the FILL is what gives, which `action.primary` already says in its own
+ * description: "MUST stay dark enough to carry white label text at AA in EVERY
+ * theme … hover goes DARKER rather than lighter."
  *
- * The baseline is a RATCHET in the estate's usual shape: it may shrink, never
- * grow, and a fix that is not recorded here fails too. It is not an exemption
- * list — every entry is a real AA failure that a reader can reach today.
+ * So `addDbimBrandModes` now does both, and both by measurement:
+ *
+ *   - the button fill takes the LIGHTEST primary rung that carries white at AA,
+ *     so four of the six groups are untouched at 500 and only Green (→700) and
+ *     Chrome Yellow (→600) move;
+ *   - `on/bg/*` takes whichever of white or Deep Earthy Brown clears AA by more,
+ *     and only where the token's CURRENT ink fails — one override, on Green's
+ *     `bolder` fill;
+ *   - a status ink steps to the lightest darker rung that clears AA on its own
+ *     tonal ground, which moves success from 600 to 700 in all six.
+ *
+ * The baseline below is a RATCHET in the estate's usual shape: it may shrink,
+ * never grow, and a fix that is not recorded there fails too.
  */
 
 const root = new URL("..", import.meta.url).pathname;
@@ -102,26 +113,25 @@ const BRANDS = [
 /**
  * Known AA failures, frozen. `<brand> :: <pairing label>`.
  *
- * Both are consequences of rung assignment on values DBIM never published:
+ * It held eight. Seven are repaired — see `dbim-brand-modes.mjs`, which now chooses the
+ * button FILL and the badge INK by measuring instead of inheriting `:root`.
  *
- *  - `button label on primary` — white on the INTERPOLATED rung 500, which for
- *    Green is #53a1a1 (3.01:1) and for Chrome Yellow #b78320 (3.34:1). Blue's
- *    own rung 500 is #0373DF at 4.66:1, which is why the default brand passes
- *    and these two do not.
- *  - `success badge text on success tonal` — 4.42:1 in ALL SIX, because DBIM's
- *    success is one published colour (Liberty Green #198754, pinned at rung
- *    500) and rungs 700 and 200 are both derived from it. Group-independent, so
- *    identical in every group.
+ * The one that remains is here because both repairs for it are unsafe, and each was tried
+ * and measured before being ruled out. Flipping the ink is right for the fill the token
+ * NAMES and wrong for the fill it often HAS — a portal repaints `primaryScale`, so the
+ * override reached the NMBA login button and put dark ink on the portal's navy at 1.6:1.
+ * Darkening the fill is right and does not survive emission: the brand block's alias
+ * re-assertion re-emits the token afterwards and the later declaration wins. The full
+ * reasoning, including why teaching the closure to skip declared tokens breaks the shipping
+ * blue brand, is in `dbim-brand-modes.mjs`.
+ *
+ * Anything appearing here again is a real AA failure a reader can reach from the Colour tab.
+ * Add an entry only with the measurement and the reason beside it; never to make a red build
+ * green.
  */
 const BASELINE = new Set([
-  "dbim-green :: button label on primary",
-  "dbim-chrome-yellow :: button label on primary",
-  "dbim-blue :: success badge text on success tonal",
-  "dbim-burgundy :: success badge text on success tonal",
-  "dbim-purple :: success badge text on success tonal",
-  "dbim-green :: success badge text on success tonal",
-  "dbim-chrome-yellow :: success badge text on success tonal",
-  "dbim-cinnamon-red :: success badge text on success tonal",
+  // white on bg/brand/primary/bolder #2d8686 — 4.32:1, needs 4.5
+  "dbim-green :: on/bg/brand/primary/bolder",
 ]);
 
 test("every DBIM conformance brand is MEASURED, and its failures are the declared ones", () => {
@@ -167,12 +177,60 @@ test("every DBIM conformance brand is MEASURED, and its failures are the declare
       details.filter((d) => appeared.some((a) => d.startsWith(a))).join("\n"),
   );
 
-  const fixed = [...BASELINE].filter((k) => !seen.has(k));
+  // Only the PAIRINGS half of the baseline is this test's to account for; the `on/*` entries
+  // belong to the sweep below, which owns them by the same rule.
+  const fixed = [...BASELINE].filter((k) => !k.includes("on/bg/") && !seen.has(k));
   assert.deepEqual(
     fixed,
     [],
     "\nThese DBIM pairings now PASS. Delete them from BASELINE in this same change, so the " +
       "gain cannot be given back:\n  " + fixed.join("\n  "),
+  );
+});
+
+test("every `on/*` ink is readable on the fill it names, in every DBIM brand", () => {
+  /*
+   * `on-pair-contrast.test.mjs` asks this question of Blue and Navy only. Without this the
+   * remaining dbim-green failure would be invisible to every gate in the repository — which
+   * is precisely the state that let the original two ship.
+   */
+  const seen = new Set();
+  const details = [];
+
+  for (const brand of BRANDS) {
+    const overrides = declsOf((s) => s === `[data-brand="${brand}"]`);
+    const resolve = makeResolver(overrides);
+    let measured = 0;
+
+    for (const name of ROOT.keys()) {
+      if (!name.startsWith("--sa-on-bg-")) continue;
+      const fg = resolve(name);
+      const bg = resolve(name.replace("--sa-on-bg-", "--sa-bg-"));
+      if (!fg || !bg || !/^#/.test(fg) || !/^#/.test(bg)) continue;
+      measured++;
+      const ratio = contrast(fg, bg);
+      if (ratio >= 4.5) continue;
+      const key = `${brand} :: ${name.replace("--sa-on-bg-", "on/bg/").replace(/-/g, "/")}`;
+      seen.add(key);
+      details.push(`${key} — ${fg} on ${bg} = ${ratio.toFixed(2)}:1`);
+    }
+
+    assert.ok(measured >= 20, `${brand}: only ${measured} on/* pairs resolved to hex`);
+  }
+
+  const appeared = [...seen].filter((k) => !BASELINE.has(k));
+  assert.deepEqual(
+    appeared,
+    [],
+    "\nNEW DBIM ink failure(s):\n" +
+      details.filter((d) => appeared.some((a) => d.startsWith(a))).join("\n"),
+  );
+
+  const fixed = [...BASELINE].filter((k) => k.includes("on/bg/") && !seen.has(k));
+  assert.deepEqual(
+    fixed,
+    [],
+    "\nThese now PASS. Delete them from BASELINE in this same change:\n  " + fixed.join("\n  "),
   );
 });
 

@@ -1906,8 +1906,8 @@
   --sa-color-text-onPrimary: var(--sa-ref-color-neutralDbim-0);
   --sa-color-text-info: var(--sa-ref-color-infoDbim-600);
   --sa-color-border-controlHover: var(--sa-ref-color-neutralDbim-600);
-  --sa-color-status-success: var(--sa-ref-color-greenDbim-600);
-  --sa-color-status-successStrong: var(--sa-ref-color-greenDbim-700);
+  --sa-color-status-success: var(--sa-ref-color-greenDbim-700);
+  --sa-color-status-successStrong: var(--sa-ref-color-greenDbim-800);
   --sa-color-status-successTonal: var(--sa-ref-color-greenDbim-100);
   --sa-color-status-warning: var(--sa-ref-color-amberDbim-600);
   --sa-color-status-warningTonal: var(--sa-ref-color-amberDbim-50);
@@ -2445,8 +2445,8 @@
   --sa-color-text-onPrimary: var(--sa-ref-color-neutralDbim-0);
   --sa-color-text-info: var(--sa-ref-color-infoDbim-600);
   --sa-color-border-controlHover: var(--sa-ref-color-neutralDbim-600);
-  --sa-color-status-success: var(--sa-ref-color-greenDbim-600);
-  --sa-color-status-successStrong: var(--sa-ref-color-greenDbim-700);
+  --sa-color-status-success: var(--sa-ref-color-greenDbim-700);
+  --sa-color-status-successStrong: var(--sa-ref-color-greenDbim-800);
   --sa-color-status-successTonal: var(--sa-ref-color-greenDbim-100);
   --sa-color-status-warning: var(--sa-ref-color-amberDbim-600);
   --sa-color-status-warningTonal: var(--sa-ref-color-amberDbim-50);
@@ -2984,8 +2984,8 @@
   --sa-color-text-onPrimary: var(--sa-ref-color-neutralDbim-0);
   --sa-color-text-info: var(--sa-ref-color-infoDbim-600);
   --sa-color-border-controlHover: var(--sa-ref-color-neutralDbim-600);
-  --sa-color-status-success: var(--sa-ref-color-greenDbim-600);
-  --sa-color-status-successStrong: var(--sa-ref-color-greenDbim-700);
+  --sa-color-status-success: var(--sa-ref-color-greenDbim-700);
+  --sa-color-status-successStrong: var(--sa-ref-color-greenDbim-800);
   --sa-color-status-successTonal: var(--sa-ref-color-greenDbim-100);
   --sa-color-status-warning: var(--sa-ref-color-amberDbim-600);
   --sa-color-status-warningTonal: var(--sa-ref-color-amberDbim-50);
@@ -3446,8 +3446,8 @@
 }
 
 [data-brand="dbim-green"] {
-  --sa-color-action-primary-default: var(--sa-ref-color-dbimPrimary-green-500);
-  --sa-color-action-primary-hover: var(--sa-ref-color-dbimPrimary-green-700);
+  --sa-color-action-primary-default: var(--sa-ref-color-dbimPrimary-green-700);
+  --sa-color-action-primary-hover: var(--sa-ref-color-dbimPrimary-green-800);
   --sa-color-action-primary-tonal: var(--sa-ref-color-dbimPrimary-green-100);
   --sa-color-primaryScale-50: var(--sa-ref-color-dbimPrimary-green-50);
   --sa-color-primaryScale-100: var(--sa-ref-color-dbimPrimary-green-100);
@@ -3523,8 +3523,8 @@
   --sa-color-text-onPrimary: var(--sa-ref-color-neutralDbim-0);
   --sa-color-text-info: var(--sa-ref-color-infoDbim-600);
   --sa-color-border-controlHover: var(--sa-ref-color-neutralDbim-600);
-  --sa-color-status-success: var(--sa-ref-color-greenDbim-600);
-  --sa-color-status-successStrong: var(--sa-ref-color-greenDbim-700);
+  --sa-color-status-success: var(--sa-ref-color-greenDbim-700);
+  --sa-color-status-successStrong: var(--sa-ref-color-greenDbim-800);
   --sa-color-status-successTonal: var(--sa-ref-color-greenDbim-100);
   --sa-color-status-warning: var(--sa-ref-color-amberDbim-600);
   --sa-color-status-warningTonal: var(--sa-ref-color-amberDbim-50);
@@ -3985,7 +3985,7 @@
 }
 
 [data-brand="dbim-chrome-yellow"] {
-  --sa-color-action-primary-default: var(--sa-ref-color-dbimPrimary-chromeYellow-500);
+  --sa-color-action-primary-default: var(--sa-ref-color-dbimPrimary-chromeYellow-600);
   --sa-color-action-primary-hover: var(--sa-ref-color-dbimPrimary-chromeYellow-700);
   --sa-color-action-primary-tonal: var(--sa-ref-color-dbimPrimary-chromeYellow-100);
   --sa-color-primaryScale-50: var(--sa-ref-color-dbimPrimary-chromeYellow-50);
@@ -4062,8 +4062,8 @@
   --sa-color-text-onPrimary: var(--sa-ref-color-neutralDbim-0);
   --sa-color-text-info: var(--sa-ref-color-infoDbim-600);
   --sa-color-border-controlHover: var(--sa-ref-color-neutralDbim-600);
-  --sa-color-status-success: var(--sa-ref-color-greenDbim-600);
-  --sa-color-status-successStrong: var(--sa-ref-color-greenDbim-700);
+  --sa-color-status-success: var(--sa-ref-color-greenDbim-700);
+  --sa-color-status-successStrong: var(--sa-ref-color-greenDbim-800);
   --sa-color-status-successTonal: var(--sa-ref-color-greenDbim-100);
   --sa-color-status-warning: var(--sa-ref-color-amberDbim-600);
   --sa-color-status-warningTonal: var(--sa-ref-color-amberDbim-50);
@@ -4601,8 +4601,8 @@
   --sa-color-text-onPrimary: var(--sa-ref-color-neutralDbim-0);
   --sa-color-text-info: var(--sa-ref-color-infoDbim-600);
   --sa-color-border-controlHover: var(--sa-ref-color-neutralDbim-600);
-  --sa-color-status-success: var(--sa-ref-color-greenDbim-600);
-  --sa-color-status-successStrong: var(--sa-ref-color-greenDbim-700);
+  --sa-color-status-success: var(--sa-ref-color-greenDbim-700);
+  --sa-color-status-successStrong: var(--sa-ref-color-greenDbim-800);
   --sa-color-status-successTonal: var(--sa-ref-color-greenDbim-100);
   --sa-color-status-warning: var(--sa-ref-color-amberDbim-600);
   --sa-color-status-warningTonal: var(--sa-ref-color-amberDbim-50);

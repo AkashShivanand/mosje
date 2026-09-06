@@ -42,7 +42,8 @@
  * a DBIM brand is unreachable from the exporter by construction rather than by discipline.
  */
 
-import { DBIM_GROUPS } from "./brand-ramps.mjs";
+import { DBIM_GROUPS, DBIM_INK, generateDbim } from "./brand-ramps.mjs";
+import { contrast } from "./wcag.mjs";
 
 /**
  * `{color.<family>.<step>}` -> the DBIM family that replaces it, for every brand.
@@ -99,6 +100,75 @@ function dbimValueFor(path, defaultValue, groupPath) {
   return null;
 }
 
+/* ───────────────────────────────────────────────────────────────────────────────────────────
+ * §2.1.iv — "colour usage should ensure the accessibility of digital platform"
+ *
+ * DBIM publishes SWATCHES and that one obligation. It publishes no pairing table: nothing in
+ * the chapter says which shade carries a button or which ink sits on it, and the rungs between
+ * its five published shades are this estate's interpolation, not DBIM's. So conformance to the
+ * palette cannot on its own produce conformant CONTRAST, and everything below is measured
+ * rather than assumed.
+ *
+ * Two different repairs, because two different things are free to move.
+ *
+ * INK MOVES where a token names exactly one fill. Every `on/bg/<path>` is the foreground for
+ * `bg/<path>` and for nothing else, so its ink can be chosen against that fill. It was not
+ * being chosen at all: `on/bg/brand/primary/bolder` is `{text.neutral.inverse}` — white —
+ * declared once at `:root`, and NO brand block re-declares an `on/*` token, navy included.
+ * That is safe exactly while every brand's fills sit in one lightness band, which DBIM's
+ * lighter groups do not.
+ *
+ * THE FILL MOVES where one ink serves several fills. `color.text.onPrimary` is the label for
+ * BOTH `action.primary.default` and `action.primary.hover`, and hover is deliberately darker
+ * — so darkening the ink to suit a light default would fail on the dark hover. `action.primary`
+ * says so in its own description: "MUST stay dark enough to carry white label text at AA in
+ * EVERY theme … hover goes DARKER rather than lighter." The fill is what gives.
+ * ─────────────────────────────────────────────────────────────────────────────────────────── */
+
+const AA = 4.5;
+
+/** The resolved DBIM ramps, built once — the same values the palette itself emits. */
+const DBIM = generateDbim();
+
+/** `{color.dbimPrimary.green.600}` and friends → a hex, or null if it is not a DBIM ramp ref. */
+function resolveDbimRef(ref) {
+  let m = /^color\.dbimPrimary\.([A-Za-z]+)\.(\d+)$/.exec(ref);
+  if (m) return DBIM.primary[`dbim${m[1][0].toUpperCase()}${m[1].slice(1)}`]?.[m[2]] ?? null;
+  m = /^color\.(neutralDbim|greenDbim|redDbim|amberDbim|infoDbim)\.(\d+)$/.exec(ref);
+  if (m) return (m[1] === "neutralDbim" ? DBIM.neutral : DBIM.functional[m[1]])?.[m[2]] ?? null;
+  if (ref === "color.dbimInk") return DBIM_INK;
+  return null;
+}
+
+/**
+ * The primary rung a DBIM group's BUTTON FILL must use so white clears AA on it.
+ *
+ * The lightest rung that passes, never darker than it has to be — a conformance preview that
+ * quietly darkens every group would misrepresent the palette as much as an unreadable one
+ * does. Four of the six are unchanged at 500; only Green (3.01:1) and Chrome Yellow (3.34:1)
+ * move, and Green moves two rungs because its 600 is still 4.32:1.
+ *
+ * `hover` follows one rung behind `default` so the two never collapse into the same colour,
+ * and never lighter than the 700 the default brand already uses.
+ */
+const PRIMARY_RUNGS = [500, 600, 700, 800];
+
+function accessibleActionRungs(groupPath) {
+  const group = DBIM_GROUPS[groupPath].group;
+  const ramp = DBIM.primary[groupPath];
+  const fallback = PRIMARY_RUNGS[PRIMARY_RUNGS.length - 1];
+  const def =
+    PRIMARY_RUNGS.find((r) => contrast("#ffffff", ramp[r]) >= AA) ?? fallback;
+  const hover = Math.min(Math.max(def + 100, 700), 800);
+  if (contrast("#ffffff", ramp[hover]) < AA) {
+    throw new Error(`DBIM ${group}: no rung carries white on hover — the ramp is broken`);
+  }
+  return { group, default: def, hover };
+}
+
+/** `on.bg.brand.primary.bolder` → `bg.brand.primary.bolder`, else null. */
+const fillPathFor = (path) => (path.startsWith("on.bg.") ? path.slice(3) : null);
+
 /**
  * Walk a parsed token tree and add a `colorModes` entry per DBIM brand wherever the token has
  * a DBIM equivalent. Mutates in place; safe to run more than once.
@@ -113,6 +183,17 @@ function dbimValueFor(path, defaultValue, groupPath) {
 export function addDbimBrandModes(tree) {
   let touched = 0;
 
+  // The button fill each group needs, measured once. Read by the walk below.
+  const actionRungs = Object.fromEntries(
+    Object.keys(DBIM_GROUPS).map((g) => [g, accessibleActionRungs(g)]),
+  );
+
+  /*
+   * Pass 1 records every token's DBIM value so pass 2 can pick an ink against the thing that
+   * ink actually sits on. Keyed by `<brand>::<token path>`.
+   */
+  const fills = new Map();
+
   const walk = (node, path) => {
     if (!node || typeof node !== "object") return;
 
@@ -122,9 +203,24 @@ export function addDbimBrandModes(tree) {
       const modes = (mosje.colorModes ??= {});
 
       for (const [groupPath, { brand }] of Object.entries(DBIM_GROUPS)) {
-        const value = dbimValueFor(path, node.$value, groupPath);
+        let value = dbimValueFor(path, node.$value, groupPath);
+
+        /*
+         * THE FILL MOVES. `action/primary/default` and `hover` are the two fills one ink has
+         * to serve, so the rung is chosen for them rather than the ink being chosen for it.
+         * `dbimValueFor` has already mapped these to `{color.dbimPrimary.<group>.<rung>}`;
+         * this re-points the rung to the measured one, which for four of the six groups is
+         * the rung it already had.
+         */
+        const action = /^color\.action\.primary\.(default|hover)$/.exec(path);
+        if (action && value !== null) {
+          const { group, ...rungs } = actionRungs[groupPath];
+          value = `{color.dbimPrimary.${group}.${rungs[action[1]]}}`;
+        }
+
         if (value === null) continue;
         modes[brand] = value;
+        fills.set(`${brand}::${path}`, value);
         touched++;
       }
 
@@ -144,5 +240,157 @@ export function addDbimBrandModes(tree) {
   };
 
   walk(tree, "");
+
+  /*
+   * PASS 2 — THE INK MOVES. Every `on/bg/<path>` is the foreground for `bg/<path>` and for
+   * nothing else, so its ink is chosen by measuring that fill: white where white clears AA,
+   * DBIM's own Deep Earthy Brown where it does not. Deliberately NOT symmetrical — dark ink is
+   * only reached for when white has failed, because white on a brand fill is what the rest of
+   * the estate does and a preview that flipped ink wherever dark merely scored higher would
+   * read as a different design rather than the same one made legible.
+   *
+   * It has to be a second pass: an `on/*` token can appear in the tree before the `bg/*` it
+   * names, and choosing an ink against a fill that has not been mapped yet is how this would
+   * silently go back to inheriting white.
+   */
+  const inked = [];
+
+  /** The node at a dotted token path, or null. */
+  const nodeAt = (tokenPath) =>
+    tokenPath.split(".").reduce((n, k) => (n && typeof n === "object" ? n[k] : null), tree);
+
+  /**
+   * A token's resolved HEX in one DBIM brand, following the alias chain.
+   *
+   * A lookup would not do. `bg/brand/primary/bolder` is `{color.primaryScale.600}` — an alias
+   * layer — so the brand never re-declares it and it has no DBIM value of its own; what makes
+   * it green is that `primaryScale` is re-pointed underneath it. Reading only what pass 1
+   * recorded therefore finds nothing for exactly the fills this repair exists for.
+   */
+  const resolveForBrand = (tokenPath, brand, depth = 0) => {
+    if (depth > 12) return null;
+    const node = nodeAt(tokenPath);
+    if (!node || typeof node !== "object" || !("$value" in node)) return null;
+    const raw = String(fills.get(`${brand}::${tokenPath}`) ?? node.$value).trim();
+    const m = /^\{([^}]+)\}$/.exec(raw);
+    if (!m) return /^#[0-9a-f]{3,8}$/i.test(raw) ? raw : null;
+    return resolveDbimRef(m[1]) ?? resolveForBrand(m[1], brand, depth + 1);
+  };
+
+  /**
+   * The lightest rung of this brand's PRIMARY ramp, darker than `fill`, that carries `ink` at
+   * AA — or null when `fill` is not on that ramp, or nothing darker is dark enough.
+   */
+  const darkerPrimaryRungFor = (fill, ink, brand) => {
+    const groupPath = Object.keys(DBIM_GROUPS).find((g) => DBIM_GROUPS[g].brand === brand);
+    const ramp = DBIM.primary[groupPath];
+    const at = PRIMARY_RUNGS.concat([900]).find((r) => ramp[r] === fill);
+    if (at === undefined) return null;
+    for (const r of PRIMARY_RUNGS.concat([900]).filter((x) => x > at)) {
+      const ratio = contrast(ink, ramp[r]);
+      if (ratio >= AA) return { ref: `{color.dbimPrimary.${DBIM_GROUPS[groupPath].group}.${r}}`, ratio };
+    }
+    return null;
+  };
+
+  /** Set a brand's value for a node, recording it for the audit line. */
+  const setInk = (node, brand, ref, why) => {
+    const ext = (node.$extensions ??= {});
+    const mosje = (ext.mosje ??= {});
+    (mosje.colorModes ??= {})[brand] = ref;
+    inked.push(`${brand} ${why}`);
+    touched++;
+  };
+
+  const inkWalk = (node, path) => {
+    if (!node || typeof node !== "object") return;
+
+    if ("$value" in node) {
+      /*
+       * A STATUS BADGE'S INK SITS ON ITS OWN TONAL GROUND, and DBIM publishes one colour per
+       * status — Liberty Green #198754 and the other three — pinned at rung 500. The badge ink
+       * (600) and the tonal ground (100) are both DERIVED from it, and for success the pair
+       * lands at 4.42:1: eight hundredths short, in all six groups at once, because the status
+       * palette is group-independent. The ink steps to the lightest darker rung that clears AA
+       * on the same ground; the ground does not move, because lightening it would change what
+       * a badge looks like rather than what it measures.
+       */
+      const status = /^color\.status\.([a-z]+)$/.exec(path);
+      if (status) {
+        for (const { brand } of Object.values(DBIM_GROUPS)) {
+          const ground = resolveForBrand(`color.status.${status[1]}Tonal`, brand);
+          const ink = resolveForBrand(path, brand);
+          if (!ground || !ink || contrast(ink, ground) >= AA) continue;
+          const ref = /^\{color\.([A-Za-z]+)\.(\d+)\}$/.exec(String(fills.get(`${brand}::${path}`) ?? ""));
+          if (!ref) continue;
+          const fixed = [600, 700, 800, 900]
+            .filter((r) => r > Number(ref[2]))
+            .find((r) => {
+              const hex = resolveDbimRef(`color.${ref[1]}.${r}`);
+              return hex && contrast(hex, ground) >= AA;
+            });
+          if (!fixed) continue;
+          setInk(node, brand, `{color.${ref[1]}.${fixed}}`, `${path} → ${ref[1]}.${fixed} on ${ground}`);
+
+          /*
+           * KEEP THE PROMINENCE STEP. `status/<x>` and `status/<x>Strong` are two rungs of one
+           * idea, and success sat on 600 with Strong on 700 — so moving success to 700 to clear
+           * AA would have landed both on the same colour and quietly deleted the distinction
+           * the pair exists to draw. Strong follows one rung further down.
+           */
+          const strongNode = nodeAt(`color.status.${status[1]}Strong`);
+          const strongRef = /^\{color\.([A-Za-z]+)\.(\d+)\}$/.exec(
+            String(fills.get(`${brand}::color.status.${status[1]}Strong`) ?? ""),
+          );
+          if (strongNode && strongRef && Number(strongRef[2]) <= fixed) {
+            const next = [700, 800, 900].find((r) => r > fixed);
+            if (next && resolveDbimRef(`color.${strongRef[1]}.${next}`)) {
+              setInk(strongNode, brand, `{color.${strongRef[1]}.${next}}`,
+                `color.status.${status[1]}Strong → ${strongRef[1]}.${next} (kept a rung below ${fixed})`);
+            }
+          }
+        }
+        return;
+      }
+
+      /*
+       * NO `on/bg/*` INK OVERRIDE, AND THAT IS A DECISION RATHER THAN AN OMISSION.
+       *
+       * One pairing is still short: dbim-green's `on/bg/brand/primary/bolder` is white on
+       * `bg/brand/primary/bolder` #2d8686 at 4.32:1. Both routes to repairing it are closed,
+       * and each was tried and measured before being ruled out:
+       *
+       *   FLIPPING THE INK to Deep Earthy Brown is right for the fill this token NAMES and
+       *   wrong for the fill it often HAS. `bg/brand/primary/bolder` resolves through
+       *   `color.primaryScale.600`, which a portal repaints: on the NMBA login the button is
+       *   the portal's navy #036 with white on it. A brand-level ink override reaches that
+       *   button while the portal's fill stays navy, which measured 1.6:1 on a live login
+       *   screen. The design system cannot know, at brand level, what a surface will repaint.
+       *
+       *   DARKENING THE FILL to rung 700 is right and does not survive emission. The brand
+       *   block re-asserts every alias whose source moved, so `bg/brand/primary/bolder` is
+       *   re-emitted as `var(--sa-color-primaryScale-600)` after the pin and the later
+       *   declaration wins. Teaching the closure to skip a token the block already declares
+       *   looks like the fix and is not: several tokens are deliberately declared with a base
+       *   value that the closure then rebuilds — `overlay/neutral/boldest` is one, and
+       *   skipping it turned a 48% color-mix into a solid colour in the SHIPPING blue brand.
+       *
+       * So it stays in `dbim-contrast.test.mjs`'s baseline, as one measured entry with its
+       * reason, rather than being repaired by a change that breaks something a reader can
+       * actually reach. Fixing it properly means giving the emitter a notion of a PINNED
+       * value that re-assertion may not overwrite, which is a change to how every brand is
+       * emitted and belongs on its own.
+       */
+    }
+
+    for (const key of Object.keys(node)) {
+      if (key.startsWith("$")) continue;
+      inkWalk(node[key], path ? `${path}.${key}` : key);
+    }
+  };
+
+  inkWalk(tree, "");
+
+
   return touched;
 }
