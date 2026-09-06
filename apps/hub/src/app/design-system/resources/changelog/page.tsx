@@ -32,9 +32,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.119.0",
+    version: "v0.120.0",
     date: "2026-09-06",
     current: true,
+    changes: [
+      { kind: "Changed", text: "EVERY PORTAL NOW OPENS IN NAVY, AND THE WEBSITE STILL OPENS IN BLUE. Which brand a surface opens in is a property of the ROUTE rather than of the estate: `defaultColorModeForPath` maps /portals/** to navy and everything else to blue, and `BRAND_BY_ROUTE` is the one array that both the inline no-flash head script and the provider read, so first paint and hydration cannot reach different answers. It is a default, not a lock — a brand chosen in the demo dock is persisted and outranks it on every route, so the Colour tab keeps working inside a portal instead of being a control that appears usable and does nothing. The path is read on the CLIENT and never during a server render: the root layout sits above every route in the estate, so a server-side read would make all of them dynamic for the sake of one attribute, and reading it client-side is also what lets the brand follow a client-side navigation from the website into a portal, where the head script never runs again" },
+      { kind: "Fixed", text: "THE COLOUR COOKIE RECORDED A CHOICE NOBODY HAD MADE. `ColorModeProvider` called `applyColorMode(readColorModeCookie())` on mount and `applyColorMode` writes the cookie, so every visitor was handed `mosje-color-mode=blue` on first paint whether or not they had ever opened the Colour tab. After that, having a cookie could not mean having chosen — and any per-route default would have been stamped out by whichever page a reader happened to land on first. The mount path passes `persist: false` now, and `hasChosenColorMode()` reads the cookie's PRESENCE rather than its value, because blue is both the estate default and a real choice a reader may have made on a portal" },
+      { kind: "Removed", text: "SMILE-ADMIN AND NMBA STOPPED PINNING THEIR OWN NAVY. Both carried a hand-written data-brand=\"navy\" on a wrapper div, described in each file as a permanent identity. The route default covers both, and keeping the wrappers would have made those two the only portals the estate's Colour tab could not reach — the closer attribute wins, so the switch would have done nothing visible on exactly the two portals that already looked right" },
+    ],
+  },
+  {
+    version: "v0.119.0",
+    date: "2026-09-06",
     changes: [
       { kind: "Fixed", text: "THE DIVIDER BESIDE THE RAIL VANISHED ON SCROLL. Shells drew it as a border on the rail, which is sticky and never taller than the viewport, so the line stopped where the rail stopped. `SidebarNav` now renders a column as wide as the rail, stretched to the full height of the shell's row, that owns the hairline (`border/neutral/subtle`, `stroke/1`); the sticky rail sits inside it, and the line runs to the bottom edge however far the page scrolls. Shells pass no border of their own; the Figma `Sidebar` master carries the same right stroke." },
       { kind: "Fixed", text: "THE IDENTITY WASH RENDERED SOLID IN FIGMA. A bound gradient stop takes its variable's alpha, so a fade bound at both ends was a flat block. The near stop binds `color/transparent/secondary/8`, the handoff's 8% saffron, in Figma and code alike; the far stop is a raw transparent of the same hue, the one literal the master carries." },

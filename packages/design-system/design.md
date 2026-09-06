@@ -820,7 +820,7 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 
 | Axis | Attribute | Values | Meaning |
 | :--- | :--- | :--- | :--- |
-| **Brand** | `data-brand` | `blue` (default), `navy` | Two peer brand palettes, BOTH on light surfaces. Renamed from `blue-light`/`blue-dark` on 2026-08-07: those read as appearance themes, which they never were. **Since 2026-08-11 a brand swap changes the PRIMARY ramp and the neutral greys, and nothing else** — `blue` anchors `#0373DF` at rung 500, `navy` anchors `#003366` at rung **600** (the rung its lightness says, not the rung convention expects). Verified against the built stylesheet on 2026-08-12: `primaryScale` differs in 11 of 11 rungs, `neutralScale` in 10 of 13, and every other ramp is byte-identical across the two brands. The neutral re-lock is a systemic guarantee that the grey follows the brand's hue, **not a visible change** — at 8-bit precision the two brands' greys differ by ≤1 per channel at most rungs, so do not describe them to a stakeholder as "warm" versus "cool". `#162F6A` is **not** navy: it is DBIM Blue, which exists only as a code-only conformance preview. **Secondary (India Saffron `#FF671F`) and accent (India Green `#046A38`) are brand-INVARIANT**: both are SAMAVESH logo colours, so they are constants of the identity rather than variants of it. Navy used to swap secondary to green, which landed it 1.00:1 from the success colour — see the changelog for audit C-02. |
+| **Brand** | `data-brand` | `blue` (website & docs default), `navy` (**portal default since 2026-09-06**) | Two peer brand palettes, BOTH on light surfaces. Renamed from `blue-light`/`blue-dark` on 2026-08-07: those read as appearance themes, which they never were. **Since 2026-08-11 a brand swap changes the PRIMARY ramp and the neutral greys, and nothing else** — `blue` anchors `#0373DF` at rung 500, `navy` anchors `#003366` at rung **600** (the rung its lightness says, not the rung convention expects). Verified against the built stylesheet on 2026-08-12: `primaryScale` differs in 11 of 11 rungs, `neutralScale` in 10 of 13, and every other ramp is byte-identical across the two brands. The neutral re-lock is a systemic guarantee that the grey follows the brand's hue, **not a visible change** — at 8-bit precision the two brands' greys differ by ≤1 per channel at most rungs, so do not describe them to a stakeholder as "warm" versus "cool". `#162F6A` is **not** navy: it is DBIM Blue, which exists only as a code-only conformance preview. **Secondary (India Saffron `#FF671F`) and accent (India Green `#046A38`) are brand-INVARIANT**: both are SAMAVESH logo colours, so they are constants of the identity rather than variants of it. Navy used to swap secondary to green, which landed it 1.00:1 from the success colour — see the changelog for audit C-02. |
 | ~~Appearance~~ | ~~`data-theme`~~ | **REMOVED 2026-08-10** | Dark and high-contrast are owned entirely by the UX4G accessibility widget, which applies its own `.dark-mode` class to `<html>` and never read `data-theme`. This axis was a second, parallel mechanism nothing consumed. The token source still carries the overrides (unemitted) so it can be revived deliberately — see `docs/superpowers/records/2026-08-10-figma-theme-dark-hc-removed.md`. |
 | **Density** | `data-density` | `comfortable` (default/unset), `compact` | Controls padding, heights, and spatial density. |
 | **Surface** | `data-surface` | `website` (default/unset), `portal` | Selects the **typography scale**. `website` = the expressive editorial ramp (display-1 ≈ 80px); `portal` = the dense functional ramp (display-1 ≈ 56px). Same role token names in both; only the `--ds-type-*` values differ. Set `data-surface="portal"` on portal `<html>` roots; the website/hub stay default. Maps 1:1 to the SAMAVESH Figma `Website` / `Portal` type modes. |
@@ -838,6 +838,33 @@ SAMAVESH operates on three independent theme axes applied via HTML attributes on
 > switch that does nothing. Opt in explicitly:
 > `<ColorModeSwitcher modes={[...COLOR_MODES, ...UX4G_COLOR_MODES]} />`.
 > The MoSJE default stays the primary blue `#0373DF`, as DBIM requires.
+
+**Which brand a surface OPENS in is a property of the route, not of the estate.**
+`defaultColorModeForPath` maps `/portals/**` to `navy` and everything else to
+`blue`; `BRAND_BY_ROUTE` is the one array the inline no-flash `<head>` script and
+the provider both read, so first paint and hydration cannot reach different
+answers. It is a **default, not a lock** — a brand chosen in the demo dock is
+persisted and outranks it on every route, so the Colour tab keeps working inside
+a portal instead of being a control that appears usable and does nothing.
+
+Two consequences worth knowing:
+
+- **The cookie is now written only by a deliberate choice.** `ColorModeProvider`
+  used to call `applyColorMode(readColorModeCookie())` on mount, which handed
+  every visitor a cookie recording a choice nobody had made — after which "has a
+  cookie" could not mean "chose", and any per-route default would be stamped out
+  by the first page anyone happened to land on. The mount path now passes
+  `persist: false`, and `hasChosenColorMode()` reads the cookie's PRESENCE rather
+  than its value, because `blue` is both the estate default and a real choice.
+- **`smile-admin` and `nmba` no longer pin `data-brand="navy"` on a wrapper.**
+  The route default covers them, and keeping the wrappers would have made those
+  two the only portals the switcher could not reach.
+
+The path is resolved on the CLIENT — `RouteColorModeProvider` reads `usePathname`
+— never during a server render. The root layout sits above every route in the
+estate, so a server-side read would make all of them dynamic for the sake of one
+attribute; it is also what lets the brand follow a client-side navigation from
+the website into a portal, where the `<head>` script never runs again.
 
 > **Tip:** Nested brand "islands" (e.g. a navy portal shell inside the blue hub) must be explicitly scoped with a nested `[data-brand]` element. To prevent a flash on initial render, initialize the attribute with the exported `colorModeInitScript()`.
 

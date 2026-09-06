@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans, Noto_Sans_Display } from "next/font/google";
-import { ColorModeProvider, UX4GAccessibilityWidget } from "@mosje/design-system";
+import { UX4GAccessibilityWidget } from "@mosje/design-system";
+import { RouteColorModeProvider } from "@/components/route-color-mode-provider";
 import { DataModeProvider } from "@/lib/data-mode/context";
 import { NotInEmbed } from "@/components/conditional-embed-chrome";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
@@ -155,7 +156,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       {/* suppressHydrationWarning: browser extensions (e.g. Grammarly) inject
           attributes onto <body> before React hydrates — benign, React-recommended. */}
       <body className="min-h-full font-sans bg-surface-muted text-ink" suppressHydrationWarning>
-        <ColorModeProvider>
+        <RouteColorModeProvider>
           {/* Which figures the dashboards show — live, illustrative, or both.
               Client-side and cookie-backed, exactly like the colour mode above
               it, so reading it never opts a static route into dynamic
@@ -179,7 +180,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <ConditionalDemoDock apps={apps} enabled={demoToolsEnabled} />
           </NotInEmbed>
           </DataModeProvider>
-        </ColorModeProvider>
+        </RouteColorModeProvider>
       </body>
     </html>
   );
