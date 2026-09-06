@@ -295,10 +295,7 @@ button {
 }
 
 /* The rail is the design system's SidebarNav; it pins itself under the
-   masthead. This only draws the dividing line. */
-.eu-sidebar {
-  border-right: 1px solid var(--stroke-300);
-}
+   masthead and its column draws the dividing line. */
 
 .subnav {
   display: grid;

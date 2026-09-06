@@ -48,6 +48,25 @@
     border: 0;
   }
 
+  /* ── Column ─────────────────────────────────────────────────────────────────── */
+  /* The rail's column: as wide as the rail, stretched to the full height of the
+     shell's row, and the owner of the hairline between rail and content. The
+     line used to be a shell's `border-r` on the rail itself; the rail is sticky
+     and no taller than the viewport, so the line stopped where the rail
+     stopped and vanished on scroll. It belongs to the column, which is neither
+     the rail nor the content — the seam between them. */
+  .ds-sidebar-column {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    align-self: stretch;
+    border-right: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    transition: width var(--sa-motion-collapse-duration) var(--sa-motion-collapse-easing);
+  }
+
+  .ds-sidebar-column.is-expanded  { width: var(--sa-layout-sidebar-width); }
+  .ds-sidebar-column.is-collapsed { width: var(--sa-layout-sidebar-collapsedWidth); }
+
   /* ── Container ─────────────────────────────────────────────────────────────── */
 
   /* The rail sits on the page canvas with NO ground of its own — every handoff
@@ -69,14 +88,12 @@
     padding: var(--sa-padding-16);
     position: sticky;
     top: var(--sa-header-stuck, 0); /* 0 when no masthead is sticky */
-    align-self: flex-start;
     max-height: calc(100dvh - var(--sa-header-stuck, 0px)); /* stylelint-disable-line length-zero-no-unit -- calc subtracts a length, so the fallback must carry a unit */
     overflow: hidden;
     transition: width var(--sa-motion-collapse-duration) var(--sa-motion-collapse-easing);
   }
 
-  .ds-sidebar.is-expanded  { width: var(--sa-layout-sidebar-width); }
-  .ds-sidebar.is-collapsed { width: var(--sa-layout-sidebar-collapsedWidth); }
+  .ds-sidebar { width: 100%; }
 
   /* ── Navigation ─────────────────────────────────────────────────────────────── */
 
@@ -459,7 +476,7 @@
    * portal is named, so it heads every rail.
    *
    * It carries the SAMAVESH wash the handoff gave it (2026-09-05): a saffron
-   * fade — bg/brand/secondary/base, the handoff's saffron at 8% over white, to
+   * fade — color/transparent/secondary/8, the handoff's saffron at 8%, to
    * nothing — across the FULL width of
    * the rail, so it bleeds through the rail's padding with negative margins and
    * pads itself by padding/16. The mark is the registry OrgLogo at 56, bare
@@ -476,7 +493,7 @@
     gap: var(--sa-inline-12);
     margin: calc(-1 * var(--sa-padding-16)) calc(-1 * var(--sa-padding-16)) 0;
     padding: var(--sa-padding-16);
-    background: linear-gradient(to bottom, var(--sa-bg-brand-secondary-base), transparent);
+    background: linear-gradient(to bottom, var(--sa-color-transparent-secondary-8), transparent);
     border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
