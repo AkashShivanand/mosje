@@ -167,6 +167,7 @@ export const FIGMA_NODES = {
   // (Password/OTP/PIN/DARPAN) and is now one component with a Credential
   // fields instance-swap slot, so the node is a COMPONENT, not a set.
   authFormCard: "55445-778",
+  portalList: "55444-709",
   credentialFieldsPassword: "57574-14697",
   credentialFieldsPin: "57574-14737",
   credentialFieldsDarpan: "57575-14794",

@@ -6916,6 +6916,51 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "PortalListProps": {
+    "source": "packages/design-system/components/auth/portal-list.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "activePath",
+        "type": "string",
+        "required": false,
+        "description": "The portal the reader is already in — drawn as the selected card, with `aria-current`. Pass the path, e.g. `/portals/e-anudaan`."
+      },
+      {
+        "name": "apps",
+        "type": "AppEntry[]",
+        "required": false,
+        "default": "DEFAULT_APPS",
+        "description": "The portals to offer. Defaults to the estate registry. **Do not pass a hand-written list.** `DEFAULT_APPS` owns whether a portal EXISTS, and a hand-kept copy of it once shipped a 404. Pass a filtered `DEFAULT_APPS` if a surface genuinely offers fewer."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filterable",
+        "type": "boolean",
+        "required": false,
+        "default": "true\n\nOff for a short list: six chips above five portals is chrome, not help.",
+        "description": "Show the category filter row."
+      },
+      {
+        "name": "includePlanned",
+        "type": "boolean",
+        "required": false,
+        "default": "false\n\nOn, a reader sees the whole estate and which parts of it are not open yet;\noff, they see only what they can actually enter. Off is the default because\nthis list is usually a way IN, and a way in that mostly cannot be taken is\na worse list.",
+        "description": "Offer portals that are not live yet, drawn as disabled cards."
+      },
+      {
+        "name": "onSelect",
+        "type": "(entry: AppEntry) => void",
+        "required": false,
+        "description": "Called with the chosen entry. Provide it when the list is a PICKER — the card becomes a button-like link the surface handles. Omit it and each card is a plain link to its portal, which is what the `/portals` directory wants."
+      }
+    ]
+  },
   "PortalLoginShellProps": {
     "source": "packages/design-system/components/auth/portal-login-shell.tsx",
     "inheritsNative": false,
@@ -6980,10 +7025,23 @@ export const GENERATED_PROPS = {
         "description": "The photograph behind the desktop hero — the Figma organism's `Portal Hero` slot. Drawn as a background so a phone, which never shows the column, never downloads it. Decorative: it carries no text and sits under an alpha mask that leaves a solid band on the left for the lockup and the Signing Into bar. NO DEFAULT, deliberately. The slot is blank until the portal supplies its own photograph, and a blank slot is the solid brand column — the same thing the library's master draws with nothing dropped into it. The shell used to default to the SMILE-Transgender photograph, which put one scheme's classroom behind every other scheme's sign-in."
       },
       {
+        "name": "onChangePortal",
+        "type": "() => void",
+        "required": false,
+        "description": "Open the change-portal picker instead of navigating. The handoff's `E-Anudaan | Portal Switch` draws this as a SIDE SHEET over the login page — \"Choose a portal to login\" — not as a trip to the hub root. Pass a handler and the control becomes a `<button>` that opens it; leave it off and it stays the `changeHref` link, so every existing consumer is unchanged. A button, not a link, when it opens a panel: a control that does not navigate must not offer middle-click or \"copy link address\", and it owes `aria-expanded` / `aria-haspopup`, which an anchor cannot honestly carry."
+      },
+      {
         "name": "onFooterLinkClick",
         "type": "(link: \"privacy\" | \"contact\" | \"about\") => void",
         "required": false,
         "description": "Called when a footer link (Privacy Policy / Contact Us / About Us) is clicked"
+      },
+      {
+        "name": "portalPickerOpen",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the picker this control opens is currently open — drives `aria-expanded`."
       }
     ]
   },
@@ -7042,6 +7100,13 @@ export const GENERATED_PROPS = {
         "type": "(payload: LoginSubmitPayload) => void | Promise<void>",
         "required": false,
         "description": "Submission callback triggered when the form is submitted"
+      },
+      {
+        "name": "portalPicker",
+        "type": "boolean",
+        "required": false,
+        "default": "true\n\nThe handoff draws it as a side sheet over the login page. Switch it OFF for a\nportal a reader arrived at deliberately and cannot swap out of — then the\nstrip's Change control falls back to `config.changeHref`.",
+        "description": "Offer the change-portal picker from the SIGNING INTO strip."
       },
       {
         "name": "roleId",

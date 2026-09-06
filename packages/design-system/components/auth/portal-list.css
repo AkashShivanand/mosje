@@ -1,0 +1,64 @@
+/* Declare the order before using it — see auth-fields.css for why this line is
+   repeated in every component stylesheet. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* The list inside the picker. Geometry from `Auth / PortalList` (55444:709):
+     400 wide, vertical, 16 between regions, 20 all round. */
+  .ds-portal-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+    padding: var(--sa-padding-20);
+  }
+
+  /* The chips WRAP. Six category names — one of them "Foundation & Autonomous
+     Bodies" at 272px — cannot sit on one 360px row, and a filter row that
+     scrolls sideways hides the filters a reader is looking for. */
+  .ds-portal-list__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+  }
+
+  .ds-portal-list__grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* A real <li> around each card, so the list is a list to a screen reader and
+     announces its length. The card itself is the link. */
+  .ds-portal-list__item {
+    display: flex;
+  }
+
+  /* Empty and filtered-to-nothing share the type but never the sentence. */
+  .ds-portal-list__note {
+    margin: 0;
+    padding: var(--sa-padding-16) 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-portal-list__clear {
+    appearance: none;
+    border: 0;
+    padding: 0;
+    background: none;
+    cursor: pointer;
+    font: inherit;
+    color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .ds-portal-list__clear:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+}

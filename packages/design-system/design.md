@@ -3136,6 +3136,18 @@ matching the Figma "Navbar Portal" account.
 **Rule**: Never rebuild the login layout per-portal. Slot in portal-specific content: logo paths, portal name, tab configuration, form JSX.  
 **Slots**: `children` is the form. `extraContent` sits **below** the form inside the card and is for page-level content, not credentials — the portal switcher grid, a demo-data notice. A field placed in `extraContent` lands after the submit button, which is the wrong tab order.
 
+#### PortalList
+**Purpose**: The scrollable list of portals inside the change-portal picker — category filters over Compact `PortalCard`s. Mirrors `Auth / PortalList` (`55444:709`), which drops into `SideSheet`'s Content slot.
+**Props**: `apps`, `activePath`, `onSelect`, `filterable`, `includePlanned`
+**Rules**:
+- **There is no `PortalPicker` component.** The picker is `SideSheet` + this, which is the Figma master's own decision — a third name for the composition would add a word without adding a decision. `PortalLoginTemplate` composes it and wires it to the SIGNING INTO strip's Change control.
+- **Never write a portal's name here.** Labels come from `PORTAL_LABELS`, which exists because two surfaces gave different answers: the banner showed "PM-AJAY / Pradhan Mantri Anusuchit Jaati Abhyuday Yojana" while `/portals` showed "PM / PM-AJAY", leaking an internal admin label to citizens. A third copy re-opens exactly that.
+- **Never hand-write the list either.** `DEFAULT_APPS` owns whether a portal EXISTS, and a hand-kept copy of it once shipped a 404.
+- **Cards stay real `<a href>`s.** `onSelect` intercepts the click and is for a surface that must NOT navigate; the login picker omits it, so middle-click, "copy link address" and Enter all work and it survives JavaScript being off.
+- **The filter row hides itself when there is nothing to choose between.** With every live portal in one category it would read "All (8)" beside "Scheme Portals (8)" — two controls that do the same thing. Same rule as a one-tab tablist.
+- **Filtered-to-nothing is worded differently from empty**, and names the way back. "No portal is listed under Corporations" and "No portals are available to sign in to" have different remedies.
+- **`includePlanned` is OFF by default**: this list is a way IN, and a way in that mostly cannot be taken is a worse list. On, unopened portals are `disabled` cards.
+
 #### AuthFormCard
 **Purpose**: The login form column — seven fixed regions and one slot. Heading, error, the DigiLocker handoff, the method tabs, **`credentialFields`**, the submit, the consent line, the account prompt.
 **Props**: `heading`, `headingLevel`, `description`, `error`, `sso`, `methodTabs`, `credentialFields`, `primaryAction`, `consent`, `accountPrompt`, `footer`, `onSubmit`

@@ -7,7 +7,9 @@ import {
   Input,
   OtpInput,
   PasswordInput,
+  PortalList,
   PortalLoginShell,
+  SideSheet,
 } from "@mosje/design-system";
 
 /**
@@ -202,4 +204,42 @@ export const WithDemoCredentials: Story = {
       />
     </PortalLoginShell>
   ),
+};
+
+/**
+ * `onChangePortal` turns the SIGNING INTO strip's Change control from a link
+ * into a button that opens the change-portal picker — the handoff's
+ * `E-Anudaan | Portal Switch`. `portalPickerOpen` feeds it `aria-expanded`.
+ *
+ * A BUTTON, not a link, when it opens a panel: a control that does not navigate
+ * must not offer middle-click or "copy link address", and it owes
+ * `aria-haspopup` / `aria-expanded`, which an anchor cannot honestly carry.
+ * Leave `onChangePortal` off and the control stays the `changeHref` link, so
+ * every existing consumer is unchanged.
+ *
+ * `PortalLoginTemplate` wires this for you; reach for it directly only when
+ * composing the shell by hand.
+ */
+export const WithPortalPicker: Story = {
+  render: function PickerShellStory() {
+    const [open, setOpen] = React.useState(false);
+    return (
+      <>
+        <PortalLoginShell
+          emblemSrc={asset("Emblem", 48, 64)}
+          digitalIndiaSrc={asset("Digital India", 120, 44)}
+          samaveshLogoSrc={asset("SAMAVESH", 64, 64)}
+          signingInto="E-Anudaan"
+          onChangePortal={() => setOpen(true)}
+          portalPickerOpen={open}
+          tabs={[{ label: "NGO", href: "#ngo", active: true }]}
+        >
+          <p>The Change control in the SIGNING INTO strip opens the picker.</p>
+        </PortalLoginShell>
+        <SideSheet open={open} onClose={() => setOpen(false)} title="Choose a portal to login">
+          <PortalList activePath="/portals/e-anudaan" />
+        </SideSheet>
+      </>
+    );
+  },
 };

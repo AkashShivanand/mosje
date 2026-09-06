@@ -89,6 +89,7 @@
 @import "./components/auth/auth-form-card.css";
 @import "./components/auth/auth-parts.css";
 @import "./components/auth/credential-fields.css";
+@import "./components/auth/portal-list.css";
 @import "./components/auth/portal-login-hero.css";
 @import "./components/auth/portal-login-template.css";
 @import "./components/utilities/accessibility-bar.css";

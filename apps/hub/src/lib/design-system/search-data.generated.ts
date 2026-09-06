@@ -1150,6 +1150,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "navigation"
   },
   {
+    "title": "Portal List — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/auth/portal-list",
+    "keywords": "portal list — design system auth & dashboard there is no picker component where the names come from the filter row disappears when it has nothing to do  tokens wcag accessibility",
+    "description": "The scrollable list of portals inside the change-portal picker: category filters over Portal Cards.",
+    "type": "component",
+    "iconName": "lock"
+  },
+  {
     "title": "Portal Login Shell — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/auth/portal-login-shell",

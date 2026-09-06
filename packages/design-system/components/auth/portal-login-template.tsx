@@ -26,6 +26,11 @@ import { TabPanel, Tabs } from "../navigation/tabs";
 // lives in one component and the modes are interchangeable parts of it, which is
 // what the Figma master was re-cut to on the same day.
 import { AuthFormCard } from "./auth-form-card";
+// The change-portal picker: the handoff's `E-Anudaan | Portal Switch` draws it as
+// a side sheet over the login page, not a trip to the hub root.
+import { breakpoint } from "../../tokens";
+import { SideSheet } from "../feedback/side-sheet";
+import { PortalList } from "./portal-list";
 import {
   DarpanFields,
   OtpRequestFields,
@@ -98,6 +103,14 @@ export interface PortalLoginTemplateProps {
   /** Called with the role id whenever the active tab changes. */
   onRoleChange?: (roleId: string) => void;
   /**
+   * Offer the change-portal picker from the SIGNING INTO strip. @default true
+   *
+   * The handoff draws it as a side sheet over the login page. Switch it OFF for a
+   * portal a reader arrived at deliberately and cannot swap out of — then the
+   * strip's Change control falls back to `config.changeHref`.
+   */
+  portalPicker?: boolean;
+  /**
    * Select the role from the URL on mount, and keep the URL in step as the
    * reader switches tabs. @default true
    *
@@ -149,6 +162,7 @@ export function PortalLoginTemplate({
   roleId,
   onRoleChange,
   deepLinkRole = true,
+  portalPicker = true,
   headingLevel = 1,
 }: PortalLoginTemplateProps) {
   const initialRole =
@@ -419,6 +433,43 @@ export function PortalLoginTemplate({
     activeRole?.digilocker && config.links?.digilockerHref
   );
 
+  /* The picker is the TEMPLATE's state, not the shell's: the shell draws two
+     Change controls (desktop and mobile) and both must drive one panel. */
+  const [pickerOpen, setPickerOpen] = React.useState(false);
+
+  /*
+   * Which anchoring the picker takes. `breakpoint.tablet` (768) is the estate's
+   * own anchor, read from the token file rather than typed here.
+   *
+   * FALSE UNTIL MOUNT, deliberately: there is no `window` on the server, and
+   * guessing makes the first client render disagree with the server's — a
+   * hydration mismatch, which costs more than the one frame of a right-anchored
+   * sheet this avoids. The sheet is shut on that frame anyway, so nothing is
+   * visible either way.
+   */
+  /*
+   * WHICH PORTAL IS ALREADY OPEN, for the picker's selected card.
+   *
+   * Read from the page's own path rather than added to `PortalLoginConfig`: a
+   * login page lives at `/portals/<slug>/login`, so the portal's path is that
+   * minus the last segment, and every portal already knows it without a second
+   * place to keep in step. Client-only for the same reason as `isPhone`.
+   */
+  const [activePortalPath, setActivePortalPath] = React.useState<string | undefined>();
+  React.useEffect(() => {
+    const parts = window.location.pathname.split("/").filter(Boolean);
+    if (parts[0] === "portals" && parts[1]) setActivePortalPath(`/portals/${parts[1]}`);
+  }, []);
+
+  const [isPhone, setIsPhone] = React.useState(false);
+  React.useEffect(() => {
+    const mq = window.matchMedia(`(max-width: ${breakpoint.tablet - 1}px)`);
+    const sync = () => setIsPhone(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
   const templateId = React.useId();
 
   /*
@@ -559,6 +610,8 @@ export function PortalLoginTemplate({
       samaveshLogoSrc={config.brandAssets?.samaveshLogoSrc || "/brand/samavesh-logo.svg"}
       signingInto={config.portalName}
       changeHref={config.changeHref || "/"}
+      onChangePortal={portalPicker ? () => setPickerOpen(true) : undefined}
+      portalPickerOpen={pickerOpen}
       tabs={tabs}
       extraContent={config.extraContent}
       onFooterLinkClick={onFooterLinkClick}
@@ -648,6 +701,27 @@ export function PortalLoginTemplate({
           ) : null
         }
       />
+      {/* THE PICKER. `SideSheet` + `PortalList` — there is no third component for
+          the composition, which is the Figma master's own decision.
+
+          It is rendered INSIDE the shell so it inherits the login page's stacking
+          context, and it takes `side="bottom"` on a phone because a thumb reaches
+          the bottom edge and not the far one. */}
+      {portalPicker && (
+        <SideSheet
+          open={pickerOpen}
+          onClose={() => setPickerOpen(false)}
+          title="Choose a portal to login"
+          side={isPhone ? "bottom" : "right"}
+        >
+          {/* NO `onSelect`. Each card stays a real `<a href>` to its portal, so
+              middle-click, "copy link address" and a keyboard Enter all work, and
+              the picker keeps working with JavaScript off. Intercepting the click
+              would buy only closing a sheet that a full navigation discards
+              anyway. */}
+          <PortalList activePath={activePortalPath} />
+        </SideSheet>
+      )}
     </PortalLoginShell>
   );
 }

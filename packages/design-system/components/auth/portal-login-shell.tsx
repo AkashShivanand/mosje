@@ -84,6 +84,21 @@ export interface PortalLoginShellProps {
   signingInto: string;
   /** Href for the "Change" button — defaults to "/" (hub root) */
   changeHref?: string;
+  /**
+   * Open the change-portal picker instead of navigating.
+   *
+   * The handoff's `E-Anudaan | Portal Switch` draws this as a SIDE SHEET over the
+   * login page — "Choose a portal to login" — not as a trip to the hub root. Pass
+   * a handler and the control becomes a `<button>` that opens it; leave it off
+   * and it stays the `changeHref` link, so every existing consumer is unchanged.
+   *
+   * A button, not a link, when it opens a panel: a control that does not navigate
+   * must not offer middle-click or "copy link address", and it owes
+   * `aria-expanded` / `aria-haspopup`, which an anchor cannot honestly carry.
+   */
+  onChangePortal?: () => void;
+  /** Whether the picker this control opens is currently open — drives `aria-expanded`. */
+  portalPickerOpen?: boolean;
 
   // ── Right panel ───────────────────────────────────────────────────────────
   /** Tab navigation items rendered as a pill segmented control */
@@ -107,6 +122,8 @@ export function PortalLoginShell({
   heroImageSrc,
   signingInto,
   changeHref = "/",
+  onChangePortal,
+  portalPickerOpen = false,
   tabs,
   children,
   extraContent,
@@ -199,15 +216,30 @@ export function PortalLoginShell({
                 <p className="ds-plogin-hero__eyebrow ds-plogin-hero__muted text-label-2">Signing Into</p>
                 <p className="text-title-1">{signingInto}</p>
               </div>
-              <Button
-                href={changeHref}
-                variant="neutral"
-                appearance="outlined"
-                tone="inverse"
-                iconLeft={<Icon name="swap_horiz" size={16} aria-hidden />}
-              >
-                Change
-              </Button>
+              {onChangePortal ? (
+                <Button
+                  type="button"
+                  onClick={onChangePortal}
+                  aria-haspopup="dialog"
+                  aria-expanded={portalPickerOpen}
+                  variant="neutral"
+                  appearance="outlined"
+                  tone="inverse"
+                  iconLeft={<Icon name="swap_horiz" size={16} aria-hidden />}
+                >
+                  Change
+                </Button>
+              ) : (
+                <Button
+                  href={changeHref}
+                  variant="neutral"
+                  appearance="outlined"
+                  tone="inverse"
+                  iconLeft={<Icon name="swap_horiz" size={16} aria-hidden />}
+                >
+                  Change
+                </Button>
+              )}
             </div>
           </div>
         </div>
@@ -241,16 +273,36 @@ export function PortalLoginShell({
                 <p className="ds-plogin-hero__eyebrow ds-plogin-hero__muted text-label-2">Signing Into</p>
                 <p className="text-title-2">{signingInto}</p>
               </div>
-              <Button
-                href={changeHref}
-                size="sm"
-                variant="neutral"
-                appearance="outlined"
-                tone="inverse"
-                iconLeft={<Icon name="swap_horiz" size={16} aria-hidden />}
-              >
-                Change
-              </Button>
+              {/* The MOBILE strip's Change, which must behave like the desktop
+                  one — a picker reachable on one device only is worse than no
+                  picker, because the reader learns it exists and then cannot
+                  find it on their phone. */}
+              {onChangePortal ? (
+                <Button
+                  type="button"
+                  onClick={onChangePortal}
+                  aria-haspopup="dialog"
+                  aria-expanded={portalPickerOpen}
+                  size="sm"
+                  variant="neutral"
+                  appearance="outlined"
+                  tone="inverse"
+                  iconLeft={<Icon name="swap_horiz" size={16} aria-hidden />}
+                >
+                  Change
+                </Button>
+              ) : (
+                <Button
+                  href={changeHref}
+                  size="sm"
+                  variant="neutral"
+                  appearance="outlined"
+                  tone="inverse"
+                  iconLeft={<Icon name="swap_horiz" size={16} aria-hidden />}
+                >
+                  Change
+                </Button>
+              )}
             </div>
           </div>
 
