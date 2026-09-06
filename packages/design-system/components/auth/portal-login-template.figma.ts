@@ -8,10 +8,21 @@
 // carries the usage rules as well as the snippet.
 // See .claude/rules/component-authoring.md §12.
 //
-// REBUILT 2026-09-02. The set was re-cut IN PLACE (node id and key preserved,
-// every instance link intact) from `Device × Step` = 8 variants to
-// `Device × Auth Method` = 6, and on 2026-09-03 to `Device × Auth Method` = 8
-// when DARPAN was reinstated (see below).
+// REBUILT 2026-09-02, RE-CUT AGAIN 2026-09-06. The set went `Device × Step` = 8
+// to `Device × Auth Method` = 6, to 8 when DARPAN was reinstated — and is now
+// **`Device` alone, TWO variants**. Node id and key preserved throughout.
+//
+// WHY THE `Auth Method` AXIS WENT TOO. Read layer by layer, seven of the form
+// card's eight regions were identical across all four of its drawings: PIN
+// differed from Password by a field label and a link's wording, DARPAN by one
+// control being visible instead of hidden — and the DARPAN variant bound none of
+// the five booleans its siblings bound, so every one of them silently did
+// nothing there. The axis was also asking two questions at once, *what
+// identifies you* and *how you prove it*, so it grew multiplicatively: five
+// identifiers against four secrets is twenty clones of an eight-region card.
+// The credential mode is now the `Credential fields` INSTANCE_SWAP slot on the
+// nested `Auth / AuthFormCard`, with five `Auth / CredentialFields` masters as
+// its preferred values.
 //
 // WHY THE `Step` AXIS WENT. It conflated two unlike things: `Credentials` and
 // `OTP` are ways of proving identity, while `Reset` and `Success` are stages of
@@ -35,14 +46,17 @@
 //
 // `Aadhaar OTP` stays gone. Nothing has been produced for it, and reinstating
 // one mode is not a reason to reinstate the other. Do not add it back without a
-// screen. The axis is Password · OTP · PIN · DARPAN, eight variants over Device.
+// screen. On 2026-09-06 the DARPAN stack was rebuilt from the department's own
+// live screen — DARPAN ID + PAN Number, no password and no security check — so
+// it is no longer a copy of the password form wearing a different label.
 
-// PROPERTY COVERAGE — both Figma properties are accounted for:
-//   Auth Method -> `defaultMode` on the active role, and the entry in that
-//                  role's `authModes`. The React component owns the live value
+// PROPERTY COVERAGE — the set's only Figma property is accounted for:
+//   Credential mode -> NOT a property of this set any more. It is the
+//                  `Credential fields` slot on the nested `Auth / AuthFormCard`.
+//                  In code it is `defaultMode` on the active role plus that
+//                  role's `authModes`; the React component owns the live value
 //                  in its own state, because the citizen switches it with the
-//                  method tabs; the variant exists so a designer can pin one
-//                  method on the canvas.
+//                  method tabs.
 //   Device      -> DELIBERATELY OMITTED. There is no `device` prop: the React
 //                  component is responsive in CSS, and the Figma axis exists
 //                  only so a designer can pin a breakpoint. Desktop is 1440×960,
@@ -66,7 +80,9 @@
 // divider belongs to the card: no card, no divider.
 //
 // CAPTCHA IS PER ROLE, AND OFF UNLESS A ROLE ASKS. It resolves `role.captcha` ??
-// `config.captcha` ?? false, and mirrors `Show captcha` on the form card. The
+// `config.captcha` ?? false, and mirrors `Show captcha` on the password and PIN
+// credential stacks — it moved off the form card on 2026-09-06, because it
+// guards a typed secret and the DARPAN stack has none. The
 // handoff asks a Garima Greh organisation for one and asks the same portal's
 // citizen for none, so it belongs to the tab; `??` and not `||`, so a role can
 // set `captcha: false` to opt OUT of a portal-wide default. The default stays
@@ -75,10 +91,10 @@
 // on only where that alternative exists, and say which in the same change.
 //
 // EVERYTHING ELSE A PORTAL VARIES IS A PROPERTY ON A NESTED PART, NOT A VARIANT.
-// Role tabs, the DigiLocker toggle, the credential-method tabs, the role select,
-// the consent line and the account prompt are all booleans on `Auth / *`
-// components inside the shell. If you find yourself wanting a new Auth Method
-// for a portal, you want a property.
+// Role tabs, the DigiLocker toggle, the credential-method tabs, the consent line
+// and the account prompt are all booleans on `Auth / *` components inside the
+// shell, and the credential mode is a slot. If you find yourself wanting a new
+// Auth Method variant for a portal, you want a `CredentialFields` master.
 //
 // TONE IS NOT A PROPERTY. Light/dark and high contrast resolve through the
 // `data-color-mode` axis and brand through `data-brand`. Never generate a `tone`,
@@ -87,19 +103,16 @@ import figma from "figma";
 
 const instance = figma.selectedInstance;
 
-// Maps 1:1 onto `PortalAuthMode`, minus `digilocker` — which is a handoff CTA
-// rather than a form mode and therefore has no variant.
-const authMode = instance.getEnum("Auth Method", {
-  Password: "password",
-  OTP: "otp",
-  PIN: "pin",
-  DARPAN: "darpan",
-});
+// There is no `Auth Method` enum to read: it stopped being a variant axis on
+// 2026-09-06. The mode a designer pinned on the canvas is the nested form card's
+// `Credential fields` slot, which Code Connect cannot reach from this instance —
+// so the snippet names the modes in config and says where the live value lives.
 
 export default {
-  example: figma.code`{/* Figma Auth Method = ${authMode}. The live method is the
-    component's own state — the citizen switches it with the method tabs — so it
-    is set here as the active role's defaultMode, not as a prop. */}
+  example: figma.code`{/* The credential mode is the nested Auth Form Card's
+    Credential fields slot in Figma, and the active role's defaultMode here. The
+    live value is the component's own state — the citizen switches it with the
+    method tabs — so it is never a prop. */}
 <PortalLoginTemplate
   config={{
     portalId: "portal-slug",
@@ -112,8 +125,8 @@ export default {
         id: "citizen",
         label: "Citizen / Beneficiary",
         audience: "citizen",
-        authModes: ["${authMode}", "otp"],
-        defaultMode: "${authMode}",
+        authModes: ["password", "otp"],
+        defaultMode: "password",
         // Per ROLE. The handoff carries the card on Citizen and on neither
         // Admin nor Garima Greh, so it is not an audience rule.
         digilocker: true,

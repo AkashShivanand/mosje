@@ -672,6 +672,92 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "AuthFormCardProps": {
+    "source": "packages/design-system/components/auth/auth-form-card.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "credentialFields",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "▸ THE SLOT — the stack of fields for the active credential mode. One of the stacks in `credential-fields.tsx`, or a portal's own. Everything around it is fixed, so a new mode is a new stack and nothing else."
+      },
+      {
+        "name": "primaryAction",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The submit. One per step, never two — on the OTP route the same button is first \"Send OTP\" and then \"Verify and Log In\"."
+      },
+      {
+        "name": "accountPrompt",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "\"Create Account\" and friends — an `AccountPrompt`."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "consent",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The consent disclosure GIGW requires — a `ConsentLine`. Not optional in practice, and typed optional only so an embedded specimen can leave it off. Never drop it to save vertical space."
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A sentence under the heading, usually the active role's own description."
+      },
+      {
+        "name": "error",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The failed attempt, in the department's words. Rendered as an error Alert."
+      },
+      {
+        "name": "footer",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Anything after the account prompt, typically the help route."
+      },
+      {
+        "name": "heading",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"Log in to your account\"\n\nThe citizen's own words for what they are doing. It is deliberately not\n\"Sign In to <portal>\", which restates the portal name already standing in\nthe shell's SIGNING INTO strip.",
+        "description": "The column's heading."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2 | 3",
+        "required": false,
+        "default": "2\n\nA real login page is the whole page, so its heading is the `<h1>` — pass 1\nthere, which is what GIGW 3.0 requires and what `PortalLoginTemplate` does.\nThe default is 2 because a card is more often EMBEDDED — in a documentation\npage, in a modal inside an authenticated shell — and a second `<h1>` costs\na screen-reader user the page outline.",
+        "description": "Heading level."
+      },
+      {
+        "name": "methodTabs",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The credential-mode switch, when the role offers more than one way in. Omit it for a single-mode portal — NOS is PIN-only, and a tablist with one tab is chrome pretending to be a choice. **Up to three modes are tabs; four or more are not.** At 390px a fourth underline tab either truncates its label or takes the row into overflow, and \"Login with NGO-DARPAN ID\" is not a label that survives truncation. Past three, the switch is a `Select` or a `RadioGroup` — which is what `PortalLoginTemplate.selectorType` already resolves."
+      },
+      {
+        "name": "onSubmit",
+        "type": "(event: React.FormEvent<HTMLFormElement>) => void",
+        "required": false,
+        "description": "Submit handler for the underlying `<form>`."
+      },
+      {
+        "name": "sso",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The identity-provider handoff and the rule beneath it — an `SSOButton` and an `AuthDivider`, as one node. ABOVE the divider and OUTSIDE the credential fields, because that is what it is: a way past the form, not a mode of it. Carrying DigiLocker as a credential mode is what made the template suppress its own submit button while DigiLocker was \"selected\"."
+      }
+    ]
+  },
   "AvatarProps": {
     "source": "packages/design-system/components/data-display/avatar.tsx",
     "inheritsNative": true,
@@ -2783,6 +2869,48 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "true",
         "description": "Stick to the viewport as the reader scrolls the sections."
+      }
+    ]
+  },
+  "DarpanFieldsProps": {
+    "source": "packages/design-system/components/auth/credential-fields.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "darpanId",
+        "type": "string",
+        "required": true,
+        "description": "The NGO-DARPAN Unique ID, e.g. `DL/2018/0123456`. Upper-cased as typed."
+      },
+      {
+        "name": "onDarpanIdChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onPanChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "pan",
+        "type": "string",
+        "required": true,
+        "description": "The organisation's PAN. Upper-cased as typed."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "note",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The sentence under the button naming the roles this route does NOT serve. **Portal copy, not the design system's.** E-Anudaan's other roles are DWO, State, Ministry, Finance and PMU; another portal's would be different ones, and a default here would put E-Anudaan's org chart on every portal that ever adopts DARPAN. Omit it and nothing renders."
       }
     ]
   },
@@ -6169,6 +6297,92 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "OtpRequestFieldsProps": {
+    "source": "packages/design-system/components/auth/credential-fields.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "mobile",
+        "type": "string",
+        "required": true,
+        "description": "The 10-digit mobile number. Non-digits are stripped before this is called."
+      },
+      {
+        "name": "onMobileChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "label",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"Registered Mobile Number\"",
+        "description": ""
+      }
+    ]
+  },
+  "OtpVerifyFieldsProps": {
+    "source": "packages/design-system/components/auth/credential-fields.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "maskedValue",
+        "type": "string",
+        "required": true,
+        "description": "The ALREADY-MASKED destination the code went to. This component does not mask for you — see `MaskedContactRow`."
+      },
+      {
+        "name": "onEdit",
+        "type": "() => void",
+        "required": true,
+        "description": "Back to step one with the value pre-filled. Must NOT send a fresh code."
+      },
+      {
+        "name": "onOtpChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onResend",
+        "type": "() => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "otp",
+        "type": "string",
+        "required": true,
+        "description": "The code."
+      },
+      {
+        "name": "secondsRemaining",
+        "type": "number",
+        "required": true,
+        "description": "Seconds left on the resend cooldown. `0` renders the active state."
+      },
+      {
+        "name": "channel",
+        "type": "\"phone\" | \"email\"",
+        "required": false,
+        "default": "\"phone\"",
+        "description": "Which channel, for the row's own documentation."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      }
+    ]
+  },
   "PageHeaderProps": {
     "source": "packages/design-system/components/layout/page-header.tsx",
     "inheritsNative": true,
@@ -6292,6 +6506,83 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"md\"",
         "description": "Control height, matching the Input scale. Declared here because the native `size` attribute on an `<input>` means character width, which is not a thing this control has — it is a fixed-length identity number."
+      }
+    ]
+  },
+  "PasswordFieldsProps": {
+    "source": "packages/design-system/components/auth/credential-fields.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "identifier",
+        "type": "string",
+        "required": true,
+        "description": "The identifier's value — username, email or mobile."
+      },
+      {
+        "name": "onIdentifierChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onPasswordChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "password",
+        "type": "string",
+        "required": true,
+        "description": "The secret's value."
+      },
+      {
+        "name": "botCheck",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "null",
+        "description": "The bot check, rendered UNDER the password field. **It belongs to this stack, not to the card.** It was a region of the card until 2026-09-06, which put it on every mode including DARPAN — where the department's own screen has none — and left it positioned but never rendered on any of them. A check guards a typed secret; a stack with no secret has nothing for it to guard. Pass `null` (the default) and nothing renders. The card never constructs one: `PortalLoginTemplate` owns the hook, because the token has to reach the submit payload."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "forgotHref",
+        "type": "string",
+        "required": false,
+        "description": "Where \"Forgot Password?\" goes. Omit it and no link is drawn."
+      },
+      {
+        "name": "identifierLabel",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"Username / Email / Mobile\"",
+        "description": ""
+      },
+      {
+        "name": "identifierPlaceholder",
+        "type": "string",
+        "required": false,
+        "default": "\"Enter User ID or Registered Email\"",
+        "description": ""
+      },
+      {
+        "name": "passwordLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Password\"",
+        "description": ""
+      },
+      {
+        "name": "passwordPlaceholder",
+        "type": "string",
+        "required": false,
+        "default": "\"Enter Password\"",
+        "description": ""
       }
     ]
   },
@@ -6471,6 +6762,76 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      }
+    ]
+  },
+  "PinFieldsProps": {
+    "source": "packages/design-system/components/auth/credential-fields.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "identifier",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onIdentifierChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onPinChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "pin",
+        "type": "string",
+        "required": true,
+        "description": "The PIN. Non-digits are stripped before this is called."
+      },
+      {
+        "name": "botCheck",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "null",
+        "description": "The bot check, under the PIN field. See `PasswordFieldsProps.botCheck`."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "forgotHref",
+        "type": "string",
+        "required": false,
+        "description": "Where \"Forgot PIN?\" goes."
+      },
+      {
+        "name": "identifierLabel",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"Username / Email / Mobile\"",
+        "description": ""
+      },
+      {
+        "name": "identifierPlaceholder",
+        "type": "string",
+        "required": false,
+        "default": "\"Enter User ID or Registered Mobile\"",
+        "description": ""
+      },
+      {
+        "name": "length",
+        "type": "number",
+        "required": false,
+        "default": "6",
+        "description": "How many digits."
       }
     ]
   },

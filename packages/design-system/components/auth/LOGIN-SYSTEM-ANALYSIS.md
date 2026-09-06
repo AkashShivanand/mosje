@@ -913,3 +913,103 @@ chrome.
    `CaptchaField`. A DS-reuse defect, and a larger refactor than this change.
 5. The Figma documentation canvas and the `claims.json` pins for the new axis
    (`figma-code-sync.md`) are not done.
+
+---
+
+## Phase 8 — the credential mode was never an axis (2026-09-06)
+
+**Asked by the human:** *"Can we simplify it using slots? Instead of creating so many
+variants for login with password, PIN, otp, Darpan, or anything else that may come in
+future."*
+
+The answer was yes, and the evidence was worse than the question assumed.
+
+### What a layer-by-layer read of the four variants found
+
+`Auth / AuthFormCard` drew **eight regions**, and **seven were byte-identical across all
+four variants**: role tabs, header, the DigiLocker block, the method tabs, the primary
+action, the consent line, the account prompt. Only the region between the method tabs and
+the button changed.
+
+| Variant | The one differing region | Height |
+|---|---|---|
+| Password | `Fields{ Role select (hidden), Identifier, Password + Forgot }` | 152 |
+| PIN | `Fields{ Role select (hidden), Identifier, PIN + Forgot PIN }` | 152 |
+| DARPAN | `Fields{ Role select (VISIBLE), Identifier, Password + Forgot }` | 236 |
+| OTP | `Sent to · Code · Resend` | 132 |
+
+- **PIN vs Password** — identical structure, identical `Password field` instance. The
+  differences were a text label and a link reading "Forgot PIN". Both are TEXT properties.
+- **DARPAN vs Password** — identical structure. The only difference was `Role select`
+  being visible. `Show role select` already existed as a boolean.
+
+So **three of the four variants were already redundant** before any future mode arrived.
+
+### The taxonomy defect underneath it
+
+`Auth Method` held `Password · OTP · PIN · DARPAN`, which are not four values of one
+thing. Password, PIN and OTP answer *how do you prove it* — they are **secrets**. DARPAN
+answers *who are you* — it is an **identifier**. That is why the DARPAN variant was a
+clone of Password: it *was* Password with a different identifier.
+
+Two questions on one axis multiply. Five identifiers × four secrets = **20 variants** of an
+eight-region card — the same trap `FIGMA-SPEC.md` §2 caught at 90 variants and correctly
+refused. It came back through a different door.
+
+### A third defect the read turned up
+
+**The DARPAN variant bound none of the five booleans its siblings bound.** Every other
+variant carried `componentPropertyReferences` for `Show role tabs`, `Show DigiLocker`,
+`Show method tabs`, `Show consent` and `Show account prompt`. DARPAN carried none — so on
+that variant all five silently did nothing. It was cloned as geometry and never wired.
+That is the standing cost of a variant axis: each new variant must re-wire every property
+by hand, and this one was not.
+
+### What shipped
+
+**Figma.** `Auth / AuthFormCard` is one COMPONENT, not a set — the Password variant was
+promoted out and the set deleted once no live instance remained. It carries six
+properties: five booleans and **`Credential fields`**, an `INSTANCE_SWAP` whose
+`preferredValues` name all five stacks, so a designer picks from a menu rather than an
+open hole. Five masters were built under `Auth / CredentialFields /` in `3 · Parts`.
+`PortalLoginTemplate` went from **eight variants to two** — `Device` alone.
+
+**Code.** `AuthFormCard` and the five stacks are exported from the barrel. The four-armed
+conditional in `portal-login-template.tsx` became one `credentialFields` expression
+resolved once, which the button label and the submit branch both read — the previous code
+asked `activeAuthMode === "otp"` in four separate places, which is how DARPAN came to be
+submitted by a button reading "Log In".
+
+### Two corrections to what the estate believed
+
+1. **DARPAN is not the password form.** The department's own live screen asks for
+   **DARPAN ID + PAN Number** — two identifiers it holds on file — and for no password
+   and no security check. While it was a clone, the PAN arrived in `LoginSubmitPayload` as
+   `credentials.password`, so the obvious consumer implementation hashed a public tax
+   identifier into a credentials table. It is now `credentials.pan`, and `DarpanFields`
+   takes no `botCheck` prop at all.
+2. **The security check belongs to the stack.** It was a region of the card, which put it
+   on every mode including DARPAN, and left it at a stale `y=571` — below the primary
+   action in two of the four variants — hidden and never once rendered or looked at.
+
+### The limit that is now written down
+
+**Up to three credential modes are tabs. Four or more are not.** At 390px a fourth
+underline tab truncates or overflows, and "Login with NGO-DARPAN ID" does not survive
+truncation. The slot makes the *fields* extensible; it does not make the *switch*
+extensible, and pretending otherwise ships a broken tablist on a phone.
+
+### Deliberately NOT changed
+
+**The role tabs stay in `PortalLoginShell`.** Figma draws them as region 1 of the card
+because there they are simply the top of the right-hand column; in code the shell owns
+them and pins them at a breakpoint the card cannot see. Moving them would give the estate
+two places to draw a tablist, which is the failure this whole pass exists to remove.
+Recorded here rather than resolved.
+
+### Corrections to this document
+
+Phase 7's "*The OTP variant has no role-tabs, SSO or account-prompt slots — deliberate*"
+was **stale**. OTP had gained all three (`57482:*`) before this pass, so the shell was
+already invariant across all four variants. A written decision the file no longer reflected
+is the more dangerous of the two errors, because the next maintainer trusts it.

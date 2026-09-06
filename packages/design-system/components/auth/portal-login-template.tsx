@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AccountPrompt, AuthDivider, ConsentLine, MaskedContactRow, ResendTimer, SSOButton } from "./auth-parts";
+import { AccountPrompt, AuthDivider, ConsentLine, SSOButton } from "./auth-parts";
 import type { DemoFillDetail } from "../../demo/demo-fab";
 // DS Audit: every control below already existed in the barrel and every one was
 // hand-rolled in this file instead — 77 arbitrary-value Tailwind classes wrapping
@@ -12,17 +12,27 @@ import type { DemoFillDetail } from "../../demo/demo-fab";
 // · RadioGroup ✅ · Select ✅ · Tabs ✅ · BotCheck ➕ added in this change.
 // ConsentLine ✅ and AccountPrompt ✅ were exported by the system and rendered by
 // NOTHING — the consent sentence GIGW requires existed only in the Figma drawing.
-import { Alert } from "../feedback/alert";
 import { Button } from "../actions/button";
 import { BotCheck } from "../forms/bot-check";
 import { useBotCheck } from "../forms/use-bot-check";
 import { RadioGroup } from "../forms/control-group";
 import { FormField } from "../forms/form-field";
-import { Input } from "../forms/input";
-import { OtpInput } from "../forms/otp-input";
-import { PasswordInput } from "../forms/password-input";
 import { Select } from "../forms/select";
+import { Icon } from "../utilities/icon";
 import { TabPanel, Tabs } from "../navigation/tabs";
+// The card's seven fixed regions and the stacks that fill its one slot. Before
+// 2026-09-06 all of it was inline here: a four-armed conditional over
+// `activeAuthMode` in which three arms drew the same two fields. The anatomy now
+// lives in one component and the modes are interchangeable parts of it, which is
+// what the Figma master was re-cut to on the same day.
+import { AuthFormCard } from "./auth-form-card";
+import {
+  DarpanFields,
+  OtpRequestFields,
+  OtpVerifyFields,
+  PasswordFields,
+  PinFields,
+} from "./credential-fields";
 import "./portal-login-template.css";
 import { PortalLoginShell, PortalLoginTab } from "./portal-login-shell";
 import { portalLoginUrl, roleFromUrl } from "./portal-login-url";
@@ -49,22 +59,23 @@ const MODE_LABELS: Record<PortalAuthMode, string> = {
 };
 
 /**
- * A field label with its recovery route on the same row.
+ * What the submit button says, per mode.
  *
- * The reference (`56693:8704`) puts "Forgot Password?" on the label line rather
- * than under the input — where a citizen looks BEFORE they have failed rather
- * than after. It is passed as `FormField`'s `label`, so associating it with the
- * control is still `FormField`'s job.
+ * A `Record`, so a new `PortalAuthMode` fails to compile until somebody has
+ * decided what its button says. It used to be a ternary that asked only whether
+ * the mode was OTP and gave every other mode "Log In" as its `else` — which is
+ * how DARPAN came to be submitted by a button reading "Log In" while the
+ * department's own screen reads "Continue with DARPAN".
+ *
+ * OTP takes the second of its pair once a code has been sent; every other mode
+ * ignores `sent`.
  */
-function LabelWithLink({ text, href, linkText }: { text: string; href?: string; linkText: string }): React.JSX.Element {
-  if (!href) return <>{text}</>;
-  return (
-    <span className="ds-plogin__labelrow">
-      <span>{text}</span>
-      <a href={href}>{linkText}</a>
-    </span>
-  );
-}
+const PRIMARY_ACTION_LABELS: Record<PortalAuthMode, { initial: string; sent?: string }> = {
+  password: { initial: "Log In" },
+  pin: { initial: "Log In" },
+  darpan: { initial: "Continue with DARPAN" },
+  otp: { initial: "Send OTP", sent: "Verify and Log In" },
+};
 
 export interface PortalLoginTemplateProps {
   /** Declarative configuration object for the portal */
@@ -213,6 +224,16 @@ export function PortalLoginTemplate({
   const [password, setPassword] = React.useState("");
   const [mobile, setMobile] = React.useState("");
   const [otp, setOtp] = React.useState("");
+  /*
+   * The organisation's PAN, the second half of the DARPAN route's proof.
+   *
+   * It gets its own state rather than reusing `password`, which is what the
+   * DARPAN form did while it was a clone of the password form. A PAN is a public
+   * tax identifier printed on the organisation's own letterhead; a password is a
+   * secret. Storing one in the other's variable is how a PAN reaches a consumer
+   * labelled `password` and gets hashed into a credentials table.
+   */
+  const [pan, setPan] = React.useState("");
   // Resolved PER ROLE, portal default second, off last. The handoff asks a
   // Garima Greh organisation for a captcha and asks the same portal's citizen
   // for none, so the answer belongs to the tab rather than to the portal.
@@ -357,9 +378,12 @@ export function PortalLoginTemplate({
       credentials: {
         username,
         // The PIN form reuses the `password` field's state, but a consumer must
-        // never receive a PIN under the name `password`.
-        password: activeAuthMode === "pin" ? undefined : password,
+        // never receive a PIN under the name `password`. Nor a PAN: the DARPAN
+        // route sends no password at all, because the department's screen asks
+        // for none.
+        password: activeAuthMode === "pin" || activeAuthMode === "darpan" ? undefined : password,
         pin: activeAuthMode === "pin" ? password : undefined,
+        pan: activeAuthMode === "darpan" ? pan : undefined,
         mobile,
         otp,
       },
@@ -395,10 +419,132 @@ export function PortalLoginTemplate({
     activeRole?.digilocker && config.links?.digilockerHref
   );
 
-  // The heading's LEVEL is the caller's; its size is not. Styling stays on the
-  // element so an embedded template looks identical to a standalone one.
-  const Heading = `h${headingLevel}` as "h1" | "h2" | "h3";
   const templateId = React.useId();
+
+  /*
+   * ▸ THE SLOT'S CONTENTS — resolved ONCE, in one expression.
+   *
+   * Everything downstream that depends on the active mode reads this decision
+   * rather than re-deciding: the button's label, the submit branch, the disabled
+   * state. Four separate `activeAuthMode === …` conditionals is how the button
+   * came to say "Log In" on a form whose own screen says "Continue with DARPAN".
+   *
+   * The OTP route resolves to a DIFFERENT STACK at each of its two steps, which
+   * is the case a variant axis could never express without pretending a
+   * two-screen journey was one drawing.
+   */
+  const credentialFields = (() => {
+    switch (activeAuthMode) {
+      case "password":
+        return (
+          <PasswordFields
+            identifier={username}
+            onIdentifierChange={setUsername}
+            password={password}
+            onPasswordChange={setPassword}
+            forgotHref={config.links?.forgotPasswordHref}
+            botCheck={botCheck}
+          />
+        );
+      case "pin":
+        return (
+          <PinFields
+            identifier={username}
+            onIdentifierChange={setUsername}
+            pin={password}
+            onPinChange={setPassword}
+            forgotHref={config.links?.forgotPasswordHref}
+            botCheck={botCheck}
+          />
+        );
+      case "darpan":
+        /* No `botCheck`, and the stack takes no prop for one. The department's
+           own DARPAN screen has no security check: two registry identifiers are
+           not a typed secret, so there is nothing here for a check to protect. */
+        return (
+          <DarpanFields
+            darpanId={username}
+            onDarpanIdChange={setUsername}
+            pan={pan}
+            onPanChange={setPan}
+            note={config.darpanNote}
+          />
+        );
+      case "otp":
+        return otpSent ? (
+          <OtpVerifyFields
+            maskedValue={`+91 ${mobile.slice(0, 2)}••••${mobile.slice(-4)}`}
+            onEdit={() => {
+              setOtpSent(false);
+              setOtp("");
+            }}
+            otp={otp}
+            onOtpChange={setOtp}
+            secondsRemaining={otpTimer}
+            onResend={handleSendOtp}
+          />
+        ) : (
+          <OtpRequestFields mobile={mobile} onMobileChange={setMobile} />
+        );
+    }
+  })();
+
+  const action = PRIMARY_ACTION_LABELS[activeAuthMode];
+  const actionLabel = otpSent && action.sent ? action.sent : action.initial;
+
+  /*
+   * The credential-mode switch, drawn only when the role offers more than one
+   * way in. E-Anudaan's organisation applicants get Password / DARPAN ID; NOS
+   * gets PIN alone and therefore no switch at all.
+   */
+  const methodSwitch =
+    authOptions.length > 1 ? (
+      <div>
+        {selectorType === "segmented" && (
+          <Tabs
+            tabs={authOptions.map((o) => ({ id: o.mode, label: o.label }))}
+            active={Math.max(0, authOptions.findIndex((o) => o.mode === activeAuthMode))}
+            onChange={(i) => setActiveAuthMode(authOptions[i]!.mode)}
+            idBase={`${templateId}-method`}
+            ariaLabel="How you want to sign in"
+            track="enclosed"
+            indicator="pill"
+          />
+        )}
+
+        {selectorType === "radio" && (
+          <RadioGroup
+            name={`${templateId}-method`}
+            legend="How you want to sign in"
+            value={activeAuthMode}
+            onChange={(v: string) => setActiveAuthMode(v as PortalAuthMode)}
+            options={authOptions.map((o) => ({
+              value: o.mode,
+              label: o.label,
+              description: o.description,
+            }))}
+          />
+        )}
+
+        {selectorType === "dropdown" && (
+          <FormField label="How you want to sign in">
+            {(control) => (
+              <Select
+                {...control}
+                value={activeAuthMode}
+                onChange={(e) => setActiveAuthMode(e.target.value as PortalAuthMode)}
+              >
+                {authOptions.map((o) => (
+                  <option key={o.mode} value={o.mode}>
+                    {o.label}
+                  </option>
+                ))}
+              </Select>
+            )}
+          </FormField>
+        )}
+      </div>
+    ) : null;
 
   return (
     <PortalLoginShell
@@ -411,304 +557,91 @@ export function PortalLoginTemplate({
       extraContent={config.extraContent}
       onFooterLinkClick={onFooterLinkClick}
     >
-      <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-        {/* The reference (`56693:8704`, `Sign In — Login Form / Desktop`) heads
-            the column "Log in to your account" — the citizen's own words for
-            what they are doing. It used to read "Sign In to <portal>", which
-            restates the portal name already standing in the hero's SIGNING INTO
-            strip two hundred pixels to the left. */}
-        <div>
-          <Heading className="ds-plogin__title">Log in to your account</Heading>
-          {activeRole?.description ? (
-            <p className="ds-plogin__lede">{activeRole.description}</p>
-          ) : null}
-        </div>
+      <AuthFormCard
+        headingLevel={headingLevel}
+        description={activeRole?.description}
+        error={error}
+        onSubmit={handleSubmit}
+        /* ── DIGILOCKER HANDOFF — ABOVE THE DIVIDER, OUTSIDE THE FIELDS ─────
+           Position and visibility both come from the handoff (`10767:71293`):
+           the card sits directly under the header and directly above the
+           "or sign in with credentials" divider, and it appears on the Citizen
+           frames only — Admin and Garima Greh carry neither the card nor the
+           divider. Hence a per-role boolean rather than an audience rule.
 
-        {error ? <Alert status="error">{error}</Alert> : null}
-
-        {/* ── DIGILOCKER HANDOFF — ABOVE THE DIVIDER, OUTSIDE THE FORM ─────── */}
-        {/* Position and visibility both come from the handoff (`10767:71293`):
-            the card sits directly under the header and directly above the
-            "or sign in with credentials" divider, and it appears on the Citizen
-            frames only — Admin and Garima Greh carry neither the card nor the
-            divider. Hence a per-role boolean rather than an audience rule.
-
-            It is a LINK, not a submit: it leaves for the identity provider and
-            takes nothing from the form with it. */}
-        {showDigiLocker && (
-          <div className="space-y-4 pt-1">
-            <SSOButton
-              href={config.links!.digilockerHref}
-              markSrc={config.brandAssets?.digilockerLogoSrc}
-            />
-            <AuthDivider />
-          </div>
-        )}
-
-        {/* ── HOW THIS ROLE PROVES ITSELF ──────────────────────────────────── */}
-        {/* Drawn only when the role offers more than one way in. E-Anudaan's
-            organisation applicants get Password / OTP / DARPAN ID; NOS gets PIN
-            alone and therefore no selector at all. */}
-        {authOptions.length > 1 && (
-          <div className="pt-1">
-            {selectorType === "segmented" && (
-              <Tabs
-                tabs={authOptions.map((o) => ({ id: o.mode, label: o.label }))}
-                active={Math.max(0, authOptions.findIndex((o) => o.mode === activeAuthMode))}
-                onChange={(i) => setActiveAuthMode(authOptions[i]!.mode)}
-                idBase={`${templateId}-method`}
-                ariaLabel="How you want to sign in"
-                track="enclosed"
-                indicator="pill"
+           It is a LINK, not a submit: it leaves for the identity provider and
+           takes nothing from the form with it. */
+        sso={
+          showDigiLocker ? (
+            <div className="ds-plogin__sso">
+              <SSOButton
+                href={config.links!.digilockerHref}
+                markSrc={config.brandAssets?.digilockerLogoSrc}
               />
-            )}
-
-            {selectorType === "radio" && (
-              <RadioGroup
-                name={`${templateId}-method`}
-                legend="How you want to sign in"
-                value={activeAuthMode}
-                onChange={(v: string) => setActiveAuthMode(v as PortalAuthMode)}
-                options={authOptions.map((o) => ({
-                  value: o.mode,
-                  label: o.label,
-                  description: o.description,
-                }))}
-              />
-            )}
-
-            {selectorType === "dropdown" && (
-              <FormField label="How you want to sign in">
-                {(control) => (
-                  <Select
-                    {...control}
-                    value={activeAuthMode}
-                    onChange={(e) => setActiveAuthMode(e.target.value as PortalAuthMode)}
-                  >
-                    {authOptions.map((o) => (
-                      <option key={o.mode} value={o.mode}>
-                        {o.label}
-                      </option>
-                    ))}
-                  </Select>
-                )}
-              </FormField>
-            )}
-          </div>
-        )}
-
-        {/* The mode's fields are the tab panel the method tabs point at. Without
-            it every tab's aria-controls named an id that did not exist — axe
-            aria-valid-attr-value, critical, caught by the production build and
-            not by the dev server. Radio and dropdown selectors are not tablists
-            and get no panel. */}
-        <ModeFields
-          asPanel={authOptions.length > 1 && selectorType === "segmented"}
-          idBase={`${templateId}-method`}
-          tabId={activeAuthMode}
-        >
-        {/* ── PASSWORD ─────────────────────────────────────────────────────── */}
-        {activeAuthMode === "password" && (
-          <div className="space-y-4 pt-1">
-            <FormField label="Username / Email / Mobile" required>
-              {(control) => (
-                <Input
-                  {...control}
-                  type="text"
-                  autoComplete="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Enter User ID or Registered Email"
-                />
-              )}
-            </FormField>
-
-            {/* The recovery link sits ON the label row, right-aligned — that is
-                where the reference puts it, and it is the one place a citizen
-                looks before they have failed rather than after. */}
-            <FormField label={<LabelWithLink text="Password" href={config.links?.forgotPasswordHref} linkText="Forgot Password?" />} required>
-              {(control) => (
-                <PasswordInput
-                  {...control}
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter Password"
-                />
-              )}
-            </FormField>
-
-            {botCheck}
-          </div>
-        )}
-
-        {/* ── PIN ──────────────────────────────────────────────────────────── */}
-        {/* NOS is PIN-only. Same anatomy as password, so the identifier field is
-            deliberately identical — only the secret and its recovery link differ. */}
-        {activeAuthMode === "pin" && (
-          <div className="space-y-4 pt-1">
-            <FormField label="Username / Email / Mobile" required>
-              {(control) => (
-                <Input
-                  {...control}
-                  type="text"
-                  autoComplete="username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Enter User ID or Registered Mobile"
-                />
-              )}
-            </FormField>
-
-            <FormField label={<LabelWithLink text="PIN" href={config.links?.forgotPasswordHref} linkText="Forgot PIN?" />} required>
-              {(control) => (
-                <PasswordInput
-                  {...control}
-                  inputMode="numeric"
-                  autoComplete="off"
-                  maxLength={6}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value.replace(/\D/g, ""))}
-                  placeholder="Enter your 6-digit PIN"
-                />
-              )}
-            </FormField>
-
-            {botCheck}
-          </div>
-        )}
-
-        {/* ── DARPAN ───────────────────────────────────────────────────────── */}
-        {/* E-Anudaan's organisation applicants sign in with the NGO-DARPAN
-            Unique ID issued by NITI Aayog. The wizard's own fields say the
-            organisation record is "Pre-filled from your login / NGO-Darpan", so
-            the identity arrives with the login rather than being typed later. */}
-        {activeAuthMode === "darpan" && (
-          <div className="space-y-4 pt-1">
-            <FormField
-              label="NGO-DARPAN Unique ID"
-              hint="The identifier issued by NITI Aayog, e.g. LGN/0000/0000000"
-              required
+              <AuthDivider />
+            </div>
+          ) : null
+        }
+        methodTabs={methodSwitch}
+        /* The mode's fields are the tab panel the method tabs point at. Without
+           it every tab's aria-controls named an id that did not exist — axe
+           aria-valid-attr-value, critical, caught by the production build and
+           not by the dev server. Radio and dropdown selectors are not tablists
+           and get no panel. */
+        credentialFields={
+          <>
+            <ModeFields
+              asPanel={authOptions.length > 1 && selectorType === "segmented"}
+              idBase={`${templateId}-method`}
+              tabId={activeAuthMode}
             >
-              {(control) => (
-                <Input
-                  {...control}
-                  type="text"
-                  autoComplete="organization"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value.toUpperCase())}
-                  placeholder="Enter your NGO-DARPAN Unique ID"
-                />
-              )}
-            </FormField>
-
-            <FormField label={<LabelWithLink text="Password" href={config.links?.forgotPasswordHref} linkText="Forgot Password?" />} required>
-              {(control) => (
-                <PasswordInput
-                  {...control}
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter Password"
-                />
-              )}
-            </FormField>
-
-            {botCheck}
-          </div>
-        )}
-
-        {/* ── MOBILE OTP ───────────────────────────────────────────────────── */}
-        {/* Two steps, as the handoff draws them (`56693:4742` → `56693:5001`):
-            the identifier alone with "Send OTP" as the primary action, then the
-            masked destination with its Edit route, the six boxes, the resend
-            timer and "Verify and Log In". It used to be one step with a small
-            outlined Send button beside the field and the timer inside it — none
-            of which is in the drawing, though every part of the drawing was
-            already exported by this package. */}
-        {activeAuthMode === "otp" && (
-          <div className="space-y-4 pt-1">
-            {!otpSent ? (
-              <FormField label="Registered Mobile Number" required>
-                {(control) => (
-                  <Input
-                    {...control}
-                    type="tel"
-                    inputMode="numeric"
-                    autoComplete="tel-national"
-                    maxLength={10}
-                    value={mobile}
-                    onChange={(e) => setMobile(e.target.value.replace(/\D/g, ""))}
-                    placeholder="10-digit mobile number"
-                  />
-                )}
-              </FormField>
-            ) : (
-              <>
-                <MaskedContactRow
-                  channel="phone"
-                  maskedValue={`+91 ${mobile.slice(0, 2)}\u2022\u2022\u2022\u2022${mobile.slice(-4)}`}
-                  onEdit={() => {
-                    setOtpSent(false);
-                    setOtp("");
-                  }}
-                />
-                <FormField label="Enter OTP" required>
-                  {(control) => (
-                    <OtpInput
-                      aria-describedby={control["aria-describedby"]}
-                      invalid={control.invalid}
-                      label="One-time password"
-                      value={otp}
-                      onValueChange={setOtp}
-                    />
-                  )}
-                </FormField>
-                <ResendTimer secondsRemaining={otpTimer} onResend={handleSendOtp} />
-              </>
-            )}
-          </div>
-        )}
-        </ModeFields>
-
-        {/* Additional Configurable Fields */}
-        {config.extraFields}
-
-        {/* Submit. Unconditional: every mode this form draws is a credential
-            form with something to submit. On the OTP form the same button is
-            first "Send OTP" and then "Verify and Log In" — one primary action per
-            step, never two buttons. */}
-        <Button
-          type="submit"
-          loading={loading}
-          disabled={activeAuthMode === "otp" && !otpSent && mobile.length < 10}
-          className="mt-4 w-full"
-        >
-          {activeAuthMode === "otp" ? (otpSent ? "Verify and Log In" : "Send OTP") : "Log In"}
-        </Button>
-
-        {/* GIGW requires the consent disclosure, and the reference carries it
-            directly under the button. It was exported by the system and rendered
-            by nothing. */}
-        <ConsentLine
-          termsHref={config.links?.termsHref}
-          privacyHref={config.links?.privacyHref}
-        />
-
-        {/* Registration, as the reference draws it: a rule with the question
-            centred on it, then the route. Also exported and rendered by nothing. */}
-        {config.links?.registerHref ? (
-          <AccountPrompt
-            options={[{ label: "Create Account", href: config.links.registerHref }]}
+              {credentialFields}
+            </ModeFields>
+            {config.extraFields}
+          </>
+        }
+        /* One primary action per step, never two. The label comes from
+           `PRIMARY_ACTION_LABELS`, so a mode cannot ship without one. */
+        primaryAction={
+          <Button
+            type="submit"
+            loading={loading}
+            disabled={activeAuthMode === "otp" && !otpSent && mobile.length < 10}
+            fullWidth
+            iconRight={
+              activeAuthMode === "darpan" ? (
+                <Icon name="arrow_forward" size={20} aria-hidden="true" />
+              ) : undefined
+            }
+          >
+            {actionLabel}
+          </Button>
+        }
+        /* GIGW requires the consent disclosure, and the reference carries it
+           directly under the button. */
+        consent={
+          <ConsentLine
+            termsHref={config.links?.termsHref}
+            privacyHref={config.links?.privacyHref}
           />
-        ) : null}
-
-        {config.links?.helpFaqHref ? (
-          <p className="ds-plogin__help">
-            <a href={config.links.helpFaqHref}>Need Help?</a>
-          </p>
-        ) : null}
-      </form>
+        }
+        /* Registration, as the reference draws it: a rule with the question
+           centred on it, then the route. */
+        accountPrompt={
+          config.links?.registerHref ? (
+            <AccountPrompt
+              options={[{ label: "Create Account", href: config.links.registerHref }]}
+            />
+          ) : null
+        }
+        footer={
+          config.links?.helpFaqHref ? (
+            <p className="ds-plogin__help">
+              <a href={config.links.helpFaqHref}>Need Help?</a>
+            </p>
+          ) : null
+        }
+      />
     </PortalLoginShell>
   );
 }

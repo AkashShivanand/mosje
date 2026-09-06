@@ -3,56 +3,20 @@
 @layer theme, base, components, utilities;
 
 @layer components {
-  /* The form column's own type. It used to be four Tailwind utilities and an
-     arbitrary `text-[var(--sa-color-primaryScale-800)]`, which is a token
-     reference that no token gate can see. */
-  /* Headline/headline-5, 20/28 — the size the handoff gives "Log in to your
-     account" (`56693:4742`), and the one the Figma AuthFormCard was rebound to
-     on 2026-09-05. It was title-2 here and headline-4 in the library, so three
-     surfaces drew three sizes of the same heading. */
-  .ds-plogin__title {
-    font-size: var(--sa-type-headline-5-size);
-    line-height: var(--sa-type-headline-5-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    color: var(--sa-text-neutral-bolder);
+  /* The identity-provider handoff and the rule under it, as one region of the
+     card. It is a region rather than two loose children because the divider is
+     the CARD's only if the button above it is: a rule reading "or sign in with
+     credentials" over nothing is a sentence about an absence. */
+  .ds-plogin__sso {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
   }
 
-  .ds-plogin__lede {
-    margin-top: var(--sa-stack-4);
-    font-size: var(--sa-type-body-3-size);
-    line-height: var(--sa-type-body-3-lh);
-    color: var(--sa-text-neutral-subtle);
-  }
-
-  /* Label on the left, recovery route on the right, on one baseline.
-
-     FLOATED, not flexed, and that is deliberate. `FormField` renders its
-     required marker as a sibling AFTER whatever `label` it is given, so a
-     full-width flex row here pushed the asterisk onto a line of its own —
-     "Password / Forgot Password?" with a lone red star underneath it. Keeping
-     the row inline lets the marker stay where every other field puts it, and
-     floats the link out to the right edge without touching FormField. */
-  .ds-plogin__labelrow {
-    display: inline;
-  }
-
-  .ds-plogin__labelrow > a {
-    float: right;
-  }
-
-  .ds-plogin__labelrow a {
-    font-size: var(--sa-type-body-3-size);
-    line-height: var(--sa-type-body-3-lh);
-    font-weight: var(--sa-font-weight-medium);
-    color: var(--sa-text-link-brand-default);
-    text-underline-offset: 2px;
-  }
-
-  .ds-plogin__labelrow a:focus-visible,
-  .ds-plogin__help a:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
-  }
+  /* The heading, the lede and the label/recovery row moved OUT of this file on
+     2026-09-06 — they belong to `AuthFormCard` and `credential-fields.tsx`, which
+     are what draw them now. Leaving dead copies here would give the estate two
+     places to change the login heading and one of them would be wrong. */
 
   .ds-plogin__help {
     text-align: center;
@@ -62,6 +26,11 @@
   }
 
   .ds-plogin__help a { color: var(--sa-text-link-brand-default); }
+
+  .ds-plogin__help a:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
 
   /* ── Role tabs ────────────────────────────────────────────────────────────
      The reference draws a grey track holding equal segments, the selected one

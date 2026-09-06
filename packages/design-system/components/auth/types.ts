@@ -174,6 +174,17 @@ export interface LoginSubmitPayload {
     password?: string;
     /** Set only when `authMode === "pin"`. The PIN never arrives as `password`. */
     pin?: string;
+    /**
+     * The organisation's PAN. Set only when `authMode === "darpan"`, where it is
+     * the second identifier rather than a secret — the DARPAN route sends no
+     * `password` at all.
+     *
+     * It has its own name for the same reason `pin` does. While the DARPAN form
+     * was a clone of the password form it arrived as `password`, so a consumer
+     * doing the obvious thing hashed a public tax identifier into a credentials
+     * table and compared it against nothing.
+     */
+    pan?: string;
     mobile?: string;
     otp?: string;
   };
@@ -219,6 +230,19 @@ export interface PortalLoginConfig {
    * `Auth / AuthFormCard`.
    */
   captcha?: boolean;
+  /**
+   * The sentence under the DARPAN fields naming the roles that route does NOT
+   * serve — E-Anudaan's reads "Other login roles (DWO, State, Ministry, Finance,
+   * PMU) use Ministry-issued credentials — separate login flow".
+   *
+   * **Portal copy, so it has no default.** Those five roles are E-Anudaan's org
+   * chart; a default here would print them on every portal that ever adopts the
+   * DARPAN route. Omit it and nothing renders — which is correct for a portal
+   * whose DARPAN route serves everyone it shows.
+   *
+   * Ignored unless a role offers `darpan`.
+   */
+  darpanNote?: React.ReactNode;
   /** Brand asset path overrides */
   brandAssets?: PortalBrandAssets;
   /** Optional custom form fields or controls to inject */

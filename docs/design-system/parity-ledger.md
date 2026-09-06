@@ -95,7 +95,12 @@
 | popover | Popover | — | `figma-only` | [378:69007](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=378-69007) |
 | Portal Card | Portal Card | `PortalCard` | `mapped` | [56486:832](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56486-832) |
 | Auth / AccountPrompt | Portal Login Template | `AccountPrompt` | `mapped` | [55438:739](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55438-739) |
-| Auth / AuthFormCard | Portal Login Template | _Internal sub-part of Portal Login Template_ | `deliberately-unmapped` | [55447:923](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55447-923) |
+| Auth / AuthFormCard | Portal Login Template | `AuthFormCard` | `mapped` | [55445:778](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55445-778) |
+| Auth / CredentialFields / Identifier + Password | Portal Login Template | `PasswordFields` | `mapped` | [57574:14697](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57574-14697) |
+| Auth / CredentialFields / Identifier + PIN | Portal Login Template | `PinFields` | `mapped` | [57574:14737](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57574-14737) |
+| Auth / CredentialFields / DARPAN | Portal Login Template | `DarpanFields` | `mapped` | [57575:14794](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57575-14794) |
+| Auth / CredentialFields / OTP request | Portal Login Template | `OtpRequestFields` | `mapped` | [57575:14833](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57575-14833) |
+| Auth / CredentialFields / OTP verify | Portal Login Template | `OtpVerifyFields` | `mapped` | [57575:14856](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57575-14856) |
 | Auth / CredentialRecovery | Portal Login Template | _Internal sub-part of Portal Login Template — the recovery steps_ | `deliberately-unmapped` | [56640:4103](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56640-4103) |
 | Auth / MaskedContactRow | Portal Login Template | `MaskedContactRow` | `mapped` | [55437:718](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55437-718) |
 | Auth / OrganisationCard | Portal Login Template | _Internal sub-part of Portal Login Template — the picker's rows_ | `deliberately-unmapped` | [55439:730](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55439-730) |
