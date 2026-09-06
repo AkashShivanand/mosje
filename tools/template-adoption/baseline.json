@@ -257,8 +257,6 @@
     "apps/hub/src/components/e-anudaan/ngo-shell.tsx",
     "apps/hub/src/components/e-anudaan/review-shell.tsx",
     "apps/hub/src/components/eutthan/eutthan-shell.tsx",
-    "apps/hub/src/components/nhapoa/admin-shell.tsx",
-    "apps/hub/src/components/nhapoa/citizen-shell.tsx",
     "apps/hub/src/components/nmba/admin-shell.tsx",
     "apps/hub/src/components/nmba/treatment-centre/tc-shell.tsx",
     "apps/hub/src/components/pm-ajay/dashboard/ui.tsx",
