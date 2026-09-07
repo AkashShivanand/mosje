@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation";
 import { DemoDock, type AppEntry, type DemoDockTab } from "@mosje/design-system";
 import { DataModePanel } from "@/components/website/DataModePanel";
 import { hasDataModes } from "@/lib/data-mode/routes";
+import { DemoFillPanel, schemeFromPath } from "@/components/e-anudaan/demo-fill-panel";
 
 /**
  * Mounts the demo dock, if an admin has it switched on.
@@ -31,9 +32,17 @@ export function ConditionalDemoDock({
   // The Data tab appears only where a dashboard reads a report feed — the same
   // route-specific rule Sign in already follows. On every other page the switch
   // would control nothing, and a control that does nothing is worse than none.
-  const extraTabs: DemoDockTab[] | undefined = hasDataModes(pathname)
-    ? [{ id: "data", label: "Data", content: <DataModePanel /> }]
-    : undefined;
+  // Route-specific tabs, on the same rule Sign in and Data already follow: a tab appears only
+  // where it controls something. Fill belongs on a grant application and nowhere else — the
+  // scheme it fills is read out of the address, so off that route it has nothing to act on.
+  const tabs: DemoDockTab[] = [];
+  if (schemeFromPath(pathname)) {
+    tabs.push({ id: "fill", label: "Fill", content: <DemoFillPanel pathname={pathname} /> });
+  }
+  if (hasDataModes(pathname)) {
+    tabs.push({ id: "data", label: "Data", content: <DataModePanel /> });
+  }
+  const extraTabs: DemoDockTab[] | undefined = tabs.length > 0 ? tabs : undefined;
 
   // `apps` is the registry with the admin's overrides already applied, resolved
   // server-side in the root layout. Omitting it falls back to DEFAULT_APPS.

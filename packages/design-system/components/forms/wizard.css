@@ -123,4 +123,17 @@
     font-size: var(--sa-type-body-2-size);
     color: var(--sa-text-neutral-base);
   }
+
+  /* The reason the advance control is disabled, beside it, so a reader meets the
+     explanation and the dark button together. A disabled control whose reason sits
+     elsewhere on the page is a dead end. `margin-inline-end: auto` pushes it left of the
+     buttons without a wrapper; it wraps to its own line on a narrow viewport because the
+     actions row already wraps. */
+  .ds-wizard__blocked {
+    margin-inline-end: auto;
+    max-width: 52ch;
+    color: var(--sa-text-status-warning-base);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-line-height);
+  }
 }

@@ -1,0 +1,32 @@
+[
+  {
+    "slug": "annual-report-valid",
+    "file": "annual-report-valid.pdf",
+    "verdict": "verified",
+    "title": "Annual Report 2025-26"
+  },
+  {
+    "slug": "committee-list-needs-review",
+    "file": "committee-list-needs-review.pdf",
+    "verdict": "review",
+    "title": "List of Managing Committee Members"
+  },
+  {
+    "slug": "wrong-document-financial-statement",
+    "file": "wrong-document-financial-statement.pdf",
+    "verdict": "invalid",
+    "title": "Statement of Income and Expenditure (Form VII)"
+  },
+  {
+    "slug": "illegible-scan",
+    "file": "illegible-scan.pdf",
+    "verdict": "invalid",
+    "title": "Scanned Certificate — poor capture"
+  },
+  {
+    "slug": "bank-authorisation-valid",
+    "file": "bank-authorisation-valid.pdf",
+    "verdict": "verified",
+    "title": "Bank Authorisation Letter"
+  }
+]

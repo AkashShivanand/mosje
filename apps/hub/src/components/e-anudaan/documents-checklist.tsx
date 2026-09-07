@@ -28,6 +28,9 @@ import { formatDate } from "@/lib/e-anudaan/format";
 
 const TONE: Record<VerdictState, { text: string; border: string; bg: string }> = {
   pending: { text: "text-ink-muted", border: "border-line", bg: "bg-surface-muted" },
+  // The check being DOWN is not the document's fault, so it is drawn neutral rather than
+  // in a status colour. Nothing is wrong with the upload; nothing is asked of the applicant.
+  unavailable: { text: "text-ink-muted", border: "border-line", bg: "bg-surface-muted" },
   verified: { text: "text-status-success", border: "border-status-success/30", bg: "bg-status-success/5" },
   review: { text: "text-status-warning", border: "border-status-warning/30", bg: "bg-status-warning/5" },
   invalid: { text: "text-status-error", border: "border-status-error/30", bg: "bg-status-error/5" },
@@ -35,6 +38,7 @@ const TONE: Record<VerdictState, { text: string; border: string; bg: string }> =
 
 const BADGE_STATUS: Record<VerdictState, BadgeStatus> = {
   pending: "info",
+  unavailable: "info",
   verified: "success",
   review: "warning",
   invalid: "danger",
