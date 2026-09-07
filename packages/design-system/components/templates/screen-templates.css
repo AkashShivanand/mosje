@@ -303,17 +303,13 @@
     margin-left: auto;
   }
 
+  /* The action bar is STATIC, and was briefly sticky. Measuring a focused field
+     against it at 375px found two of four fields overlapped by the bar — WCAG
+     2.2 SC 2.4.11 (Focus Not Obscured), which this estate targets. The
+     stickiness was solving "a long form scrolls its own submit away", which is
+     a real concern and not a 2.4.11 exemption; a submit at the end of the form
+     is what a government form does, and it cannot cover anything. */
   @media (max-width: 767px) {
-    .sa-form__actions {
-      position: sticky;
-      bottom: 0;
-      background: var(--sa-bg-neutral-base);
-      padding-bottom: var(--sa-padding-12);
-      /* Above the page's own content, below anything on the corner rail —
-         `floating-element-placement.md` reserves those rungs. */
-      z-index: var(--sa-z-raised);
-    }
-
     .sa-form__actions-buttons { width: 100%; }
     .sa-form__actions-buttons > * { flex: 1 1 auto; }
   }
@@ -418,6 +414,21 @@
 
   .sa-checklist__req { color: var(--sa-text-status-error-bolder); }
 
+  /* The word "Required" beside the asterisk, for a screen reader only. Same
+     shape as ds-events__sr and ds-files__sr, kept local rather than reaching
+     into another component's class. */
+  .sa-checklist__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
   .sa-checklist__optional {
     font-weight: var(--sa-font-weight-regular);
     color: var(--sa-text-neutral-subtle);
@@ -475,7 +486,10 @@
     gap: var(--sa-padding-8);
   }
 
-  @media (max-width: 599px) {
+  /* 767, the tablet anchor — the same rung the worklist collapses its table at,
+     so a phone meets one breakpoint across the whole template layer rather than
+     two a few pixels apart. */
+  @media (max-width: 767px) {
     .sa-checklist__item { flex-wrap: wrap; }
     .sa-checklist__item-side {
       flex-direction: row;
@@ -563,7 +577,7 @@
     margin: 0;
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 768px) {
     .sa-review__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 
@@ -638,7 +652,7 @@
     margin: 0;
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 768px) {
     .sa-confirmation__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
 
@@ -1085,6 +1099,15 @@
     /* Controls do not exist on paper. The criteria they set do, above. */
     .sa-report__filters { display: none; }
     .sa-report__table-wrap { overflow-x: visible; }
+
+    /* The SCREEN's chrome does not go on paper either, and this rule is the
+       whole reason the print masthead exists. Without it a printed statement
+       carried the page header AND the print masthead stacked, saying the title
+       twice, under a breadcrumb trail and beside two buttons nobody can press —
+       which is precisely what "print-first" was supposed to mean it did not do.
+       Scoped to .sa-report so no other screen's header is touched. */
+    .sa-report > .sa-page-header,
+    .sa-report > .ds-breadcrumb { display: none; }
   }
 
 

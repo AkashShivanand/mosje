@@ -8,22 +8,24 @@ export const metadata: Metadata = {
     "Credentials, before there is a session. An alias of Portal Login Template under the name the decision table uses.",
 };
 
+/**
+ * One row, and it is the only one that is this module's to make.
+ *
+ * The criteria a sign-in screen must meet belong to `PortalLoginTemplate` and
+ * are listed, with their evidence, on its own page. Restating them here would
+ * be a second copy of a compliance claim with nothing behind it — and the two
+ * copies would drift. What IS true here, and checkable, is that this export
+ * adds nothing that could break them.
+ */
 const A11Y: A11yItem[] = [
   {
-    criterion: "3.3.8 Accessible Authentication (Minimum)",
-    level: "AA",
-    description:
-      "Every credential field permits paste and autofill, so a password manager can complete the sign-in without a cognitive function test.",
-    status: "partial",
-    evidence:
-      "Inherited from Portal Login Template and its credential fields. Verified there, not re-verified here — this page documents an alias and adds no markup of its own.",
-  },
-  {
-    criterion: "1.3.1 Info and Relationships",
+    criterion: "4.1.2 Name, Role, Value",
     level: "A",
-    description: "Role tabs, credential fields and the footer links are the login template's own structure.",
-    status: "partial",
-    evidence: "Inherited. See the Portal Login Template page for the checked criteria and their evidence.",
+    description:
+      "This export introduces no markup, so it can neither add nor weaken an accessible name, role or value. Everything a reader meets is Portal Login Template's, and is documented there.",
+    status: "verified",
+    evidence:
+      "components/templates/auth-screen.ts is a re-export statement — no JSX, no wrapper element, no props of its own. AuthScreen and PortalLoginTemplate are the same function.",
   },
 ];
 

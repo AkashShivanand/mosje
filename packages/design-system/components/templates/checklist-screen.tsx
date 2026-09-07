@@ -203,10 +203,19 @@ function ChecklistGroupBlock({
               <div className="sa-checklist__item-main">
                 <p className="sa-checklist__item-label">
                   {item.label}
+                  {/* The asterisk is decoration and says nothing to a screen
+                      reader, so the word rides beside it. Without this a
+                      required document announced identically to one with no
+                      requirement stated, while "(optional)" WAS announced —
+                      the mandatory half of a statutory checklist was the half
+                      going unsaid. */}
                   {item.required !== false ? (
-                    <span className="sa-checklist__req" aria-hidden="true">
-                      {" *"}
-                    </span>
+                    <>
+                      <span className="sa-checklist__req" aria-hidden="true">
+                        {" *"}
+                      </span>
+                      <span className="sa-checklist__sr"> Required</span>
+                    </>
                   ) : (
                     <span className="sa-checklist__optional"> (optional)</span>
                   )}

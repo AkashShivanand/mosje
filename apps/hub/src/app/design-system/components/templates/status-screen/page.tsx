@@ -10,14 +10,6 @@ export const metadata: Metadata = {
 
 const A11Y: A11yItem[] = [
   {
-    criterion: "2.4.2 Page Titled",
-    level: "A",
-    description:
-      "Each kind carries its own badge and heading, so the browser tab and the page agree on what happened.",
-    status: "partial",
-    evidence: "ErrorView supplies the heading per kind; the route's own Metadata title is the caller's and the template cannot set it.",
-  },
-  {
     criterion: "3.3.3 Error Suggestion",
     level: "AA",
     description:

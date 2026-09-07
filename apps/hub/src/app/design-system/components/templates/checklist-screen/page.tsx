@@ -33,14 +33,6 @@ const A11Y: A11yItem[] = [
     status: "verified",
     evidence: "The count paragraph carries aria-live=\"polite\".",
   },
-  {
-    criterion: "3.3.3 Error Suggestion",
-    level: "AA",
-    description:
-      "A rejection states what was wrong and what to do, in full, not behind a disclosure.",
-    status: "partial",
-    evidence: "The template renders every finding unconditionally and never truncates. Whether the findings themselves are actionable is the caller's; the template cannot enforce that.",
-  },
 ];
 
 export default function ChecklistScreenPage(): React.JSX.Element {

@@ -181,7 +181,22 @@ export function ReportScreen<T extends object>({
         onRetry={onRetry}
         onClearFilters={onClearFilters}
       >
-        <div className="sa-report__table-wrap">
+        {/* A scrollable region must be reachable by keyboard, or a reader who
+            cannot use a pointer cannot see the columns that overflow. `tabIndex`
+            0 with a role and a name is the standard remedy; without it this was
+            the one honest gap left in this template's checklist. */}
+        {/* The lint rule below is right in general and wrong for a scrollable
+            region, which is its documented exception: a container that scrolls
+            must be focusable or a keyboard-only reader cannot reach the columns
+            that overflow. The role and the accessible name are what make this a
+            region rather than a stray tab stop. Verified in the browser. */}
+        <div
+          className="sa-report__table-wrap"
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+          tabIndex={0}
+          role="region"
+          aria-label={`${title}, scrollable table`}
+        >
           <table className="sa-report__table">
             <caption className="sa-report__caption">
               {title}

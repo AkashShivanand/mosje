@@ -21,9 +21,9 @@ const A11Y: A11yItem[] = [
     criterion: "1.4.10 Reflow",
     level: "AA",
     description:
-      "The table scrolls horizontally on screen only. This is the single place on the estate a table may do that, because a statement's columns are fixed by the statement and paper has no narrow viewport.",
-    status: "partial",
-    evidence: "The wrapper sets overflow-x: auto on screen and visible in print. The scroll container is not keyboard-focusable, which is a known gap for keyboard-only horizontal scrolling.",
+      "The table scrolls horizontally on screen only, and the scroll region is reachable by keyboard. This is the single place on the estate a table may scroll, because a statement's columns are fixed by the statement and paper has no narrow viewport.",
+    status: "verified",
+    evidence: "The wrapper sets overflow-x: auto on screen and visible in print, and carries tabIndex={0} with role=\"region\" and an aria-label naming the statement — added after review found the scroller unreachable without a pointer.",
   },
   {
     criterion: "1.4.8 Visual Presentation",
@@ -61,7 +61,7 @@ export default function ReportScreenPage(): React.JSX.Element {
       related={[
         { label: "Overview Screen", href: "/design-system/components/templates/overview-screen", reason: "when it is read on screen" },
         { label: "Data Table", href: "/design-system/components/data-display/data-table", reason: "the interactive alternative" },
-        { label: "Chart Export", href: "/design-system/components/dashboard/chart-export", reason: "the same export vocabulary" },
+        { label: "Chart Card", href: "/design-system/components/dashboard/chart-card", reason: "the same export vocabulary" },
       ]}
       design={
         <>

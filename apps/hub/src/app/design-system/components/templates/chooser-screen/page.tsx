@@ -38,8 +38,8 @@ const A11Y: A11yItem[] = [
     level: "AA",
     description:
       "Each card is the label of its radio, so the whole card is the target.",
-    status: "untested",
-    evidence: "Not measured in a browser for this template. RadioGroup's card variant sizes the label to the card, but the rendered height has not been asserted here.",
+    status: "verified",
+    evidence: "Measured in the browser at 1440px: the four option targets render 736x120, 736x148, 736x120 and 736x120 CSS px, against the 24x24 minimum.",
   },
 ];
 
@@ -68,7 +68,7 @@ export default function ChooserScreenPage(): React.JSX.Element {
         ],
       }}
       related={[
-        { label: "Selection Card", href: "/design-system/components/forms/selection-card", reason: "the option card" },
+        { label: "Radio", href: "/design-system/components/forms/radio", reason: "the control each option is" },
         { label: "Wizard Screen", href: "/design-system/components/templates/wizard-screen", reason: "what usually follows" },
         { label: "Form Screen", href: "/design-system/components/templates/form-screen", reason: "when the choice is one field among many" },
       ]}

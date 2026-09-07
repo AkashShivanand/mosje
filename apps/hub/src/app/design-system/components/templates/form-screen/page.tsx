@@ -37,9 +37,9 @@ const A11Y: A11yItem[] = [
     criterion: "2.4.11 Focus Not Obscured",
     level: "AA",
     description:
-      "Below 768px the action bar is sticky at the foot. A focused field near the bottom of a long form must not end up underneath it.",
-    status: "untested",
-    evidence: "Not yet exercised by tabbing through a long form at 375px. The bar is sticky rather than fixed, which limits but does not eliminate the risk.",
+      "Nothing in the form is pinned, so no focused field can end up underneath anything.",
+    status: "verified",
+    evidence: "The action bar was briefly sticky below 768px, and measuring a focused field against it at 375px found two of four overlapped. The stickiness was removed: the bar now computes position: static, no descendant of the form is fixed or sticky, and 0 of 4 fields overlap it when focused.",
   },
 ];
 

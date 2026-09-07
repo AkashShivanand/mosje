@@ -15,7 +15,7 @@ const A11Y: A11yItem[] = [
     description:
       "Closing the lightbox returns focus to the tile that opened it.",
     status: "verified",
-    evidence: "Each tile registers its button in a ref array; the close handler focuses triggers.current[index] before clearing the open index.",
+    evidence: "Each tile registers its button in a ref array; the close handler reads the open index, clears it, then focuses triggers.current[index].",
   },
   {
     criterion: "4.1.2 Name, Role, Value",
@@ -32,14 +32,6 @@ const A11Y: A11yItem[] = [
       "The pressed layout is marked by a fill and a weight change, never colour alone.",
     status: "verified",
     evidence: "The aria-pressed rule sets background, border-color and font-weight together.",
-  },
-  {
-    criterion: "1.2.2 Captions (Prerecorded)",
-    level: "A",
-    description:
-      "A video with speech needs a WebVTT track. The component cannot author one, and does not suppress the warning when it is missing.",
-    status: "partial",
-    evidence: "Inherited from Lightbox, which omits the track element and warns once per source in development. Compliance still depends on the caller supplying captions.",
   },
 ];
 

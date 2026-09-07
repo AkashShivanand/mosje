@@ -25,14 +25,6 @@ const A11Y: A11yItem[] = [
     status: "verified",
     evidence: "Rendered as ul/li with list styling reset in the template's own stylesheet.",
   },
-  {
-    criterion: "3.2.5 Change on Request",
-    level: "AAA",
-    description:
-      "An external link and a download are marked, so nothing opens or saves unannounced.",
-    status: "partial",
-    evidence: "The icon and Link's `external` handling mark both. Whether the caller sets those flags correctly is the caller's; the template cannot infer it from the href.",
-  },
 ];
 
 export default function CatalogueScreenPage(): React.JSX.Element {

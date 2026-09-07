@@ -178,7 +178,6 @@ export function GalleryScreen({
                       assets of unknown dimensions, which is the case
                       `next/image` cannot serve without a width and height it
                       does not have. */}
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={item.thumbnail ?? item.poster ?? item.src}
                     alt={item.alt ?? item.caption ?? ""}
