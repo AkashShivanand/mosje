@@ -112,10 +112,7 @@ export default function SiteFooterPage(): React.JSX.Element {
       name="Site Footer"
       status="Stable"
       summary="The statutory footer for the SAMAVESH estate, in two variants. It is structural rather than content-bound — every label, href, logo and sentence arrives as a prop — so the department's routes live in the app and this component serves any site or portal in the estate."
-      figma={{
-        absent:
-          "The footer is documented in the SAMAVESH library alongside the Navbar page, but is not yet registered as its own node in the estate's Figma index.",
-      }}
+      figma={{ node: "siteFooter" }}
       specimen={<SiteFooterPortalSpecimen />}
       propsFrom="SiteFooterProps"
       a11y={A11Y}

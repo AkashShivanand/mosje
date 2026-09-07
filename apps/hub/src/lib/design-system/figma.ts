@@ -176,6 +176,22 @@ export const FIGMA_NODES = {
      Navbar and Footer. Tone (Light|Dark|Tint) x State (Closed|Open), six
      variants, zero unbound values. */
   samaveshBanner: "56479:42386",
+  /* The `Site Footer` component set on the library's "Footer" page — Variant
+     (Website|Portal) x Breakpoint (Desktop|Tablet|Mobile), six variants, zero
+     unbound values. Mirrors `SiteFooter` in components/navigation.
+
+     Built 2026-09-07. The page had carried the UX4G 2.0 fork untouched since the
+     library was created — four component sets, no Documentation frame, no
+     Component record, no numbered sections — so BOTH footer docs pages declared
+     a Figma absence while a stale page sat in the library. Three of those sets
+     were deleted after an instance census; `Footer - Bottom Strip` survives in a
+     Legacy section because ten PortalLoginTemplate components still instance it.
+
+     NO `footer` KEY, deliberately. `check:ds-pages` derives the expected key from
+     the route, so a `footer` entry would force /components/navigation/footer to
+     link it — and the slim `Footer` strip has no master of its own. Its page
+     states that absence and points here instead. */
+  siteFooter: "57800:1922",
   /* Navigation — page "Portal Card" between Pagination and Stepper, matching
      where the component lives in code. Status (Live|Planned). */
   portalCard: "56486:832",
