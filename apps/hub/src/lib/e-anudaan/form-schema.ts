@@ -1367,9 +1367,19 @@ export function visibleDocuments(
   wizard: WizardDef,
   values: Record<string, string>,
 ): readonly DocDef[] {
-  return wizard.documents
-    .filter((d) => !d.showWhen || d.showWhen.equals.includes(values[d.showWhen.field] ?? ""))
-    .map((d, i) => ({ ...d, n: i + 1 }));
+  // `n` is the document's IDENTITY and is returned unchanged. It used to be rewritten to the
+  // filtered position — `.map((d, i) => ({ ...d, n: i + 1 }))` — which read as a convenience
+  // and was a data-loss bug: uploads are keyed by `n`, so the same document had a different
+  // key on each branch. An applicant who attached a Rent Agreement as AVYAY's new-project
+  // document 10, then switched to renewal where it is document 6, had their upload silently
+  // re-attributed to whichever document now sat at position 10.
+  //
+  // The DISPLAY number is the render position and belongs to the renderer, which has the
+  // index. Nothing outside a list needs it, and identity must not depend on what else is
+  // visible at the time.
+  return wizard.documents.filter(
+    (d) => !d.showWhen || d.showWhen.equals.includes(values[d.showWhen.field] ?? ""),
+  );
 }
 
 const IFSC_RE = /^[A-Z]{4}0[A-Z0-9]{6}$/;
