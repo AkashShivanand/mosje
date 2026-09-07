@@ -281,26 +281,28 @@ chart with one series; a chart with more categories than the palette distinguish
 
 ---
 
-### 4.6–4.18 The remaining templates
+### 4.6–4.18 The rest of the set — built 7 September 2026
 
-Specified in full in `.claude/rules/screen-templates.md` §4. In brief:
+**All eighteen have code.** The table below is what each one ships, and the edge
+case that shaped it. Full prose on each template's page under
+`/design-system/components/templates/`.
 
 | Template | Body | Chief edge case |
 |---|---|---|
-| `AuthScreen` | `PortalLoginTemplate` — already built and already consistent across all 18 drawn screens | A role with no SSO; captcha and WCAG 2.2 §3.3.8 |
-| `FormScreen` | `FormCard` + `FormSection[]` + one submit | Autosave semantics — optimistic or confirmed, and the department decides |
-| `ChecklistScreen` | Batch dropzone + grouped rows + per-item status | Three per-item verdicts (uploaded / needs review / not valid) with expandable findings |
-| `ReviewScreen` | Numbered `ReviewSection`s, `ReviewItem` pairs, edit links, declaration | An edit link must return the reader **to the step and back** |
-| `ChooserScreen` | `radio-card` list + one CTA | The handoff draws this **three different ways under one name** — one design only |
-| `DecisionScreen` | Record body + decision panel | A decision that cannot be unmade must say so before it is made |
-| `CatalogueScreen` | Filter chips + `FileList` / cards | A download card states its **kind**, taken from the destination |
-| `GalleryScreen` | Toolbar + grid/list + `Lightbox` | Grid and list share the same action set — the toggle changes density, not capability |
-| `SearchScreen` | Query + facets + result rows | **`idle` renders differently from `empty`** |
-| `InboxScreen` | Grouped `EventList` | A notification, a comment and an audit entry are one object — one primitive, three views |
-| `SettingsScreen` | Section index + `InlineEdit` rows | Blocked on the optimistic-save decision; until then, confirmed saves |
-| `ReportScreen` | Print-first table + export | Print pagination and repeated headers |
-| `ConfirmationScreen` | Reference number + what happens next | **Absent from every source.** A citizen who submits and sees the dashboard cannot prove they submitted |
-| `StatusScreen` | `ErrorView` | 404 / 403 / 500 / maintenance / offline are five different sentences |
+| `AuthScreen` | An **alias** of `PortalLoginTemplate` — a re-export, no wrapper, no render layer | Nothing needed rebuilding: the auth geometry is consistent across all 18 drawn screens and already matched the component |
+| `ChooserScreen` | `RadioGroup variant="card"` + one Continue | The handoff draws this **three different ways under one name**; the AVYAY geometry ships and the other two are recorded as drift. Continue is never disabled — a dead control explains nothing |
+| `FormScreen` | `FormSection[]` + `ErrorSummary` + one action bar | The autosave question is **settled**: confirmed, never optimistic, on the reasoning `InlineEdit` already published. Below 768px the bar goes sticky, because a form taller than the phone otherwise scrolls its own submit away |
+| `ChecklistScreen` | Grouped rows + per-item verdict + batch upload slot | **Four** states, not three — `missing · attached · review · rejected`. Findings render in full, and the progress line counts what is *required and accepted*, not what is present |
+| `ReviewScreen` | Numbered sections, `ReviewItem` pairs, edit links, declaration | The numbers **are** the wizard's steps. An edit link must return the reader to the step *and back*, which needs a return parameter the template cannot add |
+| `ConfirmationScreen` | Reference + facts + what happens next + receipt | **Absent from every source**, and the one template with **no data states**: a confirmation that could be "loading" is one the citizen cannot trust |
+| `DecisionScreen` | Record body + decision panel, side by side | An irreversible verdict says so **on the option, above the submit** — not in a dialogue after the officer has decided. Verdicts this role may not record are omitted, never disabled |
+| `CatalogueScreen` | Filters + rows or cards + a pager, always | A row states its **kind and size, taken from the destination** — a link labelled "Guidelines" that opens a 40 MB scan on a rural connection is what that prevents |
+| `SearchScreen` | Query + facets + ranked results | **`idle` renders differently from `empty`.** It does not sort: ranking is the caller's claim, and reordering would overrule the relevance model |
+| `InboxScreen` | Grouped `EventList` | A notification, a comment and an audit entry are one object with three views. Mark-all appears only while something is unread |
+| `SettingsScreen` | Anchor index + `InlineEdit` rows | Not blocked — **decided**. Saves are confirmed and there is no prop to change that. A read-only value says *why* |
+| `ReportScreen` | Print-first table + export | The one template that deliberately does **not** page. It prints its own masthead and its criteria, because the browser's chrome identifies nothing and a figure without its filters cannot be reproduced |
+| `GalleryScreen` | Toolbar + grid/list + `Lightbox` | Grid and list are one capability at two densities; focus returns to the tile that opened the lightbox |
+| `StatusScreen` | `ErrorView`, five kinds | 404 / 403 / 500 / maintenance / offline are five different facts. `offline` has no preset, so it borrows the 500's shape and replaces every word — and withdraws the search field |
 
 ---
 
@@ -355,8 +357,9 @@ the focus management, the number formatting — is already decided.
 The adoption ratchet is the one that matters. It is the difference between `SidebarNav`
 at 100% and `AppShell` at 0%.
 
-**Where it stands, 6 September 2026:** `8 / 278` portal files composed from a template,
-**270 declared in the baseline**. The baseline may only shrink — a new page that assembles
+**Where it stands, 7 September 2026:** `16 / 279` portal files composed from a template,
+**263 declared in the baseline**. All eighteen templates now have code; what remains is
+migration, not construction. The baseline may only shrink — a new page that assembles
 a screen by hand fails, and a baselined file that starts using a template also fails until
 the baseline is re-recorded in the same change, so one page's migration cannot be spent
 silently on another page's regression.

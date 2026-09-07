@@ -3873,6 +3873,57 @@ and a figure the register does not publish is left **off** the design rather tha
 measures not ten, one stepper not two, one chooser design not three, and a mobile form for
 every archetype where the handoff draws none (9 of its 9 mobile frames are auth).
 
+**The set is closed at eighteen, and since 2026-09-07 all eighteen have code.** The
+fourteen below completed it. Each owns the seven states through `ScreenBody`, takes
+`headingLevel` so it can be embedded, and states every sentence as a prop.
+
+*The citizen's journey, in order.* **`ChooserScreen`** — a finite set of mutually
+exclusive options as `RadioGroup variant="card"`, with one Continue that is never
+disabled; the handoff draws this three ways under one name and two of them are drift.
+**`FormScreen`** — one record that fits one screen, with `ErrorSummary` above the fields
+and an action bar that goes sticky below 768px; **more than eight fields, or a statutory
+stage, and it is a wizard instead**, which is a count rather than a feeling.
+**`ChecklistScreen`** — a required set of artefacts with **four** per-item states
+(`missing · attached · review · rejected`), because a file that has left the citizen's
+machine is not yet a document the department has accepted; findings render in full and
+the progress line counts what is *required*, not what is present. **`ReviewScreen`** —
+numbered sections whose numbers ARE the wizard's steps, each with an edit link that names
+its section; the handoff's review frame carries 51 pairs in one undifferentiated grid.
+**`ConfirmationScreen`** — the receipt, and the one template with **no data states**: it
+renders a fact the caller already holds, because a confirmation that could be "loading"
+is one the citizen cannot trust. It exists because **no source draws it at all**, so the
+drawn journey ends with nothing to quote at a counter.
+
+*The officer's half, which the handoff barely draws.* **`DecisionScreen`** — the record
+and the verdict panel side by side and scrolling together, because an officer choosing
+"Return for correction" must see the field they are returning it for; an irreversible
+verdict says so **on the option, above the submit**, never in a dialogue afterwards.
+**`ReportScreen`** — the one template that deliberately does **not** page, because page 1
+of 9 is not a statement; it prints its own masthead and its criteria, since the browser's
+chrome identifies nothing and a figure without its filters cannot be reproduced.
+**`SettingsScreen`** — an index of real anchor links beside `InlineEdit` rows; the
+optimistic-save question is **settled, not open**: saves are confirmed, and the template
+offers no alternative.
+
+*Surfaces either role reaches sideways.* **`CatalogueScreen`** — documents the reader
+opens rather than acts on, always paged, each row stating its kind and size **taken from
+the destination**. **`SearchScreen`** — ranked results, and the reason it is not a
+catalogue: **`idle` renders differently from `empty`**, so a field nobody has typed in
+shows a prompt rather than "No records found". It does not sort; ranking is the caller's
+claim. **`InboxScreen`** — dated attributed events through `EventList`, on the position
+that a notification, a comment and an audit entry are one object with three views.
+**`GalleryScreen`** — grid and list at **one capability, two densities**; every per-item
+action exists in both, and focus returns to the tile that opened the lightbox.
+**`StatusScreen`** — **five** kinds, not one: `404 · 403 · 500 · maintenance · offline`,
+because a single "Something went wrong" covers all five and helps with none. It is **not**
+an error boundary — a failed feed belongs to `ScreenBody`'s error branch, which keeps the
+page's chrome and the reader's place in it.
+
+**`AuthScreen` is an ALIAS of `PortalLoginTemplate`, not a wrapper** — a re-export, no
+second component and no render layer. It exists so the decision table's eighteenth name
+resolves in the barrel; the auth geometry was the one part of the handoff that needed no
+correction, so nothing was rebuilt.
+
 ---
 
 ### The older scaffolds
