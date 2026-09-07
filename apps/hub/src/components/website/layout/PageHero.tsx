@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Icon, SitePageHeader,
-  PageHeaderCarousel,
+  Carousel,
 } from "@mosje/design-system";
 import { PageTrail, type Crumb } from "./page-trail";
 
@@ -206,15 +206,31 @@ export function PageHero({
         mediaLabel={hasCarousel ? heroSlidesLabel : undefined}
         media={
           hasCarousel ? (
-            <span className="relative block size-[340px]">
-              <PageHeaderCarousel
-                slides={heroSlides!}
-                label={heroSlidesLabel ?? "Photographs"}
-                /* No autoplay. The source's carousel does not advance on its
-                   own either, and a picture that moves while a reader is
-                   reading the paragraph beside it is a distraction the page
-                   does not need. */
-              />
+            /*
+             * THE DESIGN SYSTEM'S OWN `Carousel`, not a second one.
+             *
+             * It already carries the WAI-ARIA pattern, the pause control, the
+             * reduced-motion rule and the dot behaviour the library documents —
+             * dots are buttons with `aria-current`, never tabs, because a
+             * tablist promises a roving arrow-key model this does not have.
+             * What the header adds is the SHAPE: the circle, and the controls
+             * lifted onto it. A component that already exists does not get
+             * written twice so one page can be round.
+             */
+            <span className="sa-siteheader__carousel">
+              <Carousel label={heroSlidesLabel ?? "Photographs"}>
+                {heroSlides!.map((s) => (
+                  <Image
+                    key={s.src}
+                    src={s.src}
+                    alt={s.alt}
+                    width={340}
+                    height={340}
+                    className="size-full object-cover"
+                    priority
+                  />
+                ))}
+              </Carousel>
             </span>
           ) : portrait ? (
             /*

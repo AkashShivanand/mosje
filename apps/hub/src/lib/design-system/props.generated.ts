@@ -9046,36 +9046,6 @@ export const GENERATED_PROPS = {
       }
     ]
   },
-  "PageHeaderCarouselProps": {
-    "source": "packages/design-system/components/layout/page-header-carousel.tsx",
-    "inheritsNative": false,
-    "props": [
-      {
-        "name": "label",
-        "type": "string",
-        "required": true,
-        "description": "Names the carousel for assistive technology, e.g. \"Abhiyaan photographs\"."
-      },
-      {
-        "name": "slides",
-        "type": "PageHeaderCarouselSlide[]",
-        "required": true,
-        "description": ""
-      },
-      {
-        "name": "autoPlayMs",
-        "type": "number",
-        "required": false,
-        "description": "Advance every N milliseconds. Omit for a carousel that only moves when the reader moves it. AUTOPLAY STOPS ON INTERACTION AND NEVER STARTS UNDER `prefers-reduced-motion`. WCAG 2.2 §2.2.2 gives a reader the right to pause anything that moves for more than five seconds, and a government page is the last place to argue with that."
-      },
-      {
-        "name": "className",
-        "type": "string",
-        "required": false,
-        "description": ""
-      }
-    ]
-  },
   "PageHeaderProps": {
     "source": "packages/design-system/components/layout/page-header.tsx",
     "inheritsNative": true,

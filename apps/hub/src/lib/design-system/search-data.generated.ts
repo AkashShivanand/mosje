@@ -970,15 +970,6 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
-    "title": "Hero Carousel — Design System",
-    "section": "Layout",
-    "href": "/design-system/components/layout/page-header-carousel",
-    "keywords": "hero carousel — design system layout two media variants, and the difference is not styling autoplay is off unless asked for one slide in the dom at a time  tokens wcag accessibility",
-    "description": "The circular photo carousel in a landing page header — the second of the header",
-    "type": "component",
-    "iconName": "view_quilt"
-  },
-  {
     "title": "Icon — Design System",
     "section": "Utilities",
     "href": "/design-system/components/utilities/icon",
