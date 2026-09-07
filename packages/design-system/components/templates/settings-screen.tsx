@@ -102,6 +102,10 @@ export function SettingsScreen({
 }: SettingsScreenProps): React.JSX.Element {
   const status = resolveScreenState({ ...state, count: sections.length });
   const indexHeadingId = React.useId();
+  /* One below the page title, for both the index and the sections — they are
+     siblings in the outline, not nested. A fixed h2 skipped a level whenever the
+     template was embedded at headingLevel 2. */
+  const Heading = (`h${headingLevel + 1}`) as "h2" | "h3";
 
   return (
     <div className={cn("sa-screen", className)}>
@@ -112,9 +116,9 @@ export function SettingsScreen({
       <ScreenBody status={status} copy={copy} skeleton="form" onRetry={onRetry}>
         <div className="sa-settings">
           <nav aria-labelledby={indexHeadingId} className="sa-settings__index">
-            <h2 id={indexHeadingId} className="sa-settings__index-title">
+            <Heading id={indexHeadingId} className="sa-settings__index-title">
               {indexTitle}
-            </h2>
+            </Heading>
             <ul className="sa-settings__index-list">
               {sections.map((section) => (
                 <li key={section.id}>
@@ -139,9 +143,9 @@ export function SettingsScreen({
                    it a keyboard reader's next Tab returns to the index. */
                 tabIndex={-1}
               >
-                <h2 id={`${section.id}-heading`} className="sa-settings__section-title">
+                <Heading id={`${section.id}-heading`} className="sa-settings__section-title">
                   {section.title}
-                </h2>
+                </Heading>
                 {section.description ? (
                   <p className="sa-settings__section-desc">{section.description}</p>
                 ) : null}

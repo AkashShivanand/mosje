@@ -153,7 +153,7 @@ export function ChecklistScreen({
           {upload ? <div className="sa-checklist__upload">{upload}</div> : null}
 
           {groups.map((group) => (
-            <ChecklistGroupBlock key={group.id} group={group} />
+            <ChecklistGroupBlock key={group.id} group={group} headingLevel={headingLevel} />
           ))}
 
           {footer ? <div className="sa-checklist__footer">{footer}</div> : null}
@@ -164,14 +164,23 @@ export function ChecklistScreen({
 }
 
 /** One named run of requirements. Split out so each gets its own heading id. */
-function ChecklistGroupBlock({ group }: { group: ChecklistGroup }): React.JSX.Element {
+function ChecklistGroupBlock({
+  group,
+  headingLevel,
+}: {
+  group: ChecklistGroup;
+  headingLevel: 1 | 2;
+}): React.JSX.Element {
   const headingId = React.useId();
+  /* One below the page title. A fixed h3 skipped a level on every real portal
+     screen, where the template's own title is the h1. */
+  const Heading = (`h${headingLevel + 1}`) as "h2" | "h3";
   return (
     <section aria-labelledby={headingId} className="sa-checklist__group">
       <div className="sa-checklist__group-head">
-        <h3 id={headingId} className="sa-checklist__group-title">
+        <Heading id={headingId} className="sa-checklist__group-title">
           {group.title}
-        </h3>
+        </Heading>
         {group.description ? (
           <p className="sa-checklist__group-desc">{group.description}</p>
         ) : null}

@@ -437,15 +437,27 @@
     color: var(--sa-text-neutral-base);
   }
 
+  /* Findings take the ROW's tone, not a blanket red. A note reading "Being
+     checked against the NGO-Darpan register" in the same colour as a rejection
+     tells the citizen their document failed when it has not — found by
+     rendering the four states side by side, not by reading the rule. */
   .sa-checklist__findings {
     display: flex;
     flex-direction: column;
     gap: var(--sa-padding-2);
     margin: var(--sa-padding-4) 0 0;
     padding-left: var(--sa-padding-20);
-    color: var(--sa-text-status-error-bolder);
+    color: var(--sa-text-neutral-base);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
+  }
+
+  .sa-checklist__item[data-state="review"] .sa-checklist__findings {
+    color: var(--sa-text-status-warning-bolder);
+  }
+
+  .sa-checklist__item[data-state="rejected"] .sa-checklist__findings {
+    color: var(--sa-text-status-error-bolder);
   }
 
   .sa-checklist__item-side {
@@ -595,10 +607,18 @@
   }
 
   /* Selectable, and never an image — a reference a citizen cannot copy is a
-     reference they will mistype at a counter. */
+     reference they will mistype at a counter.
+
+     `headline-3` rather than a display size, and the reason is a defect found by
+     rendering it: at `display-3` a 22-character reference broke across two lines
+     with the final digit orphaned on the second. Fluid type keys off the
+     VIEWPORT, so a 1440px page drew it at the clamp's 64px maximum inside a
+     410px card. This rung tops out at 28px, which holds a departmental reference
+     on one line down to a 343px phone — still the largest thing on the panel,
+     and still legible in a photograph taken at a service centre. */
   .sa-confirmation__ref {
-    font-size: var(--sa-type-display-3-size);
-    line-height: var(--sa-type-display-3-lh);
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
     font-weight: var(--sa-font-weight-bold);
     color: var(--sa-text-neutral-bolder);
     overflow-wrap: anywhere;
@@ -697,11 +717,15 @@
   @media (min-width: 1024px) {
     /* The record takes the measure; the panel takes what a form column needs.
        Below this the panel FOLLOWS the record rather than floating over it. */
-    /* ds-exempt(layout-literal): 400 is the width a radio-card list plus a
-       remarks field needs before the cards wrap their descriptions — a
-       measurement of the controls, not a spacing rung, and the ladder jumps
-       120 to 360. */
-    .sa-decision { grid-template-columns: minmax(0, 1fr) 400px; }
+    /* The RECORD holds the floor and the panel yields, because the record is what
+       the decision is about. With a fixed 400px panel a 738px container gave the
+       record 318 — the smaller half — which is backwards; found by measuring the
+       documentation specimen rather than by reading the rule.
+       ds-exempt(layout-literal): 420 is a two-column description list before its
+       terms wrap, and 400 is a radio-card list plus a remarks field before the
+       cards wrap their descriptions. Both are measurements of the controls, not
+       spacing rungs, and the ladder jumps 120 to 360. */
+    .sa-decision { grid-template-columns: minmax(420px, 1fr) minmax(0, 400px); }
   }
 
   .sa-decision__record { min-width: 0; }

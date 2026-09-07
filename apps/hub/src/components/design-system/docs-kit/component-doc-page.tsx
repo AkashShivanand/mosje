@@ -179,7 +179,15 @@ export function ComponentDocPage({
         <h2 id="cdp-specimen" className="cdp__h2">
           Specimen
         </h2>
-        <div className="cdp__specimen">{specimen}</div>
+        {/* `data-no-toc`: a specimen is a LIVE component, so any heading inside it
+            belongs to the thing being demonstrated, not to this page. Without
+            this the Review Screen page's contents list read "1Organisation
+            Details · 2Project Details · 3Grant Sought" — the specimen's own
+            section headings, numbered by its own markup, offered as navigation
+            for a documentation page that has no such sections. */}
+        <div className="cdp__specimen" data-no-toc>
+          {specimen}
+        </div>
       </section>
 
       <DocsTabs

@@ -40,7 +40,7 @@ export default function ConfirmationScreenPage(): React.JSX.Element {
     <ComponentDocPage
       name="Confirmation Screen"
       status="Beta"
-      summary={"Committed, with a reference number. The number is the screen: largest type on the page, selectable, above the fold."}
+      summary={"Committed, with a reference number. The number is the screen: set apart at the head of the panel, selectable, above the fold, and on one line."}
       figma={{
         absent:
           "Absent from every source. The handoff's citizen journey ends at submit, so a citizen who applies has nothing to quote at a counter and no way to prove they applied — post-submit confirmation is listed among the archetypes absent entirely.",
@@ -82,10 +82,12 @@ export default function ConfirmationScreenPage(): React.JSX.Element {
               holds, because a confirmation that could be &ldquo;loading&rdquo; is a confirmation
               the citizen cannot trust.
             </p>
-            <Callout type="info" title="Size the reference for a phone camera">
-              It is set larger than the page title and sits directly under the heading, so a
-              citizen photographing this screen at a service centre captures the number without
-              scrolling.
+            <Callout type="info" title="Size the reference for a phone camera, not for drama">
+              It sits directly under the heading, so a citizen photographing this screen at a
+              service centre captures the number without scrolling. It is <em>not</em> the largest
+              type on the page — the <code>h1</code> is. A first draft set it at a display size
+              and a 22-character reference broke across two lines with the final digit orphaned,
+              because fluid type keys off the viewport and this panel is not the viewport.
             </Callout>
           </section>
         </>

@@ -148,7 +148,12 @@ export function ReviewScreen({
           {intro ? <p className="sa-review__intro">{intro}</p> : null}
 
           {sections.map((section, index) => (
-            <ReviewBlock key={section.id} section={section} index={index + 1} />
+            <ReviewBlock
+              key={section.id}
+              section={section}
+              index={index + 1}
+              headingLevel={headingLevel}
+            />
           ))}
 
           {declaration ? (
@@ -184,22 +189,28 @@ export function ReviewScreen({
 function ReviewBlock({
   section,
   index,
+  headingLevel,
 }: {
   section: ReviewSectionDef;
   index: number;
+  headingLevel: 1 | 2;
 }): React.JSX.Element {
   const headingId = React.useId();
   const editLabel = section.editLabel ?? `Edit ${section.title}`;
+  /* One below the page title, never a fixed h3. Hardcoding h3 made a real
+     portal's outline run h1 then h3 with no h2 between them — a skipped level,
+     which is what a screen-reader user navigating by heading actually notices. */
+  const Heading = (`h${headingLevel + 1}`) as "h2" | "h3";
 
   return (
     <section aria-labelledby={headingId} className="sa-review__section">
       <div className="sa-review__section-head">
-        <h3 id={headingId} className="sa-review__section-title">
+        <Heading id={headingId} className="sa-review__section-title">
           <span className="sa-review__section-number" aria-hidden="true">
             {index}
           </span>
           {section.title}
-        </h3>
+        </Heading>
 
         {section.editHref ? (
           <Link href={section.editHref} className="sa-review__edit">

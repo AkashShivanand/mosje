@@ -467,7 +467,10 @@ export function ConfirmationSpecimen(): React.JSX.Element {
 }
 
 export function DecisionSpecimen(): React.JSX.Element {
-  const [verdict, setVerdict] = React.useState<string | undefined>();
+  /* Pre-selected on the irreversible verdict, because the warning it raises is
+     the whole point of this template and a specimen that starts unselected
+     demonstrates everything except that. */
+  const [verdict, setVerdict] = React.useState<string | undefined>("reject");
   return (
     <DecisionScreen
       headingLevel={2}

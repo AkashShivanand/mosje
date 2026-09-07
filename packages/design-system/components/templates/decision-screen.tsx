@@ -137,6 +137,9 @@ export function DecisionScreen({
   const screenStatus = resolveScreenState({ ...state, count: 1 });
 
   const panelHeadingId = React.useId();
+  /* One below the page title. A fixed h2 was right at headingLevel 1 and wrong
+     at 2, where it sat level with the title instead of under it. */
+  const PanelHeading = (`h${headingLevel + 1}`) as "h2" | "h3";
   const reactId = React.useId();
   const groupName = `decision${reactId.replace(/:/g, "")}`;
 
@@ -169,11 +172,15 @@ export function DecisionScreen({
           <div className="sa-decision__record">{record}</div>
 
           <section aria-labelledby={panelHeadingId} className="sa-decision__panel">
-            <h2 id={panelHeadingId} className="sa-decision__panel-title">
+            <PanelHeading id={panelHeadingId} className="sa-decision__panel-title">
               {panelTitle}
-            </h2>
+            </PanelHeading>
 
-            {errors && errors.length > 0 ? <ErrorSummary errors={errors} headingLevel={3} /> : null}
+            {/* One below the panel's own heading, so the summary sits inside the
+                panel's outline rather than claiming a level of its own. */}
+            {errors && errors.length > 0 ? (
+              <ErrorSummary errors={errors} headingLevel={headingLevel === 1 ? 3 : 4} />
+            ) : null}
 
             <RadioGroup
               name={groupName}

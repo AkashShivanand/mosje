@@ -37,7 +37,7 @@ export interface GeneratedPropSet {
 export const GENERATED_PROPS = {
   "AadhaarInputProps": {
     "source": "packages/design-system/components/forms/aadhaar-input.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "onValueChange",
@@ -229,7 +229,7 @@ export const GENERATED_PROPS = {
   },
   "AccordionItemProps": {
     "source": "packages/design-system/components/data-display/accordion.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "title",
@@ -305,7 +305,7 @@ export const GENERATED_PROPS = {
   },
   "ActionBannerProps": {
     "source": "packages/design-system/components/feedback/action-banner.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "action",
@@ -343,7 +343,7 @@ export const GENERATED_PROPS = {
   },
   "AlertProps": {
     "source": "packages/design-system/components/feedback/alert.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "action",
@@ -760,7 +760,7 @@ export const GENERATED_PROPS = {
   },
   "AvatarProps": {
     "source": "packages/design-system/components/data-display/avatar.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "alt",
@@ -831,7 +831,7 @@ export const GENERATED_PROPS = {
   },
   "BadgeProps": {
     "source": "packages/design-system/components/feedback/badge.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "dot",
@@ -872,7 +872,7 @@ export const GENERATED_PROPS = {
   },
   "BandProps": {
     "source": "packages/design-system/components/layout/band.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "children",
@@ -1235,7 +1235,7 @@ export const GENERATED_PROPS = {
   },
   "BrandGlyphProps": {
     "source": "packages/design-system/components/utilities/brand-glyph.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "name",
@@ -1499,7 +1499,7 @@ export const GENERATED_PROPS = {
   },
   "ButtonGroupProps": {
     "source": "packages/design-system/components/actions/button-group.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "aria-label",
@@ -1532,7 +1532,7 @@ export const GENERATED_PROPS = {
   },
   "ButtonProps": {
     "source": "packages/design-system/components/actions/button.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "appearance",
@@ -1706,7 +1706,7 @@ export const GENERATED_PROPS = {
   },
   "CardProps": {
     "source": "packages/design-system/components/data-display/card.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "orientation",
@@ -2047,7 +2047,7 @@ export const GENERATED_PROPS = {
   },
   "ChartCardProps": {
     "source": "packages/design-system/components/dashboard/chart-card.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "title",
@@ -2437,7 +2437,7 @@ export const GENERATED_PROPS = {
   },
   "ChatbotMascotProps": {
     "source": "packages/design-system/components/feedback/chatbot-mascot.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "ring",
@@ -2464,7 +2464,7 @@ export const GENERATED_PROPS = {
   },
   "ChatbotProps": {
     "source": "packages/design-system/components/feedback/chatbot.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "composer",
@@ -2746,7 +2746,7 @@ export const GENERATED_PROPS = {
   },
   "CheckboxProps": {
     "source": "packages/design-system/components/forms/checkbox.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "cardLayout",
@@ -2980,7 +2980,7 @@ export const GENERATED_PROPS = {
   },
   "ChipProps": {
     "source": "packages/design-system/components/forms/chip.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "count",
@@ -3606,7 +3606,7 @@ export const GENERATED_PROPS = {
   },
   "ContainerProps": {
     "source": "packages/design-system/components/layout/container.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "children",
@@ -3632,7 +3632,7 @@ export const GENERATED_PROPS = {
   },
   "ContentNavProps": {
     "source": "packages/design-system/components/navigation/content-nav.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "ariaLabel",
@@ -4417,7 +4417,7 @@ export const GENERATED_PROPS = {
   },
   "DescriptionListProps": {
     "source": "packages/design-system/components/data-display/description-list.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "items",
@@ -4666,7 +4666,7 @@ export const GENERATED_PROPS = {
   },
   "EmptyStateProps": {
     "source": "packages/design-system/components/feedback/empty-state.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "title",
@@ -4861,7 +4861,7 @@ export const GENERATED_PROPS = {
   },
   "FactStripProps": {
     "source": "packages/design-system/components/data-display/fact-strip.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "ariaLabel",
@@ -4931,7 +4931,7 @@ export const GENERATED_PROPS = {
   },
   "FieldHelpToggleProps": {
     "source": "packages/design-system/components/forms/field-parts.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "labelText",
@@ -4955,7 +4955,7 @@ export const GENERATED_PROPS = {
   },
   "FieldLabelProps": {
     "source": "packages/design-system/components/forms/field-parts.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "optional",
@@ -4979,7 +4979,7 @@ export const GENERATED_PROPS = {
   },
   "FieldMessageProps": {
     "source": "packages/design-system/components/forms/field-parts.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "status",
@@ -5022,7 +5022,7 @@ export const GENERATED_PROPS = {
   },
   "FigureProps": {
     "source": "packages/design-system/components/data-display/figure.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "children",
@@ -5208,7 +5208,7 @@ export const GENERATED_PROPS = {
   },
   "FooterProps": {
     "source": "packages/design-system/components/navigation/footer.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "copyright",
@@ -6104,7 +6104,7 @@ export const GENERATED_PROPS = {
   },
   "GridItemProps": {
     "source": "packages/design-system/components/layout/grid.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "children",
@@ -6123,7 +6123,7 @@ export const GENERATED_PROPS = {
   },
   "GridProps": {
     "source": "packages/design-system/components/layout/grid.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "children",
@@ -6148,7 +6148,7 @@ export const GENERATED_PROPS = {
   },
   "HeadingProps": {
     "source": "packages/design-system/components/layout/text.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "children",
@@ -6265,7 +6265,7 @@ export const GENERATED_PROPS = {
   },
   "IconButtonProps": {
     "source": "packages/design-system/components/actions/icon-button.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "aria-label",
@@ -7096,7 +7096,7 @@ export const GENERATED_PROPS = {
   },
   "InputProps": {
     "source": "packages/design-system/components/forms/input.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "autoComplete",
@@ -7207,7 +7207,7 @@ export const GENERATED_PROPS = {
   },
   "LabelProps": {
     "source": "packages/design-system/components/forms/label.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "hint",
@@ -7450,7 +7450,7 @@ export const GENERATED_PROPS = {
   },
   "LinkProps": {
     "source": "packages/design-system/components/navigation/link.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "disabled",
@@ -7515,7 +7515,7 @@ export const GENERATED_PROPS = {
   },
   "ListGroupProps": {
     "source": "packages/design-system/components/data-display/list-group.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "children",
@@ -7635,7 +7635,7 @@ export const GENERATED_PROPS = {
   },
   "LoaderProps": {
     "source": "packages/design-system/components/feedback/loader.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "label",
@@ -8050,7 +8050,7 @@ export const GENERATED_PROPS = {
   },
   "MetricCardProps": {
     "source": "packages/design-system/components/data-display/metric-card.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "label",
@@ -8554,7 +8554,7 @@ export const GENERATED_PROPS = {
   },
   "OrgLogoProps": {
     "source": "packages/design-system/components/brand/org-logo.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "name",
@@ -8871,7 +8871,7 @@ export const GENERATED_PROPS = {
   },
   "PageHeaderProps": {
     "source": "packages/design-system/components/layout/page-header.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "title",
@@ -8971,7 +8971,7 @@ export const GENERATED_PROPS = {
   },
   "PanInputProps": {
     "source": "packages/design-system/components/forms/pan-input.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "onValueChange",
@@ -9080,8 +9080,14 @@ export const GENERATED_PROPS = {
   },
   "PasswordInputProps": {
     "source": "packages/design-system/components/forms/password-input.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
+      {
+        "name": "autoComplete",
+        "type": "AutocompleteToken = \"name\" | \"honorific-prefix\" | \"given-name\" | \"additional-name\" | \"family-name\" | \"honorific-suffix\" | \"nickname\" | \"username\" | \"new-password\" | \"current-password\" | \"one-time-code\" | \"organization-title\" | \"organization\" | \"street-address\" | \"address-line1\" | \"address-line2\" | \"address-line3\" | \"address-level4\" | \"address-level3\" | \"address-level2\" | \"address-level1\" | \"country\" | \"country-name\" | \"postal-code\" | \"cc-name\" | \"cc-given-name\" | \"cc-additional-name\" | \"cc-family-name\" | \"cc-number\" | \"cc-exp\" | \"cc-exp-month\" | \"cc-exp-year\" | \"cc-csc\" | \"cc-type\" | \"transaction-currency\" | \"transaction-amount\" | \"language\" | \"bday\" | \"bday-day\" | \"bday-month\" | \"bday-year\" | \"sex\" | \"url\" | \"photo\" | \"tel\" | \"tel-country-code\" | \"tel-national\" | \"tel-area-code\" | \"tel-local\" | \"tel-local-prefix\" | \"tel-local-suffix\" | \"tel-extension\" | \"email\" | \"impp\" | \"off\" | \"on\" | `section-${string} ${AutocompleteFieldName}` | `shipping ${AutocompleteFieldName}` | `billing ${AutocompleteFieldName}` | `home ${AutocompleteFieldName}` | `work ${AutocompleteFieldName}` | `mobile ${AutocompleteFieldName}` | `fax ${AutocompleteFieldName}` | `pager ${AutocompleteFieldName}`",
+        "required": false,
+        "description": "`autocomplete`, typed to the HTML autofill field names rather than to `string`, so a token that does nothing fails the build instead of shipping. WCAG 2.2 1.3.5 (Identify Input Purpose, AA) is met by putting the right one on any field collecting information about the reader."
+      },
       {
         "name": "hideLabel",
         "type": "string",
@@ -9097,11 +9103,72 @@ export const GENERATED_PROPS = {
         "description": "Hide the reveal button entirely (renders a plain password field)."
       },
       {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "description": "Legacy alias for `status=\"error\"`. Still honoured everywhere, including the object `FormField` spreads onto its control, so no existing call site had to change when `status` arrived. Prefer `status`."
+      },
+      {
+        "name": "leftIcon",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Decorative icon rendered inside the field, before the text. Purely visual — it is `aria-hidden`, so the field still needs a real label."
+      },
+      {
+        "name": "pending",
+        "type": "boolean",
+        "required": false,
+        "description": "The value is being checked against something — a PAN lookup, a pincode resolving to a district. Renders a spinner in the trailing slot and sets `aria-busy`. It does NOT disable the field: a reader who wants to correct a value should not have to wait for a request they cannot see."
+      },
+      {
+        "name": "prefix",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Fixed text before the value — a currency symbol, a country code, a scheme prefix. Drawn inside the field's border and **hidden from assistive tech**, because a screen reader announcing \"rupee sign\" in the middle of a value is noise. Its meaning reaches the reader through `prefixLabel` instead."
+      },
+      {
+        "name": "prefixLabel",
+        "type": "string",
+        "required": false,
+        "description": "What the prefix MEANS, spoken. Appended to the field's description, so \"₹\" is announced as \"Amount in rupees\" rather than as a symbol or not at all. Falls back to the prefix itself when that is already a word; **always pass this explicitly when the prefix is a symbol.**"
+      },
+      {
+        "name": "rightIcon",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Trailing slot inside the field. Unlike `leftIcon` this is NOT hidden from assistive tech, because it is commonly an interactive control (a show/hide-password toggle, a clear button). Give that control its own accessible name. For a plain password reveal, prefer `<PasswordInput>`."
+      },
+      {
         "name": "showLabel",
         "type": "string",
         "required": false,
         "default": "\"Show password\"",
         "description": "Accessible name for the reveal button when the password is hidden."
+      },
+      {
+        "name": "size",
+        "type": "FieldSize = \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "required": false,
+        "default": "\"md\" (44px)",
+        "description": "Control height."
+      },
+      {
+        "name": "status",
+        "type": "FieldStatus = \"error\" | \"warning\" | \"success\"",
+        "required": false,
+        "description": "The condition the field is in. `error` blocks, `warning` does not, and `success` means a real check passed. Takes precedence over `invalid`."
+      },
+      {
+        "name": "suffix",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Fixed text after the value — a unit, a domain suffix. Same rules as `prefix`."
+      },
+      {
+        "name": "suffixLabel",
+        "type": "string",
+        "required": false,
+        "description": "What the suffix means, spoken. Same rules as `prefixLabel`."
       }
     ]
   },
@@ -9352,7 +9419,7 @@ export const GENERATED_PROPS = {
   },
   "PortalCardProps": {
     "source": "packages/design-system/components/navigation/portal-card.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "code",
@@ -9728,7 +9795,7 @@ export const GENERATED_PROPS = {
   },
   "ProfileCardProps": {
     "source": "packages/design-system/components/data-display/profile-card.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "image",
@@ -10008,7 +10075,7 @@ export const GENERATED_PROPS = {
   },
   "RadioProps": {
     "source": "packages/design-system/components/forms/radio.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "name",
@@ -10850,7 +10917,7 @@ export const GENERATED_PROPS = {
   },
   "SSOButtonProps": {
     "source": "packages/design-system/components/auth/auth-parts.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "href",
@@ -10889,7 +10956,7 @@ export const GENERATED_PROPS = {
   },
   "SamaveshBannerProps": {
     "source": "packages/design-system/components/navigation/samavesh-banner.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "allLabel",
@@ -11191,7 +11258,7 @@ export const GENERATED_PROPS = {
   },
   "SearchProps": {
     "source": "packages/design-system/components/forms/search.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "onChange",
@@ -11520,7 +11587,7 @@ export const GENERATED_PROPS = {
   },
   "SelectProps": {
     "source": "packages/design-system/components/forms/select.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "appearance",
@@ -12044,7 +12111,7 @@ export const GENERATED_PROPS = {
   },
   "SiteFooterProps": {
     "source": "packages/design-system/components/navigation/site-footer.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "copyright",
@@ -12370,7 +12437,7 @@ export const GENERATED_PROPS = {
   },
   "SitePageHeaderProps": {
     "source": "packages/design-system/components/layout/site-page-header.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "title",
@@ -12438,7 +12505,7 @@ export const GENERATED_PROPS = {
   },
   "SkeletonProps": {
     "source": "packages/design-system/components/feedback/skeleton.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "circle",
@@ -12943,7 +13010,7 @@ export const GENERATED_PROPS = {
   },
   "StepperProps": {
     "source": "packages/design-system/components/feedback/stepper.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "current",
@@ -13117,7 +13184,7 @@ export const GENERATED_PROPS = {
   },
   "TextProps": {
     "source": "packages/design-system/components/layout/text.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "as",
@@ -13174,7 +13241,7 @@ export const GENERATED_PROPS = {
   },
   "TextareaProps": {
     "source": "packages/design-system/components/forms/textarea.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "autoResize",
@@ -13232,7 +13299,7 @@ export const GENERATED_PROPS = {
   },
   "TickerProps": {
     "source": "packages/design-system/components/feedback/ticker.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "items",
@@ -13448,7 +13515,7 @@ export const GENERATED_PROPS = {
   },
   "ToggleProps": {
     "source": "packages/design-system/components/forms/toggle.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "checked",
@@ -13689,7 +13756,7 @@ export const GENERATED_PROPS = {
   },
   "VerticalTimelineItemProps": {
     "source": "packages/design-system/components/data-display/vertical-timeline.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "title",
@@ -13775,7 +13842,7 @@ export const GENERATED_PROPS = {
   },
   "VisitorCounterProps": {
     "source": "packages/design-system/components/data-display/visitor-counter.tsx",
-    "inheritsNative": false,
+    "inheritsNative": true,
     "props": [
       {
         "name": "baseline",

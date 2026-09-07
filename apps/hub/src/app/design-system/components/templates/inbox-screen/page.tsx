@@ -13,9 +13,9 @@ const A11Y: A11yItem[] = [
     criterion: "1.4.1 Use of Colour",
     level: "A",
     description:
-      "Unread is marked with a word, never a coloured dot alone.",
+      "Unread carries a word in the accessibility tree, and its visible cue is the presence of a mark rather than a hue: an unread row has a dot and a read row has none.",
     status: "verified",
-    evidence: "Inherited from EventList, which renders unreadLabel as text beside the entry.",
+    evidence: "EventList emits a visually-hidden `Unread: ` before the entry and an aria-hidden dot beside it — checked in the browser, where the dot itself is empty and carries no accessible name of its own. The distinction a sighted reader makes is presence versus absence, which is not a colour distinction.",
   },
   {
     criterion: "4.1.3 Status Messages",

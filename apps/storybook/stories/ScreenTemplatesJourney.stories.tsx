@@ -106,9 +106,11 @@ import {
  * states**: it renders a fact the caller already holds, because a confirmation
  * that could be "loading" is one the citizen cannot trust. It exists because no
  * source draws it — the handoff's journey ends at submit, so a citizen has
- * nothing to quote at a counter. `reference` is required and is the screen: the
- * largest type on the page, selectable, above the fold, so it can be
- * photographed at a service centre without scrolling. `referenceLabel`,
+ * nothing to quote at a counter. `reference` is required and is the screen: set
+ * apart at the head of the panel, selectable, above the fold, and **on one
+ * line** — a display size broke a 22-character reference across two lines with
+ * the final digit orphaned, because fluid type keys off the viewport rather than
+ * the card it sits in. `referenceLabel`,
  * `submittedAt`, `intro`, `facts`, `nextSteps` (a real ordered list, because it
  * genuinely is a sequence — each with `title`, `description`, `when`),
  * `nextStepsTitle`, `actions` and `support` fill the rest. Omit `nextSteps`
@@ -151,7 +153,9 @@ import {
  * **`InboxScreen`** — dated attributed events. A notification, a comment and an
  * audit entry are **one object with three views**, so all three render through
  * `EventList` rather than three near-identical components that drift apart.
- * `events` newest first — the template does not sort. `label` names the list;
+ * `events` newest first — the template does not sort. Unread carries a
+ * visually-hidden word plus a dot whose distinction is presence, not hue: a read
+ * row has no dot at all. `label` names the list;
  * `grouping` defaults to `day`; `onMarkAllRead` and `markAllReadLabel` appear
  * only while something is unread, because a button that does nothing on most
  * visits teaches the reader to stop seeing it. `filters`, `activeFilterCount`,
@@ -582,7 +586,7 @@ export const SearchResults: Story = {
   },
 };
 
-/** Dated attributed events, grouped by day, with unread marked as a word. */
+/** Dated attributed events, grouped by day, with unread carrying a hidden word. */
 export const Inbox: Story = {
   render: () => (
     <InboxScreen

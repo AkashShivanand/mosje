@@ -69,10 +69,15 @@ export interface ConfirmationScreenProps {
  * trust. If the submit has not settled, you are still on the screen before this
  * one.
  *
- * **The reference is the screen.** It is set in the largest type on the page,
- * it is selectable text rather than an image, and it is the first thing after
- * the heading — a citizen photographing this screen at a common service centre
- * must capture the number without scrolling.
+ * **The reference is the screen.** It is set apart at the head of the panel, in
+ * the largest type the panel carries, as selectable text rather than an image,
+ * and it is the first thing after the heading — a citizen photographing this
+ * screen at a common service centre must capture the number without scrolling.
+ *
+ * It is NOT the largest type on the page: the h1 is, and it stays that way. A
+ * first draft set it at a display size and a 22-character reference broke across
+ * two lines with the final digit orphaned on the second, which is worse than
+ * anything the extra 36px bought.
  *
  * `nextSteps` is a numbered sequence because it genuinely is one: verification
  * follows submission and precedes sanction. That is the one case where numbered
@@ -94,6 +99,9 @@ export function ConfirmationScreen({
   className,
 }: ConfirmationScreenProps): React.JSX.Element {
   const stepsHeadingId = React.useId();
+  /* One below the page title. Fixed at h2 it skipped a level whenever the
+     template was embedded at headingLevel 2. */
+  const StepsHeading = (`h${headingLevel + 1}`) as "h2" | "h3";
 
   return (
     <div className={cn("sa-screen", "sa-confirmation", className)}>
@@ -127,9 +135,9 @@ export function ConfirmationScreen({
 
       {nextSteps && nextSteps.length > 0 ? (
         <section aria-labelledby={stepsHeadingId} className="sa-confirmation__next">
-          <h2 id={stepsHeadingId} className="sa-confirmation__next-title">
+          <StepsHeading id={stepsHeadingId} className="sa-confirmation__next-title">
             {nextStepsTitle}
-          </h2>
+          </StepsHeading>
           <ol className="sa-confirmation__steps">
             {nextSteps.map((step) => (
               <li key={step.title} className="sa-confirmation__step">

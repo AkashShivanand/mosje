@@ -73,10 +73,13 @@ export interface InboxScreenProps extends ScreenStateInput {
  * components that drift apart. What differs is grouping, filtering and whether
  * anything is read.
  *
- * **Unread is marked with a word, not a dot alone.** `EventList` enforces that;
- * this template only has to not undo it. A coloured dot carries no meaning for a
- * screen-reader user and none for a reader who cannot distinguish it from the
- * background.
+ * **Unread carries a word, and its visible cue is presence rather than hue.**
+ * `EventList` emits a visually-hidden `Unread: ` before the entry — verified in
+ * the browser, where the dot beside it is empty and `aria-hidden`, so it
+ * contributes no accessible name of its own. A sighted reader tells the two
+ * apart by a mark being there or not, which is what keeps this clear of
+ * WCAG 1.4.1 rather than the dot's colour. This template only has to not undo
+ * that.
  */
 export function InboxScreen({
   breadcrumb,
