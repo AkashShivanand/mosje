@@ -24,7 +24,7 @@ const A11Y: A11yItem[] = [
     level: "A",
     status: "verified",
     evidence:
-      "Each control has an accessible name naming its destination — “Go to page 4”, not “4” — so a link list is usable.",
+      'Read from the rendered DOM: each numbered control is `aria-label="Page 4"`, and the step controls are named in words — "Previous", "Next" — which stay in the accessibility tree at every width even where the CSS hides them. This row previously claimed the name was "Go to page 4"; the code has always said "Page 4", which is also what GOV.UK and USWDS publish, so the evidence was corrected rather than the label.',
     description: "“4” read out of context is not a purpose.",
   },
   {
@@ -40,7 +40,7 @@ const A11Y: A11yItem[] = [
     level: "AA",
     status: "verified",
     evidence:
-      "Measured in a browser 2026-09-02: all seven controls render 40×40, well clear of the 24×24 floor. The page numbers are the densest targets in the control, so they are the ones that decide it.",
+      "Measured in a browser 2026-09-02: all seven `md` controls render 40×40, well clear of the 24×24 floor. On a coarse pointer they now grow to 44×44 at an 8px pitch, which is what UX4G 3.0 §3 asks for. `size=\"sm\"` stays at 32×32 — past the WCAG floor, short of UX4G — because it exists for a pager inside a narrow rail where growing the boxes re-creates the wrap it was built to avoid, and the invisible-target expansion `Button` uses is ruled out for controls this close together (it would resolve an overlapping press by paint order). The divergence is recorded in the stylesheet.",
     description: "A page number is a small label, and it needed a target built around it rather than sized to it.",
   },
 ];
