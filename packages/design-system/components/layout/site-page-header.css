@@ -156,6 +156,46 @@
    * right edge. `overflow: visible` lets it, and the band's own `overflow: clip`
    * stops it escaping the page.
    */
+  /* ── THE CAROUSEL MEDIA VARIANT ─────────────────────────────────────────────
+   *
+   * The header's second media variant is the design system's own `Carousel`
+   * shaped to the halo: a round viewport with the control row lifted onto the
+   * picture instead of sitting under it. Only the ARRANGEMENT lives here — the
+   * behaviour, the dots and the pause control are the component's, and are not
+   * restyled.
+   */
+
+  .sa-siteheader__carousel {
+    position: relative;
+    display: block;
+    width: 340px;
+    height: 340px;
+  }
+
+  .sa-siteheader__carousel .ds-carousel,
+  .sa-siteheader__carousel .ds-carousel__viewport,
+  .sa-siteheader__carousel .ds-carousel__track,
+  .sa-siteheader__carousel .ds-carousel__slide {
+    width: 100%;
+    height: 100%;
+  }
+
+  .sa-siteheader__carousel .ds-carousel__viewport {
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  /* Onto the picture, not under it: a control row below the circle would push
+     the halo off the band's vertical centre and collide with the fact card
+     that straddles the lower edge. */
+  .sa-siteheader__carousel .ds-carousel__controls {
+    position: absolute;
+    inset-inline: 0;
+    bottom: var(--sa-padding-16);
+    justify-content: center;
+    margin: 0;
+  }
+
   .sa-siteheader__media {
     display: flex;
     justify-content: flex-end;

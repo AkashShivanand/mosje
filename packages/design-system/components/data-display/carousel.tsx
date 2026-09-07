@@ -157,7 +157,39 @@ export function Carousel({
       onBlurCapture={() => setHeld(false)}
     >
       <div className="ds-carousel__viewport">
-        <div className="ds-carousel__track" ref={trackRef}>
+        {/*
+          * FOCUSABLE, BECAUSE IT SCROLLS.
+          *
+          * The track is `overflow-x: auto`, and a scrollable region that cannot
+          * be focused cannot be scrolled by anyone using a keyboard — WCAG
+          * 2.1.1, and axe reports it as `scrollable-region-focusable`. The
+          * arrows and dots move between slides, but they are not the same thing
+          * as scrolling the region itself, and a slide taller or wider than the
+          * viewport is reachable only this way.
+          *
+          * It takes a name of its own so the new tab stop announces what it is
+          * rather than landing the reader on an unlabelled box.
+          */}
+        <div
+          className="ds-carousel__track"
+          ref={trackRef}
+          /*
+           * TWO LINTERS DISAGREE HERE, AND axe IS THE ONE TO FOLLOW.
+           *
+           * `jsx-a11y/no-noninteractive-tabindex` objects to a tab stop on a
+           * non-interactive element, and is right in general. It is wrong for a
+           * SCROLLABLE one: axe's `scrollable-region-focusable` reports the
+           * same element as a WCAG 2.1.1 failure without the tab stop, because
+           * a region that scrolls and cannot be focused cannot be scrolled by
+           * anyone using a keyboard. The rule has no option that recognises a
+           * scroll container, so the exception is stated here rather than
+           * configured away for the whole package.
+           */
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- a scrollable region must be focusable (WCAG 2.1.1); see above
+          tabIndex={0}
+          role="group"
+          aria-label={`${label} — slides`}
+        >
           {slides.map((slide, i) => (
             <div
               key={i}

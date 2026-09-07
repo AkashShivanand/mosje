@@ -199,6 +199,15 @@ export interface OrganisationDetail {
     helplineLabel: string;
     helplineNumber: string;
   };
+  /**
+   * Photographs for the header's circular carousel, replacing the still
+   * portrait — the landing header's second media variant.
+   *
+   * The source cycles four pictures of the campaign in that circle. Every slide
+   * carries its own `alt`, because a carousel is not decorative the way a
+   * single portrait is: a reader is told which of the four they are on.
+   */
+  heroSlides?: { src: string; alt: string }[];
   /** Sentence under the H1 in the blue banner. */
   lead?: string;
   /** Hero quick action buttons strip displayed under description. */
@@ -2086,6 +2095,28 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       helplineLabel: "National De-Addiction Helpline",
       helplineNumber: "14446",
     },
+    /*
+     * The four photographs the source cycles in its header circle, mirrored.
+     *
+     * Their alt text is ours: the source ships them with filenames for alt
+     * ("goa", "blv", "ra", and a UUID), which describes nothing. What each
+     * picture shows is read off the picture itself.
+     */
+    heroSlides: [
+      {
+        src: "/website/content/organisation/nmba-hero-1.jpg",
+        alt: "A Nasha Mukt Bharat Abhiyaan event at a Government of India venue",
+      },
+      { src: "/website/content/organisation/nmba-hero-2-goa.png", alt: "An Abhiyaan event in Goa" },
+      {
+        src: "/website/content/organisation/nmba-hero-3-blv.png",
+        alt: "Shri B. L. Verma, Minister of State, at an Abhiyaan event",
+      },
+      {
+        src: "/website/content/organisation/nmba-hero-4-ra.png",
+        alt: "Shri Ramdas Athawale, Minister of State, at an Abhiyaan event",
+      },
+    ],
     // The paragraph the source prints under its own h1.
     lead: "The Ministry of Social Justice and Empowerment (MoSJE) is the nodal Ministry for Drug Demand Reduction and, as part of its mandate, has introduced measures to curtail substance abuse in the country. MoSJE formulated and enacted the National Action Plan for Drug Demand Reduction (NAPDDR).",
     quickActions: [
