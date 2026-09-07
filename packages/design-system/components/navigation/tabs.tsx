@@ -45,6 +45,26 @@ export interface TabDef {
    * the section exists. Arrow navigation skips over it.
    */
   disabled?: boolean;
+  /**
+   * Make this tab a real link.
+   *
+   * **For a tablist whose tabs are separate URLs, not panels on one page.** A
+   * portal's sign-in roles are the case that forced this: Citizen / Officer /
+   * Organisation each have their own address, so middle-click, "copy link
+   * address" and a shared URL all have to land on the right role — and none of
+   * those work on a `<button>`.
+   *
+   * Until 7 Sep 2026 there was no `href` here, so `PortalLoginShell` hand-rolled
+   * its own `<a role="tab">` row to keep the links. That copy then drifted from
+   * this component: it used the wrong navy for the selected tab and had no hover
+   * state at all. A capability missing from a shared component does not stop
+   * anyone needing it; it just moves the code somewhere nobody maintains.
+   *
+   * `onChange` still fires, so a consumer can preventDefault and route on the
+   * client. Leave it unset and the tab renders exactly the `<button>` it always
+   * did — every existing consumer is untouched.
+   */
+  href?: string;
 }
 
 export interface TabsProps {
@@ -52,8 +72,18 @@ export interface TabsProps {
   tabs: TabDef[];
   /** 0-based index of the active tab (owned by the parent). */
   active: number;
-  /** Called with the next active index on click or keyboard navigation. */
-  onChange: (index: number) => void;
+  /**
+   * Called with the next active index on click or keyboard navigation.
+   *
+   * The originating event is passed as a SECOND argument, and it matters when
+   * `TabDef.href` is set: a link tab navigates unless someone calls
+   * `preventDefault`, so a consumer that switches views on the client needs the
+   * real event to stop it. The first version of the href support handed over a
+   * hand-made object with a no-op `preventDefault`, and the login page's role
+   * switch went from instant to a full page load — measured as four navigations
+   * per click. Optional, so every existing consumer ignores it.
+   */
+  onChange: (index: number, event?: React.MouseEvent | React.KeyboardEvent) => void;
   /** Namespace for the generated tab/panel ids (e.g. `React.useId()`). */
   idBase: string;
   /** Accessible name for the tablist. @default "Sections" */
@@ -302,7 +332,11 @@ export function Tabs({
   // Both key pairs stay live in both orientations. WAI-ARIA only REQUIRES the pair that
   // matches `aria-orientation`, and honouring the other as well costs a user nothing
   // while rescuing anyone who reached for the axis they could see.
-  const onKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>, i: number) => {
+  // `HTMLElement`, not `HTMLButtonElement`: a tab may be an anchor when `TabDef.href`
+  // is set, and this handler only reads `e.key` and moves focus — nothing about it is
+  // button-specific. Typing it to the narrower element is what stopped the two from
+  // sharing an implementation.
+  const onKeyDown = (e: React.KeyboardEvent<HTMLElement>, i: number) => {
     let next: number | null = null;
     switch (e.key) {
       case "ArrowRight":
@@ -366,29 +400,30 @@ export function Tabs({
         <span ref={indicatorRef} className="ds-tabs__indicator" aria-hidden="true" />
         {tabs.map((t, i) => {
           const selected = active === i;
-          const button = (
-            <button
-              ref={(el) => {
-                refs.current[i] = el;
-              }}
-              type="button"
-              role="tab"
-              id={`${idBase}-tab-${t.id}`}
-              aria-selected={selected}
-              aria-controls={`${idBase}-panel-${t.id}`}
-              // `aria-disabled`, never the native `disabled` attribute: a natively
-              // disabled button leaves the focus order and stops being announced, so a
-              // screen-reader user loses the fact that the section exists at all.
-              aria-disabled={t.disabled || undefined}
-              tabIndex={selected ? 0 : -1}
-              onClick={() => {
-                if (!t.disabled) onChange(i);
-              }}
-              onKeyDown={(e) => onKeyDown(e, i)}
-              className={`ds-tabs__tab${selected ? " is-selected" : ""}${
-                t.disabled ? " is-disabled" : ""
-              }`}
-            >
+          // One set of props for both elements, so an anchor tab and a button tab
+          // cannot drift apart in state, ids or keyboard behaviour — which is
+          // exactly what happened while the login shell kept its own copy.
+          const shared = {
+            ref: (el: HTMLElement | null) => {
+              refs.current[i] = el as HTMLButtonElement | null;
+            },
+            role: "tab" as const,
+            id: `${idBase}-tab-${t.id}`,
+            "aria-selected": selected,
+            "aria-controls": `${idBase}-panel-${t.id}`,
+            // `aria-disabled`, never the native `disabled` attribute: a natively
+            // disabled button leaves the focus order and stops being announced, so a
+            // screen-reader user loses the fact that the section exists at all.
+            "aria-disabled": t.disabled || undefined,
+            tabIndex: selected ? 0 : -1,
+            onKeyDown: (e: React.KeyboardEvent<HTMLElement>) => onKeyDown(e, i),
+            className: `ds-tabs__tab${selected ? " is-selected" : ""}${
+              t.disabled ? " is-disabled" : ""
+            }`,
+          };
+
+          const inner = (
+            <>
               {t.icon ? <Icon name={t.icon} size={iconSize} className="ds-tabs__icon" /> : null}
               <span
                 ref={(el) => {
@@ -399,6 +434,32 @@ export function Tabs({
                 {t.label}
               </span>
               {t.badge ? <span className="ds-tabs__badge" aria-hidden="true" /> : null}
+            </>
+          );
+
+          const button = t.href ? (
+            <a
+              {...shared}
+              // A disabled LINK cannot be disabled — there is no such attribute —
+              // so the href is withheld instead. It keeps `role="tab"` and
+              // `aria-disabled`, so it is still announced as a tab that exists.
+              href={t.disabled ? undefined : t.href}
+              onClick={(e) => {
+                if (t.disabled) { e.preventDefault(); return; }
+                onChange(i, e);
+              }}
+            >
+              {inner}
+            </a>
+          ) : (
+            <button
+              {...shared}
+              type="button"
+              onClick={() => {
+                if (!t.disabled) onChange(i);
+              }}
+            >
+              {inner}
             </button>
           );
 

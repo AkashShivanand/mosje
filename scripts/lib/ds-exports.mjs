@@ -174,6 +174,7 @@ export const DOCUMENTED_BY = {
   PasswordFields: "AuthFormCard", PinFields: "AuthFormCard",
   DarpanFields: "AuthFormCard", IdentifierFields: "AuthFormCard",
   NewPasswordFields: "AuthFormCard", AuthResult: "AuthFormCard",
+  AuthHelpLine: "AuthFormCard",
   OtpRequestFields: "AuthFormCard", OtpVerifyFields: "AuthFormCard",
   ReviewSection: "Wizard", ReviewItem: "Wizard",
   SkeletonText: "Skeleton", SkeletonRow: "Skeleton",

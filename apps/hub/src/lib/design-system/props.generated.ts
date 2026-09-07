@@ -758,6 +758,30 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "AuthHelpLineProps": {
+    "source": "packages/design-system/components/auth/auth-parts.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "What it says — \"Back to Login\", \"Need help signing in?\"."
+      },
+      {
+        "name": "href",
+        "type": "string",
+        "required": true,
+        "description": "Where it goes."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      }
+    ]
+  },
   "AuthResultProps": {
     "source": "packages/design-system/components/auth/auth-result.tsx",
     "inheritsNative": false,
@@ -11329,9 +11353,9 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "onChange",
-        "type": "(index: number) => void",
+        "type": "(index: number, event?: React.MouseEvent | React.KeyboardEvent) => void",
         "required": true,
-        "description": "Called with the next active index on click or keyboard navigation."
+        "description": "Called with the next active index on click or keyboard navigation. The originating event is passed as a SECOND argument, and it matters when `TabDef.href` is set: a link tab navigates unless someone calls `preventDefault`, so a consumer that switches views on the client needs the real event to stop it. The first version of the href support handed over a hand-made object with a no-op `preventDefault`, and the login page's role switch went from instant to a full page load — measured as four navigations per click. Optional, so every existing consumer ignores it."
       },
       {
         "name": "tabs",

@@ -1,16 +1,16 @@
 "use client";
 
 import * as React from "react";
-// DS Audit: PortalLoginShell ✅ · AuthFormCard ✅ · Button ✅ · ConsentLine ✅ ·
+// DS Audit: PortalLoginShell ✅ · AuthFormCard ✅ · Button ✅ ·
 // Icon ✅ · PasswordStrengthMeter ✅ (existed, unused by anything until now) ·
 // NewPasswordFields ➕ added to the DS in this change ·
 // AuthResult ➕ added to the DS in this change ·
 // estimatePasswordScore ➕ added beside the meter, labelled as not zxcvbn.
 import {
   AuthFormCard,
+  AuthHelpLine,
   AuthResult,
   Button,
-  ConsentLine,
   estimatePasswordScore,
   Icon,
   NewPasswordFields,
@@ -140,16 +140,8 @@ export default function EAnudaanResetPasswordPage(): React.JSX.Element {
               Reset Password
             </Button>
           }
-          consent={
-            <ConsentLine
-              termsHref="/website/terms-conditions"
-              privacyHref="/website/privacy-policy"
-            />
-          }
           footer={
-            <p className="ds-plogin__help">
-              <a href={`${BASE}/login`}>Back to Login</a>
-            </p>
+            <AuthHelpLine href={`${BASE}/login`}>Back to Login</AuthHelpLine>
           }
         />
       )}

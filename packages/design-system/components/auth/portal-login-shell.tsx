@@ -35,6 +35,7 @@ import * as React from "react";
 import { SAMAVESH_COBRAND } from "../navigation/header/samavesh-cobrand";
 import { SiteHeader } from "../navigation/header/site-header";
 import { Button } from "../actions/button";
+import { Tabs } from "../navigation/tabs";
 import { OrgLogo } from "../brand/org-logo";
 import { Icon } from "../utilities/icon";
 // The chrome rows use the estate content container, so the emblem lines up with
@@ -269,7 +270,7 @@ export function PortalLoginShell({
             With the column able to shrink, the tab row overflows INSIDE the card
             and `Tabs`' own `overflow` handling takes over — verified: the row
             scrolls and the "More" menu appears. */}
-        <div className="ds-plogin__panel flex min-w-0 flex-1 flex-col" style={{ background: "var(--sa-bg-neutral-base)" }}>
+        <div className="ds-plogin__panel flex min-w-0 flex-1 flex-col">
 
           {/* Phone identity — the Figma organism's `Device=Mobile` variant. The
               SAMAVESH band on a light brand ground, then the Signing Into strip
@@ -330,43 +331,46 @@ export function PortalLoginShell({
             </div>
           </div>
 
-          {/* ROLE TABS.
-              Deliberately NOT the DS `Tabs` component, and the reason is in the
-              markup: these are real `<a href>`s, so middle-click, "copy link
-              address" and a shared URL all land on the right role. `Tabs`
-              renders buttons and has no `href` on `TabDef`, so adopting it here
-              would trade a working capability for a shared one. The right fix is
-              to give `TabDef` an optional `href` — recorded, not done in this
-              change, because that component is on ~95 pages.
+          {/* ROLE TABS — the design system's `Tabs`, not a copy of it.
+              `Track=Enclosed` + `Indicator=Pill`, which is what `Tabs / Tab`
+              draws for this row in Figma, and every state comes with it.
 
-              What HAS changed: the appearance now matches the reference
-              (`56693:8704`) and is bound to tokens. It was drawn with inline
-              `style={{ background: "var(--sa-…)" }}` objects, which no token gate
-              can see and no brand mode can re-bind, and `rounded-full` where the
-              reference draws a rounded rectangle. */}
+              This WAS a hand-rolled `<a role="tab">` row, kept that way because
+              these tabs are real URLs and `TabDef` had no `href`. The copy then
+              did what copies do: it drifted to the wrong navy for the selected
+              tab and never grew a hover state at all. `TabDef.href` exists now
+              (added 7 Sep 2026), so the links survive and the states are the
+              component's.
+
+              `onClick` still reaches the consumer through `onChange`, so a
+              portal that routes on the client can preventDefault there. */}
           {/* Column metrics follow the Figma shell's form column: 32 above the
               tabs, 64 at the sides on desktop, 16 on a phone (`55449:905`,
               `56693:9331`). The column used to centre the form vertically,
               which floated it away from the tabs pinned at the top. */}
           {tabs && tabs.length > 0 && (
             <div className="ds-plogin__panel-pad pt-8">
-              <div
-                className="ds-plogin__column ds-plogin__roletabs"
-                role="tablist"
-                aria-label="Portal login type"
-              >
-                {tabs.map((tab) => (
-                  <a
-                    key={tab.href}
-                    href={tab.href}
-                    onClick={tab.onClick}
-                    role="tab"
-                    aria-selected={tab.active}
-                    className="ds-plogin__roletab"
-                  >
-                    {tab.label}
-                  </a>
-                ))}
+              <div className="ds-plogin__column">
+                <Tabs
+                  tabs={tabs.map((tab) => ({
+                    id: tab.href,
+                    label: tab.label,
+                    href: tab.href,
+                  }))}
+                  active={Math.max(0, tabs.findIndex((t) => t.active))}
+                  /* The REAL event, not a stand-in. `PortalLoginTemplate`'s
+                     role handler calls `preventDefault` to stop the anchor and
+                     swap the view on the client; handing it a fake one turned
+                     every role switch into a full page load. */
+                  onChange={(i, event) => {
+                    const tab = tabs[i];
+                    if (tab?.onClick && event) tab.onClick(event as React.MouseEvent);
+                  }}
+                  idBase="ds-plogin-role"
+                  ariaLabel="Portal login type"
+                  track="enclosed"
+                  indicator="pill"
+                />
               </div>
             </div>
           )}

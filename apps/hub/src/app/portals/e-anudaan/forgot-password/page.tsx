@@ -3,11 +3,12 @@
 import * as React from "react";
 // DS Audit: PortalLoginShell ✅ existing · AuthFormCard ✅ existing ·
 // IdentifierFields ➕ added to the DS in this change (three portals had each
-// hand-rolled it) · Button ✅ · ConsentLine ✅.
+// hand-rolled it) · Button ✅.
 import {
   AuthFormCard,
+  AuthResult,
+  AuthHelpLine,
   Button,
-  ConsentLine,
   IdentifierFields,
   PortalLoginShell,
 } from "@mosje/design-system";
@@ -85,30 +86,30 @@ export default function EAnudaanForgotPasswordPage(): React.JSX.Element {
       tabs={[]}
     >
       {sent ? (
-        <AuthFormCard
+        /* A RESULT, not a form with the fields taken out. It was an
+           `AuthFormCard` whose `credentialFields` slot held a paragraph and
+           whose `primaryAction` held a link — a form card impersonating an
+           outcome, and the paragraph was written with a design-system class by
+           hand. `AuthResult` is the component for this, and `announce` is set
+           because the confirmation replaces the form on the same route. */
+        <AuthResult
           headingLevel={1}
+          announce
+          icon="mark_email_read"
           heading="Reset Link Sent"
-          description="If that is a registered account, a password reset link has been sent to the mobile number and email address recorded against it."
-          credentialFields={
-            <p className="ds-authfields__note">
-              The link is valid for 30 minutes. If it does not arrive, check the
-              details entered and try again.
-            </p>
-          }
-          primaryAction={
-            /* The reset step is behind the emailed link, which nothing here
-               sends — so the prototype walks the reader onward instead. Same
-               device as smile-admin's forget-password screen, and the only
-               honest way to make a link-gated screen reachable without
-               pretending mail was delivered. */
-            <Button href={`${BASE}/reset-password`} fullWidth>
-              Continue to Set New Password
-            </Button>
-          }
-          footer={
-            <p className="ds-plogin__help">
-              <a href={`${BASE}/login`}>Back to Login</a>
-            </p>
+          description="If that is a registered account, a password reset link has been sent to the mobile number and email address recorded against it. The link is valid for 30 minutes."
+          action={
+            <>
+              {/* The reset step is behind the emailed link, which nothing here
+                  sends — so the prototype walks the reader onward instead. Same
+                  device as smile-admin's forget-password screen, and the only
+                  honest way to make a link-gated screen reachable without
+                  pretending mail was delivered. */}
+              <Button href={`${BASE}/reset-password`} fullWidth>
+                Continue to Set New Password
+              </Button>
+              <AuthHelpLine href={`${BASE}/login`}>Back to Login</AuthHelpLine>
+            </>
           }
         />
       ) : (
@@ -142,16 +143,8 @@ export default function EAnudaanForgotPasswordPage(): React.JSX.Element {
               Send Reset Link
             </Button>
           }
-          consent={
-            <ConsentLine
-              termsHref="/website/terms-conditions"
-              privacyHref="/website/privacy-policy"
-            />
-          }
           footer={
-            <p className="ds-plogin__help">
-              <a href={`${BASE}/login`}>Back to Login</a>
-            </p>
+            <AuthHelpLine href={`${BASE}/login`}>Back to Login</AuthHelpLine>
           }
         />
       )}

@@ -767,6 +767,8 @@ export type {
   OtpRequestFieldsProps,
   OtpVerifyFieldsProps,
 } from "./components/auth/credential-fields";
+export { AuthHelpLine } from "./components/auth/auth-parts";
+export type { AuthHelpLineProps } from "./components/auth/auth-parts";
 export { AuthResult } from "./components/auth/auth-result";
 export type { AuthResultProps } from "./components/auth/auth-result";
 
