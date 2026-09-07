@@ -63,7 +63,10 @@ FILL_ALL_JS = """(F)=>{let n=0;
  document.querySelectorAll('input,select,textarea').forEach(e=>{
   if(e.type==='hidden'||e.disabled||e.readOnly||e.type==='file')return;
   if(e.tagName==='SELECT'){const o=[...e.options].find(o=>o.value&&o.value!=='');
-    if(o&&!e.value){e.value=o.value;e.dispatchEvent(new Event('change',{bubbles:true}));n++;}return;}
+    if(o&&!e.value){if(e._valueTracker)e._valueTracker.setValue('');
+      const ss=Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype,'value').set;ss.call(e,o.value);
+      e.dispatchEvent(new Event('input',{bubbles:true}));
+      e.dispatchEvent(new Event('change',{bubbles:true}));n++;}return;}
   if(e.type==='radio'){
     const grp=[...document.querySelectorAll('input[type=radio][name="'+e.name+'"]')];
     if(grp.some(r=>r.checked))return;
@@ -71,6 +74,14 @@ FILL_ALL_JS = """(F)=>{let n=0;
     (grp.find(r=>/fresh|new/.test(lab(r)))||grp[0]).click();n++;return;}
   if(e.type==='checkbox'){if(!e.checked){e.click();n++;}return;}
   if(!e.value){const set=Object.getOwnPropertyDescriptor(e.__proto__,'value').set;
+    // React keeps a tracker of the last value it saw. Without clearing it first, React reads
+    // the programmatic write as "no change", its state never updates, and the field LOOKS
+    // filled while validation still sees an empty box. AVYAY's Justification step is where
+    // this surfaced: it is new-branch-only, so unlike every other step it had no saved-draft
+    // values to fall back on, all three controls stayed empty to React, and the wizard
+    // correctly refused to advance. The walk reported "no forward control advanced" and the
+    // portal was blamed for four runs.
+    if(e._valueTracker)e._valueTracker.setValue('');
     set.call(e,F[e.type]||F.text);
     e.dispatchEvent(new Event('input',{bubbles:true}));
     e.dispatchEvent(new Event('change',{bubbles:true}));n++;}});
