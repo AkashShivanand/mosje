@@ -6,6 +6,7 @@ import { FormField } from "../forms/form-field";
 import { Input } from "../forms/input";
 import { OtpInput } from "../forms/otp-input";
 import { PasswordInput } from "../forms/password-input";
+import { PasswordStrengthMeter } from "../forms/password-strength-meter";
 import { MaskedContactRow, ResendTimer } from "./auth-parts";
 import "./credential-fields.css";
 
@@ -501,6 +502,105 @@ export function IdentifierFields({
         )}
       </FormField>
       {note ? <p className="ds-authfields__note">{note}</p> : null}
+    </Stack>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+ * NewPasswordFields
+ * ------------------------------------------------------------------------- */
+
+export interface NewPasswordFieldsProps {
+  /** The password being created. */
+  password: string;
+  onPasswordChange: (value: string) => void;
+  /** The second copy, typed to catch a typo in the first. */
+  confirm: string;
+  onConfirmChange: (value: string) => void;
+  /**
+   * A zxcvbn score, 0–4, or `null` when the field is empty.
+   *
+   * The caller computes it, because the caller is the one who knows whether
+   * this deployment has zxcvbn. `estimatePasswordScore` is the stand-in the
+   * design system ships with, and it says plainly what it is not.
+   */
+  score: 0 | 1 | 2 | 3 | 4 | null;
+  /** What is wrong with the second field — usually that the two do not match. */
+  confirmError?: React.ReactNode;
+  /** What is wrong with the first — a policy minimum, or a reused password. */
+  passwordError?: React.ReactNode;
+  className?: string;
+}
+
+/**
+ * New password, its strength, and the confirmation — the reset step's fields.
+ *
+ * Transcribed from `Auth / RecoveryFormCard`, `Step=Reset`: label "New
+ * Password" over "Enter new password", the four-segment meter with its caption
+ * and word, then "Confirm New Password" over "Re-enter new password", 16
+ * apart.
+ *
+ * **The meter belongs to the first field, not to the stack**, and is wired to
+ * it with `aria-describedby` — so a screen-reader user who focuses the password
+ * hears its strength, rather than meeting a bar with no owner further down.
+ *
+ * **`autoComplete="new-password"` on BOTH.** It is what tells a password
+ * manager to offer to generate one and then to save it, and it stops the
+ * browser autofilling the account's current password into a field that is
+ * asking for its replacement.
+ *
+ * **The mismatch is the CONFIRM field's error, never the first field's.** The
+ * first one is not wrong; it is the one being copied. Putting the message there
+ * would send a citizen to retype the password they had right.
+ *
+ * **No bot check here, and none in the master.** By this point the citizen has
+ * followed a link only the account holder's inbox received, which is a stronger
+ * proof than a checkbox — and WCAG 2.2 3.3.8 counts every extra cognitive test
+ * against a page that already has one.
+ */
+export function NewPasswordFields({
+  password,
+  onPasswordChange,
+  confirm,
+  onConfirmChange,
+  score,
+  confirmError,
+  passwordError,
+  className,
+}: NewPasswordFieldsProps): React.JSX.Element {
+  const meterId = React.useId();
+
+  return (
+    <Stack className={className}>
+      <FormField label="New Password" error={passwordError} required>
+        {(control) => (
+          <>
+            <PasswordInput
+              {...control}
+              autoComplete="new-password"
+              value={password}
+              onChange={(e) => onPasswordChange(e.target.value)}
+              placeholder="Enter new password"
+              aria-describedby={[control["aria-describedby"], meterId]
+                .filter(Boolean)
+                .join(" ")}
+            />
+            <PasswordStrengthMeter id={meterId} score={score} />
+          </>
+        )}
+      </FormField>
+
+      <FormField label="Confirm New Password" error={confirmError} required>
+        {(control) => (
+          <PasswordInput
+            {...control}
+            autoComplete="new-password"
+            value={confirm}
+            onChange={(e) => onConfirmChange(e.target.value)}
+            placeholder="Re-enter new password"
+          />
+        )}
+      </FormField>
     </Stack>
   );
 }

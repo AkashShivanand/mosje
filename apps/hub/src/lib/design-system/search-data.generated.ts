@@ -147,7 +147,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Auth Form Card — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/auth/auth-form-card",
-    "keywords": "auth form card — design system auth & dashboard why the credential mode is a slot the stacks that ship what overflows is the label width, not the tab count example adding a credential mode notes  tokens wcag accessibility",
+    "keywords": "auth form card — design system auth & dashboard why the credential mode is a slot the stacks that ship the end of a journey is not a card with empty regions the strength meter wants a scorer this estate does not have what overflows is the label width, not the tab count example adding a credential mode notes  tokens wcag accessibility",
     "description": "The login form column: seven fixed regions and one slot. The credential mode is a swapped stack, not a variant of the card.",
     "type": "component",
     "iconName": "lock"

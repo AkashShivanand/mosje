@@ -76,7 +76,7 @@ const A11Y: A11yItem[] = [
     level: "AA",
     status: "verified",
     evidence:
-      "portal-login-template.css contains no `outline: none` and no `outline: 0` anywhere, so nothing inherited from the DS controls is suppressed; and the two controls it styles itself draw the ring explicitly — `.ds-plogin__labelrow a`, `.ds-plogin__help a` (:47) and `.ds-plogin__roletab` (:96) each set `outline: var(--sa-focus-width) solid var(--sa-focus-ring)` with `--sa-focus-offset`.",
+      "portal-login-template.css contains no `outline: none` and no `outline: 0` anywhere, so nothing inherited from the DS controls is suppressed. As of 7 Sep 2026 it styles ONE control of its own — `.ds-plogin__help a`, which draws the ring explicitly with `--sa-focus-width` / `--sa-focus-ring` / `--sa-focus-offset`. The role tabs used to be the second: they were a hand-rolled anchor row carrying `role=tab` and its own focus rule, and they are the design system's `Tabs` now, so that ring is the component's.",
     description: "Fields, buttons and tabs all draw the estate's focus ring, inherited from the DS controls rather than restyled here.",
   },
 ];

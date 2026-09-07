@@ -3,6 +3,68 @@
 @layer theme, base, components, utilities;
 
 @layer components {
+  /* Anything a portal hangs below the form. Same gutter as the column above it,
+     so it lines up rather than sitting eight pixels inside. */
+  .ds-plogin__extra {
+    padding-inline: var(--sa-padding-16);
+    padding-block-end: var(--sa-padding-24);
+  }
+
+  /* ── Which column scrolls ─────────────────────────────────────────────────
+     The design is a FIXED 1440 x 960 canvas on which everything fits, so it
+     never had to answer this. A real browser does: at 1440 x 640 the login page
+     is 973 tall, and until 7 Sep 2026 the whole page scrolled — hero, Signing
+     Into bar and all — which took the one line telling a citizen WHICH portal
+     they are signing into off the screen the moment they reached for the
+     password field.
+
+     Nothing was unreachable, and it is worth being exact about that: measured at
+     1440x800, 1440x640, 1280x600 and 1024x560, every page scrolled and the
+     submit, consent and footer were all reachable at every size. This is not a
+     repair of something broken. It makes the column that has content scroll, and
+     leaves the column that is identity fixed — which is what the fixed canvas
+     shows at every size, and what the reader expects when only half the screen
+     is changing.
+
+     Desktop only. Below `lg` the hero column is not rendered at all, so there is
+     nothing to hold still and the page scrolls the ordinary way — which is also
+     the right answer on a phone, where an inner scroll region inside a page that
+     also scrolls is a trap.
+
+     `100dvh`, not `100vh`: on a phone browser `vh` includes the chrome that
+     retracts as you scroll, and this is the one place a wrong viewport unit
+     would clip the submit button rather than merely shift it. The `100vh` line
+     above it is the fallback for anything without `dvh`. */
+  @media (min-width: 1024px) {
+    /* The SHELL is exactly one viewport tall and the row takes what the masthead
+       leaves — `flex: 1` plus `min-block-size: 0`, which is the pair that lets a
+       flex child be shorter than its content and therefore scroll. No header
+       height is subtracted anywhere: an early version of this did
+       `calc(100dvh - var(--sa-plogin-header-h))` against a variable nothing set,
+       which is a magic number wearing a token's clothes. The masthead's height
+       changes with the accessibility bar and the brand lines; the layout must
+       not need to know it. */
+    .ds-plogin__shell {
+      block-size: 100vh;
+      block-size: 100dvh;
+    }
+
+    .ds-plogin__body {
+      flex: 1 1 auto;
+      min-block-size: 0;
+    }
+
+    .ds-plogin__panel {
+      overflow-y: auto;
+      /* A scroll container needs a name and a tab stop of its own for a keyboard
+         user who is not tabbing through the form — but this one CONTAINS the
+         form, so every reason to scroll it is reachable by Tab already. No
+         `tabindex` here: adding one would put an empty stop before the first
+         field on every login in the estate. */
+      overscroll-behavior: contain;
+    }
+  }
+
   /* ── The form column ──────────────────────────────────────────────────────
      Four tokens exist for this layout — `--sa-layout-login-{hero,panel}-width`,
      `--sa-layout-login-panel-gutter` and `--sa-layout-login-content-width` — and
@@ -82,42 +144,8 @@
     outline-offset: var(--sa-focus-offset);
   }
 
-  /* ── Role tabs ────────────────────────────────────────────────────────────
-     The reference draws a grey track holding equal segments, the selected one
-     filled and rounded — a rounded RECTANGLE, not the full pill this used to
-     be. Every value here was an inline style object before, which is invisible
-     to the token gate and cannot follow a brand mode. */
-
-  .ds-plogin__roletabs {
-    display: flex;
-    gap: var(--sa-inline-4);
-    padding: var(--sa-padding-4);
-    border-radius: var(--sa-shape-12);
-    background-color: var(--sa-bg-neutral-subtler);
-  }
-
-  .ds-plogin__roletab {
-    flex: 1 1 0;
-    min-height: var(--sa-target-comfortable);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--sa-padding-8) var(--sa-padding-12);
-    border-radius: var(--sa-shape-8);
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    text-align: center;
-    color: var(--sa-text-neutral-subtle);
-  }
-
-  .ds-plogin__roletab[aria-selected="true"] {
-    background-color: var(--sa-bg-brand-primary-boldest);
-    color: var(--sa-on-bg-brand-primary-boldest);
-  }
-
-  .ds-plogin__roletab:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
-  }
+  /* The role tabs' own CSS lived here — a copy of `Tabs / Tab` Indicator=Pill,
+     which drifted to the wrong navy and never grew a hover state. It is gone:
+     the shell renders the real `Tabs` now (7 Sep 2026), and `--track-enclosed`
+     already gives equal-width segments, so there was nothing left to override. */
 }

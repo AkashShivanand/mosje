@@ -758,6 +758,87 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "AuthHelpLineProps": {
+    "source": "packages/design-system/components/auth/auth-parts.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "What it says — \"Back to Login\", \"Need help signing in?\"."
+      },
+      {
+        "name": "href",
+        "type": "string",
+        "required": true,
+        "description": "Where it goes."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      }
+    ]
+  },
+  "AuthResultProps": {
+    "source": "packages/design-system/components/auth/auth-result.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "heading",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The outcome, as a sentence a citizen would recognise."
+      },
+      {
+        "name": "action",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The way onward — usually one `Button`, full width."
+      },
+      {
+        "name": "announce",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Announce this to assistive technology when it appears. Pass `true` when the result REPLACES something in place — a form that has just been submitted — because nothing else tells a screen-reader user the page changed. Leave it off when the result arrives as its own page: the navigation already announces the new heading, and a live region on top of that reads the outcome twice."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "What happened, and what it means for them. Two lines at most."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2 | 3",
+        "required": false,
+        "default": "2\n\nPass 1 when this IS the page, which is what a standalone confirmation is.\nThe default is 2 because a result is also shown inside a card that already\nsits under a page heading.",
+        "description": "Heading level."
+      },
+      {
+        "name": "icon",
+        "type": "string",
+        "required": false,
+        "description": "The Material Symbols glyph. Defaults to the one the status implies, so a caller only names it to say something the status does not."
+      },
+      {
+        "name": "status",
+        "type": "\"success\" | \"notice\"",
+        "required": false,
+        "default": "\"success\"",
+        "description": "The outcome. `success` is a green tick; `notice` is the neutral information mark, for an outcome that is neither a success nor a failure — a link that has expired, a session that has ended."
+      }
+    ]
+  },
   "AvatarProps": {
     "source": "packages/design-system/components/data-display/avatar.tsx",
     "inheritsNative": true,
@@ -8393,6 +8474,60 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "NewPasswordFieldsProps": {
+    "source": "packages/design-system/components/auth/credential-fields.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "confirm",
+        "type": "string",
+        "required": true,
+        "description": "The second copy, typed to catch a typo in the first."
+      },
+      {
+        "name": "onConfirmChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onPasswordChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "password",
+        "type": "string",
+        "required": true,
+        "description": "The password being created."
+      },
+      {
+        "name": "score",
+        "type": "0 | 1 | 2 | 3 | 4 | null",
+        "required": true,
+        "description": "A zxcvbn score, 0–4, or `null` when the field is empty. The caller computes it, because the caller is the one who knows whether this deployment has zxcvbn. `estimatePasswordScore` is the stand-in the design system ships with, and it says plainly what it is not."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "confirmError",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "What is wrong with the second field — usually that the two do not match."
+      },
+      {
+        "name": "passwordError",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "What is wrong with the first — a policy minimum, or a reused password."
+      }
+    ]
+  },
   "NotificationCentreProps": {
     "source": "packages/design-system/components/data-display/notification-centre.tsx",
     "inheritsNative": false,
@@ -9614,12 +9749,6 @@ export const GENERATED_PROPS = {
         "description": "Open the change-portal picker instead of navigating. The handoff's `E-Anudaan | Portal Switch` draws this as a SIDE SHEET over the login page — \"Choose a portal to login\" — not as a trip to the hub root. Pass a handler and the control becomes a `<button>` that opens it; leave it off and it stays the `changeHref` link, so every existing consumer is unchanged. A button, not a link, when it opens a panel: a control that does not navigate must not offer middle-click or \"copy link address\", and it owes `aria-expanded` / `aria-haspopup`, which an anchor cannot honestly carry."
       },
       {
-        "name": "onFooterLinkClick",
-        "type": "(link: \"privacy\" | \"contact\" | \"about\") => void",
-        "required": false,
-        "description": "Called when a footer link (Privacy Policy / Contact Us / About Us) is clicked"
-      },
-      {
         "name": "portalPickerOpen",
         "type": "boolean",
         "required": false,
@@ -9665,12 +9794,6 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "Loading state during form submission"
-      },
-      {
-        "name": "onFooterLinkClick",
-        "type": "(link: \"privacy\" | \"contact\" | \"about\") => void",
-        "required": false,
-        "description": "Called when a footer link is clicked"
       },
       {
         "name": "onRoleChange",
@@ -13121,9 +13244,9 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "onChange",
-        "type": "(index: number) => void",
+        "type": "(index: number, event?: React.MouseEvent | React.KeyboardEvent) => void",
         "required": true,
-        "description": "Called with the next active index on click or keyboard navigation."
+        "description": "Called with the next active index on click or keyboard navigation. The originating event is passed as a SECOND argument, and it matters when `TabDef.href` is set: a link tab navigates unless someone calls `preventDefault`, so a consumer that switches views on the client needs the real event to stop it. The first version of the href support handed over a hand-made object with a no-op `preventDefault`, and the login page's role switch went from instant to a full page load — measured as four navigations per click. Optional, so every existing consumer ignores it."
       },
       {
         "name": "tabs",
@@ -13165,6 +13288,13 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "Offer the `Tabs / More` overflow menu when the row cannot show every tab. OFF by default, and opt-in for a reason: turning it on wraps the tablist in a positioning element, so the rendered DOM changes. Every consumer that does not ask for it renders exactly what it did before. Horizontal only — a vertical list wraps its labels instead of clipping them, so it has nothing to overflow. The button appears only when tabs are actually hidden, never as permanent chrome. It does NOT remove tabs from the tablist: every tab stays focusable and arrow-reachable, and the menu is a pointer shortcut to the ones scrolled out of view."
+      },
+      {
+        "name": "panel",
+        "type": "boolean",
+        "required": false,
+        "default": "true\n\nPass `false` for a tablist that has no panels at all — a specimen on a\ndocumentation page, or a row used purely as navigation. `aria-controls` is\nthen omitted from every tab, because there is nothing to control and an\n`aria-controls` pointing at a missing id is a critical\n`aria-valid-attr-value` violation.\n\nIt has to be declared rather than detected: the panel is rendered by the\nconsumer, often as a sibling this component never sees, and a runtime DOM\nprobe would have to run after paint and then change an ARIA attribute\nunderneath a screen reader.",
+        "description": "Whether a `TabPanel` for the active tab is rendered somewhere on the page."
       },
       {
         "name": "size",

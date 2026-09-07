@@ -1,0 +1,55 @@
+/* Declare the order before using it — see auth-fields.css for why this line is
+   repeated in every component stylesheet. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* `Auth / RecoveryFormCard`, Step=Success (390 x 208). A flat 16 between all
+     four children — this card's own rhythm, deliberately not AuthFormCard's
+     32/24, because there are no regions here to separate from each other. */
+  .ds-authresult {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sa-stack-16);
+    text-align: center;
+  }
+
+  .ds-authresult__mark {
+    /* Figma: `icon/status/success/base`, 48, Outline. The Icon component draws
+       at the size it is given; only the colour belongs here. */
+    color: var(--sa-icon-status-success-base);
+  }
+
+  .ds-authresult--notice .ds-authresult__mark {
+    color: var(--sa-icon-status-info-base);
+  }
+
+  /* Headline/headline-4 — set on the class, not the element, so the caller can
+     choose h1/h2/h3 for the page outline without the size following. */
+  .ds-authresult__heading {
+    margin: 0;
+    font-size: var(--sa-type-headline-4-size);
+    line-height: var(--sa-type-headline-4-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-base);
+  }
+
+  /* Body/body-2, subtle. */
+  .ds-authresult__body {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* The action fills the column, as the master draws it. A named wrapper rather
+     than a `:last-child` rule that has to exclude its siblings — the first
+     version of this was exactly that, and stylelint was right to reject the
+     chained `:not()`. A class says what it is. Two buttons stack. */
+  .ds-authresult__action {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    inline-size: 100%;
+  }
+}

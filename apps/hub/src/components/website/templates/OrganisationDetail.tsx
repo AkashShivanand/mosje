@@ -93,6 +93,14 @@ export interface OrganisationDetailProps {
  */
 const orgHref = (slug: string) => `/website/organisation/${slug}`;
 
+/** Anchor id for an ingested section heading, so the page index can reach it. */
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 function formatDate(iso?: string): string {
   if (!iso) return "";
   const d = new Date(iso);
@@ -151,17 +159,142 @@ const isHttp = (href: string) => /^https?:\/\//.test(href);
 const DOWNLOAD_KIND: Record<OrgDownload["kind"], { meta: string; action: string }> = {
   pdf: { meta: "PDF", action: "Download PDF" },
   pptx: { meta: "Presentation (PPTX)", action: "Download presentation" },
+  // A campaign mark or a QR code. It IS a file, so it is downloaded — but
+  // calling it a page, as it was until the NMBA downloads arrived, told a
+  // reader they were about to open a web page and handed them a PNG.
+  image: { meta: "Image (PNG)", action: "Download image" },
   // Not a file. Offering to "download" a web page would be a lie the reader
   // only discovers after clicking.
   page: { meta: "Web page", action: "View page" },
 };
 
-export function formatOrgHtml(rawHtml: string): string {
+/**
+ * The source site's "at a glance" strip, lifted out of the ingested prose.
+ *
+ * EVERY organisation page on dosje.gov.in opens with one, and the ingest
+ * captures it as `<h4>value</h4><div>label</div>` repeated — the same shape on
+ * all seventeen pages that have one. Rendered as prose that is a blue number, a
+ * paragraph, a blue number, a paragraph, running down the page: NMBA's eight
+ * counters took 750px doing the work of one strip, and thirteen other pages
+ * printed their founding year and headquarters a second time in prose, directly
+ * below the hero strip already showing them.
+ *
+ * So it is extracted here and rendered through `FactStrip`, which is what a
+ * value with a label is for.
+ *
+ * THE VALUE AND THE LABEL SWAP ROUND ON SOME PAGES. Most write
+ * `<h4>2020</h4><div>Established</div>`; SMILE writes
+ * `<h4>Launched On</h4><div>12 February 2022</div>` and the national helpline
+ * writes `<h4>Helpline</h4><div>14566</div>`. Taking the h4 as the value
+ * regardless would have published "Launched On" as a figure captioned
+ * "12 February 2022". Where only one of the pair contains a digit, that one is
+ * the value.
+ */
+const GLANCE_ICONS: [RegExp, string][] = [
+  [/establish|launch|since|inception/i, "event"],
+  [/headquarter|location|address/i, "location_on"],
+  [/regional office|across india|branch/i, "hub"],
+  [/report/i, "description"],
+  [/publication|book/i, "menu_book"],
+  [/helpline|phone|contact/i, "call"],
+  [/certificate|identity|card/i, "badge"],
+  [/district/i, "location_city"],
+  [/state/i, "map"],
+  [/beneficiar|reached|people|survey|identified/i, "groups"],
+  [/rehabilit|treated/i, "volunteer_activism"],
+  [/centre|center|facility|facilities/i, "local_hospital"],
+  [/pledge/i, "front_hand"],
+];
+
+function glanceIcon(label: string): string {
+  for (const [re, icon] of GLANCE_ICONS) if (re.test(label)) return icon;
+  return "info";
+}
+
+const stripTags = (html: string) =>
+  html.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
+export function extractGlanceStrip(html: string): {
+  html: string;
+  facts: { icon: string; value: string; label: string }[];
+} {
+  const facts: { icon: string; value: string; label: string }[] = [];
+  const cleaned = html.replace(
+    /<h4[^>]*>([\s\S]*?)<\/h4>\s*<div[^>]*>([\s\S]*?)<\/div>/gi,
+    (match, rawA: string, rawB: string) => {
+      let value = stripTags(rawA);
+      let label = stripTags(rawB);
+      // A label is a short caption. Anything longer is a paragraph that happens
+      // to follow a heading, and lifting it into a strip would destroy it.
+      if (!value || !label || label.length > 60 || value.length > 60) return match;
+      if (/\d/.test(label) && !/\d/.test(value)) [value, label] = [label, value];
+      facts.push({ icon: glanceIcon(label), value, label });
+      return "";
+    },
+  );
+  return { html: cleaned, facts };
+}
+
+/** Compares two fact labels for "the page already says this". */
+const sameFact = (a: string, b: string) =>
+  a.toLowerCase().replace(/[^a-z0-9]/g, "") === b.toLowerCase().replace(/[^a-z0-9]/g, "");
+
+export function formatOrgHtml(rawHtml: string, innerHeadingLevel: 3 | 4 = 4): string {
   let html = withAssetBasePath(trimRedundantOpening(rawHtml));
   // Strip any residual unconstrained widget images
   html = html.replace(/<a[^>]*>\s*<img[^>]*class="rounded-[34]"[^>]*>\s*<\/a>/gi, "");
   html = html.replace(/<img[^>]*class="rounded-[34]"[^>]*>/gi, "");
   html = html.replace(/<img[^>]*src="[^"]*schemes-768x768[^"]*"[^>]*>/gi, "");
+  /*
+   * AN ANCHOR WITH NO href IS NOT A LINK.
+   *
+   * The ingest keeps the <a> and drops the attribute when the source's own
+   * markup carries the destination in script rather than in href — NMBA's
+   * "Helpline 14446" arrived this way, styled as a link, doing nothing, and
+   * announced to a screen reader as a link with no destination. Unwrap it to
+   * the text it contains, which is what it actually is.
+   *
+   * A `tel:` for the helpline is supplied by the record's quick actions, where
+   * it can be written deliberately rather than pattern-matched out of prose.
+   */
+  html = html.replace(/<a(?![^>]*\shref=)[^>]*>([\s\S]*?)<\/a>/gi, "$1");
+  /*
+   * AN ANCHOR WITH NOTHING INSIDE IT IS NOT A LINK EITHER.
+   *
+   * Where the source embeds a tweet, the ingest keeps the anchor and loses the
+   * card it wrapped, leaving `<a href="twitter.com/…"></a>` — zero-sized, so
+   * invisible to a sighted reader, and announced to a screen reader as a link
+   * with no name. axe reports it as `link-name`; it is on the transgender
+   * portal today and arrives on any page whose source embeds a post.
+   *
+   * Anchors holding an image are left alone: the image carries the name.
+   */
+  html = html.replace(
+    /<a\b[^>]*>((?:(?!<img)[\s\S])*?)<\/a>/gi,
+    (match, inner: string) => (stripTags(inner) === "" ? "" : match),
+  );
+  /*
+   * INNER HEADINGS SIT ONE LEVEL UNDER THE SECTION THEY ARE IN.
+   *
+   * The source marks card titles inside a section as `h5` or `h6` — DAIC's
+   * VISION and MISSION are h5, its gallery captions h6 — and the ingest keeps
+   * them. The section heading around them renders as `h3`, so the outline ran
+   * h3 → h5 and h3 → h6: a skipped level on nine organisation pages, which
+   * WCAG 2.2 and GIGW both take seriously on a government site.
+   *
+   * They are flattened rather than mapped level-for-level because within one
+   * ingested section they are siblings, not a hierarchy — a set of card titles,
+   * or a pair of headings like VISION and MISSION. Preserving a nesting the
+   * source does not actually express would invent structure.
+   *
+   * THE TARGET LEVEL DEPENDS ON WHETHER THE SECTION HAS A HEADING. With one,
+   * the section renders an h3 and its contents are h4. Without one — DAIC's
+   * opening section is untitled — the contents sit directly under the band's
+   * own h2, and h4 there is the same skipped level in a new place.
+   */
+  html = html
+    .replace(/<h[56]([^>]*)>/gi, `<h${innerHeadingLevel}$1>`)
+    .replace(/<\/h[56]>/gi, `</h${innerHeadingLevel}>`);
   // Wrap any <table> in .orgd__tablewrap if not already wrapped
   html = html.replace(/(<table[\s\S]*?<\/table>)/gi, (match) => {
     let table = match.replace(/class="[^"]*table[^"]*"/gi, 'class="orgd__table"');
@@ -171,6 +304,144 @@ export function formatOrgHtml(rawHtml: string): string {
     return `<div class="orgd__tablewrap">${table}</div>`;
   });
   return html;
+}
+
+/**
+ * The contact band — address, support details and the officer tables.
+ *
+ * EXTRACTED SO TWO SURFACES CAN SHARE IT. The organisation page renders it as
+ * one of its bands; an organisation's `/contact-us` child page, when the ingest
+ * returned that page empty, renders the same block from the same record. Before
+ * this it lived inline in the band list, so the only way to put contact details
+ * on the child page would have been a second copy of this markup — which is how
+ * two renderings of the same thing drift a card's padding apart.
+ */
+export function OrganisationContactBand({
+  contact,
+  orgSlug,
+}: {
+  contact: NonNullable<OrgDetail["contact"]>;
+  orgSlug: string;
+}) {
+  const contactAction = contact.action ?? {
+    label: "View Directory",
+    href: `/website/directory?org=${orgSlug}`,
+  };
+  return (
+    <>
+      <SectionTitle as={2} title={contact.heading} headingId="contact-heading">
+        <NextLink href={contactAction.href} className={buttonClasses("primary", "outlined", "sm")}>
+          {contactAction.label}
+        </NextLink>
+      </SectionTitle>
+      <div className="orgd__contact">
+        <div className="orgd__contact-grid">
+          {contact.address != null && (
+            <div className="orgd__contact-card">
+              <div className="flex items-center gap-2 text-primary-dark text-title-2">
+                <Icon name="location_on" size={20} />
+                <span>Headquarters</span>
+              </div>
+              <p className="text-body-2 text-ink m-0">{contact.address}</p>
+            </div>
+          )}
+          {contact.supportPhone != null && (
+            <div className="orgd__contact-card">
+              <div className="flex items-center gap-2 text-primary-dark text-title-2">
+                <Icon name="call" size={20} />
+                <span>Telephone / Helpline</span>
+              </div>
+              <p className="text-body-2 text-ink m-0">
+                <a href={`tel:${contact.supportPhone.replace(/[^+\d]/g, "")}`} className="text-link hover:underline">
+                  {contact.supportPhone}
+                </a>
+              </p>
+              {contact.supportHours != null && (
+                <span className="text-body-3 text-ink-subtle">{contact.supportHours}</span>
+              )}
+            </div>
+          )}
+          {contact.supportEmail != null && (
+            <div className="orgd__contact-card">
+              <div className="flex items-center gap-2 text-primary-dark text-title-2">
+                <Icon name="mail" size={20} />
+                <span>Official Email</span>
+              </div>
+              {/* A link, like the telephone in the card beside it. This was the
+                  one published address on the page a reader had to select and
+                  copy by hand. */}
+              <p className="text-body-2 text-ink m-0">
+                <a href={`mailto:${contact.supportEmail}`} className="text-link hover:underline">
+                  {contact.supportEmail}
+                </a>
+              </p>
+            </div>
+          )}
+          {contact.regionalOffices != null && (
+            <div className="orgd__contact-card">
+              <div className="flex items-center gap-2 text-primary-dark text-title-2">
+                <Icon name="domain" size={20} />
+                <span>State & Regional Offices</span>
+              </div>
+              <p className="text-body-2 text-ink m-0">{contact.regionalOffices}</p>
+            </div>
+          )}
+        </div>
+
+        {contact.blocks?.map((block) => (
+          <div className="orgd__people" key={block.heading}>
+            <h3 className="orgd__subhead">{block.heading}</h3>
+            <div className="orgd__tablewrap">
+              <table className="orgd__table">
+                <caption className="sr-only">{block.heading}</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Designation</th>
+                    <th scope="col">Contact</th>
+                    <th scope="col">Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {block.people.map((p) => (
+                    <tr key={p.name}>
+                      <th scope="row">{p.name}</th>
+                      <td>{p.designation}</td>
+                      <td>
+                        {p.phone != null ? (
+                          <a href={`tel:${p.phone.replace(/[^+\d]/g, "")}`}>{p.phone}</a>
+                        ) : (
+                          <>
+                            <span aria-hidden="true">—</span>
+                            <span className="sr-only">Not published</span>
+                          </>
+                        )}
+                      </td>
+                      <td>
+                        {/*
+                          * A published address is a way to reach somebody,
+                          * so it is a link. The telephone beside it has
+                          * been one all along; the email was plain text.
+                          */}
+                        {p.email != null ? (
+                          <a href={`mailto:${p.email}`}>{p.email}</a>
+                        ) : (
+                          <>
+                            <span aria-hidden="true">—</span>
+                            <span className="sr-only">Not published</span>
+                          </>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
 }
 
 export function OrganisationDetail({
@@ -244,6 +515,40 @@ export function OrganisationDetail({
 
   const hasRail = navGroups.length > 0;
 
+  // Sections the record has replaced with a real component — see
+  // `hideIngestedSections`. Compared on the slugified heading so "GEO Tagged
+  // De-addiction Facilities" and "Geo-tagged de-addiction facilities" are the
+  // same section, which they are.
+  const hidden = new Set((detail?.hideIngestedSections ?? []).map(slugify));
+  const keptSections = org.sections.filter(
+    (s) => s.heading == null || !hidden.has(slugify(s.heading)),
+  );
+
+  /*
+   * The source's "at a glance" pairs come OUT of the prose before it renders,
+   * and the prose renders without them — see `extractGlanceStrip`.
+   */
+  const glanceFacts: { icon: string; value: string; label: string }[] = [];
+  const visibleSections = keptSections.map((s) => {
+    const { html, facts } = extractGlanceStrip(s.html);
+    glanceFacts.push(...facts);
+    return { ...s, html };
+  });
+
+  /*
+   * Only the ones the hero strip is not already showing. On thirteen of the
+   * seventeen pages that carry this strip the ingested pairs ARE the curated
+   * facts — "1994 / Established", "New Delhi / Headquarters" — so publishing
+   * both puts the same two facts on the page twice, a hundred pixels apart.
+   * What is left is what the curator did not have room for: NCSC's report
+   * count, the transgender portal's certificates issued, SMILE's survey
+   * figures.
+   */
+  const curatedLabels = (detail?.facts ?? []).map((f) => f.label);
+  const newGlanceFacts = glanceFacts.filter(
+    (g) => !curatedLabels.some((c) => sameFact(c, g.label)),
+  );
+
   const bands: { id: string; body: React.ReactNode }[] = [];
 
   const aboutSubpage = relatedPages.find((p) => {
@@ -283,7 +588,7 @@ export function OrganisationDetail({
             className="gov-prose orgd__prose"
             dangerouslySetInnerHTML={{ __html: formatOrgHtml(detail.aboutHtml) }}
           />
-        ) : org.sections.length === 0 ? (
+        ) : visibleSections.length === 0 ? (
           <p className="orgd__empty">
             This page is being prepared. In the meantime the source page is available on{" "}
             <Link href={org.sourceUrl} external>
@@ -292,24 +597,68 @@ export function OrganisationDetail({
             .
           </p>
         ) : (
-          org.sections.map((s, i) => (
-            <div
-              key={s.heading ?? i}
-              className="gov-prose orgd__prose"
-              dangerouslySetInnerHTML={{
-                __html: formatOrgHtml(s.html),
-              }}
-            />
-          ))
+          /*
+           * EACH INGESTED SECTION KEEPS ITS OWN HEADING.
+           *
+           * This used to render the html alone and pass `s.heading` as the
+           * React key and nothing else — so ten titled sections of the source
+           * page arrived as one undivided 5,000-character block under a single
+           * h2, with the document outline running h1 → h2 → h6. It is the
+           * fallback path, so it did that on every organisation without a
+           * hand-authored record, not on one page.
+           *
+           * `h3` because the band's own SectionTitle above is the h2.
+           */
+          visibleSections.map((s, i) => {
+            const showHeading =
+              s.heading != null &&
+              s.heading.trim() !== "" &&
+              slugify(s.heading) !== slugify(org.title) &&
+              slugify(s.heading) !== slugify(detail?.aboutHeading ?? "About");
+            return (
+              <section key={s.heading ?? i} className="orgd__ingested-section">
+                {showHeading && (
+                  <h3 id={slugify(s.heading!)} className="orgd__ingested-heading">
+                    {s.heading}
+                  </h3>
+                )}
+                <div
+                  className="gov-prose orgd__prose"
+                  dangerouslySetInnerHTML={{
+                    __html: formatOrgHtml(s.html, showHeading ? 4 : 3),
+                  }}
+                />
+              </section>
+            );
+          })
         )}
         {detail?.aboutHighlights != null && detail.aboutHighlights.length > 0 && (
+          <>
+            {detail.aboutHighlightsHeading != null && (
+              <h3
+                id={slugify(detail.aboutHighlightsHeading)}
+                className="orgd__ingested-heading orgd__highlights-heading"
+              >
+                {detail.aboutHighlightsHeading}
+              </h3>
+            )}
           <ul className="orgd__highlights">
             {detail.aboutHighlights.map((h) => (
               <li key={h.title} className="orgd__highlight-card">
                 <span className="orgd__card-icon">
                   <Icon name={h.icon ?? "verified"} size={32} />
                 </span>
-                <h3 className="orgd__card-title">{h.title}</h3>
+                {/*
+                  * h4 when the set has its own h3 heading above it, h3 when it
+                  * does not — the cards are CHILDREN of that heading, and two
+                  * h3s where one contains the others describes a flat page that
+                  * isn't flat.
+                  */}
+                {detail.aboutHighlightsHeading != null ? (
+                  <h4 className="orgd__card-title">{h.title}</h4>
+                ) : (
+                  <h3 className="orgd__card-title">{h.title}</h3>
+                )}
                 <p className="orgd__card-desc">{h.description}</p>
                 {h.href != null && (
                   <NextLink href={h.href} className="orgd__card-cta">
@@ -320,6 +669,7 @@ export function OrganisationDetail({
               </li>
             ))}
           </ul>
+          </>
         )}
       </>
     ),
@@ -533,6 +883,52 @@ export function OrganisationDetail({
    * PM-AJAY's endpoint into the template every one of 178 organisations renders
    * would put a scheme-specific fetch on 177 pages that have no use for it.
    */
+  /*
+   * What the ingested strip had that the hero strip does not.
+   *
+   * Suppressed entirely when the record declares its own `impact` — NMBA
+   * authors those eight counters deliberately, with the date they were read,
+   * and a second automatic strip of the same figures beside it would be the
+   * duplication this extraction exists to remove.
+   */
+  if (detail?.impact == null && newGlanceFacts.length > 0) {
+    bands.push({
+      id: "at-a-glance",
+      body: (
+        <>
+          <SectionTitle as={2} title="At a Glance" headingId="at-a-glance-heading" />
+          <FactStrip ariaLabel={`${org.title} at a glance`} items={newGlanceFacts} />
+        </>
+      ),
+    });
+  }
+
+  /*
+   * The organisation's own published figures, as one strip.
+   *
+   * `FactStrip` without `overlap` — the overlapping treatment belongs to the
+   * card that straddles the hero, and a second one mid-page would look like a
+   * second hero. The `asOf` line sits under the heading because a counter with
+   * no date on a government page reads as today's number.
+   */
+  if (detail?.impact != null && detail.impact.items.length > 0) {
+    const im = detail.impact;
+    bands.push({
+      id: "impact",
+      body: (
+        <>
+          <SectionTitle
+            as={2}
+            title={im.heading}
+            description={`As published by the Department on ${im.asOf}.`}
+            headingId="impact-heading"
+          />
+          <FactStrip ariaLabel={`${org.title} in numbers`} items={im.items} />
+        </>
+      ),
+    });
+  }
+
   if (reachSlot != null) {
     bands.push({ id: "reach", body: reachSlot });
   }
@@ -868,6 +1264,50 @@ export function OrganisationDetail({
     });
   }
 
+  /*
+   * MESSAGES — signed statements from named office-holders.
+   *
+   * A `blockquote` with a `cite`d attribution, not a leader card: the quote is
+   * what the reader came for and the name is what makes it citable. The source
+   * runs these as a carousel; they are laid out here instead, because a
+   * statement a reader has to press a control to see is a statement most
+   * readers never see.
+   */
+  if (detail?.messages != null && detail.messages.items.length > 0) {
+    const ms = detail.messages;
+    bands.push({
+      id: "messages",
+      body: (
+        <>
+          <SectionTitle as={2} title={ms.heading} headingId="messages-heading">
+            {ms.description != null && <p className="orgd__band-lede">{ms.description}</p>}
+          </SectionTitle>
+          {/*
+            * No decorative quote mark on these cards. `format_quote` at 28px
+            * draws two filled commas that read as the digits "99" above a
+            * paragraph of prose — checked in the browser, and it is the glyph
+            * rendering correctly, not a failed ligature. An ornament that can
+            * be mistaken for a figure does not belong on a departmental page,
+            * and the attribution below each quote already says it is one.
+            */}
+          <ul className="orgd__messages">
+            {ms.items.map((m) => (
+              <li key={m.name} className="orgd__message">
+                <blockquote className="orgd__message-quote">
+                  <p>{m.quote}</p>
+                </blockquote>
+                <footer className="orgd__message-by">
+                  <cite className="orgd__message-name">{m.name}</cite>
+                  <span className="orgd__message-role">{m.designation}</span>
+                </footer>
+              </li>
+            ))}
+          </ul>
+        </>
+      ),
+    });
+  }
+
   if (detail?.socialFeed != null && (detail.socialFeed.posts?.length || detail.socialFeed.handles?.length)) {
     const sf = detail.socialFeed;
     bands.push({
@@ -941,112 +1381,34 @@ export function OrganisationDetail({
   }
 
   if (detail?.contact != null) {
-    const contact = detail.contact;
-    const contactAction = contact.action ?? {
-      label: "View Directory",
-      href: `/website/directory?org=${org.slug}`,
-    };
     bands.push({
       id: "contact",
+      body: <OrganisationContactBand contact={detail.contact} orgSlug={org.slug} />,
+    });
+  }
+
+  /*
+   * The source site's subject tags, last, as they are there. They are a
+   * taxonomy rather than content — a way out of the page into everything else
+   * the Department publishes on the subject — so they sit below the contact
+   * details and are drawn as quiet links, not as another card grid.
+   */
+  if (detail?.tags != null && detail.tags.items.length > 0) {
+    const tg = detail.tags;
+    bands.push({
+      id: "tags",
       body: (
         <>
-          <SectionTitle as={2} title={contact.heading} headingId="contact-heading">
-            <NextLink href={contactAction.href} className={buttonClasses("primary", "outlined", "sm")}>
-              {contactAction.label}
-            </NextLink>
-          </SectionTitle>
-          <div className="orgd__contact">
-            <div className="orgd__contact-grid">
-              {contact.address != null && (
-                <div className="orgd__contact-card">
-                  <div className="flex items-center gap-2 text-primary-dark text-title-2">
-                    <Icon name="location_on" size={20} />
-                    <span>Headquarters</span>
-                  </div>
-                  <p className="text-body-2 text-ink m-0">{contact.address}</p>
-                </div>
-              )}
-              {contact.supportPhone != null && (
-                <div className="orgd__contact-card">
-                  <div className="flex items-center gap-2 text-primary-dark text-title-2">
-                    <Icon name="call" size={20} />
-                    <span>Telephone / Helpline</span>
-                  </div>
-                  <p className="text-body-2 text-ink m-0">
-                    <a href={`tel:${contact.supportPhone.replace(/[^+\d]/g, "")}`} className="text-link hover:underline">
-                      {contact.supportPhone}
-                    </a>
-                  </p>
-                  {contact.supportHours != null && (
-                    <span className="text-body-3 text-ink-subtle">{contact.supportHours}</span>
-                  )}
-                </div>
-              )}
-              {contact.supportEmail != null && (
-                <div className="orgd__contact-card">
-                  <div className="flex items-center gap-2 text-primary-dark text-title-2">
-                    <Icon name="mail" size={20} />
-                    <span>Official Email</span>
-                  </div>
-                  <p className="text-body-2 text-ink m-0">{contact.supportEmail}</p>
-                </div>
-              )}
-              {contact.regionalOffices != null && (
-                <div className="orgd__contact-card">
-                  <div className="flex items-center gap-2 text-primary-dark text-title-2">
-                    <Icon name="domain" size={20} />
-                    <span>State & Regional Offices</span>
-                  </div>
-                  <p className="text-body-2 text-ink m-0">{contact.regionalOffices}</p>
-                </div>
-              )}
-            </div>
-
-            {contact.blocks?.map((block) => (
-              <div className="orgd__people" key={block.heading}>
-                <h3 className="orgd__subhead">{block.heading}</h3>
-                <div className="orgd__tablewrap">
-                  <table className="orgd__table">
-                    <caption className="sr-only">{block.heading}</caption>
-                    <thead>
-                      <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Designation</th>
-                        <th scope="col">Contact</th>
-                        <th scope="col">Email</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {block.people.map((p) => (
-                        <tr key={p.name}>
-                          <th scope="row">{p.name}</th>
-                          <td>{p.designation}</td>
-                          <td>
-                            {p.phone != null ? (
-                              <a href={`tel:${p.phone.replace(/[^+\d]/g, "")}`}>{p.phone}</a>
-                            ) : (
-                              <>
-                                <span aria-hidden="true">—</span>
-                                <span className="sr-only">Not published</span>
-                              </>
-                            )}
-                          </td>
-                          <td>
-                            {p.email ?? (
-                              <>
-                                <span aria-hidden="true">—</span>
-                                <span className="sr-only">Not published</span>
-                              </>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+          <SectionTitle as={2} title={tg.heading} headingId="tags-heading" />
+          <ul className="orgd__tags">
+            {tg.items.map((t) => (
+              <li key={t.href}>
+                <Link href={t.href} external variant="standalone" className="orgd__tag">
+                  {t.label}
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         </>
       ),
     });

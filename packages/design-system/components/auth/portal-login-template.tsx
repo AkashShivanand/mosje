@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AccountPrompt, AuthDivider, ConsentLine, SSOButton } from "./auth-parts";
+import { AccountPrompt, AuthDivider, SSOButton } from "./auth-parts";
 import type { DemoFillDetail } from "../../demo/demo-fab";
 // DS Audit: every control below already existed in the barrel and every one was
 // hand-rolled in this file instead — 77 arbitrary-value Tailwind classes wrapping
@@ -92,7 +92,6 @@ export interface PortalLoginTemplateProps {
   /** Error message to display inside the alert banner */
   error?: string | null;
   /** Called when a footer link is clicked */
-  onFooterLinkClick?: (link: "privacy" | "contact" | "about") => void;
   /**
    * Force the active role, overriding both the URL and `config.defaultRoleId`.
    *
@@ -158,7 +157,6 @@ export function PortalLoginTemplate({
   onSubmit,
   loading = false,
   error = null,
-  onFooterLinkClick,
   roleId,
   onRoleChange,
   deepLinkRole = true,
@@ -636,7 +634,6 @@ export function PortalLoginTemplate({
       portalPickerOpen={pickerOpen}
       tabs={tabs}
       extraContent={config.extraContent}
-      onFooterLinkClick={onFooterLinkClick}
     >
       <AuthFormCard
         headingLevel={headingLevel}
@@ -700,12 +697,15 @@ export function PortalLoginTemplate({
         }
         /* GIGW requires the consent disclosure, and the reference carries it
            directly under the button. */
-        consent={
-          <ConsentLine
-            termsHref={config.links?.termsHref}
-            privacyHref={config.links?.privacyHref}
-          />
-        }
+        /* NO consent line. Removed 7 Sep 2026 by instruction: it is not to
+           appear until it is asked for. The slot stays on `AuthFormCard`, so a
+           portal that must show the disclosure passes its own `ConsentLine` —
+           which is still exported and still documented. Nothing here decides
+           that on a portal's behalf.
+
+           Worth knowing when it comes back: the Figma `AuthFormCard` master has
+           no consent region either, so code and design now agree; it was only
+           `RecoveryFormCard` that drew one. */
         /* Registration, as the reference draws it: a rule with the question
            centred on it, then the route. */
         accountPrompt={

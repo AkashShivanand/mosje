@@ -82,7 +82,6 @@ export default function AdminLoginPage() {
         samaveshLogoSrc={`${BASE}/brand/samavesh-logo.svg`}
         signingInto="Nasha Mukt Bharat Abhiyaan"
         tabs={TABS}
-        onFooterLinkClick={() => toast("This page is coming soon.", "info")}
       >
         <h1 className="mb-1 text-headline-3 text-ink">Log in to your account</h1>
         <p className="mb-6 text-body-2 text-ink-muted">

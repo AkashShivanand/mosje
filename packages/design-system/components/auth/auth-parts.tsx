@@ -5,6 +5,7 @@ import { cn } from "../../utils/cn";
 import { Icon } from "../utilities/icon";
 import { Button } from "../actions/button";
 import "./auth-parts.css";
+import { Link } from "../navigation/link";
 
 /* ---------------------------------------------------------------------------
  * AuthDivider
@@ -435,5 +436,38 @@ export function SigningIntoBar({
         </Button>
       ) : null}
     </div>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+ * AuthHelpLine
+ * ------------------------------------------------------------------------- */
+
+export interface AuthHelpLineProps {
+  /** Where it goes. */
+  href: string;
+  /** What it says — "Back to Login", "Need help signing in?". */
+  children: React.ReactNode;
+  className?: string;
+}
+
+/**
+ * The one quiet link under an authentication card.
+ *
+ * It existed as `<p className="ds-plogin__help"><a href=…>` copied into three
+ * portal pages, which is a design-system class being written by hand outside
+ * the design system — the class is the contract, and four call sites can each
+ * spell it differently. This is that markup, once, with the DS `Link` inside it
+ * so the focus ring and the visited colour are the estate's and not this
+ * stylesheet's guess at them.
+ *
+ * **One link, not a row.** A second one turns it into navigation, and the place
+ * for navigation under a form is `AccountPrompt`, which is built to hold it.
+ */
+export function AuthHelpLine({ href, children, className }: AuthHelpLineProps): React.JSX.Element {
+  return (
+    <p className={cn("ds-plogin__help", className)}>
+      <Link href={href}>{children}</Link>
+    </p>
   );
 }

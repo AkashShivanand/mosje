@@ -1,6 +1,6 @@
 "use client";
 
-// DS Audit: PortalLoginTemplate ✅ existing · useToast ✅ existing. Nothing is
+// DS Audit: PortalLoginTemplate ✅ existing. Nothing is
 // hand-rolled here any more — the two bespoke pages this replaces carried their
 // own tabs, their own captcha and their own forgot-password rows.
 
@@ -8,7 +8,6 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import {
   PortalLoginTemplate,
-  useToast,
   type DemoFillDetail,
   type LoginSubmitPayload,
   type PortalLoginConfig,
@@ -128,7 +127,6 @@ const CONFIG: PortalLoginConfig = {
 export default function EAnudaanLoginPage() {
   const router = useRouter();
   const { login } = useEAnudaan();
-  const { toast } = useToast();
   const [error, setError] = React.useState<string | null>(null);
   // Set only by the demo console: choosing an NGO account on the officer tab
   // (or the reverse) moves the reader to the tab that account can sign in on.
@@ -192,7 +190,6 @@ export default function EAnudaanLoginPage() {
       }}
       error={error}
       onSubmit={handleSubmit}
-      onFooterLinkClick={(link) => toast(`Viewing ${link} policy.`, "info")}
     />
   );
 }

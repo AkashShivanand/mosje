@@ -144,7 +144,6 @@ const meta = {
     loading: { control: "boolean" },
     error: { control: "text" },
     onSubmit: { control: false },
-    onFooterLinkClick: { control: false },
   },
   parameters: {
     design: {
