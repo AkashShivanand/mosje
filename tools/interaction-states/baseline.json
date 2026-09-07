@@ -1,0 +1,229 @@
+{
+  "note": "Selectors that style :hover and never :active. May only shrink.",
+  "generated": "2026-09-07",
+  "total": 104,
+  "files": {
+    "actions/button-group.css": [
+      ".ds-btn"
+    ],
+    "actions/menu.css": [
+      ".ds-menu__item",
+      ".ds-menu__item--danger",
+      ".ds-menu__item--warning"
+    ],
+    "auth/auth-parts.css": [
+      ".ds-auth-sso"
+    ],
+    "dashboard/dashboard.css": [
+      ".ds-chart-export__item",
+      ".ds-chart-export__trigger",
+      ".ds-segmented__option"
+    ],
+    "data-display/accordion.css": [
+      ".sa-accordion-item",
+      ".sa-accordion-item__trigger"
+    ],
+    "data-display/bulk-actions-bar.css": [
+      ".ds-bulk__action"
+    ],
+    "data-display/carousel.css": [
+      ".ds-carousel__arrow",
+      ".ds-carousel__play"
+    ],
+    "data-display/charts/charts.css": [
+      ".ds-chart__cell",
+      ".ds-chart__mark",
+      ".ds-chart__region",
+      ".ds-chart__retry",
+      ".ds-chart__tabletoggle",
+      ".is-off"
+    ],
+    "data-display/charts/ranked-bar-list.css": [
+      ".ds-ranked__label"
+    ],
+    "data-display/data-table.css": [
+      ".ds-table__row",
+      ".ds-table__sort"
+    ],
+    "data-display/document-library.css": [
+      ".ds-doclib__action"
+    ],
+    "data-display/list-group.css": [
+      ".ds-list__row--interactive"
+    ],
+    "data-display/profile-card.css": [
+      ".sa-profile-card"
+    ],
+    "data-display/tree.css": [
+      ".ds-tree__item"
+    ],
+    "data-display/vertical-timeline.css": [
+      ".sa-vertical-timeline-item__content"
+    ],
+    "feedback/error-view.css": [
+      ".ds-error-view"
+    ],
+    "feedback/feedback-widget.css": [
+      ".ds-feedback__send",
+      ".ds-feedback__verdict"
+    ],
+    "feedback/feedback.css": [
+      ".ds-alert__close"
+    ],
+    "feedback/lightbox.css": [
+      ".ds-lightbox__close",
+      ".ds-lightbox__thumb"
+    ],
+    "feedback/modal.css": [
+      ".ds-modal__close"
+    ],
+    "feedback/side-sheet.css": [
+      ".ds-sheet__close"
+    ],
+    "feedback/stepper.css": [
+      ".ds-stepper__button"
+    ],
+    "feedback/toast.css": [
+      ".ds-toast__close"
+    ],
+    "forms/auth-fields.css": [
+      ".ds-captcha__refresh"
+    ],
+    "forms/biometric-capture.css": [
+      ".ds-biometric__go"
+    ],
+    "forms/chip.css": [
+      ".ds-chip__dismiss"
+    ],
+    "forms/combobox.css": [
+      ".ds-combobox__trigger"
+    ],
+    "forms/date-picker.css": [
+      ".ds-datepicker__day",
+      ".ds-datepicker__navbtn",
+      ".ds-datepicker__trigger"
+    ],
+    "forms/date-range-picker.css": [
+      ".ds-daterange__preset"
+    ],
+    "forms/error-summary.css": [
+      ".ds-error-summary__link"
+    ],
+    "forms/filter-select.css": [
+      ".ds-filter-select__trigger"
+    ],
+    "forms/forms.css": [
+      ".ds-field__help-toggle",
+      ".ds-input",
+      ".ds-input-shell",
+      ".ds-select__el",
+      ".ds-textarea"
+    ],
+    "forms/geo-photo-input.css": [
+      ".ds-geophoto__add",
+      ".ds-geophoto__dropzone",
+      ".ds-geophoto__remove"
+    ],
+    "forms/india-id.css": [
+      ".ds-otp__box"
+    ],
+    "forms/inline-edit.css": [
+      ".ds-inline__trigger"
+    ],
+    "forms/media-gallery-input.css": [
+      ".ds-gallery__add",
+      ".ds-gallery__dropzone",
+      ".ds-gallery__remove"
+    ],
+    "forms/media-upload.css": [
+      ".ds-media-upload__action",
+      ".ds-media-upload__dropzone"
+    ],
+    "forms/number-input.css": [
+      ".ds-number__step"
+    ],
+    "forms/password-input.css": [
+      ".ds-password__toggle"
+    ],
+    "forms/search.css": [
+      ".ds-search__clear",
+      ".ds-search__icon--action"
+    ],
+    "forms/selection-control.css": [
+      ".ds-selection--card"
+    ],
+    "forms/time-picker.css": [
+      ".ds-timepicker__trigger"
+    ],
+    "forms/time-slot.css": [
+      ".ds-slot__input"
+    ],
+    "navigation/app-switcher-panel.css": [
+      ".ds-appsw__item"
+    ],
+    "navigation/breadcrumb.css": [
+      ".ds-breadcrumb__link"
+    ],
+    "navigation/content-nav.css": [
+      ".ds-content-nav__link",
+      ".ds-content-nav__link--current",
+      ".ds-content-nav__sublink"
+    ],
+    "navigation/footer.css": [
+      ".ds-footer__link"
+    ],
+    "navigation/header/header.css": [
+      ".ds-hdr-acct__menu-item",
+      ".ds-hdr-drawer__sublink",
+      ".ds-hdr-mega-item",
+      ".ds-hdr-nav__drop-link",
+      ".ds-hdr-nav__link",
+      ".ds-hdr-nav__overview",
+      ".ds-navsheet__close",
+      ".ds-navsheet__link",
+      ".ds-navsheet__sublink",
+      ".is-danger"
+    ],
+    "navigation/language-switcher.css": [
+      ".ds-lang__label"
+    ],
+    "navigation/link.css": [
+      ".ds-link--standalone"
+    ],
+    "navigation/pagination.css": [
+      ".is-current"
+    ],
+    "navigation/samavesh-banner.css": [
+      ".ds-samavesh-banner__explore-btn",
+      ".ds-samavesh-banner__view-all"
+    ],
+    "navigation/sidebar/sidebar.css": [
+      ".ds-sidebar__row",
+      ".ds-sidebar__sub-row"
+    ],
+    "navigation/site-footer.css": [
+      ".ds-sitefooter__link",
+      ".ds-sitefooter__social-link"
+    ],
+    "navigation/tabs.css": [
+      ".ds-tabs__menu-item",
+      ".ds-tabs__more",
+      ".ds-tabs__tab"
+    ],
+    "navigation/zone-switcher.css": [
+      ".ds-appsw__fab"
+    ],
+    "utilities/accessibility-bar.css": [
+      ".sa-abar__gov",
+      ".sa-abar__skip"
+    ],
+    "utilities/back-to-top.css": [
+      ".ds-back-to-top"
+    ],
+    "utilities/ux4g-accessibility-widget.css": [
+      ".ux4g-accessibility-help-form-container",
+      ".ux4g-accessibility-uw-section",
+      ".ux4g-accessibility-uwaw-features__item__i"
+    ]
+  }
+}
