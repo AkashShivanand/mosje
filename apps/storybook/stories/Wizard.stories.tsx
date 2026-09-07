@@ -192,3 +192,47 @@ export const WithErrorSummary: Story = {
     );
   },
 };
+
+/**
+ * The step gates on something the reader must resolve here, so the advance control is held
+ * and `nextBlockedReason` says why beside it. e-Anudaan's upload step is the case it was
+ * added for: the live portal refuses to move on while a document has failed its check.
+ *
+ * **Use it only for work in flight or a condition resolved on this step** — a set still
+ * verifying, a check this step failed. Ordinary field validation belongs in `onNext`, which
+ * can reject and populate `error` (see WithErrorSummary): a form the reader can submit and
+ * be told what is wrong is more usable than one whose button is dark for reasons they must
+ * deduce. Never set `nextDisabled` without `nextBlockedReason`; a disabled control with no
+ * stated reason is a dead end.
+ */
+export const NextBlocked: Story = {
+  args: {
+    current: 2,
+    nextDisabled: true,
+    nextBlockedReason:
+      "2 documents are not valid. Replace them — or use Re-verify if you believe the check is wrong.",
+  },
+  render: (args) => (
+    <Wizard {...args}>
+      <StepBody index={2} />
+    </Wizard>
+  ),
+};
+
+/**
+ * The same control held for a reason that clears itself. Nothing is asked of the reader,
+ * so the sentence says how the wait ends rather than what to do.
+ */
+export const NextBlockedWhileChecking: Story = {
+  args: {
+    current: 2,
+    nextDisabled: true,
+    nextBlockedReason:
+      "Checking 12 documents… this takes a few seconds. Next opens as soon as the check completes.",
+  },
+  render: (args) => (
+    <Wizard {...args}>
+      <StepBody index={2} />
+    </Wizard>
+  ),
+};

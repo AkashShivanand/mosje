@@ -1,0 +1,110 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     The campaign join banner — above the page hero.
+     Bound to the DS success ramp: the Abhiyaan publishes this band in its own
+     green, which is neither gov-blue nor saffron.
+     ============================================================================ */
+
+  /* successScale-600 (#046a38). The estate has no `--sa-bg-success-*` rung, and
+     the scale is what `fact-strip.css` already reaches for when it needs a
+     ramp colour directly. White on it measures 6.72:1, and the deep green of
+     the white CTA sitting on it measures the same. */
+  .orgjb {
+    background-color: var(--sa-color-successScale-600);
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .orgjb__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-16) var(--sa-inline-24);
+    padding-block: var(--sa-padding-20);
+  }
+
+  .orgjb__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    min-width: 0;
+  }
+
+  .orgjb__heading {
+    margin: 0;
+    font-size: var(--sa-type-headline-4-size);
+    line-height: var(--sa-type-headline-4-lh);
+    font-weight: var(--sa-font-weight-bold);
+    color: inherit;
+  }
+
+  .orgjb__text {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: inherit;
+  }
+
+  .orgjb__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-12);
+  }
+
+  /* White on the green, so the button is the lightest thing in the band and
+     reads as the one action. */
+  .orgjb__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-12) var(--sa-padding-20);
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-color-successScale-700);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-bold);
+    text-decoration: none;
+  }
+
+  .orgjb__cta:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .orgjb__helpline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border: 1px solid currentColor;
+    border-radius: var(--sa-shape-8);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .orgjb__helpline-label {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .orgjb__helpline-number {
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-weight: var(--sa-font-weight-bold);
+  }
+
+  @media (max-width: 767px) {
+    .orgjb__inner {
+      align-items: flex-start;
+    }
+
+    .orgjb__actions {
+      width: 100%;
+    }
+  }
+}

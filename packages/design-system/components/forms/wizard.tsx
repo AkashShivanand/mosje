@@ -19,6 +19,24 @@ export interface WizardProps {
   submitLabel?: string;
   /** Label for the advance button. @default "Continue" */
   nextLabel?: string;
+  /**
+   * Disable the advance (or submit) control while the step is not yet clearable.
+   *
+   * For a step that gates on WORK STILL IN FLIGHT or on a condition the user must
+   * resolve here — a document set still verifying, a check the step itself failed.
+   * The reason must be visible on the step: a control that is disabled with nothing
+   * saying why is a dead end, so pair this with `nextBlockedReason`.
+   *
+   * NOT for ordinary field validation. That belongs in `onNext`, which can reject and
+   * populate `error` — a form the user can submit and be told what is wrong is more
+   * usable than one whose button is dark for reasons they must deduce.
+   */
+  nextDisabled?: boolean;
+  /**
+   * Why the advance control is disabled, announced politely beside it. Rendered only
+   * when `nextDisabled` is set.
+   */
+  nextBlockedReason?: string;
   /** Error-summary message; rendered in a focusable alert above the actions. */
   error?: string;
   /** Ref to the error-summary container so the parent can focus it on failure. */
@@ -53,6 +71,8 @@ export function Wizard({
   onSubmit,
   submitLabel = "Submit",
   nextLabel = "Continue",
+  nextDisabled = false,
+  nextBlockedReason,
   error,
   errorRef,
   children,
@@ -94,12 +114,17 @@ export function Wizard({
         <Button type="button" appearance="outlined" iconLeft={<IcLeft />} onClick={onBack} disabled={isFirst}>
           Back
         </Button>
+        {nextDisabled && nextBlockedReason && (
+          <p className="ds-wizard__blocked" role="status" aria-live="polite">
+            {nextBlockedReason}
+          </p>
+        )}
         {isLast ? (
-          <Button type="button" iconLeft={<IcSave />} onClick={onSubmit}>
+          <Button type="button" iconLeft={<IcSave />} onClick={onSubmit} disabled={nextDisabled}>
             {submitLabel}
           </Button>
         ) : (
-          <Button type="button" iconRight={<IcRight />} onClick={onNext}>
+          <Button type="button" iconRight={<IcRight />} onClick={onNext} disabled={nextDisabled}>
             {nextLabel}
           </Button>
         )}

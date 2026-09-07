@@ -8,6 +8,7 @@
  * Four states, with the live glyph and pill wording:
  *
  *   pending   "Verifying…"                        (no pill)
+ *   unavailable "Automatic check unavailable"       (no pill)
  *   verified  "✓ Document verified — <type>"      "Verified · 100%"
  *   review    "⚠ Needs review — <type>"           "Needs review · 82%"
  *   invalid   "✗ Document not valid — <type>"     "Not valid · 95%"
@@ -18,7 +19,7 @@
  * Account Number, Rent Amount, Project Address …).
  */
 
-export type VerdictState = "pending" | "verified" | "review" | "invalid";
+export type VerdictState = "pending" | "verified" | "review" | "invalid" | "unavailable";
 
 export interface DocVerdict {
   state: VerdictState;
@@ -47,6 +48,7 @@ export interface UploadedDoc {
 
 export const VERDICT_LABEL: Record<VerdictState, string> = {
   pending: "Verifying…",
+  unavailable: "Automatic check unavailable",
   verified: "Document verified",
   review: "Needs review",
   invalid: "Document not valid",
@@ -54,6 +56,7 @@ export const VERDICT_LABEL: Record<VerdictState, string> = {
 
 export const VERDICT_GLYPH: Record<VerdictState, string> = {
   pending: "hourglass_top",
+  unavailable: "cloud_off",
   verified: "check_circle",
   review: "warning",
   invalid: "cancel",
@@ -61,7 +64,7 @@ export const VERDICT_GLYPH: Record<VerdictState, string> = {
 
 /** Pill text, e.g. "Verified · 100%". */
 export function verdictPill(v: DocVerdict): string | null {
-  if (v.state === "pending" || v.confidence == null) return null;
+  if (v.state === "pending" || v.state === "unavailable" || v.confidence == null) return null;
   const word = v.state === "verified" ? "Verified" : v.state === "review" ? "Needs review" : "Not valid";
   return `${word} · ${v.confidence}%`;
 }
@@ -78,6 +81,13 @@ export function verdictHeadline(v: DocVerdict): string {
  */
 export const DEMO_VERDICTS: Record<VerdictState, DocVerdict> = {
   pending: { state: "pending" },
+  unavailable: {
+    state: "unavailable",
+    summary:
+      "We could not check this document automatically. Your upload is saved and a reviewer " +
+      "will verify it by hand — you do not need to do anything.",
+    reasons: ["You can use Re-verify if you would like to try the automatic check again."],
+  },
   verified: {
     state: "verified",
     detectedType: "Annual Report of NGO",
@@ -118,7 +128,7 @@ export const DEMO_VERDICTS: Record<VerdictState, DocVerdict> = {
  */
 export function demoVerdictFor(state: VerdictState, expected: string): DocVerdict {
   const base = DEMO_VERDICTS[state];
-  if (state === "pending") return base;
+  if (state === "pending" || state === "unavailable") return base;
   if (state === "verified") {
     return {
       ...base,
@@ -149,10 +159,59 @@ export function demoVerdictFor(state: VerdictState, expected: string): DocVerdic
   };
 }
 
-/** The live foot warning when invalid documents remain but the demo lets you continue. */
-export function invalidDocsWarning(count: number): string | null {
-  if (count === 0) return null;
-  return `${count} document${count === 1 ? " is" : "s are"} not valid. Continuing anyway — test mode. This would block on the live portal.`;
+/**
+ * Whether the upload step may be left, and what to say when it may not.
+ *
+ * The live portal BLOCKS on an invalid document and on one still verifying; our clone used
+ * to print "Continuing anyway — test mode. This would block on the live portal." and let the
+ * applicant through. A prototype that walks past its own gate teaches the wrong flow to
+ * everyone who is shown it, and it is the one behaviour the live capture of 2026-09-07 is
+ * unambiguous about:
+ *
+ *   "12 documents are not valid. Replace them — or use Re-verify if you believe the check
+ *    is wrong."
+ *
+ * `unavailable` does NOT block. That is the whole point of the state: when the checking
+ * service is down the portal accepts the upload and routes it to a human, so an applicant is
+ * never trapped by an outage that is not their fault. It was the live behaviour throughout
+ * August.
+ *
+ * `review` does not block either — it is a confidence shortfall the officer resolves, not a
+ * defect the applicant can fix.
+ */
+export function uploadGate(
+  documents: readonly { n: number; optional?: boolean }[],
+  uploaded: Record<number, { verdict: DocVerdict }>,
+): { blocked: boolean; reason: string | null } {
+  const mandatory = documents.filter((d) => !d.optional);
+  const missing = mandatory.filter((d) => uploaded[d.n] == null).length;
+  const present = Object.values(uploaded);
+  const invalid = present.filter((u) => u.verdict.state === "invalid").length;
+  const pending = present.filter((u) => u.verdict.state === "pending").length;
+
+  if (invalid > 0) {
+    return {
+      blocked: true,
+      reason:
+        `${invalid} document${invalid === 1 ? " is" : "s are"} not valid. Replace ` +
+        `${invalid === 1 ? "it" : "them"} — or use Re-verify if you believe the check is wrong.`,
+    };
+  }
+  if (pending > 0) {
+    return {
+      blocked: true,
+      reason:
+        `Checking ${pending} document${pending === 1 ? "" : "s"}… this takes a few seconds. ` +
+        `Next opens as soon as the check completes.`,
+    };
+  }
+  if (missing > 0) {
+    return {
+      blocked: true,
+      reason: `Upload all ${mandatory.length} mandatory documents to proceed (${mandatory.length - missing}/${mandatory.length}).`,
+    };
+  }
+  return { blocked: false, reason: null };
 }
 
 /**

@@ -6,6 +6,16 @@ import { PageTrail, type Crumb } from "./page-trail";
 export interface PageHeroProps {
   title: string;
   breadcrumb: Crumb[];
+  /**
+   * Rendered between the breadcrumb bar and the title band.
+   *
+   * For a call to action a source page puts above its own title — NMBA's green
+   * "Join Nasha Mukt Bharat Abhiyaan" band. It sits BELOW the trail rather than
+   * above it: the breadcrumb is how a reader knows where they are, so it stays
+   * the first thing under the navigation on every page of the estate, and a
+   * promotional band does not get to come before it.
+   */
+  afterBreadcrumb?: React.ReactNode;
   badge?: string;
   logoSrc?: string;
   featuredImage?: string;
@@ -65,6 +75,7 @@ export interface PageHeroProps {
 export function PageHero({
   title,
   breadcrumb,
+  afterBreadcrumb,
   badge,
   logoSrc,
   featuredImage,
@@ -118,6 +129,8 @@ export function PageHero({
           <PageTrail items={breadcrumb} />
         </div>
       </div>
+
+      {afterBreadcrumb}
 
       <SitePageHeader
         variant={variant}
