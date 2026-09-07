@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { SiteHeader, Icon, type AccountMenuItem, type SidebarNavGroup, type SidebarNavIdentity, OrgLogo } from "@mosje/design-system";
 import { type NavItem } from "@/lib/eutthan/portal-data";
 import { portalLink } from "./eutthan-shared";
@@ -34,6 +35,7 @@ export function EutthanHeader({
 
   return (
     <SiteHeader
+      linkAs={Link}
       homeHref={portalLink("/")}
       variant="portal"
       sticky

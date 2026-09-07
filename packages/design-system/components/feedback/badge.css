@@ -24,7 +24,7 @@
      MoSJE / UX4G — Badge atom
      Semantic CSS classes only; all colours reference design tokens (--sa-*).
      Combine: .ds-badge  +  .ds-badge--<status>  +  .ds-badge--<size>
-     Status: primary | success | danger | neutral
+     Status: neutral (default) | primary | info | success | warning | danger
      Sizes: sm | lg
      Pill shaped (radius-pill); tonal background of the status colour.
      ============================================================================ */
@@ -71,7 +71,14 @@
   }
 
   .ds-badge--neutral {
-    --_bg: var(--sa-bg-neutral-subtler);
+    /* `subtle` (#dcdee1), not `subtler` (#eef0f3). Neutral is the status a reader sees when
+       nothing has happened yet — "Not attached", "Draft", "No response" — and it is almost
+       always sitting on a white card or table row. Against #ffffff, subtler measures 1.13:1,
+       so the pill has no perceptible edge and reads as loose text rather than a chip; subtle
+       measures 1.35:1 and reads as an object. The ink is unchanged and still clears AA by a
+       wide margin (#1e2124 on #dcdee1 is 12.0:1). Both tokens are redefined in every brand
+       mode and in dark, so the pair moves together. */
+    --_bg: var(--sa-bg-neutral-subtle);
     --_fg: var(--sa-color-text-default);
   }
 
@@ -101,7 +108,13 @@
     --_fg: var(--sa-color-text-onPrimary);
   }
   .ds-badge--solid.ds-badge--info {
-    --_bg: var(--sa-color-status-infoStrong);
+    /* `info` (#006d85), not `infoStrong` (#005568). Every other family's SOLID chip takes the
+       plain rung and reserves the `Strong` one for INK — look two rules up: the subtle info
+       chip uses `infoStrong` as its foreground. Info was the only family whose solid rule
+       reached for its own ink colour as a fill, which is what a copy-paste from the subtle
+       rule above it looks like. Both clear AA on white (8.4:1 and 6.0:1); this one matches
+       its siblings and matches `bg/status/info/bolder`, which is what the Figma variant binds. */
+    --_bg: var(--sa-color-status-info);
     --_fg: var(--sa-color-text-onPrimary);
   }
   .ds-badge--solid.ds-badge--success {
