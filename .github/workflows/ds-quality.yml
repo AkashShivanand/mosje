@@ -293,6 +293,14 @@ jobs:
       # does not exist for anyone browsing the library, so every component page must end
       # in an ARRANGEMENTS section that draws every property switched on, every group
       # arrangement and every code-only state (figma-documentation-style.md). The
+      # A component that takes `linkAs` and is not given it renders a bare anchor, so every
+      # click costs a full document load — and nothing breaks, which is why it went unnoticed
+      # across 22 call sites, then returned on one portal a day after being fixed. The list of
+      # components is derived from the design-system source, so a new one is covered the day it
+      # gains the prop. Specimens and stories are out of scope and say why.
+      - name: linkAs — every navigating call site routes through the app's link component
+        run: npm run check:link-as
+
       # baseline lists the pages that do not carry it yet and may only shrink; this half
       # asks whether that list is well-formed.
       - name: Figma arrangements — the baseline of pages without the section is coherent
