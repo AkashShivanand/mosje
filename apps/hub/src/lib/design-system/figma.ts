@@ -204,6 +204,15 @@ export const FIGMA_NODES = {
      The page id is recorded rather than a frame id, because a page id survives a
      rebuild and a frame id does not — the lesson `shape` above was taught. */
   stepper: "2106:2",
+  /* The `Action Banner` component set on its own page, added 2026-09-07 between
+     the "Feedback & Status" divider and Alerts/Toasts — the group that matches
+     its folder, components/feedback/. Variant (Banner|Card) x Breakpoint
+     (Desktop|Mobile), four variants, zero unbound values.
+
+     The Card's two breakpoints draw the SAME layout at two cell widths: only the
+     banner has a media query (640). The axis is complete rather than reflowing,
+     and the Component record says so — do not collapse it. */
+  actionBanner: "57837:796",
   loader: "2141:323879",
   avatars: "2141:296702",
   emptyState: "2141:296719",
