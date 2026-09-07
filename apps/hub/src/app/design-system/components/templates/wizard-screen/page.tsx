@@ -41,10 +41,7 @@ export default function WizardScreenPage(): React.JSX.Element {
       name="Wizard Screen"
       status="Beta"
       summary="One record, entered in stages. It adds the page around the shared Wizard: the scheme title, the step meta line, the draft banner and any notices the step must carry."
-      figma={{
-        absent:
-          "Drawn across 22 of the handoff's 44 screens, but with two different stepper treatments. One ships; the divergence is recorded in docs/audit/figma-handoff-defects-2026-09-06.md §2.9.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<WizardSpecimen />}
       propsFrom="WizardScreenProps"
       a11y={A11Y}

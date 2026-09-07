@@ -42,10 +42,7 @@ export default function OverviewScreenPage(): React.JSX.Element {
       name="Overview Screen"
       status="Beta"
       summary="Many records aggregated into figures. Headline KPIs, then charts, then context, then what moved recently — the reader's order, not the database's."
-      figma={{
-        absent:
-          "Drawn once, as the orphan frame e-anudaan-dashboard (51326:6489), which sits in no section on the handoff page and is built almost entirely from layers named Frame.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<OverviewSpecimen />}
       propsFrom="OverviewScreenProps"
       a11y={A11Y}

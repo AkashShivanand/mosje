@@ -50,10 +50,7 @@ export default function PortalPagePage(): React.JSX.Element {
       name="Portal Page"
       status="Beta"
       summary="Tier A of the screen-template system: the masthead, the rail, the content column and the footer, resolved from the portal slug and the viewer's role."
-      figma={{
-        absent:
-          "Chrome is a page-composition rule rather than a published master. Its parts — Navbar and Sidebar — are published separately in the SAMAVESH library.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<WorklistSpecimen />}
       propsFrom="PortalPageProps"
       a11y={A11Y}

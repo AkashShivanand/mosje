@@ -35,10 +35,7 @@ export default function AuthScreenPage(): React.JSX.Element {
       name="Auth Screen"
       status="Beta"
       summary="Credentials, before there is a session. This is Portal Login Template under the name the decision table uses — an alias, not a wrapper: no second component, no extra render layer, no props of its own."
-      figma={{
-        absent:
-          "The auth geometry is the one clean set in the handoff — hero 922 / form column 518 at x=922 / card 390 with 64px gutters on desktop, and 375 / card 343 / 16px gutters on mobile, consistent across all 18 drawn screens. It already matched the built component, so nothing was rebuilt.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={
         <Callout type="info" title="The specimen lives on the Portal Login Template page">
           There is nothing to render here that is not rendered there. This page exists so that a

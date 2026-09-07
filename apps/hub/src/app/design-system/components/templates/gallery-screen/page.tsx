@@ -41,10 +41,7 @@ export default function GalleryScreenPage(): React.JSX.Element {
       name="Gallery Screen"
       status="Beta"
       summary={"Media a reader manages. Grid and list are one capability at two densities — the toggle changes how much fits, never what can be done."}
-      figma={{
-        absent:
-          "Absent. No media or gallery surface is drawn on the handoff page.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<GallerySpecimen />}
       propsFrom="GalleryScreenProps"
       a11y={A11Y}
