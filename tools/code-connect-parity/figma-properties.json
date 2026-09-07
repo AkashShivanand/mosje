@@ -116,6 +116,29 @@
       "State"
     ]
   },
+  "ActionBanner": {
+    "nodeId": "57837:796",
+    "captured": "2026-09-07",
+    "properties": {
+      "Variant": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Banner",
+          "Card"
+        ]
+      },
+      "Breakpoint": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Mobile"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Breakpoint"
+    ]
+  },
   "BarChart": {
     "nodeId": "57417:15992",
     "captured": "2026-09-05",
