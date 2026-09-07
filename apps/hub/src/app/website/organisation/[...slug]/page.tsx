@@ -11,6 +11,7 @@ import { AdarshGramDashboard } from "@/components/website/AdarshGramDashboard";
 import { GiaDashboard } from "@/components/website/GiaDashboard";
 import { HostelDashboard } from "@/components/website/HostelDashboard";
 import { PmajayWorksMap } from "@/components/website/PmajayWorksMap";
+import { OrganisationJoinBanner } from "@/components/website/OrganisationJoinBanner";
 import { DeAddictionMap } from "@/components/website/nmba/DeAddictionMap";
 import {
   DEADDICTION_CENTRES,
@@ -323,6 +324,11 @@ export default async function OrganisationDetailPage({
           { label: org.title },
         ],
     lastUpdated: getContentSyncedDate(),
+    // The campaign call to action the source prints ABOVE the page title.
+    beforeHero:
+      !isSubPage && detail?.joinBanner != null ? (
+        <OrganisationJoinBanner banner={detail.joinBanner} />
+      ) : undefined,
     logoSrc: detail?.logo ?? (rootOrg as { logo?: string })?.logo ?? "/website/images/National-Emblem-logo.svg",
     featuredImage: detail?.featuredImage ?? org.featuredImage ?? rootOrg?.featuredImage,
     description:
