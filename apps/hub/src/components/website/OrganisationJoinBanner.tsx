@@ -7,37 +7,61 @@ import type { OrganisationDetail } from "@/content/website/organisation-details"
 import "./organisation-join-banner.css";
 
 /**
- * The call-to-action band a campaign page opens with, above its own title.
+ * The band a campaign page opens with, above its own title.
  *
- * NMBA's source page leads with a green band carrying the volunteer invitation,
- * a QR code, a Register Now button, the national de-addiction helpline and a
- * dismiss control — the campaign's front door, above the h1. This estate folded
- * it into the hero's quick actions, which lost the invitation and moved the
- * button below the page title.
+ * ── THE THING THIS BAND WAS GETTING WRONG ────────────────────────────────────
  *
- * GREEN, AND DELIBERATELY NOT A BRAND COLOUR. The Abhiyaan publishes this band
- * in its own green, which is neither gov-blue nor saffron; it is the one place
- * on the estate where the campaign's identity outranks the department's, and it
- * is bound to the DS success ramp rather than to a literal.
+ * It held seven elements for TWO ENTIRELY DIFFERENT PEOPLE, at the same visual
+ * weight, in one green rectangle:
  *
- * ── WHY THE HELPLINE OUTRANKS THE BUTTON ─────────────────────────────────────
+ *   · someone browsing a government campaign, who might volunteer — unhurried,
+ *     exploring, perfectly willing to read a sentence first;
+ *   · someone in trouble, or whose child is, who needs a telephone number — now,
+ *     possibly at four in the morning, possibly on a bad connection.
  *
- * The source draws the register action as an OUTLINED button and the helpline as
- * a filled white pill — so on the department's own page the loudest object in
- * the band is the phone number, not the campaign's recruitment. An earlier pass
- * here inverted that, on the reasoning that a band should have exactly one
- * button. The reasoning was right and the conclusion was wrong: both are
- * actions, and on a page about drug de-addiction the four digits somebody in
- * trouble needs are correctly the more prominent of the two. The source's
- * hierarchy is reproduced rather than improved on.
+ * Every previous pass, this estate's and the source's, argued about which of
+ * those two should be louder. That is the wrong argument: they are not two
+ * treatments of one message, they are two messages — and the reason the band
+ * kept reading as cluttered is that it was being asked to be two things at once.
+ *
+ * So the band now has an ANCHOR and a GUEST. The helpline is the anchor: first
+ * in reading order, on the only white surface, and permanent. The campaign is
+ * the guest: it introduces itself, offers two ways to accept, and can be shown
+ * the door.
+ *
+ * ── AND THE DEFECT THAT FOLLOWS FROM IT ──────────────────────────────────────
+ *
+ * The dismiss shipped removing the WHOLE band — so a control whose job is "I do
+ * not want this advertisement" also deleted the national de-addiction helpline
+ * from the top of a page about drug de-addiction. Nobody decided that; it fell
+ * out of two messages sharing one container.
+ *
+ * The helpline now sits OUTSIDE the collapsible region. Dismissing the campaign
+ * leaves it exactly where it was and the band simply gets shorter. A promotion
+ * can be refused; a number somebody might need at four in the morning is not
+ * something they should be able to throw away by accident.
+ *
+ * ── THE QR AND THE BUTTON ARE ONE THING ──────────────────────────────────────
+ *
+ * They open the same URL. The source puts them at opposite ends of the band,
+ * about 900px apart, where nothing tells a reader they are the same offer. They
+ * are adjacent here, in one group, so proximity does the explaining and no
+ * caption has to.
+ *
+ * ── GREEN, AND DELIBERATELY NOT A BRAND COLOUR ───────────────────────────────
+ *
+ * The Abhiyaan publishes this band in its own green, which is neither gov-blue
+ * nor saffron; it is the one place on the estate where the campaign's identity
+ * outranks the department's, and it is bound to the DS success ramp rather than
+ * to a literal.
  *
  * ── WHY THIS IS A CLIENT COMPONENT ───────────────────────────────────────────
  *
- * Only for the dismiss. The state is deliberately in memory and nowhere else —
- * not localStorage, not sessionStorage — so the band comes back on reload. A
- * campaign the department is running is not something a reader gets to switch
- * off permanently by clicking one X; it is something they can push out of the
- * way to read the page underneath.
+ * Only for the dismiss. The state is in memory and nowhere else — not
+ * localStorage, not sessionStorage — so the campaign returns on reload. A
+ * campaign the department is running is not something a reader switches off
+ * permanently by clicking one X; it is something they push out of the way to
+ * read the page underneath.
  */
 export function OrganisationJoinBanner({
   banner,
@@ -48,25 +72,24 @@ export function OrganisationJoinBanner({
   const [closing, setClosing] = React.useState(false);
   const [gone, setGone] = React.useState(false);
 
-  const external =
-    banner.action.external || banner.action.href.startsWith("http");
+  const external = banner.action.external || banner.action.href.startsWith("http");
 
   /*
    * A BACKSTOP FOR THE TRANSITION THAT MIGHT NOT RUN.
    *
    * The collapse animates `grid-template-rows`, which not every engine
    * interpolates. Where it does not, the rows snap to `0fr` and `transitionend`
-   * never fires for that property — leaving a band that is invisible (opacity 0,
-   * zero height) but still MOUNTED, so its button and its two links stay in the
-   * tab order. A keyboard user would tab into a control they cannot see.
+   * never fires for that property — leaving a campaign that is invisible
+   * (opacity 0, zero height) but still MOUNTED, so its button and its link stay
+   * in the tab order. A keyboard user would tab into controls they cannot see.
    *
    * So the unmount does not depend on the animation completing. Comfortably
-   * longer than the 150ms exit so it never truncates a transition that IS
+   * longer than the 200ms collapse so it never truncates a transition that IS
    * running; whichever arrives first wins, and setting `gone` twice is a no-op.
    */
   React.useEffect(() => {
     if (!closing) return;
-    const t = window.setTimeout(() => setGone(true), 400);
+    const t = window.setTimeout(() => setGone(true), 450);
     return () => window.clearTimeout(t);
   }, [closing]);
 
@@ -78,9 +101,14 @@ export function OrganisationJoinBanner({
      * the whole masthead they had already tabbed past.
      *
      * `#content` is this site's <main>, and the band sits at the top of it, so
-     * moving focus there lands almost exactly where the band was. The tabindex
-     * is set here rather than in the markup because a permanent `tabindex="-1"`
-     * on <main> is a change to a shared layout for one component's benefit.
+     * moving focus there lands almost exactly where the campaign was. NOT the
+     * surviving helpline link, which was the other candidate: a reader who has
+     * just said "less of this" should be put in front of the page, not left
+     * standing on the one part of the band that did not go away.
+     *
+     * The tabindex is set here rather than in the markup because a permanent
+     * `tabindex="-1"` on <main> is a change to a shared layout for one
+     * component's benefit.
      */
     const main = document.getElementById("content");
     if (main) {
@@ -99,108 +127,124 @@ export function OrganisationJoinBanner({
     setClosing(true);
   }
 
-  const band = gone ? null : (
-    <section
-      className={`orgjb${closing ? " orgjb--closing" : ""}`}
-      aria-labelledby={headingId}
-      /* The collapse is a grid-row transition; when it finishes, unmount. Bound
-         to the transition rather than to a timer so the two can never disagree
-         about how long the animation is. */
-      onTransitionEnd={(e) => {
-        if (e.propertyName === "grid-template-rows") setGone(true);
-      }}
-    >
-      {/* Out of the tab order the moment it starts leaving: for the 150ms the
-          band is fading it is still mounted, and a control at opacity 0 that can
-          still be reached by Tab is worse than one that is simply gone. */}
-      <div className="orgjb__collapse" inert={closing || undefined}>
-        <div className="sa-container orgjb__inner">
-          {banner.qrSrc ? (
-            /*
-             * DECORATIVE, and that is not a shortcut. The code encodes the same
-             * URL as the button beside it, which is already a link with a name —
-             * so describing the picture would announce the destination twice to
-             * anyone who cannot scan it anyway.
-             */
-            <span className="orgjb__qr">
-              <Image src={banner.qrSrc} alt="" width={80} height={80} />
-            </span>
-          ) : null}
-
-          <div className="orgjb__copy">
-            <h2 id={headingId} className="orgjb__heading">
-              {banner.heading}
-            </h2>
-            <p className="orgjb__text">{banner.text}</p>
-          </div>
-
-          <a
-            className="orgjb__cta"
-            href={banner.action.href}
-            target={external ? "_blank" : undefined}
-            rel={external ? "noreferrer" : undefined}
-          >
-            <span>{banner.action.label}</span>
-            <Icon
-              name={external ? "open_in_new" : "arrow_forward"}
-              size={20}
-              aria-hidden
-            />
-            {external && <span className="sr-only">(opens in a new tab)</span>}
-          </a>
-
-          {/* The helpline is a telephone number, so it dials. It reached this
-              estate as a heading with the digits in a sibling element and no
-              link at all. */}
-          <a className="orgjb__helpline" href={`tel:${banner.helplineNumber}`}>
-            <span className="orgjb__helpline-label">
-              {banner.helplineLabel}
-            </span>
-            <span className="orgjb__helpline-pill">
-              <span className="orgjb__helpline-icon">
-                <Icon name="call" size={20} aria-hidden />
-              </span>
-              <span className="orgjb__helpline-number">
-                {banner.helplineNumber}
-              </span>
-            </span>
-          </a>
-
-          <button
-            type="button"
-            className="orgjb__dismiss"
-            onClick={dismiss}
-            /*
-             * Named by what it removes, not by its glyph. "Close" on its own
-             * gives a screen-reader user a control and no idea what it closes,
-             * on a page that also has a menu, a chat panel and a cookie notice.
-             */
-            aria-label={`Dismiss the ${banner.heading} announcement`}
-          >
-            <Icon name="close" size={20} aria-hidden />
-          </button>
-        </div>
-      </div>
-    </section>
-  );
-
   return (
     <>
       {/*
        * THE LIVE REGION IS MOUNTED FROM THE FIRST RENDER, EMPTY.
        *
-       * The band going away is announced, because focus moving on its own is not
-       * an explanation of what happened. But a region that is INSERTED carrying
-       * its text is routinely not announced at all — assistive technology has to
-       * have been observing the node before the text arrived. So the paragraph
-       * always exists and only its contents change.
+       * The campaign going away is announced, because focus moving on its own is
+       * not an explanation of what happened. But a region that is INSERTED
+       * carrying its text is routinely not announced at all — assistive
+       * technology has to have been observing the node before the text arrived.
+       * So the paragraph always exists and only its contents change.
+       *
+       * It says what SURVIVED as well as what went, because "dismissed" alone
+       * would leave a reader who wanted the number believing they had lost it.
        */}
       <p className="sr-only" role="status">
         {gone
-          ? `${banner.heading}: announcement dismissed. It returns when the page is reloaded.`
+          ? `${banner.heading}: announcement dismissed. The ${banner.helplineLabel}, ${banner.helplineNumber}, is still here. The announcement returns when the page is reloaded.`
           : ""}
       </p>
-      {band}
+
+      <section
+        className="orgjb"
+        /* Named by the campaign while the campaign is here, and by what remains
+           once it is not — a region whose name describes something no longer
+           inside it is worse than no name at all. */
+        aria-labelledby={gone ? undefined : headingId}
+        aria-label={gone ? banner.helplineLabel : undefined}
+      >
+        <div className="sa-container orgjb__inner">
+          {/*
+           * ── THE ANCHOR ──────────────────────────────────────────────────────
+           *
+           * Outside the collapsible region, first in the DOM, first in reading
+           * order, and on the only white surface in the band — the one element
+           * here allowed to be the brightest thing on the screen.
+           *
+           * It is a link, so it dials. It reached this estate as a heading with
+           * the digits in a sibling element and no link at all.
+           */}
+          <a className="orgjb__helpline" href={`tel:${banner.helplineNumber}`}>
+            <span className="orgjb__helpline-icon">
+              <Icon name="call" size={20} aria-hidden />
+            </span>
+            <span className="orgjb__helpline-label">{banner.helplineLabel}</span>
+            <span className="orgjb__helpline-number">{banner.helplineNumber}</span>
+          </a>
+
+          {/* ── THE GUEST ──────────────────────────────────────────────────── */}
+          {gone ? null : (
+            <div
+              className={`orgjb__campaign${closing ? " orgjb__campaign--closing" : ""}`}
+              onTransitionEnd={(e) => {
+                if (e.propertyName === "grid-template-rows") setGone(true);
+              }}
+            >
+              {/* Out of the tab order the moment it starts leaving: while it is
+                  fading it is still mounted, and a control at opacity 0 that can
+                  still be reached by Tab is worse than one simply gone. */}
+              <div className="orgjb__campaign-clip" inert={closing || undefined}>
+                <div className="orgjb__campaign-row">
+                  <div className="orgjb__copy">
+                    <h2 id={headingId} className="orgjb__heading">
+                      {banner.heading}
+                    </h2>
+                    <p className="orgjb__text">{banner.text}</p>
+                  </div>
+
+                  {/* Scan it or press it — the same URL, so they are one group,
+                      and proximity says so without a caption. */}
+                  <div className="orgjb__join">
+                    {banner.qrSrc ? (
+                      /*
+                       * DECORATIVE, and that is not a shortcut. The code encodes
+                       * the same URL as the button beside it, which is already a
+                       * link with a name — so describing the picture would
+                       * announce the destination twice to a reader who cannot
+                       * scan it anyway.
+                       */
+                      <span className="orgjb__qr">
+                        <Image src={banner.qrSrc} alt="" width={72} height={72} />
+                      </span>
+                    ) : null}
+
+                    <a
+                      className="orgjb__cta"
+                      href={banner.action.href}
+                      target={external ? "_blank" : undefined}
+                      rel={external ? "noreferrer" : undefined}
+                    >
+                      <span>{banner.action.label}</span>
+                      <Icon
+                        name={external ? "open_in_new" : "arrow_forward"}
+                        size={20}
+                        aria-hidden
+                      />
+                      {external && <span className="sr-only">(opens in a new tab)</span>}
+                    </a>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="orgjb__dismiss"
+                    onClick={dismiss}
+                    /*
+                     * Named by what it removes, not by its glyph — and it says
+                     * "announcement" rather than "banner" so nobody reads it as
+                     * the control that would take the helpline with it.
+                     */
+                    aria-label={`Dismiss the ${banner.heading} announcement`}
+                  >
+                    <Icon name="close" size={20} aria-hidden />
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
     </>
   );
 }
