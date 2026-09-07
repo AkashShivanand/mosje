@@ -306,6 +306,144 @@ export function formatOrgHtml(rawHtml: string, innerHeadingLevel: 3 | 4 = 4): st
   return html;
 }
 
+/**
+ * The contact band — address, support details and the officer tables.
+ *
+ * EXTRACTED SO TWO SURFACES CAN SHARE IT. The organisation page renders it as
+ * one of its bands; an organisation's `/contact-us` child page, when the ingest
+ * returned that page empty, renders the same block from the same record. Before
+ * this it lived inline in the band list, so the only way to put contact details
+ * on the child page would have been a second copy of this markup — which is how
+ * two renderings of the same thing drift a card's padding apart.
+ */
+export function OrganisationContactBand({
+  contact,
+  orgSlug,
+}: {
+  contact: NonNullable<OrgDetail["contact"]>;
+  orgSlug: string;
+}) {
+  const contactAction = contact.action ?? {
+    label: "View Directory",
+    href: `/website/directory?org=${orgSlug}`,
+  };
+  return (
+    <>
+      <SectionTitle as={2} title={contact.heading} headingId="contact-heading">
+        <NextLink href={contactAction.href} className={buttonClasses("primary", "outlined", "sm")}>
+          {contactAction.label}
+        </NextLink>
+      </SectionTitle>
+      <div className="orgd__contact">
+        <div className="orgd__contact-grid">
+          {contact.address != null && (
+            <div className="orgd__contact-card">
+              <div className="flex items-center gap-2 text-primary-dark text-title-2">
+                <Icon name="location_on" size={20} />
+                <span>Headquarters</span>
+              </div>
+              <p className="text-body-2 text-ink m-0">{contact.address}</p>
+            </div>
+          )}
+          {contact.supportPhone != null && (
+            <div className="orgd__contact-card">
+              <div className="flex items-center gap-2 text-primary-dark text-title-2">
+                <Icon name="call" size={20} />
+                <span>Telephone / Helpline</span>
+              </div>
+              <p className="text-body-2 text-ink m-0">
+                <a href={`tel:${contact.supportPhone.replace(/[^+\d]/g, "")}`} className="text-link hover:underline">
+                  {contact.supportPhone}
+                </a>
+              </p>
+              {contact.supportHours != null && (
+                <span className="text-body-3 text-ink-subtle">{contact.supportHours}</span>
+              )}
+            </div>
+          )}
+          {contact.supportEmail != null && (
+            <div className="orgd__contact-card">
+              <div className="flex items-center gap-2 text-primary-dark text-title-2">
+                <Icon name="mail" size={20} />
+                <span>Official Email</span>
+              </div>
+              {/* A link, like the telephone in the card beside it. This was the
+                  one published address on the page a reader had to select and
+                  copy by hand. */}
+              <p className="text-body-2 text-ink m-0">
+                <a href={`mailto:${contact.supportEmail}`} className="text-link hover:underline">
+                  {contact.supportEmail}
+                </a>
+              </p>
+            </div>
+          )}
+          {contact.regionalOffices != null && (
+            <div className="orgd__contact-card">
+              <div className="flex items-center gap-2 text-primary-dark text-title-2">
+                <Icon name="domain" size={20} />
+                <span>State & Regional Offices</span>
+              </div>
+              <p className="text-body-2 text-ink m-0">{contact.regionalOffices}</p>
+            </div>
+          )}
+        </div>
+
+        {contact.blocks?.map((block) => (
+          <div className="orgd__people" key={block.heading}>
+            <h3 className="orgd__subhead">{block.heading}</h3>
+            <div className="orgd__tablewrap">
+              <table className="orgd__table">
+                <caption className="sr-only">{block.heading}</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Designation</th>
+                    <th scope="col">Contact</th>
+                    <th scope="col">Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {block.people.map((p) => (
+                    <tr key={p.name}>
+                      <th scope="row">{p.name}</th>
+                      <td>{p.designation}</td>
+                      <td>
+                        {p.phone != null ? (
+                          <a href={`tel:${p.phone.replace(/[^+\d]/g, "")}`}>{p.phone}</a>
+                        ) : (
+                          <>
+                            <span aria-hidden="true">—</span>
+                            <span className="sr-only">Not published</span>
+                          </>
+                        )}
+                      </td>
+                      <td>
+                        {/*
+                          * A published address is a way to reach somebody,
+                          * so it is a link. The telephone beside it has
+                          * been one all along; the email was plain text.
+                          */}
+                        {p.email != null ? (
+                          <a href={`mailto:${p.email}`}>{p.email}</a>
+                        ) : (
+                          <>
+                            <span aria-hidden="true">—</span>
+                            <span className="sr-only">Not published</span>
+                          </>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+}
+
 export function OrganisationDetail({
   org,
   detail,
@@ -1243,121 +1381,9 @@ export function OrganisationDetail({
   }
 
   if (detail?.contact != null) {
-    const contact = detail.contact;
-    const contactAction = contact.action ?? {
-      label: "View Directory",
-      href: `/website/directory?org=${org.slug}`,
-    };
     bands.push({
       id: "contact",
-      body: (
-        <>
-          <SectionTitle as={2} title={contact.heading} headingId="contact-heading">
-            <NextLink href={contactAction.href} className={buttonClasses("primary", "outlined", "sm")}>
-              {contactAction.label}
-            </NextLink>
-          </SectionTitle>
-          <div className="orgd__contact">
-            <div className="orgd__contact-grid">
-              {contact.address != null && (
-                <div className="orgd__contact-card">
-                  <div className="flex items-center gap-2 text-primary-dark text-title-2">
-                    <Icon name="location_on" size={20} />
-                    <span>Headquarters</span>
-                  </div>
-                  <p className="text-body-2 text-ink m-0">{contact.address}</p>
-                </div>
-              )}
-              {contact.supportPhone != null && (
-                <div className="orgd__contact-card">
-                  <div className="flex items-center gap-2 text-primary-dark text-title-2">
-                    <Icon name="call" size={20} />
-                    <span>Telephone / Helpline</span>
-                  </div>
-                  <p className="text-body-2 text-ink m-0">
-                    <a href={`tel:${contact.supportPhone.replace(/[^+\d]/g, "")}`} className="text-link hover:underline">
-                      {contact.supportPhone}
-                    </a>
-                  </p>
-                  {contact.supportHours != null && (
-                    <span className="text-body-3 text-ink-subtle">{contact.supportHours}</span>
-                  )}
-                </div>
-              )}
-              {contact.supportEmail != null && (
-                <div className="orgd__contact-card">
-                  <div className="flex items-center gap-2 text-primary-dark text-title-2">
-                    <Icon name="mail" size={20} />
-                    <span>Official Email</span>
-                  </div>
-                  <p className="text-body-2 text-ink m-0">{contact.supportEmail}</p>
-                </div>
-              )}
-              {contact.regionalOffices != null && (
-                <div className="orgd__contact-card">
-                  <div className="flex items-center gap-2 text-primary-dark text-title-2">
-                    <Icon name="domain" size={20} />
-                    <span>State & Regional Offices</span>
-                  </div>
-                  <p className="text-body-2 text-ink m-0">{contact.regionalOffices}</p>
-                </div>
-              )}
-            </div>
-
-            {contact.blocks?.map((block) => (
-              <div className="orgd__people" key={block.heading}>
-                <h3 className="orgd__subhead">{block.heading}</h3>
-                <div className="orgd__tablewrap">
-                  <table className="orgd__table">
-                    <caption className="sr-only">{block.heading}</caption>
-                    <thead>
-                      <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Designation</th>
-                        <th scope="col">Contact</th>
-                        <th scope="col">Email</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {block.people.map((p) => (
-                        <tr key={p.name}>
-                          <th scope="row">{p.name}</th>
-                          <td>{p.designation}</td>
-                          <td>
-                            {p.phone != null ? (
-                              <a href={`tel:${p.phone.replace(/[^+\d]/g, "")}`}>{p.phone}</a>
-                            ) : (
-                              <>
-                                <span aria-hidden="true">—</span>
-                                <span className="sr-only">Not published</span>
-                              </>
-                            )}
-                          </td>
-                          <td>
-                            {/*
-                              * A published address is a way to reach somebody,
-                              * so it is a link. The telephone beside it has
-                              * been one all along; the email was plain text.
-                              */}
-                            {p.email != null ? (
-                              <a href={`mailto:${p.email}`}>{p.email}</a>
-                            ) : (
-                              <>
-                                <span aria-hidden="true">—</span>
-                                <span className="sr-only">Not published</span>
-                              </>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
-      ),
+      body: <OrganisationContactBand contact={detail.contact} orgSlug={org.slug} />,
     });
   }
 

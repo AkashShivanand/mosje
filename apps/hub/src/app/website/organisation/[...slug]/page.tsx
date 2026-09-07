@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import NextLink from "next/link";
 import { Button, Icon, Link, SectionTitle } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
-import { OrganisationDetail } from "@/components/website/templates/OrganisationDetail";
+import {
+  OrganisationDetail,
+  OrganisationContactBand,
+} from "@/components/website/templates/OrganisationDetail";
 import { AdarshGramDashboard } from "@/components/website/AdarshGramDashboard";
 import { GiaDashboard } from "@/components/website/GiaDashboard";
 import { HostelDashboard } from "@/components/website/HostelDashboard";
@@ -227,6 +230,11 @@ export default async function OrganisationDetailPage({
   const detail = getOrganisationDetail(key);
   /** Exact-slug record only — see the sub-page empty state below. */
   const authored = ORGANISATION_DETAILS[key];
+  /**
+   * Is this child page the organisation's contact page? Matched on the last
+   * segment, which the source spells both `contact` and `contact-us`.
+   */
+  const isContactPage = /^contact(-us)?$/.test(slug[slug.length - 1] ?? "");
   const isSubPage = slug.length > 1;
 
   const adarshGram = key === ADARSH_GRAM_SLUG ? await getAdarshGramCounts() : null;
@@ -478,6 +486,30 @@ export default async function OrganisationDetailPage({
                   dangerouslySetInnerHTML={{ __html: authored.aboutHtml }}
                   className="gov-prose text-ink max-w-none"
                 />
+              </div>
+            ) : org.sections.length === 0 && isContactPage && detail?.contact != null ? (
+              /*
+               * A CONTACT PAGE WHOSE DETAILS THE ESTATE ALREADY HOLDS.
+               *
+               * Twenty child pages came back from the ingest empty and rendered
+               * the notice below — telling a reader the Department had not
+               * written the page. Eighteen of them are contact pages, and for
+               * four the parent organisation's record already carries the
+               * address, the telephone, the hours and the officers: NCBC, NCSK,
+               * NCSC and NISD. The information was on the estate, one page away,
+               * behind a notice saying it did not exist.
+               *
+               * It renders through `OrganisationContactBand`, the same component
+               * the parent page's contact band uses, so the two cannot drift.
+               *
+               * Gated on the page ACTUALLY BEING a contact page — matched on the
+               * slug's last segment — because `detail` falls back to the root
+               * record for every child, and without the gate an empty "Creamy
+               * Layer" or "Training Calendars" page would publish the
+               * organisation's switchboard as its content.
+               */
+              <div className="bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-neutral-subtle">
+                <OrganisationContactBand contact={detail.contact} orgSlug={rootSlug} />
               </div>
             ) : org.sections.length === 0 ? (
               <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-neutral-subtle">
