@@ -1831,6 +1831,183 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "CatalogueScreenProps": {
+    "source": "packages/design-system/components/templates/catalogue-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "items",
+        "type": "CatalogueItem[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "activeFilterCount",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": ""
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "breadcrumb",
+        "type": "{ label: string; href?: string }[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "emptyAction",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "filters",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Filter chips or selects. Drop DS controls straight in."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "hrefForPage",
+        "type": "(page: number) => string",
+        "required": false,
+        "description": "Prefer this — a page number belongs in the URL."
+      },
+      {
+        "name": "layout",
+        "type": "\"rows\" | \"cards\"",
+        "required": false,
+        "default": "\"rows\"",
+        "description": "`rows` for documents, `cards` for anything with a description worth reading."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "noun",
+        "type": "string",
+        "required": false,
+        "default": "\"document\"",
+        "description": "What one item is called, for the count line."
+      },
+      {
+        "name": "onClearFilters",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onPageChange",
+        "type": "(page: number) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "page",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": "1-based. Omit paging only when the whole set genuinely fits."
+      },
+      {
+        "name": "pluralNoun",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "registerTotal",
+        "type": "number",
+        "required": false,
+        "description": "How large the catalogue is before filtering. Count line only."
+      },
+      {
+        "name": "totalPages",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": ""
+      }
+    ]
+  },
   "CharacterCountProps": {
     "source": "packages/design-system/components/forms/character-count.tsx",
     "inheritsNative": false,
@@ -2689,6 +2866,118 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "ChecklistScreenProps": {
+    "source": "packages/design-system/components/templates/checklist-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "groups",
+        "type": "ChecklistGroup[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "breadcrumb",
+        "type": "{ label: string; href?: string }[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "footer",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The step's controls, when this is a wizard step."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "notices",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Alerts above the list — accepted formats, a size ceiling."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "upload",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A batch dropzone above the groups — `MediaUpload`, or the portal's own."
+      }
+    ]
+  },
   "ChipProps": {
     "source": "packages/design-system/components/forms/chip.tsx",
     "inheritsNative": true,
@@ -2765,6 +3054,157 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "Renders a trailing chevron marking the chip as a dropdown trigger (Portal DS)."
+      }
+    ]
+  },
+  "ChooserScreenProps": {
+    "source": "packages/design-system/components/templates/chooser-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "legend",
+        "type": "string",
+        "required": true,
+        "description": "The question the options answer, as a `legend`. Required, and not decorative. Without it a screen reader announces \"SHRESHTA Mode 2, radio button, 3 of 4\" and never says what is being chosen — the note on `ControlGroup` explains why the estate makes this non-optional."
+      },
+      {
+        "name": "onChange",
+        "type": "(id: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onContinue",
+        "type": "() => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "options",
+        "type": "ChooserOption[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "backLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Back\"",
+        "description": ""
+      },
+      {
+        "name": "breadcrumb",
+        "type": "{ label: string; href?: string }[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "continueLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Save and Continue\"",
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "emptyAction",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Offered from the empty state — \"Notify me when applications open\"."
+      },
+      {
+        "name": "error",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Shown under the group when the reader continues without choosing."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "hideLegend",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Hide the legend visually where the page title already asks the question."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onBack",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": false,
+        "description": "The chosen id. `undefined` means nothing is chosen — never invent a default."
       }
     ]
   },
@@ -3046,6 +3486,94 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "default": "\"Post remark\"",
+        "description": ""
+      }
+    ]
+  },
+  "ConfirmationScreenProps": {
+    "source": "packages/design-system/components/templates/confirmation-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "reference",
+        "type": "string",
+        "required": true,
+        "description": "The reference number, exactly as the register holds it. Required, and the reason this template exists: **no source draws a confirmation screen at all.** The handoff's citizen journey ends at submit, so a citizen who submits has nothing to quote at a counter and no way to prove they applied (`docs/audit/figma-handoff-defects-2026-09-06.md` §1 — \"post-submit confirmation\" is among the archetypes absent entirely)."
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Download the receipt, track the application, return to the dashboard."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "facts",
+        "type": "ConfirmationFact[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "intro",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A short standfirst under the reference."
+      },
+      {
+        "name": "nextSteps",
+        "type": "ConfirmationStep[]",
+        "required": false,
+        "description": "What happens next. Omit where the department publishes no process."
+      },
+      {
+        "name": "nextStepsTitle",
+        "type": "string",
+        "required": false,
+        "default": "\"What Happens Next\"",
+        "description": ""
+      },
+      {
+        "name": "referenceLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Reference number\"",
+        "description": ""
+      },
+      {
+        "name": "submittedAt",
+        "type": "string",
+        "required": false,
+        "description": "When it was received, as a citizen would read it."
+      },
+      {
+        "name": "support",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Who to contact and how, when the citizen has a question."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "default": "\"Application Submitted\"",
         "description": ""
       }
     ]
@@ -3524,6 +4052,188 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "default": "\"To\"",
+        "description": ""
+      }
+    ]
+  },
+  "DecisionScreenProps": {
+    "source": "packages/design-system/components/templates/decision-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "legend",
+        "type": "string",
+        "required": true,
+        "description": "The question the verdicts answer, as a legend."
+      },
+      {
+        "name": "onChange",
+        "type": "(id: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onSubmit",
+        "type": "() => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "options",
+        "type": "DecisionOption[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "record",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The record, read-only. Compose a `RecordScreen` body here, or a `DescriptionList`, or a `ReviewScreen` at `headingLevel={2}`. **Bodies compose; chrome does not** (`docs/design-system/screen-templates.md` §2b) — do not nest a second `PortalPage` or a second h1."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "The record being decided, named as the register holds it."
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "breadcrumb",
+        "type": "{ label: string; href?: string }[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "cancelLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Cancel\"",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "errors",
+        "type": "ErrorSummaryItem[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "extras",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Anything else the decision needs — a sanctioned amount, a date."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onCancel",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "panelTitle",
+        "type": "string",
+        "required": false,
+        "default": "\"Record a Decision\"",
+        "description": ""
+      },
+      {
+        "name": "remarks",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The remarks field. Required by most schemes on anything but an approval."
+      },
+      {
+        "name": "status",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A status Badge, an SLA indicator."
+      },
+      {
+        "name": "submitLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Record Decision\"",
+        "description": ""
+      },
+      {
+        "name": "submitting",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": false,
         "description": ""
       }
     ]
@@ -4773,6 +5483,171 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "FormScreenProps": {
+    "source": "packages/design-system/components/templates/form-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The sections. `FormSection` for a field grid, `FormCard` for anything else."
+      },
+      {
+        "name": "onSubmit",
+        "type": "() => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "The page's h1. Title Case."
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "breadcrumb",
+        "type": "{ label: string; href?: string }[]",
+        "required": false,
+        "description": "Where this form sits. Omit only at the top of a section."
+      },
+      {
+        "name": "cancelLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Cancel\"",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "dirty",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has unsaved edits. The template SHOWS this; it cannot GUARD it, because the guard belongs to the router and the template does not own the router (`.claude/rules/screen-templates.md` §4). Pair it with your own `beforeunload` and route guard."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "errors",
+        "type": "ErrorSummaryItem[]",
+        "required": false,
+        "description": "Validation failures, in the order the fields appear. Non-empty renders `ErrorSummary`, which takes focus. Do not ALSO render a summary inside the body: two summaries means the second one silently steals focus from the first."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": "Heading level for the page title. Leave at 1 — a portal screen has exactly one h1 and this is it. Drop to 2 inside a documentation specimen."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "notices",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Alerts above the form — a session notice, a scheme deadline."
+      },
+      {
+        "name": "onCancel",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "requiredNote",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"Fields marked * are mandatory.\"",
+        "description": "The mandatory-fields sentence, above the first section. A prop rather than a constant because GIGW requires the estate to be bilingual and a sentence baked into a template cannot be translated. Pass `null` for a form with no mandatory fields — which is rare enough that the default is the sentence, not its absence."
+      },
+      {
+        "name": "savedAt",
+        "type": "string",
+        "required": false,
+        "description": "When the form last saved, as a citizen would read it."
+      },
+      {
+        "name": "secondaryActions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Extra controls in the action bar — \"Save as draft\"."
+      },
+      {
+        "name": "submitLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Save\"",
+        "description": ""
+      },
+      {
+        "name": "submitting",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The submit is in flight. Disables it and says so, rather than going quiet."
+      }
+    ]
+  },
   "FormSectionProps": {
     "source": "packages/design-system/components/forms/form-section.tsx",
     "inheritsNative": false,
@@ -4867,6 +5742,176 @@ export const GENERATED_PROPS = {
         "type": "ValueFormat",
         "required": false,
         "default": "formatIndian",
+        "description": ""
+      }
+    ]
+  },
+  "GalleryScreenProps": {
+    "source": "packages/design-system/components/templates/gallery-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "items",
+        "type": "GalleryItem[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the collection for a screen reader — \"Photographs from the camp\"."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "activeFilterCount",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": ""
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "breadcrumb",
+        "type": "{ label: string; href?: string }[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "emptyAction",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "filters",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "hrefForPage",
+        "type": "(page: number) => string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "layout",
+        "type": "\"grid\" | \"list\"",
+        "required": false,
+        "default": "\"grid\"",
+        "description": ""
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onClearFilters",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onLayoutChange",
+        "type": "(layout: \"grid\" | \"list\") => void",
+        "required": false,
+        "description": "Drive it from the URL where the choice should survive a share."
+      },
+      {
+        "name": "onPageChange",
+        "type": "(page: number) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "page",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "totalPages",
+        "type": "number",
+        "required": false,
+        "default": "1",
         "description": ""
       }
     ]
@@ -5467,6 +6512,177 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"scene\"",
         "description": "Rendered size. The authored geometry does not change with it — see language.ts §1 — so a drawing is correct at every tier."
+      }
+    ]
+  },
+  "InboxScreenProps": {
+    "source": "packages/design-system/components/templates/inbox-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "events",
+        "type": "EventItem[]",
+        "required": true,
+        "description": "The entries, **newest first**. This template does not sort — the order is the caller's claim, as it is on `EventList`."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the list for a screen reader — \"Notifications\", \"Audit log\"."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "activeFilterCount",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": ""
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "breadcrumb",
+        "type": "{ label: string; href?: string }[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "filters",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Filters — by kind, by date, unread only."
+      },
+      {
+        "name": "grouping",
+        "type": "\"none\" | \"day\"",
+        "required": false,
+        "default": "\"day\"",
+        "description": "`day` puts a dated heading above each day's entries, which is the right shape for anything longer than a screen."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "hrefForPage",
+        "type": "(page: number) => string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "markAllReadLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Mark all as read\"",
+        "description": ""
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onClearFilters",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onMarkAllRead",
+        "type": "() => void",
+        "required": false,
+        "description": "Offered when anything is unread. Omit for a log nobody marks."
+      },
+      {
+        "name": "onPageChange",
+        "type": "(page: number) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "page",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "totalPages",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": ""
       }
     ]
   },
@@ -9299,6 +10515,167 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "ReportScreenProps": {
+    "source": "packages/design-system/components/templates/report-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "columns",
+        "type": "ReportColumn<T>[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "getRowId",
+        "type": "(row: T) => string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "rows",
+        "type": "T[]",
+        "required": true,
+        "description": "**Every row of the statement**, not one page of it. A report is printed and filed; a printed page 1 of 9 is not a report. This template therefore does not paginate — that is the deliberate difference from `WorklistScreen`, which always pages. Where the set is too large to hold, narrow it with criteria rather than paging it."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "activeFilterCount",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": ""
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "breadcrumb",
+        "type": "{ label: string; href?: string }[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "criteria",
+        "type": "ReportCriterion[]",
+        "required": false,
+        "description": "The filters in force. **Printed, always.** A report of \"1,284 applications\" filed without the criteria that produced it is a number nobody can reproduce or defend, and the on-screen filter controls do not survive the printer."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "exportActions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Export controls — CSV, XLSX, print. Not printed."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "filters",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The filter controls. Not printed."
+      },
+      {
+        "name": "footnotes",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Notes under the table — a source, a statutory caveat. Printed."
+      },
+      {
+        "name": "generatedAt",
+        "type": "string",
+        "required": false,
+        "description": "When the figures were drawn, as a citizen would read it. Printed at the head of every copy. A statement filed without one cannot later be told apart from a statement drawn a quarter later, which is the whole difficulty with printed departmental figures."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "issuer",
+        "type": "string",
+        "required": false,
+        "description": "The department or organisation the statement is issued by. Printed."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onClearFilters",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "totals",
+        "type": "(columnKey: string) => React.ReactNode",
+        "required": false,
+        "description": "A totals row. Printed with the table, and marked as a footer row."
+      }
+    ]
+  },
   "RequiredFieldsLegendProps": {
     "source": "packages/design-system/components/forms/field-policy.tsx",
     "inheritsNative": false,
@@ -9365,6 +10742,176 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"Resend OTP in\"",
         "description": "Prompt shown while counting down."
+      }
+    ]
+  },
+  "ReviewScreenProps": {
+    "source": "packages/design-system/components/templates/review-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "onSubmit",
+        "type": "() => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "sections",
+        "type": "ReviewSectionDef[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "backLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Back\"",
+        "description": ""
+      },
+      {
+        "name": "breadcrumb",
+        "type": "{ label: string; href?: string }[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "declaration",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The certification text. Omit and no declaration is shown — which is correct for a review embedded in a longer wizard whose final step carries it."
+      },
+      {
+        "name": "declarationChecked",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "declarationError",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Shown when submit was attempted with the declaration unticked."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "errors",
+        "type": "ErrorSummaryItem[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "intro",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A standfirst above the sections — what submitting will do."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "notices",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onBack",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onDeclarationChange",
+        "type": "(checked: boolean) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "submitLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Submit Application\"",
+        "description": ""
+      },
+      {
+        "name": "submitting",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
       }
     ]
   },
@@ -9765,6 +11312,188 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "SearchScreenProps": {
+    "source": "packages/design-system/components/templates/search-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "onQueryChange",
+        "type": "(query: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "query",
+        "type": "string",
+        "required": true,
+        "description": "What is in the field. Drive it from the URL so a result set can be shared."
+      },
+      {
+        "name": "shownCount",
+        "type": "number",
+        "required": true,
+        "description": "How many are on this page. Drives the seven states."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "activeFilterCount",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "How many facets the reader has set. Distinguishes \"no matches\" from \"nothing here\"."
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "breadcrumb",
+        "type": "{ label: string; href?: string }[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The results for the current page, already ranked. This template does not sort. Ranking is the caller's claim — the thing that distinguishes a search from a catalogue — and a template that reordered results would be overruling it."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "facets",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Facets down the side — checkbox groups, selects."
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "hrefForPage",
+        "type": "(page: number) => string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onClearFilters",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onPageChange",
+        "type": "(page: number) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onSubmit",
+        "type": "() => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "page",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "resultCount",
+        "type": "number",
+        "required": false,
+        "description": "How many results the query matched, across all pages."
+      },
+      {
+        "name": "searchLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Search\" — name what is being searched: \"Search the village register\".",
+        "description": ""
+      },
+      {
+        "name": "totalPages",
+        "type": "number",
+        "required": false,
+        "default": "1",
+        "description": ""
+      }
+    ]
+  },
   "SectionTitleProps": {
     "source": "packages/design-system/components/layout/section.tsx",
     "inheritsNative": false,
@@ -10003,6 +11732,113 @@ export const GENERATED_PROPS = {
         "type": "InkLayer",
         "required": false,
         "default": "\"ink\"",
+        "description": ""
+      }
+    ]
+  },
+  "SettingsScreenProps": {
+    "source": "packages/design-system/components/templates/settings-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "sections",
+        "type": "SettingsSection[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "asked",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a request has been made at all. Leave `true` for a screen that loads on mount; pass `false` for one gated on the reader's intent, so it resolves to `idle` rather than `empty`."
+      },
+      {
+        "name": "breadcrumb",
+        "type": "{ label: string; href?: string }[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "ScreenStateCopy",
+        "required": false,
+        "default": "DEFAULT_SCREEN_COPY",
+        "description": ""
+      },
+      {
+        "name": "count",
+        "type": "number",
+        "required": false,
+        "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "error",
+        "type": "unknown",
+        "required": false,
+        "description": "The request failed. Any truthy value counts; the message is the caller's."
+      },
+      {
+        "name": "eyebrow",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filtered",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Whether the reader has narrowed the set. Pass the real predicate — a default-valued select is not a filter, and treating it as one turns every empty register into \"try clearing your filters\", which is a lie the reader cannot act on."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2",
+        "required": false,
+        "default": "1",
+        "description": ""
+      },
+      {
+        "name": "indexTitle",
+        "type": "string",
+        "required": false,
+        "default": "\"On This Page\"",
+        "description": ""
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "description": "A request is outstanding."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
         "description": ""
       }
     ]
@@ -11114,6 +12950,61 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"primary\"",
         "description": ""
+      }
+    ]
+  },
+  "StatusScreenProps": {
+    "source": "packages/design-system/components/templates/status-screen.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "description",
+        "type": "string",
+        "required": false,
+        "description": "Override the explanation. One or two sentences, in the citizen's terms."
+      },
+      {
+        "name": "kind",
+        "type": "StatusKind = \"404\" | \"403\" | \"500\" | \"maintenance\" | \"offline\"",
+        "required": false,
+        "default": "\"404\"",
+        "description": ""
+      },
+      {
+        "name": "primaryAction",
+        "type": "{ label: string; href?: string; onClick?: () => void; icon?: string }",
+        "required": false,
+        "description": "The one thing to do — \"Try again\", \"Return to the dashboard\"."
+      },
+      {
+        "name": "searchUrl",
+        "type": "string | null",
+        "required": false,
+        "description": "Search destination template. Pass `null` on a portal with no public search."
+      },
+      {
+        "name": "secondaryAction",
+        "type": "{ label: string; href?: string; onClick?: () => void; icon?: string }",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": false,
+        "description": "Override the heading where the department words it differently."
+      },
+      {
+        "name": "wayfindingLinks",
+        "type": "WayfindingLink[]",
+        "required": false,
+        "description": "Where else to go. Omit to use the estate's standard destinations."
       }
     ]
   },

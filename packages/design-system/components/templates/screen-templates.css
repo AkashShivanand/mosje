@@ -254,4 +254,980 @@
   @media (min-width: 1024px) {
     .sa-overview__pair { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   }
+
+
+  /* ---- FormScreen -----------------------------------------------------------
+     Sections, then one action bar. The bar sticks to the foot of the viewport
+     below the tablet anchor: a government form is taller than any phone, and an
+     action bar that has scrolled away is one the citizen believes is missing. */
+  .sa-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-24);
+  }
+
+  .sa-form__required-note {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .sa-form__sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-20);
+  }
+
+  .sa-form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-padding-12);
+    padding-top: var(--sa-padding-16);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  .sa-form__actions-state {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    /* Reserves the line whether or not it currently says anything, so the
+       buttons do not shift down the moment the form becomes dirty. */
+    min-height: var(--sa-padding-20);
+  }
+
+  .sa-form__actions-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-padding-12);
+    margin-left: auto;
+  }
+
+  @media (max-width: 767px) {
+    .sa-form__actions {
+      position: sticky;
+      bottom: 0;
+      background: var(--sa-bg-neutral-base);
+      padding-bottom: var(--sa-padding-12);
+      /* Above the page's own content, below anything on the corner rail —
+         `floating-element-placement.md` reserves those rungs. */
+      z-index: var(--sa-z-raised);
+    }
+
+    .sa-form__actions-buttons { width: 100%; }
+    .sa-form__actions-buttons > * { flex: 1 1 auto; }
+  }
+
+
+  /* ---- ChooserScreen --------------------------------------------------------
+     Radio cards, then one Continue. The handoff draws this three ways under one
+     name (defect report §2.2); this is the AVYAY/NAPDDR geometry, which is the
+     one built from components. */
+  .sa-chooser {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-24);
+  }
+
+  .sa-chooser__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--sa-padding-12);
+  }
+
+  @media (max-width: 767px) {
+    .sa-chooser__actions > * { flex: 1 1 auto; }
+  }
+
+
+  /* ---- ChecklistScreen ------------------------------------------------------
+     Grouped requirements, each with its own verdict. The state colour is carried
+     by the Badge and the icon TOGETHER — colour alone would fail 1.4.1. */
+  .sa-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-24);
+  }
+
+  .sa-checklist__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-12);
+  }
+
+  .sa-checklist__group-head {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-4);
+  }
+
+  .sa-checklist__group-title {
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .sa-checklist__group-desc {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .sa-checklist__items {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-8);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sa-checklist__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sa-padding-12);
+    padding: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+  }
+
+  .sa-checklist__item[data-state="rejected"] {
+    border-color: var(--sa-border-status-error-base);
+  }
+
+  .sa-checklist__item-icon { flex: none; color: var(--sa-icon-neutral-subtle); }
+  .sa-checklist__item[data-state="attached"] .sa-checklist__item-icon { color: var(--sa-icon-status-success-bolder); }
+  .sa-checklist__item[data-state="review"] .sa-checklist__item-icon { color: var(--sa-icon-status-warning-bolder); }
+  .sa-checklist__item[data-state="rejected"] .sa-checklist__item-icon { color: var(--sa-icon-status-error-bolder); }
+
+  .sa-checklist__item-main {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-4);
+  }
+
+  .sa-checklist__item-label {
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .sa-checklist__req { color: var(--sa-text-status-error-bolder); }
+
+  .sa-checklist__optional {
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .sa-checklist__item-desc,
+  .sa-checklist__item-file {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  /* The citizen's own filename. Wraps rather than clipping — a truncated name
+     makes them wonder whether they uploaded the right thing. */
+  .sa-checklist__item-file {
+    overflow-wrap: anywhere;
+    color: var(--sa-text-neutral-base);
+  }
+
+  /* Findings take the ROW's tone, not a blanket red. A note reading "Being
+     checked against the NGO-Darpan register" in the same colour as a rejection
+     tells the citizen their document failed when it has not — found by
+     rendering the four states side by side, not by reading the rule. */
+  .sa-checklist__findings {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-2);
+    margin: var(--sa-padding-4) 0 0;
+    padding-left: var(--sa-padding-20);
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .sa-checklist__item[data-state="review"] .sa-checklist__findings {
+    color: var(--sa-text-status-warning-bolder);
+  }
+
+  .sa-checklist__item[data-state="rejected"] .sa-checklist__findings {
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  .sa-checklist__item-side {
+    flex: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--sa-padding-8);
+  }
+
+  .sa-checklist__item-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--sa-padding-8);
+  }
+
+  @media (max-width: 599px) {
+    .sa-checklist__item { flex-wrap: wrap; }
+    .sa-checklist__item-side {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+  }
+
+  .sa-checklist__footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--sa-padding-12);
+    padding-top: var(--sa-padding-16);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+
+  /* ---- ReviewScreen ---------------------------------------------------------
+     Numbered sections, each tying back to the wizard step that filled it. The
+     handoff's review frame carries 51 pairs in one undifferentiated grid. */
+  .sa-review {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-20);
+  }
+
+  .sa-review__intro {
+    color: var(--sa-text-neutral-base);
+    line-height: var(--sa-type-body-1-lh);
+  }
+
+  .sa-review__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-12);
+    padding: var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+  }
+
+  .sa-review__section-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sa-padding-12);
+  }
+
+  .sa-review__section-title {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-padding-8);
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  /* The number is the wizard's step number, so it carries information rather
+     than decorating the list. */
+  .sa-review__section-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: var(--sa-padding-24);
+    height: var(--sa-padding-24);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-bg-brand-primary-base);
+    color: var(--sa-text-brand-primary-bolder);
+    font-size: var(--sa-type-label-2-size);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .sa-review__edit { flex: none; }
+
+  /* The same grid the wizard's own review step uses, so a review embedded as a
+     final step and a review rendered on its own look identical. */
+  .sa-review__grid {
+    display: grid;
+    gap: var(--sa-stack-12) var(--sa-padding-20);
+    grid-template-columns: 1fr;
+    margin: 0;
+  }
+
+  @media (min-width: 640px) {
+    .sa-review__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (min-width: 1280px) {
+    .sa-review__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  .sa-review__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--sa-padding-12);
+  }
+
+  @media (max-width: 767px) {
+    .sa-review__actions > * { flex: 1 1 auto; }
+  }
+
+
+  /* ---- ConfirmationScreen ---------------------------------------------------
+     The reference number is the screen. It is set larger than the page title,
+     because a citizen photographing this at a common service centre must
+     capture the number without scrolling. */
+  .sa-confirmation__panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--sa-padding-8);
+    padding: var(--sa-padding-32) var(--sa-padding-24);
+    border: var(--sa-stroke-1) solid var(--sa-border-status-success-base);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-status-success-base);
+  }
+
+  .sa-confirmation__icon { color: var(--sa-icon-status-success-bolder); }
+
+  .sa-confirmation__ref-label {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+  }
+
+  /* Selectable, and never an image — a reference a citizen cannot copy is a
+     reference they will mistype at a counter.
+
+     `headline-3` rather than a display size, and the reason is a defect found by
+     rendering it: at `display-3` a 22-character reference broke across two lines
+     with the final digit orphaned on the second. Fluid type keys off the
+     VIEWPORT, so a 1440px page drew it at the clamp's 64px maximum inside a
+     410px card. This rung tops out at 28px, which holds a departmental reference
+     on one line down to a 343px phone — still the largest thing on the panel,
+     and still legible in a photograph taken at a service centre. */
+  .sa-confirmation__ref {
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
+    font-weight: var(--sa-font-weight-bold);
+    color: var(--sa-text-neutral-bolder);
+    overflow-wrap: anywhere;
+    user-select: all;
+  }
+
+  .sa-confirmation__intro {
+    max-width: var(--sa-container-measure);
+    color: var(--sa-text-neutral-base);
+    line-height: var(--sa-type-body-1-lh);
+  }
+
+  .sa-confirmation__facts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sa-padding-12) var(--sa-padding-20);
+    margin: 0;
+  }
+
+  @media (min-width: 640px) {
+    .sa-confirmation__facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  .sa-confirmation__fact { display: flex; flex-direction: column; gap: var(--sa-padding-2); }
+
+  .sa-confirmation__fact-label {
+    font-size: var(--sa-type-label-2-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .sa-confirmation__fact-value {
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .sa-confirmation__next {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-12);
+  }
+
+  .sa-confirmation__next-title {
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  /* A real ordered list. This is the one place on the estate where numbered
+     markers carry information: verification genuinely follows submission. */
+  .sa-confirmation__steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-12);
+    margin: 0;
+    padding-left: var(--sa-padding-24);
+  }
+
+  .sa-confirmation__step { display: flex; flex-direction: column; gap: var(--sa-padding-2); }
+
+  .sa-confirmation__step-title {
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .sa-confirmation__step-desc,
+  .sa-confirmation__step-when {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .sa-confirmation__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-padding-12);
+  }
+
+  .sa-confirmation__support {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+
+  /* ---- DecisionScreen -------------------------------------------------------
+     Record and verdict side by side, scrolling together. A decision panel behind
+     a modal hides the field the officer is deciding about. */
+  .sa-decision {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sa-padding-20);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    /* The record takes the measure; the panel takes what a form column needs.
+       Below this the panel FOLLOWS the record rather than floating over it. */
+    /* The RECORD holds the floor and the panel yields, because the record is what
+       the decision is about. With a fixed 400px panel a 738px container gave the
+       record 318 — the smaller half — which is backwards; found by measuring the
+       documentation specimen rather than by reading the rule.
+       ds-exempt(layout-literal): 420 is a two-column description list before its
+       terms wrap, and 400 is a radio-card list plus a remarks field before the
+       cards wrap their descriptions. Both are measurements of the controls, not
+       spacing rungs, and the ladder jumps 120 to 360. */
+    .sa-decision { grid-template-columns: minmax(420px, 1fr) minmax(0, 400px); }
+  }
+
+  .sa-decision__record { min-width: 0; }
+
+  .sa-decision__panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-16);
+    padding: var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+  }
+
+  .sa-decision__panel-title {
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .sa-decision__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--sa-padding-12);
+  }
+
+
+  /* ---- CatalogueScreen ------------------------------------------------------
+     Documents the reader opens, never acts on. It always pages: Pagination
+     appears in exactly ONE of the estate's 265 portal pages, and a scheme's
+     circulars run to hundreds. */
+  .sa-catalogue {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-20);
+  }
+
+  .sa-catalogue__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-padding-12);
+  }
+
+  .sa-catalogue__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-8);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sa-catalogue__list[data-layout="cards"] {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--sa-padding-360), 1fr));
+    gap: var(--sa-padding-16);
+  }
+
+  .sa-catalogue__item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sa-padding-12);
+    padding: var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+  }
+
+  .sa-catalogue__item-icon { flex: none; color: var(--sa-icon-neutral-subtle); }
+
+  .sa-catalogue__item-main {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-4);
+  }
+
+  .sa-catalogue__item-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-padding-8);
+  }
+
+  .sa-catalogue__item-desc,
+  .sa-catalogue__item-meta {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  /* What the reader will actually get. Tabular so a column of sizes reads down
+     the page rather than jittering. */
+  .sa-catalogue__item-kind {
+    flex: none;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .sa-catalogue__pager { display: flex; justify-content: center; }
+
+
+  /* ---- SearchScreen ---------------------------------------------------------
+     Query, facets, ranked results. `idle` renders differently from `empty`,
+     which is the whole reason this is not a catalogue. */
+  .sa-search__query { width: 100%; }
+
+  .sa-search {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sa-padding-24);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    /* ds-exempt(layout-literal): 280 is what a facet column of checkbox groups
+       needs before its labels wrap; a control measurement, not a rung. */
+    .sa-search { grid-template-columns: 280px minmax(0, 1fr); }
+  }
+
+  .sa-search__facets {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-16);
+  }
+
+  .sa-search__results {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-16);
+    min-width: 0;
+  }
+
+  .sa-search__pager { display: flex; justify-content: center; }
+
+
+  /* ---- InboxScreen ----------------------------------------------------------
+     Dated attributed events. A notification, a comment and an audit entry are
+     one object with three views, so all three render through EventList. */
+  .sa-inbox {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-16);
+  }
+
+  .sa-inbox__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-padding-12);
+  }
+
+  .sa-inbox__pager { display: flex; justify-content: center; }
+
+
+  /* ---- SettingsScreen -------------------------------------------------------
+     An index of real anchor links beside the sections. Not a scroll-spy rail:
+     anchors survive with JavaScript off, are shareable, and are what a keyboard
+     user expects from a list of headings. */
+  .sa-settings {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sa-padding-24);
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    /* ds-exempt(layout-literal): 240 fits the longest settings section name in
+       the estate on one line; a measurement, not a rung. */
+    .sa-settings { grid-template-columns: 240px minmax(0, 1fr); }
+  }
+
+  .sa-settings__index {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-8);
+  }
+
+  @media (min-width: 1024px) {
+    /* Follows the reader down a long page. `top` clears the masthead, which
+       owns the top of the viewport per floating-element-placement.md. */
+    .sa-settings__index {
+      position: sticky;
+      top: var(--sa-padding-24);
+    }
+  }
+
+  .sa-settings__index-title {
+    font-size: var(--sa-type-label-1-size);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .sa-settings__index-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-8);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sa-settings__sections {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-20);
+    min-width: 0;
+  }
+
+  .sa-settings__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-12);
+    padding: var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+    /* The anchor lands below the masthead rather than under it. */
+    scroll-margin-top: var(--sa-padding-24);
+  }
+
+  .sa-settings__section-title {
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .sa-settings__section-desc {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .sa-settings__rows {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-16);
+  }
+
+
+  /* ---- ReportScreen ---------------------------------------------------------
+     Printed and filed, not glanced at. The masthead and criteria exist because
+     the browser's own print chrome identifies nothing, and a figure without its
+     filters cannot be reproduced. */
+  .sa-report__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-padding-12);
+  }
+
+  /* Screen: the PageHeader already says all of this. Paper: it is the only
+     identification the copy carries. */
+  .sa-report__print-head { display: none; }
+
+  .sa-report__criteria {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-padding-8) var(--sa-padding-24);
+    margin: 0;
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-subtler);
+    font-size: var(--sa-type-body-2-size);
+  }
+
+  .sa-report__criterion { display: flex; gap: var(--sa-padding-4); }
+  .sa-report__criterion dt { color: var(--sa-text-neutral-subtle); }
+  .sa-report__criterion dt::after { content: ":"; }
+  .sa-report__criterion dd {
+    margin: 0;
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  /* The one place on the estate a table may scroll sideways, and only on screen
+     — a statement's columns are fixed by the statement, and paper has no
+     narrow viewport. */
+  .sa-report__table-wrap { overflow-x: auto; }
+
+  .sa-report__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--sa-type-body-2-size);
+  }
+
+  .sa-report__caption {
+    text-align: left;
+    padding-bottom: var(--sa-padding-8);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+  }
+
+  .sa-report__table th,
+  .sa-report__table td {
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .sa-report__table th {
+    color: var(--sa-text-neutral-bolder);
+    font-weight: var(--sa-font-weight-semibold);
+    white-space: nowrap;
+  }
+
+  /* Digit under digit down the column. A currency column that is not tabular is
+     unreadable on paper. */
+  .sa-report__table [data-numeric] {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sa-report__table tfoot td {
+    font-weight: var(--sa-font-weight-semibold);
+    border-top: var(--sa-stroke-2) solid var(--sa-border-neutral-base);
+  }
+
+  .sa-report__footnotes {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  @media print {
+    /* `thead` repeats on every printed page by default, which is why this is a
+       real table rather than a virtualised or internally-paged one. */
+    .sa-report__table thead { display: table-header-group; }
+    .sa-report__table tfoot { display: table-footer-group; }
+    .sa-report__table tr { break-inside: avoid; }
+
+    .sa-report__print-head {
+      display: block;
+      margin-bottom: var(--sa-padding-12);
+    }
+
+    .sa-report__issuer {
+      font-weight: var(--sa-font-weight-semibold);
+      font-size: var(--sa-type-body-2-size);
+    }
+
+    .sa-report__print-title {
+      font-size: var(--sa-type-title-2-size);
+      font-weight: var(--sa-font-weight-bold);
+    }
+
+    .sa-report__generated {
+      font-size: var(--sa-type-body-2-size);
+    }
+
+    /* Controls do not exist on paper. The criteria they set do, above. */
+    .sa-report__filters { display: none; }
+    .sa-report__table-wrap { overflow-x: visible; }
+  }
+
+
+  /* ---- GalleryScreen --------------------------------------------------------
+     Grid and list are one capability at two densities. The toggle changes how
+     much fits, never what can be done. */
+  .sa-gallery__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-padding-12);
+  }
+
+  .sa-gallery__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-padding-12);
+  }
+
+  .sa-gallery__layout {
+    display: flex;
+    gap: var(--sa-padding-4);
+    margin-left: auto;
+  }
+
+  .sa-gallery__layout-button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-padding-4);
+    /* 40px tall, past WCAG 2.2 SC 2.5.8's 24px minimum. */
+    min-height: var(--sa-control-height-md);
+    padding: var(--sa-padding-4) var(--sa-padding-12);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-6);
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-body-2-size);
+    cursor: pointer;
+  }
+
+  /* The pressed state is a fill AND a weight change, never colour alone. */
+  .sa-gallery__layout-button[aria-pressed="true"] {
+    background: var(--sa-bg-brand-primary-base);
+    border-color: var(--sa-border-brand-primary-base);
+    color: var(--sa-text-brand-primary-bolder);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .sa-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-20);
+  }
+
+  .sa-gallery__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    /* ds-exempt(layout-literal): 200 is the smallest tile that still reads as a
+       photograph rather than a thumbnail; a measurement, not a rung. */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--sa-padding-16);
+  }
+
+  .sa-gallery__items[data-layout="list"] {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-12);
+  }
+
+  .sa-gallery__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-8);
+    min-width: 0;
+  }
+
+  .sa-gallery__items[data-layout="list"] .sa-gallery__item {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: var(--sa-padding-16);
+    padding: var(--sa-padding-12);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+  }
+
+  .sa-gallery__tile {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-subtle);
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .sa-gallery__items[data-layout="list"] .sa-gallery__tile {
+    flex: none;
+    width: var(--sa-padding-120);
+  }
+
+  .sa-gallery__thumb {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .sa-gallery__play {
+    position: absolute;
+    right: var(--sa-padding-8);
+    bottom: var(--sa-padding-8);
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .sa-gallery__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-4);
+    min-width: 0;
+  }
+
+  .sa-gallery__caption {
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .sa-gallery__meta {
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .sa-gallery__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-padding-8);
+  }
+
+  .sa-gallery__pager { display: flex; justify-content: center; }
+
 }
