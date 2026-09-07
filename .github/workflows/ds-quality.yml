@@ -186,6 +186,30 @@ jobs:
       - name: Icon scale — ratchet, no NEW off-scale icon sizing
         run: npm run check:icon-scale
 
+      # `/design-system/foundations/states` publishes seven states, names `active`
+      # among them, gives it a colour rung and a motion pair, and says the reason for
+      # naming them is "so every component answers a press the same way". The
+      # --sa-cmp-action-*-active-* tokens have existed all along. On 2026-09-07, 109
+      # selectors across 59 of 113 design-system stylesheets bound `:hover` and never
+      # bound `:active` — including both pagers, which is how it was found: a tap on a
+      # page number produced no acknowledgement at all, and a touch screen has no hover
+      # to fall back on.
+      #
+      # A RATCHET, not a sweep. Binding a press on 100+ selectors at once is a hundred
+      # small visual changes across seven live portals with no way to review them
+      # together. This costs nothing today, refuses to let the number grow, and fails
+      # when a component gains `:active` without the baseline being lowered in the same
+      # change — so one component's cleanup cannot be spent silently on another's
+      # regression. The baseline is PER STYLESHEET for that reason.
+      #
+      # It classifies on the component author's own declaration — a base selector the
+      # stylesheet itself styles on `:hover` — so it needs no list of known components
+      # and covers whatever is added tomorrow. A BEM modifier is credited by its block,
+      # because `.x--mod:hover` is answered by `.x:active` on the same element; without
+      # that rule the gate reported a defect one rule above its own fix.
+      - name: Interaction states — ratchet, every :hover must answer a press
+        run: npm run check:interaction-states
+
       # Radius had NO gate of any kind until 2026-08-18, while colour had six contract
       # tests, spacing had this same ratchet and icons had the one above. The first
       # census of the live library shows what that cost: of 51,844 AUTHORABLE radius

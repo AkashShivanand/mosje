@@ -47,7 +47,18 @@ function stylesheets(dir, out = []) {
   return out;
 }
 
-/** Base selectors this stylesheet styles on :hover but never on :active. */
+/**
+ * Base selectors this stylesheet styles on :hover but never on :active.
+ *
+ * A BEM MODIFIER IS CREDITED BY ITS BLOCK, and that is not a convenience — it is
+ * the difference between a gate and a nuisance. `.ds-carousel__dot--current`
+ * overrides only the hover colour; the press is answered by
+ * `.ds-carousel__dot:active`, which applies to the same element because it
+ * carries both classes. Flagging the modifier reported a defect that was already
+ * fixed one rule above it. Caught by running this against main after the
+ * carousel landed, which is the only reason it is not in the baseline as a
+ * permanent false alarm.
+ */
 function gaps(src) {
   const seen = new Map();
   const re = /(\.[A-Za-z0-9_-]+)((?::[a-z-]+(?:\([^)]*\))?)+)/g;
@@ -58,7 +69,16 @@ function gaps(src) {
     if (/:active/.test(m[2])) rec.active = true;
     seen.set(m[1], rec);
   }
-  return [...seen].filter(([, r]) => r.hover && !r.active).map(([base]) => base).sort();
+  const activeOn = new Set([...seen].filter(([, r]) => r.active).map(([base]) => base));
+  const answered = (base) => {
+    if (activeOn.has(base)) return true;
+    const cut = base.indexOf("--");
+    return cut > 0 && activeOn.has(base.slice(0, cut));
+  };
+  return [...seen]
+    .filter(([base, r]) => r.hover && !answered(base))
+    .map(([base]) => base)
+    .sort();
 }
 
 const files = stylesheets(ROOT).sort();
