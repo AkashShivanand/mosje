@@ -15,18 +15,21 @@ from PIL import Image, ImageDraw, ImageFont
 EMU = 914400
 SCALE = 110  # px per inch
 
-SERIF = "/System/Library/Fonts/Supplemental/Georgia.ttf"
-SERIF_B = "/System/Library/Fonts/Supplemental/Georgia Bold.ttf"
-SANS = "/System/Library/Fonts/Supplemental/Arial.ttf"
-SANS_B = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
+NOTO = "fonts/NotoSans-Regular.ttf"   # variable font: real Noto Sans metrics
 
 _cache = {}
 def font(face, pt, bold):
-    serif = face and "Cambria" in face
-    path = (SERIF_B if bold else SERIF) if serif else (SANS_B if bold else SANS)
-    key = (path, int(pt * SCALE / 72))
+    key = (bool(bold), int(pt * SCALE / 72))
     if key not in _cache:
-        _cache[key] = ImageFont.truetype(path, max(6, key[1]))
+        f = ImageFont.truetype(NOTO, max(6, key[1]))
+        # the variable font defaults to Regular; select Bold on the Weight axis
+        if bold:
+            try:
+                f.set_variation_by_axes([700, 100])   # axes are [Weight, Width]
+            except Exception:
+                try: f.set_variation_by_name("Bold")
+                except Exception: pass
+        _cache[key] = f
     return _cache[key]
 
 def rgb(v):

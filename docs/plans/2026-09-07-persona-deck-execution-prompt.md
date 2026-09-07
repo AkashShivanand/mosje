@@ -97,138 +97,83 @@ Carry these to the owner before the deck is sent. None of them blocks the build.
 
 ### 6.1 Canvas and grid
 
-- **13.333in × 7.5in** (`LAYOUT_WIDE`), which is 1920×1080 at 144 dpi.
-- Margin **0.72in** all sides. Content block **11.89in** wide.
-- Vertical rhythm in **0.24in** steps. Gaps between blocks are **0.32in** or **0.48in**,
-  never a third value.
+- **13.333in × 7.5in** (1920×1080 at 144 dpi). Margin **0.72in**; content block **11.89in**.
 
-### 6.2 Palette
+### 6.2 Palette — resolved SAMAVESH tokens, not approximations
 
-Estate brand tokens, not a generic deck palette. This is a Government of India property
-and the brand is the blue; the usual "don't default to blue" advice is deliberately
-overridden here, and the deviation is recorded.
+Every colour is a value read out of `packages/tokens/dist/tokens.css`. The design system
+already carried an accessible answer for the one case where the brand value fails; using
+it is the point.
 
-| Role | Hex | Where |
-|---|---|---|
-| Navy — dominant on dark slides | `003366` | title, dividers, decision slide |
-| Gov-blue — the brand, primary accent | `0373DF` | headings, recommended marks, chart series "addressed" |
-| Saffron — the single sharp accent | `F97316` | **only** the gap encoding and the "Recommended" tag. Nowhere else. |
-| Ink | `1A1A1A` | body |
-| Muted | `5A6472` | captions, sources, secondary |
-| Hairline | `D8DEE7` | table rules, card borders |
-| Surface | `F5F7FA` | light slide ground, card fills |
-| White | `FFFFFF` | light slide ground |
+| Token | Hex | Used for | Measured |
+|---|---|---|---|
+| `--sa-color-primaryScale-800` | `003975` | the dark ground | white on it, 11.40:1 |
+| `--sa-color-primaryScale-700` | `004B96` | panels on the dark ground | — |
+| `--sa-color-primaryScale-600` | `005EB9` | blue **text**, the RECOMMENDED chip | 6.36:1 on white |
+| `--sa-color-primaryScale-500` | `0373DF` | the brand — borders, chart series 1 | 4.64:1 |
+| `--sa-color-primaryScale-200` | `92C2FF` | numerals and labels on dark | 6.18:1 |
+| `--sa-color-primaryScale-100` | `C0DBFF` | body on dark | 8.04:1 |
+| `--sa-color-primaryScale-50` | `ECF4FF` | the recommended card's ground | — |
+| `--sa-color-brand-saffronDark` | `A43A00` | the failure colour — limitations, the deficit figure | 6.60:1 on white |
+| `--sa-chart-cat-1` / `-2` | `0373DF` / `E7173A` | the two chart series | 4.64:1 / 4.58:1 |
+| `--sa-color-text-default` | `1E2124` | body | 16.18:1 |
+| `--sa-color-text-muted` | `3A3D41` | standfirsts | 10.92:1 |
+| `--sa-ref-color-neutral-600` | `54585E` | eyebrows, captions, source lines | 7.16:1 white · 6.27:1 on surface |
+| `--sa-ref-color-neutral-50` / `-100` | `EEF0F3` / `DCDEE1` | card grounds / hairlines | — |
 
-Saffron earning exactly one job is the point. When it appears, it means *this is the
-number that is wrong* or *this is the one we recommend* — nothing else.
+**Two colours the deck does NOT use, deliberately.** The brand saffron `FF671F` is
+2.91:1 on white — below the floor for text *and* for graphics — so it appears nowhere;
+`saffronDark` carries every saffron job. `neutral-500` (`6F757D`) clears AA on white at
+4.65:1 but drops to **4.07:1** on the tinted card grounds, so `neutral-600` is used
+throughout instead.
 
-**No tricolour band or stripe motif anywhere** (standing instruction, 13 June 2026).
-**No accent stripes, no rules under titles, no edge bars on cards.**
+**Meaning is one-to-one.** Blue means *this is the recommendation*; saffronDark means
+*this is the problem*. No colour carries both jobs.
+
+**No tricolour band or stripe motif** (standing instruction, 13 June 2026). No accent
+stripes, no rules under titles, no edge bars on cards.
 
 ### 6.3 Typography
 
-**Cambria** headings, **Calibri** body. Both ship with Microsoft Office on every Ministry
-machine and both render true-to-width in conversion, so the layout that is checked is the
-layout that is delivered.
+**Noto Sans throughout** — the estate typeface, per `CLAUDE.md`. One family; hierarchy
+comes from weight and size, not from a second face.
 
-*Deviation recorded:* the handoff suggested Georgia headings. The two Word documents
-already delivered to the Ministry are **Calibri throughout** — Georgia was never actually
-shipped — and Georgia has no metric-compatible substitute in the render pipeline, so
-overflow checks against it cannot be trusted. Cambria gives the same serif contrast with
-neither problem. Noto Sans is the estate typeface on screen but is not installed on
-Ministry machines, so it is not used here.
+| Element | Size | Weight |
+|---|---|---|
+| Title-slide statement | 42pt | bold |
+| Dark-slide statement | 32pt | bold |
+| Slide title | 28pt | bold |
+| Deck numeral | 30–58pt | bold |
+| Standfirst | 12.5pt | regular |
+| Body / trade-offs | 10.5–11.5pt | regular, labels bold |
+| Eyebrow, caption, source | 9–10pt | bold / regular |
 
-| Element | Face | Size | Weight |
-|---|---|---|---|
-| Statement line (title, section, decision slides) | Cambria | 40–54pt | bold |
-| Slide title | Cambria | 30pt | bold |
-| Deck-motif numeral | Cambria | 66–96pt | bold |
-| Section header within a slide | Calibri | 15pt | bold |
-| Body | Calibri | 13pt | regular |
-| Table body | Calibri | 12pt | regular |
-| Caption, source line | Calibri | 10pt | regular, muted |
-| Eyebrow label | Calibri | 10pt | bold, +1.2 char spacing, uppercase |
+*Risk, stated once:* Noto Sans is the estate typeface but may not be installed on
+Ministry machines, which would substitute at open. The fix is a PDF alongside the
+`.pptx` (PowerPoint: File → Export → PDF), or installing Noto Sans on the machine that
+presents.
 
-### 6.4 The motif
+### 6.4 Restraint
 
-**The numeral.** Every slide that carries a finding sets its key figure large in Cambria
-— `141`, `5`, `0`, `−27`, `8 → 4`, `Phase 1`. Repeated on the title, the finding slides,
-the journey slides and the roadmap. This replaces the usual decorative furniture, and it
-is the right motif because the whole argument of the deck is arithmetic the Department
-can check.
+Eight slides for three decisions. Each option gets its screen, its one-line strengths and
+its one-line limitations, and nothing else. There is no journey slide, no diagnosis slide
+and no separate evidence slide — the evidence sits beside the finding it proves.
 
-No stripes, no underlines, no gradient panels, no icon-in-circle rows used as filler.
-
-### 6.5 The dark/light sandwich
-
-Dark (`003366`): slides 1, 2, 7, 16. Light: everything else. The two dark slides in the
-middle are the section break before the options and the decision slide — so the deck's
-structure is legible from the thumbnails alone.
-
-### 6.6 Screenshots
-
-The seven option frames are exported from Figma at native width and placed at
-**consistent width per slide family**, never stretched, never cropped mid-component.
-Each sits on a `D8DEE7` hairline border on `FFFFFF`, with a 10pt muted caption naming the
-surface and the option letter. Where a frame is taller than the slide allows, show the
-part that carries the argument and say in the caption what has been cropped.
-
-### 6.7 The evidence chart — the most important object in the deck
-
-§1.3 is 13 rows × 4 columns. **Do not paste it as a table.** It becomes a horizontal bar
-chart, native to PowerPoint so the Department can interrogate it:
-
-- One row per persona, ordered by the size of the gap, largest first.
-- Two series: **Schemes addressing them** (gov-blue) and **Tagged so the filter finds
-  them** (saffron).
-- Value labels on, gridlines quiet, legend at the top, no chart title (the slide title
-  does that job).
-- Scheduled Castes and Women and girls are the two the argument rests on; the slide's
-  standfirst names them so the reader knows where to look.
-
----
-
-## 7. Slide plan — 19 slides
+## 7. Slide plan — 8 slides
 
 | # | Slide | Ground | Carries |
 |---|---|---|---|
-| 1 | Title | dark | Subject, both dates, author, the file this accompanies |
-| 2 | The question | dark | *Can a citizen find what they are entitled to?* |
-| 3 | The headline finding | light | `141` · `32 → 5` · `23 → 0` · "The filter is not broken. The data behind it was never populated." |
-| 4 | **The ask, up front** | light | The three decisions and the Phase 1 instruction, in one view |
-| 5 | The evidence | light | The coverage-matrix chart (§1.3) |
-| 6 | Why it happens | light | D1, D3, D4, D6, D7 — one line each, with the D-number |
-| 7 | Three journeys, today | light | Meena 17 · Ramesh 42 · Lata 34, one sourced figure each |
-| 8 | What is being decided | dark | The three surfaces, named. Section break. |
-| 9 | Homepage — the three options | light | Comparison at a glance, recommendation marked |
-| 10 | Homepage Option A | light | Persona slider screen + strengths / limitations |
-| 11 | Homepage Option B — recommended | light | Finder question + results screens + strengths / limitations |
-| 12 | Homepage Option C | light | One-tap strip screen + strengths / limitations |
-| 13 | Schemes page — A and B | light | Both screens side by side, B recommended |
-| 14 | The chatbot | light | Samajik Sahayak + strengths / limitations |
-| 15 | The same three journeys, after | light | The same three people, against slide 7 |
-| 16 | What this depends on | light | Phases 0–4, Phase 1 named as the constraint |
-| 17 | The decisions, and who takes them | dark | Three decisions, the decider, the date |
-| 18 | Limits of this review | light | §0, in full and in plain words |
-| 19 | Sources | light | The five sources and the two dates |
+| 1 | Title | dark | Subject, both dates, `141`, the design file it accompanies |
+| 2 | The finding | light | The coverage chart, the two readings the argument rests on, and the verdict |
+| 3 | Decision 01 · the homepage | light | Three options, three screens, trade-offs, B marked |
+| 4 | Decision 02 · the schemes page | light | Two options, two screens, trade-offs, B marked |
+| 5 | Decision 03 · the chatbot | light | One option, three chat states, trade-offs |
+| 6 | Sequencing | light | Phases 0–4, Phase 1 named as the constraint |
+| 7 | The decisions | dark | Three decisions, the recommendation, the decider |
+| 8 | Limits and sources | light | §0 in full, then the five sources |
 
-Slide 7 and slide 15 use **the same layout and the same three names in the same order**,
-so the before/after comparison is made by the reader's eye and not by a caption.
-
-**Slide 4 is a late addition and it earns its place.** The deck is read without a
-presenter and had already sat unactioned once as a document. With the ask only at slide
-17, a Secretary who read four slides and stopped would never have learned what he was
-being asked for. Slide 4 states it; slide 17 records it with the decider. Their titles
-differ deliberately — "Three Decisions, and One Instruction" against "The Decisions, and
-Who Takes Them" — because two slides with the same title in a read-alone deck is a
-defect.
-
-**Only figures the review states appear as figures.** §4.1 records step counts for
-Meena alone. Rather than invent them for Ramesh and Lata, each of the three carries the
-one figure the review does record for them — Meena's 8 steps, the 0 facets that describe
-Ramesh, the 0 mentions of *senior* in the navigation that fail Lata.
-
----
+**Only figures the review states appear as figures.** Nothing is rounded for tidiness and
+nothing is invented to make a layout balance.
 
 ## 8. Build and verification
 
@@ -251,18 +196,18 @@ squashed, a chart label colliding with its bar, a gap that is neither 0.32in nor
 
 ## 9. Definition of done
 
-- [ ] 19 slides, built to §7, at 13.333 × 7.5in
+- [ ] 8 slides, built to §7, at 13.333 × 7.5in
 - [ ] Every figure traceable to the source document, with its date
 - [ ] The limits slide present and unhedged
 - [ ] Three decisions named on slide 16, each with a decider and a date
 - [ ] Recommendation marked on each of the three surfaces, alternatives kept honest
 - [ ] Coverage matrix is a native chart, not a pasted table
-- [ ] Cambria / Calibri only; no Noto Sans, no Georgia, no Aptos
-- [ ] Saffron used only for the gap encoding and the recommended mark
+- [ ] Noto Sans only — no second family
+- [ ] Every colour traced to a resolved `--sa-*` token; saffron means only "problem", blue only "recommended"
 - [ ] No tricolour motif, no accent stripes, no rules under titles
 - [ ] `validate.py` clean
 - [ ] Every text run passes WCAG 2.2 AA against the ground it actually sits on
-- [ ] All 19 slides inspected as images
+- [ ] All 8 slides inspected as images, rendered in real Noto Sans
 - [ ] PDF companion produced from the final `.pptx`
 - [ ] Unconfirmed items from §4 carried into the summary, not silently dropped
 
@@ -348,3 +293,23 @@ meant inventing a screen the Department has not approved.
 - Whether the deck goes beyond the Secretary to the Ministry, which changes how bluntly slide 6 can be worded.
 - Whether the caste wording on the finder needs Ministry sign-off before this is shown outside the Department — the Figma's own annotation says it does.
 - Whether the finder's no-match state is drawn before or after the surface decision is taken.
+
+---
+
+## Revision — 7 September 2026, second pass
+
+Cut from 19 slides to 8, moved to Noto Sans, and rebound every colour to a resolved
+`--sa-*` token.
+
+| What changed | Why |
+|---|---|
+| 19 slides → **8** | Nineteen slides to present three options is a report, not a decision aid. Everything that did not move the Secretary toward one of the three decisions came out: the journeys, the diagnosis slide, the separate up-front ask, the standalone evidence slide. |
+| Cambria + Calibri → **Noto Sans** | It is the estate typeface. The earlier pairing was chosen for render-fidelity reasons that do not outrank the design system. |
+| Invented palette → **resolved DS tokens** | The first pass approximated the brand and then hand-built accessible rungs. The design system already shipped them — `saffronDark` and the `primaryScale` ramp — so the deck now reads the real values. |
+| Saffron meaning both "problem" and "recommended" | Split. Blue is the recommendation, saffronDark is the problem. A recommendation should not wear the failure colour. |
+| `neutral-500` for captions | Raised to `neutral-600`. `neutral-500` clears AA on white but fails at 4.07:1 on the tinted card grounds the deck actually uses. |
+
+**What was dropped and where it went.** The three journeys (Meena, Ramesh, Lata), the
+five diagnoses, and the full 13-row limits treatment are all in the source review; the
+deck now cites §4.1, §3 and §0 rather than reproducing them. If the Secretary asks "why",
+the review is the answer, and the deck says where to find it.
