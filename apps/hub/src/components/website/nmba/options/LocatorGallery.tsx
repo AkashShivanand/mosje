@@ -3,7 +3,7 @@
 import * as React from "react";
 import { cn } from "@/lib/website/utils";
 import { CENTRE_TYPE_META, CENTRE_TYPE_ORDER, type CentreType, type DeAddictionCentre } from "@/content/website/deaddiction-centres";
-import { CentreMapDynamic, centreKey, filterCentres } from "./locator-shared";
+import { CentreMapDynamic, centreKey, filterCentres, useLocatorRows } from "./locator-shared";
 import { Icon, Link, Search } from "@mosje/design-system";
 
 const CAP = 48;
@@ -12,8 +12,9 @@ export function LocatorGallery() {
   const [query, setQuery] = React.useState("");
   const [type, setType] = React.useState<CentreType | "">("");
   const [modal, setModal] = React.useState<DeAddictionCentre | null>(null);
+  const { rows } = useLocatorRows();
 
-  const filtered = React.useMemo(() => filterCentres({ query, type }), [query, type]);
+  const filtered = React.useMemo(() => filterCentres(rows, { query, type }), [rows, query, type]);
 
   return (
     <div>

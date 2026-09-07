@@ -4,7 +4,7 @@ import * as React from "react";
 import { Icon, Link, Search, Select } from "@mosje/design-system";
 import { cn } from "@/lib/website/utils";
 import { CENTRE_TYPE_META, CENTRE_TYPE_ORDER, type CentreType, type DeAddictionCentre } from "@/content/website/deaddiction-centres";
-import { CentreMapDynamic, centreKey, filterCentres, ALL_STATES } from "./locator-shared";
+import { CentreMapDynamic, centreKey, filterCentres, statesOf, useLocatorRows } from "./locator-shared";
 
 const PAGE = 12;
 
@@ -14,8 +14,13 @@ export function LocatorTable() {
   const [type, setType] = React.useState<CentreType | "">("");
   const [selected, setSelected] = React.useState<DeAddictionCentre | null>(null);
   const [page, setPage] = React.useState(0);
+  const { rows: allRows } = useLocatorRows();
 
-  const filtered = React.useMemo(() => filterCentres({ query, state, type }), [query, state, type]);
+  const states = React.useMemo(() => statesOf(allRows), [allRows]);
+  const filtered = React.useMemo(
+    () => filterCentres(allRows, { query, state, type }),
+    [allRows, query, state, type],
+  );
   const pages = Math.max(1, Math.ceil(filtered.length / PAGE));
   const rows = filtered.slice(page * PAGE, page * PAGE + PAGE);
 
@@ -35,7 +40,7 @@ export function LocatorTable() {
           </div>
           <Select value={state} onChange={(e) => { setState(e.target.value); setPage(0); }} aria-label="State" className="sm:w-48">
             <option value="">All States</option>
-            {ALL_STATES.map((s) => <option key={s} value={s}>{s}</option>)}
+            {states.map((s) => <option key={s} value={s}>{s}</option>)}
           </Select>
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5">
