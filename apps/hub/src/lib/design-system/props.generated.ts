@@ -14064,6 +14064,19 @@ export const GENERATED_PROPS = {
         "description": "Ref to the error-summary container so the parent can focus it on failure."
       },
       {
+        "name": "nextBlockedReason",
+        "type": "string",
+        "required": false,
+        "description": "Why the advance control is disabled, announced politely beside it. Rendered only when `nextDisabled` is set."
+      },
+      {
+        "name": "nextDisabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Disable the advance (or submit) control while the step is not yet clearable. For a step that gates on WORK STILL IN FLIGHT or on a condition the user must resolve here — a document set still verifying, a check the step itself failed. The reason must be visible on the step: a control that is disabled with nothing saying why is a dead end, so pair this with `nextBlockedReason`. NOT for ordinary field validation. That belongs in `onNext`, which can reject and populate `error` — a form the user can submit and be told what is wrong is more usable than one whose button is dark for reasons they must deduce."
+      },
+      {
         "name": "nextLabel",
         "type": "string",
         "required": false,

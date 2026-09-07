@@ -133,7 +133,7 @@
     max-width: 52ch;
     color: var(--sa-text-status-warning-base);
     font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-line-height);
+    line-height: var(--sa-type-body-2-lh);
   }
 
   /* The actions row is `nowrap`, so on a narrow viewport the sentence is squeezed between
@@ -142,7 +142,7 @@
      reads normally, and it goes ABOVE the buttons: the reason a control cannot be used is
      worth meeting before the control. Scoped to this element rather than switching the row
      to `wrap` for everyone, because the row's two-button case has no reason to change. */
-  @media (max-width: 640px) {
+  @media (max-width: 767px) {
     .ds-wizard__actions {
       flex-wrap: wrap;
     }
