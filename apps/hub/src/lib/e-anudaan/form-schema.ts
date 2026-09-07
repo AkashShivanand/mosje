@@ -1082,9 +1082,21 @@ const NAPDDR_STEPS: readonly StepDef[] = [
         title: "Application Type & Scheme Category",
         lead: "Select the grant category and application type under NAPDDR.",
         fields: [
-          { name: "fld_application_type", label: "Application Type", kind: "select", required: true, options: ["New Project", "Renewal / Continuing Project", "Expansion of Existing Project"] },
-          { name: "fld_scheme_category", label: "NAPDDR Intervention Category", kind: "select", required: true, options: ["Integrated Rehabilitation Centre for Addicts (IRCA)", "Community based Peer Led Intervention (CPLI)", "Outreach and Drop In Centre (ODIC)", "District De-addiction Centre (DDAC)", "State Level Coordinating Agency (SLCA)"] },
-          { name: "fld_financial_year", label: "Financial Year for Grant", kind: "select", required: true, options: ["2026-27", "2025-26", "2024-25"] },
+          // The controller. Live is a RADIO with exactly these two labels — the same two AVYAY
+          // and SMILE fork on — captured 2026-09-07. Our schema previously asked this as a
+          // SELECT with three options ("New Project / Renewal / Expansion"), which invented a
+          // third branch the scheme does not have and gave the form nothing to fork on.
+          { name: "case_type", label: "Case Type", kind: "radio", required: true, options: ["New project", "Ongoing / Renewal of an existing project"] },
+          // NEW only. Live calls it Project Type and offers four; our old
+          // fld_scheme_category offered five of a different vocabulary (CPLI, ODIC, SLCA),
+          // none of which the live form lists.
+          { name: "fld_project_type", label: "Project Type", kind: "select", required: true, options: ["DDAC — District De-Addiction Centre", "IRCA — Integrated Rehabilitation Centre", "IRCA — Female", "IRCA — Male Children"], showWhen: { field: "case_type", equals: ["New project"] } },
+          // RENEWAL only. A renewal continues a sanctioned project, so it names which one and
+          // which installment it is drawing — neither question means anything to a first-time
+          // applicant, and our schema asked a new applicant neither.
+          { name: "fld_renewal_project", label: "Select the existing project to renew", kind: "select", required: true, options: ["DR/AN/NIC/40536 — Project, Nicobar · FY 2026-27", "DR/AN/NIC/40601 — awaiting sanction", "DR/LD/LAK/40535 — awaiting sanction"], showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+          { name: "fld_financial_year", label: "Financial Year for which grant is sought", kind: "select", required: true, options: ["2027-28", "2026-27", "2025-26"] },
+          { name: "fld_installment_no", label: "Installment", kind: "select", required: true, options: ["1st Installment", "2nd Installment", "3rd Installment", "4th Installment"], showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
         ],
       },
     ],
@@ -1193,6 +1205,25 @@ const NAPDDR_STEPS: readonly StepDef[] = [
     ],
   },
   {
+    // RENEWAL ONLY. Live draws eleven steps for a renewal and ten for a new project, and this
+    // is the difference: a first-time applicant has no previous installment to account for, no
+    // sanctioned project to have installed cameras at, and no PFMS code drawn against the
+    // scheme. Captured as step 8 of 11 on 2026-09-07.
+    title: "CCTV / EAT / PFMS Compliance",
+    showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] },
+    sections: [
+      {
+        title: "Monitoring & Compliance (2nd installment onward)",
+        lead: "Required from the 2nd installment onward — evidence the sanctioned project is running.",
+        fields: [
+          { name: "fld_previous_uc_submitted", label: "Previous installment fully utilised and Utilisation Certificate submitted", kind: "radio", required: true, options: ["Yes", "No"] },
+          { name: "fld_cctv_operational", label: "CCTV cameras installed and operational at the project", kind: "radio", required: true, options: ["Yes", "No"] },
+          { name: "fld_pfms_code", label: "NGO PFMS code (under head 3817)", kind: "text", required: true },
+        ],
+      },
+    ],
+  },
+  {
     title: "Verification & Signatory",
     sections: [
       {
@@ -1211,24 +1242,50 @@ const NAPDDR_STEPS: readonly StepDef[] = [
   { title: "Review & Submit", kind: "review", sections: [] },
 ];
 
+/**
+ * NAPDDR's checklist forks, and the two branches barely overlap.
+ *
+ * Live asks a first-time applicant for TWELVE documents and a renewal for EIGHT, sharing
+ * exactly one (the beneficiary list). Captured from both branches on 2026-09-07. Our schema
+ * previously declared seventeen with no condition at all, so every applicant was asked for
+ * every document of both branches — a new applicant for a Utilisation Certificate against a
+ * grant they have never held, and a renewal for a Registration Certificate the department
+ * already holds.
+ *
+ * Ordered NEW first, then the shared one, then RENEWAL, so `visibleDocuments` — which
+ * renumbers to 1..n after filtering — reproduces each branch's live numbering in order.
+ *
+ * Three documents live asks for were missing here entirely: the Registration Certificate,
+ * the Annual Report and the Audit Report, all NEW-branch. One we declared, "Agreement Bond /
+ * PSR on non-judicial stamp paper", appears on NEITHER live branch and is dropped; if it is
+ * collected at all it is after sanction, not with the application.
+ */
 const NAPDDR_DOCS: readonly DocDef[] = [
-  { n: 1, title: "Memorandum of Association", description: "Rules, aims & objectives of organisation" },
-  { n: 2, title: "List of Managing Committee Members", description: "Current composition with designations" },
-  { n: 3, title: "List of Beneficiaries — Previous Year", description: "Complete list with Aadhaar / UDID references" },
-  { n: 4, title: "Staff Monitoring Sheet", description: "Reservation policy compliance among staff" },
-  { n: 5, title: "List of Staff / Employees" },
-  { n: 6, title: "Infrastructure Details", description: "Rooms, kitchen, toilets, etc." },
-  { n: 7, title: "Bank Account Details", description: "Bank name, A/C No., IFSC, authorised person" },
-  { n: 8, title: "Agreement Bond / PSR", description: "Non-judicial stamp paper ₹20" },
-  { n: 9, title: "CCTV & Proactive Disclosures Status" },
-  { n: 10, title: "EAT Module Implementation Status" },
-  { n: 11, title: "PAN Card Copy" },
-  { n: 12, title: "Utilisation Certificate (GFR-12A)", description: "For grant of previous-to-previous FY · CA signed" },
-  { n: 13, title: "Provisional Unaudited Audit Report", description: "Apr–Sep of previous year · Accountant signed" },
-  { n: 14, title: "Budget Estimate", description: "Item-wise recurring & non-recurring" },
-  { n: 15, title: "Provisional UCs — Previous Year Grants", description: "GFR-12A · Authorised signatory" },
-  { n: 16, title: "Half-Yearly Progress Report", description: "Previous year Apr–Sep & Oct–Mar" },
-  { n: 17, title: "Audited Accounts — Previous Year", description: "Balance Sheet, I&E Statement, R&P Account · CA signed with membership number" },
+  // ── New project · 12 ────────────────────────────────────────────────────────
+  { n: 1, title: "Memorandum of Association", description: "Aims & objectives of the organisation", showWhen: { field: "case_type", equals: ["New project"] } },
+  { n: 2, title: "PAN Card copy of the organisation", showWhen: { field: "case_type", equals: ["New project"] } },
+  { n: 3, title: "List of Managing Committee Members", description: "Current financial year", showWhen: { field: "case_type", equals: ["New project"] } },
+  { n: 4, title: "List of Staff / Employees", description: "Current financial year, with qualifications", showWhen: { field: "case_type", equals: ["New project"] } },
+  // The one document both branches ask for.
+  { n: 5, title: "List of Beneficiaries — previous year" },
+  { n: 6, title: "Infrastructure details", description: "Rooms, kitchen, toilets, etc.", showWhen: { field: "case_type", equals: ["New project"] } },
+  { n: 7, title: "Bank Authorisation Letter / account details", description: "Name, A/C no., IFSC / MICR", showWhen: { field: "case_type", equals: ["New project"] } },
+  { n: 8, title: "Budget Estimate for the proposed year", description: "Recurring & non-recurring", showWhen: { field: "case_type", equals: ["New project"] } },
+  { n: 9, title: "Registration Certificate", description: "Societies Act / Trust Act or equivalent", showWhen: { field: "case_type", equals: ["New project"] } },
+  { n: 10, title: "Annual Report — last two financial years", showWhen: { field: "case_type", equals: ["New project"] } },
+  { n: 11, title: "Audit Report — last two financial years", showWhen: { field: "case_type", equals: ["New project"] } },
+  { n: 12, title: "Audited Accounts — previous year", description: "Balance Sheet, I&E, R&P, Auditor's Report", showWhen: { field: "case_type", equals: ["New project"] } },
+
+  // ── Ongoing / renewal · 8 listed, 6 mandatory ───────────────────────────────
+  // Live's own footer: "Upload all 6 documents to proceed (1/8)." The provisional audit
+  // report and the staff monitoring sheet carry an OPTIONAL marker; the other six do not.
+  { n: 13, title: "Utilisation Certificate (GFR-12A)", description: "Previous grant, CA-certified", showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+  { n: 14, title: "Provisional UCs", description: "Grants released during the previous year", showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+  { n: 15, title: "Half-Yearly Progress Report", showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+  { n: 16, title: "Provisional / unaudited audit report", optional: true, showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+  { n: 17, title: "CCTV & Proactive-Disclosures status", showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+  { n: 18, title: "EAT Module implementation status", showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+  { n: 19, title: "Staff Monitoring Sheet", optional: true, showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
 ];
 
 export const NAPDDR_WIZARD: WizardDef = {
