@@ -410,7 +410,22 @@ export function Tabs({
             role: "tab" as const,
             id: `${idBase}-tab-${t.id}`,
             "aria-selected": selected,
-            "aria-controls": `${idBase}-panel-${t.id}`,
+            /*
+             * ONLY when this tab actually owns a panel.
+             *
+             * A link tab navigates to another page, so there is no
+             * `${idBase}-panel-…` element on this one — and `aria-controls`
+             * pointing at an id that does not exist is a CRITICAL
+             * `aria-valid-attr-value` violation, not a cosmetic one. The first
+             * version of the href support set it unconditionally and axe failed
+             * seven login routes at once, which is exactly the check earning its
+             * keep: `npm run check` does not run axe, so nothing local caught it.
+             *
+             * The tablist pattern still holds without it. A tab that navigates
+             * is announced as a tab in a tablist; what it does not do is promise
+             * a panel that is not there.
+             */
+            ...(t.href ? {} : { "aria-controls": `${idBase}-panel-${t.id}` }),
             // `aria-disabled`, never the native `disabled` attribute: a natively
             // disabled button leaves the focus order and stops being announced, so a
             // screen-reader user loses the fact that the section exists at all.
