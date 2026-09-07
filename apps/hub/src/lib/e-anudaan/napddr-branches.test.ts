@@ -13,7 +13,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { NAPDDR_WIZARD, visibleDocuments, visibleSteps } from "./form-schema.ts";
+import { NAPDDR_WIZARD, WIZARDS, visibleDocuments, visibleSteps } from "./form-schema.ts";
 import { uploadProgress } from "./doc-verification.ts";
 
 const NEW = { case_type: "New project" };
@@ -65,10 +65,35 @@ test("a first-time applicant is never asked to account for a grant they have not
   }
 });
 
-test("visibleDocuments renumbers each branch from 1, so neither shows a gap", () => {
+test("each branch displays its documents from 1 with no gap", () => {
+  // The DISPLAY number is the render position. Identity is `n`, which does not move — see
+  // the cross-branch test below.
   for (const v of [NEW, REN]) {
-    const ns = visibleDocuments(NAPDDR_WIZARD, v).map((d) => d.n);
-    assert.deepEqual(ns, ns.map((_, i) => i + 1));
+    const shown = visibleDocuments(NAPDDR_WIZARD, v).map((_, i) => i + 1);
+    assert.deepEqual(shown, shown.map((_, i) => i + 1));
+  }
+});
+
+test("a document keeps the SAME n on both branches", () => {
+  // Uploads are keyed by `n`. visibleDocuments used to rewrite it to the filtered position,
+  // so the one document both NAPDDR branches ask for had two different keys, and switching
+  // case type re-attributed the file to whatever now sat in that slot.
+  const inNew = visibleDocuments(NAPDDR_WIZARD, NEW).find((d) => d.title.startsWith("List of Beneficiaries"));
+  const inRen = visibleDocuments(NAPDDR_WIZARD, REN).find((d) => d.title.startsWith("List of Beneficiaries"));
+  assert.ok(inNew && inRen);
+  assert.equal(inNew.n, inRen.n, "the same document must key the same on both branches");
+  // And it is displayed differently on each, which is the point: position is not identity.
+  const posNew = visibleDocuments(NAPDDR_WIZARD, NEW).findIndex((d) => d.n === inNew.n) + 1;
+  const posRen = visibleDocuments(NAPDDR_WIZARD, REN).findIndex((d) => d.n === inRen.n) + 1;
+  assert.notEqual(posNew, posRen, "this document sits in a different place on each branch");
+});
+
+test("every scheme's declared document numbers are unique, so a key can never collide", () => {
+  // The invariant the whole upload store rests on. If two documents in one scheme shared an
+  // `n`, one would overwrite the other's upload — on every branch, not just across a switch.
+  for (const [code, w] of Object.entries(WIZARDS)) {
+    const ns = w.documents.map((d) => d.n);
+    assert.equal(new Set(ns).size, ns.length, `${code} has a duplicate document n`);
   }
 });
 
