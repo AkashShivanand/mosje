@@ -51,6 +51,48 @@ for a rail that collapses on mobile and every one was silently ignored.
 is fighting your component, that is now working as intended — fix the consumer, or make the
 rule more specific *inside* the layer. Never move a rule out of the layer to win an argument.
 
+## 2b. Router links: a component that takes `linkAs` must be GIVEN it
+
+**`linkAs` is how a framework-agnostic component gets the app's router link.** The
+design system has no Next dependency and is not gaining one, so `SiteHeader`,
+`NavSheet`, `BrandLockup`, `PortalCard`, `SamaveshBanner`, `SiteFooter`,
+`ContentNav`, `Breadcrumb`, `Ticker` and the five Navbar parts each take a
+`linkAs` prop and default to a plain `<a>`.
+
+**Pass it. `import Link from "next/link"` and `linkAs={Link}`.**
+
+Forgetting it does not break the page, and that is the entire problem: the
+component falls back to `<a href>`, so every click is a full document load — the
+bundle re-fetched, the tree re-hydrated, the scroll position lost, no prefetch.
+Measured on the website home page before this was fixed, one masthead menu click
+re-fetched **30 script files** and took **1.9s** to `loadEventEnd`, on localhost
+with a warm cache.
+
+It was missed on **22 call sites** for months because nothing checked, and then
+it came back on `eutthan-shell.tsx` within a day of being fixed — a parallel
+branch correctly dropped the prop because it did not exist on `main` yet, and
+nothing pulled it back once it landed.
+
+**`npm run check:link-as` is the gate.** The component list is DERIVED from the
+design-system source, so a component that gains `linkAs` tomorrow is covered the
+same day with nothing to remember. Documentation specimens and Storybook stories
+are out of scope with their reasons stated — both render components to be looked
+at, not navigated, and Storybook has no router at all. A call site that genuinely
+must not route declares it on the tag:
+
+```tsx
+{/* linkAs-exempt(specimen): nav hrefs are "#"; this is drawn, not navigated */}
+```
+
+Categories are `specimen`, `external-only` and `no-router`; an unrecognised one
+fails, as does an exclusion path that has stopped matching anything.
+
+**Four hrefs never route, whatever is passed** — `navLinkTag` decides this once so
+no call site has to: a disabled row (a `<span role="link">`), an external
+destination, anything carrying a scheme or a protocol-relative host, and any `"#"`
+fragment. The last is load-bearing: a nav entry that owns a menu carries
+`href="#"` and cancels its own click.
+
 ## 3. Visual Regression & Quality Assurance
 - **Playwright VRT:** Components and internal pages are verified using Playwright. When altering a core component, ensure you run the visual suite (`npm run test:e2e`) to catch unintended drifts across the estate.
 - **Figma Code Connect:** We use `@figma/code-connect`. When building a new component that has a Figma counterpart, you MUST create a `.figma.ts` file in the component's directory to map the React props to the Figma component properties. This ensures the "Source of Truth" between Figma and Code remains unbroken.
