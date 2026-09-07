@@ -23,9 +23,14 @@ import { Pagination } from "@mosje/design-system";
  *
  * **Accessibility.** The current page carries `aria-current="page"` and is not a
  * link — there is nowhere to go. Numbers are labelled "Page 4" rather than
- * announced as a bare digit. Previous and Next are *removed* at the ends rather
- * than disabled, because a disabled control still in the tab order is worse than
- * one that is not there. Targets are 40px, clearing WCAG 2.2 AA §2.5.8 (24×24).
+ * announced as a bare digit. The two forms end differently, on purpose: the LINK
+ * form removes Previous and Next at the ends, because a press there is a
+ * navigation and nothing was going to keep focus anyway. The BUTTON form keeps
+ * them mounted and `aria-disabled`, and keeps the current page a `<button>`,
+ * because nothing else moves focus in that form — unmounting the control just
+ * pressed dropped focus to `<body>` and sent a keyboard reader back to the top
+ * of the document on every page turn. The button form also announces the new
+ * position through a polite live region. Targets are 40px, clearing WCAG 2.2 AA §2.5.8 (24×24).
  *
  * Lifecycle: **Stable**.
  */
@@ -69,7 +74,13 @@ export const LongSet: Story = {
   args: { page: 48, totalPages: 96, hrefFor: (n: number) => `?page=${n}` },
 };
 
-/** No Previous at the first page, no Next at the last — removed, not disabled. */
+/**
+ * The LINK form at both ends: no Previous at the first page, no Next at the last.
+ * Removed, not disabled — an anchor cannot take a native `disabled`, and a press
+ * here is a navigation, so there is nothing for focus to have stayed on.
+ *
+ * The button form ends differently; see `ClientState`.
+ */
 export const AtTheEnds: Story = {
   render: (args) => (
     <div style={{ display: "grid", gap: 24 }}>
@@ -82,6 +93,12 @@ export const AtTheEnds: Story = {
 /**
  * The button form, for client-side state with no URL. Note what it costs: this
  * pager's position cannot be shared or restored, which is why it is the exception.
+ *
+ * Tab to a page number and press it: focus stays on that control, which is now the
+ * current page, rather than falling to `<body>`. Press Next to the last page and
+ * Next stays mounted and `aria-disabled` rather than vanishing under the cursor.
+ * Both are the same fix — in this form nothing else moves focus, so the component
+ * must not unmount what was just pressed.
  */
 export const ClientState: Story = {
   render: function Render(args) {

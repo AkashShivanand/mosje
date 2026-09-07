@@ -86,6 +86,28 @@
     transform: scale(0.97);
   }
 
+  /* SOFT-DISABLED — reachable, announced, and not operable.
+     The button form keeps Previous and Next mounted at the ends, and the page
+     you are on stays a button, so that focus survives the press (see
+     pagination.tsx). `aria-disabled` keeps them in the tab order where the
+     native attribute would drop them — and drops the browser's own pointer
+     blocking with it, leaving a control that looks disabled and still fires.
+     `pointer-events` is the pointer half, and it lives here rather than in the
+     handler because it must hold before hydration as well as after. This is
+     `Button`'s `preserveFocus` treatment, deliberately identical. */
+  .ds-pagination__step[aria-disabled="true"],
+  .ds-pagination__page[aria-disabled="true"] {
+    pointer-events: none;
+  }
+
+  /* Only the STEPS dim. The current page is `aria-disabled` for the same
+     reason — there is nowhere to go — but it must read as current, not as
+     unavailable, so it keeps the outlined treatment below. */
+  .ds-pagination__step[aria-disabled="true"] {
+    opacity: var(--sa-alpha-disabled);
+    cursor: not-allowed;
+  }
+
   /* Outlined, not filled — the same treatment the table pager uses. */
   .ds-pagination__page.is-current {
     border-color: var(--sa-border-brand-primary-base);
@@ -130,6 +152,10 @@
     }
   }
 
+  /* The politeness announcement in the button form. Hidden, not absent: the
+     dots-and-numbers on screen already say which page you are on, and printing
+     it a second time is the interface narrating itself. */
+  .ds-pagination__status,
   .ds-pagination__sr {
     position: absolute;
     width: 1px;
