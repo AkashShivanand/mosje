@@ -39,7 +39,7 @@ export function OrganisationJoinBanner({
             rel={external ? "noreferrer" : undefined}
           >
             <span>{banner.action.label}</span>
-            <Icon name={external ? "open_in_new" : "arrow_forward"} size={18} aria-hidden />
+            <Icon name={external ? "open_in_new" : "arrow_forward"} size={20} aria-hidden />
             {external && <span className="sr-only">(opens in a new tab)</span>}
           </a>
 
