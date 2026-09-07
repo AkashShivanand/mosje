@@ -108,7 +108,13 @@
     --_fg: var(--sa-color-text-onPrimary);
   }
   .ds-badge--solid.ds-badge--info {
-    --_bg: var(--sa-color-status-infoStrong);
+    /* `info` (#006d85), not `infoStrong` (#005568). Every other family's SOLID chip takes the
+       plain rung and reserves the `Strong` one for INK — look two rules up: the subtle info
+       chip uses `infoStrong` as its foreground. Info was the only family whose solid rule
+       reached for its own ink colour as a fill, which is what a copy-paste from the subtle
+       rule above it looks like. Both clear AA on white (8.4:1 and 6.0:1); this one matches
+       its siblings and matches `bg/status/info/bolder`, which is what the Figma variant binds. */
+    --_bg: var(--sa-color-status-info);
     --_fg: var(--sa-color-text-onPrimary);
   }
   .ds-badge--solid.ds-badge--success {
