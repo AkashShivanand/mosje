@@ -127,13 +127,31 @@
   /* The reason the advance control is disabled, beside it, so a reader meets the
      explanation and the dark button together. A disabled control whose reason sits
      elsewhere on the page is a dead end. `margin-inline-end: auto` pushes it left of the
-     buttons without a wrapper; it wraps to its own line on a narrow viewport because the
-     actions row already wraps. */
+     buttons without needing a wrapper. */
   .ds-wizard__blocked {
     margin-inline-end: auto;
     max-width: 52ch;
     color: var(--sa-text-status-warning-base);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-line-height);
+  }
+
+  /* The actions row is `nowrap`, so on a narrow viewport the sentence is squeezed between
+     two buttons rather than wrapping — measured at 375px it took 189px between a 64px Back
+     and a 66px Next, three or four words to the line. Given its own full-width line it
+     reads normally, and it goes ABOVE the buttons: the reason a control cannot be used is
+     worth meeting before the control. Scoped to this element rather than switching the row
+     to `wrap` for everyone, because the row's two-button case has no reason to change. */
+  @media (max-width: 640px) {
+    .ds-wizard__actions {
+      flex-wrap: wrap;
+    }
+
+    .ds-wizard__blocked {
+      order: -1;
+      flex-basis: 100%;
+      margin-inline-end: 0;
+      max-width: none;
+    }
   }
 }
