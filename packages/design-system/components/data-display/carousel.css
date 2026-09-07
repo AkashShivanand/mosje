@@ -20,8 +20,24 @@
     font-family: var(--sa-font-latin);
   }
 
+  /* `hidden` clips the track to the radius — and clips a focus ring on any
+     control sitting against a slide's edge with it, so a keyboard reader could
+     tab to a link inside a slide and see nothing. `clip` does the same job but
+     honours `overflow-clip-margin`, which lets exactly the ring bleed out and
+     nothing else. Declared after `hidden` so a browser that does not know
+     `clip` keeps the old behaviour rather than losing the clip entirely.
+
+     ds-exempt(layout-literal): 4px is `--sa-focus-width` (2) plus
+     `--sa-focus-offset` (2), and it is written out because THE PROPERTY WILL
+     NOT TAKE A `calc()`. Verified in a browser 2026-09-07, not assumed:
+     `overflow-clip-margin: 4px` computes to 4px, a bare `var()` computes,
+     and `calc(2px + 2px)` is REJECTED at parse — so the token form silently
+     resolved to 0 and clipped the ring exactly as before. Keep this in step
+     with the two focus tokens by hand; there is no way to bind it. */
   .ds-carousel__viewport {
     overflow: hidden;
+    overflow: clip;
+    overflow-clip-margin: 4px;
     border-radius: var(--sa-cmp-card-radius);
   }
 
@@ -68,8 +84,13 @@
     justify-content: flex-end;
   }
 
+  /* Wraps rather than overflows. Six dots at a 44px coarse target still ask for
+     more than a narrow phone has once the arrows are counted, and `Pagination`
+     already resolves the same problem the same way. A second centred row is an
+     acceptable degradation; a horizontally scrolling control bar is not. */
   .ds-carousel__controls-main {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
     gap: var(--sa-inline-8);
@@ -144,6 +165,34 @@
   .ds-carousel__dot:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
+  }
+
+  /* The counter that replaces the dots past six slides. It is the position
+     indicator, so it is sized and weighted like one — quiet, tabular, and the
+     same height as the controls beside it so the row's baseline does not move
+     when a carousel crosses the threshold. */
+  .ds-carousel__counter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 4ch;
+    height: var(--sa-control-height-md);
+    margin: 0;
+    padding: 0 var(--sa-padding-8);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-1-size);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-carousel__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 
   /* 8px between the dot targets, not 4 — UX4G 3.0 §3 asks for 8px between
@@ -257,6 +306,10 @@
 
     .ds-carousel__dot {
       width: 44px;
+      height: 44px;
+    }
+
+    .ds-carousel__counter {
       height: 44px;
     }
   }

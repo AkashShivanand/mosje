@@ -5,6 +5,16 @@ import { Icon } from "../utilities/icon";
 import { cn } from "../../utils/cn";
 import "./carousel.css";
 
+/**
+ * Above this many slides the dot row stops being a position indicator and
+ * becomes a wall. Six is the largest count that still reads as a countable set
+ * at a glance, and past it the row also stops fitting: on a coarse pointer each
+ * dot is a 44px target at an 8px pitch, so seven of them plus two arrows ask
+ * for 460px — more than a 375px phone has. Above six the dots are replaced by a
+ * counter, which is the same information in a tenth of the width.
+ */
+const MAX_DOTS = 6;
+
 export interface CarouselProps {
   /**
    * The slides. Each child becomes one slide and is labelled "N of M" for
@@ -252,7 +262,7 @@ export function Carousel({
             <Icon name="chevron_left" size={20} />
           </button>
 
-          {showDots ? (
+          {showDots && count <= MAX_DOTS ? (
             <div className="ds-carousel__dots">
               {slides.map((_, i) => (
                 <button
@@ -271,6 +281,24 @@ export function Carousel({
                 />
               ))}
             </div>
+          ) : showDots ? (
+            /*
+             * PAST SIX SLIDES THE POSITION IS SHOWN, NOT DRAWN.
+             *
+             * The dots are the reason `ds-carousel__status` is visually hidden —
+             * "the position is announced, not shown, because the dots already
+             * show it". Once the dots are gone that reasoning goes with them,
+             * so the counter takes their place on screen. It is not a second
+             * copy of anything; it is the only copy.
+             *
+             * It carries no jump-to-slide affordance because there is nothing
+             * honest to offer: a set this long has no way to reach slide 9
+             * directly that is better than pressing Next.
+             */
+            <p className="ds-carousel__counter">
+              <span aria-hidden="true">{`${index + 1} / ${count}`}</span>
+              <span className="ds-carousel__sr">{`Slide ${index + 1} of ${count}`}</span>
+            </p>
           ) : null}
 
           <button

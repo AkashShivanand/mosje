@@ -123,6 +123,23 @@ export default function CarouselPage(): React.JSX.Element {
               control that had wandered to the left edge.
             </p>
           </section>
+          <section className="cdp__section" aria-labelledby="cdp-long">
+            <h2 id="cdp-long" className="cdp__h2">Past Six Slides the Dots Become a Counter</h2>
+            <p>
+              A dot row stops being a position indicator and becomes a wall. Six is the largest
+              count that still reads as a countable set at a glance, and past it the row also
+              stops fitting: on a coarse pointer each dot is a 44px target at an 8px pitch, so
+              seven of them plus two arrows ask for 460px — more than a 375px phone has. Above
+              six the dots are replaced by <code>3 / 9</code>, which is the same information in a
+              tenth of the width.
+            </p>
+            <p>
+              The counter carries no jump-to-slide affordance, because there is nothing honest to
+              offer: a set that long has no way to reach slide nine directly that is better than
+              pressing Next. If the reader needs to reach a particular item, the content wanted a
+              list, not a carousel.
+            </p>
+          </section>
           <section className="cdp__section" aria-labelledby="cdp-track">
             <h2 id="cdp-track" className="cdp__h2">The Track Is the Source of Truth</h2>
             <p>

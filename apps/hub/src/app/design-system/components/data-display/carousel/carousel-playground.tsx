@@ -17,7 +17,15 @@ const CARD: React.CSSProperties = {
   color: "var(--sa-text-neutral-bolder)",
 };
 
-/** Both arrangements: reader-driven (the default) and auto-rotating with its pause control. */
+const LONG_SET = [
+  "Andhra Pradesh", "Bihar", "Chhattisgarh", "Gujarat", "Haryana",
+  "Karnataka", "Madhya Pradesh", "Odisha", "Rajasthan",
+];
+
+/**
+ * Three arrangements: reader-driven (the default), auto-rotating with its pause
+ * control, and a set long enough that the dots become a counter.
+ */
 export function CarouselPlayground(): React.JSX.Element {
   const slides = SLIDES.map((s) => (
     <div key={s.title} style={CARD}>
@@ -48,6 +56,21 @@ export function CarouselPlayground(): React.JSX.Element {
       <Carousel label="Departmental announcements">{slides}</Carousel>
       <Carousel label="Rotating announcements" autoPlay interval={5}>
         {slides}
+      </Carousel>
+      <Carousel label="States and Union Territories reached">
+        {LONG_SET.map((name) => (
+          <div key={name} style={{ ...CARD, minHeight: "6rem" }}>
+            <h3
+              style={{
+                margin: 0,
+                fontSize: "var(--sa-type-title-2-size)",
+                lineHeight: "var(--sa-type-title-2-lh)",
+              }}
+            >
+              {name}
+            </h3>
+          </div>
+        ))}
       </Carousel>
     </div>
   );
