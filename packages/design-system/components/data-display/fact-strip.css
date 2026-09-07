@@ -58,11 +58,25 @@
   /* 12 between cells, as the handoff's card sets it. It was 0 here with 12 of
      padding on each cell instead, which is the same idea done twice: it put 24
      between neighbours and left 12 of dead space inside the card's own edges. */
+  /*
+   * ROW-GAP AT EVERY WIDTH, not only on a phone.
+   *
+   * The strip was written for the four facts under a hero, which never wrap, so
+   * `row-gap` lived in the 639px media query alone. The first strip with EIGHT
+   * items — NMBA's published counters — wraps to two rows on a desktop, and
+   * with no row gap and no dividers the second row's icons sat directly against
+   * the first row's labels. A two-line label made them touch.
+   *
+   * The reasoning already written into the media query below is simply not
+   * specific to small screens: with the dividers gone, any second row needs its
+   * own vertical rhythm. A single-row strip has no row gap to apply, so every
+   * existing four-fact strip renders exactly as before.
+   */
   .ds-fact-strip__list {
     margin: 0;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    column-gap: var(--sa-inline-12);
+    gap: var(--sa-stack-24) var(--sa-inline-12);
   }
 
   /*
@@ -163,11 +177,10 @@
   }
 
   /* Two-up on a phone: cells at 200px each would be columns of wrapped single
-     words. With the dividers gone the rows need their own vertical rhythm. */
+     words. The row rhythm is set on the base rule above, for every width. */
   @media (max-width: 639px) {
     .ds-fact-strip__list {
       grid-template-columns: repeat(2, 1fr);
-      row-gap: var(--sa-stack-24);
     }
   }
 }

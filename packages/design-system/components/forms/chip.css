@@ -94,11 +94,22 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* Selected, the count follows the chip's own ink rather than staying grey
-     against a tinted ground. */
+  /*
+   * Selected, the count follows the chip's own ink rather than staying grey
+   * against a tinted ground.
+   *
+   * 0.9, NOT 0.75 — MEASURED, not chosen. The chip's ink (#004b96) on its
+   * tinted ground (#c0dbff) is 6.06:1 at full strength; at 0.75 the blend lands
+   * on #306fb0 and measures 3.68:1, under the 4.5:1 that 14px text needs. axe
+   * caught it on the first document library with counted filter chips.
+   *
+   * The ladder, for whoever tunes this next: 0.8 → 4.06, 0.85 → 4.47 (still
+   * short), 0.9 → 5.00. 0.9 keeps the count quieter than its label and clears
+   * AA with room, which 0.85 does not.
+   */
   .ds-chip--selected .ds-chip__count {
     color: inherit;
-    opacity: 0.75;
+    opacity: 0.9;
   }
 
   .ds-chip__icon {
