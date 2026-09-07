@@ -145,3 +145,26 @@ export const CustomNoun: Story = {
     viewAllSlot: <a href="#">View all publications</a>,
   },
 };
+
+/**
+ * `groupViewAll` gives each category its OWN "view all", keyed by the group
+ * name, and it replaces `viewAllSlot` while that chip is selected.
+ *
+ * It exists for the publisher whose site keeps a separate listing per category.
+ * Folding those categories into one shelf otherwise throws away every link but
+ * one — and a single "View all documents" pointing at whichever listing the page
+ * happened to name first is worse than no link, because it silently sends a
+ * reader looking for newsletters to the circulars page. Select a chip below and
+ * watch the footer follow it.
+ */
+export const PerGroupViewAll: Story = {
+  args: {
+    items: ITEMS,
+    groupOrder: ORDER,
+    viewAllSlot: <a href="#">View all documents</a>,
+    groupViewAll: {
+      Guidelines: <a href="#guidelines">View all Guidelines</a>,
+      Circulars: <a href="#circulars">View all Circulars</a>,
+    },
+  },
+};
