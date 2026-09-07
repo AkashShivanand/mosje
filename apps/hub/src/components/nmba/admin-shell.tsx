@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Icon, PortalPage, SiteHeader, SAMAVESH_COBRAND, type PortalRole as SamaveshRole, type SidebarNavGroup, type SidebarNavItem, OrgLogo } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
@@ -155,6 +156,7 @@ export function AdminShell({ children }: AdminShellProps) {
       mainId="main-content"
       header={(nav) => (
         <SiteHeader
+          linkAs={Link}
           /* This is the fix. The button used to toggle `collapsed` — the
              DESKTOP rail's state — while the rail carried `hidden lg:flex`, so
              on a phone it did nothing and a SECOND "Menu" button inside the

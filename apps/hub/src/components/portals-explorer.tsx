@@ -248,6 +248,7 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
               return (
                 <li key={portal.path}>
                   <PortalCard
+                    linkAs={Link}
                     variant="detailed"
                     code={portalLabel(portal).short}
                     name={portalLabel(portal).full}

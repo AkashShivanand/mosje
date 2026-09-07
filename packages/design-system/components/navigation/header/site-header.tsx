@@ -74,6 +74,24 @@ export interface SiteHeaderProps {
    * @default "/"
    */
   homeHref?: string;
+  /**
+   * ROUTER-AWARE LINK FOR EVERY INTERNAL DESTINATION IN THE MASTHEAD — pass
+   * `next/link`. Threaded to the brand lockup, every nav entry, every dropdown and
+   * mega-menu row, and the sheet.
+   *
+   * PASS IT. Without it the masthead falls back to bare `<a href>`, and the masthead
+   * is on every page of every portal in the estate: one menu click then costs a full
+   * document load — the whole bundle re-fetched, the tree re-hydrated, the scroll
+   * position lost, and no prefetch to cover any of it. Measured on the website home
+   * page before this prop existed, "Department → About Us" re-fetched 30 script files
+   * and took 1.9s to `loadEventEnd`, on localhost with a warm cache.
+   *
+   * External, disabled and `"#"` destinations always stay a plain anchor whatever is
+   * passed here — see `navLinkTag`. Safe to pass from a server component: this file
+   * claims the client boundary, and the reference crosses it as a component, not a
+   * closure.
+   */
+  linkAs?: React.ElementType;
   /** Portal: collapse/menu toggle rendered on the far left of the brand row. */
   onToggleNav?: () => void;
   /** Portal: whether the app-shell nav/sidebar controlled by the toggle is open (drives `aria-expanded`). */
@@ -221,6 +239,7 @@ export function SiteHeader({
   brandLines,
   beta = true,
   homeHref = "/",
+  linkAs,
   onToggleNav,
   navExpanded,
   navControlsId,
@@ -700,27 +719,55 @@ export function SiteHeader({
     return () => ro.disconnect();
   }, [condensed, hasNav, nav]);
 
-  // Nav dropdown: close on Escape, outside-click, or focus leaving the nav.
-  const navRef = React.useRef<HTMLElement>(null);
+  /**
+   * Close the open menu on Escape, on a mousedown outside the navigation, or when
+   * focus leaves it.
+   *
+   * THE TEST IS THE DOM, NOT A REF, AND THAT IS THE ENTIRE FIX.
+   *
+   * The masthead renders BOTH faces at once — `.ds-hdr__face--rest` and
+   * `.ds-hdr__face--cond` — and each carries its own `<nav class="ds-hdr-nav">`.
+   * A single `ref` on two elements keeps only the one that mounted last, which is
+   * the condensed face. So every menu row in the RESTING face — which is the one
+   * a reader actually sees and clicks — failed `navRef.current.contains(target)`,
+   * was judged an outside click, and closed the panel on `mousedown`.
+   *
+   * The consequence is worse than it sounds: the anchor left the DOM between
+   * `mousedown` and `mouseup`, so the two landed on different elements and the
+   * browser never generated a `click` at all. **No link in any masthead menu could
+   * be opened with a mouse.** Keyboard Enter worked, and so did a programmatic
+   * `element.click()` — which is exactly why it survived review and an automated
+   * pass. A defect that only a real mouse button can reveal needs a real mouse
+   * button to test it; asserting on a synthetic click asserts nothing here.
+   *
+   * `closest()` asks the question the ref was standing in for — "is this inside
+   * the navigation" — and is right however many faces the header draws.
+   */
+  const insideNav = (node: unknown): boolean =>
+    node instanceof Element && !!node.closest(".ds-hdr-nav");
+
   React.useEffect(() => {
     if (openLabel === null) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpenLabel(null);
     };
     const onDown = (e: MouseEvent) => {
-      if (navRef.current && !navRef.current.contains(e.target as Node)) setOpenLabel(null);
+      if (!insideNav(e.target)) setOpenLabel(null);
     };
+    /* Document-level, because a listener bound to one nav element cannot see focus
+       leaving the other one. `relatedTarget` is null when focus goes nowhere at
+       all, and that correctly counts as leaving. */
     const onFocusOut = (e: FocusEvent) => {
-      if (navRef.current && !navRef.current.contains(e.relatedTarget as Node)) setOpenLabel(null);
+      if (!insideNav(e.target)) return;
+      if (!insideNav(e.relatedTarget)) setOpenLabel(null);
     };
     document.addEventListener("keydown", onKey);
     document.addEventListener("mousedown", onDown);
-    navRef.current?.addEventListener("focusout", onFocusOut);
-    const navEl = navRef.current;
+    document.addEventListener("focusout", onFocusOut);
     return () => {
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("mousedown", onDown);
-      navEl?.removeEventListener("focusout", onFocusOut);
+      document.removeEventListener("focusout", onFocusOut);
     };
   }, [openLabel]);
 
@@ -730,6 +777,7 @@ export function SiteHeader({
       item={item}
       open={openLabel === item.label}
       onOpenChange={(next) => setOpenLabel(next ? item.label : null)}
+      linkAs={linkAs}
     />
   ));
 
@@ -737,7 +785,7 @@ export function SiteHeader({
      the brand row (website / portal), inline in the brand row (compact), or inside
      the condensed bar. Same markup, same refs, same dropdown behaviour. */
   const navRow = hasNav ? (
-    <nav className={cn("ds-hdr-nav", isCompact && "is-inline")} aria-label="Primary" ref={navRef}>
+    <nav className={cn("ds-hdr-nav", isCompact && "is-inline")} aria-label="Primary">
       <ul className="ds-hdr-nav__list" style={inner}>
         {navItems}
       </ul>
@@ -810,6 +858,7 @@ export function SiteHeader({
           emblemAlt={emblemAlt}
           lines={brandLines}
           href={homeHref}
+          linkAs={linkAs}
           compact
           textHiddenOnMobile
         />
@@ -840,7 +889,7 @@ export function SiteHeader({
           </search>
         ) : (
           hasNav && (
-            <nav className="ds-hdr-nav is-cond" aria-label="Primary" ref={navRef}>
+            <nav className="ds-hdr-nav is-cond" aria-label="Primary">
               <ul className="ds-hdr-nav__list" ref={condListRef}>
                 {navItems}
               </ul>
@@ -899,6 +948,7 @@ export function SiteHeader({
               emblemAlt={emblemAlt}
               lines={brandLines}
               href={homeHref}
+              linkAs={linkAs}
               beta={isCompact ? false : beta}
               compact={isCompact}
             />
@@ -1062,6 +1112,7 @@ export function SiteHeader({
           emblemAlt={emblemAlt}
           brandLines={brandLines}
           homeHref={homeHref}
+          linkAs={linkAs}
           actions={actions}
           search={search}
           searchValue={query}

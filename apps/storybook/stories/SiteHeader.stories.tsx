@@ -5,6 +5,17 @@ import { Button, SiteHeader } from "@mosje/design-system";
 /**
  * **SiteHeader** — the SAMAVESH Navbar, in its two estate variants.
  *
+ *
+ * **`linkAs` — PASS `next/link`, and the reason is measurable.** Every internal
+ * destination here renders through it: without it the parts fall back to a bare
+ * `<a href>`, so a menu click costs a FULL DOCUMENT LOAD — the whole bundle
+ * re-fetched, the tree re-hydrated, the scroll position lost, and no prefetch to
+ * cover any of it. Measured on the estate's own home page before the prop
+ * existed, one click from "Department" to "About Us" re-fetched 30 script files
+ * and took 1.9s to `loadEventEnd`, on localhost with a warm cache. These stories
+ * leave it unset deliberately: Storybook has no router, so `<a>` is correct
+ * HERE and wrong in the app. External, disabled and `"#"` destinations stay a
+ * plain anchor whatever is passed.
  * `variant` is not cosmetic; it sets behaviour:
  *
  * - **`website`** (default) — a static masthead for the public site. Full

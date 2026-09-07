@@ -2,15 +2,16 @@
 
 import * as React from "react";
 import { CENTRE_TYPE_META, type DeAddictionCentre } from "@/content/website/deaddiction-centres";
-import { CentreMapDynamic, centreKey, filterCentres } from "./locator-shared";
+import { CentreMapDynamic, centreKey, filterCentres, useLocatorRows } from "./locator-shared";
 import { Icon, Link, Search } from "@mosje/design-system";
 
 export function LocatorAccordion() {
   const [query, setQuery] = React.useState("");
   const [open, setOpen] = React.useState<string | null>(null);
   const [selected, setSelected] = React.useState<DeAddictionCentre | null>(null);
+  const { rows } = useLocatorRows();
 
-  const filtered = React.useMemo(() => filterCentres({ query }), [query]);
+  const filtered = React.useMemo(() => filterCentres(rows, { query }), [rows, query]);
 
   const byState = React.useMemo(() => {
     const m = new Map<string, DeAddictionCentre[]>();

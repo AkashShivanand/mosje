@@ -5,6 +5,17 @@ import { BrandLockup } from "@mosje/design-system";
  * **BrandLockup** — the National Emblem plus the three-line government text
  * stack.
  *
+ *
+ * **`linkAs` — PASS `next/link`, and the reason is measurable.** Every internal
+ * destination here renders through it: without it the parts fall back to a bare
+ * `<a href>`, so a menu click costs a FULL DOCUMENT LOAD — the whole bundle
+ * re-fetched, the tree re-hydrated, the scroll position lost, and no prefetch to
+ * cover any of it. Measured on the estate's own home page before the prop
+ * existed, one click from "Department" to "About Us" re-fetched 30 script files
+ * and took 1.9s to `loadEventEnd`, on localhost with a warm cache. These stories
+ * leave it unset deliberately: Storybook has no router, so `<a>` is correct
+ * HERE and wrong in the app. External, disabled and `"#"` destinations stay a
+ * plain anchor whatever is passed.
  * `SiteHeader` renders this for you. Use it directly only where there is no
  * header: a login shell, an error page, a print header, an email template.
  *

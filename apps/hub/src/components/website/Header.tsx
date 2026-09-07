@@ -238,6 +238,7 @@ export function Header({ hideAdminLogin = false }: HeaderProps = {}) {
   return (
     <>
     <SiteHeader
+      linkAs={Link}
       homeHref="/website"
       variant="website"
       emblemSrc={`${BP}/images/National-Emblem-logo.svg`}

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { navLinkTag } from "./header/nav-link-tag";
 import { cn } from "../../utils/cn";
 import { Icon } from "../utilities/icon";
 import { Chip } from "../forms/chip";
@@ -83,6 +84,12 @@ export interface SamaveshBannerProps
   onToggle?: (open: boolean) => void;
   /** Portals shown in the drawer. Defaults to every LIVE portal in the registry. */
   portals?: SamaveshBannerPortalItem[];
+  /**
+   * Router-aware link element — pass `next/link`. Threaded to every portal card
+   * in the drawer and to the "view all" row. External destinations stay a plain
+   * anchor. Defaults to `<a>`. See `navLinkTag`.
+   */
+  linkAs?: React.ElementType;
   /** Title inside the drawer. @default "Choose a portal to visit" */
   drawerTitle?: string;
   /**
@@ -195,6 +202,7 @@ export function SamaveshBanner({
   isOpen: controlledIsOpen,
   onToggle,
   portals = DEFAULT_SAMAVESH_PORTALS,
+  linkAs,
   drawerTitle = "Choose a portal to visit",
   viewAllHref = "/portals",
   viewAllPrompt = "Are you an officer or administrator?",
@@ -210,6 +218,9 @@ export function SamaveshBanner({
   className,
   ...rest
 }: SamaveshBannerProps) {
+  /* The "view all" row is always an internal estate route, so it is the one
+     destination here that never needs the external escape. */
+  const ViewAllTag = navLinkTag({ href: viewAllHref }, linkAs);
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
   const [activeCategory, setActiveCategory] =
     React.useState<PortalCategory | null>(null);
@@ -693,6 +704,7 @@ export function SamaveshBanner({
                       href={portal.href}
                       path={portal.href}
                       external={portal.external}
+                      linkAs={linkAs}
                     />
                   </li>
                 ))}
@@ -705,10 +717,10 @@ export function SamaveshBanner({
                 {viewAllPrompt && (
                   <span className="ds-samavesh-banner__footer-prompt">{viewAllPrompt}</span>
                 )}
-                <a href={viewAllHref} className="ds-samavesh-banner__view-all">
+                <ViewAllTag href={viewAllHref} className="ds-samavesh-banner__view-all">
                   <span>{viewAllLabel}</span>
                   <Icon name="arrow_forward" size={16} aria-hidden="true" />
-                </a>
+                </ViewAllTag>
               </div>
             )}
           </div>

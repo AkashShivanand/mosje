@@ -4,6 +4,12 @@ import { PortalCard } from "@mosje/design-system";
 /**
  * **PortalCard** — one portal in a grid of them, in two densities.
  *
+ *
+ * **`linkAs` — PASS `next/link`.** Internal destinations route through it;
+ * without it the card is a bare `<a href>` and each entry into a portal costs a
+ * FULL DOCUMENT LOAD, with no prefetch to cover it. External and disabled cards
+ * stay a plain anchor whatever is passed. These stories leave it unset because
+ * Storybook has no router — `<a>` is right HERE and wrong in the app.
  * **`variant` is the only real decision, and it is about the READER, not the
  * space.** `compact` is for someone who already knows which portal they want and
  * is FINDING it — the SAMAVESH banner drawer, and the change-portal side sheet on

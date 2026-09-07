@@ -114,6 +114,7 @@ export default async function AdminPortalsPage({
   return (
     <div className="min-h-screen bg-surface-muted">
       <SiteHeader
+        linkAs={Link}
         homeHref="/admin"
         variant="compact"
         emblemSrc="/images/National-Emblem-logo.svg"

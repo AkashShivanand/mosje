@@ -14,8 +14,8 @@ import { PmajayWorksMap } from "@/components/website/PmajayWorksMap";
 import { OrganisationJoinBanner } from "@/components/website/OrganisationJoinBanner";
 import { DeAddictionMap } from "@/components/website/nmba/DeAddictionMap";
 import {
-  DEADDICTION_CENTRES,
   PUBLISHED_TOTAL,
+  TOTAL_CENTRES,
 } from "@/content/website/deaddiction-centres";
 import { getAdarshGramCounts } from "@/lib/website/adarsh-gram-api";
 import {
@@ -589,7 +589,7 @@ export default async function OrganisationDetailPage({
                    * what stops a reader concluding a third of the country's
                    * centres have gone missing.
                    */
-                  `Of the ${PUBLISHED_TOTAL} centres the Ministry publishes, the ${DEADDICTION_CENTRES.length} with recorded coordinates are plotted here.`
+                  `Of the ${PUBLISHED_TOTAL} centres the Ministry publishes, the ${TOTAL_CENTRES} with recorded coordinates are plotted here.`
                 }
                 headingId="deaddiction-map-heading"
               />

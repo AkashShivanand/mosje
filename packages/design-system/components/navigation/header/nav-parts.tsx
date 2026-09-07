@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { navDisabledAria, navTag } from "./nav-link-tag";
+import { navDisabledAria, navLinkTag } from "./nav-link-tag";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
 import type { NavColumn, NavItem, NavLink, NavMegaItem } from "./types";
@@ -125,12 +125,18 @@ export function SheetToggle({
 export interface DropdownItemProps {
   item: NavLink;
   onSelect?: () => void;
+  /**
+   * Router-aware link for internal hrefs — pass `next/link`. External, disabled
+   * and fragment destinations always render a plain anchor. Defaults to `<a>`,
+   * which costs a full page load per click. See `navLinkTag`.
+   */
+  linkAs?: React.ElementType;
   className?: string;
 }
 
 /** DropdownItem — one row inside a simple nav dropdown (Figma `Navbar/DropdownItem`). */
-export function DropdownItem({ item, onSelect, className }: DropdownItemProps): React.JSX.Element {
-  const Tag = navTag(item.disabled);
+export function DropdownItem({ item, onSelect, linkAs, className }: DropdownItemProps): React.JSX.Element {
+  const Tag = navLinkTag(item, linkAs);
   return (
     <Tag
       href={item.disabled ? undefined : item.href}
@@ -166,12 +172,21 @@ export interface NavOverview {
   href: string;
 }
 
-function OverviewRow({ overview, onSelect }: { overview: NavOverview; onSelect?: () => void }): React.JSX.Element {
+function OverviewRow({
+  overview,
+  onSelect,
+  linkAs,
+}: {
+  overview: NavOverview;
+  onSelect?: () => void;
+  linkAs?: React.ElementType;
+}): React.JSX.Element {
+  const Tag = navLinkTag(overview, linkAs);
   return (
-    <a className="ds-hdr-nav__overview" href={overview.href} onClick={onSelect}>
+    <Tag className="ds-hdr-nav__overview" href={overview.href} onClick={onSelect}>
       <span>All of {overview.label}</span>
       <Icon name="arrow_forward" size={20} aria-hidden="true" />
-    </a>
+    </Tag>
   );
 }
 
@@ -182,22 +197,24 @@ export interface NavDropdownProps {
   /** The parent entry's own page, rendered as a closing row. */
   overview?: NavOverview;
   onSelect?: () => void;
+  /** Router-aware link for internal hrefs — pass `next/link`. @see DropdownItemProps */
+  linkAs?: React.ElementType;
   className?: string;
 }
 
 /** NavDropdown — a simple single-column menu (Figma `Navbar/NavDropdown`). */
-export function NavDropdown({ id, label, items, overview, onSelect, className }: NavDropdownProps): React.JSX.Element {
+export function NavDropdown({ id, label, items, overview, onSelect, linkAs, className }: NavDropdownProps): React.JSX.Element {
   return (
     <div className={cn("ds-hdr-nav__drop-wrap", className)}>
       <ul id={id} className="ds-hdr-nav__drop" aria-label={label}>
         {items.map((c) => (
           <li key={c.label}>
-            <DropdownItem item={c} onSelect={onSelect} />
+            <DropdownItem item={c} onSelect={onSelect} linkAs={linkAs} />
           </li>
         ))}
         {overview && (
           <li>
-            <OverviewRow overview={overview} onSelect={onSelect} />
+            <OverviewRow overview={overview} onSelect={onSelect} linkAs={linkAs} />
           </li>
         )}
       </ul>
@@ -210,12 +227,14 @@ export function NavDropdown({ id, label, items, overview, onSelect, className }:
 export interface MegaMenuItemProps {
   item: NavMegaItem;
   onSelect?: () => void;
+  /** Router-aware link for internal hrefs — pass `next/link`. @see DropdownItemProps */
+  linkAs?: React.ElementType;
   className?: string;
 }
 
 /** MegaMenuItem — emblem + abbreviation + full name (Figma `Navbar/MegaMenuItem`). */
-export function MegaMenuItem({ item, onSelect, className }: MegaMenuItemProps): React.JSX.Element {
-  const Tag = navTag(item.disabled);
+export function MegaMenuItem({ item, onSelect, linkAs, className }: MegaMenuItemProps): React.JSX.Element {
+  const Tag = navLinkTag(item, linkAs);
   return (
     <Tag
       href={item.disabled ? undefined : item.href}
@@ -257,11 +276,13 @@ export interface MegaMenuProps {
   /** The parent entry's own page, rendered as a closing row. */
   overview?: NavOverview;
   onSelect?: () => void;
+  /** Router-aware link for internal hrefs — pass `next/link`. @see DropdownItemProps */
+  linkAs?: React.ElementType;
   className?: string;
 }
 
 /** MegaMenu — the multi-column organisation grid (Figma `Navbar/MegaMenu`). */
-export function MegaMenu({ id, label, columns, overview, onSelect, className }: MegaMenuProps): React.JSX.Element {
+export function MegaMenu({ id, label, columns, overview, onSelect, linkAs, className }: MegaMenuProps): React.JSX.Element {
   return (
     <div className={cn("ds-hdr-nav__drop-wrap is-mega", className)}>
       <div id={id} className="ds-hdr-nav__mega" role="group" aria-label={label}>
@@ -272,7 +293,7 @@ export function MegaMenu({ id, label, columns, overview, onSelect, className }: 
               <ul className="ds-hdr-nav__mega-list is-rich">
                 {col.items.map((it) => (
                   <li key={it.abbr}>
-                    <MegaMenuItem item={it} onSelect={onSelect} />
+                    <MegaMenuItem item={it} onSelect={onSelect} linkAs={linkAs} />
                   </li>
                 ))}
               </ul>
@@ -280,7 +301,7 @@ export function MegaMenu({ id, label, columns, overview, onSelect, className }: 
               <ul className="ds-hdr-nav__mega-list">
                 {col.links?.map((c) => (
                   <li key={c.label}>
-                    <DropdownItem item={c} onSelect={onSelect} />
+                    <DropdownItem item={c} onSelect={onSelect} linkAs={linkAs} />
                   </li>
                 ))}
               </ul>
@@ -289,7 +310,7 @@ export function MegaMenu({ id, label, columns, overview, onSelect, className }: 
         ))}
         {overview && (
           <div className="ds-hdr-nav__mega-foot">
-            <OverviewRow overview={overview} onSelect={onSelect} />
+            <OverviewRow overview={overview} onSelect={onSelect} linkAs={linkAs} />
           </div>
         )}
       </div>
@@ -304,6 +325,8 @@ export interface NavItemLinkProps {
   /** Whether this item's menu is open. Controlled by the nav that owns it. */
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
+  /** Router-aware link for internal hrefs — pass `next/link`. @see DropdownItemProps */
+  linkAs?: React.ElementType;
   className?: string;
 }
 
@@ -312,7 +335,7 @@ export interface NavItemLinkProps {
  * (Figma `Navbar/NavItem`). `columns` wins over `children` when both are given,
  * matching the type's documented contract.
  */
-export function NavItemLink({ item, open = false, onOpenChange, className }: NavItemLinkProps): React.JSX.Element {
+export function NavItemLink({ item, open = false, onOpenChange, linkAs, className }: NavItemLinkProps): React.JSX.Element {
   /* Open is deliberately slower than a flick across the row; close is slower
      still, so travelling from the label to the panel — or across a sibling on the
      way to a centred one — does not drop what you were reaching for. */
@@ -321,7 +344,12 @@ export function NavItemLink({ item, open = false, onOpenChange, className }: Nav
   const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const liRef = React.useRef<HTMLLIElement>(null);
   const linkRef = React.useRef<HTMLAnchorElement>(null);
-  const Tag = navTag(item.disabled);
+  /* An entry that OWNS a menu carries `href="#"`, so `navLinkTag` returns a plain
+     anchor for it and the router element is never handed a non-destination. Where an
+     entry has both a menu and a real page, the `onClick` below calls
+     `preventDefault()` and `next/link` honours that — it does not navigate on an
+     already-defaulted event. */
+  const Tag = navLinkTag(item, linkAs);
   const clear = () => {
     if (timer.current !== undefined) clearTimeout(timer.current);
     timer.current = undefined;
@@ -476,10 +504,10 @@ export function NavItemLink({ item, open = false, onOpenChange, className }: Nav
       </Tag>
 
       {hasChildren && open && (
-        <NavDropdown id={dropId} label={item.label} items={item.children!} overview={overview} onSelect={close} />
+        <NavDropdown id={dropId} label={item.label} items={item.children!} overview={overview} onSelect={close} linkAs={linkAs} />
       )}
       {hasMega && open && (
-        <MegaMenu id={dropId} label={item.label} columns={item.columns!} overview={overview} onSelect={close} />
+        <MegaMenu id={dropId} label={item.label} columns={item.columns!} overview={overview} onSelect={close} linkAs={linkAs} />
       )}
     </li>
   );
