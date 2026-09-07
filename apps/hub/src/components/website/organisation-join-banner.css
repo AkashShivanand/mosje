@@ -2,60 +2,103 @@
 
 @layer components {
   /* ============================================================================
-     The campaign join banner — above the page hero.
+     The campaign join banner — a STRIP above the page hero, not a second hero.
      Bound to the DS success ramp: the Abhiyaan publishes this band in its own
      green, which is neither gov-blue nor saffron.
      ============================================================================ */
 
-  /* successScale-600 (#046a38). The estate has no `--sa-bg-success-*` rung, and
-     the scale is what `fact-strip.css` already reaches for when it needs a
-     ramp colour directly. White on it measures 6.72:1, and the deep green of
-     the white CTA sitting on it measures the same. */
+  /*
+   * ── WHY THIS IS A STRIP AND NOT A SLAB ──────────────────────────────────────
+   *
+   * It shipped 158px tall, carrying a 24/32 bold heading, a sentence, a filled
+   * button and a bordered pill. Directly beneath it the page header's blue band
+   * runs another 532px. That is 690px of unbroken saturated colour above the
+   * fold, in two competing weights, before a reader reaches anything they came
+   * for — and it is the single largest reason the first fold read as cluttered.
+   *
+   * A promotional band is not entitled to a hero's proportions on a page whose
+   * own hero is directly below it. Height is what tells a reader which of two
+   * stacked coloured regions is the page and which is an announcement, so the
+   * strip gives the height back: ~80px against the header's 532.
+   *
+   * ── AND WHY THE HEADING STEPPED DOWN ────────────────────────────────────────
+   *
+   * "Join Nasha Mukt Bharat Abhiyaan" at headline-4/700 sat 300px above an H1
+   * reading "Nasha Mukt Bharat Abhiyaan (NMBA)" at headline-1. Two headings,
+   * nearly the same words, and the smaller one arriving first. Both strings are
+   * the source's own and neither is dropped — but only one of them is the page,
+   * so the invitation takes headline-5 and the page keeps headline-1.
+   */
   .orgjb {
     background-color: var(--sa-color-successScale-600);
     color: var(--sa-text-neutral-inverse);
   }
 
+  /*
+   * Copy left, actions right, on ONE row from 1024 up.
+   *
+   * It was a wrapping flex row, which is a layout that decides itself: at this
+   * content length the copy and the actions never fitted, so they always wrapped
+   * to two rows and the band was tall by accident rather than by choice. A grid
+   * states the intention — and states where it stops holding, below.
+   */
   .orgjb__inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--sa-stack-16) var(--sa-inline-24);
-    padding-block: var(--sa-padding-20);
+    display: grid;
+    gap: var(--sa-stack-12) var(--sa-inline-24);
+    padding-block: var(--sa-padding-16);
+  }
+
+  @media (width >= 64rem) {
+    .orgjb__inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+    }
   }
 
   .orgjb__copy {
     display: flex;
     flex-direction: column;
-    gap: var(--sa-stack-4);
+    gap: var(--sa-stack-2);
     min-width: 0;
   }
 
+  /* headline-5 (20/24) semibold, against the H1's headline-1. See the note above
+     on why this heading is not allowed to compete with the page's own. */
   .orgjb__heading {
     margin: 0;
-    font-size: var(--sa-type-headline-4-size);
-    line-height: var(--sa-type-headline-4-lh);
-    font-weight: var(--sa-font-weight-bold);
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-weight: var(--sa-font-weight-semibold);
     color: inherit;
   }
 
+  /* `pretty` rather than `balance`: the sentence runs to two lines in the left
+     column at 1440 and `pretty` is the one that refuses to leave the last word
+     alone on its own line. `balance` would even the two lines and is for
+     headings, which this is not. */
   .orgjb__text {
     margin: 0;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
     color: inherit;
+    text-wrap: pretty;
   }
 
   .orgjb__actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--sa-inline-12);
+    gap: var(--sa-inline-12) var(--sa-inline-24);
   }
 
-  /* White on the green, so the button is the lightest thing in the band and
-     reads as the one action. */
+  /*
+   * THE ONE BUTTON IN THE BAND.
+   *
+   * White on the green, so it is the lightest thing here and reads as the single
+   * action. The helpline beside it used to carry a border, a background inset
+   * and the same rounded 48px box — two buttons, of which one was a telephone
+   * number. See `.orgjb__helpline`.
+   */
   .orgjb__cta {
     display: inline-flex;
     align-items: center;
@@ -68,28 +111,76 @@
     line-height: var(--sa-type-label-1-lh);
     font-weight: var(--sa-font-weight-bold);
     text-decoration: none;
+    /*
+     * Named properties, never `all` — and two different tokens, because a press
+     * and a hover are not the same event. `press-easing` is the estate's strong
+     * ease-out (0.22, 1, 0.36, 1); a press that eased IN would delay the first
+     * frame, which is the one the finger is waiting on.
+     */
+    transition:
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
-  .orgjb__cta:hover {
-    background-color: var(--sa-bg-neutral-subtler);
+  /* Gated: a touch device fires hover on tap, which leaves the button stuck in
+     its hover state after the finger lifts. */
+  @media (hover: hover) and (pointer: fine) {
+    .orgjb__cta:hover {
+      background-color: var(--sa-bg-neutral-subtler);
+    }
   }
 
+  /* The press has to be felt. Subtle — 0.97, not a bounce. */
+  .orgjb__cta:active {
+    transform: scale(0.97);
+  }
+
+  /*
+   * ── A TELEPHONE NUMBER, NOT A SECOND CALL TO ACTION ─────────────────────────
+   *
+   * This carried `border: 1px solid currentColor`, 8/16 of padding and a
+   * matching radius, which made it the same object as the button next to it at
+   * the same size and the same distance from the eye. A reader scanning the band
+   * saw two buttons and had to read both to find out that one of them was a
+   * phone number.
+   *
+   * It is now a link: the icon, the department's own label, and the number. The
+   * number keeps its weight — on a de-addiction page the helpline is the most
+   * important four digits in the fold — but it no longer claims to be a control.
+   *
+   * The uppercase transform went with the border. It was applied on top of a
+   * label the record already publishes in Title Case, and small tracked capitals
+   * are a third type treatment in a band that needed to get down to two.
+   */
   .orgjb__helpline {
     display: inline-flex;
     align-items: center;
     gap: var(--sa-inline-8);
-    padding: var(--sa-padding-8) var(--sa-padding-16);
-    border: 1px solid currentColor;
-    border-radius: var(--sa-shape-8);
     color: inherit;
     text-decoration: none;
+    border-radius: var(--sa-shape-8);
+    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .orgjb__helpline:hover .orgjb__helpline-number {
+      text-decoration: underline;
+      text-underline-offset: 0.2em;
+    }
+  }
+
+  /* The focus ring has to clear the green, so it is the inverse token with an
+     offset rather than the estate's default focus colour, which is gov-blue and
+     would sit on this green at roughly 2:1. */
+  .orgjb__helpline:focus-visible,
+  .orgjb__cta:focus-visible {
+    outline: var(--sa-stroke-2) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-padding-4);
   }
 
   .orgjb__helpline-label {
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
   }
 
   .orgjb__helpline-number {
@@ -98,13 +189,15 @@
     font-weight: var(--sa-font-weight-bold);
   }
 
-  @media (max-width: 767px) {
-    .orgjb__inner {
-      align-items: flex-start;
-    }
-
+  /*
+   * Below 1024 the grid stacks, and the actions take their own row. The helpline
+   * label is dropped to its own line rather than wrapping mid-phrase between the
+   * words "De-Addiction" and "Helpline".
+   */
+  @media (width < 64rem) {
     .orgjb__actions {
-      width: 100%;
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 }
