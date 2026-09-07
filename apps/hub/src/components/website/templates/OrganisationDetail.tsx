@@ -93,6 +93,14 @@ export interface OrganisationDetailProps {
  */
 const orgHref = (slug: string) => `/website/organisation/${slug}`;
 
+/** Anchor id for an ingested section heading, so the page index can reach it. */
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
 function formatDate(iso?: string): string {
   if (!iso) return "";
   const d = new Date(iso);
@@ -151,6 +159,10 @@ const isHttp = (href: string) => /^https?:\/\//.test(href);
 const DOWNLOAD_KIND: Record<OrgDownload["kind"], { meta: string; action: string }> = {
   pdf: { meta: "PDF", action: "Download PDF" },
   pptx: { meta: "Presentation (PPTX)", action: "Download presentation" },
+  // A campaign mark or a QR code. It IS a file, so it is downloaded — but
+  // calling it a page, as it was until the NMBA downloads arrived, told a
+  // reader they were about to open a web page and handed them a PNG.
+  image: { meta: "Image (PNG)", action: "Download image" },
   // Not a file. Offering to "download" a web page would be a lie the reader
   // only discovers after clicking.
   page: { meta: "Web page", action: "View page" },
@@ -162,6 +174,19 @@ export function formatOrgHtml(rawHtml: string): string {
   html = html.replace(/<a[^>]*>\s*<img[^>]*class="rounded-[34]"[^>]*>\s*<\/a>/gi, "");
   html = html.replace(/<img[^>]*class="rounded-[34]"[^>]*>/gi, "");
   html = html.replace(/<img[^>]*src="[^"]*schemes-768x768[^"]*"[^>]*>/gi, "");
+  /*
+   * AN ANCHOR WITH NO href IS NOT A LINK.
+   *
+   * The ingest keeps the <a> and drops the attribute when the source's own
+   * markup carries the destination in script rather than in href — NMBA's
+   * "Helpline 14446" arrived this way, styled as a link, doing nothing, and
+   * announced to a screen reader as a link with no destination. Unwrap it to
+   * the text it contains, which is what it actually is.
+   *
+   * A `tel:` for the helpline is supplied by the record's quick actions, where
+   * it can be written deliberately rather than pattern-matched out of prose.
+   */
+  html = html.replace(/<a(?![^>]*\shref=)[^>]*>([\s\S]*?)<\/a>/gi, "$1");
   // Wrap any <table> in .orgd__tablewrap if not already wrapped
   html = html.replace(/(<table[\s\S]*?<\/table>)/gi, (match) => {
     let table = match.replace(/class="[^"]*table[^"]*"/gi, 'class="orgd__table"');
@@ -244,6 +269,15 @@ export function OrganisationDetail({
 
   const hasRail = navGroups.length > 0;
 
+  // Sections the record has replaced with a real component — see
+  // `hideIngestedSections`. Compared on the slugified heading so "GEO Tagged
+  // De-addiction Facilities" and "Geo-tagged de-addiction facilities" are the
+  // same section, which they are.
+  const hidden = new Set((detail?.hideIngestedSections ?? []).map(slugify));
+  const visibleSections = org.sections.filter(
+    (s) => s.heading == null || !hidden.has(slugify(s.heading)),
+  );
+
   const bands: { id: string; body: React.ReactNode }[] = [];
 
   const aboutSubpage = relatedPages.find((p) => {
@@ -283,7 +317,7 @@ export function OrganisationDetail({
             className="gov-prose orgd__prose"
             dangerouslySetInnerHTML={{ __html: formatOrgHtml(detail.aboutHtml) }}
           />
-        ) : org.sections.length === 0 ? (
+        ) : visibleSections.length === 0 ? (
           <p className="orgd__empty">
             This page is being prepared. In the meantime the source page is available on{" "}
             <Link href={org.sourceUrl} external>
@@ -292,15 +326,40 @@ export function OrganisationDetail({
             .
           </p>
         ) : (
-          org.sections.map((s, i) => (
-            <div
-              key={s.heading ?? i}
-              className="gov-prose orgd__prose"
-              dangerouslySetInnerHTML={{
-                __html: formatOrgHtml(s.html),
-              }}
-            />
-          ))
+          /*
+           * EACH INGESTED SECTION KEEPS ITS OWN HEADING.
+           *
+           * This used to render the html alone and pass `s.heading` as the
+           * React key and nothing else — so ten titled sections of the source
+           * page arrived as one undivided 5,000-character block under a single
+           * h2, with the document outline running h1 → h2 → h6. It is the
+           * fallback path, so it did that on every organisation without a
+           * hand-authored record, not on one page.
+           *
+           * `h3` because the band's own SectionTitle above is the h2.
+           */
+          visibleSections.map((s, i) => {
+            const showHeading =
+              s.heading != null &&
+              s.heading.trim() !== "" &&
+              slugify(s.heading) !== slugify(org.title) &&
+              slugify(s.heading) !== slugify(detail?.aboutHeading ?? "About");
+            return (
+              <section key={s.heading ?? i} className="orgd__ingested-section">
+                {showHeading && (
+                  <h3 id={slugify(s.heading!)} className="orgd__ingested-heading">
+                    {s.heading}
+                  </h3>
+                )}
+                <div
+                  className="gov-prose orgd__prose"
+                  dangerouslySetInnerHTML={{
+                    __html: formatOrgHtml(s.html),
+                  }}
+                />
+              </section>
+            );
+          })
         )}
         {detail?.aboutHighlights != null && detail.aboutHighlights.length > 0 && (
           <ul className="orgd__highlights">
@@ -868,6 +927,50 @@ export function OrganisationDetail({
     });
   }
 
+  /*
+   * MESSAGES — signed statements from named office-holders.
+   *
+   * A `blockquote` with a `cite`d attribution, not a leader card: the quote is
+   * what the reader came for and the name is what makes it citable. The source
+   * runs these as a carousel; they are laid out here instead, because a
+   * statement a reader has to press a control to see is a statement most
+   * readers never see.
+   */
+  if (detail?.messages != null && detail.messages.items.length > 0) {
+    const ms = detail.messages;
+    bands.push({
+      id: "messages",
+      body: (
+        <>
+          <SectionTitle as={2} title={ms.heading} headingId="messages-heading">
+            {ms.description != null && <p className="orgd__band-lede">{ms.description}</p>}
+          </SectionTitle>
+          {/*
+            * No decorative quote mark on these cards. `format_quote` at 28px
+            * draws two filled commas that read as the digits "99" above a
+            * paragraph of prose — checked in the browser, and it is the glyph
+            * rendering correctly, not a failed ligature. An ornament that can
+            * be mistaken for a figure does not belong on a departmental page,
+            * and the attribution below each quote already says it is one.
+            */}
+          <ul className="orgd__messages">
+            {ms.items.map((m) => (
+              <li key={m.name} className="orgd__message">
+                <blockquote className="orgd__message-quote">
+                  <p>{m.quote}</p>
+                </blockquote>
+                <footer className="orgd__message-by">
+                  <cite className="orgd__message-name">{m.name}</cite>
+                  <span className="orgd__message-role">{m.designation}</span>
+                </footer>
+              </li>
+            ))}
+          </ul>
+        </>
+      ),
+    });
+  }
+
   if (detail?.socialFeed != null && (detail.socialFeed.posts?.length || detail.socialFeed.handles?.length)) {
     const sf = detail.socialFeed;
     bands.push({
@@ -1032,7 +1135,14 @@ export function OrganisationDetail({
                             )}
                           </td>
                           <td>
-                            {p.email ?? (
+                            {/*
+                              * A published address is a way to reach somebody,
+                              * so it is a link. The telephone beside it has
+                              * been one all along; the email was plain text.
+                              */}
+                            {p.email != null ? (
+                              <a href={`mailto:${p.email}`}>{p.email}</a>
+                            ) : (
                               <>
                                 <span aria-hidden="true">—</span>
                                 <span className="sr-only">Not published</span>
@@ -1047,6 +1157,33 @@ export function OrganisationDetail({
               </div>
             ))}
           </div>
+        </>
+      ),
+    });
+  }
+
+  /*
+   * The source site's subject tags, last, as they are there. They are a
+   * taxonomy rather than content — a way out of the page into everything else
+   * the Department publishes on the subject — so they sit below the contact
+   * details and are drawn as quiet links, not as another card grid.
+   */
+  if (detail?.tags != null && detail.tags.items.length > 0) {
+    const tg = detail.tags;
+    bands.push({
+      id: "tags",
+      body: (
+        <>
+          <SectionTitle as={2} title={tg.heading} headingId="tags-heading" />
+          <ul className="orgd__tags">
+            {tg.items.map((t) => (
+              <li key={t.href}>
+                <Link href={t.href} external variant="standalone" className="orgd__tag">
+                  {t.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </>
       ),
     });

@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import NextLink from "next/link";
-import { Button, Icon, Link } from "@mosje/design-system";
+import { Button, Icon, Link, SectionTitle } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import { OrganisationDetail } from "@/components/website/templates/OrganisationDetail";
 import { AdarshGramDashboard } from "@/components/website/AdarshGramDashboard";
 import { GiaDashboard } from "@/components/website/GiaDashboard";
 import { HostelDashboard } from "@/components/website/HostelDashboard";
 import { PmajayWorksMap } from "@/components/website/PmajayWorksMap";
+import { DeAddictionMap } from "@/components/website/nmba/DeAddictionMap";
+import {
+  DEADDICTION_CENTRES,
+  PUBLISHED_TOTAL,
+} from "@/content/website/deaddiction-centres";
 import { getAdarshGramCounts } from "@/lib/website/adarsh-gram-api";
 import {
   getGiaData,
@@ -16,7 +21,10 @@ import {
   getPmajayReach,
 } from "@/lib/website/pmajay-api";
 import "@/components/website/scheme-dashboard.css";
-import { getOrganisationDetail } from "@/content/website/organisation-details";
+import {
+  getOrganisationDetail,
+  ORGANISATION_DETAILS,
+} from "@/content/website/organisation-details";
 import { trimRedundantOpening } from "@/lib/website/organisation-prose";
 import {
   getOrganisations,
@@ -61,6 +69,7 @@ import { socialCard } from "@/lib/seo/social";
  * the dashboard, which is built to report one.
  */
 const PMAJAY = "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay";
+const NMBA = "nasha-mukt-bharat-abhiyaan";
 
 const ADARSH_GRAM_SLUG = `${PMAJAY}/development-of-sc-dominated-villages-into-adarsh-gram`;
 const GIA_SLUG = `${PMAJAY}/grants-in-aid-to-state-districts`;
@@ -216,6 +225,8 @@ export default async function OrganisationDetailPage({
   const rootOrg = allOrgs.find((o) => o.slug === rootSlug);
   const relatedPages = allOrgs.filter((o) => o.slug === rootSlug || o.slug.startsWith(`${rootSlug}/`));
   const detail = getOrganisationDetail(key);
+  /** Exact-slug record only — see the sub-page empty state below. */
+  const authored = ORGANISATION_DETAILS[key];
   const isSubPage = slug.length > 1;
 
   const adarshGram = key === ADARSH_GRAM_SLUG ? await getAdarshGramCounts() : null;
@@ -236,6 +247,24 @@ export default async function OrganisationDetailPage({
    * discover that would be a cost paid 177 times for no result.
    */
   const reach = key === PMAJAY ? await getPmajayReach() : null;
+
+  /*
+   * NMBA'S GEO-TAGGED FACILITIES, on its own page and nowhere else.
+   *
+   * The source page draws an India map of every Ministry-supported centre with
+   * a six-way colour key beside it. The ingest captured the key and the 768
+   * total as prose and, having no way to capture a map, left the key standing
+   * alone — a legend for a picture that was not there.
+   *
+   * The map itself already existed: `DeAddictionMap`, 487 geo-tagged centres
+   * from the Abhiyaan's own endpoint, shipping on the site home and at
+   * /website/de-addiction-centres. This is that component finally appearing on
+   * the page the source puts it on, not a second one built to match.
+   *
+   * The two ingested husks are suppressed by `hideIngestedSections` on the NMBA
+   * record, so the heading and the key appear once, here.
+   */
+  const isNmba = key === NMBA;
 
   /*
    * The other two components, for the "Other PM-AJAY components" card.
@@ -420,7 +449,37 @@ export default async function OrganisationDetailPage({
       <PageLayout {...chrome}>
         <section className="py-10 md:py-14 bg-surface-muted/30">
           <div className="sa-container max-w-7xl mx-auto">
-            {org.sections.length === 0 ? (
+            {org.sections.length === 0 && authored?.aboutHtml != null ? (
+              /*
+               * THE SCRAPE RETURNED NOTHING, BUT THE SOURCE PUBLISHES SOMETHING.
+               *
+               * Two NMBA child pages — Contact Us and the PMU Corner — came back
+               * with zero sections while the source page carried an address, two
+               * named officers and eleven PMU officers with their allocated
+               * States. They rendered the "being prepared" notice below, which
+               * told a reader the Department had not written the page when in
+               * fact the Department had.
+               *
+               * `authored` is an EXACT lookup, never the root-record fallback:
+               * without that, an empty child page of any organisation would
+               * inherit its parent's About text and publish it as the child's
+               * own content.
+               */
+              <div className="bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-neutral-subtle">
+                {authored.aboutHeading != null && (
+                  <h2
+                    id={slugify(authored.aboutHeading)}
+                    className="text-headline-2 text-primary-dark pb-3 mb-6 border-b border-neutral-subtle scroll-mt-28"
+                  >
+                    {authored.aboutHeading}
+                  </h2>
+                )}
+                <div
+                  dangerouslySetInnerHTML={{ __html: authored.aboutHtml }}
+                  className="gov-prose text-ink max-w-none"
+                />
+              </div>
+            ) : org.sections.length === 0 ? (
               <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-neutral-subtle">
                 <p className="orgd__empty">
                   This page is being prepared. In the meantime the source page is available on{" "}
@@ -468,7 +527,37 @@ export default async function OrganisationDetailPage({
         detail={detail}
         relatedPages={relatedPages}
         documents={getDocuments()}
-        reachSlot={reach && <PmajayWorksMap data={reach} />}
+        reachSlot={
+          reach ? (
+            <PmajayWorksMap data={reach} />
+          ) : isNmba ? (
+            <>
+              <SectionTitle
+                as={2}
+                title="Geo-Tagged De-addiction Facilities"
+                description={
+                  /*
+                   * BOTH NUMBERS, RECONCILED — because both are on screen.
+                   *
+                   * The band's heading said 768 while the map beneath it said
+                   * "All 487" and "487 centres". One reading, two figures, and
+                   * nothing telling a reader which was true or why they differ
+                   * — the exact shape of the defect in
+                   * `.claude/rules/data-state-completeness.md` §2.
+                   *
+                   * 768 is what the Ministry publishes; 487 of those carry
+                   * coordinates and can be drawn. Saying so in one sentence is
+                   * what stops a reader concluding a third of the country's
+                   * centres have gone missing.
+                   */
+                  `Of the ${PUBLISHED_TOTAL} centres the Ministry publishes, the ${DEADDICTION_CENTRES.length} with recorded coordinates are plotted here.`
+                }
+                headingId="deaddiction-map-heading"
+              />
+              <DeAddictionMap compact />
+            </>
+          ) : null
+        }
       />
     </PageLayout>
   );

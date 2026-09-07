@@ -24,6 +24,30 @@
  * them.
  */
 
+import type { BrandGlyphName } from "@mosje/design-system";
+
+/**
+ * A signed statement from a named office-holder, as the source page's
+ * "Messages" carousel publishes them.
+ *
+ * A quote is NOT a leader card. `OrgLeader` describes who somebody is — name,
+ * designation, telephone; this describes something they said about the scheme.
+ * Rendering the second through the first drops the quote, which is the only
+ * part a reader came for, and that is precisely how five ministerial statements
+ * went missing from the NMBA page.
+ */
+export interface OrgMessage {
+  quote: string;
+  name: string;
+  designation: string;
+}
+
+/** A subject tag on the source site, linking into its tag index. */
+export interface OrgTag {
+  label: string;
+  href: string;
+}
+
 export interface OrgFact {
   /** Material Symbols Rounded name. */
   icon: string;
@@ -111,7 +135,7 @@ export interface OrgDownloadItem {
    * What the reader is about to open. Taken from the destination, never
    * guessed: `page` is a web page, the rest are files.
    */
-  kind: "pdf" | "pptx" | "page";
+  kind: "pdf" | "pptx" | "image" | "page";
   /**
    * The filter chip this sits under in the library band. Declared, never
    * inferred from the file type — "which shelf is this on" is an editorial
@@ -176,6 +200,21 @@ export interface OrganisationDetail {
   aboutHtml?: string;
   /** Link rendered beside the About heading, as the source page's "Know More". */
   aboutAction?: { label: string; href: string };
+  /**
+   * Ingested section headings to leave OUT of the About band, because a real
+   * component further down the page now renders that content properly.
+   *
+   * Matched case- and punctuation-insensitively against the scraped heading.
+   * Use it only in that exact case — the scrape captured a section as a husk
+   * and something better replaces it. NMBA's "Gallery" arrived as three dates
+   * and three captions with no photographs, its "Messages" arrived empty, and
+   * its "Legend" arrived as a colour key to a map that was never ingested. Each
+   * is now drawn from this record instead, and listing the heading here stops
+   * the husk rendering twice.
+   *
+   * It is NOT a way to hide content the estate would rather not show.
+   */
+  hideIngestedSections?: string[];
   aboutHighlights?: OrgHighlightCard[];
   leadership?: {
     heading: string;
@@ -277,7 +316,12 @@ export interface OrganisationDetail {
   };
   socialFeed?: {
     heading: string;
-    handles?: { platform: "facebook" | "x" | "youtube"; url: string; handle: string }[];
+    /**
+     * Every mark `BrandGlyph` draws. It used to be facebook / x / youtube only,
+     * which quietly excluded the two channels NMBA leads with — the WhatsApp
+     * channel and Instagram — from a page whose source lists all four.
+     */
+    handles?: { platform: BrandGlyphName; url: string; handle: string }[];
     posts?: {
       platform: "facebook" | "x" | "youtube";
       author: string;
@@ -288,6 +332,15 @@ export interface OrganisationDetail {
       likes?: string;
       shares?: string;
     }[];
+  };
+  messages?: {
+    heading: string;
+    description?: string;
+    items: OrgMessage[];
+  };
+  tags?: {
+    heading: string;
+    items: OrgTag[];
   };
   contact?: {
     heading: string;
@@ -1924,26 +1977,431 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     ],
   },
 
+  /*
+   * NASHA MUKT BHARAT ABHIYAAN.
+   *
+   * Every value below is read off
+   * https://www.dosje.gov.in/organisation/nasha-mukt-bharat-abhiyaan/ as
+   * published on 07 Sep 2026, in that page's own top-to-bottom order.
+   *
+   * TWO THINGS THIS RECORD DELIBERATELY DOES NOT DO.
+   *
+   * It does not restate the eight impact counters. Those are live figures on
+   * the source and they move daily — the ingested snapshot renders them in the
+   * About band, and a second hand-typed copy here would be a stale number in a
+   * static panel above a moving one. The same argument as the PM-AJAY "at a
+   * glance" panel above, and the same defect it was written to prevent.
+   *
+   * It does not mirror the published PDFs. They come to 68 MB and they are
+   * generated and revised by the Department; the links point at the
+   * Department's own copies so a reader always opens the current file. The
+   * IMAGES are mirrored, because they are small, static, and part of the page's
+   * design rather than its document record.
+   */
   "nasha-mukt-bharat-abhiyaan": {
     logo: "/website/images/org-logos/nmba.png",
-    lead: "Nasha Mukt Bharat Abhiyaan (NMBA) is a flagship nationwide movement launched by the Ministry of Social Justice & Empowerment to curb drug demand and build drug-free communities across 372 vulnerable districts through youth mobilization, educational institutions, and community outreach.",
+    // The source's own banner line. It was briefly the NAPDDR paragraph, which
+    // is the first thing the About band says three inches below — the same
+    // sentence twice on one screen.
+    lead: "Become a Nasha Mukt Mitr and contribute towards building a healthier, safer and Nasha Mukt Bharat.",
+    quickActions: [
+      { label: "Helpline 14446", href: "tel:14446", icon: "call", variant: "danger" },
+      {
+        label: "Register as a Nasha Mukti Mitr",
+        href: "https://nashamukt.dosje.gov.in/nasha-mukti-mitr",
+        icon: "volunteer_activism",
+        variant: "primary",
+        external: true,
+      },
+      {
+        label: "Take the Pledge",
+        href: "https://nashamukt.dosje.gov.in/epledge",
+        icon: "front_hand",
+        external: true,
+      },
+      {
+        label: "Citizen Dashboard",
+        href: "https://nashamukt.dosje.gov.in/",
+        icon: "dashboard",
+        external: true,
+      },
+    ],
+    // FOUR FACTS, ALL STATED ON THE SOURCE PAGE. "372 Districts" stood here
+    // until 07 Sep 2026 and is not on this page at all — an unsourced figure on
+    // a government page, which this file's own header forbids.
+    facts: [
+      { icon: "flag", value: "15 August 2020", label: "Abhiyaan launched" },
+      { icon: "local_hospital", value: "768", label: "De-addiction and rehabilitation centres" },
+      { icon: "call", value: "14446", label: "National de-addiction helpline" },
+      { icon: "account_balance", value: "Social Justice & Empowerment", label: "Ministry" },
+    ],
     aboutHeading: "About the Movement",
     aboutAction: { label: "Know More →", href: "/website/organisation/nasha-mukt-bharat-abhiyaan/about-us" },
-    facts: [
-      { icon: "location_city", value: "372 Districts", label: "Nationwide coverage" },
-      { icon: "groups", value: "Youth & Women Led", label: "Mobilization" },
-      { icon: "volunteer_activism", value: "Demand Reduction", label: "Primary strategy" },
-      { icon: "account_balance", value: "Social Justice & Empowerment", label: "Ministry" },
+    // Seven husks the scrape returned, each now rendered properly further down:
+    // the helpline strip by `quickActions`, the map and its key by the reach
+    // band, the two document tabs by `downloads`, the photographs by `gallery`,
+    // the five statements by `messages`, and the four channels by `socialFeed`.
+    hideIngestedSections: [
+      "Join Nasha Mukt Bharat Abhiyaan",
+      "GEO Tagged De-addiction Facilities",
+      "Legend",
+      "Latest Updates",
+      "Gallery",
+      "Messages",
+      "Social Media",
     ],
     nav: [
       {
-        label: "About NMBA",
+        label: "ABOUT THE ABHIYAAN",
         items: [
-          { label: "About the Movement", href: "#about-the-scheme" },
+          { label: "About the Organisation", href: "#about-the-scheme" },
           { label: "Overview Details", href: "/website/organisation/nasha-mukt-bharat-abhiyaan/about-us" },
         ],
       },
+      {
+        label: "FACILITIES & DOCUMENTS",
+        items: [
+          { label: "Geo-Tagged De-addiction Facilities", href: "#reach" },
+          { label: "Documents & Downloads", href: "#documents-downloads" },
+          { label: "Gallery", href: "#gallery" },
+        ],
+      },
+      {
+        label: "CORNERS",
+        items: [
+          { label: "PMU Corner", href: "/website/organisation/nasha-mukt-bharat-abhiyaan/pmu-corners" },
+          { label: "Volunteer Corner", href: "/website/organisation/nasha-mukt-bharat-abhiyaan/volunteer-corner" },
+          { label: "Intern's Corner", href: "/website/organisation/nasha-mukt-bharat-abhiyaan/interns-corner" },
+          { label: "Forum", href: "/website/organisation/nasha-mukt-bharat-abhiyaan/forum" },
+          { label: "FAQ", href: "/website/organisation/nasha-mukt-bharat-abhiyaan/faqs" },
+        ],
+      },
+      {
+        label: "CONNECT & ENGAGE",
+        items: [
+          { label: "Messages", href: "#messages" },
+          { label: "Social Media", href: "#social-feed" },
+          { label: "Contact", href: "#contact" },
+        ],
+      },
     ],
+    downloads: {
+      heading: "Documents & Downloads",
+      description:
+        "Information, education and communication material, publications, newsletters and campaign assets published for the Abhiyaan. Files open on the Department's own site, so a reader always gets the current version.",
+      groups: [
+        {
+          id: "iec-materials",
+          heading: "IEC Materials",
+          viewAllHref: "https://www.dosje.gov.in/miscellaneous/?org=nmba",
+          items: [
+            {
+              label: "Best Practices",
+              meta: "24 Jan 2025",
+              href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/47211779688755.pdf",
+              kind: "pdf",
+              group: "IEC Materials",
+            },
+            {
+              label: "User Manual for Patient Monitoring System",
+              meta: "23 Jan 2025 · 3.29 MB",
+              href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/71461779689125.pdf",
+              kind: "pdf",
+              group: "IEC Materials",
+            },
+            {
+              label: "NMBA Impact Assessment Report 2021 by UNDP",
+              meta: "22 Jan 2025 · 11.59 MB",
+              href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/03/0066_NMBA_Impact_Assessment_Report_2021_by_UNDP-1.pdf",
+              kind: "pdf",
+              group: "IEC Materials",
+            },
+            {
+              label: "Compendium (English)",
+              meta: "21 Jan 2025 · 3.43 MB",
+              href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/03/0067_Compendium_English-1.pdf",
+              kind: "pdf",
+              group: "IEC Materials",
+            },
+          ],
+        },
+        {
+          id: "publications",
+          heading: "Publications",
+          viewAllHref: "https://www.dosje.gov.in/publications/?org=nmba",
+          items: [
+            {
+              label: "Magnitude of Substance Use in India",
+              officialName: "Magnitude-of-Substance-Use-in-India-DDTC-AIIMS-2019",
+              meta: "05 Mar 2026 · DDTC, AIIMS 2019 · 10.62 MB",
+              href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/03/Magnitude-of-Substance-Use-in-India-DDTC-AIIMS-2019.pdf",
+              kind: "pdf",
+              group: "Publications",
+            },
+          ],
+        },
+        {
+          id: "newsletter",
+          heading: "Newsletter",
+          viewAllHref: "https://www.dosje.gov.in/newsletter/?org=nmba",
+          items: [
+            {
+              label: "Nasha Mukt Bharat Abhiyaan Newsletter, August 2025",
+              meta: "01 Aug 2025 · 3.21 MB",
+              href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/03/0006_August_2025-1.pdf",
+              kind: "pdf",
+              group: "Newsletter",
+            },
+            {
+              label: "Nasha Mukt Bharat Abhiyaan Newsletter, May 2025",
+              meta: "01 May 2025 · 12.55 MB",
+              href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/03/0007_May_2025-1.pdf",
+              kind: "pdf",
+              group: "Newsletter",
+            },
+            {
+              label: "Nasha Mukt Bharat Abhiyaan Newsletter, April 2025",
+              meta: "01 Apr 2025 · 17.25 MB",
+              href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/03/0008_April_2025-1.pdf",
+              kind: "pdf",
+              group: "Newsletter",
+            },
+            {
+              label: "Nasha Mukt Bharat Abhiyaan Newsletter, March 2025",
+              meta: "01 Mar 2025 · 6.45 MB",
+              href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/03/19261768801533-1.pdf",
+              kind: "pdf",
+              group: "Newsletter",
+            },
+          ],
+        },
+        {
+          id: "campaign-assets",
+          heading: "Downloads",
+          items: [
+            {
+              label: "NMBA logo",
+              meta: "PNG · campaign mark",
+              href: "/website/content/organisation/nmba-logo-large.png",
+              kind: "image",
+              group: "Downloads",
+            },
+            {
+              label: "NMBA mascot",
+              meta: "PNG · campaign mascot",
+              href: "/website/content/organisation/nmba-mascot.png",
+              kind: "image",
+              group: "Downloads",
+            },
+            {
+              label: "NMBA e-Pledge QR code",
+              meta: "PNG · opens the pledge form",
+              href: "/website/content/organisation/nmba-epledge-qr.png",
+              kind: "image",
+              group: "Downloads",
+            },
+            {
+              label: "Nasha Mukti Mitr registration QR code",
+              meta: "PNG · opens the volunteer registration",
+              href: "/website/content/organisation/nmba-nasha-mukti-mitr-qr.png",
+              kind: "image",
+              group: "Downloads",
+            },
+          ],
+        },
+        {
+          id: "circulars",
+          heading: "Circulars",
+          viewAllHref: "https://www.dosje.gov.in/circulars-notifications/?org=nmba",
+          items: [
+            {
+              label: "Committee formation — letter to all States, with enclosure",
+              officialName: "Committee formation DO to all State alongwith enclosure",
+              meta: "26 Jun 2026",
+              href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/07/Committee-formation-DO-to-all-State-alongwith-enclosure.pdf",
+              kind: "pdf",
+              group: "Circulars",
+            },
+          ],
+        },
+        {
+          id: "citizen-corner",
+          heading: "Citizen Corner",
+          items: [
+            {
+              label: "Citizen Charter",
+              meta: "17 Mar 2026 · 0.12 MB",
+              href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/03/0003_Citizen_Charter-1.pdf",
+              kind: "pdf",
+              group: "Citizen Corner",
+            },
+          ],
+        },
+      ],
+    },
+    gallery: {
+      heading: "Gallery",
+      viewAllHref: "https://www.dosje.gov.in/gallery/?org=nmba",
+      items: [
+        {
+          date: "9 May 2024",
+          caption: "NMBA Youth Awareness Programme",
+          image: "/website/content/organisation/nmba-gallery-youth-awareness.jpg",
+        },
+        {
+          date: "7 Nov 2023",
+          caption: "Sensitization of Students on Psychoactive Substance Uses, Imphal",
+          image: "/website/content/organisation/nmba-gallery-imphal-sensitization.jpg",
+        },
+        {
+          date: "29 Aug 2022",
+          caption: "Cycle Rally, Bishnupur",
+          image: "/website/content/organisation/nmba-gallery-cycle-rally-bishnupur.jpg",
+        },
+      ],
+    },
+    messages: {
+      heading: "Messages",
+      items: [
+        {
+          quote:
+            "The Nasha Mukt Bharat Abhiyaan is one prime nation building initiative because it focuses on the healthy and disciplined youth. NMBA will bring together the regulatory agencies like Narcotics Bureau, State and District Government, Police, NGOs, Hospitals, etc. so that they can work together in a coordinated manner to make India drug-free.",
+          name: "Dr Virendra Kumar",
+          designation: "Union Minister of Social Justice and Empowerment",
+        },
+        {
+          quote:
+            "Nasha Mukt Bharat Abhiyaan is a flagship campaign to enhance the evidence based approach towards substance abuse. The approach of the Abhiyaan is contemporary to engage youth and comprehensive to converge the activities done by all the stakeholders for a common goal of making India free of substance abuse.",
+          name: "Shri Ramdas Athawale",
+          designation: "Minister of State for Social Justice & Empowerment",
+        },
+        {
+          quote:
+            "Nasha Mukt Bharat Abhiyaan is a national initiative focused on achieving a Drug-Free India. It actively involves youth, women, and community members, with particular emphasis on higher education institutions, youth clubs, and women's groups. The campaign aims to spread awareness about the dangers of substance abuse, reaching out to every citizen. Through early prevention and community engagement, this movement strives to foster a healthier and happier society, encouraging a collective effort towards eliminating substance abuse.",
+          name: "Shri B. L. Verma",
+          designation: "Minister of State for Social Justice & Empowerment",
+        },
+        {
+          quote:
+            "Nasha Mukt Bharat Abhiyaan, operational in all the districts of the country is a mass movement towards a Drug Free India. We aim to reach through this campaign, every citizen in the country and move towards a healthier and happier society.",
+          name: "Sh. Sudhansh Pant",
+          designation: "Secretary, Department of Social Justice & Empowerment",
+        },
+        {
+          quote:
+            "The Nasha Mukt Bharat Abhiyaan intends to reach out to the masses and spread awareness on the issue of substance abuse through active participation of the youth, women and the community. Special emphasis is laid on the institutions of Higher Education, Youth Clubs & Women Groups to reach out to those vulnerable to substance use for early age prevention.",
+          name: "Dr. Sandeep R. Rathod",
+          designation: "Joint Secretary, Department of Social Justice & Empowerment",
+        },
+      ],
+    },
+    socialFeed: {
+      heading: "Social Media",
+      handles: [
+        {
+          platform: "whatsapp",
+          url: "https://whatsapp.com/channel/0029Vb6s9tg1SWst8ZSHXa1f",
+          handle: "WhatsApp Channel",
+        },
+        { platform: "facebook", url: "https://www.facebook.com/msjegoi", handle: "Facebook" },
+        { platform: "x", url: "https://twitter.com/MSJEGOI", handle: "X (Twitter)" },
+        { platform: "instagram", url: "https://www.instagram.com/msjegoi", handle: "Instagram" },
+      ],
+    },
+    contact: {
+      heading: "Contact",
+      address: "8th Floor, GPOA-3, Netaji Nagar, New Delhi-110023",
+      blocks: [
+        {
+          heading: "Drug Prevention Division",
+          people: [
+            {
+              name: "Arun Kumar Karn",
+              designation:
+                "DP-I & II, DP Division · Room No. 8206, 8th Floor, Zone-4, GPOA-3, Netaji Nagar, New Delhi-110023",
+              phone: "011-24104023",
+              email: "usdp1-dosje@gov.in",
+            },
+            {
+              name: "Sushant Shukla",
+              designation:
+                "DP-III & IV (matters related to Transgender) · Room No. 8614, 8th Floor, Zone-6, GPOA-3, Netaji Nagar, New Delhi-110023",
+              phone: "011-26116320",
+              email: "usdp3-dosje@gov.in",
+            },
+          ],
+        },
+      ],
+    },
+    tags: {
+      heading: "Tags",
+      items: [
+        { label: "Addiction", href: "https://www.dosje.gov.in/tag/addiction/" },
+        { label: "De-addiction", href: "https://www.dosje.gov.in/tag/de-addiction-2/" },
+        { label: "Drug Abuse", href: "https://www.dosje.gov.in/tag/drug-abuse/" },
+        { label: "Drug Abuse Awareness", href: "https://www.dosje.gov.in/tag/drug-abuse-awareness/" },
+        { label: "Drug Abuse Prevention", href: "https://www.dosje.gov.in/tag/drug-abuse-prevention/" },
+        {
+          label: "Drug Abuse Prevention Program",
+          href: "https://www.dosje.gov.in/tag/drug-abuse-prevention-program/",
+        },
+        {
+          label: "Drug De-addiction Substance",
+          href: "https://www.dosje.gov.in/tag/drug-de-addiction-substance/",
+        },
+        { label: "Drug Free India", href: "https://www.dosje.gov.in/tag/drug-free-india/" },
+        { label: "Nasha Mukti", href: "https://www.dosje.gov.in/tag/nasha-mukti/" },
+        { label: "Youth Drug Abuse", href: "https://www.dosje.gov.in/tag/youth-drug-abuse/" },
+      ],
+    },
+  },
+
+  /*
+   * TWO NMBA CHILD PAGES THE SCRAPE RETURNED EMPTY.
+   *
+   * `organisation.json` holds zero sections for both, so the route rendered its
+   * "This page is being prepared" placeholder while the source published the
+   * content below. They are keyed by their FULL slug, which
+   * `getOrganisationDetail` matches before it falls back to the root record.
+   *
+   * This is the exception the `aboutHtml` field exists for — "use it only where
+   * the scrape captured less than the source page shows" — and it is written
+   * here rather than into `organisation.json` so a re-ingest cannot lose it.
+   */
+  "nasha-mukt-bharat-abhiyaan/contact-us": {
+    aboutHeading: "Contact",
+    aboutHtml: `
+      <h3>Postal Address</h3>
+      <p>8th Floor, GPOA-3, Netaji Nagar, New Delhi-110023</p>
+      <h3>Arun Kumar Karn, DP-I &amp; II, DP Division</h3>
+      <p>Room No. 8206, 8th Floor, Zone-4, GPOA-3, Netaji Nagar, New Delhi-110023</p>
+      <p>Phone: <a href="tel:01124104023">011-24104023</a><br />
+         Email: <a href="mailto:usdp1-dosje@gov.in">usdp1-dosje[at]gov[dot]in</a></p>
+      <h3>Sushant Shukla, DP-III &amp; IV (matters related to Transgender)</h3>
+      <p>Room No. 8614, 8th Floor, Zone-6, GPOA-3, Netaji Nagar, New Delhi-110023</p>
+      <p>Phone: <a href="tel:01126116320">011-26116320</a><br />
+         Email: <a href="mailto:usdp3-dosje@gov.in">usdp3-dosje[at]gov[dot]in</a></p>
+    `,
+  },
+
+  "nasha-mukt-bharat-abhiyaan/pmu-corners": {
+    aboutHeading: "PMU Corner",
+    aboutHtml: `
+      <p>Programme Management Unit officers and the States allocated to each.</p>
+      <ul>
+        <li><strong>Aditya Singh</strong> — Assam, Meghalaya, Arunachal Pradesh</li>
+        <li><strong>Amisha Yadav</strong> — Maharashtra (West) and Goa</li>
+        <li><strong>Anvesha Tiwari</strong> — Gujarat, Daman and Diu, Rajasthan</li>
+        <li><strong>Dimple Yadav</strong> — Andhra (North), presently Telangana</li>
+        <li><strong>Gunjan</strong> — West Bengal, Sikkim and Tripura</li>
+        <li><strong>Manisha</strong> — Tamil Nadu and Puducherry</li>
+        <li><strong>P. Ajay Reddy</strong> — Manipur</li>
+        <li><strong>Pratima Mukherjee</strong> — Kerala and Tamil Nadu</li>
+        <li><strong>Priyanka Yadav</strong> — Uttar Pradesh (East)</li>
+        <li><strong>Ragini Jha</strong> — Bihar, Jharkhand, Orissa</li>
+        <li><strong>Soujanya Ambali</strong> — Andhra Pradesh</li>
+      </ul>
+    `,
   },
 };
 

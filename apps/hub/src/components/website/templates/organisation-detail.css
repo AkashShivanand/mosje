@@ -1019,4 +1019,106 @@
     justify-content: center;
     min-height: 380px;
   }
+
+  /* ── Ingested sections keep their headings ─────────────────────────────────
+     The scrape returns titled sections; before this they were flattened into
+     one block of prose under the band's own h2. The heading is an h3 so the
+     outline stays h1 → h2 → h3 instead of jumping to the h6 the source markup
+     carries inside the html. */
+
+  .orgd__ingested-section + .orgd__ingested-section {
+    margin-top: var(--sa-stack-32);
+  }
+
+  .orgd__ingested-heading {
+    margin: 0 0 var(--sa-stack-12);
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-brand-primary-bolder);
+    scroll-margin-top: var(--sa-stack-32);
+  }
+
+  /* ── Messages ──────────────────────────────────────────────────────────── */
+
+  .orgd__messages {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+    gap: var(--sa-stack-20);
+  }
+
+  .orgd__message {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-24);
+    background: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+  }
+
+  .orgd__message-quote {
+    margin: 0;
+    flex: 1;
+    padding-left: var(--sa-padding-16);
+    border-left: 2px solid var(--sa-border-brand-primary-base);
+  }
+
+  .orgd__message-quote p {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .orgd__message-by {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    padding-top: var(--sa-padding-12);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .orgd__message-name {
+    font-style: normal;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .orgd__message-role {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Tags ──────────────────────────────────────────────────────────────── */
+
+  .orgd__tags {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+  }
+
+  .orgd__tag {
+    display: inline-flex;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-bg-neutral-base);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+  }
+
+  .orgd__band-lede {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+  }
 }
