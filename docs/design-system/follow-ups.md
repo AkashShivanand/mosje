@@ -46,7 +46,32 @@ until that changes, it is a checklist a human runs.
 anyone building with it from Figma will hand-roll one. Point them at
 `Pagination.stories.tsx` until the template exists.
 
-### Button has no `inverse` axis in Figma
+### Button has no `inverse` axis in Figma — CLOSED 2026-09-07
+
+**Closed.** The rework this was deferred to has landed. The SAMAVESH `Button` set
+(key `13803f448c95c59a9163cf3ccb9394f8f1944ca1`, **Button** page — not the
+`609:283111` set on the older *Buttons* page this entry was written against) now
+carries a fifth axis:
+
+`Size · Type · Sub-type · State · **Tone = Default | Inverse**` — 360 variants.
+
+`Tone=Inverse` crosses the Sub-type axis, so both missing appearances exist:
+`Sub-type=Filled, Tone=Inverse` is `inverse`, and `Sub-type=Outlined, Tone=Inverse`
+is `inverseOutlined`. The tokens below were already there; the component now uses
+them.
+
+**How the stale note survived a month.** It was re-asserted as recently as
+2026-09-07, by reading the Button set imported from the **MoSJE Handoff** file —
+whose Button has `Type = Primary | Success | Danger` and no `Tone` — instead of
+SAMAVESH's own. A component key copied out of a handoff instance is a key into
+*that* library. Check the file before recording a gap in this one.
+
+**Still open, downstream:** `Ticker / Action` remains a local part bound to
+`cmp/action/brand/secondary/inverse/*`. It no longer has to be; a
+`Sub-type=Outlined, Tone=Inverse` Button instance replaces it whenever Ticker is
+next touched.
+
+The original entry follows, for the record.
 
 **Deferred to:** the next Button component rework. Agreed 2026-08-25.
 

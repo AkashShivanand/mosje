@@ -38,8 +38,10 @@
     justify-content: center;
     gap: var(--sa-inline-4);
     /* 40px clears WCAG 2.2 AA target size (24x24 minimum, 2.5.8) with room to
-       spare, and matches UX4G's 44px touch recommendation once the 4px gap
-       between adjacent targets is counted. */
+       spare. It does NOT meet UX4G 3.0 §3, which asks for 44x44 with 8px
+       between — this comment used to claim it did, "once the 4px gap between
+       adjacent targets is counted", which satisfies neither half of the rule.
+       The coarse-pointer block at the foot of this file is what meets it. */
     height: var(--sa-control-height-md);
     min-width: 40px;
     padding: 0 var(--sa-padding-12);
@@ -54,7 +56,8 @@
     transition:
       background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
       border-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
-      color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+      color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing);
   }
 
   .ds-pagination__page {
@@ -65,6 +68,22 @@
   .ds-pagination__page:hover {
     background-color: var(--sa-bg-neutral-subtler);
     color: var(--sa-text-neutral-base);
+  }
+
+  /* PRESSED — the state the foundation publishes and this file never bound.
+     `/design-system/foundations/states` names seven states and says the point
+     of naming them is "so every component answers a press the same way"; the
+     tokens for the pressed rung have existed all along. Without it a touch
+     screen, which has no hover, gave a tap no acknowledgement at all until the
+     next page arrived — and for the link form that is a network round trip.
+     The 0.97 give is `Button`'s, deliberately: a press should feel the same
+     everywhere on the estate. `.is-current` is excluded because it is not a
+     control — there is nowhere to go. */
+  .ds-pagination__step:active,
+  .ds-pagination__page:not(.is-current):active {
+    background-color: var(--sa-bg-neutral-active);
+    color: var(--sa-text-neutral-base);
+    transform: scale(0.97);
   }
 
   /* Outlined, not filled — the same treatment the table pager uses. */
@@ -168,5 +187,46 @@
   .ds-pagination__page:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
+  }
+
+  /* ── the thumb ───────────────────────────────────────────────────────────
+
+     UX4G 3.0 §3 asks for 44x44 with 8px between on mobile. `md` is the
+     page-level pager, which has the full width of a document to sit in, so its
+     boxes grow and the layout follows — 44px at an 8px pitch, no overlap.
+
+     `sm` KEEPS ITS 32px TARGET, and that is a decision rather than an
+     oversight. It exists for a pager inside a card or a rail; PM-AJAY's
+     coverage rail is 19rem, and `md` already wrapped there. Neither way out
+     works:
+
+       · growing the boxes re-creates the wrap `sm` was built to avoid;
+       · `Button`'s invisible ::after expansion is explicitly ruled out for
+         controls that sit this close — its own comment records that a 44px
+         target on a 32px control overlaps its neighbour by 6px a side and
+         "the overlap resolves by paint order rather than by intent", so the
+         reader presses 4 and gets 5. On a row of page numbers that is worse
+         than a small target, because it is a WRONG one.
+
+     So `sm` takes the spacing half of the rule, which costs nothing, and
+     diverges on the size half at 32px — past WCAG 2.2 AA's 24x24 floor, short
+     of UX4G's recommendation, recorded here per standards-precedence.md rather
+     than asserted away. */
+  @media (pointer: coarse) {
+    .ds-pagination__step,
+    .ds-pagination__page {
+      min-width: 44px;
+      height: 44px;
+    }
+
+    .ds-pagination__list {
+      gap: var(--sa-inline-8);
+    }
+
+    .ds-pagination--sm .ds-pagination__step,
+    .ds-pagination--sm .ds-pagination__page {
+      min-width: var(--sa-control-height-sm);
+      height: var(--sa-control-height-sm);
+    }
   }
 }

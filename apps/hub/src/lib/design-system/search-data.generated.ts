@@ -356,7 +356,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Carousel — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/carousel",
-    "keywords": "carousel — design system data display auto-rotation is off, and should stay off everything essential lives outside it too the track is the source of truth example moving is announced the dots are buttons, not tabs  tokens wcag accessibility",
+    "keywords": "carousel — design system data display auto-rotation is off, and should stay off everything essential lives outside it too the dots stay under the middle of the band past six slides the dots become a counter the track is the source of truth example moving is announced the dots are buttons, not tabs  tokens wcag accessibility",
     "description": "A band of slides the reader moves through, with auto-rotation off by default and a pause control whenever it is on.",
     "type": "component",
     "iconName": "bar_chart"

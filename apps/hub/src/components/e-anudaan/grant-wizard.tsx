@@ -591,7 +591,7 @@ function ReviewStep({
           </Button>
         </div>
         <ul className="mt-3 space-y-1.5">
-          {visibleDocuments(def, values).map((d) => {
+          {visibleDocuments(def, values).map((d, i) => {
             const up = docs[d.n];
             return (
               <li key={d.n} className="flex items-center justify-between gap-3 text-body-2">
@@ -603,7 +603,7 @@ function ReviewStep({
                     aria-hidden
                   />
                   <span className="truncate text-ink">
-                    {d.n}. {d.title}
+                    {i + 1}. {d.title}
                   </span>
                 </span>
                 {up ? (
