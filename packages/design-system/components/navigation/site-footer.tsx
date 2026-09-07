@@ -73,8 +73,31 @@ export interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
   lineage: string;
   /** [DBIM 5.6] "Hyperlinked logos". Rendered on both variants. */
   credits?: SiteFooterCredit[];
-  /** [DBIM 5.6] Website Policy, Help, Feedback, Sitemap. Required on both. */
+  /**
+   * [DBIM 5.6] The website policies — terms of use, privacy, copyright,
+   * hyperlinking, accessibility, feedback. Required on both variants.
+   *
+   * DO NOT list Sitemap or Help here. They are their own props, and on the
+   * portal variant a duplicate renders twice in the same band.
+   */
   policyLinks: SiteFooterLink[];
+  /**
+   * [DBIM 5.6] Sitemap — REQUIRED, like `lineage` and `copyright`, and for the
+   * same reason: a footer without it is not a government footer.
+   *
+   * WHERE IT RENDERS DEPENDS ON THE VARIANT, and that is the whole point of the
+   * prop. On `website` the Sitemap already sits in a link column, so this is not
+   * drawn again — the clause asks for the element to be present, not present
+   * twice. On `portal` there are no columns, so it renders in the statutory bar.
+   * Passing it is how a caller proves the destination exists for both.
+   */
+  sitemap: SiteFooterLink;
+  /**
+   * [DBIM 5.6] Help — REQUIRED, and rendered under the same rule as `sitemap`.
+   * The clause wants help RESOURCES behind it (FAQs, screen reader access,
+   * accessibility help), not a contact form.
+   */
+  help: SiteFooterLink;
   /** [DBIM 5.6] Required element. Other government platforms. */
   relatedLinks?: SiteFooterLink[];
   copyright: string;
@@ -125,9 +148,15 @@ function NewWindow() {
  * ── DBIM 5.6 ──────────────────────────────────────────────────────────────
  * The six required elements are Website Policy, Sitemap, Related Links, Help,
  * Feedback and Last Updated On, plus the lineage sentence and the hyperlinked
- * logos. `lineage`, `policyLinks` and `copyright` are REQUIRED PROPS on both
- * variants for that reason — a footer without them is not a government footer,
- * and making them optional would let a caller ship one that is not.
+ * logos. `lineage`, `policyLinks`, `copyright`, `sitemap` and `help` are
+ * REQUIRED PROPS on both variants for that reason — a footer without them is
+ * not a government footer, and making them optional would let a caller ship one
+ * that is not.
+ *
+ * `sitemap` and `help` DRAW only on `portal`, because on `website` they already
+ * sit in the link columns and the clause asks for the element to be present,
+ * not present twice. They are required regardless, so the destination cannot be
+ * missing from the variant that has to render it.
  *
  * ── COLOUR ────────────────────────────────────────────────────────────────
  * Comes entirely from `site-footer.css`, bound to the mode-aware
@@ -153,6 +182,8 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
     lineage,
     credits,
     policyLinks,
+    sitemap,
+    help,
     relatedLinks,
     copyright,
     lastUpdated,
@@ -338,7 +369,22 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
             {/* On the WEBSITE these render as a column up in the working band.
                 The portal variant has no working band, so they render here —
                 DBIM 5.6 requires the element on both variants, and moving it
-                for layout reasons must not quietly drop it from one of them. */}
+                for layout reasons must not quietly drop it from one of them.
+
+                Sitemap and Help are here for exactly that reason, and were NOT
+                until an audit on 2026-09-07 counted the portal variant's DBIM
+                elements and found four of six. The rule above had been written
+                for Related Links and never applied to the other two, so the
+                portal footer silently dropped them for eight weeks. */}
+            {!isWebsite && (
+              <nav aria-label="Site navigation and help">
+                <ul className="ds-sitefooter__inline">
+                  <li>{renderLink(sitemap)}</li>
+                  <li>{renderLink(help)}</li>
+                </ul>
+              </nav>
+            )}
+
             {!isWebsite && relatedLinks && relatedLinks.length > 0 && (
               <nav aria-label="Related government links">
                 <ul className="ds-sitefooter__inline">

@@ -33,8 +33,16 @@ import { getContentSyncedDate } from "@/lib/website/content";
  * DBIM 5.6 element coverage, all present below:
  *   Website Policy · Sitemap · Related Links · Help · Feedback · Last Updated On
  *   Social Media Links (optional) · hyperlinked lineage logos · lineage sentence
- * "Archives" is DBIM-optional and has no page on this estate; recorded as a
- * known gap in docs/guidelines rather than linked to something it is not.
+ * "Archives" is DBIM-optional — §5.6 lists it under "may also be included", though
+ * Table 8 in §7.1.1 groups it with the rest without that qualifier. It has no page
+ * on this estate and is not linked to something it is not. This comment used to say
+ * the gap was "recorded in docs/guidelines"; it was not — an audit on 2026-09-07
+ * went looking and found no such record. Do not claim a register entry without
+ * making one.
+ *
+ * DBIM COVERAGE IS VARIANT-DEPENDENT. The list above holds for variant="website".
+ * variant="portal" renders no columns, so Sitemap and Help are absent there — see
+ * design.md → SiteFooter.
  */
 
 /**
@@ -265,6 +273,12 @@ export function WebsiteSiteFooter({ lastUpdated }: SiteFooterProps = {}) {
       lineage={LINEAGE}
       credits={credits}
       policyLinks={policyLinks}
+      // [DBIM 5.6] Required on both variants. The website DRAWS these in the
+      // Support column above, so the component does not draw them again; the
+      // props guarantee the destinations exist for the portal variant, which
+      // has no columns to put them in.
+      sitemap={{ label: "Sitemap", href: "/website/sitemap" }}
+      help={{ label: "Help & Support", href: SUPPORT_PORTAL_HREF }}
       relatedLinks={relatedLinks}
       copyright={`© ${new Date().getFullYear()} Department of Social Justice & Empowerment. All Rights Reserved.`}
       lastUpdated={lastUpdated ?? getContentSyncedDate()}
