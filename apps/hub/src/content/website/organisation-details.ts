@@ -183,6 +183,22 @@ export interface OrganisationDetail {
    * Featured banner image displayed on the right of the hero.
    */
   featuredImage?: string;
+  /**
+   * The call to action the source page places ABOVE its own title.
+   *
+   * NMBA opens with a green band — "Join Nasha Mukt Bharat Abhiyaan", the
+   * volunteer invitation, a Register Now button and the national de-addiction
+   * helpline — and it sits above the h1, not below it. It was folded into the
+   * hero's quick actions, which put the campaign's front door below the fold of
+   * the page it fronts and lost the invitation entirely.
+   */
+  joinBanner?: {
+    heading: string;
+    text: string;
+    action: { label: string; href: string; external?: boolean };
+    helplineLabel: string;
+    helplineNumber: string;
+  };
   /** Sentence under the H1 in the blue banner. */
   lead?: string;
   /** Hero quick action buttons strip displayed under description. */
@@ -253,6 +269,21 @@ export interface OrganisationDetail {
   downloads?: {
     heading: string;
     description?: string;
+    /**
+     * How the groups are laid out.
+     *
+     * `"library"` (the default, and what every other organisation uses) merges
+     * every group into one filterable shelf with counted chips.
+     *
+     * `"sections"` renders each group as its own band, in the order declared —
+     * because that is how the source publishes them. NMBA's page has six
+     * separately titled document sections, each with its own "View All": IEC
+     * Materials, Publications, Newsletter, Downloads, Circulars, Citizen
+     * Corner. Merging them into one shelf keeps every file but loses the
+     * Department's own arrangement of them, and a reader who came for the
+     * newsletter has to work out which chip it is behind.
+     */
+    layout?: "library" | "sections";
     groups: OrgDownloadGroup[];
   };
   /**
@@ -331,11 +362,16 @@ export interface OrganisationDetail {
      */
     handles?: { platform: BrandGlyphName; url: string; handle: string }[];
     posts?: {
-      platform: "facebook" | "x" | "youtube";
+      /** Every mark `BrandGlyph` draws — see `handles` above. */
+      platform: BrandGlyphName;
       author: string;
       handle: string;
       date: string;
       content: string;
+      /** Where the post's own call to action goes, as the source publishes it. */
+      href?: string;
+      /** Its wording — "Follow on Instagram →" on NMBA. */
+      linkLabel?: string;
       image?: string;
       likes?: string;
       shares?: string;
@@ -373,6 +409,8 @@ export interface OrganisationDetail {
   };
   contact?: {
     heading: string;
+    /** Label above the address card. Defaults to "Headquarters". */
+    addressLabel?: string;
     action?: { label: string; href: string };
     supportPhone?: string;
     supportHours?: string;
@@ -2029,12 +2067,28 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
    */
   "nasha-mukt-bharat-abhiyaan": {
     logo: "/website/images/org-logos/nmba.png",
-    // The source's own banner line. It was briefly the NAPDDR paragraph, which
-    // is the first thing the About band says three inches below — the same
-    // sentence twice on one screen.
-    lead: "Become a Nasha Mukt Mitr and contribute towards building a healthier, safer and Nasha Mukt Bharat.",
+    /*
+     * The green band above the title, as the source publishes it.
+     *
+     * Its invitation used to be the hero's `lead`, which was the wrong home
+     * twice over: it displaced the NAPDDR paragraph the source actually prints
+     * under the h1, and it put the campaign's front door below the page title
+     * instead of above it.
+     */
+    joinBanner: {
+      heading: "Join Nasha Mukt Bharat Abhiyaan",
+      text: "Become a Nasha Mukt Mitr and contribute towards building a healthier, safer and Nasha Mukt Bharat.",
+      action: {
+        label: "Register Now, Be a volunteer for change",
+        href: "https://nashamukt.dosje.gov.in/nasha-mukti-mitr",
+        external: true,
+      },
+      helplineLabel: "National De-Addiction Helpline",
+      helplineNumber: "14446",
+    },
+    // The paragraph the source prints under its own h1.
+    lead: "The Ministry of Social Justice and Empowerment (MoSJE) is the nodal Ministry for Drug Demand Reduction and, as part of its mandate, has introduced measures to curtail substance abuse in the country. MoSJE formulated and enacted the National Action Plan for Drug Demand Reduction (NAPDDR).",
     quickActions: [
-      { label: "Helpline 14446", href: "tel:14446", icon: "call", variant: "danger" },
       {
         label: "Register as a Nasha Mukti Mitr",
         href: "https://nashamukt.dosje.gov.in/nasha-mukti-mitr",
@@ -2064,7 +2118,6 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       { icon: "call", value: "14446", label: "National de-addiction helpline" },
       { icon: "account_balance", value: "Social Justice & Empowerment", label: "Ministry" },
     ],
-    aboutHeading: "About the Movement",
     aboutAction: { label: "Know More →", href: "/website/organisation/nasha-mukt-bharat-abhiyaan/about-us" },
     /*
      * THE PROSE IS AUTHORED, AND THIS IS THE CASE `aboutHtml` EXISTS FOR.
@@ -2088,11 +2141,8 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
      * the Abhiyaan's standing description — and both are reproduced verbatim.
      * The volatile part is the counters, and those carry their own `asOf`.
      */
+    aboutHeading: "About the Abhiyaan",
     aboutHtml: `
-      <p>The Ministry of Social Justice and Empowerment (MoSJE) is the nodal Ministry
-      for Drug Demand Reduction and, as part of its mandate, has introduced measures to
-      curtail substance abuse in the country. MoSJE formulated and enacted the National
-      Action Plan for Drug Demand Reduction (NAPDDR).</p>
       <p>Drug and alcohol addiction in India has long been a silent crisis, impacting
       individuals, families, and communities across both urban and rural landscapes.
       Recognising the urgent need for collective action, the Ministry of Social Justice
@@ -2113,6 +2163,13 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     /*
      * THE SIX INSTITUTION TYPES, AS CARDS.
      *
+     * TITLES ARE THE DEPARTMENT'S OWN, including "Center" spelled the American
+     * way and the plurals "(IRCAs)", "Centres (ODIC)", "Agencies (SLCAs)".
+     * They were briefly tidied to "Centre", singular, and a singular acronym —
+     * which is not Title Case, it is rewriting a department's terminology to
+     * suit a card. The only change made is Title Case on "led" → "Led", which
+     * `ui-restraint-and-copy.md` does mandate.
+     *
      * The source draws six icon cards. The ingest returned twelve flat
      * paragraphs — a name, then a definition, six times — and rendered as prose
      * a reader could not tell the name of one from the body of the last.
@@ -2122,7 +2179,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     aboutHighlightsHeading: "Institutions for Drug Demand Reduction Supported by the Ministry",
     aboutHighlights: [
       {
-        title: "Integrated Rehabilitation Centre for Addicts (IRCA)",
+        title: "Integrated Rehabilitation Center for Addicts (IRCAs)",
         icon: "local_hospital",
         description:
           "Integrated Rehabilitation Center for Addicts (IRCAs) are de-addiction centres with inpatient facilities of counselling and treatment for drug dependent persons.",
@@ -2134,7 +2191,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
           "Community Peer led Intervention (CPLI) work with the community with youth volunteers for early preventive education especially for vulnerable adolescents and youth in the community.",
       },
       {
-        title: "Outreach and Drop-in Centre (ODIC)",
+        title: "Outreach and Drop in Centres (ODIC)",
         icon: "meeting_room",
         description:
           "Outreach and Drop in Centres (ODIC) provides facilities of screening, assessment and counselling along with providing referral and linkage to treatment and rehabilitation services for drug dependents.",
@@ -2146,7 +2203,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
           "District De-addiction Centres serve as one-stop centre with a combination of IRCA, CPLI, and ODIC. The main focus of the DDAC is early prevention, education, demand reduction, identification, treatment and rehabilitation services of vulnerable individuals or individuals affected by substance use disorders.",
       },
       {
-        title: "State Level Coordinating Agency (SLCA)",
+        title: "State Level Coordinating Agencies (SLCAs)",
         icon: "account_balance",
         description:
           "State Level Coordinating Agencies (SLCAs) are designated organizations responsible for coordinating, monitoring, facilitating, and strengthening the implementation of drug demand reduction programmes and capacity-building initiatives under NAPDDR at the State level.",
@@ -2217,6 +2274,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       },
     ],
     downloads: {
+      layout: "sections",
       heading: "Documents & Downloads",
       description:
         "Information, education and communication material, publications, newsletters and campaign assets published for the Abhiyaan. Files open on the Department's own site, so a reader always gets the current version.",
@@ -2428,6 +2486,23 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     },
     socialFeed: {
       heading: "Social Media",
+      /*
+       * The Instagram panel, as the source publishes it. Hiding the ingested
+       * Social Media section in favour of handle pills dropped its only piece
+       * of actual content — the handle, the invitation and the link — and left
+       * four pills where the source has three panels and a channel link.
+       */
+      posts: [
+        {
+          platform: "instagram",
+          author: "Ministry of Social Justice & Empowerment",
+          handle: "@our profile",
+          date: "",
+          content: "Follow us on Instagram to see our latest posts and reels.",
+          href: "https://www.instagram.com/msjegoi",
+          linkLabel: "Follow on Instagram →",
+        },
+      ],
       handles: [
         {
           platform: "whatsapp",
@@ -2441,6 +2516,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     },
     contact: {
       heading: "Contact",
+      addressLabel: "Postal Address",
       address: "8th Floor, GPOA-3, Netaji Nagar, New Delhi-110023",
       blocks: [
         {

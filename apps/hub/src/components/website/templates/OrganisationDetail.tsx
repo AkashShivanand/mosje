@@ -340,7 +340,9 @@ export function OrganisationContactBand({
             <div className="orgd__contact-card">
               <div className="flex items-center gap-2 text-primary-dark text-title-2">
                 <Icon name="location_on" size={20} />
-                <span>Headquarters</span>
+                {/* The Department's own label for the block. NMBA's source
+                    calls it "Postal Address"; most call it Headquarters. */}
+                <span>{contact.addressLabel ?? "Headquarters"}</span>
               </div>
               <p className="text-body-2 text-ink m-0">{contact.address}</p>
             </div>
@@ -568,6 +570,39 @@ export function OrganisationDetail({
     (aboutSubpage
       ? { label: "Know More →", href: orgHref(aboutSubpage.slug) }
       : undefined);
+
+  /*
+   * THE FIGURES COME BEFORE THE PROSE, because that is where the source puts
+   * them: the counters sit directly under the page title, above "About the
+   * Abhiyaan". They were rendering after the whole about band — the prose and
+   * the six institution cards — which put the campaign's headline numbers a
+   * screen and a half further down than the page they are cloned from.
+   */
+  /*
+   * The organisation's own published figures, as one strip.
+   *
+   * `FactStrip` without `overlap` — the overlapping treatment belongs to the
+   * card that straddles the hero, and a second one mid-page would look like a
+   * second hero. The `asOf` line sits under the heading because a counter with
+   * no date on a government page reads as today's number.
+   */
+  if (detail?.impact != null && detail.impact.items.length > 0) {
+    const im = detail.impact;
+    bands.push({
+      id: "impact",
+      body: (
+        <>
+          <SectionTitle
+            as={2}
+            title={im.heading}
+            description={`As published by the Department on ${im.asOf}.`}
+            headingId="impact-heading"
+          />
+          <FactStrip ariaLabel={`${org.title} in numbers`} items={im.items} />
+        </>
+      ),
+    });
+  }
 
   bands.push({
     id: "about-the-scheme",
@@ -903,31 +938,6 @@ export function OrganisationDetail({
     });
   }
 
-  /*
-   * The organisation's own published figures, as one strip.
-   *
-   * `FactStrip` without `overlap` — the overlapping treatment belongs to the
-   * card that straddles the hero, and a second one mid-page would look like a
-   * second hero. The `asOf` line sits under the heading because a counter with
-   * no date on a government page reads as today's number.
-   */
-  if (detail?.impact != null && detail.impact.items.length > 0) {
-    const im = detail.impact;
-    bands.push({
-      id: "impact",
-      body: (
-        <>
-          <SectionTitle
-            as={2}
-            title={im.heading}
-            description={`As published by the Department on ${im.asOf}.`}
-            headingId="impact-heading"
-          />
-          <FactStrip ariaLabel={`${org.title} in numbers`} items={im.items} />
-        </>
-      ),
-    });
-  }
 
   if (reachSlot != null) {
     bands.push({ id: "reach", body: reachSlot });
@@ -1016,7 +1026,56 @@ export function OrganisationDetail({
     ),
   ];
 
-  if (libraryItems.length > 0) {
+  /*
+   * THE SOURCE'S OWN DOCUMENT SECTIONS, in the source's own order.
+   *
+   * NMBA publishes six separately titled sections — IEC Materials,
+   * Publications, Newsletter, Downloads, Circulars, Citizen Corner — each with
+   * its own "View All". Merging them into one filterable shelf keeps every file
+   * and loses the Department's arrangement of them: a reader who came for the
+   * newsletter has to work out which chip it is behind.
+   *
+   * Only for records that ask for it. Every other organisation keeps the shelf,
+   * which is the right answer when its documents are one undifferentiated pile.
+   */
+  if (detail?.downloads?.layout === "sections") {
+    for (const g of detail.downloads.groups) {
+      if (g.items.length === 0) continue;
+      bands.push({
+        id: g.id,
+        body: (
+          <>
+            <SectionTitle as={2} title={g.heading} headingId={`${g.id}-heading`}>
+              {g.viewAllHref != null && (
+                <a
+                  href={g.viewAllHref}
+                  target={isHttp(g.viewAllHref) ? "_blank" : undefined}
+                  rel={isHttp(g.viewAllHref) ? "noreferrer" : undefined}
+                  className={buttonClasses("primary", "outlined", "sm")}
+                >
+                  View all
+                  {isHttp(g.viewAllHref) && <span className="sr-only"> (opens in a new tab)</span>}
+                </a>
+              )}
+            </SectionTitle>
+            <DocumentLibrary
+              items={g.items.map((f) => ({
+                id: `download-${f.href}-${f.label}`,
+                group: g.heading,
+                meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
+                title: f.label,
+                officialName: f.officialName,
+                href: f.href,
+                actionLabel: DOWNLOAD_KIND[f.kind].action,
+                external: isHttp(f.href),
+              }))}
+              groupOrder={[g.heading]}
+            />
+          </>
+        ),
+      });
+    }
+  } else if (libraryItems.length > 0) {
     const lib = detail?.downloads;
     bands.push({
       id: "documents-downloads",
@@ -1356,6 +1415,13 @@ export function OrganisationDetail({
                     <div className="w-full h-36 relative rounded-lg overflow-hidden my-3 border border-neutral-subtle">
                       <Image src={post.image} alt={post.content.slice(0, 40)} fill className="object-cover" />
                     </div>
+                  )}
+                  {post.href != null && (
+                    <p className="mt-auto pt-3">
+                      <Link href={post.href} external variant="standalone">
+                        {post.linkLabel ?? "View post"}
+                      </Link>
+                    </p>
                   )}
                   {(post.likes || post.shares) && (
                     <div className="flex items-center gap-4 pt-3 border-t border-neutral-subtle text-body-3 text-neutral-subtle mt-auto">
