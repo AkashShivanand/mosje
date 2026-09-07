@@ -3,7 +3,7 @@
   "indexPage": "56757:725",
   "indexFrame": "56757:726",
   "capturedOn": "2026-09-07",
-  "statLine": "88 pages · 217 components · counted 7 September 2026",
+  "statLine": "89 pages · 218 components · counted 7 September 2026",
   "statuses": [
     "Ready",
     "Published",
@@ -84,6 +84,7 @@
     "Portal Card",
     "Stepper",
     "Tabs",
+    "Action Banner",
     "Alerts/Toasts",
     "Chatbot",
     "Empty State",
@@ -390,8 +391,13 @@
     },
     {
       "name": "Feedback & Status",
-      "stated": 8,
+      "stated": 9,
       "cards": [
+        {
+          "name": "Action Banner",
+          "status": "Ready",
+          "linked": true
+        },
         {
           "name": "Alerts/Toasts",
           "status": "Published",

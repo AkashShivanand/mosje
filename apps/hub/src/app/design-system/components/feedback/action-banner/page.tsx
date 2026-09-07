@@ -48,7 +48,7 @@ export default function ActionBannerPage(): React.JSX.Element {
       name="Action Banner"
       status="Stable"
       summary="A call to action: a title, an optional sentence, and one control. The banner variant is the full-width strip that ends a page section; the card variant is the same content in a column, for a grid of two or three parallel offers."
-      figma={{ absent: "Not yet published in the Figma library." }}
+      figma={{ node: "actionBanner" }}
       specimen={<ActionBannerPlayground />}
       propsFrom="ActionBannerProps"
       a11y={A11Y}
