@@ -17,7 +17,7 @@ import { fileURLToPath } from "node:url";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const LIVE = join(HERE, "captures/live");
 const REPO = join(HERE, "../../../..");
-const { WIZARDS, visibleDocuments } = await import(
+const { WIZARDS, visibleDocuments, visibleSteps } = await import(
   join(REPO, "apps/hub/src/lib/e-anudaan/form-schema.ts")
 );
 
@@ -71,7 +71,13 @@ for (const [liveScheme, branches] of Object.entries(live)) {
     // ── step count ────────────────────────────────────────────────────────────
     const advertised = /Step \d+ of (\d+)/.exec(steps[0]?.stepLine || "")?.[1];
     const liveTotal = advertised ? Number(advertised) : steps.length;
-    const ours = w.steps.length;
+    // Count what the wizard WOULD RENDER on this branch, not what the schema lists.
+    // Reading `w.steps.length` counted every step on every branch and so reported
+    // defect D1 as still open after it had been fixed: `visibleSteps` is exactly the
+    // helper that fix added, and grant-wizard.tsx has counted through it since.
+    // Comparing a branch-aware live figure against a branch-blind local one cannot
+    // be right in both branches at once.
+    const ours = visibleSteps(w, BRANCH_VALUES[branch]).length;
     if (liveTotal !== ours) {
       findings.push(`${code}/${branch}: step count`);
       say(`**✗ Step count.** Live shows **${liveTotal}**; our schema declares **${ours}**.\n`);
