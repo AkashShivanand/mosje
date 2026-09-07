@@ -235,6 +235,14 @@ export const FIGMA_NODES = {
   credentialFieldsOtpVerify: "57575-14856",
   sheetToggle: "55798-4566",
   siteHeader: "4235-3169",
+  /**
+   * The WEBSITE's opening band — Landing (still / carousel media) and Inner.
+   * Named for the component, `SitePageHeader`, not for the words "page header":
+   * the key `pageHeader` made `check:ds-pages` match it to the PORTAL's
+   * PageHeader docs page, which is a title row on a page's own background and a
+   * different component entirely.
+   */
+  sitePageHeader: "57763-944",
   tab: "2316-353",
   tabs: "55489-870",
   tabsMore: "55514-848",
