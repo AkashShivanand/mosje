@@ -19,6 +19,10 @@ import type {
 import { withAssetBasePath } from "@/lib/website/content";
 import { trimRedundantOpening } from "@/lib/website/organisation-prose";
 import { OrganisationIndex } from "./OrganisationIndex";
+import { OrganisationDocumentTabs } from "../OrganisationDocumentTabs";
+import { OrganisationEventRibbon } from "../OrganisationEventRibbon";
+import { OrganisationMessages } from "../OrganisationMessages";
+import { OrganisationUpdates } from "../OrganisationUpdates";
 import "./organisation-detail.css";
 
 /**
@@ -126,6 +130,38 @@ function matchDocuments(
     .filter((d) => terms.some((t) => d.title.toLowerCase().includes(t)))
     .sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""))
     .slice(0, limit);
+}
+
+/**
+ * NEAR-DUPLICATES OUT OF THE NOTICE STRIP.
+ *
+ * The ingest carries several notices whose titles differ only in a trailing
+ * clause — three separate "Portal is open for seeking applications from eligible
+ * NGOs for release of 1st instalment of GIA for running of…" rows, all dated
+ * 01 Apr 2026. In a document SHELF that is fine: a reader scanning a grid can
+ * see the difference and pick. In a strip that shows one headline at a time it
+ * reads as the same notice cycling past three times, and the reader concludes
+ * the strip is broken.
+ *
+ * Compared on the first eighty characters, case- and punctuation-insensitively.
+ * The first eighty is enough to separate genuinely different notices — the
+ * shortest real title here is 42 — and short enough to catch the ones that
+ * diverge only at the end. The FIRST of a set survives, and the list is already
+ * sorted newest-first, so what survives is the most recent of the duplicates.
+ *
+ * It over-matches the day two real notices share an eighty-character opening.
+ * The strip is a route into the document index, not the index itself, so losing
+ * one of a pair there costs a reader a click; showing the same headline three
+ * times costs them their trust in the strip.
+ */
+function dedupeByTitle(docs: FileRecord[]): FileRecord[] {
+  const seen = new Set<string>();
+  return docs.filter((d) => {
+    const key = d.title.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().slice(0, 80);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 /**
@@ -456,6 +492,14 @@ export function OrganisationDetail({
 }: OrganisationDetailProps) {
   const circulars = matchDocuments(documents, detail?.circulars, 4);
   const resources = matchDocuments(documents, detail?.resources, 4);
+  /*
+   * The organisation's own notice board, matched the same way the two document
+   * bands are — see `whatsNew` in `organisation-details.ts`. It resolves from
+   * the ingest, so a re-crawl refreshes the strip and nobody re-types a notice.
+   */
+  const whatsNew = dedupeByTitle(
+    matchDocuments(documents, detail?.whatsNew, (detail?.whatsNew?.limit ?? 6) * 3),
+  ).slice(0, detail?.whatsNew?.limit ?? 6);
 
   const isSubPage = org.slug.includes("/");
   const rootSlug = org.slug.split("/")[0] ?? org.slug;
@@ -1038,7 +1082,53 @@ export function OrganisationDetail({
    * Only for records that ask for it. Every other organisation keeps the shelf,
    * which is the right answer when its documents are one undifferentiated pile.
    */
-  if (detail?.downloads?.layout === "sections") {
+  if (detail?.downloads?.layout === "tabs") {
+    /*
+     * ONE BAND, THE DEPARTMENT'S OWN SHELVES AS ITS TABS.
+     *
+     * It carries `documents-downloads` — the id the page index has always linked
+     * to and which `layout: "sections"` never produced, so that entry in the
+     * NMBA rail had been scrolling nowhere. See `OrganisationDocumentTabs`.
+     */
+    const lib = detail.downloads;
+    const shelves = lib.groups
+      .filter((g) => g.items.length > 0)
+      .map((g) => ({
+        id: g.id,
+        heading: g.heading,
+        viewAllHref: g.viewAllHref,
+        items: g.items.map((f) => ({
+          id: `download-${f.href}-${f.label}`,
+          group: g.heading,
+          meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
+          title: f.label,
+          officialName: f.officialName,
+          href: f.href,
+          actionLabel: DOWNLOAD_KIND[f.kind].action,
+          external: isHttp(f.href),
+        })),
+      }));
+
+    if (shelves.length > 0) {
+      bands.push({
+        id: "documents-downloads",
+        body: (
+          <>
+            <SectionTitle
+              as={2}
+              title={lib.heading}
+              description={lib.description}
+              headingId="documents-downloads-heading"
+            />
+            <OrganisationDocumentTabs
+              groups={shelves}
+              ariaLabel={`${org.title} document types`}
+            />
+          </>
+        ),
+      });
+    }
+  } else if (detail?.downloads?.layout === "sections") {
     for (const g of detail.downloads.groups) {
       if (g.items.length === 0) continue;
       bands.push({
@@ -1194,32 +1284,22 @@ export function OrganisationDetail({
               View all photos
             </NextLink>
           </SectionTitle>
-          {/* Segmented Media Tabs (Figma 5326:27984) */}
-          <div className="flex items-center gap-2 mb-6 flex-wrap">
-            <div className="inline-flex rounded-lg p-1 bg-surface-muted border border-neutral-subtle gap-1">
-              <button
-                type="button"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-surface text-ink text-label-1 shadow-sm"
-              >
-                <Icon name="image" size={16} className="text-primary-base" />
-                <span>All Photos</span>
-              </button>
-              <button
-                type="button"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-ink-subtle hover:text-ink text-label-1 transition-colors"
-              >
-                <Icon name="movie" size={16} />
-                <span>Videos</span>
-              </button>
-              <button
-                type="button"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-ink-subtle hover:text-ink text-label-1 transition-colors"
-              >
-                <Icon name="event" size={16} />
-                <span>Events</span>
-              </button>
-            </div>
-          </div>
+          {/*
+            * THE THREE MEDIA TABS ARE GONE, and they were never tabs.
+            *
+            * They were three `<button>`s with no handler, no `role="tab"`, no
+            * panel and no `aria-selected` — drawn from Figma 5326:27984 and
+            * never wired. Two of them named content this estate does not hold:
+            * `gallery` carries photographs only, so pressing "Videos" or
+            * "Events" did nothing at all, on every organisation page with a
+            * gallery. A control that points at a panel that is not there is the
+            * defect `.claude/rules/data-state-completeness.md` and the tab
+            * purity audit both name; the honest form of "we publish photographs"
+            * is a heading that says Gallery and photographs under it.
+            *
+            * They come back the day the record can hold a video or an event —
+            * as real `Tabs`, with panels.
+            */}
           <ul className="orgd__gallery">
             {detail.gallery.items.map((g) => (
               <li key={g.image} className="orgd__shot">
@@ -1349,19 +1429,28 @@ export function OrganisationDetail({
             * be mistaken for a figure does not belong on a departmental page,
             * and the attribution below each quote already says it is one.
             */}
-          <ul className="orgd__messages">
-            {ms.items.map((m) => (
-              <li key={m.name} className="orgd__message">
-                <blockquote className="orgd__message-quote">
-                  <p>{m.quote}</p>
-                </blockquote>
-                <footer className="orgd__message-by">
-                  <cite className="orgd__message-name">{m.name}</cite>
-                  <span className="orgd__message-role">{m.designation}</span>
-                </footer>
-              </li>
-            ))}
-          </ul>
+          {/*
+            * FOUR OR MORE STATEMENTS BECOME A CAROUSEL; three or fewer stay a
+            * grid, because three cards are already one row and a carousel would
+            * hide two of them behind an interaction to save nothing.
+            */}
+          {ms.items.length > 3 ? (
+            <OrganisationMessages items={ms.items} label={`Messages about ${org.title}`} />
+          ) : (
+            <ul className="orgd__messages">
+              {ms.items.map((m) => (
+                <li key={m.name} className="orgd__message">
+                  <blockquote className="orgd__message-quote">
+                    <p>{m.quote}</p>
+                  </blockquote>
+                  <footer className="orgd__message-by">
+                    <cite className="orgd__message-name">{m.name}</cite>
+                    <span className="orgd__message-role">{m.designation}</span>
+                  </footer>
+                </li>
+              ))}
+            </ul>
+          )}
         </>
       ),
     });
@@ -1492,6 +1581,47 @@ export function OrganisationDetail({
             <FactStrip overlap ariaLabel={`Key facts about ${org.title}`} items={detail.facts} />
           </div>
         </div>
+      )}
+
+      {/*
+       * TWO STRIPS BETWEEN THE HEADER AND THE PAGE'S DATA, in that order, and
+       * the order is the argument.
+       *
+       * The notice board is PERMANENT and the occasion is TEMPORARY, so the
+       * board sits first: a reader who learns where this page keeps its notices
+       * finds them in the same place in six weeks' time, when the anniversary
+       * strip has been taken down. The same reasoning
+       * `floating-element-placement.md` uses for the corner stack — what moves
+       * least anchors the position.
+       *
+       * NEITHER GOES INSIDE THE HEADER. The 07 Sep review's other finding was
+       * that this page's first fold already carries a campaign band, a hero and
+       * a fact strip; adding to it would have answered one request by worsening
+       * another. Below the fact strip they are the first thing a reader meets
+       * on the page's own ground, which is where the review asked for the
+       * ribbon — "between the blue section and the data section".
+       */}
+      {whatsNew.length > 0 && (
+        <div className="orgd__updates">
+          <div className="sa-container">
+            <OrganisationUpdates
+              items={whatsNew.map((d) => ({
+                id: d.slug,
+                title: d.title,
+                description: d.category,
+                date: formatDate(d.date),
+                dateTime: d.date,
+                href: d.fileUrl ?? d.sourceUrl,
+              }))}
+              label={detail?.whatsNew?.label ?? "What's New"}
+              viewAllHref={detail?.whatsNew?.viewAllHref ?? "/website/notices"}
+            />
+          </div>
+        </div>
+      )}
+
+      {detail?.eventRibbon != null && (
+        <OrganisationEventRibbon ribbon={detail.eventRibbon} />
       )}
 
       <div className={`orgd${hasRail ? " orgd--railed" : ""}`}>

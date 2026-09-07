@@ -13,10 +13,6 @@ import { HostelDashboard } from "@/components/website/HostelDashboard";
 import { PmajayWorksMap } from "@/components/website/PmajayWorksMap";
 import { OrganisationJoinBanner } from "@/components/website/OrganisationJoinBanner";
 import { DeAddictionMap } from "@/components/website/nmba/DeAddictionMap";
-import {
-  PUBLISHED_TOTAL,
-  TOTAL_CENTRES,
-} from "@/content/website/deaddiction-centres";
 import { getAdarshGramCounts } from "@/lib/website/adarsh-gram-api";
 import {
   getGiaData,
@@ -580,20 +576,25 @@ export default async function OrganisationDetailPage({
                 title="Geo-Tagged De-addiction Facilities"
                 description={
                   /*
-                   * BOTH NUMBERS, RECONCILED — because both are on screen.
+                   * NO COUNTS HERE, AND THAT IS THE FIX.
                    *
-                   * The band's heading said 768 while the map beneath it said
-                   * "All 487" and "487 centres". One reading, two figures, and
-                   * nothing telling a reader which was true or why they differ
-                   * — the exact shape of the defect in
-                   * `.claude/rules/data-state-completeness.md` §2.
+                   * This line used to reconcile two of the three figures —
+                   * "Of the 768 centres the Ministry publishes, the 487 with
+                   * recorded coordinates are plotted here" — which was written
+                   * to settle a disagreement between the heading and the map's
+                   * key. It settled that one and created another: the map's own
+                   * footer derives the count of what it ACTUALLY drew and reads
+                   * "482 centres plotted, of 487 geo-tagged and 768 published
+                   * nationwide", so the page carried "487 are plotted here" six
+                   * hundred pixels above "482 centres plotted".
                    *
-                   * 768 is what the Ministry publishes; 487 of those carry
-                   * coordinates and can be drawn. Saying so in one sentence is
-                   * what stops a reader concluding a third of the country's
-                   * centres have gone missing.
+                   * `data-state-completeness.md` §2 asks for one expression, not
+                   * two agreeing ones — and only one of these two can be
+                   * derived, because the plotted count is not known until the
+                   * register arrives. So the footer is the single answer and the
+                   * heading says what the section IS.
                    */
-                  `Of the ${PUBLISHED_TOTAL} centres the Ministry publishes, the ${TOTAL_CENTRES} with recorded coordinates are plotted here.`
+                  "Ministry-supported de-addiction and rehabilitation centres, at the locations recorded in the Abhiyaan\u2019s register."
                 }
                 headingId="deaddiction-map-heading"
               />

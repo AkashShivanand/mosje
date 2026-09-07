@@ -287,6 +287,81 @@ export interface OrganisationDetail {
    */
   circulars?: { category: string; match: string[]; viewAllHref: string };
   resources?: { category: string; match: string[]; viewAllHref: string };
+  /**
+   * THE ORGANISATION'S OWN NOTICE BOARD — the "What's New" strip.
+   *
+   * Requested 2026-09-07: a division uploads a notice or an advertisement about
+   * its own scheme and, today, the only place it surfaces is the estate-wide
+   * document index. A citizen who came to the Abhiyaan's page for the Abhiyaan's
+   * notices has no reason to look there.
+   *
+   * SPEC, NOT A LIST. It matches the same way `circulars` and `resources` do —
+   * a `documents.json` category plus case-insensitive title substrings, both of
+   * which must hit — so the strip stays current through a re-ingest and nobody
+   * has to re-type a notice into this file. Eighteen NMBA/NAPDDR notices are
+   * already in the ingest; none of them were reachable from this page.
+   *
+   * THE THIN SHAPE, DELIBERATELY. `Ticker` draws two: `horizontal` is a 72px
+   * bar carrying one notice at a time, `vertical` is the stacked panel. The
+   * panel is what the site home is moving to, and it was explicitly ruled out
+   * here — an organisation page's first fold is already carrying a campaign
+   * band, a hero and a fact strip, and a second full-height panel in it would
+   * cost more than the notices are worth. The bar is `limit` notices deep with
+   * a route to the rest.
+   */
+  whatsNew?: {
+    /** The plinth's name. @default "What's New" */
+    label?: string;
+    category: string;
+    match: string[];
+    viewAllHref: string;
+    /** How many notices the strip carries. @default 6 */
+    limit?: number;
+  };
+  /**
+   * A TIME-LIMITED campaign ribbon, between the header band and the page's data.
+   *
+   * Requested 2026-09-07 for the Abhiyaan's sixth-anniversary observance: a thin
+   * running strip inviting the organisations taking part to file their pre-event
+   * details, sitting "between the blue section and the data section".
+   *
+   * TWO ROUTES, BECAUSE THE TWO AUDIENCES SIGN IN DIFFERENTLY, and that was
+   * settled in the same meeting. A line Ministry or Department already holds an
+   * administrative account and files through it; an autonomous body, a chamber
+   * of commerce or a corporate participant holds no account at all and files on
+   * the open activities register. One button for both would send half the
+   * readers to a login they cannot pass.
+   *
+   * A BUTTON AND A LINK, NOT TWO BUTTONS. `ActionBanner`'s own contract states
+   * the reason and it applies here: "a banner with two equal buttons has no call
+   * to action — it has a decision", and the fix is "a text link beside the
+   * button, not a second button". The button carries the majority route; the
+   * link names the audience the button is wrong for, in that audience's own
+   * words, so the reader who needs it recognises themselves in it.
+   *
+   * IT IS TEMPORARY AND IT SAYS SO. `until` is the observance's own end date,
+   * printed inside the sentence rather than as a badge, and the strip is
+   * dismissible — the same reasoning as the join banner's campaign half, and the
+   * same in-memory state, so a reader pushes it aside for this visit and does
+   * not switch off a departmental announcement for good with one click.
+   *
+   * DELETE THE BLOCK WHEN THE WINDOW CLOSES. Nothing here expires on its own,
+   * and that is deliberate: a date comparison would silently remove a campaign
+   * the Department may have extended, which is a worse failure than a strip
+   * somebody has to take down.
+   */
+  eventRibbon?: {
+    /** The occasion, above the invitation. */
+    eyebrow: string;
+    /** The invitation, one sentence. */
+    heading: string;
+    /** Displayed end of the window — "30 September 2026". */
+    until?: string;
+    /** The majority route. */
+    action: { label: string; href: string; external?: boolean };
+    /** The other audience, named in its own words. */
+    altAction?: { label: string; href: string; external?: boolean };
+  };
   downloads?: {
     heading: string;
     description?: string;
@@ -303,8 +378,21 @@ export interface OrganisationDetail {
      * Corner. Merging them into one shelf keeps every file but loses the
      * Department's own arrangement of them, and a reader who came for the
      * newsletter has to work out which chip it is behind.
+     *
+     * `"tabs"` KEEPS THAT ARRANGEMENT AND STOPS IT COSTING THE PAGE 2,400px.
+     * NMBA's six sections rendered as six full-width bands, alternating white
+     * and grey, each with its own heading, its own "View all" and its own
+     * "Showing N of N documents" — and three of them held a SINGLE card in a
+     * three-column grid, so two thirds of three bands was empty space. Fifteen
+     * files took more vertical scroll than the entire rest of the page. As tabs
+     * the six headings become the six tabs, in the source's order, and a reader
+     * who came for the newsletter presses the word "Newsletter".
+     *
+     * It also restores the anchor. `"sections"` gave each group its own band id
+     * and no band carried `documents-downloads`, so the page index's "Documents
+     * & Downloads" link had been pointing at an element that did not exist.
      */
-    layout?: "library" | "sections";
+    layout?: "library" | "sections" | "tabs";
     groups: OrgDownloadGroup[];
   };
   /**
@@ -2165,15 +2253,74 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
         external: true,
       },
     ],
-    // FOUR FACTS, ALL STATED ON THE SOURCE PAGE. "372 Districts" stood here
-    // until 07 Sep 2026 and is not on this page at all — an unsourced figure on
-    // a government page, which this file's own header forbids.
+    /*
+     * THREE FACTS, ALL STATED ON THE SOURCE PAGE. "372 Districts" stood here
+     * until 07 Sep 2026 and is not on this page at all — an unsourced figure on
+     * a government page, which this file's own header forbids.
+     *
+     * THE HELPLINE WAS THE FOURTH AND IT WENT ON 07 Sep 2026, because it was
+     * the same number twice in one fold. The green band directly above this
+     * strip prints "National De-Addiction Helpline 14446" in 24px green inside
+     * a white pill — the loudest single element on the page — and the strip
+     * printed it again, in grey, 200px below. `ui-restraint-and-copy.md` §1:
+     * say it once, in the one place it is the answer. The band is that place.
+     *
+     * It also answers the first-fold complaint raised in the 07 Sep review, and
+     * it is the only element of that fold that could go without losing anything:
+     * the number is still on the page, twice over — the band, and the map's own
+     * "24×7 Helpline" footer.
+     *
+     * Three cells also stop the strip overflowing. At four, "Social Justice &
+     * Empowerment" ran flush to the card's inner edge at 1440 and sat under the
+     * chatbot launcher; at three it has a third of the card.
+     */
     facts: [
       { icon: "flag", value: "15 August 2020", label: "Abhiyaan launched" },
       { icon: "local_hospital", value: "768", label: "De-addiction and rehabilitation centres" },
-      { icon: "call", value: "14446", label: "National de-addiction helpline" },
       { icon: "account_balance", value: "Social Justice & Empowerment", label: "Ministry" },
     ],
+    /*
+     * THE ABHIYAAN'S OWN NOTICE BOARD.
+     *
+     * Matched, not typed — see the `whatsNew` field's own note. The ingest holds
+     * eighteen NAPDDR and de-addiction notices under Resources and Circulars &
+     * Notifications, and until now not one of them was reachable from the page
+     * of the campaign they belong to.
+     *
+     * `match` is deliberately narrow. "drug" alone drags in the Department's
+     * general grants circulars; the four terms below are the Abhiyaan's own
+     * vocabulary — its action plan, its centres, its institution types.
+     */
+    whatsNew: {
+      label: "What's New",
+      category: "Resources",
+      match: ["napddr", "de-addiction", "deaddiction", "nasha"],
+      viewAllHref: "/website/notices",
+      limit: 6,
+    },
+    /*
+     * THE SIXTH-ANNIVERSARY OBSERVANCE, as a temporary ribbon.
+     *
+     * Requested 07 Sep 2026. Two routes because the two audiences hold
+     * different credentials — see the `eventRibbon` field's note. The first
+     * opens the Abhiyaan's administrative login, which is where a line
+     * Ministry's officer already files; the second opens the activities
+     * register, which takes an entry without an account.
+     *
+     * `until` is the observance's stated window. When it closes this block is
+     * deleted, not left to expire quietly — a ribbon inviting people to an event
+     * that has happened is worse than no ribbon.
+     */
+    eventRibbon: {
+      eyebrow: "Six Years of Nasha Mukt Bharat Abhiyaan",
+      heading: "Organisations taking part in the observance may file their pre-event details until",
+      until: "30 September 2026",
+      action: { label: "File Pre-Event Details", href: "/portals/nmba/admin/login" },
+      altAction: {
+        label: "No departmental account? File on the open register",
+        href: "/portals/nmba/activities",
+      },
+    },
     aboutAction: { label: "Know More →", href: "/website/organisation/nasha-mukt-bharat-abhiyaan/about-us" },
     /*
      * THE PROSE IS AUTHORED, AND THIS IS THE CASE `aboutHtml` EXISTS FOR.
@@ -2248,7 +2395,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       },
       {
         title: "Outreach and Drop in Centres (ODIC)",
-        icon: "meeting_room",
+        icon: "support_agent",
         description:
           "Outreach and Drop in Centres (ODIC) provides facilities of screening, assessment and counselling along with providing referral and linkage to treatment and rehabilitation services for drug dependents.",
       },
@@ -2266,7 +2413,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       },
       {
         title: "Addiction Treatment Facility (ATF)",
-        icon: "medical_services",
+        icon: "monitor_heart",
         description:
           "Addiction Treatment Facility provides in patient and out patient treatment and deaddiction services to substance users in a government hospital.",
       },
@@ -2330,7 +2477,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       },
     ],
     downloads: {
-      layout: "sections",
+      layout: "tabs",
       heading: "Documents & Downloads",
       description:
         "Information, education and communication material, publications, newsletters and campaign assets published for the Abhiyaan. Files open on the Department's own site, so a reader always gets the current version.",

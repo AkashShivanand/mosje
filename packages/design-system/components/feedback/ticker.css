@@ -613,6 +613,31 @@
     text-wrap: pretty;
   }
 
+  /*
+   * TWO LINES IN THE BAR — a headline, not a paragraph.
+   *
+   * The bar's minimum height lets it grow, which is right for a title that runs
+   * a few words long and wrong for one that does not stop. Government document
+   * titles routinely do not stop: the NMBA page's notice strip drew a 223
+   * character NAPDDR call for proposals, which filled four lines and turned a
+   * 72px strip into a block of body copy with a pause button beside it.
+   *
+   * Clamped, NOT truncated. Every character stays in the DOM, so a screen
+   * reader hears the whole title and the row still links to the document it
+   * names — the reader loses nothing but the ink.
+   *
+   * The PANEL is left alone. There a title genuinely is the row's content and
+   * the list is meant to be read down; it is the single-message bar that has a
+   * height to keep.
+   */
+  .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__rowtitle {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+  }
+
   /* 80% white on the /600 ground is 4.66:1 — past 1.4.3's 4.5:1 for normal
      text. It would have been 3.52:1 on /500, which is why the ground moved. */
   .sa-ticker__rowmeta {

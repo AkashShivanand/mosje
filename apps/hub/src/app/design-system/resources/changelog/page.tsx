@@ -32,9 +32,17 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.126.0",
+    date: "2026-09-08",
+    current: true,
+    changes: [
+      { kind: "Fixed", text: "THE DOCUMENT LIBRARY\u2019S COUNT LINE APPEARED WHERE THERE WAS NOTHING TO COUNT. \u201cShowing 4 of 4 documents\u201d is an `aria-live` region whose entire job is to tell a screen-reader user that pressing a chip changed the list underneath it. The chip row already suppresses itself when there is only one real group \u2014 two chips that always agree is chrome pretending to be a control \u2014 but the count line did not, so with one group it printed a sentence restating the number of cards directly below it, with no control anywhere that could change the number. NMBA\u2019s organisation page carried six of them, one per document shelf, which is the restatement `ui-restraint-and-copy.md` \u00a71 forbids, six times on one page. It now renders under exactly the same condition as the chips" },
+      { kind: "Fixed", text: "THE TICKER BAR DREW A 223-CHARACTER TITLE OVER FOUR LINES. The bar has a MINIMUM height rather than a fixed one so a headline running a few words long can breathe \u2014 which is right, and stops being right when the headline does not stop. Government document titles routinely do not: an NAPDDR call for proposals from the ingest turned a 72px strip into a block of body copy with a pause button beside it. The bar\u2019s title is clamped to two lines; the PANEL is untouched, because there a title genuinely is the row\u2019s content and the list is meant to be read down. Clamped, not truncated \u2014 every character stays in the DOM, so a screen reader hears the whole title and the row still links to the document it names" },
+    ],
+  },
+  {
     version: "v0.125.0",
     date: "2026-09-07",
-    current: true,
     changes: [
       { kind: "Fixed", text: "HALF THE SUBTLE BADGES HAD NO EDGE, BECAUSE THREE FAMILIES SAT A RUNG HIGHER THAN THE OTHER THREE. A badge is nearly always on a white card or table row, and rung 50 is too pale to give the pill a boundary there — the reader sees loose coloured text rather than a chip. Measured against #ffffff, Info was 1.10:1, Warning 1.11:1 and Danger 1.20:1, while Primary sat at 1.42, Success 1.40 and Neutral 1.35. The rule is now stated once and holds for all six: the subtle chip takes its family's RUNG-100 background. Info, Warning and Danger move to #b4e3f2, #ffd394 and #ffc1bc, measuring 1.38, 1.40 and 1.54; the other three did not move a pixel, and are spelled out from the same `bg/*` family so the invariant is visible in the block instead of having to be resolved token by token. No ink changed, and every pair still clears AA in each mode that moves them — default/blue/navy 6.09 / 5.90 / 11.55, dark 6.09 / 5.90 / 11.65, dbim 6.25 / 6.05 / 15.41, the tightest being danger at 5.90. Watch the naming trap: the status ramps call rung 100 `subtler` and the neutral ramp calls it `subtle`, because neutral omits a rung — bind by the rung, never by the word" },
       { kind: "Changed", text: "BADGE NO LONGER READS THE `--sa-color-status-*Tonal` ALIASES, WHICH IS WHERE ITS CONTRAST WAS GATED. `PAIRINGS` in `packages/tokens/test/lib/contrast.mjs` asserts those aliases under labels naming the badge, and it feeds three gates including `dbim-contrast`'s shrink-only baseline. The entries were deliberately left alone — they still cover the hand-rolled status pills in smile-admin, pm-ajay and `SlaProgressIndicator`, which do still read those tokens. The consequence is stated rather than hidden: Badge's own subtle pairs are now measured but NOT gated, and the next change to this component's colours should add them to a gate" },

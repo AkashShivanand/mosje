@@ -128,9 +128,23 @@ export function DocumentLibrary({
         </div>
       )}
 
-      <p className="ds-doclib__count" aria-live="polite">
-        Showing {shown.length} of {items.length} {noun}
-      </p>
+      {/*
+       * THE COUNT LINE EXISTS TO ANNOUNCE A FILTER, so it appears only when
+       * there is a filter to announce — the same condition the chip row uses.
+       *
+       * It is `aria-live`: its job is to tell a screen-reader user that pressing
+       * a chip changed the list under it. With one group there are no chips, the
+       * list never changes, and the line is a sentence restating the number of
+       * cards directly below it. NMBA's page carried six of these — "Showing 4
+       * of 4 documents", "Showing 1 of 1 documents" — one per shelf, which is
+       * the restatement `ui-restraint-and-copy.md` §1 forbids, printed six times
+       * on one page.
+       */}
+      {groups.length > 2 && (
+        <p className="ds-doclib__count" aria-live="polite">
+          Showing {shown.length} of {items.length} {noun}
+        </p>
+      )}
 
       {shown.length > 0 ? (
         <ul className="ds-doclib__grid">
