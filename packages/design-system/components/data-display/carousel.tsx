@@ -243,15 +243,23 @@ export function Carousel({
               // a way to stop it, and the control has to say which state pressing
               // it produces rather than which state it is in.
               //
-              // The glyph, not the word. "Pause" and "Play" are 66px and 55px
-              // wide, so a text label made the control change size under the
-              // reader's own finger and shifted its neighbours with it. The name
-              // is on `aria-label` either way, and it is the fuller sentence.
+              // THE WORD, NOT THE GLYPH — and this was briefly the other way
+              // round. It was iconified because "Pause" and "Play" are 66px and
+              // 55px wide, so the control changed size under the reader's own
+              // finger and shifted its neighbours with it. The three-zone row
+              // above has since removed that problem entirely: this control sits
+              // in a side zone that fills, so its width cannot move the dots.
+              //
+              // With the only argument for a glyph gone, the argument against it
+              // stands: a reader who has paused a carousel must be able to SEE
+              // that it is paused, and a play/pause glyph is ambiguous about
+              // which of the two states it is reporting. The Figma master and
+              // the documentation page both say so.
               aria-label={playing ? `Stop rotating ${label}` : `Start rotating ${label}`}
               aria-pressed={!playing}
               onClick={() => setPlaying((p) => !p)}
             >
-              <Icon name={playing ? "pause" : "play_arrow"} size={20} />
+              {playing ? "Pause" : "Play"}
             </button>
           ) : null}
         </div>
