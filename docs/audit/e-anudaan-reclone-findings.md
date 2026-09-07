@@ -87,11 +87,34 @@ vendor, as a sanctioned test data set. Recorded rather than worked around.
 S01 to S09, arrived and filled — against 2 in the previous corpus. Everything short of
 Review & Submit is now held for a branch that had never been walked at all.
 
-## F6 — the placeholder check is a parity finding for our own clone
-Our build's upload step has no content verification of any kind. The live portal rejects a
-document that is structurally valid but substantively empty, and tells the applicant which
-of the twelve failed and why, in plain language. That behaviour is not in
-`form-schema.ts` or `grant-wizard.tsx` and is not in the build-defects list. It should be.
+## F6 — ~~our clone has no content verification~~ — **WRONG, corrected 2026-09-07**
+
+**The original finding said:** *"Our build's upload step has no content verification of any
+kind … That behaviour is not in `form-schema.ts` or `grant-wizard.tsx`."*
+
+**That is false, and it was reached by inference rather than by reading our source.** I
+compared the live capture against my memory of our build instead of opening the file.
+`apps/hub/src/lib/e-anudaan/doc-verification.ts` has existed since the August recon and
+implements the check in detail:
+
+- four verdict states — `pending`, `verified`, `review`, `invalid` — with the live glyph
+  and pill wording recorded from `eanudaan-user-dev` on 2026-08-22
+- per-verdict summary, bullet reasons, extracted key/value pairs and a confidence pill
+- `demoVerdictFor(state, expected)`, which writes the reasoning against the slot the
+  document sits in rather than a fixed example
+- a `Re-verify` action in `documents-checklist.tsx`
+- `uploadProgress()`, which fixed the live portal's own "10 / 7 uploaded" arithmetic
+
+**What is genuinely missing is narrower**, and is what the follow-up work implements:
+
+| Gap | Live | Ours before this change |
+|---|---|---|
+| Invalid documents block the forward control | Blocks: *"12 documents are not valid. Replace them"* | Warns and lets you continue: *"Continuing anyway — test mode"* |
+| The check being unavailable is its own state | *"Automatic check unavailable … a reviewer will verify it by hand"* (August) | No `unavailable` state in `VerdictState` |
+
+The correction matters because F6 as written would have sent someone to build a feature
+that already exists, and would have gone into the build-defects list as a missing
+capability rather than as two specific behaviours.
 
 ## F7 — THE CHANGE. Document verification was off in August; it is on now
 
