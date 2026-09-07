@@ -115,7 +115,11 @@ export { Textarea } from "./components/forms/textarea";
 export type { TextareaProps } from "./components/forms/textarea";
 export { Select } from "./components/forms/select";
 export type { SelectProps, SelectAppearance, SelectOption } from "./components/forms/select";
-export { PasswordStrengthMeter, strengthFromScore } from "./components/forms/password-strength-meter";
+export {
+  PasswordStrengthMeter,
+  strengthFromScore,
+  estimatePasswordScore,
+} from "./components/forms/password-strength-meter";
 export type { PasswordStrengthMeterProps, PasswordStrength } from "./components/forms/password-strength-meter";
 export { CaptchaField } from "./components/forms/captcha-field";
 export { BotCheck } from "./components/forms/bot-check";
@@ -750,6 +754,7 @@ export {
   PinFields,
   DarpanFields,
   IdentifierFields,
+  NewPasswordFields,
   OtpRequestFields,
   OtpVerifyFields,
 } from "./components/auth/credential-fields";
@@ -758,9 +763,14 @@ export type {
   PinFieldsProps,
   DarpanFieldsProps,
   IdentifierFieldsProps,
+  NewPasswordFieldsProps,
   OtpRequestFieldsProps,
   OtpVerifyFieldsProps,
 } from "./components/auth/credential-fields";
+export { AuthHelpLine } from "./components/auth/auth-parts";
+export type { AuthHelpLineProps } from "./components/auth/auth-parts";
+export { AuthResult } from "./components/auth/auth-result";
+export type { AuthResultProps } from "./components/auth/auth-result";
 
 // ---- Components: Accessibility -----------------------------------------------
 // CANONICAL: the official Government of India (MeitY / UX4G) accessibility widget.
@@ -912,3 +922,59 @@ export { WizardScreen } from "./components/templates/wizard-screen";
 export type { WizardScreenProps, WizardDraft } from "./components/templates/wizard-screen";
 export { OverviewScreen } from "./components/templates/overview-screen";
 export type { OverviewScreenProps } from "./components/templates/overview-screen";
+
+/* The remaining fourteen of the eighteen, completing the catalogue in
+   docs/design-system/screen-templates.md §2. Ordered as the citizen's journey
+   runs — choose, fill, attach, review, confirm — then the officer's, then the
+   surfaces either of them reaches sideways. */
+export { ChooserScreen } from "./components/templates/chooser-screen";
+export type { ChooserScreenProps, ChooserOption } from "./components/templates/chooser-screen";
+export { FormScreen } from "./components/templates/form-screen";
+export type { FormScreenProps } from "./components/templates/form-screen";
+export { ChecklistScreen } from "./components/templates/checklist-screen";
+export type {
+  ChecklistScreenProps,
+  ChecklistGroup,
+  ChecklistItem,
+  ChecklistItemState,
+} from "./components/templates/checklist-screen";
+export { ReviewScreen } from "./components/templates/review-screen";
+export type {
+  ReviewScreenProps,
+  ReviewSectionDef,
+  ReviewPair,
+} from "./components/templates/review-screen";
+export { ConfirmationScreen } from "./components/templates/confirmation-screen";
+export type {
+  ConfirmationScreenProps,
+  ConfirmationStep,
+  ConfirmationFact,
+} from "./components/templates/confirmation-screen";
+export { DecisionScreen } from "./components/templates/decision-screen";
+export type { DecisionScreenProps, DecisionOption } from "./components/templates/decision-screen";
+export { CatalogueScreen } from "./components/templates/catalogue-screen";
+export type { CatalogueScreenProps, CatalogueItem } from "./components/templates/catalogue-screen";
+export { SearchScreen } from "./components/templates/search-screen";
+export type { SearchScreenProps } from "./components/templates/search-screen";
+export { InboxScreen } from "./components/templates/inbox-screen";
+export type { InboxScreenProps } from "./components/templates/inbox-screen";
+export { SettingsScreen } from "./components/templates/settings-screen";
+export type {
+  SettingsScreenProps,
+  SettingsSection,
+  SettingRow,
+} from "./components/templates/settings-screen";
+export { ReportScreen } from "./components/templates/report-screen";
+export type {
+  ReportScreenProps,
+  ReportColumn,
+  ReportCriterion,
+} from "./components/templates/report-screen";
+export { GalleryScreen } from "./components/templates/gallery-screen";
+export type { GalleryScreenProps, GalleryItem } from "./components/templates/gallery-screen";
+export { StatusScreen } from "./components/templates/status-screen";
+export type { StatusScreenProps, StatusKind } from "./components/templates/status-screen";
+/* AuthScreen is PortalLoginTemplate under the name the decision table uses —
+   an alias, not a wrapper. See components/templates/auth-screen.ts. */
+export { AuthScreen } from "./components/templates/auth-screen";
+export type { AuthScreenProps } from "./components/templates/auth-screen";

@@ -90,7 +90,6 @@ const meta = {
     samaveshLogoSrc: { control: false },
     tabs: { control: false },
     children: { control: false },
-    onFooterLinkClick: { control: false },
   },
   parameters: { layout: "fullscreen" },
 } satisfies Meta<typeof PortalLoginShell>;
