@@ -159,21 +159,48 @@ Eight slides for three decisions. Each option gets its screen, its one-line stre
 its one-line limitations, and nothing else. There is no journey slide, no diagnosis slide
 and no separate evidence slide — the evidence sits beside the finding it proves.
 
-## 7. Slide plan — 8 slides
+## 7. Slide plan — 12 slides, one page per option
 
 | # | Slide | Ground | Carries |
 |---|---|---|---|
 | 1 | Title | dark | Subject, both dates, `141`, the design file it accompanies |
-| 2 | The finding | light | The coverage chart, the two readings the argument rests on, and the verdict |
-| 3 | Decision 01 · the homepage | light | Three options, three screens, trade-offs, B marked |
-| 4 | Decision 02 · the schemes page | light | Two options, two screens, trade-offs, B marked |
-| 5 | Decision 03 · the chatbot | light | One option, three chat states, trade-offs |
-| 6 | Sequencing | light | Phases 0–4, Phase 1 named as the constraint |
-| 7 | The decisions | dark | Three decisions, the recommendation, the decider |
-| 8 | Limits and sources | light | §0 in full, then the five sources |
+| 2 | Why a citizen cannot find a scheme today | light | The coverage chart, the two readings, the plain verdict |
+| 3 | Three decisions, six options | dark | The map: which options belong to which part of the site |
+| 4 | Home page · Option A — Explore User Personas | light | Full option record |
+| 5 | Home page · Option B — Find Schemes for You | light | Full option record |
+| 6 | Home page · Option C — Find Offerings for You | light | Full option record |
+| 7 | Schemes page · Option A — pictures with cards | light | Full option record |
+| 8 | Schemes page · Option B — filter panel and table | light | Full option record |
+| 9 | Chatbot · Option A — Samajik Sahayak | light | Full option record |
+| 10 | What has to be done first | light | Stages 0–4, Stage 1 named as the one that gates the rest |
+| 11 | Decisions required | dark | Three decisions, what is suggested, who decides |
+| 12 | What this review does not establish | light | The stated limits, then what was examined |
 
-**Only figures the review states appear as figures.** Nothing is rounded for tidiness and
-nothing is invented to make a layout balance.
+### The option record — the same seven parts on every option page
+
+A decision can be taken from one page without holding a second page in mind. Every option
+slide carries, in the same place every time:
+
+1. **A heading that locates it** — "Decision 1 of 3 · The Home Page · Option A of 3"
+2. **Status** — *On the site today* or *To be built*, and *Recommended* where it applies
+3. **The screen**, 6.6in wide, with a caption saying what is shown and what was cropped
+4. **What it is** — one plain sentence
+5. **What a citizen does** — the person's own actions, not the system's
+6. **Advantages** and **Limitations** — taken from the Figma annotations, in plain words
+7. **What the Department must do first** — the dependency, stated honestly
+8. **Our view** — a fixed box on the same line on every page, so the six can be scanned
+
+The verdict box sits at a **fixed y of 6.22in** and the generator **throws** if an option's
+record would push past it. A silent overflow is how an option loses its recommendation on
+the page that decides it.
+
+### Register
+
+Plain government English, written for a reader who is not a designer. "What a citizen
+does", not "user journey". "What the Department must do first", not "implementation
+dependencies". "Filling in the information", not "populating the data model". Stage, not
+Phase. No product-marketing voice and no clever headlines: the slide about the filter is
+called *Why a Citizen Cannot Find a Scheme Today*, not something more artful.
 
 ## 8. Build and verification
 
@@ -196,7 +223,7 @@ squashed, a chart label colliding with its bar, a gap that is neither 0.32in nor
 
 ## 9. Definition of done
 
-- [ ] 8 slides, built to §7, at 13.333 × 7.5in
+- [ ] 12 slides, built to §7, at 13.333 × 7.5in
 - [ ] Every figure traceable to the source document, with its date
 - [ ] The limits slide present and unhedged
 - [ ] Three decisions named on slide 16, each with a decider and a date
@@ -207,7 +234,8 @@ squashed, a chart label colliding with its bar, a gap that is neither 0.32in nor
 - [ ] No tricolour motif, no accent stripes, no rules under titles
 - [ ] `validate.py` clean
 - [ ] Every text run passes WCAG 2.2 AA against the ground it actually sits on
-- [ ] All 8 slides inspected as images, rendered in real Noto Sans
+- [ ] All 12 slides inspected as images, rendered in real Noto Sans
+- [ ] Every option page carries all seven parts of the record, in the same places
 - [ ] PDF companion produced from the final `.pptx`
 - [ ] Unconfirmed items from §4 carried into the summary, not silently dropped
 
