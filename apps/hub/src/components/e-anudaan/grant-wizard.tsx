@@ -53,7 +53,8 @@ import {
   type StepDef,
   type WizardDef,
 } from "@/lib/e-anudaan/form-schema";
-import { demoVerdictFor, invalidDocsWarning, type UploadedDoc } from "@/lib/e-anudaan/doc-verification";
+import { demoVerdictFor, uploadGate, type UploadedDoc } from "@/lib/e-anudaan/doc-verification";
+import { DEMO_FILL_EVENT, type DemoFillDetail } from "@/lib/e-anudaan/demo-scenarios";
 import { CostNormsPanel } from "./cost-norms-panel";
 import { DocumentsChecklist } from "./documents-checklist";
 
@@ -128,6 +129,34 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
     () => readDraft().docs ?? (def ? seedDocuments(def) : {}),
   );
   const errorRef = React.useRef<HTMLDivElement>(null);
+
+  /**
+   * The demo dock's Fill tab, applied live.
+   *
+   * A window event rather than a storage read: `values` and `docs` are seeded in lazy state
+   * initialisers, which run once, so a panel that only wrote sessionStorage would appear to do
+   * nothing until the page was reloaded. The listener also clears any standing validation
+   * errors — leaving the previous state's error summary above freshly filled answers would
+   * describe a form that no longer exists.
+   *
+   * It sets DATA only. Which step to land on is the panel's business and it routes there
+   * itself: `goto` is declared below the `!def` early return, so an effect up here cannot
+   * call it without reading a stale binding — the thing react-hooks/immutability flags. The
+   * split is the better design anyway. The wizard owns what the answers are; the caller owns
+   * where the reader should be standing to see them.
+   */
+  React.useEffect(() => {
+    const onFill = (e: Event) => {
+      const detail = (e as CustomEvent<DemoFillDetail>).detail;
+      if (!def || detail?.scheme !== def.code) return;
+      setValues(detail.values);
+      setDocs(detail.docs);
+      setErrors({});
+      setDeclared(false);
+    };
+    window.addEventListener(DEMO_FILL_EVENT, onFill);
+    return () => window.removeEventListener(DEMO_FILL_EVENT, onFill);
+  });
 
   // Persist the draft on every change, so a step-1 → step-2 → review hop keeps the answers.
   React.useEffect(() => {
@@ -225,7 +254,12 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
     router.push(`${base}/success`);
   };
 
-  const invalidCount = Object.values(docs).filter((d) => d.verdict.state === "invalid").length;
+  // The upload step's own gate. Only the documents step can be blocked by it — an ordinary
+  // field step is validated in `next()`, which can reject and say what is wrong, and a form
+  // whose button is simply dark is worse than one that answers back.
+  const gate = isDocs
+    ? uploadGate(visibleDocuments(def, values), docs)
+    : { blocked: false, reason: null };
 
   return (
     <div className="mx-auto max-w-4xl space-y-5">
@@ -268,22 +302,19 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
         onNext={next}
         onSubmit={submit}
         nextLabel={current.nextLabel ?? "Next →"}
+        nextDisabled={gate.blocked}
+        nextBlockedReason={gate.reason ?? undefined}
         submitLabel="Submit Application"
         error={errorSummary(current, errors)}
         errorRef={errorRef}
       >
         {isDocs ? (
-          <>
-            <DocumentsChecklist
-              documents={visibleDocuments(def, values)}
-              note={def.documentsNote}
-              uploaded={docs}
-              onChange={setDocs}
-            />
-            {invalidCount > 0 && (
-              <p className="mt-3 text-body-2 text-status-warning">{invalidDocsWarning(invalidCount)}</p>
-            )}
-          </>
+          <DocumentsChecklist
+            documents={visibleDocuments(def, values)}
+            note={def.documentsNote}
+            uploaded={docs}
+            onChange={setDocs}
+          />
         ) : isReview ? (
           <ReviewStep def={def} values={values} docs={docs} declared={declared} onDeclare={setDeclared} onEdit={goto} />
         ) : (
