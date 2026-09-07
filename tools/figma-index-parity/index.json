@@ -2,8 +2,8 @@
   "file": "3FF5l0SMNIwdpZrKkeyPTm",
   "indexPage": "56757:725",
   "indexFrame": "56757:726",
-  "capturedOn": "2026-09-06",
-  "statLine": "86 pages · 216 components · counted 6 September 2026",
+  "capturedOn": "2026-09-07",
+  "statLine": "87 pages · 216 components · counted 7 September 2026",
   "statuses": [
     "Ready",
     "Published",
@@ -123,6 +123,7 @@
     "Footer",
     "Sidebar",
     "Portal Login Template",
+    "Screen Templates",
     "Roadmap"
   ],
   "groups": [
@@ -606,6 +607,17 @@
         },
         {
           "name": "Portal Login Template",
+          "status": "Ready",
+          "linked": true
+        }
+      ]
+    },
+    {
+      "name": "Screen Templates",
+      "stated": 1,
+      "cards": [
+        {
+          "name": "Screen Templates",
           "status": "Ready",
           "linked": true
         }
