@@ -92,7 +92,6 @@ export interface PortalLoginTemplateProps {
   /** Error message to display inside the alert banner */
   error?: string | null;
   /** Called when a footer link is clicked */
-  onFooterLinkClick?: (link: "privacy" | "contact" | "about") => void;
   /**
    * Force the active role, overriding both the URL and `config.defaultRoleId`.
    *
@@ -158,7 +157,6 @@ export function PortalLoginTemplate({
   onSubmit,
   loading = false,
   error = null,
-  onFooterLinkClick,
   roleId,
   onRoleChange,
   deepLinkRole = true,
@@ -636,7 +634,6 @@ export function PortalLoginTemplate({
       portalPickerOpen={pickerOpen}
       tabs={tabs}
       extraContent={config.extraContent}
-      onFooterLinkClick={onFooterLinkClick}
     >
       <AuthFormCard
         headingLevel={headingLevel}

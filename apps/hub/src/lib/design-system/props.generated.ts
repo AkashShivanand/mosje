@@ -8509,12 +8509,6 @@ export const GENERATED_PROPS = {
         "description": "Open the change-portal picker instead of navigating. The handoff's `E-Anudaan | Portal Switch` draws this as a SIDE SHEET over the login page — \"Choose a portal to login\" — not as a trip to the hub root. Pass a handler and the control becomes a `<button>` that opens it; leave it off and it stays the `changeHref` link, so every existing consumer is unchanged. A button, not a link, when it opens a panel: a control that does not navigate must not offer middle-click or \"copy link address\", and it owes `aria-expanded` / `aria-haspopup`, which an anchor cannot honestly carry."
       },
       {
-        "name": "onFooterLinkClick",
-        "type": "(link: \"privacy\" | \"contact\" | \"about\") => void",
-        "required": false,
-        "description": "Called when a footer link (Privacy Policy / Contact Us / About Us) is clicked"
-      },
-      {
         "name": "portalPickerOpen",
         "type": "boolean",
         "required": false,
@@ -8560,12 +8554,6 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "Loading state during form submission"
-      },
-      {
-        "name": "onFooterLinkClick",
-        "type": "(link: \"privacy\" | \"contact\" | \"about\") => void",
-        "required": false,
-        "description": "Called when a footer link is clicked"
       },
       {
         "name": "onRoleChange",

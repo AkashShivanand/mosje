@@ -149,7 +149,6 @@ export default function PortalLoginShellPage(): React.JSX.Element {
     { label: "Admin", href: "/portals/nmba/login?role=admin", active: true },
     { label: "Patient Monitoring", href: "/portals/nmba/login?role=monitoring", active: false },
   ]}
-  onFooterLinkClick={(link) => router.push(FOOTER_ROUTES[link])}
 >
   {/* heading, fields, submit */}
 </PortalLoginShell>`}</CodeBlock>

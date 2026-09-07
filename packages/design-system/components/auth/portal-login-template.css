@@ -3,6 +3,61 @@
 @layer theme, base, components, utilities;
 
 @layer components {
+  /* ── Which column scrolls ─────────────────────────────────────────────────
+     The design is a FIXED 1440 x 960 canvas on which everything fits, so it
+     never had to answer this. A real browser does: at 1440 x 640 the login page
+     is 973 tall, and until 7 Sep 2026 the whole page scrolled — hero, Signing
+     Into bar and all — which took the one line telling a citizen WHICH portal
+     they are signing into off the screen the moment they reached for the
+     password field.
+
+     Nothing was unreachable, and it is worth being exact about that: measured at
+     1440x800, 1440x640, 1280x600 and 1024x560, every page scrolled and the
+     submit, consent and footer were all reachable at every size. This is not a
+     repair of something broken. It makes the column that has content scroll, and
+     leaves the column that is identity fixed — which is what the fixed canvas
+     shows at every size, and what the reader expects when only half the screen
+     is changing.
+
+     Desktop only. Below `lg` the hero column is not rendered at all, so there is
+     nothing to hold still and the page scrolls the ordinary way — which is also
+     the right answer on a phone, where an inner scroll region inside a page that
+     also scrolls is a trap.
+
+     `100dvh`, not `100vh`: on a phone browser `vh` includes the chrome that
+     retracts as you scroll, and this is the one place a wrong viewport unit
+     would clip the submit button rather than merely shift it. The `100vh` line
+     above it is the fallback for anything without `dvh`. */
+  @media (min-width: 1024px) {
+    /* The SHELL is exactly one viewport tall and the row takes what the masthead
+       leaves — `flex: 1` plus `min-block-size: 0`, which is the pair that lets a
+       flex child be shorter than its content and therefore scroll. No header
+       height is subtracted anywhere: an early version of this did
+       `calc(100dvh - var(--sa-plogin-header-h))` against a variable nothing set,
+       which is a magic number wearing a token's clothes. The masthead's height
+       changes with the accessibility bar and the brand lines; the layout must
+       not need to know it. */
+    .ds-plogin__shell {
+      block-size: 100vh;
+      block-size: 100dvh;
+    }
+
+    .ds-plogin__body {
+      flex: 1 1 auto;
+      min-block-size: 0;
+    }
+
+    .ds-plogin__panel {
+      overflow-y: auto;
+      /* A scroll container needs a name and a tab stop of its own for a keyboard
+         user who is not tabbing through the form — but this one CONTAINS the
+         form, so every reason to scroll it is reachable by Tab already. No
+         `tabindex` here: adding one would put an empty stop before the first
+         field on every login in the estate. */
+      overscroll-behavior: contain;
+    }
+  }
+
   /* ── The form column ──────────────────────────────────────────────────────
      Four tokens exist for this layout — `--sa-layout-login-{hero,panel}-width`,
      `--sa-layout-login-panel-gutter` and `--sa-layout-login-content-width` — and
@@ -111,9 +166,38 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /* The state matrix is `Tabs / Tab`'s own, Indicator=Pill Size=M — read from
+     the set on 7 Sep 2026 rather than approximated:
+
+       Default   no fill                    text/neutral/subtle
+       Hover     bg/neutral/subtle          text/neutral/base
+       Selected  bg/brand/primary/bolder    on/bg/brand/primary/bolder
+
+     Two of the three were wrong here. Selected used `boldest` (#001734) where
+     the master binds `bolder` (#003366) — one rung too dark, and the difference
+     is plainly visible beside the hero, which uses `bolder` correctly. And
+     there was NO hover rule at all, so the unselected role gave a citizen no
+     feedback that it could be clicked.
+
+     Both are consequences of these tabs being hand-rolled anchors rather than
+     the `Tabs` component (see portal-login-shell.tsx for why they must stay
+     anchors). Hand-rolled means the state matrix has to be copied, and a copy
+     drifts. It is copied here, from the source, with the tokens named. */
+  .ds-plogin__roletab:hover {
+    background-color: var(--sa-bg-neutral-subtle);
+    color: var(--sa-text-neutral-base);
+  }
+
   .ds-plogin__roletab[aria-selected="true"] {
-    background-color: var(--sa-bg-brand-primary-boldest);
-    color: var(--sa-on-bg-brand-primary-boldest);
+    background-color: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-bolder);
+  }
+
+  /* The selected tab keeps its ground on hover — hovering the tab you are
+     already on must not repaint it as an unselected one. */
+  .ds-plogin__roletab[aria-selected="true"]:hover {
+    background-color: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-bolder);
   }
 
   .ds-plogin__roletab:focus-visible {
