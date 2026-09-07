@@ -324,8 +324,9 @@ export default async function OrganisationDetailPage({
           { label: org.title },
         ],
     lastUpdated: getContentSyncedDate(),
-    // The campaign call to action the source prints ABOVE the page title.
-    beforeHero:
+    // The campaign call to action the source prints above the page title —
+    // under the breadcrumb, which stays the first thing on every page.
+    afterBreadcrumb:
       !isSubPage && detail?.joinBanner != null ? (
         <OrganisationJoinBanner banner={detail.joinBanner} />
       ) : undefined,
