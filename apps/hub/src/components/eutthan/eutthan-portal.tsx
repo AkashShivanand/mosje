@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { type Role } from "@/lib/eutthan/portal-data";
 import { normalizePath, DEMO_CREDENTIALS, portalLink } from "./eutthan-shared";
 import { LoginPage } from "./eutthan-login";
-import { EutthanHeader, Sidebar } from "./eutthan-shell";
+import { EutthanHeader, eutthanNavGroups, EUTTHAN_IDENTITY } from "./eutthan-shell";
 import { AdminDashboard, MinistryDashboard } from "./eutthan-dashboard";
 import { adminNavItems, ministryNavItems } from "@/lib/eutthan/portal-data";
 
@@ -33,7 +33,7 @@ const FormPage = dynamic(() =>
 );
 
 import { tableScreens } from "@/lib/eutthan/portal-data";
-import { Icon } from "@mosje/design-system";
+import { Icon, PortalPage } from "@mosje/design-system";
 
 export default function EutthanPortal() {
   const pathname = usePathname();
@@ -127,18 +127,25 @@ export default function EutthanPortal() {
   }
 
   return (
-    <div className="app-shell">
-      <EutthanHeader
-        name={userName}
-        roleLabel={roleLabel}
-        onLogout={handleLogout}
-      />
-      <div className="workspace">
-        <Sidebar navItems={navItems} />
-        <main id="eu-main-content" className="content" tabIndex={-1}>
-          {renderContent()}
-        </main>
-      </div>
-    </div>
+    <PortalPage
+      portal="eutthan-admin"
+      role="officer"
+      pathname={pathname}
+      identity={EUTTHAN_IDENTITY}
+      nav={eutthanNavGroups(navItems)}
+      /* The masthead's skipTo points here, so the id has to survive the move. */
+      mainId="eu-main-content"
+      header={(nav) => (
+        <EutthanHeader
+          name={userName}
+          roleLabel={roleLabel}
+          onLogout={handleLogout}
+          onToggleNav={nav.toggle}
+          navExpanded={nav.open}
+        />
+      )}
+    >
+      {renderContent()}
+    </PortalPage>
   );
 }

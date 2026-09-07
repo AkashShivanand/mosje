@@ -1,6 +1,6 @@
 "use client";
 
-import { DataTable, type DataTableColumn } from "@mosje/design-system";
+import { WorklistScreen, type WorklistColumn } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ROLES } from "@/lib/e-anudaan/roles";
 import { formatDate } from "@/lib/e-anudaan/selectors";
@@ -19,13 +19,15 @@ interface AuditRow {
  * Audit Trail — JS grades only on the live portal. Its columns are the source of the
  * workflow's action vocabulary (INVENTORY §12).
  */
-const COLUMNS: DataTableColumn<AuditRow>[] = [
-  { key: "at", header: "Timestamp", render: (r) => formatDate(r.at) },
-  { key: "application", header: "Application" },
-  { key: "user", header: "User" },
-  { key: "role", header: "Role" },
-  { key: "action", header: "Action" },
-  { key: "remarks", header: "Remarks" },
+const COLUMNS: WorklistColumn<AuditRow>[] = [
+  { key: "at", header: "Timestamp", priority: 2, render: (r) => formatDate(r.at) },
+  /* The application is the row's name: an auditor scans this log looking for
+     what happened to a given application, not for who was on duty. */
+  { key: "application", header: "Application", priority: 1 },
+  { key: "user", header: "User", priority: 2 },
+  { key: "role", header: "Role", priority: 3 },
+  { key: "action", header: "Action", priority: 2 },
+  { key: "remarks", header: "Remarks", priority: 3 },
 ];
 
 export default function AuditTrailPage() {
@@ -44,11 +46,26 @@ export default function AuditTrailPage() {
     .sort((a, b) => b.at.localeCompare(a.at));
 
   return (
-    <div className="space-y-5">
-      <h1 className="text-headline-1 text-ink">Audit Trail</h1>
-      <section className="rounded-xl border border-line bg-surface p-4 lg:p-5">
-        <DataTable columns={COLUMNS as unknown as DataTableColumn<Record<string, unknown>>[]} data={rows as unknown as Record<string, unknown>[]} total={rows.length} caption="Audit trail" />
-      </section>
-    </div>
+    <WorklistScreen
+      title="Audit Trail"
+      columns={COLUMNS}
+      rows={rows}
+      getRowId={(r) => r.id}
+      noun="entry"
+      pluralNoun="entries"
+      copy={{
+        idleTitle: "Search the Register",
+        loadingLabel: "Loading the audit trail",
+        errorTitle: "This Information Could Not Be Loaded",
+        errorDescription: "The service did not respond. Please try again.",
+        retryLabel: "Try again",
+        /* An audit log with no entries is a real answer, not a broken panel —
+           nothing has been done to any application yet. */
+        emptyTitle: "No Activity Recorded",
+        emptyDescription: "No action has been taken on any application under this scheme.",
+        filteredTitle: "No Entries Match Your Filters",
+        clearFiltersLabel: "Clear filters",
+      }}
+    />
   );
 }

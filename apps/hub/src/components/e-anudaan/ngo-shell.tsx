@@ -2,16 +2,29 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { SidebarNav, SiteHeader, OrgLogo } from "@mosje/design-system";
+import { OrgLogo, PortalPage, SiteHeader } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ROLES } from "@/lib/e-anudaan/roles";
 
-/** Authenticated shell for the NGO applicant. Bounces to /sign-in without an NGO session. */
+/**
+ * Authenticated shell for the NGO applicant. Bounces to /sign-in without an NGO session.
+ *
+ * The chrome is `PortalPage` — the guard is the only thing left here, which is
+ * the division `AppShell` and `PortalPage` both ask for: presentation in the
+ * template, session in a thin wrapper around it.
+ *
+ * **This shell carried the mobile-navigation defect `PortalPage` exists to
+ * remove.** Its masthead button toggled `collapsed`, the DESKTOP rail's state,
+ * while the rail itself was `hidden md:flex` — so below 768px the button
+ * collapsed a column that was not on screen and an applicant on a phone had no
+ * way to reach another page. `PortalPage` reads the viewport at click time and
+ * gives the one button its two meanings: collapse the rail above the anchor,
+ * open the drawer below it.
+ */
 export function NgoShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { state, hydrated, logout } = useEAnudaan();
-  const [collapsed, setCollapsed] = React.useState(false);
 
   const isNgo = state.session === "ngo";
   const role = ROLES.ngo;
@@ -23,48 +36,50 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
   if (!hydrated || !isNgo) return null;
 
   return (
-    <div className="min-h-screen">
-      <SiteHeader
-        homeHref="/portals/e-anudaan"
-        variant="portal"
-        emblemSrc="/images/emblem.svg"
-        brandLines={{
-          org: "Government of India",
-          ministry: "Ministry of Social Justice & Empowerment",
-          department: "Department of Social Justice & Empowerment",
-        }}
-        beta
-        onToggleNav={() => setCollapsed(!collapsed)}
-        navExpanded={!collapsed}
-        account={{
-          name: role.personName,
-          role: "NGO Applicant",
-        }}
-        accountMenu={[
-          {
-            label: "Sign out",
-            danger: true,
-            onSelect: () => {
-              logout();
-              router.push("/portals/e-anudaan/login?role=ngo");
+    <PortalPage
+      portal="e-anudaan"
+      /* The applicant is an organisation, not a citizen: E-Anudaan's NGO signs
+         in on behalf of a registered society, and the rail it should see is the
+         organisation's. */
+      role="organisation"
+      pathname={pathname}
+      identity={{
+        name: "E-Anudaan",
+        expansion: "Grant-in-Aid Management",
+        mark: <OrgLogo path="/portals/e-anudaan" />,
+        href: "/portals/e-anudaan/ngo",
+      }}
+      nav={[{ items: role.nav }]}
+      header={(nav) => (
+        <SiteHeader
+          homeHref="/portals/e-anudaan"
+          variant="portal"
+          emblemSrc="/images/emblem.svg"
+          brandLines={{
+            org: "Government of India",
+            ministry: "Ministry of Social Justice & Empowerment",
+            department: "Department of Social Justice & Empowerment",
+          }}
+          beta
+          /* The render prop is the fix: the masthead drives the rail through
+             PortalPage's own state rather than a boolean this file keeps. */
+          onToggleNav={nav.toggle}
+          navExpanded={nav.open}
+          account={{ name: role.personName, role: "NGO Applicant" }}
+          accountMenu={[
+            {
+              label: "Sign out",
+              danger: true,
+              onSelect: () => {
+                logout();
+                router.push("/portals/e-anudaan/login?role=ngo");
+              },
             },
-          },
-        ]}
-      />
-
-      <div className="flex">
-        <SidebarNav
-          identity={{ name: "E-Anudaan", expansion: "Grant-in-Aid Management", mark: <OrgLogo path="/portals/e-anudaan" />, href: "/portals/e-anudaan/ngo" }}
-          groups={[{ items: role.nav }]}
-          pathname={pathname}
-          collapsed={collapsed}
-          onCollapsedChange={setCollapsed}
-          className="hidden shrink-0 md:flex md:flex-col"
+          ]}
         />
-        <main id="main" className="min-w-0 flex-1 bg-surface-muted px-4 py-6 lg:px-8">
-          {children}
-        </main>
-      </div>
-    </div>
+      )}
+    >
+      {children}
+    </PortalPage>
   );
 }

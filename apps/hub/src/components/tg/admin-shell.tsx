@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { SidebarNav, Icon, type AccountMenuItem, OrgLogo } from "@mosje/design-system";
+import { Icon, OrgLogo, PortalPage, type AccountMenuItem } from "@mosje/design-system";
 import { TgHeader } from "./gov-chrome";
 import { useTg } from "@/lib/tg/store/store";
 import { ROLES } from "@/lib/tg/roles";
@@ -11,12 +11,20 @@ import { ROLES } from "@/lib/tg/roles";
  * Shared admin layout shell for the 4 authenticated TG officer roles. Guards
  * access: with no mock session (or a citizen session) it bounces to /admin/login.
  * The signed-in role drives the sidebar nav and the user chip.
+ *
+ * The chrome is `PortalPage`; what is left here is the guard and the role
+ * lookup, which is the division that template asks for.
+ *
+ * **The masthead button used to do nothing on a phone.** It toggled `collapsed`
+ * — the desktop rail's state — while the rail carried `hidden md:flex`, so below
+ * 768px it collapsed a column that was not on screen and an officer had no way
+ * to reach another page. `PortalPage` reads the viewport at click time and gives
+ * the button its two meanings.
  */
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
   const { state, hydrated, logout } = useTg();
-  const [collapsed, setCollapsed] = React.useState(false);
 
   const isAdmin = state.session !== null && state.session !== "citizen";
   const role = isAdmin ? ROLES[state.session as keyof typeof ROLES] : null;
@@ -40,29 +48,29 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   ];
 
   return (
-    <div className="min-h-screen">
-      <TgHeader
-        onToggleNav={() => setCollapsed(!collapsed)}
-        navExpanded={!collapsed}
-        account={{
-          name: role.label,
-          role: "Officer",
-        }}
-        accountMenu={accountMenu}
-      />
-      <div className="flex">
-        <SidebarNav
-          identity={{ name: "TG Portal", expansion: "National Portal for Transgender Persons", mark: <OrgLogo path="/portals/tg" />, href: "/portals/tg/admin" }}
-          groups={[{ items: role.nav }]}
-          pathname={pathname}
-          collapsed={collapsed}
-          onCollapsedChange={setCollapsed}
-          className="hidden shrink-0 md:flex md:flex-col"
+    <PortalPage
+      portal="tg"
+      /* Every one of the four signed-in roles here is a departmental officer;
+         the citizen session is bounced above and never reaches this shell. */
+      role="officer"
+      pathname={pathname}
+      identity={{
+        name: "TG Portal",
+        expansion: "National Portal for Transgender Persons",
+        mark: <OrgLogo path="/portals/tg" />,
+        href: "/portals/tg/admin",
+      }}
+      nav={[{ items: role.nav }]}
+      header={(nav) => (
+        <TgHeader
+          onToggleNav={nav.toggle}
+          navExpanded={nav.open}
+          account={{ name: role.label, role: "Officer" }}
+          accountMenu={accountMenu}
         />
-        <main id="main" className="min-w-0 flex-1 bg-surface-muted px-6 py-7 lg:px-10">
-          {children}
-        </main>
-      </div>
-    </div>
+      )}
+    >
+      {children}
+    </PortalPage>
   );
 }
