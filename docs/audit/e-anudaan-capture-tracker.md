@@ -1,21 +1,26 @@
 # e-Anudaan (UAT) — Capture & Audit Tracker
 
-**Last verified:** 2026-09-03 · **Bundle:** `tools/design-audit/projects/e-anudaan/out/capture-bundle.json`
-**Engine status:** merged to `main` via PR #258; one later commit still on the branch.
-**Verified by reading the bundle and the files on disk, not from the run logs.**
+**Last verified:** 2026-09-07 · **Bundle:** `tools/design-audit/projects/e-anudaan/out/capture-bundle.json`
+**Every number below was re-derived from the bundle and the filesystem, not carried forward.**
 
-Rerun the verification behind every number here with:
+Reproduce the headline figures with:
 
 ```bash
 cd tools/design-audit
 python3 - <<'PY'
 import json, collections
 b = json.load(open("projects/e-anudaan/out/capture-bundle.json"))
-print(len(b["screens"]), "screens,", len({s["role"] for s in b["screens"]}), "roles")
-print(collections.Counter(s["reachedBy"] for s in b["screens"]
-                          if str(s["reachedBy"]).startswith("flow:")))
+s = b["screens"]
+print(len(s), "screens,", len({x["role"] for x in s}), "roles")
+print(collections.Counter("flow" if str(x.get("reachedBy")).startswith("flow") else "nav" for x in s))
+print("decision screens:", sum(1 for x in s if x["slug"].endswith("-DECISION")))
 PY
 ```
+
+> **The previous version of this file overstated the corpus.** It claimed 229 screen states
+> and 43 wizard states against a bundle holding 202 and 16. The 229 counted two slug
+> generations at once — the pre- and post-`87e4d725` naming — as though they were distinct
+> screens. Numbers here are reproducible by the snippet above or they do not belong here.
 
 ---
 
@@ -23,172 +28,139 @@ PY
 
 | | Count |
 |---|---|
-| Screen states in the bundle | **229** |
+| Screen states in the bundle | **296** (was 202) |
 | — reached by navigation crawl | 186 |
-| — reached by walking a wizard | 43 |
+| — reached by a driven flow | **110** (was 16) |
 | Roles captured | **25 of 25** (24 officer + 1 applicant) |
-| Hosts with a recorded build fingerprint | 25 |
+| Hosts with a recorded build fingerprint | 25 of 25 |
 | Screens missing a screenshot hash | **0** |
-| Screenshots + element files on disk | 268 pairs (153 MB) |
-| Applications submitted end to end | **0 of 3** |
-| Conditional branches captured | **1 of 4 controllers**, one branch of that one |
+| Screenshot + element pairs on disk | 320 (195 MB) |
+| **Officer decision screens** | **21** (was 0) |
+| Wizard branches walked separately | **4** (was 0) |
+| Applications submitted end to end | **0 of 3** — see §4 |
 
----
+## 2. What this pass added
 
-## 2. Roles — all 25 captured
-
-| Family | Roles | Screens | Status |
-|---|---|---|---|
-| Applicant | `ngo-user` | 49 | ⚠️ Nav complete; wizards captured on **one branch only** |
-| AVYAY — Programme Division | `avyay-pd-{aso,so,us,ds,js}` | 8–9 each | ✅ Sidebar routes complete |
-| AVYAY — Integrated Finance | `avyay-ifd-{aso,so,us,ds,js}` | 6–7 each | ✅ Sidebar routes complete |
-| AVYAY — PMU & Director | `avyay-pmu-inspections`, `avyay-programme-director` | 6 each | ✅ Sidebar routes complete |
-| SHRESHTA M2 — Programme Division | `sm2-pd-{aso,so,us,ds,js}` | 9–11 each | ✅ Sidebar routes complete |
-| SHRESHTA M2 — Integrated Finance | `sm2-ifd-{aso,so,us,ds,js}` | 7–8 each | ✅ Sidebar routes complete |
-| SHRESHTA M2 — PMU & Director | `sm2-pmu-field-officer`, `sm2-programme-director` | 4–5 each | ✅ Sidebar routes complete |
-
-**Credentials** for all 25 are in `projects/e-anudaan/secrets.json` (gitignored, mode 600), taken
-from the sheet. The applicant login needs a captcha; the engine reads it from the DOM and answers
-it automatically — see B1 in the audit for why that is possible at all.
-
----
-
-## 3. Wizards — where each one actually stopped
-
-Each scheme puts every form section behind `/step-1`, uploads behind `/step-2`, and the end at
-`/review`. The number of internal sections differs per scheme, which is why the walker reads
-"Step N of M" off the page rather than being told.
-
-| Scheme | Steps | Captured | Reached | Outstanding |
-|---|---|---|---|---|
-| **NAPDDR** | 10 | S01–S09 | Document Uploads (9 of 10) | Review & Submit, submission |
-| **AVYAY** | 7 | S01–S06 | Document Uploads (6 of 7) | Review & Submit, submission |
-| **SHRESHTA_M2** | 6 | S01–S05 | Document Uploads (5 of 6) | Review & Submit, submission |
-
-Two states are captured per step — `-ARRIVED` (as the page was found) and `-FILLED` (after the
-walker filled and uploaded) — plus one `-VALIDATION-ERRORS` per scheme, taken by submitting the
-first step empty.
-
-### One branch only — the gap the first version of this tracker hid
-
-All 43 wizard screens are the **renewal** path. The resumed draft had `case_type` set to
-*"Ongoing / Renewal of an existing project"*, and `fill_all` only fills controls that are empty, so
-it never flipped it. Across the four schemes there are **four branch controllers**
-(`AVYAY:case_type`, `SMILE:case_type`, `SMILE:website_available`, `SMILE:fcra_80g`) governing 7
-conditional fields and 8 conditional documents.
-
-Uncaptured: AVYAY's new-project path — its Justification step, its 11-document checklist against
-renewal's 9, and the step-1 state where defect **D2** blocks the applicant. See
-`e-anudaan-build-defects.md`.
-
-**No capture of this portal is complete until the walker can set a controlling field and walk
-again.**
-
-### The audited deployment is not this source
-
-`eanudaan-user-uat.mosje.in` is behind `main`: AVYAY renders 7 steps where the source declares 8,
-and SHRESHTA_M2 counts 7 documents where the source declares 20. NAPDDR matches at 10. It is not a
-clean snapshot of any single commit — details in `e-anudaan-build-defects.md`.
-
-### Why all three stop at the same step
-
-Not a portal fault and not a timeout. The upload step disables "Next →" while it verifies the
-files, and says so: *"Checking 12 documents… this takes a few seconds. Next opens as soon as the
-check completes."* An earlier run replaced the twelve real documents with a **416-byte fixture
-PDF**, and that fixture appears not to pass the check — so the gate the portal opens for a valid
-document never opens for ours.
-
-**The fix is a real PDF, not a code change.** `projects/e-anudaan/fixtures/sample-document.pdf`
-needs replacing with a genuine, readable document of a few hundred KB. Until then the walk will
-keep stopping in the same place, correctly.
-
----
-
-## 4. Engine work — done
-
-Each row was found by a live run, not by review, and each carries a regression test.
-
-| # | Defect | Effect if unfixed | Commit |
-|---|---|---|---|
-| 1 | Wizard steps numbered by hand in the manifest | The review page was filed under a document page's slug, with real hashes, for the whole 14-day staleness window | `1634c82a` |
-| 2 | Freshness never checked the manifest | Adding three flows produced `reuse-all` — no browser launched, the flows silently never ran | `1634c82a` |
-| 3 | Flow-state absolute URLs carried into the route crawl | Navigated to `https://host` + `https://host/path`; 7 DNS failures per run | `60f53b64` |
-| 4 | A flow exception aborted the whole role | `ROLE ABORTED` discarded the two flows that had not started | `3cff282b` |
-| 5 | `captureValidation` reload demanded networkidle | Raised on an SPA holding a connection open — the trigger for #4 | `3cff282b` |
-| 6 | Review page matched on `review\|declar\|submit` | "Verification & Declaration" (step 8 of 10) read as the end; all three schemes stopped 3 steps early | `0cfc22fb` |
-| 7 | Re-uploaded an already-complete document set | Replaced 12 verified documents with a fixture, putting a ready step back into verification | `62746ee9` |
-| 8 | Clicked the forward control without checking it was enabled | Burned Playwright's 30s timeout and reported a working portal as blocked | `62746ee9` |
-| 9 | Step-title boilerplate carried into slugs | `…-PREPAREDNESS-FIELDS-MARKED-ARE`, truncated mid-word | pending commit |
-
-**Tests: 80 → 112.** Every fix above names, in its test docstring, the failure it gates.
-
----
-
-## 5. Audit — done
-
-`docs/audit/e-anudaan-uat-design-audit.md`
-
-| Severity | IDs | Count |
-|---|---|---|
-| 🔴 Blocker | B1, B2 | 2 |
-| 🟠 Major | M1, M1a, M1b, M2–M10, m1, O1–O5 | 19 |
-| 🟡 Minor | m2–m7 | 6 |
-| ⚪ Nit | n1–n5 | 5 |
-
-Two claims in the first draft were **corrected**, both recorded in the document itself:
-
-| Claim | Correction |
+| | |
 |---|---|
-| "1,575 interactive elements under 24px" | Counted every element, not pointer targets. Real figures: 614/1,449 applicant, 1,469/4,985 officer — and they are four repeated accessibility-bar controls plus real product actions. Re-graded to major. |
-| "The upload step disables Next with no explanation" | The opposite. All three schemes explain the wait and its end condition. It is the best-behaved control in the wizard. |
+| Officer **decision** screens — the sanctioning desk | **21** |
+| Officer worklists captured as flow entry states | 22 |
+| Wizard states on an explicitly named branch | 58 |
 
----
+The decision screen lives at `/dashboard/{scheme}/{grade}/review/{id}`, **a route in no
+role's navigable route list**. Twenty-five roles' worth of crawling since August produced
+24 worklists and zero decision screens because the only way in is to click a table row.
+It carries eleven sections the corpus had no example of, including Component-wise Cost
+Sheet, Previously Allocated Funds, Sanction & Disbursement, Show Cause Notices and Audit
+Trail. The available action is grade-specific — ASO offers only `Forward to SO` — which is
+why all five grades of both ladders in both schemes are captured rather than a sample.
 
-## 6. Outstanding
+**No officer decision was fired.** All 21 flows carry `allowSubmit: false`; the engine's
+`DESTRUCTIVE` pattern refuses forward/approve/reject/sanction/concur/return/query while
+that gate is shut, and every capture is logged directly beneath a `submission BLOCKED`
+line. A submission is additive; an officer decision mutates a case the other 23
+demonstration accounts are staged against.
 
-| # | Item | Blocked on | Effort |
-|---|---|---|---|
-| 1 | Three applications submitted end to end | A valid fixture PDF that passes automatic verification | Small — replace one file, re-run |
-| 2 | Review & Submit captured for all three schemes | Same as #1 | Same run |
-| 3 | **The officer decision screen** — where grants are forwarded, returned, queried, sanctioned and rejected | A flow that opens a worklist row; not yet written | Medium |
-| 4 | Colour contrast verified | The extractor does not resolve inherited backgrounds — only 1,385 of 19,280 pairs were resolvable | Medium (engine) |
-| 5 | Accessible names captured | The extractor reads visible text, not `aria-label`. 2,792 officer buttons cannot be judged either way, and finding o6 is left open because of it | Small (engine), then a full re-capture |
-| 6 | Keyboard and screen-reader pass | Human work — the machine draft cannot self-certify | Human |
-| 7 | Hindi / bilingual rendering | The language toggle was never exercised | Human |
-| 8 | Mobile and tablet layouts | Every screen in the corpus is 1440px wide | Small (config), then a re-capture |
-| 9 | One commit not yet on `main` | PR **#258** merged `feat/design-audit-capture-bundle` into `main` on 2026-09-03. Everything above is on `origin/main` **except** the tracker + slug commit, which was made after the merge | Small — new PR from `main` |
+## 3. Wizards — where each branch actually stopped
+
+| Scheme | Branch | Steps live | Captured | Stopped at |
+|---|---|---|---|---|
+| NAPDDR | new | 10 | S01–S09 (18 states) | Document Uploads |
+| NAPDDR | renewal | 11 | S01–S10 (20 states) | Document Uploads |
+| AVYAY | new | 8 | S01–S04 (8 states) | **Justification** — forward control would not advance |
+| AVYAY | renewal | 7 | S01–S06 (12 states) | Document Uploads |
+| SHRESHTA M2 | single | 6 | S01–S05 (10 states) | Document Uploads |
+
+**NAPDDR forks, and until this pass nobody knew it.** `e-anudaan-build-defects.md` left it
+as an open question; both branches are now walked and they differ structurally:
+
+| | New project | Renewal |
+|---|---|---|
+| Total steps | 10 | **11** |
+| `CCTV, EAT & PFMS Compliance` | absent | **present, step 8** |
+| Documents on the upload step | 12 | 6 |
+
+Our `form-schema.ts` models NAPDDR with no `case_type` at all, so there is no controller to
+fork on and every applicant gets one fixed step list and one fixed document list of 17.
+
+## 4. Why nothing submits — and why the previous diagnosis was wrong
+
+The previous tracker said: *"The fix is a real PDF, not a code change."* That was true of a
+portal that no longer exists.
+
+**The portal now reads document CONTENT and rejects placeholders**, naming each failure:
+
+> 12 documents are not valid. Replace them — or use Re-verify if you believe the check is wrong
+> The uploaded file contains only test text ('DESIGN QC DRY RUN') and no genuine d…
+
+In August the same step said *"Automatic check unavailable … a reviewer will verify it by
+hand"* and accepted 1 KB files. The check has been switched on or repaired between the two
+captures — on an unchanged build. Full evidence: `e-anudaan-live-change-report.md` §4.
+
+**A replacement fixture does not clear this gate**, and it should not: getting past it means
+producing documents that read as genuine grant evidence, which is fabricating records to
+defeat a verification control. **Genuine sample documents must come from the department or
+the vendor as a sanctioned test set.** This is a human step and is not worked around.
+
+Two engine notes from the same finding:
+
+- `12/12 already uploaded — leaving them alone`. Defect-fix #7 preserves a complete upload
+  set, so a replacement fixture is never even tried. A set can be **complete and invalid at
+  once** and the engine has no notion of that state, though the page says so in a countable
+  sentence. Worth fixing before the next attempt.
+- `FORWARD_LABELS` leads with `Save & Next`, which this portal does not use — so every
+  wizard step logs a failure line above a successful advance on `Next`. Harmless, but it is
+  the exact shape a real failure takes. A `forward: [Next]` override would silence it.
+
+## 5. Outstanding
+
+| # | Item | Blocked on |
+|---|---|---|
+| 1 | Post-submission acknowledgement, any scheme | Genuine sample documents (§4). **The August archive does not hold these** — in all four schemes `Step_Final_Confirmation.png` is byte-identical to that scheme's `Step_NN_Review_And_Submit.png`, and only NAPDDR's is even a review page. |
+| 2 | Review & Submit for AVYAY and SHRESHTA M2 | Same |
+| 3 | AVYAY new-project steps 5–8 | The forward control would not advance past Justification |
+| 4 | Colour contrast verified | The extractor does not resolve inherited backgrounds |
+| 5 | Accessible names captured | Element rows read visible text, not `aria-label`; the field inventory does read it |
+| 6 | Keyboard and screen-reader pass | Human work |
+| 7 | Hindi / bilingual rendering | The language toggle has never been exercised |
+| 8 | Mobile and tablet layouts | Every screen in the corpus is 1440px wide |
+| 9 | Engine test suite | `pytest` is not installed on this host; the suite was **not** run this pass. No engine code changed — the edits were a manifest, a fixture and `clone-parity.mjs`. |
 
 ### Deliberately not done
+No officer decision was exercised (§2). No document was fabricated to pass the content
+check (§4).
 
-**No officer decision was exercised.** Forward, Approve, Return, Query and Reject were never
-clicked. The three wizard submissions are additive — they create new records. Officer decisions
-mutate cases the other 23 demo accounts are staged against, and a UAT environment about to be shown
-to stakeholders is not a place to spend that state. When the decision screen is captured, its flow
-should carry `allowSubmit: false` so the gate refuses the click.
+## 6. Known traps when reading this corpus
 
----
+- **`pageH` varies between runs on unchanged content.** Eleven screens differ in measured
+  page height with identical row counts. Compare `structureHash` and `totalRows`.
+- **A screen with the chrome-only row count may be a failed capture.** On this portal that
+  count is **39**. Eight applicant screens sat at 39 in the 2026-09-03 bundle — page chrome,
+  no content — and were recorded as `ok`. Five screens legitimately read 39 today: the
+  `/queries` lists really are empty, confirmed by two runs a week apart.
+- **`clone-parity.mjs` over a partial corpus invents.** Run against a capture missing steps
+  it reports every uncaptured field as one live never rendered. Run it only after a
+  complete walk.
 
 ## 7. Where everything lives
 
 | Artefact | Path |
 |---|---|
-| Bundle (hashed index of every screen) | `tools/design-audit/projects/e-anudaan/out/capture-bundle.json` |
-| Screenshots + element rows | `tools/design-audit/projects/e-anudaan/captures/live/` — 268 pairs, not tracked in git |
-| Freshness report | `tools/design-audit/projects/e-anudaan/out/freshness.md` |
-| Traversal recipe | `tools/design-audit/projects/e-anudaan/screen-manifest.yaml` |
-| Roles, routes, auth | `tools/design-audit/projects/e-anudaan/audit.config.json` |
-| Credentials | `tools/design-audit/projects/e-anudaan/secrets.json` — gitignored |
+| Bundle | `tools/design-audit/projects/e-anudaan/out/capture-bundle.json` |
+| Screenshots + element rows | `projects/e-anudaan/captures/live/` — 320 pairs (195 MB), not tracked |
+| Change report, this pass | `docs/audit/e-anudaan-live-change-report.md` |
+| Findings log, this pass | `docs/audit/e-anudaan-reclone-findings.md` |
+| Plan for this pass | `docs/plans/2026-09-07-e-anudaan-reclone.md` |
+| Traversal recipe | `projects/e-anudaan/screen-manifest.yaml` |
+| Roles, routes, auth | `projects/e-anudaan/audit.config.json` |
+| Credentials | `projects/e-anudaan/secrets.json` — gitignored |
 | The UI/UX audit | `docs/audit/e-anudaan-uat-design-audit.md` |
 | Build defects (our code) | `docs/audit/e-anudaan-build-defects.md` |
-| This tracker | `docs/audit/e-anudaan-capture-tracker.md` |
 
 **Re-running:**
 
 ```bash
 cd tools/design-audit
-python3 engine/run.py --project e-anudaan --phase capture             # all 25 roles
-python3 engine/run.py --project e-anudaan --phase capture --role ngo-user   # the wizards only
+python3 engine/run.py --project e-anudaan --phase capture --force
+node --experimental-strip-types projects/e-anudaan/clone-parity.mjs   # from the repo root
 ```
-
-`--force` is no longer needed after a manifest edit: a changed recipe now invalidates the bundle
-on its own.

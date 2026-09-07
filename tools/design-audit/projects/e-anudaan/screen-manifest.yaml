@@ -1,6 +1,27 @@
 # e-Anudaan (UAT) capture manifest.
 # environment: uat — this, plus each flow's allowSubmit, is what permits the driver to
-# press 'Submit Application' on a live UAT record. Authorised by the product owner.
+# press 'Submit Application' on a live UAT record.
+#
+# 2026-09-07: NO flow may submit. Every allowSubmit below is false.
+#
+# Three submissions WERE authorised for the re-clone pass and were then withdrawn, because
+# the reason they were blocked turned out not to be the one anybody thought. The portal now
+# reads document CONTENT and rejects placeholders by name -- "The uploaded file contains
+# only test text ('DESIGN QC DRY RUN') and no genuine data" -- where in August it said the
+# automatic check was unavailable and accepted 1 KB files. Clearing that gate means
+# producing documents that read as genuine grant evidence, which is fabricating records to
+# defeat a verification control. It is not a fixture problem and there is no fixture that
+# honestly solves it.
+#
+# Do not set allowSubmit: true here until a SANCTIONED test document set exists, supplied
+# by the department or the vendor. See docs/audit/e-anudaan-capture-tracker.md section 4.
+#
+# The walker still reaches Review & Submit and captures it either way: -ARRIVED and
+# -FILLED are taken before the submit gate is consulted.
+#
+# Every officer-decision flow at the foot of this file stays false and must stay false. A
+# submission is additive -- it creates a new record. An officer decision is not: it
+# mutates a case the other 23 demonstration accounts are staged against.
 version: 1
 environment: uat
 stalenessCeiling: 14d
@@ -27,7 +48,7 @@ flows:
 - id: napddr-new
   role: ngo-user
   entry: /apply-grant/scheme/NAPDDR/step-1
-  allowSubmit: true
+  allowSubmit: false
   alwaysReplay: true
   reuseRecord: null
   steps:
@@ -36,7 +57,7 @@ flows:
 - id: napddr-renewal
   role: ngo-user
   entry: /apply-grant/scheme/NAPDDR/step-1
-  allowSubmit: true
+  allowSubmit: false
   alwaysReplay: true
   reuseRecord: null
   steps:
@@ -45,7 +66,7 @@ flows:
 - id: avyay-new
   role: ngo-user
   entry: /apply-grant/scheme/AVYAY/step-1
-  allowSubmit: true
+  allowSubmit: false
   alwaysReplay: true
   reuseRecord: null
   steps:
@@ -54,7 +75,7 @@ flows:
 - id: avyay-renewal
   role: ngo-user
   entry: /apply-grant/scheme/AVYAY/step-1
-  allowSubmit: true
+  allowSubmit: false
   alwaysReplay: true
   reuseRecord: null
   steps:
@@ -63,8 +84,234 @@ flows:
 - id: shreshta-m2-application
   role: ngo-user
   entry: /apply-grant/scheme/SHRESHTA_M2/step-1
-  allowSubmit: true
+  allowSubmit: false
   alwaysReplay: true
   reuseRecord: null
   steps:
   - walk: {prefix: NGO-SHRESHTA-M2, upload: fixtures/sample-document.pdf, maxSteps: 24}
+
+# ---------------------------------------------------------------------------
+# Officer DECISION screens — tracker outstanding #3, added 2026-09-07.
+#
+# Where a grant is forwarded, returned, queried, sanctioned or rejected. Every one of
+# these screens sits ONE click behind a worklist we have been capturing since August, and
+# that click was never made — so the corpus held 24 worklists and not one decision screen.
+#
+# allowSubmit is FALSE on every flow here and must stay false. The engine's DESTRUCTIVE
+# regex (forward|approve|reject|sanction|concur|submit|deficien|quer|return|save|confirm|
+# delete|send) refuses each of those labels while the gate is shut, and 'Review' matches
+# none of them — so the screen is photographed and no decision is ever fired. A UAT
+# environment staged for stakeholder demonstrations is not somewhere to spend workflow
+# state, and unlike the applicant wizard these actions are NOT additive: they mutate cases
+# the other demonstration accounts are staged against.
+# ---------------------------------------------------------------------------
+- id: sm2-pd-aso-decision
+  role: sm2-pd-aso
+  entry: /dashboard/pd/aso
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: SM2-PD-ASO-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: SM2-PD-ASO-DECISION
+- id: sm2-pd-so-decision
+  role: sm2-pd-so
+  entry: /dashboard/pd/so
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: SM2-PD-SO-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: SM2-PD-SO-DECISION
+- id: sm2-pd-us-decision
+  role: sm2-pd-us
+  entry: /dashboard/pd/us
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: SM2-PD-US-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: SM2-PD-US-DECISION
+- id: sm2-pd-ds-decision
+  role: sm2-pd-ds
+  entry: /dashboard/pd/ds
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: SM2-PD-DS-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: SM2-PD-DS-DECISION
+- id: sm2-pd-js-decision
+  role: sm2-pd-js
+  entry: /dashboard/pd/js
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: SM2-PD-JS-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: SM2-PD-JS-DECISION
+- id: sm2-ifd-aso-decision
+  role: sm2-ifd-aso
+  entry: /dashboard/sm2/ifdaso
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: SM2-IFD-ASO-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: SM2-IFD-ASO-DECISION
+- id: sm2-ifd-so-decision
+  role: sm2-ifd-so
+  entry: /dashboard/sm2/ifdso
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: SM2-IFD-SO-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: SM2-IFD-SO-DECISION
+- id: sm2-ifd-us-decision
+  role: sm2-ifd-us
+  entry: /dashboard/sm2/ifdus
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: SM2-IFD-US-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: SM2-IFD-US-DECISION
+- id: sm2-ifd-ds-decision
+  role: sm2-ifd-ds
+  entry: /dashboard/sm2/ifdds
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: SM2-IFD-DS-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: SM2-IFD-DS-DECISION
+- id: sm2-ifd-js-decision
+  role: sm2-ifd-js
+  entry: /dashboard/sm2/ifdjs
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: SM2-IFD-JS-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: SM2-IFD-JS-DECISION
+- id: avyay-pd-aso-decision
+  role: avyay-pd-aso
+  entry: /dashboard/pd/aso
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: AVYAY-PD-ASO-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: AVYAY-PD-ASO-DECISION
+- id: avyay-pd-so-decision
+  role: avyay-pd-so
+  entry: /dashboard/pd/so
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: AVYAY-PD-SO-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: AVYAY-PD-SO-DECISION
+- id: avyay-pd-us-decision
+  role: avyay-pd-us
+  entry: /dashboard/pd/us
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: AVYAY-PD-US-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: AVYAY-PD-US-DECISION
+- id: avyay-pd-ds-decision
+  role: avyay-pd-ds
+  entry: /dashboard/pd/ds
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: AVYAY-PD-DS-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: AVYAY-PD-DS-DECISION
+- id: avyay-pd-js-decision
+  role: avyay-pd-js
+  entry: /dashboard/pd/js
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: AVYAY-PD-JS-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: AVYAY-PD-JS-DECISION
+- id: avyay-ifd-aso-decision
+  role: avyay-ifd-aso
+  entry: /dashboard/finance/aso
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: AVYAY-IFD-ASO-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: AVYAY-IFD-ASO-DECISION
+- id: avyay-ifd-so-decision
+  role: avyay-ifd-so
+  entry: /dashboard/finance/so
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: AVYAY-IFD-SO-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: AVYAY-IFD-SO-DECISION
+- id: avyay-ifd-us-decision
+  role: avyay-ifd-us
+  entry: /dashboard/finance/us
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: AVYAY-IFD-US-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: AVYAY-IFD-US-DECISION
+- id: avyay-ifd-ds-decision
+  role: avyay-ifd-ds
+  entry: /dashboard/finance/ds
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: AVYAY-IFD-DS-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: AVYAY-IFD-DS-DECISION
+- id: avyay-ifd-js-decision
+  role: avyay-ifd-js
+  entry: /dashboard/finance/js
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: AVYAY-IFD-JS-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: AVYAY-IFD-JS-DECISION
+- id: avyay-programme-director-decision
+  role: avyay-programme-director
+  entry: /dashboard/avyay/pd
+  allowSubmit: false
+  alwaysReplay: true
+  steps:
+  - capture: AVYAY-PROGRAMME-DIRECTOR-WORKLIST
+  - click: Review
+    waitMs: 4000
+  - capture: AVYAY-PROGRAMME-DIRECTOR-DECISION
