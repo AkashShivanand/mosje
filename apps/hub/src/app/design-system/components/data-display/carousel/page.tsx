@@ -43,9 +43,18 @@ const A11Y: A11yItem[] = [
     level: "AA",
     status: "verified",
     evidence:
-      "Arrows bind --sa-control-height-md (40px). The dots draw an 8px mark inside a 32px button, so the mark is small and the target is not. Measured with getBoundingClientRect on this page.",
+      "Measured from the rendered DOM 2026-09-07: each dot is a 24x24 button drawing an 8px mark, and the buttons sit exactly adjacent — pitch 24, no dead space — so every dot meets 2.5.8's 24x24 minimum without the spacing exception being needed. The arrows bind --sa-control-height-md (40px) and grow to 44x44 on a coarse pointer, which is UX4G 3.0 §3's recommendation. The dots deliberately do NOT grow: a 44px target on a 24px pitch overlaps its neighbours by 10px a side and resolves the press by paint order, so the reader would press 3 and get 4. A wrong slide is worse than a small target, and the divergence is recorded in the stylesheet.",
     description:
-      "The dot is small; its target is 32px square, because these controls are the only way most readers reach slide two.",
+      "The dot is small; its target is not — 32px on a mouse, 44px on a thumb, because these controls are the only way most readers reach slide two.",
+  },
+  {
+    criterion: "1.4.1 Use of Colour",
+    level: "A",
+    status: "verified",
+    evidence:
+      "The current dot differs in SHAPE, not only in fill: measured from the computed ::before on this page, the current mark is 20px wide against 8px for the rest, so the state survives a monochrome rendering and forced-colors mode, where background-color is replaced outright. A forced-colors block keeps an outline on it as well.",
+    description:
+      "Which slide you are on is carried by the width of the mark, so it does not depend on being able to see the blue.",
   },
 ];
 
@@ -96,6 +105,40 @@ export default function CarouselPage(): React.JSX.Element {
             <p>
               Slides two onwards are, in practice, unread. If an announcement matters, it belongs on
               the page — the carousel may repeat it, but it must not be the only place it appears.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-bar">
+            <h2 id="cdp-bar" className="cdp__h2">The Dots Stay Under the Middle of the Band</h2>
+            <p>
+              The control bar is three columns and only the middle one is centred: the step
+              arrows and the dots own it, and anything else — today the rotation control, tomorrow
+              a counter — sits in a side column that cannot push them. When the bar was one
+              centred row, switching <code>autoPlay</code> on slid the dots 37px off the middle of
+              the slide they report on, so the position indicator moved for a reason that had
+              nothing to do with position.
+            </p>
+            <p>
+              The rotation control is drawn without a fill or a border. It is a mode switch, not a
+              third arrow, and given the arrows&apos; treatment it otherwise read as a navigation
+              control that had wandered to the left edge.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-long">
+            <h2 id="cdp-long" className="cdp__h2">Past Six Slides the Dots Become a Counter</h2>
+            <p>
+              A dot row stops being a position indicator and becomes a wall. Six is the largest
+              count that still reads as a countable set at a glance — past it a reader stops
+              counting and starts estimating, which is the moment the row is doing no work a
+              number would not do better. Above six the dots are replaced by <code>3 / 9</code>.
+              The reason is legibility rather than width: at the row&apos;s 24px pitch the cluster
+              only outgrows a narrow phone somewhere past eleven slides, well above where it
+              stops being readable.
+            </p>
+            <p>
+              The counter carries no jump-to-slide affordance, because there is nothing honest to
+              offer: a set that long has no way to reach slide nine directly that is better than
+              pressing Next. If the reader needs to reach a particular item, the content wanted a
+              list, not a carousel.
             </p>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-track">

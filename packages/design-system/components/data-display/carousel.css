@@ -20,8 +20,24 @@
     font-family: var(--sa-font-latin);
   }
 
+  /* `hidden` clips the track to the radius — and clips a focus ring on any
+     control sitting against a slide's edge with it, so a keyboard reader could
+     tab to a link inside a slide and see nothing. `clip` does the same job but
+     honours `overflow-clip-margin`, which lets exactly the ring bleed out and
+     nothing else. Declared after `hidden` so a browser that does not know
+     `clip` keeps the old behaviour rather than losing the clip entirely.
+
+     ds-exempt(layout-literal): 4px is `--sa-focus-width` (2) plus
+     `--sa-focus-offset` (2), and it is written out because THE PROPERTY WILL
+     NOT TAKE A `calc()`. Verified in a browser 2026-09-07, not assumed:
+     `overflow-clip-margin: 4px` computes to 4px, a bare `var()` computes,
+     and `calc(2px + 2px)` is REJECTED at parse — so the token form silently
+     resolved to 0 and clipped the ring exactly as before. Keep this in step
+     with the two focus tokens by hand; there is no way to bind it. */
   .ds-carousel__viewport {
     overflow: hidden;
+    overflow: clip;
+    overflow-clip-margin: 4px;
     border-radius: var(--sa-cmp-card-radius);
   }
 
@@ -46,11 +62,42 @@
     scroll-snap-align: start;
   }
 
+  /* Three columns, and only the middle one is centred on the slide — see the
+     comment in carousel.tsx. The side columns are equal `1fr`, so whatever the
+     lead column holds (today the pause control, tomorrow a counter) cannot
+     shift the dots off the centre line of the band they report on. */
   .ds-carousel__controls {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: var(--sa-inline-8);
+  }
+
+  .ds-carousel__controls-lead,
+  .ds-carousel__controls-trail {
     display: flex;
     align-items: center;
+    min-height: var(--sa-control-height-md);
+  }
+
+  .ds-carousel__controls-trail {
+    justify-content: flex-end;
+  }
+
+  /* Wraps rather than overflows. Six dots at a 44px coarse target still ask for
+     more than a narrow phone has once the arrows are counted, and `Pagination`
+     already resolves the same problem the same way. A second centred row is an
+     acceptable degradation; a horizontally scrolling control bar is not. */
+  /* 12px between the step controls and the dot cluster, which is what UX4G's
+     own `Pagination - Dot` puts there. At the 8px used everywhere else the
+     arrows and the dots read as one undifferentiated row; they are two kinds of
+     control and the gap is what says so. */
+  .ds-carousel__controls-main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     justify-content: center;
-    gap: var(--sa-inline-8);
+    gap: var(--sa-inline-12);
   }
 
   .ds-carousel__arrow,
@@ -60,21 +107,61 @@
     justify-content: center;
     /* The full control height rather than the 24x24 floor: these are the only
        way most readers reach slide two. */
-    min-width: var(--sa-control-height-md);
+    width: var(--sa-control-height-md);
     height: var(--sa-control-height-md);
-    padding: 0 var(--sa-padding-12);
+    padding: 0;
     border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
-    border-radius: var(--sa-control-radius);
+    /* Round, not the estate's 8px control radius. A carousel's step controls
+       are circular by convention and, more usefully here, the shape separates
+       them from the rectangular Buttons a slide's own content will hold — the
+       reader should never have to work out which controls belong to the
+       carousel and which belong to what is inside it. The website's own
+       HeroCarousel already draws them this way. */
+    border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-bolder);
     font-family: inherit;
     font-size: var(--sa-type-label-1-size);
     cursor: pointer;
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-carousel__arrow:hover,
   .ds-carousel__play:hover {
     background-color: var(--sa-bg-neutral-hover);
+    border-color: var(--sa-border-neutral-bolder-default);
+  }
+
+  /* THE ROTATION CONTROL IS NOT A THIRD ARROW.
+     Given the arrows' white-and-bordered treatment it read as a navigation
+     control that had wandered to the left edge. It is a mode switch, not a
+     step, so it drops the fill and the border and keeps only the box — lower
+     in the hierarchy, and unmistakably a different kind of control. Its target
+     is unchanged; only its weight is. */
+  .ds-carousel__play {
+    border-color: transparent;
+    background-color: transparent;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-carousel__play:hover {
+    border-color: transparent;
+    background-color: var(--sa-bg-neutral-hover);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  /* A press has to be acknowledged on the press. On a touch screen there is no
+     hover at all, so without this the only feedback a tap produced was the
+     slide arriving — which on a slow connection is the wrong side of a wait. */
+  .ds-carousel__arrow:active,
+  .ds-carousel__play:active {
+    background-color: var(--sa-bg-neutral-active);
+  }
+
+  .ds-carousel__dot:active::before {
+    transform: scale(0.9);
   }
 
   .ds-carousel__arrow:focus-visible,
@@ -84,10 +171,51 @@
     outline-offset: var(--sa-focus-offset);
   }
 
+  /* The counter that replaces the dots past six slides. It is the position
+     indicator, so it is sized and weighted like one — quiet, tabular, and the
+     same height as the controls beside it so the row's baseline does not move
+     when a carousel crosses the threshold. */
+  .ds-carousel__counter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 4ch;
+    height: var(--sa-control-height-md);
+    margin: 0;
+    padding: 0 var(--sa-padding-8);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-1-size);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-carousel__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* NO GAP, AND THE TARGETS SIT EXACTLY ADJACENT.
+     UX4G 3.0's `Pagination - Dot` puts 8px between the MARKS — a 10px dot at an
+     18px pitch. An earlier pass here read that 8px as spacing between the 32px
+     TARGETS, which gave a 40px pitch and left 8px dots floating 32px apart: four
+     times the reference, and a row that read as scattered rather than as a set.
+
+     It cannot simply be tightened to 18 either. WCAG 2.2 AA 2.5.8 wants each
+     target at least 24x24, and its spacing exception does not rescue undersized
+     targets whose 24px circles intersect — at an 18px pitch they do. So 24 is
+     the tightest pitch that stays conformant, and it is reached the way the
+     website's own `CarouselIndicators` reaches it: a 24px button with no gap
+     between buttons, so the targets are adjacent and the painted 8px marks sit
+     16px apart. The two components now genuinely match. */
   .ds-carousel__dots {
     display: flex;
     align-items: center;
-    gap: var(--sa-inline-4);
+    gap: var(--sa-inline-0);
   }
 
   /* The dot is small; its TARGET is not. Padding carries the hit area past
@@ -96,28 +224,62 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--sa-control-height-sm);
-    height: var(--sa-control-height-sm);
+    min-inline-size: var(--sa-inline-24);
+    min-block-size: var(--sa-inline-24);
     padding: 0;
     border: 0;
     background: transparent;
     cursor: pointer;
   }
 
+  /* SOLID, NOT A RING.
+     An 8px circle outlined in a 1px stroke is about six painted pixels; on the
+     documentation page the inactive dots all but vanished. A filled mark at a
+     lower emphasis reads at this size where a hairline ring does not, and it
+     gives the current dot something to contrast WITH. */
   .ds-carousel__dot::before {
     content: "";
     width: var(--sa-cmp-badge-dotSizeLg);
     height: var(--sa-cmp-badge-dotSizeLg);
-    border: var(--sa-control-border-width) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-full);
-    background-color: transparent;
+    background-color: var(--sa-border-neutral-bolder-default);
+    transition:
+      width var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
-  /* Current is a filled dot AND a heavier edge, so the state survives a monochrome
-     rendering and forced-colors mode — colour alone would fail WCAG 1.4.1. */
+  .ds-carousel__dot:hover::before {
+    background-color: var(--sa-text-neutral-base);
+  }
+
+  /* CURRENT IS A DIFFERENT SHAPE, NOT JUST A DIFFERENT COLOUR.
+     The mark grows into a pill. Shape is the cue that survives everything a
+     colour cue does not — a monochrome print, forced-colors mode (which
+     replaces background-color outright), and WCAG 1.4.1's requirement that
+     colour never be the only carrier. It is also the estate's own established
+     reading: `CarouselIndicators` on the website already grows its active
+     mark into a bar, and the two now agree. */
   .ds-carousel__dot--current::before {
-    border-color: var(--sa-border-neutral-selected);
+    width: var(--sa-inline-24);
     background-color: var(--sa-bg-brand-primary-bolder);
+  }
+
+  .ds-carousel__dot--current:hover::before {
+    background-color: var(--sa-bg-brand-primary-bolder);
+  }
+
+  /* forced-colors replaces every background, so the pill's fill goes; its WIDTH
+     is what still distinguishes it, and an outline restores an edge. */
+  @media (forced-colors: active) {
+    .ds-carousel__dot::before {
+      background-color: ButtonText;
+    }
+
+    .ds-carousel__dot--current::before {
+      background-color: Highlight;
+      outline: 1px solid ButtonText;
+    }
   }
 
   /* The position is announced, not shown — the dots already show it, and a
@@ -134,7 +296,45 @@
     border: 0;
   }
 
+  /* EVERY CONTROL IN THE BAR REACHES 44px ON A THUMB.
+     UX4G 3.0 §3 asks for 44x44 with 8px between on mobile; the bar drew 40px
+     arrows and 32px dots at a 4px pitch. `Button` solves the same problem with
+     an invisible ::after so a dense admin table's row controls do not grow into
+     one another — that reasoning does not apply to a carousel's control bar,
+     which is a standalone cluster with the full width of the band to sit in, so
+     the boxes themselves grow and the layout is allowed to follow. Coarse
+     pointers only: on a mouse this would be 44px of white space per dot for no
+     gain in accuracy. 44 is written as a literal, as it is in button.css: it is
+     a thumb measurement from an external standard, not a rung on our scale. */
+  @media (pointer: coarse) {
+    .ds-carousel__arrow,
+    .ds-carousel__play {
+      width: 44px;
+      height: 44px;
+    }
+
+    .ds-carousel__controls-lead,
+    .ds-carousel__controls-trail {
+      min-height: 44px;
+    }
+
+    /* THE DOTS DO NOT GROW, AND THAT IS THE POINT OF THE PITCH ABOVE.
+       A 44px target on a 24px pitch overlaps its neighbours by 10px a side, and
+       `button.css` records what that costs: "the overlap resolves by paint order
+       rather than by intent", so the reader presses 3 and gets 4. A wrong slide
+       is worse than a small target. The dots stay at 24x24 — WCAG 2.2 AA's floor
+       exactly, adjacent with no dead space between them — and the divergence
+       from UX4G's 44px recommendation is this comment, per
+       standards-precedence.md. The arrows and the rotation control have room and
+       do grow. */
+    .ds-carousel__counter {
+      height: 44px;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
+    /* Load-bearing: the estate sets `scroll-behavior: smooth` globally, and the
+       track must not inherit it when the reader has asked for less motion. */
     .ds-carousel__track {
       scroll-behavior: auto;
     }

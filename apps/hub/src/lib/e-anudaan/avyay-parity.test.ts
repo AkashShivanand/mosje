@@ -86,7 +86,7 @@ test("a renewal IS asked, and for the project it is renewing", () => {
 
 test("a new project gets live's eleven documents, in live's order", () => {
   assert.deepEqual(
-    visibleDocuments(AVYAY_WIZARD, NEW).map((d) => `${d.n}. ${d.title}`),
+    visibleDocuments(AVYAY_WIZARD, NEW).map((d, i) => `${i + 1}. ${d.title}`),
     [
       "1. Registration Certificate",
       "2. PAN Card of the Organisation",
@@ -103,9 +103,9 @@ test("a new project gets live's eleven documents, in live's order", () => {
   );
 });
 
-test("a renewal gets nine, renumbered from one", () => {
+test("a renewal gets nine, displayed from one", () => {
   assert.deepEqual(
-    visibleDocuments(AVYAY_WIZARD, RENEWAL).map((d) => `${d.n}. ${d.title}`),
+    visibleDocuments(AVYAY_WIZARD, RENEWAL).map((d, i) => `${i + 1}. ${d.title}`),
     [
       "1. Registration Certificate",
       "2. Annual Report of NGO — previous FY",

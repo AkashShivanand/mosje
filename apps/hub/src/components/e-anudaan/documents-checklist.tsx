@@ -95,7 +95,7 @@ export function DocumentsChecklist({
       </div>
 
       <ol className="space-y-3">
-        {documents.map((d) => {
+        {documents.map((d, i) => {
           const up = uploaded[d.n];
           const tone = up ? TONE[up.verdict.state] : TONE.pending;
           const pill = up ? verdictPill(up.verdict) : null;
@@ -105,7 +105,7 @@ export function DocumentsChecklist({
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0 space-y-1">
                   <p className="text-title-3 text-ink">
-                    {d.n}. {d.title}
+                    {i + 1}. {d.title}
                     {!d.optional && <span className="text-status-error"> *</span>}
                     {d.optional && <span className="ml-2 text-label-2 text-ink-hint">OPTIONAL</span>}
                   </p>

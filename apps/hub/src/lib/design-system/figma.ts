@@ -258,7 +258,7 @@ export const FIGMA_NODES = {
    * PageHeader docs page, which is a title row on a page's own background and a
    * different component entirely.
    */
-  sitePageHeader: "57763-944",
+  sitePageHeader: "57817-52731",
   tab: "2316-353",
   tabs: "55489-870",
   tabsMore: "55514-848",

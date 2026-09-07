@@ -90,6 +90,36 @@ export const AutoRotating: Story = {
   args: { autoPlay: true, interval: 4 },
 };
 
+/**
+ * **Past six slides the dots become a counter.**
+ *
+ * A dot row stops being a position indicator and becomes a wall — past six a reader
+ * stops counting and starts estimating, which is the moment the row is doing no work
+ * a number would not do better. There is no prop for this; the component decides,
+ * because a consumer adding a ninth slide should not have to know.
+ */
+export const LongSet: Story = {
+  args: {
+    label: "States and Union Territories reached",
+    children: [
+      "Andhra Pradesh", "Bihar", "Chhattisgarh", "Gujarat", "Haryana",
+      "Karnataka", "Madhya Pradesh", "Odisha", "Rajasthan",
+    ].map((name) => (
+      <div
+        key={name}
+        style={{
+          padding: "var(--sa-padding-32)",
+          minHeight: "6rem",
+          borderRadius: "var(--sa-cmp-card-radius)",
+          background: "var(--sa-bg-brand-primary-base)",
+        }}
+      >
+        {name}
+      </div>
+    )),
+  },
+};
+
 /** Without dots, for a band where the arrows are enough and the count is small. */
 export const WithoutDots: Story = {
   args: { showDots: false },
