@@ -254,15 +254,10 @@
     "apps/hub/src/app/portals/tg/citizen/page.tsx",
     "apps/hub/src/app/portals/tg/citizen/sign-in/page.tsx",
     "apps/hub/src/app/portals/tg/page.tsx",
-    "apps/hub/src/components/e-anudaan/ngo-shell.tsx",
     "apps/hub/src/components/e-anudaan/review-shell.tsx",
     "apps/hub/src/components/eutthan/eutthan-shell.tsx",
-    "apps/hub/src/components/nmba/admin-shell.tsx",
-    "apps/hub/src/components/nmba/treatment-centre/tc-shell.tsx",
     "apps/hub/src/components/pm-ajay/dashboard/ui.tsx",
-    "apps/hub/src/components/scw/admin-shell.tsx",
     "apps/hub/src/components/scw/user-shell.tsx",
-    "apps/hub/src/components/tg/admin-shell.tsx",
     "apps/hub/src/components/tg/citizen-shell.tsx"
   ]
 }
