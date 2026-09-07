@@ -215,6 +215,14 @@ export interface OrganisationDetail {
    * It is NOT a way to hide content the estate would rather not show.
    */
   hideIngestedSections?: string[];
+  /**
+   * Heading for the highlight cards, where they are a named section of the
+   * source page rather than a loose set of points. NMBA's six institution types
+   * are published under "Institutions for Drug Demand Reduction Supported by
+   * the Ministry"; without this the cards arrive headless and a reader has no
+   * idea what the six things have in common.
+   */
+  aboutHighlightsHeading?: string;
   aboutHighlights?: OrgHighlightCard[];
   leadership?: {
     heading: string;
@@ -332,6 +340,27 @@ export interface OrganisationDetail {
       likes?: string;
       shares?: string;
     }[];
+  };
+  /**
+   * The figures an organisation publishes about its own reach, as its own band.
+   *
+   * WHY THIS EXISTS RATHER THAN LETTING THE PROSE CARRY THEM. The ingest
+   * captures NMBA's eight counters as `<h4>345,703,321</h4><div>People
+   * Reached</div>` eight times over, and rendered as prose that is what you get:
+   * a blue number, a paragraph, a blue number, a paragraph, 750px of vertical
+   * scroll doing the work of one strip. They are facts with labels, so they
+   * belong in `FactStrip` — the same component the page already uses above.
+   *
+   * `asOf` IS NOT OPTIONAL FURNITURE. These are live counters on the source and
+   * they move daily; a figure with no date beside it claims to be current when
+   * it is a snapshot. `live-data-fallback.md`: snapshot second, and the page
+   * says which.
+   */
+  impact?: {
+    heading: string;
+    /** When these figures were read from the source, e.g. "7 September 2026". */
+    asOf: string;
+    items: OrgFact[];
   };
   messages?: {
     heading: string;
@@ -2037,19 +2066,121 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     ],
     aboutHeading: "About the Movement",
     aboutAction: { label: "Know More →", href: "/website/organisation/nasha-mukt-bharat-abhiyaan/about-us" },
-    // Seven husks the scrape returned, each now rendered properly further down:
-    // the helpline strip by `quickActions`, the map and its key by the reach
-    // band, the two document tabs by `downloads`, the photographs by `gallery`,
-    // the five statements by `messages`, and the four channels by `socialFeed`.
-    hideIngestedSections: [
-      "Join Nasha Mukt Bharat Abhiyaan",
-      "GEO Tagged De-addiction Facilities",
-      "Legend",
-      "Latest Updates",
-      "Gallery",
-      "Messages",
-      "Social Media",
+    /*
+     * THE PROSE IS AUTHORED, AND THIS IS THE CASE `aboutHtml` EXISTS FOR.
+     *
+     * The ingest captured this page's text, but in a shape no layout can
+     * rescue. Its ten sections interleave two paragraphs of departmental prose
+     * with eight counters marked up as `<h4>` + `<div>`, six institution
+     * definitions as twelve flat `<p>`s, a colour key to a map it could not
+     * capture, and four husks — a heading with no number, two document tabs
+     * with no documents, a gallery with no photographs. Rendered as prose that
+     * is one 2,000px wall of text with the counters running down it in a
+     * column.
+     *
+     * So the prose is written here, and everything that is NOT prose is handed
+     * to the component built for it: `impact` for the counters,
+     * `aboutHighlights` for the six institutions, the reach band for the map,
+     * `downloads` for the documents, `gallery` for the photographs.
+     *
+     * THE COST, STATED PLAINLY: a re-ingest of dosje.gov.in will not refresh
+     * these two paragraphs. They are stable departmental copy — the second is
+     * the Abhiyaan's standing description — and both are reproduced verbatim.
+     * The volatile part is the counters, and those carry their own `asOf`.
+     */
+    aboutHtml: `
+      <p>The Ministry of Social Justice and Empowerment (MoSJE) is the nodal Ministry
+      for Drug Demand Reduction and, as part of its mandate, has introduced measures to
+      curtail substance abuse in the country. MoSJE formulated and enacted the National
+      Action Plan for Drug Demand Reduction (NAPDDR).</p>
+      <p>Drug and alcohol addiction in India has long been a silent crisis, impacting
+      individuals, families, and communities across both urban and rural landscapes.
+      Recognising the urgent need for collective action, the Ministry of Social Justice
+      and Empowerment launched the Nasha Mukt Bharat Abhiyaan (NMBA) on 15th August 2020
+      with a vision to make India drug-sensitised and resilient against substance abuse.
+      Being a campaign mode programme, the Abhiyaan has targeted and involved
+      stakeholders that might be directly or indirectly affected by substance abuse and
+      those who are vulnerable to it. The major stakeholders and beneficiaries of the
+      NMBA are Youth, Women, Children, Educational Institutions, Civil Society, and the
+      Community at large. Since its launch, a wide range of activities have been
+      conducted throughout the country that have fostered participation from all
+      sections of society and stakeholders. There has been a shift from an earlier
+      approach of organisational involvement to community involvement in the issue of
+      substance abuse. The states, districts, and other stakeholders have taken
+      ownership of the Abhiyaan, which has helped transform the Abhiyaan into a jan
+      andolan.</p>
+    `,
+    /*
+     * THE SIX INSTITUTION TYPES, AS CARDS.
+     *
+     * The source draws six icon cards. The ingest returned twelve flat
+     * paragraphs — a name, then a definition, six times — and rendered as prose
+     * a reader could not tell the name of one from the body of the last.
+     * Definitions are verbatim; the icons are ours, chosen to separate the six
+     * at a glance, and carry no meaning the text does not already state.
+     */
+    aboutHighlightsHeading: "Institutions for Drug Demand Reduction Supported by the Ministry",
+    aboutHighlights: [
+      {
+        title: "Integrated Rehabilitation Centre for Addicts (IRCA)",
+        icon: "local_hospital",
+        description:
+          "Integrated Rehabilitation Center for Addicts (IRCAs) are de-addiction centres with inpatient facilities of counselling and treatment for drug dependent persons.",
+      },
+      {
+        title: "Community Peer Led Intervention (CPLI)",
+        icon: "diversity_3",
+        description:
+          "Community Peer led Intervention (CPLI) work with the community with youth volunteers for early preventive education especially for vulnerable adolescents and youth in the community.",
+      },
+      {
+        title: "Outreach and Drop-in Centre (ODIC)",
+        icon: "meeting_room",
+        description:
+          "Outreach and Drop in Centres (ODIC) provides facilities of screening, assessment and counselling along with providing referral and linkage to treatment and rehabilitation services for drug dependents.",
+      },
+      {
+        title: "District De-Addiction Centre (DDAC)",
+        icon: "health_and_safety",
+        description:
+          "District De-addiction Centres serve as one-stop centre with a combination of IRCA, CPLI, and ODIC. The main focus of the DDAC is early prevention, education, demand reduction, identification, treatment and rehabilitation services of vulnerable individuals or individuals affected by substance use disorders.",
+      },
+      {
+        title: "State Level Coordinating Agency (SLCA)",
+        icon: "account_balance",
+        description:
+          "State Level Coordinating Agencies (SLCAs) are designated organizations responsible for coordinating, monitoring, facilitating, and strengthening the implementation of drug demand reduction programmes and capacity-building initiatives under NAPDDR at the State level.",
+      },
+      {
+        title: "Addiction Treatment Facility (ATF)",
+        icon: "medical_services",
+        description:
+          "Addiction Treatment Facility provides in patient and out patient treatment and deaddiction services to substance users in a government hospital.",
+      },
     ],
+    /*
+     * THE EIGHT COUNTERS THE SOURCE PUBLISHES, read on 7 September 2026.
+     *
+     * Verbatim, including the source's own mixed formatting — "28,29,661+" is
+     * written in the Indian grouping with a plus, "755+" likewise, and both are
+     * reproduced as published rather than normalised into the international
+     * grouping the other six use. Rewriting a department's own figure to suit a
+     * layout is the one thing this file's header forbids outright.
+     */
+    impact: {
+      heading: "The Abhiyaan in Numbers",
+      asOf: "7 September 2026",
+      items: [
+        { icon: "groups", value: "345,703,321", label: "People reached" },
+        { icon: "school", value: "137,209,589", label: "Youth reached" },
+        { icon: "woman", value: "106,563,417", label: "Women reached" },
+        { icon: "menu_book", value: "3,726,319", label: "Activities in educational institutes" },
+        { icon: "healing", value: "28,29,661+", label: "Persons treated and rehabilitated" },
+        { icon: "local_hospital", value: "755+", label: "DoSJE-supported de-addiction centres" },
+        { icon: "front_hand", value: "3,361,211", label: "Total pledges" },
+        { icon: "volunteer_activism", value: "164,943", label: "Nasha Mukti Mitr registered" },
+      ],
+    },
     nav: [
       {
         label: "ABOUT THE ABHIYAAN",

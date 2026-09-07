@@ -484,6 +484,19 @@
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 
+  /*
+   * The PALE saffron rung, not the one above it — the same correction
+   * `fact-strip.css` already carries, written out there in full.
+   *
+   * `secondary-subtler` is scale-100 (#ffd4c4): a peach TILE. Six of them side
+   * by side, each holding a blue icon badge, read as the loudest thing on a
+   * page whose brand is gov-blue, and the six definitions they exist to carry
+   * came second to their own background. `secondary-base` is scale-50
+   * (#fff2ed), the barely-there wash, and it is what the handoff draws.
+   *
+   * Contrast improves rather than suffering: the card's description ink goes
+   * from 8.04:1 to 9.97:1, its title from 13.95:1 to 17.29:1.
+   */
   .orgd__highlight-card {
     display: flex;
     flex-direction: column;
@@ -491,7 +504,7 @@
     padding: var(--sa-padding-24);
     border: 1px solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-cmp-card-radius);
-    background-color: var(--sa-bg-brand-secondary-subtler);
+    background-color: var(--sa-bg-brand-secondary-base);
   }
 
   /* ── Leadership ─────────────────────────────────────────────────────────── */
@@ -1030,13 +1043,27 @@
     margin-top: var(--sa-stack-32);
   }
 
+  /* An ingested section heading sits one level under the band's own h2, so it
+     is headline-3 in ink.
+     TWO EARLIER ATTEMPTS WERE WRONG, both for the same reason — reading a token
+     name instead of its value. Brand blue at `title-3` (0.875rem) rendered as a
+     small blue line that read as a link; `title-2` is 1rem, exactly the size of
+     the body text beneath it. In this scale `title-*` is a LABEL ramp, not a
+     heading ramp: headings are `headline-*`. */
   .orgd__ingested-heading {
     margin: 0 0 var(--sa-stack-12);
-    font-size: var(--sa-type-title-3-size);
-    line-height: var(--sa-type-title-3-lh);
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
     font-weight: var(--sa-font-weight-semibold);
-    color: var(--sa-text-brand-primary-bolder);
+    color: var(--sa-text-neutral-bolder);
     scroll-margin-top: var(--sa-stack-32);
+  }
+
+  /* Follows a paragraph of prose rather than another heading, so it buys its
+     own air. Declared AFTER the rule above: both are one class deep, and the
+     shorthand `margin` there would otherwise reset this longhand. */
+  .orgd__highlights-heading {
+    margin-top: var(--sa-stack-32);
   }
 
   /* ── Messages ──────────────────────────────────────────────────────────── */
@@ -1060,9 +1087,12 @@
     border-radius: var(--sa-cmp-card-radius);
   }
 
+  /* The rule marks the QUOTE, so it ends where the quote ends. With `flex: 1`
+     it stretched to the tallest card in the row and drew a 200px rule down
+     empty space beside the shortest statement. The footer takes the slack
+     instead, which also lines every attribution up along the card's bottom. */
   .orgd__message-quote {
     margin: 0;
-    flex: 1;
     padding-left: var(--sa-padding-16);
     border-left: 2px solid var(--sa-border-brand-primary-base);
   }
@@ -1075,6 +1105,7 @@
   }
 
   .orgd__message-by {
+    margin-top: auto;
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-4);

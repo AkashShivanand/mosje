@@ -362,13 +362,32 @@ export function OrganisationDetail({
           })
         )}
         {detail?.aboutHighlights != null && detail.aboutHighlights.length > 0 && (
+          <>
+            {detail.aboutHighlightsHeading != null && (
+              <h3
+                id={slugify(detail.aboutHighlightsHeading)}
+                className="orgd__ingested-heading orgd__highlights-heading"
+              >
+                {detail.aboutHighlightsHeading}
+              </h3>
+            )}
           <ul className="orgd__highlights">
             {detail.aboutHighlights.map((h) => (
               <li key={h.title} className="orgd__highlight-card">
                 <span className="orgd__card-icon">
                   <Icon name={h.icon ?? "verified"} size={32} />
                 </span>
-                <h3 className="orgd__card-title">{h.title}</h3>
+                {/*
+                  * h4 when the set has its own h3 heading above it, h3 when it
+                  * does not — the cards are CHILDREN of that heading, and two
+                  * h3s where one contains the others describes a flat page that
+                  * isn't flat.
+                  */}
+                {detail.aboutHighlightsHeading != null ? (
+                  <h4 className="orgd__card-title">{h.title}</h4>
+                ) : (
+                  <h3 className="orgd__card-title">{h.title}</h3>
+                )}
                 <p className="orgd__card-desc">{h.description}</p>
                 {h.href != null && (
                   <NextLink href={h.href} className="orgd__card-cta">
@@ -379,6 +398,7 @@ export function OrganisationDetail({
               </li>
             ))}
           </ul>
+          </>
         )}
       </>
     ),
@@ -592,6 +612,32 @@ export function OrganisationDetail({
    * PM-AJAY's endpoint into the template every one of 178 organisations renders
    * would put a scheme-specific fetch on 177 pages that have no use for it.
    */
+  /*
+   * The organisation's own published figures, as one strip.
+   *
+   * `FactStrip` without `overlap` — the overlapping treatment belongs to the
+   * card that straddles the hero, and a second one mid-page would look like a
+   * second hero. The `asOf` line sits under the heading because a counter with
+   * no date on a government page reads as today's number.
+   */
+  if (detail?.impact != null && detail.impact.items.length > 0) {
+    const im = detail.impact;
+    bands.push({
+      id: "impact",
+      body: (
+        <>
+          <SectionTitle
+            as={2}
+            title={im.heading}
+            description={`As published by the Department on ${im.asOf}.`}
+            headingId="impact-heading"
+          />
+          <FactStrip ariaLabel={`${org.title} in numbers`} items={im.items} />
+        </>
+      ),
+    });
+  }
+
   if (reachSlot != null) {
     bands.push({ id: "reach", body: reachSlot });
   }
