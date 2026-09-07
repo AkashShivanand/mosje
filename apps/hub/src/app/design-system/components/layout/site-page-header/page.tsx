@@ -26,7 +26,7 @@ export default function Page(): React.JSX.Element {
       name="Site Page Header"
       status="Stable"
       summary="The blue band every website page opens with, in two levels. It is a full-bleed banner with a brand gradient, an optional portrait and an overlapping slot beneath — not the portal title row."
-      figma={{ absent: "Not yet linked to a Figma node." }}
+      figma={{ node: "sitePageHeader" }}
       specimen={<Specimen />}
       propsFrom="SitePageHeaderProps"
       a11y={A11Y}

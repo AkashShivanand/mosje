@@ -12665,6 +12665,12 @@ export const GENERATED_PROPS = {
         "description": "`landing` only — the portrait on the trailing edge. The halo is drawn by this component, not by the caller: the rings are the band's own treatment and every landing page should get the same one. Pass the picture; the plaque is ours."
       },
       {
+        "name": "mediaLabel",
+        "type": "string",
+        "required": false,
+        "description": "Names the media column, which stops it being hidden from assistive technology. THE STATIC PORTRAIT IS DECORATIVE AND THE CAROUSEL IS NOT. `media` is `aria-hidden` by contract — it repeats nothing the copy says, so a reader who never sees it loses nothing. That contract breaks the moment the slot holds CONTROLS: buttons inside an `aria-hidden` subtree stay in the tab order while being invisible to a screen reader, which is worse than either hiding them properly or exposing them properly. So a caller passing interactive media passes a label with it, and the column becomes a named region instead of a hidden one. This is the difference between the `landing` header's two media variants — still and carousel — and it is a real one, not a styling choice."
+      },
+      {
         "name": "overlay",
         "type": "React.ReactNode",
         "required": false,

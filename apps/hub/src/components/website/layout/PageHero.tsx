@@ -1,9 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Icon, SitePageHeader } from "@mosje/design-system";
+import { Icon, SitePageHeader,
+  Carousel,
+} from "@mosje/design-system";
 import { PageTrail, type Crumb } from "./page-trail";
 
 export interface PageHeroProps {
+  /**
+   * Photographs for the header's circular carousel — the second of the landing
+   * header's two media variants.
+   *
+   * When present it replaces the still portrait: the source page cycles four
+   * pictures of the campaign in the same circle the estate draws one in, and
+   * cloning that as a single still lost three of the four. `mediaLabel` goes
+   * with it, because a carousel is not decorative — see `SitePageHeader`.
+   */
+  heroSlides?: { src: string; alt: string }[];
+  /** Names the carousel, e.g. "Nasha Mukt Bharat Abhiyaan photographs". */
+  heroSlidesLabel?: string;
   title: string;
   breadcrumb: Crumb[];
   /**
@@ -84,6 +98,8 @@ export function PageHero({
   level,
   backHref,
   hasOverlappingFacts,
+  heroSlides,
+  heroSlidesLabel,
 }: PageHeroProps) {
   /*
    * A wide banner arriving through `logoSrc` is a portrait, not a mark. The
@@ -101,9 +117,10 @@ export function PageHero({
       ? logoSrc
       : undefined;
 
+  const hasCarousel = (heroSlides?.length ?? 0) > 0;
   const photo = featuredImage ?? bannerFromLogo;
   const mark = logoSrc && logoSrc !== photo ? logoSrc : undefined;
-  const variant = level ?? (photo ? "landing" : "inner");
+  const variant = level ?? (photo || hasCarousel ? "landing" : "inner");
 
   /*
    * A LANDING PAGE ALWAYS GETS THE PORTRAIT; AN INNER PAGE NEVER DOES.
@@ -186,8 +203,36 @@ export function PageHero({
             </span>
           ) : undefined
         }
+        mediaLabel={hasCarousel ? heroSlidesLabel : undefined}
         media={
-          portrait ? (
+          hasCarousel ? (
+            /*
+             * THE DESIGN SYSTEM'S OWN `Carousel`, not a second one.
+             *
+             * It already carries the WAI-ARIA pattern, the pause control, the
+             * reduced-motion rule and the dot behaviour the library documents —
+             * dots are buttons with `aria-current`, never tabs, because a
+             * tablist promises a roving arrow-key model this does not have.
+             * What the header adds is the SHAPE: the circle, and the controls
+             * lifted onto it. A component that already exists does not get
+             * written twice so one page can be round.
+             */
+            <span className="sa-siteheader__carousel">
+              <Carousel label={heroSlidesLabel ?? "Photographs"}>
+                {heroSlides!.map((s) => (
+                  <Image
+                    key={s.src}
+                    src={s.src}
+                    alt={s.alt}
+                    width={340}
+                    height={340}
+                    className="size-full object-cover"
+                    priority
+                  />
+                ))}
+              </Carousel>
+            </span>
+          ) : portrait ? (
             /*
              * 340px. The handoff's portrait is 385 inside a 489 plaque; at the
              * estate's 1320 cap the trailing column is ~416, so the picture takes

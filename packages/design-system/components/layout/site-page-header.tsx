@@ -48,6 +48,23 @@ export interface SitePageHeaderProps extends React.HTMLAttributes<HTMLElement> {
    */
   media?: React.ReactNode;
   /**
+   * Names the media column, which stops it being hidden from assistive
+   * technology.
+   *
+   * THE STATIC PORTRAIT IS DECORATIVE AND THE CAROUSEL IS NOT. `media` is
+   * `aria-hidden` by contract — it repeats nothing the copy says, so a reader
+   * who never sees it loses nothing. That contract breaks the moment the slot
+   * holds CONTROLS: buttons inside an `aria-hidden` subtree stay in the tab
+   * order while being invisible to a screen reader, which is worse than either
+   * hiding them properly or exposing them properly.
+   *
+   * So a caller passing interactive media passes a label with it, and the
+   * column becomes a named region instead of a hidden one. This is the
+   * difference between the `landing` header's two media variants — still and
+   * carousel — and it is a real one, not a styling choice.
+   */
+  mediaLabel?: string;
+  /**
    * A band that OVERLAPS the header's lower edge — the "at a glance" fact card.
    *
    * A slot rather than a `facts` array, because the design system already has
@@ -100,6 +117,7 @@ export function SitePageHeader({
   lead,
   actions,
   media,
+  mediaLabel,
   overlay,
   reservesOverlap = false,
   headingId,
@@ -133,10 +151,16 @@ export function SitePageHeader({
             ) : null}
           </div>
 
-          {/* Decorative by contract: the portrait repeats nothing the copy does
-              not already say, so a reader who never sees it loses nothing. */}
+          {/* Decorative by contract UNLESS it is labelled — see `mediaLabel`.
+              A still portrait repeats nothing the copy says and is hidden; a
+              carousel carries its own pictures and controls and is not. */}
           {isLanding && media ? (
-            <div className="sa-siteheader__media" aria-hidden="true">
+            <div
+              className="sa-siteheader__media"
+              aria-hidden={mediaLabel == null ? true : undefined}
+              aria-label={mediaLabel}
+              role={mediaLabel != null ? "region" : undefined}
+            >
               <div className="sa-siteheader__halo">
                 {/*
                  * THE PULSE IS ITS OWN ELEMENT BECAUSE THREE RINGS NEED THREE
