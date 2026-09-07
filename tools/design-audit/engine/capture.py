@@ -58,6 +58,26 @@ EXTRACT_JS = r"""
     const wrap = el.closest('label');
     return wrap ? wrap.innerText.trim() : null;
   };
+  // What a control CONTAINS, not just what it is.
+  //
+  // This inventory recorded a field's name, label, type and options and stopped there, so
+  // every capture reported `value: undefined` for every control whether it was filled or
+  // empty. A reader — human or script — could not tell a completed step from a blank one
+  // after the fact. That gap cost a wrong diagnosis on 2026-09-07: AVYAY's Justification step
+  // was read as "three empty mandatory fields" on the strength of a key the extractor never
+  // wrote, and an engine "fix" built on it regressed a different scheme's walk.
+  //
+  // A password is never recorded, only whether something was typed. Everything else is
+  // truncated, because a capture is evidence, not a copy of the applicant's answers.
+  const valueOf = el => {
+    if (el.type === 'password') return el.value ? '[redacted]' : '';
+    if (el.type === 'checkbox' || el.type === 'radio') return el.checked;
+    if (el.tagName === 'SELECT') {
+      const o = el.selectedOptions && el.selectedOptions[0];
+      return o ? o.text.trim().slice(0, 200) : '';
+    }
+    return String(el.value ?? '').slice(0, 200);
+  };
   const fields = [];
   for (const el of document.querySelectorAll('input,select,textarea')) {
     if (el.type === 'hidden') continue;
@@ -68,7 +88,12 @@ EXTRACT_JS = r"""
       required: el.required || el.getAttribute('aria-required') === 'true',
       options: el.tagName === 'SELECT' ? [...el.options].map(o => o.text.trim()).slice(0, 200) : null,
       helper: el.placeholder || el.getAttribute('aria-describedby') || null,
-      validationMessage: null,
+      value: valueOf(el),
+      // Whether the browser's own constraint validation is unhappy, and what it says. This
+      // key was declared and hard-coded to null since the inventory was written; it is the
+      // one field that answers "why will this step not advance".
+      valid: typeof el.checkValidity === 'function' ? el.checkValidity() : null,
+      validationMessage: el.validationMessage || null,
       conditionalOn: null,
     });
   }
