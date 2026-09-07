@@ -2,6 +2,8 @@
 
 import { SiteHeader, type SiteHeaderProps, SAMAVESH_COBRAND } from "@mosje/design-system";
 
+import Link from "next/link";
+
 const BASE = "/portals/nhapoa";
 
 export interface NhapoaHeaderProps {
@@ -28,6 +30,7 @@ export function NhapoaHeader({
 }: NhapoaHeaderProps) {
   return (
     <SiteHeader
+      linkAs={Link}
       homeHref={BASE}
       variant="portal"
       sticky

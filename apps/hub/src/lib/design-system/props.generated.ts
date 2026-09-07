@@ -1398,6 +1398,12 @@ export const GENERATED_PROPS = {
         "description": "Render for a dark ground — the text stack resolves to the inverse token. Portals whose masthead is navy used to hand-roll white text to get this, which is how they ended up hand-rolling the whole lockup. Pass the white emblem asset alongside it (`National_Emblem_logo_white.svg`)."
       },
       {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "Router-aware link element — pass `next/link`. The lockup is the estate's \"back to the zone root\" control and sits on every page; as a bare anchor it costs a full document load. Defaults to `<a>`. See `navLinkTag`."
+      },
+      {
         "name": "textHiddenOnMobile",
         "type": "boolean",
         "required": false,
@@ -4738,6 +4744,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "Router-aware link for internal hrefs — pass `next/link`. External, disabled and fragment destinations always render a plain anchor. Defaults to `<a>`, which costs a full page load per click. See `navLinkTag`."
+      },
+      {
         "name": "onSelect",
         "type": "() => void",
         "required": false,
@@ -7974,6 +7986,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "Router-aware link for internal hrefs — pass `next/link`."
+      },
+      {
         "name": "onSelect",
         "type": "() => void",
         "required": false,
@@ -8008,6 +8026,12 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": ""
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "Router-aware link for internal hrefs — pass `next/link`."
       },
       {
         "name": "onSelect",
@@ -8313,6 +8337,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "Router-aware link for internal hrefs — pass `next/link`."
+      },
+      {
         "name": "onSelect",
         "type": "() => void",
         "required": false,
@@ -8341,6 +8371,12 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": ""
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "Router-aware link for internal hrefs — pass `next/link`."
       },
       {
         "name": "onOpenChange",
@@ -8447,6 +8483,12 @@ export const GENERATED_PROPS = {
         "type": "{ label?: string; /** BCP-47 tag of the LABEL's own language (e.g. \"hi\" for हिंदी) so a screen reader voices it correctly. */ lang?: string; onClick?: () => void } | false",
         "required": false,
         "description": ""
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "Router-aware link for internal hrefs — pass `next/link`. Without it every row in the sheet costs a full page load. See `navLinkTag`."
       },
       {
         "name": "onAccessibility",
@@ -9605,6 +9647,12 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "description": "Opens in a new tab. The cue is BUILT IN, not the caller's job: an `open_in_new` glyph beside the name and a visually-hidden \"(opens in a new tab)\". Every portal is a separate property in production, so this ends up on for all of them — and it is deliberately NOT a separate card style. A directory where every card carries the same decoration is a directory where the decoration means nothing, so it stays the quiet inline cue it is."
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "Router-aware link element — pass `next/link`. The card is how a citizen enters a portal from the website home page and from `/portals`; as a bare anchor every one of those entries costs a full document load. External and disabled cards stay a plain anchor. Defaults to `<a>`. See `navLinkTag`."
       },
       {
         "name": "org",
@@ -11123,6 +11171,12 @@ export const GENERATED_PROPS = {
         "description": "Controlled open state."
       },
       {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "Router-aware link element — pass `next/link`. Threaded to every portal card in the drawer and to the \"view all\" row. External destinations stay a plain anchor. Defaults to `<a>`. See `navLinkTag`."
+      },
+      {
         "name": "logoSrc",
         "type": "string",
         "required": false,
@@ -12438,6 +12492,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "{ label: \"English\" }",
         "description": "Language selector."
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "ROUTER-AWARE LINK FOR EVERY INTERNAL DESTINATION IN THE MASTHEAD — pass `next/link`. Threaded to the brand lockup, every nav entry, every dropdown and mega-menu row, and the sheet. PASS IT. Without it the masthead falls back to bare `<a href>`, and the masthead is on every page of every portal in the estate: one menu click then costs a full document load — the whole bundle re-fetched, the tree re-hydrated, the scroll position lost, and no prefetch to cover any of it. Measured on the website home page before this prop existed, \"Department → About Us\" re-fetched 30 script files and took 1.9s to `loadEventEnd`, on localhost with a warm cache. External, disabled and `\"#\"` destinations always stay a plain anchor whatever is passed here — see `navLinkTag`. Safe to pass from a server component: this file claims the client boundary, and the reference crosses it as a component, not a closure."
       },
       {
         "name": "maxWidth",

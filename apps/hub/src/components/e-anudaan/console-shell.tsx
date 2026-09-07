@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { SiteHeader, OrgLogo, PortalPage, type PortalNavGroup } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
@@ -67,6 +68,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
          button collapses the column, below it opens the drawer. */
       header={(navState) => (
         <SiteHeader
+          linkAs={Link}
           homeHref="/portals/e-anudaan/dashboard"
           variant="portal"
           emblemSrc="/images/emblem.svg"

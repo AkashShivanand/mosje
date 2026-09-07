@@ -81,6 +81,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
          that decision so no portal has to make it again. */
       header={(nav) => (
         <SiteHeader
+          linkAs={Link}
           onToggleNav={nav.toggle}
           navExpanded={nav.open}
           homeHref={BASE}

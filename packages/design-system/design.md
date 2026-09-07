@@ -12,6 +12,22 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-07 · System version: v0.63.0 (THE MASTHEAD TAKES `linkAs`, AND EVERY
+  MENU CLICK STOPPED RELOADING THE PAGE. `SiteHeader`, `NavSheet`, `BrandLockup` and the five
+  Navbar parts now route internal destinations through a link component the app supplies — the
+  same escape hatch `SiteFooter`, `ContentNav`, `Breadcrumb`, `Ticker` and `Pagination` have
+  carried for months. The masthead was the one navigation surface on every page of every portal
+  in the estate, and it was the only one that never got the prop, so every row in it was a bare
+  `<a href>`. Measured on the website home page before the change, one click from Department to
+  About Us re-fetched 30 script files and took 1.9s to `loadEventEnd`, on localhost with a warm
+  cache; it now fetches 11 and keeps the document, and `next/link` prefetches the destination in
+  production. PASS IT — the default is still `<a>`, because the package has no Next dependency and
+  is not gaining one. `navLinkTag` decides what may NOT be routed rather than leaving it to be
+  remembered: a disabled row stays a `<span role="link">`, and an external destination, anything
+  carrying a scheme or a protocol-relative host, and any `"#"` fragment all stay a plain anchor —
+  the last of those load-bearing, because a nav entry that owns a menu carries `href="#"` and
+  cancels its own click. Nothing about the rendering changed.)
+
   Last reviewed: 2026-09-06 · System version: v0.62.0 (THE LOGIN SHELL BINDS THE FOUR LAYOUT
   TOKENS THAT EXISTED FOR IT. `--sa-layout-login-{hero,panel}-width`, `-panel-gutter` and
   `-content-width` were published and consumed by nothing; the shell restated the geometry as

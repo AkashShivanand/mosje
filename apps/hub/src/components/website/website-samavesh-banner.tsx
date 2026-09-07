@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   SamaveshBanner as DSSamaveshBanner,
@@ -39,5 +40,5 @@ export function WebsiteSamaveshBanner({
     return null;
   }
 
-  return <DSSamaveshBanner {...props} />;
+  return <DSSamaveshBanner linkAs={Link} {...props} />;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { SiteHeader, type SiteHeaderProps, SAMAVESH_COBRAND } from "@mosje/design-system";
 
 const BASE = "/portals/tg";
@@ -29,6 +30,7 @@ export function TgHeader({
 }: TgHeaderProps) {
   return (
     <SiteHeader
+      linkAs={Link}
       homeHref={BASE}
       variant="portal"
       sticky

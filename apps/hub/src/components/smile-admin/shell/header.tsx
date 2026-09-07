@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon, SiteHeader } from "@mosje/design-system";
+import Link from "next/link";
 import type { AccountMenuItem } from "@mosje/design-system";
 import { useApp } from "@/store/smile-admin/app-context";
 import { ROLE_LABELS } from "@/lib/smile-admin/roles";
@@ -48,6 +49,7 @@ export function Header() {
 
   return (
     <SiteHeader
+      linkAs={Link}
       homeHref={BP}
       variant="portal"
       sticky

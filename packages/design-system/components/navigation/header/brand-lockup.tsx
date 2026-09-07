@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
+import { navLinkTag } from "./nav-link-tag";
 import type { BrandLines } from "./types";
 import "./header.css";
 
@@ -11,6 +12,12 @@ export interface BrandLockupProps {
   lines: BrandLines;
   /** Home link href. @default "/" */
   href?: string;
+  /**
+   * Router-aware link element — pass `next/link`. The lockup is the estate's
+   * "back to the zone root" control and sits on every page; as a bare anchor it
+   * costs a full document load. Defaults to `<a>`. See `navLinkTag`.
+   */
+  linkAs?: React.ElementType;
   /** Show the BETA badge above the text stack. @default false */
   beta?: boolean;
   /** Compact lockup for the app-shell header (smaller emblem + tighter type). */
@@ -43,14 +50,16 @@ export function BrandLockup({
   emblemAlt = "National Emblem of India",
   lines,
   href = "/",
+  linkAs,
   beta = false,
   compact = false,
   textHiddenOnMobile = false,
   inverse = false,
   className,
 }: BrandLockupProps): React.JSX.Element {
+  const Tag = navLinkTag({ href }, linkAs);
   return (
-    <a
+    <Tag
       href={href}
       className={cn("ds-hdr-lockup", compact && "is-compact", inverse && "is-inverse", className)}
       aria-label={`${lines.department} — Home`}
@@ -77,6 +86,6 @@ export function BrandLockup({
           )}
         </span>
       </span>
-    </a>
+    </Tag>
   );
 }

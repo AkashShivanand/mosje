@@ -7,6 +7,8 @@
 
 import { SiteHeader, SAMAVESH_COBRAND } from "@mosje/design-system";
 
+import Link from "next/link";
+
 // next/public assets are served under the portal basePath; the shared DS renders
 // a plain <img>, so srcs are prefixed explicitly.
 const IMG_BASE = "/portals/pm-ajay";
@@ -14,6 +16,7 @@ const IMG_BASE = "/portals/pm-ajay";
 export function Navbar() {
   return (
     <SiteHeader
+      linkAs={Link}
       homeHref={IMG_BASE}
       variant="portal"
       emblemSrc={`${IMG_BASE}/images/National-Emblem-logo.svg`}

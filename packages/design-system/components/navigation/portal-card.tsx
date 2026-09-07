@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { navLinkTag } from "./header/nav-link-tag";
 import { Icon } from "../utilities/icon";
 import { OrgLogo } from "../brand/org-logo";
 import type { OrgSlug } from "../brand/org-logo-registry";
@@ -42,6 +43,13 @@ export interface PortalCardProps
    * at build time instead of catching it at runtime.
    */
   href: string;
+  /**
+   * Router-aware link element — pass `next/link`. The card is how a citizen
+   * enters a portal from the website home page and from `/portals`; as a bare
+   * anchor every one of those entries costs a full document load. External and
+   * disabled cards stay a plain anchor. Defaults to `<a>`. See `navLinkTag`.
+   */
+  linkAs?: React.ElementType;
   /** Portal route, resolved to its mark through the `OrgLogo` registry. */
   path?: string;
   /** Org slug, if you have that rather than a route. */
@@ -124,15 +132,17 @@ export const PortalCard = React.forwardRef<HTMLAnchorElement, PortalCardProps>(
       ctaLabel = "Open portal",
       selected = false,
       disabled = false,
+      linkAs,
       className,
       ...rest
     },
     ref,
   ) {
     const detailed = variant === "detailed";
+    const Tag = navLinkTag({ href, external, disabled }, linkAs);
 
     return (
-      <a
+      <Tag
         ref={ref}
         href={disabled ? undefined : href}
         className={cn(
@@ -207,7 +217,7 @@ export const PortalCard = React.forwardRef<HTMLAnchorElement, PortalCardProps>(
             </span>
           </span>
         )}
-      </a>
+      </Tag>
     );
   },
 );

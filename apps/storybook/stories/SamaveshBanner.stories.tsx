@@ -4,6 +4,12 @@ import { SamaveshBanner, DEFAULT_SAMAVESH_PORTALS } from "@mosje/design-system";
 /**
  * **SamaveshBanner** — the canonical top banner and portal exploration drawer for SAMAVESH.
  *
+ *
+ * **`linkAs` — PASS `next/link`.** Internal destinations route through it;
+ * without it the card is a bare `<a href>` and each entry into a portal costs a
+ * FULL DOCUMENT LOAD, with no prefetch to cover it. External and disabled cards
+ * stay a plain anchor whatever is passed. These stories leave it unset because
+ * Storybook has no router — `<a>` is right HERE and wrong in the app.
  * Implements Figma node `7116:33784` & `7298:29968`.
  *
  * Features:

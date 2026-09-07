@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { OrgLogo, PortalPage, SiteHeader } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
@@ -52,6 +53,7 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
       nav={[{ items: role.nav }]}
       header={(nav) => (
         <SiteHeader
+          linkAs={Link}
           homeHref="/portals/e-anudaan"
           variant="portal"
           emblemSrc="/images/emblem.svg"

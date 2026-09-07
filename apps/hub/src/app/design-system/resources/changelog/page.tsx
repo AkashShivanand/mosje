@@ -32,9 +32,17 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.124.0",
+    version: "v0.125.0",
     date: "2026-09-07",
     current: true,
+    changes: [
+      { kind: "Added", text: "THE MASTHEAD TAKES `linkAs`, AND EVERY MENU CLICK STOPPED RELOADING THE PAGE. `SiteHeader`, `NavSheet`, `BrandLockup`, `NavItemLink`, `NavDropdown`, `DropdownItem`, `MegaMenu` and `MegaMenuItem` now route internal destinations through a link component the app supplies — the same escape hatch `SiteFooter`, `ContentNav`, `Breadcrumb`, `Ticker` and `Pagination` have carried for months. The masthead, the one navigation surface on every page of every portal in the estate, was the only one that never got it, so every row in it was a bare `<a href>`: measured on the website home page, one click from Department to About Us re-fetched 30 script files and took 1.9s to `loadEventEnd`, on localhost with a warm cache. It now fetches 11 and keeps the document. Nothing about the rendering changed" },
+      { kind: "Fixed", text: "FOUR KINDS OF HREF MUST NOT GO THROUGH A ROUTER, AND `navLinkTag` IS WHERE THAT IS DECIDED RATHER THAN REMEMBERED. A disabled row is still a `<span role=\"link\">`; an external destination, anything carrying a scheme or a protocol-relative host, and any `\"#\"` fragment all stay a plain anchor. The third is load-bearing: a nav entry that owns a menu carries `href=\"#\"` and cancels its own click, so routing it would ask the router for a page that does not exist" },
+    ],
+  },
+  {
+    version: "v0.124.0",
+    date: "2026-09-07",
     changes: [
       { kind: "Added", text: "THE SCREEN-TEMPLATE CATALOGUE IS CLOSED — ALL EIGHTEEN NOW HAVE CODE. Four shipped on 6 September against a decision table that promised eighteen, which left fourteen rows telling a reader to import something that did not exist. The citizen's journey is now complete end to end: Chooser Screen, Form Screen, Checklist Screen, Review Screen and Confirmation Screen. The officer's half, which the handoff barely draws at all, has Decision Screen, Report Screen and Settings Screen. Catalogue Screen, Search Screen, Inbox Screen, Gallery Screen and Status Screen cover the surfaces either role reaches sideways. Auth Screen is an ALIAS of Portal Login Template — a re-export with no second component and no render layer — because the auth geometry was the one part of the handoff that needed no correction. Every one resolves its reading once through `resolveScreenState` and routes its body through `ScreenBody`, so no code path skips the empty state, and every sentence is a prop because GIGW requires the estate to be bilingual" },
       { kind: "Added", text: "CONFIRMATION SCREEN EXISTS BECAUSE NO SOURCE DRAWS ONE. The handoff's citizen journey ends at submit and returns to the dashboard, so a citizen who has just applied for a grant has no reference to quote at a counter and no way to prove the application went through. It is also the one template with no data states, deliberately: it renders a fact the caller already holds, because a confirmation that could be \"loading\" is not one the citizen can trust" },

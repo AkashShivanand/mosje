@@ -74,6 +74,24 @@ export interface SiteHeaderProps {
    * @default "/"
    */
   homeHref?: string;
+  /**
+   * ROUTER-AWARE LINK FOR EVERY INTERNAL DESTINATION IN THE MASTHEAD — pass
+   * `next/link`. Threaded to the brand lockup, every nav entry, every dropdown and
+   * mega-menu row, and the sheet.
+   *
+   * PASS IT. Without it the masthead falls back to bare `<a href>`, and the masthead
+   * is on every page of every portal in the estate: one menu click then costs a full
+   * document load — the whole bundle re-fetched, the tree re-hydrated, the scroll
+   * position lost, and no prefetch to cover any of it. Measured on the website home
+   * page before this prop existed, "Department → About Us" re-fetched 30 script files
+   * and took 1.9s to `loadEventEnd`, on localhost with a warm cache.
+   *
+   * External, disabled and `"#"` destinations always stay a plain anchor whatever is
+   * passed here — see `navLinkTag`. Safe to pass from a server component: this file
+   * claims the client boundary, and the reference crosses it as a component, not a
+   * closure.
+   */
+  linkAs?: React.ElementType;
   /** Portal: collapse/menu toggle rendered on the far left of the brand row. */
   onToggleNav?: () => void;
   /** Portal: whether the app-shell nav/sidebar controlled by the toggle is open (drives `aria-expanded`). */
@@ -221,6 +239,7 @@ export function SiteHeader({
   brandLines,
   beta = true,
   homeHref = "/",
+  linkAs,
   onToggleNav,
   navExpanded,
   navControlsId,
@@ -730,6 +749,7 @@ export function SiteHeader({
       item={item}
       open={openLabel === item.label}
       onOpenChange={(next) => setOpenLabel(next ? item.label : null)}
+      linkAs={linkAs}
     />
   ));
 
@@ -810,6 +830,7 @@ export function SiteHeader({
           emblemAlt={emblemAlt}
           lines={brandLines}
           href={homeHref}
+          linkAs={linkAs}
           compact
           textHiddenOnMobile
         />
@@ -899,6 +920,7 @@ export function SiteHeader({
               emblemAlt={emblemAlt}
               lines={brandLines}
               href={homeHref}
+              linkAs={linkAs}
               beta={isCompact ? false : beta}
               compact={isCompact}
             />
@@ -1062,6 +1084,7 @@ export function SiteHeader({
           emblemAlt={emblemAlt}
           brandLines={brandLines}
           homeHref={homeHref}
+          linkAs={linkAs}
           actions={actions}
           search={search}
           searchValue={query}

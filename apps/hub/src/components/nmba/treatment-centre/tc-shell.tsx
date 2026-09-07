@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Footer, Icon, PortalPage, SiteHeader, SAMAVESH_COBRAND, type SidebarNavChild, type SidebarNavGroup, type SidebarNavItem, OrgLogo } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
@@ -64,6 +65,7 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
       footer={<Footer />}
       header={(nav) => (
         <SiteHeader
+          linkAs={Link}
           homeHref={`${BASE}/treatment-centre`}
           variant="portal"
           sticky

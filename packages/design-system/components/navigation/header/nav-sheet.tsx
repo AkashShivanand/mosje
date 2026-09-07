@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
-import { navDisabledAria, navTag } from "./nav-link-tag";
+import { navDisabledAria, navLinkTag } from "./nav-link-tag";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
 import { AccessibilityControls } from "../../utilities/accessibility-controls";
@@ -23,6 +23,11 @@ export interface NavSheetProps {
   brandLines: BrandLines;
   /** Where the lockup links. Same rule as SiteHeader: pass the zone root. */
   homeHref?: string;
+  /**
+   * Router-aware link for internal hrefs — pass `next/link`. Without it every row
+   * in the sheet costs a full page load. See `navLinkTag`.
+   */
+  linkAs?: React.ElementType;
   /** Trailing CTA (Login / Admin Login), pinned above the list. */
   actions?: React.ReactNode;
   /**
@@ -107,6 +112,7 @@ export function NavSheet({
   emblemAlt,
   brandLines,
   homeHref = "/",
+  linkAs,
   actions,
   search,
   searchValue,
@@ -300,6 +306,9 @@ export function NavSheet({
           {nav.map((item) => {
             const sub = subContent(item);
             const hasSub = !!sub;
+            /* A row with a sub-menu is a disclosure BUTTON, so only a leaf row is a
+               link and only a leaf row needs the router element. */
+            const ItemTag = navLinkTag(item, linkAs);
             const isOpen = openLabel === item.label;
             const subId = `ds-navsheet-sub-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
             return (
@@ -320,7 +329,7 @@ export function NavSheet({
                     />
                   </button>
                 ) : (
-                  <a
+                  <ItemTag
                     href={item.href}
                     className={cn("ds-navsheet__link", item.active && "is-active")}
                     aria-current={item.active ? "page" : undefined}
@@ -329,7 +338,7 @@ export function NavSheet({
                     onClick={onClose}
                   >
                     <span>{item.label}</span>
-                  </a>
+                  </ItemTag>
                 )}
 
                 {hasSub && isOpen && sub!.columns && (
@@ -341,14 +350,14 @@ export function NavSheet({
                           <ul className="ds-navsheet__mega-list">
                             {col.items.map((it) => (
                               <li key={it.abbr}>
-                                <MegaMenuItem item={it} onSelect={onClose} />
+                                <MegaMenuItem item={it} onSelect={onClose} linkAs={linkAs} />
                               </li>
                             ))}
                           </ul>
                         ) : (
                           <ul className="ds-navsheet__sub">
                             {col.links?.map((c) => {
-                              const Tag = navTag(c.disabled);
+                              const Tag = navLinkTag(c, linkAs);
                               return (
                               <li key={c.label}>
                                 <Tag
@@ -375,7 +384,7 @@ export function NavSheet({
                 {hasSub && isOpen && sub!.children && (
                   <ul id={subId} className="ds-navsheet__sub">
                     {sub!.children.map((c) => {
-                      const Tag = navTag(c.disabled);
+                      const Tag = navLinkTag(c, linkAs);
                       return (
                       <li key={c.label}>
                         <Tag
