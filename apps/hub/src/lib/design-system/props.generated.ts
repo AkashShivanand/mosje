@@ -13290,6 +13290,13 @@ export const GENERATED_PROPS = {
         "description": "Offer the `Tabs / More` overflow menu when the row cannot show every tab. OFF by default, and opt-in for a reason: turning it on wraps the tablist in a positioning element, so the rendered DOM changes. Every consumer that does not ask for it renders exactly what it did before. Horizontal only — a vertical list wraps its labels instead of clipping them, so it has nothing to overflow. The button appears only when tabs are actually hidden, never as permanent chrome. It does NOT remove tabs from the tablist: every tab stays focusable and arrow-reachable, and the menu is a pointer shortcut to the ones scrolled out of view."
       },
       {
+        "name": "panel",
+        "type": "boolean",
+        "required": false,
+        "default": "true\n\nPass `false` for a tablist that has no panels at all — a specimen on a\ndocumentation page, or a row used purely as navigation. `aria-controls` is\nthen omitted from every tab, because there is nothing to control and an\n`aria-controls` pointing at a missing id is a critical\n`aria-valid-attr-value` violation.\n\nIt has to be declared rather than detected: the panel is rendered by the\nconsumer, often as a sibling this component never sees, and a runtime DOM\nprobe would have to run after paint and then change an ARIA attribute\nunderneath a screen reader.",
+        "description": "Whether a `TabPanel` for the active tab is rendered somewhere on the page."
+      },
+      {
         "name": "size",
         "type": "TabSize = \"s\" | \"m\" | \"l\"",
         "required": false,

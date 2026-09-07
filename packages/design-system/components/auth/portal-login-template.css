@@ -3,6 +3,13 @@
 @layer theme, base, components, utilities;
 
 @layer components {
+  /* Anything a portal hangs below the form. Same gutter as the column above it,
+     so it lines up rather than sitting eight pixels inside. */
+  .ds-plogin__extra {
+    padding-inline: var(--sa-padding-16);
+    padding-block-end: var(--sa-padding-24);
+  }
+
   /* ── Which column scrolls ─────────────────────────────────────────────────
      The design is a FIXED 1440 x 960 canvas on which everything fits, so it
      never had to answer this. A real browser does: at 1440 x 640 the login page

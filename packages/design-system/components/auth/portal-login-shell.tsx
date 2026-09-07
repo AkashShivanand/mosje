@@ -385,7 +385,10 @@ export function PortalLoginShell({
           </div>
 
           {/* Extra content (e.g. Portal Switcher Grid) */}
-          {extraContent && <div className="px-6 pb-6">{extraContent}</div>}
+          {/* The panel's own gutter, not a Tailwind spacing utility. `px-6 pb-6`
+              was 24px against the column's 16 — so anything a portal put here
+              sat eight pixels inside the form above it. */}
+          {extraContent && <div className="ds-plogin__extra">{extraContent}</div>}
 
         </div>
       </div>
