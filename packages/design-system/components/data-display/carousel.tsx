@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Icon } from "../utilities/icon";
 import { cn } from "../../utils/cn";
 import "./carousel.css";
 
@@ -205,59 +206,85 @@ export function Carousel({
         </div>
       </div>
 
+      {/*
+        THREE ZONES, AND THE MIDDLE ONE IS THE ONLY ONE THAT IS CENTRED.
+
+        The whole row used to be one centred flex line, so the moment the pause
+        control joined it the dots slid 37px off the middle of the slide they
+        report on — measured on this component's own documentation page, where
+        the plain carousel's dots sat at 664 and the auto-rotating one's at 627
+        over an identical 664 slide centre. The position indicator has to stay
+        under the middle of the thing whose position it indicates, whatever else
+        is on the row. `1fr auto 1fr` guarantees it: the step controls and dots
+        own the centre column, and anything else lives in a side column that
+        cannot push them.
+      */}
       <div className="ds-carousel__controls">
-        <button
-          type="button"
-          className="ds-carousel__arrow"
-          aria-label={`Previous slide, ${label}`}
-          onClick={() => goTo(index - 1)}
-        >
-          <span aria-hidden>&#8592;</span>
-        </button>
+        <div className="ds-carousel__controls-lead">
+          {autoPlay && !reducedMotion ? (
+            <button
+              type="button"
+              className="ds-carousel__play"
+              // WCAG 2.2.2: anything that moves for more than five seconds needs
+              // a way to stop it, and the control has to say which state pressing
+              // it produces rather than which state it is in.
+              //
+              // The glyph, not the word. "Pause" and "Play" are 66px and 55px
+              // wide, so a text label made the control change size under the
+              // reader's own finger and shifted its neighbours with it. The name
+              // is on `aria-label` either way, and it is the fuller sentence.
+              aria-label={playing ? `Stop rotating ${label}` : `Start rotating ${label}`}
+              aria-pressed={!playing}
+              onClick={() => setPlaying((p) => !p)}
+            >
+              <Icon name={playing ? "pause" : "play_arrow"} size={20} />
+            </button>
+          ) : null}
+        </div>
 
-        {showDots ? (
-          <div className="ds-carousel__dots">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                type="button"
-                className={cn(
-                  "ds-carousel__dot",
-                  i === index && "ds-carousel__dot--current",
-                )}
-                // The dot is not a tab: it does not control a panel that stays
-                // put, so `aria-current` says "this is where you are" without
-                // claiming a tablist the rest of the markup does not support.
-                aria-current={i === index || undefined}
-                aria-label={`Slide ${i + 1} of ${count}`}
-                onClick={() => goTo(i)}
-              />
-            ))}
-          </div>
-        ) : null}
-
-        <button
-          type="button"
-          className="ds-carousel__arrow"
-          aria-label={`Next slide, ${label}`}
-          onClick={() => goTo(index + 1)}
-        >
-          <span aria-hidden>&#8594;</span>
-        </button>
-
-        {autoPlay && !reducedMotion ? (
+        <div className="ds-carousel__controls-main">
           <button
             type="button"
-            className="ds-carousel__play"
-            // WCAG 2.2.2: anything that moves for more than five seconds needs
-            // a way to stop it, and the control has to say which state pressing
-            // it produces rather than which state it is in.
-            aria-label={playing ? `Stop rotating ${label}` : `Start rotating ${label}`}
-            onClick={() => setPlaying((p) => !p)}
+            className="ds-carousel__arrow"
+            aria-label={`Previous slide, ${label}`}
+            onClick={() => goTo(index - 1)}
           >
-            {playing ? "Pause" : "Play"}
+            <Icon name="chevron_left" size={20} />
           </button>
-        ) : null}
+
+          {showDots ? (
+            <div className="ds-carousel__dots">
+              {slides.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  className={cn(
+                    "ds-carousel__dot",
+                    i === index && "ds-carousel__dot--current",
+                  )}
+                  // The dot is not a tab: it does not control a panel that stays
+                  // put, so `aria-current` says "this is where you are" without
+                  // claiming a tablist the rest of the markup does not support.
+                  aria-current={i === index || undefined}
+                  aria-label={`Slide ${i + 1} of ${count}`}
+                  onClick={() => goTo(i)}
+                />
+              ))}
+            </div>
+          ) : null}
+
+          <button
+            type="button"
+            className="ds-carousel__arrow"
+            aria-label={`Next slide, ${label}`}
+            onClick={() => goTo(index + 1)}
+          >
+            <Icon name="chevron_right" size={20} />
+          </button>
+        </div>
+
+        {/* Balances the lead zone so the centre column really is centred. */}
+        <div className="ds-carousel__controls-trail" aria-hidden="true" />
       </div>
 
       {/* Moving by button changes nothing a screen reader would notice on its

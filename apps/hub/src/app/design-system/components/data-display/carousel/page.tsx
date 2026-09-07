@@ -43,9 +43,18 @@ const A11Y: A11yItem[] = [
     level: "AA",
     status: "verified",
     evidence:
-      "Arrows bind --sa-control-height-md (40px). The dots draw an 8px mark inside a 32px button, so the mark is small and the target is not. Measured with getBoundingClientRect on this page.",
+      "On a fine pointer the arrows bind --sa-control-height-md (40px) and the dots draw an 8px mark inside a 32px button, so the mark is small and the target is not. On a coarse pointer every control in the bar grows to 44x44 with 8px between, which is what UX4G 3.0 §3 asks for rather than the 24x24 WCAG floor — measured from the computed styles on an emulated 375px touch device, 2026-09-07: arrow 44x44, dot 44x44, gap 8px.",
     description:
-      "The dot is small; its target is 32px square, because these controls are the only way most readers reach slide two.",
+      "The dot is small; its target is not — 32px on a mouse, 44px on a thumb, because these controls are the only way most readers reach slide two.",
+  },
+  {
+    criterion: "1.4.1 Use of Colour",
+    level: "A",
+    status: "verified",
+    evidence:
+      "The current dot differs in SHAPE, not only in fill: measured from the computed ::before on this page, the current mark is 20px wide against 8px for the rest, so the state survives a monochrome rendering and forced-colors mode, where background-color is replaced outright. A forced-colors block keeps an outline on it as well.",
+    description:
+      "Which slide you are on is carried by the width of the mark, so it does not depend on being able to see the blue.",
   },
 ];
 
@@ -96,6 +105,22 @@ export default function CarouselPage(): React.JSX.Element {
             <p>
               Slides two onwards are, in practice, unread. If an announcement matters, it belongs on
               the page — the carousel may repeat it, but it must not be the only place it appears.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-bar">
+            <h2 id="cdp-bar" className="cdp__h2">The Dots Stay Under the Middle of the Band</h2>
+            <p>
+              The control bar is three columns and only the middle one is centred: the step
+              arrows and the dots own it, and anything else — today the rotation control, tomorrow
+              a counter — sits in a side column that cannot push them. When the bar was one
+              centred row, switching <code>autoPlay</code> on slid the dots 37px off the middle of
+              the slide they report on, so the position indicator moved for a reason that had
+              nothing to do with position.
+            </p>
+            <p>
+              The rotation control is drawn without a fill or a border. It is a mode switch, not a
+              third arrow, and given the arrows&apos; treatment it otherwise read as a navigation
+              control that had wandered to the left edge.
             </p>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-track">
