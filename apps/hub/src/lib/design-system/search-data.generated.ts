@@ -153,6 +153,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "lock"
   },
   {
+    "title": "Auth Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/auth-screen",
+    "keywords": "auth screen — design system getting started why an alias rather than nothing example  tokens wcag accessibility",
+    "description": "Credentials, before there is a session. An alias of Portal Login Template under the name the decision table uses.",
+    "type": "component",
+    "iconName": "widgets"
+  },
+  {
     "title": "Avatar — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/avatar",
@@ -353,6 +362,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Catalogue Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/catalogue-screen",
+    "keywords": "catalogue screen — design system getting started state the kind, taken from the destination page it — never scroll it inside a card example  tokens wcag accessibility",
+    "description": "A browsable listing of documents or cards, filtered and paged.",
+    "type": "component",
+    "iconName": "widgets"
+  },
+  {
     "title": "Changelog",
     "section": "Resources",
     "href": "/design-system/resources/changelog",
@@ -416,6 +434,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Checklist Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/checklist-screen",
+    "keywords": "checklist screen — design system getting started four states, and the middle two are the point findings are shown, not hidden as a wizard step  tokens wcag accessibility",
+    "description": "A required set of documents, grouped, each with its own upload state and findings.",
+    "type": "component",
+    "iconName": "widgets"
+  },
+  {
     "title": "Chip — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/chip",
@@ -423,6 +450,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A compact pill used as a filter toggle, a removable tag, a dropdown trigger or a static category, with an optional count.",
     "type": "component",
     "iconName": "edit_note"
+  },
+  {
+    "title": "Chooser Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/chooser-screen",
+    "keywords": "chooser screen — design system getting started one design, not three omit, or explain — never grey out silently example  tokens wcag accessibility",
+    "description": "A finite set of mutually exclusive options, rendered as radio cards with a single Continue.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Color — Foundations",
@@ -469,6 +505,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The remarks officers leave on a case — Event List plus a composer, read oldest first, with no edit control because a remark that can change after another officer has acted on it is not a record.",
     "type": "component",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "Confirmation Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/confirmation-screen",
+    "keywords": "confirmation screen — design system getting started the journey ended with no receipt it has no data states, deliberately example  tokens wcag accessibility",
+    "description": "The post-submit receipt: a reference number, what happens next, and how to keep a copy.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Consent Line — Design System",
@@ -578,6 +623,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A period — the two dates a report, a filter or a sanction window runs between. Two Date Pickers in a named group, with the presets a dashboard actually uses.",
     "type": "component",
     "iconName": "edit_note"
+  },
+  {
+    "title": "Decision Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/decision-screen",
+    "keywords": "decision screen — design system getting started side by side, scrolling together omit a verdict this role may not record example  tokens wcag accessibility",
+    "description": "A record beside the verdict panel: the officer",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Declaration Checkbox — Design System",
@@ -816,6 +870,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Form Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/form-screen",
+    "keywords": "form screen — design system getting started count the fields — the boundary is not a feeling the save is confirmed, never optimistic example  tokens wcag accessibility",
+    "description": "One record, editable in a single pass: sectioned fields, an error summary and one submit.",
+    "type": "component",
+    "iconName": "widgets"
+  },
+  {
     "title": "Form Section — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/form-section",
@@ -832,6 +895,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The stages of one workflow in order, each bar sized by its share of the first, with the carry-through stated beside it.",
     "type": "component",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "Gallery Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/gallery-screen",
+    "keywords": "gallery screen — design system getting started density, not capability alt text and captions are the caller&rsquo;s example  tokens wcag accessibility",
+    "description": "A managed media collection: grid or list, the same actions in both, and a lightbox.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Gauge — Design System",
@@ -943,6 +1015,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "type": "foundation",
     "badge": "Stable",
     "iconName": "palette"
+  },
+  {
+    "title": "Inbox Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/inbox-screen",
+    "keywords": "inbox screen — design system getting started one primitive, three views mark-all appears only when there is something to mark example  tokens wcag accessibility",
+    "description": "A grouped, filterable list of dated events — notifications, audit entries, activity.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "India Bubble Map — Design System",
@@ -1411,6 +1492,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "widgets"
   },
   {
+    "title": "Report Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/report-screen",
+    "keywords": "report screen — design system getting started four things the printer needs and no screen does both halves of a ratio from one source example  tokens wcag accessibility",
+    "description": "A print-first tabular statement, with its criteria and issuer on the page rather than in browser chrome.",
+    "type": "component",
+    "iconName": "widgets"
+  },
+  {
     "title": "Required Fields Legend — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/required-fields-legend",
@@ -1436,6 +1526,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "Quick links to the SAMAVESH Figma library, Storybook, GitHub, changelog, governance, contributing guide, and roadmap — plus how to get help.",
     "type": "resource",
     "iconName": "menu_book"
+  },
+  {
+    "title": "Review Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/review-screen",
+    "keywords": "review screen — design system getting started the numbers are the wizard&rsquo;s steps an edit link must come back example  tokens wcag accessibility",
+    "description": "A pre-submit summary: numbered sections, edit links, and the statutory declaration.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Roadmap",
@@ -1493,6 +1592,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Search Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/search-screen",
+    "keywords": "search screen — design system getting started idle is not empty the template does not sort example  tokens wcag accessibility",
+    "description": "A query field, facets and ranked results — with a distinct idle state before the first search.",
+    "type": "component",
+    "iconName": "widgets"
+  },
+  {
     "title": "Section Title — Design System",
     "section": "Layout",
     "href": "/design-system/components/layout/section",
@@ -1527,6 +1635,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A native select element with a custom chevron, so the platform",
     "type": "component",
     "iconName": "edit_note"
+  },
+  {
+    "title": "Settings Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/settings-screen",
+    "keywords": "settings screen — design system getting started confirmed saves, and no option to change that anchors, not scroll-spy example  tokens wcag accessibility",
+    "description": "An administered configuration surface: a section index beside inline-editable rows.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Shape",
@@ -1701,6 +1818,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The federated sign-in entry point — today, DigiLocker.",
     "type": "component",
     "iconName": "lock"
+  },
+  {
+    "title": "Status Screen — Design System",
+    "section": "Getting Started",
+    "href": "/design-system/components/templates/status-screen",
+    "keywords": "status screen — design system getting started five facts, five sentences it is not an error boundary example  tokens wcag accessibility",
+    "description": "404, 403, 500, maintenance and offline — five different facts about the world, worded differently.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Stepper — Design System",

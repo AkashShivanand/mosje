@@ -759,7 +759,21 @@ export const NAV: NavGroup[] = [
       { "label": "Overview Screen", "href": "/design-system/components/templates/overview-screen", "badge": "Beta" },
       { "label": "Worklist Screen", "href": "/design-system/components/templates/worklist-screen", "badge": "Beta" },
       { "label": "Record Screen", "href": "/design-system/components/templates/record-screen", "badge": "Beta" },
-      { "label": "Wizard Screen", "href": "/design-system/components/templates/wizard-screen", "badge": "Beta" }
+      { "label": "Wizard Screen", "href": "/design-system/components/templates/wizard-screen", "badge": "Beta" },
+      { "label": "Form Screen", "href": "/design-system/components/templates/form-screen", "badge": "Beta" },
+      { "label": "Chooser Screen", "href": "/design-system/components/templates/chooser-screen", "badge": "Beta" },
+      { "label": "Checklist Screen", "href": "/design-system/components/templates/checklist-screen", "badge": "Beta" },
+      { "label": "Review Screen", "href": "/design-system/components/templates/review-screen", "badge": "Beta" },
+      { "label": "Confirmation Screen", "href": "/design-system/components/templates/confirmation-screen", "badge": "Beta" },
+      { "label": "Decision Screen", "href": "/design-system/components/templates/decision-screen", "badge": "Beta" },
+      { "label": "Catalogue Screen", "href": "/design-system/components/templates/catalogue-screen", "badge": "Beta" },
+      { "label": "Search Screen", "href": "/design-system/components/templates/search-screen", "badge": "Beta" },
+      { "label": "Inbox Screen", "href": "/design-system/components/templates/inbox-screen", "badge": "Beta" },
+      { "label": "Settings Screen", "href": "/design-system/components/templates/settings-screen", "badge": "Beta" },
+      { "label": "Report Screen", "href": "/design-system/components/templates/report-screen", "badge": "Beta" },
+      { "label": "Gallery Screen", "href": "/design-system/components/templates/gallery-screen", "badge": "Beta" },
+      { "label": "Status Screen", "href": "/design-system/components/templates/status-screen", "badge": "Beta" },
+      { "label": "Auth Screen", "href": "/design-system/components/templates/auth-screen", "badge": "Beta" }
     ]
   },
   {
