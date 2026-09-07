@@ -99,6 +99,8 @@ const meta = {
       "This website belongs to the Department of Social Justice & Empowerment, " +
       "Ministry of Social Justice & Empowerment, Government of India. Developed and " +
       "maintained by Digital India Corporation, MeitY.",
+    sitemap: { label: "Sitemap", href: "#" },
+    help: { label: "Help & Support", href: "#" },
     policyLinks: [
       { label: "Terms & Conditions", href: "/website/terms-conditions" },
       { label: "Privacy Policy", href: "/website/privacy-policy" },

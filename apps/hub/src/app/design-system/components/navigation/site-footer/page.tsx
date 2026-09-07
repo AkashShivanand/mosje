@@ -95,14 +95,33 @@ const A11Y: A11yItem[] = [
     level: "AA",
     description:
       "Colour comes entirely from the component's stylesheet, bound to the mode-aware brand ramp, so a caller cannot introduce a failing pair through `className`.",
+    status: "verified",
+    evidence:
+      "Measured 2026-09-07 on the default blue ground #003975: lead ink #ffffff 11.40:1, navigation ink #c0dbff 8.04:1, boilerplate ink #92c2ff 6.18:1 — all against the 4.5:1 AA threshold. The social glyph reads 6.06:1 on its chip. design.md records 5.37:1 as the worst case across all eight brand modes.",
+  },
+  {
+    criterion: "1.4.11 Non-text Contrast",
+    level: "AA",
+    description:
+      "The zone hairline (1.79:1) and the social chip ground (1.33:1) both sit below 3:1 and both are exempt: neither carries information required to identify a control or understand content. Each social link is identified by its glyph, which reads 6.06:1 on the chip.",
+    status: "verified",
+    evidence: "Ratios computed from the built token values on 2026-09-07; the exemption is WCAG 1.4.11's own carve-out for decoration.",
+  },
+  {
+    criterion: "2.5.8 Target Size (Minimum)",
+    level: "AA",
+    description: "The social links are 40x40, against the 24x24 the criterion asks for.",
+    status: "verified",
+    evidence: "site-footer.css — .ds-sitefooter__social-link is width/height 40px.",
   },
   {
     criterion: "GIGW 3.0 / DBIM 5.6 — Mandatory footer elements",
     level: "GIGW",
     description:
-      "Website Policy, Sitemap, Related Links, Help, Feedback and Last Updated On, plus the lineage sentence and the hyperlinked logos. Three of the eight are required props, so the compiler catches their absence; the rest are the caller's to supply.",
-    status: "partial",
-    evidence: "lineage, policyLinks and copyright are type-required; the remainder are not.",
+      "Website Policy, Sitemap, Related Links, Help, Feedback and Last Updated On, plus the lineage sentence and the hyperlinked logos — on BOTH variants. On `website` the Sitemap and Help sit in the link columns; on `portal`, which renders no columns, they render in the statutory bar.",
+    status: "verified",
+    evidence:
+      "Audited 2026-09-07 against DBIM 5.6 and Table 8. The audit found the portal variant publishing four of six — Sitemap and Help lived only in the columns — and both are now REQUIRED props (`sitemap`, `help`) rendered in the portal's statutory bar, joining `lineage`, `policyLinks` and `copyright` as type-enforced. Verified in a browser: three labelled navs, no duplicated destination.",
   },
 ];
 
@@ -233,6 +252,8 @@ import { SiteFooter } from "@mosje/design-system";
   lineage={LINEAGE}
   credits={[{ src: negd, alt: "NeGD", href: "https://negd.gov.in/", width: 96, height: 32, prefix: "Powered by" }]}
   policyLinks={POLICY_LINKS}
+  sitemap={{ label: "Sitemap", href: "/website/sitemap" }}
+  help={{ label: "Help & Support", href: "/website/help" }}
   relatedLinks={RELATED_LINKS}
   copyright="© 2026 Department of Social Justice & Empowerment. All rights reserved."
   lastUpdated={page.lastUpdated}
@@ -248,6 +269,8 @@ import { SiteFooter } from "@mosje/design-system";
   organisation={ORGANISATION}
   lineage={LINEAGE}
   policyLinks={POLICY_LINKS}
+  sitemap={{ label: "Sitemap", href: "/website/sitemap" }}
+  help={{ label: "Help & Support", href: "/website/help" }}
   copyright={COPYRIGHT}
   lastUpdated={page.lastUpdated}
 />`}</CodeBlock>

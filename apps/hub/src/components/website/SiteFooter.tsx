@@ -273,6 +273,12 @@ export function WebsiteSiteFooter({ lastUpdated }: SiteFooterProps = {}) {
       lineage={LINEAGE}
       credits={credits}
       policyLinks={policyLinks}
+      // [DBIM 5.6] Required on both variants. The website DRAWS these in the
+      // Support column above, so the component does not draw them again; the
+      // props guarantee the destinations exist for the portal variant, which
+      // has no columns to put them in.
+      sitemap={{ label: "Sitemap", href: "/website/sitemap" }}
+      help={{ label: "Help & Support", href: SUPPORT_PORTAL_HREF }}
       relatedLinks={relatedLinks}
       copyright={`© ${new Date().getFullYear()} Department of Social Justice & Empowerment. All Rights Reserved.`}
       lastUpdated={lastUpdated ?? getContentSyncedDate()}

@@ -12297,6 +12297,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "help",
+        "type": "SiteFooterLink",
+        "required": true,
+        "description": "[DBIM 5.6] Help — REQUIRED, and rendered under the same rule as `sitemap`. The clause wants help RESOURCES behind it (FAQs, screen reader access, accessibility help), not a contact form."
+      },
+      {
         "name": "lineage",
         "type": "string",
         "required": true,
@@ -12312,7 +12318,13 @@ export const GENERATED_PROPS = {
         "name": "policyLinks",
         "type": "SiteFooterLink[]",
         "required": true,
-        "description": "[DBIM 5.6] Website Policy, Help, Feedback, Sitemap. Required on both."
+        "description": "[DBIM 5.6] The website policies — terms of use, privacy, copyright, hyperlinking, accessibility, feedback. Required on both variants. DO NOT list Sitemap or Help here. They are their own props, and on the portal variant a duplicate renders twice in the same band."
+      },
+      {
+        "name": "sitemap",
+        "type": "SiteFooterLink",
+        "required": true,
+        "description": "[DBIM 5.6] Sitemap — REQUIRED, like `lineage` and `copyright`, and for the same reason: a footer without it is not a government footer. WHERE IT RENDERS DEPENDS ON THE VARIANT, and that is the whole point of the prop. On `website` the Sitemap already sits in a link column, so this is not drawn again — the clause asks for the element to be present, not present twice. On `portal` there are no columns, so it renders in the statutory bar. Passing it is how a caller proves the destination exists for both."
       },
       {
         "name": "address",
