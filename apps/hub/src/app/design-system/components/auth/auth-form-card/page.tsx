@@ -140,9 +140,10 @@ export default function AuthFormCardPage(): React.JSX.Element {
               The Stacks That Ship
             </h2>
             <p>
-              Five, each exported from the barrel and each a master in Figma under{" "}
-              <code>Auth / CredentialFields /</code>. The card&apos;s Figma property lists all five
-              as preferred values, so a designer picks from a menu rather than an open slot.
+              Seven, each exported from the barrel. Five are masters in Figma under{" "}
+              <code>Auth / CredentialFields /</code>, and the card&apos;s Figma property lists
+              those five as preferred values, so a designer picks from a menu rather than an open
+              slot. Two arrived from the recovery flow and have no counterpart set yet.
             </p>
             <ul className="cdp__list">
               <li>
@@ -160,7 +161,68 @@ export default function AuthFormCardPage(): React.JSX.Element {
                 stacks, which is the case a variant axis could not express without pretending a
                 two-screen journey was one drawing.
               </li>
+              <li>
+                <code>IdentifierFields</code> — the identifier alone, no secret and no check. Step
+                one of credential recovery, and the stack <code>scw</code>, <code>nhapoa</code> and{" "}
+                <code>pm-ajay</code> had each re-implemented in their own page.
+              </li>
+              <li>
+                <code>NewPasswordFields</code> — new password, its strength, and the confirmation.
+                The mismatch is reported on the <em>second</em> field, never the first: the first
+                one is not wrong, it is the one being copied.
+              </li>
             </ul>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-result">
+            <h2 id="cdp-result" className="cdp__h2">
+              The End of a Journey Is Not a Card With Empty Regions
+            </h2>
+            <p>
+              <code>AuthResult</code> draws a mark, a heading, a sentence and the way onward —
+              the confirmation after a password is reset, and any other authentication outcome.
+              It is a separate component rather than a mode of this card because it has no form,
+              no fields and nothing to submit; expressing it here would mean all seven regions
+              learning to be absent.
+            </p>
+            <p>
+              It is also deliberately not <code>EmptyState</code>, which draws the same four
+              things and means something else — &ldquo;this collection has nothing in it&rdquo;.
+              A password that has just been reset is not an absence, and{" "}
+              <code>EmptyState</code> renders its title as a <code>&lt;p&gt;</code>, so a
+              standalone confirmation page would lose its heading.
+            </p>
+            <Callout type="info" title="Announce It Only When It Replaces Something">
+              Pass <code>announce</code> when the result takes the place of a form on the same
+              page, because nothing else tells a screen-reader user it changed. Leave it off when
+              the result arrives as its own page — navigation already announces the new heading,
+              and a live region on top of that reads the outcome twice.
+            </Callout>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-strength">
+            <h2 id="cdp-strength" className="cdp__h2">
+              The Strength Meter Wants a Scorer This Estate Does Not Have
+            </h2>
+            <p>
+              <code>PasswordStrengthMeter</code> asks for a zxcvbn score and is right to: zxcvbn
+              measures against real leaked-password frequency and keyboard walks, which character
+              rules do not. It fails a strong passphrase and passes{" "}
+              <code>Passw0rd!</code>.
+            </p>
+            <Callout type="warning" title="estimatePasswordScore Is a Stand-In and Says So">
+              zxcvbn is not a dependency here, and adding it is a weight decision rather than a
+              detail — the smallest useful build plus dictionaries is several hundred kilobytes on
+              a page a citizen reaches once, from whatever connection they have. So{" "}
+              <code>estimatePasswordScore</code> ships instead: length dominates, variety nudges,
+              and anything containing one of the twenty most-tried strings is capped at weak.
+              Swap zxcvbn in behind the same <code>score</code> prop for production and delete it.
+            </Callout>
+            <p>
+              Either way the meter is <strong>advisory</strong>. Never gate submission on it — a
+              colour bar cannot say what to change, so a policy minimum belongs in the field&apos;s
+              own error message, where it can.
+            </p>
           </section>
 
           <section className="cdp__section" aria-labelledby="cdp-tabs-limit">

@@ -173,6 +173,7 @@ export const DOCUMENTED_BY = {
   // Splitting that across five routes would put the comparison on none of them.
   PasswordFields: "AuthFormCard", PinFields: "AuthFormCard",
   DarpanFields: "AuthFormCard", IdentifierFields: "AuthFormCard",
+  NewPasswordFields: "AuthFormCard", AuthResult: "AuthFormCard",
   OtpRequestFields: "AuthFormCard", OtpVerifyFields: "AuthFormCard",
   ReviewSection: "Wizard", ReviewItem: "Wizard",
   SkeletonText: "Skeleton", SkeletonRow: "Skeleton",

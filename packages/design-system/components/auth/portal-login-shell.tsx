@@ -29,7 +29,6 @@
  *   - Utility bar (Gov of India flag, A-/A/A+ text-size controls, contrast, accessibility, language)
  *   - Brand header (National Emblem, Beta badge, ministry/department names, Digital India, SAMAVESH)
  *   - Left hero (SAMAVESH identity: logo, name, tagline, description)
- *   - Footer (Privacy Policy · Contact Us · About Us)
  */
 
 import * as React from "react";
@@ -108,9 +107,19 @@ export interface PortalLoginShellProps {
   /** Optional content below form area (e.g. Portal Switcher Grid) */
   extraContent?: React.ReactNode;
 
-  // ── Callbacks ─────────────────────────────────────────────────────────────
-  /** Called when a footer link (Privacy Policy / Contact Us / About Us) is clicked */
-  onFooterLinkClick?: (link: "privacy" | "contact" | "about") => void;
+  /**
+   * REMOVED 7 Sep 2026, with the footer it drove.
+   *
+   * The shell drew a Privacy Policy / Contact Us / About Us row that the master
+   * does not — `Auth / PortalLoginShell` Device=Desktop ends at the account
+   * prompt, and the E-Anudaan handoff frame ends at the submit button. It also
+   * printed "Privacy Policy" a second time about forty pixels under the consent
+   * line, which already links Terms of Use and Privacy Policy and is what
+   * satisfies the disclosure requirement. Two links to one page on one screen is
+   * the "nothing said twice" rule in `ui-restraint-and-copy.md`.
+   *
+   * A portal that genuinely needs more below the form passes `extraContent`.
+   */
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -127,14 +136,13 @@ export function PortalLoginShell({
   tabs,
   children,
   extraContent,
-  onFooterLinkClick,
 }: PortalLoginShellProps) {
   // No local text-size state. It used to scale THIS SHELL ONLY via an inline
   // font-size, which is why resizing text here did nothing on the page you landed
   // on afterwards. AccessibilityBar drives `--sa-font-scale` on :root, so the
   // reader's choice now applies estate-wide and survives navigation.
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="ds-plogin__shell flex min-h-screen flex-col">
       {/* ── Navbar — the Portal variant of the SAMAVESH Navbar ─────────────────
          Figma: `Navbar/Portal` with Menu, Search, Login Signup and Profile all off;
          accessibility bar + masthead, 146px at desktop. Cobranding is the Digital
@@ -156,7 +164,11 @@ export function PortalLoginShell({
       />
 
       {/* ── Two-column body ──────────────────────────────────────────────────── */}
-      <div className="flex flex-1">
+      {/* `ds-plogin__body` makes the RIGHT COLUMN the scroll container from the
+          large breakpoint up, so the hero and its Signing Into bar stay put while
+          the form scrolls. Below `lg` the hero is not rendered and the page
+          scrolls normally. See portal-login-template.css for the reasoning. */}
+      <div className="ds-plogin__body flex flex-1">
 
         {/* Left hero — desktop only. One construction with the Figma organism
             `Auth / LoginHero`: the photograph under an alpha mask that leaves a
@@ -257,7 +269,7 @@ export function PortalLoginShell({
             With the column able to shrink, the tab row overflows INSIDE the card
             and `Tabs`' own `overflow` handling takes over — verified: the row
             scrolls and the "More" menu appears. */}
-        <div className="flex min-w-0 flex-1 flex-col" style={{ background: "var(--sa-bg-neutral-base)" }}>
+        <div className="ds-plogin__panel flex min-w-0 flex-1 flex-col" style={{ background: "var(--sa-bg-neutral-base)" }}>
 
           {/* Phone identity — the Figma organism's `Device=Mobile` variant. The
               SAMAVESH band on a light brand ground, then the Signing Into strip
@@ -371,44 +383,6 @@ export function PortalLoginShell({
           {/* Extra content (e.g. Portal Switcher Grid) */}
           {extraContent && <div className="px-6 pb-6">{extraContent}</div>}
 
-          {/* Footer */}
-          <footer
-            className="px-6 py-3.5"
-            style={{ borderTop: "1px solid var(--sa-border-neutral-subtle)" }}
-          >
-            <nav
-              aria-label="Footer links"
-              className="flex flex-wrap items-center justify-center gap-4 text-body-3"
-              style={{ color: "var(--sa-text-neutral-subtle)" }}
-            >
-              <button
-                type="button"
-                onClick={() => onFooterLinkClick?.("privacy")}
-                className="hover:underline"
-                style={{ color: "inherit" }}
-              >
-                Privacy Policy
-              </button>
-              <span aria-hidden="true">·</span>
-              <button
-                type="button"
-                onClick={() => onFooterLinkClick?.("contact")}
-                className="hover:underline"
-                style={{ color: "inherit" }}
-              >
-                Contact Us
-              </button>
-              <span aria-hidden="true">·</span>
-              <button
-                type="button"
-                onClick={() => onFooterLinkClick?.("about")}
-                className="hover:underline"
-                style={{ color: "inherit" }}
-              >
-                About Us
-              </button>
-            </nav>
-          </footer>
         </div>
       </div>
     </div>

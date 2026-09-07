@@ -758,6 +758,63 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "AuthResultProps": {
+    "source": "packages/design-system/components/auth/auth-result.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "heading",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The outcome, as a sentence a citizen would recognise."
+      },
+      {
+        "name": "action",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The way onward — usually one `Button`, full width."
+      },
+      {
+        "name": "announce",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Announce this to assistive technology when it appears. Pass `true` when the result REPLACES something in place — a form that has just been submitted — because nothing else tells a screen-reader user the page changed. Leave it off when the result arrives as its own page: the navigation already announces the new heading, and a live region on top of that reads the outcome twice."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "What happened, and what it means for them. Two lines at most."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2 | 3",
+        "required": false,
+        "default": "2\n\nPass 1 when this IS the page, which is what a standalone confirmation is.\nThe default is 2 because a result is also shown inside a card that already\nsits under a page heading.",
+        "description": "Heading level."
+      },
+      {
+        "name": "icon",
+        "type": "string",
+        "required": false,
+        "description": "The Material Symbols glyph. Defaults to the one the status implies, so a caller only names it to say something the status does not."
+      },
+      {
+        "name": "status",
+        "type": "\"success\" | \"notice\"",
+        "required": false,
+        "default": "\"success\"",
+        "description": "The outcome. `success` is a green tick; `notice` is the neutral information mark, for an outcome that is neither a success nor a failure — a link that has expired, a session that has ended."
+      }
+    ]
+  },
   "AvatarProps": {
     "source": "packages/design-system/components/data-display/avatar.tsx",
     "inheritsNative": true,
@@ -7177,6 +7234,60 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "NewPasswordFieldsProps": {
+    "source": "packages/design-system/components/auth/credential-fields.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "confirm",
+        "type": "string",
+        "required": true,
+        "description": "The second copy, typed to catch a typo in the first."
+      },
+      {
+        "name": "onConfirmChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onPasswordChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "password",
+        "type": "string",
+        "required": true,
+        "description": "The password being created."
+      },
+      {
+        "name": "score",
+        "type": "0 | 1 | 2 | 3 | 4 | null",
+        "required": true,
+        "description": "A zxcvbn score, 0–4, or `null` when the field is empty. The caller computes it, because the caller is the one who knows whether this deployment has zxcvbn. `estimatePasswordScore` is the stand-in the design system ships with, and it says plainly what it is not."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "confirmError",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "What is wrong with the second field — usually that the two do not match."
+      },
+      {
+        "name": "passwordError",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "What is wrong with the first — a policy minimum, or a reused password."
+      }
+    ]
+  },
   "NotificationCentreProps": {
     "source": "packages/design-system/components/data-display/notification-centre.tsx",
     "inheritsNative": false,
@@ -8398,12 +8509,6 @@ export const GENERATED_PROPS = {
         "description": "Open the change-portal picker instead of navigating. The handoff's `E-Anudaan | Portal Switch` draws this as a SIDE SHEET over the login page — \"Choose a portal to login\" — not as a trip to the hub root. Pass a handler and the control becomes a `<button>` that opens it; leave it off and it stays the `changeHref` link, so every existing consumer is unchanged. A button, not a link, when it opens a panel: a control that does not navigate must not offer middle-click or \"copy link address\", and it owes `aria-expanded` / `aria-haspopup`, which an anchor cannot honestly carry."
       },
       {
-        "name": "onFooterLinkClick",
-        "type": "(link: \"privacy\" | \"contact\" | \"about\") => void",
-        "required": false,
-        "description": "Called when a footer link (Privacy Policy / Contact Us / About Us) is clicked"
-      },
-      {
         "name": "portalPickerOpen",
         "type": "boolean",
         "required": false,
@@ -8449,12 +8554,6 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "Loading state during form submission"
-      },
-      {
-        "name": "onFooterLinkClick",
-        "type": "(link: \"privacy\" | \"contact\" | \"about\") => void",
-        "required": false,
-        "description": "Called when a footer link is clicked"
       },
       {
         "name": "onRoleChange",

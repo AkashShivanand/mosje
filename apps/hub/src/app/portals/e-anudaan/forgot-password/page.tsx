@@ -3,12 +3,11 @@
 import * as React from "react";
 // DS Audit: PortalLoginShell ✅ existing · AuthFormCard ✅ existing ·
 // IdentifierFields ➕ added to the DS in this change (three portals had each
-// hand-rolled it) · Button ✅ · ConsentLine ✅ · Icon ✅.
+// hand-rolled it) · Button ✅ · ConsentLine ✅.
 import {
   AuthFormCard,
   Button,
   ConsentLine,
-  Icon,
   IdentifierFields,
   PortalLoginShell,
 } from "@mosje/design-system";
@@ -42,10 +41,11 @@ const BASE = "/portals/e-anudaan";
  * "if that is a registered account" — because a recovery form that answers "no
  * such user" is an account-enumeration oracle.
  *
- * **This is the REQUEST step only.** The Figma `Auth / CredentialRecovery`
- * (`56640:4103`) also draws Set New Password and its success screen, both
- * reached from the emailed link rather than from here; neither exists in code on
- * any portal, and that gap is recorded on the login template's component record.
+ * **This is the REQUEST step.** Set New Password and its confirmation are the
+ * other two, at `./reset-password`, built on 7 Sep 2026. In production they sit
+ * behind a single-use token in the emailed link; here the confirmation below
+ * carries the reader on to them, because a screen nothing can reach is a screen
+ * nobody has reviewed.
  */
 export default function EAnudaanForgotPasswordPage(): React.JSX.Element {
   const [identifier, setIdentifier] = React.useState("");
@@ -96,15 +96,19 @@ export default function EAnudaanForgotPasswordPage(): React.JSX.Element {
             </p>
           }
           primaryAction={
-            <Button
-              href={`${BASE}/login`}
-              appearance="outlined"
-              variant="neutral"
-              fullWidth
-              iconLeft={<Icon name="arrow_back" size={16} aria-hidden="true" />}
-            >
-              Back to Login
+            /* The reset step is behind the emailed link, which nothing here
+               sends — so the prototype walks the reader onward instead. Same
+               device as smile-admin's forget-password screen, and the only
+               honest way to make a link-gated screen reachable without
+               pretending mail was delivered. */
+            <Button href={`${BASE}/reset-password`} fullWidth>
+              Continue to Set New Password
             </Button>
+          }
+          footer={
+            <p className="ds-plogin__help">
+              <a href={`${BASE}/login`}>Back to Login</a>
+            </p>
           }
         />
       ) : (
