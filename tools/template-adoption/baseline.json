@@ -256,8 +256,6 @@
     "apps/hub/src/app/portals/tg/page.tsx",
     "apps/hub/src/components/e-anudaan/review-shell.tsx",
     "apps/hub/src/components/eutthan/eutthan-shell.tsx",
-    "apps/hub/src/components/pm-ajay/dashboard/ui.tsx",
-    "apps/hub/src/components/scw/user-shell.tsx",
-    "apps/hub/src/components/tg/citizen-shell.tsx"
+    "apps/hub/src/components/pm-ajay/dashboard/ui.tsx"
   ]
 }
