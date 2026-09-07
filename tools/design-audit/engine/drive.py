@@ -59,10 +59,37 @@ def resolve_fixture(man, step):
     return base
 
 
-FILL_ALL_JS = """(F)=>{let n=0;
+# RAW string, like EXTRACT_JS beside it. Without the r, Python turns every `\b` in this
+# JavaScript into a literal backspace before the browser ever sees it, so a regex word
+# boundary silently becomes \x08 and can never match. That is not hypothetical: the measure
+# rule below matched `(sq.ft.)` — whose `\(` Python leaves alone, not being a recognised
+# escape — while `\b(?:number of|…)` matched nothing at all, and AVYAY's step 5 kept
+# reporting "Number of Rooms must be a number" against a filler that looked correct.
+FILL_ALL_JS = r"""(F)=>{let n=0;
+ // A control's INPUT TYPE is not what it asks for. AVYAY's "Distance to the nearest similar
+ // service (km)" is type=text, so the browser is content with anything -- checkValidity()
+ // returns true -- while the portal's own rule rejects it: "Distance to the nearest similar
+ // service (km) must be a number." Filling it by type put "Example Welfare Society" in a
+ // kilometres box, and AVYAY's new-project branch stopped at step 4 on every run for it.
+ //
+ // So the label decides when the type does not. Only a MEASURE counts: a unit in brackets,
+ // or a phrase that can only precede a quantity. Deliberately NOT every label containing
+ // "number" -- "Registration Number" and "NGO-Darpan Unique ID" are identifiers, and putting
+ // 10 in them fails a different rule.
+ const NUMERIC=/\((?:km|kms|nos?|%|₹|rs|inr|sq\.? ?ft|sq\.? ?m|years?|months?|days?)\.?\)|\b(?:number of|no\.? of|total number|count of|how many|of which|distance|capacity|strength|area|amount|percentage)\b/i;
+ const labelOf=e=>{let t=e.getAttribute('aria-label')||'';
+   if(!t&&e.id){const l=document.querySelector('label[for="'+CSS.escape(e.id)+'"]');if(l)t=l.innerText;}
+   if(!t){const w=e.closest('label');if(w)t=w.innerText;}
+   return (t+' '+(e.placeholder||'')+' '+(e.name||'')).trim();};
+ // A placeholder written as an example IS the answer's shape, and the portal knows its own
+ // format better than any default can. AVYAY asks for "Project In-charge (name & contact)"
+ // in one box and rejects a bare name: "Enter the name and a contact number of at least 10
+ // digits — e.g. Ramesh Kumar, 9876543210." That example is sitting in the placeholder.
+ const eg=e=>{const m=/^\s*e\.?g\.?[:\s]\s*(.+)$/i.exec(e.placeholder||'');return m?m[1].trim():null;};
+ const pick=e=>eg(e)||(NUMERIC.test(labelOf(e))?F.number:(F[e.type]||F.text));
  document.querySelectorAll('input,select,textarea').forEach(e=>{
   if(e.type==='hidden'||e.disabled||e.readOnly||e.type==='file')return;
-  if(e.tagName==='SELECT'){const o=[...e.options].find(o=>o.value&&o.value!=='');
+  if(e.tagName==='SELECT'){const o=[...e.options].find(o=>o.value&&o.value!==''&&!/^\s*(select|choose|--|please)\b/i.test(o.text||''));
     if(o&&!e.value){e.value=o.value;e.dispatchEvent(new Event('change',{bubbles:true}));n++;}return;}
   if(e.type==='radio'){
     const grp=[...document.querySelectorAll('input[type=radio][name="'+e.name+'"]')];
@@ -70,14 +97,20 @@ FILL_ALL_JS = """(F)=>{let n=0;
     const lab=r=>((r.labels&&r.labels[0]?r.labels[0].innerText:'')+' '+(r.value||'')).toLowerCase();
     (grp.find(r=>/fresh|new/.test(lab(r)))||grp[0]).click();n++;return;}
   if(e.type==='checkbox'){if(!e.checked){e.click();n++;}return;}
-  if(!e.value){const set=Object.getOwnPropertyDescriptor(e.__proto__,'value').set;
-    set.call(e,F[e.type]||F.text);
+  // Fill when EMPTY, and also when a measure holds something that is not a number. The
+  // first pass can run before React has wired label[for] up, so labelOf sees nothing, the
+  // measure looks like ordinary text and gets a charity's name; every later pass then skips
+  // it because it is no longer empty. Re-checking the value against the label heals that
+  // whatever the timing, and never touches a value that is already right.
+  const wrong=NUMERIC.test(labelOf(e))&&e.value!==''&&isNaN(Number(String(e.value).replace(/,/g,'')));
+  if(!e.value||wrong){const set=Object.getOwnPropertyDescriptor(e.__proto__,'value').set;
+    set.call(e,pick(e));
     e.dispatchEvent(new Event('input',{bubbles:true}));
     e.dispatchEvent(new Event('change',{bubbles:true}));n++;}});
  return n;}"""
 
 DEFAULT_VALUES = {"text": "Example Welfare Society", "textarea": "12 Example Road, Nagpur 440001",
-                  "email": "contact@example-welfare.org", "tel": "9800000000", "number": "10",
+                  "email": "contact@example-welfare.org", "tel": "9800000000", "number": "50",
                   "date": "2020-04-01", "url": "https://example-welfare.org", "search": "Example"}
 
 
