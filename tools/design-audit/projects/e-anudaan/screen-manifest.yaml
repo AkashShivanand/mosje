@@ -1,6 +1,12 @@
 # e-Anudaan (UAT) capture manifest.
 # environment: uat — this, plus each flow's allowSubmit, is what permits the driver to
-# press 'Submit Application' on a live UAT record. Authorised by the product owner.
+# press 'Submit Application' on a live UAT record.
+#
+# 2026-09-07: every flow is allowSubmit: FALSE for the re-clone pass. The walker still
+# reaches Review & Submit and captures it (-ARRIVED and -FILLED are taken before the
+# submit gate is consulted) — it simply does not press the button. That gets the screen
+# the last run never reached without spending live UAT state on an authorisation given
+# for a different run. Flip back to true, per flow, when a submission is actually wanted.
 version: 1
 environment: uat
 stalenessCeiling: 14d
@@ -27,7 +33,7 @@ flows:
 - id: napddr-new
   role: ngo-user
   entry: /apply-grant/scheme/NAPDDR/step-1
-  allowSubmit: true
+  allowSubmit: false
   alwaysReplay: true
   reuseRecord: null
   steps:
@@ -36,7 +42,7 @@ flows:
 - id: napddr-renewal
   role: ngo-user
   entry: /apply-grant/scheme/NAPDDR/step-1
-  allowSubmit: true
+  allowSubmit: false
   alwaysReplay: true
   reuseRecord: null
   steps:
@@ -45,7 +51,7 @@ flows:
 - id: avyay-new
   role: ngo-user
   entry: /apply-grant/scheme/AVYAY/step-1
-  allowSubmit: true
+  allowSubmit: false
   alwaysReplay: true
   reuseRecord: null
   steps:
@@ -54,7 +60,7 @@ flows:
 - id: avyay-renewal
   role: ngo-user
   entry: /apply-grant/scheme/AVYAY/step-1
-  allowSubmit: true
+  allowSubmit: false
   alwaysReplay: true
   reuseRecord: null
   steps:
@@ -63,7 +69,7 @@ flows:
 - id: shreshta-m2-application
   role: ngo-user
   entry: /apply-grant/scheme/SHRESHTA_M2/step-1
-  allowSubmit: true
+  allowSubmit: false
   alwaysReplay: true
   reuseRecord: null
   steps:
