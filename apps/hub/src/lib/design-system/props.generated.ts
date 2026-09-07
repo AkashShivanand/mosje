@@ -758,6 +758,63 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "AuthResultProps": {
+    "source": "packages/design-system/components/auth/auth-result.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "heading",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The outcome, as a sentence a citizen would recognise."
+      },
+      {
+        "name": "action",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The way onward — usually one `Button`, full width."
+      },
+      {
+        "name": "announce",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Announce this to assistive technology when it appears. Pass `true` when the result REPLACES something in place — a form that has just been submitted — because nothing else tells a screen-reader user the page changed. Leave it off when the result arrives as its own page: the navigation already announces the new heading, and a live region on top of that reads the outcome twice."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "What happened, and what it means for them. Two lines at most."
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2 | 3",
+        "required": false,
+        "default": "2\n\nPass 1 when this IS the page, which is what a standalone confirmation is.\nThe default is 2 because a result is also shown inside a card that already\nsits under a page heading.",
+        "description": "Heading level."
+      },
+      {
+        "name": "icon",
+        "type": "string",
+        "required": false,
+        "description": "The Material Symbols glyph. Defaults to the one the status implies, so a caller only names it to say something the status does not."
+      },
+      {
+        "name": "status",
+        "type": "\"success\" | \"notice\"",
+        "required": false,
+        "default": "\"success\"",
+        "description": "The outcome. `success` is a green tick; `notice` is the neutral information mark, for an outcome that is neither a success nor a failure — a link that has expired, a session that has ended."
+      }
+    ]
+  },
   "AvatarProps": {
     "source": "packages/design-system/components/data-display/avatar.tsx",
     "inheritsNative": true,
@@ -7174,6 +7231,60 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "The query, owned by `SiteHeader`. The sheet used to hold its own, so whatever the reader had typed in the masthead vanished the moment they opened the menu."
+      }
+    ]
+  },
+  "NewPasswordFieldsProps": {
+    "source": "packages/design-system/components/auth/credential-fields.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "confirm",
+        "type": "string",
+        "required": true,
+        "description": "The second copy, typed to catch a typo in the first."
+      },
+      {
+        "name": "onConfirmChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "onPasswordChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "password",
+        "type": "string",
+        "required": true,
+        "description": "The password being created."
+      },
+      {
+        "name": "score",
+        "type": "0 | 1 | 2 | 3 | 4 | null",
+        "required": true,
+        "description": "A zxcvbn score, 0–4, or `null` when the field is empty. The caller computes it, because the caller is the one who knows whether this deployment has zxcvbn. `estimatePasswordScore` is the stand-in the design system ships with, and it says plainly what it is not."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "confirmError",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "What is wrong with the second field — usually that the two do not match."
+      },
+      {
+        "name": "passwordError",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "What is wrong with the first — a policy minimum, or a reused password."
       }
     ]
   },

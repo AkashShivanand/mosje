@@ -115,7 +115,11 @@ export { Textarea } from "./components/forms/textarea";
 export type { TextareaProps } from "./components/forms/textarea";
 export { Select } from "./components/forms/select";
 export type { SelectProps, SelectAppearance, SelectOption } from "./components/forms/select";
-export { PasswordStrengthMeter, strengthFromScore } from "./components/forms/password-strength-meter";
+export {
+  PasswordStrengthMeter,
+  strengthFromScore,
+  estimatePasswordScore,
+} from "./components/forms/password-strength-meter";
 export type { PasswordStrengthMeterProps, PasswordStrength } from "./components/forms/password-strength-meter";
 export { CaptchaField } from "./components/forms/captcha-field";
 export { BotCheck } from "./components/forms/bot-check";
@@ -750,6 +754,7 @@ export {
   PinFields,
   DarpanFields,
   IdentifierFields,
+  NewPasswordFields,
   OtpRequestFields,
   OtpVerifyFields,
 } from "./components/auth/credential-fields";
@@ -758,9 +763,12 @@ export type {
   PinFieldsProps,
   DarpanFieldsProps,
   IdentifierFieldsProps,
+  NewPasswordFieldsProps,
   OtpRequestFieldsProps,
   OtpVerifyFieldsProps,
 } from "./components/auth/credential-fields";
+export { AuthResult } from "./components/auth/auth-result";
+export type { AuthResultProps } from "./components/auth/auth-result";
 
 // ---- Components: Accessibility -----------------------------------------------
 // CANONICAL: the official Government of India (MeitY / UX4G) accessibility widget.
