@@ -2,109 +2,455 @@
 
 @layer components {
   /* ============================================================================
-     The campaign join banner — above the page hero.
-     Bound to the DS success ramp: the Abhiyaan publishes this band in its own
-     green, which is neither gov-blue nor saffron.
-     ============================================================================ */
+     The campaign band — AN ANCHOR AND A GUEST.
+     ============================================================================
 
-  /* successScale-600 (#046a38). The estate has no `--sa-bg-success-*` rung, and
-     the scale is what `fact-strip.css` already reaches for when it needs a
-     ramp colour directly. White on it measures 6.72:1, and the deep green of
-     the white CTA sitting on it measures the same. */
+     Two messages, not one, and the layout says which is which:
+
+       ANCHOR — the national de-addiction helpline. First in reading order, on
+       the only white surface in the band, permanent. Outside the collapsible
+       region, so dismissing an advertisement cannot delete an emergency number.
+
+       GUEST  — the campaign. Heading, sentence, and two ways to accept (scan or
+       press, adjacent because they open the same URL). Collapsible.
+
+     The band is bound to the DS success ramp: the Abhiyaan publishes it in its
+     own green, which is neither gov-blue nor saffron.
+
+     ── THE GRADIENT ────────────────────────────────────────────────────────────
+
+     The source runs a gradient rather than a flat fill. Both stops come from the
+     success ramp and the band gets DARKER along it, which does two jobs: white
+     text's contrast only improves as it travels (6.7:1 at the leading edge,
+     12.8:1 at the trailing one), and the guest half sits on deeper ground than
+     the anchor, so the hierarchy is carried by the surface as well as by the
+     objects on it.
+     ========================================================================= */
+
   .orgjb {
-    background-color: var(--sa-color-successScale-600);
+    background-image: linear-gradient(
+      100deg,
+      var(--sa-color-successScale-600),
+      var(--sa-color-successScale-700)
+    );
     color: var(--sa-text-neutral-inverse);
   }
 
+  /*
+   * ANCHOR | GUEST, on one row from 1024 up.
+   *
+   * The guest takes the free space so the anchor is never squeezed by a long
+   * sentence; `align-items: center` keeps the anchor on the band's centre line
+   * whatever the guest is doing, including collapsing to nothing.
+   */
   .orgjb__inner {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
     gap: var(--sa-stack-16) var(--sa-inline-24);
-    padding-block: var(--sa-padding-20);
+    padding-block: var(--sa-padding-16);
+    align-items: center;
+  }
+
+  @media (width >= 64rem) {
+    .orgjb__inner {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+  }
+
+  /* ── THE ANCHOR ──────────────────────────────────────────────────────────── */
+
+  /*
+   * A white pill, and it is the only one in the band.
+   *
+   * The lightest material draws the eye to the interactive thing that matters
+   * most — and here that is not the campaign's recruitment, it is the number a
+   * person in trouble is looking for. Everything else in the band is drawn on
+   * the green; this alone is drawn on white.
+   */
+  .orgjb__helpline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-4) var(--sa-padding-20) var(--sa-padding-4) var(--sa-padding-4);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-raised);
+    color: var(--sa-color-successScale-700);
+    text-decoration: none;
+    transition:
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .orgjb__helpline:hover {
+      background-color: var(--sa-bg-neutral-subtler);
+    }
+  }
+
+  .orgjb__helpline:active {
+    transform: scale(0.98);
+  }
+
+  /* The pale rung under the ramp's own green: 5.9:1 for the glyph, against the
+     3:1 floor WCAG 2.2 §1.4.11 puts under a non-text control. */
+  .orgjb__helpline-icon {
+    display: grid;
+    place-items: center;
+    width: var(--sa-control-height-md);
+    height: var(--sa-control-height-md);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-successScale-50);
+    color: var(--sa-color-successScale-600);
+  }
+
+  /*
+   * The label is set as the record writes it — no uppercase transform.
+   *
+   * Two earlier passes flipped this twice, which is a sign the question was
+   * wrong. It is settled by position rather than by taste: on the green, small
+   * tracked capitals were competing with a heading; on white, beside the number
+   * they name, they would be shouting inside the calmest object in the band.
+   * Sentence case, one line, and the number carries the weight.
+   */
+  .orgjb__helpline-label {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /*
+   * 8.7:1 on the pill, and the only place in this file with optical tracking.
+   *
+   * Letterforms read further apart as they grow, so display-sized figures need
+   * pulling in — a rule for large TEXT, and doubly true for digits, which have
+   * no ascenders or descenders to bind them into a word. The body copy and the
+   * label above are left at the token defaults, where tracking would hurt.
+   */
+  .orgjb__helpline-number {
+    font-size: var(--sa-type-headline-4-size);
+    line-height: var(--sa-type-headline-4-lh);
+    font-weight: var(--sa-font-weight-bold);
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-color-successScale-700);
+  }
+
+  /* ── THE GUEST ───────────────────────────────────────────────────────────── */
+
+  /*
+   * The collapse. A grid whose single row runs 1fr → 0fr is the one way to
+   * transition to "the height of nothing" without measuring content in
+   * JavaScript first — `height: auto` is not interpolable, and a fixed pixel
+   * height would be wrong the moment the sentence wraps differently.
+   *
+   * Only the GUEST collapses. The anchor is a sibling of it, not a child, so the
+   * band shrinks to the height of the pill — 116px to 80 — while the pill keeps
+   * its horizontal position exactly and settles 18px as the band closes around
+   * it. It is never re-flowed, never re-laid-out, never re-rendered; it is the
+   * fixed point the rest of the band collapses toward.
+   *
+   * That is the whole argument of the animation: the advertisement deflates and
+   * the help does not go anywhere.
+   */
+  .orgjb__campaign {
+    display: grid;
+    grid-template-rows: 1fr;
+    min-width: 0;
+    transition: grid-template-rows var(--sa-motion-collapse-duration)
+      var(--sa-motion-collapse-easing);
+  }
+
+  .orgjb__campaign--closing {
+    grid-template-rows: 0fr;
+  }
+
+  /* Both are load-bearing: a grid item's default `min-height: auto` refuses to
+     shrink below its content, so without it the 0fr row never closes. */
+  .orgjb__campaign-clip {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /*
+   * The contents recede as the row closes rather than being guillotined by the
+   * clip — a short lift and fade, so it reads as something withdrawing instead
+   * of a rectangle losing its bottom half. Faster than the collapse, so the
+   * content has finished going before the space finishes closing.
+   */
+  .orgjb__campaign-row {
+    display: grid;
+    gap: var(--sa-stack-12) var(--sa-inline-24);
+    align-items: center;
+    transition:
+      opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+      transform var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
+
+  .orgjb__campaign--closing .orgjb__campaign-row {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+
+  @media (width >= 64rem) {
+    .orgjb__campaign-row {
+      grid-template-columns: minmax(0, 1fr) auto auto;
+    }
   }
 
   .orgjb__copy {
     display: flex;
     flex-direction: column;
-    gap: var(--sa-stack-4);
+    gap: var(--sa-stack-2);
     min-width: 0;
   }
 
+  /*
+   * headline-5, against the H1's headline-1.
+   *
+   * "Join Nasha Mukt Bharat Abhiyaan" at headline-4/700 sat 300px above an H1
+   * reading "Nasha Mukt Bharat Abhiyaan (NMBA)" — two headings, nearly the same
+   * words, and the smaller one arriving first. Both strings are the source's own
+   * and neither is dropped, but only one of them is the page.
+   */
   .orgjb__heading {
     margin: 0;
-    font-size: var(--sa-type-headline-4-size);
-    line-height: var(--sa-type-headline-4-lh);
-    font-weight: var(--sa-font-weight-bold);
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-weight: var(--sa-font-weight-semibold);
     color: inherit;
   }
 
+  /* `pretty` rather than `balance`: the sentence runs to two lines in its column
+     at 1440, and `pretty` is the one that refuses to leave the last word alone
+     on its own line. `balance` evens the lines and is for headings. */
   .orgjb__text {
     margin: 0;
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
     color: inherit;
+    text-wrap: pretty;
   }
 
-  .orgjb__actions {
+  /*
+   * SCAN IT OR PRESS IT — ONE GROUP.
+   *
+   * The QR and the button open the same URL. The source puts them at opposite
+   * ends of the band, roughly 900px apart, where nothing tells a reader they are
+   * the same offer. Sitting 8 apart inside a 24 gap, proximity says it and no
+   * caption has to.
+   */
+  .orgjb__join {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
-    gap: var(--sa-inline-12);
+    gap: var(--sa-inline-8);
   }
 
-  /* White on the green, so the button is the lightest thing in the band and
-     reads as the one action. */
+  /* A white card, because a QR needs a quiet zone to scan and the green would
+     otherwise run to the edge of the pattern. The source file is 686px square,
+     so 72 is a downscale rather than a stretch. */
+  .orgjb__qr {
+    display: grid;
+    place-items: center;
+    padding: var(--sa-padding-6);
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .orgjb__qr img {
+    display: block;
+    width: 72px;
+    height: 72px;
+  }
+
+  /* Dropped below the one-row breakpoint, and it is the one thing here that is
+     not a loss: a reader on a phone is holding the device that would scan it,
+     and the same destination is a full-width button directly beside it. */
+  @media (width < 64rem) {
+    .orgjb__qr {
+      display: none;
+    }
+  }
+
+  /*
+   * Outlined, not filled — the second action in a band that already has its
+   * bright object. Two filled controls would put the recruitment level with the
+   * helpline again, which is the arrangement this redesign exists to end.
+   *
+   * White on the leading stop measures 6.7:1, so the border clears the 3:1 WCAG
+   * 2.2 §1.4.11 asks of a control's boundary with room to spare.
+   */
   .orgjb__cta {
     display: inline-flex;
     align-items: center;
     gap: var(--sa-inline-8);
     padding: var(--sa-padding-12) var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-text-neutral-inverse);
     border-radius: var(--sa-shape-8);
-    background-color: var(--sa-bg-neutral-base);
-    color: var(--sa-color-successScale-700);
+    color: var(--sa-text-neutral-inverse);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    font-weight: var(--sa-font-weight-bold);
+    font-weight: var(--sa-font-weight-semibold);
     text-decoration: none;
+    /*
+     * Named properties, never `all` — and two different tokens, because a press
+     * and a hover are not the same event. `press-easing` is the estate's strong
+     * ease-out (0.22, 1, 0.36, 1); a press that eased IN would delay the first
+     * frame, which is the one the finger is waiting on.
+     */
+    transition:
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
-  .orgjb__cta:hover {
-    background-color: var(--sa-bg-neutral-subtler);
+  /* Gated: a touch device fires hover on tap, which leaves a control stuck in
+     its hover state after the finger lifts. */
+  @media (hover: hover) and (pointer: fine) {
+    .orgjb__cta:hover {
+      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 14%, transparent);
+    }
   }
 
-  .orgjb__helpline {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-8);
-    padding: var(--sa-padding-8) var(--sa-padding-16);
-    border: 1px solid currentColor;
+  /* The press has to be felt. Subtle — 0.97, not a bounce. */
+  .orgjb__cta:active {
+    transform: scale(0.97);
+  }
+
+  /*
+   * Quiet, because nobody came here to close a banner — but a real 40px target,
+   * which clears WCAG 2.2 §2.5.8's 24px floor rather than sitting on it. A 20px
+   * glyph with no box around it is the usual way this control ends up
+   * unhittable on a phone.
+   */
+  .orgjb__dismiss {
+    display: grid;
+    place-items: center;
+    width: var(--sa-control-height-md);
+    height: var(--sa-control-height-md);
+    padding: 0;
+    border: 0;
     border-radius: var(--sa-shape-8);
-    color: inherit;
-    text-decoration: none;
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 12%, transparent);
+    color: var(--sa-text-neutral-inverse);
+    cursor: pointer;
+    transition:
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
-  .orgjb__helpline-label {
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+  @media (hover: hover) and (pointer: fine) {
+    .orgjb__dismiss:hover {
+      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 24%, transparent);
+    }
   }
 
-  .orgjb__helpline-number {
-    font-size: var(--sa-type-headline-5-size);
-    line-height: var(--sa-type-headline-5-lh);
-    font-weight: var(--sa-font-weight-bold);
+  .orgjb__dismiss:active {
+    transform: scale(0.92);
   }
 
-  @media (max-width: 767px) {
-    .orgjb__inner {
-      align-items: flex-start;
+  /*
+   * The focus ring is the inverse token, not the estate's default. The default
+   * focus colour is gov-blue, which on this green measures about 2:1 — a ring
+   * nobody can see is the same as no ring. The helpline is the exception: it is
+   * ringed in the ramp's deep green, because ITS ground is white.
+   */
+  .orgjb__cta:focus-visible,
+  .orgjb__dismiss:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .orgjb__helpline:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /*
+   * ── BELOW 1024 ──────────────────────────────────────────────────────────────
+   *
+   * The row stacks and the anchor still comes first. Only the copy gives way to
+   * the dismiss control: an earlier version put every child in one column, so a
+   * 40px control and its gap narrowed the button and the helpline as well as the
+   * heading — on a 390px screen, a sixth of the width surrendered by three
+   * elements to make room for one whose row they do not even share.
+   */
+  @media (width < 64rem) {
+    .orgjb__campaign-row {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: var(--sa-stack-12) var(--sa-inline-12);
     }
 
-    .orgjb__actions {
-      width: 100%;
+    .orgjb__copy {
+      grid-column: 1;
+    }
+
+    .orgjb__join {
+      grid-column: 1 / -1;
+    }
+
+    .orgjb__dismiss {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    /* Full width, so the label centres against its icon rather than sitting left
+       with the icon marooned at the far edge. */
+    .orgjb__cta {
+      flex: 1;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .orgjb__helpline {
+      align-self: start;
+    }
+  }
+
+  /*
+   * ── REDUCED MOTION ──────────────────────────────────────────────────────────
+   *
+   * The collapse is a size change, which is exactly what the preference is
+   * about, so it happens instantly. The component skips the transition under
+   * this query too — this is the belt to that braces, for a browser that reports
+   * the preference to CSS but not to `matchMedia`.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .orgjb__campaign,
+    .orgjb__campaign-row,
+    .orgjb__cta,
+    .orgjb__helpline,
+    .orgjb__dismiss {
+      transition: none;
+    }
+
+    .orgjb__campaign--closing .orgjb__campaign-row {
+      transform: none;
+    }
+
+    .orgjb__cta:active,
+    .orgjb__helpline:active,
+    .orgjb__dismiss:active {
+      transform: none;
+    }
+  }
+
+  /*
+   * ── INCREASED CONTRAST ──────────────────────────────────────────────────────
+   *
+   * Two things here rely on a translucent wash over the gradient: the dismiss
+   * button's ground and the outlined button's hover. Both become solid, and the
+   * outlined button gains a real border weight, so nothing in the band depends
+   * on a 12%-alpha difference being visible.
+   */
+  @media (prefers-contrast: more) {
+    .orgjb__cta {
+      border-width: var(--sa-stroke-2);
+    }
+
+    .orgjb__dismiss {
+      background-color: transparent;
+      border: var(--sa-stroke-2) solid var(--sa-text-neutral-inverse);
     }
   }
 }

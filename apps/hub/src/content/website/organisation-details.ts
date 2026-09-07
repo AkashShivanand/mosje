@@ -198,6 +198,18 @@ export interface OrganisationDetail {
     action: { label: string; href: string; external?: boolean };
     helplineLabel: string;
     helplineNumber: string;
+    /**
+     * A QR that scans to the SAME destination as `action`.
+     *
+     * The source band leads with one, and it is the only element of that band
+     * this estate had never cloned. It is drawn decorative — the code encodes a
+     * URL that is already a named link beside it, so describing the picture
+     * would announce the destination twice to a reader who cannot scan it.
+     *
+     * Dropped below 1024, where the reader is holding the device that would
+     * have scanned it.
+     */
+    qrSrc?: string;
   };
   /**
    * Photographs for the header's circular carousel, replacing the still
@@ -2094,6 +2106,10 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       },
       helplineLabel: "National De-Addiction Helpline",
       helplineNumber: "14446",
+      // Scans to the same nasha-mukti-mitr form the button opens. The file is
+      // already published in this record's downloads; this is the same asset,
+      // not a second copy of it.
+      qrSrc: "/website/content/organisation/nmba-nasha-mukti-mitr-qr.png",
     },
     /*
      * The four photographs the source cycles in its header circle, mirrored.
@@ -2119,18 +2135,27 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     ],
     // The paragraph the source prints under its own h1.
     lead: "The Ministry of Social Justice and Empowerment (MoSJE) is the nodal Ministry for Drug Demand Reduction and, as part of its mandate, has introduced measures to curtail substance abuse in the country. MoSJE formulated and enacted the National Action Plan for Drug Demand Reduction (NAPDDR).",
+    /*
+     * TWO ACTIONS, NOT THREE — and the one that went was a duplicate.
+     *
+     * "Register as a Nasha Mukti Mitr" stood here pointing at
+     * nashamukt.dosje.gov.in/nasha-mukti-mitr, which is the exact destination of
+     * the green band's "Register Now, Be a volunteer for change" a few hundred
+     * pixels above it. The first fold therefore carried five controls, of which
+     * two were the same link under two different names — the second one styled
+     * `primary`, so the page offered a reader two competing primary invitations
+     * to do one thing.
+     *
+     * The invitation is not lost: the band above is where the source publishes
+     * it, above its own title, and it is the more prominent of the two. What is
+     * removed is the repetition.
+     */
     quickActions: [
-      {
-        label: "Register as a Nasha Mukti Mitr",
-        href: "https://nashamukt.dosje.gov.in/nasha-mukti-mitr",
-        icon: "volunteer_activism",
-        variant: "primary",
-        external: true,
-      },
       {
         label: "Take the Pledge",
         href: "https://nashamukt.dosje.gov.in/epledge",
         icon: "front_hand",
+        variant: "primary",
         external: true,
       },
       {

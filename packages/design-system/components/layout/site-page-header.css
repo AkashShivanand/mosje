@@ -128,12 +128,25 @@
    * the token owner; until it ships, this uses the inverse token that does
    * resolve, which is the same white.
    */
+  /*
+   * ── ROMAN, NOT ITALIC ───────────────────────────────────────────────────────
+   *
+   * The standfirst ran `font-style: italic`, which is the typographic convention
+   * for a QUOTATION — and this is not one. What it holds is the department's own
+   * prose about itself, three or four lines of it, reversed out of a saturated
+   * blue at 16px. On NMBA that is three full lines of italic; sloped letterforms
+   * lose the vertical stems that carry legibility at speed, and they lose most
+   * of it against a coloured ground and at the small sizes a phone renders.
+   *
+   * Nothing in the handoff asks for the slope, and the rule to its left is what
+   * marks the paragraph as a standfirst — it does that job on its own, which is
+   * why the rule stays and the italic goes.
+   */
   .sa-siteheader__lead {
     border-inline-start: var(--sa-stroke-4) solid var(--sa-text-neutral-inverse);
     padding-inline-start: var(--sa-padding-24);
     color: var(--sa-text-neutral-inverse);
     font-size: var(--sa-type-body-1-size);
-    font-style: italic;
     /*
      * Also the paired leading. `1.5` is exact on the WEBSITE, where body-1 is a
      * flat 16/24 — and off on the portal, where the role clamps 14/20 up to
@@ -185,16 +198,130 @@
     overflow: hidden;
   }
 
-  /* Onto the picture, not under it: a control row below the circle would push
-     the halo off the band's vertical centre and collide with the fact card
-     that straddles the lower edge. */
+  /*
+   * Onto the picture, not under it: a control row below the circle would push
+   * the halo off the band's vertical centre and collide with the fact card
+   * that straddles the lower edge.
+   *
+   * ── AND THEREFORE ON A SCRIM ────────────────────────────────────────────────
+   *
+   * The component's controls are drawn for a KNOWN ground — dark hairline dots
+   * and a brand fill, both correct under a carousel sitting on white. Lifted
+   * onto a photograph they have no ground at all: on NMBA's opening slide the
+   * four dots landed on a crowd in printed cotton and were, in practice,
+   * invisible, while the two arrows read as a pair of white cards parked over
+   * people's faces.
+   *
+   * A photograph cannot be relied on for contrast, so the row brings its own:
+   * one translucent dark pill, and the controls restated for it. This is
+   * PRESENTATION for a context the component cannot know about — the behaviour,
+   * the ARIA, the dot semantics and the pause rule are still the component's and
+   * are not touched here.
+   */
   .sa-siteheader__carousel .ds-carousel__controls {
     position: absolute;
     inset-inline: 0;
-    bottom: var(--sa-padding-16);
+    /*
+     * 48, NOT 16 — AND THE NUMBER IS GEOMETRY, NOT TASTE.
+     *
+     * The viewport is a circle of radius 170, so the width available to a
+     * centred row shrinks the closer it sits to the bottom. At 16 from the
+     * bottom the circle is only 144px across (2·√(170²−154²)) while the control
+     * row is 224 — so both ends of the pill hung off the photograph and onto the
+     * navy halo behind it.
+     *
+     * The row needs half its width plus a margin to fit: √(170²−dy²) ≥ 120 gives
+     * dy ≤ 120.4, which is 49.6 from the bottom. 48 is the token rung below it.
+     * If the row ever gets wider — a fifth slide, a pause button — this number
+     * has to be recomputed, not nudged.
+     */
+    bottom: var(--sa-padding-48);
     justify-content: center;
-    margin: 0;
+    width: fit-content;
+    margin-inline: auto;
+    padding: var(--sa-padding-6);
+    gap: var(--sa-inline-4);
+    border-radius: var(--sa-shape-full);
+    /*
+     * A flat scrim, and deliberately NO `backdrop-filter`.
+     *
+     * The blurred version drew a visible rectangular haze around the pill: the
+     * filter samples a rectangular region and the softened edge reads outside
+     * the rounded corners it is clipped to. A denser flat scrim does the same
+     * legibility job with no artefact and no compositing cost — which also
+     * matters here, because this sits over an element that is animating.
+     */
+    background-color: color-mix(in srgb, var(--sa-color-neutralScale-900) 66%, transparent);
   }
+
+  /* Circular, transparent, and the picture shows through between them: two
+     opaque white rectangles were the heaviest objects in the band. */
+  .sa-siteheader__carousel .ds-carousel__arrow {
+    min-width: var(--sa-control-height-sm);
+    width: var(--sa-control-height-sm);
+    height: var(--sa-control-height-sm);
+    padding: 0;
+    border: 0;
+    border-radius: var(--sa-shape-full);
+    background-color: transparent;
+    color: var(--sa-text-neutral-inverse);
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sa-siteheader__carousel .ds-carousel__arrow:hover {
+      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 22%, transparent);
+    }
+  }
+
+  .sa-siteheader__carousel .ds-carousel__arrow:active {
+    transform: scale(0.92);
+  }
+
+  /* The focus ring is white here, not the estate's gov-blue: the ring sits on a
+     near-black pill over a photograph, where blue on black is about 2.4:1. */
+  .sa-siteheader__carousel .ds-carousel__arrow:focus-visible,
+  .sa-siteheader__carousel .ds-carousel__dot:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* The dot itself stays the component's 8px circle in the component's 32px hit
+     area — only what it is PAINTED with changes, because the ground did. */
+  .sa-siteheader__carousel .ds-carousel__dot {
+    width: var(--sa-control-height-sm);
+    height: var(--sa-control-height-sm);
+  }
+
+  /*
+   * 60% WHITE, AND THE NUMBER IS A CONTRAST CALCULATION.
+   *
+   * An unselected dot is a control, so WCAG 2.2 §1.4.11 puts a 3:1 floor under
+   * it — and its ground is not fixed, because the scrim is translucent over an
+   * arbitrary photograph. The worst case is the brightest possible slide: 66%
+   * of #0e1114 over white composites to about #605f60, and a dot at 45% white
+   * over that lands on 2.9:1, which fails. At 60% it composites to about #bfbfbf
+   * and measures 3.2:1 against the same ground; over a dark slide it is 4.9:1.
+   *
+   * So the floor is met on ANY photograph rather than on the four this page
+   * happens to ship — which matters, because the slides are content and the next
+   * one to be added will not be checked against this rule.
+   */
+  .sa-siteheader__carousel .ds-carousel__dot::before {
+    border-color: transparent;
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 60%, transparent);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .sa-siteheader__carousel .ds-carousel__dot--current::before {
+    border-color: transparent;
+    background-color: var(--sa-text-neutral-inverse);
+  }
+
+  /* The "Slide N of M" live region is for assistive technology and is already
+     visually hidden by the component; nothing here re-exposes it. */
 
   .sa-siteheader__media {
     display: flex;
