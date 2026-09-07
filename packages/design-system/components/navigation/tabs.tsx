@@ -102,6 +102,22 @@ export interface TabsProps {
    */
   divider?: boolean;
   /**
+   * Whether a `TabPanel` for the active tab is rendered somewhere on the page.
+   * @default true
+   *
+   * Pass `false` for a tablist that has no panels at all — a specimen on a
+   * documentation page, or a row used purely as navigation. `aria-controls` is
+   * then omitted from every tab, because there is nothing to control and an
+   * `aria-controls` pointing at a missing id is a critical
+   * `aria-valid-attr-value` violation.
+   *
+   * It has to be declared rather than detected: the panel is rendered by the
+   * consumer, often as a sibling this component never sees, and a runtime DOM
+   * probe would have to run after paint and then change an ARIA attribute
+   * underneath a screen reader.
+   */
+  panel?: boolean;
+  /**
    * Offer the `Tabs / More` overflow menu when the row cannot show every tab.
    *
    * OFF by default, and opt-in for a reason: turning it on wraps the tablist in
@@ -163,6 +179,7 @@ export function Tabs({
   orientation = "horizontal",
   divider = true,
   overflow = false,
+  panel = true,
 }: TabsProps) {
   const refs = React.useRef<Array<HTMLButtonElement | null>>([]);
   const labelRefs = React.useRef<Array<HTMLSpanElement | null>>([]);
@@ -411,21 +428,34 @@ export function Tabs({
             id: `${idBase}-tab-${t.id}`,
             "aria-selected": selected,
             /*
-             * ONLY when this tab actually owns a panel.
+             * ONLY on the tab whose panel is actually in the document.
              *
-             * A link tab navigates to another page, so there is no
-             * `${idBase}-panel-…` element on this one — and `aria-controls`
-             * pointing at an id that does not exist is a CRITICAL
-             * `aria-valid-attr-value` violation, not a cosmetic one. The first
-             * version of the href support set it unconditionally and axe failed
-             * seven login routes at once, which is exactly the check earning its
-             * keep: `npm run check` does not run axe, so nothing local caught it.
+             * `aria-controls` pointing at an id that does not exist is a
+             * CRITICAL `aria-valid-attr-value` violation, and there are two ways
+             * to earn one here.
              *
-             * The tablist pattern still holds without it. A tab that navigates
-             * is announced as a tab in a tablist; what it does not do is promise
-             * a panel that is not there.
+             * A LINK TAB navigates to another page, so no panel of its own is
+             * ever rendered. Setting it unconditionally failed seven login
+             * routes in CI at once when `TabDef.href` was added.
+             *
+             * AN UNSELECTED TAB is the second, and it was estate-wide: every
+             * consumer of this component renders one `TabPanel` at a time —
+             * `tabId={SECTIONS[active].id}`, `activeTabId === t.id && …` — so
+             * the inactive tabs were all pointing at panels that do not exist.
+             * axe does not flag that one, which is why it survived; it is still
+             * a promise the markup cannot keep.
+             *
+             * A TABLIST WITH NO PANELS AT ALL is the third — 23 specimens on
+             * the Tabs documentation page, which draw the row to show a variant
+             * and render nothing for it to control. `panel={false}` says so.
+             *
+             * ARIA makes `aria-controls` optional on `tab` ("authors SHOULD"),
+             * so omitting it where the panel is absent is correct rather than a
+             * compromise. If a consumer ever renders every panel at once, this
+             * is the line to revisit — none does today, and all ten were
+             * checked.
              */
-            ...(t.href ? {} : { "aria-controls": `${idBase}-panel-${t.id}` }),
+            ...(!panel || t.href || !selected ? {} : { "aria-controls": `${idBase}-panel-${t.id}` }),
             // `aria-disabled`, never the native `disabled` attribute: a natively
             // disabled button leaves the focus order and stops being announced, so a
             // screen-reader user loses the fact that the section exists at all.

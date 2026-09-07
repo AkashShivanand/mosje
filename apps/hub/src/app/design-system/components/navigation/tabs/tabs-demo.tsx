@@ -83,6 +83,9 @@ export function TabsSpecimen({
         onChange={setActive}
         idBase={idBase}
         ariaLabel={label}
+              /* A specimen: the row is drawn to show a variant, and nothing is
+           rendered for it to control. */
+        panel={false}
       />
     </div>
   );
