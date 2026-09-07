@@ -1,0 +1,133 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     HeroCarousel — the circular photo carousel in a landing page header.
+     Sits inside `.sa-siteheader__halo`, which owns the ring and the size.
+     ============================================================================ */
+
+  .sa-hdrcar {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+  }
+
+  .sa-hdrcar__frame {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .sa-hdrcar__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* The picture is the only thing that changes, so it is the only thing that
+       animates — and only for a reader who has not asked it not to. */
+    animation: sa-hdrcar-in var(--sa-motion-enter-duration) var(--sa-motion-enter-easing) both;
+  }
+
+  @keyframes sa-hdrcar-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* ── Controls ─────────────────────────────────────────────────────────────
+     On the circle's edge, not outside it: the halo already carries a 10px ring
+     and anything beyond that collides with the copy column at 1024px. */
+
+  .sa-hdrcar__nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-padding-40);
+    height: var(--sa-padding-40);
+    border: none;
+    border-radius: var(--sa-shape-full);
+    background-color: color-mix(in srgb, var(--sa-bg-neutral-base) 88%, transparent);
+    color: var(--sa-text-brand-primary-bolder);
+    cursor: pointer;
+  }
+
+  .sa-hdrcar__nav:hover {
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .sa-hdrcar__nav--prev {
+    inset-inline-start: calc(var(--sa-padding-8) * -1);
+  }
+
+  .sa-hdrcar__nav--next {
+    inset-inline-end: calc(var(--sa-padding-8) * -1);
+  }
+
+  .sa-hdrcar__dots {
+    position: absolute;
+    bottom: var(--sa-padding-16);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-full);
+    background-color: color-mix(in srgb, var(--sa-color-primaryScale-900) 55%, transparent);
+  }
+
+  /*
+   * 24×24 of TARGET around an 8px dot.
+   *
+   * WCAG 2.2 §2.5.8 asks for 24×24, and a row of 8px dots 8px apart fails it
+   * twice over — the target and the spacing. The visible dot stays small; the
+   * button around it does not.
+   */
+  .sa-hdrcar__dot {
+    width: var(--sa-padding-24);
+    height: var(--sa-padding-24);
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    display: inline-grid;
+    place-items: center;
+  }
+
+  .sa-hdrcar__dot::before {
+    content: "";
+    width: var(--sa-padding-8);
+    height: var(--sa-padding-8);
+    border-radius: var(--sa-shape-full);
+    background-color: color-mix(in srgb, var(--sa-bg-neutral-base) 55%, transparent);
+  }
+
+  .sa-hdrcar__dot--on::before {
+    /* The current slide's dot is a bar, not a brighter circle: shape survives a
+       greyscale print and a reader who cannot separate the two opacities. */
+    width: var(--sa-padding-20);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .sa-hdrcar__nav:focus-visible,
+  .sa-hdrcar__dot:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sa-hdrcar__img {
+      animation: none;
+    }
+  }
+}

@@ -2974,6 +2974,18 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **`reservesOverlap` is for a page with no overlay that sits beside pages that have one.** It pads the band by the same 64px so the blue does not change height as a reader moves between an organisation's front page and its inner pages. It is ignored when `overlay` is present — reserving the space twice leaves a gutter of empty blue.
 - **The halo behind `media` is three filled discs on one 6s loop, not three rings.** Each is born at the portrait's exact radius, so it is opaque where nobody can see it and emerges already fading; each dies at zero. That is what makes the loop seamless without a fade-in, and it is why the keyframes are `linear` — the deceleration is in the published samples, and easing an already-eased set of values twice makes the motion lurch then stall. Under `prefers-reduced-motion` two discs park at the component's own resting drawing and the third is not rendered.
 
+#### PageHeaderCarousel
+**Purpose**: The circular photo carousel in a landing page header — the second of `SitePageHeader`'s two media variants, for an organisation that publishes several pictures of its own work rather than one.
+**Key props**: `slides`, `label`, `autoPlayMs`
+**Rules**:
+- **Reach for it only when there really are several pictures.** One photograph belongs in the still `media` slot: it is decorative, hidden from assistive technology, and adds nothing to the tab order. A carousel is the more expensive answer in every way, and it earns that only by showing something a still cannot.
+- **It is NOT decorative, and that is the whole difference between the two variants.** Pass `mediaLabel` to `SitePageHeader` alongside it. `media` is `aria-hidden` by contract; leaving that in place around a carousel puts buttons in the tab order that no screen reader announces — worse than either hiding them properly or exposing them properly.
+- **Every slide carries its own `alt`, and it is required.** The still portrait's `alt=""` is honest because the picture repeats nothing the copy says; a carousel shows several different things and tells the reader which one they are on.
+- **Autoplay is opt-in, latches off on hover or focus, and never starts under `prefers-reduced-motion`** (WCAG 2.2 §2.2.2). NMBA ships without it, as its source does — a picture moving beside a paragraph someone is reading is a distraction a departmental page does not need.
+- **One slide is in the DOM at a time.** A track of images inside a circle means every picture but one is present and invisible: a screen-reader user walks through pictures a sighted reader cannot see, and the count they hear does not match the page. A polite live region announces the change instead.
+- **The dots are 24×24 targets around an 8px dot** (WCAG 2.2 §2.5.8), and the current one is a bar rather than a brighter circle — shape carries the state, not tone alone.
+- **Not to be confused with the hub's own `HeroCarousel`**, which is a full-bleed banner carousel on the website home. Different surface, different job; this one lives inside the header's haloed circle.
+
 #### Avatar
 **Purpose**: Circular user or entity representation.  
 **Rule**: Always provide `alt` text. For decorative-only avatars, `alt=""`.

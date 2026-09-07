@@ -332,6 +332,10 @@ export default async function OrganisationDetailPage({
       ) : undefined,
     logoSrc: detail?.logo ?? (rootOrg as { logo?: string })?.logo ?? "/website/images/National-Emblem-logo.svg",
     featuredImage: detail?.featuredImage ?? org.featuredImage ?? rootOrg?.featuredImage,
+    // The carousel variant of the landing header, where the record supplies
+    // photographs. Root page only — a child page has no hero of its own.
+    heroSlides: !isSubPage ? detail?.heroSlides : undefined,
+    heroSlidesLabel: !isSubPage && detail?.heroSlides ? `${org.title} photographs` : undefined,
     description:
       (org as { description?: string }).description ??
       detail?.lead,

@@ -22,6 +22,15 @@ const meta = {
           "hex would freeze the band to the blue brand, and this estate is white-label — " +
           "`data-brand=\"navy\"` and the DBIM palette must retheme it. So the second stop is " +
           "the ramp's own next shade.\n\n" +
+          "**`mediaLabel` is what makes the media column visible to assistive " +
+          "technology,** and it is the difference between the header's two media " +
+          "variants. `media` is `aria-hidden` by contract: a still portrait repeats " +
+          "nothing the copy says, so a reader who never sees it loses nothing. Pass a " +
+          "label and the column becomes a named region instead — which is required, not " +
+          "optional, the moment the slot holds controls, as `PageHeaderCarousel` does. " +
+          "Buttons inside an `aria-hidden` subtree stay in the tab order while being " +
+          "invisible to a screen reader. Leave it unset for a single decorative " +
+          "portrait.\n\n" +
           "**`overlay`** is the slot the “at a glance” card sits in. It overlaps the band's " +
           "lower edge by 64px; the header reserves the space, the page decides what goes " +
           "in it — normally a `FactStrip`, which the system already has.\n\n" +

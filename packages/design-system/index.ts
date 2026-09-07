@@ -696,6 +696,8 @@ export { Band } from "./components/layout/band";
 export type { BandProps, BandTone, BandSpacing } from "./components/layout/band";
 export { PageHeader } from "./components/layout/page-header";
 export { SitePageHeader } from "./components/layout/site-page-header";
+export { PageHeaderCarousel } from "./components/layout/page-header-carousel";
+export type { PageHeaderCarouselProps, PageHeaderCarouselSlide } from "./components/layout/page-header-carousel";
 export type { SitePageHeaderProps } from "./components/layout/site-page-header";
 export type { PageHeaderProps } from "./components/layout/page-header";
 export { AppShell } from "./components/layout/app-shell";

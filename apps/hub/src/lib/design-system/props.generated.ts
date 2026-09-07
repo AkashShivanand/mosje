@@ -9046,6 +9046,36 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "PageHeaderCarouselProps": {
+    "source": "packages/design-system/components/layout/page-header-carousel.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Names the carousel for assistive technology, e.g. \"Abhiyaan photographs\"."
+      },
+      {
+        "name": "slides",
+        "type": "PageHeaderCarouselSlide[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "autoPlayMs",
+        "type": "number",
+        "required": false,
+        "description": "Advance every N milliseconds. Omit for a carousel that only moves when the reader moves it. AUTOPLAY STOPS ON INTERACTION AND NEVER STARTS UNDER `prefers-reduced-motion`. WCAG 2.2 §2.2.2 gives a reader the right to pause anything that moves for more than five seconds, and a government page is the last place to argue with that."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      }
+    ]
+  },
   "PageHeaderProps": {
     "source": "packages/design-system/components/layout/page-header.tsx",
     "inheritsNative": true,
@@ -12663,6 +12693,12 @@ export const GENERATED_PROPS = {
         "type": "React.ReactNode",
         "required": false,
         "description": "`landing` only — the portrait on the trailing edge. The halo is drawn by this component, not by the caller: the rings are the band's own treatment and every landing page should get the same one. Pass the picture; the plaque is ours."
+      },
+      {
+        "name": "mediaLabel",
+        "type": "string",
+        "required": false,
+        "description": "Names the media column, which stops it being hidden from assistive technology. THE STATIC PORTRAIT IS DECORATIVE AND THE CAROUSEL IS NOT. `media` is `aria-hidden` by contract — it repeats nothing the copy says, so a reader who never sees it loses nothing. That contract breaks the moment the slot holds CONTROLS: buttons inside an `aria-hidden` subtree stay in the tab order while being invisible to a screen reader, which is worse than either hiding them properly or exposing them properly. So a caller passing interactive media passes a label with it, and the column becomes a named region instead of a hidden one. This is the difference between the `landing` header's two media variants — still and carousel — and it is a real one, not a styling choice."
       },
       {
         "name": "overlay",

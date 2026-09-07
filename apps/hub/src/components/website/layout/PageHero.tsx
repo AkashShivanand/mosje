@@ -1,9 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Icon, SitePageHeader } from "@mosje/design-system";
+import { Icon, SitePageHeader,
+  PageHeaderCarousel,
+} from "@mosje/design-system";
 import { PageTrail, type Crumb } from "./page-trail";
 
 export interface PageHeroProps {
+  /**
+   * Photographs for the header's circular carousel — the second of the landing
+   * header's two media variants.
+   *
+   * When present it replaces the still portrait: the source page cycles four
+   * pictures of the campaign in the same circle the estate draws one in, and
+   * cloning that as a single still lost three of the four. `mediaLabel` goes
+   * with it, because a carousel is not decorative — see `SitePageHeader`.
+   */
+  heroSlides?: { src: string; alt: string }[];
+  /** Names the carousel, e.g. "Nasha Mukt Bharat Abhiyaan photographs". */
+  heroSlidesLabel?: string;
   title: string;
   breadcrumb: Crumb[];
   /**
@@ -84,6 +98,8 @@ export function PageHero({
   level,
   backHref,
   hasOverlappingFacts,
+  heroSlides,
+  heroSlidesLabel,
 }: PageHeroProps) {
   /*
    * A wide banner arriving through `logoSrc` is a portrait, not a mark. The
@@ -101,9 +117,10 @@ export function PageHero({
       ? logoSrc
       : undefined;
 
+  const hasCarousel = (heroSlides?.length ?? 0) > 0;
   const photo = featuredImage ?? bannerFromLogo;
   const mark = logoSrc && logoSrc !== photo ? logoSrc : undefined;
-  const variant = level ?? (photo ? "landing" : "inner");
+  const variant = level ?? (photo || hasCarousel ? "landing" : "inner");
 
   /*
    * A LANDING PAGE ALWAYS GETS THE PORTRAIT; AN INNER PAGE NEVER DOES.
@@ -186,8 +203,20 @@ export function PageHero({
             </span>
           ) : undefined
         }
+        mediaLabel={hasCarousel ? heroSlidesLabel : undefined}
         media={
-          portrait ? (
+          hasCarousel ? (
+            <span className="relative block size-[340px]">
+              <PageHeaderCarousel
+                slides={heroSlides!}
+                label={heroSlidesLabel ?? "Photographs"}
+                /* No autoplay. The source's carousel does not advance on its
+                   own either, and a picture that moves while a reader is
+                   reading the paragraph beside it is a distraction the page
+                   does not need. */
+              />
+            </span>
+          ) : portrait ? (
             /*
              * 340px. The handoff's portrait is 385 inside a 489 plaque; at the
              * estate's 1320 cap the trailing column is ~416, so the picture takes
