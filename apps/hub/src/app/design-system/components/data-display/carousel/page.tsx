@@ -43,7 +43,7 @@ const A11Y: A11yItem[] = [
     level: "AA",
     status: "verified",
     evidence:
-      "On a fine pointer the arrows bind --sa-control-height-md (40px) and the dots draw an 8px mark inside a 32px button, so the mark is small and the target is not. On a coarse pointer every control in the bar grows to 44x44 with 8px between, which is what UX4G 3.0 §3 asks for rather than the 24x24 WCAG floor — measured from the computed styles on an emulated 375px touch device, 2026-09-07: arrow 44x44, dot 44x44, gap 8px.",
+      "Measured from the rendered DOM 2026-09-07: each dot is a 24x24 button drawing an 8px mark, and the buttons sit exactly adjacent — pitch 24, no dead space — so every dot meets 2.5.8's 24x24 minimum without the spacing exception being needed. The arrows bind --sa-control-height-md (40px) and grow to 44x44 on a coarse pointer, which is UX4G 3.0 §3's recommendation. The dots deliberately do NOT grow: a 44px target on a 24px pitch overlaps its neighbours by 10px a side and resolves the press by paint order, so the reader would press 3 and get 4. A wrong slide is worse than a small target, and the divergence is recorded in the stylesheet.",
     description:
       "The dot is small; its target is not — 32px on a mouse, 44px on a thumb, because these controls are the only way most readers reach slide two.",
   },
@@ -127,11 +127,12 @@ export default function CarouselPage(): React.JSX.Element {
             <h2 id="cdp-long" className="cdp__h2">Past Six Slides the Dots Become a Counter</h2>
             <p>
               A dot row stops being a position indicator and becomes a wall. Six is the largest
-              count that still reads as a countable set at a glance, and past it the row also
-              stops fitting: on a coarse pointer each dot is a 44px target at an 8px pitch, so
-              seven of them plus two arrows ask for 460px — more than a 375px phone has. Above
-              six the dots are replaced by <code>3 / 9</code>, which is the same information in a
-              tenth of the width.
+              count that still reads as a countable set at a glance — past it a reader stops
+              counting and starts estimating, which is the moment the row is doing no work a
+              number would not do better. Above six the dots are replaced by <code>3 / 9</code>.
+              The reason is legibility rather than width: at the row&apos;s 24px pitch the cluster
+              only outgrows a narrow phone somewhere past eleven slides, well above where it
+              stops being readable.
             </p>
             <p>
               The counter carries no jump-to-slide affordance, because there is nothing honest to

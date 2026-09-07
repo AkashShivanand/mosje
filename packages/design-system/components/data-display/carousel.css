@@ -88,12 +88,16 @@
      more than a narrow phone has once the arrows are counted, and `Pagination`
      already resolves the same problem the same way. A second centred row is an
      acceptable degradation; a horizontally scrolling control bar is not. */
+  /* 12px between the step controls and the dot cluster, which is what UX4G's
+     own `Pagination - Dot` puts there. At the 8px used everywhere else the
+     arrows and the dots read as one undifferentiated row; they are two kinds of
+     control and the gap is what says so. */
   .ds-carousel__controls-main {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: var(--sa-inline-8);
+    gap: var(--sa-inline-12);
   }
 
   .ds-carousel__arrow,
@@ -195,13 +199,23 @@
     white-space: nowrap;
   }
 
-  /* 8px between the dot targets, not 4 — UX4G 3.0 §3 asks for 8px between
-     interactive elements, and at 4px two 32px targets were closer than the
-     spacing rule allows for controls this small. */
+  /* NO GAP, AND THE TARGETS SIT EXACTLY ADJACENT.
+     UX4G 3.0's `Pagination - Dot` puts 8px between the MARKS — a 10px dot at an
+     18px pitch. An earlier pass here read that 8px as spacing between the 32px
+     TARGETS, which gave a 40px pitch and left 8px dots floating 32px apart: four
+     times the reference, and a row that read as scattered rather than as a set.
+
+     It cannot simply be tightened to 18 either. WCAG 2.2 AA 2.5.8 wants each
+     target at least 24x24, and its spacing exception does not rescue undersized
+     targets whose 24px circles intersect — at an 18px pitch they do. So 24 is
+     the tightest pitch that stays conformant, and it is reached the way the
+     website's own `CarouselIndicators` reaches it: a 24px button with no gap
+     between buttons, so the targets are adjacent and the painted 8px marks sit
+     16px apart. The two components now genuinely match. */
   .ds-carousel__dots {
     display: flex;
     align-items: center;
-    gap: var(--sa-inline-8);
+    gap: var(--sa-inline-0);
   }
 
   /* The dot is small; its TARGET is not. Padding carries the hit area past
@@ -210,8 +224,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--sa-control-height-sm);
-    height: var(--sa-control-height-sm);
+    min-inline-size: var(--sa-inline-24);
+    min-block-size: var(--sa-inline-24);
     padding: 0;
     border: 0;
     background: transparent;
@@ -247,7 +261,7 @@
      reading: `CarouselIndicators` on the website already grows its active
      mark into a bar, and the two now agree. */
   .ds-carousel__dot--current::before {
-    width: var(--sa-inline-20);
+    width: var(--sa-inline-24);
     background-color: var(--sa-bg-brand-primary-bolder);
   }
 
@@ -304,11 +318,15 @@
       min-height: 44px;
     }
 
-    .ds-carousel__dot {
-      width: 44px;
-      height: 44px;
-    }
-
+    /* THE DOTS DO NOT GROW, AND THAT IS THE POINT OF THE PITCH ABOVE.
+       A 44px target on a 24px pitch overlaps its neighbours by 10px a side, and
+       `button.css` records what that costs: "the overlap resolves by paint order
+       rather than by intent", so the reader presses 3 and gets 4. A wrong slide
+       is worse than a small target. The dots stay at 24x24 — WCAG 2.2 AA's floor
+       exactly, adjacent with no dead space between them — and the divergence
+       from UX4G's 44px recommendation is this comment, per
+       standards-precedence.md. The arrows and the rotation control have room and
+       do grow. */
     .ds-carousel__counter {
       height: 44px;
     }

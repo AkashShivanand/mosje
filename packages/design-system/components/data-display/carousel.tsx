@@ -8,10 +8,14 @@ import "./carousel.css";
 /**
  * Above this many slides the dot row stops being a position indicator and
  * becomes a wall. Six is the largest count that still reads as a countable set
- * at a glance, and past it the row also stops fitting: on a coarse pointer each
- * dot is a 44px target at an 8px pitch, so seven of them plus two arrows ask
- * for 460px — more than a 375px phone has. Above six the dots are replaced by a
- * counter, which is the same information in a tenth of the width.
+ * at a glance — past it a reader stops counting and starts estimating, which is
+ * the moment the row is doing no work a number would not do better.
+ *
+ * The reason is legibility, not width. An earlier version of this comment
+ * argued from arithmetic — seven 44px dots plus two arrows asking for 460px on
+ * a 375px phone — and that arithmetic stopped being true when the row was
+ * tightened to a 24px pitch. At 24 the cluster only outgrows a narrow phone
+ * somewhere past eleven slides, well above where it stops being readable.
  */
 const MAX_DOTS = 6;
 

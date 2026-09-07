@@ -93,11 +93,10 @@ export const AutoRotating: Story = {
 /**
  * **Past six slides the dots become a counter.**
  *
- * A dot row stops being a position indicator and becomes a wall, and it also stops
- * fitting: on a coarse pointer each dot is a 44px target at an 8px pitch, so seven
- * of them plus two arrows ask for 460px — more than a 375px phone has. There is no
- * prop for this; the component decides, because a consumer adding a ninth slide
- * should not have to know.
+ * A dot row stops being a position indicator and becomes a wall — past six a reader
+ * stops counting and starts estimating, which is the moment the row is doing no work
+ * a number would not do better. There is no prop for this; the component decides,
+ * because a consumer adding a ninth slide should not have to know.
  */
 export const LongSet: Story = {
   args: {
