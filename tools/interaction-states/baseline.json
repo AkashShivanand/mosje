@@ -1,7 +1,7 @@
 {
   "note": "Selectors that style :hover and never :active. May only shrink.",
   "generated": "2026-09-07",
-  "total": 104,
+  "total": 101,
   "files": {
     "actions/button-group.css": [
       ".ds-btn"
@@ -25,10 +25,6 @@
     ],
     "data-display/bulk-actions-bar.css": [
       ".ds-bulk__action"
-    ],
-    "data-display/carousel.css": [
-      ".ds-carousel__arrow",
-      ".ds-carousel__play"
     ],
     "data-display/charts/charts.css": [
       ".ds-chart__cell",
@@ -186,9 +182,6 @@
     ],
     "navigation/language-switcher.css": [
       ".ds-lang__label"
-    ],
-    "navigation/link.css": [
-      ".ds-link--standalone"
     ],
     "navigation/pagination.css": [
       ".is-current"
