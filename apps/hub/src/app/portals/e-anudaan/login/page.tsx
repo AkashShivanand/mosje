@@ -43,6 +43,12 @@ const CONFIG: PortalLoginConfig = {
     emblemSrc: `${BASE}/brand/national-emblem.svg`,
     digitalIndiaSrc: `${BASE}/brand/digital-india.svg`,
     samaveshLogoSrc: `${BASE}/brand/samavesh-logo.svg`,
+    /* The handoff's Portal Hero photograph (52380:187201), exported from the
+       design at its native 1254 square — the source's ceiling, so it is shipped
+       whole rather than upscaled. Served from the shared login-hero directory
+       beside SMILE's, because a hero photograph belongs to the SCHEME and any
+       portal's login may want it. */
+    heroImageSrc: "/portals/login-hero/e-anudaan.jpg",
   },
   /*
    * FOLLOWING THE HANDOFF — `E-Anudaan | NGO` and `| Admin`, LOGIN &

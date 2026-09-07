@@ -32,22 +32,34 @@
     color: var(--sa-on-bg-brand-primary-boldest);
   }
 
+  /* The alpha mask, transcribed from the handoff's `Mask` (57375:16783) rather
+     than approximated. Its stops read RIGHT to LEFT — alpha 1 at 0, 0.5 at 0.4,
+     0 at 0.84 — so mirrored into CSS they are 16%, 60% and 100%.
+
+     This file previously said 0%, 50% and 100%-at-70%, which reached full
+     opacity a third of the way early and never fully hid the photograph at the
+     lockup's edge. Solved from the rendered frame rather than read off the
+     stops, by recovering the per-pixel alpha from the known navy ground and the
+     source photograph: measured 0.00 out to 15% across, 0.38 at half, 0.63 at
+     70%, 0.97 at the right edge — a straight ramp from 16% to 100%, which is
+     what these three stops describe and the old three did not. */
   .ds-plogin-hero__photo {
     position: absolute;
     inset: 0 0 0 11.71%;
     background-position: center;
     background-size: cover;
+    background-repeat: no-repeat;
     -webkit-mask-image: linear-gradient(
       to right,
-      transparent 0%,
-      color-mix(in srgb, currentColor 50%, transparent) 50%,
-      currentColor 70%
+      transparent 16%,
+      color-mix(in srgb, currentColor 50%, transparent) 60%,
+      currentColor 100%
     );
     mask-image: linear-gradient(
       to right,
-      transparent 0%,
-      color-mix(in srgb, currentColor 50%, transparent) 50%,
-      currentColor 70%
+      transparent 16%,
+      color-mix(in srgb, currentColor 50%, transparent) 60%,
+      currentColor 100%
     );
   }
 
@@ -110,11 +122,26 @@
     );
   }
 
+  /* The strip's own top rule, which the master carries and this did not: 1px of
+     white at 40% across the bar's full width, with the 24 of padding below it
+     (`Auth / SigningIntoBar`, Device=Desktop, 794 x 80, strokeTopWeight 1).
+     Measured in the handoff render at y=816, x 64..857 — exactly the bar's box.
+
+     Bound to `border/neutral/inverse/subtle`, not to the master's own binding.
+     Figma binds `cmp/action/brand/primary/inverse/disabled/border`, which is a
+     DISABLED INVERSE BUTTON's border reused as a divider: identical value, wrong
+     name. The Figma master was rebound to match this in the same change, so the
+     two agree on the semantic and not merely on the pixels.
+
+     Desktop only. The phone strip's variant sets a top weight and then carries
+     no stroke at all, so it draws nothing — correct, because that strip already
+     sits on its own ground with the band above it. */
   .ds-plogin-hero__bar {
     display: flex;
     align-items: center;
     gap: var(--sa-inline-12);
     padding-block-start: var(--sa-padding-24);
+    border-block-start: 1px solid var(--sa-border-neutral-inverse-subtle);
   }
 
   .ds-plogin-hero__bar-text {

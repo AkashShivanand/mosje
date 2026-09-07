@@ -43,6 +43,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* Same reason as the `min-w-0` on the panel in `portal-login-shell.tsx`:
+       nothing in this column may set the page's width from its own content. */
+    min-inline-size: 0;
     padding-inline: var(--sa-padding-16);
   }
 

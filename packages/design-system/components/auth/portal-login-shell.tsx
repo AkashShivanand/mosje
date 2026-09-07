@@ -245,7 +245,19 @@ export function PortalLoginShell({
         </div>
 
         {/* Right panel */}
-        <div className="flex flex-1 flex-col" style={{ background: "var(--sa-bg-neutral-base)" }}>
+        {/* `min-w-0` is load-bearing. A flex item defaults to `min-width: auto`,
+            so this column could not shrink below its own min-content — and its
+            min-content is set by the two credential-mode tab labels, which do
+            not wrap: 185 + 183 = 368, plus the panel's 2 x 16 gutter = 400. On a
+            375px phone that pushed the whole page 25px wide and cut the "Change"
+            button off the right edge. Measured at 375 with a real 375 viewport;
+            the browser pane clamps at 400, which is exactly why this survived an
+            earlier pass that believed it had checked the narrow case.
+
+            With the column able to shrink, the tab row overflows INSIDE the card
+            and `Tabs`' own `overflow` handling takes over — verified: the row
+            scrolls and the "More" menu appears. */}
+        <div className="flex min-w-0 flex-1 flex-col" style={{ background: "var(--sa-bg-neutral-base)" }}>
 
           {/* Phone identity — the Figma organism's `Device=Mobile` variant. The
               SAMAVESH band on a light brand ground, then the Signing Into strip
