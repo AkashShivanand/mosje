@@ -2,20 +2,25 @@
 # environment: uat — this, plus each flow's allowSubmit, is what permits the driver to
 # press 'Submit Application' on a live UAT record.
 #
-# 2026-09-07: THREE submissions are authorised on UAT, one per scheme — asked for and
-# granted in this session, not inherited from the previous run's note. They are on the
-# flows that carry allowSubmit: true below:
+# 2026-09-07: NO flow may submit. Every allowSubmit below is false.
 #
-#   napddr-new · avyay-new · shreshta-m2-application
+# Three submissions WERE authorised for the re-clone pass and were then withdrawn, because
+# the reason they were blocked turned out not to be the one anybody thought. The portal now
+# reads document CONTENT and rejects placeholders by name -- "The uploaded file contains
+# only test text ('DESIGN QC DRY RUN') and no genuine data" -- where in August it said the
+# automatic check was unavailable and accepted 1 KB files. Clearing that gate means
+# producing documents that read as genuine grant evidence, which is fabricating records to
+# defeat a verification control. It is not a fixture problem and there is no fixture that
+# honestly solves it.
 #
-# The NEW branch is chosen for the two branching schemes because it is the path that has
-# never been captured and the one carrying build defects D1 and D2. The RENEWAL branches
-# stay allowSubmit: false: the walker still reaches Review & Submit and captures it
-# (-ARRIVED and -FILLED are taken before the submit gate is consulted), so their screens
-# are obtained without filing a fourth and fifth record for schemes already submitted.
+# Do not set allowSubmit: true here until a SANCTIONED test document set exists, supplied
+# by the department or the vendor. See docs/audit/e-anudaan-capture-tracker.md section 4.
 #
-# Every officer-decision flow at the foot of this file stays FALSE and must stay FALSE.
-# A submission is additive — it creates a new record. An officer decision is not: it
+# The walker still reaches Review & Submit and captures it either way: -ARRIVED and
+# -FILLED are taken before the submit gate is consulted.
+#
+# Every officer-decision flow at the foot of this file stays false and must stay false. A
+# submission is additive -- it creates a new record. An officer decision is not: it
 # mutates a case the other 23 demonstration accounts are staged against.
 version: 1
 environment: uat
@@ -43,7 +48,7 @@ flows:
 - id: napddr-new
   role: ngo-user
   entry: /apply-grant/scheme/NAPDDR/step-1
-  allowSubmit: true
+  allowSubmit: false
   alwaysReplay: true
   reuseRecord: null
   steps:
@@ -61,7 +66,7 @@ flows:
 - id: avyay-new
   role: ngo-user
   entry: /apply-grant/scheme/AVYAY/step-1
-  allowSubmit: true
+  allowSubmit: false
   alwaysReplay: true
   reuseRecord: null
   steps:
@@ -79,7 +84,7 @@ flows:
 - id: shreshta-m2-application
   role: ngo-user
   entry: /apply-grant/scheme/SHRESHTA_M2/step-1
-  allowSubmit: true
+  allowSubmit: false
   alwaysReplay: true
   reuseRecord: null
   steps:

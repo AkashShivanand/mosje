@@ -213,3 +213,44 @@ with the snippet it ships.
   two environments in one pass would put two different products in one corpus.
 - **Regenerating our portal from the new capture.** The capture is evidence, not a
   source. Changes to our build come one defect at a time, through Step 7.
+
+---
+
+# Outcome, 2026-09-07
+
+| Step | Result |
+|---|---|
+| 1 — Freeze a before-state | ✅ Done, **and it was flawed** — the snapshot stored a file path where a row count belonged, so the real before-state was recovered from git (`git show origin/main:…/capture-bundle.json`). Every comparison in the report uses the git version. |
+| 2 — Rebuild the bundle to index what was on disk | ❌ **Not needed; the premise was wrong.** No bundling defect existed. The 18 unindexed slugs were a superseded naming generation, correctly ignored. §1 above is the corrected finding. |
+| 3 — Re-capture all 25 roles | ✅ 296 states, 25 roles, 0 aborts, 0 tracebacks |
+| 4 — Diff and report | ✅ `docs/audit/e-anudaan-live-change-report.md` |
+| 5 — Replace the fixture and walk the wizards | ⚠️ **Partial.** Fixture replaced; walks reached Document Uploads on four of five branches. Review & Submit not reached — the blocker is a content check, not a fixture (§F5, §F7). |
+| 6 — Capture the new-project branch | ✅ NAPDDR new S01–S09 and renewal S01–S10; AVYAY new S01–S04, renewal S01–S06. The fork was proven and measured. |
+| 7 — Run clone-parity and act | ✅ Tool fixed to count through `visibleSteps` first; D1 confirmed genuinely fixed. Open gaps are documents only. |
+| 8 — Officer decision screens | ✅ **21 of 21**, no decision fired |
+| 9 — Rewrite the tracker | ✅ Every figure reproducible |
+
+## What the pass actually answered
+
+**"Has the live version changed?"** — Not the build: both UAT fingerprints are
+byte-identical to 2026-09-03, no screen's content moved, 177 of 196 comparable screens are
+identical. **But yes in behaviour:** the automatic document check was unavailable in August
+and is active now, rejecting placeholder files by name. Only walking a wizard reveals it.
+
+**"Keep the changes and enhancements we've made."** — Nothing in `apps/hub` was touched.
+`visibleSteps`, the D1–D7 fixes, the login work and the 49 portal route files are as they
+were; the parity fix corrected a *measurement* that was misreporting them.
+
+## Three things this pass changed its mind about, on evidence
+
+1. The bundle was not broken (Step 2).
+2. The upload blocker was not a malformed fixture (Step 5).
+3. The August archive does not contain the submission screens — `Step_Final_Confirmation.png`
+   is a byte-identical duplicate of `Step_NN_Review_And_Submit.png` in all four schemes.
+
+## Left open
+
+Post-submission acknowledgements need a sanctioned test document set from the department —
+recorded in the tracker §5 as a human step. AVYAY's new branch beyond Justification, mobile
+layouts, Hindi rendering and the keyboard pass remain as before. `pytest` is not installed
+on this host, so the engine suite was not run; no engine code changed this pass.
