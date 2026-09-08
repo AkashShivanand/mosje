@@ -59,13 +59,27 @@ def resolve_fixture(man, step):
     return base
 
 
+# Shared by the filler and the healer below: what a control CALLS itself, gathered from every
+# place a portal might have put it, plus a normaliser so a label read off an error message can
+# be matched against one read off the DOM.
+_HELPERS_JS = r"""
+ const labelOf=e=>{let t=e.getAttribute('aria-label')||'';
+   if(!t&&e.id){const l=document.querySelector('label[for="'+CSS.escape(e.id)+'"]');if(l)t=l.innerText;}
+   if(!t){const w=e.closest('label');if(w)t=w.innerText;}
+   return (t+' '+(e.placeholder||'')+' '+(e.name||'')).trim();};
+ const norm=s=>String(s||'').replace(/[*:]/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
+ const write=(e,v)=>{Object.getOwnPropertyDescriptor(e.__proto__,'value').set.call(e,v);
+   e.dispatchEvent(new Event('input',{bubbles:true}));
+   e.dispatchEvent(new Event('change',{bubbles:true}));};
+"""
+
 # RAW string, like EXTRACT_JS beside it. Without the r, Python turns every `\b` in this
 # JavaScript into a literal backspace before the browser ever sees it, so a regex word
 # boundary silently becomes \x08 and can never match. That is not hypothetical: the measure
 # rule below matched `(sq.ft.)` — whose `\(` Python leaves alone, not being a recognised
 # escape — while `\b(?:number of|…)` matched nothing at all, and AVYAY's step 5 kept
 # reporting "Number of Rooms must be a number" against a filler that looked correct.
-FILL_ALL_JS = r"""(F)=>{let n=0;
+FILL_ALL_JS = r"""(F)=>{let n=0;""" + _HELPERS_JS + r"""
  // A control's INPUT TYPE is not what it asks for. AVYAY's "Distance to the nearest similar
  // service (km)" is type=text, so the browser is content with anything -- checkValidity()
  // returns true -- while the portal's own rule rejects it: "Distance to the nearest similar
@@ -77,16 +91,19 @@ FILL_ALL_JS = r"""(F)=>{let n=0;
  // "number" -- "Registration Number" and "NGO-Darpan Unique ID" are identifiers, and putting
  // 10 in them fails a different rule.
  const NUMERIC=/\((?:km|kms|nos?|%|₹|rs|inr|sq\.? ?ft|sq\.? ?m|years?|months?|days?)\.?\)|\b(?:number of|no\.? of|total number|count of|how many|of which|distance|capacity|strength|area|amount|percentage)\b/i;
- const labelOf=e=>{let t=e.getAttribute('aria-label')||'';
-   if(!t&&e.id){const l=document.querySelector('label[for="'+CSS.escape(e.id)+'"]');if(l)t=l.innerText;}
-   if(!t){const w=e.closest('label');if(w)t=w.innerText;}
-   return (t+' '+(e.placeholder||'')+' '+(e.name||'')).trim();};
  // A placeholder written as an example IS the answer's shape, and the portal knows its own
  // format better than any default can. AVYAY asks for "Project In-charge (name & contact)"
  // in one box and rejects a bare name: "Enter the name and a contact number of at least 10
  // digits — e.g. Ramesh Kumar, 9876543210." That example is sitting in the placeholder.
  const eg=e=>{const m=/^\s*e\.?g\.?[:\s]\s*(.+)$/i.exec(e.placeholder||'');return m?m[1].trim():null;};
- const pick=e=>eg(e)||(NUMERIC.test(labelOf(e))?F.number:(F[e.type]||F.text));
+ // Two date boxes on one step are usually a SPAN, and a span has an order. NAPDDR's step 2
+ // asks for "Date of Registration" and "Registration valid up to"; filling both from the one
+ // date default gives the same day for each. No browser objects -- checkValidity() is true on
+ // both -- while the portal requires the second to fall after the first, a rule our own clone
+ // models as `afterRegistration`. So a label naming the END of a span takes the later default.
+ const LATER=/\bvalid (?:up ?to|upto|till|until|through)\b|\bexpir|\b(?:to|end|closing|last) date\b|\bdate of (?:expiry|completion|closure)\b/i;
+ const pick=e=>eg(e)||(e.type==='date'&&LATER.test(labelOf(e))?F.dateLater
+   :(NUMERIC.test(labelOf(e))?F.number:(F[e.type]||F.text)));
  document.querySelectorAll('input,select,textarea').forEach(e=>{
   if(e.type==='hidden'||e.disabled||e.readOnly||e.type==='file')return;
   if(e.tagName==='SELECT'){const o=[...e.options].find(o=>o.value&&o.value!==''&&!/^\s*(select|choose|--|please)\b/i.test(o.text||''));
@@ -103,15 +120,38 @@ FILL_ALL_JS = r"""(F)=>{let n=0;
   // it because it is no longer empty. Re-checking the value against the label heals that
   // whatever the timing, and never touches a value that is already right.
   const wrong=NUMERIC.test(labelOf(e))&&e.value!==''&&isNaN(Number(String(e.value).replace(/,/g,'')));
-  if(!e.value||wrong){const set=Object.getOwnPropertyDescriptor(e.__proto__,'value').set;
-    set.call(e,pick(e));
-    e.dispatchEvent(new Event('input',{bubbles:true}));
-    e.dispatchEvent(new Event('change',{bubbles:true}));n++;}});
+  // The same heal for the end of a span: an earlier pass, or the portal's own draft, may have
+  // left it on or before the start date. A date already later than the start is left alone.
+  const early=e.type==='date'&&LATER.test(labelOf(e))&&e.value!==''&&e.value<=F.date;
+  if(!e.value||wrong||early){write(e,pick(e));n++;}});
  return n;}"""
+
+
+# The label rules above are guesses about what a box wants. This one is not a guess: after a
+# refused step the portal has NAMED the fields it rejected, in its own words -- "Beneficiaries
+# treated in the previous year must be a number." No regex over labels would have caught that
+# one, and the next scheme will have another. Reading the complaint is general where a growing
+# list of hand-written phrases is not.
+HEAL_NUMERIC_JS = r"""(F)=>{""" + _HELPERS_JS + r"""
+ const want=[];
+ document.body.innerText.split('\n').forEach(t=>{
+   const m=/^(.{3,90}?)\s+must be (?:a |an )?(?:valid |whole )?(?:number|numeric|digit)/i.exec(t.trim());
+   if(m)want.push(norm(m[1]));});
+ if(!want.length)return {healed:0,labels:[]};
+ const healed=[];
+ document.querySelectorAll('input,textarea').forEach(e=>{
+  if(e.type==='hidden'||e.disabled||e.readOnly||e.type==='file')return;
+  const l=norm(labelOf(e));
+  // labelOf appends the placeholder and the name, so the DOM label is the LONGER string and
+  // the complaint is its prefix. Anchoring at the start keeps "Number of Rooms" from matching
+  // a field merely mentioning rooms further along its own label.
+  if(!l||!want.some(w=>l.indexOf(w)===0))return;
+  write(e,F.number);healed.push(l.slice(0,60));});
+ return {healed:healed.length,labels:healed};}"""
 
 DEFAULT_VALUES = {"text": "Example Welfare Society", "textarea": "12 Example Road, Nagpur 440001",
                   "email": "contact@example-welfare.org", "tel": "9800000000", "number": "50",
-                  "date": "2020-04-01", "url": "https://example-welfare.org", "search": "Example"}
+                  "date": "2020-04-01", "dateLater": "2030-03-31", "url": "https://example-welfare.org", "search": "Example"}
 
 
 def fill_all(pg, values=None, passes=3):
@@ -133,6 +173,26 @@ def fill_all(pg, values=None, passes=3):
             break
         pg.wait_for_timeout(700)
     return total
+
+
+def heal_numeric(pg, values=None):
+    """Re-fill the fields the portal itself has just called non-numeric, and say which.
+
+    Called only after a step refuses to advance, so it costs nothing on a step that worked.
+    Returns how many controls were rewritten, which is the caller's cue to press forward again.
+    """
+    vals = {**DEFAULT_VALUES, **(values or {})}
+    try:
+        out = pg.evaluate(HEAL_NUMERIC_JS, vals) or {}
+    except Exception as e:
+        print(f"    ! numeric heal failed ({str(e)[:60]})", flush=True)
+        return 0
+    healed = out.get("healed", 0)
+    if healed:
+        print(f"    · the portal named {healed} field(s) as numeric: "
+              f"{'; '.join(out.get('labels') or [])[:110]}", flush=True)
+        pg.wait_for_timeout(600)
+    return healed
 
 
 def upload_all(pg, path, limit=None):
@@ -387,17 +447,24 @@ def walk_wizard(pg, spec, flow, man, cfg, paths, bdl, role, fid, allowed, why):
                                        allowed, why, done)
             break
 
-        wait_for_forward(pg, forward, spec.get("forwardTimeoutMs", 120000))
-        moved = False
-        for label in forward:
-            if _destructive_and_blocked(label, allowed):
-                continue
-            if _click(pg, label, spec.get("waitMs", 3000), allowed):
-                pg.wait_for_timeout(spec.get("settleMs", 1200))
-                if _position(pg) != pos:
-                    moved = True
-                    break
-                print(f"    · {label!r} clicked but the wizard stayed on step {pos[1]}", flush=True)
+        def _press_forward():
+            wait_for_forward(pg, forward, spec.get("forwardTimeoutMs", 120000))
+            for label in forward:
+                if _destructive_and_blocked(label, allowed):
+                    continue
+                if _click(pg, label, spec.get("waitMs", 3000), allowed):
+                    pg.wait_for_timeout(spec.get("settleMs", 1200))
+                    if _position(pg) != pos:
+                        return True
+                    print(f"    · {label!r} clicked but the wizard stayed on step {pos[1]}",
+                          flush=True)
+            return False
+
+        moved = _press_forward()
+        # A refusal is the one moment the portal explains itself. Read what it said, fix what it
+        # named, and try once more before giving up on everything past this step.
+        if not moved and heal_numeric(pg, spec.get("values")):
+            moved = _press_forward()
         if not moved:
             print(f"[flow {fid}] STOPPED at step {pos[1]} {pos[2]!r} — no forward control "
                   f"advanced the wizard. Captured {len(done)} state(s); nothing beyond this "
