@@ -116,6 +116,22 @@ const SCHEMES = [
 
 const GROUP_LABEL = Object.fromEntries(GROUPS.map(g => [g.id, g.label]));
 
+/* Artwork withdrawn 8 September 2026. The drawing for this group showed a young
+   man in visible distress holding a smoking implement: the stigma, not the group.
+   NAPDDR serves the person's family as well, and none of that is in a picture of
+   an addict. Nothing is drawn in its place until the artwork depicts what the
+   scheme gives rather than what a person is assumed to look like — which is the
+   same reason the caste and community groups should not be drawn as people at all. */
+const NO_MARK = new Set(['drug']);
+
+/* Every screen draws a group's mark through this, so a withdrawal takes effect
+   everywhere at once and leaves a plain ground rather than a broken image. */
+function markHTML(id) {
+  return NO_MARK.has(id)
+    ? '<span class="mark-none" role="presentation"></span>'
+    : `<img src="personas/${id}.png" alt="">`;
+}
+
 /* The live site's Target Group filter, counted on dosje.gov.in on 8 September 2026.
    Kept here so the prototype can show today's state honestly where it needs to. */
 const LIVE_FILTER = {

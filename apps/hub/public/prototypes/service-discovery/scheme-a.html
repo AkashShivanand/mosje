@@ -39,7 +39,7 @@ const ALL = [{id:'all',label:'All'}].concat(GROUPS);
 function draw(){
   el('faces').innerHTML = ALL.map(g=>`
     <button class="face-btn" data-g="${g.id}" aria-pressed="${g.id===sel}">
-      <span class="circ"><img src="personas/${g.id}.png" alt=""></span><span class="lbl">${g.label}</span></button>`).join('');
+      <span class="circ">${markHTML(g.id)}</span><span class="lbl">${g.label}</span></button>`).join('');
   const list = sel==='all' ? SCHEMES : SCHEMES.filter(s=>s.g.includes(sel));
   el('cards').innerHTML = list.slice(0,9).map(s=>`
     <article class="scard rise">
