@@ -120,7 +120,10 @@ export default function CarouselPage(): React.JSX.Element {
             <p>
               The rotation control is drawn without a fill or a border. It is a mode switch, not a
               third arrow, and given the arrows&apos; treatment it otherwise read as a navigation
-              control that had wandered to the left edge.
+              control that had wandered to the left edge. It keeps its <em>word</em> rather than a
+              play/pause glyph: a reader who has paused a carousel must be able to see that it is
+              paused, and a toggling icon is ambiguous about which of the two states it reports.
+              Its label changing width is harmless here, because the zone it sits in absorbs it.
             </p>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-long">
