@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import NextLink from "next/link";
-import { Button, Icon, Link, SectionTitle } from "@mosje/design-system";
+import { Button, Icon, Link, SectionTitle, buttonClasses } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import {
   OrganisationDetail,
@@ -335,44 +335,67 @@ export default async function OrganisationDetailPage({
     description:
       (org as { description?: string }).description ??
       detail?.lead,
+    /*
+     * THE HERO'S QUICK ACTIONS ARE DESIGN-SYSTEM BUTTONS, and until 8 Sep 2026
+     * they were 90 characters of hand-written Tailwind pretending to be one.
+     *
+     * The old class list reached past the token system in four separate ways:
+     * `bg-amber-400` / `hover:bg-amber-300` / `text-slate-900` are Tailwind's
+     * own palette rather than the estate's ramps; `text-[var(--sa-color-
+     * primaryScale-600)]` reached a colour through an arbitrary value; and
+     * `rounded-lg`, `shadow-sm` and `shadow-md` are Tailwind's radius and
+     * elevation scales, not the DS ones. None of it was caught by a gate,
+     * because `check:ds-linkage` reads raw values and these were class names.
+     *
+     * `buttonClasses` gained a `tone` parameter on 3 September for exactly this
+     * case — its own note says the helper "could express three of the
+     * component's four axes, so a next/link styled as a button on a navy header
+     * had no way to ask for the inverse treatment and consumers hand-wrote the
+     * class." This was one of those consumers. `tone="inverse"` is what the band
+     * needs; the DS then owns the fill, the ink, the radius, the elevation, the
+     * hover, the press and the focus ring.
+     */
     actions: detail?.quickActions && detail.quickActions.length > 0 ? (
       <div className="flex flex-wrap gap-2.5 items-center mt-2">
         {detail.quickActions.map((qa) => {
           const isExternal = qa.external || qa.href.startsWith("http");
+          /*
+           * `primary` is the filled invitation, `danger` the one that must not
+           * be missed, and everything else the quiet companion. Mapped here
+           * rather than stored in the record, because the record describes what
+           * an action IS and the template decides how a button looks.
+           */
+          const appearance = qa.variant === "primary" || qa.variant === "danger" ? "filled" : "outlined";
+          const variant = qa.variant === "danger" ? "danger" : "primary";
           return (
             <a
               key={qa.href}
               href={qa.href}
               target={isExternal ? "_blank" : undefined}
               rel={isExternal ? "noreferrer" : undefined}
-              className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-label-1 transition-all shadow-sm ${
-                qa.variant === "primary"
-                  ? "bg-white text-[var(--sa-color-primaryScale-600)] hover:bg-white/90 shadow-md font-bold"
-                  : qa.variant === "danger"
-                  ? "bg-amber-400 text-slate-900 hover:bg-amber-300 font-bold"
-                  : "bg-white/15 text-white hover:bg-white/25 border border-white/30 backdrop-blur-sm"
-              }`}
+              /*
+                * `md`, because the handoff's instances are Size=Default, which
+                * is 40px — `sm` is its Small (32) and was a guess. Read off the
+                * component properties on 51586:22056/22061/22066 rather than
+                * measured off a screenshot.
+                */
+              className={buttonClasses(variant, appearance, "md", undefined, "inverse")}
             >
               {qa.icon && <Icon name={qa.icon} size={16} />}
               <span>{qa.label}</span>
               {isExternal ? (
                 <>
-                  <Icon name="open_in_new" size={16} className="opacity-80" />
+                  <Icon name="open_in_new" size={16} aria-hidden />
                   {/*
-                    * THE GLYPH IS NOT THE WARNING.
-                    *
-                    * `open_in_new` is decorative to anyone who cannot see it, so
-                    * "Take the Pledge" and "Citizen Dashboard" were the only two
-                    * links on this page that left for another site without
-                    * saying so — every other external link in the template
-                    * already carries this span. An unannounced new tab strands a
-                    * screen-reader user in a document whose Back button does
-                    * nothing (WCAG G201).
+                    * THE GLYPH IS NOT THE WARNING. `open_in_new` is decorative
+                    * to anyone who cannot see it, so these were the only links
+                    * on the page that left for another site without saying so
+                    * (WCAG G201).
                     */}
                   <span className="sr-only"> (opens in a new tab)</span>
                 </>
               ) : (
-                <Icon name="arrow_forward" size={16} className="opacity-80" />
+                <Icon name="arrow_forward" size={16} aria-hidden />
               )}
             </a>
           );
