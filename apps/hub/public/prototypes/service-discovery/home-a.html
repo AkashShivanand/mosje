@@ -88,6 +88,11 @@ body{background:var(--sa-white);padding:40px 24px}
   .persona__h{width:auto;white-space:normal;font-size:28px;line-height:36px}
   .pslider{width:100%;max-width:340px;align-self:center}
 }
+/* A group whose artwork was withdrawn. On the blue panel a pale fill reads as a
+   FAILED IMAGE, so the mark is an empty frame in the panel's own colour — the
+   decision from 250d68a6, carried over when .shot was renamed .pshot. */
+.pshot .mark-none{background:var(--sa-mark-none-panel-bg);
+  border:1px dashed var(--sa-mark-none-panel-line)}
 </style></head><body>
 <script src="data.js"></script>
 
@@ -145,8 +150,9 @@ function draw(animate){
   const g = GROUPS[i];
   const shot = el('shot');
   const paint = () => {
-    shot.innerHTML = `<img src="personas/${g.id}.png" alt="">`;
+    shot.innerHTML = markHTML(g.id);
     el('pname').textContent = g.short || g.label;
+    shot.style.opacity = 1; shot.style.transform = 'none';
   };
   if (animate) {
     const img = shot.querySelector('img');

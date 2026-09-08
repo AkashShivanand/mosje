@@ -390,16 +390,33 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             ],
           },
           {
-            id: "five-questions",
-            title: "Find support for you",
+            id: "finder",
+            title: "Schemes for Your Situation",
             summary:
-              "Five short questions, any of which may be skipped. Skipping widens the answer rather than ending it.",
+              "Four short questions — the group, the stage of life, the kind of help and the State — built as a website section from the design system, over the Department's own scheme pages. Any question may be left unanswered, and leaving one unanswered widens the list.",
             status: "proposed",
             live: true,
             lookAt: [
-              "The count at the top right falls as answers narrow — 45 at question two, 6 once five are answered",
-              "Choosing “person with disability” routes to DEPwD rather than returning nothing",
-              "It ends at a place to apply, not at a page of text",
+              "It is the estate's own components — SectionTitle, Stepper, card radios, chips, cards — so what is reviewed is what the website would ship",
+              "The progress row is also the record of answers, and a finished stage can be reopened from it",
+              "On the answer screen each answer is a chip; removing one widens the list in place rather than starting over",
+              "Every scheme is a real page on dosje.gov.in, with who it lists and what it provides taken from that page; a State scheme appears only for its own State",
+              "Choosing “Persons with Disabilities” goes straight to a signpost for DEPwD rather than through three questions that cannot change the answer",
+              "The copy is in the Department's register: no “we”, no “you told us”, and nothing on screen states that anyone is eligible",
+            ],
+          },
+          {
+            id: "five-questions",
+            title: "Find Schemes for You — five questions",
+            summary:
+              "The first draft: five short questions in a static page, any of which may be skipped.",
+            status: "superseded",
+            live: true,
+            supersededBy:
+              "Redrawn as “Schemes for Your Situation”. It was a static page in an iframe with its own stylesheet and its own buttons, and it spoke in a product's voice — “You told us”, “Show what I can apply for”, “we ask so we can show”. Its first question (myself / my family / an organisation) filtered nothing. The idea — short questions, skipping widens — survives in the redesign; the surface did not.",
+            lookAt: [
+              "Choosing “person with disability” routes to DEPwD rather than returning nothing — kept in the redesign",
+              "It ends at a place to apply, not at a page of text — kept in the redesign",
             ],
           },
           {

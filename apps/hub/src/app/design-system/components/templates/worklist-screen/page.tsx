@@ -58,10 +58,7 @@ export default function WorklistScreenPage(): React.JSX.Element {
       name="Worklist Screen"
       status="Beta"
       summary="Many records the reader acts on. Filters, a table, bulk actions and a pager — plus every one of the seven states, which the caller never writes."
-      figma={{
-        absent:
-          "The handoff draws no list screen at all: Pagination, Breadcrumb and Search return zero hits across all 5,138 nodes of the E-Anudaan page. The layout here is the estate's own answer, recorded in docs/audit/figma-handoff-defects-2026-09-06.md.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<WorklistSpecimen />}
       propsFrom="WorklistScreenProps"
       a11y={A11Y}

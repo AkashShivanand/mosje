@@ -13,6 +13,13 @@ export const FIGMA_FILE_URL =
 
 /** Page/frame node IDs in the SAMAVESH Figma file (docs-relevant subset). */
 export const FIGMA_NODES = {
+  // ── Screen templates ──
+  screenTemplates: "57677:737", // "Screen Templates" — the eighteen as ANNOTATED FRAMES,
+  //                          not component sets: a screen template is a layout and a
+  //                          contract, and making it placeable would invite a designer to
+  //                          detach and edit a screen the code owns. Page id, not the
+  //                          documentation frame's, for the reason recorded on `shape`.
+
   // ── Foundations ──
   color: "2140:295913", // "Color Styles"
   typography: "2140:295912", // "Text Styles"

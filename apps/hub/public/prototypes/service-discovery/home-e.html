@@ -92,7 +92,7 @@ function draw(){
   el('out').innerHTML = `
     <div class="reading rise"><span aria-hidden="true">⌕</span>
       <span>Read as <b>${r.reading}</b>. Matched on the words a citizen actually uses, not on a document tag.</span></div>
-    <div class="grp"><h3>Schemes · ${hits.length} shown</h3>
+    <div class="grp"><h3>Schemes</h3>
       ${hits.map(s=>`<div class="hit"><div class="grow"><b>${s.t}</b>
         <small>${s.benefit} · run by ${s.runBy} · ${s.juris}</small></div>
         <button class="btn ghost">Open →</button></div>`).join('')}</div>
@@ -100,7 +100,7 @@ function draw(){
       <div class="hit"><div class="grow"><b>${hits[0] ? hits[0].apply : 'Where to apply near you'}</b>
         <small>Named before you leave this site, with what to have ready</small></div>
         <button class="btn ghost">Open →</button></div></div>
-    ${g ? `<p class="note">All ${SCHEMES.filter(s=>s.g.includes(r.group)).length} schemes listed for ${g.label.toLowerCase()}.</p>` : ''}`;
+    ${g ? `<p class="note">All schemes listed for ${g.label.toLowerCase()}.</p>` : ''}`;
 }
 el('q').addEventListener('input', draw);
 el('tries').addEventListener('click', e => {

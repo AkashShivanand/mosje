@@ -280,9 +280,17 @@ function Flyout({
   const ref = React.useRef<HTMLDivElement>(null);
   const [pos, setPos] = React.useState<{ top: number; left: number } | null>(null);
 
+  /* MEASURING THE DOM.
+     The flyout is placed from its anchor's rect, which does not exist until the
+     anchor is in the document; a layout effect is the earliest a measurement can
+     be taken and it still lands before paint. The package's `useAnchoredPosition`
+     does the same thing with flipping and reflow, and this flyout does not need
+     either — moving it onto that foundation is worthwhile follow-up, not a
+     silencing of this rule. */
   React.useLayoutEffect(() => {
     if (!anchor) return;
     const r = anchor.getBoundingClientRect();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
     setPos({ top: r.top, left: r.right });
   }, [anchor]);
 
@@ -397,7 +405,15 @@ function MainItem({
   const leaf = asLeaf(item);
   const active = itemActive(current, item);
   const [open, toggle] = useDisclosure(active);
-  const anchorRef = React.useRef<HTMLButtonElement>(null);
+  /*
+   * The collapsed row's button is held in STATE, not a ref, because the flyout
+   * needs it as a prop and a ref cannot be read during render — `react-hooks/refs`
+   * is right that `anchorRef.current` in the JSX below only worked by accident of
+   * ordering, and would not re-render if the node were ever replaced. A callback
+   * ref into state gives the flyout a node it can trust and a render that stays
+   * pure.
+   */
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
   const listRef = React.useRef<HTMLUListElement>(null);
 
   // The level-1 item that holds the current page is tinted, as the page is: the
@@ -443,7 +459,7 @@ function MainItem({
       <li>
         <Tooltip content={item.label} side="right" duplicatesTriggerName disabled={flyoutOpen}>
           <button
-            ref={anchorRef}
+            ref={setAnchorEl}
             type="button"
             aria-label={name}
             aria-haspopup="true"
@@ -462,7 +478,7 @@ function MainItem({
           <Flyout
             item={item}
             current={current}
-            anchor={anchorRef.current}
+            anchor={anchorEl}
             id={id}
             onClose={onFlyoutClose}
           />
@@ -644,10 +660,11 @@ export function SidebarNav({
   const current = resolveCurrent(groups, pathname);
   const [openFlyout, setOpenFlyout] = React.useState<string | null>(null);
   const closeFlyout = React.useCallback(() => setOpenFlyout(null), []);
-  // A flyout belongs to the collapsed rail; expanding closes it.
-  React.useEffect(() => {
-    if (!collapsed) setOpenFlyout(null);
-  }, [collapsed]);
+  /* A flyout belongs to the collapsed rail, so expanding must close it — DERIVED
+     rather than reset in an effect. `openFlyout` is only consulted through this
+     value, so an expanded rail cannot show one, and no render is spent clearing
+     state that the next collapse would set again anyway. */
+  const activeFlyout = collapsed ? openFlyout : null;
   const baseId = React.useId();
 
   return (
@@ -710,7 +727,7 @@ export function SidebarNav({
                     item={item}
                     current={current}
                     collapsed={collapsed}
-                    flyoutOpen={openFlyout === (item.href ?? item.label)}
+                    flyoutOpen={activeFlyout === (item.href ?? item.label)}
                     onFlyoutToggle={() => {
                       const key = item.href ?? item.label;
                       setOpenFlyout((cur) => (cur === key ? null : key));

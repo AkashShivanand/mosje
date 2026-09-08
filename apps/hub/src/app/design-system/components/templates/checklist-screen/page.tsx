@@ -41,10 +41,7 @@ export default function ChecklistScreenPage(): React.JSX.Element {
       name="Checklist Screen"
       status="Beta"
       summary={"A required set of artefacts, each with its own verdict. Four states per row, because a file that has left the citizen's machine is not yet a document the department has accepted."}
-      figma={{
-        absent:
-          "Drawn as five document-upload wizard steps across the three schemes, with no per-item verdict and no findings. The four states here are the estate's answer, taken from FileList's existing scanning/failed vocabulary.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<ChecklistSpecimen />}
       propsFrom="ChecklistScreenProps"
       a11y={A11Y}

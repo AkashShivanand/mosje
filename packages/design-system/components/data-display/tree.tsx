@@ -185,6 +185,13 @@ export function Tree({
     }
 
     if (event.key.length === 1 && /\S/.test(event.key)) {
+      /* eslint-disable-next-line react-hooks/purity -- `onKeyDown` is an event
+         handler, never called during render (its only reference is the JSX
+         `onKeyDown` below), and type-ahead needs the wall clock to tell a pause
+         from a continued word. The rule cannot see that this declaration is
+         handler-only: the same `Date.now()` in a handler passed directly as a JSX
+         prop is not flagged. Reading the clock here is correct; moving it to state
+         or a ref-of-now would only relocate the impurity. */
       const now = Date.now();
       // A pause clears the buffer, so "ba" finds Bankura and a later "n" starts
       // afresh rather than searching for "ban".

@@ -49,10 +49,7 @@ export default function DecisionScreenPage(): React.JSX.Element {
       name="Decision Screen"
       status="Beta"
       summary={"One record, and a decision to record against it. Both on screen at once, because an officer choosing \"Return for correction\" must be able to see the field they are returning it for."}
-      figma={{
-        absent:
-          "Absent. The handoff draws the citizen intake journey in depth and almost none of the officer half — no list screen, no decision screen, and no admin screen beyond the admin login.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<DecisionSpecimen />}
       propsFrom="DecisionScreenProps"
       a11y={A11Y}

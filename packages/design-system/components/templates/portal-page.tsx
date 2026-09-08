@@ -219,7 +219,14 @@ export function PortalPage({
   /* The rail closes when the route changes. Without this, a citizen who taps a
      destination on a phone lands on the new page with the drawer still over it
      and has to dismiss the navigation they just used. */
+  /* RESETTING ON A ROUTE CHANGE. The drawer is the citizen's to open, so it
+     cannot be derived from the route; it only has to be forced shut when the
+     route changes under it. React's alternatives are remounting the whole shell
+     with a `key` (which throws away scroll position and focus) or comparing the
+     previous path during render (which `react-hooks/set-state-in-render`,
+     enabled here, forbids). */
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
     setDrawerOpen(false);
     // The route is the trigger; setDrawerOpen is stable enough and including it
     // would re-close the drawer whenever the parent re-creates its handler.

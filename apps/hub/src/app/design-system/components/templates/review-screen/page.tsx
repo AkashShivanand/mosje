@@ -41,10 +41,7 @@ export default function ReviewScreenPage(): React.JSX.Element {
       name="Review Screen"
       status="Beta"
       summary={"Everything entered, nothing yet committed. Numbered sections that tie back to the wizard steps that filled them, each with an edit link that names its section."}
-      figma={{
-        absent:
-          "Drawn once, as e-anudaan-step7-review-submit — 51 label/value pairs in one undifferentiated grid, with no section numbering and no edit affordance.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<ReviewSpecimen />}
       propsFrom="ReviewScreenProps"
       a11y={A11Y}

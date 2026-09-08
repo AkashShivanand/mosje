@@ -21,7 +21,6 @@ td small{display:block;color:var(--sa-muted);font-size:11.5px;margin-top:2px}
 </style></head><body>
 <script src="data.js"></script><script src="shell.js"></script>
 <main class="wrap sec">
-  <p class="eyebrow">Offerings</p>
   <div>
     <h1 class="sec-t">Schemes &amp; Services</h1>
     <p class="sec-lede">Tick the groups that apply. Filters combine, so a group and a stage of life and a kind of help can be asked for together.</p>
@@ -36,7 +35,7 @@ td small{display:block;color:var(--sa-muted);font-size:11.5px;margin-top:2px}
   <p class="note">Listing is not a decision on any application — the sanctioning authority decides that.</p>
 </main>
 <script>
-mountShell('Offerings');
+/* No masthead: this option is reviewed as the section alone. */
 const el = id => document.getElementById(id);
 const sel = { group:new Set(), stage:new Set(), need:new Set() };
 const pre = new URLSearchParams(location.search).get('g');

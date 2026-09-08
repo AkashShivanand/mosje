@@ -163,7 +163,13 @@ export function useBotCheck({
     // No Web Crypto (older browser, or a non-secure origin) is a real state, not
     // an exception: the check cannot run, so it reports failure and the citizen
     // gets the route out rather than a form that silently will not submit.
+    /* READING A BROWSER CAPABILITY. Whether Web Crypto exists is a fact about
+       the client, so it cannot be tested during render without the server and
+       client disagreeing. "No crypto" is a real state of this machine, not an
+       exception, and the state is what routes the citizen out; there is nowhere
+       else to record it. */
     if (typeof crypto === "undefined" || !crypto.subtle) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
       setStatus("failed");
       return;
     }

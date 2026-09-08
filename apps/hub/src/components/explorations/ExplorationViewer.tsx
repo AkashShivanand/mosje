@@ -10,6 +10,7 @@ import { LayoutCtasBelow, LayoutCtasRight, LayoutTwoZones } from "./nmba/BannerL
 import {
   HomePersonas,
   HomeFiveQuestions,
+  HomeSchemeFinder,
   HomeOneTap,
   HomeTasks,
   HomeSearch,
@@ -41,6 +42,7 @@ const PROTOTYPES: Record<string, React.ComponentType> = {
   "nmba/banner-layout/two-zones": LayoutTwoZones,
   "service-discovery/home-page/personas": HomePersonas,
   "service-discovery/home-page/five-questions": HomeFiveQuestions,
+  "service-discovery/home-page/finder": HomeSchemeFinder,
   "service-discovery/home-page/one-tap": HomeOneTap,
   "service-discovery/home-page/tasks": HomeTasks,
   "service-discovery/home-page/search": HomeSearch,

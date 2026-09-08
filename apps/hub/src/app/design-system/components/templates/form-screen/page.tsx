@@ -49,10 +49,7 @@ export default function FormScreenPage(): React.JSX.Element {
       name="Form Screen"
       status="Beta"
       summary={"One record, editable, and it fits on one screen. Sections, an error summary that takes focus, and one action bar that stays reachable at 375px."}
-      figma={{
-        absent:
-          "The handoff draws only staged wizard steps — no single-screen form. This is the estate's own composition, and it is what the >8-field rule sends everything below the wizard threshold to.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<FormSpecimen />}
       propsFrom="FormScreenProps"
       a11y={A11Y}

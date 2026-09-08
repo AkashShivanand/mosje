@@ -492,7 +492,11 @@ export function DemoDock({
   // moment — re-toning the whole page live — needs the panel out of the
   // way, which is exactly what no in-panel control can offer.
   const { mode: colorMode, setMode: setColorMode, modes: colorModes } = useColorMode();
-  const colourAnnouncer = useLiveRegion();
+  /* Destructured at the call, not read as `colourAnnouncer.ref` in the JSX:
+     `react-hooks/refs` reads a `.ref` member access during render as reading a
+     ref's value, which it is not — but a plain binding says the same thing and
+     the rule accepts it. */
+  const { ref: colourAnnouncerRef, announce: announceColour } = useLiveRegion();
   React.useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.code !== "KeyC" || !event.altKey) return;
@@ -504,11 +508,11 @@ export function DemoDock({
       const next = colorModes[(index + 1) % colorModes.length];
       if (!next) return;
       setColorMode(next.id);
-      colourAnnouncer.announce(`Colour mode: ${next.label}`);
+      announceColour(`Colour mode: ${next.label}`);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [colorMode, colorModes, setColorMode, colourAnnouncer]);
+  }, [colorMode, colorModes, setColorMode, announceColour]);
 
   React.useEffect(() => {
     return () => {
@@ -717,7 +721,7 @@ export function DemoDock({
       {/* Always mounted (not just while the panel is open) so the global
           colour-mode shortcut can announce a change even with the dock
           closed — that's the whole point of the shortcut. */}
-      <LiveRegion ref={colourAnnouncer.ref} />
+      <LiveRegion ref={colourAnnouncerRef} />
       {shouldRender && (
         // KNOWN, BASELINED LINT FINDING — not a defect. jsx-a11y flags the keydown
         // handler below because it classes `dialog` as a non-interactive role. This

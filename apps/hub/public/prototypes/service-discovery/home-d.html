@@ -63,12 +63,10 @@ const REDRESS = [
 let sel = 'track';
 function panel(){
   if (sel === 'check') {
-    const n = SCHEMES.length;
     return `<div class="panel rise"><h2>Check What You Can Get</h2>
       <p class="lede">Five short questions, any of which may be skipped. Skipping widens the answer rather than ending it.</p>
-      <div class="routes">${STAGES.map(s=>{
-        const c = SCHEMES.filter(x=>x.s.includes(s.id)).length;
-        return `<div class="route"><b>${s.label}</b><small>${c} of ${n} schemes are open at this stage</small></div>`;}).join('')}</div>
+      <div class="routes">${STAGES.map(s=>
+        `<div class="route"><b>${s.label}</b><small>Schemes are open at this stage</small></div>`).join('')}</div>
       <div class="row" style="margin-top:16px"><a class="btn" href="home-b.html">Start the questions →</a>
         <span class="note" style="margin:0">Nothing you answer is stored.</span></div></div>`;
   }

@@ -152,6 +152,13 @@ function ModeFields({
   );
 }
 
+const subscribeToNothing = (): (() => void) => () => {};
+function portalPathOnClient(): string | undefined {
+  const parts = window.location.pathname.split("/").filter(Boolean);
+  return parts[0] === "portals" && parts[1] ? `/portals/${parts[1]}` : undefined;
+}
+const portalPathOnServer = (): undefined => undefined;
+
 export function PortalLoginTemplate({
   config,
   onSubmit,
@@ -205,9 +212,16 @@ export function PortalLoginTemplate({
    * trade; the alternative is making this component read a framework's router,
    * which would tie a framework-agnostic package to Next.
    */
+  /* INITIALISING FROM THE URL AFTER HYDRATION. The role cannot be read during
+     render: the server has no location, and reading it on the client only would
+     make the two renders disagree. It cannot be an initial state value for the
+     same reason. So the tab opens on its default and the deep- linked one takes
+     over on the first commit — the one-frame flicker the comment above already
+     accepts as the price of not tying this package to a router. */
   React.useEffect(() => {
     if (!deepLinkRole || roleId) return;
     const wanted = roleFromUrl(window.location.href);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
     if (wanted && roleIds.includes(wanted)) setActiveRoleId(wanted);
     // Mount only: later URL changes are the router's business, not this component's.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -453,11 +467,15 @@ export function PortalLoginTemplate({
    * minus the last segment, and every portal already knows it without a second
    * place to keep in step. Client-only for the same reason as `isPhone`.
    */
-  const [activePortalPath, setActivePortalPath] = React.useState<string | undefined>();
-  React.useEffect(() => {
-    const parts = window.location.pathname.split("/").filter(Boolean);
-    if (parts[0] === "portals" && parts[1]) setActivePortalPath(`/portals/${parts[1]}`);
-  }, []);
+  /* A pure snapshot of the path, so `useSyncExternalStore` rather than a
+     state-setting effect: it returns undefined on the server and through
+     hydration and the real value after, with no extra render. Nothing
+     subscribes because the previous effect did not track navigation either. */
+  const activePortalPath = React.useSyncExternalStore(
+    subscribeToNothing,
+    portalPathOnClient,
+    portalPathOnServer,
+  );
 
   const [isPhone, setIsPhone] = React.useState(false);
   React.useEffect(() => {

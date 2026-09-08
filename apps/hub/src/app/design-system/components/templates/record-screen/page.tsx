@@ -48,10 +48,7 @@ export default function RecordScreenPage(): React.JSX.Element {
       name="Record Screen"
       status="Beta"
       summary="One record, read-only. A summary strip carries the four or five facts a reader came for; everything else sits behind tabs that can be linked to."
-      figma={{
-        absent:
-          "The handoff draws a review summary (e-anudaan-step7-review-submit, 51 label/value pairs) but no committed-record view. This is the estate's own composition.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<RecordSpecimen />}
       propsFrom="RecordScreenProps"
       a11y={A11Y}

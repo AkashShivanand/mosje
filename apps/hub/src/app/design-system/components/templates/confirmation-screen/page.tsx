@@ -41,10 +41,7 @@ export default function ConfirmationScreenPage(): React.JSX.Element {
       name="Confirmation Screen"
       status="Beta"
       summary={"Committed, with a reference number. The number is the screen: set apart at the head of the panel, selectable, above the fold, and on one line."}
-      figma={{
-        absent:
-          "Absent from every source. The handoff's citizen journey ends at submit, so a citizen who applies has nothing to quote at a counter and no way to prove they applied — post-submit confirmation is listed among the archetypes absent entirely.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<ConfirmationSpecimen />}
       propsFrom="ConfirmationScreenProps"
       a11y={A11Y}
