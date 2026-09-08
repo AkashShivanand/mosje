@@ -4,13 +4,13 @@
 const GROUPS = [
   { id:'sc',      label:'Scheduled Caste',        sub:'As listed in the Presidential Order' },
   { id:'obc',     label:'OBC or EBC',             sub:'Other and Economically Backward Class' },
-  { id:'dnt',     label:'DNT, nomadic or semi-nomadic', sub:'De-notified and nomadic communities' },
-  { id:'safai',   label:'Sanitation or waste work', sub:'You or a parent does cleaning or sewer work' },
+  { id:'dnt',     label:'DNT, nomadic or semi-nomadic', short:'DNT and nomadic', sub:'De-notified and nomadic communities' },
+  { id:'safai',   label:'Sanitation or waste work', short:'Sanitation work', sub:'You or a parent does cleaning or sewer work' },
   { id:'senior',  label:'Senior citizen',         sub:'Aged 60 years or above' },
   { id:'tg',      label:'Transgender person',     sub:'Covered under the SMILE umbrella' },
-  { id:'drug',    label:'Affected by substance use', sub:'For the person or their family' },
+  { id:'drug',    label:'Affected by substance use', short:'Substance use', sub:'For the person or their family' },
   { id:'student', label:'Student',                sub:'In school, college or beyond' },
-  { id:'ngo',     label:'NGO or voluntary organisation', sub:'Applying for grant-in-aid' },
+  { id:'ngo',     label:'NGO or voluntary organisation', short:'Voluntary organisation', sub:'Applying for grant-in-aid' },
 ];
 
 /* Asked in the finder so the Department's boundary can be named, but not shown as one
