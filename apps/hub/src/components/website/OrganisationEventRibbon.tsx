@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import NextLink from "next/link";
-import { Icon } from "@mosje/design-system";
+import { Icon, buttonClasses } from "@mosje/design-system";
 import type { OrganisationDetail } from "@/content/website/organisation-details";
 import "./organisation-event-ribbon.css";
 
@@ -94,10 +94,14 @@ export function OrganisationEventRibbon({
       {gone ? null : (
         <section className="orger" aria-labelledby={headingId}>
           <div className="sa-container orger__inner">
-            <span className="orger__mark" aria-hidden>
-              <Icon name="calendar_month" size={20} />
-            </span>
-
+            {/*
+              * NO MARK. A 40px calendar tile stood here and pushed the eyebrow
+              * and the sentence to x=140, while the H1, the lead, the hero
+              * buttons, the campaign band's pill and this ribbon's own edge all
+              * begin at 84. It was the only stray indent in the fold, and it was
+              * carrying no meaning the words "SIX YEARS OF NASHA MUKT BHARAT
+              * ABHIYAAN" do not already carry.
+              */}
             <div className="orger__copy">
               <p id={headingId} className="orger__eyebrow">
                 {ribbon.eyebrow}
@@ -115,8 +119,24 @@ export function OrganisationEventRibbon({
             </div>
 
             <div className="orger__routes">
+              {/*
+                * OUTLINED, NOT FILLED — and a DS button rather than a hand-rolled
+                * one, the same swap the hero's quick actions and the campaign
+                * band's CTA have already had.
+                *
+                * `#a43a00` filled was the only saturated fill below the masthead,
+                * so a SIX-WEEK campaign strip was louder than the page's
+                * permanent primary action, which is a white outline on the hero.
+                * The thing that gets deleted in October was out-shouting the
+                * thing that stays.
+                *
+                * `--sa-btn-edge` carries the saffron, which is the hook
+                * `button.css` publishes for the ink and border of the outlined
+                * appearances — the estate has no saffron VARIANT, and inventing
+                * one for a temporary strip would be the wrong direction.
+                */}
               <NextLink
-                className="orger__cta"
+                className={buttonClasses("primary", "outlined", "sm", "orger__cta")}
                 href={ribbon.action.href}
                 target={external ? "_blank" : undefined}
                 rel={external ? "noreferrer" : undefined}

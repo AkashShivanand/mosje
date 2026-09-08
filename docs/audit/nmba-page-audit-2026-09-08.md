@@ -205,7 +205,61 @@ word bounded.
 
 ---
 
-## 7. Two gate findings, spun off
+## 7. First-fold audit, and the five things it changed
+
+Audited as a design director on 8 September, after the work above had shipped.
+**The finding that mattered most was self-inflicted**, and it was only visible by
+measuring rather than looking at a full-page capture.
+
+### The fold did not contain the fold
+
+The notice strip and the occasion ribbon were both added this week with commit
+messages claiming they sat "high on the page". Measured at four real viewports:
+
+| Viewport | Band | Hero | Fact strip | What's New | Ribbon |
+|---|---|---|---|---|---|
+| 1440×760 · 13" laptop | full | cut | **below** | **below** | **below** |
+| 1512×820 · MacBook Air | full | cut | **below** | **below** | **below** |
+| 1920×955 · 24" desktop | full | full | cut | **below** | **below** |
+| 390×664 · phone | full | cut | **below** | **below** | **below** |
+
+Neither strip was above the fold on any device. The composed fold ran 236→1201px
+— 965px of band — and no laptop shows more than 760 of it. The review had asked
+for the first fold to carry LESS; it carried more, and the additions landed where
+nobody sees them without scrolling.
+
+### The five fixes
+
+| # | Finding | Fix |
+|---|---|---|
+| 1 | The ribbon was below the fold on every device | Moved above the hero, after the campaign band. `full` at 1440×760, 1512×820 and 1920×955 |
+| 2 | Three fact cells at 405px around 150px of content — 63% air, and three unrelated statements rather than a strip | Four cells at 301px |
+| 3 | The helpline was removed as a duplicate of the campaign band's pill — **but that band is dismissible**, so pressing its X removed the only remaining instance of the number from a page about drug de-addiction | Restored as the fourth fact |
+| 4 | `#a43a00` filled was the only saturated fill below the masthead, so a six-week campaign strip out-shouted the page's permanent primary action | Outlined, through `--sa-btn-edge` |
+| 5 | The ribbon's 40px calendar tile pushed its copy to x=140 while everything else in the fold began at 84 | Mark removed; every element in the fold now starts at **84** |
+
+### What was NOT changed, and why
+
+**The What's New strip is still below the fold**, on every viewport. Moving it
+above the hero would put three bands before the page title, which is the stacking
+the same audit criticised. It is a permanent notice board rather than a
+time-limited campaign, so it can afford to sit where a reader arrives at it; the
+ribbon could not. Recorded rather than fixed.
+
+**Three apparent misalignments were left alone** because they are two-column
+rows, not stray indents: the notice strip's headline at x=290 sits beside its
+plinth, the campaign band's heading at x=470 sits beside the helpline pill, and
+the fact strip centres its cells because that is the `FactStrip` component's own
+design. Calling those failures would have padded the count.
+
+**The Ministry fact is the weakest of the four** — a reader on the Department's
+own site is told the Department twice by the masthead already. It stays only
+because removing it returns the strip to three, which measured worse. Replace it
+the day the source publishes a fourth figure worth the space.
+
+---
+
+## 8. Two gate findings, spun off
 
 **`check:link-as` can be fooled by a `>` in a comment.** Its tag scanner stops at
 the first `>` at brace depth zero without skipping comments or strings, so a
