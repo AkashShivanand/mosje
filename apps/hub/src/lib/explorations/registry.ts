@@ -398,7 +398,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             live: true,
             lookAt: [
               "It is the estate's own components — SectionTitle, Stepper, card radios, chips, cards — so what is reviewed is what the website would ship",
-              "The stepper on the left is also the record of answers, and a finished stage can be reopened from it",
+              "The progress row is also the record of answers, and a finished stage can be reopened from it",
               "On the answer screen each answer is a chip; removing one widens the list in place rather than starting over",
               "Every scheme is a real page on dosje.gov.in, with who it lists and what it provides taken from that page; a State scheme appears only for its own State",
               "Choosing “Persons with Disabilities” goes straight to a signpost for DEPwD rather than through three questions that cannot change the answer",
