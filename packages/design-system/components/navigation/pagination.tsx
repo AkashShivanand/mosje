@@ -193,6 +193,34 @@ export function Pagination({
   const pages = numbered ? pageList(current, last as number, siblings) : [];
   const atStart = current <= 1;
   const atEnd = bounded ? current >= (last as number) : !hasNext;
+  const isLinkForm = Boolean(hrefFor);
+
+  /*
+   * ONE SENTENCE, ONE PLACE — and, below, ONE NODE.
+   *
+   * This string had two authors: the visible paragraph the steps-only form
+   * draws, and the clipped live region the button form announces through. Both
+   * said "Page N of M", and in the steps-only BUTTON form both rendered — so
+   * the accessibility tree carried the position twice, once as static text and
+   * once as a status message. Only one was on screen, so nothing looked wrong.
+   *
+   * The fix is not to hide one of them: it is to notice they are the same
+   * sentence. Where the position is already on screen the live region goes ON
+   * it, which is the pattern ARIA asks for anyway — a status message a sighted
+   * reader can also read. The clipped copy is kept only for the form that has
+   * no visible position to attach to.
+   */
+  const positionText = bounded ? `Page ${current} of ${last}` : `Page ${current}`;
+
+  /*
+   * The live region is the visible paragraph when there is one, and a clipped
+   * node when there is not. The link form gets neither — a navigation announces
+   * itself, and a second announcement talks over the framework's route
+   * announcer.
+   */
+  const announceOnPosition = !isLinkForm && !numbered;
+  const announceSeparately = !isLinkForm && numbered;
+  const liveAttrs = { role: "status", "aria-live": "polite" } as const;
 
   /**
    * THE BUTTON FORM DISABLES IN PLACE; THE LINK FORM STILL REMOVES.
@@ -212,7 +240,6 @@ export function Pagination({
    * This also settles the disagreement with `DataTable`'s own pager, which has
    * always disabled rather than removed.
    */
-  const isLinkForm = Boolean(hrefFor);
 
   /*
    * `aria-disabled`, NOT `disabled`, AND THE THREE JOBS THAT COMES WITH.
@@ -353,8 +380,8 @@ export function Pagination({
          * the page alone, because claiming an "of N" the caller never supplied
          * would be inventing one.
          */
-        <p className="ds-pagination__position">
-          {bounded ? `Page ${current} of ${last}` : `Page ${current}`}
+        <p className="ds-pagination__position" {...(announceOnPosition ? liveAttrs : {})}>
+          {positionText}
         </p>
       )}
 
@@ -407,17 +434,20 @@ export function Pagination({
       ) : null}
 
       {/*
-        Nothing about a page turn is audible on its own. The link form does not
-        need this — a navigation announces itself — but in the button form the
+        Nothing about a page turn is audible on its own. In the button form the
         rows swap silently, so the new position is announced politely. SMILE
         Admin hand-rolled exactly this beside its own pager, which is the usual
         sign that the component owed it.
+
+        This node is the NUMBERED button form only. Steps-only already draws the
+        position on screen and carries the live region there, and the link form
+        needs no announcement at all — see `announceSeparately` above.
       */}
-      {isLinkForm ? null : (
-        <p className="ds-pagination__status" role="status" aria-live="polite">
-          {bounded ? `Page ${current} of ${last}` : `Page ${current}`}
+      {announceSeparately ? (
+        <p className="ds-pagination__status" {...liveAttrs}>
+          {positionText}
         </p>
-      )}
+      ) : null}
     </nav>
   );
 }

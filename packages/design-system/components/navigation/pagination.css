@@ -232,9 +232,14 @@
     }
   }
 
-  /* The politeness announcement in the button form. Hidden, not absent: the
-     dots-and-numbers on screen already say which page you are on, and printing
-     it a second time is the interface narrating itself. */
+  /* The politeness announcement in the NUMBERED button form. Hidden, not
+     absent: the numbers on screen already say which page you are on, and
+     printing it a second time is the interface narrating itself.
+
+     The steps-only form has no numbers, so it draws the position as visible
+     text and puts the live region on THAT paragraph rather than rendering this
+     one beside it — otherwise the same sentence sits in the accessibility tree
+     twice, once as content and once as a status message. */
   .ds-pagination__status,
   .ds-pagination__sr {
     position: absolute;
