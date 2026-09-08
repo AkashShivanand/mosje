@@ -189,7 +189,7 @@ export function ListingTable({
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={current === 1}
-            className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-300 px-3 text-label-1 disabled:opacity-40 enabled:hover:bg-surface-muted"
+            className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-300 px-3 text-label-1 disabled:opacity-40 enabled:hover:bg-surface-muted [@media(pointer:coarse)]:h-11"
           >
             <Icon name="keyboard_arrow_left" size={16} /> Prev
           </button>
@@ -199,7 +199,7 @@ export function ListingTable({
           <button
             onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
             disabled={current === totalPages}
-            className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-300 px-3 text-label-1 disabled:opacity-40 enabled:hover:bg-surface-muted"
+            className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-300 px-3 text-label-1 disabled:opacity-40 enabled:hover:bg-surface-muted [@media(pointer:coarse)]:h-11"
           >
             Next <Icon name="keyboard_arrow_right" size={16} />
           </button>
