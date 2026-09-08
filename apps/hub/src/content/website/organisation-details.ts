@@ -366,33 +366,39 @@ export interface OrganisationDetail {
     heading: string;
     description?: string;
     /**
-     * How the groups are laid out.
+     * Chip order, most-wanted first — the publisher's own, where it has one.
      *
-     * `"library"` (the default, and what every other organisation uses) merges
-     * every group into one filterable shelf with counted chips.
+     * Omit it and the estate's default order applies, which leads with
+     * Guidelines and Circulars. That is right for a body whose documents are one
+     * undifferentiated pile and wrong for one that leads with something else:
+     * NMBA's source page opens with IEC material, and reordering its chips to
+     * put Circulars first would be the estate imposing its filing system on the
+     * Department's.
      *
-     * `"sections"` renders each group as its own band, in the order declared —
-     * because that is how the source publishes them. NMBA's page has six
-     * separately titled document sections, each with its own "View All": IEC
-     * Materials, Publications, Newsletter, Downloads, Circulars, Citizen
-     * Corner. Merging them into one shelf keeps every file but loses the
-     * Department's own arrangement of them, and a reader who came for the
-     * newsletter has to work out which chip it is behind.
-     *
-     * `"tabs"` KEEPS THAT ARRANGEMENT AND STOPS IT COSTING THE PAGE 2,400px.
-     * NMBA's six sections rendered as six full-width bands, alternating white
-     * and grey, each with its own heading, its own "View all" and its own
-     * "Showing N of N documents" — and three of them held a SINGLE card in a
-     * three-column grid, so two thirds of three bands was empty space. Fifteen
-     * files took more vertical scroll than the entire rest of the page. As tabs
-     * the six headings become the six tabs, in the source's order, and a reader
+     * `"tabs"` KEEPS THE PUBLISHER'S ARRANGEMENT AND STOPS IT COSTING THE PAGE
+     * 2,400px. A `"sections"` mode used to sit here and rendered each group as
+     * its own full-width band; it was removed on 8 September because six
+     * top-level headings broke the side rail's contract — the rail offered one
+     * "Documents & Downloads" entry pointing at an id that mode never rendered.
+     * Tabs answer both halves of that: ONE section carrying the anchor, and the
+     * six headings kept as the six tabs, in the source's own order, so a reader
      * who came for the newsletter presses the word "Newsletter".
      *
-     * It also restores the anchor. `"sections"` gave each group its own band id
-     * and no band carried `documents-downloads`, so the page index's "Documents
-     * & Downloads" link had been pointing at an element that did not exist.
+     * `"library"` (the default, and what every other organisation uses) merges
+     * every group into one filterable shelf with counted chips, and — since
+     * `groupViewAll` — a route out that follows the selected chip.
      */
-    layout?: "library" | "sections" | "tabs";
+    layout?: "library" | "tabs";
+    /*
+     * Chip order for the `library` layout. Names are the ITEM `group` values,
+     * which is what the chips are built from — not the group headings, though
+     * on a well-formed record they match.
+     *
+     * `tabs` does NOT read this: it takes its order from `groups`, which is the
+     * source's own. Two lists of the same order would be two things to keep in
+     * step, and this file has already paid for that once.
+     */
+    groupOrder?: string[];
     groups: OrgDownloadGroup[];
   };
   /**
@@ -1041,11 +1047,17 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       {
         label: "PUBLICATIONS & REPORTS",
         items: [
-          { label: "Annual Reports", href: "#annual-reports" },
-          { label: "SOP and Advisory", href: "#sop-and-advisories" },
-          { label: "Act/Rules", href: "#acts-and-rules" },
-          { label: "Notifications", href: "#circulars-notifications" },
-          { label: "Rules & Procedure", href: "#rules-of-procedure" },
+          /*
+           * ONE ENTRY, NOT FIVE — and the five it replaces all pointed at
+           * nothing.
+           *
+           * Annual Reports, SOP and Advisory, Act/Rules, Notifications and Rules
+           * & Procedure were separate sections once. They are categories inside
+           * the one document shelf now, reachable as chips, and this rail was
+           * never updated: every one of those five anchors resolved to no
+           * element, so a fifth of the Commission's rail scrolled nowhere.
+           */
+          { label: "Documents & Downloads", href: "#documents-downloads" },
           { label: "Rajya Sabha Questions", href: "/website/organisation/national-commission-for-safai-karamcharis/rajya-sabha-questions" },
           { label: "Meetings", href: "/website/organisation/national-commission-for-safai-karamcharis/meetings" },
           { label: "FAQ", href: "/website/organisation/national-commission-for-safai-karamcharis/faq" },
@@ -1487,7 +1499,9 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
         label: "OUR WORK & IMPACT",
         items: [
           { label: "Major Activities", href: "#national-initiatives" },
-          { label: "Annual Reports", href: "#annual-reports" },
+          /* "#annual-reports" resolved to nothing: the Commission's reports are
+             a category inside the document shelf, not a section of their own. */
+          { label: "Documents & Downloads", href: "#documents-downloads" },
           { label: "State Offices", href: "/website/organisation/national-commission-for-scheduled-castes/state-office-ahmedabad" },
           { label: "Spot Visits by Commission", href: "/website/organisation/national-commission-for-scheduled-castes/spot-visits-by-the-commission" },
           { label: "PSU / PSB Reviews", href: "/website/organisation/national-commission-for-scheduled-castes/psu-psb-reviews" },
@@ -1882,6 +1896,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       {
         label: "Statutory Documents",
         items: [
+          { label: "Downloads & Statutory Resources", href: "#components" },
           { label: "Affidavit Formats & Downloads", href: "/website/organisation/national-portal-for-transgender-persons/downloads" },
         ],
       },
@@ -1916,6 +1931,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
         items: [
           { label: "Platform Overview", href: "#about-the-scheme" },
           { label: "About DAPSC", href: "/website/organisation/e-utthaan/about-us" },
+          { label: "Reporting Modules & Query Interfaces", href: "#components" },
         ],
       },
       {
@@ -1983,12 +1999,18 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
           { label: "Pearls of Wisdom", href: "/website/organisation/senior-citizens-welfarescw/pearls-of-wisdom" },
         ],
       },
-      {
-        label: "CONNECT & ENGAGE",
-        items: [
-          { label: "Contact Division", href: "#contact" },
-        ],
-      },
+      /*
+       * NO "CONNECT & ENGAGE" GROUP, because there is nothing to put in it.
+       *
+       * It held one entry, "Contact Division" → "#contact", and this record
+       * carries no `contact` block — so the template renders no contact section
+       * and the link resolved to nothing. The honest fix is the empty group
+       * going, not a heading kept over a dead link.
+       *
+       * TO RESTORE IT: add a `contact` block with the Division's real address,
+       * telephone and email, and put the entry back. That is content this
+       * estate does not have and must not invent.
+       */
     ],
     components: {
       heading: "Community & Welfare Initiatives",
@@ -2026,6 +2048,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
         items: [
           { label: "About Corporation", href: "#about-the-scheme" },
           { label: "Overview Details", href: "/website/organisation/national-scheduled-castes-finance-and-development-corporation/about-us" },
+          { label: "Services & Channels", href: "#components" },
           { label: "Quick Links & Portals", href: "/website/organisation/national-scheduled-castes-finance-and-development-corporation/quick-links" },
         ],
       },
@@ -2455,10 +2478,27 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       ],
     },
     nav: [
+      /*
+       * THE RAIL IS A LIST OF THE PAGE'S SECTIONS, SO IT IS ORDERED LIKE THEM.
+       *
+       * In-page entries appear in the order their sections appear in the
+       * document — Numbers, About, Facilities, Documents, Gallery, then the
+       * Connect group. Sub-page links have no position in the page, so they sit
+       * with the subject they extend: "Overview Details" under About, the five
+       * corners in their own group.
+       *
+       * Two things were wrong before this ordering was applied. "The Abhiyaan in
+       * Numbers" was on the page and in no group, so a third of the fold was
+       * unreachable from the rail; and every entry named its section except the
+       * first, which said "About the Organisation" against a heading reading
+       * "About the Abhiyaan". A rail whose labels do not match the headings they
+       * scroll to is a rail a reader stops trusting.
+       */
       {
         label: "ABOUT THE ABHIYAAN",
         items: [
-          { label: "About the Organisation", href: "#about-the-scheme" },
+          { label: "The Abhiyaan in Numbers", href: "#impact" },
+          { label: "About the Abhiyaan", href: "#about-the-scheme" },
           { label: "Overview Details", href: "/website/organisation/nasha-mukt-bharat-abhiyaan/about-us" },
         ],
       },

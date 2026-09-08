@@ -67,8 +67,17 @@ export interface ChipProps
   count?: number | string;
   /**
    * What one unit of `count` is, for assistive technology. @default "items"
+   *
+   * Give it the PLURAL — "documents", "items". A count of exactly 1 drops a
+   * trailing "s", so a screen reader hears "Publications, 1 document" rather
+   * than "1 documents". Pass `countLabelOne` where that trim is wrong.
    */
   countLabel?: string;
+  /**
+   * The singular of `countLabel`, where trimming an "s" does not produce it —
+   * "entries" → "entry", "boxes" → "box". Only consulted when `count` is 1.
+   */
+  countLabelOne?: string;
   /** When provided, renders a trailing dismiss (×) button. */
   onDismiss?: () => void;
   /** Accessible label for the dismiss button. @default "Remove" */
@@ -88,6 +97,22 @@ export interface ChipProps
  * (Enter/Space toggles). Styled entirely via semantic CSS classes that
  * reference design tokens (--sa-*). No Tailwind, no deps.
  */
+/**
+ * The right noun for a count, for assistive technology only.
+ *
+ * Deliberately not a general pluraliser: it handles the one case that matters
+ * here — a plural label against a count of exactly 1 — and defers to
+ * `countLabelOne` for anything a trailing "s" does not describe. `count` may be
+ * a preformatted string (`formatIndian`), in which case only the literal "1" is
+ * treated as singular, so "1,000" is correctly left plural.
+ */
+function countUnit(count: number | string, plural: string, singular?: string): string {
+  const isOne = count === 1 || count === "1";
+  if (!isOne) return plural;
+  if (singular != null) return singular;
+  return plural.endsWith("s") && !plural.endsWith("ss") ? plural.slice(0, -1) : plural;
+}
+
 export const Chip = React.forwardRef<HTMLDivElement, ChipProps>(function Chip(
   {
     selected = false,
@@ -97,6 +122,7 @@ export const Chip = React.forwardRef<HTMLDivElement, ChipProps>(function Chip(
     leadingIcon,
     count,
     countLabel = "items",
+    countLabelOne,
     onDismiss,
     dismissLabel = "Remove",
     trailingDropdown = false,
@@ -167,7 +193,10 @@ export const Chip = React.forwardRef<HTMLDivElement, ChipProps>(function Chip(
       {count != null && (
         <span className="ds-chip__count">
           {count}
-          <span className="ds-sr-only">{` ${countLabel}`}</span>
+          {/* "1 documents" is what a screen reader read on every chip holding a
+              single item — and a filter row is exactly where counts of one are
+              common. */}
+          <span className="ds-sr-only">{` ${countUnit(count, countLabel, countLabelOne)}`}</span>
         </span>
       )}
       {trailingDropdown && (

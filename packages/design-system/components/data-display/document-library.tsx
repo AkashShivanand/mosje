@@ -54,6 +54,24 @@ export interface DocumentLibraryProps {
    * navigation.
    */
   viewAllSlot?: React.ReactNode;
+  /**
+   * A per-group "view all", keyed by the group's own name.
+   *
+   * When a chip is selected and this map has an entry for it, that entry
+   * replaces `viewAllSlot` in the footer — so the link always points at the
+   * listing the reader is currently filtered to, rather than at whichever one
+   * the page happened to name first.
+   *
+   * It exists because collapsing several document sections into one shelf
+   * otherwise throws away every "view all" but one. A publisher that keeps a
+   * separate listing per category on its own site still has those listings; the
+   * shelf should hand the reader the right one.
+   *
+   * Elements, not URLs, for the same reason `viewAllSlot` is an element: this is
+   * a client component, and a server page cannot pass `next/link` itself across
+   * the boundary. See the note above.
+   */
+  groupViewAll?: Record<string, React.ReactNode>;
   /** Noun used in the count line and the empty state. @default "documents" */
   noun?: string;
   /**
@@ -110,6 +128,7 @@ export function DocumentLibrary({
   items,
   groupOrder,
   viewAllSlot,
+  groupViewAll,
   noun = "documents",
   layout = "grid",
   railLabel,
@@ -240,7 +259,12 @@ export function DocumentLibrary({
         <p className="ds-doclib__empty">No {noun} of this type are published yet.</p>
       )}
 
-      {viewAllSlot && <div className="ds-doclib__footer">{viewAllSlot}</div>}
+      {/* The current group's own listing wins over the generic one. `current` is
+          "All" until a chip is picked, and no map should carry an "All" key, so
+          the unfiltered shelf keeps the generic link. */}
+      {(groupViewAll?.[current] ?? viewAllSlot) && (
+        <div className="ds-doclib__footer">{groupViewAll?.[current] ?? viewAllSlot}</div>
+      )}
     </div>
   );
 }

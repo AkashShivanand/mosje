@@ -261,3 +261,29 @@ export const ColourKeyChips: Story = {
     );
   },
 };
+
+/**
+ * `countLabel` is what a screen reader hears after the figure, and it is given
+ * as the PLURAL. A count of exactly 1 drops a trailing "s" on its own, so the
+ * first chip below is announced "Publications, 1 document" rather than
+ * "1 documents" — a filter row is exactly where counts of one are common.
+ *
+ * `countLabelOne` names the singular where trimming an "s" does not produce it.
+ * Nothing here changes what is DRAWN: both chips render the bare figure, and the
+ * noun is in the accessibility tree only.
+ */
+export const CountGrammar: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+      <Chip count={1} countLabel="documents">
+        Publications
+      </Chip>
+      <Chip count={4} countLabel="documents">
+        Newsletter
+      </Chip>
+      <Chip count={1} countLabel="entries" countLabelOne="entry">
+        Register
+      </Chip>
+    </div>
+  ),
+};

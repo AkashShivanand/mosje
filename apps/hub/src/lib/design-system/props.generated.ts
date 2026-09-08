@@ -3079,8 +3079,14 @@ export const GENERATED_PROPS = {
         "name": "countLabel",
         "type": "string",
         "required": false,
-        "default": "\"items\"",
+        "default": "\"items\"\n\nGive it the PLURAL — \"documents\", \"items\". A count of exactly 1 drops a\ntrailing \"s\", so a screen reader hears \"Publications, 1 document\" rather\nthan \"1 documents\". Pass `countLabelOne` where that trim is wrong.",
         "description": "What one unit of `count` is, for assistive technology."
+      },
+      {
+        "name": "countLabelOne",
+        "type": "string",
+        "required": false,
+        "description": "The singular of `countLabel`, where trimming an \"s\" does not produce it — \"entries\" → \"entry\", \"boxes\" → \"box\". Only consulted when `count` is 1."
       },
       {
         "name": "disabled",
@@ -4609,6 +4615,12 @@ export const GENERATED_PROPS = {
         "type": "string[]",
         "required": false,
         "description": "Chip order, most-wanted first. Groups absent from `items` are dropped, so one order can serve several pages. Omit it and the chips follow first appearance in `items`."
+      },
+      {
+        "name": "groupViewAll",
+        "type": "Record<string, React.ReactNode>",
+        "required": false,
+        "description": "A per-group \"view all\", keyed by the group's own name. When a chip is selected and this map has an entry for it, that entry replaces `viewAllSlot` in the footer — so the link always points at the listing the reader is currently filtered to, rather than at whichever one the page happened to name first. It exists because collapsing several document sections into one shelf otherwise throws away every \"view all\" but one. A publisher that keeps a separate listing per category on its own site still has those listings; the shelf should hand the reader the right one. Elements, not URLs, for the same reason `viewAllSlot` is an element: this is a client component, and a server page cannot pass `next/link` itself across the boundary. See the note above."
       },
       {
         "name": "layout",

@@ -158,13 +158,13 @@ export function Pagination({
     e.preventDefault();
     e.stopPropagation();
   };
-  const inert = {
+  const inertAttrs = {
     "aria-disabled": true,
-    onClick: block,
     onKeyDown: (e: React.KeyboardEvent) => {
       if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") block(e);
     },
   } as const;
+  const inert = { ...inertAttrs, onClick: block } as const;
 
   const step = (target: number, direction: "prev" | "next", text: string, atEnd = false) => {
     const icon = direction === "prev" ? "chevron_left" : "chevron_right";
@@ -185,8 +185,16 @@ export function Pagination({
       <button
         type="button"
         className="ds-pagination__step"
-        onClick={() => onPageChange?.(target)}
-        {...(atEnd ? inert : {})}
+        /*
+         * A step at the end of the range must NOT reach `onPageChange`: the
+         * control keeps its tab stop and its focus, so nothing else refuses
+         * the activation for us, and a "Previous" on page 1 would otherwise
+         * ask for page 0. The handler is chosen here rather than left to a
+         * spread overwriting an explicit prop — that ordering was silent,
+         * and moving the spread one line up would have re-enabled the step.
+         */
+        onClick={atEnd ? block : () => onPageChange?.(target)}
+        {...(atEnd ? inertAttrs : {})}
       >
         {content}
       </button>

@@ -16,9 +16,18 @@ const A11Y: A11yItem[] = [
     level: "A",
     status: "verified",
     evidence:
-      "Measured on the auto-rotating specimen: the pause control renders only when autoPlay is on, its label flipped from 'Stop rotating…' to 'Start rotating…' when pressed, and the announced slide index then held at 'Slide 2 of 4' across seven seconds with a five-second interval. The suspend-on-hover and suspend-on-focus behaviour is implemented but was NOT measurable here — the automation pane runs unfocused (document.hasFocus() is false and focusin never dispatches), so that half is reasoned rather than observed. WCAG 2.2.2 is satisfied by the pause control alone, which is what was measured.",
+      "Measured on the auto-rotating specimen: the pause control renders only when autoPlay is on, its name flipped from 'Pause rotating…' to 'Play rotating…' when pressed, and the announced slide index then held at 'Slide 2 of 4' across seven seconds with a five-second interval. The suspend-on-hover and suspend-on-focus behaviour is implemented but was NOT measurable here — the automation pane runs unfocused (document.hasFocus() is false and focusin never dispatches), so that half is reasoned rather than observed. WCAG 2.2.2 is satisfied by the pause control alone, which is what was measured.",
     description:
       "Anything moving for more than five seconds can be stopped, and moves only while the reader is not engaged with it.",
+  },
+  {
+    criterion: "2.5.3 Label in Name",
+    level: "A",
+    status: "verified",
+    evidence:
+      "Read from the rendered DOM 2026-09-08: the rotation control's visible text is 'Pause' and its accessible name is 'Pause rotating Rotating announcements' — the visible word is the START of the name, not replaced by it, so a speech-input user saying \"click Pause\" reaches the control. Pressing it gives 'Play' against 'Play rotating…'. The name is composed from the visible word plus a visually hidden suffix rather than an aria-label, because an aria-label of 'Stop rotating…' over a button reading 'Pause' fails this criterion outright.",
+    description:
+      "The word a reader can see is contained in the name a screen reader and a speech-input user get, so both are talking about the same control.",
   },
   {
     criterion: "4.1.2 Name, Role, Value",
@@ -120,7 +129,10 @@ export default function CarouselPage(): React.JSX.Element {
             <p>
               The rotation control is drawn without a fill or a border. It is a mode switch, not a
               third arrow, and given the arrows&apos; treatment it otherwise read as a navigation
-              control that had wandered to the left edge.
+              control that had wandered to the left edge. It keeps its <em>word</em> rather than a
+              play/pause glyph: a reader who has paused a carousel must be able to see that it is
+              paused, and a toggling icon is ambiguous about which of the two states it reports.
+              Its label changing width is harmless here, because the zone it sits in absorbs it.
             </p>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-long">
