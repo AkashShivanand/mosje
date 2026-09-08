@@ -281,20 +281,12 @@ OPTIONS.forEach(o => {
   const bottom = PH - 0.78;
   if (y > bottom) throw new Error(`record overflows the page on "${o.title}" (${y.toFixed(2)} > ${bottom})`);
 
-  /* No verdict on the page. Naming an option "not recommended" tells the reader
-     what to think about an option we are asking them to weigh, and an option we
-     advise against has no business being presented at all. The RECOMMENDED pill
-     is the single highlight; the note says whose recommendation it is, and that
-     the decision is not ours. Everything else on the page is evidence.  */
-  if (o.rec) {
-    s.addText("Recommended by the design team. The decision rests with the Department.", {
-      x:M, y:PH-1.08, w:boxW, h:0.24, isTextBox:true, margin:0,
-      fontFace:F, fontSize:T.caption, bold:true, color:BLUE_TXT });
-  }
+  /* No verdict and no note on the page. The RECOMMENDED pill beside the title is
+     the single highlight and it says enough; a sentence repeating it under the
+     screen was the same claim twice on one page. Everything else here is
+     evidence, and the reader decides. */
 
-  sourceLine(s, o.vid
-    ? "Recorded from a working prototype of this option. Schemes shown are the Department's own, tagged as they would be after the preparatory work."
-    : "Schemes shown are the Department's own, tagged as they would be after the preparatory work.");
+
   s.addNotes(o.vid
     ? `${o.title}. Press play — it is a real page being used, not an animation.`
     : `${o.title}. A working prototype of this option can be shown live on request.`);
