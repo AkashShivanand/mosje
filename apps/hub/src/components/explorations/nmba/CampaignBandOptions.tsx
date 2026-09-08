@@ -9,7 +9,7 @@ import {
   rectOf,
   type Rect,
 } from "../flight";
-import { BadgeInner, Campaign, Dismiss, Fold, Helpline, HeroBadge, NMBA } from "./fold";
+import { BadgeInner, Campaign, Dismiss, Fold, Helpline, HelplineCard, HeroBadge, NMBA } from "./fold";
 import "./campaign-band.css";
 
 /* ══════════════════════════════════════════════════════════════════════════
@@ -184,6 +184,52 @@ export function OptionFlight() {
           <BadgeInner />
         </div>
       ) : null}
+    </>
+  );
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   OPTION C — The band goes; the badge simply arrives  (SHIPPED)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/**
+ * What the estate now does, and what the flight above was traded for.
+ *
+ * The whole band folds away and the helpline appears beside the mark — 6px up
+ * and a fade, after the fold has finished. No ghost, no arc, no blur.
+ *
+ * The flight was legible and smooth and it was wrong for this page: 615ms of
+ * theatre attached to the act of REFUSING an advertisement, on a government page
+ * about drug de-addiction. The reader has just said "less of this"; answering
+ * that with a flourish is the wrong register. What survives from it is the part
+ * that mattered — the number is carried rather than kept.
+ */
+export function OptionArrive() {
+  const [gone, setGone] = React.useState(false);
+
+  return (
+    <>
+      <p className="ds-sr-only" role="status">
+        {gone
+          ? `${NMBA.banner.heading}: dismissed. The ${NMBA.banner.helplineLabel}, ${NMBA.banner.helplineNumber}, is now shown beside the page heading.`
+          : ""}
+      </p>
+
+      <Fold
+        band={
+          gone ? null : (
+            <section className="xband" aria-label={NMBA.banner.heading}>
+              <div className="sa-container xband__inner">
+                <Campaign />
+                <Helpline />
+                <Dismiss onClick={() => setGone(true)} label="Dismiss the campaign band" />
+              </div>
+            </section>
+          )
+        }
+        logoAside={gone ? <span className="xarrive"><HelplineCard size="hero" /></span> : null}
+      />
     </>
   );
 }

@@ -938,3 +938,31 @@
     }
   }
 }
+
+@layer components {
+  /* The shipped transition: 6px up and a fade, once the band has folded away.
+     Two compositor-only properties and one delay — the whole of it. */
+  .xarrive {
+    display: inline-flex;
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing) 120ms,
+      transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing) 120ms;
+  }
+
+  @starting-style {
+    .xarrive {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    @starting-style {
+      .xarrive {
+        transform: none;
+      }
+    }
+  }
+}

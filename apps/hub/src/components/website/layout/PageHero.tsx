@@ -56,6 +56,15 @@ export interface PageHeroProps {
    */
   backHref?: string;
   /**
+   * Rendered BESIDE the organisation's mark, inside the header's logo slot.
+   *
+   * For the helpline badge that appears when the campaign band is dismissed. It
+   * goes in the logo slot rather than beside the component because that slot IS
+   * the row the mark sits in — "beside the mark" means inside it — and because
+   * anything placed after `SitePageHeader` would sit under the title instead.
+   */
+  logoAside?: React.ReactNode;
+  /**
    * This page draws a fact card that overlaps the band's lower edge, so the band
    * should reserve room for it. Set by the organisation route, which knows
    * whether the organisation has facts to show.
@@ -99,6 +108,7 @@ export function PageHero({
   level,
   backHref,
   hasOverlappingFacts,
+  logoAside,
   heroSlides,
   heroSlidesLabel,
 }: PageHeroProps) {
@@ -211,22 +221,25 @@ export function PageHero({
              * logo is actually drawn at, and `priority` keeps an above-the-fold
              * mark out of the lazy queue.
              */
-            <span
-              className={
-                markNeedsGround(mark)
-                  ? "grid size-[100px] place-items-center overflow-hidden rounded-full bg-white"
-                  : "grid size-[100px] place-items-center"
-              }
-            >
-              <Image
-                src={mark}
-                alt=""
-                width={100}
-                height={100}
-                priority
-                className={markNeedsGround(mark) ? "size-[84px] object-contain" : "size-[100px] object-contain"}
-              />
-            </span>
+            <div className="flex items-center gap-4">
+              <span
+                className={
+                  markNeedsGround(mark)
+                    ? "grid size-[100px] place-items-center overflow-hidden rounded-full bg-white"
+                    : "grid size-[100px] place-items-center"
+                }
+              >
+                <Image
+                  src={mark}
+                  alt=""
+                  width={100}
+                  height={100}
+                  priority
+                  className={markNeedsGround(mark) ? "size-[84px] object-contain" : "size-[100px] object-contain"}
+                />
+              </span>
+              {logoAside}
+            </div>
           ) : undefined
         }
         mediaLabel={hasCarousel ? heroSlidesLabel : undefined}

@@ -115,7 +115,9 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             title: "Anchor and guest",
             summary:
               "The helpline sits outside the collapsible region. Dismissing the campaign leaves the number where it was and the band simply gets shorter.",
-            status: "proposed",
+            status: "superseded",
+            supersededBy:
+              "It left a residual green strip carrying one pill, which is a band that has lost its reason to exist. “The badge simply arrives” removes the band and keeps the number.",
             live: true,
             lookAt: [
               "The band does not disappear — it loses its campaign half and keeps a green strip",
@@ -127,14 +129,30 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             id: "flight",
             title: "The helpline flies to the hero",
             summary:
-              "The whole band leaves, and the helpline travels from it into a badge beside the campaign mark, so the number is carried rather than kept.",
-            status: "proposed",
+              "The whole band leaves, and the helpline travels from it into a badge beside the campaign mark on a 615ms arc.",
+            status: "superseded",
+            supersededBy:
+              "Legible and smooth, and wrong for this page: 615ms of theatre attached to the act of REFUSING an advertisement, on a government page about drug de-addiction. The reader has just said “less of this”. Its idea survives in the shipped option; only the flight went.",
             live: true,
             lookAt: [
               "The band goes entirely — no residual green strip",
               "The number arrives beside the mark, where the page's identity already is",
               "Under `prefers-reduced-motion` there is no flight: the badge is simply there",
               "It puts the helpline in the fold TWICE — once on the badge and once in the fact strip. The fact strip carries it only because the band can be dismissed, so choosing this option means deciding whether that fact returns to the Abhiyaan's fourth figure.",
+            ],
+          },
+          {
+            id: "arrive",
+            title: "The badge simply arrives",
+            summary:
+              "The whole band folds away and the helpline appears beside the mark — 6px up and a fade, once the fold has finished.",
+            status: "chosen",
+            live: true,
+            landedIn: "the live organisation template — `OrganisationHelplineBadge`",
+            lookAt: [
+              "The band goes entirely, and the number is beside the mark a moment later",
+              "Two properties and one delay; nothing crosses the fold",
+              "Under `prefers-reduced-motion` the 6px goes and the fade stays — a fade is not motion, and it is what says the badge is new",
             ],
           },
         ],

@@ -792,3 +792,69 @@ there is never a band where both or neither appears.
 Verified at 390, 768, 900, 1024 and 1440 on `/reports` and `/explorations`: no
 horizontal scroll at any of them, and exactly one of the two navigation forms
 present at each.
+
+---
+
+## 15. The flight is out, and the behaviour is on the live page
+
+### 15.1 Why the flight went
+
+It was legible and it was smooth. It was also **615ms of theatre attached to the
+act of refusing an advertisement**, on a Government of India page about drug
+de-addiction. The reader has just pressed × — they have said *less of this* — and
+answering that with a card arcing 860px across the fold is the wrong register
+however well it is executed.
+
+What survives is the part that mattered: **the number is carried, not kept.**
+Only the journey went.
+
+### 15.2 What ships
+
+The band folds away; the helpline appears beside the organisation's mark, 6px up
+and a fade, 120ms after the fold begins. Two compositor-only properties and one
+delay. `@starting-style` rather than a `data-mounted` effect — the element is
+inserted already holding its opening frame, so there is no first paint at full
+opacity to guard against and no state to keep in React.
+
+Under `prefers-reduced-motion` the 6px goes and **the fade stays**: a fade is not
+motion, and it is what tells the reader the badge is new.
+
+### 15.3 The wiring, and why it is a store
+
+| Piece | Where |
+|---|---|
+| `dismissCampaign()` / `useCampaignDismissed()` | `src/lib/website/campaign-dismissed.ts` |
+| The badge | `OrganisationHelplineBadge` + `organisation-helpline-badge.css` |
+| The slot | `PageHero`'s new `logoAside`, rendered inside `SitePageHeader`'s logo row |
+| The wiring | the organisation route, only where the record publishes a helpline |
+
+The two components are siblings rendered by a **server** component: the band sits
+in `afterBreadcrumb`, the badge inside the logo slot, and the route between them
+cannot hold client state. A context would mean wrapping the whole fold in a
+client boundary to pass one boolean — turning the hero, the fact strip and the
+page title into client components for no other reason.
+`useSyncExternalStore` is the estate's own answer to exactly this, and the same
+shape `DataModeProvider` uses.
+
+**In memory, deliberately.** Not `localStorage`, not `sessionStorage`. The band's
+own contract is that a campaign the Department is running is not something a
+reader switches off permanently by clicking one ×. The state dies with the page,
+and so does the badge. It is also reset on unmount, so a route change cannot
+carry one organisation's dismissal onto the next.
+
+### 15.4 What this fixes that was never a design
+
+Until now, dismissing the band removed the national de-addiction helpline from
+the top of a page about drug de-addiction, and that was *safe* only because the
+key-facts strip happens to carry the number as its third figure — a coincidence
+of content standing in for a design. It is now a design.
+
+The live region says so too: it names the number and where it went, rather than
+only announcing that something was dismissed.
+
+Verified at 1440, 768 and 390: the badge is 107×40 at all three and no viewport
+scrolls sideways. Register: `campaign-band` now holds three options, with
+"anchor and guest" and "the helpline flies" both kept and marked with what beat
+them.
+
+Stills: `prod-before-dismiss.png`, `prod-after-dismiss.png`.

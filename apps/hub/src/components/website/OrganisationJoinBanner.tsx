@@ -4,6 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import { Icon, buttonClasses } from "@mosje/design-system";
 import type { OrganisationDetail } from "@/content/website/organisation-details";
+import { dismissCampaign } from "@/lib/website/campaign-dismissed";
 import "./organisation-join-banner.css";
 
 /**
@@ -95,6 +96,18 @@ export function OrganisationJoinBanner({
 
   function dismiss() {
     /*
+     * THE HELPLINE DOES NOT GO WITH THE ADVERTISEMENT.
+     *
+     * Announcing the dismissal to the store puts the number back beside the
+     * organisation's mark, so refusing a recruitment drive no longer removes a
+     * national de-addiction helpline from the top of a page about drug
+     * de-addiction. Until this existed that was safe only because the key-facts
+     * strip happens to carry the number — a coincidence of content standing in
+     * for a design.
+     */
+    dismissCampaign();
+
+    /*
      * FOCUS HAS TO GO SOMEWHERE. The button the reader just pressed is about to
      * leave the DOM, and a browser answers that by dropping focus on <body> —
      * which sends a keyboard user back to the very top of the document, behind
@@ -140,7 +153,7 @@ export function OrganisationJoinBanner({
        */}
       <p className="sr-only" role="status">
         {gone
-          ? `${banner.heading}: dismissed. The announcement returns when the page is reloaded.`
+          ? `${banner.heading}: dismissed. The ${banner.helplineLabel}, ${banner.helplineNumber}, is now shown beside the page heading. The announcement returns when the page is reloaded.`
           : ""}
       </p>
 
