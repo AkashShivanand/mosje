@@ -59,7 +59,7 @@ export const HomePersonas = () => (
   <Stage src={`${P}/home-a.html`} title="Explore User Personas — the panel already on the home page" />
 );
 export const HomeFiveQuestions = () => (
-  <Stage src={`${P}/home-b.html`} title="Find support for you — the first draft, five questions in a static page" />
+  <Stage src={`${P}/home-b.html`} title="Find Schemes for You — the first draft, five questions in a static page" />
 );
 /* The redesign is a real section built from the design system, so it mounts
    directly rather than through a scaled frame — see `finder/SchemeFinder.tsx`. */

@@ -407,7 +407,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           },
           {
             id: "five-questions",
-            title: "Find support for you",
+            title: "Find Schemes for You — five questions",
             summary:
               "The first draft: five short questions in a static page, any of which may be skipped.",
             status: "superseded",
