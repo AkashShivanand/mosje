@@ -11,6 +11,10 @@ import "./assistant.css";
  * seal, the bubbles, the quick replies, the composer and the disclaimer — is the
  * component the estate ships, so what is demonstrated is what would be built.
  *
+ * It sits under /prototypes/service-discovery with the other five options. Those
+ * five are static files; this one is a route because it renders a React component
+ * from the design system. The explorations register embeds it from there.
+ *
  * DS Audit: Chatbot ✅ existing · SectionTitle ✅ existing · Card ✅ existing ·
  * Badge ✅ existing. DocumentLibrary was considered for the backdrop and passed
  * over: it carries filtering and pagination this page has no use for, and the

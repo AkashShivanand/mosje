@@ -71,5 +71,5 @@ export const SchemesFilterTable = () => (
   <Stage src={`${P}/scheme-b.html`} title="Filter panel with a table of schemes" />
 );
 export const AssistantChat = () => (
-  <Stage src="/explorations/service-discovery/prototype/assistant" title="Samajik Sahayak — the same five questions, in chat" />
+  <Stage src="/prototypes/service-discovery/assistant" title="Samajik Sahayak — the same five questions, in chat" />
 );

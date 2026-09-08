@@ -4,7 +4,7 @@
 const { chromium } = require('playwright');
 const path = require('path');
 const OUT = '/private/tmp/claude-502/-Users-akashk-Documents-Projects-MoSJE/e6a25eff-90f9-4ba8-b636-cbf7abbb150b/scratchpad/video';
-const URL = 'http://localhost:3021/explorations/service-discovery/prototype/assistant';
+const URL = 'http://localhost:3021/prototypes/service-discovery/assistant';
 
 async function tap(p, label, pause = 1500) {
   const el = p.locator(`.ds-chatbot button:has-text("${label}")`).first();
