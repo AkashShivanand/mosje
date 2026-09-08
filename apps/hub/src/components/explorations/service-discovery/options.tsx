@@ -21,7 +21,7 @@ import "./service-discovery-options.css";
 const CANVAS_W = 1440;
 const CANVAS_H = 900;
 
-function Stage({ src, title }: { src: string; title: string }) {
+function Stage({ src, title, height = CANVAS_H }: { src: string; title: string; height?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
 
@@ -41,13 +41,13 @@ function Stage({ src, title }: { src: string; title: string }) {
   }, [measure]);
 
   return (
-    <div className="sdopt-stage" ref={ref} style={{ height: CANVAS_H * scale }}>
+    <div className="sdopt-stage" ref={ref} style={{ height: height * scale }}>
       <iframe
         className="sdopt-stage__frame"
         src={src}
         title={title}
         loading="lazy"
-        style={{ width: CANVAS_W, height: CANVAS_H, transform: `scale(${scale})` }}
+        style={{ width: CANVAS_W, height, transform: `scale(${scale})` }}
       />
     </div>
   );
@@ -56,7 +56,7 @@ function Stage({ src, title }: { src: string; title: string }) {
 const P = "/prototypes/service-discovery";
 
 export const HomePersonas = () => (
-  <Stage src={`${P}/home-a.html`} title="Explore User Personas — the panel already on the home page" />
+  <Stage src={`${P}/home-a.html`} height={1180} title="Explore User Personas — the panel already on the home page" />
 );
 export const HomeFiveQuestions = () => (
   <Stage src={`${P}/home-b.html`} title="Find support for you — five short questions" />
