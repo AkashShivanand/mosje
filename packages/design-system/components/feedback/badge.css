@@ -24,7 +24,7 @@
      MoSJE / UX4G — Badge atom
      Semantic CSS classes only; all colours reference design tokens (--sa-*).
      Combine: .ds-badge  +  .ds-badge--<status>  +  .ds-badge--<size>
-     Status: primary | success | danger | neutral
+     Status: neutral (default) | primary | info | success | warning | danger
      Sizes: sm | lg
      Pill shaped (radius-pill); tonal background of the status colour.
      ============================================================================ */
@@ -44,34 +44,66 @@
 
   /* --------------------------------------------------------------------------
      Status → tonal bg + readable text
+
+     ONE RULE, SIX FAMILIES: the subtle chip takes its family's RUNG-100 background.
+     Nothing else. A badge is nearly always on a white card or table row, and rung 50
+     is too pale to give the pill an edge there — the reader sees loose coloured text
+     rather than a chip. Measured against #ffffff:
+
+         rung 50   info #e2f8ff 1.10   warning #fff1df 1.11   danger #ffe4e1 1.20
+         rung 100  info #b4e3f2 1.38   warning #ffd394 1.40   danger #ffc1bc 1.54
+                   neutral #dcdee1 1.35  success #bde3c7 1.40  primary #c0dbff 1.42
+
+     Three families were on rung 50 and three on rung 100, which is how the drift went
+     unnoticed: each chip looked deliberate on its own, and only the set showed that
+     half of them had no edge. The ink is unchanged everywhere and every pair still
+     clears AA by a wide margin — the tightest is danger at 5.90:1.
+
+     The names differ by family and the RUNG does not: the status ramps call rung 100
+     `subtler`, the neutral ramp calls it `subtle` because it omits a rung. Bind by the
+     rung, never by the word. Primary and success previously reached this same rung via
+     the legacy `--sa-color-*Tonal` aliases; they are spelled out here so the invariant
+     is visible in the block rather than having to be resolved token by token. Those two
+     did not move a pixel.
+
+     ONE THING A REVIEWER SHOULD KNOW: this component no longer reads the
+     `--sa-color-status-*Tonal` aliases, and those are what PAIRINGS in
+     packages/tokens/test/lib/contrast.mjs asserts under labels naming the badge. Those
+     entries were deliberately left alone — they still cover the hand-rolled status pills
+     in smile-admin, pm-ajay and sla-progress-indicator, and they feed three gates
+     including dbim-contrast's shrink-only baseline. The consequence is that Badge's own
+     subtle pairs are NOT gated. They were measured instead, in every mode that moves
+     them: default/blue/navy info 6.09 danger 5.90 warning 11.55; dark 6.09 / 5.90 /
+     11.65; dbim 6.25 / 6.05 / 15.41. Add them to a gate if this component's colours are
+     touched again.
      -------------------------------------------------------------------------- */
   .ds-badge--primary {
-    --_bg: var(--sa-color-action-primary-tonal);
+    --_bg: var(--sa-bg-brand-primary-subtler);
     --_fg: var(--sa-color-action-primary-hover);
   }
 
   .ds-badge--info {
-    --_bg: var(--sa-color-status-infoTonal);
+    --_bg: var(--sa-bg-status-info-subtler);
     --_fg: var(--sa-color-status-infoStrong);
   }
 
   .ds-badge--success {
-    --_bg: var(--sa-color-status-successTonal);
+    --_bg: var(--sa-bg-status-success-subtler);
     --_fg: var(--sa-color-status-successStrong);
   }
 
   .ds-badge--danger {
-    --_bg: var(--sa-color-status-dangerTonal);
+    --_bg: var(--sa-bg-status-error-subtler);
     --_fg: var(--sa-color-status-dangerStrong);
   }
 
   .ds-badge--warning {
-    --_bg: var(--sa-color-status-warningTonal);
+    --_bg: var(--sa-bg-status-warning-subtler);
     --_fg: var(--sa-color-text-default);
   }
 
   .ds-badge--neutral {
-    --_bg: var(--sa-bg-neutral-subtler);
+    --_bg: var(--sa-bg-neutral-subtle);
     --_fg: var(--sa-color-text-default);
   }
 
@@ -101,7 +133,13 @@
     --_fg: var(--sa-color-text-onPrimary);
   }
   .ds-badge--solid.ds-badge--info {
-    --_bg: var(--sa-color-status-infoStrong);
+    /* `info` (#006d85), not `infoStrong` (#005568). Every other family's SOLID chip takes the
+       plain rung and reserves the `Strong` one for INK — look two rules up: the subtle info
+       chip uses `infoStrong` as its foreground. Info was the only family whose solid rule
+       reached for its own ink colour as a fill, which is what a copy-paste from the subtle
+       rule above it looks like. Both clear AA on white (8.4:1 and 6.0:1); this one matches
+       its siblings and matches `bg/status/info/bolder`, which is what the Figma variant binds. */
+    --_bg: var(--sa-color-status-info);
     --_fg: var(--sa-color-text-onPrimary);
   }
   .ds-badge--solid.ds-badge--success {

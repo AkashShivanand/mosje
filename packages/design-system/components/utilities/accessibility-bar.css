@@ -20,6 +20,32 @@
  * a new one, so these rules sit below utilities exactly as component CSS should.
  */
 @layer components {
+  /*
+   * VISUALLY HIDDEN, DECLARED HERE — not `sr-only`, not `ds-sr-only`.
+   *
+   * `sr-only` is Tailwind's, so a consumer that does not run Tailwind renders
+   * the text on screen; `ds-sr-only` lives in `live-region.css`, which this
+   * component does not import, so it is only present by luck of what else the
+   * page rendered. A component's own stylesheet has to carry everything the
+   * component needs, and a visually-hidden class that is sometimes absent fails
+   * loudly and visibly.
+   *
+   * The standard recipe: clipped to nothing, out of flow, still in the
+   * accessibility tree. `white-space: nowrap` stops a long string forcing a
+   * scrollbar before the clip applies.
+   */
+  .sa-abar__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
   /* AccessibilityBar — government top utility bar (UX4G / GIGW).
      Mirrors the SAMAVESH Figma "Accessibility Bar" master 1:1. Every value binds to a
      Tier-2 (--sa-*) or Tier-3 (--sa-cmp-accessibilityBar-*) token — no Tier-1 refs, no

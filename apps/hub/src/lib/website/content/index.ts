@@ -1,3 +1,4 @@
+import { localiseDocumentLinks, sampleDocumentFor } from "../sample-documents";
 import type { SectionRecord, FileRecord } from "@/types/website/content";
 import organisationData from "@/content/website/organisation.json";
 import schemesData from "@/content/website/schemes.json";
@@ -18,7 +19,20 @@ const BASE_PATH = "/website";
 
 /** Prefix `/website` onto ingested `/content/…` asset URLs in raw HTML. */
 export function withAssetBasePath(html: string): string {
-  return html.replaceAll('src="/content/', `src="${BASE_PATH}/content/`);
+  /*
+   * TWO REWRITES, AND THE SECOND IS THE REASON THIS FUNCTION IS ON EVERY
+   * INGESTED SECTION.
+   *
+   * Images get the base path, as they always did. Document links get a LOCAL
+   * SAMPLE: the ingest's prose carries 97 links to `durwo6bhtjtqt.cloudfront.net`
+   * across `organisation.json` and `schemes.json`, so a reader following a link
+   * inside a paragraph left the prototype exactly as they did from the document
+   * shelves. Pages are untouched — see `sample-documents.ts` for what counts as a
+   * file and what counts as a place.
+   */
+  return localiseDocumentLinks(
+    html.replaceAll('src="/content/', `src="${BASE_PATH}/content/`),
+  );
 }
 
 /** Human date of the last content ingest, e.g. "13 Jun 2026" (for "Last updated"). */
@@ -49,19 +63,39 @@ export function getScheme(slug: string): SectionRecord | undefined {
   return schemes.find((s) => s.slug === slug);
 }
 
-const tenders = tendersData as FileRecord[];
+/*
+ * EVERY INGESTED FILE RECORD CARRIES A LOCAL `fileUrl`.
+ *
+ * `documents.json`, `tenders.json` and `vacancies.json` hold a `sourceUrl`
+ * pointing at a dosje.gov.in PAGE and, for most rows, no `fileUrl` at all — so
+ * every card rendered by `DocumentLibrary`, the notice ticker and the document
+ * catalogue offered "Download PDF" and delivered a web page on another site.
+ *
+ * The sample is chosen from the row's own category and title, so a circular
+ * opens a memorandum and a newsletter opens a newsletter. `sourceUrl` is left
+ * exactly as it is: it is where the document actually lives, and a consumer that
+ * wants the real thing still has it.
+ *
+ * Mapped once at module scope rather than per call — these three lists are read
+ * on nearly every website route, and re-deriving 2,000 hrefs per render to
+ * produce the same eight strings would be work for nothing.
+ */
+const withLocalFile = (rows: FileRecord[]): FileRecord[] =>
+  rows.map((d) => ({ ...d, fileUrl: sampleDocumentFor(d.category, d.title) }));
+
+const tenders = withLocalFile(tendersData as FileRecord[]);
 
 export function getTenders(): FileRecord[] {
   return tenders;
 }
 
-const vacancies = vacanciesData as FileRecord[];
+const vacancies = withLocalFile(vacanciesData as FileRecord[]);
 
 export function getVacancies(): FileRecord[] {
   return vacancies;
 }
 
-const documents = documentsData as FileRecord[];
+const documents = withLocalFile(documentsData as FileRecord[]);
 
 export function getDocuments(): FileRecord[] {
   return documents;

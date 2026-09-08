@@ -117,6 +117,16 @@ const ROUTES: { name: string; path: string }[] = [
   { name: "the error summary", path: "/design-system/components/forms/error-summary" },
   { name: "the website home", path: "/website" },
   /*
+    THE ORGANISATION TEMPLATE, watched through the page that exercises the most
+    of it. `OrganisationDetail` renders all 178 organisation pages, and NMBA is
+    the record that turns on the parts the others leave off — the campaign band,
+    the notice ticker, the occasion ribbon, the fact strip, the counters, the
+    tabbed document shelves, the message carousel, the geo-tagged map. Watching
+    one route therefore watches nine components and the template that orders
+    them; watching /website alone watched none of it.
+  */
+  { name: "an organisation page", path: "/website/organisation/nasha-mukt-bharat-abhiyaan" },
+  /*
     PORTALS — added 2026-09-02, and the reason they are here is what they found.
     The suite watched six routes and NONE of the twenty portals, so it was
     measuring the surface built to be measured. One run against three portals

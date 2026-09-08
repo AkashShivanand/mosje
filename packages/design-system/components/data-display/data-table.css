@@ -186,12 +186,23 @@
     background: transparent;
     color: var(--sa-text-neutral-subtle);
     font-weight: var(--sa-font-weight-semibold);
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), transform var(--sa-motion-press-duration) var(--sa-motion-press-easing);
   }
 
   .ds-table__page-nav:hover:not(:disabled),
   .ds-table__page:hover {
     background-color: var(--sa-bg-neutral-hover);
+  }
+
+  /* PRESSED. The table's pager and the standalone `Pagination` are the same
+     control drawn twice, and until now they also answered a press differently:
+     neither answered it at all. Both bind the foundation's pressed rung now, in
+     the same way, so a listing and a table on one screen agree. */
+  .ds-table__page-nav:not(:disabled):active,
+  .ds-table__page:not(.is-current):active,
+  .ds-table__pagesize-btn:active {
+    background-color: var(--sa-bg-neutral-active);
+    transform: scale(0.97);
   }
 
   .ds-table__page-nav:disabled {

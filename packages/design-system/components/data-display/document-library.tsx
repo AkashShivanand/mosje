@@ -54,8 +54,53 @@ export interface DocumentLibraryProps {
    * navigation.
    */
   viewAllSlot?: React.ReactNode;
+  /**
+   * A per-group "view all", keyed by the group's own name.
+   *
+   * When a chip is selected and this map has an entry for it, that entry
+   * replaces `viewAllSlot` in the footer — so the link always points at the
+   * listing the reader is currently filtered to, rather than at whichever one
+   * the page happened to name first.
+   *
+   * It exists because collapsing several document sections into one shelf
+   * otherwise throws away every "view all" but one. A publisher that keeps a
+   * separate listing per category on its own site still has those listings; the
+   * shelf should hand the reader the right one.
+   *
+   * Elements, not URLs, for the same reason `viewAllSlot` is an element: this is
+   * a client component, and a server page cannot pass `next/link` itself across
+   * the boundary. See the note above.
+   */
+  groupViewAll?: Record<string, React.ReactNode>;
   /** Noun used in the count line and the empty state. @default "documents" */
   noun?: string;
+  /**
+   * How the cards are laid out.
+   *
+   * `"grid"` (default) wraps them down the page in as many columns as fit — the
+   * right answer for a shelf that IS the page, like a document catalogue.
+   *
+   * `"rail"` puts them on one row that scrolls sideways, with the next card
+   * peeking in from the right edge. Use it where the shelf is one section among
+   * many and its height is competing with everything below it: on the
+   * organisation pages a four-item shelf in a three-column grid was two rows
+   * with two thirds of the second one empty.
+   *
+   * A rail costs the reader a gesture to see the later cards, so it is for
+   * shelves that already publish a route to the whole list. It does not suit a
+   * shelf of twenty.
+   *
+   * @default "grid"
+   */
+  layout?: "grid" | "rail";
+  /**
+   * Names the rail for assistive technology — "IEC Materials". Required in
+   * spirit when `layout="rail"`: the rail is a focusable scroll region (WCAG
+   * 2.1.1), so it adds a tab stop, and an unnamed one lands the reader on an
+   * unlabelled box. Ignored by the grid, which is not focusable and needs no
+   * name.
+   */
+  railLabel?: string;
   className?: string;
 }
 
@@ -83,7 +128,10 @@ export function DocumentLibrary({
   items,
   groupOrder,
   viewAllSlot,
+  groupViewAll,
   noun = "documents",
+  layout = "grid",
+  railLabel,
   className,
 }: DocumentLibraryProps) {
   const groups = React.useMemo(() => {
@@ -128,12 +176,62 @@ export function DocumentLibrary({
         </div>
       )}
 
-      <p className="ds-doclib__count" aria-live="polite">
-        Showing {shown.length} of {items.length} {noun}
-      </p>
+      {/*
+       * THE COUNT LINE EXISTS TO ANNOUNCE A FILTER, so it appears only when
+       * there is a filter to announce — the same condition the chip row uses.
+       *
+       * It is `aria-live`: its job is to tell a screen-reader user that pressing
+       * a chip changed the list under it. With one group there are no chips, the
+       * list never changes, and the line is a sentence restating the number of
+       * cards directly below it. NMBA's page carried six of these — "Showing 4
+       * of 4 documents", "Showing 1 of 1 documents" — one per shelf, which is
+       * the restatement `ui-restraint-and-copy.md` §1 forbids, printed six times
+       * on one page.
+       */}
+      {groups.length > 2 && (
+        <p className="ds-doclib__count" aria-live="polite">
+          Showing {shown.length} of {items.length} {noun}
+        </p>
+      )}
 
       {shown.length > 0 ? (
-        <ul className="ds-doclib__grid">
+        <ul
+          className={["ds-doclib__grid", layout === "rail" && "ds-doclib__grid--rail"]
+            .filter(Boolean)
+            .join(" ")}
+          /*
+           * A SCROLLABLE REGION MUST BE FOCUSABLE, and only when it is one.
+           *
+           * WCAG 2.1.1: a region that scrolls and cannot be focused cannot be
+           * scrolled by anyone using a keyboard, and axe reports the same
+           * element as `scrollable-region-focusable`. The grid does not scroll,
+           * so it takes no tab stop — a tab stop that leads nowhere is a cost
+           * with no benefit, and the estate already has enough of them.
+           *
+           * `jsx-a11y/no-noninteractive-tabindex` objects to a tab stop on a
+           * non-interactive element and is right in general; it has no option
+           * that recognises a scroll container. `Carousel`'s track carries a
+           * disable directive for exactly this. **This one deliberately does
+           * not**, and `check:ds-lint` is why: the rule reads a LITERAL
+           * `tabIndex`, and this value is computed, so the rule never fires and
+           * a directive here is reported as unused. If the value is ever made a
+           * literal, add the directive back with the same reason.
+           */
+          tabIndex={layout === "rail" ? 0 : undefined}
+          /*
+           * NO `role` HERE. The rail carried `role="group"`, which OVERRODE the
+           * `<ul>`'s implicit `list` role — and a list role is what makes its
+           * `<li>` children list items. axe caught it on the first run of the
+           * organisation page against the suite: "[serious] listitem — <li>
+           * elements must be contained in a <ul> or <ol>", on all four cards.
+           *
+           * A named list is the better announcement anyway. The element keeps
+           * its list semantics, takes `aria-label` for the shelf's name, and
+           * takes the tab stop the scroll region needs, so a screen-reader user
+           * hears "IEC Materials, list, 4 items" and can scroll it.
+           */
+          aria-label={layout === "rail" ? railLabel : undefined}
+        >
           {shown.map((item) => (
             <li key={item.id} className="ds-doclib__card">
               <p className="ds-doclib__meta">{item.meta}</p>
@@ -161,7 +259,12 @@ export function DocumentLibrary({
         <p className="ds-doclib__empty">No {noun} of this type are published yet.</p>
       )}
 
-      {viewAllSlot && <div className="ds-doclib__footer">{viewAllSlot}</div>}
+      {/* The current group's own listing wins over the generic one. `current` is
+          "All" until a chip is picked, and no map should carry an "All" key, so
+          the unfiltered shelf keeps the generic link. */}
+      {(groupViewAll?.[current] ?? viewAllSlot) && (
+        <div className="ds-doclib__footer">{groupViewAll?.[current] ?? viewAllSlot}</div>
+      )}
     </div>
   );
 }

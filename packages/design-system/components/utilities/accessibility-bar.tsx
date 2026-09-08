@@ -154,6 +154,17 @@ export function AccessibilityBar({
           <span className="sa-abar__govlink">
             <span className="sa-abar__govlabel">{govLink.label}</span>
             <Icon name="launch" size={LAUNCH_ICON_SIZE} className="sa-abar__ext" aria-hidden />
+            {/*
+              * THE LAUNCH GLYPH IS DECORATIVE, so it is not the warning.
+              *
+              * This row is `target="_blank"` on every page of the estate and it
+              * carried nothing but an `aria-hidden` icon to say so — the first
+              * link in the document, opening a new tab silently, for anyone who
+              * cannot see the glyph (WCAG G201). Every other external link in
+              * the system already carries this span; this one was missed because
+              * the glyph looks like it is doing the job.
+              */}
+            <span className="sa-abar__sr"> (opens in a new tab)</span>
           </span>
         </a>
 

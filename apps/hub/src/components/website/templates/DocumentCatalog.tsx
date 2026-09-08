@@ -1,9 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Button, Icon } from "@mosje/design-system";
+import { useMemo, useRef, useState } from "react";
+import { Button, Icon, Pagination } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import type { Crumb } from "@/components/website/layout/page-trail";
+
+/** A destination that leaves this site, and therefore opens in a new tab. */
+const isHttp = (href: string | undefined) => /^https?:\/\//.test(href ?? "");
 
 export interface DocumentRecord {
   title: string;
@@ -57,10 +60,31 @@ export function DocumentCatalog({
   }, [documents, search, selectedCategory, sortOrder]);
 
   const totalPages = Math.ceil(filtered.length / pageSize) || 1;
-  const paginated = filtered.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
+  const safePage = Math.min(currentPage, totalPages);
+  const paginated = filtered.slice((safePage - 1) * pageSize, safePage * pageSize);
+  const rangeStart = filtered.length === 0 ? 0 : (safePage - 1) * pageSize + 1;
+  const rangeEnd = Math.min(safePage * pageSize, filtered.length);
+
+  /**
+   * The list is the thing that changed, so the reader is put at the top of it.
+   *
+   * `Pagination` renders the page you are on as a `<span>`, not a button, so the
+   * control that was just clicked leaves the DOM and focus falls to `<body>` —
+   * a keyboard reader would be returned to the masthead, and a screen-reader
+   * reader would be told nothing at all. Moving focus to the list answers both:
+   * it keeps focus inside the region that changed and re-announces the results
+   * heading. The container is never in the tab order; it is a target for this
+   * move only, which is why it carries no focus ring.
+   */
+  const resultsRef = useRef<HTMLDivElement>(null);
+
+  const changePage = (next: number) => {
+    setCurrentPage(next);
+    const el = resultsRef.current;
+    if (!el) return;
+    el.focus({ preventScroll: true });
+    el.scrollIntoView({ block: "start" });
+  };
 
   return (
     <PageLayout
@@ -135,18 +159,25 @@ export function DocumentCatalog({
             </div>
           </div>
 
-          {/* Results Summary */}
-          <div className="mt-4 flex items-center justify-between text-body-3 text-ink-muted px-1">
-            <span>
-              Showing <strong>{filtered.length}</strong> documents
-            </span>
-            <span>
-              Page {currentPage} of {totalPages}
-            </span>
+          {/* Results Summary — the range on screen, not the size of the whole
+              filter result. "Showing 981 documents" over a list of ten was the
+              count of the query presented as the count of the page. */}
+          <div className="mt-4 text-body-3 text-ink-muted px-1">
+            {filtered.length === 0 ? (
+              <span>No documents match the current filters</span>
+            ) : (
+              <span>
+                Showing <strong>{rangeStart.toLocaleString("en-IN")}–{rangeEnd.toLocaleString("en-IN")}</strong>{" "}
+                of <strong>{filtered.length.toLocaleString("en-IN")}</strong> documents
+              </span>
+            )}
           </div>
 
           {/* Document List */}
-          <div className="mt-4 divide-y divide-gray-150 rounded-xl border border-gray-200 bg-white shadow-xs overflow-hidden">
+          <div
+            ref={resultsRef}
+            tabIndex={-1}
+            className="mt-4 divide-y divide-gray-150 rounded-xl border border-gray-200 bg-white shadow-xs overflow-hidden outline-none">
             {paginated.length === 0 ? (
               <div className="p-12 text-center text-ink-muted">
                 <Icon name="folder_off" size={40} className="mx-auto mb-2 text-gray-300" />
@@ -197,9 +228,22 @@ export function DocumentCatalog({
                   </div>
 
                   <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+                    {/*
+                      * `external` IS COMPUTED, NOT ASSUMED.
+                      *
+                      * It was hardcoded, which was true while every document in
+                      * the ingest resolved to a URL on dosje.gov.in. Since the
+                      * estate serves its own sample documents, most of these
+                      * hrefs are LOCAL — and a hardcoded `external` renders the
+                      * launch glyph and tells a screen-reader user they are
+                      * leaving the site when they are not. A false new-tab
+                      * warning costs more trust than a missing one, because a
+                      * reader who has learnt the warning is honest starts
+                      * relying on it.
+                      */}
                     <Button
                       href={doc.sourceUrl ?? "#"}
-                      external
+                      external={isHttp(doc.sourceUrl)}
                       variant="primary"
                       appearance="outlined"
                       size="sm"
@@ -209,7 +253,9 @@ export function DocumentCatalog({
                     </Button>
                     <Button
                       href={doc.sourceUrl ?? "#"}
-                      target="_blank"
+                      /* A local file downloads in place; only a remote one needs
+                         a tab of its own. */
+                      target={isHttp(doc.sourceUrl) ? "_blank" : undefined}
                       download
                       variant="primary"
                       appearance="filled"
@@ -224,49 +270,24 @@ export function DocumentCatalog({
             )}
           </div>
 
-          {/* Pagination Controls */}
-          {totalPages > 1 && (
-            <div className="mt-8 flex items-center justify-center gap-2">
-              <button
-                type="button"
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-label-2 text-ink disabled:opacity-40 hover:bg-gray-50"
-              >
-                <Icon name="chevron_left" size={16} /> Previous
-              </button>
+          {/* The department's system pager, not a local one.
 
-              <div className="flex items-center gap-1">
-                {Array.from({ length: Math.min(5, totalPages) }).map((_, i) => {
-                  const pNum = i + 1;
-                  const isActive = pNum === currentPage;
-                  return (
-                    <button
-                      key={pNum}
-                      type="button"
-                      onClick={() => setCurrentPage(pNum)}
-                      className={`h-8 w-8 rounded-lg text-label-2 transition ${
-                        isActive
-                          ? "bg-primary text-white"
-                          : "border border-gray-200 bg-white text-ink hover:bg-gray-50"
-                      }`}
-                    >
-                      {pNum}
-                    </button>
-                  );
-                })}
-              </div>
-
-              <button
-                type="button"
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-label-2 text-ink disabled:opacity-40 hover:bg-gray-50"
-              >
-                Next <Icon name="chevron_right" size={16} />
-              </button>
-            </div>
-          )}
+              What was here rendered `Array.from({ length: Math.min(5, totalPages) })`
+              and numbered it `i + 1` — the literal list 1,2,3,4,5, whatever the
+              total. On Statutory Advices that is 5 of 99 pages, with no button
+              highlighted past the fifth, so the control stopped saying where the
+              reader was. It was also a bare `<div>`: no landmark, no name, no
+              `aria-current`. `Pagination` windows the numbers around the current
+              page, keeps the first and last one click away, and renders nothing
+              at all below two pages. */}
+          <div className="mt-8">
+            <Pagination
+              page={safePage}
+              totalPages={totalPages}
+              onPageChange={changePage}
+              label={`${title} pages`}
+            />
+          </div>
         </div>
       </section>
     </PageLayout>

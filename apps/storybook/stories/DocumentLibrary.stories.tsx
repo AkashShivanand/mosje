@@ -128,6 +128,34 @@ export const SingleGroupHidesFilters: Story = {
   },
 };
 
+/**
+ * `layout="rail"` puts the cards on ONE ROW THAT SCROLLS SIDEWAYS, with the next
+ * card cut by the container's edge — and the cut is the affordance. Use it where
+ * the shelf is one section among many and its height is competing with everything
+ * below it: on the NMBA organisation page a four-file shelf in a three-column grid
+ * was two rows with two thirds of the second one empty.
+ *
+ * **`railLabel` is not optional in practice.** The rail is a scrollable region, so
+ * WCAG 2.1.1 requires it to be focusable — a region that scrolls and cannot be
+ * focused cannot be scrolled by anyone using a keyboard, and axe reports it as
+ * `scrollable-region-focusable`. That adds a tab stop, and an unnamed tab stop
+ * lands the reader on an unlabelled box. Name it after the shelf.
+ *
+ * **When NOT to use it.** A rail costs the reader a gesture to reach the later
+ * cards, so it is wrong for a shelf that IS the page — a document catalogue — and
+ * wrong for a shelf of twenty, where the fifteenth file is unreachable in
+ * practice. Reach for it only where a "View all" already publishes the whole list.
+ */
+export const Rail: Story = {
+  args: {
+    items: ITEMS.filter((i) => i.group !== "Circulars"),
+    groupOrder: ORDER,
+    layout: "rail",
+    railLabel: "Guidelines and formats",
+    viewAllSlot: <a href="#">View all documents</a>,
+  },
+};
+
 /** Nothing published yet — the band says so rather than rendering an empty grid. */
 export const Empty: Story = {
   args: { items: [], viewAllSlot: <a href="#">View all documents</a> },
@@ -143,5 +171,28 @@ export const CustomNoun: Story = {
     groupOrder: ORDER,
     noun: "publications",
     viewAllSlot: <a href="#">View all publications</a>,
+  },
+};
+
+/**
+ * `groupViewAll` gives each category its OWN "view all", keyed by the group
+ * name, and it replaces `viewAllSlot` while that chip is selected.
+ *
+ * It exists for the publisher whose site keeps a separate listing per category.
+ * Folding those categories into one shelf otherwise throws away every link but
+ * one — and a single "View all documents" pointing at whichever listing the page
+ * happened to name first is worse than no link, because it silently sends a
+ * reader looking for newsletters to the circulars page. Select a chip below and
+ * watch the footer follow it.
+ */
+export const PerGroupViewAll: Story = {
+  args: {
+    items: ITEMS,
+    groupOrder: ORDER,
+    viewAllSlot: <a href="#">View all documents</a>,
+    groupViewAll: {
+      Guidelines: <a href="#guidelines">View all Guidelines</a>,
+      Circulars: <a href="#circulars">View all Circulars</a>,
+    },
   },
 };

@@ -17,8 +17,13 @@ import type {
   OrgDownloadItem as OrgDownload,
 } from "@/content/website/organisation-details";
 import { withAssetBasePath } from "@/lib/website/content";
+import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { trimRedundantOpening } from "@/lib/website/organisation-prose";
 import { OrganisationIndex } from "./OrganisationIndex";
+import { OrganisationDocumentTabs } from "../OrganisationDocumentTabs";
+import { OrganisationEventRibbon } from "../OrganisationEventRibbon";
+import { OrganisationMessages } from "../OrganisationMessages";
+import { OrganisationUpdates } from "../OrganisationUpdates";
 import "./organisation-detail.css";
 
 /**
@@ -126,6 +131,38 @@ function matchDocuments(
     .filter((d) => terms.some((t) => d.title.toLowerCase().includes(t)))
     .sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""))
     .slice(0, limit);
+}
+
+/**
+ * NEAR-DUPLICATES OUT OF THE NOTICE STRIP.
+ *
+ * The ingest carries several notices whose titles differ only in a trailing
+ * clause — three separate "Portal is open for seeking applications from eligible
+ * NGOs for release of 1st instalment of GIA for running of…" rows, all dated
+ * 01 Apr 2026. In a document SHELF that is fine: a reader scanning a grid can
+ * see the difference and pick. In a strip that shows one headline at a time it
+ * reads as the same notice cycling past three times, and the reader concludes
+ * the strip is broken.
+ *
+ * Compared on the first eighty characters, case- and punctuation-insensitively.
+ * The first eighty is enough to separate genuinely different notices — the
+ * shortest real title here is 42 — and short enough to catch the ones that
+ * diverge only at the end. The FIRST of a set survives, and the list is already
+ * sorted newest-first, so what survives is the most recent of the duplicates.
+ *
+ * It over-matches the day two real notices share an eighty-character opening.
+ * The strip is a route into the document index, not the index itself, so losing
+ * one of a pair there costs a reader a click; showing the same headline three
+ * times costs them their trust in the strip.
+ */
+function dedupeByTitle(docs: FileRecord[]): FileRecord[] {
+  const seen = new Set<string>();
+  return docs.filter((d) => {
+    const key = d.title.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim().slice(0, 80);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 /**
@@ -456,6 +493,14 @@ export function OrganisationDetail({
 }: OrganisationDetailProps) {
   const circulars = matchDocuments(documents, detail?.circulars, 4);
   const resources = matchDocuments(documents, detail?.resources, 4);
+  /*
+   * The organisation's own notice board, matched the same way the two document
+   * bands are — see `whatsNew` in `organisation-details.ts`. It resolves from
+   * the ingest, so a re-crawl refreshes the strip and nobody re-types a notice.
+   */
+  const whatsNew = dedupeByTitle(
+    matchDocuments(documents, detail?.whatsNew, (detail?.whatsNew?.limit ?? 6) * 3),
+  ).slice(0, detail?.whatsNew?.limit ?? 6);
 
   const isSubPage = org.slug.includes("/");
   const rootSlug = org.slug.split("/")[0] ?? org.slug;
@@ -1013,63 +1058,100 @@ export function OrganisationDetail({
       external: isHttp(d.fileUrl ?? d.sourceUrl),
     })),
     ...(detail?.downloads?.groups ?? []).flatMap((g) =>
-      g.items.map((f) => ({
-        id: `download-${f.href}-${f.label}`,
-        group: f.group ?? "Formats",
-        meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
-        title: f.label,
-        officialName: f.officialName,
-        href: f.href,
-        actionLabel: DOWNLOAD_KIND[f.kind].action,
-        external: isHttp(f.href),
-      })),
+      g.items.map((f) => {
+        const href = localiseDocumentUrl(f.href, f.label, g.heading);
+        return {
+          id: `download-${f.href}-${f.label}`,
+          group: f.group ?? "Formats",
+          meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
+          title: f.label,
+          officialName: f.officialName,
+          href,
+          actionLabel: DOWNLOAD_KIND[f.kind].action,
+          external: isHttp(href),
+        };
+      }),
     ),
   ];
 
   /*
-   * THE SOURCE'S OWN DOCUMENT SECTIONS, in the source's own order.
+   * ONE DOCUMENTS SECTION, ALWAYS — AND WHY THE SECOND LAYOUT IS GONE.
    *
-   * NMBA publishes six separately titled sections — IEC Materials,
-   * Publications, Newsletter, Downloads, Circulars, Citizen Corner — each with
-   * its own "View All". Merging them into one filterable shelf keeps every file
-   * and loses the Department's arrangement of them: a reader who came for the
-   * newsletter has to work out which chip it is behind.
+   * A `layout: "sections"` mode used to exist for records whose source publishes
+   * several separately titled document sections. NMBA was its only user, and it
+   * pushed SIX top-level headings onto the page — IEC Materials, Publications,
+   * Newsletter, Downloads, Circulars, Citizen Corner — each its own band with its
+   * own "View All".
    *
-   * Only for records that ask for it. Every other organisation keeps the shelf,
-   * which is the right answer when its documents are one undifferentiated pile.
+   * It was removed because it broke the contract the side rail depends on. The
+   * rail is a list of the page's sections; NMBA's rail offered one entry,
+   * "Documents & Downloads", pointing at `#documents-downloads` — an id that this
+   * branch never rendered, because in that mode there is no such section. So the
+   * one link in the rail that covered a third of the page went nowhere, and the
+   * six sections it stood for appeared in the rail not at all.
+   *
+   * The shelf keeps the publisher's arrangement as CHIPS rather than as headings,
+   * which is this component's whole argument (see `DocumentLibrary`): the
+   * categories survive, the six consecutive grids of identical cards do not. What
+   * the sections mode had over it — a per-category "View All" — is now kept by
+   * `groupViewAll`, which is strictly better than what it replaced: the link
+   * follows the selected chip instead of being fixed to one category.
    */
-  if (detail?.downloads?.layout === "sections") {
-    for (const g of detail.downloads.groups) {
-      if (g.items.length === 0) continue;
-      bands.push({
+  if (detail?.downloads?.layout === "tabs") {
+    /*
+     * ONE BAND, THE DEPARTMENT'S OWN SHELVES AS ITS TABS.
+     *
+     * It carries `documents-downloads` — the id the page index has always linked
+     * to and which `layout: "sections"` never produced, so that entry in the
+     * NMBA rail had been scrolling nowhere. See `OrganisationDocumentTabs`.
+     */
+    const lib = detail.downloads;
+    const shelves = lib.groups
+      .filter((g) => g.items.length > 0)
+      .map((g) => ({
         id: g.id,
+        heading: g.heading,
+        viewAllHref: g.viewAllHref,
+        items: g.items.map((f) => {
+          /*
+           * A DOCUMENT RESOLVES TO A LOCAL SAMPLE; AN IMAGE DOES NOT.
+           *
+           * The record's four campaign assets — the mark, the mascot and the two
+           * QR codes — are real files this estate already serves, and they were
+           * never the problem. Its eleven PDFs pointed at the Department's CDN.
+           * `localiseDocumentUrl` tells the two apart by the URL, and `external`
+           * is recomputed from the RESULT rather than the input: a localised
+           * file must not keep opening in a new tab and announcing itself as
+           * leaving the site, because it no longer does.
+           */
+          const href = localiseDocumentUrl(f.href, f.label, g.heading);
+          return {
+            id: `download-${f.href}-${f.label}`,
+            group: g.heading,
+            meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
+            title: f.label,
+            officialName: f.officialName,
+            href,
+            actionLabel: DOWNLOAD_KIND[f.kind].action,
+            external: isHttp(href),
+          };
+        }),
+      }));
+
+    if (shelves.length > 0) {
+      bands.push({
+        id: "documents-downloads",
         body: (
           <>
-            <SectionTitle as={2} title={g.heading} headingId={`${g.id}-heading`}>
-              {g.viewAllHref != null && (
-                <a
-                  href={g.viewAllHref}
-                  target={isHttp(g.viewAllHref) ? "_blank" : undefined}
-                  rel={isHttp(g.viewAllHref) ? "noreferrer" : undefined}
-                  className={buttonClasses("primary", "outlined", "sm")}
-                >
-                  View all
-                  {isHttp(g.viewAllHref) && <span className="sr-only"> (opens in a new tab)</span>}
-                </a>
-              )}
-            </SectionTitle>
-            <DocumentLibrary
-              items={g.items.map((f) => ({
-                id: `download-${f.href}-${f.label}`,
-                group: g.heading,
-                meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
-                title: f.label,
-                officialName: f.officialName,
-                href: f.href,
-                actionLabel: DOWNLOAD_KIND[f.kind].action,
-                external: isHttp(f.href),
-              }))}
-              groupOrder={[g.heading]}
+            <SectionTitle
+              as={2}
+              title={lib.heading}
+              description={lib.description}
+              headingId="documents-downloads-heading"
+            />
+            <OrganisationDocumentTabs
+              groups={shelves}
+              ariaLabel={`${org.title} document types`}
             />
           </>
         ),
@@ -1077,6 +1159,32 @@ export function OrganisationDetail({
     }
   } else if (libraryItems.length > 0) {
     const lib = detail?.downloads;
+
+    /*
+     * Each group's own listing on the Department's site, keyed by the group name
+     * so it lines up with the chip. Built from the same `groups` the items came
+     * from, so a group that gains a listing gains the link with no further
+     * wiring.
+     */
+    const groupViewAll: Record<string, React.ReactNode> = {};
+    for (const g of lib?.groups ?? []) {
+      if (g.viewAllHref == null) continue;
+      const label = g.items[0]?.group ?? g.heading;
+      groupViewAll[label] = (
+        <a
+          href={g.viewAllHref}
+          target={isHttp(g.viewAllHref) ? "_blank" : undefined}
+          rel={isHttp(g.viewAllHref) ? "noreferrer" : undefined}
+          className={buttonClasses("primary", "outlined", "sm")}
+        >
+          {/* The heading's OWN case. Lower-casing it turned "IEC Materials" into
+              "iec materials", and the estate sets titles in Title Case anyway. */}
+          {`View all ${g.heading}`}
+          {isHttp(g.viewAllHref) && <span className="sr-only"> (opens in a new tab)</span>}
+        </a>
+      );
+    }
+
     bands.push({
       id: "documents-downloads",
       body: (
@@ -1089,7 +1197,11 @@ export function OrganisationDetail({
           />
           <DocumentLibrary
             items={libraryItems}
-            groupOrder={LIBRARY_GROUP_ORDER}
+            /* The record's own order where it has one — a publisher that leads
+               with IEC material should not have its chips reordered to put
+               Circulars first because that is the estate's default. */
+            groupOrder={lib?.groupOrder ?? LIBRARY_GROUP_ORDER}
+            groupViewAll={groupViewAll}
             viewAllSlot={
               <NextLink
                 href={
@@ -1194,32 +1306,22 @@ export function OrganisationDetail({
               View all photos
             </NextLink>
           </SectionTitle>
-          {/* Segmented Media Tabs (Figma 5326:27984) */}
-          <div className="flex items-center gap-2 mb-6 flex-wrap">
-            <div className="inline-flex rounded-lg p-1 bg-surface-muted border border-neutral-subtle gap-1">
-              <button
-                type="button"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-surface text-ink text-label-1 shadow-sm"
-              >
-                <Icon name="image" size={16} className="text-primary-base" />
-                <span>All Photos</span>
-              </button>
-              <button
-                type="button"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-ink-subtle hover:text-ink text-label-1 transition-colors"
-              >
-                <Icon name="movie" size={16} />
-                <span>Videos</span>
-              </button>
-              <button
-                type="button"
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-ink-subtle hover:text-ink text-label-1 transition-colors"
-              >
-                <Icon name="event" size={16} />
-                <span>Events</span>
-              </button>
-            </div>
-          </div>
+          {/*
+            * THE THREE MEDIA TABS ARE GONE, and they were never tabs.
+            *
+            * They were three `<button>`s with no handler, no `role="tab"`, no
+            * panel and no `aria-selected` — drawn from Figma 5326:27984 and
+            * never wired. Two of them named content this estate does not hold:
+            * `gallery` carries photographs only, so pressing "Videos" or
+            * "Events" did nothing at all, on every organisation page with a
+            * gallery. A control that points at a panel that is not there is the
+            * defect `.claude/rules/data-state-completeness.md` and the tab
+            * purity audit both name; the honest form of "we publish photographs"
+            * is a heading that says Gallery and photographs under it.
+            *
+            * They come back the day the record can hold a video or an event —
+            * as real `Tabs`, with panels.
+            */}
           <ul className="orgd__gallery">
             {detail.gallery.items.map((g) => (
               <li key={g.image} className="orgd__shot">
@@ -1349,19 +1451,28 @@ export function OrganisationDetail({
             * be mistaken for a figure does not belong on a departmental page,
             * and the attribution below each quote already says it is one.
             */}
-          <ul className="orgd__messages">
-            {ms.items.map((m) => (
-              <li key={m.name} className="orgd__message">
-                <blockquote className="orgd__message-quote">
-                  <p>{m.quote}</p>
-                </blockquote>
-                <footer className="orgd__message-by">
-                  <cite className="orgd__message-name">{m.name}</cite>
-                  <span className="orgd__message-role">{m.designation}</span>
-                </footer>
-              </li>
-            ))}
-          </ul>
+          {/*
+            * FOUR OR MORE STATEMENTS BECOME A CAROUSEL; three or fewer stay a
+            * grid, because three cards are already one row and a carousel would
+            * hide two of them behind an interaction to save nothing.
+            */}
+          {ms.items.length > 3 ? (
+            <OrganisationMessages items={ms.items} label={`Messages about ${org.title}`} />
+          ) : (
+            <ul className="orgd__messages">
+              {ms.items.map((m) => (
+                <li key={m.name} className="orgd__message">
+                  <blockquote className="orgd__message-quote">
+                    <p>{m.quote}</p>
+                  </blockquote>
+                  <footer className="orgd__message-by">
+                    <cite className="orgd__message-name">{m.name}</cite>
+                    <span className="orgd__message-role">{m.designation}</span>
+                  </footer>
+                </li>
+              ))}
+            </ul>
+          )}
         </>
       ),
     });
@@ -1492,6 +1603,47 @@ export function OrganisationDetail({
             <FactStrip overlap ariaLabel={`Key facts about ${org.title}`} items={detail.facts} />
           </div>
         </div>
+      )}
+
+      {/*
+       * TWO STRIPS BETWEEN THE HEADER AND THE PAGE'S DATA, in that order, and
+       * the order is the argument.
+       *
+       * The notice board is PERMANENT and the occasion is TEMPORARY, so the
+       * board sits first: a reader who learns where this page keeps its notices
+       * finds them in the same place in six weeks' time, when the anniversary
+       * strip has been taken down. The same reasoning
+       * `floating-element-placement.md` uses for the corner stack — what moves
+       * least anchors the position.
+       *
+       * NEITHER GOES INSIDE THE HEADER. The 07 Sep review's other finding was
+       * that this page's first fold already carries a campaign band, a hero and
+       * a fact strip; adding to it would have answered one request by worsening
+       * another. Below the fact strip they are the first thing a reader meets
+       * on the page's own ground, which is where the review asked for the
+       * ribbon — "between the blue section and the data section".
+       */}
+      {whatsNew.length > 0 && (
+        <div className="orgd__updates">
+          <div className="sa-container">
+            <OrganisationUpdates
+              items={whatsNew.map((d) => ({
+                id: d.slug,
+                title: d.title,
+                description: d.category,
+                date: formatDate(d.date),
+                dateTime: d.date,
+                href: d.fileUrl ?? d.sourceUrl,
+              }))}
+              label={detail?.whatsNew?.label ?? "What's New"}
+              viewAllHref={detail?.whatsNew?.viewAllHref ?? "/website/notices"}
+            />
+          </div>
+        </div>
+      )}
+
+      {detail?.eventRibbon != null && (
+        <OrganisationEventRibbon ribbon={detail.eventRibbon} />
       )}
 
       <div className={`orgd${hasRail ? " orgd--railed" : ""}`}>

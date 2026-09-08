@@ -3079,8 +3079,14 @@ export const GENERATED_PROPS = {
         "name": "countLabel",
         "type": "string",
         "required": false,
-        "default": "\"items\"",
+        "default": "\"items\"\n\nGive it the PLURAL — \"documents\", \"items\". A count of exactly 1 drops a\ntrailing \"s\", so a screen reader hears \"Publications, 1 document\" rather\nthan \"1 documents\". Pass `countLabelOne` where that trim is wrong.",
         "description": "What one unit of `count` is, for assistive technology."
+      },
+      {
+        "name": "countLabelOne",
+        "type": "string",
+        "required": false,
+        "description": "The singular of `countLabel`, where trimming an \"s\" does not produce it — \"entries\" → \"entry\", \"boxes\" → \"box\". Only consulted when `count` is 1."
       },
       {
         "name": "disabled",
@@ -4611,11 +4617,30 @@ export const GENERATED_PROPS = {
         "description": "Chip order, most-wanted first. Groups absent from `items` are dropped, so one order can serve several pages. Omit it and the chips follow first appearance in `items`."
       },
       {
+        "name": "groupViewAll",
+        "type": "Record<string, React.ReactNode>",
+        "required": false,
+        "description": "A per-group \"view all\", keyed by the group's own name. When a chip is selected and this map has an entry for it, that entry replaces `viewAllSlot` in the footer — so the link always points at the listing the reader is currently filtered to, rather than at whichever one the page happened to name first. It exists because collapsing several document sections into one shelf otherwise throws away every \"view all\" but one. A publisher that keeps a separate listing per category on its own site still has those listings; the shelf should hand the reader the right one. Elements, not URLs, for the same reason `viewAllSlot` is an element: this is a client component, and a server page cannot pass `next/link` itself across the boundary. See the note above."
+      },
+      {
+        "name": "layout",
+        "type": "\"grid\" | \"rail\"",
+        "required": false,
+        "default": "\"grid\"",
+        "description": "How the cards are laid out. `\"grid\"` (default) wraps them down the page in as many columns as fit — the right answer for a shelf that IS the page, like a document catalogue. `\"rail\"` puts them on one row that scrolls sideways, with the next card peeking in from the right edge. Use it where the shelf is one section among many and its height is competing with everything below it: on the organisation pages a four-item shelf in a three-column grid was two rows with two thirds of the second one empty. A rail costs the reader a gesture to see the later cards, so it is for shelves that already publish a route to the whole list. It does not suit a shelf of twenty."
+      },
+      {
         "name": "noun",
         "type": "string",
         "required": false,
         "default": "\"documents\"",
         "description": "Noun used in the count line and the empty state."
+      },
+      {
+        "name": "railLabel",
+        "type": "string",
+        "required": false,
+        "description": "Names the rail for assistive technology — \"IEC Materials\". Required in spirit when `layout=\"rail\"`: the rail is a focusable scroll region (WCAG 2.1.1), so it adds a tab stop, and an unnamed one lands the reader on an unlabelled box. Ignored by the grid, which is not focusable and needs no name."
       },
       {
         "name": "viewAllSlot",
@@ -12297,6 +12322,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "help",
+        "type": "SiteFooterLink",
+        "required": true,
+        "description": "[DBIM 5.6] Help — REQUIRED, and rendered under the same rule as `sitemap`. The clause wants help RESOURCES behind it (FAQs, screen reader access, accessibility help), not a contact form."
+      },
+      {
         "name": "lineage",
         "type": "string",
         "required": true,
@@ -12312,7 +12343,13 @@ export const GENERATED_PROPS = {
         "name": "policyLinks",
         "type": "SiteFooterLink[]",
         "required": true,
-        "description": "[DBIM 5.6] Website Policy, Help, Feedback, Sitemap. Required on both."
+        "description": "[DBIM 5.6] The website policies — terms of use, privacy, copyright, hyperlinking, accessibility, feedback. Required on both variants. DO NOT list Sitemap or Help here. They are their own props, and on the portal variant a duplicate renders twice in the same band."
+      },
+      {
+        "name": "sitemap",
+        "type": "SiteFooterLink",
+        "required": true,
+        "description": "[DBIM 5.6] Sitemap — REQUIRED, like `lineage` and `copyright`, and for the same reason: a footer without it is not a government footer. WHERE IT RENDERS DEPENDS ON THE VARIANT, and that is the whole point of the prop. On `website` the Sitemap already sits in a link column, so this is not drawn again — the clause asks for the element to be present, not present twice. On `portal` there are no columns, so it renders in the statutory bar. Passing it is how a caller proves the destination exists for both."
       },
       {
         "name": "address",
@@ -12663,6 +12700,12 @@ export const GENERATED_PROPS = {
         "type": "React.ReactNode",
         "required": false,
         "description": "`landing` only — the portrait on the trailing edge. The halo is drawn by this component, not by the caller: the rings are the band's own treatment and every landing page should get the same one. Pass the picture; the plaque is ours."
+      },
+      {
+        "name": "mediaLabel",
+        "type": "string",
+        "required": false,
+        "description": "Names the media column, which stops it being hidden from assistive technology. THE STATIC PORTRAIT IS DECORATIVE AND THE CAROUSEL IS NOT. `media` is `aria-hidden` by contract — it repeats nothing the copy says, so a reader who never sees it loses nothing. That contract breaks the moment the slot holds CONTROLS: buttons inside an `aria-hidden` subtree stay in the tab order while being invisible to a screen reader, which is worse than either hiding them properly or exposing them properly. So a caller passing interactive media passes a label with it, and the column becomes a named region instead of a hidden one. This is the difference between the `landing` header's two media variants — still and carousel — and it is a real one, not a styling choice."
       },
       {
         "name": "overlay",

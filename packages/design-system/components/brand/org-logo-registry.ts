@@ -53,6 +53,51 @@ export const ORG_LOGOS = {
 export type OrgSlug = keyof typeof ORG_LOGOS;
 
 /**
+ * THE MARKS THAT DO NOT CARRY THEIR OWN GROUND.
+ *
+ * Most organisation marks are self-contained seals — a coloured disc, a badge,
+ * a roundel — and they sit on a brand-blue band exactly as the handoff draws
+ * them: bare, edge to edge, with no plate behind. `Logo` in the Organisation
+ * Details header (3751:10135) is a 100x100 frame with no fill, no stroke and no
+ * radius, and NMBA's own frame (51586:22013) puts its green seal straight on the
+ * blue.
+ *
+ * The six below cannot. Rendered at 100px on the band's own gradient and looked
+ * at rather than calculated:
+ *
+ *   nbcfdc  a pale blue mark on a blue band — it all but disappears
+ *   smile   thin, pale artwork with no enclosing shape
+ *   daf     the State Emblem in near-black line art. The ratio is fine (4.3:1)
+ *   dwbdnc  and the LEGIBILITY is not: at 2% coverage the fine strokes and the
+ *   ncsk    "सत्यमेव जयते" beneath them read as a smudge on a mid-blue ground.
+ *   scw     A number cannot see that; the contact sheet can.
+ *
+ * SO THE PLATE IS THE EXCEPTION, NOT THE RULE. It used to be applied to all
+ * seventeen, which put a white ring around eleven marks that already had their
+ * own edge — the "thick stroke" that is in no design. A mark listed here is a
+ * statement about that organisation's ARTWORK, and the right long-term fix is
+ * artwork that holds the band; until then this keeps it readable.
+ *
+ * The State Emblem fallback needs one for the same reason `daf` does.
+ */
+export const ORG_MARKS_NEEDING_GROUND: ReadonlySet<string> = new Set([
+  "nbcfdc",
+  "smile",
+  "daf",
+  "dwbdnc",
+  "ncsk",
+  "scw",
+]);
+
+/** Does this mark need a plate behind it on a brand-coloured band? */
+export function markNeedsGround(src: string | undefined): boolean {
+  if (!src) return true; // the State Emblem fallback — see above
+  const slug = src.split("/").pop()?.replace(/\.[a-z0-9]+$/i, "") ?? "";
+  return ORG_MARKS_NEEDING_GROUND.has(slug) || /national-emblem/i.test(slug);
+}
+
+
+/**
  * The State Emblem, used where an organisation has no mark of its own.
  *
  * IT IS THE CORRECT ANSWER, NOT A PLACEHOLDER. These are Government of India

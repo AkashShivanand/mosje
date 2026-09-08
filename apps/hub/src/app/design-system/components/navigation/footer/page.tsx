@@ -81,7 +81,7 @@ export default function FooterPage(): React.JSX.Element {
       summary="The slim navy app-shell footer: one band carrying the NeGD and MeitY credit line, plus optional policy links. It ends a signed-in workflow, not a public page."
       figma={{
         absent:
-          "Matches the portal footer inside the Navbar and app-shell masters in the SAMAVESH library; it is not published as its own node in the estate's Figma index.",
+          "This slim strip has no master of its own. The library's Footer page publishes Site Footer, whose Variant=Portal is the shape to draw and to build against; prefer it for new work.",
       }}
       specimen={
         <Footer

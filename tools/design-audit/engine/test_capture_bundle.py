@@ -5,6 +5,7 @@ Run:  cd tools/design-audit && python3 -m unittest engine.test_capture_bundle -v
 """
 import datetime, os, re, sys, tempfile, unittest, unittest.mock
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from engine import capture as C
 from engine import manifest as M
 
 
@@ -1079,3 +1080,32 @@ class RecordHarvestNeedsASubmission(unittest.TestCase):
         bdl = self._run([{"walk": {"prefix": "P"}}])
         self.assertEqual(bdl.get("records", {}), {},
                          "an id was harvested from a page that is not a confirmation screen")
+
+
+class FailedFlowCarryForward(unittest.TestCase):
+    """A failed flow must not delete what earlier runs recorded for it."""
+
+    @staticmethod
+    def _bundle(*slugs):
+        return {"screens": [{"slug": s} for s in slugs]}
+
+    def test_a_failed_flow_keeps_the_screens_this_run_never_reached(self):
+        prev = [{"slug": "S01", "reachedBy": "flow:avyay-new"},
+                {"slug": "S02", "reachedBy": "flow:avyay-new"}]
+        rescued = C.screens_to_rescue(prev, self._bundle(), {"avyay-new"})
+        self.assertEqual([s["slug"] for s in rescued["avyay-new"]], ["S01", "S02"])
+
+    def test_a_screen_recaptured_this_run_is_not_rescued(self):
+        # This run reached it, so its fresh state is the true one and must not be overwritten.
+        prev = [{"slug": "S01", "reachedBy": "flow:avyay-new"},
+                {"slug": "S02", "reachedBy": "flow:avyay-new"}]
+        rescued = C.screens_to_rescue(prev, self._bundle("S01"), {"avyay-new"})
+        self.assertEqual([s["slug"] for s in rescued["avyay-new"]], ["S02"])
+
+    def test_a_flow_that_did_not_fail_rescues_nothing(self):
+        prev = [{"slug": "S01", "reachedBy": "flow:napddr-new"}]
+        self.assertEqual(C.screens_to_rescue(prev, self._bundle(), {"avyay-new"}), {})
+
+    def test_no_failures_means_no_carry_forward(self):
+        prev = [{"slug": "S01", "reachedBy": "flow:avyay-new"}]
+        self.assertEqual(C.screens_to_rescue(prev, self._bundle(), set()), {})

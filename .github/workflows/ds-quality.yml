@@ -186,6 +186,30 @@ jobs:
       - name: Icon scale — ratchet, no NEW off-scale icon sizing
         run: npm run check:icon-scale
 
+      # `/design-system/foundations/states` publishes seven states, names `active`
+      # among them, gives it a colour rung and a motion pair, and says the reason for
+      # naming them is "so every component answers a press the same way". The
+      # --sa-cmp-action-*-active-* tokens have existed all along. On 2026-09-07, 109
+      # selectors across 59 of 113 design-system stylesheets bound `:hover` and never
+      # bound `:active` — including both pagers, which is how it was found: a tap on a
+      # page number produced no acknowledgement at all, and a touch screen has no hover
+      # to fall back on.
+      #
+      # A RATCHET, not a sweep. Binding a press on 100+ selectors at once is a hundred
+      # small visual changes across seven live portals with no way to review them
+      # together. This costs nothing today, refuses to let the number grow, and fails
+      # when a component gains `:active` without the baseline being lowered in the same
+      # change — so one component's cleanup cannot be spent silently on another's
+      # regression. The baseline is PER STYLESHEET for that reason.
+      #
+      # It classifies on the component author's own declaration — a base selector the
+      # stylesheet itself styles on `:hover` — so it needs no list of known components
+      # and covers whatever is added tomorrow. A BEM modifier is credited by its block,
+      # because `.x--mod:hover` is answered by `.x:active` on the same element; without
+      # that rule the gate reported a defect one rule above its own fix.
+      - name: Interaction states — ratchet, every :hover must answer a press
+        run: npm run check:interaction-states
+
       # Radius had NO gate of any kind until 2026-08-18, while colour had six contract
       # tests, spacing had this same ratchet and icons had the one above. The first
       # census of the live library shows what that cost: of 51,844 AUTHORABLE radius
@@ -293,6 +317,14 @@ jobs:
       # does not exist for anyone browsing the library, so every component page must end
       # in an ARRANGEMENTS section that draws every property switched on, every group
       # arrangement and every code-only state (figma-documentation-style.md). The
+      # A component that takes `linkAs` and is not given it renders a bare anchor, so every
+      # click costs a full document load — and nothing breaks, which is why it went unnoticed
+      # across 22 call sites, then returned on one portal a day after being fixed. The list of
+      # components is derived from the design-system source, so a new one is covered the day it
+      # gains the prop. Specimens and stories are out of scope and say why.
+      - name: linkAs — every navigating call site routes through the app's link component
+        run: npm run check:link-as
+
       # baseline lists the pages that do not carry it yet and may only shrink; this half
       # asks whether that list is well-formed.
       - name: Figma arrangements — the baseline of pages without the section is coherent

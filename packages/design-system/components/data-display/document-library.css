@@ -24,6 +24,93 @@
     margin: 0;
   }
 
+  /* ── The rail ──────────────────────────────────────────────────────────
+     ONE ROW THAT SCROLLS SIDEWAYS, instead of a grid that wraps downward.
+
+     Asked for on 8 Sep 2026 for the organisation pages, and it is the same
+     instruction that turned six document bands into six tabs: stop spending
+     page height on files. A four-item shelf in a three-column grid is two rows
+     with a third of the second one empty; as a rail it is one row and the
+     fourth card peeks in from the right, which is also what tells the reader
+     there is more.
+
+     ── IT IS NOT THE SCROLLING REGION THAT RULE FORBIDS ───────────────────
+
+     `data-state-completeness.md` §4 says never to scroll a region inside a
+     card, and the harm it names is specific: "on a phone a reader flicking the
+     page down lands in the list and moves the list instead." That is a
+     VERTICAL scroll container swallowing a vertical gesture. A horizontal rail
+     cannot: a downward flick passes straight through to the page, and only a
+     sideways drag moves the rail. The two gestures never compete.
+
+     `overscroll-behavior-inline: contain` stops the other end of the same
+     problem — a sideways fling that reaches the rail's edge must not become
+     the browser's back-navigation.
+
+     ── AND IT IS NOT A REFLOW FAILURE ─────────────────────────────────────
+
+     WCAG 1.4.10 asks that the PAGE not require horizontal scrolling at 320px.
+     A region that scrolls sideways by design is not that, and the rail is
+     `100%` of its column at every width, so the document itself never grows a
+     horizontal scrollbar. What the criterion would object to is content only
+     reachable by scrolling the page sideways; here every file is also one
+     press away on the shelf's own "View All".
+     ==================================================================== */
+  .ds-doclib__grid--rail {
+    display: flex;
+    /* `stretch`, so a two-line title and a four-line one square off against
+       each other and every "Download PDF" sits on one baseline. */
+    align-items: stretch;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-snap-type: x proximity;
+    /* The cards carry a shadow-free border, but the focus ring does not stop at
+       the card's edge — without the padding a focused card's outline is clipped
+       by the scroll container. */
+    padding-block: var(--sa-padding-4);
+    scroll-padding-inline: var(--sa-padding-4);
+  }
+
+  /*
+   * A FIXED CARD WIDTH, and the peek is the point.
+   *
+   * `1fr` columns would divide the rail evenly and land the last card flush
+   * with the right edge, which reads as a finished row rather than a row with
+   * more in it. At a fixed 264 the fourth card is cut by the container on a
+   * 950px column, and a cut card is the only affordance a rail needs.
+   */
+  .ds-doclib__grid--rail .ds-doclib__card {
+    flex: 0 0 16.5rem;
+    scroll-snap-align: start;
+  }
+
+  /*
+   * WCAG 2.1.1 — a region that scrolls and cannot be focused cannot be
+   * scrolled by anyone using a keyboard, and axe reports it as
+   * `scrollable-region-focusable`. The tab stop is added in the component, with
+   * a name, so the new stop announces what it is; this is only its ring.
+   */
+  .ds-doclib__grid--rail:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: var(--sa-focus-offset);
+    border-radius: var(--sa-shape-12);
+  }
+
+  /*
+   * A THIN SCROLLBAR, NOT NO SCROLLBAR.
+   *
+   * Hiding it entirely is the fashionable answer and it removes the one piece
+   * of persistent evidence that the rail scrolls at all — on a trackpad, where
+   * the overlay scrollbar only appears mid-gesture, that leaves a reader who
+   * has not already dragged with nothing but the cut card. Thin and in the
+   * neutral ramp is quiet enough for a departmental page and honest about what
+   * the control is.
+   */
+  .ds-doclib__grid--rail {
+    scrollbar-width: thin;
+    scrollbar-color: var(--sa-border-neutral-base) transparent;
+  }
+
   .ds-doclib__card {
     display: flex;
     flex-direction: column;

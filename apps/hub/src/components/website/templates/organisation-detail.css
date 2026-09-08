@@ -485,26 +485,48 @@
   }
 
   /*
-   * The PALE saffron rung, not the one above it — the same correction
-   * `fact-strip.css` already carries, written out there in full.
+   * WHITE, LIKE EVERY OTHER CARD ON THE PAGE. This was a saffron wash, and
+   * before that a full peach tile — each step a correction of the last, and the
+   * wash was still wrong for a reason neither step addressed.
    *
-   * `secondary-subtler` is scale-100 (#ffd4c4): a peach TILE. Six of them side
-   * by side, each holding a blue icon badge, read as the loudest thing on a
-   * page whose brand is gov-blue, and the six definitions they exist to carry
-   * came second to their own background. `secondary-base` is scale-50
-   * (#fff2ed), the barely-there wash, and it is what the handoff draws.
+   * The clash was never the wash on its own; it was the wash UNDER A BLUE ICON
+   * CHIP. `.orgd__card-icon` paints `bg/brand/primary/subtler` (#c0dbff), so
+   * each of NMBA's six institution cards put a saturated cool chip on a warm
+   * ground — while the FactStrip a thousand pixels above put a SAFFRON chip on
+   * white. One page, two contradictory answers to "what does an icon chip look
+   * like", and the six cards carrying the page's densest reference content were
+   * the loudest thing on it.
    *
-   * Contrast improves rather than suffering: the card's description ink goes
-   * from 8.04:1 to 9.97:1, its title from 13.95:1 to 17.29:1.
+   * White resolves both: the cards join `.orgd__card`, the documents, the
+   * gallery and the messages in one card language, the blue chip reads as an
+   * accent rather than a collision, and saffron is left to the fact strip where
+   * it means something. Contrast improves again — the description's ink goes
+   * from 9.97:1 on #fff2ed to 10.9:1 on white.
+   *
+   * `height: 100%` so a row of cards with unequal definitions still squares off
+   * against the grid rather than each card shrink-wrapping its own text.
    */
   .orgd__highlight-card {
     display: flex;
     flex-direction: column;
+    height: 100%;
     gap: var(--sa-stack-8);
     padding: var(--sa-padding-24);
     border: 1px solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-cmp-card-radius);
-    background-color: var(--sa-bg-brand-secondary-base);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  /*
+   * body-2, not body-3. These cards are almost entirely description — a
+   * definition of an institution type, up to sixty words — and body-3 is the
+   * caption size. It set the page's longest reading passage in its smallest
+   * type, two rungs below the prose directly above it.
+   */
+  .orgd__highlight-card .orgd__card-desc {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
   }
 
   /* ── Leadership ─────────────────────────────────────────────────────────── */
@@ -1066,6 +1088,22 @@
     margin-top: var(--sa-stack-32);
   }
 
+  /* ── What's New ────────────────────────────────────────────────────────── */
+
+  /*
+   * The notice strip's own breathing room, and nothing else.
+   *
+   * `Ticker` draws its own ground, its own plinth and its own height; all this
+   * wrapper does is hold it inside `.sa-container` and separate it from the
+   * fact strip above and the ribbon below. The fact strip straddles the header
+   * band by -64px, so the space above has to clear that overlap rather than the
+   * strip's own edge.
+   */
+  .orgd__updates {
+    padding-block: var(--sa-stack-24) var(--sa-stack-16);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
   /* ── Messages ──────────────────────────────────────────────────────────── */
 
   .orgd__messages {
@@ -1085,6 +1123,39 @@
     background: var(--sa-bg-neutral-base);
     border: 1px solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-cmp-card-radius);
+  }
+
+  /*
+   * A CARD IN A CAROUSEL TAKES A MEASURE, NOT THE BAND'S FULL WIDTH.
+   *
+   * The slide is as wide as the band — 1,272px at the widest cap — and a 16px
+   * line across that carries about 150 characters, roughly twice the readable
+   * maximum. `container-md` (720px) puts these paragraphs at the same measure as
+   * the prose above them, centred so the carousel's dots stay under the middle
+   * of the card they report on.
+   *
+   * `min-height` stops the card resizing under the reader between a two-line
+   * statement and a nine-line one, which on a carousel means the controls jump
+   * every time Next is pressed.
+   */
+  .orgd__message--slide {
+    max-width: var(--sa-container-md);
+    min-height: 15rem;
+    margin: 0 auto;
+  }
+
+  /*
+   * IN A CAROUSEL THE ATTRIBUTION FOLLOWS THE QUOTE; it does not sink to the
+   * bottom of the card.
+   *
+   * `margin-top: auto` on `.orgd__message-by` exists so that a ROW of cards
+   * lines its attributions up along one baseline — which is right in a grid and
+   * meaningless in a carousel, where there is only ever one card on screen. Kept,
+   * it pushed the name and designation of a four-line statement to the foot of a
+   * 240px card and left a well of empty white between the quote and its author.
+   */
+  .orgd__message--slide .orgd__message-by {
+    margin-top: 0;
   }
 
   /* The rule marks the QUOTE, so it ends where the quote ends. With `flex: 1`

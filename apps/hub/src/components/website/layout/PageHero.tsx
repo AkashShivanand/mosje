@@ -1,9 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Icon, SitePageHeader } from "@mosje/design-system";
+import { Icon, SitePageHeader,
+  Carousel,
+  markNeedsGround,
+} from "@mosje/design-system";
 import { PageTrail, type Crumb } from "./page-trail";
 
 export interface PageHeroProps {
+  /**
+   * Photographs for the header's circular carousel — the second of the landing
+   * header's two media variants.
+   *
+   * When present it replaces the still portrait: the source page cycles four
+   * pictures of the campaign in the same circle the estate draws one in, and
+   * cloning that as a single still lost three of the four. `mediaLabel` goes
+   * with it, because a carousel is not decorative — see `SitePageHeader`.
+   */
+  heroSlides?: { src: string; alt: string }[];
+  /** Names the carousel, e.g. "Nasha Mukt Bharat Abhiyaan photographs". */
+  heroSlidesLabel?: string;
   title: string;
   breadcrumb: Crumb[];
   /**
@@ -84,6 +99,8 @@ export function PageHero({
   level,
   backHref,
   hasOverlappingFacts,
+  heroSlides,
+  heroSlidesLabel,
 }: PageHeroProps) {
   /*
    * A wide banner arriving through `logoSrc` is a portrait, not a mark. The
@@ -101,9 +118,10 @@ export function PageHero({
       ? logoSrc
       : undefined;
 
+  const hasCarousel = (heroSlides?.length ?? 0) > 0;
   const photo = featuredImage ?? bannerFromLogo;
   const mark = logoSrc && logoSrc !== photo ? logoSrc : undefined;
-  const variant = level ?? (photo ? "landing" : "inner");
+  const variant = level ?? (photo || hasCarousel ? "landing" : "inner");
 
   /*
    * A LANDING PAGE ALWAYS GETS THE PORTRAIT; AN INNER PAGE NEVER DOES.
@@ -167,6 +185,25 @@ export function PageHero({
              * 100px, as the handoff sets it. It was 72 and read as an
              * afterthought beside a 40px title.
              *
+             * NO WHITE DISC AND NO RING — that was a code invention, and the
+             * heavy stroke it drew is not in either design that specifies this
+             * frame. The handoff's `Logo` (3751:10135) is a 100x100 frame with
+             * NO fill, NO stroke and NO radius, holding a 100x100 image edge to
+             * edge; the NMBA frame (51586:22013) draws its green seal bare on
+             * the blue the same way. The build wrapped an 84px mark in a 100px
+             * white circle with a `border-white/40` hairline, so eight pixels of
+             * white ran all the way round every organisation mark on the estate
+             * and read as a thick stroke the designer never drew.
+             *
+             * The disc was presumably defensive — a dark mark on transparent
+             * would need a ground. Measured across all seventeen marks against
+             * the band's lighter stop, it is not needed: the four near-black
+             * wordmarks sit at 4.31:1, and the coloured seals carry their own
+             * internal contrast, which is what the handoff relies on. A mark
+             * that genuinely cannot hold the band is an ARTWORK problem for that
+             * organisation, not a reason to put a white circle behind all of
+             * them.
+             *
              * EXPLICIT width/height, not `fill`. With `fill` and no `sizes`,
              * Next picked a 36px candidate off the srcset and upscaled it into a
              * 100px circle — the mark arrived soft to the point of looking
@@ -174,20 +211,54 @@ export function PageHero({
              * logo is actually drawn at, and `priority` keeps an above-the-fold
              * mark out of the lazy queue.
              */
-            <span className="grid size-[100px] place-items-center overflow-hidden rounded-full border border-white/40 bg-white">
+            <span
+              className={
+                markNeedsGround(mark)
+                  ? "grid size-[100px] place-items-center overflow-hidden rounded-full bg-white"
+                  : "grid size-[100px] place-items-center"
+              }
+            >
               <Image
                 src={mark}
                 alt=""
                 width={100}
                 height={100}
                 priority
-                className="size-[84px] object-contain"
+                className={markNeedsGround(mark) ? "size-[84px] object-contain" : "size-[100px] object-contain"}
               />
             </span>
           ) : undefined
         }
+        mediaLabel={hasCarousel ? heroSlidesLabel : undefined}
         media={
-          portrait ? (
+          hasCarousel ? (
+            /*
+             * THE DESIGN SYSTEM'S OWN `Carousel`, not a second one.
+             *
+             * It already carries the WAI-ARIA pattern, the pause control, the
+             * reduced-motion rule and the dot behaviour the library documents —
+             * dots are buttons with `aria-current`, never tabs, because a
+             * tablist promises a roving arrow-key model this does not have.
+             * What the header adds is the SHAPE: the circle, and the controls
+             * lifted onto it. A component that already exists does not get
+             * written twice so one page can be round.
+             */
+            <span className="sa-siteheader__carousel">
+              <Carousel label={heroSlidesLabel ?? "Photographs"}>
+                {heroSlides!.map((s) => (
+                  <Image
+                    key={s.src}
+                    src={s.src}
+                    alt={s.alt}
+                    width={340}
+                    height={340}
+                    className="size-full object-cover"
+                    priority
+                  />
+                ))}
+              </Carousel>
+            </span>
+          ) : portrait ? (
             /*
              * 340px. The handoff's portrait is 385 inside a 489 plaque; at the
              * estate's 1320 cap the trailing column is ~416, so the picture takes

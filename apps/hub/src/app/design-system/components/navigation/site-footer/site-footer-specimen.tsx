@@ -1,11 +1,20 @@
 import * as React from "react";
 import { SiteFooter } from "@mosje/design-system";
 
+/*
+ * Sitemap and Help are NOT here. They are their own props since 2026-09-07, and
+ * a caller that also lists them among the policies gets each of them twice on
+ * the portal variant — which is what this specimen did until the change was
+ * verified in a browser. DBIM 5.6 asks for the element to be present, not
+ * present twice.
+ */
 const POLICY = [
-  { label: "Website Policy", href: "#" },
-  { label: "Help", href: "#" },
+  { label: "Terms & Conditions", href: "#" },
+  { label: "Privacy Policy", href: "#" },
+  { label: "Copyright", href: "#" },
+  { label: "Hyperlinking", href: "#" },
+  { label: "Accessibility", href: "#" },
   { label: "Feedback", href: "#" },
-  { label: "Sitemap", href: "#" },
 ];
 
 const RELATED = [
@@ -32,6 +41,8 @@ export function SiteFooterPortalSpecimen(): React.JSX.Element {
       ]}
       lineage={LINEAGE}
       policyLinks={POLICY}
+      sitemap={{ label: "Sitemap", href: "#" }}
+      help={{ label: "Help & Support", href: "#" }}
       relatedLinks={RELATED}
       copyright="© 2026 Department of Social Justice & Empowerment. All rights reserved."
       lastUpdated="27 August 2026"
@@ -95,6 +106,8 @@ export function SiteFooterWebsiteSpecimen(): React.JSX.Element {
       ]}
       lineage={LINEAGE}
       policyLinks={POLICY}
+      sitemap={{ label: "Sitemap", href: "#" }}
+      help={{ label: "Help & Support", href: "#" }}
       relatedLinks={RELATED}
       copyright="© 2026 Department of Social Justice & Empowerment. All rights reserved."
       lastUpdated="27 August 2026"

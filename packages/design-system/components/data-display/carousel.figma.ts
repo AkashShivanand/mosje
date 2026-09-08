@@ -30,7 +30,7 @@ export default {
   example: figma.code`
     <Carousel
       label="Schemes for senior citizens"
-      ${autoPlay === "on" ? figma.code`autoPlay interval={7000}` : ""}
+      ${autoPlay === "on" ? figma.code`autoPlay interval={7}` : ""}
       showDots
     >
       <Slide />

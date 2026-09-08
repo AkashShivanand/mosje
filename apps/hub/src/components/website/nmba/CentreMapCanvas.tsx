@@ -7,6 +7,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster";
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+import "./centre-map.css";
 import {
   CENTRE_TYPE_META,
   type DeAddictionCentre,
@@ -125,7 +126,7 @@ export function CentreMapCanvas({ centres, selected, userLoc, onSelect }: Centre
          what both this section and /website/de-addiction-centres were showing. */
       maxZoom={18}
       scrollWheelZoom={false}
-      className="h-full min-h-[380px] w-full"
+      className="website-centre-map h-full min-h-[380px] w-full"
       aria-label="Map of De-addiction Centres across India"
     >
       <TileLayer

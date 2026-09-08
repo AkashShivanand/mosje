@@ -94,11 +94,19 @@ function pageList(page: number, totalPages: number, siblings: number): (number |
  *
  * ACCESSIBILITY. The whole control is a `<nav>` with an accessible name, so a
  * screen-reader user can jump to it and knows what it is. The current page
- * carries `aria-current="page"` and is NOT a link — there is nowhere to go — and
- * every number is labelled "Page N" rather than announced as a bare digit.
- * Previous/Next are labelled in words and are removed rather than disabled at the
- * ends, because a disabled link is not focusable and a disabled-looking control
- * that is still in the tab order is worse than one that is not there.
+ * carries `aria-current="page"` and never navigates — there is nowhere to go —
+ * and every number is labelled "Page N" rather than announced as a bare digit.
+ * Previous and Next are labelled in words.
+ *
+ * THE TWO FORMS END DIFFERENTLY, ON PURPOSE. In the LINK form the ends are
+ * removed: a press there is a navigation, so nothing was going to keep focus
+ * anyway, and an anchor cannot take a native `disabled` at all. In the BUTTON
+ * form they stay mounted and go `aria-disabled`, and the current page stays a
+ * `<button>` rather than becoming a `<span>` — because nothing else moves focus
+ * in that form, and unmounting the control that was just pressed drops focus to
+ * `<body>`. A page turn used to send a keyboard reader back to the top of the
+ * document; it no longer does. The button form also announces the new position
+ * through a polite live region, since the rows otherwise swap in silence.
  */
 export function Pagination({
   page,
@@ -115,7 +123,50 @@ export function Pagination({
   const current = Math.min(Math.max(1, page), totalPages);
   const pages = pageList(current, totalPages, siblings);
 
-  const step = (target: number, direction: "prev" | "next", text: string) => {
+  /**
+   * THE BUTTON FORM DISABLES IN PLACE; THE LINK FORM STILL REMOVES.
+   *
+   * The asymmetry is the fix, not an inconsistency. In the link form a press is
+   * a navigation: the document changes, the framework's route announcer speaks,
+   * and there is nothing left on screen for focus to have stayed on — so
+   * removing Previous at page 1 costs nothing, and GOV.UK removes it too.
+   *
+   * In the button form nothing moves focus. Unmounting the control that was
+   * just pressed drops focus to `<body>`, which returns a keyboard reader to
+   * the top of the document on every page turn — on a 99-page register, every
+   * time. So in that form the ends stay mounted and the current page stays a
+   * `<button>`: same element, same key, so React patches it in place and the
+   * focused node survives.
+   *
+   * This also settles the disagreement with `DataTable`'s own pager, which has
+   * always disabled rather than removed.
+   */
+  const isLinkForm = Boolean(hrefFor);
+
+  /*
+   * `aria-disabled`, NOT `disabled`, AND THE THREE JOBS THAT COMES WITH.
+   *
+   * The native attribute leaves the tab order, and a focused element that
+   * becomes `disabled` loses focus — which is the defect, restated. So the
+   * control keeps its tab stop and announces itself dimmed, and the three
+   * things the attribute was doing are taken back by hand: the click, the
+   * Enter/Space keypress, and — via `type="button"`, which these already carry —
+   * implicit form submission. `Button`'s `preserveFocus` does exactly this, and
+   * the pointer half lives in the stylesheet so it holds before hydration too.
+   */
+  const block = (e: React.SyntheticEvent): void => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+  const inertAttrs = {
+    "aria-disabled": true,
+    onKeyDown: (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") block(e);
+    },
+  } as const;
+  const inert = { ...inertAttrs, onClick: block } as const;
+
+  const step = (target: number, direction: "prev" | "next", text: string, atEnd = false) => {
     const icon = direction === "prev" ? "chevron_left" : "chevron_right";
     const iconSize = size === "sm" ? 16 : 20;
     const content = (
@@ -131,7 +182,20 @@ export function Pagination({
         {content}
       </a>
     ) : (
-      <button type="button" className="ds-pagination__step" onClick={() => onPageChange?.(target)}>
+      <button
+        type="button"
+        className="ds-pagination__step"
+        /*
+         * A step at the end of the range must NOT reach `onPageChange`: the
+         * control keeps its tab stop and its focus, so nothing else refuses
+         * the activation for us, and a "Previous" on page 1 would otherwise
+         * ask for page 0. The handler is chosen here rather than left to a
+         * spread overwriting an explicit prop — that ordering was silent,
+         * and moving the spread one line up would have re-enabled the step.
+         */
+        onClick={atEnd ? block : () => onPageChange?.(target)}
+        {...(atEnd ? inertAttrs : {})}
+      >
         {content}
       </button>
     );
@@ -139,7 +203,9 @@ export function Pagination({
 
   return (
     <nav className={cn("ds-pagination", `ds-pagination--${size}`, className)} aria-label={label}>
-      {current > 1 && step(current - 1, "prev", "Previous")}
+      {isLinkForm
+        ? current > 1 && step(current - 1, "prev", "Previous")
+        : step(current - 1, "prev", "Previous", current === 1)}
 
       <ul className="ds-pagination__list">
         {pages.map((n, index) =>
@@ -150,10 +216,22 @@ export function Pagination({
           ) : (
             <li key={n}>
               {n === current ? (
-                <span className="ds-pagination__page is-current" aria-current="page">
-                  <span className="ds-pagination__sr">Page </span>
-                  {n}
-                </span>
+                isLinkForm ? (
+                  <span className="ds-pagination__page is-current" aria-current="page">
+                    <span className="ds-pagination__sr">Page </span>
+                    {n}
+                  </span>
+                ) : (
+                  <button
+                    type="button"
+                    className="ds-pagination__page is-current"
+                    aria-current="page"
+                    aria-label={`Page ${n}`}
+                    {...inert}
+                  >
+                    {n}
+                  </button>
+                )
               ) : hrefFor ? (
                 <a className="ds-pagination__page" href={hrefFor(n)} aria-label={`Page ${n}`}>
                   {n}
@@ -173,7 +251,22 @@ export function Pagination({
         )}
       </ul>
 
-      {current < totalPages && step(current + 1, "next", "Next")}
+      {isLinkForm
+        ? current < totalPages && step(current + 1, "next", "Next")
+        : step(current + 1, "next", "Next", current === totalPages)}
+
+      {/*
+        Nothing about a page turn is audible on its own. The link form does not
+        need this — a navigation announces itself — but in the button form the
+        rows swap silently, so the new position is announced politely. SMILE
+        Admin hand-rolled exactly this beside its own pager, which is the usual
+        sign that the component owed it.
+      */}
+      {isLinkForm ? null : (
+        <p className="ds-pagination__status" role="status" aria-live="polite">
+          {`Page ${current} of ${totalPages}`}
+        </p>
+      )}
     </nav>
   );
 }
