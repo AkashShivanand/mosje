@@ -4,6 +4,14 @@ import * as React from "react";
 import { Icon } from "@mosje/design-system";
 import type { ExplorationModule, ExplorationOption } from "@/lib/explorations/registry";
 import { OptionAnchorGuest, OptionFlight } from "./nmba/CampaignBandOptions";
+import {
+  HomePersonas,
+  HomeFiveQuestions,
+  HomeOneTap,
+  SchemesPictures,
+  SchemesFilterTable,
+  AssistantChat,
+} from "./service-discovery/options";
 import "./explorations.css";
 
 /**
@@ -18,6 +26,12 @@ import "./explorations.css";
 const PROTOTYPES: Record<string, React.ComponentType> = {
   "nmba/campaign-band/current": OptionAnchorGuest,
   "nmba/campaign-band/flight": OptionFlight,
+  "service-discovery/home-page/personas": HomePersonas,
+  "service-discovery/home-page/five-questions": HomeFiveQuestions,
+  "service-discovery/home-page/one-tap": HomeOneTap,
+  "service-discovery/schemes-page/pictures": SchemesPictures,
+  "service-discovery/schemes-page/filter-table": SchemesFilterTable,
+  "service-discovery/assistant/samajik-sahayak": AssistantChat,
 };
 
 const STATUS_WORD: Record<ExplorationOption["status"], string> = {

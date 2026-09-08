@@ -14,6 +14,10 @@ const eslintConfig = defineConfig([
     // can serve it as static files. It is generated third-party output — linting
     // it produced ~11,900 problems and drowned the real ones.
     "public/storybook/**",
+    // Standalone prototypes served as static files. Their scripts are loaded by
+    // <script> tags, so every top-level declaration reads as unused to a linter
+    // that expects modules — they are browser globals by design, not dead code.
+    "public/prototypes/**",
   ]),
 ]);
 
