@@ -60,7 +60,7 @@ export default function PaginationPage(): React.JSX.Element {
       name="Pagination"
       status="Stable"
       summary="Moving through a set of results a page at a time. It renders real links wherever the page number belongs in the URL, and falls back to a handler for state that has no URL of its own."
-      figma={{ absent: "Not yet drawn in the Figma library. The Figma counterpart is outstanding." }}
+      figma={{ node: "pagination" }}
       specimen={<PaginationSpecimen />}
       propsFrom="PaginationProps"
       a11y={A11Y}
