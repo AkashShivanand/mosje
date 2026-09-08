@@ -67,7 +67,8 @@
     color: var(--sa-color-text-muted);
   }
 
-  @media (max-width: 900px) {
+  /* the title block runs to 68ch and the badges plus the button need ~300 beside it */
+  @media (max-width: 1023px) {
     .sd-head { flex-direction: column; }
   }
 }
