@@ -139,3 +139,69 @@ export function LayoutCtasBelow() {
     />
   );
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   OPTION C — Two zones: a campaign, and a standing service
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/**
+ * The band still carries both, and stops pretending they are the same kind of
+ * thing.
+ *
+ * ── WHAT MAKES TWO CONTROLS READ AS SIBLINGS ────────────────────────────────
+ *
+ * Same ground, same height, same silhouette, 12px apart. All four said "these
+ * are two ways to do one thing" about a volunteer form and a national helpline
+ * — which are not related, are not for the same person, and are not even the
+ * same medium. Worse, the band has THREE controls and TWO destinations: the code
+ * and the button open the same URL, so the row read as one sentence with a
+ * telephone number stuck on the end of it.
+ *
+ * ── WHAT SEPARATES THEM HERE ────────────────────────────────────────────────
+ *
+ * Three changes, and each does a different job:
+ *
+ * 1. ITS OWN GROUND. A darker panel — `successScale-800` against the band's
+ *    600→700 — so the eye reads a seam before it reads any words. This is the
+ *    one that does most of the work; the other two would not be enough alone.
+ * 2. ITS OWN SHAPE. Not a pill with a label, but a FACT: a caption above a
+ *    figure, which is how the key strip below states the same number. A button
+ *    invites; a fact simply is.
+ * 3. ITS OWN POSITION. Flush to the trailing edge and full height, so it reads
+ *    as part of the band's furniture rather than as the last item in a list of
+ *    actions.
+ *
+ * It is also the hero badge's structure — caption over figure, glyph leading —
+ * so the thing that moves on dismissal is recognisably the same object arriving
+ * in a lighter skin.
+ */
+export function LayoutTwoZones() {
+  const [gone, setGone] = React.useState(false);
+  return (
+    <Fold
+      band={
+        gone ? null : (
+          <section className="xband xband--zoned" aria-label={NMBA.banner.heading}>
+            <div className="sa-container xband__inner xband__inner--zoned">
+              <CampaignCopy />
+              <CampaignCta />
+
+              <a className="xband__service" href={`tel:${NMBA.banner.helplineNumber}`}>
+                <span className="xband__service-icon" aria-hidden>
+                  <Icon name="call" size={20} />
+                </span>
+                <span className="xband__service-text">
+                  <span className="xband__service-label">{NMBA.banner.helplineShort}</span>
+                  <span className="xband__service-number">{NMBA.banner.helplineNumber}</span>
+                </span>
+              </a>
+
+              <Dismiss onClick={() => setGone(true)} label="Dismiss the campaign band" />
+            </div>
+          </section>
+        )
+      }
+    />
+  );
+}

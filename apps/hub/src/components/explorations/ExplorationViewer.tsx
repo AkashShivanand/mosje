@@ -6,7 +6,7 @@ import type { ExplorationModule, ExplorationOption } from "@/lib/explorations/re
 import { OptionArrive, OptionFlight } from "./nmba/CampaignBandOptions";
 import { OptionOneBand, OptionTwoBands } from "./nmba/TopBandsOptions";
 import { HelplineRinging, HelplineStatic } from "./nmba/HelplineCardOptions";
-import { LayoutCtasBelow, LayoutCtasRight } from "./nmba/BannerLayoutOptions";
+import { LayoutCtasBelow, LayoutCtasRight, LayoutTwoZones } from "./nmba/BannerLayoutOptions";
 import "./explorations.css";
 
 /**
@@ -27,6 +27,7 @@ const PROTOTYPES: Record<string, React.ComponentType> = {
   "nmba/helpline-card/ringing": HelplineRinging,
   "nmba/banner-layout/ctas-right": LayoutCtasRight,
   "nmba/banner-layout/ctas-below": LayoutCtasBelow,
+  "nmba/banner-layout/two-zones": LayoutTwoZones,
 };
 
 const STATUS_WORD: Record<ExplorationOption["status"], string> = {

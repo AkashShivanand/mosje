@@ -915,3 +915,46 @@ the hero badge be the only place it lives. That resolves every part of it:
 
 The current build is the second-best answer: the helpline is in the band, paired,
 and survives dismissal by machinery. Recorded here rather than changed unasked.
+
+---
+
+## 17. Two zones — the band carries both and stops pretending they are alike
+
+Asked for after §16.2 concluded that the helpline and Register are not related.
+This keeps both in the band and separates them by design rather than by distance.
+
+### What makes two controls read as siblings
+
+Same ground, same height, same silhouette, 12px apart. All four said *"these are
+two ways to do one thing"* about a volunteer form and a national helpline — not
+related, not for the same person, not even the same medium. And the band's
+arithmetic sharpens it: **three controls, two destinations**, because the code
+and the button open the same URL. The row read as one sentence with a telephone
+number stuck on the end.
+
+### What separates them here
+
+| | What it does |
+|---|---|
+| **Its own ground** — `successScale-800` (`#003d1e`) against the band's 600→700 | The seam is read before any of the words are. This does most of the work; the other two would not be enough alone |
+| **Its own shape** — a caption over a figure, not a label inside a pill | A button invites; a fact simply is. It is also how the key strip below states the same number |
+| **Its own position** — flush trailing edge, full row height | It reads as part of the band's furniture rather than as the last item in a list of actions |
+
+It is also **the hero badge's structure** — glyph leading, caption over figure —
+so what moves on dismissal is recognisably the same object arriving in a lighter
+skin, rather than one control being replaced by another.
+
+**A hairline, because the gradient is darkest exactly here.** The band runs
+600 → 700 left to right, so the panel's 800 lands against the deepest part of the
+ramp and the step is smallest precisely where the seam must be read. Going darker
+still would fix that and leave hover nowhere to go; a 12% white inset edge
+defines the panel without touching either.
+
+White on `#003d1e` measures about **13:1** — the most legible text in the band,
+which is right for the one line somebody may be reading in a hurry.
+
+Measured: band 1270×96, panel 206×72, 24px from the button. At 390 the panel
+takes its own row; no viewport scrolls sideways.
+
+`/explorations/nmba/banner-layout` now holds three: **both CTAs right**, **CTAs
+below the copy**, and **two zones**.

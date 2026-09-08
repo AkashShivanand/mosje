@@ -155,7 +155,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
         id: "banner-layout",
         title: "How the campaign band is composed",
         question:
-          "Where do the band's two calls to action sit — as a pair on the trailing edge beside the message, or in a column below the copy?",
+          "The band carries a volunteer campaign and a national helpline, which are not related. How is it composed so the two do not read as a matched pair?",
         date: "8 September 2026",
         options: [
           {
@@ -184,6 +184,20 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
               "The heading is headline-3 at 28px, sitting above an H1 — worth checking against the page title",
               "Its sentence points at the e-pledge while the button beneath goes to the volunteer register; kept verbatim so the mismatch can be settled rather than quietly harmonised",
               "The pulsing call glyph is the handoff's own instance, not an addition",
+            ],
+          },
+          {
+            id: "two-zones",
+            title: "Two zones",
+            summary:
+              "The campaign keeps the band's gradient; the helpline takes a darker panel at the trailing edge, shaped as a fact — a caption over a figure — rather than as a second button.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "The seam is read before any of the words are — a gap of any size only ever says “same thing, further away”",
+              "It is a FACT, not a control: a caption over a figure, which is how the key strip below states the same number",
+              "It is the hero badge's structure, so what moves on dismissal is recognisably the same object in a lighter skin",
+              "White on `successScale-800` measures about 13:1 — the most legible text in the band, which is right for the line somebody may be reading in a hurry",
             ],
           },
         ],
