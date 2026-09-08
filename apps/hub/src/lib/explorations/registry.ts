@@ -107,27 +107,21 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
         id: "campaign-band",
         title: "The campaign band and the helpline",
         question:
-          "When a reader dismisses the campaign band, what happens to the national de-addiction helpline inside it?",
+          "When a reader dismisses the campaign band, does the national de-addiction helpline go with it, or move to the hero?",
         date: "8 September 2026",
         options: [
           {
-            id: "current",
-            title: "Anchor and guest",
+            id: "goes",
+            title: "It goes with the band",
             summary:
-              "The helpline sits outside the collapsible region. Dismissing the campaign leaves the number where it was and the band simply gets shorter.",
+              "Press the × and the whole band leaves, the number included. What the estate did until 8 September.",
             status: "superseded",
             supersededBy:
-              "It left a residual green strip carrying one pill, which is a band that has lost its reason to exist. “The badge simply arrives” removes the band and keeps the number.",
-            live: true,
-            lookAt: [
-              "The band does not disappear — it loses its campaign half and keeps a green strip",
-              "The number never moves, so a reader who wanted it can still find it",
-              "Two messages share one rectangle, which is what made the band read as cluttered",
-            ],
+              "A control whose job is “I do not want this advertisement” also removed a national de-addiction helpline from the top of a page about drug de-addiction. It was only ever survivable because the key-facts strip happens to carry the number — a coincidence of content standing in for a design.",
           },
           {
             id: "flight",
-            title: "The helpline flies to the hero",
+            title: "It flies to the hero",
             summary:
               "The whole band leaves, and the helpline travels from it into a badge beside the campaign mark on a 615ms arc.",
             status: "superseded",

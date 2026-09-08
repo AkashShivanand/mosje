@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Icon } from "@mosje/design-system";
 import type { ExplorationModule, ExplorationOption } from "@/lib/explorations/registry";
-import { OptionAnchorGuest, OptionArrive, OptionFlight } from "./nmba/CampaignBandOptions";
+import { OptionArrive, OptionFlight } from "./nmba/CampaignBandOptions";
 import { OptionOneBand, OptionTwoBands } from "./nmba/TopBandsOptions";
 import { HelplineRinging, HelplineStatic } from "./nmba/HelplineCardOptions";
 import { LayoutCtasBelow, LayoutCtasRight } from "./nmba/BannerLayoutOptions";
@@ -19,7 +19,6 @@ import "./explorations.css";
  * because a missing prototype and a prototype that draws nothing look the same.
  */
 const PROTOTYPES: Record<string, React.ComponentType> = {
-  "nmba/campaign-band/current": OptionAnchorGuest,
   "nmba/campaign-band/flight": OptionFlight,
   "nmba/campaign-band/arrive": OptionArrive,
   "nmba/top-bands/two": OptionTwoBands,

@@ -13,31 +13,6 @@ import { BadgeInner, Campaign, Dismiss, Fold, Helpline, HelplineCard, HeroBadge,
 import "./campaign-band.css";
 
 /* ══════════════════════════════════════════════════════════════════════════
-   OPTION A — Anchor and guest (what is built today)
-   ══════════════════════════════════════════════════════════════════════════ */
-
-export function OptionAnchorGuest() {
-  const [gone, setGone] = React.useState(false);
-
-  return (
-    <Fold
-      band={
-        <section className="xband" aria-label={NMBA.banner.helplineLabel}>
-          <div className="sa-container xband__inner" data-gone={gone || undefined}>
-            {gone ? null : <Campaign />}
-            {/* OUTSIDE the collapsible half — that is the whole option. */}
-            <Helpline />
-            {gone ? null : (
-              <Dismiss onClick={() => setGone(true)} label="Dismiss the campaign announcement" />
-            )}
-          </div>
-        </section>
-      }
-    />
-  );
-}
-
-/* ══════════════════════════════════════════════════════════════════════════
    OPTION B — The helpline flies to the hero
    ══════════════════════════════════════════════════════════════════════════ */
 
