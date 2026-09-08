@@ -198,13 +198,37 @@ const TRANSFORMS = ["attribute/cti", "name/kebab", "color/css", "mosje/cubic-bez
 // Build another brand with: BRAND=<id> npm run build. See brands/README.md.
 const BRAND = process.env.BRAND || "mosje";
 
+/*
+ * WHERE THE BUILD WRITES — and why it can be redirected.
+ *
+ * Every platform below writes into the REPOSITORY: `dist/`, and, more
+ * consequentially, `../design-system/tokens.css`, which is the file
+ * `apps/hub/src/app/globals.css` imports and the dev server watches.
+ *
+ * That made a test into a hazard. `brand-contrast.test.mjs` builds the
+ * `_starter` pack to check a re-skin still passes AA, and it did so straight
+ * over those files — so for the couple of seconds the assertions ran, the whole
+ * estate's shipped tokens were the starter pack's, whose primary is India Green
+ * `#095e34`. It restored `mosje` in a `finally`, which covers a failing
+ * assertion and covers nothing else: a Ctrl-C, a killed `npm run ci`, or — the
+ * one that actually bit — a dev server watching the file and caching the green
+ * chunk before the restore landed. The served CSS stayed green long after the
+ * disk was blue again, on every page in the estate.
+ *
+ * `TOKENS_OUT` redirects every output under one root, so a build that only
+ * wants to LOOK at another brand never touches a shipped artefact. Unset, the
+ * paths are exactly what they were.
+ */
+const OUT = process.env.TOKENS_OUT;
+const out = (p) => (OUT ? `${OUT.replace(/\/$/, "")}/${p.replace(/^(\.\.\/)+/, "")}` : p);
+
 const sd = new StyleDictionary({
   preprocessors: ["mosje/dbim-brands", "mosje/devanagari-leading"],
   source: [`brands/${BRAND}/brand.json`, "src/primitive.json", "src/semantic.json", "src/system.generated.json", "src/component.json", "src/component.generated.json"],
   platforms: {
     css: {
       transforms: TRANSFORMS,
-      buildPath: "dist/",
+      buildPath: out("dist/"),
       files: [
         { destination: "tokens.css", format: "css/legacy-ds" },
         { destination: "tokens-tailwind.css", format: "css/tailwind-v4" },
@@ -212,17 +236,17 @@ const sd = new StyleDictionary({
     },
     ts: {
       transforms: TRANSFORMS,
-      buildPath: "dist/",
+      buildPath: out("dist/"),
       files: [{ destination: "tokens.ts", format: "ts/nested" }],
     },
     tw3: {
       transforms: TRANSFORMS,
-      buildPath: "dist/",
+      buildPath: out("dist/"),
       files: [{ destination: "tailwind-v3.cjs", format: "tailwind/v3" }],
     },
     figma: {
       transforms: TRANSFORMS,
-      buildPath: "dist/",
+      buildPath: out("dist/"),
       files: [
         { destination: "figma.tokens.json", format: "json/nested-values" },
         { destination: "figma.variables.json", format: "json/figma-variables" },
@@ -233,7 +257,7 @@ const sd = new StyleDictionary({
     // package resolution. This file is GENERATED — do not hand-edit it.
     designSystemCss: {
       transforms: TRANSFORMS,
-      buildPath: "../design-system/",
+      buildPath: out("../design-system/"),
       files: [
         { destination: "tokens.css", format: "css/legacy-ds" },
       ],
@@ -244,14 +268,14 @@ const sd = new StyleDictionary({
     // measure.mjs. Removing the shipped copy is what let the flat `font.size.*` ramp go.
     ux4gConformance: {
       transforms: TRANSFORMS,
-      buildPath: "../../tools/ux4g-conformance/",
+      buildPath: out("../../tools/ux4g-conformance/"),
       files: [{ destination: "parity.generated.css", format: "css/ux4g-parity" }],
     },
     // Generate the portal Tailwind v3 preset straight into @mosje/config, so portals keep
     // importing "@mosje/config/tailwind-preset" with no extra package resolution.
     configPreset: {
       transforms: TRANSFORMS,
-      buildPath: "../config/",
+      buildPath: out("../config/"),
       files: [{ destination: "tailwind-preset.cjs", format: "tailwind/v3" }],
     },
   },
