@@ -236,18 +236,23 @@ const OPTIONS = [
 
 OPTIONS.forEach(o => {
   const s = slide(false);
-  header(s, o.surface, o.title, null);
+  /* Which part of the site, and which option of how many, is what a reader needs
+     first — so it is the heading. The option's own name is the subheading beneath
+     it. It used to be the other way round, with the part in small caps above, and
+     a reader could not tell at a glance which page an option belonged to. */
+  s.addText(o.surface, { x:M, y:0.44, w:CW, h:0.5, isTextBox:true, margin:0,
+    fontFace:F, fontSize:T.h1, bold:true, color:DARK });
+  s.addText(o.title, { x:M, y:1.0, w:CW, h:0.34, isTextBox:true, margin:0,
+    fontFace:F, fontSize:T.lead+2.5, color:BLUE_TXT });
   let px = M;
-  px += pill(s, px, 1.18, o.live?"ALREADY ON THE SITE":"TO BE BUILT",
+  px += pill(s, px, 1.46, o.live?"ALREADY ON THE SITE":"TO BE BUILT",
              o.live?SURF:BLUE_50, o.live?MUTE:BLUE_TXT) + 0.14;
-  if (o.rec) pill(s, px, 1.18, "RECOMMENDED", BLUE_TXT, WHITE);
+  if (o.rec) pill(s, px, 1.46, "RECOMMENDED", BLUE_TXT, WHITE);
 
   /* The frames come off the design file at their own proportions — a 2.3:1 strip
      for the persona panel, a 1.35:1 page for the schemes grid. Fit each inside one
      box rather than forcing a shape on it, so nothing is stretched or cropped twice. */
-  /* the column must hold the screen, its caption and the verdict beneath it:
-     1.64 + boxH + 0.52 + 0.86 <= 6.72, so the screen gets 3.62 at most */
-  const y0 = 1.64, boxW = 5.9, boxH = 3.62;
+  const y0 = 1.92, boxW = 5.9, boxH = 4.2;
   const src = o.vid ? A(`video/${o.vid}.png`) : A(`figma/${o.img}.png`);
   const im = imageSize(src);
   const sc = Math.min(boxW/im.w, boxH/im.h);
@@ -276,17 +281,16 @@ OPTIONS.forEach(o => {
   const bottom = PH - 0.78;
   if (y > bottom) throw new Error(`record overflows the page on "${o.title}" (${y.toFixed(2)} > ${bottom})`);
 
-  /* The verdict sits under the screen it judges, not on the far side of the page.
-     It also fills the space a short wide frame leaves in this column. */
-  const vy = iy + ih + 0.52;
-  const vh = 0.86;
-  if (vy + vh > bottom) throw new Error(`verdict overflows the page on "${o.title}"`);
-  s.addShape(pres.ShapeType.rect, { x:M, y:vy, w:boxW, h:vh,
-    fill:{color:o.rec?BLUE_50:SURF}, line:{color:o.rec?BLUE:HAIR, width:o.rec?1.25:0.75} });
-  s.addText("OUR RECOMMENDATION", { x:M+0.22, y:vy+0.15, w:boxW-0.44, h:0.2, isTextBox:true, margin:0,
-    fontFace:F, fontSize:T.caption, bold:true, charSpacing:TRACK.pill, color:MUTE });
-  s.addText(o.view, { x:M+0.22, y:vy+0.38, w:boxW-0.44, h:0.42, isTextBox:true, margin:0,
-    fontFace:F, fontSize:T.body+1, bold:true, color:DARK, lineSpacingMultiple:1.18 });
+  /* No verdict on the page. Naming an option "not recommended" tells the reader
+     what to think about an option we are asking them to weigh, and an option we
+     advise against has no business being presented at all. The RECOMMENDED pill
+     is the single highlight; the note says whose recommendation it is, and that
+     the decision is not ours. Everything else on the page is evidence.  */
+  if (o.rec) {
+    s.addText("Recommended by the design team. The decision rests with the Department.", {
+      x:M, y:PH-1.08, w:boxW, h:0.24, isTextBox:true, margin:0,
+      fontFace:F, fontSize:T.caption, bold:true, color:BLUE_TXT });
+  }
 
   sourceLine(s, o.vid
     ? "Recorded from a working prototype of this option. Schemes shown are the Department's own, tagged as they would be after the preparatory work."
@@ -308,8 +312,6 @@ OPTIONS.forEach(o => {
      "Two ways in for two kinds of visitor, one page that can genuinely be filtered, and a conversational route for the person already lost on a page."],
     ["Fullest","Option B, with A repaired","Option B, keeping A's pictures above the panel","Yes",
      "As above, and the Schemes page keeps the warmth of the pictures without losing the facts of the table."],
-    ["Not advised","Option B only","Option A only","Yes",
-     "Three separate pieces of work building three copies of the same scheme information, with nothing to keep them in step."],
   ];
   const cols = [1.9, 2.3, 2.7, 0.95, 4.043];   // sums to CW exactly
   console.assert(Math.abs(cols.reduce((a,b)=>a+b,0) - CW) < 0.01, 'combine table columns must sum to the content width');
@@ -319,7 +321,7 @@ OPTIONS.forEach(o => {
     fontFace:F, fontSize:8.5, bold:true, charSpacing:1, color:MUTE }); x += cols[i]; });
   let ry = y0+0.3;
   rows.forEach((r,i)=>{
-    const rec = r[0]==="Recommended", bad = r[0]==="Not advised";
+    const rec = r[0]==="Recommended";
     const h = 1.14;
     s.addShape(pres.ShapeType.rect, { x:M, y:ry, w:CW, h,
       fill:{color: rec?BLUE_50:(i%2?SURF:WHITE)}, line:{color: rec?BLUE:HAIR, width: rec?1.25:0.75} });
@@ -327,7 +329,7 @@ OPTIONS.forEach(o => {
     r.forEach((cell,k)=>{
       s.addText(cell, { x:cx, y:ry+0.14, w:cols[k]-0.24, h:h-0.28, isTextBox:true, margin:0,
         fontFace:F, fontSize: k===4?9.5:10.5, bold: k===0,
-        color: k===0 ? (rec?DARK:(bad?SAFF_TXT:INK)) : (k===4?INK_MUTE:INK), lineSpacingMultiple:1.14 });
+        color: k===0 ? (rec?DARK:INK) : (k===4?INK_MUTE:INK), lineSpacingMultiple:1.14 });
       cx += cols[k];
     });
     ry += h + 0.1;
