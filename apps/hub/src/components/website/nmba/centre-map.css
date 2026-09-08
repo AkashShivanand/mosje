@@ -1,0 +1,48 @@
+/* ============================================================================
+   Leaflet's own chrome, brought up to the estate's contrast floor.
+   ============================================================================
+
+   THE ATTRIBUTION FAILED 1.4.3 AND IT IS NOT OPTIONAL TEXT. Leaflet ships its
+   attribution as `#0078a8` links on `rgba(255,255,255,0.7)`, which over the
+   tiles resolves to about `#dddddd` — measured 3.64:1 on the de-addiction map,
+   against the 4.5:1 normal text needs. The line carries the OpenStreetMap
+   credit, which the licence requires us to display, so it cannot be waved
+   through as vendor decoration: it is text we are obliged to publish and
+   therefore text we are obliged to make readable.
+
+   Two changes, both minimal. The plate goes opaque so the ratio no longer
+   depends on which tile happens to sit under it — a contrast that changes as
+   the reader pans is not a contrast anyone can certify. And the link ink takes
+   the estate's own link token, #005eb9, which measures 6.36:1 on white. The
+   type size is left exactly as Leaflet sets it; enlarging a licence credit is
+   not our call to make.
+
+   ── WHY THIS FILE IS NOT IN `@layer components` ─────────────────────────────
+
+   It was, and it did nothing. `leaflet/dist/leaflet.css` is UNLAYERED, and an
+   unlayered declaration outranks every layered one however specific the layered
+   selector is — the exact trap `design-system-architecture.md` §2a documents,
+   arriving from the other direction. Verified in the browser: with the layer,
+   the plate still computed `rgba(255, 255, 255, 0.8)` and the link still
+   `rgb(0, 120, 168)`.
+
+   So these rules are deliberately unlayered, and they win on source order
+   because this file is imported after Leaflet's in `CentreMapCanvas.tsx`. Do
+   not "tidy" them into a layer.
+
+   Scoped to this map's own container, so nothing here reaches the portal's
+   Leaflet instances without somebody deciding it should.
+   ========================================================================= */
+
+.website-centre-map .leaflet-control-attribution {
+  background-color: var(--sa-bg-neutral-base);
+  color: var(--sa-text-neutral-base);
+}
+
+.website-centre-map .leaflet-control-attribution a {
+  color: var(--sa-text-link-brand-default);
+}
+
+.website-centre-map .leaflet-control-attribution a:hover {
+  color: var(--sa-text-link-brand-hover);
+}

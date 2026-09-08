@@ -1,0 +1,229 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     The occasion ribbon — ONE ROW, AND IT KNOWS IT IS TEMPORARY.
+     ============================================================================
+
+     Asked for as "a thin ribbon between the blue section and the data section".
+     Everything here is in service of thin: a single grid row at 1024 and up, a
+     20px mark rather than a 72px QR, an eyebrow and one sentence rather than a
+     heading and a paragraph, and no ground colour strong enough to need a
+     white-out treatment.
+
+     ── WHY IT IS A RULE AND NOT A FILL ─────────────────────────────────────────
+
+     The band above it is a full green gradient and the hero below is full blue.
+     A third saturated band would have made the top of the page three stripes and
+     nothing would have read as more important than anything else. So the ribbon
+     carries the estate's second brand ramp at its quietest rung — the same
+     `bg/brand/secondary/base` wash the fact-strip chips use — with the emphasis
+     in a 3px saffron rule down its leading edge. It reads as a notice pinned to
+     the page rather than as a fourth hero.
+
+     Contrast on that wash is comfortable: `text/neutral/base` measures 15.6:1
+     and the saffron `secondaryScale-700` rule is decorative, so §1.4.11 does not
+     bind it — the ribbon's meaning is carried by its words, never by its colour.
+     ========================================================================= */
+
+  /*
+   * THE ACCENT RULE IS AN INSET SHADOW, NOT A BORDER — because a border is
+   * layout and this is decoration.
+   *
+   * As `border-inline-start: 3px` it pushed the ribbon's own `.sa-container`
+   * three pixels right of every other section's, so the eyebrow no longer lined
+   * up with the headings above and below it. Measured at 1920 the drift reached
+   * 5px, which is small enough to look like a mistake rather than a design and
+   * large enough to see. An inset shadow paints in the same place and occupies
+   * none.
+   */
+  .orger {
+    background-color: var(--sa-bg-brand-secondary-base);
+    border-block: 1px solid var(--sa-border-neutral-subtle);
+    box-shadow: inset 3px 0 0 0 var(--sa-color-secondaryScale-600);
+  }
+
+  /*
+   * MARK | COPY | ROUTES | DISMISS, one row from 1024 up.
+   *
+   * `1fr` on the copy and `auto` on the rest, so the sentence takes the slack and
+   * the controls keep their intrinsic width — the opposite arrangement lets a
+   * long route label squeeze the sentence to two words.
+   */
+  .orger__inner {
+    display: grid;
+    /* mark | copy | dismiss on the first row; the routes take a row of their own
+       below 1024, where three controls on one line would each be two words wide. */
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--sa-stack-12) var(--sa-inline-16);
+    padding-block: var(--sa-padding-12);
+  }
+
+  @media (min-width: 1024px) {
+    .orger__inner {
+      grid-template-columns: auto minmax(0, 1fr) auto auto;
+    }
+  }
+
+  .orger__mark {
+    grid-row: 1;
+    grid-column: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-padding-40);
+    height: var(--sa-padding-40);
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-color-secondaryScale-600);
+  }
+
+  .orger__copy {
+    grid-row: 1;
+    grid-column: 2;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+  }
+
+  /* The occasion. `label-3` uppercase with tracking — the estate's eyebrow, not
+     a second heading: the ribbon must not compete with the H1 beneath it. */
+  .orger__eyebrow {
+    margin: 0;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--sa-color-secondaryScale-700);
+  }
+
+  .orger__text {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+  }
+
+  /* The deadline is the one word in the sentence a reader scans for, so it is
+     the one word carrying weight. Bold, not colour: a date distinguished only by
+     hue is invisible to a reader who cannot see the hue. */
+  .orger__until {
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+    white-space: nowrap;
+  }
+
+  /*
+   * ROW TWO BELOW 1024, COLUMN THREE ABOVE IT — and both are stated explicitly.
+   *
+   * Auto-placement got this wrong in the first build: the dismiss button carried
+   * an explicit `grid-row: 1` that survived into the wide layout, so the browser
+   * back-filled it into column two and the × rendered BEFORE the calendar mark,
+   * at the far left of the ribbon. Every cell here names its own row and column
+   * so nothing is left to back-fill.
+   */
+  .orger__routes {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+    flex-wrap: wrap;
+    grid-row: 2;
+    grid-column: 2 / -1;
+  }
+
+  @media (min-width: 1024px) {
+    .orger__routes {
+      grid-row: 1;
+      grid-column: 3;
+      flex-wrap: nowrap;
+    }
+  }
+
+  /*
+   * The majority route. Filled saffron rather than the estate's blue, because a
+   * blue filled button here would read as the page's primary action — and the
+   * page's primary action is the campaign's own "Register Now" in the band
+   * above, which is a permanent invitation rather than a six-week one.
+   *
+   * `secondaryScale-700` carries white at 4.9:1; `-600` does not, and this is
+   * text, so §1.4.3 binds it at 4.5:1.
+   */
+  .orger__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-color-secondaryScale-700);
+    color: var(--sa-text-neutral-inverse);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 150ms ease;
+  }
+
+  .orger__cta:hover {
+    background-color: var(--sa-color-secondaryScale-800);
+  }
+
+  /* The other audience. Underlined from rest, because a link that is only a
+     colour is not a link to a reader who cannot see the colour (§1.4.1). */
+  /* `padding-block` takes the hit area from 16px to 24px. As a standalone
+     control in a control row — not a link inside a sentence — it does not get
+     WCAG 2.2 §2.5.8's inline-text exception, so it meets the 24×24 minimum on
+     its own rather than relying on the spacing clause. */
+  .orger__alt {
+    padding-block: var(--sa-padding-4);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .orger__alt:hover {
+    color: var(--sa-text-link-brand-hover);
+  }
+
+  /* 40px square — on the padding scale, which has no 36, and comfortably above
+     the 24×24 WCAG 2.2 §2.5.8 floor. Same size as the mark at the other end, so
+     the row reads as bracketed. */
+  .orger__dismiss {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-padding-40);
+    height: var(--sa-padding-40);
+    border-radius: var(--sa-shape-8);
+    border: 0;
+    background: transparent;
+    color: var(--sa-text-neutral-subtle);
+    cursor: pointer;
+    justify-self: end;
+    grid-row: 1;
+    grid-column: 3;
+  }
+
+  @media (min-width: 1024px) {
+    .orger__dismiss {
+      grid-column: 4;
+    }
+  }
+
+  .orger__dismiss:hover {
+    background-color: var(--sa-bg-neutral-subtle);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .orger__cta:focus-visible,
+  .orger__alt:focus-visible,
+  .orger__dismiss:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: var(--sa-focus-offset);
+  }
+}

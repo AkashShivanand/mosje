@@ -5,6 +5,9 @@ import { Button, Icon, Pagination } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import type { Crumb } from "@/components/website/layout/page-trail";
 
+/** A destination that leaves this site, and therefore opens in a new tab. */
+const isHttp = (href: string | undefined) => /^https?:\/\//.test(href ?? "");
+
 export interface DocumentRecord {
   title: string;
   category?: string;
@@ -225,9 +228,22 @@ export function DocumentCatalog({
                   </div>
 
                   <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+                    {/*
+                      * `external` IS COMPUTED, NOT ASSUMED.
+                      *
+                      * It was hardcoded, which was true while every document in
+                      * the ingest resolved to a URL on dosje.gov.in. Since the
+                      * estate serves its own sample documents, most of these
+                      * hrefs are LOCAL — and a hardcoded `external` renders the
+                      * launch glyph and tells a screen-reader user they are
+                      * leaving the site when they are not. A false new-tab
+                      * warning costs more trust than a missing one, because a
+                      * reader who has learnt the warning is honest starts
+                      * relying on it.
+                      */}
                     <Button
                       href={doc.sourceUrl ?? "#"}
-                      external
+                      external={isHttp(doc.sourceUrl)}
                       variant="primary"
                       appearance="outlined"
                       size="sm"
@@ -237,7 +253,9 @@ export function DocumentCatalog({
                     </Button>
                     <Button
                       href={doc.sourceUrl ?? "#"}
-                      target="_blank"
+                      /* A local file downloads in place; only a remote one needs
+                         a tab of its own. */
+                      target={isHttp(doc.sourceUrl) ? "_blank" : undefined}
                       download
                       variant="primary"
                       appearance="filled"
