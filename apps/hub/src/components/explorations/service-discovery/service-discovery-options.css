@@ -1,0 +1,19 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  .sdopt-stage {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--sa-shape-12);
+    background-color: var(--sa-bg-neutral-base);
+  }
+  /* width, height and transform are set from the measured width in the component */
+  .sdopt-stage__frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 0;
+    transform-origin: top left;
+  }
+}
