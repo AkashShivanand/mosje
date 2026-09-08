@@ -22,5 +22,6 @@ export const SITE_NAV: readonly SiteNavItem[] = [
   { label: "Portals", href: "/portals" },
   { label: "Design System", href: "/design-system" },
   { label: "Reports", href: "/reports" },
+  { label: "Explorations", href: "/explorations" },
   { label: "Storybook", href: "/storybook/", newTab: true },
 ] as const;
