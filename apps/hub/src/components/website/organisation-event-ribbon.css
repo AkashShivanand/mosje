@@ -27,20 +27,29 @@
      ========================================================================= */
 
   /*
-   * THE ACCENT RULE IS AN INSET SHADOW, NOT A BORDER — because a border is
-   * layout and this is decoration.
+   * NO EDGE STRIPE. It was a 3px saffron inset shadow at x=0 — the viewport's
+   * own edge, EIGHTY-FOUR PIXELS from the content it was meant to mark, and from
+   * the H1, the lead, the hero buttons and this ribbon's own eyebrow, all of
+   * which begin at 84. At 1920 that distance is 260px. A mark that far from
+   * everything it relates to is not an accent, it is a stray line down the side
+   * of the page, and it was the same "only stray indent in the fold" argument
+   * that removed this ribbon's calendar tile.
    *
-   * As `border-inline-start: 3px` it pushed the ribbon's own `.sa-container`
-   * three pixels right of every other section's, so the eyebrow no longer lined
-   * up with the headings above and below it. Measured at 1920 the drift reached
-   * 5px, which is small enough to look like a mistake rather than a design and
-   * large enough to see. An inset shadow paints in the same place and occupies
-   * none.
+   * The accent it was carrying is already in the band: a saffron eyebrow in
+   * tracked capitals, a saffron button edge and a saffron link, on a saffron
+   * wash. Nothing was lost by taking the stripe away, and one decorative element
+   * that had to be explained went with it.
+   *
+   * ── AND ONLY ONE HAIRLINE ───────────────────────────────────────────────────
+   *
+   * `border-block` drew a rule above AND below. The rule above sits directly
+   * under the campaign band, which already ends in a hard colour boundary, so it
+   * was a second line drawn on top of an edge that existed. The band keeps its
+   * lower rule, which separates it from the hero, and loses the upper one.
    */
   .orger {
     background-color: var(--sa-bg-brand-secondary-base);
-    border-block: 1px solid var(--sa-border-neutral-subtle);
-    box-shadow: inset 3px 0 0 0 var(--sa-color-secondaryScale-600);
+    border-block-end: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   /*
@@ -99,7 +108,9 @@
     .orger__copy {
       flex-direction: row;
       align-items: baseline;
-      gap: var(--sa-inline-8);
+      /* 12, not 8. The eyebrow is tracked capitals and the sentence is not, so
+         the two need enough space for the change of register to register. */
+      gap: var(--sa-inline-12);
     }
 
     /* The separator belongs to the eyebrow, so it cannot end up orphaned on its
@@ -253,10 +264,11 @@
     height: var(--sa-control-height-sm);
     border-radius: var(--sa-shape-8);
     border: 0;
-    background: transparent;
+    background-color: transparent;
     color: var(--sa-text-neutral-subtle);
     cursor: pointer;
     justify-self: end;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
     grid-row: 1;
     grid-column: 2;
   }

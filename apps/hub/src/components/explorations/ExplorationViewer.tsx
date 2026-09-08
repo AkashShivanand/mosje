@@ -4,6 +4,7 @@ import * as React from "react";
 import { Icon } from "@mosje/design-system";
 import type { ExplorationModule, ExplorationOption } from "@/lib/explorations/registry";
 import { OptionAnchorGuest, OptionFlight } from "./nmba/CampaignBandOptions";
+import { OptionOneBand, OptionTwoBands } from "./nmba/TopBandsOptions";
 import "./explorations.css";
 
 /**
@@ -18,6 +19,8 @@ import "./explorations.css";
 const PROTOTYPES: Record<string, React.ComponentType> = {
   "nmba/campaign-band/current": OptionAnchorGuest,
   "nmba/campaign-band/flight": OptionFlight,
+  "nmba/top-bands/two": OptionTwoBands,
+  "nmba/top-bands/one": OptionOneBand,
 };
 
 const STATUS_WORD: Record<ExplorationOption["status"], string> = {

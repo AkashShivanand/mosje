@@ -34,12 +34,35 @@
     color: var(--sa-text-neutral-inverse);
   }
 
+  /* QR | copy | Register | Helpline | × — production's own arrangement, so the
+     option being decided is the only thing that differs between the two. */
   .xband__inner {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto auto;
     align-items: center;
-    gap: var(--sa-stack-16) var(--sa-inline-24);
-    padding: var(--sa-padding-12) var(--sa-padding-24);
+    column-gap: var(--sa-inline-24);
+    padding-block: var(--sa-padding-16);
+  }
+
+  .xband__inner > .xband__qr {
+    align-self: stretch;
+  }
+
+  .xband__helpline {
+    margin-inline-start: var(--sa-inline-16);
+
+    --sa-btn-fill: var(--sa-bg-neutral-base);
+    --sa-btn-ink: var(--sa-color-successScale-700);
+  }
+
+  .xband__helpline-label {
+    font-weight: var(--sa-font-weight-regular);
+    opacity: 0.75;
+  }
+
+  .xband__helpline-number {
+    font-weight: var(--sa-font-weight-bold);
+    font-variant-numeric: tabular-nums;
   }
 
   /*
@@ -89,56 +112,7 @@
     transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
   }
 
-  /* ── The helpline pill, in the band ───────────────────────────────────── */
-
-  .xband__helpline {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-12);
-    padding: var(--sa-padding-4) var(--sa-padding-20) var(--sa-padding-4) var(--sa-padding-4);
-    border-radius: var(--sa-shape-full);
-    background-color: var(--sa-bg-neutral-base);
-    color: var(--sa-color-successScale-700);
-    text-decoration: none;
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
-  }
-
-  .xband__helpline:hover {
-    background-color: var(--sa-bg-neutral-subtler);
-  }
-
-  .xband__helpline-icon {
-    display: grid;
-    place-items: center;
-    inline-size: var(--sa-control-height-sm);
-    block-size: var(--sa-control-height-sm);
-    border-radius: var(--sa-shape-full);
-    background-color: var(--sa-color-successScale-50);
-    color: var(--sa-color-successScale-600);
-  }
-
-  .xband__helpline-label {
-    font-size: var(--sa-type-label-2-size);
-    font-weight: var(--sa-font-weight-medium);
-    color: var(--sa-text-neutral-subtle);
-  }
-
-  .xband__helpline-number {
-    font-size: var(--sa-type-label-1-size);
-    font-weight: var(--sa-font-weight-bold);
-    font-variant-numeric: tabular-nums;
-  }
-
   /* ── The campaign half ────────────────────────────────────────────────── */
-
-  .xband__campaign {
-    display: flex;
-    flex: 1 1 auto;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-end;
-    gap: var(--sa-stack-12) var(--sa-inline-24);
-  }
 
   .xband__copy {
     display: flex;
@@ -293,10 +267,173 @@
     will-change: transform, opacity, filter;
   }
 
+  /* ── The anniversary notice, as its own band ──────────────────────────── */
+
+  .xrib {
+    background-color: var(--sa-bg-brand-secondary-base);
+    border-block-end: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  .xrib__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-8) var(--sa-inline-16);
+    padding-block: var(--sa-padding-8);
+  }
+
+  .xrib__copy {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--sa-inline-12);
+  }
+
+  .xrib__eyebrow {
+    font-size: var(--sa-type-label-3-size);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--sa-color-secondaryScale-700);
+  }
+
+  .xrib__eyebrow::after {
+    content: "·";
+    margin-inline-start: var(--sa-inline-12);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xrib__text {
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .xrib__routes {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+  }
+
+  .xrib__cta {
+    --sa-btn-edge: var(--sa-color-secondaryScale-700);
+  }
+
+  .xrib__second {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--sa-inline-6);
+    font-size: var(--sa-type-body-2-size);
+  }
+
+  .xrib__second-note {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xrib__alt {
+    color: var(--sa-color-secondaryScale-700);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .xrib__dismiss {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-8);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── One band, two panels ─────────────────────────────────────────────── */
+
+  /*
+   * BOTH PANELS TAKE THE CAMPAIGN'S GREEN, and the notice gives up its saffron.
+   *
+   * A band that changes ground colour as it advances is a band that flashes, and
+   * two saturated grounds alternating above a blue hero is three colours fighting
+   * over 104px. The Abhiyaan's green is the page's own identity, so it holds; the
+   * notice keeps its words and loses its hue. That IS the cost of this option and
+   * it should be weighed, not designed around.
+   */
+  .xband__inner--one {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: var(--sa-inline-24);
+  }
+
+  .xband__panels {
+    min-inline-size: 0;
+  }
+
+  .xband__panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-12) var(--sa-inline-24);
+  }
+
+  /* The copy takes the slack; the routes keep their intrinsic width. The other
+     way round squeezed a two-line sentence into 400px and left 600px of empty
+     green between the routes and the dots. */
+  .xband__panel > .xband__copy {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
+  .xband__panel--notice .xband__heading {
+    font-size: var(--sa-type-label-1-size);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+  }
+
+  .xband__notice-routes {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+  }
+
+  .xband__alt {
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-inverse);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  /*
+   * Dots, not chevrons. With two panels a reader wants the OTHER one, and a pair
+   * of arrows makes them work out which arrow that is. The target is 24×24 —
+   * WCAG 2.2 §2.5.8's floor — with the visible dot inside it.
+   */
+  .xband__tabs {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+  }
+
+  .xband__tab {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-full);
+  }
+
+  .xband__tab::before {
+    content: "";
+    inline-size: var(--sa-padding-8);
+    block-size: var(--sa-padding-8);
+    border-radius: var(--sa-shape-full);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 45%, transparent);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .xband__tab[aria-selected="true"]::before {
+    background-color: var(--sa-text-neutral-inverse);
+  }
+
   @media (max-width: 767px) {
-    .xband__inner {
-      padding-inline: var(--sa-padding-16);
-    }
 
     /* On a narrow band the mark and the badge stop being one row: a 100px mark
        beside a pill leaves the title nowhere to go. */

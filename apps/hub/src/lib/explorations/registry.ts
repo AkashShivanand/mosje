@@ -140,6 +140,42 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
         ],
       },
       {
+        id: "top-bands",
+        title: "The two bands above the hero",
+        question:
+          "The fold opens with two announcement bands stacked — a campaign and an anniversary notice. Should they stay separate, or share one?",
+        date: "8 September 2026",
+        options: [
+          {
+            id: "two",
+            title: "Two bands",
+            summary:
+              "Each announcement keeps its own band, its own ground colour and its own dismiss, and both are visible at once.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "Both messages are readable without the reader doing anything",
+              "They cost 154px of a 760px fold before the page has said what it is",
+              "Two grounds and two dismisses stacked 50px apart",
+            ],
+          },
+          {
+            id: "one",
+            title: "One band, two panels",
+            summary:
+              "A single band carrying both, switched by the reader. Half the height, and one message visible at a time.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "50px of the fold given back to the hero",
+              "The second panel is, in practice, unread — the design system's own Carousel says so",
+              "Nothing rotates on a timer: a band carrying a helpline must not move a sentence away mid-read",
+              "The notice gives up its saffron, because a band that changes ground colour as it advances flashes",
+            ],
+          },
+        ],
+      },
+      {
         id: "documents",
         title: "Documents & Downloads",
         question:

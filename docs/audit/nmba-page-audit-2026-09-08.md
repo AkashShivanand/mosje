@@ -514,3 +514,65 @@ Before and after at 4× device scale: `docs/audit/img/logo-zoom-before.png` and
 `Pagination` in `smile-admin/(app)/persons/page.tsx`, `website/ui/data-table.tsx`
 and the design system's `data-table.tsx` are another session's uncommitted edits
 in this shared working tree. They are deliberately not staged and not reverted.
+
+---
+
+## 11. The orange band, cleaner — and the two-bands question as an exploration
+
+### 11.1 What came off the ribbon
+
+**The 3px saffron edge stripe.** It was an inset shadow at `x=0` — the viewport's
+own edge, **84px from the content it was meant to mark**, and from the H1, the
+lead, the hero buttons and the ribbon's own eyebrow, all of which begin at 84. At
+1920 that distance is 260px. A mark that far from everything it relates to is a
+stray line down the side of the page, and it is the same argument that removed
+this ribbon's calendar tile in an earlier pass. The accent it carried is already
+in the band four times over: a saffron eyebrow, a saffron button edge, a saffron
+link, on a saffron wash.
+
+**One of its two hairlines.** `border-block` drew a rule above *and* below. The
+rule above sat directly under the campaign band, which already ends in a hard
+colour boundary — a second line drawn on an edge that existed.
+
+**8px between the eyebrow and the sentence → 12.** The eyebrow is tracked
+capitals and the sentence is not; the change of register needs room to register.
+
+The dismiss now carries the same hover-only wash as the campaign band's, so two
+dismisses 50px apart behave identically rather than merely measuring the same.
+
+### 11.2 Two options, both live
+
+`/explorations/nmba/top-bands` — *"The fold opens with two announcement bands
+stacked. Should they stay separate, or share one?"*
+
+| | Two bands | One band, two panels |
+|---|---|---|
+| Fold height | 104 + 50 = **154px** of a 760px fold | **104px** |
+| Messages visible | both, without the reader doing anything | one at a time |
+| Grounds | green and saffron, stacked above a blue hero | green only — the notice gives up its hue |
+| Dismisses | two | one |
+
+**What is actually being traded is height against readership, and the exchange
+rate is not symmetrical.** Two bands cost a fifth of the fold before the page has
+said what it is. One band costs 104px and shows one message at a time, which on
+every carousel ever measured means the second is, in practice, unread — the
+design system's own `Carousel` says so in its docstring. So the question is not
+which looks tidier: it is whether the anniversary notice is worth 50px of every
+reader's fold, or worth being seen by almost none of them. Neither prototype
+answers that; the Department does.
+
+**Nothing rotates on a timer, and that is not a convenience.** `Carousel`'s
+contract on this estate forbids autoplay for anything a citizen reads — a strip
+that advances on its own takes the sentence away mid-sentence, and does it most
+to the slowest readers. A band carrying a de-addiction helpline and a filing
+deadline is exactly that content. WCAG 2.2 §2.2.2 would also require a pause
+control for anything moving more than five seconds, which means a **fourth**
+control on a row that already has three.
+
+**The switch is dots, not chevrons.** With two panels a reader wants *the other
+one*, and a pair of arrows makes them work out which arrow that is. Each dot is a
+24×24 target (§2.5.8) with an 8px mark inside it, and the pair is a `tablist`
+with arrow-key support.
+
+Stills: `docs/audit/img/bands-opt-two.png`, `bands-opt-one-a.png`,
+`bands-opt-one-b.png`, composed as `bands-options.png`.
