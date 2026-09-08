@@ -18,10 +18,11 @@ had nowhere to go.
 | Function bundle (`standalone/node_modules`) | 42 MB — already well traced, not the problem |
 
 Both allowances are shared across every **retained** deployment, so the sum is
-what counts, not any single build. At ~600 MB of build output apiece, the 10 GB
-ceiling is reached in roughly **seventeen deployments** of unchanged files, and
-far fewer once dedupe stops helping — which it does the moment a shared component
-changes and all 1,300 prerendered pages are rewritten.
+what counts, not any single build. A build is ~600 MB, but that is not what a
+deployment *stores*: Vercel deduplicates, so the 140 MB of assets is kept once and
+each deployment is charged only for what changed. 1,174 of them filled exactly
+10 GB, which puts the stored cost at about **8.7 MB each** — see the update below,
+which is where this audit changed its mind.
 
 The heaviest route trees, for the record:
 
@@ -43,11 +44,12 @@ written `.html`, six `.rsc` variants and the segment-cache entries for each.
    answers 200, and the production deployment serving them was never a candidate
    for removal.
 2. **Gated the build** — `scripts/vercel-ignore-build.sh`, wired through
-   `apps/hub/vercel.json`. It skips a preview when the branch has no open pull
-   request, and skips any commit whose changed files all sit outside the
-   deployment (`docs/`, `Assets/`, `tools/`, `.claude/`, markdown — the same set
-   `.vercelignore` already refuses to upload). Measured against the last 300
-   commits: **11% of builds avoided**, plus the handful of pre-PR branch pushes.
+   `apps/hub/vercel.json`. It skips any commit whose changed files all sit outside
+   the deployment (`docs/`, `Assets/`, `tools/`, `.claude/`, markdown — the same
+   set `.vercelignore` already refuses to upload). Measured against the last 300
+   commits: **11% of builds avoided**. Its first version also skipped previews on
+   branches with no open pull request; the update below replaced that with the
+   stronger rule.
 3. **Made the purge repeatable** — `npm run vercel:prune`, which builds the
    keep-list itself rather than trusting `--safe`.
 
@@ -109,9 +111,11 @@ achieves the storage saving without touching the branch discipline.
 
 ## What is still open
 
-**The build output is the real ceiling, and it has not been addressed.** Purging
-buys headroom; it does not change the fact that each deployment costs ~600 MB.
-Two levers, neither taken yet because both change how the estate renders:
+**Build size is the remaining lever, and it is now the SMALLER one.** With
+deduplication measured at ~8.7 MB stored per deployment, cutting the count was
+worth more than cutting the build, and the count has been cut. These stay on the
+list for the day the deploy rate climbs again — neither is urgent, and both change
+how the estate renders:
 
 - **Stop prerendering every route at build time.** `website/organisation/` and
   `website/schemes-services/` prerender 1,300-odd pages into 171 MB. Rendering
@@ -124,11 +128,10 @@ Two levers, neither taken yet because both change how the estate renders:
   Vercel ships them inside the function has NOT been verified here — check that
   before spending the change.
 - **Move the 44 MB of QC report PDFs out of `apps/hub/public/reports`.** This was
-  on the list and was deliberately not done: PDFs that do not change dedupe across
-  deployments, so they cost 44 MB once, not per build — against 600 MB of build
-  output every time. Moving them means new URLs for documents a citizen can
-  currently download, which is a worse trade than it looks. The two levers above
-  are where the storage actually is.
+  on the list and was deliberately not done, and the 8.7 MB measurement is why:
+  PDFs that do not change are stored once, so they cost 44 MB in total rather than
+  per build. Moving them means new URLs for documents a citizen can currently
+  download — a real cost for almost no saving.
 
 ## The measurements behind this
 
