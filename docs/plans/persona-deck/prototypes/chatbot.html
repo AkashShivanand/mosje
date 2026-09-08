@@ -1,0 +1,101 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Samajik Sahayak — the assistant</title>
+<link rel="stylesheet" href="core.css">
+<style>
+.page-bg{background:var(--sa-surface);min-height:520px;border-radius:var(--sa-radius-lg);padding:26px;position:relative}
+.ghost-copy{max-width:60ch;color:#9aa0a8}
+.ghost-copy h2{color:#8d949c;font-size:20px;margin:0 0 8px}
+.launcher{position:absolute;right:26px;bottom:26px;width:58px;height:58px;border-radius:50%;background:var(--sa-primary-500);
+  color:#fff;border:none;font-size:24px;cursor:pointer;box-shadow:0 6px 22px rgba(3,115,223,.36);transition:transform .12s ease-out}
+.launcher:active{transform:scale(.94)}
+.panel{position:absolute;right:26px;bottom:26px;width:376px;background:#fff;border-radius:var(--sa-radius-lg);
+  box-shadow:0 18px 48px rgba(30,33,36,.22);overflow:hidden;display:flex;flex-direction:column;max-height:520px}
+.phead{background:var(--sa-primary-800);color:#fff;padding:13px 16px;display:flex;align-items:center;gap:10px}
+.phead .av{width:32px;height:32px;border-radius:50%;background:var(--sa-primary-500);display:flex;align-items:center;justify-content:center;font-size:16px}
+.phead b{font-size:14.5px;display:block;line-height:1.2}
+.phead small{font-size:11px;color:var(--sa-primary-100)}
+.log{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:9px;background:#fff}
+.msg{max-width:82%;padding:9px 13px;border-radius:14px;font-size:13.5px;line-height:1.45}
+.bot{background:var(--sa-surface);color:var(--sa-ink);border-bottom-left-radius:4px;align-self:flex-start}
+.me{background:var(--sa-primary-800);color:#fff;border-bottom-right-radius:4px;align-self:flex-end}
+.quick{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px}
+.quick button{font:inherit;font-size:12.5px;background:var(--sa-primary-50);color:var(--sa-primary-700);
+  border:1px solid var(--sa-primary-100);border-radius:999px;padding:6px 12px;cursor:pointer;transition:transform .1s ease-out,background .15s}
+.quick button:hover{background:var(--sa-primary-100)}
+.quick button:active{transform:scale(.96)}
+.pfoot{border-top:1px solid var(--sa-hair);padding:9px 14px;font-size:10.5px;color:var(--sa-muted);background:#fff}
+</style></head><body>
+<script src="data.js"></script><script src="shell.js"></script>
+<main class="wrap sec">
+  <p class="eyebrow">Mode 2 · the assistant</p>
+  <h1 class="sec-t">Samajik Sahayak</h1>
+  <p class="sec-lede">Already built and reachable from every page — including pages that lead nowhere else. The same five questions, asked one at a time.</p>
+  <div class="page-bg" id="stage">
+    <div class="ghost-copy"><h2>Documents</h2>
+      <p style="font-size:13.5px">Any page of the site. The assistant sits in the corner and can be opened without leaving what you were reading.</p></div>
+    <button class="launcher" id="launch" aria-label="Open Samajik Sahayak">💬</button>
+  </div>
+  <p class="note">A button in the corner is found only by those looking for it. The assistant states plainly that it cannot decide or change an application.</p>
+</main>
+<script>
+mountShell('Documents');
+const el = id => document.getElementById(id);
+const SCRIPT = [
+  { bot:['This is the assistant for the Department of Social Justice &amp; Empowerment. How can I help?'],
+    quick:['Which scheme applies to me?','Where do I complain?'] },
+  { bot:['I can narrow it down with five short questions. Skip any of them — skipping widens the answer rather than ending it.','Question 1 of 5. Who is this for?'],
+    quick:['Myself','Someone in my family','An organisation I run'] },
+  { bot:['Question 2 of 5. Which of these describes you?'],
+    quick:['Scheduled Caste','OBC or EBC','Sanitation work','Senior citizen','Skip'] },
+  { bot:['Question 3 of 5. What stage of life?'],
+    quick:['In school','In college or beyond','Of working age','A senior citizen'] },
+  { bot:['Question 4 of 5. What kind of help do you need?'],
+    quick:['Education and fees','Money to work with','A home','Health and care'] },
+  { bot:['Question 5 of 5. Which State do you live in?'],
+    quick:['Bihar','Maharashtra','Skip'] },
+];
+let step = 0, open = false;
+function panel(){
+  el('stage').insertAdjacentHTML('beforeend', `
+    <div class="panel rise" id="panel">
+      <div class="phead"><span class="av">💬</span>
+        <span><b>Samajik Sahayak</b><small>सामाजिक सहायक</small></span>
+        <span style="flex:1"></span>
+        <button id="close" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer" aria-label="Close">✕</button></div>
+      <div class="log" id="log"></div>
+      <div class="quick" id="quick"></div>
+      <div class="pfoot">Samajik Sahayak points you to the right portal. It cannot decide or change an application.</div>
+    </div>`);
+  el('close').onclick = () => { el('panel').remove(); open=false; step=0; };
+  advance();
+}
+function say(cls, text){
+  el('log').insertAdjacentHTML('beforeend', `<div class="msg ${cls} rise">${text}</div>`);
+  el('log').scrollTop = el('log').scrollHeight;
+}
+function advance(){
+  const s = SCRIPT[step];
+  if (!s) return finish();
+  s.bot.forEach((b,i)=>setTimeout(()=>say('bot',b), i*420));
+  setTimeout(()=>{
+    el('quick').innerHTML = s.quick.map(q=>`<button data-q="${q}">${q}</button>`).join('');
+  }, s.bot.length*420);
+}
+function finish(){
+  const list = matchSchemes({ group:'sc', stage:'college', need:'edu' });
+  say('bot', `That leaves <b>${list.length}</b>. These list you as their target group — whether an application succeeds is the sanctioning authority's decision, not mine.`);
+  list.slice(0,3).forEach((s,i)=>setTimeout(()=>say('bot', `<b>${s.t}</b><br>${s.benefit} · run by ${s.runBy}<br><small>${s.need}</small>`), 420+i*420));
+  setTimeout(()=>{ el('quick').innerHTML =
+    list.slice(0,2).map(s=>`<button data-q="open">Open ${s.t.split(' ').slice(0,3).join(' ')}…</button>`).join('') +
+    `<button data-q="restart">Start over</button>`; }, 420+list.length*420);
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('#quick button'); if(!b) return;
+  say('me', b.dataset.q === 'open' ? 'Open that one' : b.textContent);
+  el('quick').innerHTML='';
+  if (b.dataset.q === 'restart'){ el('log').innerHTML=''; step=0; setTimeout(advance,300); return; }
+  if (b.dataset.q === 'open'){ setTimeout(()=>say('bot','Opening the National Scholarship Portal in a new tab.'),400); return; }
+  step++; setTimeout(advance, 420);
+});
+el('launch').onclick = () => { if(open) return; open=true; el('launch').style.display='none'; panel(); };
+</script></body></html>

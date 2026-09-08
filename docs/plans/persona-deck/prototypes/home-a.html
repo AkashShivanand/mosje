@@ -1,0 +1,77 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Explore User Personas — Home page, Option A</title>
+<link rel="stylesheet" href="core.css">
+<style>
+.grid2{display:grid;grid-template-columns:1fr 420px;gap:32px;align-items:start}
+.docs h2{font-size:24px;color:var(--sa-primary-700);margin:0 0 16px;font-weight:700}
+.doc{border:1px solid var(--sa-hair);border-radius:var(--sa-radius);padding:14px 16px;margin-bottom:12px;background:#fff}
+.doc b{font-size:14px}.doc small{color:var(--sa-muted);font-size:12px;display:block;margin:2px 0 8px}
+.panel{background:linear-gradient(160deg,var(--sa-primary-500),var(--sa-primary-700));border-radius:var(--sa-radius-lg);padding:26px;color:#fff}
+.panel h2{margin:0 0 6px;font-size:22px;font-weight:700}
+.panel .nudge{background:rgba(255,255,255,.16);border-radius:var(--sa-radius);padding:9px 12px;font-size:12.5px;margin-bottom:18px}
+.persona-tile{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:var(--sa-radius);
+  padding:26px 18px;text-align:center;transition:opacity .3s cubic-bezier(.22,.61,.36,1),transform .3s cubic-bezier(.22,.61,.36,1)}
+.persona-tile .face{font-size:64px;line-height:1;margin-bottom:12px;filter:grayscale(.1)}
+.persona-tile .nm{font-size:18px;font-weight:700}
+.persona-tile .cnt{font-size:12.5px;color:var(--sa-primary-100);margin-top:4px}
+.pnav{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
+.arrow{background:rgba(255,255,255,.14);border:none;color:#fff;width:38px;height:38px;border-radius:50%;font-size:17px;cursor:pointer;transition:transform .1s ease-out,background .15s}
+.arrow:hover{background:rgba(255,255,255,.26)}.arrow:active{transform:scale(.92)}
+.arrow:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.dots{display:flex;gap:6px}.dots i{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35)}
+.dots i.on{width:20px;border-radius:3px;background:#fff}
+.panel .btn{background:#fff;color:var(--sa-primary-700);width:100%;margin-top:16px}
+.fade{opacity:0;transform:translateY(6px)}
+</style></head><body>
+<script src="data.js"></script><script src="shell.js"></script>
+<main class="wrap sec">
+  <p class="eyebrow">Home page</p>
+  <h1 class="sec-t">Recent Documents and Explore User Personas</h1>
+  <p class="sec-lede">The panel already on the home page. What changes is what it <b>does</b>: choosing a group opens the Schemes page already filtered to it.</p>
+  <div class="grid2">
+    <div class="docs">
+      <h2>Recent Documents</h2>
+      <div class="doc"><b>Annual Report 2024–25</b><small>29 Jul 2026 · PDF, 2.4 MB</small>
+        <button class="btn ghost">View online</button> <button class="btn">Download</button></div>
+      <div class="doc"><b>NAMASTE — Revised Scheme Guidelines</b><small>15 Aug 2026 · PDF, 3.1 MB</small>
+        <button class="btn ghost">View online</button> <button class="btn">Download</button></div>
+      <div class="doc"><b>PM-AJAY Operational Guidelines</b><small>10 Sep 2025 · PDF, 2.0 MB</small>
+        <button class="btn ghost">View online</button> <button class="btn">Download</button></div>
+    </div>
+    <aside class="panel">
+      <h2>Explore User Personas</h2>
+      <div class="nudge">Choose your role to see the schemes meant for you.</div>
+      <div class="persona-tile" id="tile"></div>
+      <div class="pnav">
+        <button class="arrow" id="prev" aria-label="Previous group">←</button>
+        <div class="dots" id="dots"></div>
+        <button class="arrow" id="next" aria-label="Next group">→</button>
+      </div>
+      <button class="btn" id="go">View these schemes →</button>
+      <p style="font-size:11.5px;color:var(--sa-primary-100);margin:12px 0 0">One group at a time. To see whether you are represented, you must click through.</p>
+    </aside>
+  </div>
+</main>
+<script>
+mountShell('Home');
+const FACE = { sc:'🧑🏽‍🎓', obc:'👩🏽‍🎓', dnt:'🧑🏽‍🌾', safai:'🧑🏽‍🔧', senior:'🧓🏽', tg:'🧑🏽', drug:'🧑🏽‍⚕️', ngo:'🏛️', pwd:'🧑🏽‍🦽' };
+let i = 0;
+const el = id => document.getElementById(id);
+function count(g){ return SCHEMES.filter(s=>s.g.includes(g)).length; }
+function draw(animate){
+  const g = GROUPS[i];
+  const t = el('tile');
+  const paint = () => {
+    t.innerHTML = `<div class="face">${FACE[g.id]||'🧑🏽'}</div>
+      <div class="nm">${g.label}</div>
+      <div class="cnt">${count(g.id)} schemes listed for this group</div>`;
+    t.classList.remove('fade');
+  };
+  if (animate) { t.classList.add('fade'); setTimeout(paint, 150); } else paint();
+  el('dots').innerHTML = GROUPS.map((_,k)=>`<i class="${k===i?'on':''}"></i>`).join('');
+}
+el('prev').onclick = () => { i = (i-1+GROUPS.length)%GROUPS.length; draw(true); };
+el('next').onclick = () => { i = (i+1)%GROUPS.length; draw(true); };
+el('go').onclick = () => { location.href = 'scheme-b.html?g=' + GROUPS[i].id; };
+draw(false);
+</script></body></html>

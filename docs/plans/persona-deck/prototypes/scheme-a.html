@@ -1,0 +1,57 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Schemes &amp; Services — Option A, pictures and cards</title>
+<link rel="stylesheet" href="core.css">
+<style>
+.faces{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 26px}
+.face-btn{background:none;border:none;cursor:pointer;text-align:center;width:96px;padding:6px 2px;border-radius:var(--sa-radius);transition:transform .1s ease-out,background .15s}
+.face-btn:hover{background:var(--sa-surface)}
+.face-btn:active{transform:scale(.96)}
+.face-btn .circ{width:64px;height:64px;border-radius:50%;background:var(--sa-primary-50);border:2px solid transparent;
+  display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 7px;transition:border-color .15s,background .15s}
+.face-btn[aria-pressed="true"] .circ{border-color:var(--sa-primary-500);background:var(--sa-primary-100)}
+.face-btn .lbl{font-size:11.5px;line-height:1.25;color:var(--sa-ink-muted)}
+.face-btn[aria-pressed="true"] .lbl{color:var(--sa-primary-700);font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.scard{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);overflow:hidden;background:#fff;display:flex;flex-direction:column}
+.scard .art{height:110px;display:flex;align-items:center;justify-content:center;font-size:44px;background:var(--sa-primary-50)}
+.scard .bd{padding:14px 16px;flex:1;display:flex;flex-direction:column}
+.scard h3{margin:0 0 7px;font-size:14.5px;font-weight:700;color:var(--sa-ink);line-height:1.3}
+.scard p{margin:0 0 12px;font-size:12.5px;color:var(--sa-ink-muted);flex:1}
+.scard .more{color:var(--sa-primary-600);font-weight:600;font-size:13px;text-decoration:none}
+</style></head><body>
+<script src="data.js"></script><script src="shell.js"></script>
+<main class="wrap sec">
+  <p class="eyebrow">Offerings</p>
+  <div class="spread">
+    <div><h1 class="sec-t">Schemes &amp; Services</h1>
+      <p class="sec-lede">All nine groups are visible at once. Choose the one that describes you.</p></div>
+    <div><div class="count-big" id="n">0</div><div class="count-cap">schemes shown</div></div>
+  </div>
+  <div class="faces" id="faces"></div>
+  <div class="cards" id="cards"></div>
+  <p class="note">Nine illustrations to draw and to keep up to date. A card cannot show who runs a scheme, or whether it is Central or State — for that, see Option B.</p>
+</main>
+<script>
+mountShell('Offerings');
+const FACE = { all:'👥', sc:'🧑🏽‍🎓', obc:'👩🏽‍🎓', dnt:'🧑🏽‍🌾', safai:'🧑🏽‍🔧', senior:'🧓🏽', tg:'🧑🏽', drug:'🧑🏽‍⚕️', ngo:'🏛️', pwd:'🧑🏽‍🦽' };
+const el = id => document.getElementById(id);
+let sel = 'all';
+const ALL = [{id:'all',label:'All'}].concat(GROUPS);
+function draw(){
+  el('faces').innerHTML = ALL.map(g=>`
+    <button class="face-btn" data-g="${g.id}" aria-pressed="${g.id===sel}">
+      <span class="circ">${FACE[g.id]||'🧑🏽'}</span><span class="lbl">${g.label}</span></button>`).join('');
+  const list = sel==='all' ? SCHEMES : SCHEMES.filter(s=>s.g.includes(sel));
+  el('n').textContent = list.length;
+  el('cards').innerHTML = list.slice(0,9).map(s=>`
+    <article class="scard rise">
+      <div class="art">${FACE[s.g[0]]||'📄'}</div>
+      <div class="bd"><h3>${s.t}</h3><p>${s.benefit} · run by ${s.runBy}</p>
+        <a class="more" href="#">Know more →</a></div>
+    </article>`).join('');
+}
+el('faces').addEventListener('click', e => {
+  const b = e.target.closest('.face-btn'); if(!b) return; sel = b.dataset.g; draw();
+});
+draw();
+</script></body></html>
