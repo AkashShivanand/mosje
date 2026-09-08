@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { navLinkTag } from "./nav-link-tag";
+import { navLinkRoutes } from "./nav-link-tag";
 import type { BrandLines } from "./types";
 import "./header.css";
 
@@ -57,7 +57,7 @@ export function BrandLockup({
   inverse = false,
   className,
 }: BrandLockupProps): React.JSX.Element {
-  const Tag = navLinkTag({ href }, linkAs);
+  const Tag: React.ElementType = navLinkRoutes({ href }, linkAs) ? linkAs! : "a";
   return (
     <Tag
       href={href}

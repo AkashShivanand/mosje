@@ -121,19 +121,25 @@ export function SelectionControl({
   const errorId = error != null ? `${inputId}-error` : undefined;
   const isInvalid = invalid || error != null;
 
-  // Warned once per session rather than per render, and not at all in production builds
-  // (bundlers strip the branch when NODE_ENV is inlined; here the guard is the once-flag).
-  if (!warnedUnlabelled) {
-    const named =
-      label != null || inputProps["aria-label"] != null || inputProps["aria-labelledby"] != null;
-    if (!named) {
-      warnedUnlabelled = true;
-      console.warn(
-        `[@mosje/design-system] <${kind === "checkbox" ? "Checkbox" : "Radio"}> rendered with no accessible name. ` +
-          "Pass `label`, or `aria-label` / `aria-labelledby` when the label is elsewhere (WCAG 4.1.2, GIGW 5.2.45).",
-      );
-    }
-  }
+  // Warned once per session rather than per render. IN AN EFFECT, not in render:
+  // the check writes a module-level flag and calls console.warn, and both are side
+  // effects. Rendering must be pure — React may call it twice in development, throw
+  // the result away under Suspense, or (with the compiler on) skip it entirely, so a
+  // warning fired from render is neither guaranteed nor guaranteed-once. An effect
+  // runs after commit, exactly once per mounted control, which is what "warn the
+  // developer about this instance" actually means.
+  const unnamed =
+    label == null &&
+    inputProps["aria-label"] == null &&
+    inputProps["aria-labelledby"] == null;
+  React.useEffect(() => {
+    if (warnedUnlabelled || !unnamed) return;
+    warnedUnlabelled = true;
+    console.warn(
+      `[@mosje/design-system] <${kind === "checkbox" ? "Checkbox" : "Radio"}> rendered with no accessible name. ` +
+        "Pass `label`, or `aria-label` / `aria-labelledby` when the label is elsewhere (WCAG 4.1.2, GIGW 5.2.45).",
+    );
+  }, [unnamed, kind]);
 
   return (
     <div

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { navLinkTag } from "./header/nav-link-tag";
+import { navLinkRoutes } from "./header/nav-link-tag";
 import { Icon } from "../utilities/icon";
 import { OrgLogo } from "../brand/org-logo";
 import type { OrgSlug } from "../brand/org-logo-registry";
@@ -139,7 +139,11 @@ export const PortalCard = React.forwardRef<HTMLAnchorElement, PortalCardProps>(
     ref,
   ) {
     const detailed = variant === "detailed";
-    const Tag = navLinkTag({ href, external, disabled }, linkAs);
+    const Tag: React.ElementType = disabled
+      ? "span"
+      : navLinkRoutes({ href, external, disabled }, linkAs)
+        ? linkAs!
+        : "a";
 
     return (
       <Tag

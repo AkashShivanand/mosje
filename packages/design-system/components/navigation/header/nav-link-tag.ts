@@ -67,9 +67,39 @@ export function navLinkTag(
   linkAs?: React.ElementType,
 ): NavTag {
   if (item.disabled) return navTag(true);
-  if (!linkAs || item.external) return "a";
+  return (navLinkRoutes(item, linkAs) ? linkAs : "a") as NavTag;
+}
+
+/**
+ * The same four rules as a PREDICATE — does this item route through `linkAs`?
+ *
+ * It exists because `react-hooks/static-components` reads
+ * `const Tag = navLinkTag(item, linkAs)` followed by `<Tag …>` as a component
+ * CONSTRUCTED during render. Nothing is constructed: the value is either the
+ * string `"a"`/`"span"` or the `linkAs` prop, both stable. But the rule cannot
+ * see through the call, and it is right to be conservative — a component really
+ * created in render resets its state on every pass.
+ *
+ * The rule is satisfied when the tag's VALUE is traceable, even if the decision
+ * behind it is a call. So call sites now read:
+ *
+ *   const Tag: React.ElementType = item.disabled
+ *     ? "span"
+ *     : navLinkRoutes(item, linkAs) ? linkAs! : "a";
+ *
+ * — a ternary over a prop and two literals, which the rule accepts, while the
+ * four rules themselves stay here rather than being copied to ten call sites.
+ * `navLinkTag` is kept and delegates to this, so nothing outside the masthead
+ * has to change.
+ */
+export function navLinkRoutes(
+  item: { disabled?: boolean; external?: boolean; href?: string },
+  linkAs?: React.ElementType,
+): boolean {
+  if (item.disabled) return false;
+  if (!linkAs || item.external) return false;
   const href = item.href;
-  if (!href || href.startsWith("#")) return "a";
-  if (href.startsWith("//") || /^[a-z][a-z0-9+.-]*:/i.test(href)) return "a";
-  return linkAs as NavTag;
+  if (!href || href.startsWith("#")) return false;
+  if (href.startsWith("//") || /^[a-z][a-z0-9+.-]*:/i.test(href)) return false;
+  return true;
 }

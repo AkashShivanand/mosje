@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
-import { navDisabledAria, navLinkTag } from "./nav-link-tag";
+import { navDisabledAria, navLinkRoutes } from "./nav-link-tag";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
 import { AccessibilityControls } from "../../utilities/accessibility-controls";
@@ -308,7 +308,11 @@ export function NavSheet({
             const hasSub = !!sub;
             /* A row with a sub-menu is a disclosure BUTTON, so only a leaf row is a
                link and only a leaf row needs the router element. */
-            const ItemTag = navLinkTag(item, linkAs);
+            const ItemTag: React.ElementType = item.disabled
+              ? "span"
+              : navLinkRoutes(item, linkAs)
+                ? linkAs!
+                : "a";
             const isOpen = openLabel === item.label;
             const subId = `ds-navsheet-sub-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
             return (
@@ -357,7 +361,11 @@ export function NavSheet({
                         ) : (
                           <ul className="ds-navsheet__sub">
                             {col.links?.map((c) => {
-                              const Tag = navLinkTag(c, linkAs);
+                              const Tag: React.ElementType = c.disabled
+                                ? "span"
+                                : navLinkRoutes(c, linkAs)
+                                  ? linkAs!
+                                  : "a";
                               return (
                               <li key={c.label}>
                                 <Tag
@@ -384,7 +392,11 @@ export function NavSheet({
                 {hasSub && isOpen && sub!.children && (
                   <ul id={subId} className="ds-navsheet__sub">
                     {sub!.children.map((c) => {
-                      const Tag = navLinkTag(c, linkAs);
+                      const Tag: React.ElementType = c.disabled
+                        ? "span"
+                        : navLinkRoutes(c, linkAs)
+                          ? linkAs!
+                          : "a";
                       return (
                       <li key={c.label}>
                         <Tag
