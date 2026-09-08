@@ -16,7 +16,7 @@
  *   node tools/design-parity/build-ledger.mjs > docs/design-system/parity-ledger.md
  */
 
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
@@ -233,6 +233,42 @@ function loadFigmaSets() {
     }));
 }
 
+/**
+ * PAIRINGS DERIVED FROM THE CODE CONNECT TEMPLATES, BY NODE ID.
+ *
+ * Every `*.figma.ts` header names both a Figma node and the code component it
+ * maps to, so the pairing is already written down authoritatively — and it is
+ * the one place that cannot drift, because Code Connect will not publish a
+ * template whose node is wrong.
+ *
+ * The hand table above still WINS where it has an entry: it encodes decisions a
+ * template cannot (three header sets that are one component, a set deliberately
+ * paired to something other than its template's subject). This only fills gaps.
+ *
+ * It exists because refreshing the capture alone made the ledger LESS accurate:
+ * the fresh capture brought 61 newly-published sets and several renames, and a
+ * table keyed by NAME missed every one of them — mapped fell 81 to 70 while the
+ * estate had in fact improved. Keying on the node id removes that failure mode.
+ */
+function loadTemplatePairings() {
+  const root = join(REPO, "packages", "design-system", "components");
+  const out = new Map();
+  const walk = (dir) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const p = join(dir, e.name);
+      if (e.isDirectory()) walk(p);
+      else if (e.name.endsWith(".figma.ts")) {
+        const src = readFileSync(p, "utf8");
+        const node = src.match(/node-id=(\d+)-(\d+)/);
+        const comp = src.match(/^\/\/\s*component=(.+)$/m);
+        if (node && comp) out.set(`${node[1]}:${node[2]}`, comp[1].trim());
+      }
+    }
+  };
+  walk(root);
+  return out;
+}
+
 function loadCodeExports() {
   const src = readFileSync(
     join(REPO, "packages", "design-system", "index.ts"),
@@ -258,10 +294,15 @@ function figmaUrl(nodeId) {
 
 const sets = loadFigmaSets();
 const codeExports = loadCodeExports();
+const templatePairings = loadTemplatePairings();
 
 // The Carousel page's `Loader` is a different component from the Loader atom.
+// Hand table first — it encodes decisions a template cannot — then the template,
+// keyed by node id so a rename in Figma cannot break the link.
 const pairingFor = (set) =>
-  set.name === "Loader" && set.page === "Carousel" ? undefined : PAIRINGS[set.name];
+  set.name === "Loader" && set.page === "Carousel"
+    ? undefined
+    : (PAIRINGS[set.name] ?? templatePairings.get(set.nodeId));
 
 const rows = sets.map((set) => {
   const code = pairingFor(set);

@@ -249,12 +249,24 @@
   /* A white card, because a QR needs a quiet zone to scan and the green would
      otherwise run to the edge of the pattern. The source file is 686px square,
      so 72 is a downscale rather than a stretch. */
+  /*
+   * NO PLATE AND NO PADDING — THE CODE ALREADY CARRIES ITS OWN.
+   *
+   * This drew a 6px white plate around the QR, which looked like a thick white
+   * outline because it was the SECOND one. A QR's quiet zone is part of the
+   * spec — four modules of white on every side, without which a scanner cannot
+   * find the code — and the asset has it baked in: measured, 56px of white on a
+   * 686px image, 8.2% per side. Our plate stacked on top of that.
+   *
+   * So the padding is removed and the ground with it. The image is white to its
+   * own edge, so the rounded corner needs `overflow: hidden` to bite; nothing
+   * else here has anything left to draw.
+   */
   .orgjb__qr {
     display: grid;
     place-items: center;
-    padding: var(--sa-padding-6);
     border-radius: var(--sa-shape-8);
-    background-color: var(--sa-bg-neutral-base);
+    overflow: hidden;
   }
 
   .orgjb__qr img {

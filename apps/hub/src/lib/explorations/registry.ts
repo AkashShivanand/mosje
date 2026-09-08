@@ -1,0 +1,256 @@
+/**
+ * THE EXPLORATIONS REGISTER — options we have drawn, and what became of them.
+ *
+ * ── WHY THIS EXISTS ─────────────────────────────────────────────────────────
+ *
+ * Design decisions on this estate have been made in chat and landed straight on
+ * `main`. That works while one person remembers the reasoning, and it fails in
+ * two specific ways, both of which have already happened:
+ *
+ *   · A stakeholder asks "what did the other version look like?" and the answer
+ *     is a commit diff, which is not a thing anyone can look at.
+ *   · An option is rejected, and six weeks later somebody proposes it again,
+ *     because nothing recorded that it was considered or why it lost.
+ *
+ * So an exploration is a REAL, RUNNING PROTOTYPE at its own address, kept after
+ * the decision rather than deleted. Nothing here is reachable from the public
+ * site, nothing here is imported by a page under `/website` or `/portals`, and
+ * choosing an option is a deliberate act of moving code — not of flipping a flag
+ * that some production surface is quietly reading.
+ *
+ * ── HOW IT IS ORGANISED ─────────────────────────────────────────────────────
+ *
+ * Page-wise, then module-wise, which is how the work actually arrives: someone
+ * asks about "the NMBA hero" or "the scheme card on the home page", never about
+ * a component in the abstract. A SURFACE is a page or a family of pages; a
+ * MODULE is one decision inside it. A module holds two or more OPTIONS, one of
+ * which may be the current build.
+ *
+ *   /explorations                              every surface
+ *   /explorations/<surface>/<module>           one decision, all its options
+ *
+ * ── THE ONE RULE ────────────────────────────────────────────────────────────
+ *
+ * **An option is never deleted.** When one wins the others become
+ * `superseded`, keep their address, and say what beat them. A register that
+ * loses the rejected options is a register that will be re-litigated.
+ */
+
+/** Where an option stands. */
+export type ExplorationStatus =
+  /** Built, presented, and it is what ships. */
+  | "chosen"
+  /** Built and awaiting a decision. */
+  | "proposed"
+  /** Considered, not chosen. Kept, with what beat it. */
+  | "superseded"
+  /** Real, but deliberately not being pursued now. */
+  | "parked";
+
+export interface ExplorationOption {
+  /** Slug within the module — "current", "option-a", "flight". */
+  id: string;
+  title: string;
+  /** One sentence. What this option IS, not what it is for. */
+  summary: string;
+  status: ExplorationStatus;
+  /**
+   * What a stakeholder should actually look at, so a review is about the thing
+   * being decided rather than about whatever the reader noticed first.
+   */
+  lookAt?: string[];
+  /** Where it landed, for a `chosen` option — a PR number or a route. */
+  landedIn?: string;
+  /** What beat it, for a `superseded` one. */
+  supersededBy?: string;
+  /**
+   * `true` when this option renders a live prototype on the module's page.
+   * `false` records a decision whose prototype was the live estate itself —
+   * every option shipped before this register existed is one of those.
+   */
+  live?: boolean;
+}
+
+export interface ExplorationModule {
+  /** Slug — "campaign-band". */
+  id: string;
+  title: string;
+  /**
+   * THE DECISION, AS A QUESTION. Not a description of the module. A module
+   * whose question cannot be written down is not a decision, it is a to-do.
+   */
+  question: string;
+  /** When the options were drawn. */
+  date: string;
+  options: ExplorationOption[];
+}
+
+export interface ExplorationSurface {
+  /** Slug — "nmba". */
+  id: string;
+  title: string;
+  /** Which real page or pages this is about. */
+  route?: string;
+  summary: string;
+  modules: ExplorationModule[];
+}
+
+export const EXPLORATIONS: readonly ExplorationSurface[] = [
+  {
+    id: "nmba",
+    title: "Nasha Mukt Bharat Abhiyaan",
+    route: "/website/organisation/nasha-mukt-bharat-abhiyaan",
+    summary:
+      "The organisation page. Its first fold and its document shelves have carried most of the estate's design decisions this month, because it is the record that turns on every part of the organisation template.",
+    modules: [
+      {
+        id: "campaign-band",
+        title: "The campaign band and the helpline",
+        question:
+          "When a reader dismisses the campaign band, what happens to the national de-addiction helpline inside it?",
+        date: "8 September 2026",
+        options: [
+          {
+            id: "current",
+            title: "Anchor and guest",
+            summary:
+              "The helpline sits outside the collapsible region. Dismissing the campaign leaves the number where it was and the band simply gets shorter.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "The band does not disappear — it loses its campaign half and keeps a green strip",
+              "The number never moves, so a reader who wanted it can still find it",
+              "Two messages share one rectangle, which is what made the band read as cluttered",
+            ],
+          },
+          {
+            id: "flight",
+            title: "The helpline flies to the hero",
+            summary:
+              "The whole band leaves, and the helpline travels from it into a badge beside the campaign mark, so the number is carried rather than kept.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "The band goes entirely — no residual green strip",
+              "The number arrives beside the mark, where the page's identity already is",
+              "Under `prefers-reduced-motion` there is no flight: the badge is simply there",
+              "It puts the helpline in the fold TWICE — once on the badge and once in the fact strip. The fact strip carries it only because the band can be dismissed, so choosing this option means deciding whether that fact returns to the Abhiyaan's fourth figure.",
+            ],
+          },
+        ],
+      },
+      {
+        id: "documents",
+        title: "Documents & Downloads",
+        question:
+          "The Department publishes six separately titled document shelves. How does one page carry all six without spending 2,400px on fifteen files?",
+        date: "7–8 September 2026",
+        options: [
+          {
+            id: "sections",
+            title: "Six bands",
+            summary:
+              "Each shelf its own full-width band, in the source's order, each with its own heading and its own route out.",
+            status: "superseded",
+            supersededBy:
+              "Six top-level headings broke the side rail's contract — the rail offered one “Documents & Downloads” entry pointing at an id this mode never rendered.",
+          },
+          {
+            id: "library",
+            title: "One shelf, chips",
+            summary:
+              "Every group merged into one filterable shelf, the publisher's arrangement kept as counted chips, with a route out that follows the selected chip.",
+            status: "chosen",
+            landedIn: "PR #379 — and it is what the other 177 organisations use",
+          },
+          {
+            id: "tabs",
+            title: "One shelf, tabs",
+            summary:
+              "The Department's six headings become six tabs on one band, each keeping its own “View All”, with the cards on a sideways-scrolling rail.",
+            status: "chosen",
+            landedIn: "PR #381 — used by NMBA, which is the record that asked for it",
+          },
+        ],
+      },
+      {
+        id: "first-fold",
+        title: "The first fold",
+        question:
+          "The fold carries a campaign band, a hero, a fact strip, a notice strip and a time-limited ribbon. Which of them is actually above the fold, and what gives way?",
+        date: "8 September 2026",
+        options: [
+          {
+            id: "ribbon-below",
+            title: "Ribbon between the fact strip and the data",
+            summary:
+              "Where the 7 September review asked for it — “between the blue section and the data section”.",
+            status: "superseded",
+            supersededBy:
+              "Measured below the fold at 1440×760, 1512×820, 1920×955 and on a phone. A time-limited call to action nobody scrolls to costs height and returns nothing.",
+          },
+          {
+            id: "ribbon-above",
+            title: "Ribbon above the hero",
+            summary:
+              "After the campaign band, before the page title — one 50px line carrying the occasion, the invitation and two routes.",
+            status: "chosen",
+            landedIn: "PR #393, tightened in #395",
+          },
+        ],
+      },
+      {
+        id: "hero-mark",
+        title: "The organisation mark on the hero",
+        question:
+          "Seventeen organisation marks sit on a brand-coloured band. Which of them need a white plate behind them?",
+        date: "8 September 2026",
+        options: [
+          {
+            id: "plate-all",
+            title: "A white disc behind every mark",
+            summary: "An 84px mark inside a 100px white circle with a hairline border.",
+            status: "superseded",
+            supersededBy:
+              "It is in no design — the handoff's Logo frame has no fill, no stroke and no radius — and it put a ring around eleven marks that already carry their own edge.",
+          },
+          {
+            id: "plate-declared",
+            title: "A plate only where the artwork needs one",
+            summary:
+              "Six marks are declared in the registry as unable to hold a brand band; the other eleven render bare, as the handoff draws them.",
+            status: "chosen",
+            landedIn: "PR #388 — `ORG_MARKS_NEEDING_GROUND`",
+          },
+        ],
+      },
+    ],
+  },
+];
+
+export function surfaceById(id: string): ExplorationSurface | undefined {
+  return EXPLORATIONS.find((s) => s.id === id);
+}
+
+export function moduleById(surfaceId: string, moduleId: string): ExplorationModule | undefined {
+  return surfaceById(surfaceId)?.modules.find((m) => m.id === moduleId);
+}
+
+/** Every surface/module pair, for `generateStaticParams`. */
+export function allModuleParams(): { surface: string; module: string }[] {
+  return EXPLORATIONS.flatMap((s) => s.modules.map((m) => ({ surface: s.id, module: m.id })));
+}
+
+/** Counted, never typed — the index prints these. */
+export function counts() {
+  const modules = EXPLORATIONS.flatMap((s) => s.modules);
+  const options = modules.flatMap((m) => m.options);
+  return {
+    surfaces: EXPLORATIONS.length,
+    modules: modules.length,
+    options: options.length,
+    open: options.filter((o) => o.status === "proposed").length,
+    chosen: options.filter((o) => o.status === "chosen").length,
+    kept: options.filter((o) => o.status === "superseded" || o.status === "parked").length,
+  };
+}
