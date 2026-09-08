@@ -188,9 +188,25 @@ export function OrganisationJoinBanner({
               <div className="orgjb__campaign-clip" inert={closing || undefined}>
                 <div className="orgjb__campaign-row">
                   <div className="orgjb__copy">
-                    <h2 id={headingId} className="orgjb__heading">
+                    {/*
+                      * A `<p>`, NOT AN `<h2>` — and the region is still named by it.
+                      *
+                      * This band renders ABOVE the page's own `<h1>`, so as a
+                      * heading it opened the document outline at level 2 and then
+                      * went UP to level 1. A screen-reader user listing headings
+                      * met "Join Nasha Mukt Bharat Abhiyaan" before the page told
+                      * them which page they were on, on every organisation page
+                      * that carries a campaign band.
+                      *
+                      * It was never a section heading anyway: the band is a
+                      * promotional aside beside the page, not a division of it.
+                      * `aria-labelledby` still points here, so the region keeps
+                      * its accessible name and loses nothing but the outline
+                      * entry it should never have had.
+                      */}
+                    <p id={headingId} className="orgjb__heading">
                       {banner.heading}
-                    </h2>
+                    </p>
                     <p className="orgjb__text">{banner.text}</p>
                   </div>
 

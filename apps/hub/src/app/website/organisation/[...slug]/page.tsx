@@ -356,7 +356,21 @@ export default async function OrganisationDetailPage({
               {qa.icon && <Icon name={qa.icon} size={16} />}
               <span>{qa.label}</span>
               {isExternal ? (
-                <Icon name="open_in_new" size={16} className="opacity-80" />
+                <>
+                  <Icon name="open_in_new" size={16} className="opacity-80" />
+                  {/*
+                    * THE GLYPH IS NOT THE WARNING.
+                    *
+                    * `open_in_new` is decorative to anyone who cannot see it, so
+                    * "Take the Pledge" and "Citizen Dashboard" were the only two
+                    * links on this page that left for another site without
+                    * saying so — every other external link in the template
+                    * already carries this span. An unannounced new tab strands a
+                    * screen-reader user in a document whose Back button does
+                    * nothing (WCAG G201).
+                    */}
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </>
               ) : (
                 <Icon name="arrow_forward" size={16} className="opacity-80" />
               )}

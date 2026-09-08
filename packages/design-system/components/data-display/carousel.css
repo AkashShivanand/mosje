@@ -56,6 +56,26 @@
     display: none;
   }
 
+  /*
+   * THE TRACK'S RING WAS THE BROWSER'S, NOT THE ESTATE'S.
+   *
+   * `.ds-carousel__track` takes a tab stop because a scrollable region must be
+   * focusable (WCAG 2.1.1) — but the rule three blocks down names only the
+   * arrows, the play control and the dots, so the track fell through to the
+   * user-agent default. Measured on the NMBA organisation page: `1px auto`
+   * against the `2px solid` every other control on that page draws. It met
+   * 2.4.7 and it was visibly a different system.
+   *
+   * `outline-offset` is NEGATIVE here where the controls' is positive: the
+   * track is a full-bleed scroll container, so an outset ring is drawn outside
+   * the band and clipped by the section's own overflow. Inset, it lands on the
+   * slide.
+   */
+  .ds-carousel__track:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
+  }
+
   .ds-carousel__slide {
     flex: 0 0 100%;
     min-width: 0;

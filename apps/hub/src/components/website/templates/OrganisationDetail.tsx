@@ -17,6 +17,7 @@ import type {
   OrgDownloadItem as OrgDownload,
 } from "@/content/website/organisation-details";
 import { withAssetBasePath } from "@/lib/website/content";
+import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { trimRedundantOpening } from "@/lib/website/organisation-prose";
 import { OrganisationIndex } from "./OrganisationIndex";
 import { OrganisationDocumentTabs } from "../OrganisationDocumentTabs";
@@ -1057,16 +1058,19 @@ export function OrganisationDetail({
       external: isHttp(d.fileUrl ?? d.sourceUrl),
     })),
     ...(detail?.downloads?.groups ?? []).flatMap((g) =>
-      g.items.map((f) => ({
-        id: `download-${f.href}-${f.label}`,
-        group: f.group ?? "Formats",
-        meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
-        title: f.label,
-        officialName: f.officialName,
-        href: f.href,
-        actionLabel: DOWNLOAD_KIND[f.kind].action,
-        external: isHttp(f.href),
-      })),
+      g.items.map((f) => {
+        const href = localiseDocumentUrl(f.href, f.label, g.heading);
+        return {
+          id: `download-${f.href}-${f.label}`,
+          group: f.group ?? "Formats",
+          meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
+          title: f.label,
+          officialName: f.officialName,
+          href,
+          actionLabel: DOWNLOAD_KIND[f.kind].action,
+          external: isHttp(href),
+        };
+      }),
     ),
   ];
 
@@ -1097,16 +1101,30 @@ export function OrganisationDetail({
         id: g.id,
         heading: g.heading,
         viewAllHref: g.viewAllHref,
-        items: g.items.map((f) => ({
-          id: `download-${f.href}-${f.label}`,
-          group: g.heading,
-          meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
-          title: f.label,
-          officialName: f.officialName,
-          href: f.href,
-          actionLabel: DOWNLOAD_KIND[f.kind].action,
-          external: isHttp(f.href),
-        })),
+        items: g.items.map((f) => {
+          /*
+           * A DOCUMENT RESOLVES TO A LOCAL SAMPLE; AN IMAGE DOES NOT.
+           *
+           * The record's four campaign assets — the mark, the mascot and the two
+           * QR codes — are real files this estate already serves, and they were
+           * never the problem. Its eleven PDFs pointed at the Department's CDN.
+           * `localiseDocumentUrl` tells the two apart by the URL, and `external`
+           * is recomputed from the RESULT rather than the input: a localised
+           * file must not keep opening in a new tab and announcing itself as
+           * leaving the site, because it no longer does.
+           */
+          const href = localiseDocumentUrl(f.href, f.label, g.heading);
+          return {
+            id: `download-${f.href}-${f.label}`,
+            group: g.heading,
+            meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
+            title: f.label,
+            officialName: f.officialName,
+            href,
+            actionLabel: DOWNLOAD_KIND[f.kind].action,
+            external: isHttp(href),
+          };
+        }),
       }));
 
     if (shelves.length > 0) {
@@ -1149,16 +1167,19 @@ export function OrganisationDetail({
               )}
             </SectionTitle>
             <DocumentLibrary
-              items={g.items.map((f) => ({
-                id: `download-${f.href}-${f.label}`,
-                group: g.heading,
-                meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
-                title: f.label,
-                officialName: f.officialName,
-                href: f.href,
-                actionLabel: DOWNLOAD_KIND[f.kind].action,
-                external: isHttp(f.href),
-              }))}
+              items={g.items.map((f) => {
+                const href = localiseDocumentUrl(f.href, f.label, g.heading);
+                return {
+                  id: `download-${f.href}-${f.label}`,
+                  group: g.heading,
+                  meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
+                  title: f.label,
+                  officialName: f.officialName,
+                  href,
+                  actionLabel: DOWNLOAD_KIND[f.kind].action,
+                  external: isHttp(href),
+                };
+              })}
               groupOrder={[g.heading]}
             />
           </>

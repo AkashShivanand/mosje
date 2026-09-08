@@ -1,0 +1,50 @@
+[
+  {
+    "kind": "report",
+    "file": "report.pdf",
+    "title": "Sample Annual Report",
+    "pages": 2
+  },
+  {
+    "kind": "circular",
+    "file": "circular.pdf",
+    "title": "Sample Circular",
+    "pages": 1
+  },
+  {
+    "kind": "newsletter",
+    "file": "newsletter.pdf",
+    "title": "Sample Newsletter",
+    "pages": 1
+  },
+  {
+    "kind": "guideline",
+    "file": "guideline.pdf",
+    "title": "Sample Guidelines",
+    "pages": 1
+  },
+  {
+    "kind": "charter",
+    "file": "charter.pdf",
+    "title": "Sample Citizen Charter",
+    "pages": 1
+  },
+  {
+    "kind": "manual",
+    "file": "manual.pdf",
+    "title": "Sample User Manual",
+    "pages": 1
+  },
+  {
+    "kind": "form",
+    "file": "form.pdf",
+    "title": "Sample Form",
+    "pages": 1
+  },
+  {
+    "kind": "publication",
+    "file": "publication.pdf",
+    "title": "Sample Publication",
+    "pages": 1
+  }
+]

@@ -126,7 +126,86 @@ is a third column at 130px, where every label wraps to four lines.
 
 ---
 
-## 5. Two gate findings, spun off
+## 5. Accessibility audit, 8 September — and the one finding that was not a defect
+
+A full pass: axe across 33 routes, manual keyboard traversal, computed-contrast
+sampling on every text leaf, 320px reflow, 200% zoom, and `prefers-reduced-motion`.
+**Zero critical.** Five major and three minor, all now closed.
+
+| # | Finding | Criterion | Fix |
+|---|---|---|---|
+| 1 | The join banner's `<h2>` rendered **above** the page's `<h1>` — the outline opened at level 2, on every organisation page with a campaign band | 1.3.1 | The band is a promotional aside, not a section. It is a `<p>`, and `aria-labelledby` still names the region from it |
+| 2 | A four-slide hero carousel cost **7 tab stops** before a keyboard user reached a word of the page | 2.4.3 | Roving tabindex on the dot row: 7 → 4, with Left/Right/Home/End between dots. Nothing removed — a mouse user can click dot 3, so a keyboard user must reach dot 3 |
+| 3 | `.ds-carousel__track` drew the browser's `1px auto` ring against the estate's `2px solid` everywhere else | 2.4.7 / consistency | Bound to `--sa-focus-width` / `--sa-focus-ring`, inset because the track is full-bleed |
+| 4 | Four links opened a new tab silently — two hero quick actions and the masthead's "Government of India" | G201 | All three of ours now carry the warning; the fourth is the third-party widget's own link |
+| 5 | Leaflet's attribution measured **3.64:1** — and it carries the OpenStreetMap credit the licence obliges us to display | 1.4.3 | Opaque plate, estate link ink: **6.36:1** |
+| 6–8 | UX4G widget: a 10×10 close button, 36×20 toggles, a panel overflowing at 640px | 2.5.8, 1.4.10 | Third-party, MeitY-mandated, already a declared deviation |
+
+**What passes, measured rather than assumed:** `lang`, one `h1`, 31 images all
+with `alt`; no horizontal page scroll at 320px or at 200% zoom; the ticker
+autoplays with a real pause control **and does not advance at all under
+`prefers-reduced-motion`**; and the footer's 20px links clear 2.5.8 through the
+spacing exception on a 32px pitch.
+
+**A correction worth recording.** The brief this audit ran from listed "2.5.5
+Touch target ≥ 44×44" as WCAG 2.1 AA. It is not — 2.5.5 is Level **AAA**, and
+the AA criterion is 2.2's **2.5.8 at 24×24**. Under the wrong figure this report
+would have opened with 26 footer-link failures that are not failures.
+`standards-precedence.md` names this exact error: getting it wrong sits invented
+findings beside real ones and devalues both.
+
+### The finding that was not a defect
+
+**Every primary brand surface on the dev server was rendering `#095e34` India
+Green** — the Admin Login button, the ticker plinth, the selected document tab,
+the focus rings. The committed tokens, `packages/tokens/dist`, and the production
+build all say `#005eb9`; the value came from `brands/_starter/brand.json`, the
+template pack. The dev server was serving a chunk compiled while another branch
+was checked out, and it had been doing so for hours.
+
+Restarting it restored blue. **Nothing was wrong with the design and nothing
+needed fixing** — but any visual sign-off taken from that preview was taken
+against a colour the estate does not ship, and screenshots from either side of
+the restart disagree for that reason. Restart before a visual review.
+
+---
+
+## 6. Every document link is now local
+
+Requested 8 September: replace the documents with local dummy files, keeping the
+embedded images as they are.
+
+**What it replaced.** Every "Download PDF" on the website left the estate for
+`durwo6bhtjtqt.cloudfront.net` or `dosje.gov.in` — so a reviewer on a laptop with
+no network got nothing, and a demonstration that the shelves work depended on a
+third party staying up. The images were mirrored months ago; the documents never
+were, deliberately, because a mirrored PDF is a stale snapshot presented as the
+Department's current file.
+
+**What it is instead.** Not a mirror — eight obvious **samples**, watermarked
+SAMPLE on every page, with a banner and a footer saying what they are, invented
+particulars throughout and zeros where a real file would carry figures. 432 KB
+for the set, against roughly a gigabyte if all 1,962 ingested documents got their
+own file. `apps/hub/src/lib/website/sample-documents.ts` picks the kind from the
+document's own category and title, so a newsletter card opens something
+newsletter-shaped and a circular opens a memorandum.
+
+**What is deliberately not rewritten.** A link is replaced only when it points at
+a FILE — a document extension, or the Department's document CDN. Pages keep their
+own addresses: the tag index, the e-pledge form, the Instagram profile, the "View
+all" routes into dosje.gov.in's listings. Sending a reader to a sample PDF instead
+of a page would be a worse lie than the broken download this fixes. Locally-served
+images — the campaign mark, the mascot, the two QR codes — are untouched.
+
+**The rule this needed a test for.** "Committee formation — letter to all States"
+first resolved to a **form**, because `format` is a substring of `formation`.
+`sample-documents.test.ts` pins twelve real departmental titles against their
+kinds, and the correspondence rules now run before the form rules with every form
+word bounded.
+
+---
+
+## 7. Two gate findings, spun off
 
 **`check:link-as` can be fooled by a `>` in a comment.** Its tag scanner stops at
 the first `>` at brace depth zero without skipping comments or strings, so a

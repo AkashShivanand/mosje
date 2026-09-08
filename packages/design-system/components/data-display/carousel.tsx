@@ -86,6 +86,7 @@ export function Carousel({
   const [playing, setPlaying] = React.useState(autoPlay);
   const [held, setHeld] = React.useState(false);
   const trackRef = React.useRef<HTMLDivElement>(null);
+  const dotsRef = React.useRef<HTMLDivElement>(null);
   const baseId = React.useId();
 
   /**
@@ -267,7 +268,27 @@ export function Carousel({
           </button>
 
           {showDots && count <= MAX_DOTS ? (
-            <div className="ds-carousel__dots">
+            /*
+             * ONE TAB STOP FOR THE WHOLE ROW — a roving tabindex, not six stops.
+             *
+             * Every dot used to be tabbable, so a four-slide carousel cost SEVEN
+             * stops: the track, two arrows and four dots. Measured on the NMBA
+             * organisation page, that was seven stops spent on a decorative
+             * photograph before a keyboard user reached a word of the page.
+             *
+             * Roving is the documented answer and it takes nothing away: the
+             * current dot is the only one in the tab order, and Left/Right/Home/
+             * End move between them — so every slide is still reachable directly,
+             * which is what 2.1.1 asks (a mouse user can click dot 3, therefore
+             * a keyboard user must be able to get to dot 3). Removing the dots
+             * from the tab order altogether would have been the cheap fix and it
+             * would have failed that test.
+             *
+             * `group` with a name, not `tablist`: these are buttons that move a
+             * scroll position, not tabs over panels that stay put — the same
+             * reasoning the `aria-current` note below already carried.
+             */
+            <div className="ds-carousel__dots" role="group" aria-label={`${label} — slides`} ref={dotsRef}>
               {slides.map((_, i) => (
                 <button
                   key={i}
@@ -281,7 +302,39 @@ export function Carousel({
                   // claiming a tablist the rest of the markup does not support.
                   aria-current={i === index || undefined}
                   aria-label={`Slide ${i + 1} of ${count}`}
+                  tabIndex={i === index ? 0 : -1}
                   onClick={() => goTo(i)}
+                  /*
+                   * ON THE BUTTON, NOT ON THE GROUP. The first version put one
+                   * handler on the wrapping `<div role="group">` and read the
+                   * carousel's `index`; `jsx-a11y/no-noninteractive-element-
+                   * interactions` refused it, and it was right — a keydown
+                   * belongs on the thing that took the focus. Reading the
+                   * button's own `i` is also more honest than reading `index`,
+                   * which only happened to agree because focus follows selection.
+                   */
+                  onKeyDown={(e) => {
+                    const next =
+                      e.key === "ArrowRight" ? i + 1
+                      : e.key === "ArrowLeft" ? i - 1
+                      : e.key === "Home" ? 0
+                      : e.key === "End" ? count - 1
+                      : null;
+                    if (next === null) return;
+                    e.preventDefault();
+                    const wrapped = (next + count) % count;
+                    goTo(wrapped);
+                    /*
+                     * Focus follows the selection, or the reader is left on a
+                     * dot that is no longer current and the next arrow press
+                     * moves from the wrong place. Queued, because the button
+                     * being focused is about to re-render with its new
+                     * `tabIndex`.
+                     */
+                    requestAnimationFrame(() =>
+                      dotsRef.current?.querySelectorAll("button")[wrapped]?.focus(),
+                    );
+                  }}
                 />
               ))}
             </div>
