@@ -18,7 +18,7 @@
     "predev": "npm run kill-ports && npm run ensure:storybook",
     "dev": "bash -c 'cd apps/hub && exec next dev --turbopack -p 3007'",
     "branches": "bash scripts/branch-inventory.sh --text",
-    "vercel:prune": "bash scripts/vercel-prune.sh",
+    "vercel:prune": "node scripts/vercel-prune.mjs",
     "dev:hub": "bash -c 'cd apps/hub && exec next dev --turbopack -p 3007'",
     "dev:storybook": "bash -c 'cd apps/storybook && exec env NODE_PATH=$(pwd)/node_modules storybook dev -p 6006'",
     "check:build": "npm --prefix apps/hub run build",
