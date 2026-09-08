@@ -28,9 +28,11 @@
  *   node scripts/vercel-prune.mjs            # delete
  *   node scripts/vercel-prune.mjs --dry-run  # list what would go
  *   node scripts/vercel-prune.mjs --keep-production 20
+ *   node scripts/vercel-prune.mjs --allow-modified   # run an edited copy
  */
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 const PROJECTS = ["mosje-samavesh", "sewa-management", "srv-memorial-trust"];
 const DRY_RUN = process.argv.includes("--dry-run");
@@ -38,6 +40,97 @@ const keepFlag = process.argv.indexOf("--keep-production");
 const KEEP_PRODUCTION =
   keepFlag === -1 ? 5 : Number(process.argv[keepFlag + 1]) || 5;
 const BATCH = 10;
+const ALLOW_MODIFIED = process.argv.includes("--allow-modified");
+
+/**
+ * Refuse to delete anything if this file is not the version on `origin/main`.
+ *
+ * This script deletes deployments permanently, and a stale copy of it deletes
+ * the WRONG ones. That is not hypothetical: the version before 2026-09-08 read
+ * branches from the current checkout and applied them to every project, which
+ * would have removed 17 previews for branches still open in another repository.
+ * The fix is on main — and a session sitting on a feature branch that predates
+ * it still has the broken copy on disk, one `npm run vercel:prune` away.
+ *
+ * Compared by CONTENT, not by branch, so running main's copy from anywhere (a
+ * temporary directory, another worktree) passes, and only a genuinely different
+ * script is stopped.
+ *
+ * When the comparison itself cannot be made — no git, no origin/main, no network
+ * — it warns and continues. An unverifiable check is not evidence of a stale
+ * script, and blocking there would strand the tool exactly when it is needed.
+ *
+ * WHAT IT CANNOT DO, and this is inherent rather than an oversight: a checkout
+ * whose copy of this file PREDATES the guard has no guard in it, so it runs
+ * unchecked. Nothing written here can reach backwards into a copy that never
+ * contained it. The protection therefore starts now and covers drift from this
+ * version onward; the pre-guard copies on branches open on 2026-09-08 stop
+ * existing as those branches merge or take main. Until then the only defence for
+ * those is the one that caught it the first time — run a dry run and read it.
+ */
+function refuseIfStale() {
+  if (ALLOW_MODIFIED) {
+    console.log("⚠️  --allow-modified: running this copy without checking it against main.\n");
+    return;
+  }
+
+  const PATH_ON_MAIN = "scripts/vercel-prune.mjs";
+  let mine;
+  try {
+    mine = readFileSync(fileURLToPath(import.meta.url), "utf8");
+  } catch {
+    return; // cannot read ourselves; nothing to compare
+  }
+
+  // Refresh the ref cheaply. Failure here is fine — the local origin/main is
+  // still a far better comparison than none.
+  try {
+    execFileSync("git", ["fetch", "--quiet", "origin", "main"], {
+      stdio: "ignore",
+      timeout: 20_000,
+    });
+  } catch {
+    /* offline, or no such remote */
+  }
+
+  let onMain;
+  try {
+    onMain = execFileSync("git", ["show", `origin/main:${PATH_ON_MAIN}`], {
+      encoding: "utf8",
+      maxBuffer: 8 * 1024 * 1024,
+    });
+  } catch {
+    console.log(
+      "⚠️  Could not read origin/main's copy of this script, so it has not been " +
+        "checked for staleness. Continuing.\n",
+    );
+    return;
+  }
+
+  if (mine.trim() === onMain.trim()) return;
+
+  console.error(
+    [
+      "",
+      "🛑 This copy of vercel-prune differs from the one on origin/main.",
+      "",
+      "   Nothing has been deleted. A stale copy of this script deletes the wrong",
+      "   deployments — the version before 2026-09-08 would have removed previews",
+      "   for branches that were still open.",
+      "",
+      "   If your checkout is simply behind:",
+      "       git fetch origin && git merge origin/main",
+      "",
+      "   To run main's copy without changing your checkout:",
+      `       git show origin/main:${PATH_ON_MAIN} > /tmp/prune.mjs && node /tmp/prune.mjs`,
+      "",
+      "   If you are deliberately editing this script, say so:",
+      "       node scripts/vercel-prune.mjs --allow-modified --dry-run",
+      "",
+    ].join("\n"),
+  );
+  process.exit(1);
+}
 
 function api(path) {
   const out = execFileSync("vercel", ["api", path], {
@@ -211,6 +304,11 @@ function prune(projectName, teamId) {
   }
   console.log(`    removed ${removed} of ${doomed.length}`);
 }
+
+// Before anything else, and before --dry-run too: a stale dry run prints a plan
+// that is wrong in exactly the way that matters, and a plan is what a person acts
+// on.
+refuseIfStale();
 
 // The projects sit under a team, and `vercel api` does not inherit the CLI's
 // scope, so every call has to name it. `.vercel/project.json` is written by
