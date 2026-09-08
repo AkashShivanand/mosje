@@ -34,6 +34,23 @@
       var(--sa-color-successScale-700)
     );
     color: var(--sa-text-neutral-inverse);
+    /*
+     * A SHADOW, BECAUSE TWO SATURATED FIELDS MEET HERE.
+     *
+     * The band's green sits directly on the hero's blue — the estate's two
+     * strongest colours butted together with nothing between them. On the live
+     * page a cream ribbon usually separates them, which is what made it work;
+     * dismiss the ribbon and the seam is a hard line between two full-bleed
+     * fields.
+     *
+     * A shadow rather than a rule, because it says the true thing: this band is
+     * a dismissible announcement resting ON the page, not a stripe cut out of
+     * it. It also survives the ribbon being there or not.
+     */
+    box-shadow: 0 var(--sa-stroke-1) 0 0 color-mix(in srgb, var(--sa-text-neutral-inverse) 16%, transparent),
+      0 6px 16px -6px color-mix(in srgb, var(--sa-color-successScale-900) 55%, transparent);
+    position: relative;
+    z-index: var(--sa-z-raised);
   }
 
   /*
@@ -220,10 +237,22 @@
    * words, and the smaller one arriving first. Both strings are the source's own
    * and neither is dropped, but only one of them is the page.
    */
+  /*
+   * headline-4, NOT headline-5 — because the helpline is 20px bold beside it.
+   *
+   * At headline-5 the campaign's own name and the telephone number were both
+   * 20px, separated only by 600 against 700. Having just argued that these are
+   * different KINDS of thing, giving them the same typographic weight undoes
+   * the separation the panel achieves: the band's identity and a service it
+   * happens to print sat level.
+   *
+   * It still does not compete with the H1 below: headline-4 tops out at 24px
+   * against the title's 40.
+   */
   .orgjb__heading {
     margin: 0;
-    font-size: var(--sa-type-headline-5-size);
-    line-height: var(--sa-type-headline-5-lh);
+    font-size: var(--sa-type-headline-4-size);
+    line-height: var(--sa-type-headline-4-lh);
     font-weight: var(--sa-font-weight-semibold);
     color: inherit;
   }
@@ -262,10 +291,21 @@
     overflow: hidden;
   }
 
+  /*
+   * 88, NOT 72 — the box is not the code.
+   *
+   * A QR carries its own quiet zone and this asset's is 8.2% a side, so a 72px
+   * box renders about 60px of actual pattern. That scans at close range and is
+   * marginal at the distance somebody actually holds a phone from a screen.
+   *
+   * 88 gives about 74px of pattern and costs the band 16px of height, which is
+   * the trade: the code is the only thing in the band that fails completely if
+   * it is slightly too small, where everything else merely reads tighter.
+   */
   .orgjb__qr img {
     display: block;
-    width: 72px;
-    height: 72px;
+    width: 88px;
+    height: 88px;
   }
 
   /* Dropped below the one-row breakpoint, and it is the one thing here that is

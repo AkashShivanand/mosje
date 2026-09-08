@@ -190,7 +190,7 @@ export function OrganisationJoinBanner({
                      * who cannot scan it anyway.
                      */
                     <span className="orgjb__qr">
-                      <Image src={banner.qrSrc} alt="" width={72} height={72} />
+                      <Image src={banner.qrSrc} alt="" width={88} height={88} />
                     </span>
                   ) : null}
 

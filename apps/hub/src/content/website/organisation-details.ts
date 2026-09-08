@@ -2364,33 +2364,28 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
      * until 07 Sep 2026 and is not on this page at all — an unsourced figure on
      * a government page, which this file's own header forbids.
      *
-     * THE HELPLINE WAS REMOVED ON 07 SEP AND IS BACK ON 08 SEP. It went as a
-     * duplicate: the green band directly above prints "National De-Addiction
-     * Helpline 14446" in 24px inside a white pill, and printing it again in grey
-     * 200px below is the restatement `ui-restraint-and-copy.md` §1 forbids.
+     * THE HELPLINE IS OUT AGAIN, AND THIS TIME THE REASON HOLDS.
      *
-     * That argument was right about the duplication and wrong about which copy
-     * to keep, for a reason the audit found and the original pass did not: THE
-     * BAND IS DISMISSIBLE. Press its X and the campaign half collapses, and with
-     * it the only remaining instance of the number in the fold. A national
-     * de-addiction helpline that a reader can remove from a page about drug
-     * de-addiction by closing an advertisement is not a duplicate worth saving
-     * 200px on.
+     * It went on 07 Sep as a duplicate of the green band directly above, came
+     * back on 08 Sep because the band was dismissible and pressing its X took
+     * the only remaining copy of the number with it, and goes now because that
+     * is no longer true: the band carries it while it is there, and
+     * `OrganisationHelplineBadge` carries it beside the mark the moment the band
+     * is dismissed. The number is in the fold in every state, by design rather
+     * than by this row happening to exist.
      *
-     * Four cells is also the count the strip is built for: at three it drew
-     * 405px cells around 150px of content, 63% air, and read as three unrelated
-     * statements rather than a strip.
+     * So the row was doing nothing but printing 14446 a second time, 950px from
+     * the first, both times prominently.
      *
-     * The Ministry fact is the weakest of the four — a reader on the
-     * Department's own site is told the Department twice by the masthead
-     * already. It stays only because removing it returns the strip to three,
-     * which measured worse. Replace it the day the source publishes a fourth
-     * figure worth the space.
+     * THREE FACTS, NOT FOUR, and the Ministry row survives on the same argument
+     * it always did — weakly. It is the only cell that is a NAME among figures,
+     * a reader on the Department's own site has been told the Department twice
+     * by the masthead already, and it stays because two is not a strip. Replace
+     * it the day the source publishes a fourth figure worth the space.
      */
     facts: [
       { icon: "flag", value: "15 August 2020", label: "Abhiyaan launched" },
       { icon: "local_hospital", value: "768", label: "De-addiction and rehabilitation centres" },
-      { icon: "call", value: "14446", label: "National de-addiction helpline" },
       { icon: "account_balance", value: "Social Justice & Empowerment", label: "Ministry" },
     ],
     /*

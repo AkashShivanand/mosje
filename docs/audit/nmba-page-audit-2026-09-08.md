@@ -958,3 +958,56 @@ takes its own row; no viewport scrolls sideways.
 
 `/explorations/nmba/banner-layout` now holds three: **both CTAs right**, **CTAs
 below the copy**, and **two zones**.
+
+---
+
+## 18. The fold audit, and what came of each finding
+
+Seven findings. **Six fixed, one withdrawn**, and the withdrawal is the one worth
+reading.
+
+| # | Finding | Outcome |
+|---|---|---|
+| 1 | The lead's column stopped **24px** from the 340px photograph | Fixed — the landing grid sets its own `column-gap: 40`, and the gutter measures 40 |
+| 2 | Green band met blue hero with a hard seam | Fixed — a hairline and a soft shadow, so the band rests ON the page |
+| 3 | The helpline number **tied** the campaign's own heading, both 20px | Fixed — the heading is `headline-4` (24px at 1440) against the number's 16 |
+| 4 | `14446` appeared **twice in the fold**, 950px apart | Fixed — the fact-strip row is gone |
+| 5 | The fact strip's fourth cell was a **name among three figures**, and the only one that wrapped | Fixed by 4 — three cells now, none wrapping |
+| 6 | The mark "floats": 64px above, 20px below | **Withdrawn** — see below |
+| 7 | The code's effective pattern was **~60px** inside a 72px box | Fixed — 88px box, ~74px of pattern |
+
+### Why 6 was withdrawn
+
+The 64 above the mark is the band's own `padding-block`, and it is symmetric with
+the 64 below the actions. The 20 below the mark is the content column's internal
+`gap`. **They are different quantities and were never meant to match** — one is
+the band's edge, the other is the rhythm inside it. Reading them as an asymmetry
+was reading a grid as a stack. Changing either would have made the band's top and
+bottom padding disagree, to fix something that was not wrong.
+
+### What each fix cost
+
+**The band grew 104 → 120px.** All of it the code: 88 + 32 of padding. That is a
+real charge against a 760px fold and it is the trade the finding named — a QR is
+the only thing in the band that fails *completely* if it is slightly too small,
+where everything else merely reads tighter. A code nobody can scan is not a
+smaller feature, it is an absent one.
+
+**The gutter fix is in the design system**, not this page: `.sa-siteheader__container`
+shares one `gap` between the stacked layout, where it is a row gap between copy
+and picture, and the landing layout, where it is the gutter beside a 340px
+photograph. 24 is right for the first and wrong for the second, so the landing
+variant now sets its own column gap. Every landing header on the estate gets it.
+
+**The helpline fact went for a reason that only just became true.** It was
+removed on 7 Sep as a duplicate, restored on 8 Sep because the band was
+dismissible and pressing × took the last copy of the number with it, and is
+removed again now because that is no longer so: the band carries it while it is
+there, and `OrganisationHelplineBadge` carries it beside the mark the moment the
+band goes. The number is in the fold in every state by design, rather than
+because this row happened to exist.
+
+Three facts, not four. The Ministry row survives on the same weak argument as
+before — it is the only cell that is a name among figures, and a reader on the
+Department's own site has been told the Department twice by the masthead already.
+It stays because two is not a strip.
