@@ -174,13 +174,18 @@ export function Dismiss({ onClick, label }: { onClick: () => void; label: string
 /**
  * THE HELPLINE CARD — one component, two sizes, and the thing that flies.
  *
- * ── WHY THE GLYPH MOVED TO THE RIGHT ────────────────────────────────────────
+ * ── THE GLYPH LEADS, AND IT WENT TO THE RIGHT AND BACK ──────────────────────
  *
- * With the icon leading, the card read left to right as *symbol → label →
- * number*: the decoration arrived first and the five digits a person is actually
- * looking for arrived last, at the end of a 296px control. Reversed, the card
- * reads *label → number → act*, which is the order the reader needs them in, and
- * it puts the moving element on the edge the eye leaves the card by.
+ * The argument for moving it right was that the card then read *label → number →
+ * act* rather than putting decoration before the five digits. That reasoning was
+ * fine and it lost to two better facts: the handoff draws it on the leading edge
+ * (`Nudge`, 57895:11260), and a glyph that identifies WHAT a control is belongs
+ * before the label rather than after it — the same place the icon sits on every
+ * other button in the estate.
+ *
+ * The halo goes with it, which is the part that matters: on the leading edge it
+ * sits at the card's rounded end, where a soft disc expanding has room to be seen
+ * against the green rather than against the number.
  *
  * ── AND WHY IT RINGS, BRIEFLY ───────────────────────────────────────────────
  *
@@ -215,14 +220,14 @@ export function HelplineCard({
       tabIndex={inert ? -1 : undefined}
       aria-label={`${NMBA.banner.helplineLabel} ${NMBA.banner.helplineNumber}`}
     >
+      <span className="xhc__icon" aria-hidden>
+        <Icon name="call" size={20} />
+      </span>
       <span className="xhc__text">
         <span className="xhc__label">
           {size === "hero" ? "Helpline" : NMBA.banner.helplineShort}
         </span>
         <span className="xhc__number">{NMBA.banner.helplineNumber}</span>
-      </span>
-      <span className="xhc__icon" aria-hidden>
-        <Icon name="call" size={20} />
       </span>
     </a>
   );
@@ -233,11 +238,8 @@ export function Helpline({ innerRef }: { innerRef?: React.Ref<HTMLAnchorElement>
   return <HelplineCard size="band" innerRef={innerRef} />;
 }
 
-/**
- * The campaign, as production now arranges it: the code leads, the message
- * follows, the button closes the sentence they both open.
- */
-export function Campaign() {
+/** The code and the message — everything in the campaign except its button. */
+export function CampaignCopy() {
   return (
     <>
       <span className="xband__qr">
@@ -247,17 +249,36 @@ export function Campaign() {
         <p className="xband__heading">{NMBA.banner.heading}</p>
         <p className="xband__text">{NMBA.banner.text}</p>
       </div>
-      <a
-        className={buttonClasses("success", "outlined", "md", "xband__cta", "inverse")}
-        href={NMBA.banner.actionHref}
-        target="_blank"
-        rel="noreferrer"
-        aria-label={NMBA.banner.actionFullLabel}
-      >
-        <span>{NMBA.banner.actionLabel}</span>
-        <Icon name="open_in_new" size={20} aria-hidden />
-        <span className="ds-sr-only"> (opens in a new tab)</span>
-      </a>
+    </>
+  );
+}
+
+/** The campaign's own button. */
+export function CampaignCta() {
+  return (
+    <a
+      className={buttonClasses("success", "outlined", "md", "xband__cta", "inverse")}
+      href={NMBA.banner.actionHref}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={NMBA.banner.actionFullLabel}
+    >
+      <span>{NMBA.banner.actionLabel}</span>
+      <Icon name="open_in_new" size={20} aria-hidden />
+      <span className="ds-sr-only"> (opens in a new tab)</span>
+    </a>
+  );
+}
+
+/**
+ * The campaign, as production now arranges it: the code leads, the message
+ * follows, the button closes the sentence they both open.
+ */
+export function Campaign() {
+  return (
+    <>
+      <CampaignCopy />
+      <CampaignCta />
     </>
   );
 }

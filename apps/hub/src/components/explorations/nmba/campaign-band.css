@@ -46,6 +46,23 @@
 
   /* With the campaign dismissed only the helpline is left, so the row stops
      pretending to have five columns. */
+  /* QR | copy | [both CTAs] | × — four cells rather than five, because the two
+     routes are one group in this option. */
+  .xband__inner--pair {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+  }
+
+  .xband__pair {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-8) var(--sa-inline-12);
+  }
+
+  .xband__inner--pair .xhc--band {
+    margin-inline-start: 0;
+  }
+
   .xband__inner[data-gone] {
     grid-template-columns: minmax(0, 1fr);
     justify-items: start;
@@ -170,40 +187,58 @@
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-color-successScale-600);
     opacity: 0;
-    animation: xhc-halo 1600ms var(--sa-motion-reveal-easing) 3 both;
+    animation: xhc-halo 2000ms var(--sa-motion-emphasis-easing) 2 both;
   }
 
   /* The well itself breathes 3.5% — far below the threshold at which it reads
      as a size change, and just enough that the halo looks emitted rather than
      drawn on top. */
   .xhc__icon {
-    animation: xhc-breathe 1600ms var(--sa-motion-reveal-easing) 3 both;
+    animation: xhc-breathe 2000ms var(--sa-motion-emphasis-easing) 2 both;
   }
 
   .xhc:hover .xhc__icon::before,
   .xhc:focus-visible .xhc__icon::before {
-    animation: xhc-halo 1400ms var(--sa-motion-reveal-easing) infinite;
+    animation: xhc-halo 2000ms var(--sa-motion-emphasis-easing) infinite;
   }
 
   .xhc:hover .xhc__icon,
   .xhc:focus-visible .xhc__icon {
-    animation: xhc-breathe 1400ms var(--sa-motion-reveal-easing) infinite;
+    animation: xhc-breathe 2000ms var(--sa-motion-emphasis-easing) infinite;
   }
 
   /*
-   * Never from `scale(0)`: the halo starts at 0.85, already the size of a thing
-   * rather than the memory of one. It stops at 1.9 and holds — the last 30% of
-   * the cycle is empty, which is the pause between breaths.
+   * ── WHAT MADE THE FIRST PULSE FEEL STEPPY ───────────────────────────────
+   *
+   * Three things, and none of them was the duration:
+   *
+   * 1. OPACITY WAS FULL ON FRAME ONE. It went 0 → 0.42 instantly, so every
+   *    cycle began with a pop. It now ramps in over the first 14%, which is the
+   *    single biggest difference.
+   * 2. IT REACHED 1.9. Nearly doubling made the disc a shape rather than a
+   *    glow, so its edge was legible and the edge is what looked like a step.
+   *    1.62 keeps it soft.
+   * 3. A HARD EASE-OUT. `reveal` is fast-out-slow-in — right for something
+   *    emitted, wrong for something breathing, because it spends most of the
+   *    cycle stationary and then jumps. `emphasis` accelerates and decelerates,
+   *    which is what a swell does.
+   *
+   * Two breaths of 2000ms rather than three of 1600: same 4s total, still under
+   * the five past which WCAG 2.2 §2.2.2 would want a pause control, and the
+   * margin is stated so nobody lengthens a breath and crosses it unnoticed.
    */
   @keyframes xhc-halo {
-    0% { opacity: 0.42; transform: scale(0.85); }
-    55% { opacity: 0; transform: scale(1.9); }
-    100% { opacity: 0; transform: scale(1.9); }
+    0% { opacity: 0; transform: scale(0.92); }
+    14% { opacity: 0.36; }
+    62% { opacity: 0; transform: scale(1.62); }
+    100% { opacity: 0; transform: scale(1.62); }
   }
 
+  /* 2.5%, down from 3.5% — with the glyph on the leading edge the well sits
+     against the card's rounded end, where any wobble reads against the curve. */
   @keyframes xhc-breathe {
-    0%, 55%, 100% { transform: scale(1); }
-    22% { transform: scale(1.035); }
+    0%, 62%, 100% { transform: scale(1); }
+    26% { transform: scale(1.025); }
   }
 
   /*
@@ -231,11 +266,11 @@
 
   .xhc--band {
     margin-inline-start: var(--sa-inline-16);
-    padding: var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-20);
+    padding: var(--sa-padding-4) var(--sa-padding-20) var(--sa-padding-4) var(--sa-padding-4);
   }
 
   .xhc--hero {
-    padding: var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-16);
+    padding: var(--sa-padding-4) var(--sa-padding-16) var(--sa-padding-4) var(--sa-padding-4);
   }
 
   .xhc--hero .xhc__label {
@@ -370,7 +405,7 @@
     display: inline-flex;
     align-items: center;
     gap: var(--sa-inline-12);
-    padding: var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-16);
+    padding: var(--sa-padding-4) var(--sa-padding-16) var(--sa-padding-4) var(--sa-padding-4);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-color-successScale-700);

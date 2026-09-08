@@ -100,54 +100,73 @@ export function flyGhost(
    * read as a twitch rather than a hand-off.
    *
    * Both pills carry the same thing at their leading edge — a phone glyph in a
-   * circular well — so aligning left edges makes that well travel continuously
-   * and doubles the distance to 132px on a real diagonal. It is the shared
-   * element in the shared-element transition; the label and the digits are what
-   * changes around it.
+   * circular well — so aligning left edges makes that well travel continuously.
    */
   const dx = from.left - to.left;
   const dy = from.top + from.height / 2 - (to.top + to.height / 2);
-  // Clamped: a source pill much taller or shorter than the badge would otherwise
-  // start the flight as an illegible speck or an overbearing slab.
   const scale = Math.min(1.25, Math.max(0.8, from.height / to.height));
+  const len = Math.hypot(dx, dy) || 1;
 
   /*
-   * A gentle bow at the midpoint, PERPENDICULAR to the direction of travel.
+   * ── DURATION SCALES WITH DISTANCE ───────────────────────────────────────
    *
-   * A straight line reads as a slide; the bow is what makes it read as flight.
-   * The first version added its offset to x unconditionally, which arcs a
-   * vertical path and does nothing at all to a horizontal one — and this path
-   * became horizontal the moment the helpline moved to the band's trailing edge
-   * and the badge stayed beside the mark, 860px away.
+   * A fixed 400ms is two different animations depending on where the card
+   * starts. At the 128px hop it was leisurely; at the 860px crossing the card
+   * moved at 2,150 px/s, which is a flick rather than a flight — fast enough
+   * that the eye tracks a blur and never reads it as one object arriving.
    *
-   * A twelfth of the distance and no more. A visible arc on a government page is
-   * a decoration; this is a hand-off that happens to be legible.
+   * So the token sets the base and the distance adds to it, clamped either side
+   * so a very short flight never crawls and a full-width one never drags. 860px
+   * resolves to about 615ms; 130px to about 430ms.
    */
-  const len = Math.hypot(dx, dy) || 1;
+  const ms = Math.round(
+    Math.min(opts.duration * 1.6, Math.max(opts.duration * 0.8, opts.duration + len * 0.25)),
+  );
+
   /*
-   * The perpendicular is NEGATED so the card arcs OVER the path rather than
-   * under it. Both are perpendicular and only one reads as flight: the downward
-   * arc sends the card dipping through the hero and back up, which looks like
-   * something sagging rather than something travelling.
+   * A gentle bow at the midpoint, PERPENDICULAR to the direction of travel and
+   * negated so the card arcs OVER the path rather than sagging under it.
    */
   const bowX = (dy / len) * (len / 12);
   const bowY = (-dx / len) * (len / 12);
 
+  /*
+   * ── BLUR PEAKS IN THE MIDDLE, WHERE THE SPEED IS ────────────────────────
+   *
+   * It used to be heaviest at the START and clear by the midpoint, which is
+   * backwards: with an ease-in-out curve the card is at its SLOWEST on frame one
+   * and its fastest halfway across. Blurring the slow part and sharpening the
+   * fast part is the opposite of motion blur, and it is why the flight read as
+   * "a blurry thing appears, then a sharp thing streaks".
+   *
+   * Peak 3px at the midpoint, tapering to nothing at both ends. A little at the
+   * start still helps the hand-off, because the departing pill and the arriving
+   * card are not the same shape.
+   *
+   * ── AND THE PER-KEYFRAME EASING ─────────────────────────────────────────
+   *
+   * Opacity resolves on its own curve well before the position does, so the card
+   * is fully solid for the second half of its journey and the eye has something
+   * definite to follow into the landing. One easing for everything made the card
+   * still be fading in while it was already settling.
+   */
   return ghost.animate(
     [
       {
         transform: `translate(${dx}px, ${dy}px) scale(${scale})`,
-        opacity: 0.55,
-        filter: "blur(2px)",
+        opacity: 0.7,
+        filter: "blur(1.5px)",
+        easing: "cubic-bezier(0.4, 0, 0.2, 1)",
       },
       {
         transform: `translate(${dx / 2 + bowX}px, ${dy / 2 + bowY}px) scale(${1 + (scale - 1) / 2})`,
         opacity: 1,
-        filter: "blur(0.5px)",
+        filter: "blur(3px)",
         offset: 0.5,
+        easing: "cubic-bezier(0.22, 1, 0.36, 1)",
       },
       { transform: "translate(0, 0) scale(1)", opacity: 1, filter: "blur(0)" },
     ],
-    { duration: opts.duration, easing: opts.easing, fill: "backwards" },
+    { duration: ms, easing: "linear", fill: "backwards" },
   );
 }

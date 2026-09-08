@@ -669,3 +669,64 @@ The handoff's `Nudge` pulse takes the same cadence, so the two layout options
 differ in how they are composed and not in how the signal behaves.
 
 Frames across one breath: `docs/audit/img/halo-frames.png`.
+
+---
+
+## 13. The flight refined, the glyph back on the left, and the banner as two options
+
+### 13.1 The flight
+
+| | Before | After | Why |
+|---|---|---|---|
+| Duration | Fixed 400ms | `clamp(base×0.8, base + distance×0.25, base×1.6)` — **615ms** at 860px, ~430ms at 130px | A fixed duration is two different animations depending on where the card starts. At 860px it moved at **2,150 px/s** — fast enough that the eye tracks a blur and never reads one object arriving |
+| Blur | 2px at the **start**, clear by the midpoint | 1.5px at the start, **3px at the midpoint**, 0 at the end | Backwards. With an in-out curve the card is slowest on frame one and fastest halfway across, so it was blurring the slow part and sharpening the fast part — the opposite of motion blur |
+| Easing | One curve for everything | Per-keyframe: in-out for the departure, a strong ease-out into the landing | Opacity resolves well before position does, so the card is solid for the second half and the eye has something definite to follow in |
+| Opening opacity | 0.55 | 0.7 | At 0.55 the object was half-there while the pill was still visible; the two read as a crossfade rather than one thing moving |
+
+Landing is unchanged and still exact — predicted and actual agree to the pixel.
+
+### 13.2 The glyph went right and came back
+
+The argument for the trailing edge was that the card then read *label → number →
+act* instead of putting decoration before the digits. That reasoning was sound
+and it lost to two better facts: **the handoff draws it on the leading edge**
+(`Nudge`, 57895:11260), and a glyph that identifies *what a control is* belongs
+before its label — which is where the icon sits on every other button in the
+estate.
+
+### 13.3 The pulse, smoothed
+
+Three things made it steppy, and none was the duration:
+
+| | Before | After |
+|---|---|---|
+| Opacity onset | `0 → 0.42` on frame one — a pop every cycle | Ramps in over the first 14% |
+| Peak scale | 1.9 — nearly doubling, so the disc had a legible **edge**, and the edge is what looked like a step | 1.62 |
+| Easing | `reveal` (fast-out, slow-in) — right for something emitted, wrong for something breathing: it spends most of the cycle stationary, then jumps | `emphasis` (in-out) — accelerates and decelerates, which is what a swell does |
+
+Two breaths of 2000ms rather than three of 1600 — the same 4s total, still under
+§2.2.2's five seconds, margin stated in the stylesheet.
+
+### 13.4 The banner, as two options
+
+`/explorations/nmba/banner-layout` — *"Where do the band's two calls to action
+sit?"*
+
+| | Both CTAs on the right | CTAs below the copy |
+|---|---|---|
+| Height | **104px** | **168px** |
+| Code | 72px | 120px, spanning the full height |
+| Heading | label-sized | `headline-3`, 28/36 |
+| The two routes | one group on the trailing edge, **12 apart** | a column under the sentence, 16 apart |
+
+**12 is the gap, not 8 and not 16.** At 8 the two pills touch optically and read
+as a segmented control; at 16 they stop being a group at this size.
+
+**And it costs something.** The two were 40 apart on purpose: pairing the
+helpline with the campaign's own button makes it read as the second half of one
+offer, when it is a standing public service that happens to be printed here. The
+trade is a tighter, calmer trailing edge against a muddier distinction between a
+campaign action and a permanent one. Recorded on the option rather than resolved
+in it.
+
+Stills: `opt-ctas-right.png`, `opt-ctas-below.png`, `flight-frames.png`.

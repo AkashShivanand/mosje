@@ -143,27 +143,28 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
         id: "banner-layout",
         title: "How the campaign band is composed",
         question:
-          "The handoff draws this band 168px tall with a 120px code and the buttons under the copy; the build is 104px with the buttons on the trailing edge. Which composition ships?",
+          "Where do the band's two calls to action sit — as a pair on the trailing edge beside the message, or in a column below the copy?",
         date: "8 September 2026",
         options: [
           {
-            id: "compact",
-            title: "Compact, one row",
+            id: "ctas-right",
+            title: "Both CTAs on the right",
             summary:
-              "104px. A 72px code leads, the message takes the middle, and both routes sit on the trailing edge.",
+              "104px, one row. A 72px code leads, the message takes the middle, and the two routes sit together on the trailing edge, 12 apart.",
             status: "proposed",
             live: true,
             lookAt: [
               "It costs 104px of a 760px fold",
               "Everything is on one optical line, so the row scans in a single pass",
-              "The heading is label-sized, not headline-sized — it does not compete with the H1 below it",
+              "The heading is label-sized — it does not compete with the H1 below it",
+              "Pairing the helpline with the campaign's button makes it read as the second half of one offer, when it is a standing service that happens to be printed here",
             ],
           },
           {
-            id: "handoff",
-            title: "Two rows, per the handoff",
+            id: "ctas-below",
+            title: "CTAs below the copy",
             summary:
-              "168px, drawn from `Nudge` (57774:19709): a 120px code spanning both rows, a 28px heading, and both buttons in a column beside it.",
+              "168px. A 120px code spans the full height, and the heading, sentence and both buttons stack beside it — the handoff’s own composition.",
             status: "proposed",
             live: true,
             lookAt: [

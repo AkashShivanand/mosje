@@ -3,36 +3,52 @@
 import * as React from "react";
 import Image from "next/image";
 import { Icon, buttonClasses } from "@mosje/design-system";
-import { Campaign, Dismiss, Fold, HelplineCard, NMBA } from "./fold";
+import { CampaignCopy, CampaignCta, Dismiss, Fold, HelplineCard, NMBA } from "./fold";
 import "./campaign-band.css";
 
 /**
- * THE DECISION: how is the campaign band composed?
+ * THE DECISION: where do the band's two calls to action sit?
  *
- * The SAMAVESH handoff draws it as `Nudge` (57774:19709) — 168px tall, a 120px
- * code on the left spanning the full height, and the copy and both buttons
- * stacked in a column beside it. What this estate ships is 104px, one row, with
- * the buttons on the trailing edge.
+ * On the TRAILING EDGE, as a pair beside the message — one row, 104px — or
+ * BELOW THE COPY in a column, which is how the SAMAVESH handoff draws it
+ * (`Nudge`, 57774:19709) at 168px.
  *
- * Neither is a mistake. They are two answers to the same question and the
- * difference is 64px of a 760px fold — see `top-bands`, where the same currency
- * is being spent on a different thing.
+ * Neither is a mistake. The difference is 64px of a 760px fold, and it buys a
+ * 120px code and a 28px heading rather than a 72px code and a label-sized one.
+ * See `top-bands`, where the same currency is being spent on something else.
  */
 
 /* ══════════════════════════════════════════════════════════════════════════
-   OPTION A — Compact, one row (what is built today)
+   OPTION A — Both CTAs on the trailing edge, as a pair
    ══════════════════════════════════════════════════════════════════════════ */
 
-export function LayoutCompact() {
+export function LayoutCtasRight() {
   const [gone, setGone] = React.useState(false);
   return (
     <Fold
       band={
         gone ? null : (
           <section className="xband" aria-label={NMBA.banner.heading}>
-            <div className="sa-container xband__inner">
-              <Campaign />
-              <HelplineCard size="band" />
+            <div className="sa-container xband__inner xband__inner--pair">
+              <CampaignCopy />
+              {/*
+               * THE TWO ROUTES AS ONE GROUP, 12 APART.
+               *
+               * They were 40 apart, deliberately: pairing the helpline with the
+               * campaign's own button made it read as the second half of one
+               * offer, when it is a standing public service that happens to be
+               * printed here. As a pair that reading returns — the trade is a
+               * tighter, calmer trailing edge against a slightly muddier
+               * distinction between a campaign action and a permanent one.
+               *
+               * 12 is the gap, not 8 and not 16: at 8 the two pills touch
+               * optically and read as a segmented control, and at 16 they stop
+               * being a group at this size.
+               */}
+              <div className="xband__pair">
+                <CampaignCta />
+                <HelplineCard size="band" />
+              </div>
               <Dismiss onClick={() => setGone(true)} label="Dismiss the campaign band" />
             </div>
           </section>
@@ -46,7 +62,7 @@ export function LayoutCompact() {
    OPTION B — Two rows, as the handoff draws it
    ══════════════════════════════════════════════════════════════════════════ */
 
-export function LayoutHandoff() {
+export function LayoutCtasBelow() {
   const [gone, setGone] = React.useState(false);
   if (gone) return <Fold band={null} />;
 
