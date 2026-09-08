@@ -32,39 +32,56 @@ function imageSize(file) {
 }
 
 
+
+/* One type scale for the whole deck. Every step is a real jump, so a reader can
+   tell a label from a body line at a glance instead of reading it first. The
+   previous scale ran label 8.5 / body 9.5 — a single point apart, which is why
+   the four blocks in an option record read as one grey wall.
+   Tracking is in points, so 1.0 on 8.5pt type is ~12% of the em and shatters a
+   word: "O U R  R E C O M M E N D AT I O N". Labels track 0.6, pills 0.5. */
+const T = { display:40, h1:27, h2:17, lead:12.5, body:10, label:9, caption:8.5, micro:8 };
+const TRACK = { eyebrow:0.8, label:0.6, pill:0.5 };
+
 const slide = dark => { const s = pres.addSlide(); s.background = { color: dark?DARK:WHITE }; return s; };
 
 function header(s, eyebrow, title, lede) {
   s.addText(eyebrow.toUpperCase(), { x:M, y:0.42, w:CW, h:0.22, isTextBox:true, margin:0,
-    fontFace:F, fontSize:10, bold:true, charSpacing:1.2, color:MUTE });
-  s.addText(title, { x:M, y:0.66, w:CW, h:0.46, isTextBox:true, margin:0,
-    fontFace:F, fontSize:26, bold:true, color:DARK });
-  if (!lede) return 1.24;
-  s.addText(lede, { x:M, y:1.16, w:CW*0.92, h:0.3, isTextBox:true, margin:0,
-    fontFace:F, fontSize:12, color:INK_MUTE });
-  return 1.6;
+    fontFace:F, fontSize:T.label, bold:true, charSpacing:TRACK.eyebrow, color:MUTE });
+  s.addText(title, { x:M, y:0.68, w:CW, h:0.48, isTextBox:true, margin:0,
+    fontFace:F, fontSize:T.h1, bold:true, color:DARK });
+  if (!lede) return 1.28;
+  s.addText(lede, { x:M, y:1.20, w:CW*0.92, h:0.3, isTextBox:true, margin:0,
+    fontFace:F, fontSize:T.lead, color:INK_MUTE });
+  return 1.66;
 }
 function pill(s, x, y, label, fill, txt) {
-  const w = 0.076*label.length + 0.3;
+  const w = 0.072*label.length + 0.32;
   s.addShape(pres.ShapeType.roundRect, { x, y, w, h:0.26, rectRadius:0.13,
     fill:{color:fill}, line:{color:fill, width:0} });
   s.addText(label, { x, y, w, h:0.26, isTextBox:true, margin:0, align:"center", valign:"middle",
-    fontFace:F, fontSize:8.5, bold:true, charSpacing:0.9, color:txt });
+    fontFace:F, fontSize:T.micro, bold:true, charSpacing:TRACK.pill, color:txt });
   return w;
 }
-const sourceLine = (s, t) => s.addText(t, { x:M, y:PH-0.48, w:CW, h:0.24, isTextBox:true, margin:0,
-  fontFace:F, fontSize:9, color:MUTE });
+const sourceLine = (s, t) => s.addText(t, { x:M, y:PH-0.46, w:CW, h:0.24, isTextBox:true, margin:0,
+  fontFace:F, fontSize:T.micro, color:MUTE });
 
 /** A labelled block in the option record. Returns the y the next block starts at. */
 function field(s, x, y, w, label, body, labelColor) {
-  s.addText(label.toUpperCase(), { x, y, w, h:0.18, isTextBox:true, margin:0,
-    fontFace:F, fontSize:8.5, bold:true, charSpacing:1, color:labelColor||MUTE });
-  const cpl = Math.floor((w*72)/(9.5*0.5));
+  s.addText(label.toUpperCase(), { x, y, w, h:0.19, isTextBox:true, margin:0,
+    fontFace:F, fontSize:T.label, bold:true, charSpacing:TRACK.label, color:labelColor||MUTE });
+  const cpl = Math.floor((w*72)/(T.body*0.5));
   const lines = body.reduce((n,t)=>n+Math.max(1,Math.ceil(t.length/cpl)),0);
-  const h = lines*0.166 + body.length*0.03 + 0.04;
-  s.addText(body.map((t,i)=>({ text:(body.length>1?"·  ":"")+t, options:{ breakLine:i<body.length-1 } })), {
-    x, y:y+0.18, w, h, isTextBox:true, margin:0, fontFace:F, fontSize:9.5, color:INK, lineSpacingMultiple:1.16 });
-  return y+0.18+h+0.08;
+  const h = lines*0.175 + body.length*0.035 + 0.04;
+  /* the marker carries the block's colour so a list reads as a list at a glance,
+     while the sentence itself stays in the body colour */
+  const runs = [];
+  body.forEach((t,i)=>{
+    if (body.length>1) runs.push({ text:"\u00B7  ", options:{ color:labelColor||MUTE, bold:true } });
+    runs.push({ text:t, options:{ breakLine:i<body.length-1 } });
+  });
+  s.addText(runs, { x, y:y+0.21, w, h, isTextBox:true, margin:0, fontFace:F,
+    fontSize:T.body, color:INK, lineSpacingMultiple:1.2 });
+  return y+0.21+h+0.17;
 }
 
 /* ═══ 1 · Title ═══════════════════════════════════════════════════════════ */
@@ -89,8 +106,6 @@ function field(s, x, y, w, label, body, labelColor) {
     x:M, y:5.66, w:8.8, h:0.3, isTextBox:true, margin:0, fontFace:F, fontSize:12.5, color:WHITE });
   s.addText("Counts taken from dosje.gov.in on 8 September 2026 · MoSJE Design Research", {
     x:M, y:5.98, w:8.8, h:0.3, isTextBox:true, margin:0, fontFace:F, fontSize:11, color:BLUE_100 });
-  s.addText("Accompanies the design file\nMoSJE (WIP) — Service Discovery", { x:9.6, y:5.66, w:3.0, h:0.6,
-    isTextBox:true, margin:0, align:"right", fontFace:F, fontSize:11, color:BLUE_100, lineSpacingMultiple:1.18 });
   s.addNotes("Sent ahead of the meeting, so it reads without a presenter. Six options, one to a page, each with the screen drawn for it. Approval is sought on three parts of the site, and for the preparatory work.");
 }
 
@@ -131,7 +146,7 @@ function field(s, x, y, w, label, body, labelColor) {
 /* ═══ 3–8 · One option, one page, with the screen as drawn ════════════ */
 const OPTIONS = [
   { surface:"The Home Page · Option A of 3", title:"Explore User Personas",
-    img:"home-a", node:"4632:158557", live:true, rec:false,
+    img:"home-a", live:true, rec:false,
     caption:"The panel as drawn: one group at a time, moved with the arrows beneath it.",
     what:"A picture of one group at a time, with arrows to move between them. It is on the home page today.",
     does:"Looks at the pictures, sees one that matches, and taps through to the Schemes page.",
@@ -145,7 +160,7 @@ const OPTIONS = [
     view:"Repair it, but do not rely on it alone. It serves the visitor who recognises a picture." },
 
   { surface:"The Home Page · Option B of 3", title:"Find support for you",
-    img:"home-b", node:"4632:158637", live:false, rec:true,
+    img:"home-b", live:false, rec:true,
     caption:"Question two of five, and the count at the top right — 45 here, and 6 once all five are answered.",
     what:"Five short questions, any of which may be skipped. Skipping widens the answer rather than ending it.",
     does:"Answers up to five questions — group, stage of life, kind of help, State — and is shown the schemes that list them, each with a place to apply.",
@@ -160,7 +175,7 @@ const OPTIONS = [
     view:"Recommended for the home page. It answers the question a citizen actually arrives with." },
 
   { surface:"The Home Page · Option C of 3", title:"Find offerings for you",
-    img:"home-c", node:"4632:177409", live:false, rec:false,
+    img:"home-c", live:false, rec:false,
     caption:"The nine groups as a single row. Choosing one opens the portal, the scheme and the complaint route beneath it.",
     what:"A row of groups. Tapping one shows the portal, the scheme and the complaint route for that group.",
     does:"Taps the group that describes them and sees three things they can act on, without answering anything.",
@@ -175,7 +190,7 @@ const OPTIONS = [
     view:"A good companion to Option B for the visitor who will not answer questions. Not a replacement for it." },
 
   { surface:"The Schemes Page · Option A of 2", title:"Pictures of the Nine Groups, with Cards",
-    img:"scheme-a", node:"4632:158842", live:false, rec:false,
+    img:"scheme-a", live:false, rec:false,
     caption:"All nine groups shown at once, above a card for each scheme.",
     what:"A row of pictures for the nine groups, above cards for each scheme.",
     does:"Picks their group from the pictures, then reads the scheme cards below.",
@@ -190,7 +205,7 @@ const OPTIONS = [
     view:"Not recommended for this page. The pictures are welcoming, but this is the page where people compare." },
 
   { surface:"The Schemes Page · Option B of 2", title:"Filter Panel with a Table of Schemes",
-    img:"scheme-b", node:"4632:159038", live:false, rec:true,
+    img:"scheme-b", live:false, rec:true,
     caption:"Two filters ticked together — Scheduled Caste and OBC — and the table beside them, showing who runs each scheme.",
     what:"Filters down the left; a table on the right showing what a person gets, who runs it, and whether it is Central or State.",
     does:"Ticks the filters that apply and reads the schemes side by side to see which to apply for.",
@@ -204,9 +219,9 @@ const OPTIONS = [
     view:"Recommended for the Schemes page. Option A's pictures can sit above this panel if the Department wishes to keep them." },
 
   { surface:"The Assistant · Option A of 1", title:"Samajik Sahayak — the Same Five Questions, in Chat",
-    vid:"chatbot", node:"4632:159395", live:true, rec:true,
-    caption:"Recorded walkthrough. Opened from an ordinary page, then answered one question at a time.",
-    what:"The same five questions, asked one at a time in a chat window that is already built and reachable from every page.",
+    vid:"chatbot", live:true, rec:true,
+    caption:"Recorded walkthrough of the assistant the design system ships, opened from an ordinary page and answered one question at a time.",
+    what:"The same five questions, asked one at a time in a chat window that is already built and reachable from every page. What is shown is the design system's own assistant, not a copy of it.",
     does:"Opens the assistant from whichever page they are on, answers on their phone, and is given schemes to open.",
     pros:["Reachable from every page, including pages that lead nowhere else",
           "One question per screen suits a mobile phone",
@@ -230,7 +245,9 @@ OPTIONS.forEach(o => {
   /* The frames come off the design file at their own proportions — a 2.3:1 strip
      for the persona panel, a 1.35:1 page for the schemes grid. Fit each inside one
      box rather than forcing a shape on it, so nothing is stretched or cropped twice. */
-  const y0 = 1.64, boxW = 5.9, boxH = 4.30;
+  /* the column must hold the screen, its caption and the verdict beneath it:
+     1.64 + boxH + 0.52 + 0.86 <= 6.72, so the screen gets 3.62 at most */
+  const y0 = 1.64, boxW = 5.9, boxH = 3.62;
   const src = o.vid ? A(`video/${o.vid}.png`) : A(`figma/${o.img}.png`);
   const im = imageSize(src);
   const sc = Math.min(boxW/im.w, boxH/im.h);
@@ -247,7 +264,7 @@ OPTIONS.forEach(o => {
     s.addImage({ path:src, x:ix, y:iy, w:iw, h:ih });
   }
   s.addText((o.vid ? "\u25B6  " : "") + o.caption, { x:M, y:iy+ih+0.14, w:boxW, h:0.34,
-    isTextBox:true, margin:0, fontFace:F, fontSize:9, color:MUTE, lineSpacingMultiple:1.1 });
+    isTextBox:true, margin:0, fontFace:F, fontSize:T.caption, color:MUTE, lineSpacingMultiple:1.15 });
 
   const rx = M+boxW+0.5, rw = CW-boxW-0.5;
   let y = y0;
@@ -256,21 +273,27 @@ OPTIONS.forEach(o => {
   y = field(s, rx, y, rw, "In its favour", o.pros, BLUE_TXT);
   y = field(s, rx, y, rw, "Against it", o.cons, SAFF_TXT);
 
-  const vy = 6.22;
-  if (y > vy) throw new Error(`record overflows the view box on "${o.title}" (${y.toFixed(2)} > ${vy})`);
-  s.addShape(pres.ShapeType.rect, { x:rx, y:vy, w:rw, h:0.72,
+  const bottom = PH - 0.78;
+  if (y > bottom) throw new Error(`record overflows the page on "${o.title}" (${y.toFixed(2)} > ${bottom})`);
+
+  /* The verdict sits under the screen it judges, not on the far side of the page.
+     It also fills the space a short wide frame leaves in this column. */
+  const vy = iy + ih + 0.52;
+  const vh = 0.86;
+  if (vy + vh > bottom) throw new Error(`verdict overflows the page on "${o.title}"`);
+  s.addShape(pres.ShapeType.rect, { x:M, y:vy, w:boxW, h:vh,
     fill:{color:o.rec?BLUE_50:SURF}, line:{color:o.rec?BLUE:HAIR, width:o.rec?1.25:0.75} });
-  s.addText("OUR RECOMMENDATION", { x:rx+0.16, y:vy+0.1, w:rw-0.32, h:0.18, isTextBox:true, margin:0,
-    fontFace:F, fontSize:8.5, bold:true, charSpacing:1, color:MUTE });
-  s.addText(o.view, { x:rx+0.16, y:vy+0.3, w:rw-0.32, h:0.38, isTextBox:true, margin:0,
-    fontFace:F, fontSize:10, bold:true, color:DARK, lineSpacingMultiple:1.14 });
+  s.addText("OUR RECOMMENDATION", { x:M+0.22, y:vy+0.15, w:boxW-0.44, h:0.2, isTextBox:true, margin:0,
+    fontFace:F, fontSize:T.caption, bold:true, charSpacing:TRACK.pill, color:MUTE });
+  s.addText(o.view, { x:M+0.22, y:vy+0.38, w:boxW-0.44, h:0.42, isTextBox:true, margin:0,
+    fontFace:F, fontSize:T.body+1, bold:true, color:DARK, lineSpacingMultiple:1.18 });
 
   sourceLine(s, o.vid
-    ? `Walkthrough recorded from a working prototype built to this design — MoSJE (WIP), Service Discovery, frame ${o.node}. Schemes shown are the Department's own, tagged as they would be after the preparatory work.`
-    : `Screen from the design file — MoSJE (WIP), Service Discovery, frame ${o.node}. Schemes shown are the Department's own, tagged as they would be after the preparatory work.`);
+    ? "Recorded from a working prototype of this option. Schemes shown are the Department's own, tagged as they would be after the preparatory work."
+    : "Schemes shown are the Department's own, tagged as they would be after the preparatory work.");
   s.addNotes(o.vid
-    ? `${o.title}. Press play — it is a real page being used, not an animation. Design file frame ${o.node}.`
-    : `${o.title}. The screen is taken from the design file, frame ${o.node}. A working prototype of this option can be shown live on request.`);
+    ? `${o.title}. Press play — it is a real page being used, not an animation.`
+    : `${o.title}. A working prototype of this option can be shown live on request.`);
 });
 
 /* ═══ 9 · How the options combine ═══════════════════════════════════════ */
@@ -376,44 +399,6 @@ OPTIONS.forEach(o => {
     x:M+0.34, y:5.42, w:CW-0.68, h:0.32, isTextBox:true, margin:0, fontFace:F, fontSize:11.5, color:BLUE_100 });
 
   s.addNotes("The three parts are decided separately. If only one is settled today, the Schemes page is the one that changes most for the most people.");
-}
-
-/* ═══ 12 · For the record ══════════════════════════════════════════ */
-{
-  const s = slide(false);
-  const y0 = header(s, "For the Record", "What This Review Does and Does Not Establish", null);
-  const limits = [
-    ["Every figure here was read from the live site.",
-     "The 134 schemes, and the count against each value of the Target Group filter, were read directly from dosje.gov.in on 8 September 2026."],
-    ["No citizens were interviewed.",
-     "The findings come from examining the two Ministry websites and comparing them with myScheme, the disability department's site, the National Scholarship Portal and GOV.UK. The groups described are taken from the Department's own Acts, schemes and organisations, not from interviews. Before Stage 3 is built, the questions should be tested with people from those groups."],
-  ];
-  let y = y0 + 0.16;
-  limits.forEach((l,i)=>{
-    s.addText(String(i+1), { x:M, y:y+0.02, w:0.5, h:0.4, isTextBox:true, margin:0,
-      fontFace:F, fontSize:21, bold:true, color:SAFF_TXT });
-    s.addText(l[0], { x:M+0.6, y, w:CW-0.6, h:0.3, isTextBox:true, margin:0, fontFace:F, fontSize:14, bold:true, color:DARK });
-    s.addText(l[1], { x:M+0.6, y:y+0.32, w:CW-0.6, h:0.9, isTextBox:true, margin:0,
-      fontFace:F, fontSize:11.5, color:INK, lineSpacingMultiple:1.24 });
-    y += 1.52;
-    s.addShape(pres.ShapeType.line, { x:M, y:y-0.2, w:CW, h:0, line:{color:HAIR, width:0.75} });
-  });
-  s.addText("WHAT WAS EXAMINED", { x:M, y:y+0.04, w:CW, h:0.22, isTextBox:true, margin:0,
-    fontFace:F, fontSize:9.5, bold:true, charSpacing:1.2, color:MUTE });
-  const srcs = [
-    ["The Ministry's own websites","dosje.gov.in, marked BETA, and socialjustice.gov.in — read on 8 September 2026."],
-    ["The Target Group filter","All 11 values counted on the live site: Students 50 · Sanitation Workers 16 · DNT 14 · Senior Citizens 9 · OBC 6 · Scheduled Castes 5 · Business 4 · Small business 4 · BPL, Homeowners, Medium business 1 each. 23 schemes carry no group."],
-    ["Other government websites","myscheme.gov.in · depwd.gov.in · scholarships.gov.in · GOV.UK, for comparison."],
-    ["Standards applied","GIGW 3.0, DBIM 3.0 and WCAG 2.2 AA."],
-    ["The design file","MoSJE (WIP) — Service Discovery. Every screen in this deck is a frame from that file, and each frame's id is printed under the screen it belongs to. The assistant additionally carries a recorded walkthrough. Working prototypes of all six exist and can be shown live."],
-  ];
-  let sy = y + 0.3;
-  srcs.forEach(r=>{
-    s.addText(r[0], { x:M, y:sy, w:3.1, h:0.26, isTextBox:true, margin:0, fontFace:F, fontSize:10.5, bold:true, color:BLUE_TXT });
-    s.addText(r[1], { x:M+3.3, y:sy, w:CW-3.3, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:10.5, color:INK, lineSpacingMultiple:1.16 });
-    sy += r[1].length > 120 ? 0.52 : 0.34;
-  });
-  sourceLine(s, "How Citizens Find Schemes — options for service discovery on the Department's website. MoSJE Design Research, 8 September 2026.");
 }
 
 pres.writeFile({ fileName: "MoSJE-Service-Discovery-Options.pptx" }).then(f => console.log("wrote", f));

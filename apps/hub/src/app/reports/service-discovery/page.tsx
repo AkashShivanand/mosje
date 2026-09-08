@@ -58,8 +58,8 @@ const OPTIONS: Option[] = [
   {
     id: "chatbot", label: "Assistant", surface: "The Assistant · Option A of 1",
     title: "Samajik Sahayak — the same five questions, in chat", status: "live", recommended: true,
-    what: "Open it from the corner of an ordinary page. The same five questions, one per screen, on a surface that is already built.",
-    file: "chatbot.html",
+    what: "Open it from the corner of an ordinary page. The same five questions, one per screen, on a surface that is already built. This one runs the design system's own Chatbot component, not a copy of it.",
+    file: "chatbot",
   },
 ];
 
@@ -126,7 +126,8 @@ export default function ServiceDiscoveryPrototypes() {
             {o.status === "live" ? "Already on the site" : "To be built"}
           </Badge>
           {o.recommended ? <Badge status="primary" emphasis="solid">Recommended</Badge> : null}
-          <Button href={`${BASE}/${o.file}`} target="_blank" rel="noreferrer" variant="neutral" size="sm">
+          <Button href={o.id === "chatbot" ? "/reports/service-discovery/assistant" : `${BASE}/${o.file}`}
+            target="_blank" rel="noreferrer" variant="neutral" size="sm">
             Open full screen
           </Button>
         </div>
@@ -138,7 +139,7 @@ export default function ServiceDiscoveryPrototypes() {
         <iframe
           key={o.id}
           className="sd-stage__frame"
-          src={`${BASE}/${o.file}`}
+          src={o.id === "chatbot" ? "/reports/service-discovery/assistant" : `${BASE}/${o.file}`}
           title={`${o.title} — interactive prototype`}
           loading="lazy"
           style={{ width: CANVAS_W, height: CANVAS_H, transform: `scale(${scale})` }}
