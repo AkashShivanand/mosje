@@ -1,0 +1,110 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ==========================================================================
+     The helpline badge, beside the organisation mark.
+     ==========================================================================
+
+     It appears only after the campaign band is dismissed, so its entrance is the
+     only motion it has: 6px up and a fade, on the estate's enter duration, after
+     a delay that lets the band finish folding away. Two properties, both
+     compositor-only.
+
+     `@starting-style` rather than a `data-mounted` effect — the element is
+     inserted already carrying its own opening frame, so there is no first paint
+     at full opacity to guard against and no state to hold in React.
+     ========================================================================= */
+
+  /*
+   * SIZED FOR THE HERO, NOT FOR THE BAND IT CAME FROM.
+   *
+   * It arrived as a 107×40 copy of the band's control, which is the right size
+   * on a crowded 104px row and the wrong one beside a 100px mark under a 40px
+   * title — there it read as a leftover chip rather than as the page's second
+   * standing fact. The hero has the room: the mark, the badge and the title all
+   * sit left of a 340px portrait with 700px of blue between them.
+   *
+   * 48 tall against the mark's 100, a 40px well, and the number at
+   * `headline-5` — the same step the campaign band gives its own heading. The
+   * label stays small and grey so the five digits carry the weight, which is
+   * what a person under stress is scanning for.
+   */
+  .orgb {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    flex: 0 0 auto;
+    padding: var(--sa-padding-4) var(--sa-padding-20) var(--sa-padding-4) var(--sa-padding-4);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-color-successScale-700);
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: var(--sa-elevation-raised);
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing) 120ms,
+      transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing) 120ms,
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @starting-style {
+    .orgb {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .orgb:hover {
+      box-shadow: var(--sa-elevation-dropdown);
+    }
+  }
+
+  .orgb:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .orgb__icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    inline-size: var(--sa-control-height-md);
+    block-size: var(--sa-control-height-md);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-successScale-50);
+    color: var(--sa-color-successScale-600);
+  }
+
+  .orgb__text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+  }
+
+  .orgb__label {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .orgb__number {
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-weight: var(--sa-font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+  }
+
+  /* The 6px is the only thing to remove; the fade stays, because a fade is not
+     motion and it is what tells the reader the badge is new. */
+  @media (prefers-reduced-motion: reduce) {
+    @starting-style {
+      .orgb {
+        transform: none;
+      }
+    }
+  }
+}

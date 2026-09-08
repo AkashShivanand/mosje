@@ -1497,7 +1497,22 @@
     background: transparent;
   }
 
-  @media (min-width: 768px) {
+  /*
+   * 1024, NOT 768 — MEASURED, and it was wrong before the nav grew.
+   *
+   * The inline nav turned on at 768 and the hub's list needs 577px beside a
+   * ~300px lockup. Binary-searched at a 768 viewport: FOUR items fit, five
+   * pushed the document to 781, and six to 893. So the compact bar had been
+   * scrolling sideways at tablet since the fifth entry landed — adding
+   * "Explorations" as a sixth made it 112px worse and is how it was found, not
+   * what caused it.
+   *
+   * The drawer below this breakpoint is not a fallback invented for this fix:
+   * it is the same SheetToggle the mobile masthead has always shown, and the
+   * rule beneath this one has always hidden it at exactly the same width. The
+   * two move together, so there is never a band where both or neither appears.
+   */
+  @media (min-width: 1024px) {
     .ds-hdr-nav.is-inline {
       display: block;
     }
@@ -1517,7 +1532,8 @@
      masthead moved away from; it survived only because the compact variant was added
      after that pass and has no Figma master to check against. It has one now
      (Navbar/Compact, Device=Mobile), and it shows the 48px SheetToggle. */
-  @media (min-width: 768px) {
+  /* Moves with the inline nav's breakpoint above — see the note there. */
+  @media (min-width: 1024px) {
     .ds-hdr[data-variant="compact"] .ds-hdr-burger {
       display: none;
     }

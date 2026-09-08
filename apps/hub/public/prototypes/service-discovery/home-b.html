@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Find Support for You — Home page, Option B</title>
+<title>Find support for you — Home page, Option B</title>
 <link rel="stylesheet" href="core.css">
 <style>
 .finder{background:var(--sa-surface);border-radius:var(--sa-radius-lg);padding:30px 34px 34px}
@@ -32,12 +32,9 @@
 <script src="data.js"></script><script src="shell.js"></script>
 <main class="wrap sec">
   <p class="eyebrow">Citizen Services</p>
-  <div class="spread">
-    <div>
-      <h1 class="sec-t" id="head">Find Support for You</h1>
-      <p class="sec-lede" id="lede">Five short questions. Skip any of them — skipping widens the answer instead of stopping it.</p>
-    </div>
-    <div><div class="count-big" id="count">26</div><div class="count-cap" id="countcap">of 26 still match</div></div>
+  <div>
+    <h1 class="sec-t" id="head">Find support for you</h1>
+    <p class="sec-lede" id="lede">Five short questions. Skip any of them — skipping widens the answer instead of stopping it.</p>
   </div>
   <div class="progress" id="prog"></div>
   <div class="finder" id="finder"></div>
@@ -62,13 +59,6 @@ let step = 0;
 const ans = {};
 const el = id => document.getElementById(id);
 
-function remaining(){
-  return matchSchemes({ group:ans.group, stage:ans.stage, need:ans.need }).length;
-}
-function setCount(n, total){
-  el('count').textContent = n;
-  el('countcap').textContent = 'of ' + total + ' still match';
-}
 function drawProgress(){
   el('prog').innerHTML = Q.map((_,i)=>`<i class="${i<=step?'on':''}"></i>`).join('');
 }
@@ -96,7 +86,6 @@ function render(){
       const b = e.target.closest('.opt-card'); if(!b) return;
       ans[q.k] = (ans[q.k]===b.dataset.id) ? undefined : b.dataset.id;
       [...el('opts').children].forEach(c=>c.setAttribute('aria-pressed', String(ans[q.k]===c.dataset.id)));
-      setCount(remaining(), SCHEMES.length);
     });
     el('next').onclick = () => { step++; render(); };
     el('skip').onclick = () => { ans[Q[step].k]=undefined; step++; render(); };
@@ -104,7 +93,6 @@ function render(){
   } else {
     results();
   }
-  setCount(remaining(), SCHEMES.length);
 }
 function results(){
   el('head').textContent = 'What you can apply for';

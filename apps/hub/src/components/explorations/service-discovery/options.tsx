@@ -62,7 +62,7 @@ export const HomeFiveQuestions = () => (
   <Stage src={`${P}/home-b.html`} title="Find support for you — five short questions" />
 );
 export const HomeOneTap = () => (
-  <Stage src={`${P}/home-c.html`} title="Find offerings for you — one tap, no questions" />
+  <Stage src={`${P}/home-c.html`} title="Find Schemes for You — one tap, no questions" />
 );
 export const SchemesPictures = () => (
   <Stage src={`${P}/scheme-a.html`} title="Pictures of the nine groups, with cards" />

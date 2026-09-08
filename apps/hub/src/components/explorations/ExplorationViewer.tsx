@@ -3,7 +3,10 @@
 import * as React from "react";
 import { Icon } from "@mosje/design-system";
 import type { ExplorationModule, ExplorationOption } from "@/lib/explorations/registry";
-import { OptionAnchorGuest, OptionFlight } from "./nmba/CampaignBandOptions";
+import { OptionArrive, OptionFlight } from "./nmba/CampaignBandOptions";
+import { OptionOneBand, OptionTwoBands } from "./nmba/TopBandsOptions";
+import { HelplineRinging, HelplineStatic } from "./nmba/HelplineCardOptions";
+import { LayoutCtasBelow, LayoutCtasRight, LayoutTwoZones } from "./nmba/BannerLayoutOptions";
 import {
   HomePersonas,
   HomeFiveQuestions,
@@ -27,8 +30,15 @@ import "./explorations.css";
  * because a missing prototype and a prototype that draws nothing look the same.
  */
 const PROTOTYPES: Record<string, React.ComponentType> = {
-  "nmba/campaign-band/current": OptionAnchorGuest,
   "nmba/campaign-band/flight": OptionFlight,
+  "nmba/campaign-band/arrive": OptionArrive,
+  "nmba/top-bands/two": OptionTwoBands,
+  "nmba/top-bands/one": OptionOneBand,
+  "nmba/helpline-card/current": HelplineStatic,
+  "nmba/helpline-card/ringing": HelplineRinging,
+  "nmba/banner-layout/ctas-right": LayoutCtasRight,
+  "nmba/banner-layout/ctas-below": LayoutCtasBelow,
+  "nmba/banner-layout/two-zones": LayoutTwoZones,
   "service-discovery/home-page/personas": HomePersonas,
   "service-discovery/home-page/five-questions": HomeFiveQuestions,
   "service-discovery/home-page/one-tap": HomeOneTap,

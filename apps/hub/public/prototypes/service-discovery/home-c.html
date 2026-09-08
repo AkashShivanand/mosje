@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Find Offerings for You — Home page, Option C</title>
+<title>Find Schemes for You — Home page, Option C</title>
 <link rel="stylesheet" href="core.css">
 <style>
 .strip{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 22px}
@@ -18,10 +18,9 @@
 <script src="data.js"></script><script src="shell.js"></script>
 <main class="wrap sec">
   <p class="eyebrow">Citizen Services</p>
-  <div class="spread">
-    <div><h1 class="sec-t">Find Offerings for You</h1>
-      <p class="sec-lede">Choose who you are. You are shown the portal, the scheme and the complaint route for that group — no questions asked.</p></div>
-    <div><div class="count-big">134</div><div class="count-cap">schemes published</div></div>
+  <div>
+    <h1 class="sec-t">Find Schemes for You</h1>
+    <p class="sec-lede">Choose who you are. You are shown the portal, the scheme and the complaint route for that group — no questions asked.</p>
   </div>
   <div class="strip" id="strip"></div>
   <div id="out"></div>
@@ -47,7 +46,6 @@ function draw(){
     `<button class="chip" data-g="${g.id}" aria-pressed="${g.id===sel}">${g.label}</button>`).join('');
   const g = GROUPS.find(x=>x.id===sel), r = ROUTES[sel];
   const scheme = SCHEMES.find(s=>s.g.includes(sel));
-  const n = SCHEMES.filter(s=>s.g.includes(sel)).length;
   el('out').innerHTML = `
     <div class="result rise">
       <div class="rhead"><img src="personas/${g.id}.png" alt=""><div><b>${g.label}</b><p>${g.sub}</p></div></div>
@@ -60,8 +58,7 @@ function draw(){
       <div class="rrow"><div class="grow"><span class="tag grey">Complaint</span>
         <h4>${r.grievance}</h4><small>Report denial of a right, discrimination, or a benefit not received</small></div>
         <button class="btn ghost">Visit →</button></div>
-      <div class="rfoot"><a href="scheme-b.html?g=${sel}" style="color:var(--sa-primary-600);font-weight:600;font-size:13.5px;text-decoration:none">All ${g.label} schemes →</a>
-        <span class="tag grey">${n} listed</span></div>
+      <div class="rfoot"><a href="scheme-b.html?g=${sel}" style="color:var(--sa-primary-600);font-weight:600;font-size:13.5px;text-decoration:none">All ${g.label} schemes →</a></div>
     </div>`;
 }
 el('strip').addEventListener('click', e => {
