@@ -8,14 +8,14 @@
 //
 // PROPERTY COVERAGE — all 3 Figma properties are accounted for:
 //   Size           (variant) -> size
-//   Selceted       (variant) -> NOT a prop. See below.
+//   Selected       (variant) -> NOT a prop. See below.
 //   item control   (variant) -> NOT a prop. See below.
 //
-// `Selceted` (the typo is the published property name — renaming it would
-// migrate four instances, and that is a decision the team has not taken) draws
-// WHERE IN THE SET the reader is: First, middle, last. The component derives
-// that from `page` against `totalPages`; a page number pinned from outside
-// could contradict what the reader has just done, so it maps to nothing.
+// `Selected` draws WHERE IN THE SET the reader is: First, middle, last. The
+// component derives that from `page` against `totalPages`; a position pinned
+// from outside could contradict what the reader has just done, so it maps to
+// nothing. (This property was published as `Selceted` until 8 September 2026;
+// the rename migrated all four instances with their values intact.)
 //
 // `item control` draws a page-size control and a results summary that the React
 // component DOES NOT HAVE. It is Figma-ahead-of-code, recorded as an open item
