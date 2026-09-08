@@ -26,14 +26,11 @@ async function tap(p, label, pause = 1500) {
   const errs = []; p.on('pageerror', e => errs.push(String(e)));
   await p.goto(URL, { waitUntil: 'networkidle' });
   // the demo dock is scaffolding for our own sessions, not part of the option
-  /* Out of frame for this recording: demo scaffolding and the dev-server badge
-     are ours rather than the option's, and the UX4G accessibility widget is
-     third-party chrome that sits on every page of the estate — it is not part
-     of what the assistant is being judged on. It stays on the real pages. */
-  await p.addStyleTag({ content: [
-    '.ds-demodock', 'nextjs-portal', '[data-nextjs-toast]',
-    '#uw-widget-custom-trigger', '[class*="ux4g-accessibility"]', '[id^="uw-"]',
-  ].join(',') + '{display:none !important}' });
+  /* Only our own scaffolding is hidden here — the demo dock and the dev-server
+     badge exist for our sessions, not for the option. The accessibility widget
+     is hidden by the route itself, so this script does not repeat the decision. */
+  await p.addStyleTag({ content:
+    '.ds-demodock,nextjs-portal,[data-nextjs-toast]{display:none !important}' });
   await p.waitForTimeout(1400);
 
   const launcher = p.locator('.ds-chatbot__launcher');

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Chatbot, SectionTitle, Card, CardBody, CardTitle, Badge } from "@mosje/design-system";
 import type { ChatbotQuickReply, ChatbotReply } from "@mosje/design-system";
 import "./assistant.css";
@@ -73,6 +73,19 @@ const OPENERS = q("Which scheme applies to me?", "Where do I complain?");
 export default function AssistantPrototype() {
   const step = useRef(0);
   const [open, setOpen] = useState(false);
+
+  /* The UX4G accessibility widget is third-party chrome mounted at body level on
+     every page of the estate. This route exists to demonstrate one component, and
+     the widget shares its corner — so it is hidden HERE and nowhere else. The
+     class goes on <body> because the widget is not inside this page's subtree,
+     and it is removed on unmount so no other route inherits it.
+
+     This is a demonstration surface under /reports, not a citizen-facing service
+     page. The widget stays on every page a citizen actually uses. */
+  useEffect(() => {
+    document.body.classList.add("sd-hide-a11y-widget");
+    return () => document.body.classList.remove("sd-hide-a11y-widget");
+  }, []);
 
   const onQuickReply = (reply: ChatbotQuickReply): ChatbotReply => {
     if (reply.label === "Start over") {

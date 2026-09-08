@@ -52,3 +52,12 @@
      justify-self does nothing here. */
   .sd-assistant__docs .ds-badge { align-self: flex-start; }
 }
+
+/* Deliberately OUTSIDE the components layer and marked important: the widget's
+   own stylesheet is unlayered, and an unlayered rule outranks every layered one.
+   Scoped to the class the assistant route adds to <body> for its lifetime. */
+body.sd-hide-a11y-widget #uw-widget-custom-trigger,
+body.sd-hide-a11y-widget [class*="ux4g-accessibility"],
+body.sd-hide-a11y-widget [id^="uw-"] {
+  display: none !important;
+}
