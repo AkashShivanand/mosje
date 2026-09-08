@@ -2261,18 +2261,32 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
      * it, above its own title, and it is the more prominent of the two. What is
      * removed is the repetition.
      */
+    /*
+     * THE EMPHASIS IS THE HANDOFF'S, AND IT IS THE REVERSE OF WHAT WAS HERE.
+     *
+     * Read off the Figma instances' own component properties rather than by
+     * eye: `Citizen Dashbaord` (51586:22056) is Type=Inverted, Sub-type=FILLED;
+     * `Take the Pledge` (51586:22066) is Type=Inverted, Sub-type=OUTLINED. This
+     * record had them the other way round, so the page led with the pledge in
+     * solid white where the design leads with the dashboard.
+     *
+     * It is also the better reading of the page. The pledge is one action a
+     * citizen takes once; the dashboard is where the Abhiyaan's own figures
+     * live, and it is the destination a returning reader wants. The band above
+     * already carries the campaign's loudest invitation.
+     */
     quickActions: [
-      {
-        label: "Take the Pledge",
-        href: "https://nashamukt.dosje.gov.in/epledge",
-        icon: "front_hand",
-        variant: "primary",
-        external: true,
-      },
       {
         label: "Citizen Dashboard",
         href: "https://nashamukt.dosje.gov.in/",
         icon: "dashboard",
+        variant: "primary",
+        external: true,
+      },
+      {
+        label: "Take the Pledge",
+        href: "https://nashamukt.dosje.gov.in/epledge",
+        icon: "front_hand",
         external: true,
       },
     ],

@@ -850,6 +850,8 @@ export {
   NATIONAL_EMBLEM_INVERSE,
   orgLogoSrc,
   portalLogoSrc,
+  ORG_MARKS_NEEDING_GROUND,
+  markNeedsGround,
 } from "./components/brand/org-logo-registry";
 export type { OrgSlug } from "./components/brand/org-logo-registry";
 

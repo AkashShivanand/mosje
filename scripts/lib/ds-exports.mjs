@@ -51,6 +51,12 @@ export const NOT_COMPONENTS = new Set([
   // entry of ORG_LOGOS, so the data is on screen even though the constant is not
   // a component. `check:org-logos` is what actually guards this registry.
   "ORG_LOGOS", "ORG_LOGO_FALLBACK", "PORTAL_ORG_LOGOS",
+  // Which six marks cannot hold a brand-coloured band on their own artwork, and
+  // the predicate that reads it. A judgement about ARTWORK, recorded beside the
+  // paths it qualifies — see the registry for how each one was measured. The set
+  // is data and the predicate is pure; neither renders anything, and what they
+  // decide is visible on every organisation hero rather than on a page here.
+  "ORG_MARKS_NEEDING_GROUND", "markNeedsGround",
   "SAMAVESH_MARK", "SAMAVESH_MARK_VECTOR", "NATIONAL_EMBLEM", "NATIONAL_EMBLEM_INVERSE",
   // The masthead's SAMAVESH cobrand — a BrandMark value, documented on the SiteHeader
   // page where it is rendered live, not a component of its own.
