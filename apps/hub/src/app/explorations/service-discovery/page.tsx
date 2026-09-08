@@ -2,12 +2,18 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SectionTitle, Tabs, Badge, Button } from "@mosje/design-system";
+import { HubSiteHeader } from "@/components/hub-site-header";
+import { HubFooter } from "@/components/site-footer";
 import "./service-discovery.css";
 
 /**
  * The six service-discovery options, running live, so they can be shown in a room
  * rather than described. Each panel embeds the prototype it names — the same build
  * the walkthroughs in the deck were recorded from.
+ *
+ * It lives under /explorations because that is the section for options drawn for a
+ * decision and kept after it, rejected ones included. It was briefly under /reports,
+ * which is for findings rather than for options awaiting a choice.
  *
  * DS Audit: SectionTitle ✅ existing · Tabs ✅ existing · Badge ✅ existing ·
  * Button ✅ existing · the 1440-wide stage is page-local layout, not a new component.
@@ -97,7 +103,9 @@ export default function ServiceDiscoveryPrototypes() {
   if (!o) return null;
 
   return (
-    <main className="sa-container sd-page">
+    <div className="flex min-h-screen flex-col bg-surface-muted">
+      <HubSiteHeader current="/explorations" />
+      <main className="sa-container sd-page">
       <SectionTitle
         eyebrow="Service Discovery"
         title="How Citizens Find Schemes — the Six Options, Running"
@@ -126,7 +134,7 @@ export default function ServiceDiscoveryPrototypes() {
             {o.status === "live" ? "Already on the site" : "To be built"}
           </Badge>
           {o.recommended ? <Badge status="primary" emphasis="solid">Recommended</Badge> : null}
-          <Button href={o.id === "chatbot" ? "/reports/service-discovery/assistant" : `${BASE}/${o.file}`}
+          <Button href={o.id === "chatbot" ? "/explorations/service-discovery/assistant" : `${BASE}/${o.file}`}
             target="_blank" rel="noreferrer" variant="neutral" size="sm">
             Open full screen
           </Button>
@@ -139,7 +147,7 @@ export default function ServiceDiscoveryPrototypes() {
         <iframe
           key={o.id}
           className="sd-stage__frame"
-          src={o.id === "chatbot" ? "/reports/service-discovery/assistant" : `${BASE}/${o.file}`}
+          src={o.id === "chatbot" ? "/explorations/service-discovery/assistant" : `${BASE}/${o.file}`}
           title={`${o.title} — interactive prototype`}
           loading="lazy"
           style={{ width: CANVAS_W, height: CANVAS_H, transform: `scale(${scale})` }}
@@ -150,6 +158,8 @@ export default function ServiceDiscoveryPrototypes() {
         Schemes shown are the Department&rsquo;s own, tagged as they would be once the scheme records
         carry a group. Listing is not a decision on any application — the sanctioning authority decides that.
       </p>
-    </main>
+      </main>
+      <HubFooter />
+    </div>
   );
 }
