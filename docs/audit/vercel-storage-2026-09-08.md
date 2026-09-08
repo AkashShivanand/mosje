@@ -36,9 +36,11 @@ written `.html`, six `.rsc` variants and the segment-cache entries for each.
 
 ## What was done
 
-1. **Purged unaliased deployments.** `vercel remove <project> --safe --yes`, run
-   repeatedly. `--safe` keeps the live production deployment and each branch's
-   current preview URL; everything superseded goes.
+1. **Purged 1,161 of the 1,174 deployments**, against an explicit keep-list: the
+   live production deployment, the four production builds before it, and the
+   newest preview for each of the eight branches still on origin. The live site
+   was checked before and after — `/` still redirects to the gate, `/gate` still
+   answers 200.
 2. **Gated the build** — `scripts/vercel-ignore-build.sh`, wired through
    `apps/hub/vercel.json`. It skips a preview when the branch has no open pull
    request, and skips any commit whose changed files all sit outside the
@@ -77,6 +79,24 @@ Two levers, neither taken yet because both change how the estate renders:
   thirds, at the cost of a slower first hit per page. For a password-gated
   prototype that trade looks right; for a public government site it needs a
   decision.
-- **Move the 44 MB of QC report PDFs out of `apps/hub/public/reports`.** Smaller
-  effect — unchanged files dedupe across deployments — but it lowers the floor
-  every deployment starts from.
+- **Drop the server source maps.** `.next/server` carries 2,549 `.map` files,
+  **78 MB**, 14% of the build output, and production never reads them. Whether
+  Vercel ships them inside the function has NOT been verified here — check that
+  before spending the change.
+- **Move the 44 MB of QC report PDFs out of `apps/hub/public/reports`.** This was
+  on the list and was deliberately not done: PDFs that do not change dedupe across
+  deployments, so they cost 44 MB once, not per build — against 600 MB of build
+  output every time. Moving them means new URLs for documents a citizen can
+  currently download, which is a worse trade than it looks. The two levers above
+  are where the storage actually is.
+
+## The measurements behind this
+
+| Where the numbers came from | |
+|---|---|
+| Deployment counts, targets, ages, PR metadata | `vercel api /v6/deployments`, paged |
+| Retention policy in force | `vercel api /v9/projects/<id>` → `deploymentExpiration` |
+| Retention not settable | `PATCH /v9/projects` → 400 unknown property; two retention endpoints → 404 |
+| Build output composition | `du` over `apps/hub/.next` from the 2026-09-08 06:28 build |
+| Build-skip rate | the rule replayed over the last 300 commits |
+| Live site unaffected | `curl` against `/` and `/gate` after the purge |
