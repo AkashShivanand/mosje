@@ -15,21 +15,27 @@ removes what it found cannot be checked against later.
 | F-1 | The register stops at page five | **Closed** | #368 |
 | F-2 | That pager is invisible to assistive technology | **Closed** | #368 |
 | F-3 | "Showing 981 documents" over a list of ten | **Closed** | #368 |
-| F-4 | One control, nine renderings | **Partly** | #370, #378 settled `Pagination` vs `DataTable` on disable-in-place. `DocumentCatalog` now uses the component, so eight renderings remain; six are untouched |
-| F-5 | The two prototype pagers are focusable decoys | Open | — |
-| F-6 | Two landmarks with the same name | Open | — |
-| F-7 | No pager meets UX4G 3.0's touch target | **Partly** | #370 for `Pagination` `md`, #369 for the carousel. The table pager (36px), `ListingTable` (36px) and `DocumentCatalog`'s steps are unchanged; `Pagination` `sm` stays 32 by a recorded decision |
+| F-4 | One control, nine renderings | **Closed** | #370, #378 settled `Pagination` vs `DataTable` on disable-in-place. `DocumentCatalog`, `DataTable`, `ListingTable` and both smile-admin pagers now render the component. The two `StaticPager` decoys are deliberately excluded — see below |
+| F-5 | The two prototype pagers are focusable decoys | **Closed** | Both are spans inside an `aria-hidden` wrapper now — same picture, out of the tab order |
+| F-6 | ~~Two landmarks with the same name~~ | **WRONG — withdrawn** | Both `<nav aria-label="Pagination">` exist in the source, but their containers are `hidden md:block` and `md:hidden` — exact complements. Measured against the app's own CSS: at 1280px the desktop nav computes `block` and the mobile `none`; at 375px the reverse. `display: none` removes an element from the accessibility tree, so only one is ever exposed. The finding read two labels in the source without checking what renders — the same error as F-17 |
+| F-7 | No pager meets UX4G 3.0's touch target | **Closed** | `Pagination` `md` (#370), the carousel (#369), and now the table pager and `ListingTable` — all 44x44 on a coarse pointer, verified from computed styles at 375px. `DocumentCatalog` has no steps of its own since #368. `Pagination` `sm` stays 32 by a recorded decision |
 | F-8 | Focus destroyed on every page change | **Closed** | #378 |
 | F-9 | No pressed state, anywhere | **Closed** | #370, with the remaining 101 selectors gated by #374 |
 | F-10 | Documented evidence that does not match the code | **Closed** | #370 |
 | F-11 | No results summary | **Re-filed** | Wrong as written. Figma has drawn one since before this audit — `item control=true` renders "Showing 200 of 15000 items". The gap is the CODE's, not the system's |
 | F-12 | No page-size control | **Re-filed** | Same. The Figma master has had a page-size select all along |
-| F-13 | No Previous/Next-only mode | Open | — |
-| F-14 | No jump-to-page | Open | — |
-| F-15 | No unknown-total mode | Open | — |
-| F-16 | No loading state | Open | — |
+| F-13 | No Previous/Next-only mode | **Closed** | `showNumbers={false}` — the three hand-rolls beside the component can now ask it |
+| F-14 | No jump-to-page | **Closed** | `showJump`, button form only — the field needs a submit handler and this file stays free of "use client" so `hrefFor` can cross the server boundary |
+| F-15 | No unknown-total mode | **Closed** | `totalPages` is optional; omitting it drops the numbers and reads `hasNext`. Built on request, and it still has NO consumer — the first server-paged register will be the test of whether the shape is right |
+| F-16 | No loading state | **Closed** | `loading` marks the control `aria-busy` and makes every control inert |
 | F-17 | ~~`Pagination` has no Figma master~~ | **WRONG — withdrawn** | The master has existed all along (`522:216228`, six variants, well bound). The audit repeated the docs page's `figma absent` claim without checking the library, and the 8 September re-verification checked the same two repository facts rather than Figma. Corrected: the docs page now links the node, and the master gained a `Size=md` axis matching the code |
-| F-18 | The docs specimen omits `size="sm"` | Open | — |
+| F-18 | The docs specimen omits `size="sm"` | **Closed** | The specimen draws `sm` in a 19rem box — PM-AJAY's coverage rail, the constraint it exists for |
+
+**A second finding was wrong the same way.** F-6 claimed two identically-named
+Pagination landmarks on one page. Both are in the source; only one is ever
+rendered, because their containers are exact responsive complements and
+`display: none` removes an element from the accessibility tree. Like F-17, it was
+reasoned from source without checking what the browser builds. Withdrawn.
 
 **One finding was simply wrong.** F-17 asserted there was no Figma master for
 `Pagination`. There was — six variants, competently bound, with a page-size control
@@ -147,11 +153,11 @@ way; `DataTable` already writes it that way. This page does not.
 |---|---|---|---|---|---|---|
 | 1 | DS `Pagination` `md` | 40×40, 4px gap | outlined | **removed** | windowed + ellipses | ✅ |
 | 2 | DS `Pagination` `sm` | 32×32, 4px gap | outlined | removed | windowed | ✅ |
-| 3 | DS `DataTable` pager | 36×36, 4px gap | outlined | **disabled** | windowed, icon ellipsis | ✅ |
-| 4 | website `ListingTable` | 36px | *n/a* | disabled | **none** | ✅ |
-| 5 | website `DocumentCatalog` | 32×32 / 30px steps | **filled** | disabled | **1–5 only** | ❌ |
-| 6 | smile-admin, desktop | Button `sm` | *n/a* | disabled | none, `Page n / N` | ✅ |
-| 7 | smile-admin, mobile | Button `sm` | *n/a* | disabled | none | ✅ (duplicate name) |
+| 3 | DS `DataTable` pager | *folded* → `Pagination sm` | — | — | — | — |
+| 4 | website `ListingTable` | *folded* → `Pagination` steps-only | — | — | — | — |
+| 5 | website `DocumentCatalog` | *folded* → `Pagination hrefFor` | — | — | — | — |
+| 6 | smile-admin, desktop | *folded* → `Pagination` steps-only | — | — | — | — |
+| 7 | smile-admin, mobile | *folded* → `Pagination sm` steps-only | — | — | — | — |
 | 8 | scw `StaticPager` | 32×32, 6px gap | outlined **+ tinted fill** | disabled | decoy | ⚠️ unnamed |
 | 9 | e-Utthan `StaticPager` | 32×32, 8px gap | outlined | disabled | decoy | ✅ |
 
@@ -166,6 +172,21 @@ the same screen will not agree about what "you are here" looks like.
 This was already found once. `tools/design-audit/projects/tg/out/audit-master-final.json:156`
 records *"Match the pagination active-page control to the design's outlined
 style. Applies to every paginated table."* It was recorded and not propagated.
+
+**Resolved.** Seven of the nine now render `Pagination`: its own two sizes, plus
+`DocumentCatalog` (link form), `DataTable`, `ListingTable` and both smile-admin
+pagers. What made that possible was building the modes first — `showNumbers={false}`
+for the three call sites that only ever wanted Previous / Next, and an optional
+`totalPages` for the one that does not know how many pages there are. Folding
+those pagers before the component could express them would have meant either
+inventing page numbers a caller does not have, or bending the component to each
+caller in turn, which is how nine renderings happen.
+
+**The two `StaticPager`s are deliberately NOT folded, and must not be.** They are
+pictures over mock rows — F-5 fixed them by making them inoperable, which is what
+an honest decoy is. Folding them onto `Pagination` would give them working
+buttons again and re-introduce the defect in the same change that claimed to
+close this one. They are the exception this finding records, not an omission.
 
 ### F-5 · The two "static" pagers are focusable controls that do nothing · **MEDIUM**
 
@@ -344,7 +365,7 @@ like before any of it was acted on.*
 | **1** | F-1 / F-2 / F-3 — replace `DocumentCatalog`'s pager with `<Pagination hrefFor>` and fix the count sentence | small, 13 public pages fixed at once |
 | **2** | F-8 — focus preservation + live region in the button form | small, in the component |
 | **3** | F-7 — `@media (pointer: coarse)` 44px target, copying `button.css`; correct the CSS comment | small, estate-wide |
-| **4** | F-4 — retire `ListingTable`'s and `smile-admin`'s pagers onto the component; settle removed-vs-disabled between `Pagination` and `DataTable` | medium |
+| **4** | F-4 — retire `ListingTable`'s and `smile-admin`'s pagers onto the component; settle removed-vs-disabled between `Pagination` and `DataTable` | medium — **done** |
 | **5** | F-11 / F-13 — add a results summary slot and a Prev/Next-only mode; that is what items 4's call sites need to exist first | medium |
 | **6** | F-17 / F-18 — draw the Figma master, add the `sm` arrangement | medium |
 | **7** | F-9, F-10, F-5, F-6, F-12, F-14, F-15, F-16 | small each |

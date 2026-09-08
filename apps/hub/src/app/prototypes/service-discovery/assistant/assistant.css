@@ -1,0 +1,63 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  .sd-assistant {
+    padding-block: var(--sa-stack-32) var(--sa-stack-48);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-24);
+  }
+  /* Ordinary page content, so the assistant is seen opening over a real page
+     rather than over an empty canvas. */
+  .sd-assistant__page {
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background-color: var(--sa-bg-neutral-subtle);
+    padding: var(--sa-padding-32);
+    min-height: 20rem;
+  }
+  .sd-assistant__label {
+    margin: 0 0 var(--sa-stack-8);
+    font-size: var(--sa-type-title-1-size);
+    font-weight: var(--sa-font-weight-bold);
+    color: var(--sa-color-text-muted);
+  }
+  .sd-assistant__hint {
+    margin: 0;
+    max-width: 46ch;
+    font-size: var(--sa-type-body-1-size);
+    color: var(--sa-color-text-muted);
+  }
+}
+
+@layer components {
+  .sd-assistant__docs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--sa-stack-16);
+    max-width: 34rem;
+  }
+  .sd-assistant__meta {
+    margin: var(--sa-stack-4) 0 var(--sa-stack-12);
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-color-text-muted);
+  }
+}
+
+@layer components {
+  /* A badge states a fact about the file; it is not a bar across the card.
+     CardBody is a flex column, so the cross-axis property is align-self —
+     justify-self does nothing here. */
+  .sd-assistant__docs .ds-badge { align-self: flex-start; }
+}
+
+/* Deliberately OUTSIDE the components layer and marked important: the widget's
+   own stylesheet is unlayered, and an unlayered rule outranks every layered one.
+   Scoped to the class the assistant route adds to <body> for its lifetime. */
+body.sd-hide-a11y-widget #uw-widget-custom-trigger,
+body.sd-hide-a11y-widget [class*="ux4g-accessibility"],
+body.sd-hide-a11y-widget [id^="uw-"] {
+  display: none !important;
+}

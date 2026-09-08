@@ -186,26 +186,36 @@ export function CellContent({
  * the day these screens page real rows, and not before.
  */
 export function StaticPager({ total }: { total: number }) {
+  /*
+   * DRAWN, NOT OPERABLE — which is what the docstring above always claimed and
+   * the markup did not deliver. It rendered real <button>s inside a named
+   * <nav>, with aria-label="Next page" and aria-current="page": a keyboard
+   * reader tabbed into five controls that announced themselves as working page
+   * navigation and did nothing.
+   *
+   * Spans inside an aria-hidden wrapper instead. Identical to look at, out of
+   * the tab order, silent to a screen reader. Honest for a screen holding one
+   * fixed page of mock rows, and it becomes the design system's `Pagination`
+   * the day these screens page real ones.
+   */
   return (
-    <nav aria-label="Pagination" className="pagination">
+    <div aria-hidden="true" className="pagination">
       <div className="page-size">
         <span>Rows per page:</span>
-        <button type="button">
+        <span className="page-size__value">
           10 <Icon name="keyboard_arrow_down" size={12} />
-        </button>
+        </span>
       </div>
       <div className="pages">
-        <button type="button" aria-label="Previous page" disabled>&lsaquo;</button>
-        <button type="button" className="current" aria-current="page">
-          1
-        </button>
-        {total > 10 && <button type="button">2</button>}
-        {total > 20 && <button type="button">3</button>}
-        <button type="button" aria-label="Next page">&rsaquo;</button>
+        <span className="is-disabled">&lsaquo;</span>
+        <span className="current">1</span>
+        {total > 10 && <span>2</span>}
+        {total > 20 && <span>3</span>}
+        <span>&rsaquo;</span>
       </div>
       <span style={{ fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)", color: "var(--text-muted)" }}>
         {total} total
       </span>
-    </nav>
+    </div>
   );
 }

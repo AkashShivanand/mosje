@@ -13,7 +13,11 @@ function appLint(appDir) {
       .filter((f) => !f.startsWith(".."));
     if (files.length === 0) return [];
     const fileArgs = files.map((f) => `'${f}'`).join(" ");
-    return [`bash -c 'cd ${abs} && ${bin} --fix --max-warnings 0 ${fileArgs}'`];
+    // --no-warn-ignored: lint-staged hands over every staged file by name, including
+    // ones the app's eslint config ignores (generated bundles, static assets served
+    // from public/). Without it each one raises a warning, and --max-warnings 0 then
+    // fails the commit for a file eslint was told not to look at.
+    return [`bash -c 'cd ${abs} && ${bin} --fix --no-warn-ignored --max-warnings 0 ${fileArgs}'`];
   };
 }
 

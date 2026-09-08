@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Icon, Link, Search } from "@mosje/design-system";
+import { Icon, Link, Pagination, Search } from "@mosje/design-system";
 
 export interface ListingTableColumn {
   key: string;
@@ -183,28 +183,18 @@ export function ListingTable({
         </table>
       </div>
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <nav className="mt-4 flex items-center justify-center gap-2" aria-label="Pagination">
-          <button
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-            disabled={current === 1}
-            className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-300 px-3 text-label-1 disabled:opacity-40 enabled:hover:bg-surface-muted"
-          >
-            <Icon name="keyboard_arrow_left" size={16} /> Prev
-          </button>
-          <span className="px-2 text-body-2 text-ink-muted" aria-current="page">
-            Page {current} of {totalPages}
-          </span>
-          <button
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-            disabled={current === totalPages}
-            className="inline-flex h-9 items-center gap-1 rounded-lg border border-gray-300 px-3 text-label-1 disabled:opacity-40 enabled:hover:bg-surface-muted"
-          >
-            Next <Icon name="keyboard_arrow_right" size={16} />
-          </button>
-        </nav>
-      )}
+      {/* The department's pager, not a local one. This hand-rolled Previous /
+          "Page N of M" / Next is exactly the steps-only form the component now
+          offers — it was one of the three call sites that argued for adding it. */}
+      <div className="mt-4 flex justify-center">
+        <Pagination
+          page={current}
+          totalPages={totalPages}
+          onPageChange={setPage}
+          showNumbers={false}
+          label={`${caption} pages`}
+        />
+      </div>
     </div>
   );
 }

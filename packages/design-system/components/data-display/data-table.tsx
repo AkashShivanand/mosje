@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Pagination } from "../navigation/pagination";
 import { cn } from "../../utils/cn";
 import "./data-table.css";
 
@@ -74,15 +75,6 @@ export interface DataTableProps<T> {
   className?: string;
 }
 
-const IcChevronLeft = () => (
-  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-);
-const IcChevronRight = () => (
-  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-);
-const IcEllipsis = () => (
-  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><circle cx="5" cy="12" r="1.6" fill="currentColor" /><circle cx="12" cy="12" r="1.6" fill="currentColor" /><circle cx="19" cy="12" r="1.6" fill="currentColor" /></svg>
-);
 
 /**
  * MoSJE / SAMAVESH DataTable — the shared paginated table.
@@ -171,13 +163,6 @@ export function DataTable<T extends Record<string, unknown>>({
     if (controlledSort === undefined) setOwnSort(next);
     onSortChange?.(next);
   };
-
-  const pageNumbers = React.useMemo<Array<number | "…">>(() => {
-    if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1);
-    if (safePage <= 4) return [1, 2, 3, "…", totalPages];
-    if (safePage >= totalPages - 3) return [1, "…", totalPages - 2, totalPages - 1, totalPages];
-    return [1, "…", safePage - 1, safePage, safePage + 1, "…", totalPages];
-  }, [safePage, totalPages]);
 
   /*
    * PAGING AND SORTING ANNOUNCED NOTHING.
@@ -305,45 +290,25 @@ export function DataTable<T extends Record<string, unknown>>({
           )}
         </div>
 
-        <nav aria-label="Table pagination" className="ds-table__pager">
-          <button
-            type="button"
-            className="ds-table__page-nav"
-            aria-label="Previous page"
-            disabled={safePage === 1}
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-          >
-            <IcChevronLeft />
-          </button>
-          {pageNumbers.map((n, i) =>
-            n === "…" ? (
-              <span key={`e-${i}`} className="ds-table__ellipsis">
-                <IcEllipsis />
-                <span className="ds-sr-only">more pages</span>
-              </span>
-            ) : (
-              <button
-                key={n}
-                type="button"
-                className={cn("ds-table__page", safePage === n && "is-current")}
-                aria-label={`Page ${n}`}
-                aria-current={safePage === n ? "page" : undefined}
-                onClick={() => setPage(Number(n))}
-              >
-                {n}
-              </button>
-            ),
-          )}
-          <button
-            type="button"
-            className="ds-table__page-nav"
-            aria-label="Next page"
-            disabled={safePage === totalPages}
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-          >
-            <IcChevronRight />
-          </button>
-        </nav>
+        {/* THE COMPONENT, NOT A SECOND COPY OF IT.
+            This was the "system disagrees with itself" half of the audit's F-4:
+            a second numbered pager inside the design system, with its own window
+            algorithm and its own idea of what a disabled end looks like. It is
+            `Pagination` now.
+
+            `sm` is the right size and not merely the closest one — its own
+            docstring is "a pager INSIDE a card or a rail, a panel that paginates
+            its own contents rather than the page", which is exactly a table
+            footer, and it draws the chevron-only steps this pager already had.
+            `siblings={1}` reproduces the window it used to compute by hand. */}
+        <Pagination
+          page={safePage}
+          totalPages={totalPages}
+          onPageChange={setPage}
+          siblings={1}
+          size="sm"
+          label="Table pagination"
+        />
       </div>
     </div>
   );

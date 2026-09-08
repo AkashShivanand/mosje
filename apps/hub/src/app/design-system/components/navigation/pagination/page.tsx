@@ -24,7 +24,7 @@ const A11Y: A11yItem[] = [
     level: "AA",
     status: "verified",
     evidence:
-      'In the button form a visually hidden <p role="status" aria-live="polite"> carries "Page N of M" and updates on every change — read from the DOM after pressing Next to the last page of twelve: "Page 12 of 12". The link form does not render it, because a navigation announces itself and a second announcement would talk over the framework\'s own route announcer.',
+      'In the button form a <p role="status" aria-live="polite"> carries "Page N of M" and updates on every change — read from the DOM after pressing Next to the last page of twelve: "Page 12 of 12". It is the VISIBLE position paragraph in the steps-only form and a visually hidden node in the numbered one, so the sentence is never in the accessibility tree twice. The link form renders neither, because a navigation announces itself and a second announcement would talk over the framework\'s own route announcer.',
     description:
       "Changing page swaps the rows and moves nothing else, so a screen-reader user is told where they now are.",
   },

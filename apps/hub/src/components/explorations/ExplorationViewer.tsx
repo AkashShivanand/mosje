@@ -7,6 +7,14 @@ import { OptionArrive, OptionFlight } from "./nmba/CampaignBandOptions";
 import { OptionOneBand, OptionTwoBands } from "./nmba/TopBandsOptions";
 import { HelplineRinging, HelplineStatic } from "./nmba/HelplineCardOptions";
 import { LayoutCtasBelow, LayoutCtasRight, LayoutTwoZones } from "./nmba/BannerLayoutOptions";
+import {
+  HomePersonas,
+  HomeFiveQuestions,
+  HomeOneTap,
+  SchemesPictures,
+  SchemesFilterTable,
+  AssistantChat,
+} from "./service-discovery/options";
 import "./explorations.css";
 
 /**
@@ -28,6 +36,12 @@ const PROTOTYPES: Record<string, React.ComponentType> = {
   "nmba/banner-layout/ctas-right": LayoutCtasRight,
   "nmba/banner-layout/ctas-below": LayoutCtasBelow,
   "nmba/banner-layout/two-zones": LayoutTwoZones,
+  "service-discovery/home-page/personas": HomePersonas,
+  "service-discovery/home-page/five-questions": HomeFiveQuestions,
+  "service-discovery/home-page/one-tap": HomeOneTap,
+  "service-discovery/schemes-page/pictures": SchemesPictures,
+  "service-discovery/schemes-page/filter-table": SchemesFilterTable,
+  "service-discovery/assistant/samajik-sahayak": AssistantChat,
 };
 
 const STATUS_WORD: Record<ExplorationOption["status"], string> = {

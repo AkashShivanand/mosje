@@ -1,0 +1,111 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Schemes &amp; Services — Option B, filter panel and table</title>
+<link rel="stylesheet" href="core.css">
+<style>
+.layout{display:grid;grid-template-columns:250px 1fr;gap:26px;align-items:start}
+.filters{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);padding:16px;background:#fff;position:sticky;top:16px}
+.fgroup{margin-bottom:18px}
+.fgroup h3{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--sa-muted);margin:0 0 9px;font-weight:700}
+.fopt{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:6px;cursor:pointer;font-size:13.5px;transition:background .12s}
+.fopt:hover{background:var(--sa-surface)}
+.fopt input{accent-color:var(--sa-primary-500);width:15px;height:15px;margin:0}
+.fopt .n{margin-left:auto;font-size:11.5px;color:var(--sa-muted);background:var(--sa-surface);border-radius:999px;padding:1px 8px}
+.fopt.zero{opacity:.45}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:#fff;border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);overflow:hidden}
+th{background:var(--sa-primary-50);color:var(--sa-primary-800);text-align:left;font-size:11.5px;letter-spacing:.7px;text-transform:uppercase;padding:11px 14px;font-weight:700}
+td{padding:12px 14px;border-top:1px solid var(--sa-hair);vertical-align:top}
+td a{color:var(--sa-primary-600);font-weight:600;text-decoration:none}
+td small{display:block;color:var(--sa-muted);font-size:11.5px;margin-top:2px}
+.applied{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.empty{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);padding:28px;text-align:center;background:#fff}
+</style></head><body>
+<script src="data.js"></script><script src="shell.js"></script>
+<main class="wrap sec">
+  <p class="eyebrow">Offerings</p>
+  <div class="spread">
+    <div><h1 class="sec-t">Schemes &amp; Services</h1>
+      <p class="sec-lede">Tick the groups that apply. Filters combine, so a group and a stage of life and a kind of help can be asked for together.</p></div>
+    <div><div class="count-big" id="n">0</div><div class="count-cap">schemes shown</div></div>
+  </div>
+  <div class="layout">
+    <aside class="filters" id="filters"></aside>
+    <section>
+      <div class="applied" id="applied"></div>
+      <div id="table"></div>
+    </section>
+  </div>
+  <p class="note">Listing is not a decision on any application — the sanctioning authority decides that.</p>
+</main>
+<script>
+mountShell('Offerings');
+const el = id => document.getElementById(id);
+const sel = { group:new Set(), stage:new Set(), need:new Set() };
+const pre = new URLSearchParams(location.search).get('g');
+if (pre) sel.group.add(pre);
+
+function rows(){
+  return SCHEMES.filter(s =>
+    (!sel.group.size || s.g.some(x=>sel.group.has(x))) &&
+    (!sel.stage.size || s.s.some(x=>sel.stage.has(x))) &&
+    (!sel.need.size  || s.n.some(x=>sel.need.has(x))));
+}
+/* Count for one value, given every OTHER axis' current selection — so the
+   number beside a filter tells the truth about what ticking it would give. */
+function countFor(axis, id){
+  return SCHEMES.filter(s => {
+    const g = axis==='group' ? [id] : [...sel.group];
+    const st= axis==='stage' ? [id] : [...sel.stage];
+    const nd= axis==='need'  ? [id] : [...sel.need];
+    return (!g.length  || s.g.some(x=>g.includes(x)))
+        && (!st.length || s.s.some(x=>st.includes(x)))
+        && (!nd.length || s.n.some(x=>nd.includes(x)));
+  }).length;
+}
+function drawFilters(){
+  const block = (title, axis, items) => `
+    <div class="fgroup"><h3>${title}</h3>
+    ${items.map(o=>{const c=countFor(axis,o.id);return `
+      <label class="fopt ${c?'':'zero'}">
+        <input type="checkbox" data-axis="${axis}" data-id="${o.id}" ${sel[axis].has(o.id)?'checked':''}>
+        <span>${o.label}</span><span class="n">${c}</span></label>`;}).join('')}
+    </div>`;
+  el('filters').innerHTML =
+    block('Group','group',GROUPS) + block('Stage of life','stage',STAGES) + block('Kind of help','need',NEEDS) +
+    `<button class="btn ghost" id="reset" style="width:100%">Reset filters</button>`;
+  el('reset').onclick = () => { sel.group.clear(); sel.stage.clear(); sel.need.clear(); draw(); };
+}
+function draw(){
+  drawFilters();
+  const list = rows();
+  el('n').textContent = list.length;
+  const chips = [...sel.group].map(g=>['group',g,GROUP_LABEL[g]])
+    .concat([...sel.stage].map(s=>['stage',s,(STAGES.find(x=>x.id===s)||{}).label]))
+    .concat([...sel.need].map(n=>['need',n,(NEEDS.find(x=>x.id===n)||{}).label]));
+  el('applied').innerHTML = chips.length
+    ? `<span style="font-size:12.5px;color:var(--sa-muted)">Showing</span>` +
+      chips.map(([a,i,l])=>`<button class="chip" aria-pressed="true" data-clear="${a}:${i}">${l} ×</button>`).join('')
+    : `<span style="font-size:12.5px;color:var(--sa-muted)">All ${SCHEMES.length} schemes in this prototype. Tick a filter to narrow.</span>`;
+  el('table').innerHTML = list.length ? `
+    <table class="rise"><thead><tr>
+      <th style="width:44%">Scheme</th><th>You get</th><th>Run by</th><th>Central or State</th></tr></thead>
+      <tbody>${list.map(s=>`<tr>
+        <td><a href="#">${s.t}</a><small>${s.g.map(g=>GROUP_LABEL[g]).join(' · ')}</small></td>
+        <td>${s.benefit}</td><td>${s.runBy}</td>
+        <td><span class="tag ${s.juris==='Central'?'blue':'grey'}">${s.juris}</span></td></tr>`).join('')}
+      </tbody></table>`
+    : `<div class="empty rise"><b style="font-size:15px">No scheme matches all of those filters together.</b>
+        <p style="font-size:13.5px;color:var(--sa-ink-muted);margin:8px 0 14px">The count beside each filter shows what it would give on its own. Removing one usually brings results back.</p>
+        <button class="btn" onclick="document.getElementById('reset').click()">Reset filters</button></div>`;
+}
+document.addEventListener('change', e => {
+  const c = e.target.closest('input[data-axis]'); if(!c) return;
+  const s = sel[c.dataset.axis];
+  c.checked ? s.add(c.dataset.id) : s.delete(c.dataset.id);
+  draw();
+});
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-clear]'); if(!b) return;
+  const [a,i] = b.dataset.clear.split(':'); sel[a].delete(i); draw();
+});
+draw();
+</script></body></html>

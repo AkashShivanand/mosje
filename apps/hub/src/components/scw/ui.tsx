@@ -119,9 +119,27 @@ export function StaticPager({
   totalPages: number;
 }) {
   const pages = totalPages <= 6 ? Array.from({ length: totalPages }, (_, i) => i + 1) : [1, 2, 3, 4, 5];
+  /*
+   * DRAWN, NOT OPERABLE — and that is the whole point of the docstring above.
+   *
+   * This used to render real <button>s and a real <select>: in the tab order,
+   * with hover states, aria-current="page" and aria-label="Next page". A mouse
+   * user learned within one click that it was scenery. A keyboard or
+   * screen-reader user tabbed into five controls that announced themselves as
+   * working page navigation and did nothing — which is precisely the "control
+   * that looks like it works and does not" the comment above warns against.
+   *
+   * So it is now spans inside an aria-hidden wrapper: identical to look at,
+   * absent from the tab order, and silent to a screen reader. That is honest
+   * for a screen holding one fixed page of mock rows. It becomes the design
+   * system's `Pagination` the day these screens page real rows.
+   */
   return (
-    <div className="mt-4 flex flex-wrap items-center justify-between gap-3 px-1">
-      <nav className="flex items-center gap-1.5 text-label-1">
+    <div
+      aria-hidden="true"
+      className="mt-4 flex flex-wrap items-center justify-between gap-3 px-1"
+    >
+      <div className="flex items-center gap-1.5 text-label-1">
         <PageBtn disabled>‹</PageBtn>
         {pages.map((p) => (
           <PageBtn key={p} active={p === 1}>
@@ -135,16 +153,12 @@ export function StaticPager({
           </>
         )}
         <PageBtn>›</PageBtn>
-      </nav>
+      </div>
       <div className="flex items-center gap-2 text-body-2 text-ink-muted">
         <span>Showing</span>
-        <span className="relative">
-          <select className="appearance-none rounded-md border border-line bg-white py-1 pl-2.5 pr-7 text-body-2">
-            <option>{pageSize}</option>
-            <option>50</option>
-            <option>100</option>
-          </select>
-          <Icon name="keyboard_arrow_down" size={14} className="pointer-events-none absolute right-1.5 top-1/2 -translate-y-1/2 text-ink-hint" />
+        <span className="relative inline-flex items-center rounded-md border border-line bg-white py-1 pl-2.5 pr-7 text-body-2">
+          {pageSize}
+          <Icon name="keyboard_arrow_down" size={14} className="absolute right-1.5 top-1/2 -translate-y-1/2 text-ink-hint" />
         </span>
         <span>
           of <span className="font-semibold text-ink">{total}</span> items
@@ -163,19 +177,20 @@ function PageBtn({
   active?: boolean;
   disabled?: boolean;
 }) {
+  // A span, not a button: see StaticPager. Nothing here is operable.
   return (
-    <button
-      disabled={disabled}
+    <span
+      aria-disabled={disabled || undefined}
       className={cn(
-        "flex h-8 min-w-8 items-center justify-center rounded-md border px-2 text-label-1 transition-colors",
+        "flex h-8 min-w-8 items-center justify-center rounded-md border px-2 text-label-1",
         active
           ? "border-navy bg-navy/5 font-semibold text-navy"
-          : "border-line text-ink-muted hover:bg-black/5",
-        disabled && "cursor-not-allowed opacity-40 hover:bg-transparent"
+          : "border-line text-ink-muted",
+        disabled && "opacity-40"
       )}
     >
       {children}
-    </button>
+    </span>
   );
 }
 

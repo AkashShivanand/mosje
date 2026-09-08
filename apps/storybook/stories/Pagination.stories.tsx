@@ -32,6 +32,17 @@ import { Pagination } from "@mosje/design-system";
  * of the document on every page turn. The button form also announces the new
  * position through a polite live region. Targets are 40px, clearing WCAG 2.2 AA §2.5.8 (24×24).
  *
+ * **Four modes beyond the numbered default.** `showNumbers={false}` gives the
+ * steps-only form — Previous, the position in words, Next — which is GOV.UK's
+ * "block" pagination and what three surfaces here had hand-rolled beside the
+ * component. Omitting `totalPages` altogether is the unbounded form for a
+ * cursor-paged feed: it cannot window numbers without a total, so it drops them
+ * and reads `hasNext` to decide whether Next is live. `showJump` offers a "go to
+ * page" field for a set too long to walk — button form only, because the field
+ * needs a submit handler and this file carries no "use client" so that `hrefFor`
+ * can cross the server boundary. `loading` marks the control `aria-busy` and
+ * makes every control inert, so three presses cannot queue against one request.
+ *
  * Lifecycle: **Stable**.
  */
 const meta = {
@@ -112,6 +123,57 @@ export const ClientState: Story = {
       </div>
     );
   },
+};
+
+/**
+ * **Steps only** — `showNumbers={false}`. The position is SHOWN rather than only
+ * announced, because without the numbers nothing else tells the reader where they
+ * are. `ListingTable` and SMILE Admin's two pagers each hand-rolled this before
+ * the component offered it.
+ *
+ * That visible paragraph IS the live region here — the numbered form's separate
+ * hidden one is not rendered, or the same sentence would sit in the
+ * accessibility tree twice.
+ */
+export const StepsOnly: Story = {
+  render: function Render(args) {
+    const [page, setPage] = React.useState(4);
+    return <Pagination {...args} page={page} totalPages={12} showNumbers={false} onPageChange={setPage} label="Applications" />;
+  },
+};
+
+/**
+ * **Unbounded** — no `totalPages` at all, for a cursor-paged feed or a count too
+ * expensive to run per request. It says the page it is on and nothing it cannot
+ * know: no "of N" is invented. `hasNext` decides whether Next is live.
+ */
+export const UnknownTotal: Story = {
+  render: function Render(args) {
+    const [page, setPage] = React.useState(2);
+    return <Pagination {...args} page={page} hasNext={page < 4} onPageChange={setPage} label="Notifications" />;
+  },
+};
+
+/**
+ * **Go to page** — `showJump`. At 99 pages with the default `siblings`, reaching
+ * page 60 is eleven presses. Native `min`/`max` do the validating, so an
+ * out-of-range number never reaches the handler.
+ */
+export const JumpToPage: Story = {
+  render: function Render(args) {
+    const [page, setPage] = React.useState(7);
+    return <Pagination {...args} page={page} totalPages={99} showJump onPageChange={setPage} label="Advices" />;
+  },
+};
+
+/**
+ * **Loading.** Every control inert and the whole thing `aria-busy`, so a reader
+ * cannot queue three presses against one in-flight request and land somewhere
+ * they did not choose. No spinner — the result set is what is loading, and its
+ * own surface should say so.
+ */
+export const Loading: Story = {
+  args: { page: 4, totalPages: 12, loading: true, onPageChange: () => {}, label: "Fetching" },
 };
 
 /**

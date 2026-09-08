@@ -22,8 +22,21 @@ export type PaginationSize = "sm" | "md";
 export interface PaginationProps {
   /** 1-based current page. */
   page: number;
-  /** Total number of pages. Values below 1 render nothing. */
-  totalPages: number;
+  /**
+   * Total number of pages. Values below 1 render nothing.
+   *
+   * OMIT IT when the total is genuinely unknown — a cursor-paged feed, or a
+   * count too expensive to run on every request. The control then drops the
+   * numbers, because a window cannot be computed without a total, and reads
+   * `hasNext` to decide whether Next is live. Do NOT pass a guess: a page count
+   * that moves under the reader is worse than one that was never claimed.
+   */
+  totalPages?: number;
+  /**
+   * Whether a next page exists. Only consulted when `totalPages` is omitted;
+   * with a total the component works it out. @default true
+   */
+  hasNext?: boolean;
   /**
    * The href for a given page. Provide this and the control renders real links —
    * which is the DEFAULT and the preferred shape for anything whose page number
@@ -57,6 +70,42 @@ export interface PaginationProps {
    * accessibility tree either way.
    */
   size?: PaginationSize;
+  /**
+   * Draw the numbered pages. @default true
+   *
+   * `false` gives the STEPS-ONLY form — Previous, the position in words, Next —
+   * which is GOV.UK's "block" pagination and what three surfaces on this estate
+   * had already hand-rolled beside the component rather than asking it for:
+   * `ListingTable`, and SMILE Admin's desktop and mobile pairs.
+   *
+   * Reach for it when the reader moves through a set one at a time rather than
+   * jumping about in it, or when the pager sits somewhere too narrow for a row
+   * of numbers. It is implied when `totalPages` is omitted, because there is
+   * then nothing to number.
+   */
+  showNumbers?: boolean;
+  /**
+   * Offer a "go to page" field. @default false
+   *
+   * For a long set, where the window leaves most pages more than a click away:
+   * at 99 pages with the default `siblings`, reaching page 60 is eleven presses.
+   *
+   * BUTTON FORM ONLY, and that is a constraint rather than a preference. The
+   * field needs a submit handler, and this file deliberately carries no
+   * "use client" so that `hrefFor` — a function — can cross the server
+   * boundary. In the link form it renders nothing; a link-form consumer that
+   * wants one owns a form of its own, pointed at its own URL.
+   */
+  showJump?: boolean;
+  /**
+   * The next page is being fetched. @default false
+   *
+   * Marks the control `aria-busy` and makes every one of its controls inert, so
+   * a reader cannot queue three presses against one in-flight request and land
+   * somewhere they did not choose. It does NOT draw a spinner: the thing that
+   * is loading is the result set, and its own surface should say so.
+   */
+  loading?: boolean;
   className?: string;
 }
 
@@ -111,17 +160,67 @@ function pageList(page: number, totalPages: number, siblings: number): (number |
 export function Pagination({
   page,
   totalPages,
+  hasNext = true,
   hrefFor,
   onPageChange,
   label = "Pagination",
   siblings = 2,
   size = "md",
+  showNumbers = true,
+  showJump = false,
+  loading = false,
   className,
 }: PaginationProps): React.JSX.Element | null {
-  if (totalPages < 2) return null;
+  /*
+   * AN UNKNOWN TOTAL IS A MODE, NOT A MISSING VALUE.
+   *
+   * With a total the control can window the numbers and know where the ends
+   * are. Without one it can do neither, so it drops to steps and asks `hasNext`
+   * — USWDS calls the same thing "unbounded". Everything below reads `bounded`
+   * rather than testing `totalPages` repeatedly, so the two modes cannot drift
+   * apart the way the key and the map did on the PM-AJAY reach section.
+   */
+  const bounded = typeof totalPages === "number";
 
-  const current = Math.min(Math.max(1, page), totalPages);
-  const pages = pageList(current, totalPages, siblings);
+  // Below two pages there is nothing to page. An unbounded set never knows that,
+  // so it renders as long as the caller says a next page exists.
+  if (bounded && (totalPages as number) < 2) return null;
+  if (!bounded && !hasNext && page <= 1) return null;
+
+  const last = bounded ? (totalPages as number) : undefined;
+  const current = bounded ? Math.min(Math.max(1, page), last as number) : Math.max(1, page);
+  const numbered = showNumbers && bounded;
+  const pages = numbered ? pageList(current, last as number, siblings) : [];
+  const atStart = current <= 1;
+  const atEnd = bounded ? current >= (last as number) : !hasNext;
+  const isLinkForm = Boolean(hrefFor);
+
+  /*
+   * ONE SENTENCE, ONE PLACE — and, below, ONE NODE.
+   *
+   * This string had two authors: the visible paragraph the steps-only form
+   * draws, and the clipped live region the button form announces through. Both
+   * said "Page N of M", and in the steps-only BUTTON form both rendered — so
+   * the accessibility tree carried the position twice, once as static text and
+   * once as a status message. Only one was on screen, so nothing looked wrong.
+   *
+   * The fix is not to hide one of them: it is to notice they are the same
+   * sentence. Where the position is already on screen the live region goes ON
+   * it, which is the pattern ARIA asks for anyway — a status message a sighted
+   * reader can also read. The clipped copy is kept only for the form that has
+   * no visible position to attach to.
+   */
+  const positionText = bounded ? `Page ${current} of ${last}` : `Page ${current}`;
+
+  /*
+   * The live region is the visible paragraph when there is one, and a clipped
+   * node when there is not. The link form gets neither — a navigation announces
+   * itself, and a second announcement talks over the framework's route
+   * announcer.
+   */
+  const announceOnPosition = !isLinkForm && !numbered;
+  const announceSeparately = !isLinkForm && numbered;
+  const liveAttrs = { role: "status", "aria-live": "polite" } as const;
 
   /**
    * THE BUTTON FORM DISABLES IN PLACE; THE LINK FORM STILL REMOVES.
@@ -141,7 +240,6 @@ export function Pagination({
    * This also settles the disagreement with `DataTable`'s own pager, which has
    * always disabled rather than removed.
    */
-  const isLinkForm = Boolean(hrefFor);
 
   /*
    * `aria-disabled`, NOT `disabled`, AND THE THREE JOBS THAT COMES WITH.
@@ -154,6 +252,18 @@ export function Pagination({
    * implicit form submission. `Button`'s `preserveFocus` does exactly this, and
    * the pointer half lives in the stylesheet so it holds before hydration too.
    */
+  /*
+   * THE FIELD'S ID IS DERIVED FROM THE NAV'S NAME, NOT FROM `useId`.
+   *
+   * `useId` is a hook, and a hook here would have to run in the LINK form too —
+   * which renders on the server, where hooks are not available. That is the same
+   * constraint that keeps "use client" out of this file. The nav's accessible
+   * name is already required to be specific when a page carries more than one
+   * pager, so it is the natural unique key, and it only has to be unique among
+   * the pagers on one page rather than globally.
+   */
+  const baseId = `ds-pagination-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}`;
+
   const block = (e: React.SyntheticEvent): void => {
     e.preventDefault();
     e.stopPropagation();
@@ -166,7 +276,7 @@ export function Pagination({
   } as const;
   const inert = { ...inertAttrs, onClick: block } as const;
 
-  const step = (target: number, direction: "prev" | "next", text: string, atEnd = false) => {
+  const step = (target: number, direction: "prev" | "next", text: string, disabled = false) => {
     const icon = direction === "prev" ? "chevron_left" : "chevron_right";
     const iconSize = size === "sm" ? 16 : 20;
     const content = (
@@ -186,15 +296,21 @@ export function Pagination({
         type="button"
         className="ds-pagination__step"
         /*
-         * A step at the end of the range must NOT reach `onPageChange`: the
-         * control keeps its tab stop and its focus, so nothing else refuses
-         * the activation for us, and a "Previous" on page 1 would otherwise
-         * ask for page 0. The handler is chosen here rather than left to a
-         * spread overwriting an explicit prop — that ordering was silent,
-         * and moving the spread one line up would have re-enabled the step.
+         * A step that is disabled must NOT reach `onPageChange` — at the end of
+         * the range, where "Previous" on page 1 would ask for page 0, and while
+         * `loading`, where three presses would queue against one request. The
+         * control keeps its tab stop and its focus, so nothing else refuses the
+         * activation for us. The handler is chosen here rather than left to a
+         * spread overwriting an explicit prop — that ordering was silent, and
+         * moving the spread one line up would have re-enabled the step.
+         *
+         * It reads the PARAMETER, not the outer `atEnd`. Reading the outer one
+         * made Previous inert at the end of the set instead of the start, and
+         * left both steps live while loading — the control looked disabled and
+         * still worked. Caught by measuring the rendered DOM, not by review.
          */
-        onClick={atEnd ? block : () => onPageChange?.(target)}
-        {...(atEnd ? inertAttrs : {})}
+        onClick={disabled ? block : () => onPageChange?.(target)}
+        {...(disabled ? inertAttrs : {})}
       >
         {content}
       </button>
@@ -202,11 +318,16 @@ export function Pagination({
   };
 
   return (
-    <nav className={cn("ds-pagination", `ds-pagination--${size}`, className)} aria-label={label}>
+    <nav
+      className={cn("ds-pagination", `ds-pagination--${size}`, className)}
+      aria-label={label}
+      aria-busy={loading || undefined}
+    >
       {isLinkForm
-        ? current > 1 && step(current - 1, "prev", "Previous")
-        : step(current - 1, "prev", "Previous", current === 1)}
+        ? !atStart && step(current - 1, "prev", "Previous")
+        : step(current - 1, "prev", "Previous", atStart || loading)}
 
+      {numbered ? (
       <ul className="ds-pagination__list">
         {pages.map((n, index) =>
           n === null ? (
@@ -242,6 +363,7 @@ export function Pagination({
                   className="ds-pagination__page"
                   aria-label={`Page ${n}`}
                   onClick={() => onPageChange?.(n)}
+                  {...(loading ? inert : {})}
                 >
                   {n}
                 </button>
@@ -250,23 +372,82 @@ export function Pagination({
           ),
         )}
       </ul>
+      ) : (
+        /*
+         * STEPS-ONLY. Without numbers the reader has nothing telling them where
+         * they are, so the position is SHOWN rather than only announced — the
+         * same reasoning the carousel's counter follows. With no total it says
+         * the page alone, because claiming an "of N" the caller never supplied
+         * would be inventing one.
+         */
+        <p className="ds-pagination__position" {...(announceOnPosition ? liveAttrs : {})}>
+          {positionText}
+        </p>
+      )}
 
       {isLinkForm
-        ? current < totalPages && step(current + 1, "next", "Next")
-        : step(current + 1, "next", "Next", current === totalPages)}
+        ? !atEnd && step(current + 1, "next", "Next")
+        : step(current + 1, "next", "Next", atEnd || loading)}
+
+      {showJump && !isLinkForm && bounded ? (
+        /*
+         * GO TO PAGE — button form only; the prop's docstring says why.
+         *
+         * A native form, so Enter submits with no key handling of our own, and
+         * an uncontrolled input, so the control needs no state and this file
+         * needs no "use client". The value is read off the form on submit and
+         * clamped, because a reader who types 500 into a 99-page set meant the
+         * end, not an error.
+         */
+        <form
+          className="ds-pagination__jump"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const raw = new FormData(e.currentTarget).get("page");
+            const n = Number.parseInt(String(raw ?? ""), 10);
+            if (Number.isNaN(n)) return;
+            onPageChange?.(Math.min(Math.max(1, n), last as number));
+            e.currentTarget.reset();
+          }}
+        >
+          <label className="ds-pagination__jump-label" htmlFor={`${baseId}-jump`}>
+            Go to page
+          </label>
+          <input
+            id={`${baseId}-jump`}
+            className="ds-pagination__jump-field"
+            name="page"
+            type="number"
+            inputMode="numeric"
+            min={1}
+            max={last}
+            disabled={loading}
+            aria-describedby={`${baseId}-jump-range`}
+          />
+          <span id={`${baseId}-jump-range`} className="ds-pagination__sr">
+            {`between 1 and ${last}`}
+          </span>
+          <button type="submit" className="ds-pagination__jump-go" disabled={loading}>
+            Go
+          </button>
+        </form>
+      ) : null}
 
       {/*
-        Nothing about a page turn is audible on its own. The link form does not
-        need this — a navigation announces itself — but in the button form the
+        Nothing about a page turn is audible on its own. In the button form the
         rows swap silently, so the new position is announced politely. SMILE
         Admin hand-rolled exactly this beside its own pager, which is the usual
         sign that the component owed it.
+
+        This node is the NUMBERED button form only. Steps-only already draws the
+        position on screen and carries the live region there, and the link form
+        needs no announcement at all — see `announceSeparately` above.
       */}
-      {isLinkForm ? null : (
-        <p className="ds-pagination__status" role="status" aria-live="polite">
-          {`Page ${current} of ${totalPages}`}
+      {announceSeparately ? (
+        <p className="ds-pagination__status" {...liveAttrs}>
+          {positionText}
         </p>
-      )}
+      ) : null}
     </nav>
   );
 }
