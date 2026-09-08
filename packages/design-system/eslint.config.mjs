@@ -54,7 +54,24 @@ export default tseslint.config(
       globals: { window: "readonly", document: "readonly", console: "readonly", setTimeout: "readonly", clearTimeout: "readonly", setInterval: "readonly", clearInterval: "readonly", requestAnimationFrame: "readonly", cancelAnimationFrame: "readonly", navigator: "readonly", localStorage: "readonly", HTMLElement: "readonly", SVGSVGElement: "readonly", HTMLInputElement: "readonly", HTMLDivElement: "readonly", MutationObserver: "readonly", ResizeObserver: "readonly", IntersectionObserver: "readonly", getComputedStyle: "readonly", CustomEvent: "readonly", Event: "readonly", KeyboardEvent: "readonly", fetch: "readonly", URL: "readonly", Blob: "readonly", File: "readonly", FileReader: "readonly", Image: "readonly", performance: "readonly", crypto: "readonly", process: "readonly" },
     },
     rules: {
-      ...reactHooks.configs.recommended.rules,
+      /*
+       * The two react-hooks rules are NAMED rather than spread from
+       * `configs.recommended.rules`, because that set is not stable across the
+       * plugin's majors and this config had no way to notice when it changed.
+       *
+       * It changed on the v5 → v7 bump: `recommended` picked up the React
+       * Compiler rules, and 54 findings appeared across 15 files in one install
+       * — `set-state-in-effect` (23), `refs` (15), `immutability` (8),
+       * `static-components` (6), `purity`, `globals`. All plausible, none
+       * reviewed, and a dependency bump is the wrong place for a refactor of
+       * that size.
+       *
+       * So the rule set stays exactly what it enforced before, and adopting the
+       * React Compiler rules is its own piece of work with its own diff. Add
+       * them here deliberately, not by inheriting a set that moves underneath.
+       */
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
       ...jsxA11y.flatConfigs.recommended.rules,
       // The package is strict TypeScript; `any` is already absent and the type
       // checker is the authority on types. These would only add noise.
