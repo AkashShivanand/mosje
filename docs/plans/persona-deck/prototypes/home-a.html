@@ -11,7 +11,7 @@
 .panel .nudge{background:rgba(255,255,255,.16);border-radius:var(--sa-radius);padding:9px 12px;font-size:12.5px;margin-bottom:18px}
 .persona-tile{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);border-radius:var(--sa-radius);
   padding:26px 18px;text-align:center;transition:opacity .3s cubic-bezier(.22,.61,.36,1),transform .3s cubic-bezier(.22,.61,.36,1)}
-.persona-tile .face{font-size:64px;line-height:1;margin-bottom:12px;filter:grayscale(.1)}
+.persona-tile .face{width:132px;height:132px;object-fit:contain;display:block;margin:0 auto 12px}
 .persona-tile .nm{font-size:18px;font-weight:700}
 .persona-tile .cnt{font-size:12.5px;color:var(--sa-primary-100);margin-top:4px}
 .pnav{display:flex;align-items:center;justify-content:space-between;margin-top:16px}
@@ -54,7 +54,6 @@
 </main>
 <script>
 mountShell('Home');
-const FACE = { sc:'🧑🏽‍🎓', obc:'👩🏽‍🎓', dnt:'🧑🏽‍🌾', safai:'🧑🏽‍🔧', senior:'🧓🏽', tg:'🧑🏽', drug:'🧑🏽‍⚕️', ngo:'🏛️', pwd:'🧑🏽‍🦽' };
 let i = 0;
 const el = id => document.getElementById(id);
 function count(g){ return SCHEMES.filter(s=>s.g.includes(g)).length; }
@@ -62,7 +61,7 @@ function draw(animate){
   const g = GROUPS[i];
   const t = el('tile');
   const paint = () => {
-    t.innerHTML = `<div class="face">${FACE[g.id]||'🧑🏽'}</div>
+    t.innerHTML = `<img class="face" src="personas/${g.id}.png" alt="">
       <div class="nm">${g.label}</div>
       <div class="cnt">${count(g.id)} schemes listed for this group</div>`;
     t.classList.remove('fade');

@@ -83,7 +83,7 @@ function draw(){
     .concat([...sel.need].map(n=>['need',n,(NEEDS.find(x=>x.id===n)||{}).label]));
   el('applied').innerHTML = chips.length
     ? `<span style="font-size:12.5px;color:var(--sa-muted)">Showing</span>` +
-      chips.map(([a,i,l])=>`<button class="chip" aria-pressed="true" data-clear="${a}:${i}">${l} ✕</button>`).join('')
+      chips.map(([a,i,l])=>`<button class="chip" aria-pressed="true" data-clear="${a}:${i}">${l} ×</button>`).join('')
     : `<span style="font-size:12.5px;color:var(--sa-muted)">All ${SCHEMES.length} schemes in this prototype. Tick a filter to narrow.</span>`;
   el('table').innerHTML = list.length ? `
     <table class="rise"><thead><tr>

@@ -9,9 +9,13 @@ const GROUPS = [
   { id:'senior',  label:'Senior citizen',         sub:'Aged 60 years or above' },
   { id:'tg',      label:'Transgender person',     sub:'Covered under the SMILE umbrella' },
   { id:'drug',    label:'Affected by substance use', sub:'For the person or their family' },
+  { id:'student', label:'Student',                sub:'In school, college or beyond' },
   { id:'ngo',     label:'NGO or voluntary organisation', sub:'Applying for grant-in-aid' },
-  { id:'pwd',     label:'Person with disability', sub:'Served by a different department' },
 ];
+
+/* Asked in the finder so the Department's boundary can be named, but not shown as one
+   of its personas — disability is served by DEPwD, a different department. */
+const SIGNPOST = { id:'pwd', label:'Person with disability', sub:'Served by a different department' };
 const STAGES = [
   { id:'school',  label:'In school' },
   { id:'college', label:'In college or beyond' },
@@ -30,19 +34,19 @@ const STATES = ['Bihar','Maharashtra','Uttar Pradesh','Rajasthan','Tamil Nadu','
 
 /* benefit = what you get · runBy = who runs it · juris = Central | State | Corporation */
 const SCHEMES = [
-  { t:'Post-Matric Scholarship for SC Students', g:['sc'], s:['college'], n:['edu'],
+  { t:'Post-Matric Scholarship for SC Students', g:['sc','student'], s:['college'], n:['edu'],
     benefit:'Scholarship', runBy:'MoSJE', juris:'Central',
     need:'Caste certificate, family income under ₹2.5 lakh a year, and proof of college admission.', apply:'National Scholarship Portal' },
-  { t:'Pre-Matric Scholarship for SC Students (Class IX and X)', g:['sc'], s:['school'], n:['edu'],
+  { t:'Pre-Matric Scholarship for SC Students (Class IX and X)', g:['sc','student'], s:['school'], n:['edu'],
     benefit:'Scholarship', runBy:'MoSJE', juris:'Central',
     need:'Headmaster certification, academic records, and proof of residence.', apply:'National Scholarship Portal' },
-  { t:'Central Sector Scholarship of Top Class Education for SC Students', g:['sc'], s:['college'], n:['edu'],
+  { t:'Central Sector Scholarship of Top Class Education for SC Students', g:['sc','student'], s:['college'], n:['edu'],
     benefit:'Full tuition', runBy:'MoSJE', juris:'Central',
     need:'Admission to a listed premier institution, and an income certificate.', apply:'National Scholarship Portal' },
-  { t:'National Fellowship for Scheduled Caste Students', g:['sc'], s:['college'], n:['edu'],
+  { t:'National Fellowship for Scheduled Caste Students', g:['sc','student'], s:['college'], n:['edu'],
     benefit:'Monthly stipend', runBy:'UGC for MoSJE', juris:'Central',
     need:'Registration in an M.Phil or Ph.D programme.', apply:'UGC portal' },
-  { t:'SHRESHTA — Residential Education for SC Students', g:['sc'], s:['school'], n:['edu'],
+  { t:'SHRESHTA — Residential Education for SC Students', g:['sc','student'], s:['school'], n:['edu'],
     benefit:'Residential schooling', runBy:'MoSJE', juris:'Central',
     need:'Class VIII pass, and family income under ₹2.5 lakh a year.', apply:'SHRESHTA portal' },
   { t:'Credit Enhancement Guarantee Scheme for the Scheduled Castes', g:['sc'], s:['working'], n:['work'],
@@ -54,13 +58,13 @@ const SCHEMES = [
   { t:'NSFDC Term Loan', g:['sc'], s:['working'], n:['work'],
     benefit:'Concessional loan', runBy:'NSFDC', juris:'Corporation',
     need:'Caste certificate and a State Channelising Agency in your State.', apply:'Where to apply near you' },
-  { t:'PM Young Achievers Scholarship Award Scheme (PM-YASASVI)', g:['obc'], s:['school','college'], n:['edu'],
+  { t:'PM Young Achievers Scholarship Award Scheme (PM-YASASVI)', g:['obc','student'], s:['school','college'], n:['edu'],
     benefit:'Scholarship', runBy:'MoSJE', juris:'Central',
     need:'Class IX or XI, and family income under ₹2.5 lakh a year.', apply:'National Scholarship Portal' },
-  { t:'National Fellowship for OBC Students (NF-OBC)', g:['obc'], s:['college'], n:['edu'],
+  { t:'National Fellowship for OBC Students (NF-OBC)', g:['obc','student'], s:['college'], n:['edu'],
     benefit:'Monthly stipend', runBy:'UGC for MoSJE', juris:'Central',
     need:'Registration in an M.Phil or Ph.D programme.', apply:'UGC portal' },
-  { t:'Construction of Hostels for OBC Boys and Girls', g:['obc'], s:['school','college'], n:['edu','home'],
+  { t:'Construction of Hostels for OBC Boys and Girls', g:['obc','student'], s:['school','college'], n:['edu','home'],
     benefit:'Hostel place', runBy:'State government', juris:'Central',
     need:'Applied through the institution.', apply:'Where to apply near you' },
   { t:'Scheme for Economic Empowerment of DNTs (SEED)', g:['dnt'], s:['working','college'], n:['edu','work','care','home'],
@@ -78,7 +82,7 @@ const SCHEMES = [
   { t:'Swachhta Udyami Yojana', g:['safai'], s:['working'], n:['work'],
     benefit:'Concessional loan', runBy:'NSKFDC', juris:'Corporation',
     need:'A sanitation-related business proposal.', apply:'Where to apply near you' },
-  { t:'Pre-matric Scholarship for Children of Those in Unclean Occupations', g:['safai','sc'], s:['school'], n:['edu'],
+  { t:'Pre-matric Scholarship for Children of Those in Unclean Occupations', g:['safai','sc','student'], s:['school'], n:['edu'],
     benefit:'Scholarship', runBy:'MoSJE', juris:'Central',
     need:'Parent’s occupation certificate.', apply:'National Scholarship Portal' },
   { t:'Atal Vayo Abhyuday Yojana (AVYAY)', g:['senior'], s:['senior'], n:['care','home'],

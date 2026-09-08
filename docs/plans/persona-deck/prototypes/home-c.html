@@ -4,7 +4,8 @@
 <style>
 .strip{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 22px}
 .result{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);overflow:hidden;background:#fff}
-.rhead{padding:16px 20px;border-bottom:1px solid var(--sa-hair)}
+.rhead{padding:14px 20px;border-bottom:1px solid var(--sa-hair);display:flex;align-items:center;gap:14px}
+.rhead img{width:52px;height:52px;object-fit:contain;border-radius:50%;background:var(--sa-primary-50);flex:none}
 .rhead b{font-size:16px;color:var(--sa-primary-800)}
 .rhead p{margin:4px 0 0;font-size:13px;color:var(--sa-ink-muted)}
 .rrow{display:flex;align-items:center;gap:16px;padding:15px 20px;border-bottom:1px solid var(--sa-hair)}
@@ -49,7 +50,7 @@ function draw(){
   const n = SCHEMES.filter(s=>s.g.includes(sel)).length;
   el('out').innerHTML = `
     <div class="result rise">
-      <div class="rhead"><b>${g.label}</b><p>${g.sub}</p></div>
+      <div class="rhead"><img src="personas/${g.id}.png" alt=""><div><b>${g.label}</b><p>${g.sub}</p></div></div>
       <div class="rrow"><div class="grow"><span class="tag saff">Portal</span>
         <h4>${r.portal[0]}</h4><small>${r.portal[1]}</small></div>
         <button class="btn">Apply now →</button></div>
