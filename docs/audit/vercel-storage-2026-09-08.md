@@ -18,10 +18,11 @@ had nowhere to go.
 | Function bundle (`standalone/node_modules`) | 42 MB — already well traced, not the problem |
 
 Both allowances are shared across every **retained** deployment, so the sum is
-what counts, not any single build. At ~600 MB of build output apiece, the 10 GB
-ceiling is reached in roughly **seventeen deployments** of unchanged files, and
-far fewer once dedupe stops helping — which it does the moment a shared component
-changes and all 1,300 prerendered pages are rewritten.
+what counts, not any single build. A build is ~600 MB, but that is not what a
+deployment *stores*: Vercel deduplicates, so the 140 MB of assets is kept once and
+each deployment is charged only for what changed. 1,174 of them filled exactly
+10 GB, which puts the stored cost at about **8.7 MB each** — see the update below,
+which is where this audit changed its mind.
 
 The heaviest route trees, for the record:
 
@@ -43,11 +44,12 @@ written `.html`, six `.rsc` variants and the segment-cache entries for each.
    answers 200, and the production deployment serving them was never a candidate
    for removal.
 2. **Gated the build** — `scripts/vercel-ignore-build.sh`, wired through
-   `apps/hub/vercel.json`. It skips a preview when the branch has no open pull
-   request, and skips any commit whose changed files all sit outside the
-   deployment (`docs/`, `Assets/`, `tools/`, `.claude/`, markdown — the same set
-   `.vercelignore` already refuses to upload). Measured against the last 300
-   commits: **11% of builds avoided**, plus the handful of pre-PR branch pushes.
+   `apps/hub/vercel.json`. It skips any commit whose changed files all sit outside
+   the deployment (`docs/`, `Assets/`, `tools/`, `.claude/`, markdown — the same
+   set `.vercelignore` already refuses to upload). Measured against the last 300
+   commits: **11% of builds avoided**. Its first version also skipped previews on
+   branches with no open pull request; the update below replaced that with the
+   stronger rule.
 3. **Made the purge repeatable** — `npm run vercel:prune`, which builds the
    keep-list itself rather than trusting `--safe`.
 
@@ -73,11 +75,47 @@ a deployment still **building** cannot be removed and the CLI *hangs* rather tha
 erroring — one such id stalled a batch of ten for three and a half minutes — and a
 batch call fails whole, so a failed batch is retried one id at a time.
 
+## Update, same day — branch previews are off by default
+
+The measurement that settles it: **1,174 retained deployments filled exactly
+10 GB, so the average retained deployment costs about 8.7 MB.** Deduplication is
+doing the heavy lifting — the 140 MB of static assets is stored once, and a
+deployment's marginal cost is only what changed. That inverts the conclusion
+above: **the count is the problem, not the size of a build.**
+
+798 of the 1,174 were branch previews, and they were rarely opened. So previews
+are now off unless a push asks for one — the token `[preview]` in the commit
+**subject** — which leaves roughly 376 deployments in a 30-day window, about a
+third of the cap, and holds there because the window keeps rolling.
+
+Only the subject line is matched, and that was learned the hard way: the commit
+that introduced the rule described the token in its own body, matched itself, and
+built the preview it had just switched off. A body discusses the token; a subject
+is a person saying what the push is for.
+
+| 30-day window | Retained | Storage |
+|---|---|---|
+| What happened | 1,174 | 100% of both caps |
+| Previews off | ~376 | ~33% |
+| Previews off, plus the docs-only rule | ~335 | ~29% |
+
+**Nothing is lost by this.** Review and CI live on the pull request in GitHub
+Actions and have never depended on Vercel building a preview. `main` has no branch
+protection and no rulesets, so a preview check that does not report cannot block a
+merge — checked, not assumed.
+
+**Merging to `main` locally and pushing was considered and rejected.** It would cut
+the same 798 deployments, but `.husky/pre-commit` refuses commits on `main` for a
+reason: CI then reports after the deploy has already raced it. Turning previews off
+achieves the storage saving without touching the branch discipline.
+
 ## What is still open
 
-**The build output is the real ceiling, and it has not been addressed.** Purging
-buys headroom; it does not change the fact that each deployment costs ~600 MB.
-Two levers, neither taken yet because both change how the estate renders:
+**Build size is the remaining lever, and it is now the SMALLER one.** With
+deduplication measured at ~8.7 MB stored per deployment, cutting the count was
+worth more than cutting the build, and the count has been cut. These stay on the
+list for the day the deploy rate climbs again — neither is urgent, and both change
+how the estate renders:
 
 - **Stop prerendering every route at build time.** `website/organisation/` and
   `website/schemes-services/` prerender 1,300-odd pages into 171 MB. Rendering
@@ -90,11 +128,10 @@ Two levers, neither taken yet because both change how the estate renders:
   Vercel ships them inside the function has NOT been verified here — check that
   before spending the change.
 - **Move the 44 MB of QC report PDFs out of `apps/hub/public/reports`.** This was
-  on the list and was deliberately not done: PDFs that do not change dedupe across
-  deployments, so they cost 44 MB once, not per build — against 600 MB of build
-  output every time. Moving them means new URLs for documents a citizen can
-  currently download, which is a worse trade than it looks. The two levers above
-  are where the storage actually is.
+  on the list and was deliberately not done, and the 8.7 MB measurement is why:
+  PDFs that do not change are stored once, so they cost 44 MB in total rather than
+  per build. Moving them means new URLs for documents a citizen can currently
+  download — a real cost for almost no saving.
 
 ## The measurements behind this
 
