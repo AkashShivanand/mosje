@@ -54,7 +54,7 @@
     display: grid;
     /* mark | copy | dismiss on the first row; the routes take a row of their own
        below 1024, where three controls on one line would each be two words wide. */
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: var(--sa-stack-12) var(--sa-inline-16);
     padding-block: var(--sa-padding-12);
@@ -62,26 +62,13 @@
 
   @media (min-width: 1024px) {
     .orger__inner {
-      grid-template-columns: auto minmax(0, 1fr) auto auto;
+      grid-template-columns: minmax(0, 1fr) auto auto;
     }
-  }
-
-  .orger__mark {
-    grid-row: 1;
-    grid-column: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--sa-padding-40);
-    height: var(--sa-padding-40);
-    border-radius: var(--sa-shape-8);
-    background-color: var(--sa-bg-neutral-base);
-    color: var(--sa-color-secondaryScale-600);
   }
 
   .orger__copy {
     grid-row: 1;
-    grid-column: 2;
+    grid-column: 1;
     min-width: 0;
     display: flex;
     flex-direction: column;
@@ -131,44 +118,32 @@
     gap: var(--sa-inline-16);
     flex-wrap: wrap;
     grid-row: 2;
-    grid-column: 2 / -1;
+    grid-column: 1 / -1;
   }
 
   @media (min-width: 1024px) {
     .orger__routes {
       grid-row: 1;
-      grid-column: 3;
+      grid-column: 2;
       flex-wrap: nowrap;
     }
   }
 
   /*
-   * The majority route. Filled saffron rather than the estate's blue, because a
-   * blue filled button here would read as the page's primary action — and the
-   * page's primary action is the campaign's own "Register Now" in the band
-   * above, which is a permanent invitation rather than a six-week one.
+   * THE CTA IS `Button` NOW; THIS RULE SETS ONE PROPERTY.
    *
-   * `secondaryScale-700` carries white at 4.9:1; `-600` does not, and this is
-   * text, so §1.4.3 binds it at 4.5:1.
+   * It was a filled `secondaryScale-700` pill — the only saturated fill below
+   * the masthead, so a six-week campaign strip was louder than the page's
+   * permanent primary action. Outlined, it is emphatic without out-ranking a
+   * hero it will outlive by nothing.
+   *
+   * `--sa-btn-edge` is the hook `button.css` publishes for the ink and border
+   * of the outlined appearances. Saffron `-700` measures 6.05:1 on the ribbon's
+   * own `#fff2ed` ground as text, and well past 1.4.11's 3:1 as an edge; the
+   * brand blue the DS would otherwise draw belongs to the hero, not here.
    */
   .orger__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-8);
-    padding: var(--sa-padding-8) var(--sa-padding-16);
-    border-radius: var(--sa-shape-8);
-    background-color: var(--sa-color-secondaryScale-700);
-    color: var(--sa-text-neutral-inverse);
-    font-size: var(--sa-type-label-1-size);
-    line-height: var(--sa-type-label-1-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    text-decoration: none;
-    white-space: nowrap;
-    transition: background-color 150ms ease;
-  }
-
-  .orger__cta:hover {
-    background-color: var(--sa-color-secondaryScale-800);
+    --sa-btn-edge: var(--sa-color-secondaryScale-700);
   }
 
   /* The other audience. Underlined from rest, because a link that is only a
@@ -206,12 +181,12 @@
     cursor: pointer;
     justify-self: end;
     grid-row: 1;
-    grid-column: 3;
+    grid-column: 2;
   }
 
   @media (min-width: 1024px) {
     .orger__dismiss {
-      grid-column: 4;
+      grid-column: 3;
     }
   }
 

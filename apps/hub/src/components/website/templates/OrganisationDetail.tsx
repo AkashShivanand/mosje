@@ -21,7 +21,6 @@ import { localiseDocumentUrl } from "@/lib/website/sample-documents";
 import { trimRedundantOpening } from "@/lib/website/organisation-prose";
 import { OrganisationIndex } from "./OrganisationIndex";
 import { OrganisationDocumentTabs } from "../OrganisationDocumentTabs";
-import { OrganisationEventRibbon } from "../OrganisationEventRibbon";
 import { OrganisationMessages } from "../OrganisationMessages";
 import { OrganisationUpdates } from "../OrganisationUpdates";
 import "./organisation-detail.css";
@@ -1642,9 +1641,6 @@ export function OrganisationDetail({
         </div>
       )}
 
-      {detail?.eventRibbon != null && (
-        <OrganisationEventRibbon ribbon={detail.eventRibbon} />
-      )}
 
       <div className={`orgd${hasRail ? " orgd--railed" : ""}`}>
         <div className="sa-container orgd__grid">
