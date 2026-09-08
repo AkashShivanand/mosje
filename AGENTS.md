@@ -154,6 +154,38 @@ estate, Storybook included, on **port 3007**. There is no per-portal dev server.
 - **Commit messages carry no AI attribution.** No `Co-Authored-By: Claude`, no
   "Generated with Claude Code". `.husky/commit-msg` strips them as a backstop.
 
+## Figma libraries: SAMAVESH is the only one we BUILD from (standing instruction, 2026-09-08)
+
+**Every Figma file we author binds to the SAMAVESH Design System library —
+`3FF5l0SMNIwdpZrKkeyPTm`, the canonical library named in `GOVERNANCE.md` — and to
+nothing else.** The other libraries reachable from this estate, `MoSJE + UX4G DS`
+and `MoSJE Portal DS`, are **read-only reference**: open them to check a value or
+a pattern, never bind a fill, a style or a component to them.
+
+They are near-misses, which is exactly what makes them dangerous. `MoSJE + UX4G
+DS` publishes `Primary/800 #01376B` where SAMAVESH publishes
+`bg/brand/primary/boldest #003975`; `Neutral/200 #E2E6EA` against SAMAVESH's
+`border/neutral/subtle #DCDEE1`. A file bound to the wrong one looks right and
+drifts from the estate by a shade nobody can name. That happened to the service
+discovery deck on 2026-09-08 and was only caught by reading `figma.config.json`
+for the file key rather than by looking at it.
+
+**Binding by hand is the failure mode.** A literal that merely EQUALS a token is
+not bound to it — the same defect `documentation-ds-linkage.md` names for the web
+surfaces. Import the variable and bind; do not type the hex.
+
+Two properties of SAMAVESH that decide how a file consumes it:
+
+- It publishes only the **semantic** layer — `bg/*`, `text/*`, `border/*`,
+  `icon/*`, `cmp/*`, 509 variables. The `Palette` collection publishes **nothing**,
+  which is the same Tier-1/Tier-2 boundary `design-system-architecture.md`
+  enforces in code: consume `--sa-*`, never a `--sa-ref-*` primitive.
+- Its text ramp is a **UI** ramp: Headline 16–40, Body 12–16, and a Display tier
+  (40–80) set in `Noto Sans Display`. None of that fits a 1920px slide canvas, so
+  a deck connects the tiers whose size genuinely matches a slide role and sets the
+  rest explicitly in Noto Sans. **If slide-scale text styles are wanted, they
+  belong in SAMAVESH** — not hand-set in each deck.
+
 ## Safety rules (learned the hard way)
 
 - **macOS is case-insensitive.** `Portals` and `portals` are the SAME directory.
