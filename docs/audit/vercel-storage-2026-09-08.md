@@ -36,11 +36,12 @@ written `.html`, six `.rsc` variants and the segment-cache entries for each.
 
 ## What was done
 
-1. **Purged 1,161 of the 1,174 deployments**, against an explicit keep-list: the
-   live production deployment, the four production builds before it, and the
-   newest preview for each of the eight branches still on origin. The live site
-   was checked before and after — `/` still redirects to the gate, `/gate` still
-   answers 200.
+1. **Took the project from 1,174 retained deployments to 15**, against an explicit
+   keep-list: the live production deployment, the four production builds before
+   it, and the newest preview for each branch still on origin. The live site was
+   checked before and after — `/` still redirects to the gate, `/gate` still
+   answers 200, and the production deployment serving them was never a candidate
+   for removal.
 2. **Gated the build** — `scripts/vercel-ignore-build.sh`, wired through
    `apps/hub/vercel.json`. It skips a preview when the branch has no open pull
    request, and skips any commit whose changed files all sit outside the
@@ -64,8 +65,13 @@ deployment its own `-<hash>-` alias, so `--safe` reads nearly the whole history 
 in use: it removed 213 of 1,174 and then reported nothing left to do, twice, while
 the account was still at 100%. The prune therefore states its keep-list — the live
 production deployment, the four production builds before it, and the newest preview
-for each branch still on origin — and deletes everything else. That took the project
-from 806 retained deployments to 13.
+for each branch still on origin — and deletes everything else. That is what took the
+project from 1,174 to 15.
+
+Two things that only showed up in the doing, both now encoded in the script:
+a deployment still **building** cannot be removed and the CLI *hangs* rather than
+erroring — one such id stalled a batch of ten for three and a half minutes — and a
+batch call fails whole, so a failed batch is retried one id at a time.
 
 ## What is still open
 
