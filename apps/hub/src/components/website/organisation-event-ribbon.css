@@ -183,23 +183,53 @@
     --sa-btn-edge: var(--sa-color-secondaryScale-700);
   }
 
-  /* The other audience. Underlined from rest, because a link that is only a
-     colour is not a link to a reader who cannot see the colour (§1.4.1). */
-  /* `padding-block` takes the hit area from 16px to 24px. As a standalone
-     control in a control row — not a link inside a sentence — it does not get
-     WCAG 2.2 §2.5.8's inline-text exception, so it meets the 24×24 minimum on
-     its own rather than relying on the spacing clause. */
+  /*
+   * THE SECOND ROUTE — a qualifier, then a link.
+   *
+   * Both at the sentence's own size. At `label-2` the link was 12px beside a
+   * 14px sentence and a 14px button, which made the smallest text in the ribbon
+   * the one a reader had to decide about.
+   */
+  .orger__second {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--sa-inline-6);
+    flex-wrap: wrap;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .orger__second-note {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /*
+   * SAFFRON, NOT BRAND BLUE — the ribbon gets ONE accent.
+   *
+   * The strip carried four inks on a 48px line: a saffron eyebrow, a near-black
+   * sentence, a saffron button and a BLUE link. The blue was the only blue on a
+   * cream ground between a green band and a blue hero, and it belonged to the
+   * hero's system rather than to this one, so the ribbon's second route read as
+   * a fragment of another component.
+   *
+   * `secondaryScale-700` is what the button's edge and the leading rule already
+   * use, and it measures 6.05:1 as text on the ribbon's `#fff2ed` wash.
+   *
+   * Underlined from rest, because a link that is only a colour is not a link to
+   * a reader who cannot see the colour (§1.4.1). `padding-block` takes the hit
+   * area to 24px: as a standalone control in a control row it does not get WCAG
+   * 2.2 §2.5.8's inline-text exception, so it meets the 24×24 minimum on its own
+   * rather than relying on the spacing clause.
+   */
   .orger__alt {
     padding-block: var(--sa-padding-4);
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    color: var(--sa-text-link-brand-default);
+    color: var(--sa-color-secondaryScale-700);
     text-decoration: underline;
     text-underline-offset: 0.2em;
   }
 
   .orger__alt:hover {
-    color: var(--sa-text-link-brand-hover);
+    text-decoration-thickness: 2px;
   }
 
   /*

@@ -147,15 +147,28 @@ export function OrganisationEventRibbon({
               </NextLink>
 
               {ribbon.altAction != null && (
-                <NextLink
-                  className="orger__alt"
-                  href={ribbon.altAction.href}
-                  target={altExternal ? "_blank" : undefined}
-                  rel={altExternal ? "noreferrer" : undefined}
-                >
-                  {ribbon.altAction.label}
-                  {altExternal && <span className="sr-only"> (opens in a new tab)</span>}
-                </NextLink>
+                /*
+                 * THE QUALIFIER IS TEXT AND THE ROUTE IS THE LINK.
+                 *
+                 * This was one 290px underlined string carrying a question and
+                 * an instruction — so the second-choice route was WIDER than the
+                 * primary button next to it, and the thing a reader clicked
+                 * included a question they were meant to answer first.
+                 */
+                <span className="orger__second">
+                  {ribbon.altAction.note ? (
+                    <span className="orger__second-note">{ribbon.altAction.note}</span>
+                  ) : null}
+                  <NextLink
+                    className="orger__alt"
+                    href={ribbon.altAction.href}
+                    target={altExternal ? "_blank" : undefined}
+                    rel={altExternal ? "noreferrer" : undefined}
+                  >
+                    {ribbon.altAction.label}
+                    {altExternal && <span className="sr-only"> (opens in a new tab)</span>}
+                  </NextLink>
+                </span>
               )}
             </div>
 

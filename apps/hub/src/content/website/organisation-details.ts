@@ -195,8 +195,38 @@ export interface OrganisationDetail {
   joinBanner?: {
     heading: string;
     text: string;
-    action: { label: string; href: string; external?: boolean };
+    action: {
+      /** The department's own words, kept whole. Used as the accessible name. */
+      label: string;
+      /**
+       * What the BUTTON shows, where the department's label is a sentence.
+       *
+       * NMBA publishes "Register Now, Be a volunteer for change" — two clauses
+       * doing two jobs in one control, 331px wide, beside a QR that opens the
+       * same URL. The second clause is also a restatement of the band's own
+       * sentence two inches to its left, so showing it on the button says the
+       * same thing twice at two weights.
+       *
+       * The full label stays as `aria-label`, so nothing is lost to a screen
+       * reader and the visible text is contained in the accessible name — WCAG
+       * 2.2 §2.5.3. Omit it and the button shows `label`.
+       */
+      shortLabel?: string;
+      href: string;
+      external?: boolean;
+    };
     helplineLabel: string;
+    /**
+     * What the CALL BUTTON shows, where the published label is long.
+     *
+     * "National De-Addiction Helpline" makes a 364px control — wider than the
+     * campaign's own message beside it, which put the band's emphasis back on
+     * the layout rather than on the buttons. The full label stays as the
+     * button's `aria-label`, and the key-facts strip 200px below prints it in
+     * full, so nothing is lost from the page. Omit it and the button shows
+     * `helplineLabel`.
+     */
+    helplineShortLabel?: string;
     helplineNumber: string;
     /**
      * A QR that scans to the SAME destination as `action`.
@@ -358,9 +388,43 @@ export interface OrganisationDetail {
     /** Displayed end of the window — "30 September 2026". */
     until?: string;
     /** The majority route. */
-    action: { label: string; href: string; external?: boolean };
+    action: {
+      /** The department's own words, kept whole. Used as the accessible name. */
+      label: string;
+      /**
+       * What the BUTTON shows, where the department's label is a sentence.
+       *
+       * NMBA publishes "Register Now, Be a volunteer for change" — two clauses
+       * doing two jobs in one control, 331px wide, beside a QR that opens the
+       * same URL. The second clause is also a restatement of the band's own
+       * sentence two inches to its left, so showing it on the button says the
+       * same thing twice at two weights.
+       *
+       * The full label stays as `aria-label`, so nothing is lost to a screen
+       * reader and the visible text is contained in the accessible name — WCAG
+       * 2.2 §2.5.3. Omit it and the button shows `label`.
+       */
+      shortLabel?: string;
+      href: string;
+      external?: boolean;
+    };
     /** The other audience, named in its own words. */
-    altAction?: { label: string; href: string; external?: boolean };
+    altAction?: {
+      /**
+       * Plain text set BEFORE the link, where the second route needs a
+       * qualifier to make sense.
+       *
+       * NMBA's read "No departmental account? File on the open register" — a
+       * question and an instruction inside one 290px underlined link, which made
+       * the SECONDARY route wider than the primary button beside it. A control's
+       * label is a label; the condition under which a reader should use it is
+       * context, and context is not clickable.
+       */
+      note?: string;
+      label: string;
+      href: string;
+      external?: boolean;
+    };
   };
   downloads?: {
     heading: string;
@@ -2212,10 +2276,15 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       text: "Become a Nasha Mukt Mitr and contribute towards building a healthier, safer and Nasha Mukt Bharat.",
       action: {
         label: "Register Now, Be a volunteer for change",
+        shortLabel: "Register Now",
         href: "https://nashamukt.dosje.gov.in/nasha-mukti-mitr",
         external: true,
       },
       helplineLabel: "National De-Addiction Helpline",
+      // "National" goes and "De-Addiction" stays: the band's own words are
+      // "Join Nasha Mukt Bharat Abhiyaan", so nothing else in the row says what
+      // the helpline is for.
+      helplineShortLabel: "De-Addiction Helpline",
       helplineNumber: "14446",
       // Scans to the same nasha-mukti-mitr form the button opens. The file is
       // already published in this record's downloads; this is the same asset,
@@ -2394,7 +2463,8 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
        */
       action: { label: "File Pre-Event Details", href: "/portals/nmba/admin/login" },
       altAction: {
-        label: "No departmental account? File on the open register",
+        note: "No departmental account?",
+        label: "File on the open register",
         href: "/portals/nmba/activities",
       },
     },

@@ -392,3 +392,125 @@ option rather than resolved in it.
 
 Stills: `docs/audit/img/flight-{1-before,2-midair,3-after}.png`, captured at
 1440x900 / DPR 2 with the animation clock frozen at 200ms for the mid-air frame.
+
+---
+
+## 10. The two bands, rebalanced — and the white cast finally located
+
+### 10.1 What the audit measured, before
+
+Green band, 1440×104, content `x=84…1356`:
+
+| | x | w | h |
+|---|---|---|---|
+| helpline pill | 84 | **362** | 48 |
+| copy | 470 | 387 | 70 |
+| QR | 881 | 72 | 72 |
+| CTA | 961 | **331** | 32 |
+| dismiss | 1316 | 40 | 40 |
+
+**The gaps were 24 · 24 · 8 · 24.** That single 8 was the defect: it welded a
+scannable code to the left edge of a button, in the middle of the band, between
+a sentence and that sentence's own action — so a reader met the code before they
+met the thing it was a shortcut TO.
+
+**Five heights, one shared centre, no shared edge.** 48 / 70 / 72 / 32 / 40, all
+optically centred on y=305. A centre line is invisible; a flush top and bottom is
+not. That is what "unbalanced" was describing.
+
+The brightest, widest object was the helpline — 362px of pure white — and it was
+not the band's message. The CTA label was two clauses with a comma splice, 331px,
+opening the same URL as the 72px code beside it. The dismiss carried a permanent
+12% white wash in a 40px box, more painted surface than any control on the ribbon
+below it.
+
+### 10.2 What it is now
+
+```
+[QR] ─24─ Join Nasha Mukt Bharat Abhiyaan ─24─ [Register Now] ──40── [Helpline 14446] ─24─ ×
+ └──────────────── the campaign, one sentence ───────────────┘        └ a standing service
+```
+
+Measured: QR 72 · copy 580 · Register 180 · Helpline 296 · × 32, gaps 24 / 24 /
+**40** / 24. Two numbers, and the 40 is the helpline's own leading margin —
+because the separation belongs to the thing being set apart, not to the campaign.
+
+The QR leads and takes the row's full 72px height, so the band has a left edge
+the eye can measure everything else against. The helpline is the only filled
+control in the band and it is no longer paired with the campaign's button: they
+had read as two halves of one offer, and it is not part of the offer.
+
+Two labels were shortened, both with the department's full wording kept as the
+accessible name so the visible text is contained in it (WCAG 2.2 §2.5.3):
+`Register Now, Be a volunteer for change` → **Register Now** (the dropped clause
+restates the band's own sentence 200px to its left), and `National De-Addiction
+Helpline` → **De-Addiction Helpline** (364px → 296px; the key-facts strip below
+prints it in full). Both are recorded on the record type as explicit fields, not
+derived by string surgery.
+
+### 10.3 The ribbon
+
+Four inks on a 48px line — saffron eyebrow, near-black sentence, saffron button,
+**brand-blue link** — and the blue was the only blue on a cream ground between a
+green band and a blue hero. It now takes `secondaryScale-700`, the same saffron
+as the button's edge and the leading rule: one accent.
+
+The second route was one 290px underlined string carrying a question AND an
+instruction, so the second-choice route measured wider than the primary button
+beside it. It is now plain text plus a link — *No departmental account?* +
+**File on the open register** — 175 + 160, against the button's 202. A control's
+label is a label; the condition under which to use it is context, and context is
+not clickable. Its size went from `label-2` (12px) to the sentence's own 14px.
+
+Both dismisses are now 32×32 with the wash on hover only, where they were 40 and
+32 at two different treatments 50px apart.
+
+### 10.4 The white cast around the logo — three passes to find
+
+Reported repeatedly and twice reported as not present, because it is not in the
+CSS and not in the visible artwork.
+
+A PNG stores a colour for every pixel **including the fully transparent ones**,
+and most exporters write white there. Nothing sees them — until the browser
+resizes the image, at which point it interpolates neighbours and the invisible
+white bleeds into the visible edge.
+
+Measured on `nmba.png`: **30,907 transparent pixels, every one `rgb(255,255,255)`,
+of which 874 sit directly against the seal.**
+
+It shows on the DIAGONALS and not at the horizontal centre, and that is the whole
+reason it was missed: the seal fills the square edge to edge left and right, so
+there are no transparent neighbours there to bleed. The first investigation
+scanned a row through the middle of the mark, found blue running straight into
+green, and concluded there was no ring. There was — 45° away from where it looked.
+
+`tools/logo-alpha-bleed/bleed.mjs` dilates each mark's own colour outward into
+its transparent region and leaves every alpha byte untouched: no visible pixel
+changes value, and the interpolator now blends green into green. These are
+indexed PNGs whose transparent entries were all the same white duplicated across
+dozens of palette slots, so the repair reuses those redundant slots — `nmba.png`
+went 26,291 → 28,498 bytes. Four marks carried the defect: `nmba`, `daic`, `nos`,
+`sambal`.
+
+**Two wrong tests were written before the right one**, and both are recorded in
+the tool because each looks correct on its own:
+
+| Test | What it reported | Why it was wrong |
+|---|---|---|
+| "is the transparent pixel pale?" | 308 pixels on an already-repaired `nmba.png` | The seal's own edge around the National Emblem is `rgb(248,252,252)`; a correct bleed looks white |
+| "does it differ from its neighbour?" | all seventeen marks | A transparent pixel beside a *partially* transparent one differs by definition — that is anti-aliasing, not a halo |
+
+The test is both conditions together, against **fully opaque** neighbours only.
+It does not reach zero and is not a gate: a transparent pixel wedged between two
+differently coloured opaque ones can only carry one of them. On `nmba.png` that
+irreducible residue is 155 pixels, down from 874 holding pure white.
+
+Before and after at 4× device scale: `docs/audit/img/logo-zoom-before.png` and
+`logo-zoom-after.png`.
+
+### 10.5 Not touched
+
+`check` fails on this branch, and none of it is this work: `showNumbers` on
+`Pagination` in `smile-admin/(app)/persons/page.tsx`, `website/ui/data-table.tsx`
+and the design system's `data-table.tsx` are another session's uncommitted edits
+in this shared working tree. They are deliberately not staged and not reverted.
