@@ -730,3 +730,65 @@ campaign action and a permanent one. Recorded on the option rather than resolved
 in it.
 
 Stills: `opt-ctas-right.png`, `opt-ctas-below.png`, `flight-frames.png`.
+
+---
+
+## 14. The blank space, and the tablet overflow it uncovered
+
+### 14.1 The gap was a measure cap, not a layout problem
+
+Measured at 1440 on the CTAs-right option:
+
+| | |
+|---|---|
+| Copy cell | **663px** |
+| Sentence ink | **288px**, over 2 lines |
+| Gap between the sentence and the buttons | **399px** |
+
+`.xband__text` carried `max-inline-size: 44ch` — about 288px at 14px — inherited
+from when the copy sat in a narrow column. On a 663px cell it wrapped the
+sentence to two lines while **375px of its own cell stayed empty**, and the band
+looked unbalanced because a third of the row was a hole held open by a rule meant
+to prevent long lines.
+
+A measure cap protects *reading*. This is one strapline, met once, above the page
+it introduces — and the grid already caps it: the cell is `1fr` between a 72px
+code and the controls, so it can never run the full container width. That is the
+right constraint, and it is a real one.
+
+| | Before | After |
+|---|---|---|
+| Sentence | 2 lines, 288px | **1 line, 573px** |
+| Dead space | 399px | **114px** |
+| Copy block height | 59px | 41px |
+
+At 1280 it returns to two lines and at 390 to three, which is the grid doing the
+capping.
+
+### 14.2 Two regressions the measurement then exposed
+
+**The pair grid never stacked.** `.xband__inner--pair` declared its four columns
+at *every* width, so below the one-row breakpoint the copy kept a `1fr` cell
+while the controls kept their intrinsic widths: at 768 the sentence got **111px,
+six lines and a 205px band**. Every cell now names its own row and column below
+1024, and the code is dropped below 768 as production does.
+
+**The hub's inline nav had been overflowing at tablet since before this work.**
+`ds-hdr-nav.is-inline` turned on at `min-width: 768px`, and the hub's list needs
+577px beside a ~300px lockup. Binary-searched at a 768 viewport:
+
+| Items | Document width |
+|---|---|
+| 4 | 768 — fits |
+| **5** | **781 — overflows** |
+| 6 | 893 |
+
+So the compact bar had been scrolling sideways at tablet since the *fifth* entry
+landed. Adding "Explorations" as a sixth made it 112px worse and is how it was
+found, not what caused it. The breakpoint moves to **1024** — together with the
+drawer trigger's, which has always been hidden at exactly the same width, so
+there is never a band where both or neither appears.
+
+Verified at 390, 768, 900, 1024 and 1440 on `/reports` and `/explorations`: no
+horizontal scroll at any of them, and exactly one of the two navigation forms
+present at each.
