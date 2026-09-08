@@ -199,6 +199,14 @@ export function Popover({
   const trigger = React.cloneElement(child, {
     // MERGE, never assign — the consumer's own ref on the trigger is often
     // load-bearing, and React 19 removed reading `element.ref`.
+    /* eslint-disable-next-line react-hooks/refs -- MERGING A FORWARDED REF. The
+       trigger needs both this component's handle on the node (for positioning and
+       focus return) and whatever ref the consumer already put on their own
+       element. `mergeRefs` returns a callback ref and reads nothing during
+       render; the rule flags any ref passed into a function because it cannot see
+       that. There is no pure alternative — handing a node back to a ref its owner
+       gave us is inherently a write — and dropping the consumer's ref is the bug
+       this merge exists to prevent. */
     ref: mergeRefs(triggerRef, child.props.ref),
     "aria-haspopup": "dialog",
     "aria-expanded": open,
@@ -233,9 +241,10 @@ export function Popover({
             style={{
               top: coords?.top ?? 0,
               left: coords?.left ?? 0,
-              width: matchTriggerWidth
-                ? triggerRef.current?.getBoundingClientRect().width
-                : undefined,
+              // From the anchor hook, which measures the trigger in the same
+              // layout effect as the position. Reading the ref here instead was
+              // both impure and wrong on the first render, when it is still null.
+              width: matchTriggerWidth ? coords?.triggerWidth : undefined,
               // Measured before painted — see foundations/anchor.ts.
               visibility: coords ? "visible" : "hidden",
             }}
@@ -254,8 +263,14 @@ export function Popover({
                 {title}
               </p>
             ) : null}
+            {/* `closeAndRestore` is handed to the consumer to CALL LATER, from
+                their own button. It touches refs (restoring focus to the trigger),
+                so the rule treats passing it as reading a ref during render;
+                nothing is read until the consumer closes the popover, and a render
+                prop cannot be given a close handler any other way. */}
             {typeof content === "function"
-              ? content({ close: closeAndRestore })
+              ? // eslint-disable-next-line react-hooks/refs -- see above
+                content({ close: closeAndRestore })
               : content}
           </div>,
           document.body,

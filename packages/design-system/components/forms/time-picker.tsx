@@ -325,7 +325,9 @@ export function TimePicker({
               style={{
                 top: coords?.top ?? 0,
                 left: coords?.left ?? 0,
-                width: wrapRef.current?.getBoundingClientRect().width,
+                // From the anchor hook — see popover. The listbox matches the
+                // field's width, and the field is the anchor it was measured from.
+                width: coords?.triggerWidth,
                 visibility: coords ? "visible" : "hidden",
               }}
             >

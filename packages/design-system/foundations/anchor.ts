@@ -34,6 +34,18 @@ export interface AnchorCoords {
   left: number;
   /** The side actually used, which is not always the side asked for. */
   side: AnchorSide;
+  /**
+   * The trigger's measured width, for panels that match it — a select-style
+   * listbox, a time picker.
+   *
+   * It lives here because the alternative was each caller reading
+   * `triggerRef.current?.getBoundingClientRect().width` in its own JSX, which
+   * `react-hooks/refs` refuses and which was wrong anyway: on the first render
+   * the ref is still null, so the panel took `width: undefined` and only picked
+   * up the real width if something else happened to re-render it. Measured in
+   * the same layout effect as the position, it is a value the render can trust.
+   */
+  triggerWidth: number;
 }
 
 /** Distance kept between the panel and the viewport edge, in px. */
@@ -159,16 +171,13 @@ export function useAnchoredPosition({
   const [coords, setCoords] = React.useState<AnchorCoords | null>(null);
 
   React.useLayoutEffect(() => {
-    if (!open) {
-      setCoords(null);
-      return;
-    }
+    if (!open) return;
     const place = () => {
       const t = triggerRef.current?.getBoundingClientRect();
       const p = panelRef.current?.getBoundingClientRect();
       if (!t || !p) return;
       const resolved = resolveAnchorSide(side, t, p, offset);
-      setCoords(computeAnchorCoords(t, p, resolved, offset, align));
+      setCoords({ ...computeAnchorCoords(t, p, resolved, offset, align), triggerWidth: t.width });
     };
     place();
     window.addEventListener("scroll", place, true);
@@ -179,7 +188,19 @@ export function useAnchoredPosition({
     };
   }, [open, side, align, offset, triggerRef, panelRef]);
 
-  return coords;
+  /*
+   * Derived, not reset. Closing used to call `setCoords(null)` from inside the
+   * layout effect, which `react-hooks/set-state-in-effect` refuses — an effect
+   * that sets state on the same pass schedules another render for something the
+   * render could simply have computed.
+   *
+   * Returning null while closed is equivalent and cheaper. The stale coords stay
+   * in state, and cannot be seen: on reopen the layout effect re-measures BEFORE
+   * the browser paints, so the corrected position is in the DOM by the time
+   * anything is drawn — which is the same guarantee the panel already relied on
+   * for its very first measurement.
+   */
+  return open ? coords : null;
 }
 
 /** Selector for the elements that can hold focus inside an overlay panel. */

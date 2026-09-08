@@ -165,6 +165,14 @@ export function Tooltip({
     // React 19 only: `ref` is an ordinary prop, and reading `element.ref` is
     // REMOVED — doing so logs "Accessing element.ref was removed in React 19"
     // and throws during render, which silently costs you the whole tooltip.
+    /* eslint-disable-next-line react-hooks/refs -- MERGING A FORWARDED REF. The
+       trigger needs both this component's handle on the node (for positioning and
+       focus return) and whatever ref the consumer already put on their own
+       element. `mergeRefs` returns a callback ref and reads nothing during
+       render; the rule flags any ref passed into a function because it cannot see
+       that. There is no pure alternative — handing a node back to a ref its owner
+       gave us is inherently a write — and dropping the consumer's ref is the bug
+       this merge exists to prevent. */
     ref: mergeRefs(triggerRef, child.props.ref),
     // Describedby (not labelledby): the tooltip supplements the trigger's own
     // accessible name rather than replacing it. Omitted when the bubble merely

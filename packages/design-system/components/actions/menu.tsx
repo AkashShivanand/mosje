@@ -265,6 +265,14 @@ export function Menu({
   >;
 
   const trigger = React.cloneElement(child, {
+    /* eslint-disable-next-line react-hooks/refs -- MERGING A FORWARDED REF. The
+       trigger needs both this component's handle on the node (for positioning and
+       focus return) and whatever ref the consumer already put on their own
+       element. `mergeRefs` returns a callback ref and reads nothing during
+       render; the rule flags any ref passed into a function because it cannot see
+       that. There is no pure alternative — handing a node back to a ref its owner
+       gave us is inherently a write — and dropping the consumer's ref is the bug
+       this merge exists to prevent. */
     ref: mergeRefs(triggerRef, child.props.ref),
     "aria-haspopup": "menu",
     "aria-expanded": open,
