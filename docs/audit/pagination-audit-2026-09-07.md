@@ -24,10 +24,10 @@ removes what it found cannot be checked against later.
 | F-10 | Documented evidence that does not match the code | **Closed** | #370 |
 | F-11 | No results summary | **Re-filed** | Wrong as written. Figma has drawn one since before this audit — `item control=true` renders "Showing 200 of 15000 items". The gap is the CODE's, not the system's |
 | F-12 | No page-size control | **Re-filed** | Same. The Figma master has had a page-size select all along |
-| F-13 | No Previous/Next-only mode | Open | — |
-| F-14 | No jump-to-page | Open | — |
-| F-15 | No unknown-total mode | Open | — |
-| F-16 | No loading state | Open | — |
+| F-13 | No Previous/Next-only mode | **Closed** | `showNumbers={false}` — the three hand-rolls beside the component can now ask it |
+| F-14 | No jump-to-page | **Closed** | `showJump`, button form only — the field needs a submit handler and this file stays free of "use client" so `hrefFor` can cross the server boundary |
+| F-15 | No unknown-total mode | **Closed** | `totalPages` is optional; omitting it drops the numbers and reads `hasNext`. Built on request, and it still has NO consumer — the first server-paged register will be the test of whether the shape is right |
+| F-16 | No loading state | **Closed** | `loading` marks the control `aria-busy` and makes every control inert |
 | F-17 | ~~`Pagination` has no Figma master~~ | **WRONG — withdrawn** | The master has existed all along (`522:216228`, six variants, well bound). The audit repeated the docs page's `figma absent` claim without checking the library, and the 8 September re-verification checked the same two repository facts rather than Figma. Corrected: the docs page now links the node, and the master gained a `Size=md` axis matching the code |
 | F-18 | The docs specimen omits `size="sm"` | **Closed** | The specimen draws `sm` in a 19rem box — PM-AJAY's coverage rail, the constraint it exists for |
 

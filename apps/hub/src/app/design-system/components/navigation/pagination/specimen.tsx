@@ -6,6 +6,9 @@ import * as React from "react";
 export function PaginationSpecimen(): React.JSX.Element {
   const [page, setPage] = React.useState(3);
   const [railPage, setRailPage] = React.useState(2);
+  const [stepPage, setStepPage] = React.useState(4);
+  const [feedPage, setFeedPage] = React.useState(2);
+  const [jumpPage, setJumpPage] = React.useState(7);
   return (
     <div style={{ display: "grid", gap: "var(--sa-stack-24)" }}>
       <Pagination page={page} totalPages={12} onPageChange={setPage} />
@@ -43,6 +46,38 @@ export function PaginationSpecimen(): React.JSX.Element {
           label="States"
         />
       </div>
+
+      {/* Steps only — GOV.UK's block form, and what three surfaces here had
+          already hand-rolled beside the component. */}
+      <Pagination
+        page={stepPage}
+        totalPages={12}
+        onPageChange={setStepPage}
+        showNumbers={false}
+        label="Applications"
+      />
+
+      {/* No total: a cursor-paged feed. It says the page it is on and nothing
+          it cannot know. */}
+      <Pagination
+        page={feedPage}
+        onPageChange={setFeedPage}
+        hasNext={feedPage < 4}
+        label="Notifications"
+      />
+
+      {/* Go to page, for a set too long to walk. Button form only. */}
+      <Pagination
+        page={jumpPage}
+        totalPages={99}
+        onPageChange={setJumpPage}
+        showJump
+        label="Advices"
+      />
+
+      {/* Loading: every control inert, so three presses cannot queue against
+          one request. */}
+      <Pagination page={4} totalPages={12} onPageChange={() => {}} loading label="Fetching" />
     </div>
   );
 }

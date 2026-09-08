@@ -9125,16 +9125,17 @@ export const GENERATED_PROPS = {
         "description": "1-based current page."
       },
       {
-        "name": "totalPages",
-        "type": "number",
-        "required": true,
-        "description": "Total number of pages. Values below 1 render nothing."
-      },
-      {
         "name": "className",
         "type": "string",
         "required": false,
         "description": ""
+      },
+      {
+        "name": "hasNext",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Whether a next page exists. Only consulted when `totalPages` is omitted; with a total the component works it out."
       },
       {
         "name": "hrefFor",
@@ -9150,10 +9151,31 @@ export const GENERATED_PROPS = {
         "description": "Accessible name for the surrounding nav."
       },
       {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "default": "false\n\nMarks the control `aria-busy` and makes every one of its controls inert, so\na reader cannot queue three presses against one in-flight request and land\nsomewhere they did not choose. It does NOT draw a spinner: the thing that\nis loading is the result set, and its own surface should say so.",
+        "description": "The next page is being fetched."
+      },
+      {
         "name": "onPageChange",
         "type": "(page: number) => void",
         "required": false,
         "description": "Page-change handler, for a control paginating client-side state that has no URL of its own. Ignored when `hrefFor` is given."
+      },
+      {
+        "name": "showJump",
+        "type": "boolean",
+        "required": false,
+        "default": "false\n\nFor a long set, where the window leaves most pages more than a click away:\nat 99 pages with the default `siblings`, reaching page 60 is eleven presses.\n\nBUTTON FORM ONLY, and that is a constraint rather than a preference. The\nfield needs a submit handler, and this file deliberately carries no\n\"use client\" so that `hrefFor` — a function — can cross the server\nboundary. In the link form it renders nothing; a link-form consumer that\nwants one owns a form of its own, pointed at its own URL.",
+        "description": "Offer a \"go to page\" field."
+      },
+      {
+        "name": "showNumbers",
+        "type": "boolean",
+        "required": false,
+        "default": "true\n\n`false` gives the STEPS-ONLY form — Previous, the position in words, Next —\nwhich is GOV.UK's \"block\" pagination and what three surfaces on this estate\nhad already hand-rolled beside the component rather than asking it for:\n`ListingTable`, and SMILE Admin's desktop and mobile pairs.\n\nReach for it when the reader moves through a set one at a time rather than\njumping about in it, or when the pager sits somewhere too narrow for a row\nof numbers. It is implied when `totalPages` is omitted, because there is\nthen nothing to number.",
+        "description": "Draw the numbered pages."
       },
       {
         "name": "siblings",
@@ -9168,6 +9190,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"md\"\n\n`sm` is for a pager INSIDE a card or a rail — a panel that paginates its\nown contents rather than the page. `md`'s 40px targets and word-labelled\nsteps are sized for a page-level pager with the full width to sit in; in\nPM-AJAY's 19rem coverage rail the same control asked for 267px it did not\nhave and wrapped onto two lines.\n\n`sm` is 32px, past the 24px minimum target (WCAG 2.2 SC 2.5.8), and drops\nthe step labels to icons at every width — a card pager sits beside the\nlist it pages, so \"Previous\" has a visible referent that a page-level\npager stranded at the foot of a document does not. The words stay in the\naccessibility tree either way.",
         "description": "Control size."
+      },
+      {
+        "name": "totalPages",
+        "type": "number",
+        "required": false,
+        "description": "Total number of pages. Values below 1 render nothing. OMIT IT when the total is genuinely unknown — a cursor-paged feed, or a count too expensive to run on every request. The control then drops the numbers, because a window cannot be computed without a total, and reads `hasNext` to decide whether Next is live. Do NOT pass a guess: a page count that moves under the reader is worse than one that was never claimed."
       }
     ]
   },
