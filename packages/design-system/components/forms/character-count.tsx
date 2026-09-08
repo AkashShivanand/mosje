@@ -89,10 +89,10 @@ export function CharacterCount({
   const [announced, setAnnounced] = React.useState("");
 
   React.useEffect(() => {
-    if (!shouldAnnounce) {
-      setAnnounced("");
-      return;
-    }
+    // Nothing to clear when the count is not announced: BOTH live regions below
+    // are gated on `shouldAnnounce`, so a stale string is not in the DOM to be
+    // read. Clearing the state here would only spend a render saying the same.
+    if (!shouldAnnounce) return;
     const timer = window.setTimeout(() => setAnnounced(message), ANNOUNCE_DELAY_MS);
     return () => window.clearTimeout(timer);
   }, [message, shouldAnnounce]);
@@ -122,10 +122,10 @@ export function CharacterCount({
       {/* The ANNOUNCEMENTS. Two regions, because swapping `aria-live` on one
           node is unreliable; whichever applies holds the text. */}
       <span className="ds-sr-only" aria-live="polite">
-        {over ? "" : announced}
+        {shouldAnnounce && !over ? announced : ""}
       </span>
       <span className="ds-sr-only" aria-live="assertive">
-        {over ? announced : ""}
+        {shouldAnnounce && over ? announced : ""}
       </span>
     </>
   );

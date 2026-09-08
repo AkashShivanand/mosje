@@ -77,10 +77,10 @@ export function TabsOverflow({ tabs, active, size, onSelect, ariaLabel }: TabsOv
    * scroll container whose overflow it exists to resolve.
    */
   React.useLayoutEffect(() => {
-    if (!open) {
-      setCoords(null);
-      return;
-    }
+    /* No reset on close. The menu is only rendered while `open`, and the layout
+       effect re-measures before paint on the next opening, so the stale coords in
+       state are never drawn. Clearing them cost an extra render per close. */
+    if (!open) return;
     const place = () => {
       const t = triggerRef.current?.getBoundingClientRect();
       const m = menuRef.current?.getBoundingClientRect();

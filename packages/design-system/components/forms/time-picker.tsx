@@ -132,6 +132,9 @@ export function TimePicker({
 
   const [open, setOpen] = React.useState(false);
   const [text, setText] = React.useState(value);
+  /* eslint-disable-next-line react-hooks/set-state-in-effect -- the same editable
+     buffer as NumberInput: the field holds what the reader is typing, which is not
+     always a valid time, and must resync when `value` is set from outside. */
   React.useEffect(() => setText(value), [value]);
 
   const wrapRef = React.useRef<HTMLDivElement>(null);

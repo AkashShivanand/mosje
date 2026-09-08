@@ -333,10 +333,11 @@ export function SiteHeader({
    * would silently change. Reading `scrollY` inside a rAF costs nothing measurable.
    */
   React.useEffect(() => {
-    if (!wantsScrollCollapse) {
-      setScrolled(false);
-      return;
-    }
+    /* No reset when the feature is off — `condensed` below already ANDs this
+       with `wantsScrollCollapse`, so a stale `true` cannot reach the DOM, and
+       `react-hooks/set-state-in-effect` is right that scheduling a render to
+       clear it is work the render can just do. */
+    if (!wantsScrollCollapse) return;
     let frame = 0;
     const read = () => {
       frame = 0;
@@ -662,10 +663,8 @@ export function SiteHeader({
    * burger) cannot make the nav fit again and flip it straight back.
    */
   React.useEffect(() => {
-    if (!condensed || !hasNav) {
-      setNavOverflows(false);
-      return;
-    }
+    // Same as `scrolled` above: gated on read, not cleared by an extra render.
+    if (!condensed || !hasNav) return;
     const inner = condInRef.current;
     const list = condListRef.current;
     if (!inner || !list || typeof ResizeObserver === "undefined") return;
@@ -1034,7 +1033,7 @@ export function SiteHeader({
       ref={headerRef}
       className={cn("ds-hdr", isSticky && "is-sticky", condensed && "is-scrolled", className)}
       data-variant={variant}
-      data-nav-overflow={navOverflows ? "true" : undefined}
+      data-nav-overflow={condensed && hasNav && navOverflows ? "true" : undefined}
     >
       {/* ── Tier 1: Accessibility bar (the shared DS component) ──
          Figma is the source of truth, so all four actions render: skip · font

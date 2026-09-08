@@ -42,6 +42,10 @@ export interface AppSwitcherProps {
  * panel's content; it needs one.)
  * Uses plain <a href> links so navigation works from inside any basePath-ed zone.
  */
+const subscribeToNothing = (): (() => void) => () => {};
+const pathnameOnClient = (): string => window.location.pathname;
+const pathnameOnServer = (): null => null;
+
 export function AppSwitcher({
   apps = DEFAULT_APPS,
   devMode: _devMode = false,
@@ -49,16 +53,22 @@ export function AppSwitcher({
   className,
 }: AppSwitcherProps): React.JSX.Element {
   const [open, setOpen] = React.useState(false);
-  const [pathname, setPathname] = React.useState<string | null>(null);
+  /* The current path, read on the client only — the server has no location and
+     rendering one would be a hydration mismatch.
+     `useSyncExternalStore` rather than a state-setting effect: it takes separate
+     client and server snapshots, so it answers `null` while rendering on the
+     server and through hydration, then the real path afterwards, with no extra
+     render pass. Nothing subscribes because nothing changes — the previous
+     effect had `[]` deps and did not track navigation either. */
+  const pathname = React.useSyncExternalStore(
+    subscribeToNothing,
+    pathnameOnClient,
+    pathnameOnServer,
+  );
   const rootRef = React.useRef<HTMLDivElement>(null);
   const panelRef = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const panelId = React.useId();
-
-  // Client-only pathname — avoids SSR mismatch.
-  React.useEffect(() => {
-    setPathname(window.location.pathname);
-  }, []);
 
   const closePanel = React.useCallback(() => {
     setOpen(false);

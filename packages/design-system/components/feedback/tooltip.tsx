@@ -10,7 +10,6 @@ import {
   type AnchorPosition,
   resolveAnchorSide,
   useAnchoredPosition,
-  type AnchorCoords,
 } from "../../foundations/anchor";
 import "./tooltip.css";
 

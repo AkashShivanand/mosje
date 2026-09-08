@@ -57,11 +57,17 @@ export function ColorModeProvider({
    * default it would have stamped `blue` over a portal's navy on first paint.
    * `persist: false` here is what keeps "has a cookie" meaning "chose".
    */
+  /* SYNCHRONISING WITH AN EXTERNAL SYSTEM, which is what the rule's own message
+     says effects are for. The work here is `applyColorMode` writing the
+     attribute on <html>; the state write only mirrors what was applied so
+     consumers can read it. Both inputs are cookies, which cannot be read during
+     render without the server and client disagreeing. */
   React.useEffect(() => {
     const next = hasChosenColorMode()
       ? readColorModeCookie()
       : normalizeColorMode(routeDefault ?? DEFAULT_COLOR_MODE);
     applyColorMode(next, { persist: false });
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
     setModeState((current) => (current === next ? current : next));
   }, [routeDefault]);
 

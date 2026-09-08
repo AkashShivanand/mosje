@@ -193,10 +193,7 @@ export function usePanelLeft(
   const [left, setLeft] = React.useState<number | null>(null);
 
   React.useLayoutEffect(() => {
-    if (!active || typeof window === "undefined") {
-      setLeft(null);
-      return;
-    }
+    if (!active || typeof window === "undefined") return;
 
     const resolve = () => {
       const panel = panelRef.current;
@@ -238,5 +235,10 @@ export function usePanelLeft(
     };
   }, [panelRef, active, inset]);
 
-  return left;
+  /* Derived, not reset. The effect used to `setLeft(null)` when the panel went
+     inactive, which `react-hooks/set-state-in-effect` refuses — a render can
+     compute "not placed yet" without scheduling a second pass for it. The stale
+     measurement stays in state and cannot be seen: the layout effect re-measures
+     before paint on the next activation. */
+  return active ? left : null;
 }

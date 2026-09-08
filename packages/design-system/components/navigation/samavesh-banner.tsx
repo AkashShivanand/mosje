@@ -422,7 +422,13 @@ export function SamaveshBanner({
    * left in `leaving` with an open panel slides away carrying the panel with it.
    * Watching `open` itself covers every route in.
    */
+  /* REACTING TO A CONTROLLED PROP. A parent can set `isOpen` back to true
+     without going through `handleToggle`, and a band left mid-`leaving` then
+     slides away carrying the open panel with it. The transition it has to
+     cancel IS state, so cancelling it is a state write, and the only signal is
+     the prop changing. */
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
     if (open) release();
   }, [open, release]);
 
