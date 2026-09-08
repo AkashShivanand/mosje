@@ -91,6 +91,28 @@ function storybookRewrites() {
 const nextConfig: NextConfig = {
   ...(process.env.VERCEL ? {} : { output: "standalone" as const }),
   staticPageGenerationTimeout: 180,
+  /*
+   * NO SOURCE MAPS FOR THE SERVER BUNDLE.
+   *
+   * The production build emitted 1,947 `.map` files totalling 79 MB — 14% of a
+   * 559 MB server output — and production never reads them. They exist to make a
+   * server stack trace readable, which matters on a service being debugged from
+   * its logs and does not here: this estate is prerendered, its runtime errors
+   * surface in Vercel's own error view with the frame that threw, and nobody has
+   * ever opened one of these maps.
+   *
+   * The reason it is worth 79 MB: the free tier counts Deployment Storage and
+   * Function Storage across every retained deployment, and both hit 100% on
+   * 2026-09-07 (see docs/audit/vercel-storage-2026-09-08.md). Every megabyte of
+   * build output is paid for once per deployment, and 12 production deployments
+   * landed on 2026-09-08 alone.
+   *
+   * If a runtime error ever needs a readable server trace, set this to true for
+   * that investigation and set it back.
+   */
+  experimental: {
+    serverSourceMaps: false,
+  },
   images: {
     remotePatterns: [
       {

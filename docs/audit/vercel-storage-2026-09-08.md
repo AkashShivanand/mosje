@@ -156,14 +156,52 @@ for a decision:
   thirds, at the cost of a slower first hit per page. For a password-gated
   prototype that trade looks right; for a public government site it needs a
   decision.
-- **Drop the server source maps.** `.next/server` carries 2,549 `.map` files,
-  **78 MB**, 14% of the build output, and production never reads them. Whether
-  Vercel ships them inside the function has NOT been verified here — check that
-  before spending the change.
+- ~~**Drop the server source maps.**~~ **DONE.** `experimental.serverSourceMaps:
+  false` in `apps/hub/next.config.ts`. Measured on a full rebuild: 2,549 `.map`
+  files and 79 MB became zero, and `.next/server` went from 559 MB to 480 MB — a
+  14% cut with 947 pages still generated and nothing else in the output moved.
+  The earlier note wondered whether Vercel ships the maps into the function; that
+  question is now moot, because they are no longer produced.
 - **Move the 44 MB of QC report PDFs out of `apps/hub/public/reports`.** Still the
   weakest of the three: 44 MB against a ~300 MB deployment is about a seventh, and
   moving them means new URLs for documents a citizen can currently download. Worth
   doing only alongside one of the two above, not instead of them.
+
+## Where the rest of the build weight is, measured 2026-09-08
+
+The four buckets of a 559 MB `.next/server`, before the source-map change:
+
+| Part | Size | Share |
+|---|---|---|
+| Prerendered `.html` (868 pages) | 138 MB | 25% |
+| `.segments/` router-prefetch payloads (3,928 files) | 115 MB | 21% |
+| Server source maps (1,947 files) — now zero | 79 MB | 14% |
+| Top-level `.rsc` (868 files) | 58 MB | 10% |
+| Code chunks and per-route JS | ~169 MB | 30% |
+
+A typical page costs **463 KB**: 197 KB of HTML, an 86 KB `.rsc`, and 180 KB of
+`.segments/` — inside which `_full.segment.rsc` is a byte-for-byte duplicate of
+the `.rsc` beside it. **53–55% of every page is the inline RSC payload**, not
+markup; header and footer together are 25 KB.
+
+Two things that are NOT available, so nobody spends time looking again:
+
+- **The 115 MB of `.segments` has no switch.** `clientSegmentCache` does not
+  exist in Next 16.3.4 — the name predates it — and neither Next's config types
+  nor Vercel's docs expose anything else. It is standard prerender output.
+- **The four outlier pages cannot be trimmed mechanically.** `changelog.html`
+  2.7 MB, `design-context` 1.4 MB, `tokens` 1.1 MB, and the IPSRC scheme page
+  1.7 MB are all SERVER components, and 54–64% of each is the inline RSC payload
+  — which is the serialisation of what they render. They are large because of
+  their content, not their construction. The changelog's source alone is 584 KB
+  of hand-written TSX across 2,245 lines. Making these smaller means rendering
+  less, which is a content decision, not a build setting.
+
+The remaining lever with a large, certain saving is prerendering fewer pages:
+`website/organisation` is 228 pages / 108 MB and `website/schemes-services` is
+140 pages / 63 MB. On demand with ISR they cost the build nothing and cache after
+the first hit, at the price of that first hit. Offered on 2026-09-08 and declined
+for now.
 
 ## The measurements behind this
 
