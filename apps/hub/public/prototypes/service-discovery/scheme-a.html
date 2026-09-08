@@ -22,7 +22,6 @@
 </style></head><body>
 <script src="data.js"></script><script src="shell.js"></script>
 <main class="wrap sec">
-  <p class="eyebrow">Offerings</p>
   <div>
     <h1 class="sec-t">Schemes &amp; Services</h1>
     <p class="sec-lede">All nine groups are visible at once. Choose the one that describes you.</p>
@@ -32,7 +31,7 @@
   <p class="note">Nine illustrations to commission and to keep up to date. Scheme cards would carry the Department's own creatives, which are not yet supplied. A card has little room for who runs a scheme, or whether it is Central or State — for that, see Option B.</p>
 </main>
 <script>
-mountShell('Offerings');
+/* No masthead: this option is reviewed as the section alone. */
 const el = id => document.getElementById(id);
 let sel = 'all';
 const ALL = [{id:'all',label:'All'}].concat(GROUPS);

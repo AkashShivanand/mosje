@@ -1,0 +1,325 @@
+/* ============================================================================
+   Schemes for Your Situation — exploration prototype
+   ============================================================================
+
+   Styles for the `finder` option at `/explorations/service-discovery/home-page`.
+   Not imported by any page under `/website` or `/portals`. Every value is a
+   `--sa-*` token; the `xsf` prefix marks the whole file as an exploration, the
+   same convention `campaign-band.css` set.
+
+   The section is WEBSITE furniture, so it is contained: `.sa-container` owns the
+   cap and the margin ladder and nothing here restates a width.
+   ========================================================================= */
+
+@layer theme, base, components, utilities;
+
+@layer components {
+  .xsf {
+    background-color: var(--sa-bg-neutral-base);
+    padding-block: var(--sa-padding-48) var(--sa-padding-56);
+    color: var(--sa-text-neutral-base);
+  }
+
+  /* Title row on top; below it the stepper on the left and the working panel
+     on the right. On a phone the two stack, and the stepper collapses itself. */
+  /* The original's composition: progress on top, one panel beneath it, the
+     note under the panel. */
+  .xsf__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sa-stack-20);
+    margin-block-start: var(--sa-stack-24);
+  }
+
+  /* The original set its heading in the deep brand blue; the section title
+     keeps that. */
+  .xsf .ds-section-title__heading {
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  .xsf__rail-note {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── The question panel ───────────────────────────────────────────────── */
+
+  .xsf__panel {
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-16);
+    background-color: var(--sa-bg-neutral-subtler);
+    padding: var(--sa-padding-24);
+  }
+
+  @media (max-width: 40rem) {
+    .xsf__panel {
+      padding: var(--sa-padding-8);
+    }
+  }
+
+  @media (min-width: 48rem) {
+    .xsf__panel {
+      padding: var(--sa-padding-32);
+    }
+  }
+
+  /* One question at a time enters on the system's own entry curve. Reduced
+     motion is handled at the token layer, so nothing is repeated here. */
+  /* The original's white card inside the grey panel. */
+  .xsf__step {
+    animation: xsf-enter var(--sa-motion-enter-duration)
+      var(--sa-motion-enter-easing) both;
+    background-color: var(--sa-bg-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    box-shadow: var(--sa-elevation-card);
+    padding: var(--sa-padding-24);
+  }
+
+  @keyframes xsf-enter {
+    from {
+      opacity: 0;
+      translate: 0 var(--sa-stack-8);
+    }
+    to {
+      opacity: 1;
+      translate: none;
+    }
+  }
+
+  .xsf__count {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xsf__question {
+    margin-block-start: var(--sa-stack-4);
+    font-size: var(--sa-type-headline-4-size);
+    line-height: var(--sa-type-headline-4-lh);
+    letter-spacing: var(--sa-type-heading-tracking);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .xsf__question:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+    border-radius: var(--sa-shape-4);
+  }
+
+  .xsf__hint {
+    margin-block-start: var(--sa-stack-8);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+    max-inline-size: 64ch;
+  }
+
+  .xsf__options {
+    margin-block-start: var(--sa-stack-24);
+  }
+
+  /* The option cards sit in a two-up grid at desktop. The design system's
+     horizontal group wraps as a flex row, which gives ragged tiles when the
+     labels differ in length; a grid keeps every tile the same width so the eye
+     compares labels and not edges. */
+  .xsf__options .ds-control-group__options.is-horizontal {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sa-stack-12) var(--sa-inline-12);
+  }
+
+  @media (min-width: 40rem) {
+    .xsf__options .ds-control-group__options.is-horizontal {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .xsf__options .ds-control-group__options.is-horizontal {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .xsf__options .ds-control-group__item,
+  .xsf__options .ds-selection--card {
+    block-size: 100%;
+  }
+
+  /* The Select draws its chevron against its own wrapper, so the width is
+     set on a box around it and not on the control. */
+  .xsf__select {
+    max-inline-size: 28rem;
+  }
+
+  .xsf__pager {
+    margin-block-start: var(--sa-stack-24);
+    display: flex;
+    justify-content: center;
+  }
+
+  .xsf__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    margin-block-start: var(--sa-stack-32);
+    padding-block-start: var(--sa-padding-20);
+    border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  .xsf__actions-end {
+    margin-inline-start: auto;
+    display: flex;
+    gap: var(--sa-inline-12);
+  }
+
+  /* On a phone the row cannot hold "Leave Unanswered" beside "Continue"
+     without breaking a label mid-word, so the controls stack full-width with
+     the primary action first. */
+  @media (max-width: 40rem) {
+    .xsf__actions {
+      flex-direction: column-reverse;
+      align-items: stretch;
+    }
+
+    .xsf__actions-end {
+      margin-inline-start: 0;
+      flex-direction: column-reverse;
+    }
+
+    .xsf__actions .ds-btn {
+      inline-size: 100%;
+    }
+  }
+
+  /* ── The answer ───────────────────────────────────────────────────────── */
+
+  .xsf__answers {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    margin-block-start: var(--sa-stack-16);
+  }
+
+  .xsf__answers-label {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-neutral-subtle);
+    margin-inline-end: var(--sa-inline-4);
+  }
+
+  .xsf__list {
+    list-style: none;
+    margin: var(--sa-stack-24) 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+  }
+
+  .xsf__scheme .ds-card__body {
+    display: grid;
+    gap: var(--sa-stack-12);
+  }
+
+  /* The original put the route to apply on the trailing edge of the row. */
+  @media (min-width: 64rem) {
+    .xsf__scheme .ds-card__body {
+      grid-template-columns: minmax(0, 1fr) max-content;
+      grid-template-areas:
+        "head actions"
+        "facts actions";
+      column-gap: var(--sa-inline-24);
+      align-items: start;
+    }
+
+    .xsf__scheme-head {
+      grid-area: head;
+    }
+
+    .xsf__facts {
+      grid-area: facts;
+    }
+
+    .xsf__scheme-actions {
+      grid-area: actions;
+      flex-direction: column;
+      align-items: flex-end;
+      padding-block-start: 0;
+    }
+  }
+
+  /* Title, then its tags, always in that order. Placed beside the title they
+     sat on the same line for a short title and dropped below it for a long
+     one, so the eye had to find them afresh on every row. */
+  .xsf__scheme-head {
+    display: grid;
+    gap: var(--sa-stack-8);
+  }
+
+  .xsf__scheme-title {
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    letter-spacing: var(--sa-type-title-tracking);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-brand-primary-bolder);
+    text-wrap: balance;
+    max-inline-size: 60ch;
+  }
+
+  .xsf__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+  }
+
+  .xsf__facts {
+    margin: 0;
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr);
+    gap: var(--sa-stack-6) var(--sa-inline-16);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .xsf__facts dt {
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xsf__facts dd {
+    margin: 0;
+    color: var(--sa-text-neutral-base);
+    max-inline-size: 72ch;
+  }
+
+  .xsf__scheme-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-8) var(--sa-inline-20);
+    padding-block-start: var(--sa-padding-4);
+  }
+
+  .xsf__signpost {
+    margin-block-start: var(--sa-stack-24);
+  }
+
+  .xsf__empty {
+    margin-block-start: var(--sa-stack-24);
+  }
+
+  /* The section stays the same height whatever the answer, so a reader
+     who removes a chip is not thrown down the page. */
+  .xsf__panel--answer {
+    min-block-size: 24rem;
+  }
+}

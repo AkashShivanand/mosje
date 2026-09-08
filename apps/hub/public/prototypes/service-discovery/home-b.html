@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Find support for you — Home page, Option B</title>
+<title>Find Schemes for You — Home page, Option B</title>
 <link rel="stylesheet" href="core.css">
 <style>
 .finder{background:var(--sa-surface);border-radius:var(--sa-radius-lg);padding:30px 34px 34px}
@@ -31,9 +31,8 @@
 <body>
 <script src="data.js"></script><script src="shell.js"></script>
 <main class="wrap sec">
-  <p class="eyebrow">Citizen Services</p>
   <div>
-    <h1 class="sec-t" id="head">Find support for you</h1>
+    <h1 class="sec-t" id="head">Find Schemes for You</h1>
     <p class="sec-lede" id="lede">Five short questions. Skip any of them — skipping widens the answer instead of stopping it.</p>
   </div>
   <div class="progress" id="prog"></div>
@@ -42,7 +41,7 @@
 </main>
 
 <script>
-mountShell('Home');
+/* No masthead: this option is reviewed as the section alone. */
 const Q = [
   { k:'who',   t:'Who is this for?', h:'You can answer for yourself or for someone in your family.',
     o:[{id:'self',l:'Myself'},{id:'family',l:'Someone in my family'},{id:'org',l:'An organisation I run'}] },
@@ -95,7 +94,7 @@ function render(){
   }
 }
 function results(){
-  el('head').textContent = 'What you can apply for';
+  el('head').textContent = 'What You Can Apply For';
   el('lede').textContent = 'Ordered by how closely each one fits what you told us. Every card ends in a real place to apply.';
   const list = matchSchemes({ group:ans.group, stage:ans.stage, need:ans.need });
   const chips = Object.entries(ans).filter(([,v])=>v).map(([k,v]) => {
@@ -130,7 +129,7 @@ function results(){
               You can also call the Department on 1800-11-0031.</p></div>`}`}
     </div>`;
   el('again').onclick = () => { step=0; for(const k in ans) delete ans[k];
-    el('head').textContent='Find support for you';
+    el('head').textContent='Find Schemes for You';
     el('lede').textContent='Five short questions. Skip any of them — skipping widens the answer instead of stopping it.';
     render(); };
 }
