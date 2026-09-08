@@ -268,7 +268,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           },
           {
             id: "one-tap",
-            title: "Find offerings for you",
+            title: "Find Schemes for You",
             summary:
               "A row of the nine groups. Tapping one shows the portal, the scheme and the complaint route for that group, on the home page itself.",
             status: "proposed",

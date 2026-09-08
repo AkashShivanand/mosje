@@ -23,10 +23,9 @@
 <script src="data.js"></script><script src="shell.js"></script>
 <main class="wrap sec">
   <p class="eyebrow">Offerings</p>
-  <div class="spread">
-    <div><h1 class="sec-t">Schemes &amp; Services</h1>
-      <p class="sec-lede">All nine groups are visible at once. Choose the one that describes you.</p></div>
-    <div><div class="count-big" id="n">0</div><div class="count-cap">schemes shown</div></div>
+  <div>
+    <h1 class="sec-t">Schemes &amp; Services</h1>
+    <p class="sec-lede">All nine groups are visible at once. Choose the one that describes you.</p>
   </div>
   <div class="faces" id="faces"></div>
   <div class="cards" id="cards"></div>
@@ -42,7 +41,6 @@ function draw(){
     <button class="face-btn" data-g="${g.id}" aria-pressed="${g.id===sel}">
       <span class="circ"><img src="personas/${g.id}.png" alt=""></span><span class="lbl">${g.label}</span></button>`).join('');
   const list = sel==='all' ? SCHEMES : SCHEMES.filter(s=>s.g.includes(sel));
-  el('n').textContent = list.length;
   el('cards').innerHTML = list.slice(0,9).map(s=>`
     <article class="scard rise">
       <div class="top"><span class="tag blue">${s.benefit}</span> <span class="tag grey">${s.juris}</span></div>
