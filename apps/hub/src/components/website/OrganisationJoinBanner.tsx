@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Icon } from "@mosje/design-system";
+import { Icon, buttonClasses } from "@mosje/design-system";
 import type { OrganisationDetail } from "@/content/website/organisation-details";
 import "./organisation-join-banner.css";
 
@@ -226,8 +226,31 @@ export function OrganisationJoinBanner({
                       </span>
                     ) : null}
 
+                    {/*
+                      * A DESIGN-SYSTEM BUTTON, not a re-implementation of one.
+                      *
+                      * `.orgjb__cta` used to declare its own padding, border,
+                      * radius, type, weight, hover, press and transition —
+                      * thirty-six lines restating what `Button` already owns.
+                      * Every value was correctly token-bound and it even carried
+                      * its own focus ring, so this was a re-implementation that
+                      * was RIGHT — the harder case to argue. What it cost was
+                      * not a defect but divergence: one button whose size,
+                      * weight and press would drift from every other button in
+                      * the estate the next time the component moved.
+                      *
+                      * `variant="success"` because the band is the Abhiyaan's
+                      * own green rather than the department's blue, and the DS
+                      * carries a success family for the inverse ladder. The one
+                      * thing overridden is the EDGE, through `--sa-btn-edge` —
+                      * the hook the component publishes for exactly this. The
+                      * success default is `successScale-100`, a pale green that
+                      * measures 4.79:1 on the band; the handoff draws the pill
+                      * in WHITE at 6.72:1, and this change is about what builds
+                      * the button, not about restyling it.
+                      */}
                     <a
-                      className="orgjb__cta"
+                      className={buttonClasses("success", "outlined", "sm", "orgjb__cta", "inverse")}
                       href={banner.action.href}
                       target={external ? "_blank" : undefined}
                       rel={external ? "noreferrer" : undefined}

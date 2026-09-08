@@ -22,14 +22,23 @@ removes what it found cannot be checked against later.
 | F-8 | Focus destroyed on every page change | **Closed** | #378 |
 | F-9 | No pressed state, anywhere | **Closed** | #370, with the remaining 101 selectors gated by #374 |
 | F-10 | Documented evidence that does not match the code | **Closed** | #370 |
-| F-11 | No results summary | Open | — |
-| F-12 | No page-size control | Open | — |
+| F-11 | No results summary | **Re-filed** | Wrong as written. Figma has drawn one since before this audit — `item control=true` renders "Showing 200 of 15000 items". The gap is the CODE's, not the system's |
+| F-12 | No page-size control | **Re-filed** | Same. The Figma master has had a page-size select all along |
 | F-13 | No Previous/Next-only mode | Open | — |
 | F-14 | No jump-to-page | Open | — |
 | F-15 | No unknown-total mode | Open | — |
 | F-16 | No loading state | Open | — |
-| F-17 | `Pagination` has no Figma master | Open | Verified still absent 8 September. The *Carousel* master was rebuilt in the same period; this is a different component |
+| F-17 | ~~`Pagination` has no Figma master~~ | **WRONG — withdrawn** | The master has existed all along (`522:216228`, six variants, well bound). The audit repeated the docs page's `figma absent` claim without checking the library, and the 8 September re-verification checked the same two repository facts rather than Figma. Corrected: the docs page now links the node, and the master gained a `Size=md` axis matching the code |
 | F-18 | The docs specimen omits `size="sm"` | Open | — |
+
+**One finding was simply wrong.** F-17 asserted there was no Figma master for
+`Pagination`. There was — six variants, competently bound, with a page-size control
+and a results summary the React component still lacks. The audit inherited the
+claim from the documentation page's own `figma={{ absent }}` and never opened the
+library to check. Two further findings, F-11 and F-12, were filed as "the system
+never designed this" when the truth was "the design exists and the code never
+built it" — a different problem with a different owner. All three are corrected
+above rather than quietly deleted.
 
 **One finding not in the original list**, added by the work itself: `tools/interaction-states`
 now measures the pressed-state gap across the whole design system — 109 selectors in 59 of

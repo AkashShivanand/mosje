@@ -2291,29 +2291,37 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       },
     ],
     /*
-     * THREE FACTS, ALL STATED ON THE SOURCE PAGE. "372 Districts" stood here
+     * FOUR FACTS, ALL STATED ON THE SOURCE PAGE. "372 Districts" stood here
      * until 07 Sep 2026 and is not on this page at all — an unsourced figure on
      * a government page, which this file's own header forbids.
      *
-     * THE HELPLINE WAS THE FOURTH AND IT WENT ON 07 Sep 2026, because it was
-     * the same number twice in one fold. The green band directly above this
-     * strip prints "National De-Addiction Helpline 14446" in 24px green inside
-     * a white pill — the loudest single element on the page — and the strip
-     * printed it again, in grey, 200px below. `ui-restraint-and-copy.md` §1:
-     * say it once, in the one place it is the answer. The band is that place.
+     * THE HELPLINE WAS REMOVED ON 07 SEP AND IS BACK ON 08 SEP. It went as a
+     * duplicate: the green band directly above prints "National De-Addiction
+     * Helpline 14446" in 24px inside a white pill, and printing it again in grey
+     * 200px below is the restatement `ui-restraint-and-copy.md` §1 forbids.
      *
-     * It also answers the first-fold complaint raised in the 07 Sep review, and
-     * it is the only element of that fold that could go without losing anything:
-     * the number is still on the page, twice over — the band, and the map's own
-     * "24×7 Helpline" footer.
+     * That argument was right about the duplication and wrong about which copy
+     * to keep, for a reason the audit found and the original pass did not: THE
+     * BAND IS DISMISSIBLE. Press its X and the campaign half collapses, and with
+     * it the only remaining instance of the number in the fold. A national
+     * de-addiction helpline that a reader can remove from a page about drug
+     * de-addiction by closing an advertisement is not a duplicate worth saving
+     * 200px on.
      *
-     * Three cells also stop the strip overflowing. At four, "Social Justice &
-     * Empowerment" ran flush to the card's inner edge at 1440 and sat under the
-     * chatbot launcher; at three it has a third of the card.
+     * Four cells is also the count the strip is built for: at three it drew
+     * 405px cells around 150px of content, 63% air, and read as three unrelated
+     * statements rather than a strip.
+     *
+     * The Ministry fact is the weakest of the four — a reader on the
+     * Department's own site is told the Department twice by the masthead
+     * already. It stays only because removing it returns the strip to three,
+     * which measured worse. Replace it the day the source publishes a fourth
+     * figure worth the space.
      */
     facts: [
       { icon: "flag", value: "15 August 2020", label: "Abhiyaan launched" },
       { icon: "local_hospital", value: "768", label: "De-addiction and rehabilitation centres" },
+      { icon: "call", value: "14446", label: "National de-addiction helpline" },
       { icon: "account_balance", value: "Social Justice & Empowerment", label: "Ministry" },
     ],
     /*

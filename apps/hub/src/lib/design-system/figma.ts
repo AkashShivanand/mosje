@@ -154,6 +154,7 @@ export const FIGMA_NODES = {
   // Was five hardcoded "Slide N/Desktop" frames — a mockup of one carousel.
   // Slides are consumer content; the design system owns the control row.
   carousel: "2141:296708",
+  pagination: "522:216228",
   badges: "2141:296703",
   checkbox: "15:664", // the Checkbox set. The entry pointed at the PAGE (2141:296710) until 2026-09-04
   chips: "2141:296709",

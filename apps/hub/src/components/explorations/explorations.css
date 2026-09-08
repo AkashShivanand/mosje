@@ -1,0 +1,226 @@
+/* ============================================================================
+   Explorations — the options register's own chrome
+   ============================================================================
+   Not a citizen-facing surface. This is internal tooling for presenting design
+   options to stakeholders, so it takes the estate's tokens and the estate's
+   components, but it is deliberately quieter than a website page: the thing
+   being looked at is the prototype inside the frame, not the frame.
+   ========================================================================= */
+
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ── Index ────────────────────────────────────────────────────────────── */
+
+  .xpl-surface {
+    border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    padding-block-start: var(--sa-padding-32);
+    margin-block-start: var(--sa-stack-32);
+  }
+
+  .xpl-surface:first-of-type {
+    border-block-start: 0;
+    padding-block-start: 0;
+    margin-block-start: 0;
+  }
+
+  .xpl-modules {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: var(--sa-stack-16) var(--sa-inline-16);
+    margin-block-start: var(--sa-stack-20);
+  }
+
+  .xpl-module-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background-color: var(--sa-bg-neutral-base);
+    color: inherit;
+    text-decoration: none;
+    transition:
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .xpl-module-card:hover {
+    border-color: var(--sa-border-neutral-bolder-hover);
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  .xpl-module-card__title {
+    font-size: var(--sa-type-label-1-size);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .xpl-module-card__question {
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xpl-module-card__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    margin-block-start: auto;
+    padding-block-start: var(--sa-padding-8);
+  }
+
+  /* ── Status words — never colour alone (WCAG 1.4.1) ───────────────────── */
+
+  .xpl-status {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--sa-padding-2) var(--sa-padding-8);
+    border-radius: var(--sa-shape-full);
+    font-size: var(--sa-type-label-3-size);
+    font-weight: var(--sa-font-weight-medium);
+    white-space: nowrap;
+  }
+
+  .xpl-status--chosen {
+    background-color: var(--sa-bg-status-success-subtle);
+    color: var(--sa-text-status-success-base);
+  }
+
+  .xpl-status--proposed {
+    background-color: var(--sa-bg-status-info-subtle);
+    color: var(--sa-text-status-info-base);
+  }
+
+  .xpl-status--superseded,
+  .xpl-status--parked {
+    background-color: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Viewer ───────────────────────────────────────────────────────────── */
+
+  .xpl-viewer__switch {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+    margin-block-end: var(--sa-stack-20);
+  }
+
+  .xpl-viewer__tab {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    transition:
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .xpl-viewer__tab[aria-selected="true"] {
+    border-color: var(--sa-border-brand-primary-bolder);
+    background-color: var(--sa-bg-brand-primary-subtle);
+    color: var(--sa-text-brand-primary-base);
+  }
+
+  .xpl-viewer__tab-title {
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .xpl-viewer__summary {
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-base);
+    max-inline-size: 68ch;
+  }
+
+  .xpl-viewer__look {
+    margin-block-start: var(--sa-stack-16);
+    padding: var(--sa-padding-16);
+    border-inline-start: var(--sa-stroke-2) solid var(--sa-border-brand-primary-base);
+    background-color: var(--sa-bg-neutral-subtler);
+    border-start-end-radius: var(--sa-shape-8);
+    border-end-end-radius: var(--sa-shape-8);
+  }
+
+  .xpl-viewer__look-title {
+    font-size: var(--sa-type-label-3-size);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xpl-viewer__look ul {
+    margin-block-start: var(--sa-stack-8);
+    padding-inline-start: var(--sa-padding-20);
+    list-style: disc;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-base);
+  }
+
+  /* The prototype's own stage. A dashed edge says "this is a specimen, not the
+     page" without adding a caption that says the same thing in words. */
+  /*
+   * THE FRAME ADDS NO HORIZONTAL PADDING, AND THAT IS THE POINT.
+   *
+   * It holds the real fold, whose own `.sa-container` sets the estate's cap and
+   * margin ladder. Padding here would narrow the container the prototype is
+   * being judged in, so a band that fits at 1,272px would be reviewed at 1,240
+   * and the review would be of a page that does not exist. The dashed rule says
+   * "specimen" without costing the specimen any width.
+   */
+  .xpl-frame {
+    margin-block-start: var(--sa-stack-20);
+    border: var(--sa-stroke-1) dashed var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-16);
+    padding-block: var(--sa-padding-8);
+    background-color: var(--sa-bg-neutral-base);
+    overflow: hidden;
+  }
+
+  .xpl-frame--none {
+    padding: var(--sa-padding-16);
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .xpl-frame--none {
+    border-style: solid;
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xpl-viewer__reset {
+    margin-block-start: var(--sa-stack-12);
+  }
+
+  .xpl-viewer__reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-6);
+    font-size: var(--sa-type-label-2-size);
+    color: var(--sa-text-link-brand-default);
+  }
+
+  .xpl-viewer__reset-btn:hover {
+    text-decoration: underline;
+  }
+
+  .xpl-viewer__note {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sa-inline-8);
+    margin-block-start: var(--sa-stack-16);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+    max-inline-size: 76ch;
+  }
+}

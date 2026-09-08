@@ -205,7 +205,61 @@ word bounded.
 
 ---
 
-## 7. Two gate findings, spun off
+## 7. First-fold audit, and the five things it changed
+
+Audited as a design director on 8 September, after the work above had shipped.
+**The finding that mattered most was self-inflicted**, and it was only visible by
+measuring rather than looking at a full-page capture.
+
+### The fold did not contain the fold
+
+The notice strip and the occasion ribbon were both added this week with commit
+messages claiming they sat "high on the page". Measured at four real viewports:
+
+| Viewport | Band | Hero | Fact strip | What's New | Ribbon |
+|---|---|---|---|---|---|
+| 1440×760 · 13" laptop | full | cut | **below** | **below** | **below** |
+| 1512×820 · MacBook Air | full | cut | **below** | **below** | **below** |
+| 1920×955 · 24" desktop | full | full | cut | **below** | **below** |
+| 390×664 · phone | full | cut | **below** | **below** | **below** |
+
+Neither strip was above the fold on any device. The composed fold ran 236→1201px
+— 965px of band — and no laptop shows more than 760 of it. The review had asked
+for the first fold to carry LESS; it carried more, and the additions landed where
+nobody sees them without scrolling.
+
+### The five fixes
+
+| # | Finding | Fix |
+|---|---|---|
+| 1 | The ribbon was below the fold on every device | Moved above the hero, after the campaign band. `full` at 1440×760, 1512×820 and 1920×955 |
+| 2 | Three fact cells at 405px around 150px of content — 63% air, and three unrelated statements rather than a strip | Four cells at 301px |
+| 3 | The helpline was removed as a duplicate of the campaign band's pill — **but that band is dismissible**, so pressing its X removed the only remaining instance of the number from a page about drug de-addiction | Restored as the fourth fact |
+| 4 | `#a43a00` filled was the only saturated fill below the masthead, so a six-week campaign strip out-shouted the page's permanent primary action | Outlined, through `--sa-btn-edge` |
+| 5 | The ribbon's 40px calendar tile pushed its copy to x=140 while everything else in the fold began at 84 | Mark removed; every element in the fold now starts at **84** |
+
+### What was NOT changed, and why
+
+**The What's New strip is still below the fold**, on every viewport. Moving it
+above the hero would put three bands before the page title, which is the stacking
+the same audit criticised. It is a permanent notice board rather than a
+time-limited campaign, so it can afford to sit where a reader arrives at it; the
+ribbon could not. Recorded rather than fixed.
+
+**Three apparent misalignments were left alone** because they are two-column
+rows, not stray indents: the notice strip's headline at x=290 sits beside its
+plinth, the campaign band's heading at x=470 sits beside the helpline pill, and
+the fact strip centres its cells because that is the `FactStrip` component's own
+design. Calling those failures would have padded the count.
+
+**The Ministry fact is the weakest of the four** — a reader on the Department's
+own site is told the Department twice by the masthead already. It stays only
+because removing it returns the strip to three, which measured worse. Replace it
+the day the source publishes a fourth figure worth the space.
+
+---
+
+## 8. Two gate findings, spun off
 
 **`check:link-as` can be fooled by a `>` in a comment.** Its tag scanner stops at
 the first `>` at brace depth zero without skipping comments or strings, so a
@@ -220,3 +274,87 @@ it above the explicit props would silently re-enable navigation on a disabled
 arrow.
 
 Both are recorded as separate tasks; neither is fixed here.
+
+---
+
+## 9. The QR plate, the logo, and the explorations register — 08 Sep 2026
+
+### 9.1 The QR's "thick white outline" was a DOUBLED quiet zone
+
+Reported as a border on the code. It is not a border and never was one. The
+asset — `nmba-nasha-mukti-mitr-qr.png`, 686x686 — carries the quiet zone the QR
+specification requires **inside the image**: 56 white pixels on every side, 8.2%
+of the file. `.orgjb__qr` then drew a 6px white plate and a radius around it, so
+the reader saw the asset's own margin plus ours, and read the sum as a stroke.
+
+Removed: `padding: var(--sa-padding-6)` and `background-color:
+var(--sa-bg-neutral-base)`. Kept: the radius, now with `overflow: hidden` so it
+clips the asset rather than describing a plate that is no longer painted.
+
+### 9.2 The logo's "white cast" is not on `main`
+
+Measured on the running build at 3x device scale, scanning the row through the
+mark's vertical centre: brand blue `rgb(3, 114, 221)` runs from x=0 to x=41 and
+becomes the seal's green `rgb(60, 128, 109)` at x=42, with no lighter pixel
+between. The wrapper computes `background-color: rgba(0, 0, 0, 0)`, `border:
+0px`, `border-radius: 0px`. The PNG itself is opaque green to x=383 with
+transparent corners — no baked-in ring.
+
+The disc was removed in PR #388 (`07fe7e7b`). A white ring seen now is a cached
+page or the older deployment, not the current build.
+
+### 9.3 Explorations — a place for options to be kept
+
+`/explorations` is a new hub zone, outside `/website` and `/portals` and marked
+`noindex`. It holds design options as **running prototypes at their own
+address**, organised page-wise then module-wise, with the question each module
+answers and what became of every option. Nothing under it is imported by a
+citizen-facing page, and choosing an option is an act of moving code — never of
+flipping a flag production is reading.
+
+Registered so far: four NMBA decisions, nine options — the campaign band (two,
+both live and both open), Documents & Downloads (three), the first fold's ribbon
+placement (two), and the hero mark's ground (two).
+
+**The stage is the real fold.** The first version of the campaign-band prototype
+stubbed the hero — a flat blue bar with the mark and one line of title — and it
+was rejected on sight, correctly: the question is where a badge LANDS in the
+fold, and it cannot be answered against a hero that is not the hero. The
+prototype now composes `PageTrail`, `SitePageHeader` and `FactStrip`, the same
+three components the live organisation route uses, fed the Abhiyaan's own record
+and its own mark through `orgLogoSrc`.
+
+### 9.4 The flight, and two measurements that changed it
+
+The helpline travels from the band into a badge beside the mark, built with the
+Web Animations API and a FLIP ghost. **Motion was considered and not installed**
+— 35 KB gzipped and a main-thread animation loop, for one transition that fires
+once per session, on the part of the page where hydration and image decode are
+still competing.
+
+Two things were wrong on the first build and both were caught by measuring
+rather than looking:
+
+| What | Measured | Fixed by |
+|---|---|---|
+| The band left a 24px green strip and the badge landed 24px low | `grid-template-rows: 0fr` floored at exactly the collapsing child's 12px block padding — `min-block-size: 0` releases the CONTENT box, and padding sits outside it | A bare `.xband__clip` between the band and its padded inner |
+| The badge "teleported then settled" | `--sa-motion-reveal-easing` covered **93% of the distance in the first 45% of the time**; it is an arrival curve, not a travel curve | `--sa-motion-emphasis-*` — same 400ms, `cubic-bezier(0.4, 0, 0.2, 1)` |
+| The flight was a 66px twitch | Centring a 297px pill on a 109px badge started the ghost at x=208 when the pill's own edge was at x=109 | Align the LEADING edges, where both carry the same icon well: 132px on a real diagonal |
+
+Landing is computed, not measured: the badge sits below the band in normal flow,
+so a band collapsing to zero raises it by exactly the band's height. Predicted
+and actual landing agree to the pixel — `{1205, 670}` at 1440x900.
+
+Verified: `prefers-reduced-motion` mounts no ghost at all and swaps instantly;
+the badge is `aria-hidden` and out of the tab order until it arrives; the live
+region is mounted empty from the first render and names what MOVED rather than
+what went.
+
+**One consequence a stakeholder has to decide, not us.** The fact strip carries
+"14446 / National de-addiction helpline" only because the band is dismissible
+(§4). If the badge carries the number instead, the fold shows it twice, and that
+fact should go back to being the Abhiyaan's fourth figure. Recorded on the
+option rather than resolved in it.
+
+Stills: `docs/audit/img/flight-{1-before,2-midair,3-after}.png`, captured at
+1440x900 / DPR 2 with the animation clock frozen at 200ms for the mid-air frame.

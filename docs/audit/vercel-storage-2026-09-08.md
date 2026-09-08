@@ -18,11 +18,9 @@ had nowhere to go.
 | Function bundle (`standalone/node_modules`) | 42 MB — already well traced, not the problem |
 
 Both allowances are shared across every **retained** deployment, so the sum is
-what counts, not any single build. A build is ~600 MB, but that is not what a
-deployment *stores*: Vercel deduplicates, so the 140 MB of assets is kept once and
-each deployment is charged only for what changed. 1,174 of them filled exactly
-10 GB, which puts the stored cost at about **8.7 MB each** — see the update below,
-which is where this audit changed its mind.
+what counts, not any single build. What one deployment costs is measured below,
+under "What a deployment actually costs" — a question this audit got wrong twice
+before reading the usage page.
 
 The heaviest route trees, for the record:
 
@@ -77,16 +75,13 @@ batch call fails whole, so a failed batch is retried one id at a time.
 
 ## Update, same day — branch previews are off by default
 
-The measurement that settles it: **1,174 retained deployments filled exactly
-10 GB, so the average retained deployment costs about 8.7 MB.** Deduplication is
-doing the heavy lifting — the 140 MB of static assets is stored once, and a
-deployment's marginal cost is only what changed. That inverts the conclusion
-above: **the count is the problem, not the size of a build.**
-
-798 of the 1,174 were branch previews, and they were rarely opened. So previews
-are now off unless a push asks for one — the token `[preview]` in the commit
-**subject** — which leaves roughly 376 deployments in a 30-day window, about a
-third of the cap, and holds there because the window keeps rolling.
+798 of the 1,174 retained deployments were branch previews, and they were rarely
+opened. Whatever a deployment costs — measured further down, where it is finally
+read off the usage page rather than inferred — two thirds of the bill bought
+nothing. So previews are now off unless a push asks for one — the token
+`[preview]` in the commit **subject** — which leaves roughly 376 deployments in a
+30-day window, about a third of the count that filled the account, and holds there
+because the window keeps rolling.
 
 Only the subject line is matched, and that was learned the hard way: the commit
 that introduced the rule described the token in its own body, matched itself, and
@@ -109,13 +104,51 @@ the same 798 deployments, but `.husky/pre-commit` refuses commits on `main` for 
 reason: CI then reports after the deploy has already raced it. Turning previews off
 achieves the storage saving without touching the branch discipline.
 
+## What a deployment actually costs — read off the usage page, not inferred
+
+This audit twice stated a per-deployment cost it had not measured. Both figures
+are withdrawn; the numbers below come from Vercel's own usage page, read on
+2026-09-08 for the period Aug 9 – Sep 8:
+
+| Metric on the usage page | Value | Limit shown |
+|---|---|---|
+| Deployment Storage | **356.27 GB** | `/ -` |
+| Functions Storage | **128.93 GB** | `/ -` |
+
+Divided by the 1,174 deployments of that period, a deployment costs roughly
+**300 MB of Deployment Storage and 110 MB of Functions Storage**. Both charts are
+monotonic "Total size" curves that accumulate across the period; deleting a
+deployment does not pull them down, it only flattens them, and they reset when the
+period rolls over.
+
+**The two withdrawn figures, and why each was wrong:**
+
+- *"~600 MB per deployment, so the cap fills in seventeen"* measured the local
+  `.next` build directory. That is what a build produces, not what a deployment is
+  charged for, and it ignored deduplication entirely.
+- *"~8.7 MB stored per deployment"* divided the 10 GB named in Vercel's email by
+  1,174. That assumed the 10 GB was a live byte count of what is currently stored.
+  Nothing established that, and the usage page shows an accumulating period total
+  instead. It was arithmetic on an unverified premise, and the conclusion drawn
+  from it — that build size had become the smaller lever — did not follow.
+
+**The 10 GB in the emails cannot be reconciled from this account.** The usage page
+displays no limit against either storage metric, and the API that would give the
+quota is Pro-only (`GET /v1/usage` → *"only available to Teams on the Pro or
+Enterprise plan"*). So the quota's exact definition is unknown here, and this
+document should not pretend otherwise.
+
+**What survives all of it, and is why the work stands:** every deployment adds
+~410 MB across the two metrics, and 798 of the 1,174 were previews nobody opened.
+Fewer deployments means proportionally less usage under any reading of the quota.
+
 ## What is still open
 
-**Build size is the remaining lever, and it is now the SMALLER one.** With
-deduplication measured at ~8.7 MB stored per deployment, cutting the count was
-worth more than cutting the build, and the count has been cut. These stay on the
-list for the day the deploy rate climbs again — neither is urgent, and both change
-how the estate renders:
+**Build size still matters, roughly in proportion.** A deployment costs about
+300 MB of Deployment Storage and 110 MB of Functions Storage, so
+a build two thirds smaller is a bill two thirds smaller. Cutting the count was the
+faster lever and it has been cut; these change how the estate renders, so they wait
+for a decision:
 
 - **Stop prerendering every route at build time.** `website/organisation/` and
   `website/schemes-services/` prerender 1,300-odd pages into 171 MB. Rendering
@@ -127,11 +160,10 @@ how the estate renders:
   **78 MB**, 14% of the build output, and production never reads them. Whether
   Vercel ships them inside the function has NOT been verified here — check that
   before spending the change.
-- **Move the 44 MB of QC report PDFs out of `apps/hub/public/reports`.** This was
-  on the list and was deliberately not done, and the 8.7 MB measurement is why:
-  PDFs that do not change are stored once, so they cost 44 MB in total rather than
-  per build. Moving them means new URLs for documents a citizen can currently
-  download — a real cost for almost no saving.
+- **Move the 44 MB of QC report PDFs out of `apps/hub/public/reports`.** Still the
+  weakest of the three: 44 MB against a ~300 MB deployment is about a seventh, and
+  moving them means new URLs for documents a citizen can currently download. Worth
+  doing only alongside one of the two above, not instead of them.
 
 ## The measurements behind this
 
