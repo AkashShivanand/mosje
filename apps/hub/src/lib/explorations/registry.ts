@@ -140,6 +140,78 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
         ],
       },
       {
+        id: "banner-layout",
+        title: "How the campaign band is composed",
+        question:
+          "The handoff draws this band 168px tall with a 120px code and the buttons under the copy; the build is 104px with the buttons on the trailing edge. Which composition ships?",
+        date: "8 September 2026",
+        options: [
+          {
+            id: "compact",
+            title: "Compact, one row",
+            summary:
+              "104px. A 72px code leads, the message takes the middle, and both routes sit on the trailing edge.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "It costs 104px of a 760px fold",
+              "Everything is on one optical line, so the row scans in a single pass",
+              "The heading is label-sized, not headline-sized — it does not compete with the H1 below it",
+            ],
+          },
+          {
+            id: "handoff",
+            title: "Two rows, per the handoff",
+            summary:
+              "168px, drawn from `Nudge` (57774:19709): a 120px code spanning both rows, a 28px heading, and both buttons in a column beside it.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "64px more of the fold than the compact band, all of it the code's height",
+              "The heading is headline-3 at 28px, sitting above an H1 — worth checking against the page title",
+              "Its sentence points at the e-pledge while the button beneath goes to the volunteer register; kept verbatim so the mismatch can be settled rather than quietly harmonised",
+              "The pulsing call glyph is the handoff's own instance, not an addition",
+            ],
+          },
+        ],
+      },
+      {
+        id: "helpline-card",
+        title: "The helpline inside the campaign band",
+        question:
+          "The national de-addiction helpline sits on a band that is mostly about volunteering. What shape does it take so a person in trouble finds it first?",
+        date: "8 September 2026",
+        options: [
+          {
+            id: "current",
+            title: "Glyph first, static",
+            summary:
+              "A filled white control reading symbol, label, number, with nothing on it that moves.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "The decoration arrives first and the five digits last, at the end of a 296px control",
+              "Nothing distinguishes it from the campaign's own button except its fill",
+            ],
+          },
+          {
+            id: "ringing",
+            title: "Card with a ringing glyph",
+            summary:
+              "Label and number lead; the handset sits on the trailing edge and rings twice on arrival, then again on hover and focus.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "It reads label → number → act, which is the order a reader needs them in",
+              "Two rings is 2.4 seconds — deliberately under the five past which WCAG 2.2 would demand a pause control",
+              "After that it answers the reader rather than interrupting them: it rings on hover and on focus",
+              "Under `prefers-reduced-motion` it never moves at all",
+              "It is the SAME component the hero badge uses, so the flight in “The campaign band and the helpline” is one card changing size",
+            ],
+          },
+        ],
+      },
+      {
         id: "top-bands",
         title: "The two bands above the hero",
         question:

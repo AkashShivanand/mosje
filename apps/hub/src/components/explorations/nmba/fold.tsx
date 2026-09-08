@@ -171,19 +171,66 @@ export function Dismiss({ onClick, label }: { onClick: () => void; label: string
   );
 }
 
-export function Helpline({ innerRef }: { innerRef?: React.Ref<HTMLAnchorElement> }) {
+/**
+ * THE HELPLINE CARD — one component, two sizes, and the thing that flies.
+ *
+ * ── WHY THE GLYPH MOVED TO THE RIGHT ────────────────────────────────────────
+ *
+ * With the icon leading, the card read left to right as *symbol → label →
+ * number*: the decoration arrived first and the five digits a person is actually
+ * looking for arrived last, at the end of a 296px control. Reversed, the card
+ * reads *label → number → act*, which is the order the reader needs them in, and
+ * it puts the moving element on the edge the eye leaves the card by.
+ *
+ * ── AND WHY IT RINGS, BRIEFLY ───────────────────────────────────────────────
+ *
+ * Twice on arrival, then still. Not continuously: WCAG 2.2 §2.2.2 requires a
+ * pause mechanism for anything that moves for more than five seconds beside
+ * other content, and a fourth control on this row to switch off a decoration
+ * would be a worse band than a still one. Two rings is 2.4s.
+ *
+ * After that it rings on hover and on focus, which is where the movement earns
+ * its place — it answers the reader rather than interrupting them. Under
+ * `prefers-reduced-motion` it never moves at all.
+ */
+export function HelplineCard({
+  size = "band",
+  innerRef,
+  inert,
+}: {
+  /** `band` is the 40px control in the announcement; `hero` is the badge it
+   *  becomes beside the organisation mark. Same markup, so the flight between
+   *  them is one object changing size rather than two objects swapping. */
+  size?: "band" | "hero";
+  innerRef?: React.Ref<HTMLAnchorElement>;
+  /** Rendered for measurement only — out of the tree and out of tab order. */
+  inert?: boolean;
+}) {
   return (
     <a
-      className={buttonClasses("success", "filled", "md", "xband__helpline", "inverse")}
+      className={`xhc xhc--${size}`}
       href={`tel:${NMBA.banner.helplineNumber}`}
       ref={innerRef}
+      aria-hidden={inert || undefined}
+      tabIndex={inert ? -1 : undefined}
       aria-label={`${NMBA.banner.helplineLabel} ${NMBA.banner.helplineNumber}`}
     >
-      <Icon name="call" size={20} aria-hidden />
-      <span className="xband__helpline-label">{NMBA.banner.helplineShort}</span>
-      <span className="xband__helpline-number">{NMBA.banner.helplineNumber}</span>
+      <span className="xhc__text">
+        <span className="xhc__label">
+          {size === "hero" ? "Helpline" : NMBA.banner.helplineShort}
+        </span>
+        <span className="xhc__number">{NMBA.banner.helplineNumber}</span>
+      </span>
+      <span className="xhc__icon" aria-hidden>
+        <Icon name="call" size={20} />
+      </span>
     </a>
   );
+}
+
+/** The band's helpline, at band size. */
+export function Helpline({ innerRef }: { innerRef?: React.Ref<HTMLAnchorElement> }) {
+  return <HelplineCard size="band" innerRef={innerRef} />;
 }
 
 /**
@@ -215,7 +262,10 @@ export function Campaign() {
   );
 }
 
-/** The badge, in the hero. One element, two states, no second copy. */
+/**
+ * The card once it has landed in the hero. Same component, `hero` size — so the
+ * flight is one object changing size, not one object replaced by another.
+ */
 export function HeroBadge({
   innerRef,
   arrived,
@@ -224,36 +274,26 @@ export function HeroBadge({
   arrived: boolean;
 }) {
   return (
-    <a
-      className="xband-hero__badge"
-      href={`tel:${NMBA.banner.helplineNumber}`}
-      ref={innerRef}
-      data-arrived={arrived || undefined}
-      /* In the layout from the first render so the flight has a rect to aim at
-         and the hero does not reflow when it lands — but out of the
-         accessibility tree and out of the tab order until it is real. */
-      aria-hidden={arrived ? undefined : true}
-      tabIndex={arrived ? undefined : -1}
-    >
-      <BadgeInner />
-    </a>
+    <span className="xhc-slot" data-arrived={arrived || undefined}>
+      <HelplineCard size="hero" innerRef={innerRef} inert={!arrived} />
+    </span>
   );
 }
 
+/** The card's contents, for the flying ghost. */
 export function BadgeInner() {
   return (
     <>
-      <span className="xband-hero__badge-icon">
-        <Icon name="call" size={20} aria-hidden />
+      <span className="xhc__text">
+        <span className="xhc__label">Helpline</span>
+        <span className="xhc__number">{NMBA.banner.helplineNumber}</span>
       </span>
-      <span className="xband-hero__badge-text">
-        <span className="xband-hero__badge-label">Helpline</span>
-        <span className="xband-hero__badge-number">{NMBA.banner.helplineNumber}</span>
+      <span className="xhc__icon" aria-hidden>
+        <Icon name="call" size={20} />
       </span>
     </>
   );
 }
-
 
 /**
  * The anniversary notice, as its own band — the second of the two the fold opens
@@ -268,7 +308,10 @@ export function Ribbon({ onDismiss }: { onDismiss: () => void }) {
           <p className="xrib__text">{NMBA.ribbon.text}</p>
         </div>
         <div className="xrib__routes">
-          <a className={buttonClasses("primary", "outlined", "sm", "xrib__cta")} href={NMBA.ribbon.action.href}>
+          <a
+            className={buttonClasses("primary", "outlined", "sm", "xrib__cta")}
+            href={NMBA.ribbon.action.href}
+          >
             <span>{NMBA.ribbon.action.label}</span>
             <Icon name="arrow_forward" size={20} aria-hidden />
           </a>

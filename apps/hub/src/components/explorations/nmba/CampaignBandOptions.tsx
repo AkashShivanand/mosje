@@ -23,16 +23,12 @@ export function OptionAnchorGuest() {
     <Fold
       band={
         <section className="xband" aria-label={NMBA.banner.helplineLabel}>
-          <div className="sa-container xband__inner">
+          <div className="sa-container xband__inner" data-gone={gone || undefined}>
+            {gone ? null : <Campaign />}
+            {/* OUTSIDE the collapsible half — that is the whole option. */}
             <Helpline />
             {gone ? null : (
-              <>
-                <Campaign />
-                <Dismiss
-                  onClick={() => setGone(true)}
-                  label="Dismiss the campaign announcement"
-                />
-              </>
+              <Dismiss onClick={() => setGone(true)} label="Dismiss the campaign announcement" />
             )}
           </div>
         </section>
@@ -162,8 +158,8 @@ export function OptionFlight() {
               {/* The clip carries NO padding of its own — see `campaign-band.css`. */}
               <div className="xband__clip">
                 <div className="sa-container xband__inner">
-                  <Helpline innerRef={pillRef} />
                   <Campaign />
+                  <Helpline innerRef={pillRef} />
                   <Dismiss onClick={dismiss} label="Dismiss the campaign band" />
                 </div>
               </div>

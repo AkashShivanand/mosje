@@ -112,12 +112,26 @@ export function flyGhost(
   const scale = Math.min(1.25, Math.max(0.8, from.height / to.height));
 
   /*
-   * A gentle outward bow at the midpoint. A straight line between two points
-   * this close reads as a slide; the bow is what makes it read as travel. It is
-   * a twelfth of the horizontal distance and no more — a visible arc on a
-   * government page is a decoration, and this is a hand-off.
+   * A gentle bow at the midpoint, PERPENDICULAR to the direction of travel.
+   *
+   * A straight line reads as a slide; the bow is what makes it read as flight.
+   * The first version added its offset to x unconditionally, which arcs a
+   * vertical path and does nothing at all to a horizontal one — and this path
+   * became horizontal the moment the helpline moved to the band's trailing edge
+   * and the badge stayed beside the mark, 860px away.
+   *
+   * A twelfth of the distance and no more. A visible arc on a government page is
+   * a decoration; this is a hand-off that happens to be legible.
    */
-  const bow = dx / 12;
+  const len = Math.hypot(dx, dy) || 1;
+  /*
+   * The perpendicular is NEGATED so the card arcs OVER the path rather than
+   * under it. Both are perpendicular and only one reads as flight: the downward
+   * arc sends the card dipping through the hero and back up, which looks like
+   * something sagging rather than something travelling.
+   */
+  const bowX = (dy / len) * (len / 12);
+  const bowY = (-dx / len) * (len / 12);
 
   return ghost.animate(
     [
@@ -127,7 +141,7 @@ export function flyGhost(
         filter: "blur(2px)",
       },
       {
-        transform: `translate(${dx / 2 + bow}px, ${dy / 2}px) scale(${1 + (scale - 1) / 2})`,
+        transform: `translate(${dx / 2 + bowX}px, ${dy / 2 + bowY}px) scale(${1 + (scale - 1) / 2})`,
         opacity: 1,
         filter: "blur(0.5px)",
         offset: 0.5,

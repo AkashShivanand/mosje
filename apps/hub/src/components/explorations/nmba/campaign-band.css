@@ -44,72 +44,214 @@
     padding-block: var(--sa-padding-16);
   }
 
+  /* With the campaign dismissed only the helpline is left, so the row stops
+     pretending to have five columns. */
+  .xband__inner[data-gone] {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+  }
+
   .xband__inner > .xband__qr {
     align-self: stretch;
   }
 
-  .xband__helpline {
+  /* ══════════════════════════════════════════════════════════════════════
+     THE HELPLINE CARD — one component, two sizes
+     ══════════════════════════════════════════════════════════════════════ */
+
+  .xhc {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-color-successScale-700);
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: var(--sa-elevation-card);
+    transition:
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .xhc:active {
+    transform: scale(0.98);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .xhc:hover {
+      box-shadow: var(--sa-elevation-raised);
+    }
+  }
+
+  .xhc:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* The label recedes and the NUMBER carries the weight — a person scanning this
+     under stress is looking for five digits, not for a noun phrase. */
+  .xhc__text {
+    display: flex;
+    flex-direction: column;
+    line-height: var(--sa-type-label-2-lh);
+  }
+
+  .xhc__label {
+    font-size: var(--sa-type-label-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xhc__number {
+    font-size: var(--sa-type-label-1-size);
+    font-weight: var(--sa-font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+  }
+
+  /*
+   * THE GLYPH SITS ON THE TRAILING EDGE, and it is the only thing here that
+   * moves. Leading, the card read symbol → label → number, so the decoration
+   * arrived first and the five digits last. This way it reads label → number →
+   * act, and the movement sits on the edge the eye leaves the card by.
+   */
+  .xhc__icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-successScale-50);
+    color: var(--sa-color-successScale-600);
+  }
+
+  /*
+   * TWO RINGS ON ARRIVAL, THEN STILL — 2.4s, deliberately under the five
+   * seconds past which WCAG 2.2 §2.2.2 would require a pause control. A fourth
+   * control on this row to switch off a decoration is a worse band than a still
+   * one.
+   *
+   * `both` fill so the handset rests at 0° rather than snapping back, and the
+   * animation is on the GLYPH while the waves are on its well — separating them
+   * keeps each on `transform`/`opacity` only.
+   */
+  .xhc__icon > * {
+    animation: xhc-ring 1200ms var(--sa-motion-emphasis-easing) 2 both;
+  }
+
+  .xhc__icon::before,
+  .xhc__icon::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--sa-shape-full);
+    border: var(--sa-stroke-2) solid var(--sa-color-successScale-600);
+    opacity: 0;
+    animation: xhc-wave 1200ms var(--sa-motion-emphasis-easing) 2 both;
+  }
+
+  .xhc__icon::after {
+    animation-delay: 300ms;
+  }
+
+  /* After the arrival ring it answers the reader rather than interrupting them:
+     it rings again on hover and on focus, which is when the movement is about to
+     mean something. */
+  .xhc:hover .xhc__icon > *,
+  .xhc:focus-visible .xhc__icon > * {
+    animation: xhc-ring 1200ms var(--sa-motion-emphasis-easing) infinite;
+  }
+
+  .xhc:hover .xhc__icon::before,
+  .xhc:hover .xhc__icon::after,
+  .xhc:focus-visible .xhc__icon::before,
+  .xhc:focus-visible .xhc__icon::after {
+    animation: xhc-wave 1200ms var(--sa-motion-emphasis-easing) infinite;
+  }
+
+  @keyframes xhc-ring {
+    0%,
+    62%,
+    100% { transform: rotate(0deg); }
+    8% { transform: rotate(-14deg); }
+    18% { transform: rotate(12deg); }
+    28% { transform: rotate(-10deg); }
+    38% { transform: rotate(8deg); }
+    48% { transform: rotate(-5deg); }
+    55% { transform: rotate(3deg); }
+  }
+
+  @keyframes xhc-wave {
+    0% { opacity: 0.55; transform: scale(1); }
+    70% { opacity: 0; transform: scale(1.7); }
+    100% { opacity: 0; transform: scale(1.7); }
+  }
+
+  /* Never moves. Not a faster ring — no ring. */
+  @media (prefers-reduced-motion: reduce) {
+    .xhc__icon > *,
+    .xhc__icon::before,
+    .xhc__icon::after,
+    .xhc:hover .xhc__icon > *,
+    .xhc:focus-visible .xhc__icon > * {
+      animation: none;
+    }
+  }
+
+  /* ── The two sizes ────────────────────────────────────────────────────── */
+
+  .xhc--band {
+    margin-inline-start: var(--sa-inline-16);
+    padding: var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-20);
+  }
+
+  .xhc--hero {
+    padding: var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-16);
+  }
+
+  .xhc--hero .xhc__label {
+    font-size: var(--sa-type-label-3-size);
+  }
+
+  /*
+   * The slot holds the card's space in the hero from the first render, so the
+   * flight has a rect to aim at and the hero does not reflow when it lands.
+   */
+  .xhc-slot {
+    display: inline-flex;
+    flex: 0 0 auto;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .xhc-slot[data-arrived] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* The superseded arrangement, kept so the two can be compared side by side:
+     glyph first, label, number, and nothing moves. */
+  .xband__helpline-legacy {
     margin-inline-start: var(--sa-inline-16);
 
     --sa-btn-fill: var(--sa-bg-neutral-base);
     --sa-btn-ink: var(--sa-color-successScale-700);
   }
 
-  .xband__helpline-label {
+  .xhcl__label {
     font-weight: var(--sa-font-weight-regular);
     opacity: 0.75;
   }
 
-  .xband__helpline-number {
+  .xhcl__number {
     font-weight: var(--sa-font-weight-bold);
     font-variant-numeric: tabular-nums;
   }
 
-  /*
-   * THE COLLAPSE.
-   *
-   * `grid-template-rows: 1fr → 0fr` is the only way to transition a box to its
-   * own content height without measuring it in JavaScript. It matters here
-   * beyond tidiness: `flight.ts` computes the badge's landing position from
-   * `band.offsetHeight`, which is only the right number if the band collapses to
-   * exactly zero. A `max-height` guess would leave the badge a few pixels out.
-   */
-  .xband--flight {
-    display: grid;
-    grid-template-rows: 1fr;
-    transition:
-      grid-template-rows var(--sa-motion-emphasis-duration) var(--sa-motion-emphasis-easing),
-      opacity var(--sa-motion-emphasis-duration) var(--sa-motion-emphasis-easing);
-  }
-
-  /*
-   * THE CLIP MUST CARRY NO PADDING, AND THAT IS NOT A DETAIL.
-   *
-   * `min-block-size: 0` releases the grid item's automatic minimum on its
-   * CONTENT box. Padding sits outside that box, so a collapsing child with
-   * `padding-block: 12px` floors the track at 24px however far the `fr` is
-   * driven — measured: the band collapsed to exactly 24px and left a green
-   * hairline across the top of the hero, with the badge landing 24px low.
-   *
-   * So the collapsing child is a bare clip and the padding lives one level
-   * further in, where the clip can eat it.
-   */
-  .xband--flight > .xband__clip {
-    overflow: hidden;
-    min-block-size: 0;
-    padding: 0;
-  }
-
-  .xband--flight.is-leaving {
-    grid-template-rows: 0fr;
-    opacity: 0;
-  }
-
-  /* The pill hands over to the ghost well before the collapse finishes, so the
-     reader never sees two copies of the same number at once. */
-  .xband--flight.is-leaving .xband__helpline {
-    opacity: 0;
-    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  .xhc-replay {
+    margin-block-start: var(--sa-stack-12);
   }
 
   /* ── The campaign half ────────────────────────────────────────────────── */
@@ -188,63 +330,6 @@
   }
 
   /*
-   * THE BADGE.
-   *
-   * It is in the layout from the first render — `opacity: 0`, not `display:
-   * none` — for two reasons that both matter. The flight needs a rect to aim
-   * at, and the hero must not reflow when the badge lands. It is `aria-hidden`
-   * and out of the tab order until it arrives, so nothing announces a control
-   * the reader cannot see.
-   */
-  .xband-hero__badge {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-8);
-    flex: 0 0 auto;
-    padding: var(--sa-padding-6) var(--sa-padding-16) var(--sa-padding-6) var(--sa-padding-6);
-    border-radius: var(--sa-shape-full);
-    background-color: var(--sa-bg-neutral-base);
-    color: var(--sa-color-primaryScale-700);
-    text-decoration: none;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    box-shadow: var(--sa-elevation-card);
-  }
-
-  .xband-hero__badge[data-arrived] {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .xband-hero__badge-icon {
-    display: grid;
-    place-items: center;
-    inline-size: var(--sa-control-height-sm);
-    block-size: var(--sa-control-height-sm);
-    border-radius: var(--sa-shape-full);
-    background-color: var(--sa-color-primaryScale-50);
-    color: var(--sa-color-primaryScale-600);
-  }
-
-  .xband-hero__badge-text {
-    display: flex;
-    flex-direction: column;
-    line-height: var(--sa-type-label-2-lh);
-  }
-
-  .xband-hero__badge-label {
-    font-size: var(--sa-type-label-3-size);
-    color: var(--sa-text-neutral-subtle);
-  }
-
-  .xband-hero__badge-number {
-    font-size: var(--sa-type-label-1-size);
-    font-weight: var(--sa-font-weight-bold);
-    font-variant-numeric: tabular-nums;
-  }
-
-  /*
    * THE GHOST — what the reader actually watches fly.
    *
    * `position: fixed`, so the band collapsing underneath it cannot move it, and
@@ -257,13 +342,14 @@
     z-index: var(--sa-z-rail);
     display: inline-flex;
     align-items: center;
-    gap: var(--sa-inline-8);
-    padding: var(--sa-padding-6) var(--sa-padding-16) var(--sa-padding-6) var(--sa-padding-6);
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-16);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-neutral-base);
-    color: var(--sa-color-primaryScale-700);
+    color: var(--sa-color-successScale-700);
     box-shadow: var(--sa-elevation-dropdown);
     pointer-events: none;
+    white-space: nowrap;
     will-change: transform, opacity, filter;
   }
 
@@ -440,6 +526,188 @@
     .xband-logo-row {
       flex-wrap: wrap;
       gap: var(--sa-stack-12);
+    }
+  }
+}
+
+@layer components {
+  /* ══════════════════════════════════════════════════════════════════════
+     `Nudge` — the handoff's own composition, 57774:19709
+     ══════════════════════════════════════════════════════════════════════
+     Every value below is read off the Figma node rather than eyeballed from
+     the screenshot: 168 tall, a 1320 container at x=60, a 120px code at 24,24,
+     content at x=168 spanning 1064, CTAs on a second row at y=80, and a 40px
+     icon button at x=1256. The gradient is the brand ACCENT ramp — bolder to
+     boldest — not the success ramp the compact band uses.
+     ====================================================================== */
+
+  .xnudge {
+    background-image: linear-gradient(
+      to right,
+      var(--sa-bg-brand-accent-bolder),
+      var(--sa-bg-brand-accent-boldest)
+    );
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .xnudge__inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: var(--sa-inline-24);
+    padding-block: var(--sa-padding-24);
+  }
+
+  /* Spans both rows and sets the band's height — 120, against the compact
+     band's 72. Four times the area, and the whole of the extra 64px. */
+  .xnudge__qr {
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: var(--sa-shape-6);
+  }
+
+  .xnudge__qr img {
+    display: block;
+    inline-size: 120px;
+    block-size: 120px;
+  }
+
+  .xnudge__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+    min-inline-size: 0;
+  }
+
+  .xnudge__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+  }
+
+  .xnudge__heading {
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .xnudge__text {
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+  }
+
+  .xnudge__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-8) var(--sa-inline-16);
+  }
+
+  /* The handoff's `brand/secondary/inverse` edge — a pale blue, not white. */
+  .xnudge__cta {
+    --sa-btn-edge: var(--sa-cmp-action-brand-secondary-inverse-default-border);
+  }
+
+  .xnudge__helpline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    block-size: var(--sa-control-height-md);
+    padding-inline: var(--sa-padding-16);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-cmp-action-success-primary-inverse-default-bg);
+    color: var(--sa-cmp-action-success-primary-inverse-default-text);
+    font-size: var(--sa-type-label-1-size);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .xnudge__helpline:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .xnudge__helpline-number {
+    font-weight: var(--sa-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /*
+   * THE PULSE IS THE HANDOFF'S OWN — instance 57895:11261, a 32px ring drawn
+   * around the 16px glyph at -8,-8. Figma can only draw it at rest; here it
+   * expands and fades.
+   *
+   * TWICE, THEN STILL, for the same reason the other card rings twice: WCAG 2.2
+   * §2.2.2 wants a pause control for anything moving beyond five seconds beside
+   * other content, and a fourth control on this row to switch off a decoration
+   * is a worse band than a still one. After that it answers hover and focus.
+   */
+  .xnudge__pulse {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    inline-size: var(--sa-icon-size-16);
+    block-size: var(--sa-icon-size-16);
+    color: var(--sa-cmp-action-success-primary-inverse-default-text);
+  }
+
+  .xnudge__pulse::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: var(--sa-shape-full);
+    background-color: color-mix(in srgb, var(--sa-color-successScale-600) 48%, transparent);
+    animation: xnudge-pulse 1600ms var(--sa-motion-emphasis-easing) 2 both;
+  }
+
+  .xnudge__helpline:hover .xnudge__pulse::before,
+  .xnudge__helpline:focus-visible .xnudge__pulse::before {
+    animation: xnudge-pulse 1600ms var(--sa-motion-emphasis-easing) infinite;
+  }
+
+  @keyframes xnudge-pulse {
+    0% { opacity: 0.5; transform: scale(0.62); }
+    60% { opacity: 0; transform: scale(1.1); }
+    100% { opacity: 0; transform: scale(1.1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .xnudge__pulse::before,
+    .xnudge__helpline:hover .xnudge__pulse::before,
+    .xnudge__helpline:focus-visible .xnudge__pulse::before {
+      animation: none;
+      opacity: 0.5;
+      transform: scale(0.62);
+    }
+  }
+
+  .xnudge__dismiss {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-md);
+    block-size: var(--sa-control-height-md);
+    border-radius: var(--sa-shape-8);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 12%, transparent);
+    color: var(--sa-text-neutral-inverse);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .xnudge__dismiss:hover {
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 24%, transparent);
+  }
+
+  @media (max-width: 767px) {
+    .xnudge__inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    /* The 120px code goes below the copy rather than beside it: at 390 a code
+       and a 28px heading on one row leaves the heading 190px. */
+    .xnudge__qr {
+      grid-row: 2;
+      grid-column: 1 / -1;
     }
   }
 }

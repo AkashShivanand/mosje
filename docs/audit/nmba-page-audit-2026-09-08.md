@@ -576,3 +576,71 @@ with arrow-key support.
 
 Stills: `docs/audit/img/bands-opt-two.png`, `bands-opt-one-a.png`,
 `bands-opt-one-b.png`, composed as `bands-options.png`.
+
+---
+
+## 12. The helpline card, and the handoff's own banner
+
+### 12.1 The card — one component, two sizes
+
+The glyph moved to the **trailing** edge. Leading, the card read *symbol → label →
+number*: the decoration arrived first and the five digits a person is actually
+looking for arrived last, at the end of a 296px control. Reversed it reads *label
+→ number → act*, which is the order the reader needs them in, and it puts the
+moving element on the edge the eye leaves the card by.
+
+`HelplineCard` now renders at `band` and `hero` size from one component, so the
+flight in `campaign-band` is **one card changing size** rather than one object
+being replaced by another.
+
+**It rings twice on arrival, then stops.** 1.2s × 2 = 2.4s — deliberately under
+the five seconds past which WCAG 2.2 §2.2.2 requires a pause mechanism for
+content moving beside other content. A fourth control on that row to switch off a
+decoration would be a worse band than a still one. After the arrival ring it
+answers **hover and focus**, which is where the movement earns its place: it
+responds to the reader rather than interrupting them. Under
+`prefers-reduced-motion` it never moves.
+
+### 12.2 Two flight bugs the reorder exposed
+
+| | Before | After |
+|---|---|---|
+| Band order in the flight option | helpline, then QR, then copy — the pre-reorder arrangement | QR, copy, Register, Helpline, as production |
+| The arc | `bow = dx / 12`, added to **x** unconditionally — which arcs a vertical path and does nothing at all to a horizontal one | Perpendicular to travel, and **negated**, so the card arcs over rather than sagging under |
+
+The second only became visible when the helpline moved to the band's trailing
+edge: the flight went from a 128px diagonal to an **860px** crossing, and a bow
+that had been invisible on a short vertical hop became a card diving through the
+hero and back up.
+
+### 12.3 `Nudge` — the handoff's composition, built as drawn
+
+`3FF5l0SMNIwdpZrKkeyPTm` node **57774:19709**. Every value read off the node, not
+eyeballed from a screenshot:
+
+| | Handoff | Built |
+|---|---|---|
+| Band height | 168 | **168** |
+| Code | 120×120 at 24,24, radius `--sa-shape-6` | same |
+| Content | x=168, 1064 wide, two rows, CTAs at y=80 | same |
+| Heading | `headline-3` 28/36 semibold | same |
+| Ground | `--sa-bg-brand-accent-bolder` → `-boldest` | same |
+| Register edge | `--sa-cmp-action-brand-secondary-inverse-default-border` | same |
+| Dismiss | 40×40 icon button, trailing | same |
+
+**The pulsing call glyph is the master's own idea** — instance `57895:11261`, a
+32px ring drawn around the 16px glyph at −8,−8. Figma can only draw it at rest;
+here it expands and fades, twice, under the same 2.2.2 reasoning as the card.
+
+**Two things the handoff and the build disagree about, recorded rather than
+harmonised:**
+
+1. Its sentence is *"Take the NMBA e-pledge today and commit to a Nasha Mukt
+   Bharat!"* — which points at the **e-pledge**, while the button beneath it goes
+   to the **volunteer register**. Kept verbatim in the prototype so the mismatch
+   is visible and can be settled by the Department.
+2. Its heading is `headline-3` at 28px, sitting directly above the page's own
+   `<h1>`. Worth checking against the title it precedes.
+
+Reference and build: `docs/audit/img/figma-banner-ref.png` and
+`nudge-handoff.png`.
