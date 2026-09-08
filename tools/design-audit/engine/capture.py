@@ -655,6 +655,32 @@ def rows_to_prune(rows, failures, visited_roles, captured_counts):
     pruned = sorted({row.get("slug") for row in rows if row.get("slug") in failed_this_run})
     return kept, pruned, skipped_roles
 
+def screens_to_rescue(prev_screens, bdl, flow_failures):
+    """Pure decision function for the failed-flow carry-forward in run().
+
+    A flow that ERRORED walked a shortened path, so a screen it recorded on an earlier run and
+    did not reach on this one is unproven, not gone. Without this a dropped connection deletes
+    the flow's whole history, and the only warning is a SHRANK line printed AFTER the file has
+    been written: net::ERR_INTERNET_DISCONNECTED took a 296-screen bundle to 222, and only
+    `git checkout` got it back.
+
+    Args:
+      prev_screens: the previous bundle's screen list.
+      bdl: the bundle being built this run — a screen already in it is NOT rescued, because
+        this run reached it and its fresh state is the true one.
+      flow_failures: ids of flows that raised this run.
+
+    Returns: flow id -> list of previous screens to carry forward, flows with none omitted.
+    """
+    out = {}
+    for fid in flow_failures:
+        rescued = [s for s in prev_screens
+                   if s.get("reachedBy") == f"flow:{fid}" and not B.find_screen(bdl, s["slug"])]
+        if rescued:
+            out[fid] = rescued
+    return out
+
+
 def merge_manifest(existing, fresh):
     """Replace rows whose `slug` was re-captured, preserving position, and append the rest.
 
@@ -729,6 +755,8 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
     visited_roles = set()  # roles capture_role actually ran for — everyone else's bundle
                             # screens (SKIP/ABORTED/not-in---role) must be carried forward, not lost.
     failures = {}   # role -> slugs whose navigation failed this run (see the pruning below)
+    flow_failures = set()  # flow ids that ERRORED — their unreached screens are unproven,
+                          # not absent, and must survive into the next bundle.
     with sync_playwright() as p:
         b = p.chromium.launch(channel="chrome", headless=True)
         for role in cfg["live"]["roles"]:
@@ -788,6 +816,7 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
                     try:
                         DRV.run_flow(pg, flow, man, cfg, paths, bdl, env)
                     except Exception as e:
+                        flow_failures.add(flow["id"])
                         print(f"[flow {flow['id']}] FAILED: {str(e)[:120]} — the remaining "
                               f"flows for this role still run", flush=True)
                 # Record this host's build fingerprint so a FUTURE run's Tier 0 check
@@ -861,6 +890,16 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
         for s in prev.get("screens", []):
             if s.get("role") not in visited_roles and not B.find_screen(bdl, s["slug"]):
                 B.upsert_screen(bdl, s)
+        # A flow that ERRORED walked a shortened path, so the screens it did not reach this run
+        # are unproven, not gone. Carry them forward. Without this a dropped connection deletes
+        # everything every previous run recorded for that flow, and the only warning is a
+        # SHRANK line printed AFTER the file is written: net::ERR_INTERNET_DISCONNECTED took
+        # this bundle 296 -> 222, and only `git checkout` got it back.
+        for fid, rescued in sorted(screens_to_rescue(prev.get("screens", []), bdl, flow_failures).items()):
+            for s_prev in rescued:
+                B.upsert_screen(bdl, s_prev)
+            print(f"[flow {fid}] carried {len(rescued)} previously captured screen(s) forward "
+                  f"rather than dropping them on a failed run", flush=True)
         bdl["records"] = {**prev.get("records", {}), **bdl.get("records", {})}
         bdl["hosts"] = {**prev.get("hosts", {}), **bdl.get("hosts", {})}
         prev_n, new_n = len(prev.get("screens", [])), len(bdl.get("screens", []))
