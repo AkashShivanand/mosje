@@ -257,6 +257,40 @@ own site is told the Department twice by the masthead already. It stays only
 because removing it returns the strip to three, which measured worse. Replace it
 the day the source publishes a fourth figure worth the space.
 
+### The follow-up, and the estimate that was wrong
+
+Moving the ribbon above the hero pushed the hero down by 66px, so the hero's own
+buttons went from CUT by the 13-inch fold to 39px below it — one visibility
+problem traded for another. Three options were costed; option 1 was chosen:
+put the ribbon's occasion and sentence on one line and tighten its padding,
+estimated at **30px recovered**.
+
+**It recovered 16, and the estimate was wrong for a reason worth recording.** The
+ribbon's height was never set by its stacked copy. Measured: the band is 66px, of
+which 40 is the DISMISS BUTTON — taller than the call to action beside it (32) and
+than the copy (20 per line). The copy stacking cost nothing, because it was
+shorter than the control next to it either way. An estimate made by reading a
+stylesheet instead of measuring the rendered box.
+
+What the pass did achieve, all of it worth keeping on its own merits:
+
+| | Before | After |
+|---|---|---|
+| Ribbon height | 66px | **50px** |
+| Occasion + sentence | two lines | **one**, at 1440 and above |
+| Eyebrow | "SIX YEARS OF NASHA MUKT BHARAT ABHIYAAN" — restating the H1 directly below it | "SIX YEARS OF THE ABHIYAAN" |
+| Dismiss control | 40px, the tallest thing in a campaign strip | 32px, the DS `sm` height, still clear of §2.5.8's 24 |
+| Hero buttons at 1512×820 | cut | **cut by 3px** — effectively visible |
+| Hero buttons at 1440×760 | 39px below the fold | **23px below** |
+
+**The hero's buttons are still below the fold on a 13-inch laptop, and no
+remaining change inside the ribbon can fix that.** The budget: 236 of masthead
+and breadcrumb, 116 of campaign band, 50 of ribbon, and 364 from the hero band's
+top to its buttons — 766 before a 40px button that has to fit inside 760. The
+next 54px has to come from the campaign band or the hero's own internal spacing,
+and the hero is a template shared by 178 pages. That is a decision, not a tweak,
+and it is recorded here rather than taken.
+
 ---
 
 ## 8. Two gate findings, spun off
