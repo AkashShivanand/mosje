@@ -1,6 +1,6 @@
 /**
  * Service Discovery — options placed before the Department.
- * One page per option, each carrying a recorded walkthrough of a working prototype.
+ * One page per option, each carrying the screen as drawn in the design file.
  * Noto Sans throughout. Every colour is a resolved SAMAVESH token.
  *
  * Figures: scheme counts and Target Group filter counts were measured on the live
@@ -24,6 +24,13 @@ const SURF="EEF0F3", HAIR="DCDEE1", WHITE="FFFFFF";
 const F = "Noto Sans";
 const W=13.333, PH=7.5, M=0.72, CW=W-M*2;
 const A = f => `assets/${f}`;
+
+/** Width and height of a PNG, read from its IHDR chunk. */
+function imageSize(file) {
+  const b = fs.readFileSync(file);
+  return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) };
+}
+
 
 const slide = dark => { const s = pres.addSlide(); s.background = { color: dark?DARK:WHITE }; return s; };
 
@@ -78,13 +85,13 @@ function field(s, x, y, w, label, body, labelColor) {
     align:"right", fontFace:F, fontSize:11, color:BLUE_100, lineSpacingMultiple:1.18 });
 
   s.addShape(pres.ShapeType.line, { x:M, y:5.4, w:CW, h:0, line:{color:BLUE_DEEP, width:1} });
-  s.addText("Each option is shown as a recorded walkthrough of a working prototype, not a picture.", {
+  s.addText("Each option is shown as the screen drawn for it, with what it does, what favours it and what counts against it. The assistant also carries a recorded walkthrough.", {
     x:M, y:5.66, w:8.8, h:0.3, isTextBox:true, margin:0, fontFace:F, fontSize:12.5, color:WHITE });
   s.addText("Counts taken from dosje.gov.in on 8 September 2026 · MoSJE Design Research", {
     x:M, y:5.98, w:8.8, h:0.3, isTextBox:true, margin:0, fontFace:F, fontSize:11, color:BLUE_100 });
   s.addText("Accompanies the design file\nMoSJE (WIP) — Service Discovery", { x:9.6, y:5.66, w:3.0, h:0.6,
     isTextBox:true, margin:0, align:"right", fontFace:F, fontSize:11, color:BLUE_100, lineSpacingMultiple:1.18 });
-  s.addNotes("Sent ahead of the meeting, so it reads without a presenter. Six options, one to a page, each with a recorded walkthrough. Approval is sought on three parts of the site, and for the preparatory work.");
+  s.addNotes("Sent ahead of the meeting, so it reads without a presenter. Six options, one to a page, each with the screen drawn for it. Approval is sought on three parts of the site, and for the preparatory work.");
 }
 
 /* ═══ 2 · The map ════════════════════════════════════════════════════════ */
@@ -121,11 +128,11 @@ function field(s, x, y, w, label, body, labelColor) {
     x:M, y:6.44, w:CW, h:0.3, isTextBox:true, margin:0, fontFace:F, fontSize:11, color:BLUE_100 });
 }
 
-/* ═══ 3–8 · One option, one page, with its recorded walkthrough ═════════ */
+/* ═══ 3–8 · One option, one page, with the screen as drawn ════════════ */
 const OPTIONS = [
   { surface:"The Home Page · Option A of 3", title:"Explore User Personas",
-    vid:"home-a", live:true, rec:false,
-    caption:"Recorded walkthrough. Moving between groups with the arrows; each shows how many schemes list it.",
+    img:"home-a", node:"4632:158557", live:true, rec:false,
+    caption:"The panel as drawn: one group at a time, moved with the arrows beneath it.",
     what:"A picture of one group at a time, with arrows to move between them. It is on the home page today.",
     does:"Looks at the pictures, sees one that matches, and taps through to the Schemes page.",
     pros:["Already built and already on the page — the cheapest of all six",
@@ -135,12 +142,11 @@ const OPTIONS = [
     cons:["One group at a time, behind arrows — you cannot see whether you are represented without clicking",
           "Sorts by group alone, not by stage of life, need or State",
           "Today, choosing a group does not filter the Schemes page; the panel's own promise goes unmet"],
-    needs:"Make the choice actually open the Schemes page already filtered. This repair is needed in any case — a panel that promises to show services made for you, and then does not, is worse than no panel.",
     view:"Repair it, but do not rely on it alone. It serves the visitor who recognises a picture." },
 
   { surface:"The Home Page · Option B of 3", title:"Find support for you",
-    vid:"home-b", live:false, rec:true,
-    caption:"Recorded walkthrough. Five questions answered; the count falls from 26 to 3, then the schemes are listed.",
+    img:"home-b", node:"4632:158637", live:false, rec:true,
+    caption:"Question two of five, and the count at the top right — 45 here, and 6 once all five are answered.",
     what:"Five short questions, any of which may be skipped. Skipping widens the answer rather than ending it.",
     does:"Answers up to five questions — group, stage of life, kind of help, State — and is shown the schemes that list them, each with a place to apply.",
     pros:["Reads stage of life, need and State, not group alone — which is how entitlement actually works",
@@ -151,12 +157,11 @@ const OPTIONS = [
     cons:["Every scheme must be tagged on four axes before it works at all",
           "Adds roughly 150 pixels to the home page, unless it replaces Our Offerings",
           "Asks about caste at the second question — the wording needs the Department's approval"],
-    needs:"Tag all 134 scheme records — the same work every other option needs. Approve the wording of the group question and the reason shown for asking it.",
     view:"Recommended for the home page. It answers the question a citizen actually arrives with." },
 
   { surface:"The Home Page · Option C of 3", title:"Find offerings for you",
-    vid:"home-c", live:false, rec:false,
-    caption:"Recorded walkthrough. Three groups tapped in turn; the last is routed to the sibling department.",
+    img:"home-c", node:"4632:177409", live:false, rec:false,
+    caption:"The nine groups as a single row. Choosing one opens the portal, the scheme and the complaint route beneath it.",
     what:"A row of groups. Tapping one shows the portal, the scheme and the complaint route for that group.",
     does:"Taps the group that describes them and sees three things they can act on, without answering anything.",
     pros:["One tap, with no questions to answer",
@@ -167,12 +172,11 @@ const OPTIONS = [
     cons:["Every scheme must be tagged before it works",
           "Reads group alone, so it is less exact than the five questions",
           "Needs space on the home page, unless it replaces Our Offerings"],
-    needs:"Tag all 134 scheme records, and settle which three items are shown for each group.",
     view:"A good companion to Option B for the visitor who will not answer questions. Not a replacement for it." },
 
   { surface:"The Schemes Page · Option A of 2", title:"Pictures of the Nine Groups, with Cards",
-    vid:"scheme-a", live:false, rec:false,
-    caption:"Recorded walkthrough. Choosing a group from the pictures; the cards below change with it.",
+    img:"scheme-a", node:"4632:158842", live:false, rec:false,
+    caption:"All nine groups shown at once, above a card for each scheme.",
     what:"A row of pictures for the nine groups, above cards for each scheme.",
     does:"Picks their group from the pictures, then reads the scheme cards below.",
     pros:["All nine groups visible at once — no arrows, no scrolling to find yourself",
@@ -183,12 +187,11 @@ const OPTIONS = [
           "A card has no room for who runs the scheme, or whether it is Central or State",
           "Two schemes cannot be compared side by side",
           "Nine illustrations to commission and to keep up to date"],
-    needs:"Tag all 134 scheme records, and commission nine illustrations.",
     view:"Not recommended for this page. The pictures are welcoming, but this is the page where people compare." },
 
   { surface:"The Schemes Page · Option B of 2", title:"Filter Panel with a Table of Schemes",
-    vid:"scheme-b", live:false, rec:true,
-    caption:"Recorded walkthrough. Group, stage of life and kind of help ticked together — the filters combine.",
+    img:"scheme-b", node:"4632:159038", live:false, rec:true,
+    caption:"Two filters ticked together — Scheduled Caste and OBC — and the table beside them, showing who runs each scheme.",
     what:"Filters down the left; a table on the right showing what a person gets, who runs it, and whether it is Central or State.",
     does:"Ticks the filters that apply and reads the schemes side by side to see which to apply for.",
     pros:["Filters combine — group and stage of life and kind of help can be asked for together",
@@ -198,11 +201,10 @@ const OPTIONS = [
     cons:["A table reads as a record rather than an invitation",
           "Asks the citizen to use the site's own words",
           "Needs more care on a small screen"],
-    needs:"Tag all 134 scheme records, including who runs each one and whether it is Central or State.",
     view:"Recommended for the Schemes page. Option A's pictures can sit above this panel if the Department wishes to keep them." },
 
   { surface:"The Assistant · Option A of 1", title:"Samajik Sahayak — the Same Five Questions, in Chat",
-    vid:"chatbot", live:true, rec:true,
+    vid:"chatbot", node:"4632:159395", live:true, rec:true,
     caption:"Recorded walkthrough. Opened from an ordinary page, then answered one question at a time.",
     what:"The same five questions, asked one at a time in a chat window that is already built and reachable from every page.",
     does:"Opens the assistant from whichever page they are on, answers on their phone, and is given schemes to open.",
@@ -214,7 +216,6 @@ const OPTIONS = [
     cons:["A button in the corner is found only by those looking for it",
           "It covers the page on a small screen",
           "Harder to use with a screen reader"],
-    needs:"Tag all 134 scheme records, and ask the existing vendor to add the scheme branch.",
     view:"Recommended, alongside whichever home page option is approved. It reaches the person already lost on a page." },
 ];
 
@@ -226,21 +227,34 @@ OPTIONS.forEach(o => {
              o.live?SURF:BLUE_50, o.live?MUTE:BLUE_TXT) + 0.14;
   if (o.rec) pill(s, px, 1.18, "RECOMMENDED", BLUE_TXT, WHITE);
 
-  const y0 = 1.64, vw = 5.9, vh = vw/1.6;
-  s.addShape(pres.ShapeType.rect, { x:M-0.03, y:y0-0.03, w:vw+0.06, h:vh+0.06,
+  /* The frames come off the design file at their own proportions — a 2.3:1 strip
+     for the persona panel, a 1.35:1 page for the schemes grid. Fit each inside one
+     box rather than forcing a shape on it, so nothing is stretched or cropped twice. */
+  const y0 = 1.64, boxW = 5.9, boxH = 4.30;
+  const src = o.vid ? A(`video/${o.vid}.png`) : A(`figma/${o.img}.png`);
+  const im = imageSize(src);
+  const sc = Math.min(boxW/im.w, boxH/im.h);
+  const iw = im.w*sc, ih = im.h*sc;
+  /* top-aligned, so a wide short frame does not float in the middle of the column
+     with the caption stranded far beneath it */
+  const ix = M + (boxW-iw)/2, iy = y0;
+  s.addShape(pres.ShapeType.rect, { x:ix-0.03, y:iy-0.03, w:iw+0.06, h:ih+0.06,
     fill:{color:WHITE}, line:{color:HAIR, width:0.75} });
-  s.addMedia({ type:"video", path:A(`video/${o.vid}.mp4`), cover:b64(A(`video/${o.vid}.png`)),
-    x:M, y:y0, w:vw, h:vh });
-  s.addText("▶  " + o.caption, { x:M, y:y0+vh+0.12, w:vw, h:0.34, isTextBox:true, margin:0,
-    fontFace:F, fontSize:9, color:MUTE, lineSpacingMultiple:1.1 });
+  if (o.vid) {
+    s.addMedia({ type:"video", path:A(`video/${o.vid}.mp4`), cover:b64(src),
+      x:ix, y:iy, w:iw, h:ih });
+  } else {
+    s.addImage({ path:src, x:ix, y:iy, w:iw, h:ih });
+  }
+  s.addText((o.vid ? "\u25B6  " : "") + o.caption, { x:M, y:iy+ih+0.14, w:boxW, h:0.34,
+    isTextBox:true, margin:0, fontFace:F, fontSize:9, color:MUTE, lineSpacingMultiple:1.1 });
 
-  const rx = M+vw+0.5, rw = CW-vw-0.5;
+  const rx = M+boxW+0.5, rw = CW-boxW-0.5;
   let y = y0;
   y = field(s, rx, y, rw, "What it is", [o.what]);
   y = field(s, rx, y, rw, "What a citizen does", [o.does]);
   y = field(s, rx, y, rw, "In its favour", o.pros, BLUE_TXT);
   y = field(s, rx, y, rw, "Against it", o.cons, SAFF_TXT);
-  y = field(s, rx, y, rw, "What the Department must do first", [o.needs]);
 
   const vy = 6.22;
   if (y > vy) throw new Error(`record overflows the view box on "${o.title}" (${y.toFixed(2)} > ${vy})`);
@@ -251,8 +265,12 @@ OPTIONS.forEach(o => {
   s.addText(o.view, { x:rx+0.16, y:vy+0.3, w:rw-0.32, h:0.38, isTextBox:true, margin:0,
     fontFace:F, fontSize:10, bold:true, color:DARK, lineSpacingMultiple:1.14 });
 
-  sourceLine(s, "Walkthrough recorded from a working prototype built to this design. Schemes shown are the Department's own, tagged as they would be after the preparatory work.");
-  s.addNotes("Press play on the video. It is a real page being used, not an animation.");
+  sourceLine(s, o.vid
+    ? `Walkthrough recorded from a working prototype built to this design — MoSJE (WIP), Service Discovery, frame ${o.node}. Schemes shown are the Department's own, tagged as they would be after the preparatory work.`
+    : `Screen from the design file — MoSJE (WIP), Service Discovery, frame ${o.node}. Schemes shown are the Department's own, tagged as they would be after the preparatory work.`);
+  s.addNotes(o.vid
+    ? `${o.title}. Press play — it is a real page being used, not an animation. Design file frame ${o.node}.`
+    : `${o.title}. The screen is taken from the design file, frame ${o.node}. A working prototype of this option can be shown live on request.`);
 });
 
 /* ═══ 9 · How the options combine ═══════════════════════════════════════ */
@@ -294,44 +312,7 @@ OPTIONS.forEach(o => {
   sourceLine(s, "The three parts are independent: a choice on one does not settle the others.");
 }
 
-/* ═══ 10 · What has to be done first ═══════════════════════════════════ */
-{
-  const s = slide(false);
-  const y0 = header(s, "Sequencing", "What Has to Be Done First",
-    "Every option above reads the same information about each scheme. Until it is filled in, none of them can work — which is why the tagging comes before the design.");
-  const stages = [
-    ["Stage 0","Correcting What Is Wrong","2–3 weeks","Small effort · useful",
-     "Remove the leftover control in the footer, correct the two spelling errors, make missing pages return a proper error, restore the accessibility page, and take down the empty scheme pages.",false],
-    ["Stage 1","Filling In the Information","4–8 weeks","Large effort · essential",
-     "Decide what is recorded about each scheme, and fill it in for all 134. Add the major schemes missing from dosje.gov.in. Rewrite the list of categories and groups.",true],
-    ["Stage 2","Rebuilding the Pages","6–10 weeks","Sizeable effort · large gain",
-     "The Schemes page with working filters and shareable links. Pages for each group. Plain actions on the home page. A simpler main menu.",false],
-    ["Stage 3","The Questions and the Assistant","6–8 weeks","Moderate effort · large gain",
-     "Build Find support for you, check it against accessibility standards, and test it with at least eight people from the groups it serves, in Hindi and one other language.",false],
-    ["Stage 4","Bringing the Two Sites Together","Ongoing","Moderate effort · steady gain",
-     "Publish the scheme information for myScheme. Move socialjustice.gov.in on to dosje.gov.in and close the older site. Make the fields compulsory when a scheme is added.",false],
-  ];
-  const cw = (CW - 4*0.22)/5;
-  stages.forEach((p,i)=>{
-    const x = M + i*(cw+0.22), on = p[5];
-    s.addShape(pres.ShapeType.rect, { x, y:y0, w:cw, h:4.14, fill:{color:on?DARK:SURF}, line:{color:on?DARK:HAIR, width:0.75} });
-    s.addText(p[0].toUpperCase(), { x:x+0.22, y:y0+0.24, w:cw-0.44, h:0.22, isTextBox:true, margin:0,
-      fontFace:F, fontSize:9.5, bold:true, charSpacing:1.1, color:on?BLUE_200:MUTE });
-    s.addText(p[1], { x:x+0.22, y:y0+0.5, w:cw-0.44, h:0.64, isTextBox:true, margin:0,
-      fontFace:F, fontSize:14, bold:true, color:on?WHITE:DARK, lineSpacingMultiple:1.08 });
-    s.addText(p[2], { x:x+0.22, y:y0+1.2, w:cw-0.44, h:0.24, isTextBox:true, margin:0,
-      fontFace:F, fontSize:11.5, bold:true, color:on?BLUE_200:BLUE_TXT });
-    s.addText(p[3], { x:x+0.22, y:y0+1.48, w:cw-0.44, h:0.34, isTextBox:true, margin:0,
-      fontFace:F, fontSize:9.5, color:on?BLUE_100:MUTE, lineSpacingMultiple:1.12 });
-    s.addText(p[4], { x:x+0.22, y:y0+1.9, w:cw-0.44, h:2.0, isTextBox:true, margin:0,
-      fontFace:F, fontSize:10, color:on?BLUE_100:INK, lineSpacingMultiple:1.2 });
-  });
-  s.addText("Stage 1 is the one piece only the Department can do. The Schemes page, the questions, the group pages and the assistant all wait on it.", {
-    x:M, y:y0+4.36, w:CW, h:0.3, isTextBox:true, margin:0, fontFace:F, fontSize:11.5, bold:true, color:DARK });
-  sourceLine(s, "Times shown are estimates, not commitments.");
-}
-
-/* ═══ 11 · Safeguards ══════════════════════════════════════════════════ */
+/* ═══ 10 · Safeguards ══════════════════════════════════════════════════ */
 {
   const s = slide(false);
   const y0 = header(s, "Safeguards", "Five Commitments That Hold Whichever Options Are Approved", null);
@@ -361,21 +342,21 @@ OPTIONS.forEach(o => {
   sourceLine(s, "These hold across all six options and are not traded against for speed.");
 }
 
-/* ═══ 12 · For approval ════════════════════════════════════════════════ */
+/* ═══ 11 · What is proposed ════════════════════════════════════════════════ */
 {
   const s = slide(true);
-  s.addText("SUBMITTED FOR APPROVAL", { x:M, y:0.7, w:CW, h:0.24, isTextBox:true, margin:0,
+  s.addText("IN SUMMARY", { x:M, y:0.7, w:CW, h:0.24, isTextBox:true, margin:0,
     fontFace:F, fontSize:10, bold:true, charSpacing:1.3, color:BLUE_100 });
-  s.addText("What Is Proposed", { x:M, y:1.0, w:CW, h:0.6, isTextBox:true, margin:0,
+  s.addText("What the Design Team Recommends", { x:M, y:1.0, w:CW, h:0.6, isTextBox:true, margin:0,
     fontFace:F, fontSize:32, bold:true, color:WHITE });
 
   const rows = [
-    ["1","The home page","Option B, with Option A repaired","Department of Social Justice & Empowerment"],
-    ["2","The Schemes page","Option B — filter panel with a table","Department of Social Justice & Empowerment"],
-    ["3","The assistant","Yes — it carries the same five questions","Department, with the existing vendor"],
+    ["1","The home page","Option B, with Option A repaired","It answers the question a citizen arrives with; A still serves the visitor who recognises a picture"],
+    ["2","The Schemes page","Option B — filter panel with a table","This is the page where people compare, and a table can carry who runs it and where it applies"],
+    ["3","The assistant","Yes — the same five questions, in chat","It reaches the person already lost on a page, and is largely built"],
   ];
   const rowY = 2.0, rowH = 0.82;
-  [["THE PART OF THE SITE", M+0.7, 4.4],["WHAT IS PROPOSED", M+5.2, 4.2],["WHO APPROVES", M+9.5, 2.4]]
+  [["THE PART OF THE SITE", M+0.7, 4.4],["OUR RECOMMENDATION", M+5.2, 4.2],["WHY", M+9.5, 2.4]]
     .forEach(c => s.addText(c[0], { x:c[1], y:rowY-0.3, w:c[2], h:0.22, isTextBox:true, margin:0,
       fontFace:F, fontSize:9, bold:true, charSpacing:1.1, color:BLUE_200 }));
   rows.forEach((r,i)=>{
@@ -388,36 +369,22 @@ OPTIONS.forEach(o => {
   });
   s.addShape(pres.ShapeType.line, { x:M, y:rowY+3*rowH-0.08, w:CW, h:0, line:{color:BLUE_DEEP, width:1} });
 
-  s.addShape(pres.ShapeType.rect, { x:M, y:4.62, w:CW, h:1.16, fill:{color:BLUE_DEEP}, line:{color:BLUE_DEEP, width:0} });
-  s.addText("And approval to begin Stage 1 — filling in the information for all 134 schemes.", {
-    x:M+0.34, y:4.76, w:CW-0.68, h:0.36, isTextBox:true, margin:0, fontFace:F, fontSize:17, bold:true, color:WHITE });
-  s.addText("This is the one piece of work every option above depends on. Whichever options are approved, it has to begin first, and only the Department can do it.", {
-    x:M+0.34, y:5.18, w:CW-0.68, h:0.44, isTextBox:true, margin:0, fontFace:F, fontSize:11.5, color:BLUE_100, lineSpacingMultiple:1.16 });
+  s.addShape(pres.ShapeType.rect, { x:M, y:4.9, w:CW, h:1.0, fill:{color:BLUE_DEEP}, line:{color:BLUE_DEEP, width:0} });
+  s.addText("The three parts are independent. Any combination of these options can be taken.", {
+    x:M+0.34, y:5.06, w:CW-0.68, h:0.32, isTextBox:true, margin:0, fontFace:F, fontSize:16, bold:true, color:WHITE });
+  s.addText("Page 9 sets out how they combine, and what each combination means for a citizen.", {
+    x:M+0.34, y:5.42, w:CW-0.68, h:0.32, isTextBox:true, margin:0, fontFace:F, fontSize:11.5, color:BLUE_100 });
 
-  s.addText("ALSO REQUIRED FROM THE DEPARTMENT", { x:M, y:5.94, w:CW, h:0.2, isTextBox:true, margin:0,
-    fontFace:F, fontSize:8.5, bold:true, charSpacing:1, color:BLUE_200 });
-  const need = [
-    ["Confirmation of the group tags on each scheme","Only the division that administers a scheme can confirm who it is for"],
-    ["Approval of the wording of the group question","It asks a citizen to state their category — the wording should be the Department's, not a designer's"],
-    ["A ruling on scope: this Department only, or both","The Schemes page shows DEPwD schemes while the questions route disability away to DEPwD; one of the two must change"],
-    ["Verified helpline numbers and office contacts","Only Elderline 14567 is treated as confirmed today"],
-  ];
-  let ny = 6.2;
-  need.forEach(n=>{
-    s.addText(n[0], { x:M, y:ny, w:5.2, h:0.24, isTextBox:true, margin:0, fontFace:F, fontSize:10, bold:true, color:WHITE });
-    s.addText(n[1], { x:M+5.4, y:ny, w:CW-5.4, h:0.24, isTextBox:true, margin:0, fontFace:F, fontSize:10, color:BLUE_100 });
-    ny += 0.28;
-  });
-  s.addNotes("If only one thing is settled today, let it be Stage 1. The three choices can follow; nothing can be built before the information is filled in.");
+  s.addNotes("The three parts are decided separately. If only one is settled today, the Schemes page is the one that changes most for the most people.");
 }
 
-/* ═══ 13 · Limits and sources ══════════════════════════════════════════ */
+/* ═══ 12 · For the record ══════════════════════════════════════════ */
 {
   const s = slide(false);
   const y0 = header(s, "For the Record", "What This Review Does and Does Not Establish", null);
   const limits = [
-    ["The counts are current; the earlier figure of 141 is superseded.",
-     "The 134 schemes, and the count against every value of the Target Group filter, were read directly from dosje.gov.in on 8 September 2026. An earlier figure of 141 came from a content export dated 13 June 2026 and no longer matches the site. Where this deck gives a number, it is the live one."],
+    ["Every figure here was read from the live site.",
+     "The 134 schemes, and the count against each value of the Target Group filter, were read directly from dosje.gov.in on 8 September 2026."],
     ["No citizens were interviewed.",
      "The findings come from examining the two Ministry websites and comparing them with myScheme, the disability department's site, the National Scholarship Portal and GOV.UK. The groups described are taken from the Department's own Acts, schemes and organisations, not from interviews. Before Stage 3 is built, the questions should be tested with people from those groups."],
   ];
@@ -438,7 +405,7 @@ OPTIONS.forEach(o => {
     ["The Target Group filter","All 11 values counted on the live site: Students 50 · Sanitation Workers 16 · DNT 14 · Senior Citizens 9 · OBC 6 · Scheduled Castes 5 · Business 4 · Small business 4 · BPL, Homeowners, Medium business 1 each. 23 schemes carry no group."],
     ["Other government websites","myscheme.gov.in · depwd.gov.in · scholarships.gov.in · GOV.UK, for comparison."],
     ["Standards applied","GIGW 3.0, DBIM 3.0 and WCAG 2.2 AA."],
-    ["The design file and prototypes","MoSJE (WIP) — Service Discovery. Each walkthrough was recorded from a working prototype built to that design."],
+    ["The design file","MoSJE (WIP) — Service Discovery. Every screen in this deck is a frame from that file, and each frame's id is printed under the screen it belongs to. The assistant additionally carries a recorded walkthrough. Working prototypes of all six exist and can be shown live."],
   ];
   let sy = y + 0.3;
   srcs.forEach(r=>{
