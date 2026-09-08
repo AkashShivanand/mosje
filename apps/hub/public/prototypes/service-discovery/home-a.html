@@ -1,15 +1,24 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Explore User Personas — Home page, Option A</title>
+<title>Recent Documents and Explore User Personas — the section</title>
 <link rel="stylesheet" href="core.css">
 <style>
-/* Recent Documents and Persona — Figma node 4650:177524.
-   Every value below is a token from core.css; the spacing scale is the
-   handoff's own (4/8/12/16/24/40/56). */
-.rdp-bleed{padding:0 24px 40px}
-.rdp{max-width:1322px;margin:0 auto;border:1px solid var(--sa-hairline-brand);border-radius:12px;
-  overflow:hidden;display:flex;justify-content:center;align-items:flex-start;padding-top:24px}
-.rdp__inner{flex:1;display:flex;align-items:center;gap:16px;min-width:0}
+/* ============================================================================
+   Recent Documents and Explore User Personas — Figma node 4650:177524.
 
+   The SECTION ONLY. No masthead, no page title, no commentary — this is the
+   block as it would sit on the home page, so it can be judged as the thing
+   itself rather than as a slide about the thing.
+
+   Every value is a token from core.css. The spacing scale is the handoff's
+   own: 4 / 8 / 12 / 16 / 24 / 40 / 56.
+   ========================================================================= */
+body{background:var(--sa-white);padding:40px 24px}
+
+.rdp{max-width:1322px;margin:0 auto;border:1px solid var(--sa-hairline-brand);border-radius:12px;
+  overflow:hidden;display:flex;align-items:flex-start;padding-top:24px}
+.rdp__row{flex:1;display:flex;align-items:center;gap:16px;min-width:0}
+
+/* ── left: the documents ───────────────────────────────── */
 .rdp__col{flex:1;min-width:0;display:flex;flex-direction:column;gap:24px;padding:56px 24px}
 .rdp__head{display:flex;gap:24px;align-items:flex-end}
 .rdp__head h2{flex:1;margin:0;font-size:32px;line-height:40px;font-weight:600;color:var(--sa-primary-700)}
@@ -19,31 +28,29 @@
   font-weight:500;letter-spacing:.1px;cursor:pointer;white-space:nowrap}
 .viewall:focus-visible{outline:3px solid var(--sa-primary-200);outline-offset:2px}
 
-.rdp__grid{display:flex;flex-wrap:wrap;gap:24px;align-content:center}
+.rdp__grid{display:flex;flex-wrap:wrap;gap:24px}
 .dcard{flex:1;min-width:328px;background:var(--sa-neutral-50);border:1px solid var(--sa-primary-100);
   border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px}
 .dcard__t{margin:0;font-size:16px;line-height:24px;font-weight:500;letter-spacing:.15px;color:var(--sa-ink)}
 .dcard__d{margin:0;font-size:14px;line-height:20px;letter-spacing:.25px;color:var(--sa-ink-muted)}
-.dcard__info{display:flex;flex-direction:column;gap:8px;padding-bottom:8px}
-.dcard__info p{margin:0;font-size:14px;line-height:20px;letter-spacing:.25px;color:var(--sa-ink)}
 .dcard__meta{margin:0;font-size:12px;line-height:16px;font-weight:500;letter-spacing:.5px;color:var(--sa-ink-muted)}
-.dcard__cta{display:flex;gap:12px;justify-content:flex-end}
+.dcard__cta{display:flex;gap:12px;justify-content:flex-end;margin-top:auto}
 .dbtn{font:inherit;font-size:12px;line-height:16px;font-weight:500;letter-spacing:.5px;
   border-radius:8px;padding:8px 16px;border:1px solid transparent;cursor:pointer}
-.dbtn--out{background:var(--sa-white);color:var(--sa-primary-500);border-color:var(--sa-primary-500)}
+.dbtn--out{background:var(--sa-white);color:var(--sa-primary-700);border-color:var(--sa-primary-700)}
 .dbtn--fill{background:var(--sa-primary-500);color:var(--sa-white)}
 .dbtn:focus-visible{outline:3px solid var(--sa-primary-200);outline-offset:2px}
 
-/* ── the persona panel ─────────────────────────────────── */
-.persona{align-self:stretch;display:flex;flex-direction:column;align-items:center;gap:16px;
-  padding:40px;border-radius:20px 20px 0 0;flex:none;
+/* ── right: the persona panel ──────────────────────────── */
+.persona{align-self:stretch;flex:none;display:flex;flex-direction:column;align-items:center;gap:16px;
+  padding:40px;border-radius:20px 20px 0 0;
   background:linear-gradient(180deg,var(--sa-primary-500) 0%,var(--sa-persona-to) 100%)}
 .persona__h{width:348px;margin:0;font-size:32px;line-height:40px;font-weight:600;
   color:var(--sa-white);text-align:center;white-space:nowrap}
 .nudge{position:relative;width:100%;background:var(--sa-persona-to);border-radius:16px;padding:12px;
   box-shadow:var(--sa-shadow-nudge);font-size:12px;line-height:16px;letter-spacing:.4px;
   color:var(--sa-white);text-align:center}
-.nudge::after{content:"";position:absolute;bottom:-11px;left:162px;width:20px;height:12px;
+.nudge::after{content:"";position:absolute;bottom:-11px;left:calc(50% - 10px);width:20px;height:12px;
   background:var(--sa-persona-to);clip-path:polygon(0 0,100% 0,50% 100%)}
 
 .pslider{width:300px;background:var(--sa-scrim-32);border:1px solid var(--sa-scrim-48);
@@ -55,76 +62,81 @@
   color:var(--sa-white);text-align:center}
 .pdiv{height:1px;width:100%;background:var(--sa-scrim-48)}
 .pnav{display:flex;align-items:center;justify-content:space-between}
-.parrow{display:inline-flex;align-items:center;justify-content:center;padding:8px;border-radius:8px;
-  border:0;background:transparent;color:var(--sa-white);cursor:pointer}
+.parrow{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;
+  border-radius:8px;border:0;background:transparent;color:var(--sa-white);cursor:pointer}
 .parrow:hover{background:var(--sa-scrim-32)}
 .parrow:focus-visible{outline:2px solid var(--sa-white);outline-offset:1px}
 .pdots{display:flex;align-items:center;gap:8px}
-.pdots i{width:8px;height:8px;border-radius:8px;background:var(--sa-white);opacity:.32;
+/* 8px dot, 40px active bar — the handoff's own scale.
+   PRESENTATIONAL, not controls. Nine 24px targets (WCAG 2.2 AA 2.5.8) would be
+   280px inside a 268px slider and would shove the arrows out of the panel. The
+   arrows are the navigation and they are 40px, so the dots state position
+   rather than offering a second, undersized way to change it. */
+.pdots i{display:block;width:8px;height:8px;border-radius:8px;background:var(--sa-white);opacity:.32;
   transition:width .22s ease-out,opacity .22s ease-out}
 .pdots i.on{width:40px;opacity:1}
-@media (prefers-reduced-motion:reduce){
-  .pshot img,.pdots i{transition:none}
+
+@media (prefers-reduced-motion:reduce){ .pshot img,.pdots i{transition:none} }
+
+/* Below the two-card measure the panel stops hanging off the edge and the
+   section becomes one column. */
+@media (max-width:1100px){
+  .rdp{padding-top:0}
+  .rdp__row{flex-direction:column;align-items:stretch;gap:0}
+  .rdp__col{padding:32px 20px}
+  .persona{align-self:stretch;width:auto;border-radius:0;padding:32px 20px}
+  .persona__h{width:auto;white-space:normal;font-size:28px;line-height:36px}
+  .pslider{width:100%;max-width:340px;align-self:center}
 }
 </style></head><body>
-<script src="data.js"></script><script src="shell.js"></script>
-<main class="wrap sec">
-  <p class="eyebrow">Home page</p>
-  <h1 class="sec-t">Recent Documents and Explore User Personas</h1>
-  <p class="sec-lede">The panel already on the home page. What changes is what it <b>does</b>: choosing a group opens the Schemes page already filtered to it.</p>
+<script src="data.js"></script>
 
-</main>
-
-<div class="rdp-bleed">
-  <section class="rdp">
-    <div class="rdp__inner">
-      <div class="rdp__col">
-        <div class="rdp__head">
-          <h2>Recent Documents</h2>
-          <button class="viewall">View All<span class="mi" style="font-size:16px">arrow_forward</span></button>
-        </div>
-        <div class="rdp__grid" id="docs"></div>
+<section class="rdp" aria-labelledby="rdp-docs-h">
+  <div class="rdp__row">
+    <div class="rdp__col">
+      <div class="rdp__head">
+        <h2 id="rdp-docs-h">Recent Documents</h2>
+        <button type="button" class="viewall">View All<span class="mi" style="font-size:16px" aria-hidden="true">arrow_forward</span></button>
       </div>
-
-      <aside class="persona">
-        <h2 class="persona__h">Explore User Personas</h2>
-        <p class="nudge">Choose your role to discover services made for you.</p>
-        <div class="pslider">
-          <div class="pshot" id="shot"></div>
-          <p class="pname" id="pname"></p>
-          <div class="pdiv"></div>
-          <div class="pnav">
-            <button class="parrow" id="prev" aria-label="Previous role"><span class="mi" style="font-size:24px">arrow_back</span></button>
-            <div class="pdots" id="dots"></div>
-            <button class="parrow" id="next" aria-label="Next role"><span class="mi" style="font-size:24px">arrow_forward</span></button>
-          </div>
-        </div>
-      </aside>
+      <div class="rdp__grid" id="docs"></div>
     </div>
-  </section>
-</div>
 
-<main class="wrap" style="padding-bottom:40px">
-  <p class="note">Choosing a role opens the Schemes page already filtered to that group. Listing is not a decision on any application — the sanctioning authority decides that.</p>
-</main>
+    <aside class="persona" aria-labelledby="rdp-persona-h">
+      <h2 class="persona__h" id="rdp-persona-h">Explore User Personas</h2>
+      <p class="nudge">Choose your role to discover services made for you.</p>
+      <div class="pslider">
+        <div class="pshot" id="shot"></div>
+        <p class="pname" id="pname" aria-live="polite"></p>
+        <div class="pdiv"></div>
+        <div class="pnav">
+          <button type="button" class="parrow" id="prev" aria-label="Previous role"><span class="mi" style="font-size:24px" aria-hidden="true">arrow_back</span></button>
+          <div class="pdots" id="dots" aria-hidden="true"></div>
+          <button type="button" class="parrow" id="next" aria-label="Next role"><span class="mi" style="font-size:24px" aria-hidden="true">arrow_forward</span></button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
 <script>
-mountShell('Home');
 const el = id => document.getElementById(id);
 
-/* The Department's own recent documents, not sample titles. */
+/* The Department's own recent documents. The description and file size the
+   design draws are not rendered: documents.json carries neither, and a size on
+   a government page that nobody measured is a fabrication. */
 const DOCS = [
-  ['Annual Report 2025–26','20 Aug 2026','Review of activities, policy recommendations, and safeguard implementation.','Type: Report • File: PDF (2.4 MB)'],
-  ['NAMASTE — Revised Scheme Guidelines','15 Aug 2026','Revised guidelines, including the waste picker component.','Type: Guidelines • File: PDF (3.1 MB)'],
-  ['PM-AJAY Operational Guidelines','10 Sep 2025','Adarsh Gram, grants-in-aid and hostel components, and how each is claimed.','Type: Guidelines • File: PDF (2.0 MB)'],
-  ['National Overseas Scholarship — Result 2026–27','5 Oct 2026','Candidates selected for the 2026–27 award year.','Type: Result • File: PDF (2.6 MB)'],
+  ['Annual Report 2025-26 (English)','22 Apr 2026','Report'],
+  ['Annual Report 2025-26 (Hindi)','22 Apr 2026','Report'],
+  ['Result of National Overseas Scholarship (NOS) for SC candidates 2025-26 (2nd Round)','18 Apr 2026','Result'],
+  ['Acceptance of Transgender Identity Certificate/Card in EPFO Records','15 Apr 2026','Circular'],
 ];
-el('docs').innerHTML = DOCS.map(([t,d,s,m]) => `
+el('docs').innerHTML = DOCS.map(([t,d,type]) => `
   <article class="dcard">
     <div><p class="dcard__t">${t}</p><p class="dcard__d">${d}</p></div>
-    <div class="dcard__info"><p>${s}</p><p class="dcard__meta">${m}</p></div>
+    <p class="dcard__meta">Type: ${type}</p>
     <div class="dcard__cta">
-      <button class="dbtn dbtn--out">View Online</button>
-      <button class="dbtn dbtn--fill">Download</button>
+      <button type="button" class="dbtn dbtn--out">View Online</button>
+      <button type="button" class="dbtn dbtn--fill">Download</button>
     </div>
   </article>`).join('');
 
