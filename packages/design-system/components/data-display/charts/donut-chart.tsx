@@ -5,7 +5,7 @@ import { ChartFrame, type ChartState, type ChartStateProps } from "./internal/ch
 import { Legend } from "./internal/legend";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
 import { categoricalColor, CHART_INK } from "./internal/palette";
-import { ringPath, polarToCartesian } from "./internal/geometry";
+import { ringPath, polarToCartesian, sliceBoundaries } from "./internal/geometry";
 import { formatIndian, formatPercent } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
 import { withheldLabel, type ChartDatum } from "./types";
@@ -85,11 +85,10 @@ export function DonutChart(props: DonutChartProps) {
     const resolved = state ?? (total === 0 ? "empty" : undefined);
     if (resolved) return stateFrame(resolved);
 
-    let cursor = 0;
+    const bounds = sliceBoundaries(shown.map((d) => d.value));
     const segs = shown.map((d, i) => {
-      const start = (cursor / total) * 360;
-      cursor += d.value;
-      const end = (cursor / total) * 360;
+      const start = (bounds[i] / total) * 360;
+      const end = (bounds[i + 1] / total) * 360;
       const color = d.color ?? categoricalColor(i);
       return { ...d, start, end, color, pct: (d.value / total) * 100 };
     });

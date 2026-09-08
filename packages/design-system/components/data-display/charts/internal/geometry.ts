@@ -70,3 +70,17 @@ export function ringPath(
     "Z",
   ].join(" ");
 }
+
+/**
+ * Where each slice of a pie or donut begins, as a running total of the values
+ * before it. Returns n+1 boundaries, so slice `i` spans `[out[i], out[i + 1]]`.
+ *
+ * It exists because both charts did this with a `let cursor` mutated inside
+ * `.map()`, and `react-hooks/immutability` is right to refuse that: a callback
+ * that reassigns a variable from an enclosing scope is only correct if it runs
+ * exactly once, in order, during render — and with the React Compiler on, none
+ * of those three is guaranteed. A prefix sum has no such assumption.
+ */
+export function sliceBoundaries(values: readonly number[]): number[] {
+  return values.reduce<number[]>((acc, v) => [...acc, acc[acc.length - 1] + v], [0]);
+}
