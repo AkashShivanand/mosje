@@ -4,11 +4,13 @@
 # Exit 0 = SKIP the build. Exit 1 = BUILD. (Vercel's convention, inverted from
 # the usual shell one, which is why every branch below says which it takes.)
 #
-# It exists because the free tier's 10 GB Deployment Storage and 10 GB Function
-# Storage are shared across every RETAINED deployment, and retention is 30 days
-# and not configurable below Pro. On 2026-09-08 this project held 1,174 retained
-# deployments — up to 105 in a single day — which is an 8.7 MB budget each for a
-# Next.js app whose public/ alone is 140 MB. Both limits hit 100% the same night.
+# It exists because the free tier's Deployment Storage and Function Storage are
+# shared across every RETAINED deployment, and retention is 30 days and not
+# configurable below Pro. On 2026-09-08 this project held 1,174 retained
+# deployments — up to 105 in a single day — and both limits hit 100% that night.
+# Vercel's usage page put the month at 356.27 GB of Deployment Storage and
+# 128.93 GB of Functions Storage, so a deployment costs roughly 300 MB and 110 MB
+# of the two. Every push avoided here is that much not spent.
 #
 # Two rules, both about deployments that could never have been looked at:
 #
