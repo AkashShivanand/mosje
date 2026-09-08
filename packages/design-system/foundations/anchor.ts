@@ -29,11 +29,15 @@ export type AnchorSide = "top" | "bottom" | "left" | "right";
  */
 export type AnchorAlign = "start" | "center" | "end";
 
-export interface AnchorCoords {
+/** Where a panel sits, before anything has been measured about the trigger. */
+export interface AnchorPosition {
   top: number;
   left: number;
   /** The side actually used, which is not always the side asked for. */
   side: AnchorSide;
+}
+
+export interface AnchorCoords extends AnchorPosition {
   /**
    * The trigger's measured width, for panels that match it — a select-style
    * listbox, a time picker.
@@ -98,7 +102,7 @@ export function computeAnchorCoords(
   side: AnchorSide,
   offset: number,
   align: AnchorAlign = "center",
-): AnchorCoords {
+): AnchorPosition {
   const alignAxis = (start: number, triggerSize: number, panelSize: number) => {
     if (align === "start") return start;
     if (align === "end") return start + triggerSize - panelSize;

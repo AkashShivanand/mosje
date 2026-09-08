@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useHydrated } from "../../foundations/use-hydrated";
 import { createPortal } from "react-dom";
 import { Icon } from "../utilities/icon";
 import type { TabDef, TabSize } from "./tabs";
@@ -57,14 +58,12 @@ function nextEnabled(order: number[], tabs: TabDef[], from: number, dir: 1 | -1)
 export function TabsOverflow({ tabs, active, size, onSelect, ariaLabel }: TabsOverflowProps) {
   const [open, setOpen] = React.useState(false);
   const [coords, setCoords] = React.useState<{ top: number; left: number } | null>(null);
-  const [mounted, setMounted] = React.useState(false);
+  const mounted = useHydrated();
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
   const itemRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
   const menuId = React.useId();
 
-  // A portal needs a DOM node, which SSR has not got.
-  React.useEffect(() => setMounted(true), []);
 
   const close = React.useCallback((returnFocus: boolean) => {
     setOpen(false);

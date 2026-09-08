@@ -44,8 +44,9 @@ export function PieChart({ data, title, state, onRetry, filterLabel, tableView }
 
   const bounds = sliceBoundaries(shown.map((d) => d.value));
   const slices = shown.map((d, i) => {
-    const start = (bounds[i] / total) * 360;
-    const end = (bounds[i + 1] / total) * 360;
+    // `bounds` has one more entry than `shown`, so both indices exist.
+    const start = (bounds[i]! / total) * 360;
+    const end = (bounds[i + 1]! / total) * 360;
     const color = d.color ?? categoricalColor(i);
     return { ...d, start, end, color, pct: (d.value / total) * 100 };
   });

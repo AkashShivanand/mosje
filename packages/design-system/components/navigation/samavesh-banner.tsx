@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { navLinkRoutes } from "./header/nav-link-tag";
+import { navLinkRoutes, type NavTag } from "./header/nav-link-tag";
 import { cn } from "../../utils/cn";
 import { Icon } from "../utilities/icon";
 import { Chip } from "../forms/chip";
@@ -220,8 +220,8 @@ export function SamaveshBanner({
 }: SamaveshBannerProps) {
   /* The "view all" row is always an internal estate route, so it is the one
      destination here that never needs the external escape. */
-  const ViewAllTag: React.ElementType = navLinkRoutes({ href: viewAllHref }, linkAs)
-    ? linkAs!
+  const ViewAllTag: NavTag = navLinkRoutes({ href: viewAllHref }, linkAs)
+    ? (linkAs as NavTag)
     : "a";
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
   const [activeCategory, setActiveCategory] =

@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useHydrated } from "../../foundations/use-hydrated";
 import { createPortal } from "react-dom";
 import { cn } from "../../utils/cn";
 import { mergeRefs } from "../../utils/merge-refs";
@@ -127,8 +128,7 @@ export function Popover({
 
   // Portals need a DOM node, which does not exist during SSR. Gate on a mounted
   // flag so the server and the first client render agree.
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
+  const mounted = useHydrated();
 
   const setOpen = React.useCallback(
     (next: boolean) => {

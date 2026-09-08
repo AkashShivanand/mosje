@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useHydrated } from "../../foundations/use-hydrated";
 import { createPortal } from "react-dom";
 import { cn } from "../../utils/cn";
 import { mergeRefs } from "../../utils/merge-refs";
@@ -145,8 +146,7 @@ export function Menu({
   const menuRef = React.useRef<HTMLDivElement>(null);
   const menuId = React.useId();
 
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
+  const mounted = useHydrated();
 
   const setOpen = React.useCallback(
     (next: boolean) => {

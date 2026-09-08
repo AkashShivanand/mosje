@@ -82,5 +82,11 @@ export function ringPath(
  * of those three is guaranteed. A prefix sum has no such assumption.
  */
 export function sliceBoundaries(values: readonly number[]): number[] {
-  return values.reduce<number[]>((acc, v) => [...acc, acc[acc.length - 1] + v], [0]);
+  const out: number[] = [0];
+  let running = 0;
+  for (const v of values) {
+    running += v;
+    out.push(running);
+  }
+  return out;
 }

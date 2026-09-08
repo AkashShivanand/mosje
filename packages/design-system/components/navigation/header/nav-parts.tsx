@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { navDisabledAria, navLinkRoutes } from "./nav-link-tag";
+import { navDisabledAria, navLinkRoutes, type NavTag } from "./nav-link-tag";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
 import type { NavColumn, NavItem, NavLink, NavMegaItem } from "./types";
@@ -136,10 +136,10 @@ export interface DropdownItemProps {
 
 /** DropdownItem — one row inside a simple nav dropdown (Figma `Navbar/DropdownItem`). */
 export function DropdownItem({ item, onSelect, linkAs, className }: DropdownItemProps): React.JSX.Element {
-  const Tag: React.ElementType = item.disabled
-    ? "span"
+  const Tag: NavTag = item.disabled
+    ? ("span" as NavTag)
     : navLinkRoutes(item, linkAs)
-      ? linkAs!
+      ? (linkAs as NavTag)
       : "a";
   return (
     <Tag
@@ -185,11 +185,7 @@ function OverviewRow({
   onSelect?: () => void;
   linkAs?: React.ElementType;
 }): React.JSX.Element {
-  const Tag: React.ElementType = overview.disabled
-    ? "span"
-    : navLinkRoutes(overview, linkAs)
-      ? linkAs!
-      : "a";
+  const Tag: NavTag = navLinkRoutes(overview, linkAs) ? (linkAs as NavTag) : "a";
   return (
     <Tag className="ds-hdr-nav__overview" href={overview.href} onClick={onSelect}>
       <span>All of {overview.label}</span>
@@ -242,10 +238,10 @@ export interface MegaMenuItemProps {
 
 /** MegaMenuItem — emblem + abbreviation + full name (Figma `Navbar/MegaMenuItem`). */
 export function MegaMenuItem({ item, onSelect, linkAs, className }: MegaMenuItemProps): React.JSX.Element {
-  const Tag: React.ElementType = item.disabled
-    ? "span"
+  const Tag: NavTag = item.disabled
+    ? ("span" as NavTag)
     : navLinkRoutes(item, linkAs)
-      ? linkAs!
+      ? (linkAs as NavTag)
       : "a";
   return (
     <Tag
@@ -361,10 +357,10 @@ export function NavItemLink({ item, open = false, onOpenChange, linkAs, classNam
      entry has both a menu and a real page, the `onClick` below calls
      `preventDefault()` and `next/link` honours that — it does not navigate on an
      already-defaulted event. */
-  const Tag: React.ElementType = item.disabled
-    ? "span"
+  const Tag: NavTag = item.disabled
+    ? ("span" as NavTag)
     : navLinkRoutes(item, linkAs)
-      ? linkAs!
+      ? (linkAs as NavTag)
       : "a";
   const clear = () => {
     if (timer.current !== undefined) clearTimeout(timer.current);

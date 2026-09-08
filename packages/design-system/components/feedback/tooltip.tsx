@@ -1,11 +1,13 @@
 "use client";
 
 import * as React from "react";
+import { useHydrated } from "../../foundations/use-hydrated";
 import { createPortal } from "react-dom";
 import { cn } from "../../utils/cn";
 import { mergeRefs } from "../../utils/merge-refs";
 import {
   computeAnchorCoords,
+  type AnchorPosition,
   resolveAnchorSide,
   useAnchoredPosition,
   type AnchorCoords,
@@ -46,7 +48,9 @@ export interface TooltipProps {
   children: React.ReactElement;
 }
 
-type Coords = AnchorCoords;
+/* The test helper below computes a POSITION only — it never measures the
+   trigger's width, which is the tooltip's business none of. */
+type Coords = AnchorPosition;
 
 /**
  * Flip to the opposite side when the preferred one would overflow the viewport.
@@ -113,8 +117,7 @@ export function Tooltip({
    * Portals need a DOM node, which does not exist during SSR. Gate the portal
    * on a mounted flag so the server and first client render agree.
    */
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
+  const mounted = useHydrated();
 
   const show = React.useCallback(
     (immediate: boolean) => {

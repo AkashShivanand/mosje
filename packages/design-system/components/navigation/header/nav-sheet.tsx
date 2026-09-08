@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { useHydrated } from "../../../foundations/use-hydrated";
 import { createPortal } from "react-dom";
-import { navDisabledAria, navLinkRoutes } from "./nav-link-tag";
+import { navDisabledAria, navLinkRoutes, type NavTag } from "./nav-link-tag";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
 import { AccessibilityControls } from "../../utilities/accessibility-controls";
@@ -132,8 +133,7 @@ export function NavSheet({
   const query = searchValue ?? ownQuery;
   const setQuery = onSearchValueChange ?? setOwnQuery;
   /* Portals need a DOM, so nothing renders until after hydration. */
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
+  const mounted = useHydrated();
   const ref = React.useRef<HTMLDivElement>(null);
   /** Whatever had focus when the sheet opened — almost always the SheetToggle. */
   const returnTo = React.useRef<HTMLElement | null>(null);
@@ -308,10 +308,10 @@ export function NavSheet({
             const hasSub = !!sub;
             /* A row with a sub-menu is a disclosure BUTTON, so only a leaf row is a
                link and only a leaf row needs the router element. */
-            const ItemTag: React.ElementType = item.disabled
-              ? "span"
+            const ItemTag: NavTag = item.disabled
+              ? ("span" as NavTag)
               : navLinkRoutes(item, linkAs)
-                ? linkAs!
+                ? (linkAs as NavTag)
                 : "a";
             const isOpen = openLabel === item.label;
             const subId = `ds-navsheet-sub-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
@@ -361,10 +361,10 @@ export function NavSheet({
                         ) : (
                           <ul className="ds-navsheet__sub">
                             {col.links?.map((c) => {
-                              const Tag: React.ElementType = c.disabled
-                                ? "span"
+                              const Tag: NavTag = c.disabled
+                                ? ("span" as NavTag)
                                 : navLinkRoutes(c, linkAs)
-                                  ? linkAs!
+                                  ? (linkAs as NavTag)
                                   : "a";
                               return (
                               <li key={c.label}>
@@ -392,10 +392,10 @@ export function NavSheet({
                 {hasSub && isOpen && sub!.children && (
                   <ul id={subId} className="ds-navsheet__sub">
                     {sub!.children.map((c) => {
-                      const Tag: React.ElementType = c.disabled
-                        ? "span"
+                      const Tag: NavTag = c.disabled
+                        ? ("span" as NavTag)
                         : navLinkRoutes(c, linkAs)
-                          ? linkAs!
+                          ? (linkAs as NavTag)
                           : "a";
                       return (
                       <li key={c.label}>
