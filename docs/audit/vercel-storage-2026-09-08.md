@@ -45,7 +45,8 @@ written `.html`, six `.rsc` variants and the segment-cache entries for each.
    deployment (`docs/`, `Assets/`, `tools/`, `.claude/`, markdown — the same set
    `.vercelignore` already refuses to upload). Measured against the last 300
    commits: **11% of builds avoided**, plus the handful of pre-PR branch pushes.
-3. **Made the purge repeatable** — `npm run vercel:prune`.
+3. **Made the purge repeatable** — `npm run vercel:prune`, which builds the
+   keep-list itself rather than trusting `--safe`.
 
 ## What could not be done
 
@@ -56,10 +57,13 @@ an unknown property, and no retention endpoint exists in the public API spec
 Pro this is a per-environment control; here the equivalent is running
 `npm run vercel:prune` on a schedule.
 
-Note also that `--safe` is more conservative than it first appears: of 1,174
-deployments, only ~212 were unaliased on the first pass. Vercel keeps a branch
-alias pointing at each branch's latest preview, and those survive the safe purge
-by design.
+**And `vercel remove --safe` is not the tool it sounds like.** Vercel gives every
+deployment its own `-<hash>-` alias, so `--safe` reads nearly the whole history as
+in use: it removed 213 of 1,174 and then reported nothing left to do, twice, while
+the account was still at 100%. The prune therefore states its keep-list — the live
+production deployment, the four production builds before it, and the newest preview
+for each branch still on origin — and deletes everything else. That took the project
+from 806 retained deployments to 13.
 
 ## What is still open
 
