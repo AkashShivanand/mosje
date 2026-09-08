@@ -57,7 +57,10 @@ export function OrganisationHelplineBadge({
         <Icon name="call" size={20} />
       </span>
       <span className="orgb__text">
-        <span className="orgb__label">Helpline</span>
+        {/* "De-Addiction Helpline", not "Helpline": nothing else in the hero
+            says what the number is for, and the fact strip 200px below only
+            says it once the reader has scrolled past the title. */}
+        <span className="orgb__label">{label.replace(/^National\s+/i, "")}</span>
         <span className="orgb__number">{number}</span>
       </span>
     </a>

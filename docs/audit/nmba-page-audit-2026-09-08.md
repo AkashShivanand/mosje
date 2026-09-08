@@ -858,3 +858,60 @@ scrolls sideways. Register: `campaign-band` now holds three options, with
 them.
 
 Stills: `prod-before-dismiss.png`, `prod-after-dismiss.png`.
+
+---
+
+## 16. The hero badge, sized for where it is — and whether the helpline belongs beside Register
+
+### 16.1 Sized for the hero, not for the band it came from
+
+It arrived as a 107×40 copy of the band's control — the right size on a crowded
+104px row, the wrong one beside a 100px mark under a 40px title, where it read as
+a leftover chip rather than the page's second standing fact. The hero has the
+room: mark, badge and title all sit left of a 340px portrait with ~700px of blue
+between them.
+
+| | Before | After |
+|---|---|---|
+| Size | 107×40 | **198×54** |
+| Icon well | 32px | 40px |
+| Number | `label-1`, 14px | **`headline-5`, 20px** — the same step the band gives its own heading |
+| Label | "Helpline" | **"De-Addiction Helpline"** |
+| Elevation | `card` | `raised` |
+
+The label now says what the number is FOR. Nothing else in the hero does, and the
+fact strip only says it once the reader has scrolled past the title. The full
+departmental title stays as the accessible name, so the visible text is contained
+in it (WCAG 2.2 §2.5.3).
+
+### 16.2 Are the helpline and Register related? No — and the pairing is the problem
+
+They share a rectangle because the source page put them there. They are two
+messages for two people:
+
+| | Register Now | 14446 |
+|---|---|---|
+| Who | someone browsing a campaign, unhurried | someone in trouble, possibly at 4am |
+| What | volunteering — discretionary | a national de-addiction helpline |
+| Medium | a web form | a telephone |
+| Urgency | none | the whole point |
+
+**And the band's own arithmetic makes it worse: it has three controls and two
+destinations.** The QR and Register open the *same URL*. So a reader scanning
+left to right meets scan-to-join, read-the-invitation, press-to-join — one
+sentence — and then a telephone number, which is a different sentence entirely.
+Setting the helpline 12px from Register as a matched pair asserts a parity that
+does not exist.
+
+**The recommendation is to take the helpline out of the band altogether** and let
+the hero badge be the only place it lives. That resolves every part of it:
+
+- the band becomes one message with one offer — scan it or press it, same URL;
+- the number becomes **permanent** rather than conditional, present whether or not
+  anyone has dismissed anything;
+- it sits beside the page's identity, which is where a standing fact belongs;
+- and the dismissal wiring disappears — no store, no `useSyncExternalStore`, no
+  cross-component state, because nothing has to survive anything.
+
+The current build is the second-best answer: the helpline is in the band, paired,
+and survives dismissal by machinery. Recorded here rather than changed unasked.

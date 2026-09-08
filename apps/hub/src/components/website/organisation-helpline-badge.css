@@ -15,18 +15,32 @@
      at full opacity to guard against and no state to hold in React.
      ========================================================================= */
 
+  /*
+   * SIZED FOR THE HERO, NOT FOR THE BAND IT CAME FROM.
+   *
+   * It arrived as a 107×40 copy of the band's control, which is the right size
+   * on a crowded 104px row and the wrong one beside a 100px mark under a 40px
+   * title — there it read as a leftover chip rather than as the page's second
+   * standing fact. The hero has the room: the mark, the badge and the title all
+   * sit left of a 340px portrait with 700px of blue between them.
+   *
+   * 48 tall against the mark's 100, a 40px well, and the number at
+   * `headline-5` — the same step the campaign band gives its own heading. The
+   * label stays small and grey so the five digits carry the weight, which is
+   * what a person under stress is scanning for.
+   */
   .orgb {
     display: inline-flex;
     align-items: center;
-    gap: var(--sa-inline-8);
+    gap: var(--sa-inline-12);
     flex: 0 0 auto;
-    padding: var(--sa-padding-4) var(--sa-padding-16) var(--sa-padding-4) var(--sa-padding-4);
+    padding: var(--sa-padding-4) var(--sa-padding-20) var(--sa-padding-4) var(--sa-padding-4);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-color-successScale-700);
     text-decoration: none;
     white-space: nowrap;
-    box-shadow: var(--sa-elevation-card);
+    box-shadow: var(--sa-elevation-raised);
     opacity: 1;
     transform: translateY(0);
     transition:
@@ -44,7 +58,7 @@
 
   @media (hover: hover) and (pointer: fine) {
     .orgb:hover {
-      box-shadow: var(--sa-elevation-raised);
+      box-shadow: var(--sa-elevation-dropdown);
     }
   }
 
@@ -57,8 +71,8 @@
     display: grid;
     place-items: center;
     flex: 0 0 auto;
-    inline-size: var(--sa-control-height-sm);
-    block-size: var(--sa-control-height-sm);
+    inline-size: var(--sa-control-height-md);
+    block-size: var(--sa-control-height-md);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-color-successScale-50);
     color: var(--sa-color-successScale-600);
@@ -67,18 +81,21 @@
   .orgb__text {
     display: flex;
     flex-direction: column;
-    line-height: var(--sa-type-label-2-lh);
+    gap: var(--sa-stack-2);
   }
 
   .orgb__label {
     font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
     color: var(--sa-text-neutral-subtle);
   }
 
   .orgb__number {
-    font-size: var(--sa-type-label-1-size);
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
     font-weight: var(--sa-font-weight-bold);
     font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
   }
 
   /* The 6px is the only thing to remove; the fade stays, because a fade is not
