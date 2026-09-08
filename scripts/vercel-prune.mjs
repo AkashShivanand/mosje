@@ -29,13 +29,14 @@
  *   node scripts/vercel-prune.mjs --keep-production 20
  */
 import { execFileSync } from "node:child_process";
+import { readFileSync } from "node:fs";
 
 const PROJECTS = ["mosje-samavesh", "sewa-management", "srv-memorial-trust"];
 const DRY_RUN = process.argv.includes("--dry-run");
 const keepFlag = process.argv.indexOf("--keep-production");
 const KEEP_PRODUCTION =
   keepFlag === -1 ? 5 : Number(process.argv[keepFlag + 1]) || 5;
-const BATCH = 20;
+const BATCH = 10;
 
 function api(path) {
   const out = execFileSync("vercel", ["api", path], {
@@ -102,7 +103,17 @@ function prune(projectName, teamId, branches) {
     keep.add(d.uid);
   }
 
-  const doomed = rows.filter((d) => !keep.has(d.uid)).map((d) => d.uid);
+  // A deployment still building cannot be removed, and asking hangs the CLI
+  // rather than erroring — one such id stalled a ten-deployment batch for three
+  // and a half minutes before it was killed. Leave them; the next run takes them.
+  const inFlight = new Set(
+    rows
+      .filter((d) => ["BUILDING", "QUEUED", "INITIALIZING"].includes(d.state))
+      .map((d) => d.uid),
+  );
+  const doomed = rows
+    .filter((d) => !keep.has(d.uid) && !inFlight.has(d.uid))
+    .map((d) => d.uid);
   const priorProduction = Math.max(
     0,
     Math.min(KEEP_PRODUCTION, production.length) - (liveProduction ? 1 : 0),
@@ -114,20 +125,49 @@ function prune(projectName, teamId, branches) {
   );
   if (DRY_RUN || doomed.length === 0) return;
 
+  let removed = 0;
   for (let i = 0; i < doomed.length; i += BATCH) {
     const batch = doomed.slice(i, i + BATCH);
     try {
-      execFileSync("vercel", ["remove", ...batch, "--yes"], { stdio: "ignore" });
+      // Every call is capped: one unremovable id in a batch takes the batch's
+      // whole call down with it, and without a timeout that is a stall, not an
+      // error.
+      execFileSync("vercel", ["remove", ...batch, "--yes"], {
+        stdio: "ignore",
+        timeout: 60_000,
+      });
+      removed += batch.length;
     } catch {
-      console.log(`    a batch failed at ${i}; continuing`);
+      // Retry one at a time so the rest of the batch still goes.
+      for (const id of batch) {
+        try {
+          execFileSync("vercel", ["remove", id, "--yes"], {
+            stdio: "ignore",
+            timeout: 30_000,
+          });
+          removed += 1;
+        } catch {
+          console.log(`    could not remove ${id}`);
+        }
+      }
     }
   }
-  console.log(`    removed ${doomed.length}`);
+  console.log(`    removed ${removed} of ${doomed.length}`);
 }
 
-const teamId = JSON.parse(
-  execFileSync("cat", [".vercel/project.json"], { encoding: "utf8" }),
-).orgId;
+// The projects sit under a team, and `vercel api` does not inherit the CLI's
+// scope, so every call has to name it. `.vercel/project.json` is written by
+// `vercel link` and is gitignored, which is why its absence is explained rather
+// than thrown.
+let teamId;
+try {
+  teamId = JSON.parse(readFileSync(".vercel/project.json", "utf8")).orgId;
+} catch {
+  console.error(
+    "No .vercel/project.json here. Run `vercel link` from the repo root first.",
+  );
+  process.exit(1);
+}
 const branches = liveBranches();
 console.log(
   `${DRY_RUN ? "Dry run — " : ""}pruning ${PROJECTS.length} project(s); ` +
