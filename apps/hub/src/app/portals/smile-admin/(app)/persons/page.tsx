@@ -12,7 +12,7 @@ import { TH, THead, TR, TD, Table } from "@/components/smile-admin/table";
 import { BENEFICIARIES, type Beneficiary } from "@/lib/smile-admin/mock-data";
 import { STATES } from "@/lib/smile-admin/states";
 import { useApp } from "@/store/smile-admin/app-context";
-import { Badge, Button, Icon, Label, buttonClasses } from "@mosje/design-system";
+import { Badge, Button, Icon, Label, Pagination, buttonClasses } from "@mosje/design-system";
 
 const STATUSES = [
   "All statuses",
@@ -450,10 +450,10 @@ export default function PersonsPage() {
             )}
           </tbody>
         </Table>
-        <nav
-          aria-label="Pagination"
-          className="flex items-center justify-between border-t border-stroke-100 bg-neutral-50/40 px-lg py-md text-label-2 text-ink-muted"
-        >
+        {/* A layout row, not a landmark: `Pagination` brings its own named
+            <nav>, and nesting one inside another with the same name is the
+            duplicate-landmark defect for real. */}
+        <div className="flex items-center justify-between border-t border-stroke-100 bg-neutral-50/40 px-lg py-md text-label-2 text-ink-muted">
           <div>
             {filtered.length === 0 ? (
               <span>0 records</span>
@@ -471,38 +471,24 @@ export default function PersonsPage() {
               </>
             )}
           </div>
-          <div className="flex items-center gap-xs">
-            <Button
-              appearance="outlined"
-              size="sm"
-              onClick={() => setPage((p) => Math.max(0, p - 1))}
-              disabled={page === 0}
-              aria-label="Previous page"
-            >
-              Previous
-            </Button>
-            <span aria-live="polite" className="px-sm font-medium text-ink">
-              Page <span className="tabular-nums">{page + 1}</span> /{" "}
-              <span className="tabular-nums">{totalPages}</span>
-            </span>
-            <Button
-              appearance="outlined"
-              size="sm"
-              onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-              disabled={page >= totalPages - 1}
-              aria-label="Next page"
-            >
-              Next
-            </Button>
-          </div>
-        </nav>
+          {/* The component's steps-only form. This pair of Buttons with a
+              hand-rolled position between them is what argued for adding it —
+              including the polite live region, which the component now owns, so
+              the position is no longer announced twice. `page` is 0-based here
+              and `Pagination` is 1-based; the conversion lives at this boundary
+              and nowhere else. */}
+          <Pagination
+            page={page + 1}
+            totalPages={totalPages}
+            onPageChange={(n) => setPage(n - 1)}
+            showNumbers={false}
+            label="Beneficiary pages"
+          />
+        </div>
       </div>
 
       {/* Mobile pagination */}
-      <nav
-        aria-label="Pagination"
-        className="flex items-center justify-between gap-sm rounded-lg border border-stroke-200 bg-white px-md py-sm shadow-xs md:hidden"
-      >
+      <div className="flex items-center justify-between gap-sm rounded-lg border border-stroke-200 bg-white px-md py-sm shadow-xs md:hidden">
         <span className="text-body-3 text-ink-muted">
           {filtered.length === 0 ? (
             "0 records"
@@ -516,27 +502,15 @@ export default function PersonsPage() {
             </>
           )}
         </span>
-        <div className="flex items-center gap-xs">
-          <Button
-            appearance="outlined"
-            size="sm"
-            onClick={() => setPage((p) => Math.max(0, p - 1))}
-            disabled={page === 0}
-            aria-label="Previous page"
-          >
-            Previous
-          </Button>
-          <Button
-            appearance="outlined"
-            size="sm"
-            onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
-            disabled={page >= totalPages - 1}
-            aria-label="Next page"
-          >
-            Next
-          </Button>
-        </div>
-      </nav>
+        <Pagination
+          page={page + 1}
+          totalPages={totalPages}
+          onPageChange={(n) => setPage(n - 1)}
+          showNumbers={false}
+          size="sm"
+          label="Beneficiary pages"
+        />
+      </div>
     </div>
   );
 }
