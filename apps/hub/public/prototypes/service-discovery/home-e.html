@@ -77,7 +77,7 @@ function draw(){
   if (r.k === 'unknown') {
     el('out').innerHTML = `<div class="dead rise"><b>That word is not in the list yet</b>
       <p>This is the honest weakness of searching: it fails quietly for anything the list does not hold, and the person searching cannot tell an absent scheme from an unknown word. The way out has to be a real one.</p>
-      <a class="btn" href="home-b.html">Answer five questions instead →</a></div>`;
+      <a class="btn" href="home-b.html">Answer two questions instead →</a></div>`;
     return;
   }
   if (r.k === 'pwd') {
@@ -88,16 +88,16 @@ function draw(){
     return;
   }
   const g = GROUPS.find(x => x.id === r.group);
-  const hits = SCHEMES.filter(s => s.g.includes(r.group)).slice(0,4);
+  const hits = matchSchemes({ who: r.group }).slice(0,4);
   el('out').innerHTML = `
     <div class="reading rise"><span aria-hidden="true">⌕</span>
       <span>Read as <b>${r.reading}</b>. Matched on the words a citizen actually uses, not on a document tag.</span></div>
     <div class="grp"><h3>Schemes</h3>
-      ${hits.map(s=>`<div class="hit"><div class="grow"><b>${s.t}</b>
-        <small>${s.benefit} · run by ${s.runBy} · ${s.juris}</small></div>
+      ${hits.map(s=>`<div class="hit"><div class="grow"><b>${s.name}</b>
+        <small>${s.provides}</small></div>
         <button class="btn ghost">Open →</button></div>`).join('')}</div>
     <div class="grp"><h3>Where to apply</h3>
-      <div class="hit"><div class="grow"><b>${hits[0] ? hits[0].apply : 'Where to apply near you'}</b>
+      <div class="hit"><div class="grow"><b>${hits[0] ? routeLabel(hits[0].apply[0]) : 'Where to apply near you'}</b>
         <small>Named before you leave this site, with what to have ready</small></div>
         <button class="btn ghost">Open →</button></div></div>
     ${g ? `<p class="note">All schemes listed for ${g.label.toLowerCase()}.</p>` : ''}`;

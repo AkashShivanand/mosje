@@ -7,7 +7,7 @@ import "./service-discovery-options.css";
  * The six service-discovery options, as prototypes the explorations viewer can
  * mount one at a time.
  *
- * Each option is a page that already exists and already runs — five as static
+ * Each option is a page that already exists and already runs — most as static
  * files under /prototypes, the assistant as a route that renders the design
  * system's own Chatbot. This file only frames them, so there is one copy of each
  * prototype rather than a second one written to satisfy the register.
@@ -59,19 +59,19 @@ export const HomePersonas = () => (
   <Stage src={`${P}/home-a.html`} height={740} title="Explore User Personas — the panel already on the home page" />
 );
 export const HomeFiveQuestions = () => (
-  <Stage src={`${P}/home-b.html`} title="Find Schemes for You — the first draft, five questions in a static page" />
+  <Stage src={`${P}/home-b.html`} height={900} title="Find Schemes for You — two questions, the persona and the kind of support" />
 );
 /* The redesign is a real section built from the design system, so it mounts
    directly rather than through a scaled frame — see `finder/SchemeFinder.tsx`. */
 export { SchemeFinder as HomeSchemeFinder } from "./finder/SchemeFinder";
 export const HomeOneTap = () => (
-  <Stage src={`${P}/home-c.html`} title="Find Schemes for You — one tap, no questions" />
+  <Stage src={`${P}/home-c.html`} height={1340} title="Find Schemes for You — one tap, persona first" />
 );
 export const SchemesPictures = () => (
-  <Stage src={`${P}/scheme-a.html`} title="Pictures of the nine groups, with cards" />
+  <Stage src={`${P}/scheme-a.html`} height={1300} title="Pictures of the groups, with cards, filtered on who it is for and what it provides" />
 );
 export const SchemesFilterTable = () => (
-  <Stage src={`${P}/scheme-b.html`} title="Filter panel with a table of schemes" />
+  <Stage src={`${P}/scheme-b.html`} height={1700} title="Filter panel with a table of schemes, on the same two axes" />
 );
 export const HomeTasks = () => (
   <Stage src={`${P}/home-d.html`} title="What You Need to Do — four tasks, in place of the Department's parts" />
@@ -83,5 +83,5 @@ export const HandOffInterstitial = () => (
   <Stage src={`${P}/handoff.html`} title="Before You Leave This Site — the hand-off screen" />
 );
 export const AssistantChat = () => (
-  <Stage src="/prototypes/service-discovery/assistant" title="Samajik Sahayak — the same five questions, in chat" />
+  <Stage src="/prototypes/service-discovery/assistant" title="Samajik Sahayak — the same two questions, in chat" />
 );

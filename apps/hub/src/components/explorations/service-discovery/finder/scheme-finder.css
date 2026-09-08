@@ -309,6 +309,13 @@
     padding-block-start: var(--sa-padding-4);
   }
 
+  /* Where the Department publishes no portal or number, the route is named
+     in words rather than offered as a button that goes nowhere. */
+  .xsf__route {
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
   .xsf__signpost {
     margin-block-start: var(--sa-stack-24);
   }

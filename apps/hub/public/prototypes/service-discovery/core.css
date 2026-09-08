@@ -111,3 +111,10 @@ h1.sec-t{font-size:30px;font-weight:700;color:var(--sa-primary-800);margin:0 0 6
    figure. The label beside it carries the group. */
 .mark-none{display:block;width:100%;height:100%;border-radius:inherit;
   background:var(--sa-primary-50);border:1px dashed var(--sa-primary-200)}
+/* A group drawn as what it is given rather than as a figure: one Material
+   Symbol on the same ground the illustrated marks sit on. */
+.mark-icon{display:grid;place-items:center;width:100%;height:100%;border-radius:inherit;
+  background:var(--sa-primary-50);color:var(--sa-primary-700)}
+.mark-icon .mi{font-size:26px}
+.pshot .mark-icon{background:var(--sa-mark-none-panel-bg);color:var(--sa-white)}
+.pshot .mark-icon .mi{font-size:96px}

@@ -367,7 +367,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
     title: "How a citizen finds a scheme",
     route: "/website",
     summary:
-      "The site publishes 134 schemes and its Target Group filter offers no value for women and girls, transgender persons, persons with disabilities, victims of atrocities or voluntary organisations. Twenty-three schemes carry no group at all. These options address that on the three parts of the site where a citizen looks.",
+      "The site's Target Group filter offers no value for transgender persons, persons affected by substance use, victims of atrocities or voluntary organisations, and its Schemes list counts guideline pages and State schemes as the Department's own. These options read one validated master of the Department's schemes, on two axes — who the scheme is for and what it provides — on the three parts of the site where a citizen looks.",
     modules: [
       {
         id: "home-page",
@@ -391,29 +391,29 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           },
           {
             id: "finder",
-            title: "Schemes for Your Situation",
+            title: "Find Schemes for You — two questions",
             summary:
-              "Four short questions — the group, the stage of life, the kind of help and the State — built as a website section from the design system, over the Department's own scheme pages. Any question may be left unanswered, and leaving one unanswered widens the list.",
+              "Two short questions — who is looking for support, and what kind of support — built as a website section from the design system over the validated scheme master. The second may be left unanswered, which widens the list.",
             status: "proposed",
             live: true,
             lookAt: [
               "It is the estate's own components — SectionTitle, Stepper, card radios, chips, cards — so what is reviewed is what the website would ship",
-              "The progress row is also the record of answers, and a finished stage can be reopened from it",
+              "Stage of life, State and gender are not asked: none of the Department's schemes divides on them, and the 8 September 2026 review cut them",
               "On the answer screen each answer is a chip; removing one widens the list in place rather than starting over",
-              "Every scheme is a real page on dosje.gov.in, with who it lists and what it provides taken from that page; a State scheme appears only for its own State",
+              "Every scheme is a record in the Department's Annual Report 2025-26 or its Demand for Grants, with whom it names and what it provides taken from there; no count is printed anywhere",
               "Choosing “Persons with Disabilities” goes straight to a signpost for DEPwD rather than through three questions that cannot change the answer",
               "The copy is in the Department's register: no “we”, no “you told us”, and nothing on screen states that anyone is eligible",
             ],
           },
           {
             id: "five-questions",
-            title: "Find Schemes for You — five questions",
+            title: "Find Schemes for You — the drawn draft",
             summary:
-              "The first draft: five short questions in a static page, any of which may be skipped.",
+              "The static draft of the same two questions, drawn for the recordings and the deck.",
             status: "superseded",
             live: true,
             supersededBy:
-              "Redrawn as “Schemes for Your Situation”. It was a static page in an iframe with its own stylesheet and its own buttons, and it spoke in a product's voice — “You told us”, “Show what I can apply for”, “we ask so we can show”. Its first question (myself / my family / an organisation) filtered nothing. The idea — short questions, skipping widens — survives in the redesign; the surface did not.",
+              "Built as a website section from the design system. The static page keeps the same two questions over the same master and is what the deck records; the section is what the website would ship.",
             lookAt: [
               "Choosing “person with disability” routes to DEPwD rather than returning nothing — kept in the redesign",
               "It ends at a place to apply, not at a page of text — kept in the redesign",
@@ -423,13 +423,13 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             id: "one-tap",
             title: "Find Schemes for You",
             summary:
-              "A row of the nine groups. Tapping one shows the portal, the scheme and the complaint route for that group, on the home page itself.",
+              "A row of the personas. Tapping one lists the schemes that name that group, grouped by what they provide, with the place to apply, on the home page itself.",
             status: "proposed",
             live: true,
             lookAt: [
               "One tap, with nothing to answer",
               "It shows portals, schemes and complaint routes together, which no other option does",
-              "It reads group alone, so it is less exact than the five questions",
+              "It reads the persona alone; the kind of support is shown as headings rather than asked",
             ],
           },
           {
@@ -470,13 +470,13 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
         options: [
           {
             id: "pictures",
-            title: "Pictures of the nine groups, with cards",
+            title: "Pictures of the groups, with cards",
             summary:
-              "All nine groups visible at once as illustrations, above a card for each scheme.",
+              "Every persona visible at once, then what it provides as a row of chips, above a card for each scheme.",
             status: "proposed",
             live: true,
             lookAt: [
-              "No arrows and no scrolling to find yourself — all nine are on screen",
+              "No arrows and no scrolling to find yourself — every persona is on screen",
               "A card has no room for who runs the scheme, or whether it is Central or State",
               "Two schemes cannot be compared side by side",
             ],
@@ -485,12 +485,12 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             id: "filter-table",
             title: "Filter panel with a table of schemes",
             summary:
-              "Filters down the left, a table on the right showing what a person gets, who runs it, and whether it is Central or State.",
+              "Filters down the left on the same two axes, a table on the right showing what each scheme provides, whom it names, and its type.",
             status: "proposed",
             live: true,
             lookAt: [
-              "Filters combine — group and stage of life and kind of help together",
-              "The count beside each filter warns before an empty result rather than after it",
+              "Filters combine — who it is for and what it provides, together",
+              "A filter that would leave nothing is greyed rather than numbered, so it warns without printing a count",
               "A table reads as a record rather than an invitation",
             ],
           },
@@ -540,9 +540,9 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
         options: [
           {
             id: "samajik-sahayak",
-            title: "Samajik Sahayak — the same five questions, in chat",
+            title: "Samajik Sahayak — the same two questions, in chat",
             summary:
-              "The same five questions, asked one at a time in the assistant that is already built and reachable from every page.",
+              "The same two questions, asked one at a time in the assistant that is already built and reachable from every page.",
             status: "proposed",
             live: true,
             lookAt: [

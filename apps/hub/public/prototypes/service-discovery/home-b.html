@@ -1,137 +1,139 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Find Schemes for You — Home page, Option B</title>
+<title>Find Schemes for You — Home Page, Option B</title>
 <link rel="stylesheet" href="core.css">
 <style>
-.finder{background:var(--sa-surface);border-radius:var(--sa-radius-lg);padding:30px 34px 34px}
-.qcard{background:var(--sa-white);border-radius:var(--sa-radius-lg);border:1px solid var(--sa-hair);padding:26px 28px;margin-top:20px;box-shadow:var(--sa-shadow)}
+.finder{background:var(--sa-surface);border-radius:var(--sa-radius-lg);padding:26px 30px 30px}
+.qcard{background:var(--sa-white);border-radius:var(--sa-radius-lg);border:1px solid var(--sa-hair);padding:24px 26px;box-shadow:var(--sa-shadow)}
 .qnum{font-size:11px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:var(--sa-muted)}
-.qtitle{font-size:23px;font-weight:700;color:var(--sa-ink);margin:6px 0 4px;letter-spacing:-.01em}
-.qhelp{font-size:13.5px;color:var(--sa-muted);margin:0 0 20px}
-.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.qtitle{font-size:22px;font-weight:700;color:var(--sa-ink);margin:6px 0 4px;letter-spacing:-.01em}
+.qhelp{font-size:13.5px;color:var(--sa-muted);margin:0 0 18px;max-width:70ch}
+.opts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .opt-card{
-  text-align:left;font:inherit;background:var(--sa-white);border:1.5px solid var(--sa-hair);border-radius:var(--sa-radius);
-  padding:13px 15px;cursor:pointer;transition:transform .1s ease-out,border-color .15s,background .15s;
+  display:flex;align-items:center;gap:12px;text-align:left;font:inherit;background:var(--sa-white);
+  border:1.5px solid var(--sa-hair);border-radius:var(--sa-radius);padding:10px 12px;cursor:pointer;
+  transition:transform .1s ease-out,border-color .15s,background .15s;
 }
 .opt-card:hover{border-color:var(--sa-primary-200)}
 .opt-card[aria-pressed="true"]{border-color:var(--sa-primary-500);background:var(--sa-primary-50)}
 .opt-card:focus-visible{outline:3px solid var(--sa-primary-200);outline-offset:2px}
-.opt-card b{display:block;font-size:14px;font-weight:600}
-.opt-card span{font-size:11.5px;color:var(--sa-muted)}
-.qfoot{display:flex;align-items:center;gap:14px;margin-top:22px;padding-top:18px;border-top:1px solid var(--sa-hair)}
+.opt-card .m{width:44px;height:44px;border-radius:50%;background:var(--sa-primary-50);flex:none;overflow:hidden;display:grid;place-items:center}
+.opt-card .m img{width:100%;height:100%;object-fit:contain}
+.opt-card .m .mark-none{width:100%;height:100%;border-radius:50%}
+.opt-card b{display:block;font-size:13.5px;font-weight:600;line-height:1.25}
+.opt-card span{display:block;font-size:11.5px;color:var(--sa-muted);margin-top:2px;line-height:1.3}
+.opt-card.wide{grid-column:span 2}
+.qfoot{display:flex;align-items:center;gap:14px;margin-top:20px;padding-top:16px;border-top:1px solid var(--sa-hair)}
 .qfoot .grow{flex:1}
 .pills{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .pill{background:var(--sa-white);border:1px solid var(--sa-primary-200);color:var(--sa-primary-700);border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:600}
-.res{background:var(--sa-white);border:1px solid var(--sa-hair);border-radius:var(--sa-radius);padding:16px 18px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start}
-.res .grow{flex:1}
-.res h3{margin:0 0 6px;font-size:15.5px;color:var(--sa-primary-700);font-weight:700}
-.res p{margin:6px 0 0;font-size:13px;color:var(--sa-ink-muted)}
-.depwd{background:var(--sa-saffron-light);border:1px solid var(--sa-saffron-hair);border-radius:var(--sa-radius);padding:18px 20px}
-.depwd b{color:var(--sa-saffron-dark)}
+.res{background:var(--sa-white);border:1px solid var(--sa-hair);border-radius:var(--sa-radius);padding:14px 18px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start}
+.res .grow{flex:1;min-width:0}
+.res h3{margin:0 0 5px;font-size:15px;color:var(--sa-primary-700);font-weight:700;line-height:1.3}
+.res p{margin:5px 0 0;font-size:13px;color:var(--sa-ink-muted);line-height:1.45}
+.res .btn{flex:none;white-space:nowrap}
+.signpost{background:var(--sa-saffron-light);border:1px solid var(--sa-saffron-hair);border-radius:var(--sa-radius);padding:18px 20px}
+.signpost b{color:var(--sa-saffron-dark)}
+.empty{background:var(--sa-white);border:1px solid var(--sa-hair);border-radius:var(--sa-radius);padding:18px 20px}
 </style></head>
 <body>
 <script src="data.js"></script><script src="shell.js"></script>
 <main class="wrap sec">
   <div>
     <h1 class="sec-t" id="head">Find Schemes for You</h1>
-    <p class="sec-lede" id="lede">Five short questions. Skip any of them — skipping widens the answer instead of stopping it.</p>
+    <p class="sec-lede" id="lede">Two short questions. Nothing you answer is stored.</p>
   </div>
   <div class="progress" id="prog"></div>
-  <div class="finder" id="finder"></div>
-  <p class="note">No sign-in. No Aadhaar. Nothing you answer is stored. A scheme listing you as its target group is not a decision on your application — the sanctioning authority decides that.</p>
+  <div class="finder" id="finder" style="margin-top:14px"></div>
+  <p class="note">A scheme naming you as its target group is not a decision on your application — the sanctioning authority decides that.</p>
 </main>
 
 <script>
-/* No masthead: this option is reviewed as the section alone. */
-const Q = [
-  { k:'who',   t:'Who is this for?', h:'You can answer for yourself or for someone in your family.',
-    o:[{id:'self',l:'Myself'},{id:'family',l:'Someone in my family'},{id:'org',l:'An organisation I run'}] },
-  { k:'group', t:'Which of these describes you?', h:'We ask so we can show only what you may apply for. You can skip this.',
-    o:GROUPS.map(g=>({id:g.id,l:g.label,s:g.sub})) },
-  { k:'stage', t:'What stage of life?', h:'This separates school schemes from college, work and old-age support.',
-    o:STAGES.map(s=>({id:s.id,l:s.label})) },
-  { k:'need',  t:'What kind of help do you need?', h:'Choose the closest one. You can change it afterwards.',
-    o:NEEDS.map(n=>({id:n.id,l:n.label})) },
-  { k:'state', t:'Which State do you live in?', h:'This separates central schemes from State ones, and finds your channelising agency.',
-    o:STATES.map(s=>({id:s,l:s})) },
-];
-let step = 0;
-const ans = {};
+/* No masthead: this option is reviewed as the section alone.
+   Two questions — the persona and the kind of support — and nothing else. The
+   8 September 2026 review dropped "who is this for", stage of life and State:
+   none of the Department's schemes divides on them. */
+const LEDE = 'Two short questions. Nothing you answer is stored.';
 const el = id => document.getElementById(id);
+const ans = {};
+let step = 0;
+
+const Q = [
+  { k:'who',   t:'Who Is Looking for Support?',
+    h:'Choose the one that describes you. Persons with disabilities are directed to the department that serves them.',
+    o:() => PERSONAS.map(g=>({id:g.id,l:g.label,s:g.sub,mark:true}))
+              .concat([{id:SIGNPOST.id,l:SIGNPOST.label,s:SIGNPOST.sub,mark:true}]) },
+  { k:'offer', t:'What Kind of Support?',
+    h:'Only what the Department provides for that group is listed. Skip this to see all of it.',
+    o:() => offersFor(ans.who).map(o=>({id:o.id,l:o.label,s:o.sub,mark:false})) },
+];
 
 function drawProgress(){
   el('prog').innerHTML = Q.map((_,i)=>`<i class="${i<=step?'on':''}"></i>`).join('');
 }
 function render(){
   drawProgress();
-  if (step < Q.length) {
-    const q = Q[step];
-    el('finder').innerHTML = `
-      <div class="qcard rise">
-        <div class="qnum">Question ${step+1} of ${Q.length}</div>
-        <h2 class="qtitle">${q.t}</h2>
-        <p class="qhelp">${q.h}</p>
-        <div class="opts" id="opts">
-          ${q.o.map(o=>`<button class="opt-card" data-id="${o.id}" aria-pressed="${ans[q.k]===o.id}">
-             <b>${o.l}</b>${o.s?`<span>${o.s}</span>`:''}</button>`).join('')}
-        </div>
-        <div class="qfoot">
-          ${step>0?'<button class="btn ghost" id="back">Back</button>':''}
-          <button class="btn link" id="skip">Skip this question</button>
-          <span class="grow"></span>
-          <button class="btn" id="next">${step===Q.length-1?'Show what I can apply for':'Next question →'}</button>
-        </div>
-      </div>`;
-    el('opts').addEventListener('click', e => {
-      const b = e.target.closest('.opt-card'); if(!b) return;
-      ans[q.k] = (ans[q.k]===b.dataset.id) ? undefined : b.dataset.id;
-      [...el('opts').children].forEach(c=>c.setAttribute('aria-pressed', String(ans[q.k]===c.dataset.id)));
-    });
-    el('next').onclick = () => { step++; render(); };
-    el('skip').onclick = () => { ans[Q[step].k]=undefined; step++; render(); };
-    if (el('back')) el('back').onclick = () => { step--; render(); };
-  } else {
-    results();
-  }
+  if (step >= Q.length) return results();
+  const q = Q[step], opts = q.o();
+  el('finder').innerHTML = `
+    <div class="qcard rise">
+      <div class="qnum">Question ${step+1} of ${Q.length}</div>
+      <h2 class="qtitle">${q.t}</h2>
+      <p class="qhelp">${q.h}</p>
+      <div class="opts" id="opts">
+        ${opts.map(o=>`<button class="opt-card ${o.mark?'':'wide'}" data-id="${o.id}" aria-pressed="${ans[q.k]===o.id}">
+           ${o.mark?`<span class="m">${markHTML(o.id)}</span>`:''}
+           <span><b>${o.l}</b>${o.s?`<span>${o.s}</span>`:''}</span></button>`).join('')}
+      </div>
+      <div class="qfoot">
+        ${step>0?'<button class="btn ghost" id="back">Back</button>':''}
+        ${step>0?'<button class="btn link" id="skip">Skip this question</button>':''}
+        <span class="grow"></span>
+        <button class="btn" id="next" ${ans[q.k]||step>0?'':'disabled'}>${step===Q.length-1?'Show the schemes':'Next question →'}</button>
+      </div>
+    </div>`;
+  el('opts').addEventListener('click', e => {
+    const b = e.target.closest('.opt-card'); if(!b) return;
+    ans[q.k] = (ans[q.k]===b.dataset.id) ? undefined : b.dataset.id;
+    [...el('opts').children].forEach(c=>c.setAttribute('aria-pressed', String(ans[q.k]===c.dataset.id)));
+    el('next').disabled = step===0 && !ans.who;
+    if (q.k==='who' && ans.who===SIGNPOST.id) { step = Q.length; render(); }
+  });
+  el('next').onclick = () => { step++; render(); };
+  if (el('skip')) el('skip').onclick = () => { ans[q.k]=undefined; step++; render(); };
+  if (el('back')) el('back').onclick = () => { step--; render(); };
 }
 function results(){
-  el('head').textContent = 'What You Can Apply For';
-  el('lede').textContent = 'Ordered by how closely each one fits what you told us. Every card ends in a real place to apply.';
-  const list = matchSchemes({ group:ans.group, stage:ans.stage, need:ans.need });
-  const chips = Object.entries(ans).filter(([,v])=>v).map(([k,v]) => {
-    const q = Q.find(x=>x.k===k); const o = q.o.find(x=>x.id===v);
-    return `<span class="pill">${o?o.l:v}</span>`;
-  }).join('');
-  // The Department's boundary is named, not hidden.
-  const isPwd = ans.group === 'pwd';
+  const who = PERSONAS.find(g=>g.id===ans.who);
+  const offer = OFFERINGS.find(o=>o.id===ans.offer);
+  const isPwd = ans.who === SIGNPOST.id;
+  el('head').textContent = 'Schemes That Name You';
+  el('lede').textContent = isPwd ? 'The Department of Empowerment of Persons with Disabilities serves this group.'
+    : 'Each scheme below names the group you chose. The application is made where the button says.';
+  const list = isPwd ? [] : matchSchemes({ who:ans.who, offer:ans.offer });
+  const chips = [who && `<span class="pill">${who.label}</span>`, offer && `<span class="pill">${offer.label}</span>`,
+                 isPwd && `<span class="pill">${SIGNPOST.label}</span>`].filter(Boolean).join('');
   el('finder').innerHTML = `
     <div class="rise">
-      <div class="row" style="margin-bottom:16px"><span style="font-size:12.5px;color:var(--sa-muted)">You told us</span>
-        <span class="pills">${chips}</span>
-        <span class="grow" style="flex:1"></span>
+      <div class="row" style="margin-bottom:14px"><span style="font-size:12.5px;color:var(--sa-muted)">Chosen</span>
+        <span class="pills">${chips}</span><span class="grow" style="flex:1"></span>
         <button class="btn link" id="again">Start again</button></div>
-      ${isPwd ? `<div class="depwd rise"><b>Support for persons with disabilities is handled by a different department.</b>
-        <p style="margin:8px 0 0;font-size:13.5px">The Department of Empowerment of Persons with Disabilities, in this same Ministry, runs those schemes — including the UDID card.
-        You can reach it at <b>depwd.gov.in</b>. Nothing below is from that department.</p></div>`
-      : `<div style="font-size:11.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--sa-muted);margin-bottom:10px">${list.length} ${list.length===1?'match':'matches'}</div>
-         ${list.length ? list.map(s=>`
-           <div class="res rise">
-             <div class="grow">
-               <h3>${s.t}</h3>
-               <span class="tag blue">${s.benefit}</span>
-               <span class="tag ${s.juris==='Central'?'saff':'grey'}">${s.juris}</span>
-               <span class="tag grey">Run by ${s.runBy}</span>
-               <p><b>What you will need.</b> ${s.need}</p>
-             </div>
-             <button class="btn">Apply on ${s.apply} →</button>
-           </div>`).join('')
-         : `<div class="depwd"><b>Nothing in the register matches all of those answers.</b>
-              <p style="margin:8px 0 0;font-size:13.5px">Removing the last answer usually helps — skipping a question widens the answer rather than ending it.
-              You can also call the Department on 1800-11-0031.</p></div>`}`}
+      ${isPwd ? `<div class="signpost"><b>Support for persons with disabilities is provided by a different department.</b>
+          <p style="margin:8px 0 0;font-size:13.5px">The Department of Empowerment of Persons with Disabilities, in this same Ministry, runs those schemes, including the UDID card. It can be reached at <b>${SIGNPOST.to}</b>.</p></div>`
+      : list.length ? list.map(s=>`
+          <div class="res">
+            <div class="grow">
+              <h3>${s.name}</h3>
+              ${s.umbrella?`<span class="tag blue">${s.umbrella}</span> `:''}<span class="tag grey">${s.type}</span>
+              <p>${s.provides}</p>
+              <p><b>Whom it names.</b> ${s.named}</p>
+            </div>
+            <button class="btn">${applyLabel(s.apply[0])} →</button>
+          </div>`).join('')
+      : `<div class="empty"><b>The Department's record has no scheme for that group and that kind of support together.</b>
+          <p style="margin:8px 0 0;font-size:13.5px;color:var(--sa-ink-muted)">Remove the second answer to see everything the Department provides for the group.</p></div>`}
     </div>`;
   el('again').onclick = () => { step=0; for(const k in ans) delete ans[k];
-    el('head').textContent='Find Schemes for You';
-    el('lede').textContent='Five short questions. Skip any of them — skipping widens the answer instead of stopping it.';
-    render(); };
+    el('head').textContent='Find Schemes for You'; el('lede').textContent=LEDE; render(); };
 }
 render();
 </script>

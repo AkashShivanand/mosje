@@ -1,54 +1,78 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Schemes &amp; Services — Option A, pictures and cards</title>
+<title>Schemes &amp; Services — Option A, Pictures and Cards</title>
 <link rel="stylesheet" href="core.css">
 <style>
-.faces{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 26px}
-.face-btn{background:none;border:none;cursor:pointer;text-align:center;width:96px;padding:6px 2px;border-radius:var(--sa-radius);transition:transform .1s ease-out,background .15s}
+.faces{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 14px}
+.face-btn{background:none;border:none;cursor:pointer;text-align:center;width:92px;padding:6px 2px;border-radius:var(--sa-radius);transition:transform .1s ease-out,background .15s;font:inherit}
 .face-btn:hover{background:var(--sa-surface)}
-.face-btn:active{transform:scale(.96)}
-.face-btn .circ{width:66px;height:66px;border-radius:50%;background:var(--sa-primary-50);border:2px solid transparent;
-  display:flex;align-items:center;justify-content:center;overflow:hidden;margin:0 auto 7px;transition:border-color .15s,background .15s}
+.face-btn .circ{width:60px;height:60px;border-radius:50%;background:var(--sa-primary-50);border:2px solid transparent;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;margin:0 auto 6px;transition:border-color .15s,background .15s}
 .face-btn .circ img{width:100%;height:100%;object-fit:contain}
+.face-btn .circ .mark-none{width:100%;height:100%;border-radius:50%}
 .face-btn[aria-pressed="true"] .circ{border-color:var(--sa-primary-500);background:var(--sa-primary-100)}
-.face-btn .lbl{font-size:11.5px;line-height:1.25;color:var(--sa-ink-muted)}
+.face-btn .lbl{font-size:11px;line-height:1.25;color:var(--sa-ink-muted)}
 .face-btn[aria-pressed="true"] .lbl{color:var(--sa-primary-700);font-weight:700}
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.axis{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--sa-muted);margin:0 0 8px}
+.kinds{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .scard{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);overflow:hidden;background:var(--sa-white);display:flex;flex-direction:column}
-.scard .top{background:var(--sa-primary-50);padding:10px 16px;border-bottom:1px solid var(--sa-hair)}
-.scard .bd{padding:14px 16px;flex:1;display:flex;flex-direction:column}
-.scard h3{margin:0 0 7px;font-size:14.5px;font-weight:700;color:var(--sa-ink);line-height:1.3}
-.scard p{margin:0 0 12px;font-size:12.5px;color:var(--sa-ink-muted);flex:1}
+.scard .top{background:var(--sa-primary-50);padding:9px 16px;border-bottom:1px solid var(--sa-hair)}
+.scard .bd{padding:13px 16px;flex:1;display:flex;flex-direction:column}
+.scard h3{margin:0 0 6px;font-size:14px;font-weight:700;color:var(--sa-ink);line-height:1.3}
+.scard p{margin:0 0 10px;font-size:12.5px;color:var(--sa-ink-muted);flex:1;line-height:1.45}
 .scard .more{color:var(--sa-primary-600);font-weight:600;font-size:13px;text-decoration:none}
+.pager{display:flex;justify-content:center;gap:6px;margin-top:18px}
+.pager button{font:inherit;font-size:13px;min-width:34px;height:34px;border-radius:var(--sa-radius);border:1px solid var(--sa-hair);background:var(--sa-white);cursor:pointer}
+.pager button[aria-current="page"]{background:var(--sa-primary-500);border-color:var(--sa-primary-500);color:var(--sa-white);font-weight:600}
+.empty{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);padding:26px;text-align:center;background:var(--sa-white)}
 </style></head><body>
 <script src="data.js"></script><script src="shell.js"></script>
 <main class="wrap sec">
   <div>
     <h1 class="sec-t">Schemes &amp; Services</h1>
-    <p class="sec-lede">All nine groups are visible at once. Choose the one that describes you.</p>
+    <p class="sec-lede">Choose who the scheme is for, then what it provides. Every group is visible at once.</p>
   </div>
+  <p class="axis">Who It Is For</p>
   <div class="faces" id="faces"></div>
+  <p class="axis">What It Provides</p>
+  <div class="kinds" id="kinds"></div>
   <div class="cards" id="cards"></div>
-  <p class="note">Nine illustrations to commission and to keep up to date. Scheme cards would carry the Department's own creatives, which are not yet supplied. A card has little room for who runs a scheme, or whether it is Central or State — for that, see Option B.</p>
+  <div class="pager" id="pager"></div>
+  <p class="note">Listing is not a decision on any application — the sanctioning authority decides that.</p>
 </main>
 <script>
-/* No masthead: this option is reviewed as the section alone. */
+/* No masthead: this option is reviewed as the section alone.
+   Two filters and no third — the persona and the offering, the same axes as the
+   home page. Cards are paged at nine so the page keeps its height. No count
+   is printed; the pager shows where the reader is. */
 const el = id => document.getElementById(id);
-let sel = 'all';
-const ALL = [{id:'all',label:'All'}].concat(GROUPS);
+const PAGE = 9;
+let who = 'all', offer = 'all', page = 1;
+const FACES = [{id:'all',label:'All', short:'All'}].concat(PERSONAS);
 function draw(){
-  el('faces').innerHTML = ALL.map(g=>`
-    <button class="face-btn" data-g="${g.id}" aria-pressed="${g.id===sel}">
-      <span class="circ">${markHTML(g.id)}</span><span class="lbl">${g.label}</span></button>`).join('');
-  const list = sel==='all' ? SCHEMES : SCHEMES.filter(s=>s.g.includes(sel));
-  el('cards').innerHTML = list.slice(0,9).map(s=>`
+  el('faces').innerHTML = FACES.map(g=>`
+    <button class="face-btn" data-g="${g.id}" aria-pressed="${g.id===who}">
+      <span class="circ">${g.id==='all'?'<img src="personas/all.png" alt="">':markHTML(g.id)}</span><span class="lbl">${g.short||g.label}</span></button>`).join('');
+  const kinds = who==='all' ? OFFERINGS : offersFor(who);
+  if (offer!=='all' && !kinds.some(o=>o.id===offer)) offer = 'all';
+  el('kinds').innerHTML = [`<button class="chip" data-o="all" aria-pressed="${offer==='all'}">All</button>`]
+    .concat(kinds.map(o=>`<button class="chip" data-o="${o.id}" aria-pressed="${o.id===offer}">${o.short}</button>`)).join('');
+  const list = matchSchemes({ who: who==='all'?undefined:who, offer: offer==='all'?undefined:offer });
+  const pages = Math.max(1, Math.ceil(list.length/PAGE));
+  if (page>pages) page = pages;
+  const slice = list.slice((page-1)*PAGE, page*PAGE);
+  el('cards').innerHTML = slice.length ? slice.map(s=>`
     <article class="scard rise">
-      <div class="top"><span class="tag blue">${s.benefit}</span> <span class="tag grey">${s.juris}</span></div>
-      <div class="bd"><h3>${s.t}</h3><p>${s.benefit} · run by ${s.runBy}</p>
-        <a class="more" href="#">Know more →</a></div>
-    </article>`).join('');
+      <div class="top">${s.umbrella?`<span class="tag blue">${s.umbrella}</span> `:''}<span class="tag grey">${s.type}</span></div>
+      <div class="bd"><h3>${s.name}</h3><p>${s.provides}</p>
+        <a class="more" href="#">Know More →</a></div>
+    </article>`).join('')
+    : `<div class="empty" style="grid-column:1/-1"><b>No scheme in the Department's record provides that for this group.</b>
+       <p style="font-size:13.5px;color:var(--sa-ink-muted);margin:8px 0 0">Choose "All" under What It Provides to see everything for the group.</p></div>`;
+  el('pager').innerHTML = pages>1 ? Array.from({length:pages},(_,i)=>`<button data-p="${i+1}" ${i+1===page?'aria-current="page"':''}>${i+1}</button>`).join('') : '';
 }
-el('faces').addEventListener('click', e => {
-  const b = e.target.closest('.face-btn'); if(!b) return; sel = b.dataset.g; draw();
-});
+el('faces').addEventListener('click', e => { const b=e.target.closest('.face-btn'); if(!b) return; who=b.dataset.g; page=1; draw(); });
+el('kinds').addEventListener('click', e => { const b=e.target.closest('.chip'); if(!b) return; offer=b.dataset.o; page=1; draw(); });
+el('pager').addEventListener('click', e => { const b=e.target.closest('button[data-p]'); if(!b) return; page=+b.dataset.p; draw(); });
 draw();
 </script></body></html>
