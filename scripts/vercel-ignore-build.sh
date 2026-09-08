@@ -12,16 +12,23 @@
 #
 # Two rules, both about deployments that could never have been looked at:
 #
-#   1. A preview with no open pull request. 54 of the last 56 previews carried a
-#      PR; the two that did not were pushes to a branch before its PR existed.
-#      Those previews are built, stored for 30 days, and read by nobody.
+#   1. A preview nobody asked for. Branch previews are OFF by default — say so
+#      per push by putting [preview] in the commit message. 798 of the 1,174
+#      deployments were previews, and the ones that were opened were opened
+#      rarely; storing every one of them for 30 days is what filled the account.
+#      Turning them off leaves ~376 deployments in a 30-day window, about a third
+#      of the cap, and it costs nothing that matters: review and CI live on the
+#      pull request in GitHub Actions, which has never had anything to do with
+#      whether Vercel built a preview.
 #   2. A commit that changes only files the deployment cannot see. .vercelignore
 #      already keeps docs/, Assets/, tools/, specs/ and e2e/ out of the upload,
 #      so a commit touching only those produces a byte-identical build. 340 of
 #      920 commits in the fortnight to 2026-09-08 were exactly that.
 #
-# Production (main) is never skipped for rule 1 — only for rule 2, and only when
-# nothing that reaches the build has changed.
+# Production (main) is never subject to rule 1 — only to rule 2, and only when
+# nothing that reaches the build has changed. An explicit [preview] beats rule 2
+# as well: asking for a preview of a docs-only commit is odd, but it is a person
+# saying what they want, and a heuristic should not argue with that.
 set -uo pipefail
 
 # Vercel runs this from the project's Root Directory (apps/hub). Move to the
@@ -36,12 +43,25 @@ SKIP=0
 
 REF="${VERCEL_GIT_COMMIT_REF:-unknown}"
 ENVIRONMENT="${VERCEL_ENV:-preview}"
-PR="${VERCEL_GIT_PULL_REQUEST_ID:-}"
 
-# Rule 1 — a preview branch with no pull request open against it.
-if [ "$ENVIRONMENT" != "production" ] && [ -z "$PR" ]; then
-  say "SKIP: '$REF' has no open pull request. Open one and the next push deploys."
+# The opt-in. Vercel passes the commit message in; reading it from git is the
+# fallback for a local run or a shallow clone that arrived without it.
+MESSAGE="${VERCEL_GIT_COMMIT_MESSAGE:-$(git log -1 --format=%B 2>/dev/null)}"
+case "$MESSAGE" in
+  *"[preview]"*) WANTS_PREVIEW=1 ;;
+  *)             WANTS_PREVIEW=0 ;;
+esac
+
+# Rule 1 — branch previews are off unless this push asked for one.
+if [ "$ENVIRONMENT" != "production" ] && [ "$WANTS_PREVIEW" -eq 0 ]; then
+  say "SKIP: previews are off by default. Put [preview] in the commit message to get one for '$REF'."
   exit $SKIP
+fi
+
+# An explicit request wins outright, including over rule 2 below.
+if [ "$ENVIRONMENT" != "production" ] && [ "$WANTS_PREVIEW" -eq 1 ]; then
+  say "BUILD: '$REF' asked for a preview."
+  exit $BUILD
 fi
 
 # Rule 2 — did this push touch anything the deployment can actually see?

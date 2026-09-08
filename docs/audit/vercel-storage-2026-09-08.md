@@ -73,6 +73,35 @@ a deployment still **building** cannot be removed and the CLI *hangs* rather tha
 erroring — one such id stalled a batch of ten for three and a half minutes — and a
 batch call fails whole, so a failed batch is retried one id at a time.
 
+## Update, same day — branch previews are off by default
+
+The measurement that settles it: **1,174 retained deployments filled exactly
+10 GB, so the average retained deployment costs about 8.7 MB.** Deduplication is
+doing the heavy lifting — the 140 MB of static assets is stored once, and a
+deployment's marginal cost is only what changed. That inverts the conclusion
+above: **the count is the problem, not the size of a build.**
+
+798 of the 1,174 were branch previews, and they were rarely opened. So previews
+are now off unless a push asks for one — `[preview]` in the commit message — which
+leaves roughly 376 deployments in a 30-day window, about a third of the cap, and
+holds there because the window keeps rolling.
+
+| 30-day window | Retained | Storage |
+|---|---|---|
+| What happened | 1,174 | 100% of both caps |
+| Previews off | ~376 | ~33% |
+| Previews off, plus the docs-only rule | ~335 | ~29% |
+
+**Nothing is lost by this.** Review and CI live on the pull request in GitHub
+Actions and have never depended on Vercel building a preview. `main` has no branch
+protection and no rulesets, so a preview check that does not report cannot block a
+merge — checked, not assumed.
+
+**Merging to `main` locally and pushing was considered and rejected.** It would cut
+the same 798 deployments, but `.husky/pre-commit` refuses commits on `main` for a
+reason: CI then reports after the deploy has already raced it. Turning previews off
+achieves the storage saving without touching the branch discipline.
+
 ## What is still open
 
 **The build output is the real ceiling, and it has not been addressed.** Purging
