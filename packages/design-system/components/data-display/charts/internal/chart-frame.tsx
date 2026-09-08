@@ -273,6 +273,14 @@ export function ChartFrame({
    * it rendered has not changed, so the roving state survives re-renders.
    */
   const ownSvgRef = React.useRef<SVGSVGElement | null>(null);
+  /* eslint-disable react-hooks/immutability -- MERGING A FORWARDED REF, which is
+     the one thing that cannot be done without writing to a prop. The frame needs
+     its own handle on the <svg> for the roving-tabindex effect below, and the
+     caller may also have passed one; a callback ref that populates both is the
+     documented React pattern for that, and React itself writes to `ref.current`
+     the same way. The rule's objection — "modifying component props" — is right
+     in general and has no alternative here: there is no pure way to hand a node
+     back to a ref its owner gave us. Scoped to this callback only. */
   const setSvgRef = React.useCallback(
     (el: SVGSVGElement | null) => {
       ownSvgRef.current = el;
@@ -281,6 +289,7 @@ export function ChartFrame({
     },
     [svgRef],
   );
+  /* eslint-enable react-hooks/immutability */
   React.useEffect(() => {
     if (!marksAreFocusable) return;
     const svg = ownSvgRef.current;

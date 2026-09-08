@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useHydrated } from "../../foundations/use-hydrated";
 import { createPortal } from "react-dom";
 import { Icon } from "../utilities/icon";
 import type { TabDef, TabSize } from "./tabs";
@@ -57,14 +58,12 @@ function nextEnabled(order: number[], tabs: TabDef[], from: number, dir: 1 | -1)
 export function TabsOverflow({ tabs, active, size, onSelect, ariaLabel }: TabsOverflowProps) {
   const [open, setOpen] = React.useState(false);
   const [coords, setCoords] = React.useState<{ top: number; left: number } | null>(null);
-  const [mounted, setMounted] = React.useState(false);
+  const mounted = useHydrated();
   const triggerRef = React.useRef<HTMLButtonElement>(null);
   const menuRef = React.useRef<HTMLDivElement>(null);
   const itemRefs = React.useRef<Array<HTMLButtonElement | null>>([]);
   const menuId = React.useId();
 
-  // A portal needs a DOM node, which SSR has not got.
-  React.useEffect(() => setMounted(true), []);
 
   const close = React.useCallback((returnFocus: boolean) => {
     setOpen(false);
@@ -78,10 +77,10 @@ export function TabsOverflow({ tabs, active, size, onSelect, ariaLabel }: TabsOv
    * scroll container whose overflow it exists to resolve.
    */
   React.useLayoutEffect(() => {
-    if (!open) {
-      setCoords(null);
-      return;
-    }
+    /* No reset on close. The menu is only rendered while `open`, and the layout
+       effect re-measures before paint on the next opening, so the stale coords in
+       state are never drawn. Clearing them cost an extra render per close. */
+    if (!open) return;
     const place = () => {
       const t = triggerRef.current?.getBoundingClientRect();
       const m = menuRef.current?.getBoundingClientRect();

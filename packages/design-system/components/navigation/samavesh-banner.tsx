@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { navLinkTag } from "./header/nav-link-tag";
+import { navLinkRoutes, type NavTag } from "./header/nav-link-tag";
 import { cn } from "../../utils/cn";
 import { Icon } from "../utilities/icon";
 import { Chip } from "../forms/chip";
@@ -220,7 +220,9 @@ export function SamaveshBanner({
 }: SamaveshBannerProps) {
   /* The "view all" row is always an internal estate route, so it is the one
      destination here that never needs the external escape. */
-  const ViewAllTag = navLinkTag({ href: viewAllHref }, linkAs);
+  const ViewAllTag: NavTag = navLinkRoutes({ href: viewAllHref }, linkAs)
+    ? (linkAs as NavTag)
+    : "a";
   const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
   const [activeCategory, setActiveCategory] =
     React.useState<PortalCategory | null>(null);
@@ -420,7 +422,13 @@ export function SamaveshBanner({
    * left in `leaving` with an open panel slides away carrying the panel with it.
    * Watching `open` itself covers every route in.
    */
+  /* REACTING TO A CONTROLLED PROP. A parent can set `isOpen` back to true
+     without going through `handleToggle`, and a band left mid-`leaving` then
+     slides away carrying the open panel with it. The transition it has to
+     cancel IS state, so cancelling it is a state write, and the only signal is
+     the prop changing. */
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
     if (open) release();
   }, [open, release]);
 

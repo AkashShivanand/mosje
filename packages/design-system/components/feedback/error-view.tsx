@@ -104,6 +104,22 @@ const PRESETS: Record<ErrorViewKind, { badge: string; title: string; desc: strin
   },
 };
 
+/**
+ * The default "Go Back" action: history if there is any, the website home if not.
+ *
+ * MODULE SCOPE, not a closure built in render. `react-hooks/immutability` reads
+ * `window.location.href = …` inside a function created during render as a write
+ * to an outside value from render, and it is right to: that function is part of
+ * the render result, and render must not have effects. Nothing here needs props
+ * or state — it is the same two-step fallback for every instance — so hoisting it
+ * removes the closure rather than silencing the rule.
+ */
+function goBackOrHome(): void {
+  if (typeof window === "undefined") return;
+  if (window.history.length > 1) window.history.back();
+  else window.location.href = "/website";
+}
+
 export function ErrorView({
   kind = "404",
   badge,
@@ -141,13 +157,7 @@ export function ErrorView({
 
   const resolvedSecondary = secondaryAction ?? {
     label: "Go Back",
-    onClick: () => {
-      if (typeof window !== "undefined" && window.history.length > 1) {
-        window.history.back();
-      } else if (typeof window !== "undefined") {
-        window.location.href = "/website";
-      }
-    },
+    onClick: goBackOrHome,
     icon: "arrow_back",
   };
 

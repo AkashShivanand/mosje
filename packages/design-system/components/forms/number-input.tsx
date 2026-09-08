@@ -92,7 +92,14 @@ export function NumberInput({
     [precision],
   );
   const [text, setText] = React.useState(value === null ? "" : format(value));
+  /* AN EDITABLE BUFFER THAT MUST RESYNC. `text` deliberately diverges from
+     `value` while typing — "1," is neither a number nor empty — and has to
+     catch up when the value is changed from outside. React's two blessed
+     alternatives both cost more than they save: a `key` remount loses the caret
+     mid-edit, and comparing the previous prop during render is `set-state-in-
+     render`, which this same rule set forbids. */
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- see above
     setText(value === null ? "" : format(value));
   }, [value, format]);
 

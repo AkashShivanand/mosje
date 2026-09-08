@@ -1,14 +1,15 @@
 "use client";
 
 import * as React from "react";
+import { useHydrated } from "../../foundations/use-hydrated";
 import { createPortal } from "react-dom";
 import { cn } from "../../utils/cn";
 import { mergeRefs } from "../../utils/merge-refs";
 import {
   computeAnchorCoords,
+  type AnchorPosition,
   resolveAnchorSide,
   useAnchoredPosition,
-  type AnchorCoords,
 } from "../../foundations/anchor";
 import "./tooltip.css";
 
@@ -46,7 +47,9 @@ export interface TooltipProps {
   children: React.ReactElement;
 }
 
-type Coords = AnchorCoords;
+/* The test helper below computes a POSITION only — it never measures the
+   trigger's width, which is the tooltip's business none of. */
+type Coords = AnchorPosition;
 
 /**
  * Flip to the opposite side when the preferred one would overflow the viewport.
@@ -113,8 +116,7 @@ export function Tooltip({
    * Portals need a DOM node, which does not exist during SSR. Gate the portal
    * on a mounted flag so the server and first client render agree.
    */
-  const [mounted, setMounted] = React.useState(false);
-  React.useEffect(() => setMounted(true), []);
+  const mounted = useHydrated();
 
   const show = React.useCallback(
     (immediate: boolean) => {
@@ -165,6 +167,14 @@ export function Tooltip({
     // React 19 only: `ref` is an ordinary prop, and reading `element.ref` is
     // REMOVED — doing so logs "Accessing element.ref was removed in React 19"
     // and throws during render, which silently costs you the whole tooltip.
+    /* eslint-disable-next-line react-hooks/refs -- MERGING A FORWARDED REF. The
+       trigger needs both this component's handle on the node (for positioning and
+       focus return) and whatever ref the consumer already put on their own
+       element. `mergeRefs` returns a callback ref and reads nothing during
+       render; the rule flags any ref passed into a function because it cannot see
+       that. There is no pure alternative — handing a node back to a ref its owner
+       gave us is inherently a write — and dropping the consumer's ref is the bug
+       this merge exists to prevent. */
     ref: mergeRefs(triggerRef, child.props.ref),
     // Describedby (not labelledby): the tooltip supplements the trigger's own
     // accessible name rather than replacing it. Omitted when the bubble merely

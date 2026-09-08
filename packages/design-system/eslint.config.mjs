@@ -55,23 +55,35 @@ export default tseslint.config(
     },
     rules: {
       /*
-       * The two react-hooks rules are NAMED rather than spread from
-       * `configs.recommended.rules`, because that set is not stable across the
-       * plugin's majors and this config had no way to notice when it changed.
+       * Every rule is NAMED rather than spread from `configs.recommended.rules`,
+       * because that set is not stable across the plugin's majors and this config
+       * had no way to notice when it changed. It changed on the v5 → v7 bump:
+       * `recommended` silently picked up the React Compiler rules and put 54
+       * findings into a gate that had 2. Naming them means the next major cannot
+       * add or drop enforcement here without someone editing this list.
        *
-       * It changed on the v5 → v7 bump: `recommended` picked up the React
-       * Compiler rules, and 54 findings appeared across 15 files in one install
-       * — `set-state-in-effect` (23), `refs` (15), `immutability` (8),
-       * `static-components` (6), `purity`, `globals`. All plausible, none
-       * reviewed, and a dependency bump is the wrong place for a refactor of
-       * that size.
-       *
-       * So the rule set stays exactly what it enforced before, and adopting the
-       * React Compiler rules is its own piece of work with its own diff. Add
-       * them here deliberately, not by inheriting a set that moves underneath.
+       * This IS v7's full `recommended` set, transcribed. The compiler rules were
+       * adopted deliberately and their 54 findings fixed; see the commit that did
+       * it for what each class of finding turned out to be.
        */
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
+      // React Compiler rules — the compiler assumes these hold, so a violation
+      // is a correctness risk once it is switched on, not a style preference.
+      "react-hooks/config": "error",
+      "react-hooks/error-boundaries": "error",
+      "react-hooks/gating": "error",
+      "react-hooks/globals": "error",
+      "react-hooks/immutability": "error",
+      "react-hooks/incompatible-library": "warn",
+      "react-hooks/preserve-manual-memoization": "error",
+      "react-hooks/purity": "error",
+      "react-hooks/refs": "error",
+      "react-hooks/set-state-in-effect": "error",
+      "react-hooks/set-state-in-render": "error",
+      "react-hooks/static-components": "error",
+      "react-hooks/unsupported-syntax": "warn",
+      "react-hooks/use-memo": "error",
       ...jsxA11y.flatConfigs.recommended.rules,
       // The package is strict TypeScript; `any` is already absent and the type
       // checker is the authority on types. These would only add noise.
