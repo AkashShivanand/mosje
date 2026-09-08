@@ -1,0 +1,92 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Before You Leave This Site — the hand-off screen</title>
+<link rel="stylesheet" href="core.css">
+<style>
+.pair{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:start}
+.lead{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);background:var(--sa-white);overflow:hidden}
+.lead__top{padding:20px 24px;border-bottom:1px solid var(--sa-hair)}
+.lead__top b{display:block;font-size:19px;color:var(--sa-ink);margin:0 0 6px}
+.lead__top p{margin:0;font-size:13.5px;color:var(--sa-ink-muted);line-height:1.55}
+.lead__body{padding:18px 24px 20px}
+.papers{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:10px 0 18px}
+.paper{display:flex;gap:9px;align-items:center;background:var(--sa-surface);border:1px solid var(--sa-hair);
+  border-radius:var(--sa-radius);padding:10px 13px;font-size:12.5px;color:var(--sa-ink)}
+.after{border-radius:var(--sa-radius-lg);overflow:hidden}
+.after__bar{padding:10px 16px;font-size:10.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--sa-muted)}
+.after__body{padding:34px 24px;text-align:center}
+.after__body b{display:block;font-size:16px;color:var(--sa-ink);margin:0 0 6px}
+.after__body p{margin:0 auto;max-width:44ch;font-size:13px;color:var(--sa-ink-muted);line-height:1.6}
+.ruleline{margin:20px 0 0;padding:16px 20px;border:1px solid var(--sa-hair);border-radius:var(--sa-radius);
+  background:var(--sa-surface);font-size:13px;color:var(--sa-ink);line-height:1.6}
+</style></head><body>
+<script src="data.js"></script><script src="shell.js"></script>
+<main class="wrap sec">
+  <p class="eyebrow">Citizen Services</p>
+  <div class="spread">
+    <div><h1 class="sec-t">Before You Leave This Site</h1>
+      <p class="sec-lede">Most schemes are applied for somewhere else — the National Scholarship Portal, e-Anudaan, a State agency. The Department cannot control what happens after the hand-off, so the last screen it owns has to do the work.</p></div>
+  </div>
+  <div class="tries" style="display:flex;gap:8px;margin:0 0 22px">
+    <button class="chip" data-k="online" aria-pressed="true">Applied for online</button>
+    <button class="chip" data-k="office" aria-pressed="false">Applied for in person</button>
+  </div>
+  <div class="pair" id="out"></div>
+  <p class="note">Listing is not a decision on any application — the sanctioning authority decides that.</p>
+</main>
+<script>
+mountShell('Offerings');
+const el = id => document.getElementById(id);
+const VIEW = {
+  online: {
+    title:'You are about to leave dosje.gov.in',
+    body:'Applications for the Post-Matric Scholarship for SC Students are submitted on the National Scholarship Portal, scholarships.gov.in, which is run separately. Nothing entered here travels with you — this site never asked for it.',
+    papersLabel:'Have these ready before you go',
+    papers:['Caste certificate','Family income certificate','Proof of college admission','A bank account in the student’s own name'],
+    cta:'Continue to scholarships.gov.in →', back:'Back to the scheme',
+    barText:'Outside dosje.gov.in — National Scholarship Portal', outside:true,
+    afterTitle:'The prototype ends here',
+    afterBody:'Everything past this point is on another government site, outside this Department. Getting a citizen to the right one, with the right papers, was the whole task.',
+    rule:'Name the domain, not “the portal”. People check the address bar, and a name they were told to expect is what stops them abandoning the application.',
+  },
+  office: {
+    title:'This one is applied for in person',
+    body:'The NSFDC term loan has no online application. It is sanctioned by the State Channelising Agency for your State, so the last step is a desk rather than a portal. Nothing done online will move it forward.',
+    papersLabel:'Carry these with you',
+    papers:['Caste certificate','Income proof','A one-page note on the work','This list, printed'],
+    cta:'Find the office nearest you →', back:'Back to the scheme',
+    barText:'Still on dosje.gov.in', outside:false,
+    afterTitle:'The office nearest you, and what to carry',
+    afterBody:'An address, opening hours, a telephone number and the same list of papers — on one page that prints, because the person who needs it may not come back online.',
+    rule:'An offline ending is a real ending, not a failure. It earns the same care as a hand-off: address, hours, telephone, and something that can be printed.',
+  },
+};
+let k = 'online';
+function draw(){
+  const v = VIEW[k];
+  document.querySelectorAll('.chip[data-k]').forEach(c =>
+    c.setAttribute('aria-pressed', String(c.dataset.k === k)));
+  el('out').innerHTML = `
+    <div class="lead rise">
+      <div class="lead__top"><b>${v.title}</b><p>${v.body}</p></div>
+      <div class="lead__body">
+        <p class="eyebrow" style="margin:0">${v.papersLabel}</p>
+        <div class="papers">${v.papers.map(p=>`<span class="paper">${p}</span>`).join('')}</div>
+        <div class="row" style="justify-content:space-between">
+          <button class="btn ghost">← ${v.back}</button>
+          <button class="btn">${v.cta}</button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="after rise" style="border:1px ${v.outside?'dashed':'solid'} var(--sa-hair);background:${v.outside?'var(--sa-surface)':'var(--sa-white)'}">
+        <div class="after__bar" style="border-bottom:1px ${v.outside?'dashed':'solid'} var(--sa-hair)">${v.barText}</div>
+        <div class="after__body"><b>${v.afterTitle}</b><p>${v.afterBody}</p></div>
+      </div>
+      <div class="ruleline"><b style="display:block;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--sa-muted);margin:0 0 6px">The rule this follows</b>${v.rule}</div>
+    </div>`;
+}
+document.querySelector('.tries').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if(!b) return; k = b.dataset.k; draw();
+});
+draw();
+</script></body></html>

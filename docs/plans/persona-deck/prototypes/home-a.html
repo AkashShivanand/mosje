@@ -1,85 +1,158 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Explore User Personas — Home page, Option A</title>
+<title>Recent Documents and Explore User Personas — the section</title>
 <link rel="stylesheet" href="core.css">
 <style>
-.grid2{display:grid;grid-template-columns:1fr 428px;gap:32px;align-items:start}
-.docs h2{font-size:24px;color:var(--sa-primary-700);margin:0 0 16px;font-weight:700}
-.doc{border:1px solid var(--sa-hair);border-radius:var(--sa-radius);padding:14px 16px;margin-bottom:12px;background:#fff}
-.doc b{font-size:14px}.doc small{color:var(--sa-muted);font-size:12px;display:block;margin:2px 0 8px}
-.panel{background:linear-gradient(180deg,#0373DF 0%,#0260BC 100%);border-radius:16px;padding:40px;color:#fff;width:428px}
-.panel h2{margin:0;height:40px;font-size:26px;font-weight:700;text-align:center;letter-spacing:-.01em}
-/* the nudge carries a pointer tail, as drawn */
-.nudge{position:relative;background:rgba(255,255,255,.15);border-radius:8px;height:40px;margin-top:16px;
-  display:flex;align-items:center;justify-content:center;font-size:12px;text-align:center;padding:0 12px}
-.nudge::after{content:"";position:absolute;left:50%;transform:translateX(-50%);bottom:-11px;
-  border:10px solid transparent;border-top-color:rgba(255,255,255,.15);border-bottom:0}
-/* slider: 300x400, 16px padding, 268 square image, divider, 40px nav — per the design file */
-.slider{width:300px;margin:16px auto 0;background:linear-gradient(180deg,#0B57A2 0%,#0B4E91 100%);border:1px solid rgba(255,255,255,.10);
-  border-radius:12px;padding:16px}
-.shot{width:268px;height:268px;border-radius:8px;background:#025FB8;
-  display:flex;align-items:center;justify-content:center;overflow:hidden;
-  transition:opacity .3s cubic-bezier(.22,.61,.36,1),transform .3s cubic-bezier(.22,.61,.36,1)}
-.shot img{width:100%;height:100%;object-fit:cover;display:block}
-.pname{height:28px;line-height:28px;margin-top:8px;text-align:center;font-size:20px;font-weight:600;
-  white-space:nowrap;overflow:hidden}  /* the card is a fixed 400 tall; a wrapped name pushed the nav out of it */
-.pdiv{height:1px;background:rgba(255,255,255,.14);margin:12px 0 0}
-.pnav{height:40px;margin-top:12px;display:flex;align-items:center;justify-content:space-between}
-.arrow{width:40px;height:40px;background:none;border:none;color:#fff;font-size:20px;cursor:pointer;
-  border-radius:50%;transition:background .15s,transform .1s ease-out}
-.arrow:hover{background:rgba(255,255,255,.14)}
-.arrow:active{transform:scale(.92)}
-.arrow:focus-visible{outline:3px solid #fff;outline-offset:2px}
-.dots{display:flex;gap:8px;align-items:center}
-.dots i{width:8px;height:8px;border-radius:4px;background:#5988B5;transition:width .25s,background .25s}
-.dots i.on{width:40px;background:#fff}
-.fade{opacity:0;transform:translateY(6px)}
+/* ============================================================================
+   Recent Documents and Explore User Personas — Figma node 4650:177524.
+
+   The SECTION ONLY. No masthead, no page title, no commentary — this is the
+   block as it would sit on the home page, so it can be judged as the thing
+   itself rather than as a slide about the thing.
+
+   Every value is a token from core.css. The spacing scale is the handoff's
+   own: 4 / 8 / 12 / 16 / 24 / 40 / 56.
+   ========================================================================= */
+body{background:var(--sa-white);padding:40px 24px}
+
+.rdp{max-width:1322px;margin:0 auto;border:1px solid var(--sa-hairline-brand);border-radius:12px;
+  overflow:hidden;display:flex;align-items:flex-start;padding-top:24px}
+.rdp__row{flex:1;display:flex;align-items:center;gap:16px;min-width:0}
+
+/* ── left: the documents ───────────────────────────────── */
+.rdp__col{flex:1;min-width:0;display:flex;flex-direction:column;gap:24px;padding:56px 24px}
+.rdp__head{display:flex;gap:24px;align-items:flex-end}
+.rdp__head h2{flex:1;margin:0;font-size:32px;line-height:40px;font-weight:600;color:var(--sa-primary-700)}
+.viewall{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:1px solid var(--sa-primary-500);border-radius:8px;padding:10px 16px 10px 24px;
+  background:var(--sa-white);color:var(--sa-primary-500);font:inherit;font-size:14px;line-height:20px;
+  font-weight:500;letter-spacing:.1px;cursor:pointer;white-space:nowrap}
+.viewall:focus-visible{outline:3px solid var(--sa-primary-200);outline-offset:2px}
+
+.rdp__grid{display:flex;flex-wrap:wrap;gap:24px}
+.dcard{flex:1;min-width:328px;background:var(--sa-neutral-50);border:1px solid var(--sa-primary-100);
+  border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.dcard__t{margin:0;font-size:16px;line-height:24px;font-weight:500;letter-spacing:.15px;color:var(--sa-ink)}
+.dcard__d{margin:0;font-size:14px;line-height:20px;letter-spacing:.25px;color:var(--sa-ink-muted)}
+.dcard__meta{margin:0;font-size:12px;line-height:16px;font-weight:500;letter-spacing:.5px;color:var(--sa-ink-muted)}
+.dcard__cta{display:flex;gap:12px;justify-content:flex-end;margin-top:auto}
+.dbtn{font:inherit;font-size:12px;line-height:16px;font-weight:500;letter-spacing:.5px;
+  border-radius:8px;padding:8px 16px;border:1px solid transparent;cursor:pointer}
+.dbtn--out{background:var(--sa-white);color:var(--sa-primary-700);border-color:var(--sa-primary-700)}
+.dbtn--fill{background:var(--sa-primary-500);color:var(--sa-white)}
+.dbtn:focus-visible{outline:3px solid var(--sa-primary-200);outline-offset:2px}
+
+/* ── right: the persona panel ──────────────────────────── */
+.persona{align-self:stretch;flex:none;display:flex;flex-direction:column;align-items:center;gap:16px;
+  padding:40px;border-radius:20px 20px 0 0;
+  background:linear-gradient(180deg,var(--sa-primary-500) 0%,var(--sa-persona-to) 100%)}
+.persona__h{width:348px;margin:0;font-size:32px;line-height:40px;font-weight:600;
+  color:var(--sa-white);text-align:center;white-space:nowrap}
+.nudge{position:relative;width:100%;background:var(--sa-persona-to);border-radius:16px;padding:12px;
+  box-shadow:var(--sa-shadow-nudge);font-size:12px;line-height:16px;letter-spacing:.4px;
+  color:var(--sa-white);text-align:center}
+.nudge::after{content:"";position:absolute;bottom:-11px;left:calc(50% - 10px);width:20px;height:12px;
+  background:var(--sa-persona-to);clip-path:polygon(0 0,100% 0,50% 100%)}
+
+.pslider{width:300px;background:var(--sa-scrim-32);border:1px solid var(--sa-scrim-48);
+  border-radius:20px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.pshot{aspect-ratio:1/1;width:100%;background:var(--sa-persona-to);border-radius:12px;overflow:hidden}
+.pshot img{width:100%;height:100%;object-fit:cover;display:block;
+  transition:opacity .22s ease-out,transform .22s ease-out}
+.pname{height:28px;overflow:hidden;margin:0;font-size:22px;line-height:28px;font-weight:500;
+  color:var(--sa-white);text-align:center}
+.pdiv{height:1px;width:100%;background:var(--sa-scrim-48)}
+.pnav{display:flex;align-items:center;justify-content:space-between}
+.parrow{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;
+  border-radius:8px;border:0;background:transparent;color:var(--sa-white);cursor:pointer}
+.parrow:hover{background:var(--sa-scrim-32)}
+.parrow:focus-visible{outline:2px solid var(--sa-white);outline-offset:1px}
+.pdots{display:flex;align-items:center;gap:8px}
+/* 8px dot, 40px active bar — the handoff's own scale.
+   PRESENTATIONAL, not controls. Nine 24px targets (WCAG 2.2 AA 2.5.8) would be
+   280px inside a 268px slider and would shove the arrows out of the panel. The
+   arrows are the navigation and they are 40px, so the dots state position
+   rather than offering a second, undersized way to change it. */
+.pdots i{display:block;width:8px;height:8px;border-radius:8px;background:var(--sa-white);opacity:.32;
+  transition:width .22s ease-out,opacity .22s ease-out}
+.pdots i.on{width:40px;opacity:1}
+
+@media (prefers-reduced-motion:reduce){ .pshot img,.pdots i{transition:none} }
+
+/* Below the two-card measure the panel stops hanging off the edge and the
+   section becomes one column. */
+@media (max-width:1100px){
+  .rdp{padding-top:0}
+  .rdp__row{flex-direction:column;align-items:stretch;gap:0}
+  .rdp__col{padding:32px 20px}
+  .persona{align-self:stretch;width:auto;border-radius:0;padding:32px 20px}
+  .persona__h{width:auto;white-space:normal;font-size:28px;line-height:36px}
+  .pslider{width:100%;max-width:340px;align-self:center}
+}
 </style></head><body>
-<script src="data.js"></script><script src="shell.js"></script>
-<main class="wrap sec">
-  <p class="eyebrow">Home page</p>
-  <h1 class="sec-t">Recent Documents and Explore User Personas</h1>
-  <p class="sec-lede">The panel already on the home page. What changes is what it <b>does</b>: choosing a group opens the Schemes page already filtered to it.</p>
-  <div class="grid2">
-    <div class="docs">
-      <h2>Recent Documents</h2>
-      <div class="doc"><b>Annual Report 2024–25</b><small>29 Jul 2026 · PDF, 2.4 MB</small>
-        <button class="btn ghost">View online</button> <button class="btn">Download</button></div>
-      <div class="doc"><b>NAMASTE — Revised Scheme Guidelines</b><small>15 Aug 2026 · PDF, 3.1 MB</small>
-        <button class="btn ghost">View online</button> <button class="btn">Download</button></div>
-      <div class="doc"><b>PM-AJAY Operational Guidelines</b><small>10 Sep 2025 · PDF, 2.0 MB</small>
-        <button class="btn ghost">View online</button> <button class="btn">Download</button></div>
+<script src="data.js"></script>
+
+<section class="rdp" aria-labelledby="rdp-docs-h">
+  <div class="rdp__row">
+    <div class="rdp__col">
+      <div class="rdp__head">
+        <h2 id="rdp-docs-h">Recent Documents</h2>
+        <button type="button" class="viewall">View All<span class="mi" style="font-size:16px" aria-hidden="true">arrow_forward</span></button>
+      </div>
+      <div class="rdp__grid" id="docs"></div>
     </div>
-    <aside class="panel">
-      <h2>Explore User Personas</h2>
-      <div class="nudge">Choose your role to discover services made for you.</div>
-      <div class="slider">
-        <div class="shot" id="shot"></div>
-        <div class="pname" id="pname"></div>
+
+    <aside class="persona" aria-labelledby="rdp-persona-h">
+      <h2 class="persona__h" id="rdp-persona-h">Explore User Personas</h2>
+      <p class="nudge">Choose your role to discover services made for you.</p>
+      <div class="pslider">
+        <div class="pshot" id="shot"></div>
+        <p class="pname" id="pname" aria-live="polite"></p>
         <div class="pdiv"></div>
         <div class="pnav">
-          <button class="arrow" id="prev" aria-label="Previous role">&#8592;</button>
-          <div class="dots" id="dots"></div>
-          <button class="arrow" id="next" aria-label="Next role">&#8594;</button>
+          <button type="button" class="parrow" id="prev" aria-label="Previous role"><span class="mi" style="font-size:24px" aria-hidden="true">arrow_back</span></button>
+          <div class="pdots" id="dots" aria-hidden="true"></div>
+          <button type="button" class="parrow" id="next" aria-label="Next role"><span class="mi" style="font-size:24px" aria-hidden="true">arrow_forward</span></button>
         </div>
       </div>
     </aside>
   </div>
-</main>
+</section>
+
 <script>
-mountShell('Home');
-let i = 0;
 const el = id => document.getElementById(id);
-function count(g){ return SCHEMES.filter(s=>s.g.includes(g)).length; }
+
+/* The Department's own recent documents. The description and file size the
+   design draws are not rendered: documents.json carries neither, and a size on
+   a government page that nobody measured is a fabrication. */
+const DOCS = [
+  ['Annual Report 2025-26 (English)','22 Apr 2026','Report'],
+  ['Annual Report 2025-26 (Hindi)','22 Apr 2026','Report'],
+  ['Result of National Overseas Scholarship (NOS) for SC candidates 2025-26 (2nd Round)','18 Apr 2026','Result'],
+  ['Acceptance of Transgender Identity Certificate/Card in EPFO Records','15 Apr 2026','Circular'],
+];
+el('docs').innerHTML = DOCS.map(([t,d,type]) => `
+  <article class="dcard">
+    <div><p class="dcard__t">${t}</p><p class="dcard__d">${d}</p></div>
+    <p class="dcard__meta">Type: ${type}</p>
+    <div class="dcard__cta">
+      <button type="button" class="dbtn dbtn--out">View Online</button>
+      <button type="button" class="dbtn dbtn--fill">Download</button>
+    </div>
+  </article>`).join('');
+
+let i = 0;
 function draw(animate){
   const g = GROUPS[i];
-  const shot = document.getElementById('shot');
+  const shot = el('shot');
   const paint = () => {
     shot.innerHTML = `<img src="personas/${g.id}.png" alt="">`;
-    document.getElementById('pname').textContent = g.short || g.label;
-    shot.style.opacity = 1; shot.style.transform = 'none';
+    el('pname').textContent = g.short || g.label;
   };
-  if (animate) { shot.style.opacity = 0; shot.style.transform = 'translateY(6px)'; setTimeout(paint, 160); }
-  else paint();
+  if (animate) {
+    const img = shot.querySelector('img');
+    if (img) { img.style.opacity = 0; img.style.transform = 'translateY(6px)'; }
+    setTimeout(paint, 160);
+  } else { paint(); }
   el('dots').innerHTML = GROUPS.map((_,k)=>`<i class="${k===i?'on':''}"></i>`).join('');
 }
 el('prev').onclick = () => { i = (i-1+GROUPS.length)%GROUPS.length; draw(true); };

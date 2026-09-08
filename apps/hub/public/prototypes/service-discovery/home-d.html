@@ -1,0 +1,108 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>What You Need to Do — Home page, task-first</title>
+<link rel="stylesheet" href="core.css">
+<style>
+.tasks{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 24px}
+.task{text-align:left;font:inherit;background:var(--sa-white);border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);
+  padding:18px 20px;cursor:pointer;transition:border-color .15s,background .15s,transform .1s ease-out}
+.task[aria-pressed="true"]{border-color:var(--sa-primary-500);background:var(--sa-primary-50)}
+.task:focus-visible{outline:3px solid var(--sa-primary-200);outline-offset:2px}
+.task b{display:block;font-size:15.5px;color:var(--sa-primary-800);margin:0 0 4px}
+.task small{font-size:12.5px;color:var(--sa-muted);line-height:1.45}
+.panel{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);background:var(--sa-white);padding:22px 24px}
+.panel h2{margin:0 0 4px;font-size:19px;color:var(--sa-primary-800)}
+.panel p.lede{margin:0 0 18px;font-size:13.5px;color:var(--sa-ink-muted)}
+.routes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.route{border:1px solid var(--sa-hair);border-radius:var(--sa-radius);padding:15px 17px;background:var(--sa-surface)}
+.route b{display:block;font-size:14px;color:var(--sa-primary-800);margin:0 0 4px}
+.route small{font-size:12.5px;color:var(--sa-muted);line-height:1.45}
+.steps{display:flex;flex-direction:column;gap:0}
+.step{display:flex;gap:14px;align-items:flex-start}
+.step .dot{width:22px;height:22px;border-radius:50%;flex:none;display:grid;place-items:center;color:var(--sa-white);font-size:12px;font-weight:700}
+.step .bar{width:2px;flex:1;min-height:16px;margin:2px auto}
+.step .body{padding-bottom:14px}
+.step b{display:block;font-size:14px}
+.step small{font-size:12.5px;color:var(--sa-muted)}
+.gcards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gcard{border:1px solid var(--sa-hair);border-radius:var(--sa-radius);padding:14px 16px}
+.gcard b{display:block;font-size:14px;margin:0 0 3px}
+.gcard small{font-size:12.5px;color:var(--sa-muted)}
+</style></head><body>
+<script src="data.js"></script><script src="shell.js"></script>
+<main class="wrap sec">
+  <p class="eyebrow">Citizen Services</p>
+  <div class="spread">
+    <div><h1 class="sec-t">What You Need to Do</h1>
+      <p class="sec-lede">The home page opens on four things a citizen does, rather than on the parts of the Department. Two of the four serve people who have already applied and are waiting to hear.</p></div>
+  </div>
+  <div class="tasks" id="tasks"></div>
+  <div id="out"></div>
+  <p class="note">No sign-in is required to check what is open to you. Listing is not a decision on any application — the sanctioning authority decides that.</p>
+</main>
+<script>
+mountShell('Home');
+const el = id => document.getElementById(id);
+const TASKS = [
+  { id:'check', t:'Check What You Can Get', s:'Five short questions. No sign-in.' },
+  { id:'apply', t:'Apply for a Scheme',     s:'Straight to the portal that takes it.' },
+  { id:'track', t:'Track an Application',   s:'Where your file has reached.' },
+  { id:'redress', t:'Raise a Grievance',    s:'A benefit refused, delayed or not received.' },
+];
+const TRACK = [
+  { t:'Application submitted', s:'18 June 2026 · National Scholarship Portal', k:'done' },
+  { t:'Verified by your institution', s:'2 July 2026 · Government College, Patna', k:'done' },
+  { t:'With the State Nodal Officer', s:'Since 21 July 2026 · usually three to five weeks', k:'now' },
+  { t:'Paid into your bank account', s:'Not started', k:'next' },
+];
+const REDRESS = [
+  ['A scholarship has not been paid','Sanctioned but not received, or paid to the wrong account.'],
+  ['A case under the Atrocities Act has stalled','An FIR is registered and relief or follow-up has not moved.'],
+  ['A hostel or home is not fit to live in','Conditions in a funded hostel, shelter or old age home.'],
+  ['A grant has been misused','Misuse by a funded voluntary organisation.'],
+];
+let sel = 'track';
+function panel(){
+  if (sel === 'check') {
+    return `<div class="panel rise"><h2>Check What You Can Get</h2>
+      <p class="lede">Five short questions, any of which may be skipped. Skipping widens the answer rather than ending it.</p>
+      <div class="routes">${STAGES.map(s=>
+        `<div class="route"><b>${s.label}</b><small>Schemes are open at this stage</small></div>`).join('')}</div>
+      <div class="row" style="margin-top:16px"><a class="btn" href="home-b.html">Start the questions →</a>
+        <span class="note" style="margin:0">Nothing you answer is stored.</span></div></div>`;
+  }
+  if (sel === 'apply') {
+    return `<div class="panel rise"><h2>Where to Apply</h2>
+      <p class="lede">Every scheme the Department funds is applied for in one of three places. Naming which one comes first saves a citizen from guessing.</p>
+      <div class="routes">
+        <div class="route"><b>National Scholarship Portal</b><small>Post-Matric, Pre-Matric, Top Class Education and PM-YASASVI. One registration covers them all.</small></div>
+        <div class="route"><b>The scheme's own portal</b><small>SEED, NAMASTE, e-Anudaan and the National Overseas Scholarship each keep their own calendar.</small></div>
+        <div class="route"><b>In person, near you</b><small>Corporation loans and PM-AJAY are sanctioned by a State agency. There is no online route.</small></div>
+      </div>
+      <p class="note">Each route opens with what to have ready before you leave this site.</p></div>`;
+  }
+  if (sel === 'track') {
+    const col = k => k==='done' ? 'var(--sa-primary-600)' : k==='now' ? 'var(--sa-saffron-dark)' : 'var(--sa-hair)';
+    return `<div class="panel rise"><h2>Track an Application</h2>
+      <p class="lede">The state the site has no answer for today. A person waiting on a scholarship has nowhere on this site to look, so they telephone the office instead.</p>
+      <div class="steps">${TRACK.map((s,i)=>`
+        <div class="step"><div style="display:flex;flex-direction:column;align-items:center;align-self:stretch">
+          <span class="dot" style="background:${col(s.k)}">${s.k==='done'?'✓':''}</span>
+          ${i<TRACK.length-1?`<span class="bar" style="background:${s.k==='done'?'var(--sa-primary-600)':'var(--sa-hair)'}"></span>`:''}
+        </div><div class="body"><b style="color:${s.k==='next'?'var(--sa-muted)':'var(--sa-ink)'}">${s.t}</b><small>${s.s}</small></div></div>`).join('')}</div>
+      <p class="note">Nothing further is required of you at this stage. If it has not moved five weeks after reaching the State Nodal Officer, that is the point to raise a grievance.</p></div>`;
+  }
+  return `<div class="panel rise"><h2>Raise a Grievance</h2>
+    <p class="lede">Today this is a link in the page footer that leaves the site without explanation. Naming the four kinds of complaint first is what sends each one to the desk that can act.</p>
+    <div class="gcards">${REDRESS.map(([t,s])=>`<div class="gcard"><b>${t}</b><small>${s}</small></div>`).join('')}</div>
+    <p class="note">Each route asks for the reference number that lets an officer find the case.</p></div>`;
+}
+function draw(){
+  el('tasks').innerHTML = TASKS.map(t=>
+    `<button class="task" data-t="${t.id}" aria-pressed="${t.id===sel}"><b>${t.t}</b><small>${t.s}</small></button>`).join('');
+  el('out').innerHTML = panel();
+}
+el('tasks').addEventListener('click', e => {
+  const b = e.target.closest('.task'); if(!b) return; sel = b.dataset.t; draw();
+});
+draw();
+</script></body></html>

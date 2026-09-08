@@ -1,0 +1,111 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>Ask in Your Own Words — Home page, plain-language search</title>
+<link rel="stylesheet" href="core.css">
+<style>
+.field{display:flex;align-items:center;gap:12px;border:2px solid var(--sa-primary-500);border-radius:var(--sa-radius-lg);
+  padding:0 8px 0 18px;height:58px;background:var(--sa-white);margin:0 0 14px}
+.field input{flex:1;border:0;outline:0;font:inherit;font-size:17px;color:var(--sa-ink);background:transparent;min-width:0}
+.field input::placeholder{color:var(--sa-muted)}
+.tries{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 20px}
+.tries .lbl{font-size:12.5px;color:var(--sa-muted)}
+.reading{display:flex;gap:11px;align-items:flex-start;background:var(--sa-surface);border:1px solid var(--sa-hair);
+  border-radius:var(--sa-radius);padding:13px 16px;margin:0 0 18px;font-size:13.5px;color:var(--sa-ink)}
+.grp{margin:0 0 16px}
+.grp h3{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--sa-muted);margin:0 0 8px}
+.hit{display:flex;align-items:center;gap:16px;border:1px solid var(--sa-hair);border-bottom:none;padding:14px 18px;background:var(--sa-white)}
+.hit:first-of-type{border-radius:var(--sa-radius-lg) var(--sa-radius-lg) 0 0}
+.hit:last-of-type{border-bottom:1px solid var(--sa-hair);border-radius:0 0 var(--sa-radius-lg) var(--sa-radius-lg)}
+.hit .grow{flex:1}
+.hit b{display:block;font-size:14.5px;color:var(--sa-primary-800);margin:0 0 2px}
+.hit small{font-size:12.5px;color:var(--sa-muted)}
+.dead{border:1px dashed var(--sa-hair);border-radius:var(--sa-radius-lg);padding:24px;background:var(--sa-white)}
+.dead b{display:block;font-size:16px;color:var(--sa-ink);margin:0 0 6px}
+.dead p{margin:0 0 14px;font-size:13.5px;color:var(--sa-ink-muted);max-width:70ch}
+</style></head><body>
+<script src="data.js"></script><script src="shell.js"></script>
+<main class="wrap sec">
+  <p class="eyebrow">Citizen Services</p>
+  <h1 class="sec-t">Ask in Your Own Words</h1>
+  <p class="sec-lede">The site now matches what is typed against document tags, which is why a search for “disability” returns an annual report. This reads everyday and colloquial words, and names the department that holds the answer.</p>
+  <div class="field">
+    <span aria-hidden="true" style="font-size:19px;color:var(--sa-primary-600)">⌕</span>
+    <input id="q" type="text" value="safai ka kaam" aria-label="Search schemes, services and documents"
+      placeholder="pension for my mother · safai ka kaam · nasha · chhatravriti">
+    <button class="btn">Search</button>
+  </div>
+  <div class="tries"><span class="lbl">Try:</span><span id="tries"></span></div>
+  <div id="out"></div>
+  <p class="note">Listing is not a decision on any application — the sanctioning authority decides that.</p>
+</main>
+<script>
+mountShell('Home');
+const el = id => document.getElementById(id);
+
+/* The synonym layer. Word-boundary matched, so "confirmation" never reads as an
+   atrocity and "first" never reads as an FIR. */
+const LEXICON = [
+  { k:'safai',  words:['safai','sewer','manhole','scavenger','scavenging','sanitation','kachra','jhadu'],
+    reading:'work in sanitation and waste', group:'safai' },
+  { k:'senior', words:['pension','budhapa','elderly','elder','senior','vridh','maa','mother','father'],
+    reading:'support for a senior citizen', group:'senior' },
+  { k:'drug',   words:['nasha','daaru','sharab','drug','drugs','alcohol','addiction','addict','rehab'],
+    reading:'help with drug or alcohol dependence', group:'drug' },
+  { k:'edu',    words:['chhatravriti','chatravriti','scholarship','fees','padhai','admission','matric','hostel'],
+    reading:'a scholarship for study', group:'student' },
+  { k:'ngo',    words:['anudaan','ngo','voluntary','grant','funding'],
+    reading:'grant-in-aid for a voluntary organisation', group:'ngo' },
+  { k:'pwd',    words:['divyang','viklang','disability','disabled','udid','wheelchair'],
+    reading:'disability support', group:null },
+];
+const TRIES = ['safai ka kaam','pension for my mother','nasha chhudana hai','divyang certificate','chhatravriti class 11','gadi ka insurance'];
+
+function resolve(q){
+  const s = (q||'').toLowerCase();
+  if (!s.trim()) return null;
+  for (const e of LEXICON)
+    for (const w of e.words)
+      if (new RegExp('(^|[^a-z])' + w + '($|[^a-z])','i').test(s)) return e;
+  return { k:'unknown' };
+}
+function draw(){
+  const q = el('q').value;
+  el('tries').innerHTML = TRIES.map(t=>
+    `<button class="chip" data-q="${t}" aria-pressed="${t===q}">${t}</button>`).join(' ');
+  const r = resolve(q);
+  if (!r) { el('out').innerHTML = ''; return; }
+
+  if (r.k === 'unknown') {
+    el('out').innerHTML = `<div class="dead rise"><b>That word is not in the list yet</b>
+      <p>This is the honest weakness of searching: it fails quietly for anything the list does not hold, and the person searching cannot tell an absent scheme from an unknown word. The way out has to be a real one.</p>
+      <a class="btn" href="home-b.html">Answer five questions instead →</a></div>`;
+    return;
+  }
+  if (r.k === 'pwd') {
+    el('out').innerHTML = `<div class="dead rise" style="border-style:solid;border-color:var(--sa-saffron-hair);background:var(--sa-saffron-light)">
+      <b>That is held by another department</b>
+      <p>Disability certificates, UDID cards, aids under ADIP and disability scholarships are with the Department of Empowerment of Persons with Disabilities — the same Ministry, a different department. Nothing on this site covers them, and saying so is faster than a search that returns an annual report.</p>
+      <a class="btn" href="#">Continue to depwd.gov.in →</a></div>`;
+    return;
+  }
+  const g = GROUPS.find(x => x.id === r.group);
+  const hits = SCHEMES.filter(s => s.g.includes(r.group)).slice(0,4);
+  el('out').innerHTML = `
+    <div class="reading rise"><span aria-hidden="true">⌕</span>
+      <span>Read as <b>${r.reading}</b>. Matched on the words a citizen actually uses, not on a document tag.</span></div>
+    <div class="grp"><h3>Schemes</h3>
+      ${hits.map(s=>`<div class="hit"><div class="grow"><b>${s.t}</b>
+        <small>${s.benefit} · run by ${s.runBy} · ${s.juris}</small></div>
+        <button class="btn ghost">Open →</button></div>`).join('')}</div>
+    <div class="grp"><h3>Where to apply</h3>
+      <div class="hit"><div class="grow"><b>${hits[0] ? hits[0].apply : 'Where to apply near you'}</b>
+        <small>Named before you leave this site, with what to have ready</small></div>
+        <button class="btn ghost">Open →</button></div></div>
+    ${g ? `<p class="note">All schemes listed for ${g.label.toLowerCase()}.</p>` : ''}`;
+}
+el('q').addEventListener('input', draw);
+el('tries').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if(!b) return;
+  el('q').value = b.dataset.q; draw();
+});
+draw();
+</script></body></html>
