@@ -43,6 +43,8 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
+import { scanSource } from "./scan.mjs";
+
 const ROOT = path.resolve(import.meta.dirname, "../..");
 const rel = (p) => path.relative(ROOT, p);
 
@@ -74,8 +76,6 @@ const EXEMPT_CATEGORIES = {
   "external-only": "every destination it renders is off-site",
   "no-router": "runs outside a router (a standalone bundle, an email, a raster canvas)",
 };
-
-const EXEMPT_RE = /linkAs-exempt\(([a-z-]+)\)\s*:\s*(.+)/;
 
 /* ── file walking ─────────────────────────────────────────────────────────── */
 
@@ -111,41 +111,14 @@ function componentsAcceptingLinkAs() {
 
 /* ── 2. every JSX call site, and whether it passes the prop ───────────────── */
 
-/** The opening tag starting at `i`, brace-aware so a nested object cannot end it. */
-function openingTag(src, i) {
-  let depth = 0;
-  for (let j = i; j < src.length; j++) {
-    const c = src[j];
-    if (c === "{") depth++;
-    else if (c === "}") depth--;
-    else if (c === ">" && depth === 0) return src.slice(i, j + 1);
-  }
-  return src.slice(i);
-}
+/* The scan itself lives in `scan.mjs`, where it is unit-tested: finding the end
+   of a JSX tag is the part of this gate that can be quietly wrong, and was. */
 
 function callSites(files, components) {
   const sites = [];
   for (const file of files) {
     const src = fs.readFileSync(file, "utf8");
-    const lines = src.split("\n");
-    for (const name of components) {
-      const re = new RegExp(`<${name}(?=[\\s/>])`, "g");
-      for (const m of src.matchAll(re)) {
-        const tag = openingTag(src, m.index);
-        const line = src.slice(0, m.index).split("\n").length;
-        // An exemption is declared on the tag itself or in the three lines above it.
-        const near = [tag, ...lines.slice(Math.max(0, line - 4), line - 1)].join("\n");
-        const ex = near.match(EXEMPT_RE);
-        sites.push({
-          file,
-          line,
-          name,
-          passes: /\blinkAs\s*=/.test(tag),
-          spread: /\{\s*\.\.\./.test(tag),
-          exemption: ex ? { category: ex[1], reason: ex[2].trim() } : null,
-        });
-      }
-    }
+    for (const site of scanSource(src, components)) sites.push({ file, ...site });
   }
   return sites;
 }
