@@ -255,11 +255,19 @@ export function Carousel({
               // that it is paused, and a play/pause glyph is ambiguous about
               // which of the two states it is reporting. The Figma master and
               // the documentation page both say so.
-              aria-label={playing ? `Stop rotating ${label}` : `Start rotating ${label}`}
+              //
+              // THE VISIBLE WORD IS THE START OF THE ACCESSIBLE NAME, not a
+              // separate one. WCAG 2.5.3 (Label in Name, Level A): the name has
+              // to CONTAIN the text a reader can see, so an `aria-label` of
+              // "Stop rotating …" over a button reading "Pause" fails it — and
+              // a speech-input user saying "click Pause" reaches nothing. The
+              // fuller sentence is still spoken; it is appended out of sight
+              // instead of replacing what is on screen.
               aria-pressed={!playing}
               onClick={() => setPlaying((p) => !p)}
             >
               {playing ? "Pause" : "Play"}
+              <span className="ds-carousel__sr">{` rotating ${label}`}</span>
             </button>
           ) : null}
         </div>
