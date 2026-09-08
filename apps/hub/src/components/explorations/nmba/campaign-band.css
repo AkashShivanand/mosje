@@ -1,0 +1,308 @@
+/* ============================================================================
+   Campaign band — exploration prototypes
+   ============================================================================
+
+   Prototype styles for `/explorations/nmba/campaign-band`. Not imported by any
+   page under `/website` or `/portals`, and deliberately not shared with
+   `organisation-join-banner.css`: an exploration that inherits the production
+   stylesheet stops being a record of what was proposed the moment production
+   moves.
+
+   The `x` prefix marks the whole file as an exploration, so a grep for
+   `orgjb__` never lands here and a grep for `xband` never lands in production.
+   ========================================================================= */
+
+@layer theme, base, components, utilities;
+
+@layer components {
+  .xband-stage {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--sa-shape-12);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  /* ── The band ─────────────────────────────────────────────────────────── */
+
+  .xband {
+    background-image: linear-gradient(
+      to right,
+      var(--sa-color-successScale-600),
+      var(--sa-color-successScale-700)
+    );
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .xband__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-16) var(--sa-inline-24);
+    padding: var(--sa-padding-12) var(--sa-padding-24);
+  }
+
+  /*
+   * THE COLLAPSE.
+   *
+   * `grid-template-rows: 1fr → 0fr` is the only way to transition a box to its
+   * own content height without measuring it in JavaScript. It matters here
+   * beyond tidiness: `flight.ts` computes the badge's landing position from
+   * `band.offsetHeight`, which is only the right number if the band collapses to
+   * exactly zero. A `max-height` guess would leave the badge a few pixels out.
+   */
+  .xband--flight {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition:
+      grid-template-rows var(--sa-motion-emphasis-duration) var(--sa-motion-emphasis-easing),
+      opacity var(--sa-motion-emphasis-duration) var(--sa-motion-emphasis-easing);
+  }
+
+  /*
+   * THE CLIP MUST CARRY NO PADDING, AND THAT IS NOT A DETAIL.
+   *
+   * `min-block-size: 0` releases the grid item's automatic minimum on its
+   * CONTENT box. Padding sits outside that box, so a collapsing child with
+   * `padding-block: 12px` floors the track at 24px however far the `fr` is
+   * driven — measured: the band collapsed to exactly 24px and left a green
+   * hairline across the top of the hero, with the badge landing 24px low.
+   *
+   * So the collapsing child is a bare clip and the padding lives one level
+   * further in, where the clip can eat it.
+   */
+  .xband--flight > .xband__clip {
+    overflow: hidden;
+    min-block-size: 0;
+    padding: 0;
+  }
+
+  .xband--flight.is-leaving {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+
+  /* The pill hands over to the ghost well before the collapse finishes, so the
+     reader never sees two copies of the same number at once. */
+  .xband--flight.is-leaving .xband__helpline {
+    opacity: 0;
+    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
+
+  /* ── The helpline pill, in the band ───────────────────────────────────── */
+
+  .xband__helpline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-4) var(--sa-padding-20) var(--sa-padding-4) var(--sa-padding-4);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-color-successScale-700);
+    text-decoration: none;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .xband__helpline:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .xband__helpline-icon {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-successScale-50);
+    color: var(--sa-color-successScale-600);
+  }
+
+  .xband__helpline-label {
+    font-size: var(--sa-type-label-2-size);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xband__helpline-number {
+    font-size: var(--sa-type-label-1-size);
+    font-weight: var(--sa-font-weight-bold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── The campaign half ────────────────────────────────────────────────── */
+
+  .xband__campaign {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--sa-stack-12) var(--sa-inline-24);
+  }
+
+  .xband__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+  }
+
+  .xband__heading {
+    font-size: var(--sa-type-label-1-size);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .xband__text {
+    font-size: var(--sa-type-body-3-size);
+    max-inline-size: 44ch;
+    opacity: 0.9;
+  }
+
+  .xband__join {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+  }
+
+  /* No plate and no padding — the QR asset carries its own quiet zone, 56px a
+     side on a 686px image. See `organisation-join-banner.css`. */
+  .xband__qr {
+    display: grid;
+    place-items: center;
+    border-radius: var(--sa-shape-8);
+    overflow: hidden;
+  }
+
+  .xband__cta {
+    --sa-btn-edge: var(--sa-text-neutral-inverse);
+  }
+
+  .xband__dismiss {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-8);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 12%, transparent);
+    color: var(--sa-text-neutral-inverse);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .xband__dismiss:hover {
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 24%, transparent);
+  }
+
+  /* ── The fold ─────────────────────────────────────────────────────────── */
+
+  /*
+   * The stage is the real fold — `PageTrail`, `SitePageHeader`, `FactStrip` —
+   * so this file adds almost nothing to it. What it does add is the row the
+   * mark and the badge share, because `SitePageHeader`'s `logo` slot holds one
+   * child today and this option gives it two.
+   */
+  .xband-fold {
+    background-color: var(--sa-bg-neutral-base);
+    /* The fact card straddles the banner's lower edge, so the fold's last
+       painted row is the card's shadow. Without this the frame clipped it and
+       the specimen looked cut off rather than finished. */
+    padding-block-end: var(--sa-padding-8);
+  }
+
+  .xband-logo-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+  }
+
+  /*
+   * THE BADGE.
+   *
+   * It is in the layout from the first render — `opacity: 0`, not `display:
+   * none` — for two reasons that both matter. The flight needs a rect to aim
+   * at, and the hero must not reflow when the badge lands. It is `aria-hidden`
+   * and out of the tab order until it arrives, so nothing announces a control
+   * the reader cannot see.
+   */
+  .xband-hero__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    flex: 0 0 auto;
+    padding: var(--sa-padding-6) var(--sa-padding-16) var(--sa-padding-6) var(--sa-padding-6);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-color-primaryScale-700);
+    text-decoration: none;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  .xband-hero__badge[data-arrived] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .xband-hero__badge-icon {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-primaryScale-50);
+    color: var(--sa-color-primaryScale-600);
+  }
+
+  .xband-hero__badge-text {
+    display: flex;
+    flex-direction: column;
+    line-height: var(--sa-type-label-2-lh);
+  }
+
+  .xband-hero__badge-label {
+    font-size: var(--sa-type-label-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xband-hero__badge-number {
+    font-size: var(--sa-type-label-1-size);
+    font-weight: var(--sa-font-weight-bold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /*
+   * THE GHOST — what the reader actually watches fly.
+   *
+   * `position: fixed`, so the band collapsing underneath it cannot move it, and
+   * laid out at the badge's LANDING rect so the flight is a pure transform.
+   * `will-change` is set for the few hundred milliseconds it exists; the element
+   * is unmounted on arrival, so it never becomes a permanent compositor layer.
+   */
+  .xband-ghost {
+    position: fixed;
+    z-index: var(--sa-z-rail);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-6) var(--sa-padding-16) var(--sa-padding-6) var(--sa-padding-6);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-color-primaryScale-700);
+    box-shadow: var(--sa-elevation-dropdown);
+    pointer-events: none;
+    will-change: transform, opacity, filter;
+  }
+
+  @media (max-width: 767px) {
+    .xband__inner {
+      padding-inline: var(--sa-padding-16);
+    }
+
+    /* On a narrow band the mark and the badge stop being one row: a 100px mark
+       beside a pill leaves the title nowhere to go. */
+    .xband-logo-row {
+      flex-wrap: wrap;
+      gap: var(--sa-stack-12);
+    }
+  }
+}
