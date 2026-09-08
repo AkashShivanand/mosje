@@ -644,3 +644,28 @@ harmonised:**
 
 Reference and build: `docs/audit/img/figma-banner-ref.png` and
 `nudge-handoff.png`.
+
+### 12.4 The call icon: a halo, not a ringing handset
+
+The first version rocked the handset ±14° six times. Replaced, and only the
+third reason below is about taste:
+
+| | Before | After | Why |
+|---|---|---|---|
+| Metaphor | Handset rocking ±14° | Glyph still; a halo expands and fades | A shaking handset is the universal sign of an **incoming** call. The reader is about to **place** one — it was saying the opposite of what it meant |
+| Frequency | Fired on every page load | Same, but at a fraction of the amplitude | A band on every organisation page is not a rare animation. At that frequency the right amount of movement is far less than it looks on first viewing |
+| Cadence | Two fast rings (2.4s), then a dead stop | Three slow breaths (4.8s), then still | Peripheral vision detects **change**, not amplitude. A slow low-contrast repeat is noticed by someone not looking at it; a single bright burst is missed by anyone who blinked |
+| Amplitude | ±14° rotation at 20px | Halo `scale(0.85 → 1.9)`, opacity `0.42 → 0`, plus a 3.5% breath on the well | ±14° is a wobble. On a Government of India page about drug de-addiction, jaunty is the wrong register |
+| Easing | `--sa-motion-emphasis-easing` (in-out) | `--sa-motion-reveal-easing`, `cubic-bezier(0.22, 1, 0.36, 1)` | The halo is emitted, not travelling — a strong ease-out reads as something leaving the source |
+| Entry scale | `scale(1)` | `scale(0.85)` | Never from nothing; it starts already the size of a thing |
+| Reduced motion | `animation: none` — signal gone | Halo rests at `opacity 0.28, scale 1.2` | Fewer and gentler, not zero. The glyph keeps its soft ring; nothing travels |
+
+4.8s is under §2.2.2's five-second threshold **on purpose**, and the margin is
+stated in the stylesheet so nobody lengthens a breath to 1.7s and pushes the
+total past it without noticing. Hover and focus run it on indefinitely, which
+§2.2.2 does not bind because the reader started it.
+
+The handoff's `Nudge` pulse takes the same cadence, so the two layout options
+differ in how they are composed and not in how the signal behaves.
+
+Frames across one breath: `docs/audit/img/halo-frames.png`.

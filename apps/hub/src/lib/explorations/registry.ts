@@ -196,16 +196,17 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           },
           {
             id: "ringing",
-            title: "Card with a ringing glyph",
+            title: "Card with a breathing halo",
             summary:
-              "Label and number lead; the handset sits on the trailing edge and rings twice on arrival, then again on hover and focus.",
+              "Label and number lead; the glyph sits on the trailing edge inside a halo that breathes three times and then rests.",
             status: "proposed",
             live: true,
             lookAt: [
               "It reads label → number → act, which is the order a reader needs them in",
-              "Two rings is 2.4 seconds — deliberately under the five past which WCAG 2.2 would demand a pause control",
-              "After that it answers the reader rather than interrupting them: it rings on hover and on focus",
-              "Under `prefers-reduced-motion` it never moves at all",
+              "The glyph does not move. A rocking handset means an INCOMING call, and the reader is about to place one — the halo means the line is live",
+              "Three breaths over 4.8s, then still: under the five past which WCAG 2.2 would demand a pause control, and under it on purpose",
+              "It runs on under hover and focus, which is user-initiated and the one moment the movement is about to mean something",
+              "Under `prefers-reduced-motion` the halo rests at its opening frame — the meaning without the movement",
               "It is the SAME component the hero badge uses, so the flight in “The campaign band and the helpline” is one card changing size",
             ],
           },

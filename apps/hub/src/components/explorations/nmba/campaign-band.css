@@ -128,75 +128,102 @@
   }
 
   /*
-   * TWO RINGS ON ARRIVAL, THEN STILL — 2.4s, deliberately under the five
-   * seconds past which WCAG 2.2 §2.2.2 would require a pause control. A fourth
-   * control on this row to switch off a decoration is a worse band than a still
-   * one.
+   * ── THE SIGNAL IS A HALO, NOT A RINGING HANDSET ─────────────────────────
    *
-   * `both` fill so the handset rests at 0° rather than snapping back, and the
-   * animation is on the GLYPH while the waves are on its well — separating them
-   * keeps each on `transform`/`opacity` only.
+   * THREE REASONS THE ROCK WAS WRONG, and only the third is about taste.
+   *
+   * 1. IT MEANT THE OPPOSITE THING. A handset shaking side to side is the
+   *    universal sign of an INCOMING call. The reader is about to PLACE one.
+   *    The animation was telling them somebody was ringing them.
+   *
+   * 2. IT FIRED ON EVERY PAGE LOAD. Rare animations may be expressive; this one
+   *    is seen on every visit to every organisation page that carries a
+   *    campaign band. At that frequency the correct amount of movement is much
+   *    less than it looks like on the first viewing.
+   *
+   * 3. ±14° AT 20px IS A WOBBLE, not a detail. On a Government of India page
+   *    about drug de-addiction, jaunty is the wrong register.
+   *
+   * A halo says "this line is live" — the right meaning, carried by the
+   * quietest possible means. The glyph itself never moves at rest.
+   *
+   * ── WHY IT INSISTS, THEN GIVES UP ───────────────────────────────────────
+   *
+   * Three breaths over 4.8s, then still. Not two hard rings and a dead stop:
+   * peripheral vision detects CHANGE rather than amplitude, so a slow repeat at
+   * low contrast is noticed by someone not looking at it, where a single bright
+   * burst is missed by anyone who blinked.
+   *
+   * 4.8s is under the five past which WCAG 2.2 §2.2.2 requires a pause control
+   * for content moving beside other content — and it is under it on purpose,
+   * with the margin stated so nobody trims it to 1.7s a breath and pushes the
+   * total to 5.1 without noticing.
+   *
+   * On hover and on focus it runs on, slightly quicker. That is user-initiated,
+   * so §2.2.2 does not bind it, and it is the one moment the movement is about
+   * to mean something.
    */
-  .xhc__icon > * {
-    animation: xhc-ring 1200ms var(--sa-motion-emphasis-easing) 2 both;
-  }
-
-  .xhc__icon::before,
-  .xhc__icon::after {
+  .xhc__icon::before {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: var(--sa-shape-full);
-    border: var(--sa-stroke-2) solid var(--sa-color-successScale-600);
+    background-color: var(--sa-color-successScale-600);
     opacity: 0;
-    animation: xhc-wave 1200ms var(--sa-motion-emphasis-easing) 2 both;
+    animation: xhc-halo 1600ms var(--sa-motion-reveal-easing) 3 both;
   }
 
-  .xhc__icon::after {
-    animation-delay: 300ms;
-  }
-
-  /* After the arrival ring it answers the reader rather than interrupting them:
-     it rings again on hover and on focus, which is when the movement is about to
-     mean something. */
-  .xhc:hover .xhc__icon > *,
-  .xhc:focus-visible .xhc__icon > * {
-    animation: xhc-ring 1200ms var(--sa-motion-emphasis-easing) infinite;
+  /* The well itself breathes 3.5% — far below the threshold at which it reads
+     as a size change, and just enough that the halo looks emitted rather than
+     drawn on top. */
+  .xhc__icon {
+    animation: xhc-breathe 1600ms var(--sa-motion-reveal-easing) 3 both;
   }
 
   .xhc:hover .xhc__icon::before,
-  .xhc:hover .xhc__icon::after,
-  .xhc:focus-visible .xhc__icon::before,
-  .xhc:focus-visible .xhc__icon::after {
-    animation: xhc-wave 1200ms var(--sa-motion-emphasis-easing) infinite;
+  .xhc:focus-visible .xhc__icon::before {
+    animation: xhc-halo 1400ms var(--sa-motion-reveal-easing) infinite;
   }
 
-  @keyframes xhc-ring {
-    0%,
-    62%,
-    100% { transform: rotate(0deg); }
-    8% { transform: rotate(-14deg); }
-    18% { transform: rotate(12deg); }
-    28% { transform: rotate(-10deg); }
-    38% { transform: rotate(8deg); }
-    48% { transform: rotate(-5deg); }
-    55% { transform: rotate(3deg); }
+  .xhc:hover .xhc__icon,
+  .xhc:focus-visible .xhc__icon {
+    animation: xhc-breathe 1400ms var(--sa-motion-reveal-easing) infinite;
   }
 
-  @keyframes xhc-wave {
-    0% { opacity: 0.55; transform: scale(1); }
-    70% { opacity: 0; transform: scale(1.7); }
-    100% { opacity: 0; transform: scale(1.7); }
+  /*
+   * Never from `scale(0)`: the halo starts at 0.85, already the size of a thing
+   * rather than the memory of one. It stops at 1.9 and holds — the last 30% of
+   * the cycle is empty, which is the pause between breaths.
+   */
+  @keyframes xhc-halo {
+    0% { opacity: 0.42; transform: scale(0.85); }
+    55% { opacity: 0; transform: scale(1.9); }
+    100% { opacity: 0; transform: scale(1.9); }
   }
 
-  /* Never moves. Not a faster ring — no ring. */
+  @keyframes xhc-breathe {
+    0%, 55%, 100% { transform: scale(1); }
+    22% { transform: scale(1.035); }
+  }
+
+  /*
+   * Reduced motion keeps the MEANING and drops the movement: the halo rests at
+   * its opening frame, so the glyph still sits in a soft ring and nothing
+   * travels. "Fewer and gentler", not zero.
+   */
   @media (prefers-reduced-motion: reduce) {
-    .xhc__icon > *,
+    .xhc__icon,
     .xhc__icon::before,
-    .xhc__icon::after,
-    .xhc:hover .xhc__icon > *,
-    .xhc:focus-visible .xhc__icon > * {
+    .xhc:hover .xhc__icon,
+    .xhc:hover .xhc__icon::before,
+    .xhc:focus-visible .xhc__icon,
+    .xhc:focus-visible .xhc__icon::before {
       animation: none;
+    }
+
+    .xhc__icon::before {
+      opacity: 0.28;
+      transform: scale(1.2);
     }
   }
 
@@ -659,18 +686,20 @@
     inset: -8px;
     border-radius: var(--sa-shape-full);
     background-color: color-mix(in srgb, var(--sa-color-successScale-600) 48%, transparent);
-    animation: xnudge-pulse 1600ms var(--sa-motion-emphasis-easing) 2 both;
+    animation: xnudge-pulse 1600ms var(--sa-motion-reveal-easing) 3 both;
   }
 
   .xnudge__helpline:hover .xnudge__pulse::before,
   .xnudge__helpline:focus-visible .xnudge__pulse::before {
-    animation: xnudge-pulse 1600ms var(--sa-motion-emphasis-easing) infinite;
+    animation: xnudge-pulse 1400ms var(--sa-motion-reveal-easing) infinite;
   }
 
+  /* Same cadence as the card's halo, so the two layout options differ in how
+     they are composed and not in how the signal behaves. */
   @keyframes xnudge-pulse {
-    0% { opacity: 0.5; transform: scale(0.62); }
-    60% { opacity: 0; transform: scale(1.1); }
-    100% { opacity: 0; transform: scale(1.1); }
+    0% { opacity: 0.48; transform: scale(0.62); }
+    55% { opacity: 0; transform: scale(1.15); }
+    100% { opacity: 0; transform: scale(1.15); }
   }
 
   @media (prefers-reduced-motion: reduce) {
