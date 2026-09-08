@@ -392,3 +392,622 @@ option rather than resolved in it.
 
 Stills: `docs/audit/img/flight-{1-before,2-midair,3-after}.png`, captured at
 1440x900 / DPR 2 with the animation clock frozen at 200ms for the mid-air frame.
+
+---
+
+## 10. The two bands, rebalanced — and the white cast finally located
+
+### 10.1 What the audit measured, before
+
+Green band, 1440×104, content `x=84…1356`:
+
+| | x | w | h |
+|---|---|---|---|
+| helpline pill | 84 | **362** | 48 |
+| copy | 470 | 387 | 70 |
+| QR | 881 | 72 | 72 |
+| CTA | 961 | **331** | 32 |
+| dismiss | 1316 | 40 | 40 |
+
+**The gaps were 24 · 24 · 8 · 24.** That single 8 was the defect: it welded a
+scannable code to the left edge of a button, in the middle of the band, between
+a sentence and that sentence's own action — so a reader met the code before they
+met the thing it was a shortcut TO.
+
+**Five heights, one shared centre, no shared edge.** 48 / 70 / 72 / 32 / 40, all
+optically centred on y=305. A centre line is invisible; a flush top and bottom is
+not. That is what "unbalanced" was describing.
+
+The brightest, widest object was the helpline — 362px of pure white — and it was
+not the band's message. The CTA label was two clauses with a comma splice, 331px,
+opening the same URL as the 72px code beside it. The dismiss carried a permanent
+12% white wash in a 40px box, more painted surface than any control on the ribbon
+below it.
+
+### 10.2 What it is now
+
+```
+[QR] ─24─ Join Nasha Mukt Bharat Abhiyaan ─24─ [Register Now] ──40── [Helpline 14446] ─24─ ×
+ └──────────────── the campaign, one sentence ───────────────┘        └ a standing service
+```
+
+Measured: QR 72 · copy 580 · Register 180 · Helpline 296 · × 32, gaps 24 / 24 /
+**40** / 24. Two numbers, and the 40 is the helpline's own leading margin —
+because the separation belongs to the thing being set apart, not to the campaign.
+
+The QR leads and takes the row's full 72px height, so the band has a left edge
+the eye can measure everything else against. The helpline is the only filled
+control in the band and it is no longer paired with the campaign's button: they
+had read as two halves of one offer, and it is not part of the offer.
+
+Two labels were shortened, both with the department's full wording kept as the
+accessible name so the visible text is contained in it (WCAG 2.2 §2.5.3):
+`Register Now, Be a volunteer for change` → **Register Now** (the dropped clause
+restates the band's own sentence 200px to its left), and `National De-Addiction
+Helpline` → **De-Addiction Helpline** (364px → 296px; the key-facts strip below
+prints it in full). Both are recorded on the record type as explicit fields, not
+derived by string surgery.
+
+### 10.3 The ribbon
+
+Four inks on a 48px line — saffron eyebrow, near-black sentence, saffron button,
+**brand-blue link** — and the blue was the only blue on a cream ground between a
+green band and a blue hero. It now takes `secondaryScale-700`, the same saffron
+as the button's edge and the leading rule: one accent.
+
+The second route was one 290px underlined string carrying a question AND an
+instruction, so the second-choice route measured wider than the primary button
+beside it. It is now plain text plus a link — *No departmental account?* +
+**File on the open register** — 175 + 160, against the button's 202. A control's
+label is a label; the condition under which to use it is context, and context is
+not clickable. Its size went from `label-2` (12px) to the sentence's own 14px.
+
+Both dismisses are now 32×32 with the wash on hover only, where they were 40 and
+32 at two different treatments 50px apart.
+
+### 10.4 The white cast around the logo — three passes to find
+
+Reported repeatedly and twice reported as not present, because it is not in the
+CSS and not in the visible artwork.
+
+A PNG stores a colour for every pixel **including the fully transparent ones**,
+and most exporters write white there. Nothing sees them — until the browser
+resizes the image, at which point it interpolates neighbours and the invisible
+white bleeds into the visible edge.
+
+Measured on `nmba.png`: **30,907 transparent pixels, every one `rgb(255,255,255)`,
+of which 874 sit directly against the seal.**
+
+It shows on the DIAGONALS and not at the horizontal centre, and that is the whole
+reason it was missed: the seal fills the square edge to edge left and right, so
+there are no transparent neighbours there to bleed. The first investigation
+scanned a row through the middle of the mark, found blue running straight into
+green, and concluded there was no ring. There was — 45° away from where it looked.
+
+`tools/logo-alpha-bleed/bleed.mjs` dilates each mark's own colour outward into
+its transparent region and leaves every alpha byte untouched: no visible pixel
+changes value, and the interpolator now blends green into green. These are
+indexed PNGs whose transparent entries were all the same white duplicated across
+dozens of palette slots, so the repair reuses those redundant slots — `nmba.png`
+went 26,291 → 28,498 bytes. Four marks carried the defect: `nmba`, `daic`, `nos`,
+`sambal`.
+
+**Two wrong tests were written before the right one**, and both are recorded in
+the tool because each looks correct on its own:
+
+| Test | What it reported | Why it was wrong |
+|---|---|---|
+| "is the transparent pixel pale?" | 308 pixels on an already-repaired `nmba.png` | The seal's own edge around the National Emblem is `rgb(248,252,252)`; a correct bleed looks white |
+| "does it differ from its neighbour?" | all seventeen marks | A transparent pixel beside a *partially* transparent one differs by definition — that is anti-aliasing, not a halo |
+
+The test is both conditions together, against **fully opaque** neighbours only.
+It does not reach zero and is not a gate: a transparent pixel wedged between two
+differently coloured opaque ones can only carry one of them. On `nmba.png` that
+irreducible residue is 155 pixels, down from 874 holding pure white.
+
+Before and after at 4× device scale: `docs/audit/img/logo-zoom-before.png` and
+`logo-zoom-after.png`.
+
+### 10.5 Not touched
+
+`check` fails on this branch, and none of it is this work: `showNumbers` on
+`Pagination` in `smile-admin/(app)/persons/page.tsx`, `website/ui/data-table.tsx`
+and the design system's `data-table.tsx` are another session's uncommitted edits
+in this shared working tree. They are deliberately not staged and not reverted.
+
+---
+
+## 11. The orange band, cleaner — and the two-bands question as an exploration
+
+### 11.1 What came off the ribbon
+
+**The 3px saffron edge stripe.** It was an inset shadow at `x=0` — the viewport's
+own edge, **84px from the content it was meant to mark**, and from the H1, the
+lead, the hero buttons and the ribbon's own eyebrow, all of which begin at 84. At
+1920 that distance is 260px. A mark that far from everything it relates to is a
+stray line down the side of the page, and it is the same argument that removed
+this ribbon's calendar tile in an earlier pass. The accent it carried is already
+in the band four times over: a saffron eyebrow, a saffron button edge, a saffron
+link, on a saffron wash.
+
+**One of its two hairlines.** `border-block` drew a rule above *and* below. The
+rule above sat directly under the campaign band, which already ends in a hard
+colour boundary — a second line drawn on an edge that existed.
+
+**8px between the eyebrow and the sentence → 12.** The eyebrow is tracked
+capitals and the sentence is not; the change of register needs room to register.
+
+The dismiss now carries the same hover-only wash as the campaign band's, so two
+dismisses 50px apart behave identically rather than merely measuring the same.
+
+### 11.2 Two options, both live
+
+`/explorations/nmba/top-bands` — *"The fold opens with two announcement bands
+stacked. Should they stay separate, or share one?"*
+
+| | Two bands | One band, two panels |
+|---|---|---|
+| Fold height | 104 + 50 = **154px** of a 760px fold | **104px** |
+| Messages visible | both, without the reader doing anything | one at a time |
+| Grounds | green and saffron, stacked above a blue hero | green only — the notice gives up its hue |
+| Dismisses | two | one |
+
+**What is actually being traded is height against readership, and the exchange
+rate is not symmetrical.** Two bands cost a fifth of the fold before the page has
+said what it is. One band costs 104px and shows one message at a time, which on
+every carousel ever measured means the second is, in practice, unread — the
+design system's own `Carousel` says so in its docstring. So the question is not
+which looks tidier: it is whether the anniversary notice is worth 50px of every
+reader's fold, or worth being seen by almost none of them. Neither prototype
+answers that; the Department does.
+
+**Nothing rotates on a timer, and that is not a convenience.** `Carousel`'s
+contract on this estate forbids autoplay for anything a citizen reads — a strip
+that advances on its own takes the sentence away mid-sentence, and does it most
+to the slowest readers. A band carrying a de-addiction helpline and a filing
+deadline is exactly that content. WCAG 2.2 §2.2.2 would also require a pause
+control for anything moving more than five seconds, which means a **fourth**
+control on a row that already has three.
+
+**The switch is dots, not chevrons.** With two panels a reader wants *the other
+one*, and a pair of arrows makes them work out which arrow that is. Each dot is a
+24×24 target (§2.5.8) with an 8px mark inside it, and the pair is a `tablist`
+with arrow-key support.
+
+Stills: `docs/audit/img/bands-opt-two.png`, `bands-opt-one-a.png`,
+`bands-opt-one-b.png`, composed as `bands-options.png`.
+
+---
+
+## 12. The helpline card, and the handoff's own banner
+
+### 12.1 The card — one component, two sizes
+
+The glyph moved to the **trailing** edge. Leading, the card read *symbol → label →
+number*: the decoration arrived first and the five digits a person is actually
+looking for arrived last, at the end of a 296px control. Reversed it reads *label
+→ number → act*, which is the order the reader needs them in, and it puts the
+moving element on the edge the eye leaves the card by.
+
+`HelplineCard` now renders at `band` and `hero` size from one component, so the
+flight in `campaign-band` is **one card changing size** rather than one object
+being replaced by another.
+
+**It rings twice on arrival, then stops.** 1.2s × 2 = 2.4s — deliberately under
+the five seconds past which WCAG 2.2 §2.2.2 requires a pause mechanism for
+content moving beside other content. A fourth control on that row to switch off a
+decoration would be a worse band than a still one. After the arrival ring it
+answers **hover and focus**, which is where the movement earns its place: it
+responds to the reader rather than interrupting them. Under
+`prefers-reduced-motion` it never moves.
+
+### 12.2 Two flight bugs the reorder exposed
+
+| | Before | After |
+|---|---|---|
+| Band order in the flight option | helpline, then QR, then copy — the pre-reorder arrangement | QR, copy, Register, Helpline, as production |
+| The arc | `bow = dx / 12`, added to **x** unconditionally — which arcs a vertical path and does nothing at all to a horizontal one | Perpendicular to travel, and **negated**, so the card arcs over rather than sagging under |
+
+The second only became visible when the helpline moved to the band's trailing
+edge: the flight went from a 128px diagonal to an **860px** crossing, and a bow
+that had been invisible on a short vertical hop became a card diving through the
+hero and back up.
+
+### 12.3 `Nudge` — the handoff's composition, built as drawn
+
+`3FF5l0SMNIwdpZrKkeyPTm` node **57774:19709**. Every value read off the node, not
+eyeballed from a screenshot:
+
+| | Handoff | Built |
+|---|---|---|
+| Band height | 168 | **168** |
+| Code | 120×120 at 24,24, radius `--sa-shape-6` | same |
+| Content | x=168, 1064 wide, two rows, CTAs at y=80 | same |
+| Heading | `headline-3` 28/36 semibold | same |
+| Ground | `--sa-bg-brand-accent-bolder` → `-boldest` | same |
+| Register edge | `--sa-cmp-action-brand-secondary-inverse-default-border` | same |
+| Dismiss | 40×40 icon button, trailing | same |
+
+**The pulsing call glyph is the master's own idea** — instance `57895:11261`, a
+32px ring drawn around the 16px glyph at −8,−8. Figma can only draw it at rest;
+here it expands and fades, twice, under the same 2.2.2 reasoning as the card.
+
+**Two things the handoff and the build disagree about, recorded rather than
+harmonised:**
+
+1. Its sentence is *"Take the NMBA e-pledge today and commit to a Nasha Mukt
+   Bharat!"* — which points at the **e-pledge**, while the button beneath it goes
+   to the **volunteer register**. Kept verbatim in the prototype so the mismatch
+   is visible and can be settled by the Department.
+2. Its heading is `headline-3` at 28px, sitting directly above the page's own
+   `<h1>`. Worth checking against the title it precedes.
+
+Reference and build: `docs/audit/img/figma-banner-ref.png` and
+`nudge-handoff.png`.
+
+### 12.4 The call icon: a halo, not a ringing handset
+
+The first version rocked the handset ±14° six times. Replaced, and only the
+third reason below is about taste:
+
+| | Before | After | Why |
+|---|---|---|---|
+| Metaphor | Handset rocking ±14° | Glyph still; a halo expands and fades | A shaking handset is the universal sign of an **incoming** call. The reader is about to **place** one — it was saying the opposite of what it meant |
+| Frequency | Fired on every page load | Same, but at a fraction of the amplitude | A band on every organisation page is not a rare animation. At that frequency the right amount of movement is far less than it looks on first viewing |
+| Cadence | Two fast rings (2.4s), then a dead stop | Three slow breaths (4.8s), then still | Peripheral vision detects **change**, not amplitude. A slow low-contrast repeat is noticed by someone not looking at it; a single bright burst is missed by anyone who blinked |
+| Amplitude | ±14° rotation at 20px | Halo `scale(0.85 → 1.9)`, opacity `0.42 → 0`, plus a 3.5% breath on the well | ±14° is a wobble. On a Government of India page about drug de-addiction, jaunty is the wrong register |
+| Easing | `--sa-motion-emphasis-easing` (in-out) | `--sa-motion-reveal-easing`, `cubic-bezier(0.22, 1, 0.36, 1)` | The halo is emitted, not travelling — a strong ease-out reads as something leaving the source |
+| Entry scale | `scale(1)` | `scale(0.85)` | Never from nothing; it starts already the size of a thing |
+| Reduced motion | `animation: none` — signal gone | Halo rests at `opacity 0.28, scale 1.2` | Fewer and gentler, not zero. The glyph keeps its soft ring; nothing travels |
+
+4.8s is under §2.2.2's five-second threshold **on purpose**, and the margin is
+stated in the stylesheet so nobody lengthens a breath to 1.7s and pushes the
+total past it without noticing. Hover and focus run it on indefinitely, which
+§2.2.2 does not bind because the reader started it.
+
+The handoff's `Nudge` pulse takes the same cadence, so the two layout options
+differ in how they are composed and not in how the signal behaves.
+
+Frames across one breath: `docs/audit/img/halo-frames.png`.
+
+---
+
+## 13. The flight refined, the glyph back on the left, and the banner as two options
+
+### 13.1 The flight
+
+| | Before | After | Why |
+|---|---|---|---|
+| Duration | Fixed 400ms | `clamp(base×0.8, base + distance×0.25, base×1.6)` — **615ms** at 860px, ~430ms at 130px | A fixed duration is two different animations depending on where the card starts. At 860px it moved at **2,150 px/s** — fast enough that the eye tracks a blur and never reads one object arriving |
+| Blur | 2px at the **start**, clear by the midpoint | 1.5px at the start, **3px at the midpoint**, 0 at the end | Backwards. With an in-out curve the card is slowest on frame one and fastest halfway across, so it was blurring the slow part and sharpening the fast part — the opposite of motion blur |
+| Easing | One curve for everything | Per-keyframe: in-out for the departure, a strong ease-out into the landing | Opacity resolves well before position does, so the card is solid for the second half and the eye has something definite to follow in |
+| Opening opacity | 0.55 | 0.7 | At 0.55 the object was half-there while the pill was still visible; the two read as a crossfade rather than one thing moving |
+
+Landing is unchanged and still exact — predicted and actual agree to the pixel.
+
+### 13.2 The glyph went right and came back
+
+The argument for the trailing edge was that the card then read *label → number →
+act* instead of putting decoration before the digits. That reasoning was sound
+and it lost to two better facts: **the handoff draws it on the leading edge**
+(`Nudge`, 57895:11260), and a glyph that identifies *what a control is* belongs
+before its label — which is where the icon sits on every other button in the
+estate.
+
+### 13.3 The pulse, smoothed
+
+Three things made it steppy, and none was the duration:
+
+| | Before | After |
+|---|---|---|
+| Opacity onset | `0 → 0.42` on frame one — a pop every cycle | Ramps in over the first 14% |
+| Peak scale | 1.9 — nearly doubling, so the disc had a legible **edge**, and the edge is what looked like a step | 1.62 |
+| Easing | `reveal` (fast-out, slow-in) — right for something emitted, wrong for something breathing: it spends most of the cycle stationary, then jumps | `emphasis` (in-out) — accelerates and decelerates, which is what a swell does |
+
+Two breaths of 2000ms rather than three of 1600 — the same 4s total, still under
+§2.2.2's five seconds, margin stated in the stylesheet.
+
+### 13.4 The banner, as two options
+
+`/explorations/nmba/banner-layout` — *"Where do the band's two calls to action
+sit?"*
+
+| | Both CTAs on the right | CTAs below the copy |
+|---|---|---|
+| Height | **104px** | **168px** |
+| Code | 72px | 120px, spanning the full height |
+| Heading | label-sized | `headline-3`, 28/36 |
+| The two routes | one group on the trailing edge, **12 apart** | a column under the sentence, 16 apart |
+
+**12 is the gap, not 8 and not 16.** At 8 the two pills touch optically and read
+as a segmented control; at 16 they stop being a group at this size.
+
+**And it costs something.** The two were 40 apart on purpose: pairing the
+helpline with the campaign's own button makes it read as the second half of one
+offer, when it is a standing public service that happens to be printed here. The
+trade is a tighter, calmer trailing edge against a muddier distinction between a
+campaign action and a permanent one. Recorded on the option rather than resolved
+in it.
+
+Stills: `opt-ctas-right.png`, `opt-ctas-below.png`, `flight-frames.png`.
+
+---
+
+## 14. The blank space, and the tablet overflow it uncovered
+
+### 14.1 The gap was a measure cap, not a layout problem
+
+Measured at 1440 on the CTAs-right option:
+
+| | |
+|---|---|
+| Copy cell | **663px** |
+| Sentence ink | **288px**, over 2 lines |
+| Gap between the sentence and the buttons | **399px** |
+
+`.xband__text` carried `max-inline-size: 44ch` — about 288px at 14px — inherited
+from when the copy sat in a narrow column. On a 663px cell it wrapped the
+sentence to two lines while **375px of its own cell stayed empty**, and the band
+looked unbalanced because a third of the row was a hole held open by a rule meant
+to prevent long lines.
+
+A measure cap protects *reading*. This is one strapline, met once, above the page
+it introduces — and the grid already caps it: the cell is `1fr` between a 72px
+code and the controls, so it can never run the full container width. That is the
+right constraint, and it is a real one.
+
+| | Before | After |
+|---|---|---|
+| Sentence | 2 lines, 288px | **1 line, 573px** |
+| Dead space | 399px | **114px** |
+| Copy block height | 59px | 41px |
+
+At 1280 it returns to two lines and at 390 to three, which is the grid doing the
+capping.
+
+### 14.2 Two regressions the measurement then exposed
+
+**The pair grid never stacked.** `.xband__inner--pair` declared its four columns
+at *every* width, so below the one-row breakpoint the copy kept a `1fr` cell
+while the controls kept their intrinsic widths: at 768 the sentence got **111px,
+six lines and a 205px band**. Every cell now names its own row and column below
+1024, and the code is dropped below 768 as production does.
+
+**The hub's inline nav had been overflowing at tablet since before this work.**
+`ds-hdr-nav.is-inline` turned on at `min-width: 768px`, and the hub's list needs
+577px beside a ~300px lockup. Binary-searched at a 768 viewport:
+
+| Items | Document width |
+|---|---|
+| 4 | 768 — fits |
+| **5** | **781 — overflows** |
+| 6 | 893 |
+
+So the compact bar had been scrolling sideways at tablet since the *fifth* entry
+landed. Adding "Explorations" as a sixth made it 112px worse and is how it was
+found, not what caused it. The breakpoint moves to **1024** — together with the
+drawer trigger's, which has always been hidden at exactly the same width, so
+there is never a band where both or neither appears.
+
+Verified at 390, 768, 900, 1024 and 1440 on `/reports` and `/explorations`: no
+horizontal scroll at any of them, and exactly one of the two navigation forms
+present at each.
+
+---
+
+## 15. The flight is out, and the behaviour is on the live page
+
+### 15.1 Why the flight went
+
+It was legible and it was smooth. It was also **615ms of theatre attached to the
+act of refusing an advertisement**, on a Government of India page about drug
+de-addiction. The reader has just pressed × — they have said *less of this* — and
+answering that with a card arcing 860px across the fold is the wrong register
+however well it is executed.
+
+What survives is the part that mattered: **the number is carried, not kept.**
+Only the journey went.
+
+### 15.2 What ships
+
+The band folds away; the helpline appears beside the organisation's mark, 6px up
+and a fade, 120ms after the fold begins. Two compositor-only properties and one
+delay. `@starting-style` rather than a `data-mounted` effect — the element is
+inserted already holding its opening frame, so there is no first paint at full
+opacity to guard against and no state to keep in React.
+
+Under `prefers-reduced-motion` the 6px goes and **the fade stays**: a fade is not
+motion, and it is what tells the reader the badge is new.
+
+### 15.3 The wiring, and why it is a store
+
+| Piece | Where |
+|---|---|
+| `dismissCampaign()` / `useCampaignDismissed()` | `src/lib/website/campaign-dismissed.ts` |
+| The badge | `OrganisationHelplineBadge` + `organisation-helpline-badge.css` |
+| The slot | `PageHero`'s new `logoAside`, rendered inside `SitePageHeader`'s logo row |
+| The wiring | the organisation route, only where the record publishes a helpline |
+
+The two components are siblings rendered by a **server** component: the band sits
+in `afterBreadcrumb`, the badge inside the logo slot, and the route between them
+cannot hold client state. A context would mean wrapping the whole fold in a
+client boundary to pass one boolean — turning the hero, the fact strip and the
+page title into client components for no other reason.
+`useSyncExternalStore` is the estate's own answer to exactly this, and the same
+shape `DataModeProvider` uses.
+
+**In memory, deliberately.** Not `localStorage`, not `sessionStorage`. The band's
+own contract is that a campaign the Department is running is not something a
+reader switches off permanently by clicking one ×. The state dies with the page,
+and so does the badge. It is also reset on unmount, so a route change cannot
+carry one organisation's dismissal onto the next.
+
+### 15.4 What this fixes that was never a design
+
+Until now, dismissing the band removed the national de-addiction helpline from
+the top of a page about drug de-addiction, and that was *safe* only because the
+key-facts strip happens to carry the number as its third figure — a coincidence
+of content standing in for a design. It is now a design.
+
+The live region says so too: it names the number and where it went, rather than
+only announcing that something was dismissed.
+
+Verified at 1440, 768 and 390: the badge is 107×40 at all three and no viewport
+scrolls sideways. Register: `campaign-band` now holds three options, with
+"anchor and guest" and "the helpline flies" both kept and marked with what beat
+them.
+
+Stills: `prod-before-dismiss.png`, `prod-after-dismiss.png`.
+
+---
+
+## 16. The hero badge, sized for where it is — and whether the helpline belongs beside Register
+
+### 16.1 Sized for the hero, not for the band it came from
+
+It arrived as a 107×40 copy of the band's control — the right size on a crowded
+104px row, the wrong one beside a 100px mark under a 40px title, where it read as
+a leftover chip rather than the page's second standing fact. The hero has the
+room: mark, badge and title all sit left of a 340px portrait with ~700px of blue
+between them.
+
+| | Before | After |
+|---|---|---|
+| Size | 107×40 | **198×54** |
+| Icon well | 32px | 40px |
+| Number | `label-1`, 14px | **`headline-5`, 20px** — the same step the band gives its own heading |
+| Label | "Helpline" | **"De-Addiction Helpline"** |
+| Elevation | `card` | `raised` |
+
+The label now says what the number is FOR. Nothing else in the hero does, and the
+fact strip only says it once the reader has scrolled past the title. The full
+departmental title stays as the accessible name, so the visible text is contained
+in it (WCAG 2.2 §2.5.3).
+
+### 16.2 Are the helpline and Register related? No — and the pairing is the problem
+
+They share a rectangle because the source page put them there. They are two
+messages for two people:
+
+| | Register Now | 14446 |
+|---|---|---|
+| Who | someone browsing a campaign, unhurried | someone in trouble, possibly at 4am |
+| What | volunteering — discretionary | a national de-addiction helpline |
+| Medium | a web form | a telephone |
+| Urgency | none | the whole point |
+
+**And the band's own arithmetic makes it worse: it has three controls and two
+destinations.** The QR and Register open the *same URL*. So a reader scanning
+left to right meets scan-to-join, read-the-invitation, press-to-join — one
+sentence — and then a telephone number, which is a different sentence entirely.
+Setting the helpline 12px from Register as a matched pair asserts a parity that
+does not exist.
+
+**The recommendation is to take the helpline out of the band altogether** and let
+the hero badge be the only place it lives. That resolves every part of it:
+
+- the band becomes one message with one offer — scan it or press it, same URL;
+- the number becomes **permanent** rather than conditional, present whether or not
+  anyone has dismissed anything;
+- it sits beside the page's identity, which is where a standing fact belongs;
+- and the dismissal wiring disappears — no store, no `useSyncExternalStore`, no
+  cross-component state, because nothing has to survive anything.
+
+The current build is the second-best answer: the helpline is in the band, paired,
+and survives dismissal by machinery. Recorded here rather than changed unasked.
+
+---
+
+## 17. Two zones — the band carries both and stops pretending they are alike
+
+Asked for after §16.2 concluded that the helpline and Register are not related.
+This keeps both in the band and separates them by design rather than by distance.
+
+### What makes two controls read as siblings
+
+Same ground, same height, same silhouette, 12px apart. All four said *"these are
+two ways to do one thing"* about a volunteer form and a national helpline — not
+related, not for the same person, not even the same medium. And the band's
+arithmetic sharpens it: **three controls, two destinations**, because the code
+and the button open the same URL. The row read as one sentence with a telephone
+number stuck on the end.
+
+### What separates them here
+
+| | What it does |
+|---|---|
+| **Its own ground** — `successScale-800` (`#003d1e`) against the band's 600→700 | The seam is read before any of the words are. This does most of the work; the other two would not be enough alone |
+| **Its own shape** — a caption over a figure, not a label inside a pill | A button invites; a fact simply is. It is also how the key strip below states the same number |
+| **Its own position** — flush trailing edge, full row height | It reads as part of the band's furniture rather than as the last item in a list of actions |
+
+It is also **the hero badge's structure** — glyph leading, caption over figure —
+so what moves on dismissal is recognisably the same object arriving in a lighter
+skin, rather than one control being replaced by another.
+
+**A hairline, because the gradient is darkest exactly here.** The band runs
+600 → 700 left to right, so the panel's 800 lands against the deepest part of the
+ramp and the step is smallest precisely where the seam must be read. Going darker
+still would fix that and leave hover nowhere to go; a 12% white inset edge
+defines the panel without touching either.
+
+White on `#003d1e` measures about **13:1** — the most legible text in the band,
+which is right for the one line somebody may be reading in a hurry.
+
+Measured: band 1270×96, panel 206×72, 24px from the button. At 390 the panel
+takes its own row; no viewport scrolls sideways.
+
+`/explorations/nmba/banner-layout` now holds three: **both CTAs right**, **CTAs
+below the copy**, and **two zones**.
+
+---
+
+## 18. The fold audit, and what came of each finding
+
+Seven findings. **Six fixed, one withdrawn**, and the withdrawal is the one worth
+reading.
+
+| # | Finding | Outcome |
+|---|---|---|
+| 1 | The lead's column stopped **24px** from the 340px photograph | Fixed — the landing grid sets its own `column-gap: 40`, and the gutter measures 40 |
+| 2 | Green band met blue hero with a hard seam | Fixed — a hairline and a soft shadow, so the band rests ON the page |
+| 3 | The helpline number **tied** the campaign's own heading, both 20px | Fixed — the heading is `headline-4` (24px at 1440) against the number's 16 |
+| 4 | `14446` appeared **twice in the fold**, 950px apart | Fixed — the fact-strip row is gone |
+| 5 | The fact strip's fourth cell was a **name among three figures**, and the only one that wrapped | Fixed by 4 — three cells now, none wrapping |
+| 6 | The mark "floats": 64px above, 20px below | **Withdrawn** — see below |
+| 7 | The code's effective pattern was **~60px** inside a 72px box | Fixed — 88px box, ~74px of pattern |
+
+### Why 6 was withdrawn
+
+The 64 above the mark is the band's own `padding-block`, and it is symmetric with
+the 64 below the actions. The 20 below the mark is the content column's internal
+`gap`. **They are different quantities and were never meant to match** — one is
+the band's edge, the other is the rhythm inside it. Reading them as an asymmetry
+was reading a grid as a stack. Changing either would have made the band's top and
+bottom padding disagree, to fix something that was not wrong.
+
+### What each fix cost
+
+**The band grew 104 → 120px.** All of it the code: 88 + 32 of padding. That is a
+real charge against a 760px fold and it is the trade the finding named — a QR is
+the only thing in the band that fails *completely* if it is slightly too small,
+where everything else merely reads tighter. A code nobody can scan is not a
+smaller feature, it is an absent one.
+
+**The gutter fix is in the design system**, not this page: `.sa-siteheader__container`
+shares one `gap` between the stacked layout, where it is a row gap between copy
+and picture, and the landing layout, where it is the gutter beside a 340px
+photograph. 24 is right for the first and wrong for the second, so the landing
+variant now sets its own column gap. Every landing header on the estate gets it.
+
+**The helpline fact went for a reason that only just became true.** It was
+removed on 7 Sep as a duplicate, restored on 8 Sep because the band was
+dismissible and pressing × took the last copy of the number with it, and is
+removed again now because that is no longer so: the band carries it while it is
+there, and `OrganisationHelplineBadge` carries it beside the mark the moment the
+band goes. The number is in the fold in every state by design, rather than
+because this row happened to exist.
+
+Three facts, not four. The Ministry row survives on the same weak argument as
+before — it is the only cell that is a name among figures, and a reader on the
+Department's own site has been told the Department twice by the masthead already.
+It stays because two is not a strip.

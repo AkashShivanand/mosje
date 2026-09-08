@@ -107,34 +107,170 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
         id: "campaign-band",
         title: "The campaign band and the helpline",
         question:
-          "When a reader dismisses the campaign band, what happens to the national de-addiction helpline inside it?",
+          "When a reader dismisses the campaign band, does the national de-addiction helpline go with it, or move to the hero?",
         date: "8 September 2026",
         options: [
           {
-            id: "current",
-            title: "Anchor and guest",
+            id: "goes",
+            title: "It goes with the band",
             summary:
-              "The helpline sits outside the collapsible region. Dismissing the campaign leaves the number where it was and the band simply gets shorter.",
-            status: "proposed",
-            live: true,
-            lookAt: [
-              "The band does not disappear — it loses its campaign half and keeps a green strip",
-              "The number never moves, so a reader who wanted it can still find it",
-              "Two messages share one rectangle, which is what made the band read as cluttered",
-            ],
+              "Press the × and the whole band leaves, the number included. What the estate did until 8 September.",
+            status: "superseded",
+            supersededBy:
+              "A control whose job is “I do not want this advertisement” also removed a national de-addiction helpline from the top of a page about drug de-addiction. It was only ever survivable because the key-facts strip happens to carry the number — a coincidence of content standing in for a design.",
           },
           {
             id: "flight",
-            title: "The helpline flies to the hero",
+            title: "It flies to the hero",
             summary:
-              "The whole band leaves, and the helpline travels from it into a badge beside the campaign mark, so the number is carried rather than kept.",
-            status: "proposed",
+              "The whole band leaves, and the helpline travels from it into a badge beside the campaign mark on a 615ms arc.",
+            status: "superseded",
+            supersededBy:
+              "Legible and smooth, and wrong for this page: 615ms of theatre attached to the act of REFUSING an advertisement, on a government page about drug de-addiction. The reader has just said “less of this”. Its idea survives in the shipped option; only the flight went.",
             live: true,
             lookAt: [
               "The band goes entirely — no residual green strip",
               "The number arrives beside the mark, where the page's identity already is",
               "Under `prefers-reduced-motion` there is no flight: the badge is simply there",
               "It puts the helpline in the fold TWICE — once on the badge and once in the fact strip. The fact strip carries it only because the band can be dismissed, so choosing this option means deciding whether that fact returns to the Abhiyaan's fourth figure.",
+            ],
+          },
+          {
+            id: "arrive",
+            title: "The badge simply arrives",
+            summary:
+              "The whole band folds away and the helpline appears beside the mark — 6px up and a fade, once the fold has finished.",
+            status: "chosen",
+            live: true,
+            landedIn: "the live organisation template — `OrganisationHelplineBadge`",
+            lookAt: [
+              "The band goes entirely, and the number is beside the mark a moment later",
+              "Two properties and one delay; nothing crosses the fold",
+              "Under `prefers-reduced-motion` the 6px goes and the fade stays — a fade is not motion, and it is what says the badge is new",
+            ],
+          },
+        ],
+      },
+      {
+        id: "banner-layout",
+        title: "How the campaign band is composed",
+        question:
+          "The band carries a volunteer campaign and a national helpline, which are not related. How is it composed so the two do not read as a matched pair?",
+        date: "8 September 2026",
+        options: [
+          {
+            id: "ctas-right",
+            title: "Both CTAs on the right",
+            summary:
+              "104px, one row. A 72px code leads, the message takes the middle, and the two routes sit together on the trailing edge, 12 apart.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "It costs 104px of a 760px fold",
+              "Everything is on one optical line, so the row scans in a single pass",
+              "The heading is label-sized — it does not compete with the H1 below it",
+              "Pairing the helpline with the campaign's button makes it read as the second half of one offer, when it is a standing service that happens to be printed here",
+            ],
+          },
+          {
+            id: "ctas-below",
+            title: "CTAs below the copy",
+            summary:
+              "168px. A 120px code spans the full height, and the heading, sentence and both buttons stack beside it — the handoff’s own composition.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "64px more of the fold than the compact band, all of it the code's height",
+              "The heading is headline-3 at 28px, sitting above an H1 — worth checking against the page title",
+              "Its sentence points at the e-pledge while the button beneath goes to the volunteer register; kept verbatim so the mismatch can be settled rather than quietly harmonised",
+              "The pulsing call glyph is the handoff's own instance, not an addition",
+            ],
+          },
+          {
+            id: "two-zones",
+            title: "Two zones",
+            summary:
+              "The campaign keeps the band's gradient; the helpline takes a darker panel at the trailing edge, shaped as a fact — a caption over a figure — rather than as a second button.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "The seam is read before any of the words are — a gap of any size only ever says “same thing, further away”",
+              "It is a FACT, not a control: a caption over a figure, which is how the key strip below states the same number",
+              "It is the hero badge's structure, so what moves on dismissal is recognisably the same object in a lighter skin",
+              "White on `successScale-800` measures about 13:1 — the most legible text in the band, which is right for the line somebody may be reading in a hurry",
+            ],
+          },
+        ],
+      },
+      {
+        id: "helpline-card",
+        title: "The helpline inside the campaign band",
+        question:
+          "The national de-addiction helpline sits on a band that is mostly about volunteering. What shape does it take so a person in trouble finds it first?",
+        date: "8 September 2026",
+        options: [
+          {
+            id: "current",
+            title: "Glyph first, static",
+            summary:
+              "A filled white control reading symbol, label, number, with nothing on it that moves.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "The decoration arrives first and the five digits last, at the end of a 296px control",
+              "Nothing distinguishes it from the campaign's own button except its fill",
+            ],
+          },
+          {
+            id: "ringing",
+            title: "Card with a breathing halo",
+            summary:
+              "Label and number lead; the glyph sits on the trailing edge inside a halo that breathes three times and then rests.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "It reads label → number → act, which is the order a reader needs them in",
+              "The glyph does not move. A rocking handset means an INCOMING call, and the reader is about to place one — the halo means the line is live",
+              "Three breaths over 4.8s, then still: under the five past which WCAG 2.2 would demand a pause control, and under it on purpose",
+              "It runs on under hover and focus, which is user-initiated and the one moment the movement is about to mean something",
+              "Under `prefers-reduced-motion` the halo rests at its opening frame — the meaning without the movement",
+              "It is the SAME component the hero badge uses, so the flight in “The campaign band and the helpline” is one card changing size",
+            ],
+          },
+        ],
+      },
+      {
+        id: "top-bands",
+        title: "The two bands above the hero",
+        question:
+          "The fold opens with two announcement bands stacked — a campaign and an anniversary notice. Should they stay separate, or share one?",
+        date: "8 September 2026",
+        options: [
+          {
+            id: "two",
+            title: "Two bands",
+            summary:
+              "Each announcement keeps its own band, its own ground colour and its own dismiss, and both are visible at once.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "Both messages are readable without the reader doing anything",
+              "They cost 154px of a 760px fold before the page has said what it is",
+              "Two grounds and two dismisses stacked 50px apart",
+            ],
+          },
+          {
+            id: "one",
+            title: "One band, two panels",
+            summary:
+              "A single band carrying both, switched by the reader. Half the height, and one message visible at a time.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "50px of the fold given back to the hero",
+              "The second panel is, in practice, unread — the design system's own Carousel says so",
+              "Nothing rotates on a timer: a band carrying a helpline must not move a sentence away mid-read",
+              "The notice gives up its saffron, because a band that changes ground colour as it advances flashes",
             ],
           },
         ],

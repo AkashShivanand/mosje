@@ -34,82 +34,109 @@
     color: var(--sa-text-neutral-inverse);
   }
 
+  /* QR | copy | Register | Helpline | × — production's own arrangement, so the
+     option being decided is the only thing that differs between the two. */
   .xband__inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+    align-items: center;
+    column-gap: var(--sa-inline-24);
+    padding-block: var(--sa-padding-16);
+  }
+
+  /* With the campaign dismissed only the helpline is left, so the row stops
+     pretending to have five columns. */
+  /* QR | copy | [both CTAs] | × — four cells rather than five, because the two
+     routes are one group in this option. */
+  .xband__inner--pair {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+  }
+
+  .xband__pair {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--sa-stack-16) var(--sa-inline-24);
-    padding: var(--sa-padding-12) var(--sa-padding-24);
+    gap: var(--sa-stack-8) var(--sa-inline-12);
   }
 
-  /*
-   * THE COLLAPSE.
-   *
-   * `grid-template-rows: 1fr → 0fr` is the only way to transition a box to its
-   * own content height without measuring it in JavaScript. It matters here
-   * beyond tidiness: `flight.ts` computes the badge's landing position from
-   * `band.offsetHeight`, which is only the right number if the band collapses to
-   * exactly zero. A `max-height` guess would leave the badge a few pixels out.
-   */
-  .xband--flight {
-    display: grid;
-    grid-template-rows: 1fr;
-    transition:
-      grid-template-rows var(--sa-motion-emphasis-duration) var(--sa-motion-emphasis-easing),
-      opacity var(--sa-motion-emphasis-duration) var(--sa-motion-emphasis-easing);
+  .xband__inner--pair .xhc--band {
+    margin-inline-start: 0;
   }
 
-  /*
-   * THE CLIP MUST CARRY NO PADDING, AND THAT IS NOT A DETAIL.
-   *
-   * `min-block-size: 0` releases the grid item's automatic minimum on its
-   * CONTENT box. Padding sits outside that box, so a collapsing child with
-   * `padding-block: 12px` floors the track at 24px however far the `fr` is
-   * driven — measured: the band collapsed to exactly 24px and left a green
-   * hairline across the top of the hero, with the badge landing 24px low.
-   *
-   * So the collapsing child is a bare clip and the padding lives one level
-   * further in, where the clip can eat it.
-   */
-  .xband--flight > .xband__clip {
-    overflow: hidden;
-    min-block-size: 0;
-    padding: 0;
+  .xband__inner[data-gone] {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
   }
 
-  .xband--flight.is-leaving {
-    grid-template-rows: 0fr;
-    opacity: 0;
+  .xband__inner > .xband__qr {
+    align-self: stretch;
   }
 
-  /* The pill hands over to the ghost well before the collapse finishes, so the
-     reader never sees two copies of the same number at once. */
-  .xband--flight.is-leaving .xband__helpline {
-    opacity: 0;
-    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
-  }
+  /* ══════════════════════════════════════════════════════════════════════
+     THE HELPLINE CARD — one component, two sizes
+     ══════════════════════════════════════════════════════════════════════ */
 
-  /* ── The helpline pill, in the band ───────────────────────────────────── */
-
-  .xband__helpline {
+  .xhc {
     display: inline-flex;
     align-items: center;
     gap: var(--sa-inline-12);
-    padding: var(--sa-padding-4) var(--sa-padding-20) var(--sa-padding-4) var(--sa-padding-4);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-color-successScale-700);
     text-decoration: none;
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+    white-space: nowrap;
+    box-shadow: var(--sa-elevation-card);
+    transition:
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
-  .xband__helpline:hover {
-    background-color: var(--sa-bg-neutral-subtler);
+  .xhc:active {
+    transform: scale(0.98);
   }
 
-  .xband__helpline-icon {
+  @media (hover: hover) and (pointer: fine) {
+    .xhc:hover {
+      box-shadow: var(--sa-elevation-raised);
+    }
+  }
+
+  .xhc:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* The label recedes and the NUMBER carries the weight — a person scanning this
+     under stress is looking for five digits, not for a noun phrase. */
+  .xhc__text {
+    display: flex;
+    flex-direction: column;
+    line-height: var(--sa-type-label-2-lh);
+  }
+
+  .xhc__label {
+    font-size: var(--sa-type-label-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xhc__number {
+    font-size: var(--sa-type-label-1-size);
+    font-weight: var(--sa-font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+  }
+
+  /*
+   * THE GLYPH SITS ON THE TRAILING EDGE, and it is the only thing here that
+   * moves. Leading, the card read symbol → label → number, so the decoration
+   * arrived first and the five digits last. This way it reads label → number →
+   * act, and the movement sits on the edge the eye leaves the card by.
+   */
+  .xhc__icon {
+    position: relative;
     display: grid;
     place-items: center;
+    flex: 0 0 auto;
     inline-size: var(--sa-control-height-sm);
     block-size: var(--sa-control-height-sm);
     border-radius: var(--sa-shape-full);
@@ -117,28 +144,179 @@
     color: var(--sa-color-successScale-600);
   }
 
-  .xband__helpline-label {
-    font-size: var(--sa-type-label-2-size);
-    font-weight: var(--sa-font-weight-medium);
-    color: var(--sa-text-neutral-subtle);
+  /*
+   * ── THE SIGNAL IS A HALO, NOT A RINGING HANDSET ─────────────────────────
+   *
+   * THREE REASONS THE ROCK WAS WRONG, and only the third is about taste.
+   *
+   * 1. IT MEANT THE OPPOSITE THING. A handset shaking side to side is the
+   *    universal sign of an INCOMING call. The reader is about to PLACE one.
+   *    The animation was telling them somebody was ringing them.
+   *
+   * 2. IT FIRED ON EVERY PAGE LOAD. Rare animations may be expressive; this one
+   *    is seen on every visit to every organisation page that carries a
+   *    campaign band. At that frequency the correct amount of movement is much
+   *    less than it looks like on the first viewing.
+   *
+   * 3. ±14° AT 20px IS A WOBBLE, not a detail. On a Government of India page
+   *    about drug de-addiction, jaunty is the wrong register.
+   *
+   * A halo says "this line is live" — the right meaning, carried by the
+   * quietest possible means. The glyph itself never moves at rest.
+   *
+   * ── WHY IT INSISTS, THEN GIVES UP ───────────────────────────────────────
+   *
+   * Three breaths over 4.8s, then still. Not two hard rings and a dead stop:
+   * peripheral vision detects CHANGE rather than amplitude, so a slow repeat at
+   * low contrast is noticed by someone not looking at it, where a single bright
+   * burst is missed by anyone who blinked.
+   *
+   * 4.8s is under the five past which WCAG 2.2 §2.2.2 requires a pause control
+   * for content moving beside other content — and it is under it on purpose,
+   * with the margin stated so nobody trims it to 1.7s a breath and pushes the
+   * total to 5.1 without noticing.
+   *
+   * On hover and on focus it runs on, slightly quicker. That is user-initiated,
+   * so §2.2.2 does not bind it, and it is the one moment the movement is about
+   * to mean something.
+   */
+  .xhc__icon::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-successScale-600);
+    opacity: 0;
+    animation: xhc-halo 2000ms var(--sa-motion-emphasis-easing) 2 both;
   }
 
-  .xband__helpline-number {
-    font-size: var(--sa-type-label-1-size);
+  /* The well itself breathes 3.5% — far below the threshold at which it reads
+     as a size change, and just enough that the halo looks emitted rather than
+     drawn on top. */
+  .xhc__icon {
+    animation: xhc-breathe 2000ms var(--sa-motion-emphasis-easing) 2 both;
+  }
+
+  .xhc:hover .xhc__icon::before,
+  .xhc:focus-visible .xhc__icon::before {
+    animation: xhc-halo 2000ms var(--sa-motion-emphasis-easing) infinite;
+  }
+
+  .xhc:hover .xhc__icon,
+  .xhc:focus-visible .xhc__icon {
+    animation: xhc-breathe 2000ms var(--sa-motion-emphasis-easing) infinite;
+  }
+
+  /*
+   * ── WHAT MADE THE FIRST PULSE FEEL STEPPY ───────────────────────────────
+   *
+   * Three things, and none of them was the duration:
+   *
+   * 1. OPACITY WAS FULL ON FRAME ONE. It went 0 → 0.42 instantly, so every
+   *    cycle began with a pop. It now ramps in over the first 14%, which is the
+   *    single biggest difference.
+   * 2. IT REACHED 1.9. Nearly doubling made the disc a shape rather than a
+   *    glow, so its edge was legible and the edge is what looked like a step.
+   *    1.62 keeps it soft.
+   * 3. A HARD EASE-OUT. `reveal` is fast-out-slow-in — right for something
+   *    emitted, wrong for something breathing, because it spends most of the
+   *    cycle stationary and then jumps. `emphasis` accelerates and decelerates,
+   *    which is what a swell does.
+   *
+   * Two breaths of 2000ms rather than three of 1600: same 4s total, still under
+   * the five past which WCAG 2.2 §2.2.2 would want a pause control, and the
+   * margin is stated so nobody lengthens a breath and crosses it unnoticed.
+   */
+  @keyframes xhc-halo {
+    0% { opacity: 0; transform: scale(0.92); }
+    14% { opacity: 0.36; }
+    62% { opacity: 0; transform: scale(1.62); }
+    100% { opacity: 0; transform: scale(1.62); }
+  }
+
+  /* 2.5%, down from 3.5% — with the glyph on the leading edge the well sits
+     against the card's rounded end, where any wobble reads against the curve. */
+  @keyframes xhc-breathe {
+    0%, 62%, 100% { transform: scale(1); }
+    26% { transform: scale(1.025); }
+  }
+
+  /*
+   * Reduced motion keeps the MEANING and drops the movement: the halo rests at
+   * its opening frame, so the glyph still sits in a soft ring and nothing
+   * travels. "Fewer and gentler", not zero.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .xhc__icon,
+    .xhc__icon::before,
+    .xhc:hover .xhc__icon,
+    .xhc:hover .xhc__icon::before,
+    .xhc:focus-visible .xhc__icon,
+    .xhc:focus-visible .xhc__icon::before {
+      animation: none;
+    }
+
+    .xhc__icon::before {
+      opacity: 0.28;
+      transform: scale(1.2);
+    }
+  }
+
+  /* ── The two sizes ────────────────────────────────────────────────────── */
+
+  .xhc--band {
+    margin-inline-start: var(--sa-inline-16);
+    padding: var(--sa-padding-4) var(--sa-padding-20) var(--sa-padding-4) var(--sa-padding-4);
+  }
+
+  .xhc--hero {
+    padding: var(--sa-padding-4) var(--sa-padding-16) var(--sa-padding-4) var(--sa-padding-4);
+  }
+
+  .xhc--hero .xhc__label {
+    font-size: var(--sa-type-label-3-size);
+  }
+
+  /*
+   * The slot holds the card's space in the hero from the first render, so the
+   * flight has a rect to aim at and the hero does not reflow when it lands.
+   */
+  .xhc-slot {
+    display: inline-flex;
+    flex: 0 0 auto;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .xhc-slot[data-arrived] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* The superseded arrangement, kept so the two can be compared side by side:
+     glyph first, label, number, and nothing moves. */
+  .xband__helpline-legacy {
+    margin-inline-start: var(--sa-inline-16);
+
+    --sa-btn-fill: var(--sa-bg-neutral-base);
+    --sa-btn-ink: var(--sa-color-successScale-700);
+  }
+
+  .xhcl__label {
+    font-weight: var(--sa-font-weight-regular);
+    opacity: 0.75;
+  }
+
+  .xhcl__number {
     font-weight: var(--sa-font-weight-bold);
     font-variant-numeric: tabular-nums;
   }
 
-  /* ── The campaign half ────────────────────────────────────────────────── */
-
-  .xband__campaign {
-    display: flex;
-    flex: 1 1 auto;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: flex-end;
-    gap: var(--sa-stack-12) var(--sa-inline-24);
+  .xhc-replay {
+    margin-block-start: var(--sa-stack-12);
   }
+
+  /* ── The campaign half ────────────────────────────────────────────────── */
 
   .xband__copy {
     display: flex;
@@ -146,15 +324,41 @@
     gap: var(--sa-stack-2);
   }
 
+  /*
+   * headline-5 and body-2, WHICH IS WHAT PRODUCTION USES.
+   *
+   * This carried label-1 over body-3 — 14 over 12, against the live band's 20
+   * over 14. A prototype whose type is a step smaller than the thing it stands
+   * for is not a prototype of it: the audit that found this was reading the
+   * campaign's own headline as SMALLER than the lead paragraph below it, which
+   * is a defect the real band does not have.
+   */
   .xband__heading {
-    font-size: var(--sa-type-label-1-size);
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
     font-weight: var(--sa-font-weight-semibold);
   }
 
+  /*
+   * NO MEASURE CAP IN THIS BAND, AND THE CAP WAS THE BLANK SPACE.
+   *
+   * `max-inline-size: 44ch` — about 288px at 14px — was carried over from when
+   * the copy sat in a narrow column. On a 663px cell it made the sentence wrap
+   * to two lines while 375px of its OWN cell stayed empty, and the gap between
+   * the message and the buttons measured 399px. The band looked unbalanced
+   * because a third of the row was a hole, and the hole was being held open by a
+   * rule meant to prevent long lines.
+   *
+   * A measure cap protects READING. This is one strapline, met once, above the
+   * page it introduces — and the grid already caps it: the cell is `1fr` between
+   * a 72px code and the controls, so it can never run the full container width.
+   * That is the right constraint here, and it is a real one.
+   */
   .xband__text {
-    font-size: var(--sa-type-body-3-size);
-    max-inline-size: 44ch;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
     opacity: 0.9;
+    text-wrap: pretty;
   }
 
   .xband__join {
@@ -214,63 +418,6 @@
   }
 
   /*
-   * THE BADGE.
-   *
-   * It is in the layout from the first render — `opacity: 0`, not `display:
-   * none` — for two reasons that both matter. The flight needs a rect to aim
-   * at, and the hero must not reflow when the badge lands. It is `aria-hidden`
-   * and out of the tab order until it arrives, so nothing announces a control
-   * the reader cannot see.
-   */
-  .xband-hero__badge {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-8);
-    flex: 0 0 auto;
-    padding: var(--sa-padding-6) var(--sa-padding-16) var(--sa-padding-6) var(--sa-padding-6);
-    border-radius: var(--sa-shape-full);
-    background-color: var(--sa-bg-neutral-base);
-    color: var(--sa-color-primaryScale-700);
-    text-decoration: none;
-    white-space: nowrap;
-    opacity: 0;
-    pointer-events: none;
-    box-shadow: var(--sa-elevation-card);
-  }
-
-  .xband-hero__badge[data-arrived] {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .xband-hero__badge-icon {
-    display: grid;
-    place-items: center;
-    inline-size: var(--sa-control-height-sm);
-    block-size: var(--sa-control-height-sm);
-    border-radius: var(--sa-shape-full);
-    background-color: var(--sa-color-primaryScale-50);
-    color: var(--sa-color-primaryScale-600);
-  }
-
-  .xband-hero__badge-text {
-    display: flex;
-    flex-direction: column;
-    line-height: var(--sa-type-label-2-lh);
-  }
-
-  .xband-hero__badge-label {
-    font-size: var(--sa-type-label-3-size);
-    color: var(--sa-text-neutral-subtle);
-  }
-
-  .xband-hero__badge-number {
-    font-size: var(--sa-type-label-1-size);
-    font-weight: var(--sa-font-weight-bold);
-    font-variant-numeric: tabular-nums;
-  }
-
-  /*
    * THE GHOST — what the reader actually watches fly.
    *
    * `position: fixed`, so the band collapsing underneath it cannot move it, and
@@ -283,26 +430,666 @@
     z-index: var(--sa-z-rail);
     display: inline-flex;
     align-items: center;
-    gap: var(--sa-inline-8);
-    padding: var(--sa-padding-6) var(--sa-padding-16) var(--sa-padding-6) var(--sa-padding-6);
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-4) var(--sa-padding-16) var(--sa-padding-4) var(--sa-padding-4);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-neutral-base);
-    color: var(--sa-color-primaryScale-700);
+    color: var(--sa-color-successScale-700);
     box-shadow: var(--sa-elevation-dropdown);
     pointer-events: none;
+    white-space: nowrap;
     will-change: transform, opacity, filter;
   }
 
-  @media (max-width: 767px) {
-    .xband__inner {
-      padding-inline: var(--sa-padding-16);
+  /* ── The anniversary notice, as its own band ──────────────────────────── */
+
+  .xrib {
+    background-color: var(--sa-bg-brand-secondary-base);
+    border-block-end: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  .xrib__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-8) var(--sa-inline-16);
+    padding-block: var(--sa-padding-8);
+  }
+
+  .xrib__copy {
+    display: flex;
+    flex: 1 1 auto;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--sa-inline-12);
+  }
+
+  .xrib__eyebrow {
+    font-size: var(--sa-type-label-3-size);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--sa-color-secondaryScale-700);
+  }
+
+  .xrib__eyebrow::after {
+    content: "·";
+    margin-inline-start: var(--sa-inline-12);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xrib__text {
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .xrib__routes {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+  }
+
+  .xrib__cta {
+    --sa-btn-edge: var(--sa-color-secondaryScale-700);
+  }
+
+  .xrib__second {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--sa-inline-6);
+    font-size: var(--sa-type-body-2-size);
+  }
+
+  .xrib__second-note {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xrib__alt {
+    color: var(--sa-color-secondaryScale-700);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .xrib__dismiss {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-8);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── One band, two panels ─────────────────────────────────────────────── */
+
+  /*
+   * BOTH PANELS TAKE THE CAMPAIGN'S GREEN, and the notice gives up its saffron.
+   *
+   * A band that changes ground colour as it advances is a band that flashes, and
+   * two saturated grounds alternating above a blue hero is three colours fighting
+   * over 104px. The Abhiyaan's green is the page's own identity, so it holds; the
+   * notice keeps its words and loses its hue. That IS the cost of this option and
+   * it should be weighed, not designed around.
+   */
+  .xband__inner--one {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: var(--sa-inline-24);
+  }
+
+  .xband__panels {
+    min-inline-size: 0;
+  }
+
+  .xband__panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-12) var(--sa-inline-24);
+  }
+
+  /* The copy takes the slack; the routes keep their intrinsic width. The other
+     way round squeezed a two-line sentence into 400px and left 600px of empty
+     green between the routes and the dots. */
+  .xband__panel > .xband__copy {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
+  .xband__panel--notice .xband__heading {
+    font-size: var(--sa-type-label-1-size);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+  }
+
+  .xband__notice-routes {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+  }
+
+  .xband__alt {
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-inverse);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  /*
+   * Dots, not chevrons. With two panels a reader wants the OTHER one, and a pair
+   * of arrows makes them work out which arrow that is. The target is 24×24 —
+   * WCAG 2.2 §2.5.8's floor — with the visible dot inside it.
+   */
+  .xband__tabs {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+  }
+
+  .xband__tab {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-full);
+  }
+
+  .xband__tab::before {
+    content: "";
+    inline-size: var(--sa-padding-8);
+    block-size: var(--sa-padding-8);
+    border-radius: var(--sa-shape-full);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 45%, transparent);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .xband__tab[aria-selected="true"]::before {
+    background-color: var(--sa-text-neutral-inverse);
+  }
+
+  /*
+   * ── BELOW 1024 ──────────────────────────────────────────────────────────
+   *
+   * The five- and four-column rows were declared at EVERY width, so below the
+   * one-row breakpoint the copy kept a `1fr` cell while the controls kept their
+   * intrinsic widths — and at 768 that left the sentence 111px, six lines, a
+   * 205px band and a page that scrolled sideways. Measured, not guessed: the
+   * document's scrollWidth was 894 against a 768 viewport.
+   *
+   * Every cell names its own row and column here, because auto-placement beside
+   * explicitly placed siblings is how the ribbon's dismiss once ended up left of
+   * the mark it was supposed to follow.
+   */
+  @media (max-width: 1023px) {
+    .xband__inner,
+    .xband__inner--pair {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      row-gap: var(--sa-stack-12);
+      align-items: center;
     }
+
+    .xband__qr {
+      grid-row: 1;
+      grid-column: 1;
+    }
+
+    .xband__copy {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    .xband__dismiss {
+      grid-row: 1;
+      grid-column: 3;
+      align-self: start;
+    }
+
+    .xband__pair {
+      grid-row: 2;
+      grid-column: 1 / -1;
+    }
+
+    .xband__inner:not(.xband__inner--pair) .xband__cta {
+      grid-row: 2;
+      grid-column: 1 / -1;
+    }
+
+    .xband__inner:not(.xband__inner--pair) .xhc--band {
+      grid-row: 3;
+      grid-column: 1 / -1;
+      margin-inline-start: 0;
+    }
+  }
+
+  @media (max-width: 767px) {
+    /* The code goes: a reader on a phone is holding the device that would scan
+       it, and the same destination is a full-width button directly below. This
+       is what production does at the same breakpoint. */
+    .xband__qr {
+      display: none;
+    }
+
+    .xband__copy {
+      grid-column: 1 / 3;
+    }
+
+    .xband__pair {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .xband__pair > * {
+      justify-content: center;
+    }
+
 
     /* On a narrow band the mark and the badge stop being one row: a 100px mark
        beside a pill leaves the title nowhere to go. */
     .xband-logo-row {
       flex-wrap: wrap;
       gap: var(--sa-stack-12);
+    }
+  }
+}
+
+@layer components {
+  /* ══════════════════════════════════════════════════════════════════════
+     `Nudge` — the handoff's own composition, 57774:19709
+     ══════════════════════════════════════════════════════════════════════
+     Every value below is read off the Figma node rather than eyeballed from
+     the screenshot: 168 tall, a 1320 container at x=60, a 120px code at 24,24,
+     content at x=168 spanning 1064, CTAs on a second row at y=80, and a 40px
+     icon button at x=1256. The gradient is the brand ACCENT ramp — bolder to
+     boldest — not the success ramp the compact band uses.
+     ====================================================================== */
+
+  .xnudge {
+    background-image: linear-gradient(
+      to right,
+      var(--sa-bg-brand-accent-bolder),
+      var(--sa-bg-brand-accent-boldest)
+    );
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .xnudge__inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: start;
+    column-gap: var(--sa-inline-24);
+    padding-block: var(--sa-padding-24);
+  }
+
+  /* Spans both rows and sets the band's height — 120, against the compact
+     band's 72. Four times the area, and the whole of the extra 64px. */
+  .xnudge__qr {
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: var(--sa-shape-6);
+  }
+
+  .xnudge__qr img {
+    display: block;
+    inline-size: 120px;
+    block-size: 120px;
+  }
+
+  .xnudge__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+    min-inline-size: 0;
+  }
+
+  .xnudge__copy {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+  }
+
+  .xnudge__heading {
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .xnudge__text {
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+  }
+
+  .xnudge__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-8) var(--sa-inline-16);
+  }
+
+  /* The handoff's `brand/secondary/inverse` edge — a pale blue, not white. */
+  .xnudge__cta {
+    --sa-btn-edge: var(--sa-cmp-action-brand-secondary-inverse-default-border);
+  }
+
+  .xnudge__helpline {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    block-size: var(--sa-control-height-md);
+    padding-inline: var(--sa-padding-16);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-cmp-action-success-primary-inverse-default-bg);
+    color: var(--sa-cmp-action-success-primary-inverse-default-text);
+    font-size: var(--sa-type-label-1-size);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .xnudge__helpline:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .xnudge__helpline-number {
+    font-weight: var(--sa-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /*
+   * THE PULSE IS THE HANDOFF'S OWN — instance 57895:11261, a 32px ring drawn
+   * around the 16px glyph at -8,-8. Figma can only draw it at rest; here it
+   * expands and fades.
+   *
+   * TWICE, THEN STILL, for the same reason the other card rings twice: WCAG 2.2
+   * §2.2.2 wants a pause control for anything moving beyond five seconds beside
+   * other content, and a fourth control on this row to switch off a decoration
+   * is a worse band than a still one. After that it answers hover and focus.
+   */
+  .xnudge__pulse {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    inline-size: var(--sa-icon-size-16);
+    block-size: var(--sa-icon-size-16);
+    color: var(--sa-cmp-action-success-primary-inverse-default-text);
+  }
+
+  .xnudge__pulse::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: var(--sa-shape-full);
+    background-color: color-mix(in srgb, var(--sa-color-successScale-600) 48%, transparent);
+    animation: xnudge-pulse 1600ms var(--sa-motion-reveal-easing) 3 both;
+  }
+
+  .xnudge__helpline:hover .xnudge__pulse::before,
+  .xnudge__helpline:focus-visible .xnudge__pulse::before {
+    animation: xnudge-pulse 1400ms var(--sa-motion-reveal-easing) infinite;
+  }
+
+  /* Same cadence as the card's halo, so the two layout options differ in how
+     they are composed and not in how the signal behaves. */
+  @keyframes xnudge-pulse {
+    0% { opacity: 0.48; transform: scale(0.62); }
+    55% { opacity: 0; transform: scale(1.15); }
+    100% { opacity: 0; transform: scale(1.15); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .xnudge__pulse::before,
+    .xnudge__helpline:hover .xnudge__pulse::before,
+    .xnudge__helpline:focus-visible .xnudge__pulse::before {
+      animation: none;
+      opacity: 0.5;
+      transform: scale(0.62);
+    }
+  }
+
+  .xnudge__dismiss {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-md);
+    block-size: var(--sa-control-height-md);
+    border-radius: var(--sa-shape-8);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 12%, transparent);
+    color: var(--sa-text-neutral-inverse);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .xnudge__dismiss:hover {
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 24%, transparent);
+  }
+
+  /*
+   * ── BELOW 1024 ──────────────────────────────────────────────────────────
+   *
+   * The five- and four-column rows were declared at EVERY width, so below the
+   * one-row breakpoint the copy kept a `1fr` cell while the controls kept their
+   * intrinsic widths — and at 768 that left the sentence 111px, six lines, a
+   * 205px band and a page that scrolled sideways. Measured, not guessed: the
+   * document's scrollWidth was 894 against a 768 viewport.
+   *
+   * Every cell names its own row and column here, because auto-placement beside
+   * explicitly placed siblings is how the ribbon's dismiss once ended up left of
+   * the mark it was supposed to follow.
+   */
+  @media (max-width: 1023px) {
+    .xband__inner,
+    .xband__inner--pair {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      row-gap: var(--sa-stack-12);
+      align-items: center;
+    }
+
+    .xband__qr {
+      grid-row: 1;
+      grid-column: 1;
+    }
+
+    .xband__copy {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    .xband__dismiss {
+      grid-row: 1;
+      grid-column: 3;
+      align-self: start;
+    }
+
+    .xband__pair {
+      grid-row: 2;
+      grid-column: 1 / -1;
+    }
+
+    .xband__inner:not(.xband__inner--pair) .xband__cta {
+      grid-row: 2;
+      grid-column: 1 / -1;
+    }
+
+    .xband__inner:not(.xband__inner--pair) .xhc--band {
+      grid-row: 3;
+      grid-column: 1 / -1;
+      margin-inline-start: 0;
+    }
+  }
+
+  @media (max-width: 767px) {
+    /* The code goes: a reader on a phone is holding the device that would scan
+       it, and the same destination is a full-width button directly below. This
+       is what production does at the same breakpoint. */
+    .xband__qr {
+      display: none;
+    }
+
+    .xband__copy {
+      grid-column: 1 / 3;
+    }
+
+    .xband__pair {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .xband__pair > * {
+      justify-content: center;
+    }
+
+    .xnudge__inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    /* The 120px code goes below the copy rather than beside it: at 390 a code
+       and a 28px heading on one row leaves the heading 190px. */
+    .xnudge__qr {
+      grid-row: 2;
+      grid-column: 1 / -1;
+    }
+  }
+}
+
+@layer components {
+  /* The shipped transition: 6px up and a fade, once the band has folded away.
+     Two compositor-only properties and one delay — the whole of it. */
+  .xarrive {
+    display: inline-flex;
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing) 120ms,
+      transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing) 120ms;
+  }
+
+  @starting-style {
+    .xarrive {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    @starting-style {
+      .xarrive {
+        transform: none;
+      }
+    }
+  }
+}
+
+@layer components {
+  /* ══════════════════════════════════════════════════════════════════════
+     TWO ZONES — a campaign, and a standing service
+     ══════════════════════════════════════════════════════════════════════ */
+
+  /* The band's own padding goes: the service panel is full height, so the
+     breathing room moves inside each zone rather than around both. */
+  .xband--zoned .xband__inner--zoned {
+    grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+    column-gap: var(--sa-inline-24);
+    align-items: stretch;
+    padding-block: var(--sa-padding-12);
+  }
+
+  .xband__inner--zoned > .xband__copy,
+  .xband__inner--zoned > .xband__cta,
+  .xband__inner--zoned > .xband__dismiss {
+    align-self: center;
+  }
+
+  /*
+   * ITS OWN GROUND, and this is the change that does most of the work. A seam is
+   * read before any words are: `successScale-800` against the band's 600→700 is
+   * a step the eye takes as "different thing", where a gap of any size is only
+   * ever read as "same thing, further away".
+   *
+   * White on #003d1e measures about 13:1, so the figure is the most legible text
+   * in the band — which is correct for the one line somebody may be reading in a
+   * hurry.
+   */
+  .xband__service {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    align-self: stretch;
+    padding: var(--sa-padding-8) var(--sa-padding-20) var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-12);
+    background-color: var(--sa-color-successScale-800);
+    /*
+     * A HAIRLINE, BECAUSE THE GRADIENT IS DARKEST EXACTLY HERE.
+     *
+     * The band runs 600 → 700 left to right, so the panel's own 800 lands
+     * against the deepest part of the ramp and the step is at its smallest
+     * precisely where the seam has to be read. Going darker still would fix that
+     * and leave hover nowhere to go; a 10% white edge defines the panel without
+     * touching either.
+     */
+    box-shadow: inset 0 0 0 var(--sa-stroke-1)
+      color-mix(in srgb, var(--sa-text-neutral-inverse) 12%, transparent);
+    color: var(--sa-text-neutral-inverse);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .xband__service:hover {
+      background-color: var(--sa-color-successScale-900);
+    }
+  }
+
+  .xband__service:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* A tint of the ground, not a grey. Grey text on a coloured surface is the
+     thing that makes a panel look faded rather than quiet. */
+  .xband__service-icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    inline-size: var(--sa-control-height-md);
+    block-size: var(--sa-control-height-md);
+    border-radius: var(--sa-shape-full);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 14%, transparent);
+  }
+
+  .xband__service-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+  }
+
+  /*
+   * ITS OWN SHAPE: a caption above a figure, which is how the key strip below
+   * states the same number — not a label inside a pill, which is how a button
+   * states an instruction. A button invites; a fact simply is.
+   */
+  .xband__service-label {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    color: color-mix(in srgb, var(--sa-text-neutral-inverse) 78%, transparent);
+  }
+
+  .xband__service-number {
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-weight: var(--sa-font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.01em;
+  }
+
+  @media (max-width: 1023px) {
+    .xband--zoned .xband__inner--zoned {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+    }
+
+    .xband__service {
+      grid-row: 3;
+      grid-column: 1 / -1;
+      justify-content: center;
     }
   }
 }

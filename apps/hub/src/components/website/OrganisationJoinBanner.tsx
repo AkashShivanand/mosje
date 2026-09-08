@@ -4,49 +4,48 @@ import * as React from "react";
 import Image from "next/image";
 import { Icon, buttonClasses } from "@mosje/design-system";
 import type { OrganisationDetail } from "@/content/website/organisation-details";
+import { dismissCampaign } from "@/lib/website/campaign-dismissed";
 import "./organisation-join-banner.css";
 
 /**
  * The band a campaign page opens with, above its own title.
  *
- * ── THE THING THIS BAND WAS GETTING WRONG ────────────────────────────────────
+ * ── ONE MESSAGE, THREE ROUTES ───────────────────────────────────────────────
  *
- * It held seven elements for TWO ENTIRELY DIFFERENT PEOPLE, at the same visual
- * weight, in one green rectangle:
+ * It used to hold two messages in one green rectangle, at the same weight: a
+ * recruitment drive for someone browsing unhurried, and a telephone number for
+ * someone in trouble at four in the morning. Every pass argued about which
+ * should be louder, which is the wrong argument — they were two announcements
+ * sharing a container, and that is what made the band read as cluttered.
  *
- *   · someone browsing a government campaign, who might volunteer — unhurried,
- *     exploring, perfectly willing to read a sentence first;
- *   · someone in trouble, or whose child is, who needs a telephone number — now,
- *     possibly at four in the morning, possibly on a bad connection.
+ * They are now ONE message with THREE ways to act on it. The band says what the
+ * Abhiyaan is; the reader can call it, register for it, or scan it. Nothing in
+ * the row is a second announcement, so nothing has to out-shout anything.
  *
- * Every previous pass, this estate's and the source's, argued about which of
- * those two should be louder. That is the wrong argument: they are not two
- * treatments of one message, they are two messages — and the reason the band
- * kept reading as cluttered is that it was being asked to be two things at once.
+ * Emphasis is carried by the buttons rather than by the layout: the helpline is
+ * FILLED and the campaign is OUTLINED, because on a page about de-addiction the
+ * number outranks the recruitment. That was previously done with a 362px white
+ * pill — the widest and brightest object in the band, and not the band's own
+ * message.
  *
- * So the band now has an ANCHOR and a GUEST. The helpline is the anchor: first
- * in reading order, on the only white surface, and permanent. The campaign is
- * the guest: it introduces itself, offers two ways to accept, and can be shown
- * the door.
+ * ── WHAT THE DISMISS TAKES, AND WHY THAT IS NOW SAFE ─────────────────────────
  *
- * ── AND THE DEFECT THAT FOLLOWS FROM IT ──────────────────────────────────────
+ * The × removes the whole band, helpline included. That is a deliberate change
+ * from the arrangement where the helpline sat outside the collapsible region,
+ * and it is safe on NMBA for one specific reason: the key-facts strip 200px
+ * below carries `14446 · National de-addiction helpline` as its third figure,
+ * restored on 08 September for exactly this eventuality.
  *
- * The dismiss shipped removing the WHOLE band — so a control whose job is "I do
- * not want this advertisement" also deleted the national de-addiction helpline
- * from the top of a page about drug de-addiction. Nobody decided that; it fell
- * out of two messages sharing one container.
- *
- * The helpline now sits OUTSIDE the collapsible region. Dismissing the campaign
- * leaves it exactly where it was and the band simply gets shorter. A promotion
- * can be refused; a number somebody might need at four in the morning is not
- * something they should be able to throw away by accident.
+ * ANY organisation record that gains a `joinBanner` with a helpline should carry
+ * that number in `facts` too. Nothing enforces it — it is a content decision, so
+ * it is written here rather than asserted in code.
  *
  * ── THE QR AND THE BUTTON ARE ONE THING ──────────────────────────────────────
  *
  * They open the same URL. The source puts them at opposite ends of the band,
  * about 900px apart, where nothing tells a reader they are the same offer. They
- * are adjacent here, in one group, so proximity does the explaining and no
- * caption has to.
+ * are adjacent here — the QR closes the row at the trailing edge, immediately
+ * after the button — so proximity does the explaining and no caption has to.
  *
  * ── GREEN, AND DELIBERATELY NOT A BRAND COLOUR ───────────────────────────────
  *
@@ -73,6 +72,8 @@ export function OrganisationJoinBanner({
   const [gone, setGone] = React.useState(false);
 
   const external = banner.action.external || banner.action.href.startsWith("http");
+  const ctaLabel = banner.action.shortLabel ?? banner.action.label;
+  const helpLabel = banner.helplineShortLabel ?? banner.helplineLabel;
 
   /*
    * A BACKSTOP FOR THE TRANSITION THAT MIGHT NOT RUN.
@@ -94,6 +95,18 @@ export function OrganisationJoinBanner({
   }, [closing]);
 
   function dismiss() {
+    /*
+     * THE HELPLINE DOES NOT GO WITH THE ADVERTISEMENT.
+     *
+     * Announcing the dismissal to the store puts the number back beside the
+     * organisation's mark, so refusing a recruitment drive no longer removes a
+     * national de-addiction helpline from the top of a page about drug
+     * de-addiction. Until this existed that was safe only because the key-facts
+     * strip happens to carry the number — a coincidence of content standing in
+     * for a design.
+     */
+    dismissCampaign();
+
     /*
      * FOCUS HAS TO GO SOMEWHERE. The button the reader just pressed is about to
      * leave the DOM, and a browser answers that by dropping focus on <body> —
@@ -132,50 +145,21 @@ export function OrganisationJoinBanner({
       {/*
        * THE LIVE REGION IS MOUNTED FROM THE FIRST RENDER, EMPTY.
        *
-       * The campaign going away is announced, because focus moving on its own is
-       * not an explanation of what happened. But a region that is INSERTED
-       * carrying its text is routinely not announced at all — assistive
-       * technology has to have been observing the node before the text arrived.
-       * So the paragraph always exists and only its contents change.
-       *
-       * It says what SURVIVED as well as what went, because "dismissed" alone
-       * would leave a reader who wanted the number believing they had lost it.
+       * The band going away is announced, because focus moving on its own is not
+       * an explanation of what happened. But a region that is INSERTED carrying
+       * its text is routinely not announced at all — assistive technology has to
+       * have been observing the node before the text arrived. So the paragraph
+       * always exists and only its contents change.
        */}
       <p className="sr-only" role="status">
         {gone
-          ? `${banner.heading}: announcement dismissed. The ${banner.helplineLabel}, ${banner.helplineNumber}, is still here. The announcement returns when the page is reloaded.`
+          ? `${banner.heading}: dismissed. The ${banner.helplineLabel}, ${banner.helplineNumber}, is now shown beside the page heading. The announcement returns when the page is reloaded.`
           : ""}
       </p>
 
-      <section
-        className="orgjb"
-        /* Named by the campaign while the campaign is here, and by what remains
-           once it is not — a region whose name describes something no longer
-           inside it is worse than no name at all. */
-        aria-labelledby={gone ? undefined : headingId}
-        aria-label={gone ? banner.helplineLabel : undefined}
-      >
-        <div className="sa-container orgjb__inner">
-          {/*
-           * ── THE ANCHOR ──────────────────────────────────────────────────────
-           *
-           * Outside the collapsible region, first in the DOM, first in reading
-           * order, and on the only white surface in the band — the one element
-           * here allowed to be the brightest thing on the screen.
-           *
-           * It is a link, so it dials. It reached this estate as a heading with
-           * the digits in a sibling element and no link at all.
-           */}
-          <a className="orgjb__helpline" href={`tel:${banner.helplineNumber}`}>
-            <span className="orgjb__helpline-icon">
-              <Icon name="call" size={20} aria-hidden />
-            </span>
-            <span className="orgjb__helpline-label">{banner.helplineLabel}</span>
-            <span className="orgjb__helpline-number">{banner.helplineNumber}</span>
-          </a>
-
-          {/* ── THE GUEST ──────────────────────────────────────────────────── */}
-          {gone ? null : (
+      {gone ? null : (
+        <section className="orgjb" aria-labelledby={headingId}>
+          <div className="sa-container orgjb__inner">
             <div
               className={`orgjb__campaign${closing ? " orgjb__campaign--closing" : ""}`}
               onTransitionEnd={(e) => {
@@ -187,6 +171,29 @@ export function OrganisationJoinBanner({
                   still be reached by Tab is worse than one simply gone. */}
               <div className="orgjb__campaign-clip" inert={closing || undefined}>
                 <div className="orgjb__campaign-row">
+                  {banner.qrSrc ? (
+                    /*
+                     * THE CODE LEADS, and it is the reason this band now has a
+                     * left edge at all.
+                     *
+                     * It sits immediately before the heading it fulfils — "Join
+                     * Nasha Mukt Bharat Abhiyaan" — with the button that opens
+                     * the same URL directly after that heading. The three read
+                     * left to right as one sentence: scan it, here is what it
+                     * is, or press this. The source publishes the code and the
+                     * button about 900px apart with nothing between them saying
+                     * they are the same offer.
+                     *
+                     * DECORATIVE, and that is not a shortcut: the button beside
+                     * it is already a link with a name, so describing the
+                     * picture would announce the destination twice to a reader
+                     * who cannot scan it anyway.
+                     */
+                    <span className="orgjb__qr">
+                      <Image src={banner.qrSrc} alt="" width={88} height={88} />
+                    </span>
+                  ) : null}
+
                   <div className="orgjb__copy">
                     {/*
                       * A `<p>`, NOT AN `<h2>` — and the region is still named by it.
@@ -197,12 +204,6 @@ export function OrganisationJoinBanner({
                       * met "Join Nasha Mukt Bharat Abhiyaan" before the page told
                       * them which page they were on, on every organisation page
                       * that carries a campaign band.
-                      *
-                      * It was never a section heading anyway: the band is a
-                      * promotional aside beside the page, not a division of it.
-                      * `aria-labelledby` still points here, so the region keeps
-                      * its accessible name and loses nothing but the outline
-                      * entry it should never have had.
                       */}
                     <p id={headingId} className="orgjb__heading">
                       {banner.heading}
@@ -210,70 +211,67 @@ export function OrganisationJoinBanner({
                     <p className="orgjb__text">{banner.text}</p>
                   </div>
 
-                  {/* Scan it or press it — the same URL, so they are one group,
-                      and proximity says so without a caption. */}
-                  <div className="orgjb__join">
-                    {banner.qrSrc ? (
-                      /*
-                       * DECORATIVE, and that is not a shortcut. The code encodes
-                       * the same URL as the button beside it, which is already a
-                       * link with a name — so describing the picture would
-                       * announce the destination twice to a reader who cannot
-                       * scan it anyway.
-                       */
-                      <span className="orgjb__qr">
-                        <Image src={banner.qrSrc} alt="" width={72} height={72} />
-                      </span>
-                    ) : null}
+                  {/*
+                    * A DESIGN-SYSTEM BUTTON, not a re-implementation of one.
+                    *
+                    * `variant="success"` because the band is the Abhiyaan's own
+                    * green rather than the department's blue, and the DS carries a
+                    * success family for the inverse ladder. The one thing
+                    * overridden is the EDGE, through `--sa-btn-edge` — the hook the
+                    * component publishes for exactly this. The success default is
+                    * `successScale-100`, a pale green that measures 4.79:1 on the
+                    * band; the handoff draws the pill in WHITE at 6.72:1.
+                    */}
+                  <a
+                    className={buttonClasses("success", "outlined", "md", "orgjb__cta", "inverse")}
+                    href={banner.action.href}
+                    target={external ? "_blank" : undefined}
+                    rel={external ? "noreferrer" : undefined}
+                    /* The department's whole label, where the button shows a
+                       clause of it. The visible text is contained in this
+                       string, so §2.5.3 holds. */
+                    aria-label={ctaLabel === banner.action.label ? undefined : banner.action.label}
+                  >
+                    <span>{ctaLabel}</span>
+                    <Icon name={external ? "open_in_new" : "arrow_forward"} size={20} aria-hidden />
+                    {external && <span className="sr-only">(opens in a new tab)</span>}
+                  </a>
 
-                    {/*
-                      * A DESIGN-SYSTEM BUTTON, not a re-implementation of one.
-                      *
-                      * `.orgjb__cta` used to declare its own padding, border,
-                      * radius, type, weight, hover, press and transition —
-                      * thirty-six lines restating what `Button` already owns.
-                      * Every value was correctly token-bound and it even carried
-                      * its own focus ring, so this was a re-implementation that
-                      * was RIGHT — the harder case to argue. What it cost was
-                      * not a defect but divergence: one button whose size,
-                      * weight and press would drift from every other button in
-                      * the estate the next time the component moved.
-                      *
-                      * `variant="success"` because the band is the Abhiyaan's
-                      * own green rather than the department's blue, and the DS
-                      * carries a success family for the inverse ladder. The one
-                      * thing overridden is the EDGE, through `--sa-btn-edge` —
-                      * the hook the component publishes for exactly this. The
-                      * success default is `successScale-100`, a pale green that
-                      * measures 4.79:1 on the band; the handoff draws the pill
-                      * in WHITE at 6.72:1, and this change is about what builds
-                      * the button, not about restyling it.
-                      */}
-                    <a
-                      className={buttonClasses("success", "outlined", "sm", "orgjb__cta", "inverse")}
-                      href={banner.action.href}
-                      target={external ? "_blank" : undefined}
-                      rel={external ? "noreferrer" : undefined}
-                    >
-                      <span>{banner.action.label}</span>
-                      <Icon
-                        name={external ? "open_in_new" : "arrow_forward"}
-                        size={20}
-                        aria-hidden
-                      />
-                      {external && <span className="sr-only">(opens in a new tab)</span>}
-                    </a>
-                  </div>
+                  {/*
+                    * THE HELPLINE STANDS APART, AND IT IS THE ONLY FILLED CONTROL.
+                    *
+                    * It was next to the campaign's own button as a matched pair,
+                    * which read as two halves of one offer — and it is not part of
+                    * the offer. It is a standing public service that happens to be
+                    * printed on this page, so it takes the band's trailing edge,
+                    * a wider gap in front of it, and the only white fill.
+                    *
+                    * Set apart AND brightest: a reader looking for a number finds
+                    * the one object on the band that is a solid block of white,
+                    * wherever in the row it sits, and a reader following the
+                    * campaign is never asked to step over it to reach the button.
+                    */}
+                  <a
+                    className={buttonClasses("success", "filled", "md", "orgjb__helpline", "inverse")}
+                    href={`tel:${banner.helplineNumber}`}
+                    /* The department's full title, where the button shows a
+                       shortened one. The visible text is contained in this
+                       string, so WCAG 2.2 §2.5.3 holds. */
+                    aria-label={
+                      helpLabel === banner.helplineLabel
+                        ? undefined
+                        : `${banner.helplineLabel} ${banner.helplineNumber}`
+                    }
+                  >
+                    <Icon name="call" size={20} aria-hidden />
+                    <span className="orgjb__helpline-label">{helpLabel}</span>
+                    <span className="orgjb__helpline-number">{banner.helplineNumber}</span>
+                  </a>
 
                   <button
                     type="button"
                     className="orgjb__dismiss"
                     onClick={dismiss}
-                    /*
-                     * Named by what it removes, not by its glyph — and it says
-                     * "announcement" rather than "banner" so nobody reads it as
-                     * the control that would take the helpline with it.
-                     */
                     aria-label={`Dismiss the ${banner.heading} announcement`}
                   >
                     <Icon name="close" size={20} aria-hidden />
@@ -281,9 +279,9 @@ export function OrganisationJoinBanner({
                 </div>
               </div>
             </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
     </>
   );
 }

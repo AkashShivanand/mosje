@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import NextLink from "next/link";
 import { Button, Icon, Link, SectionTitle, buttonClasses } from "@mosje/design-system";
+import { OrganisationHelplineBadge } from "@/components/website/OrganisationHelplineBadge";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import {
   OrganisationDetail,
@@ -301,6 +302,18 @@ export default async function OrganisationDetailPage({
     backHref: isSubPage ? orgHref(rootSlug) : undefined,
     // The template draws a fact card that straddles the band's lower edge.
     hasOverlappingFacts: (detail?.facts?.length ?? 0) > 0,
+    /*
+     * The helpline, beside the mark, once the campaign band is dismissed —
+     * rendered here rather than inside the band because it has to OUTLIVE it.
+     * Only where the record actually publishes one; an organisation with no
+     * helpline gets nothing, not an empty slot.
+     */
+    logoAside: detail?.joinBanner?.helplineNumber ? (
+      <OrganisationHelplineBadge
+        label={detail.joinBanner.helplineLabel}
+        number={detail.joinBanner.helplineNumber}
+      />
+    ) : undefined,
     title: org.title,
     badge: isSubPage ? (rootOrg?.title ?? "Associated Organisation") : "Associated Organisation",
     // "Associated Organisations" carries NO href. It used to point at /website —

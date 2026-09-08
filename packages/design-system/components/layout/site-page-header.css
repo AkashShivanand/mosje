@@ -59,8 +59,21 @@
     padding-block: var(--sa-padding-64);
   }
 
+  /*
+   * 40 BETWEEN THE COLUMNS, NOT 24.
+   *
+   * The container's `gap` is shared by the stacked layout (where it is a ROW gap
+   * between the copy and the picture) and the landing layout (where it is the
+   * GUTTER between a paragraph and a 340px photograph). 24 is right for the
+   * first and too tight for the second: measured at 1440, the lead's box ended
+   * 24px from the portrait's edge, which reads as crowding and gets worse as the
+   * viewport narrows.
+   *
+   * A column gap is not a row gap, so the landing variant sets its own.
+   */
   .sa-siteheader--landing .sa-siteheader__container {
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    column-gap: var(--sa-inline-40);
   }
 
   /*
