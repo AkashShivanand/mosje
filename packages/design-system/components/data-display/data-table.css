@@ -217,6 +217,26 @@
     background: var(--sa-bg-neutral-base);
   }
 
+  /* THE THUMB, as `Pagination` and the carousel already have it.
+     UX4G 3.0 §3 asks for 44x44 with 8px between on mobile; this pager draws 36
+     at a 4px pitch. The footer is a row that wraps, so the boxes grow and the
+     layout follows — there is no dense neighbour for them to collide with, and
+     that is why they grow rather than hiding the target in a pseudo-element the
+     way `Button` must. Coarse pointers only: on a mouse this would inflate a
+     table footer for no gain in accuracy. */
+  @media (pointer: coarse) {
+    .ds-table__page-nav,
+    .ds-table__page,
+    .ds-table__pagesize-btn {
+      min-width: 44px;
+      height: 44px;
+    }
+
+    .ds-table__pager {
+      gap: var(--sa-inline-8);
+    }
+  }
+
   .ds-table__ellipsis {
     display: inline-flex;
     align-items: center;

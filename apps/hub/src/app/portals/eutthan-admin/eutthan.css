@@ -681,8 +681,12 @@ tr.selected-row td {
   gap: var(--sa-inline-8);
 }
 
+/* The prototype pager is drawn from spans, not buttons — see StaticPager in
+   eutthan-cells.tsx. The selectors dress both so the picture is unchanged. */
 .pages button,
-.page-size button {
+.pages > span,
+.page-size button,
+.page-size__value {
   display: inline-flex;
   min-width: 32px;
   min-height: 32px;
@@ -694,7 +698,8 @@ tr.selected-row td {
   background: transparent;
 }
 
-.pages button.current {
+.pages button.current,
+.pages > span.current {
   border: 1px solid var(--primary);
   color: var(--text);
   background: white;

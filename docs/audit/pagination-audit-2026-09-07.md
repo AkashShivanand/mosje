@@ -16,9 +16,9 @@ removes what it found cannot be checked against later.
 | F-2 | That pager is invisible to assistive technology | **Closed** | #368 |
 | F-3 | "Showing 981 documents" over a list of ten | **Closed** | #368 |
 | F-4 | One control, nine renderings | **Partly** | #370, #378 settled `Pagination` vs `DataTable` on disable-in-place. `DocumentCatalog` now uses the component, so eight renderings remain; six are untouched |
-| F-5 | The two prototype pagers are focusable decoys | Open | — |
-| F-6 | Two landmarks with the same name | Open | — |
-| F-7 | No pager meets UX4G 3.0's touch target | **Partly** | #370 for `Pagination` `md`, #369 for the carousel. The table pager (36px), `ListingTable` (36px) and `DocumentCatalog`'s steps are unchanged; `Pagination` `sm` stays 32 by a recorded decision |
+| F-5 | The two prototype pagers are focusable decoys | **Closed** | Both are spans inside an `aria-hidden` wrapper now — same picture, out of the tab order |
+| F-6 | ~~Two landmarks with the same name~~ | **WRONG — withdrawn** | Both `<nav aria-label="Pagination">` exist in the source, but their containers are `hidden md:block` and `md:hidden` — exact complements. Measured against the app's own CSS: at 1280px the desktop nav computes `block` and the mobile `none`; at 375px the reverse. `display: none` removes an element from the accessibility tree, so only one is ever exposed. The finding read two labels in the source without checking what renders — the same error as F-17 |
+| F-7 | No pager meets UX4G 3.0's touch target | **Closed** | `Pagination` `md` (#370), the carousel (#369), and now the table pager and `ListingTable` — all 44x44 on a coarse pointer, verified from computed styles at 375px. `DocumentCatalog` has no steps of its own since #368. `Pagination` `sm` stays 32 by a recorded decision |
 | F-8 | Focus destroyed on every page change | **Closed** | #378 |
 | F-9 | No pressed state, anywhere | **Closed** | #370, with the remaining 101 selectors gated by #374 |
 | F-10 | Documented evidence that does not match the code | **Closed** | #370 |
@@ -29,7 +29,13 @@ removes what it found cannot be checked against later.
 | F-15 | No unknown-total mode | Open | — |
 | F-16 | No loading state | Open | — |
 | F-17 | ~~`Pagination` has no Figma master~~ | **WRONG — withdrawn** | The master has existed all along (`522:216228`, six variants, well bound). The audit repeated the docs page's `figma absent` claim without checking the library, and the 8 September re-verification checked the same two repository facts rather than Figma. Corrected: the docs page now links the node, and the master gained a `Size=md` axis matching the code |
-| F-18 | The docs specimen omits `size="sm"` | Open | — |
+| F-18 | The docs specimen omits `size="sm"` | **Closed** | The specimen draws `sm` in a 19rem box — PM-AJAY's coverage rail, the constraint it exists for |
+
+**A second finding was wrong the same way.** F-6 claimed two identically-named
+Pagination landmarks on one page. Both are in the source; only one is ever
+rendered, because their containers are exact responsive complements and
+`display: none` removes an element from the accessibility tree. Like F-17, it was
+reasoned from source without checking what the browser builds. Withdrawn.
 
 **One finding was simply wrong.** F-17 asserted there was no Figma master for
 `Pagination`. There was — six variants, competently bound, with a page-size control
