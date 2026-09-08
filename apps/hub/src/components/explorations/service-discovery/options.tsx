@@ -70,6 +70,15 @@ export const SchemesPictures = () => (
 export const SchemesFilterTable = () => (
   <Stage src={`${P}/scheme-b.html`} title="Filter panel with a table of schemes" />
 );
+export const HomeTasks = () => (
+  <Stage src={`${P}/home-d.html`} title="What You Need to Do — four tasks, in place of the Department's parts" />
+);
+export const HomeSearch = () => (
+  <Stage src={`${P}/home-e.html`} title="Ask in Your Own Words — one field, read in plain language" />
+);
+export const HandOffInterstitial = () => (
+  <Stage src={`${P}/handoff.html`} title="Before You Leave This Site — the hand-off screen" />
+);
 export const AssistantChat = () => (
   <Stage src="/prototypes/service-discovery/assistant" title="Samajik Sahayak — the same five questions, in chat" />
 );

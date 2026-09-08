@@ -1,3 +1,7 @@
+/* Noto Sans is the estate's typeface (CLAUDE.md), and a prototype is rendered
+   INSIDE AN IFRAME on the explorations page — the hub's next/font never reaches
+   this document, so without this line every option was reviewed in system-ui. */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap');
 /* SAMAVESH prototype shell — tokens read from packages/tokens/dist/tokens.css */
 :root{
   --sa-primary-50:#ECF4FF; --sa-primary-100:#C0DBFF; --sa-primary-200:#92C2FF;
@@ -6,6 +10,11 @@
   --sa-ink:#1E2124; --sa-ink-muted:#3A3D41; --sa-muted:#54585E;
   --sa-yellow:#FFD323;
   --sa-surface:#EEF0F3; --sa-hair:#DCDEE1; --sa-white:#ffffff;
+  /* The live home-page persona panel's own gradient, transcribed from dosje.gov.in.
+     Declared here so no page writes a colour literal of its own. */
+  --sa-persona-to:#0260BC; --sa-persona-slider-from:#0B57A2; --sa-persona-slider-to:#0B4E91;
+  --sa-persona-shot:#025FB8; --sa-persona-dot:#5988B5;
+  --sa-saffron-hair:#F6C9AF;
   --sa-radius:8px; --sa-radius-lg:14px;
   --sa-shadow:0 1px 2px rgba(30,33,36,.06),0 8px 24px rgba(30,33,36,.06);
 }

@@ -8,6 +8,9 @@ import {
   HomePersonas,
   HomeFiveQuestions,
   HomeOneTap,
+  HomeTasks,
+  HomeSearch,
+  HandOffInterstitial,
   SchemesPictures,
   SchemesFilterTable,
   AssistantChat,
@@ -29,8 +32,11 @@ const PROTOTYPES: Record<string, React.ComponentType> = {
   "service-discovery/home-page/personas": HomePersonas,
   "service-discovery/home-page/five-questions": HomeFiveQuestions,
   "service-discovery/home-page/one-tap": HomeOneTap,
+  "service-discovery/home-page/tasks": HomeTasks,
+  "service-discovery/home-page/search": HomeSearch,
   "service-discovery/schemes-page/pictures": SchemesPictures,
   "service-discovery/schemes-page/filter-table": SchemesFilterTable,
+  "service-discovery/hand-off/interstitial": HandOffInterstitial,
   "service-discovery/assistant/samajik-sahayak": AssistantChat,
 };
 

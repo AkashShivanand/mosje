@@ -279,6 +279,33 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
               "It reads group alone, so it is less exact than the five questions",
             ],
           },
+          {
+            id: "tasks",
+            title: "What you need to do",
+            summary:
+              "Four things a citizen does — check, apply, track, raise a grievance — in place of the parts of the Department.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "Two of the four serve people who have already applied and are waiting to hear",
+              "Tracking an application is the one thing on it the site cannot do today, which is why people telephone the office",
+              "It settles the entry point and not the finding — behind “check what you can get” still sits one of the other three options",
+            ],
+          },
+          {
+            id: "search",
+            title: "Ask in your own words",
+            summary:
+              "One field that reads safai, nasha, chhatravriti and budhapa, and names the department that holds the answer.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "Type “divyang” and it routes to DEPwD, where the live search returns a 2015 annual report tagged “disability arising from untouchability”",
+              "Type “gadi ka insurance” and it says plainly that the word is not in its list, rather than returning nothing",
+              "It is matched on word boundaries, so “confirmation” is not read as a complaint and “first” is not read as an FIR",
+              "It costs the home page no height — the field is already in the masthead — but it is found only by people who were going to type",
+            ],
+          },
         ],
       },
       {
@@ -312,6 +339,41 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
               "Filters combine — group and stage of life and kind of help together",
               "The count beside each filter warns before an empty result rather than after it",
               "A table reads as a record rather than an invitation",
+            ],
+          },
+        ],
+      },
+      {
+        id: "hand-off",
+        title: "Leaving for another site",
+        question:
+          "Most schemes are applied for on a portal this Department does not run. What does the last screen here do?",
+        date: "8 September 2026",
+        options: [
+          {
+            id: "straight-out",
+            title: "The link goes straight out",
+            summary:
+              "An apply button opens the other site directly, which is what every scheme page does today.",
+            status: "proposed",
+            live: false,
+            lookAt: [
+              "It is what the estate already does, so it costs nothing to keep",
+              "A citizen arrives at a portal that asks for papers nobody told them to bring",
+              "Where a scheme has no online route at all — the corporation loans, PM-AJAY — the button has nowhere to go",
+            ],
+          },
+          {
+            id: "interstitial",
+            title: "One screen that names the destination",
+            summary:
+              "The domain, what will be asked for there, and a way back. Where there is no online route it says so, and gives the office instead.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "It names scholarships.gov.in rather than “the portal”, because people check the address bar",
+              "The in-person ending is treated as an ending and not a failure: address, hours, telephone, and a list that prints",
+              "It is one more screen between a citizen and the application they came to make",
             ],
           },
         ],
