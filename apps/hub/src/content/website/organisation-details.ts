@@ -2357,8 +2357,27 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
      * that has happened is worse than no ribbon.
      */
     eventRibbon: {
-      eyebrow: "Six Years of Nasha Mukt Bharat Abhiyaan",
-      heading: "Organisations taking part in the observance may file their pre-event details",
+      /*
+       * "the Abhiyaan", not the full name. The page's own H1 sits directly
+       * below this row and reads "Nasha Mukt Bharat Abhiyaan (NMBA)", so
+       * spelling it out again here is the restatement `ui-restraint-and-copy.md`
+       * §1 forbids — and it is the register the rest of this record already
+       * uses ("About the Abhiyaan", "The Abhiyaan in Numbers").
+       *
+       * It also buys the row 110px, which is what lets the occasion and the
+       * sentence share one line at 1440. They missed it by TWO PIXELS before
+       * this cut: 311 of eyebrow plus 8 of gap plus 375 of sentence against a
+       * 692px column.
+       */
+      eyebrow: "Six Years of the Abhiyaan",
+      /*
+       * SHORTENED ON 8 Sep, and only because the row is now one line: the
+       * eyebrow and the sentence share it, and "in the observance" restated
+       * what the eyebrow beside it already says. Cutting words that earn their
+       * place to fit a layout would be the wrong trade; cutting a restatement
+       * is the same rule the rest of this file follows.
+       */
+      heading: "Organisations taking part may file their pre-event details",
       /*
        * NO `until`, AND ITS ABSENCE IS THE POINT.
        *
