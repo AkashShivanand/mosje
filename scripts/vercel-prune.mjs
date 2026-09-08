@@ -17,7 +17,8 @@
  *
  *   - the live production deployment (never touched)
  *   - the N production builds before it, so a rollback is still possible
- *   - the newest preview for each branch that still exists on origin
+ *   - the newest preview for each branch that still exists in the repository
+ *     THAT project deploys from — per project, not per checkout
  *
  * A preview whose branch has been merged and deleted is kept by nothing, which
  * is the point: its URL leads to a branch that no longer exists.
@@ -46,18 +47,58 @@ function api(path) {
   return JSON.parse(out);
 }
 
-/** Branches that still exist on the remote. A preview for anything else is dead. */
-function liveBranches() {
-  const out = execFileSync("git", ["ls-remote", "--heads", "origin"], {
-    encoding: "utf8",
-    maxBuffer: 16 * 1024 * 1024,
-  });
-  return new Set(
-    out
-      .split("\n")
-      .filter((l) => l.includes("refs/heads/"))
-      .map((l) => l.split("refs/heads/")[1]),
-  );
+/**
+ * Branches that still exist in the repository THIS project deploys from. A
+ * preview for anything else is dead.
+ *
+ * Per project, not per checkout, and that distinction is the whole point. The
+ * first version read `git ls-remote origin` once and applied it to all three
+ * projects — but only one of them deploys from this repo. Run from here,
+ * `sewa-management`'s branches all looked deleted, and a dry run showed it would
+ * have removed 38 of its 43 deployments, 17 of them previews for branches that
+ * are still open in `shivyog-sewa-management`. Caught before it ran; the tool
+ * should not have been able to do it at all.
+ *
+ * Returns null when the branch list cannot be established, and the caller then
+ * keeps every preview for that project. Deleting on a failed lookup is exactly
+ * the failure this guards against.
+ */
+function liveBranches(project) {
+  const link = project?.link ?? {};
+  const repo = link.org && link.repo ? `${link.org}/${link.repo}` : null;
+  if (!repo) return null;
+
+  const parse = (out) =>
+    new Set(
+      out
+        .split("\n")
+        .map((l) => (l.includes("refs/heads/") ? l.split("refs/heads/")[1] : l))
+        .map((l) => l.trim())
+        .filter(Boolean),
+    );
+
+  // gh first: it is already authenticated, which matters for a private repo.
+  try {
+    return parse(
+      execFileSync(
+        "gh",
+        ["api", `repos/${repo}/branches`, "--paginate", "--jq", ".[].name"],
+        { encoding: "utf8", maxBuffer: 16 * 1024 * 1024 },
+      ),
+    );
+  } catch {
+    /* fall through */
+  }
+  try {
+    return parse(
+      execFileSync("git", ["ls-remote", "--heads", `https://github.com/${repo}`], {
+        encoding: "utf8",
+        maxBuffer: 16 * 1024 * 1024,
+      }),
+    );
+  } catch {
+    return null;
+  }
 }
 
 function allDeployments(teamId, projectId) {
@@ -78,7 +119,7 @@ function allDeployments(teamId, projectId) {
   return rows.sort((a, b) => b.created - a.created);
 }
 
-function prune(projectName, teamId, branches) {
+function prune(projectName, teamId) {
   let project;
   try {
     project = api(`/v9/projects/${projectName}?teamId=${teamId}`);
@@ -87,6 +128,7 @@ function prune(projectName, teamId, branches) {
     return;
   }
 
+  const branches = liveBranches(project);
   const liveProduction = project?.targets?.production?.id ?? null;
   const rows = allDeployments(teamId, project.id);
   const keep = new Set(liveProduction ? [liveProduction] : []);
@@ -94,11 +136,18 @@ function prune(projectName, teamId, branches) {
   const production = rows.filter((d) => (d.target ?? "preview") === "production");
   for (const d of production.slice(0, KEEP_PRODUCTION)) keep.add(d.uid);
 
+  // With no branch list, every preview is kept: a preview is only dead if its
+  // branch is known to be gone, and "we could not ask" is not that.
   const branchSeen = new Set();
   for (const d of rows) {
     if ((d.target ?? "preview") !== "preview") continue;
     const ref = d.meta?.githubCommitRef;
-    if (!ref || branchSeen.has(ref) || !branches.has(ref)) continue;
+    if (!ref) continue;
+    if (branches === null) {
+      keep.add(d.uid);
+      continue;
+    }
+    if (branchSeen.has(ref) || !branches.has(ref)) continue;
     branchSeen.add(ref);
     keep.add(d.uid);
   }
@@ -118,8 +167,16 @@ function prune(projectName, teamId, branches) {
     0,
     Math.min(KEEP_PRODUCTION, production.length) - (liveProduction ? 1 : 0),
   );
+  const repo =
+    project?.link?.org && project?.link?.repo
+      ? `${project.link.org}/${project.link.repo}`
+      : "no linked repo";
   console.log(
-    `  ${projectName}: ${rows.length} retained · keeping ${keep.size} ` +
+    `  ${projectName} (${repo}` +
+      `${branches === null ? ", branches UNKNOWN — keeping every preview" : `, ${branches.size} live branches`})`,
+  );
+  console.log(
+    `    ${rows.length} retained · keeping ${keep.size} ` +
       `(${liveProduction ? "live production + " : ""}${priorProduction} prior + ` +
       `${branchSeen.size} branch previews) · deleting ${doomed.length}`,
   );
@@ -168,12 +225,11 @@ try {
   );
   process.exit(1);
 }
-const branches = liveBranches();
 console.log(
   `${DRY_RUN ? "Dry run — " : ""}pruning ${PROJECTS.length} project(s); ` +
-    `${branches.size} branch(es) still on origin`,
+    `each project's branches are read from the repo IT deploys from`,
 );
-for (const name of PROJECTS) prune(name, teamId, branches);
+for (const name of PROJECTS) prune(name, teamId);
 console.log(
   "\nDeleting a deployment frees its storage immediately; the dashboard figure can lag a few minutes.",
 );
