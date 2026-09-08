@@ -82,3 +82,8 @@ h1.sec-t{font-size:30px;font-weight:700;color:var(--sa-primary-800);margin:0 0 6
   .rise{animation:none}
   *{transition-duration:.01ms !important}
 }
+
+/* A group whose artwork has been withdrawn: a plain ground, never a stand-in
+   figure. The label beside it carries the group. */
+.mark-none{display:block;width:100%;height:100%;border-radius:inherit;
+  background:var(--sa-primary-50);border:1px dashed var(--sa-primary-200)}
