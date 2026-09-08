@@ -280,40 +280,29 @@
    * White on the leading stop measures 6.7:1, so the border clears the 3:1 WCAG
    * 2.2 §1.4.11 asks of a control's boundary with room to spare.
    */
+  /*
+   * THE BUTTON IS `Button` NOW; THIS RULE SETS ONE PROPERTY.
+   *
+   * Thirty-six lines used to live here — padding, border, radius, type scale,
+   * weight, hover, press, transition — every one of them a re-statement of
+   * something the design system already owns. They were all correctly
+   * token-bound, which is why no gate ever objected: `check:ds-linkage` reads
+   * raw values, and there were none. This was a re-implementation that was
+   * RIGHT, and that is the harder case to argue — what it cost was not a defect
+   * but divergence, one button whose size, weight and press would drift from
+   * every other button in the estate the next time the component moved.
+   *
+   * The focus ring below is the one part that was NOT redundant, and it stays:
+   * the DS ring is gov-blue, which measures about 2:1 on this green.
+   *
+   * `--sa-btn-edge` is the hook `button.css` publishes for the ink and border
+   * of the outlined appearances. The success family's inverse edge is
+   * `successScale-100`, a pale green measuring 4.79:1 on the band; the handoff
+   * draws this pill in white, which measures 6.72:1 on the lighter stop and
+   * 9.25:1 on the darker one. White it stays.
+   */
   .orgjb__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-8);
-    padding: var(--sa-padding-12) var(--sa-padding-20);
-    border: var(--sa-stroke-1) solid var(--sa-text-neutral-inverse);
-    border-radius: var(--sa-shape-8);
-    color: var(--sa-text-neutral-inverse);
-    font-size: var(--sa-type-label-1-size);
-    line-height: var(--sa-type-label-1-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    text-decoration: none;
-    /*
-     * Named properties, never `all` — and two different tokens, because a press
-     * and a hover are not the same event. `press-easing` is the estate's strong
-     * ease-out (0.22, 1, 0.36, 1); a press that eased IN would delay the first
-     * frame, which is the one the finger is waiting on.
-     */
-    transition:
-      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing),
-      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
-  }
-
-  /* Gated: a touch device fires hover on tap, which leaves a control stuck in
-     its hover state after the finger lifts. */
-  @media (hover: hover) and (pointer: fine) {
-    .orgjb__cta:hover {
-      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 14%, transparent);
-    }
-  }
-
-  /* The press has to be felt. Subtle — 0.97, not a bounce. */
-  .orgjb__cta:active {
-    transform: scale(0.97);
+    --sa-btn-edge: var(--sa-text-neutral-inverse);
   }
 
   /*
