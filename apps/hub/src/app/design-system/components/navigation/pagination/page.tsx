@@ -20,6 +20,15 @@ const A11Y: A11yItem[] = [
     description: "A row of numbers is not navigation to anything that cannot see the row.",
   },
   {
+    criterion: "4.1.3 Status Messages",
+    level: "AA",
+    status: "verified",
+    evidence:
+      'In the button form a visually hidden <p role="status" aria-live="polite"> carries "Page N of M" and updates on every change — read from the DOM after pressing Next to the last page of twelve: "Page 12 of 12". The link form does not render it, because a navigation announces itself and a second announcement would talk over the framework\'s own route announcer.',
+    description:
+      "Changing page swaps the rows and moves nothing else, so a screen-reader user is told where they now are.",
+  },
+  {
     criterion: "2.4.4 Link Purpose (In Context)",
     level: "A",
     status: "verified",
@@ -32,7 +41,7 @@ const A11Y: A11yItem[] = [
     level: "A",
     status: "verified",
     evidence:
-      "With `hrefFor` the controls are anchors and inherit the browser's own keyboard handling; nothing is re-implemented.",
+      "With `hrefFor` the controls are anchors and inherit the browser's own keyboard handling; nothing is re-implemented. In the button form the ends stay mounted as `aria-disabled` buttons and the current page stays a `<button>`, so the tab stop never disappears under the reader — verified in a browser 2026-09-07: focusing a page number and pressing it leaves `document.activeElement` on the SAME node, and pressing Next to the last page leaves focus on Next. Both previously fell to `<body>`.",
     description: "This is the reason to prefer links: the accessible behaviour is the platform's, not ours.",
   },
   {

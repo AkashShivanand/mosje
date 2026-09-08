@@ -124,7 +124,7 @@
     "check:token-consumers": "node tools/token-consumers/check.mjs",
     "check:sidebar-adoption": "node tools/sidebar-adoption/check.mjs",
     "check:template-adoption": "node tools/template-adoption/check.mjs",
-    "check:link-as": "node tools/link-as/check.mjs",
+    "check:link-as": "node --test tools/link-as/scan.test.mjs && node tools/link-as/check.mjs",
     "check:template-adoption:baseline": "node tools/template-adoption/check.mjs --baseline"
   },
   "devDependencies": {

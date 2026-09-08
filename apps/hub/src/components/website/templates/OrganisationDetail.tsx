@@ -1027,56 +1027,56 @@ export function OrganisationDetail({
   ];
 
   /*
-   * THE SOURCE'S OWN DOCUMENT SECTIONS, in the source's own order.
+   * ONE DOCUMENTS SECTION, ALWAYS — AND WHY THE SECOND LAYOUT IS GONE.
    *
-   * NMBA publishes six separately titled sections — IEC Materials,
-   * Publications, Newsletter, Downloads, Circulars, Citizen Corner — each with
-   * its own "View All". Merging them into one filterable shelf keeps every file
-   * and loses the Department's arrangement of them: a reader who came for the
-   * newsletter has to work out which chip it is behind.
+   * A `layout: "sections"` mode used to exist for records whose source publishes
+   * several separately titled document sections. NMBA was its only user, and it
+   * pushed SIX top-level headings onto the page — IEC Materials, Publications,
+   * Newsletter, Downloads, Circulars, Citizen Corner — each its own band with its
+   * own "View All".
    *
-   * Only for records that ask for it. Every other organisation keeps the shelf,
-   * which is the right answer when its documents are one undifferentiated pile.
+   * It was removed because it broke the contract the side rail depends on. The
+   * rail is a list of the page's sections; NMBA's rail offered one entry,
+   * "Documents & Downloads", pointing at `#documents-downloads` — an id that this
+   * branch never rendered, because in that mode there is no such section. So the
+   * one link in the rail that covered a third of the page went nowhere, and the
+   * six sections it stood for appeared in the rail not at all.
+   *
+   * The shelf keeps the publisher's arrangement as CHIPS rather than as headings,
+   * which is this component's whole argument (see `DocumentLibrary`): the
+   * categories survive, the six consecutive grids of identical cards do not. What
+   * the sections mode had over it — a per-category "View All" — is now kept by
+   * `groupViewAll`, which is strictly better than what it replaced: the link
+   * follows the selected chip instead of being fixed to one category.
    */
-  if (detail?.downloads?.layout === "sections") {
-    for (const g of detail.downloads.groups) {
-      if (g.items.length === 0) continue;
-      bands.push({
-        id: g.id,
-        body: (
-          <>
-            <SectionTitle as={2} title={g.heading} headingId={`${g.id}-heading`}>
-              {g.viewAllHref != null && (
-                <a
-                  href={g.viewAllHref}
-                  target={isHttp(g.viewAllHref) ? "_blank" : undefined}
-                  rel={isHttp(g.viewAllHref) ? "noreferrer" : undefined}
-                  className={buttonClasses("primary", "outlined", "sm")}
-                >
-                  View all
-                  {isHttp(g.viewAllHref) && <span className="sr-only"> (opens in a new tab)</span>}
-                </a>
-              )}
-            </SectionTitle>
-            <DocumentLibrary
-              items={g.items.map((f) => ({
-                id: `download-${f.href}-${f.label}`,
-                group: g.heading,
-                meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
-                title: f.label,
-                officialName: f.officialName,
-                href: f.href,
-                actionLabel: DOWNLOAD_KIND[f.kind].action,
-                external: isHttp(f.href),
-              }))}
-              groupOrder={[g.heading]}
-            />
-          </>
-        ),
-      });
-    }
-  } else if (libraryItems.length > 0) {
+  if (libraryItems.length > 0) {
     const lib = detail?.downloads;
+
+    /*
+     * Each group's own listing on the Department's site, keyed by the group name
+     * so it lines up with the chip. Built from the same `groups` the items came
+     * from, so a group that gains a listing gains the link with no further
+     * wiring.
+     */
+    const groupViewAll: Record<string, React.ReactNode> = {};
+    for (const g of lib?.groups ?? []) {
+      if (g.viewAllHref == null) continue;
+      const label = g.items[0]?.group ?? g.heading;
+      groupViewAll[label] = (
+        <a
+          href={g.viewAllHref}
+          target={isHttp(g.viewAllHref) ? "_blank" : undefined}
+          rel={isHttp(g.viewAllHref) ? "noreferrer" : undefined}
+          className={buttonClasses("primary", "outlined", "sm")}
+        >
+          {/* The heading's OWN case. Lower-casing it turned "IEC Materials" into
+              "iec materials", and the estate sets titles in Title Case anyway. */}
+          {`View all ${g.heading}`}
+          {isHttp(g.viewAllHref) && <span className="sr-only"> (opens in a new tab)</span>}
+        </a>
+      );
+    }
+
     bands.push({
       id: "documents-downloads",
       body: (
@@ -1089,7 +1089,11 @@ export function OrganisationDetail({
           />
           <DocumentLibrary
             items={libraryItems}
-            groupOrder={LIBRARY_GROUP_ORDER}
+            /* The record's own order where it has one — a publisher that leads
+               with IEC material should not have its chips reordered to put
+               Circulars first because that is the estate's default. */
+            groupOrder={lib?.groupOrder ?? LIBRARY_GROUP_ORDER}
+            groupViewAll={groupViewAll}
             viewAllSlot={
               <NextLink
                 href={

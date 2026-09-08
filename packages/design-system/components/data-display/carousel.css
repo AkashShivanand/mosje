@@ -107,7 +107,7 @@
     justify-content: center;
     /* The full control height rather than the 24x24 floor: these are the only
        way most readers reach slide two. */
-    width: var(--sa-control-height-md);
+    min-width: var(--sa-control-height-md);
     height: var(--sa-control-height-md);
     padding: 0;
     border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
@@ -140,10 +140,16 @@
      step, so it drops the fill and the border and keeps only the box — lower
      in the hierarchy, and unmistakably a different kind of control. Its target
      is unchanged; only its weight is. */
+  /* The label sets the width, so the box pads rather than squares off. Its
+     width changing between "Pause" and "Play" is harmless now: it lives in a
+     side zone that fills, and the dots are centred by the middle column. */
   .ds-carousel__play {
+    padding: 0 var(--sa-padding-12);
     border-color: transparent;
     background-color: transparent;
     color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-1-size);
+    font-weight: var(--sa-font-weight-semibold);
   }
 
   .ds-carousel__play:hover {
@@ -309,7 +315,7 @@
   @media (pointer: coarse) {
     .ds-carousel__arrow,
     .ds-carousel__play {
-      width: 44px;
+      min-width: 44px;
       height: 44px;
     }
 
