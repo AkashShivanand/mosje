@@ -49,10 +49,7 @@ export default function ChooserScreenPage(): React.JSX.Element {
       name="Chooser Screen"
       status="Beta"
       summary={"A finite set of mutually exclusive options, and one Continue. The handoff draws this screen three different ways under one name; this is the one built from components."}
-      figma={{
-        absent:
-          "Drawn three times under one name (e-anudaan-select-scheme). AVYAY and NAPDDR place an 800px column with a 170px gutter and use radio-card instances; SHRESHTA runs 1068 full-bleed, shifts the column 24px, hand-builds four frames with no component, and shrinks the CTA from 223 to 105. This ships the first.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<ChooserSpecimen />}
       propsFrom="ChooserScreenProps"
       a11y={A11Y}

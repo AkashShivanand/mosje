@@ -33,10 +33,7 @@ export default function StatusScreenPage(): React.JSX.Element {
       name="Status Screen"
       status="Beta"
       summary={"No record, because something failed. Five kinds, five different sentences — a single \"Something went wrong\" covers all of them and helps with none."}
-      figma={{
-        absent:
-          "Absent. No error page of any kind is drawn on the handoff page.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<StatusSpecimen />}
       propsFrom="StatusScreenProps"
       a11y={A11Y}

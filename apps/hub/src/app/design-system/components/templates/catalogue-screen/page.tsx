@@ -33,10 +33,7 @@ export default function CatalogueScreenPage(): React.JSX.Element {
       name="Catalogue Screen"
       status="Beta"
       summary={"Many records the reader browses rather than acts on. It pages, always — Pagination appears in exactly one of the estate's 265 portal pages."}
-      figma={{
-        absent:
-          "Absent. Pagination, Breadcrumb and Search return zero hits across all 5,138 nodes of the handoff's E-Anudaan page, and no list or catalogue screen is drawn anywhere on it.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<CatalogueSpecimen />}
       propsFrom="CatalogueScreenProps"
       a11y={A11Y}

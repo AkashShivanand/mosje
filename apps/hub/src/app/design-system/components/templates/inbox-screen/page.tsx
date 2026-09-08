@@ -41,10 +41,7 @@ export default function InboxScreenPage(): React.JSX.Element {
       name="Inbox Screen"
       status="Beta"
       summary={"Many records, each a dated attributed event. A notification, a comment and an audit entry are one object with three views."}
-      figma={{
-        absent:
-          "Absent. Notifications is among the archetypes the handoff does not draw at all.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<InboxSpecimen />}
       propsFrom="InboxScreenProps"
       a11y={A11Y}

@@ -42,10 +42,7 @@ export default function ScreenBodyPage(): React.JSX.Element {
       name="Screen Body"
       status="Beta"
       summary="The state branch. Every screen template routes its content through this, which is what makes the seven states structural rather than remembered."
-      figma={{
-        absent:
-          "A behavioural primitive with no visual of its own — at `ready` it is a plain wrapper, and every other state renders an EmptyState, which is published.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<StatesSpecimen />}
       propsFrom="ScreenBodyProps"
       a11y={A11Y}

@@ -41,10 +41,7 @@ export default function ReportScreenPage(): React.JSX.Element {
       name="Report Screen"
       status="Beta"
       summary={"A tabular statement meant to be printed or filed. It is the one template that deliberately does not page, because page 1 of 9 is not a statement."}
-      figma={{
-        absent:
-          "Absent. No report or export surface is drawn anywhere on the handoff page.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<ReportSpecimen />}
       propsFrom="ReportScreenProps"
       a11y={A11Y}

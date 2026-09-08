@@ -49,10 +49,7 @@ export default function SearchScreenPage(): React.JSX.Element {
       name="Search Screen"
       status="Beta"
       summary={"Many records, ranked by a query the reader typed. Idle renders differently from empty, which is the whole reason this is not a catalogue."}
-      figma={{
-        absent:
-          "Absent. Any layer named \"search\" returns zero hits across all 5,138 nodes of the handoff's E-Anudaan page.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<SearchSpecimen />}
       propsFrom="SearchScreenProps"
       a11y={A11Y}

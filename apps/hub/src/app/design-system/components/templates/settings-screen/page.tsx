@@ -49,10 +49,7 @@ export default function SettingsScreenPage(): React.JSX.Element {
       name="Settings Screen"
       status="Beta"
       summary={"Configuration the reader administers. An index of real anchor links beside sections of inline-editable rows, and every save is confirmed."}
-      figma={{
-        absent:
-          "Absent. Settings and profile are among the archetypes the handoff does not draw at all.",
-      }}
+      figma={{ node: "screenTemplates" }}
       specimen={<SettingsSpecimen />}
       propsFrom="SettingsScreenProps"
       a11y={A11Y}
