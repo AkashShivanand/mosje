@@ -120,6 +120,86 @@
     background-color: var(--sa-bg-neutral-base);
   }
 
+  /* The position, where the numbers are not drawn. It is TEXT, not a control —
+     the steps either side do the moving — so it takes the ink of a label rather
+     than of a button, and tabular figures so the row does not twitch as the
+     number changes. */
+  .ds-pagination__position {
+    margin: 0;
+    padding: 0 var(--sa-padding-8);
+    color: var(--sa-text-neutral-base);
+    font-weight: var(--sa-font-weight-medium);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* GO TO PAGE. A row, not a panel: it sits inside the nav beside the steps, so
+     it must not read as a second region. */
+  .ds-pagination__jump {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    margin-inline-start: var(--sa-inline-8);
+  }
+
+  .ds-pagination__jump-label {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* Wide enough for four digits and no wider — a field sized for prose invites
+     prose, and this one takes a page number. */
+  .ds-pagination__jump-field {
+    inline-size: 5ch;
+    height: var(--sa-control-height-md);
+    padding: 0 var(--sa-padding-8);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-6);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-base);
+    font: inherit;
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+
+  .ds-pagination__jump-go {
+    height: var(--sa-control-height-md);
+    padding: 0 var(--sa-padding-12);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-6);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    font: inherit;
+    font-weight: var(--sa-font-weight-semibold);
+    cursor: pointer;
+  }
+
+  .ds-pagination__jump-go:hover {
+    background-color: var(--sa-bg-neutral-hover);
+  }
+
+  .ds-pagination__jump-go:active {
+    background-color: var(--sa-bg-neutral-active);
+    transform: scale(0.97);
+  }
+
+  .ds-pagination__jump-field:focus-visible,
+  .ds-pagination__jump-go:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-pagination__jump-field:disabled,
+  .ds-pagination__jump-go:disabled {
+    opacity: var(--sa-alpha-disabled);
+    cursor: not-allowed;
+  }
+
+  /* LOADING. The control dims as a whole and stops taking presses, so a reader
+     cannot queue three of them against one in-flight request. No spinner: the
+     thing that is loading is the result set, and its own surface says so. */
+  .ds-pagination[aria-busy="true"] {
+    opacity: var(--sa-alpha-disabled);
+  }
+
   .ds-pagination__ellipsis {
     display: inline-flex;
     align-items: center;
@@ -193,6 +273,18 @@
     padding: 0;
   }
 
+  .ds-pagination--sm .ds-pagination__position,
+  .ds-pagination--sm .ds-pagination__jump-label {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .ds-pagination--sm .ds-pagination__jump-field,
+  .ds-pagination--sm .ds-pagination__jump-go {
+    height: var(--sa-control-height-sm);
+    font-size: var(--sa-type-body-3-size);
+  }
+
   .ds-pagination--sm .ds-pagination__step svg {
     width: 16px;
     height: 16px;
@@ -247,6 +339,11 @@
 
     .ds-pagination__list {
       gap: var(--sa-inline-8);
+    }
+
+    .ds-pagination__jump-field,
+    .ds-pagination__jump-go {
+      height: 44px;
     }
 
     .ds-pagination--sm .ds-pagination__step,
