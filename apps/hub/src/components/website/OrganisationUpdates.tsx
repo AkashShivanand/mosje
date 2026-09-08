@@ -47,15 +47,7 @@ export function OrganisationUpdates({
       items={items}
       label={label}
       /* h2, because the strip is a top-level section of the page and the bands
-         below it are h2s. Ticker defaults the label to a plain inline span.
-
-         NO CLOSING ANGLE BRACKET ANYWHERE IN THIS TAG'S COMMENTS. `check:link-as`
-         finds a tag's end by scanning for the first closing bracket at brace
-         depth zero, so one written inside a comment here ends the tag early and
-         the gate stops seeing the `linkAs` two lines below — reported as a call
-         site that will render a bare anchor when it does not. Worth knowing in
-         the other direction too: the same scan would stop before a MISSING
-         `linkAs`, and pass. */
+         below it are h2s. Ticker defaults the label to a plain inline span. */
       labelAs="h2"
       linkAs={NextLink}
       action={
