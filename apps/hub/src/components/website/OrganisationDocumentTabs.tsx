@@ -86,6 +86,17 @@ export function OrganisationDocumentTabs({
              one job. */
           items={current.items}
           groupOrder={[current.heading]}
+          /*
+           * A RAIL, NOT A GRID. Asked for on 8 Sep 2026, and it finishes the job
+           * the tabs started: the tabs stopped six shelves being six bands, and
+           * the rail stops each shelf being two rows. Four files in a
+           * three-column grid left a third of a row empty under every tab.
+           *
+           * The shelf's own "View All" below is what makes it safe — nothing
+           * here is only reachable by dragging sideways.
+           */
+          layout="rail"
+          railLabel={current.heading}
           viewAllSlot={
             current.viewAllHref != null ? (
               <a

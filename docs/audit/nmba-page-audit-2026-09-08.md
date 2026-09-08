@@ -76,7 +76,16 @@ The strip clamps to two lines and links to the document. **The fix is upstream,
 in how those titles are captured or published; nothing on this page can honestly
 correct it.**
 
-**c. The second pre-event route was not confirmed in the review.** The occasion
+**c. The observance has no published closing date, and the ribbon no longer claims one.**
+A date stood in the ribbon — "until 30 September 2026" — and it was **invented**. The
+review that asked for the ribbon never named a window. `organisation-details.ts`
+forbids exactly that ("an invented statistic on a government page is a defect of a
+different order from a layout bug"), and a closing date is worse than most, because a
+citizen can plan around it. It is removed and the sentence reads whole without it.
+**Get the Department's own window and put it back** — the field is still on the type and
+the ribbon prints it in bold inside the sentence.
+
+**d. The second pre-event route was not confirmed in the review.** The occasion
 ribbon offers two doors — the administrative login for line Ministries and
 Departments, the open activities register for autonomous bodies and corporate
 participants. The second was described in the review as still needing
@@ -85,13 +94,13 @@ exist. It currently points at `/portals/nmba/activities`, which is open and
 carries the event form, and is the closest real destination. **Confirm the route
 before the observance opens.**
 
-**d. "Admin Login" was left alone, deliberately.** The review opened with a
+**e. "Admin Login" was left alone, deliberately.** The review opened with a
 proposal to rename it to "Login" and closed by keeping "Admin Login" — a plain
 "Login" invites citizens into a door only officials can pass, and the login page
 does not yet carry the citizen/official split that would make the rename safe.
 Recorded here so the next session does not re-open it as an oversight.
 
-**e. The three-fact strip leaves an orphan below 640px.** Three cells in a
+**f. The three-fact strip leaves an orphan below 640px.** Three cells in a
 two-column grid puts the third alone on its own row. Accepted: the alternative
 is a third column at 130px, where every label wraps to four lines.
 
@@ -113,6 +122,7 @@ is a third column at 130px, where every label wraps to four lines.
 | 10 | The notice bar drew a 223-character title over four lines, turning a 72px strip into a block of body copy | Clamped to two lines in the bar; the panel is untouched |
 | 11 | Three near-identical NAPDDR notices, same date, would have cycled past as one notice repeating | Deduplicated on the first eighty characters of the title |
 | 12 | "View all iec materials" — the shelf name lower-cased to fit a sentence, against the Title Case rule | "View All", with the shelf named for screen readers |
+| 13 | Each tab's four files still wrapped to a second row in a three-column grid, leaving two thirds of that row empty under every shelf | `DocumentLibrary` gains `layout="rail"` — one row that scrolls sideways, the fourth card cut by the container edge |
 
 ---
 

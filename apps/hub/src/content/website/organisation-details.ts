@@ -2313,8 +2313,21 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
      */
     eventRibbon: {
       eyebrow: "Six Years of Nasha Mukt Bharat Abhiyaan",
-      heading: "Organisations taking part in the observance may file their pre-event details until",
-      until: "30 September 2026",
+      heading: "Organisations taking part in the observance may file their pre-event details",
+      /*
+       * NO `until`, AND ITS ABSENCE IS THE POINT.
+       *
+       * A date stood here — "30 September 2026" — and it was INVENTED. The
+       * review that asked for this ribbon never named a window, and this file's
+       * own header forbids exactly that: "Do not add a founding year, a budget
+       * or a beneficiary figure that the source does not state; an invented
+       * statistic on a government page is a defect of a different order from a
+       * layout bug." A closing date a citizen might plan around is worse than a
+       * budget figure, because it is actionable.
+       *
+       * The field stays on the type. Put the Department's own date back the day
+       * it is known, and the ribbon prints it in bold inside the sentence.
+       */
       action: { label: "File Pre-Event Details", href: "/portals/nmba/admin/login" },
       altAction: {
         label: "No departmental account? File on the open register",

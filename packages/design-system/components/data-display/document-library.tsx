@@ -56,6 +56,33 @@ export interface DocumentLibraryProps {
   viewAllSlot?: React.ReactNode;
   /** Noun used in the count line and the empty state. @default "documents" */
   noun?: string;
+  /**
+   * How the cards are laid out.
+   *
+   * `"grid"` (default) wraps them down the page in as many columns as fit — the
+   * right answer for a shelf that IS the page, like a document catalogue.
+   *
+   * `"rail"` puts them on one row that scrolls sideways, with the next card
+   * peeking in from the right edge. Use it where the shelf is one section among
+   * many and its height is competing with everything below it: on the
+   * organisation pages a four-item shelf in a three-column grid was two rows
+   * with two thirds of the second one empty.
+   *
+   * A rail costs the reader a gesture to see the later cards, so it is for
+   * shelves that already publish a route to the whole list. It does not suit a
+   * shelf of twenty.
+   *
+   * @default "grid"
+   */
+  layout?: "grid" | "rail";
+  /**
+   * Names the rail for assistive technology — "IEC Materials". Required in
+   * spirit when `layout="rail"`: the rail is a focusable scroll region (WCAG
+   * 2.1.1), so it adds a tab stop, and an unnamed one lands the reader on an
+   * unlabelled box. Ignored by the grid, which is not focusable and needs no
+   * name.
+   */
+  railLabel?: string;
   className?: string;
 }
 
@@ -84,6 +111,8 @@ export function DocumentLibrary({
   groupOrder,
   viewAllSlot,
   noun = "documents",
+  layout = "grid",
+  railLabel,
   className,
 }: DocumentLibraryProps) {
   const groups = React.useMemo(() => {
@@ -147,7 +176,43 @@ export function DocumentLibrary({
       )}
 
       {shown.length > 0 ? (
-        <ul className="ds-doclib__grid">
+        <ul
+          className={["ds-doclib__grid", layout === "rail" && "ds-doclib__grid--rail"]
+            .filter(Boolean)
+            .join(" ")}
+          /*
+           * A SCROLLABLE REGION MUST BE FOCUSABLE, and only when it is one.
+           *
+           * WCAG 2.1.1: a region that scrolls and cannot be focused cannot be
+           * scrolled by anyone using a keyboard, and axe reports the same
+           * element as `scrollable-region-focusable`. The grid does not scroll,
+           * so it takes no tab stop — a tab stop that leads nowhere is a cost
+           * with no benefit, and the estate already has enough of them.
+           *
+           * `jsx-a11y/no-noninteractive-tabindex` objects to a tab stop on a
+           * non-interactive element and is right in general; it has no option
+           * that recognises a scroll container. `Carousel`'s track carries a
+           * disable directive for exactly this. **This one deliberately does
+           * not**, and `check:ds-lint` is why: the rule reads a LITERAL
+           * `tabIndex`, and this value is computed, so the rule never fires and
+           * a directive here is reported as unused. If the value is ever made a
+           * literal, add the directive back with the same reason.
+           */
+          tabIndex={layout === "rail" ? 0 : undefined}
+          /*
+           * NO `role` HERE. The rail carried `role="group"`, which OVERRODE the
+           * `<ul>`'s implicit `list` role — and a list role is what makes its
+           * `<li>` children list items. axe caught it on the first run of the
+           * organisation page against the suite: "[serious] listitem — <li>
+           * elements must be contained in a <ul> or <ol>", on all four cards.
+           *
+           * A named list is the better announcement anyway. The element keeps
+           * its list semantics, takes `aria-label` for the shelf's name, and
+           * takes the tab stop the scroll region needs, so a screen-reader user
+           * hears "IEC Materials, list, 4 items" and can scroll it.
+           */
+          aria-label={layout === "rail" ? railLabel : undefined}
+        >
           {shown.map((item) => (
             <li key={item.id} className="ds-doclib__card">
               <p className="ds-doclib__meta">{item.meta}</p>

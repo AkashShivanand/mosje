@@ -4611,11 +4611,24 @@ export const GENERATED_PROPS = {
         "description": "Chip order, most-wanted first. Groups absent from `items` are dropped, so one order can serve several pages. Omit it and the chips follow first appearance in `items`."
       },
       {
+        "name": "layout",
+        "type": "\"grid\" | \"rail\"",
+        "required": false,
+        "default": "\"grid\"",
+        "description": "How the cards are laid out. `\"grid\"` (default) wraps them down the page in as many columns as fit — the right answer for a shelf that IS the page, like a document catalogue. `\"rail\"` puts them on one row that scrolls sideways, with the next card peeking in from the right edge. Use it where the shelf is one section among many and its height is competing with everything below it: on the organisation pages a four-item shelf in a three-column grid was two rows with two thirds of the second one empty. A rail costs the reader a gesture to see the later cards, so it is for shelves that already publish a route to the whole list. It does not suit a shelf of twenty."
+      },
+      {
         "name": "noun",
         "type": "string",
         "required": false,
         "default": "\"documents\"",
         "description": "Noun used in the count line and the empty state."
+      },
+      {
+        "name": "railLabel",
+        "type": "string",
+        "required": false,
+        "description": "Names the rail for assistive technology — \"IEC Materials\". Required in spirit when `layout=\"rail\"`: the rail is a focusable scroll region (WCAG 2.1.1), so it adds a tab stop, and an unnamed one lands the reader on an unlabelled box. Ignored by the grid, which is not focusable and needs no name."
       },
       {
         "name": "viewAllSlot",

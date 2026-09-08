@@ -128,6 +128,34 @@ export const SingleGroupHidesFilters: Story = {
   },
 };
 
+/**
+ * `layout="rail"` puts the cards on ONE ROW THAT SCROLLS SIDEWAYS, with the next
+ * card cut by the container's edge — and the cut is the affordance. Use it where
+ * the shelf is one section among many and its height is competing with everything
+ * below it: on the NMBA organisation page a four-file shelf in a three-column grid
+ * was two rows with two thirds of the second one empty.
+ *
+ * **`railLabel` is not optional in practice.** The rail is a scrollable region, so
+ * WCAG 2.1.1 requires it to be focusable — a region that scrolls and cannot be
+ * focused cannot be scrolled by anyone using a keyboard, and axe reports it as
+ * `scrollable-region-focusable`. That adds a tab stop, and an unnamed tab stop
+ * lands the reader on an unlabelled box. Name it after the shelf.
+ *
+ * **When NOT to use it.** A rail costs the reader a gesture to reach the later
+ * cards, so it is wrong for a shelf that IS the page — a document catalogue — and
+ * wrong for a shelf of twenty, where the fifteenth file is unreachable in
+ * practice. Reach for it only where a "View all" already publishes the whole list.
+ */
+export const Rail: Story = {
+  args: {
+    items: ITEMS.filter((i) => i.group !== "Circulars"),
+    groupOrder: ORDER,
+    layout: "rail",
+    railLabel: "Guidelines and formats",
+    viewAllSlot: <a href="#">View all documents</a>,
+  },
+};
+
 /** Nothing published yet — the band says so rather than rendering an empty grid. */
 export const Empty: Story = {
   args: { items: [], viewAllSlot: <a href="#">View all documents</a> },
