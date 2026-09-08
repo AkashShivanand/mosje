@@ -130,6 +130,10 @@ export const ClientState: Story = {
  * announced, because without the numbers nothing else tells the reader where they
  * are. `ListingTable` and SMILE Admin's two pagers each hand-rolled this before
  * the component offered it.
+ *
+ * That visible paragraph IS the live region here — the numbered form's separate
+ * hidden one is not rendered, or the same sentence would sit in the
+ * accessibility tree twice.
  */
 export const StepsOnly: Story = {
   render: function Render(args) {
