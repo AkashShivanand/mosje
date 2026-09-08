@@ -80,7 +80,7 @@ const PERSONAS = [
 const SIGNPOST = {
   "id": "pwd",
   "label": "Persons with Disabilities",
-  "sub": "Served by the Department of Empowerment of Persons with Disabilities",
+  "sub": "Their schemes are run by the Department of Empowerment of Persons with Disabilities",
   "to": "depwd.gov.in"
 };
 
@@ -135,41 +135,72 @@ const OFFERINGS = [
   }
 ];
 
+/* The schemes a person with a disability is shown — DEPwD's, labelled as such. */
+const DEPWD = {
+  "why": "Persons with disabilities are not in DoSJE's mandate (AR §1.2). Their schemes are DEPwD's, a separate Department of the same Ministry since 2012. They are shown here, labelled as DEPwD's, so a visitor who indicates a disability is given the four schemes that exist rather than an empty result.",
+  "schemes": [
+    {
+      "id": "depwd-ddrs",
+      "name": "Deendayal Divyangjan Rehabilitation Scheme (DDRS)",
+      "provides": "Grant-in-aid to organisations for rehabilitation projects, and District Disability Rehabilitation Centres offering early intervention, therapy, assistive-device fitment, scholarship assistance and help with the UDID card.",
+      "named": "Persons with disabilities, through implementing organisations; one DDRC is envisaged in every district."
+    },
+    {
+      "id": "depwd-adip",
+      "name": "Assistance to Persons with Disabilities for Purchase/Fitting of Aids and Appliances (ADIP)",
+      "provides": "Modern, certified aids and appliances, and corrective surgery where required, through ALIMCO, National Institutes, DDRCs and other agencies, including camps for school-going children.",
+      "named": "Needy persons with disabilities, as the scheme's guidelines define them."
+    },
+    {
+      "id": "depwd-sipda",
+      "name": "Scheme for Implementation of the Rights of Persons with Disabilities Act, 2016 (SIPDA)",
+      "provides": "Ten sub-schemes including the Unique Disability ID (UDID) card, barrier-free environment, early intervention centres, skill development and assistance to spinal injury centres.",
+      "named": "Persons with disabilities; the UDID card is the identity every other DEPwD scheme reads."
+    },
+    {
+      "id": "depwd-scholarships",
+      "name": "Scholarships for Students with Disabilities",
+      "provides": "Pre-matric, post-matric, top-class, overseas and fellowship support for students with disabilities.",
+      "named": "Students with disabilities, as each component's guidelines define them."
+    }
+  ]
+};
+
 const ROUTES = {
   "nsp": {
     "label": "National Scholarship Portal",
     "href": "https://scholarships.gov.in"
   },
   "state": {
-    "label": "the State Government's scholarship portal",
+    "label": "the State's scholarship portal",
     "href": null
   },
   "nos": {
-    "label": "the National Overseas Scholarship portal",
+    "label": "the NOS portal",
     "href": "https://nosmsje.gov.in"
   },
   "ugc": {
-    "label": "the University Grants Commission",
+    "label": "the UGC",
     "href": "https://www.ugc.gov.in"
   },
   "nbcfdc": {
-    "label": "NBCFDC, through its channel partners",
+    "label": "NBCFDC",
     "href": "https://nbcfdc.gov.in"
   },
   "nsfdc": {
-    "label": "NSFDC, through its channelising agencies",
+    "label": "NSFDC",
     "href": "https://nsfdc.nic.in"
   },
   "nskfdc": {
-    "label": "NSKFDC, through its channelising agencies",
+    "label": "NSKFDC",
     "href": "https://nskfdc.nic.in"
   },
   "canara": {
-    "label": "Canara Bank, the nodal bank",
+    "label": "Canara Bank",
     "href": null
   },
   "shreshta": {
-    "label": "the SHRESHTA entrance test (NETS), conducted by NTA",
+    "label": "the SHRESHTA entrance test (NTA)",
     "href": null
   },
   "pmajay": {
@@ -181,39 +212,39 @@ const ROUTES = {
     "href": null
   },
   "nhaa": {
-    "label": "the National Helpline Against Atrocities, 14566",
+    "label": "Helpline 14566",
     "href": "tel:14566"
   },
   "ncsc": {
-    "label": "the NCSC e-Grievance Management Portal",
+    "label": "the NCSC grievance portal",
     "href": "https://ncsc.nic.in"
   },
   "ncsk": {
-    "label": "the National Commission for Safai Karamcharis",
+    "label": "the NCSK",
     "href": null
   },
   "namaste": {
-    "label": "profiling under NAMASTE, through the urban local body",
+    "label": "the urban local body (NAMASTE)",
     "href": null
   },
   "bank": {
-    "label": "the lending bank; the subvention is paid by the corporation",
+    "label": "the lending bank",
     "href": null
   },
   "ifci": {
-    "label": "IFCI Venture, the fund manager",
+    "label": "IFCI Venture",
     "href": null
   },
   "pmdaksh": {
-    "label": "the PM-DAKSH portal, or a training institute empanelled by NSFDC, NBCFDC or NSKFDC",
-    "href": "https://pmdaksh.dosje.gov.in"
+    "label": "the PM-DAKSH portal",
+    "href": null
   },
   "alimco": {
-    "label": "an ALIMCO assessment camp",
+    "label": "an ALIMCO camp",
     "href": null
   },
   "elderline": {
-    "label": "Elderline, 14567",
+    "label": "Elderline 14567",
     "href": "tel:14567"
   },
   "eanudaan": {
@@ -221,27 +252,27 @@ const ROUTES = {
     "href": "https://grants-msje.gov.in"
   },
   "nmba": {
-    "label": "the nearest centre, or the de-addiction helpline 14446",
+    "label": "Helpline 14446, or the nearest centre",
     "href": "tel:14446"
   },
   "smile": {
-    "label": "the shelter home in the city, through the urban local body",
+    "label": "the shelter home (urban local body)",
     "href": null
   },
   "tgportal": {
     "label": "the National Portal for Transgender Persons",
-    "href": "https://transgender.dosje.gov.in"
+    "href": null
   },
   "seed": {
     "label": "the SEED portal",
     "href": "https://seed.dosje.gov.in"
   },
   "institution": {
-    "label": "the school or college, which applies to the State",
+    "label": "the school or college",
     "href": null
   },
   "wcd": {
-    "label": "the District Magistrate, through the Ministry of Women and Child Development",
+    "label": "the District Magistrate (WCD)",
     "href": null
   },
   "daf": {
@@ -249,7 +280,7 @@ const ROUTES = {
     "href": null
   },
   "nisd": {
-    "label": "a training institute affiliated to NISD, or empanelled under NSDC",
+    "label": "a NISD-affiliated institute",
     "href": null
   }
 };

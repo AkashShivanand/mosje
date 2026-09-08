@@ -19,6 +19,7 @@ import {
   useLiveRegion,
 } from "@mosje/design-system";
 import {
+  SD_DEPWD,
   SD_OFFERINGS,
   SD_PERSONAS,
   SD_ROUTES,
@@ -328,7 +329,7 @@ function AnswerPanel({
     <div className="xsf__step">
       <p className="xsf__count">Schemes</p>
       <h3 className="xsf__question" tabIndex={-1} ref={topRef}>
-        {signpost ? "Support for Persons with Disabilities" : "Schemes That Name You"}
+        {signpost ? "Schemes for Persons with Disabilities" : "Schemes for Your Group"}
       </h3>
       <p className="xsf__hint">
         {signpost
@@ -351,21 +352,51 @@ function AnswerPanel({
       )}
 
       {signpost ? (
-        <div className="xsf__signpost">
-          <Alert
-            status="info"
-            title="Department of Empowerment of Persons with Disabilities"
-            action={
-              <Link href={`https://${SD_SIGNPOST.to}`} external variant="standalone">
-                Go to {SD_SIGNPOST.to}
-              </Link>
-            }
-          >
-            The Department of Empowerment of Persons with Disabilities runs the
-            schemes for persons with disabilities, including the Unique
-            Disability ID. This Department does not.
-          </Alert>
-        </div>
+        <>
+          <div className="xsf__signpost">
+            <Alert
+              status="info"
+              title="These schemes are run by a different Department"
+              action={
+                <Link href={`https://${SD_SIGNPOST.to}`} external variant="standalone">
+                  Go to {SD_SIGNPOST.to}
+                </Link>
+              }
+            >
+              The Department of Empowerment of Persons with Disabilities, a separate
+              Department of the same Ministry, runs the schemes for persons with
+              disabilities and issues the Unique Disability ID. They are listed here so
+              that nobody is turned away empty-handed.
+            </Alert>
+          </div>
+          <ul className="xsf__list">
+            {SD_DEPWD.schemes.map((s) => (
+              <li key={s.id}>
+                <Card className="xsf__scheme">
+                  <CardBody>
+                    <div className="xsf__scheme-head">
+                      <h4 className="xsf__scheme-title">{s.name}</h4>
+                      <div className="xsf__tags">
+                        <Badge status="warning">Run by DEPwD</Badge>
+                      </div>
+                    </div>
+                    <dl className="xsf__facts">
+                      <dt>For</dt>
+                      <dd>{s.named}</dd>
+                      <dt>Provides</dt>
+                      <dd>{s.provides}</dd>
+                    </dl>
+                    <div className="xsf__scheme-actions">
+                      <Link href={`https://${SD_SIGNPOST.to}`} external variant="standalone" size="sm">
+                        Open on {SD_SIGNPOST.to}
+                      </Link>
+                    </div>
+                  </CardBody>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        </>
       ) : schemes.length === 0 ? (
         <div className="xsf__empty">
           <EmptyState
@@ -436,7 +467,7 @@ function SchemeRow({ scheme: s }: { scheme: SdScheme }) {
           </div>
         </div>
         <dl className="xsf__facts">
-          <dt>Names</dt>
+          <dt>For</dt>
           <dd>{s.named}</dd>
           <dt>Provides</dt>
           <dd>{s.provides}</dd>

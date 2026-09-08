@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Chatbot, SectionTitle, Card, CardBody, CardTitle, Badge } from "@mosje/design-system";
 import type { ChatbotQuickReply, ChatbotReply } from "@mosje/design-system";
 import {
+  SD_DEPWD,
   SD_PERSONAS,
   SD_SIGNPOST,
   SD_ROUTES,
@@ -120,11 +121,14 @@ export default function AssistantPrototype() {
     if (label === "Which scheme applies to me?") return askWho();
     if (label.startsWith("Open ")) {
       const name = label.slice(5);
+      if (SD_DEPWD.schemes.some((s) => s.name === name)) {
+        return { text: `Opening ${name} on ${SD_SIGNPOST.to}.`, quickReplies: q("Start over") };
+      }
       const hit = sdMatch(persona.current ?? undefined).find((h) => h.name === name);
       const route = hit ? SD_ROUTES[hit.apply[0] ?? ""] : undefined;
       return {
         text: route
-          ? `Opening the scheme's page. The application itself is made on ${route.label}.`
+          ? `Opening the scheme's page. The application itself is made through ${route.label}.`
           : "Opening the scheme's page.",
         quickReplies: q("Start over"),
       };
@@ -133,8 +137,9 @@ export default function AssistantPrototype() {
       if (label === SD_SIGNPOST.label) {
         asked.current = "none";
         return {
-          text: `Support for persons with disabilities is provided by the Department of Empowerment of Persons with Disabilities, in this same Ministry, at ${SD_SIGNPOST.to}. Nothing here is from that department.`,
-          quickReplies: q("Start over"),
+          text:
+            `Those schemes are run by the Department of Empowerment of Persons with Disabilities, a separate Department of the same Ministry, at ${SD_SIGNPOST.to}: ${list(SD_DEPWD.schemes.map((s) => s.name))}. The UDID card is issued there too.`,
+          quickReplies: q(...SD_DEPWD.schemes.map((s) => `Open ${s.name}`), "Start over"),
         };
       }
       const p = SD_PERSONAS.find((x) => x.short === label);

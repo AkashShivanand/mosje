@@ -69,6 +69,9 @@ const SIGNPOST = ${js({ id: m.signpost.id, label: m.signpost.label, sub: m.signp
 
 const OFFERINGS = ${js(m.offerings.map(({ id, label, short, sub }) => ({ id, label, short: short || label, sub })))};
 
+/* The schemes a person with a disability is shown — DEPwD's, labelled as such. */
+const DEPWD = ${js({ why: m.depwd.why, schemes: m.depwd.schemes.map(({ id, name, provides, named }) => ({ id, name, provides, named })) })};
+
 const ROUTES = ${js(Object.fromEntries(Object.entries(m.routes).map(([k, r]) => [k, { label: r.label, href: r.href }])))};
 
 const SCHEMES = ${js(
@@ -156,6 +159,7 @@ export interface SdScheme {
 
 export const SD_PERSONAS: SdPersona[] = ${js(m.personas.map(({ id, label, short, sub }) => ({ id, label, short: short || label, sub })))};
 export const SD_SIGNPOST = ${js({ id: m.signpost.id, label: m.signpost.label, sub: m.signpost.sub, to: m.signpost.to })};
+export const SD_DEPWD: { why: string; schemes: { id: string; name: string; provides: string; named: string }[] } = ${js({ why: m.depwd.why, schemes: m.depwd.schemes.map(({ id, name, provides, named }) => ({ id, name, provides, named })) })};
 export const SD_OFFERINGS: SdOffering[] = ${js(m.offerings.map(({ id, label, short, sub }) => ({ id, label, short: short || label, sub })))};
 export const SD_ROUTES: Record<string, { label: string; href: string | null }> = ${js(Object.fromEntries(Object.entries(m.routes).map(([k, r]) => [k, { label: r.label, href: r.href }])))};
 export const SD_SCHEMES: SdScheme[] = ${js(
@@ -285,6 +289,16 @@ team can see the empty cells, and the screens show the schemes themselves.
 | Scheme | Type | Names | Provides | What it provides | Whom it names | Where to apply | Sources |
 |---|---|---|---|---|---|---|---|
 ${schemeRows}
+
+## 6a. Persons with disabilities — a different Department's schemes
+
+${m.depwd.why}
+
+| Scheme | What it provides | Whom it names | Source |
+|---|---|---|---|
+${m.depwd.schemes.map((s) => `| ${s.name} | ${s.provides} | ${s.named} | ${s.sources.join(", ")} |`).join("\n")}
+
+Source: ${m.depwd.source}
 
 ## 7. What the beta site lists that this master does not
 
