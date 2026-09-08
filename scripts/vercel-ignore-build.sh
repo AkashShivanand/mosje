@@ -46,15 +46,21 @@ ENVIRONMENT="${VERCEL_ENV:-preview}"
 
 # The opt-in. Vercel passes the commit message in; reading it from git is the
 # fallback for a local run or a shallow clone that arrived without it.
+#
+# Only the SUBJECT line counts, and that is not a detail. The commit that
+# introduced this rule described the token in its own body, matched itself, and
+# built the preview it had just switched off. A body is prose — it discusses the
+# token; a subject is the person saying what this push is for.
 MESSAGE="${VERCEL_GIT_COMMIT_MESSAGE:-$(git log -1 --format=%B 2>/dev/null)}"
-case "$MESSAGE" in
+SUBJECT="$(printf '%s\n' "$MESSAGE" | head -1)"
+case "$SUBJECT" in
   *"[preview]"*) WANTS_PREVIEW=1 ;;
   *)             WANTS_PREVIEW=0 ;;
 esac
 
 # Rule 1 — branch previews are off unless this push asked for one.
 if [ "$ENVIRONMENT" != "production" ] && [ "$WANTS_PREVIEW" -eq 0 ]; then
-  say "SKIP: previews are off by default. Put [preview] in the commit message to get one for '$REF'."
+  say "SKIP: previews are off by default. Put the opt-in token in the commit SUBJECT to get one for '$REF'."
   exit $SKIP
 fi
 

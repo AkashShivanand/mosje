@@ -82,9 +82,14 @@ deployment's marginal cost is only what changed. That inverts the conclusion
 above: **the count is the problem, not the size of a build.**
 
 798 of the 1,174 were branch previews, and they were rarely opened. So previews
-are now off unless a push asks for one — `[preview]` in the commit message — which
-leaves roughly 376 deployments in a 30-day window, about a third of the cap, and
-holds there because the window keeps rolling.
+are now off unless a push asks for one — the token `[preview]` in the commit
+**subject** — which leaves roughly 376 deployments in a 30-day window, about a
+third of the cap, and holds there because the window keeps rolling.
+
+Only the subject line is matched, and that was learned the hard way: the commit
+that introduced the rule described the token in its own body, matched itself, and
+built the preview it had just switched off. A body discusses the token; a subject
+is a person saying what the push is for.
 
 | 30-day window | Retained | Storage |
 |---|---|---|
