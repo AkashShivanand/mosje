@@ -102,7 +102,7 @@ function field(s, x, y, w, label, body, labelColor) {
     align:"right", fontFace:F, fontSize:11, color:BLUE_100, lineSpacingMultiple:1.18 });
 
   s.addShape(pres.ShapeType.line, { x:M, y:5.4, w:CW, h:0, line:{color:BLUE_DEEP, width:1} });
-  s.addText("Each option is shown as the screen drawn for it, with what it does, what favours it and what counts against it. The assistant also carries a recorded walkthrough.", {
+  s.addText("Each option is shown as the screen built for it, with what it does, what favours it and what counts against it. The persona panel and the assistant carry recorded walkthroughs.", {
     x:M, y:5.66, w:8.8, h:0.3, isTextBox:true, margin:0, fontFace:F, fontSize:12.5, color:WHITE });
   s.addText("Counts taken from dosje.gov.in on 8 September 2026 · MoSJE Design Research", {
     x:M, y:5.98, w:8.8, h:0.3, isTextBox:true, margin:0, fontFace:F, fontSize:11, color:BLUE_100 });
@@ -146,8 +146,8 @@ function field(s, x, y, w, label, body, labelColor) {
 /* ═══ 3–8 · One option, one page, with the screen as drawn ════════════ */
 const OPTIONS = [
   { surface:"The Home Page · Option A of 3", title:"Explore User Personas",
-    img:"home-a", live:true, rec:false,
-    caption:"The panel as drawn: one group at a time, moved with the arrows beneath it.",
+    vid:"home-a", live:true, rec:false,
+    caption:"The panel as built, played through all nine groups: one at a time, moved with the arrows beneath it.",
     what:"A picture of one group at a time, with arrows to move between them. It is on the home page today.",
     does:"Looks at the pictures, sees one that matches, and taps through to the Schemes page.",
     pros:["Already built and already on the page — the cheapest of all six",
