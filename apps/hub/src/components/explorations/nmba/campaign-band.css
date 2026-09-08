@@ -324,8 +324,18 @@
     gap: var(--sa-stack-2);
   }
 
+  /*
+   * headline-5 and body-2, WHICH IS WHAT PRODUCTION USES.
+   *
+   * This carried label-1 over body-3 — 14 over 12, against the live band's 20
+   * over 14. A prototype whose type is a step smaller than the thing it stands
+   * for is not a prototype of it: the audit that found this was reading the
+   * campaign's own headline as SMALLER than the lead paragraph below it, which
+   * is a defect the real band does not have.
+   */
   .xband__heading {
-    font-size: var(--sa-type-label-1-size);
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
     font-weight: var(--sa-font-weight-semibold);
   }
 
@@ -345,7 +355,8 @@
    * That is the right constraint here, and it is a real one.
    */
   .xband__text {
-    font-size: var(--sa-type-body-3-size);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
     opacity: 0.9;
     text-wrap: pretty;
   }
