@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { Icon, buttonClasses } from "@mosje/design-system";
+import { Icon, Modal, buttonClasses } from "@mosje/design-system";
 import { Fold, NMBA } from "./fold";
 import "./standing-band.css";
 
@@ -75,6 +75,7 @@ const OFFERS = [
     id: "observance",
     accent: "saffron",
     icon: "celebration",
+    celebrate: true,
     /** For the pager's accessible name — the eyebrow's words survive here. */
     name: "Sixth Anniversary",
     heading: NMBA.ribbon.eyebrow,
@@ -91,6 +92,7 @@ const OFFERS = [
     id: "mitr",
     accent: "leaf",
     icon: "volunteer_activism",
+    celebrate: false,
     name: "Volunteer",
     heading: NMBA.banner.heading,
     body: NMBA.banner.text,
@@ -115,6 +117,7 @@ export function StandingBand() {
   const [hovered, setHovered] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
   const dotsRef = React.useRef<HTMLDivElement>(null);
+  const [zoom, setZoom] = React.useState(false);
 
   /* `OFFERS[i]` is indexed access; the modulo above guarantees it resolves, and
      this is what says so to the compiler without an assertion. */
@@ -127,9 +130,12 @@ export function StandingBand() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
 
-  /* Four independent holds. Hover and focus are tracked separately: a reader who
-     tabs in and then moves the mouse away must not have it start again. */
-  const running = playing && !hovered && !focused && !reduced && !gone;
+  /* Five independent holds. Hover and focus are tracked separately: a reader who
+     tabs in and then moves the mouse away must not have it start again. And the
+     band must not turn under an open dialog — the code on screen belongs to the
+     panel that opened it, and rotating away from that panel would leave a code
+     for an announcement the reader can no longer see. */
+  const running = playing && !hovered && !focused && !reduced && !gone && !zoom;
 
   React.useEffect(() => {
     if (!running) return;
@@ -149,6 +155,7 @@ export function StandingBand() {
   return (
     <Fold
       band={
+        <>
         <section
           className="sband"
           role="region"
@@ -209,16 +216,65 @@ export function StandingBand() {
                      * layout that shifts.
                      */
                     <>
-                      <span className="sband__mark sband__mark--code">
+                      {/*
+                       * A BUTTON, BECAUSE 70px IS TOO SMALL TO SCAN AND ALWAYS
+                       * WAS.
+                       *
+                       * A camera needs the code to fill a useful part of the
+                       * frame; at 70px on a 1440 page a reader has to walk up to
+                       * their own monitor. So the tile is now the way to a
+                       * legible one rather than an ornament that happens to be a
+                       * code, and it carries the badge at rest — an affordance
+                       * that only appears on hover does not exist for a reader
+                       * on a touch screen, which is most of them.
+                       *
+                       * It stops being decorative the moment it does something,
+                       * so it takes a name. The image inside stays `alt=""`:
+                       * the button is already named, and announcing the picture
+                       * as well would say the same thing twice.
+                       */}
+                      <button
+                        type="button"
+                        className="sband__mark sband__mark--code"
+                        onClick={() => setZoom(true)}
+                        aria-label="Show the registration code at a size a camera can read"
+                      >
                         <Image src={o.qr} alt="" width={128} height={128} />
-                      </span>
+                        <span className="sband__mark-badge" aria-hidden>
+                          <Icon name="zoom_in" size={16} />
+                        </span>
+                      </button>
                       <span className="sband__mark sband__mark--glyph sband__mark--phone" aria-hidden>
                         <Icon name={o.icon} size={40} />
                       </span>
                     </>
                   ) : (
-                    <span className="sband__mark sband__mark--glyph" aria-hidden>
+                    <span
+                      className={`sband__mark sband__mark--glyph${o.celebrate ? " sband__mark--celebrate" : ""}`}
+                      aria-hidden
+                    >
                       <Icon name={o.icon} size={40} />
+                      {/*
+                       * SIX SPECKS, ONE BURST PER APPEARANCE.
+                       *
+                       * A glyph of confetti is a picture of a celebration; a
+                       * glyph that goes off is one. It fires when the panel
+                       * becomes the active one — the CSS animation starts when
+                       * `[data-active]` begins to match — so a reader who is
+                       * looking at the band when it turns sees the observance
+                       * arrive rather than merely be there.
+                       *
+                       * It runs 1.1s and then stops, which is why it needs no
+                       * control of its own under §2.2.2; and it can only recur
+                       * when the band rotates, so the pause button that stops
+                       * the rotation stops this too. Nothing moves at all under
+                       * `prefers-reduced-motion`.
+                       */}
+                      {o.celebrate
+                        ? [0, 1, 2, 3, 4, 5].map((n) => (
+                            <span key={n} className="sband__spark" data-n={n} />
+                          ))
+                        : null}
                     </span>
                   )}
 
@@ -343,6 +399,75 @@ export function StandingBand() {
             </button>
           </div>
         </section>
+
+        {/*
+          * ── THE CODE, AT A SIZE A CAMERA CAN READ ───────────────────────────
+          *
+          * OUTSIDE the section, deliberately. The band carries `z-index` on the
+          * raised rung, which makes it a stacking context; a dialog rendered
+          * inside it can never rise above anything painted later in the
+          * document however high its own z-index goes. The DS `Modal` does not
+          * portal, so the only way it clears the hero beneath is to be a sibling
+          * of the band rather than a child of it.
+          *
+          * It is the DS `Modal` and not a hand-rolled one, which is where the
+          * focus trap, Escape, the backdrop and focus restoration to the tile
+          * come from — none of which is worth re-implementing for a dialog whose
+          * whole content is one picture and two sentences.
+          *
+          * WHAT IS IN IT IS THE INSTRUCTION, NOT A BIGGER PICTURE. A code shown
+          * inside a phone's own viewfinder says "point a camera at this" without
+          * a caption having to; the sentence beside it says which form opens,
+          * and the address is printed in full for a reader who cannot use a
+          * camera at all. That last one is the reason this is not just a
+          * lightbox — a scan-only dialog is a dead end for anybody without a
+          * second device.
+          */}
+        <Modal
+          open={zoom}
+          onClose={() => setZoom(false)}
+          size="lg"
+          title="Register as a Nasha Mukt Mitr"
+          className="sbz"
+        >
+          <div className="sbz__grid">
+            <div className="sbz__phone" aria-hidden>
+              <span className="sbz__speaker" />
+              <span className="sbz__screen">
+                <span className="sbz__view">
+                  <Image
+                    className="sbz__code"
+                    src={NMBA.banner.qrSrc}
+                    alt=""
+                    width={686}
+                    height={686}
+                  />
+                </span>
+              </span>
+            </div>
+
+            <div className="sbz__copy">
+              <p className="sbz__lead">
+                Point a phone camera at this code. It opens the Nasha Mukt Mitr volunteer
+                registration form on the Abhiyaan&rsquo;s own portal.
+              </p>
+              <p className="sbz__or">Or open it directly at</p>
+              <p className="sbz__url">nashamukt.dosje.gov.in/nasha-mukti-mitr</p>
+              <a
+                className={buttonClasses("success", "filled", "md", "sbz__cta")}
+                href={NMBA.banner.actionHref}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={NMBA.banner.actionFullLabel}
+              >
+                <span>{NMBA.banner.actionLabel}</span>
+                <Icon name="open_in_new" size={20} aria-hidden />
+                <span className="ds-sr-only"> (opens in a new tab)</span>
+              </a>
+            </div>
+          </div>
+        </Modal>
+        </>
       }
     />
   );
