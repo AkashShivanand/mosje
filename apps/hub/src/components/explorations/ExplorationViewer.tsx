@@ -52,6 +52,34 @@ const PROTOTYPES: Record<string, React.ComponentType> = {
   "service-discovery/assistant/samajik-sahayak": AssistantChat,
 };
 
+/**
+ * THE OPTION A MODULE OPENS ON.
+ *
+ * It used to be `options[0]`, and the register is ordered CHRONOLOGICALLY — the
+ * option drawn first, which on a settled decision is reliably the one that lost.
+ * Measured across the register before this changed: all five settled decisions
+ * opened on a rejected option, and four of those on an option that predates this
+ * section and was therefore never built, so the page opened on a dashed empty
+ * box. `/explorations/nmba/campaign-band` — the first card on the index — showed
+ * a stakeholder "It goes with the band · Not chosen" and nothing else.
+ *
+ * The register's own order is the RECORD and is not touched. Only the landing
+ * point moves, and it moves to the answer:
+ *
+ *   1. the chosen option — the decision, which is what the page is about
+ *   2. failing that, the first option with a prototype to look at
+ *   3. failing that, the first option, so the page always resolves
+ *
+ * A chosen option with no prototype still wins over a live rejected one: the
+ * panel then says the prototype was the live estate itself, which is the truth
+ * about the decision rather than a picture of the alternative.
+ */
+function defaultOptionId(module: ExplorationModule): string {
+  const chosen = module.options.find((o) => o.status === "chosen");
+  const live = module.options.find((o) => o.live);
+  return (chosen ?? live ?? module.options[0])?.id ?? "";
+}
+
 const STATUS_WORD: Record<ExplorationOption["status"], string> = {
   chosen: "Chosen",
   proposed: "Awaiting a decision",
@@ -81,20 +109,68 @@ const STATUS_WORD: Record<ExplorationOption["status"], string> = {
 export function ExplorationViewer({
   surfaceId,
   module,
+  initialOptionId,
 }: {
   surfaceId: string;
   module: ExplorationModule;
+  /**
+   * `?option=` READ ON THE SERVER, not here.
+   *
+   * The obvious client version — a mount effect that reads
+   * `window.location.search` and calls `setActive` — is banned by
+   * `react-hooks/set-state-in-effect`, and rightly: it renders the wrong option
+   * first and corrects it a frame later. Reading the query in the page and
+   * handing the answer down means the server and the client agree on the first
+   * paint, so there is no flash and no hydration mismatch.
+   *
+   * What it costs is that these eleven pages now render per request rather than
+   * at build. They are internal, `noindex`, behind the site gate, and their
+   * params are still enumerated by `generateStaticParams`.
+   */
+  initialOptionId?: string;
 }): React.JSX.Element {
-  const [active, setActive] = React.useState(module.options[0]?.id ?? "");
+  const [active, setActive] = React.useState(() =>
+    initialOptionId && module.options.some((o) => o.id === initialOptionId)
+      ? initialOptionId
+      : defaultOptionId(module),
+  );
   // Bumped by "Reset", and part of the frame's key. Switching options already
   // remounts; this is for the reviewer who wants to watch the same one twice.
   const [run, setRun] = React.useState(0);
+
+  /**
+   * SELECT, AND SAY SO IN THE URL.
+   *
+   * Every link to a module used to open that module's default, so "look at the
+   * third one" could not be sent — the reader arrived somewhere else and had to
+   * be told which pill to press. `replaceState` rather than a router push: this
+   * is not a navigation, and pushing it would make Back walk through the options
+   * a reviewer flipped between rather than leaving the page.
+   */
+  const select = React.useCallback((id: string) => {
+    setActive(id);
+    const url = new URL(window.location.href);
+    url.searchParams.set("option", id);
+    window.history.replaceState(null, "", url);
+  }, []);
+
   const option = module.options.find((o) => o.id === active) ?? module.options[0];
   // A module with no options is a registry defect, not a state to design for —
   // the register's own type says "two or more". Rendering nothing is the honest
   // response, and it fails loudly on the page rather than silently in a build.
   if (!option) return <p className="xpl-viewer">This decision has no options recorded.</p>;
   const Prototype = PROTOTYPES[`${surfaceId}/${module.id}/${option.id}`];
+
+  // The stepper WRAPS, like the tab row's own arrow keys already do. With two or
+  // three options — which is most of the register — flipping is the whole point,
+  // and a disabled end would make comparing the first against the last a
+  // round trip through every one in between.
+  const index = module.options.findIndex((o) => o.id === option.id);
+  const stepTo = (delta: number): ExplorationOption | undefined =>
+    module.options[(index + delta + module.options.length) % module.options.length];
+  const previous = stepTo(-1);
+  const following = stepTo(1);
+  const many = module.options.length > 1;
 
   return (
     <div className="xpl-viewer">
@@ -109,7 +185,7 @@ export function ExplorationViewer({
             aria-controls={`xpl-panel-${o.id}`}
             tabIndex={o.id === active ? 0 : -1}
             className="xpl-viewer__tab"
-            onClick={() => setActive(o.id)}
+            onClick={() => select(o.id)}
             onKeyDown={(e) => {
               const i = module.options.findIndex((x) => x.id === o.id);
               const next =
@@ -122,7 +198,7 @@ export function ExplorationViewer({
               e.preventDefault();
               const id = module.options[next]?.id;
               if (!id) return;
-              setActive(id);
+              select(id);
               document.getElementById(`xpl-tab-${id}`)?.focus();
             }}
           >
@@ -138,6 +214,69 @@ export function ExplorationViewer({
         aria-labelledby={`xpl-tab-${option.id}`}
         className="xpl-viewer__panel"
       >
+        {/*
+         * ── THE OPTION BAR — pinned, because the name has to survive a scroll ──
+         *
+         * It sits INSIDE the panel and above the summary, so it belongs to the
+         * option it names and leaves with it. The tab row stays above as the jump
+         * list; this is the handle you hold while you are inside the prototype.
+         *
+         * The live region wraps the count, the name and the status together so a
+         * step announces one sentence — "3 of 6, Two questions, awaiting a
+         * decision" — rather than three separate updates a reader has to assemble.
+         */}
+        <div className="xpl-viewer__bar">
+          {many && previous ? (
+            <button
+              type="button"
+              className="xpl-viewer__step"
+              onClick={() => select(previous.id)}
+              /* The DESTINATION, not the direction. "Previous" alone tells a
+                 screen-reader user which way the control goes and nothing about
+                 where it lands, which is the thing they cannot see. */
+              aria-label={`Previous option: ${previous.title}`}
+            >
+              <Icon name="chevron_left" size={20} aria-hidden />
+            </button>
+          ) : null}
+
+          <p className="xpl-viewer__bar-now" aria-live="polite">
+            {many ? (
+              <span className="xpl-viewer__bar-count">
+                {index + 1} / {module.options.length}
+              </span>
+            ) : null}
+            <span className="xpl-viewer__bar-name">{option.title}</span>
+            <span className={`xpl-dot xpl-dot--${option.status}`} aria-hidden />
+            <span className="xpl-viewer__bar-status">{STATUS_WORD[option.status]}</span>
+          </p>
+
+          {Prototype ? (
+            <button
+              type="button"
+              className="xpl-viewer__bar-reset"
+              onClick={() => setRun((n) => n + 1)}
+              /* Named on the button rather than by its span, because the span is
+                 visually hidden below 640 and the glyph is decorative. */
+              aria-label="Reset this prototype"
+            >
+              <Icon name="refresh" size={16} aria-hidden />
+              <span className="xpl-viewer__bar-reset-label">Reset</span>
+            </button>
+          ) : null}
+
+          {many && following ? (
+            <button
+              type="button"
+              className="xpl-viewer__step"
+              onClick={() => select(following.id)}
+              aria-label={`Next option: ${following.title}`}
+            >
+              <Icon name="chevron_right" size={20} aria-hidden />
+            </button>
+          ) : null}
+        </div>
+
         <p className="xpl-viewer__summary">{option.summary}</p>
 
         {option.lookAt?.length ? (
@@ -152,17 +291,12 @@ export function ExplorationViewer({
         ) : null}
 
         {Prototype ? (
-          <>
-            <div className="xpl-frame" key={`${option.id}:${run}`}>
-              <Prototype />
-            </div>
-            <p className="xpl-viewer__reset">
-              <button type="button" className="xpl-viewer__reset-btn" onClick={() => setRun((n) => n + 1)}>
-                <Icon name="refresh" size={16} aria-hidden />
-                <span>Reset this prototype</span>
-              </button>
-            </p>
-          </>
+          /* Reset used to sit under here, below the fold of the thing it resets.
+             It is in the bar now, where it is reachable at the moment a reviewer
+             decides they want to watch the animation again. */
+          <div className="xpl-frame" key={`${option.id}:${run}`}>
+            <Prototype />
+          </div>
         ) : (
           <div className="xpl-frame xpl-frame--none">
             <p>
