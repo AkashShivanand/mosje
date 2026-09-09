@@ -239,9 +239,15 @@
     --cband-accent-soft: var(--sa-color-secondaryScale-200);
   }
 
+  /*
+   * `successScale-50`, not `-100`. `-100` measured 4.60:1 on the glass card
+   * against the 4.5 §1.4.3 asks — it passes, and it is the first thing that
+   * fails if the card's translucency is ever touched. `-50` is 6.81:1, which is
+   * margin rather than luck.
+   */
   .cband__offer[data-accent="leaf"] {
-    --cband-accent: var(--sa-color-successScale-100);
-    --cband-accent-soft: var(--sa-color-successScale-200);
+    --cband-accent: var(--sa-color-successScale-50);
+    --cband-accent-soft: var(--sa-color-successScale-100);
   }
 
   .cband__offer-glyph {
@@ -442,12 +448,22 @@
 
   /* ── The band's own dismiss, at the band's own corner ─────────────────── */
 
-  /* On the GROUND, between the cards and the band's edge, vertically centred —
-     it belongs to the band, so it stands outside both of them. */
+  /*
+   * ON THE GROUND, AND ALIGNED TO THE CARDS' TOP EDGE.
+   *
+   * It stays outside both cards, because it dismisses the BAND and a control
+   * inside the glass card would say it dismisses the offer. What was wrong was
+   * the vertical centring: it floated at the middle height of a gap, related to
+   * nothing, which is what made the band's right end read as unfinished.
+   *
+   * Sharing the cards' top edge gives it one relationship without giving it the
+   * wrong scope. (The 24px either side of the band is the container's own
+   * padding and was never the asymmetry it looked like.)
+   */
   .cband__dismiss {
     display: grid;
     place-items: center;
-    align-self: center;
+    align-self: start;
     inline-size: var(--sa-control-height-sm);
     block-size: var(--sa-control-height-sm);
     border-radius: var(--sa-shape-8);
@@ -551,6 +567,68 @@
 
     .cband__offer-actions {
       grid-column: 1 / -1;
+    }
+
+    /*
+     * THE BODY AND THE SECOND ROUTE GO ON A PHONE.
+     *
+     * At 390 the band was 380px of an 844px viewport — forty-five per cent of
+     * the screen, for an announcement, above the page it announces. That is not
+     * a small band; it is a page.
+     *
+     * What survives is what the announcement IS: the eyebrow saying which kind
+     * of thing it is, the heading, and the way in. The sentence and the
+     * alternative route are elaboration, and elaboration belongs on the page the
+     * button opens — where there is room for it and where a reader who pressed
+     * the button has asked for it.
+     */
+    .cband__offer-body {
+      display: none;
+    }
+
+    /*
+     * THE HELPLINE GOES TO ONE LINE, and the band's own padding tightens.
+     *
+     * Dropping the body took 380 to 340; the rest of the height is structure,
+     * not words. Measured at 390: the helpline card was 80px of it — a 48px
+     * glyph with a label stacked over a number — and the band and stage were
+     * paying 20 and 16 of padding each on a 390px screen.
+     *
+     * Inline, the card is 56. With the paddings at 16 and 12 the band lands
+     * near 300, which is where it stops: below that the only thing left to cut
+     * is the rotating half itself, and whether a phone gets the announcements
+     * at all is a content decision, not a layout one.
+     */
+    .cband__inner {
+      padding-block: var(--sa-padding-16);
+      row-gap: var(--sa-stack-16);
+    }
+
+    .cband__stage {
+      padding: var(--sa-padding-12);
+    }
+
+    .cband__helpline {
+      padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-8) var(--sa-padding-8);
+      gap: var(--sa-inline-12);
+    }
+
+    .cband__helpline-glyph {
+      inline-size: var(--sa-control-height-md);
+      block-size: var(--sa-control-height-md);
+    }
+
+    /* Label beside the number, not above it: two 16px lines of chrome around a
+       28px figure is a card built for a desktop row. */
+    .cband__helpline-text {
+      flex-direction: row;
+      align-items: baseline;
+      gap: var(--sa-inline-8);
+    }
+
+    .cband__helpline-number {
+      font-size: var(--sa-type-headline-5-size);
+      line-height: var(--sa-type-headline-5-lh);
     }
 
     .cband__offer-qr {

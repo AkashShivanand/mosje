@@ -1288,3 +1288,56 @@ line where a future gradient tweak would push it under.
 Every measured pair passes, and the saffron eyebrow is checked at **both** ends
 of the card's gradient — 4.75:1 at the light end, 6.59:1 at the dark end — because
 a gradient means one sample is not a result.
+
+---
+
+## 24. The three critique findings, fixed — and one of them corrected first
+
+### The "asymmetric margins" finding was wrong, and I checked before acting on it
+
+I reported the band's internal margins as **24 left, 76 right**. They are not
+asymmetric: 24 is the container's own padding on *both* sides, and the 76 is the
+gap plus the dismiss plus that same 24. I had measured two different things and
+called the difference a defect.
+
+What was actually wrong is smaller and real: the dismiss was **vertically centred
+against nothing** — floating at the middle height of a gap, related to no other
+element, which is what made the band's right end read as unfinished. It now
+shares the cards' top edge. It stays *outside* both cards, because it dismisses
+the band and a control inside the glass card would claim the wrong scope.
+
+### The phone: 380px → 296px
+
+45% of an 844px viewport, for an announcement, above the page it announces. Not a
+small band — a page.
+
+| Cut | Saved |
+|---|---|
+| The body sentence and the second route | 40px |
+| The helpline card to one line — glyph 48→40, label beside the number, not above | 24px |
+| Band padding 20→16, stage padding 16→12 | 20px |
+
+**296px, 35%.** That is the floor: below it the only thing left to cut is the
+rotating half itself, and whether a phone gets the announcements at all is a
+content decision rather than a layout one.
+
+What survives on a phone is what the announcement *is* — the eyebrow saying which
+kind of thing it is, the heading, and the way in. The sentence is elaboration,
+and elaboration belongs on the page the button opens, where there is room for it
+and where a reader who pressed the button has asked for it.
+
+### The leaf eyebrow
+
+`successScale-100` measured **4.60:1** against the 4.5 §1.4.3 asks. It passes, and
+it is the first thing that fails if the card's translucency is ever touched.
+`-50` is **6.81:1** — margin rather than luck.
+
+### Verified
+
+| | 1440 | 768 | 390 |
+|---|---|---|---|
+| Band height | 164 (22% of the fold) | 263 (26%) | **296 (35%)** |
+| Helpline card | 124 | 82 | 56 |
+| Dismiss shares the cards' top edge | yes | yes | yes |
+| Pager overlaps the button | no | no | no |
+| Horizontal scroll | none | none | none |
