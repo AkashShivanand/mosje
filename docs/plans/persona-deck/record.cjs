@@ -72,10 +72,11 @@ const WALKS = {
   }},
   'scheme-b': { url: 'file://' + path.join(PROTO, 'scheme-b.html'), run: async p => {
     await p.waitForTimeout(1700);
-    await tap(p, '.face-btn[data-g="obc"]', { pause: 1600 });
+    await tap(p, 'input[data-axis="who"][data-id="obc"]', { pause: 1300 });
+    await tap(p, 'input[data-axis="who"][data-id="student"]', { pause: 1600 });
     await scroll(p, 320, 1400);
     await scroll(p, -320, 600);
-    await tap(p, '.face-btn[data-g="ngo"]', { pause: 1600 });
+    await tap(p, '[data-clear="who:obc"]', { pause: 1600 });
     await tap(p, '#reset', { pause: 1400 });
   }},
   'finder': { url: base + '/explorations/service-discovery/home-page', run: async p => {

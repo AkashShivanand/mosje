@@ -1052,6 +1052,7 @@ const HAS_ART = new Set([
   "tg",
   "drug",
   "begging",
+  "atrocity",
   "ngo"
 ]);
 /* Material Symbols Rounded, the estate's icon set, for the groups with no
