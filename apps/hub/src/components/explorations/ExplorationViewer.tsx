@@ -6,6 +6,7 @@ import type { ExplorationModule, ExplorationOption } from "@/lib/explorations/re
 import { OptionArrive, OptionFlight } from "./nmba/CampaignBandOptions";
 import { OptionOneBand, OptionOneBandAuto, OptionTwoBands } from "./nmba/TopBandsOptions";
 import { ComposedBand } from "./nmba/ComposedBandOption";
+import { StandingBand } from "./nmba/StandingBandOption";
 import { HelplineRinging, HelplineStatic } from "./nmba/HelplineCardOptions";
 import { LayoutCtasBelow, LayoutCtasRight, LayoutTwoZones } from "./nmba/BannerLayoutOptions";
 import {
@@ -38,6 +39,7 @@ const PROTOTYPES: Record<string, React.ComponentType> = {
   "nmba/top-bands/one": OptionOneBand,
   "nmba/top-bands/one-auto": OptionOneBandAuto,
   "nmba/top-bands/composed": ComposedBand,
+  "nmba/top-bands/standing": StandingBand,
   "nmba/helpline-card/current": HelplineStatic,
   "nmba/helpline-card/ringing": HelplineRinging,
   "nmba/banner-layout/ctas-right": LayoutCtasRight,

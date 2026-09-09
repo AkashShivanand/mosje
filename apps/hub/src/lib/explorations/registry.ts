@@ -346,7 +346,6 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             label: "Two Halves",
             summary:
               "The helpline is the band's only white surface; the rotating half carries the observance and the volunteer drive, each with its own accent, glyph, eyebrow and shape.",
-            status: "proposed",
             live: true,
             lookAt: [
               "The band has PRESENCE — a real height, a lit top edge, a shadow onto the hero. A band nobody notices has failed at the only job it has",
@@ -355,6 +354,33 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
               "The lightest material is the helpline, because on a page about de-addiction the most important interactive thing is not the campaign",
               "Pagination sits INSIDE the rotating half, because it pages that; the dismiss sits at the band's corner, because it dismisses the band",
               "The current dot lengthens into a bar — a shape change reads at a glance where a brightness change alone does not",
+            ],
+            status: "superseded",
+            supersededBy:
+              "The priority was wrong. It gave the national helpline a 28px number and the campaign a 20px heading, so the two halves read as peers — and on this page they are not. The handoff of 9 September settled it by making the number the loudest object in the band, and “The number leads” is that composition built.",
+          },
+          {
+            id: "standing",
+            title: "The number leads",
+            /* Not "The Number" — the distinguishing thing is its SIZE, not that
+               a number is present. Every option in this module has one. */
+            label: "Number Loudest",
+            summary:
+              "The handoff at 57913:17152, built — the helpline on the trailing edge at display scale, one leading mark slot the two offers share, and the pager wearing the glass card's own material.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "THE NUMBER IS THE LOUDEST THING IN THE BAND — 48px on the only solid white surface, against a 20px campaign heading. On a page about drug de-addiction the most consequential object in the fold is not the volunteer drive",
+              "The campaign still reads FIRST, because it is on the leading edge and it is what the band is for. The number is found by weight from anywhere on the row, which is why it does not need the leading position as well",
+              "The eyebrow is gone. What it was carrying moves to two marks that read further — the leading square (a saffron glyph tile, or a white code tile) and the glass card's lit top edge, which carries the panel's accent across the full 889px as it turns",
+              "The current dot FILLS across the six seconds, so the change is announced before it happens instead of explained after it. It stops with the pause button, with hover, with focus, and under `prefers-reduced-motion`",
+              "The pager wears the glass card's material, not white. Drawn white it was the third white object on the row and outranked the campaign's own button — a control for advancing a slide should not do that",
+              "THE CODE OPENS. Its tile is a button carrying a magnifier badge at rest — an affordance that only appears on hover does not exist on a touch screen — and it opens a dialog showing the code inside a phone's own camera viewfinder, at 176px instead of 70. The address is printed in full beneath it, because a dialog that only offers a code is a dead end for a reader with no second device",
+              "The confetti goes off. The observance's glyph pops and throws six specks each time its panel arrives — 1s, then still, and it can only recur when the band rotates, so the pause button stops it too. Nothing moves under `prefers-reduced-motion`",
+              "The code's white margin is the FILE's own. `nmba-nasha-mukti-mitr-qr.png` already carries a 56px quiet zone in 686 — 8.2% each side, the ~4 modules the QR specification asks for — so the 6px of tile padding on top of it was a second margin, and the band around the code was the first thing the eye met",
+              "The action aligns to the TOP, with the heading it acts on rather than with the middle of the paragraph",
+              "ON A PHONE THE SENTENCE COMES BACK. The previous composition bought its height by deleting the only line that says what the reader is registering for. It returns at 12px, the heading drops to 16 and holds one line against a measured 268px of copy, and the mark becomes a 24px accent chip: 286px, 34% of an 844px viewport, against 268 for the wordless version",
+              "Four pixels shorter than the drawing at 1440, and 14px shorter than the composition it replaces: 150px of a 760px fold",
             ],
           },
         ],
