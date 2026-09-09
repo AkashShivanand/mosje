@@ -298,7 +298,9 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             label: "Two Bands",
             summary:
               "Each announcement keeps its own band, its own ground colour and its own dismiss, and both are visible at once.",
-            status: "proposed",
+            status: "superseded",
+            supersededBy:
+              "Two bands cost 154px of a 760px fold, in two ground colours, with two dismisses 50px apart — and the second of them was below the fold on every viewport measured. The chosen band carries both in 150px.",
             live: true,
             lookAt: [
               "Both messages are readable without the reader doing anything",
@@ -312,7 +314,9 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             label: "One Band",
             summary:
               "A single band carrying both, switched by the reader. Half the height, and one message visible at a time.",
-            status: "proposed",
+            status: "superseded",
+            supersededBy:
+              "Right about one band and wrong about who advances it. A panel a reader has to press to see is, in practice, unread — the design system’s own Carousel says so — and the temporary announcement is the one that cannot afford to be. The chosen band rotates, with the pause §2.2.2 requires.",
             live: true,
             lookAt: [
               "50px of the fold given back to the hero",
@@ -367,7 +371,9 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             label: "Number Loudest",
             summary:
               "The handoff at 57913:17152, built — the helpline on the trailing edge at display scale, one leading mark slot the two offers share, and the pager wearing the glass card's own material.",
-            status: "proposed",
+            status: "chosen",
+            landedIn:
+              "the live organisation template — `OrganisationAnnouncementBand`, which replaced `OrganisationJoinBanner` and `OrganisationEventRibbon`",
             live: true,
             lookAt: [
               "THE NUMBER IS THE LOUDEST THING IN THE BAND — 48px on the only solid white surface, against a 20px campaign heading. On a page about drug de-addiction the most consequential object in the fold is not the volunteer drive",
