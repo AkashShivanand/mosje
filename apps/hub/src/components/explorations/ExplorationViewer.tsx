@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icon } from "@mosje/design-system";
+import { Icon, SectionTitle } from "@mosje/design-system";
 import type { ExplorationModule, ExplorationOption } from "@/lib/explorations/registry";
 import { OptionArrive, OptionFlight } from "./nmba/CampaignBandOptions";
 import { OptionOneBand, OptionTwoBands } from "./nmba/TopBandsOptions";
@@ -86,6 +86,15 @@ const STATUS_WORD: Record<ExplorationOption["status"], string> = {
   superseded: "Not chosen",
   parked: "Parked",
 };
+
+/**
+ * "Chosen" alone is a lie in `documents`, where two options won on different
+ * surfaces. Where the register scopes a win, the scope is part of the word.
+ */
+function statusWord(option: ExplorationOption): string {
+  const word = STATUS_WORD[option.status];
+  return option.chosenFor ? `${word} · ${option.chosenFor}` : word;
+}
 
 /**
  * One decision, all its options, one at a time.
@@ -202,8 +211,8 @@ export function ExplorationViewer({
               document.getElementById(`xpl-tab-${id}`)?.focus();
             }}
           >
-            <span className="xpl-viewer__tab-title">{o.title}</span>
-            <span className={`xpl-status xpl-status--${o.status}`}>{STATUS_WORD[o.status]}</span>
+            <span className="xpl-viewer__tab-title">{o.label}</span>
+            <span className={`xpl-status xpl-status--${o.status}`}>{statusWord(o)}</span>
           </button>
         ))}
       </div>
@@ -234,7 +243,7 @@ export function ExplorationViewer({
               /* The DESTINATION, not the direction. "Previous" alone tells a
                  screen-reader user which way the control goes and nothing about
                  where it lands, which is the thing they cannot see. */
-              aria-label={`Previous option: ${previous.title}`}
+              aria-label={`Previous option: ${previous.label}`}
             >
               <Icon name="chevron_left" size={20} aria-hidden />
             </button>
@@ -246,9 +255,9 @@ export function ExplorationViewer({
                 {index + 1} / {module.options.length}
               </span>
             ) : null}
-            <span className="xpl-viewer__bar-name">{option.title}</span>
+            <span className="xpl-viewer__bar-name">{option.label}</span>
             <span className={`xpl-dot xpl-dot--${option.status}`} aria-hidden />
-            <span className="xpl-viewer__bar-status">{STATUS_WORD[option.status]}</span>
+            <span className="xpl-viewer__bar-status">{statusWord(option)}</span>
           </p>
 
           {Prototype ? (
@@ -270,14 +279,26 @@ export function ExplorationViewer({
               type="button"
               className="xpl-viewer__step"
               onClick={() => select(following.id)}
-              aria-label={`Next option: ${following.title}`}
+              aria-label={`Next option: ${following.label}`}
             >
               <Icon name="chevron_right" size={20} aria-hidden />
             </button>
           ) : null}
         </div>
 
-        <p className="xpl-viewer__summary">{option.summary}</p>
+        {/*
+         * The FULL title, which the tab and the bar no longer carry — they hold
+         * the short label now, and a name that exists only in a truncated pill is
+         * a name nobody can read. `SectionTitle`, not a hand-rolled heading:
+         * `ui-restraint-and-copy.md` §3 is explicit that a section heading is the
+         * design system's, so section headers stay identical estate-wide.
+         */}
+        <SectionTitle
+          as={2}
+          title={option.title}
+          description={option.summary}
+          className="xpl-viewer__headline"
+        />
 
         {option.lookAt?.length ? (
           <div className="xpl-viewer__look">

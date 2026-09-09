@@ -12,6 +12,85 @@
 @layer components {
   /* ── Index ────────────────────────────────────────────────────────────── */
 
+  /*
+   * THE FILTER, which is the control that turns a list into an answer. Fifteen
+   * options were awaiting a decision and the page had no way to show which; a
+   * reader's question here is "what needs me?", and eleven cards in insertion
+   * order do not answer it.
+   *
+   * `aria-pressed` on plain buttons, not `role="tab"`: there are no panels here,
+   * only the same list narrowed, and a tablist promises a roving arrow-key model
+   * this does not have. Toggle buttons in a named group is what this is.
+   */
+  .xpl-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+    margin-block-end: var(--sa-stack-24);
+  }
+
+  .xpl-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    min-block-size: var(--sa-control-height-sm);
+    padding: var(--sa-padding-6) var(--sa-padding-12);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    font-weight: var(--sa-font-weight-medium);
+    transition:
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .xpl-filter:hover {
+      border-color: var(--sa-border-neutral-bolder-hover);
+    }
+  }
+
+  /* Same correction as the tabs: `base` is the palest rung, and the ring is what
+     carries the pressed state without moving the row by a pixel. */
+  .xpl-filter[aria-pressed="true"] {
+    border-color: var(--sa-border-brand-primary-bolder);
+    background-color: var(--sa-bg-brand-primary-base);
+    box-shadow: inset 0 0 0 var(--sa-stroke-1) var(--sa-border-brand-primary-bolder);
+    color: var(--sa-text-brand-primary-base);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .xpl-filter__count {
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xpl-filter[aria-pressed="true"] .xpl-filter__count {
+    color: inherit;
+  }
+
+  /* Filtered to nothing — worded differently from empty, and it names the way
+     out, because the reader caused this state and can undo it. */
+  .xpl-nothing {
+    padding: var(--sa-padding-24);
+    border: var(--sa-stroke-1) dashed var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-12);
+    background-color: var(--sa-bg-neutral-base);
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xpl-nothing__clear {
+    color: var(--sa-text-link-brand-default);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .xpl-nothing__clear:hover {
+    text-decoration: underline;
+  }
+
   .xpl-surface {
     border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     padding-block-start: var(--sa-padding-32);
@@ -62,13 +141,55 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /*
+   * The option NAMES, as plain text rather than a pill each.
+   *
+   * They used to be one `.xpl-status` pill per option carrying the name AND the
+   * status joined by an em dash — in a register where three names contain an em
+   * dash of their own, so nothing told a reader where the name stopped. The
+   * pills also dominated the card and two of them ran off its edge, because a
+   * status pill is `white-space: nowrap` and a title is not a status.
+   *
+   * Now that a label is one to three words (see `ExplorationOption.label`) the
+   * whole set fits on a line or two, and the card's own title leads again.
+   */
+  .xpl-module-card__labels {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
   .xpl-module-card__foot {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--sa-inline-8);
+    gap: var(--sa-inline-8) var(--sa-inline-12);
     margin-block-start: auto;
-    padding-block-start: var(--sa-padding-8);
+    padding-block-start: var(--sa-padding-12);
+    border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    font-size: var(--sa-type-label-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* The status, counted once per state instead of spelled out once per option.
+     Never colour alone — the dot always has its count and its word beside it. */
+  .xpl-tally {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-6);
+    white-space: nowrap;
+  }
+
+  .xpl-module-card__date {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    margin-inline-start: auto;
+    white-space: nowrap;
   }
 
   /* ── Status words — never colour alone (WCAG 1.4.1) ───────────────────── */
@@ -176,9 +297,9 @@
     font-weight: var(--sa-font-weight-semibold);
   }
 
-  .xpl-viewer__summary {
-    font-size: var(--sa-type-body-2-size);
-    color: var(--sa-text-neutral-base);
+  /* `SectionTitle` brings its own type and rhythm; all this does is hold the
+     description to a measure, which the component does not decide for a caller. */
+  .xpl-viewer__headline .ds-section-title__description {
     max-inline-size: 68ch;
   }
 
