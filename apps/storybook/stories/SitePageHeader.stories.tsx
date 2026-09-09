@@ -132,6 +132,12 @@ export const VeryLongTitle: Story = {
  * `media` is rendered `aria-hidden`: the portrait repeats nothing the copy does
  * not already say, so a reader who never sees it loses nothing. The placeholder
  * here stands in for the department's own photograph.
+ *
+ * **Pass the picture only.** The round frame, its size and its translucent ground
+ * are the component's — which is why this stand-in is a plain square block and
+ * still renders as a circle. Wrapping `media` in a `rounded-full` span of your own
+ * is not needed and was the source of a defect: a caller that forgot drew a square
+ * photograph on a circular plaque.
  */
 export const LandingWithLogoAndPortrait: Story = {
   args: {
@@ -160,14 +166,12 @@ export const LandingWithLogoAndPortrait: Story = {
       </a>
     ),
     media: (
+      // A plain SQUARE block, deliberately: the circle you see is the component's
+      // frame doing its job, not this stand-in drawing one.
       <span
         style={{
           display: "block",
-          width: 320,
-          height: 320,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, var(--sa-color-primaryScale-700, #004a8f) 62%, transparent 63%)",
+          background: "var(--sa-color-primaryScale-700)",
         }}
       />
     ),

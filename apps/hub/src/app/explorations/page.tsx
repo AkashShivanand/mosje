@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { HubSiteHeader } from "@/components/hub-site-header";
 import { HubFooter } from "@/components/site-footer";
+import { ExplorationIndex } from "@/components/explorations/ExplorationIndex";
 import { EXPLORATIONS, counts } from "@/lib/explorations/registry";
 import "@/components/explorations/explorations.css";
 
@@ -11,13 +12,6 @@ export const metadata: Metadata = {
     "Design options drawn for the estate, the question each one answers, and what became of it.",
   robots: { index: false, follow: false },
 };
-
-const STATUS_WORD = {
-  chosen: "Chosen",
-  proposed: "Awaiting a decision",
-  superseded: "Not chosen",
-  parked: "Parked",
-} as const;
 
 export default function ExplorationsPage() {
   const n = counts();
@@ -57,51 +51,23 @@ export default function ExplorationsPage() {
               the ones that were not chosen, with what beat them.
             </p>
 
-            {/* Counted from the register, never typed. */}
+            {/*
+             * Counted from the register, never typed — AND THE PARTS NOW ADD UP.
+             * It read "30 options · 15 awaiting a decision · 9 kept for the
+             * record", which leaves six unaccounted: the chosen ones, which the
+             * line never mentioned. A reader who tries the arithmetic on a
+             * government page and finds it wrong stops trusting the rest of it.
+             */}
             <p className="mt-4 text-body-2 text-ink-muted">
               {n.surfaces} {n.surfaces === 1 ? "surface" : "surfaces"} · {n.modules}{" "}
-              {n.modules === 1 ? "decision" : "decisions"} · {n.options} options ·{" "}
-              {n.open} awaiting a decision · {n.kept} kept for the record
+              {n.modules === 1 ? "decision" : "decisions"} · {n.options} options — {n.open} awaiting
+              a decision, {n.chosen} chosen, {n.kept} not chosen
             </p>
           </div>
         </div>
 
         <div className="sa-container py-10">
-          {EXPLORATIONS.map((surface) => (
-            <section key={surface.id} className="xpl-surface" aria-labelledby={`xpl-${surface.id}`}>
-              <h2 id={`xpl-${surface.id}`} className="text-headline-3 text-ink">
-                {surface.title}
-              </h2>
-              <p className="mt-2 max-w-measure text-body-2 text-ink-muted">{surface.summary}</p>
-              {surface.route ? (
-                <p className="mt-2 text-body-3">
-                  <Link href={surface.route} className="text-primary hover:underline">
-                    Open the live page
-                  </Link>
-                </p>
-              ) : null}
-
-              <div className="xpl-modules">
-                {surface.modules.map((m) => (
-                  <Link
-                    key={m.id}
-                    href={`/explorations/${surface.id}/${m.id}`}
-                    className="xpl-module-card"
-                  >
-                    <span className="xpl-module-card__title">{m.title}</span>
-                    <span className="xpl-module-card__question">{m.question}</span>
-                    <span className="xpl-module-card__foot">
-                      {m.options.map((o) => (
-                        <span key={o.id} className={`xpl-status xpl-status--${o.status}`}>
-                          {o.title} — {STATUS_WORD[o.status]}
-                        </span>
-                      ))}
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </section>
-          ))}
+          <ExplorationIndex surfaces={EXPLORATIONS} />
         </div>
       </main>
 

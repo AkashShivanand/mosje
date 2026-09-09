@@ -194,8 +194,11 @@
   .sa-siteheader__carousel {
     position: relative;
     display: block;
-    width: 340px;
-    height: 340px;
+    /* The plaque's own measurement — declared once on `.sa-siteheader__halo`,
+       so the circle, the frame that clips it and the carousel that fills it
+       cannot drift apart. */
+    width: var(--sa-siteheader-portrait);
+    height: var(--sa-siteheader-portrait);
   }
 
   .sa-siteheader__carousel .ds-carousel,
@@ -360,12 +363,20 @@
    * can move.
    */
   .sa-siteheader__halo {
+    /*
+     * ONE MEASUREMENT, THREE USERS. The handoff's portrait is 385 inside a 489
+     * plaque; at the estate's 1320 cap the trailing column is ~416, so the
+     * picture takes 340 and its rings bleed past the column into the band.
+     * The circle, the frame that clips the picture and the carousel that can
+     * fill it all read it from here rather than each restating 340.
+     */
+    --sa-siteheader-portrait: 340px;
     position: relative;
     display: grid;
     place-items: center;
     flex-shrink: 0;
-    width: 340px;
-    height: 340px;
+    width: var(--sa-siteheader-portrait);
+    height: var(--sa-siteheader-portrait);
     border-radius: 50%;
     box-shadow: 0 0 0 10px color-mix(in srgb, var(--sa-color-primaryScale-900) 88%, transparent);
     /* Never from scale(0) — nothing in the world appears out of nothing. */
@@ -479,6 +490,56 @@
   .sa-siteheader__halo > *:not(.sa-siteheader__pulse) {
     position: relative;
     z-index: 1;
+  }
+
+  /*
+   * ── THE ROUND FRAME, AND WHY IT IS NOT THE HALO ─────────────────────────────
+   *
+   * The picture is cut to a circle HERE, by the component, and not by whoever
+   * passes `media`.
+   *
+   * The halo cannot do it: the pulse is one of its children, and clipping at the
+   * halo would cut off the very discs whose whole job is to travel out past the
+   * portrait's edge. That fact was read, correctly, as "the halo can't clip" —
+   * and then, incorrectly, as "so the caller must". It is a wrapper's job. A
+   * box inside the halo clips the picture and nothing else.
+   *
+   * WHAT THE OLD ARRANGEMENT COST. Two callers pass `media`. The website's
+   * organisation route wrapped its portrait in a round, clipping span; the NMBA
+   * exploration passed a bare image — and drew a 340px SQUARE photograph on a
+   * circular plaque, on a stage whose own note says it must be the real fold.
+   * A rule that has to be remembered at every call site is a rule that will be
+   * missed at one of them.
+   *
+   * WHAT THE CALLER STILL OWNS is how the artwork SITS in the frame —
+   * `object-cover` for a photograph, `object-contain` with padding for a mark or
+   * the State Emblem, which would otherwise be cropped into by the round edge.
+   * That depends on the picture, so it cannot be decided here.
+   */
+  .sa-siteheader__portrait {
+    display: block;
+    width: var(--sa-siteheader-portrait);
+    height: var(--sa-siteheader-portrait);
+    border-radius: 50%;
+    overflow: hidden;
+    /*
+     * The ground a NON-photograph sits on. Most root organisation pages have no
+     * featured picture and render a mark or the emblem instead; against the
+     * band's gradient a contained mark needs a disc behind it or it reads as
+     * floating. A photograph covers this completely, so it costs those pages
+     * nothing.
+     */
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 10%, transparent);
+  }
+
+  /*
+   * The picture fills the frame whatever intrinsic size it was passed at, so a
+   * caller cannot under- or over-size it. `object-fit` is deliberately NOT set:
+   * see the note above on what the caller still owns.
+   */
+  .sa-siteheader__portrait > * {
+    width: 100%;
+    height: 100%;
   }
 
   @keyframes sa-halo-enter {
