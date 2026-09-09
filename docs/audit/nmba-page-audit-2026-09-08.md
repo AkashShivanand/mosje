@@ -1126,3 +1126,66 @@ Stills: `auto-1-notice.png`, `auto-2-campaign.png`.
 
 The `top-bands` module now holds three: **two bands**, **one band the reader
 advances**, and **one band that advances itself**.
+
+---
+
+## 21. A composed band — two halves, one standing service and one rotating offer
+
+The previous attempt was **assembled, not designed**, and the criticism was fair:
+a flat strip on one optical line, small type at the left, and the dots, the
+pause and the cross loose at the right grouped with nothing. The eye had nothing
+to land on, so a band whose only job is to be noticed went unnoticed. Worse, its
+two rotating panels were identical — which defeats the one reason to rotate them.
+
+### The height is the taller panel's, by construction
+
+Both panels occupy the same grid cell and the inactive one keeps its space with
+`visibility: hidden`. So the band is `max-content` of the two without measuring
+anything in JavaScript, and it never resizes as it turns. **Verified: 156px on
+both panels.**
+
+### The halves are different materials
+
+The helpline is the **only white surface** on the page's green. The lightest
+material draws the eye to the most important interactive thing — and on a page
+about drug de-addiction that is not the campaign, it is the number somebody may
+be looking for at four in the morning. `headline-3` numerals, tabular, with a
+touch of negative tracking because large figures read too far apart as they grow.
+
+### The two offers are told apart four ways
+
+One difference is not enough at a glance, and the reader is not studying the band:
+
+| | Observance | Volunteer |
+|---|---|---|
+| Accent | saffron `rgb(255,145,103)` | leaf `rgb(189,227,199)` |
+| Glyph | `celebration` | `volunteer_activism` |
+| Eyebrow | SIXTH ANNIVERSARY | VOLUNTEER |
+| Shape | no code | carries the code |
+
+**The chip mixes the light accent, not the saturated one.** `secondaryScale-400`
+at 22% over the band's green resolved to a muddy olive — two saturated hues
+averaging into a third belonging to neither. The pale rung mixes *toward* the
+accent, so the chip reads as tinted glass rather than dirt.
+
+### Controls sit with what they control
+
+Pagination is **inside** the rotating half, aligned to the copy column, because it
+pages that and not the band. The dismiss is at the band's own corner, because it
+dismisses the band. A control's position is the only explanation of its scope a
+reader ever gets.
+
+The current dot **lengthens into a bar** rather than merely brightening — a shape
+change reads at a glance where a brightness change alone does not. The pause has
+a filled well at rest: at 78% ink on a dark ground it was a hairline.
+
+### Two defects the first build had, both caught by measuring
+
+| | Before | After |
+|---|---|---|
+| The action button | Left-aligned in an `auto` column, so "File Pre-Event Details" and "Register Now" started **58px apart** and the button slid sideways every six seconds | Flush right — both panels' actions share an edge at x=1267. Padding both to one fixed width would have left "Register Now" adrift in 90px of empty button |
+| The code's column | Absent on the observance panel, so every column after it shifted | Reserved at its own width whether or not a code is in it. An empty track is the price of a button that stays put |
+
+Anchoring verified: glyph at x=400 and CTA right edge at 1267 on **both** panels.
+
+Stills: `cband-1.png`, `cband-2.png`, `cband-both.png`.

@@ -1,0 +1,479 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ==========================================================================
+     ONE BAND, TWO HALVES — a standing service and a rotating offer
+     ==========================================================================
+
+     The band has PRESENCE, which the flat strip it replaces did not: a real
+     height set by its tallest content, a light top edge where the material
+     catches, and a shadow onto the hero so it reads as resting on the page
+     rather than cut out of it. A band a reader does not notice has failed at the
+     only job it has.
+     ========================================================================= */
+
+  .cband {
+    position: relative;
+    z-index: var(--sa-z-raised);
+    background-image: linear-gradient(
+      104deg,
+      var(--sa-color-successScale-600) 0%,
+      var(--sa-color-successScale-700) 62%,
+      var(--sa-color-successScale-800) 100%
+    );
+    color: var(--sa-text-neutral-inverse);
+    /* A bright top edge is light catching the material; the shadow beneath is
+       the band sitting above the hero. */
+    box-shadow:
+      inset 0 var(--sa-stroke-1) 0 0 color-mix(in srgb, var(--sa-text-neutral-inverse) 18%, transparent),
+      0 8px 20px -8px color-mix(in srgb, var(--sa-color-successScale-900) 60%, transparent);
+  }
+
+  .cband__inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: stretch;
+    column-gap: var(--sa-inline-32);
+    padding-block: var(--sa-padding-20);
+  }
+
+  /* ── The standing service ─────────────────────────────────────────────────
+     The ONLY white surface on the page's green. The lightest material draws the
+     eye to the most important interactive thing — and on a page about drug
+     de-addiction that is not the campaign, it is the number somebody may be
+     looking for at four in the morning. */
+
+  .cband__helpline {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+    align-self: center;
+    padding: var(--sa-padding-12) var(--sa-padding-24) var(--sa-padding-12) var(--sa-padding-12);
+    border-radius: var(--sa-shape-16);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-color-successScale-700);
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: var(--sa-elevation-dropdown);
+    transition:
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cband__helpline:hover {
+      box-shadow: var(--sa-elevation-modal);
+    }
+  }
+
+  .cband__helpline:active {
+    transform: scale(0.985);
+  }
+
+  .cband__helpline:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .cband__helpline-glyph {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    inline-size: var(--sa-control-height-lg);
+    block-size: var(--sa-control-height-lg);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-successScale-50);
+    color: var(--sa-color-successScale-600);
+    animation: cband-breathe 2000ms var(--sa-motion-emphasis-easing) 2 both;
+  }
+
+  /* Two breaths, then still — 4s, under §2.2.2's five seconds on purpose. It
+     answers hover and focus afterwards, which is user-initiated. */
+  .cband__helpline-glyph::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-successScale-600);
+    opacity: 0;
+    animation: cband-halo 2000ms var(--sa-motion-emphasis-easing) 2 both;
+  }
+
+  .cband__helpline:hover .cband__helpline-glyph::before,
+  .cband__helpline:focus-visible .cband__helpline-glyph::before {
+    animation: cband-halo 2000ms var(--sa-motion-emphasis-easing) infinite;
+  }
+
+  @keyframes cband-halo {
+    0% { opacity: 0; transform: scale(0.92); }
+    14% { opacity: 0.34; }
+    62% { opacity: 0; transform: scale(1.6); }
+    100% { opacity: 0; transform: scale(1.6); }
+  }
+
+  @keyframes cband-breathe {
+    0%, 62%, 100% { transform: scale(1); }
+    26% { transform: scale(1.03); }
+  }
+
+  .cband__helpline-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+  }
+
+  .cband__helpline-label {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* Tight leading and a touch of negative tracking, because large numerals read
+     too far apart as they grow. Tabular, so a changing figure never shifts. */
+  .cband__helpline-number {
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
+    font-weight: var(--sa-font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* ── The rotating offer ─────────────────────────────────────────────────── */
+
+  /*
+   * BOTH PANELS SHARE ONE CELL, so the stage is always the height of the taller
+   * one and the band never resizes as it turns. `visibility: hidden` keeps the
+   * inactive panel's space where `display: none` would collapse it.
+   */
+  .cband__stage {
+    display: grid;
+    grid-template-areas: "offer";
+    align-items: center;
+    padding-block-end: var(--sa-padding-24);
+  }
+
+  /*
+   * THE COLUMNS ARE FIXED, SO NOTHING MOVES WHEN THE PANEL TURNS.
+   *
+   * As a flex row the two panels sized themselves independently, and the
+   * observance has no code where the volunteer drive has one — so the action
+   * button sat at a different x on each panel and hopped sideways every six
+   * seconds. An element that persists across a transition must not move during
+   * it; that is the difference between a panel changing and the band twitching.
+   *
+   * The code's column is reserved at its own width whether or not a code is in
+   * it. An empty track is the price of a button that stays put.
+   */
+  .cband__offer {
+    grid-area: offer;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) 88px auto;
+    align-items: center;
+    gap: var(--sa-inline-20);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
+      transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+  }
+
+  .cband__offer[data-active] {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /*
+   * FOUR WAYS TO TELL THE TWO APART, because one is not enough at a glance and
+   * the reader is not studying the band. Its own ACCENT, its own GLYPH, its own
+   * EYEBROW naming what kind of thing it is, and its own SHAPE — the volunteer
+   * panel carries a code and the observance does not.
+   */
+  .cband__offer[data-accent="saffron"] {
+    --cband-accent: var(--sa-color-secondaryScale-300);
+    --cband-accent-soft: var(--sa-color-secondaryScale-400);
+  }
+
+  .cband__offer[data-accent="leaf"] {
+    --cband-accent: var(--sa-color-successScale-100);
+    --cband-accent-soft: var(--sa-color-successScale-200);
+  }
+
+  .cband__offer-glyph {
+    grid-column: 1;
+    display: grid;
+    place-items: center;
+    align-self: flex-start;
+    inline-size: var(--sa-control-height-md);
+    block-size: var(--sa-control-height-md);
+    border-radius: var(--sa-shape-12);
+    /*
+     * THE CHIP MIXES THE LIGHT ACCENT, NOT THE SATURATED ONE.
+     *
+     * `secondaryScale-400` at 22% over the band's green resolved to a muddy
+     * olive — two saturated hues averaging into a third that belongs to
+     * neither. The pale rung mixes toward the accent instead of away from it,
+     * so the chip reads as tinted glass rather than as dirt.
+     */
+    background-color: color-mix(in srgb, var(--cband-accent) 18%, transparent);
+    color: var(--cband-accent);
+    box-shadow: inset 0 0 0 var(--sa-stroke-1)
+      color-mix(in srgb, var(--cband-accent) 38%, transparent);
+  }
+
+  .cband__offer-copy {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    min-inline-size: 0;
+  }
+
+  /* Small text wants positive tracking; this is the one place the band uses it. */
+  .cband__offer-eyebrow {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--cband-accent);
+  }
+
+  .cband__offer-heading {
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+  }
+
+  .cband__offer-body {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: color-mix(in srgb, var(--sa-text-neutral-inverse) 82%, transparent);
+    text-wrap: pretty;
+  }
+
+  .cband__offer-qr {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border-radius: var(--sa-shape-8);
+  }
+
+  .cband__offer-qr img {
+    display: block;
+    inline-size: 88px;
+    block-size: 88px;
+  }
+
+  .cband__offer-qr {
+    grid-column: 3;
+  }
+
+  /*
+   * FLUSH RIGHT, so the two panels' actions share an edge.
+   *
+   * Left-aligned in the last column, "File Pre-Event Details" and "Register Now"
+   * started 58px apart and the button appeared to slide sideways every time the
+   * band turned. Padding both out to one fixed width would fix it and leave
+   * "Register Now" adrift in ninety pixels of empty button; sharing the RIGHT
+   * edge is what right-set actions do anyway, and it costs nothing.
+   */
+  .cband__offer-actions {
+    grid-column: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--sa-stack-8);
+  }
+
+  .cband__cta {
+    --sa-btn-edge: var(--cband-accent);
+  }
+
+  .cband__alt {
+    font-size: var(--sa-type-label-3-size);
+    color: color-mix(in srgb, var(--sa-text-neutral-inverse) 82%, transparent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  /* ── Pagination, inside the half it pages ────────────────────────────────
+     Its scope is the only thing its position has to explain, so it sits under
+     the rotating panel and nowhere near the band's own dismiss. */
+
+  /* Aligned with the COPY column, not the glyph: the pager belongs to the words
+     it pages, and a control that lines up with nothing reads as debris. */
+  .cband__pager {
+    grid-area: offer;
+    place-self: end start;
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    margin-inline-start: calc(var(--sa-control-height-md) + var(--sa-inline-20));
+    margin-block-end: calc(-1 * var(--sa-padding-24));
+  }
+
+  .cband__dots {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-2);
+  }
+
+  /* A 24px target with a small mark inside it — §2.5.8's floor, met by the
+     control rather than by the spacing clause. */
+  .cband__dot {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-full);
+  }
+
+  .cband__dot::before {
+    content: "";
+    inline-size: var(--sa-padding-6);
+    block-size: var(--sa-padding-6);
+    border-radius: var(--sa-shape-full);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 40%, transparent);
+    transition:
+      inline-size var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  /* The current dot lengthens into a bar — a shape change reads at a glance
+     where a brightness change alone does not. */
+  .cband__dot[aria-selected="true"]::before {
+    inline-size: var(--sa-padding-20);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-text-neutral-inverse);
+  }
+
+  /* The pause reads as a peer of the dots, not a ghost beside them: a filled
+     well at rest, because at 78% ink on a dark ground it was a hairline. */
+  .cband__play {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    margin-inline-start: var(--sa-inline-8);
+    border-radius: var(--sa-shape-full);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 14%, transparent);
+    color: var(--sa-text-neutral-inverse);
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cband__play:hover {
+      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 16%, transparent);
+      color: var(--sa-text-neutral-inverse);
+    }
+  }
+
+  /* ── The band's own dismiss, at the band's own corner ─────────────────── */
+
+  .cband__dismiss {
+    display: grid;
+    place-items: center;
+    align-self: start;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-8);
+    color: color-mix(in srgb, var(--sa-text-neutral-inverse) 72%, transparent);
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cband__dismiss:hover {
+      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 16%, transparent);
+      color: var(--sa-text-neutral-inverse);
+    }
+  }
+
+  .cband__dot:focus-visible,
+  .cband__play:focus-visible,
+  .cband__dismiss:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cband__offer {
+      transition: opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+      transform: none;
+    }
+
+    .cband__helpline-glyph,
+    .cband__helpline-glyph::before,
+    .cband__helpline:hover .cband__helpline-glyph::before {
+      animation: none;
+    }
+
+    .cband__helpline-glyph::before {
+      opacity: 0.26;
+      transform: scale(1.2);
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .cband__offer {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+    }
+
+    .cband__offer-qr {
+      display: none;
+    }
+
+    .cband__offer-actions {
+      grid-column: 3;
+    }
+
+    .cband__inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      row-gap: var(--sa-stack-20);
+    }
+
+    .cband__helpline {
+      grid-row: 1;
+      grid-column: 1;
+    }
+
+    .cband__dismiss {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    .cband__stage {
+      grid-row: 2;
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .cband__offer {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .cband__offer-actions {
+      grid-column: 1 / -1;
+    }
+
+    .cband__offer-qr {
+      display: none;
+    }
+
+    .cband__offer-actions {
+      inline-size: 100%;
+    }
+  }
+}
