@@ -270,13 +270,13 @@ ASSISTANT.forEach(optionPage);
     ["","B · Filter Panel with a Table","Tick groups on the left, table on the right. For comparing."],
     ["The assistant","Samajik Sahayak","The same two questions, in the chat window on every page."],
   ];
-  const rowY = 2.95, rowH = 0.56;
+  const rowY = 2.95, rowH = 0.62;
   rows.forEach((r,i)=>{
     const y = rowY + i*rowH;
     if (r[0]) s.addShape(pres.ShapeType.line, { x:M, y:y-0.08, w:CW, h:0, line:{color:BLUE_DEEP, width:1} });
     s.addText(r[0], { x:M, y:y+0.04, w:3.0, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:14, color:BLUE_100 });
-    s.addText(r[1], { x:M+3.1, y:y+0.04, w:4.4, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:15, bold:true, color:WHITE });
-    s.addText(r[2], { x:M+7.6, y:y+0.06, w:CW-7.6, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:13, color:WHITE, transparency:15 });
+    s.addText(r[1], { x:M+3.1, y:y+0.04, w:3.6, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:15, bold:true, color:WHITE });
+    s.addText(r[2], { x:M+6.8, y:y+0.06, w:CW-6.8, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:13, color:WHITE, transparency:15 });
   });
   s.addShape(pres.ShapeType.line, { x:M, y:rowY+rows.length*rowH-0.08, w:CW, h:0, line:{color:BLUE_DEEP, width:1} });
   s.addText("Before any of them is built: the two lists are confirmed by the divisions, every scheme is tagged on both, and the development team estimates the re-tagging.", {
