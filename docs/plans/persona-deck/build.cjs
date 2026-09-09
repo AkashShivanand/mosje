@@ -130,7 +130,7 @@ const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels 
   col(M, "Who Is Looking for Support", PERSONAS);
   s.addShape(pres.ShapeType.line, { x:W/2, y:y0, w:0, h:0.56+PERSONAS.length*rowH, line:{color:HAIR, width:0.75} });
   col(W-M-colW, "What the Department Provides", OFFERINGS);
-  footLine(s, "The first eight are the groups the Department's mandate names (Annual Report 2025-26, §1.2); the last three are groups its schemes name. Every scheme is a record in the Annual Report 2025-26 or the Demand for Grants 2026-27, tagged on both.");
+  footLine(s, "The first eight are the groups the Department's mandate names (Annual Report 2025-26, §1.2). The last three are groups its schemes name. Every scheme is a record in the Annual Report 2025-26 or the Demand for Grants 2026-27, tagged on both. Every source is listed in the data-sources report.");
   s.addNotes("The one idea. On the left, the person: the groups the Department's own mandate names, plus the three its schemes name — students, victims of atrocities, and the voluntary organisations it funds. On the right, what the Department gives, in its own words. A scheme is findable under every group it names and every kind of support it provides, at once. Everything that follows is a view over these two lists. Not stage of life, not State: the review cut those, and a scheme record is tagged on these two axes only.");
 }
 
@@ -138,11 +138,11 @@ const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels 
 {
   const s = slide(false);
   const y0 = header(s, "The Home Page", "Three Options",
-    "A is on the page today. B or C takes the section beneath the hero, where Our Offerings sits.");
+    "A is on the site today. B or C would take the section below the banner, where Our Offerings sits now.");
   const items = [
-    ["A","Explore User Personas","home-a","One persona at a time. Kept, in the mandate's order.","ON THE SITE TODAY"],
-    ["B","Two Questions","home-b","Who is looking for support, then what kind. Ends at the place to apply.","RECOMMENDED"],
-    ["C","One Tap","home-c","A row of the groups. One tap lists what the Department provides for that group.","COMPANION TO B"],
+    ["A","Explore User Personas","home-a","One group at a time. Kept as it is.","ON THE SITE TODAY"],
+    ["B","Two Questions","home-b","Who you are, then what you need. Ends with the schemes and a link to see them all.","RECOMMENDED"],
+    ["C","One Tap","home-c","Pick your group. First the portal for that group, then its schemes.","COMPANION TO B"],
   ];
   const cw = (CW-0.6)/3;
   items.forEach((it,i)=>{
@@ -153,52 +153,58 @@ const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels 
     pill(s, x, m.iy+m.ih+0.16, it[4], it[4]==="RECOMMENDED"?BLUE_TXT:SURF, it[4]==="RECOMMENDED"?WHITE:MUTE);
     s.addText(it[3], { x, y:m.iy+m.ih+0.54, w:cw, h:0.7, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.2 });
   });
-  footLine(s, "B and C replace Our Offerings rather than lengthening the page. Either can be approved.");
-  s.addNotes("Three options for the home page. A stays where it is. B or C takes the section beneath the hero. C serves the visitor who will not answer questions. The next three pages show each one being used.");
+  footLine(s, "B and C take the place of Our Offerings, so the page does not get longer. Either one can be approved.");
+  s.addNotes("Three options for the home page. A stays where it is. B or C takes the section below the banner. C is for the visitor who will not answer questions. The next three pages show each one being used.");
 }
 
 /* ═══ 4–6 · Home page options ════════════════════════════════════════════ */
 const OPTIONS = [
   { part:"The Home Page · Option A of 3", title:"Explore User Personas",
     img:"home-a", live:true, rec:false,
-    caption:"The panel as it stands on the site today, in the mandate's order.",
-    pros:["Already on the site, so no extra height","The pictures cross language","Choosing a persona now filters the Schemes page"],
-    cons:["One persona at a time; a visitor cannot see whether they are represented without clicking","Asks who, never what"],
-    notes:"The panel already on the home page: one persona at a time, moved with arrows. The persona list is the same eleven the other options use, in the same order. A citizen looks at the pictures, sees one that matches, and taps through to the Schemes page filtered to that persona. Today choosing a persona filters nothing — that is fixed in every option." },
+    caption:"The panel as it is on the site today.",
+    what:"The panel already on the home page. It shows one group at a time, and you move between them with the arrows.",
+    how:["Tap the arrows to move between the groups","Tap a group to open the Schemes page for that group"],
+    why:["Already on the site, so nothing new to build","The pictures work in any language"],
+    notes:"The panel already on the home page: one group at a time, moved with arrows. The list of groups is the same eleven the other options use, in the same order. Today, choosing a group filters nothing on the Schemes page; every option fixes that." },
   { part:"The Home Page · Option B of 3", title:"Two Questions",
     vid:"home-b", live:false, rec:true,
     caption:"Recorded: Scheduled Castes, then Scholarships. Then Senior Citizens with the second question skipped.",
-    pros:["Both questions change the list; nothing is asked for its own sake","Ends at the place to apply, with the scheme's page beside it","Built from the design system, over the validated list"],
-    cons:["Every scheme must be tagged on both axes before it works","Takes the Our Offerings slot"],
-    notes:"Two short questions — who is looking for support, and what kind of support — over the Department's own list of schemes. The second may be skipped, which widens the list. A citizen answers and is shown the schemes that name them, each with what it provides, whom it names and the place to apply. The tagging is done for the Department's own schemes and is to be confirmed by each division." },
+    what:"Two short questions on the home page: who you are, and what kind of support you need.",
+    how:["Question 2 can be skipped, which shows everything for the group","The answer shows the first three schemes, each with a link to its own page","One more link opens the Schemes page, already filtered to the same two answers"],
+    why:["Both questions change what you see; nothing is asked for its own sake","A visitor gets an answer without leaving the home page"],
+    notes:"Two short questions over the Department's own list of schemes. The second may be skipped, which widens the list. The answer shows both choices, the first three schemes, and a link to the Schemes page filtered to the same choices. There is no apply button here: the scheme's own page says where to apply. Before this can be built, every scheme has to be tagged on both lists; that is on the page near the end." },
   { part:"The Home Page · Option C of 3", title:"One Tap",
     vid:"home-c", live:false, rec:false,
-    caption:"Recorded: Scheduled Castes, Senior Citizens, Transgender Persons, Voluntary Organisations — one tap each.",
-    pros:["One tap, no questions","The same two axes as B, with the second unasked","The place to apply beside every scheme"],
-    cons:["Long lists for the larger groups","Takes the Our Offerings slot"],
-    notes:"A row of the groups. Tapping one lists the schemes that name that group, headed by what they provide, with the place to apply beside each and a link to the scheme's page. Nobody answers anything. The cost is length for the larger groups." },
+    caption:"Recorded: Scheduled Castes, Senior Citizens, Transgender Persons, Voluntary Organisations. One tap each.",
+    what:"A row of the groups. Pick yours and the schemes appear. No questions asked.",
+    how:["The first band is the portal or helpline the Department runs for that group","Below it, the schemes for the group, sorted by what they give","Each scheme links to its page, and one link opens the full list"],
+    why:["One tap and nothing to answer","The portal a group already uses comes first"],
+    notes:"A row of the groups. Tapping one shows the portal or helpline for that group first, where the Department has one, then the schemes that name the group, sorted by what they give. Each links to its own page. The larger groups get long lists, which is why the list is cut at three per kind of support with a link to the rest." },
 ];
 const SCHEMES_PAGE = [
   { part:"The Schemes Page · Option A of 2", title:"Pictures of the Groups, with Cards",
     vid:"scheme-a", live:false, rec:false,
     caption:"Recorded: Safai Karamcharis, then Loans and Credit, then Senior Citizens.",
-    pros:["Every group visible at once","The same two filters as the home page","Cards carry the scheme's type and what it provides"],
-    cons:["No room on a card for whom the scheme names","Two schemes cannot be compared side by side"],
-    notes:"Every persona visible at once as a row of marks, then what it provides as a row of chips, above a card for each scheme. Two filters and no third; cards are paged so the page keeps its height. This is browsing." },
+    what:"Every group as a picture in one row. Pick one, then, if you like, the kind of support.",
+    how:["Two filters and no third","Cards show what a scheme gives; nine to a page","Each card opens the scheme's page"],
+    why:["Every group is visible at once, with no scrolling to find yourself","The same two filters as the home page, so the same idea is met twice"],
+    notes:"The layout from before the review, with the review's changes: two filters, no counts, and paged cards so the page keeps its height. This is for browsing." },
   { part:"The Schemes Page · Option B of 2", title:"Filter Panel with a Table",
     vid:"scheme-b", live:false, rec:true,
     caption:"Recorded: Other Backward Classes with Scholarships, then Loans added, then one filter removed.",
-    pros:["Filters combine: who it is for and what it provides, together","The table carries whom each scheme names","A filter that would leave nothing is greyed, not counted"],
-    cons:["A table reads as a record rather than an invitation"],
-    notes:"Filters down the left on the same two axes; a table on the right showing what each scheme provides, whom it names and its type. Ten rows a page. This is deciding — the page where people compare, and a table can carry what a card cannot." },
+    what:"Filters down the left, a table on the right. Tick who it is for and what kind of support you need.",
+    how:["The two filters work together","A filter that would leave nothing is greyed out, with no number beside it","Ten rows a page; each scheme links to its page"],
+    why:["Two schemes can be read side by side","The table has room to say who each scheme is for"],
+    notes:"The layout from before the review, with the review's changes: two filters, no counts, greyed filters instead of numbers, ten rows a page. This is for comparing and deciding, which is what most people come to this page to do." },
 ];
 const ASSISTANT = [
   { part:"The Assistant · The Same Two Questions, in Chat", title:"Samajik Sahayak",
     vid:"assistant", live:true, rec:true,
-    caption:"Recorded: the assistant the design system ships, opened from an ordinary page. Scheduled Castes, then Loans and Credit.",
-    pros:["Reachable from every page","One question per screen, which suits a phone","Already built; only the scheme branch is new"],
-    cons:["A button in the corner is found only by those looking for it"],
-    notes:"The same two questions, asked one at a time in the chat window that is already built and reachable from every page. It reads the same list as the home page, so it can never name different schemes for the same person. It states plainly that it cannot decide or change an application." },
+    caption:"Recorded: the assistant opened from an ordinary page. Scheduled Castes, then Loans and Credit.",
+    what:"The chat button in the corner of every page asks the same two questions, one at a time.",
+    how:["Pick your group, then the kind of support","The reply names the schemes and offers to open each one","It reads the same list as the home page, so the answers always match"],
+    why:["Reachable from every page, even one that leads nowhere else","One question per screen suits a phone"],
+    notes:"The same two questions, asked one at a time in the chat window that is already built and reachable from every page. It reads the same list as the home page, so it can never name different schemes for the same person. It says plainly that it cannot decide or change an application." },
 ];
 
 function optionPage(o) {
@@ -213,11 +219,16 @@ function optionPage(o) {
   s.addText((o.vid ? "▶  " : "") + o.caption, { x:M, y:m.iy+m.ih+0.14, w:boxW, h:0.42, isTextBox:true, margin:0, fontFace:F, fontSize:T.micro, color:MUTE, lineSpacingMultiple:1.15 });
   const rx = M+boxW+0.5, rw = W-M-rx;
   let y = y0;
-  y = list(s, rx, y, rw, "In its favour", o.pros, BLUE_TXT);
-  y = list(s, rx, y, rw, "Against it", o.cons, SAFF_TXT);
-  const bottom = PH - 0.55;
+  s.addText("WHAT IT IS", { x:rx, y, w:rw, h:0.22, isTextBox:true, margin:0, fontFace:F, fontSize:T.label, bold:true, charSpacing:TRACK.eyebrow, color:DARK });
+  const cpl = Math.floor((rw*72)/(T.body*0.6));
+  const wh = Math.max(1, Math.ceil(o.what.length/cpl))*0.21 + 0.06;
+  s.addText(o.what, { x:rx, y:y+0.3, w:rw, h:wh, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.15 });
+  y += 0.3 + wh + 0.22;
+  y = list(s, rx, y, rw, "How it works", o.how, BLUE_TXT);
+  y = list(s, rx, y, rw, "Why it helps", o.why, BLUE_TXT);
+  const bottom = PH - 0.45;
   if (y > bottom) throw new Error(`overflows the page on "${o.title}" (${y.toFixed(2)} > ${bottom})`);
-  s.addNotes(o.notes + (o.vid ? " Press play — it is a real page being used, not an animation." : ""));
+  s.addNotes(o.notes + (o.vid ? " Press play: it is a real page being used, not an animation." : ""));
 }
 OPTIONS.forEach(optionPage);
 
@@ -225,10 +236,10 @@ OPTIONS.forEach(optionPage);
 {
   const s = slide(false);
   const y0 = header(s, "The Schemes Page", "Two Options",
-    "Where a person lands from the home page, and where officers and voluntary organisations work. Both filter on the same two lists.");
+    "Where a person lands from the home page, and where officers and voluntary organisations work. Both use the same two filters.");
   const items = [
-    ["A","Pictures of the Groups, with Cards","scheme-a","Every group on screen at once, then cards. Browsing.","OPTION A"],
-    ["B","Filter Panel with a Table","scheme-b","Filters that combine; a table that carries whom each scheme names. Deciding.","RECOMMENDED"],
+    ["A","Pictures of the Groups, with Cards","scheme-a","Every group on screen at once, then cards. For browsing.","OPTION A"],
+    ["B","Filter Panel with a Table","scheme-b","Filters that work together, and a table that says who each scheme is for. For deciding.","RECOMMENDED"],
   ];
   const cw = (CW-0.6)/2;
   items.forEach((it,i)=>{
@@ -239,7 +250,7 @@ OPTIONS.forEach(optionPage);
     pill(s, x, m.iy+m.ih+0.16, it[4], it[4]==="RECOMMENDED"?BLUE_TXT:SURF, it[4]==="RECOMMENDED"?WHITE:MUTE);
     s.addText(it[3], { x, y:m.iy+m.ih+0.54, w:cw, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.2 });
   });
-  footLine(s, "No count is printed on either. A filter that would leave nothing is greyed.");
+  footLine(s, "No count is shown on either. A filter that would leave nothing is greyed out.");
   s.addNotes("The internal page. Two arrangements of the same two filters. The next two pages show each being used.");
 }
 SCHEMES_PAGE.forEach(optionPage);
@@ -250,11 +261,11 @@ ASSISTANT.forEach(optionPage);
 /* ═══ 11 · Before anything is built ═════════════════════════════════════ */
 {
   const s = slide(false);
-  const y0 = header(s, "First", "Before Anything Is Built", "Whichever options are approved, three things come first.");
+  const y0 = header(s, "First", "Before Anything Is Built", "Whichever options are chosen, three things come first.");
   const items = [
-    ["Confirm the two lists", "The eleven groups and the eight kinds of support, by the divisions that own them — including whether every group is to be named on a public page."],
-    ["Tag every scheme on both", "Each record carries whom it names, what it provides and where it is applied for, with a source on every row. The divisions confirm their rows."],
-    ["Estimate the re-tagging", "The website's catalogue is tagged on one axis, one value a scheme. Two axes, many values, is the development work every option needs."],
+    ["Confirm the two lists", "The eleven groups and the eight kinds of support, checked by the divisions that own them, including whether every group should be named on a public page."],
+    ["Tag every scheme on both lists", "Each scheme record says who it is for, what it gives and where to apply, with a source on every row. The divisions check their rows."],
+    ["Estimate the re-tagging", "The website's catalogue tags each scheme once, on one list. Tagging every scheme on two lists is the development work every option needs."],
   ];
   let y = y0 + 0.2;
   items.forEach((it,i)=>{
@@ -264,7 +275,7 @@ ASSISTANT.forEach(optionPage);
     y += 1.34;
     if (i < items.length-1) s.addShape(pres.ShapeType.line, { x:M, y:y-0.22, w:CW, h:0, line:{color:HAIR, width:0.75} });
   });
-  footLine(s, "The design team supplies the lists and the tagged records; the divisions confirm them; the development team estimates the re-tagging.");
+  footLine(s, "The design team supplies the lists and the tagged records. The divisions check them. The development team estimates the re-tagging.");
   s.addNotes("The page the review asked for. The two lists and the tagged records exist and are with the divisions to confirm. The estimate for re-tagging the catalogue is asked of the development team before any option is scheduled. Two questions are open and recorded: whether Victims of Atrocities and Persons Engaged in Begging are acceptable public wording, and NSFDC's income ceiling, which two of the Department's own pages state differently.");
 }
 
@@ -273,9 +284,9 @@ ASSISTANT.forEach(optionPage);
   const s = slide(false);
   const y0 = header(s, "Whichever Options Are Approved", "Three Rules", null);
   const items = [
-    ["It names the group. It never decides the case.", "No screen and no message says a person is eligible. The sanctioning authority decides every application."],
-    ["It asks two things. It stores nothing.", "No sign-in, no Aadhaar, no telephone number, no income. The answers are chosen from fixed options, never typed."],
-    ["It prints no number.", "No count of schemes on any screen. The only figures are the helplines the Department publishes and the amounts its Annual Report states."],
+    ["It names the group. It never decides the case.", "No screen and no message says a person is eligible. The office that sanctions the scheme decides every application."],
+    ["It asks two things. It stores nothing.", "No sign-in, no Aadhaar, no phone number, no income. The answers are picked from a fixed list, never typed."],
+    ["It shows no numbers.", "No count of schemes on any screen. The only figures are the helpline numbers the Department publishes and the amounts its Annual Report states."],
   ];
   let y = y0 + 0.3;
   items.forEach((it,i)=>{
@@ -284,7 +295,7 @@ ASSISTANT.forEach(optionPage);
     y += 1.5;
     if (i < items.length-1) s.addShape(pres.ShapeType.line, { x:M, y:y-0.3, w:CW, h:0, line:{color:HAIR, width:0.75} });
   });
-  footLine(s, "These hold across all six options and are not traded against for speed.");
+  footLine(s, "These hold for all six options and are not traded away for speed.");
   s.addNotes("Three commitments that hold whatever is chosen. A citizen who acts on a wrong assurance from a government website bears a real cost, and the Department bears the complaint — so nothing here decides a case, nothing is collected, and no number leaves a design file.");
 }
 
@@ -294,9 +305,9 @@ ASSISTANT.forEach(optionPage);
   s.addText("IN SUMMARY", { x:M, y:0.7, w:CW, h:0.24, isTextBox:true, margin:0, fontFace:F, fontSize:T.label, bold:true, charSpacing:TRACK.eyebrow, color:BLUE_100 });
   s.addText("What the Design Team Recommends", { x:M, y:1.0, w:CW, h:0.7, isTextBox:true, margin:0, fontFace:F, fontSize:34, bold:true, color:WHITE });
   const rows = [
-    ["The home page","Option B, with A kept","It answers the question a citizen arrives with"],
+    ["The home page","Option B, with A kept","It answers the question a visitor arrives with"],
     ["The Schemes page","Option B — filters with a table","It is where people compare"],
-    ["The assistant","Yes — the same two questions","It reaches the person already lost on a page"],
+    ["The assistant","Yes — the same two questions","It reaches the person who is already lost on a page"],
   ];
   const rowY = 2.3, rowH = 0.9;
   rows.forEach((r,i)=>{

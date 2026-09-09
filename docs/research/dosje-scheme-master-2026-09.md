@@ -1,7 +1,7 @@
 # The Department's schemes, mapped to the people it serves and to what it provides
 
 > **Generated** from `dosje-scheme-master-2026-09.json` by `tools/service-discovery/build-data.mjs`
-> on 2026-09-08. Edit the JSON, not this file.
+> on 2026-09-09. Edit the JSON, not this file.
 
 ## 1. Why this exists
 

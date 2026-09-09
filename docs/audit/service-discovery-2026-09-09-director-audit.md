@@ -244,3 +244,31 @@ Person* figures, which are not used because persons with disabilities are not se
 Department. For the four personas with no figure, the way through is a request to the DBIM ToolKit
 team (MeitY) for four persona illustrations in the library's line style, using the briefs in §4;
 until then the Department's own two figures and the two DBIM icons stand.
+
+## 4b. Prompts to draw the missing figures
+
+Use these with any image model, or hand them to an illustrator. Each is written to match the
+DBIM Visual Components Library's persona style, so the new figures sit beside the existing ones
+without looking borrowed from somewhere else.
+
+**Style, the same for every prompt.** Black ink line drawing of one Indian adult, waist-up, facing
+the viewer, on a plain white background with no shadow, no colour and no scenery. Clean, even
+lines of one weight, like a coloured-in outline from a textbook. Calm, direct expression, a slight
+smile. Everyday clothes drawn simply. Square image, the person centred, head near the top with a
+little space above it. No text, no logo, no border. The drawing must look kind and ordinary,
+never sad, never dramatic.
+
+| Persona | Prompt (add the style paragraph above to each) |
+|---|---|
+| Transgender Persons | A transgender woman in her thirties, hair tied back, wearing a plain sari with a small bindi and stud earrings, standing straight with her hands loosely clasped in front of her. Confident and at ease. Nothing that suggests performance or costume. |
+| Safai Karamcharis | A sanitation worker in his forties in a plain collared work shirt and a soft cloth cap, one hand resting on the handle of a long-handled broom that is only partly in frame. Weathered but healthy face, looking straight ahead with quiet dignity. No dirt, no mask, no gloves, no vehicle. |
+| Persons Engaged in Begging | A man in his fifties now living in a shelter, greying hair combed, a simple cotton kurta and a light shawl over one shoulder, standing upright with a small cloth bag on his shoulder as if arriving somewhere. Dignified and rested. Nothing that suggests begging, a bowl, a street, or pity. |
+| Victims of Atrocities | A woman in her thirties in a plain cotton sari, hair neatly tied, holding a thin paper folder against her chest with both hands, looking straight ahead, composed and resolute. A person seeking her rights with dignity. No injury, no distress, no police, no courtroom. |
+| Persons Affected by Substance Use (if the DBIM Health Seeker is not wanted) | A young man in his twenties in recovery, short neat hair, a plain collared shirt, standing straight with his hands at his sides and a small, hopeful smile. Healthy and alert. Nothing that suggests intoxication, medicine, a hospital or a bottle. |
+
+**Which to draw and which to keep.** Transgender Persons and Safai Karamcharis already have the
+Department's own figures from the live persona panel; draw new ones only if the set is to be
+uniform. Persons Engaged in Begging and Victims of Atrocities have no figure anywhere and use
+icons today (*Night Shelter*, *Justice*); an icon is acceptable for both if drawing a person feels
+wrong for the subject — that is a judgement for the division, and the audit records both choices
+as defensible.

@@ -71,8 +71,8 @@ def render(path, outdir):
             x = sh.left / EMU * SCALE; y = sh.top / EMU * SCALE
             w = sh.width / EMU * SCALE; h = sh.height / EMU * SCALE
 
-            # picture
-            if sh.shape_type == 13:
+            # picture, or a movie drawn as its poster frame
+            if sh.shape_type == 13 or sh.shape_type == 16 or getattr(sh, "poster_frame", None) is not None:
                 try:
                     im = Image.open(io_bytes(sh)).convert("RGB")
                     im = im.resize((max(1, int(w)), max(1, int(h))))
@@ -136,6 +136,9 @@ def render(path, outdir):
 
 def io_bytes(sh):
     import io
+    pf = getattr(sh, "poster_frame", None)
+    if pf is not None:
+        return io.BytesIO(pf.blob)
     return io.BytesIO(sh.image.blob)
 
 if __name__ == "__main__":

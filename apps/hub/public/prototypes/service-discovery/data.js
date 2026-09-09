@@ -12,31 +12,51 @@ const PERSONAS = [
     "id": "sc",
     "label": "Scheduled Castes",
     "short": "Scheduled Castes",
-    "sub": "As notified under Article 341 of the Constitution"
+    "sub": "As notified under Article 341 of the Constitution",
+    "portal": {
+      "route": "nsfdc",
+      "blurb": "Concessional loans for Scheduled Castes, through the State channelising agency"
+    }
   },
   {
     "id": "obc",
     "label": "Other Backward Classes",
     "short": "Other Backward Classes",
-    "sub": "Including Economically Backward Classes"
+    "sub": "Including Economically Backward Classes",
+    "portal": {
+      "route": "nbcfdc",
+      "blurb": "Concessional loans and skill training for Other Backward Classes"
+    }
   },
   {
     "id": "senior",
     "label": "Senior Citizens",
     "short": "Senior Citizens",
-    "sub": "Aged 60 years or above"
+    "sub": "Aged 60 years or above",
+    "portal": {
+      "route": "elderline",
+      "blurb": "Toll-free helpline for senior citizens"
+    }
   },
   {
     "id": "drug",
     "label": "Persons Affected by Substance Use",
     "short": "Affected by Substance Use",
-    "sub": "The person, and their family"
+    "sub": "The person, and their family",
+    "portal": {
+      "route": "nmba",
+      "blurb": "Toll-free helpline for de-addiction and counselling"
+    }
   },
   {
     "id": "tg",
     "label": "Transgender Persons",
     "short": "Transgender Persons",
-    "sub": "As defined in the Transgender Persons (Protection of Rights) Act, 2019"
+    "sub": "As defined in the Transgender Persons (Protection of Rights) Act, 2019",
+    "portal": {
+      "route": "tgportal",
+      "blurb": "Certificate of identity and welfare support for transgender persons"
+    }
   },
   {
     "id": "begging",
@@ -48,31 +68,51 @@ const PERSONAS = [
     "id": "dnt",
     "label": "De-notified, Nomadic and Semi-Nomadic Tribes",
     "short": "DNT, Nomadic and Semi-Nomadic Tribes",
-    "sub": "Communities listed as DNT, NT or SNT"
+    "sub": "Communities listed as DNT, NT or SNT",
+    "portal": {
+      "route": "seed",
+      "blurb": "Coaching, health insurance, housing and livelihood for DNT communities"
+    }
   },
   {
     "id": "safai",
     "label": "Safai Karamcharis",
     "short": "Safai Karamcharis",
-    "sub": "Manual scavengers, sewer and septic tank workers, waste pickers, and their dependants"
+    "sub": "Manual scavengers, sewer and septic tank workers, waste pickers, and their dependants",
+    "portal": {
+      "route": "nskfdc",
+      "blurb": "Loans and skill training for Safai Karamcharis and their dependants"
+    }
   },
   {
     "id": "student",
     "label": "Students",
     "short": "Students",
-    "sub": "From Class I to Ph.D. and study abroad, from the groups the Department serves"
+    "sub": "From Class I to Ph.D. and study abroad, from the groups the Department serves",
+    "portal": {
+      "route": "nsp",
+      "blurb": "Scholarships from pre-matric to post-matric, in one place"
+    }
   },
   {
     "id": "atrocity",
     "label": "Victims of Atrocities",
     "short": "Victims of Atrocities",
-    "sub": "Under the PCR Act, 1955 and the SC/ST (PoA) Act, 1989"
+    "sub": "Under the PCR Act, 1955 and the SC/ST (PoA) Act, 1989",
+    "portal": {
+      "route": "nhaa",
+      "blurb": "National Helpline Against Atrocities, round the clock"
+    }
   },
   {
     "id": "ngo",
     "label": "Voluntary Organisations",
     "short": "Voluntary Organisations",
-    "sub": "NGOs, CBOs and institutions applying for grant-in-aid"
+    "sub": "NGOs, CBOs and institutions applying for grant-in-aid",
+    "portal": {
+      "route": "eanudaan",
+      "blurb": "Grant-in-aid applications for voluntary organisations"
+    }
   }
 ];
 
@@ -154,7 +194,7 @@ const ROUTES = {
   },
   "nskfdc": {
     "label": "NSKFDC",
-    "href": "https://nskfdc.nic.in"
+    "href": null
   },
   "canara": {
     "label": "Canara Bank",
@@ -226,7 +266,7 @@ const ROUTES = {
   },
   "seed": {
     "label": "the SEED portal",
-    "href": "https://seed.dosje.gov.in"
+    "href": null
   },
   "institution": {
     "label": "the school or college",
