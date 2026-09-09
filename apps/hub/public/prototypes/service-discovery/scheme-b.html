@@ -1,121 +1,106 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Schemes &amp; Services — Option B, Filter Panel and Table</title>
+<title>Schemes &amp; Services — Option B, Rail and Table</title>
 <link rel="stylesheet" href="core.css">
 <style>
-.layout{display:grid;grid-template-columns:250px 1fr;gap:26px;align-items:start}
-.filters{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);padding:16px;background:var(--sa-white);position:sticky;top:16px}
-.fgroup{margin-bottom:18px}
-.fgroup h3{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--sa-muted);margin:0 0 9px;font-weight:700}
-.fopt{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:6px;cursor:pointer;font-size:13.5px;transition:background .12s;line-height:1.3;border:1px solid transparent}
-.fopt.on{background:var(--sa-primary-50);border-color:var(--sa-primary-200)}
-.fopt .m{width:30px;height:30px;border-radius:50%;background:var(--sa-primary-50);flex:none;overflow:hidden;display:grid;place-items:center}
-.fopt .m img{width:100%;height:100%;object-fit:contain}
-.fopt .m .mark-none,.fopt .m .mark-icon{width:100%;height:100%;border-radius:50%}
-.fopt .m .mark-icon .mi{font-size:18px}
-.fopt span.t{flex:1}
-.fgroup h3{display:flex;justify-content:space-between;align-items:center}
-.fgroup h3 a{font-size:11px;letter-spacing:0;text-transform:none;color:var(--sa-primary-600);font-weight:600;text-decoration:none}
-.fopt:hover{background:var(--sa-surface)}
-.fopt input{accent-color:var(--sa-primary-500);width:15px;height:15px;margin:0;flex:none}
-.fopt.zero{opacity:.45}
+.page-t{font-size:22px;font-weight:600;color:var(--sa-muted);margin:0 0 18px;opacity:.7}
+.toolbar{display:flex;gap:12px;align-items:center;margin:0 0 18px}
+.search{flex:1;max-width:520px;display:flex;align-items:center;gap:10px;border:1px solid var(--sa-hair);border-radius:var(--sa-radius);background:var(--sa-white);padding:12px 14px;font-size:14px;color:var(--sa-muted)}
+.search input{border:none;outline:none;font:inherit;flex:1;color:var(--sa-ink)}
+.toolbar .grow{flex:1}
+.sel{font:inherit;font-size:13.5px;color:var(--sa-ink);border:1px solid var(--sa-hair);border-radius:var(--sa-radius);background:var(--sa-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23222' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 12px center;padding:9px 32px 9px 14px;appearance:none;-webkit-appearance:none;cursor:pointer}
+.btn.soft{background:var(--sa-primary-200);color:var(--sa-white)}
+.seg{display:inline-flex;background:var(--sa-primary-50);border-radius:var(--sa-radius);padding:3px}
+.seg button{font:inherit;font-size:13.5px;border:none;background:none;padding:8px 26px;border-radius:calc(var(--sa-radius) - 2px);cursor:pointer;color:var(--sa-ink)}
+.seg button[aria-pressed="true"]{background:var(--sa-white);box-shadow:var(--sa-shadow);font-weight:600}
+.panel{background:var(--sa-neutral-50);border-radius:var(--sa-radius-lg);padding:22px 24px 24px}
+/* The rail: one row that scrolls sideways and never wraps. Every tile is the
+   same width, the picture the same size, the label the same height. */
+.rail{display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;padding:4px 2px 10px;scrollbar-width:thin;margin:0 0 20px}
+.face-btn{flex:0 0 118px;width:118px;background:none;border:none;cursor:pointer;text-align:center;padding:4px 0;border-radius:var(--sa-radius);font:inherit;display:flex;flex-direction:column;align-items:center;gap:8px;transition:transform .1s ease-out}
+.face-btn:active{transform:scale(.96)}
+.face-btn .circ{width:70px;height:70px;border-radius:50%;background:var(--sa-primary-50);border:2px solid transparent;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;flex:none;transition:border-color .15s,background .15s}
+.face-btn .circ img{width:100%;height:100%;object-fit:contain}
+.face-btn .circ .mark-none,.face-btn .circ .mark-icon{width:100%;height:100%;border-radius:50%}
+.face-btn[aria-pressed="true"] .circ{border-color:var(--sa-primary-500);background:var(--sa-primary-500)}
+.face-btn[aria-pressed="true"] .circ .mark-icon{background:var(--sa-primary-500);color:var(--sa-white)}
+.face-btn .lbl{font-size:11.5px;line-height:1.25;color:var(--sa-ink-muted);height:5em;display:flex;align-items:flex-start;justify-content:center;width:100%}
+.face-btn[aria-pressed="true"] .lbl{color:var(--sa-primary-700);font-weight:700}
+.head{display:flex;align-items:center;justify-content:space-between;margin:0 0 14px}
+.head h2{margin:0;font-size:22px;font-weight:700;color:var(--sa-ink)}
 table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--sa-white);border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);overflow:hidden}
 th{background:var(--sa-primary-50);color:var(--sa-primary-800);text-align:left;font-size:11.5px;letter-spacing:.7px;text-transform:uppercase;padding:11px 14px;font-weight:700}
 td{padding:12px 14px;border-top:1px solid var(--sa-hair);vertical-align:top;line-height:1.45}
 td a{color:var(--sa-primary-600);font-weight:600;text-decoration:none}
 td small{display:block;color:var(--sa-muted);font-size:11.5px;margin-top:2px}
-.applied{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px;min-height:34px}
-.empty{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);padding:28px;text-align:center;background:var(--sa-white)}
-.pager{display:flex;justify-content:flex-end;gap:6px;margin-top:14px}
+.pager{display:flex;justify-content:flex-start;gap:6px;margin-top:14px}
 .pager button{font:inherit;font-size:13px;min-width:34px;height:34px;border-radius:var(--sa-radius);border:1px solid var(--sa-hair);background:var(--sa-white);cursor:pointer}
-.pager button[aria-current="page"]{background:var(--sa-primary-500);border-color:var(--sa-primary-500);color:var(--sa-white);font-weight:600}
+.pager button[aria-current="page"]{border-color:var(--sa-primary-500);color:var(--sa-primary-700);font-weight:600}
+.empty{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);padding:26px;text-align:center;background:var(--sa-white)}
 </style></head><body>
 <script src="data.js"></script><script src="shell.js"></script>
 <main class="wrap sec">
-  <div>
-    <h1 class="sec-t">Schemes &amp; Services</h1>
-    <p class="sec-lede">Tick one or more target groups.</p>
+  <h1 class="page-t">Offerings/Schemes &amp; Services</h1>
+  <div class="toolbar">
+    <label class="search"><span class="mi" aria-hidden="true" style="font-size:20px">search</span><input id="q" type="search" placeholder="Search by scheme name or keyword" aria-label="Search by scheme name or keyword"></label>
+    <span class="grow"></span>
+    <select class="sel" id="kind" aria-label="Category"></select>
+    <select class="sel" id="org" aria-label="Organisation"></select>
+    <button class="btn soft" id="reset">Reset Filters</button>
   </div>
-  <div class="layout">
-    <aside class="filters" id="filters"></aside>
-    <section>
-      <div class="applied" id="applied"></div>
-      <div id="table"></div>
-      <div class="pager" id="pager"></div>
-    </section>
+  <div class="panel">
+    <div class="rail" id="faces"></div>
+    <div class="head"><h2>Active Schemes</h2><div class="seg" role="group" aria-label="Scheme status"><button aria-pressed="true">Active</button><button aria-pressed="false">Archived</button></div></div>
+    <div id="table"></div>
+    <div class="pager" id="pager"></div>
   </div>
-  <p class="note">Listing is not a decision on any application — the sanctioning authority decides that.</p>
+  <p class="note">Being listed here does not mean an application is approved. The sanctioning authority decides that.</p>
 </main>
 <script>
 /* No masthead: this option is reviewed as the section alone.
-   The layout from before the 8 September review, with the review's asks:
-   two filters and no third, no count beside a filter — one that would leave
-   the table empty is greyed instead — and ten rows a page. */
+   The reference layout (WIP node 4759:155021) with the persona rail on top —
+   one row that scrolls sideways and never wraps — and a table beneath that
+   says what each scheme gives and who it is for. Ten rows a page, no count. */
 const el = id => document.getElementById(id);
 const PAGE = 10;
-const sel = { who:new Set(), offer:new Set() };
 const qs = new URLSearchParams(location.search);
-if (qs.get('g')) sel.who.add(qs.get('g'));
-if (qs.get('o')) sel.offer.add(qs.get('o'));
-let page = 1;
-
-const ok = (s, whoSet, offerSet) =>
-  (!whoSet.size || [...whoSet].some(w => pairOk(s, w))) &&
-  (!offerSet.size || [...offerSet].some(o => pairOk(s, undefined, o))) &&
-  (!whoSet.size || !offerSet.size || [...whoSet].some(w => [...offerSet].some(o => pairOk(s, w, o))));
-const rows = () => SCHEMES.filter(s => ok(s, sel.who, sel.offer));
-/* Would ticking this value, with every OTHER selection as it stands, leave anything? */
-function wouldLeave(axis, id){
-  const w = axis==='who' ? new Set([id]) : sel.who;
-  const o = axis==='offer' ? new Set([id]) : sel.offer;
-  return SCHEMES.some(s => ok(s, w, o));
-}
+let who = qs.get('g') || 'all', offer = qs.get('o') || 'all', org = 'all', page = 1, q = '';
+const FACES = [{id:'all',label:'All', short:'All'}].concat(PERSONAS);
 function drawFilters(){
-  const block = (title, axis, items) => `
-    <div class="fgroup"><h3>${title}<a href="#" data-reset="${axis}">Reset</a></h3>
-    ${items.map(x=>{const on=sel[axis].has(x.id), live=on||wouldLeave(axis,x.id);return `
-      <label class="fopt ${live?'':'zero'} ${on?'on':''}" ${live?'':'aria-disabled="true"'}>
-        ${axis==='who'?`<span class="m">${markHTML(x.id)}</span>`:''}<span class="t">${x.short||x.label}</span>
-        <input type="checkbox" data-axis="${axis}" data-id="${x.id}" ${on?'checked':''} ${live?'':'disabled'}></label>`;}).join('')}
-    </div>`;
-  el('filters').innerHTML =
-    block('Target Group','who',PERSONAS) +
-    `<button class="btn ghost" id="reset" style="width:100%">Reset Filters</button>`;
-  el('reset').onclick = () => { sel.who.clear(); sel.offer.clear(); page=1; draw(); };
-  el('filters').querySelectorAll('[data-reset]').forEach(a => a.onclick = e => { e.preventDefault(); sel[a.dataset.reset].clear(); page=1; draw(); });
+  const kinds = who==='all' ? OFFERINGS : offersFor(who);
+  if (offer!=='all' && !kinds.some(o=>o.id===offer)) offer = 'all';
+  el('kind').innerHTML = `<option value="all">Category</option>` + kinds.map(o=>`<option value="${o.id}" ${o.id===offer?'selected':''}>${o.short||o.label}</option>`).join('');
+  const orgs = [...new Set(SCHEMES.map(s=>s.apply).filter(a=>a && ROUTES[a]))];
+  el('org').innerHTML = `<option value="all">Organisation</option>` + orgs.map(a=>`<option value="${a}" ${a===org?'selected':''}>${ROUTES[a].label}</option>`).join('');
 }
 function draw(){
   drawFilters();
-  const list = rows();
-  const chips = [...sel.who].map(g=>['who',g,GROUP_LABEL[g]]).concat([...sel.offer].map(o=>['offer',o,OFFER_LABEL[o]]));
-  el('applied').innerHTML = chips.length
-    ? `<span style="font-size:12.5px;color:var(--sa-muted)">Showing</span>` +
-      chips.map(([a,i,l])=>`<button class="chip" aria-pressed="true" data-clear="${a}:${i}">${l} ×</button>`).join('')
-    : `<span style="font-size:12.5px;color:var(--sa-muted)">Tick a filter to narrow the list.</span>`;
+  el('faces').innerHTML = FACES.map(g=>`
+    <button class="face-btn" data-g="${g.id}" aria-pressed="${g.id===who}">
+      <span class="circ">${g.id==='all'?'<span class="mark-icon" role="presentation"><span class="mi">groups</span></span>':markHTML(g.id)}</span><span class="lbl">${g.short||g.label}</span></button>`).join('');
+  let list = matchSchemes({ who: who==='all'?undefined:who, offer: offer==='all'?undefined:offer });
+  if (org!=='all') list = list.filter(x => x.apply===org);
+  if (q) { const s = q.toLowerCase(); list = list.filter(x => (x.name+' '+x.provides+' '+x.named).toLowerCase().includes(s)); }
   const pages = Math.max(1, Math.ceil(list.length/PAGE));
   if (page>pages) page = pages;
   const slice = list.slice((page-1)*PAGE, page*PAGE);
   el('table').innerHTML = list.length ? `
     <table class="rise"><thead><tr>
-      <th style="width:34%">Scheme</th><th style="width:36%">You Get</th><th>Who It Is For</th></tr></thead>
+      <th style="width:32%">Scheme</th><th style="width:36%">You Get</th><th>Who It Is For</th></tr></thead>
       <tbody>${slice.map(s=>`<tr>
         <td><a href="#">${s.name}</a>${s.umbrella?`<small>${s.umbrella}</small>`:''}</td>
         <td>${s.provides}</td>
         <td>${s.named}</td></tr>`).join('')}
       </tbody></table>`
-    : `<div class="empty rise"><b style="font-size:15px">No scheme matches those filters together.</b>
-        <p style="font-size:13.5px;color:var(--sa-ink-muted);margin:8px 0 14px">A greyed filter is one that would leave nothing with the others as they stand. Removing one usually brings the list back.</p>
-        <button class="btn" onclick="document.getElementById('reset').click()">Reset Filters</button></div>`;
+    : `<div class="empty rise"><b style="font-size:15px">No scheme in the Department's record matches that.</b>
+        <p style="font-size:13.5px;color:var(--sa-ink-muted);margin:8px 0 0">Choose “All” or clear the search to see everything.</p></div>`;
   el('pager').innerHTML = pages>1 ? Array.from({length:pages},(_,i)=>`<button data-p="${i+1}" ${i+1===page?'aria-current="page"':''}>${i+1}</button>`).join('') : '';
 }
-document.addEventListener('change', e => {
-  const c = e.target.closest('input[data-axis]'); if(!c) return;
-  const s = sel[c.dataset.axis];
-  c.checked ? s.add(c.dataset.id) : s.delete(c.dataset.id);
-  page = 1; draw();
-});
-document.addEventListener('click', e => {
-  const b = e.target.closest('[data-clear]'); if(b){ const [a,i] = b.dataset.clear.split(':'); sel[a].delete(i); page=1; draw(); return; }
-  const p = e.target.closest('button[data-p]'); if(p){ page=+p.dataset.p; draw(); }
-});
+el('faces').addEventListener('click', e => { const b=e.target.closest('.face-btn'); if(!b) return; who=b.dataset.g; page=1; draw(); b.scrollIntoView({inline:'nearest', block:'nearest'}); });
+el('q').addEventListener('input', e => { q=e.target.value.trim(); page=1; draw(); });
+el('kind').onchange = e => { offer=e.target.value; page=1; draw(); };
+el('org').onchange = e => { org=e.target.value; page=1; draw(); };
+el('reset').onclick = () => { who='all'; offer='all'; org='all'; q=''; el('q').value=''; page=1; draw(); };
+el('pager').addEventListener('click', e => { const b=e.target.closest('button[data-p]'); if(!b) return; page=+b.dataset.p; draw(); });
 draw();
 </script></body></html>

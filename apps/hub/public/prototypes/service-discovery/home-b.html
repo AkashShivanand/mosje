@@ -48,7 +48,7 @@
   </div>
   <div class="progress" id="prog"></div>
   <div class="finder" id="finder" style="margin-top:14px"></div>
-  <p class="note">A scheme naming your group as its target group is not a decision on your application — the sanctioning authority decides that.</p>
+  <p class="note">A scheme that names your group does not mean your application is approved. The sanctioning authority decides that.</p>
 </main>
 
 <script>
@@ -128,7 +128,7 @@ function results(){
         <span class="grow" style="flex:1"></span>
         <button class="btn link" id="again">Start again</button></div>
       ${list.length ? list.slice(0,SHOW).map(card).join('') +
-        `<div class="all"><span>${list.length>SHOW ? 'These are the first three.' : 'These are all of them.'}</span><a href="${link}">View all schemes for ${who.short}${offer?` under ${offer.short}`:''} →</a></div>`
+        `<div class="all"><span></span><a href="${link}">View all schemes for ${who.short}${offer?` under ${offer.short}`:''} →</a></div>`
       : `<div class="empty"><b>The Department's record has no scheme for that group and that kind of support together.</b>
           <p style="margin:8px 0 0;font-size:14px;color:var(--sa-ink-muted)">Remove the second answer to see everything the Department provides for the group.</p></div>`}
     </div>`;

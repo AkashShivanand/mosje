@@ -13,7 +13,7 @@
  * offering id, or an unknown apply route fails the build — an invented scheme cannot
  * reach a screen.
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -93,7 +93,7 @@ const OFFER_LABEL = Object.fromEntries(OFFERINGS.map((o) => [o.id, o.label]));
    added by this master, or one whose artwork was withdrawn, is drawn as a
    plain token-coloured mark, never a stand-in figure. The label beside it
    carries the group. */
-const HAS_ART = new Set(${js(m.personas.filter((p) => p.art !== false && ["sc","obc","dnt","safai","senior","tg","student","ngo","drug","begging"].includes(p.id)).map((p) => p.id))});
+const HAS_ART = new Set(${js(m.personas.filter((p) => p.art !== false && existsSync(resolve(root, "apps/hub/public/prototypes/service-discovery/personas", p.id + ".png"))).map((p) => p.id))});
 /* Material Symbols Rounded, the estate's icon set, for the groups with no
    figure: what the scheme gives, not what a person is assumed to look like. */
 const MARK_ICON = { drug:'health_and_safety', begging:'night_shelter', atrocity:'balance' };

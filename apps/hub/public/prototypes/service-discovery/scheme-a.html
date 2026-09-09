@@ -2,11 +2,16 @@
 <title>Schemes &amp; Services — Option A, Pictures and Cards</title>
 <link rel="stylesheet" href="core.css">
 <style>
+.page-t{font-size:22px;font-weight:600;color:var(--sa-muted);margin:0 0 18px;opacity:.7}
 .toolbar{display:flex;gap:12px;align-items:center;margin:0 0 18px}
-.search{flex:1;max-width:520px;display:flex;align-items:center;gap:10px;border:1px solid var(--sa-hair);border-radius:var(--sa-radius);background:var(--sa-white);padding:9px 14px;font-size:14px;color:var(--sa-muted)}
+.search{flex:1;max-width:520px;display:flex;align-items:center;gap:10px;border:1px solid var(--sa-hair);border-radius:var(--sa-radius);background:var(--sa-white);padding:12px 14px;font-size:14px;color:var(--sa-muted)}
 .search input{border:none;outline:none;font:inherit;flex:1;color:var(--sa-ink)}
 .toolbar .grow{flex:1}
-.sel{font:inherit;font-size:13.5px;border:1px solid var(--sa-hair);border-radius:var(--sa-radius);background:var(--sa-white);padding:9px 12px;color:var(--sa-ink);min-width:200px}
+.sel{font:inherit;font-size:13.5px;color:var(--sa-ink);border:1px solid var(--sa-hair);border-radius:var(--sa-radius);background:var(--sa-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23222' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 12px center;padding:9px 32px 9px 14px;appearance:none;-webkit-appearance:none;cursor:pointer}
+.btn.soft{background:var(--sa-primary-200);color:var(--sa-white)}
+.seg{display:inline-flex;background:var(--sa-primary-50);border-radius:var(--sa-radius);padding:3px}
+.seg button{font:inherit;font-size:13.5px;border:none;background:none;padding:8px 26px;border-radius:calc(var(--sa-radius) - 2px);cursor:pointer;color:var(--sa-ink)}
+.seg button[aria-pressed="true"]{background:var(--sa-white);box-shadow:var(--sa-shadow);font-weight:600}
 .panel{background:var(--sa-neutral-50);border-radius:var(--sa-radius-lg);padding:22px 24px 24px}
 /* The rail: one row that scrolls sideways and never wraps. Every tile is the
    same width, the picture the same size, the label the same height. */
@@ -37,18 +42,21 @@
 </style></head><body>
 <script src="data.js"></script><script src="shell.js"></script>
 <main class="wrap sec">
+  <h1 class="page-t">Offerings/Schemes &amp; Services</h1>
   <div class="toolbar">
     <label class="search"><span class="mi" aria-hidden="true" style="font-size:20px">search</span><input id="q" type="search" placeholder="Search by scheme name or keyword" aria-label="Search by scheme name or keyword"></label>
     <span class="grow"></span>
-    <button class="btn ghost" id="reset">Reset Filters</button>
+    <select class="sel" id="kind" aria-label="Category"></select>
+    <select class="sel" id="org" aria-label="Organisation"></select>
+    <button class="btn soft" id="reset">Reset Filters</button>
   </div>
   <div class="panel">
     <div class="rail" id="faces"></div>
-    <div class="head"><h2>Active Schemes</h2></div>
+    <div class="head"><h2>Active Schemes</h2><div class="seg" role="group" aria-label="Scheme status"><button aria-pressed="true">Active</button><button aria-pressed="false">Archived</button></div></div>
     <div class="cards" id="cards"></div>
     <div class="pager" id="pager"></div>
   </div>
-  <p class="note">Listing is not a decision on any application — the sanctioning authority decides that.</p>
+  <p class="note">Being listed here does not mean an application is approved. The sanctioning authority decides that.</p>
 </main>
 <script>
 /* No masthead: this option is reviewed as the section alone.
@@ -60,18 +68,22 @@
 const el = id => document.getElementById(id);
 const PAGE = 9;
 const qs = new URLSearchParams(location.search);
-let who = qs.get('g') || 'all', offer = qs.get('o') || 'all', page = 1, q = '';
+let who = qs.get('g') || 'all', offer = qs.get('o') || 'all', org = 'all', page = 1, q = '';
 const FACES = [{id:'all',label:'All', short:'All'}].concat(PERSONAS);
-function drawKinds(){
+function drawFilters(){
   const kinds = who==='all' ? OFFERINGS : offersFor(who);
   if (offer!=='all' && !kinds.some(o=>o.id===offer)) offer = 'all';
-  el('kind').innerHTML = `<option value="all">Kind of support: all</option>` + kinds.map(o=>`<option value="${o.id}" ${o.id===offer?'selected':''}>${o.short}</option>`).join('');
+  el('kind').innerHTML = `<option value="all">Category</option>` + kinds.map(o=>`<option value="${o.id}" ${o.id===offer?'selected':''}>${o.short||o.label}</option>`).join('');
+  const orgs = [...new Set(SCHEMES.map(s=>s.apply).filter(a=>a && ROUTES[a]))];
+  el('org').innerHTML = `<option value="all">Organisation</option>` + orgs.map(a=>`<option value="${a}" ${a===org?'selected':''}>${ROUTES[a].label}</option>`).join('');
 }
 function draw(){
+  drawFilters();
   el('faces').innerHTML = FACES.map(g=>`
     <button class="face-btn" data-g="${g.id}" aria-pressed="${g.id===who}">
-      <span class="circ">${g.id==='all'?'<img src="personas/all.png" alt="">':markHTML(g.id)}</span><span class="lbl">${g.short||g.label}</span></button>`).join('');
+      <span class="circ">${g.id==='all'?'<span class="mark-icon" role="presentation"><span class="mi">groups</span></span>':markHTML(g.id)}</span><span class="lbl">${g.short||g.label}</span></button>`).join('');
   let list = matchSchemes({ who: who==='all'?undefined:who, offer: offer==='all'?undefined:offer });
+  if (org!=='all') list = list.filter(x => x.apply===org);
   if (q) { const s = q.toLowerCase(); list = list.filter(x => (x.name+' '+x.provides+' '+(x.umbrella||'')).toLowerCase().includes(s)); }
   const pages = Math.max(1, Math.ceil(list.length/PAGE));
   if (page>pages) page = pages;
@@ -88,7 +100,9 @@ function draw(){
 }
 el('faces').addEventListener('click', e => { const b=e.target.closest('.face-btn'); if(!b) return; who=b.dataset.g; page=1; draw(); b.scrollIntoView({inline:'nearest', block:'nearest'}); });
 el('q').addEventListener('input', e => { q=e.target.value.trim(); page=1; draw(); });
-el('reset').onclick = () => { who='all'; offer='all'; q=''; el('q').value=''; page=1; draw(); };
+el('kind').onchange = e => { offer=e.target.value; page=1; draw(); };
+el('org').onchange = e => { org=e.target.value; page=1; draw(); };
+el('reset').onclick = () => { who='all'; offer='all'; org='all'; q=''; el('q').value=''; page=1; draw(); };
 el('pager').addEventListener('click', e => { const b=e.target.closest('button[data-p]'); if(!b) return; page=+b.dataset.p; draw(); });
 draw();
 </script></body></html>

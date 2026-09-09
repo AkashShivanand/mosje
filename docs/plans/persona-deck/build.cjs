@@ -183,21 +183,21 @@ const OPTIONS = [
 const SCHEMES_PAGE = [
   { part:"The Schemes Page · Option A of 2", title:"Pictures of the Groups, with Cards",
     vid:"scheme-a", live:false, rec:false,
-    caption:"Recorded: Safai Karamcharis, then Loans and Credit, then Senior Citizens.",
+    caption:"Recorded: Safai Karamcharis, Transgender Persons, then Senior Citizens.",
     what:"Every group as a picture in one row. Pick one and its schemes appear as cards.",
-    how:["Pick a group; search by name if you know it","Cards show what a scheme gives; nine to a page","Each card opens the scheme's page"],
+    how:["Pick a group from the row; it scrolls sideways","Category and Organisation narrow the list further","Cards show what a scheme gives; nine to a page"],
     why:["Every group is visible at once, with no scrolling to find yourself","The same groups as the home page, so the same idea is met twice"],
     notes:"The layout from before the review, with the review's changes: one filter, the group, no counts, and paged cards so the page keeps its height. This is for browsing." },
-  { part:"The Schemes Page · Option B of 2", title:"Filter Panel with a Table",
+  { part:"The Schemes Page · Option B of 2", title:"Pictures of the Groups, with a Table",
     vid:"scheme-b", live:false, rec:true,
     caption:"Recorded: Other Backward Classes with Scholarships, then Loans added, then one filter removed.",
-    what:"The target groups down the left, a table on the right. Tick one or more groups.",
-    how:["Ticked groups add up, so two groups show both their schemes","No number beside any filter","Ten rows a page; each scheme links to its page"],
+    what:"The same row of groups, with a table beneath instead of cards.",
+    how:["Pick a group from the row; it scrolls sideways","Category and Organisation narrow the list further","The table says what each scheme gives and who it is for"],
     why:["Two schemes can be read side by side","The table has room to say who each scheme is for"],
-    notes:"The layout from before the review, with the review's changes: the group filter only, no counts, ten rows a page. This is for comparing and deciding, which is what most people come to this page to do." },
+    notes:"The reference layout with a table beneath the row of groups: what each scheme gives and who it is for, ten rows a page, no counts. This is for comparing and deciding." },
 ];
 const ASSISTANT = [
-  { part:"The Assistant · The Same Two Questions, in Chat", title:"Samajik Sahayak",
+  { part:"The Assistant · Samajik Sahayak", title:"The Same Two Questions, in Chat",
     vid:"assistant", live:true, rec:true,
     caption:"Recorded: the assistant opened from an ordinary page. Scheduled Castes, then Loans and Credit.",
     what:"The chat button in the corner of every page asks the same two questions, one at a time.",
@@ -208,8 +208,8 @@ const ASSISTANT = [
 
 function optionPage(o) {
   const s = slide(false);
-  s.addText(o.part.toUpperCase(), { x:M, y:0.48, w:CW, h:0.24, isTextBox:true, margin:0, fontFace:F, fontSize:T.label, bold:true, charSpacing:TRACK.eyebrow, color:MUTE });
-  s.addText(o.title, { x:M, y:0.76, w:CW-2.6, h:0.56, isTextBox:true, margin:0, fontFace:F, fontSize:T.h1, bold:true, color:DARK });
+  s.addText(o.title.toUpperCase(), { x:M, y:0.48, w:CW, h:0.24, isTextBox:true, margin:0, fontFace:F, fontSize:T.label, bold:true, charSpacing:TRACK.eyebrow, color:MUTE });
+  s.addText(o.part, { x:M, y:0.76, w:CW-2.6, h:0.56, isTextBox:true, margin:0, fontFace:F, fontSize:T.h1, bold:true, color:DARK });
   let px = M;
   px += pill(s, px, 1.42, o.live?"ON THE SITE TODAY":"TO BE BUILT", o.live?SURF:BLUE_50, o.live?MUTE:BLUE_TXT) + 0.14;
   const y0 = 1.95, boxW = 7.1, boxH = 4.45;
@@ -237,7 +237,7 @@ OPTIONS.forEach(optionPage);
     "Where a person lands from the home page, and where officers and voluntary organisations work.");
   const items = [
     ["A","Pictures of the Groups, with Cards","scheme-a","Every group on screen at once, then cards. For browsing.","OPTION A"],
-    ["B","Filter Panel with a Table","scheme-b","Tick the groups, and a table that says who each scheme is for. For comparing.","OPTION B"],
+    ["B","Pictures of the Groups, with a Table","scheme-b","The same row of groups, then a table that says who each scheme is for. For comparing.","OPTION B"],
   ];
   const cw = (CW-0.6)/2;
   items.forEach((it,i)=>{
@@ -268,7 +268,7 @@ ASSISTANT.forEach(optionPage);
     ["","B · Two Questions","Who you are, then what you need. Three schemes and a link to all of them."],
     ["","C · One Tap","Pick your group. Its portal first, then its schemes."],
     ["The Schemes page","A · Pictures of the Groups, with Cards","Every group in one row, then cards. For browsing."],
-    ["","B · Filter Panel with a Table","Tick the groups, and a table. For comparing."],
+    ["","B · Pictures of the Groups, with a Table","The same row, then a table. For comparing."],
     ["The assistant","Samajik Sahayak","The same two questions, in the chat window on every page."],
   ];
   const rowY = 2.5, rowH = 0.56;

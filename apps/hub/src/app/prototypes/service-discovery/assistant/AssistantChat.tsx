@@ -94,7 +94,7 @@ export function AssistantChat() {
     return {
       text:
         `These name ${who.label}${offer ? ` under ${offer.label}` : ""}: ${list(hits.map((h) => h.name))}. ` +
-        "A scheme naming you is not a decision on an application — the sanctioning authority decides that.",
+        "A scheme that names your group does not mean your application is approved. The sanctioning authority decides that.",
       quickReplies: q(...hits.map((h) => `Open ${h.name}`), "Start over"),
     };
   };
@@ -105,7 +105,7 @@ export function AssistantChat() {
     if (label === "Where do I complain?") {
       return {
         text:
-          "A complaint about a right denied or a benefit not received goes to the Public Grievance Portal. An atrocity against a member of a Scheduled Caste or Scheduled Tribe can be reported round the clock on the National Helpline Against Atrocities, 14566.",
+          "A complaint about a right denied or a benefit not received goes to the Public Grievance Portal. If you are from a Scheduled Caste or Scheduled Tribe and face an atrocity, you can call the National Helpline Against Atrocities, 14566, at any hour.",
         quickReplies: q("Which scheme applies to me?"),
       };
     }
