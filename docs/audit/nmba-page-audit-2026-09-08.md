@@ -1189,3 +1189,155 @@ a filled well at rest: at 78% ink on a dark ground it was a hairline.
 Anchoring verified: glyph at x=400 and CTA right edge at 1267 on **both** panels.
 
 Stills: `cband-1.png`, `cband-2.png`, `cband-both.png`.
+
+---
+
+## 22. The composed band, audited by its author before it was shown
+
+The first composition was four loose objects on a green field. Only the helpline
+read as a THING; the rest was text and a button sitting on colour. So the band
+said "one card and some writing" when it needed to say *"a number you can always
+call, and a notice that changes."*
+
+### The story is told by material, not by labels
+
+Both halves are cards now, sharing a top and a bottom edge — verified at y=845
+and bottom=969 on both panels. **Solid white is permanent; translucent glass is
+the half that turns.** A reader gets that before reading a word, which is the
+only way a band this size explains itself. No "NEED HELP" or "WHAT'S ON" headers:
+a label that says what a shape already says is chrome.
+
+### Both panels take the same copy shape
+
+Panel one was an eyebrow over a two-line sentence; panel two was an eyebrow,
+heading, body and a code. Same box, different density, so the band felt unsettled
+as it turned. The observance now uses **the record's own eyebrow as its heading
+and its sentence as the body** — the department's words in both slots, no
+invention, and the two panels are the same object with different content.
+
+### Three defects found by testing rather than looking
+
+| | What happened | Why looking missed it |
+|---|---|---|
+| **The pager was unclickable** | The offer and the pager share `grid-area: offer` — which is what makes the stage the height of its tallest panel — so the offer painted over the pager and swallowed every click | The dots were perfectly visible the whole time. Only driving a real click found it |
+| The pager collided with the second route | Button, link and pager stacked in one corner | It looked merely tight |
+| The empty code track cost 104px of measure | Reserved at 88px to hold the action still — which flushing the actions right already does | Nothing was visibly broken; the copy just wrapped early |
+
+The second route moved into the prose, where it belongs: *"file on the open
+register"* is a condition attached to the offer, not a peer of the button.
+
+### Anchored, and verified
+
+| | Panel 1 | Panel 2 |
+|---|---|---|
+| Band height | 164 | 164 |
+| CTA right edge | 1259 | 1259 |
+| Cards' top / bottom | 845 / 969 | 845 / 969 |
+| Pager clearance under the CTA | 28px | 28px |
+
+Nothing that persists across the turn moves during it.
+
+**Known and accepted:** on the observance panel the inline route wraps as "File
+on the / open register". The alternative is a third element stacked in the action
+corner, which is the collision this pass removed.
+
+---
+
+## 23. Contrast audit of the composed band — two failures I shipped unchecked
+
+Sampled from **rendered pixels**, not from tokens. That distinction is the whole
+finding: the band's ground is a `linear-gradient` with a translucent card over
+it, so nothing in the CSS states the colour the text actually sits on. A first
+attempt walked the DOM for a `background-color`, found none, and returned white —
+producing contrast figures that were confident and meaningless.
+
+The glass card renders `rgb(22,108,66)` at its light end and `rgb(20,84,51)` at
+its dark end.
+
+| Element | Before | Needs | Verdict |
+|---|---|---|---|
+| Heading — white on glass | 7.60:1 | 4.5 | pass |
+| Body — 82% white on glass | 5.70:1 | 4.5 | pass |
+| Eyebrow — leaf `successScale-100` | 4.60:1 | 4.5 | pass, narrowly |
+| **Eyebrow — saffron `secondaryScale-300`** | **3.44:1** | 4.5 | **FAIL §1.4.3** |
+| **Inactive dot — 40% white** | **2.57:1** | 3.0 | **FAIL §1.4.11** |
+| Dismiss glyph — 72% white on band | 4.25:1 | 3.0 | pass |
+| Pause glyph — white on a 14% well | 5.42:1 | 3.0 | pass |
+
+### The saffron rung, measured across the ramp
+
+```
+-400  2.61:1     -300  3.44:1  ← shipped
+-200  4.43:1  ← the one that tempts you, and fails by 0.07
+-100  5.60:1  ← chosen
+```
+
+`-300` looked perfectly legible, which is exactly the trap: a saturated warm hue
+on a saturated dark ground reads as *bright* long after it has stopped being
+*contrasty*. The eyebrow is 12px, so it is normal text and gets no large-text
+allowance.
+
+### The dot
+
+An inactive carousel dot is a UI component, so §1.4.11 asks 3:1. At 40% white it
+was 2.57. Raised to 55% → 3.47:1 — headroom, rather than a number sitting on the
+line where a future gradient tweak would push it under.
+
+### After
+
+Every measured pair passes, and the saffron eyebrow is checked at **both** ends
+of the card's gradient — 4.75:1 at the light end, 6.59:1 at the dark end — because
+a gradient means one sample is not a result.
+
+---
+
+## 24. The three critique findings, fixed — and one of them corrected first
+
+### The "asymmetric margins" finding was wrong, and I checked before acting on it
+
+I reported the band's internal margins as **24 left, 76 right**. They are not
+asymmetric: 24 is the container's own padding on *both* sides, and the 76 is the
+gap plus the dismiss plus that same 24. I had measured two different things and
+called the difference a defect.
+
+What was actually wrong is smaller and real: the dismiss was **vertically centred
+against nothing** — floating at the middle height of a gap, related to no other
+element, which is what made the band's right end read as unfinished. It now
+shares the cards' top edge. It stays *outside* both cards, because it dismisses
+the band and a control inside the glass card would claim the wrong scope.
+
+### The phone: 380px → 296px
+
+45% of an 844px viewport, for an announcement, above the page it announces. Not a
+small band — a page.
+
+| Cut | Saved |
+|---|---|
+| The body sentence and the second route | 40px |
+| The helpline card to one line — glyph 48→40, label beside the number, not above | 24px |
+| Band padding 20→16, stage padding 16→12 | 20px |
+
+**296px, 35%.** That is the floor: below it the only thing left to cut is the
+rotating half itself, and whether a phone gets the announcements at all is a
+content decision rather than a layout one.
+
+What survives on a phone is what the announcement *is* — the eyebrow saying which
+kind of thing it is, the heading, and the way in. The sentence is elaboration,
+and elaboration belongs on the page the button opens, where there is room for it
+and where a reader who pressed the button has asked for it.
+
+### The leaf eyebrow
+
+`successScale-100` measured **4.60:1** against the 4.5 §1.4.3 asks. It passes, and
+it is the first thing that fails if the card's translucency is ever touched.
+`-50` is **6.81:1** — margin rather than luck.
+
+### Verified
+
+| | 1440 | 768 | 390 |
+|---|---|---|---|
+| Band height | 164 (22% of the fold) | 263 (26%) | **296 (35%)** |
+| Helpline card | 124 | 82 | 56 |
+| Dismiss shares the cards' top edge | yes | yes | yes |
+| Pager overlaps the button | no | no | no |
+| Horizontal scroll | none | none | none |

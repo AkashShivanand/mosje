@@ -10,7 +10,105 @@
 @layer theme, base, components, utilities;
 
 @layer components {
+  /*
+   * The design system's visually-hidden treatment, declared HERE rather than
+   * borrowed. `ds-sr-only` lives in `live-region.css`, which this module does not
+   * import — so relying on it means relying on whatever else the page happened to
+   * render, which is how a warning silently stops being announced.
+   */
+  .xpl-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   /* ── Index ────────────────────────────────────────────────────────────── */
+
+  /*
+   * THE FILTER, which is the control that turns a list into an answer. Fifteen
+   * options were awaiting a decision and the page had no way to show which; a
+   * reader's question here is "what needs me?", and eleven cards in insertion
+   * order do not answer it.
+   *
+   * `aria-pressed` on plain buttons, not `role="tab"`: there are no panels here,
+   * only the same list narrowed, and a tablist promises a roving arrow-key model
+   * this does not have. Toggle buttons in a named group is what this is.
+   */
+  .xpl-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+    margin-block-end: var(--sa-stack-24);
+  }
+
+  .xpl-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    min-block-size: var(--sa-control-height-sm);
+    padding: var(--sa-padding-6) var(--sa-padding-12);
+    /* Same correction as the option tabs — see the note above them. */
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    font-weight: var(--sa-font-weight-medium);
+    transition:
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .xpl-filter:hover {
+      border-color: var(--sa-border-neutral-bolder-hover);
+    }
+  }
+
+  /* Same correction as the tabs: `base` is the palest rung, and the ring is what
+     carries the pressed state without moving the row by a pixel. */
+  .xpl-filter[aria-pressed="true"] {
+    border-color: var(--sa-border-brand-primary-bolder);
+    background-color: var(--sa-bg-brand-primary-base);
+    box-shadow: inset 0 0 0 var(--sa-stroke-1) var(--sa-border-brand-primary-bolder);
+    color: var(--sa-text-brand-primary-base);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .xpl-filter__count {
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xpl-filter[aria-pressed="true"] .xpl-filter__count {
+    color: inherit;
+  }
+
+  /* Filtered to nothing — worded differently from empty, and it names the way
+     out, because the reader caused this state and can undo it. */
+  .xpl-nothing {
+    padding: var(--sa-padding-24);
+    border: var(--sa-stroke-1) dashed var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-12);
+    background-color: var(--sa-bg-neutral-base);
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xpl-nothing__clear {
+    color: var(--sa-text-link-brand-default);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .xpl-nothing__clear:hover {
+    text-decoration: underline;
+  }
 
   .xpl-surface {
     border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
@@ -62,42 +160,81 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /*
+   * The option NAMES, as plain text rather than a pill each.
+   *
+   * They used to be one `.xpl-status` pill per option carrying the name AND the
+   * status joined by an em dash — in a register where three names contain an em
+   * dash of their own, so nothing told a reader where the name stopped. The
+   * pills also dominated the card and two of them ran off its edge, because a
+   * status pill is `white-space: nowrap` and a title is not a status.
+   *
+   * Now that a label is one to three words (see `ExplorationOption.label`) the
+   * whole set fits on a line or two, and the card's own title leads again.
+   */
+  .xpl-module-card__labels {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
   .xpl-module-card__foot {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--sa-inline-8);
+    gap: var(--sa-inline-8) var(--sa-inline-12);
     margin-block-start: auto;
-    padding-block-start: var(--sa-padding-8);
+    padding-block-start: var(--sa-padding-12);
+    border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    font-size: var(--sa-type-label-3-size);
+    color: var(--sa-text-neutral-subtle);
   }
 
-  /* ── Status words — never colour alone (WCAG 1.4.1) ───────────────────── */
-
-  .xpl-status {
+  /* The status, counted once per state instead of spelled out once per option.
+     Never colour alone — the dot always has its count and its word beside it. */
+  .xpl-tally {
     display: inline-flex;
     align-items: center;
-    padding: var(--sa-padding-2) var(--sa-padding-8);
-    border-radius: var(--sa-shape-full);
-    font-size: var(--sa-type-label-3-size);
-    font-weight: var(--sa-font-weight-medium);
+    gap: var(--sa-inline-6);
     white-space: nowrap;
   }
 
-  .xpl-status--chosen {
-    background-color: var(--sa-bg-status-success-subtle);
-    color: var(--sa-text-status-success-base);
+  .xpl-module-card__date {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    margin-inline-start: auto;
+    white-space: nowrap;
   }
 
-  .xpl-status--proposed {
-    background-color: var(--sa-bg-status-info-subtle);
-    color: var(--sa-text-status-info-base);
-  }
-
-  .xpl-status--superseded,
-  .xpl-status--parked {
-    background-color: var(--sa-bg-neutral-subtler);
-    color: var(--sa-text-neutral-subtle);
-  }
+  /*
+   * ── THE STATUS PILL IS GONE, AND SO IS THE DEFECT IT CARRIED ───────────────
+   *
+   * `.xpl-status` was a pill on every option in the tab row and on every option
+   * on the index. It is replaced by a dot beside a word, tallied once — see
+   * `.xpl-dot` and `.xpl-tally` — so the rule is deleted rather than left as CSS
+   * nothing renders.
+   *
+   * KEEP THE LESSON, because it applies to the next status colour anyone binds
+   * here. The pill was `bg/status/<family>/subtle` under
+   * `text/status/<family>/base`, which is the trap `documentation-ds-linkage.md`
+   * records under "Bind by RESOLVED VALUE, not by name": on this estate `subtle`
+   * resolves to ramp rung 200 and the ink to rung 600, and 200/600 is not a text
+   * pairing. Measured on the running page, both at 12px where the AA floor is
+   * 4.5 rather than 3.0:
+   *
+   *     chosen               #046A38 on #99CAA7   3.64:1   FAIL
+   *     awaiting a decision  #006D85 on #8ECCDF   3.36:1   FAIL
+   *
+   * `subtler` (rung 100) is not enough either — 4.79 and 4.31. `base` is rung 50,
+   * the palest, and clears both: 6.14 and 5.42. The name reads like a default and
+   * its value is the lightest tint, which `component-authoring.md` §10 says in so
+   * many words about shade order.
+   */
 
   /* ── Viewer ───────────────────────────────────────────────────────────── */
 
@@ -108,12 +245,27 @@
     margin-block-end: var(--sa-stack-20);
   }
 
+  /*
+   * ── AN IDLE CONTROL HAS TO BE VISIBLE AS A CONTROL ──────────────────────────
+   *
+   * `border/neutral/subtle` is #DCDEE1 and the ground these pills sit on is
+   * `surface-muted`. Measured: the border is 1.18:1 against it and the white fill
+   * is 1.14:1, so an unselected pill had NO boundary a reader could see — below
+   * the 3:1 that WCAG 2.2 §1.4.11 asks for the visual information that identifies
+   * a component. The selected one was fine (5.57:1) because its border is the
+   * brand rung, which is exactly how the defect hid: the state you look at while
+   * checking passes, and the other five do not.
+   *
+   * `border/neutral/bolder/default` measures 4.4:1 on the same ground. This was
+   * already true of the option tabs before the filter chips existed; both are
+   * corrected here rather than one being built to match the other's defect.
+   */
   .xpl-viewer__tab {
     display: flex;
     align-items: center;
     gap: var(--sa-inline-8);
     padding: var(--sa-padding-8) var(--sa-padding-16);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-subtle);
@@ -123,19 +275,48 @@
       background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
+  /*
+   * The selected tab, corrected the same way: `bg/brand/primary/subtle` under
+   * `text/brand/primary/base` measured 3.45:1 at 12px — the single most important
+   * label in the component, below AA. `base` measures 5.74:1.
+   *
+   * The INSET RING rather than a thicker border: a second pixel of border would
+   * move every tab in the row by one pixel on selection, and a row that twitches
+   * as you flip through it is worse than a quiet one. The ring doubles the edge
+   * optically and costs no layout.
+   */
   .xpl-viewer__tab[aria-selected="true"] {
     border-color: var(--sa-border-brand-primary-bolder);
-    background-color: var(--sa-bg-brand-primary-subtle);
+    background-color: var(--sa-bg-brand-primary-base);
+    box-shadow: inset 0 0 0 var(--sa-stroke-1) var(--sa-border-brand-primary-bolder);
     color: var(--sa-text-brand-primary-base);
+  }
+
+  /*
+   * A tab scrolled behind the sticky bar is WCAG 2.2 §2.4.11 (Focus Not
+   * Obscured). The root already carries `scroll-padding-top` for the pinned
+   * masthead — see `header.css` — and this composes with it, so a tab reached by
+   * Tab or by an arrow key lands below BOTH. `standards-precedence.md` names this
+   * as the consequence of a sticky header, and the bar makes it a second one.
+   */
+  .xpl-viewer__tab {
+    scroll-margin-top: calc(var(--sa-header-pinned, 69px) + var(--xpl-bar-height) + var(--sa-stack-16));
   }
 
   .xpl-viewer__tab-title {
     font-weight: var(--sa-font-weight-semibold);
   }
 
-  .xpl-viewer__summary {
-    font-size: var(--sa-type-body-2-size);
-    color: var(--sa-text-neutral-base);
+  /* The tab's dot is the same object as the legend's and the index's, so a
+     reader learns one mark and reads it everywhere. */
+  .xpl-viewer__tab .xpl-dot {
+    /* Optically centred against a cap-height label rather than the line box. */
+    margin-block-start: 1px;
+  }
+
+  /* `SectionTitle` brings its own type and rhythm; all this does is hold the
+     description to a measure, which the component does not decide for a caller. */
+  .xpl-viewer__headline .ds-section-title__description {
     max-inline-size: 68ch;
   }
 
@@ -198,20 +379,249 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  .xpl-viewer__reset {
-    margin-block-start: var(--sa-stack-12);
+  /* ══════════════════════════════════════════════════════════════════════════
+     THE OPTION BAR — the answer to "which one am I looking at?"
+     ══════════════════════════════════════════════════════════════════════════
+
+     A module page runs to 2,091px and a prototype frame to 1,165px, so a reader
+     who scrolls into the specimen has the tab row, the summary and every other
+     mention of the option's name off screen — looking at a full-page mock that
+     is deliberately indistinguishable from the real site. Six options, and
+     nothing on screen saying which.
+
+     So the name is pinned. The bar carries the four things a reader needs while
+     they are IN the prototype rather than above it: where they are in the set,
+     what it is called, where it stands, and a way to the next one without
+     scrolling back. Reset moves here from the foot of the page, where it was
+     below the fold of the thing it resets.
+
+     WHY IT IS NOT THE TAB ROW MADE STICKY. Six wrapped pills carrying titles and
+     status words is 88px of chrome; pinning it would take a tenth of a laptop
+     viewport for the whole scroll, and the row is a JUMP LIST — you use it once.
+     The bar is 48px and is the thing you use continuously.
+     ═══════════════════════════════════════════════════════════════════════════ */
+
+  .xpl-viewer {
+    /* Named once: the bar's own height, and the offset a focused tab must clear
+       so it cannot land underneath the bar. */
+    --xpl-bar-height: 3rem;
   }
 
-  .xpl-viewer__reset-btn {
+  .xpl-viewer__bar {
+    position: sticky;
+    /*
+     * The masthead is sticky on every hub surface and publishes its measured
+     * pinned height as `--sa-header-pinned`; the fallback is the compact
+     * variant's own 69px, used only for the frames before the script runs.
+     */
+    top: var(--sa-header-pinned, 69px);
+    /*
+     * `z/sticky`, not a literal and not `z/raised`. The prototypes are real page
+     * furniture and bring their own stacking — the NMBA fold puts its breadcrumb
+     * strip at `z-20` — so a bar at 1 would be painted over by the specimen it is
+     * meant to label. 200 clears that and stays well under the masthead's 500.
+     */
+    z-index: var(--sa-z-sticky);
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    min-block-size: var(--xpl-bar-height);
+    margin-block: var(--sa-stack-16);
+    padding: var(--sa-padding-4);
+    padding-inline-end: var(--sa-padding-8);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  .xpl-viewer__step {
+    display: grid;
+    place-items: center;
+    flex: none;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-base);
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .xpl-viewer__step:hover {
+      border-color: var(--sa-border-neutral-bolder-hover);
+      background-color: var(--sa-bg-neutral-subtler);
+    }
+  }
+
+  /* The live region. It holds the count, the name and the status together, so a
+     reader who presses the stepper hears "3 of 6, Two questions, awaiting a
+     decision" as one sentence rather than three separate updates. */
+  .xpl-viewer__bar-now {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    padding-inline-start: var(--sa-padding-4);
+  }
+
+  .xpl-viewer__bar-count {
+    flex: none;
+    font-size: var(--sa-type-label-3-size);
+    font-weight: var(--sa-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* The one string this whole component exists to keep on screen. It truncates
+     rather than wrapping, because a bar that changes height as you step through
+     the set moves the prototype underneath it. */
+  .xpl-viewer__bar-name {
+    flex: 0 1 auto;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--sa-type-label-1-size);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-base);
+  }
+
+  /*
+   * Status as a MARK, not a fifth repetition of the word. It is never alone: the
+   * word sits beside it on a wide bar and inside the live region always, so this
+   * is not colour-only information (WCAG 1.4.1). The ink rungs are the 600s, so
+   * every dot clears 3:1 against the bar as a non-text indicator (1.4.11).
+   */
+  .xpl-dot {
+    flex: none;
+    /* A dot's diameter is geometry, not a spacing step — there is no size token
+       below the 16px icon rung, and borrowing `--sa-padding-8` for a width would
+       be the cross-family binding `space-linkage` counts as a defect. */
+    inline-size: 0.5rem;
+    block-size: 0.5rem;
+    border-radius: var(--sa-shape-full);
+  }
+
+  .xpl-dot--chosen {
+    background-color: var(--sa-text-status-success-base);
+  }
+
+  .xpl-dot--proposed {
+    background-color: var(--sa-text-status-info-base);
+  }
+
+  .xpl-dot--superseded,
+  .xpl-dot--parked {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 var(--sa-stroke-2) var(--sa-border-neutral-bolder-default);
+  }
+
+  .xpl-viewer__bar-status {
+    flex: none;
+    font-size: var(--sa-type-label-3-size);
+    color: var(--sa-text-neutral-subtle);
+    white-space: nowrap;
+  }
+
+  /* The 32px minimum block size is WCAG 2.2 §2.5.8 (Target Size, 24x24 minimum),
+     and it is what stops the control shrinking to its 16px glyph once the label
+     is hidden below 640. */
+  .xpl-viewer__bar-reset {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: var(--sa-inline-6);
+    flex: none;
+    min-inline-size: var(--sa-control-height-sm);
+    min-block-size: var(--sa-control-height-sm);
+    padding-inline: var(--sa-padding-8);
+    border-radius: var(--sa-shape-full);
     font-size: var(--sa-type-label-2-size);
     color: var(--sa-text-link-brand-default);
   }
 
-  .xpl-viewer__reset-btn:hover {
+  .xpl-viewer__bar-reset:hover {
     text-decoration: underline;
+  }
+
+  /*
+   * Under 640 the bar keeps the two things that cannot be inferred — where you
+   * are, and what it is called — and takes the status word and Reset's label down
+   * to their marks.
+   *
+   * HIDDEN VISUALLY, NOT REMOVED. `display: none` would take the status out of the
+   * accessibility tree as well, and it is inside the live region — so a reader
+   * stepping through the set on a phone would stop being told where each option
+   * stands, which is the one thing the dot cannot say on its own. This is the
+   * design system's own visually-hidden treatment, applied for a breakpoint
+   * rather than for a class. Reset keeps its `aria-label` whatever its span does.
+   */
+  @media (width < 40rem) {
+    /*
+     * The LABEL, by its own class — never `.xpl-viewer__bar-reset span`. `Icon`
+     * renders a span too, so the loose selector hid the glyph as well and left a
+     * button measuring 8 x 0 with nothing in it: a control that is present in the
+     * tree, named correctly, and impossible to press. Found by measuring the
+     * rendered box rather than by looking at it.
+     */
+    .xpl-viewer__bar-status,
+    .xpl-viewer__bar-reset-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /*
+     * ── PASS 6 · THE TAB ROW ON A PHONE ────────────────────────────────────
+     *
+     * Six full-width pills was 570px of switcher before any content — most of
+     * the fold — with each title wrapping INSIDE its pill while a status pill
+     * of nearly equal width sat beside it.
+     *
+     * Both causes are gone rather than worked around: the label is one to three
+     * words and the status is a dot, so a tab is short enough to sit beside its
+     * neighbours. What is left is to stop them stretching: `flex-wrap` on a
+     * container whose children have no basis will still give a lone tab the
+     * whole row.
+     *
+     * NOT a horizontally scrolling row, and not a disclosure. A scroller hides
+     * options off the edge of the one control whose job is to show that they
+     * exist, and a disclosure costs a tap before a reader can even see what the
+     * choices are. Two or three short rows shows every option at once, which is
+     * what this control is for.
+     */
+    .xpl-viewer__tab {
+      flex: 0 1 auto;
+      padding-inline: var(--sa-padding-12);
+    }
+
+    /*
+     * The trailing gutter is for the demo dock, which is `position: fixed`
+     * against the right wall and vertically centred, so on a narrow viewport it
+     * lands on whatever is beside it. Page content passing under it is expected;
+     * a CONTROL passing under it is not — a reader cannot press the tab it
+     * covers. The rail is 52px wide (`portal-appswitcher.md`), and this keeps
+     * the last tab in a row clear of it.
+     */
+    .xpl-viewer__switch,
+    .xpl-viewer__bar {
+      padding-inline-end: var(--sa-padding-56);
+    }
+
+    .xpl-viewer__bar-reset {
+      padding-inline: var(--sa-padding-4);
+    }
   }
 
   .xpl-viewer__note {

@@ -52,7 +52,8 @@ const OFFERS = [
     accent: "saffron",
     icon: "celebration",
     eyebrow: "Sixth Anniversary",
-    heading: NMBA.ribbon.text,
+    heading: NMBA.ribbon.eyebrow,
+    body: NMBA.ribbon.text,
     action: { label: NMBA.ribbon.action.label, href: NMBA.ribbon.action.href, icon: "arrow_forward" },
     alt: NMBA.ribbon.alt,
     qr: null,
@@ -169,7 +170,27 @@ export function ComposedBand() {
                   <div className="cband__offer-copy">
                     <p className="cband__offer-eyebrow">{o.eyebrow}</p>
                     <p className="cband__offer-heading">{o.heading}</p>
-                    {"body" in o && o.body ? <p className="cband__offer-body">{o.body}</p> : null}
+                    <p className="cband__offer-body">
+                      {o.body}
+                      {/*
+                       * THE SECOND ROUTE IS A NOTE ON THE OFFER, NOT A PEER OF
+                       * THE BUTTON.
+                       *
+                       * Stacked under the action it made three things share one
+                       * corner — button, link, pager — and the pager ended up
+                       * touching the link. It is also the wrong reading: "file
+                       * on the open register" is a condition attached to the
+                       * offer, and conditions live with the prose.
+                       */}
+                      {"alt" in o && o.alt ? (
+                        <>
+                          {" "}
+                          <a className="cband__alt" href={o.alt.href}>
+                            {o.alt.label}
+                          </a>
+                        </>
+                      ) : null}
+                    </p>
                   </div>
 
                   {o.qr ? (
@@ -188,11 +209,6 @@ export function ComposedBand() {
                       <span>{o.action.label}</span>
                       <Icon name={o.action.icon} size={20} aria-hidden />
                     </a>
-                    {"alt" in o && o.alt ? (
-                      <a className="cband__alt" href={o.alt.href}>
-                        {o.alt.label}
-                      </a>
-                    ) : null}
                   </div>
                 </div>
               ))}

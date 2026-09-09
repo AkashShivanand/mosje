@@ -151,7 +151,8 @@ export function Fold({
           </div>
         }
         media={
-          <Image src={NMBA.photo} alt="" width={340} height={340} className="size-full object-cover" />
+          /* The picture only — the round plaque is `SitePageHeader`'s. */
+          <Image src={NMBA.photo} alt="" width={340} height={340} className="object-cover" />
         }
       />
 
