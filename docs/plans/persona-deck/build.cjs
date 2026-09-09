@@ -86,8 +86,8 @@ function list(s, x, y, w, label, items, labelColor) {
   items.forEach(t => {
     const lines = Math.max(1, Math.ceil(t.length/cpl));
     const h = lines*0.21 + 0.04;
-    s.addShape(pres.ShapeType.rect, { x, y:yy+0.07, w:0.06, h:0.06, fill:{color:labelColor}, line:{color:labelColor, width:0} });
-    s.addText(t, { x:x+0.2, y:yy, w:w-0.2, h, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.15 });
+    s.addShape(pres.ShapeType.rect, { x, y:yy+0.06, w:0.06, h:0.06, fill:{color:labelColor}, line:{color:labelColor, width:0} });
+    s.addText(t, { x:x+0.2, y:yy, w:w-0.2, h, isTextBox:true, margin:0, valign:'top', fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.15 });
     yy += h + 0.08;
   });
   return yy + 0.22;
@@ -169,9 +169,9 @@ const OPTIONS = [
     vid:"home-b", live:false, rec:true,
     caption:"Recorded: Scheduled Castes, then Scholarships. Then Senior Citizens with the second question skipped.",
     what:"Two short questions on the home page: who you are, and what kind of support you need.",
-    how:["Question 2 can be skipped, which shows everything for the group","The answer shows the first three schemes, each with a link to its own page","One more link opens the Schemes page, already filtered to the same two answers"],
+    how:["Question 2 can be skipped, which shows everything for the group","The answer shows three schemes, each with a link to its own page","One more link opens the Schemes page, already filtered to the same two answers"],
     why:["Both questions change what you see; nothing is asked for its own sake","A visitor gets an answer without leaving the home page"],
-    notes:"Two short questions over the Department's own list of schemes. The second may be skipped, which widens the list. The answer shows both choices, the first three schemes, and a link to the Schemes page filtered to the same choices. There is no apply button here: the scheme's own page says where to apply. Before this can be built, every scheme has to be tagged on both lists; that is on the page near the end." },
+    notes:"Two short questions over the Department's own list of schemes. The second may be skipped, which widens the list. The answer shows both choices, three schemes, and a link to the Schemes page filtered to the same choices. There is no apply button here: the scheme's own page says where to apply. Before this can be built, every scheme has to be tagged on both lists; that is on the page near the end." },
   { part:"The Home Page · Option C of 3", title:"One Tap",
     vid:"home-c", live:false, rec:false,
     caption:"Recorded: Scheduled Castes, Senior Citizens, Transgender Persons, Voluntary Organisations. One tap each.",
@@ -186,7 +186,7 @@ const SCHEMES_PAGE = [
     caption:"Recorded: Safai Karamcharis, Transgender Persons, then Senior Citizens.",
     what:"Every group as a picture in one row. Pick one and its schemes appear as cards.",
     how:["Pick a group from the row; it scrolls sideways","Category and Organisation narrow the list further","Cards show what a scheme gives; nine to a page"],
-    why:["Every group is visible at once, with no scrolling to find yourself","The same groups as the home page, so the same idea is met twice"],
+    why:["A picture for every group, so you spot yours at a glance","The same groups as the home page, so the same idea is met twice"],
     notes:"The layout from before the review, with the review's changes: one filter, the group, no counts, and paged cards so the page keeps its height. This is for browsing." },
   { part:"The Schemes Page · Option B of 2", title:"Filter Panel with a Table",
     vid:"scheme-b", live:false, rec:true,
@@ -220,7 +220,7 @@ function optionPage(o) {
   s.addText("WHAT IT IS", { x:rx, y, w:rw, h:0.22, isTextBox:true, margin:0, fontFace:F, fontSize:T.label, bold:true, charSpacing:TRACK.eyebrow, color:DARK });
   const cpl = Math.floor((rw*72)/(T.body*0.6));
   const wh = Math.max(1, Math.ceil(o.what.length/cpl))*0.21 + 0.06;
-  s.addText(o.what, { x:rx, y:y+0.3, w:rw, h:wh, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.15 });
+  s.addText(o.what, { x:rx, y:y+0.3, w:rw, h:wh, isTextBox:true, margin:0, valign:'top', fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.15 });
   y += 0.3 + wh + 0.22;
   y = list(s, rx, y, rw, "How it works", o.how, BLUE_TXT);
   y = list(s, rx, y, rw, "Why it helps", o.why, BLUE_TXT);

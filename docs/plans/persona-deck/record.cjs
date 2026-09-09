@@ -119,8 +119,8 @@ const WALKS = {
     const dir = path.join(OUT, '_' + name);
     fs.rmSync(dir, { recursive: true, force: true });
     const ctx = await b.newContext({
-      viewport: { width: W, height: H },
-      recordVideo: { dir, size: { width: W, height: H } },
+      viewport: { width: W, height: H }, deviceScaleFactor: 2,
+      recordVideo: { dir, size: { width: W * 2, height: H * 2 } },
     });
     const p = await ctx.newPage();
     const errs = []; p.on('pageerror', e => errs.push(String(e)));
@@ -133,7 +133,7 @@ const WALKS = {
     await ctx.close(); await b.close();
     const webm = fs.readdirSync(dir).find(f => f.endsWith('.webm'));
     if (webm) {
-      execSync(`ffmpeg -v error -y -i "${path.join(dir, webm)}" -c:v libx264 -pix_fmt yuv420p -crf 22 -movflags +faststart "${path.join(OUT, name + '.mp4')}"`);
+      execSync(`ffmpeg -v error -y -i "${path.join(dir, webm)}" -vf scale=1440:-2 -c:v libx264 -pix_fmt yuv420p -crf 21 -preset slow -movflags +faststart "${path.join(OUT, name + '.mp4')}"`);
       fs.rmSync(dir, { recursive: true, force: true });
     }
     console.log(name, '· errors:', errs.length ? errs : 'none', failed ? '· FAILED: ' + failed : '');

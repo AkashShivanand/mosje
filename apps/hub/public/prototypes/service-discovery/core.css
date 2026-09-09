@@ -63,7 +63,7 @@ h1.sec-t{font-size:30px;font-weight:700;color:var(--sa-primary-800);margin:0 0 6
 
 /* ── controls ─────────────────────────────────────────── */
 .btn{
-  font:inherit;font-size:13.5px;font-weight:600;border-radius:var(--sa-radius);
+  font:inherit;font-size:13.5px;font-weight:600;border-radius:var(--sa-radius);text-decoration:none;display:inline-block;
   padding:9px 16px;border:1px solid transparent;cursor:pointer;
   background:var(--sa-primary-500);color:var(--sa-white);
   transition:transform .1s ease-out, background .15s;
