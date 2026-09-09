@@ -9,13 +9,23 @@ import "@/components/explorations/explorations.css";
 
 interface Params {
   params: Promise<{ surface: string; module: string }>;
+  /**
+   * `?option=<id>` — which of the module's options to open on.
+   *
+   * Every link to a module used to open that module's own default, so "look at
+   * the third one" was not a thing anyone could send: the reader arrived
+   * somewhere else and had to be told which pill to press. Resolved here rather
+   * than in the client component so the first paint is already correct — see the
+   * note on `initialOptionId`.
+   */
+  searchParams: Promise<{ option?: string | string[] }>;
 }
 
 export function generateStaticParams() {
   return allModuleParams();
 }
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+export async function generateMetadata({ params }: Pick<Params, "params">): Promise<Metadata> {
   const { surface, module } = await params;
   const s = surfaceById(surface);
   const m = moduleById(surface, module);
@@ -27,8 +37,9 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   };
 }
 
-export default async function ExplorationModulePage({ params }: Params) {
+export default async function ExplorationModulePage({ params, searchParams }: Params) {
   const { surface, module } = await params;
+  const { option } = await searchParams;
   const s = surfaceById(surface);
   const m = moduleById(surface, module);
   if (!s || !m) notFound();
@@ -92,7 +103,11 @@ export default async function ExplorationModulePage({ params }: Params) {
         </div>
 
         <div className="sa-container py-10">
-          <ExplorationViewer surfaceId={s.id} module={m} />
+          <ExplorationViewer
+            surfaceId={s.id}
+            module={m}
+            initialOptionId={typeof option === "string" ? option : undefined}
+          />
         </div>
       </main>
 
