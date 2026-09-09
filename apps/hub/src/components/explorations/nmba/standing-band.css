@@ -1,0 +1,732 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ==========================================================================
+     THE NUMBER LEADS — one green field, two cards of different material
+     ==========================================================================
+
+     Drawn from the handoff at 57913:17152. The band's whole argument is made
+     by WEIGHT rather than by position: the campaign reads first because it is on
+     the leading edge and it is what the band is for, and the helpline is found
+     from anywhere on the row because it is the brightest and largest object in
+     it. Nothing has to out-shout anything, and neither half has to explain
+     itself in words.
+     ========================================================================= */
+
+  .sband {
+    position: relative;
+    z-index: var(--sa-z-raised);
+    /*
+     * HORIZONTAL, not the 104° the previous composition used. Over a 150px band
+     * a 14° tilt is a difference nobody can see, and the handoff draws it flat —
+     * so the drawing and the build now agree, and one recorded approximation
+     * goes away.
+     */
+    background-image: linear-gradient(
+      to right,
+      var(--sa-color-successScale-600) 0%,
+      var(--sa-color-successScale-700) 62%,
+      var(--sa-color-successScale-800) 100%
+    );
+    color: var(--sa-text-neutral-inverse);
+    /* A bright top edge is light catching the material; the shadow beneath is
+       the band sitting above the hero rather than being cut out of it. */
+    box-shadow:
+      inset 0 var(--sa-stroke-1) 0 0 color-mix(in srgb, var(--sa-text-neutral-inverse) 18%, transparent),
+      0 8px 20px -8px color-mix(in srgb, var(--sa-color-successScale-900) 60%, transparent);
+  }
+
+  /*
+   * THE OFFER TAKES THE SLACK; THE NUMBER AND THE DISMISS KEEP THEIR SIZE.
+   *
+   * `align-items: stretch` is what makes the two cards share a top and a bottom
+   * edge whichever is taller — a shared edge is read before any word is, and it
+   * is the only thing saying these two objects belong to one band.
+   */
+  .sband__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: stretch;
+    column-gap: var(--sa-inline-20);
+    padding-block: var(--sa-padding-24);
+  }
+
+  /* ── The rotating offer ───────────────────────────────────────────────────
+     Translucent, because it is the half that turns. Never a light translucent
+     surface on another: the ground beneath is the band's own gradient, and the
+     helpline beside it is solid. */
+
+  .sband__stage {
+    position: relative;
+    display: grid;
+    grid-template-areas: "offer";
+    align-items: center;
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    border-radius: var(--sa-shape-16);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent);
+    /*
+     * THE LIT EDGE CARRIES THE PANEL'S ACCENT, and it is the second of the two
+     * ways the offers are told apart.
+     *
+     * The eyebrow it replaces was a 40px chip on a 1272px band — a difference a
+     * reader has to be looking for. This one is 889px wide and shifts hue as the
+     * band turns, so the change registers peripherally, which is the only place
+     * a reader is looking when a band above the fold changes under them.
+     */
+    box-shadow: inset 0 var(--sa-stroke-1) 0 0
+      color-mix(in srgb, var(--sband-accent) 44%, transparent);
+    transition: box-shadow var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+  }
+
+  /*
+   * `secondaryScale-100`, NOT `-200` — MEASURED, and the rungs above it fail.
+   *
+   * Sampled against the glass card's actual rendered pixel (rgb(20,96,58))
+   * rather than against the token it is mixed from:
+   *
+   *     -400  2.61:1   -300  3.44:1   -200  4.43:1   -100  5.60:1
+   *
+   * `-300` once shipped at 3.44 and looked fine, which is the whole problem with
+   * judging contrast by eye on a saturated ground. `-200` is the one that tempts
+   * you and still fails §1.4.3, by 0.07.
+   */
+  .sband__stage[data-accent="saffron"],
+  .sband__offer[data-accent="saffron"] {
+    --sband-accent: var(--sa-color-secondaryScale-100);
+    --sband-accent-ink: var(--sa-color-secondaryScale-700);
+  }
+
+  /*
+   * `successScale-50`, not `-100`. `-100` measures 4.60:1 on the glass card
+   * against the 4.5 §1.4.3 asks — it passes, and it is the first thing that
+   * fails if the card's translucency is ever touched. `-50` is 6.81:1, which is
+   * margin rather than luck.
+   */
+  .sband__stage[data-accent="leaf"],
+  .sband__offer[data-accent="leaf"] {
+    --sband-accent: var(--sa-color-successScale-50);
+    --sband-accent-ink: var(--sa-color-successScale-700);
+  }
+
+  /*
+   * BOTH PANELS SHARE ONE CELL, so the stage is always the height of the taller
+   * one and the band cannot resize as it turns. `visibility: hidden` keeps the
+   * inactive panel's space where `display: none` would collapse it.
+   *
+   * The columns are fixed — mark, copy, action — so the skeleton is identical on
+   * both panels and only the contents cross-fade.
+   */
+  .sband__offer {
+    grid-area: offer;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: var(--sa-inline-16);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
+      transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+  }
+
+  .sband__offer[data-active] {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /*
+   * ── ONE LEADING SLOT, TWO KINDS OF OBJECT ───────────────────────────────
+   *
+   * The square is sized by the copy beside it rather than by a number written
+   * here, so neither panel can set the band's height on its own and the two
+   * marks are always the same size as each other.
+   */
+  .sband__mark {
+    grid-column: 1;
+    display: grid;
+    place-items: center;
+    align-self: stretch;
+    aspect-ratio: 1;
+    border-radius: var(--sa-shape-8);
+    overflow: hidden;
+  }
+
+  /*
+   * A SOLID TILE, NOT A TINTED ONE — and the two panels' marks are peers again.
+   *
+   * At 18% over the glass the saffron averaged into a grey-olive square with a
+   * pale pink glyph on it. Beside the volunteer panel's crisp white code tile
+   * that is not a peer, it is a smudge — and the accent it exists to carry, the
+   * larger of the two things telling the offers apart, was the one thing in it
+   * you could not see. Seen only at 2× on the rendered band; at page scale it
+   * passes for a design.
+   *
+   * Solid `secondaryScale-100` with the glyph in `-700` is a real tile with real
+   * saffron in it, the same weight as the code tile opposite, and 6.9:1 for the
+   * glyph on its own ground. Both marks are now "a light tile carrying the
+   * panel's identity", which is a rule rather than two separate decisions.
+   */
+  .sband__mark--glyph {
+    background-color: var(--sband-accent);
+    color: var(--sband-accent-ink);
+  }
+
+  /*
+   * A CODE NEEDS ITS QUIET ZONE. Drawn bare on the translucent green — which is
+   * how the handoff has it — a code loses the light margin a scanner reads its
+   * edges against. The white tile restores it, and has the useful side effect of
+   * giving this panel a leading mark of the same weight as the other's.
+   */
+  .sband__mark--code {
+    position: relative;
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  /*
+   * THE CODE IS TAKEN OUT OF THE HEIGHT CALCULATION, and this is not a detail.
+   *
+   * In flow, the image's own 128px contributes to the row's max-content height,
+   * so the square stopped being sized by the copy and started setting the band:
+   * measured, the code panel's tile came out at 140 against the glyph panel's
+   * 70, and the whole band at 220px instead of 150 — a seventy-pixel difference
+   * that only appears on one of the two panels, which is exactly the shape of
+   * defect a single screenshot misses.
+   *
+   * Absolutely positioned, the image fills the tile the copy sized and
+   * contributes nothing back. The 6px inset is the code's quiet zone.
+   */
+  .sband__mark--code img {
+    position: absolute;
+    inset-block-start: var(--sa-padding-6);
+    inset-inline-start: var(--sa-padding-6);
+    inline-size: calc(100% - (2 * var(--sa-padding-6)));
+    block-size: calc(100% - (2 * var(--sa-padding-6)));
+    object-fit: contain;
+  }
+
+  /* The phone's stand-in for the code is out of the way at every other width. */
+  .sband__mark--phone {
+    display: none;
+  }
+
+  .sband__copy {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+    min-inline-size: 0;
+    padding-inline-end: var(--sa-padding-8);
+  }
+
+  .sband__heading {
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    /* Tighter as it grows — a heading at 20px on a dark ground reads slightly
+       loose at the body's tracking. */
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+  }
+
+  .sband__body {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: color-mix(in srgb, var(--sa-text-neutral-inverse) 82%, transparent);
+    text-wrap: pretty;
+  }
+
+  /* Underlined from rest: a link distinguished only by weight is not a link to a
+     reader who cannot see the difference (§1.4.1). It takes the inline-text
+     exception to §2.5.8 because it genuinely is inside a sentence. */
+  /* The condition is one phrase, so it breaks BEFORE itself rather than through
+     itself. Left to wrap freely at 1440 it split as "…details. No departmental /
+     account? File on the open register", which severs an adjective from its
+     noun across a line. */
+  .sband__alt-note {
+    white-space: nowrap;
+  }
+
+  .sband__alt {
+    color: var(--sa-text-neutral-inverse);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  /*
+   * THE EDGE IS WHITE ON BOTH PANELS, not the panel's accent.
+   *
+   * Both buttons are the same KIND of action — the way into the thing the panel
+   * is announcing — so a button that changed colour every six seconds would be
+   * saying something about the action that is not true. White is also the
+   * measured-safest edge on this gradient, at 6.72:1 where the DS success
+   * default measures 4.79.
+   */
+  .sband__cta {
+    grid-column: 3;
+
+    --sa-btn-edge: var(--sa-text-neutral-inverse);
+  }
+
+  /* ── Pagination, on the card it pages ─────────────────────────────────────
+     Its scope is the only thing its position has to explain, so it belongs to
+     the rotating card and sits nowhere near the band's own dismiss. */
+
+  /*
+   * ── IT STRADDLES THE CARD'S BOTTOM EDGE, AND IT HAS ITS OWN GROUND ──────
+   *
+   * Tucked INSIDE the card's bottom-right corner it does not fit. Measured at
+   * 1440: the card is 102px tall, the action is a 40px button centred in it, and
+   * a 32px pager in the same corner intersects that button by 94px across and
+   * 9px down. Two controls, one of them on top of the other, and both perfectly
+   * visible in a screenshot — which is why this was found by asking the browser
+   * for two rectangles rather than by looking at them.
+   *
+   * So it sits ON the edge, centred, the way the handoff draws it: 16px inside
+   * the card and 16px out into the band's own bottom padding, clear of the
+   * button by 15px and costing the band no height at all.
+   *
+   * A control that straddles an edge is ambiguous about which side it belongs to
+   * unless it has a ground of its own — which is what the handoff's white pill
+   * was for, and why removing that ground while keeping the position was the
+   * wrong half to change. It keeps a ground; what it does not keep is WHITE. On
+   * a row where the national helpline is the only white surface, a slide-advance
+   * control has no business being the second one. The band's own darkest rung
+   * reads as a distinct object without competing with anything.
+   */
+  .sband__pager {
+    position: relative;
+    /* It shares the panel's grid cell — that is what makes the stage the height
+       of its tallest panel — so without the raised rung the offer paints over
+       the pager and swallows every click on the dots. Found by driving a real
+       click, not by looking: the control was visible the whole time. */
+    z-index: var(--sa-z-raised);
+    grid-area: offer;
+    place-self: end end;
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-2);
+    padding-inline: var(--sa-padding-6);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-successScale-800);
+    /*
+     * A HAIRLINE AND A SHADOW, because the ground alone cannot carry the shape.
+     *
+     * Measured: the pill's own fill against the band beneath it is 1.35:1 — the
+     * half that hangs below the card is very nearly the colour it is sitting on,
+     * and no rung of this ramp gets a dark green to 3:1 against another dark
+     * green. Nothing FAILS §1.4.11 by that — a reader identifies this control by
+     * its dots (4.85:1) and its pause glyph (12.45:1), not by its container —
+     * but a capsule whose lower half dissolves is not the object it was drawn
+     * as. The lift does what the colour cannot.
+     */
+    box-shadow:
+      inset 0 0 0 var(--sa-stroke-1)
+        color-mix(in srgb, var(--sa-text-neutral-inverse) 32%, transparent),
+      0 2px 6px -1px color-mix(in srgb, var(--sa-color-successScale-950) 55%, transparent);
+    /* Down by its own height, so its CENTRE lands on the card's bottom edge. */
+    margin-block-end: calc(-1 * var(--sa-control-height-sm));
+  }
+
+  .sband__dots {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-2);
+  }
+
+  /* A 32px target with a small mark inside it — well past §2.5.8's 24×24 floor,
+     met by the control itself rather than by the spacing clause. */
+  .sband__dot {
+    position: relative;
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-full);
+  }
+
+  .sband__dot::before {
+    content: "";
+    inline-size: var(--sa-padding-6);
+    block-size: var(--sa-padding-6);
+    border-radius: var(--sa-shape-full);
+    /* 55%, not 40%. An inactive dot is a UI component, so §1.4.11 wants 3:1 and
+       40% measured 2.57 on the glass card. 55% is 3.47 — headroom rather than a
+       number sitting on the line. */
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 55%, transparent);
+    transition:
+      inline-size var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  /* The current dot lengthens into a bar — a shape change reads at a glance
+     where a brightness change alone does not. The bar is the TRACK; the fill
+     below runs across it. */
+  .sband__dot[aria-selected="true"]::before {
+    inline-size: var(--sa-padding-20);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 45%, transparent);
+  }
+
+  /*
+   * ── THE DWELL, SHOWN RUNNING ────────────────────────────────────────────
+   *
+   * A reader has no way of knowing this band rotates until it has already
+   * rotated under them — the two 6px dots are a cue only to someone already
+   * looking for one. The current dot fills across the six seconds, so the change
+   * is announced before it happens rather than explained after it.
+   *
+   * `linear`, because this is constant motion reporting elapsed time and not a
+   * UI element entering; any easing here would misreport when the panel turns.
+   * `scaleX` rather than `inline-size`, so it stays off the layout path.
+   *
+   * It is paused by the same four holds as the rotation itself — the pause
+   * button, hover, focus and `prefers-reduced-motion` — because an indicator
+   * that keeps running while the thing it indicates has stopped is a lie.
+   */
+  .sband__dot[aria-selected="true"]::after {
+    content: "";
+    position: absolute;
+    inline-size: var(--sa-padding-20);
+    block-size: var(--sa-padding-6);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-text-neutral-inverse);
+    transform-origin: left center;
+    transform: scaleX(0);
+    animation: sband-dwell var(--sband-dwell, 6000ms) linear forwards;
+    animation-play-state: paused;
+  }
+
+  .sband__pager[data-running] .sband__dot[aria-selected="true"]::after {
+    animation-play-state: running;
+  }
+
+  @keyframes sband-dwell {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  /* The pause is a peer of the dots, not a ghost beside them: a filled well at
+     rest, because at 78% ink alone it read as a hairline. */
+  .sband__play {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    margin-inline-start: var(--sa-inline-2);
+    border-radius: var(--sa-shape-full);
+    /* No well of its own: the pager already has a ground, and a lighter patch
+       inside a dark pill reads as a second object rather than as a button. */
+    color: var(--sa-text-neutral-inverse);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sband__play:hover {
+      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 24%, transparent);
+    }
+
+    .sband__dot:hover::before {
+      background-color: var(--sa-text-neutral-inverse);
+    }
+  }
+
+  /* ── The standing service ─────────────────────────────────────────────────
+     The only solid white surface on the page's green, carrying the only
+     display-scale figure in the fold. */
+
+  .sband__helpline {
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+    padding: var(--sa-padding-16) var(--sa-padding-24) var(--sa-padding-16) var(--sa-padding-16);
+    border-radius: var(--sa-shape-16);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-color-successScale-700);
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: var(--sa-elevation-dropdown);
+    transition:
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sband__helpline:hover {
+      box-shadow: var(--sa-elevation-modal);
+    }
+  }
+
+  .sband__helpline:active {
+    transform: scale(0.985);
+  }
+
+  .sband__helpline-glyph {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    inline-size: var(--sa-control-height-lg);
+    block-size: var(--sa-control-height-lg);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-successScale-50);
+    color: var(--sa-color-successScale-600);
+    animation: sband-breathe 2000ms var(--sa-motion-emphasis-easing) 2 both;
+  }
+
+  /* Two breaths, then still — 4s, deliberately under §2.2.2's five seconds, so
+     it needs no control of its own. Afterwards it answers hover and focus,
+     which is movement the reader asked for. */
+  .sband__helpline-glyph::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-successScale-600);
+    opacity: 0;
+    animation: sband-halo 2000ms var(--sa-motion-emphasis-easing) 2 both;
+  }
+
+  .sband__helpline:hover .sband__helpline-glyph::before,
+  .sband__helpline:focus-visible .sband__helpline-glyph::before {
+    animation: sband-halo 2000ms var(--sa-motion-emphasis-easing) infinite;
+  }
+
+  @keyframes sband-halo {
+    0% { opacity: 0; transform: scale(0.92); }
+    14% { opacity: 0.34; }
+    62% { opacity: 0; transform: scale(1.6); }
+    100% { opacity: 0; transform: scale(1.6); }
+  }
+
+  @keyframes sband-breathe {
+    0%, 62%, 100% { transform: scale(1); }
+    26% { transform: scale(1.03); }
+  }
+
+  .sband__helpline-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+  }
+
+  .sband__helpline-label {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-bold);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /*
+   * DISPLAY SCALE, AND THE TRACKING GOES NEGATIVE.
+   *
+   * The handoff draws this at 52px with +2px of tracking. The size is the
+   * decision and it is right — on a page about drug de-addiction the most
+   * consequential object in the fold is this number, and size is the only
+   * argument a 150px band can make. `display-5` is the estate's own rung at that
+   * scale and it is fluid, so the figure comes down to 25px on a phone with no
+   * override written here.
+   *
+   * The tracking is the correction. Large figures read too far apart as they
+   * grow, not too close; +2px at display scale is the one setting that makes a
+   * number harder to take in at a glance, which is the only thing this number
+   * has to do. Leading is set to the size for the same reason — 56px of leading
+   * on a 48px numeral is 8px of dead space inside the card, and it was pushing
+   * the whole band four pixels taller than the drawing.
+   *
+   * Tabular, so a figure that ever changes cannot shift the card's width.
+   */
+  .sband__helpline-number {
+    font-size: var(--sa-type-display-5-size);
+    line-height: var(--sa-type-display-5-size);
+    font-weight: var(--sa-font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+
+  /* ── The band's own dismiss ───────────────────────────────────────────────
+     On the band's ground, outside both cards, sharing their top edge. Inside the
+     glass card it would say it dismisses the offer; vertically centred in the
+     gap it would relate to nothing, which is what once made the band's right end
+     read as unfinished. */
+
+  .sband__dismiss {
+    grid-column: 3;
+    display: grid;
+    place-items: center;
+    align-self: start;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-8);
+    color: color-mix(in srgb, var(--sa-text-neutral-inverse) 72%, transparent);
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .sband__dismiss:hover {
+      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 16%, transparent);
+      color: var(--sa-text-neutral-inverse);
+    }
+  }
+
+  .sband__dot:focus-visible,
+  .sband__play:focus-visible,
+  .sband__dismiss:focus-visible,
+  .sband__helpline:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sband__offer {
+      transition: opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+      transform: none;
+    }
+
+    /* Nothing is going to turn, so the current dot is simply a solid bar. An
+       empty track beside a filled dot would say a change is coming. */
+    .sband__dot[aria-selected="true"]::after {
+      animation: none;
+      transform: scaleX(1);
+    }
+
+    .sband__helpline-glyph,
+    .sband__helpline-glyph::before,
+    .sband__helpline:hover .sband__helpline-glyph::before {
+      animation: none;
+    }
+
+    .sband__helpline-glyph::before {
+      opacity: 0.26;
+      transform: scale(1.2);
+    }
+  }
+
+  /* ── Below 1024: one column, and the number comes first ──────────────────
+     A phone IS a telephone. Where the two halves cannot sit side by side, the
+     one that is urgent goes above the one that is an announcement — the reverse
+     of the desktop reading order, and correct for the same reason. */
+
+  @media (max-width: 1023px) {
+    .sband__inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      row-gap: var(--sa-stack-16);
+    }
+
+    /*
+     * IT HUGS, IT DOES NOT FILL. Given the whole 1fr column the card stretched
+     * to 640px at 768 with the number in the left corner and half a card of
+     * white behind it — a card reads as an object because it is the size of what
+     * is in it, and one that is not is just a light rectangle.
+     */
+    .sband__helpline {
+      grid-row: 1;
+      grid-column: 1;
+      justify-self: start;
+    }
+
+    .sband__dismiss {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    .sband__stage {
+      grid-row: 2;
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 767px) {
+    /*
+     * THE PAGER GETS ITS OWN ROW, because the corner it lives in is taken. On a
+     * phone the action goes full width, and the pager — pinned to the same
+     * cell's bottom-right — lands ON the button. Measured at 390 the two boxes
+     * genuinely intersect, so the last thing a reader can tap in the band is a
+     * control sitting on top of another control.
+     *
+     * A second row costs 32px and is the honest fix; nudging the pager sideways
+     * would only move the collision to whatever the button becomes next.
+     */
+    .sband__stage {
+      grid-template-areas: "offer" "pager";
+      row-gap: var(--sa-stack-8);
+      padding: var(--sa-padding-12);
+    }
+
+    .sband__pager {
+      grid-area: pager;
+      place-self: center start;
+      /* Back in flow: on a phone the action goes full width, so an edge-riding
+         pill would land on the button again — this time from below. */
+      margin-block-end: 0;
+    }
+
+    /*
+     * THE SENTENCE GOES, THE MARK AND THE HEADING STAY.
+     *
+     * What survives is what the announcement IS and the way into it. The
+     * sentence and the alternative route are elaboration, and elaboration
+     * belongs on the page the button opens — where there is room for it, and
+     * where a reader who pressed the button has asked for it.
+     */
+    .sband__body {
+      display: none;
+    }
+
+    .sband__offer {
+      grid-template-columns: auto minmax(0, 1fr);
+      row-gap: var(--sa-stack-12);
+    }
+
+    .sband__mark--code {
+      display: none;
+    }
+
+    .sband__mark--phone {
+      display: grid;
+    }
+
+    /* The mark can no longer be sized by a one-line copy column, so it takes the
+       md control height — the same square the estate uses for an icon button. */
+    .sband__mark {
+      align-self: center;
+      inline-size: var(--sa-control-height-md);
+      block-size: var(--sa-control-height-md);
+    }
+
+    .sband__cta {
+      grid-column: 1 / -1;
+      inline-size: 100%;
+    }
+
+    .sband__inner {
+      padding-block: var(--sa-padding-16);
+    }
+
+    /*
+     * THE LABEL GOES BESIDE THE NUMBER. Two 16px lines of chrome stacked over a
+     * 25px figure is a card built for a desktop row; inline, the card is one
+     * line and the number still leads it.
+     */
+    .sband__helpline {
+      padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-8) var(--sa-padding-8);
+      gap: var(--sa-inline-12);
+    }
+
+    .sband__helpline-glyph {
+      inline-size: var(--sa-control-height-md);
+      block-size: var(--sa-control-height-md);
+    }
+
+    .sband__helpline-text {
+      flex-direction: row;
+      align-items: baseline;
+      gap: var(--sa-inline-8);
+    }
+  }
+}

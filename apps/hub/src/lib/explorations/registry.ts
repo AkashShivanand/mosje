@@ -301,7 +301,6 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             title: "Two halves — a standing service and a rotating offer",
             summary:
               "The helpline is the band's only white surface; the rotating half carries the observance and the volunteer drive, each with its own accent, glyph, eyebrow and shape.",
-            status: "proposed",
             live: true,
             lookAt: [
               "The band has PRESENCE — a real height, a lit top edge, a shadow onto the hero. A band nobody notices has failed at the only job it has",
@@ -310,6 +309,26 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
               "The lightest material is the helpline, because on a page about de-addiction the most important interactive thing is not the campaign",
               "Pagination sits INSIDE the rotating half, because it pages that; the dismiss sits at the band's corner, because it dismisses the band",
               "The current dot lengthens into a bar — a shape change reads at a glance where a brightness change alone does not",
+            ],
+            status: "superseded",
+            supersededBy:
+              "The priority was wrong. It gave the national helpline a 28px number and the campaign a 20px heading, so the two halves read as peers — and on this page they are not. The handoff of 9 September settled it by making the number the loudest object in the band, and “The number leads” is that composition built.",
+          },
+          {
+            id: "standing",
+            title: "The number leads",
+            summary:
+              "The handoff at 57913:17152, built — the helpline on the trailing edge at display scale, one leading mark slot the two offers share, and the pager wearing the glass card's own material.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "THE NUMBER IS THE LOUDEST THING IN THE BAND — 48px on the only solid white surface, against a 20px campaign heading. On a page about drug de-addiction the most consequential object in the fold is not the volunteer drive",
+              "The campaign still reads FIRST, because it is on the leading edge and it is what the band is for. The number is found by weight from anywhere on the row, which is why it does not need the leading position as well",
+              "The eyebrow is gone. What it was carrying moves to two marks that read further — the leading square (a saffron glyph tile, or a white code tile) and the glass card's lit top edge, which carries the panel's accent across the full 889px as it turns",
+              "The current dot FILLS across the six seconds, so the change is announced before it happens instead of explained after it. It stops with the pause button, with hover, with focus, and under `prefers-reduced-motion`",
+              "The pager wears the glass card's material, not white. Drawn white it was the third white object on the row and outranked the campaign's own button — a control for advancing a slide should not do that",
+              "The code has a white quiet zone, because a code drawn bare on translucent green loses the light margin a scanner reads its edges against",
+              "Four pixels shorter than the drawing, and 14px shorter than the composition it replaces: 150px of a 760px fold",
             ],
           },
         ],
