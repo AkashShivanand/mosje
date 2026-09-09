@@ -176,3 +176,96 @@ number; "PIB n" is a release number.
 - The State-level application route for the SC scholarships: the legacy site says the State
   selects, and some States use their own portals rather than the National Scholarship Portal.
 - Every row is to be confirmed by the division that owns the scheme before anything is built.
+
+## 9. Cross-check against myScheme
+
+myScheme (myscheme.gov.in, run by NeGD under MeitY) lists 85 schemes under "Ministry of Social
+Justice and Empowerment" (captured 2026-09-09). myScheme (NeGD, MeitY) lists the whole Ministry — both Departments — and lists corporation loan products and umbrella components as separate schemes. Used as a cross-check only; nothing on a screen comes from it.
+
+| myScheme entry | How it relates to this master |
+|---|---|
+| Persons With Disabilities Scheme In Colleges: Higher Education For Persons With Special Needs | DEPwD or disability — not this Department |
+| Centrally Sponsored Scheme of Pre-matric Scholarship to Other Backward Classes (OBC) for Studies in India | Matches a record in the master |
+| Green Business Scheme | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| The NSFDC Internship Scheme | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Venture Capital Fund for Scheduled Castes | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Dr Ambedkar Central Sector Scheme of Interest Subsidy on Educational Loans for Overseas Studies for Other Backward Classes (OBCs) and Economically Backward Classes (EBCs) | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Pre-Matric Scholarship for Scheduled Caste Students | Matches a record in the master |
+| Post Matric Scholarship Students With Disabilities | DEPwD or disability — not this Department |
+| Top Class Education For Scheduled Caste Students | Matches a record in the master |
+| Pre Matric Scholarship For Students With Disabilities | DEPwD or disability — not this Department |
+| Vanchit Ikai Samooh aur Vargon ki Aarthik Sahayata Yojana (VISVAS) for Individual | Matches a record in the master |
+| NBCFDC General Loan Scheme | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Free Coaching for SCs, OBCs and beneficiaries of PM CARES Children Scheme | Matches a record in the master |
+| PM-YASASVI: Top Class School Education for OBC, EBC and DNT Students | Matches a record in the master |
+| PM-Special Training of Geriatric Caregivers | A component of an umbrella scheme the master carries as one record |
+| Support for Marginalized Individuals for Livelihood and Enterprise (SMILE): Composite Medical Health for Transgender Persons | A component of an umbrella scheme the master carries as one record |
+| Information, Monitoring, Evaluation and Social Audit (I-MESA): Project Monitoring Unit (PMU) | Monitoring and evaluation, not a citizen-facing scheme |
+| AVYAY - National Action Plan for Senior Citizens: Health and Shelter for Senior Citizens | A component of an umbrella scheme the master carries as one record |
+| Information-Monitoring, Evaluation, and Social Audit (I-MESA): Social Audit | Monitoring and evaluation, not a citizen-facing scheme |
+| Vikaas-Day Care Scheme For Person with Disability Children | DEPwD or disability — not this Department |
+| Top Class Education For Students With Disabilities | DEPwD or disability — not this Department |
+| National Overseas Scholarship For Scheduled Caste Etc. Candidates | Matches a record in the master |
+| National Overseas Scholarship For Students With Disabilities | DEPwD or disability — not this Department |
+| Free Coaching for Students with Disabilities | DEPwD or disability — not this Department |
+| Niramaya Health Insurance Scheme | DEPwD or disability — not this Department |
+| Centrally Sponsored Scheme for Implementation of the Protection of Civil Rights Act, 1955 and the Scheduled Castes and the Scheduled Tribes (Prevention of Atrocities) Act, 1989 | Matches a record in the master |
+| Scheme of Assistance to State Scheduled Castes Development Corporations | Listed on myScheme; not in the Annual Report 2025-26 or the Demand for Grants — for the division to confirm |
+| Ambedkar Social Innovation and Incubation Mission (ASIIM) | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Disha - Early Intervention and School Readiness Scheme | DEPwD or disability — not this Department |
+| Free Coaching Scheme | Matches a record in the master |
+| Pradhan Mantri Dakshta Aur Kushalta Sampann Hitgrahi (PM-DAKSH) | Matches a record in the master |
+| Loan Based Schemes For Safai Karamchari - Education Loan | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Centrally Sponsored Scheme of Post-Matric Scholarship for OBC Students for studying in India | Matches a record in the master |
+| Central Sector Scheme of National Fellowship for Providing Fellowship to Scheduled Caste Students to Pursue M.Phil. & PhD | Matches a record in the master |
+| Education Loan Scheme | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| PM-YASASVI: Post-Matric Scholarship for OBC, EBC and DNT Students | Matches a record in the master |
+| Garima Greh Shelter Homes For Transgender Persons | A component of an umbrella scheme the master carries as one record |
+| Vocational Education and Training Loan Scheme | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Post-Matric Scholarship for SC students | Matches a record in the master |
+| National Action Plan for Skill Development of Persons with Disabilities | DEPwD or disability — not this Department |
+| Scheme For Residential Education For Students in High Schools in Targeted Areas (SHRESHTA): Mode 1 - SHRESHTA Schools (Best CBSE Private Residential Schools) | A component of an umbrella scheme the master carries as one record |
+| Scheme For Residential Education For Students in High Schools in Targeted Areas (SHRESHTA): Mode 2 - NGO Operated Schools | A component of an umbrella scheme the master carries as one record |
+| Scholarships for Higher Education for Young Achievers Scheme (SHREYAS) (OBC & Others) | Matches a record in the master |
+| Samarth-Respite Care Scheme | DEPwD or disability — not this Department |
+| Pre- Matric Scholarships Scheme for Scheduled Castes & Others | Matches a record in the master |
+| New Swarnima Scheme For Women | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Pre-Matric Scholarships to the Children of Those Engaged in Occupations Involving Cleaning and Prone to Health Hazards | Matches a record in the master |
+| National Fellowship for Students with Disabilities | DEPwD or disability — not this Department |
+| Mahila Samriddhi Yojana | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Centrally Sponsored Scheme of Upgradation of Merit of Scheduled Caste Students | Listed on myScheme; not in the Annual Report 2025-26 or the Demand for Grants — for the division to confirm |
+| Construction of Hostels for OBC Boys and Girls | Matches a record in the master |
+| PM-YASASVI: Pre-Matric Scholarship for OBC, EBC and DNT Students | Matches a record in the master |
+| SMILE - Comprehensive Rehabilitation For Welfare Of Transgender Persons | Matches a record in the master |
+| PM-YASASVI: Top Class College Education for OBC, EBC and DNT Students | Matches a record in the master |
+| Micro Credit Finance (NSFDC) | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Information, Monitoring, Evaluation and Social Audit (I-MESA): Evaluation and Studies | Monitoring and evaluation, not a citizen-facing scheme |
+| Scheme for Economic Empowerment of De-notified, Nomadic and Semi-Nomadic Tribes - "Educational Empowerment" Component | A component of an umbrella scheme the master carries as one record |
+| Gharaunda-Group Home for Adults Scheme | DEPwD or disability — not this Department |
+| National Award for Individual Excellence | DEPwD or disability — not this Department |
+| Divyangjan Kaushal Yojana | DEPwD or disability — not this Department |
+| Dr. Ambedakar Centrally Sponsored Scheme of Post-Matric Scholarships for the Economically Backward Class (EBC) Students | Matches a record in the master |
+| Assistance to Voluntary Organizations Working for Welfare of OBCs | Listed on myScheme; not in the Annual Report 2025-26 or the Demand for Grants — for the division to confirm |
+| Self Employment Scheme For Rehabilitation Of Manual Scavengers | Matches a record in the master |
+| Loan Based Schemes For Safai Karamchari - General Term Loan (GTL) | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Scheme for Supportive Money to the Parents of Transgender Children | A component of an umbrella scheme the master carries as one record |
+| Rashtriya Parivar Sahayata Yojana | Listed on myScheme; not in the Annual Report 2025-26 or the Demand for Grants — for the division to confirm |
+| Pradhan Mantri Adarsh Gram Yojana | A component of an umbrella scheme the master carries as one record |
+| National Awards For Empowerment Of Persons With Disabilities: National Awards For Institutions Engaged In Empowering Persons With Disabilities: Divyangjano Ke Liye Sarvshrestha Placement Agency | DEPwD or disability — not this Department |
+| Scheme of Assistance for the Prevention of Alcoholism & Substance (Drugs) Abuse and for Social Defence Services: General Grant-in-Aid Programme for Financial Assistance in the Field of Social Defence | Matches a record in the master |
+| Credit Enhancement Guarantee Scheme For The Scheduled Castes | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Education Loan Scheme (NSFDC) | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Information, Monitoring, Evaluation and Social Audit (I-MESA): Central Smart Surveillance Unit (CSSU) | Monitoring and evaluation, not a citizen-facing scheme |
+| Loan Based Schemes For Safai Karamchari - Sanitary Marts Scheme | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Scheme Of Assistance To Disabled Persons For Purchase/Fitting Of Aids/Appliances | DEPwD or disability — not this Department |
+| Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (PM-AJAY) - Adarsh Gram | A component of an umbrella scheme the master carries as one record |
+| National Awards For Empowerment Of Persons With Disabilities: Sugamya Bharat Abhiyan | DEPwD or disability — not this Department |
+| Loan Based Schemes For Safai Karamchari - Swachhta Udyami Yojana – Swachhta Se Sampannta Ki Aur | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| Credit Based Schemes For SC - Term Loan (TL) | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |
+| National Awards For Empowerment Of Persons With Disabilities: Divyangjano Ke Liye Sarvshrestha Niyoktha | DEPwD or disability — not this Department |
+| National Awards For Empowerment Of Persons With Disabilities (further categories) | DEPwD or disability — not this Department |
+| Scheme of Grant-in-Aid to Voluntary and other Organizations Working for Scheduled Castes | Matches a record in the master |
+| National Action for Mechanised Sanitation Ecosystem (NAMASTE) - "Emergency Response Sanitation Unit (ERSU) Formation and Functionalisation" | A component of an umbrella scheme the master carries as one record |
+| Deen Dayal Disabled Rehabilitation Scheme | DEPwD or disability — not this Department |
+| Vanchit Ikai Samooh aur Vargon ki Aarthik Sahayata Yojana (VISVAS) for Self-Help Groups | Matches a record in the master |
+| Loan based Scheme for Pay and Use Community Toilets | A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master |

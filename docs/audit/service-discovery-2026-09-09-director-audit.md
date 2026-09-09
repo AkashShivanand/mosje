@@ -272,3 +272,18 @@ uniform. Persons Engaged in Begging and Victims of Atrocities have no figure any
 icons today (*Night Shelter*, *Justice*); an icon is acceptable for both if drawing a person feels
 wrong for the subject — that is a judgement for the division, and the audit records both choices
 as defensible.
+
+## 5. Third pass, 9 September 2026 (evening) — what changed and why
+
+| Instruction | Done |
+|---|---|
+| Remove "Against it"; document differently; plain language | Every option page now says what it is, how it works and why it helps. No verdicts. The deck's words were rewritten for a school-leaver. |
+| Two Questions: View details only, no apply link; both answers under "You chose"; two or three schemes then a link to the filtered Schemes page; drop the design-system sentence; drop the scheme type from cards | Done: three schemes, View details, both chips, "View all schemes for …" opens the Schemes page filtered to the same answers. Type removed from every card and row. |
+| Say where the data came from; a separate report | `docs/research/service-discovery-data-sources.md`, generated from the master: documents, groups, kinds of support, portals and links with the 9 September link checks, every scheme with its sources, exclusions, conflicts, what is unverified, and a cross-check against myScheme. |
+| One Tap: a band for the group's portal, then the categorised list | Done. The band shows the one portal or helpline the Department runs for the group; a button only where the site answered on 9 September (NSFDC, NBCFDC, NSP, e-Anudaan, the helplines); the rest named in words. |
+| Schemes page: the earlier layouts with the feedback; correct data; aligned personas | Option A follows the WIP frame 4759:155021 with the persona rail as one horizontally scrolling, aligned row of the eleven groups; search, a Kind of Support dropdown and Reset; cards paged at nine; no counts. Option B keeps the panel-and-table with faces beside the target groups and a Reset per panel. |
+| Before/after page images did not load | Both pages now carry their images inside the file. |
+| Google Drive | The 8 September deck, PDF and zip moved into `_superseded`; the new deck and PDF uploaded; the walkthrough videos replaced. |
+| Remove "Before Anything Is Built" and "Three Rules"; summary without a recommendation | Both slides removed. The closing slide lists the six options by part of the site and says what comes before a build; it recommends nothing. The "Recommended" pills are gone from every page as well. |
+| Realistic UI behind the chatbot; no demo rail | The assistant now sits on the website's own home page (its real header, banner, About, Offerings and Recent Documents), and the recording hides the demo rail and the accessibility widget. |
+| myScheme data | Captured the Ministry's 85 entries and reconciled them to the master in the report's §9: DEPwD's and disability schemes, corporation loan products, umbrella components, and four entries for the divisions to confirm. Nothing on a screen comes from myScheme. |

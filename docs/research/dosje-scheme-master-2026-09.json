@@ -1408,5 +1408,354 @@
       "nmba": "nmba.dosje.gov.in certificate expired",
       "pmdaksh": "pmdaksh.dosje.gov.in refused the connection"
     }
+  },
+  "crossChecks": {
+    "myscheme": {
+      "url": "https://www.myscheme.gov.in/search/ministry/Ministry%20Of%20Social%20Justice%20and%20Empowerment",
+      "captured": "2026-09-09",
+      "note": "myScheme (NeGD, MeitY) lists the whole Ministry — both Departments — and lists corporation loan products and umbrella components as separate schemes. Used as a cross-check only; nothing on a screen comes from it.",
+      "entries": [
+        {
+          "name": "Persons With Disabilities Scheme In Colleges: Higher Education For Persons With Special Needs",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Centrally Sponsored Scheme of Pre-matric Scholarship to Other Backward Classes (OBC) for Studies in India",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Green Business Scheme",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "The NSFDC Internship Scheme",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Venture Capital Fund for Scheduled Castes",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Dr Ambedkar Central Sector Scheme of Interest Subsidy on Educational Loans for Overseas Studies for Other Backward Classes (OBCs) and Economically Backward Classes (EBCs)",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Pre-Matric Scholarship for Scheduled Caste Students",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Post Matric Scholarship Students With Disabilities",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Top Class Education For Scheduled Caste Students",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Pre Matric Scholarship For Students With Disabilities",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Vanchit Ikai Samooh aur Vargon ki Aarthik Sahayata Yojana (VISVAS) for Individual",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "NBCFDC General Loan Scheme",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Free Coaching for SCs, OBCs and beneficiaries of PM CARES Children Scheme",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "PM-YASASVI: Top Class School Education for OBC, EBC and DNT Students",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "PM-Special Training of Geriatric Caregivers",
+          "reading": "A component of an umbrella scheme the master carries as one record"
+        },
+        {
+          "name": "Support for Marginalized Individuals for Livelihood and Enterprise (SMILE): Composite Medical Health for Transgender Persons",
+          "reading": "A component of an umbrella scheme the master carries as one record"
+        },
+        {
+          "name": "Information, Monitoring, Evaluation and Social Audit (I-MESA): Project Monitoring Unit (PMU)",
+          "reading": "Monitoring and evaluation, not a citizen-facing scheme"
+        },
+        {
+          "name": "AVYAY - National Action Plan for Senior Citizens: Health and Shelter for Senior Citizens",
+          "reading": "A component of an umbrella scheme the master carries as one record"
+        },
+        {
+          "name": "Information-Monitoring, Evaluation, and Social Audit (I-MESA): Social Audit",
+          "reading": "Monitoring and evaluation, not a citizen-facing scheme"
+        },
+        {
+          "name": "Vikaas-Day Care Scheme For Person with Disability Children",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Top Class Education For Students With Disabilities",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "National Overseas Scholarship For Scheduled Caste Etc. Candidates",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "National Overseas Scholarship For Students With Disabilities",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Free Coaching for Students with Disabilities",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Niramaya Health Insurance Scheme",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Centrally Sponsored Scheme for Implementation of the Protection of Civil Rights Act, 1955 and the Scheduled Castes and the Scheduled Tribes (Prevention of Atrocities) Act, 1989",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Scheme of Assistance to State Scheduled Castes Development Corporations",
+          "reading": "Listed on myScheme; not in the Annual Report 2025-26 or the Demand for Grants — for the division to confirm"
+        },
+        {
+          "name": "Ambedkar Social Innovation and Incubation Mission (ASIIM)",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Disha - Early Intervention and School Readiness Scheme",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Free Coaching Scheme",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Pradhan Mantri Dakshta Aur Kushalta Sampann Hitgrahi (PM-DAKSH)",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Loan Based Schemes For Safai Karamchari - Education Loan",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Centrally Sponsored Scheme of Post-Matric Scholarship for OBC Students for studying in India",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Central Sector Scheme of National Fellowship for Providing Fellowship to Scheduled Caste Students to Pursue M.Phil. & PhD",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Education Loan Scheme",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "PM-YASASVI: Post-Matric Scholarship for OBC, EBC and DNT Students",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Garima Greh Shelter Homes For Transgender Persons",
+          "reading": "A component of an umbrella scheme the master carries as one record"
+        },
+        {
+          "name": "Vocational Education and Training Loan Scheme",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Post-Matric Scholarship for SC students",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "National Action Plan for Skill Development of Persons with Disabilities",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Scheme For Residential Education For Students in High Schools in Targeted Areas (SHRESHTA): Mode 1 - SHRESHTA Schools (Best CBSE Private Residential Schools)",
+          "reading": "A component of an umbrella scheme the master carries as one record"
+        },
+        {
+          "name": "Scheme For Residential Education For Students in High Schools in Targeted Areas (SHRESHTA): Mode 2 - NGO Operated Schools",
+          "reading": "A component of an umbrella scheme the master carries as one record"
+        },
+        {
+          "name": "Scholarships for Higher Education for Young Achievers Scheme (SHREYAS) (OBC & Others)",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Samarth-Respite Care Scheme",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Pre- Matric Scholarships Scheme for Scheduled Castes & Others",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "New Swarnima Scheme For Women",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Pre-Matric Scholarships to the Children of Those Engaged in Occupations Involving Cleaning and Prone to Health Hazards",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "National Fellowship for Students with Disabilities",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Mahila Samriddhi Yojana",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Centrally Sponsored Scheme of Upgradation of Merit of Scheduled Caste Students",
+          "reading": "Listed on myScheme; not in the Annual Report 2025-26 or the Demand for Grants — for the division to confirm"
+        },
+        {
+          "name": "Construction of Hostels for OBC Boys and Girls",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "PM-YASASVI: Pre-Matric Scholarship for OBC, EBC and DNT Students",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "SMILE - Comprehensive Rehabilitation For Welfare Of Transgender Persons",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "PM-YASASVI: Top Class College Education for OBC, EBC and DNT Students",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Micro Credit Finance (NSFDC)",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Information, Monitoring, Evaluation and Social Audit (I-MESA): Evaluation and Studies",
+          "reading": "Monitoring and evaluation, not a citizen-facing scheme"
+        },
+        {
+          "name": "Scheme for Economic Empowerment of De-notified, Nomadic and Semi-Nomadic Tribes - \"Educational Empowerment\" Component",
+          "reading": "A component of an umbrella scheme the master carries as one record"
+        },
+        {
+          "name": "Gharaunda-Group Home for Adults Scheme",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "National Award for Individual Excellence",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Divyangjan Kaushal Yojana",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Dr. Ambedakar Centrally Sponsored Scheme of Post-Matric Scholarships for the Economically Backward Class (EBC) Students",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Assistance to Voluntary Organizations Working for Welfare of OBCs",
+          "reading": "Listed on myScheme; not in the Annual Report 2025-26 or the Demand for Grants — for the division to confirm"
+        },
+        {
+          "name": "Self Employment Scheme For Rehabilitation Of Manual Scavengers",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Loan Based Schemes For Safai Karamchari - General Term Loan (GTL)",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Scheme for Supportive Money to the Parents of Transgender Children",
+          "reading": "A component of an umbrella scheme the master carries as one record"
+        },
+        {
+          "name": "Rashtriya Parivar Sahayata Yojana",
+          "reading": "Listed on myScheme; not in the Annual Report 2025-26 or the Demand for Grants — for the division to confirm"
+        },
+        {
+          "name": "Pradhan Mantri Adarsh Gram Yojana",
+          "reading": "A component of an umbrella scheme the master carries as one record"
+        },
+        {
+          "name": "National Awards For Empowerment Of Persons With Disabilities: National Awards For Institutions Engaged In Empowering Persons With Disabilities: Divyangjano Ke Liye Sarvshrestha Placement Agency",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Scheme of Assistance for the Prevention of Alcoholism & Substance (Drugs) Abuse and for Social Defence Services: General Grant-in-Aid Programme for Financial Assistance in the Field of Social Defence",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Credit Enhancement Guarantee Scheme For The Scheduled Castes",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Education Loan Scheme (NSFDC)",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Information, Monitoring, Evaluation and Social Audit (I-MESA): Central Smart Surveillance Unit (CSSU)",
+          "reading": "Monitoring and evaluation, not a citizen-facing scheme"
+        },
+        {
+          "name": "Loan Based Schemes For Safai Karamchari - Sanitary Marts Scheme",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Scheme Of Assistance To Disabled Persons For Purchase/Fitting Of Aids/Appliances",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (PM-AJAY) - Adarsh Gram",
+          "reading": "A component of an umbrella scheme the master carries as one record"
+        },
+        {
+          "name": "National Awards For Empowerment Of Persons With Disabilities: Sugamya Bharat Abhiyan",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Loan Based Schemes For Safai Karamchari - Swachhta Udyami Yojana – Swachhta Se Sampannta Ki Aur",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "Credit Based Schemes For SC - Term Loan (TL)",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        },
+        {
+          "name": "National Awards For Empowerment Of Persons With Disabilities: Divyangjano Ke Liye Sarvshrestha Niyoktha",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "National Awards For Empowerment Of Persons With Disabilities (further categories)",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Scheme of Grant-in-Aid to Voluntary and other Organizations Working for Scheduled Castes",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "National Action for Mechanised Sanitation Ecosystem (NAMASTE) - \"Emergency Response Sanitation Unit (ERSU) Formation and Functionalisation\"",
+          "reading": "A component of an umbrella scheme the master carries as one record"
+        },
+        {
+          "name": "Deen Dayal Disabled Rehabilitation Scheme",
+          "reading": "DEPwD or disability — not this Department"
+        },
+        {
+          "name": "Vanchit Ikai Samooh aur Vargon ki Aarthik Sahayata Yojana (VISVAS) for Self-Help Groups",
+          "reading": "Matches a record in the master"
+        },
+        {
+          "name": "Loan based Scheme for Pay and Use Community Toilets",
+          "reading": "A corporation loan or credit product — reported under NSFDC, NSKFDC, NBCFDC or the venture fund in the master"
+        }
+      ]
+    }
   }
 }

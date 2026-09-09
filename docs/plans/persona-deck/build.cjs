@@ -141,8 +141,8 @@ const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels 
     "A is on the site today. B or C would take the section below the banner, where Our Offerings sits now.");
   const items = [
     ["A","Explore User Personas","home-a","One group at a time. Kept as it is.","ON THE SITE TODAY"],
-    ["B","Two Questions","home-b","Who you are, then what you need. Ends with the schemes and a link to see them all.","RECOMMENDED"],
-    ["C","One Tap","home-c","Pick your group. First the portal for that group, then its schemes.","COMPANION TO B"],
+    ["B","Two Questions","home-b","Who you are, then what you need. Ends with the schemes and a link to see them all.","OPTION B"],
+    ["C","One Tap","home-c","Pick your group. First the portal for that group, then its schemes.","OPTION C"],
   ];
   const cw = (CW-0.6)/3;
   items.forEach((it,i)=>{
@@ -150,10 +150,10 @@ const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels 
     s.addText(it[0], { x, y:y0, w:0.55, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:28, bold:true, color:BLUE_TXT });
     s.addText(it[1], { x:x+0.55, y:y0+0.08, w:cw-0.55, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:T.lead, bold:true, color:DARK });
     const m = media(s, { img:it[2] }, x, y0+0.62, cw, cw*0.625);
-    pill(s, x, m.iy+m.ih+0.16, it[4], it[4]==="RECOMMENDED"?BLUE_TXT:SURF, it[4]==="RECOMMENDED"?WHITE:MUTE);
+    pill(s, x, m.iy+m.ih+0.16, it[4], SURF, MUTE);
     s.addText(it[3], { x, y:m.iy+m.ih+0.54, w:cw, h:0.7, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.2 });
   });
-  footLine(s, "B and C take the place of Our Offerings, so the page does not get longer. Either one can be approved.");
+  footLine(s, "B and C take the place of Our Offerings, so the page does not get longer.");
   s.addNotes("Three options for the home page. A stays where it is. B or C takes the section below the banner. C is for the visitor who will not answer questions. The next three pages show each one being used.");
 }
 
@@ -213,7 +213,6 @@ function optionPage(o) {
   s.addText(o.title, { x:M, y:0.76, w:CW-2.6, h:0.56, isTextBox:true, margin:0, fontFace:F, fontSize:T.h1, bold:true, color:DARK });
   let px = M;
   px += pill(s, px, 1.42, o.live?"ON THE SITE TODAY":"TO BE BUILT", o.live?SURF:BLUE_50, o.live?MUTE:BLUE_TXT) + 0.14;
-  if (o.rec) pill(s, px, 1.42, "RECOMMENDED", BLUE_TXT, WHITE);
   const y0 = 1.95, boxW = 7.1, boxH = 4.45;
   const m = media(s, o, M, y0, boxW, boxH);
   s.addText((o.vid ? "▶  " : "") + o.caption, { x:M, y:m.iy+m.ih+0.14, w:boxW, h:0.42, isTextBox:true, margin:0, fontFace:F, fontSize:T.micro, color:MUTE, lineSpacingMultiple:1.15 });
@@ -239,7 +238,7 @@ OPTIONS.forEach(optionPage);
     "Where a person lands from the home page, and where officers and voluntary organisations work. Both use the same two filters.");
   const items = [
     ["A","Pictures of the Groups, with Cards","scheme-a","Every group on screen at once, then cards. For browsing.","OPTION A"],
-    ["B","Filter Panel with a Table","scheme-b","Filters that work together, and a table that says who each scheme is for. For deciding.","RECOMMENDED"],
+    ["B","Filter Panel with a Table","scheme-b","Filters that work together, and a table that says who each scheme is for. For comparing.","OPTION B"],
   ];
   const cw = (CW-0.6)/2;
   items.forEach((it,i)=>{
@@ -247,7 +246,7 @@ OPTIONS.forEach(optionPage);
     s.addText(it[0], { x, y:y0, w:0.55, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:28, bold:true, color:BLUE_TXT });
     s.addText(it[1], { x:x+0.55, y:y0+0.08, w:cw-0.55, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:T.lead, bold:true, color:DARK });
     const m = media(s, { img:it[2] }, x, y0+0.62, cw, cw*0.625);
-    pill(s, x, m.iy+m.ih+0.16, it[4], it[4]==="RECOMMENDED"?BLUE_TXT:SURF, it[4]==="RECOMMENDED"?WHITE:MUTE);
+    pill(s, x, m.iy+m.ih+0.16, it[4], SURF, MUTE);
     s.addText(it[3], { x, y:m.iy+m.ih+0.54, w:cw, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.2 });
   });
   footLine(s, "No count is shown on either. A filter that would leave nothing is greyed out.");
@@ -258,69 +257,33 @@ SCHEMES_PAGE.forEach(optionPage);
 /* ═══ 10 · The assistant ════════════════════════════════════════════════ */
 ASSISTANT.forEach(optionPage);
 
-/* ═══ 11 · Before anything is built ═════════════════════════════════════ */
-{
-  const s = slide(false);
-  const y0 = header(s, "First", "Before Anything Is Built", "Whichever options are chosen, three things come first.");
-  const items = [
-    ["Confirm the two lists", "The eleven groups and the eight kinds of support, checked by the divisions that own them, including whether every group should be named on a public page."],
-    ["Tag every scheme on both lists", "Each scheme record says who it is for, what it gives and where to apply, with a source on every row. The divisions check their rows."],
-    ["Estimate the re-tagging", "The website's catalogue tags each scheme once, on one list. Tagging every scheme on two lists is the development work every option needs."],
-  ];
-  let y = y0 + 0.2;
-  items.forEach((it,i)=>{
-    s.addText(String(i+1), { x:M, y, w:0.6, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:26, bold:true, color:BLUE_TXT });
-    s.addText(it[0], { x:M+0.7, y:y+0.02, w:CW-0.7, h:0.36, isTextBox:true, margin:0, fontFace:F, fontSize:T.h2, bold:true, color:DARK });
-    s.addText(it[1], { x:M+0.7, y:y+0.42, w:CW-0.7, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.2 });
-    y += 1.34;
-    if (i < items.length-1) s.addShape(pres.ShapeType.line, { x:M, y:y-0.22, w:CW, h:0, line:{color:HAIR, width:0.75} });
-  });
-  footLine(s, "The design team supplies the lists and the tagged records. The divisions check them. The development team estimates the re-tagging.");
-  s.addNotes("The page the review asked for. The two lists and the tagged records exist and are with the divisions to confirm. The estimate for re-tagging the catalogue is asked of the development team before any option is scheduled. Two questions are open and recorded: whether Victims of Atrocities and Persons Engaged in Begging are acceptable public wording, and NSFDC's income ceiling, which two of the Department's own pages state differently.");
-}
-
-/* ═══ 12 · Three rules ══════════════════════════════════════════════════ */
-{
-  const s = slide(false);
-  const y0 = header(s, "Whichever Options Are Approved", "Three Rules", null);
-  const items = [
-    ["It names the group. It never decides the case.", "No screen and no message says a person is eligible. The office that sanctions the scheme decides every application."],
-    ["It asks two things. It stores nothing.", "No sign-in, no Aadhaar, no phone number, no income. The answers are picked from a fixed list, never typed."],
-    ["It shows no numbers.", "No count of schemes on any screen. The only figures are the helpline numbers the Department publishes and the amounts its Annual Report states."],
-  ];
-  let y = y0 + 0.3;
-  items.forEach((it,i)=>{
-    s.addText(it[0], { x:M, y, w:CW, h:0.46, isTextBox:true, margin:0, fontFace:F, fontSize:22, bold:true, color:DARK });
-    s.addText(it[1], { x:M, y:y+0.5, w:CW, h:0.36, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK_MUTE, lineSpacingMultiple:1.2 });
-    y += 1.5;
-    if (i < items.length-1) s.addShape(pres.ShapeType.line, { x:M, y:y-0.3, w:CW, h:0, line:{color:HAIR, width:0.75} });
-  });
-  footLine(s, "These hold for all six options and are not traded away for speed.");
-  s.addNotes("Three commitments that hold whatever is chosen. A citizen who acts on a wrong assurance from a government website bears a real cost, and the Department bears the complaint — so nothing here decides a case, nothing is collected, and no number leaves a design file.");
-}
-
-/* ═══ 13 · The recommendation ═══════════════════════════════════════════ */
+/* ═══ 11 · In summary ══════════════════════════════════════════════════ */
 {
   const s = slide(true);
   s.addText("IN SUMMARY", { x:M, y:0.7, w:CW, h:0.24, isTextBox:true, margin:0, fontFace:F, fontSize:T.label, bold:true, charSpacing:TRACK.eyebrow, color:BLUE_100 });
-  s.addText("What the Design Team Recommends", { x:M, y:1.0, w:CW, h:0.7, isTextBox:true, margin:0, fontFace:F, fontSize:34, bold:true, color:WHITE });
+  s.addText("Six Options, Three Parts of the Site", { x:M, y:1.0, w:CW, h:0.7, isTextBox:true, margin:0, fontFace:F, fontSize:34, bold:true, color:WHITE });
+  s.addText("Every option asks the same two things: who you are, and what kind of support you need. Each part is decided on its own.", {
+    x:M, y:1.75, w:CW, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:T.lead, color:BLUE_100, lineSpacingMultiple:1.2 });
   const rows = [
-    ["The home page","Option B, with A kept","It answers the question a visitor arrives with"],
-    ["The Schemes page","Option B — filters with a table","It is where people compare"],
-    ["The assistant","Yes — the same two questions","It reaches the person who is already lost on a page"],
+    ["The home page","A · Explore User Personas","On the site today. One group at a time."],
+    ["","B · Two Questions","Who you are, then what you need. Three schemes and a link to all of them."],
+    ["","C · One Tap","Pick your group. Its portal first, then its schemes."],
+    ["The Schemes page","A · Pictures of the Groups, with Cards","Every group in one row, then cards. For browsing."],
+    ["","B · Filter Panel with a Table","Two filters that work together, and a table. For comparing."],
+    ["The assistant","Samajik Sahayak","The same two questions, in the chat window on every page."],
   ];
-  const rowY = 2.3, rowH = 0.9;
+  const rowY = 2.5, rowH = 0.56;
   rows.forEach((r,i)=>{
     const y = rowY + i*rowH;
-    s.addShape(pres.ShapeType.line, { x:M, y:y-0.1, w:CW, h:0, line:{color:BLUE_DEEP, width:1} });
-    s.addText(r[0], { x:M, y:y+0.12, w:3.6, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:15, color:BLUE_100 });
-    s.addText(r[1], { x:M+3.7, y:y+0.12, w:4.6, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:17, bold:true, color:WHITE });
-    s.addText(r[2], { x:M+8.4, y:y+0.14, w:CW-8.4, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:12, color:BLUE_100, lineSpacingMultiple:1.15 });
+    if (r[0]) s.addShape(pres.ShapeType.line, { x:M, y:y-0.08, w:CW, h:0, line:{color:BLUE_DEEP, width:1} });
+    s.addText(r[0], { x:M, y:y+0.04, w:3.0, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:14, color:BLUE_100 });
+    s.addText(r[1], { x:M+3.1, y:y+0.04, w:4.4, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:15, bold:true, color:WHITE });
+    s.addText(r[2], { x:M+7.6, y:y+0.06, w:CW-7.6, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:12, color:BLUE_100 });
   });
-  s.addShape(pres.ShapeType.line, { x:M, y:rowY+3*rowH-0.1, w:CW, h:0, line:{color:BLUE_DEEP, width:1} });
-  s.addText("The three parts are decided separately. Whichever is chosen, the two lists and the tagging come first.", {
-    x:M, y:5.5, w:CW, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:16, bold:true, color:WHITE });
-  s.addNotes("The three parts are decided separately. If only one is settled today, the Schemes page is the one that changes most for the most people.");
+  s.addShape(pres.ShapeType.line, { x:M, y:rowY+rows.length*rowH-0.08, w:CW, h:0, line:{color:BLUE_DEEP, width:1} });
+  s.addText("Before any of them is built: the two lists are confirmed by the divisions, every scheme is tagged on both, and the development team estimates the re-tagging.", {
+    x:M, y:6.1, w:CW, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:12.5, color:BLUE_100, lineSpacingMultiple:1.2 });
+  s.addNotes("The six options, in one place. Each part of the site is decided on its own; any combination can be taken. Whatever is chosen, the two lists have to be confirmed, every scheme tagged on both, and the re-tagging estimated before the build starts.");
 }
 
 pres.writeFile({ fileName: "MoSJE-Service-Discovery-Options.pptx" }).then(f => console.log("wrote", f));

@@ -393,6 +393,15 @@ ${m.conflicts.map((c) => `- **${c.field}** — one source says ${c.a}; another s
 - The State-level application route for the SC scholarships: the legacy site says the State
   selects, and some States use their own portals rather than the National Scholarship Portal.
 - Every row is to be confirmed by the division that owns the scheme before anything is built.
+
+## 9. Cross-check against myScheme
+
+myScheme (myscheme.gov.in, run by NeGD under MeitY) lists ${m.crossChecks.myscheme.entries.length} schemes under "Ministry of Social
+Justice and Empowerment" (captured ${m.crossChecks.myscheme.captured}). ${m.crossChecks.myscheme.note}
+
+| myScheme entry | How it relates to this master |
+|---|---|
+${m.crossChecks.myscheme.entries.map((e) => `| ${e.name} | ${e.reading} |`).join("\n")}
 `;
 writeFileSync(srcPath, srcDoc);
 

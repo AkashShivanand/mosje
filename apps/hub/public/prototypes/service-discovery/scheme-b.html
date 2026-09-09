@@ -6,7 +6,15 @@
 .filters{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);padding:16px;background:var(--sa-white);position:sticky;top:16px}
 .fgroup{margin-bottom:18px}
 .fgroup h3{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--sa-muted);margin:0 0 9px;font-weight:700}
-.fopt{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:6px;cursor:pointer;font-size:13.5px;transition:background .12s;line-height:1.3}
+.fopt{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:6px;cursor:pointer;font-size:13.5px;transition:background .12s;line-height:1.3;border:1px solid transparent}
+.fopt.on{background:var(--sa-primary-50);border-color:var(--sa-primary-200)}
+.fopt .m{width:30px;height:30px;border-radius:50%;background:var(--sa-primary-50);flex:none;overflow:hidden;display:grid;place-items:center}
+.fopt .m img{width:100%;height:100%;object-fit:contain}
+.fopt .m .mark-none,.fopt .m .mark-icon{width:100%;height:100%;border-radius:50%}
+.fopt .m .mark-icon .mi{font-size:18px}
+.fopt span.t{flex:1}
+.fgroup h3{display:flex;justify-content:space-between;align-items:center}
+.fgroup h3 a{font-size:11px;letter-spacing:0;text-transform:none;color:var(--sa-primary-600);font-weight:600;text-decoration:none}
 .fopt:hover{background:var(--sa-surface)}
 .fopt input{accent-color:var(--sa-primary-500);width:15px;height:15px;margin:0;flex:none}
 .fopt.zero{opacity:.45}
@@ -25,7 +33,7 @@ td small{display:block;color:var(--sa-muted);font-size:11.5px;margin-top:2px}
 <main class="wrap sec">
   <div>
     <h1 class="sec-t">Schemes &amp; Services</h1>
-    <p class="sec-lede">Tick who the scheme is for and what kind of support you want. The two work together.</p>
+    <p class="sec-lede">Tick the target group and the kind of support. The two work together.</p>
   </div>
   <div class="layout">
     <aside class="filters" id="filters"></aside>
@@ -63,16 +71,17 @@ function wouldLeave(axis, id){
 }
 function drawFilters(){
   const block = (title, axis, items) => `
-    <div class="fgroup"><h3>${title}</h3>
+    <div class="fgroup"><h3>${title}<a href="#" data-reset="${axis}">Reset</a></h3>
     ${items.map(x=>{const on=sel[axis].has(x.id), live=on||wouldLeave(axis,x.id);return `
-      <label class="fopt ${live?'':'zero'}" ${live?'':'aria-disabled="true"'}>
-        <input type="checkbox" data-axis="${axis}" data-id="${x.id}" ${on?'checked':''} ${live?'':'disabled'}>
-        <span>${x.short||x.label}</span></label>`;}).join('')}
+      <label class="fopt ${live?'':'zero'} ${on?'on':''}" ${live?'':'aria-disabled="true"'}>
+        ${axis==='who'?`<span class="m">${markHTML(x.id)}</span>`:''}<span class="t">${x.short||x.label}</span>
+        <input type="checkbox" data-axis="${axis}" data-id="${x.id}" ${on?'checked':''} ${live?'':'disabled'}></label>`;}).join('')}
     </div>`;
   el('filters').innerHTML =
-    block('Who It Is For','who',PERSONAS) + block('Kind of Support','offer',OFFERINGS) +
+    block('Target Group','who',PERSONAS) + block('Kind of Support','offer',OFFERINGS) +
     `<button class="btn ghost" id="reset" style="width:100%">Reset Filters</button>`;
   el('reset').onclick = () => { sel.who.clear(); sel.offer.clear(); page=1; draw(); };
+  el('filters').querySelectorAll('[data-reset]').forEach(a => a.onclick = e => { e.preventDefault(); sel[a.dataset.reset].clear(); page=1; draw(); });
 }
 function draw(){
   drawFilters();

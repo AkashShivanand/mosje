@@ -66,8 +66,8 @@ const WALKS = {
   'scheme-a': { url: 'file://' + path.join(PROTO, 'scheme-a.html'), run: async p => {
     await p.waitForTimeout(1600);
     await tap(p, '.face-btn[data-g="safai"]', { pause: 1500 });
-    await tap(p, '.chip[data-o="loan"]', { pause: 1500 });
-    await tap(p, '.chip[data-o="all"]', { pause: 1100 });
+    await p.selectOption('#kind', 'loan'); await p.waitForTimeout(1500);
+    await p.selectOption('#kind', 'all'); await p.waitForTimeout(1100);
     await tap(p, '.face-btn[data-g="senior"]', { pause: 1600 });
     await scroll(p, 300, 1500);
   }},
@@ -94,7 +94,11 @@ const WALKS = {
     await scroll(p, 420, 1800);
   }},
   'assistant': { url: base + '/prototypes/service-discovery/assistant', run: async p => {
+    /* The demo rail and the accessibility widget are estate chrome, not the
+       page; the recording shows the site as a citizen would see it. */
+    await p.addStyleTag({ content: '.ds-demodock,#uw-widget-custom-trigger,[id^="uw-"],.uwy{display:none!important}' });
     await p.waitForTimeout(2000);
+    await scroll(p, 520, 1400);
     await tap(p, 'button[aria-label="Samajik Sahayak, chat assistant"]', { pause: 1600 });
     const quick = label => p.locator('button', { hasText: label }).last();
     for (const label of ['Which scheme applies to me?', 'Scheduled Castes', 'Loans and Credit']) {
