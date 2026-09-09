@@ -12,8 +12,7 @@ import { AdarshGramDashboard } from "@/components/website/AdarshGramDashboard";
 import { GiaDashboard } from "@/components/website/GiaDashboard";
 import { HostelDashboard } from "@/components/website/HostelDashboard";
 import { PmajayWorksMap } from "@/components/website/PmajayWorksMap";
-import { OrganisationJoinBanner } from "@/components/website/OrganisationJoinBanner";
-import { OrganisationEventRibbon } from "@/components/website/OrganisationEventRibbon";
+import { OrganisationAnnouncementBand } from "@/components/website/OrganisationAnnouncementBand";
 import { DeAddictionMap } from "@/components/website/nmba/DeAddictionMap";
 import { getAdarshGramCounts } from "@/lib/website/adarsh-gram-api";
 import {
@@ -337,28 +336,30 @@ export default async function OrganisationDetailPage({
     // The campaign call to action the source prints above the page title —
     // under the breadcrumb, which stays the first thing on every page.
     /*
-     * THE OCCASION RIBBON MOVES ABOVE THE HERO, and the reason is a measurement.
+     * ONE BAND, ABOVE THE HERO, CARRYING BOTH ANNOUNCEMENTS.
      *
-     * It shipped between the fact strip and the page's data, which is where the
-     * 7 September review asked for it — "between the blue section and the data
-     * section" — and two commit messages then claimed it was high on the page.
-     * It was not. Measured at four real viewports on 8 September, the ribbon was
-     * BELOW THE FOLD on every one of them: 1440x760, 1512x820, 1920x955 and a
-     * 390x664 phone. So was the notice strip, and so was the fact card on three
-     * of the four. A time-limited call to action nobody scrolls to is worse than
-     * no call to action, because it costs the page height and returns nothing.
+     * It was two stacked bands until 9 September — a permanent campaign in green
+     * and a temporary observance in saffron — costing 154px of a 760px fold
+     * before the page had said what it was, with two grounds and two dismisses
+     * 50px apart. `OrganisationAnnouncementBand` is the option chosen from
+     * `nmba/top-bands`: one band that turns, 150px, with the temporary
+     * announcement leading because it is the one a reader can still miss.
      *
-     * Above the hero it sits at roughly y=352 and is seen on every device. It
-     * follows the campaign band rather than leading, because the band is
-     * permanent and this is six weeks — the same ordering argument the notice
-     * strip and the ribbon already use between themselves.
+     * ABOVE the hero, and that placement is a measurement rather than a
+     * preference. The observance shipped between the fact strip and the page's
+     * data, which is where the 7 September review asked for it — "between the
+     * blue section and the data section" — and two commit messages then claimed
+     * it was high on the page. It was not. Measured at four real viewports on 8
+     * September it was BELOW THE FOLD on every one: 1440x760, 1512x820, 1920x955
+     * and a 390x664 phone. A time-limited call to action nobody scrolls to is
+     * worse than none, because it costs the page height and returns nothing.
      */
     afterBreadcrumb:
       !isSubPage && (detail?.joinBanner != null || detail?.eventRibbon != null) ? (
-        <>
-          {detail?.joinBanner != null && <OrganisationJoinBanner banner={detail.joinBanner} />}
-          {detail?.eventRibbon != null && <OrganisationEventRibbon ribbon={detail.eventRibbon} />}
-        </>
+        <OrganisationAnnouncementBand
+          banner={detail?.joinBanner}
+          ribbon={detail?.eventRibbon}
+        />
       ) : undefined,
     logoSrc: detail?.logo ?? (rootOrg as { logo?: string })?.logo ?? "/website/images/National-Emblem-logo.svg",
     featuredImage: detail?.featuredImage ?? org.featuredImage ?? rootOrg?.featuredImage,
