@@ -118,6 +118,7 @@ const WALKS = {
     const b = await chromium.launch();
     const dir = path.join(OUT, '_' + name);
     fs.rmSync(dir, { recursive: true, force: true });
+    const started = Date.now();
     const ctx = await b.newContext({
       viewport: { width: W, height: H }, deviceScaleFactor: 2,
       recordVideo: { dir, size: { width: W, height: H } },
@@ -125,6 +126,9 @@ const WALKS = {
     const p = await ctx.newPage();
     const errs = []; p.on('pageerror', e => errs.push(String(e)));
     await p.goto(walk.url, { waitUntil: 'networkidle' });
+    /* Icons are a web font; wait for it so no frame shows the glyph names as words, and trim the load from the video. */
+    await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(300);
+    const trim = ((Date.now() - started) / 1000).toFixed(2);
     /* The Next dev badge is tooling, not the page. */
     await p.addStyleTag({ content: 'nextjs-portal{display:none!important}' }).catch(() => {});
     let failed = null;
@@ -133,7 +137,7 @@ const WALKS = {
     await ctx.close(); await b.close();
     const webm = fs.readdirSync(dir).find(f => f.endsWith('.webm'));
     if (webm) {
-      execSync(`ffmpeg -v error -y -i "${path.join(dir, webm)}" -vf scale=1440:-2 -c:v libx264 -pix_fmt yuv420p -crf 21 -preset slow -movflags +faststart "${path.join(OUT, name + '.mp4')}"`);
+      execSync(`ffmpeg -v error -y -ss ${trim} -i "${path.join(dir, webm)}" -vf scale=1440:-2 -c:v libx264 -pix_fmt yuv420p -crf 21 -preset slow -movflags +faststart "${path.join(OUT, name + '.mp4')}"`);
       fs.rmSync(dir, { recursive: true, force: true });
     }
     console.log(name, '· errors:', errs.length ? errs : 'none', failed ? '· FAILED: ' + failed : '');

@@ -4,7 +4,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap');
 /* Material Symbols Rounded, weight 300 — the estate's icon set (CLAUDE.md). Same
    iframe reason as the typeface: nothing else loads it into this document. */
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,300,0,0&display=block');
 /* SAMAVESH prototype shell — tokens read from packages/tokens/dist/tokens.css */
 :root{
   --sa-primary-50:#ECF4FF; --sa-primary-100:#C0DBFF; --sa-primary-200:#92C2FF;

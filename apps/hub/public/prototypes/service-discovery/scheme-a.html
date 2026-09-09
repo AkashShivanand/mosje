@@ -15,18 +15,18 @@
 .panel{background:var(--sa-neutral-50);border-radius:var(--sa-radius-lg);padding:22px 24px 24px}
 /* The rail: one row that scrolls sideways and never wraps. Every tile is the
    same width, the picture the same size, the label the same height. */
-.rail{display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;padding:4px 2px 6px;scrollbar-width:thin;margin:0 0 10px}
-.face-btn{flex:0 0 118px;width:118px;background:none;border:none;cursor:pointer;text-align:center;padding:4px 0;border-radius:var(--sa-radius);font:inherit;display:flex;flex-direction:column;align-items:center;gap:8px;transition:transform .1s ease-out}
+.rail{display:flex;gap:6px;align-items:flex-start;overflow-x:auto;overflow-y:hidden;padding:4px 2px 0;scrollbar-width:thin;margin:0 0 8px}
+.face-btn{flex:0 0 110px;width:110px;background:none;border:none;cursor:pointer;text-align:center;padding:4px 0;border-radius:var(--sa-radius);font:inherit;display:flex;flex-direction:column;align-items:center;gap:8px;transition:transform .1s ease-out}
 .face-btn:active{transform:scale(.96)}
-.face-btn .circ{width:70px;height:70px;border-radius:50%;background:var(--sa-primary-50);border:2px solid transparent;
+.face-btn .circ{width:88px;height:88px;border-radius:50%;background:var(--sa-primary-50);border:2px solid transparent;
   display:flex;align-items:center;justify-content:center;overflow:hidden;flex:none;transition:border-color .15s,background .15s}
 .face-btn .circ img{width:100%;height:100%;object-fit:contain}
 .face-btn .circ .mark-none,.face-btn .circ .mark-icon{width:100%;height:100%;border-radius:50%}
 .face-btn[aria-pressed="true"] .circ{border-color:var(--sa-primary-500);box-shadow:0 0 0 3px var(--sa-primary-100)}
 .face-btn[aria-pressed="true"] .circ .mark-icon{color:var(--sa-primary-700)}
-.face-btn .lbl{font-size:11.5px;line-height:1.25;color:var(--sa-ink-muted);height:3.8em;display:flex;align-items:flex-start;justify-content:center;width:100%}
+.face-btn .lbl{font-size:11.5px;line-height:1.25;color:var(--sa-ink-muted);height:auto;display:flex;align-items:flex-start;justify-content:center;width:100%}
 .face-btn[aria-pressed="true"] .lbl{color:var(--sa-primary-700);font-weight:700}
-.head{display:flex;align-items:center;justify-content:space-between;margin:0 0 16px}
+.head{display:flex;align-items:center;justify-content:space-between;margin:0 0 14px}
 .head h2{margin:0;font-size:22px;font-weight:700;color:var(--sa-ink)}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .scard{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);overflow:hidden;background:var(--sa-white);display:flex;flex-direction:column}
