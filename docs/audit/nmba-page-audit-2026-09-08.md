@@ -1011,3 +1011,66 @@ Three facts, not four. The Ministry row survives on the same weak argument as
 before — it is the only cell that is a name among figures, and a reader on the
 Department's own site has been told the Department twice by the masthead already.
 It stays because two is not a strip.
+
+---
+
+## 19. Two zones ships, and three questions answered
+
+### 19.1 The animation was genuinely missing
+
+The halo was built for the white card (`.xhc`) and **never carried across when
+the panel was drawn**. So the one element in the band that is a live telephone
+line was the only version of it that did not say so.
+
+Fixed, with one change: the halo is tinted **white**, not `successScale-600`. The
+well sits on `successScale-800`, and a green halo on a green ground is invisible.
+Same cadence as everywhere else — two breaths of 2000ms, 4s total, under
+§2.2.2's five seconds on purpose, then hover and focus.
+
+### 19.2 Placement: the trailing edge is right, and not for aesthetic reasons
+
+**Reading order follows the band's own purpose**, which is the campaign. The
+helpline is found by TREATMENT rather than by position: it is the darkest object
+in the band and carries its largest text (20px bold white at ~13:1, against the
+campaign's 24px heading and 14px sentence on a lighter ground).
+
+Leading, it would do two things wrong at once. It would open a campaign band with
+something that is not the campaign — the "two messages in one rectangle" problem
+in a new arrangement. And it would put two full-height blocks side by side at the
+same edge, because the 88px code is already the band's leading anchor.
+
+The one argument for leading is that somebody in crisis scans left first. It does
+not survive contact with the treatment: a reader scanning for a telephone number
+finds the only dark panel on a light green band before they finish reading the
+first word of the heading. Position is the weakest of the signals available here,
+and it is the only one the campaign also needs.
+
+### 19.3 Separation: 24 → 48
+
+The panel's ground already says *different thing*; the gap says *how* different.
+At the row's plain 24 it read as the next item in a list of actions — which is
+the reading the whole zone exists to prevent.
+
+24 from the grid plus 24 of leading margin **on the service**, because the
+separation belongs to the thing being set apart, not to the campaign. Measured:
+Register ends at 1046, the panel starts at 1094.
+
+### 19.4 What shipped
+
+`.orgjb__helpline` — a filled white DS button — is gone from the live band and
+replaced by `.orgjb__service`: an 88px-tall panel on `successScale-800` with a
+12% white hairline, a caption over a figure, and the halo. The band is 120px
+(the 88px code sets it, per §18).
+
+Register updated: **two zones is `chosen`**; "both CTAs on the right" and "CTAs
+below the copy" are `superseded` and keep their addresses with what beat them.
+The first lost because the pairing it depends on is the defect; the second
+because it answers a different question — how tall the band is — and stacking
+the routes in a column makes them *more* alike, not less.
+
+Housekeeping found on the way: a stray `.orgjb__copy { padding-inline-end }`
+fragment with an extra closing brace, left by an earlier edit, had been closing
+`@layer components` about 300 lines early. Everything below it had been sitting
+outside the layer — which, per `design-system-architecture.md` §2a, means it was
+beating every layered rule in the estate rather than losing to utilities as
+intended.

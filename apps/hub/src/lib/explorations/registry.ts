@@ -163,7 +163,6 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             title: "Both CTAs on the right",
             summary:
               "104px, one row. A 72px code leads, the message takes the middle, and the two routes sit together on the trailing edge, 12 apart.",
-            status: "proposed",
             live: true,
             lookAt: [
               "It costs 104px of a 760px fold",
@@ -171,13 +170,15 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
               "The heading is label-sized — it does not compete with the H1 below it",
               "Pairing the helpline with the campaign's button makes it read as the second half of one offer, when it is a standing service that happens to be printed here",
             ],
+            status: "superseded",
+            supersededBy:
+              "The pairing it depends on is the defect: a volunteer form and a national helpline are not two ways to do one thing. “Two zones” keeps both in the band and separates them by design.",
           },
           {
             id: "ctas-below",
             title: "CTAs below the copy",
             summary:
               "168px. A 120px code spans the full height, and the heading, sentence and both buttons stack beside it — the handoff’s own composition.",
-            status: "proposed",
             live: true,
             lookAt: [
               "64px more of the fold than the compact band, all of it the code's height",
@@ -185,13 +186,17 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
               "Its sentence points at the e-pledge while the button beneath goes to the volunteer register; kept verbatim so the mismatch can be settled rather than quietly harmonised",
               "The pulsing call glyph is the handoff's own instance, not an addition",
             ],
+            status: "superseded",
+            supersededBy:
+              "It answers a different question — how tall the band is — and stacking the two routes in a column makes them MORE alike, not less. Kept because the handoff draws it and the 120px code is worth revisiting.",
           },
           {
             id: "two-zones",
             title: "Two zones",
             summary:
               "The campaign keeps the band's gradient; the helpline takes a darker panel at the trailing edge, shaped as a fact — a caption over a figure — rather than as a second button.",
-            status: "proposed",
+            status: "chosen",
+            landedIn: "the live organisation band — `.orgjb__service`",
             live: true,
             lookAt: [
               "The seam is read before any of the words are — a gap of any size only ever says “same thing, further away”",
