@@ -362,8 +362,8 @@ export function Pagination({
                   type="button"
                   className="ds-pagination__page"
                   aria-label={`Page ${n}`}
-                  onClick={() => onPageChange?.(n)}
-                  {...(loading ? inert : {})}
+                  onClick={loading ? block : () => onPageChange?.(n)}
+                  {...(loading ? inertAttrs : {})}
                 >
                   {n}
                 </button>
