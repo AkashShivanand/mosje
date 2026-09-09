@@ -45,9 +45,19 @@ None of these change the six options or the structure. All are copy, one still, 
 
 Reading level: every sentence a viewer sees is at or below grade 12 (Flesch-Kincaid, checked 9 September).
 
-## 4. What I did not change
+## 4. Decisions taken by the presenter, 9 September
 
-Nothing in this audit was applied to the deck. Items A1 to A9 are decisions for the presenter, because each adds a sentence or a slide to a deck whose length and neutrality were set by the reviewer. Each is a two-way door: a one-line edit and a rebuild.
+| Item | Decision |
+|---|---|
+| A1 | Declined. The ask is not the deck's to make; a deadline will be set with the Ministry. |
+| A2 | Applied. |
+| A3 | Applied. |
+| A4 | Declined. A designer does not give effort estimates. |
+| A5 | Declined after seeing a mock of the slide. |
+| A6 | Applied, then removed at the presenter's request. |
+| A7 | Applied. |
+| A8 | Applied, then removed at the presenter's request; the prerequisite stays as the footnote on slide 11. |
+| A9 | Applied; needs a check in PowerPoint before the room. |
 
 ## 5. Figma
 

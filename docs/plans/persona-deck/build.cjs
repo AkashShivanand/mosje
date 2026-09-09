@@ -270,7 +270,7 @@ ASSISTANT.forEach(optionPage);
     ["","B · Filter Panel with a Table","Tick groups on the left, table on the right. For comparing."],
     ["The assistant","Samajik Sahayak","The same two questions, in the chat window on every page."],
   ];
-  const rowY = 2.95, rowH = 0.62;
+  const rowY = 2.5, rowH = 0.62;
   rows.forEach((r,i)=>{
     const y = rowY + i*rowH;
     if (r[0]) s.addShape(pres.ShapeType.line, { x:M, y:y-0.08, w:CW, h:0, line:{color:BLUE_DEEP, width:1} });
@@ -280,9 +280,7 @@ ASSISTANT.forEach(optionPage);
   });
   s.addShape(pres.ShapeType.line, { x:M, y:rowY+rows.length*rowH-0.08, w:CW, h:0, line:{color:BLUE_DEEP, width:1} });
   s.addText("Before any of them is built: the two lists are confirmed by the divisions, every scheme is tagged on both, and the development team estimates the re-tagging.", {
-    x:M, y:2.28, w:CW, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:13, color:WHITE, lineSpacingMultiple:1.2 });
-  s.addText("Options that share a mechanism: Home B with Schemes B, the two lists; Home C with Schemes A, the picture row.", {
-    x:M, y:rowY+rows.length*rowH+0.1, w:CW, h:0.3, isTextBox:true, margin:0, fontFace:F, fontSize:12.5, color:BLUE_100 });
+    x:M, y:rowY+rows.length*rowH+0.14, w:CW, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:12.5, color:BLUE_100, lineSpacingMultiple:1.2 });
   s.addNotes("The six options, in one place. Each part of the site is decided on its own; any combination can be taken. Whatever is chosen, the two lists have to be confirmed, every scheme tagged on both, and the re-tagging estimated before the build starts.");
 }
 
