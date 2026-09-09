@@ -248,7 +248,6 @@ OPTIONS.forEach(optionPage);
     pill(s, x, m.iy+m.ih+0.16, it[4], SURF, MUTE);
     s.addText(it[3], { x, y:m.iy+m.ih+0.54, w:cw, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.2 });
   });
-  footLine(s, "No count is shown on either.");
   s.addNotes("The internal page. Two arrangements of the same two filters. The next two pages show each being used.");
 }
 SCHEMES_PAGE.forEach(optionPage);
