@@ -43,7 +43,7 @@
 mountShell('Home');
 const el = id => document.getElementById(id);
 const TASKS = [
-  { id:'check', t:'Check What You Can Get', s:'Five short questions. No sign-in.' },
+  { id:'check', t:'Check What You Can Get', s:'Two short questions. No sign-in.' },
   { id:'apply', t:'Apply for a Scheme',     s:'Straight to the portal that takes it.' },
   { id:'track', t:'Track an Application',   s:'Where your file has reached.' },
   { id:'redress', t:'Raise a Grievance',    s:'A benefit refused, delayed or not received.' },
@@ -64,9 +64,11 @@ let sel = 'track';
 function panel(){
   if (sel === 'check') {
     return `<div class="panel rise"><h2>Check What You Can Get</h2>
-      <p class="lede">Five short questions, any of which may be skipped. Skipping widens the answer rather than ending it.</p>
-      <div class="routes">${STAGES.map(s=>
-        `<div class="route"><b>${s.label}</b><small>Schemes are open at this stage</small></div>`).join('')}</div>
+      <p class="lede">Two short questions. The second may be skipped, which widens the answer rather than ending it.</p>
+      <div class="routes" style="grid-template-columns:1fr 1fr">
+        <div class="route"><b>Who Is Looking for Support?</b><small>${PERSONAS.map(g=>g.short).join(' · ')}</small></div>
+        <div class="route"><b>What Kind of Support?</b><small>${OFFERINGS.map(o=>o.short).join(' · ')}</small></div>
+      </div>
       <div class="row" style="margin-top:16px"><a class="btn" href="home-b.html">Start the questions →</a>
         <span class="note" style="margin:0">Nothing you answer is stored.</span></div></div>`;
   }

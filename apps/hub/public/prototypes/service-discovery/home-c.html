@@ -1,64 +1,61 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8">
-<title>Find Schemes for You — Home page, Option C</title>
+<title>Find Schemes for You — Home Page, Option C</title>
 <link rel="stylesheet" href="core.css">
 <style>
-.strip{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 22px}
+.strip{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 20px}
 .result{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);overflow:hidden;background:var(--sa-white)}
-.rhead{padding:14px 20px;border-bottom:1px solid var(--sa-hair);display:flex;align-items:center;gap:14px}
-.rhead img{width:52px;height:52px;object-fit:contain;border-radius:50%;background:var(--sa-primary-50);flex:none}
-.rhead .mark-none{width:52px;height:52px;border-radius:50%;flex:none}
+.rhead{padding:14px 20px;border-bottom:1px solid var(--sa-hair);display:flex;align-items:center;gap:14px;background:var(--sa-primary-50)}
+.rhead .m{width:52px;height:52px;border-radius:50%;background:var(--sa-white);flex:none;overflow:hidden;display:grid;place-items:center}
+.rhead .m img{width:100%;height:100%;object-fit:contain}
+.rhead .m .mark-none{width:100%;height:100%;border-radius:50%}
 .rhead b{font-size:16px;color:var(--sa-primary-800)}
-.rhead p{margin:4px 0 0;font-size:13px;color:var(--sa-ink-muted)}
-.rrow{display:flex;align-items:center;gap:16px;padding:15px 20px;border-bottom:1px solid var(--sa-hair)}
-.rrow:last-child{border-bottom:none}
-.rrow .grow{flex:1}
-.rrow h4{margin:5px 0 3px;font-size:14.5px;font-weight:700;color:var(--sa-ink)}
-.rrow small{font-size:12.5px;color:var(--sa-muted)}
-.rfoot{display:flex;justify-content:space-between;align-items:center;padding:13px 20px;background:var(--sa-surface)}
+.rhead p{margin:3px 0 0;font-size:13px;color:var(--sa-ink-muted)}
+.group{padding:10px 20px 4px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--sa-saffron-dark);border-top:1px solid var(--sa-hair)}
+.group:first-of-type{border-top:none}
+.rrow{display:flex;align-items:center;gap:16px;padding:11px 20px}
+.rrow .grow{flex:1;min-width:0}
+.rrow h4{margin:0 0 2px;font-size:14.5px;font-weight:700;color:var(--sa-ink);line-height:1.3}
+.rrow small{display:block;font-size:13px;color:var(--sa-muted);line-height:1.4}
+.rrow .via{font-size:12.5px;color:var(--sa-ink-muted);white-space:nowrap;max-width:260px;text-align:right}
+.rrow a.go{color:var(--sa-primary-600);font-weight:600;font-size:13px;text-decoration:none;white-space:nowrap}
+.rfoot{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:var(--sa-surface);border-top:1px solid var(--sa-hair)}
+.rfoot a{color:var(--sa-primary-600);font-weight:600;font-size:13.5px;text-decoration:none}
 </style></head><body>
 <script src="data.js"></script><script src="shell.js"></script>
 <main class="wrap sec">
   <div>
     <h1 class="sec-t">Find Schemes for You</h1>
-    <p class="sec-lede">Choose who you are. You are shown the portal, the scheme and the complaint route for that group — no questions asked.</p>
+    <p class="sec-lede">Choose who you are. The schemes that name that group are listed by what they provide, with the place to apply.</p>
   </div>
   <div class="strip" id="strip"></div>
   <div id="out"></div>
-  <p class="note">One tap. Listing is not a decision on any application — the sanctioning authority decides that.</p>
+  <p class="note">A scheme naming a group is not a decision on any application — the sanctioning authority decides that.</p>
 </main>
 <script>
-/* No masthead: this option is reviewed as the section alone. */
+/* No masthead: this option is reviewed as the section alone.
+   Persona first, one tap, no questions. Rows are grouped by offering so the
+   same right-hand side the finder asks about is visible here without asking.
+   The row's link goes to the scheme's own page, which carries the portal —
+   the "common thing" agreed on 8 September; the portal is named beside it. */
 const el = id => document.getElementById(id);
-const ROUTES = {
-  sc:     { portal:['National Scholarship Portal','Apply for Post-Matric and Pre-Matric scholarships'], grievance:'Public Grievance Portal' },
-  obc:    { portal:['National Scholarship Portal','Apply for PM-YASASVI and OBC hostels'], grievance:'Public Grievance Portal' },
-  dnt:    { portal:['SEED Portal','Coaching, health insurance, housing and livelihood for DNT communities'], grievance:'Public Grievance Portal' },
-  safai:  { portal:['NAMASTE Portal','Profiling, safety equipment and capital subsidy for sanitation workers'], grievance:'Public Grievance Portal' },
-  senior: { portal:['Elderline 14567','Toll-free helpline for senior citizens, in your language'], grievance:'Public Grievance Portal' },
-  tg:     { portal:['National Portal for Transgender Persons','Apply for the Identity Certificate and welfare support'], grievance:'Public Grievance Portal' },
-  drug:   { portal:['NMBA — 14446','De-addiction centres and counselling, toll free'], grievance:'Public Grievance Portal' },
-  ngo:    { portal:['e-Anudaan','Apply for grant-in-aid as a voluntary organisation'], grievance:'Public Grievance Portal' },
-  pwd:    { portal:['depwd.gov.in','Handled by the Department of Empowerment of Persons with Disabilities'], grievance:'Public Grievance Portal' },
-};
-let sel = 'tg';
+const PER_GROUP = 3;   // rows per offering, so the panel fits the fold
+let sel = 'student';
 function draw(){
-  el('strip').innerHTML = GROUPS.map(g =>
-    `<button class="chip" data-g="${g.id}" aria-pressed="${g.id===sel}">${g.label}</button>`).join('');
-  const g = GROUPS.find(x=>x.id===sel), r = ROUTES[sel];
-  const scheme = SCHEMES.find(s=>s.g.includes(sel));
+  el('strip').innerHTML = PERSONAS.map(g =>
+    `<button class="chip" data-g="${g.id}" aria-pressed="${g.id===sel}">${g.short}</button>`).join('');
+  const g = PERSONAS.find(x=>x.id===sel);
+  const groups = offersFor(sel).map(o => ({ o, rows: matchSchemes({ who:sel, offer:o.id }) })).filter(x=>x.rows.length);
   el('out').innerHTML = `
     <div class="result rise">
-      <div class="rhead">${markHTML(g.id)}<div><b>${g.label}</b><p>${g.sub}</p></div></div>
-      <div class="rrow"><div class="grow"><span class="tag saff">Portal</span>
-        <h4>${r.portal[0]}</h4><small>${r.portal[1]}</small></div>
-        <button class="btn">Apply now →</button></div>
-      ${scheme ? `<div class="rrow"><div class="grow"><span class="tag blue">Scheme</span>
-        <h4>${scheme.t}</h4><small>${scheme.benefit} · run by ${scheme.runBy}</small></div>
-        <button class="btn ghost">Apply now →</button></div>` : ''}
-      <div class="rrow"><div class="grow"><span class="tag grey">Complaint</span>
-        <h4>${r.grievance}</h4><small>Report denial of a right, discrimination, or a benefit not received</small></div>
-        <button class="btn ghost">Visit →</button></div>
-      <div class="rfoot"><a href="scheme-b.html?g=${sel}" style="color:var(--sa-primary-600);font-weight:600;font-size:13.5px;text-decoration:none">All ${g.label} schemes →</a></div>
+      <div class="rhead"><span class="m">${markHTML(g.id)}</span><div><b>${g.label}</b><p>${g.sub}</p></div></div>
+      ${groups.map(({o,rows}) => `
+        <div class="group">${o.label}</div>
+        ${rows.slice(0,PER_GROUP).map(s => `
+          <div class="rrow"><div class="grow"><h4>${s.name}</h4><small>${s.provides}</small></div>
+            <span class="via">${applyLabel(s.apply[0])}</span>
+            <a class="go" href="#">Scheme page →</a></div>`).join('')}
+        ${rows.length>PER_GROUP ? `<div class="rrow" style="padding-top:0"><a class="go" href="scheme-b.html?g=${sel}&o=${o.id}">More ${o.short.toLowerCase()} for this group →</a></div>` : ''}`).join('')}
+      <div class="rfoot"><a href="scheme-b.html?g=${sel}">All Schemes for ${g.short} →</a></div>
     </div>`;
 }
 el('strip').addEventListener('click', e => {

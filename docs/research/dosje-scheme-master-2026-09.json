@@ -1,0 +1,1386 @@
+{
+  "$comment": [
+    "THE SCHEME MASTER — every scheme the Department of Social Justice and Empowerment runs,",
+    "mapped to the people it serves (personas) and to what it provides (offerings).",
+    "",
+    "This file is the single source for the service-discovery prototypes, the Figma option",
+    "frames and the decision deck. `tools/service-discovery/build-data.mjs` generates",
+    "`apps/hub/public/prototypes/service-discovery/data.js` and",
+    "`docs/research/dosje-scheme-master-2026-09.md` from it. Edit HERE, then rebuild.",
+    "",
+    "SOURCES. Nothing in this file comes from the beta site's Schemes list, which the",
+    "8 September 2026 review found untrustworthy (it counts guideline pages, status tables",
+    "and State schemes as Department schemes). Every record cites at least one of:",
+    "  AR    Department of Social Justice and Empowerment, Annual Report 2025-26, Chapter 3",
+    "        (socialjustice.gov.in/writereaddata/UploadFile/71441776233188.pdf), section number",
+    "  SBE   Notes on Demands for Grants 2026-27, Demand No. 93 (indiabudget.gov.in/doc/eb/sbe93.pdf),",
+    "        line item number",
+    "  PIB   Year-End Review 2025 of the Department, PIB release 2209488, 29 December 2025",
+    "  SJ    socialjustice.gov.in/schemes/<n> — the Department's legacy site scheme page",
+    "  DOSJE dosje.gov.in organisation page, used only for portal names",
+    "",
+    "RULES. A figure appears here only when a source states it. Where two sources disagree",
+    "the field is left empty and the disagreement is recorded in `conflicts`. Nothing here",
+    "states that a person IS eligible — `who` records whom the scheme names as its target",
+    "group; the sanctioning authority decides every application.",
+    "`offersFor` — where a record names more than one persona and not every offering applies to every one of them (a grant is for the NGO, the care is for the citizen), it says which personas each offering is for. Absent means every offering applies to every persona named."
+  ],
+  "generated": "2026-09-08",
+  "mandate": {
+    "source": "AR §1.2",
+    "groups": [
+      "Scheduled Castes (SCs)",
+      "Other Backward Classes (OBCs)",
+      "Senior Citizens",
+      "Victims of Alcoholism and Substance Abuse",
+      "Transgender Persons",
+      "Persons engaged in Beggary",
+      "De-notified, Nomadic and Semi-Nomadic Tribes (DNTs)",
+      "Manual Scavengers",
+      "Sewer & Septic Tank workers",
+      "Waste Pickers",
+      "Economically Backward Classes (EBCs)",
+      "Economically Weaker Sections (EWS)"
+    ]
+  },
+  "personas": [
+    {
+      "id": "student",
+      "label": "Students",
+      "sub": "From Class I to Ph.D. and study abroad, from the groups the Department serves",
+      "mandate": "cross-cutting — every scholarship names a community and a stage; a student looks for the stage first. Listed first because it is the most common visitor and because the panel's artwork for it is a woman: the review asked that the sequence open on a female figure."
+    },
+    {
+      "id": "sc",
+      "label": "Scheduled Castes",
+      "sub": "As notified under Article 341 of the Constitution",
+      "mandate": "Scheduled Castes (SCs)"
+    },
+    {
+      "id": "obc",
+      "label": "Other Backward Classes",
+      "sub": "Including Economically Backward Classes",
+      "mandate": "Other Backward Classes (OBCs); Economically Backward Classes (EBCs)"
+    },
+    {
+      "id": "dnt",
+      "label": "De-notified, Nomadic and Semi-Nomadic Tribes",
+      "short": "DNT, Nomadic and Semi-Nomadic Tribes",
+      "sub": "Communities listed as DNT, NT or SNT",
+      "mandate": "De-notified, Nomadic and Semi-Nomadic Tribes (DNTs)"
+    },
+    {
+      "id": "safai",
+      "label": "Safai Karamcharis",
+      "sub": "Manual scavengers, sewer and septic tank workers, waste pickers, and their dependants",
+      "mandate": "Manual Scavengers; Sewer & Septic Tank workers; Waste Pickers"
+    },
+    {
+      "id": "senior",
+      "label": "Senior Citizens",
+      "sub": "Aged 60 years or above",
+      "mandate": "Senior Citizens"
+    },
+    {
+      "id": "tg",
+      "label": "Transgender Persons",
+      "sub": "As defined in the Transgender Persons (Protection of Rights) Act, 2019",
+      "mandate": "Transgender Persons"
+    },
+    {
+      "id": "drug",
+      "label": "Persons Affected by Substance Use",
+      "short": "Affected by Substance Use",
+      "sub": "The person, and their family",
+      "mandate": "Victims of Alcoholism and Substance Abuse"
+    },
+    {
+      "id": "begging",
+      "label": "Persons Engaged in Begging",
+      "short": "Engaged in Begging",
+      "sub": "Rescue, shelter and rehabilitation",
+      "mandate": "Persons engaged in Beggary"
+    },
+    {
+      "id": "atrocity",
+      "label": "Victims of Atrocities",
+      "sub": "Under the PCR Act, 1955 and the SC/ST (PoA) Act, 1989",
+      "mandate": "served through the PCR-PoA scheme (AR §3.9) and the National Helpline Against Atrocities"
+    },
+    {
+      "id": "ngo",
+      "label": "Voluntary Organisations",
+      "sub": "NGOs, CBOs and institutions applying for grant-in-aid",
+      "mandate": "delivery partners under AVYAY, NAPDDR, SHRESHTA, SMILE and PM-AJAY (AR §3.39)"
+    }
+  ],
+  "signpost": {
+    "id": "pwd",
+    "label": "Persons with Disabilities",
+    "sub": "Their schemes are run by the Department of Empowerment of Persons with Disabilities",
+    "to": "depwd.gov.in",
+    "why": "A separate Department of the same Ministry since 2012; its Annual Report 2025-26 carries DDRS, ADIP, SIPDA and the disability scholarships. DoSJE carries none."
+  },
+  "offerings": [
+    {
+      "id": "scholarship",
+      "label": "Scholarships and Fellowships",
+      "sub": "Pre-matric to Ph.D., and study abroad"
+    },
+    {
+      "id": "schooling",
+      "label": "Residential Schools, Hostels and Coaching",
+      "short": "Schools, Hostels and Coaching",
+      "sub": "Top-class schools, hostels and free coaching for competitive examinations"
+    },
+    {
+      "id": "loan",
+      "label": "Loans and Credit",
+      "sub": "Concessional loans, interest subvention and venture capital through the Department's corporations"
+    },
+    {
+      "id": "skill",
+      "label": "Skill Training and Livelihood",
+      "sub": "Free training with stipend, self-employment support, village development"
+    },
+    {
+      "id": "care",
+      "label": "Care, Shelter and Health",
+      "sub": "Old-age homes, shelter homes, assistive devices and health cover"
+    },
+    {
+      "id": "deaddiction",
+      "label": "De-addiction and Counselling",
+      "sub": "Treatment centres, the 14446 helpline and Nasha Mukt Bharat Abhiyaan"
+    },
+    {
+      "id": "protection",
+      "label": "Protection, Relief and Grievance",
+      "sub": "Relief to atrocity victims, the 14566 helpline, and the Commissions' grievance portals"
+    },
+    {
+      "id": "grant",
+      "label": "Grants to Voluntary Organisations",
+      "sub": "Grant-in-aid through the e-Anudaan portal"
+    }
+  ],
+  "routes": {
+    "nsp": {
+      "label": "National Scholarship Portal",
+      "href": "https://scholarships.gov.in",
+      "source": "AR §3.20, §3.21 — merit lists prepared on the National Scholarship Portal"
+    },
+    "state": {
+      "label": "the State's scholarship portal",
+      "href": null,
+      "source": "SJ 25 — awardees are selected by the State Government/UT to which the applicant belongs"
+    },
+    "nos": {
+      "label": "the NOS portal",
+      "href": "https://nosmsje.gov.in",
+      "source": "SJ 28 — apply online on the portal https://nosmsje.gov.in"
+    },
+    "ugc": {
+      "label": "the UGC",
+      "href": "https://www.ugc.gov.in",
+      "source": "SBE 8.01 — the implementing agency of this scheme is UGC"
+    },
+    "nbcfdc": {
+      "label": "NBCFDC",
+      "href": "https://nbcfdc.gov.in",
+      "source": "AR §3.36 — lending through State Channelising Agencies and banks; NFOBC nodal agency"
+    },
+    "nsfdc": {
+      "label": "NSFDC",
+      "href": "https://nsfdc.nic.in",
+      "source": "AR §3.34; SJ 34"
+    },
+    "nskfdc": {
+      "label": "NSKFDC",
+      "href": "https://nskfdc.nic.in",
+      "source": "AR §3.35; SJ 37"
+    },
+    "canara": {
+      "label": "Canara Bank",
+      "href": null,
+      "source": "AR §3.24 — implemented through the Canara Bank"
+    },
+    "shreshta": {
+      "label": "the SHRESHTA entrance test (NTA)",
+      "href": null,
+      "source": "AR §3.10; PIB"
+    },
+    "pmajay": {
+      "label": "the PM-AJAY portal",
+      "href": "https://pmajay.dosje.gov.in",
+      "source": "SJ 104"
+    },
+    "district": {
+      "label": "the District administration",
+      "href": null,
+      "source": "AR §3.9 — Central assistance released to States/UTs; relief is administered locally"
+    },
+    "nhaa": {
+      "label": "Helpline 14566",
+      "href": "tel:14566",
+      "source": "PIB 1780979 (13 Dec 2021); DOSJE organisation page NHAA"
+    },
+    "ncsc": {
+      "label": "the NCSC grievance portal",
+      "href": "https://ncsc.nic.in",
+      "source": "AR §3.27"
+    },
+    "ncsk": {
+      "label": "the NCSK",
+      "href": null,
+      "source": "AR §3.28"
+    },
+    "namaste": {
+      "label": "the urban local body (NAMASTE)",
+      "href": null,
+      "source": "AR §3.11 — profiling through the NAMASTE application; NAMASTE cards issued by ULBs/PRIs"
+    },
+    "bank": {
+      "label": "the lending bank",
+      "href": null,
+      "source": "AR §3.25"
+    },
+    "ifci": {
+      "label": "IFCI Venture",
+      "href": null,
+      "source": "PIB — IFCI manages the fund"
+    },
+    "pmdaksh": {
+      "label": "the PM-DAKSH portal",
+      "href": null,
+      "source": "AR §3.13 — implemented by the three corporations through selected training institutes — the portal address was not confirmed on 9 September 2026, so no link is shown"
+    },
+    "alimco": {
+      "label": "an ALIMCO camp",
+      "href": null,
+      "source": "AR §3.14 C — implemented by ALIMCO as Central Nodal Agency"
+    },
+    "elderline": {
+      "label": "Elderline 14567",
+      "href": "tel:14567",
+      "source": "AR §3.14 D"
+    },
+    "eanudaan": {
+      "label": "the e-Anudaan portal",
+      "href": "https://grants-msje.gov.in",
+      "source": "AR §3.39 — grants-msje.gov.in"
+    },
+    "nmba": {
+      "label": "Helpline 14446, or the nearest centre",
+      "href": "tel:14446",
+      "source": "AR §3.15 — toll-free helpline 14446; nmba.dosje.gov.in"
+    },
+    "smile": {
+      "label": "the shelter home (urban local body)",
+      "href": null,
+      "source": "AR §3.16 — implemented in 181 cities through District Administrations and ULBs"
+    },
+    "tgportal": {
+      "label": "the National Portal for Transgender Persons",
+      "href": null,
+      "source": "AR §3.17; DOSJE organisation page — the portal address was not confirmed on 9 September 2026, so no link is shown"
+    },
+    "seed": {
+      "label": "the SEED portal",
+      "href": "https://seed.dosje.gov.in",
+      "source": "SJ 109"
+    },
+    "institution": {
+      "label": "the school or college",
+      "href": null,
+      "source": "AR §3.22 — assistance to States/UTs and institutions for construction"
+    },
+    "wcd": {
+      "label": "the District Magistrate (WCD)",
+      "href": null,
+      "source": "AR §3.26"
+    },
+    "daf": {
+      "label": "Dr. Ambedkar Foundation",
+      "href": null,
+      "source": "AR §3.31"
+    },
+    "nisd": {
+      "label": "a NISD-affiliated institute",
+      "href": null,
+      "source": "AR §3.14 F"
+    }
+  },
+  "schemes": [
+    {
+      "id": "pms-sc",
+      "umbrella": "Umbrella Scheme for Development of Scheduled Castes",
+      "division": "SCD",
+      "type": "Centrally Sponsored",
+      "name": "Post Matric Scholarship for Scheduled Castes",
+      "who": [
+        "sc",
+        "student"
+      ],
+      "offers": [
+        "scholarship"
+      ],
+      "provides": "Compulsory non-refundable fees, including tuition, and an academic allowance for the whole course after Class X.",
+      "named": "SC students studying at the post-matric stage; parent or guardian income up to ₹2.5 lakh a year.",
+      "apply": [
+        "state",
+        "nsp"
+      ],
+      "sources": [
+        "AR §3.1",
+        "SBE 26",
+        "PIB",
+        "SJ 25"
+      ]
+    },
+    {
+      "id": "pre-matric-sc",
+      "umbrella": "Umbrella Scheme for Development of Scheduled Castes",
+      "division": "SCD",
+      "type": "Centrally Sponsored",
+      "name": "Pre-Matric Scholarship for Scheduled Castes and Others",
+      "who": [
+        "sc",
+        "safai",
+        "student"
+      ],
+      "offers": [
+        "scholarship"
+      ],
+      "provides": "An academic allowance of ₹3,500 a year for day scholars and ₹7,000 or ₹8,000 for hostellers.",
+      "named": "SC students in Class IX and X with family income up to ₹2.5 lakh; and children in Class I to X of manual scavengers, tanners and flayers, waste pickers and hazardous-cleaning workers, with no income limit.",
+      "apply": [
+        "state",
+        "nsp"
+      ],
+      "sources": [
+        "AR §3.2",
+        "SBE 27",
+        "PIB"
+      ]
+    },
+    {
+      "id": "nfsc",
+      "umbrella": "SHREYAS for SCs",
+      "division": "SCD",
+      "type": "Central Sector",
+      "name": "National Fellowship for Scheduled Caste Students",
+      "who": [
+        "sc",
+        "student"
+      ],
+      "offers": [
+        "scholarship"
+      ],
+      "provides": "A Ph.D. fellowship with contingency and house rent allowance; 2,000 new fellowships a year.",
+      "named": "SC students who have qualified UGC NET-JRF or UGC-CSIR NET-JRF, for Ph.D. at a UGC-recognised institution.",
+      "apply": [
+        "ugc"
+      ],
+      "sources": [
+        "AR §3.3",
+        "SBE 8.01",
+        "PIB"
+      ]
+    },
+    {
+      "id": "nos",
+      "umbrella": "SHREYAS for SCs",
+      "division": "SCD",
+      "type": "Central Sector",
+      "name": "National Overseas Scholarship for SCs and Others",
+      "who": [
+        "sc",
+        "dnt",
+        "student"
+      ],
+      "offers": [
+        "scholarship"
+      ],
+      "provides": "Tuition, maintenance and contingency allowances, visa, insurance and air passage for a Master's or Ph.D. abroad; 125 slots a year, 30% for women.",
+      "named": "Students from Scheduled Castes, DNT, NT and SNT communities, landless agricultural labourers and traditional artisans; family income up to ₹8 lakh; age up to 35; admission to a top-500 QS-ranked university.",
+      "apply": [
+        "nos"
+      ],
+      "sources": [
+        "AR §3.4",
+        "SBE 8.04",
+        "PIB",
+        "SJ 28"
+      ]
+    },
+    {
+      "id": "top-class-sc",
+      "umbrella": "SHREYAS for SCs",
+      "division": "SCD",
+      "type": "Central Sector",
+      "name": "Top Class Education for Scheduled Caste Students",
+      "who": [
+        "sc",
+        "student"
+      ],
+      "offers": [
+        "scholarship"
+      ],
+      "provides": "Full tuition and non-refundable charges, plus an academic allowance of ₹86,000 in the first year and ₹41,000 in each later year, at 274 notified institutions.",
+      "named": "SC students with family income up to ₹8 lakh admitted to a notified institution; 30% of slots for SC girl students.",
+      "apply": [
+        "nsp"
+      ],
+      "sources": [
+        "AR §3.5",
+        "SBE 8.03",
+        "PIB"
+      ]
+    },
+    {
+      "id": "free-coaching",
+      "umbrella": "SHREYAS for SCs",
+      "division": "SCD",
+      "type": "Central Sector",
+      "name": "Free Coaching for SCs, OBCs and PM CARES Children",
+      "who": [
+        "sc",
+        "obc",
+        "student"
+      ],
+      "offers": [
+        "schooling"
+      ],
+      "provides": "Course fee up to ₹75,000 and a stipend of ₹4,000 a month for up to 12 months of coaching for competitive and entrance examinations.",
+      "named": "SC and OBC students with family income up to ₹8 lakh, and beneficiaries of the PM CARES for Children scheme with no income or caste condition.",
+      "apply": [
+        "nsp"
+      ],
+      "sources": [
+        "AR §3.6",
+        "SBE 8.02",
+        "PIB"
+      ]
+    },
+    {
+      "id": "shreshta",
+      "umbrella": null,
+      "division": "SCD",
+      "type": "Central Sector",
+      "name": "SHRESHTA — Residential Education for Students in High Schools in Targeted Areas",
+      "who": [
+        "sc",
+        "student",
+        "ngo"
+      ],
+      "offers": [
+        "schooling",
+        "grant"
+      ],
+      "provides": "Mode I: full tuition and hostel fees at a top private residential school from Class 9 or 11 to Class 12. Mode II: grant-in-aid to NGO-run residential schools and hostels for SC students.",
+      "named": "Meritorious SC students selected through the National Entrance Test for SHRESHTA; and voluntary organisations running schools and hostels for SC students.",
+      "apply": [
+        "shreshta",
+        "eanudaan"
+      ],
+      "sources": [
+        "AR §3.10",
+        "SBE 9",
+        "PIB"
+      ],
+      "offersFor": {
+        "grant": [
+          "ngo"
+        ],
+        "schooling": [
+          "sc",
+          "student"
+        ]
+      }
+    },
+    {
+      "id": "pm-ajay",
+      "umbrella": "Umbrella Scheme for Development of Scheduled Castes",
+      "division": "SCD",
+      "type": "Centrally Sponsored",
+      "name": "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (PM-AJAY)",
+      "who": [
+        "sc"
+      ],
+      "offers": [
+        "skill"
+      ],
+      "provides": "Development of SC-dominated villages as Adarsh Gram; grants-in-aid for district and State livelihood and infrastructure projects; hostels in higher-education institutions.",
+      "named": "Scheduled Caste communities, through the State Government and District administration; 100% centrally funded.",
+      "apply": [
+        "pmajay"
+      ],
+      "sources": [
+        "AR §3.7",
+        "SBE 28",
+        "PIB",
+        "SJ 104"
+      ]
+    },
+    {
+      "id": "pcr-poa",
+      "umbrella": "Umbrella Scheme for Development of Scheduled Castes",
+      "division": "SCD",
+      "type": "Centrally Sponsored",
+      "name": "Implementation of the PCR Act, 1955 and the SC/ST (PoA) Act, 1989",
+      "who": [
+        "atrocity",
+        "sc"
+      ],
+      "offers": [
+        "protection"
+      ],
+      "provides": "Relief and rehabilitation of atrocity victims and their dependants; an incentive for inter-caste marriages where one spouse is a Scheduled Caste; SC/ST Protection Cells, special police stations and exclusive special courts.",
+      "named": "Victims of atrocities under the two Acts, and their dependants, through the State Government.",
+      "apply": [
+        "nhaa",
+        "district"
+      ],
+      "sources": [
+        "AR §3.9",
+        "SBE 29",
+        "PIB"
+      ]
+    },
+    {
+      "id": "nhaa",
+      "umbrella": null,
+      "division": "SCD",
+      "type": "Helpline",
+      "name": "National Helpline Against Atrocities — 14566",
+      "who": [
+        "atrocity",
+        "sc"
+      ],
+      "offers": [
+        "protection"
+      ],
+      "provides": "A toll-free, round-the-clock helpline in Hindi, English and regional languages that registers complaints under the PoA Act and follows them to an FIR.",
+      "named": "Anyone reporting an atrocity against a member of a Scheduled Caste or Scheduled Tribe.",
+      "apply": [
+        "nhaa"
+      ],
+      "sources": [
+        "PIB 1780979",
+        "DOSJE NHAA"
+      ]
+    },
+    {
+      "id": "ncsc-egmp",
+      "umbrella": null,
+      "division": "SCD",
+      "type": "Grievance",
+      "name": "NCSC e-Grievance Management Portal",
+      "who": [
+        "sc"
+      ],
+      "offers": [
+        "protection"
+      ],
+      "provides": "Lodging and tracking of a complaint about deprivation of the rights and safeguards of Scheduled Castes, with SMS and e-mail updates at each stage.",
+      "named": "Any member of a Scheduled Caste with a grievance about a safeguard.",
+      "apply": [
+        "ncsc"
+      ],
+      "sources": [
+        "AR §3.27",
+        "PIB"
+      ]
+    },
+    {
+      "id": "namaste",
+      "umbrella": null,
+      "division": "SCD",
+      "type": "Central Sector",
+      "name": "National Action for Mechanised Sanitation Ecosystem (NAMASTE)",
+      "who": [
+        "safai"
+      ],
+      "offers": [
+        "care",
+        "skill",
+        "loan"
+      ],
+      "provides": "Profiling and a NAMASTE card; PPE kits and safety training; health cover under Ayushman Bharat PM-JAY; capital subsidy for sanitation vehicles and equipment under Swachhta Udyami Yojana; skill training with stipend for manual scavengers and dependants.",
+      "named": "Sewer and septic tank workers, waste pickers, and manual scavengers and their dependants.",
+      "apply": [
+        "namaste",
+        "nskfdc"
+      ],
+      "sources": [
+        "AR §3.11",
+        "SBE 17",
+        "PIB",
+        "SJ 37"
+      ]
+    },
+    {
+      "id": "nskfdc-loans",
+      "umbrella": null,
+      "division": "SCD",
+      "type": "Corporation",
+      "name": "NSKFDC Concessional Loans",
+      "who": [
+        "safai"
+      ],
+      "offers": [
+        "loan"
+      ],
+      "provides": "Concessional loans for income-generating activities and education, with priority to women through Mahila Samridhi Yojana and Mahila Adhikarita Yojana.",
+      "named": "Safai Karamcharis including waste pickers, manual scavengers, and their dependants.",
+      "apply": [
+        "nskfdc"
+      ],
+      "sources": [
+        "AR §3.35",
+        "PIB"
+      ]
+    },
+    {
+      "id": "ncsk",
+      "umbrella": null,
+      "division": "SCD",
+      "type": "Grievance",
+      "name": "National Commission for Safai Karamcharis",
+      "who": [
+        "safai"
+      ],
+      "offers": [
+        "protection"
+      ],
+      "provides": "Investigation of grievances of Safai Karamcharis, and pursuit of compensation in sewer and septic tank death and disability cases.",
+      "named": "Safai Karamcharis and the families of sewer and septic tank workers.",
+      "apply": [
+        "ncsk"
+      ],
+      "sources": [
+        "AR §3.28",
+        "PIB"
+      ]
+    },
+    {
+      "id": "nsfdc-loans",
+      "umbrella": null,
+      "division": "SCD",
+      "type": "Corporation",
+      "name": "NSFDC Concessional Loans",
+      "who": [
+        "sc"
+      ],
+      "offers": [
+        "loan"
+      ],
+      "provides": "Micro finance up to ₹1.40 lakh, term loans up to ₹50 lakh and education loans up to ₹40 lakh at concessional interest, through State Channelising Agencies and banks.",
+      "named": "Scheduled Caste families within the Corporation's income ceiling.",
+      "apply": [
+        "nsfdc"
+      ],
+      "sources": [
+        "AR §3.34",
+        "PIB",
+        "SJ 34"
+      ]
+    },
+    {
+      "id": "nbcfdc-loans",
+      "umbrella": null,
+      "division": "BC",
+      "type": "Corporation",
+      "name": "NBCFDC Concessional Loans",
+      "who": [
+        "obc"
+      ],
+      "offers": [
+        "loan"
+      ],
+      "provides": "Individual loans up to ₹25 lakh, group loans up to ₹25 lakh per self-help group, and education loans up to ₹25 lakh at concessional interest.",
+      "named": "Members of Backward Classes with annual family income up to ₹3 lakh.",
+      "apply": [
+        "nbcfdc"
+      ],
+      "sources": [
+        "AR §3.36",
+        "PIB"
+      ]
+    },
+    {
+      "id": "visvas",
+      "umbrella": null,
+      "division": "SCD / BC",
+      "type": "Central Sector",
+      "name": "VISVAS Yojana — Interest Subvention",
+      "who": [
+        "sc",
+        "obc",
+        "safai"
+      ],
+      "offers": [
+        "loan"
+      ],
+      "provides": "A 5% interest subvention, paid by direct benefit transfer, on income-generating loans up to ₹5 lakh for individuals and ₹10 lakh for self-help groups.",
+      "named": "SC and OBC borrowers with family income up to ₹3 lakh, and Safai Karamcharis with no income limit, holding standard loan accounts.",
+      "apply": [
+        "bank"
+      ],
+      "sources": [
+        "AR §3.25",
+        "SBE 10",
+        "PIB"
+      ]
+    },
+    {
+      "id": "vcf",
+      "umbrella": null,
+      "division": "SCD / BC",
+      "type": "Central Sector",
+      "name": "Venture Capital Fund for SCs and for Backward Classes, with ASIIM",
+      "who": [
+        "sc",
+        "obc"
+      ],
+      "offers": [
+        "loan"
+      ],
+      "provides": "Concessional finance from ₹10 lakh to ₹15 crore for SC enterprises and ₹20 lakh to ₹15 crore for Backward Class enterprises; equity up to ₹30 lakh for SC youth start-ups under ASIIM.",
+      "named": "SC and Backward Class entrepreneurs and start-ups.",
+      "apply": [
+        "ifci"
+      ],
+      "sources": [
+        "AR §3.12",
+        "SBE 12",
+        "PIB"
+      ]
+    },
+    {
+      "id": "pm-daksh",
+      "umbrella": null,
+      "division": "SCD / BC",
+      "type": "Central Sector",
+      "name": "PM-DAKSH — Skill Training",
+      "who": [
+        "sc",
+        "obc",
+        "dnt",
+        "safai"
+      ],
+      "offers": [
+        "skill"
+      ],
+      "provides": "Free skill training, from up-skilling to long-term courses, with a stipend or boarding and lodging, and placement support.",
+      "named": "Persons aged 18 to 45 from Scheduled Castes, DNTs and sanitation work with no income limit; OBCs with family income up to ₹3 lakh; EBCs up to ₹1 lakh.",
+      "apply": [
+        "pmdaksh"
+      ],
+      "sources": [
+        "AR §3.13",
+        "SBE 11",
+        "PIB"
+      ],
+      "note": "SBE 11 records that the scheme is merged with PM Kaushal Vikas Yojana from 2026-27. The record stands for 2025-26 and must be reviewed before the surface launches."
+    },
+    {
+      "id": "avyay-ipsrc",
+      "umbrella": "Atal Vayo Abhyuday Yojana",
+      "division": "Social Defence",
+      "type": "Centrally Sponsored",
+      "name": "Integrated Programme for Senior Citizens",
+      "who": [
+        "senior",
+        "ngo"
+      ],
+      "offers": [
+        "care",
+        "grant"
+      ],
+      "provides": "Grant-in-aid to organisations running senior citizen homes, continuous care homes and day-care centres that give free shelter, food, medical care and recreation.",
+      "named": "Indigent senior citizens; and organisations working in old-age care for at least two years.",
+      "apply": [
+        "eanudaan"
+      ],
+      "sources": [
+        "AR §3.14 A",
+        "SBE 31",
+        "PIB"
+      ],
+      "offersFor": {
+        "grant": [
+          "ngo"
+        ],
+        "care": [
+          "senior"
+        ]
+      }
+    },
+    {
+      "id": "avyay-rvy",
+      "umbrella": "Atal Vayo Abhyuday Yojana",
+      "division": "Social Defence",
+      "type": "Central Sector",
+      "name": "Rashtriya Vayoshri Yojana",
+      "who": [
+        "senior"
+      ],
+      "offers": [
+        "care"
+      ],
+      "provides": "Free physical aids and assistive devices for age-related disability or infirmity, distributed through ALIMCO camps.",
+      "named": "Senior citizens aged 60 or above, holding Aadhaar, who are BPL or have a monthly income of not more than ₹15,000.",
+      "apply": [
+        "alimco"
+      ],
+      "sources": [
+        "AR §3.14 C",
+        "SBE 18",
+        "PIB"
+      ]
+    },
+    {
+      "id": "avyay-elderline",
+      "umbrella": "Atal Vayo Abhyuday Yojana",
+      "division": "Social Defence",
+      "type": "Helpline",
+      "name": "Elderline — National Helpline for Senior Citizens, 14567",
+      "who": [
+        "senior"
+      ],
+      "offers": [
+        "care",
+        "protection"
+      ],
+      "provides": "Free information, guidance, emotional support and field intervention in cases of abuse and rescue, in every State and UT.",
+      "named": "All senior citizens.",
+      "apply": [
+        "elderline"
+      ],
+      "sources": [
+        "AR §3.14 D",
+        "PIB"
+      ]
+    },
+    {
+      "id": "avyay-caregivers",
+      "umbrella": "Atal Vayo Abhyuday Yojana",
+      "division": "Social Defence",
+      "type": "Central Sector",
+      "name": "Training of Geriatric Caregivers",
+      "who": [
+        "senior"
+      ],
+      "offers": [
+        "skill"
+      ],
+      "provides": "Certified training in geriatric care at medical and nursing colleges and NISD-affiliated institutes, to create a pool of professional caregivers.",
+      "named": "Persons aged 18 or above with the qualification the job role requires.",
+      "apply": [
+        "nisd"
+      ],
+      "sources": [
+        "AR §3.14 F",
+        "PIB"
+      ]
+    },
+    {
+      "id": "napddr",
+      "umbrella": "Umbrella Programme for Development of Other Vulnerable Groups",
+      "division": "Social Defence",
+      "type": "Centrally Sponsored",
+      "name": "National Action Plan for Drug Demand Reduction and Nasha Mukt Bharat Abhiyaan",
+      "who": [
+        "drug",
+        "ngo"
+      ],
+      "offers": [
+        "deaddiction",
+        "grant"
+      ],
+      "provides": "Integrated Rehabilitation Centres for Addicts, Outreach and Drop-In Centres, District De-Addiction Centres and Addiction Treatment Facilities in government hospitals; the toll-free de-addiction helpline 14446; grant-in-aid to the voluntary organisations that run the centres.",
+      "named": "Persons dependent on alcohol or drugs and their families; and NGOs running de-addiction and outreach centres.",
+      "apply": [
+        "nmba",
+        "eanudaan"
+      ],
+      "sources": [
+        "AR §3.15",
+        "SBE 32",
+        "PIB"
+      ],
+      "offersFor": {
+        "grant": [
+          "ngo"
+        ],
+        "deaddiction": [
+          "drug"
+        ]
+      }
+    },
+    {
+      "id": "smile-begging",
+      "umbrella": "SMILE",
+      "division": "Social Defence",
+      "type": "Central Sector",
+      "name": "SMILE — Comprehensive Rehabilitation of Persons Engaged in Begging",
+      "who": [
+        "begging"
+      ],
+      "offers": [
+        "care",
+        "skill"
+      ],
+      "provides": "Survey and identification, outreach and rescue, shelter homes with food, clothing, counselling and medical aid, and rehabilitation through education, skilling and self-employment; in 181 cities.",
+      "named": "Persons engaged in begging, and their children.",
+      "apply": [
+        "smile"
+      ],
+      "sources": [
+        "AR §3.16",
+        "SBE 15.01",
+        "PIB",
+        "SJ 99"
+      ]
+    },
+    {
+      "id": "smile-tg",
+      "umbrella": "SMILE",
+      "division": "Social Defence",
+      "type": "Central Sector",
+      "name": "SMILE — Comprehensive Rehabilitation for Welfare of Transgender Persons",
+      "who": [
+        "tg",
+        "ngo"
+      ],
+      "offers": [
+        "care",
+        "skill",
+        "protection",
+        "grant"
+      ],
+      "provides": "A certificate of identity through the National Portal for Transgender Persons; Garima Greh shelter homes; health cover under Ayushman Bharat PM-JAY; skill development and entrepreneurship training; Transgender Protection Cells in the States.",
+      "named": "Transgender persons holding a certificate of identity issued through the National Portal; and CBOs and NGOs able to run a shelter home.",
+      "apply": [
+        "tgportal",
+        "eanudaan"
+      ],
+      "sources": [
+        "AR §3.17",
+        "SBE 15.02",
+        "PIB",
+        "SJ 99"
+      ],
+      "offersFor": {
+        "grant": [
+          "ngo"
+        ],
+        "care": [
+          "tg"
+        ],
+        "skill": [
+          "tg"
+        ],
+        "protection": [
+          "tg"
+        ]
+      }
+    },
+    {
+      "id": "yasasvi-pre",
+      "umbrella": "PM-YASASVI",
+      "division": "BC",
+      "type": "Centrally Sponsored",
+      "name": "PM-YASASVI Pre-Matric Scholarship for OBC, EBC and DNT Students",
+      "who": [
+        "obc",
+        "dnt",
+        "student"
+      ],
+      "offers": [
+        "scholarship"
+      ],
+      "provides": "A consolidated academic allowance of ₹4,000 a year, paid by direct benefit transfer.",
+      "named": "OBC, EBC and DNT students in Class IX and X in Government schools, with family income up to ₹2.5 lakh.",
+      "apply": [
+        "state",
+        "nsp"
+      ],
+      "sources": [
+        "AR §3.18",
+        "SBE 30.02",
+        "PIB",
+        "SJ 101"
+      ]
+    },
+    {
+      "id": "yasasvi-post",
+      "umbrella": "PM-YASASVI",
+      "division": "BC",
+      "type": "Centrally Sponsored",
+      "name": "PM-YASASVI Post-Matric Scholarship for OBC, EBC and DNT Students",
+      "who": [
+        "obc",
+        "dnt",
+        "student"
+      ],
+      "offers": [
+        "scholarship"
+      ],
+      "provides": "An academic allowance of ₹5,000 to ₹20,000 a year by category of course, for study after Class X.",
+      "named": "OBC, EBC and DNT students at the post-matric stage, with family income up to ₹2.5 lakh.",
+      "apply": [
+        "state",
+        "nsp"
+      ],
+      "sources": [
+        "AR §3.19",
+        "SBE 30.01",
+        "PIB",
+        "SJ 101"
+      ]
+    },
+    {
+      "id": "yasasvi-school",
+      "umbrella": "PM-YASASVI",
+      "division": "BC",
+      "type": "Centrally Sponsored",
+      "name": "PM-YASASVI Top Class School Education for OBC, EBC and DNT Students",
+      "who": [
+        "obc",
+        "dnt",
+        "student"
+      ],
+      "offers": [
+        "scholarship",
+        "schooling"
+      ],
+      "provides": "Tuition, hostel and other school charges up to ₹75,000 a year in Class 9 and 10 and ₹1,25,000 a year in Class 11 and 12, at shortlisted top schools; 30% of scholarships for girls.",
+      "named": "OBC, EBC and DNT students admitted to a shortlisted school, with household income under ₹2.5 lakh; selected on the National Scholarship Portal merit list.",
+      "apply": [
+        "nsp"
+      ],
+      "sources": [
+        "AR §3.20",
+        "SBE 30.05",
+        "PIB"
+      ]
+    },
+    {
+      "id": "yasasvi-college",
+      "umbrella": "PM-YASASVI",
+      "division": "BC",
+      "type": "Centrally Sponsored",
+      "name": "PM-YASASVI Top Class College Education for OBC, EBC and DNT Students",
+      "who": [
+        "obc",
+        "dnt",
+        "student"
+      ],
+      "offers": [
+        "scholarship"
+      ],
+      "provides": "Full tuition and non-refundable charges, living expenses of ₹3,000 a month, ₹5,000 a year for books, and a one-time laptop allowance of ₹45,000, at IIMs, IITs, AIIMS, NITs, NLUs and other notified institutions.",
+      "named": "OBC, EBC and DNT students with family income up to ₹2.5 lakh admitted to a notified institution; 30% of slots for girl students.",
+      "apply": [
+        "nsp"
+      ],
+      "sources": [
+        "AR §3.21",
+        "SBE 30.04",
+        "PIB"
+      ]
+    },
+    {
+      "id": "yasasvi-hostel",
+      "umbrella": "PM-YASASVI",
+      "division": "BC",
+      "type": "Centrally Sponsored",
+      "name": "Construction of Hostels for OBC Boys and Girls",
+      "who": [
+        "obc",
+        "student"
+      ],
+      "offers": [
+        "schooling"
+      ],
+      "provides": "Central assistance to States, UTs and NIRF-ranked institutions to build hostels for OBC students near Government schools, colleges and universities.",
+      "named": "OBC students from rural areas, through the institution or State that builds the hostel.",
+      "apply": [
+        "institution"
+      ],
+      "sources": [
+        "AR §3.22",
+        "SBE 30.03",
+        "PIB"
+      ]
+    },
+    {
+      "id": "nfobc",
+      "umbrella": "SHREYAS for OBCs and EBCs",
+      "division": "BC",
+      "type": "Central Sector",
+      "name": "National Fellowship for OBC Students",
+      "who": [
+        "obc",
+        "student"
+      ],
+      "offers": [
+        "scholarship"
+      ],
+      "provides": "A Junior and Senior Research Fellowship at UGC rates for M.Phil. and Ph.D.; 1,000 fellowships a year, 750 in humanities and social sciences and 250 in science.",
+      "named": "OBC students who have qualified UGC NET-JRF or UGC-CSIR NET-JRF.",
+      "apply": [
+        "nbcfdc"
+      ],
+      "sources": [
+        "AR §3.23",
+        "SBE 13.01",
+        "PIB"
+      ]
+    },
+    {
+      "id": "interest-subsidy-overseas",
+      "umbrella": "SHREYAS for OBCs and EBCs",
+      "division": "BC",
+      "type": "Central Sector",
+      "name": "Dr. Ambedkar Interest Subsidy on Education Loans for Overseas Studies for OBCs and EBCs",
+      "who": [
+        "obc",
+        "student"
+      ],
+      "offers": [
+        "scholarship",
+        "loan"
+      ],
+      "provides": "The full interest for the moratorium period on an education loan of up to ₹20 lakh for a Master's, M.Phil. or Ph.D. abroad; half of the assistance reserved for women.",
+      "named": "OBC candidates within the creamy-layer limit and EBC candidates with family income up to ₹5 lakh, admitted to an approved course abroad.",
+      "apply": [
+        "canara"
+      ],
+      "sources": [
+        "AR §3.24",
+        "SBE 13.02"
+      ]
+    },
+    {
+      "id": "seed",
+      "umbrella": null,
+      "division": "BC",
+      "type": "Central Sector",
+      "name": "Scheme for Economic Empowerment of DNTs (SEED)",
+      "who": [
+        "dnt",
+        "student"
+      ],
+      "offers": [
+        "schooling",
+        "care",
+        "skill"
+      ],
+      "provides": "Free coaching for competitive examinations; health insurance through Ayushman Bharat; livelihood support through self-help groups; and financial assistance for housing through PM Awas Yojana.",
+      "named": "Members of De-notified, Nomadic and Semi-Nomadic communities holding a DNT certificate.",
+      "apply": [
+        "seed"
+      ],
+      "sources": [
+        "AR §3.30",
+        "SBE 14",
+        "PIB",
+        "SJ 109"
+      ]
+    },
+    {
+      "id": "pm-cares-scholarship",
+      "umbrella": null,
+      "division": "Other",
+      "type": "Central Sector",
+      "name": "Special Scholarship under PM CARES for Children",
+      "who": [
+        "student"
+      ],
+      "offers": [
+        "scholarship"
+      ],
+      "provides": "₹20,000 a year for a child in Class 1 to 12: a monthly allowance of ₹1,000 and an academic allowance of ₹8,000 for fees, books, uniform and equipment.",
+      "named": "Children who lost both parents, or their legal guardian or surviving parent, to COVID-19, identified by the District Magistrate under the PM CARES for Children scheme.",
+      "apply": [
+        "wcd"
+      ],
+      "sources": [
+        "AR §3.26",
+        "SBE 25"
+      ]
+    },
+    {
+      "id": "daf-medical-aid",
+      "umbrella": "Dr. Ambedkar Foundation",
+      "division": "SCD",
+      "type": "Foundation",
+      "name": "Dr. Ambedkar Medical Aid Scheme",
+      "who": [
+        "sc"
+      ],
+      "offers": [
+        "care"
+      ],
+      "provides": "Medical treatment for serious ailments requiring surgery of the kidney, heart, liver, brain, cancer or other life-threatening disease.",
+      "named": "SC and ST patients with annual family income under ₹3 lakh.",
+      "apply": [
+        "daf"
+      ],
+      "sources": [
+        "AR §3.31",
+        "PIB"
+      ]
+    },
+    {
+      "id": "daf-merit-award",
+      "umbrella": "Dr. Ambedkar Foundation",
+      "division": "SCD",
+      "type": "Foundation",
+      "name": "Dr. Ambedkar National Merit Awards for Class 10 and Class 12",
+      "who": [
+        "sc",
+        "student"
+      ],
+      "offers": [
+        "scholarship"
+      ],
+      "provides": "Cash awards of ₹40,000 to ₹60,000 for the top three SC and ST students of each recognised Board in Class 10, with a separate award for the highest-scoring girl; awards for SC students in Class 12 in four streams.",
+      "named": "SC and ST students who scored at least 50% in a recognised Board's secondary examination; SC students in the senior secondary examination.",
+      "apply": [
+        "daf"
+      ],
+      "sources": [
+        "AR §3.31",
+        "PIB"
+      ]
+    },
+    {
+      "id": "eanudaan",
+      "umbrella": null,
+      "division": "All",
+      "type": "Portal",
+      "name": "e-Anudaan — Grant-in-Aid to Voluntary Organisations",
+      "who": [
+        "ngo"
+      ],
+      "offers": [
+        "grant"
+      ],
+      "provides": "Online application, processing and sanction of grant-in-aid for five Department schemes, with NGO Darpan verification and PFMS payment.",
+      "named": "Voluntary organisations registered on NGO Darpan applying under AVYAY, NAPDDR, SHRESHTA Mode II, SMILE and the Department's other grant schemes.",
+      "apply": [
+        "eanudaan"
+      ],
+      "sources": [
+        "AR §3.39"
+      ]
+    }
+  ],
+  "excluded": [
+    {
+      "title": "List of 46 offences under the SC and ST PoA Act, 1989",
+      "why": "A reference list, not a scheme. Shown as a scheme on the beta site and questioned on the 8 September call."
+    },
+    {
+      "title": "Guidelines of NAMASTE; Revised Guidelines of NAMASTE; Revised guidelines for Waste Pickers under NAMASTE",
+      "why": "Guideline documents of one scheme, listed three times as schemes."
+    },
+    {
+      "title": "Status of Loan Application…; Status of SRMS as on 30 April 2018; Financial & Physical Achievements of NSKFDC upto 2018; Data of Central Assistance released…",
+      "why": "Status tables and achievement reports, not schemes."
+    },
+    {
+      "title": "Ashram Shalas; CM Housing Rent Scheme; Gadia Lohar Scheme; Post SSC Scholarship for Boys/Girls; Savitribai Phule Scholarship for VJNT/SBC; Vimukt Jati Hostel Scheme; Rajarshi Chhatrapati Shahu Maharaj Merit Scholarship; Mukhyamantri Vimukt Ghumantu… Swarozgar Yojana; and the other VJNT/SBC entries",
+      "why": "State Government schemes, mostly Maharashtra's and Rajasthan's, catalogued without their State. None appears in the Department's Annual Report or Demand for Grants."
+    },
+    {
+      "title": "Credit Enhancement Guarantee Scheme for SCs",
+      "why": "Listed on the legacy site; no line in the Demand for Grants 2026-27 and no section in the Annual Report 2025-26. Left off until the Department confirms it is live."
+    },
+    {
+      "title": "Self Employment Scheme for Rehabilitation of Manual Scavengers (SRMS)",
+      "why": "Subsumed into NAMASTE from 2023-24 (AR §3.11). Its components appear under the NAMASTE record."
+    },
+    {
+      "title": "Babu Jagjivan Ram Chhatrawas Yojana; Pradhan Mantri Adarsh Gram Yojana; Special Central Assistance to SCSP",
+      "why": "Merged into PM-AJAY in 2021-22 (AR §3.7)."
+    },
+    {
+      "title": "Persons with disabilities — DDRS, ADIP, SIPDA, disability scholarships, UDID",
+      "why": "Schemes of the Department of Empowerment of Persons with Disabilities. The finder signposts to depwd.gov.in."
+    }
+  ],
+  "conflicts": [
+    {
+      "field": "NSFDC income ceiling",
+      "a": "AR §3.34: annual family income up to ₹3.00 lakh",
+      "b": "SJ 34: annual family income up to ₹5.00 lakh",
+      "decision": "No figure is shown on any surface for NSFDC until the Corporation confirms which is current."
+    },
+    {
+      "field": "Elderline call volume",
+      "a": "PIB: about 27.29 lakh calls",
+      "b": "not stated in AR",
+      "decision": "No usage figure is shown; the helpline number is."
+    },
+    {
+      "field": "SMILE begging coverage",
+      "a": "AR §3.16: 181 cities across 34 States/UTs",
+      "b": "AR §3.16, same paragraph, and PIB: 32 States/UTs",
+      "decision": "The city count is shown; the States count is not."
+    },
+    {
+      "field": "Scheme count",
+      "a": "Beta site pagination: 134",
+      "b": "This master: 38 records — 28 schemes and sub-schemes, 3 corporation loan products, 2 Foundation schemes, 5 helplines, grievance and portal routes",
+      "decision": "No count appears on any screen, slide or frame. The number of records is stated only in the research document with its derivation."
+    }
+  ],
+  "depwd": {
+    "source": "Department of Empowerment of Persons with Disabilities, Annual Report 2025-26, Chapter 7 (cdnbbsr.s3waas.gov.in/s3e58aea67b01fa747687f038dfde066f6/uploads/2026/04/20260401316377355.pdf)",
+    "why": "Persons with disabilities are not in DoSJE's mandate (AR §1.2). Their schemes are DEPwD's, a separate Department of the same Ministry since 2012. They are shown here, labelled as DEPwD's, so a visitor who indicates a disability is given the four schemes that exist rather than an empty result.",
+    "schemes": [
+      {
+        "id": "depwd-ddrs",
+        "name": "Deendayal Divyangjan Rehabilitation Scheme (DDRS)",
+        "provides": "Grant-in-aid to organisations for rehabilitation projects, and District Disability Rehabilitation Centres offering early intervention, therapy, assistive-device fitment, scholarship assistance and help with the UDID card.",
+        "named": "Persons with disabilities, through implementing organisations; one DDRC is envisaged in every district.",
+        "sources": [
+          "DEPwD AR §7.1"
+        ]
+      },
+      {
+        "id": "depwd-adip",
+        "name": "Assistance to Persons with Disabilities for Purchase/Fitting of Aids and Appliances (ADIP)",
+        "provides": "Modern, certified aids and appliances, and corrective surgery where required, through ALIMCO, National Institutes, DDRCs and other agencies, including camps for school-going children.",
+        "named": "Needy persons with disabilities, as the scheme's guidelines define them.",
+        "sources": [
+          "DEPwD AR §7.2"
+        ]
+      },
+      {
+        "id": "depwd-sipda",
+        "name": "Scheme for Implementation of the Rights of Persons with Disabilities Act, 2016 (SIPDA)",
+        "provides": "Ten sub-schemes including the Unique Disability ID (UDID) card, barrier-free environment, early intervention centres, skill development and assistance to spinal injury centres.",
+        "named": "Persons with disabilities; the UDID card is the identity every other DEPwD scheme reads.",
+        "sources": [
+          "DEPwD AR §7.3"
+        ]
+      },
+      {
+        "id": "depwd-scholarships",
+        "name": "Scholarships for Students with Disabilities",
+        "provides": "Pre-matric, post-matric, top-class, overseas and fellowship support for students with disabilities.",
+        "named": "Students with disabilities, as each component's guidelines define them.",
+        "sources": [
+          "DEPwD AR §7 (iv)"
+        ]
+      }
+    ]
+  }
+}

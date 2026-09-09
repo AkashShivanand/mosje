@@ -3,6 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Chatbot, SectionTitle, Card, CardBody, CardTitle, Badge } from "@mosje/design-system";
 import type { ChatbotQuickReply, ChatbotReply } from "@mosje/design-system";
+import {
+  SD_DEPWD,
+  SD_PERSONAS,
+  SD_SIGNPOST,
+  SD_ROUTES,
+  sdMatch,
+  sdOffersFor,
+} from "@/lib/explorations/service-discovery-master";
 import "./assistant.css";
 
 /**
@@ -11,107 +19,139 @@ import "./assistant.css";
  * seal, the bubbles, the quick replies, the composer and the disclaimer — is the
  * component the estate ships, so what is demonstrated is what would be built.
  *
- * It sits under /prototypes/service-discovery with the other five options. Those
- * five are static files; this one is a route because it renders a React component
- * from the design system. The explorations register embeds it from there.
+ * It asks the SAME two questions as the home-page finder — who is looking, and
+ * what kind of support — over the same scheme master, so the chat and the page
+ * can never name different schemes for the same person. The 8 September 2026
+ * review cut the five questions to these two.
  *
  * DS Audit: Chatbot ✅ existing · SectionTitle ✅ existing · Card ✅ existing ·
- * Badge ✅ existing. DocumentLibrary was considered for the backdrop and passed
- * over: it carries filtering and pagination this page has no use for, and the
- * point here is the assistant, not the list behind it.
+ * Badge ✅ existing.
  */
-
-type Step = { text: string; quickReplies: ChatbotQuickReply[] };
 
 const q = (...labels: string[]): ChatbotQuickReply[] =>
   labels.map((label) => ({ id: label.toLowerCase().replace(/[^a-z0-9]+/g, "-"), label }));
-
-/** The five questions, in the order the design file asks them. */
-const STEPS: Step[] = [
-  {
-    text:
-      "I can narrow it down with five short questions. Skip any of them — skipping widens the answer rather than ending it.\n\nQuestion 1 of 5. Who is this for?",
-    quickReplies: q("Myself", "Someone in my family", "An organisation I run"),
-  },
-  {
-    text: "Question 2 of 5. Which of these describes you?",
-    quickReplies: q("Scheduled Caste", "OBC or EBC", "Sanitation work", "Senior citizen", "Skip this"),
-  },
-  {
-    text: "Question 3 of 5. What stage of life?",
-    quickReplies: q("In school", "In college or beyond", "Of working age", "A senior citizen"),
-  },
-  {
-    text: "Question 4 of 5. What kind of help do you need?",
-    quickReplies: q("Education and fees", "Money to work with", "A home", "Health and care"),
-  },
-  {
-    text: "Question 5 of 5. Which State do you live in?",
-    quickReplies: q("Bihar", "Maharashtra", "Skip this"),
-  },
-  {
-    /* One bubble, not a wall. The transcript renders a message as a single
-       paragraph, so the three schemes are named here and opened from the
-       suggestions beneath rather than stacked inside the sentence. */
-    text:
-      "That leaves 3, all run by MoSJE: the Post-Matric Scholarship, the Central Sector " +
-      "Scholarship of Top Class Education, and the National Fellowship for M.Phil and PhD. " +
-      "They list you as their target group — whether an application succeeds is the " +
-      "sanctioning authority's decision, not mine.",
-    quickReplies: q("Open Post-Matric Scholarship", "Open Top Class Education", "Open National Fellowship", "Start over"),
-  },
-];
-
-
-/** Real publications from the Department's own Documents page. */
-const DOCUMENTS = [
-  { title: "Annual Report 2024\u201325", date: "29 July 2026", kind: "Report", size: "PDF, 2.4 MB" },
-  { title: "NAMASTE \u2014 Revised Scheme Guidelines", date: "15 August 2026", kind: "Guidelines", size: "PDF, 3.1 MB" },
-  { title: "PM-AJAY Operational Guidelines", date: "10 September 2025", kind: "Guidelines", size: "PDF, 2.0 MB" },
-];
 
 const GREETING =
   "This is the assistant for the Department of Social Justice & Empowerment. How can I help?";
 const OPENERS = q("Which scheme applies to me?", "Where do I complain?");
 
+const PERSONA_LABELS = SD_PERSONAS.map((p) => p.short);
+
+/** Real publications from the Department's own Documents page. */
+const DOCUMENTS = [
+  { title: "Annual Report 2025–26 (English)", date: "22 April 2026", kind: "Report" },
+  { title: "Result of National Overseas Scholarship (NOS) for SC candidates 2025–26 (2nd Round)", date: "18 April 2026", kind: "Result" },
+  { title: "Acceptance of Transgender Identity Certificate/Card in EPFO Records", date: "15 April 2026", kind: "Circular" },
+];
+
+/** Join names the way a sentence does: "A, B and C". */
+const list = (xs: string[]) =>
+  xs.length <= 1 ? xs.join("") : `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`;
+
 export default function AssistantPrototype() {
-  const step = useRef(0);
   const [open, setOpen] = useState(false);
+  /* The conversation's state: which persona was chosen, and whether the
+     offering question has been asked. Refs, because a reply handler must not
+     re-render the panel mid-answer. */
+  const persona = useRef<string | null>(null);
+  const asked = useRef<"none" | "who" | "offer">("none");
 
   /* The UX4G accessibility widget is third-party chrome mounted at body level on
      every page of the estate. This route exists to demonstrate one component, and
-     the widget shares its corner — so it is hidden HERE and nowhere else. The
-     class goes on <body> because the widget is not inside this page's subtree,
-     and it is removed on unmount so no other route inherits it.
-
-     This is a demonstration surface under /reports, not a citizen-facing service
-     page. The widget stays on every page a citizen actually uses. */
+     the widget shares its corner — so it is hidden HERE and nowhere else. */
   useEffect(() => {
     document.body.classList.add("sd-hide-a11y-widget");
     return () => document.body.classList.remove("sd-hide-a11y-widget");
   }, []);
 
-  const onQuickReply = (reply: ChatbotQuickReply): ChatbotReply => {
-    if (reply.label === "Start over") {
-      step.current = 0;
-      return { text: GREETING, quickReplies: OPENERS };
-    }
-    if (reply.label.startsWith("Open ")) {
+  const reset = (): ChatbotReply => {
+    persona.current = null;
+    asked.current = "none";
+    return { text: GREETING, quickReplies: OPENERS };
+  };
+
+  const askWho = (): ChatbotReply => {
+    asked.current = "who";
+    return {
+      text:
+        "Two short questions, and nothing you answer is stored.\n\nQuestion 1 of 2. Who is looking for support?",
+      quickReplies: q(...PERSONA_LABELS, SD_SIGNPOST.label),
+    };
+  };
+
+  const askOffer = (): ChatbotReply => {
+    asked.current = "offer";
+    const offers = sdOffersFor(persona.current!).map((o) => o.short);
+    return {
+      text: "Question 2 of 2. What kind of support? Skip this to see everything the Department provides for the group.",
+      quickReplies: q(...offers, "Skip this"),
+    };
+  };
+
+  const answer = (offerLabel?: string): ChatbotReply => {
+    const who = SD_PERSONAS.find((p) => p.id === persona.current)!;
+    const offer = offerLabel ? sdOffersFor(who.id).find((o) => o.short === offerLabel) : undefined;
+    const hits = sdMatch(who.id, offer?.id).slice(0, 3);
+    if (!hits.length) {
       return {
-        text: "Opening the National Scholarship Portal, where that application is made.",
-        quickReplies: q("Start over"),
+        text: `The Department's record has no scheme for ${who.label} under ${offer?.label ?? "that heading"}. Skipping the second question shows everything for the group.`,
+        quickReplies: q("Skip this", "Start over"),
       };
     }
-    if (reply.label === "Where do I complain?") {
+    /* One bubble, not a wall: the schemes are named in the sentence and opened
+       from the suggestions beneath. No count — the sentence lists them. */
+    return {
+      text:
+        `These name ${who.label}${offer ? ` under ${offer.label}` : ""}: ${list(hits.map((h) => h.name))}. ` +
+        "A scheme naming you is not a decision on an application — the sanctioning authority decides that.",
+      quickReplies: q(...hits.map((h) => `Open ${h.name}`), "Start over"),
+    };
+  };
+
+  const onQuickReply = (reply: ChatbotQuickReply): ChatbotReply => {
+    const label = reply.label;
+    if (label === "Start over") return reset();
+    if (label === "Where do I complain?") {
       return {
         text:
-          "The Public Grievance Portal takes complaints about a right denied, discrimination, or a benefit not received.",
+          "A complaint about a right denied or a benefit not received goes to the Public Grievance Portal. An atrocity against a member of a Scheduled Caste or Scheduled Tribe can be reported round the clock on the National Helpline Against Atrocities, 14566.",
         quickReplies: q("Which scheme applies to me?"),
       };
     }
-    const next = STEPS[step.current];
-    step.current = Math.min(step.current + 1, STEPS.length - 1);
-    return next ? { text: next.text, quickReplies: next.quickReplies } : { text: GREETING };
+    if (label === "Which scheme applies to me?") return askWho();
+    if (label.startsWith("Open ")) {
+      const name = label.slice(5);
+      if (SD_DEPWD.schemes.some((s) => s.name === name)) {
+        return { text: `Opening ${name} on ${SD_SIGNPOST.to}.`, quickReplies: q("Start over") };
+      }
+      const hit = sdMatch(persona.current ?? undefined).find((h) => h.name === name);
+      const route = hit ? SD_ROUTES[hit.apply[0] ?? ""] : undefined;
+      return {
+        text: route
+          ? `Opening the scheme's page. The application itself is made through ${route.label}.`
+          : "Opening the scheme's page.",
+        quickReplies: q("Start over"),
+      };
+    }
+    if (asked.current === "who") {
+      if (label === SD_SIGNPOST.label) {
+        asked.current = "none";
+        return {
+          text:
+            `Those schemes are run by the Department of Empowerment of Persons with Disabilities, a separate Department of the same Ministry, at ${SD_SIGNPOST.to}: ${list(SD_DEPWD.schemes.map((s) => s.name))}. The UDID card is issued there too.`,
+          quickReplies: q(...SD_DEPWD.schemes.map((s) => `Open ${s.name}`), "Start over"),
+        };
+      }
+      const p = SD_PERSONAS.find((x) => x.short === label);
+      if (p) {
+        persona.current = p.id;
+        return askOffer();
+      }
+    }
+    if (asked.current === "offer") {
+      return answer(label === "Skip this" ? undefined : label);
+    }
+    return reset();
   };
 
   return (
@@ -120,7 +160,7 @@ export default function AssistantPrototype() {
         <SectionTitle
           eyebrow="The Assistant"
           title="Samajik Sahayak"
-          description="The assistant sits in the corner of every page and can be opened without leaving what you were reading. It asks the same five questions, one at a time."
+          description="The assistant sits in the corner of every page and can be opened without leaving what you were reading. It asks the same two questions as the home page, one at a time."
           as={2}
         />
         <div className="sd-assistant__page">
@@ -131,10 +171,8 @@ export default function AssistantPrototype() {
                 <Card>
                   <CardBody>
                     <CardTitle>{d.title}</CardTitle>
-                    <p className="sd-assistant__meta">
-                      {d.date} · {d.kind}
-                    </p>
-                    <Badge status="neutral" emphasis="subtle">{d.size}</Badge>
+                    <p className="sd-assistant__meta">{d.date}</p>
+                    <Badge status="neutral" emphasis="subtle">{d.kind}</Badge>
                   </CardBody>
                 </Card>
               </li>
