@@ -324,6 +324,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "one-auto",
             title: "One band, the notice first, advancing on its own",
+            label: "Advancing",
             summary:
               "The same single band, but the anniversary notice leads and the panels rotate every six seconds — with a pause control, because that is what makes it lawful.",
             live: true,
@@ -342,6 +343,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "composed",
             title: "Two halves — a standing service and a rotating offer",
+            label: "Two Halves",
             summary:
               "The helpline is the band's only white surface; the rotating half carries the observance and the volunteer drive, each with its own accent, glyph, eyebrow and shape.",
             status: "proposed",
