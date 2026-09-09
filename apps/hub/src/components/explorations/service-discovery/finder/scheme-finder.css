@@ -316,10 +316,6 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  .xsf__signpost {
-    margin-block-start: var(--sa-stack-24);
-  }
-
   .xsf__empty {
     margin-block-start: var(--sa-stack-24);
   }

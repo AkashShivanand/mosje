@@ -33,7 +33,7 @@ each says why it is here:
 
 | Persona | On the screen | Why it is a persona |
 |---|---|---|
-| **Students** | From Class I to Ph.D. and study abroad, from the groups the Department serves | cross-cutting — every scholarship names a community and a stage; a student looks for the stage first. Listed first because it is the most common visitor and because the panel's artwork for it is a woman: the review asked that the sequence open on a female figure. |
+| **Students** | From Class I to Ph.D. and study abroad, from the groups the Department serves | cross-cutting — every scholarship names a community and a stage; a student looks for the stage first. Listed first because it is the most common visitor, and the panel's artwork for it is a woman: the review asked that the sequence open on a female figure. Source: the scholarship records in AR ch.3 (§3.2–3.5, §3.19–3.22, §3.27) each name students of the groups the Department serves. |
 | **Scheduled Castes** | As notified under Article 341 of the Constitution | Scheduled Castes (SCs) |
 | **Other Backward Classes** | Including Economically Backward Classes | Other Backward Classes (OBCs); Economically Backward Classes (EBCs) |
 | **De-notified, Nomadic and Semi-Nomadic Tribes** | Communities listed as DNT, NT or SNT | De-notified, Nomadic and Semi-Nomadic Tribes (DNTs) |
@@ -45,7 +45,9 @@ each says why it is here:
 | **Victims of Atrocities** | Under the PCR Act, 1955 and the SC/ST (PoA) Act, 1989 | served through the PCR-PoA scheme (AR §3.9) and the National Helpline Against Atrocities |
 | **Voluntary Organisations** | NGOs, CBOs and institutions applying for grant-in-aid | delivery partners under AVYAY, NAPDDR, SHRESHTA, SMILE and PM-AJAY (AR §3.39) |
 
-**Persons with disabilities** are asked for and signposted, never listed: A separate Department of the same Ministry since 2012; its Annual Report 2025-26 carries DDRS, ADIP, SIPDA and the disability scholarships. DoSJE carries none.
+**Persons with disabilities** are not in the mandate and no DoSJE surface names them. Their
+schemes are the Department of Empowerment of Persons with Disabilities', a separate Department
+of the same Ministry since 2012 (see §7).
 
 **Left off.** *Economically Weaker Sections* are named in the mandate but no scheme in
 Chapter 3 or the Demand for Grants serves EWS as such, so there is nothing to show. *Women
@@ -129,19 +131,6 @@ team can see the empty cells, and the screens show the schemes themselves.
 | Dr. Ambedkar National Merit Awards for Class 10 and Class 12<br><small>Dr. Ambedkar Foundation</small> | Foundation | Scheduled Castes, Students | Scholarships and Fellowships | Cash awards of ₹40,000 to ₹60,000 for the top three SC and ST students of each recognised Board in Class 10, with a separate award for the highest-scoring girl; awards for SC students in Class 12 in four streams. | SC and ST students who scored at least 50% in a recognised Board's secondary examination; SC students in the senior secondary examination. | Dr. Ambedkar Foundation | AR §3.31, PIB |
 | e-Anudaan — Grant-in-Aid to Voluntary Organisations | Portal | Voluntary Organisations | Grants to Voluntary Organisations | Online application, processing and sanction of grant-in-aid for five Department schemes, with NGO Darpan verification and PFMS payment. | Voluntary organisations registered on NGO Darpan applying under AVYAY, NAPDDR, SHRESHTA Mode II, SMILE and the Department's other grant schemes. | the e-Anudaan portal | AR §3.39 |
 
-## 6a. Persons with disabilities — a different Department's schemes
-
-Persons with disabilities are not in DoSJE's mandate (AR §1.2). Their schemes are DEPwD's, a separate Department of the same Ministry since 2012. They are shown here, labelled as DEPwD's, so a visitor who indicates a disability is given the four schemes that exist rather than an empty result.
-
-| Scheme | What it provides | Whom it names | Source |
-|---|---|---|---|
-| Deendayal Divyangjan Rehabilitation Scheme (DDRS) | Grant-in-aid to organisations for rehabilitation projects, and District Disability Rehabilitation Centres offering early intervention, therapy, assistive-device fitment, scholarship assistance and help with the UDID card. | Persons with disabilities, through implementing organisations; one DDRC is envisaged in every district. | DEPwD AR §7.1 |
-| Assistance to Persons with Disabilities for Purchase/Fitting of Aids and Appliances (ADIP) | Modern, certified aids and appliances, and corrective surgery where required, through ALIMCO, National Institutes, DDRCs and other agencies, including camps for school-going children. | Needy persons with disabilities, as the scheme's guidelines define them. | DEPwD AR §7.2 |
-| Scheme for Implementation of the Rights of Persons with Disabilities Act, 2016 (SIPDA) | Ten sub-schemes including the Unique Disability ID (UDID) card, barrier-free environment, early intervention centres, skill development and assistance to spinal injury centres. | Persons with disabilities; the UDID card is the identity every other DEPwD scheme reads. | DEPwD AR §7.3 |
-| Scholarships for Students with Disabilities | Pre-matric, post-matric, top-class, overseas and fellowship support for students with disabilities. | Students with disabilities, as each component's guidelines define them. | DEPwD AR §7 (iv) |
-
-Source: Department of Empowerment of Persons with Disabilities, Annual Report 2025-26, Chapter 7 (cdnbbsr.s3waas.gov.in/s3e58aea67b01fa747687f038dfde066f6/uploads/2026/04/20260401316377355.pdf)
-
 ## 7. What the beta site lists that this master does not
 
 | Listed on the beta site | Why it is not here |
@@ -153,7 +142,7 @@ Source: Department of Empowerment of Persons with Disabilities, Annual Report 20
 | Credit Enhancement Guarantee Scheme for SCs | Listed on the legacy site; no line in the Demand for Grants 2026-27 and no section in the Annual Report 2025-26. Left off until the Department confirms it is live. |
 | Self Employment Scheme for Rehabilitation of Manual Scavengers (SRMS) | Subsumed into NAMASTE from 2023-24 (AR §3.11). Its components appear under the NAMASTE record. |
 | Babu Jagjivan Ram Chhatrawas Yojana; Pradhan Mantri Adarsh Gram Yojana; Special Central Assistance to SCSP | Merged into PM-AJAY in 2021-22 (AR §3.7). |
-| Persons with disabilities — DDRS, ADIP, SIPDA, disability scholarships, UDID | Schemes of the Department of Empowerment of Persons with Disabilities. The finder signposts to depwd.gov.in. |
+| Persons with disabilities — DDRS, ADIP, SIPDA, disability scholarships, UDID | Schemes of the Department of Empowerment of Persons with Disabilities, a separate Department of the same Ministry since 2012. Outside DoSJE's mandate (AR §1.2), so not shown on any DoSJE surface. |
 
 ## 8. Where the sources disagree
 

@@ -7,6 +7,16 @@ everything the 8 September review asked for, and what a design director and a UX
 still change. Everything in section 3 that could be fixed in this session was fixed; what could not is
 marked.
 
+> **Addendum, 9 September 2026 (later the same day).** The decision recorded in §1.1 and §3 — to ask
+> for persons with disabilities and show DEPwD's four schemes — is **withdrawn on instruction**: the
+> Department does not serve them, so no DoSJE surface names them. The disability choice, the DEPwD
+> result, the assistant branch, the finder branch, the Figma row and the deck's safeguard line are all
+> removed. The finding in §1.1 stands as the validation answer; the design consequence is reversed.
+> The persona list itself is re-validated below in §1.1a. The deck was also rebuilt as a live
+> presentation (one idea a slide, the explanation in the speaker notes, Option A on a still because
+> its recording did not play), and the concept slide was redrawn without the × mark, which read as an
+> error. Before-and-after: `service-discovery-2026-09-09b-before-after.html`.
+
 ---
 
 ## 1. Validation — is what the screens say true?
@@ -30,10 +40,36 @@ Two things make this confusing on the site itself, and both were checked today:
   Figma capture and reads "Government Official / Beneficiary" today. The site's own persona
   vocabulary is in flux.
 
-**Decision taken:** persons with disabilities are asked for on every option and are shown DEPwD's four
-schemes, each labelled *Run by DEPwD*, with the route to depwd.gov.in. Nobody is turned away with an
-empty result, and nothing is presented as this Department's. The earlier version showed a note and no
-schemes; the audit in section 3 found that a dead end.
+**Decision taken (morning):** persons with disabilities were asked for on every option and shown DEPwD's
+four schemes, labelled as DEPwD's. **Reversed (afternoon, on instruction):** the Department does not
+serve them, so they are not named on any DoSJE surface. See the addendum above.
+
+### 1.1a The eleven personas, re-validated against their sources
+
+| Persona on the screen | Where the Department names the group | Source |
+|---|---|---|
+| Students | Every scholarship record names "students" of the groups the Department serves — pre-matric, post-matric, top class, overseas, fellowships | AR 2025-26 ch.3 §3.2–3.5 (SC), §3.19–3.22 (OBC/EBC/DNT), §3.27 (NOS); SBE Demand 93 |
+| Scheduled Castes | Mandate group | AR 2025-26 §1.2 |
+| Other Backward Classes | Mandate group; EBCs folded in, because the OBC schemes name them together | AR 2025-26 §1.2; PM-YASASVI records §3.19–3.21 |
+| De-notified, Nomadic and Semi-Nomadic Tribes | Mandate group | AR 2025-26 §1.2; SEED §3.24 |
+| Safai Karamcharis | Mandate names manual scavengers, sewer and septic tank workers, waste pickers; NAMASTE and NSKFDC name them together as Safai Karamcharis | AR 2025-26 §1.2, §3.11 (NAMASTE), NSKFDC page |
+| Senior Citizens | Mandate group | AR 2025-26 §1.2; AVYAY §3.29–3.31 |
+| Transgender Persons | Mandate group | AR 2025-26 §1.2; SMILE §3.35 |
+| Persons Affected by Substance Use | Mandate: "victims of alcoholism and substance abuse"; NAPDDR names the person and the family | AR 2025-26 §1.2, §3.33 |
+| Persons Engaged in Begging | Mandate: "persons engaged in beggary"; SMILE's second component | AR 2025-26 §1.2, §3.36 |
+| Victims of Atrocities | Not a mandate group; named by the PCR/PoA scheme and the National Helpline Against Atrocities | AR 2025-26 §3.9; helpline 14566 |
+| Voluntary Organisations | Not a mandate group; the grantee every grant-in-aid record names | AR 2025-26 §3.39; e-Anudaan |
+
+Two mandate groups are **not** personas because no scheme record serves them as such: *Economically
+Weaker Sections* (named in §1.2, no scheme in ch.3 or the Demand for Grants) and *Economically
+Backward Classes* on their own (always named alongside OBCs). Persons with disabilities are not in the
+mandate and are not shown.
+
+**One claim withdrawn from the concept slide and the Figma frame:** "none of the Department's schemes
+divides on stage of life, State or gender." It is not true as written — Top Class and PM-YASASVI
+reserve 30% of slots for girl students, the OBC hostel scheme is for boys and girls separately, and
+PM-AJAY and PCR/PoA run through State Governments. What is true, and what the slide now says, is that
+every scheme is tagged on the two lists and nothing else is asked.
 
 ### 1.2 The personas — checked against the mandate
 
@@ -50,7 +86,7 @@ schemes; the audit in section 3 found that a dead end.
 | Persons Engaged in Begging | Persons engaged in beggary | ✅ |
 | Victims of Atrocities | not a mandate group | ✅ served through the PCR-PoA scheme (AR §3.9) and NHAA 14566; the review named it |
 | Voluntary Organisations | not a mandate group | ✅ delivery partners under AVYAY, NAPDDR, SHRESHTA, SMILE (AR §3.39, e-Anudaan) |
-| Persons with Disabilities | **not a mandate group** | ✅ signposted to DEPwD, never listed as a persona of this Department |
+| Persons with Disabilities | **not a mandate group** | ✅ not shown on any surface (morning: signposted; afternoon: removed on instruction) |
 | *EWS* | Economically Weaker Sections | ⛔ left off — no scheme in Chapter 3 or the Demand for Grants serves EWS as such |
 
 ### 1.3 The offerings — checked against what the schemes provide
@@ -126,8 +162,8 @@ Not in the transcript but implied by item 2 and confirmed today: the design-syst
 
 | Finding | Severity | Action |
 |---|---|---|
-| Persons with disabilities got a note and no schemes — a dead end for the one group most likely to arrive at the wrong department | High | DEPwD's four schemes are shown, labelled *Run by DEPwD*, in the finder, the design-system finder and the assistant |
-| The disability choice sat in the persona grid as a twelfth card, so it read as one of the Department's groups | High | Moved to a distinct dashed row beneath the grid: "Their schemes are run by DEPwD. Choose this to see them." |
+| Persons with disabilities got a note and no schemes — a dead end for the one group most likely to arrive at the wrong department | High | DEPwD's four schemes are shown, labelled *Run by DEPwD*, in the finder, the design-system finder and the assistant  **Withdrawn later the same day — see the addendum: nothing about disability is shown now.** |
+| The disability choice sat in the persona grid as a twelfth card, so it read as one of the Department's groups | High | Moved to a distinct dashed row beneath the grid: "Their schemes are run by DEPwD. Choose this to see them."  **Withdrawn later the same day — see the addendum: nothing about disability is shown now.** |
 | Apply buttons carried a whole sentence ("Apply through NSFDC, through its channelising agencies") | Medium | Route labels shortened; the detail belongs on the scheme page |
 | "Whom it names" as a card label — the Department's register, not a citizen's | Medium | Cards use *For* and *Provides*; the eligibility rule is unchanged in the wording of the values |
 | "Schemes That Name You" as a results heading | Medium | "Schemes for Your Group" — still no eligibility claim |
@@ -172,7 +208,7 @@ hatching, white ground, no props, no text, square.**
 | Persons Affected by Substance Use | A young man in his twenties in recovery: healthy, alert, hopeful; short neat hair, plain collared shirt. Nothing that suggests intoxication, distress or stigma — the earlier drawing was withdrawn for exactly that |
 | Persons Engaged in Begging | A middle-aged man now in a shelter and rehabilitation programme: weathered but dignified face, greying hair, simple cotton kurta, a light shawl over one shoulder. Nothing that suggests begging or pity |
 | Victims of Atrocities | A woman in her thirties in a plain cotton sari, resolute and composed, holding a thin folder of papers to her chest — a person seeking relief with dignity. No sign of injury, distress or violence |
-| Persons with Disabilities (the DEPwD row) | A young woman in a salwar kameez seated in a wheelchair, the push handles just visible at the bottom of the frame, self-assured |
 
-Until they exist, the three personas and the DEPwD row use Material Symbols on the same ground the
-illustrated marks sit on: `health_and_safety`, `night_shelter`, `balance`, `accessible`.
+Until they exist, the three personas use Material Symbols on the same ground the illustrated marks
+sit on: `health_and_safety`, `night_shelter`, `balance`. (A fourth brief, for the DEPwD row, was
+withdrawn with the row.)

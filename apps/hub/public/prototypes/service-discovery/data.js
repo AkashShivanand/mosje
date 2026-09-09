@@ -76,14 +76,6 @@ const PERSONAS = [
   }
 ];
 
-/* Asked so the Department's boundary can be named, never shown as a persona. */
-const SIGNPOST = {
-  "id": "pwd",
-  "label": "Persons with Disabilities",
-  "sub": "Their schemes are run by the Department of Empowerment of Persons with Disabilities",
-  "to": "depwd.gov.in"
-};
-
 const OFFERINGS = [
   {
     "id": "scholarship",
@@ -134,37 +126,6 @@ const OFFERINGS = [
     "sub": "Grant-in-aid through the e-Anudaan portal"
   }
 ];
-
-/* The schemes a person with a disability is shown — DEPwD's, labelled as such. */
-const DEPWD = {
-  "why": "Persons with disabilities are not in DoSJE's mandate (AR §1.2). Their schemes are DEPwD's, a separate Department of the same Ministry since 2012. They are shown here, labelled as DEPwD's, so a visitor who indicates a disability is given the four schemes that exist rather than an empty result.",
-  "schemes": [
-    {
-      "id": "depwd-ddrs",
-      "name": "Deendayal Divyangjan Rehabilitation Scheme (DDRS)",
-      "provides": "Grant-in-aid to organisations for rehabilitation projects, and District Disability Rehabilitation Centres offering early intervention, therapy, assistive-device fitment, scholarship assistance and help with the UDID card.",
-      "named": "Persons with disabilities, through implementing organisations; one DDRC is envisaged in every district."
-    },
-    {
-      "id": "depwd-adip",
-      "name": "Assistance to Persons with Disabilities for Purchase/Fitting of Aids and Appliances (ADIP)",
-      "provides": "Modern, certified aids and appliances, and corrective surgery where required, through ALIMCO, National Institutes, DDRCs and other agencies, including camps for school-going children.",
-      "named": "Needy persons with disabilities, as the scheme's guidelines define them."
-    },
-    {
-      "id": "depwd-sipda",
-      "name": "Scheme for Implementation of the Rights of Persons with Disabilities Act, 2016 (SIPDA)",
-      "provides": "Ten sub-schemes including the Unique Disability ID (UDID) card, barrier-free environment, early intervention centres, skill development and assistance to spinal injury centres.",
-      "named": "Persons with disabilities; the UDID card is the identity every other DEPwD scheme reads."
-    },
-    {
-      "id": "depwd-scholarships",
-      "name": "Scholarships for Students with Disabilities",
-      "provides": "Pre-matric, post-matric, top-class, overseas and fellowship support for students with disabilities.",
-      "named": "Students with disabilities, as each component's guidelines define them."
-    }
-  ]
-};
 
 const ROUTES = {
   "nsp": {
@@ -1053,7 +1014,7 @@ const HAS_ART = new Set([
 ]);
 /* Material Symbols Rounded, the estate's icon set, for the groups with no
    figure: what the scheme gives, not what a person is assumed to look like. */
-const MARK_ICON = { drug:'health_and_safety', begging:'night_shelter', atrocity:'balance', pwd:'accessible' };
+const MARK_ICON = { drug:'health_and_safety', begging:'night_shelter', atrocity:'balance' };
 function markHTML(id) {
   if (HAS_ART.has(id)) return `<img src="personas/${id}.png" alt="">`;
   if (MARK_ICON[id]) return `<span class="mark-icon" role="presentation"><span class="mi">${MARK_ICON[id]}</span></span>`;

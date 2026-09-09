@@ -79,41 +79,6 @@ export const SD_PERSONAS: SdPersona[] = [
     "sub": "NGOs, CBOs and institutions applying for grant-in-aid"
   }
 ];
-export const SD_SIGNPOST = {
-  "id": "pwd",
-  "label": "Persons with Disabilities",
-  "sub": "Their schemes are run by the Department of Empowerment of Persons with Disabilities",
-  "to": "depwd.gov.in"
-};
-export const SD_DEPWD: { why: string; schemes: { id: string; name: string; provides: string; named: string }[] } = {
-  "why": "Persons with disabilities are not in DoSJE's mandate (AR §1.2). Their schemes are DEPwD's, a separate Department of the same Ministry since 2012. They are shown here, labelled as DEPwD's, so a visitor who indicates a disability is given the four schemes that exist rather than an empty result.",
-  "schemes": [
-    {
-      "id": "depwd-ddrs",
-      "name": "Deendayal Divyangjan Rehabilitation Scheme (DDRS)",
-      "provides": "Grant-in-aid to organisations for rehabilitation projects, and District Disability Rehabilitation Centres offering early intervention, therapy, assistive-device fitment, scholarship assistance and help with the UDID card.",
-      "named": "Persons with disabilities, through implementing organisations; one DDRC is envisaged in every district."
-    },
-    {
-      "id": "depwd-adip",
-      "name": "Assistance to Persons with Disabilities for Purchase/Fitting of Aids and Appliances (ADIP)",
-      "provides": "Modern, certified aids and appliances, and corrective surgery where required, through ALIMCO, National Institutes, DDRCs and other agencies, including camps for school-going children.",
-      "named": "Needy persons with disabilities, as the scheme's guidelines define them."
-    },
-    {
-      "id": "depwd-sipda",
-      "name": "Scheme for Implementation of the Rights of Persons with Disabilities Act, 2016 (SIPDA)",
-      "provides": "Ten sub-schemes including the Unique Disability ID (UDID) card, barrier-free environment, early intervention centres, skill development and assistance to spinal injury centres.",
-      "named": "Persons with disabilities; the UDID card is the identity every other DEPwD scheme reads."
-    },
-    {
-      "id": "depwd-scholarships",
-      "name": "Scholarships for Students with Disabilities",
-      "provides": "Pre-matric, post-matric, top-class, overseas and fellowship support for students with disabilities.",
-      "named": "Students with disabilities, as each component's guidelines define them."
-    }
-  ]
-};
 export const SD_OFFERINGS: SdOffering[] = [
   {
     "id": "scholarship",

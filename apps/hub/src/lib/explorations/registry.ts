@@ -398,10 +398,9 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             live: true,
             lookAt: [
               "It is the estate's own components — SectionTitle, Stepper, card radios, chips, cards — so what is reviewed is what the website would ship",
-              "Stage of life, State and gender are not asked: none of the Department's schemes divides on them, and the 8 September 2026 review cut them",
+              "Stage of life, State and gender are not asked: the 8 September 2026 review cut them, and the persona and the kind of support are the two axes every scheme record is tagged on",
               "On the answer screen each answer is a chip; removing one widens the list in place rather than starting over",
               "Every scheme is a record in the Department's Annual Report 2025-26 or its Demand for Grants, with whom it names and what it provides taken from there; no count is printed anywhere",
-              "Choosing “Persons with Disabilities” goes straight to a signpost for DEPwD rather than through three questions that cannot change the answer",
               "The copy is in the Department's register: no “we”, no “you told us”, and nothing on screen states that anyone is eligible",
             ],
           },
@@ -415,7 +414,6 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             supersededBy:
               "Built as a website section from the design system. The static page keeps the same two questions over the same master and is what the deck records; the section is what the website would ship.",
             lookAt: [
-              "Choosing “person with disability” routes to DEPwD rather than returning nothing — kept in the redesign",
               "It ends at a place to apply, not at a page of text — kept in the redesign",
             ],
           },
@@ -453,7 +451,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             status: "proposed",
             live: true,
             lookAt: [
-              "Type “divyang” and it routes to DEPwD, where the live search returns a 2015 annual report tagged “disability arising from untouchability”",
+              "Type “atyachar ki shikayat” and it reads a complaint of atrocity and names the helpline, where the live search matches the word to a document tag",
               "Type “gadi ka insurance” and it says plainly that the word is not in its list, rather than returning nothing",
               "It is matched on word boundaries, so “confirmation” is not read as a complaint and “first” is not read as an FIR",
               "It costs the home page no height — the field is already in the masthead — but it is found only by people who were going to type",

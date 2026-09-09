@@ -51,9 +51,7 @@ const WALKS = {
     await tap(p, '.opt-card[data-id="senior"]', { pause: 900 });        // Senior Citizens
     await tap(p, '#next', { pause: 1200 });
     await tap(p, '#skip', { pause: 2400 });                             // skip — everything for the group
-    await tap(p, '#again', { pause: 1000 });
-    await tap(p, '#pwd', { pause: 2600 });                              // persons with disabilities — DEPwD's four
-    await p.waitForTimeout(1000);
+    await p.waitForTimeout(1200);
   }},
   'home-c': { url: 'file://' + path.join(PROTO, 'home-c.html'), run: async p => {
     await p.waitForTimeout(1600);
