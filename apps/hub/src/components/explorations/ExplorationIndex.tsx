@@ -184,7 +184,11 @@ export function ExplorationIndex({
                       </span>
                     ))}
                     <span className="xpl-module-card__date">
-                      <Icon name="event" size={14} aria-hidden />
+                      {/* 16, the scale's smallest step — not 14. The size comes
+                          from the `size` prop and drives the glyph's optical-size
+                          axis, so an off-scale value draws a glyph cut for one
+                          size and shows it at another. */}
+                      <Icon name="event" size={16} aria-hidden />
                       {m.date}
                     </span>
                   </span>
