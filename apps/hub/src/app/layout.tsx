@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans, Noto_Sans_Display } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { UX4GAccessibilityWidget } from "@mosje/design-system";
 import { RouteColorModeProvider } from "@/components/route-color-mode-provider";
 import { DataModeProvider } from "@/lib/data-mode/context";
@@ -181,6 +182,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </NotInEmbed>
           </DataModeProvider>
         </RouteColorModeProvider>
+        <Analytics />
       </body>
     </html>
   );
