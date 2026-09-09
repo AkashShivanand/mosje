@@ -120,7 +120,7 @@ const WALKS = {
     fs.rmSync(dir, { recursive: true, force: true });
     const ctx = await b.newContext({
       viewport: { width: W, height: H }, deviceScaleFactor: 2,
-      recordVideo: { dir, size: { width: W * 2, height: H * 2 } },
+      recordVideo: { dir, size: { width: W, height: H } },
     });
     const p = await ctx.newPage();
     const errs = []; p.on('pageerror', e => errs.push(String(e)));
