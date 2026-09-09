@@ -211,8 +211,21 @@ export function ExplorationViewer({
               document.getElementById(`xpl-tab-${id}`)?.focus();
             }}
           >
+            {/*
+             * A DOT, NOT THE SENTENCE — and the sentence is still in the
+             * accessible name, because a coloured mark on its own is status
+             * conveyed by colour alone (WCAG 1.4.1). What decodes it for a
+             * sighted reader is the legend in the module header directly above
+             * this row, which is the same dot beside the same word.
+             *
+             * The word had to go: six tabs measured 222px each against a 1,272px
+             * container, so the row wrapped to two lines even after the labels
+             * were shortened — and "Awaiting a decision" appeared five times in
+             * one row, saying nothing the header could not say once.
+             */}
+            <span className={`xpl-dot xpl-dot--${o.status}`} aria-hidden />
             <span className="xpl-viewer__tab-title">{o.label}</span>
-            <span className={`xpl-status xpl-status--${o.status}`}>{statusWord(o)}</span>
+            <span className="xpl-sr-only">{statusWord(o)}</span>
           </button>
         ))}
       </div>

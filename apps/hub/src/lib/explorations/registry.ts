@@ -663,6 +663,30 @@ export function allModuleParams(): { surface: string; module: string }[] {
   return EXPLORATIONS.flatMap((s) => s.modules.map((m) => ({ surface: s.id, module: m.id })));
 }
 
+/**
+ * HOW MANY OPTIONS ARE IN EACH STATE, ordered as the status ladder is, and
+ * carrying only the states that are actually present.
+ *
+ * Exported rather than computed at each call site because two surfaces render
+ * it — the index card's foot and the module header's legend — and two
+ * implementations of one count is how they end up disagreeing on screen.
+ */
+export function optionTally(
+  options: readonly ExplorationOption[],
+): { status: ExplorationStatus; n: number }[] {
+  return (["proposed", "chosen", "superseded", "parked"] as const)
+    .map((status) => ({ status, n: options.filter((o) => o.status === status).length }))
+    .filter((t) => t.n > 0);
+}
+
+/** The plural phrasing a tally needs. "1 options" is a defect. */
+export const STATUS_TALLY: Record<ExplorationStatus, string> = {
+  chosen: "chosen",
+  proposed: "awaiting a decision",
+  superseded: "not chosen",
+  parked: "parked",
+};
+
 /** Counted, never typed — the index prints these. */
 export function counts() {
   const modules = EXPLORATIONS.flatMap((s) => s.modules);

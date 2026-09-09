@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { Icon } from "@mosje/design-system";
 import type { ExplorationStatus, ExplorationSurface } from "@/lib/explorations/registry";
+import { STATUS_TALLY, optionTally } from "@/lib/explorations/registry";
 import "./explorations.css";
 
 /**
@@ -35,14 +36,6 @@ import "./explorations.css";
  * on your way somewhere, and putting it in the URL would make this page render
  * per request for a control nobody links to. It is client state, deliberately.
  */
-
-/** Plural forms the tally needs. A count line reading "1 options" is a defect. */
-const STATUS_TALLY: Record<ExplorationStatus, string> = {
-  chosen: "chosen",
-  proposed: "awaiting a decision",
-  superseded: "not chosen",
-  parked: "parked",
-};
 
 /** The filter's own vocabulary. `parked` is folded into "not chosen" — the
  *  register holds none today, and a chip that always reads zero is chrome. */
@@ -164,12 +157,7 @@ export function ExplorationIndex({
 
           <div className="xpl-modules">
             {modules.map((m) => {
-              const tally = (["proposed", "chosen", "superseded", "parked"] as const)
-                .map((status) => ({
-                  status,
-                  n: m.options.filter((o) => o.status === status).length,
-                }))
-                .filter((t) => t.n > 0);
+              const tally = optionTally(m.options);
 
               return (
                 <Link
