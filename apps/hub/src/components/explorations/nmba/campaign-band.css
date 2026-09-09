@@ -1093,3 +1093,36 @@
     }
   }
 }
+
+@layer components {
+  /* The dots and the pause travel together — one cluster, not two controls that
+     happen to be adjacent. */
+  .xband__controls {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+  }
+
+  .xband__play {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-full);
+    color: var(--sa-text-neutral-inverse);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 12%, transparent);
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .xband__play:hover {
+      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 24%, transparent);
+    }
+  }
+
+  .xband__play:focus-visible,
+  .xband__tab:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+}
