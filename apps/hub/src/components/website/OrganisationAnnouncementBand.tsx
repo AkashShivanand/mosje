@@ -6,6 +6,7 @@ import NextLink from "next/link";
 import { Icon, Modal, buttonClasses } from "@mosje/design-system";
 import type { OrganisationDetail } from "@/content/website/organisation-details";
 import { dismissCampaign } from "@/lib/website/campaign-dismissed";
+import { ConfettiMark } from "./ConfettiMark";
 import "./organisation-announcement-band.css";
 
 /**
@@ -103,6 +104,22 @@ export function OrganisationAnnouncementBand({
   const [zoom, setZoom] = React.useState(false);
   const dotsRef = React.useRef<HTMLDivElement>(null);
 
+  /*
+   * THE POP AND THE SPRAY HAPPEN ONCE.
+   *
+   * A celebration that fires every six seconds forever stops being a
+   * celebration and becomes a tic — and it is the loudest movement in a band
+   * that sits above the page's own title. So the burst belongs to the FIRST
+   * appearance, which is the only one a reader has not seen, and the mark keeps
+   * a quiet drift after that.
+   *
+   * A ref rather than state: nothing renders differently because of it on the
+   * turn it flips, so putting it in state would buy a re-render and nothing
+   * else. It is read during render and written in an effect, never during.
+   */
+  const seenObservance = React.useRef(false);
+  const [firstShow, setFirstShow] = React.useState(true);
+
   const [reduced] = React.useState(
     () =>
       typeof window !== "undefined" &&
@@ -188,11 +205,41 @@ export function OrganisationAnnouncementBand({
    */
   const running = rotates && playing && !hovered && !focused && !reduced && !gone && !zoom;
 
+  /*
+   * THE DRIFT IS NOT THE ROTATION, so it does not answer to the same holds.
+   *
+   * Hover and focus pause the rotation because a reader is reading and a
+   * sentence must not move away mid-read. Neither is a reason to freeze a
+   * decorative mark — so the ambient loop answers to the PAUSE button, to
+   * `prefers-reduced-motion`, and to nothing else.
+   *
+   * It runs whether or not the band rotates, which is what makes the pause
+   * control necessary even on a band with a single announcement: this loops
+   * forever, and §2.2.2 wants a way to stop anything that does.
+   */
+  const hasDrift = panels.some((o) => o.celebrate) && !reduced && !gone;
+  const drifting = hasDrift && playing;
+
   React.useEffect(() => {
     if (!running) return;
     const t = window.setInterval(() => setI((n) => (n + 1) % panels.length), DWELL_MS);
     return () => window.clearInterval(t);
   }, [running, panels.length]);
+
+  /*
+   * The observance has now been seen. Flipping this on the FIRST commit rather
+   * than on a later one is what keeps the burst to a single appearance: the
+   * mark reads `firstShow` while the CSS animation is starting, and every
+   * appearance after this render is a quiet one.
+   */
+  React.useEffect(() => {
+    if (!firstShow) return;
+    if (!panels[i]?.celebrate) return;
+    if (seenObservance.current) return;
+    seenObservance.current = true;
+    const t = window.setTimeout(() => setFirstShow(false), 1400);
+    return () => window.clearTimeout(t);
+  }, [firstShow, panels, i]);
 
   function go(next: number) {
     const n = (next + panels.length) % panels.length;
@@ -310,8 +357,24 @@ export function OrganisationAnnouncementBand({
                         aria-label="Show the registration code at a size a camera can read"
                       >
                         <Image src={o.qr} alt="" width={128} height={128} />
-                        <span className="orgab__mark-badge" aria-hidden>
-                          <Icon name="zoom_in" size={16} />
+                        {/*
+                         * ON HOVER AND ON FOCUS, not at rest.
+                         *
+                         * A badge sitting on the code permanently is a second
+                         * mark on a 72px tile whose whole job is to be one, and
+                         * it covers the corner of a code. The earlier argument
+                         * for keeping it visible was touch — an affordance that
+                         * only appears on hover does not exist for a reader who
+                         * cannot hover — and that argument does not apply HERE:
+                         * this tile is not rendered below 768 at all. Where
+                         * there is no pointer there is no code either.
+                         *
+                         * Focus is included with hover for the same reason it
+                         * always is: a keyboard reader cannot hover, and this is
+                         * a button.
+                         */}
+                        <span className="orgab__mark-zoom" aria-hidden>
+                          <Icon name="zoom_in" size={20} fill weight={400} />
                         </span>
                       </button>
                       {/*
@@ -335,19 +398,26 @@ export function OrganisationAnnouncementBand({
                       className={`orgab__mark orgab__mark--glyph${o.celebrate ? " orgab__mark--celebrate" : ""}`}
                       aria-hidden
                     >
-                      <Icon name={o.icon} size={40} />
+                      {o.celebrate ? (
+                        <ConfettiMark burst={firstShow && n === i} loop={drifting} />
+                      ) : (
+                        <Icon name={o.icon} size={40} />
+                      )}
                       {/*
-                       * SIX SPECKS, ONE BURST PER APPEARANCE. A glyph of confetti
-                       * is a picture of a celebration; a glyph that goes off is
-                       * one. It fires when the panel becomes the active one — the
-                       * CSS animation starts when `[data-active]` begins to match.
+                       * SIX SPECKS, AND ONLY ON THE FIRST APPEARANCE.
                        *
-                       * It runs 1s and stops, which is why it needs no control of
-                       * its own under §2.2.2, and it can only recur when the band
-                       * rotates — so the pause that stops the rotation stops this
-                       * too. Nothing moves under `prefers-reduced-motion`.
+                       * The pop and the spray are what say "this is an
+                       * anniversary" to a reader meeting the band for the first
+                       * time. Fired every six seconds for as long as the page is
+                       * open they would say something else entirely, so they are
+                       * spent once and the mark keeps a quiet drift afterwards.
+                       *
+                       * They are not rendered at all after that, rather than
+                       * rendered and hidden: six elements carrying a finished
+                       * animation are six things for the compositor to keep
+                       * thinking about.
                        */}
-                      {o.celebrate
+                      {o.celebrate && firstShow && n === i
                         ? [0, 1, 2, 3, 4, 5].map((n2) => (
                             <span key={n2} className="orgab__spark" data-n={n2} />
                           ))
@@ -423,8 +493,12 @@ export function OrganisationAnnouncementBand({
                * where it does appear it sits on the card it pages and nowhere
                * near the band's own dismiss.
                */}
-              {rotates ? (
+              {rotates || drifting ? (
                 <div className="orgab__pager" data-running={running || undefined}>
+                  {/* Dots only where there is somewhere to go. On a band with one
+                      announcement the pause still appears, because the mark
+                      beside it never stops on its own. */}
+                  {rotates ? (
                   <div
                     className="orgab__dots"
                     role="tablist"
@@ -450,12 +524,19 @@ export function OrganisationAnnouncementBand({
                       </button>
                     ))}
                   </div>
+                  ) : null}
 
                   {/* WCAG 2.2 §2.2.2: anything auto-updating past five seconds
-                      needs a mechanism to stop it. A 6s dwell is over that line,
-                      so this control is what makes the band lawful — and it stops
-                      the dwell indicator and the confetti with it. Not rendered
-                      under `prefers-reduced-motion`, where nothing rotates. */}
+                      needs a mechanism to stop it. Two things here are over that
+                      line — the 6s dwell and the confetti's endless drift — so
+                      this one control is what makes the band lawful, and it stops
+                      the rotation, the dwell indicator and the drift together.
+                      Not rendered under `prefers-reduced-motion`, where nothing
+                      moves in the first place.
+
+                      FILLED, and the one glyph in the band that is: a transport
+                      control is read as a shape at 16px, and a 300-weight outline
+                      of two bars is a shape you have to look at twice. */}
                   {reduced ? null : (
                     <button
                       type="button"
@@ -463,7 +544,7 @@ export function OrganisationAnnouncementBand({
                       aria-pressed={!playing}
                       onClick={() => setPlaying((p) => !p)}
                     >
-                      <Icon name={playing ? "pause" : "play_arrow"} size={20} aria-hidden />
+                      <Icon name={playing ? "pause" : "play_arrow"} size={16} fill weight={400} aria-hidden />
                       <span className="ds-sr-only">
                         {playing ? "Pause the announcements" : "Play the announcements"}
                       </span>
@@ -484,8 +565,16 @@ export function OrganisationAnnouncementBand({
                 href={`tel:${banner.helplineNumber}`}
                 aria-label={`${banner.helplineLabel} ${banner.helplineNumber}`}
               >
+                {/*
+                  * FILLED AND HEAVIER, because it sits beside a 48px Bold
+                  * numeral. At weight 300 and 24px in a 48px well it was a
+                  * hairline watermark next to five of the boldest glyphs on the
+                  * page — present in the markup and absent from the design,
+                  * which is what "the call icon is missing" means when the icon
+                  * is demonstrably there.
+                  */}
                 <span className="orgab__helpline-glyph" aria-hidden>
-                  <Icon name="call" size={24} />
+                  <Icon name="call" size={32} fill weight={500} />
                 </span>
                 <span className="orgab__helpline-text">
                   <span className="orgab__helpline-label">
@@ -534,44 +623,60 @@ export function OrganisationAnnouncementBand({
         <Modal
           open={zoom}
           onClose={() => setZoom(false)}
-          size="lg"
+          size="sm"
+          /* Named for assistive technology and hidden from sight: the dialog IS
+             a phone, and a phone does not have a page title bar. */
           title={banner.heading}
-          className="orgbz"
+          hideClose
+          className="orgabz"
         >
-          <div className="orgbz__grid">
-            <div className="orgbz__phone" aria-hidden>
-              <span className="orgbz__speaker" />
-              <span className="orgbz__screen">
-                <span className="orgbz__view">
-                  <Image
-                    className="orgbz__code"
-                    src={banner.qrSrc}
-                    alt=""
-                    width={686}
-                    height={686}
-                  />
-                </span>
-              </span>
-            </div>
+          <div className="orgabz__frame">
+            <span className="orgabz__island" aria-hidden />
 
-            <div className="orgbz__copy">
-              <p className="orgbz__lead">
-                Point a phone camera at this code. It opens the same form as the button below.
-              </p>
-              <p className="orgbz__or">Or open it directly at</p>
-              <p className="orgbz__url">{banner.action.href.replace(/^https?:\/\//, "")}</p>
+            <button
+              type="button"
+              className="orgabz__close"
+              onClick={() => setZoom(false)}
+              aria-label="Close"
+            >
+              <Icon name="close" size={16} weight={500} aria-hidden />
+            </button>
+
+            <div className="orgabz__screen">
+              <span className="orgabz__code">
+                <Image src={banner.qrSrc} alt="" width={686} height={686} />
+              </span>
+
+              {/*
+               * ONE LINE, AND NO PRINTED ADDRESS.
+               *
+               * The wide dialog this replaces printed the URL, and the argument
+               * for it was real: a reader with no second device cannot scan
+               * anything, and a scan-only dialog is a dead end for them. The
+               * button below is that reader's route, and it is a better one —
+               * they are on a computer, and the address existed to be typed into
+               * a device they do not have.
+               *
+               * It also would not fit. Measured on the 220px screen: 39
+               * characters at 12px want 242, so it broke as "nasha-mukti-" /
+               * "mitr" — an address split mid-word is worse than no address.
+               */}
+              <p className="orgabz__lead">Scan to register as a Nasha Mukt Mitr</p>
+
               <a
-                className={buttonClasses("success", "filled", "md", "orgbz__cta")}
+                className={buttonClasses("success", "filled", "sm", "orgabz__cta")}
                 href={banner.action.href}
                 target="_blank"
                 rel="noreferrer"
                 aria-label={banner.action.label}
               >
                 <span>{banner.action.shortLabel ?? banner.action.label}</span>
-                <Icon name="open_in_new" size={20} aria-hidden />
+                <Icon name="open_in_new" size={16} aria-hidden />
                 <span className="ds-sr-only"> (opens in a new tab)</span>
               </a>
             </div>
+
+            <span className="orgabz__home" aria-hidden />
           </div>
         </Modal>
       ) : null}

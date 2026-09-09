@@ -72,6 +72,10 @@
     display: grid;
     grid-template-areas: "offer";
     align-items: center;
+    /* The depth the turn happens in. On the STAGE rather than on the panel, so
+       both panels share one vanishing point and the turn reads as one card
+       rotating rather than as two cards each rotating in their own world. */
+    perspective: 1400px;
     padding: var(--sa-padding-16) var(--sa-padding-20);
     border-radius: var(--sa-shape-16);
     background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent);
@@ -127,6 +131,33 @@
    * The columns are fixed — mark, copy, action — so the skeleton is identical on
    * both panels and only the contents cross-fade.
    */
+  /*
+   * ── THE PANEL TURNS, AND THE CARD IS WHAT TURNS ─────────────────────────
+   *
+   * A cross-fade with a 6px lift said "something changed" and nothing more; at
+   * a six-second cadence above the page's own title that is easy to miss
+   * entirely, which defeats the only reason to rotate two announcements.
+   *
+   * It turns now — a 26° rotation about the vertical, with the perspective on
+   * the stage so the far edge genuinely recedes. Not a full 180° flip: half a
+   * second of a card showing its back is a long time on a band a reader is
+   * trying to read, and at 26° the incoming face is already legible while it is
+   * still moving. The scale and the recede sell the depth that the angle alone
+   * does not.
+   *
+   * BLUR CARRIES THE OVERLAP. Both panels occupy one cell, so for 250ms two
+   * different sentences are on top of each other; sharp, the eye reads two
+   * objects, and blurred it reads one thing becoming another. Two pixels is
+   * enough and stays cheap — this is a paint the compositor does on a small
+   * box, not a backdrop filter.
+   *
+   * ENTER 250ms DECELERATING, EXIT 150ms ACCELERATING — the estate's own
+   * `enter`/`exit` pairs. The outgoing gets out of the way faster than the
+   * incoming arrives, which is what stops a cross-transition reading as a
+   * collision. `visibility` is delayed by the exit duration so the leaving
+   * panel is still painted while it leaves; it is what keeps the inactive panel
+   * out of the accessibility tree at rest.
+   */
   .orgab__offer {
     grid-area: offer;
     display: grid;
@@ -135,16 +166,27 @@
     column-gap: var(--sa-inline-16);
     visibility: hidden;
     opacity: 0;
-    transform: translateY(6px);
+    filter: blur(2px);
+    transform: rotateY(-26deg) translateZ(-28px) scale(0.97);
+    transform-origin: 30% 50%;
+    backface-visibility: hidden;
     transition:
-      opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
-      transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+      opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+      filter var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+      transform var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+      visibility 0s linear var(--sa-motion-exit-duration);
   }
 
   .orgab__offer[data-active] {
     visibility: visible;
     opacity: 1;
-    transform: translateY(0);
+    filter: blur(0);
+    transform: rotateY(0deg) translateZ(0) scale(1);
+    transition:
+      opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
+      filter var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
+      transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
+      visibility 0s;
   }
 
   /*
@@ -233,11 +275,6 @@
       box-shadow: var(--sa-elevation-dropdown);
     }
 
-    .orgab__mark--code:hover .orgab__mark-badge {
-      transform: scale(1.12);
-      background-color: var(--sa-color-successScale-600);
-      color: var(--sa-text-neutral-inverse);
-    }
   }
 
   .orgab__mark--code:active {
@@ -245,109 +282,41 @@
   }
 
   /*
-   * THE BADGE IS THERE AT REST, not only on hover. A hover-only affordance does
-   * not exist on a touch screen, and it does not exist for a reader scanning the
-   * band rather than pointing at it — which is when they need to know the code
-   * can be opened. Hover makes it louder; it does not make it appear.
-   */
-  .orgab__mark-badge {
-    position: absolute;
-    inset-block-end: calc(-1 * var(--sa-padding-4));
-    inset-inline-end: calc(-1 * var(--sa-padding-4));
-    display: grid;
-    place-items: center;
-    inline-size: var(--sa-padding-20);
-    block-size: var(--sa-padding-20);
-    border-radius: var(--sa-shape-full);
-    background-color: var(--sa-color-successScale-700);
-    color: var(--sa-text-neutral-inverse);
-    box-shadow: 0 0 0 var(--sa-stroke-2) var(--sa-bg-neutral-base);
-    transition:
-      transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
-      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
-  }
-
-  /*
-   * THE CODE IS TAKEN OUT OF THE HEIGHT CALCULATION, and this is not a detail.
+   * THE MAGNIFIER APPEARS ON HOVER AND ON FOCUS, not at rest.
    *
-   * In flow, the image's own 128px contributes to the row's max-content height,
-   * so the square stopped being sized by the copy and started setting the band:
-   * measured, the code panel's tile came out at 140 against the glyph panel's
-   * 70, and the whole band at 220px instead of 150 — a seventy-pixel difference
-   * that only appears on one of the two panels, which is exactly the shape of
-   * defect a single screenshot misses.
+   * A badge pinned to the corner permanently was a second mark on a 72px tile
+   * whose entire job is to be one, and it sat on the code. The argument that
+   * kept it visible was touch — an affordance that only appears on hover does
+   * not exist for a reader who cannot hover — and it does not hold HERE: this
+   * tile is not rendered below 768 at all, so where there is no pointer there
+   * is no code either.
    *
-   * Absolutely positioned, the image fills the tile the copy sized and
-   * contributes nothing back. The 6px inset is the code's quiet zone.
+   * It covers the whole tile rather than a corner of it, because the thing
+   * being offered is the code itself: a wash and a glyph over all of it says
+   * "open this", where a badge beside it says "there is a control here too".
+   * The cursor says the same thing again.
    */
-  .orgab__mark--code img {
+  .orgab__mark-zoom {
     position: absolute;
     inset: 0;
-    inline-size: 100%;
-    block-size: 100%;
+    display: grid;
+    place-items: center;
     border-radius: inherit;
-    object-fit: contain;
-  }
-
-  /* ── The confetti goes off ───────────────────────────────────────────────
-     A glyph OF a celebration is a picture of one; a glyph that goes off is one.
-     It fires when the panel becomes the active one, runs 1.1s and stops. */
-
-  .orgab__offer[data-active] .orgab__mark--celebrate {
-    animation: orgab-pop 700ms var(--sa-motion-emphasis-easing) both;
-  }
-
-  .orgab__spark {
-    position: absolute;
-    inset-block-start: 50%;
-    inset-inline-start: 50%;
-    inline-size: var(--sa-padding-8);
-    block-size: var(--sa-stroke-3);
-    border-radius: var(--sa-shape-full);
-    background-color: var(--spark-ink);
+    background-color: color-mix(in srgb, var(--sa-color-successScale-900) 66%, transparent);
+    color: var(--sa-text-neutral-inverse);
     opacity: 0;
+    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
-  /*
-   * SIX DIRECTIONS, AND THEY HAVE TO CLEAR THE TILE TO BE SEEN.
-   *
-   * The first pass threw them 26-34px from the centre of a 70px tile, so they
-   * spent their bright half INSIDE it — pale saffron specks on a pale saffron
-   * ground, invisible, and by the time they crossed onto the green they were
-   * already fading. Caught by screenshotting the burst mid-flight rather than
-   * by trusting the keyframes.
-   *
-   * They travel 48-60px now, which puts the tile's 35px edge at roughly a third
-   * of the way, and the opacity peak moved to 30% so the brightest moment is the
-   * one where they cross onto the card. The saturated `-400` orange is the one
-   * ink that holds on both grounds; the pale rungs only work once they are out.
-   *
-   * Uneven angles and staggered starts, because even ones read as a mechanism
-   * and this is meant to read as confetti.
-   */
-  .orgab__spark[data-n="0"] { --dx: -46px; --dy: -38px; --spark-ink: var(--sa-color-secondaryScale-400); --spark-in: 0ms; }
-  .orgab__spark[data-n="1"] { --dx: 42px;  --dy: -50px; --spark-ink: var(--sa-color-secondaryScale-100); --spark-in: 60ms; }
-  .orgab__spark[data-n="2"] { --dx: 58px;  --dy: -10px; --spark-ink: var(--sa-text-neutral-inverse);     --spark-in: 30ms; }
-  .orgab__spark[data-n="3"] { --dx: -54px; --dy: 14px;  --spark-ink: var(--sa-color-secondaryScale-400); --spark-in: 110ms; }
-  .orgab__spark[data-n="4"] { --dx: 24px;  --dy: 48px;  --spark-ink: var(--sa-color-successScale-50);    --spark-in: 80ms; }
-  .orgab__spark[data-n="5"] { --dx: -20px; --dy: -58px; --spark-ink: var(--sa-color-secondaryScale-100); --spark-in: 150ms; }
-
-  .orgab__offer[data-active] .orgab__spark {
-    animation: orgab-spark 1000ms var(--sa-motion-emphasis-easing) var(--spark-in) both;
+  @media (hover: hover) and (pointer: fine) {
+    .orgab__mark--code:hover .orgab__mark-zoom {
+      opacity: 1;
+    }
   }
 
-  @keyframes orgab-spark {
-    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.5) rotate(0deg); }
-    30%  { opacity: 1; }
-    72%  { opacity: 1; }
-    100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.1) rotate(160deg); }
-  }
-
-  @keyframes orgab-pop {
-    0%   { transform: scale(0.88) rotate(-9deg); }
-    46%  { transform: scale(1.09) rotate(5deg); }
-    74%  { transform: scale(0.98) rotate(-2deg); }
-    100% { transform: scale(1) rotate(0deg); }
+  /* A keyboard reader cannot hover, and this is a button. */
+  .orgab__mark--code:focus-visible .orgab__mark-zoom {
+    opacity: 1;
   }
 
   /* The phone's stand-in for the code is out of the way at every other width. */
@@ -459,6 +428,20 @@
    * control has no business being the second one. The band's own darkest rung
    * reads as a distinct object without competing with anything.
    */
+  /*
+   * ── IT SITS INSIDE THE CARD NOW, AND IT HAS NO GROUND ───────────────────
+   *
+   * It rode the card's bottom edge, which is why it needed a dark capsule to
+   * read against two grounds at once — and that capsule made a slide-advance
+   * control the third most defined object in the band. It fits inside, and the
+   * reason it did not before is fixed: the action is aligned to the TOP now, so
+   * the card's lower-right corner is empty. Measured at 1440 — the button
+   * occupies 16 to 56 of a 104px card and the pager 60 to 88.
+   *
+   * With no edge to straddle it needs no ground. What is left is three small
+   * marks in the card's own ink, which is as quiet as a control can be while
+   * still being one.
+   */
   .orgab__pager {
     position: relative;
     /* It shares the panel's grid cell — that is what makes the stage the height
@@ -471,26 +454,6 @@
     display: flex;
     align-items: center;
     gap: var(--sa-inline-2);
-    padding-inline: var(--sa-padding-6);
-    border-radius: var(--sa-shape-full);
-    background-color: var(--sa-color-successScale-800);
-    /*
-     * A HAIRLINE AND A SHADOW, because the ground alone cannot carry the shape.
-     *
-     * Measured: the pill's own fill against the band beneath it is 1.35:1 — the
-     * half that hangs below the card is very nearly the colour it is sitting on,
-     * and no rung of this ramp gets a dark green to 3:1 against another dark
-     * green. Nothing FAILS §1.4.11 by that — a reader identifies this control by
-     * its dots (4.85:1) and its pause glyph (12.45:1), not by its container —
-     * but a capsule whose lower half dissolves is not the object it was drawn
-     * as. The lift does what the colour cannot.
-     */
-    box-shadow:
-      inset 0 0 0 var(--sa-stroke-1)
-        color-mix(in srgb, var(--sa-text-neutral-inverse) 32%, transparent),
-      0 2px 6px -1px color-mix(in srgb, var(--sa-color-successScale-950) 55%, transparent);
-    /* Down by its own height, so its CENTRE lands on the card's bottom edge. */
-    margin-block-end: calc(-1 * var(--sa-control-height-sm));
   }
 
   .orgab__dots {
@@ -499,14 +462,15 @@
     gap: var(--sa-inline-2);
   }
 
-  /* A 32px target with a small mark inside it — well past §2.5.8's 24×24 floor,
-     met by the control itself rather than by the spacing clause. */
+  /* A 24px target with a small mark inside it — §2.5.8's floor, met by the
+     control itself rather than by the spacing clause. 32 was a lot of hit area
+     for a mark 6px across, and the extra 8 was the loudest thing about it. */
   .orgab__dot {
     position: relative;
     display: grid;
     place-items: center;
-    inline-size: var(--sa-control-height-sm);
-    block-size: var(--sa-control-height-sm);
+    inline-size: var(--sa-padding-24);
+    block-size: var(--sa-padding-24);
     border-radius: var(--sa-shape-full);
   }
 
@@ -529,24 +493,31 @@
      below runs across it. */
   .orgab__dot[aria-selected="true"]::before {
     inline-size: var(--sa-padding-20);
-    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 45%, transparent);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 40%, transparent);
   }
 
   /*
-   * ── THE DWELL, SHOWN RUNNING ────────────────────────────────────────────
+   * ── THE DWELL, AND WHY IT IS CLIPPED RATHER THAN SCALED ─────────────────
    *
    * A reader has no way of knowing this band rotates until it has already
-   * rotated under them — the two 6px dots are a cue only to someone already
-   * looking for one. The current dot fills across the six seconds, so the change
-   * is announced before it happens rather than explained after it.
+   * rotated under them. The current dot fills across the six seconds, so the
+   * change is announced before it happens rather than explained after it.
    *
-   * `linear`, because this is constant motion reporting elapsed time and not a
-   * UI element entering; any easing here would misreport when the panel turns.
-   * `scaleX` rather than `inline-size`, so it stays off the layout path.
+   * It ran on `scaleX` before, and `scaleX` squashes the SHAPE as well as the
+   * width: a 20x6 pill at scaleX(0.1) is a 2px sliver whose 3px end caps have
+   * been flattened to almost nothing, so the fill began with a blunt left edge
+   * and grew its own roundness as it went. That is the defect — the left cap
+   * should be as round at 5% as it is at 100%, because it is the same cap.
    *
-   * It is paused by the same four holds as the rotation itself — the pause
-   * button, hover, focus and `prefers-reduced-motion` — because an indicator
-   * that keeps running while the thing it indicates has stopped is a lie.
+   * `clip-path: inset(... round 999px)` reveals the pill instead of deforming
+   * it. The element underneath is always a finished 20x6 pill; the clip is a
+   * rounded window opening across it, so both caps are correct at every frame.
+   * It stays off the layout path, which `inline-size` would not.
+   *
+   * `linear`, because this reports elapsed time and any easing would misreport
+   * when the panel turns. Paused by the same holds as the rotation itself — an
+   * indicator that keeps running while the thing it indicates has stopped is a
+   * lie.
    */
   .orgab__dot[aria-selected="true"]::after {
     content: "";
@@ -555,8 +526,7 @@
     block-size: var(--sa-padding-6);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-text-neutral-inverse);
-    transform-origin: left center;
-    transform: scaleX(0);
+    clip-path: inset(0 100% 0 0 round var(--sa-shape-full));
     animation: orgab-dwell var(--orgab-dwell, 6000ms) linear forwards;
     animation-play-state: paused;
   }
@@ -566,28 +536,31 @@
   }
 
   @keyframes orgab-dwell {
-    from { transform: scaleX(0); }
-    to { transform: scaleX(1); }
+    from { clip-path: inset(0 100% 0 0 round var(--sa-shape-full)); }
+    to   { clip-path: inset(0 0 0 0 round var(--sa-shape-full)); }
   }
 
-  /* The pause is a peer of the dots, not a ghost beside them: a filled well at
-     rest, because at 78% ink alone it read as a hairline. */
+  /*
+   * A GLYPH, NOT A BUTTON-SHAPED THING. It had a filled well so it would not
+   * read as a hairline at 300 weight — the well was solving a problem the glyph
+   * had. Filled at 400 the two bars are a solid shape at 16px, which needs no
+   * container to be seen, so the container goes and the pager loses its last
+   * piece of furniture.
+   */
   .orgab__play {
     display: grid;
     place-items: center;
-    inline-size: var(--sa-control-height-sm);
-    block-size: var(--sa-control-height-sm);
+    inline-size: var(--sa-padding-24);
+    block-size: var(--sa-padding-24);
     margin-inline-start: var(--sa-inline-2);
     border-radius: var(--sa-shape-full);
-    /* No well of its own: the pager already has a ground, and a lighter patch
-       inside a dark pill reads as a second object rather than as a button. */
-    color: var(--sa-text-neutral-inverse);
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+    color: color-mix(in srgb, var(--sa-text-neutral-inverse) 62%, transparent);
+    transition: color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .orgab__play:hover {
-      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 24%, transparent);
+      color: var(--sa-text-neutral-inverse);
     }
 
     .orgab__dot:hover::before {
@@ -626,13 +599,21 @@
     transform: scale(0.985);
   }
 
+  /*
+   * 56, NOT 48 — and the glyph inside it filled at weight 500.
+   *
+   * Beside five digits at 48px Bold, a 24px outline at weight 300 in a 48px
+   * well was a watermark: present in the markup, absent from the design. The
+   * well now reads against a 104px card, and the glyph fills half of it in a
+   * weight that can stand next to the numerals it belongs to.
+   */
   .orgab__helpline-glyph {
     position: relative;
     display: grid;
     place-items: center;
     flex: 0 0 auto;
-    inline-size: var(--sa-control-height-lg);
-    block-size: var(--sa-control-height-lg);
+    inline-size: var(--sa-padding-56);
+    block-size: var(--sa-padding-56);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-color-successScale-50);
     color: var(--sa-color-successScale-600);
@@ -747,13 +728,28 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .orgab__offer {
-      transition: opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+    /* A cross-fade, and nothing that moves in space. The blur goes with the
+       turn: it existed to bridge two overlapping objects mid-rotation, and with
+       no rotation it is just a smear. */
+    .orgab__offer,
+    .orgab__offer[data-active] {
+      transition:
+        opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
+        visibility 0s linear var(--sa-motion-enter-duration);
       transform: none;
+      filter: none;
     }
 
-    .orgab__offer[data-active] .orgab__mark--celebrate,
-    .orgab__offer[data-active] .orgab__spark {
+    .orgab__offer[data-active] {
+      transition:
+        opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
+        visibility 0s;
+    }
+
+    .orgab__mark--celebrate .cfti,
+    .cfti__ray,
+    .cfti__bit,
+    .orgab__spark {
       animation: none;
     }
 
@@ -782,203 +778,197 @@
 
 
   /* ══════════════════════════════════════════════════════════════════════════
-     THE CODE, ENLARGED — a viewfinder, not a lightbox
+     THE CODE, ENLARGED — the dialog IS the phone
      ══════════════════════════════════════════════════════════════════════════
 
-     A dialog that only makes the picture bigger tells the reader nothing they
-     did not already know. This one shows the code where a code is actually
-     read — inside a phone's own camera frame, with the brackets a camera draws
-     — so the instruction is the picture and the sentence beside it only has to
-     say which form opens.
+     It was a phone drawn inside a white dialog: two frames around one code, an
+     app pretending to be a picture of an app. The dialog is the device now —
+     the bezel is the panel, the screen is the body, and there is nothing around
+     it. What a reader is being asked to do is hold up a phone, so the thing on
+     screen is a phone.
 
-     Everything here is drawn in CSS. A screenshot of a phone would be an image
-     to ship, a device to date, and a thing to re-export the day the code
-     changes.
+     Everything is drawn in CSS. A photograph of a handset would be an image to
+     ship, a model to date, and a file to re-export the day the code changes.
+
+     The DS `Modal` still supplies everything that is hard — the backdrop, the
+     focus trap, Escape, and focus restored to the tile that opened it. Only its
+     surface is restyled; `hideClose` removes its own button because the phone
+     carries one, and the title is kept for the accessible name and taken out of
+     sight, since a phone has no page-title bar.
      ========================================================================= */
 
-  .orgbz__grid {
-    display: grid;
-    align-items: center;
-  }
-
-  /* ── The phone ─────────────────────────────────────────────────────────── */
-
-  .orgbz__phone {
-    position: relative;
-    padding: var(--sa-padding-8);
-    border-radius: var(--sa-shape-32);
-    background-color: var(--sa-color-neutralScale-900);
+  .ds-modal.orgabz {
+    inline-size: 300px;
+    max-inline-size: 300px;
+    /* The bezel. Its thickness IS this padding, so the screen inside needs no
+       size of its own. */
+    padding: var(--sa-padding-12);
+    border-radius: var(--sa-shape-40);
+    background-color: var(--sa-color-neutralScale-950);
+    overflow: visible;
     box-shadow:
-      inset 0 0 0 var(--sa-stroke-1) color-mix(in srgb, var(--sa-text-neutral-inverse) 14%, transparent),
-      var(--sa-elevation-modal);
+      /* the metal edge catching light at the top, and its shadow at the bottom */
+      inset 0 var(--sa-stroke-1) 0 0 color-mix(in srgb, var(--sa-text-neutral-inverse) 22%, transparent),
+      inset 0 calc(-1 * var(--sa-stroke-1)) 0 0 color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent),
+      0 24px 48px -12px color-mix(in srgb, var(--sa-color-neutralScale-950) 55%, transparent),
+      0 8px 16px -8px color-mix(in srgb, var(--sa-color-neutralScale-950) 40%, transparent);
   }
 
-  /* The earpiece slot. It is the one detail that makes the rectangle read as a
-     phone rather than as a dark card, which is the whole job of the frame. */
-  .orgbz__speaker {
-    display: block;
-    inline-size: var(--sa-padding-40);
-    block-size: var(--sa-padding-4);
-    margin: 0 auto var(--sa-stack-8);
+  /* Named for assistive technology, not for the eye. */
+  .orgabz .ds-modal__header {
+    position: absolute;
+    inline-size: var(--sa-stroke-1);
+    block-size: var(--sa-stroke-1);
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .orgabz .ds-modal__body {
+    padding: 0;
+  }
+
+  .orgabz__frame {
+    position: relative;
+  }
+
+  /* The two details that make a rounded rectangle read as a handset: the island
+     at the top and the home indicator at the bottom. Both sit ON the screen, as
+     they do on the device. */
+  .orgabz__island {
+    position: absolute;
+    z-index: var(--sa-z-raised);
+    inset-block-start: var(--sa-padding-12);
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    inline-size: var(--sa-padding-72);
+    block-size: var(--sa-padding-16);
     border-radius: var(--sa-shape-full);
-    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 22%, transparent);
+    /* The bezel's own colour, because that is what a cutout is — the hardware
+       showing through the display, not a shape drawn on it. */
+    background-color: var(--sa-color-neutralScale-950);
+  }
+
+  .orgabz__home {
+    position: absolute;
+    z-index: var(--sa-z-raised);
+    inset-block-end: var(--sa-padding-8);
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    inline-size: var(--sa-padding-80);
+    block-size: var(--sa-stroke-3);
+    border-radius: var(--sa-shape-full);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 34%, transparent);
   }
 
   /*
-   * A PHONE IS TALL, and drawn square it read as a tablet — or worse, as a dark
-   * card with a code on it, which is the generic box this dialog exists to avoid.
-   * 9:17 is the shape of the device the reader is being asked to pick up, and
-   * the empty screen above and below the brackets is what makes it a viewfinder
-   * rather than a frame.
+   * THE CLOSE IS ON THE SCREEN, top-right, where a sheet's close sits on a real
+   * handset. It is also the first thing in the dialog's tab order, which is the
+   * part that matters: a reader who tabs in must reach the way out before they
+   * reach a link that leaves the site.
    */
-  .orgbz__screen {
-    position: relative;
+  .orgabz__close {
+    position: absolute;
+    z-index: var(--sa-z-raised);
+    inset-block-start: var(--sa-padding-16);
+    inset-inline-end: var(--sa-padding-16);
     display: grid;
-    align-content: center;
-    /* 9:14, not 9:17. At a true handset ratio the screen was 415px tall against
-       250px of copy, and the dialog became a tall phone with a paragraph beside
-       it and 165px of nothing under the paragraph. This is still unmistakably a
-       phone and the two columns end within 50px of each other. */
-    aspect-ratio: 9 / 14;
+    place-items: center;
+    inline-size: var(--sa-padding-32);
+    block-size: var(--sa-padding-32);
+    border-radius: var(--sa-shape-full);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 14%, transparent);
+    color: var(--sa-text-neutral-inverse);
+    cursor: pointer;
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .orgabz__close:hover {
+      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 26%, transparent);
+    }
+  }
+
+  .orgabz__close:active {
+    transform: scale(0.94);
+  }
+
+  .orgabz__close:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /*
+   * 9:17, which is a handset rather than the 9:19.5 of the tallest of them. The
+   * true ratio makes a 300px-wide frame 670px tall before the bezel, and a
+   * dialog that does not fit a 13-inch laptop is a dialog that scrolls — a
+   * scrolling phone is the one thing that would give the illusion away.
+   */
+  .orgabz__screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-stack-4);
+    aspect-ratio: 9 / 17;
+    padding: var(--sa-padding-40) var(--sa-padding-20);
+    border-radius: var(--sa-shape-32);
+    /*
+     * A SCREEN IS LIT, AND IT IS LIT FROM THE TOP.
+     *
+     * A flat dark fill reads as a hole cut in the bezel, and a glow centred in
+     * the middle left the top of the screen as dark as the bezel around it —
+     * which is where the island is, so the island was invisible. Measured:
+     * near-black hardware on a near-black screen. The light source moves to 8%
+     * down and the near stop goes up a rung, so the top of the screen is the
+     * brightest part of it and the cutout in front of it reads as hardware.
+     */
+    background:
+      radial-gradient(
+        140% 92% at 50% 6%,
+        var(--sa-color-successScale-700) 0%,
+        var(--sa-color-successScale-900) 58%,
+        var(--sa-color-successScale-950) 100%
+      );
+  }
+
+  /*
+   * THE CODE IS THE SCREEN'S CONTENT, at 200px — nearly three times the 72px
+   * tile that opens it, and enough for a camera at arm's length. Its white
+   * margin is the file's own 8.2%; nothing is added.
+   */
+  .orgabz__code {
+    display: block;
+    inline-size: 200px;
     padding: var(--sa-padding-8);
     border-radius: var(--sa-shape-16);
-    /* The Abhiyaan's own green, dimmed — a camera preview is never white, and a
-       white screen inside a black bezel reads as a photograph of paper. */
-    background-color: var(--sa-color-successScale-900);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: 0 10px 24px -8px
+      color-mix(in srgb, var(--sa-color-neutralScale-950) 45%, transparent);
   }
 
-  .orgbz__view {
-    position: relative;
-    display: block;
-    padding: var(--sa-padding-16);
-  }
-
-  /*
-   * THE FOUR BRACKETS A CAMERA DRAWS. Eight background layers rather than eight
-   * elements: the corners are decoration on one box, and decoration does not
-   * earn markup.
-   */
-  .orgbz__view::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-
-    --b: color-mix(in srgb, var(--sa-color-successScale-50) 88%, transparent);
-    --l: linear-gradient(var(--b), var(--b));
-    background:
-      var(--l) 0 0 / 26px 3px no-repeat,
-      var(--l) 0 0 / 3px 26px no-repeat,
-      var(--l) 100% 0 / 26px 3px no-repeat,
-      var(--l) 100% 0 / 3px 26px no-repeat,
-      var(--l) 0 100% / 26px 3px no-repeat,
-      var(--l) 0 100% / 3px 26px no-repeat,
-      var(--l) 100% 100% / 26px 3px no-repeat,
-      var(--l) 100% 100% / 3px 26px no-repeat;
-  }
-
-  /* Edge to edge again — the file's own 8.2% margin is the quiet zone, here as
-     in the band. */
-  .orgbz__code {
+  .orgabz__code img {
     display: block;
     inline-size: 100%;
     block-size: auto;
     border-radius: var(--sa-shape-4);
   }
 
-  /* ── The words ─────────────────────────────────────────────────────────── */
-
-  .orgbz__copy {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--sa-stack-4);
-  }
-
-  .orgbz__lead {
+  .orgabz__lead {
+    margin-block-start: var(--sa-stack-20);
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    color: var(--sa-text-neutral-base);
-    text-wrap: pretty;
-  }
-
-  .orgbz__or {
-    margin-block-start: var(--sa-stack-12);
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    letter-spacing: var(--sa-type-caps-tracking);
-    text-transform: uppercase;
-    color: var(--sa-text-neutral-subtle);
-  }
-
-  /*
-   * THE ADDRESS IN FULL, and this is why the dialog is not a lightbox: a reader
-   * with no second device cannot scan anything, and a dialog that only offers a
-   * code is a dead end for them. Tabular figures and a wrap-anywhere rule so a
-   * long path breaks inside the box rather than widening it.
-   */
-  /*
-   * NEUTRAL, NOT GREEN, AND SELECTABLE IN ONE CLICK.
-   *
-   * In the Abhiyaan's green it looked exactly like a link and was not one, which
-   * is a promise the dialog cannot keep — the button below it is what navigates.
-   * An address printed on a page is there to be COPIED or typed on another
-   * device, so `user-select: all` makes one click take the whole of it.
-   */
-  .orgbz__url {
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
     font-weight: var(--sa-font-weight-medium);
-    color: var(--sa-text-neutral-base);
-    overflow-wrap: anywhere;
-    user-select: all;
-  }
-
-  .orgbz__cta {
-    margin-block-start: var(--sa-stack-16);
-  }
-
-  /*
-   * MOBILE-FIRST HERE, unlike the band above it — the dialog stacks by default
-   * and only takes two columns from 768.
-   *
-   * Written the other way round it wanted `max-width: 559px`, which is where the
-   * 640px dialog genuinely stops fitting two columns and is NOT on the estate's
-   * breakpoint ladder (360 · 768 · 1024 · 1280 · 1440 · 1920). `check:breakpoints`
-   * caught it. Inverting the query puts the rule on 768 and costs nothing real:
-   * between 560 and 767 the dialog stacks a little earlier than it strictly has
-   * to, and a stacked dialog at 700px is a perfectly good dialog.
-   */
-  .orgbz__grid {
-    grid-template-columns: minmax(0, 1fr);
-    justify-items: center;
-    gap: var(--sa-stack-20);
-  }
-
-  .orgbz__phone {
-    inline-size: 200px;
-  }
-
-  .orgbz__copy {
-    align-items: center;
     text-align: center;
+    text-wrap: balance;
+    color: var(--sa-text-neutral-inverse);
   }
 
-  @media (min-width: 768px) {
-    .orgbz__grid {
-      grid-template-columns: auto minmax(0, 1fr);
-      justify-items: stretch;
-      gap: var(--sa-inline-24);
-    }
-
-    .orgbz__phone {
-      inline-size: 240px;
-    }
-
-    .orgbz__copy {
-      align-items: flex-start;
-      text-align: start;
-    }
+  .orgabz__cta {
+    margin-block-start: var(--sa-stack-24);
   }
 
   /* ── Below 1024: one column, and the number comes first ──────────────────
