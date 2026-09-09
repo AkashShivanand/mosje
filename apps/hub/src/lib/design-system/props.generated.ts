@@ -12727,7 +12727,7 @@ export const GENERATED_PROPS = {
         "name": "media",
         "type": "React.ReactNode",
         "required": false,
-        "description": "`landing` only — the portrait on the trailing edge. The halo is drawn by this component, not by the caller: the rings are the band's own treatment and every landing page should get the same one. Pass the picture; the plaque is ours."
+        "description": "`landing` only — the portrait on the trailing edge. The halo is drawn by this component, not by the caller: the rings are the band's own treatment and every landing page should get the same one. Pass the picture; the plaque is ours. THE ROUND FRAME IS OURS TOO, AND THAT IS A CORRECTION. It used to be the caller's, on the reasoning that `.sa-siteheader__halo` cannot clip its own children — the pulse discs are children and are MEANT to escape. True, but the conclusion was wrong: the answer is a wrapper inside the halo that clips only the picture, not a rule every caller has to remember. Of the two callers on the estate, one remembered and one did not, and the one that did not drew a 340px SQUARE photograph on a circular plaque. So pass the raw picture at any size. It is sized to the plaque and clipped to the circle here. What the caller still owns is how the picture SITS in that frame — `object-cover` for a photograph, `object-contain` with padding for a mark or the State Emblem — because that depends on the artwork."
       },
       {
         "name": "mediaLabel",
