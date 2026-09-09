@@ -157,3 +157,176 @@ export function OptionOneBand() {
     />
   );
 }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   OPTION C — One band, the notice first, advancing on its own
+   ══════════════════════════════════════════════════════════════════════════ */
+
+const AUTO_PANELS = ["notice", "campaign"] as const;
+/** Long enough to read a sentence and look away, short enough that the second
+ *  panel is not effectively hidden. Both messages are one line of prose. */
+const DWELL_MS = 6000;
+
+export function OptionOneBandAuto() {
+  const [i, setI] = React.useState(0);
+  const [gone, setGone] = React.useState(false);
+  const [playing, setPlaying] = React.useState(true);
+  /** Hover and focus are two INDEPENDENT holds — a reader who tabs into the
+   *  band and then moves the mouse away must not have it start moving again. */
+  const [hovered, setHovered] = React.useState(false);
+  const [focused, setFocused] = React.useState(false);
+  const tabsRef = React.useRef<HTMLDivElement>(null);
+
+  /*
+   * REDUCED MOTION DOES NOT AUTOPLAY AT ALL.
+   *
+   * §2.2.2 is satisfied by the pause control below, but the preference is a
+   * separate promise and a slower rotation is not what it asks for. Read once,
+   * on mount, so the band does not change behaviour under a reader mid-visit.
+   */
+  const [reduced] = React.useState(
+    () =>
+      typeof window !== "undefined" &&
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+
+  const running = playing && !hovered && !focused && !reduced && !gone;
+
+  React.useEffect(() => {
+    if (!running) return;
+    const t = window.setInterval(() => setI((n) => (n + 1) % AUTO_PANELS.length), DWELL_MS);
+    return () => window.clearInterval(t);
+  }, [running]);
+
+  function go(next: number) {
+    const n = (next + AUTO_PANELS.length) % AUTO_PANELS.length;
+    setI(n);
+    /* Any deliberate move stops the rotation. A reader who has chosen a panel
+       has said which one they want; taking it away four seconds later is the
+       thing autoplay is most often blamed for. */
+    setPlaying(false);
+    tabsRef.current?.querySelector<HTMLButtonElement>(`[data-panel="${n}"]`)?.focus();
+  }
+
+  if (gone) return <Fold band={null} />;
+
+  const notice = i === 0;
+
+  return (
+    <Fold
+      band={
+        <section
+          className="xband xband--one"
+          /* A carousel, said in the one place assistive technology reads it. */
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Announcements"
+          onPointerEnter={() => setHovered(true)}
+          onPointerLeave={() => setHovered(false)}
+          onFocusCapture={() => setFocused(true)}
+          onBlurCapture={(e) => {
+            if (!e.currentTarget.contains(e.relatedTarget as Node)) setFocused(false);
+          }}
+        >
+          <div className="sa-container xband__inner xband__inner--one">
+            {/*
+             * `aria-live` is OFF while it rotates and POLITE once it does not.
+             * A region that announces itself every six seconds is not
+             * accessible, it is relentless; one that says nothing after the
+             * reader presses a dot has told them nothing at all.
+             */}
+            <div
+              className="xband__panels"
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${i + 1} of ${AUTO_PANELS.length}`}
+              aria-live={running ? "off" : "polite"}
+            >
+              {notice ? (
+                <div className="xband__panel xband__panel--notice">
+                  <div className="xband__copy">
+                    <p className="xband__heading">{NMBA.ribbon.eyebrow}</p>
+                    <p className="xband__text">{NMBA.ribbon.text}</p>
+                  </div>
+                  <div className="xband__notice-routes">
+                    <a
+                      className={buttonClasses("success", "outlined", "md", undefined, "inverse")}
+                      href={NMBA.ribbon.action.href}
+                    >
+                      <span>{NMBA.ribbon.action.label}</span>
+                      <Icon name="arrow_forward" size={20} aria-hidden />
+                    </a>
+                    <a className="xband__alt" href={NMBA.ribbon.alt.href}>
+                      {NMBA.ribbon.alt.label}
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <div className="xband__panel">
+                  <Campaign />
+                  <Helpline />
+                </div>
+              )}
+            </div>
+
+            <div className="xband__controls">
+              <div className="xband__tabs" role="tablist" aria-label="Announcements" ref={tabsRef}>
+                {AUTO_PANELS.map((p, n) => (
+                  <button
+                    key={p}
+                    type="button"
+                    role="tab"
+                    data-panel={n}
+                    aria-selected={n === i}
+                    tabIndex={n === i ? 0 : -1}
+                    className="xband__tab"
+                    onClick={() => go(n)}
+                    onKeyDown={(e) => {
+                      if (e.key === "ArrowRight") { e.preventDefault(); go(i + 1); }
+                      if (e.key === "ArrowLeft") { e.preventDefault(); go(i - 1); }
+                    }}
+                  >
+                    <span className="ds-sr-only">
+                      {p === "notice" ? NMBA.ribbon.eyebrow : NMBA.banner.heading}
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              {/*
+               * THE PAUSE IS NOT OPTIONAL, AND IT IS NOT DECORATION.
+               *
+               * WCAG 2.2 §2.2.2 requires a mechanism to pause, stop or hide any
+               * content that moves, blinks or auto-updates for more than five
+               * seconds beside other content. A 6s dwell is over that line the
+               * moment the band mounts, so this control is what makes the
+               * autoplay lawful rather than a nice extra.
+               *
+               * Hover and focus pause it too, which the clause does not require
+               * and every reader does: nothing takes a sentence away while
+               * somebody is reading it.
+               */}
+              {reduced ? null : (
+                <button
+                  type="button"
+                  className="xband__play"
+                  aria-pressed={!playing}
+                  onClick={() => setPlaying((p) => !p)}
+                >
+                  <Icon name={playing ? "pause" : "play_arrow"} size={20} aria-hidden />
+                  <span className="ds-sr-only">
+                    {playing ? "Pause the announcements" : "Play the announcements"}
+                  </span>
+                </button>
+              )}
+            </div>
+
+            <Dismiss onClick={() => setGone(true)} label="Dismiss the announcements" />
+          </div>
+        </section>
+      }
+    />
+  );
+}

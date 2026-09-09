@@ -248,7 +248,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
         id: "top-bands",
         title: "The two bands above the hero",
         question:
-          "The fold opens with two announcement bands stacked — a campaign and an anniversary notice. Should they stay separate, or share one?",
+          "The fold opens with two announcement bands stacked — a permanent campaign and a temporary anniversary notice. Should they stay separate, share one band the reader advances, or share one that advances itself?",
         date: "8 September 2026",
         options: [
           {
@@ -276,6 +276,22 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
               "The second panel is, in practice, unread — the design system's own Carousel says so",
               "Nothing rotates on a timer: a band carrying a helpline must not move a sentence away mid-read",
               "The notice gives up its saffron, because a band that changes ground colour as it advances flashes",
+            ],
+          },
+          {
+            id: "one-auto",
+            title: "One band, the notice first, advancing on its own",
+            summary:
+              "The same single band, but the anniversary notice leads and the panels rotate every six seconds — with a pause control, because that is what makes it lawful.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "The temporary announcement is what a reader meets first; the permanent campaign follows",
+              "It rotates on a 6s dwell, so the second panel is no longer effectively unread — which is the whole objection to a manual carousel",
+              "THE PAUSE IS NOT DECORATION: WCAG 2.2 §2.2.2 requires a mechanism to pause, stop or hide anything auto-updating for more than five seconds beside other content. Remove it and the band is unlawful, not merely brisk",
+              "Hover and focus pause it too — the clause does not require that and every reader does",
+              "Pressing a dot stops the rotation for good: a reader who chose a panel has said which one they want",
+              "Under `prefers-reduced-motion` it does not rotate at all, and the pause control is not rendered because there is nothing to pause",
             ],
           },
         ],

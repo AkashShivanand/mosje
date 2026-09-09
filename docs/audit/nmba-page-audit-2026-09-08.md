@@ -1074,3 +1074,55 @@ fragment with an extra closing brace, left by an earlier edit, had been closing
 outside the layer — which, per `design-system-architecture.md` §2a, means it was
 beating every layered rule in the estate rather than losing to utilities as
 intended.
+
+---
+
+## 20. One band, the notice first, advancing on its own
+
+Asked for: use the one section for both, lead with the temporary event, and let it
+autoplay.
+
+### The pause control is what makes it lawful
+
+WCAG 2.2 §2.2.2 requires a mechanism to pause, stop or hide any content that
+moves, blinks or auto-updates for **more than five seconds** beside other
+content. A 6s dwell is over that line the moment the band mounts. So the pause
+button is not a nice extra on this option — without it the band does not conform,
+and the estate does not trade accessibility.
+
+Built with it, autoplay is fine, and this is the version that answers the real
+objection to the manual carousel: that the second panel is in practice unread.
+Rotation is what makes both messages actually seen.
+
+### Four holds, not one
+
+| Hold | Why |
+|---|---|
+| The pause button | §2.2.2. `aria-pressed` states which way it is set |
+| Hover | Nothing takes a sentence away while somebody is reading it |
+| Focus | Tracked **separately** from hover — a reader who tabs in and then moves the mouse away must not have it start moving again |
+| Pressing a dot | Stops it for good. A reader who chose a panel has said which one they want; taking it away four seconds later is what autoplay is most often blamed for |
+
+Under `prefers-reduced-motion` it does not rotate at all, and the pause control is
+not rendered — there is nothing to pause. §2.2.2 is satisfied by the button; the
+preference is a separate promise, and a slower rotation is not what it asks for.
+It is read once on mount, so the band never changes behaviour under a reader
+mid-visit.
+
+### `aria-live` flips with the rotation
+
+`off` while it advances on its own, `polite` once it does not. A region that
+announces itself every six seconds is not accessible, it is relentless; one that
+stays silent after the reader presses a dot has told them nothing at all.
+
+### Verified
+
+Notice leads ("Six Years of the Abhiyaan"), rotates to the campaign after 6s,
+the pause button holds it, and it is still on the same panel 7s later.
+`role="region"`, `aria-roledescription="carousel"`, per-slide
+`aria-roledescription="slide"` with an "n of 2" label.
+
+Stills: `auto-1-notice.png`, `auto-2-campaign.png`.
+
+The `top-bands` module now holds three: **two bands**, **one band the reader
+advances**, and **one band that advances itself**.
