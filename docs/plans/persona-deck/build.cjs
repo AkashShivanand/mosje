@@ -236,7 +236,7 @@ OPTIONS.forEach(optionPage);
   const y0 = header(s, "The Schemes Page", "Two Options",
     "Where a person lands from the home page, and where officers and voluntary organisations work.");
   const items = [
-    ["A","Pictures of the Groups, with Cards","scheme-a","Every group on screen at once, then cards. For browsing.","OPTION A"],
+    ["A","Pictures of the Groups, with Cards","scheme-a","A picture for every group in one row, then cards. For browsing.","OPTION A"],
     ["B","Filter Panel with a Table","scheme-b","Tick one or more groups on the left; the table says who each scheme is for. For comparing.","OPTION B"],
   ];
   const cw = (CW-0.6)/2;
