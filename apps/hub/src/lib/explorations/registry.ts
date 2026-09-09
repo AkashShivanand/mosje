@@ -283,7 +283,6 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             title: "One band, the notice first, advancing on its own",
             summary:
               "The same single band, but the anniversary notice leads and the panels rotate every six seconds — with a pause control, because that is what makes it lawful.",
-            status: "proposed",
             live: true,
             lookAt: [
               "The temporary announcement is what a reader meets first; the permanent campaign follows",
@@ -292,6 +291,25 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
               "Hover and focus pause it too — the clause does not require that and every reader does",
               "Pressing a dot stops the rotation for good: a reader who chose a panel has said which one they want",
               "Under `prefers-reduced-motion` it does not rotate at all, and the pause control is not rendered because there is nothing to pause",
+            ],
+            status: "superseded",
+            supersededBy:
+              "Assembled rather than designed: a flat strip on one optical line, with the dots, the pause and the cross loose at the right and grouped with nothing. Its two panels were also identical, which defeats the only reason to rotate them.",
+          },
+          {
+            id: "composed",
+            title: "Two halves — a standing service and a rotating offer",
+            summary:
+              "The helpline is the band's only white surface; the rotating half carries the observance and the volunteer drive, each with its own accent, glyph, eyebrow and shape.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "The band has PRESENCE — a real height, a lit top edge, a shadow onto the hero. A band nobody notices has failed at the only job it has",
+              "The height is the taller panel's, always: both share one grid cell and the inactive one keeps its space, so the band never resizes as it turns",
+              "The two offers are told apart FOUR ways — accent, glyph, eyebrow, and shape (one carries a code, one does not). One difference is not enough at a glance",
+              "The lightest material is the helpline, because on a page about de-addiction the most important interactive thing is not the campaign",
+              "Pagination sits INSIDE the rotating half, because it pages that; the dismiss sits at the band's corner, because it dismisses the band",
+              "The current dot lengthens into a bar — a shape change reads at a glance where a brightness change alone does not",
             ],
           },
         ],
