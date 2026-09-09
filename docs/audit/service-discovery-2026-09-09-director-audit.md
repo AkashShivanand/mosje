@@ -161,6 +161,33 @@ the master's `conflicts`.
 | 17 | Negi's effort estimate on re-tagging is needed; an intern for the mapping (08:09, 03:00) | Slide 11 item 3 asks development for the estimate; the tagged master is the input the intern would otherwise produce |
 | 18 | Don't mail the PPT; confirm it is ready; Rohit books AS's time; Akash presents (24:34–25:00) | The deck's notes say "presented live"; nothing says "sent ahead" |
 
+### 2a. Checkpoint, 9 September 15:50 — the same eighteen items against what exists now
+
+Re-checked after the day's passes (reference header, filter panel, persona figures, deck rebuild, both Figma files).
+
+| # | Item | Status | Where it stands now |
+|---|---|---|---|
+| 1 | No "134" on slide 1 | Done | Title slide carries no count |
+| 2 | No numbers on any screen | Done | No count on any prototype, frame or slide; pagers show page numbers only; the reference's "Showing 9 of 85 items" was not adopted; helpline numbers and scheme amounts remain |
+| 3 | One vocabulary across the panel and the new options | Done | One master of eleven groups, one label each, on every page, in the assistant, on slide 2 and in Figma section 1 |
+| 4 | Drop "who is this for" | Done | Not asked anywhere |
+| 5 | Community question absorbs stage of life | Done | Students and Senior Citizens are in the group list; no stage question |
+| 6 | "Kind of help" becomes what the Department offers, with real examples | Done | Eight offerings with the Department's own examples as subtitles (Option B question 2) |
+| 7 | Drop State | Done | Not asked anywhere |
+| 8 | Two screens, persona then offering; the two masters and the mapping | Done | Option B; masters on slide 2 and Figma section 1; mapping in the research doc and the data-sources report |
+| 9 | Option C stays, persona-based, no numbers, no pitch text | Done | Group row, portal band, schemes grouped by offering; the band now reads "Apply Now" with a Portal badge (Akash, 9 Sep) |
+| 10 | Apply links: portal directly, or the scheme page carrying the portal | Done, one of each | Scheme rows open the scheme page ("View details"); the Option C band opens the group's portal directly |
+| 11 | Schemes page Option A: only the two axes | **Decision needed** | The page follows the reference header Akash asked for (frame 4759:155021): group row, Category, and an Organisation chip. Organisation is a third filter. Keep it because the reference has it, or drop it to hold the two-axis rule |
+| 12 | SC, OBC, DNT shown as variants; tag later | Done | Three separate groups; the tagging is the prerequisite line on slide 11 |
+| 13 | Open on a female figure | Done | Students, drawn as a young woman, first in every list, row and panel |
+| 14 | Schemes page Option B: remove the "19 schemes" header | Done | Removed; nothing counts the rows |
+| 15 | Fold the Bolt variant into Option B | Done | Only Option B remains |
+| 16 | Deck order: concept, home page with placement, internal page, assistant | Done | Slides 2, 3 to 6, 7 to 9, 10; placement stated on slide 3 and drawn in Figma section 5 |
+| 17 | Negi's re-tagging estimate; an intern for the mapping | Partly | Slide 11's footnote asks development for the estimate; the intern is an internal action and is not on a slide |
+| 18 | Don't mail the PPT; present live | Done | Deck built for the room; recordings start on slide entry; nothing says "sent ahead" |
+
+One open decision (item 11). Everything else is in the deck, the prototypes and both Figma files as of this checkpoint.
+
 Not in the transcript but implied by item 2 and confirmed today: the design-system finder's own
 1,000-line scheme list, which repeated the beta site's data, is deleted; it reads the master.
 
