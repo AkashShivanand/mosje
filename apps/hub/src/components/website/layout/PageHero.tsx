@@ -273,23 +273,25 @@ export function PageHero({
             </span>
           ) : portrait ? (
             /*
-             * 340px. The handoff's portrait is 385 inside a 489 plaque; at the
-             * estate's 1320 cap the trailing column is ~416, so the picture takes
-             * 340 and its rings bleed past the column into the band — which is
-             * what the frame does too, clipping the outermost ring at the right
-             * edge. The band already carries `overflow: clip` for exactly this.
+             * THE PICTURE ONLY. The round frame, its size and its translucent
+             * ground are `SitePageHeader`'s — this used to wrap the image in a
+             * `size-[340px] overflow-hidden rounded-full bg-white/10` span, and
+             * the second caller of that slot did not know it had to, which is
+             * why the plaque is now drawn by the component. Do not put the
+             * circle back here.
+             *
+             * What stays is the one thing that depends on the ARTWORK: a
+             * photograph fills the circle, while a mark or the State Emblem is
+             * padded so the round edge does not crop into it.
              */
-            <span className="relative block size-[340px] overflow-hidden rounded-full bg-white/10">
-              <Image
-                src={portrait}
-                alt=""
-                fill
-                /* A photograph fills the circle; a mark or the emblem is padded
-                   so it is not cropped into by the round frame. */
-                className={portraitIsEmblem || !photo ? "object-contain p-12" : "object-cover"}
-                priority
-              />
-            </span>
+            <Image
+              src={portrait}
+              alt=""
+              width={340}
+              height={340}
+              className={portraitIsEmblem || !photo ? "object-contain p-12" : "object-cover"}
+              priority
+            />
           ) : undefined
         }
       />

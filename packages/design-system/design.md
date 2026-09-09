@@ -12,6 +12,20 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-09 · System version: v0.64.0 (`SitePageHeader` CUTS THE PORTRAIT TO THE
+  CIRCLE ITSELF, SO A CALLER CANNOT GET THE FRAME WRONG. The halo cannot do the clipping — the
+  pulse discs are its children and the whole point of them is that they travel out past the
+  picture's edge — and that true fact had been read as "so the caller must". Two callers pass
+  `media`. The website's organisation route wrapped its portrait in a round, clipping span; the
+  NMBA exploration passed a bare image and drew a 340px SQUARE photograph on a circular plaque, on
+  a stage whose own note says it must be the real fold. A wrapper inside the halo now clips the
+  picture and nothing else, so `media` takes the raw picture at any size and is sized and clipped
+  by the component. The 340 is declared once, on the halo, and read by the circle, the frame and
+  the carousel that can fill it. What the caller still owns is how the artwork SITS in that frame —
+  `object-cover` for a photograph, `object-contain` with padding for a mark or the State Emblem —
+  because that depends on the picture, not on the component. Nothing rendered changed on the
+  website; the exploration's fold is now the fold it claims to be.)
+
   Last reviewed: 2026-09-07 · System version: v0.63.0 (THE MASTHEAD TAKES `linkAs`, AND EVERY
   MENU CLICK STOPPED RELOADING THE PAGE. `SiteHeader`, `NavSheet`, `BrandLockup` and the five
   Navbar parts now route internal destinations through a link component the app supplies — the
@@ -2974,6 +2988,7 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **The gradient is built from the brand ramp, never from the handoff's second hex.** The design paints the band `#0373df → #3f83c6`; only the first is a Figma variable and the second is an unbound raw fill (flagged for the library owner). Reproducing it would freeze the band to the blue brand, and this estate is white-label — `data-brand="navy"` and the DBIM palette must retheme it, so the second stop is the ramp's own next shade.
 - `overlay` is the slot the "at a glance" card sits in — normally a `FactStrip` with `overlap`. It straddles the band's lower edge by 64px: the header reserves the space, the page decides what goes in it.
 - **`reservesOverlap` is for a page with no overlay that sits beside pages that have one.** It pads the band by the same 64px so the blue does not change height as a reader moves between an organisation's front page and its inner pages. It is ignored when `overlay` is present — reserving the space twice leaves a gutter of empty blue.
+- **`media` takes the PICTURE ONLY — the round frame is the component's.** Pass an `<img>` (or the design system's `Carousel`) at whatever intrinsic size; it is sized to the plaque and clipped to the circle here. Do NOT wrap it in a `rounded-full overflow-hidden` span of your own. This was the caller's job until 2026-09-09, on the reasoning that the halo cannot clip its own children — true, because the pulse discs are children and are meant to escape — and the conclusion was wrong: a wrapper inside the halo clips the picture and nothing else. Of the two callers, one remembered and one did not, and the one that did not drew a 340px square photograph on a circular plaque. What the caller DOES still own is how the artwork sits in the frame: `object-cover` for a photograph, `object-contain` with padding for a mark or the State Emblem, which the round edge would otherwise crop into.
 - **The halo behind `media` is three filled discs on one 6s loop, not three rings.** Each is born at the portrait's exact radius, so it is opaque where nobody can see it and emerges already fading; each dies at zero. That is what makes the loop seamless without a fade-in, and it is why the keyframes are `linear` — the deceleration is in the published samples, and easing an already-eased set of values twice makes the motion lurch then stall. Under `prefers-reduced-motion` two discs park at the component's own resting drawing and the third is not rendered.
 
 #### Avatar
