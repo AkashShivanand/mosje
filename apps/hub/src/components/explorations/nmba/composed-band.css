@@ -221,9 +221,22 @@
    * EYEBROW naming what kind of thing it is, and its own SHAPE — the volunteer
    * panel carries a code and the observance does not.
    */
+  /*
+   * `secondaryScale-100`, NOT `-300` — MEASURED, and the first two rungs fail.
+   *
+   * The eyebrow is 12px text, so §1.4.3 wants 4.5:1. Sampled against the glass
+   * card's actual rendered pixel (rgb(20,96,58)) rather than against the token
+   * it is mixed from:
+   *
+   *     -400  2.61:1   -300  3.44:1   -200  4.43:1   -100  5.60:1
+   *
+   * `-300` shipped at 3.44 and looked fine, which is the whole problem with
+   * judging contrast by eye on a saturated ground. `-200` is the one that
+   * tempts you and still fails, by 0.07.
+   */
   .cband__offer[data-accent="saffron"] {
-    --cband-accent: var(--sa-color-secondaryScale-300);
-    --cband-accent-soft: var(--sa-color-secondaryScale-400);
+    --cband-accent: var(--sa-color-secondaryScale-100);
+    --cband-accent-soft: var(--sa-color-secondaryScale-200);
   }
 
   .cband__offer[data-accent="leaf"] {
@@ -387,7 +400,10 @@
     inline-size: var(--sa-padding-6);
     block-size: var(--sa-padding-6);
     border-radius: var(--sa-shape-full);
-    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 40%, transparent);
+    /* 55%, not 40%. An inactive dot is a UI component, so §1.4.11 wants 3:1 and
+       40% measured 2.57 on the glass card. 55% is 3.47 — headroom rather than a
+       number sitting on the line. */
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 55%, transparent);
     transition:
       inline-size var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
       background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);

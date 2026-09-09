@@ -1240,3 +1240,51 @@ Nothing that persists across the turn moves during it.
 **Known and accepted:** on the observance panel the inline route wraps as "File
 on the / open register". The alternative is a third element stacked in the action
 corner, which is the collision this pass removed.
+
+---
+
+## 23. Contrast audit of the composed band — two failures I shipped unchecked
+
+Sampled from **rendered pixels**, not from tokens. That distinction is the whole
+finding: the band's ground is a `linear-gradient` with a translucent card over
+it, so nothing in the CSS states the colour the text actually sits on. A first
+attempt walked the DOM for a `background-color`, found none, and returned white —
+producing contrast figures that were confident and meaningless.
+
+The glass card renders `rgb(22,108,66)` at its light end and `rgb(20,84,51)` at
+its dark end.
+
+| Element | Before | Needs | Verdict |
+|---|---|---|---|
+| Heading — white on glass | 7.60:1 | 4.5 | pass |
+| Body — 82% white on glass | 5.70:1 | 4.5 | pass |
+| Eyebrow — leaf `successScale-100` | 4.60:1 | 4.5 | pass, narrowly |
+| **Eyebrow — saffron `secondaryScale-300`** | **3.44:1** | 4.5 | **FAIL §1.4.3** |
+| **Inactive dot — 40% white** | **2.57:1** | 3.0 | **FAIL §1.4.11** |
+| Dismiss glyph — 72% white on band | 4.25:1 | 3.0 | pass |
+| Pause glyph — white on a 14% well | 5.42:1 | 3.0 | pass |
+
+### The saffron rung, measured across the ramp
+
+```
+-400  2.61:1     -300  3.44:1  ← shipped
+-200  4.43:1  ← the one that tempts you, and fails by 0.07
+-100  5.60:1  ← chosen
+```
+
+`-300` looked perfectly legible, which is exactly the trap: a saturated warm hue
+on a saturated dark ground reads as *bright* long after it has stopped being
+*contrasty*. The eyebrow is 12px, so it is normal text and gets no large-text
+allowance.
+
+### The dot
+
+An inactive carousel dot is a UI component, so §1.4.11 asks 3:1. At 40% white it
+was 2.57. Raised to 55% → 3.47:1 — headroom, rather than a number sitting on the
+line where a future gradient tweak would push it under.
+
+### After
+
+Every measured pair passes, and the saffron eyebrow is checked at **both** ends
+of the card's gradient — 4.75:1 at the light end, 6.59:1 at the dark end — because
+a gradient means one sample is not a result.
