@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import {
-  Alert,
   Badge,
   Button,
   Card,
@@ -19,11 +18,9 @@ import {
   useLiveRegion,
 } from "@mosje/design-system";
 import {
-  SD_DEPWD,
   SD_OFFERINGS,
   SD_PERSONAS,
   SD_ROUTES,
-  SD_SIGNPOST,
   sdMatch,
   sdApplyLabel,
   sdOffersFor,
@@ -35,7 +32,7 @@ import "./scheme-finder.css";
  * FIND SCHEMES FOR YOU — the home-page finder, as a website section.
  *
  * DS Audit: SectionTitle ✅ · Stepper ✅ · RadioGroup (card) ✅ · Chip ✅ ·
- * Button ✅ · Card ✅ · Badge ✅ · Alert ✅ · EmptyState ✅ · Link ✅ ·
+ * Button ✅ · Card ✅ · Badge ✅ · EmptyState ✅ · Link ✅ ·
  * LiveRegion ✅ · Icon ✅ · Pagination ✅. Nothing hand-rolled but the layout
  * and the scheme row's fact list.
  *
@@ -82,7 +79,6 @@ const PERSONA_ICON: Record<string, string> = {
   begging: "night_shelter",
   atrocity: "balance",
   ngo: "volunteer_activism",
-  pwd: "accessible",
 };
 const OFFERING_ICON: Record<string, string> = {
   scholarship: "school",
@@ -102,12 +98,11 @@ interface Answers {
 
 const QUESTION_TEXT = ["Who Is Looking for Support?", "What Kind of Support?"] as const;
 const HINT_TEXT = [
-  "Choose the one that describes you. Persons with disabilities are directed to the department that serves them.",
+  "Choose the one that describes you.",
   "Only what the Department provides for that group is listed. Leave unanswered to see all of it.",
 ] as const;
 
-const personaLabel = (id?: string) =>
-  id === SD_SIGNPOST.id ? SD_SIGNPOST.label : SD_PERSONAS.find((p) => p.id === id)?.label;
+const personaLabel = (id?: string) => SD_PERSONAS.find((p) => p.id === id)?.label;
 const offeringLabel = (id?: string) => SD_OFFERINGS.find((o) => o.id === id)?.label;
 
 export function SchemeFinder(): React.JSX.Element {
@@ -133,8 +128,6 @@ export function SchemeFinder(): React.JSX.Element {
     announce(message);
   };
 
-  const isSignpost = answers.who === SD_SIGNPOST.id;
-
   const steps = STEP_LABELS.map((label, i) => ({
     label,
     description:
@@ -146,12 +139,6 @@ export function SchemeFinder(): React.JSX.Element {
   }));
 
   const next = () => {
-    /* Disability is another department's remit: the second question cannot
-       change that answer, so the finder goes straight to the signpost. */
-    if (step === 0 && isSignpost) {
-      go(ANSWER, "Support for persons with disabilities is provided by a different department.");
-      return;
-    }
     const n = step + 1;
     go(n, n === ANSWER ? "Schemes that name the group chosen." : `Question 2 of 2. ${QUESTION_TEXT[1]}`);
   };
@@ -163,7 +150,7 @@ export function SchemeFinder(): React.JSX.Element {
     go(0, `Question 1 of 2. ${QUESTION_TEXT[0]}`);
   };
 
-  const offers = answers.who && !isSignpost ? sdOffersFor(answers.who) : [];
+  const offers = answers.who ? sdOffersFor(answers.who) : [];
 
   return (
     <section className="xsf" aria-labelledby="xsf-title">
@@ -192,7 +179,6 @@ export function SchemeFinder(): React.JSX.Element {
               <AnswerPanel
                 key={`${answers.who}|${answers.offer}`}
                 answers={answers}
-                signpost={isSignpost}
                 onRemoveOffer={() => {
                   setAnswers((a) => ({ ...a, offer: undefined }));
                   announce("Answer removed. The list has widened.");
@@ -218,20 +204,12 @@ export function SchemeFinder(): React.JSX.Element {
                       orientation="horizontal"
                       value={answers.who}
                       onChange={(v) => setAnswers({ who: v })}
-                      options={[
-                        ...SD_PERSONAS.map((g) => ({
-                          value: g.id,
-                          label: g.label,
-                          description: g.sub,
-                          icon: <Icon name={PERSONA_ICON[g.id] ?? "person"} size={24} aria-hidden />,
-                        })),
-                        {
-                          value: SD_SIGNPOST.id,
-                          label: SD_SIGNPOST.label,
-                          description: SD_SIGNPOST.sub,
-                          icon: <Icon name={PERSONA_ICON.pwd ?? "accessible"} size={24} aria-hidden />,
-                        },
-                      ]}
+                      options={SD_PERSONAS.map((g) => ({
+                        value: g.id,
+                        label: g.label,
+                        description: g.sub,
+                        icon: <Icon name={PERSONA_ICON[g.id] ?? "person"} size={24} aria-hidden />,
+                      }))}
                     />
                   )}
                   {step === 1 && (
@@ -298,18 +276,16 @@ export function SchemeFinder(): React.JSX.Element {
 
 function AnswerPanel({
   answers,
-  signpost,
   onRemoveOffer,
   onChange,
   onRestart,
 }: {
   answers: Answers;
-  signpost: boolean;
   onRemoveOffer: () => void;
   onChange: () => void;
   onRestart: () => void;
 }) {
-  const schemes = signpost ? [] : sdMatch(answers.who, answers.offer);
+  const schemes = sdMatch(answers.who, answers.offer);
   /* Paged, never scrolled inside the panel (`data-state-completeness.md` §4).
      The page resets whenever the list changes — the parent keys this panel on
      the answers — so a removed answer never leaves the reader on page 3 of a
@@ -329,12 +305,10 @@ function AnswerPanel({
     <div className="xsf__step">
       <p className="xsf__count">Schemes</p>
       <h3 className="xsf__question" tabIndex={-1} ref={topRef}>
-        {signpost ? "Schemes for Persons with Disabilities" : "Schemes for Your Group"}
+        Schemes for Your Group
       </h3>
       <p className="xsf__hint">
-        {signpost
-          ? "Schemes for persons with disabilities are run by a separate department of the same Ministry."
-          : "Each scheme names the group chosen. The application is made where the scheme says."}
+        Each scheme names the group chosen. The application is made where the scheme says.
       </p>
 
       {(who || offer) && (
@@ -351,53 +325,7 @@ function AnswerPanel({
         </div>
       )}
 
-      {signpost ? (
-        <>
-          <div className="xsf__signpost">
-            <Alert
-              status="info"
-              title="These schemes are run by a different Department"
-              action={
-                <Link href={`https://${SD_SIGNPOST.to}`} external variant="standalone">
-                  Go to {SD_SIGNPOST.to}
-                </Link>
-              }
-            >
-              The Department of Empowerment of Persons with Disabilities, a separate
-              Department of the same Ministry, runs the schemes for persons with
-              disabilities and issues the Unique Disability ID. They are listed here so
-              that nobody is turned away empty-handed.
-            </Alert>
-          </div>
-          <ul className="xsf__list">
-            {SD_DEPWD.schemes.map((s) => (
-              <li key={s.id}>
-                <Card className="xsf__scheme">
-                  <CardBody>
-                    <div className="xsf__scheme-head">
-                      <h4 className="xsf__scheme-title">{s.name}</h4>
-                      <div className="xsf__tags">
-                        <Badge status="warning">Run by DEPwD</Badge>
-                      </div>
-                    </div>
-                    <dl className="xsf__facts">
-                      <dt>For</dt>
-                      <dd>{s.named}</dd>
-                      <dt>Provides</dt>
-                      <dd>{s.provides}</dd>
-                    </dl>
-                    <div className="xsf__scheme-actions">
-                      <Link href={`https://${SD_SIGNPOST.to}`} external variant="standalone" size="sm">
-                        Open on {SD_SIGNPOST.to}
-                      </Link>
-                    </div>
-                  </CardBody>
-                </Card>
-              </li>
-            ))}
-          </ul>
-        </>
-      ) : schemes.length === 0 ? (
+      {schemes.length === 0 ? (
         <div className="xsf__empty">
           <EmptyState
             icon={<Icon name="search_off" size={40} aria-hidden />}

@@ -51,9 +51,7 @@ const WALKS = {
     await tap(p, '.opt-card[data-id="senior"]', { pause: 900 });        // Senior Citizens
     await tap(p, '#next', { pause: 1200 });
     await tap(p, '#skip', { pause: 2400 });                             // skip — everything for the group
-    await tap(p, '#again', { pause: 1000 });
-    await tap(p, '#pwd', { pause: 2600 });                              // persons with disabilities — DEPwD's four
-    await p.waitForTimeout(1000);
+    await p.waitForTimeout(1200);
   }},
   'home-c': { url: 'file://' + path.join(PROTO, 'home-c.html'), run: async p => {
     await p.waitForTimeout(1600);
@@ -68,19 +66,17 @@ const WALKS = {
   'scheme-a': { url: 'file://' + path.join(PROTO, 'scheme-a.html'), run: async p => {
     await p.waitForTimeout(1600);
     await tap(p, '.face-btn[data-g="safai"]', { pause: 1500 });
-    await tap(p, '.chip[data-o="loan"]', { pause: 1500 });
-    await tap(p, '.chip[data-o="all"]', { pause: 1100 });
+    await tap(p, '.face-btn[data-g="tg"]', { pause: 1500 });
     await tap(p, '.face-btn[data-g="senior"]', { pause: 1600 });
     await scroll(p, 300, 1500);
   }},
   'scheme-b': { url: 'file://' + path.join(PROTO, 'scheme-b.html'), run: async p => {
     await p.waitForTimeout(1700);
     await tap(p, 'input[data-axis="who"][data-id="obc"]', { pause: 1300 });
-    await tap(p, 'input[data-axis="offer"][data-id="scholarship"]', { pause: 1600 });
-    await tap(p, 'input[data-axis="offer"][data-id="loan"]', { pause: 1600 });
+    await tap(p, 'input[data-axis="who"][data-id="student"]', { pause: 1600 });
     await scroll(p, 320, 1400);
     await scroll(p, -320, 600);
-    await tap(p, '[data-clear="offer:scholarship"]', { pause: 1600 });
+    await tap(p, '[data-clear="who:obc"]', { pause: 1600 });
     await tap(p, '#reset', { pause: 1400 });
   }},
   'finder': { url: base + '/explorations/service-discovery/home-page', run: async p => {
@@ -96,6 +92,9 @@ const WALKS = {
     await scroll(p, 420, 1800);
   }},
   'assistant': { url: base + '/prototypes/service-discovery/assistant', run: async p => {
+    /* The demo rail and the accessibility widget are estate chrome, not the
+       page; the recording shows the site as a citizen would see it. */
+    await p.addStyleTag({ content: '.ds-demodock,#uw-widget-custom-trigger,[id^="uw-"],.uwy{display:none!important}' });
     await p.waitForTimeout(2000);
     await tap(p, 'button[aria-label="Samajik Sahayak, chat assistant"]', { pause: 1600 });
     const quick = label => p.locator('button', { hasText: label }).last();
@@ -119,13 +118,17 @@ const WALKS = {
     const b = await chromium.launch();
     const dir = path.join(OUT, '_' + name);
     fs.rmSync(dir, { recursive: true, force: true });
+    const started = Date.now();
     const ctx = await b.newContext({
-      viewport: { width: W, height: H },
+      viewport: { width: W, height: H }, deviceScaleFactor: 2,
       recordVideo: { dir, size: { width: W, height: H } },
     });
     const p = await ctx.newPage();
     const errs = []; p.on('pageerror', e => errs.push(String(e)));
     await p.goto(walk.url, { waitUntil: 'networkidle' });
+    /* Icons are a web font; wait for it so no frame shows the glyph names as words, and trim the load from the video. */
+    await p.evaluate(() => document.fonts.ready); await p.waitForTimeout(300);
+    const trim = ((Date.now() - started) / 1000).toFixed(2);
     /* The Next dev badge is tooling, not the page. */
     await p.addStyleTag({ content: 'nextjs-portal{display:none!important}' }).catch(() => {});
     let failed = null;
@@ -134,7 +137,7 @@ const WALKS = {
     await ctx.close(); await b.close();
     const webm = fs.readdirSync(dir).find(f => f.endsWith('.webm'));
     if (webm) {
-      execSync(`ffmpeg -v error -y -i "${path.join(dir, webm)}" -c:v libx264 -pix_fmt yuv420p -crf 22 -movflags +faststart "${path.join(OUT, name + '.mp4')}"`);
+      execSync(`ffmpeg -v error -y -ss ${trim} -i "${path.join(dir, webm)}" -vf scale=1440:-2 -c:v libx264 -pix_fmt yuv420p -crf 21 -preset slow -movflags +faststart "${path.join(OUT, name + '.mp4')}"`);
       fs.rmSync(dir, { recursive: true, force: true });
     }
     console.log(name, '· errors:', errs.length ? errs : 'none', failed ? '· FAILED: ' + failed : '');

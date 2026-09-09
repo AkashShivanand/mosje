@@ -22,26 +22,21 @@
 .opt-card .m .mark-none,.opt-card .m .mark-icon{width:100%;height:100%;border-radius:50%}
 .opt-card b{display:block;font-size:14.5px;font-weight:600;line-height:1.25}
 .opt-card span{display:block;font-size:12.5px;color:var(--sa-muted);margin-top:2px;line-height:1.3}
-.other{display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px 14px;border:1.5px dashed var(--sa-primary-200);border-radius:var(--sa-radius);background:var(--sa-white);font:inherit;text-align:left;cursor:pointer;width:100%}
-.other[aria-pressed="true"]{border-style:solid;border-color:var(--sa-primary-500);background:var(--sa-primary-50)}
-.other:focus-visible{outline:3px solid var(--sa-primary-200);outline-offset:2px}
-.other .m{width:36px;height:36px;border-radius:50%;flex:none;overflow:hidden}
-.other b{font-size:14.5px;font-weight:600}
-.other span{font-size:13px;color:var(--sa-muted);margin-left:8px}
 .qfoot{display:flex;align-items:center;gap:14px;margin-top:20px;padding-top:16px;border-top:1px solid var(--sa-hair)}
 .qfoot .grow{flex:1}
 .pills{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 .pill{background:var(--sa-white);border:1px solid var(--sa-primary-200);color:var(--sa-primary-700);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600}
 .res{background:var(--sa-white);border:1px solid var(--sa-hair);border-radius:var(--sa-radius);padding:14px 18px;margin-bottom:10px;display:flex;gap:16px;align-items:flex-start}
 .res .grow{flex:1;min-width:0}
-.res h3{margin:0 0 5px;font-size:15.5px;color:var(--sa-primary-700);font-weight:700;line-height:1.3}
-.res dl{margin:8px 0 0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13.5px;line-height:1.45}
+.res h3{margin:0 0 6px;font-size:15.5px;color:var(--sa-primary-700);font-weight:700;line-height:1.3}
+.res dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13.5px;line-height:1.45}
 .res dt{color:var(--sa-muted);font-weight:600}
 .res dd{margin:0;color:var(--sa-ink-muted)}
-.res .acts{display:flex;flex-direction:column;align-items:flex-end;gap:8px;flex:none}
+.res .acts{flex:none;align-self:center}
 .res .acts a{color:var(--sa-primary-600);font-weight:600;font-size:13.5px;text-decoration:none;white-space:nowrap}
-.depwd{background:var(--sa-primary-50);border:1px solid var(--sa-primary-200);border-radius:var(--sa-radius);padding:14px 18px;margin-bottom:12px;font-size:14px}
-.depwd b{color:var(--sa-primary-800)}
+.all{display:flex;justify-content:flex-end;align-items:center;padding:8px 4px 0}
+.all a{color:var(--sa-primary-600);font-weight:600;font-size:14px;text-decoration:none}
+.all span{font-size:13px;color:var(--sa-muted)}
 .empty{background:var(--sa-white);border:1px solid var(--sa-hair);border-radius:var(--sa-radius);padding:18px 20px}
 </style></head>
 <body>
@@ -53,18 +48,17 @@
   </div>
   <div class="progress" id="prog"></div>
   <div class="finder" id="finder" style="margin-top:14px"></div>
-  <p class="note">A scheme naming your group as its target group is not a decision on your application — the sanctioning authority decides that.</p>
+  <p class="note">A scheme that names your group does not mean your application is approved. The sanctioning authority decides that.</p>
 </main>
 
 <script>
 /* No masthead: this option is reviewed as the section alone.
-   Two questions — the persona and the kind of support — and nothing else. The
-   8 September 2026 review dropped "who is this for", stage of life and State:
-   none of the Department's schemes divides on them.
-   Persons with disabilities are a separate choice beneath the grid, not one of
-   the personas: their schemes are DEPwD's, and choosing it shows those four,
-   labelled as DEPwD's, rather than an empty result. */
+   Two questions — the group and the kind of support — and nothing else. The
+   answer shows three schemes with a link to each scheme's own page, and one
+   link to the Schemes page filtered to the same two answers. No apply button:
+   the scheme page carries where to apply (agreed on 8 September 2026). */
 const LEDE = 'Two short questions. Nothing you answer is stored.';
+const SHOW = 3;
 const el = id => document.getElementById(id);
 const ans = {};
 let step = 0;
@@ -95,9 +89,6 @@ function render(){
            ${o.mark?`<span class="m">${markHTML(o.id)}</span>`:''}
            <span><b>${o.l}</b>${o.s?`<span>${o.s}</span>`:''}</span></button>`).join('')}
       </div>
-      ${q.k==='who' ? `<button class="other" id="pwd" aria-pressed="${ans.who===SIGNPOST.id}">
-          <span class="m">${markHTML(SIGNPOST.id)}</span>
-          <span><b>${SIGNPOST.label}</b><span>${SIGNPOST.sub}. Choose this to see them.</span></span></button>` : ''}
       <div class="qfoot">
         ${step>0?'<button class="btn ghost" id="back">Back</button>':''}
         ${step>0?'<button class="btn link" id="skip">Skip this question</button>':''}
@@ -109,42 +100,35 @@ function render(){
     const b = e.target.closest('.opt-card'); if(!b) return;
     ans[q.k] = (ans[q.k]===b.dataset.id) ? undefined : b.dataset.id;
     [...el('opts').children].forEach(c=>c.setAttribute('aria-pressed', String(ans[q.k]===c.dataset.id)));
-    if (el('pwd')) el('pwd').setAttribute('aria-pressed','false');
     el('next').disabled = step===0 && !ans.who;
   });
-  if (el('pwd')) el('pwd').onclick = () => { ans.who = SIGNPOST.id; ans.offer = undefined; step = Q.length; render(); };
   el('next').onclick = () => { step++; render(); };
   if (el('skip')) el('skip').onclick = () => { ans[q.k]=undefined; step++; render(); };
   if (el('back')) el('back').onclick = () => { step--; render(); };
 }
-function card(s, depwd){
+function card(s){
   return `<div class="res">
     <div class="grow">
       <h3>${s.name}</h3>
-      ${depwd ? `<span class="tag saff">Run by DEPwD</span>` : `${s.umbrella?`<span class="tag blue">${s.umbrella}</span> `:''}<span class="tag grey">${s.type}</span>`}
-      <dl><dt>For</dt><dd>${s.named}</dd><dt>Provides</dt><dd>${s.provides}</dd></dl>
+      <dl><dt>For</dt><dd>${s.named}</dd><dt>You get</dt><dd>${s.provides}</dd></dl>
     </div>
-    <div class="acts">
-      ${depwd ? `<button class="btn">Open on depwd.gov.in →</button>` : `<button class="btn">${applyLabel(s.apply[0])} →</button><a href="#">Scheme page →</a>`}
-    </div></div>`;
+    <div class="acts"><a href="#">View details →</a></div></div>`;
 }
 function results(){
-  const isPwd = ans.who === SIGNPOST.id;
   const who = PERSONAS.find(g=>g.id===ans.who);
   const offer = OFFERINGS.find(o=>o.id===ans.offer);
-  el('head').textContent = isPwd ? 'Schemes for Persons with Disabilities' : 'Schemes for Your Group';
-  el('lede').textContent = isPwd ? 'These are run by the Department of Empowerment of Persons with Disabilities, a separate Department of the same Ministry.'
-    : 'Each scheme below names the group you chose. The application is made where the button says.';
-  const list = isPwd ? DEPWD.schemes : matchSchemes({ who:ans.who, offer:ans.offer });
-  const chips = [who && `<span class="pill">${who.label}</span>`, offer && `<span class="pill">${offer.label}</span>`,
-                 isPwd && `<span class="pill">${SIGNPOST.label}</span>`].filter(Boolean).join('');
+  el('head').textContent = 'Schemes for Your Group';
+  el('lede').textContent = 'Each scheme below names the group you chose. Open a scheme to see where and how to apply.';
+  const list = matchSchemes({ who:ans.who, offer:ans.offer });
+  const link = `scheme-b.html?g=${ans.who}${ans.offer?`&o=${ans.offer}`:''}`;
   el('finder').innerHTML = `
     <div class="rise">
-      <div class="row" style="margin-bottom:14px"><span style="font-size:13px;color:var(--sa-muted)">Chosen</span>
-        <span class="pills">${chips}</span><span class="grow" style="flex:1"></span>
+      <div class="row" style="margin-bottom:14px"><span style="font-size:13px;color:var(--sa-muted)">You chose</span>
+        <span class="pills"><span class="pill">${who.label}</span><span class="pill">${offer ? offer.label : 'Any kind of support'}</span></span>
+        <span class="grow" style="flex:1"></span>
         <button class="btn link" id="again">Start again</button></div>
-      ${isPwd ? `<div class="depwd"><b>This Department does not run these schemes.</b> They are the Department of Empowerment of Persons with Disabilities', reached at depwd.gov.in, where the UDID card is also issued.</div>` : ''}
-      ${list.length ? list.map(s=>card(s, isPwd)).join('')
+      ${list.length ? list.slice(0,SHOW).map(card).join('') +
+        `<div class="all"><span></span><a href="${link}">View all schemes for ${who.short}${offer?` under ${offer.short}`:''} →</a></div>`
       : `<div class="empty"><b>The Department's record has no scheme for that group and that kind of support together.</b>
           <p style="margin:8px 0 0;font-size:14px;color:var(--sa-ink-muted)">Remove the second answer to see everything the Department provides for the group.</p></div>`}
     </div>`;

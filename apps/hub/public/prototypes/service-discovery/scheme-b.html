@@ -2,111 +2,141 @@
 <title>Schemes &amp; Services — Option B, Filter Panel and Table</title>
 <link rel="stylesheet" href="core.css">
 <style>
-.layout{display:grid;grid-template-columns:250px 1fr;gap:26px;align-items:start}
-.filters{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);padding:16px;background:var(--sa-white);position:sticky;top:16px}
-.fgroup{margin-bottom:16px}
-.fgroup h3{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--sa-muted);margin:0 0 8px;font-weight:700}
-.fopt{display:flex;align-items:center;gap:9px;padding:6px 8px;border-radius:6px;cursor:pointer;font-size:13px;transition:background .12s;line-height:1.3}
-.fopt:hover{background:var(--sa-surface)}
-.fopt input{accent-color:var(--sa-primary-500);width:15px;height:15px;margin:0;flex:none}
+.toolbar{display:flex;gap:24px;align-items:center;justify-content:space-between;padding:16px 24px;margin:0 0 14px;border-bottom:1px solid var(--sa-neutral-50)}
+.search{flex:0 0 516px;width:516px;height:56px;box-sizing:border-box;display:flex;align-items:center;gap:10px;border:1px solid var(--sa-neutral-100,#F3F4F6);border-radius:8px;background:var(--sa-white);padding:0 16px;font-size:14px;color:var(--sa-muted)}
+.search input{border:none;outline:none;font:inherit;flex:1;color:var(--sa-ink)}
+.toolbar .grow{flex:1}
+.filters{display:flex;gap:12px;align-items:center}
+.sel{font:inherit;font-size:14px;color:var(--sa-ink);height:40px;min-width:0;width:auto;flex:none;border:1px solid var(--sa-hair);border-radius:8px;background:var(--sa-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%231f2428' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 12px center;padding:8px 34px 8px 16px;appearance:none;-webkit-appearance:none;cursor:pointer}
+#kind{width:112px}
+#org{width:139px}
+.btn.soft{background:var(--sa-primary-500);color:var(--sa-white);font-size:14px;font-weight:500;height:40px;padding:10px 24px;border-radius:8px;white-space:nowrap;flex:none}
+.seg{display:inline-flex;background:var(--sa-primary-50);border-radius:var(--sa-radius);padding:3px}
+.seg button{font:inherit;font-size:13.5px;border:none;background:none;padding:8px 26px;border-radius:calc(var(--sa-radius) - 2px);cursor:pointer;color:var(--sa-ink)}
+.seg button[aria-pressed="true"]{background:var(--sa-white);box-shadow:var(--sa-shadow);font-weight:600}
+.panel{background:var(--sa-neutral-50);border-radius:var(--sa-radius-lg);padding:22px 24px 24px}
+.head{display:flex;align-items:center;justify-content:space-between;margin:0 0 18px}
+.head h2{margin:0;font-size:22px;font-weight:700;color:var(--sa-ink)}
+.layout{display:grid;grid-template-columns:250px 1fr;gap:20px;align-items:start}
+.filters{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);padding:16px;background:var(--sa-white)}
+.fgroup h3{font-size:15px;color:var(--sa-ink);margin:0 0 10px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+.fgroup h3 a{font-size:12px;color:var(--sa-primary-600);font-weight:600;text-decoration:none}
+.fopt{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:var(--sa-radius);cursor:pointer;font-size:13.5px;transition:background .12s;line-height:1.3;border:1px solid var(--sa-hair);background:var(--sa-surface);margin-bottom:8px}
+.fopt.on{background:var(--sa-primary-50);border-color:var(--sa-primary-200)}
+.fopt .m{width:30px;height:30px;border-radius:50%;background:var(--sa-primary-50);flex:none;overflow:hidden;display:grid;place-items:center}
+.fopt .m img{width:100%;height:100%;object-fit:contain}
+.fopt .m .mark-none,.fopt .m .mark-icon{width:100%;height:100%;border-radius:50%}
+.fopt .m .mark-icon .mi{font-size:18px}
+.fopt span.t{flex:1}
+.fopt:hover{background:var(--sa-white)}
+.fopt input{accent-color:var(--sa-primary-500);width:16px;height:16px;margin:0;flex:none}
 .fopt.zero{opacity:.45}
-table{width:100%;border-collapse:collapse;font-size:13px;background:var(--sa-white);border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);overflow:hidden}
-th{background:var(--sa-primary-50);color:var(--sa-primary-800);text-align:left;font-size:11px;letter-spacing:.7px;text-transform:uppercase;padding:10px 14px;font-weight:700}
-td{padding:10px 14px;border-top:1px solid var(--sa-hair);vertical-align:top;line-height:1.4}
+table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--sa-white);border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);overflow:hidden}
+th{background:var(--sa-primary-50);color:var(--sa-primary-800);text-align:left;font-size:11.5px;letter-spacing:.7px;text-transform:uppercase;padding:11px 14px;font-weight:700}
+td{padding:12px 14px;border-top:1px solid var(--sa-hair);vertical-align:top;line-height:1.45}
 td a{color:var(--sa-primary-600);font-weight:600;text-decoration:none}
 td small{display:block;color:var(--sa-muted);font-size:11.5px;margin-top:2px}
-.applied{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px;min-height:34px}
-.empty{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);padding:26px;text-align:center;background:var(--sa-white)}
-.pager{display:flex;justify-content:flex-end;gap:6px;margin-top:14px}
+.applied{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px;min-height:34px}
+.empty{border:1px solid var(--sa-hair);border-radius:var(--sa-radius-lg);padding:28px;text-align:center;background:var(--sa-white)}
+.pager{display:flex;justify-content:flex-start;gap:6px;margin-top:14px}
 .pager button{font:inherit;font-size:13px;min-width:34px;height:34px;border-radius:var(--sa-radius);border:1px solid var(--sa-hair);background:var(--sa-white);cursor:pointer}
-.pager button[aria-current="page"]{background:var(--sa-primary-500);border-color:var(--sa-primary-500);color:var(--sa-white);font-weight:600}
+.pager button[aria-current="page"]{border-color:var(--sa-primary-500);color:var(--sa-primary-700);font-weight:600}
 </style></head><body>
 <script src="data.js"></script><script src="shell.js"></script>
 <main class="wrap sec">
-  <div>
-    <h1 class="sec-t">Schemes &amp; Services</h1>
-    <p class="sec-lede">Tick who the scheme is for and what it provides. Filters combine, so a group and a kind of support can be asked for together.</p>
+  <div class="toolbar">
+    <label class="search"><span class="mi" aria-hidden="true" style="font-size:20px">search</span><input id="q" type="search" placeholder="Search by scheme name or keyword" aria-label="Search by scheme name or keyword"></label>
+    <div class="filters">
+      <select class="sel" id="kind" aria-label="Category"></select>
+      <select class="sel" id="org" aria-label="Organisation"></select>
+      <button class="btn soft" id="reset">Reset Filters</button>
+    </div>
   </div>
-  <div class="layout">
-    <aside class="filters" id="filters"></aside>
-    <section>
-      <div class="applied" id="applied"></div>
-      <div id="table"></div>
-      <div class="pager" id="pager"></div>
-    </section>
+  <div class="panel">
+    <div class="head"><h2>Active Schemes</h2><div class="seg" role="group" aria-label="Scheme status"><button aria-pressed="true">Active</button><button aria-pressed="false">Archived</button></div></div>
+    <div class="layout">
+      <aside class="filters" id="filters"></aside>
+      <section>
+        <div class="applied" id="applied"></div>
+        <div id="table"></div>
+        <div class="pager" id="pager"></div>
+      </section>
+    </div>
   </div>
-  <p class="note">Listing is not a decision on any application — the sanctioning authority decides that.</p>
+  <p class="note">Being listed here does not mean an application is approved. The sanctioning authority decides that.</p>
 </main>
 <script>
 /* No masthead: this option is reviewed as the section alone.
-   Two axes, the same as the home page. No count anywhere: a filter that would
-   leave the table empty is greyed rather than numbered, and the table is paged
-   at ten so the page keeps its height. */
+   The reference layout (WIP node 4759:155021, second frame): the Target Group
+   panel on the left, where more than one group can be ticked, and a table on
+   the right. Category and Organisation sit in the header. No count anywhere;
+   a group that would leave the table empty is greyed rather than counted. */
 const el = id => document.getElementById(id);
 const PAGE = 10;
-const sel = { who:new Set(), offer:new Set() };
+const sel = { who:new Set() };
 const qs = new URLSearchParams(location.search);
 if (qs.get('g')) sel.who.add(qs.get('g'));
-if (qs.get('o')) sel.offer.add(qs.get('o'));
-let page = 1;
+let offer = qs.get('o') || 'all', org = 'all', page = 1, q = '';
 
-const ok = (s, whoSet, offerSet) =>
-  (!whoSet.size || [...whoSet].some(w => pairOk(s, w))) &&
-  (!offerSet.size || [...offerSet].some(o => pairOk(s, undefined, o))) &&
-  (!whoSet.size || !offerSet.size || [...whoSet].some(w => [...offerSet].some(o => pairOk(s, w, o))));
-const rows = () => SCHEMES.filter(s => ok(s, sel.who, sel.offer));
-/* Would ticking this value, with every OTHER selection as it stands, leave anything? */
-function wouldLeave(axis, id){
-  const w = axis==='who' ? new Set([id]) : sel.who;
-  const o = axis==='offer' ? new Set([id]) : sel.offer;
-  return SCHEMES.some(s => ok(s, w, o));
+const ok = (s, whoSet) =>
+  (!whoSet.size || [...whoSet].some(w => pairOk(s, w, offer==='all'?undefined:offer))) &&
+  (whoSet.size || offer==='all' || pairOk(s, undefined, offer)) &&
+  (org==='all' || s.apply===org) &&
+  (!q || (s.name+' '+s.provides+' '+s.named).toLowerCase().includes(q));
+const rows = () => SCHEMES.filter(s => ok(s, sel.who));
+function wouldLeave(id){ return SCHEMES.some(s => ok(s, new Set([id]))); }
+function drawHeader(){
+  const kinds = sel.who.size ? OFFERINGS.filter(o => [...sel.who].some(w => offersFor(w).some(x => x.id===o.id))) : OFFERINGS;
+  if (offer!=='all' && !kinds.some(o=>o.id===offer)) offer = 'all';
+  el('kind').innerHTML = `<option value="all">Category</option>` + kinds.map(o=>`<option value="${o.id}" ${o.id===offer?'selected':''}>${o.short||o.label}</option>`).join('');
+  const orgs = [...new Set(SCHEMES.map(s=>s.apply).filter(a=>a && ROUTES[a]))];
+  el('org').innerHTML = `<option value="all">Organisation</option>` + orgs.map(a=>`<option value="${a}" ${a===org?'selected':''}>${ROUTES[a].label}</option>`).join('');
 }
 function drawFilters(){
-  const block = (title, axis, items) => `
-    <div class="fgroup"><h3>${title}</h3>
-    ${items.map(x=>{const on=sel[axis].has(x.id), live=on||wouldLeave(axis,x.id);return `
-      <label class="fopt ${live?'':'zero'}" ${live?'':'aria-disabled="true"'}>
-        <input type="checkbox" data-axis="${axis}" data-id="${x.id}" ${on?'checked':''} ${live?'':'disabled'}>
-        <span>${x.short||x.label}</span></label>`;}).join('')}
+  el('filters').innerHTML = `
+    <div class="fgroup"><h3>Target Group<a href="#" data-reset="who">Reset</a></h3>
+    ${PERSONAS.map(x=>{const on=sel.who.has(x.id), live=on||wouldLeave(x.id);return `
+      <label class="fopt ${live?'':'zero'} ${on?'on':''}" ${live?'':'aria-disabled="true"'}>
+        <span class="m">${markHTML(x.id)}</span><span class="t">${x.short||x.label}</span>
+        <input type="checkbox" data-axis="who" data-id="${x.id}" ${on?'checked':''} ${live?'':'disabled'}></label>`;}).join('')}
     </div>`;
-  el('filters').innerHTML =
-    block('Who It Is For','who',PERSONAS) + block('What It Provides','offer',OFFERINGS) +
-    `<button class="btn ghost" id="reset" style="width:100%">Reset Filters</button>`;
-  el('reset').onclick = () => { sel.who.clear(); sel.offer.clear(); page=1; draw(); };
+  el('filters').querySelectorAll('[data-reset]').forEach(a => a.onclick = e => { e.preventDefault(); sel.who.clear(); page=1; draw(); });
 }
 function draw(){
-  drawFilters();
+  drawHeader(); drawFilters();
   const list = rows();
-  const chips = [...sel.who].map(g=>['who',g,GROUP_LABEL[g]]).concat([...sel.offer].map(o=>['offer',o,OFFER_LABEL[o]]));
+  const chips = [...sel.who].map(g=>['who',g,GROUP_LABEL[g]]);
   el('applied').innerHTML = chips.length
     ? `<span style="font-size:12.5px;color:var(--sa-muted)">Showing</span>` +
       chips.map(([a,i,l])=>`<button class="chip" aria-pressed="true" data-clear="${a}:${i}">${l} ×</button>`).join('')
-    : `<span style="font-size:12.5px;color:var(--sa-muted)">Tick a filter to narrow the list.</span>`;
+    : `<span style="font-size:12.5px;color:var(--sa-muted)">Tick a group to narrow the list.</span>`;
   const pages = Math.max(1, Math.ceil(list.length/PAGE));
   if (page>pages) page = pages;
   const slice = list.slice((page-1)*PAGE, page*PAGE);
   el('table').innerHTML = list.length ? `
     <table class="rise"><thead><tr>
-      <th style="width:34%">Scheme</th><th style="width:34%">What It Provides</th><th>Whom It Names</th><th style="width:11%">Type</th></tr></thead>
+      <th style="width:34%">Scheme</th><th style="width:36%">You Get</th><th>Who It Is For</th></tr></thead>
       <tbody>${slice.map(s=>`<tr>
         <td><a href="#">${s.name}</a>${s.umbrella?`<small>${s.umbrella}</small>`:''}</td>
         <td>${s.provides}</td>
-        <td>${s.named}</td>
-        <td><span class="tag ${/Central|Sponsored/.test(s.type)?'blue':'grey'}">${s.type}</span></td></tr>`).join('')}
+        <td>${s.named}</td></tr>`).join('')}
       </tbody></table>`
     : `<div class="empty rise"><b style="font-size:15px">No scheme matches those filters together.</b>
-        <p style="font-size:13.5px;color:var(--sa-ink-muted);margin:8px 0 14px">A greyed filter is one that would leave nothing with the others as they stand. Removing one usually brings the list back.</p>
+        <p style="font-size:13.5px;color:var(--sa-ink-muted);margin:8px 0 14px">A greyed group is one that would leave nothing with the other filters as they stand. Removing one usually brings the list back.</p>
         <button class="btn" onclick="document.getElementById('reset').click()">Reset Filters</button></div>`;
   el('pager').innerHTML = pages>1 ? Array.from({length:pages},(_,i)=>`<button data-p="${i+1}" ${i+1===page?'aria-current="page"':''}>${i+1}</button>`).join('') : '';
 }
+el('kind').onchange = e => { offer=e.target.value; page=1; draw(); };
+el('org').onchange = e => { org=e.target.value; page=1; draw(); };
+el('q').oninput = e => { q=e.target.value.trim().toLowerCase(); page=1; draw(); };
+el('reset').onclick = () => { sel.who.clear(); offer='all'; org='all'; q=''; el('q').value=''; page=1; draw(); };
 document.addEventListener('change', e => {
   const c = e.target.closest('input[data-axis]'); if(!c) return;
-  const s = sel[c.dataset.axis];
-  c.checked ? s.add(c.dataset.id) : s.delete(c.dataset.id);
+  c.checked ? sel.who.add(c.dataset.id) : sel.who.delete(c.dataset.id);
   page = 1; draw();
 });
 document.addEventListener('click', e => {
-  const b = e.target.closest('[data-clear]'); if(b){ const [a,i] = b.dataset.clear.split(':'); sel[a].delete(i); page=1; draw(); return; }
+  const b = e.target.closest('[data-clear]'); if(b){ const [a,i] = b.dataset.clear.split(':'); sel.who.delete(i); page=1; draw(); return; }
   const p = e.target.closest('button[data-p]'); if(p){ page=+p.dataset.p; draw(); }
 });
 draw();

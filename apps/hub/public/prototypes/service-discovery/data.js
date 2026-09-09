@@ -12,77 +12,109 @@ const PERSONAS = [
     "id": "student",
     "label": "Students",
     "short": "Students",
-    "sub": "From Class I to Ph.D. and study abroad, from the groups the Department serves"
+    "sub": "From Class I to Ph.D. and study abroad, from the groups the Department serves",
+    "portal": {
+      "route": "nsp",
+      "blurb": "Scholarships from pre-matric to post-matric, in one place"
+    }
   },
   {
     "id": "sc",
     "label": "Scheduled Castes",
     "short": "Scheduled Castes",
-    "sub": "As notified under Article 341 of the Constitution"
+    "sub": "As notified under Article 341 of the Constitution",
+    "portal": {
+      "route": "nsfdc",
+      "blurb": "Concessional loans for Scheduled Castes, through the State channelising agency"
+    }
   },
   {
     "id": "obc",
     "label": "Other Backward Classes",
     "short": "Other Backward Classes",
-    "sub": "Including Economically Backward Classes"
+    "sub": "Including Economically Backward Classes",
+    "portal": {
+      "route": "nbcfdc",
+      "blurb": "Concessional loans and skill training for Other Backward Classes"
+    }
   },
   {
     "id": "dnt",
     "label": "De-notified, Nomadic and Semi-Nomadic Tribes",
-    "short": "DNT, Nomadic and Semi-Nomadic Tribes",
-    "sub": "Communities listed as DNT, NT or SNT"
+    "short": "De-notified, Nomadic and Semi-Nomadic Tribes",
+    "sub": "Communities listed as DNT, NT or SNT",
+    "portal": {
+      "route": "seed",
+      "blurb": "Coaching, health insurance, housing and livelihood for DNT communities"
+    }
   },
   {
     "id": "safai",
     "label": "Safai Karamcharis",
     "short": "Safai Karamcharis",
-    "sub": "Manual scavengers, sewer and septic tank workers, waste pickers, and their dependants"
+    "sub": "Manual scavengers, sewer and septic tank workers, waste pickers, and their dependants",
+    "portal": {
+      "route": "nskfdc",
+      "blurb": "Loans and skill training for Safai Karamcharis and their dependants"
+    }
   },
   {
     "id": "senior",
     "label": "Senior Citizens",
     "short": "Senior Citizens",
-    "sub": "Aged 60 years or above"
+    "sub": "Aged 60 years or above",
+    "portal": {
+      "route": "elderline",
+      "blurb": "Toll-free helpline for senior citizens"
+    }
   },
   {
     "id": "tg",
     "label": "Transgender Persons",
     "short": "Transgender Persons",
-    "sub": "As defined in the Transgender Persons (Protection of Rights) Act, 2019"
+    "sub": "As defined in the Transgender Persons (Protection of Rights) Act, 2019",
+    "portal": {
+      "route": "tgportal",
+      "blurb": "Certificate of identity and welfare support for transgender persons"
+    }
   },
   {
     "id": "drug",
     "label": "Persons Affected by Substance Use",
-    "short": "Affected by Substance Use",
-    "sub": "The person, and their family"
+    "short": "Persons Affected by Substance Use",
+    "sub": "The person, and their family",
+    "portal": {
+      "route": "nmba",
+      "blurb": "Toll-free helpline for de-addiction and counselling"
+    }
   },
   {
     "id": "begging",
     "label": "Persons Engaged in Begging",
-    "short": "Engaged in Begging",
+    "short": "Persons Engaged in Begging",
     "sub": "Rescue, shelter and rehabilitation"
   },
   {
     "id": "atrocity",
     "label": "Victims of Atrocities",
     "short": "Victims of Atrocities",
-    "sub": "Under the PCR Act, 1955 and the SC/ST (PoA) Act, 1989"
+    "sub": "Under the PCR Act, 1955 and the SC/ST (PoA) Act, 1989",
+    "portal": {
+      "route": "nhaa",
+      "blurb": "National Helpline Against Atrocities, round the clock"
+    }
   },
   {
     "id": "ngo",
     "label": "Voluntary Organisations",
     "short": "Voluntary Organisations",
-    "sub": "NGOs, CBOs and institutions applying for grant-in-aid"
+    "sub": "NGOs, CBOs and institutions applying for grant-in-aid",
+    "portal": {
+      "route": "eanudaan",
+      "blurb": "Grant-in-aid applications for voluntary organisations"
+    }
   }
 ];
-
-/* Asked so the Department's boundary can be named, never shown as a persona. */
-const SIGNPOST = {
-  "id": "pwd",
-  "label": "Persons with Disabilities",
-  "sub": "Their schemes are run by the Department of Empowerment of Persons with Disabilities",
-  "to": "depwd.gov.in"
-};
 
 const OFFERINGS = [
   {
@@ -135,37 +167,6 @@ const OFFERINGS = [
   }
 ];
 
-/* The schemes a person with a disability is shown — DEPwD's, labelled as such. */
-const DEPWD = {
-  "why": "Persons with disabilities are not in DoSJE's mandate (AR §1.2). Their schemes are DEPwD's, a separate Department of the same Ministry since 2012. They are shown here, labelled as DEPwD's, so a visitor who indicates a disability is given the four schemes that exist rather than an empty result.",
-  "schemes": [
-    {
-      "id": "depwd-ddrs",
-      "name": "Deendayal Divyangjan Rehabilitation Scheme (DDRS)",
-      "provides": "Grant-in-aid to organisations for rehabilitation projects, and District Disability Rehabilitation Centres offering early intervention, therapy, assistive-device fitment, scholarship assistance and help with the UDID card.",
-      "named": "Persons with disabilities, through implementing organisations; one DDRC is envisaged in every district."
-    },
-    {
-      "id": "depwd-adip",
-      "name": "Assistance to Persons with Disabilities for Purchase/Fitting of Aids and Appliances (ADIP)",
-      "provides": "Modern, certified aids and appliances, and corrective surgery where required, through ALIMCO, National Institutes, DDRCs and other agencies, including camps for school-going children.",
-      "named": "Needy persons with disabilities, as the scheme's guidelines define them."
-    },
-    {
-      "id": "depwd-sipda",
-      "name": "Scheme for Implementation of the Rights of Persons with Disabilities Act, 2016 (SIPDA)",
-      "provides": "Ten sub-schemes including the Unique Disability ID (UDID) card, barrier-free environment, early intervention centres, skill development and assistance to spinal injury centres.",
-      "named": "Persons with disabilities; the UDID card is the identity every other DEPwD scheme reads."
-    },
-    {
-      "id": "depwd-scholarships",
-      "name": "Scholarships for Students with Disabilities",
-      "provides": "Pre-matric, post-matric, top-class, overseas and fellowship support for students with disabilities.",
-      "named": "Students with disabilities, as each component's guidelines define them."
-    }
-  ]
-};
-
 const ROUTES = {
   "nsp": {
     "label": "National Scholarship Portal",
@@ -193,7 +194,7 @@ const ROUTES = {
   },
   "nskfdc": {
     "label": "NSKFDC",
-    "href": "https://nskfdc.nic.in"
+    "href": null
   },
   "canara": {
     "label": "Canara Bank",
@@ -265,7 +266,7 @@ const ROUTES = {
   },
   "seed": {
     "label": "the SEED portal",
-    "href": "https://seed.dosje.gov.in"
+    "href": null
   },
   "institution": {
     "label": "the school or college",
@@ -1049,11 +1050,14 @@ const HAS_ART = new Set([
   "safai",
   "senior",
   "tg",
+  "drug",
+  "begging",
+  "atrocity",
   "ngo"
 ]);
 /* Material Symbols Rounded, the estate's icon set, for the groups with no
    figure: what the scheme gives, not what a person is assumed to look like. */
-const MARK_ICON = { drug:'health_and_safety', begging:'night_shelter', atrocity:'balance', pwd:'accessible' };
+const MARK_ICON = { drug:'health_and_safety', begging:'night_shelter', atrocity:'balance' };
 function markHTML(id) {
   if (HAS_ART.has(id)) return `<img src="personas/${id}.png" alt="">`;
   if (MARK_ICON[id]) return `<span class="mark-icon" role="presentation"><span class="mi">${MARK_ICON[id]}</span></span>`;

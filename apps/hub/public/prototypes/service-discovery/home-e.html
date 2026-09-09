@@ -26,7 +26,7 @@
 <main class="wrap sec">
   <p class="eyebrow">Citizen Services</p>
   <h1 class="sec-t">Ask in Your Own Words</h1>
-  <p class="sec-lede">The site now matches what is typed against document tags, which is why a search for “disability” returns an annual report. This reads everyday and colloquial words, and names the department that holds the answer.</p>
+  <p class="sec-lede">The site now matches what is typed against document tags, which is why a search for “pension” returns a circular before a scheme. This reads everyday and colloquial words and names the scheme that holds the answer.</p>
   <div class="field">
     <span aria-hidden="true" style="font-size:19px;color:var(--sa-primary-600)">⌕</span>
     <input id="q" type="text" value="safai ka kaam" aria-label="Search schemes, services and documents"
@@ -35,7 +35,7 @@
   </div>
   <div class="tries"><span class="lbl">Try:</span><span id="tries"></span></div>
   <div id="out"></div>
-  <p class="note">Listing is not a decision on any application — the sanctioning authority decides that.</p>
+  <p class="note">Being listed here does not mean an application is approved. The sanctioning authority decides that.</p>
 </main>
 <script>
 mountShell('Home');
@@ -54,10 +54,8 @@ const LEXICON = [
     reading:'a scholarship for study', group:'student' },
   { k:'ngo',    words:['anudaan','ngo','voluntary','grant','funding'],
     reading:'grant-in-aid for a voluntary organisation', group:'ngo' },
-  { k:'pwd',    words:['divyang','viklang','disability','disabled','udid','wheelchair'],
-    reading:'disability support', group:null },
 ];
-const TRIES = ['safai ka kaam','pension for my mother','nasha chhudana hai','divyang certificate','chhatravriti class 11','gadi ka insurance'];
+const TRIES = ['safai ka kaam','pension for my mother','nasha chhudana hai','atyachar ki shikayat','chhatravriti class 11','gadi ka insurance'];
 
 function resolve(q){
   const s = (q||'').toLowerCase();
@@ -78,13 +76,6 @@ function draw(){
     el('out').innerHTML = `<div class="dead rise"><b>That word is not in the list yet</b>
       <p>This is the honest weakness of searching: it fails quietly for anything the list does not hold, and the person searching cannot tell an absent scheme from an unknown word. The way out has to be a real one.</p>
       <a class="btn" href="home-b.html">Answer two questions instead →</a></div>`;
-    return;
-  }
-  if (r.k === 'pwd') {
-    el('out').innerHTML = `<div class="dead rise" style="border-style:solid;border-color:var(--sa-saffron-hair);background:var(--sa-saffron-light)">
-      <b>That is held by another department</b>
-      <p>Disability certificates, UDID cards, aids under ADIP and disability scholarships are with the Department of Empowerment of Persons with Disabilities — the same Ministry, a different department. Nothing on this site covers them, and saying so is faster than a search that returns an annual report.</p>
-      <a class="btn" href="#">Continue to depwd.gov.in →</a></div>`;
     return;
   }
   const g = GROUPS.find(x => x.id === r.group);

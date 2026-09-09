@@ -7,6 +7,16 @@ everything the 8 September review asked for, and what a design director and a UX
 still change. Everything in section 3 that could be fixed in this session was fixed; what could not is
 marked.
 
+> **Addendum, 9 September 2026 (later the same day).** The decision recorded in §1.1 and §3 — to ask
+> for persons with disabilities and show DEPwD's four schemes — is **withdrawn on instruction**: the
+> Department does not serve them, so no DoSJE surface names them. The disability choice, the DEPwD
+> result, the assistant branch, the finder branch, the Figma row and the deck's safeguard line are all
+> removed. The finding in §1.1 stands as the validation answer; the design consequence is reversed.
+> The persona list itself is re-validated below in §1.1a. The deck was also rebuilt as a live
+> presentation (one idea a slide, the explanation in the speaker notes, Option A on a still because
+> its recording did not play), and the concept slide was redrawn without the × mark, which read as an
+> error. Before-and-after: `service-discovery-2026-09-09b-before-after.html`.
+
 ---
 
 ## 1. Validation — is what the screens say true?
@@ -30,10 +40,46 @@ Two things make this confusing on the site itself, and both were checked today:
   Figma capture and reads "Government Official / Beneficiary" today. The site's own persona
   vocabulary is in flux.
 
-**Decision taken:** persons with disabilities are asked for on every option and are shown DEPwD's four
-schemes, each labelled *Run by DEPwD*, with the route to depwd.gov.in. Nobody is turned away with an
-empty result, and nothing is presented as this Department's. The earlier version showed a note and no
-schemes; the audit in section 3 found that a dead end.
+**Decision taken (morning):** persons with disabilities were asked for on every option and shown DEPwD's
+four schemes, labelled as DEPwD's. **Reversed (afternoon, on instruction):** the Department does not
+serve them, so they are not named on any DoSJE surface. See the addendum above.
+
+### 1.1a The eleven personas, re-validated against their sources
+
+| Persona on the screen | Where the Department names the group | Source |
+|---|---|---|
+| Scheduled Castes | Mandate group | AR 2025-26 §1.2 |
+| Other Backward Classes | Mandate group; EBCs folded in, because the OBC schemes name them together | AR 2025-26 §1.2; PM-YASASVI records §3.19–3.21 |
+| Senior Citizens | Mandate group | AR 2025-26 §1.2; AVYAY §3.29–3.31 |
+| Persons Affected by Substance Use | Mandate: "victims of alcoholism and substance abuse"; NAPDDR names the person and the family | AR 2025-26 §1.2, §3.33 |
+| Transgender Persons | Mandate group | AR 2025-26 §1.2; SMILE §3.35 |
+| Persons Engaged in Begging | Mandate: "persons engaged in beggary"; SMILE's second component | AR 2025-26 §1.2, §3.36 |
+| De-notified, Nomadic and Semi-Nomadic Tribes | Mandate group | AR 2025-26 §1.2; SEED §3.24 |
+| Safai Karamcharis | Mandate names manual scavengers, sewer and septic tank workers, waste pickers; NAMASTE and NSKFDC name them together as Safai Karamcharis | AR 2025-26 §1.2, §3.11 (NAMASTE), NSKFDC page |
+| Students | Not a mandate group; every scholarship record names students of the groups the Department serves | AR 2025-26 ch.3 §3.2–3.5 (SC), §3.19–3.22 (OBC/EBC/DNT), §3.27 (NOS); SBE Demand 93 |
+| Victims of Atrocities | Not a mandate group; named by the PCR/PoA scheme and the National Helpline Against Atrocities | AR 2025-26 §3.9; helpline 14566 |
+| Voluntary Organisations | Not a mandate group; the grantee every grant-in-aid record names | AR 2025-26 §3.39; e-Anudaan |
+
+**Order (instruction of 9 September 2026, afternoon):** the eight mandate groups first, in the order §1.2
+names them, then the three the schemes name. Every surface, the deck and the Figma frames follow it.
+Consequence: the persona panel on the home page (Option A) now opens on Scheduled Castes, a male
+figure, not on Students; the review's request that the sequence open on a female figure is not met
+unless the panel alone keeps a different order.
+
+**Artwork (same instruction):** every figure is from the DBIM Visual Components Library
+(dbimtoolkit.digifootprint.gov.in). Students now uses the file DBIM tags to Social Justice and
+Empowerment (`2024/09/e9a238d8ab6944add204874fdf132403.png`). The full assignment is §4a.
+
+Two mandate groups are **not** personas because no scheme record serves them as such: *Economically
+Weaker Sections* (named in §1.2, no scheme in ch.3 or the Demand for Grants) and *Economically
+Backward Classes* on their own (always named alongside OBCs). Persons with disabilities are not in the
+mandate and are not shown.
+
+**One claim withdrawn from the concept slide and the Figma frame:** "none of the Department's schemes
+divides on stage of life, State or gender." It is not true as written — Top Class and PM-YASASVI
+reserve 30% of slots for girl students, the OBC hostel scheme is for boys and girls separately, and
+PM-AJAY and PCR/PoA run through State Governments. What is true, and what the slide now says, is that
+every scheme is tagged on the two lists and nothing else is asked.
 
 ### 1.2 The personas — checked against the mandate
 
@@ -50,7 +96,7 @@ schemes; the audit in section 3 found that a dead end.
 | Persons Engaged in Begging | Persons engaged in beggary | ✅ |
 | Victims of Atrocities | not a mandate group | ✅ served through the PCR-PoA scheme (AR §3.9) and NHAA 14566; the review named it |
 | Voluntary Organisations | not a mandate group | ✅ delivery partners under AVYAY, NAPDDR, SHRESHTA, SMILE (AR §3.39, e-Anudaan) |
-| Persons with Disabilities | **not a mandate group** | ✅ signposted to DEPwD, never listed as a persona of this Department |
+| Persons with Disabilities | **not a mandate group** | ✅ not shown on any surface (morning: signposted; afternoon: removed on instruction) |
 | *EWS* | Economically Weaker Sections | ⛔ left off — no scheme in Chapter 3 or the Demand for Grants serves EWS as such |
 
 ### 1.3 The offerings — checked against what the schemes provide
@@ -115,6 +161,33 @@ the master's `conflicts`.
 | 17 | Negi's effort estimate on re-tagging is needed; an intern for the mapping (08:09, 03:00) | Slide 11 item 3 asks development for the estimate; the tagged master is the input the intern would otherwise produce |
 | 18 | Don't mail the PPT; confirm it is ready; Rohit books AS's time; Akash presents (24:34–25:00) | The deck's notes say "presented live"; nothing says "sent ahead" |
 
+### 2a. Checkpoint, 9 September 15:50 — the same eighteen items against what exists now
+
+Re-checked after the day's passes (reference header, filter panel, persona figures, deck rebuild, both Figma files).
+
+| # | Item | Status | Where it stands now |
+|---|---|---|---|
+| 1 | No "134" on slide 1 | Done | Title slide carries no count |
+| 2 | No numbers on any screen | Done | No count on any prototype, frame or slide; pagers show page numbers only; the reference's "Showing 9 of 85 items" was not adopted; helpline numbers and scheme amounts remain |
+| 3 | One vocabulary across the panel and the new options | Done | One master of eleven groups, one label each, on every page, in the assistant, on slide 2 and in Figma section 1 |
+| 4 | Drop "who is this for" | Done | Not asked anywhere |
+| 5 | Community question absorbs stage of life | Done | Students and Senior Citizens are in the group list; no stage question |
+| 6 | "Kind of help" becomes what the Department offers, with real examples | Done | Eight offerings with the Department's own examples as subtitles (Option B question 2) |
+| 7 | Drop State | Done | Not asked anywhere |
+| 8 | Two screens, persona then offering; the two masters and the mapping | Done | Option B; masters on slide 2 and Figma section 1; mapping in the research doc and the data-sources report |
+| 9 | Option C stays, persona-based, no numbers, no pitch text | Done | Group row, portal band, schemes grouped by offering; the band now reads "Apply Now" with a Portal badge (Akash, 9 Sep) |
+| 10 | Apply links: portal directly, or the scheme page carrying the portal | Done, one of each | Scheme rows open the scheme page ("View details"); the Option C band opens the group's portal directly |
+| 11 | Schemes page Option A: only the two axes | **Decision needed** | The page follows the reference header Akash asked for (frame 4759:155021): group row, Category, and an Organisation chip. Organisation is a third filter. Keep it because the reference has it, or drop it to hold the two-axis rule |
+| 12 | SC, OBC, DNT shown as variants; tag later | Done | Three separate groups; the tagging is the prerequisite line on slide 11 |
+| 13 | Open on a female figure | Done | Students, drawn as a young woman, first in every list, row and panel |
+| 14 | Schemes page Option B: remove the "19 schemes" header | Done | Removed; nothing counts the rows |
+| 15 | Fold the Bolt variant into Option B | Done | Only Option B remains |
+| 16 | Deck order: concept, home page with placement, internal page, assistant | Done | Slides 2, 3 to 6, 7 to 9, 10; placement stated on slide 3 and drawn in Figma section 5 |
+| 17 | Negi's re-tagging estimate; an intern for the mapping | Partly | Slide 11's footnote asks development for the estimate; the intern is an internal action and is not on a slide |
+| 18 | Don't mail the PPT; present live | Done | Deck built for the room; recordings start on slide entry; nothing says "sent ahead" |
+
+One open decision (item 11). Everything else is in the deck, the prototypes and both Figma files as of this checkpoint.
+
 Not in the transcript but implied by item 2 and confirmed today: the design-system finder's own
 1,000-line scheme list, which repeated the beta site's data, is deleted; it reads the master.
 
@@ -126,8 +199,8 @@ Not in the transcript but implied by item 2 and confirmed today: the design-syst
 
 | Finding | Severity | Action |
 |---|---|---|
-| Persons with disabilities got a note and no schemes — a dead end for the one group most likely to arrive at the wrong department | High | DEPwD's four schemes are shown, labelled *Run by DEPwD*, in the finder, the design-system finder and the assistant |
-| The disability choice sat in the persona grid as a twelfth card, so it read as one of the Department's groups | High | Moved to a distinct dashed row beneath the grid: "Their schemes are run by DEPwD. Choose this to see them." |
+| Persons with disabilities got a note and no schemes — a dead end for the one group most likely to arrive at the wrong department | High | DEPwD's four schemes are shown, labelled *Run by DEPwD*, in the finder, the design-system finder and the assistant  **Withdrawn later the same day — see the addendum: nothing about disability is shown now.** |
+| The disability choice sat in the persona grid as a twelfth card, so it read as one of the Department's groups | High | Moved to a distinct dashed row beneath the grid: "Their schemes are run by DEPwD. Choose this to see them."  **Withdrawn later the same day — see the addendum: nothing about disability is shown now.** |
 | Apply buttons carried a whole sentence ("Apply through NSFDC, through its channelising agencies") | Medium | Route labels shortened; the detail belongs on the scheme page |
 | "Whom it names" as a card label — the Department's register, not a citizen's | Medium | Cards use *For* and *Provides*; the eligibility rule is unchanged in the wording of the values |
 | "Schemes That Name You" as a results heading | Medium | "Schemes for Your Group" — still no eligibility claim |
@@ -172,7 +245,72 @@ hatching, white ground, no props, no text, square.**
 | Persons Affected by Substance Use | A young man in his twenties in recovery: healthy, alert, hopeful; short neat hair, plain collared shirt. Nothing that suggests intoxication, distress or stigma — the earlier drawing was withdrawn for exactly that |
 | Persons Engaged in Begging | A middle-aged man now in a shelter and rehabilitation programme: weathered but dignified face, greying hair, simple cotton kurta, a light shawl over one shoulder. Nothing that suggests begging or pity |
 | Victims of Atrocities | A woman in her thirties in a plain cotton sari, resolute and composed, holding a thin folder of papers to her chest — a person seeking relief with dignity. No sign of injury, distress or violence |
-| Persons with Disabilities (the DEPwD row) | A young woman in a salwar kameez seated in a wheelchair, the push handles just visible at the bottom of the frame, self-assured |
 
-Until they exist, the three personas and the DEPwD row use Material Symbols on the same ground the
-illustrated marks sit on: `health_and_safety`, `night_shelter`, `balance`, `accessible`.
+Until they exist, the three personas use Material Symbols on the same ground the illustrated marks
+sit on: `health_and_safety`, `night_shelter`, `balance`. (A fourth brief, for the DEPwD row, was
+withdrawn with the row.)
+
+## 4a. Artwork assignment — one DBIM file per persona
+
+| Persona | DBIM asset | File under `static/uploads/` |
+|---|---|---|
+| Scheduled Castes | Livelihood Seeker (Service Seeker, Minority Affairs) | `2024/09/280a755bc02a0451f99cf5ced70d9686.png` — already in use |
+| Other Backward Classes | Rural Livelihood Seeker (Agriculture and Rural) | `2024/09/5a17da7b7805131ba2104a245d87268f.png` — already in use |
+| Senior Citizens | Pensioner (Lifecycle Based, Expenditure) | `2024/09/4cfb6b14d6febde9855a874947df9885.png` — already in use |
+| Persons Affected by Substance Use | Health Seeker (Service Seeker, Health and Family Welfare) | `2024/09/ab8f73c5030b70aff82d93e9458385bd.png` — proposed; not yet placed |
+| Transgender Persons | none in the library | keep the Department's own figure from the live persona panel |
+| Persons Engaged in Begging | none in the library | the DBIM icon *Night Shelter*, the same mark used today |
+| De-notified, Nomadic and Semi-Nomadic Tribes | Livelihood Seeker (Service Seeker, Minority Affairs), second figure | `2024/09/9e5c20f6e1afa6a1b4527be5667127a0.png` — already in use |
+| Safai Karamcharis | none in the library | keep the Department's own figure from the live persona panel |
+| Students | Student (Service Seeker, **Social Justice and Empowerment**) | `2024/09/e9a238d8ab6944add204874fdf132403.png` — placed this pass |
+| Victims of Atrocities | none in the library | the DBIM icon *Justice*, in place of the Material `balance` mark |
+| Voluntary Organisations | Social Worker (Government and Social Services) | `2024/09/0a4ab241a8924af6bc07bb1663bb7fda.png` — already in use |
+
+The library's only assets tagged to this Ministry are the Student above and two *Differently Abled
+Person* figures, which are not used because persons with disabilities are not served by this
+Department. For the four personas with no figure, the way through is a request to the DBIM ToolKit
+team (MeitY) for four persona illustrations in the library's line style, using the briefs in §4;
+until then the Department's own two figures and the two DBIM icons stand.
+
+## 4b. Prompts to draw the missing figures
+
+Use these with any image model, or hand them to an illustrator. Each is written to match the
+DBIM Visual Components Library's persona style, so the new figures sit beside the existing ones
+without looking borrowed from somewhere else.
+
+**Style, the same for every prompt.** Black ink line drawing of one Indian adult, waist-up, facing
+the viewer, on a plain white background with no shadow, no colour and no scenery. Clean, even
+lines of one weight, like a coloured-in outline from a textbook. Calm, direct expression, a slight
+smile. Everyday clothes drawn simply. Square image, the person centred, head near the top with a
+little space above it. No text, no logo, no border. The drawing must look kind and ordinary,
+never sad, never dramatic.
+
+| Persona | Prompt (add the style paragraph above to each) |
+|---|---|
+| Transgender Persons | A transgender woman in her thirties, hair tied back, wearing a plain sari with a small bindi and stud earrings, standing straight with her hands loosely clasped in front of her. Confident and at ease. Nothing that suggests performance or costume. |
+| Safai Karamcharis | A sanitation worker in his forties in a plain collared work shirt and a soft cloth cap, one hand resting on the handle of a long-handled broom that is only partly in frame. Weathered but healthy face, looking straight ahead with quiet dignity. No dirt, no mask, no gloves, no vehicle. |
+| Persons Engaged in Begging | A man in his fifties now living in a shelter, greying hair combed, a simple cotton kurta and a light shawl over one shoulder, standing upright with a small cloth bag on his shoulder as if arriving somewhere. Dignified and rested. Nothing that suggests begging, a bowl, a street, or pity. |
+| Victims of Atrocities | A woman in her thirties in a plain cotton sari, hair neatly tied, holding a thin paper folder against her chest with both hands, looking straight ahead, composed and resolute. A person seeking her rights with dignity. No injury, no distress, no police, no courtroom. |
+| Persons Affected by Substance Use (if the DBIM Health Seeker is not wanted) | A young man in his twenties in recovery, short neat hair, a plain collared shirt, standing straight with his hands at his sides and a small, hopeful smile. Healthy and alert. Nothing that suggests intoxication, medicine, a hospital or a bottle. |
+
+**Which to draw and which to keep.** Transgender Persons and Safai Karamcharis already have the
+Department's own figures from the live persona panel; draw new ones only if the set is to be
+uniform. Persons Engaged in Begging and Victims of Atrocities have no figure anywhere and use
+icons today (*Night Shelter*, *Justice*); an icon is acceptable for both if drawing a person feels
+wrong for the subject — that is a judgement for the division, and the audit records both choices
+as defensible.
+
+## 5. Third pass, 9 September 2026 (evening) — what changed and why
+
+| Instruction | Done |
+|---|---|
+| Remove "Against it"; document differently; plain language | Every option page now says what it is, how it works and why it helps. No verdicts. The deck's words were rewritten for a school-leaver. |
+| Two Questions: View details only, no apply link; both answers under "You chose"; two or three schemes then a link to the filtered Schemes page; drop the design-system sentence; drop the scheme type from cards | Done: three schemes, View details, both chips, "View all schemes for …" opens the Schemes page filtered to the same answers. Type removed from every card and row. |
+| Say where the data came from; a separate report | `docs/research/service-discovery-data-sources.md`, generated from the master: documents, groups, kinds of support, portals and links with the 9 September link checks, every scheme with its sources, exclusions, conflicts, what is unverified, and a cross-check against myScheme. |
+| One Tap: a band for the group's portal, then the categorised list | Done. The band shows the one portal or helpline the Department runs for the group; a button only where the site answered on 9 September (NSFDC, NBCFDC, NSP, e-Anudaan, the helplines); the rest named in words. |
+| Schemes page: the earlier layouts with the feedback; correct data; aligned personas | Option A follows the WIP frame 4759:155021 with the persona rail as one horizontally scrolling, aligned row of the eleven groups; search, a Kind of Support dropdown and Reset; cards paged at nine; no counts. Option B keeps the panel-and-table with faces beside the target groups and a Reset per panel. |
+| Before/after page images did not load | Both pages now carry their images inside the file. |
+| Google Drive | The 8 September deck, PDF and zip moved into `_superseded`; the new deck and PDF uploaded; the walkthrough videos replaced. |
+| Remove "Before Anything Is Built" and "Three Rules"; summary without a recommendation | Both slides removed. The closing slide lists the six options by part of the site and says what comes before a build; it recommends nothing. The "Recommended" pills are gone from every page as well. |
+| Realistic UI behind the chatbot; no demo rail | The assistant now sits on the website's own home page (its real header, banner, About, Offerings and Recent Documents), and the recording hides the demo rail and the accessibility widget. |
+| myScheme data | Captured the Ministry's 85 entries and reconciled them to the master in the report's §9: DEPwD's and disability schemes, corporation loan products, umbrella components, and four entries for the divisions to confirm. Nothing on a screen comes from myScheme. |
