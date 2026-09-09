@@ -24,15 +24,15 @@ off and the disagreement is in §7.
 
 | On the screen | Taken from |
 |---|---|
+| Students | cross-cutting — every scholarship names a community and a stage; a student looks for the stage first. Listed after the mandate groups, with the other two personas the schemes rather than the mandate name. Source: the scholarship records in AR ch.3 (§3.2–3.5, §3.19–3.22, §3.27) each name students of the groups the Department serves. |
 | Scheduled Castes | Scheduled Castes (SCs) (AR §1.2) |
 | Other Backward Classes | Other Backward Classes (OBCs); Economically Backward Classes (EBCs) (AR §1.2) |
-| Senior Citizens | Senior Citizens (AR §1.2) |
-| Persons Affected by Substance Use | Victims of Alcoholism and Substance Abuse (AR §1.2) |
-| Transgender Persons | Transgender Persons (AR §1.2) |
-| Persons Engaged in Begging | Persons engaged in Beggary (AR §1.2) |
 | De-notified, Nomadic and Semi-Nomadic Tribes | De-notified, Nomadic and Semi-Nomadic Tribes (DNTs) (AR §1.2) |
 | Safai Karamcharis | Manual Scavengers; Sewer & Septic Tank workers; Waste Pickers (AR §1.2) |
-| Students | cross-cutting — every scholarship names a community and a stage; a student looks for the stage first. Listed after the mandate groups, with the other two personas the schemes rather than the mandate name. Source: the scholarship records in AR ch.3 (§3.2–3.5, §3.19–3.22, §3.27) each name students of the groups the Department serves. |
+| Senior Citizens | Senior Citizens (AR §1.2) |
+| Transgender Persons | Transgender Persons (AR §1.2) |
+| Persons Affected by Substance Use | Victims of Alcoholism and Substance Abuse (AR §1.2) |
+| Persons Engaged in Begging | Persons engaged in Beggary (AR §1.2) |
 | Victims of Atrocities | served through the PCR-PoA scheme (AR §3.9) and the National Helpline Against Atrocities |
 | Voluntary Organisations | delivery partners under AVYAY, NAPDDR, SHRESHTA, SMILE and PM-AJAY (AR §3.39) |
 
@@ -92,14 +92,14 @@ The persona band on the One Tap option shows one of these per group:
 
 | Group | Band | Source |
 |---|---|---|
+| Students | National Scholarship Portal — Scholarships from pre-matric to post-matric, in one place | AR §3.20, §3.21 |
 | Scheduled Castes | NSFDC — Concessional loans for Scheduled Castes, through the State channelising agency | AR §3.34; SJ 34 |
 | Other Backward Classes | NBCFDC — Concessional loans and skill training for Other Backward Classes | AR §3.36 |
-| Senior Citizens | Elderline 14567 — Toll-free helpline for senior citizens | AR §3.14 D |
-| Persons Affected by Substance Use | Helpline 14446, or the nearest centre — Toll-free helpline for de-addiction and counselling | AR §3.15 |
-| Transgender Persons | the National Portal for Transgender Persons — Certificate of identity and welfare support for transgender persons | AR §3.17 |
 | De-notified, Nomadic and Semi-Nomadic Tribes | the SEED portal — Coaching, health insurance, housing and livelihood for DNT communities | SJ 109 |
 | Safai Karamcharis | NSKFDC — Loans and skill training for Safai Karamcharis and their dependants | AR §3.35; SJ 37 |
-| Students | National Scholarship Portal — Scholarships from pre-matric to post-matric, in one place | AR §3.20, §3.21 |
+| Senior Citizens | Elderline 14567 — Toll-free helpline for senior citizens | AR §3.14 D |
+| Transgender Persons | the National Portal for Transgender Persons — Certificate of identity and welfare support for transgender persons | AR §3.17 |
+| Persons Affected by Substance Use | Helpline 14446, or the nearest centre — Toll-free helpline for de-addiction and counselling | AR §3.15 |
 | Victims of Atrocities | Helpline 14566 — National Helpline Against Atrocities, round the clock | PIB 1780979 |
 | Voluntary Organisations | the e-Anudaan portal — Grant-in-aid applications for voluntary organisations | AR §3.39 |
 

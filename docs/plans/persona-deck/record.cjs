@@ -66,19 +66,17 @@ const WALKS = {
   'scheme-a': { url: 'file://' + path.join(PROTO, 'scheme-a.html'), run: async p => {
     await p.waitForTimeout(1600);
     await tap(p, '.face-btn[data-g="safai"]', { pause: 1500 });
-    await p.selectOption('#kind', 'loan'); await p.waitForTimeout(1500);
-    await p.selectOption('#kind', 'all'); await p.waitForTimeout(1100);
+    await tap(p, '.face-btn[data-g="tg"]', { pause: 1500 });
     await tap(p, '.face-btn[data-g="senior"]', { pause: 1600 });
     await scroll(p, 300, 1500);
   }},
   'scheme-b': { url: 'file://' + path.join(PROTO, 'scheme-b.html'), run: async p => {
     await p.waitForTimeout(1700);
     await tap(p, 'input[data-axis="who"][data-id="obc"]', { pause: 1300 });
-    await tap(p, 'input[data-axis="offer"][data-id="scholarship"]', { pause: 1600 });
-    await tap(p, 'input[data-axis="offer"][data-id="loan"]', { pause: 1600 });
+    await tap(p, 'input[data-axis="who"][data-id="student"]', { pause: 1600 });
     await scroll(p, 320, 1400);
     await scroll(p, -320, 600);
-    await tap(p, '[data-clear="offer:scholarship"]', { pause: 1600 });
+    await tap(p, '[data-clear="who:obc"]', { pause: 1600 });
     await tap(p, '#reset', { pause: 1400 });
   }},
   'finder': { url: base + '/explorations/service-discovery/home-page', run: async p => {
@@ -98,7 +96,6 @@ const WALKS = {
        page; the recording shows the site as a citizen would see it. */
     await p.addStyleTag({ content: '.ds-demodock,#uw-widget-custom-trigger,[id^="uw-"],.uwy{display:none!important}' });
     await p.waitForTimeout(2000);
-    await scroll(p, 520, 1400);
     await tap(p, 'button[aria-label="Samajik Sahayak, chat assistant"]', { pause: 1600 });
     const quick = label => p.locator('button', { hasText: label }).last();
     for (const label of ['Which scheme applies to me?', 'Scheduled Castes', 'Loans and Credit']) {

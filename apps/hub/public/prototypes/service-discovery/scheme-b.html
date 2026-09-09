@@ -33,7 +33,7 @@ td small{display:block;color:var(--sa-muted);font-size:11.5px;margin-top:2px}
 <main class="wrap sec">
   <div>
     <h1 class="sec-t">Schemes &amp; Services</h1>
-    <p class="sec-lede">Tick the target group and the kind of support. The two work together.</p>
+    <p class="sec-lede">Tick one or more target groups.</p>
   </div>
   <div class="layout">
     <aside class="filters" id="filters"></aside>
@@ -78,7 +78,7 @@ function drawFilters(){
         <input type="checkbox" data-axis="${axis}" data-id="${x.id}" ${on?'checked':''} ${live?'':'disabled'}></label>`;}).join('')}
     </div>`;
   el('filters').innerHTML =
-    block('Target Group','who',PERSONAS) + block('Kind of Support','offer',OFFERINGS) +
+    block('Target Group','who',PERSONAS) +
     `<button class="btn ghost" id="reset" style="width:100%">Reset Filters</button>`;
   el('reset').onclick = () => { sel.who.clear(); sel.offer.clear(); page=1; draw(); };
   el('filters').querySelectorAll('[data-reset]').forEach(a => a.onclick = e => { e.preventDefault(); sel[a.dataset.reset].clear(); page=1; draw(); });

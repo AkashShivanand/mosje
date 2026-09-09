@@ -13,6 +13,16 @@ export interface SdScheme {
 
 export const SD_PERSONAS: SdPersona[] = [
   {
+    "id": "student",
+    "label": "Students",
+    "short": "Students",
+    "sub": "From Class I to Ph.D. and study abroad, from the groups the Department serves",
+    "portal": {
+      "route": "nsp",
+      "blurb": "Scholarships from pre-matric to post-matric, in one place"
+    }
+  },
+  {
     "id": "sc",
     "label": "Scheduled Castes",
     "short": "Scheduled Castes",
@@ -33,45 +43,9 @@ export const SD_PERSONAS: SdPersona[] = [
     }
   },
   {
-    "id": "senior",
-    "label": "Senior Citizens",
-    "short": "Senior Citizens",
-    "sub": "Aged 60 years or above",
-    "portal": {
-      "route": "elderline",
-      "blurb": "Toll-free helpline for senior citizens"
-    }
-  },
-  {
-    "id": "drug",
-    "label": "Persons Affected by Substance Use",
-    "short": "Affected by Substance Use",
-    "sub": "The person, and their family",
-    "portal": {
-      "route": "nmba",
-      "blurb": "Toll-free helpline for de-addiction and counselling"
-    }
-  },
-  {
-    "id": "tg",
-    "label": "Transgender Persons",
-    "short": "Transgender Persons",
-    "sub": "As defined in the Transgender Persons (Protection of Rights) Act, 2019",
-    "portal": {
-      "route": "tgportal",
-      "blurb": "Certificate of identity and welfare support for transgender persons"
-    }
-  },
-  {
-    "id": "begging",
-    "label": "Persons Engaged in Begging",
-    "short": "Engaged in Begging",
-    "sub": "Rescue, shelter and rehabilitation"
-  },
-  {
     "id": "dnt",
     "label": "De-notified, Nomadic and Semi-Nomadic Tribes",
-    "short": "DNT, Nomadic and Semi-Nomadic Tribes",
+    "short": "De-notified, Nomadic and Semi-Nomadic Tribes",
     "sub": "Communities listed as DNT, NT or SNT",
     "portal": {
       "route": "seed",
@@ -89,14 +63,40 @@ export const SD_PERSONAS: SdPersona[] = [
     }
   },
   {
-    "id": "student",
-    "label": "Students",
-    "short": "Students",
-    "sub": "From Class I to Ph.D. and study abroad, from the groups the Department serves",
+    "id": "senior",
+    "label": "Senior Citizens",
+    "short": "Senior Citizens",
+    "sub": "Aged 60 years or above",
     "portal": {
-      "route": "nsp",
-      "blurb": "Scholarships from pre-matric to post-matric, in one place"
+      "route": "elderline",
+      "blurb": "Toll-free helpline for senior citizens"
     }
+  },
+  {
+    "id": "tg",
+    "label": "Transgender Persons",
+    "short": "Transgender Persons",
+    "sub": "As defined in the Transgender Persons (Protection of Rights) Act, 2019",
+    "portal": {
+      "route": "tgportal",
+      "blurb": "Certificate of identity and welfare support for transgender persons"
+    }
+  },
+  {
+    "id": "drug",
+    "label": "Persons Affected by Substance Use",
+    "short": "Persons Affected by Substance Use",
+    "sub": "The person, and their family",
+    "portal": {
+      "route": "nmba",
+      "blurb": "Toll-free helpline for de-addiction and counselling"
+    }
+  },
+  {
+    "id": "begging",
+    "label": "Persons Engaged in Begging",
+    "short": "Persons Engaged in Begging",
+    "sub": "Rescue, shelter and rehabilitation"
   },
   {
     "id": "atrocity",
