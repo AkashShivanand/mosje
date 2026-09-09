@@ -362,6 +362,9 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "standing",
             title: "The number leads",
+            /* Not "The Number" — the distinguishing thing is its SIZE, not that
+               a number is present. Every option in this module has one. */
+            label: "Number Loudest",
             summary:
               "The handoff at 57913:17152, built — the helpline on the trailing edge at display scale, one leading mark slot the two offers share, and the pager wearing the glass card's own material.",
             status: "proposed",
