@@ -524,6 +524,27 @@
   }
 
   @media (max-width: 767px) {
+    /*
+     * THE PAGER GETS ITS OWN ROW BELOW 768, because the corner it lives in is
+     * taken. On a phone the action goes full width, and the pager — pinned to
+     * the same cell's bottom-right — landed ON the button. Measured at 390:
+     * the two boxes genuinely intersect, so the last thing a reader can tap in
+     * the band is a control sitting on top of another control.
+     *
+     * A second row costs 40px and is the honest fix; nudging the pager sideways
+     * would only move the collision to whatever the button becomes next.
+     */
+    .cband__stage {
+      grid-template-areas: "offer" "pager";
+      row-gap: var(--sa-stack-12);
+    }
+
+    .cband__pager {
+      grid-area: pager;
+      place-self: center start;
+      margin: 0;
+    }
+
     .cband__offer {
       grid-template-columns: auto minmax(0, 1fr);
     }
