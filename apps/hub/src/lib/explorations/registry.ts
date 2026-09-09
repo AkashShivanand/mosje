@@ -51,6 +51,25 @@ export interface ExplorationOption {
   /** Slug within the module — "current", "option-a", "flight". */
   id: string;
   title: string;
+  /**
+   * THE SHORT NAME — one to three words, and the FIRST WORD MUST BE THE THING
+   * THAT MAKES THIS OPTION DIFFERENT.
+   *
+   * `title` is a headline for the panel; this is a label for a tab and for the
+   * option bar, and the two want different lengths. One string doing both jobs
+   * produced the defect this field exists to end: three of the home page's six
+   * options began with the same twenty characters — "Find Schemes for You" — so
+   * the only thing telling them apart sat at the END of the string, which is the
+   * one place scanning never reaches. They are "Two Questions", "Five Questions"
+   * and "One Tap" now.
+   *
+   * Required, not optional, so a new option cannot arrive without one. Unique
+   * within its module. Title Case, like every other title on the estate
+   * (`ui-restraint-and-copy.md` §2). And NEVER borrowed from a string inside the
+   * option's own mock — naming three options after the same on-screen button is
+   * exactly how the collision happened.
+   */
+  label: string;
   /** One sentence. What this option IS, not what it is for. */
   summary: string;
   status: ExplorationStatus;
@@ -61,6 +80,20 @@ export interface ExplorationOption {
   lookAt?: string[];
   /** Where it landed, for a `chosen` option — a PR number or a route. */
   landedIn?: string;
+  /**
+   * WHICH SURFACE A CHOSEN OPTION WAS CHOSEN FOR.
+   *
+   * Two options in `documents` are both `chosen`, and that is CORRECT rather
+   * than a data error: chips shipped to the other 177 organisations in PR #379,
+   * tabs shipped to NMBA in PR #381, and the register had no way to say so. On
+   * the index that rendered as two identical green "Chosen" pills with nothing
+   * to tell them apart — the register lying about its own record.
+   *
+   * Set it only where a decision genuinely resolved differently on different
+   * surfaces. A single winner needs no scope, and giving it one implies a
+   * division that does not exist.
+   */
+  chosenFor?: string;
   /** What beat it, for a `superseded` one. */
   supersededBy?: string;
   /**
@@ -113,6 +146,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "goes",
             title: "It goes with the band",
+            label: "With the Band",
             summary:
               "Press the × and the whole band leaves, the number included. What the estate did until 8 September.",
             status: "superseded",
@@ -122,6 +156,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "flight",
             title: "It flies to the hero",
+            label: "Flies to the Hero",
             summary:
               "The whole band leaves, and the helpline travels from it into a badge beside the campaign mark on a 615ms arc.",
             status: "superseded",
@@ -138,6 +173,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "arrive",
             title: "The badge simply arrives",
+            label: "Simply Arrives",
             summary:
               "The whole band folds away and the helpline appears beside the mark — 6px up and a fade, once the fold has finished.",
             status: "chosen",
@@ -161,6 +197,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "ctas-right",
             title: "Both CTAs on the right",
+            label: "Both on the Right",
             summary:
               "104px, one row. A 72px code leads, the message takes the middle, and the two routes sit together on the trailing edge, 12 apart.",
             live: true,
@@ -177,6 +214,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "ctas-below",
             title: "CTAs below the copy",
+            label: "Stacked Below",
             summary:
               "168px. A 120px code spans the full height, and the heading, sentence and both buttons stack beside it — the handoff’s own composition.",
             live: true,
@@ -193,6 +231,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "two-zones",
             title: "Two zones",
+            label: "Two Zones",
             summary:
               "The campaign keeps the band's gradient; the helpline takes a darker panel at the trailing edge, shaped as a fact — a caption over a figure — rather than as a second button.",
             status: "chosen",
@@ -217,6 +256,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "current",
             title: "Glyph first, static",
+            label: "Static Glyph",
             summary:
               "A filled white control reading symbol, label, number, with nothing on it that moves.",
             status: "proposed",
@@ -229,6 +269,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "ringing",
             title: "Card with a breathing halo",
+            label: "Breathing Halo",
             summary:
               "Label and number lead; the glyph sits on the trailing edge inside a halo that breathes three times and then rests.",
             status: "proposed",
@@ -254,6 +295,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "two",
             title: "Two bands",
+            label: "Two Bands",
             summary:
               "Each announcement keeps its own band, its own ground colour and its own dismiss, and both are visible at once.",
             status: "proposed",
@@ -267,6 +309,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "one",
             title: "One band, two panels",
+            label: "One Band",
             summary:
               "A single band carrying both, switched by the reader. Half the height, and one message visible at a time.",
             status: "proposed",
@@ -281,6 +324,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "one-auto",
             title: "One band, the notice first, advancing on its own",
+            label: "Advancing",
             summary:
               "The same single band, but the anniversary notice leads and the panels rotate every six seconds — with a pause control, because that is what makes it lawful.",
             live: true,
@@ -299,6 +343,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "composed",
             title: "Two halves — a standing service and a rotating offer",
+            label: "Two Halves",
             summary:
               "The helpline is the band's only white surface; the rotating half carries the observance and the volunteer drive, each with its own accent, glyph, eyebrow and shape.",
             status: "proposed",
@@ -324,6 +369,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "sections",
             title: "Six bands",
+            label: "Six Bands",
             summary:
               "Each shelf its own full-width band, in the source's order, each with its own heading and its own route out.",
             status: "superseded",
@@ -333,17 +379,21 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "library",
             title: "One shelf, chips",
+            label: "Chips",
             summary:
               "Every group merged into one filterable shelf, the publisher's arrangement kept as counted chips, with a route out that follows the selected chip.",
             status: "chosen",
+            chosenFor: "177 organisations",
             landedIn: "PR #379 — and it is what the other 177 organisations use",
           },
           {
             id: "tabs",
             title: "One shelf, tabs",
+            label: "Tabs",
             summary:
               "The Department's six headings become six tabs on one band, each keeping its own “View All”, with the cards on a sideways-scrolling rail.",
             status: "chosen",
+            chosenFor: "NMBA",
             landedIn: "PR #381 — used by NMBA, which is the record that asked for it",
           },
         ],
@@ -358,6 +408,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "ribbon-below",
             title: "Ribbon between the fact strip and the data",
+            label: "Below the Facts",
             summary:
               "Where the 7 September review asked for it — “between the blue section and the data section”.",
             status: "superseded",
@@ -367,6 +418,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "ribbon-above",
             title: "Ribbon above the hero",
+            label: "Above the Hero",
             summary:
               "After the campaign band, before the page title — one 50px line carrying the occasion, the invitation and two routes.",
             status: "chosen",
@@ -384,6 +436,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "plate-all",
             title: "A white disc behind every mark",
+            label: "Every Mark",
             summary: "An 84px mark inside a 100px white circle with a hairline border.",
             status: "superseded",
             supersededBy:
@@ -392,6 +445,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "plate-declared",
             title: "A plate only where the artwork needs one",
+            label: "Only Where Needed",
             summary:
               "Six marks are declared in the registry as unable to hold a brand band; the other eleven render bare, as the handoff draws them.",
             status: "chosen",
@@ -418,6 +472,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "personas",
             title: "Explore User Personas",
+            label: "Personas",
             summary:
               "The panel already on the home page: one group at a time, moved with arrows, and choosing one opens the Schemes page filtered to it.",
             status: "proposed",
@@ -431,6 +486,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "finder",
             title: "Find Schemes for You — two questions",
+            label: "Two Questions",
             summary:
               "Two short questions — who is looking for support, and what kind of support — built as a website section from the design system over the validated scheme master. The second may be left unanswered, which widens the list.",
             status: "proposed",
@@ -447,6 +503,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "five-questions",
             title: "Find Schemes for You — the drawn draft",
+            label: "Five Questions",
             summary:
               "The static draft of the same two questions, drawn for the recordings and the deck.",
             status: "superseded",
@@ -461,6 +518,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "one-tap",
             title: "Find Schemes for You",
+            label: "One Tap",
             summary:
               "A row of the personas. Tapping one lists the schemes that name that group, grouped by what they provide, with the place to apply, on the home page itself.",
             status: "proposed",
@@ -474,6 +532,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "tasks",
             title: "What you need to do",
+            label: "Tasks",
             summary:
               "Four things a citizen does — check, apply, track, raise a grievance — in place of the parts of the Department.",
             status: "proposed",
@@ -487,6 +546,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "search",
             title: "Ask in your own words",
+            label: "Free Text",
             summary:
               "One field that reads safai, nasha, chhatravriti and budhapa, and names the department that holds the answer.",
             status: "proposed",
@@ -510,6 +570,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "pictures",
             title: "Pictures of the groups, with cards",
+            label: "Pictures",
             summary:
               "Every persona visible at once, then what it provides as a row of chips, above a card for each scheme.",
             status: "proposed",
@@ -523,6 +584,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "filter-table",
             title: "Filter panel with a table of schemes",
+            label: "Filter Table",
             summary:
               "Filters down the left on the same two axes, a table on the right showing what each scheme provides, whom it names, and its type.",
             status: "proposed",
@@ -545,6 +607,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "straight-out",
             title: "The link goes straight out",
+            label: "Straight Out",
             summary:
               "An apply button opens the other site directly, which is what every scheme page does today.",
             status: "proposed",
@@ -558,6 +621,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
           {
             id: "interstitial",
             title: "One screen that names the destination",
+            label: "Interstitial",
             summary:
               "The domain, what will be asked for there, and a way back. Where there is no online route it says so, and gives the office instead.",
             status: "proposed",
@@ -578,8 +642,38 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
         date: "8 September 2026",
         options: [
           {
+            /*
+             * THE DO-NOTHING OPTION, WHICH IS A REAL ONE.
+             *
+             * This module carried a single option, and a decision with one answer
+             * is not a decision — it is a proposal wearing a register's clothes,
+             * and this type's own comment says a module holds "two or more". The
+             * alternative every stakeholder raises is that the page already
+             * carries its own links and a floating button is one more thing to
+             * ignore. It is written down so it can be argued against rather than
+             * assumed away.
+             *
+             * It comes first because it is the status quo, and the register is
+             * ordered by when a thing was drawn. `live: false` because the
+             * prototype for doing nothing IS the estate as it stands.
+             */
+            id: "no-assistant",
+            title: "Nothing — the page already carries its own links",
+            label: "No Assistant",
+            summary:
+              "The page is left as it is: whatever leads onward from it are the routes it already publishes.",
+            status: "proposed",
+            live: false,
+            lookAt: [
+              "Open the live page and count what actually leads onward from it",
+              "A control in the corner is found by people looking for one, and a citizen who does not know the Department's vocabulary is not looking",
+              "Nothing to build, nothing to maintain, and nothing to get wrong in public",
+            ],
+          },
+          {
             id: "samajik-sahayak",
             title: "Samajik Sahayak — the same two questions, in chat",
+            label: "Samajik Sahayak",
             summary:
               "The same two questions, asked one at a time in the assistant that is already built and reachable from every page.",
             status: "proposed",
@@ -609,6 +703,30 @@ export function moduleById(surfaceId: string, moduleId: string): ExplorationModu
 export function allModuleParams(): { surface: string; module: string }[] {
   return EXPLORATIONS.flatMap((s) => s.modules.map((m) => ({ surface: s.id, module: m.id })));
 }
+
+/**
+ * HOW MANY OPTIONS ARE IN EACH STATE, ordered as the status ladder is, and
+ * carrying only the states that are actually present.
+ *
+ * Exported rather than computed at each call site because two surfaces render
+ * it — the index card's foot and the module header's legend — and two
+ * implementations of one count is how they end up disagreeing on screen.
+ */
+export function optionTally(
+  options: readonly ExplorationOption[],
+): { status: ExplorationStatus; n: number }[] {
+  return (["proposed", "chosen", "superseded", "parked"] as const)
+    .map((status) => ({ status, n: options.filter((o) => o.status === status).length }))
+    .filter((t) => t.n > 0);
+}
+
+/** The plural phrasing a tally needs. "1 options" is a defect. */
+export const STATUS_TALLY: Record<ExplorationStatus, string> = {
+  chosen: "chosen",
+  proposed: "awaiting a decision",
+  superseded: "not chosen",
+  parked: "parked",
+};
 
 /** Counted, never typed — the index prints these. */
 export function counts() {

@@ -10,7 +10,105 @@
 @layer theme, base, components, utilities;
 
 @layer components {
+  /*
+   * The design system's visually-hidden treatment, declared HERE rather than
+   * borrowed. `ds-sr-only` lives in `live-region.css`, which this module does not
+   * import — so relying on it means relying on whatever else the page happened to
+   * render, which is how a warning silently stops being announced.
+   */
+  .xpl-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   /* ── Index ────────────────────────────────────────────────────────────── */
+
+  /*
+   * THE FILTER, which is the control that turns a list into an answer. Fifteen
+   * options were awaiting a decision and the page had no way to show which; a
+   * reader's question here is "what needs me?", and eleven cards in insertion
+   * order do not answer it.
+   *
+   * `aria-pressed` on plain buttons, not `role="tab"`: there are no panels here,
+   * only the same list narrowed, and a tablist promises a roving arrow-key model
+   * this does not have. Toggle buttons in a named group is what this is.
+   */
+  .xpl-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+    margin-block-end: var(--sa-stack-24);
+  }
+
+  .xpl-filter {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    min-block-size: var(--sa-control-height-sm);
+    padding: var(--sa-padding-6) var(--sa-padding-12);
+    /* Same correction as the option tabs — see the note above them. */
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    font-weight: var(--sa-font-weight-medium);
+    transition:
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .xpl-filter:hover {
+      border-color: var(--sa-border-neutral-bolder-hover);
+    }
+  }
+
+  /* Same correction as the tabs: `base` is the palest rung, and the ring is what
+     carries the pressed state without moving the row by a pixel. */
+  .xpl-filter[aria-pressed="true"] {
+    border-color: var(--sa-border-brand-primary-bolder);
+    background-color: var(--sa-bg-brand-primary-base);
+    box-shadow: inset 0 0 0 var(--sa-stroke-1) var(--sa-border-brand-primary-bolder);
+    color: var(--sa-text-brand-primary-base);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .xpl-filter__count {
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xpl-filter[aria-pressed="true"] .xpl-filter__count {
+    color: inherit;
+  }
+
+  /* Filtered to nothing — worded differently from empty, and it names the way
+     out, because the reader caused this state and can undo it. */
+  .xpl-nothing {
+    padding: var(--sa-padding-24);
+    border: var(--sa-stroke-1) dashed var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-12);
+    background-color: var(--sa-bg-neutral-base);
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .xpl-nothing__clear {
+    color: var(--sa-text-link-brand-default);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  .xpl-nothing__clear:hover {
+    text-decoration: underline;
+  }
 
   .xpl-surface {
     border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
@@ -62,63 +160,81 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /*
+   * The option NAMES, as plain text rather than a pill each.
+   *
+   * They used to be one `.xpl-status` pill per option carrying the name AND the
+   * status joined by an em dash — in a register where three names contain an em
+   * dash of their own, so nothing told a reader where the name stopped. The
+   * pills also dominated the card and two of them ran off its edge, because a
+   * status pill is `white-space: nowrap` and a title is not a status.
+   *
+   * Now that a label is one to three words (see `ExplorationOption.label`) the
+   * whole set fits on a line or two, and the card's own title leads again.
+   */
+  .xpl-module-card__labels {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
   .xpl-module-card__foot {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--sa-inline-8);
+    gap: var(--sa-inline-8) var(--sa-inline-12);
     margin-block-start: auto;
-    padding-block-start: var(--sa-padding-8);
+    padding-block-start: var(--sa-padding-12);
+    border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    font-size: var(--sa-type-label-3-size);
+    color: var(--sa-text-neutral-subtle);
   }
 
-  /* ── Status words — never colour alone (WCAG 1.4.1) ───────────────────── */
-
-  .xpl-status {
+  /* The status, counted once per state instead of spelled out once per option.
+     Never colour alone — the dot always has its count and its word beside it. */
+  .xpl-tally {
     display: inline-flex;
     align-items: center;
-    padding: var(--sa-padding-2) var(--sa-padding-8);
-    border-radius: var(--sa-shape-full);
-    font-size: var(--sa-type-label-3-size);
-    font-weight: var(--sa-font-weight-medium);
+    gap: var(--sa-inline-6);
+    white-space: nowrap;
+  }
+
+  .xpl-module-card__date {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    margin-inline-start: auto;
     white-space: nowrap;
   }
 
   /*
-   * ── `base` IS THE PALEST RUNG, AND `subtle` IS A MID-TONE ───────────────────
+   * ── THE STATUS PILL IS GONE, AND SO IS THE DEFECT IT CARRIED ───────────────
    *
-   * These pills were `bg/status/<family>/subtle` under `text/status/<family>/base`
-   * — the trap `documentation-ds-linkage.md` records under "Bind by RESOLVED
-   * VALUE, not by name": on this estate `subtle` resolves to ramp rung 200 and
-   * the ink to
-   * rung 600, and 200/600 is not a text pairing. Measured on the running page:
+   * `.xpl-status` was a pill on every option in the tab row and on every option
+   * on the index. It is replaced by a dot beside a word, tallied once — see
+   * `.xpl-dot` and `.xpl-tally` — so the rule is deleted rather than left as CSS
+   * nothing renders.
+   *
+   * KEEP THE LESSON, because it applies to the next status colour anyone binds
+   * here. The pill was `bg/status/<family>/subtle` under
+   * `text/status/<family>/base`, which is the trap `documentation-ds-linkage.md`
+   * records under "Bind by RESOLVED VALUE, not by name": on this estate `subtle`
+   * resolves to ramp rung 200 and the ink to rung 600, and 200/600 is not a text
+   * pairing. Measured on the running page, both at 12px where the AA floor is
+   * 4.5 rather than 3.0:
    *
    *     chosen               #046A38 on #99CAA7   3.64:1   FAIL
    *     awaiting a decision  #006D85 on #8ECCDF   3.36:1   FAIL
    *
-   * Both at 12px, so the AA floor is 4.5 — not the 3.0 that applies to large text.
-   * `subtler` (rung 100) is NOT enough either: 4.79 and 4.31, so one of the two
-   * still fails. `base` is rung 50, the palest, and clears both with margin:
-   *
-   *     chosen               6.14:1     awaiting a decision   5.42:1
-   *
-   * The name reads like a default and its value is the lightest tint — see
-   * `component-authoring.md` §10, which says the same thing about shade order.
+   * `subtler` (rung 100) is not enough either — 4.79 and 4.31. `base` is rung 50,
+   * the palest, and clears both: 6.14 and 5.42. The name reads like a default and
+   * its value is the lightest tint, which `component-authoring.md` §10 says in so
+   * many words about shade order.
    */
-  .xpl-status--chosen {
-    background-color: var(--sa-bg-status-success-base);
-    color: var(--sa-text-status-success-base);
-  }
-
-  .xpl-status--proposed {
-    background-color: var(--sa-bg-status-info-base);
-    color: var(--sa-text-status-info-base);
-  }
-
-  .xpl-status--superseded,
-  .xpl-status--parked {
-    background-color: var(--sa-bg-neutral-subtler);
-    color: var(--sa-text-neutral-subtle);
-  }
 
   /* ── Viewer ───────────────────────────────────────────────────────────── */
 
@@ -129,12 +245,27 @@
     margin-block-end: var(--sa-stack-20);
   }
 
+  /*
+   * ── AN IDLE CONTROL HAS TO BE VISIBLE AS A CONTROL ──────────────────────────
+   *
+   * `border/neutral/subtle` is #DCDEE1 and the ground these pills sit on is
+   * `surface-muted`. Measured: the border is 1.18:1 against it and the white fill
+   * is 1.14:1, so an unselected pill had NO boundary a reader could see — below
+   * the 3:1 that WCAG 2.2 §1.4.11 asks for the visual information that identifies
+   * a component. The selected one was fine (5.57:1) because its border is the
+   * brand rung, which is exactly how the defect hid: the state you look at while
+   * checking passes, and the other five do not.
+   *
+   * `border/neutral/bolder/default` measures 4.4:1 on the same ground. This was
+   * already true of the option tabs before the filter chips existed; both are
+   * corrected here rather than one being built to match the other's defect.
+   */
   .xpl-viewer__tab {
     display: flex;
     align-items: center;
     gap: var(--sa-inline-8);
     padding: var(--sa-padding-8) var(--sa-padding-16);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-subtle);
@@ -176,9 +307,16 @@
     font-weight: var(--sa-font-weight-semibold);
   }
 
-  .xpl-viewer__summary {
-    font-size: var(--sa-type-body-2-size);
-    color: var(--sa-text-neutral-base);
+  /* The tab's dot is the same object as the legend's and the index's, so a
+     reader learns one mark and reads it everywhere. */
+  .xpl-viewer__tab .xpl-dot {
+    /* Optically centred against a cap-height label rather than the line box. */
+    margin-block-start: 1px;
+  }
+
+  /* `SectionTitle` brings its own type and rhythm; all this does is hold the
+     description to a measure, which the component does not decide for a caller. */
+  .xpl-viewer__headline .ds-section-title__description {
     max-inline-size: 68ch;
   }
 
@@ -442,6 +580,43 @@
       clip: rect(0, 0, 0, 0);
       white-space: nowrap;
       border: 0;
+    }
+
+    /*
+     * ── PASS 6 · THE TAB ROW ON A PHONE ────────────────────────────────────
+     *
+     * Six full-width pills was 570px of switcher before any content — most of
+     * the fold — with each title wrapping INSIDE its pill while a status pill
+     * of nearly equal width sat beside it.
+     *
+     * Both causes are gone rather than worked around: the label is one to three
+     * words and the status is a dot, so a tab is short enough to sit beside its
+     * neighbours. What is left is to stop them stretching: `flex-wrap` on a
+     * container whose children have no basis will still give a lone tab the
+     * whole row.
+     *
+     * NOT a horizontally scrolling row, and not a disclosure. A scroller hides
+     * options off the edge of the one control whose job is to show that they
+     * exist, and a disclosure costs a tap before a reader can even see what the
+     * choices are. Two or three short rows shows every option at once, which is
+     * what this control is for.
+     */
+    .xpl-viewer__tab {
+      flex: 0 1 auto;
+      padding-inline: var(--sa-padding-12);
+    }
+
+    /*
+     * The trailing gutter is for the demo dock, which is `position: fixed`
+     * against the right wall and vertically centred, so on a narrow viewport it
+     * lands on whatever is beside it. Page content passing under it is expected;
+     * a CONTROL passing under it is not — a reader cannot press the tab it
+     * covers. The rail is 52px wide (`portal-appswitcher.md`), and this keeps
+     * the last tab in a row clear of it.
+     */
+    .xpl-viewer__switch,
+    .xpl-viewer__bar {
+      padding-inline-end: var(--sa-padding-56);
     }
 
     .xpl-viewer__bar-reset {
