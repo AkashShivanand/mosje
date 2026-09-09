@@ -33,15 +33,15 @@ each says why it is here:
 
 | Persona | On the screen | Why it is a persona |
 |---|---|---|
-| **Students** | From Class I to Ph.D. and study abroad, from the groups the Department serves | cross-cutting — every scholarship names a community and a stage; a student looks for the stage first. Listed first because it is the most common visitor, and the panel's artwork for it is a woman: the review asked that the sequence open on a female figure. Source: the scholarship records in AR ch.3 (§3.2–3.5, §3.19–3.22, §3.27) each name students of the groups the Department serves. |
 | **Scheduled Castes** | As notified under Article 341 of the Constitution | Scheduled Castes (SCs) |
 | **Other Backward Classes** | Including Economically Backward Classes | Other Backward Classes (OBCs); Economically Backward Classes (EBCs) |
+| **Senior Citizens** | Aged 60 years or above | Senior Citizens |
+| **Persons Affected by Substance Use** | The person, and their family | Victims of Alcoholism and Substance Abuse |
+| **Transgender Persons** | As defined in the Transgender Persons (Protection of Rights) Act, 2019 | Transgender Persons |
+| **Persons Engaged in Begging** | Rescue, shelter and rehabilitation | Persons engaged in Beggary |
 | **De-notified, Nomadic and Semi-Nomadic Tribes** | Communities listed as DNT, NT or SNT | De-notified, Nomadic and Semi-Nomadic Tribes (DNTs) |
 | **Safai Karamcharis** | Manual scavengers, sewer and septic tank workers, waste pickers, and their dependants | Manual Scavengers; Sewer & Septic Tank workers; Waste Pickers |
-| **Senior Citizens** | Aged 60 years or above | Senior Citizens |
-| **Transgender Persons** | As defined in the Transgender Persons (Protection of Rights) Act, 2019 | Transgender Persons |
-| **Persons Affected by Substance Use** | The person, and their family | Victims of Alcoholism and Substance Abuse |
-| **Persons Engaged in Begging** | Rescue, shelter and rehabilitation | Persons engaged in Beggary |
+| **Students** | From Class I to Ph.D. and study abroad, from the groups the Department serves | cross-cutting — every scholarship names a community and a stage; a student looks for the stage first. Listed after the mandate groups, with the other two personas the schemes rather than the mandate name. Source: the scholarship records in AR ch.3 (§3.2–3.5, §3.19–3.22, §3.27) each name students of the groups the Department serves. |
 | **Victims of Atrocities** | Under the PCR Act, 1955 and the SC/ST (PoA) Act, 1989 | served through the PCR-PoA scheme (AR §3.9) and the National Helpline Against Atrocities |
 | **Voluntary Organisations** | NGOs, CBOs and institutions applying for grant-in-aid | delivery partners under AVYAY, NAPDDR, SHRESHTA, SMILE and PM-AJAY (AR §3.39) |
 
@@ -72,15 +72,15 @@ finder does not ask about gender.
 
 | | Scholarships and Fellowships | Schools, Hostels and Coaching | Loans and Credit | Skill Training and Livelihood | Care, Shelter and Health | De-addiction and Counselling | Protection, Relief and Grievance | Grants to Voluntary Organisations |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Students | 13 | 5 | 1 | 1 | 1 | · | · | · |
 | Scheduled Castes | 6 | 2 | 3 | 2 | 1 | · | 3 | · |
 | Other Backward Classes | 6 | 3 | 4 | 1 | · | · | · | · |
+| Senior Citizens | · | · | · | 1 | 3 | · | 1 | · |
+| Persons Affected by Substance Use | · | · | · | · | · | 1 | · | · |
+| Transgender Persons | · | · | · | 1 | 1 | · | 1 | · |
+| Persons Engaged in Begging | · | · | · | 1 | 1 | · | · | · |
 | De-notified, Nomadic and Semi-Nomadic Tribes | 5 | 2 | · | 2 | 1 | · | · | · |
 | Safai Karamcharis | 1 | · | 3 | 2 | 1 | · | 1 | · |
-| Senior Citizens | · | · | · | 1 | 3 | · | 1 | · |
-| Transgender Persons | · | · | · | 1 | 1 | · | 1 | · |
-| Persons Affected by Substance Use | · | · | · | · | · | 1 | · | · |
-| Persons Engaged in Begging | · | · | · | 1 | 1 | · | · | · |
+| Students | 13 | 5 | 1 | 1 | 1 | · | · | · |
 | Victims of Atrocities | · | · | · | · | · | · | 2 | · |
 | Voluntary Organisations | · | · | · | · | · | · | · | 5 |
 

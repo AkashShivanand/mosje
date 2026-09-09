@@ -9,12 +9,6 @@
 
 const PERSONAS = [
   {
-    "id": "student",
-    "label": "Students",
-    "short": "Students",
-    "sub": "From Class I to Ph.D. and study abroad, from the groups the Department serves"
-  },
-  {
     "id": "sc",
     "label": "Scheduled Castes",
     "short": "Scheduled Castes",
@@ -25,6 +19,30 @@ const PERSONAS = [
     "label": "Other Backward Classes",
     "short": "Other Backward Classes",
     "sub": "Including Economically Backward Classes"
+  },
+  {
+    "id": "senior",
+    "label": "Senior Citizens",
+    "short": "Senior Citizens",
+    "sub": "Aged 60 years or above"
+  },
+  {
+    "id": "drug",
+    "label": "Persons Affected by Substance Use",
+    "short": "Affected by Substance Use",
+    "sub": "The person, and their family"
+  },
+  {
+    "id": "tg",
+    "label": "Transgender Persons",
+    "short": "Transgender Persons",
+    "sub": "As defined in the Transgender Persons (Protection of Rights) Act, 2019"
+  },
+  {
+    "id": "begging",
+    "label": "Persons Engaged in Begging",
+    "short": "Engaged in Begging",
+    "sub": "Rescue, shelter and rehabilitation"
   },
   {
     "id": "dnt",
@@ -39,28 +57,10 @@ const PERSONAS = [
     "sub": "Manual scavengers, sewer and septic tank workers, waste pickers, and their dependants"
   },
   {
-    "id": "senior",
-    "label": "Senior Citizens",
-    "short": "Senior Citizens",
-    "sub": "Aged 60 years or above"
-  },
-  {
-    "id": "tg",
-    "label": "Transgender Persons",
-    "short": "Transgender Persons",
-    "sub": "As defined in the Transgender Persons (Protection of Rights) Act, 2019"
-  },
-  {
-    "id": "drug",
-    "label": "Persons Affected by Substance Use",
-    "short": "Affected by Substance Use",
-    "sub": "The person, and their family"
-  },
-  {
-    "id": "begging",
-    "label": "Persons Engaged in Begging",
-    "short": "Engaged in Begging",
-    "sub": "Rescue, shelter and rehabilitation"
+    "id": "student",
+    "label": "Students",
+    "short": "Students",
+    "sub": "From Class I to Ph.D. and study abroad, from the groups the Department serves"
   },
   {
     "id": "atrocity",
@@ -1003,13 +1003,13 @@ const OFFER_LABEL = Object.fromEntries(OFFERINGS.map((o) => [o.id, o.label]));
    plain token-coloured mark, never a stand-in figure. The label beside it
    carries the group. */
 const HAS_ART = new Set([
-  "student",
   "sc",
   "obc",
-  "dnt",
-  "safai",
   "senior",
   "tg",
+  "dnt",
+  "safai",
+  "student",
   "ngo"
 ]);
 /* Material Symbols Rounded, the estate's icon set, for the groups with no

@@ -13,12 +13,6 @@ export interface SdScheme {
 
 export const SD_PERSONAS: SdPersona[] = [
   {
-    "id": "student",
-    "label": "Students",
-    "short": "Students",
-    "sub": "From Class I to Ph.D. and study abroad, from the groups the Department serves"
-  },
-  {
     "id": "sc",
     "label": "Scheduled Castes",
     "short": "Scheduled Castes",
@@ -29,6 +23,30 @@ export const SD_PERSONAS: SdPersona[] = [
     "label": "Other Backward Classes",
     "short": "Other Backward Classes",
     "sub": "Including Economically Backward Classes"
+  },
+  {
+    "id": "senior",
+    "label": "Senior Citizens",
+    "short": "Senior Citizens",
+    "sub": "Aged 60 years or above"
+  },
+  {
+    "id": "drug",
+    "label": "Persons Affected by Substance Use",
+    "short": "Affected by Substance Use",
+    "sub": "The person, and their family"
+  },
+  {
+    "id": "tg",
+    "label": "Transgender Persons",
+    "short": "Transgender Persons",
+    "sub": "As defined in the Transgender Persons (Protection of Rights) Act, 2019"
+  },
+  {
+    "id": "begging",
+    "label": "Persons Engaged in Begging",
+    "short": "Engaged in Begging",
+    "sub": "Rescue, shelter and rehabilitation"
   },
   {
     "id": "dnt",
@@ -43,28 +61,10 @@ export const SD_PERSONAS: SdPersona[] = [
     "sub": "Manual scavengers, sewer and septic tank workers, waste pickers, and their dependants"
   },
   {
-    "id": "senior",
-    "label": "Senior Citizens",
-    "short": "Senior Citizens",
-    "sub": "Aged 60 years or above"
-  },
-  {
-    "id": "tg",
-    "label": "Transgender Persons",
-    "short": "Transgender Persons",
-    "sub": "As defined in the Transgender Persons (Protection of Rights) Act, 2019"
-  },
-  {
-    "id": "drug",
-    "label": "Persons Affected by Substance Use",
-    "short": "Affected by Substance Use",
-    "sub": "The person, and their family"
-  },
-  {
-    "id": "begging",
-    "label": "Persons Engaged in Begging",
-    "short": "Engaged in Begging",
-    "sub": "Rescue, shelter and rehabilitation"
+    "id": "student",
+    "label": "Students",
+    "short": "Students",
+    "sub": "From Class I to Ph.D. and study abroad, from the groups the Department serves"
   },
   {
     "id": "atrocity",

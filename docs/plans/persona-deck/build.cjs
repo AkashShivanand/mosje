@@ -93,7 +93,7 @@ function list(s, x, y, w, label, items, labelColor) {
   return yy + 0.22;
 }
 
-const PERSONAS = ["Students","Scheduled Castes","Other Backward Classes","De-notified, Nomadic and Semi-Nomadic Tribes","Safai Karamcharis","Senior Citizens","Transgender Persons","Persons Affected by Substance Use","Persons Engaged in Begging","Victims of Atrocities","Voluntary Organisations"];
+const PERSONAS = ["Scheduled Castes","Other Backward Classes","Senior Citizens","Persons Affected by Substance Use","Transgender Persons","Persons Engaged in Begging","De-notified, Nomadic and Semi-Nomadic Tribes","Safai Karamcharis","Students","Victims of Atrocities","Voluntary Organisations"];
 const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels and Coaching","Loans and Credit","Skill Training and Livelihood","Care, Shelter and Health","De-addiction and Counselling","Protection, Relief and Grievance","Grants to Voluntary Organisations"];
 
 /* ═══ 1 · Title ═══════════════════════════════════════════════════════════ */
@@ -130,7 +130,7 @@ const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels 
   col(M, "Who Is Looking for Support", PERSONAS);
   s.addShape(pres.ShapeType.line, { x:W/2, y:y0, w:0, h:0.56+PERSONAS.length*rowH, line:{color:HAIR, width:0.75} });
   col(W-M-colW, "What the Department Provides", OFFERINGS);
-  footLine(s, "The groups are those the Department's mandate names (Annual Report 2025-26, §1.2) and those its schemes name. Every scheme is a record in the Annual Report 2025-26 or the Demand for Grants 2026-27, tagged on both.");
+  footLine(s, "The first eight are the groups the Department's mandate names (Annual Report 2025-26, §1.2); the last three are groups its schemes name. Every scheme is a record in the Annual Report 2025-26 or the Demand for Grants 2026-27, tagged on both.");
   s.addNotes("The one idea. On the left, the person: the groups the Department's own mandate names, plus the three its schemes name — students, victims of atrocities, and the voluntary organisations it funds. On the right, what the Department gives, in its own words. A scheme is findable under every group it names and every kind of support it provides, at once. Everything that follows is a view over these two lists. Not stage of life, not State: the review cut those, and a scheme record is tagged on these two axes only.");
 }
 
@@ -140,7 +140,7 @@ const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels 
   const y0 = header(s, "The Home Page", "Three Options",
     "A is on the page today. B or C takes the section beneath the hero, where Our Offerings sits.");
   const items = [
-    ["A","Explore User Personas","home-a","One persona at a time. Kept, opening on Students.","ON THE SITE TODAY"],
+    ["A","Explore User Personas","home-a","One persona at a time. Kept, in the mandate's order.","ON THE SITE TODAY"],
     ["B","Two Questions","home-b","Who is looking for support, then what kind. Ends at the place to apply.","RECOMMENDED"],
     ["C","One Tap","home-c","A row of the groups. One tap lists what the Department provides for that group.","COMPANION TO B"],
   ];
@@ -161,10 +161,10 @@ const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels 
 const OPTIONS = [
   { part:"The Home Page · Option A of 3", title:"Explore User Personas",
     img:"home-a", live:true, rec:false,
-    caption:"The panel as it stands on the site today, opening on Students.",
+    caption:"The panel as it stands on the site today, in the mandate's order.",
     pros:["Already on the site, so no extra height","The pictures cross language","Choosing a persona now filters the Schemes page"],
     cons:["One persona at a time; a visitor cannot see whether they are represented without clicking","Asks who, never what"],
-    notes:"The panel already on the home page: one persona at a time, moved with arrows. The persona list is the same eleven the other options use, and it opens on Students. A citizen looks at the pictures, sees one that matches, and taps through to the Schemes page filtered to that persona. Today choosing a persona filters nothing — that is fixed in every option." },
+    notes:"The panel already on the home page: one persona at a time, moved with arrows. The persona list is the same eleven the other options use, in the same order. A citizen looks at the pictures, sees one that matches, and taps through to the Schemes page filtered to that persona. Today choosing a persona filters nothing — that is fixed in every option." },
   { part:"The Home Page · Option B of 3", title:"Two Questions",
     vid:"home-b", live:false, rec:true,
     caption:"Recorded: Scheduled Castes, then Scholarships. Then Senior Citizens with the second question skipped.",

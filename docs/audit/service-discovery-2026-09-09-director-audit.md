@@ -48,17 +48,27 @@ serve them, so they are not named on any DoSJE surface. See the addendum above.
 
 | Persona on the screen | Where the Department names the group | Source |
 |---|---|---|
-| Students | Every scholarship record names "students" of the groups the Department serves — pre-matric, post-matric, top class, overseas, fellowships | AR 2025-26 ch.3 §3.2–3.5 (SC), §3.19–3.22 (OBC/EBC/DNT), §3.27 (NOS); SBE Demand 93 |
 | Scheduled Castes | Mandate group | AR 2025-26 §1.2 |
 | Other Backward Classes | Mandate group; EBCs folded in, because the OBC schemes name them together | AR 2025-26 §1.2; PM-YASASVI records §3.19–3.21 |
+| Senior Citizens | Mandate group | AR 2025-26 §1.2; AVYAY §3.29–3.31 |
+| Persons Affected by Substance Use | Mandate: "victims of alcoholism and substance abuse"; NAPDDR names the person and the family | AR 2025-26 §1.2, §3.33 |
+| Transgender Persons | Mandate group | AR 2025-26 §1.2; SMILE §3.35 |
+| Persons Engaged in Begging | Mandate: "persons engaged in beggary"; SMILE's second component | AR 2025-26 §1.2, §3.36 |
 | De-notified, Nomadic and Semi-Nomadic Tribes | Mandate group | AR 2025-26 §1.2; SEED §3.24 |
 | Safai Karamcharis | Mandate names manual scavengers, sewer and septic tank workers, waste pickers; NAMASTE and NSKFDC name them together as Safai Karamcharis | AR 2025-26 §1.2, §3.11 (NAMASTE), NSKFDC page |
-| Senior Citizens | Mandate group | AR 2025-26 §1.2; AVYAY §3.29–3.31 |
-| Transgender Persons | Mandate group | AR 2025-26 §1.2; SMILE §3.35 |
-| Persons Affected by Substance Use | Mandate: "victims of alcoholism and substance abuse"; NAPDDR names the person and the family | AR 2025-26 §1.2, §3.33 |
-| Persons Engaged in Begging | Mandate: "persons engaged in beggary"; SMILE's second component | AR 2025-26 §1.2, §3.36 |
+| Students | Not a mandate group; every scholarship record names students of the groups the Department serves | AR 2025-26 ch.3 §3.2–3.5 (SC), §3.19–3.22 (OBC/EBC/DNT), §3.27 (NOS); SBE Demand 93 |
 | Victims of Atrocities | Not a mandate group; named by the PCR/PoA scheme and the National Helpline Against Atrocities | AR 2025-26 §3.9; helpline 14566 |
 | Voluntary Organisations | Not a mandate group; the grantee every grant-in-aid record names | AR 2025-26 §3.39; e-Anudaan |
+
+**Order (instruction of 9 September 2026, afternoon):** the eight mandate groups first, in the order §1.2
+names them, then the three the schemes name. Every surface, the deck and the Figma frames follow it.
+Consequence: the persona panel on the home page (Option A) now opens on Scheduled Castes, a male
+figure, not on Students; the review's request that the sequence open on a female figure is not met
+unless the panel alone keeps a different order.
+
+**Artwork (same instruction):** every figure is from the DBIM Visual Components Library
+(dbimtoolkit.digifootprint.gov.in). Students now uses the file DBIM tags to Social Justice and
+Empowerment (`2024/09/e9a238d8ab6944add204874fdf132403.png`). The full assignment is §4a.
 
 Two mandate groups are **not** personas because no scheme record serves them as such: *Economically
 Weaker Sections* (named in §1.2, no scheme in ch.3 or the Demand for Grants) and *Economically
@@ -212,3 +222,25 @@ hatching, white ground, no props, no text, square.**
 Until they exist, the three personas use Material Symbols on the same ground the illustrated marks
 sit on: `health_and_safety`, `night_shelter`, `balance`. (A fourth brief, for the DEPwD row, was
 withdrawn with the row.)
+
+## 4a. Artwork assignment — one DBIM file per persona
+
+| Persona | DBIM asset | File under `static/uploads/` |
+|---|---|---|
+| Scheduled Castes | Livelihood Seeker (Service Seeker, Minority Affairs) | `2024/09/280a755bc02a0451f99cf5ced70d9686.png` — already in use |
+| Other Backward Classes | Rural Livelihood Seeker (Agriculture and Rural) | `2024/09/5a17da7b7805131ba2104a245d87268f.png` — already in use |
+| Senior Citizens | Pensioner (Lifecycle Based, Expenditure) | `2024/09/4cfb6b14d6febde9855a874947df9885.png` — already in use |
+| Persons Affected by Substance Use | Health Seeker (Service Seeker, Health and Family Welfare) | `2024/09/ab8f73c5030b70aff82d93e9458385bd.png` — proposed; not yet placed |
+| Transgender Persons | none in the library | keep the Department's own figure from the live persona panel |
+| Persons Engaged in Begging | none in the library | the DBIM icon *Night Shelter*, the same mark used today |
+| De-notified, Nomadic and Semi-Nomadic Tribes | Livelihood Seeker (Service Seeker, Minority Affairs), second figure | `2024/09/9e5c20f6e1afa6a1b4527be5667127a0.png` — already in use |
+| Safai Karamcharis | none in the library | keep the Department's own figure from the live persona panel |
+| Students | Student (Service Seeker, **Social Justice and Empowerment**) | `2024/09/e9a238d8ab6944add204874fdf132403.png` — placed this pass |
+| Victims of Atrocities | none in the library | the DBIM icon *Justice*, in place of the Material `balance` mark |
+| Voluntary Organisations | Social Worker (Government and Social Services) | `2024/09/0a4ab241a8924af6bc07bb1663bb7fda.png` — already in use |
+
+The library's only assets tagged to this Ministry are the Student above and two *Differently Abled
+Person* figures, which are not used because persons with disabilities are not served by this
+Department. For the four personas with no figure, the way through is a request to the DBIM ToolKit
+team (MeitY) for four persona illustrations in the library's line style, using the briefs in §4;
+until then the Department's own two figures and the two DBIM icons stand.
