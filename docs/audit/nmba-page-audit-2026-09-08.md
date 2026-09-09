@@ -1189,3 +1189,54 @@ a filled well at rest: at 78% ink on a dark ground it was a hairline.
 Anchoring verified: glyph at x=400 and CTA right edge at 1267 on **both** panels.
 
 Stills: `cband-1.png`, `cband-2.png`, `cband-both.png`.
+
+---
+
+## 22. The composed band, audited by its author before it was shown
+
+The first composition was four loose objects on a green field. Only the helpline
+read as a THING; the rest was text and a button sitting on colour. So the band
+said "one card and some writing" when it needed to say *"a number you can always
+call, and a notice that changes."*
+
+### The story is told by material, not by labels
+
+Both halves are cards now, sharing a top and a bottom edge — verified at y=845
+and bottom=969 on both panels. **Solid white is permanent; translucent glass is
+the half that turns.** A reader gets that before reading a word, which is the
+only way a band this size explains itself. No "NEED HELP" or "WHAT'S ON" headers:
+a label that says what a shape already says is chrome.
+
+### Both panels take the same copy shape
+
+Panel one was an eyebrow over a two-line sentence; panel two was an eyebrow,
+heading, body and a code. Same box, different density, so the band felt unsettled
+as it turned. The observance now uses **the record's own eyebrow as its heading
+and its sentence as the body** — the department's words in both slots, no
+invention, and the two panels are the same object with different content.
+
+### Three defects found by testing rather than looking
+
+| | What happened | Why looking missed it |
+|---|---|---|
+| **The pager was unclickable** | The offer and the pager share `grid-area: offer` — which is what makes the stage the height of its tallest panel — so the offer painted over the pager and swallowed every click | The dots were perfectly visible the whole time. Only driving a real click found it |
+| The pager collided with the second route | Button, link and pager stacked in one corner | It looked merely tight |
+| The empty code track cost 104px of measure | Reserved at 88px to hold the action still — which flushing the actions right already does | Nothing was visibly broken; the copy just wrapped early |
+
+The second route moved into the prose, where it belongs: *"file on the open
+register"* is a condition attached to the offer, not a peer of the button.
+
+### Anchored, and verified
+
+| | Panel 1 | Panel 2 |
+|---|---|---|
+| Band height | 164 | 164 |
+| CTA right edge | 1259 | 1259 |
+| Cards' top / bottom | 845 / 969 | 845 / 969 |
+| Pager clearance under the CTA | 28px | 28px |
+
+Nothing that persists across the turn moves during it.
+
+**Known and accepted:** on the observance panel the inline route wraps as "File
+on the / open register". The alternative is a third element stacked in the action
+corner, which is the collision this pass removed.

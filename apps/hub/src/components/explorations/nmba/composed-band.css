@@ -29,11 +29,24 @@
       0 8px 20px -8px color-mix(in srgb, var(--sa-color-successScale-900) 60%, transparent);
   }
 
+  /*
+   * ── TWO CARDS ON ONE GROUND, AND THAT IS THE WHOLE STORY ────────────────
+   *
+   * The first pass put four loose objects on a green field: a white pill, an
+   * icon, some text, a button. Only the pill read as a THING, so the band said
+   * "one card and some writing" — not "a number you can always call, and a
+   * notice that changes".
+   *
+   * Both halves are cards now, sharing a top and a bottom edge, and the
+   * MATERIAL says which is which. Solid white is permanent; translucent glass
+   * is the one that turns. A reader gets that before reading a word, which is
+   * the only way a band this size can explain itself.
+   */
   .cband__inner {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: stretch;
-    column-gap: var(--sa-inline-32);
+    column-gap: var(--sa-inline-20);
     padding-block: var(--sa-padding-20);
   }
 
@@ -47,8 +60,7 @@
     display: flex;
     align-items: center;
     gap: var(--sa-inline-16);
-    align-self: center;
-    padding: var(--sa-padding-12) var(--sa-padding-24) var(--sa-padding-12) var(--sa-padding-12);
+    padding: var(--sa-padding-16) var(--sa-padding-24) var(--sa-padding-16) var(--sa-padding-16);
     border-radius: var(--sa-shape-16);
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-color-successScale-700);
@@ -148,11 +160,24 @@
    * one and the band never resizes as it turns. `visibility: hidden` keeps the
    * inactive panel's space where `display: none` would collapse it.
    */
+  /*
+   * THE STAGE IS THE SECOND CARD — translucent, because it is the half that
+   * changes. Light catches its top edge the way it catches the band's, so it
+   * reads as a pane of glass laid on the green rather than a hole cut in it.
+   *
+   * Never a light translucent surface on another light one: the ground beneath
+   * is the band's own gradient, and the helpline beside it is solid.
+   */
   .cband__stage {
+    position: relative;
     display: grid;
     grid-template-areas: "offer";
     align-items: center;
-    padding-block-end: var(--sa-padding-24);
+    padding: var(--sa-padding-16) var(--sa-padding-20) var(--sa-padding-16) var(--sa-padding-16);
+    border-radius: var(--sa-shape-16);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent);
+    box-shadow: inset 0 var(--sa-stroke-1) 0 0
+      color-mix(in srgb, var(--sa-text-neutral-inverse) 16%, transparent);
   }
 
   /*
@@ -164,15 +189,18 @@
    * seconds. An element that persists across a transition must not move during
    * it; that is the difference between a panel changing and the band twitching.
    *
-   * The code's column is reserved at its own width whether or not a code is in
-   * it. An empty track is the price of a button that stays put.
+   * The code's column was reserved at 88px whether or not a code was in it, to
+   * hold the action still. It no longer has to: flushing the actions RIGHT does
+   * that on its own, and the empty track was costing the panel without a code
+   * 104px of measure — enough to wrap "File on the open register" mid-phrase.
+   * `auto` collapses it where there is no code, and the button does not move.
    */
   .cband__offer {
     grid-area: offer;
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) 88px auto;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
     align-items: center;
-    gap: var(--sa-inline-20);
+    gap: var(--sa-inline-16);
     visibility: hidden;
     opacity: 0;
     transform: translateY(6px);
@@ -285,11 +313,14 @@
    * "Register Now" adrift in ninety pixels of empty button; sharing the RIGHT
    * edge is what right-set actions do anyway, and it costs nothing.
    */
+  /* One control now, so the column is just the button — and the pager below it
+     has the corner to itself. */
   .cband__offer-actions {
     grid-column: 4;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    align-self: start;
     gap: var(--sa-stack-8);
   }
 
@@ -298,7 +329,7 @@
   }
 
   .cband__alt {
-    font-size: var(--sa-type-label-3-size);
+    font-size: inherit;
     color: color-mix(in srgb, var(--sa-text-neutral-inverse) 82%, transparent);
     text-decoration: underline;
     text-underline-offset: 0.2em;
@@ -308,16 +339,31 @@
      Its scope is the only thing its position has to explain, so it sits under
      the rotating panel and nowhere near the band's own dismiss. */
 
-  /* Aligned with the COPY column, not the glyph: the pager belongs to the words
-     it pages, and a control that lines up with nothing reads as debris. */
+  /*
+   * THE PAGER IS INSIDE THE CARD IT PAGES.
+   *
+   * It floated in dead space under the copy, lined up with nothing, which is how
+   * a control comes to read as debris. Sitting in the glass card's own bottom
+   * corner it needs no explaining: this card turns, and this is what turns it.
+   */
+  /*
+   * IT HAS TO SIT ABOVE THE PANEL, because it shares the panel's grid cell.
+   *
+   * The offer and the pager are both `grid-area: offer` — that is what makes the
+   * stage the height of its tallest panel — so the offer paints over the pager
+   * and swallowed every click on the dots. Caught by driving a real click, not
+   * by looking: the control was perfectly visible the entire time.
+   */
   .cband__pager {
+    position: relative;
+    z-index: var(--sa-z-raised);
     grid-area: offer;
-    place-self: end start;
+    place-self: end end;
     display: flex;
     align-items: center;
     gap: var(--sa-inline-4);
-    margin-inline-start: calc(var(--sa-control-height-md) + var(--sa-inline-20));
-    margin-block-end: calc(-1 * var(--sa-padding-24));
+    margin-block-end: calc(-1 * var(--sa-padding-8));
+    margin-inline-end: calc(-1 * var(--sa-padding-8));
   }
 
   .cband__dots {
@@ -380,10 +426,12 @@
 
   /* ── The band's own dismiss, at the band's own corner ─────────────────── */
 
+  /* On the GROUND, between the cards and the band's edge, vertically centred —
+     it belongs to the band, so it stands outside both of them. */
   .cband__dismiss {
     display: grid;
     place-items: center;
-    align-self: start;
+    align-self: center;
     inline-size: var(--sa-control-height-sm);
     block-size: var(--sa-control-height-sm);
     border-radius: var(--sa-shape-8);
