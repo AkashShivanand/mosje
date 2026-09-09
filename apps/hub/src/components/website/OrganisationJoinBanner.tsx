@@ -238,34 +238,47 @@ export function OrganisationJoinBanner({
                   </a>
 
                   {/*
-                    * THE HELPLINE STANDS APART, AND IT IS THE ONLY FILLED CONTROL.
+                    * ── THE STANDING SERVICE, IN ITS OWN ZONE ──────────────────
                     *
-                    * It was next to the campaign's own button as a matched pair,
-                    * which read as two halves of one offer — and it is not part of
-                    * the offer. It is a standing public service that happens to be
-                    * printed on this page, so it takes the band's trailing edge,
-                    * a wider gap in front of it, and the only white fill.
+                    * Not a second button. A volunteer form and a national
+                    * de-addiction helpline are not related — different people,
+                    * different urgency, different medium — and the band already
+                    * has THREE controls and TWO destinations, because the code
+                    * and the button open the same URL. As a matched pill beside
+                    * `Register`, the row read as one sentence with a telephone
+                    * number stuck on the end of it.
                     *
-                    * Set apart AND brightest: a reader looking for a number finds
-                    * the one object on the band that is a solid block of white,
-                    * wherever in the row it sits, and a reader following the
-                    * campaign is never asked to step over it to reach the button.
+                    * Three things separate it, each doing a different job:
+                    *
+                    * 1. ITS OWN GROUND — `successScale-800` against the band's
+                    *    600→700. A seam is read before any word is; a gap of any
+                    *    size only ever says "same thing, further away".
+                    * 2. ITS OWN SHAPE — a caption over a figure, which is how a
+                    *    fact is stated. A button invites; a fact simply is.
+                    * 3. ITS OWN POSITION — flush to the trailing edge and full
+                    *    height, so it reads as the band's furniture rather than
+                    *    as the last item in a list of actions.
+                    *
+                    * IT SITS ON THE TRAILING EDGE ON PURPOSE. Reading order
+                    * follows the band's own purpose, which is the campaign; the
+                    * helpline is found by TREATMENT rather than by position — it
+                    * is the darkest object in the band and carries its largest
+                    * text. Leading, it would open a campaign band with something
+                    * that is not the campaign, and put two full-height blocks
+                    * side by side at the same edge.
                     */}
                   <a
-                    className={buttonClasses("success", "filled", "md", "orgjb__helpline", "inverse")}
+                    className="orgjb__service"
                     href={`tel:${banner.helplineNumber}`}
-                    /* The department's full title, where the button shows a
-                       shortened one. The visible text is contained in this
-                       string, so WCAG 2.2 §2.5.3 holds. */
-                    aria-label={
-                      helpLabel === banner.helplineLabel
-                        ? undefined
-                        : `${banner.helplineLabel} ${banner.helplineNumber}`
-                    }
+                    aria-label={`${banner.helplineLabel} ${banner.helplineNumber}`}
                   >
-                    <Icon name="call" size={20} aria-hidden />
-                    <span className="orgjb__helpline-label">{helpLabel}</span>
-                    <span className="orgjb__helpline-number">{banner.helplineNumber}</span>
+                    <span className="orgjb__service-icon" aria-hidden>
+                      <Icon name="call" size={20} />
+                    </span>
+                    <span className="orgjb__service-text">
+                      <span className="orgjb__service-label">{helpLabel}</span>
+                      <span className="orgjb__service-number">{banner.helplineNumber}</span>
+                    </span>
                   </a>
 
                   <button

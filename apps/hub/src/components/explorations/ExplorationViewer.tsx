@@ -4,7 +4,8 @@ import * as React from "react";
 import { Icon, SectionTitle } from "@mosje/design-system";
 import type { ExplorationModule, ExplorationOption } from "@/lib/explorations/registry";
 import { OptionArrive, OptionFlight } from "./nmba/CampaignBandOptions";
-import { OptionOneBand, OptionTwoBands } from "./nmba/TopBandsOptions";
+import { OptionOneBand, OptionOneBandAuto, OptionTwoBands } from "./nmba/TopBandsOptions";
+import { ComposedBand } from "./nmba/ComposedBandOption";
 import { HelplineRinging, HelplineStatic } from "./nmba/HelplineCardOptions";
 import { LayoutCtasBelow, LayoutCtasRight, LayoutTwoZones } from "./nmba/BannerLayoutOptions";
 import {
@@ -35,6 +36,8 @@ const PROTOTYPES: Record<string, React.ComponentType> = {
   "nmba/campaign-band/arrive": OptionArrive,
   "nmba/top-bands/two": OptionTwoBands,
   "nmba/top-bands/one": OptionOneBand,
+  "nmba/top-bands/one-auto": OptionOneBandAuto,
+  "nmba/top-bands/composed": ComposedBand,
   "nmba/helpline-card/current": HelplineStatic,
   "nmba/helpline-card/ringing": HelplineRinging,
   "nmba/banner-layout/ctas-right": LayoutCtasRight,

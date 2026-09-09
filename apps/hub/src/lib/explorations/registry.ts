@@ -200,7 +200,6 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             label: "Both on the Right",
             summary:
               "104px, one row. A 72px code leads, the message takes the middle, and the two routes sit together on the trailing edge, 12 apart.",
-            status: "proposed",
             live: true,
             lookAt: [
               "It costs 104px of a 760px fold",
@@ -208,6 +207,9 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
               "The heading is label-sized — it does not compete with the H1 below it",
               "Pairing the helpline with the campaign's button makes it read as the second half of one offer, when it is a standing service that happens to be printed here",
             ],
+            status: "superseded",
+            supersededBy:
+              "The pairing it depends on is the defect: a volunteer form and a national helpline are not two ways to do one thing. “Two zones” keeps both in the band and separates them by design.",
           },
           {
             id: "ctas-below",
@@ -215,7 +217,6 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             label: "Stacked Below",
             summary:
               "168px. A 120px code spans the full height, and the heading, sentence and both buttons stack beside it — the handoff’s own composition.",
-            status: "proposed",
             live: true,
             lookAt: [
               "64px more of the fold than the compact band, all of it the code's height",
@@ -223,6 +224,9 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
               "Its sentence points at the e-pledge while the button beneath goes to the volunteer register; kept verbatim so the mismatch can be settled rather than quietly harmonised",
               "The pulsing call glyph is the handoff's own instance, not an addition",
             ],
+            status: "superseded",
+            supersededBy:
+              "It answers a different question — how tall the band is — and stacking the two routes in a column makes them MORE alike, not less. Kept because the handoff draws it and the 120px code is worth revisiting.",
           },
           {
             id: "two-zones",
@@ -230,7 +234,8 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             label: "Two Zones",
             summary:
               "The campaign keeps the band's gradient; the helpline takes a darker panel at the trailing edge, shaped as a fact — a caption over a figure — rather than as a second button.",
-            status: "proposed",
+            status: "chosen",
+            landedIn: "the live organisation band — `.orgjb__service`",
             live: true,
             lookAt: [
               "The seam is read before any of the words are — a gap of any size only ever says “same thing, further away”",
@@ -284,7 +289,7 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
         id: "top-bands",
         title: "The two bands above the hero",
         question:
-          "The fold opens with two announcement bands stacked — a campaign and an anniversary notice. Should they stay separate, or share one?",
+          "The fold opens with two announcement bands stacked — a permanent campaign and a temporary anniversary notice. Should they stay separate, share one band the reader advances, or share one that advances itself?",
         date: "8 September 2026",
         options: [
           {
@@ -314,6 +319,40 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
               "The second panel is, in practice, unread — the design system's own Carousel says so",
               "Nothing rotates on a timer: a band carrying a helpline must not move a sentence away mid-read",
               "The notice gives up its saffron, because a band that changes ground colour as it advances flashes",
+            ],
+          },
+          {
+            id: "one-auto",
+            title: "One band, the notice first, advancing on its own",
+            summary:
+              "The same single band, but the anniversary notice leads and the panels rotate every six seconds — with a pause control, because that is what makes it lawful.",
+            live: true,
+            lookAt: [
+              "The temporary announcement is what a reader meets first; the permanent campaign follows",
+              "It rotates on a 6s dwell, so the second panel is no longer effectively unread — which is the whole objection to a manual carousel",
+              "THE PAUSE IS NOT DECORATION: WCAG 2.2 §2.2.2 requires a mechanism to pause, stop or hide anything auto-updating for more than five seconds beside other content. Remove it and the band is unlawful, not merely brisk",
+              "Hover and focus pause it too — the clause does not require that and every reader does",
+              "Pressing a dot stops the rotation for good: a reader who chose a panel has said which one they want",
+              "Under `prefers-reduced-motion` it does not rotate at all, and the pause control is not rendered because there is nothing to pause",
+            ],
+            status: "superseded",
+            supersededBy:
+              "Assembled rather than designed: a flat strip on one optical line, with the dots, the pause and the cross loose at the right and grouped with nothing. Its two panels were also identical, which defeats the only reason to rotate them.",
+          },
+          {
+            id: "composed",
+            title: "Two halves — a standing service and a rotating offer",
+            summary:
+              "The helpline is the band's only white surface; the rotating half carries the observance and the volunteer drive, each with its own accent, glyph, eyebrow and shape.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "The band has PRESENCE — a real height, a lit top edge, a shadow onto the hero. A band nobody notices has failed at the only job it has",
+              "The height is the taller panel's, always: both share one grid cell and the inactive one keeps its space, so the band never resizes as it turns",
+              "The two offers are told apart FOUR ways — accent, glyph, eyebrow, and shape (one carries a code, one does not). One difference is not enough at a glance",
+              "The lightest material is the helpline, because on a page about de-addiction the most important interactive thing is not the campaign",
+              "Pagination sits INSIDE the rotating half, because it pages that; the dismiss sits at the band's corner, because it dismisses the band",
+              "The current dot lengthens into a bar — a shape change reads at a glance where a brightness change alone does not",
             ],
           },
         ],

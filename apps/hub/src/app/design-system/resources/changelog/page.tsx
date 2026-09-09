@@ -32,9 +32,16 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.127.0",
+    date: "2026-09-09",
+    current: true,
+    changes: [
+      { kind: "Fixed", text: "`SitePageHeader` NOW CUTS THE PORTRAIT TO THE CIRCLE ITSELF, INSTEAD OF ASKING EVERY CALLER TO REMEMBER. The halo cannot do the clipping \u2014 the pulse discs are its children and the whole point of them is that they travel out past the picture\u2019s edge \u2014 and that true fact had been read as \u201cso the caller must\u201d. Two callers pass `media`; the website\u2019s organisation route wrapped its portrait in a round, clipping span, and the NMBA exploration passed a bare image and drew a 340px SQUARE photograph on a circular plaque, on a stage whose own note says it must be the real fold. A wrapper inside the halo clips the picture and nothing else, so a caller now passes the raw picture at any size and cannot get the frame wrong. The 340 is declared once, on the halo, and read by the circle, the frame and the carousel that fills it. What the caller still owns is how the artwork SITS in the frame \u2014 `object-cover` for a photograph, `object-contain` with padding for a mark or the State Emblem \u2014 because that depends on the picture, not on the component" },
+    ],
+  },
+  {
     version: "v0.126.0",
     date: "2026-09-08",
-    current: true,
     changes: [
       { kind: "Added", text: "THE REGISTRY NOW SAYS WHICH SIX MARKS CANNOT HOLD A BRAND BAND ON THEIR OWN. `ORG_MARKS_NEEDING_GROUND` and `markNeedsGround()` \u2014 because the organisation hero was putting a white disc behind ALL SEVENTEEN, which is a ring around eleven marks that already carry their own edge, and it is in no design: the handoff\u2019s `Logo` frame (3751:10135) has no fill, no stroke and no radius, and NMBA\u2019s own frame draws its green seal straight on the blue. Which six was decided by rendering every mark at 100px on the band\u2019s own gradient and LOOKING, not by arithmetic \u2014 the four State Emblem wordmarks measure a comfortable 4.3:1 against the band and are still an illegible smudge at 2% coverage, which no ratio predicts. nbcfdc is the clear case: a pale blue mark on a blue band, all but invisible. A mark listed there is a statement about that organisation\u2019s ARTWORK, and the real fix is artwork that holds the band" },
       { kind: "Fixed", text: "A FOUR-SLIDE CAROUSEL COST SEVEN TAB STOPS, AND FOUR OF THEM WERE DOTS. Every dot was tabbable, so the track, two arrows and four dots stood between a keyboard user and the first word of the page \u2014 measured on the NMBA organisation page, where the carousel is a decorative photograph in the hero. The dot row is a ROVING TABINDEX now: the current dot is the only one in the tab order, and Left / Right / Home / End move between them with focus following the selection. Seven stops become four and nothing is taken away \u2014 a mouse user can click dot 3, so a keyboard user must be able to reach dot 3, which is why dropping the dots from the tab order altogether was the wrong fix. `role=\"group\"` with a name, not `tablist`: these are buttons that move a scroll position, not tabs over panels that stay put. The handler sits on each BUTTON rather than on the wrapping div, which is both what `jsx-a11y/no-noninteractive-element-interactions` requires and the more honest read \u2014 the key event belongs to the thing that took the focus" },
