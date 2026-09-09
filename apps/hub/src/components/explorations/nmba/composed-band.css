@@ -1,0 +1,642 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ==========================================================================
+     ONE BAND, TWO HALVES — a standing service and a rotating offer
+     ==========================================================================
+
+     The band has PRESENCE, which the flat strip it replaces did not: a real
+     height set by its tallest content, a light top edge where the material
+     catches, and a shadow onto the hero so it reads as resting on the page
+     rather than cut out of it. A band a reader does not notice has failed at the
+     only job it has.
+     ========================================================================= */
+
+  .cband {
+    position: relative;
+    z-index: var(--sa-z-raised);
+    background-image: linear-gradient(
+      104deg,
+      var(--sa-color-successScale-600) 0%,
+      var(--sa-color-successScale-700) 62%,
+      var(--sa-color-successScale-800) 100%
+    );
+    color: var(--sa-text-neutral-inverse);
+    /* A bright top edge is light catching the material; the shadow beneath is
+       the band sitting above the hero. */
+    box-shadow:
+      inset 0 var(--sa-stroke-1) 0 0 color-mix(in srgb, var(--sa-text-neutral-inverse) 18%, transparent),
+      0 8px 20px -8px color-mix(in srgb, var(--sa-color-successScale-900) 60%, transparent);
+  }
+
+  /*
+   * ── TWO CARDS ON ONE GROUND, AND THAT IS THE WHOLE STORY ────────────────
+   *
+   * The first pass put four loose objects on a green field: a white pill, an
+   * icon, some text, a button. Only the pill read as a THING, so the band said
+   * "one card and some writing" — not "a number you can always call, and a
+   * notice that changes".
+   *
+   * Both halves are cards now, sharing a top and a bottom edge, and the
+   * MATERIAL says which is which. Solid white is permanent; translucent glass
+   * is the one that turns. A reader gets that before reading a word, which is
+   * the only way a band this size can explain itself.
+   */
+  .cband__inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: stretch;
+    column-gap: var(--sa-inline-20);
+    padding-block: var(--sa-padding-20);
+  }
+
+  /* ── The standing service ─────────────────────────────────────────────────
+     The ONLY white surface on the page's green. The lightest material draws the
+     eye to the most important interactive thing — and on a page about drug
+     de-addiction that is not the campaign, it is the number somebody may be
+     looking for at four in the morning. */
+
+  .cband__helpline {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+    padding: var(--sa-padding-16) var(--sa-padding-24) var(--sa-padding-16) var(--sa-padding-16);
+    border-radius: var(--sa-shape-16);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-color-successScale-700);
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: var(--sa-elevation-dropdown);
+    transition:
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cband__helpline:hover {
+      box-shadow: var(--sa-elevation-modal);
+    }
+  }
+
+  .cband__helpline:active {
+    transform: scale(0.985);
+  }
+
+  .cband__helpline:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .cband__helpline-glyph {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    inline-size: var(--sa-control-height-lg);
+    block-size: var(--sa-control-height-lg);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-successScale-50);
+    color: var(--sa-color-successScale-600);
+    animation: cband-breathe 2000ms var(--sa-motion-emphasis-easing) 2 both;
+  }
+
+  /* Two breaths, then still — 4s, under §2.2.2's five seconds on purpose. It
+     answers hover and focus afterwards, which is user-initiated. */
+  .cband__helpline-glyph::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-successScale-600);
+    opacity: 0;
+    animation: cband-halo 2000ms var(--sa-motion-emphasis-easing) 2 both;
+  }
+
+  .cband__helpline:hover .cband__helpline-glyph::before,
+  .cband__helpline:focus-visible .cband__helpline-glyph::before {
+    animation: cband-halo 2000ms var(--sa-motion-emphasis-easing) infinite;
+  }
+
+  @keyframes cband-halo {
+    0% { opacity: 0; transform: scale(0.92); }
+    14% { opacity: 0.34; }
+    62% { opacity: 0; transform: scale(1.6); }
+    100% { opacity: 0; transform: scale(1.6); }
+  }
+
+  @keyframes cband-breathe {
+    0%, 62%, 100% { transform: scale(1); }
+    26% { transform: scale(1.03); }
+  }
+
+  .cband__helpline-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+  }
+
+  .cband__helpline-label {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* Tight leading and a touch of negative tracking, because large numerals read
+     too far apart as they grow. Tabular, so a changing figure never shifts. */
+  .cband__helpline-number {
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
+    font-weight: var(--sa-font-weight-bold);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* ── The rotating offer ─────────────────────────────────────────────────── */
+
+  /*
+   * BOTH PANELS SHARE ONE CELL, so the stage is always the height of the taller
+   * one and the band never resizes as it turns. `visibility: hidden` keeps the
+   * inactive panel's space where `display: none` would collapse it.
+   */
+  /*
+   * THE STAGE IS THE SECOND CARD — translucent, because it is the half that
+   * changes. Light catches its top edge the way it catches the band's, so it
+   * reads as a pane of glass laid on the green rather than a hole cut in it.
+   *
+   * Never a light translucent surface on another light one: the ground beneath
+   * is the band's own gradient, and the helpline beside it is solid.
+   */
+  .cband__stage {
+    position: relative;
+    display: grid;
+    grid-template-areas: "offer";
+    align-items: center;
+    padding: var(--sa-padding-16) var(--sa-padding-20) var(--sa-padding-16) var(--sa-padding-16);
+    border-radius: var(--sa-shape-16);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent);
+    box-shadow: inset 0 var(--sa-stroke-1) 0 0
+      color-mix(in srgb, var(--sa-text-neutral-inverse) 16%, transparent);
+  }
+
+  /*
+   * THE COLUMNS ARE FIXED, SO NOTHING MOVES WHEN THE PANEL TURNS.
+   *
+   * As a flex row the two panels sized themselves independently, and the
+   * observance has no code where the volunteer drive has one — so the action
+   * button sat at a different x on each panel and hopped sideways every six
+   * seconds. An element that persists across a transition must not move during
+   * it; that is the difference between a panel changing and the band twitching.
+   *
+   * The code's column was reserved at 88px whether or not a code was in it, to
+   * hold the action still. It no longer has to: flushing the actions RIGHT does
+   * that on its own, and the empty track was costing the panel without a code
+   * 104px of measure — enough to wrap "File on the open register" mid-phrase.
+   * `auto` collapses it where there is no code, and the button does not move.
+   */
+  .cband__offer {
+    grid-area: offer;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: var(--sa-inline-16);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
+      transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+  }
+
+  .cband__offer[data-active] {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /*
+   * FOUR WAYS TO TELL THE TWO APART, because one is not enough at a glance and
+   * the reader is not studying the band. Its own ACCENT, its own GLYPH, its own
+   * EYEBROW naming what kind of thing it is, and its own SHAPE — the volunteer
+   * panel carries a code and the observance does not.
+   */
+  /*
+   * `secondaryScale-100`, NOT `-300` — MEASURED, and the first two rungs fail.
+   *
+   * The eyebrow is 12px text, so §1.4.3 wants 4.5:1. Sampled against the glass
+   * card's actual rendered pixel (rgb(20,96,58)) rather than against the token
+   * it is mixed from:
+   *
+   *     -400  2.61:1   -300  3.44:1   -200  4.43:1   -100  5.60:1
+   *
+   * `-300` shipped at 3.44 and looked fine, which is the whole problem with
+   * judging contrast by eye on a saturated ground. `-200` is the one that
+   * tempts you and still fails, by 0.07.
+   */
+  .cband__offer[data-accent="saffron"] {
+    --cband-accent: var(--sa-color-secondaryScale-100);
+    --cband-accent-soft: var(--sa-color-secondaryScale-200);
+  }
+
+  /*
+   * `successScale-50`, not `-100`. `-100` measured 4.60:1 on the glass card
+   * against the 4.5 §1.4.3 asks — it passes, and it is the first thing that
+   * fails if the card's translucency is ever touched. `-50` is 6.81:1, which is
+   * margin rather than luck.
+   */
+  .cband__offer[data-accent="leaf"] {
+    --cband-accent: var(--sa-color-successScale-50);
+    --cband-accent-soft: var(--sa-color-successScale-100);
+  }
+
+  .cband__offer-glyph {
+    grid-column: 1;
+    display: grid;
+    place-items: center;
+    align-self: flex-start;
+    inline-size: var(--sa-control-height-md);
+    block-size: var(--sa-control-height-md);
+    border-radius: var(--sa-shape-12);
+    /*
+     * THE CHIP MIXES THE LIGHT ACCENT, NOT THE SATURATED ONE.
+     *
+     * `secondaryScale-400` at 22% over the band's green resolved to a muddy
+     * olive — two saturated hues averaging into a third that belongs to
+     * neither. The pale rung mixes toward the accent instead of away from it,
+     * so the chip reads as tinted glass rather than as dirt.
+     */
+    background-color: color-mix(in srgb, var(--cband-accent) 18%, transparent);
+    color: var(--cband-accent);
+    box-shadow: inset 0 0 0 var(--sa-stroke-1)
+      color-mix(in srgb, var(--cband-accent) 38%, transparent);
+  }
+
+  .cband__offer-copy {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    min-inline-size: 0;
+  }
+
+  /* Small text wants positive tracking; this is the one place the band uses it. */
+  .cband__offer-eyebrow {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--cband-accent);
+  }
+
+  .cband__offer-heading {
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    letter-spacing: -0.005em;
+    text-wrap: balance;
+  }
+
+  .cband__offer-body {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: color-mix(in srgb, var(--sa-text-neutral-inverse) 82%, transparent);
+    text-wrap: pretty;
+  }
+
+  .cband__offer-qr {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border-radius: var(--sa-shape-8);
+  }
+
+  .cband__offer-qr img {
+    display: block;
+    inline-size: 88px;
+    block-size: 88px;
+  }
+
+  .cband__offer-qr {
+    grid-column: 3;
+  }
+
+  /*
+   * FLUSH RIGHT, so the two panels' actions share an edge.
+   *
+   * Left-aligned in the last column, "File Pre-Event Details" and "Register Now"
+   * started 58px apart and the button appeared to slide sideways every time the
+   * band turned. Padding both out to one fixed width would fix it and leave
+   * "Register Now" adrift in ninety pixels of empty button; sharing the RIGHT
+   * edge is what right-set actions do anyway, and it costs nothing.
+   */
+  /* One control now, so the column is just the button — and the pager below it
+     has the corner to itself. */
+  .cband__offer-actions {
+    grid-column: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    align-self: start;
+    gap: var(--sa-stack-8);
+  }
+
+  .cband__cta {
+    --sa-btn-edge: var(--cband-accent);
+  }
+
+  .cband__alt {
+    font-size: inherit;
+    color: color-mix(in srgb, var(--sa-text-neutral-inverse) 82%, transparent);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  /* ── Pagination, inside the half it pages ────────────────────────────────
+     Its scope is the only thing its position has to explain, so it sits under
+     the rotating panel and nowhere near the band's own dismiss. */
+
+  /*
+   * THE PAGER IS INSIDE THE CARD IT PAGES.
+   *
+   * It floated in dead space under the copy, lined up with nothing, which is how
+   * a control comes to read as debris. Sitting in the glass card's own bottom
+   * corner it needs no explaining: this card turns, and this is what turns it.
+   */
+  /*
+   * IT HAS TO SIT ABOVE THE PANEL, because it shares the panel's grid cell.
+   *
+   * The offer and the pager are both `grid-area: offer` — that is what makes the
+   * stage the height of its tallest panel — so the offer paints over the pager
+   * and swallowed every click on the dots. Caught by driving a real click, not
+   * by looking: the control was perfectly visible the entire time.
+   */
+  .cband__pager {
+    position: relative;
+    z-index: var(--sa-z-raised);
+    grid-area: offer;
+    place-self: end end;
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    margin-block-end: calc(-1 * var(--sa-padding-8));
+    margin-inline-end: calc(-1 * var(--sa-padding-8));
+  }
+
+  .cband__dots {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-2);
+  }
+
+  /* A 24px target with a small mark inside it — §2.5.8's floor, met by the
+     control rather than by the spacing clause. */
+  .cband__dot {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-full);
+  }
+
+  .cband__dot::before {
+    content: "";
+    inline-size: var(--sa-padding-6);
+    block-size: var(--sa-padding-6);
+    border-radius: var(--sa-shape-full);
+    /* 55%, not 40%. An inactive dot is a UI component, so §1.4.11 wants 3:1 and
+       40% measured 2.57 on the glass card. 55% is 3.47 — headroom rather than a
+       number sitting on the line. */
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 55%, transparent);
+    transition:
+      inline-size var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  /* The current dot lengthens into a bar — a shape change reads at a glance
+     where a brightness change alone does not. */
+  .cband__dot[aria-selected="true"]::before {
+    inline-size: var(--sa-padding-20);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-text-neutral-inverse);
+  }
+
+  /* The pause reads as a peer of the dots, not a ghost beside them: a filled
+     well at rest, because at 78% ink on a dark ground it was a hairline. */
+  .cband__play {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    margin-inline-start: var(--sa-inline-8);
+    border-radius: var(--sa-shape-full);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 14%, transparent);
+    color: var(--sa-text-neutral-inverse);
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cband__play:hover {
+      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 16%, transparent);
+      color: var(--sa-text-neutral-inverse);
+    }
+  }
+
+  /* ── The band's own dismiss, at the band's own corner ─────────────────── */
+
+  /*
+   * ON THE GROUND, AND ALIGNED TO THE CARDS' TOP EDGE.
+   *
+   * It stays outside both cards, because it dismisses the BAND and a control
+   * inside the glass card would say it dismisses the offer. What was wrong was
+   * the vertical centring: it floated at the middle height of a gap, related to
+   * nothing, which is what made the band's right end read as unfinished.
+   *
+   * Sharing the cards' top edge gives it one relationship without giving it the
+   * wrong scope. (The 24px either side of the band is the container's own
+   * padding and was never the asymmetry it looked like.)
+   */
+  .cband__dismiss {
+    display: grid;
+    place-items: center;
+    align-self: start;
+    inline-size: var(--sa-control-height-sm);
+    block-size: var(--sa-control-height-sm);
+    border-radius: var(--sa-shape-8);
+    color: color-mix(in srgb, var(--sa-text-neutral-inverse) 72%, transparent);
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cband__dismiss:hover {
+      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 16%, transparent);
+      color: var(--sa-text-neutral-inverse);
+    }
+  }
+
+  .cband__dot:focus-visible,
+  .cband__play:focus-visible,
+  .cband__dismiss:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cband__offer {
+      transition: opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+      transform: none;
+    }
+
+    .cband__helpline-glyph,
+    .cband__helpline-glyph::before,
+    .cband__helpline:hover .cband__helpline-glyph::before {
+      animation: none;
+    }
+
+    .cband__helpline-glyph::before {
+      opacity: 0.26;
+      transform: scale(1.2);
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .cband__offer {
+      grid-template-columns: auto minmax(0, 1fr) auto;
+    }
+
+    .cband__offer-qr {
+      display: none;
+    }
+
+    .cband__offer-actions {
+      grid-column: 3;
+    }
+
+    .cband__inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      row-gap: var(--sa-stack-20);
+    }
+
+    .cband__helpline {
+      grid-row: 1;
+      grid-column: 1;
+    }
+
+    .cband__dismiss {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    .cband__stage {
+      grid-row: 2;
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 767px) {
+    /*
+     * THE PAGER GETS ITS OWN ROW BELOW 768, because the corner it lives in is
+     * taken. On a phone the action goes full width, and the pager — pinned to
+     * the same cell's bottom-right — landed ON the button. Measured at 390:
+     * the two boxes genuinely intersect, so the last thing a reader can tap in
+     * the band is a control sitting on top of another control.
+     *
+     * A second row costs 40px and is the honest fix; nudging the pager sideways
+     * would only move the collision to whatever the button becomes next.
+     */
+    .cband__stage {
+      grid-template-areas: "offer" "pager";
+      row-gap: var(--sa-stack-12);
+    }
+
+    .cband__pager {
+      grid-area: pager;
+      place-self: center start;
+      margin: 0;
+    }
+
+    .cband__offer {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    .cband__offer-actions {
+      grid-column: 1 / -1;
+    }
+
+    /*
+     * THE BODY AND THE SECOND ROUTE GO ON A PHONE.
+     *
+     * At 390 the band was 380px of an 844px viewport — forty-five per cent of
+     * the screen, for an announcement, above the page it announces. That is not
+     * a small band; it is a page.
+     *
+     * What survives is what the announcement IS: the eyebrow saying which kind
+     * of thing it is, the heading, and the way in. The sentence and the
+     * alternative route are elaboration, and elaboration belongs on the page the
+     * button opens — where there is room for it and where a reader who pressed
+     * the button has asked for it.
+     */
+    .cband__offer-body {
+      display: none;
+    }
+
+    /*
+     * THE HELPLINE GOES TO ONE LINE, and the band's own padding tightens.
+     *
+     * Dropping the body took 380 to 340; the rest of the height is structure,
+     * not words. Measured at 390: the helpline card was 80px of it — a 48px
+     * glyph with a label stacked over a number — and the band and stage were
+     * paying 20 and 16 of padding each on a 390px screen.
+     *
+     * Inline, the card is 56. With the paddings at 16 and 12 the band lands
+     * near 300, which is where it stops: below that the only thing left to cut
+     * is the rotating half itself, and whether a phone gets the announcements
+     * at all is a content decision, not a layout one.
+     */
+    .cband__inner {
+      padding-block: var(--sa-padding-16);
+      row-gap: var(--sa-stack-16);
+    }
+
+    .cband__stage {
+      padding: var(--sa-padding-12);
+    }
+
+    .cband__helpline {
+      padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-8) var(--sa-padding-8);
+      gap: var(--sa-inline-12);
+    }
+
+    .cband__helpline-glyph {
+      inline-size: var(--sa-control-height-md);
+      block-size: var(--sa-control-height-md);
+    }
+
+    /* Label beside the number, not above it: two 16px lines of chrome around a
+       28px figure is a card built for a desktop row. */
+    .cband__helpline-text {
+      flex-direction: row;
+      align-items: baseline;
+      gap: var(--sa-inline-8);
+    }
+
+    .cband__helpline-number {
+      font-size: var(--sa-type-headline-5-size);
+      line-height: var(--sa-type-headline-5-lh);
+    }
+
+    .cband__offer-qr {
+      display: none;
+    }
+
+    .cband__offer-actions {
+      inline-size: 100%;
+    }
+  }
+}

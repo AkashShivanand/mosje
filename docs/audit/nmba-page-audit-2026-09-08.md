@@ -1011,3 +1011,333 @@ Three facts, not four. The Ministry row survives on the same weak argument as
 before — it is the only cell that is a name among figures, and a reader on the
 Department's own site has been told the Department twice by the masthead already.
 It stays because two is not a strip.
+
+---
+
+## 19. Two zones ships, and three questions answered
+
+### 19.1 The animation was genuinely missing
+
+The halo was built for the white card (`.xhc`) and **never carried across when
+the panel was drawn**. So the one element in the band that is a live telephone
+line was the only version of it that did not say so.
+
+Fixed, with one change: the halo is tinted **white**, not `successScale-600`. The
+well sits on `successScale-800`, and a green halo on a green ground is invisible.
+Same cadence as everywhere else — two breaths of 2000ms, 4s total, under
+§2.2.2's five seconds on purpose, then hover and focus.
+
+### 19.2 Placement: the trailing edge is right, and not for aesthetic reasons
+
+**Reading order follows the band's own purpose**, which is the campaign. The
+helpline is found by TREATMENT rather than by position: it is the darkest object
+in the band and carries its largest text (20px bold white at ~13:1, against the
+campaign's 24px heading and 14px sentence on a lighter ground).
+
+Leading, it would do two things wrong at once. It would open a campaign band with
+something that is not the campaign — the "two messages in one rectangle" problem
+in a new arrangement. And it would put two full-height blocks side by side at the
+same edge, because the 88px code is already the band's leading anchor.
+
+The one argument for leading is that somebody in crisis scans left first. It does
+not survive contact with the treatment: a reader scanning for a telephone number
+finds the only dark panel on a light green band before they finish reading the
+first word of the heading. Position is the weakest of the signals available here,
+and it is the only one the campaign also needs.
+
+### 19.3 Separation: 24 → 48
+
+The panel's ground already says *different thing*; the gap says *how* different.
+At the row's plain 24 it read as the next item in a list of actions — which is
+the reading the whole zone exists to prevent.
+
+24 from the grid plus 24 of leading margin **on the service**, because the
+separation belongs to the thing being set apart, not to the campaign. Measured:
+Register ends at 1046, the panel starts at 1094.
+
+### 19.4 What shipped
+
+`.orgjb__helpline` — a filled white DS button — is gone from the live band and
+replaced by `.orgjb__service`: an 88px-tall panel on `successScale-800` with a
+12% white hairline, a caption over a figure, and the halo. The band is 120px
+(the 88px code sets it, per §18).
+
+Register updated: **two zones is `chosen`**; "both CTAs on the right" and "CTAs
+below the copy" are `superseded` and keep their addresses with what beat them.
+The first lost because the pairing it depends on is the defect; the second
+because it answers a different question — how tall the band is — and stacking
+the routes in a column makes them *more* alike, not less.
+
+Housekeeping found on the way: a stray `.orgjb__copy { padding-inline-end }`
+fragment with an extra closing brace, left by an earlier edit, had been closing
+`@layer components` about 300 lines early. Everything below it had been sitting
+outside the layer — which, per `design-system-architecture.md` §2a, means it was
+beating every layered rule in the estate rather than losing to utilities as
+intended.
+
+---
+
+## 20. One band, the notice first, advancing on its own
+
+Asked for: use the one section for both, lead with the temporary event, and let it
+autoplay.
+
+### The pause control is what makes it lawful
+
+WCAG 2.2 §2.2.2 requires a mechanism to pause, stop or hide any content that
+moves, blinks or auto-updates for **more than five seconds** beside other
+content. A 6s dwell is over that line the moment the band mounts. So the pause
+button is not a nice extra on this option — without it the band does not conform,
+and the estate does not trade accessibility.
+
+Built with it, autoplay is fine, and this is the version that answers the real
+objection to the manual carousel: that the second panel is in practice unread.
+Rotation is what makes both messages actually seen.
+
+### Four holds, not one
+
+| Hold | Why |
+|---|---|
+| The pause button | §2.2.2. `aria-pressed` states which way it is set |
+| Hover | Nothing takes a sentence away while somebody is reading it |
+| Focus | Tracked **separately** from hover — a reader who tabs in and then moves the mouse away must not have it start moving again |
+| Pressing a dot | Stops it for good. A reader who chose a panel has said which one they want; taking it away four seconds later is what autoplay is most often blamed for |
+
+Under `prefers-reduced-motion` it does not rotate at all, and the pause control is
+not rendered — there is nothing to pause. §2.2.2 is satisfied by the button; the
+preference is a separate promise, and a slower rotation is not what it asks for.
+It is read once on mount, so the band never changes behaviour under a reader
+mid-visit.
+
+### `aria-live` flips with the rotation
+
+`off` while it advances on its own, `polite` once it does not. A region that
+announces itself every six seconds is not accessible, it is relentless; one that
+stays silent after the reader presses a dot has told them nothing at all.
+
+### Verified
+
+Notice leads ("Six Years of the Abhiyaan"), rotates to the campaign after 6s,
+the pause button holds it, and it is still on the same panel 7s later.
+`role="region"`, `aria-roledescription="carousel"`, per-slide
+`aria-roledescription="slide"` with an "n of 2" label.
+
+Stills: `auto-1-notice.png`, `auto-2-campaign.png`.
+
+The `top-bands` module now holds three: **two bands**, **one band the reader
+advances**, and **one band that advances itself**.
+
+---
+
+## 21. A composed band — two halves, one standing service and one rotating offer
+
+The previous attempt was **assembled, not designed**, and the criticism was fair:
+a flat strip on one optical line, small type at the left, and the dots, the
+pause and the cross loose at the right grouped with nothing. The eye had nothing
+to land on, so a band whose only job is to be noticed went unnoticed. Worse, its
+two rotating panels were identical — which defeats the one reason to rotate them.
+
+### The height is the taller panel's, by construction
+
+Both panels occupy the same grid cell and the inactive one keeps its space with
+`visibility: hidden`. So the band is `max-content` of the two without measuring
+anything in JavaScript, and it never resizes as it turns. **Verified: 156px on
+both panels.**
+
+### The halves are different materials
+
+The helpline is the **only white surface** on the page's green. The lightest
+material draws the eye to the most important interactive thing — and on a page
+about drug de-addiction that is not the campaign, it is the number somebody may
+be looking for at four in the morning. `headline-3` numerals, tabular, with a
+touch of negative tracking because large figures read too far apart as they grow.
+
+### The two offers are told apart four ways
+
+One difference is not enough at a glance, and the reader is not studying the band:
+
+| | Observance | Volunteer |
+|---|---|---|
+| Accent | saffron `rgb(255,145,103)` | leaf `rgb(189,227,199)` |
+| Glyph | `celebration` | `volunteer_activism` |
+| Eyebrow | SIXTH ANNIVERSARY | VOLUNTEER |
+| Shape | no code | carries the code |
+
+**The chip mixes the light accent, not the saturated one.** `secondaryScale-400`
+at 22% over the band's green resolved to a muddy olive — two saturated hues
+averaging into a third belonging to neither. The pale rung mixes *toward* the
+accent, so the chip reads as tinted glass rather than dirt.
+
+### Controls sit with what they control
+
+Pagination is **inside** the rotating half, aligned to the copy column, because it
+pages that and not the band. The dismiss is at the band's own corner, because it
+dismisses the band. A control's position is the only explanation of its scope a
+reader ever gets.
+
+The current dot **lengthens into a bar** rather than merely brightening — a shape
+change reads at a glance where a brightness change alone does not. The pause has
+a filled well at rest: at 78% ink on a dark ground it was a hairline.
+
+### Two defects the first build had, both caught by measuring
+
+| | Before | After |
+|---|---|---|
+| The action button | Left-aligned in an `auto` column, so "File Pre-Event Details" and "Register Now" started **58px apart** and the button slid sideways every six seconds | Flush right — both panels' actions share an edge at x=1267. Padding both to one fixed width would have left "Register Now" adrift in 90px of empty button |
+| The code's column | Absent on the observance panel, so every column after it shifted | Reserved at its own width whether or not a code is in it. An empty track is the price of a button that stays put |
+
+Anchoring verified: glyph at x=400 and CTA right edge at 1267 on **both** panels.
+
+Stills: `cband-1.png`, `cband-2.png`, `cband-both.png`.
+
+---
+
+## 22. The composed band, audited by its author before it was shown
+
+The first composition was four loose objects on a green field. Only the helpline
+read as a THING; the rest was text and a button sitting on colour. So the band
+said "one card and some writing" when it needed to say *"a number you can always
+call, and a notice that changes."*
+
+### The story is told by material, not by labels
+
+Both halves are cards now, sharing a top and a bottom edge — verified at y=845
+and bottom=969 on both panels. **Solid white is permanent; translucent glass is
+the half that turns.** A reader gets that before reading a word, which is the
+only way a band this size explains itself. No "NEED HELP" or "WHAT'S ON" headers:
+a label that says what a shape already says is chrome.
+
+### Both panels take the same copy shape
+
+Panel one was an eyebrow over a two-line sentence; panel two was an eyebrow,
+heading, body and a code. Same box, different density, so the band felt unsettled
+as it turned. The observance now uses **the record's own eyebrow as its heading
+and its sentence as the body** — the department's words in both slots, no
+invention, and the two panels are the same object with different content.
+
+### Three defects found by testing rather than looking
+
+| | What happened | Why looking missed it |
+|---|---|---|
+| **The pager was unclickable** | The offer and the pager share `grid-area: offer` — which is what makes the stage the height of its tallest panel — so the offer painted over the pager and swallowed every click | The dots were perfectly visible the whole time. Only driving a real click found it |
+| The pager collided with the second route | Button, link and pager stacked in one corner | It looked merely tight |
+| The empty code track cost 104px of measure | Reserved at 88px to hold the action still — which flushing the actions right already does | Nothing was visibly broken; the copy just wrapped early |
+
+The second route moved into the prose, where it belongs: *"file on the open
+register"* is a condition attached to the offer, not a peer of the button.
+
+### Anchored, and verified
+
+| | Panel 1 | Panel 2 |
+|---|---|---|
+| Band height | 164 | 164 |
+| CTA right edge | 1259 | 1259 |
+| Cards' top / bottom | 845 / 969 | 845 / 969 |
+| Pager clearance under the CTA | 28px | 28px |
+
+Nothing that persists across the turn moves during it.
+
+**Known and accepted:** on the observance panel the inline route wraps as "File
+on the / open register". The alternative is a third element stacked in the action
+corner, which is the collision this pass removed.
+
+---
+
+## 23. Contrast audit of the composed band — two failures I shipped unchecked
+
+Sampled from **rendered pixels**, not from tokens. That distinction is the whole
+finding: the band's ground is a `linear-gradient` with a translucent card over
+it, so nothing in the CSS states the colour the text actually sits on. A first
+attempt walked the DOM for a `background-color`, found none, and returned white —
+producing contrast figures that were confident and meaningless.
+
+The glass card renders `rgb(22,108,66)` at its light end and `rgb(20,84,51)` at
+its dark end.
+
+| Element | Before | Needs | Verdict |
+|---|---|---|---|
+| Heading — white on glass | 7.60:1 | 4.5 | pass |
+| Body — 82% white on glass | 5.70:1 | 4.5 | pass |
+| Eyebrow — leaf `successScale-100` | 4.60:1 | 4.5 | pass, narrowly |
+| **Eyebrow — saffron `secondaryScale-300`** | **3.44:1** | 4.5 | **FAIL §1.4.3** |
+| **Inactive dot — 40% white** | **2.57:1** | 3.0 | **FAIL §1.4.11** |
+| Dismiss glyph — 72% white on band | 4.25:1 | 3.0 | pass |
+| Pause glyph — white on a 14% well | 5.42:1 | 3.0 | pass |
+
+### The saffron rung, measured across the ramp
+
+```
+-400  2.61:1     -300  3.44:1  ← shipped
+-200  4.43:1  ← the one that tempts you, and fails by 0.07
+-100  5.60:1  ← chosen
+```
+
+`-300` looked perfectly legible, which is exactly the trap: a saturated warm hue
+on a saturated dark ground reads as *bright* long after it has stopped being
+*contrasty*. The eyebrow is 12px, so it is normal text and gets no large-text
+allowance.
+
+### The dot
+
+An inactive carousel dot is a UI component, so §1.4.11 asks 3:1. At 40% white it
+was 2.57. Raised to 55% → 3.47:1 — headroom, rather than a number sitting on the
+line where a future gradient tweak would push it under.
+
+### After
+
+Every measured pair passes, and the saffron eyebrow is checked at **both** ends
+of the card's gradient — 4.75:1 at the light end, 6.59:1 at the dark end — because
+a gradient means one sample is not a result.
+
+---
+
+## 24. The three critique findings, fixed — and one of them corrected first
+
+### The "asymmetric margins" finding was wrong, and I checked before acting on it
+
+I reported the band's internal margins as **24 left, 76 right**. They are not
+asymmetric: 24 is the container's own padding on *both* sides, and the 76 is the
+gap plus the dismiss plus that same 24. I had measured two different things and
+called the difference a defect.
+
+What was actually wrong is smaller and real: the dismiss was **vertically centred
+against nothing** — floating at the middle height of a gap, related to no other
+element, which is what made the band's right end read as unfinished. It now
+shares the cards' top edge. It stays *outside* both cards, because it dismisses
+the band and a control inside the glass card would claim the wrong scope.
+
+### The phone: 380px → 296px
+
+45% of an 844px viewport, for an announcement, above the page it announces. Not a
+small band — a page.
+
+| Cut | Saved |
+|---|---|
+| The body sentence and the second route | 40px |
+| The helpline card to one line — glyph 48→40, label beside the number, not above | 24px |
+| Band padding 20→16, stage padding 16→12 | 20px |
+
+**296px, 35%.** That is the floor: below it the only thing left to cut is the
+rotating half itself, and whether a phone gets the announcements at all is a
+content decision rather than a layout one.
+
+What survives on a phone is what the announcement *is* — the eyebrow saying which
+kind of thing it is, the heading, and the way in. The sentence is elaboration,
+and elaboration belongs on the page the button opens, where there is room for it
+and where a reader who pressed the button has asked for it.
+
+### The leaf eyebrow
+
+`successScale-100` measured **4.60:1** against the 4.5 §1.4.3 asks. It passes, and
+it is the first thing that fails if the card's translucency is ever touched.
+`-50` is **6.81:1** — margin rather than luck.
+
+### Verified
+
+| | 1440 | 768 | 390 |
+|---|---|---|---|
+| Band height | 164 (22% of the fold) | 263 (26%) | **296 (35%)** |
+| Helpline card | 124 | 82 | 56 |
+| Dismiss shares the cards' top edge | yes | yes | yes |
+| Pager overlaps the button | no | no | no |
+| Horizontal scroll | none | none | none |

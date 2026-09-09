@@ -149,8 +149,17 @@
       column-gap: var(--sa-inline-24);
     }
 
-    .orgjb__helpline {
-      margin-inline-start: var(--sa-inline-16);
+    /*
+     * 48 BETWEEN THE CAMPAIGN AND THE SERVICE — 24 from the grid, 24 more here.
+     *
+     * The panel's own ground already says "different thing"; this says how
+     * different. At the row's plain 24 the panel read as the next item in a
+     * list of actions, which is the reading the whole zone exists to prevent.
+     * The margin is the SERVICE'S, not the campaign's: the separation belongs
+     * to the thing being set apart.
+     */
+    .orgjb__service {
+      margin-inline-start: var(--sa-inline-24);
     }
 
     /* The 8 that makes the message's own step 32 while the grid stays on 24.
@@ -176,35 +185,142 @@
     align-self: stretch;
   }
 
+  /* ══════════════════════════════════════════════════════════════════════
+     THE STANDING SERVICE — its own ground, its own shape, its own edge
+     ══════════════════════════════════════════════════════════════════════ */
+
   /*
-   * THE HELPLINE IS A `Button` NOW.
+   * `successScale-800` (#003d1e) against the band's 600→700. White on it
+   * measures about 13:1 — the most legible text in the band, which is right for
+   * the one line somebody may be reading in a hurry.
    *
-   * It was 36 lines of hand-rolled pill: its own padding, radius, shadow, press
-   * transform and hover. Every value was token-bound and the result was correct,
-   * which is the harder case to argue — what it cost was not a defect but
-   * divergence, one control whose size, weight, press and focus ring would drift
-   * from every other button in the estate the next time the component moved.
-   *
-   * `filled` + `inverse` on the success ramp is the DS's own answer for the
-   * emphatic action on a green ground. The two hooks below are the ink and fill,
-   * because the Abhiyaan's band draws this in white — 9.4:1 for the label on
-   * white, against the green's own 4.79:1 for the pale default.
+   * A HAIRLINE, BECAUSE THE GRADIENT IS DARKEST EXACTLY HERE. The band runs
+   * 600 → 700 left to right, so the panel's 800 lands against the deepest part
+   * of the ramp and the step is at its smallest precisely where the seam has to
+   * be read. Going darker still would fix that and leave hover nowhere to go; a
+   * 12% white edge defines the panel without touching either.
    */
-  .orgjb__helpline {
-    --sa-btn-fill: var(--sa-bg-neutral-base);
-    --sa-btn-ink: var(--sa-color-successScale-700);
+  .orgjb__service {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    align-self: stretch;
+    padding: var(--sa-padding-8) var(--sa-padding-20) var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-12);
+    background-color: var(--sa-color-successScale-800);
+    box-shadow: inset 0 0 0 var(--sa-stroke-1)
+      color-mix(in srgb, var(--sa-text-neutral-inverse) 12%, transparent);
+    color: var(--sa-text-neutral-inverse);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .orgjb__service:hover {
+      background-color: var(--sa-color-successScale-900);
+    }
+  }
+
+  .orgjb__service:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /*
-   * The label recedes and the NUMBER carries the weight — a person scanning this
-   * band under stress is looking for five digits, not for a noun phrase.
+   * THE HALO, WHICH THE PANEL WAS MISSING.
+   *
+   * It was built for the white card and never carried across when the panel was
+   * drawn — so the one element in the band that is a live telephone line was the
+   * only version of it that did not say so. Same cadence as everywhere else:
+   * two breaths of 2000ms, then still. 4s total, under the five past which WCAG
+   * 2.2 §2.2.2 would require a pause control, and under it on purpose.
+   *
+   * Tinted WHITE here rather than green: the well sits on `successScale-800`, so
+   * a green halo on a green ground is invisible. It is the same signal in the
+   * ink the panel is written in.
    */
-  .orgjb__helpline-label {
-    font-weight: var(--sa-font-weight-regular);
-    opacity: 0.75;
+  .orgjb__service-icon {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    inline-size: var(--sa-control-height-md);
+    block-size: var(--sa-control-height-md);
+    border-radius: var(--sa-shape-full);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 14%, transparent);
+    animation: orgjb-breathe 2000ms var(--sa-motion-emphasis-easing) 2 both;
   }
 
-  .orgjb__helpline-number {
+  .orgjb__service-icon::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-text-neutral-inverse);
+    opacity: 0;
+    animation: orgjb-halo 2000ms var(--sa-motion-emphasis-easing) 2 both;
+  }
+
+  /* After the arrival breaths it answers the reader rather than interrupting
+     them — user-initiated, so §2.2.2 does not bind it. */
+  .orgjb__service:hover .orgjb__service-icon::before,
+  .orgjb__service:focus-visible .orgjb__service-icon::before {
+    animation: orgjb-halo 2000ms var(--sa-motion-emphasis-easing) infinite;
+  }
+
+  .orgjb__service:hover .orgjb__service-icon,
+  .orgjb__service:focus-visible .orgjb__service-icon {
+    animation: orgjb-breathe 2000ms var(--sa-motion-emphasis-easing) infinite;
+  }
+
+  @keyframes orgjb-halo {
+    0% { opacity: 0; transform: scale(0.92); }
+    14% { opacity: 0.3; }
+    62% { opacity: 0; transform: scale(1.62); }
+    100% { opacity: 0; transform: scale(1.62); }
+  }
+
+  @keyframes orgjb-breathe {
+    0%, 62%, 100% { transform: scale(1); }
+    26% { transform: scale(1.025); }
+  }
+
+  /* Fewer and gentler, not zero: the halo rests at its opening frame, so the
+     glyph keeps its soft ring and nothing travels. */
+  @media (prefers-reduced-motion: reduce) {
+    .orgjb__service-icon,
+    .orgjb__service-icon::before,
+    .orgjb__service:hover .orgjb__service-icon,
+    .orgjb__service:hover .orgjb__service-icon::before,
+    .orgjb__service:focus-visible .orgjb__service-icon,
+    .orgjb__service:focus-visible .orgjb__service-icon::before {
+      animation: none;
+    }
+
+    .orgjb__service-icon::before {
+      opacity: 0.2;
+      transform: scale(1.2);
+    }
+  }
+
+  .orgjb__service-text {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+  }
+
+  /* A tint of the ground, not a grey — grey on a coloured surface is what makes
+     a panel look faded rather than quiet. */
+  .orgjb__service-label {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    color: color-mix(in srgb, var(--sa-text-neutral-inverse) 78%, transparent);
+  }
+
+  .orgjb__service-number {
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
     font-weight: var(--sa-font-weight-bold);
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.01em;
@@ -217,10 +333,13 @@
    * an EDGE: 48, 70, 72, 32 and 40 tall, all hung off an invisible centre. A
    * centre line is not something an eye can see; a flush top and bottom is.
    *
-   * The QR is the tallest object and it now sits at the trailing edge, flush to
-   * the row's full height, so it draws the band's right-hand boundary. The copy
-   * and the buttons centre against a block they can be measured by.
+   * The QR is the tallest object and it now leads the row, flush to the row's
+   * full height, so it draws the band's left-hand boundary. Everything after it
+   * centres against a block the eye can measure by.
    */
+  .orgjb__campaign-row > .orgjb__qr {
+    align-self: stretch;
+  }
 
   .orgjb__copy {
     display: flex;
@@ -403,7 +522,7 @@
     outline-offset: var(--sa-focus-offset);
   }
 
-  .orgjb__helpline:focus-visible {
+  .orgjb__service:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
     outline-offset: var(--sa-focus-offset);
   }
@@ -449,7 +568,7 @@
       justify-content: center;
     }
 
-    .orgjb__helpline {
+    .orgjb__service {
       grid-row: 3;
       grid-column: 1 / -1;
       justify-content: center;
@@ -467,7 +586,7 @@
    */
   @media (width >= 40rem) and (width < 64rem) {
     .orgjb__cta,
-    .orgjb__helpline {
+    .orgjb__service {
       justify-self: start;
     }
   }
@@ -486,7 +605,6 @@
     .orgjb__campaign,
     .orgjb__campaign-row,
     .orgjb__cta,
-    .orgjb__helpline,
     .orgjb__dismiss {
       transition: none;
     }
@@ -496,7 +614,6 @@
     }
 
     .orgjb__cta:active,
-    .orgjb__helpline:active,
     .orgjb__dismiss:active {
       transform: none;
     }
