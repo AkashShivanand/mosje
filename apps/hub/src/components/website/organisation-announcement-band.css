@@ -728,10 +728,20 @@
     transition: inline-size var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
   }
 
-  /* 48, because the bar inside it is 40. Every dot clears §2.5.8's 24x24 floor
-     by the control itself, active or not. */
+  /*
+   * 40 — THE BOX IS THE BAR, AND THE ROW DOES NOT GROW.
+   *
+   * It was 48, giving the 40px bar a margin inside its own target, and that
+   * cost the pager eight pixels of width it had not asked for: 48 + 2 + 24 is
+   * 74 where two 32s were 66. A pagination control that takes more room than
+   * before to say the same thing has spent something for nothing.
+   *
+   * At 40 the target IS the bar. 40 + 2 + 24 is 66 — exactly the width the row
+   * had — and both dots still clear §2.5.8's 24x24 floor by the control itself,
+   * the active one by a wide margin.
+   */
   .orgab__dot[aria-selected="true"] {
-    inline-size: var(--sa-padding-48);
+    inline-size: var(--sa-padding-40);
   }
 
   .orgab__dot::before {
