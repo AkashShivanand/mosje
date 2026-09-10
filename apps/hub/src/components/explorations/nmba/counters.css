@@ -1,0 +1,163 @@
+@layer theme, base, components, utilities;
+
+/* ============================================================================
+   EXPLORATION — the Abhiyaan's eight published counters
+   Three treatments of one set. Prototype styles: nothing under /website or
+   /portals imports this file, and choosing an option means MOVING the winning
+   rules into `FactStrip`, not pointing a production surface at this stylesheet.
+   ============================================================================ */
+
+@layer components {
+  /* The grey field the card is lifted off, so an option is judged on the ground
+     it will actually stand on rather than on the viewer's white panel. */
+  .kpix__stage {
+    background-color: var(--sa-bg-neutral-subtler);
+    padding: var(--sa-padding-32) var(--sa-padding-24);
+    border-radius: var(--sa-shape-12);
+  }
+
+  .kpix__card {
+    background-color: var(--sa-bg-neutral-base);
+    border-radius: var(--sa-shape-20);
+    box-shadow: var(--sa-elevation-modal);
+    padding: var(--sa-padding-24) var(--sa-padding-16);
+  }
+
+  .kpix__asof {
+    margin: var(--sa-stack-8) 0 0;
+    text-align: right;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── The scaled cell, shared by the grid and the carousel ─────────────────
+   *
+   * THE FIGURE LEADS AND NOTHING ELSE COMPETES WITH IT.
+   *
+   * The shipped strip sets the value at `headline-5` (20px) over a `body-1`
+   * label (16px) — a ratio of 1.25:1, which is the weakest hierarchy two sizes
+   * can have. At that ratio a figure of 345 million is not a KPI, it is a line
+   * of text that happens to be a number, and eight of them read as eight equal
+   * lines of text.
+   *
+   * `headline-2` resolves to 32px at 1440 against a 14px caption — 2.3:1, and
+   * the figure carries the cell on its own.
+   *
+   * SO THE MARK STOPS BEING A TILE AND JOINS THE CAPTION. A 56px peach chip
+   * above a 20px figure was the loudest thing in the cell, which was survivable
+   * only while the figure was quiet. Beside a 32px figure it would be a second
+   * claim on the same attention. It goes inline with the label instead, at 20px
+   * and no chip: still there to be scanned by, no longer competing to be read
+   * first.
+   */
+  .kpix__grid {
+    margin: 0;
+    display: grid;
+  }
+
+  .kpix__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    min-width: 0;
+  }
+
+  .kpix__value {
+    order: 1;
+    margin: 0;
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-base);
+    /*
+     * TABULAR FIGURES. Proportional digits give `1` about half the advance width
+     * of `8`, so eight numbers set beside one another have eight different
+     * rhythms and none of the columns agree. `tnum` makes every digit one width,
+     * which is what makes a row of figures read as measurements rather than as
+     * words that happen to be numeric. It is also what stops the row twitching
+     * if these are ever counted up on entry.
+     */
+    font-variant-numeric: tabular-nums;
+  }
+
+  .kpix__label {
+    order: 2;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sa-inline-8);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* The glyph sits on the caption's first line, not centred against a caption
+     that may run to two. `flex-shrink: 0` so a long caption never squeezes it
+     into an ellipse. */
+  .kpix__icon {
+    flex: 0 0 auto;
+    margin-top: 2px;
+    color: var(--sa-color-secondaryScale-600);
+  }
+
+  /* ── Carousel option ─────────────────────────────────────────────────────
+   *
+   * One row of four, two pages. The row is the same cell as the grid, so the
+   * two options differ ONLY in how many figures a reader can see at once —
+   * which is the actual decision, and it is the only thing that should vary
+   * between two options being compared.
+   */
+  .kpix__page {
+    display: grid;
+    gap: var(--sa-inline-24);
+    /* The slide must not collapse to its content: two pages of four cells with
+       different caption lengths would otherwise change the card's height as the
+       reader pages, which is the one thing a carousel must never do. */
+    align-content: start;
+    min-height: 5.5rem;
+  }
+
+  /* ── The column count, MOBILE-FIRST and on the estate's own ladder ────────
+   *
+   * One column, then two at 768, then four at 1024 — `min-width` steps taken
+   * from the published ladder (360 · 768 · 1024 · 1280 · 1440 · 1920) rather
+   * than invented for this card.
+   *
+   * It was written the other way first, as `max-width` steps at 1023 and 599,
+   * and `check:breakpoints` refused the 599: a new off-ladder literal is a new
+   * breakpoint nobody else on the estate will know about. Rewriting it upward
+   * fixed that and was the better shape anyway — the base rule is now the
+   * narrowest case, which is what mobile-first means.
+   *
+   * THE FIGURE DECIDES WHERE EACH STEP SITS. `345,703,321` is about 190px at
+   * 32px and 143 at 24, and a cell narrower than its figure would have to shrink
+   * or clip the one thing on this card that may do neither. Four-up at 1024
+   * gives 218px a cell; two-up at 768 gives 320.
+   */
+  .kpix__grid,
+  .kpix__page {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .kpix__grid {
+    gap: var(--sa-stack-24);
+  }
+
+  @media (min-width: 768px) {
+    .kpix__grid,
+    .kpix__page {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .kpix__grid {
+      gap: var(--sa-stack-32) var(--sa-inline-24);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .kpix__grid,
+    .kpix__page {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+}

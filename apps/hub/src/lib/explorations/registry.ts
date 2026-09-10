@@ -137,6 +137,64 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
       "The organisation page. Its first fold and its document shelves have carried most of the estate's design decisions this month, because it is the record that turns on every part of the organisation template.",
     modules: [
       {
+        id: "counters",
+        title: "The Abhiyaan's eight published counters",
+        question:
+          "Eight figures is more than a fact strip was drawn for. Do they scale up so all eight read as figures, or page four at a time?",
+        date: "10 September 2026",
+        options: [
+          {
+            id: "as-shipped",
+            title: "Four across, twice, at strip size",
+            label: "Strip Size",
+            summary:
+              "`FactStrip` at `layout=\"inline\"` — every figure on the card, set at 20px over a 16px caption.",
+            status: "chosen",
+            live: true,
+            landedIn: "the live organisation template — what the page renders today",
+            lookAt: [
+              "The figure is 20px and its caption 16px — a ratio of 1.25:1, which is the weakest hierarchy two sizes can have",
+              "At that ratio 345 million reads as a line of text that happens to be numeric, and eight of them read as eight equal lines",
+              "The 56px peach chip is the loudest thing in each cell, which only works while the figure is quiet",
+            ],
+          },
+          {
+            id: "scaled-grid",
+            title: "The same eight, scaled to read as figures",
+            label: "Scaled Grid",
+            summary:
+              "Every figure still on the card, at 32px against a 14px caption, with the mark demoted into the caption line.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "2.3:1 between figure and caption, against 1.25:1 today — the figure now carries the cell",
+              "The mark leaves its chip and joins the caption at 20px: still there to scan by, no longer competing to be read first",
+              "Tabular figures, so the eight numbers share one rhythm instead of eight",
+              "It is SHORTER than what ships despite the larger figures, because the chip was taller than the copy it sat above",
+              "All eight remain on the page, which is the property a departmental statistic set should have",
+              "On a phone it takes ONE column and runs to about 700px — the same as what ships. A 24px figure will not sit two-up in a 390px viewport without being squeezed, and a squeezed published figure is not an option.",
+            ],
+          },
+          {
+            id: "carousel",
+            title: "Four at a time, two pages",
+            label: "Paged Carousel",
+            summary:
+              "The DS `Carousel` with autoplay off — one row of four, the other four a page away.",
+            status: "proposed",
+            live: true,
+            lookAt: [
+              "The card halves: one row rather than two",
+              "Four of the Department's eight published statistics are NOT on the page at any moment — the trade this option is really asking about",
+              "Autoplay is off and must stay off: a figure that leaves before it has been read is worse than one never shown",
+              "The slide has a minimum height so the card does not change size as a reader pages",
+              "Compare the two page indicators against the notice bar's own controls 150px below — a second set of arrows in one fold",
+              "MEASURED: it saves 24px against the scaled grid — 188 against 212 — because the control row costs back most of the second row it removes. Half the figures hidden, for 24 pixels.",
+            ],
+          },
+        ],
+      },
+      {
         id: "campaign-band",
         title: "The campaign band and the helpline",
         question:
