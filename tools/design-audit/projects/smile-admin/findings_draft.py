@@ -259,3 +259,85 @@ DEFERRED = [
 #   radius 9999 vs 999 — visually identical; a token-bookkeeping point with no DS in play.
 # ---------------------------------------------------------------------------
 MACHINE = []
+
+# ---------------------------------------------------------------------------
+# Sign-in surface. Compared against the five designed auth frames: Sign In (8383:55268),
+# Choose Portal (8383:55528) and the three Implementing Agency states (8383:54485, 8383:54743,
+# 9387:139420). Every size/weight/colour below was measured on both sides.
+# ---------------------------------------------------------------------------
+LOGIN = [
+ ("L01", "Screen", "Sign In", "Major", "Typography",
+  "A third typeface appears on the sign-in screen",
+  "Every string on the designed sign-in frames is Noto Sans.",
+  "Six elements render in Plus Jakarta Sans: the 'Log in to your account' heading, the Log In "
+  "button, 'Implementing Agency?' and 'Sign in with OTP', the 'Forgot Password' heading on that "
+  "screen, 'Implementing Agency sign-in', and 'Send OTP'. Everything around them is Noto Sans, so "
+  "the panel is set in two typefaces at once.",
+  "Set all six to Noto Sans. The estate mandates it on every government property, and this is the "
+  "first screen anyone sees."),
+
+ ("L02", "Screen", "Sign In", "Major", "Typography",
+  "The SAMAVESH wordmark is little over half the size the design draws",
+  "56px Bold.",
+  "30px. The lock-up is the largest thing on the designed screen and is no longer.",
+  "Set the wordmark to 56px Bold."),
+
+ ("L03", "Screen", "Sign In", "Major", "Typography",
+  "Forgot Password is a third smaller and a different colour",
+  "18px Medium in the ink colour #1f2937.",
+  "13px Medium in the primary navy #003366.",
+  "Set it to 18px. If it should read as a link rather than as text, that is a design decision to "
+  "make in the frame — the build should not decide it alone."),
+
+ ("L04", "Screen", "Sign In", "Minor", "Typography",
+  "The hero tagline and strapline are both a size down",
+  "'Justice. Equality. Dignity.' 28px Medium; the strapline beneath it 16px Regular.",
+  "24px Bold and 14px Regular.",
+  "Restore 28px Medium and 16px Regular."),
+
+ ("L05", "Screen", "Sign In", "Minor", "Typography",
+  "Every line of the Signing into block is smaller than drawn",
+  "SIGNING INTO 12px Medium, 'SMILE Beggary' 20px Bold, the description 14px Regular.",
+  "10px, 16px and 11px. The label also reads 'Signing into' rather than the design's uppercase "
+  "SIGNING INTO.",
+  "Restore 12 / 20 / 14 and settle the capitalisation in the frame."),
+
+ ("L06", "Screen", "Sign In", "Minor", "Typography",
+  "Both field labels are smaller, heavier and a different grey",
+  "'Email or Mobile Number' and 'Password' are 14px Medium in #1f2937.",
+  "13px SemiBold in #334155.",
+  "Set both to 14px Medium #1f2937."),
+
+ ("L07", "Screen", "Sign In", "Minor", "Content & Iconography",
+  "The password placeholder is worded differently",
+  "'Enter your password'.",
+  "'Enter password'. The field above it matches the design exactly, so this one reads as an "
+  "oversight rather than a decision.",
+  "Use 'Enter your password', or change both in the frame."),
+
+ ("L08", "Screen", "Sign In", "Minor", "Components & States",
+  "Two controls are in the build that the design does not draw",
+  "The form is: two fields, Forgot Password, Log In, then the Implementing Agency link.",
+  "The build adds a 'Remember me' checkbox and an 'OR' divider above the Implementing Agency "
+  "link, plus a version and build stamp in the bottom corner.",
+  "Confirm all three are intended. If they are, add them to the frame — a checkbox that stores a "
+  "sign-in preference is a design decision, not an implementation detail."),
+
+ ("L09", "Screen", "Choose Portal", "Major", "Components & States",
+  "Choose Portal is a different pattern from the one designed",
+  "The design keeps the reader on the sign-in panel: a 'Your role' selector set to Super Admin, "
+  "and four portals listed inline — SCW, SMILE-Transgender, NOS, NMBA.",
+  "The build opens a right-hand slide-over drawer listing nine portals as cards (the four above "
+  "plus SMILE-Beggary, E-Utthaan, E-Anudaan, PM-AJAY, NHAPOA), with a green tick on the current "
+  "one. There is no role selector at all.",
+  "Decide which pattern is right and make both match. The missing role selector is the part to "
+  "settle first — the design uses it to choose what you sign in AS, and the build has no "
+  "equivalent."),
+
+ ("L10", "Screen", "Choose Portal", "Minor", "Color & Token",
+  "Portal names in the drawer are orange",
+  "Portal names are ink-coloured text, #1f2428.",
+  "Each portal name is orange. Orange is the estate's accent, and here it is doing the job of a "
+  "heading on nine cards at once.",
+  "Set the portal names to the ink colour and let the logo and the tick carry the colour."),
+]

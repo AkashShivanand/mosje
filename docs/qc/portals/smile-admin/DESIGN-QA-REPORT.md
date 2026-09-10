@@ -3,7 +3,7 @@
 **Build:** smile-admin-dev.mosje.in, captured 10 September 2026 · **Design:** MoSJE Portal Handoff → *Smile Beggary (Synced)*
 **Status:** draft — not signed off. A human still owes the keyboard and screen-reader pass.
 
-**Review in Figma:** [review sheet](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50817-25) (numbered markers, editable) · [pinned report](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50826-25)
+**Review in Figma:** [review sheet](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50817-25) (numbered markers) · [pinned report](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50826-25)
 
 ---
 
@@ -11,19 +11,134 @@
 
 | | |
 |---|---|
-| Screens compared design ↔ build | 19 |
-| Findings | **25** — 8 Major, 14 Minor, 3 Nit |
+| Screens compared design ↔ build | 19 + the sign-in surface |
+| Findings | **35** — 12 Major, 20 Minor, 3 Nit |
 | Applies to every screen | 10 |
 | Specific to one screen | 15 |
+| Sign-in surface | 10 |
 
-Every finding is a difference between what the design frame specifies and what the build renders.
+Every finding is a difference between what the design specifies and what the build renders.
 Engineering defects with no design counterpart are not raised here.
 
-**The three that matter most**
+**The five that matter most**
 
-1. **The sidebar is the wrong typeface and size on every screen** — the system font at 15px, where the design says Noto Sans at 14px.
-2. **The same table header is three different sizes** depending on which list you are on — 12px on fourteen screens, 14px on two, 11px on one.
-3. **Pagination is mirrored** — page numbers and record count have swapped sides, on every list screen.
+1. **The sign-in screen is set in two typefaces** — six elements render in Plus Jakarta Sans where the design is Noto Sans throughout.
+2. **Choose Portal is a different pattern entirely** — a nine-portal drawer in the build against a four-portal inline list with a role selector in the design. The role selector has no equivalent in the build.
+3. **The sidebar is the wrong typeface and size on every screen** — the system font at 15px, against Noto Sans at 14px.
+4. **The same table header is three different sizes** depending on the list — 12px on fourteen screens, 14px on two, 11px on one.
+5. **Pagination is mirrored** — page numbers and record count have swapped sides, on every list screen.
+
+---
+
+## Sign-in surface
+
+
+## Sign In
+
+### A third typeface appears on the sign-in screen
+
+`L01` · **Major** · Typography
+
+| | |
+|---|---|
+| **Design says** | Every string on the designed sign-in frames is Noto Sans. |
+| **Build does** | Six elements render in Plus Jakarta Sans: the 'Log in to your account' heading, the Log In button, 'Implementing Agency?' and 'Sign in with OTP', the 'Forgot Password' heading on that screen, 'Implementing Agency sign-in', and 'Send OTP'. Everything around them is Noto Sans, so the panel is set in two typefaces at once. |
+| **Fix** | Set all six to Noto Sans. The estate mandates it on every government property, and this is the first screen anyone sees. |
+
+### The SAMAVESH wordmark is little over half the size the design draws
+
+`L02` · **Major** · Typography
+
+| | |
+|---|---|
+| **Design says** | 56px Bold. |
+| **Build does** | 30px. The lock-up is the largest thing on the designed screen and is no longer. |
+| **Fix** | Set the wordmark to 56px Bold. |
+
+### Forgot Password is a third smaller and a different colour
+
+`L03` · **Major** · Typography
+
+| | |
+|---|---|
+| **Design says** | 18px Medium in the ink colour #1f2937. |
+| **Build does** | 13px Medium in the primary navy #003366. |
+| **Fix** | Set it to 18px. If it should read as a link rather than as text, that is a design decision to make in the frame — the build should not decide it alone. |
+
+### The hero tagline and strapline are both a size down
+
+`L04` · **Minor** · Typography
+
+| | |
+|---|---|
+| **Design says** | 'Justice. Equality. Dignity.' 28px Medium; the strapline beneath it 16px Regular. |
+| **Build does** | 24px Bold and 14px Regular. |
+| **Fix** | Restore 28px Medium and 16px Regular. |
+
+### Every line of the Signing into block is smaller than drawn
+
+`L05` · **Minor** · Typography
+
+| | |
+|---|---|
+| **Design says** | SIGNING INTO 12px Medium, 'SMILE Beggary' 20px Bold, the description 14px Regular. |
+| **Build does** | 10px, 16px and 11px. The label also reads 'Signing into' rather than the design's uppercase SIGNING INTO. |
+| **Fix** | Restore 12 / 20 / 14 and settle the capitalisation in the frame. |
+
+### Both field labels are smaller, heavier and a different grey
+
+`L06` · **Minor** · Typography
+
+| | |
+|---|---|
+| **Design says** | 'Email or Mobile Number' and 'Password' are 14px Medium in #1f2937. |
+| **Build does** | 13px SemiBold in #334155. |
+| **Fix** | Set both to 14px Medium #1f2937. |
+
+### The password placeholder is worded differently
+
+`L07` · **Minor** · Content & Iconography
+
+| | |
+|---|---|
+| **Design says** | 'Enter your password'. |
+| **Build does** | 'Enter password'. The field above it matches the design exactly, so this one reads as an oversight rather than a decision. |
+| **Fix** | Use 'Enter your password', or change both in the frame. |
+
+### Two controls are in the build that the design does not draw
+
+`L08` · **Minor** · Components & States
+
+| | |
+|---|---|
+| **Design says** | The form is: two fields, Forgot Password, Log In, then the Implementing Agency link. |
+| **Build does** | The build adds a 'Remember me' checkbox and an 'OR' divider above the Implementing Agency link, plus a version and build stamp in the bottom corner. |
+| **Fix** | Confirm all three are intended. If they are, add them to the frame — a checkbox that stores a sign-in preference is a design decision, not an implementation detail. |
+
+## Choose Portal
+
+### Choose Portal is a different pattern from the one designed
+
+`L09` · **Major** · Components & States
+
+| | |
+|---|---|
+| **Design says** | The design keeps the reader on the sign-in panel: a 'Your role' selector set to Super Admin, and four portals listed inline — SCW, SMILE-Transgender, NOS, NMBA. |
+| **Build does** | The build opens a right-hand slide-over drawer listing nine portals as cards (the four above plus SMILE-Beggary, E-Utthaan, E-Anudaan, PM-AJAY, NHAPOA), with a green tick on the current one. There is no role selector at all. |
+| **Fix** | Decide which pattern is right and make both match. The missing role selector is the part to settle first — the design uses it to choose what you sign in AS, and the build has no equivalent. |
+
+### Portal names in the drawer are orange
+
+`L10` · **Minor** · Color & Token
+
+| | |
+|---|---|
+| **Design says** | Portal names are ink-coloured text, #1f2428. |
+| **Build does** | Each portal name is orange. Orange is the estate's accent, and here it is doing the job of a heading on nine cards at once. |
+| **Fix** | Set the portal names to the ink colour and let the logo and the tick carry the colour. |
+
+> **Not audited:** the two later Implementing Agency states (OTP sent, and resend) are designed
+> but need a real OTP to reach. They were not captured and carry no findings either way.
 
 ---
 
@@ -128,7 +243,6 @@ Engineering defects with no design counterpart are not raised here.
 | **Design says** | Three plain A glyphs at graduated sizes; size alone carries the meaning. |
 | **Build does** | The A glyphs carry superscript minus and plus signs. |
 | **Fix** | Confirm which is intended. If the signs stay, they belong in both the design and the build so the masthead is one specification. |
-
 ---
 
 ## Findings specific to one screen
@@ -297,8 +411,8 @@ Engineering defects with no design counterpart are not raised here.
 
 ## Coverage
 
-**Compared:** 19 screens, super-admin. That role is the only one that reaches every screen; the
-other roles render the same screens, so a finding on one is a finding on all.
+**Compared:** 19 screens plus the sign-in surface, as super-admin. That role is the only one that
+reaches every screen; the other roles render the same screens, so a finding on one holds for all.
 
 **Roles reached:** super-admin (23 of 23 routes) · central-authority (23 of 23) · US/SO (4 of 4) ·
 NISD (4 of 4). US/SO and NISD were checked live — four sidebar entries each is genuinely their
@@ -310,23 +424,22 @@ whole portal, not an incomplete crawl.
 |---|---|
 | State Nodal Officer | No credentials in the shared access sheet |
 | Nodal Officer | No credentials in the shared access sheet |
-| Implementing Agency | No credentials, **and** it is a separate sign-in (the login page offers "Implementing Agency? Sign in with OTP"). The design has three Implementing Agency auth frames. This is an unaudited surface, not just an unaudited role. |
+| Implementing Agency | No credentials, **and** it signs in by OTP. Its three designed states cannot be reached without a test number whose OTP can be read. |
 
-**Not yet compared:** the add / edit / view / detail states that sit behind buttons, and the
-Master Settings tabs. Their design frames exist; the capture of them is in progress and they are
-not in this count.
+**Not yet compared:** the add / edit / view / detail states behind buttons, and the Master Settings
+tabs. Their design frames exist and the capture is in progress; they are not in this count.
 
 **Four routes found no design frame** on *Smile Beggary (Synced)*: `/hotspot-approvals` and the
 three Fund Monitoring create forms. If the recent design-and-dev sync produced frames for them,
-they are on a page this audit was not pointed at — worth confirming.
+they are on a page this audit was not pointed at.
 
 ---
 
 ## Raised elsewhere, not here
 
-Two things were found that are real but are not design bugs, so they are recorded in
-`docs/audit/smile-beggary-capture-and-session.md` rather than in this report:
+Two real problems that are not design bugs, recorded in
+`docs/audit/smile-beggary-capture-and-session.md`:
 
 - A page refresh signs the officer out on 15 of 20 routes, including the landing dashboard.
 - The Beneficiary List and Shelter Occupants take up to 25 seconds to show their first row.
-  (The *design* consequence — that no loading state was ever drawn — **is** in this report.)
+  (The design consequence — that no loading state was ever drawn — **is** in this report.)
