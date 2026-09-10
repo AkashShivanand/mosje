@@ -3,7 +3,7 @@
   "project": "smile-admin",
   "environment": "dev",
   "engineSha": "4d06b510",
-  "capturedAt": "2026-09-10T15:55:45+05:30",
+  "capturedAt": "2026-09-10T16:28:40+05:30",
   "hosts": {
     "super-admin": {
       "base": "https://smile-admin-dev.mosje.in",
@@ -350,8 +350,8 @@
       "pageH": 6082,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-DASHBOARD.json",
-      "structureHash": "dc280d73dbdbc1beed643ece1bfdd7f28ac785441a40b4738de135447003208c",
-      "geometryHash": "1d409af6e1583d84282361701f4c6f6f01131d859815b6dcf8bffe776f4bf480",
+      "structureHash": "2606b961a823f11069344ce1e34170aa04468e76bfc03c1fa4233f8569658c56",
+      "geometryHash": "dc31bbe89344679878015bc68d2fb7b28b95d6260749c34c676948e34aae4c32",
       "maskedRows": 0,
       "totalRows": 329,
       "fields": [
@@ -373,7 +373,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-xra1sgf69",
+          "name": "mantine-ygl5cwaf1",
           "label": "Drill funds chart \u2014 State",
           "type": "text",
           "required": false,
@@ -385,7 +385,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-4wrt0u3lm",
+          "name": "mantine-hgvxofbgu",
           "label": "Drill funds chart \u2014 District / City",
           "type": "text",
           "required": false,
@@ -410,7 +410,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T15:56:38+05:30",
+      "capturedAt": "2026-09-10T16:29:17+05:30",
       "designUnchanged": false
     },
     {
@@ -425,8 +425,8 @@
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-CITY-PROFILING.json",
-      "structureHash": "425c760c8ef3a4f5ea270a28e2d27b58e454421f514eb4738908b50384c7d6aa",
-      "geometryHash": "1bd62d0bb702d3ea423cd6bc3d81ee14ee52830ff05043242b735210d9cd9579",
+      "structureHash": "734596e2c29bcc75f2b3ffcf59e1ad4e430007a4466dc8aec5fdd0083d5a5f7e",
+      "geometryHash": "b83095547c830126e293fd4f81b53c9b8013e00a215c413a76c322654f133444",
       "maskedRows": 0,
       "totalRows": 254,
       "fields": [
@@ -554,7 +554,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T15:56:45+05:30",
+      "capturedAt": "2026-09-10T16:29:23+05:30",
       "designUnchanged": false
     },
     {
@@ -564,13 +564,13 @@
       "url": "https://smile-admin-dev.mosje.in/performance-stats",
       "reachedBy": "nav",
       "png": "captures/live/SUPER-ADMIN-PERFORMANCE-STATS.png",
-      "pngSha256": "e5603bbfe77107b6d8a3e2a138b7c91086f1fdca27e5dfd0dafe154b393ecae7",
+      "pngSha256": "c365818a35a9ac165d7eefd42908a79f371e5e7285f261136c0a22431224f632",
       "pngH": 4262,
       "pageH": 4262,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-PERFORMANCE-STATS.json",
-      "structureHash": "099cc48bc3df40f08b9c5f92799c8b9a8f5af52e54779148b839b204b175a6fe",
-      "geometryHash": "6663ea537c78ee536dd3c68b30739699e2be15e97fa835c5e87b9e27e36b7b66",
+      "structureHash": "541663fdb38e38060a00d76e92b9484fb77a9dc08ccdbdebf1fbc6c728b8652e",
+      "geometryHash": "68093ae72532bdb1d2f0fc32b7b47ccb2386a7a912917fd965f8de66583c8994",
       "maskedRows": 0,
       "totalRows": 665,
       "fields": [
@@ -720,7 +720,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T15:56:50+05:30",
+      "capturedAt": "2026-09-10T16:29:29+05:30",
       "designUnchanged": false
     },
     {
@@ -735,8 +735,8 @@
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-USERS.json",
-      "structureHash": "b86e9760d816e27a7bcad91d6455ed18ca954a2eb69e13caaaa6eeb33fd43cf9",
-      "geometryHash": "56a41cdd257e4dde3b91671b3bdfd056543c5c48c8f20bc71201f946b9f25b68",
+      "structureHash": "0eeb69dea4a56056234d67ca695fa6904ead576e72b633904ae410064b88ebe0",
+      "geometryHash": "293de1e5f4f0651265d999513f090bebf3f2a17e969ba3bb824508f527338ef8",
       "maskedRows": 0,
       "totalRows": 270,
       "fields": [
@@ -857,7 +857,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-co1p5neid",
+          "name": "mantine-32952kt2h",
           "label": "",
           "type": "checkbox",
           "required": false,
@@ -869,7 +869,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-teyuc889q",
+          "name": "mantine-bpvpluxh5",
           "label": "",
           "type": "checkbox",
           "required": false,
@@ -881,7 +881,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-6vl5sft71",
+          "name": "mantine-21h3q3s59",
           "label": "",
           "type": "checkbox",
           "required": false,
@@ -893,7 +893,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-iwne0rwb1",
+          "name": "mantine-jrp62y328",
           "label": "",
           "type": "checkbox",
           "required": false,
@@ -905,7 +905,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-0k439tl4w",
+          "name": "mantine-h4g29b0rs",
           "label": "",
           "type": "checkbox",
           "required": false,
@@ -917,7 +917,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-nm1lcwivo",
+          "name": "mantine-vkiaghwng",
           "label": "",
           "type": "checkbox",
           "required": false,
@@ -929,7 +929,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-nc0w3m7i9",
+          "name": "mantine-42rgxl5tn",
           "label": "",
           "type": "checkbox",
           "required": false,
@@ -941,7 +941,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-xf5qjeum5",
+          "name": "mantine-r6gwr1e0w",
           "label": "",
           "type": "checkbox",
           "required": false,
@@ -953,7 +953,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-t3dj32mkf",
+          "name": "mantine-a3tt1s47w",
           "label": "",
           "type": "checkbox",
           "required": false,
@@ -965,7 +965,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-hlkznme10",
+          "name": "mantine-gsdfqwbus",
           "label": "",
           "type": "checkbox",
           "required": false,
@@ -1008,7 +1008,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T15:56:57+05:30",
+      "capturedAt": "2026-09-10T16:29:35+05:30",
       "designUnchanged": false
     },
     {
@@ -1023,8 +1023,8 @@
       "pageH": 1834,
       "truncated": true,
       "rows": "captures/live/SUPER-ADMIN-ROLES.json",
-      "structureHash": "7800c6452aaa8486adbe4b1e08ff5a6157d717297c1726feacd2de8fc0795d3b",
-      "geometryHash": "1e8e803b7cc9c187181fa3b1c2a2e82b983ae2e5c12e9c41a0c393eeee071fae",
+      "structureHash": "faec62e0e5f2b5383c4bd085b3cca52a877cb803061169dbca631bde71d45dd4",
+      "geometryHash": "94b2e0c04e755f70a7b1934f7a172ea5fc4cdb22fb46049714d72fde776004d0",
       "maskedRows": 0,
       "totalRows": 194,
       "fields": [
@@ -1054,7 +1054,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T15:57:07+05:30",
+      "capturedAt": "2026-09-10T16:29:46+05:30",
       "designUnchanged": false
     },
     {
@@ -1069,8 +1069,8 @@
       "pageH": 1857,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-PERMISSIONS.json",
-      "structureHash": "1c6a0f1a919d1edaa448d824331eec2a1a84548c3bbf866326a06dd5ff4c29f8",
-      "geometryHash": "4c29f09363c3bf03fd8099e2fab3bf0651228e725ed660dfbb72b13ca2ff9e7e",
+      "structureHash": "f2cb64ad1067fda49d960dd7beca7adc71f5f53ab2abd9673ef8a42b9a6a83ee",
+      "geometryHash": "b5e2e6dc071bd38bfedd4c77bba5217d868a54750f87d410c7828c1a35cc8133",
       "maskedRows": 0,
       "totalRows": 169,
       "fields": [
@@ -1100,7 +1100,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T15:57:12+05:30",
+      "capturedAt": "2026-09-10T16:29:51+05:30",
       "designUnchanged": false
     },
     {
@@ -1115,8 +1115,8 @@
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-SURVEY-LOCATIONS.json",
-      "structureHash": "ae13028867bdd3436c75f4a9cfc943eb0b31c01e7fe30aa81abcec15813ce1ec",
-      "geometryHash": "8ee84d175db1b9a2f5560b237f79809b0110911a6b9b6a1975a7e4c90605e7e4",
+      "structureHash": "95d7ca76f6bbe65fd4530a51246cee43a1c2e0b0657bff696c68e2c15bd765ac",
+      "geometryHash": "6767712e2059e73ac59212f060907991480ba00c65af988bcc08a3f76bd5e405",
       "maskedRows": 0,
       "totalRows": 262,
       "fields": [
@@ -1255,7 +1255,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T15:57:18+05:30",
+      "capturedAt": "2026-09-10T16:29:57+05:30",
       "designUnchanged": false
     },
     {
@@ -1270,8 +1270,8 @@
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-SURVEYOR-MAPPED.json",
-      "structureHash": "52a48ed65bbad53e8d852b05d4e6ce40700e07db6f0a2d130749509103e5334d",
-      "geometryHash": "f43e22f30b3b07ab49c28dfae71fac5cee670f0f2aa14674754a0e58f595c080",
+      "structureHash": "a12c773ca49d38c57f0046a3740e4ab43d967378e777f9f8a9daa949d23e1781",
+      "geometryHash": "c55f30353cf75ce065edb5500fad160688aad48aa22d520d04363087298bd904",
       "maskedRows": 20,
       "totalRows": 261,
       "fields": [
@@ -1472,7 +1472,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T15:57:24+05:30",
+      "capturedAt": "2026-09-10T16:30:04+05:30",
       "designUnchanged": false
     },
     {
@@ -1482,13 +1482,13 @@
       "url": "https://smile-admin-dev.mosje.in/beggary-schemes",
       "reachedBy": "nav",
       "png": "captures/live/SUPER-ADMIN-BEGGARY-SCHEMES.png",
-      "pngSha256": "b70b911819249d1b549839c650ae0070505e76424ebcf89c2cf46e5107bae8e7",
+      "pngSha256": "db1c01716e4191cb0c858c9615da3dcfe1c002711e43a9e163720204c2bfb8c1",
       "pngH": 1791,
       "pageH": 1791,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-BEGGARY-SCHEMES.json",
-      "structureHash": "8d33556f17bdb4e89d783e93f2c3a068aa7f7d44a6db982499cf26a5f92450e0",
-      "geometryHash": "6624b10df2c6fb1117c7d0de37866b6f5c700b8d46ee9d8ab7f2d549a995bcbd",
+      "structureHash": "92ad6c78a7af86c4b4301f512c33b578c82d4926c1aeb30d56e45a299786158f",
+      "geometryHash": "3063f14b728328fde5ef6b55a529333f44bc8c510cc2ca4bd85dd86038a377d2",
       "maskedRows": 0,
       "totalRows": 262,
       "fields": [
@@ -1573,7 +1573,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-idznaxkwj",
+          "name": "mantine-8fbstb695",
           "label": "Filter by status",
           "type": "text",
           "required": false,
@@ -1585,7 +1585,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-rzqea1w3o",
+          "name": "mantine-5y7ej9g9w",
           "label": "Filter by Nodal Officer assignment",
           "type": "text",
           "required": false,
@@ -1682,7 +1682,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T15:57:30+05:30",
+      "capturedAt": "2026-09-10T16:30:09+05:30",
       "designUnchanged": false
     },
     {
@@ -1697,8 +1697,8 @@
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-HOTSPOT-APPROVALS.json",
-      "structureHash": "c14a01157d9a3ebf432db2ea0158d406bba41d25aec2c3885e2ea8e94ba44c56",
-      "geometryHash": "642a760b4fed0e550dffecc01636904f5b9bb12b7daec1826b240d534c0b1b0e",
+      "structureHash": "6772a1a2a2e745ebfac36590aaaee48a293080de9fefd78c894bf5fdbec1a883",
+      "geometryHash": "fff9087fabc6ad83db718289072ee575a16dbd6cc98749543b5ca7758964e4da",
       "maskedRows": 0,
       "totalRows": 126,
       "fields": [
@@ -1733,7 +1733,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T15:57:36+05:30",
+      "capturedAt": "2026-09-10T16:30:15+05:30",
       "designUnchanged": false
     },
     {
@@ -1748,8 +1748,8 @@
       "pageH": 3028,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-PERSONS.json",
-      "structureHash": "d105e86372c671c9806d1dff6c6de6617ee51e2383ae9490587586f48db93b60",
-      "geometryHash": "9424fb4dc4a20ea53d1696041c9fa80dc613bbe86e5c7c8d210abc990c6f8128",
+      "structureHash": "3e653b45781ebf9059c28c776f0d32f7ea28a2b6d06f578c122d7a3f5a372336",
+      "geometryHash": "472e8d0661b19aa89c93478ce875d518330b6ebcfe186842daa928b8b4affc94",
       "maskedRows": 0,
       "totalRows": 385,
       "fields": [
@@ -1846,7 +1846,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-qys7fr3wq",
+          "name": "mantine-82seg3tn0",
           "label": "Filter by IA / NGO",
           "type": "text",
           "required": false,
@@ -1858,7 +1858,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-u96dpjwp3",
+          "name": "mantine-7u6lncjyl",
           "label": "Filter by mobilization status",
           "type": "text",
           "required": false,
@@ -1870,7 +1870,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-n7qzaqfbc",
+          "name": "mantine-wk11mww16",
           "label": "Filter by gender",
           "type": "text",
           "required": false,
@@ -1882,7 +1882,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-ondevy71k",
+          "name": "mantine-dt9296ugv",
           "label": "Filter by age band",
           "type": "text",
           "required": false,
@@ -1925,7 +1925,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T15:57:57+05:30",
+      "capturedAt": "2026-09-10T16:30:39+05:30",
       "designUnchanged": false
     },
     {
@@ -1935,13 +1935,13 @@
       "url": "https://smile-admin-dev.mosje.in/shelter-homes",
       "reachedBy": "nav",
       "png": "captures/live/SUPER-ADMIN-SHELTER-HOMES.png",
-      "pngSha256": "7dad6ecc1eef7879f5a4102461904d7305518ca120f1bd1da4f9e155d351d3b7",
+      "pngSha256": "7aeceb29b6fb880211ec3b44b3d9fe636e5772ec08cbeeaf80cd67a43b344e2f",
       "pngH": 1905,
       "pageH": 1905,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-SHELTER-HOMES.json",
-      "structureHash": "e46b591f699316931c9c0b6cbc615313fe9c4e52efe327d826f177e351d8222c",
-      "geometryHash": "ca8bb509a7b260474e97c389a83d2f93764066153155241629ac640a0279ce7c",
+      "structureHash": "df1ea1cd981e6eb9c49ba1af31d92e1a17e57546a11c724743bbfe5958d3084c",
+      "geometryHash": "df458ad3d40aab4d60660c3efac6bdeefe34614f2e251e7bd4464ec95114788a",
       "maskedRows": 0,
       "totalRows": 278,
       "fields": [
@@ -2022,7 +2022,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-hpft3dw8k",
+          "name": "mantine-z9corazif",
           "label": null,
           "type": "text",
           "required": false,
@@ -2034,7 +2034,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-3jymmnjtz",
+          "name": "mantine-uk8652q5o",
           "label": null,
           "type": "text",
           "required": false,
@@ -2077,7 +2077,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T15:58:02+05:30",
+      "capturedAt": "2026-09-10T16:30:45+05:30",
       "designUnchanged": false
     },
     {
@@ -2092,8 +2092,8 @@
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-SHELTER-HOMES-BENEFICIARIES.json",
-      "structureHash": "e8041a47d7aef7a6a54fa6a327e8ef7a7c2075bfeb3edf9b4b3635b7d86ee7ef",
-      "geometryHash": "d8e07db18d591a0fb7cc5fea4a815b02f52543bb6e1a0ac8a4081a9589b01471",
+      "structureHash": "b24864d0932b10710cffc28cf3e4b69ed1686bc8d8069a708c5c4035f93e6f54",
+      "geometryHash": "ae8b8c9befc65c94b75b27f48ffd86ffb275eac8cfacba86f877cdfdcceb22b3",
       "maskedRows": 0,
       "totalRows": 158,
       "fields": [
@@ -2217,7 +2217,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T15:58:11+05:30",
+      "capturedAt": "2026-09-10T16:30:53+05:30",
       "designUnchanged": false
     },
     {
@@ -2343,13 +2343,13 @@
       "url": "https://smile-admin-dev.mosje.in/comprehensive-rehab/data",
       "reachedBy": "nav",
       "png": "captures/live/SUPER-ADMIN-COMPREHENSIVE-REHAB-DATA.png",
-      "pngSha256": "49c6cdaebfb9f822a1f384ebd424936ccb495de14d6399c1a867b6f8b392fc73",
+      "pngSha256": "475705ecf95fd28717fe008f8642233abe02400287a38d1fea9d662991b1b231",
       "pngH": 1750,
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-COMPREHENSIVE-REHAB-DATA.json",
-      "structureHash": "c963783882e03dc8a1ae8aee166771571cf07a4233f10abeab21d0656958ad0a",
-      "geometryHash": "e790f8e4264962ad277e0768d78bbb5e1ed1ec68e45d0511448e4a0d09bcf9a6",
+      "structureHash": "a736f4b7d89aaf621bbc64a0eb036ff26dd7e93d86fe405c53b7d365c20e6355",
+      "geometryHash": "42636400e180010873c88178b27bdf295e0fb028c4903f46c4548bcc00d4af59",
       "maskedRows": 0,
       "totalRows": 243,
       "fields": [
@@ -2527,7 +2527,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T15:59:55+05:30",
+      "capturedAt": "2026-09-10T16:32:37+05:30",
       "designUnchanged": false
     },
     {
@@ -2571,13 +2571,13 @@
       "url": "https://smile-admin-dev.mosje.in/fund-monitoring/sanction-orders/create",
       "reachedBy": "nav",
       "png": "captures/live/SUPER-ADMIN-FUND-MONITORING-SANCTION-ORDERS-CREATE.png",
-      "pngSha256": "75d83fd2a74101bd1d394d53461806ac2f7afcdd7114fa7c9b75088d2ed2b421",
+      "pngSha256": "4d5f86bb9cfbf9025c0d52b87e050078343ef0b82aadd98d93fe6840e8eb540e",
       "pngH": 1750,
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-FUND-MONITORING-SANCTION-ORDERS-CREATE.json",
-      "structureHash": "04a55f83152c8c63918880c19000ba9fd4b32d837fa6b3d7d6ee0550c17e41d6",
-      "geometryHash": "e55c537bfd7e69d2e0334ab9fd0ce0bf934b6ee8c459a69a5639c8ca322888c2",
+      "structureHash": "859a5ed1804f0bb1aea036ea4a8fd96a429fc875e861b07a08dee5c2dcebe673",
+      "geometryHash": "06f4c04df36e275959b3f6e3f532a2440fa5e4dd4c634e8ddf98bb2cd77eb783",
       "maskedRows": 0,
       "totalRows": 134,
       "fields": [
@@ -2739,7 +2739,121 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:01:41+05:30",
+      "capturedAt": "2026-09-10T16:34:22+05:30",
+      "designUnchanged": false
+    },
+    {
+      "slug": "SUPER-ADMIN-FUND-MONITORING-NISD-RELEASES-CREATE",
+      "role": "super-admin",
+      "route": "/fund-monitoring/nisd-releases/create",
+      "url": "https://smile-admin-dev.mosje.in/fund-monitoring/nisd-releases/create",
+      "reachedBy": "nav",
+      "png": "captures/live/SUPER-ADMIN-FUND-MONITORING-NISD-RELEASES-CREATE.png",
+      "pngSha256": "9ac59bb9aab17a2605474a65d4a6e63a8a8ed9d022a391916a1ef7bd3d55ac94",
+      "pngH": 1750,
+      "pageH": 1750,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-FUND-MONITORING-NISD-RELEASES-CREATE.json",
+      "structureHash": "5a1ba81a25788a436628ad6310722336f4e47a1214c72bfda8538598548f51cd",
+      "geometryHash": "ff3ea32c8d9b6bfdd8d0f23549cf772e9da4edfe300474bfab567fac982d6a50",
+      "maskedRows": 0,
+      "totalRows": 138,
+      "fields": [
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Search # / state / district\u2026",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "select",
+          "required": false,
+          "options": [
+            "All States/UTs",
+            "Andaman & Nicobar Islands",
+            "Andhra Pradesh",
+            "Arunachal Pradesh",
+            "Assam",
+            "Bihar",
+            "Chandigarh",
+            "Chhattisgarh",
+            "Dadra & Nagar Haveli and Daman & Diu",
+            "Delhi",
+            "Goa",
+            "Gujarat",
+            "Haryana",
+            "Himachal Pradesh",
+            "Jammu & Kashmir",
+            "Jharkhand",
+            "Karnataka",
+            "Kerala",
+            "Ladakh",
+            "Lakshadweep",
+            "Madhya Pradesh",
+            "Maharashtra",
+            "Manipur",
+            "Meghalaya",
+            "Mizoram",
+            "Nagaland",
+            "Odisha",
+            "Puducherry",
+            "Punjab",
+            "Rajasthan",
+            "Sikkim",
+            "Tamil Nadu",
+            "Telangana",
+            "Tripura",
+            "Uttarakhand",
+            "Uttar Pradesh",
+            "West Bengal"
+          ],
+          "helper": null,
+          "value": "All States/UTs",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": "Per page\n10\n20\n40\n50\n100",
+          "type": "select",
+          "required": false,
+          "options": [
+            "10",
+            "20",
+            "40",
+            "50",
+            "100"
+          ],
+          "helper": null,
+          "value": "10",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": null,
+      "capturedAt": "2026-09-10T16:35:15+05:30",
       "designUnchanged": false
     },
     {
@@ -2749,18 +2863,18 @@
       "url": "https://smile-admin-dev.mosje.in/fund-monitoring/nodal-officer-onward-releases/create",
       "reachedBy": "nav",
       "png": "captures/live/SUPER-ADMIN-FUND-MONITORING-NODAL-OFFICER-ONWARD-RELEASES-CREATE.png",
-      "pngSha256": "9294f577fe115136985b6b97a377d96946894bf18793f390611e24d576bfe825",
+      "pngSha256": "28a4a6460d7436201d4b3a2b55585802f8158b142a25730bf33d05307255c7c6",
       "pngH": 1750,
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-FUND-MONITORING-NODAL-OFFICER-ONWARD-RELEASES-CREATE.json",
-      "structureHash": "93e31611347795600640e1d0f94fd575588ce3a172b013f64287308a3a34ffac",
-      "geometryHash": "a375ff349e3f2aba707a2e3276a6ff5b02c6a0c831d30dd7e318e5c05091e1e5",
+      "structureHash": "2800a19b7346ecb8789f994b3ff7f9f02e44352a56d0b10d5db3c0f755b49f50",
+      "geometryHash": "219b67e70cee7ad04f38675473b1947f43a9c76d167242194b654c84cf63f89d",
       "maskedRows": 0,
       "totalRows": 119,
       "fields": [
         {
-          "name": "mantine-u9fuqufbx",
+          "name": "mantine-zylb5rh2z",
           "label": null,
           "type": "text",
           "required": false,
@@ -2785,7 +2899,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:02:58+05:30",
+      "capturedAt": "2026-09-10T16:36:08+05:30",
       "designUnchanged": false
     },
     {
@@ -2800,8 +2914,8 @@
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-NOTIFICATIONS.json",
-      "structureHash": "661b4bd0d6514483af079037757ee8be34a101d7ddccba663d6bd40c9fb35787",
-      "geometryHash": "685dc8a8c9059c9c6548d0455eab48ed63bf4be2c3bb2b4cedc44605fba60719",
+      "structureHash": "5fbfa9239fc8b57926a7b87b33d7e465583584892385d748847545a0d953320d",
+      "geometryHash": "7e0b567928b458d8bc8fde36ba3b00d425211c9229e4324e8afdc358a414ce13",
       "maskedRows": 0,
       "totalRows": 142,
       "fields": [
@@ -2855,7 +2969,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:03:50+05:30",
+      "capturedAt": "2026-09-10T16:37:01+05:30",
       "designUnchanged": false
     },
     {
@@ -2865,13 +2979,13 @@
       "url": "https://smile-admin-dev.mosje.in/master-setting",
       "reachedBy": "nav",
       "png": "captures/live/SUPER-ADMIN-MASTER-SETTING.png",
-      "pngSha256": "a0c147ae31c67a9f667ef30b1e2f8d09aff6c780f7eae1f53cfe3a2f7d19552b",
+      "pngSha256": "53c0f443011b118c141b50bb10499f3002721b60c79dc20aac7dca16be017af5",
       "pngH": 2384,
       "pageH": 2384,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-MASTER-SETTING.json",
-      "structureHash": "ec0085ec498ae59bf42c07dd3cb7a47b0f3d12e88012e09064ab54c5de3a34ff",
-      "geometryHash": "78f759d5d55a5e52d68e4c7de95e5839610d7bbaaad0a298e9ecb630a3a9ee49",
+      "structureHash": "b6c8ef2c957e75264d6a116f55a3fbad1dfc36777284b4c0be710e4fd4222c8f",
+      "geometryHash": "9a9f5bff82a7c27c1ae7042780bc77e707f2803b49e37491cb37f30b558f9fe5",
       "maskedRows": 0,
       "totalRows": 331,
       "fields": [
@@ -2889,7 +3003,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:04:42+05:30",
+      "capturedAt": "2026-09-10T16:37:53+05:30",
       "designUnchanged": false
     },
     {
@@ -2899,13 +3013,13 @@
       "url": "https://smile-admin-dev.mosje.in/audit-log",
       "reachedBy": "nav",
       "png": "captures/live/SUPER-ADMIN-AUDIT-LOG.png",
-      "pngSha256": "b18d33b0c77c1dc9c827aede24e988e8892a9ac9ade50e72be777aa358ec990d",
+      "pngSha256": "f524e3f22cf058050d73f111e25906d05eaff98ec85495fdd681502360f50e9f",
       "pngH": 1750,
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-AUDIT-LOG.json",
-      "structureHash": "a36a301af1f350e2e913822db92f88ea88d4b551389a087ea329ab653bf0fd01",
-      "geometryHash": "20e0869911950587161306cc79d2ea2cef7e32a2e33daf8a9068d0b76eeecd34",
+      "structureHash": "168e8caf2a3bfa3458590a0348a771524a4bc5b4e39957ed1ebbaa6d1589878d",
+      "geometryHash": "de62119f664ab3ad88c384091c4baef894fe9d3919ddf6c8937a87d66d37b36f",
       "maskedRows": 0,
       "totalRows": 316,
       "fields": [
@@ -2971,7 +3085,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:05:34+05:30",
+      "capturedAt": "2026-09-10T16:38:46+05:30",
       "designUnchanged": false
     },
     {
@@ -2981,15 +3095,15 @@
       "url": "https://smile-admin-dev.mosje.in/consent",
       "reachedBy": "nav",
       "png": "captures/live/SUPER-ADMIN-CONSENT.png",
-      "pngSha256": "6e60aab67c99e62d35eb008ec3ddb74ca3eb49b71cac9f117f4cadf050789952",
+      "pngSha256": "2589e6f7e986e9955cc34b28f7704b90ad5b871f2c0e3b8fe9a943f3f87f5f63",
       "pngH": 1750,
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-CONSENT.json",
-      "structureHash": "01984881eac3c8a64e63f5914c203fe6650296f9774339e66e659b9cb18ec899",
-      "geometryHash": "fe7c265ff3f9c65b197f5917226257f77230f25de9dd2ea053eb8ea8e3d77666",
+      "structureHash": "6f8f804591b654b07848901648f4c430d260d0665ec189c979ab2497e6009ab9",
+      "geometryHash": "798567317ec96265d8122e7341655fdfb3d1e454043171dc15f355bca1761ac6",
       "maskedRows": 20,
-      "totalRows": 295,
+      "totalRows": 296,
       "fields": [
         {
           "name": null,
@@ -3099,58 +3213,276 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:06:06+05:30",
+      "capturedAt": "2026-09-10T16:39:39+05:30",
       "designUnchanged": false
     },
     {
       "slug": "SUPER-ADMIN-USERS-ADD-USER-ENTRY",
       "role": "super-admin",
-      "route": "https://smile-admin-dev.mosje.in/login",
-      "url": "https://smile-admin-dev.mosje.in/login",
+      "route": "https://smile-admin-dev.mosje.in/users",
+      "url": "https://smile-admin-dev.mosje.in/users",
       "reachedBy": "flow:users-onboard",
       "png": "captures/live/SUPER-ADMIN-USERS-ADD-USER-ENTRY.png",
-      "pngSha256": "e670cd9ce1a357f7f73ca32bdfb51c36b6c407948ccc1e853fba26d913a16600",
+      "pngSha256": "d945f850260a0be45f80e32ce574e5b375ab50942780ad7b4a4dce923ff321c5",
       "pngH": null,
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/SUPER-ADMIN-USERS-ADD-USER-ENTRY.json",
-      "structureHash": "8f0c308d3e3fbfba845a543895cedd24b99925948c707a963416b6157fcaee91",
-      "geometryHash": "1b49f545620ca5972e6322a9008a502e5e6a735b3de2350eb0f1281a4fb29593",
+      "structureHash": "b86e9760d816e27a7bcad91d6455ed18ca954a2eb69e13caaaa6eeb33fd43cf9",
+      "geometryHash": "56a41cdd257e4dde3b91671b3bdfd056543c5c48c8f20bc71201f946b9f25b68",
       "maskedRows": 0,
-      "totalRows": 79,
+      "totalRows": 270,
       "fields": [
         {
-          "name": "mobile_number",
-          "label": "Email or Mobile Number",
-          "type": "text",
+          "name": null,
+          "label": null,
+          "type": "search",
           "required": false,
           "options": null,
-          "helper": "Enter your registered email or mobile",
+          "helper": "Search by name or mobile (10 digits)",
           "value": "",
           "valid": true,
           "validationMessage": null,
           "conditionalOn": null
         },
         {
-          "name": "password",
-          "label": "Password",
-          "type": "password",
+          "name": null,
+          "label": "Filter by role",
+          "type": "select",
           "required": false,
-          "options": null,
-          "helper": "Enter password",
-          "value": "",
+          "options": [
+            "All roles",
+            "Super Admin",
+            "Central / Ministry Admin",
+            "State Nodal Officer",
+            "Nodal Officer / DO",
+            "Implementing Agency",
+            "Surveyor",
+            "US / SO",
+            "NISD",
+            "Swashraya (Shelter Home)"
+          ],
+          "helper": null,
+          "value": "All roles",
           "valid": true,
           "validationMessage": null,
           "conditionalOn": null
         },
         {
-          "name": "remember_me",
-          "label": "Remember me",
+          "name": null,
+          "label": "Filter by status",
+          "type": "select",
+          "required": false,
+          "options": [
+            "All statuses",
+            "Active",
+            "Inactive",
+            "Pending approval"
+          ],
+          "helper": null,
+          "value": "All statuses",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "select",
+          "required": false,
+          "options": [
+            "All States / UTs",
+            "Andaman & Nicobar Islands",
+            "Andhra Pradesh",
+            "Arunachal Pradesh",
+            "Assam",
+            "Bihar",
+            "Chandigarh",
+            "Chhattisgarh",
+            "Dadra & Nagar Haveli and Daman & Diu",
+            "Delhi",
+            "Goa",
+            "Gujarat",
+            "Haryana",
+            "Himachal Pradesh",
+            "Jammu & Kashmir",
+            "Jharkhand",
+            "Karnataka",
+            "Kerala",
+            "Ladakh",
+            "Lakshadweep",
+            "Madhya Pradesh",
+            "Maharashtra",
+            "Manipur",
+            "Meghalaya",
+            "Mizoram",
+            "Nagaland",
+            "Odisha",
+            "Puducherry",
+            "Punjab",
+            "Rajasthan",
+            "Sikkim",
+            "Tamil Nadu",
+            "Telangana",
+            "Tripura",
+            "Uttarakhand",
+            "Uttar Pradesh",
+            "West Bengal"
+          ],
+          "helper": null,
+          "value": "All States / UTs",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "select",
+          "required": false,
+          "options": [
+            "All Districts"
+          ],
+          "helper": null,
+          "value": "All Districts",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-v6e2nvp3d",
+          "label": "",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": true,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-7f1s34z1e",
+          "label": "",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": true,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-6smq36hau",
+          "label": "",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": true,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-yy2cikgy0",
+          "label": "",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": true,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-qzd1hi8uj",
+          "label": "",
           "type": "checkbox",
           "required": false,
           "options": null,
           "helper": null,
           "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-gmq1lbslu",
+          "label": "",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": true,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-il5h1xfy0",
+          "label": "",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": true,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-f9zxhwkdh",
+          "label": "",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-425263ep7",
+          "label": "",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": true,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-4ha2gtz5l",
+          "label": "",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": "Per page\n10\n20\n40\n50\n100",
+          "type": "select",
+          "required": false,
+          "options": [
+            "10",
+            "20",
+            "40",
+            "50",
+            "100"
+          ],
+          "helper": null,
+          "value": "10",
           "valid": true,
           "validationMessage": null,
           "conditionalOn": null
@@ -3173,57 +3505,90 @@
         "step": 1,
         "of": 2
       },
-      "capturedAt": "2026-09-10T16:06:12+05:30"
+      "capturedAt": "2026-09-10T16:39:44+05:30"
     },
     {
-      "slug": "SUPER-ADMIN-MASTER-SETTING-GEOGRAPHY",
+      "slug": "SUPER-ADMIN-USERS-ADD-USER",
       "role": "super-admin",
-      "route": "https://smile-admin-dev.mosje.in/login",
-      "url": "https://smile-admin-dev.mosje.in/login",
-      "reachedBy": "flow:master-settings-tabs",
-      "png": "captures/live/SUPER-ADMIN-MASTER-SETTING-GEOGRAPHY.png",
-      "pngSha256": "e670cd9ce1a357f7f73ca32bdfb51c36b6c407948ccc1e853fba26d913a16600",
+      "route": "https://smile-admin-dev.mosje.in/users/onboard",
+      "url": "https://smile-admin-dev.mosje.in/users/onboard",
+      "reachedBy": "flow:users-onboard",
+      "png": "captures/live/SUPER-ADMIN-USERS-ADD-USER.png",
+      "pngSha256": "5f12ac46f166482035a3a4da3529538f2213afae43ad030ae6d9178aafb95c9a",
       "pngH": null,
       "pageH": 1750,
       "truncated": false,
-      "rows": "captures/live/SUPER-ADMIN-MASTER-SETTING-GEOGRAPHY.json",
-      "structureHash": "8f0c308d3e3fbfba845a543895cedd24b99925948c707a963416b6157fcaee91",
-      "geometryHash": "1b49f545620ca5972e6322a9008a502e5e6a735b3de2350eb0f1281a4fb29593",
+      "rows": "captures/live/SUPER-ADMIN-USERS-ADD-USER.json",
+      "structureHash": "48846e8506d090ef9f64f7e1b2a4bf7e3c35b65425248a3b185ad69c6e2b5b7c",
+      "geometryHash": "bee1d9f2f17dd6e3a106a7999ffcce0d70db11c05e444c061d861d2ecb62e164",
       "maskedRows": 0,
-      "totalRows": 79,
+      "totalRows": 131,
       "fields": [
         {
-          "name": "mobile_number",
-          "label": "Email or Mobile Number",
+          "name": "mantine-h251raoqo",
+          "label": null,
           "type": "text",
           "required": false,
           "options": null,
-          "helper": "Enter your registered email or mobile",
+          "helper": "Enter First Name",
           "value": "",
           "valid": true,
           "validationMessage": null,
           "conditionalOn": null
         },
         {
-          "name": "password",
-          "label": "Password",
-          "type": "password",
+          "name": "mantine-xj2g3630e",
+          "label": null,
+          "type": "text",
           "required": false,
           "options": null,
-          "helper": "Enter password",
+          "helper": "Enter Last Name",
           "value": "",
           "valid": true,
           "validationMessage": null,
           "conditionalOn": null
         },
         {
-          "name": "remember_me",
-          "label": "Remember me",
-          "type": "checkbox",
+          "name": "mantine-79mkty5qq",
+          "label": null,
+          "type": "text",
           "required": false,
           "options": null,
+          "helper": "name@example.gov.in",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-url77dr3v",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "10-digit mobile",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-o6sqdo9e7",
+          "label": null,
+          "type": "select",
+          "required": false,
+          "options": [
+            "Select Role",
+            "Central Admin / Central Ministry",
+            "State Nodal Officer",
+            "Implementing Authority / Nodal Officer",
+            "US/SO",
+            "NISD",
+            "Swashraya (Shelter Home)",
+            "New"
+          ],
           "helper": null,
-          "value": false,
+          "value": "Select Role",
           "valid": true,
           "validationMessage": null,
           "conditionalOn": null
@@ -3242,11 +3607,1186 @@
         }
       ],
       "wizard": {
+        "flow": "users-onboard",
+        "step": 2,
+        "of": 2
+      },
+      "capturedAt": "2026-09-10T16:39:50+05:30"
+    },
+    {
+      "slug": "SUPER-ADMIN-ROLES-NEW-ROLE",
+      "role": "super-admin",
+      "route": "https://smile-admin-dev.mosje.in/roles",
+      "url": "https://smile-admin-dev.mosje.in/roles",
+      "reachedBy": "flow:roles-new",
+      "png": "captures/live/SUPER-ADMIN-ROLES-NEW-ROLE.png",
+      "pngSha256": "201b7c92232b489815e3140712a9faf97b4d43a458eaaca68c23c3b401fb305b",
+      "pngH": null,
+      "pageH": 1813,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-ROLES-NEW-ROLE.json",
+      "structureHash": "a307570e545b1a53c976ee999d84abadc4036e9f8b1fcc5cf36e0bd248ac2ef1",
+      "geometryHash": "cb69a6b73c5b0f41f3057a842b4b6d8a0a8b0154673af3737c2e6ecd2f45de1e",
+      "maskedRows": 0,
+      "totalRows": 202,
+      "fields": [
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Search roles by name or description\u2026",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "e.g. Regional Auditor",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Short description",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "roles-new",
+        "step": 1,
+        "of": 1
+      },
+      "capturedAt": "2026-09-10T16:40:03+05:30"
+    },
+    {
+      "slug": "SUPER-ADMIN-PERMISSIONS-MANAGE-ROLES",
+      "role": "super-admin",
+      "route": "https://smile-admin-dev.mosje.in/roles",
+      "url": "https://smile-admin-dev.mosje.in/roles",
+      "reachedBy": "flow:permissions-manage",
+      "png": "captures/live/SUPER-ADMIN-PERMISSIONS-MANAGE-ROLES.png",
+      "pngSha256": "da78c6f9f2cbcee8fbf5cc7e672b180bbc93b4c396a693655f015eecc7ef705b",
+      "pngH": null,
+      "pageH": 1813,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-PERMISSIONS-MANAGE-ROLES.json",
+      "structureHash": "01e30e3efe93fbad96c4ae545b14f106f8b97a31e1bbe14e7f931533b86ac80e",
+      "geometryHash": "db348b8bd7531deb1e0e25a682e9988b4814e6b246cd5216c0b60ad747822ded",
+      "maskedRows": 0,
+      "totalRows": 194,
+      "fields": [
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Search roles by name or description\u2026",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "permissions-manage",
+        "step": 1,
+        "of": 1
+      },
+      "capturedAt": "2026-09-10T16:42:07+05:30"
+    },
+    {
+      "slug": "SUPER-ADMIN-PERMISSIONS-EXPANDED",
+      "role": "super-admin",
+      "route": "https://smile-admin-dev.mosje.in/permissions",
+      "url": "https://smile-admin-dev.mosje.in/permissions",
+      "reachedBy": "flow:permissions-expand",
+      "png": "captures/live/SUPER-ADMIN-PERMISSIONS-EXPANDED.png",
+      "pngSha256": "3d46f8231d26137b4f3ed9d3a7f5585870a9ae71e2a39b967963a0acf00710a8",
+      "pngH": null,
+      "pageH": 3988,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-PERMISSIONS-EXPANDED.json",
+      "structureHash": "627c91451aea8942cc92e3958a40aa94ab3cd23f70d53f33faeed0baf409a960",
+      "geometryHash": "28de7a77735a0469a371159641904133e8b3dc2d0134401d530f688fd916b7df",
+      "maskedRows": 0,
+      "totalRows": 172,
+      "fields": [
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Search by code or description (e.g. survey_create, fund release)\u2026",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "permissions-expand",
+        "step": 1,
+        "of": 1
+      },
+      "capturedAt": "2026-09-10T16:42:15+05:30"
+    },
+    {
+      "slug": "SUPER-ADMIN-SURVEYOR-MAPPED-VIEW",
+      "role": "super-admin",
+      "route": "https://smile-admin-dev.mosje.in/surveyors/10068",
+      "url": "https://smile-admin-dev.mosje.in/surveyors/10068",
+      "reachedBy": "flow:surveyor-view",
+      "png": "captures/live/SUPER-ADMIN-SURVEYOR-MAPPED-VIEW.png",
+      "pngSha256": "6ce0902ba8fd4910d6c7b2e3d2326b93be6331bc87b8ed20c83467d576c7d8fa",
+      "pngH": null,
+      "pageH": 2230,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-SURVEYOR-MAPPED-VIEW.json",
+      "structureHash": "749c34f3dac5d9f01e7f1c354268f926a6410cf76504e4a31f130104cafdf417",
+      "geometryHash": "ab9eeeb5a75d60fb0999217f7c5377c5353d374e2a031db563d36714c7bd4d4c",
+      "maskedRows": 7,
+      "totalRows": 179,
+      "fields": [
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "surveyor-view",
+        "step": 1,
+        "of": 1
+      },
+      "capturedAt": "2026-09-10T16:42:48+05:30"
+    },
+    {
+      "slug": "SUPER-ADMIN-SHELTER-HOMES-ADD",
+      "role": "super-admin",
+      "route": "https://smile-admin-dev.mosje.in/shelter-homes",
+      "url": "https://smile-admin-dev.mosje.in/shelter-homes",
+      "reachedBy": "flow:shelter-home-add",
+      "png": "captures/live/SUPER-ADMIN-SHELTER-HOMES-ADD.png",
+      "pngSha256": "61188984ad24230f24b9b7281a86ecd5e2d968038eff300eb05bfd7d4d2e7c08",
+      "pngH": null,
+      "pageH": 2882,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-SHELTER-HOMES-ADD.json",
+      "structureHash": "b28ba79e229470d89a5555f0f6f6947bca364e3b53fda8c40fa1cabc555e3d85",
+      "geometryHash": "61a0dea763d3a349c44e892767be3f070b7191a6f3dba87f12daeb7270e31a0f",
+      "maskedRows": 0,
+      "totalRows": 338,
+      "fields": [
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "number",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": "1",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-aqg3qmj9y",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": "Government",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-x3tv6vk4h",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": "Active",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-w0g052bo2",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Pick an Implementing Agency",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-bakvoarga",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Pick all that apply",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "e.g., Asha Kelkar",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Contact person's first name",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Contact person's last name",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "email",
+          "required": false,
+          "options": null,
+          "helper": "staff@example.org",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "10-digit mobile",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "select",
+          "required": false,
+          "options": [
+            "All States / UTs",
+            "Andaman & Nicobar Islands",
+            "Andhra Pradesh",
+            "Arunachal Pradesh",
+            "Assam",
+            "Bihar",
+            "Chandigarh",
+            "Chhattisgarh",
+            "Dadra & Nagar Haveli and Daman & Diu",
+            "Delhi",
+            "Goa",
+            "Gujarat",
+            "Haryana",
+            "Himachal Pradesh",
+            "Jammu & Kashmir",
+            "Jharkhand",
+            "Karnataka",
+            "Kerala",
+            "Ladakh",
+            "Lakshadweep",
+            "Madhya Pradesh",
+            "Maharashtra",
+            "Manipur",
+            "Meghalaya",
+            "Mizoram",
+            "Nagaland",
+            "Odisha",
+            "Puducherry",
+            "Punjab",
+            "Rajasthan",
+            "Sikkim",
+            "Tamil Nadu",
+            "Telangana",
+            "Tripura",
+            "Uttarakhand",
+            "Uttar Pradesh",
+            "West Bengal"
+          ],
+          "helper": null,
+          "value": "All States / UTs",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "select",
+          "required": false,
+          "options": [
+            "All Districts"
+          ],
+          "helper": null,
+          "value": "All Districts",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Search name / contact / address",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-i2rkjnfgo",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Type",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-u3cu0mo19",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Operational status",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": "Per page\n10\n20\n40\n50\n100",
+          "type": "select",
+          "required": false,
+          "options": [
+            "10",
+            "20",
+            "40",
+            "50",
+            "100"
+          ],
+          "helper": null,
+          "value": "10",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "shelter-home-add",
+        "step": 1,
+        "of": 1
+      },
+      "capturedAt": "2026-09-10T16:42:57+05:30"
+    },
+    {
+      "slug": "SUPER-ADMIN-SHELTER-HOMES-EDIT",
+      "role": "super-admin",
+      "route": "https://smile-admin-dev.mosje.in/shelter-homes",
+      "url": "https://smile-admin-dev.mosje.in/shelter-homes",
+      "reachedBy": "flow:shelter-home-edit",
+      "png": "captures/live/SUPER-ADMIN-SHELTER-HOMES-EDIT.png",
+      "pngSha256": "258d223790d7f9956253ba36e6ff279b64657358c0af6be52ee4cd72beeba830",
+      "pngH": null,
+      "pageH": 2449,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-SHELTER-HOMES-EDIT.json",
+      "structureHash": "a2c33b18473c15ba9b654dc6586bc104a726f8d379e85f73bc90dc2da89b96fc",
+      "geometryHash": "fc46319e05058049673a7c9dba840c0e20df88a2a13b23e3e2621dbf9ab3ba58",
+      "maskedRows": 0,
+      "totalRows": 318,
+      "fields": [
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": "Panchkula Shelter Home (BIH-HR-2026-08)",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "number",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": "50",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": "UMMEED",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-aqg3qmj9y",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": "Government",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-x3tv6vk4h",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": "Active",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-w0g052bo2",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Pick an Implementing Agency",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-bakvoarga",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Pick all that apply",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "select",
+          "required": false,
+          "options": [
+            "All States / UTs",
+            "Andaman & Nicobar Islands",
+            "Andhra Pradesh",
+            "Arunachal Pradesh",
+            "Assam",
+            "Bihar",
+            "Chandigarh",
+            "Chhattisgarh",
+            "Dadra & Nagar Haveli and Daman & Diu",
+            "Delhi",
+            "Goa",
+            "Gujarat",
+            "Haryana",
+            "Himachal Pradesh",
+            "Jammu & Kashmir",
+            "Jharkhand",
+            "Karnataka",
+            "Kerala",
+            "Ladakh",
+            "Lakshadweep",
+            "Madhya Pradesh",
+            "Maharashtra",
+            "Manipur",
+            "Meghalaya",
+            "Mizoram",
+            "Nagaland",
+            "Odisha",
+            "Puducherry",
+            "Punjab",
+            "Rajasthan",
+            "Sikkim",
+            "Tamil Nadu",
+            "Telangana",
+            "Tripura",
+            "Uttarakhand",
+            "Uttar Pradesh",
+            "West Bengal"
+          ],
+          "helper": null,
+          "value": "All States / UTs",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "select",
+          "required": false,
+          "options": [
+            "All Districts"
+          ],
+          "helper": null,
+          "value": "All Districts",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Search name / contact / address",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-i2rkjnfgo",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Type",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mantine-u3cu0mo19",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Operational status",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": "Per page\n10\n20\n40\n50\n100",
+          "type": "select",
+          "required": false,
+          "options": [
+            "10",
+            "20",
+            "40",
+            "50",
+            "100"
+          ],
+          "helper": null,
+          "value": "10",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "shelter-home-edit",
+        "step": 1,
+        "of": 1
+      },
+      "capturedAt": "2026-09-10T16:43:05+05:30"
+    },
+    {
+      "slug": "SUPER-ADMIN-HOTSPOT-APPROVALS-REINSPECTION",
+      "role": "super-admin",
+      "route": "https://smile-admin-dev.mosje.in/hotspot-approvals",
+      "url": "https://smile-admin-dev.mosje.in/hotspot-approvals",
+      "reachedBy": "flow:hotspot-reinspection",
+      "png": "captures/live/SUPER-ADMIN-HOTSPOT-APPROVALS-REINSPECTION.png",
+      "pngSha256": "15b26a957ca0afebf41516a545d4062a80bd20a511caaf55ad66d80687da082a",
+      "pngH": null,
+      "pageH": 2230,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-HOTSPOT-APPROVALS-REINSPECTION.json",
+      "structureHash": "202e29f4a92069b9a52703e5171298f434b2d9f6413cfe5466dcbdd605dbe45e",
+      "geometryHash": "ef873e694c0ce017b632602f2d6c531d146b6ba16ada71a3438942f4af006a3c",
+      "maskedRows": 0,
+      "totalRows": 146,
+      "fields": [
+        {
+          "name": null,
+          "label": null,
+          "type": "select",
+          "required": false,
+          "options": [
+            "Pending",
+            "Approved",
+            "Rejected",
+            "All"
+          ],
+          "helper": null,
+          "value": "Pending",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "hotspot-reinspection",
+        "step": 1,
+        "of": 1
+      },
+      "capturedAt": "2026-09-10T16:43:15+05:30"
+    },
+    {
+      "slug": "SUPER-ADMIN-CITY-PROFILING-L2-DISTRICTS",
+      "role": "super-admin",
+      "route": "https://smile-admin-dev.mosje.in/city-profiling/1",
+      "url": "https://smile-admin-dev.mosje.in/city-profiling/1",
+      "reachedBy": "flow:city-profiling-drilldown",
+      "png": "captures/live/SUPER-ADMIN-CITY-PROFILING-L2-DISTRICTS.png",
+      "pngSha256": "e951eb8cb7be719bbd54ad00cae3f4bfefb644d7cacb3623e83d05ae26b32d48",
+      "pngH": null,
+      "pageH": 2230,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-CITY-PROFILING-L2-DISTRICTS.json",
+      "structureHash": "038966745324a107d60b1ef579edee8171812226613879f1850d0b86fbd542d3",
+      "geometryHash": "ab17b1d8cd22b0b5820b9560cf4aa7cbf50524948a6c5152f64700682db07f6b",
+      "maskedRows": 0,
+      "totalRows": 228,
+      "fields": [
+        {
+          "name": null,
+          "label": "Search cities",
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Search by city, district, IA name",
+          "value": "",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": "Filter by district",
+          "type": "select",
+          "required": false,
+          "options": [
+            "All Districts",
+            "Alluri Sitharama Raju",
+            "Anakapalli",
+            "Anantapur",
+            "Ananthapuramu",
+            "Annamayya",
+            "Bapatla",
+            "Chittoor",
+            "Dr. B.R. Ambedkar Konaseema",
+            "East Godavari",
+            "Eluru",
+            "Guntur",
+            "Kakinada",
+            "Krishna",
+            "Kurnool",
+            "Nandyal",
+            "Nellore",
+            "North Tripura",
+            "NTR",
+            "Palnadu",
+            "Parvathipuram Manyam",
+            "Prakasam",
+            "Rajahmundry",
+            "Rajampet",
+            "Rayachoty",
+            "SRIKAKULAM",
+            "Sri Potti Sriramulu Nellore",
+            "Sri Sathya Sai",
+            "Tirupati",
+            "Vijayawada",
+            "Visakhapatanam",
+            "Visakhapatnam",
+            "Vizianagaram",
+            "West Godavari",
+            "YSR Kadapa"
+          ],
+          "helper": null,
+          "value": "All Districts",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": "Filter by implementing agency",
+          "type": "select",
+          "required": false,
+          "options": [
+            "All IAs"
+          ],
+          "helper": null,
+          "value": "All IAs",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": "Per page\n10\n20\n40\n50\n100",
+          "type": "select",
+          "required": false,
+          "options": [
+            "10",
+            "20",
+            "40",
+            "50",
+            "100"
+          ],
+          "helper": null,
+          "value": "10",
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "city-profiling-drilldown",
+        "step": 1,
+        "of": 1
+      },
+      "capturedAt": "2026-09-10T16:43:46+05:30"
+    },
+    {
+      "slug": "SUPER-ADMIN-MASTER-SETTING-GEOGRAPHY",
+      "role": "super-admin",
+      "route": "https://smile-admin-dev.mosje.in/master-setting",
+      "url": "https://smile-admin-dev.mosje.in/master-setting",
+      "reachedBy": "flow:master-settings-tabs",
+      "png": "captures/live/SUPER-ADMIN-MASTER-SETTING-GEOGRAPHY.png",
+      "pngSha256": "367dddf647a067aed164dcbf189ceb0fde60fe9ed31dab36a9256c44a14f805c",
+      "pngH": null,
+      "pageH": 2384,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-MASTER-SETTING-GEOGRAPHY.json",
+      "structureHash": "476601b106cab6a13bec3329058b201dd49544f1a31c963d7ddb9c84be69325a",
+      "geometryHash": "14d50c949a3e004439f7d8f216c42ae0bd1d308fe7891cf6562d90d5a7aba525",
+      "maskedRows": 0,
+      "totalRows": 351,
+      "fields": [
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
         "flow": "master-settings-tabs",
         "step": 1,
         "of": 6
       },
-      "capturedAt": "2026-09-10T16:09:55+05:30"
+      "capturedAt": "2026-09-10T16:44:26+05:30"
+    },
+    {
+      "slug": "SUPER-ADMIN-MASTER-SETTING-ROLE-PERMISSION",
+      "role": "super-admin",
+      "route": "https://smile-admin-dev.mosje.in/master-setting",
+      "url": "https://smile-admin-dev.mosje.in/master-setting",
+      "reachedBy": "flow:master-settings-tabs",
+      "png": "captures/live/SUPER-ADMIN-MASTER-SETTING-ROLE-PERMISSION.png",
+      "pngSha256": "a35bf39c79cbb1f4a3a596f95fb4abe5955cda85e07aa8aea781cd210b6644eb",
+      "pngH": null,
+      "pageH": 2230,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-MASTER-SETTING-ROLE-PERMISSION.json",
+      "structureHash": "56777755e95b3e916ebcad97f02c79a79f31405addc0dc1d8c49230500257ed2",
+      "geometryHash": "b8637a7e5cc03f927cdb7e2e6915bd33a18f4fc58dd9b32f1575240742887f6f",
+      "maskedRows": 0,
+      "totalRows": 216,
+      "fields": [
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "master-settings-tabs",
+        "step": 2,
+        "of": 6
+      },
+      "capturedAt": "2026-09-10T16:44:31+05:30"
+    },
+    {
+      "slug": "SUPER-ADMIN-MASTER-SETTING-SURVEY-QUESTIONNAIRE",
+      "role": "super-admin",
+      "route": "https://smile-admin-dev.mosje.in/master-setting",
+      "url": "https://smile-admin-dev.mosje.in/master-setting",
+      "reachedBy": "flow:master-settings-tabs",
+      "png": "captures/live/SUPER-ADMIN-MASTER-SETTING-SURVEY-QUESTIONNAIRE.png",
+      "pngSha256": "2e1ce104ad299552ba15951a8d207bf33a8c306c41d4beaead6253f7ecbdcf7b",
+      "pngH": null,
+      "pageH": 2230,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-MASTER-SETTING-SURVEY-QUESTIONNAIRE.json",
+      "structureHash": "1aee824e3150e9f2ebf24b0f8a9c788a65f75f90711718bea69f3eb6e055c0c4",
+      "geometryHash": "b11be3a32435ac853db48c8ac8e43ad919958682a87ffda887d9cb79ee03a366",
+      "maskedRows": 0,
+      "totalRows": 216,
+      "fields": [
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "master-settings-tabs",
+        "step": 3,
+        "of": 6
+      },
+      "capturedAt": "2026-09-10T16:44:36+05:30"
+    },
+    {
+      "slug": "SUPER-ADMIN-MASTER-SETTING-AGENCY",
+      "role": "super-admin",
+      "route": "https://smile-admin-dev.mosje.in/master-setting",
+      "url": "https://smile-admin-dev.mosje.in/master-setting",
+      "reachedBy": "flow:master-settings-tabs",
+      "png": "captures/live/SUPER-ADMIN-MASTER-SETTING-AGENCY.png",
+      "pngSha256": "77eac26505ca29e8b8552de0667d4b26bf1e79335344cc60e3754bbea3c64f0b",
+      "pngH": null,
+      "pageH": 2230,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-MASTER-SETTING-AGENCY.json",
+      "structureHash": "942b5ac79930d22c90971fbed8ced609fa4006587fce512b1a82153d2b9dcef1",
+      "geometryHash": "c7667b7488befb9ecc93a5ba8d756c39d4ab97aad2f1c68b2dcabecec22ab499",
+      "maskedRows": 0,
+      "totalRows": 207,
+      "fields": [
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "master-settings-tabs",
+        "step": 4,
+        "of": 6
+      },
+      "capturedAt": "2026-09-10T16:44:42+05:30"
+    },
+    {
+      "slug": "SUPER-ADMIN-MASTER-SETTING-OPERATIONAL",
+      "role": "super-admin",
+      "route": "https://smile-admin-dev.mosje.in/master-setting",
+      "url": "https://smile-admin-dev.mosje.in/master-setting",
+      "reachedBy": "flow:master-settings-tabs",
+      "png": "captures/live/SUPER-ADMIN-MASTER-SETTING-OPERATIONAL.png",
+      "pngSha256": "be7d1869d76fbdb6d0d739bd5ec9e9dea18e5010e332f5bcf4195ebd002b528d",
+      "pngH": null,
+      "pageH": 2230,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-MASTER-SETTING-OPERATIONAL.json",
+      "structureHash": "175b4ebb2bfc80066935de610478ea069db507e0aec543c75ec063624ab67c75",
+      "geometryHash": "56e04ce1db0459eeef55b0c17fa0837c4f9233538e72e0bfddde6b058c96ae7d",
+      "maskedRows": 0,
+      "totalRows": 201,
+      "fields": [
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "master-settings-tabs",
+        "step": 5,
+        "of": 6
+      },
+      "capturedAt": "2026-09-10T16:44:47+05:30"
+    },
+    {
+      "slug": "SUPER-ADMIN-MASTER-SETTING-FUND-MANAGEMENT",
+      "role": "super-admin",
+      "route": "https://smile-admin-dev.mosje.in/master-setting",
+      "url": "https://smile-admin-dev.mosje.in/master-setting",
+      "reachedBy": "flow:master-settings-tabs",
+      "png": "captures/live/SUPER-ADMIN-MASTER-SETTING-FUND-MANAGEMENT.png",
+      "pngSha256": "57abbb8874ad6457c53f1622f7edfa215be02c4c0950d23254186ca2405ffb18",
+      "pngH": null,
+      "pageH": 2230,
+      "truncated": false,
+      "rows": "captures/live/SUPER-ADMIN-MASTER-SETTING-FUND-MANAGEMENT.json",
+      "structureHash": "f13a4e940c269793837c3ba48944caa7bce40290c390562c51a7da5d3ab11f7c",
+      "geometryHash": "15b195fb22e2f8f1b46cd13cb09d465e776ffdf3b88130d5244b574054f74a2c",
+      "maskedRows": 0,
+      "totalRows": 189,
+      "fields": [
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "master-settings-tabs",
+        "step": 6,
+        "of": 6
+      },
+      "capturedAt": "2026-09-10T16:44:52+05:30"
     },
     {
       "slug": "CENTRAL-AUTHORITY-DASHBOARD",
@@ -3255,13 +4795,13 @@
       "url": "https://smile-admin-dev.mosje.in/dashboard",
       "reachedBy": "nav",
       "png": "captures/live/CENTRAL-AUTHORITY-DASHBOARD.png",
-      "pngSha256": "b49326439516d3f4dca8b6393c4e1f5528ec9321ed12e6ff6ee550b88927a292",
+      "pngSha256": "d875f2e8dc816779e04e21ad32255c9a470523e7608b019302d0d7fd76841a78",
       "pngH": 6082,
       "pageH": 6082,
       "truncated": false,
       "rows": "captures/live/CENTRAL-AUTHORITY-DASHBOARD.json",
-      "structureHash": "26c84dc0cabb2c7ec3ec62b7307e04d2385e41465b88ab9d52cb976685384a8c",
-      "geometryHash": "8309988d7f129881a9691fd8b99fc593f3f8bdfef6bfa32c6e7c751c41c52b1e",
+      "structureHash": "10eb96a076636a824be0f759e0e5d5ab5ac164384684330cd201df3bd3003df6",
+      "geometryHash": "a0a169ab3e1ed57c0f76b71645f0c32f5a1cf9a9a288c72fa3c127e8604416f9",
       "maskedRows": 0,
       "totalRows": 329,
       "fields": [
@@ -3283,7 +4823,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-p7qbm7du2",
+          "name": "mantine-onud3r2x2",
           "label": "Drill funds chart \u2014 State",
           "type": "text",
           "required": false,
@@ -3295,7 +4835,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-7m0lfoj7o",
+          "name": "mantine-8jygopewx",
           "label": "Drill funds chart \u2014 District / City",
           "type": "text",
           "required": false,
@@ -3320,7 +4860,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:10:26+05:30",
+      "capturedAt": "2026-09-10T16:45:10+05:30",
       "designUnchanged": false
     },
     {
@@ -3330,13 +4870,13 @@
       "url": "https://smile-admin-dev.mosje.in/city-profiling",
       "reachedBy": "nav",
       "png": "captures/live/CENTRAL-AUTHORITY-CITY-PROFILING.png",
-      "pngSha256": "ab8c178aaef577ed24969c511cb1d5907ff61c8e9dcda6025ce9267d6ecd8c34",
+      "pngSha256": "a16dae7eed73539ac13d449e9899653957a4e35855289c3197878f0bf158f1b0",
       "pngH": 1750,
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/CENTRAL-AUTHORITY-CITY-PROFILING.json",
-      "structureHash": "ed9424317e8432bd0d6acf1374b103823a62c1997a5ae9c83dad319d419292d5",
-      "geometryHash": "30f0fd6dbfbb6385fb8ae6162a61b711270ad10cb5924231f4adf93348ae1010",
+      "structureHash": "e3af5c7af4a193d863b3d05a84f132834743de9e3c840572211497c4825770fa",
+      "geometryHash": "bdcd1c93cdcc4ec48392685d7966c0da17ced743c759aa4c37b5ae3eab288d5d",
       "maskedRows": 0,
       "totalRows": 254,
       "fields": [
@@ -3464,7 +5004,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:10:32+05:30",
+      "capturedAt": "2026-09-10T16:45:16+05:30",
       "designUnchanged": false
     },
     {
@@ -4315,8 +5855,8 @@
       "pageH": 1791,
       "truncated": false,
       "rows": "captures/live/CENTRAL-AUTHORITY-BEGGARY-SCHEMES.json",
-      "structureHash": "0e83b3d13cf582ba5669e31596bb6e573ceb6356d5fb89d591fbd7bb6be8088c",
-      "geometryHash": "a866c1afabc14bfcf0d281e09a3b4a52e27498637dd281fb3e5f078265e36f18",
+      "structureHash": "b9c7f1cae0892dbbe7092de5ac894d8541b8d533a148a5bf27213b50dc84b458",
+      "geometryHash": "94f72c13f054518f76cadf3f6efcbb1cfb880f557c73cb7e75df4ba91415508a",
       "maskedRows": 0,
       "totalRows": 262,
       "fields": [
@@ -4401,7 +5941,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-bf2o2yb3w",
+          "name": "mantine-07ml15f9v",
           "label": "Filter by status",
           "type": "text",
           "required": false,
@@ -4413,7 +5953,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-rpd98cdu6",
+          "name": "mantine-mmzsnwa6x",
           "label": "Filter by Nodal Officer assignment",
           "type": "text",
           "required": false,
@@ -4510,7 +6050,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:11:19+05:30",
+      "capturedAt": "2026-09-10T16:46:20+05:30",
       "designUnchanged": false
     },
     {
@@ -4520,13 +6060,13 @@
       "url": "https://smile-admin-dev.mosje.in/hotspot-approvals",
       "reachedBy": "nav",
       "png": "captures/live/CENTRAL-AUTHORITY-HOTSPOT-APPROVALS.png",
-      "pngSha256": "fd9dca7aa0ec44a5f9da4b4f4c6ea0d290d40f2005a999da77201ee85e8b3e96",
+      "pngSha256": "ea67a49a64b178c05ae49f2fd568090089dc7f2280f21dd8b7c2f9124671731b",
       "pngH": 1750,
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/CENTRAL-AUTHORITY-HOTSPOT-APPROVALS.json",
-      "structureHash": "ef4cb9b821498d10e4af9978958c7ced2e82e70a64ddc0df68c465b2703c79f4",
-      "geometryHash": "2883814dfdd7c16483d4a48b7201d38961c9461d9ae0e44bc0ee63f501111294",
+      "structureHash": "81ff2fc40fa75e75ee3e34a8d679f1f15e03d9164b330bb69ca91b74364c570e",
+      "geometryHash": "e9d141ccbd4533e423e4fe46fe08b8db95844acf88c29bd02be31e6157d86877",
       "maskedRows": 0,
       "totalRows": 126,
       "fields": [
@@ -4561,7 +6101,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:11:26+05:30",
+      "capturedAt": "2026-09-10T16:46:26+05:30",
       "designUnchanged": false
     },
     {
@@ -4576,8 +6116,8 @@
       "pageH": 3028,
       "truncated": false,
       "rows": "captures/live/CENTRAL-AUTHORITY-PERSONS.json",
-      "structureHash": "e660ec840e23913e2b46febf89463cdb6086dbc2775ec3d5cff3c89cbf641b86",
-      "geometryHash": "68d3b77f4246d94d6a94823a7176d626e15e3895f7f698e0e8165bec3b5984b3",
+      "structureHash": "d17ef14825037af8f54deb1ee3e0ca857c9a0a79b34deda602653687dcf35139",
+      "geometryHash": "964de3d00f53a05379ed31270f18d9effaefbb4f384244302839845e6e394238",
       "maskedRows": 0,
       "totalRows": 385,
       "fields": [
@@ -4674,7 +6214,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-8opjeocvk",
+          "name": "mantine-bu966s0n9",
           "label": "Filter by IA / NGO",
           "type": "text",
           "required": false,
@@ -4686,7 +6226,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-28tjjxb3n",
+          "name": "mantine-tnv01ngpa",
           "label": "Filter by mobilization status",
           "type": "text",
           "required": false,
@@ -4698,7 +6238,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-8r1bpgxhw",
+          "name": "mantine-9ph9zc3vx",
           "label": "Filter by gender",
           "type": "text",
           "required": false,
@@ -4710,7 +6250,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-2giwm8n8q",
+          "name": "mantine-6vmj376ky",
           "label": "Filter by age band",
           "type": "text",
           "required": false,
@@ -4753,7 +6293,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:11:47+05:30",
+      "capturedAt": "2026-09-10T16:46:49+05:30",
       "designUnchanged": false
     },
     {
@@ -4768,8 +6308,8 @@
       "pageH": 1905,
       "truncated": false,
       "rows": "captures/live/CENTRAL-AUTHORITY-SHELTER-HOMES.json",
-      "structureHash": "ab7e715cddd9dff6f311e93e99b285c962ee7d038166c24e6c6f9b57d7c00dfe",
-      "geometryHash": "f2833cbf0dffa0132b7c1750d100c1c90f80dd44da02b15830b0a97683aae444",
+      "structureHash": "1f725c910089f93be91a319a9e6b1c024cf1aeec299e979339c034128db84558",
+      "geometryHash": "fbc15a9c4a6ae65178d9ccce2b80520212fa0a54e0eb010872678f040d4652c8",
       "maskedRows": 0,
       "totalRows": 278,
       "fields": [
@@ -4850,7 +6390,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-pjxxhdmjm",
+          "name": "mantine-n2lxcig2d",
           "label": null,
           "type": "text",
           "required": false,
@@ -4862,7 +6402,7 @@
           "conditionalOn": null
         },
         {
-          "name": "mantine-bxik7dzul",
+          "name": "mantine-ujizfxu80",
           "label": null,
           "type": "text",
           "required": false,
@@ -4905,7 +6445,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:11:53+05:30",
+      "capturedAt": "2026-09-10T16:46:54+05:30",
       "designUnchanged": false
     },
     {
@@ -4915,13 +6455,13 @@
       "url": "https://smile-admin-dev.mosje.in/shelter-homes/beneficiaries",
       "reachedBy": "nav",
       "png": "captures/live/CENTRAL-AUTHORITY-SHELTER-HOMES-BENEFICIARIES.png",
-      "pngSha256": "b023249bd1456a758b59f301910fcb4ea0f7f53fa90af4e3a9e4f09a18a0680f",
+      "pngSha256": "5482933ebbdb9fdb2f8b79fb01eed6cde48706022a6eb72eecc1ba6378f9e507",
       "pngH": 1750,
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/CENTRAL-AUTHORITY-SHELTER-HOMES-BENEFICIARIES.json",
-      "structureHash": "8febc3276077a4270da5906d9c137564c8f9cd7769059ce0e3a1a6cf642913e6",
-      "geometryHash": "5633db7627c65a33d54c005e6030706e47b90be311bb92e3d458bbdaf5e125c2",
+      "structureHash": "2c7d455607c8af22fae6496fb06f7e220012fe6c478f262d6c51d05cf66e0a20",
+      "geometryHash": "da9ae7d4e24946e56160de9fccfc98d13d8dfcd1a943000b54032af68bb61bf7",
       "maskedRows": 0,
       "totalRows": 158,
       "fields": [
@@ -5045,7 +6585,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:12:01+05:30",
+      "capturedAt": "2026-09-10T16:47:02+05:30",
       "designUnchanged": false
     },
     {
@@ -5060,8 +6600,8 @@
       "pageH": 2620,
       "truncated": false,
       "rows": "captures/live/CENTRAL-AUTHORITY-COMPREHENSIVE-REHAB-SKILL-TRAINING.json",
-      "structureHash": "1476cd07fb6879afac1ded1d35d9192351622b563041da172340ed68d766d15a",
-      "geometryHash": "f7918696b196addd508aea0e1e8518954a08f217077fea52dc6c2d48aa4ff251",
+      "structureHash": "3be2adec1800caec5b44a898d5f8fbe489385e720340c9cdd7eda2638b4cd56b",
+      "geometryHash": "b2d6a5acdee1ffff5d798d86d3c49e613ba61ea6fdbd94341f2d8af17076c738",
       "maskedRows": 0,
       "totalRows": 362,
       "fields": [
@@ -5161,7 +6701,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:12:54+05:30",
+      "capturedAt": "2026-09-10T16:47:55+05:30",
       "designUnchanged": false
     },
     {
@@ -5171,13 +6711,13 @@
       "url": "https://smile-admin-dev.mosje.in/comprehensive-rehab/data",
       "reachedBy": "nav",
       "png": "captures/live/CENTRAL-AUTHORITY-COMPREHENSIVE-REHAB-DATA.png",
-      "pngSha256": "55ea1de3d8ff9c94a5e26282fe9208bd78be73585b731b27ddab06df0637cdcc",
+      "pngSha256": "448366d8c4dbf187dbae69fd5ddfb5f28c88b80b4fd90d4f9896570cd8ebe82b",
       "pngH": 1750,
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/CENTRAL-AUTHORITY-COMPREHENSIVE-REHAB-DATA.json",
-      "structureHash": "7c703cacdc25e72ba2f35fad1b52eabb6313b0ba2c309837546ab5f5226cd1db",
-      "geometryHash": "3abc927895f69a82f4181b5deb09f74c64f26e6286b73795893b2b55fa7c64da",
+      "structureHash": "bc91f655506608a9bc712b1b0e040b4c183e2c097d34fce8da1d7dcff386ee88",
+      "geometryHash": "0f2e1a8597ce9db4ce26495a78db39f4b7884faa397be6142d41973b79deaf3e",
       "maskedRows": 0,
       "totalRows": 243,
       "fields": [
@@ -5355,7 +6895,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:13:47+05:30",
+      "capturedAt": "2026-09-10T16:48:49+05:30",
       "designUnchanged": false
     },
     {
@@ -5370,8 +6910,8 @@
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/CENTRAL-AUTHORITY-FUND-MONITORING.json",
-      "structureHash": "a4f8cd2db96d23f18d5cb8f96e47ba236f1eeff9ef65d3017aeba1061bed11ca",
-      "geometryHash": "12e63b557317708c65382094e628e22023fbda09af7604c82a776be245bd3619",
+      "structureHash": "b5ddb233a729f9c41024c659cd7987449bf9f55016a9fa56c1b3d00acafe24f9",
+      "geometryHash": "cd3e68961f6fe3fa51f461271c969ba0853f67629943262556d881a0d939f2f3",
       "maskedRows": 0,
       "totalRows": 146,
       "fields": [
@@ -5389,7 +6929,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:14:40+05:30",
+      "capturedAt": "2026-09-10T16:49:43+05:30",
       "designUnchanged": false
     },
     {
@@ -5742,8 +7282,8 @@
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/CENTRAL-AUTHORITY-NOTIFICATIONS.json",
-      "structureHash": "10dc8d3e4ef1e7c70f907626a301aefe5ba25b46633b339bcba0fb4a2308f77a",
-      "geometryHash": "5f2b707b5f1f851dda7d0bef0a46f60973f1404ca5ba0636d0e6a754a42684ff",
+      "structureHash": "9a264c0b75db34db8ce091ae49d817d15425f41fcfd5be252d87cfdec6fba243",
+      "geometryHash": "a985c20194b6b850b4accf1517dab4ad90c1e1ed8d8eb719adf9ee7dc8478fc4",
       "maskedRows": 0,
       "totalRows": 142,
       "fields": [
@@ -5797,7 +7337,41 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:18:12+05:30",
+      "capturedAt": "2026-09-10T16:53:15+05:30",
+      "designUnchanged": false
+    },
+    {
+      "slug": "CENTRAL-AUTHORITY-MASTER-SETTING",
+      "role": "central-authority",
+      "route": "/master-setting",
+      "url": "https://smile-admin-dev.mosje.in/master-setting",
+      "reachedBy": "nav",
+      "png": "captures/live/CENTRAL-AUTHORITY-MASTER-SETTING.png",
+      "pngSha256": "307efc380795af754d6ee088967f3e655da0f9c65802bb8e02333a7e883b972e",
+      "pngH": 2384,
+      "pageH": 2384,
+      "truncated": false,
+      "rows": "captures/live/CENTRAL-AUTHORITY-MASTER-SETTING.json",
+      "structureHash": "3b5df882cca69446be1a3ec4e6483f108cb9999c09f57d3ffd95336933a40868",
+      "geometryHash": "f5168dbb6c1d04a8e6f4a1b295b476cd9312af7a8348f290aceb6250b932ace5",
+      "maskedRows": 0,
+      "totalRows": 331,
+      "fields": [
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "value": false,
+          "valid": true,
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": null,
+      "capturedAt": "2026-09-10T16:54:07+05:30",
       "designUnchanged": false
     },
     {
@@ -5807,13 +7381,13 @@
       "url": "https://smile-admin-dev.mosje.in/audit-log",
       "reachedBy": "nav",
       "png": "captures/live/CENTRAL-AUTHORITY-AUDIT-LOG.png",
-      "pngSha256": "54fdba4d371062d4d779364b92e397fce290c895ab064e440418f494e1687c75",
+      "pngSha256": "3bb5a7a5874ff0acb28f31e4a63a6f3580ec4e6d35e8386c4b187edae18d3cc2",
       "pngH": 1750,
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/CENTRAL-AUTHORITY-AUDIT-LOG.json",
-      "structureHash": "35a6effa179697c9f605bd097f7a4a7c2c5f454955f0d3046f57587168116ad0",
-      "geometryHash": "d43b6ceb0370cefcccecca39353bd0a479f9765d387168ef1e82202d9803fc22",
+      "structureHash": "116610076bab406f8fad06fd1f5de4b4a70a9bd5b8cb49f905e1d8ad88071e60",
+      "geometryHash": "93c834d32dc16c117393a3db95d9083ce78a19cec90edebba759633fb869ff4f",
       "maskedRows": 0,
       "totalRows": 316,
       "fields": [
@@ -5879,7 +7453,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:19:29+05:30",
+      "capturedAt": "2026-09-10T16:55:00+05:30",
       "designUnchanged": false
     },
     {
@@ -5894,8 +7468,8 @@
       "pageH": 1750,
       "truncated": false,
       "rows": "captures/live/CENTRAL-AUTHORITY-CONSENT.json",
-      "structureHash": "f83c0be54f6a0ea42bbdf7a34c25faeead765bf4f61a0e6834dbb451b7637f89",
-      "geometryHash": "0fe8f9b6d55f76ff1cbc25cc55f81d514a5706e4c80a783fced30d9fe0f50e26",
+      "structureHash": "cb70b706d846d6fbbabde51d6c57096885a43f23eb8ff8e19b18df62c1738a08",
+      "geometryHash": "d0e6dcb4ccdb0dfbc3fababc57925b70f708985abb3c3605bbae894e2dc98382",
       "maskedRows": 20,
       "totalRows": 296,
       "fields": [
@@ -6007,7 +7581,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:20:22+05:30",
+      "capturedAt": "2026-09-10T16:55:54+05:30",
       "designUnchanged": false
     },
     {
@@ -6263,13 +7837,13 @@
       "url": "https://smile-admin-dev.mosje.in/audit-log",
       "reachedBy": "nav",
       "png": "captures/live/US-SO-AUDIT-LOG.png",
-      "pngSha256": "01fb3f5588be332aa80e99fb9632e53722156b0817ff35fa12c3b0d64ec71bd9",
+      "pngSha256": "fd01b8438ace95861e8155634170dbf9236418583487d15004bbd0fd7cdd3670",
       "pngH": 1748,
       "pageH": 1748,
       "truncated": false,
       "rows": "captures/live/US-SO-AUDIT-LOG.json",
-      "structureHash": "72e0d57c039a47d052909360100cdad9386b3bda1947e9331965ebdafc99d34a",
-      "geometryHash": "b538e4ceafe81009743e5de0a22093c3ce93022861c3b29c32aa350a05bfcc69",
+      "structureHash": "bf728b1cc476a74f182af4f087b1c65c6a54b79b03fc025669894d674e83f153",
+      "geometryHash": "fbd276fe4c00b3b0e94f5170a8bcd07aa7330644905c366fc95608d35208dedc",
       "maskedRows": 0,
       "totalRows": 275,
       "fields": [
@@ -6335,7 +7909,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:20:52+05:30",
+      "capturedAt": "2026-09-10T16:56:23+05:30",
       "designUnchanged": false
     },
     {
@@ -6527,13 +8101,13 @@
       "url": "https://smile-admin-dev.mosje.in/audit-log",
       "reachedBy": "nav",
       "png": "captures/live/NISD-AUDIT-LOG.png",
-      "pngSha256": "e69c39a1ac1aafe93afc238fea2d86b4887b52b35e8ea188368a3f61dff1db04",
+      "pngSha256": "d47ff4fc771897c792c921fd5285cc73dd2872cfcd8414ee1358856f8a5abdd6",
       "pngH": 1748,
       "pageH": 1748,
       "truncated": false,
       "rows": "captures/live/NISD-AUDIT-LOG.json",
-      "structureHash": "a53fabd8110142a49f27f3add764b4a20939c93205205e514f2a15ce9f8a50a2",
-      "geometryHash": "9d135d92adec548ebc3334635c69eb2fb96a3b0b883c5a56c0c72a5de40aa563",
+      "structureHash": "b6d7f8195fb273d13b9419622f3b7a65734616845deb83c8271a8fffca69833d",
+      "geometryHash": "fbab54b5f12dc4520aced16e120672f1bd063009faed7f0aeebe5cd0ea4b5ec0",
       "maskedRows": 0,
       "totalRows": 275,
       "fields": [
@@ -6599,7 +8173,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-10T16:21:22+05:30",
+      "capturedAt": "2026-09-10T16:56:52+05:30",
       "designUnchanged": false
     }
   ],

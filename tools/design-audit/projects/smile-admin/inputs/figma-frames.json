@@ -1,529 +1,815 @@
 [
-  {
-    "node_id": "8664:49264",
-    "name": "super-admin/Dashboard",
-    "heading": "Programme Overview",
-    "route": "/dashboard",
-    "kind": "screen"
-  },
-  {
-    "node_id": "51891:441340",
-    "name": "super-admin/City Profiling",
-    "heading": "City Profiling",
-    "route": "/city-profiling",
-    "kind": "screen"
-  },
-  {
-    "node_id": "51563:156833",
-    "name": "super-admin/Performance Statistics",
-    "heading": "Begging-Free City - KPI Framework",
-    "route": "/performance-stats",
-    "kind": "screen"
-  },
-  {
-    "node_id": "8664:51029",
-    "name": "super-admin/Users",
-    "heading": "Users",
-    "route": "/users",
-    "kind": "screen"
-  },
-  {
-    "node_id": "8664:52367",
-    "name": "super-admin/Roles",
-    "heading": "Roles",
-    "route": "/roles",
-    "kind": "screen"
-  },
-  {
-    "node_id": "51661:156038",
-    "name": "super-admin/Permissions",
-    "heading": "Permissions Catalog",
-    "route": "/permissions",
-    "kind": "screen"
-  },
-  {
-    "node_id": "8664:55325",
-    "name": "super-admin/Survey Locations",
-    "heading": "Survey Locations",
-    "route": "/survey-locations",
-    "kind": "screen"
-  },
-  {
-    "node_id": "51699:165683",
-    "name": "super-admin/Surveyor Mappings",
-    "heading": "Surveyor Mappings",
-    "route": "/surveyor-mapped",
-    "kind": "screen"
-  },
-  {
-    "node_id": "51699:172678",
-    "name": "super-admin/IA List",
-    "heading": "Implementing Agency Registration List",
-    "route": "/beggary-schemes",
-    "kind": "screen"
-  },
-  {
-    "node_id": "8664:57337",
-    "name": "super-admin/Beneficiary List",
-    "heading": "Beneficiary List",
-    "route": "/persons",
-    "kind": "screen"
-  },
-  {
-    "node_id": "51723:161681",
-    "name": "super-admin/Swashraya (Shelter Homes)",
-    "heading": "Swashraya (Shelter Homes)",
-    "route": "/shelter-homes",
-    "kind": "screen"
-  },
-  {
-    "node_id": "51712:164958",
-    "name": "super-admin/Shelter Occupants",
-    "heading": "Shelter Occupants",
-    "route": "/shelter-homes/beneficiaries",
-    "kind": "screen"
-  },
-  {
-    "node_id": "51742:164435",
-    "name": "super-admin/Skill & Training",
-    "heading": "Skill & Training",
-    "route": "/comprehensive-rehab/skill-training",
-    "kind": "screen"
-  },
-  {
-    "node_id": "51742:166982",
-    "name": "super-admin/Rehab Data",
-    "heading": "Comprehensive Rehabilitation Data",
-    "route": "/comprehensive-rehab/data",
-    "kind": "screen"
-  },
-  {
-    "node_id": "51751:165371",
-    "name": "super-admin/Fund Monitoring - Sanction Order Tracking",
-    "heading": "Fund Monitoring",
-    "route": "/fund-monitoring",
-    "kind": "screen"
-  },
-  {
-    "node_id": "51757:223050",
-    "name": "super-admin/Fund Monitoring - NISD Release Tracker",
-    "heading": "Fund Monitoring",
-    "kind": "screen",
-    "_designOnly": true,
-    "_why": "A tab state of the Fund Monitoring screen, not a route. The design draws Sanction Order / NISD Release / Onward Release as three tabs on one screen; the build splits them into separate sidebar entries and separate create routes."
-  },
-  {
-    "node_id": "51757:223831",
-    "name": "super-admin/Fund Monitoring - Onward Release Tracker",
-    "heading": "Fund Monitoring",
-    "kind": "screen",
-    "_designOnly": true,
-    "_why": "A tab state of the Fund Monitoring screen, not a route. The design draws Sanction Order / NISD Release / Onward Release as three tabs on one screen; the build splits them into separate sidebar entries and separate create routes."
-  },
-  {
-    "node_id": "51830:237991",
-    "name": "super-admin/Notifications",
-    "heading": "Notifications",
-    "route": "/notifications",
-    "kind": "screen"
-  },
-  {
-    "node_id": "51868:193450",
-    "name": "super-admin/Audit Log",
-    "heading": "Audit Log",
-    "route": "/audit-log",
-    "kind": "screen"
-  },
-  {
-    "node_id": "51873:194809",
-    "name": "super-admin/Consent Forms",
-    "heading": "Consent Forms",
-    "route": "/consent",
-    "kind": "screen"
-  },
-  {
-    "node_id": "51836:240081",
-    "name": "super-admin/Master Settings - Geography Masters",
-    "heading": "Master Settings",
-    "route": "/master-setting",
-    "kind": "screen"
-  },
-  {
-    "node_id": "8664:50160",
-    "name": "super-admin/Dashboard - sidebar/filter/chart card states",
-    "heading": "Programme Overview",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51891:441685",
-    "name": "super-admin/City Profiling - Level 2 City/District List",
-    "heading": "Andhra Pradesh",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51891:441935",
-    "name": "super-admin/City Profiling - Level 3 City Profile View",
-    "heading": "Vijayawada",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "8664:52311",
-    "name": "super-admin/Users - Add User",
-    "heading": "Onboard New User",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51656:191902",
-    "name": "super-admin/Users - row action dropdown",
-    "heading": "Users",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51661:158685",
-    "name": "super-admin/Roles - Create New Role",
-    "heading": "Roles",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "8664:52827",
-    "name": "super-admin/Roles - Edit Role",
-    "heading": "Edit Roles - Super Admin",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "8664:56996",
-    "name": "super-admin/Survey Locations - Add Surveyor",
-    "heading": "123 Maple Street",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51689:164525",
-    "name": "super-admin/Survey Locations - Add Surveyor / Agency Details",
-    "heading": "123 Maple Street",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51699:166256",
-    "name": "super-admin/Surveyor Mappings - Add Implementing Agencies",
-    "heading": "",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51699:173158",
-    "name": "super-admin/IA List - Add Implementing Agencies",
-    "heading": "",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51710:159825",
-    "name": "super-admin/IA List - View Agency (Approved)",
-    "heading": "Hope Horizon",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51712:160748",
-    "name": "super-admin/IA List - View Agency (Pending)",
-    "heading": "Hope Horizon",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51742:163249",
-    "name": "super-admin/Swashraya - Edit Shelter Home",
-    "heading": "Edit Swashraya (Shelter Home)",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51746:169337",
-    "name": "super-admin/Rehab Data - View Rehabilitation Details",
-    "heading": "Comprehensive Rehabilitation Data",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51768:167027",
-    "name": "super-admin/MIS Reports - Mobilised Report",
-    "heading": "Mobilised Persons Report",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51780:170884",
-    "name": "super-admin/MIS Reports - Rehabilitated Report",
-    "heading": "Rehabilitated Persons Report",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51809:188848",
-    "name": "super-admin/MIS Reports - Beneficiary Report",
-    "heading": "Beneficiary Report",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51813:190332",
-    "name": "super-admin/MIS Reports - Swashraya (Shelter Home) Report",
-    "heading": "Swashraya (Shelter Home) Report",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51815:191771",
-    "name": "super-admin/MIS Reports - Implementing Agency Report",
-    "heading": "Implementing Agency Report",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51818:193487",
-    "name": "super-admin/MIS Reports - Survey Location Report",
-    "heading": "Survey Location Report",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51820:195217",
-    "name": "super-admin/MIS Reports - Comprehensive Rehab Report",
-    "heading": "Comprehensive Rehab Report",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51820:197430",
-    "name": "super-admin/MIS Reports - Master Report",
-    "heading": "Master Report",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51873:195833",
-    "name": "super-admin/Consent Form - View Details",
-    "heading": "Jankalyan Parishad",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51845:182519",
-    "name": "super-admin/Master Settings - Roles & Permission Masters",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51845:183410",
-    "name": "super-admin/Master Settings - Survey Questionnaire Masters",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51845:184267",
-    "name": "super-admin/Master Settings - Agency Masters",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51845:186361",
-    "name": "super-admin/Master Settings - Operational Masters",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51847:186355",
-    "name": "super-admin/Master Settings - Fund Management Masters",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51850:188122",
-    "name": "super-admin/Master Settings - Rehabilitation Masters",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51850:188933",
-    "name": "super-admin/Master Settings - Survey Location Masters",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51864:189762",
-    "name": "super-admin/Master Settings - Survey Location Masters / Add New",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51850:189665",
-    "name": "super-admin/Master Settings - Beggar Type Masters",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51867:190702",
-    "name": "super-admin/Master Settings - Beggar Type Masters / Add New",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51850:189882",
-    "name": "super-admin/Master Settings - Skill & Training Masters",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51867:191628",
-    "name": "super-admin/Master Settings - Skill & Training Masters / Add New",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51850:190620",
-    "name": "super-admin/Master Settings - Swashraya Checklist Masters",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51867:192554",
-    "name": "super-admin/Master Settings - Swashraya Checklist Masters / Add New",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51847:185344",
-    "name": "super-admin/Master Settings - Operational Masters / Edit",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51845:185346",
-    "name": "super-admin/Master Settings - Agency Masters / Edit",
-    "heading": "Master Settings",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51712:164382",
-    "name": "super-admin/Beneficiary section - Shelter Homes",
-    "heading": "Shelter Homes",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51712:165912",
-    "name": "super-admin/Beneficiary section - Beneficiary View",
-    "heading": "Beneficiary 702-6",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51712:166102",
-    "name": "super-admin/Beneficiary section - Add Shelter Homes",
-    "heading": "Add Shelter Homes",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51712:166175",
-    "name": "super-admin/Beneficiary section - Photo View",
-    "heading": "Beneficiary 702-6",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51687:156971",
-    "name": "super-admin/Survey Locations section - Surveyor",
-    "heading": "Surveyor",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51687:157246",
-    "name": "super-admin/Survey Locations section - Implementing Agencies",
-    "heading": "Implementing Agencies Registration List",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51687:157973",
-    "name": "super-admin/Survey Locations section - Add Survey Location",
-    "heading": "Add Survey Location",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51687:158026",
-    "name": "super-admin/Survey Locations section - Add Implementing Agency",
-    "heading": "Add Implementing Agency",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51687:158096",
-    "name": "super-admin/Survey Locations section - Assign Surveyor",
-    "heading": "Assign Surveyor",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "51687:158239",
-    "name": "super-admin/Survey Locations section - View Agency",
-    "heading": "Hope Horizon",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "8383:54485",
-    "name": "super-admin/Sign In - Implementing Agency (Desktop)",
-    "heading": "SAMAVESH",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "8383:55528",
-    "name": "super-admin/Choose Portal (Desktop)",
-    "heading": "SAMAVESH",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "8349:13381",
-    "name": "super-admin/Sign In (Mobile)",
-    "heading": "SAMAVESH",
-    "kind": "screen",
-    "_designOnly": true
-  },
-  {
-    "node_id": "8349:13761",
-    "name": "super-admin/Choose Portal (Mobile)",
-    "heading": "SAMAVESH",
-    "kind": "screen",
-    "_designOnly": true
-  }
+ {
+  "node_id": "51868:193450",
+  "slug": "CENTRAL-AUTHORITY-AUDIT-LOG",
+  "name": "central-authority/Audit Log",
+  "heading": "Audit Log",
+  "route": "/audit-log",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51699:172678",
+  "slug": "CENTRAL-AUTHORITY-BEGGARY-SCHEMES",
+  "name": "central-authority/IA List",
+  "heading": "Implementing Agency Registration List",
+  "route": "/beggary-schemes",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51891:441340",
+  "slug": "CENTRAL-AUTHORITY-CITY-PROFILING",
+  "name": "central-authority/City Profiling",
+  "heading": "City Profiling",
+  "route": "/city-profiling",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51742:166982",
+  "slug": "CENTRAL-AUTHORITY-COMPREHENSIVE-REHAB-DATA",
+  "name": "central-authority/Rehab Data",
+  "heading": "Comprehensive Rehabilitation Data",
+  "route": "/comprehensive-rehab/data",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51742:164435",
+  "slug": "CENTRAL-AUTHORITY-COMPREHENSIVE-REHAB-SKILL-TRAINING",
+  "name": "central-authority/Skill & Training",
+  "heading": "Skill & Training",
+  "route": "/comprehensive-rehab/skill-training",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51873:194809",
+  "slug": "CENTRAL-AUTHORITY-CONSENT",
+  "name": "central-authority/Consent Forms",
+  "heading": "Consent Forms",
+  "route": "/consent",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:49264",
+  "slug": "CENTRAL-AUTHORITY-DASHBOARD",
+  "name": "central-authority/Dashboard",
+  "heading": "Programme Overview",
+  "route": "/dashboard",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51751:165371",
+  "slug": "CENTRAL-AUTHORITY-FUND-MONITORING",
+  "name": "central-authority/Fund Monitoring - Sanction Order Tracking",
+  "heading": "Fund Monitoring",
+  "route": "/fund-monitoring",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51836:240081",
+  "slug": "CENTRAL-AUTHORITY-MASTER-SETTING",
+  "name": "central-authority/Master Settings - Geography Masters",
+  "heading": "Master Settings",
+  "route": "/master-setting",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51830:237991",
+  "slug": "CENTRAL-AUTHORITY-NOTIFICATIONS",
+  "name": "central-authority/Notifications",
+  "heading": "Notifications",
+  "route": "/notifications",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51563:156833",
+  "slug": "CENTRAL-AUTHORITY-PERFORMANCE-STATS",
+  "name": "central-authority/Performance Statistics",
+  "heading": "Begging-Free City - KPI Framework",
+  "route": "/performance-stats",
+  "kind": "screen",
+  "_refFrame": true,
+  "_refWhy": "Correctly paired \u2014 the titles genuinely differ ('Begging-Free City - KPI Framework' in the design, 'Performance Statistics' in the build) and that difference is written up as a finding rather than treated as a mis-pairing."
+ },
+ {
+  "node_id": "51661:156038",
+  "slug": "CENTRAL-AUTHORITY-PERMISSIONS",
+  "name": "central-authority/Permissions",
+  "heading": "Permissions Catalog",
+  "route": "/permissions",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:57337",
+  "slug": "CENTRAL-AUTHORITY-PERSONS",
+  "name": "central-authority/Beneficiary List",
+  "heading": "Beneficiary List",
+  "route": "/persons",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:52367",
+  "slug": "CENTRAL-AUTHORITY-ROLES",
+  "name": "central-authority/Roles",
+  "heading": "Roles",
+  "route": "/roles",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51723:161681",
+  "slug": "CENTRAL-AUTHORITY-SHELTER-HOMES",
+  "name": "central-authority/Swashraya (Shelter Homes)",
+  "heading": "Swashraya (Shelter Homes)",
+  "route": "/shelter-homes",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51712:164958",
+  "slug": "CENTRAL-AUTHORITY-SHELTER-HOMES-BENEFICIARIES",
+  "name": "central-authority/Shelter Occupants",
+  "heading": "Shelter Occupants",
+  "route": "/shelter-homes/beneficiaries",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:55325",
+  "slug": "CENTRAL-AUTHORITY-SURVEY-LOCATIONS",
+  "name": "central-authority/Survey Locations",
+  "heading": "Survey Locations",
+  "route": "/survey-locations",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51699:165683",
+  "slug": "CENTRAL-AUTHORITY-SURVEYOR-MAPPED",
+  "name": "central-authority/Surveyor Mappings",
+  "heading": "Surveyor Mappings",
+  "route": "/surveyor-mapped",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:51029",
+  "slug": "CENTRAL-AUTHORITY-USERS",
+  "name": "central-authority/Users",
+  "heading": "Users",
+  "route": "/users",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51868:193450",
+  "slug": "NISD-AUDIT-LOG",
+  "name": "nisd/Audit Log",
+  "heading": "Audit Log",
+  "route": "/audit-log",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:49264",
+  "slug": "NISD-DASHBOARD",
+  "name": "nisd/Dashboard",
+  "heading": "Programme Overview",
+  "route": "/dashboard",
+  "kind": "screen",
+  "_refFrame": true,
+  "_refWhy": "These roles get their own restricted dashboard titled 'Welcome, <name>'. No frame is drawn for it, so it is audited against the super-admin dashboard as the visual reference; the title difference is a finding."
+ },
+ {
+  "node_id": "51751:165371",
+  "slug": "NISD-FUND-MONITORING",
+  "name": "nisd/Fund Monitoring - Sanction Order Tracking",
+  "heading": "Fund Monitoring",
+  "route": "/fund-monitoring",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8383:55528",
+  "slug": "SIGNIN-CHOOSE-PORTAL",
+  "name": "signin/Choose Portal (Desktop)",
+  "heading": "SAMAVESH",
+  "route": "https://smile-admin-dev.mosje.in/login",
+  "kind": "screen",
+  "_refFrame": true,
+  "_refWhy": "A sign-in page's largest text is the SAMAVESH wordmark, not a page title, so the design-vs-build title check has nothing meaningful to compare. The pairing is correct; only that one check is skipped."
+ },
+ {
+  "node_id": "8383:55268",
+  "slug": "SIGNIN-DEFAULT",
+  "name": "signin/8383:55268",
+  "heading": "",
+  "route": "https://smile-admin-dev.mosje.in/login",
+  "kind": "screen",
+  "_refFrame": true,
+  "_refWhy": "A sign-in page's largest text is the SAMAVESH wordmark, not a page title, so the design-vs-build title check has nothing meaningful to compare. The pairing is correct; only that one check is skipped."
+ },
+ {
+  "node_id": "8383:54485",
+  "slug": "SIGNIN-IMPLEMENTING-AGENCY-OTP",
+  "name": "signin/Sign In - Implementing Agency (Desktop)",
+  "heading": "SAMAVESH",
+  "route": "https://smile-admin-dev.mosje.in/ia-login",
+  "kind": "screen",
+  "_refFrame": true,
+  "_refWhy": "A sign-in page's largest text is the SAMAVESH wordmark, not a page title, so the design-vs-build title check has nothing meaningful to compare. The pairing is correct; only that one check is skipped."
+ },
+ {
+  "node_id": "8383:55268",
+  "slug": "SIGNIN-LOGIN",
+  "name": "signin/8383:55268",
+  "heading": "",
+  "route": "/login",
+  "kind": "screen",
+  "_refFrame": true,
+  "_refWhy": "A sign-in page's largest text is the SAMAVESH wordmark, not a page title, so the design-vs-build title check has nothing meaningful to compare. The pairing is correct; only that one check is skipped."
+ },
+ {
+  "node_id": "51868:193450",
+  "slug": "SUPER-ADMIN-AUDIT-LOG",
+  "name": "super-admin/Audit Log",
+  "heading": "Audit Log",
+  "route": "/audit-log",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51699:172678",
+  "slug": "SUPER-ADMIN-BEGGARY-SCHEMES",
+  "name": "super-admin/IA List",
+  "heading": "Implementing Agency Registration List",
+  "route": "/beggary-schemes",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51891:441340",
+  "slug": "SUPER-ADMIN-CITY-PROFILING",
+  "name": "super-admin/City Profiling",
+  "heading": "City Profiling",
+  "route": "/city-profiling",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51891:441685",
+  "slug": "SUPER-ADMIN-CITY-PROFILING-L2-DISTRICTS",
+  "name": "super-admin/City Profiling - Level 2 City/District List",
+  "heading": "Andhra Pradesh",
+  "route": "https://smile-admin-dev.mosje.in/city-profiling/1",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51742:166982",
+  "slug": "SUPER-ADMIN-COMPREHENSIVE-REHAB-DATA",
+  "name": "super-admin/Rehab Data",
+  "heading": "Comprehensive Rehabilitation Data",
+  "route": "/comprehensive-rehab/data",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51742:164435",
+  "slug": "SUPER-ADMIN-COMPREHENSIVE-REHAB-SKILL-TRAINING",
+  "name": "super-admin/Skill & Training",
+  "heading": "Skill & Training",
+  "route": "/comprehensive-rehab/skill-training",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51873:194809",
+  "slug": "SUPER-ADMIN-CONSENT",
+  "name": "super-admin/Consent Forms",
+  "heading": "Consent Forms",
+  "route": "/consent",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:49264",
+  "slug": "SUPER-ADMIN-DASHBOARD",
+  "name": "super-admin/Dashboard",
+  "heading": "Programme Overview",
+  "route": "/dashboard",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51751:165371",
+  "slug": "SUPER-ADMIN-FUND-MONITORING",
+  "name": "super-admin/Fund Monitoring - Sanction Order Tracking",
+  "heading": "Fund Monitoring",
+  "route": "/fund-monitoring",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51836:240081",
+  "slug": "SUPER-ADMIN-MASTER-SETTING",
+  "name": "super-admin/Master Settings - Geography Masters",
+  "heading": "Master Settings",
+  "route": "/master-setting",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51845:184267",
+  "slug": "SUPER-ADMIN-MASTER-SETTING-AGENCY",
+  "name": "super-admin/Master Settings - Agency Masters",
+  "heading": "Master Settings",
+  "route": "https://smile-admin-dev.mosje.in/master-setting",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51847:186355",
+  "slug": "SUPER-ADMIN-MASTER-SETTING-FUND-MANAGEMENT",
+  "name": "super-admin/Master Settings - Fund Management Masters",
+  "heading": "Master Settings",
+  "route": "https://smile-admin-dev.mosje.in/master-setting",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51836:240081",
+  "slug": "SUPER-ADMIN-MASTER-SETTING-GEOGRAPHY",
+  "name": "super-admin/Master Settings - Geography Masters",
+  "heading": "Master Settings",
+  "route": "https://smile-admin-dev.mosje.in/master-setting",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51845:186361",
+  "slug": "SUPER-ADMIN-MASTER-SETTING-OPERATIONAL",
+  "name": "super-admin/Master Settings - Operational Masters",
+  "heading": "Master Settings",
+  "route": "https://smile-admin-dev.mosje.in/master-setting",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51845:182519",
+  "slug": "SUPER-ADMIN-MASTER-SETTING-ROLE-PERMISSION",
+  "name": "super-admin/Master Settings - Roles & Permission Masters",
+  "heading": "Master Settings",
+  "route": "https://smile-admin-dev.mosje.in/master-setting",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51845:183410",
+  "slug": "SUPER-ADMIN-MASTER-SETTING-SURVEY-QUESTIONNAIRE",
+  "name": "super-admin/Master Settings - Survey Questionnaire Masters",
+  "heading": "Master Settings",
+  "route": "https://smile-admin-dev.mosje.in/master-setting",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51830:237991",
+  "slug": "SUPER-ADMIN-NOTIFICATIONS",
+  "name": "super-admin/Notifications",
+  "heading": "Notifications",
+  "route": "/notifications",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51563:156833",
+  "slug": "SUPER-ADMIN-PERFORMANCE-STATS",
+  "name": "super-admin/Performance Statistics",
+  "heading": "Begging-Free City - KPI Framework",
+  "route": "/performance-stats",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51661:156038",
+  "slug": "SUPER-ADMIN-PERMISSIONS",
+  "name": "super-admin/Permissions",
+  "heading": "Permissions Catalog",
+  "route": "/permissions",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51661:156038",
+  "slug": "SUPER-ADMIN-PERMISSIONS-EXPANDED",
+  "name": "super-admin/Permissions",
+  "heading": "Permissions Catalog",
+  "route": "https://smile-admin-dev.mosje.in/permissions",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:52367",
+  "slug": "SUPER-ADMIN-PERMISSIONS-MANAGE-ROLES",
+  "name": "super-admin/Roles",
+  "heading": "Roles",
+  "route": "https://smile-admin-dev.mosje.in/roles",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:57337",
+  "slug": "SUPER-ADMIN-PERSONS",
+  "name": "super-admin/Beneficiary List",
+  "heading": "Beneficiary List",
+  "route": "/persons",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:52367",
+  "slug": "SUPER-ADMIN-ROLES",
+  "name": "super-admin/Roles",
+  "heading": "Roles",
+  "route": "/roles",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51661:158685",
+  "slug": "SUPER-ADMIN-ROLES-NEW-ROLE",
+  "name": "super-admin/Roles - Create New Role",
+  "heading": "Roles",
+  "route": "https://smile-admin-dev.mosje.in/roles",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51723:161681",
+  "slug": "SUPER-ADMIN-SHELTER-HOMES",
+  "name": "super-admin/Swashraya (Shelter Homes)",
+  "heading": "Swashraya (Shelter Homes)",
+  "route": "/shelter-homes",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51712:166102",
+  "slug": "SUPER-ADMIN-SHELTER-HOMES-ADD",
+  "name": "super-admin/Beneficiary section - Add Shelter Homes",
+  "heading": "Add Shelter Homes",
+  "route": "https://smile-admin-dev.mosje.in/shelter-homes",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51712:164958",
+  "slug": "SUPER-ADMIN-SHELTER-HOMES-BENEFICIARIES",
+  "name": "super-admin/Shelter Occupants",
+  "heading": "Shelter Occupants",
+  "route": "/shelter-homes/beneficiaries",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51742:163249",
+  "slug": "SUPER-ADMIN-SHELTER-HOMES-EDIT",
+  "name": "super-admin/Swashraya - Edit Shelter Home",
+  "heading": "Edit Swashraya (Shelter Home)",
+  "route": "https://smile-admin-dev.mosje.in/shelter-homes",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:55325",
+  "slug": "SUPER-ADMIN-SURVEY-LOCATIONS",
+  "name": "super-admin/Survey Locations",
+  "heading": "Survey Locations",
+  "route": "/survey-locations",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51699:165683",
+  "slug": "SUPER-ADMIN-SURVEYOR-MAPPED",
+  "name": "super-admin/Surveyor Mappings",
+  "heading": "Surveyor Mappings",
+  "route": "/surveyor-mapped",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:51029",
+  "slug": "SUPER-ADMIN-USERS",
+  "name": "super-admin/Users",
+  "heading": "Users",
+  "route": "/users",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:52311",
+  "slug": "SUPER-ADMIN-USERS-ADD-USER",
+  "name": "super-admin/Users - Add User",
+  "heading": "Onboard New User",
+  "route": "https://smile-admin-dev.mosje.in/users/onboard",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:51029",
+  "slug": "SUPER-ADMIN-USERS-ADD-USER-ENTRY",
+  "name": "super-admin/Users",
+  "heading": "Users",
+  "route": "https://smile-admin-dev.mosje.in/users",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51868:193450",
+  "slug": "US-SO-AUDIT-LOG",
+  "name": "us-so/Audit Log",
+  "heading": "Audit Log",
+  "route": "/audit-log",
+  "kind": "screen"
+ },
+ {
+  "node_id": "8664:49264",
+  "slug": "US-SO-DASHBOARD",
+  "name": "us-so/Dashboard",
+  "heading": "Programme Overview",
+  "route": "/dashboard",
+  "kind": "screen",
+  "_refFrame": true,
+  "_refWhy": "These roles get their own restricted dashboard titled 'Welcome, <name>'. No frame is drawn for it, so it is audited against the super-admin dashboard as the visual reference; the title difference is a finding."
+ },
+ {
+  "node_id": "51751:165371",
+  "slug": "US-SO-FUND-MONITORING",
+  "name": "us-so/Fund Monitoring - Sanction Order Tracking",
+  "heading": "Fund Monitoring",
+  "route": "/fund-monitoring",
+  "kind": "screen"
+ },
+ {
+  "node_id": "51757:223050",
+  "name": "super-admin/Fund Monitoring - NISD Release Tracker",
+  "heading": "Fund Monitoring",
+  "kind": "screen",
+  "_designOnly": true,
+  "_why": "A tab state of the Fund Monitoring screen, not a route. The design draws Sanction Order / NISD Release / Onward Release as three tabs on one screen; the build splits them into separate sidebar entries and separate create routes."
+ },
+ {
+  "node_id": "51757:223831",
+  "name": "super-admin/Fund Monitoring - Onward Release Tracker",
+  "heading": "Fund Monitoring",
+  "kind": "screen",
+  "_designOnly": true,
+  "_why": "A tab state of the Fund Monitoring screen, not a route. The design draws Sanction Order / NISD Release / Onward Release as three tabs on one screen; the build splits them into separate sidebar entries and separate create routes."
+ },
+ {
+  "node_id": "8664:50160",
+  "name": "super-admin/Dashboard - sidebar/filter/chart card states",
+  "heading": "Programme Overview",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51891:441935",
+  "name": "super-admin/City Profiling - Level 3 City Profile View",
+  "heading": "Vijayawada",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51656:191902",
+  "name": "super-admin/Users - row action dropdown",
+  "heading": "Users",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "8664:52827",
+  "name": "super-admin/Roles - Edit Role",
+  "heading": "Edit Roles - Super Admin",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "8664:56996",
+  "name": "super-admin/Survey Locations - Add Surveyor",
+  "heading": "123 Maple Street",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51689:164525",
+  "name": "super-admin/Survey Locations - Add Surveyor / Agency Details",
+  "heading": "123 Maple Street",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51699:166256",
+  "name": "super-admin/Surveyor Mappings - Add Implementing Agencies",
+  "heading": "",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51699:173158",
+  "name": "super-admin/IA List - Add Implementing Agencies",
+  "heading": "",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51710:159825",
+  "name": "super-admin/IA List - View Agency (Approved)",
+  "heading": "Hope Horizon",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51712:160748",
+  "name": "super-admin/IA List - View Agency (Pending)",
+  "heading": "Hope Horizon",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51746:169337",
+  "name": "super-admin/Rehab Data - View Rehabilitation Details",
+  "heading": "Comprehensive Rehabilitation Data",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51768:167027",
+  "name": "super-admin/MIS Reports - Mobilised Report",
+  "heading": "Mobilised Persons Report",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51780:170884",
+  "name": "super-admin/MIS Reports - Rehabilitated Report",
+  "heading": "Rehabilitated Persons Report",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51809:188848",
+  "name": "super-admin/MIS Reports - Beneficiary Report",
+  "heading": "Beneficiary Report",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51813:190332",
+  "name": "super-admin/MIS Reports - Swashraya (Shelter Home) Report",
+  "heading": "Swashraya (Shelter Home) Report",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51815:191771",
+  "name": "super-admin/MIS Reports - Implementing Agency Report",
+  "heading": "Implementing Agency Report",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51818:193487",
+  "name": "super-admin/MIS Reports - Survey Location Report",
+  "heading": "Survey Location Report",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51820:195217",
+  "name": "super-admin/MIS Reports - Comprehensive Rehab Report",
+  "heading": "Comprehensive Rehab Report",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51820:197430",
+  "name": "super-admin/MIS Reports - Master Report",
+  "heading": "Master Report",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51873:195833",
+  "name": "super-admin/Consent Form - View Details",
+  "heading": "Jankalyan Parishad",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51850:188122",
+  "name": "super-admin/Master Settings - Rehabilitation Masters",
+  "heading": "Master Settings",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51850:188933",
+  "name": "super-admin/Master Settings - Survey Location Masters",
+  "heading": "Master Settings",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51864:189762",
+  "name": "super-admin/Master Settings - Survey Location Masters / Add New",
+  "heading": "Master Settings",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51850:189665",
+  "name": "super-admin/Master Settings - Beggar Type Masters",
+  "heading": "Master Settings",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51867:190702",
+  "name": "super-admin/Master Settings - Beggar Type Masters / Add New",
+  "heading": "Master Settings",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51850:189882",
+  "name": "super-admin/Master Settings - Skill & Training Masters",
+  "heading": "Master Settings",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51867:191628",
+  "name": "super-admin/Master Settings - Skill & Training Masters / Add New",
+  "heading": "Master Settings",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51850:190620",
+  "name": "super-admin/Master Settings - Swashraya Checklist Masters",
+  "heading": "Master Settings",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51867:192554",
+  "name": "super-admin/Master Settings - Swashraya Checklist Masters / Add New",
+  "heading": "Master Settings",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51847:185344",
+  "name": "super-admin/Master Settings - Operational Masters / Edit",
+  "heading": "Master Settings",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51845:185346",
+  "name": "super-admin/Master Settings - Agency Masters / Edit",
+  "heading": "Master Settings",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51712:164382",
+  "name": "super-admin/Beneficiary section - Shelter Homes",
+  "heading": "Shelter Homes",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51712:165912",
+  "name": "super-admin/Beneficiary section - Beneficiary View",
+  "heading": "Beneficiary 702-6",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51712:166175",
+  "name": "super-admin/Beneficiary section - Photo View",
+  "heading": "Beneficiary 702-6",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51687:157246",
+  "name": "super-admin/Survey Locations section - Implementing Agencies",
+  "heading": "Implementing Agencies Registration List",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51687:157973",
+  "name": "super-admin/Survey Locations section - Add Survey Location",
+  "heading": "Add Survey Location",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51687:158026",
+  "name": "super-admin/Survey Locations section - Add Implementing Agency",
+  "heading": "Add Implementing Agency",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51687:158096",
+  "name": "super-admin/Survey Locations section - Assign Surveyor",
+  "heading": "Assign Surveyor",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "51687:158239",
+  "name": "super-admin/Survey Locations section - View Agency",
+  "heading": "Hope Horizon",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "8349:13381",
+  "name": "super-admin/Sign In (Mobile)",
+  "heading": "SAMAVESH",
+  "kind": "screen",
+  "_designOnly": true
+ },
+ {
+  "node_id": "8349:13761",
+  "name": "super-admin/Choose Portal (Mobile)",
+  "heading": "SAMAVESH",
+  "kind": "screen",
+  "_designOnly": true
+ }
 ]

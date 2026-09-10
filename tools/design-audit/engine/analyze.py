@@ -105,27 +105,39 @@ def build_ledger(cfg, frames, captured, paths):
             # An explicit `route` on the frame is the only unambiguous pairing there is. Use it
             # first, and never fall through to a heuristic when it is present but does not match —
             # a stated route that matches nothing is a real UNMAPPED, not an invitation to guess.
+            # A frame may name its capture SLUG outright. That is the only pairing with no
+            # inference in it at all, and it is the one way to pair a state that is not a route
+            # — a modal, a wizard step, a tab — or the same screen captured as a second role.
+            # Route and segment matching stay for frames that do not use it.
+            declared_slug = fr.get("slug")
             declared = fr.get("route")
-            if declared:
+            if declared_slug:
+                hit = next((c for c in captured if c["slug"] == declared_slug), None)
+            elif declared:
                 hit = cap_by_route.get((role, norm(declared)))
             else:
                 hit = cap_by_key.get(key)
             # Landing frame → this role's ROOT capture. A root route offers no screen segment to
             # match on, so pair by role alone — but only for a frame that declares itself the home
             # view, or every unmatched frame in the role would grab the home screenshot.
-            if not hit and not fr.get("route") and _is_home_frame(name):
+            if not hit and not fr.get("route") and not fr.get("slug") and _is_home_frame(name):
                 hit = cap_by_key.get((role, HOME_SEG))
             # Substring fallback — SCOPED TO THE SAME ROLE (r == role). Unscoped, this walked every
             # key in every role and paired one role's design against another role's screenshot while
             # still reporting MAPPED: a confident wrong answer, strictly worse than an honest
             # UNMAPPED, and invisible downstream because spec-diffing trusts the pairing.
-            if not hit and not fr.get("route") and screen:
+            if not hit and not fr.get("route") and not fr.get("slug") and screen:
                 hit = next((c for (r, s), c in cap_by_key.items() if r == role and screen in s), None)
         status = "MAPPED" if hit else ("DESIGN-ONLY" if is_design_only else "UNMAPPED")
         # design↔build MAPPING sanity: the frame's heading must agree with the paired capture's title,
         # or the pairing is wrong (a build screenshot on the wrong Figma frame — invisible to spec diffing).
         verdict = None
-        if hit and fr.get("heading"):
+        # `_refFrame` means the pairing is deliberate but the design↔build TITLE check does not
+        # apply — a style-reference frame, a sign-in page whose largest text is a wordmark, or a
+        # pair whose titles genuinely differ and where that difference is itself a finding.
+        # crosscheck.py already honours the flag; build_ledger did not, so it kept reporting
+        # MISMAP for pairings a human had already adjudicated.
+        if hit and fr.get("heading") and not fr.get("_refFrame"):
             dh, bh = fr["heading"], _bhead(hit["slug"])
             if bh:
                 verdict = "MATCH" if XC._overlap(XC._toks(dh), XC._toks(bh)) >= 0.34 else "MISMAP"
@@ -313,21 +325,41 @@ def assemble(cfg, ledger, conf, paths, top_n=12):
 
 def run(project):
     cfg, paths = C.load(project)
+    # THE MANIFEST IS A CACHE; THE DISK IS THE TRUTH.
+    #
+    # `_captured.json` records what the LAST run visited. A partial run — one role, or a
+    # --verify pass that reused most screens — writes a NARROWER manifest, and every capture it
+    # did not touch then disappears from the audit even though the file is sitting right there.
+    # That happened on SMILE-Beggary: 75 captures on disk, 56 in the manifest, and 19 real
+    # screens silently excluded from coverage — the exact failure the coverage gate exists to
+    # catch, arriving through the gate's own input. Always reconcile, and always say so.
     cap_path = os.path.join(paths["captures"], "_captured.json")
+    captured = []
     if os.path.exists(cap_path):
-        captured = json.load(open(cap_path))
-    else:
-        # rebuild the manifest from the extracted live JSON files on disk
-        captured = []
-        for f in sorted(glob.glob(os.path.join(paths["captures_live"], "*.json"))):
-            if os.path.basename(f).startswith("_"): continue
+        try:
+            captured = json.load(open(cap_path))
+        except Exception:
+            captured = []
+    known = {c.get("slug") for c in captured}
+    recovered = []
+    for f in sorted(glob.glob(os.path.join(paths["captures_live"], "*.json"))):
+        if os.path.basename(f).startswith("_"): continue
+        slug = os.path.splitext(os.path.basename(f))[0]
+        if slug in known: continue
+        try:
             d = json.load(open(f))
-            if not isinstance(d, dict) or "rows" not in d: continue
-            slug = os.path.splitext(os.path.basename(f))[0]
-            captured.append({"slug": slug, "role": d.get("role", slug.split("-")[0].lower()),
-                             "route": d.get("route", "/" + slug.lower()), "url": d.get("url"),
-                             "png": f"captures/live/{slug}.png", "pageH": d.get("pageH", 1000),
-                             "rows": len(d.get("rows", []))})
+        except Exception:
+            continue
+        if not isinstance(d, dict) or "rows" not in d: continue
+        captured.append({"slug": slug, "role": d.get("role", slug.split("-")[0].lower()),
+                         "route": d.get("route", "/" + slug.lower()), "url": d.get("url"),
+                         "png": f"captures/live/{slug}.png", "pageH": d.get("pageH", 1000),
+                         "rows": len(d.get("rows", []))})
+        recovered.append(slug)
+    if recovered:
+        print(f"  reconciled: {len(recovered)} capture(s) on disk were missing from the manifest "
+              f"and have been added — {recovered[:4]}{'...' if len(recovered) > 4 else ''}",
+              flush=True)
     frames = load_frames(paths, cfg)
     ledger = build_ledger(cfg, frames, captured, paths)
     mode, allow = load_baseline(cfg, captured, paths)
