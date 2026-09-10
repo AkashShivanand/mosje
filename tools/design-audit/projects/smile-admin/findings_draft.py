@@ -132,22 +132,18 @@ SCREEN = [
   "if it is not, the three designed cards and their chart types should be restored."),
 
  ("S02", "Screen", "Dashboard", "Minor", "Components & States",
-  "The six KPI cards became five, with two metrics merged",
-  "Six equal cards: Identified/Surveyed, Mobilised, Shelter Assigned, Rehabilitated, Fund "
-  "Disbursed, Fund Utilised.",
-  "Five cards, one of which ('Shelter & Rehabilitation') holds two figures side by side, and "
-  "'Rehabilitated' is presented as 'Combined Total Rehab'.",
+  "Two of the six metrics are merged into one cell, and a third is renamed",
+  "Six cells in a three-by-two grid: Identified/Surveyed, Mobilised, Shelter Assigned, "
+  "Rehabilitated, Fund Disbursed, Fund Utilised.",
+  "Six cells too, but the third holds TWO figures under one heading — 'Shelter & Rehabilitation', "
+  "carrying Shelter Assigned 564 and Child Rehab 306 — and 'Rehabilitated' is renamed 'Combined "
+  "Total Rehab'. So the build reports seven figures in six cells, and Child Rehab appears in "
+  "neither the design nor its own cell. (Corrected 2026-09-10: an earlier draft said the row "
+  "dropped to five cards. It has six.)",
   "Confirm the merge is intended and update the design frame to match, so the dashboard has one "
   "specification. A card holding two figures needs its own treatment in the design, not an "
   "improvised split."),
 
- ("S03", "Screen", "Dashboard", "Minor", "Layout & Spacing",
-  "The KPI row lost its shared container",
-  "The six cards sit inside one white panel under a PROGRAMME OVERVIEW rule, separated by hairline "
-  "dividers, reading as a single block.",
-  "The cards are separate surfaces with gaps between them.",
-  "Restore the single panel with hairline dividers so the overview reads as one figure set rather "
-  "than five unrelated tiles."),
 
  ("S04", "Screen", "Dashboard", "Minor", "Components & States",
   "The System Users panel's rows gained their own fills",
@@ -196,17 +192,23 @@ SCREEN = [
   "list that is paginated to 1,248 items."),
 
  ("S10", "Screen", "Consent Forms", "Minor", "Components & States",
-  "The Submitted On column is not in the build",
-  "Columns end with Document and Submitted On.",
-  "The table ends at Document; the submission date is not shown.",
-  "Restore the Submitted On column — a consent record without its date cannot be reconciled."),
+  "Submitted On and Action are off the right-hand edge of the screen",
+  "Six columns end at Submitted On, the last of them finishing inside the 1440 frame.",
+  "Eight columns run to x=1630. Document is the last one fully visible; Submitted On starts at "
+  "x=1418 and Action at x=1548, so both sit outside the 1440 viewport and are reachable only by "
+  "scrolling the table sideways. (Corrected 2026-09-10: an earlier draft said Submitted On was "
+  "not built at all. It is built — it is off-screen, which is why it was missed.)",
+  "Fit the columns inside the viewport. A consent record whose date cannot be seen without a "
+  "sideways scroll is the same problem as one with no date."),
 
  ("S11", "Screen", "Consent Forms", "Minor", "Color & Token",
-  "Agency names are drawn as orange links",
-  "The Implementing Agency / NGO value is plain body text.",
-  "The value is an orange link. Orange is the estate's accent colour, not its link colour, and it "
-  "reads as a warning state in a column that also carries Awaited chips.",
-  "If the value should be a link, use the primary navy; if it should not, set it as body text."),
+  "Agency names are drawn as links where the design has plain text",
+  "The Implementing Agency / NGO value is plain body text in #1f2937, like every other cell.",
+  "The value is a link in the primary navy #003366. Nothing else in the row is a link, and the "
+  "column gives no indication of where the link goes. (Corrected 2026-09-10: an earlier draft "
+  "called the link orange. Measured, it is #003366.)",
+  "Decide whether the agency name opens anything. If it does, keep the navy and give it an "
+  "affordance a reader can see; if it does not, set it as body text."),
 
  ("S12", "Screen", "Notifications", "Minor", "Components & States",
   "The empty state sits under a full twelve-column table header",
@@ -695,4 +697,35 @@ SCREEN3 = [
   "specification the design frame does not display.",
   "Move the stray content inside the frame, or delete it if it is superseded. Anything a "
   "developer cannot see is not a specification. This is a design-file defect, not a build one."),
+
+ ("S44", "Screen", "Users", "Minor", "Color & Token",
+  "The Users table has a blue header band that no other table has",
+  "The header row sits on #f9fafb, the same near-white as every other list screen.",
+  "It sits on #b7ccf3, a mid blue. Measured on all six list screens captured: Consent Forms, "
+  "Beneficiary List, Shelter Occupants, Rehab Data and Master Settings are all #f9fafb; only "
+  "Users is blue. Its header is also 14px where most are 12px (G04).",
+  "Set the Users header band to #f9fafb. One list screen styled differently from the other "
+  "sixteen is the clearest sign a table component was forked."),
+
+ ("S45", "Screen", "Beneficiary List", "Nit", "Color & Token",
+  "The DESIGN gives the same status two different colours",
+  "IDENTIFIED is drawn twice on the frame: blue #1558b0 on #d2e3fc in the first row, and amber "
+  "#8c571f on #ffe4bf in the sixth. Every other status is consistent — SUBMITTED navy, "
+  "REHABILITATION and MOBILIZED green, UNDER MOBILIZATION amber.",
+  "The build gives every status the same blue, so it does not reproduce the inconsistency; it "
+  "loses the colour-coding instead (S16).",
+  "Pick one colour for IDENTIFIED in the design frame before the colour-coding is built, or the "
+  "same ambiguity is built in."),
+]
+
+# A finding that did not survive re-checking. Kept, not deleted: a reviewer who saw it in an
+# earlier draft needs to know it was withdrawn and why, and the next audit needs the reason.
+WITHDRAWN = [
+ ("S03", "Screen", "Dashboard", "Withdrawn", "Layout & Spacing",
+  "The KPI row lost its shared container",
+  "The six cards sit inside one white panel under a PROGRAMME OVERVIEW rule, separated by "
+  "hairline dividers.",
+  "The same: one panel, one rule, hairline dividers.",
+  "No action. Withdrawn 2026-09-10 after looking at the two images side by side — it had been "
+  "written from a text extraction, which cannot see a panel."),
 ]

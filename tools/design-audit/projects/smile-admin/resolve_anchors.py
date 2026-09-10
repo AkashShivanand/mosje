@@ -88,6 +88,10 @@ ANCHORS = {
  "S41": dict(slug="SUPER-ADMIN-ROLES",           text="Super Admin", ymin=440, ymax=500),
  "S42": dict(slug="SUPER-ADMIN-CITY-PROFILING-L2-DISTRICTS", text="Fund Disbursed", ymax=400),
  "S43": dict(slug="SUPER-ADMIN-SHELTER-HOMES-BENEFICIARIES", text="Gender", tag="th"),
+ "S16": dict(slug="SUPER-ADMIN-PERSONS", text="APPROVED_BY_IA"),
+ "S17": dict(slug="SUPER-ADMIN-SURVEYOR-MAPPED", text="Total Mappings"),
+ "S44": dict(slug="SUPER-ADMIN-USERS",  text="Username", tag="th"),
+ "S45": dict(slug="SUPER-ADMIN-PERSONS", text="IDENTIFIED", ymin=600, ymax=660),
 }
 
 def rows_for(slug):

@@ -17,7 +17,8 @@ from build_global_boards import png_size, SCALE, COL
 PAD, MINC = 120, 380
 SEV = {"Blocker": 0, "Major": 1, "Minor": 2, "Nit": 3}
 # which screens this pass builds; the first five sections already exist in the report
-SCREENS = ["Shelter Occupants", "Master Settings", "Rehab Data", "Skill & Training",
+SCREENS = ["Dashboard", "Users", "Consent Forms", "Notifications", "Beneficiary List",
+           "Shelter Occupants", "Master Settings", "Rehab Data", "Skill & Training",
            "City Profiling", "City Profiling — district list", "Performance Statistics",
            "Onboard New User", "Add Shelter Home", "Create New Role", "Roles"]
 

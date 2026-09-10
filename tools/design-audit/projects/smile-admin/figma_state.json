@@ -10,10 +10,10 @@
   "_note": "The Design-QC document exists under two file keys with identical page ids \u2014 LHVPBAQasYOqOK1ZYCiZFG is an older copy that other projects' READMEs still point at. The canonical one for SMILE is 8LX7sqdDtWIAoCYZueCJq7. Node ids match across the two because one was duplicated from the other, so a node id alone does NOT tell you which file you are in \u2014 always pass the file key explicitly.",
   "rows": 63,
   "images": 38,
-  "findings": 71,
+  "findings": 72,
   "reportRootNodeId": "50826:25",
   "reportRootUrl": "https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50826-25",
-  "pinnedFindings": 59,
+  "pinnedFindings": 61,
   "boards": 23,
   "houseStyle": "Matches the NMBA and NHAPOA pages in this file: a REVIEW SHEET (3-column DESIGN|BUILD|ISSUES, the reviewer's editing surface) plus a REPORT of pinned boards. Board = navy section-header with severity chips, white board r12 stroke #e2e8f0, bhead #f8fafc, Screenshots panel #eef2f7 with two 688-wide white cards r10, bfoot with slug + links, then Finding Card instances. Pins are Pin/<Severity> instances, 28x28, numbered, positioned absolutely inside the clip frame.",
   "_dsAdoption": "REMOVED 2026-09-10 at the reviewer's instruction \u2014 this portal is not built on the design system, so scoring its CSS against published tokens measured a contract nobody signed. The engine still computes it; this project does not report it.",
@@ -24,5 +24,6 @@
   "screenBoards": 16,
   "_rowsComplete": "2026-09-10: all 63 design-to-build pairs are rows on the review sheet \u2014 4 sign-in, 34 super-admin (including the 15 form and dialog states reached through the flows), 19 central-authority, 3 US/SO, 3 NISD. Roles share design frames, so a per-role row reuses the super-admin design image hash and carries its own build capture.",
   "_screenPins": "2026-09-10: the 25 findings from the second pass are pinned too \u2014 eleven new screen boards (Shelter Occupants, Master Settings, Rehab Data, Skill & Training, City Profiling and its district list, Performance Statistics, Onboard New User, Add Shelter Home, Create New Role, Roles), 26 markers, each asserted to sit inside its own crop.",
-  "_figmaPageLoadBug": "2026-09-10: use_figma returns a TRUNCATED tree when the traversed frame's page is not the current page \u2014 45 text nodes vs 201 on the same frame. Four design-side claims were wrong because of it, including 'Master Settings has no tab rail'. Always setCurrentPageAsync first."
+  "_figmaPageLoadBug": "2026-09-10: use_figma returns a TRUNCATED tree when the traversed frame's page is not the current page \u2014 45 text nodes vs 201 on the same frame. Four design-side claims were wrong because of it, including 'Master Settings has no tab rail'. Always setCurrentPageAsync first.",
+  "_reverified": "2026-09-10: the five screen boards built before the page-load bug was found were re-checked against the images at 1:1. S03 was withdrawn (the shared KPI container IS in the build); S02, S10 and S11 were corrected (six cells not five; Submitted On is built but off-screen; the agency link is #003366, not orange). S44 and S45 are new. Every one of the 16 screen boards now carries pins."
 }

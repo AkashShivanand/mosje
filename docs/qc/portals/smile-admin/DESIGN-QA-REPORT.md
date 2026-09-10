@@ -12,9 +12,9 @@
 | | |
 |---|---|
 | Screens compared design ↔ build | 31 + the sign-in surface |
-| Findings | **71** — 25 Major, 38 Minor, 8 Nit |
+| Findings | **72** — 25 Major, 38 Minor, 9 Nit |
 | Applies to every screen | 18 |
-| Specific to one screen | 43 |
+| Specific to one screen | 44 |
 | Sign-in surface | 10 |
 
 Every finding is a difference between what the design specifies and what the build renders. Engineering defects with no design counterpart are not raised here; they are in `docs/audit/smile-beggary-capture-and-session.md`.
@@ -219,7 +219,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Dashboard
 
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50828-289)
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50868-1489)
 
 ### The Beneficiary Profile section was rebuilt with different charts
 
@@ -231,25 +231,15 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Build does** | Two wider cards: gender is drawn as a vertical bar chart behind Identification / Rehabilitation / Mobilisation tabs, and the second card is a Swashraya donut. Age Distribution and Beggar Type are not on this row. |
 | **Fix** | Confirm the restructure is intended. If it is, the design frame needs to be brought up to it; if it is not, the three designed cards and their chart types should be restored. |
 
-### The six KPI cards became five, with two metrics merged
+### Two of the six metrics are merged into one cell, and a third is renamed
 
 `S02` · **Minor** · Components & States
 
 | | |
 |---|---|
-| **Design says** | Six equal cards: Identified/Surveyed, Mobilised, Shelter Assigned, Rehabilitated, Fund Disbursed, Fund Utilised. |
-| **Build does** | Five cards, one of which ('Shelter & Rehabilitation') holds two figures side by side, and 'Rehabilitated' is presented as 'Combined Total Rehab'. |
+| **Design says** | Six cells in a three-by-two grid: Identified/Surveyed, Mobilised, Shelter Assigned, Rehabilitated, Fund Disbursed, Fund Utilised. |
+| **Build does** | Six cells too, but the third holds TWO figures under one heading — 'Shelter & Rehabilitation', carrying Shelter Assigned 564 and Child Rehab 306 — and 'Rehabilitated' is renamed 'Combined Total Rehab'. So the build reports seven figures in six cells, and Child Rehab appears in neither the design nor its own cell. (Corrected 2026-09-10: an earlier draft said the row dropped to five cards. It has six.) |
 | **Fix** | Confirm the merge is intended and update the design frame to match, so the dashboard has one specification. A card holding two figures needs its own treatment in the design, not an improvised split. |
-
-### The KPI row lost its shared container
-
-`S03` · **Minor** · Layout & Spacing
-
-| | |
-|---|---|
-| **Design says** | The six cards sit inside one white panel under a PROGRAMME OVERVIEW rule, separated by hairline dividers, reading as a single block. |
-| **Build does** | The cards are separate surfaces with gaps between them. |
-| **Fix** | Restore the single panel with hairline dividers so the overview reads as one figure set rather than five unrelated tiles. |
 
 ### The System Users panel's rows gained their own fills
 
@@ -263,7 +253,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Users
 
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50828-644)
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50868-1597)
 
 ### View Catalog sits on a different screen from the one the design puts it on
 
@@ -295,9 +285,19 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Build does** | Search, All roles, All statuses, All States / UTs, All Districts. |
 | **Fix** | Confirm the extra filters are intended; if so, add them to the design frame. Showing all the relevant filters is the right instinct — this is a note, not a defect. |
 
+### The Users table has a blue header band that no other table has
+
+`S44` · **Minor** · Color & Token
+
+| | |
+|---|---|
+| **Design says** | The header row sits on #f9fafb, the same near-white as every other list screen. |
+| **Build does** | It sits on #b7ccf3, a mid blue. Measured on all six list screens captured: Consent Forms, Beneficiary List, Shelter Occupants, Rehab Data and Master Settings are all #f9fafb; only Users is blue. Its header is also 14px where most are 12px (G04). |
+| **Fix** | Set the Users header band to #f9fafb. One list screen styled differently from the other sixteen is the clearest sign a table component was forked. |
+
 ## Consent Forms
 
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50828-426)
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50868-1732)
 
 ### The breadcrumb puts Consent Forms under Access Control
 
@@ -319,29 +319,29 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Build does** | There is no date filter; the row carries State, District and search instead. |
 | **Fix** | Add the date-range filter back. It is the only way to answer 'what came in this month' on a list that is paginated to 1,248 items. |
 
-### The Submitted On column is not in the build
+### Submitted On and Action are off the right-hand edge of the screen
 
 `S10` · **Minor** · Components & States
 
 | | |
 |---|---|
-| **Design says** | Columns end with Document and Submitted On. |
-| **Build does** | The table ends at Document; the submission date is not shown. |
-| **Fix** | Restore the Submitted On column — a consent record without its date cannot be reconciled. |
+| **Design says** | Six columns end at Submitted On, the last of them finishing inside the 1440 frame. |
+| **Build does** | Eight columns run to x=1630. Document is the last one fully visible; Submitted On starts at x=1418 and Action at x=1548, so both sit outside the 1440 viewport and are reachable only by scrolling the table sideways. (Corrected 2026-09-10: an earlier draft said Submitted On was not built at all. It is built — it is off-screen, which is why it was missed.) |
+| **Fix** | Fit the columns inside the viewport. A consent record whose date cannot be seen without a sideways scroll is the same problem as one with no date. |
 
-### Agency names are drawn as orange links
+### Agency names are drawn as links where the design has plain text
 
 `S11` · **Minor** · Color & Token
 
 | | |
 |---|---|
-| **Design says** | The Implementing Agency / NGO value is plain body text. |
-| **Build does** | The value is an orange link. Orange is the estate's accent colour, not its link colour, and it reads as a warning state in a column that also carries Awaited chips. |
-| **Fix** | If the value should be a link, use the primary navy; if it should not, set it as body text. |
+| **Design says** | The Implementing Agency / NGO value is plain body text in #1f2937, like every other cell. |
+| **Build does** | The value is a link in the primary navy #003366. Nothing else in the row is a link, and the column gives no indication of where the link goes. (Corrected 2026-09-10: an earlier draft called the link orange. Measured, it is #003366.) |
+| **Fix** | Decide whether the agency name opens anything. If it does, keep the navy and give it an affordance a reader can see; if it does not, set it as body text. |
 
 ## Notifications
 
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50828-754)
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50869-1489)
 
 ### The empty state sits under a full twelve-column table header
 
@@ -365,7 +365,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Beneficiary List
 
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50828-563)
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50869-1568)
 
 ### The screen has no loading state in the design, and the build needs one
 
@@ -396,6 +396,16 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Design says** | Status is colour-coded so the column can be scanned: Identified, Submitted, Rehabilitation, Under Mobilization and Mobilized each carry their own colour. |
 | **Build does** | Every chip renders in the same blue #1d4ed8 — IDENTIFIED, APPROVED_BY_IA, MOBILIZED and REHABILITATED are visually identical. The chips are also uppercase and carry raw status codes (APPROVED_BY_IA) rather than the readable labels the design uses. |
 | **Fix** | Colour-code the statuses as the design does, and show the readable label rather than the database value. |
+
+### The DESIGN gives the same status two different colours
+
+`S45` · **Nit** · Color & Token
+
+| | |
+|---|---|
+| **Design says** | IDENTIFIED is drawn twice on the frame: blue #1558b0 on #d2e3fc in the first row, and amber #8c571f on #ffe4bf in the sixth. Every other status is consistent — SUBMITTED navy, REHABILITATION and MOBILIZED green, UNDER MOBILIZATION amber. |
+| **Build does** | The build gives every status the same blue, so it does not reproduce the inconsistency; it loses the colour-coding instead (S16). |
+| **Fix** | Pick one colour for IDENTIFIED in the design frame before the colour-coding is built, or the same ambiguity is built in. |
 
 ## Surveyor Mappings
 
@@ -830,3 +840,19 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Design says** | Portal names are ink-coloured text, #1f2428. |
 | **Build does** | Each portal name is orange. Orange is the estate's accent, and here it is doing the job of a heading on nine cards at once. |
 | **Fix** | Set the portal names to the ink colour and let the logo and the tick carry the colour. |
+
+---
+
+## Withdrawn on re-checking
+
+Findings that did not survive a second look. They are kept rather than deleted, because a reviewer who saw them in an earlier draft needs to know they were withdrawn and why.
+
+### The KPI row lost its shared container
+
+`S03` · **Withdrawn** · Layout & Spacing · Dashboard
+
+| | |
+|---|---|
+| **Design says** | The six cards sit inside one white panel under a PROGRAMME OVERVIEW rule, separated by hairline dividers. |
+| **Build does** | The same: one panel, one rule, hairline dividers. |
+| **Fix** | No action. Withdrawn 2026-09-10 after looking at the two images side by side — it had been written from a text extraction, which cannot see a panel. |

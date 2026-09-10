@@ -109,6 +109,14 @@ L.append("---\n")
 L.append("## Sign-in surface\n")
 for f in F.LOGIN:
     L.append(card(f))
+if getattr(F, "WITHDRAWN", None):
+    L.append("---\n")
+    L.append("## Withdrawn on re-checking\n")
+    L.append("Findings that did not survive a second look. They are kept rather than deleted, "
+             "because a reviewer who saw them in an earlier draft needs to know they were "
+             "withdrawn and why.\n")
+    for f in F.WITHDRAWN:
+        L.append(card(f, f" · {f[2]}"))
 
 md = "\n".join(L).rstrip() + "\n"
 os.makedirs(os.path.dirname(os.path.abspath(OUT)), exist_ok=True)
