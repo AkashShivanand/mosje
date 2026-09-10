@@ -95,7 +95,7 @@ browser; `--phase capture`/`all` always captures, tier-1-deciding per screen. `-
 derives the report's WebP figures. See `AUDIT-A-PORTAL.md` §2b for the freshness gate and how
 submission inside a manifest flow is gated by `environment` + `allowSubmit`.
 
-## Five deliverables, three gates
+## Five deliverables, seven gates
 
 All five come from one `audit-master.json` (full table + who-makes-what in
 **[AUDIT-A-PORTAL.md](AUDIT-A-PORTAL.md)**):
@@ -109,10 +109,30 @@ Publish to **Google Drive** by uploading each fresh file as a **new version** (t
 overwrite a fileId in place) — on a re-run, get a row-level changelog vs the live Drive copy so only
 changed rows are updated. Full flow: **[projects/nhapoa/SYNC-GUIDE.md](projects/nhapoa/SYNC-GUIDE.md)**.
 
-**Gates that must be green before you trust a run:**
+**Gates that must be green before you trust a run.** The first three measure the PIPELINE; the
+last four measure whether the FINDING is true, which is what a reviewer actually receives. The
+second set exists because a run once shipped with about one claim in five wrong and the first
+three all green.
 1. **Coverage gate** (`coverage-ledger.json`) — every design frame matched to a live capture; `UNMAPPED` = a missed screen → FAIL.
 2. **Mapping gate** (`crosscheck.md`, `engine/crosscheck.py`) — the design frame's **title** must match the live capture's **title**; a build screenshot on the wrong frame (or vice versa) → **MISMAP** → FAIL. Needs a `heading` per frame in `inputs/figma-frames.json`.
 3. **Pin gate** (`failures.md`, `qc_geometry.py`) — every pin sits inside its element ⊂ crop ⊂ image; misses → FAIL. Ship only when empty.
+4. **Design-read gate** (`engine/claims.py`) — `use_figma` returns a **truncated** tree when the frame's page was never loaded, and says nothing about it: 45 text nodes on a frame that has 201. Every design dump must come from **`engine/figma_dump.js`**, which sets the page and records `_meta.pageLoaded` + `_meta.totalText`; an implausibly small read → FAIL.
+5. **Evidence gate** — every **presence, colour, count or position** claim must carry a 1:1 crop of BOTH sides (`out/evidence/<ID>.png`, generated for you, element ringed). A text extraction cannot see an icon, a panel fill or a column that scrolled off the viewport, and every wrong claim in that run was one of those four kinds. Typography measurements need no crop; they come off the extraction's own numbers and held.
+6. **Anchor gate** — a finding about a **chip / pill / badge / tile / banner / card** must resolve to an element with a background, and one about a **button / link / checkbox / dropdown** to something operable. "The active page chip is the wrong colour" once resolved to the words *Per page* beside it. A deliberate neighbour-anchor declares `why=` on its spec.
+7. **Duplicate-anchor gate** — two findings on one design box is a copy-paste, not a coincidence; declare genuine sharing in `allowSharedAnchors`.
+
+**Shared modules a project should call rather than re-write:** `engine/anchors.py` (anchor
+resolution, and the tag/role/bg fields the claim gates need), `engine/boards.py` (crop bands and
+pin geometry, with the assertions), `engine/tracker.py` (a portal's tracker sheet, the additive
+push to Drive that never overwrites a dev's Status, and the sync back from a Google Sheet export),
+`engine/claims.py` (the four claim gates). What stays per-project is the editorial half: the
+findings themselves, the anchor specs, and the scope rules for what that portal does and does not
+raise.
+
+Run the gates with `python3 engine/run.py --project <p> --phase claims` (also runs inside `analyze`).
+Set `"claimGates": true` in the project config to make them fatal. Output: `out/claims.md` —
+failures, the claim-class table, and every frame that draws content **outside its own bounds**,
+which is a design-file defect the build will otherwise implement from a spec nobody can see.
 
 **The learning loop** (a running principle, not optional): read the ledger before, fold every
 correction back after, and **turn any mechanizable mistake into one of the gates above** so it can't

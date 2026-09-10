@@ -387,12 +387,23 @@ class _FakeLocator:
     the query matched nothing, so both reading the name and clicking raise, exactly as
     Playwright does.
     """
-    def __init__(self, page, requested, resolved):
+    def __init__(self, page, requested, resolved, visible=True):
         self.page, self.requested, self.resolved = page, requested, resolved
+        self._visible = visible
 
     @property
     def first(self):
         return self
+
+    def is_visible(self, timeout=None):
+        """Playwright locators have this and drive.py's resolver calls it — every CSS leg is
+        `:visible` because a responsive shell keeps a hidden duplicate of its controls, and
+        clicking the hidden twin fails silently. The double did NOT model it, so when the
+        resolver grew its visibility check three FlowSafety tests went red without anyone
+        noticing: every strategy was skipped and no click was ever attempted."""
+        if self.resolved is None:
+            return False
+        return self._visible
 
     def get_attribute(self, name, timeout=None):
         return None
@@ -661,6 +672,26 @@ class WizardPage(FakePage):
 
 class _WizardLocatorMixin:
     pass
+
+
+class HiddenTwin(unittest.TestCase):
+    """The resolver skips a control it cannot see. Without this test the visibility check could
+    be deleted and every other test would still pass."""
+
+    def test_a_hidden_match_is_not_clicked(self):
+        pg = FakePage(buttons=["Next"])
+        real_locator = pg.locator
+
+        def only_hidden(selector):
+            loc = real_locator(selector)
+            loc._visible = False
+            return loc
+        pg.locator = only_hidden
+        pg.get_by_role = lambda kind, name=None, exact=False: _FakeLocator(pg, name, None)
+        pg.get_by_text = lambda label, exact=False: _FakeLocator(pg, label, None)
+        loc, resolved = D._resolve(pg, "Next", exact=True)
+        self.assertIsNone(loc)
+        self.assertEqual([], [c for c in pg.calls if c[0] == "click"])
 
 
 class AdaptiveWizardWalk(unittest.TestCase):

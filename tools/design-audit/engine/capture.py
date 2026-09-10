@@ -409,6 +409,266 @@ def do_login(pg, role, auth):
     login(pg, role["base"], auth, role["user"], role["pass"])
     return True
 
+# ---------------------------------------------------------------------------
+# Navigation modes.
+#
+# The default crawl is `goto` — a full document load per route. That is correct for
+# most builds and it is what every existing project uses.
+#
+# It is WRONG for a build whose session cannot survive a reload. SMILE-Beggary's admin
+# (2026-09-10) logs the user out on a hard refresh of /dashboard and /city-profiling:
+# the `smile_admin_token` cookie is dropped and every later route renders the login
+# page. Because the engine visits the landing route FIRST, one bad route poisoned the
+# whole run — 49 screenshots of a login form across 4 roles, and every gate stayed
+# green, because a login page is a perfectly valid 1440x1000 capture.
+#
+# `navMode: "spa"` navigates the way a person does: click the sidebar anchor for the
+# route, no document load, session untouched. `goto` stays the fallback for a route
+# with no anchor.
+# ---------------------------------------------------------------------------
+LOGIN_MARKER_TEXT = ("log in to your account", "sign in to your account",
+                     "enter your registered email", "enter password")
+
+def looks_like_login(pg, auth=None):
+    """True when the rendered page is a login screen.
+
+    Deliberately checks the RENDERED TEXT, not the URL. A SPA that renders its login
+    view without changing the path (or that bounces after the URL bar has already
+    settled) defeats a url-only check, which is exactly how the SMILE run passed its
+    own `loginMarker` test and still captured 49 login pages."""
+    try:
+        txt = (pg.evaluate("()=>document.body.innerText.slice(0,4000)") or "").lower()
+    except Exception:
+        return False
+    if any(m in txt for m in LOGIN_MARKER_TEXT):
+        return True
+    marker = (auth or {}).get("loginMarker")
+    return bool(marker and marker in pg.url)
+
+# A skeleton row is an element with a background, a real box, and NO text — the grey bar a
+# table draws while its request is in flight. A capture taken mid-skeleton is not a capture of
+# the screen: it shows the loading state under the populated screen's name, and every fidelity
+# finding derived from it is about a placeholder. Observed on SMILE-Beggary /persons, whose KPI
+# cards and 10 table rows were all grey bars while the design frame beside it showed real data.
+WAIT_FOR_DATA_JS = r"""() => {
+  const busy = document.querySelectorAll('[aria-busy="true"],[data-loading="true"]').length;
+  let skel = 0;
+  document.querySelectorAll('div,span,td,li').forEach(el => {
+    if (el.children.length) return;
+    if ((el.textContent || '').trim()) return;
+    const r = el.getBoundingClientRect();
+    if (r.width < 24 || r.height < 6 || r.height > 60) return;
+    const cs = getComputedStyle(el);
+    const bg = cs.backgroundColor || '';
+    if (bg === 'transparent' || bg === 'rgba(0, 0, 0, 0)') return;
+    if (cs.animationName && cs.animationName !== 'none') { skel += 2; return; }
+    skel += 1;
+  });
+  return { busy, skel };
+}"""
+
+# Every page in a real app has a handful of small filled boxes with no text — a divider, a
+# progress track, an avatar ring. Measured across SMILE-Beggary's 23 admin screens that floor is
+# a steady 15, while a page genuinely mid-load reads 105-127. Report against the floor, not
+# against zero, or every screen in the estate is flagged as "still loading".
+SKELETON_FLOOR = 20
+
+def wait_for_data(pg, tries=16, pause=2000):
+    # Budget: up to ~32s, but ONLY for a page that is actually showing skeletons — a page below
+    # SKELETON_FLOOR returns on the first reading and costs nothing. The budget is set by the
+    # slowest real page measured: SMILE-Beggary's Beneficiary List renders its first table row
+    # between 12s and 25s after arrival. A 7s budget filed that screen as an empty grey page and
+    # would have shipped "the list never loads" as a finding, which is not what it does.
+    """Wait until a page stops rendering skeleton placeholders.
+
+    Returns (skeletons_remaining, waited_ms). Never blocks forever: a page whose EMPTY state
+    legitimately draws grey bars would otherwise hang the crawl, so this caps out and lets the
+    capture proceed — the gate below is what reports it.
+    """
+    waited = 0
+    last = None
+    agree = 0
+    for _ in range(tries):
+        try:
+            st = pg.evaluate(WAIT_FOR_DATA_JS)
+        except Exception:
+            return (0, waited)
+        n = (st or {}).get("skel", 0) + (st or {}).get("busy", 0) * 5
+        if n <= SKELETON_FLOOR:
+            return (0, waited)
+        # Require TWO agreeing readings before calling it a resting state, for the same reason
+        # settle_height does: a list that renders in two passes plateaus briefly mid-load, and
+        # accepting the first quiet reading files a half-drawn page as finished.
+        # A plateau only means "resting state" when the count is NEAR the floor. A page that is
+        # genuinely mid-load sits at a constant high count for its whole wait — SMILE-Beggary's
+        # Beneficiary List holds a steady 105 for 12-25s — so treating any plateau as finished
+        # returned after 2s and filed the loading state as the screen. Above 3x the floor, keep
+        # waiting until the count actually drops or the budget is spent.
+        if last is not None and n == last and n < SKELETON_FLOOR * 3:
+            agree += 1
+            if agree >= 1:
+                return (n, waited)
+        else:
+            agree = 0
+        last = n
+        pg.wait_for_timeout(pause); waited += pause
+    return (last or 0, waited)
+
+def expand_nav_groups(pg):
+    """Open every collapsible sidebar group so its anchors exist in the DOM.
+
+    A group header is often a plain <div>/<button> with no href, so a crawl that follows
+    <a href> only cannot see the routes nested under it — NMBA hid 12 real screens this way.
+    Here it also breaks SPA navigation: the anchor is absent, spa_navigate returns False, and
+    the caller falls back to a reload, which on a session-fragile build logs the user out.
+
+    Clicks candidate headers inside the nav/aside and returns how many new hrefs appeared.
+    """
+    try:
+        before = set(pg.evaluate("()=>[...document.querySelectorAll('a[href^=\"/\"]')].map(a=>a.getAttribute('href'))"))
+    except Exception:
+        return 0
+    try:
+        heads = pg.query_selector_all(
+            "nav [role=button], aside [role=button], nav button, aside button, "
+            "nav [aria-expanded], aside [aria-expanded]")
+    except Exception:
+        heads = []
+    for h in heads[:40]:
+        try:
+            if not h.is_visible():
+                continue
+            if (h.get_attribute("aria-expanded") or "").lower() == "true":
+                continue
+            h.click(timeout=2500)
+            pg.wait_for_timeout(180)
+        except Exception:
+            continue
+    try:
+        after = set(pg.evaluate("()=>[...document.querySelectorAll('a[href^=\"/\"]')].map(a=>a.getAttribute('href'))"))
+    except Exception:
+        return 0
+    return len(after - before)
+
+def spa_navigate(pg, base, path, timeout=25000):
+    """Click the in-app anchor for `path`. Returns True when the SPA actually moved."""
+    # A responsive shell renders its nav TWICE — a hidden off-canvas/mobile copy and the
+    # visible desktop one — and the hidden copy usually comes first in the DOM. Taking
+    # query_selector's first match therefore clicks a node with no offsetParent, the click
+    # fails, and the crawl silently falls back to goto (which is the whole thing SPA mode
+    # exists to avoid). Always pick a VISIBLE anchor.
+    sel = f'a[href="{path}"]'
+    try:
+        start = pg.evaluate("()=>location.pathname")
+    except Exception:
+        start = None
+    try:
+        els = pg.query_selector_all(sel)
+        el = next((e for e in els if e.is_visible()), None) if els else None
+        if el is None:
+            # The anchor may be nested under a collapsed group. Open the groups and look again
+            # BEFORE surrendering to a reload — on a session-fragile build the reload is the
+            # expensive failure, not the missing anchor.
+            expand_nav_groups(pg)
+            els = pg.query_selector_all(sel)
+            el = next((e for e in els if e.is_visible()), None) if els else None
+        if el is None:
+            return False
+        el.scroll_into_view_if_needed(timeout=4000)
+        el.click(timeout=timeout)
+    except Exception:
+        return False
+    # The URL updates synchronously on a history push; give the view a moment to swap.
+    #
+    # Accept a REDIRECT. A nav href and the route the app actually serves need not agree:
+    # SMILE-Beggary's sidebar links to /survey-locations and the app lands on /surveys. Insisting
+    # on an exact pathname match reported "no in-app link", fell back to a reload, and lost the
+    # session — so a real, reachable, correctly-rendering screen went uncaptured twice.
+    for _ in range(40):
+        pg.wait_for_timeout(150)
+        try:
+            here = pg.evaluate("()=>location.pathname")
+        except Exception:
+            return False
+        if here == path:
+            return True
+        if here != start and here and not here.rstrip("/").endswith("/login"):
+            return here          # landed somewhere else on purpose — a redirect, not a failure
+    return False
+
+def navigate(pg, base, path, cfg, auth, role, waitms=0):
+    """Go to `path`, honouring navMode, and RECOVER a lost session instead of
+    silently screenshotting the login page.
+
+    Returns "ok" | "failed". Never returns success while a login form is on screen."""
+    mode = (cfg.get("live", {}) or {}).get("navMode", "goto")
+
+    def _goto():
+        try:
+            pg.goto(base + path, wait_until="networkidle", timeout=45000); return True
+        except Exception:
+            pass
+        try:
+            pg.goto(base + path, wait_until="domcontentloaded", timeout=45000); return True
+        except Exception:
+            pg.wait_for_timeout(2000)
+        try:
+            pg.goto(base + path, wait_until="domcontentloaded", timeout=45000); return True
+        except Exception:
+            return False
+
+    # Already on the target path: navigating again is pure risk. On a build whose session
+    # cannot survive a reload, "re-visit the route you are already on" is the single most
+    # expensive no-op there is — it was the landing route, so it poisoned every run.
+    try:
+        here = pg.evaluate("()=>location.pathname")
+    except Exception:
+        here = None
+    if here == path and mode == "spa":
+        moved = True
+    else:
+        moved = spa_navigate(pg, base, path) if mode == "spa" else _goto()
+    if not moved and mode == "spa":
+        moved = _goto()          # no anchor for this route (deep link / detail view)
+    if not moved:
+        return "failed"
+    if waitms:
+        pg.wait_for_timeout(waitms)
+
+    # Landed on a login form -> the session died. Re-authenticate once and retry, in
+    # SPA mode, so the route that killed the session is not the route that re-kills it.
+    if role.get("auth") != "none" and looks_like_login(pg, auth):
+        print(f"  ! session lost before {path} — re-authenticating", flush=True)
+        try:
+            if not do_login(pg, role, auth):
+                return "failed"
+        except Exception:
+            return "failed"
+        # The shell's nav is rendered asynchronously after a login. Looking for the anchor
+        # immediately reports "no in-app link" for a route whose link is a second away — which
+        # cost three real screens before this wait existed.
+        try:
+            pg.wait_for_selector("nav a[href], aside a[href], [class*=sidebar] a[href]", timeout=10000)
+        except Exception:
+            pass
+        pg.wait_for_timeout(800)
+        if not spa_navigate(pg, base, path):
+            # In SPA mode a reload is what killed the session in the first place. Retrying it
+            # here just spends a second login to reach the same login page — which is exactly
+            # what the first version of this recovery did, on every route it could not click.
+            if mode == "spa":
+                print(f"  ! {path}: no in-app link after re-auth — screen NOT captured "
+                      f"(a reload would only lose the session again)", flush=True)
+                return "failed"
+            if not _goto():
+                return "failed"
+        if waitms:
+            pg.wait_for_timeout(waitms)
+        if looks_like_login(pg, auth):
+            print(f"  ! {path}: still a login page after re-auth — screen NOT captured", flush=True)
+            return "failed"
+    return "ok"
+
 def _route_path(route, base):
     """A crawlable route is a path, never an absolute URL — `base + route` is how the crawl
     navigates, so an origin left on the front concatenates into an unresolvable host."""
@@ -460,6 +720,7 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         failures = {}
     base = role["base"]; width = cfg.get("capture", {}).get("width", 1440)
     waitms = cfg.get("capture", {}).get("waitMs", 1800)
+    auth = role_auth(role, cfg.get("live", {}).get("auth", {}))
     degraded = []          # consecutive screens far smaller than the bundle says they were
     routes = discover_routes(pg, cfg)
     land = pg.url.replace(base, "").split("?")[0]
@@ -496,24 +757,12 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         # from the previous route changes how the next one lays out.
         try: pg.set_viewport_size({"width": width, "height": 1000})
         except Exception: pass
-        try:
-            pg.goto(base + path, wait_until="networkidle", timeout=45000)
-        except Exception:
-            try:
-                pg.goto(base + path, wait_until="domcontentloaded", timeout=45000)
-            except Exception:
-                # One extra try after a short pause — no loop, no backoff ladder — before we
-                # accept the route is unreachable this run. A screen must never vanish from a
-                # run silently: if this also fails, it is logged here and in the role summary.
-                pg.wait_for_timeout(2000)
-                try:
-                    pg.goto(base + path, wait_until="domcontentloaded", timeout=45000)
-                except Exception as e:
-                    print(f"  ! {slug}: navigation failed ({str(e)[:120]}) — screen NOT captured",
-                          flush=True)
-                    failed.append(slug)
-                    continue
-        pg.wait_for_timeout(waitms)
+        # navigate() honours live.navMode ("goto" default, "spa" clicks the in-app anchor)
+        # and re-authenticates rather than screenshotting a login page. A screen must never
+        # vanish from a run silently: an unreachable route is logged here and in the role summary.
+        if navigate(pg, base, path, cfg, auth, role, waitms=waitms) != "ok":
+            failed.append(slug)
+            continue
         prev = B.find_screen(prev_bundle, slug) if prev_bundle else None
         png = os.path.join(paths["captures_live"], f"{slug}.png")
         dpr = cfg.get("capture", {}).get("dpr", 2)
@@ -525,6 +774,7 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         # comments say are common: pageH and the row set differ from settling alone, so a
         # verify run would report "changed" on nearly every page for reasons that have
         # nothing to do with the page actually changing, and the reuse saving is lost.
+        skel_left, skel_waited = wait_for_data(pg)
         settled = settle_height(pg, UNCLIP_JS, width=width, base_h=1000)
         try:
             probe = pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
@@ -576,7 +826,13 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
             truncated = residual > 4
             if truncated:
                 warn += f"  [TRUNCATED - {residual}px still hidden (lazy-loading page)]"
-            captured.append({"slug": slug, "role": role["name"], "route": path, "url": base + path,
+            # A page still drawing skeleton placeholders after wait_for_data gave up is showing
+            # its LOADING state under the populated screen's name. Say so on the line and record
+            # it on the row, so nobody audits a grey bar against a design frame full of data.
+            if skel_left > SKELETON_FLOOR:
+                warn += f"  <-- STILL LOADING ({skel_left} skeleton placeholders after {skel_waited}ms)"
+            captured.append({"skeletons": skel_left,
+                             "slug": slug, "role": role["name"], "route": path, "url": base + path,
                              "png": f"captures/live/{slug}.png", "rows": len(data["rows"]),
                              "pageH": data["pageH"], "pngH": png_h, "truncated": truncated})
             kept, masked = B.mask_rows(data["rows"], MAN.volatile_patterns(man, slug) if man else [])
@@ -942,6 +1198,86 @@ def refresh(project, force=False, verify=True):
     """Re-check freshness without a full capture. `--phase bundle` — what a QC run calls first."""
     return run(project, only_role=None, allow_empty=False, force=force, verify=verify)
 
+
+def audit_no_login_pages(paths, verbose=True, expected_roles=()):
+    """A captured screen must never BE the login page.
+
+    The gate that did not exist on 2026-09-10, when a run against SMILE-Beggary wrote 49
+    screenshots of a login form across four roles and reported success. The build logs the
+    session out on a hard reload of its landing route, so every route after the first rendered
+    the login view — and nothing noticed, because a login page is a valid 1440x1000 capture
+    with a real element extraction behind it. The url-based `loginMarker` check could not see
+    it: the SPA renders the login view without the path being /login.
+
+    Reads the extraction JSON beside each PNG (no browser, no re-fetch) and looks for the
+    login form's own text. Cheap, so always run it.
+    """
+    live = paths["captures_live"]
+    if not os.path.isdir(live):
+        return []
+    # A role may capture the sign-in surface ON PURPOSE — the five designed auth frames have to
+    # be compared like any other screen. Such a role declares `expectsLoginPage: true` in the
+    # config and its captures are exempt. Without this the gate is right in general and wrong
+    # about exactly the screens someone deliberately went to fetch.
+    exempt = tuple(r.upper().replace("_", "-") + "-" for r in expected_roles)
+    bad = []
+    for fn in sorted(os.listdir(live)):
+        if not fn.endswith(".json"):
+            continue
+        if exempt and fn.upper().startswith(exempt):
+            continue
+        try:
+            with open(os.path.join(live, fn)) as fh:
+                d = json.load(fh)
+        except Exception:
+            continue
+        rows = d.get("rows") or d.get("elements") or []
+        blob = " ".join(str(r.get("text") or "") for r in rows).lower()
+        if any(m in blob for m in LOGIN_MARKER_TEXT):
+            bad.append(fn[:-5])
+    if verbose:
+        if bad:
+            print(f"!! LOGIN-PAGE CAPTURES: {len(bad)} screen(s) are the login form, not the screen "
+                  f"they claim to be. The session was lost mid-run; do NOT analyze on top of this. "
+                  f"Try live.navMode='spa'. Affected: {bad}", flush=True)
+        else:
+            print("login-page audit: ok (no capture is a login screen)", flush=True)
+    return bad
+
+def audit_design_frame_width(paths, width=1440, verbose=True):
+    """Every design frame PNG must be exactly `width` px wide.
+
+    The board/crop/pin maths in qc_geometry assumes a 1440-wide source on BOTH sides. The Figma
+    MCP's get_screenshot caps the LONGER edge at `maxDimension` (default 1024), so any tall frame
+    — a 1440x3869 dashboard, say — comes back proportionally DOWNSCALED (1072x2880) unless the cap
+    is raised past its height. Nothing about that is visible in the image: it renders, it looks
+    right, and every crop and pin derived from it is silently off by the scale factor.
+
+    Ask for maxDimension >= the frame's original_height and re-download when this fires.
+    """
+    d = paths["captures_figma"]
+    if not os.path.isdir(d):
+        return []
+    bad = []
+    for fn in sorted(os.listdir(d)):
+        if not fn.endswith(".png"):
+            continue
+        try:
+            with open(os.path.join(d, fn), "rb") as fh:
+                fh.read(16)
+                w, h = struct.unpack(">II", fh.read(8))
+        except Exception:
+            continue
+        if w != width:
+            bad.append(f"{fn} ({w}x{h})")
+    if verbose:
+        if bad:
+            print(f"!! DESIGN FRAME SCALE: {len(bad)} frame(s) are not {width}px wide — every crop "
+                  f"and pin derived from them will be off. Re-export with a larger maxDimension: "
+                  f"{bad}", flush=True)
+        else:
+            print(f"design frame widths: ok (all {width}px)", flush=True)
+    return bad
 
 def audit_capture_integrity(paths, verbose=True):
     """A live capture must never be byte-identical to its own design image.

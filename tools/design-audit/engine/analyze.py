@@ -61,8 +61,23 @@ def build_ledger(cfg, frames, captured, paths):
     # Keyed by (role, screen) TUPLE rather than a concatenated string: concatenation let one role
     # bleed into another whenever a role name prefixed another (e.g. "state" vs "stateauthority").
     cap_by_key = {}
+    # Also key every capture by its FULL route. The last-segment key is ambiguous the moment a
+    # portal nests its verbs: SMILE-Beggary has three distinct Fund Monitoring screens at
+    # /fund-monitoring/sanction-orders/create, /nisd-releases/create and
+    # /nodal-officer-onward-releases/create — all three collapse to the segment "create", so two
+    # of them silently overwrote the third in this dict and their design frames went UNMAPPED
+    # while their captures sat in EXTRA. A frame can now also name its `route` outright, which
+    # beats every heuristic below.
+    cap_by_route = {}
+    seg_seen = collections.Counter()
     for c in captured:
         cap_by_key[(norm(c["role"]), _screen_seg(c["route"]))] = c
+        cap_by_route[(norm(c["role"]), norm(c["route"]))] = c
+        seg_seen[(norm(c["role"]), _screen_seg(c["route"]))] += 1
+    _collide = [f"{r}:{s}" for (r, s), n in seg_seen.items() if n > 1]
+    if _collide:
+        print(f"  ! route-segment collision ({len(_collide)}): {_collide} — pair these frames by "
+              f"an explicit \"route\" in inputs/figma-frames.json", flush=True)
     rows = []; mapped = unmapped = extra = design_only = 0; mismap = 0
     used = set(); n_frames = 0
     def _bhead(slug):
@@ -87,23 +102,42 @@ def build_ledger(cfg, frames, captured, paths):
         is_design_only = bool(fr.get("_designOnly"))
         hit = None
         if not is_design_only:
-            hit = cap_by_key.get(key)
+            # An explicit `route` on the frame is the only unambiguous pairing there is. Use it
+            # first, and never fall through to a heuristic when it is present but does not match —
+            # a stated route that matches nothing is a real UNMAPPED, not an invitation to guess.
+            # A frame may name its capture SLUG outright. That is the only pairing with no
+            # inference in it at all, and it is the one way to pair a state that is not a route
+            # — a modal, a wizard step, a tab — or the same screen captured as a second role.
+            # Route and segment matching stay for frames that do not use it.
+            declared_slug = fr.get("slug")
+            declared = fr.get("route")
+            if declared_slug:
+                hit = next((c for c in captured if c["slug"] == declared_slug), None)
+            elif declared:
+                hit = cap_by_route.get((role, norm(declared)))
+            else:
+                hit = cap_by_key.get(key)
             # Landing frame → this role's ROOT capture. A root route offers no screen segment to
             # match on, so pair by role alone — but only for a frame that declares itself the home
             # view, or every unmatched frame in the role would grab the home screenshot.
-            if not hit and _is_home_frame(name):
+            if not hit and not fr.get("route") and not fr.get("slug") and _is_home_frame(name):
                 hit = cap_by_key.get((role, HOME_SEG))
             # Substring fallback — SCOPED TO THE SAME ROLE (r == role). Unscoped, this walked every
             # key in every role and paired one role's design against another role's screenshot while
             # still reporting MAPPED: a confident wrong answer, strictly worse than an honest
             # UNMAPPED, and invisible downstream because spec-diffing trusts the pairing.
-            if not hit and screen:
+            if not hit and not fr.get("route") and not fr.get("slug") and screen:
                 hit = next((c for (r, s), c in cap_by_key.items() if r == role and screen in s), None)
         status = "MAPPED" if hit else ("DESIGN-ONLY" if is_design_only else "UNMAPPED")
         # design↔build MAPPING sanity: the frame's heading must agree with the paired capture's title,
         # or the pairing is wrong (a build screenshot on the wrong Figma frame — invisible to spec diffing).
         verdict = None
-        if hit and fr.get("heading"):
+        # `_refFrame` means the pairing is deliberate but the design↔build TITLE check does not
+        # apply — a style-reference frame, a sign-in page whose largest text is a wordmark, or a
+        # pair whose titles genuinely differ and where that difference is itself a finding.
+        # crosscheck.py already honours the flag; build_ledger did not, so it kept reporting
+        # MISMAP for pairings a human had already adjudicated.
+        if hit and fr.get("heading") and not fr.get("_refFrame"):
             dh, bh = fr["heading"], _bhead(hit["slug"])
             if bh:
                 verdict = "MATCH" if XC._overlap(XC._toks(dh), XC._toks(bh)) >= 0.34 else "MISMAP"
@@ -165,11 +199,20 @@ def load_baseline(cfg, captured, paths):
 # ---------- 3. conformance ----------
 def conformance(cfg, captured, allow, mode, paths):
     dev = collections.defaultdict(lambda: {"count": 0, "screens": set(), "sample": None, "loc": None})
-    total = conf = 0
+    total = conf = excluded = 0
     for c in captured:
         fp = os.path.join(paths["captures_live"], f"{c['slug']}.json")
         if not os.path.exists(fp): continue
         for r in json.load(open(fp)).get("rows", []):
+            # Skip OFF-CANVAS elements. A hidden third-party panel is extracted like anything
+            # else — the UX4G accessibility widget sits at x~1690 with its own stylesheet — and on
+            # SMILE-Beggary that was 2,099 of 11,442 measured elements, 18%, none of them ours and
+            # none of them fixable by us. Counting them makes DS-adoption a number about somebody
+            # else's CSS. The exclusion is reported so it is never silent.
+            _x, _w = r.get("x"), r.get("w")
+            if isinstance(_x, (int, float)) and isinstance(_w, (int, float)) and (_x < 0 or _x + _w > 1441):
+                excluded += 1
+                continue
             total += 1; ok = True
             checks = [("color", tohex(r.get("color")), allow["colors"]),
                       ("radius", r.get("radius"), allow["radii"]),
@@ -182,15 +225,31 @@ def conformance(cfg, captured, allow, mode, paths):
                     ok = False
                     d = dev[(prop, str(val))]
                     d["count"] += 1; d["screens"].add(c["slug"])
-                    if d["sample"] is None:
+                    # The FIRST occurrence is not necessarily a PINNABLE one. A third-party
+                    # off-canvas widget (the UX4G accessibility panel sits at x~1690, outside the
+                    # 1440 viewport) is extracted like anything else, and picking it as the sample
+                    # produced a pin at x=120% that failed the geometry assertion — a real gate
+                    # failure caused by a bad sample, not by a bad capture. Take the first sample
+                    # whose box is inside the captured viewport.
+                    _x, _y, _w = r.get("x"), r.get("y"), r.get("w")
+                    _pinnable = (isinstance(_x, (int, float)) and isinstance(_w, (int, float))
+                                 and _x >= 0 and _x + _w <= 1441)
+                    if d["loc"] is None and _pinnable:
                         d["sample"] = r.get("text", "")[:30]
-                        d["loc"] = (c["slug"], r.get("x"), r.get("y"), r.get("w"), r.get("h"), c.get("pageH", 1000))
+                        d["loc"] = (c["slug"], _x, _y, _w, r.get("h"), c.get("pageH", 1000))
+                    elif d["sample"] is None:
+                        d["sample"] = r.get("text", "")[:30]
             if ok: conf += 1
     ds_adoption = round(100 * conf / max(1, total), 1)
     ranked = sorted(dev.items(), key=lambda kv: -kv[1]["count"])
     devlist = [{"prop": k[0], "value": k[1], "count": v["count"], "screens": len(v["screens"]),
                 "sample": v["sample"], "loc": v["loc"]} for k, v in ranked]
+    if excluded:
+        print("  excluded %d off-canvas element(s) from conformance (hidden/third-party chrome "
+              "outside the 1440 viewport); DS-adoption is over the %d that are ours"
+              % (excluded, total), flush=True)
     return {"mode": mode, "ds_adoption_pct": ds_adoption, "elements_checked": total,
+            "elements_excluded_offcanvas": excluded,
             "elements_conformant": conf, "deviations": devlist}
 
 # ---------- 4. assemble audit-master.json ----------
@@ -201,7 +260,16 @@ PROP_TOKEN = {"color": "colour token", "radius": "radius token",
 
 def assemble(cfg, ledger, conf, paths, top_n=12):
     findings = []
-    for i, d in enumerate(conf["deviations"][:top_n], 1):
+    # A deviation whose every occurrence sits off-canvas (a hidden third-party panel) has no
+    # pinnable sample. Report it — the drift is real — but do not try to place a marker for it,
+    # and do not let it crash the assembly, which it did until this guard existed.
+    devs = [d for d in conf["deviations"] if d.get("loc")][:top_n]
+    unpinnable = [d for d in conf["deviations"][:top_n] if not d.get("loc")]
+    if unpinnable:
+        _names = ", ".join("%s=%s" % (d["prop"], d["value"]) for d in unpinnable)
+        print("  ! %d deviation(s) have no on-canvas sample and are reported without a pin: %s"
+              % (len(unpinnable), _names), flush=True)
+    for i, d in enumerate(devs, 1):
         loc = d["loc"]; slug = loc[0]
         H = loc[5] or 1000
         xp = round(100 * (loc[1] + loc[3] / 2) / 1440) if loc[1] is not None else 50
@@ -257,21 +325,41 @@ def assemble(cfg, ledger, conf, paths, top_n=12):
 
 def run(project):
     cfg, paths = C.load(project)
+    # THE MANIFEST IS A CACHE; THE DISK IS THE TRUTH.
+    #
+    # `_captured.json` records what the LAST run visited. A partial run — one role, or a
+    # --verify pass that reused most screens — writes a NARROWER manifest, and every capture it
+    # did not touch then disappears from the audit even though the file is sitting right there.
+    # That happened on SMILE-Beggary: 75 captures on disk, 56 in the manifest, and 19 real
+    # screens silently excluded from coverage — the exact failure the coverage gate exists to
+    # catch, arriving through the gate's own input. Always reconcile, and always say so.
     cap_path = os.path.join(paths["captures"], "_captured.json")
+    captured = []
     if os.path.exists(cap_path):
-        captured = json.load(open(cap_path))
-    else:
-        # rebuild the manifest from the extracted live JSON files on disk
-        captured = []
-        for f in sorted(glob.glob(os.path.join(paths["captures_live"], "*.json"))):
-            if os.path.basename(f).startswith("_"): continue
+        try:
+            captured = json.load(open(cap_path))
+        except Exception:
+            captured = []
+    known = {c.get("slug") for c in captured}
+    recovered = []
+    for f in sorted(glob.glob(os.path.join(paths["captures_live"], "*.json"))):
+        if os.path.basename(f).startswith("_"): continue
+        slug = os.path.splitext(os.path.basename(f))[0]
+        if slug in known: continue
+        try:
             d = json.load(open(f))
-            if not isinstance(d, dict) or "rows" not in d: continue
-            slug = os.path.splitext(os.path.basename(f))[0]
-            captured.append({"slug": slug, "role": d.get("role", slug.split("-")[0].lower()),
-                             "route": d.get("route", "/" + slug.lower()), "url": d.get("url"),
-                             "png": f"captures/live/{slug}.png", "pageH": d.get("pageH", 1000),
-                             "rows": len(d.get("rows", []))})
+        except Exception:
+            continue
+        if not isinstance(d, dict) or "rows" not in d: continue
+        captured.append({"slug": slug, "role": d.get("role", slug.split("-")[0].lower()),
+                         "route": d.get("route", "/" + slug.lower()), "url": d.get("url"),
+                         "png": f"captures/live/{slug}.png", "pageH": d.get("pageH", 1000),
+                         "rows": len(d.get("rows", []))})
+        recovered.append(slug)
+    if recovered:
+        print(f"  reconciled: {len(recovered)} capture(s) on disk were missing from the manifest "
+              f"and have been added — {recovered[:4]}{'...' if len(recovered) > 4 else ''}",
+              flush=True)
     frames = load_frames(paths, cfg)
     ledger = build_ledger(cfg, frames, captured, paths)
     mode, allow = load_baseline(cfg, captured, paths)
