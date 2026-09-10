@@ -4994,24 +4994,18 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
-        "name": "columns",
-        "type": "number",
-        "required": false,
-        "description": "Fix the strip to this many columns instead of fitting as many 200px cells as the width allows. Pass it when the item count has a shape the auto-fit cannot find. Eight counters want 4×2; at the full content width the auto-fit lays five in the first row and three in the second, which reads as a grid that ran out of content rather than as two rows of four. Below 1024px the strip falls back to two-up whatever is passed, because four 200px cells do not fit a tablet."
-      },
-      {
-        "name": "layout",
-        "type": "\"stack\" | \"inline\"",
-        "required": false,
-        "default": "\"stack\"",
-        "description": "How one cell is arranged. `\"stack\"` (default) centres icon over value over label — the treatment the handoff draws for three or four standing facts under a hero. `\"inline\"` sets the icon beside the copy and aligns the cell to the start, so the eye travels along a row rather than around a tile. Use it once the strip carries enough items to read as a grid of tiles — eight centred tiles are eight things to look at, where eight left-aligned rows are two lines that scan. It is also 35% shorter, which matters when the card straddles a page header."
-      },
-      {
         "name": "overlap",
         "type": "boolean",
         "required": false,
         "default": "false",
         "description": "Pull the card up so it straddles the band above it — the treatment used under a page hero. Requires the band above to have room; on its own in a plain section, leave it off."
+      },
+      {
+        "name": "variant",
+        "type": "\"compact\" | \"extended\"",
+        "required": false,
+        "default": "`items.length > 5 ? \"extended\" : \"compact\"`",
+        "description": "WHICH SHAPE THE STRIP TAKES. Derived from the item count unless you say. `\"compact\"` — the treatment the handoff draws: as many 200px cells as the width allows, on one row, each one a centred stack of mark over value over label. Right for the three or four standing facts under a page hero. `\"extended\"` — for a set too long to sit on one row. The cells go to a fixed, balanced column count and wrap; each one turns on its side, with the mark in a column of its own and the value and label beside it; and the value steps up from `headline-5` to `headline-2` so it reads as a figure rather than as a line of text that happens to be numeric. THE DEFAULT IS THE COUNT, and the threshold is arithmetic rather than taste. `minmax(200px, 1fr)` fits at most FIVE tracks in the widest content column this estate has (1120px of grid inside the card), so six is the first count that cannot be one row. At six the compact shape stops being a strip and becomes a grid of identical tiles, which is a shape the eye has to enter once per tile. Pass it only to override that — a six-item strip that must stay compact, or a four-item one that must read as figures."
       }
     ]
   },

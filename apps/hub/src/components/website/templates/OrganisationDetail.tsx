@@ -276,15 +276,6 @@ const sameFact = (a: string, b: string) =>
   a.toLowerCase().replace(/[^a-z0-9]/g, "") === b.toLowerCase().replace(/[^a-z0-9]/g, "");
 
 /**
- * The column count that divides `count` cells into equal rows, or `undefined`
- * to leave `FactStrip` fitting as many as the width allows.
- *
- * Only ever engages above five, because up to five the auto-fit already puts
- * them on one row and one row is always the right shape. Above it, an uneven
- * last row reads as a grid that ran out of content — NMBA's eight counters laid
- * out 5 + 3 — so a count that divides by four or three is told which.
- */
-/**
  * Whether this record draws a card across the header band's lower edge.
  *
  * EXPORTED, AND THAT IS THE POINT. The route sets `reservesOverlap` on the
@@ -301,13 +292,6 @@ export function hasOverlappingFactCard(detail: OrgDetail | undefined): boolean {
   if (detail == null) return false;
   if (detail.impact?.placement === "hero" && detail.impact.items.length > 0) return true;
   return (detail.facts?.length ?? 0) > 0;
-}
-
-function balancedColumns(count: number): number | undefined {
-  if (count <= 5) return undefined;
-  if (count % 4 === 0) return 4;
-  if (count % 3 === 0) return 3;
-  return undefined;
 }
 
 export function formatOrgHtml(rawHtml: string, innerHeadingLevel: 3 | 4 = 4): string {
@@ -1667,16 +1651,15 @@ export function OrganisationDetail({
       {heroStrip != null && (
         <div className="orgd__facts">
           <div className="sa-container">
-            <FactStrip
-              overlap
-              columns={balancedColumns(heroStrip.items.length)}
-              /* Inline once the set is big enough to read as a grid of tiles.
-                 Five is the most that fit one row, so six is where a strip
-                 becomes a grid — see `FactStrip`'s own note on the layout. */
-              layout={heroStrip.items.length > 5 ? "inline" : "stack"}
-              ariaLabel={heroStrip.ariaLabel}
-              items={heroStrip.items}
-            />
+            {/*
+              * NO SHAPE PROP. `FactStrip` reads its own item count and takes
+              * the compact strip up to five facts and the extended grid above
+              * — the threshold is arithmetic (five 200px cells is all that fits
+              * one row) and it belongs in the component, not in every caller.
+              * Three curated facts and eight published counters both arrive
+              * here through the same slot; only one of them is a strip.
+              */}
+            <FactStrip overlap ariaLabel={heroStrip.ariaLabel} items={heroStrip.items} />
             {/*
              * PROVENANCE, NOT NARRATION. These are live counters on the source
              * and they move daily, so a figure with no date beside it claims to

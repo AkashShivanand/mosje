@@ -148,10 +148,11 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             title: "Four across, twice, at strip size",
             label: "Strip Size",
             summary:
-              "`FactStrip` at `layout=\"inline\"` — every figure on the card, set at 20px over a 16px caption.",
-            status: "chosen",
+              "Four across, mark in a 48px chip beside the copy, figure at 20px over a 16px caption.",
+            status: "superseded",
             live: true,
-            landedIn: "the live organisation template — what the page renders today",
+            supersededBy:
+              "Scaled Grid, on 10 September. The figure and its caption sat at 1.25:1 — the weakest hierarchy two sizes can have — and the chip was the loudest thing in every cell. It is drawn from its own frozen styles now rather than through `FactStrip`, because the component no longer offers this treatment and a record that renders through today\u2019s component is not a record of what was there.",
             lookAt: [
               "The figure is 20px and its caption 16px — a ratio of 1.25:1, which is the weakest hierarchy two sizes can have",
               "At that ratio 345 million reads as a line of text that happens to be numeric, and eight of them read as eight equal lines",
@@ -163,9 +164,11 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             title: "The same eight, scaled to read as figures",
             label: "Scaled Grid",
             summary:
-              "Every figure still on the card, at 32px against a 14px caption, with the mark demoted into the caption line.",
-            status: "proposed",
+              "Every figure still on the card, at 32px against a 14px caption, with the mark demoted out of its chip.",
+            status: "chosen",
             live: true,
+            landedIn:
+              "`FactStrip`, as the `extended` variant \u2014 which the component now resolves from the item count on its own",
             lookAt: [
               "2.3:1 between figure and caption, against 1.25:1 today — the figure now carries the cell",
               "The mark leaves its chip and joins the caption at 20px: still there to scan by, no longer competing to be read first",
@@ -181,8 +184,10 @@ export const EXPLORATIONS: readonly ExplorationSurface[] = [
             label: "Paged Carousel",
             summary:
               "The DS `Carousel` with autoplay off — one row of four, the other four a page away.",
-            status: "proposed",
+            status: "superseded",
             live: true,
+            supersededBy:
+              "Scaled Grid. MEASURED, it saves 24px \u2014 188 against 212 \u2014 because the control row costs back most of the second row it removes. Twenty-four pixels, in exchange for hiding four of the Department\u2019s eight published statistics behind a page turn, and a second set of arrows in a fold that already has the notice bar\u2019s. Well made and the wrong side of the trade on a departmental page.",
             lookAt: [
               "The card halves: one row rather than two",
               "Four of the Department's eight published statistics are NOT on the page at any moment — the trade this option is really asking about",

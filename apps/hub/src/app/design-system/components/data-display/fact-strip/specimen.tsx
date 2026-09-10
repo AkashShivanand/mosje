@@ -4,9 +4,10 @@ import { FactStrip } from "@mosje/design-system";
 import * as React from "react";
 
 /**
- * Both arrangements the estate ships, because `columns` and `layout` are only
- * visible in the properties panel otherwise, and the eight-counter shape is the
- * one a reader is most likely to meet — it is the card under the NMBA header.
+ * BOTH SHAPES, because `variant` resolves from the item count and a reader
+ * browsing the library would otherwise only ever meet whichever one the
+ * specimen happened to pass. Neither of these sets a `variant`: three facts
+ * resolve to `compact`, eight to `extended`.
  */
 export function Specimen(): React.JSX.Element {
   return (
@@ -20,9 +21,8 @@ export function Specimen(): React.JSX.Element {
           { icon: "location_on", value: "New Delhi", label: "Head office" },
         ]}
       />
+      {/* Eight items, so this one resolves to `extended` on its own. */}
       <FactStrip
-        columns={4}
-        layout="inline"
         ariaLabel="This campaign in numbers"
         items={[
           { icon: "groups", value: "345,703,321", label: "People reached" },

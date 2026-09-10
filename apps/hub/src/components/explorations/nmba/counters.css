@@ -161,3 +161,54 @@
     }
   }
 }
+
+@layer components {
+  /* ── Option 1's own styles — the treatment of 10 September, kept ───────────
+   *
+   * `FactStrip` no longer draws this: `columns` and `layout` were folded into
+   * one `variant`, and the compact shape it now offers is the CENTRED stack,
+   * not this side-on cell at strip size. The register's rule is that an option
+   * is never deleted, and an option that renders through today's component is
+   * not a record of what was there — it is a record of what is there now,
+   * wearing an old label. So it is drawn here, frozen.
+   */
+  .kpix__grid--strip {
+    gap: var(--sa-stack-24) var(--sa-inline-12);
+  }
+
+  .kpix__item--strip {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 0 var(--sa-inline-12);
+    align-items: start;
+  }
+
+  .kpix__chip {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: start;
+    padding: var(--sa-padding-8);
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-brand-secondary-base);
+    color: var(--sa-color-secondaryScale-600);
+  }
+
+  .kpix__value--strip {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-variant-numeric: normal;
+  }
+
+  .kpix__label--strip {
+    grid-column: 2;
+    grid-row: 2;
+    display: block;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+  }
+}

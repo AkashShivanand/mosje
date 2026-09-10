@@ -1444,3 +1444,79 @@ in the handoff first.
 
 `#impact` no longer exists as a band; the rail entry that pointed at it is
 removed, and `check:org-anchors` passes with zero dangling entries.
+
+---
+
+## 21. The counters become a design-system variant (10 Sep 2026)
+
+The three treatments in §20.4's wake were drawn as running prototypes
+(`/explorations/nmba/counters`) and the grid won. It is now `FactStrip`'s
+`extended` variant rather than anything NMBA-specific.
+
+### 21.1 What decided it, in one line
+
+**The scaled grid is SHORTER than the small one.** 208px against 232, with the
+figure at 32px instead of 20px and every caption on one line.
+
+The card was never tall because it held eight figures. It was tall because each
+cell wore a **56px chip above a 20px number** — a mark taller than the copy it
+introduced. Demote the mark and there is room to raise the figure by 60% and
+hand back 24px.
+
+### 21.2 Why a variant rather than props
+
+`columns` and `layout` were both added earlier the same day, and both were the
+caller telling the component something the component already knew. They are one
+prop now: `variant`, defaulting to `compact` up to five facts and `extended`
+above.
+
+**Five is arithmetic, not taste.** `minmax(200px, 1fr)` fits at most five tracks
+in the widest content column on the estate, so six is the first count that cannot
+be one row. The template passes nothing: three curated facts and eight published
+counters arrive through the same slot and only one of them is a strip.
+
+| | compact | extended |
+|---|---|---|
+| Columns | as many 200px cells as fit, one row | 4 (or 3 where the count divides by 3 and not 4), wrapped |
+| Cell | centred stack, mark over figure over caption | side-on, mark in its own column |
+| Figure | `headline-5`, 20px | `headline-2`, 32px at 1440 |
+| Caption | `body-1`, 16px | `body-2`, 14px |
+| Ratio | **1.25 : 1** | **2.3 : 1** |
+| Mark | 32px glyph in a 56px chip | bare 24px glyph |
+
+### 21.3 The measurement that sets the 1280 step
+
+An extended cell holds a 24px mark, a 12px gap and the widest figure beside them.
+`345,703,321` measures **183px** at `headline-2`. Four-up inside a 1024 content
+column gives a **212px** cell — a 176px copy column, **six pixels short**. So the
+full column count waits until 1280 (cell 250, copy 214, clears by 31); two-up
+from 768; one below.
+
+That costs height at 1024 — 391px against 254 — and it is the right trade. **A
+published figure may never be shrunk, wrapped or clipped to fit a layout.** The
+same rule already cost the inline layout its two-up phone case, where the figure
+ran out under its neighbour's chip and put `345,703,32` on the page.
+
+### 21.4 What the carousel was worth
+
+Built, measured, kept at its address: **188px against the grid's 212 — twenty-four
+pixels, for hiding four of the Department's eight published statistics behind a
+page turn.** The control row costs back most of the second row it removes. It
+also puts a second set of arrows in a fold that already has the notice bar's.
+
+Well made, and the wrong side of the trade on a departmental page.
+
+### 21.5 Verified
+
+Swept across all fifteen organisation pages: **thirteen render pixel-identical**
+— they carry five facts or fewer, so they resolve to `compact` and nothing about
+them changes. NMBA goes from five ragged label baselines to two. The transgender
+portal's at-a-glance strip keeps the label fix from §20.4.
+
+| | 1440 | 1280 | 1024 | 768 | 639 | 390 | 360 |
+|---|---|---|---|---|---|---|---|
+| Columns | 4 | 4 | 2 | 2 | 1 | 1 | 1 |
+| Figure | 32px | 32px | 30px | 28px | 26px | 24px | 24px |
+| Card | 208 | — | 391 | 382 | 683 | 666 | 684 |
+| Figure clipped or overflowing | none | none | none | none | none | none | none |
+| Horizontal scroll | none | none | none | none | none | none | none |

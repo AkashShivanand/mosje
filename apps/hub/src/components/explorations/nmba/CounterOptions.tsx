@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Carousel, FactStrip, Icon } from "@mosje/design-system";
+import { Carousel, Icon } from "@mosje/design-system";
 import "./counters.css";
 
 /**
@@ -60,15 +60,33 @@ function Stage({ children }: { children: React.ReactNode }) {
 }
 
 /**
- * OPTION 1 — what the page renders today.
+ * OPTION 1 — what the page rendered on the morning of 10 September 2026.
  *
- * `FactStrip` at `layout="inline"`, four across, figure at `headline-5` (20px)
- * over a `body-1` caption (16px).
+ * Four across, mark in a 48px chip beside the copy, figure at `headline-5`
+ * (20px) over a `body-1` caption (16px).
+ *
+ * DRAWN HERE RATHER THAN THROUGH `FactStrip`, and deliberately. The register's
+ * one rule is that an option is never deleted — but a component's API moves on,
+ * and this option's whole point is to preserve a treatment the component no
+ * longer offers. A record that renders through today's component is not a
+ * record of what was there; it is a record of what is there now, mislabelled.
  */
 export function CountersAsShipped(): React.JSX.Element {
   return (
     <Stage>
-      <FactStrip columns={4} layout="inline" ariaLabel="The Abhiyaan in numbers" items={COUNTERS} />
+      <div className="kpix__card">
+        <dl className="kpix__grid kpix__grid--strip" aria-label="The Abhiyaan in numbers">
+          {COUNTERS.map((c) => (
+            <div className="kpix__item kpix__item--strip" key={c.label}>
+              <span className="kpix__chip" aria-hidden>
+                <Icon name={c.icon} size={32} />
+              </span>
+              <dt className="kpix__label kpix__label--strip">{c.label}</dt>
+              <dd className="kpix__value kpix__value--strip">{c.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
       <p className="kpix__asof">{AS_OF}</p>
     </Stage>
   );
