@@ -1603,9 +1603,35 @@
      * them apart; putting the pager under the button's leading edge is where a
      * thumb reaching for one is least likely to find the other.
      */
+    /*
+     * 4, NOT 8 — AND THE FOUR PIXELS BUY A GAP RATHER THAN COSTING HEIGHT.
+     *
+     * The card's bottom strip is 32 and the pager is a 24px target sitting 8
+     * above the card's edge, which put its top at exactly the action's bottom:
+     * a measured gap of ZERO between two tap targets. Hit-tested at 390, a tap
+     * three pixels below the button landed on a pagination dot, so a thumb that
+     * overshoots "File Pre-Event Details" by a hair changes the panel instead of
+     * opening the form. On a 48px-tall primary action that overshoot is
+     * ordinary, not a corner case.
+     *
+     * Dropping the inset moves the pager DOWN inside the strip that already
+     * exists, so the gap appears above it and the band does not grow — which
+     * matters, because the strip was cut from 40 to 32 on this breakpoint
+     * precisely to stop the pager paying for space twice.
+     *
+     * It also lands the mark centred: the 6px mark sits 9px inside its own 24px
+     * box, so 4 below gives 13 above the mark and 13 below it. It used to be 9
+     * and 17, which is why the pager read as hanging off the button rather than
+     * sitting in the card.
+     *
+     * FOUR IS A BUFFER, NOT A CLEARANCE. Both controls already clear §2.5.8 by
+     * their own size (24x24), so nothing here is a conformance fix. If a wider
+     * separation is wanted it costs eight pixels of band height, and that is a
+     * trade to make deliberately rather than by drifting into it.
+     */
     .orgab__pager {
       inset-inline: var(--sa-padding-12) auto;
-      inset-block-end: var(--sa-padding-8);
+      inset-block-end: var(--sa-padding-4);
     }
 
     /*
