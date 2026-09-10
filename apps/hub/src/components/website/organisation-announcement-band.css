@@ -203,10 +203,20 @@
      * the offers are told apart — 923px wide and shifting hue as the card
      * turns, where the eyebrow it replaced was a 40px chip.
      *
-     * THE BOTTOM PADDING IS A STRIP, not breathing room. The pager sits in it,
-     * clear of the action above: measured at 1440 the action occupies 16 to 56
-     * of the card and the pager 90 to 114, a 34px gap where both crowded into
-     * the content row had 8.
+     * THE BOTTOM PADDING IS ORDINARY PADDING AGAIN — it was a 40px STRIP whose
+     * only occupant was the pager, and reserving a strip put the control 26.5px
+     * below the last line of the copy it belongs to. Measured at 1440: the
+     * copy's last line centred at 344.5, the pager at 371. On a card whose
+     * content is one block of text, a control floating in its own band below
+     * that text reads as a separate object rather than as part of the panel.
+     *
+     * At 16 the padding matches the top and the pager's centre lands on the
+     * last line of the LONGEST panel — which is the one that sets the card's
+     * height, so the position is stable rather than moving per panel. The
+     * shorter panel's copy ends higher and the pager stays put; aligning to
+     * whichever panel is showing would move the control every six seconds,
+     * which is the defect this alignment exists to avoid, not a better version
+     * of it.
      *
      * THE VALUE HAS TO BE ON THE SCALE. It was once written as
      * `--sa-padding-36`, which the space scale does not publish — the steps are
@@ -216,7 +226,7 @@
      * silently set the row height. Nothing errored; `check:dangling-vars` is the
      * gate that names it.
      */
-    padding: var(--sa-padding-16) var(--sa-padding-20) var(--sa-padding-40);
+    padding: var(--sa-padding-16) var(--sa-padding-20);
     border-radius: var(--sa-shape-16);
     background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent);
     box-shadow: inset 0 var(--sa-stroke-1) 0 0
@@ -316,6 +326,24 @@
     transition:
       transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
       box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  /*
+   * THE IMAGE TAKES THE TILE'S CORNERS — the comment above has claimed since it
+   * was written that "the image below clips to the radius on its own", and the
+   * rule that did it was lost. Nothing replaced it, so a square white PNG
+   * filling a 64px tile edge to edge painted straight over all four of the
+   * tile's 8px corners: measured `border-radius: 0px` on the image against
+   * `8px` on the tile, and a QR that read as a hard square chip on a card where
+   * every other corner is rounded.
+   *
+   * `inherit` rather than a restated `--sa-shape-8`, so the image cannot drift
+   * from the tile the day the tile's radius changes. The mark itself still must
+   * NOT take `overflow: hidden` — the code's zoom wash sits inside the radius,
+   * but the observance's confetti flies out of its corners.
+   */
+  .orgab__mark--code img {
+    border-radius: inherit;
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -688,9 +716,27 @@
     gap: var(--sa-inline-2);
   }
 
-  /* Out of the way while the card is edge-on, back when it lands. */
+  /*
+   * THE PAGER NO LONGER BLINKS OUT ON EVERY TURN.
+   *
+   * It faded to nothing for the whole 520ms flip, and that fade was written
+   * when the card turned on `rotateY` and swung out from under it. On `rotateX`
+   * the card foreshortens toward its own centre line instead, so the pager's
+   * footprint is never crossed — and the card is white at 8% over the band's
+   * green, so a pager standing on bare green mid-turn is indistinguishable from
+   * a pager standing on the card.
+   *
+   * What the fade actually produced was the jerk: a full white bar, 520ms of
+   * nothing, then an empty bar in a different place and already part-filled,
+   * because the dwell kept running through the blackout. The fill itself is
+   * clean — scrubbed at nine points across the six seconds it is linear to the
+   * frame, 100% to 0% with the box steady at 40. The discontinuity was entirely
+   * the disappearance.
+   *
+   * Only the pointer is withdrawn now, so a click cannot land on a dot whose
+   * panel is still arriving.
+   */
   .orgab__pager[data-turning] {
-    opacity: 0;
     pointer-events: none;
   }
 
@@ -897,7 +943,18 @@
       color: var(--sa-text-neutral-inverse);
     }
 
-    .orgab__dot:hover::before {
+    /*
+     * THE INACTIVE DOTS ONLY — this rule used to be unscoped, and on the active
+     * dot it read as the progress bar filling instantly under the pointer.
+     *
+     * The active dot's `::before` is not a dot, it is the 40px GROOVE the fill
+     * runs across, and it is deliberately dark so the white fill separates from
+     * it by lightness. Painting it `neutral-inverse` on hover made the whole
+     * track the same white as the fill: a bar that jumped to 100% whenever the
+     * reader's pointer passed over it, and back when it left. Same specificity
+     * as the groove rule and later in the file, so it won.
+     */
+    .orgab__dot[aria-selected="false"]:hover::before {
       background-color: var(--sa-text-neutral-inverse);
     }
   }
