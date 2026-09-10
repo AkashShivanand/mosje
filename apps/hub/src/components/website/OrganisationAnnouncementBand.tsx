@@ -113,11 +113,9 @@ export function OrganisationAnnouncementBand({
    * appearance, which is the only one a reader has not seen, and the mark keeps
    * a quiet drift after that.
    *
-   * A ref rather than state: nothing renders differently because of it on the
-   * turn it flips, so putting it in state would buy a re-render and nothing
-   * else. It is read during render and written in an effect, never during.
+   * ONE PIECE OF STATE AND NO GUARD. An earlier version carried a `seen` ref
+   * alongside it and that ref is what broke the feature — see the effect below.
    */
-  const seenObservance = React.useRef(false);
   const [firstShow, setFirstShow] = React.useState(true);
 
   const [reduced] = React.useState(
@@ -232,14 +230,35 @@ export function OrganisationAnnouncementBand({
    * mark reads `firstShow` while the CSS animation is starting, and every
    * appearance after this render is a quiet one.
    */
+  /*
+   * ── THE BURST RETIRES ON A TIMER, AND THE GUARD IS WHAT STOPPED IT ────────
+   *
+   * This ran the timer behind a `seen` ref: set the ref, schedule the flip,
+   * clear it on cleanup. Under React's StrictMode the effect mounts, tears down
+   * and mounts again — so the first run scheduled the flip, the cleanup cleared
+   * it, and the second run hit `if (seen.current) return` and never scheduled
+   * another. `firstShow` stayed true for the life of the page, and the pop and
+   * the six specks fired on EVERY appearance of the observance: the exact
+   * behaviour the one-off burst exists to prevent.
+   *
+   * Measured on the merged build before this fix — `data-burst` and six spark
+   * elements present at t=0.3s, gone at t=6.5s while the volunteer panel was
+   * up, and BACK at t=12.5s when the observance returned.
+   *
+   * No ref now. The effect is idempotent: while `firstShow` is true it schedules
+   * the flip, and every re-run reschedules it. A double-invoke costs a second
+   * timer and nothing else.
+   *
+   * It does not test which panel is showing. The observance leads, so it is on
+   * screen from the first frame; and the burst is already scoped in the render
+   * by `firstShow && n === i`, so a second condition here only added a way for
+   * the flip never to happen.
+   */
   React.useEffect(() => {
     if (!firstShow) return;
-    if (!panels[i]?.celebrate) return;
-    if (seenObservance.current) return;
-    seenObservance.current = true;
     const t = window.setTimeout(() => setFirstShow(false), 1400);
     return () => window.clearTimeout(t);
-  }, [firstShow, panels, i]);
+  }, [firstShow]);
 
   function go(next: number) {
     const n = (next + panels.length) % panels.length;
