@@ -196,6 +196,44 @@ export function OrganisationAnnouncementBand({
   }
 
   /*
+   * ── HOW LONG THE CARD SHOULD WAIT: ASK THE BAR ──────────────────────────
+   *
+   * This is the whole fix for a defect that kept coming back in new clothes.
+   * The bar and the card were two clocks, and every hold split them further
+   * apart, because a hold PAUSES the bar's animation — which keeps its place —
+   * but CLEARS the card's timer, which then re-armed for a whole fresh cycle.
+   *
+   * Measured on the shipped build: hover the card for three seconds and let go,
+   * and the bar filled at 4443ms while the card turned at 6531ms. Two seconds of
+   * a full bar sitting there doing nothing, scaling with however long the reader
+   * hovered. Hovering is the commonest thing anyone does to this band, so the
+   * most-seen announcement on the estate carried the worst version of it.
+   *
+   * The bar's own animation already knows the answer exactly — through every
+   * pause, resume, negative delay and panel change — so it is the ONE source of
+   * truth, and the timer is DERIVED from it rather than run alongside it:
+   *
+   *     remaining = delay + duration - currentTime
+   *
+   * Correct in all four cases without special-casing any of them: a fresh panel
+   * still waiting out its flip, a bar part-filled after a hover, a bar picked up
+   * mid-way by a negative delay, and a bar already full.
+   */
+  function dwellRemainingMs(): number | null {
+    const dot = dotsRef.current?.querySelector<HTMLElement>('.orgab__dot[aria-selected="true"]');
+    if (!dot) return null;
+    const dwell = dot
+      .getAnimations({ subtree: true })
+      .find((a) => (a as CSSAnimation).animationName === "orgab-dwell");
+    const timing = dwell?.effect?.getTiming();
+    const now = dwell?.currentTime;
+    if (!timing || typeof now !== "number") return null;
+    const duration = typeof timing.duration === "number" ? timing.duration : null;
+    if (duration === null) return null;
+    return Math.max(0, (timing.delay ?? 0) + duration - now);
+  }
+
+  /*
    * THE POP AND THE SPRAY HAPPEN ONCE.
    *
    * A celebration that fires every six seconds forever stops being a
@@ -373,10 +411,8 @@ export function OrganisationAnnouncementBand({
      * one here would put the bar at 100% with seconds still to run, which is
      * the dead hold this file has already fixed once.
      */
-    const wait =
-      resumeFrom != null
-        ? Math.max(0, Math.round(DWELL_MS * (1 - resumeFrom / 100)))
-        : FLIP_MS + DWELL_MS;
+    /* Derived from the bar, never computed alongside it — see dwellRemainingMs. */
+    const wait = dwellRemainingMs() ?? FLIP_MS + DWELL_MS;
     const t = window.setTimeout(() => advance(1), wait);
     return () => window.clearTimeout(t);
   }, [running, advance, turn, resumeFrom]);
