@@ -154,6 +154,22 @@ export function OrganisationAnnouncementBand({
    * the bar, which is every other moment.
    */
   const [held, setHeld] = React.useState<number | null>(null);
+  /*
+   * PICKED UP, NOT STARTED AGAIN.
+   *
+   * Releasing the hold used to hand the bar back to an animation that had never
+   * run, so it snapped from wherever the reader stopped it to nothing and began
+   * a fresh six seconds. Truthful, because the rotation timer really did
+   * restart — but the reader had pressed play, not reset, and a bar that jumps
+   * backwards on resume is the same class of abruptness as the ones already
+   * fixed here.
+   *
+   * This is the percentage to pick up FROM. It drives two things that have to
+   * agree or the dead hold comes back: a negative `animation-delay`, which
+   * starts the fill partway rather than at nothing, and the rotation's wait,
+   * which becomes the REMAINING time rather than a whole dwell.
+   */
+  const [resumeFrom, setResumeFrom] = React.useState<number | null>(null);
   const dotsRef = React.useRef<HTMLDivElement>(null);
 
   /*
@@ -318,6 +334,8 @@ export function OrganisationAnnouncementBand({
     if (delta <= 0) return;
     setTurn((t) => t + delta);
     setTurning(true);
+    /* A new panel gets a whole dwell, so whatever was being picked up is spent. */
+    setResumeFrom(null);
   }, []);
 
   /* Only ever SCHEDULES, so nothing is set synchronously during the effect. */
@@ -349,9 +367,19 @@ export function OrganisationAnnouncementBand({
    */
   React.useEffect(() => {
     if (!running) return;
-    const t = window.setTimeout(() => advance(1), FLIP_MS + DWELL_MS);
+    /*
+     * Picking up mid-bar means the card is already on screen — no flip to wait
+     * out — and only the unspent part of the dwell is left. Charging a whole
+     * one here would put the bar at 100% with seconds still to run, which is
+     * the dead hold this file has already fixed once.
+     */
+    const wait =
+      resumeFrom != null
+        ? Math.max(0, Math.round(DWELL_MS * (1 - resumeFrom / 100)))
+        : FLIP_MS + DWELL_MS;
+    const t = window.setTimeout(() => advance(1), wait);
     return () => window.clearTimeout(t);
-  }, [running, advance, turn]);
+  }, [running, advance, turn, resumeFrom]);
 
   /*
    * The observance has now been seen. Flipping this on the FIRST commit rather
@@ -490,7 +518,27 @@ export function OrganisationAnnouncementBand({
            * cursor is in transit across a full-width strip is not engagement.
            * The card is the announcement; the green either side of it is not.
            */
-          onFocusCapture={() => setFocused(true)}
+          /*
+           * A KEYBOARD READER HOLDS IT; A CLICK DOES NOT.
+           *
+           * Any focus used to hold the rotation, and a mouse click focuses what
+           * it clicks — so pressing PLAY focused the play button, `focused` went
+           * true, and `running` stayed false. The control cancelled itself:
+           * press play, nothing starts, and it only begins once the reader
+           * happens to click somewhere else. Reproduced on the shipped build,
+           * so this predates the resume it was found by.
+           *
+           * `:focus-visible` is exactly the distinction wanted and the browser
+           * already computes it: a button focused by pointer does not match it,
+           * one reached by Tab does. So the hold now means "a keyboard reader is
+           * in here reading", which is what it was always for, and a reader who
+           * presses play gets what they asked for. The pointer half is
+           * unaffected — hovering the card still holds it.
+           */
+          onFocusCapture={(e) => {
+            const target = e.target as HTMLElement;
+            setFocused(target.matches?.(":focus-visible") ?? true);
+          }}
           onBlurCapture={(e) => {
             if (!e.currentTarget.contains(e.relatedTarget as Node)) setFocused(false);
           }}
@@ -702,10 +750,14 @@ export function OrganisationAnnouncementBand({
                   data-running={running || undefined}
                   data-turning={turning || undefined}
                   data-held={held != null ? "" : undefined}
+                  data-resume={resumeFrom != null ? "" : undefined}
                   style={
-                    held != null
-                      ? ({ "--orgab-held": `${held}%` } as React.CSSProperties)
-                      : undefined
+                    {
+                      ...(held != null ? { "--orgab-held": `${held}%` } : null),
+                      ...(resumeFrom != null
+                        ? { "--orgab-resume": `${(resumeFrom / 100) * DWELL_MS}ms` }
+                        : null),
+                    } as React.CSSProperties
                   }
                 >
                   {rotates ? (
@@ -764,10 +816,12 @@ export function OrganisationAnnouncementBand({
                       onClick={() => {
                         const next = !playing;
                         setPlaying(next);
-                        /* Starting again hands the bar back to the animation;
-                           pausing leaves whatever is pinned alone, so the
-                           transport control's own pause still holds its frame. */
-                        if (next) setHeld(null);
+                        if (next) {
+                          /* Hand the pinned value to the animation as a
+                             starting point rather than discarding it. */
+                          setResumeFrom(held);
+                          setHeld(null);
+                        }
                       }}
                     >
                       <Icon name={playing ? "pause" : "play_arrow"} size={16} fill weight={400} aria-hidden />

@@ -974,6 +974,29 @@
    * The transport control's pause is untouched and still works the old way: it
    * changes no panel, so its animation is holding the right frame already.
    */
+  /*
+   * PICKED UP PARTWAY — a NEGATIVE delay, which is the whole trick.
+   *
+   * A negative `animation-delay` starts an animation as though it had already
+   * been running for that long, so the fill begins at the percentage the reader
+   * stopped it at and finishes early by exactly the same amount. No keyframes to
+   * duplicate, no `currentTime` to reach into a pseudo-element and set, and it
+   * survives being paused: with the pointer still on the card the animation sits
+   * paused at the picked-up offset, showing the held position, and carries on
+   * from there when the pointer leaves.
+   *
+   * The rotation's wait is cut by the same amount in the component. The two
+   * numbers come from one value and must keep doing so — if the bar picks up at
+   * 40% and the card still waits a whole dwell, the bar is full with seconds
+   * left to run, which is the dead hold this file has already fixed once.
+   *
+   * There is no flip to wait out here: the card is already on screen, so this
+   * replaces the delay rather than adding to it.
+   */
+  .orgab__pager[data-resume] .orgab__dot[aria-selected="true"]::after {
+    animation-delay: calc(-1 * var(--orgab-resume, 0ms));
+  }
+
   .orgab__pager[data-held] .orgab__dot[aria-selected="true"]::after {
     animation: none;
     clip-path: inset(
