@@ -130,7 +130,22 @@
      * 4.40:1, against 3.67:1 before, on a 3:1 floor (WCAG 2.2 §1.4.11).
      */
     background-color: var(--sa-bg-brand-secondary-base);
-    color: var(--sa-color-secondaryScale-600);
+    /*
+     * THE GLYPH BINDS THROUGH THE ICON FAMILY, not past it.
+     *
+     * This read `--sa-color-secondaryScale-600` — a Palette rung, one tier below
+     * where component code is allowed to reach, and the same class of leak
+     * `icon/neutral/subtler` was added to close. It was survivable in CSS and
+     * fatal in Figma: the Palette collection publishes NOTHING, so the colour
+     * could not be bound from a consuming file at all, and this component could
+     * not be authored in the library without either a cross-family `bg/*`
+     * binding or a raw hex.
+     *
+     * `icon/brand/secondary/bolder` was added on 10 Sep 2026 and aliases the
+     * same rung, so nothing moves: #c34700 either way. 4.97:1 on white and
+     * 4.4:1 on the chip, both clear of the 3:1 non-text floor (WCAG 2.2 §1.4.11).
+     */
+    color: var(--sa-icon-brand-secondary-bolder);
   }
 
   /* Visual order is icon → value → label; the DOM order is icon → <dt> → <dd>,
