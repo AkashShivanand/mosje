@@ -703,15 +703,35 @@
   /* A 24px target with a small mark inside it — §2.5.8's floor, met by the
      control itself rather than by the spacing clause. 32 was a lot of hit area
      for a mark 6px across, and the extra 8 was the loudest thing about it. */
+  /*
+   * THE ACTIVE DOT IS WIDE; THE OTHERS ARE NOT.
+   *
+   * It was 32 for every dot with a 24px bar in the active one, and that is the
+   * size at which this indicator kept failing: two thirds of a 24px bar is
+   * 16px of white against 8px of dark, which is too little of each to read as a
+   * proportion. Rendered side by side at four sizes and two edge treatments, a
+   * 24px bar reads as a knob in a slot at BOTH treatments and a 40px bar reads
+   * as a bar at one of them. Width was the variable that mattered, and two
+   * previous passes spent themselves on the corner radius instead.
+   *
+   * Only the current one grows, so the row stays compact, and the growth is
+   * transitioned — the pill expanding as the panel takes over is the same
+   * gesture the bar itself makes.
+   */
   .orgab__dot {
     position: relative;
     display: grid;
     place-items: center;
-    /* The active bar is 24 wide, so the target has to be at least that. Still
-       clears §2.5.8's 24x24 floor by the control itself. */
-    inline-size: var(--sa-padding-32);
+    inline-size: var(--sa-padding-24);
     block-size: var(--sa-padding-24);
     border-radius: var(--sa-shape-full);
+    transition: inline-size var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+  }
+
+  /* 48, because the bar inside it is 40. Every dot clears §2.5.8's 24x24 floor
+     by the control itself, active or not. */
+  .orgab__dot[aria-selected="true"] {
+    inline-size: var(--sa-padding-48);
   }
 
   .orgab__dot::before {
@@ -744,7 +764,7 @@
    * fill reads at a glance without being any brighter than it was.
    */
   .orgab__dot[aria-selected="true"]::before {
-    inline-size: var(--sa-padding-24);
+    inline-size: var(--sa-padding-40);
     background-color: color-mix(in srgb, var(--sa-color-successScale-950) 42%, transparent);
     box-shadow: inset 0 0 0 var(--sa-stroke-1)
       color-mix(in srgb, var(--sa-color-successScale-950) 20%, transparent);
@@ -774,21 +794,37 @@
    * lie.
    */
   /*
-   * THE FILL IS A PILL, BOTH CAPS ROUND. A flat leading edge was tried and
-   * rejected by the person who has to look at it — restored on request, and the
-   * note is kept because the reasoning behind the change was not wrong so much
-   * as outvoted: a square leading edge reads as a level, a round one reads as a
-   * lozenge, and which of those is right for a 24x6 bar is a judgement, not a
-   * measurement.
+   * ── THE LEADING EDGE IS FLAT, AND THIS TIME IT IS MEASURED ──────────────
+   *
+   * Three passes argued about this and two of them were wrong, so the fourth
+   * rendered the choices instead of reasoning about them: 24px and 40px bars,
+   * each with a round leading edge and with a flat one, all four frozen at the
+   * same 66% and looked at side by side at 8x.
+   *
+   *   24 round   a white lozenge floating in a groove          — a knob
+   *   24 flat    correct in principle, too cramped to read     — a knob
+   *   40 round   a longer white lozenge, still detached        — a knob
+   *   40 flat    one pill, two thirds white                    — a bar
+   *
+   * Both changes were needed. A round leading edge separates the fill from the
+   * groove at ANY width, because a rounded end is what a knob has; and a flat
+   * edge on a 24px bar has too little either side of it to say what it is. The
+   * earlier attempt that shipped only the flat edge is why this looked like it
+   * had been made worse rather than better.
+   *
+   * `round R 0 0 R` rounds the two LEFT corners of the clip and leaves the
+   * right square, so the fill has the track's own cap behind it at the start
+   * and a straight edge where it has got to. At 100% the clip cuts nothing and
+   * the element's own radius gives the right cap back.
    */
   .orgab__dot[aria-selected="true"]::after {
     content: "";
     position: absolute;
-    inline-size: var(--sa-padding-24);
+    inline-size: var(--sa-padding-40);
     block-size: var(--sa-padding-6);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-text-neutral-inverse);
-    clip-path: inset(0 100% 0 0 round var(--sa-shape-full));
+    clip-path: inset(0 100% 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full));
     animation: orgab-dwell var(--orgab-dwell, 6000ms) linear forwards;
     animation-play-state: paused;
   }
@@ -798,8 +834,8 @@
   }
 
   @keyframes orgab-dwell {
-    from { clip-path: inset(0 100% 0 0 round var(--sa-shape-full)); }
-    to   { clip-path: inset(0 0 0 0 round var(--sa-shape-full)); }
+    from { clip-path: inset(0 100% 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full)); }
+    to   { clip-path: inset(0 0 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full)); }
   }
 
   /*
