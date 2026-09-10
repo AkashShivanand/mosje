@@ -48,12 +48,22 @@
    * edge whichever is taller — a shared edge is read before any word is, and it
    * is the only thing saying these two objects belong to one band.
    */
+  /*
+   * THE BAND'S OWN PADDING COMES DOWN TO 16.
+   *
+   * Giving the card a strip for the pager cost the band 24px, 152 to 176, and
+   * the gap it bought is worth keeping — so the height comes back out of the
+   * things that are not the gap. 24 to 16 here, a 72px mark to 64 (the copy
+   * beside it is 70, so the mark was setting the row height on its own), and
+   * the pager 12 off the card's bottom edge rather than 12. The cards carry
+   * their own generous inner padding, so 16 around them still breathes.
+   */
   .orgab__inner {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto auto;
     align-items: stretch;
     column-gap: var(--sa-inline-20);
-    padding-block: var(--sa-padding-24);
+    padding-block: var(--sa-padding-16);
   }
 
   /* An organisation whose record publishes no helpline gets no empty white card
@@ -67,30 +77,50 @@
      surface on another: the ground beneath is the band's own gradient, and the
      helpline beside it is solid. */
 
+  /*
+   * THE STAGE IS THE SCENE, NOT THE CARD.
+   *
+   * It used to be the card — it carried the glass, the radius and the lit edge,
+   * with two panels cross-fading inside it. A card that FLIPS cannot be built
+   * that way: a flip needs a front and a back, so the material moved onto the
+   * faces and what is left here is the depth they turn in and the strip the
+   * pager sits in.
+   *
+   * `perspective` lives here rather than on the faces so both share one
+   * vanishing point — otherwise each face turns in a world of its own and the
+   * two halves of the flip do not line up.
+   */
   .orgab__stage {
     position: relative;
     display: grid;
-    grid-template-areas: "offer";
-    align-items: center;
-    /* The depth the turn happens in. On the STAGE rather than on the panel, so
-       both panels share one vanishing point and the turn reads as one card
-       rotating rather than as two cards each rotating in their own world. */
-    perspective: 1400px;
-    padding: var(--sa-padding-16) var(--sa-padding-20);
-    border-radius: var(--sa-shape-16);
-    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent);
-    /*
-     * THE LIT EDGE CARRIES THE PANEL'S ACCENT, and it is the second of the two
-     * ways the offers are told apart.
-     *
-     * The eyebrow it replaces was a 40px chip on a 1272px band — a difference a
-     * reader has to be looking for. This one is 889px wide and shifts hue as the
-     * band turns, so the change registers peripherally, which is the only place
-     * a reader is looking when a band above the fold changes under them.
-     */
-    box-shadow: inset 0 var(--sa-stroke-1) 0 0
-      color-mix(in srgb, var(--orgab-accent) 44%, transparent);
-    transition: box-shadow var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+    perspective: 1600px;
+  }
+
+  /*
+   * THE CARD ITSELF. Both faces occupy one grid cell of it, so it is still the
+   * height of its tallest panel and the band cannot resize as it turns.
+   *
+   * IT TURNS ABOUT THE HORIZONTAL AXIS — top over bottom, like a page on a
+   * flip-chart. About the vertical it swung 923px of card through the reader's
+   * eyeline, which on a band this wide is a lot of motion for an announcement
+   * changing; over the horizontal the card is 128px deep, so the same 180° is a
+   * quarter of the travel and reads as a turn rather than as a swing.
+   *
+   * It also FORESHORTENS INWARD: a card rotating about its own horizontal axis
+   * gets shorter mid-turn, never taller, so nothing can reach out of the band.
+   *
+   * 520ms, and deliberately longer than the 250ms this estate gives a UI
+   * transition. Those are transitions a reader CAUSED and is waiting on; this
+   * one is ambient and its whole job is to be noticed — a half-turn through 180
+   * degrees at 250ms is a smear rather than a card. `emphasis` easing, because
+   * the easing table's answer for something moving on screen is in-out.
+   */
+  .orgab__flipper {
+    display: grid;
+    grid-template-areas: "face";
+    transform-style: preserve-3d;
+    transform: rotateX(calc(var(--orgab-turn, 0) * -180deg));
+    transition: transform var(--orgab-flip, 520ms) var(--sa-motion-emphasis-easing);
   }
 
   /*
@@ -105,7 +135,6 @@
    * judging contrast by eye on a saturated ground. `-200` is the one that tempts
    * you and still fails §1.4.3, by 0.07.
    */
-  .orgab__stage[data-accent="saffron"],
   .orgab__offer[data-accent="saffron"] {
     --orgab-accent: var(--sa-color-secondaryScale-100);
     --orgab-accent-ink: var(--sa-color-secondaryScale-700);
@@ -117,7 +146,6 @@
    * fails if the card's translucency is ever touched. `-50` is 6.81:1, which is
    * margin rather than luck.
    */
-  .orgab__stage[data-accent="leaf"],
   .orgab__offer[data-accent="leaf"] {
     --orgab-accent: var(--sa-color-successScale-50);
     --orgab-accent-ink: var(--sa-color-successScale-700);
@@ -159,35 +187,56 @@
    * out of the accessibility tree at rest.
    */
   .orgab__offer {
-    grid-area: offer;
+    grid-area: face;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
     column-gap: var(--sa-inline-16);
-    visibility: hidden;
-    opacity: 0;
-    filter: blur(2px);
-    transform: rotateY(-26deg) translateZ(-28px) scale(0.97);
-    transform-origin: 30% 50%;
+    /*
+     * ── THE CARD MATERIAL, NOW ON THE FACE ──────────────────────────────
+     *
+     * Translucent, because this is the half that turns. Never a light
+     * translucent surface on another: the ground beneath is the band's own
+     * gradient, and the helpline beside it is solid.
+     *
+     * The lit top edge carries the panel's ACCENT and is one of the two ways
+     * the offers are told apart — 923px wide and shifting hue as the card
+     * turns, where the eyebrow it replaced was a 40px chip.
+     *
+     * THE BOTTOM PADDING IS A STRIP, not breathing room. The pager sits in it,
+     * clear of the action above: measured at 1440 the action occupies 16 to 56
+     * of the card and the pager 90 to 114, a 34px gap where both crowded into
+     * the content row had 8.
+     *
+     * THE VALUE HAS TO BE ON THE SCALE. It was once written as
+     * `--sa-padding-36`, which the space scale does not publish — the steps are
+     * 0·2·4·6·8·12·16·20·24·32·40·48·56·64·72·80 — so the whole `padding`
+     * shorthand was invalid and DROPPED. The card lost every side of its padding
+     * at once and its content overflowed a 46px box while the helpline beside it
+     * silently set the row height. Nothing errored; `check:dangling-vars` is the
+     * gate that names it.
+     */
+    padding: var(--sa-padding-16) var(--sa-padding-20) var(--sa-padding-40);
+    border-radius: var(--sa-shape-16);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent);
+    box-shadow: inset 0 var(--sa-stroke-1) 0 0
+      color-mix(in srgb, var(--orgab-accent) 44%, transparent);
+    /* The half of the card you are not looking at is not drawn. Without this a
+       reader sees the other announcement mirrored, through the card. */
     backface-visibility: hidden;
-    transition:
-      opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
-      filter var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
-      transform var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
-      visibility 0s linear var(--sa-motion-exit-duration);
   }
 
-  .orgab__offer[data-active] {
-    visibility: visible;
-    opacity: 1;
-    filter: blur(0);
-    transform: rotateY(0deg) translateZ(0) scale(1);
-    transition:
-      opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
-      filter var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
-      transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
-      visibility 0s;
+  /* Face 1 is pre-turned, so it faces out when the flipper reaches 180. */
+  .orgab__offer[data-face="1"] {
+    transform: rotateX(180deg);
   }
+
+  /*
+   * NOTHING IS HIDDEN BY `visibility` ANY MORE. It was what kept the inactive
+   * panel's space while removing it from view; the backface does both now, and
+   * a hidden face cannot be flipped INTO view. `inert` in the markup is what
+   * keeps the panel a reader cannot see out of the tab order.
+   */
 
   /*
    * ── ONE LEADING SLOT, TWO KINDS OF OBJECT ───────────────────────────────
@@ -219,8 +268,8 @@
      * scale, and a mark two pixels taller than a copy block nobody is comparing
      * it to is not a defect — a tile drawn across a title is.
      */
-    inline-size: var(--sa-padding-72);
-    block-size: var(--sa-padding-72);
+    inline-size: var(--sa-padding-64);
+    block-size: var(--sa-padding-64);
     border-radius: var(--sa-shape-8);
     /* NOT `overflow: hidden` on the mark itself — the code's badge sits outside
        its corner and the observance's specks fly out of it. The image below
@@ -317,6 +366,179 @@
   /* A keyboard reader cannot hover, and this is a button. */
   .orgab__mark--code:focus-visible .orgab__mark-zoom {
     opacity: 1;
+  }
+
+  /* ══════════════════════════════════════════════════════════════════════════
+     THE MARK'S MOTION — a burst once, then a drift that never stops
+     ══════════════════════════════════════════════════════════════════════════
+
+     ALL OF THIS WAS DELETED BY ACCIDENT and shipped that way. Rewriting the
+     confetti section to add the ambient loop replaced the whole block, and the
+     block held everything: the spark's size, position and ink, the ray and bit
+     animations, and all four `@keyframes`. What survived was six
+     `<span class="orgab__spark">` with no styles at all — zero-sized,
+     invisible — an `animation: orgab-pop` naming a keyframe that no longer
+     existed, and a drawn mark that never moved.
+
+     Nothing about it LOOKED broken. The markup was right, the classes were
+     right, `data-burst` and `data-loop` were on the element, and no gate has
+     anything to say about a keyframe that is referenced and never declared.
+     Playwright is what found it: six elements matched `.orgab__spark` and not
+     one of them was visible.
+
+     THE SHAPE IT IS REBUILT TO is the Rive reference — a popper that RECOILS
+     before it throws, and pieces that TUMBLE as they fly rather than sliding
+     outward at a fixed angle. Two things carry that: every piece turns through
+     most of a revolution on its way out, and the pieces come in three lengths
+     and three inks, so no two read as the same object.
+     ========================================================================= */
+
+  /* ── The burst: the block shakes, eight pieces go, once ─────────────────── */
+
+  /*
+   * THE WHOLE BLOCK SHAKES, not the drawing inside it. The pop belongs to the
+   * tile — that is the object a reader sees move, and animating only the glyph
+   * inside a still tile reads as a picture wobbling in its frame.
+   */
+  .orgab__mark--celebrate[data-burst] {
+    animation: orgab-pop 720ms var(--sa-motion-emphasis-easing) both;
+  }
+
+  /*
+   * ── WHY THE FIRST BURST WAS BLAND, AND WHAT THE REFERENCE ACTUALLY DOES ──
+   *
+   * It threw eight pieces that were all the same object: a 3px rounded dash, in
+   * three tints of two hues, travelling in a straight line. Looked at beside
+   * unicornicons' confetti it is obvious what is missing, and it is not colour —
+   * that reference throws SILHOUETTES. Solid circles at two sizes, a thick
+   * curved squiggle, a clover, an open arc. The variety is in shape, and every
+   * piece is chunky enough to be a shape rather than a stroke.
+   *
+   * So the pieces come in three kinds now, and they are filled rather than
+   * hairline:
+   *
+   *   dot   a 7px circle          — the reference's most common piece
+   *   bar   a 10x4 rounded dash   — a streamer seen flat
+   *   arc   a 10px open crescent  — a streamer seen curled, drawn as one border
+   *                                 of a circle so it costs no extra element
+   *
+   * And they ARC. A straight line from a popper is a spark, not confetti: the
+   * mid-keyframe pushes each piece off its own axis so it curves, and the end
+   * sits below the peak so the piece falls out of its own throw.
+   */
+  .orgab__spark {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    opacity: 0;
+    /* Above the copy beside it, so a piece thrown right does not vanish behind
+       the heading. */
+    z-index: var(--sa-z-raised);
+    animation: orgab-spark 1100ms var(--sa-motion-emphasis-easing) var(--spark-in) both;
+  }
+
+  .orgab__spark[data-shape="dot"] {
+    inline-size: var(--sa-padding-6);
+    block-size: var(--sa-padding-6);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--spark-ink);
+  }
+
+  .orgab__spark[data-shape="bar"] {
+    inline-size: var(--sa-padding-12);
+    block-size: var(--sa-stroke-3);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--spark-ink);
+  }
+
+  /* One border of a circle: an open crescent, and the reference's curled
+     streamer, without a second element or a path to maintain. */
+  .orgab__spark[data-shape="arc"] {
+    inline-size: var(--sa-padding-12);
+    block-size: var(--sa-padding-12);
+    border-radius: var(--sa-shape-full);
+    border-block-start: var(--sa-stroke-3) solid var(--spark-ink);
+    border-inline-start: var(--sa-stroke-3) solid transparent;
+    border-inline-end: var(--sa-stroke-3) solid transparent;
+  }
+
+  /*
+   * ── INK IS CHOSEN BY DISTANCE, BECAUSE THE PIECE CROSSES TWO GROUNDS ─────
+   *
+   * The tile is cream and the card behind it is green, and a burst thrown from
+   * the middle of a 64px tile spends its first half ON the cream. Inked by
+   * taste rather than by ground, half the pieces vanished for half their
+   * flight: `secondaryScale-100` is cream on cream, and the mint is nearly so.
+   * Seen only by freezing the burst and stepping through it — at page speed it
+   * reads as "fewer pieces than there are".
+   *
+   * So the rule is mechanical. A piece that travels FAR is on the green for
+   * most of its life and takes a light ink; a piece that stays NEAR is on the
+   * cream and takes a dark one. Nothing is chosen for looking nice on its own.
+   *
+   *   near  (< 50px)  orange -400 / -600, green -600   — read on cream
+   *   far   (>= 50px) white, mint -50                  — read on green
+   *
+   * `--cx/--cy` is the mid-flight push that bends the path; `--fall` is how far
+   * below the peak the piece ends, so the throw has a top to it.
+   */
+  .orgab__spark[data-n="0"] { --dx: -44px; --dy: -38px; --cx: -14px; --cy: -30px; --fall: 10px; --rot: 220deg;  --spark-ink: var(--sa-color-secondaryScale-600); --spark-in: 0ms; }
+  .orgab__spark[data-n="1"] { --dx: 42px;  --dy: -50px; --cx: 12px;  --cy: -38px; --fall: 12px; --rot: -260deg; --spark-ink: var(--sa-color-secondaryScale-400); --spark-in: 45ms; }
+  .orgab__spark[data-n="2"] { --dx: 58px;  --dy: -14px; --cx: 24px;  --cy: -22px; --fall: 14px; --rot: 180deg;  --spark-ink: var(--sa-text-neutral-inverse);     --spark-in: 20ms; }
+  .orgab__spark[data-n="3"] { --dx: -54px; --dy: 12px;  --cx: -26px; --cy: -14px; --fall: 8px;  --rot: -200deg; --spark-ink: var(--sa-color-successScale-50);    --spark-in: 90ms; }
+  .orgab__spark[data-n="4"] { --dx: 24px;  --dy: 46px;  --cx: 16px;  --cy: 10px;  --fall: 6px;  --rot: 240deg;  --spark-ink: var(--sa-color-successScale-600);   --spark-in: 65ms; }
+  .orgab__spark[data-n="5"] { --dx: -18px; --dy: -58px; --cx: -6px;  --cy: -40px; --fall: 12px; --rot: -180deg; --spark-ink: var(--sa-text-neutral-inverse);     --spark-in: 125ms; }
+  .orgab__spark[data-n="6"] { --dx: 50px;  --dy: 28px;  --cx: 26px;  --cy: 4px;   --fall: 8px;  --rot: 200deg;  --spark-ink: var(--sa-color-successScale-50);    --spark-in: 150ms; }
+  .orgab__spark[data-n="7"] { --dx: -36px; --dy: -20px; --cx: -18px; --cy: -20px; --fall: 10px; --rot: -240deg; --spark-ink: var(--sa-color-secondaryScale-600); --spark-in: 180ms; }
+  .orgab__spark[data-n="8"] { --dx: 14px;  --dy: -64px; --cx: 4px;   --cy: -44px; --fall: 14px; --rot: 300deg;  --spark-ink: var(--sa-color-successScale-50);    --spark-in: 35ms; }
+  .orgab__spark[data-n="9"] { --dx: -60px; --dy: -8px;  --cx: -30px; --cy: -18px; --fall: 10px; --rot: -300deg; --spark-ink: var(--sa-text-neutral-inverse);     --spark-in: 105ms; }
+
+  @keyframes orgab-spark {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.4) rotate(0deg);
+    }
+
+    /* Bright by the time it is off the cream, not before. */
+    30% { opacity: 1; }
+
+    /* The bend. Without this the pieces leave on eight straight lines, which is
+       a firework rather than confetti. */
+    55% {
+      opacity: 1;
+      transform:
+        translate(
+          calc(-50% + (var(--cx) * var(--spark-reach, 1))),
+          calc(-50% + (var(--cy) * var(--spark-reach, 1)))
+        )
+        scale(1.1)
+        rotate(calc(var(--rot) * 0.55));
+    }
+
+    78% { opacity: 1; }
+
+    /* …and the fall. The piece ends below where it was going, so the throw has
+       a top to it. */
+    100% {
+      opacity: 0;
+      transform:
+        translate(
+          calc(-50% + (var(--dx) * var(--spark-reach, 1))),
+          calc(-50% + ((var(--dy) + var(--fall)) * var(--spark-reach, 1)))
+        )
+        scale(0.95)
+        rotate(var(--rot));
+    }
+  }
+
+  /* The recoil: back and down, then up and over, then settle. A popper kicks
+     before it throws, and that kick is what a plain scale-up leaves out. */
+  @keyframes orgab-pop {
+    0%   { transform: scale(0.9) rotate(8deg); }
+    18%  { transform: scale(0.94) rotate(-12deg); }
+    46%  { transform: scale(1.1) rotate(6deg); }
+    72%  { transform: scale(0.98) rotate(-2deg); }
+    100% { transform: scale(1) rotate(0deg); }
   }
 
   /* The phone's stand-in for the code is out of the way at every other width. */
@@ -442,18 +664,34 @@
    * marks in the card's own ink, which is as quiet as a control can be while
    * still being one.
    */
+  /*
+   * ── IT SITS IN THE CARD'S BOTTOM STRIP, AND OUTSIDE THE FLIPPER ─────────
+   *
+   * Outside, because it does not turn. It pages the card; a control that
+   * somersaults with the thing it controls is a decoration pretending to be
+   * one. It is positioned against the STAGE, which is the card's footprint,
+   * so it lands in the card's own bottom strip without being a child of a face.
+   *
+   * Bottom-right, 12 up and 20 in, matching the card's own side padding — the
+   * pager and the action share a right edge, which is what makes the 36px
+   * between them read as a gap rather than as a misalignment.
+   */
   .orgab__pager {
-    position: relative;
-    /* It shares the panel's grid cell — that is what makes the stage the height
-       of its tallest panel — so without the raised rung the offer paints over
-       the pager and swallows every click on the dots. Found by driving a real
-       click, not by looking: the control was visible the whole time. */
+    position: absolute;
+    opacity: 1;
+    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+    inset-block-end: var(--sa-padding-12);
+    inset-inline-end: var(--sa-padding-20);
     z-index: var(--sa-z-raised);
-    grid-area: offer;
-    place-self: end end;
     display: flex;
     align-items: center;
     gap: var(--sa-inline-2);
+  }
+
+  /* Out of the way while the card is edge-on, back when it lands. */
+  .orgab__pager[data-turning] {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .orgab__dots {
@@ -465,6 +703,21 @@
   /* A 24px target with a small mark inside it — §2.5.8's floor, met by the
      control itself rather than by the spacing clause. 32 was a lot of hit area
      for a mark 6px across, and the extra 8 was the loudest thing about it. */
+  /*
+   * THE ACTIVE DOT IS WIDE; THE OTHERS ARE NOT.
+   *
+   * It was 32 for every dot with a 24px bar in the active one, and that is the
+   * size at which this indicator kept failing: two thirds of a 24px bar is
+   * 16px of white against 8px of dark, which is too little of each to read as a
+   * proportion. Rendered side by side at four sizes and two edge treatments, a
+   * 24px bar reads as a knob in a slot at BOTH treatments and a 40px bar reads
+   * as a bar at one of them. Width was the variable that mattered, and two
+   * previous passes spent themselves on the corner radius instead.
+   *
+   * Only the current one grows, so the row stays compact, and the growth is
+   * transitioned — the pill expanding as the panel takes over is the same
+   * gesture the bar itself makes.
+   */
   .orgab__dot {
     position: relative;
     display: grid;
@@ -472,6 +725,23 @@
     inline-size: var(--sa-padding-24);
     block-size: var(--sa-padding-24);
     border-radius: var(--sa-shape-full);
+    transition: inline-size var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+  }
+
+  /*
+   * 40 — THE BOX IS THE BAR, AND THE ROW DOES NOT GROW.
+   *
+   * It was 48, giving the 40px bar a margin inside its own target, and that
+   * cost the pager eight pixels of width it had not asked for: 48 + 2 + 24 is
+   * 74 where two 32s were 66. A pagination control that takes more room than
+   * before to say the same thing has spent something for nothing.
+   *
+   * At 40 the target IS the bar. 40 + 2 + 24 is 66 — exactly the width the row
+   * had — and both dots still clear §2.5.8's 24x24 floor by the control itself,
+   * the active one by a wide margin.
+   */
+  .orgab__dot[aria-selected="true"] {
+    inline-size: var(--sa-padding-40);
   }
 
   .orgab__dot::before {
@@ -491,9 +761,23 @@
   /* The current dot lengthens into a bar — a shape change reads at a glance
      where a brightness change alone does not. The bar is the TRACK; the fill
      below runs across it. */
+  /*
+   * THE TRACK IS A GROOVE, NOT A PALER WHITE.
+   *
+   * It was white at 40% under a white fill, and when the pager lost its dark
+   * capsule the two stopped being distinguishable: 40% white and 100% white,
+   * six pixels tall, on a mid-green card. The indicator was running the whole
+   * time — measured mid-cycle at `inset(0 52.5% 0 0 round 999px)` — and could
+   * not be seen, which for a progress indicator is the same as not running.
+   *
+   * A dark groove separates them by lightness instead of by opacity, and the
+   * fill reads at a glance without being any brighter than it was.
+   */
   .orgab__dot[aria-selected="true"]::before {
-    inline-size: var(--sa-padding-20);
-    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 40%, transparent);
+    inline-size: var(--sa-padding-40);
+    background-color: color-mix(in srgb, var(--sa-color-successScale-950) 42%, transparent);
+    box-shadow: inset 0 0 0 var(--sa-stroke-1)
+      color-mix(in srgb, var(--sa-color-successScale-950) 20%, transparent);
   }
 
   /*
@@ -519,14 +803,38 @@
    * indicator that keeps running while the thing it indicates has stopped is a
    * lie.
    */
+  /*
+   * ── THE LEADING EDGE IS FLAT, AND THIS TIME IT IS MEASURED ──────────────
+   *
+   * Three passes argued about this and two of them were wrong, so the fourth
+   * rendered the choices instead of reasoning about them: 24px and 40px bars,
+   * each with a round leading edge and with a flat one, all four frozen at the
+   * same 66% and looked at side by side at 8x.
+   *
+   *   24 round   a white lozenge floating in a groove          — a knob
+   *   24 flat    correct in principle, too cramped to read     — a knob
+   *   40 round   a longer white lozenge, still detached        — a knob
+   *   40 flat    one pill, two thirds white                    — a bar
+   *
+   * Both changes were needed. A round leading edge separates the fill from the
+   * groove at ANY width, because a rounded end is what a knob has; and a flat
+   * edge on a 24px bar has too little either side of it to say what it is. The
+   * earlier attempt that shipped only the flat edge is why this looked like it
+   * had been made worse rather than better.
+   *
+   * `round R 0 0 R` rounds the two LEFT corners of the clip and leaves the
+   * right square, so the fill has the track's own cap behind it at the start
+   * and a straight edge where it has got to. At 100% the clip cuts nothing and
+   * the element's own radius gives the right cap back.
+   */
   .orgab__dot[aria-selected="true"]::after {
     content: "";
     position: absolute;
-    inline-size: var(--sa-padding-20);
+    inline-size: var(--sa-padding-40);
     block-size: var(--sa-padding-6);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-text-neutral-inverse);
-    clip-path: inset(0 100% 0 0 round var(--sa-shape-full));
+    clip-path: inset(0 100% 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full));
     animation: orgab-dwell var(--orgab-dwell, 6000ms) linear forwards;
     animation-play-state: paused;
   }
@@ -536,16 +844,27 @@
   }
 
   @keyframes orgab-dwell {
-    from { clip-path: inset(0 100% 0 0 round var(--sa-shape-full)); }
-    to   { clip-path: inset(0 0 0 0 round var(--sa-shape-full)); }
+    from { clip-path: inset(0 100% 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full)); }
+    to   { clip-path: inset(0 0 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full)); }
   }
 
   /*
-   * A GLYPH, NOT A BUTTON-SHAPED THING. It had a filled well so it would not
-   * read as a hairline at 300 weight — the well was solving a problem the glyph
-   * had. Filled at 400 the two bars are a solid shape at 16px, which needs no
-   * container to be seen, so the container goes and the pager loses its last
-   * piece of furniture.
+   * NO WELL AT REST, A CIRCLE ON HOVER.
+   *
+   * It used to carry a filled well at all times so the glyph would not read as
+   * a hairline at weight 300 — the well was solving a problem the glyph had,
+   * and filled at 400 the two bars are a solid shape at 16px that needs no
+   * container to be seen. So the well went.
+   *
+   * IT WENT TOO FAR. Removing the resting well also removed the hover circle,
+   * and that one was not decoration: it is the only thing that says this glyph
+   * is a BUTTON rather than a status mark, and it is the press target made
+   * visible. A control whose hit area a reader cannot see is a control they aim
+   * at by guessing.
+   *
+   * So the circle is back, on hover and focus only — and the press takes the
+   * estate's usual 0.94, because a transport control that does not answer the
+   * click feels broken however fast it acts.
    */
   .orgab__play {
     display: grid;
@@ -554,12 +873,27 @@
     block-size: var(--sa-padding-24);
     margin-inline-start: var(--sa-inline-2);
     border-radius: var(--sa-shape-full);
+    background-color: transparent;
     color: color-mix(in srgb, var(--sa-text-neutral-inverse) 62%, transparent);
-    transition: color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+    transition:
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+  }
+
+  .orgab__play:active {
+    transform: scale(0.94);
+  }
+
+  /* Keyboard readers cannot hover, and the circle is the target made visible. */
+  .orgab__play:focus-visible {
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 20%, transparent);
+    color: var(--sa-text-neutral-inverse);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .orgab__play:hover {
+      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 20%, transparent);
       color: var(--sa-text-neutral-inverse);
     }
 
@@ -746,9 +1080,7 @@
         visibility 0s;
     }
 
-    .orgab__mark--celebrate .cfti,
-    .cfti__ray,
-    .cfti__bit,
+    .orgab__mark--celebrate[data-burst],
     .orgab__spark {
       animation: none;
     }
@@ -1038,24 +1370,39 @@
 
   @media (max-width: 767px) {
     /*
-     * THE PAGER GETS ITS OWN ROW. On a phone the action goes full width, so a
-     * pill riding the card's edge would land on the button — this time from
-     * below. A row costs 24px and is the honest fix; nudging the pill sideways
-     * would only move the collision to whatever the button becomes next.
+     * THE CARD'S PADDING SHRINKS, AND THE STRIP WITH IT.
+     *
+     * The desktop face reserves a 40px strip below its content for the pager.
+     * Applied unchanged on a phone that put the band at 342px — 41% of an 844px
+     * viewport, against 286 before this pass — because the phone's action is
+     * already a full-width row of its own, so the strip was being paid for
+     * twice. 32 is what the pager needs at its phone size, and the sides come
+     * in to 12 where the desktop card can afford 20.
      */
-    .orgab__stage {
-      grid-template-areas: "offer" "pager";
-      row-gap: var(--sa-stack-8);
-      padding: var(--sa-padding-12);
+    .orgab__offer {
+      padding: var(--sa-padding-12) var(--sa-padding-12) var(--sa-padding-32);
     }
 
+    /*
+     * BOTTOM-LEFT ON A PHONE, not bottom-right. The action is full width there,
+     * so the two share the card's whole measure and only the vertical gap keeps
+     * them apart; putting the pager under the button's leading edge is where a
+     * thumb reaching for one is least likely to find the other.
+     */
     .orgab__pager {
-      grid-area: pager;
-      place-self: center start;
-      /* Back in flow, and no lift: it is no longer sitting on an edge. */
-      margin-block-end: 0;
-      box-shadow: inset 0 0 0 var(--sa-stroke-1)
-        color-mix(in srgb, var(--sa-text-neutral-inverse) 32%, transparent);
+      inset-inline: var(--sa-padding-12) auto;
+      inset-block-end: var(--sa-padding-8);
+    }
+
+    /*
+     * THE BURST IS SCALED TO ITS TILE. The distances are set for a 72px mark;
+     * on a phone the mark is 24, so pieces thrown 48–62px cleared the tile
+     * entirely and flew across the heading — measured at 390, the first word of
+     * "Six Years of the Abhiyaan" was under them. Half the reach keeps the
+     * confetti around the thing it is coming out of.
+     */
+    .orgab__spark {
+      --spark-reach: 0.45;
     }
 
     .orgab__dot,

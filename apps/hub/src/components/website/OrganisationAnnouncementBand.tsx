@@ -6,7 +6,6 @@ import NextLink from "next/link";
 import { Icon, Modal, buttonClasses } from "@mosje/design-system";
 import type { OrganisationDetail } from "@/content/website/organisation-details";
 import { dismissCampaign } from "@/lib/website/campaign-dismissed";
-import { ConfettiMark } from "./ConfettiMark";
 import "./organisation-announcement-band.css";
 
 /**
@@ -85,6 +84,21 @@ interface Panel {
 
 const DWELL_MS = 6000;
 
+/** The card's half-turn. Read by the CSS through `--orgab-flip`, so the
+ *  duration and the fade that hides the controls during it cannot drift. */
+const FLIP_MS = 520;
+
+/**
+ * THE PIECES, BY SILHOUETTE.
+ *
+ * The first burst threw eight of the same object — a thin dash — which is what
+ * made it read as sparks rather than as confetti. The reference it is drawn
+ * from throws SHAPES: solid circles at two sizes, a curled streamer, an open
+ * arc. Order matters only in that no two neighbours share a kind, so the eye
+ * cannot find a pattern in ten pieces leaving at once.
+ */
+const SPARKS = ["dot", "bar", "arc", "dot", "bar", "arc", "dot", "bar", "arc", "dot"] as const;
+
 function isExternal(href: string, flag?: boolean) {
   return flag === true || /^https?:\/\//.test(href);
 }
@@ -96,7 +110,30 @@ export function OrganisationAnnouncementBand({
   banner?: Banner;
   ribbon?: Ribbon;
 }): React.JSX.Element | null {
-  const [i, setI] = React.useState(0);
+  /*
+   * A TURN COUNT, NOT AN INDEX — because the card FLIPS.
+   *
+   * An index alternating 0,1,0,1 would rotate the card forward and then back,
+   * which reads as a card being turned over and turned back rather than as a
+   * deck advancing. The count only ever goes up, so every change is another
+   * half-turn in the same direction; the panel on show is its parity.
+   */
+  const [turn, setTurn] = React.useState(0);
+
+  /*
+   * THE CONTROLS STAND ASIDE WHILE THE CARD TURNS.
+   *
+   * The pager is deliberately NOT inside the flipper — a control that
+   * somersaults with the thing it controls is decoration pretending to be one.
+   * The cost is that for half a second the card is edge-on and much narrower
+   * than its footprint, so a pager pinned to that footprint sits on bare green
+   * with nothing under it. Measured mid-flip at 1440: the card's right edge
+   * pulls in to 742 while the pager stays at 900.
+   *
+   * So it fades for the length of the turn and comes back. 520ms is the
+   * flipper's own duration and the two are set from the same constant.
+   */
+  const [turning, setTurning] = React.useState(false);
   const [gone, setGone] = React.useState(false);
   const [playing, setPlaying] = React.useState(true);
   const [hovered, setHovered] = React.useState(false);
@@ -192,6 +229,7 @@ export function OrganisationAnnouncementBand({
   }, [banner, ribbon]);
 
   const rotates = panels.length > 1;
+  const i = panels.length ? turn % panels.length : 0;
   const current = panels[i] ?? panels[0];
 
   /*
@@ -203,26 +241,32 @@ export function OrganisationAnnouncementBand({
    */
   const running = rotates && playing && !hovered && !focused && !reduced && !gone && !zoom;
 
+
   /*
-   * THE DRIFT IS NOT THE ROTATION, so it does not answer to the same holds.
-   *
-   * Hover and focus pause the rotation because a reader is reading and a
-   * sentence must not move away mid-read. Neither is a reason to freeze a
-   * decorative mark — so the ambient loop answers to the PAUSE button, to
-   * `prefers-reduced-motion`, and to nothing else.
-   *
-   * It runs whether or not the band rotates, which is what makes the pause
-   * control necessary even on a band with a single announcement: this loops
-   * forever, and §2.2.2 wants a way to stop anything that does.
+   * ONE PLACE THE CARD IS TOLD TO TURN, and the fade is set in the same update
+   * rather than in an effect watching the turn. Reacting to `turn` in an effect
+   * is a cascading render and the React Compiler says so; it is also the wrong
+   * shape — the fade is not a consequence of the turn arriving, it is half of
+   * what "turn" means here.
    */
-  const hasDrift = panels.some((o) => o.celebrate) && !reduced && !gone;
-  const drifting = hasDrift && playing;
+  const advance = React.useCallback((delta: number) => {
+    if (delta <= 0) return;
+    setTurn((t) => t + delta);
+    setTurning(true);
+  }, []);
+
+  /* Only ever SCHEDULES, so nothing is set synchronously during the effect. */
+  React.useEffect(() => {
+    if (!turning) return;
+    const t = window.setTimeout(() => setTurning(false), FLIP_MS);
+    return () => window.clearTimeout(t);
+  }, [turning]);
 
   React.useEffect(() => {
     if (!running) return;
-    const t = window.setInterval(() => setI((n) => (n + 1) % panels.length), DWELL_MS);
+    const t = window.setInterval(() => advance(1), DWELL_MS);
     return () => window.clearInterval(t);
-  }, [running, panels.length]);
+  }, [running, advance]);
 
   /*
    * The observance has now been seen. Flipping this on the FIRST commit rather
@@ -261,8 +305,18 @@ export function OrganisationAnnouncementBand({
   }, [firstShow]);
 
   function go(next: number) {
-    const n = (next + panels.length) % panels.length;
-    setI(n);
+    const len = panels.length;
+    const n = ((next % len) + len) % len;
+    /*
+     * Advance to the panel by the FORWARD distance, so a press turns the card
+     * the same way the timer does. Pressing the dot that is already showing
+     * costs zero turns and the card does not move — it only stops the rotation.
+     *
+     * With two announcements the arrow keys' "previous" and "next" are the same
+     * panel, so nothing is lost by never turning backwards. A third would want
+     * a real direction, and this is the line that would have to learn it.
+     */
+    advance((((n - (turn % len)) % len) + len) % len);
     /* Pressing a dot stops the rotation for good: a reader who chose a panel has
        said which one they want. */
     setPlaying(false);
@@ -333,6 +387,9 @@ export function OrganisationAnnouncementBand({
             <div
               className="orgab__stage"
               data-accent={current.accent}
+              style={
+                { "--orgab-turn": turn, "--orgab-flip": `${FLIP_MS}ms` } as React.CSSProperties
+              }
               {...(rotates
                 ? {
                     "aria-roledescription": "slide",
@@ -341,6 +398,15 @@ export function OrganisationAnnouncementBand({
                   }
                 : {})}
             >
+              {/*
+                * THE FLIPPER IS THE CARD. Both faces sit in one grid cell of it,
+                * so it is still the height of its tallest panel and the band
+                * still cannot resize as it turns; what changed is that the card
+                * MATERIAL moved onto the faces, because a card that flips has to
+                * have a front and a back rather than a background behind two
+                * cross-fading panels.
+                */}
+              <div className="orgab__flipper">
               {panels.map((o, n) => (
                 /*
                  * BOTH PANELS SHARE ONE GRID CELL and the inactive one keeps its
@@ -352,6 +418,9 @@ export function OrganisationAnnouncementBand({
                   key={o.id}
                   className="orgab__offer"
                   data-accent={o.accent}
+                  /* Its own half-turn: face 0 faces out at rest, face 1 is
+                     pre-rotated so it faces out when the flipper is at 180. */
+                  data-face={n % 2}
                   data-active={n === i || undefined}
                   {...(n === i ? {} : { inert: true })}
                 >
@@ -415,15 +484,14 @@ export function OrganisationAnnouncementBand({
                   ) : (
                     <span
                       className={`orgab__mark orgab__mark--glyph${o.celebrate ? " orgab__mark--celebrate" : ""}`}
+                      /* The tile is what the pop animation keys off, so the flag
+                         lives here rather than on a drawing inside it. */
+                      data-burst={o.celebrate && firstShow && n === i ? "" : undefined}
                       aria-hidden
                     >
-                      {o.celebrate ? (
-                        <ConfettiMark burst={firstShow && n === i} loop={drifting} />
-                      ) : (
-                        <Icon name={o.icon} size={40} />
-                      )}
+                      <Icon name={o.icon} size={40} />
                       {/*
-                       * SIX SPECKS, AND ONLY ON THE FIRST APPEARANCE.
+                       * EIGHT PIECES, AND ONLY ON THE FIRST APPEARANCE.
                        *
                        * The pop and the spray are what say "this is an
                        * anniversary" to a reader meeting the band for the first
@@ -437,8 +505,8 @@ export function OrganisationAnnouncementBand({
                        * thinking about.
                        */}
                       {o.celebrate && firstShow && n === i
-                        ? [0, 1, 2, 3, 4, 5].map((n2) => (
-                            <span key={n2} className="orgab__spark" data-n={n2} />
+                        ? SPARKS.map((shape, n2) => (
+                            <span key={n2} className="orgab__spark" data-n={n2} data-shape={shape} />
                           ))
                         : null}
                     </span>
@@ -502,6 +570,7 @@ export function OrganisationAnnouncementBand({
                   )}
                 </div>
               ))}
+              </div>
 
               {/*
                * PAGINATION ONLY WHERE THERE IS SOMETHING TO PAGE. With one
@@ -512,11 +581,12 @@ export function OrganisationAnnouncementBand({
                * where it does appear it sits on the card it pages and nowhere
                * near the band's own dismiss.
                */}
-              {rotates || drifting ? (
-                <div className="orgab__pager" data-running={running || undefined}>
-                  {/* Dots only where there is somewhere to go. On a band with one
-                      announcement the pause still appears, because the mark
-                      beside it never stops on its own. */}
+              {rotates ? (
+                <div
+                  className="orgab__pager"
+                  data-running={running || undefined}
+                  data-turning={turning || undefined}
+                >
                   {rotates ? (
                   <div
                     className="orgab__dots"
@@ -546,10 +616,9 @@ export function OrganisationAnnouncementBand({
                   ) : null}
 
                   {/* WCAG 2.2 §2.2.2: anything auto-updating past five seconds
-                      needs a mechanism to stop it. Two things here are over that
-                      line — the 6s dwell and the confetti's endless drift — so
-                      this one control is what makes the band lawful, and it stops
-                      the rotation, the dwell indicator and the drift together.
+                      needs a mechanism to stop it. A 6s dwell is over that line,
+                      so this control is what makes the band lawful — and it stops
+                      the dwell indicator with it.
                       Not rendered under `prefers-reduced-motion`, where nothing
                       moves in the first place.
 
