@@ -139,7 +139,45 @@ export function OrganisationAnnouncementBand({
   const [hovered, setHovered] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
   const [zoom, setZoom] = React.useState(false);
+  /*
+   * WHERE THE READER STOPPED IT.
+   *
+   * Pressing the transport control already held the bar, because a PAUSED CSS
+   * animation keeps its current frame. Pressing a DOT did not: the panel
+   * changes, so the fill belongs to a different dot and starts from nothing —
+   * and since the same press also stops the rotation for good, that nothing sat
+   * there permanently. An empty groove beside a play triangle reads as broken
+   * rather than as held.
+   *
+   * So the percentage on screen at the moment of the press is captured and the
+   * bar is pinned to it. `null` means nothing is pinned and the animation owns
+   * the bar, which is every other moment.
+   */
+  const [held, setHeld] = React.useState<number | null>(null);
   const dotsRef = React.useRef<HTMLDivElement>(null);
+
+  /*
+   * Read straight off the rendered pseudo-element, because the animation is the
+   * only thing that knows how far it has got — there is no React state tracking
+   * the fill, deliberately, since a 60-per-second counter in state would render
+   * the whole band every frame.
+   *
+   * Percentages only. Under reduced motion the clip is the `inset(0px round …)`
+   * shorthand, whose second token is `round` rather than a length, so this
+   * returns null there and nothing is pinned — which is correct, as that bar is
+   * already solid and there is no rotation to stop.
+   */
+  function fillOnScreen(): number | null {
+    const dot = dotsRef.current?.querySelector<HTMLElement>('.orgab__dot[aria-selected="true"]');
+    if (!dot) return null;
+    const clip = window.getComputedStyle(dot, "::after").clipPath;
+    const inset = /inset\(([^)]*)\)/.exec(clip)?.[1];
+    if (!inset) return null;
+    const right = inset.trim().split(/\s+/)[1];
+    if (!right || !right.endsWith("%")) return null;
+    const pct = 100 - parseFloat(right);
+    return Number.isFinite(pct) ? Math.min(100, Math.max(0, pct)) : null;
+  }
 
   /*
    * THE POP AND THE SPRAY HAPPEN ONCE.
@@ -363,6 +401,9 @@ export function OrganisationAnnouncementBand({
      * panel, so nothing is lost by never turning backwards. A third would want
      * a real direction, and this is the line that would have to learn it.
      */
+    /* Read the bar BEFORE `advance` moves the selection, or this reads the
+       incoming dot's empty fill instead of the one the reader just stopped. */
+    setHeld(fillOnScreen());
     advance((((n - (turn % len)) % len) + len) % len);
     /* Pressing a dot stops the rotation for good: a reader who chose a panel has
        said which one they want. */
@@ -660,6 +701,12 @@ export function OrganisationAnnouncementBand({
                   className="orgab__pager"
                   data-running={running || undefined}
                   data-turning={turning || undefined}
+                  data-held={held != null ? "" : undefined}
+                  style={
+                    held != null
+                      ? ({ "--orgab-held": `${held}%` } as React.CSSProperties)
+                      : undefined
+                  }
                 >
                   {rotates ? (
                   <div
@@ -714,7 +761,14 @@ export function OrganisationAnnouncementBand({
                       type="button"
                       className="orgab__play"
                       aria-pressed={!playing}
-                      onClick={() => setPlaying((p) => !p)}
+                      onClick={() => {
+                        const next = !playing;
+                        setPlaying(next);
+                        /* Starting again hands the bar back to the animation;
+                           pausing leaves whatever is pinned alone, so the
+                           transport control's own pause still holds its frame. */
+                        if (next) setHeld(null);
+                      }}
                     >
                       <Icon name={playing ? "pause" : "play_arrow"} size={16} fill weight={400} aria-hidden />
                       <span className="ds-sr-only">

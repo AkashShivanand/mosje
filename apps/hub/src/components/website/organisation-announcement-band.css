@@ -956,6 +956,32 @@
     animation-play-state: running;
   }
 
+  /*
+   * PINNED WHERE THE READER STOPPED IT.
+   *
+   * Pressing a dot changes the panel, so the fill moves to a different dot and
+   * the animation would start it from nothing — and the same press stops the
+   * rotation for good, so that nothing stayed on screen. The reader had just
+   * been watching a bar four tenths of the way across; what they got back was
+   * an empty groove beside a play triangle, which reads as a control that has
+   * broken rather than one that is holding.
+   *
+   * `--orgab-held` is the percentage that was on screen at the moment of the
+   * press. The animation is taken off the element entirely rather than paused,
+   * because a paused animation holds ITS OWN frame — which on a freshly
+   * selected dot is zero, the very thing being fixed.
+   *
+   * The transport control's pause is untouched and still works the old way: it
+   * changes no panel, so its animation is holding the right frame already.
+   */
+  .orgab__pager[data-held] .orgab__dot[aria-selected="true"]::after {
+    animation: none;
+    clip-path: inset(
+      0 calc(100% - var(--orgab-held, 0%)) 0 0 round var(--sa-shape-full) 0 0
+        var(--sa-shape-full)
+    );
+  }
+
   @keyframes orgab-dwell {
     from { clip-path: inset(0 100% 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full)); }
     to   { clip-path: inset(0 0 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full)); }
