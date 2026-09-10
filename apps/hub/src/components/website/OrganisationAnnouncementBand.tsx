@@ -360,6 +360,29 @@ export function OrganisationAnnouncementBand({
   const running =
     armed && rotates && playing && !hovered && !focused && !reduced && !gone && !zoom;
 
+  /*
+   * SWITCHED ON, BUT HELD — and the difference is the whole point.
+   *
+   * `playing` is a SETTING the reader controls with the transport button.
+   * Hover, focus and the open dialog are TEMPORARY holds on top of it. Those
+   * two were indistinguishable on screen: resting the pointer on the card
+   * stopped the rotation and froze the bar mid-fill while the button went on
+   * showing the pause glyph, `aria-pressed="false"` and "Pause the
+   * announcements" — every signal insisting it was playing.
+   *
+   * So a held carousel and a stalled one looked identical, which is what made
+   * a deliberate courtesy read as a broken control. It is also a 4.1.2 failure:
+   * a screen reader was told the thing was playing while it was stopped.
+   *
+   * The button is left alone, because its meaning has not changed — auto
+   * rotation is still switched on, and pressing it still switches it off. The
+   * HOLD gets its own quiet signal instead, on the indicator that is actually
+   * holding, and `aria-live` already flips to "polite" so the panel is
+   * announced while the reader is parked on it.
+   */
+  const holding =
+    armed && rotates && playing && !reduced && !gone && (hovered || focused || zoom);
+
 
   /*
    * ONE PLACE THE CARD IS TOLD TO TURN, and the fade is set in the same update
@@ -786,6 +809,7 @@ export function OrganisationAnnouncementBand({
                   data-running={running || undefined}
                   data-turning={turning || undefined}
                   data-held={held != null ? "" : undefined}
+                  data-holding={holding ? "" : undefined}
                   data-resume={resumeFrom != null ? "" : undefined}
                   style={
                     {
