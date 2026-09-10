@@ -915,15 +915,36 @@
    * alternates left and right, and a wipe that runs the wrong way half the time
    * is worse than one that runs no way at all.
    */
+  /*
+   * IT RETRACTS INTO ITS OWN DOT — `100%`, never a stated 40.
+   *
+   * Stated at 40 it kept its full width while the dot underneath it shrank back
+   * to 24, so an absolutely-positioned 40px bar centred in a 24px box spilled
+   * out of both ends and straight into the neighbour, which was itself growing
+   * 24 -> 40 from the other side. Captured at 60ms intervals, the middle of the
+   * handoff was three overlapping shapes where there should be two dots: a
+   * fading bar, a stray circle, and the incoming track, all on top of one
+   * another. The turn read as a smear.
+   *
+   * At `100%` the fill is bounded by the dot that owns it, so it narrows as
+   * that dot narrows and the gesture is the fill retracting rather than
+   * escaping.
+   *
+   * AND IT LEAVES BEFORE THE WIDTHS FINISH. The fade ran for the whole flip
+   * (520ms) against a width transition of 250ms, so a ghost of the old fill was
+   * still on screen after the new track had fully formed. The exit duration
+   * (150ms) clears it first, which is the order the eye expects: the old thing
+   * goes, then the new thing arrives.
+   */
   .orgab__dot[data-leaving]::after {
     content: "";
     position: absolute;
-    inline-size: var(--sa-padding-40);
+    inline-size: 100%;
     block-size: var(--sa-padding-6);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-text-neutral-inverse);
     clip-path: inset(0 0 0 0 round var(--sa-shape-full));
-    animation: orgab-drain var(--orgab-flip, 520ms) var(--sa-motion-exit-easing) forwards;
+    animation: orgab-drain var(--sa-motion-exit-duration) var(--sa-motion-exit-easing) forwards;
   }
 
   @keyframes orgab-drain {
