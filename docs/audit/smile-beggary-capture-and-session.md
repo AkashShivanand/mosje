@@ -85,3 +85,43 @@ spends a fresh login on another reload.
 **Residual cost:** roughly a third of routes still lose the session once and are recovered by
 re-login, which is why a full four-role run takes appreciably longer here than on other portals.
 That cost disappears when the refresh defect is fixed.
+
+---
+
+## 4. What the run produced
+
+**Capture (10 September 2026, dev, four roles):** 51 authenticated screens — 23 super-admin,
+23 central-authority, 4 US/SO, 4 NISD. Every one verified as a real signed-in screen, at its full
+scrolled height, with a matching element extraction.
+
+**Coverage against the design.** The Figma page `Smile Beggary (Synced)` holds 75 enumerated
+frames. 19 pair with a captured route; 56 are **design-only** and 33 build screens have **no design
+frame**. That is declared coverage debt, not a missed screen — the design draws detail views, add
+and edit forms, eight MIS reports and seventeen Master Settings panels that the build's sidebar
+does not expose, and the build has create forms and screens (Hotspot Approvals, three Fund
+Monitoring create routes) that the design has never drawn.
+
+**Gates.** Coverage 0 unmapped · mapping 0 mismapped · pin assertions 0 failures.
+
+**Design-system adoption: 55.0%** of the 9,343 elements that are ours. 2,099 further elements were
+excluded as off-canvas third-party chrome (the UX4G accessibility panel) — counting them would have
+made the figure partly about somebody else's stylesheet, and reported 48.2%.
+
+**Findings: 31 drafted** — 1 Blocker, 8 Major, 18 Minor, 4 Nit. Sixteen are Global (they apply to
+every screen carrying that element) and fifteen are screen-specific.
+
+## 5. Two things measured that are worth stating on their own
+
+**The Beneficiary List takes 12 to 25 seconds to show its first row.** Timed on a fast wired
+connection at t=5s, 12s, 25s and 40s: no column headers, no rows and no KPI figures until somewhere
+between 12 and 25 seconds, then the full list. The API returns 200. Shelter Occupants behaves the
+same way. This was nearly written up as "the list never loads" — timing it changed the finding.
+
+**The sidebar is not Noto Sans.** 2,128 elements across all 51 captures compute to `-apple-system`,
+at 15px, which is not on the published type scale. On the Users screen every one of them is a
+navigation item. The estate mandates Noto Sans on all government properties.
+
+## 6. Route note
+
+The sidebar links to `/survey-locations`; the application serves `/surveys`. Invisible to a reader,
+but it is why the screen could not be captured until the crawler was taught to accept a redirect.

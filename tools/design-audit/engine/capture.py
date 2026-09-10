@@ -467,7 +467,18 @@ WAIT_FOR_DATA_JS = r"""() => {
   return { busy, skel };
 }"""
 
-def wait_for_data(pg, tries=8, pause=900):
+# Every page in a real app has a handful of small filled boxes with no text — a divider, a
+# progress track, an avatar ring. Measured across SMILE-Beggary's 23 admin screens that floor is
+# a steady 15, while a page genuinely mid-load reads 105-127. Report against the floor, not
+# against zero, or every screen in the estate is flagged as "still loading".
+SKELETON_FLOOR = 20
+
+def wait_for_data(pg, tries=16, pause=2000):
+    # Budget: up to ~32s, but ONLY for a page that is actually showing skeletons — a page below
+    # SKELETON_FLOOR returns on the first reading and costs nothing. The budget is set by the
+    # slowest real page measured: SMILE-Beggary's Beneficiary List renders its first table row
+    # between 12s and 25s after arrival. A 7s budget filed that screen as an empty grey page and
+    # would have shipped "the list never loads" as a finding, which is not what it does.
     """Wait until a page stops rendering skeleton placeholders.
 
     Returns (skeletons_remaining, waited_ms). Never blocks forever: a page whose EMPTY state
@@ -476,17 +487,29 @@ def wait_for_data(pg, tries=8, pause=900):
     """
     waited = 0
     last = None
+    agree = 0
     for _ in range(tries):
         try:
             st = pg.evaluate(WAIT_FOR_DATA_JS)
         except Exception:
             return (0, waited)
         n = (st or {}).get("skel", 0) + (st or {}).get("busy", 0) * 5
-        if n <= 2:
-            return (n, waited)
-        if last is not None and n == last:
-            # stopped changing: this is the page's resting state, not a load in progress
-            return (n, waited)
+        if n <= SKELETON_FLOOR:
+            return (0, waited)
+        # Require TWO agreeing readings before calling it a resting state, for the same reason
+        # settle_height does: a list that renders in two passes plateaus briefly mid-load, and
+        # accepting the first quiet reading files a half-drawn page as finished.
+        # A plateau only means "resting state" when the count is NEAR the floor. A page that is
+        # genuinely mid-load sits at a constant high count for its whole wait — SMILE-Beggary's
+        # Beneficiary List holds a steady 105 for 12-25s — so treating any plateau as finished
+        # returned after 2s and filed the loading state as the screen. Above 3x the floor, keep
+        # waiting until the count actually drops or the budget is spent.
+        if last is not None and n == last and n < SKELETON_FLOOR * 3:
+            agree += 1
+            if agree >= 1:
+                return (n, waited)
+        else:
+            agree = 0
         last = n
         pg.wait_for_timeout(pause); waited += pause
     return (last or 0, waited)
@@ -536,6 +559,10 @@ def spa_navigate(pg, base, path, timeout=25000):
     # exists to avoid). Always pick a VISIBLE anchor.
     sel = f'a[href="{path}"]'
     try:
+        start = pg.evaluate("()=>location.pathname")
+    except Exception:
+        start = None
+    try:
         els = pg.query_selector_all(sel)
         el = next((e for e in els if e.is_visible()), None) if els else None
         if el is None:
@@ -552,13 +579,21 @@ def spa_navigate(pg, base, path, timeout=25000):
     except Exception:
         return False
     # The URL updates synchronously on a history push; give the view a moment to swap.
+    #
+    # Accept a REDIRECT. A nav href and the route the app actually serves need not agree:
+    # SMILE-Beggary's sidebar links to /survey-locations and the app lands on /surveys. Insisting
+    # on an exact pathname match reported "no in-app link", fell back to a reload, and lost the
+    # session — so a real, reachable, correctly-rendering screen went uncaptured twice.
     for _ in range(40):
         pg.wait_for_timeout(150)
         try:
-            if pg.evaluate("()=>location.pathname") == path:
-                return True
+            here = pg.evaluate("()=>location.pathname")
         except Exception:
             return False
+        if here == path:
+            return True
+        if here != start and here and not here.rstrip("/").endswith("/login"):
+            return here          # landed somewhere else on purpose — a redirect, not a failure
     return False
 
 def navigate(pg, base, path, cfg, auth, role, waitms=0):
@@ -609,7 +644,14 @@ def navigate(pg, base, path, cfg, auth, role, waitms=0):
                 return "failed"
         except Exception:
             return "failed"
-        pg.wait_for_timeout(1200)
+        # The shell's nav is rendered asynchronously after a login. Looking for the anchor
+        # immediately reports "no in-app link" for a route whose link is a second away — which
+        # cost three real screens before this wait existed.
+        try:
+            pg.wait_for_selector("nav a[href], aside a[href], [class*=sidebar] a[href]", timeout=10000)
+        except Exception:
+            pass
+        pg.wait_for_timeout(800)
         if not spa_navigate(pg, base, path):
             # In SPA mode a reload is what killed the session in the first place. Retrying it
             # here just spends a second login to reach the same login page — which is exactly
@@ -787,7 +829,7 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
             # A page still drawing skeleton placeholders after wait_for_data gave up is showing
             # its LOADING state under the populated screen's name. Say so on the line and record
             # it on the row, so nobody audits a grey bar against a design frame full of data.
-            if skel_left > 2:
+            if skel_left > SKELETON_FLOOR:
                 warn += f"  <-- STILL LOADING ({skel_left} skeleton placeholders after {skel_waited}ms)"
             captured.append({"skeletons": skel_left,
                              "slug": slug, "role": role["name"], "route": path, "url": base + path,

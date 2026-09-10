@@ -187,11 +187,20 @@ def load_baseline(cfg, captured, paths):
 # ---------- 3. conformance ----------
 def conformance(cfg, captured, allow, mode, paths):
     dev = collections.defaultdict(lambda: {"count": 0, "screens": set(), "sample": None, "loc": None})
-    total = conf = 0
+    total = conf = excluded = 0
     for c in captured:
         fp = os.path.join(paths["captures_live"], f"{c['slug']}.json")
         if not os.path.exists(fp): continue
         for r in json.load(open(fp)).get("rows", []):
+            # Skip OFF-CANVAS elements. A hidden third-party panel is extracted like anything
+            # else — the UX4G accessibility widget sits at x~1690 with its own stylesheet — and on
+            # SMILE-Beggary that was 2,099 of 11,442 measured elements, 18%, none of them ours and
+            # none of them fixable by us. Counting them makes DS-adoption a number about somebody
+            # else's CSS. The exclusion is reported so it is never silent.
+            _x, _w = r.get("x"), r.get("w")
+            if isinstance(_x, (int, float)) and isinstance(_w, (int, float)) and (_x < 0 or _x + _w > 1441):
+                excluded += 1
+                continue
             total += 1; ok = True
             checks = [("color", tohex(r.get("color")), allow["colors"]),
                       ("radius", r.get("radius"), allow["radii"]),
@@ -204,15 +213,31 @@ def conformance(cfg, captured, allow, mode, paths):
                     ok = False
                     d = dev[(prop, str(val))]
                     d["count"] += 1; d["screens"].add(c["slug"])
-                    if d["sample"] is None:
+                    # The FIRST occurrence is not necessarily a PINNABLE one. A third-party
+                    # off-canvas widget (the UX4G accessibility panel sits at x~1690, outside the
+                    # 1440 viewport) is extracted like anything else, and picking it as the sample
+                    # produced a pin at x=120% that failed the geometry assertion — a real gate
+                    # failure caused by a bad sample, not by a bad capture. Take the first sample
+                    # whose box is inside the captured viewport.
+                    _x, _y, _w = r.get("x"), r.get("y"), r.get("w")
+                    _pinnable = (isinstance(_x, (int, float)) and isinstance(_w, (int, float))
+                                 and _x >= 0 and _x + _w <= 1441)
+                    if d["loc"] is None and _pinnable:
                         d["sample"] = r.get("text", "")[:30]
-                        d["loc"] = (c["slug"], r.get("x"), r.get("y"), r.get("w"), r.get("h"), c.get("pageH", 1000))
+                        d["loc"] = (c["slug"], _x, _y, _w, r.get("h"), c.get("pageH", 1000))
+                    elif d["sample"] is None:
+                        d["sample"] = r.get("text", "")[:30]
             if ok: conf += 1
     ds_adoption = round(100 * conf / max(1, total), 1)
     ranked = sorted(dev.items(), key=lambda kv: -kv[1]["count"])
     devlist = [{"prop": k[0], "value": k[1], "count": v["count"], "screens": len(v["screens"]),
                 "sample": v["sample"], "loc": v["loc"]} for k, v in ranked]
+    if excluded:
+        print("  excluded %d off-canvas element(s) from conformance (hidden/third-party chrome "
+              "outside the 1440 viewport); DS-adoption is over the %d that are ours"
+              % (excluded, total), flush=True)
     return {"mode": mode, "ds_adoption_pct": ds_adoption, "elements_checked": total,
+            "elements_excluded_offcanvas": excluded,
             "elements_conformant": conf, "deviations": devlist}
 
 # ---------- 4. assemble audit-master.json ----------
@@ -223,7 +248,16 @@ PROP_TOKEN = {"color": "colour token", "radius": "radius token",
 
 def assemble(cfg, ledger, conf, paths, top_n=12):
     findings = []
-    for i, d in enumerate(conf["deviations"][:top_n], 1):
+    # A deviation whose every occurrence sits off-canvas (a hidden third-party panel) has no
+    # pinnable sample. Report it — the drift is real — but do not try to place a marker for it,
+    # and do not let it crash the assembly, which it did until this guard existed.
+    devs = [d for d in conf["deviations"] if d.get("loc")][:top_n]
+    unpinnable = [d for d in conf["deviations"][:top_n] if not d.get("loc")]
+    if unpinnable:
+        _names = ", ".join("%s=%s" % (d["prop"], d["value"]) for d in unpinnable)
+        print("  ! %d deviation(s) have no on-canvas sample and are reported without a pin: %s"
+              % (len(unpinnable), _names), flush=True)
+    for i, d in enumerate(devs, 1):
         loc = d["loc"]; slug = loc[0]
         H = loc[5] or 1000
         xp = round(100 * (loc[1] + loc[3] / 2) / 1440) if loc[1] is not None else 50

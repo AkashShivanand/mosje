@@ -108,15 +108,17 @@
     "node_id": "51757:223050",
     "name": "super-admin/Fund Monitoring - NISD Release Tracker",
     "heading": "Fund Monitoring",
-    "route": "/fund-monitoring/nisd-releases/create",
-    "kind": "screen"
+    "kind": "screen",
+    "_designOnly": true,
+    "_why": "A tab state of the Fund Monitoring screen, not a route. The design draws Sanction Order / NISD Release / Onward Release as three tabs on one screen; the build splits them into separate sidebar entries and separate create routes."
   },
   {
     "node_id": "51757:223831",
     "name": "super-admin/Fund Monitoring - Onward Release Tracker",
     "heading": "Fund Monitoring",
-    "route": "/fund-monitoring/nodal-officer-onward-releases/create",
-    "kind": "screen"
+    "kind": "screen",
+    "_designOnly": true,
+    "_why": "A tab state of the Fund Monitoring screen, not a route. The design draws Sanction Order / NISD Release / Onward Release as three tabs on one screen; the build splits them into separate sidebar entries and separate create routes."
   },
   {
     "node_id": "51830:237991",
@@ -145,15 +147,6 @@
     "heading": "Master Settings",
     "route": "/master-setting",
     "kind": "screen"
-  },
-  {
-    "node_id": "51751:165371",
-    "name": "super-admin/Fund Monitoring - Sanction Order (create)",
-    "heading": "Fund Monitoring",
-    "route": "/fund-monitoring/sanction-orders/create",
-    "kind": "screen",
-    "_refFrame": true,
-    "_refWhy": "No dedicated create-form frame exists; audited against the Sanction Order Tracking frame as the style reference."
   },
   {
     "node_id": "8664:50160",
