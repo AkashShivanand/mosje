@@ -12,7 +12,7 @@ from openpyxl.utils import get_column_letter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
-XLSX = os.path.join(REPO, "docs", "qc", "MoSJE-Portal-QC-Tracker.xlsx")
+XLSX = os.environ.get("TRACKER_XLSX") or os.path.join(REPO, "docs", "qc", "MoSJE-Portal-QC-Tracker.xlsx")
 SHEET, COV = "SMILE Beggary", "Coverage – SMILE Beggary"
 HEAD = ["ID", "Screen", "Category", "Severity", "Issue (Design → Built)", "Recommended Fix (Dev)",
         "Figma URL", "Live URL", "Status", "Assignee", "Date", "Notes", "Scope"]
@@ -38,7 +38,8 @@ def main():
     for name in (SHEET, COV):
         if name in wb.sheetnames:
             del wb[name]
-    ws = wb.create_sheet(SHEET, wb.sheetnames.index("NHAPOA"))
+    at = wb.sheetnames.index("NHAPOA") if "NHAPOA" in wb.sheetnames else len(wb.sheetnames)
+    ws = wb.create_sheet(SHEET, at)
     style_header(ws, HEAD, WIDTHS)
     rows = 0
     for s in am["screens"]:
