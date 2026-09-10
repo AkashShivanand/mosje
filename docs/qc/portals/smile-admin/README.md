@@ -32,34 +32,31 @@ on 15 of 20 routes — live in `docs/audit/smile-beggary-capture-and-session.md`
 
 ## Publishing to Google Drive
 
-The shared tracker lives in Drive as a **native Google Sheet**
-([MoSJE-Portal-QC-Tracker](https://docs.google.com/spreadsheets/d/11qIPlrq7T5osSqtd7NoxuVxIJ1bnj6Dng-b4-L9U6qQ/edit)),
-in *My Drive → MoSJE → Design QC*, alongside one PDF per portal. It carries four tabs — Read Me,
-Rollup, `eUtthan Admin` (42 findings) and `NHAA` (151) — and is a different lineage from the
-`.xlsx` in this repo, which also holds TG and the Coverage tabs.
+*My Drive → MoSJE → Design QC* holds one PDF per portal and the tracker. The tracker there is
+**`MoSJE-Portal-QC-Tracker.xlsx`** — the same shape as the repo copy, minus the Coverage sheets.
 
-**The Drive connector available to this session can read Drive files and create new ones. It
-cannot write cells or add tabs to a native Google Sheet.** So a portal is published in two moves:
+Two standing rules (reviewer, 2026-09-10):
 
-1. **The PDF** is copied straight into the Drive folder (it is a real filesystem mount), named to
-   match the others: `SMILE-Beggary-Design-QC-Report.pdf`.
-2. **The findings tab** is built into `SMILE-Beggary-QC-sheet-to-import.xlsx`
-   (`python3 build_drive_import.py`) and dropped in the same folder. In the Google Sheet:
-   **File → Import → Upload → select it → "Insert new sheet(s)" → Import data.** That adds
-   `SMILE Beggary` and cannot alter the tabs already there.
-   **Coverage stays local** (reviewer, 2026-09-10): the Drive tracker carries the defect list
-   people work from; the per-screen coverage ledger lives only in the repo copy.
-3. **Rollup** takes one new row, pasted under the existing two — Import cannot merge into an
-   existing tab:
+- **Coverage stays local.** The Drive tracker carries the defect list people work from; the
+  per-screen coverage ledgers live only in `docs/qc/MoSJE-Portal-QC-Tracker.xlsx`.
+- **A push never replaces what is in Drive.** Status, Assignee, Date and Notes are the devs'
+  columns — a push keeps whatever Drive already has for an existing finding id and brings across
+  only the audit columns. New ids arrive as Open.
 
-   | Portal | Total | Blocker | Major | Minor | Nit | Open | Fixed | Verified |
-   |---|---|---|---|---|---|---|---|---|
-   | SMILE Beggary | 60 | 0 | 19 | 35 | 6 | 60 | 0 | 0 |
+```bash
+# after any change to the repo tracker
+cd tools/design-audit/projects/smile-admin
+python3 push_tracker_to_drive.py            # dry run: says what it would add and preserve
+python3 push_tracker_to_drive.py --apply    # writes; keeps a backup OUTSIDE the Drive folder
+```
 
-   The live Rollup holds literal numbers for the other two portals, so these are literals too. If
-   you would rather it aggregated, the formula is
-   `=COUNTIF('SMILE Beggary'!$D:$D,"Major")` and so on, and `=COUNTA('SMILE Beggary'!$A$2:$A$999)`
-   for the total.
+The PDF is copied straight in (the folder is a filesystem mount), named to match the others:
+`SMILE-Beggary-Design-QC-Report.pdf`.
 
-The import file's columns match the live `NHAA` tab exactly, including the trailing **Scope**
-column, so filters and the Rollup formulas behave the same way.
+**The `.gsheet` in that folder is a separate, older file** — four tabs, no TG, no SMILE. Nothing
+in this session writes to it: the Drive connector can read Drive files and create new ones, but
+cannot write cells or add tabs to a native Google Sheet. Treat the `.xlsx` as the Drive tracker.
+
+**If someone has the .xlsx open in the Google Sheets editor, close it before pushing** — a later
+save from that browser tab will overwrite whatever the push wrote. That is how the NHAPOA tab
+came to be renamed to NHAA mid-session on 2026-09-10.
