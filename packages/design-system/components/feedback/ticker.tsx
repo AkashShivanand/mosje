@@ -88,6 +88,21 @@ export interface TickerProps extends Omit<React.HTMLAttributes<HTMLElement>, "ti
    */
   orientation?: TickerOrientation;
   /**
+   * The label plinth runs off the START edge of the viewport. `horizontal` only.
+   *
+   * Pass it ONLY when the bar itself spans the viewport, which is how the Figma
+   * frame draws it — the page margin beside the plinth is bar-coloured there,
+   * and a plinth that stops short of the edge reads as a floating chip rather
+   * than a masthead band.
+   *
+   * Leave it off inside a content column. A bar inset to the column with a
+   * plinth bled to the viewport is aligned on one edge and not the other, and
+   * that is what it looks like.
+   *
+   * @default false
+   */
+  bleed?: boolean;
+  /**
    * HOW TALL THE PANEL IS. `vertical` only.
    *
    * `auto` (default) — the panel stands at its own height: the header plus the
@@ -213,6 +228,7 @@ export function Ticker({
   icon,
   action,
   orientation = "horizontal",
+  bleed = false,
   height = "auto",
   rows = 4,
   interval = 5000,
@@ -523,7 +539,7 @@ export function Ticker({
   return (
     <section
       {...rest}
-      className={cn("sa-ticker", className)}
+      className={cn("sa-ticker", bleed && "sa-ticker--bleed", className)}
       data-orientation="horizontal"
       data-step={step}
       data-animate={canMove && !reducedMotion ? "" : undefined}

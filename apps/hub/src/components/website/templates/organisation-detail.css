@@ -1122,9 +1122,23 @@
    * band by -64px, so the space above has to clear that overlap rather than the
    * strip's own edge.
    */
+  /*
+   * THE NOTICE BOARD STANDS ON THE PAGE'S FIELD, NOT IN A WHITE TRAY OF ITS OWN.
+   *
+   * It was `bg-neutral-base` — white — which put a 130px white slab between the
+   * grey `.orgd__facts::before` paints above it and the grey the first tinted
+   * band paints below. Three surfaces in 300px, the middle one belonging to
+   * nothing, and the bar floating in it. Reviewed as "feels forcefully placed",
+   * and a strip that is its own colour IS placed rather than seated.
+   *
+   * `neutral-subtler` is the same grey as its neighbours, so the field now runs
+   * unbroken from under the fact card, past the bar, into the content zone —
+   * one ground with two objects lifted off it, which is what the fact card was
+   * always doing on its own.
+   */
   .orgd__updates {
     padding-block: var(--sa-stack-24) var(--sa-stack-16);
-    background-color: var(--sa-bg-neutral-base);
+    background-color: var(--sa-bg-neutral-subtler);
   }
 
   /* ── Messages ──────────────────────────────────────────────────────────── */

@@ -1670,6 +1670,10 @@ export function OrganisationDetail({
             <FactStrip
               overlap
               columns={balancedColumns(heroStrip.items.length)}
+              /* Inline once the set is big enough to read as a grid of tiles.
+                 Five is the most that fit one row, so six is where a strip
+                 becomes a grid — see `FactStrip`'s own note on the layout. */
+              layout={heroStrip.items.length > 5 ? "inline" : "stack"}
               ariaLabel={heroStrip.ariaLabel}
               items={heroStrip.items}
             />

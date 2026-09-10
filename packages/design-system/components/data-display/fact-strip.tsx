@@ -33,6 +33,21 @@ export interface FactStripProps extends React.HTMLAttributes<HTMLDivElement> {
    */
   columns?: number;
   /**
+   * How one cell is arranged. `"stack"` (default) centres icon over value over
+   * label — the treatment the handoff draws for three or four standing facts
+   * under a hero.
+   *
+   * `"inline"` sets the icon beside the copy and aligns the cell to the start,
+   * so the eye travels along a row rather than around a tile. Use it once the
+   * strip carries enough items to read as a grid of tiles — eight centred tiles
+   * are eight things to look at, where eight left-aligned rows are two lines
+   * that scan. It is also 35% shorter, which matters when the card straddles a
+   * page header.
+   *
+   * @default "stack"
+   */
+  layout?: "stack" | "inline";
+  /**
    * Names the list for assistive technology, e.g. "Key facts about PM-AJAY".
    * Required, because "New Delhi, Headquarters, 3, Components" read as a bare
    * run of text tells a screen-reader user nothing about what they belong to.
@@ -73,6 +88,7 @@ export function FactStrip({
   items,
   overlap = false,
   columns,
+  layout = "stack",
   ariaLabel,
   className,
   style,
@@ -84,6 +100,7 @@ export function FactStrip({
         "ds-fact-strip",
         overlap && "ds-fact-strip--overlap",
         columns != null && "ds-fact-strip--columns",
+        layout === "inline" && "ds-fact-strip--inline",
         className,
       )}
       style={

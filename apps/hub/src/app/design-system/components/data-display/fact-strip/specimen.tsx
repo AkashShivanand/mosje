@@ -4,9 +4,9 @@ import { FactStrip } from "@mosje/design-system";
 import * as React from "react";
 
 /**
- * Both arrangements the estate ships, because `columns` is only visible in the
- * properties panel otherwise and the eight-counter shape is the one a reader is
- * most likely to meet — it is the card under the NMBA header.
+ * Both arrangements the estate ships, because `columns` and `layout` are only
+ * visible in the properties panel otherwise, and the eight-counter shape is the
+ * one a reader is most likely to meet — it is the card under the NMBA header.
  */
 export function Specimen(): React.JSX.Element {
   return (
@@ -22,6 +22,7 @@ export function Specimen(): React.JSX.Element {
       />
       <FactStrip
         columns={4}
+        layout="inline"
         ariaLabel="This campaign in numbers"
         items={[
           { icon: "groups", value: "345,703,321", label: "People reached" },

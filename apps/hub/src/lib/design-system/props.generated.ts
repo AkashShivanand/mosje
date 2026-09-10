@@ -5000,6 +5000,13 @@ export const GENERATED_PROPS = {
         "description": "Fix the strip to this many columns instead of fitting as many 200px cells as the width allows. Pass it when the item count has a shape the auto-fit cannot find. Eight counters want 4×2; at the full content width the auto-fit lays five in the first row and three in the second, which reads as a grid that ran out of content rather than as two rows of four. Below 1024px the strip falls back to two-up whatever is passed, because four 200px cells do not fit a tablet."
       },
       {
+        "name": "layout",
+        "type": "\"stack\" | \"inline\"",
+        "required": false,
+        "default": "\"stack\"",
+        "description": "How one cell is arranged. `\"stack\"` (default) centres icon over value over label — the treatment the handoff draws for three or four standing facts under a hero. `\"inline\"` sets the icon beside the copy and aligns the cell to the start, so the eye travels along a row rather than around a tile. Use it once the strip carries enough items to read as a grid of tiles — eight centred tiles are eight things to look at, where eight left-aligned rows are two lines that scan. It is also 35% shorter, which matters when the card straddles a page header."
+      },
+      {
         "name": "overlap",
         "type": "boolean",
         "required": false,
@@ -13586,6 +13593,13 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "true",
         "description": "Start moving on mount."
+      },
+      {
+        "name": "bleed",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The label plinth runs off the START edge of the viewport. `horizontal` only. Pass it ONLY when the bar itself spans the viewport, which is how the Figma frame draws it — the page margin beside the plinth is bar-coloured there, and a plinth that stops short of the edge reads as a floating chip rather than a masthead band. Leave it off inside a content column. A bar inset to the column with a plinth bled to the viewport is aligned on one edge and not the other, and that is what it looks like."
       },
       {
         "name": "height",

@@ -125,10 +125,11 @@
   }
 
   /* The darker block. It is a pseudo-element rather than a sibling rect so it
-     cannot drift out of step with the label it sits behind, and it bleeds LEFT
-     to the edge of the viewport — the container's own margin is bar-coloured
-     in the frame, and a plinth that stops at the content column reads as a
-     floating chip rather than a masthead band. */
+     cannot drift out of step with the label it sits behind. The negative start
+     inset cancels `.sa-ticker__container`'s own 24px of padding, so the plinth
+     is flush with the BAR's leading edge rather than floating 24px inside it —
+     which is what the frame draws and what makes the bar read as a navy block
+     against a blue field instead of a chip laid on one. */
   .sa-ticker__heading::before {
     content: "";
     position: absolute;
@@ -139,11 +140,32 @@
     box-shadow: var(--sa-elevation-card);
   }
 
-  /* On a viewport wider than the content column the margin is not 24px, it is
-     however much is left over — so the plinth is pushed out with a very large
-     negative start inset and clipped by the bar's own overflow. */
+  /*
+   * ── PAST THE BAR'S OWN EDGE ONLY WHERE THE BAR REACHES THE VIEWPORT ───────
+   *
+   * On a viewport wider than the content column the page margin is not 24px,
+   * it is however much is left over — so this pushed the plinth out with a very
+   * large negative inset and let the bar's overflow clip it, painting the whole
+   * left margin navy. The note read: "the container's own margin is
+   * bar-coloured in the frame, and a plinth that stops at the content column
+   * reads as a floating chip rather than a masthead band."
+   *
+   * True OF THE FRAME, which draws the bar edge to edge. Not true of a bar
+   * inside a content column — and the estate's one horizontal ticker, the
+   * organisation page's notice board, sits in `.sa-container`. At 1440 the bar
+   * ran 84 → 1356 while its plinth ran 0 → 266: bleeding off the left edge of
+   * the page and stopping short of the right, directly beneath a fact card that
+   * is symmetrically inset. Reviewed on 10 Sep as "not aligned properly and
+   * feels forcefully placed", which is what a bar aligned on one edge and not
+   * the other looks like. It only ever appeared at 1440 and above, which is why
+   * it survived — every narrower width drew it correctly.
+   *
+   * `bleed` keeps the frame's treatment available for a bar that genuinely
+   * spans the viewport. Opt-in, because getting it wrong is invisible until
+   * somebody holds a straight edge against the page.
+   */
   @media (min-width: 1440px) {
-    .sa-ticker__heading::before {
+    .sa-ticker--bleed .sa-ticker__heading::before {
       inset-inline-start: -100vw;
     }
   }
