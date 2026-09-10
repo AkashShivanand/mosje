@@ -466,26 +466,33 @@ SCREEN2 = [
   "read 'Type' and 'Name'."),
 
  ("S19", "Screen", "Shelter Occupants", "Major", "Components & States",
-  "The table carries twelve columns where the design specifies five",
-  "Five columns: Beneficiary Name, Beneficiary ID, Beneficiary Type, Facility Status, Actions.",
-  "Twelve: S.No., Beneficiary ID, Beneficiary Name, Gender, Age, Survey Location, Survey Date, "
-  "State, Swashraya (Shelter Home) Type, Beneficiary Type, Swashraya (Shelter Home) Name, Facility "
-  "Status. The designed Actions column is not among them, so there is no per-row action at all.",
-  "Decide the column set with the department and put it in both places. Whatever is agreed, the "
-  "Actions column the design specifies has to exist or be dropped from the design deliberately."),
+  "The designed Actions column is not built, and the design frame hides seven columns outside itself",
+  "Five columns render inside the 1440 frame — Beneficiary Name, Beneficiary ID, Beneficiary Type, "
+  "Facility Status, Actions — and seven more sit OUTSIDE it at x=1274 to x=2849 (a second Actions, "
+  "Gender, Age, Survey Location, State, Shelter Home Name, Shelter Home Type), along with a "
+  "five-figure KPI strip. Nothing outside the frame renders, so a developer opening this frame "
+  "sees five columns.",
+  "Twelve columns: S.No., Beneficiary ID, Beneficiary Name, Gender, Age, Survey Location, Survey "
+  "Date, State, Swashraya (Shelter Home) Type, Beneficiary Type, Swashraya (Shelter Home) Name, "
+  "Facility Status. Most of them match the design's hidden set. Actions is not among them, so "
+  "there is no per-row action at all.",
+  "Two jobs. Bring the seven stray columns and the KPI strip inside the frame so the design says "
+  "what it means, and build the Actions column or drop it deliberately. "
+  "(Corrected 2026-09-10: an earlier draft read the frame as specifying five columns. It "
+  "specifies twelve; seven of them are drawn where they cannot be seen.)"),
 
  ("S20", "Screen", "Master Settings", "Major", "Components & States",
-  "The build invents a tab rail and a four-figure strip the design does not draw",
-  "The screen is heading, sub-line, then the table. Each master (Geography, Agency, Operational, "
-  "Fund Management, Role & Permission, Survey Questionnaire) is drawn as its own frame, and no "
-  "frame shows how a reader moves between them.",
-  "A rail of nine tabs sits above the table, and above that a four-figure strip — Active Tab / "
-  "Geography Masters, Records / 36, Mode / Read-only, Your Access / Full access. Neither is in "
-  "any design frame.",
-  "The design owes this screen its navigation: nine masters with no drawn way to move between "
-  "them is a gap, and the build filled it on its own. Draw the tab rail. The four-figure strip is "
-  "a separate decision — 'Mode: Read-only' and 'Your Access: Full access' say two things about "
-  "permissions that appear to contradict each other."),
+  "The build adds a four-figure strip the design does not draw, and shows nine tabs where the design shows five",
+  "Heading, sub-line, then a rail of five tabs — Geography, Roles & Permission, Survey "
+  "Questionnaire, Agency, Operational — with an overflow control for the rest, then the table.",
+  "The same rail carries all nine tabs at once, and above it sits a four-figure strip: Active Tab "
+  "/ Geography Masters, Records / 36, Mode / Read-only, Your Access / Full access. The strip is "
+  "in no design frame.",
+  "Decide whether the strip stays; if it does, draw it. Either show five tabs and an overflow as "
+  "designed or widen the rail deliberately. 'Mode: Read-only' beside 'Your Access: Full access' "
+  "also needs settling — on the same screen they say opposite things. "
+  "(Corrected 2026-09-10: an earlier draft said the design had no tab rail. It has one; the "
+  "query that reported otherwise had read a partly-loaded Figma page.)"),
 
  ("S21", "Screen", "Master Settings", "Minor", "Components & States",
   "The Geography table gains a row-number column and an Actions column",
@@ -505,12 +512,14 @@ SCREEN2 = [
   "design if it is staying."),
 
  ("S23", "Screen", "Skill & Training", "Minor", "Components & States",
-  "The build carries five columns the design does not",
-  "Seven columns: Beneficiary ID, Beneficiary Name, Gender, Age, Duration of Skill and Training, "
-  "Skill and Training Type, Survey Location.",
-  "Twelve: the designed seven plus S.No., Shelter Name, State, District and Status.",
-  "Confirm the five extra columns and add them to the design frame, or drop them. Twelve columns "
-  "at 1440 is what pushes this table into horizontal scrolling."),
+  "Three build columns are in no design, and two more are drawn outside the frame",
+  "Seven columns render: Beneficiary ID, Beneficiary Name, Gender, Age, Duration of Skill and "
+  "Training, Skill and Training Type, Survey Location. Two more — Status and District — sit "
+  "outside the 1440 frame at x=1540 and x=1805, where they do not render.",
+  "Twelve: the designed seven, the two strays, plus S.No., Shelter Name and State, which are in "
+  "no design at all.",
+  "Bring Status and District inside the frame, and confirm S.No., Shelter Name and State. Twelve "
+  "columns at 1440 is what pushes this table into horizontal scrolling."),
 
  ("S24", "Screen", "Skill & Training", "Nit", "Layout & Spacing",
   "Two column headers sit ten pixels above the rest of the header row — in the DESIGN",
@@ -675,4 +684,15 @@ SCREEN3 = [
   "design draws them as plain navy.",
   "Same decision as the state list (S25): add the two cards to the design or drop them. Restore "
   "the table's card and its header band."),
+
+ ("S43", "Screen", "Shelter Occupants", "Major", "Layout & Spacing",
+  "Three design frames carry content outside their own canvas, where it cannot be seen",
+  "Shelter Occupants holds seven table columns and a five-figure KPI strip at x=1274–2849; Rehab "
+  "Data holds Status and District at x=1519 and x=1794; Skill & Training holds Status and District "
+  "at x=1540 and x=1805. The frames are 1440 wide, so none of it renders — it is invisible in the "
+  "exported frame, in Dev Mode, and in any screenshot taken from Figma.",
+  "The build shows most of those columns, which is how they were found: the build was reading a "
+  "specification the design frame does not display.",
+  "Move the stray content inside the frame, or delete it if it is superseded. Anything a "
+  "developer cannot see is not a specification. This is a design-file defect, not a build one."),
 ]

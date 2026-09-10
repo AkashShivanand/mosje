@@ -17,6 +17,7 @@ OUT = os.path.join(HERE, "..", "..", "..", "..", "docs", "qc", "portals", "smile
 
 secs = json.load(open(os.path.join(HERE, "sheet", "global_sections.json")))
 nodes = json.load(open(os.path.join(HERE, "global_nodes.json")))
+screen_nodes = json.load(open(os.path.join(HERE, "screen_nodes.json")))
 by_id = {s["id"]: s for s in secs}
 
 ALL = F.GLOBAL + F.SCREEN + F.LOGIN + F.DIFF + F.DIFF2 + F.SCREEN2 + F.SCREEN3
@@ -76,7 +77,13 @@ L.append("---\n")
 L.append("## Findings on one screen\n")
 screen_findings = screen_only
 for screen in dict.fromkeys(f[2] for f in screen_findings):
-    L.append(f"## {screen}\n")
+    node = screen_nodes.get(screen)
+    if node:
+        link = f"https://www.figma.com/design/{FILE}/Design-QC?node-id={node.replace(':', '-')}"
+        L.append(f"## {screen}\n")
+        L.append(f"[Board with markers ↗]({link})\n")
+    else:
+        L.append(f"## {screen}\n")
     for f in [x for x in screen_findings if x[2] == screen]:
         L.append(card(f))
 

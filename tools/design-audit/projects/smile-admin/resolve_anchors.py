@@ -59,6 +59,35 @@ ANCHORS = {
  "G17": dict(slug="SUPER-ADMIN-CONSENT",       text="Access Control", fs=12),
  "G18": dict(slug="SUPER-ADMIN-PERSONS",       text="Data:", fs=12),
  "G19": dict(slug="SUPER-ADMIN-SURVEYOR-MAPPED", tag="select", ymin=380, ymax=470),
+
+ # ---- the form, dialog and tab states (batch 5) ----
+ "S18": dict(slug="SUPER-ADMIN-SHELTER-HOMES-BENEFICIARIES", text="Swashraya (Shelter Home) Persons", tag="h1"),
+ "S19": dict(slug="SUPER-ADMIN-SHELTER-HOMES-BENEFICIARIES", text="Swashraya (Shelter Home) Type", tag="th"),
+ "S20": dict(slug="SUPER-ADMIN-MASTER-SETTING",  text="Active Tab"),
+ "S21": dict(slug="SUPER-ADMIN-MASTER-SETTING",  text="Actions", tag="th"),
+ "S22": dict(slug="SUPER-ADMIN-COMPREHENSIVE-REHAB-DATA", text="Captured On", tag="th"),
+ "S23": dict(slug="SUPER-ADMIN-COMPREHENSIVE-REHAB-SKILL-TRAINING", text="Shelter Name", tag="th"),
+ "S24": dict(slug="SUPER-ADMIN-COMPREHENSIVE-REHAB-SKILL-TRAINING", text="Duration of Skill and Training", tag="th"),
+ "S25": dict(slug="SUPER-ADMIN-CITY-PROFILING",  text="Fund Utilised", ymax=400),
+ "S26": dict(slug="SUPER-ADMIN-CITY-PROFILING",  text="Fund Disbursed", tag="th"),
+ "S27": dict(slug="SUPER-ADMIN-CITY-PROFILING",  text="Total Identified/Surveyed", tag="th"),
+ "S28": dict(slug="SUPER-ADMIN-CITY-PROFILING",  text="Number of Cities/Districts", tag="th"),
+ "S29": dict(slug="SUPER-ADMIN-PERFORMANCE-STATS", text="KPI 1", ymax=400),
+ "S30": dict(slug="SUPER-ADMIN-USERS-ADD-USER",  text="First Name", tag="label"),
+ "S31": dict(slug="SUPER-ADMIN-USERS-ADD-USER",  text="Select Role", tag="label"),
+ "S32": dict(slug="SUPER-ADMIN-USERS-ADD-USER",  text="Email ID", tag="label"),
+ "S33": dict(slug="SUPER-ADMIN-SHELTER-HOMES-ADD", text="Shelter Name", tag="label"),
+ "S34": dict(slug="SUPER-ADMIN-SHELTER-HOMES-ADD", text="Type", tag="label", ymin=560, ymax=650),
+ # the amber banner carries no text node in the extraction; measured 30px above the first label
+ "S35": dict(slug="SUPER-ADMIN-SHELTER-HOMES-ADD", text="Shelter Name", tag="label", dx=300, dy=-30, w=40, h=20),
+ "S36": dict(slug="SUPER-ADMIN-SHELTER-HOMES-ADD", text="Address", tag="label"),
+ "S37": dict(slug="SUPER-ADMIN-ROLES-NEW-ROLE",  text="Role Name", tag="label"),
+ "S38": dict(slug="SUPER-ADMIN-ROLES-NEW-ROLE",  text="Create New Role", tag="h2"),
+ "S39": dict(slug="SUPER-ADMIN-ROLES-NEW-ROLE",  text="After creating the role", tag="p"),
+ "S40": dict(slug="SUPER-ADMIN-ROLES",           text="Role Management", tag="h1"),
+ "S41": dict(slug="SUPER-ADMIN-ROLES",           text="Super Admin", ymin=440, ymax=500),
+ "S42": dict(slug="SUPER-ADMIN-CITY-PROFILING-L2-DISTRICTS", text="Fund Disbursed", ymax=400),
+ "S43": dict(slug="SUPER-ADMIN-SHELTER-HOMES-BENEFICIARIES", text="Gender", tag="th"),
 }
 
 def rows_for(slug):
@@ -104,8 +133,15 @@ def main():
         if not r:
             missing.append(f"{fid}: {spec} matched nothing on {slug}")
             continue
+        box = [r["x"], r["y"], r["w"], r["h"]]
+        # dx/dy: some things a finding is about have no text node of their own — an icon, a
+        # tinted banner, a close control. Anchor to a neighbour the extraction CAN see, then
+        # offset by a distance measured off the capture, and say so in the record.
+        dx, dy = spec.get("dx", 0), spec.get("dy", 0)
+        if dx or dy:
+            box = [box[0] + dx, box[1] + dy, spec.get("w", box[2]), spec.get("h", box[3])]
         out[fid] = {"slug": slug, "anchor": spec.get("text") or spec.get("tag"), "pageH": pageH,
-                    "box": [r["x"], r["y"], r["w"], r["h"]],
+                    "box": box, "offset": [dx, dy] if (dx or dy) else None,
                     "text": (r.get("text") or "")[:50], "fontSize": r.get("fontSize")}
     json.dump(out, open(os.path.join(HERE, "sheet", "anchors.json"), "w"), indent=1)
     print(f"resolved {len(out)}/{len(ANCHORS)}")

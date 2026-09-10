@@ -12,9 +12,9 @@
 | | |
 |---|---|
 | Screens compared design ↔ build | 31 + the sign-in surface |
-| Findings | **70** — 24 Major, 38 Minor, 8 Nit |
+| Findings | **71** — 25 Major, 38 Minor, 8 Nit |
 | Applies to every screen | 18 |
-| Specific to one screen | 42 |
+| Specific to one screen | 43 |
 | Sign-in surface | 10 |
 
 Every finding is a difference between what the design specifies and what the build renders. Engineering defects with no design counterpart are not raised here; they are in `docs/audit/smile-beggary-capture-and-session.md`.
@@ -219,6 +219,8 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Dashboard
 
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50828-289)
+
 ### The Beneficiary Profile section was rebuilt with different charts
 
 `S01` · **Major** · Components & States
@@ -261,6 +263,8 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Users
 
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50828-644)
+
 ### View Catalog sits on a different screen from the one the design puts it on
 
 `S05` · **Minor** · Components & States
@@ -292,6 +296,8 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Fix** | Confirm the extra filters are intended; if so, add them to the design frame. Showing all the relevant filters is the right instinct — this is a note, not a defect. |
 
 ## Consent Forms
+
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50828-426)
 
 ### The breadcrumb puts Consent Forms under Access Control
 
@@ -335,6 +341,8 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Notifications
 
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50828-754)
+
 ### The empty state sits under a full twelve-column table header
 
 `S12` · **Minor** · Components & States
@@ -356,6 +364,8 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Fix** | Confirm which set is right. Whichever it is, the design frame and the build should carry the same filters. |
 
 ## Beneficiary List
+
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50828-563)
 
 ### The screen has no loading state in the design, and the build needs one
 
@@ -401,6 +411,8 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Shelter Occupants
 
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50864-1033)
+
 ### The screen has one name in the design and a different one in the build
 
 `S18` · **Major** · Content & Iconography
@@ -411,27 +423,39 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Build does** | The heading and the breadcrumb both read 'Swashraya (Shelter Home) Persons'. Two of the table's own column headers carry the same expansion — 'Swashraya (Shelter Home) Type' and 'Swashraya (Shelter Home) Name' — so the parenthetical is repeated three times on one screen. |
 | **Fix** | Agree one name for this screen and use it in the design, the heading, the breadcrumb and the sidebar. If Swashraya is the departmental term, say it once in the heading and let the columns read 'Type' and 'Name'. |
 
-### The table carries twelve columns where the design specifies five
+### The designed Actions column is not built, and the design frame hides seven columns outside itself
 
 `S19` · **Major** · Components & States
 
 | | |
 |---|---|
-| **Design says** | Five columns: Beneficiary Name, Beneficiary ID, Beneficiary Type, Facility Status, Actions. |
-| **Build does** | Twelve: S.No., Beneficiary ID, Beneficiary Name, Gender, Age, Survey Location, Survey Date, State, Swashraya (Shelter Home) Type, Beneficiary Type, Swashraya (Shelter Home) Name, Facility Status. The designed Actions column is not among them, so there is no per-row action at all. |
-| **Fix** | Decide the column set with the department and put it in both places. Whatever is agreed, the Actions column the design specifies has to exist or be dropped from the design deliberately. |
+| **Design says** | Five columns render inside the 1440 frame — Beneficiary Name, Beneficiary ID, Beneficiary Type, Facility Status, Actions — and seven more sit OUTSIDE it at x=1274 to x=2849 (a second Actions, Gender, Age, Survey Location, State, Shelter Home Name, Shelter Home Type), along with a five-figure KPI strip. Nothing outside the frame renders, so a developer opening this frame sees five columns. |
+| **Build does** | Twelve columns: S.No., Beneficiary ID, Beneficiary Name, Gender, Age, Survey Location, Survey Date, State, Swashraya (Shelter Home) Type, Beneficiary Type, Swashraya (Shelter Home) Name, Facility Status. Most of them match the design's hidden set. Actions is not among them, so there is no per-row action at all. |
+| **Fix** | Two jobs. Bring the seven stray columns and the KPI strip inside the frame so the design says what it means, and build the Actions column or drop it deliberately. (Corrected 2026-09-10: an earlier draft read the frame as specifying five columns. It specifies twelve; seven of them are drawn where they cannot be seen.) |
+
+### Three design frames carry content outside their own canvas, where it cannot be seen
+
+`S43` · **Major** · Layout & Spacing
+
+| | |
+|---|---|
+| **Design says** | Shelter Occupants holds seven table columns and a five-figure KPI strip at x=1274–2849; Rehab Data holds Status and District at x=1519 and x=1794; Skill & Training holds Status and District at x=1540 and x=1805. The frames are 1440 wide, so none of it renders — it is invisible in the exported frame, in Dev Mode, and in any screenshot taken from Figma. |
+| **Build does** | The build shows most of those columns, which is how they were found: the build was reading a specification the design frame does not display. |
+| **Fix** | Move the stray content inside the frame, or delete it if it is superseded. Anything a developer cannot see is not a specification. This is a design-file defect, not a build one. |
 
 ## Master Settings
 
-### The build invents a tab rail and a four-figure strip the design does not draw
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50864-1139)
+
+### The build adds a four-figure strip the design does not draw, and shows nine tabs where the design shows five
 
 `S20` · **Major** · Components & States
 
 | | |
 |---|---|
-| **Design says** | The screen is heading, sub-line, then the table. Each master (Geography, Agency, Operational, Fund Management, Role & Permission, Survey Questionnaire) is drawn as its own frame, and no frame shows how a reader moves between them. |
-| **Build does** | A rail of nine tabs sits above the table, and above that a four-figure strip — Active Tab / Geography Masters, Records / 36, Mode / Read-only, Your Access / Full access. Neither is in any design frame. |
-| **Fix** | The design owes this screen its navigation: nine masters with no drawn way to move between them is a gap, and the build filled it on its own. Draw the tab rail. The four-figure strip is a separate decision — 'Mode: Read-only' and 'Your Access: Full access' say two things about permissions that appear to contradict each other. |
+| **Design says** | Heading, sub-line, then a rail of five tabs — Geography, Roles & Permission, Survey Questionnaire, Agency, Operational — with an overflow control for the rest, then the table. |
+| **Build does** | The same rail carries all nine tabs at once, and above it sits a four-figure strip: Active Tab / Geography Masters, Records / 36, Mode / Read-only, Your Access / Full access. The strip is in no design frame. |
+| **Fix** | Decide whether the strip stays; if it does, draw it. Either show five tabs and an overflow as designed or widen the rail deliberately. 'Mode: Read-only' beside 'Your Access: Full access' also needs settling — on the same screen they say opposite things. (Corrected 2026-09-10: an earlier draft said the design had no tab rail. It has one; the query that reported otherwise had read a partly-loaded Figma page.) |
 
 ### The Geography table gains a row-number column and an Actions column
 
@@ -445,6 +469,8 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Rehab Data
 
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50863-1025)
+
 ### Gender and Age are not in the build, and the build adds a column of its own
 
 `S22` · **Major** · Components & States
@@ -457,15 +483,17 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Skill & Training
 
-### The build carries five columns the design does not
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50864-1220)
+
+### Three build columns are in no design, and two more are drawn outside the frame
 
 `S23` · **Minor** · Components & States
 
 | | |
 |---|---|
-| **Design says** | Seven columns: Beneficiary ID, Beneficiary Name, Gender, Age, Duration of Skill and Training, Skill and Training Type, Survey Location. |
-| **Build does** | Twelve: the designed seven plus S.No., Shelter Name, State, District and Status. |
-| **Fix** | Confirm the five extra columns and add them to the design frame, or drop them. Twelve columns at 1440 is what pushes this table into horizontal scrolling. |
+| **Design says** | Seven columns render: Beneficiary ID, Beneficiary Name, Gender, Age, Duration of Skill and Training, Skill and Training Type, Survey Location. Two more — Status and District — sit outside the 1440 frame at x=1540 and x=1805, where they do not render. |
+| **Build does** | Twelve: the designed seven, the two strays, plus S.No., Shelter Name and State, which are in no design at all. |
+| **Fix** | Bring Status and District inside the frame, and confirm S.No., Shelter Name and State. Twelve columns at 1440 is what pushes this table into horizontal scrolling. |
 
 ### Two column headers sit ten pixels above the rest of the header row — in the DESIGN
 
@@ -478,6 +506,8 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Fix** | The build is right. Align the design's header cells to one baseline so the frame stops disagreeing with itself. |
 
 ## City Profiling
+
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50865-1057)
 
 ### A fifth KPI card appears, and two of the four designed ones are renamed
 
@@ -521,6 +551,8 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Performance Statistics
 
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50865-1246)
+
 ### The KPI card lost its tinted header band and its blue outline
 
 `S29` · **Minor** · Color & Token
@@ -532,6 +564,8 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Fix** | Restore the tinted header band and the blue outline. They are what separate a KPI scorecard from an ordinary content card at a glance. |
 
 ## Onboard New User
+
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50865-1298)
 
 ### Four of the five field labels are worded differently from the design
 
@@ -564,6 +598,8 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Fix** | Restore the section header. It is the only thing naming the group, and the same pattern is used on the shelter-home form. |
 
 ## Add Shelter Home
+
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50866-1273)
 
 ### Six required markers are missing, and the three section headers with them
 
@@ -607,6 +643,8 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Create New Role
 
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50866-1408)
+
 ### The dialog's field labels are uppercase 11px grey without their required markers
 
 `S37` · **Minor** · Typography
@@ -639,6 +677,8 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Roles
 
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50866-1516)
+
 ### The page is called Roles in the design and Role Management in the build
 
 `S40` · **Minor** · Content & Iconography
@@ -660,6 +700,8 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Fix** | Confirm the band. If it stays, draw it in the design and keep the chip in Title Case. |
 
 ## City Profiling — district list
+
+[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50865-1194)
 
 ### The district list gains the same two fund cards as the state list, and loses its table card
 
