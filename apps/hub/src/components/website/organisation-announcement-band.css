@@ -203,19 +203,30 @@
      * the offers are told apart — 923px wide and shifting hue as the card
      * turns, where the eyebrow it replaced was a 40px chip.
      *
-     * THE BOTTOM PADDING IS A STRIP, not breathing room. The pager sits in it,
-     * clear of the action above: measured at 1440 the action occupies 16 to 56
-     * of the card and the pager 90 to 114, a 34px gap where both crowded into
-     * the content row had 8.
+     * THE BOTTOM PADDING IS ORDINARY PADDING AGAIN — it was a 40px STRIP whose
+     * only occupant was the pager, and reserving a strip put the control 26.5px
+     * below the last line of the copy it belongs to. Measured at 1440: the
+     * copy's last line centred at 344.5, the pager at 371. On a card whose
+     * content is one block of text, a control floating in its own band below
+     * that text reads as a separate object rather than as part of the panel.
      *
-     * 32, AND THE VALUE MATTERS. It was written as `--sa-padding-36`, which the
-     * space scale does not publish — 0·2·4·6·8·12·16·20·24·32·40·48·56·64·72·80
-     * — so the whole `padding` shorthand was invalid and DROPPED. The card lost
-     * every side of its padding at once and its content overflowed a 46px box
-     * while the helpline beside it silently set the row height. Nothing errored;
-     * `check:dangling-vars` is the gate that names it, and it had not been run.
+     * At 16 the padding matches the top and the pager's centre lands on the
+     * last line of the LONGEST panel — which is the one that sets the card's
+     * height, so the position is stable rather than moving per panel. The
+     * shorter panel's copy ends higher and the pager stays put; aligning to
+     * whichever panel is showing would move the control every six seconds,
+     * which is the defect this alignment exists to avoid, not a better version
+     * of it.
+     *
+     * THE VALUE HAS TO BE ON THE SCALE. It was once written as
+     * `--sa-padding-36`, which the space scale does not publish — the steps are
+     * 0·2·4·6·8·12·16·20·24·32·40·48·56·64·72·80 — so the whole `padding`
+     * shorthand was invalid and DROPPED. The card lost every side of its padding
+     * at once and its content overflowed a 46px box while the helpline beside it
+     * silently set the row height. Nothing errored; `check:dangling-vars` is the
+     * gate that names it.
      */
-    padding: var(--sa-padding-16) var(--sa-padding-20) var(--sa-padding-32);
+    padding: var(--sa-padding-16) var(--sa-padding-20);
     border-radius: var(--sa-shape-16);
     background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent);
     box-shadow: inset 0 var(--sa-stroke-1) 0 0
@@ -317,6 +328,24 @@
       box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
+  /*
+   * THE IMAGE TAKES THE TILE'S CORNERS — the comment above has claimed since it
+   * was written that "the image below clips to the radius on its own", and the
+   * rule that did it was lost. Nothing replaced it, so a square white PNG
+   * filling a 64px tile edge to edge painted straight over all four of the
+   * tile's 8px corners: measured `border-radius: 0px` on the image against
+   * `8px` on the tile, and a QR that read as a hard square chip on a card where
+   * every other corner is rounded.
+   *
+   * `inherit` rather than a restated `--sa-shape-8`, so the image cannot drift
+   * from the tile the day the tile's radius changes. The mark itself still must
+   * NOT take `overflow: hidden` — the code's zoom wash sits inside the radius,
+   * but the observance's confetti flies out of its corners.
+   */
+  .orgab__mark--code img {
+    border-radius: inherit;
+  }
+
   @media (hover: hover) and (pointer: fine) {
     .orgab__mark--code:hover {
       transform: scale(1.05);
@@ -399,7 +428,7 @@
    * tile — that is the object a reader sees move, and animating only the glyph
    * inside a still tile reads as a picture wobbling in its frame.
    */
-  .orgab__mark--celebrate:has(.cfti[data-burst]) {
+  .orgab__mark--celebrate[data-burst] {
     animation: orgab-pop 720ms var(--sa-motion-emphasis-easing) both;
   }
 
@@ -538,59 +567,6 @@
     46%  { transform: scale(1.1) rotate(6deg); }
     72%  { transform: scale(0.98) rotate(-2deg); }
     100% { transform: scale(1) rotate(0deg); }
-  }
-
-  /* ── The drift: what keeps going after the burst is spent ───────────────── */
-
-  /*
-   * Every part is animated and PAUSED by default; `data-loop` runs them. A
-   * paused animation holds its frame, so pressing pause leaves the confetti
-   * where it is rather than snapping it home.
-   *
-   * `transform-box: fill-box`, because an SVG child's transform origin is the
-   * viewBox origin otherwise and every one of these turns about itself.
-   */
-  .cfti__ray,
-  .cfti__bit {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation-play-state: paused;
-  }
-
-  .cfti[data-loop] .cfti__ray,
-  .cfti[data-loop] .cfti__bit {
-    animation-play-state: running;
-  }
-
-  /* Three rays breathing outward by about a pixel, staggered — even timing
-     reads as a mechanism and this is meant to read as paper. */
-  .cfti__ray {
-    animation: cfti-ray 2800ms var(--sa-motion-emphasis-easing) infinite;
-  }
-
-  .cfti__ray[data-n="0"] { --rx: -0.4px; --ry: -1.4px; animation-delay: 0ms; }
-  .cfti__ray[data-n="1"] { --rx: 1.1px;  --ry: -1.1px; animation-delay: 320ms; }
-  .cfti__ray[data-n="2"] { --rx: 1.5px;  --ry: -0.2px; animation-delay: 640ms; }
-
-  @keyframes cfti-ray {
-    0%, 100% { transform: translate(0, 0); opacity: 0.55; }
-    45%      { transform: translate(var(--rx), var(--ry)); opacity: 1; }
-  }
-
-  /* Three bits floating a few pixels and turning a little. They return to where
-     they started rather than fading out and reappearing — a piece of confetti
-     that blinks back to its origin is a piece of confetti you notice. */
-  .cfti__bit {
-    animation: cfti-bit 3600ms var(--sa-motion-emphasis-easing) infinite;
-  }
-
-  .cfti__bit[data-n="0"] { --bx: 1.2px;  --by: -2.6px; --bd: 18deg;  animation-delay: 0ms; }
-  .cfti__bit[data-n="1"] { --bx: -1.6px; --by: 2.2px;  --bd: -22deg; animation-delay: 900ms; }
-  .cfti__bit[data-n="2"] { --bx: 2.2px;  --by: -1.4px; --bd: 26deg;  animation-delay: 1800ms; }
-
-  @keyframes cfti-bit {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.4; }
-    50%      { transform: translate(var(--bx), var(--by)) rotate(var(--bd)); opacity: 1; }
   }
 
   /* The phone's stand-in for the code is out of the way at every other width. */
@@ -732,7 +708,7 @@
     position: absolute;
     opacity: 1;
     transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
-    inset-block-end: var(--sa-padding-4);
+    inset-block-end: var(--sa-padding-12);
     inset-inline-end: var(--sa-padding-20);
     z-index: var(--sa-z-raised);
     display: flex;
@@ -740,9 +716,27 @@
     gap: var(--sa-inline-2);
   }
 
-  /* Out of the way while the card is edge-on, back when it lands. */
+  /*
+   * THE PAGER NO LONGER BLINKS OUT ON EVERY TURN.
+   *
+   * It faded to nothing for the whole 520ms flip, and that fade was written
+   * when the card turned on `rotateY` and swung out from under it. On `rotateX`
+   * the card foreshortens toward its own centre line instead, so the pager's
+   * footprint is never crossed — and the card is white at 8% over the band's
+   * green, so a pager standing on bare green mid-turn is indistinguishable from
+   * a pager standing on the card.
+   *
+   * What the fade actually produced was the jerk: a full white bar, 520ms of
+   * nothing, then an empty bar in a different place and already part-filled,
+   * because the dwell kept running through the blackout. The fill itself is
+   * clean — scrubbed at nine points across the six seconds it is linear to the
+   * frame, 100% to 0% with the box steady at 40. The discontinuity was entirely
+   * the disappearance.
+   *
+   * Only the pointer is withdrawn now, so a click cannot land on a dot whose
+   * panel is still arriving.
+   */
   .orgab__pager[data-turning] {
-    opacity: 0;
     pointer-events: none;
   }
 
@@ -755,15 +749,45 @@
   /* A 24px target with a small mark inside it — §2.5.8's floor, met by the
      control itself rather than by the spacing clause. 32 was a lot of hit area
      for a mark 6px across, and the extra 8 was the loudest thing about it. */
+  /*
+   * THE ACTIVE DOT IS WIDE; THE OTHERS ARE NOT.
+   *
+   * It was 32 for every dot with a 24px bar in the active one, and that is the
+   * size at which this indicator kept failing: two thirds of a 24px bar is
+   * 16px of white against 8px of dark, which is too little of each to read as a
+   * proportion. Rendered side by side at four sizes and two edge treatments, a
+   * 24px bar reads as a knob in a slot at BOTH treatments and a 40px bar reads
+   * as a bar at one of them. Width was the variable that mattered, and two
+   * previous passes spent themselves on the corner radius instead.
+   *
+   * Only the current one grows, so the row stays compact, and the growth is
+   * transitioned — the pill expanding as the panel takes over is the same
+   * gesture the bar itself makes.
+   */
   .orgab__dot {
     position: relative;
     display: grid;
     place-items: center;
-    /* The active bar is 24 wide, so the target has to be at least that. Still
-       clears §2.5.8's 24x24 floor by the control itself. */
-    inline-size: var(--sa-padding-32);
+    inline-size: var(--sa-padding-24);
     block-size: var(--sa-padding-24);
     border-radius: var(--sa-shape-full);
+    transition: inline-size var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+  }
+
+  /*
+   * 40 — THE BOX IS THE BAR, AND THE ROW DOES NOT GROW.
+   *
+   * It was 48, giving the 40px bar a margin inside its own target, and that
+   * cost the pager eight pixels of width it had not asked for: 48 + 2 + 24 is
+   * 74 where two 32s were 66. A pagination control that takes more room than
+   * before to say the same thing has spent something for nothing.
+   *
+   * At 40 the target IS the bar. 40 + 2 + 24 is 66 — exactly the width the row
+   * had — and both dots still clear §2.5.8's 24x24 floor by the control itself,
+   * the active one by a wide margin.
+   */
+  .orgab__dot[aria-selected="true"] {
+    inline-size: var(--sa-padding-40);
   }
 
   .orgab__dot::before {
@@ -796,7 +820,7 @@
    * fill reads at a glance without being any brighter than it was.
    */
   .orgab__dot[aria-selected="true"]::before {
-    inline-size: var(--sa-padding-24);
+    inline-size: var(--sa-padding-40);
     background-color: color-mix(in srgb, var(--sa-color-successScale-950) 42%, transparent);
     box-shadow: inset 0 0 0 var(--sa-stroke-1)
       color-mix(in srgb, var(--sa-color-successScale-950) 20%, transparent);
@@ -826,11 +850,23 @@
    * lie.
    */
   /*
-   * THE LEADING EDGE IS FLAT. Rounding all four corners of the clip made the
-   * fill a PILL that grew — at 78% it read as a white lozenge floating in a
-   * groove with a dark crescent beside it, which is a knob in a slot, not a
-   * level rising. Seen only at 8x; at page scale it merely looked wrong without
-   * saying why.
+   * ── THE LEADING EDGE IS FLAT, AND THIS TIME IT IS MEASURED ──────────────
+   *
+   * Three passes argued about this and two of them were wrong, so the fourth
+   * rendered the choices instead of reasoning about them: 24px and 40px bars,
+   * each with a round leading edge and with a flat one, all four frozen at the
+   * same 66% and looked at side by side at 8x.
+   *
+   *   24 round   a white lozenge floating in a groove          — a knob
+   *   24 flat    correct in principle, too cramped to read     — a knob
+   *   40 round   a longer white lozenge, still detached        — a knob
+   *   40 flat    one pill, two thirds white                    — a bar
+   *
+   * Both changes were needed. A round leading edge separates the fill from the
+   * groove at ANY width, because a rounded end is what a knob has; and a flat
+   * edge on a 24px bar has too little either side of it to say what it is. The
+   * earlier attempt that shipped only the flat edge is why this looked like it
+   * had been made worse rather than better.
    *
    * `round R 0 0 R` rounds the two LEFT corners of the clip and leaves the
    * right square, so the fill has the track's own cap behind it at the start
@@ -840,17 +876,133 @@
   .orgab__dot[aria-selected="true"]::after {
     content: "";
     position: absolute;
-    inline-size: var(--sa-padding-24);
+    inline-size: var(--sa-padding-40);
     block-size: var(--sa-padding-6);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-text-neutral-inverse);
     clip-path: inset(0 100% 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full));
-    animation: orgab-dwell var(--orgab-dwell, 6000ms) linear forwards;
+    /*
+     * IT WAITS FOR THE CARD TO LAND. `animation-delay` is the flip.
+     *
+     * Three things used to start on the same frame: the card began its
+     * half-turn, the two dots began swapping widths (24 -> 40 and 40 -> 24 over
+     * about 208ms), and this fill began counting. Measured, the new bar was
+     * already at 3% before it had finished GROWING — a 6px-tall element getting
+     * wider and fuller at the same time, which is two motions competing for one
+     * object and reads as a lurch.
+     *
+     * Delayed by the flip, the sequence is legible instead of simultaneous: the
+     * old fill leaves, the card turns, the dots resize, and only then does the
+     * bar start from nothing. The reader is also no longer charged for the half
+     * second in which the panel was edge-on and unreadable.
+     */
+    animation: orgab-dwell var(--orgab-dwell, 6000ms) linear var(--orgab-flip, 520ms) forwards;
     animation-play-state: paused;
+  }
+
+  /*
+   * THE FILL LEAVES, RATHER THAN BEING DELETED.
+   *
+   * `::after` belongs to `[aria-selected="true"]`, so at the turn it simply
+   * stopped matching: one frame a full 40px white bar, the next frame nothing,
+   * and an empty bar in the other dot. Captured frame by frame off a screen
+   * recording, that is a teleport — the indicator is in two places and travels
+   * through neither, so the eye has to re-find it on every rotation.
+   *
+   * `data-leaving` holds the outgoing fill for exactly the flip and lets it go
+   * out the way the card does: fading as its own dot narrows back to 24. It is
+   * a fade and not a directional wipe on purpose — with two panels the travel
+   * alternates left and right, and a wipe that runs the wrong way half the time
+   * is worse than one that runs no way at all.
+   */
+  /*
+   * IT RETRACTS INTO ITS OWN DOT — `100%`, never a stated 40.
+   *
+   * Stated at 40 it kept its full width while the dot underneath it shrank back
+   * to 24, so an absolutely-positioned 40px bar centred in a 24px box spilled
+   * out of both ends and straight into the neighbour, which was itself growing
+   * 24 -> 40 from the other side. Captured at 60ms intervals, the middle of the
+   * handoff was three overlapping shapes where there should be two dots: a
+   * fading bar, a stray circle, and the incoming track, all on top of one
+   * another. The turn read as a smear.
+   *
+   * At `100%` the fill is bounded by the dot that owns it, so it narrows as
+   * that dot narrows and the gesture is the fill retracting rather than
+   * escaping.
+   *
+   * AND IT LEAVES BEFORE THE WIDTHS FINISH. The fade ran for the whole flip
+   * (520ms) against a width transition of 250ms, so a ghost of the old fill was
+   * still on screen after the new track had fully formed. The exit duration
+   * (150ms) clears it first, which is the order the eye expects: the old thing
+   * goes, then the new thing arrives.
+   */
+  .orgab__dot[data-leaving]::after {
+    content: "";
+    position: absolute;
+    inline-size: 100%;
+    block-size: var(--sa-padding-6);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-text-neutral-inverse);
+    clip-path: inset(0 0 0 0 round var(--sa-shape-full));
+    animation: orgab-drain var(--sa-motion-exit-duration) var(--sa-motion-exit-easing) forwards;
+  }
+
+  @keyframes orgab-drain {
+    from { opacity: 1; }
+    to   { opacity: 0; }
   }
 
   .orgab__pager[data-running] .orgab__dot[aria-selected="true"]::after {
     animation-play-state: running;
+  }
+
+  /*
+   * PINNED WHERE THE READER STOPPED IT.
+   *
+   * Pressing a dot changes the panel, so the fill moves to a different dot and
+   * the animation would start it from nothing — and the same press stops the
+   * rotation for good, so that nothing stayed on screen. The reader had just
+   * been watching a bar four tenths of the way across; what they got back was
+   * an empty groove beside a play triangle, which reads as a control that has
+   * broken rather than one that is holding.
+   *
+   * `--orgab-held` is the percentage that was on screen at the moment of the
+   * press. The animation is taken off the element entirely rather than paused,
+   * because a paused animation holds ITS OWN frame — which on a freshly
+   * selected dot is zero, the very thing being fixed.
+   *
+   * The transport control's pause is untouched and still works the old way: it
+   * changes no panel, so its animation is holding the right frame already.
+   */
+  /*
+   * PICKED UP PARTWAY — a NEGATIVE delay, which is the whole trick.
+   *
+   * A negative `animation-delay` starts an animation as though it had already
+   * been running for that long, so the fill begins at the percentage the reader
+   * stopped it at and finishes early by exactly the same amount. No keyframes to
+   * duplicate, no `currentTime` to reach into a pseudo-element and set, and it
+   * survives being paused: with the pointer still on the card the animation sits
+   * paused at the picked-up offset, showing the held position, and carries on
+   * from there when the pointer leaves.
+   *
+   * The rotation's wait is cut by the same amount in the component. The two
+   * numbers come from one value and must keep doing so — if the bar picks up at
+   * 40% and the card still waits a whole dwell, the bar is full with seconds
+   * left to run, which is the dead hold this file has already fixed once.
+   *
+   * There is no flip to wait out here: the card is already on screen, so this
+   * replaces the delay rather than adding to it.
+   */
+  .orgab__pager[data-resume] .orgab__dot[aria-selected="true"]::after {
+    animation-delay: calc(-1 * var(--orgab-resume, 0ms));
+  }
+
+  .orgab__pager[data-held] .orgab__dot[aria-selected="true"]::after {
+    animation: none;
+    clip-path: inset(
+      0 calc(100% - var(--orgab-held, 0%)) 0 0 round var(--sa-shape-full) 0 0
+        var(--sa-shape-full)
+    );
   }
 
   @keyframes orgab-dwell {
@@ -907,7 +1059,18 @@
       color: var(--sa-text-neutral-inverse);
     }
 
-    .orgab__dot:hover::before {
+    /*
+     * THE INACTIVE DOTS ONLY — this rule used to be unscoped, and on the active
+     * dot it read as the progress bar filling instantly under the pointer.
+     *
+     * The active dot's `::before` is not a dot, it is the 40px GROOVE the fill
+     * runs across, and it is deliberately dark so the white fill separates from
+     * it by lightness. Painting it `neutral-inverse` on hover made the whole
+     * track the same white as the fill: a bar that jumped to 100% whenever the
+     * reader's pointer passed over it, and back when it left. Same specificity
+     * as the groove rule and later in the file, so it won.
+     */
+    .orgab__dot[aria-selected="false"]:hover::before {
       background-color: var(--sa-text-neutral-inverse);
     }
   }
@@ -1090,9 +1253,7 @@
         visibility 0s;
     }
 
-    .orgab__mark--celebrate:has(.cfti[data-burst]),
-    .cfti__ray,
-    .cfti__bit,
+    .orgab__mark--celebrate[data-burst],
     .orgab__spark {
       animation: none;
     }
@@ -1102,10 +1263,21 @@
     }
 
     /* Nothing is going to turn, so the current dot is simply a solid bar. An
-       empty track beside a filled dot would say a change is coming. */
+       empty track beside a filled dot would say a change is coming.
+       `transform: scaleX(1)` is what this used to say, and it had been dead
+       since the fill stopped being a scale: with the animation off, the base
+       `clip-path: inset(0 100% 0 0)` held, so the bar a reduced-motion reader
+       actually got was EMPTY — the opposite of what the line above promises.
+       The clip is reset instead, which is the mechanism the fill now uses. */
     .orgab__dot[aria-selected="true"]::after {
       animation: none;
-      transform: scaleX(1);
+      clip-path: inset(0 0 0 0 round var(--sa-shape-full));
+    }
+
+    /* There is no turn to cover, so nothing leaves. */
+    .orgab__dot[data-leaving]::after {
+      animation: none;
+      content: none;
     }
 
     .orgab__helpline-glyph,

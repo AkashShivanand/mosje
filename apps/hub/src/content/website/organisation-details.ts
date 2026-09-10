@@ -222,9 +222,14 @@ export interface OrganisationDetail {
      * "National De-Addiction Helpline" makes a 364px control — wider than the
      * campaign's own message beside it, which put the band's emphasis back on
      * the layout rather than on the buttons. The full label stays as the
-     * button's `aria-label`, and the key-facts strip 200px below prints it in
-     * full, so nothing is lost from the page. Omit it and the button shows
-     * `helplineLabel`.
+     * button's `aria-label`, so nothing is lost from the page. Omit it and the
+     * button shows `helplineLabel`.
+     *
+     * (This note used to add "and the key-facts strip 200px below prints it in
+     * full". It has not since 08 Sep 2026, when the helpline row came off that
+     * strip — `OrganisationHelplineBadge` carries the number instead. Corrected
+     * rather than left, because a comment that names a second copy of something
+     * is the reason a maintainer feels safe removing the first.)
      */
     helplineShortLabel?: string;
     helplineNumber: string;
@@ -576,6 +581,22 @@ export interface OrganisationDetail {
     /** When these figures were read from the source, e.g. "7 September 2026". */
     asOf: string;
     items: OrgFact[];
+    /**
+     * WHERE ON THE PAGE THE COUNTERS GO. Defaults to `"band"`.
+     *
+     * `"hero"` puts them in the fact-strip slot — the card that straddles the
+     * header — INSTEAD of the curated `facts`, and drops the mid-page band. Use
+     * it where the source publishes its counters in the fold, which is where a
+     * campaign's headline figures belong: NMBA prints all eight directly under
+     * its own h1, above "About the Abhiyaan", and reproducing them a screen
+     * further down while the strip above carried three facts we had assembled
+     * ourselves inverted the page's own emphasis.
+     *
+     * `heading` is not drawn in this position — the card is hero furniture, not
+     * a section — but it still names the list for assistive technology, and
+     * `asOf` prints as a caption beneath the card.
+     */
+    placement?: "band" | "hero";
   };
   messages?: {
     heading: string;
@@ -2360,34 +2381,32 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       },
     ],
     /*
-     * FOUR FACTS, ALL STATED ON THE SOURCE PAGE. "372 Districts" stood here
-     * until 07 Sep 2026 and is not on this page at all — an unsourced figure on
-     * a government page, which this file's own header forbids.
+     * NO CURATED `facts` — THE COUNTERS TAKE THE STRIP. See `impact.placement`
+     * below, and the note there for the whole argument.
      *
-     * THE HELPLINE IS OUT AGAIN, AND THIS TIME THE REASON HOLDS.
+     * Three stood here, and re-reading the source settled that all three were
+     * the wrong occupants of that card. The source page prints its EIGHT
+     * counters in exactly this position, straddling its own header, and prints
+     * no other strip; these three were assembled by us out of prose and out of
+     * a section heading further down the page:
      *
-     * It went on 07 Sep as a duplicate of the green band directly above, came
-     * back on 08 Sep because the band was dismissible and pressing its X took
-     * the only remaining copy of the number with it, and goes now because that
-     * is no longer true: the band carries it while it is there, and
-     * `OrganisationHelplineBadge` carries it beside the mark the moment the band
-     * is dismissed. The number is in the fold in every state, by design rather
-     * than by this row happening to exist.
+     *   "15 August 2020 / Abhiyaan launched" — taken from the About paragraph,
+     *   which states it verbatim and still does, two screens below. Nothing is
+     *   lost by not printing it twice.
      *
-     * So the row was doing nothing but printing 14446 a second time, 950px from
-     * the first, both times prominently.
+     *   "768 / De-addiction and rehabilitation centres" — the figure the source
+     *   prints as the heading of its GEO-tagged facilities section, not as a
+     *   header fact. It also sat 24px from "755+ / DoSJE-supported de-addiction
+     *   centres" once the counters arrived, which is two centre counts in one
+     *   card with nothing on the page explaining why they differ. It is
+     *   recorded in the audit doc rather than deleted quietly.
      *
-     * THREE FACTS, NOT FOUR, and the Ministry row survives on the same argument
-     * it always did — weakly. It is the only cell that is a NAME among figures,
-     * a reader on the Department's own site has been told the Department twice
-     * by the masthead already, and it stays because two is not a strip. Replace
-     * it the day the source publishes a fourth figure worth the space.
+     *   "Social Justice & Empowerment / Ministry" — a NAME among figures, on
+     *   the Department's own site, where the masthead has said it twice already.
+     *   Its own note here called it weak and asked to be replaced "the day the
+     *   source publishes a fourth figure worth the space". The source publishes
+     *   eight.
      */
-    facts: [
-      { icon: "flag", value: "15 August 2020", label: "Abhiyaan launched" },
-      { icon: "local_hospital", value: "768", label: "De-addiction and rehabilitation centres" },
-      { icon: "account_balance", value: "Social Justice & Empowerment", label: "Ministry" },
-    ],
     /*
      * THE ABHIYAAN'S OWN NOTICE BOARD.
      *
@@ -2572,6 +2591,26 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     impact: {
       heading: "The Abhiyaan in Numbers",
       asOf: "7 September 2026",
+      /*
+       * IN THE FOLD, BECAUSE THAT IS WHERE THE SOURCE PUBLISHES THEM.
+       *
+       * dosje.gov.in prints all eight counters in a white card straddling the
+       * lower edge of the blue header — the exact treatment `FactStrip overlap`
+       * draws — and goes straight from there into "About the Abhiyaan". There
+       * is no "in Numbers" section on the source page at all.
+       *
+       * We had them as a band BELOW the header instead, with a strip of three
+       * facts of our own composition in the card above. That inverted the
+       * page's emphasis twice over: the campaign's own headline figures were
+       * pushed under the fold, and the most prominent card on the page carried
+       * material the source does not present that way.
+       *
+       * The heading survives as the list's accessible name and as the label
+       * this record is discussed by; it is not drawn, because the card is
+       * header furniture and a title over it would announce a section that the
+       * source does not have and the rail no longer lists.
+       */
+      placement: "hero",
       items: [
         { icon: "groups", value: "345,703,321", label: "People reached" },
         { icon: "school", value: "137,209,589", label: "Youth reached" },
@@ -2599,11 +2638,17 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
        * first, which said "About the Organisation" against a heading reading
        * "About the Abhiyaan". A rail whose labels do not match the headings they
        * scroll to is a rail a reader stops trusting.
+       *
+       * AND "THE ABHIYAAN IN NUMBERS" IS NOW OFF IT, for the same reason it was
+       * put on. The counters moved into the header's own card
+       * (`impact.placement`), so there is no `#impact` section to scroll to and
+       * the figures are above the rail rather than below it. A rail entry
+       * pointing at something the reader has already passed is the trust
+       * problem in the opposite direction.
        */
       {
         label: "ABOUT THE ABHIYAAN",
         items: [
-          { label: "The Abhiyaan in Numbers", href: "#impact" },
           { label: "About the Abhiyaan", href: "#about-the-scheme" },
           { label: "Overview Details", href: "/website/organisation/nasha-mukt-bharat-abhiyaan/about-us" },
         ],

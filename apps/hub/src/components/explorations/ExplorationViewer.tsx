@@ -22,6 +22,11 @@ import {
   AssistantChat,
 } from "./service-discovery/options";
 import "./explorations.css";
+import {
+  CountersAsShipped,
+  CountersCarousel,
+  CountersScaledGrid,
+} from "./nmba/CounterOptions";
 
 /**
  * THE PROTOTYPE REGISTRY.
@@ -33,6 +38,9 @@ import "./explorations.css";
  * because a missing prototype and a prototype that draws nothing look the same.
  */
 const PROTOTYPES: Record<string, React.ComponentType> = {
+  "nmba/counters/as-shipped": CountersAsShipped,
+  "nmba/counters/scaled-grid": CountersScaledGrid,
+  "nmba/counters/carousel": CountersCarousel,
   "nmba/campaign-band/flight": OptionFlight,
   "nmba/campaign-band/arrive": OptionArrive,
   "nmba/top-bands/two": OptionTwoBands,

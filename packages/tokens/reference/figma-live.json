@@ -1,7 +1,7 @@
 {
   "$description": "Snapshot of the LIVE SAMAVESH Figma library — fileKey 3FF5l0SMNIwdpZrKkeyPTm, the canonical one named in GOVERNANCE.md. TWO OLDER COPIES still exist and still contain variables (qyzTEy8… 261 vars, T3bkN5g… 176), so a sync run against either looks successful and reaches nobody: check the count before writing. Variable names ARE the canonical DTCG paths, so this file doubles as the proof that the Figma tree and the source tree are the same tree.",
   "$readAt": "2026-09-05",
-  "$note": "2026-08-12, icon sizes RESTORED to 16/20/24/32/40/48/64 after an earlier pass on the same day narrowed them to DBIM 3.4's four and deleted 16, 20 and 40. That narrowing is withdrawn: DBIM 3.4 publishes a downloadable asset bank in four sizes, it does not forbid a smaller inline glyph, and 16px beside 14px body text is 358 of 713 call sites because it is the right size there. A standard's list is a floor, not a ceiling — the four DBIM sizes are all present, and the three smaller steps interface work needs are kept. Precedence rule at .claude/rules/standards-precedence.md. Names stay numeric so they cannot drift from what they render. Previous note: 2026-08-12, icon sizes reconciled to DBIM 3.0. Section 3.4 (Figure 9) defines exactly four icon sizes — 24, 32, 48, 64 — and section 3.7.i makes them mandatory. The scale held 16, 20, 24, 32 and 40: three sizes DBIM does not sanction, and two of its four missi FIFTEENTH pass — the BUTTON, and a disagreement that ran in both directions. All 135 filled variants of the Button set were bound to ref/color/{primary,success,danger}/source: a TIER-1 reference variable, banned in app code by design.md and sitting on this file's own orphan list. Two faults followed. Primary rendered #0373DF — the INK of the family, not its fill — so when the code moved to #005EB9 the library would have been left behind. And every STATE shared one variable, so Hover, Pressed, Disabled and Focused were pixel-identical to Default here while the code rendered four distinct colours; nobody had noticed, because a component set with 540 variants is not read one variant at a time. Rebound to the Tier-3 action matrix, cmp/action/{brand|success|destructive}/primary/{default|hover|active|disabled}/{bg,text} — 135 fills and 135 labels, 15 distinct Type x State pairings, zero left on a ref. Worth recording which side was wrong: SUCCESS AND DANGER WERE ALREADY CORRECT IN FIGMA (#00542B, #AA2F25) while the code painted them from the ink slot at #004220 and #8B1F18. The library had the right answer and the code caught up to it — the reverse of the assumption that code leads and Figma lags.",
+  "$note": "2026-09-10, PARTIAL RE-RECORD — variables only. icon/brand/secondary/bolder was added to the Color collection (509 -> 510), pushed to the library and read back before recording: every field byte-identical to dist/figma.variables.json. $valueChecksums, $fieldChecksums and $contrastNotes carry recordedAt 2026-09-10 accordingly. $readAt STAYS at 2026-09-05, which is the date of the last FULL read, because $ghostAudit was not re-run and bumping $readAt would refresh its all-clear without re-auditing — the exact staleness figma-ghost-bindings.test.mjs exists to catch. A variable ADDITION cannot create a ghost binding in any case: a ghost is a binding to an id no collection owns, and this added an id a collection does own. Re-run the 68-page ghost audit the next time the node graph is touched, and bump $readAt then. Previous note: 2026-08-12, icon sizes RESTORED to 16/20/24/32/40/48/64 after an earlier pass on the same day narrowed them to DBIM 3.4's four and deleted 16, 20 and 40. That narrowing is withdrawn: DBIM 3.4 publishes a downloadable asset bank in four sizes, it does not forbid a smaller inline glyph, and 16px beside 14px body text is 358 of 713 call sites because it is the right size there. A standard's list is a floor, not a ceiling — the four DBIM sizes are all present, and the three smaller steps interface work needs are kept. Precedence rule at .claude/rules/standards-precedence.md. Names stay numeric so they cannot drift from what they render. Previous note: 2026-08-12, icon sizes reconciled to DBIM 3.0. Section 3.4 (Figure 9) defines exactly four icon sizes — 24, 32, 48, 64 — and section 3.7.i makes them mandatory. The scale held 16, 20, 24, 32 and 40: three sizes DBIM does not sanction, and two of its four missi FIFTEENTH pass — the BUTTON, and a disagreement that ran in both directions. All 135 filled variants of the Button set were bound to ref/color/{primary,success,danger}/source: a TIER-1 reference variable, banned in app code by design.md and sitting on this file's own orphan list. Two faults followed. Primary rendered #0373DF — the INK of the family, not its fill — so when the code moved to #005EB9 the library would have been left behind. And every STATE shared one variable, so Hover, Pressed, Disabled and Focused were pixel-identical to Default here while the code rendered four distinct colours; nobody had noticed, because a component set with 540 variants is not read one variant at a time. Rebound to the Tier-3 action matrix, cmp/action/{brand|success|destructive}/primary/{default|hover|active|disabled}/{bg,text} — 135 fills and 135 labels, 15 distinct Type x State pairings, zero left on a ref. Worth recording which side was wrong: SUCCESS AND DANGER WERE ALREADY CORRECT IN FIGMA (#00542B, #AA2F25) while the code painted them from the ink slot at #004220 and #8B1F18. The library had the right answer and the code caught up to it — the reverse of the assumption that code leads and Figma lags.",
   "$ghostAudit": {
     "auditedAt": "2026-09-05",
     "status": "complete",
@@ -1170,6 +1170,7 @@
     "icon/neutral/subtler",
     "icon/brand/primary/base",
     "icon/brand/primary/bolder",
+    "icon/brand/secondary/bolder",
     "icon/status/success/base",
     "icon/status/success/bolder",
     "icon/status/error/base",
@@ -1820,12 +1821,12 @@
   },
   "$valueChecksums": {
     "note": "Per-collection checksum over `name|mode|value`, computed by build/figma-value-parity.mjs. The rest of this file records NAMES, and every check built on it compares names — which is why the library could hold 13 component tokens bound to the wrong palette rung, a reverted webfont, and 54 fluid-type variables carrying the old tablet curve, all under the correct names, with nothing noticing. `payload` is what the build produces; `figmaObserved` is a verified read of the library. They are expected to be EQUAL, and figma-value-parity.test.mjs fails when the payload moves without this record being refreshed.",
-    "recordedAt": "2026-09-06",
-    "$lastChange": "2026-09-06 (merge) — TWO READS, one per collection. This branch moved Static (control/track) and ds/transparent-primary-600 moved Palette and Space; each collection's checksums are taken from the read that moved it, so neither read is discarded and none is invented. A single fresh read across all three is owed the next time the library is synced. ||| 2026-09-06 (thirteenth read) — ONE TOKEN ADDED: control/track, the slider's rail, aliasing ref/size/8. It shipped with its consumer in the same change (Slider and RangeSlider bind var(--sa-control-track)) and was created in the library with all five fields — value alias, description, codeSyntax WEB, scopes WIDTH_HEIGHT, hiddenFromPublishing false. Read back from the live library: Static's value checksum and all four field checksums moved 95 -> 96 and agree with the payload exactly. No other collection moved. Previous entry: 2026-09-05 (twelfth read) — THIRTY-TWO FOUNDATION TOKENS ADDED, from the benchmark gaps the audit named: neutral state fills bg/neutral/{hover,active,selected,readonly,loading} with their on/* inks, border/neutral/selected, neutral state layers overlay/neutral/{hover,active,focus,drag} as alias+alpha, focus/ringInner (the two-tone ring), control/height/{sm,md,lg}, aspect/{square,video,photo,portrait}, icon/fill/{outline,filled}, cmp/avatar/size/{xs,sm,md,lg} and cmp/{chip,dialog,tooltip}/radius. Every one shipped with a consumer in the same change (check:token-consumers) and was created in the library with all five fields; the focus/ring effect style now binds its inner spread to focus/ringInner, and elevation/inset joined the effect styles as the one INNER_SHADOW. Read back: payload equals library on every value and every field in all nine collections. Previous entry: 2026-09-05 (eleventh read) — THE CORRECTIVE PUSH. A five-field audit found the value checksums equal while the other four fields the standard requires had drifted, unseen: 253 descriptions carried HTML entities (the Plugin API stores an apostrophe as &#39; and reads it back that way — a property of Figma, not of the push; six were DOUBLE-escaped from an earlier push of already-escaped text), 479 descriptions differed from the payload after decoding (Palette's 90 ramp rungs shared one sentence, the Type roles and alpha ladder had guidance the library predated), five codeSyntax lines named CSS variables that do not exist (two kebab-cased minHeight, three empty), hiddenFromPublishing disagreed on 164 variables (payload hid the type/* roles by SOURCE tier; the library hid the Palette ramps), all 138 Palette rungs carried ALL_FILLS, and the six font/weight rows declared FLOAT over STRING values. Exporter: hidden now follows the LIBRARY-name tier (ref/* and all of Palette), Palette carries the five explicit colour scopes, the weight rows are STRING/FONT_STYLE, and a Tier-2 colour referencing a Tier-2 colour with its own alpha aliases THAT variable (cmp/accessibilityBar/{hoverBg,pillBg} -> overlay/brand/*), which was the one remaining Color value difference. Library: 347 variables corrected in place, 479 descriptions rewritten from the payload, ref/viewport/desktop-xl renamed desktopXl. Two variables authored in the library during the audit (layout/sidebar/collapsedWidth 88, layout/sidebar/flyoutWidth 240) were brought into source rather than deleted. $fieldChecksums now records description, codeSyntax, scopes and hidden per collection; the reader decodes the API's entity encoding before hashing descriptions. ||| 2026-09-06 (thirteenth read, Palette) — THE PRIMARY TIERS FOLLOW THE LIBRARY. color/transparent/primary/{8,16,24,32,40,48} now alias color/primaryScale/600 in the payload (build/brand-ramps.mjs BASE and semantic.json), as they already did in the library; the six-entry difference the twelfth read recorded in knownDifference.Palette is closed by changing the payload, not by pushing 500 over the library, on instruction. Palette value checksums are equal again (c547e79f:278) with nothing written to Figma; the four field checksums are unchanged. Previous: 2026-09-06 (twelfth read, Palette) — A 0% TIER FOR THE SECONDARY WASH. color/transparent/secondary/0 added to the payload (Palette 138 → 139 variables, 276 → 278 values) and created in the library — one family only, because check:token-consumers refuses a token nothing binds, and the rail's identity wash is the one consumer today — as COMPOSE_COLOR(base, alpha/0) with the payload's scopes, code syntax, description and visibility; the four field checksums are byte-equal after the push. The value halves DIFFER by six entries and knownDifference.Palette says why: the library's existing color/transparent/primary/8…48 alias primaryScale/600 while the payload aliases primaryScale/500 — a drift made in the library after the eleventh read, found by this read and deliberately not reconciled here (it is the primary/navy work's to settle, not the sidebar's). Previous: cmp/stepper/node/md · /node/sm · /track · /dot added to Space (152 → 156). Created in the library on 2026-09-06 and read back before this record moved: they resolve to 32, 24, 1 and 8px, aliasing ref/size/32, ref/size/24, ref/border/width/sm and ref/size/8.",
+    "recordedAt": "2026-09-10",
+    "$lastChange": "Added icon/brand/secondary/bolder — the icon family had a brand ramp with only one brand in it, so FactStrip.s saffron mark reached into color/secondaryScale/600, which the Palette collection does not publish. Pushed to the library, read back (Color 509 → 510, every field byte-identical to the generated payload), then re-recorded.",
     "payload": {
       "Space": "6d8b54fb:152",
       "Palette": "c547e79f:278",
-      "Color": "1eba00d1:509",
+      "Color": "6bd5f8fd:510",
       "Type": "bf306572:678",
       "Radius": "23d36c78:31",
       "Motion": "4ff49255:42",
@@ -1836,7 +1837,7 @@
     "figmaObserved": {
       "Space": "6d8b54fb:152",
       "Palette": "c547e79f:278",
-      "Color": "1eba00d1:509",
+      "Color": "6bd5f8fd:510",
       "Type": "bf306572:678",
       "Radius": "23d36c78:31",
       "Motion": "4ff49255:42",
@@ -1851,8 +1852,8 @@
   },
   "$contrastNotes": {
     "note": "The contrast SENTENCE each variable publishes, as last READ FROM THE LIVE LIBRARY. figma-contrast-parity.test.mjs asserts the built payload still matches this, so a measurement cannot move in code without reaching designers. Re-record only after pushing the descriptions and reading them back — never from the build alone.",
-    "recordedAt": "2026-09-04",
-    "$lastChange": "2026-09-04 (second read) — re-read after the alias+opacity push: 94 sentences, byte-identical to the previous read; the code's figure for border/neutral/inverse/subtle now agrees with the library (3.81:1) because the contrast audit composites an alias's opacity instead of reading the base as opaque (it had claimed 18.94:1). 2026-09-04 — the 60 holding notes for the colour-system redesign are closed: the descriptions were pushed to the library and the 94 sentences it now publishes were read back into figmaObserved. Previous: 2026-09-04 — 47 holding notes added for the colour-system redesign (see knownDifference). Previous: 2026-09-04, first recording. A live read that day found 31 of 94 figures wrong or absent: the whole ",
+    "recordedAt": "2026-09-10",
+    "$lastChange": "icon/brand/secondary/bolder — 4.97:1 vs bg/neutral/base, measured by the build and published to the library in the same pass.",
     "figmaObserved": {
       "bg/neutral/subtle": "Contrast 1.35:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
       "bg/neutral/bold": "Contrast 1.66:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
@@ -1947,7 +1948,8 @@
       "border/status/success/bolder": "Contrast 9.25:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
       "border/status/error/bolder": "Contrast 9.1:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
       "border/status/warning/bolder": "Contrast 7.79:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
-      "border/status/info/bolder": "Contrast 8.4:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA)."
+      "border/status/info/bolder": "Contrast 8.4:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+      "icon/brand/secondary/bolder": "Contrast 4.97:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA)."
     },
     "knownDifference": {
       "$note": "A variable whose published figure is DELIBERATELY not what the build computes. Empty, and it should stay that way: the library and the code describing the same colour differently needs a reason a designer would accept, not merely a note that one exists."
@@ -2032,6 +2034,7 @@
       "icon/neutral/subtler": "Contrast 4.65:1 vs bg/neutral/base — meets ≥3:1: non-essential text and quiet icons.",
       "icon/brand/primary/base": "Contrast 4.64:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
       "icon/brand/primary/bolder": "Contrast 6.36:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+      "icon/brand/secondary/bolder": "Contrast 4.97:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
       "icon/status/success/base": "Contrast 6.72:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
       "icon/status/success/bolder": "Contrast 9.25:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
       "icon/status/error/base": "Contrast 6.72:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
@@ -2052,7 +2055,7 @@
   "$namesRefreshed": "2026-09-06 — Palette re-derived after color/transparent/secondary/0 was pushed to the library and read back (138 → 139). 2026-09-06 — Space re-derived after the four cmp/stepper/* variables were pushed to the library and read back. 2026-09-05 — every collection's name array re-derived from the eleventh live read (1,058 variables): the payload's names plus the four library-only ref/viewport/* canvas widths in Space. The arrays had been three weeks stale for Space (90 vs 146), Palette (164 vs 138) and Color (484 vs 493), which made the payload's `status` field call 104 existing Space variables new.",
   "$fieldChecksums": {
     "$note": "Per-collection, per-FIELD checksums over `name=value` entries (build/figma-value-parity.mjs collectionFieldChecksums). Added 2026-09-05 because the value checksum alone let 253 escaped descriptions, five dead codeSyntax lines and 164 visibility disagreements sit under equal numbers. The reader excludes the library-only ref/viewport/* widths, skips scopes on TIMING/EASING (unsettable; Figma reports ALL_SCOPES) and decodes the Plugin API's HTML-entity encoding of descriptions (&#39; &amp; &quot; &gt; &lt;) before hashing — the API escapes on write and reads back escaped, so a raw read never equals the payload.",
-    "recordedAt": "2026-09-06",
+    "recordedAt": "2026-09-10",
     "payload": {
       "Space": {
         "description": "5cff4d5:152",
@@ -2067,10 +2070,10 @@
         "hidden": "e07f0347:139"
       },
       "Color": {
-        "description": "ede97696:509",
-        "codeSyntax": "2f65fb01:509",
-        "scopes": "53692f32:509",
-        "hidden": "c964ec7b:509"
+        "description": "fcffe685:510",
+        "codeSyntax": "2592798f:510",
+        "scopes": "fb9a96ab:510",
+        "hidden": "61620c8b:510"
       },
       "Type": {
         "description": "3a360ee8:113",
@@ -2123,10 +2126,10 @@
         "hidden": "e07f0347:139"
       },
       "Color": {
-        "description": "ede97696:509",
-        "codeSyntax": "2f65fb01:509",
-        "scopes": "53692f32:509",
-        "hidden": "c964ec7b:509"
+        "description": "fcffe685:510",
+        "codeSyntax": "2592798f:510",
+        "scopes": "fb9a96ab:510",
+        "hidden": "61620c8b:510"
       },
       "Type": {
         "description": "3a360ee8:113",

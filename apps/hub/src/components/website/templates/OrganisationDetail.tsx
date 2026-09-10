@@ -275,6 +275,25 @@ export function extractGlanceStrip(html: string): {
 const sameFact = (a: string, b: string) =>
   a.toLowerCase().replace(/[^a-z0-9]/g, "") === b.toLowerCase().replace(/[^a-z0-9]/g, "");
 
+/**
+ * Whether this record draws a card across the header band's lower edge.
+ *
+ * EXPORTED, AND THAT IS THE POINT. The route sets `reservesOverlap` on the
+ * header so the band pads itself by the 64 the card pulls up into; the template
+ * decides what the card contains. Those are two answers to one question, and
+ * they disagreed the moment NMBA's counters took the slot from its curated
+ * `facts`: the route still tested `detail.facts.length`, found none, dropped the
+ * reservation, and the card landed FLUSH against the hero's buttons — 0px where
+ * there had been 64. Nothing failed; the page just closed up.
+ *
+ * One expression, both callers. `data-state-completeness.md` §2.
+ */
+export function hasOverlappingFactCard(detail: OrgDetail | undefined): boolean {
+  if (detail == null) return false;
+  if (detail.impact?.placement === "hero" && detail.impact.items.length > 0) return true;
+  return (detail.facts?.length ?? 0) > 0;
+}
+
 export function formatOrgHtml(rawHtml: string, innerHeadingLevel: 3 | 4 = 4): string {
   let html = withAssetBasePath(trimRedundantOpening(rawHtml));
   // Strip any residual unconstrained widget images
@@ -630,7 +649,40 @@ export function OrganisationDetail({
    * second hero. The `asOf` line sits under the heading because a counter with
    * no date on a government page reads as today's number.
    */
-  if (detail?.impact != null && detail.impact.items.length > 0) {
+  /*
+   * …UNLESS THE RECORD PUTS THEM IN THE FOLD, which is where the source puts
+   * NMBA's. See `impact.placement`. In that case the counters ARE the fact
+   * strip and there is no band at all.
+   */
+  const impactInHero =
+    detail?.impact != null &&
+    detail.impact.placement === "hero" &&
+    detail.impact.items.length > 0;
+
+  /*
+   * WHAT THE CARD UNDER THE HEADER SHOWS — resolved ONCE, so the strip and the
+   * band below it can never both claim the figures.
+   *
+   * The counters win the slot when the record asks for it, because a record
+   * that publishes its own counters in the fold is saying they are the page's
+   * standing facts; anything curated beside them would be a second answer to
+   * the same question, 24px away.
+   */
+  const heroStrip: {
+    items: { icon: string; value: string; label: string }[];
+    ariaLabel: string;
+    asOf?: string;
+  } | null = impactInHero
+    ? {
+        items: detail!.impact!.items,
+        ariaLabel: `${org.title} in numbers`,
+        asOf: detail!.impact!.asOf,
+      }
+    : detail?.facts != null && detail.facts.length > 0
+      ? { items: detail.facts, ariaLabel: `Key facts about ${org.title}` }
+      : null;
+
+  if (detail?.impact != null && !impactInHero && detail.impact.items.length > 0) {
     const im = detail.impact;
     bands.push({
       id: "impact",
@@ -1596,10 +1648,36 @@ export function OrganisationDetail({
 
   return (
     <>
-      {detail?.facts != null && detail.facts.length > 0 && (
+      {heroStrip != null && (
         <div className="orgd__facts">
           <div className="sa-container">
-            <FactStrip overlap ariaLabel={`Key facts about ${org.title}`} items={detail.facts} />
+            {/*
+              * NO SHAPE PROP. `FactStrip` reads its own item count and takes
+              * the compact strip up to five facts and the extended grid above
+              * — the threshold is arithmetic (five 200px cells is all that fits
+              * one row) and it belongs in the component, not in every caller.
+              * Three curated facts and eight published counters both arrive
+              * here through the same slot; only one of them is a strip.
+              */}
+            <FactStrip overlap ariaLabel={heroStrip.ariaLabel} items={heroStrip.items} />
+            {/*
+             * THE READ DATE IS RECORDED, NOT PRINTED.
+             *
+             * "As published by the Department on 7 September 2026." stood under
+             * this card and came off on review. It is the right instinct: the
+             * card carries the Department's own figures on the Department's own
+             * estate, so a reader never had the question it answered, and
+             * `ui-restraint-and-copy.md` §1 keeps off the screen anything about
+             * the pipeline rather than about the scheme.
+             *
+             * `impact.asOf` STAYS on the record and stays required. It is what
+             * tells the next maintainer that these are a snapshot of live
+             * counters and when it was taken — the fact that matters, to the
+             * person who refreshes them rather than to a citizen. It is still
+             * printed where the counters render as their own SECTION
+             * (`placement: "band"`): a section has a standfirst to carry it, and
+             * a mid-page figure with no date reads as today's.
+             */}
           </div>
         </div>
       )}
