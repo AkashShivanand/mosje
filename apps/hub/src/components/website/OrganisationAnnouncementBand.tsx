@@ -713,20 +713,24 @@ export function OrganisationAnnouncementBand({
                     >
                       <Icon name={o.icon} size={40} />
                       {/*
-                       * EIGHT PIECES, AND ONLY ON THE FIRST APPEARANCE.
+                       * THE PIECES ARE RENDERED FOR AS LONG AS THE ANNIVERSARY
+                       * IS THE PANEL ON SHOW — but they only MOVE twice: once
+                       * on the first appearance, and again whenever a reader
+                       * puts their pointer on the card.
                        *
-                       * The pop and the spray are what say "this is an
-                       * anniversary" to a reader meeting the band for the first
-                       * time. Fired every six seconds for as long as the page is
-                       * open they would say something else entirely, so they are
-                       * spent once and the mark keeps a quiet drift afterwards.
+                       * They used to be rendered only during `firstShow` and
+                       * torn out afterwards, which is why the spray could never
+                       * come back: there was nothing left to animate. Keeping
+                       * them costs ten empty spans that hold no running
+                       * animation at rest — the animation is attached by the
+                       * burst flag or by the card's `:hover`, so the compositor
+                       * has nothing to think about in between.
                        *
-                       * They are not rendered at all after that, rather than
-                       * rendered and hidden: six elements carrying a finished
-                       * animation are six things for the compositor to keep
-                       * thinking about.
+                       * Still only on the ACTIVE panel: the back face of the
+                       * flipper is not something a reader can hover, and ten
+                       * spans behind it would animate where nobody is looking.
                        */}
-                      {o.celebrate && firstShow && n === i
+                      {o.celebrate && n === i
                         ? SPARKS.map((shape, n2) => (
                             <span key={n2} className="orgab__spark" data-n={n2} data-shape={shape} />
                           ))
