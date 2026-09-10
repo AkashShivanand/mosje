@@ -2,8 +2,8 @@
   "file": "3FF5l0SMNIwdpZrKkeyPTm",
   "indexPage": "56757:725",
   "indexFrame": "56757:726",
-  "capturedOn": "2026-09-07",
-  "statLine": "89 pages · 218 components · counted 7 September 2026",
+  "capturedOn": "2026-09-10",
+  "statLine": "90 pages · 220 components · counted 10 September 2026",
   "statuses": [
     "Ready",
     "Published",
@@ -105,6 +105,7 @@
     "Comment",
     "Description List",
     "Event List",
+    "Fact Strip",
     "Figure",
     "List",
     "File List",
@@ -468,7 +469,7 @@
     },
     {
       "name": "Data Display",
-      "stated": 17,
+      "stated": 18,
       "cards": [
         {
           "name": "Card",
@@ -512,6 +513,11 @@
         },
         {
           "name": "Description List",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Fact Strip",
           "status": "Ready",
           "linked": true
         },

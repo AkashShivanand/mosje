@@ -907,6 +907,7 @@
   --sa-icon-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
   --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
+  --sa-icon-brand-secondary-bolder: var(--sa-color-secondaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-successScale-600);
   --sa-icon-status-success-bolder: var(--sa-color-successScale-700);
   --sa-icon-status-error-base: var(--sa-color-dangerScale-600);
@@ -1734,6 +1735,7 @@
   --sa-icon-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
   --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
+  --sa-icon-brand-secondary-bolder: var(--sa-color-secondaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-successScale-600);
   --sa-icon-status-success-bolder: var(--sa-color-successScale-700);
   --sa-icon-status-error-base: var(--sa-color-dangerScale-600);
@@ -2322,6 +2324,7 @@
   --sa-icon-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
   --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
+  --sa-icon-brand-secondary-bolder: var(--sa-color-secondaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-successScale-600);
   --sa-icon-status-success-bolder: var(--sa-color-successScale-700);
   --sa-icon-status-error-base: var(--sa-color-dangerScale-600);
@@ -2911,6 +2914,7 @@
   --sa-icon-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
   --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
+  --sa-icon-brand-secondary-bolder: var(--sa-color-secondaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-successScale-600);
   --sa-icon-status-success-bolder: var(--sa-color-successScale-700);
   --sa-icon-status-error-base: var(--sa-color-dangerScale-600);
@@ -3498,6 +3502,7 @@
   --sa-icon-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
   --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
+  --sa-icon-brand-secondary-bolder: var(--sa-color-secondaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-successScale-600);
   --sa-icon-status-success-bolder: var(--sa-color-successScale-700);
   --sa-icon-status-error-base: var(--sa-color-dangerScale-600);
@@ -4085,6 +4090,7 @@
   --sa-icon-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
   --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
+  --sa-icon-brand-secondary-bolder: var(--sa-color-secondaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-successScale-600);
   --sa-icon-status-success-bolder: var(--sa-color-successScale-700);
   --sa-icon-status-error-base: var(--sa-color-dangerScale-600);
@@ -4672,6 +4678,7 @@
   --sa-icon-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
   --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
+  --sa-icon-brand-secondary-bolder: var(--sa-color-secondaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-successScale-600);
   --sa-icon-status-success-bolder: var(--sa-color-successScale-700);
   --sa-icon-status-error-base: var(--sa-color-dangerScale-600);
@@ -5259,6 +5266,7 @@
   --sa-icon-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
   --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
+  --sa-icon-brand-secondary-bolder: var(--sa-color-secondaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-successScale-600);
   --sa-icon-status-success-bolder: var(--sa-color-successScale-700);
   --sa-icon-status-error-base: var(--sa-color-dangerScale-600);
@@ -5846,6 +5854,7 @@
   --sa-icon-neutral-subtler: var(--sa-color-neutralScale-500);
   --sa-icon-brand-primary-base: var(--sa-color-action-primary-default);
   --sa-icon-brand-primary-bolder: var(--sa-color-primaryScale-600);
+  --sa-icon-brand-secondary-bolder: var(--sa-color-secondaryScale-600);
   --sa-icon-status-success-base: var(--sa-color-successScale-600);
   --sa-icon-status-success-bolder: var(--sa-color-successScale-700);
   --sa-icon-status-error-base: var(--sa-color-dangerScale-600);

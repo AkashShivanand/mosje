@@ -139,7 +139,99 @@ export function OrganisationAnnouncementBand({
   const [hovered, setHovered] = React.useState(false);
   const [focused, setFocused] = React.useState(false);
   const [zoom, setZoom] = React.useState(false);
+  /*
+   * WHERE THE READER STOPPED IT.
+   *
+   * Pressing the transport control already held the bar, because a PAUSED CSS
+   * animation keeps its current frame. Pressing a DOT did not: the panel
+   * changes, so the fill belongs to a different dot and starts from nothing —
+   * and since the same press also stops the rotation for good, that nothing sat
+   * there permanently. An empty groove beside a play triangle reads as broken
+   * rather than as held.
+   *
+   * So the percentage on screen at the moment of the press is captured and the
+   * bar is pinned to it. `null` means nothing is pinned and the animation owns
+   * the bar, which is every other moment.
+   */
+  const [held, setHeld] = React.useState<number | null>(null);
+  /*
+   * PICKED UP, NOT STARTED AGAIN.
+   *
+   * Releasing the hold used to hand the bar back to an animation that had never
+   * run, so it snapped from wherever the reader stopped it to nothing and began
+   * a fresh six seconds. Truthful, because the rotation timer really did
+   * restart — but the reader had pressed play, not reset, and a bar that jumps
+   * backwards on resume is the same class of abruptness as the ones already
+   * fixed here.
+   *
+   * This is the percentage to pick up FROM. It drives two things that have to
+   * agree or the dead hold comes back: a negative `animation-delay`, which
+   * starts the fill partway rather than at nothing, and the rotation's wait,
+   * which becomes the REMAINING time rather than a whole dwell.
+   */
+  const [resumeFrom, setResumeFrom] = React.useState<number | null>(null);
   const dotsRef = React.useRef<HTMLDivElement>(null);
+
+  /*
+   * Read straight off the rendered pseudo-element, because the animation is the
+   * only thing that knows how far it has got — there is no React state tracking
+   * the fill, deliberately, since a 60-per-second counter in state would render
+   * the whole band every frame.
+   *
+   * Percentages only. Under reduced motion the clip is the `inset(0px round …)`
+   * shorthand, whose second token is `round` rather than a length, so this
+   * returns null there and nothing is pinned — which is correct, as that bar is
+   * already solid and there is no rotation to stop.
+   */
+  function fillOnScreen(): number | null {
+    const dot = dotsRef.current?.querySelector<HTMLElement>('.orgab__dot[aria-selected="true"]');
+    if (!dot) return null;
+    const clip = window.getComputedStyle(dot, "::after").clipPath;
+    const inset = /inset\(([^)]*)\)/.exec(clip)?.[1];
+    if (!inset) return null;
+    const right = inset.trim().split(/\s+/)[1];
+    if (!right || !right.endsWith("%")) return null;
+    const pct = 100 - parseFloat(right);
+    return Number.isFinite(pct) ? Math.min(100, Math.max(0, pct)) : null;
+  }
+
+  /*
+   * ── HOW LONG THE CARD SHOULD WAIT: ASK THE BAR ──────────────────────────
+   *
+   * This is the whole fix for a defect that kept coming back in new clothes.
+   * The bar and the card were two clocks, and every hold split them further
+   * apart, because a hold PAUSES the bar's animation — which keeps its place —
+   * but CLEARS the card's timer, which then re-armed for a whole fresh cycle.
+   *
+   * Measured on the shipped build: hover the card for three seconds and let go,
+   * and the bar filled at 4443ms while the card turned at 6531ms. Two seconds of
+   * a full bar sitting there doing nothing, scaling with however long the reader
+   * hovered. Hovering is the commonest thing anyone does to this band, so the
+   * most-seen announcement on the estate carried the worst version of it.
+   *
+   * The bar's own animation already knows the answer exactly — through every
+   * pause, resume, negative delay and panel change — so it is the ONE source of
+   * truth, and the timer is DERIVED from it rather than run alongside it:
+   *
+   *     remaining = delay + duration - currentTime
+   *
+   * Correct in all four cases without special-casing any of them: a fresh panel
+   * still waiting out its flip, a bar part-filled after a hover, a bar picked up
+   * mid-way by a negative delay, and a bar already full.
+   */
+  function dwellRemainingMs(): number | null {
+    const dot = dotsRef.current?.querySelector<HTMLElement>('.orgab__dot[aria-selected="true"]');
+    if (!dot) return null;
+    const dwell = dot
+      .getAnimations({ subtree: true })
+      .find((a) => (a as CSSAnimation).animationName === "orgab-dwell");
+    const timing = dwell?.effect?.getTiming();
+    const now = dwell?.currentTime;
+    if (!timing || typeof now !== "number") return null;
+    const duration = typeof timing.duration === "number" ? timing.duration : null;
+    if (duration === null) return null;
+    return Math.max(0, (timing.delay ?? 0) + duration - now);
+  }
 
   /*
    * THE POP AND THE SPRAY HAPPEN ONCE.
@@ -230,6 +322,8 @@ export function OrganisationAnnouncementBand({
 
   const rotates = panels.length > 1;
   const i = panels.length ? turn % panels.length : 0;
+  /* The panel the card is turning away from — the one whose fill has to leave. */
+  const prev = panels.length ? (turn - 1 + panels.length) % panels.length : 0;
   const current = panels[i] ?? panels[0];
 
   /*
@@ -239,7 +333,55 @@ export function OrganisationAnnouncementBand({
    * belongs to the panel that opened it, and turning away from that panel would
    * leave a code for an announcement the reader can no longer see.
    */
-  const running = rotates && playing && !hovered && !focused && !reduced && !gone && !zoom;
+  /*
+   * ARMED ON MOUNT, and this is the other half of the two-clocks defect.
+   *
+   * `running` is true during the SERVER render, so `data-running` shipped in
+   * the HTML and the dwell bar began filling at FIRST PAINT. The rotation
+   * timer, being an effect, could only start at HYDRATION. Everything between
+   * those two moments was time the bar counted and the card did not, so the
+   * first rotation arrived that much after the bar had finished: 398ms measured
+   * on the built page, 1215ms in dev where hydration is slower. Either way it
+   * is the first cycle every visitor sees.
+   *
+   * Gating on a flag that can only become true in an effect makes first paint
+   * and the armed timer the same instant, so the two clocks share an origin.
+   * Server and first client render both see `false`, so nothing mismatches.
+   */
+  const [armed, setArmed] = React.useState(false);
+  /* SCHEDULES, never sets synchronously — the same shape as the flip's own
+     effect below, and for the same reason: the React Compiler rejects a
+     `setState` in an effect body as a cascading render. */
+  React.useEffect(() => {
+    const t = window.setTimeout(() => setArmed(true), 0);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  const running =
+    armed && rotates && playing && !hovered && !focused && !reduced && !gone && !zoom;
+
+  /*
+   * SWITCHED ON, BUT HELD — and the difference is the whole point.
+   *
+   * `playing` is a SETTING the reader controls with the transport button.
+   * Hover, focus and the open dialog are TEMPORARY holds on top of it. Those
+   * two were indistinguishable on screen: resting the pointer on the card
+   * stopped the rotation and froze the bar mid-fill while the button went on
+   * showing the pause glyph, `aria-pressed="false"` and "Pause the
+   * announcements" — every signal insisting it was playing.
+   *
+   * So a held carousel and a stalled one looked identical, which is what made
+   * a deliberate courtesy read as a broken control. It is also a 4.1.2 failure:
+   * a screen reader was told the thing was playing while it was stopped.
+   *
+   * The button is left alone, because its meaning has not changed — auto
+   * rotation is still switched on, and pressing it still switches it off. The
+   * HOLD gets its own quiet signal instead, on the indicator that is actually
+   * holding, and `aria-live` already flips to "polite" so the panel is
+   * announced while the reader is parked on it.
+   */
+  const holding =
+    armed && rotates && playing && !reduced && !gone && (hovered || focused || zoom);
 
 
   /*
@@ -253,6 +395,8 @@ export function OrganisationAnnouncementBand({
     if (delta <= 0) return;
     setTurn((t) => t + delta);
     setTurning(true);
+    /* A new panel gets a whole dwell, so whatever was being picked up is spent. */
+    setResumeFrom(null);
   }, []);
 
   /* Only ever SCHEDULES, so nothing is set synchronously during the effect. */
@@ -262,11 +406,39 @@ export function OrganisationAnnouncementBand({
     return () => window.clearTimeout(t);
   }, [turning]);
 
+  /*
+   * THE ROTATION IS RE-ANCHORED TO THE PANEL THAT JUST LANDED, and `turn` is in
+   * the deps for exactly that reason.
+   *
+   * It was a free-running `setInterval` established when `running` first became
+   * true, while the dwell bar restarts on every commit of `turn`. Two clocks
+   * with different origins: the interval's origin is HYDRATION and the bar's is
+   * FIRST PAINT, so the bar finished however long hydration had taken before
+   * the first rotation was due. Measured on the live page: a 398ms hold at a
+   * full bar on the first cycle, against 22-31ms on every cycle after it. The
+   * first cycle is the one every visitor sees.
+   *
+   * A timeout re-armed on each turn has one origin for both, so the bar and the
+   * card cannot drift apart however long the page took to become interactive.
+   *
+   * The wait is the flip PLUS the dwell, because the bar no longer starts
+   * counting until the card has landed (see `animation-delay` in the
+   * stylesheet). The reader gets the full six seconds of a panel they can
+   * actually read, rather than six seconds that began while it was edge-on.
+   */
   React.useEffect(() => {
     if (!running) return;
-    const t = window.setInterval(() => advance(1), DWELL_MS);
-    return () => window.clearInterval(t);
-  }, [running, advance]);
+    /*
+     * Picking up mid-bar means the card is already on screen — no flip to wait
+     * out — and only the unspent part of the dwell is left. Charging a whole
+     * one here would put the bar at 100% with seconds still to run, which is
+     * the dead hold this file has already fixed once.
+     */
+    /* Derived from the bar, never computed alongside it — see dwellRemainingMs. */
+    const wait = dwellRemainingMs() ?? FLIP_MS + DWELL_MS;
+    const t = window.setTimeout(() => advance(1), wait);
+    return () => window.clearTimeout(t);
+  }, [running, advance, turn, resumeFrom]);
 
   /*
    * The observance has now been seen. Flipping this on the FIRST commit rather
@@ -316,6 +488,9 @@ export function OrganisationAnnouncementBand({
      * panel, so nothing is lost by never turning backwards. A third would want
      * a real direction, and this is the line that would have to learn it.
      */
+    /* Read the bar BEFORE `advance` moves the selection, or this reads the
+       incoming dot's empty fill instead of the one the reader just stopped. */
+    setHeld(fillOnScreen());
     advance((((n - (turn % len)) % len) + len) % len);
     /* Pressing a dot stops the rotation for good: a reader who chose a panel has
        said which one they want. */
@@ -374,10 +549,55 @@ export function OrganisationAnnouncementBand({
           {...(rotates
             ? { role: "region", "aria-roledescription": "carousel", "aria-label": "Announcements" }
             : { "aria-label": "Announcement" })}
-          style={{ "--orgab-dwell": `${DWELL_MS}ms` } as React.CSSProperties}
-          onPointerEnter={() => setHovered(true)}
-          onPointerLeave={() => setHovered(false)}
-          onFocusCapture={() => setFocused(true)}
+          /* Both durations are declared HERE, on the band, because the pager is
+             a sibling of the flipper rather than a child of it — `--orgab-flip`
+             set on the flipper alone would not reach the dots that now read it
+             for their delay and their exit. */
+          style={
+            {
+              "--orgab-dwell": `${DWELL_MS}ms`,
+              "--orgab-flip": `${FLIP_MS}ms`,
+            } as React.CSSProperties
+          }
+          /*
+           * THE HOVER HOLD IS NOT ON THIS ELEMENT ANY MORE — it is on the card
+           * (see `.orgab__stage` below), and that is the whole point.
+           *
+           * `.orgab` is a FULL-BLEED strip the width of the viewport, sitting
+           * directly above the hero. Holding the rotation on its
+           * `pointerenter` meant a pointer merely CROSSING the page on its way
+           * to the hero silently froze the progress bar — and froze it with no
+           * sign that it had stopped, because the transport control still reads
+           * "pause", i.e. "this is playing". A reader saw a progress bar that
+           * advanced, stopped dead, advanced again. That is the stutter in the
+           * screen recording, and it was never the animation.
+           *
+           * Pausing for a reader who is ENGAGED with the announcement is right
+           * and WCAG 2.2.2 wants the mechanism to exist. Pausing for one whose
+           * cursor is in transit across a full-width strip is not engagement.
+           * The card is the announcement; the green either side of it is not.
+           */
+          /*
+           * A KEYBOARD READER HOLDS IT; A CLICK DOES NOT.
+           *
+           * Any focus used to hold the rotation, and a mouse click focuses what
+           * it clicks — so pressing PLAY focused the play button, `focused` went
+           * true, and `running` stayed false. The control cancelled itself:
+           * press play, nothing starts, and it only begins once the reader
+           * happens to click somewhere else. Reproduced on the shipped build,
+           * so this predates the resume it was found by.
+           *
+           * `:focus-visible` is exactly the distinction wanted and the browser
+           * already computes it: a button focused by pointer does not match it,
+           * one reached by Tab does. So the hold now means "a keyboard reader is
+           * in here reading", which is what it was always for, and a reader who
+           * presses play gets what they asked for. The pointer half is
+           * unaffected — hovering the card still holds it.
+           */
+          onFocusCapture={(e) => {
+            const target = e.target as HTMLElement;
+            setFocused(target.matches?.(":focus-visible") ?? true);
+          }}
           onBlurCapture={(e) => {
             if (!e.currentTarget.contains(e.relatedTarget as Node)) setFocused(false);
           }}
@@ -386,6 +606,8 @@ export function OrganisationAnnouncementBand({
             {/* ── The announcement, on the leading edge ──────────────────── */}
             <div
               className="orgab__stage"
+              onPointerEnter={() => setHovered(true)}
+              onPointerLeave={() => setHovered(false)}
               data-accent={current.accent}
               style={
                 { "--orgab-turn": turn, "--orgab-flip": `${FLIP_MS}ms` } as React.CSSProperties
@@ -491,20 +713,24 @@ export function OrganisationAnnouncementBand({
                     >
                       <Icon name={o.icon} size={40} />
                       {/*
-                       * EIGHT PIECES, AND ONLY ON THE FIRST APPEARANCE.
+                       * THE PIECES ARE RENDERED FOR AS LONG AS THE ANNIVERSARY
+                       * IS THE PANEL ON SHOW — but they only MOVE twice: once
+                       * on the first appearance, and again whenever a reader
+                       * puts their pointer on the card.
                        *
-                       * The pop and the spray are what say "this is an
-                       * anniversary" to a reader meeting the band for the first
-                       * time. Fired every six seconds for as long as the page is
-                       * open they would say something else entirely, so they are
-                       * spent once and the mark keeps a quiet drift afterwards.
+                       * They used to be rendered only during `firstShow` and
+                       * torn out afterwards, which is why the spray could never
+                       * come back: there was nothing left to animate. Keeping
+                       * them costs ten empty spans that hold no running
+                       * animation at rest — the animation is attached by the
+                       * burst flag or by the card's `:hover`, so the compositor
+                       * has nothing to think about in between.
                        *
-                       * They are not rendered at all after that, rather than
-                       * rendered and hidden: six elements carrying a finished
-                       * animation are six things for the compositor to keep
-                       * thinking about.
+                       * Still only on the ACTIVE panel: the back face of the
+                       * flipper is not something a reader can hover, and ten
+                       * spans behind it would animate where nobody is looking.
                        */}
-                      {o.celebrate && firstShow && n === i
+                      {o.celebrate && n === i
                         ? SPARKS.map((shape, n2) => (
                             <span key={n2} className="orgab__spark" data-n={n2} data-shape={shape} />
                           ))
@@ -586,6 +812,17 @@ export function OrganisationAnnouncementBand({
                   className="orgab__pager"
                   data-running={running || undefined}
                   data-turning={turning || undefined}
+                  data-held={held != null ? "" : undefined}
+                  data-holding={holding ? "" : undefined}
+                  data-resume={resumeFrom != null ? "" : undefined}
+                  style={
+                    {
+                      ...(held != null ? { "--orgab-held": `${held}%` } : null),
+                      ...(resumeFrom != null
+                        ? { "--orgab-resume": `${(resumeFrom / 100) * DWELL_MS}ms` }
+                        : null),
+                    } as React.CSSProperties
+                  }
                 >
                   {rotates ? (
                   <div
@@ -601,6 +838,16 @@ export function OrganisationAnnouncementBand({
                         role="tab"
                         data-i={n}
                         aria-selected={n === i}
+                        /*
+                         * THE DOT THE FILL IS LEAVING, for as long as the card
+                         * is turning. Without it the bar had no exit: one frame
+                         * a full 40px white bar, the next frame gone, with an
+                         * empty bar appearing in the other dot. Nothing joined
+                         * the two states, so the indicator teleported rather
+                         * than moved and the eye had to find it again every
+                         * cycle.
+                         */
+                        data-leaving={turning && n === prev ? "" : undefined}
                         tabIndex={n === i ? 0 : -1}
                         className="orgab__dot"
                         onClick={() => go(n)}
@@ -630,7 +877,16 @@ export function OrganisationAnnouncementBand({
                       type="button"
                       className="orgab__play"
                       aria-pressed={!playing}
-                      onClick={() => setPlaying((p) => !p)}
+                      onClick={() => {
+                        const next = !playing;
+                        setPlaying(next);
+                        if (next) {
+                          /* Hand the pinned value to the animation as a
+                             starting point rather than discarding it. */
+                          setResumeFrom(held);
+                          setHeld(null);
+                        }
+                      }}
                     >
                       <Icon name={playing ? "pause" : "play_arrow"} size={16} fill weight={400} aria-hidden />
                       <span className="ds-sr-only">

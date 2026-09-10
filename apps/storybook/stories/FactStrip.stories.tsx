@@ -10,10 +10,22 @@ import { FactStrip } from "@mosje/design-system";
  * when the number would look wrong without "+12% vs last month" beside it, and
  * for this when a trend on the value would be nonsense.
  *
- * **One card, not a row of cards.** The items share a single surface divided by
- * hairlines, because they are one summary of one organisation rather than four
- * things to compare. `items` is a plain array; four is the count the
- * organisation-detail template uses and the most that stays legible on a laptop.
+ * **One card, not a row of cards.** The items share a single surface, because
+ * they are one summary of one organisation rather than four things to compare.
+ * There is no rule between the cells: the marks already give the row its
+ * rhythm, and vertical hairlines under a hero add furniture to the calmest band
+ * on the page.
+ *
+ * **`variant` has two shapes, and the item count picks one.** Up to five facts
+ * it is `compact` — one row of centred stacks, the treatment the handoff draws.
+ * Above five it cannot BE one row, so it becomes `extended`: the cells wrap to a
+ * balanced column count, each turns on its side with the mark in a column of its
+ * own, and the value steps up from `headline-5` to `headline-2` so it reads as a
+ * figure rather than as a line of text that happens to be numeric. Five is
+ * arithmetic rather than taste — `minmax(200px, 1fr)` fits at most five tracks
+ * in the widest content column on the estate. Pass `variant` only to override
+ * the count: a six-item strip that must stay compact, or a four-item one that
+ * must read as figures.
  *
  * `overlap` pulls the card up so it straddles the band above — the treatment
  * under a coloured page hero, and the reason the banner and the facts read as
@@ -25,7 +37,7 @@ import { FactStrip } from "@mosje/design-system";
  * Name what the facts are about.
  *
  * `icon` takes a Material Symbols Rounded name, like everywhere else in the
- * estate. The strip renders it at 24 in a tinted chip; there is no size prop,
+ * estate. The strip renders it at 32 in a tinted chip; there is no size prop,
  * because four differently-sized chips in one row is never the answer.
  *
  * Lifecycle: **Stable**.
@@ -46,6 +58,12 @@ const meta = {
   argTypes: {
     ariaLabel: { control: "text" },
     overlap: { control: "boolean" },
+    variant: {
+      control: "inline-radio",
+      options: ["compact", "extended"],
+      description:
+        "Leave it unset and the item count decides — compact up to five facts, extended above.",
+    },
     items: { control: false },
     className: { control: false },
   },
@@ -101,4 +119,47 @@ export const OverlappingAHero: Story = {
       </div>
     ),
   ],
+};
+
+/**
+ * **Eight facts, so `variant` resolves to `extended` on its own** — nothing is
+ * passed here. The cells wrap four across, each turns on its side, and the
+ * figure steps up to `headline-2` against a `body-2` caption: 2.3:1 where
+ * compact is 1.25:1, which is the weakest hierarchy two sizes can have.
+ *
+ * The card is SHORTER than the same eight would be stacked — 220px against 312 —
+ * because a side-on cell puts the mark beside two lines instead of above them.
+ * These are the Abhiyaan's published counters, read on 7 September 2026.
+ */
+export const Extended: Story = {
+  args: {
+    ariaLabel: "Nasha Mukt Bharat Abhiyaan in numbers",
+    items: [
+      { icon: "groups", value: "345,703,321", label: "People reached" },
+      { icon: "school", value: "137,209,589", label: "Youth reached" },
+      { icon: "woman", value: "106,563,417", label: "Women reached" },
+      { icon: "menu_book", value: "3,726,319", label: "Activities in educational institutes" },
+      { icon: "healing", value: "28,29,661+", label: "Persons treated and rehabilitated" },
+      { icon: "local_hospital", value: "755+", label: "DoSJE-supported de-addiction centres" },
+      { icon: "front_hand", value: "3,361,211", label: "Total pledges" },
+      { icon: "volunteer_activism", value: "164,943", label: "Nasha Mukti Mitr registered" },
+    ],
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: 1272, margin: "0 auto", padding: 24 }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
+/**
+ * **`variant` overriding the count.** The same four facts as the Playground,
+ * forced into the extended shape — a set small enough to be a strip, set as
+ * figures because the page wants them read that way. The override exists for
+ * this; it is not the default for a reason.
+ */
+export const ExtendedByOverride: Story = {
+  args: { variant: "extended" },
 };

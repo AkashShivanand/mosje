@@ -101,3 +101,10 @@ docs/audit_screenshots/
 
 # UX4G conformance mapping — a build output of @mosje/tokens, read only by tools/ux4g-conformance/measure.mjs
 tools/ux4g-conformance/parity.generated.css
+
+# Strix security-scan run output — one directory per run, holding the SARIF
+# findings, a coverage map, the agent's own log and a SQLite state DB. All of it
+# is reproducible by re-running the scan, and the log and state carry whatever
+# the run happened to read, so it is not content to publish. Ignored, never
+# deleted: a finished run is the local input to whoever triages it.
+strix_runs/

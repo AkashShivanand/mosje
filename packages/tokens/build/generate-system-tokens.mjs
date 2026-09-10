@@ -110,6 +110,20 @@ put(["icon", "brand", "primary", "base"], "{color.action.primary.default}", "Bra
 /** Pairs with `text/brand/primary/bolder` so a label and its leading glyph never disagree. */
 put(["icon", "brand", "primary", "bolder"], "{color.primaryScale.600}", "Brand-coloured icon that must pass AA on a tinted surface");
 /**
+ * THE SAFFRON GLYPH RUNG — the twin of `primary/bolder`, and added 2026-09-10 because the
+ * icon family had a brand ramp with only one brand in it.
+ *
+ * `FactStrip` paints its mark #c34700 on the pale saffron chip, and with no such token it
+ * reached past the icon family into `color/secondaryScale/600` — the same class of leak
+ * `icon/neutral/subtler` was added to close, and worse here because the Palette collection
+ * publishes NOTHING: a Figma file could not bind that colour at all, so the component could
+ * not be authored in the library without either a cross-family `bg/*` binding or a raw hex.
+ *
+ * 4.40:1 on `bg/brand/secondary/base` (#fff2ed) and 4.9:1 on white — clear of the 3:1
+ * non-text floor (WCAG 2.2 §1.4.11) on both surfaces the chip is drawn on.
+ */
+put(["icon", "brand", "secondary", "bolder"], "{color.secondaryScale.600}", "Saffron icon that must pass AA on a tinted surface — the mark on a FactStrip chip. Pairs with bg/brand/secondary/base.");
+/**
  * The quiet ICON rung, and the twin of `text/neutral/subtler` — added 2026-08-26 because the
  * library had no such thing and 14 glyphs had reached past the icon family into the raw stroke
  * ramp to find one. The worst were the Date-Time Picker's prev/next chevrons at `stroke/300`:

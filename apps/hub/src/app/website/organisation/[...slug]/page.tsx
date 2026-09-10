@@ -7,6 +7,7 @@ import { PageLayout } from "@/components/website/layout/PageLayout";
 import {
   OrganisationDetail,
   OrganisationContactBand,
+  hasOverlappingFactCard,
 } from "@/components/website/templates/OrganisationDetail";
 import { AdarshGramDashboard } from "@/components/website/AdarshGramDashboard";
 import { GiaDashboard } from "@/components/website/GiaDashboard";
@@ -299,8 +300,14 @@ export default async function OrganisationDetailPage({
     level: (isSubPage ? "inner" : "landing") as "inner" | "landing",
     // Only a sub-page has somewhere to go back TO.
     backHref: isSubPage ? orgHref(rootSlug) : undefined,
-    // The template draws a fact card that straddles the band's lower edge.
-    hasOverlappingFacts: (detail?.facts?.length ?? 0) > 0,
+    /*
+     * The template draws a fact card that straddles the band's lower edge —
+     * asked of the template rather than re-derived here, because the card is
+     * not always the curated `facts` (see `impact.placement`) and a route that
+     * guesses wrong takes the band's 64px of reserved padding away from a card
+     * that is still there.
+     */
+    hasOverlappingFacts: hasOverlappingFactCard(detail),
     /*
      * The helpline, beside the mark, once the campaign band is dismissed —
      * rendered here rather than inside the band because it has to OUTLIVE it.
