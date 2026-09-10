@@ -1,26 +1,14 @@
 #!/usr/bin/env python3
-"""Bind every SMILE finding to a REAL element box on the build capture.
-
-Pins are never hand-placed (audit-rules §2/§F): each finding names an anchor by the text a
-reader can see, that text is looked up in the live extraction, and the pin is derived from the
-element's real box against the real capture height. Anything that does not resolve is printed,
-not silently defaulted — a pin on the wrong element is worse than no pin.
-"""
-import json, os, re, sys
+"""SMILE-Beggary's anchor specs. The resolver itself lives in engine/anchors.py so every portal
+gets the same lookup rules and the same recorded fields — tag, role and bg are what the claim
+gates reason about."""
+import os, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(HERE)), "engine"))
+import anchors as A
+
 LIVE = os.path.join(HERE, "captures", "live")
 
-# finding id -> anchor spec on the BUILD capture.
-#   text:  the visible string (prefix-forgiving — the extractor truncates at 80 chars)
-#   tag:   narrow to an element type. REQUIRED for a <select>, whose options are not direct
-#          child text nodes and so carry no text at all in the extraction — four anchors
-#          silently failed to resolve before this existed.
-#   fs:    disambiguate two elements with the same words. "Programme Overview" is both the h1
-#          (28px) and nothing else; "PROGRAMME OVERVIEW" is a 12px section label — a
-#          case-insensitive text match alone picks the wrong one.
-#   ymin/ymax: last resort, to pick one of several identical labels.
-#   chrome: allow a match above y=60 or left of the content column (masthead / footer / the
-#          third-party accessibility panel), which are excluded by default.
 ANCHORS = {
  # ---- screen-specific ----
  "S01": dict(slug="SUPER-ADMIN-DASHBOARD",     text="BENEFICIARY PROFILE", tag="h2"),
@@ -103,70 +91,7 @@ ANCHORS = {
  "L09": dict(slug="SIGNIN-CHOOSE-PORTAL", text="Log in to your account", tag="h2"),
 }
 
-def rows_for(slug):
-    p = os.path.join(LIVE, f"{slug}.json")
-    d = json.load(open(p))
-    return d.get("rows") or [], d.get("pageH") or 1000
 
-def find(rows, spec):
-    """Resolve one anchor spec to a real element row, or None. Never guesses: a spec that
-    matches nothing is reported by the caller, because a pin on the wrong element is worse
-    than a finding with no pin."""
-    want = (spec.get("text") or "").lower()
-    tag, fs = spec.get("tag"), spec.get("fs")
-    ymin, ymax = spec.get("ymin", 0), spec.get("ymax", 10 ** 9)
-    xmin, xmax = spec.get("xmin", -10 ** 9), spec.get("xmax", 10 ** 9)
-    chrome = spec.get("chrome", False)
-    cands = []
-    for r in rows:
-        x, y = r.get("x"), r.get("y")
-        if x is None or y is None: continue
-        if not (ymin <= y <= ymax): continue
-        if not (xmin <= x <= xmax): continue
-        if not chrome and (y < 60 or x < 300 or x > 1440): continue
-        if tag and r.get("tag") != tag: continue
-        if fs is not None and r.get("fontSize") != fs: continue
-        if want:
-            t = (r.get("text") or "").strip().lower()
-            if not t: continue
-            if not (t == want or t.startswith(want) or (want.startswith(t) and len(t) > 4)):
-                continue
-        cands.append(r)
-    if not cands: return None
-    cands.sort(key=lambda r: (r.get("y") or 0, r.get("x") or 0))
-    n = spec.get("nth", 0)
-    return cands[n] if n < len(cands) else cands[0]
-
-def main():
-    out, missing = {}, []
-    for fid, spec in ANCHORS.items():
-        slug = spec["slug"]
-        rows, pageH = rows_for(slug)
-        r = find(rows, spec)
-        if not r:
-            missing.append(f"{fid}: {spec} matched nothing on {slug}")
-            continue
-        box = [r["x"], r["y"], r["w"], r["h"]]
-        # dx/dy: some things a finding is about have no text node of their own — an icon, a
-        # tinted banner, a close control. Anchor to a neighbour the extraction CAN see, then
-        # offset by a distance measured off the capture, and say so in the record.
-        dx, dy = spec.get("dx", 0), spec.get("dy", 0)
-        if dx or dy:
-            box = [box[0] + dx, box[1] + dy, spec.get("w", box[2]), spec.get("h", box[3])]
-        # the element's OWN tag/role is recorded, not just the spec's: engine/claims.py checks that
-        # a finding about a chip or a button did not resolve to a plain text span beside it
-        out[fid] = {"slug": slug, "anchor": spec.get("text") or spec.get("tag"), "pageH": pageH,
-                    "box": box, "offset": [dx, dy] if (dx or dy) else None,
-                    "text": (r.get("text") or "")[:50], "fontSize": r.get("fontSize"),
-                    "tag": r.get("tag"), "role": r.get("role"),
-                    "bg": r.get("bg"), "color": r.get("color"),
-                    "_anchorWhy": spec.get("why")}
-    json.dump(out, open(os.path.join(HERE, "sheet", "anchors.json"), "w"), indent=1)
-    print(f"resolved {len(out)}/{len(ANCHORS)}")
-    for m in missing: print("  !", m)
-    for fid in sorted(out):
-        a = out[fid]
-        print(f"  {fid:<4} {a['slug']:<34} y={a['box'][1]:<5} x={a['box'][0]:<5} {a['text']!r}")
 
 if __name__ == "__main__":
-    main()
+    A.resolve(ANCHORS, LIVE, out_path=os.path.join(HERE, "sheet", "anchors.json"))

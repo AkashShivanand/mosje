@@ -9,7 +9,11 @@
     "tokensFile": "inputs/tokens.json",
     "urlTemplate": "https://www.figma.com/design/REPLACE_figma_file_key/Name?node-id={node}"
   },
-  "capture": { "width": 1440, "dpr": 2, "waitMs": 1800 },
+  "capture": {
+    "width": 1440,
+    "dpr": 2,
+    "waitMs": 1800
+  },
   "live": {
     "auth": {
       "type": "form",
@@ -20,16 +24,33 @@
       "loginMarker": "/login"
     },
     "roles": [
-      { "name": "public", "base": "https://REPLACE.example.com", "auth": "none" },
-      { "name": "admin",  "base": "https://REPLACE.example.com", "user": "admin@example.com" }
+      {
+        "name": "public",
+        "base": "https://REPLACE.example.com",
+        "auth": "none"
+      },
+      {
+        "name": "admin",
+        "base": "https://REPLACE.example.com",
+        "user": "admin@example.com"
+      }
     ],
-    "skipRoutes": ["/login", "/logout", "/terms-and-conditions", "/privacy-policy"]
+    "skipRoutes": [
+      "/login",
+      "/logout",
+      "/terms-and-conditions",
+      "/privacy-policy"
+    ]
   },
   "baseline": {
     "mode": "tokens",
-    "_modes": "tokens (strict, vs inputs/tokens.json) | derived (from Figma variables) | internal (no DS — flag outliers)",
+    "_modes": "tokens (strict, vs inputs/tokens.json) | derived (from Figma variables) | internal (no DS \u2014 flag outliers)",
     "source": "inputs/tokens.json"
   },
   "manifest": "screen-manifest.yaml",
-  "notes": "Passwords live in secrets.json (gitignored), keyed by role name. Never commit them."
+  "notes": "Passwords live in secrets.json (gitignored), keyed by role name. Never commit them.",
+  "claimGates": false,
+  "_claimGates": "Set true once this project has resolved anchors (projects/<p>/sheet/anchors.json) and a design dump from engine/figma_dump.js. Then `run.py --phase claims` is FATAL: no finding ships without a crop pair, no anchor sits on the element beside the one the sentence is about, and no design read is trusted unless it can prove the page was loaded.",
+  "allowSharedAnchors": [],
+  "_allowSharedAnchors": "Pairs of finding ids that legitimately share one design box \u2014 normally a global and its per-screen twin. Everything else that shares a box is a copy-paste and fails the duplicate-anchor gate."
 }
