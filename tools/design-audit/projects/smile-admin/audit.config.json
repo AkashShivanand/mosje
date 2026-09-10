@@ -68,5 +68,15 @@
     "source": "inputs/tokens.json"
   },
   "manifest": "screen-manifest.yaml",
-  "notes": "Passwords live in secrets.json (gitignored, symlinked to the main worktree). Credentials sourced 2026-09-10 from the shared 'Portal access - DEV and UAT test Logins' sheet. Three further roles are listed there with EMPTY credentials and cannot be captured: State Nodal Officer, Nodal Officer, Implementing Agency. A prod host also exists (https://smilebeggary-admin.dosje.gov.in) with a Test Super Admin account; this audit deliberately targets DEV."
+  "notes": "Passwords live in secrets.json (gitignored, symlinked to the main worktree). Credentials sourced 2026-09-10 from the shared 'Portal access - DEV and UAT test Logins' sheet. Three further roles are listed there with EMPTY credentials and cannot be captured: State Nodal Officer, Nodal Officer, Implementing Agency. A prod host also exists (https://smilebeggary-admin.dosje.gov.in) with a Test Super Admin account; this audit deliberately targets DEV.",
+  "allowSharedAnchors": [
+    [
+      "S08",
+      "G17"
+    ]
+  ],
+  "_allowSharedAnchors_why": "S08 and G17 are both about the breadcrumb's first step on Consent Forms \u2014 one per-screen, one global \u2014 so they legitimately resolve to the same design box. Every other duplicate is a copy-paste and the gate should fail on it.",
+  "claimGates": true,
+  "claimAnchorsUseWorkingIds": true,
+  "_claimGates_why": "The claim gates are fatal for this project: it is the one whose findings were audited claim by claim, so it is the reference implementation. A project without resolved anchors still gets the design-read gate and the claim classification, just not fatally."
 }

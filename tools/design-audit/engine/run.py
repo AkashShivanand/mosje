@@ -44,7 +44,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--project", required=True)
     ap.add_argument("--phase", default="analyze+report",
-                    choices=["capture", "analyze", "report", "analyze+report", "all", "bundle", "figures"])
+                    choices=["capture", "analyze", "report", "analyze+report", "all", "bundle",
+                             "figures", "claims"])
     ap.add_argument("--role", default=None, help="capture only this role (merged into the "
                     "existing manifest — other roles' entries are preserved)")
     ap.add_argument("--allow-empty", action="store_true",
@@ -88,6 +89,22 @@ def main():
         print("== PHASE: figures =="); FIG.derive(a.project, hub)
     if ph in ("analyze", "analyze+report", "all"):
         print("== PHASE: analyze =="); AN.run(a.project)
+    if ph in ("claims", "analyze", "analyze+report", "all"):
+        # The claim gates. Every OTHER gate in this engine measures the pipeline — did we capture
+        # it, is the pin inside its crop. These measure whether the FINDING is true, which is the
+        # thing a reviewer actually receives. Added after a run in which about one claim in five
+        # was wrong and every existing gate was green.
+        print("== PHASE: claims ==")
+        import subprocess as _sp, config as _CFG
+        _cfg, _ = _CFG.load(a.project)
+        _strict = bool(_cfg.get("claimGates"))
+        _rc = _sp.call([sys.executable, os.path.join(ENGINE, "claims_run.py"),
+                        "--project", a.project] + (["--strict"] if _strict else [])
+                       + (["--by-old-id"] if _cfg.get("claimAnchorsUseWorkingIds") else []))
+        if _rc and _strict:
+            print("\n!! CLAIM GATE FAILED — the findings are not publishable as they stand.",
+                  flush=True)
+            sys.exit(2)
     if ph in ("report", "analyze+report", "all"):
         print("== PHASE: report =="); REP.build(a.project)
     print("\nNEXT (human track → CERTIFIED):")

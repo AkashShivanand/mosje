@@ -1,312 +1,233 @@
 {
+ "SUPER-ADMIN-DASHBOARD": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8664:49264",
+   "totalText": 392,
+   "offCanvas": 0,
+   "noRender": 91,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-USERS": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8664:51029",
+   "totalText": 283,
+   "offCanvas": 41,
+   "noRender": 69,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
  "SUPER-ADMIN-ROLES": {
-  "rows": [
-   {
-    "x": 325,
-    "y": 163,
-    "fs": 14,
-    "fw": "Regular",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "Home"
-   },
-   {
-    "x": 387,
-    "y": 162,
-    "fs": 14,
-    "fw": "Medium",
-    "fam": "Noto Sans",
-    "fill": "#1f2937",
-    "ch": "Roles"
-   },
-   {
-    "x": 327,
-    "y": 194,
-    "fs": 28,
-    "fw": "Medium",
-    "fam": "Noto Sans",
-    "fill": "#1f2937",
-    "ch": "Roles"
-   },
-   {
-    "x": 325,
-    "y": 236,
-    "fs": 16,
-    "fw": "Regular",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "Roles bundle permissions. Assign a role to"
-   },
-   {
-    "x": 1115,
-    "y": 172,
-    "fs": 14,
-    "fw": "Medium",
-    "fam": "Noto Sans",
-    "fill": "#003366",
-    "ch": "View Catalogue"
-   },
-   {
-    "x": 1299,
-    "y": 172,
-    "fs": 14,
-    "fw": "Medium",
-    "fam": "Noto Sans",
-    "fill": "#ffffff",
-    "ch": "Add New Role"
-   },
-   {
-    "x": 412,
-    "y": 338,
-    "fs": 14,
-    "fw": "Medium",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "Total Roles"
-   },
-   {
-    "x": 1247,
-    "y": 338,
-    "fs": 14,
-    "fw": "Medium",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "Permissions Mapped"
-   },
-   {
-    "x": 969,
-    "y": 338,
-    "fs": 14,
-    "fw": "Medium",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "System Roles"
-   },
-   {
-    "x": 690,
-    "y": 339,
-    "fs": 14,
-    "fw": "Medium",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "Active"
-   },
-   {
-    "x": 361,
-    "y": 468,
-    "fs": 14,
-    "fw": "Regular",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "Search role by name or description"
-   },
-   {
-    "x": 369,
-    "y": 528,
-    "fs": 14,
-    "fw": "SemiBold",
-    "fam": "Noto Sans",
-    "fill": "#003366",
-    "ch": "Super Admin"
-   },
-   {
-    "x": 623,
-    "y": 530,
-    "fs": 11,
-    "fw": "Medium",
-    "fam": "Noto Sans",
-    "fill": "#27682a",
-    "ch": "Active"
-   },
-   {
-    "x": 337,
-    "y": 574,
-    "fs": 14,
-    "fw": "Regular",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "Platform super administrator with pan-Indi"
-   },
-   {
-    "x": 345,
-    "y": 628,
-    "fs": 11,
-    "fw": "Medium",
-    "fam": "Noto Sans",
-    "fill": "#1558b0",
-    "ch": "65 Permissions"
-   },
-   {
-    "x": 419,
-    "y": 678,
-    "fs": 12,
-    "fw": "Medium",
-    "fam": "Noto Sans",
-    "fill": "#ffffff",
-    "ch": "Edit Permissions"
-   },
-   {
-    "x": 739,
-    "y": 528,
-    "fs": 14,
-    "fw": "SemiBold",
-    "fam": "Noto Sans",
-    "fill": "#003366",
-    "ch": "Central Admin / Central Ministry"
-   },
-   {
-    "x": 707,
-    "y": 574,
-    "fs": 14,
-    "fw": "Regular",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "MoSJE / NeGD at the central level. Pan-Ind"
-   },
-   {
-    "x": 1110,
-    "y": 528,
-    "fs": 14,
-    "fw": "SemiBold",
-    "fam": "Noto Sans",
-    "fill": "#003366",
-    "ch": "State Nodal Officer"
-   },
-   {
-    "x": 1078,
-    "y": 574,
-    "fs": 14,
-    "fw": "Regular",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "State-level Nodal Officer ~ read/write wit"
-   },
-   {
-    "x": 368,
-    "y": 746,
-    "fs": 14,
-    "fw": "SemiBold",
-    "fam": "Noto Sans",
-    "fill": "#003366",
-    "ch": "Implementing Authority / Nodal Officer"
-   },
-   {
-    "x": 337,
-    "y": 810,
-    "fs": 14,
-    "fw": "Regular",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "District-level operational owner (formerly"
-   },
-   {
-    "x": 739,
-    "y": 749,
-    "fs": 14,
-    "fw": "SemiBold",
-    "fam": "Noto Sans",
-    "fill": "#003366",
-    "ch": "Surveyor"
-   },
-   {
-    "x": 707,
-    "y": 802,
-    "fs": 14,
-    "fw": "Regular",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "Field surveyor ~ logs in via OTP on mobile"
-   },
-   {
-    "x": 1110,
-    "y": 749,
-    "fs": 14,
-    "fw": "SemiBold",
-    "fam": "Noto Sans",
-    "fill": "#003366",
-    "ch": "IA"
-   },
-   {
-    "x": 1078,
-    "y": 794,
-    "fs": 14,
-    "fw": "Regular",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "Implementing Agency ~ registers via mobile"
-   },
-   {
-    "x": 740,
-    "y": 985,
-    "fs": 14,
-    "fw": "SemiBold",
-    "fam": "Noto Sans",
-    "fill": "#003366",
-    "ch": "NISD"
-   },
-   {
-    "x": 707,
-    "y": 1030,
-    "fs": 14,
-    "fw": "Regular",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "National Institute of Social Defence ~ ope"
-   },
-   {
-    "x": 1110,
-    "y": 984,
-    "fs": 14,
-    "fw": "SemiBold",
-    "fam": "Noto Sans",
-    "fill": "#003366",
-    "ch": "Swashraya (Shelter Home)"
-   },
-   {
-    "x": 1077,
-    "y": 1030,
-    "fs": 14,
-    "fw": "Regular",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "Shelter home staff ~ submits facility chec"
-   },
-   {
-    "x": 369,
-    "y": 985,
-    "fs": 14,
-    "fw": "SemiBold",
-    "fam": "Noto Sans",
-    "fill": "#003366",
-    "ch": "US/SO"
-   },
-   {
-    "x": 337,
-    "y": 1030,
-    "fs": 14,
-    "fw": "Regular",
-    "fam": "Noto Sans",
-    "fill": "#374151",
-    "ch": "Under Secretary / Section Officer ~ operat"
-   },
-   {
-    "x": 1162,
-    "y": 1266,
-    "fs": 14,
-    "fw": "Medium",
-    "fam": "Noto Sans",
-    "fill": "#ffffff",
-    "ch": "Terms & Conditions"
-   },
-   {
-    "x": 1326,
-    "y": 1266,
-    "fs": 14,
-    "fw": "Medium",
-    "fam": "Noto Sans",
-    "fill": "#ffffff",
-    "ch": "Privacy Policy"
-   }
-  ]
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8664:52367",
+   "totalText": 220,
+   "offCanvas": 6,
+   "noRender": 31,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-PERMISSIONS": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51661:156038",
+   "totalText": 195,
+   "offCanvas": 3,
+   "noRender": 20,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-CONSENT": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51873:194809",
+   "totalText": 255,
+   "offCanvas": 4,
+   "noRender": 56,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-NOTIFICATIONS": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51830:237991",
+   "totalText": 160,
+   "offCanvas": 13,
+   "noRender": 30,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-PERSONS": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8664:57337",
+   "totalText": 309,
+   "offCanvas": 28,
+   "noRender": 73,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-MASTER-SETTING": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51836:240081",
+   "totalText": 201,
+   "offCanvas": 10,
+   "noRender": 33,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-COMPREHENSIVE-REHAB-DATA": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51742:166982",
+   "totalText": 268,
+   "offCanvas": 33,
+   "noRender": 58,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-COMPREHENSIVE-REHAB-SKILL-TRAINING": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51742:164435",
+   "totalText": 265,
+   "offCanvas": 35,
+   "noRender": 58,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-SHELTER-HOMES-BENEFICIARIES": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51712:164958",
+   "totalText": 311,
+   "offCanvas": 102,
+   "noRender": 131,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-CITY-PROFILING": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51891:441340",
+   "totalText": 281,
+   "offCanvas": 13,
+   "noRender": 30,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-CITY-PROFILING-L2-DISTRICTS": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51891:441685",
+   "totalText": 217,
+   "offCanvas": 17,
+   "noRender": 33,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-PERFORMANCE-STATS": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51563:156833",
+   "totalText": 580,
+   "offCanvas": 53,
+   "noRender": 65,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-SURVEYOR-MAPPED": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51699:165683",
+   "totalText": 276,
+   "offCanvas": 14,
+   "noRender": 56,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-SURVEY-LOCATIONS": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8664:55325",
+   "totalText": 262,
+   "offCanvas": 3,
+   "noRender": 33,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-USERS-ADD-USER": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8664:52311",
+   "totalText": 164,
+   "offCanvas": 17,
+   "noRender": 33,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-SHELTER-HOMES-ADD": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51712:166102",
+   "totalText": 186,
+   "offCanvas": 17,
+   "noRender": 34,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SUPER-ADMIN-ROLES-NEW-ROLE": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "51661:158685",
+   "totalText": 230,
+   "offCanvas": 7,
+   "noRender": 33,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SIGNIN-LOGIN": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8383:55268",
+   "totalText": 277,
+   "offCanvas": 0,
+   "noRender": 109,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
+ },
+ "SIGNIN-CHOOSE-PORTAL": {
+  "_meta": {
+   "pageLoaded": true,
+   "node": "8383:55528",
+   "totalText": 289,
+   "offCanvas": 0,
+   "noRender": 109,
+   "_read": "engine/figma_dump.js, meta-only (WITH_ELEMENTS=false)"
+  },
+  "elements": []
  }
 }
