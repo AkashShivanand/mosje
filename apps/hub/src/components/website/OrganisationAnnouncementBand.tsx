@@ -967,60 +967,54 @@ export function OrganisationAnnouncementBand({
         <Modal
           open={zoom}
           onClose={() => setZoom(false)}
-          size="sm"
-          /* Named for assistive technology and hidden from sight: the dialog IS
-             a phone, and a phone does not have a page title bar. */
+          size="md"
+          /*
+           * THE DIALOG IS A NOTICE, NOT A DEVICE — and it stopped being a drawn
+           * phone for three reasons that were all measurable.
+           *
+           * It was a picture of a phone, and it is only ever shown on a DESKTOP:
+           * the code tile is `display: none` below 768, so a reader on a phone
+           * never opens this at all. A mockup of the device you are not holding,
+           * shown only to people not holding it.
+           *
+           * It cost the one thing that had to be big. A 545px-tall dialog gave
+           * the code 184px of itself; the bezel, the notch, the home indicator
+           * and the chrome took the rest. A code is scanned by a SECOND camera
+           * off a screen, so its size is the whole specification.
+           *
+           * And it buried the action most readers need. On a desktop nobody can
+           * scan their own screen, so the link is the primary route and it was a
+           * small button under a drawing. It is the full-width action now, and
+           * the code serves the reader who wants it on their phone instead.
+           *
+           * The frame also carried its own close button and `hideClose`, both of
+           * which existed only because a phone has no title bar. With the frame
+           * gone the dialog takes the design system's own header and close, and
+           * behaves like every other dialog on the estate.
+           */
           title={banner.heading}
-          hideClose
           className="orgabz"
         >
-          <div className="orgabz__frame">
-            <span className="orgabz__island" aria-hidden />
+          <div className="orgabz__body">
+            <span className="orgabz__code">
+              <Image src={banner.qrSrc} alt="" width={686} height={686} />
+            </span>
 
-            <button
-              type="button"
-              className="orgabz__close"
-              onClick={() => setZoom(false)}
-              aria-label="Close"
+            <p className="orgabz__lead">
+              Scan this code with a phone camera to open the volunteer register.
+            </p>
+
+            <a
+              className={buttonClasses("success", "filled", "md", "orgabz__cta")}
+              href={banner.action.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={banner.action.label}
             >
-              <Icon name="close" size={16} weight={500} aria-hidden />
-            </button>
-
-            <div className="orgabz__screen">
-              <span className="orgabz__code">
-                <Image src={banner.qrSrc} alt="" width={686} height={686} />
-              </span>
-
-              {/*
-               * ONE LINE, AND NO PRINTED ADDRESS.
-               *
-               * The wide dialog this replaces printed the URL, and the argument
-               * for it was real: a reader with no second device cannot scan
-               * anything, and a scan-only dialog is a dead end for them. The
-               * button below is that reader's route, and it is a better one —
-               * they are on a computer, and the address existed to be typed into
-               * a device they do not have.
-               *
-               * It also would not fit. Measured on the 220px screen: 39
-               * characters at 12px want 242, so it broke as "nasha-mukti-" /
-               * "mitr" — an address split mid-word is worse than no address.
-               */}
-              <p className="orgabz__lead">Scan to register as a Nasha Mukt Mitr</p>
-
-              <a
-                className={buttonClasses("success", "filled", "sm", "orgabz__cta")}
-                href={banner.action.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={banner.action.label}
-              >
-                <span>{banner.action.shortLabel ?? banner.action.label}</span>
-                <Icon name="open_in_new" size={16} aria-hidden />
-                <span className="ds-sr-only"> (opens in a new tab)</span>
-              </a>
-            </div>
-
-            <span className="orgabz__home" aria-hidden />
+              <span>{banner.action.shortLabel ?? banner.action.label}</span>
+              <Icon name="open_in_new" size={20} aria-hidden />
+              <span className="ds-sr-only"> (opens in a new tab)</span>
+            </a>
           </div>
         </Modal>
       ) : null}

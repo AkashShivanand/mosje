@@ -1400,178 +1400,75 @@
      sight, since a phone has no page-title bar.
      ========================================================================= */
 
-  .ds-modal.orgabz {
-    inline-size: 300px;
-    max-inline-size: 300px;
-    /* The bezel. Its thickness IS this padding, so the screen inside needs no
-       size of its own. */
-    padding: var(--sa-padding-12);
-    border-radius: var(--sa-shape-40);
-    background-color: var(--sa-color-neutralScale-950);
-    overflow: visible;
-    box-shadow:
-      /* the metal edge catching light at the top, and its shadow at the bottom */
-      inset 0 var(--sa-stroke-1) 0 0 color-mix(in srgb, var(--sa-text-neutral-inverse) 22%, transparent),
-      inset 0 calc(-1 * var(--sa-stroke-1)) 0 0 color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent),
-      0 24px 48px -12px color-mix(in srgb, var(--sa-color-neutralScale-950) 55%, transparent),
-      0 8px 16px -8px color-mix(in srgb, var(--sa-color-neutralScale-950) 40%, transparent);
-  }
-
-  /* Named for assistive technology, not for the eye. */
-  .orgabz .ds-modal__header {
-    position: absolute;
-    inline-size: var(--sa-stroke-1);
-    block-size: var(--sa-stroke-1);
-    padding: 0;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  .orgabz .ds-modal__body {
-    padding: 0;
-  }
-
-  .orgabz__frame {
-    position: relative;
-  }
-
-  /* The two details that make a rounded rectangle read as a handset: the island
-     at the top and the home indicator at the bottom. Both sit ON the screen, as
-     they do on the device. */
-  .orgabz__island {
-    position: absolute;
-    z-index: var(--sa-z-raised);
-    inset-block-start: var(--sa-padding-12);
-    inset-inline-start: 50%;
-    translate: -50% 0;
-    inline-size: var(--sa-padding-72);
-    block-size: var(--sa-padding-16);
-    border-radius: var(--sa-shape-full);
-    /* The bezel's own colour, because that is what a cutout is — the hardware
-       showing through the display, not a shape drawn on it. */
-    background-color: var(--sa-color-neutralScale-950);
-  }
-
-  .orgabz__home {
-    position: absolute;
-    z-index: var(--sa-z-raised);
-    inset-block-end: var(--sa-padding-8);
-    inset-inline-start: 50%;
-    translate: -50% 0;
-    inline-size: var(--sa-padding-80);
-    block-size: var(--sa-stroke-3);
-    border-radius: var(--sa-shape-full);
-    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 34%, transparent);
-  }
-
   /*
-   * THE CLOSE IS ON THE SCREEN, top-right, where a sheet's close sits on a real
-   * handset. It is also the first thing in the dialog's tab order, which is the
-   * part that matters: a reader who tabs in must reach the way out before they
-   * reach a link that leaves the site.
+   * THE CODE, ENLARGED — a notice, not a device.
+   *
+   * What stood here drew an iPhone: bezel, notch, home indicator, a dark green
+   * screen. Three measurements retired it.
+   *
+   * It is only ever seen on a DESKTOP. The code tile is `display: none` below
+   * 768, so a reader on a phone never opens this — a drawing of the device you
+   * are not holding, shown only to the people not holding it.
+   *
+   * It cost the code its size. The dialog measured 545px tall and gave the code
+   * 184px of that; the frame took the rest. A code is read by a SECOND camera
+   * off a screen, so its size is the entire specification and everything drawn
+   * around it is subtracted from the only thing that matters.
+   *
+   * And it buried the route most readers need. Nobody can scan their own screen,
+   * so on a desktop the LINK is the primary action — and it was a small button
+   * under a picture.
+   *
+   * So: white ground, because the code is black-on-white and the scanner wants
+   * that contrast uninterrupted; the code as large as the dialog will carry; one
+   * sentence; and the link as the full-width action. The dialog takes the design
+   * system's own header and close, which the frame had replaced with a custom
+   * button only because a phone has no title bar.
    */
-  .orgabz__close {
-    position: absolute;
-    z-index: var(--sa-z-raised);
-    inset-block-start: var(--sa-padding-16);
-    inset-inline-end: var(--sa-padding-16);
+  .orgabz__body {
     display: grid;
-    place-items: center;
-    inline-size: var(--sa-padding-32);
-    block-size: var(--sa-padding-32);
-    border-radius: var(--sa-shape-full);
-    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 14%, transparent);
-    color: var(--sa-text-neutral-inverse);
-    cursor: pointer;
-    transition:
-      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
-      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .orgabz__close:hover {
-      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 26%, transparent);
-    }
-  }
-
-  .orgabz__close:active {
-    transform: scale(0.94);
-  }
-
-  .orgabz__close:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
-    outline-offset: var(--sa-focus-offset);
+    justify-items: center;
+    gap: var(--sa-stack-16);
   }
 
   /*
-   * 9:17, which is a handset rather than the 9:19.5 of the tallest of them. The
-   * true ratio makes a 300px-wide frame 670px tall before the bezel, and a
-   * dialog that does not fit a 13-inch laptop is a dialog that scrolls — a
-   * scrolling phone is the one thing that would give the illusion away.
-   */
-  .orgabz__screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--sa-stack-4);
-    aspect-ratio: 9 / 17;
-    padding: var(--sa-padding-40) var(--sa-padding-20);
-    border-radius: var(--sa-shape-32);
-    /*
-     * A SCREEN IS LIT, AND IT IS LIT FROM THE TOP.
-     *
-     * A flat dark fill reads as a hole cut in the bezel, and a glow centred in
-     * the middle left the top of the screen as dark as the bezel around it —
-     * which is where the island is, so the island was invisible. Measured:
-     * near-black hardware on a near-black screen. The light source moves to 8%
-     * down and the near stop goes up a rung, so the top of the screen is the
-     * brightest part of it and the cutout in front of it reads as hardware.
-     */
-    background:
-      radial-gradient(
-        140% 92% at 50% 6%,
-        var(--sa-color-successScale-700) 0%,
-        var(--sa-color-successScale-900) 58%,
-        var(--sa-color-successScale-950) 100%
-      );
-  }
-
-  /*
-   * THE CODE IS THE SCREEN'S CONTENT, at 200px — nearly three times the 72px
-   * tile that opens it, and enough for a camera at arm's length. Its white
-   * margin is the file's own 8.2%; nothing is added.
+   * THE QUIET ZONE IS IN THE FILE, so the frame adds none of its own — the same
+   * reasoning as the tile in the band: `nmba-nasha-mukti-mitr-qr.png` is 686
+   * square with the code occupying 574, an 8.2% margin each way, which is the
+   * four modules the specification asks for. A border rather than a shadow: this
+   * is a printed object on a page, not a floating card.
    */
   .orgabz__code {
     display: block;
-    inline-size: 200px;
-    padding: var(--sa-padding-8);
-    border-radius: var(--sa-shape-16);
+    inline-size: min(100%, var(--sa-padding-360));
+    aspect-ratio: 1;
+    border-radius: var(--sa-shape-12);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     background-color: var(--sa-bg-neutral-base);
-    box-shadow: 0 10px 24px -8px
-      color-mix(in srgb, var(--sa-color-neutralScale-950) 45%, transparent);
+    overflow: hidden;
   }
 
   .orgabz__code img {
-    display: block;
     inline-size: 100%;
-    block-size: auto;
-    border-radius: var(--sa-shape-4);
+    block-size: 100%;
+    object-fit: contain;
   }
 
+  /* One sentence, centred under the code, in the body ramp — it is a caption to
+     the object above it, not a paragraph of its own. */
   .orgabz__lead {
-    margin-block-start: var(--sa-stack-20);
-    font-size: var(--sa-type-body-1-size);
-    line-height: var(--sa-type-body-1-lh);
-    font-weight: var(--sa-font-weight-medium);
+    margin: 0;
+    max-inline-size: 34ch;
     text-align: center;
-    text-wrap: balance;
-    color: var(--sa-text-neutral-inverse);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
   }
 
+  /* Full width, because on the surface this dialog actually appears on it is the
+     route that works. */
   .orgabz__cta {
-    margin-block-start: var(--sa-stack-24);
+    inline-size: 100%;
   }
 
   /* ── Below 1024: one column, and the number comes first ──────────────────
@@ -1787,11 +1684,20 @@
       line-height: var(--sa-type-body-3-lh);
     }
 
-    /* See the note above: the administrative route is the one thing that goes. */
-    .orgab__alt,
-    .orgab__alt-note {
-      display: none;
-    }
+    /*
+     * THE OPEN REGISTER STAYS ON THE PHONE — and hiding it had it exactly
+     * backwards.
+     *
+     * The note above these two lines said "the administrative route is the one
+     * thing that goes". It is the route that STAYED. The card's own action goes
+     * to `/portals/nmba/admin/login`, which needs a departmental account; this
+     * link goes to the open register, which needs nothing. Hiding it left a
+     * phone reader with a sign-in page as their only route into an event
+     * register that was built not to require one.
+     *
+     * It costs one line of 12px text. The sentence it belongs to — "No
+     * departmental account?" — is the whole reason a citizen would look for it.
+     */
 
     .orgab__cta {
       grid-column: 1 / -1;

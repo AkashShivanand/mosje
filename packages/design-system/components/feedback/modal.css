@@ -25,10 +25,31 @@
      Accessible dialog: backdrop, focus-trap, Escape, focus restore.
      ============================================================================ */
 
+  /*
+   * ABOVE THE MASTHEAD, WHICH IS WHERE A DIALOG HAS TO BE.
+   *
+   * This sat on the DROPDOWN rung (100) while `.ds-hdr` sits on the MODAL rung
+   * (500), so on every page with the site header — which is every public page
+   * on the estate — the masthead painted over the dialog. Caught on the NMBA
+   * announcement band's code dialog, whose top 27px were behind the header and
+   * whose scrim stopped at the header's bottom edge, so the nav stayed bright
+   * while the page behind it dimmed.
+   *
+   * WHY NOT THE `modal` RUNG, WHICH IS ITS NAME. The header is already there,
+   * deliberately: its own comment records that Leaflet gives `.leaflet-map-pane`
+   * a transform and `z-index: 400` which competes at the ROOT, so a masthead
+   * below 400 slides under a map when it pins. 500 is the lowest rung that
+   * clears it. Taking the same rung and winning on document order would work
+   * today and break the day a dialog renders above the header in the markup.
+   *
+   * So a dialog takes the next rung up. The ladder is missing a `header` rung
+   * between `overlay` and `modal`, and until it has one this is the honest
+   * reading of it — recorded here rather than left as a bare number.
+   */
   .ds-modal__backdrop {
     position: fixed;
     inset: 0;
-    z-index: var(--sa-z-dropdown);
+    z-index: var(--sa-z-popover);
     display: flex;
     align-items: center;
     justify-content: center;
