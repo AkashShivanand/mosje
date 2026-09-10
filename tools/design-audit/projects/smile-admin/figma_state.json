@@ -1,0 +1,14 @@
+{
+  "reportFileKey": "8LX7sqdDtWIAoCYZueCJq7",
+  "reportFileName": "Design QC",
+  "pageId": "622:272",
+  "pageName": "Smile Beggary",
+  "reviewRootNodeId": "50817:25",
+  "reviewRootUrl": "https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50817-25",
+  "designFileKey": "evmNmlK8g4VYwJVu2FwSGV",
+  "designPageId": "7732:77842",
+  "_note": "The Design-QC document exists under two file keys with identical page ids \u2014 LHVPBAQasYOqOK1ZYCiZFG is an older copy that other projects' READMEs still point at. The canonical one for SMILE is 8LX7sqdDtWIAoCYZueCJq7. Node ids match across the two because one was duplicated from the other, so a node id alone does NOT tell you which file you are in \u2014 always pass the file key explicitly.",
+  "rows": 19,
+  "images": 38,
+  "findings": 31
+}
