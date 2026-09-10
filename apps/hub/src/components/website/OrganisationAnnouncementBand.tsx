@@ -89,6 +89,17 @@ const DWELL_MS = 6000;
  *  duration and the fade that hides the controls during it cannot drift. */
 const FLIP_MS = 520;
 
+/**
+ * THE PIECES, BY SILHOUETTE.
+ *
+ * The first burst threw eight of the same object — a thin dash — which is what
+ * made it read as sparks rather than as confetti. The reference it is drawn
+ * from throws SHAPES: solid circles at two sizes, a curled streamer, an open
+ * arc. Order matters only in that no two neighbours share a kind, so the eye
+ * cannot find a pattern in ten pieces leaving at once.
+ */
+const SPARKS = ["dot", "bar", "arc", "dot", "bar", "arc", "dot", "bar", "arc", "dot"] as const;
+
 function isExternal(href: string, flag?: boolean) {
   return flag === true || /^https?:\/\//.test(href);
 }
@@ -510,8 +521,8 @@ export function OrganisationAnnouncementBand({
                        * thinking about.
                        */}
                       {o.celebrate && firstShow && n === i
-                        ? [0, 1, 2, 3, 4, 5, 6, 7].map((n2) => (
-                            <span key={n2} className="orgab__spark" data-n={n2} />
+                        ? SPARKS.map((shape, n2) => (
+                            <span key={n2} className="orgab__spark" data-n={n2} data-shape={shape} />
                           ))
                         : null}
                     </span>
