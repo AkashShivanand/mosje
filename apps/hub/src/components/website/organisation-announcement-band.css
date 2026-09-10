@@ -373,20 +373,48 @@
    * "open this", where a badge beside it says "there is a control here too".
    * The cursor says the same thing again.
    */
+  /*
+   * TWO STRENGTHS, BECAUSE THE CODE HAS TO STAY SCANNABLE.
+   *
+   * The wash announces that the code opens. Shown at full strength the moment a
+   * pointer touches anywhere on the card, it would cover the QR for as long as
+   * a reader is reading — and hovering the card is exactly when they are, since
+   * that same hover holds the rotation for them. A code a camera cannot read
+   * because the interface is busy advertising itself is worse than no hint.
+   *
+   * So the hint escalates. On the CARD the veil is light and the magnifier
+   * sits over a code that is still perfectly scannable: "there is something
+   * here". On the TILE itself it goes to full strength: "press this". The
+   * cursor says the same thing a third time.
+   */
   .orgab__mark-zoom {
     position: absolute;
     inset: 0;
     display: grid;
     place-items: center;
     border-radius: inherit;
-    background-color: color-mix(in srgb, var(--sa-color-successScale-900) 66%, transparent);
+    background-color: color-mix(
+      in srgb,
+      var(--sa-color-successScale-900) var(--orgab-zoom-veil, 66%),
+      transparent
+    );
     color: var(--sa-text-neutral-inverse);
     opacity: 0;
-    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+    transition:
+      opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   @media (hover: hover) and (pointer: fine) {
+    /* Anywhere on the card: the hint appears, and the code stays readable. */
+    .orgab__offer:hover .orgab__mark-zoom {
+      --orgab-zoom-veil: 26%;
+      opacity: 1;
+    }
+
+    /* On the tile: the full wash, because now it is the thing being pressed. */
     .orgab__mark--code:hover .orgab__mark-zoom {
+      --orgab-zoom-veil: 66%;
       opacity: 1;
     }
   }
@@ -428,7 +456,21 @@
    * tile — that is the object a reader sees move, and animating only the glyph
    * inside a still tile reads as a picture wobbling in its frame.
    */
-  .orgab__mark--celebrate[data-burst] {
+  /*
+   * THE POP ANSWERS A POINTER, not only the first appearance.
+   *
+   * `[data-burst]` fires once, on arrival. A reader who puts their pointer on
+   * the card is asking the same question the burst answered — what is this? —
+   * so the mark answers it again. Re-entering restarts it, because a CSS
+   * animation attached by a `:hover` rule begins afresh every time the selector
+   * starts matching.
+   *
+   * Scoped to the OFFER rather than the band: the band is a full-bleed strip
+   * and a pointer crossing the page on its way to the hero is not asking
+   * anything.
+   */
+  .orgab__mark--celebrate[data-burst],
+  .orgab__offer:hover .orgab__mark--celebrate {
     animation: orgab-pop 720ms var(--sa-motion-emphasis-easing) both;
   }
 
@@ -462,7 +504,12 @@
     /* Above the copy beside it, so a piece thrown right does not vanish behind
        the heading. */
     z-index: var(--sa-z-raised);
-    animation: orgab-spark 1100ms var(--sa-motion-emphasis-easing) var(--spark-in) both;
+    /* NO animation at rest. The pieces are in the DOM for as long as the
+       anniversary is on show, and they are given their flight by the burst flag
+       or by the card's hover — see below. Ten spans holding a finished
+       animation are ten things the compositor keeps thinking about; ten spans
+       holding none are free. */
+    animation: none;
   }
 
   .orgab__spark[data-shape="dot"] {
@@ -561,6 +608,13 @@
 
   /* The recoil: back and down, then up and over, then settle. A popper kicks
      before it throws, and that kick is what a plain scale-up leaves out. */
+  /* The spray, on arrival and on hover — the same flight either way, and the
+     per-piece `--spark-in` still staggers them so nothing leaves in unison. */
+  .orgab__mark--celebrate[data-burst] .orgab__spark,
+  .orgab__offer:hover .orgab__mark--celebrate .orgab__spark {
+    animation: orgab-spark 1100ms var(--sa-motion-emphasis-easing) var(--spark-in) both;
+  }
+
   @keyframes orgab-pop {
     0%   { transform: scale(0.9) rotate(8deg); }
     18%  { transform: scale(0.94) rotate(-12deg); }
@@ -1284,6 +1338,9 @@
     }
 
     .orgab__mark--celebrate[data-burst],
+    .orgab__offer:hover .orgab__mark--celebrate,
+    .orgab__mark--celebrate[data-burst] .orgab__spark,
+    .orgab__offer:hover .orgab__mark--celebrate .orgab__spark,
     .orgab__spark {
       animation: none;
     }
