@@ -4999,6 +4999,13 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "Pull the card up so it straddles the band above it — the treatment used under a page hero. Requires the band above to have room; on its own in a plain section, leave it off."
+      },
+      {
+        "name": "variant",
+        "type": "\"compact\" | \"extended\"",
+        "required": false,
+        "default": "`items.length > 5 ? \"extended\" : \"compact\"`",
+        "description": "WHICH SHAPE THE STRIP TAKES. Derived from the item count unless you say. `\"compact\"` — the treatment the handoff draws: as many 200px cells as the width allows, on one row, each one a centred stack of mark over value over label. Right for the three or four standing facts under a page hero. `\"extended\"` — for a set too long to sit on one row. The cells go to a fixed, balanced column count and wrap; each one turns on its side, with the mark in a chip of its own and the value and label flush beside it; and the value steps up from `headline-5` to `headline-2` so it reads as a figure rather than as a line of text that happens to be numeric. THE DEFAULT IS THE COUNT, and the threshold is arithmetic rather than taste. `minmax(200px, 1fr)` fits at most FIVE tracks in the widest content column this estate has (1120px of grid inside the card), so six is the first count that cannot be one row. At six the compact shape stops being a strip and becomes a grid of identical tiles, which is a shape the eye has to enter once per tile. Pass it only to override that — a six-item strip that must stay compact, or a four-item one that must read as figures."
       }
     ]
   },
@@ -13580,6 +13587,13 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "true",
         "description": "Start moving on mount."
+      },
+      {
+        "name": "bleed",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The label plinth runs off the START edge of the viewport. `horizontal` only. Pass it ONLY when the bar itself spans the viewport, which is how the Figma frame draws it — the page margin beside the plinth is bar-coloured there, and a plinth that stops short of the edge reads as a floating chip rather than a masthead band. Leave it off inside a content column. A bar inset to the column with a plinth bled to the viewport is aligned on one edge and not the other, and that is what it looks like."
       },
       {
         "name": "height",

@@ -79,6 +79,7 @@
     gap: var(--sa-stack-24) var(--sa-inline-12);
   }
 
+
   /*
    * GAP 0, NOT 12 — the 12 belongs between the icon and the copy block, and
    * nowhere else.
@@ -158,15 +159,31 @@
     color: var(--sa-text-neutral-base);
   }
 
-  /* `margin-top: auto` bottom-aligns the labels across the row. The grid already
-     equalises cell heights, so without it a value that wraps to two lines drops
-     its own label a line below its neighbours' — one tile visibly out of step.
-     Pinned to the bottom, the labels read as a row whatever the values do. */
+  /*
+   * THE LABEL SITS UNDER ITS OWN VALUE, not at the bottom of the cell.
+   *
+   * It carried `margin-top: auto`, which bottom-aligned every label across the
+   * row. That was written for a wrapping VALUE — "Social Justice &
+   * Empowerment" over two lines would otherwise drop its own label a line below
+   * its neighbours'. It trades the common case for the rare one, and the eight
+   * NMBA counters are where the bill came in: four of the eight LABELS wrap
+   * ("Activities in educational institutes", "Persons treated and
+   * rehabilitated"), so every short-labelled cell had its caption pushed 24px
+   * clear of the figure it captions while the wrapped ones stayed tight. The
+   * row aligned; the pairs came apart, and a value 24px from its label reads as
+   * an orphan.
+   *
+   * Top-aligned, the value and its label stay one two-line block — which is
+   * what the handoff's `Copy` frame is — and the labels still start on one line
+   * across the row, because the icons and values above them are one line each.
+   * A wrapping value now offsets its own label by a line; that is one cell out
+   * of step in a case that occurs on one strip in the estate, against four out
+   * of eight in the case above.
+   */
   /* body-1 in the handoff: 16/24 with 0.5 tracking. It was 12px, which made the
      label read as a caption rather than as the thing the value answers. */
   .ds-fact-strip__label {
     order: 2;
-    margin-top: auto;
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
     /* #3a3d41 against the handoff's #343a40 — the same grey to within a few
@@ -176,11 +193,191 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /* ══════════════════════════════════════════════════════════════════════════
+     EXTENDED — the shape a set takes once it is too long to be one row
+     ══════════════════════════════════════════════════════════════════════════
+
+     `minmax(200px, 1fr)` fits at most FIVE tracks in the widest content column
+     on this estate, so six is the first count that cannot be a strip. Left in
+     the compact shape, six or more centred stacks are a grid of identical
+     tiles: no hierarchy, and a shape the eye has to enter once per tile.
+
+     THREE THINGS CHANGE TOGETHER, and they are one decision rather than three.
+
+     1 · The cells WRAP to a fixed, balanced column count (`extendedColumns`)
+         instead of fitting as many as the width allows — auto-fit laid eight
+         out 5 + 3, which reads as a grid that ran out of content.
+
+     2 · Each cell turns ON ITS SIDE: the mark takes a column of its own and the
+         figure and its caption sit beside it. A row then reads left to right
+         the way a line of type does, and the cells in a row share one baseline
+         for their figures and another for their captions.
+
+     3 · The figure steps up from `headline-5` to `headline-2` — 20px to 32px at
+         1440 — against a caption dropped to `body-2`. The compact strip sets
+         them at 1.25:1, which is the weakest hierarchy two sizes can have; at
+         that ratio a figure of 345 million is a line of text that happens to be
+         numeric. 2.3:1 is what makes it read as a measurement.
+
+     THE MARK KEEPS ITS CHIP, at 8 of padding rather than 12 — a 48px tile
+     against a 60px copy block, spanning the pair rather than sitting above it.
+     It was briefly demoted to a bare glyph on the reasoning that a tile competes
+     with a 32px figure; reverted on review, and the review was right. What
+     competes is the COMPACT tile — 56px, stacked above a 20px value, the widest
+     thing in its own cell. Beside the copy at 48 it reads as the copy's mark.
+
+     THE HEIGHT COMES FROM THE LAYOUT, NOT FROM DROPPING ANYTHING. Turning the
+     cell on its side puts the mark beside two lines instead of above them, so a
+     row costs 60px rather than 116 — which is why an extended card holding eight
+     counters at 32px is SHORTER than a compact one holding the same eight at
+     20px: 220 against 312. */
+
+  .ds-fact-strip--extended .ds-fact-strip__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    /*
+     * NO ROW GAP. The figure and its caption are ONE two-line block, which is
+     * what the handoff's `Copy` frame draws: two lines, flush, no space of
+     * their own. Their line boxes already carry the air — `headline-2` is 40px
+     * for 32px of type and `body-2` is 20 for 14, so four points of half-leading
+     * sit under the figure's baseline and three above the caption's cap before
+     * any gap is added at all.
+     *
+     * This ran at 4 and then at 8, and 8 was the wrong direction: it read as
+     * blank space between two texts rather than as one pair, which is exactly
+     * how it was reported. The `gap: 0` on the compact item has carried the same
+     * note since the component was built — "a flat 12px gap put that same 12
+     * between the value and its own label, which broke the pair apart and made
+     * the label read as a third, unrelated line". It is the same pair here.
+     */
+    gap: 0 var(--sa-inline-12);
+    align-items: start;
+    /*
+     * `align-content: start`, AND WITHOUT IT THE PAIR COMES APART AGAIN.
+     *
+     * The cell stretches to its grid row, and the row is as tall as the tallest
+     * cell in it — so a cell whose caption runs to one line inside a row where
+     * another runs to two has 20px of surplus. A grid's default `align-content`
+     * is `stretch`, and stretch DISTRIBUTES that surplus equally across the
+     * auto-sized rows: ten points into the figure's row and ten into the
+     * caption's. The gap set to zero here reappeared as ten, in exactly the
+     * cells that had nothing to do with it.
+     *
+     * Measured on NMBA's second row before this line: captions at 1029 and
+     * 1039 — two baselines in one row, from a rule about neither of them.
+     * `start` keeps the surplus at the foot of the cell where it belongs.
+     */
+    align-content: start;
+    text-align: start;
+  }
+
+  /*
+   * GRID PLACEMENT, NOT `order`. The DOM is icon → `<dt>` → `<dd>`, and the
+   * compact layout reverses the last two with `order` so the value draws above
+   * its label. Grid ignores `order` entirely, so every child is placed by name
+   * here — and the reading order stays "Label: value" whatever the drawing does.
+   */
+  /*
+   * THE MARK KEEPS ITS CHIP, and spans the pair rather than sitting beside the
+   * figure alone.
+   *
+   * It was briefly a bare 24px glyph on the reasoning that a 56px tile competes
+   * with a 32px figure. That is true of the tile the COMPACT strip draws — 32px
+   * glyph on 12 of padding, stacked above a 20px value. It is not true of this
+   * one: at 8 of padding the chip is 48 against a 60px copy block, so it reads
+   * as the copy's mark rather than as a tile the copy hangs off. Reverted on
+   * review, and the review was right.
+   *
+   * `grid-row: 1 / span 2` so the chip belongs to the figure AND its caption —
+   * they are one block, and a mark beside only the first line of a two-line
+   * block reads as a bullet. `align-self: start` keeps its top edge on the
+   * figure's line box however many lines the caption runs to.
+   */
+  .ds-fact-strip--extended .ds-fact-strip__icon {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    align-self: start;
+    padding: var(--sa-padding-8);
+    margin-bottom: 0;
+  }
+
+  .ds-fact-strip--extended .ds-fact-strip__value {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
+    /*
+     * TABULAR FIGURES. Proportional digits give `1` about half the advance of
+     * `8`, so numbers set beside one another have as many rhythms as there are
+     * cells and none of the columns agree. `tnum` makes every digit one width,
+     * which is what makes a row of figures read as measurements rather than as
+     * words that happen to be numeric — and what would stop the row twitching
+     * if these are ever counted up on entry.
+     */
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-fact-strip--extended .ds-fact-strip__label {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  /*
+   * ── THE COLUMN LADDER, MOBILE-FIRST, AND THE FIGURE DECIDES IT ────────────
+   *
+   * One column, two at 768, the balanced count at 1280 — `min-width` steps off
+   * the estate's published ladder, not numbers invented for this card.
+   *
+   * THE FULL COUNT WAITS UNTIL 1280, and that is measured rather than chosen.
+   * An extended cell must hold a 24px mark, a 12px gap and the widest figure
+   * beside them. `345,703,321` is 183px at `headline-2`; four-up inside a 1024
+   * content column gives a 212px cell, so the copy column would be 176 — SIX
+   * PIXELS SHORT of the figure it has to hold, and a published figure may not
+   * be shrunk, wrapped or clipped to fit a layout. At 1280 the cell is 250 and
+   * the copy column 214, which clears it by 31.
+   */
+  .ds-fact-strip--extended .ds-fact-strip__list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sa-stack-24);
+  }
+
+  @media (min-width: 768px) {
+    .ds-fact-strip--extended .ds-fact-strip__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--sa-stack-32) var(--sa-inline-24);
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .ds-fact-strip--extended .ds-fact-strip__list {
+      grid-template-columns: repeat(var(--ds-fact-strip-columns, 4), minmax(0, 1fr));
+    }
+  }
+
   /* Two-up on a phone: cells at 200px each would be columns of wrapped single
      words. The row rhythm is set on the base rule above, for every width. */
   @media (max-width: 639px) {
     .ds-fact-strip__list {
       grid-template-columns: repeat(2, 1fr);
     }
+
+    /*
+     * THE COMPACT STRIP GOES TWO-UP HERE; THE EXTENDED ONE IS ALREADY ONE-UP.
+     *
+     * Its own ladder starts at a single column and only reaches two at 768, and
+     * that is what makes a side-on cell safe on a phone: at 390 the single cell
+     * is about 294px, the mark and its gap take 36, and `345,703,321` is 137 at
+     * the `headline-2` clamp's floor. It clears by 121.
+     *
+     * An earlier cut had the extended layout going two-up here as well, and the
+     * arithmetic is worth keeping written down: a 141px cell leaves the copy
+     * column 81px against a 118px figure, and the figure ran out UNDER its
+     * neighbour's mark. `345,703,32` and `106,563,41` were on a Government of
+     * India page, and they are not the Department's figures. A published figure
+     * is the one thing on this card that may never shrink, wrap or be covered —
+     * if a layout cannot fit it, the layout changes.
+     */
   }
 }
