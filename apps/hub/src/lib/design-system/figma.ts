@@ -114,6 +114,13 @@ export const FIGMA_NODES = {
   // ROW master (8 variants), its documentation frame and its component record.
   // The grid that arranges rows is code-only and is recorded as open item 01.
   descriptionList: "57518:737",
+  // "Fact Strip" — created 2026-09-10 between Event List and Figure, and the FIRST
+  // Figma home this component has ever had: it was drawn inside the site header's
+  // frame and published nowhere, which is why its docs page declared it absent.
+  // Two sets on the page — `Fact Strip` (Type=Compact | Extended) and the nested
+  // `Fact Strip / Fact` cell that carries Value, Label and the Icon swap. The node
+  // below is the documentation FRAME, not the page, so the link lands on the prose.
+  factStrip: "57985:811",
   // "Figure" — created 2026-09-06 after Description List. Ten variants (Ratio ×
   // Fit); the image itself is a slot the caller fills, which is why the master
   // draws an empty framed rectangle.

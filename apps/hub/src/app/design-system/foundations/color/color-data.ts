@@ -42,7 +42,7 @@ export const META = {
   "modesMeasured": 8,
   "cvdSafeSeries": 9,
   "worstCvdSeriesPair": 8.2,
-  "rolesMeasured": 47,
+  "rolesMeasured": 48,
   "rolesBelowFloor": 0,
   "generatedFrom": "packages/tokens/dist/tokens.css"
 } as const;
@@ -2606,7 +2606,7 @@ export const SLOT_COUNTS = {
   "border": 17,
   "bg": 53,
   "text": 22,
-  "icon": 15,
+  "icon": 16,
   "cmp": 296,
   "focus": 2,
   "overlay": 7,
@@ -4350,6 +4350,17 @@ export const ROLE_CONTRAST: readonly RoleContrast[] = [
     "value": "#005eb9",
     "onWhite": 6.36,
     "onMuted": 5.57,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "icon/brand/secondary/bolder",
+    "role": "icon",
+    "value": "#c34700",
+    "onWhite": 4.97,
+    "onMuted": 4.36,
     "floor": 3,
     "ground": "both",
     "aaa": false,

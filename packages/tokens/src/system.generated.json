@@ -345,6 +345,12 @@
           "$value": "{color.primaryScale.600}",
           "$description": "Use for icons in the primary brand colour — not for long-form reading."
         }
+      },
+      "secondary": {
+        "bolder": {
+          "$value": "{color.secondaryScale.600}",
+          "$description": "Use for icons in the secondary brand colour — not for long-form reading."
+        }
       }
     },
     "status": {
