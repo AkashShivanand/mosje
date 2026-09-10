@@ -937,6 +937,44 @@
     }
   }
 
+  /*
+   * ── THE DIVIDER GOES WHEN THE ROUTE STOPS SHARING A LINE WITH THE CONTROL ──
+   *
+   * `.sa-ticker__nav + .sa-ticker__action` draws a hairline on the route's
+   * leading edge to separate it from the pause beside it. In the narrow header
+   * the container wraps, and once the header cannot hold the name, the pause AND
+   * the route, the route takes a line of its own — where it is the first thing
+   * on that line and the hairline has nothing to its left to separate it from.
+   * It rendered as a stray navy tick against the bar's own edge, which is what
+   * it was reported as.
+   *
+   * CSS CANNOT ASK "DID YOU WRAP", so this is measured instead. Walked across
+   * twelve widths on the live bar: the route sits beside the pause down to a bar
+   * of 366px and takes its own line at 326. 359 is the ladder step between them.
+   *
+   * THE LIMIT OF THAT, STATED: the wrap point depends on how wide the label and
+   * the route's own words are, so a longer `label` — Hindi, or any scheduled
+   * language — can wrap earlier and bring the stray line back above 359. The
+   * honest fix would be a selector for "first on its line", which CSS does not
+   * have. If this reappears, move the number rather than reaching for a
+   * different mechanism, and re-measure rather than guessing.
+   */
+  @container sa-ticker (max-width: 359px) {
+    /*
+     * THE BORDER GOES; THE INSET STAYS, and dropping both was the first cut's
+     * mistake. The 16 of padding is doing two jobs in one declaration — holding
+     * the route clear of the hairline, and holding it clear of the bar's edge —
+     * and only the first of them stops applying when the route takes its own
+     * line. Removed together, "View All Updates" sat hard against the rounded
+     * corner while the name a line above it was inset by 16. It is the same 16
+     * `.sa-ticker__heading` uses, so the route now starts on the mark's own
+     * left edge.
+     */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__nav + .sa-ticker__action {
+      border-inline-start: 0;
+    }
+  }
+
   @keyframes sa-ticker-fade {
     from {
       opacity: 0;
