@@ -208,14 +208,15 @@
      * of the card and the pager 90 to 114, a 34px gap where both crowded into
      * the content row had 8.
      *
-     * 32, AND THE VALUE MATTERS. It was written as `--sa-padding-36`, which the
-     * space scale does not publish — 0·2·4·6·8·12·16·20·24·32·40·48·56·64·72·80
-     * — so the whole `padding` shorthand was invalid and DROPPED. The card lost
-     * every side of its padding at once and its content overflowed a 46px box
-     * while the helpline beside it silently set the row height. Nothing errored;
-     * `check:dangling-vars` is the gate that names it, and it had not been run.
+     * THE VALUE HAS TO BE ON THE SCALE. It was once written as
+     * `--sa-padding-36`, which the space scale does not publish — the steps are
+     * 0·2·4·6·8·12·16·20·24·32·40·48·56·64·72·80 — so the whole `padding`
+     * shorthand was invalid and DROPPED. The card lost every side of its padding
+     * at once and its content overflowed a 46px box while the helpline beside it
+     * silently set the row height. Nothing errored; `check:dangling-vars` is the
+     * gate that names it.
      */
-    padding: var(--sa-padding-16) var(--sa-padding-20) var(--sa-padding-32);
+    padding: var(--sa-padding-16) var(--sa-padding-20) var(--sa-padding-40);
     border-radius: var(--sa-shape-16);
     background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent);
     box-shadow: inset 0 var(--sa-stroke-1) 0 0
@@ -399,7 +400,7 @@
    * tile — that is the object a reader sees move, and animating only the glyph
    * inside a still tile reads as a picture wobbling in its frame.
    */
-  .orgab__mark--celebrate:has(.cfti[data-burst]) {
+  .orgab__mark--celebrate[data-burst] {
     animation: orgab-pop 720ms var(--sa-motion-emphasis-easing) both;
   }
 
@@ -538,59 +539,6 @@
     46%  { transform: scale(1.1) rotate(6deg); }
     72%  { transform: scale(0.98) rotate(-2deg); }
     100% { transform: scale(1) rotate(0deg); }
-  }
-
-  /* ── The drift: what keeps going after the burst is spent ───────────────── */
-
-  /*
-   * Every part is animated and PAUSED by default; `data-loop` runs them. A
-   * paused animation holds its frame, so pressing pause leaves the confetti
-   * where it is rather than snapping it home.
-   *
-   * `transform-box: fill-box`, because an SVG child's transform origin is the
-   * viewBox origin otherwise and every one of these turns about itself.
-   */
-  .cfti__ray,
-  .cfti__bit {
-    transform-box: fill-box;
-    transform-origin: center;
-    animation-play-state: paused;
-  }
-
-  .cfti[data-loop] .cfti__ray,
-  .cfti[data-loop] .cfti__bit {
-    animation-play-state: running;
-  }
-
-  /* Three rays breathing outward by about a pixel, staggered — even timing
-     reads as a mechanism and this is meant to read as paper. */
-  .cfti__ray {
-    animation: cfti-ray 2800ms var(--sa-motion-emphasis-easing) infinite;
-  }
-
-  .cfti__ray[data-n="0"] { --rx: -0.4px; --ry: -1.4px; animation-delay: 0ms; }
-  .cfti__ray[data-n="1"] { --rx: 1.1px;  --ry: -1.1px; animation-delay: 320ms; }
-  .cfti__ray[data-n="2"] { --rx: 1.5px;  --ry: -0.2px; animation-delay: 640ms; }
-
-  @keyframes cfti-ray {
-    0%, 100% { transform: translate(0, 0); opacity: 0.55; }
-    45%      { transform: translate(var(--rx), var(--ry)); opacity: 1; }
-  }
-
-  /* Three bits floating a few pixels and turning a little. They return to where
-     they started rather than fading out and reappearing — a piece of confetti
-     that blinks back to its origin is a piece of confetti you notice. */
-  .cfti__bit {
-    animation: cfti-bit 3600ms var(--sa-motion-emphasis-easing) infinite;
-  }
-
-  .cfti__bit[data-n="0"] { --bx: 1.2px;  --by: -2.6px; --bd: 18deg;  animation-delay: 0ms; }
-  .cfti__bit[data-n="1"] { --bx: -1.6px; --by: 2.2px;  --bd: -22deg; animation-delay: 900ms; }
-  .cfti__bit[data-n="2"] { --bx: 2.2px;  --by: -1.4px; --bd: 26deg;  animation-delay: 1800ms; }
-
-  @keyframes cfti-bit {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.4; }
-    50%      { transform: translate(var(--bx), var(--by)) rotate(var(--bd)); opacity: 1; }
   }
 
   /* The phone's stand-in for the code is out of the way at every other width. */
@@ -732,7 +680,7 @@
     position: absolute;
     opacity: 1;
     transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
-    inset-block-end: var(--sa-padding-4);
+    inset-block-end: var(--sa-padding-12);
     inset-inline-end: var(--sa-padding-20);
     z-index: var(--sa-z-raised);
     display: flex;
@@ -826,16 +774,12 @@
    * lie.
    */
   /*
-   * THE LEADING EDGE IS FLAT. Rounding all four corners of the clip made the
-   * fill a PILL that grew — at 78% it read as a white lozenge floating in a
-   * groove with a dark crescent beside it, which is a knob in a slot, not a
-   * level rising. Seen only at 8x; at page scale it merely looked wrong without
-   * saying why.
-   *
-   * `round R 0 0 R` rounds the two LEFT corners of the clip and leaves the
-   * right square, so the fill has the track's own cap behind it at the start
-   * and a straight edge where it has got to. At 100% the clip cuts nothing and
-   * the element's own radius gives the right cap back.
+   * THE FILL IS A PILL, BOTH CAPS ROUND. A flat leading edge was tried and
+   * rejected by the person who has to look at it — restored on request, and the
+   * note is kept because the reasoning behind the change was not wrong so much
+   * as outvoted: a square leading edge reads as a level, a round one reads as a
+   * lozenge, and which of those is right for a 24x6 bar is a judgement, not a
+   * measurement.
    */
   .orgab__dot[aria-selected="true"]::after {
     content: "";
@@ -844,7 +788,7 @@
     block-size: var(--sa-padding-6);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-text-neutral-inverse);
-    clip-path: inset(0 100% 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full));
+    clip-path: inset(0 100% 0 0 round var(--sa-shape-full));
     animation: orgab-dwell var(--orgab-dwell, 6000ms) linear forwards;
     animation-play-state: paused;
   }
@@ -854,8 +798,8 @@
   }
 
   @keyframes orgab-dwell {
-    from { clip-path: inset(0 100% 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full)); }
-    to   { clip-path: inset(0 0 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full)); }
+    from { clip-path: inset(0 100% 0 0 round var(--sa-shape-full)); }
+    to   { clip-path: inset(0 0 0 0 round var(--sa-shape-full)); }
   }
 
   /*
@@ -1090,9 +1034,7 @@
         visibility 0s;
     }
 
-    .orgab__mark--celebrate:has(.cfti[data-burst]),
-    .cfti__ray,
-    .cfti__bit,
+    .orgab__mark--celebrate[data-burst],
     .orgab__spark {
       animation: none;
     }

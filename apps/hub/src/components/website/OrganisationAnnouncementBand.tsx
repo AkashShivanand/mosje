@@ -6,7 +6,6 @@ import NextLink from "next/link";
 import { Icon, Modal, buttonClasses } from "@mosje/design-system";
 import type { OrganisationDetail } from "@/content/website/organisation-details";
 import { dismissCampaign } from "@/lib/website/campaign-dismissed";
-import { ConfettiMark } from "./ConfettiMark";
 import "./organisation-announcement-band.css";
 
 /**
@@ -242,20 +241,6 @@ export function OrganisationAnnouncementBand({
    */
   const running = rotates && playing && !hovered && !focused && !reduced && !gone && !zoom;
 
-  /*
-   * THE DRIFT IS NOT THE ROTATION, so it does not answer to the same holds.
-   *
-   * Hover and focus pause the rotation because a reader is reading and a
-   * sentence must not move away mid-read. Neither is a reason to freeze a
-   * decorative mark — so the ambient loop answers to the PAUSE button, to
-   * `prefers-reduced-motion`, and to nothing else.
-   *
-   * It runs whether or not the band rotates, which is what makes the pause
-   * control necessary even on a band with a single announcement: this loops
-   * forever, and §2.2.2 wants a way to stop anything that does.
-   */
-  const hasDrift = panels.some((o) => o.celebrate) && !reduced && !gone;
-  const drifting = hasDrift && playing;
 
   /*
    * ONE PLACE THE CARD IS TOLD TO TURN, and the fade is set in the same update
@@ -499,13 +484,12 @@ export function OrganisationAnnouncementBand({
                   ) : (
                     <span
                       className={`orgab__mark orgab__mark--glyph${o.celebrate ? " orgab__mark--celebrate" : ""}`}
+                      /* The tile is what the pop animation keys off, so the flag
+                         lives here rather than on a drawing inside it. */
+                      data-burst={o.celebrate && firstShow && n === i ? "" : undefined}
                       aria-hidden
                     >
-                      {o.celebrate ? (
-                        <ConfettiMark burst={firstShow && n === i} loop={drifting} />
-                      ) : (
-                        <Icon name={o.icon} size={40} />
-                      )}
+                      <Icon name={o.icon} size={40} />
                       {/*
                        * EIGHT PIECES, AND ONLY ON THE FIRST APPEARANCE.
                        *
@@ -597,15 +581,12 @@ export function OrganisationAnnouncementBand({
                * where it does appear it sits on the card it pages and nowhere
                * near the band's own dismiss.
                */}
-              {rotates || drifting ? (
+              {rotates ? (
                 <div
                   className="orgab__pager"
                   data-running={running || undefined}
                   data-turning={turning || undefined}
                 >
-                  {/* Dots only where there is somewhere to go. On a band with one
-                      announcement the pause still appears, because the mark
-                      beside it never stops on its own. */}
                   {rotates ? (
                   <div
                     className="orgab__dots"
@@ -635,10 +616,9 @@ export function OrganisationAnnouncementBand({
                   ) : null}
 
                   {/* WCAG 2.2 §2.2.2: anything auto-updating past five seconds
-                      needs a mechanism to stop it. Two things here are over that
-                      line — the 6s dwell and the confetti's endless drift — so
-                      this one control is what makes the band lawful, and it stops
-                      the rotation, the dwell indicator and the drift together.
+                      needs a mechanism to stop it. A 6s dwell is over that line,
+                      so this control is what makes the band lawful — and it stops
+                      the dwell indicator with it.
                       Not rendered under `prefers-reduced-motion`, where nothing
                       moves in the first place.
 
