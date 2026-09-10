@@ -573,12 +573,38 @@ def _resolve(pg, label, exact):
     really matched. `exact` picks `:text-is()` over `:has-text()` for the CSS leg too, so an
     engine-chosen label cannot fuzzy-match through the fallback either.
     """
+    # Strategy ladder, widest-safety-first. The first two are the original pair. The rest exist
+    # because a real portal's "buttons" are frequently NOT <button>: SMILE-Beggary renders every
+    # page action as a <span> inside a clickable wrapper, so role=button and button:has-text()
+    # both resolved nothing and TEN flows aborted in a row — every add/edit/view state on the
+    # portal, silently, with only a log line to show for it.
+    #
+    # `:visible` on every CSS leg is not cosmetic: a responsive shell keeps a hidden duplicate of
+    # its controls, and clicking the hidden twin fails the same way the hidden nav anchor did.
+    # The safety contract is unchanged — whatever this resolves to still has its accessible name
+    # read and tested against DESTRUCTIVE before any click happens.
+    txt_sel = (f':text-is("{label}")' if exact else f':has-text("{label}")')
+    CLICKABLE = 'button, a, [role=button], [role=tab], [role=menuitem], [role=link]'
     for build in (lambda: pg.get_by_role("button", name=label, exact=exact).first,
                   lambda: pg.locator(
                       (f'button:text-is("{label}")' if exact else f'button:has-text("{label}")')
-                  ).first):
+                  ).first,
+                  lambda: pg.get_by_role("link", name=label, exact=exact).first,
+                  lambda: pg.locator(f'a:visible{txt_sel}').first,
+                  lambda: pg.locator(f'[role=button]:visible{txt_sel}').first,
+                  lambda: pg.locator(f'[role=tab]:visible{txt_sel}').first,
+                  # Last resort: find the TEXT, then climb to the nearest clickable ancestor.
+                  # This is what catches a <span> label inside a clickable <div>.
+                  lambda: pg.get_by_text(label, exact=exact).locator(
+                      f'xpath=ancestor-or-self::*[self::button or self::a or @role="button" '
+                      f'or @role="tab" or @tabindex][1]').first):
         try:
             loc = build()
+        except Exception:
+            continue
+        try:
+            if not loc.is_visible(timeout=1500):
+                continue
         except Exception:
             continue
         txt = _resolved_text(loc)
@@ -645,11 +671,19 @@ def run_flow(pg, flow, man, cfg, paths, bdl, environment):
         # Same two-attempt pattern the route crawl uses: an SPA that keeps its token in
         # sessionStorage can sit forever short of networkidle, and a flow that cannot reach its
         # entry screen is a silent no-op otherwise.
-        try:
-            pg.goto(base + flow["entry"], wait_until="networkidle", timeout=45000)
-        except Exception:
-            pg.goto(base + flow["entry"], wait_until="domcontentloaded", timeout=45000)
-        pg.wait_for_timeout(cfg.get("capture", {}).get("waitMs", 1800))
+        # Enter the flow the SAME way the route crawl navigates — honouring live.navMode and
+        # recovering a lost session. A raw goto here is a full document reload, and on a build
+        # whose session cannot survive one (SMILE-Beggary) it logged the crawler out at the
+        # doorstep: the flow then "captured" the login page under the first screen's name, and
+        # only the post-capture login-page gate caught it.
+        import capture as _CAP
+        role_obj = next((r for r in cfg["live"]["roles"] if r["name"] == role), {})
+        if _CAP.navigate(pg, base, flow["entry"], cfg,
+                         _CAP.role_auth(role_obj, cfg["live"].get("auth", {})),
+                         role_obj,
+                         waitms=cfg.get("capture", {}).get("waitMs", 1800)) != "ok":
+            print(f"[flow {fid}] could not reach entry {flow['entry']} — flow skipped", flush=True)
+            return []
     done, step_no = [], 0
     steps = flow.get("steps") or []
     total = sum(1 for s in steps if "capture" in s)

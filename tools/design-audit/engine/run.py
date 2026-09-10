@@ -64,7 +64,10 @@ def main():
         # every other gate green; neither was wired in until now.
         import config as _CFG; _, _paths = _CFG.load(a.project)
         _corrupt = CAP.audit_capture_integrity(_paths)
-        _login = CAP.audit_no_login_pages(_paths)
+        _cfgd, _ = _CFG.load(a.project)
+        _expect = [r["name"] for r in _cfgd.get("live", {}).get("roles", [])
+                   if r.get("expectsLoginPage")]
+        _login = CAP.audit_no_login_pages(_paths, expected_roles=_expect)
         _scale = CAP.audit_design_frame_width(_paths)
         if _corrupt or _login or _scale:
             print("\n!! CAPTURE GATE FAILED — analyze/report refused. Fix the captures and re-run.",

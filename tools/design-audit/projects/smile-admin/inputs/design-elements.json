@@ -1,0 +1,312 @@
+{
+ "SUPER-ADMIN-ROLES": {
+  "rows": [
+   {
+    "x": 325,
+    "y": 163,
+    "fs": 14,
+    "fw": "Regular",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "Home"
+   },
+   {
+    "x": 387,
+    "y": 162,
+    "fs": 14,
+    "fw": "Medium",
+    "fam": "Noto Sans",
+    "fill": "#1f2937",
+    "ch": "Roles"
+   },
+   {
+    "x": 327,
+    "y": 194,
+    "fs": 28,
+    "fw": "Medium",
+    "fam": "Noto Sans",
+    "fill": "#1f2937",
+    "ch": "Roles"
+   },
+   {
+    "x": 325,
+    "y": 236,
+    "fs": 16,
+    "fw": "Regular",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "Roles bundle permissions. Assign a role to"
+   },
+   {
+    "x": 1115,
+    "y": 172,
+    "fs": 14,
+    "fw": "Medium",
+    "fam": "Noto Sans",
+    "fill": "#003366",
+    "ch": "View Catalogue"
+   },
+   {
+    "x": 1299,
+    "y": 172,
+    "fs": 14,
+    "fw": "Medium",
+    "fam": "Noto Sans",
+    "fill": "#ffffff",
+    "ch": "Add New Role"
+   },
+   {
+    "x": 412,
+    "y": 338,
+    "fs": 14,
+    "fw": "Medium",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "Total Roles"
+   },
+   {
+    "x": 1247,
+    "y": 338,
+    "fs": 14,
+    "fw": "Medium",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "Permissions Mapped"
+   },
+   {
+    "x": 969,
+    "y": 338,
+    "fs": 14,
+    "fw": "Medium",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "System Roles"
+   },
+   {
+    "x": 690,
+    "y": 339,
+    "fs": 14,
+    "fw": "Medium",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "Active"
+   },
+   {
+    "x": 361,
+    "y": 468,
+    "fs": 14,
+    "fw": "Regular",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "Search role by name or description"
+   },
+   {
+    "x": 369,
+    "y": 528,
+    "fs": 14,
+    "fw": "SemiBold",
+    "fam": "Noto Sans",
+    "fill": "#003366",
+    "ch": "Super Admin"
+   },
+   {
+    "x": 623,
+    "y": 530,
+    "fs": 11,
+    "fw": "Medium",
+    "fam": "Noto Sans",
+    "fill": "#27682a",
+    "ch": "Active"
+   },
+   {
+    "x": 337,
+    "y": 574,
+    "fs": 14,
+    "fw": "Regular",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "Platform super administrator with pan-Indi"
+   },
+   {
+    "x": 345,
+    "y": 628,
+    "fs": 11,
+    "fw": "Medium",
+    "fam": "Noto Sans",
+    "fill": "#1558b0",
+    "ch": "65 Permissions"
+   },
+   {
+    "x": 419,
+    "y": 678,
+    "fs": 12,
+    "fw": "Medium",
+    "fam": "Noto Sans",
+    "fill": "#ffffff",
+    "ch": "Edit Permissions"
+   },
+   {
+    "x": 739,
+    "y": 528,
+    "fs": 14,
+    "fw": "SemiBold",
+    "fam": "Noto Sans",
+    "fill": "#003366",
+    "ch": "Central Admin / Central Ministry"
+   },
+   {
+    "x": 707,
+    "y": 574,
+    "fs": 14,
+    "fw": "Regular",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "MoSJE / NeGD at the central level. Pan-Ind"
+   },
+   {
+    "x": 1110,
+    "y": 528,
+    "fs": 14,
+    "fw": "SemiBold",
+    "fam": "Noto Sans",
+    "fill": "#003366",
+    "ch": "State Nodal Officer"
+   },
+   {
+    "x": 1078,
+    "y": 574,
+    "fs": 14,
+    "fw": "Regular",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "State-level Nodal Officer ~ read/write wit"
+   },
+   {
+    "x": 368,
+    "y": 746,
+    "fs": 14,
+    "fw": "SemiBold",
+    "fam": "Noto Sans",
+    "fill": "#003366",
+    "ch": "Implementing Authority / Nodal Officer"
+   },
+   {
+    "x": 337,
+    "y": 810,
+    "fs": 14,
+    "fw": "Regular",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "District-level operational owner (formerly"
+   },
+   {
+    "x": 739,
+    "y": 749,
+    "fs": 14,
+    "fw": "SemiBold",
+    "fam": "Noto Sans",
+    "fill": "#003366",
+    "ch": "Surveyor"
+   },
+   {
+    "x": 707,
+    "y": 802,
+    "fs": 14,
+    "fw": "Regular",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "Field surveyor ~ logs in via OTP on mobile"
+   },
+   {
+    "x": 1110,
+    "y": 749,
+    "fs": 14,
+    "fw": "SemiBold",
+    "fam": "Noto Sans",
+    "fill": "#003366",
+    "ch": "IA"
+   },
+   {
+    "x": 1078,
+    "y": 794,
+    "fs": 14,
+    "fw": "Regular",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "Implementing Agency ~ registers via mobile"
+   },
+   {
+    "x": 740,
+    "y": 985,
+    "fs": 14,
+    "fw": "SemiBold",
+    "fam": "Noto Sans",
+    "fill": "#003366",
+    "ch": "NISD"
+   },
+   {
+    "x": 707,
+    "y": 1030,
+    "fs": 14,
+    "fw": "Regular",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "National Institute of Social Defence ~ ope"
+   },
+   {
+    "x": 1110,
+    "y": 984,
+    "fs": 14,
+    "fw": "SemiBold",
+    "fam": "Noto Sans",
+    "fill": "#003366",
+    "ch": "Swashraya (Shelter Home)"
+   },
+   {
+    "x": 1077,
+    "y": 1030,
+    "fs": 14,
+    "fw": "Regular",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "Shelter home staff ~ submits facility chec"
+   },
+   {
+    "x": 369,
+    "y": 985,
+    "fs": 14,
+    "fw": "SemiBold",
+    "fam": "Noto Sans",
+    "fill": "#003366",
+    "ch": "US/SO"
+   },
+   {
+    "x": 337,
+    "y": 1030,
+    "fs": 14,
+    "fw": "Regular",
+    "fam": "Noto Sans",
+    "fill": "#374151",
+    "ch": "Under Secretary / Section Officer ~ operat"
+   },
+   {
+    "x": 1162,
+    "y": 1266,
+    "fs": 14,
+    "fw": "Medium",
+    "fam": "Noto Sans",
+    "fill": "#ffffff",
+    "ch": "Terms & Conditions"
+   },
+   {
+    "x": 1326,
+    "y": 1266,
+    "fs": 14,
+    "fw": "Medium",
+    "fam": "Noto Sans",
+    "fill": "#ffffff",
+    "ch": "Privacy Policy"
+   }
+  ]
+ }
+}

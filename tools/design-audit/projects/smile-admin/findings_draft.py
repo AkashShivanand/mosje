@@ -9,17 +9,10 @@ no width/height, no copy rewrites, repeats consolidated into Global, severity fr
 """
 
 GLOBAL = [
- ("G01", "Global", "All screens", "Blocker", "Components & States",
-  "A page refresh signs the officer out on most screens",
-  "The design assumes a session that persists; every screen is drawn signed in.",
-  "Reloading the page ends the session on 15 of the 20 routes measured, including the landing "
-  "Dashboard. The smile_admin_token cookie is dropped when the session-validation call "
-  "(/auth/admin/session/hmac-secret) returns 401 before the page's own data calls resolve, so the "
-  "heavier the screen the more reliably it happens.",
-  "Hold the session independently of the page's data calls: resolve session validation before, or "
-  "independently of, the screen's own requests, and treat a failed validation as retry-then-prompt "
-  "rather than an immediate sign-out. Until then an officer loses unsaved work on any refresh, "
-  "second tab, or bookmarked deep link."),
+# G01 (a page refresh signs the officer out) was REMOVED on the reviewer's instruction: this
+# report raises DESIGN bugs only, and a session dropping on reload has no design counterpart to
+# compare against. It is engineering, and it stays fully documented — with the measurement, 15 of
+# 20 routes — in docs/audit/smile-beggary-capture-and-session.md.
 
  ("G02", "Global", "All list screens", "Major", "Color & Token",
   "The active page number is saffron, not the primary navy",
@@ -217,17 +210,18 @@ SCREEN = [
   "same filters."),
 
  ("S14", "Screen", "Beneficiary List", "Major", "Components & States",
-  "The list shows nothing but grey bars for the first 12 to 25 seconds",
-  "The design shows the populated list: five KPI cards carrying figures, and rows with colour-coded "
-  "status pills (Identified, Submitted, Rehabilitation, Under Mobilization, Mobilized).",
-  "Timed on a fast wired connection: at 5s and at 12s the page had no column headers, no rows and "
-  "no KPI figures — only grey placeholder bars. The first row appeared between 12s and 25s. The "
-  "page does load; it takes long enough that a reader will conclude it is broken. Same behaviour on "
-  "Shelter Occupants.",
-  "Bring first paint of the table under a few seconds — page the request, or return the KPI totals "
-  "and the first page of rows before the rest. Whatever the timing, the wait itself has to be "
-  "designed: the Figma section has no loading frame, so what a reader sees for those 25 seconds is "
-  "undesigned (.claude/rules/data-state-completeness.md § the four states that get skipped)."),
+  "The screen has no loading state in the design, and the build needs one",
+  "The Figma section draws only the populated list — five KPI cards with figures and rows with "
+  "colour-coded status pills. There is no frame for what the screen looks like while the data is "
+  "on its way.",
+  "On the live build the KPI figures and every table row are grey placeholder bars for a "
+  "noticeable stretch before the data arrives (timed at up to 25 seconds on a fast connection). "
+  "Shelter Occupants behaves the same way. So the state a reader actually sees on arrival is one "
+  "nobody designed.",
+  "Design the loading state — a skeleton in the shape of the result, so the layout does not jump "
+  "when the data lands — and add it to the Figma section for this screen and Shelter Occupants. "
+  "How long the wait itself should be is an engineering question, recorded separately, not raised "
+  "here."),
 
  ("S15", "Screen", "Beneficiary List", "Nit", "Content & Iconography",
   "The footer year differs between design and build",

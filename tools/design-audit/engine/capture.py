@@ -1199,7 +1199,7 @@ def refresh(project, force=False, verify=True):
     return run(project, only_role=None, allow_empty=False, force=force, verify=verify)
 
 
-def audit_no_login_pages(paths, verbose=True):
+def audit_no_login_pages(paths, verbose=True, expected_roles=()):
     """A captured screen must never BE the login page.
 
     The gate that did not exist on 2026-09-10, when a run against SMILE-Beggary wrote 49
@@ -1215,9 +1215,16 @@ def audit_no_login_pages(paths, verbose=True):
     live = paths["captures_live"]
     if not os.path.isdir(live):
         return []
+    # A role may capture the sign-in surface ON PURPOSE — the five designed auth frames have to
+    # be compared like any other screen. Such a role declares `expectsLoginPage: true` in the
+    # config and its captures are exempt. Without this the gate is right in general and wrong
+    # about exactly the screens someone deliberately went to fetch.
+    exempt = tuple(r.upper().replace("_", "-") + "-" for r in expected_roles)
     bad = []
     for fn in sorted(os.listdir(live)):
         if not fn.endswith(".json"):
+            continue
+        if exempt and fn.upper().startswith(exempt):
             continue
         try:
             with open(os.path.join(live, fn)) as fh:
