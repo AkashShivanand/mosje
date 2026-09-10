@@ -742,11 +742,22 @@
   }
 
   /*
-   * A GLYPH, NOT A BUTTON-SHAPED THING. It had a filled well so it would not
-   * read as a hairline at 300 weight — the well was solving a problem the glyph
-   * had. Filled at 400 the two bars are a solid shape at 16px, which needs no
-   * container to be seen, so the container goes and the pager loses its last
-   * piece of furniture.
+   * NO WELL AT REST, A CIRCLE ON HOVER.
+   *
+   * It used to carry a filled well at all times so the glyph would not read as
+   * a hairline at weight 300 — the well was solving a problem the glyph had,
+   * and filled at 400 the two bars are a solid shape at 16px that needs no
+   * container to be seen. So the well went.
+   *
+   * IT WENT TOO FAR. Removing the resting well also removed the hover circle,
+   * and that one was not decoration: it is the only thing that says this glyph
+   * is a BUTTON rather than a status mark, and it is the press target made
+   * visible. A control whose hit area a reader cannot see is a control they aim
+   * at by guessing.
+   *
+   * So the circle is back, on hover and focus only — and the press takes the
+   * estate's usual 0.94, because a transport control that does not answer the
+   * click feels broken however fast it acts.
    */
   .orgab__play {
     display: grid;
@@ -755,12 +766,27 @@
     block-size: var(--sa-padding-24);
     margin-inline-start: var(--sa-inline-2);
     border-radius: var(--sa-shape-full);
+    background-color: transparent;
     color: color-mix(in srgb, var(--sa-text-neutral-inverse) 62%, transparent);
-    transition: color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+    transition:
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+  }
+
+  .orgab__play:active {
+    transform: scale(0.94);
+  }
+
+  /* Keyboard readers cannot hover, and the circle is the target made visible. */
+  .orgab__play:focus-visible {
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 20%, transparent);
+    color: var(--sa-text-neutral-inverse);
   }
 
   @media (hover: hover) and (pointer: fine) {
     .orgab__play:hover {
+      background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 20%, transparent);
       color: var(--sa-text-neutral-inverse);
     }
 
