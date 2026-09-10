@@ -58,13 +58,16 @@ GLOBAL = [
   "Set the label to Title Case at label-1 (14/20 Medium) and let the card grow to its content. A "
   "truncated label is a label the reader cannot use."),
 
- ("G06", "Global", "All screens with KPI cards", "Minor", "Color & Token",
-  "KPI icons lost their tinted chip",
-  "Each KPI icon sits in a rounded square filled with a light tint of that metric's colour, which "
-  "is what makes the row of cards scannable.",
-  "The icons are drawn bare on the card, in a flat colour, with no ground behind them.",
-  "Restore the tinted rounded chip behind each KPI icon, using the same tint the design assigns to "
-  "that metric."),
+ ("G06", "Global", "All screens with KPI cards", "Minor", "Layout & Spacing",
+  "The KPI icon tile is 36px where the design draws 56px",
+  "The icon sits in a rounded tile filled with a light tint of that metric's colour, measured at "
+  "56 x 56 on the Beneficiary List frame.",
+  "The same tinted tile is there, at 36 x 36 — about a third of the drawn area. With the label "
+  "also dropping to 11px uppercase (G05), the whole card reads a size smaller than designed.",
+  "Set the icon tile to 56 x 56 with the same tint. "
+  "(Corrected 2026-09-10: an earlier draft of this finding said the build had no tinted chip at "
+  "all. It has one; it is smaller. The claim came from a text-only extraction that does not see "
+  "the icon element — the screenshots do.)"),
 
  ("G07", "Global", "Most list screens", "Minor", "Components & States",
   "The page-level export moved out of the header and became two buttons",
@@ -445,4 +448,231 @@ DIFF2 = [
   "The build reads 'Total Mappings' and 'Distinct Surveyors' — the complete words.",
   "The build is right and the design frame is truncated. Fix the Figma labels so this does not "
   "get reported as a build defect at the next review."),
+]
+
+# ---------------------------------------------------------------------------
+# Batch 4 — Master Settings, Rehab Data, Skill & Training, Shelter Occupants.
+# Every column list below was read off the design frame's own text nodes and the build's own
+# <th> elements in the same pass; nothing here is from an earlier draft.
+SCREEN2 = [
+ ("S18", "Screen", "Shelter Occupants", "Major", "Content & Iconography",
+  "The screen has one name in the design and a different one in the build",
+  "The heading reads 'Shelter Occupants', and the sub-line 'Beneficiaries currently residing in…'.",
+  "The heading and the breadcrumb both read 'Swashraya (Shelter Home) Persons'. Two of the table's "
+  "own column headers carry the same expansion — 'Swashraya (Shelter Home) Type' and 'Swashraya "
+  "(Shelter Home) Name' — so the parenthetical is repeated three times on one screen.",
+  "Agree one name for this screen and use it in the design, the heading, the breadcrumb and the "
+  "sidebar. If Swashraya is the departmental term, say it once in the heading and let the columns "
+  "read 'Type' and 'Name'."),
+
+ ("S19", "Screen", "Shelter Occupants", "Major", "Components & States",
+  "The table carries twelve columns where the design specifies five",
+  "Five columns: Beneficiary Name, Beneficiary ID, Beneficiary Type, Facility Status, Actions.",
+  "Twelve: S.No., Beneficiary ID, Beneficiary Name, Gender, Age, Survey Location, Survey Date, "
+  "State, Swashraya (Shelter Home) Type, Beneficiary Type, Swashraya (Shelter Home) Name, Facility "
+  "Status. The designed Actions column is not among them, so there is no per-row action at all.",
+  "Decide the column set with the department and put it in both places. Whatever is agreed, the "
+  "Actions column the design specifies has to exist or be dropped from the design deliberately."),
+
+ ("S20", "Screen", "Master Settings", "Major", "Components & States",
+  "The build invents a tab rail and a four-figure strip the design does not draw",
+  "The screen is heading, sub-line, then the table. Each master (Geography, Agency, Operational, "
+  "Fund Management, Role & Permission, Survey Questionnaire) is drawn as its own frame, and no "
+  "frame shows how a reader moves between them.",
+  "A rail of nine tabs sits above the table, and above that a four-figure strip — Active Tab / "
+  "Geography Masters, Records / 36, Mode / Read-only, Your Access / Full access. Neither is in "
+  "any design frame.",
+  "The design owes this screen its navigation: nine masters with no drawn way to move between "
+  "them is a gap, and the build filled it on its own. Draw the tab rail. The four-figure strip is "
+  "a separate decision — 'Mode: Read-only' and 'Your Access: Full access' say two things about "
+  "permissions that appear to contradict each other."),
+
+ ("S21", "Screen", "Master Settings", "Minor", "Components & States",
+  "The Geography table gains a row-number column and an Actions column",
+  "Three columns: State Code, State Name, Local Name.",
+  "Five: #, State Code, State Name, Local Name, Actions.",
+  "Confirm both additions and add them to the design frame. A row number and an edit action are "
+  "reasonable on a master list; they simply are not specified anywhere yet."),
+
+ ("S22", "Screen", "Rehab Data", "Major", "Components & States",
+  "Gender and Age are not in the build, and the build adds a column of its own",
+  "Seven columns: Beneficiary Name, Gender, Age, Type, Category/Specify, State/District, "
+  "Follow-UP Status.",
+  "Gender and Age are absent. 'Beneficiary Name' is shortened to 'Beneficiary', and a 'Captured "
+  "On' column is added that the design does not have.",
+  "Restore Gender and Age — on a rehabilitation register they are the two fields the design put "
+  "first after the name. Keep the full 'Beneficiary Name' label, and add 'Captured On' to the "
+  "design if it is staying."),
+
+ ("S23", "Screen", "Skill & Training", "Minor", "Components & States",
+  "The build carries five columns the design does not",
+  "Seven columns: Beneficiary ID, Beneficiary Name, Gender, Age, Duration of Skill and Training, "
+  "Skill and Training Type, Survey Location.",
+  "Twelve: the designed seven plus S.No., Shelter Name, State, District and Status.",
+  "Confirm the five extra columns and add them to the design frame, or drop them. Twelve columns "
+  "at 1440 is what pushes this table into horizontal scrolling."),
+
+ ("S24", "Screen", "Skill & Training", "Nit", "Layout & Spacing",
+  "Two column headers sit ten pixels above the rest of the header row — in the DESIGN",
+  "'Duration of Skill and Training' and 'Skill and Training Type' are drawn at y=362 while "
+  "Beneficiary ID, Beneficiary Name, Gender and Age are at y=372: the two long labels wrap to a "
+  "second line and are top-aligned where the short ones are not.",
+  "The build's header cells all share one baseline.",
+  "The build is right. Align the design's header cells to one baseline so the frame stops "
+  "disagreeing with itself."),
+
+ ("S25", "Screen", "City Profiling", "Minor", "Components & States",
+  "A fifth KPI card appears, and two of the four designed ones are renamed",
+  "Four cards: States/UTs Onboarded, Total Cities Selected, Beneficiaries Identified, Funds "
+  "Released. Each label sits on one line beside a 56px icon tile.",
+  "Five: States/UTs Onboarded, Total Cities Selected, Beneficiary Identified/Surveyed, Fund "
+  "Disbursed, Fund Utilised. Three of the five labels wrap onto two or three lines, so the figure "
+  "sits at a different height on every card and the row no longer reads across.",
+  "Add the fifth card to the design and agree the two renamed labels. Whatever the wording, size "
+  "the cards so the label fits on one line — a row of figures a reader cannot compare across is "
+  "the point of the row lost."),
+
+ ("S26", "Screen", "City Profiling", "Major", "Layout & Spacing",
+  "The last column of the table is off the side of the screen",
+  "Ten columns fit inside the 1440 frame, the last (Utilized (₹)) ending at about x=1400.",
+  "The same ten columns run to x=1554, so Fund Utilised sits outside the 1440 viewport and can "
+  "only be reached by scrolling the table sideways. Measured on the live page at a 1440 viewport.",
+  "Fit the ten columns inside the viewport — the design does it by using short headers "
+  "('Cities', 'Identified', 'Released (₹)') where the build spells them out."),
+
+ ("S27", "Screen", "City Profiling", "Minor", "Color & Token",
+  "The four figure columns lose their coloured chips",
+  "Identified, Rehabilitated, Released (₹) and Utilized (₹) are drawn as tinted pills — blue, "
+  "green, amber and red — so a reader can pick a state's performance out of the table at a glance.",
+  "All four render as plain text in the body colour.",
+  "Restore the four tinted pills. They are the only thing distinguishing ten numeric columns "
+  "from each other."),
+
+ ("S28", "Screen", "City Profiling", "Nit", "Content & Iconography",
+  "Four column headers are worded differently from the design",
+  "Cities · Nodal Officer · Identified · Rehabilitated.",
+  "Number of Cities/Districts · State Nodal Officer · Total Identified/Surveyed · Total "
+  "Rehabilitated.",
+  "Agree one wording. The build's is more precise and the design's fits the column width; either "
+  "is defensible, but both places should say the same thing."),
+
+ ("S29", "Screen", "Performance Statistics", "Minor", "Color & Token",
+  "The KPI card lost its tinted header band and its blue outline",
+  "Each card has a pale blue band across the top carrying 'KPI n' and the KPI's name in navy, "
+  "with the icon plain in the corner, and the card itself is outlined in blue.",
+  "The header band is white and the card is outlined in the neutral grey used by every other "
+  "card on the estate; the icon has gained a filled rounded tile. The name and description are "
+  "present, as designed.",
+  "Restore the tinted header band and the blue outline. They are what separate a KPI scorecard "
+  "from an ordinary content card at a glance."),
+]
+
+# ---------------------------------------------------------------------------
+# Batch 5 — the form and dialog states reached through the flows. Every claim below was read
+# off the two images side by side at 1:1, after a text-only extraction twice reported an element
+# as absent that the screenshot showed plainly (see audit-rules, 2026-09-10).
+SCREEN3 = [
+ ("S30", "Screen", "Onboard New User", "Major", "Content & Iconography",
+  "Four of the five field labels are worded differently from the design",
+  "Full Name * · Last Name * · Email Address * · Contact Number * · Select Role *.",
+  "First Name * · Last Name (no required marker) · Email ID * · Mobile Number * · Select Role *. "
+  "Four labels are reworded and one loses its required marker.",
+  "Agree the five labels and use them in both places. Note the design's own pair is wrong — "
+  "'Full Name' beside 'Last Name' asks for the surname twice; the build's 'First Name' is the "
+  "right reading and the Figma frame should be corrected to match."),
+
+ ("S31", "Screen", "Onboard New User", "Minor", "Layout & Spacing",
+  "The form card is two-thirds the designed width and centred",
+  "The card spans the content column, about 1090px wide, with the two field columns at x=349 "
+  "and x=880.",
+  "About 730px wide and centred, so the first field starts 190px further right and the card "
+  "leaves a wide empty margin on both sides.",
+  "Let the form card fill the content column as the design does."),
+
+ ("S32", "Screen", "Onboard New User", "Minor", "Components & States",
+  "The BASIC DETAILS section header is not in the build",
+  "A small-caps 'BASIC DETAILS' label with a hairline rule runs across the top of the card.",
+  "The card opens straight onto the first field.",
+  "Restore the section header. It is the only thing naming the group, and the same pattern is "
+  "used on the shelter-home form."),
+
+ ("S33", "Screen", "Add Shelter Home", "Major", "Components & States",
+  "Six required markers are missing, and the three section headers with them",
+  "Asterisks on Shelter Name, Capacity, Type, Contact Person, Address, Operational Status, Linked "
+  "Implementing Agency and Skills & Training Programmes. Three small-caps section headers divide "
+  "the form: SHELTER HOME DETAILS, IMPLEMENTING AGENCY DETAILS, SHELTER HOME LOGIN ACCOUNT.",
+  "Only Shelter Name and Capacity carry an asterisk. The three section headers are not there; "
+  "the fields run continuously under one card title.",
+  "Restore the required markers — a form that does not say which fields are mandatory fails at "
+  "submit instead of before it — and the three section headers."),
+
+ ("S34", "Screen", "Add Shelter Home", "Minor", "Layout & Spacing",
+  "The field grid is two columns where the design draws three",
+  "Three across: Shelter Name | Capacity | Type, then Contact Person | Address | Operational "
+  "Status.",
+  "Two across, in a different order: Shelter Name | Capacity, then Contact Person | Address, "
+  "then Type | Operational Status. The form is a third longer as a result.",
+  "Use the designed three-column grid and the designed field order."),
+
+ ("S35", "Screen", "Add Shelter Home", "Minor", "Components & States",
+  "The build adds a warning banner the design does not have",
+  "No banner. The form opens on its fields.",
+  "An amber banner reads 'Pick a State and District / City in the filter above (or link an "
+  "Implementing Agency below) so this shelter lands in the right district.'",
+  "The banner is doing real work — it explains a dependency the design never resolved. Keep it, "
+  "and draw it in the design, or design the dependency out."),
+
+ ("S36", "Screen", "Add Shelter Home", "Major", "Components & States",
+  "The DESIGN puts a date-range picker where the Address field should be",
+  "The field labelled 'Address' is drawn as a date control with a calendar icon reading 'Select "
+  "Start and End Date'. 'Contact Person' is drawn as a dropdown.",
+  "Address is a text input and Contact Person is a text input, which is what both fields are for.",
+  "The build is right. Fix the Figma frame — this is a design-side defect, and it is the second "
+  "of its kind on this page after 'Sanction DateDate'."),
+
+ ("S37", "Screen", "Create New Role", "Minor", "Typography",
+  "The dialog's field labels are uppercase 11px grey without their required markers",
+  "'Role Name *' and 'Description *' in Title Case, dark, with a red asterisk.",
+  "'ROLE NAME' and 'DESCRIPTION' in 11px uppercase grey, no asterisk, though both fields are "
+  "still required.",
+  "Set the two labels to Title Case at the label size in the body colour and restore the "
+  "asterisks."),
+
+ ("S38", "Screen", "Create New Role", "Minor", "Components & States",
+  "The dialog has no close control",
+  "An × sits in the top-right corner of the dialog.",
+  "There is no ×. The only ways out are Cancel and the Escape key, and Escape is not signposted.",
+  "Add the × to the dialog header."),
+
+ ("S39", "Screen", "Create New Role", "Nit", "Color & Token",
+  "The guidance note loses its panel",
+  "'After creating the role you'll be redirected to the permission picker' sits in a pale amber "
+  "panel, so it reads as a consequence of pressing the button.",
+  "The same sentence is plain grey text with a small information icon, level with the field "
+  "labels around it.",
+  "Restore the amber panel."),
+
+ ("S40", "Screen", "Roles", "Minor", "Content & Iconography",
+  "The page is called Roles in the design and Role Management in the build",
+  "The heading reads 'Roles', and the role cards carry '65 Permissions' and '#ID 1'.",
+  "The heading reads 'Role Management'. The card chips are abbreviated to '46 perms' and "
+  "'# ID 4', and the Active chip is uppercased.",
+  "Agree the page name, and spell 'Permissions' out on the chip — 'perms' is developer shorthand "
+  "on a government screen."),
+
+ ("S41", "Screen", "Roles", "Nit", "Color & Token",
+  "Role cards gained a tinted header band",
+  "The card header is white: icon, role name, and an Active chip on the right.",
+  "The header sits on a tinted band, and the chip reads ACTIVE in uppercase.",
+  "Confirm the band. If it stays, draw it in the design and keep the chip in Title Case."),
+
+ ("S42", "Screen", "City Profiling — district list", "Minor", "Components & States",
+  "The district list gains the same two fund cards as the state list, and loses its table card",
+  "Three KPI cards (Cities Selected, Total Identified, Total Rehabilitated), and the table sits "
+  "in a bordered card with a tinted, rounded header band.",
+  "Five KPI cards — Fund Disbursed and Fund Utilised are added, as on the state list — and the "
+  "table has no card border and a flat header band. City names are underlined links where the "
+  "design draws them as plain navy.",
+  "Same decision as the state list (S25): add the two cards to the design or drop them. Restore "
+  "the table's card and its header band."),
 ]

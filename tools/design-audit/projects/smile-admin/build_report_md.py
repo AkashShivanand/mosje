@@ -19,7 +19,7 @@ secs = json.load(open(os.path.join(HERE, "sheet", "global_sections.json")))
 nodes = json.load(open(os.path.join(HERE, "global_nodes.json")))
 by_id = {s["id"]: s for s in secs}
 
-ALL = F.GLOBAL + F.SCREEN + F.LOGIN + F.DIFF + F.DIFF2
+ALL = F.GLOBAL + F.SCREEN + F.LOGIN + F.DIFF + F.DIFF2 + F.SCREEN2 + F.SCREEN3
 counts = collections.Counter(f[3] for f in ALL)
 
 
@@ -45,11 +45,11 @@ L.append("---\n")
 L.append("## Summary\n")
 L.append("| | |")
 L.append("|---|---|")
-L.append("| Screens compared design ↔ build | 19 + the sign-in surface |")
+L.append("| Screens compared design ↔ build | 31 + the sign-in surface |")
 L.append(f"| Findings | **{len(ALL)}** — {counts['Major']} Major, {counts['Minor']} Minor, "
          f"{counts['Nit']} Nit |")
 L.append(f"| Applies to every screen | {len(secs)} |")
-screen_only = [f for f in F.SCREEN + F.DIFF + F.DIFF2 if f[1] == "Screen"]
+screen_only = [f for f in F.SCREEN + F.DIFF + F.DIFF2 + F.SCREEN2 + F.SCREEN3 if f[1] == "Screen"]
 L.append(f"| Specific to one screen | {len(screen_only)} |")
 L.append(f"| Sign-in surface | {len(F.LOGIN)} |")
 L.append("")
@@ -79,6 +79,25 @@ for screen in dict.fromkeys(f[2] for f in screen_findings):
     L.append(f"## {screen}\n")
     for f in [x for x in screen_findings if x[2] == screen]:
         L.append(card(f))
+
+L.append("---\n")
+L.append("## Coverage — what was checked, and what could not be\n")
+L.append("| | |")
+L.append("|---|---|")
+L.append("| Design frames on *Smile Beggary (Synced)* paired to a build capture | 63 |")
+L.append("| Roles crawled | Super Admin, Central Authority, US/SO, NISD |")
+L.append("| Roles skipped at the reviewer's instruction | State Nodal Officer, Nodal Officer, Implementing Agency |")
+L.append("")
+L.append("**Built with no design on the page I was pointed at.** The surveyor detail page "
+         "(`/surveyors/<id>`) — a profile card with a Parent Implementing Agency panel — has no "
+         "frame on *Smile Beggary (Synced)*. The nearest frame, `Survey Locations section - "
+         "Surveyor`, is a surveyor LIST. The same is true of `/hotspot-approvals` and the three "
+         "Fund Monitoring create forms. These may be designed elsewhere; they are not on the page "
+         "this audit was given.\n")
+L.append("**States I could not reach.** View Catalog, Edit Permissions, Create Survey Location, "
+         "View Beneficiary, the dashboard chart tabs and Add District: the control resolves and "
+         "the click lands, but the resulting view does not finish loading within the capture "
+         "window. They are not audited, and they are not counted as clean.\n")
 L.append("---\n")
 L.append("## Sign-in surface\n")
 for f in F.LOGIN:
