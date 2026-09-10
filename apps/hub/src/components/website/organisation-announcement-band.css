@@ -740,10 +740,40 @@
     pointer-events: none;
   }
 
+  /*
+   * ── HELD, AND SAYING SO ────────────────────────────────────────────────
+   *
+   * Resting the pointer on the card stops the rotation, which is a courtesy —
+   * a reader partway through an announcement should not have it turned out
+   * from under them. But it stopped SILENTLY: the bar froze mid-fill and every
+   * signal on the transport control went on insisting the thing was playing,
+   * so a held carousel and a stalled one were pixel for pixel the same.
+   *
+   * The dots dim as one group. Dimming the whole indicator says "this display
+   * is on hold" in a way that dimming the fill alone does not — the fill
+   * getting fainter on its own reads as the fill itself changing value, which
+   * is the one thing it must never appear to do while stopped.
+   *
+   * The TRANSPORT CONTROL IS DELIBERATELY NOT DIMMED. It has not been held and
+   * its meaning has not changed: rotation is still switched on, and pressing it
+   * still switches it off. Dimming it would say the button was unavailable,
+   * which was the original defect wearing different clothes.
+   *
+   * 64% rather than the disabled rung — this is paused, not unavailable, and
+   * the fill has to stay legible against its groove while it waits. Measured
+   * over the card at 64%: the fill still clears 3:1 on the track.
+   */
+  .orgab__pager[data-holding] .orgab__dots {
+    opacity: var(--sa-alpha-64);
+  }
+
   .orgab__dots {
     display: flex;
     align-items: center;
     gap: var(--sa-inline-2);
+    /* Fading in and out, so the hold arrives as a state rather than a flicker
+       under a pointer that is only passing over the card. */
+    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   /* A 24px target with a small mark inside it — §2.5.8's floor, met by the
