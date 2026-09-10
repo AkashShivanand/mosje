@@ -121,7 +121,15 @@ three all green.
 6. **Anchor gate** — a finding about a **chip / pill / badge / tile / banner / card** must resolve to an element with a background, and one about a **button / link / checkbox / dropdown** to something operable. "The active page chip is the wrong colour" once resolved to the words *Per page* beside it. A deliberate neighbour-anchor declares `why=` on its spec.
 7. **Duplicate-anchor gate** — two findings on one design box is a copy-paste, not a coincidence; declare genuine sharing in `allowSharedAnchors`.
 
-Run them with `python3 engine/run.py --project <p> --phase claims` (also runs inside `analyze`).
+**Shared modules a project should call rather than re-write:** `engine/anchors.py` (anchor
+resolution, and the tag/role/bg fields the claim gates need), `engine/boards.py` (crop bands and
+pin geometry, with the assertions), `engine/tracker.py` (a portal's tracker sheet, the additive
+push to Drive that never overwrites a dev's Status, and the sync back from a Google Sheet export),
+`engine/claims.py` (the four claim gates). What stays per-project is the editorial half: the
+findings themselves, the anchor specs, and the scope rules for what that portal does and does not
+raise.
+
+Run the gates with `python3 engine/run.py --project <p> --phase claims` (also runs inside `analyze`).
 Set `"claimGates": true` in the project config to make them fatal. Output: `out/claims.md` —
 failures, the claim-class table, and every frame that draws content **outside its own bounds**,
 which is a design-file defect the build will otherwise implement from a spec nobody can see.
