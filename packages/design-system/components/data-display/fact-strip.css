@@ -80,6 +80,24 @@
   }
 
   /*
+   * A FIXED COLUMN COUNT, because auto-fit optimises for width and a strip is
+   * read as a shape.
+   *
+   * At the full content width (1152 at 1440, less the card's own 32 of padding)
+   * `minmax(200px, 1fr)` fits FIVE tracks. That is correct arithmetic and the
+   * wrong answer for eight items: five in the top row and three in the bottom
+   * reads as a grid that ran out of content, where 4×2 reads as a set. The
+   * consumer knows the count, so the consumer names the shape.
+   *
+   * `minmax(0, 1fr)` rather than `minmax(200px, 1fr)`: with the count fixed, a
+   * 200px floor overflows the card the moment four cells no longer fit, and a
+   * strip that scrolls sideways is worse than one with narrow cells.
+   */
+  .ds-fact-strip--columns .ds-fact-strip__list {
+    grid-template-columns: repeat(var(--ds-fact-strip-columns), minmax(0, 1fr));
+  }
+
+  /*
    * GAP 0, NOT 12 — the 12 belongs between the icon and the copy block, and
    * nowhere else.
    *
@@ -158,15 +176,31 @@
     color: var(--sa-text-neutral-base);
   }
 
-  /* `margin-top: auto` bottom-aligns the labels across the row. The grid already
-     equalises cell heights, so without it a value that wraps to two lines drops
-     its own label a line below its neighbours' — one tile visibly out of step.
-     Pinned to the bottom, the labels read as a row whatever the values do. */
+  /*
+   * THE LABEL SITS UNDER ITS OWN VALUE, not at the bottom of the cell.
+   *
+   * It carried `margin-top: auto`, which bottom-aligned every label across the
+   * row. That was written for a wrapping VALUE — "Social Justice &
+   * Empowerment" over two lines would otherwise drop its own label a line below
+   * its neighbours'. It trades the common case for the rare one, and the eight
+   * NMBA counters are where the bill came in: four of the eight LABELS wrap
+   * ("Activities in educational institutes", "Persons treated and
+   * rehabilitated"), so every short-labelled cell had its caption pushed 24px
+   * clear of the figure it captions while the wrapped ones stayed tight. The
+   * row aligned; the pairs came apart, and a value 24px from its label reads as
+   * an orphan.
+   *
+   * Top-aligned, the value and its label stay one two-line block — which is
+   * what the handoff's `Copy` frame is — and the labels still start on one line
+   * across the row, because the icons and values above them are one line each.
+   * A wrapping value now offsets its own label by a line; that is one cell out
+   * of step in a case that occurs on one strip in the estate, against four out
+   * of eight in the case above.
+   */
   /* body-1 in the handoff: 16/24 with 0.5 tracking. It was 12px, which made the
      label read as a caption rather than as the thing the value answers. */
   .ds-fact-strip__label {
     order: 2;
-    margin-top: auto;
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
     /* #3a3d41 against the handoff's #343a40 — the same grey to within a few
@@ -174,6 +208,18 @@
        the pair had no tonal hierarchy at all: the label competed with the figure
        it exists to caption. */
     color: var(--sa-text-neutral-subtle);
+  }
+
+  /*
+   * A NAMED COLUMN COUNT IS A DESKTOP INSTRUCTION. Four cells need 200 each
+   * plus 36 of gaps before the copy starts breaking mid-word, and a tablet's
+   * content column does not have it. Two-up from here down, whatever was
+   * passed — the auto-fit strips reach the same shape on their own.
+   */
+  @media (max-width: 1023px) {
+    .ds-fact-strip--columns .ds-fact-strip__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   /* Two-up on a phone: cells at 200px each would be columns of wrapped single

@@ -4994,6 +4994,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "columns",
+        "type": "number",
+        "required": false,
+        "description": "Fix the strip to this many columns instead of fitting as many 200px cells as the width allows. Pass it when the item count has a shape the auto-fit cannot find. Eight counters want 4×2; at the full content width the auto-fit lays five in the first row and three in the second, which reads as a grid that ran out of content rather than as two rows of four. Below 1024px the strip falls back to two-up whatever is passed, because four 200px cells do not fit a tablet."
+      },
+      {
         "name": "overlap",
         "type": "boolean",
         "required": false,

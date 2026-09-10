@@ -275,6 +275,41 @@ export function extractGlanceStrip(html: string): {
 const sameFact = (a: string, b: string) =>
   a.toLowerCase().replace(/[^a-z0-9]/g, "") === b.toLowerCase().replace(/[^a-z0-9]/g, "");
 
+/**
+ * The column count that divides `count` cells into equal rows, or `undefined`
+ * to leave `FactStrip` fitting as many as the width allows.
+ *
+ * Only ever engages above five, because up to five the auto-fit already puts
+ * them on one row and one row is always the right shape. Above it, an uneven
+ * last row reads as a grid that ran out of content — NMBA's eight counters laid
+ * out 5 + 3 — so a count that divides by four or three is told which.
+ */
+/**
+ * Whether this record draws a card across the header band's lower edge.
+ *
+ * EXPORTED, AND THAT IS THE POINT. The route sets `reservesOverlap` on the
+ * header so the band pads itself by the 64 the card pulls up into; the template
+ * decides what the card contains. Those are two answers to one question, and
+ * they disagreed the moment NMBA's counters took the slot from its curated
+ * `facts`: the route still tested `detail.facts.length`, found none, dropped the
+ * reservation, and the card landed FLUSH against the hero's buttons — 0px where
+ * there had been 64. Nothing failed; the page just closed up.
+ *
+ * One expression, both callers. `data-state-completeness.md` §2.
+ */
+export function hasOverlappingFactCard(detail: OrgDetail | undefined): boolean {
+  if (detail == null) return false;
+  if (detail.impact?.placement === "hero" && detail.impact.items.length > 0) return true;
+  return (detail.facts?.length ?? 0) > 0;
+}
+
+function balancedColumns(count: number): number | undefined {
+  if (count <= 5) return undefined;
+  if (count % 4 === 0) return 4;
+  if (count % 3 === 0) return 3;
+  return undefined;
+}
+
 export function formatOrgHtml(rawHtml: string, innerHeadingLevel: 3 | 4 = 4): string {
   let html = withAssetBasePath(trimRedundantOpening(rawHtml));
   // Strip any residual unconstrained widget images
@@ -630,7 +665,40 @@ export function OrganisationDetail({
    * second hero. The `asOf` line sits under the heading because a counter with
    * no date on a government page reads as today's number.
    */
-  if (detail?.impact != null && detail.impact.items.length > 0) {
+  /*
+   * …UNLESS THE RECORD PUTS THEM IN THE FOLD, which is where the source puts
+   * NMBA's. See `impact.placement`. In that case the counters ARE the fact
+   * strip and there is no band at all.
+   */
+  const impactInHero =
+    detail?.impact != null &&
+    detail.impact.placement === "hero" &&
+    detail.impact.items.length > 0;
+
+  /*
+   * WHAT THE CARD UNDER THE HEADER SHOWS — resolved ONCE, so the strip and the
+   * band below it can never both claim the figures.
+   *
+   * The counters win the slot when the record asks for it, because a record
+   * that publishes its own counters in the fold is saying they are the page's
+   * standing facts; anything curated beside them would be a second answer to
+   * the same question, 24px away.
+   */
+  const heroStrip: {
+    items: { icon: string; value: string; label: string }[];
+    ariaLabel: string;
+    asOf?: string;
+  } | null = impactInHero
+    ? {
+        items: detail!.impact!.items,
+        ariaLabel: `${org.title} in numbers`,
+        asOf: detail!.impact!.asOf,
+      }
+    : detail?.facts != null && detail.facts.length > 0
+      ? { items: detail.facts, ariaLabel: `Key facts about ${org.title}` }
+      : null;
+
+  if (detail?.impact != null && !impactInHero && detail.impact.items.length > 0) {
     const im = detail.impact;
     bands.push({
       id: "impact",
@@ -1596,10 +1664,27 @@ export function OrganisationDetail({
 
   return (
     <>
-      {detail?.facts != null && detail.facts.length > 0 && (
+      {heroStrip != null && (
         <div className="orgd__facts">
           <div className="sa-container">
-            <FactStrip overlap ariaLabel={`Key facts about ${org.title}`} items={detail.facts} />
+            <FactStrip
+              overlap
+              columns={balancedColumns(heroStrip.items.length)}
+              ariaLabel={heroStrip.ariaLabel}
+              items={heroStrip.items}
+            />
+            {/*
+             * PROVENANCE, NOT NARRATION. These are live counters on the source
+             * and they move daily, so a figure with no date beside it claims to
+             * be current when it is a snapshot — `live-data-fallback.md`. In the
+             * band position this line was the SectionTitle's description; the
+             * card in the fold has no section title, so it carries its own.
+             */}
+            {heroStrip.asOf != null && (
+              <p className="orgd__facts-asof">
+                As published by the Department on {heroStrip.asOf}.
+              </p>
+            )}
           </div>
         </div>
       )}

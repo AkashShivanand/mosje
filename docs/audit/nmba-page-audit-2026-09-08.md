@@ -1341,3 +1341,106 @@ it is the first thing that fails if the card's translucency is ever touched.
 | Dismiss shares the cards' top edge | yes | yes | yes |
 | Pager overlaps the button | no | no | no |
 | Horizontal scroll | none | none | none |
+
+---
+
+## 20. The counters go back where the source publishes them (10 Sep 2026)
+
+### 20.1 The finding
+
+Raised on review: *"these numbers were in the facts sheet below header in the
+live website, you have moved them down and in the fact sheet you have kept your
+own data."*
+
+Checked against the ingest and against dosje.gov.in rather than from memory, and
+it is correct on both halves.
+
+`content/website/organisation.json[49].sections[1]` — the section whose heading
+is the page's own h1 — carries the NAPDDR lead paragraph and then all **eight**
+counters. There is no "in Numbers" section anywhere on the source page; it goes
+from the counters straight into "About the Abhiyaan". The live page draws them in
+a white card straddling the lower edge of the blue header, which is the exact
+treatment `FactStrip overlap` exists for.
+
+We had them as a band **below** the header, and the card in that position carried
+three facts of our own assembly. The page's emphasis was inverted twice over: the
+campaign's headline figures were under the fold, and the most prominent card on
+the page held material the source does not present that way.
+
+### 20.2 The three facts that came off the card, and where each one went
+
+| Fact | Where it is stated on the source | Where it is now |
+|---|---|---|
+| `15 August 2020` / Abhiyaan launched | the About paragraph, verbatim | still there, two screens down. Printing it twice was the restatement `ui-restraint-and-copy.md` §1 bans |
+| `768` / De-addiction and rehabilitation centres | the heading of the source's GEO-tagged facilities section — **not** a header fact | **off the page.** See 20.3 — it needs a decision, not a quiet deletion |
+| `Social Justice & Empowerment` / Ministry | nowhere. Ours | gone. Its own note in the record called it weak and asked to be replaced the day the source published a fourth figure worth the space; the source publishes eight |
+
+### 20.3 One open item for a stakeholder: 768, 755+ and 487
+
+**Three different counts of de-addiction centres are in play and no page says
+why they differ.**
+
+| Figure | Source | Where it appears |
+|---|---|---|
+| **768** | the source's GEO-tagged facilities heading | was in our fact strip; now nowhere on our page |
+| **755+** | the source's own counter, one of the eight | in the header card, as published |
+| **487** | our own facilities register, summed live | the Geo-Tagged De-addiction Facilities section |
+
+Keeping 768 in the header card would have put it 24px from `755+` with nothing
+to explain the gap, which is worse than leaving it out. But 487 against 755+ on
+one page is the same problem 300px apart, and it predates this change.
+
+**This needs the Department, not a layout decision.** Either the register is
+incomplete against the published total, or the two count different things
+(geo-tagged locations vs. DoSJE-supported centres). Until somebody says which,
+the page states each figure where the source states it and claims no
+relationship between them.
+
+### 20.4 What changed in the design system, and why it is not NMBA-specific
+
+**`FactStrip` bottom-aligned its labels.** `margin-top: auto` was written for a
+wrapping VALUE — "Social Justice & Empowerment" over two lines would otherwise
+drop its own label below its neighbours'. Eight counters are where that trade
+came due: four of the eight LABELS wrap, so the short-labelled cells had their
+captions pushed 24px clear of the figures they caption. Measured across all
+fifteen organisation pages: thirteen render pixel-identical after the fix, the
+transgender portal's at-a-glance strip gains the same correction, and NMBA's
+strip goes from four label baselines to one per row.
+
+**`FactStrip` gained `columns`.** At the full content width `minmax(200px, 1fr)`
+fits five tracks, so eight items laid out 5 + 3.
+
+**And one defect the move exposed rather than caused.** The route sets
+`reservesOverlap` on the header — the 64px of padding the card pulls up into —
+from `detail.facts.length`. The template decides what the card *contains*. Two
+answers to one question, and they disagreed the moment the counters took the
+slot: the route found no `facts`, dropped the reservation, and the card landed
+**flush against the hero's buttons**, 0px where there had been 64. Nothing threw
+and no gate failed; the fold just closed up. Both callers now read one exported
+expression — `data-state-completeness.md` §2.
+
+### 20.5 Not changed, and deliberately
+
+**`28,29,661+` still stands in the Indian grouping among seven internationally
+grouped figures**, and `755+` still carries its plus. Both are as the Department
+publishes them. It reads as an inconsistency and it is one — the source's, and
+this file's header forbids normalising a department's own figure to suit a
+layout. Worth raising with the Department; not worth fixing from our side.
+
+**The value stays at `headline-5` (20px).** These are now the page's headline
+figures and a case can be made for a step up, but 20/24/600 is measured from the
+handoff and the strip is shared with sixteen other pages. A type change belongs
+in the handoff first.
+
+### 20.6 Verified
+
+| | 1440 | 1024 | 768 | 390 |
+|---|---|---|---|---|
+| Card straddles the band by | 64 | 64 | 64 | 64 |
+| Clear space above the card | 64 | 64 | 64 | 64 |
+| Columns | 4 | 4 | 2 | 2 |
+| Horizontal scroll | none | none | none | none |
+| Label baselines per row | 1 | 1 | 1 | 1 |
+
+`#impact` no longer exists as a band; the rail entry that pointed at it is
+removed, and `check:org-anchors` passes with zero dangling entries.

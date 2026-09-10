@@ -22,6 +22,17 @@ export interface FactStripProps extends React.HTMLAttributes<HTMLDivElement> {
    */
   overlap?: boolean;
   /**
+   * Fix the strip to this many columns instead of fitting as many 200px cells
+   * as the width allows.
+   *
+   * Pass it when the item count has a shape the auto-fit cannot find. Eight
+   * counters want 4×2; at the full content width the auto-fit lays five in the
+   * first row and three in the second, which reads as a grid that ran out of
+   * content rather than as two rows of four. Below 1024px the strip falls back
+   * to two-up whatever is passed, because four 200px cells do not fit a tablet.
+   */
+  columns?: number;
+  /**
    * Names the list for assistive technology, e.g. "Key facts about PM-AJAY".
    * Required, because "New Delhi, Headquarters, 3, Components" read as a bare
    * run of text tells a screen-reader user nothing about what they belong to.
@@ -61,13 +72,25 @@ export interface FactStripProps extends React.HTMLAttributes<HTMLDivElement> {
 export function FactStrip({
   items,
   overlap = false,
+  columns,
   ariaLabel,
   className,
+  style,
   ...rest
 }: FactStripProps): React.JSX.Element {
   return (
     <div
-      className={cn("ds-fact-strip", overlap && "ds-fact-strip--overlap", className)}
+      className={cn(
+        "ds-fact-strip",
+        overlap && "ds-fact-strip--overlap",
+        columns != null && "ds-fact-strip--columns",
+        className,
+      )}
+      style={
+        columns != null
+          ? ({ ...style, "--ds-fact-strip-columns": columns } as React.CSSProperties)
+          : style
+      }
       {...rest}
     >
       <dl className="ds-fact-strip__list" aria-label={ariaLabel}>

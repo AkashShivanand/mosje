@@ -2971,11 +2971,13 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 **Rule**: Never nest `<Card>` inside another `<Card>`.
 
 #### FactStrip
-**Purpose**: The row of standing facts under a page hero — headquarters, number of components, who a scheme serves. One card divided by hairlines, not a row of cards.
-**Key props**: `items` (`{icon, value, label}[]`), `overlap`, `ariaLabel`
+**Purpose**: The row of standing facts under a page hero — headquarters, number of components, who a scheme serves. One card, not a row of cards.
+**Key props**: `items` (`{icon, value, label}[]`), `overlap`, `columns`, `ariaLabel`
 **Rules**:
 - **NOT `MetricCard`.** A metric is a measurement that moves and carries a trend; MetricCard has the change pill to prove it. These are facts that never trend, so the two differ in what they may *contain*, not only in how they look. Giving MetricCard a centred variant would have put a change arrow one prop away from a headquarters address.
-- **One surface, not four cards.** Separate cards read as four things to compare; a divided surface reads as one summary of one organisation, which is what it is.
+- **One surface, not four cards.** Separate cards read as four things to compare; one surface reads as one summary of one organisation, which is what it is. There is no rule between the cells — the icons already give the row its rhythm, and four vertical hairlines add furniture to the calmest band on the page. (This line said "divided by hairlines" until 10 Sep 2026, months after they were taken out.)
+- **`columns` when the count has a shape the width cannot find.** The default fits as many 200px cells as there is room for, which is right up to five and wrong above it: eight items at the full content width lay out 5 + 3, a grid that looks like it ran out of content. Name the count and get 4×2. It falls back to two-up below 1024 whatever is passed.
+- **The label sits under its own value, not at the foot of the cell.** A wrapping label makes its cell taller; its neighbours' labels stay put rather than dropping to meet it. The pair is one two-line block and must read as one.
 - `ariaLabel` is required. Unlabelled, the strip is announced as the bare run "New Delhi, Headquarters, 3, Scheme components".
 - Renders as a `<dl>`; the value is moved above the label with `order`, so the DOM keeps `<dt>` first and the pair is read "Headquarters: New Delhi".
 - `overlap` pulls the card up over the band above it. Use it only directly under a hero — elsewhere it bites into whatever precedes it.

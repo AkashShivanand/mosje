@@ -439,6 +439,29 @@
     z-index: 1;
   }
 
+  /*
+   * The counters' read date, where the counters are in the fold.
+   *
+   * Right-aligned and quiet: it is provenance, not a caption anybody reads
+   * first, and left-aligned it would read as the start of the page's copy. The
+   * top margin is deliberately small — it belongs to the card above it, not to
+   * the band below.
+   */
+  .orgd__facts-asof {
+    margin: var(--sa-stack-8) 0 0;
+    text-align: right;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    /*
+     * `subtle`, NOT `subtler`, and the difference is a WCAG failure. This line
+     * sits on `bg/neutral/subtler` (#eef0f3), and `text/neutral/subtler`
+     * (#6f757d) measures 4.07:1 there — under the 4.5:1 floor for 12px text
+     * (WCAG 2.2 §1.4.3). `subtle` (#3a3d41) measures 9.7:1. The line is made
+     * quiet by its SIZE, not by being greyed to the edge of legibility.
+     */
+    color: var(--sa-text-neutral-subtle);
+  }
+
   .orgd__facts::before {
     content: "";
     position: absolute;
