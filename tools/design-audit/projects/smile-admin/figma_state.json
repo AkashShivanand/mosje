@@ -10,5 +10,12 @@
   "_note": "The Design-QC document exists under two file keys with identical page ids \u2014 LHVPBAQasYOqOK1ZYCiZFG is an older copy that other projects' READMEs still point at. The canonical one for SMILE is 8LX7sqdDtWIAoCYZueCJq7. Node ids match across the two because one was duplicated from the other, so a node id alone does NOT tell you which file you are in \u2014 always pass the file key explicitly.",
   "rows": 19,
   "images": 38,
-  "findings": 31
+  "findings": 26,
+  "reportRootNodeId": "50826:25",
+  "reportRootUrl": "https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50826-25",
+  "pinnedFindings": 26,
+  "boards": 9,
+  "houseStyle": "Matches the NMBA and NHAPOA pages in this file: a REVIEW SHEET (3-column DESIGN|BUILD|ISSUES, the reviewer's editing surface) plus a REPORT of pinned boards. Board = navy section-header with severity chips, white board r12 stroke #e2e8f0, bhead #f8fafc, Screenshots panel #eef2f7 with two 688-wide white cards r10, bfoot with slug + links, then Finding Card instances. Pins are Pin/<Severity> instances, 28x28, numbered, positioned absolutely inside the clip frame.",
+  "_dsAdoption": "REMOVED 2026-09-10 at the reviewer's instruction \u2014 this portal is not built on the design system, so scoring its CSS against published tokens measured a contract nobody signed. The engine still computes it; this project does not report it.",
+  "_coverageCorrection": "An earlier draft claimed 33 build screens had no design. 29 of those were the other three roles' captures of the same routes, unmapped because only super-admin had declared frames. Do not repeat that claim without checking the role breakdown first."
 }

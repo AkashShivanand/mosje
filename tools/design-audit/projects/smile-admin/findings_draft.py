@@ -38,13 +38,17 @@ GLOBAL = [
   "Return to the design's order: page numbers left, count and per-page right, so the control a "
   "reader reaches for is in the same place on every list in the estate."),
 
- ("G04", "Global", "All screens with a data table", "Minor", "Typography",
-  "Table headers are set in uppercase micro-type",
-  "Column headers are Title Case at the body size in the primary navy, semibold.",
-  "Column headers are uppercase, smaller, and letterspaced. On Notifications the 12 headers wrap "
-  "onto two lines to fit.",
-  "Set column headers in Title Case at font-size 14 / weight 600, per the label-1 style the SMILE "
-  "variables publish. Uppercase micro-type costs legibility and forces the two-line wrap."),
+ ("G04", "Global", "All screens with a data table", "Major", "Typography",
+  "The same table header is three different sizes depending on the screen",
+  "One column-header style: Title Case at the body size in the primary navy, semibold.",
+  "Measured across all 17 list screens: the header cell renders at 12px on fourteen of them, 14px "
+  "on Users and City Profiling, and 11px on Performance Statistics. All of them are uppercased by "
+  "text-transform and letterspaced, so the DOM says 'Name' and the screen says 'NAME'. On "
+  "Notifications the twelve headers wrap onto two lines to fit.",
+  "Pick one column-header style and bind every table to it — label-1 (14/20 Medium) is the closest "
+  "published match. Three sizes for one element is what makes a set of list screens read as three "
+  "different products; the uppercase is a separate decision to make deliberately, since it costs "
+  "legibility and is what forces the two-line wrap."),
 
  ("G05", "Global", "All screens with KPI cards", "Minor", "Typography",
   "KPI card labels are uppercase, and some are truncated",
@@ -87,6 +91,16 @@ GLOBAL = [
   "Confirm the intent. GIGW expects a contrast affordance in the masthead; if light/dark replaces "
   "it, the contrast requirement needs to be met somewhere the reader can find it, and the design "
   "should be updated to match."),
+
+ ("G11", "Global", "All screens", "Major", "Typography",
+  "The sidebar is a different typeface and size from the design",
+  "Every navigation label is Noto Sans at 14px — measured off the design frame's own text nodes "
+  "(Dashboard, City Profiling, Performance Statistics, Users, Roles all report 14).",
+  "The build renders the sidebar in the system stack (-apple-system) at 15px. Measured on Users, "
+  "48 of the 181 on-canvas elements are in that stack and every one of them is a navigation item; "
+  "across all 51 captures it is 2,128 elements.",
+  "Set the sidebar to Noto Sans at 14px to match the design. The likely cause is a navigation "
+  "component left on the framework's default sans stack rather than the app's."),
 
  ("G10", "Global", "All screens", "Major", "Responsive & A11y",
   "No accessibility statement is published",
@@ -232,58 +246,18 @@ DEFERRED = [
 ]
 
 # ---------------------------------------------------------------------------
-# Machine-verified globals (the engine measured these across all 51 captures; each was then
-# re-checked by hand on a named screen before being written up).
+# DS-adoption was REMOVED on 2026-09-10 at the reviewer's instruction: these portals are not
+# built on the design system, so scoring their CSS against published tokens measured a contract
+# nobody signed. What survives from that pass is the one item that is a genuine DESIGN-vs-BUILD
+# visual discrepancy — the sidebar's type — verified by comparing the design frame's own text
+# nodes against the build's computed CSS, not against a token list.
+#
+# Dropped with the metric, and why each is not a design-vs-build finding:
+#   pure black / a second colour palette — only meaningful against a token set; where a colour
+#     genuinely differs from the design it is already written up as G02 and S11.
+#   type down to 9px — the DESIGN does this too (its BETA tag is 10px and its masthead strapline
+#     7px), so it is not a build deviation. Worth raising with the designers as a shared
+#     accessibility concern; it is not a fidelity defect.
+#   radius 9999 vs 999 — visually identical; a token-bookkeeping point with no DS in play.
 # ---------------------------------------------------------------------------
-MACHINE = [
- ("M01", "Global", "All screens", "Major", "Typography",
-  "The whole sidebar is set in the system font, not Noto Sans",
-  "Every label is Noto Sans, which the estate mandates on all government properties and which the "
-  "SMILE Figma variables publish as both font-family/body and font-family/heading.",
-  "2,128 elements across all 51 captures compute to -apple-system. On Users, 48 of the 181 "
-  "on-canvas elements are in that stack, and they are the navigation: Dashboard, City Profiling, "
-  "Performance Statistics, Users, Roles — the whole sidebar, on every screen.",
-  "Give the sidebar the same font-family as the rest of the shell. The likely cause is a component "
-  "left on the framework's default sans stack rather than the app's."),
-
- ("M02", "Global", "All screens", "Major", "Typography",
-  "The sidebar is set at 15px, which is not on the type scale",
-  "The published scale runs 11, 12, 13, 14, 16, 18, 20, 24, 28, 32 — there is no 15.",
-  "2,207 elements across all 51 captures render at 15px, and on Users every one of them is a "
-  "sidebar item.",
-  "Move the navigation label to 14px (label-1) or 16px (body-1). 15px is a value the design system "
-  "cannot theme, resize or reason about."),
-
- ("M03", "Global", "All screens", "Minor", "Color & Token",
-  "Pure black is used as a text colour",
-  "The darkest published text colour is Text/Dark #1f2937.",
-  "499 elements across all 51 captures render #000000, and a further 234 render #111827 — neither "
-  "is in the SMILE variable set.",
-  "Bind text to Text/Dark #1f2937. Pure black on white is both off-token and harsher than the "
-  "palette intends."),
-
- ("M04", "Global", "All screens", "Minor", "Color & Token",
-  "A second, unpublished palette runs alongside the design system's",
-  "The variables publish one neutral ramp, one primary ramp, an info pair and a single error red.",
-  "Alongside them the build renders #15803d, #047857, #64748b, #475569, #b45309, #0a3a74 and "
-  "#2563eb — greens, slates and ambers with no counterpart in the SMILE variables, most visibly in "
-  "the status chips and the dashboard charts.",
-  "Either bind these to published tokens or publish them. A colour that only exists in the CSS "
-  "cannot be themed, contrast-checked or reused, and today just over half the interface "
-  "(55% of 9,343 elements) sits on the token set."),
-
- ("M05", "Global", "All screens", "Minor", "Typography",
-  "Type runs down to 9px",
-  "The smallest published size is label-3 at 11px.",
-  "290 elements render at 10px and 108 at 9px, across all 51 captures — the BETA tag in the "
-  "masthead and the plus and minus marks on the text-size controls among them.",
-  "Raise anything below 11px to label-3. Text this small is difficult on a low-resolution display "
-  "and is the kind of thing an accessibility review will stop."),
-
- ("M06", "Global", "All screens with a pill", "Nit", "Color & Token",
-  "Fully-rounded corners are drawn as 9999px, not the radius token",
-  "radius-full is published as 999.",
-  "361 elements across 17 screens use 9999.",
-  "Bind to radius-full. It looks identical; it just is not the token, so it does not move when the "
-  "token does."),
-]
+MACHINE = []
