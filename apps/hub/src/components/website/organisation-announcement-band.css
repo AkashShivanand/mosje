@@ -67,30 +67,41 @@
      surface on another: the ground beneath is the band's own gradient, and the
      helpline beside it is solid. */
 
+  /*
+   * THE STAGE IS THE SCENE, NOT THE CARD.
+   *
+   * It used to be the card — it carried the glass, the radius and the lit edge,
+   * with two panels cross-fading inside it. A card that FLIPS cannot be built
+   * that way: a flip needs a front and a back, so the material moved onto the
+   * faces and what is left here is the depth they turn in and the strip the
+   * pager sits in.
+   *
+   * `perspective` lives here rather than on the faces so both share one
+   * vanishing point — otherwise each face turns in a world of its own and the
+   * two halves of the flip do not line up.
+   */
   .orgab__stage {
     position: relative;
     display: grid;
-    grid-template-areas: "offer";
-    align-items: center;
-    /* The depth the turn happens in. On the STAGE rather than on the panel, so
-       both panels share one vanishing point and the turn reads as one card
-       rotating rather than as two cards each rotating in their own world. */
-    perspective: 1400px;
-    padding: var(--sa-padding-16) var(--sa-padding-20);
-    border-radius: var(--sa-shape-16);
-    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent);
-    /*
-     * THE LIT EDGE CARRIES THE PANEL'S ACCENT, and it is the second of the two
-     * ways the offers are told apart.
-     *
-     * The eyebrow it replaces was a 40px chip on a 1272px band — a difference a
-     * reader has to be looking for. This one is 889px wide and shifts hue as the
-     * band turns, so the change registers peripherally, which is the only place
-     * a reader is looking when a band above the fold changes under them.
-     */
-    box-shadow: inset 0 var(--sa-stroke-1) 0 0
-      color-mix(in srgb, var(--orgab-accent) 44%, transparent);
-    transition: box-shadow var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+    perspective: 1600px;
+  }
+
+  /*
+   * THE CARD ITSELF. Both faces occupy one grid cell of it, so it is still the
+   * height of its tallest panel and the band cannot resize as it turns.
+   *
+   * 520ms, and deliberately longer than the 250ms this estate gives a UI
+   * transition. Those are transitions a reader CAUSED and is waiting on; this
+   * one is ambient and its whole job is to be noticed — a half-turn through 180
+   * degrees at 250ms is a smear rather than a card. `emphasis` easing, because
+   * the easing table's answer for something moving on screen is in-out.
+   */
+  .orgab__flipper {
+    display: grid;
+    grid-template-areas: "face";
+    transform-style: preserve-3d;
+    transform: rotateY(calc(var(--orgab-turn, 0) * 180deg));
+    transition: transform var(--orgab-flip, 520ms) var(--sa-motion-emphasis-easing);
   }
 
   /*
@@ -105,7 +116,6 @@
    * judging contrast by eye on a saturated ground. `-200` is the one that tempts
    * you and still fails §1.4.3, by 0.07.
    */
-  .orgab__stage[data-accent="saffron"],
   .orgab__offer[data-accent="saffron"] {
     --orgab-accent: var(--sa-color-secondaryScale-100);
     --orgab-accent-ink: var(--sa-color-secondaryScale-700);
@@ -117,7 +127,6 @@
    * fails if the card's translucency is ever touched. `-50` is 6.81:1, which is
    * margin rather than luck.
    */
-  .orgab__stage[data-accent="leaf"],
   .orgab__offer[data-accent="leaf"] {
     --orgab-accent: var(--sa-color-successScale-50);
     --orgab-accent-ink: var(--sa-color-successScale-700);
@@ -159,35 +168,49 @@
    * out of the accessibility tree at rest.
    */
   .orgab__offer {
-    grid-area: offer;
+    grid-area: face;
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) auto;
     align-items: center;
     column-gap: var(--sa-inline-16);
-    visibility: hidden;
-    opacity: 0;
-    filter: blur(2px);
-    transform: rotateY(-26deg) translateZ(-28px) scale(0.97);
-    transform-origin: 30% 50%;
+    /*
+     * ── THE CARD MATERIAL, NOW ON THE FACE ──────────────────────────────
+     *
+     * Translucent, because this is the half that turns. Never a light
+     * translucent surface on another: the ground beneath is the band's own
+     * gradient, and the helpline beside it is solid.
+     *
+     * The lit top edge carries the panel's ACCENT and is one of the two ways
+     * the offers are told apart — 923px wide and shifting hue as the card
+     * turns, where the eyebrow it replaced was a 40px chip.
+     *
+     * THE BOTTOM PADDING IS A STRIP, not breathing room. The pager sits in it,
+     * clear of the action above: measured at 1440 the action occupies 16 to 56
+     * of the card and the pager 92 to 116, so the gap is 36px rather than the
+     * 8 it had when both were crowded into the content row. It costs the band
+     * 24px, and that is the trade — see the note on the pager below.
+     */
+    padding: var(--sa-padding-16) var(--sa-padding-20) var(--sa-padding-40);
+    border-radius: var(--sa-shape-16);
+    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent);
+    box-shadow: inset 0 var(--sa-stroke-1) 0 0
+      color-mix(in srgb, var(--orgab-accent) 44%, transparent);
+    /* The half of the card you are not looking at is not drawn. Without this a
+       reader sees the other announcement mirrored, through the card. */
     backface-visibility: hidden;
-    transition:
-      opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
-      filter var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
-      transform var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
-      visibility 0s linear var(--sa-motion-exit-duration);
   }
 
-  .orgab__offer[data-active] {
-    visibility: visible;
-    opacity: 1;
-    filter: blur(0);
-    transform: rotateY(0deg) translateZ(0) scale(1);
-    transition:
-      opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
-      filter var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
-      transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
-      visibility 0s;
+  /* Face 1 is pre-turned, so it faces out when the flipper reaches 180. */
+  .orgab__offer[data-face="1"] {
+    transform: rotateY(180deg);
   }
+
+  /*
+   * NOTHING IS HIDDEN BY `visibility` ANY MORE. It was what kept the inactive
+   * panel's space while removing it from view; the backface does both now, and
+   * a hidden face cannot be flipped INTO view. `inert` in the markup is what
+   * keeps the panel a reader cannot see out of the tab order.
+   */
 
   /*
    * ── ONE LEADING SLOT, TWO KINDS OF OBJECT ───────────────────────────────
@@ -319,6 +342,152 @@
     opacity: 1;
   }
 
+  /* ══════════════════════════════════════════════════════════════════════════
+     THE MARK'S MOTION — a burst once, then a drift that never stops
+     ══════════════════════════════════════════════════════════════════════════
+
+     ALL OF THIS WAS DELETED BY ACCIDENT and shipped that way. Rewriting the
+     confetti section to add the ambient loop replaced the whole block, and the
+     block held everything: the spark's size, position and ink, the ray and bit
+     animations, and all four `@keyframes`. What survived was six
+     `<span class="orgab__spark">` with no styles at all — zero-sized,
+     invisible — an `animation: orgab-pop` naming a keyframe that no longer
+     existed, and a drawn mark that never moved.
+
+     Nothing about it LOOKED broken. The markup was right, the classes were
+     right, `data-burst` and `data-loop` were on the element, and no gate has
+     anything to say about a keyframe that is referenced and never declared.
+     Playwright is what found it: six elements matched `.orgab__spark` and not
+     one of them was visible.
+
+     THE SHAPE IT IS REBUILT TO is the Rive reference — a popper that RECOILS
+     before it throws, and pieces that TUMBLE as they fly rather than sliding
+     outward at a fixed angle. Two things carry that: every piece turns through
+     most of a revolution on its way out, and the pieces come in three lengths
+     and three inks, so no two read as the same object.
+     ========================================================================= */
+
+  /* ── The burst: the block shakes, eight pieces go, once ─────────────────── */
+
+  /*
+   * THE WHOLE BLOCK SHAKES, not the drawing inside it. The pop belongs to the
+   * tile — that is the object a reader sees move, and animating only the glyph
+   * inside a still tile reads as a picture wobbling in its frame.
+   */
+  .orgab__mark--celebrate:has(.cfti[data-burst]) {
+    animation: orgab-pop 720ms var(--sa-motion-emphasis-easing) both;
+  }
+
+  .orgab__spark {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: 50%;
+    inline-size: var(--spark-len, var(--sa-padding-8));
+    block-size: var(--sa-stroke-3);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--spark-ink);
+    opacity: 0;
+    /* Above the copy beside it, so a piece thrown to the right does not vanish
+       behind the heading. */
+    z-index: var(--sa-z-raised);
+    animation: orgab-spark 1000ms var(--sa-motion-emphasis-easing) var(--spark-in) both;
+  }
+
+  /*
+   * They travel 48–62px from the centre of a 72px tile, so the tile's own 36px
+   * edge falls at roughly a third of the flight and the brightest part happens
+   * on the green rather than on the cream. The saturated `-400` orange is the
+   * one ink that holds on both grounds; the pale rungs only work once a piece
+   * is clear of the tile.
+   */
+  .orgab__spark[data-n="0"] { --dx: -46px; --dy: -40px; --rot: 220deg;  --spark-len: 8px;  --spark-ink: var(--sa-color-secondaryScale-400); --spark-in: 0ms; }
+  .orgab__spark[data-n="1"] { --dx: 44px;  --dy: -52px; --rot: -260deg; --spark-len: 6px;  --spark-ink: var(--sa-color-secondaryScale-100); --spark-in: 50ms; }
+  .orgab__spark[data-n="2"] { --dx: 60px;  --dy: -12px; --rot: 180deg;  --spark-len: 10px; --spark-ink: var(--sa-text-neutral-inverse);     --spark-in: 25ms; }
+  .orgab__spark[data-n="3"] { --dx: -56px; --dy: 16px;  --rot: -200deg; --spark-len: 8px;  --spark-ink: var(--sa-color-secondaryScale-400); --spark-in: 95ms; }
+  .orgab__spark[data-n="4"] { --dx: 26px;  --dy: 50px;  --rot: 240deg;  --spark-len: 6px;  --spark-ink: var(--sa-color-successScale-50);    --spark-in: 70ms; }
+  .orgab__spark[data-n="5"] { --dx: -20px; --dy: -60px; --rot: -180deg; --spark-len: 10px; --spark-ink: var(--sa-color-secondaryScale-100); --spark-in: 130ms; }
+  .orgab__spark[data-n="6"] { --dx: 52px;  --dy: 30px;  --rot: 200deg;  --spark-len: 8px;  --spark-ink: var(--sa-text-neutral-inverse);     --spark-in: 160ms; }
+  .orgab__spark[data-n="7"] { --dx: -38px; --dy: -18px; --rot: -240deg; --spark-len: 6px;  --spark-ink: var(--sa-color-successScale-50);    --spark-in: 190ms; }
+
+  @keyframes orgab-spark {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.5) rotate(0deg); }
+    22%  { opacity: 1; }
+    70%  { opacity: 1; }
+    100% {
+      opacity: 0;
+      transform:
+        translate(
+          calc(-50% + (var(--dx) * var(--spark-reach, 1))),
+          calc(-50% + (var(--dy) * var(--spark-reach, 1)))
+        )
+        scale(1.05)
+        rotate(var(--rot));
+    }
+  }
+
+  /* The recoil: back and down, then up and over, then settle. A popper kicks
+     before it throws, and that kick is what a plain scale-up leaves out. */
+  @keyframes orgab-pop {
+    0%   { transform: scale(0.9) rotate(8deg); }
+    18%  { transform: scale(0.94) rotate(-12deg); }
+    46%  { transform: scale(1.1) rotate(6deg); }
+    72%  { transform: scale(0.98) rotate(-2deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+
+  /* ── The drift: what keeps going after the burst is spent ───────────────── */
+
+  /*
+   * Every part is animated and PAUSED by default; `data-loop` runs them. A
+   * paused animation holds its frame, so pressing pause leaves the confetti
+   * where it is rather than snapping it home.
+   *
+   * `transform-box: fill-box`, because an SVG child's transform origin is the
+   * viewBox origin otherwise and every one of these turns about itself.
+   */
+  .cfti__ray,
+  .cfti__bit {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation-play-state: paused;
+  }
+
+  .cfti[data-loop] .cfti__ray,
+  .cfti[data-loop] .cfti__bit {
+    animation-play-state: running;
+  }
+
+  /* Three rays breathing outward by about a pixel, staggered — even timing
+     reads as a mechanism and this is meant to read as paper. */
+  .cfti__ray {
+    animation: cfti-ray 2800ms var(--sa-motion-emphasis-easing) infinite;
+  }
+
+  .cfti__ray[data-n="0"] { --rx: -0.4px; --ry: -1.4px; animation-delay: 0ms; }
+  .cfti__ray[data-n="1"] { --rx: 1.1px;  --ry: -1.1px; animation-delay: 320ms; }
+  .cfti__ray[data-n="2"] { --rx: 1.5px;  --ry: -0.2px; animation-delay: 640ms; }
+
+  @keyframes cfti-ray {
+    0%, 100% { transform: translate(0, 0); opacity: 0.55; }
+    45%      { transform: translate(var(--rx), var(--ry)); opacity: 1; }
+  }
+
+  /* Three bits floating a few pixels and turning a little. They return to where
+     they started rather than fading out and reappearing — a piece of confetti
+     that blinks back to its origin is a piece of confetti you notice. */
+  .cfti__bit {
+    animation: cfti-bit 3600ms var(--sa-motion-emphasis-easing) infinite;
+  }
+
+  .cfti__bit[data-n="0"] { --bx: 1.2px;  --by: -2.6px; --bd: 18deg;  animation-delay: 0ms; }
+  .cfti__bit[data-n="1"] { --bx: -1.6px; --by: 2.2px;  --bd: -22deg; animation-delay: 900ms; }
+  .cfti__bit[data-n="2"] { --bx: 2.2px;  --by: -1.4px; --bd: 26deg;  animation-delay: 1800ms; }
+
+  @keyframes cfti-bit {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); opacity: 0.4; }
+    50%      { transform: translate(var(--bx), var(--by)) rotate(var(--bd)); opacity: 1; }
+  }
+
   /* The phone's stand-in for the code is out of the way at every other width. */
   .orgab__mark--phone {
     display: none;
@@ -442,18 +611,34 @@
    * marks in the card's own ink, which is as quiet as a control can be while
    * still being one.
    */
+  /*
+   * ── IT SITS IN THE CARD'S BOTTOM STRIP, AND OUTSIDE THE FLIPPER ─────────
+   *
+   * Outside, because it does not turn. It pages the card; a control that
+   * somersaults with the thing it controls is a decoration pretending to be
+   * one. It is positioned against the STAGE, which is the card's footprint,
+   * so it lands in the card's own bottom strip without being a child of a face.
+   *
+   * Bottom-right, 12 up and 20 in, matching the card's own side padding — the
+   * pager and the action share a right edge, which is what makes the 36px
+   * between them read as a gap rather than as a misalignment.
+   */
   .orgab__pager {
-    position: relative;
-    /* It shares the panel's grid cell — that is what makes the stage the height
-       of its tallest panel — so without the raised rung the offer paints over
-       the pager and swallows every click on the dots. Found by driving a real
-       click, not by looking: the control was visible the whole time. */
+    position: absolute;
+    opacity: 1;
+    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+    inset-block-end: var(--sa-padding-12);
+    inset-inline-end: var(--sa-padding-20);
     z-index: var(--sa-z-raised);
-    grid-area: offer;
-    place-self: end end;
     display: flex;
     align-items: center;
     gap: var(--sa-inline-2);
+  }
+
+  /* Out of the way while the card is edge-on, back when it lands. */
+  .orgab__pager[data-turning] {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .orgab__dots {
@@ -469,7 +654,9 @@
     position: relative;
     display: grid;
     place-items: center;
-    inline-size: var(--sa-padding-24);
+    /* The active bar is 24 wide, so the target has to be at least that. Still
+       clears §2.5.8's 24x24 floor by the control itself. */
+    inline-size: var(--sa-padding-32);
     block-size: var(--sa-padding-24);
     border-radius: var(--sa-shape-full);
   }
@@ -491,9 +678,23 @@
   /* The current dot lengthens into a bar — a shape change reads at a glance
      where a brightness change alone does not. The bar is the TRACK; the fill
      below runs across it. */
+  /*
+   * THE TRACK IS A GROOVE, NOT A PALER WHITE.
+   *
+   * It was white at 40% under a white fill, and when the pager lost its dark
+   * capsule the two stopped being distinguishable: 40% white and 100% white,
+   * six pixels tall, on a mid-green card. The indicator was running the whole
+   * time — measured mid-cycle at `inset(0 52.5% 0 0 round 999px)` — and could
+   * not be seen, which for a progress indicator is the same as not running.
+   *
+   * A dark groove separates them by lightness instead of by opacity, and the
+   * fill reads at a glance without being any brighter than it was.
+   */
   .orgab__dot[aria-selected="true"]::before {
-    inline-size: var(--sa-padding-20);
-    background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 40%, transparent);
+    inline-size: var(--sa-padding-24);
+    background-color: color-mix(in srgb, var(--sa-color-successScale-950) 42%, transparent);
+    box-shadow: inset 0 0 0 var(--sa-stroke-1)
+      color-mix(in srgb, var(--sa-color-successScale-950) 20%, transparent);
   }
 
   /*
@@ -522,7 +723,7 @@
   .orgab__dot[aria-selected="true"]::after {
     content: "";
     position: absolute;
-    inline-size: var(--sa-padding-20);
+    inline-size: var(--sa-padding-24);
     block-size: var(--sa-padding-6);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-text-neutral-inverse);
@@ -746,7 +947,7 @@
         visibility 0s;
     }
 
-    .orgab__mark--celebrate .cfti,
+    .orgab__mark--celebrate:has(.cfti[data-burst]),
     .cfti__ray,
     .cfti__bit,
     .orgab__spark {
@@ -1038,24 +1239,39 @@
 
   @media (max-width: 767px) {
     /*
-     * THE PAGER GETS ITS OWN ROW. On a phone the action goes full width, so a
-     * pill riding the card's edge would land on the button — this time from
-     * below. A row costs 24px and is the honest fix; nudging the pill sideways
-     * would only move the collision to whatever the button becomes next.
+     * THE CARD'S PADDING SHRINKS, AND THE STRIP WITH IT.
+     *
+     * The desktop face reserves a 40px strip below its content for the pager.
+     * Applied unchanged on a phone that put the band at 342px — 41% of an 844px
+     * viewport, against 286 before this pass — because the phone's action is
+     * already a full-width row of its own, so the strip was being paid for
+     * twice. 32 is what the pager needs at its phone size, and the sides come
+     * in to 12 where the desktop card can afford 20.
      */
-    .orgab__stage {
-      grid-template-areas: "offer" "pager";
-      row-gap: var(--sa-stack-8);
-      padding: var(--sa-padding-12);
+    .orgab__offer {
+      padding: var(--sa-padding-12) var(--sa-padding-12) var(--sa-padding-32);
     }
 
+    /*
+     * BOTTOM-LEFT ON A PHONE, not bottom-right. The action is full width there,
+     * so the two share the card's whole measure and only the vertical gap keeps
+     * them apart; putting the pager under the button's leading edge is where a
+     * thumb reaching for one is least likely to find the other.
+     */
     .orgab__pager {
-      grid-area: pager;
-      place-self: center start;
-      /* Back in flow, and no lift: it is no longer sitting on an edge. */
-      margin-block-end: 0;
-      box-shadow: inset 0 0 0 var(--sa-stroke-1)
-        color-mix(in srgb, var(--sa-text-neutral-inverse) 32%, transparent);
+      inset-inline: var(--sa-padding-12) auto;
+      inset-block-end: var(--sa-padding-8);
+    }
+
+    /*
+     * THE BURST IS SCALED TO ITS TILE. The distances are set for a 72px mark;
+     * on a phone the mark is 24, so pieces thrown 48–62px cleared the tile
+     * entirely and flew across the heading — measured at 390, the first word of
+     * "Six Years of the Abhiyaan" was under them. Half the reach keeps the
+     * confetti around the thing it is coming out of.
+     */
+    .orgab__spark {
+      --spark-reach: 0.45;
     }
 
     .orgab__dot,
