@@ -125,3 +125,52 @@ navigation item. The estate mandates Noto Sans on all government properties.
 
 The sidebar links to `/survey-locations`; the application serves `/surveys`. Invisible to a reader,
 but it is why the screen could not be captured until the crawler was taught to accept a redirect.
+
+---
+
+## 7. Capture coverage — what this pass reached, and what it did not
+
+Asked plainly: **the portal is not fully cloned, and not every role was traversed.** The numbers.
+
+### Roles — 4 of the 7 in the credentials sheet
+
+| Role | Reached | Screens |
+|---|---|---|
+| super-admin | ✅ | 23 of 23 sidebar routes |
+| central-authority | ⚠️ | 20 of 23 — `/persons`, `/survey-locations` and `/comprehensive-rehab/skill-training` lost their session on every attempt |
+| US/SO | ✅ | 4 of 4 — verified live: this role's sidebar really is Dashboard, Fund Monitoring, Sanction Order, Audit Log |
+| NISD | ✅ | 4 of 4 — verified live: Dashboard, Fund Monitoring, Release Order, Audit Log |
+| State Nodal Officer | ❌ | credentials column is empty in the sheet |
+| Nodal Officer | ❌ | credentials column is empty in the sheet |
+| Implementing Agency | ❌ | no credentials, **and it is a separate sign-in** — the login page offers "Implementing Agency? Sign in with OTP", and the design carries three Implementing-Agency sign-in frames. That is an unaudited surface, not just an unaudited role. |
+
+### Screens — sidebar routes only
+
+51 screen states were captured. Every one is a page a sidebar link reaches. Not captured:
+
+- **Every state behind a button.** Counted from the captures themselves: `View` (20 screens),
+  `Edit Permissions` (10), `View Details` (10), `View Surveyor` (10), `Edit` (10), plus
+  `Add District`, `New Role`, `Create Survey Location`, `Add Swashraya (Shelter Home)`,
+  `View Beneficiary`, `Review & Submit`. The design has frames for most of these.
+- **Master Settings' tabs.** The design draws seventeen master panels; the build's
+  `/master-setting` is one route and the pass captured its landing state only.
+- **MIS Reports.** Eight designed reports; the sidebar entry exposed no href on any role.
+- **The sign-in screens themselves** — `/login` and Choose Portal are in `skipRoutes`, so the
+  five designed auth frames were never compared.
+- **Modals, dropdowns, confirmations, and most empty/error/loading states.**
+
+### What that means for the report
+
+The 26 findings are sound for what they cover — 19 screens compared design-to-build, every finding
+pinned to a real element. But **coverage is nav-depth only**. A reader should not take "26 findings"
+as the portal's total defect count; it is the count for the pages a sidebar link reaches, on one
+role, plus what those pages share with the rest.
+
+### To close the gap
+
+1. Credentials for State Nodal Officer, Nodal Officer and Implementing Agency (the last also needs
+   a test OTP, or an account the OTP can be read for).
+2. Re-run central-authority's three failed routes.
+3. Declare the button-reachable states as flows in `screen-manifest.yaml` and let `engine/drive.py`
+   walk them — the engine already supports this and never commits a destructive action on dev.
+4. Remove `/login` from `skipRoutes` for one pass so the auth screens are compared.

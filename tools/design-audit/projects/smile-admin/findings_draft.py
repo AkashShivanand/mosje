@@ -150,11 +150,15 @@ SCREEN = [
   "Return the rows to flat-on-navy with the icon chip only, and keep the label on one line."),
 
  ("S05", "Screen", "Users", "Minor", "Components & States",
-  "The View Catalog action is not in the build",
-  "Two header actions: a secondary 'View Catalog' and the primary 'Onboard New User'.",
-  "'View Catalog' is absent; its place is taken by the CSV and PDF export buttons.",
-  "Confirm whether View Catalog is still in scope. If it is, restore it as the secondary action "
-  "beside the primary button."),
+  "View Catalog sits on a different screen from the one the design puts it on",
+  "Users carries two header actions: a secondary 'View Catalog' and the primary 'Onboard New User'.",
+  "On Users that slot holds CSV and PDF instead. View Catalog is NOT missing from the build — it "
+  "is on the ROLES screen, in the same header position (x=1154, y=158), on both super-admin and "
+  "central-authority. The Roles design frame does not show it there.",
+  "Confirm which screen owns View Catalog. If Users is right per the design, move it back and add "
+  "it to the Roles frame's removal; if Roles is right, update both design frames to match. "
+  "(Corrected 2026-09-10: an earlier draft of this finding said the action was absent from the "
+  "build. It is not — it is on another screen.)"),
 
  ("S06", "Screen", "Users", "Minor", "Typography",
   "The Name column lost its emphasis",
