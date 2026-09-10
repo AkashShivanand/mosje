@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Build a two-tab workbook the reviewer can drop into the live Google Sheet.
+"""Build the workbook the reviewer drops into the live Google Sheet.
+
+Findings only. Coverage stays local (reviewer, 2026-09-10): the Drive tracker carries the defect
+list people work from; the per-screen coverage ledger lives in the repo copy.
 
 The Drive connector this session has can read Drive files and create new ones; it cannot write
 cells or add tabs to a native Google Sheet. So the safe path is an IMPORT file: Google Sheets'
@@ -14,7 +17,7 @@ from openpyxl.utils import get_column_letter
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 AM = os.path.join(REPO, "docs", "qc", "portals", "smile-admin", "audit-master.json")
-OUT = os.path.join(HERE, "out", "SMILE-Beggary-QC-sheets-to-import.xlsx")
+OUT = os.path.join(HERE, "out", "SMILE-Beggary-QC-sheet-to-import.xlsx")
 HEAD = ["ID", "Screen", "Category", "Severity", "Issue (Design → Built)", "Recommended Fix (Dev)",
         "Figma URL", "Live URL", "Status", "Assignee", "Date", "Notes", "Scope"]
 COVHEAD = ["Screen", "Section", "Figma URL", "Has Design?", "Built?", "QC Status", "# Findings", "Notes"]
@@ -51,29 +54,6 @@ def main():
         r[0].font = Font(size=9, bold=True)
     ws.auto_filter.ref = f"A1:M{ws.max_row}"
 
-    cov = wb.create_sheet("Coverage – SMILE Beggary")
-    header(cov, COVHEAD, [44, 18, 34, 12, 10, 14, 12, 52])
-    rows = json.load(open(os.path.join(HERE, "sheet", "all_rows.json")))
-    per = collections.Counter()
-    for s in am["screens"]:
-        per[s["name"]] += len(s["findings"])
-    for r in rows:
-        cov.append([f"{r['role']} — {r['title']}", r["role"], r["figmaUrl"], "Yes", "Yes",
-                    "In Review", per.get(r["title"], 0), None])
-    cov.append(["Surveyor detail (/surveyors/<id>)", "super-admin", None, "No", "Yes", "Not compared", 0,
-                "No design frame on 'Smile Beggary (Synced)' — the nearest frame is the surveyor LIST."])
-    for label in ("View Catalog", "Edit Permissions", "Create Survey Location", "View Beneficiary",
-                  "Dashboard chart tabs", "Add District"):
-        cov.append([label, "super-admin", None, "Yes", "Yes", "Not reached", 0,
-                    "The control resolves and the click lands, but the view does not finish loading "
-                    "inside the capture window."])
-    for label in ("State Nodal Officer", "Nodal Officer", "Implementing Agency"):
-        cov.append([f"Role — {label}", label, None, "Yes", "Yes", "Skipped", 0,
-                    "Skipped at the reviewer's instruction for this pass."])
-    for r in cov.iter_rows(min_row=2, max_row=cov.max_row):
-        for c in r:
-            c.alignment = Alignment(wrap_text=True, vertical="top")
-    cov.auto_filter.ref = f"A1:H{cov.max_row}"
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     wb.save(OUT)
@@ -81,7 +61,6 @@ def main():
     total = sum(counts.values())
     print(f"{OUT}")
     print(f"  'SMILE Beggary'            {ws.max_row - 1} rows")
-    print(f"  'Coverage – SMILE Beggary' {cov.max_row - 1} rows")
     print(f"  Rollup row to paste: SMILE Beggary | {total} | {counts['Blocker']} | "
           f"{counts['Major']} | {counts['Minor']} | {counts['Nit']} | {total} | 0 | 0")
 

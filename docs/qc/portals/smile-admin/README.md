@@ -43,10 +43,12 @@ cannot write cells or add tabs to a native Google Sheet.** So a portal is publis
 
 1. **The PDF** is copied straight into the Drive folder (it is a real filesystem mount), named to
    match the others: `SMILE-Beggary-Design-QC-Report.pdf`.
-2. **The two tabs** are built into `SMILE-Beggary-QC-sheets-to-import.xlsx`
+2. **The findings tab** is built into `SMILE-Beggary-QC-sheet-to-import.xlsx`
    (`python3 build_drive_import.py`) and dropped in the same folder. In the Google Sheet:
    **File → Import → Upload → select it → "Insert new sheet(s)" → Import data.** That adds
-   `SMILE Beggary` and `Coverage – SMILE Beggary` and cannot alter the tabs already there.
+   `SMILE Beggary` and cannot alter the tabs already there.
+   **Coverage stays local** (reviewer, 2026-09-10): the Drive tracker carries the defect list
+   people work from; the per-screen coverage ledger lives only in the repo copy.
 3. **Rollup** takes one new row, pasted under the existing two — Import cannot merge into an
    existing tab:
 
