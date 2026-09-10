@@ -3,6 +3,8 @@
 
 **September 2026** · Follow-up to the NIC DBIM Compliance Audit of May 2026
 
+> **Shareable web version:** https://claude.ai/code/artifact/a7597251-c3c0-4023-af79-5d54e29823b5
+
 ---
 
 ## Contents
