@@ -33,6 +33,21 @@ const IcClose = () => (
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 /**
+ * The selector matches things that CANNOT actually take focus: a control inside
+ * a `hidden` branch, one in a collapsed accordion, one inside an `inert`
+ * subtree. Tabbing to one of those does nothing, so the trap would appear to
+ * swallow the key.
+ *
+ * `getClientRects()` rather than `offsetParent`, which is null for anything
+ * `position: fixed` and would drop a pinned control from the list.
+ */
+function isReachable(el: HTMLElement): boolean {
+  if (el.closest("[inert]")) return false;
+  if (el.getAttribute("aria-hidden") === "true") return false;
+  return el.getClientRects().length > 0;
+}
+
+/**
  * MoSJE / SAMAVESH Modal — the shared accessible dialog.
  *
  * Bakes in everything every portal was re-implementing by hand: a backdrop,
@@ -78,7 +93,18 @@ export function Modal({
     if (!open) return;
     const opener = document.activeElement as HTMLElement | null;
     const panel = panelRef.current;
-    panel?.querySelector<HTMLElement>(FOCUSABLE)?.focus();
+
+    /*
+     * The same reachability filter the trap uses, for the same reason: the
+     * selector matches controls that cannot take focus, and `querySelector`
+     * would have handed the first of those to `.focus()` — a no-op that leaves
+     * focus on whatever opened the dialog, outside it. The panel is the
+     * fallback, so focus is always inside on the first frame.
+     */
+    const opening = Array.from(panel?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []).filter(
+      isReachable,
+    );
+    (opening[0] ?? panel)?.focus();
 
     // Lock background scroll while the dialog is open so pointer/switch users
     // can't interact with the page behind the modal (WCAG 2.4.3, GIGW).
@@ -91,17 +117,72 @@ export function Modal({
         return;
       }
       if (e.key !== "Tab" || !panel) return;
-      const f = panel.querySelectorAll<HTMLElement>(FOCUSABLE);
-      if (f.length === 0) return;
-      const first = f[0];
-      const last = f[f.length - 1];
-      if (e.shiftKey && document.activeElement === first) {
+
+      /*
+       * ── EVERY TAB IS INTERCEPTED, NOT ONLY THE ONES AT THE EDGES ─────────
+       *
+       * This used to call `preventDefault()` only when focus sat on the first
+       * or last control, and let the browser handle everything between them.
+       * That is correct exactly as long as the browser's sequential focus order
+       * inside the panel matches this list's document order — and on this
+       * estate it does not.
+       *
+       * Every public page loads the UX4G accessibility widget, which injects
+       * NINETEEN elements carrying a POSITIVE `tabindex` (1 through 11).
+       * Positive tabindex is visited BEFORE every `tabindex=0` element in the
+       * sequential order, so the browser's "next" from any control in any
+       * dialog was one of the widget's buttons, sitting behind the scrim. A
+       * keyboard or switch user tabbing inside a dialog left it on the first
+       * press, with nothing to tell them they had.
+       *
+       * Measured on the NMBA organisation page, 10 September 2026: Tab from a
+       * dialog's first control landed on `.ux4g-accessibility-skip-link`.
+       *
+       * So the order inside the dialog is this list's order and no other, and
+       * the browser is never asked. That also fixes the reverse case for free —
+       * `first`/`last` were the only two positions the old handler could
+       * recognise, so a dialog whose focus had already been stolen could not
+       * recover.
+       *
+       * ── THE ONE THING THIS WOULD BREAK ──────────────────────────────────
+       *
+       * A dialog containing a popup that RENDERS ITSELF ELSEWHERE in the DOM —
+       * `Menu`, `Popover`, `TimePicker` all portal — would have that popup's
+       * controls outside `panel`, and unreachable by Tab. Audited on 10
+       * September across all ~40 `<Modal>` call sites: none nests one, and
+       * `Menu`'s items carry `tabIndex={-1}` because they are arrow-key
+       * navigated, so they were never in this list anyway. If a dialog ever
+       * does nest a portalled popup with Tab-reachable content, this is the
+       * code that has to learn about it.
+       */
+      const f = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(isReachable);
+
+      // A dialog with nothing to focus still must not leak. Hold the key and
+      // put focus on the panel itself.
+      if (f.length === 0) {
         e.preventDefault();
-        last?.focus();
-      } else if (!e.shiftKey && document.activeElement === last) {
-        e.preventDefault();
-        first?.focus();
+        panel.focus();
+        return;
       }
+
+      e.preventDefault();
+
+      const active = document.activeElement as HTMLElement | null;
+      const at = active ? f.indexOf(active) : -1;
+
+      /*
+       * `at === -1` means focus is not on one of the dialog's own controls —
+       * it is on the panel (where the effect puts it when there is nothing to
+       * focus), or something outside has taken it. Either way the next press
+       * should land INSIDE, at the end nearest the direction of travel.
+       */
+      if (at === -1) {
+        (e.shiftKey ? f[f.length - 1] : f[0])?.focus();
+        return;
+      }
+
+      const next = e.shiftKey ? (at - 1 + f.length) % f.length : (at + 1) % f.length;
+      f[next]?.focus();
     };
     /*
       CLOSE-ON-OUTSIDE LIVES HERE, NOT ON THE BACKDROP.
@@ -148,6 +229,10 @@ export function Modal({
         ref={panelRef}
         role="dialog"
         aria-modal="true"
+        /* Programmatically focusable, never in the tab order: it is where focus
+           goes when a dialog has no controls of its own, so the trap has
+           somewhere to hold it. */
+        tabIndex={-1}
         aria-labelledby={titleId}
         className={cn("ds-modal", `ds-modal--${size}`, className)}
       >
