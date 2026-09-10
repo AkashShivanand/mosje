@@ -48,12 +48,22 @@
    * edge whichever is taller — a shared edge is read before any word is, and it
    * is the only thing saying these two objects belong to one band.
    */
+  /*
+   * THE BAND'S OWN PADDING COMES DOWN TO 16.
+   *
+   * Giving the card a strip for the pager cost the band 24px, 152 to 176, and
+   * the gap it bought is worth keeping — so the height comes back out of the
+   * things that are not the gap. 24 to 16 here, a 72px mark to 64 (the copy
+   * beside it is 70, so the mark was setting the row height on its own), and
+   * the pager 12 off the card's bottom edge rather than 12. The cards carry
+   * their own generous inner padding, so 16 around them still breathes.
+   */
   .orgab__inner {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto auto;
     align-items: stretch;
     column-gap: var(--sa-inline-20);
-    padding-block: var(--sa-padding-24);
+    padding-block: var(--sa-padding-16);
   }
 
   /* An organisation whose record publishes no helpline gets no empty white card
@@ -90,6 +100,15 @@
    * THE CARD ITSELF. Both faces occupy one grid cell of it, so it is still the
    * height of its tallest panel and the band cannot resize as it turns.
    *
+   * IT TURNS ABOUT THE HORIZONTAL AXIS — top over bottom, like a page on a
+   * flip-chart. About the vertical it swung 923px of card through the reader's
+   * eyeline, which on a band this wide is a lot of motion for an announcement
+   * changing; over the horizontal the card is 128px deep, so the same 180° is a
+   * quarter of the travel and reads as a turn rather than as a swing.
+   *
+   * It also FORESHORTENS INWARD: a card rotating about its own horizontal axis
+   * gets shorter mid-turn, never taller, so nothing can reach out of the band.
+   *
    * 520ms, and deliberately longer than the 250ms this estate gives a UI
    * transition. Those are transitions a reader CAUSED and is waiting on; this
    * one is ambient and its whole job is to be noticed — a half-turn through 180
@@ -100,7 +119,7 @@
     display: grid;
     grid-template-areas: "face";
     transform-style: preserve-3d;
-    transform: rotateY(calc(var(--orgab-turn, 0) * 180deg));
+    transform: rotateX(calc(var(--orgab-turn, 0) * -180deg));
     transition: transform var(--orgab-flip, 520ms) var(--sa-motion-emphasis-easing);
   }
 
@@ -186,11 +205,17 @@
      *
      * THE BOTTOM PADDING IS A STRIP, not breathing room. The pager sits in it,
      * clear of the action above: measured at 1440 the action occupies 16 to 56
-     * of the card and the pager 92 to 116, so the gap is 36px rather than the
-     * 8 it had when both were crowded into the content row. It costs the band
-     * 24px, and that is the trade — see the note on the pager below.
+     * of the card and the pager 90 to 114, a 34px gap where both crowded into
+     * the content row had 8.
+     *
+     * 32, AND THE VALUE MATTERS. It was written as `--sa-padding-36`, which the
+     * space scale does not publish — 0·2·4·6·8·12·16·20·24·32·40·48·56·64·72·80
+     * — so the whole `padding` shorthand was invalid and DROPPED. The card lost
+     * every side of its padding at once and its content overflowed a 46px box
+     * while the helpline beside it silently set the row height. Nothing errored;
+     * `check:dangling-vars` is the gate that names it, and it had not been run.
      */
-    padding: var(--sa-padding-16) var(--sa-padding-20) var(--sa-padding-40);
+    padding: var(--sa-padding-16) var(--sa-padding-20) var(--sa-padding-32);
     border-radius: var(--sa-shape-16);
     background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent);
     box-shadow: inset 0 var(--sa-stroke-1) 0 0
@@ -202,7 +227,7 @@
 
   /* Face 1 is pre-turned, so it faces out when the flipper reaches 180. */
   .orgab__offer[data-face="1"] {
-    transform: rotateY(180deg);
+    transform: rotateX(180deg);
   }
 
   /*
@@ -242,8 +267,8 @@
      * scale, and a mark two pixels taller than a copy block nobody is comparing
      * it to is not a defect — a tile drawn across a title is.
      */
-    inline-size: var(--sa-padding-72);
-    block-size: var(--sa-padding-72);
+    inline-size: var(--sa-padding-64);
+    block-size: var(--sa-padding-64);
     border-radius: var(--sa-shape-8);
     /* NOT `overflow: hidden` on the mark itself — the code's badge sits outside
        its corner and the observance's specks fly out of it. The image below
@@ -378,49 +403,129 @@
     animation: orgab-pop 720ms var(--sa-motion-emphasis-easing) both;
   }
 
+  /*
+   * ── WHY THE FIRST BURST WAS BLAND, AND WHAT THE REFERENCE ACTUALLY DOES ──
+   *
+   * It threw eight pieces that were all the same object: a 3px rounded dash, in
+   * three tints of two hues, travelling in a straight line. Looked at beside
+   * unicornicons' confetti it is obvious what is missing, and it is not colour —
+   * that reference throws SILHOUETTES. Solid circles at two sizes, a thick
+   * curved squiggle, a clover, an open arc. The variety is in shape, and every
+   * piece is chunky enough to be a shape rather than a stroke.
+   *
+   * So the pieces come in three kinds now, and they are filled rather than
+   * hairline:
+   *
+   *   dot   a 7px circle          — the reference's most common piece
+   *   bar   a 10x4 rounded dash   — a streamer seen flat
+   *   arc   a 10px open crescent  — a streamer seen curled, drawn as one border
+   *                                 of a circle so it costs no extra element
+   *
+   * And they ARC. A straight line from a popper is a spark, not confetti: the
+   * mid-keyframe pushes each piece off its own axis so it curves, and the end
+   * sits below the peak so the piece falls out of its own throw.
+   */
   .orgab__spark {
     position: absolute;
     inset-block-start: 50%;
     inset-inline-start: 50%;
-    inline-size: var(--spark-len, var(--sa-padding-8));
+    opacity: 0;
+    /* Above the copy beside it, so a piece thrown right does not vanish behind
+       the heading. */
+    z-index: var(--sa-z-raised);
+    animation: orgab-spark 1100ms var(--sa-motion-emphasis-easing) var(--spark-in) both;
+  }
+
+  .orgab__spark[data-shape="dot"] {
+    inline-size: var(--sa-padding-6);
+    block-size: var(--sa-padding-6);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--spark-ink);
+  }
+
+  .orgab__spark[data-shape="bar"] {
+    inline-size: var(--sa-padding-12);
     block-size: var(--sa-stroke-3);
     border-radius: var(--sa-shape-full);
     background-color: var(--spark-ink);
-    opacity: 0;
-    /* Above the copy beside it, so a piece thrown to the right does not vanish
-       behind the heading. */
-    z-index: var(--sa-z-raised);
-    animation: orgab-spark 1000ms var(--sa-motion-emphasis-easing) var(--spark-in) both;
+  }
+
+  /* One border of a circle: an open crescent, and the reference's curled
+     streamer, without a second element or a path to maintain. */
+  .orgab__spark[data-shape="arc"] {
+    inline-size: var(--sa-padding-12);
+    block-size: var(--sa-padding-12);
+    border-radius: var(--sa-shape-full);
+    border-block-start: var(--sa-stroke-3) solid var(--spark-ink);
+    border-inline-start: var(--sa-stroke-3) solid transparent;
+    border-inline-end: var(--sa-stroke-3) solid transparent;
   }
 
   /*
-   * They travel 48–62px from the centre of a 72px tile, so the tile's own 36px
-   * edge falls at roughly a third of the flight and the brightest part happens
-   * on the green rather than on the cream. The saturated `-400` orange is the
-   * one ink that holds on both grounds; the pale rungs only work once a piece
-   * is clear of the tile.
+   * ── INK IS CHOSEN BY DISTANCE, BECAUSE THE PIECE CROSSES TWO GROUNDS ─────
+   *
+   * The tile is cream and the card behind it is green, and a burst thrown from
+   * the middle of a 64px tile spends its first half ON the cream. Inked by
+   * taste rather than by ground, half the pieces vanished for half their
+   * flight: `secondaryScale-100` is cream on cream, and the mint is nearly so.
+   * Seen only by freezing the burst and stepping through it — at page speed it
+   * reads as "fewer pieces than there are".
+   *
+   * So the rule is mechanical. A piece that travels FAR is on the green for
+   * most of its life and takes a light ink; a piece that stays NEAR is on the
+   * cream and takes a dark one. Nothing is chosen for looking nice on its own.
+   *
+   *   near  (< 50px)  orange -400 / -600, green -600   — read on cream
+   *   far   (>= 50px) white, mint -50                  — read on green
+   *
+   * `--cx/--cy` is the mid-flight push that bends the path; `--fall` is how far
+   * below the peak the piece ends, so the throw has a top to it.
    */
-  .orgab__spark[data-n="0"] { --dx: -46px; --dy: -40px; --rot: 220deg;  --spark-len: 8px;  --spark-ink: var(--sa-color-secondaryScale-400); --spark-in: 0ms; }
-  .orgab__spark[data-n="1"] { --dx: 44px;  --dy: -52px; --rot: -260deg; --spark-len: 6px;  --spark-ink: var(--sa-color-secondaryScale-100); --spark-in: 50ms; }
-  .orgab__spark[data-n="2"] { --dx: 60px;  --dy: -12px; --rot: 180deg;  --spark-len: 10px; --spark-ink: var(--sa-text-neutral-inverse);     --spark-in: 25ms; }
-  .orgab__spark[data-n="3"] { --dx: -56px; --dy: 16px;  --rot: -200deg; --spark-len: 8px;  --spark-ink: var(--sa-color-secondaryScale-400); --spark-in: 95ms; }
-  .orgab__spark[data-n="4"] { --dx: 26px;  --dy: 50px;  --rot: 240deg;  --spark-len: 6px;  --spark-ink: var(--sa-color-successScale-50);    --spark-in: 70ms; }
-  .orgab__spark[data-n="5"] { --dx: -20px; --dy: -60px; --rot: -180deg; --spark-len: 10px; --spark-ink: var(--sa-color-secondaryScale-100); --spark-in: 130ms; }
-  .orgab__spark[data-n="6"] { --dx: 52px;  --dy: 30px;  --rot: 200deg;  --spark-len: 8px;  --spark-ink: var(--sa-text-neutral-inverse);     --spark-in: 160ms; }
-  .orgab__spark[data-n="7"] { --dx: -38px; --dy: -18px; --rot: -240deg; --spark-len: 6px;  --spark-ink: var(--sa-color-successScale-50);    --spark-in: 190ms; }
+  .orgab__spark[data-n="0"] { --dx: -44px; --dy: -38px; --cx: -14px; --cy: -30px; --fall: 10px; --rot: 220deg;  --spark-ink: var(--sa-color-secondaryScale-600); --spark-in: 0ms; }
+  .orgab__spark[data-n="1"] { --dx: 42px;  --dy: -50px; --cx: 12px;  --cy: -38px; --fall: 12px; --rot: -260deg; --spark-ink: var(--sa-color-secondaryScale-400); --spark-in: 45ms; }
+  .orgab__spark[data-n="2"] { --dx: 58px;  --dy: -14px; --cx: 24px;  --cy: -22px; --fall: 14px; --rot: 180deg;  --spark-ink: var(--sa-text-neutral-inverse);     --spark-in: 20ms; }
+  .orgab__spark[data-n="3"] { --dx: -54px; --dy: 12px;  --cx: -26px; --cy: -14px; --fall: 8px;  --rot: -200deg; --spark-ink: var(--sa-color-successScale-50);    --spark-in: 90ms; }
+  .orgab__spark[data-n="4"] { --dx: 24px;  --dy: 46px;  --cx: 16px;  --cy: 10px;  --fall: 6px;  --rot: 240deg;  --spark-ink: var(--sa-color-successScale-600);   --spark-in: 65ms; }
+  .orgab__spark[data-n="5"] { --dx: -18px; --dy: -58px; --cx: -6px;  --cy: -40px; --fall: 12px; --rot: -180deg; --spark-ink: var(--sa-text-neutral-inverse);     --spark-in: 125ms; }
+  .orgab__spark[data-n="6"] { --dx: 50px;  --dy: 28px;  --cx: 26px;  --cy: 4px;   --fall: 8px;  --rot: 200deg;  --spark-ink: var(--sa-color-successScale-50);    --spark-in: 150ms; }
+  .orgab__spark[data-n="7"] { --dx: -36px; --dy: -20px; --cx: -18px; --cy: -20px; --fall: 10px; --rot: -240deg; --spark-ink: var(--sa-color-secondaryScale-600); --spark-in: 180ms; }
+  .orgab__spark[data-n="8"] { --dx: 14px;  --dy: -64px; --cx: 4px;   --cy: -44px; --fall: 14px; --rot: 300deg;  --spark-ink: var(--sa-color-successScale-50);    --spark-in: 35ms; }
+  .orgab__spark[data-n="9"] { --dx: -60px; --dy: -8px;  --cx: -30px; --cy: -18px; --fall: 10px; --rot: -300deg; --spark-ink: var(--sa-text-neutral-inverse);     --spark-in: 105ms; }
 
   @keyframes orgab-spark {
-    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.5) rotate(0deg); }
-    22%  { opacity: 1; }
-    70%  { opacity: 1; }
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.4) rotate(0deg);
+    }
+
+    /* Bright by the time it is off the cream, not before. */
+    30% { opacity: 1; }
+
+    /* The bend. Without this the pieces leave on eight straight lines, which is
+       a firework rather than confetti. */
+    55% {
+      opacity: 1;
+      transform:
+        translate(
+          calc(-50% + (var(--cx) * var(--spark-reach, 1))),
+          calc(-50% + (var(--cy) * var(--spark-reach, 1)))
+        )
+        scale(1.1)
+        rotate(calc(var(--rot) * 0.55));
+    }
+
+    78% { opacity: 1; }
+
+    /* …and the fall. The piece ends below where it was going, so the throw has
+       a top to it. */
     100% {
       opacity: 0;
       transform:
         translate(
           calc(-50% + (var(--dx) * var(--spark-reach, 1))),
-          calc(-50% + (var(--dy) * var(--spark-reach, 1)))
+          calc(-50% + ((var(--dy) + var(--fall)) * var(--spark-reach, 1)))
         )
-        scale(1.05)
+        scale(0.95)
         rotate(var(--rot));
     }
   }
@@ -627,7 +732,7 @@
     position: absolute;
     opacity: 1;
     transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
-    inset-block-end: var(--sa-padding-12);
+    inset-block-end: var(--sa-padding-4);
     inset-inline-end: var(--sa-padding-20);
     z-index: var(--sa-z-raised);
     display: flex;
@@ -720,6 +825,18 @@
    * indicator that keeps running while the thing it indicates has stopped is a
    * lie.
    */
+  /*
+   * THE LEADING EDGE IS FLAT. Rounding all four corners of the clip made the
+   * fill a PILL that grew — at 78% it read as a white lozenge floating in a
+   * groove with a dark crescent beside it, which is a knob in a slot, not a
+   * level rising. Seen only at 8x; at page scale it merely looked wrong without
+   * saying why.
+   *
+   * `round R 0 0 R` rounds the two LEFT corners of the clip and leaves the
+   * right square, so the fill has the track's own cap behind it at the start
+   * and a straight edge where it has got to. At 100% the clip cuts nothing and
+   * the element's own radius gives the right cap back.
+   */
   .orgab__dot[aria-selected="true"]::after {
     content: "";
     position: absolute;
@@ -727,7 +844,7 @@
     block-size: var(--sa-padding-6);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-text-neutral-inverse);
-    clip-path: inset(0 100% 0 0 round var(--sa-shape-full));
+    clip-path: inset(0 100% 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full));
     animation: orgab-dwell var(--orgab-dwell, 6000ms) linear forwards;
     animation-play-state: paused;
   }
@@ -737,8 +854,8 @@
   }
 
   @keyframes orgab-dwell {
-    from { clip-path: inset(0 100% 0 0 round var(--sa-shape-full)); }
-    to   { clip-path: inset(0 0 0 0 round var(--sa-shape-full)); }
+    from { clip-path: inset(0 100% 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full)); }
+    to   { clip-path: inset(0 0 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full)); }
   }
 
   /*
