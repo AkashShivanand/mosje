@@ -111,6 +111,30 @@
     padding-inline: var(--sa-padding-24);
   }
 
+  /*
+   * A CONTAINED BAR HAS CORNERS; A FULL-BLEED ONE DOES NOT.
+   *
+   * Tied to `bleed` rather than given a prop of its own, because it is the same
+   * distinction: a bar running to the edges of the viewport has no corners a
+   * reader can see, and rounding them would leave two slivers of page showing
+   * through at the ends of a band meant to be continuous. A bar sitting inside
+   * a content column has four, and square ones beneath a card radiused at 20
+   * read as an unfinished slab — which is how the organisation page's notice
+   * board read on review.
+   *
+   * 12 is the radius the vertical panel already carries a few rules below. Same
+   * component, same family, one number.
+   *
+   * `clip` rather than `hidden`: both round the plinth into the corner, but
+   * `hidden` also makes a scroll container, and a scroll container a keyboard
+   * user can scroll into by tabbing at a control near its edge is a behaviour
+   * nobody asked this bar for.
+   */
+  .sa-ticker:not(.sa-ticker--vertical, .sa-ticker--bleed) {
+    border-radius: var(--sa-shape-12);
+    overflow: clip;
+  }
+
   /* ── Heading — the plinth ────────────────────────────────────────────── */
 
   .sa-ticker__heading {

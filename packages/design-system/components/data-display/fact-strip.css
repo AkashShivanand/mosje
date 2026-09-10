@@ -230,7 +230,19 @@
   .ds-fact-strip--extended .ds-fact-strip__item {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
-    gap: var(--sa-stack-4) var(--sa-inline-12);
+    /*
+     * 8 BETWEEN THE FIGURE AND ITS CAPTION, NOT 4.
+     *
+     * The gap has to be read against the figure, not measured on its own. At
+     * `headline-2` the value's line box is 40px for 32px of type, so only 4 of
+     * half-leading sit under the baseline; at `body-2` the caption contributes
+     * 3 above its cap. Four points of grid gap between them left about eleven
+     * of visible air under a figure two and a half times the caption's size,
+     * and the pair read as crowded rather than as one block. Eight doubles the
+     * part that is actually adjustable and lands near fifteen, which is the
+     * first value at which the caption stops touching the figure it captions.
+     */
+    gap: var(--sa-stack-8) var(--sa-inline-12);
     align-items: start;
     text-align: start;
   }

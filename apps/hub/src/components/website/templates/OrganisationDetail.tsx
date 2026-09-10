@@ -1661,17 +1661,23 @@ export function OrganisationDetail({
               */}
             <FactStrip overlap ariaLabel={heroStrip.ariaLabel} items={heroStrip.items} />
             {/*
-             * PROVENANCE, NOT NARRATION. These are live counters on the source
-             * and they move daily, so a figure with no date beside it claims to
-             * be current when it is a snapshot — `live-data-fallback.md`. In the
-             * band position this line was the SectionTitle's description; the
-             * card in the fold has no section title, so it carries its own.
+             * THE READ DATE IS RECORDED, NOT PRINTED.
+             *
+             * "As published by the Department on 7 September 2026." stood under
+             * this card and came off on review. It is the right instinct: the
+             * card carries the Department's own figures on the Department's own
+             * estate, so a reader never had the question it answered, and
+             * `ui-restraint-and-copy.md` §1 keeps off the screen anything about
+             * the pipeline rather than about the scheme.
+             *
+             * `impact.asOf` STAYS on the record and stays required. It is what
+             * tells the next maintainer that these are a snapshot of live
+             * counters and when it was taken — the fact that matters, to the
+             * person who refreshes them rather than to a citizen. It is still
+             * printed where the counters render as their own SECTION
+             * (`placement: "band"`): a section has a standfirst to carry it, and
+             * a mid-page figure with no date reads as today's.
              */}
-            {heroStrip.asOf != null && (
-              <p className="orgd__facts-asof">
-                As published by the Department on {heroStrip.asOf}.
-              </p>
-            )}
           </div>
         </div>
       )}
