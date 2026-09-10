@@ -219,31 +219,55 @@
          that ratio a figure of 345 million is a line of text that happens to be
          numeric. 2.3:1 is what makes it read as a measurement.
 
-     AND THE MARK LOSES ITS CHIP. A 56px peach tile above a 20px figure is
-     survivable only while the figure is quiet. Beside a 32px one it is a second
-     claim on the same attention, so it becomes a bare 24px glyph — still there
-     to be scanned by, no longer competing to be read first. That is also what
-     pays for the larger figure: the chip was TALLER than the copy it
-     introduced, so an extended card is SHORTER than a compact one holding the
-     same eight items. */
+     THE MARK KEEPS ITS CHIP, at 8 of padding rather than 12 — a 48px tile
+     against a 60px copy block, spanning the pair rather than sitting above it.
+     It was briefly demoted to a bare glyph on the reasoning that a tile competes
+     with a 32px figure; reverted on review, and the review was right. What
+     competes is the COMPACT tile — 56px, stacked above a 20px value, the widest
+     thing in its own cell. Beside the copy at 48 it reads as the copy's mark.
+
+     THE HEIGHT COMES FROM THE LAYOUT, NOT FROM DROPPING ANYTHING. Turning the
+     cell on its side puts the mark beside two lines instead of above them, so a
+     row costs 60px rather than 116 — which is why an extended card holding eight
+     counters at 32px is SHORTER than a compact one holding the same eight at
+     20px: 220 against 312. */
 
   .ds-fact-strip--extended .ds-fact-strip__item {
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     /*
-     * 8 BETWEEN THE FIGURE AND ITS CAPTION, NOT 4.
+     * NO ROW GAP. The figure and its caption are ONE two-line block, which is
+     * what the handoff's `Copy` frame draws: two lines, flush, no space of
+     * their own. Their line boxes already carry the air — `headline-2` is 40px
+     * for 32px of type and `body-2` is 20 for 14, so four points of half-leading
+     * sit under the figure's baseline and three above the caption's cap before
+     * any gap is added at all.
      *
-     * The gap has to be read against the figure, not measured on its own. At
-     * `headline-2` the value's line box is 40px for 32px of type, so only 4 of
-     * half-leading sit under the baseline; at `body-2` the caption contributes
-     * 3 above its cap. Four points of grid gap between them left about eleven
-     * of visible air under a figure two and a half times the caption's size,
-     * and the pair read as crowded rather than as one block. Eight doubles the
-     * part that is actually adjustable and lands near fifteen, which is the
-     * first value at which the caption stops touching the figure it captions.
+     * This ran at 4 and then at 8, and 8 was the wrong direction: it read as
+     * blank space between two texts rather than as one pair, which is exactly
+     * how it was reported. The `gap: 0` on the compact item has carried the same
+     * note since the component was built — "a flat 12px gap put that same 12
+     * between the value and its own label, which broke the pair apart and made
+     * the label read as a third, unrelated line". It is the same pair here.
      */
-    gap: var(--sa-stack-8) var(--sa-inline-12);
+    gap: 0 var(--sa-inline-12);
     align-items: start;
+    /*
+     * `align-content: start`, AND WITHOUT IT THE PAIR COMES APART AGAIN.
+     *
+     * The cell stretches to its grid row, and the row is as tall as the tallest
+     * cell in it — so a cell whose caption runs to one line inside a row where
+     * another runs to two has 20px of surplus. A grid's default `align-content`
+     * is `stretch`, and stretch DISTRIBUTES that surplus equally across the
+     * auto-sized rows: ten points into the figure's row and ten into the
+     * caption's. The gap set to zero here reappeared as ten, in exactly the
+     * cells that had nothing to do with it.
+     *
+     * Measured on NMBA's second row before this line: captions at 1029 and
+     * 1039 — two baselines in one row, from a rule about neither of them.
+     * `start` keeps the surplus at the foot of the cell where it belongs.
+     */
+    align-content: start;
     text-align: start;
   }
 
@@ -253,16 +277,28 @@
    * its label. Grid ignores `order` entirely, so every child is placed by name
    * here — and the reading order stays "Label: value" whatever the drawing does.
    */
+  /*
+   * THE MARK KEEPS ITS CHIP, and spans the pair rather than sitting beside the
+   * figure alone.
+   *
+   * It was briefly a bare 24px glyph on the reasoning that a 56px tile competes
+   * with a 32px figure. That is true of the tile the COMPACT strip draws — 32px
+   * glyph on 12 of padding, stacked above a 20px value. It is not true of this
+   * one: at 8 of padding the chip is 48 against a 60px copy block, so it reads
+   * as the copy's mark rather than as a tile the copy hangs off. Reverted on
+   * review, and the review was right.
+   *
+   * `grid-row: 1 / span 2` so the chip belongs to the figure AND its caption —
+   * they are one block, and a mark beside only the first line of a two-line
+   * block reads as a bullet. `align-self: start` keeps its top edge on the
+   * figure's line box however many lines the caption runs to.
+   */
   .ds-fact-strip--extended .ds-fact-strip__icon {
     grid-column: 1;
-    /* Row 1 only, centred on the FIGURE. Spanning both rows would float the
-       glyph between the figure and its caption, belonging to neither; the mark
-       marks the figure. */
-    grid-row: 1;
-    align-self: center;
-    padding: 0;
+    grid-row: 1 / span 2;
+    align-self: start;
+    padding: var(--sa-padding-8);
     margin-bottom: 0;
-    background-color: transparent;
   }
 
   .ds-fact-strip--extended .ds-fact-strip__value {

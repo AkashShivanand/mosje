@@ -47,7 +47,7 @@ export interface FactStripProps extends React.HTMLAttributes<HTMLDivElement> {
    *
    * `"extended"` — for a set too long to sit on one row. The cells go to a
    * fixed, balanced column count and wrap; each one turns on its side, with the
-   * mark in a column of its own and the value and label beside it; and the
+   * mark in a chip of its own and the value and label flush beside it; and the
    * value steps up from `headline-5` to `headline-2` so it reads as a figure
    * rather than as a line of text that happens to be numeric.
    *
@@ -144,7 +144,7 @@ export function FactStrip({
         {items.map((item) => (
           <div className="ds-fact-strip__item" key={item.label + item.value}>
             <span className="ds-fact-strip__icon" aria-hidden="true">
-              <Icon name={item.icon} size={shape === "extended" ? 24 : 32} />
+              <Icon name={item.icon} size={32} />
             </span>
             <dt className="ds-fact-strip__label">{item.label}</dt>
             <dd className="ds-fact-strip__value">{item.value}</dd>
