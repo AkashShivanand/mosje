@@ -230,6 +230,8 @@ export function OrganisationAnnouncementBand({
 
   const rotates = panels.length > 1;
   const i = panels.length ? turn % panels.length : 0;
+  /* The panel the card is turning away from — the one whose fill has to leave. */
+  const prev = panels.length ? (turn - 1 + panels.length) % panels.length : 0;
   const current = panels[i] ?? panels[0];
 
   /*
@@ -239,7 +241,32 @@ export function OrganisationAnnouncementBand({
    * belongs to the panel that opened it, and turning away from that panel would
    * leave a code for an announcement the reader can no longer see.
    */
-  const running = rotates && playing && !hovered && !focused && !reduced && !gone && !zoom;
+  /*
+   * ARMED ON MOUNT, and this is the other half of the two-clocks defect.
+   *
+   * `running` is true during the SERVER render, so `data-running` shipped in
+   * the HTML and the dwell bar began filling at FIRST PAINT. The rotation
+   * timer, being an effect, could only start at HYDRATION. Everything between
+   * those two moments was time the bar counted and the card did not, so the
+   * first rotation arrived that much after the bar had finished: 398ms measured
+   * on the built page, 1215ms in dev where hydration is slower. Either way it
+   * is the first cycle every visitor sees.
+   *
+   * Gating on a flag that can only become true in an effect makes first paint
+   * and the armed timer the same instant, so the two clocks share an origin.
+   * Server and first client render both see `false`, so nothing mismatches.
+   */
+  const [armed, setArmed] = React.useState(false);
+  /* SCHEDULES, never sets synchronously — the same shape as the flip's own
+     effect below, and for the same reason: the React Compiler rejects a
+     `setState` in an effect body as a cascading render. */
+  React.useEffect(() => {
+    const t = window.setTimeout(() => setArmed(true), 0);
+    return () => window.clearTimeout(t);
+  }, []);
+
+  const running =
+    armed && rotates && playing && !hovered && !focused && !reduced && !gone && !zoom;
 
 
   /*
@@ -262,11 +289,31 @@ export function OrganisationAnnouncementBand({
     return () => window.clearTimeout(t);
   }, [turning]);
 
+  /*
+   * THE ROTATION IS RE-ANCHORED TO THE PANEL THAT JUST LANDED, and `turn` is in
+   * the deps for exactly that reason.
+   *
+   * It was a free-running `setInterval` established when `running` first became
+   * true, while the dwell bar restarts on every commit of `turn`. Two clocks
+   * with different origins: the interval's origin is HYDRATION and the bar's is
+   * FIRST PAINT, so the bar finished however long hydration had taken before
+   * the first rotation was due. Measured on the live page: a 398ms hold at a
+   * full bar on the first cycle, against 22-31ms on every cycle after it. The
+   * first cycle is the one every visitor sees.
+   *
+   * A timeout re-armed on each turn has one origin for both, so the bar and the
+   * card cannot drift apart however long the page took to become interactive.
+   *
+   * The wait is the flip PLUS the dwell, because the bar no longer starts
+   * counting until the card has landed (see `animation-delay` in the
+   * stylesheet). The reader gets the full six seconds of a panel they can
+   * actually read, rather than six seconds that began while it was edge-on.
+   */
   React.useEffect(() => {
     if (!running) return;
-    const t = window.setInterval(() => advance(1), DWELL_MS);
-    return () => window.clearInterval(t);
-  }, [running, advance]);
+    const t = window.setTimeout(() => advance(1), FLIP_MS + DWELL_MS);
+    return () => window.clearTimeout(t);
+  }, [running, advance, turn]);
 
   /*
    * The observance has now been seen. Flipping this on the FIRST commit rather
@@ -374,9 +421,34 @@ export function OrganisationAnnouncementBand({
           {...(rotates
             ? { role: "region", "aria-roledescription": "carousel", "aria-label": "Announcements" }
             : { "aria-label": "Announcement" })}
-          style={{ "--orgab-dwell": `${DWELL_MS}ms` } as React.CSSProperties}
-          onPointerEnter={() => setHovered(true)}
-          onPointerLeave={() => setHovered(false)}
+          /* Both durations are declared HERE, on the band, because the pager is
+             a sibling of the flipper rather than a child of it — `--orgab-flip`
+             set on the flipper alone would not reach the dots that now read it
+             for their delay and their exit. */
+          style={
+            {
+              "--orgab-dwell": `${DWELL_MS}ms`,
+              "--orgab-flip": `${FLIP_MS}ms`,
+            } as React.CSSProperties
+          }
+          /*
+           * THE HOVER HOLD IS NOT ON THIS ELEMENT ANY MORE — it is on the card
+           * (see `.orgab__stage` below), and that is the whole point.
+           *
+           * `.orgab` is a FULL-BLEED strip the width of the viewport, sitting
+           * directly above the hero. Holding the rotation on its
+           * `pointerenter` meant a pointer merely CROSSING the page on its way
+           * to the hero silently froze the progress bar — and froze it with no
+           * sign that it had stopped, because the transport control still reads
+           * "pause", i.e. "this is playing". A reader saw a progress bar that
+           * advanced, stopped dead, advanced again. That is the stutter in the
+           * screen recording, and it was never the animation.
+           *
+           * Pausing for a reader who is ENGAGED with the announcement is right
+           * and WCAG 2.2.2 wants the mechanism to exist. Pausing for one whose
+           * cursor is in transit across a full-width strip is not engagement.
+           * The card is the announcement; the green either side of it is not.
+           */
           onFocusCapture={() => setFocused(true)}
           onBlurCapture={(e) => {
             if (!e.currentTarget.contains(e.relatedTarget as Node)) setFocused(false);
@@ -386,6 +458,8 @@ export function OrganisationAnnouncementBand({
             {/* ── The announcement, on the leading edge ──────────────────── */}
             <div
               className="orgab__stage"
+              onPointerEnter={() => setHovered(true)}
+              onPointerLeave={() => setHovered(false)}
               data-accent={current.accent}
               style={
                 { "--orgab-turn": turn, "--orgab-flip": `${FLIP_MS}ms` } as React.CSSProperties
@@ -601,6 +675,16 @@ export function OrganisationAnnouncementBand({
                         role="tab"
                         data-i={n}
                         aria-selected={n === i}
+                        /*
+                         * THE DOT THE FILL IS LEAVING, for as long as the card
+                         * is turning. Without it the bar had no exit: one frame
+                         * a full 40px white bar, the next frame gone, with an
+                         * empty bar appearing in the other dot. Nothing joined
+                         * the two states, so the indicator teleported rather
+                         * than moved and the eye had to find it again every
+                         * cycle.
+                         */
+                        data-leaving={turning && n === prev ? "" : undefined}
                         tabIndex={n === i ? 0 : -1}
                         className="orgab__dot"
                         onClick={() => go(n)}

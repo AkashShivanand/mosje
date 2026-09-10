@@ -881,8 +881,54 @@
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-text-neutral-inverse);
     clip-path: inset(0 100% 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full));
-    animation: orgab-dwell var(--orgab-dwell, 6000ms) linear forwards;
+    /*
+     * IT WAITS FOR THE CARD TO LAND. `animation-delay` is the flip.
+     *
+     * Three things used to start on the same frame: the card began its
+     * half-turn, the two dots began swapping widths (24 -> 40 and 40 -> 24 over
+     * about 208ms), and this fill began counting. Measured, the new bar was
+     * already at 3% before it had finished GROWING — a 6px-tall element getting
+     * wider and fuller at the same time, which is two motions competing for one
+     * object and reads as a lurch.
+     *
+     * Delayed by the flip, the sequence is legible instead of simultaneous: the
+     * old fill leaves, the card turns, the dots resize, and only then does the
+     * bar start from nothing. The reader is also no longer charged for the half
+     * second in which the panel was edge-on and unreadable.
+     */
+    animation: orgab-dwell var(--orgab-dwell, 6000ms) linear var(--orgab-flip, 520ms) forwards;
     animation-play-state: paused;
+  }
+
+  /*
+   * THE FILL LEAVES, RATHER THAN BEING DELETED.
+   *
+   * `::after` belongs to `[aria-selected="true"]`, so at the turn it simply
+   * stopped matching: one frame a full 40px white bar, the next frame nothing,
+   * and an empty bar in the other dot. Captured frame by frame off a screen
+   * recording, that is a teleport — the indicator is in two places and travels
+   * through neither, so the eye has to re-find it on every rotation.
+   *
+   * `data-leaving` holds the outgoing fill for exactly the flip and lets it go
+   * out the way the card does: fading as its own dot narrows back to 24. It is
+   * a fade and not a directional wipe on purpose — with two panels the travel
+   * alternates left and right, and a wipe that runs the wrong way half the time
+   * is worse than one that runs no way at all.
+   */
+  .orgab__dot[data-leaving]::after {
+    content: "";
+    position: absolute;
+    inline-size: var(--sa-padding-40);
+    block-size: var(--sa-padding-6);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-text-neutral-inverse);
+    clip-path: inset(0 0 0 0 round var(--sa-shape-full));
+    animation: orgab-drain var(--orgab-flip, 520ms) var(--sa-motion-exit-easing) forwards;
+  }
+
+  @keyframes orgab-drain {
+    from { opacity: 1; }
+    to   { opacity: 0; }
   }
 
   .orgab__pager[data-running] .orgab__dot[aria-selected="true"]::after {
@@ -1147,10 +1193,21 @@
     }
 
     /* Nothing is going to turn, so the current dot is simply a solid bar. An
-       empty track beside a filled dot would say a change is coming. */
+       empty track beside a filled dot would say a change is coming.
+       `transform: scaleX(1)` is what this used to say, and it had been dead
+       since the fill stopped being a scale: with the animation off, the base
+       `clip-path: inset(0 100% 0 0)` held, so the bar a reduced-motion reader
+       actually got was EMPTY — the opposite of what the line above promises.
+       The clip is reset instead, which is the mechanism the fill now uses. */
     .orgab__dot[aria-selected="true"]::after {
       animation: none;
-      transform: scaleX(1);
+      clip-path: inset(0 0 0 0 round var(--sa-shape-full));
+    }
+
+    /* There is no turn to cover, so nothing leaves. */
+    .orgab__dot[data-leaving]::after {
+      animation: none;
+      content: none;
     }
 
     .orgab__helpline-glyph,
