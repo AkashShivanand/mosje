@@ -13,9 +13,9 @@
       "existing": 139
     },
     "Color": {
-      "total": 509,
+      "total": 510,
       "new": 0,
-      "existing": 509
+      "existing": 510
     },
     "Type": {
       "total": 113,
@@ -12214,6 +12214,38 @@
               "rung": "bolder",
               "min": 4.5,
               "measured": 6.36,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "icon/brand/secondary/bolder",
+          "path": "icon/brand/secondary/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/600"
+            }
+          },
+          "description": "Use for icons in the secondary brand colour — not for long-form reading. Contrast 4.97:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-icon-brand-secondary-bolder)"
+          },
+          "scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "hiddenFromPublishing": false,
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 4.97,
               "meets": true
             }
           }
@@ -34056,8 +34088,8 @@
   ],
   "contrast": {
     "$description": "Contrast classes are MEASURED against each token's own surface, across every brand, and the worst case is what the description states. A token absent from this summary carries no contrast sentence because the prominence ladder does not describe it — see build/contrast-contract.mjs.",
-    "measured": 94,
-    "meets": 94,
+    "measured": 95,
+    "meets": 95,
     "shortfall": []
   }
 }

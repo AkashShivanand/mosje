@@ -1387,6 +1387,9 @@ export const tokens = {
       "primary": {
         "base": "#0373df",
         "bolder": "#005eb9"
+      },
+      "secondary": {
+        "bolder": "#c34700"
       }
     },
     "status": {
