@@ -1,0 +1,477 @@
+{
+ "prefix": "NMB",
+ "kept": [
+  {
+   "old": "G01",
+   "scope": "Global",
+   "screen": "Sidebar navigation (every screen)",
+   "slug": "ADMIN-USER-MANAGEMENT",
+   "sev": "Blocker",
+   "cat": "Color & Token",
+   "title": "Sidebar navigation labels fail AA contrast",
+   "design": "Every navigation label is #1F2937 on white - about 14.7:1 - and the selected item is #003366 on a #E5EFF9 pill. Measured on the admin sidebar's own text nodes.",
+   "build": "Every unselected navigation label is #9CA3AF on #FFFFFF. That is 2.54:1, where WCAG 2.2 AA requires 4.5:1 for text this size. It reads as a disabled control, and it is the same in the citizen shell and in all three admin roles.",
+   "fix": "Set the unselected label to the design's #1F2937. If a quieter resting state is wanted, #4B5563 is the lightest neutral in the token set that still clears 4.5:1 on white; #9CA3AF cannot be used for text on white at any size.",
+   "id": "NMB-GLOBAL-001"
+  },
+  {
+   "old": "G02",
+   "scope": "Global",
+   "screen": "Government masthead (every screen)",
+   "slug": "ADMIN-USER-MANAGEMENT",
+   "sev": "Blocker",
+   "cat": "Components & States",
+   "title": "The GIGW accessibility toolset is missing from the masthead",
+   "design": "The blue government bar carries the mandated inline set: A- / A / A+ text-size controls with the current size shown selected, a contrast toggle, an accessibility icon, and a globe with the language named in words ('English').",
+   "build": "The bar carries only an accessibility glyph, which opens a third-party panel, and a bare two-script glyph for language. The text-size controls and the contrast toggle are not present anywhere on the page.",
+   "fix": "Restore the inline A- / A / A+ and contrast controls in the government bar, and label the language control with the language name as the design does. GIGW 3.0 treats this set as a masthead requirement, so its absence is a compliance gap on every screen, not a styling preference.",
+   "id": "NMB-GLOBAL-002"
+  },
+  {
+   "old": "G03",
+   "scope": "Global",
+   "screen": "Admin sidebar (all admin roles)",
+   "slug": "ADMIN-USER-MANAGEMENT",
+   "sev": "Major",
+   "cat": "Content & Iconography",
+   "title": "Admin sidebar navigation icons are absent",
+   "design": "Every admin navigation item pairs a 24px Material Symbols icon at #003366 with its label - widgets, event, group_add, article_shortcut, task and so on - and the icon sits 32px from the panel edge.",
+   "build": "The admin sidebar draws label-only rows with a thin tree-branch connector line in the icon's place. No item has an icon. The citizen shell DOES carry its icons, so the two shells disagree with each other as well as with the design.",
+   "fix": "Add the navigation icon to each admin sidebar item, using the same Material Symbols set and #003366 the citizen shell already uses, and drop the connector line the design does not have.",
+   "id": "NMB-GLOBAL-003"
+  },
+  {
+   "old": "G04",
+   "scope": "Global",
+   "screen": "Government masthead (authenticated screens)",
+   "slug": "ADMIN-USER-MANAGEMENT",
+   "sev": "Major",
+   "cat": "Typography",
+   "title": "The ministry lockup drops its third line and changes colour",
+   "design": "Three lines, all #1F2937: 'Government of India' at 12px Medium, 'Ministry of Social Justice & Empowerment' at 14px Medium, and 'Department of Social Justice & Empowerment' at 20px Bold as the emphasised line.",
+   "build": "Two lines at #374151: 'Government of India' at 12px Medium, and 'Ministry of Social Justice & Empowerment' promoted to 20px Bold. The Department line is not rendered. The sign-in page does draw all three, so the authenticated shell also disagrees with the portal's own login screen.",
+   "fix": "Render the third line and set the lockup to #1F2937, matching the sign-in page and the design. The emphasised line is the Department, not the Ministry.",
+   "id": "NMB-GLOBAL-004"
+  },
+  {
+   "old": "G05",
+   "scope": "Global",
+   "screen": "Data tables (every list screen)",
+   "slug": "ADMIN-USER-MANAGEMENT",
+   "sev": "Major",
+   "cat": "Components & States",
+   "title": "Row action controls lose their button and change colour",
+   "design": "Row actions are bordered icon-buttons - a light 1px outline, radius 6, the edit glyph at #003366 and the delete glyph at #EC5042 - sized as real click targets.",
+   "build": "The actions are bare glyphs with no button around them, and the edit glyph is drawn at #E08020, an amber that appears nowhere in the NMBA token set. On the four NAPDDR committee screens the same actions become three outlined TEXT buttons instead (View / Edit / Delete).",
+   "fix": "Restore the bordered icon-button and set the edit glyph to #003366. Use one row-action component across the portal rather than icon-buttons on some screens and text buttons on others.",
+   "id": "NMB-GLOBAL-005",
+   "_anchorWhy": "The row-action controls are icon-only buttons with no text node, so the extraction does not record them. The box is measured off the capture at the Actions column, x1305-1425 on the first data row, where the two glyphs are drawn."
+  },
+  {
+   "old": "G06",
+   "scope": "Global",
+   "screen": "Pagination (every paged screen)",
+   "slug": "ADMIN-NAPDDR-STATE-COMMITTEE",
+   "sev": "Major",
+   "cat": "Content & Iconography",
+   "title": "Previous and next are a hyphen and a plus sign",
+   "design": "The pager runs a left chevron, the page numbers with the current one in a rounded outlined chip, an ellipsis, the last page, and a right chevron.",
+   "build": "The two step controls render as '-' and '+'. A minus and a plus read as decrease and increase, not as previous and next page, and there is no ellipsis or last-page number.",
+   "fix": "Use the chevrons the design specifies for the step controls, and show the ellipsis and last page so a reader can tell how long the list is.",
+   "id": "NMB-GLOBAL-006"
+  },
+  {
+   "old": "G07",
+   "scope": "Global",
+   "screen": "Selects and filters (every screen with one)",
+   "slug": "ADMIN-NAPDDR-STATE-COMMITTEE",
+   "sev": "Minor",
+   "cat": "Components & States",
+   "title": "Dropdowns are the browser's own select, not the design system's",
+   "design": "Every dropdown is the design-system select: a rounded bordered field with its own chevron and the label at 14px #1F2937.",
+   "build": "The rows-per-page control, the facility filter and the three activity filters render as an unstyled native <select> with the operating system's chevron and its own border radius, so they look different on every browser and different from every other control on the page.",
+   "fix": "Skin these with the design-system select so their border, radius, type and chevron match the rest of the interface.",
+   "id": "NMB-GLOBAL-007",
+   "_anchorWhy": "The control IS a native <select> and it carries no text node of its own - its value is rendered by the browser. The box is the select's own measured rect (x1271 y567, 63x31) from the capture."
+  },
+  {
+   "old": "G08",
+   "scope": "Global",
+   "screen": "Search fields (every list screen)",
+   "slug": "ADMIN-IMPORTANT-DOCUMENTS",
+   "sev": "Minor",
+   "cat": "Content & Iconography",
+   "title": "The search magnifier is missing, or sits on the wrong side",
+   "design": "Every search field carries a magnifier inside its left edge, ahead of the placeholder.",
+   "build": "The magnifier is absent on User Management, the Ministries dashboard, all four NAPDDR screens and Facilities, and on Important Documents it is drawn inside the RIGHT edge instead. So the same control differs from screen to screen as well as from the design.",
+   "fix": "Put the magnifier inside the left edge of every search field, as the design does.",
+   "id": "NMB-GLOBAL-008"
+  },
+  {
+   "old": "G09",
+   "scope": "Global",
+   "screen": "Data tables (every list screen)",
+   "slug": "ADMIN-MINISTRIES-DASHBOARD",
+   "sev": "Major",
+   "cat": "Layout & Spacing",
+   "title": "Table row height is inconsistent across the portal",
+   "design": "Table rows are a steady 45-55px throughout, so a list reads the same on every screen.",
+   "build": "Measured row heights run 41px on User Management, 53px on most lists, 57px on Important Documents, 65px on the NAPDDR screens, 85px on Best Practices and 153px on the Ministries dashboard - the same component at more than three times the height from one screen to the next. Header rows vary too, from 38px to 85px.",
+   "fix": "Set one row height for the table component and let it apply everywhere; where a cell wraps to two lines, let the row grow from that one value rather than redefining it per screen.",
+   "id": "NMB-GLOBAL-009"
+  },
+  {
+   "old": "G10",
+   "scope": "Global",
+   "screen": "Data tables (every list screen)",
+   "slug": "ADMIN-USER-MANAGEMENT",
+   "sev": "Minor",
+   "cat": "Color & Token",
+   "title": "Table cell text is lighter than the design",
+   "design": "Cell values are #1F2937, the same near-black the rest of the body copy uses.",
+   "build": "Cell values are #4B5563. It still clears AA, but it makes the data quieter than its own column headers, which the design does not do.",
+   "fix": "Set cell values to #1F2937 and leave #4B5563 for secondary lines inside a cell.",
+   "id": "NMB-GLOBAL-010"
+  },
+  {
+   "old": "G11",
+   "scope": "Global",
+   "screen": "Page header (every screen)",
+   "slug": "ADMIN-USER-MANAGEMENT",
+   "sev": "Minor",
+   "cat": "Color & Token",
+   "title": "The page title is a lighter grey than the design",
+   "design": "The page title is 24px SemiBold #1F2937.",
+   "build": "The page title is 24px 600 #374151 - the right size and weight, a lighter colour.",
+   "fix": "Set the page title to #1F2937.",
+   "id": "NMB-GLOBAL-011"
+  },
+  {
+   "old": "G12",
+   "scope": "Global",
+   "screen": "KPI cards (every dashboard)",
+   "slug": "STATE-NODAL-OFFICER-DASHBOARD",
+   "sev": "Minor",
+   "cat": "Color & Token",
+   "title": "KPI icon tiles use a pink tint that is not a token",
+   "design": "Every KPI icon sits on a 32px tile filled #E5EFF9 - Primary/50 - at radius 10, so the row of cards reads as one set.",
+   "build": "The tiles are tinted per card, and the tint used for 'Important Documents' measures #FDE8EF, a pink that is in no NMBA token. On the district dashboard the same row mixes pink, blue and amber tiles for metrics that carry no status meaning.",
+   "fix": "Fill every KPI icon tile with #E5EFF9. Reserve a coloured tint for a metric that genuinely signals a state, and take the tint from the token set when you do.",
+   "id": "NMB-GLOBAL-012",
+   "_anchorWhy": "The icon tile is an SVG on a filled div with no text, so the extraction records neither. The tile's fill was sampled from the capture at x590-650 y240-290 and measures #FDE8EF against the design's #E5EFF9."
+  },
+  {
+   "old": "G13",
+   "scope": "Global",
+   "screen": "KPI cards (every dashboard)",
+   "slug": "STATE-NODAL-OFFICER-DASHBOARD",
+   "sev": "Minor",
+   "cat": "Typography",
+   "title": "The KPI value is 30px, which is not on the type scale",
+   "design": "The KPI value is 32px SemiBold #003366 - the top step of the published scale.",
+   "build": "The KPI value is 30px. The scale runs 24, 28, 32; 30 is not a step on it, so this number is the only type size in the portal that no token can express.",
+   "fix": "Set the KPI value to 32px.",
+   "id": "NMB-GLOBAL-013"
+  },
+  {
+   "old": "G14",
+   "scope": "Global",
+   "screen": "KPI cards (every dashboard)",
+   "slug": "STATE-NODAL-OFFICER-DASHBOARD",
+   "sev": "Nit",
+   "cat": "Color & Token",
+   "title": "The KPI label is a lighter grey than the design",
+   "design": "The KPI label is 14px SemiBold #374151.",
+   "build": "The KPI label is 14px 600 #6B7280.",
+   "fix": "Set the KPI label to #374151.",
+   "id": "NMB-GLOBAL-014"
+  },
+  {
+   "old": "G15",
+   "scope": "Global",
+   "screen": "Sidebar navigation (every screen)",
+   "slug": "ADMIN-USER-MANAGEMENT",
+   "sev": "Nit",
+   "cat": "Components & States",
+   "title": "The selected navigation item is a tighter pill in a heavier weight",
+   "design": "The selected item is a 48px-tall pill at radius 16 filled #E5EFF9, its label at 14px Regular #003366 - the same weight as every other item, distinguished by the fill alone.",
+   "build": "The selected item is a 36px-tall pill at radius 10, and its label is set Bold. Weight and shape both change where the design changes only the fill.",
+   "fix": "Match the pill to radius 16 and the item height to the design, and keep the selected label at the same weight as the rest.",
+   "id": "NMB-GLOBAL-015"
+  },
+  {
+   "old": "S01",
+   "scope": "Screen",
+   "screen": "Citizen - Home",
+   "slug": "PUBLIC-HOME",
+   "sev": "Major",
+   "cat": "Components & States",
+   "title": "The pledge banner has lost its call to action",
+   "design": "The green banner carries a white pill button reading 'Take the Pledge' with a right arrow, its label 14px Medium #003366, sitting at the right end of the banner.",
+   "build": "The banner has the heading and the supporting line but no button at all, so the landing page's primary action is not on it.",
+   "fix": "Restore the button at the right of the banner, white fill with the label in #003366, as the design draws it.",
+   "id": "NMB-SCREEN-016",
+   "_anchorWhy": "The banner's own container has no text node. The box is measured off the capture at the right end of the green banner, where the design places the button."
+  },
+  {
+   "old": "S02",
+   "scope": "Screen",
+   "screen": "Citizen - Home",
+   "slug": "PUBLIC-HOME",
+   "sev": "Major",
+   "cat": "Layout & Spacing",
+   "title": "The 'Number of Programmes' section is not built",
+   "design": "Below the metric cards the design carries a titled section of four grouped cards - Education & Youth, Community Outreach, Governance & Local Bodies, Targeted Interventions - each with an icon and its figures colour-coded to the group (#1558B0, #2E7D32, #BB772B, #EC5042) at 28px SemiBold.",
+   "build": "The section is absent. The page goes from the metric cards straight to a state-wise bar chart that the design does not carry.",
+   "fix": "Build the four programme-group cards as designed. If the bar chart is meant to replace them, that is a decision to take back to the design rather than a substitution to leave in place.",
+   "id": "NMB-SCREEN-017"
+  },
+  {
+   "old": "S03",
+   "scope": "Screen",
+   "screen": "Citizen - Activity Snapshots",
+   "slug": "PUBLIC-ACTIVITIES",
+   "sev": "Major",
+   "cat": "Components & States",
+   "title": "The activity card has no title and no description",
+   "design": "Each card carries five things: the type chip at 11px, the activity title at 16px Medium #1F2937, a two-to-three line description at 12px, then the location and the date.",
+   "build": "Each card carries three: the type as a chip, the location and the date. The activity's own title and its description are not rendered, so the card's only heading is the category it belongs to.",
+   "fix": "Render the activity title and its description between the chip and the location line, at the sizes the design specifies.",
+   "id": "NMB-SCREEN-018"
+  },
+  {
+   "old": "S04",
+   "scope": "Screen",
+   "screen": "Citizen - Help Centres & Facilities",
+   "slug": "PUBLIC-FACILITIES",
+   "sev": "Major",
+   "cat": "Components & States",
+   "title": "The facility card has lost its 'Call Now' action and its service tags",
+   "design": "Each facility card ends with two buttons side by side - 'Get Directions' filled #003366 and 'Call Now' white with a #003366 outline - above which sit the service tags as small pills (Inpatient Treatment, Outpatient Counseling, Detoxification, Rehabilitation).",
+   "build": "'Call Now' is not present and 'Get Directions' stretches the full width of the card in its place. The service tag pills are not rendered either, so a reader cannot see what a centre offers without opening it.",
+   "fix": "Restore the second action beside 'Get Directions' and the service tag pills above the buttons.",
+   "id": "NMB-SCREEN-019"
+  },
+  {
+   "old": "S05",
+   "scope": "Screen",
+   "screen": "Citizen - Help Centres & Facilities",
+   "slug": "PUBLIC-FACILITIES",
+   "sev": "Minor",
+   "cat": "Typography",
+   "title": "Facility names are set in capitals",
+   "design": "The facility name is Title Case at 16px SemiBold #1F2937.",
+   "build": "The facility name is uppercased. At this length a name in capitals is measurably slower to read, and no other name in the portal is set this way.",
+   "fix": "Remove the uppercase transform and set the name Title Case as the design does.",
+   "id": "NMB-SCREEN-020"
+  },
+  {
+   "old": "S13",
+   "scope": "Screen",
+   "screen": "Citizen - Help Centres & Facilities",
+   "slug": "PUBLIC-FACILITIES",
+   "sev": "Minor",
+   "cat": "Color & Token",
+   "title": "The facility-type chip is filled with a colour that is not a token",
+   "design": "The type chip is filled #C8E6C9 with an #81C784 border and its label in #27682A at 11px - the green the token set publishes - and the type is what the colour encodes, so a hospital chip is blue and a de-addiction centre chip is green.",
+   "build": "Every type chip is filled #EDE7F6, a lavender that appears in no NMBA token, and the same fill is used for every facility type, so the colour no longer tells a reader what kind of centre it is.",
+   "fix": "Fill the chip from the token set and keep one colour per facility type as the design does.",
+   "id": "NMB-SCREEN-021"
+  },
+  {
+   "old": "S06",
+   "scope": "Screen",
+   "screen": "NAPDDR committee screens (all four)",
+   "slug": "ADMIN-NAPDDR-STATE-COMMITTEE",
+   "sev": "Major",
+   "cat": "Layout & Spacing",
+   "title": "The breadcrumb is not rendered",
+   "design": "Above the page title sits a breadcrumb - 'NAPDDR Three-Tier Committee > State-Level Committee' - at 12px, the trail a reader uses to get back up out of a nested section.",
+   "build": "There is no breadcrumb on any of the four committee screens. The page title is the first thing under the masthead, so a reader three levels into the section has nothing to climb back with.",
+   "fix": "Render the breadcrumb above the title on all four committee screens.",
+   "id": "NMB-SCREEN-022"
+  },
+  {
+   "old": "S07",
+   "scope": "Screen",
+   "screen": "Officer dashboards (State and District)",
+   "slug": "STATE-NODAL-OFFICER-DASHBOARD",
+   "sev": "Blocker",
+   "cat": "Layout & Spacing",
+   "title": "The whole 'My Submissions' section is not built",
+   "design": "Below the metric cards the dashboard carries its main working area: a 'My Submissions' heading, an Export control and an 'Add Event' primary button, a search field, four filters including a date range, a table of submissions with view / edit / delete on every row, and pagination.",
+   "build": "The page ends after the metric cards. None of the section is present, on either the State Nodal Officer or the District Nodal Officer dashboard, so neither officer can see or add a submission from the screen the design makes their home.",
+   "fix": "Build the section as designed on both dashboards.",
+   "id": "NMB-SCREEN-023"
+  },
+  {
+   "old": "S08",
+   "scope": "Screen",
+   "screen": "Sign in",
+   "slug": "SIGNIN-LOGIN",
+   "sev": "Major",
+   "cat": "Color & Token",
+   "title": "White text sits on an untinted photograph",
+   "design": "The left panel's photograph carries a navy tint, and the SAMAVESH lockup, the 'Justice. Equality. Dignity.' line and the paragraph beneath it read as white on that tint.",
+   "build": "The photograph is drawn at full contrast with no tint, and the same white text sits directly on it. Over the lighter areas of the crowd the paragraph is close to unreadable, and the contrast a reader gets depends on which part of the picture a line happens to fall over.",
+   "fix": "Restore the navy tint over the photograph so the white text has a predictable ground, as the design specifies.",
+   "id": "NMB-SCREEN-024"
+  },
+  {
+   "old": "S09",
+   "scope": "Screen",
+   "screen": "Sign in",
+   "slug": "SIGNIN-LOGIN",
+   "sev": "Major",
+   "cat": "Components & States",
+   "title": "The sign-in fields have no visible labels",
+   "design": "Every field in the design's sign-in panel carries a visible label above it - 'Project Id', 'Enter OTP' - with the placeholder used only for an example value.",
+   "build": "The username and password fields carry no label at all; the only naming is the placeholder, which disappears the moment a reader types. The design has no frame for this tab, so it is audited against the pattern the design uses on every other field.",
+   "fix": "Add a visible label above each field and keep the placeholder for the example.",
+   "id": "NMB-SCREEN-025"
+  },
+  {
+   "old": "S10",
+   "scope": "Screen",
+   "screen": "Admin, State and District shells",
+   "slug": "ADMIN-USER-MANAGEMENT",
+   "sev": "Major",
+   "cat": "Components & States",
+   "title": "Two footer links land on the dashboard instead of their own page",
+   "design": "The design has no 'About Us' or 'Contact Us' page inside the authenticated shell; these are citizen-site destinations.",
+   "build": "In the admin shell /about-us and /contact-us both render a page that is byte-for-byte identical to the dashboard - verified by checksum on all three admin roles. A reader who follows either link is silently returned to the dashboard with no indication that the page they asked for does not exist.",
+   "fix": "Point these links at the citizen site's pages, or give the shell a not-found state. A route with no page should say so rather than substituting the landing screen.",
+   "id": "NMB-SCREEN-026",
+   "_anchorWhy": "This finding is about which page a route serves, so there is no single control to anchor to; the anchor is the page title that proves it - /about-us renders the heading 'Dashboard'.",
+   "_evidenceWhy": "The evidence is a checksum, not a picture: ADMIN-ABOUT-US.png, ADMIN-CONTACT-US.png and ADMIN-STATE-DISTRICT-DASHBOARD.png are byte-identical (md5 a16f44d585bfd979e3cd935f83bf980e), and the same holds for the State Nodal Officer role. Two pictures of identical pages would show a reviewer nothing."
+  },
+  {
+   "old": "S14",
+   "scope": "Screen",
+   "screen": "Citizen - masthead (every citizen screen)",
+   "slug": "PUBLIC-HOME",
+   "sev": "Minor",
+   "cat": "Components & States",
+   "title": "The citizen masthead is a different component from the one designed",
+   "design": "The right of the citizen masthead holds a signed-in user block: the name at 16px SemiBold #1F2937, the email beneath it at 13px #374151, and a 48px initials avatar filled #C8DBF0.",
+   "build": "The build shows a green National Deaddiction Helpline badge carrying the 14446 number, and a 'Nasha Mukti Mitr Login' button. There is no user block, because the citizen site has no signed-in state. So the design assumes a citizen session the build does not have.",
+   "fix": "Decide which is right and make both sides agree: either the citizen site gains the signed-in block the design draws, or the design is updated to the helpline-and-login masthead the build ships. Raised because the two disagree, not because the build is necessarily wrong.",
+   "id": "NMB-SCREEN-027"
+  },
+  {
+   "old": "S15",
+   "scope": "Screen",
+   "screen": "Citizen - Help Centres & Facilities",
+   "slug": "PUBLIC-FACILITIES",
+   "sev": "Nit",
+   "cat": "Layout & Spacing",
+   "title": "The facility map opens on a whole-subcontinent view",
+   "design": "The map opens framed on the area the facilities are in, close enough to read street names, with the three results pinned in view.",
+   "build": "The map opens zoomed out far enough to show Kabul, Colombo and Chengdu, with 722 pins clustered over India, so a reader has to zoom before the map tells them anything about their own district.",
+   "fix": "Frame the map on the results being listed - the reader's district, or the search area - rather than on the whole set. Raised as a confirm-if-intended: if a national overview is the deliberate default, say so and the design should show it that way.",
+   "id": "NMB-SCREEN-028",
+   "_anchorWhy": "The map is a canvas with no text node. The box is the map panel's measured rect on both sides."
+  },
+  {
+   "old": "S11",
+   "scope": "Screen",
+   "screen": "Important Documents (all roles)",
+   "slug": "ADMIN-IMPORTANT-DOCUMENTS",
+   "sev": "Nit",
+   "cat": "Typography",
+   "title": "Status chips are not set in capitals",
+   "design": "The status chip is uppercase at 11px - DRAFT, PUBLISHED - which is what separates it from ordinary cell text at a glance.",
+   "build": "The chips read 'Draft' and 'Published' in sentence case, so they carry the same case as the data around them.",
+   "fix": "Apply the uppercase transform to the status chip.",
+   "id": "NMB-SCREEN-029"
+  },
+  {
+   "old": "S12",
+   "scope": "Screen",
+   "screen": "Important Documents (all roles)",
+   "slug": "ADMIN-IMPORTANT-DOCUMENTS",
+   "sev": "Nit",
+   "cat": "Layout & Spacing",
+   "title": "The row actions are in a different order",
+   "design": "The row actions run download, then edit, then delete.",
+   "build": "They run edit, then download, then delete. The download control is the one a reader uses most on this screen and the design puts it first.",
+   "fix": "Order the row actions download, edit, delete as the design does.",
+   "id": "NMB-SCREEN-030"
+  },
+  {
+   "old": "G16",
+   "scope": "Global",
+   "screen": "Filters (every screen with them)",
+   "sev": "Nit",
+   "cat": "Components & States",
+   "title": "Use the relevant filter options and follow the design",
+   "design": "Several screens draw more filters than the build offers - the citizen dashboard's State and District selects, the admin list screens' 'All States/UTs', the officer dashboard's four-filter row.",
+   "build": "This is raised once, as a note: show the filters each screen actually needs and style them as the design does. It is not repeated as a finding on each screen.",
+   "fix": "This is raised once, as a note: show the filters each screen actually needs and style them as the design does. It is not repeated as a finding on each screen.",
+   "id": "NMB-GLOBAL-031",
+   "_evidenceWhy": "A standing note about which filters to show, raised once by decision instead of per screen; it describes no single element, so it carries no crop."
+  }
+ ],
+ "dropped": [
+  {
+   "old": "NMB-SNODASH-004",
+   "title": "KPI grid reflows to unequal card widths",
+   "reason": "Measured on the capture: the three cards on the officer dashboard span 308-662, 688-1040 and 1066-1418 - 354, 352 and 352px with even 26px gaps, and the second row starts at the same two x positions. The grid is even. Withdrawn."
+  },
+  {
+   "old": "NMB-GLOBAL-003 (July wording)",
+   "title": "Sidebar navigation icons absent PORTAL-WIDE",
+   "reason": "The citizen shell does carry its navigation icons; only the admin shell has none. The finding is kept but narrowed to the admin shell - see G03."
+  },
+  {
+   "old": "NMB-GLOBAL-004 (July wording)",
+   "title": "Page title is off the type scale",
+   "reason": "The build's page title measures 24px at weight 600, which is exactly what the design specifies. Only the colour differs. Narrowed to a colour finding - see G11."
+  },
+  {
+   "old": "reviewer",
+   "title": "Admin screens are missing the footer strip",
+   "reason": "Checked on both sides: NO admin, State Nodal Officer or District Nodal Officer DESIGN frame carries a footer either - 0 footer elements across all 31 of them, against 3 on every citizen frame. The build matches the design exactly. Not a discrepancy."
+  },
+  {
+   "old": "reviewer",
+   "title": "The sidebar expand/collapse icon does not match the design",
+   "reason": "Cropped both sides at 1:1: the control is the same collapse glyph in the same place at the same size. Any difference is in how it behaves, which a static design QC cannot evidence - it belongs in a functional pass."
+  },
+  {
+   "old": "reviewer",
+   "title": "The facility filter is too wide",
+   "reason": "Width and height vary with content and viewport, so they are not audited as defects here."
+  },
+  {
+   "old": "reviewer",
+   "title": "The side navigation lists different items from the design",
+   "reason": "Which items a menu carries is information architecture and content, which this run was scoped to leave out. Recorded for the content pass."
+  },
+  {
+   "old": "reviewer",
+   "title": "The filter label reads 'All Facilities' where the design says 'All Facility Types'",
+   "reason": "Wording. Out of scope for this run by instruction."
+  }
+ ],
+ "counts": {
+  "Blocker": 3,
+  "Major": 13,
+  "Minor": 9,
+  "Nit": 6
+ },
+ "designFileNotes": [
+  {
+   "title": "Seven frames draw content outside their own canvas",
+   "detail": "Measured during the Phase-0 read: 44 text nodes sit outside the frame bounds on each of the Admin State/UT-District Events, State Nodal Officer Dashboard and District Nodal Officer Dashboard frames, 66 on Admin General Feedback, 9 on District Nodal Officer Important Documents, and 4 on each of the three NAPDDR committee frames. Content outside the frame renders nowhere - not in an export, not in Dev Mode - so it is invisible to anyone reading the handoff."
+  },
+  {
+   "title": "Twelve loose artboards sit at the section root",
+   "detail": "Frames named 'Table', 'Table Container', 'Contianer', 'CardHeader', 'Body' and 'arrow-wrapper' sit beside the screen frames at 1090-3067px wide. They are the wide tables and fragments the screens reference, but at the root they read as screens."
+  },
+  {
+   "title": "The admin sign-in form has no design",
+   "detail": "Both login frames draw the Patient Monitoring tab - one showing the Project Id field, one showing the OTP step. The Admin tab, which is what the build shows by default and what every officer in this audit signs in through, is drawn only as an inactive tab. Its form is undesigned."
+  }
+ ]
+}

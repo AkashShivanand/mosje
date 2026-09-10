@@ -152,3 +152,38 @@ class DuplicateAnchors(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class WhyFieldsSurviveLoading(unittest.TestCase):
+    """`_anchorWhy` and `_evidenceWhy` are the two documented escape hatches, and claims_run's
+    projection used to drop both on the way from findings_final.json to the gates - so a finding
+    that legitimately cannot be anchored (an icon-only button, a native <select>) or evidenced by
+    a picture (a claim whose proof is a checksum) had no way to pass except by being re-worded to
+    dodge the gate. Found on NMBA, 2026-09-11.
+    """
+
+    def _load(self, kept):
+        import json as _json, os as _os, tempfile, importlib.util
+        d = tempfile.mkdtemp()
+        with open(_os.path.join(d, "findings_final.json"), "w") as fh:
+            _json.dump({"prefix": "X", "kept": kept, "dropped": [], "counts": {}}, fh)
+        spec = importlib.util.spec_from_file_location(
+            "claims_run", _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "claims_run.py"))
+        m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        return m.load_findings(d)
+
+    def test_anchor_why_survives(self):
+        got = self._load([{"id": "X-1", "title": "t", "design": "d", "build": "b",
+                           "_anchorWhy": "the control has no text node"}])
+        self.assertEqual(got[0].get("_anchorWhy"), "the control has no text node")
+
+    def test_evidence_why_survives(self):
+        got = self._load([{"id": "X-1", "title": "t", "design": "d", "build": "b",
+                           "_evidenceWhy": "the proof is a checksum"}])
+        self.assertEqual(got[0].get("_evidenceWhy"), "the proof is a checksum")
+
+    def test_absent_why_is_not_invented(self):
+        got = self._load([{"id": "X-1", "title": "t", "design": "d", "build": "b"}])
+        self.assertNotIn("_anchorWhy", got[0])
+        self.assertNotIn("_evidenceWhy", got[0])

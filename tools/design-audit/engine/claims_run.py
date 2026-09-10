@@ -24,14 +24,23 @@ def load_findings(proj, published=None):
     # the PUBLISHED master (docs/qc/portals/<name>/) is the deliverable and wins; out/ holds the
     # machine draft, which is a different, earlier set
     am = published if (published and os.path.exists(published)) else os.path.join(proj, "out", "audit-master.json")
+    # `_anchorWhy` and `_evidenceWhy` MUST survive this projection. Both gates test for them on
+    # the finding, and this function used to drop them - so the documented escape hatch could
+    # never be exercised from findings_final.json, and a legitimately-unanchorable finding (an
+    # icon-only button, a native <select>, a claim whose evidence is a checksum) had no way to
+    # pass short of re-wording it to dodge the gate. Found on NMBA, 2026-09-11.
+    def _why(src):
+        return {k: src[k] for k in ("_anchorWhy", "_evidenceWhy") if src.get(k)}
+
     if os.path.exists(am):
         d = json.load(open(am))
-        return [{"id": f["id"], "title": f.get("element"), "design": f.get("figma"),
-                 "build": f.get("live")} for s in d["screens"] for f in s["findings"]]
+        return [dict({"id": f["id"], "title": f.get("element"), "design": f.get("figma"),
+                      "build": f.get("live")}, **_why(f))
+                for s in d["screens"] for f in s["findings"]]
     ff = os.path.join(proj, "findings_final.json")
     if os.path.exists(ff):
-        return [{"id": k["id"], "_old": k.get("old"), "title": k.get("title"),
-                 "design": k.get("design"), "build": k.get("build")}
+        return [dict({"id": k["id"], "_old": k.get("old"), "title": k.get("title"),
+                      "design": k.get("design"), "build": k.get("build")}, **_why(k))
                 for k in json.load(open(ff))["kept"]]
     return []
 

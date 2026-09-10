@@ -11,7 +11,7 @@ manifest (rows for that role's slugs are replaced, every other role's rows are p
 and a full run that captured nothing refuses to overwrite a non-empty manifest without
 `--allow-empty`. The manifest is the only record of the captured SET — the PNG/JSON files
 survive a bad write, the set does not."""
-import json, os, struct, subprocess, sys
+import json, os, re, struct, subprocess, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import config as C
 import manifest as MAN
@@ -680,6 +680,138 @@ def _route_path(route, base):
     return r if r.startswith("/") else None
 
 
+# A nav group header that is not a <button> and not an <a> is invisible to an href crawl, and
+# so is everything inside it. NMBA nests four real, rendering NAPDDR committee routes behind a
+# plain <div> with `cursor:auto`; the July 2026 run therefore filed eleven built screens as
+# "designed but never built" — the exact opposite of the truth — across three roles. The lesson
+# was written down and never mechanized, so the same portal was about to lose the same twelve
+# screens a second time. Hence this: expansion is part of discovery, not a per-project driver.
+#
+# Clicking unlabelled things in a live build is only safe with a refusal list. These labels are
+# never nav toggles, and one of them (Logout) would end the run.
+_GROUP_LABEL_REFUSE = re.compile(
+    r"\b(log\s?out|sign\s?out|logout|signout|delete|remove|submit|save|approve|reject|"
+    r"withdraw|disburse|send|export|download|verify|otp|confirm|pay|print)\b", re.I)
+
+
+def is_safe_group_label(text):
+    """True when `text` may be clicked in a nav to reveal routes.
+
+    Refuses anything that could commit, export, or end the session, and anything too long or
+    too short to be a group header. The length bounds matter as much as the word list: a whole
+    sidebar's text collapses into one node when a wrapper has no element children, and clicking
+    that is a shot in the dark."""
+    t = (text or "").strip()
+    if not (2 <= len(t) <= 60):
+        return False
+    return not _GROUP_LABEL_REFUSE.search(t)
+
+
+# Returns the VISIBLE, hrefless nav-group CONTROLS as [{i, text}], outermost first.
+#
+# Three properties are load-bearing, and each was learned by getting it wrong on this portal.
+#
+# VISIBLE: a responsive shell renders its nav twice and the hidden off-canvas copy comes FIRST
+# in the DOM, so an index-based click on the first match hits a node with no layout box.
+#
+# OUTERMOST: a group header is a <button> wrapping a <span> of the same text. Collecting both
+# and clicking both toggles the group open and then shut again - which is what happened on
+# NMBA's first run: three clicks on one control, a cheerful "expanded 3 nav group(s)" in the
+# log, and not one new route.
+#
+# A CONTROL, not any ancestor: the button sits inside two plain <div>s that also have no
+# anchors and the same text. Clicking one of THOSE does nothing at all, because a DOM click
+# dispatches on the element it is called on and React's handler is on the descendant - events
+# bubble up, never down. So a candidate must look like a control: a <button>, role=button, or
+# cursor:pointer. The wrapping divs compute cursor:auto and are correctly skipped.
+#
+# `loose` drops the control test and takes leaf text nodes instead. It is the fallback for a
+# build whose group header genuinely is an unstyled <div>, which is what NMBA's own July 2026
+# ledger entry claims this portal had - the build has since changed, and a fallback is cheaper
+# than assuming which of the two is true on the next portal.
+_NAV_CANDIDATES_JS = """(loose)=>{
+  const roots=[...document.querySelectorAll('nav,aside,[class*=sidebar],[class*=Sidebar]')];
+  const out=[]; window.__qcNav=[]; const seen=new Set();
+  const vis=e=>e.offsetParent||getComputedStyle(e).position==='fixed';
+  const ctl=e=>e.tagName==='BUTTON'||e.getAttribute('role')==='button'
+              ||getComputedStyle(e).cursor==='pointer';
+  const qualifies=e=>{
+    if(e.nodeType!==1) return false;
+    if(e.matches('a[href]')||e.closest('a[href]')) return false;
+    if(e.querySelector('a[href]')) return false;      // a container, not a header
+    if(e.children.length>3) return false;
+    if(!vis(e)) return false;
+    if(loose ? e.children.length!==0 : !ctl(e)) return false;
+    const t=(e.textContent||'').replace(/\s+/g,' ').trim();
+    return !!t && t.length>=2 && t.length<=60;
+  };
+  const walk=e=>{
+    if(qualifies(e)){
+      const t=(e.textContent||'').replace(/\s+/g,' ').trim();
+      const key=t.replace(/[^a-z0-9]/gi,'').toLowerCase();
+      if(!seen.has(key)){ seen.add(key); window.__qcNav.push(e); out.push({i:window.__qcNav.length-1,text:t}); }
+      return;                                          // STOP - do not collect its children too
+    }
+    for(const c of e.children) walk(c);
+  };
+  for(const r of roots) walk(r);
+  return out;
+}"""
+
+
+def expand_nav_groups(pg, log=True):
+    """Click every safe collapsible nav group so its routes enter the DOM.
+
+    Each candidate is clicked ONCE and then VERIFIED against the anchor count: a click that
+    revealed nothing is simply not a group, and a click that made anchors DISAPPEAR shut a
+    group that was already open and is undone. Verification is the only honest signal here -
+    a nav header carries no aria-expanded, no role, and sometimes no cursor:pointer.
+
+    Returns the labels that actually revealed routes."""
+    revealed, tried = [], set()
+    for loose in (False, True):
+        for _ in range(2):                  # two rounds, so a group inside a group opens too
+            try:
+                cands = pg.evaluate(_NAV_CANDIDATES_JS, loose)
+            except Exception:
+                break
+            todo = [c for c in cands if is_safe_group_label(c.get("text"))
+                    and _label_key(c.get("text")) not in tried]
+            if not todo:
+                break
+            for c in todo:
+                tried.add(_label_key(c.get("text")))
+                try:
+                    before = len(pg.evaluate(_HREFS_JS))
+                    # el.click(), not a Playwright click: these headers have no accessible role
+                    # and Playwright's actionability checks reject them, while a DOM click works.
+                    pg.evaluate("i=>window.__qcNav[i] && window.__qcNav[i].click()", c["i"])
+                    pg.wait_for_timeout(900)
+                    after = len(pg.evaluate(_HREFS_JS))
+                    if after > before:
+                        revealed.append(c["text"])
+                    elif after < before:
+                        pg.evaluate("i=>window.__qcNav[i] && window.__qcNav[i].click()", c["i"])
+                        pg.wait_for_timeout(900)
+                except Exception:
+                    pass
+        if revealed:
+            break                           # the strict pass worked; no need to guess loosely
+    if revealed and log:
+        print(f"  expanded {len(revealed)} nav group(s): "
+              f"{', '.join(sorted(set(revealed))[:6])}", flush=True)
+    return revealed
+
+
+def _label_key(text):
+    """A group header re-renders with a chevron that flips between collapsed and expanded, so
+    one control reads as three different labels across two rounds. Compare on letters only."""
+    return re.sub(r"[^a-z0-9]", "", str(text or "").lower())
+
+
+_HREFS_JS = """()=>{const s=new Set();document.querySelectorAll('nav a[href],aside a[href],[class*=sidebar] a[href],[class*=menu] a[href],a[href]').forEach(a=>{const h=a.getAttribute('href');if(h&&h.startsWith('/')&&!h.startsWith('//'))s.add(h.split('?')[0].split('#')[0])});return [...s]}"""
+
+
 def discover_routes(pg, cfg):
     # A slow-loading nav/carousel widget can still be rendering when we read hrefs, so the
     # discovered route SET varies run to run (observed on scw-user-uat: two routes intermittently
@@ -690,9 +822,15 @@ def discover_routes(pg, cfg):
                              "[class*=menu] a[href]", timeout=4000)
     except Exception:
         pass
-    hrefs = pg.evaluate("""()=>{const s=new Set();document.querySelectorAll('nav a[href],aside a[href],[class*=sidebar] a[href],[class*=menu] a[href],a[href]').forEach(a=>{const h=a.getAttribute('href');if(h&&h.startsWith('/')&&!h.startsWith('//'))s.add(h.split('?')[0].split('#')[0])});return [...s]}""")
+    before = set(pg.evaluate(_HREFS_JS))
+    expand_nav_groups(pg)
+    hrefs = set(pg.evaluate(_HREFS_JS)) | before
+    gained = hrefs - before
+    if gained:
+        print(f"  +{len(gained)} route(s) revealed by expanding nav groups: "
+              f"{', '.join(sorted(gained)[:6])}", flush=True)
     skip = set(cfg.get("live", {}).get("skipRoutes", []))
-    return [h for h in hrefs if h and h not in skip]
+    return [h for h in sorted(hrefs) if h and h not in skip]
 
 def _engine_sha():
     """Short git sha of the engine, recorded so a bundle can be traced to the code that made it."""

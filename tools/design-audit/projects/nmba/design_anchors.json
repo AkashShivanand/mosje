@@ -1,0 +1,452 @@
+{
+ "NMB-GLOBAL-001": {
+  "node": "52061:126900",
+  "frameH": 1010,
+  "box": [
+   32,
+   342,
+   220,
+   26
+  ],
+  "text": "All Pledge Reports",
+  "offset": [
+   -32,
+   -6
+  ]
+ },
+ "NMB-GLOBAL-002": {
+  "node": "52061:126900",
+  "frameH": 1010,
+  "box": [
+   1008,
+   4,
+   330,
+   34
+  ],
+  "text": "Skip to Main Content",
+  "offset": [
+   150,
+   -10
+  ]
+ },
+ "NMB-GLOBAL-003": {
+  "node": "52061:126900",
+  "frameH": 1010,
+  "box": [
+   31,
+   403,
+   250,
+   26
+  ],
+  "text": "Important Documents",
+  "offset": [
+   -34,
+   -6
+  ]
+ },
+ "NMB-GLOBAL-004": {
+  "node": "52061:126900",
+  "frameH": 1010,
+  "box": [
+   124,
+   99,
+   460,
+   26
+  ],
+  "text": "Department of Social Justice & Empowerment",
+  "offset": [
+   -2,
+   -4
+  ]
+ },
+ "NMB-GLOBAL-005": {
+  "node": "52061:126900",
+  "frameH": 1010,
+  "box": [
+   1290,
+   374,
+   120,
+   34
+  ],
+  "text": "Actions",
+  "offset": [
+   -8,
+   44
+  ]
+ },
+ "NMB-GLOBAL-006": {
+  "node": "52092:136433",
+  "frameH": 1088,
+  "box": [
+   325,
+   818,
+   312,
+   46
+  ],
+  "text": "@box",
+  "offset": [
+   325,
+   818
+  ]
+ },
+ "NMB-GLOBAL-007": {
+  "node": "52092:136433",
+  "frameH": 1088,
+  "box": [
+   1270,
+   811,
+   90,
+   36
+  ],
+  "text": "Showing",
+  "offset": [
+   70,
+   -10
+  ]
+ },
+ "NMB-GLOBAL-008": {
+  "node": "52070:443098",
+  "frameH": 1088,
+  "box": [
+   335,
+   240,
+   40,
+   32
+  ],
+  "text": "Search by Name, State,DIstrict, Activity...",
+  "offset": [
+   -26,
+   -8
+  ]
+ },
+ "NMB-GLOBAL-009": {
+  "node": "52051:161871",
+  "frameH": 1034,
+  "box": [
+   326,
+   539,
+   300,
+   50
+  ],
+  "text": "Organization/Ministry",
+  "offset": [
+   -24,
+   44
+  ]
+ },
+ "NMB-GLOBAL-010": {
+  "node": "52061:126900",
+  "frameH": 1010,
+  "box": [
+   343,
+   379,
+   200,
+   26
+  ],
+  "text": "James Cameron",
+  "offset": [
+   -4,
+   -6
+  ]
+ },
+ "NMB-GLOBAL-011": {
+  "node": "52061:126900",
+  "frameH": 1010,
+  "box": [
+   322,
+   176,
+   240,
+   34
+  ],
+  "text": "User Management",
+  "offset": [
+   -4,
+   -6
+  ]
+ },
+ "NMB-GLOBAL-012": {
+  "node": "2309:14405",
+  "frameH": 1367,
+  "box": [
+   335,
+   227,
+   40,
+   40
+  ],
+  "text": "Important Documents",
+  "offset": [
+   270,
+   -6
+  ]
+ },
+ "NMB-GLOBAL-013": {
+  "node": "2309:14405",
+  "frameH": 1367,
+  "box": [
+   346,
+   314,
+   150,
+   36
+  ],
+  "text": "252",
+  "offset": [
+   -4,
+   -6
+  ]
+ },
+ "NMB-GLOBAL-014": {
+  "node": "2309:14405",
+  "frameH": 1367,
+  "box": [
+   61,
+   227,
+   200,
+   24
+  ],
+  "text": "Important Documents",
+  "offset": [
+   -4,
+   -6
+  ]
+ },
+ "NMB-GLOBAL-015": {
+  "node": "52061:126900",
+  "frameH": 1010,
+  "box": [
+   292,
+   174,
+   250,
+   30
+  ],
+  "text": "User Management",
+  "offset": [
+   -34,
+   -8
+  ]
+ },
+ "NMB-SCREEN-016": {
+  "node": "9081:59117",
+  "frameH": 2277,
+  "box": [
+   1190,
+   206,
+   170,
+   46
+  ],
+  "text": "Take the Pledge",
+  "offset": [
+   -24,
+   -14
+  ]
+ },
+ "NMB-SCREEN-017": {
+  "node": "9081:59117",
+  "frameH": 2277,
+  "box": [
+   319,
+   732,
+   260,
+   30
+  ],
+  "text": "NUMBER OF PROGRAMMES",
+  "offset": [
+   -6,
+   -8
+  ]
+ },
+ "NMB-SCREEN-018": {
+  "node": "9081:58966",
+  "frameH": 1954,
+  "box": [
+   332,
+   504,
+   260,
+   60
+  ],
+  "text": "Alandi Student Awareness Drive",
+  "offset": [
+   -8,
+   -8
+  ]
+ },
+ "NMB-SCREEN-019": {
+  "node": "9081:58585",
+  "frameH": 1280,
+  "box": [
+   1203,
+   652,
+   300,
+   50
+  ],
+  "text": "Call Now",
+  "offset": [
+   -90,
+   -16
+  ]
+ },
+ "NMB-SCREEN-020": {
+  "node": "9081:58585",
+  "frameH": 1280,
+  "box": [
+   959,
+   427,
+   300,
+   44
+  ],
+  "text": "National Institute of Mental Health and Neuro Sciences",
+  "offset": [
+   -6,
+   -6
+  ]
+ },
+ "NMB-SCREEN-021": {
+  "node": "9081:58585",
+  "frameH": 1280,
+  "box": [
+   965,
+   401,
+   140,
+   26
+  ],
+  "text": "De Addiction Center",
+  "offset": [
+   -8,
+   -8
+  ]
+ },
+ "NMB-SCREEN-022": {
+  "node": "52092:136433",
+  "frameH": 1088,
+  "box": [
+   321,
+   180,
+   340,
+   24
+  ],
+  "text": "State-Level Steering and Monitoring Committee",
+  "offset": [
+   -4,
+   -30
+  ]
+ },
+ "NMB-SCREEN-023": {
+  "node": "2309:14405",
+  "frameH": 1367,
+  "box": [
+   343,
+   596,
+   300,
+   44
+  ],
+  "text": "My Submissions",
+  "offset": [
+   -8,
+   -10
+  ]
+ },
+ "NMB-SCREEN-024": {
+  "node": "9884:112146",
+  "frameH": 960,
+  "box": [
+   57,
+   561,
+   420,
+   70
+  ],
+  "text": "Single Access Mechanism for All Verticals of",
+  "offset": [
+   -8,
+   -8
+  ]
+ },
+ "NMB-SCREEN-025": {
+  "node": "9884:112146",
+  "frameH": 960,
+  "box": [
+   983,
+   543,
+   200,
+   24
+  ],
+  "text": "Project Id",
+  "offset": [
+   -4,
+   -6
+  ]
+ },
+ "NMB-SCREEN-026": {
+  "node": "52061:126900",
+  "frameH": 1010,
+  "box": [
+   61,
+   162,
+   200,
+   34
+  ],
+  "text": "Dashboard",
+  "offset": [
+   -4,
+   -6
+  ]
+ },
+ "NMB-SCREEN-027": {
+  "node": "9081:59117",
+  "frameH": 2277,
+  "box": [
+   1226,
+   61,
+   200,
+   50
+  ],
+  "text": "Sachin Malhotra",
+  "offset": [
+   -8,
+   -10
+  ]
+ },
+ "NMB-SCREEN-028": {
+  "node": "9081:58585",
+  "frameH": 1280,
+  "box": [
+   346,
+   401,
+   600,
+   400
+  ],
+  "text": "Facilities (3)",
+  "offset": [
+   -620,
+   60
+  ]
+ },
+ "NMB-SCREEN-029": {
+  "node": "52070:443098",
+  "frameH": 1088,
+  "box": [
+   1094,
+   310,
+   90,
+   26
+  ],
+  "text": "PUBLISHED",
+  "offset": [
+   -6,
+   -6
+  ]
+ },
+ "NMB-SCREEN-030": {
+  "node": "52070:443098",
+  "frameH": 1088,
+  "box": [
+   1227,
+   360,
+   120,
+   34
+  ],
+  "text": "Action",
+  "offset": [
+   -8,
+   44
+  ]
+ }
+}
