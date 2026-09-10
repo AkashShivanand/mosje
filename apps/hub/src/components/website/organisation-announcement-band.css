@@ -1582,7 +1582,18 @@
   @media (max-width: 1023px) {
     .orgab__inner {
       grid-template-columns: minmax(0, 1fr) auto;
-      row-gap: var(--sa-stack-16);
+
+      /*
+       * EIGHT, NOT TWENTY — the last four pixels the smallest phone needed.
+       *
+       * Stacking the helpline's label brought the card from 315 to 241, which
+       * clears the dismiss at 360 and above. At 320 the column is 236 and the
+       * card is 241, so five pixels still ran under the cross. The desktop gap
+       * is 20 because it separates two CARDS; here it separates a card from a
+       * 32px glyph on the band's own green, where 8 is ample and the twelve
+       * pixels recovered are what the 320 case was short of.
+       */
+      gap: var(--sa-stack-16) var(--sa-inline-8);
     }
 
     /*
@@ -1793,9 +1804,26 @@
     }
 
     /*
-     * THE LABEL GOES BESIDE THE NUMBER. Two 16px lines of chrome stacked over a
-     * 25px figure is a card built for a desktop row; inline, the card is one
-     * line and the number still leads it.
+     * THE LABEL GOES BACK ABOVE THE NUMBER — and this is a width decision, not
+     * a typographic one.
+     *
+     * It was put beside the number to keep the card to one line. That made the
+     * card as wide as the label PLUS the figure: 315px measured at every phone
+     * width from 320 to 414, against a grid column of 306 at 390 and 256 at 320.
+     * A card that cannot fit its column does not stop at the column — it ran on
+     * underneath the band's dismiss, which is a WHITE cross at 72% and therefore
+     * invisible on white. An unseen control that removes the whole announcement,
+     * sitting over the helpline number, was the result.
+     *
+     * Capping the card was tried and reverted: the content does not reflow, so
+     * the cap simply clipped the figure — 204px of card at 320, showing "144"
+     * and losing "46". Clipping a national helpline number is a worse defect
+     * than the one being fixed.
+     *
+     * Stacked, the card is only as wide as the WIDER of the two lines instead of
+     * their sum, which is what buys the cross its lane back. The figure still
+     * leads: it is `display-5`, fluid, and four times the label's size, so
+     * putting a 12px line above it does not make the label compete.
      */
     .orgab__helpline {
       padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-8) var(--sa-padding-8);
@@ -1807,10 +1835,60 @@
       block-size: var(--sa-control-height-md);
     }
 
+    /* Column, as on the desktop card — the inline override is what this whole
+       note is about, so it is gone rather than overridden back. */
+
+    /*
+     * AND IT MAY WRAP, WHICH IS THE LAST FOUR PIXELS AT 320.
+     *
+     * A flex item's `min-width` is `auto`, so the card could not shrink below
+     * its own content however narrow the column got: at 320 the track is 216
+     * and the card sat at 241, overflowing by 25 and running under the cross
+     * again. The binding measurement is the LABEL, not the figure — twenty-one
+     * uppercase characters with caps tracking are 165 of those 241 pixels.
+     *
+     * Allowing both boxes to shrink lets "DE-ADDICTION HELPLINE" take two lines
+     * on the narrowest phones and the card fit its column. The FIGURE never
+     * wraps: it is one tabular token, so it sets the card's floor and the label
+     * gives way around it — the right way round for a number this is the whole
+     * point of.
+     */
+    .orgab__helpline,
     .orgab__helpline-text {
-      flex-direction: row;
-      align-items: baseline;
-      gap: var(--sa-inline-8);
+      min-inline-size: 0;
+    }
+
+    /*
+     * THE CAP ONLY WORKS BECAUSE THE LABEL CAN NOW WRAP.
+     *
+     * `justify-self: start` sizes a grid item to its CONTENT, not its track, so
+     * without this the card ignored the column entirely. With it and nothing
+     * else it clipped — which is exactly what was tried and reverted before the
+     * label was stacked: the content had no way to reflow, so capping the box
+     * just cut the figure off at "144".
+     *
+     * The two together are the fix. The cap makes the card respect its column;
+     * the wrapping above gives it somewhere to put the overflow.
+     */
+    .orgab__helpline {
+      max-inline-size: 100%;
+    }
+
+    /*
+     * AND THE LABEL IS ALLOWED TO TAKE TWO LINES.
+     *
+     * It carries `white-space: nowrap` for the desktop card, where the row has
+     * the width for it. Under the cap that turned into a spill rather than a
+     * wrap: 165px of label in a 140px box at 320, running out of the white card
+     * onto the band's green. Nothing above this line could have caught it —
+     * `min-inline-size: 0` lets a box shrink, but a box that may not wrap has
+     * nowhere to put what does not fit.
+     *
+     * Only the LABEL. The figure keeps its nowrap by never being asked: it is a
+     * single tabular token and it is what the card is sized around.
+     */
+    .orgab__helpline-label {
+      white-space: normal;
     }
   }
 }
