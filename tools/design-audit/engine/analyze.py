@@ -61,8 +61,23 @@ def build_ledger(cfg, frames, captured, paths):
     # Keyed by (role, screen) TUPLE rather than a concatenated string: concatenation let one role
     # bleed into another whenever a role name prefixed another (e.g. "state" vs "stateauthority").
     cap_by_key = {}
+    # Also key every capture by its FULL route. The last-segment key is ambiguous the moment a
+    # portal nests its verbs: SMILE-Beggary has three distinct Fund Monitoring screens at
+    # /fund-monitoring/sanction-orders/create, /nisd-releases/create and
+    # /nodal-officer-onward-releases/create — all three collapse to the segment "create", so two
+    # of them silently overwrote the third in this dict and their design frames went UNMAPPED
+    # while their captures sat in EXTRA. A frame can now also name its `route` outright, which
+    # beats every heuristic below.
+    cap_by_route = {}
+    seg_seen = collections.Counter()
     for c in captured:
         cap_by_key[(norm(c["role"]), _screen_seg(c["route"]))] = c
+        cap_by_route[(norm(c["role"]), norm(c["route"]))] = c
+        seg_seen[(norm(c["role"]), _screen_seg(c["route"]))] += 1
+    _collide = [f"{r}:{s}" for (r, s), n in seg_seen.items() if n > 1]
+    if _collide:
+        print(f"  ! route-segment collision ({len(_collide)}): {_collide} — pair these frames by "
+              f"an explicit \"route\" in inputs/figma-frames.json", flush=True)
     rows = []; mapped = unmapped = extra = design_only = 0; mismap = 0
     used = set(); n_frames = 0
     def _bhead(slug):
@@ -87,17 +102,24 @@ def build_ledger(cfg, frames, captured, paths):
         is_design_only = bool(fr.get("_designOnly"))
         hit = None
         if not is_design_only:
-            hit = cap_by_key.get(key)
+            # An explicit `route` on the frame is the only unambiguous pairing there is. Use it
+            # first, and never fall through to a heuristic when it is present but does not match —
+            # a stated route that matches nothing is a real UNMAPPED, not an invitation to guess.
+            declared = fr.get("route")
+            if declared:
+                hit = cap_by_route.get((role, norm(declared)))
+            else:
+                hit = cap_by_key.get(key)
             # Landing frame → this role's ROOT capture. A root route offers no screen segment to
             # match on, so pair by role alone — but only for a frame that declares itself the home
             # view, or every unmatched frame in the role would grab the home screenshot.
-            if not hit and _is_home_frame(name):
+            if not hit and not fr.get("route") and _is_home_frame(name):
                 hit = cap_by_key.get((role, HOME_SEG))
             # Substring fallback — SCOPED TO THE SAME ROLE (r == role). Unscoped, this walked every
             # key in every role and paired one role's design against another role's screenshot while
             # still reporting MAPPED: a confident wrong answer, strictly worse than an honest
             # UNMAPPED, and invisible downstream because spec-diffing trusts the pairing.
-            if not hit and screen:
+            if not hit and not fr.get("route") and screen:
                 hit = next((c for (r, s), c in cap_by_key.items() if r == role and screen in s), None)
         status = "MAPPED" if hit else ("DESIGN-ONLY" if is_design_only else "UNMAPPED")
         # design↔build MAPPING sanity: the frame's heading must agree with the paired capture's title,

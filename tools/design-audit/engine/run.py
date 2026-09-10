@@ -60,6 +60,16 @@ def main():
     preflight(need_browser=ph in ("capture", "all", "bundle"))
     if ph in ("capture", "all"):
         print("== PHASE: capture =="); CAP.run(a.project, a.role, a.allow_empty, a.force, a.verify)
+        # Two cheap post-capture gates. Both were written after a run shipped bad captures with
+        # every other gate green; neither was wired in until now.
+        import config as _CFG; _, _paths = _CFG.load(a.project)
+        _corrupt = CAP.audit_capture_integrity(_paths)
+        _login = CAP.audit_no_login_pages(_paths)
+        _scale = CAP.audit_design_frame_width(_paths)
+        if _corrupt or _login or _scale:
+            print("\n!! CAPTURE GATE FAILED — analyze/report refused. Fix the captures and re-run.",
+                  flush=True)
+            sys.exit(2)
     if ph == "bundle":
         # verify=True ALWAYS, and by keyword. `--verify` is a store_true, so passing it
         # positionally handed refresh() a False that overrode its deliberate verify=True default
