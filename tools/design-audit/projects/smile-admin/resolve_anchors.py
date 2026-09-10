@@ -40,16 +40,25 @@ ANCHORS = {
  "S15": dict(slug="SUPER-ADMIN-PERSONS",       text="\u00a9 2026 Copyright", chrome=True),
  # ---- globals, each pinned on a representative screen ----
  "G01": dict(slug="SUPER-ADMIN-DASHBOARD",     text="Programme Overview", tag="h1"),
- "G02": dict(slug="SUPER-ADMIN-USERS",         text="Per page"),
+ "G02": dict(slug="SUPER-ADMIN-USERS",         text="1", tag="button", ymin=980, ymax=1020, xmin=1080, xmax=1140),
  "G03": dict(slug="SUPER-ADMIN-USERS",         text="Showing"),
  "G04": dict(slug="SUPER-ADMIN-USERS",         text="Username", tag="th"),
  "G05": dict(slug="SUPER-ADMIN-NOTIFICATIONS", text="Total Notifications", fs=11),
  "G06": dict(slug="SUPER-ADMIN-PERSONS",       text="Male", ymax=400),
- "G07": dict(slug="SUPER-ADMIN-USERS",         text="CSV"),
+ "G07": dict(slug="SUPER-ADMIN-PERSONS",       text="Download All (CSV)", tag="button"),
  "G08": dict(slug="SUPER-ADMIN-USERS",         text="A", fs=18, chrome=True, xmax=1440),
  "G09": dict(slug="SUPER-ADMIN-USERS",         tag="button", chrome=True, ymax=40, xmin=1180, xmax=1250),
  "G10": dict(slug="SUPER-ADMIN-USERS",         text="Privacy Policy", chrome=True),
  "G11": dict(slug="SUPER-ADMIN-USERS",         text="City Profiling", chrome=True),
+ # ---- globals found by the element diff ----
+ "G12": dict(slug="SUPER-ADMIN-USERS",         text="Users", fs=24),
+ "G13": dict(slug="SUPER-ADMIN-USERS",         text="Onboard portal users", fs=14),
+ "G14": dict(slug="SUPER-ADMIN-USERS",         text="Access Control", fs=12),
+ "G15": dict(slug="SUPER-ADMIN-USERS",         text="Terms & Conditions", chrome=True),
+ "G16": dict(slug="SUPER-ADMIN-CONSENT",       text="Uploaded", fs=12),
+ "G17": dict(slug="SUPER-ADMIN-CONSENT",       text="Access Control", fs=12),
+ "G18": dict(slug="SUPER-ADMIN-PERSONS",       text="Data:", fs=12),
+ "G19": dict(slug="SUPER-ADMIN-SURVEYOR-MAPPED", tag="select", ymin=380, ymax=470),
 }
 
 def rows_for(slug):

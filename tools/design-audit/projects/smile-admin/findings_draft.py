@@ -15,13 +15,19 @@ GLOBAL = [
 # 20 routes — in docs/audit/smile-beggary-capture-and-session.md.
 
  ("G02", "Global", "All list screens", "Major", "Color & Token",
-  "The active page number is saffron, not the primary navy",
-  "Pagination's current page is a navy chip on white — Primary/500 #003366, the palette the rest "
-  "of the interface is built from.",
-  "The current page is an orange chip. Orange is the estate's accent, not its primary, and it is "
-  "not among the colours the SMILE Figma variables publish for an active control.",
-  "Bind the active page chip to Primary/500 #003366 with white text, matching every other selected "
-  "control on the screen."),
+  "The current page is a solid gold chip; the design outlines it in navy",
+  "The active page is a white chip with a 1px navy #003366 outline and radius 8, its number in "
+  "#1F2937. Every other page number is plain text on no fill. (Measured on the Users frame's own "
+  ".page instances.)",
+  "The active page is a solid gold #F5BE14 chip with black text. Gold appears nowhere else in the "
+  "interface as a selected state, and it is not among the colours the SMILE Figma variables "
+  "publish for an active control.",
+  "Draw the active page as the design does — white fill, 1px #003366 outline, radius 8 — or, if a "
+  "filled active state is wanted, fill it with the primary navy and set the number in white. Gold "
+  "reads as a warning beside the Awaited and Pending chips these same tables carry. "
+  "(Corrected 2026-09-10: an earlier draft of this finding called the build chip saffron/orange "
+  "and the design chip navy-filled; measured, the build is #F5BE14 and the design is white with a "
+  "navy outline.)"),
 
  ("G03", "Global", "All list screens", "Major", "Layout & Spacing",
   "The two halves of the pagination row are swapped",
@@ -60,13 +66,17 @@ GLOBAL = [
   "Restore the tinted rounded chip behind each KPI icon, using the same tint the design assigns to "
   "that metric."),
 
- ("G07", "Global", "All screens", "Minor", "Components & States",
+ ("G07", "Global", "Most list screens", "Minor", "Components & States",
   "The page-level export moved out of the header and became two buttons",
-  "One 'Export' button sits on the header row, aligned with the page title.",
+  "One 'Export' control sits on the header row at x=1349, level with the page title — on "
+  "Beneficiary List, Consent Forms, Notifications, Survey Locations, Surveyor Mappings and the "
+  "Dashboard. Users and Roles carry no export in the design at all.",
   "Two buttons, 'CSV' and 'PDF', sit above the title row at the top-right of the content area, out "
-  "of line with the heading. On the Beneficiary List there are three export controls.",
+  "of line with the heading — including on Users and Roles, where the design draws none. The "
+  "Beneficiary List has three: Download All (CSV), CSV and PDF.",
   "Return a single Export control to the header row aligned with the H1, and put the format choice "
-  "inside it, so the header's action slot reads the same on every screen."),
+  "inside it, so the header's action slot reads the same on every screen. Where the design has no "
+  "export and the build does (Users, Roles), decide which is right and make both say so."),
 
  ("G08", "Global", "All screens", "Nit", "Content & Iconography",
   "The text-size controls gained plus and minus signs",
@@ -340,4 +350,99 @@ LOGIN = [
   "Each portal name is orange. Orange is the estate's accent, and here it is doing the job of a "
   "heading on nine cards at once.",
   "Set the portal names to the ink colour and let the logo and the tick carry the colour."),
+]
+
+# ---------------------------------------------------------------------------
+# Found by the element-level diff: every piece of text that appears in BOTH the design frame
+# and the live capture, compared on size, weight, colour and position. Each of these repeated
+# on every screen diffed, so they are global. Counts are of screens where it was measured.
+# ---------------------------------------------------------------------------
+DIFF = [
+ ("G12", "Global", "All screens", "Major", "Typography",
+  "Every page title is smaller, heavier and a different colour than the design",
+  "The page heading is 28px Medium in the ink colour #1f2937.",
+  "24px Bold in #111827 — measured identically on Users, Roles, Permissions, Notifications, "
+  "Fund Monitoring, Consent Forms, Audit Log, Swashraya and IA List. Bold at a smaller size "
+  "reads as a different level in the hierarchy from the one the design set.",
+  "Set the page heading to 28px Medium #1f2937 in the shared page-header component, which fixes "
+  "it everywhere at once."),
+
+ ("G13", "Global", "All screens", "Minor", "Typography",
+  "The line under every page title is a size down and a lighter grey",
+  "The description under the heading is 16px Regular in #374151.",
+  "14px Regular in #6b7280, on every screen measured.",
+  "Set it to 16px #374151 in the same page-header component."),
+
+ ("G14", "Global", "All screens", "Minor", "Typography",
+  "Breadcrumbs are 12px where the design says 14px",
+  "The breadcrumb is 14px — its trail in #374151, the current page in #1f2937.",
+  "12px, with the trail in #6b7280 and the current page in #374151. Two steps lighter and a size "
+  "down, on every screen that has a breadcrumb.",
+  "Set the breadcrumb to 14px and restore the two colours."),
+
+ ("G15", "Global", "All screens with a footer", "Minor", "Typography",
+  "Footer links are smaller and lighter than drawn",
+  "Terms & Conditions and Privacy Policy are 14px Medium.",
+  "12px Regular, on every screen.",
+  "Set the footer links to 14px Medium."),
+
+ ("G16", "Global", "All screens with status chips", "Minor", "Color & Token",
+  "Status chips are a size up, a weight heavier, and different colours",
+  "A status chip is 11px Medium — green #27682a for a positive state, amber #8c571f for a "
+  "waiting one.",
+  "12px SemiBold in #047857 and #b45309. Measured on Consent Forms (Uploaded / Awaited), "
+  "Swashraya (Active) and the Audit Log's action chips.",
+  "Set chips to 11px Medium and bind the two states to the greens and ambers the design uses, "
+  "so a chip means the same thing and looks the same on every screen."),
+]
+
+DIFF2 = [
+ ("G17", "Global", "All screens", "Major", "Content & Iconography",
+  "The breadcrumb names a different section from the design on nearly every screen",
+  "The breadcrumb's first step names the section the design files the screen under: Home (Users, "
+  "Roles, Permissions), Others (Consent Forms), System (Audit Log), Field Operations (IA List, "
+  "Survey Locations, Surveyor Mappings), Reports & Analytics (Fund Monitoring).",
+  "Nine of the ten disagree. Users says 'Access Control'; Roles and Permissions say 'RBAC'; "
+  "Consent Forms says 'Access Control'; Audit Log says 'Compliance'; IA List says 'IA Lifecycle'; "
+  "Survey Locations and Surveyor Mappings say 'Survey Operations'; Fund Monitoring says 'Fund "
+  "Monitoring'. Several also disagree with the build's OWN sidebar headings — the sidebar files "
+  "Consent Forms under Others, and the breadcrumb says Access Control.",
+  "Agree one section vocabulary and use it in the sidebar, the breadcrumb and the design. 'RBAC' "
+  "is developer shorthand and should not be on a citizen-facing government screen at all."),
+
+ ("G18", "Global", "All list screens", "Minor", "Components & States",
+  "The data-version selector lost its label",
+  "A labelled control reading 'Data: Consolidate (All)' at 14px Medium in the primary navy, on "
+  "the header row of IA List, Beneficiary List, Survey Locations, Surveyor Mappings and "
+  "Notifications.",
+  "A bare 'Data:' at 12px SemiBold in grey with an unlabelled dropdown beside it. The reader is "
+  "told the word 'Data' and left to open the menu to find out what it does.",
+  "Restore the full label at 14px Medium in the primary navy."),
+
+ ("G19", "Global", "All list screens", "Major", "Components & States",
+  "The filters the design specifies are not in the build",
+  "Each list screen carries a named filter row: All States/UT, All Districts, All IAs/NGOs, All "
+  "Statuses, and where relevant All Genders and All Ages.",
+  "Measured on IA List, Beneficiary List, Survey Locations and Surveyor Mappings: the designed "
+  "filters are absent. The build offers a search box and, on some screens, one or two unlabelled "
+  "dropdowns instead — so a reader cannot narrow a 1,248-row list by state or by status at all.",
+  "Add the designed filter set. This is the largest functional gap between the design and the "
+  "build on the list screens, and it is the same gap on all four."),
+
+ ("S16", "Screen", "Beneficiary List", "Major", "Color & Token",
+  "Every status chip is the same blue, where the design colour-codes them",
+  "Status is colour-coded so the column can be scanned: Identified, Submitted, Rehabilitation, "
+  "Under Mobilization and Mobilized each carry their own colour.",
+  "Every chip renders in the same blue #1d4ed8 — IDENTIFIED, APPROVED_BY_IA, MOBILIZED and "
+  "REHABILITATED are visually identical. The chips are also uppercase and carry raw status codes "
+  "(APPROVED_BY_IA) rather than the readable labels the design uses.",
+  "Colour-code the statuses as the design does, and show the readable label rather than the "
+  "database value."),
+
+ ("S17", "Screen", "Surveyor Mappings", "Nit", "Content & Iconography",
+  "Two KPI labels are cut off in the DESIGN, not the build",
+  "The design frame reads 'Total Mapping' and 'Distinct Survey'.",
+  "The build reads 'Total Mappings' and 'Distinct Surveyors' — the complete words.",
+  "The build is right and the design frame is truncated. Fix the Figma labels so this does not "
+  "get reported as a build defect at the next review."),
 ]
