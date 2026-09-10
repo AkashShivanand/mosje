@@ -92,6 +92,15 @@ ANCHORS = {
  "S17": dict(slug="SUPER-ADMIN-SURVEYOR-MAPPED", text="Total Mappings"),
  "S44": dict(slug="SUPER-ADMIN-USERS",  text="Username", tag="th"),
  "S45": dict(slug="SUPER-ADMIN-PERSONS", text="IDENTIFIED", ymin=600, ymax=660),
+ # ---- the sign-in surface. chrome=True because the brand panel sits left of the content column ----
+ "L01": dict(slug="SIGNIN-LOGIN", text="Log in to your account", tag="h2"),
+ "L02": dict(slug="SIGNIN-LOGIN", text="SAMAVESH", fs=30, chrome=True),
+ "L03": dict(slug="SIGNIN-LOGIN", text="Forgot Password?", tag="a"),
+ "L04": dict(slug="SIGNIN-LOGIN", text="Justice. Equality. Dignity.", chrome=True),
+ "L05": dict(slug="SIGNIN-LOGIN", text="Signing into", chrome=True),
+ "L06": dict(slug="SIGNIN-LOGIN", text="Email or Mobile Number", tag="label"),
+ "L08": dict(slug="SIGNIN-LOGIN", text="Remember me", tag="label"),
+ "L09": dict(slug="SIGNIN-CHOOSE-PORTAL", text="Log in to your account", tag="h2"),
 }
 
 def rows_for(slug):

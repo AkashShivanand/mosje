@@ -1,0 +1,2878 @@
+{
+ "portal": "SMILE \u2014 Beggary (Comprehensive Rehabilitation) \u00b7 Admin",
+ "idPrefix": "SMB",
+ "generated": "2026-09-10",
+ "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=7732-77842",
+ "method": "Design frames on 'Smile Beggary (Synced)' compared against the live dev build at a 1440 viewport, screen by screen, for four roles. Only differences between the design and the build are raised. Copy, wording and policy items are out of scope for this report, and the filter sets are covered by one global note rather than per screen.",
+ "deferred": [
+  {
+   "id": "G10",
+   "title": "No accessibility statement is published",
+   "reason": "Policy, not a design difference \u2014 no accessibility statement in EITHER the design or the build. Raised with the GIGW compliance work instead."
+  },
+  {
+   "id": "S07",
+   "title": "The build carries two filters the design does not",
+   "reason": "Filters \u2014 folded into the single global note."
+  },
+  {
+   "id": "S08",
+   "title": "The breadcrumb puts Consent Forms under Access Control",
+   "reason": "Content \u2014 same class as G17: the breadcrumb's parent label."
+  },
+  {
+   "id": "S09",
+   "title": "The date-range filter is not in the build",
+   "reason": "Filters \u2014 folded into the single global note."
+  },
+  {
+   "id": "S13",
+   "title": "The filters are not the ones the design specifies",
+   "reason": "Filters \u2014 folded into the single global note."
+  },
+  {
+   "id": "S15",
+   "title": "The footer year differs between design and build",
+   "reason": "Content \u2014 the footer year (2025 in the design, 2026 in the build)."
+  },
+  {
+   "id": "L07",
+   "title": "The password placeholder is worded differently",
+   "reason": "Content \u2014 the password placeholder wording."
+  },
+  {
+   "id": "L10",
+   "title": "Portal names in the drawer are orange",
+   "reason": "WITHDRAWN \u2014 the portal names are orange in the design too, so there is no difference."
+  },
+  {
+   "id": "G17",
+   "title": "The breadcrumb names a different section from the design on nearly every screen",
+   "reason": "Content \u2014 which section name the breadcrumb uses is a vocabulary decision, not a design defect."
+  },
+  {
+   "id": "S18",
+   "title": "The screen has one name in the design and a different one in the build",
+   "reason": "Content \u2014 the screen is called 'Shelter Occupants' in the design and 'Swashraya (Shelter Home) Persons' in the build. A naming decision."
+  },
+  {
+   "id": "S28",
+   "title": "Four column headers are worded differently from the design",
+   "reason": "Content \u2014 four column headers worded differently."
+  },
+  {
+   "id": "S40",
+   "title": "The page is called Roles in the design and Role Management in the build",
+   "reason": "Content \u2014 the page is called Roles in the design and Role Management in the build."
+  },
+  {
+   "id": "S03",
+   "title": "The KPI row lost its shared container",
+   "reason": "WITHDRAWN \u2014 the build has the shared KPI container after all."
+  }
+ ],
+ "screens": [
+  {
+   "slug": "SMB-GLOBAL-001",
+   "name": "Global \u00b7 The current page is a solid gold chip; the design outlines it in navy",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-51029",
+   "liveUrl": "https://smile-admin-dev.mosje.in/users",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-001",
+     "element": "The current page is a solid gold chip; the design outlines it in navy",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Color & Token",
+     "severity": "Major",
+     "figma": "The active page is a white chip with a 1px navy #003366 outline and radius 8, its number in #1F2937. Every other page number is plain text on no fill. (Measured on the Users frame's own .page instances.)",
+     "live": "The active page is a solid gold #F5BE14 chip with black text. Gold appears nowhere else in the interface as a selected state, and it is not among the colours the SMILE Figma variables publish for an active control.",
+     "fix": "Draw the active page as the design does \u2014 white fill, 1px #003366 outline, radius 8 \u2014 or, if a filled active state is wanted, fill it with the primary navy and set the number in white. Gold reads as a warning beside the Awaited and Pending chips these same tables carry. (Corrected 2026-09-10: an earlier draft of this finding called the build chip saffron/orange and the design chip navy-filled; measured, the build is #F5BE14 and the design is white with a navy outline.)",
+     "subO": "Scope: Global \u2014 shown on Users; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      866,
+      1440,
+      1246
+     ],
+     "liveBox": [
+      0,
+      868,
+      1440,
+      1248
+     ],
+     "sectionBox": [
+      0,
+      868,
+      1440,
+      1248
+     ],
+     "figmaPin": {
+      "x": 26.1,
+      "y": 69.5
+     },
+     "livePin": {
+      "x": 77.8,
+      "y": 38.4
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "8664:51029",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-002",
+   "name": "Global \u00b7 The two halves of the pagination row are swapped",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-51029",
+   "liveUrl": "https://smile-admin-dev.mosje.in/users",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-002",
+     "element": "The two halves of the pagination row are swapped",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Layout & Spacing",
+     "severity": "Major",
+     "figma": "Page numbers sit on the left, the record count and per-page selector on the right.",
+     "live": "The record count is on the left and the page numbers plus per-page selector are on the right \u2014 the mirror image, on every list screen.",
+     "fix": "Return to the design's order: page numbers left, count and per-page right, so the control a reader reaches for is in the same place on every list in the estate.",
+     "subO": "Scope: Global \u2014 shown on Users; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      866,
+      1440,
+      1246
+     ],
+     "liveBox": [
+      0,
+      874,
+      1440,
+      1254
+     ],
+     "sectionBox": [
+      0,
+      874,
+      1440,
+      1254
+     ],
+     "figmaPin": {
+      "x": 95.5,
+      "y": 69.5
+     },
+     "livePin": {
+      "x": 28.5,
+      "y": 36.8
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "8664:51029",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-003",
+   "name": "Global \u00b7 The same table header is three different sizes depending on the screen",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-51029",
+   "liveUrl": "https://smile-admin-dev.mosje.in/users",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-003",
+     "element": "The same table header is three different sizes depending on the screen",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Typography",
+     "severity": "Major",
+     "figma": "One column-header style: Title Case at the body size in the primary navy, semibold.",
+     "live": "Measured across all 17 list screens: the header cell renders at 12px on fourteen of them, 14px on Users and City Profiling, and 11px on Performance Statistics. All of them are uppercased by text-transform and letterspaced, so the DOM says 'Name' and the screen says 'NAME'. On Notifications the twelve headers wrap onto two lines to fit.",
+     "fix": "Pick one column-header style and bind every table to it \u2014 label-1 (14/20 Medium) is the closest published match. Three sizes for one element is what makes a set of list screens read as three different products; the uppercase is a separate decision to make deliberately, since it costs legibility and is what forces the two-line wrap.",
+     "subO": "Scope: Global \u2014 shown on Users; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      377,
+      1440,
+      757
+     ],
+     "liveBox": [
+      0,
+      324,
+      1440,
+      704
+     ],
+     "sectionBox": [
+      0,
+      324,
+      1440,
+      704
+     ],
+     "figmaPin": {
+      "x": 36.6,
+      "y": 35.5
+     },
+     "livePin": {
+      "x": 46.9,
+      "y": 39.2
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "8664:51029",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-004",
+   "name": "Global \u00b7 The sidebar is a different typeface and size from the design",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-51029",
+   "liveUrl": "https://smile-admin-dev.mosje.in/users",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-004",
+     "element": "The sidebar is a different typeface and size from the design",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Typography",
+     "severity": "Major",
+     "figma": "Every navigation label is Noto Sans at 14px \u2014 measured off the design frame's own text nodes (Dashboard, City Profiling, Performance Statistics, Users, Roles all report 14).",
+     "live": "The build renders the sidebar in the system stack (-apple-system) at 15px. Measured on Users, 48 of the 181 on-canvas elements are in that stack and every one of them is a navigation item; across all 51 captures it is 2,128 elements.",
+     "fix": "Set the sidebar to Noto Sans at 14px to match the design. The likely cause is a navigation component left on the framework's default sans stack rather than the app's.",
+     "subO": "Scope: Global \u2014 shown on Users; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      98,
+      1440,
+      478
+     ],
+     "liveBox": [
+      0,
+      86,
+      1440,
+      466
+     ],
+     "sectionBox": [
+      0,
+      86,
+      1440,
+      466
+     ],
+     "figmaPin": {
+      "x": 7.4,
+      "y": 36.1
+     },
+     "livePin": {
+      "x": 11.6,
+      "y": 36.8
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "8664:51029",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-005",
+   "name": "Global \u00b7 Every page title is smaller, heavier and a different colour than the design",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-51029",
+   "liveUrl": "https://smile-admin-dev.mosje.in/users",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-005",
+     "element": "Every page title is smaller, heavier and a different colour than the design",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Typography",
+     "severity": "Major",
+     "figma": "The page heading is 28px Medium in the ink colour #1f2937.",
+     "live": "24px Bold in #111827 \u2014 measured identically on Users, Roles, Permissions, Notifications, Fund Monitoring, Consent Forms, Audit Log, Swashraya and IA List. Bold at a smaller size reads as a different level in the hierarchy from the one the design set.",
+     "fix": "Set the page heading to 28px Medium #1f2937 in the shared page-header component, which fixes it everywhere at once.",
+     "subO": "Scope: Global \u2014 shown on Users; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      65,
+      1440,
+      445
+     ],
+     "liveBox": [
+      0,
+      44,
+      1440,
+      424
+     ],
+     "sectionBox": [
+      0,
+      44,
+      1440,
+      424
+     ],
+     "figmaPin": {
+      "x": 25.1,
+      "y": 36.8
+     },
+     "livePin": {
+      "x": 41.5,
+      "y": 38.4
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "8664:51029",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-006",
+   "name": "Global \u00b7 KPI card labels are uppercase, and some are truncated",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-NOTIFICATIONS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-NOTIFICATIONS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51830-237991",
+   "liveUrl": "https://smile-admin-dev.mosje.in/notifications",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-006",
+     "element": "KPI card labels are uppercase, and some are truncated",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Typography",
+     "severity": "Minor",
+     "figma": "Card labels are Title Case at the label size, sitting above the figure \u2014 'Total Users', 'Identified/Surveyed', 'Total Notification'.",
+     "live": "Labels are uppercase and smaller, and where the label is long it is cut off with an ellipsis: the Notifications page reads 'TOTAL NOTIFIC\u2026'.",
+     "fix": "Set the label to Title Case at label-1 (14/20 Medium) and let the card grow to its content. A truncated label is a label the reader cannot use.",
+     "subO": "Scope: Global \u2014 shown on Notifications; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      184,
+      1440,
+      564
+     ],
+     "liveBox": [
+      0,
+      141,
+      1440,
+      521
+     ],
+     "sectionBox": [
+      0,
+      141,
+      1440,
+      521
+     ],
+     "figmaPin": {
+      "x": 32.6,
+      "y": 35.7
+     },
+     "livePin": {
+      "x": 30.1,
+      "y": 36.4
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "51830:237991",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-007",
+   "name": "Global \u00b7 The KPI icon tile is 36px where the design draws 56px",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-PERSONS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-PERSONS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-57337",
+   "liveUrl": "https://smile-admin-dev.mosje.in/persons",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-007",
+     "element": "The KPI icon tile is 36px where the design draws 56px",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Layout & Spacing",
+     "severity": "Minor",
+     "figma": "The icon sits in a rounded tile filled with a light tint of that metric's colour, measured at 56 x 56 on the Beneficiary List frame.",
+     "live": "The same tinted tile is there, at 36 x 36 \u2014 about a third of the drawn area. With the label also dropping to 11px uppercase (G05), the whole card reads a size smaller than designed.",
+     "fix": "Set the icon tile to 56 x 56 with the same tint. (Corrected 2026-09-10: an earlier draft of this finding said the build had no tinted chip at all. It has one; it is smaller. The claim came from a text-only extraction that does not see the icon element \u2014 the screenshots do.)",
+     "subO": "Scope: Global \u2014 shown on Beneficiary List; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      184,
+      1440,
+      564
+     ],
+     "liveBox": [
+      0,
+      182,
+      1440,
+      562
+     ],
+     "sectionBox": [
+      0,
+      182,
+      1440,
+      562
+     ],
+     "figmaPin": {
+      "x": 45.2,
+      "y": 35.7
+     },
+     "livePin": {
+      "x": 41.2,
+      "y": 36.4
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "8664:57337",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-008",
+   "name": "Global \u00b7 The page-level export moved out of the header and became two buttons",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-PERSONS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-PERSONS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-57337",
+   "liveUrl": "https://smile-admin-dev.mosje.in/persons",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-008",
+     "element": "The page-level export moved out of the header and became two buttons",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "One 'Export' control sits on the header row at x=1349, level with the page title \u2014 on Beneficiary List, Consent Forms, Notifications, Survey Locations, Surveyor Mappings and the Dashboard. Users and Roles carry no export in the design at all.",
+     "live": "Two buttons, 'CSV' and 'PDF', sit above the title row at the top-right of the content area, out of line with the heading \u2014 including on Users and Roles, where the design draws none. The Beneficiary List has three: Download All (CSV), CSV and PDF.",
+     "fix": "Return a single Export control to the header row aligned with the H1, and put the format choice inside it, so the header's action slot reads the same on every screen. Where the design has no export and the build does (Users, Roles), decide which is right and make both say so.",
+     "subO": "Scope: Global \u2014 shown on Beneficiary List; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      43,
+      1440,
+      423
+     ],
+     "liveBox": [
+      0,
+      62,
+      1440,
+      442
+     ],
+     "sectionBox": [
+      0,
+      62,
+      1440,
+      442
+     ],
+     "figmaPin": {
+      "x": 95.1,
+      "y": 35.9
+     },
+     "livePin": {
+      "x": 80.7,
+      "y": 39.5
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "8664:57337",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-009",
+   "name": "Global \u00b7 The masthead's contrast control is now a light/dark toggle",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-51029",
+   "liveUrl": "https://smile-admin-dev.mosje.in/users",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-009",
+     "element": "The masthead's contrast control is now a light/dark toggle",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "The accessibility bar carries a contrast control (the half-filled circle) beside the accessibility icon.",
+     "live": "That slot is a crescent moon labelled 'Light-Dark'; the neighbouring control is labelled 'Invert Colors'. A theme switch and a contrast control are different affordances.",
+     "fix": "Confirm the intent. GIGW expects a contrast affordance in the masthead; if light/dark replaces it, the contrast requirement needs to be met somewhere the reader can find it, and the design should be updated to match.",
+     "subO": "Scope: Global \u2014 shown on Users; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      0,
+      1440,
+      380
+     ],
+     "liveBox": [
+      0,
+      0,
+      1440,
+      380
+     ],
+     "sectionBox": [
+      0,
+      0,
+      1440,
+      380
+     ],
+     "figmaPin": {
+      "x": 83.3,
+      "y": 5.3
+     },
+     "livePin": {
+      "x": 84.5,
+      "y": 5.3
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "8664:51029",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-010",
+   "name": "Global \u00b7 The line under every page title is a size down and a lighter grey",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-51029",
+   "liveUrl": "https://smile-admin-dev.mosje.in/users",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-010",
+     "element": "The line under every page title is a size down and a lighter grey",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Typography",
+     "severity": "Minor",
+     "figma": "The description under the heading is 16px Regular in #374151.",
+     "live": "14px Regular in #6b7280, on every screen measured.",
+     "fix": "Set it to 16px #374151 in the same page-header component.",
+     "subO": "Scope: Global \u2014 shown on Users; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      106,
+      1440,
+      486
+     ],
+     "liveBox": [
+      0,
+      80,
+      1440,
+      460
+     ],
+     "sectionBox": [
+      0,
+      80,
+      1440,
+      460
+     ],
+     "figmaPin": {
+      "x": 45.7,
+      "y": 36.3
+     },
+     "livePin": {
+      "x": 41.5,
+      "y": 36.8
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "8664:51029",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-011",
+   "name": "Global \u00b7 Breadcrumbs are 12px where the design says 14px",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-51029",
+   "liveUrl": "https://smile-admin-dev.mosje.in/users",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-011",
+     "element": "Breadcrumbs are 12px where the design says 14px",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Typography",
+     "severity": "Minor",
+     "figma": "The breadcrumb is 14px \u2014 its trail in #374151, the current page in #1f2937.",
+     "live": "12px, with the trail in #6b7280 and the current page in #374151. Two steps lighter and a size down, on every screen that has a breadcrumb.",
+     "fix": "Set the breadcrumb to 14px and restore the two colours.",
+     "subO": "Scope: Global \u2014 shown on Users; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      33,
+      1440,
+      413
+     ],
+     "liveBox": [
+      0,
+      24,
+      1440,
+      404
+     ],
+     "sectionBox": [
+      0,
+      24,
+      1440,
+      404
+     ],
+     "figmaPin": {
+      "x": 23.9,
+      "y": 35.5
+     },
+     "livePin": {
+      "x": 25.6,
+      "y": 36.3
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "8664:51029",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-012",
+   "name": "Global \u00b7 Footer links are smaller and lighter than drawn",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-51029",
+   "liveUrl": "https://smile-admin-dev.mosje.in/users",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-012",
+     "element": "Footer links are smaller and lighter than drawn",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Typography",
+     "severity": "Minor",
+     "figma": "Terms & Conditions and Privacy Policy are 14px Medium.",
+     "live": "12px Regular, on every screen.",
+     "fix": "Set the footer links to 14px Medium.",
+     "subO": "Scope: Global \u2014 shown on Users; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      866,
+      1440,
+      1246
+     ],
+     "liveBox": [
+      0,
+      1370,
+      1440,
+      1750
+     ],
+     "sectionBox": [
+      0,
+      1370,
+      1440,
+      1750
+     ],
+     "figmaPin": {
+      "x": 85.2,
+      "y": 93.0
+     },
+     "livePin": {
+      "x": 87.2,
+      "y": 93.2
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "8664:51029",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-013",
+   "name": "Global \u00b7 Status chips are a size up, a weight heavier, and different colours",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-CONSENT.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-CONSENT.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51873-194809",
+   "liveUrl": "https://smile-admin-dev.mosje.in/consent",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-013",
+     "element": "Status chips are a size up, a weight heavier, and different colours",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Color & Token",
+     "severity": "Minor",
+     "figma": "A status chip is 11px Medium \u2014 green #27682a for a positive state, amber #8c571f for a waiting one.",
+     "live": "12px SemiBold in #047857 and #b45309. Measured on Consent Forms (Uploaded / Awaited), Swashraya (Active) and the Audit Log's action chips.",
+     "fix": "Set chips to 11px Medium and bind the two states to the greens and ambers the design uses, so a chip means the same thing and looks the same on every screen.",
+     "subO": "Scope: Global \u2014 shown on Consent Forms; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      307,
+      1440,
+      687
+     ],
+     "liveBox": [
+      0,
+      267,
+      1440,
+      647
+     ],
+     "sectionBox": [
+      0,
+      267,
+      1440,
+      647
+     ],
+     "figmaPin": {
+      "x": 82.4,
+      "y": 35.7
+     },
+     "livePin": {
+      "x": 94.3,
+      "y": 37.1
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "51873:194809",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-014",
+   "name": "Global \u00b7 The data-version selector lost its label",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-PERSONS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-PERSONS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-57337",
+   "liveUrl": "https://smile-admin-dev.mosje.in/persons",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-014",
+     "element": "The data-version selector lost its label",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "A labelled control reading 'Data: Consolidate (All)' at 14px Medium in the primary navy, on the header row of IA List, Beneficiary List, Survey Locations, Surveyor Mappings and Notifications.",
+     "live": "A bare 'Data:' at 12px SemiBold in grey with an unlabelled dropdown beside it. The reader is told the word 'Data' and left to open the menu to find out what it does.",
+     "fix": "Restore the full label at 14px Medium in the primary navy.",
+     "subO": "Scope: Global \u2014 shown on Beneficiary List; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      42,
+      1440,
+      422
+     ],
+     "liveBox": [
+      0,
+      70,
+      1440,
+      450
+     ],
+     "sectionBox": [
+      0,
+      70,
+      1440,
+      450
+     ],
+     "figmaPin": {
+      "x": 82.4,
+      "y": 35.9
+     },
+     "livePin": {
+      "x": 61.8,
+      "y": 36.3
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "8664:57337",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-015",
+   "name": "Global \u00b7 The filter row does not match the design's",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-SURVEYOR-MAPPED.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-SURVEYOR-MAPPED.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51699-165683",
+   "liveUrl": "https://smile-admin-dev.mosje.in/surveyor-mapped",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-015",
+     "element": "The filter row does not match the design's",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Each list screen carries a named filter row \u2014 All States/UT, All Districts, All IAs/NGOs, All Statuses, and where relevant All Genders and All Ages. Measured on IA List, Beneficiary List, Survey Locations and Surveyor Mappings.",
+     "live": "The filter sets differ from screen to screen and from the design: some screens offer a search box and one or two unlabelled dropdowns, Users has two filters the design does not, and Notifications filters by Type and Channel where the design filters by geography.",
+     "fix": "Use the relevant filter options for each screen and follow the design where it applies. This is one note for the whole portal, not a demand that every screen match the designed list exactly \u2014 the filter sets are still being settled.",
+     "subO": "Scope: Global \u2014 shown on Surveyor Mappings; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      314,
+      1440,
+      694
+     ],
+     "liveBox": [
+      0,
+      286,
+      1440,
+      666
+     ],
+     "sectionBox": [
+      0,
+      286,
+      1440,
+      666
+     ],
+     "figmaPin": {
+      "x": 85.5,
+      "y": 35.7
+     },
+     "livePin": {
+      "x": 28.6,
+      "y": 38.9
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "51699:165683",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SMB-GLOBAL-016",
+   "name": "Global \u00b7 The text-size controls gained plus and minus signs",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-51029",
+   "liveUrl": "https://smile-admin-dev.mosje.in/users",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-GLOBAL-016",
+     "element": "The text-size controls gained plus and minus signs",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Content & Iconography",
+     "severity": "Nit",
+     "figma": "Three plain A glyphs at graduated sizes; size alone carries the meaning.",
+     "live": "The A glyphs carry superscript minus and plus signs.",
+     "fix": "Confirm which is intended. If the signs stay, they belong in both the design and the build so the masthead is one specification.",
+     "subO": "Scope: Global \u2014 shown on Users; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      0,
+      1440,
+      380
+     ],
+     "liveBox": [
+      0,
+      0,
+      1440,
+      380
+     ],
+     "sectionBox": [
+      0,
+      0,
+      1440,
+      380
+     ],
+     "figmaPin": {
+      "x": 76.0,
+      "y": 5.3
+     },
+     "livePin": {
+      "x": 79.3,
+      "y": 5.3
+     }
+    }
+   ],
+   "_role": "Global",
+   "_node": "8664:51029",
+   "_undesigned": false,
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "SUPER-ADMIN-DASHBOARD",
+   "name": "Dashboard",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-DASHBOARD.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-DASHBOARD.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-49264",
+   "liveUrl": "https://smile-admin-dev.mosje.in/dashboard",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-DASHBOARD-001",
+     "element": "The Beneficiary Profile section was rebuilt with different charts",
+     "section": "super-admin-dashboard",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "Three cards across: Gender Distribution as a donut, Age Distribution as horizontal bars, and Beggar Type as a horizontal stacked bar, each with its own Export link and a one-line reading beneath it.",
+     "live": "Two wider cards: gender is drawn as a vertical bar chart behind Identification / Rehabilitation / Mobilisation tabs, and the second card is a Swashraya donut. Age Distribution and Beggar Type are not on this row.",
+     "fix": "Confirm the restructure is intended. If it is, the design frame needs to be brought up to it; if it is not, the three designed cards and their chart types should be restored.",
+     "figmaBox": [
+      0,
+      304,
+      1440,
+      842
+     ],
+     "liveBox": [
+      0,
+      303,
+      1440,
+      920
+     ],
+     "sectionBox": [
+      0,
+      303,
+      1440,
+      920
+     ],
+     "figmaPin": {
+      "x": 28.4,
+      "y": 74.7
+     },
+     "livePin": {
+      "x": 28.8,
+      "y": 77.0
+     }
+    },
+    {
+     "num": 2,
+     "id": "SMB-SA-DASHBOARD-002",
+     "element": "Two of the six metrics are merged into one cell, and a third is renamed",
+     "section": "super-admin-dashboard",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Six cells in a three-by-two grid: Identified/Surveyed, Mobilised, Shelter Assigned, Rehabilitated, Fund Disbursed, Fund Utilised.",
+     "live": "Six cells too, but the third holds TWO figures under one heading \u2014 'Shelter & Rehabilitation', carrying Shelter Assigned 564 and Child Rehab 306 \u2014 and 'Rehabilitated' is renamed 'Combined Total Rehab'. So the build reports seven figures in six cells, and Child Rehab appears in neither the design nor its own cell. (Corrected 2026-09-10: an earlier draft said the row dropped to five cards. It has six.)",
+     "fix": "Confirm the merge is intended and update the design frame to match, so the dashboard has one specification. A card holding two figures needs its own treatment in the design, not an improvised split.",
+     "figmaBox": [
+      0,
+      304,
+      1440,
+      842
+     ],
+     "liveBox": [
+      0,
+      303,
+      1440,
+      920
+     ],
+     "sectionBox": [
+      0,
+      303,
+      1440,
+      920
+     ],
+     "figmaPin": {
+      "x": 28.5,
+      "y": 25.5
+     },
+     "livePin": {
+      "x": 27.0,
+      "y": 24.3
+     }
+    },
+    {
+     "num": 3,
+     "id": "SMB-SA-DASHBOARD-003",
+     "element": "The System Users panel's rows gained their own fills",
+     "section": "super-admin-dashboard",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Rows sit flat on the navy panel; only the small leading icon has a lighter ground.",
+     "live": "Each row is a filled lighter-blue bar, and the longest label wraps onto two lines.",
+     "fix": "Return the rows to flat-on-navy with the icon chip only, and keep the label on one line.",
+     "figmaBox": [
+      0,
+      304,
+      1440,
+      842
+     ],
+     "liveBox": [
+      0,
+      303,
+      1440,
+      920
+     ],
+     "sectionBox": [
+      0,
+      303,
+      1440,
+      920
+     ],
+     "figmaPin": {
+      "x": 89.4,
+      "y": 25.7
+     },
+     "livePin": {
+      "x": 89.7,
+      "y": 25.9
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "8664:49264",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-USERS",
+   "name": "Users",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-51029",
+   "liveUrl": "https://smile-admin-dev.mosje.in/users",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-USERS-001",
+     "element": "View Catalog sits on a different screen from the one the design puts it on",
+     "section": "super-admin-users",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Users carries two header actions: a secondary 'View Catalog' and the primary 'Onboard New User'.",
+     "live": "On Users that slot holds CSV and PDF instead. View Catalog is NOT missing from the build \u2014 it is on the ROLES screen, in the same header position (x=1154, y=158), on both super-admin and central-authority. The Roles design frame does not show it there.",
+     "fix": "Confirm which screen owns View Catalog. If Users is right per the design, move it back and add it to the Roles frame's removal; if Roles is right, update both design frames to match. (Corrected 2026-09-10: an earlier draft of this finding said the action was absent from the build. It is not \u2014 it is on another screen.)",
+     "figmaBox": [
+      0,
+      42,
+      1440,
+      648
+     ],
+     "liveBox": [
+      0,
+      25,
+      1440,
+      622
+     ],
+     "sectionBox": [
+      0,
+      25,
+      1440,
+      622
+     ],
+     "figmaPin": {
+      "x": 79.1,
+      "y": 22.6
+     },
+     "livePin": {
+      "x": 91.9,
+      "y": 25.0
+     }
+    },
+    {
+     "num": 2,
+     "id": "SMB-SA-USERS-002",
+     "element": "The Name column lost its emphasis",
+     "section": "super-admin-users",
+     "scope": "Screen",
+     "axis": "Typography",
+     "severity": "Minor",
+     "figma": "The person's name is set semibold, which is what lets a reader scan the column.",
+     "live": "The name is set at the same weight as every other cell.",
+     "fix": "Set the Name cell to weight 600, matching the design and the body-2-semibold style the variables publish.",
+     "figmaBox": [
+      0,
+      42,
+      1440,
+      648
+     ],
+     "liveBox": [
+      0,
+      25,
+      1440,
+      622
+     ],
+     "sectionBox": [
+      0,
+      25,
+      1440,
+      622
+     ],
+     "figmaPin": {
+      "x": 25.6,
+      "y": 77.6
+     },
+     "livePin": {
+      "x": 34.9,
+      "y": 75.0
+     }
+    },
+    {
+     "num": 3,
+     "id": "SMB-SA-USERS-003",
+     "element": "The Users table has a blue header band that no other table has",
+     "section": "super-admin-users",
+     "scope": "Screen",
+     "axis": "Color & Token",
+     "severity": "Minor",
+     "figma": "The header row sits on #f9fafb, the same near-white as every other list screen.",
+     "live": "It sits on #b7ccf3, a mid blue. Measured on all six list screens captured: Consent Forms, Beneficiary List, Shelter Occupants, Rehab Data and Master Settings are all #f9fafb; only Users is blue. Its header is also 14px where most are 12px (G04).",
+     "fix": "Set the Users header band to #f9fafb. One list screen styled differently from the other sixteen is the clearest sign a table component was forked.",
+     "figmaBox": [
+      0,
+      42,
+      1440,
+      648
+     ],
+     "liveBox": [
+      0,
+      25,
+      1440,
+      622
+     ],
+     "sectionBox": [
+      0,
+      25,
+      1440,
+      622
+     ],
+     "figmaPin": {
+      "x": 36.7,
+      "y": 77.6
+     },
+     "livePin": {
+      "x": 46.9,
+      "y": 75.0
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "8664:51029",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-CONSENT",
+   "name": "Consent Forms",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-CONSENT.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-CONSENT.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51873-194809",
+   "liveUrl": "https://smile-admin-dev.mosje.in/consent",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-CONSENT-001",
+     "element": "Submitted On and Action are off the right-hand edge of the screen",
+     "section": "super-admin-consent",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Six columns end at Submitted On, the last of them finishing inside the 1440 frame.",
+     "live": "Eight columns run to x=1630. Document is the last one fully visible; Submitted On starts at x=1418 and Action at x=1548, so both sit outside the 1440 viewport and are reachable only by scrolling the table sideways. (Corrected 2026-09-10: an earlier draft said Submitted On was not built at all. It is built \u2014 it is off-screen, which is why it was missed.)",
+     "fix": "Fit the columns inside the viewport. A consent record whose date cannot be seen without a sideways scroll is the same problem as one with no date.",
+     "figmaBox": [
+      0,
+      242,
+      1440,
+      622
+     ],
+     "liveBox": [
+      0,
+      209,
+      1440,
+      589
+     ],
+     "sectionBox": [
+      0,
+      209,
+      1440,
+      589
+     ],
+     "figmaPin": {
+      "x": 91.3,
+      "y": 35.7
+     },
+     "livePin": {
+      "x": 94.3,
+      "y": 39.6
+     }
+    },
+    {
+     "num": 2,
+     "id": "SMB-SA-CONSENT-002",
+     "element": "Agency names are drawn as links where the design has plain text",
+     "section": "super-admin-consent",
+     "scope": "Screen",
+     "axis": "Color & Token",
+     "severity": "Minor",
+     "figma": "The Implementing Agency / NGO value is plain body text in #1f2937, like every other cell.",
+     "live": "The value is a link in the primary navy #003366. Nothing else in the row is a link, and the column gives no indication of where the link goes. (Corrected 2026-09-10: an earlier draft called the link orange. Measured, it is #003366.)",
+     "fix": "Decide whether the agency name opens anything. If it does, keep the navy and give it an affordance a reader can see; if it does not, set it as body text.",
+     "figmaBox": [
+      0,
+      242,
+      1440,
+      622
+     ],
+     "liveBox": [
+      0,
+      209,
+      1440,
+      589
+     ],
+     "sectionBox": [
+      0,
+      209,
+      1440,
+      589
+     ],
+     "figmaPin": {
+      "x": 69.1,
+      "y": 52.8
+     },
+     "livePin": {
+      "x": 82.3,
+      "y": 52.5
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "51873:194809",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-NOTIFICATIONS",
+   "name": "Notifications",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-NOTIFICATIONS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-NOTIFICATIONS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51830-237991",
+   "liveUrl": "https://smile-admin-dev.mosje.in/notifications",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-NOTIF-001",
+     "element": "The empty state sits under a full twelve-column table header",
+     "section": "super-admin-notifications",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "The empty card stands alone under the filters, with no header row above it.",
+     "live": "The full header row is drawn above the empty card, and its twelve labels wrap onto two lines.",
+     "fix": "Hide the column header when there are no rows, as the design does, so the empty state reads as an answer rather than a broken table.",
+     "figmaBox": [
+      0,
+      602,
+      1440,
+      982
+     ],
+     "liveBox": [
+      0,
+      464,
+      1440,
+      844
+     ],
+     "sectionBox": [
+      0,
+      464,
+      1440,
+      844
+     ],
+     "figmaPin": {
+      "x": 60.4,
+      "y": 36.6
+     },
+     "livePin": {
+      "x": 60.4,
+      "y": 37.5
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "51830:237991",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-PERSONS",
+   "name": "Beneficiary List",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-PERSONS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-PERSONS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-57337",
+   "liveUrl": "https://smile-admin-dev.mosje.in/persons",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-PERSONS-001",
+     "element": "The screen has no loading state in the design, and the build needs one",
+     "section": "super-admin-persons",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "The Figma section draws only the populated list \u2014 five KPI cards with figures and rows with colour-coded status pills. There is no frame for what the screen looks like while the data is on its way.",
+     "live": "On the live build the KPI figures and every table row are grey placeholder bars for a noticeable stretch before the data arrives (timed at up to 25 seconds on a fast connection). Shelter Occupants behaves the same way. So the state a reader actually sees on arrival is one nobody designed.",
+     "fix": "Design the loading state \u2014 a skeleton in the shape of the result, so the layout does not jump when the data lands \u2014 and add it to the Figma section for this screen and Shelter Occupants. How long the wait itself should be is an engineering question, recorded separately, not raised here.",
+     "figmaBox": [
+      0,
+      64,
+      1440,
+      983
+     ],
+     "liveBox": [
+      0,
+      82,
+      1440,
+      887
+     ],
+     "sectionBox": [
+      0,
+      82,
+      1440,
+      887
+     ],
+     "figmaPin": {
+      "x": 29.5,
+      "y": 15.7
+     },
+     "livePin": {
+      "x": 40.7,
+      "y": 18.1
+     }
+    },
+    {
+     "num": 2,
+     "id": "SMB-SA-PERSONS-002",
+     "element": "Every status chip is the same blue, where the design colour-codes them",
+     "section": "super-admin-persons",
+     "scope": "Screen",
+     "axis": "Color & Token",
+     "severity": "Major",
+     "figma": "Status is colour-coded so the column can be scanned: IDENTIFIED blue #1558b0 on #d2e3fc, SUBMITTED navy #002b55 on #c8dbf0, REHABILITATION and MOBILIZED green #27682a on #c8e6c9, UNDER MOBILIZATION amber #8c571f on #ffe4bf.",
+     "live": "Every chip renders in the same blue \u2014 #1d4ed8 on #eff6ff \u2014 so IDENTIFIED, APPROVED_BY_IA, MOBILIZED and REHABILITATED are visually identical.",
+     "fix": "Colour-code the statuses as the design does. A status column where every value looks the same cannot be scanned, which is the only reason it is a column.",
+     "figmaBox": [
+      0,
+      64,
+      1440,
+      983
+     ],
+     "liveBox": [
+      0,
+      82,
+      1440,
+      887
+     ],
+     "sectionBox": [
+      0,
+      82,
+      1440,
+      887
+     ],
+     "figmaPin": {
+      "x": 75.7,
+      "y": 60.9
+     },
+     "livePin": {
+      "x": 60.6,
+      "y": 82.5
+     }
+    },
+    {
+     "num": 3,
+     "id": "SMB-SA-PERSONS-003",
+     "element": "The DESIGN gives the same status two different colours",
+     "section": "super-admin-persons",
+     "scope": "Screen",
+     "axis": "Color & Token",
+     "severity": "Nit",
+     "figma": "IDENTIFIED is drawn twice on the frame: blue #1558b0 on #d2e3fc in the first row, and amber #8c571f on #ffe4bf in the sixth. Every other status is consistent \u2014 SUBMITTED navy, REHABILITATION and MOBILIZED green, UNDER MOBILIZATION amber.",
+     "live": "The build gives every status the same blue, so it does not reproduce the inconsistency; it loses the colour-coding instead (S16).",
+     "fix": "Pick one colour for IDENTIFIED in the design frame before the colour-coding is built, or the same ambiguity is built in.",
+     "figmaBox": [
+      0,
+      64,
+      1440,
+      983
+     ],
+     "liveBox": [
+      0,
+      82,
+      1440,
+      887
+     ],
+     "sectionBox": [
+      0,
+      82,
+      1440,
+      887
+     ],
+     "figmaPin": {
+      "x": 75.4,
+      "y": 85.3
+     },
+     "livePin": {
+      "x": 59.1,
+      "y": 69.4
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "8664:57337",
+   "_undesigned": false
+  },
+  {
+   "slug": "SIGNIN-LOGIN",
+   "name": "Sign In",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SIGNIN-LOGIN.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SIGNIN-LOGIN.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8383-55268",
+   "liveUrl": "https://smile-admin-dev.mosje.in/login",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-AUTH-001",
+     "element": "A second typeface appears on the sign-in screen",
+     "section": "signin-login",
+     "scope": "Screen",
+     "axis": "Typography",
+     "severity": "Major",
+     "figma": "Every string on the designed sign-in frames is Noto Sans.",
+     "live": "Four elements render in Plus Jakarta Sans \u2014 the 'Log in to your account' heading, the Log In button, 'Implementing Agency?' and 'Sign in with OTP' \u2014 measured on the live page. Everything around them is Noto Sans, so the panel is set in two typefaces at once.",
+     "fix": "Set all four to Noto Sans. The estate mandates it on every government property, and this is the first screen anyone sees.",
+     "figmaBox": [
+      0,
+      224,
+      1440,
+      954
+     ],
+     "liveBox": [
+      0,
+      211,
+      1440,
+      1000
+     ],
+     "sectionBox": [
+      0,
+      211,
+      1440,
+      1000
+     ],
+     "figmaPin": {
+      "x": 74.9,
+      "y": 21.6
+     },
+     "livePin": {
+      "x": 81.5,
+      "y": 18.3
+     }
+    },
+    {
+     "num": 2,
+     "id": "SMB-AUTH-002",
+     "element": "The SAMAVESH wordmark is little over half the size the design draws",
+     "section": "signin-login",
+     "scope": "Screen",
+     "axis": "Typography",
+     "severity": "Major",
+     "figma": "56px Bold.",
+     "live": "30px. The lock-up is the largest thing on the designed screen and is no longer.",
+     "fix": "Set the wordmark to 56px Bold.",
+     "figmaBox": [
+      0,
+      224,
+      1440,
+      954
+     ],
+     "liveBox": [
+      0,
+      211,
+      1440,
+      1000
+     ],
+     "sectionBox": [
+      0,
+      211,
+      1440,
+      1000
+     ],
+     "figmaPin": {
+      "x": 23.3,
+      "y": 21.6
+     },
+     "livePin": {
+      "x": 15.5,
+      "y": 28.5
+     }
+    },
+    {
+     "num": 3,
+     "id": "SMB-AUTH-003",
+     "element": "Forgot Password is a third smaller and a different colour",
+     "section": "signin-login",
+     "scope": "Screen",
+     "axis": "Typography",
+     "severity": "Major",
+     "figma": "18px Medium in the ink colour #1f2937.",
+     "live": "13px Medium in the primary navy #003366.",
+     "fix": "Set it to 18px. If it should read as a link rather than as text, that is a design decision to make in the frame \u2014 the build should not decide it alone.",
+     "figmaBox": [
+      0,
+      224,
+      1440,
+      954
+     ],
+     "liveBox": [
+      0,
+      211,
+      1440,
+      1000
+     ],
+     "sectionBox": [
+      0,
+      211,
+      1440,
+      1000
+     ],
+     "figmaPin": {
+      "x": 98.1,
+      "y": 43.4
+     },
+     "livePin": {
+      "x": 91.2,
+      "y": 47.7
+     }
+    },
+    {
+     "num": 4,
+     "id": "SMB-AUTH-005",
+     "element": "The hero tagline and strapline are both a size down",
+     "section": "signin-login",
+     "scope": "Screen",
+     "axis": "Typography",
+     "severity": "Minor",
+     "figma": "'Justice. Equality. Dignity.' 28px Medium; the strapline beneath it 16px Regular.",
+     "live": "24px Bold and 14px Regular.",
+     "fix": "Restore 28px Medium and 16px Regular.",
+     "figmaBox": [
+      0,
+      224,
+      1440,
+      954
+     ],
+     "liveBox": [
+      0,
+      211,
+      1440,
+      1000
+     ],
+     "sectionBox": [
+      0,
+      211,
+      1440,
+      1000
+     ],
+     "figmaPin": {
+      "x": 14.7,
+      "y": 39.5
+     },
+     "livePin": {
+      "x": 31.5,
+      "y": 43.3
+     }
+    },
+    {
+     "num": 5,
+     "id": "SMB-AUTH-006",
+     "element": "Every line of the Signing into block is smaller than drawn",
+     "section": "signin-login",
+     "scope": "Screen",
+     "axis": "Typography",
+     "severity": "Minor",
+     "figma": "SIGNING INTO 12px Medium, 'SMILE Beggary' 20px Bold, the description 14px Regular.",
+     "live": "10px, 16px and 11px. The label also reads 'Signing into' rather than the design's uppercase SIGNING INTO.",
+     "fix": "Restore 12 / 20 / 14 and settle the capitalisation in the frame.",
+     "figmaBox": [
+      0,
+      224,
+      1440,
+      954
+     ],
+     "liveBox": [
+      0,
+      211,
+      1440,
+      1000
+     ],
+     "sectionBox": [
+      0,
+      211,
+      1440,
+      1000
+     ],
+     "figmaPin": {
+      "x": 11.5,
+      "y": 81.4
+     },
+     "livePin": {
+      "x": 29.8,
+      "y": 86.7
+     }
+    },
+    {
+     "num": 6,
+     "id": "SMB-AUTH-007",
+     "element": "Both field labels are smaller, heavier and a different grey",
+     "section": "signin-login",
+     "scope": "Screen",
+     "axis": "Typography",
+     "severity": "Minor",
+     "figma": "'Email or Mobile Number' and 'Password' are 14px Medium in #1f2937.",
+     "live": "13px SemiBold in #334155.",
+     "fix": "Set both to 14px Medium #1f2937.",
+     "figmaBox": [
+      0,
+      224,
+      1440,
+      954
+     ],
+     "liveBox": [
+      0,
+      211,
+      1440,
+      1000
+     ],
+     "sectionBox": [
+      0,
+      211,
+      1440,
+      1000
+     ],
+     "figmaPin": {
+      "x": 73.8,
+      "y": 29.0
+     },
+     "livePin": {
+      "x": 81.5,
+      "y": 25.3
+     }
+    },
+    {
+     "num": 7,
+     "id": "SMB-AUTH-008",
+     "element": "Two controls are in the build that the design does not draw",
+     "section": "signin-login",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "The form is: two fields, Forgot Password, Log In, then the Implementing Agency link.",
+     "live": "The build adds a 'Remember me' checkbox and an 'OR' divider above the Implementing Agency link, plus a version and build stamp in the bottom corner.",
+     "fix": "Confirm all three are intended. If they are, add them to the frame \u2014 a checkbox that stores a sign-in preference is a design decision, not an implementation detail.",
+     "figmaBox": [
+      0,
+      224,
+      1440,
+      954
+     ],
+     "liveBox": [
+      0,
+      211,
+      1440,
+      1000
+     ],
+     "sectionBox": [
+      0,
+      211,
+      1440,
+      1000
+     ],
+     "figmaPin": {
+      "x": 72.0,
+      "y": 40.5
+     },
+     "livePin": {
+      "x": 72.8,
+      "y": 47.7
+     }
+    }
+   ],
+   "_role": "Sign-in",
+   "_node": "8383:55268",
+   "_undesigned": false
+  },
+  {
+   "slug": "SIGNIN-CHOOSE-PORTAL",
+   "name": "Choose Portal",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SIGNIN-CHOOSE-PORTAL.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SIGNIN-CHOOSE-PORTAL.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8383-55528",
+   "liveUrl": "https://smile-admin-dev.mosje.in/login",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-AUTH-004",
+     "element": "The role selector on the sign-in panel is not in the build",
+     "section": "signin-choose-portal",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "The Choose Portal frame's login panel reads 'Log in to your account / Select your role to continue', with a 'Your role' field set to Super Admin above the email and password fields.",
+     "live": "There is no role selector. The panel goes straight from the heading to Email or Mobile Number. (The portal drawer itself matches \u2014 both design and build present the portals as a right-hand drawer with orange titles.)",
+     "fix": "Confirm whether the role is chosen at sign-in or derived from the account. If it is derived, remove the selector from the design frame; if it is chosen, build it.",
+     "figmaBox": [
+      0,
+      313,
+      1440,
+      693
+     ],
+     "liveBox": [
+      0,
+      211,
+      1440,
+      591
+     ],
+     "sectionBox": [
+      0,
+      211,
+      1440,
+      591
+     ],
+     "figmaPin": {
+      "x": 70.9,
+      "y": 36.1
+     },
+     "livePin": {
+      "x": 81.5,
+      "y": 37.9
+     }
+    }
+   ],
+   "_role": "Sign-in",
+   "_node": "8383:55528",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-SURVEYOR-MAPPED",
+   "name": "Surveyor Mappings",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-SURVEYOR-MAPPED.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-SURVEYOR-MAPPED.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51699-165683",
+   "liveUrl": "https://smile-admin-dev.mosje.in/surveyor-mapped",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-SURVEYORS-001",
+     "element": "Two KPI labels are cut off in the DESIGN, not the build",
+     "section": "super-admin-surveyor-mapped",
+     "scope": "Screen",
+     "axis": "Content & Iconography",
+     "severity": "Nit",
+     "figma": "The design frame reads 'Total Mapping' and 'Distinct Survey'.",
+     "live": "The build reads 'Total Mappings' and 'Distinct Surveyors' \u2014 the complete words.",
+     "fix": "The build is right and the design frame is truncated. Fix the Figma labels so this does not get reported as a build defect at the next review.",
+     "figmaBox": [
+      0,
+      184,
+      1440,
+      564
+     ],
+     "liveBox": [
+      0,
+      141,
+      1440,
+      521
+     ],
+     "sectionBox": [
+      0,
+      141,
+      1440,
+      521
+     ],
+     "figmaPin": {
+      "x": 31.9,
+      "y": 36.1
+     },
+     "livePin": {
+      "x": 30.1,
+      "y": 36.4
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "51699:165683",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-SHELTER-HOMES-BENEFICIARIES",
+   "name": "Shelter Occupants",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-SHELTER-HOMES-BENEFICIARIES.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-SHELTER-HOMES-BENEFICIARIES.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51712-164958",
+   "liveUrl": "https://smile-admin-dev.mosje.in/shelter-homes/beneficiaries",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-SHELTEROCC-001",
+     "element": "The designed Actions column is not built, and the design frame hides seven columns outside itself",
+     "section": "super-admin-shelter-homes-beneficiaries",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "Five columns render inside the 1440 frame \u2014 Beneficiary Name, Beneficiary ID, Beneficiary Type, Facility Status, Actions \u2014 and seven more sit OUTSIDE it at x=1274 to x=2849 (a second Actions, Gender, Age, Survey Location, State, Shelter Home Name, Shelter Home Type), along with a five-figure KPI strip. Nothing outside the frame renders, so a developer opening this frame sees five columns.",
+     "live": "Twelve columns: S.No., Beneficiary ID, Beneficiary Name, Gender, Age, Survey Location, Survey Date, State, Swashraya (Shelter Home) Type, Beneficiary Type, Swashraya (Shelter Home) Name, Facility Status. Most of them match the design's hidden set. Actions is not among them, so there is no per-row action at all.",
+     "fix": "Two jobs. Bring the seven stray columns and the KPI strip inside the frame so the design says what it means, and build the Actions column or drop it deliberately. (Corrected 2026-09-10: an earlier draft read the frame as specifying five columns. It specifies twelve; seven of them are drawn where they cannot be seen.)",
+     "figmaBox": [
+      0,
+      232,
+      1440,
+      612
+     ],
+     "liveBox": [
+      0,
+      302,
+      1440,
+      682
+     ],
+     "sectionBox": [
+      0,
+      302,
+      1440,
+      682
+     ],
+     "figmaPin": {
+      "x": 85.4,
+      "y": 36.1
+     },
+     "livePin": {
+      "x": 76.4,
+      "y": 45.9
+     }
+    },
+    {
+     "num": 2,
+     "id": "SMB-SA-SHELTEROCC-002",
+     "element": "Three design frames carry content outside their own canvas, where it cannot be seen",
+     "section": "super-admin-shelter-homes-beneficiaries",
+     "scope": "Screen",
+     "axis": "Layout & Spacing",
+     "severity": "Major",
+     "figma": "Shelter Occupants holds seven table columns and a five-figure KPI strip at x=1274\u20132849; Rehab Data holds Status and District at x=1519 and x=1794; Skill & Training holds Status and District at x=1540 and x=1805. The frames are 1440 wide, so none of it renders \u2014 it is invisible in the exported frame, in Dev Mode, and in any screenshot taken from Figma.",
+     "live": "The build shows most of those columns, which is how they were found: the build was reading a specification the design frame does not display.",
+     "fix": "Move the stray content inside the frame, or delete it if it is superseded. Anything a developer cannot see is not a specification. This is a design-file defect, not a build one.",
+     "figmaBox": [
+      0,
+      232,
+      1440,
+      612
+     ],
+     "liveBox": [
+      0,
+      302,
+      1440,
+      682
+     ],
+     "sectionBox": [
+      0,
+      302,
+      1440,
+      682
+     ],
+     "figmaPin": {
+      "x": 93.9,
+      "y": 36.1
+     },
+     "livePin": {
+      "x": 46.8,
+      "y": 45.9
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "51712:164958",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-MASTER-SETTING",
+   "name": "Master Settings",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-MASTER-SETTING.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-MASTER-SETTING.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51836-240081",
+   "liveUrl": "https://smile-admin-dev.mosje.in/master-setting",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-MASTER-001",
+     "element": "The build adds a four-figure strip the design does not draw, and shows nine tabs where the design shows five",
+     "section": "super-admin-master-setting",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "Heading, sub-line, then a rail of five tabs \u2014 Geography, Roles & Permission, Survey Questionnaire, Agency, Operational \u2014 with an overflow control for the rest, then the table.",
+     "live": "The same rail carries all nine tabs at once, and above it sits a four-figure strip: Active Tab / Geography Masters, Records / 36, Mode / Read-only, Your Access / Full access. The strip is in no design frame.",
+     "fix": "Decide whether the strip stays; if it does, draw it. Either show five tabs and an overflow as designed or widen the rail deliberately. 'Mode: Read-only' beside 'Your Access: Full access' also needs settling \u2014 on the same screen they say opposite things. (Corrected 2026-09-10: an earlier draft said the design had no tab rail. It has one; the query that reported otherwise had read a partly-loaded Figma page.)",
+     "figmaBox": [
+      0,
+      106,
+      1440,
+      507
+     ],
+     "liveBox": [
+      0,
+      161,
+      1440,
+      645
+     ],
+     "sectionBox": [
+      0,
+      161,
+      1440,
+      645
+     ],
+     "figmaPin": {
+      "x": 56.6,
+      "y": 34.4
+     },
+     "livePin": {
+      "x": 30.1,
+      "y": 28.6
+     }
+    },
+    {
+     "num": 2,
+     "id": "SMB-SA-MASTER-002",
+     "element": "The Geography table gains a row-number column and an Actions column",
+     "section": "super-admin-master-setting",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Three columns: State Code, State Name, Local Name.",
+     "live": "Five: #, State Code, State Name, Local Name, Actions.",
+     "fix": "Confirm both additions and add them to the design frame. A row number and an edit action are reasonable on a master list; they simply are not specified anywhere yet.",
+     "figmaBox": [
+      0,
+      106,
+      1440,
+      507
+     ],
+     "liveBox": [
+      0,
+      161,
+      1440,
+      645
+     ],
+     "sectionBox": [
+      0,
+      161,
+      1440,
+      645
+     ],
+     "figmaPin": {
+      "x": 26.7,
+      "y": 66.2
+     },
+     "livePin": {
+      "x": 93.0,
+      "y": 68.9
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "51836:240081",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-COMPREHENSIVE-REHAB-DATA",
+   "name": "Rehab Data",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-COMPREHENSIVE-REHAB-DATA.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-COMPREHENSIVE-REHAB-DATA.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51742-166982",
+   "liveUrl": "https://smile-admin-dev.mosje.in/comprehensive-rehab/data",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-REHAB-001",
+     "element": "Gender and Age are not in the build, and the build adds a column of its own",
+     "section": "super-admin-comprehensive-rehab-data",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "Seven columns: Beneficiary Name, Gender, Age, Type, Category/Specify, State/District, Follow-UP Status.",
+     "live": "Gender and Age are absent. 'Beneficiary Name' is shortened to 'Beneficiary', and a 'Captured On' column is added that the design does not have.",
+     "fix": "Restore Gender and Age \u2014 on a rehabilitation register they are the two fields the design put first after the name. Keep the full 'Beneficiary Name' label, and add 'Captured On' to the design if it is staying.",
+     "figmaBox": [
+      0,
+      256,
+      1440,
+      636
+     ],
+     "liveBox": [
+      0,
+      161,
+      1440,
+      541
+     ],
+     "sectionBox": [
+      0,
+      161,
+      1440,
+      541
+     ],
+     "figmaPin": {
+      "x": 40.2,
+      "y": 35.7
+     },
+     "livePin": {
+      "x": 92.8,
+      "y": 38.6
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "51742:166982",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-COMPREHENSIVE-REHAB-SKILL-TRAINING",
+   "name": "Skill & Training",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-COMPREHENSIVE-REHAB-SKILL-TRAINING.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-COMPREHENSIVE-REHAB-SKILL-TRAINING.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51742-164435",
+   "liveUrl": "https://smile-admin-dev.mosje.in/comprehensive-rehab/skill-training",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-SKILL-001",
+     "element": "Three build columns are in no design, and two more are drawn outside the frame",
+     "section": "super-admin-comprehensive-rehab-skill-training",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Seven columns render: Beneficiary ID, Beneficiary Name, Gender, Age, Duration of Skill and Training, Skill and Training Type, Survey Location. Two more \u2014 Status and District \u2014 sit outside the 1440 frame at x=1540 and x=1805, where they do not render.",
+     "live": "Twelve: the designed seven, the two strays, plus S.No., Shelter Name and State, which are in no design at all.",
+     "fix": "Bring Status and District inside the frame, and confirm S.No., Shelter Name and State. Twelve columns at 1440 is what pushes this table into horizontal scrolling.",
+     "figmaBox": [
+      0,
+      232,
+      1440,
+      612
+     ],
+     "liveBox": [
+      0,
+      161,
+      1440,
+      541
+     ],
+     "sectionBox": [
+      0,
+      161,
+      1440,
+      541
+     ],
+     "figmaPin": {
+      "x": 88.0,
+      "y": 38.7
+     },
+     "livePin": {
+      "x": 81.0,
+      "y": 45.9
+     }
+    },
+    {
+     "num": 2,
+     "id": "SMB-SA-SKILL-002",
+     "element": "Two column headers sit ten pixels above the rest of the header row \u2014 in the DESIGN",
+     "section": "super-admin-comprehensive-rehab-skill-training",
+     "scope": "Screen",
+     "axis": "Layout & Spacing",
+     "severity": "Nit",
+     "figma": "'Duration of Skill and Training' and 'Skill and Training Type' are drawn at y=362 while Beneficiary ID, Beneficiary Name, Gender and Age are at y=372: the two long labels wrap to a second line and are top-aligned where the short ones are not.",
+     "live": "The build's header cells all share one baseline.",
+     "fix": "The build is right. Align the design's header cells to one baseline so the frame stops disagreeing with itself.",
+     "figmaBox": [
+      0,
+      232,
+      1440,
+      612
+     ],
+     "liveBox": [
+      0,
+      161,
+      1440,
+      541
+     ],
+     "sectionBox": [
+      0,
+      161,
+      1440,
+      541
+     ],
+     "figmaPin": {
+      "x": 75.0,
+      "y": 38.7
+     },
+     "livePin": {
+      "x": 57.5,
+      "y": 45.9
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "51742:164435",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-CITY-PROFILING",
+   "name": "City Profiling",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-CITY-PROFILING.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-CITY-PROFILING.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51891-441340",
+   "liveUrl": "https://smile-admin-dev.mosje.in/city-profiling",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-CITY-001",
+     "element": "The last column of the table is off the side of the screen",
+     "section": "super-admin-city-profiling",
+     "scope": "Screen",
+     "axis": "Layout & Spacing",
+     "severity": "Major",
+     "figma": "Ten columns fit inside the 1440 frame, the last (Utilized (\u20b9)) ending at about x=1400.",
+     "live": "The same ten columns run to x=1554, so Fund Utilised sits outside the 1440 viewport and can only be reached by scrolling the table sideways. Measured on the live page at a 1440 viewport.",
+     "fix": "Fit the ten columns inside the viewport \u2014 the design does it by using short headers ('Cities', 'Identified', 'Released (\u20b9)') where the build spells them out.",
+     "figmaBox": [
+      0,
+      200,
+      1440,
+      639
+     ],
+     "liveBox": [
+      0,
+      173,
+      1440,
+      674
+     ],
+     "sectionBox": [
+      0,
+      173,
+      1440,
+      674
+     ],
+     "figmaPin": {
+      "x": 93.4,
+      "y": 68.9
+     },
+     "livePin": {
+      "x": 99.0,
+      "y": 68.4
+     }
+    },
+    {
+     "num": 2,
+     "id": "SMB-SA-CITY-002",
+     "element": "A fifth KPI card appears, and two of the four designed ones are renamed",
+     "section": "super-admin-city-profiling",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Four cards: States/UTs Onboarded, Total Cities Selected, Beneficiaries Identified, Funds Released. Each label sits on one line beside a 56px icon tile.",
+     "live": "Five: States/UTs Onboarded, Total Cities Selected, Beneficiary Identified/Surveyed, Fund Disbursed, Fund Utilised. Three of the five labels wrap onto two or three lines, so the figure sits at a different height on every card and the row no longer reads across.",
+     "fix": "Add the fifth card to the design and agree the two renamed labels. Whatever the wording, size the cards so the label fits on one line \u2014 a row of figures a reader cannot compare across is the point of the row lost.",
+     "figmaBox": [
+      0,
+      200,
+      1440,
+      639
+     ],
+     "liveBox": [
+      0,
+      173,
+      1440,
+      674
+     ],
+     "sectionBox": [
+      0,
+      173,
+      1440,
+      674
+     ],
+     "figmaPin": {
+      "x": 89.4,
+      "y": 30.6
+     },
+     "livePin": {
+      "x": 93.1,
+      "y": 28.9
+     }
+    },
+    {
+     "num": 3,
+     "id": "SMB-SA-CITY-003",
+     "element": "The four figure columns lose their coloured chips",
+     "section": "super-admin-city-profiling",
+     "scope": "Screen",
+     "axis": "Color & Token",
+     "severity": "Minor",
+     "figma": "Identified, Rehabilitated, Released (\u20b9) and Utilized (\u20b9) are drawn as tinted pills \u2014 blue, green, amber and red \u2014 so a reader can pick a state's performance out of the table at a glance.",
+     "live": "All four render as plain text in the body colour.",
+     "fix": "Restore the four tinted pills. They are the only thing distinguishing ten numeric columns from each other.",
+     "figmaBox": [
+      0,
+      200,
+      1440,
+      639
+     ],
+     "liveBox": [
+      0,
+      173,
+      1440,
+      674
+     ],
+     "sectionBox": [
+      0,
+      173,
+      1440,
+      674
+     ],
+     "figmaPin": {
+      "x": 71.7,
+      "y": 68.7
+     },
+     "livePin": {
+      "x": 83.8,
+      "y": 68.4
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "51891:441340",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-PERFORMANCE-STATS",
+   "name": "Performance Statistics",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-PERFORMANCE-STATS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-PERFORMANCE-STATS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51563-156833",
+   "liveUrl": "https://smile-admin-dev.mosje.in/performance-stats",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-PERF-001",
+     "element": "The KPI card lost its tinted header band and its blue outline",
+     "section": "super-admin-performance-stats",
+     "scope": "Screen",
+     "axis": "Color & Token",
+     "severity": "Minor",
+     "figma": "Each card has a pale blue band across the top carrying 'KPI n' and the KPI's name in navy, with the icon plain in the corner, and the card itself is outlined in blue.",
+     "live": "The header band is white and the card is outlined in the neutral grey used by every other card on the estate; the icon has gained a filled rounded tile. The name and description are present, as designed.",
+     "fix": "Restore the tinted header band and the blue outline. They are what separate a KPI scorecard from an ordinary content card at a glance.",
+     "figmaBox": [
+      0,
+      256,
+      1440,
+      636
+     ],
+     "liveBox": [
+      0,
+      218,
+      1440,
+      598
+     ],
+     "sectionBox": [
+      0,
+      218,
+      1440,
+      598
+     ],
+     "figmaPin": {
+      "x": 28.2,
+      "y": 36.1
+     },
+     "livePin": {
+      "x": 24.7,
+      "y": 36.4
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "51563:156833",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-USERS-ADD-USER",
+   "name": "Onboard New User",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS-ADD-USER.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-USERS-ADD-USER.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-52311",
+   "liveUrl": "https://smile-admin-dev.mosje.in/users/onboard",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-ADDUSER-001",
+     "element": "Last Name is marked required in the design and not in the build",
+     "section": "super-admin-users-add-user",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "All five fields carry a red asterisk: Full Name, Last Name, Email Address, Contact Number, Select Role.",
+     "live": "Four carry one; Last Name does not, so the form does not say whether it is mandatory until submit. (The four labels are also worded differently \u2014 Full Name / Email Address / Contact Number against First Name / Email ID / Mobile Number \u2014 but wording is content and is not raised in this report.)",
+     "fix": "Mark Last Name required, or make the design agree that it is optional.",
+     "figmaBox": [
+      0,
+      185,
+      1440,
+      675
+     ],
+     "liveBox": [
+      0,
+      173,
+      1440,
+      605
+     ],
+     "sectionBox": [
+      0,
+      173,
+      1440,
+      605
+     ],
+     "figmaPin": {
+      "x": 26.5,
+      "y": 34.8
+     },
+     "livePin": {
+      "x": 48.5,
+      "y": 32.4
+     }
+    },
+    {
+     "num": 2,
+     "id": "SMB-SA-ADDUSER-002",
+     "element": "The form card is two-thirds the designed width and centred",
+     "section": "super-admin-users-add-user",
+     "scope": "Screen",
+     "axis": "Layout & Spacing",
+     "severity": "Minor",
+     "figma": "The card spans the content column, about 1090px wide, with the two field columns at x=349 and x=880.",
+     "live": "About 730px wide and centred, so the first field starts 190px further right and the card leaves a wide empty margin on both sides.",
+     "fix": "Let the form card fill the content column as the design does.",
+     "figmaBox": [
+      0,
+      185,
+      1440,
+      675
+     ],
+     "liveBox": [
+      0,
+      173,
+      1440,
+      605
+     ],
+     "sectionBox": [
+      0,
+      173,
+      1440,
+      605
+     ],
+     "figmaPin": {
+      "x": 26.7,
+      "y": 72.3
+     },
+     "livePin": {
+      "x": 60.4,
+      "y": 67.6
+     }
+    },
+    {
+     "num": 3,
+     "id": "SMB-SA-ADDUSER-003",
+     "element": "The BASIC DETAILS section header is not in the build",
+     "section": "super-admin-users-add-user",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "A small-caps 'BASIC DETAILS' label with a hairline rule runs across the top of the card.",
+     "live": "The card opens straight onto the first field.",
+     "fix": "Restore the section header. It is the only thing naming the group, and the same pattern is used on the shelter-home form.",
+     "figmaBox": [
+      0,
+      185,
+      1440,
+      675
+     ],
+     "liveBox": [
+      0,
+      173,
+      1440,
+      605
+     ],
+     "sectionBox": [
+      0,
+      173,
+      1440,
+      605
+     ],
+     "figmaPin": {
+      "x": 27.6,
+      "y": 27.6
+     },
+     "livePin": {
+      "x": 48.5,
+      "y": 50.0
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "8664:52311",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-SHELTER-HOMES-ADD",
+   "name": "Add Shelter Home",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-SHELTER-HOMES-ADD.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-SHELTER-HOMES-ADD.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51712-166102",
+   "liveUrl": "https://smile-admin-dev.mosje.in/shelter-homes",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-ADDSHELTER-001",
+     "element": "Six required markers are missing, and the three section headers with them",
+     "section": "super-admin-shelter-homes-add",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "Asterisks on Shelter Name, Capacity, Type, Contact Person, Address, Operational Status, Linked Implementing Agency and Skills & Training Programmes. Three small-caps section headers divide the form: SHELTER HOME DETAILS, IMPLEMENTING AGENCY DETAILS, SHELTER HOME LOGIN ACCOUNT.",
+     "live": "Only Shelter Name and Capacity carry an asterisk. The three section headers are not there; the fields run continuously under one card title.",
+     "fix": "Restore the required markers \u2014 a form that does not say which fields are mandatory fails at submit instead of before it \u2014 and the three section headers.",
+     "figmaBox": [
+      0,
+      153,
+      1440,
+      551
+     ],
+     "liveBox": [
+      0,
+      296,
+      1440,
+      750
+     ],
+     "sectionBox": [
+      0,
+      296,
+      1440,
+      750
+     ],
+     "figmaPin": {
+      "x": 29.8,
+      "y": 33.9
+     },
+     "livePin": {
+      "x": 41.9,
+      "y": 37.0
+     }
+    },
+    {
+     "num": 2,
+     "id": "SMB-SA-ADDSHELTER-002",
+     "element": "The DESIGN puts a date-range picker where the Address field should be",
+     "section": "super-admin-shelter-homes-add",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "The field labelled 'Address' is drawn as a date control with a calendar icon reading 'Select Start and End Date'. 'Contact Person' is drawn as a dropdown.",
+     "live": "Address is a text input and Contact Person is a text input, which is what both fields are for.",
+     "fix": "The build is right. Fix the Figma frame \u2014 this is a design-side defect, and it is the second of its kind on this page after 'Sanction DateDate'.",
+     "figmaBox": [
+      0,
+      153,
+      1440,
+      551
+     ],
+     "liveBox": [
+      0,
+      296,
+      1440,
+      750
+     ],
+     "sectionBox": [
+      0,
+      296,
+      1440,
+      750
+     ],
+     "figmaPin": {
+      "x": 50.7,
+      "y": 66.0
+     },
+     "livePin": {
+      "x": 78.9,
+      "y": 53.3
+     }
+    },
+    {
+     "num": 3,
+     "id": "SMB-SA-ADDSHELTER-003",
+     "element": "The field grid is two columns where the design draws three",
+     "section": "super-admin-shelter-homes-add",
+     "scope": "Screen",
+     "axis": "Layout & Spacing",
+     "severity": "Minor",
+     "figma": "Three across: Shelter Name | Capacity | Type, then Contact Person | Address | Operational Status.",
+     "live": "Two across, in a different order: Shelter Name | Capacity, then Contact Person | Address, then Type | Operational Status. The form is a third longer as a result.",
+     "fix": "Use the designed three-column grid and the designed field order.",
+     "figmaBox": [
+      0,
+      153,
+      1440,
+      551
+     ],
+     "liveBox": [
+      0,
+      296,
+      1440,
+      750
+     ],
+     "sectionBox": [
+      0,
+      296,
+      1440,
+      750
+     ],
+     "figmaPin": {
+      "x": 74.7,
+      "y": 43.3
+     },
+     "livePin": {
+      "x": 41.9,
+      "y": 69.6
+     }
+    },
+    {
+     "num": 4,
+     "id": "SMB-SA-ADDSHELTER-004",
+     "element": "The build adds a warning banner the design does not have",
+     "section": "super-admin-shelter-homes-add",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "No banner. The form opens on its fields.",
+     "live": "An amber banner reads 'Pick a State and District / City in the filter above (or link an Implementing Agency below) so this shelter lands in the right district.'",
+     "fix": "The banner is doing real work \u2014 it explains a dependency the design never resolved. Keep it, and draw it in the design, or design the dependency out.",
+     "figmaBox": [
+      0,
+      153,
+      1440,
+      551
+     ],
+     "liveBox": [
+      0,
+      296,
+      1440,
+      750
+     ],
+     "sectionBox": [
+      0,
+      296,
+      1440,
+      750
+     ],
+     "figmaPin": {
+      "x": 27.4,
+      "y": 42.8
+     },
+     "livePin": {
+      "x": 46.2,
+      "y": 30.8
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "51712:166102",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-ROLES-NEW-ROLE",
+   "name": "Create New Role",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-ROLES-NEW-ROLE.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-ROLES-NEW-ROLE.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51661-158685",
+   "liveUrl": "https://smile-admin-dev.mosje.in/roles",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-NEWROLE-001",
+     "element": "The dialog's field labels are uppercase 11px grey without their required markers",
+     "section": "super-admin-roles-new-role",
+     "scope": "Screen",
+     "axis": "Typography",
+     "severity": "Minor",
+     "figma": "'Role Name *' and 'Description *' in Title Case, dark, with a red asterisk.",
+     "live": "'ROLE NAME' and 'DESCRIPTION' in 11px uppercase grey, no asterisk, though both fields are still required.",
+     "fix": "Set the two labels to Title Case at the label size in the body colour and restore the asterisks.",
+     "figmaBox": [
+      0,
+      175,
+      1440,
+      735
+     ],
+     "liveBox": [
+      0,
+      636,
+      1440,
+      1123
+     ],
+     "sectionBox": [
+      0,
+      636,
+      1440,
+      1123
+     ],
+     "figmaPin": {
+      "x": 36.3,
+      "y": 38.5
+     },
+     "livePin": {
+      "x": 50.0,
+      "y": 37.4
+     }
+    },
+    {
+     "num": 2,
+     "id": "SMB-SA-NEWROLE-002",
+     "element": "The dialog has no close control",
+     "section": "super-admin-roles-new-role",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "An \u00d7 sits in the top-right corner of the dialog.",
+     "live": "There is no \u00d7. The only ways out are Cancel and the Escape key, and Escape is not signposted.",
+     "fix": "Add the \u00d7 to the dialog header.",
+     "figmaBox": [
+      0,
+      175,
+      1440,
+      735
+     ],
+     "liveBox": [
+      0,
+      636,
+      1440,
+      1123
+     ],
+     "sectionBox": [
+      0,
+      636,
+      1440,
+      1123
+     ],
+     "figmaPin": {
+      "x": 65.4,
+      "y": 26.8
+     },
+     "livePin": {
+      "x": 42.7,
+      "y": 29.6
+     }
+    },
+    {
+     "num": 3,
+     "id": "SMB-SA-NEWROLE-003",
+     "element": "The guidance note loses its panel",
+     "section": "super-admin-roles-new-role",
+     "scope": "Screen",
+     "axis": "Color & Token",
+     "severity": "Nit",
+     "figma": "'After creating the role you'll be redirected to the permission picker' sits in a pale amber panel, so it reads as a consequence of pressing the button.",
+     "live": "The same sentence is plain grey text with a small information icon, level with the field labels around it.",
+     "fix": "Restore the amber panel.",
+     "figmaBox": [
+      0,
+      175,
+      1440,
+      735
+     ],
+     "liveBox": [
+      0,
+      636,
+      1440,
+      1123
+     ],
+     "sectionBox": [
+      0,
+      636,
+      1440,
+      1123
+     ],
+     "figmaPin": {
+      "x": 48.7,
+      "y": 75.7
+     },
+     "livePin": {
+      "x": 50.0,
+      "y": 71.7
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "51661:158685",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-ROLES",
+   "name": "Roles",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-ROLES.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-ROLES.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-52367",
+   "liveUrl": "https://smile-admin-dev.mosje.in/roles",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-ROLES-001",
+     "element": "Role cards gained a tinted header band",
+     "section": "super-admin-roles",
+     "scope": "Screen",
+     "axis": "Color & Token",
+     "severity": "Nit",
+     "figma": "The card header is white: icon, role name, and an Active chip on the right.",
+     "live": "The header sits on a tinted band, and the chip reads ACTIVE in uppercase.",
+     "fix": "Confirm the band. If it stays, draw it in the design and keep the chip in Title Case.",
+     "figmaBox": [
+      0,
+      398,
+      1440,
+      778
+     ],
+     "liveBox": [
+      0,
+      339,
+      1440,
+      719
+     ],
+     "sectionBox": [
+      0,
+      339,
+      1440,
+      719
+     ],
+     "figmaPin": {
+      "x": 28.6,
+      "y": 36.1
+     },
+     "livePin": {
+      "x": 29.2,
+      "y": 37.5
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "8664:52367",
+   "_undesigned": false
+  },
+  {
+   "slug": "SUPER-ADMIN-CITY-PROFILING-L2-DISTRICTS",
+   "name": "City Profiling \u2014 district list",
+   "env": "dev",
+   "figmaImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-CITY-PROFILING-L2-DISTRICTS.design.png",
+   "liveImg": "../../../../tools/design-audit/projects/smile-admin/sheet/SUPER-ADMIN-CITY-PROFILING-L2-DISTRICTS.build.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51891-441685",
+   "liveUrl": "https://smile-admin-dev.mosje.in/city-profiling/1",
+   "findings": [
+    {
+     "num": 1,
+     "id": "SMB-SA-CITYL2-001",
+     "element": "The district list gains the same two fund cards as the state list, and loses its table card",
+     "section": "super-admin-city-profiling-l2-districts",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Three KPI cards (Cities Selected, Total Identified, Total Rehabilitated), and the table sits in a bordered card with a tinted, rounded header band.",
+     "live": "Five KPI cards \u2014 Fund Disbursed and Fund Utilised are added, as on the state list \u2014 and the table has no card border and a flat header band. City names are underlined links where the design draws them as plain navy.",
+     "fix": "Same decision as the state list (S25): add the two cards to the design or drop them. Restore the table's card and its header band.",
+     "figmaBox": [
+      0,
+      176,
+      1440,
+      556
+     ],
+     "liveBox": [
+      0,
+      173,
+      1440,
+      553
+     ],
+     "sectionBox": [
+      0,
+      173,
+      1440,
+      553
+     ],
+     "figmaPin": {
+      "x": 83.2,
+      "y": 35.4
+     },
+     "livePin": {
+      "x": 77.8,
+      "y": 38.2
+     }
+    }
+   ],
+   "_role": "Super Admin",
+   "_node": "51891:441685",
+   "_undesigned": false
+  }
+ ]
+}

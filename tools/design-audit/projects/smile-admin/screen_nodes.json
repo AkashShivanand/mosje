@@ -14,5 +14,8 @@
  "Onboard New User": "50865:1298",
  "Add Shelter Home": "50866:1273",
  "Create New Role": "50866:1408",
- "Roles": "50866:1516"
+ "Roles": "50866:1516",
+ "Sign In": "50873:1298",
+ "Choose Portal": "50873:1514",
+ "Surveyor Mappings": "50873:1566"
 }

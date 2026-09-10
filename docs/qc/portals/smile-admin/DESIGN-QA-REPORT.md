@@ -1,9 +1,9 @@
-# SMILE — Beggary (Admin) · Design QA Report
+# SMILE — Beggary (Comprehensive Rehabilitation) · Admin · Design QC Report
 
-**Build:** smile-admin-dev.mosje.in, captured 10 September 2026 · **Design:** MoSJE Portal Handoff → *Smile Beggary (Synced)*  
-**Status:** draft — not signed off. A human still owes the keyboard and screen-reader pass.
+**Build:** smile-admin-dev.mosje.in, captured 10 September 2026 · **Design:** [MoSJE Portal Handoff → *Smile Beggary (Synced)*](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=7732-77842)  
+**Status:** ready for review — a human still owes the keyboard and screen-reader pass.
 
-**Review in Figma:** [review sheet](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50817-25) · [pinned report](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50826-25) — every finding below has a numbered marker on a DESIGN | BUILD board there.
+**Also published as:** the PDF beside this file, the `SMILE Beggary` sheet in `docs/qc/MoSJE-Portal-QC-Tracker.xlsx`, and in Figma as a [review sheet](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50817-25) and a [pinned report](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50826-25).
 
 ---
 
@@ -11,31 +11,30 @@
 
 | | |
 |---|---|
-| Screens compared design ↔ build | 31 + the sign-in surface |
-| Findings | **72** — 25 Major, 38 Minor, 9 Nit |
-| Applies to every screen | 18 |
+| Screens compared design ↔ build | 63 pairs across four roles + the sign-in surface |
+| Findings | **60** — 19 Major, 35 Minor, 6 Nit |
+| Applies to every screen | 16 |
 | Specific to one screen | 44 |
-| Sign-in surface | 10 |
 
-Every finding is a difference between what the design specifies and what the build renders. Engineering defects with no design counterpart are not raised here; they are in `docs/audit/smile-beggary-capture-and-session.md`.
+Design frames on 'Smile Beggary (Synced)' compared against the live dev build at a 1440 viewport, screen by screen, for four roles. Only differences between the design and the build are raised. Copy, wording and policy items are out of scope for this report, and the filter sets are covered by one global note rather than per screen.
 
-**Where to start.** The five with the widest reach:
+**Where to start.** The findings with the widest reach:
 
-1. **The filters the design specifies are not in the build** — `G19`, Major.
-2. **The same table header is three different sizes depending on the screen** — `G04`, Major.
-3. **The sidebar is a different typeface and size from the design** — `G11`, Major.
-4. **The two halves of the pagination row are swapped** — `G03`, Major.
-5. **The breadcrumb names a different section from the design on nearly every screen** — `G17`, Major.
+1. **The current page is a solid gold chip; the design outlines it in navy** — `SMB-GLOBAL-001`.
+2. **The two halves of the pagination row are swapped** — `SMB-GLOBAL-002`.
+3. **The same table header is three different sizes depending on the screen** — `SMB-GLOBAL-003`.
+4. **The sidebar is a different typeface and size from the design** — `SMB-GLOBAL-004`.
+5. **Every page title is smaller, heavier and a different colour than the design** — `SMB-GLOBAL-005`.
 
 ---
 
 ## Findings that apply to every screen
 
-These are listed first because each one repeats across the portal, so fixing one fixes many. Each has its own board in Figma showing the design and the build side by side, with the marker on the element in question.
+Each has its own board in Figma and its own page in the PDF, showing the design and the build side by side with the marker on the element in question.
 
 ### The current page is a solid gold chip; the design outlines it in navy
 
-`G02` · **Major** · Color & Token · Scope: every screen · shown on **Users** ([board 1 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50854-553))
+`SMB-GLOBAL-001` · **Major** · Color & Token · Scope: every screen
 
 | | |
 |---|---|
@@ -45,7 +44,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### The two halves of the pagination row are swapped
 
-`G03` · **Major** · Layout & Spacing · Scope: every screen · shown on **Users** ([board 2 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50854-607))
+`SMB-GLOBAL-002` · **Major** · Layout & Spacing · Scope: every screen
 
 | | |
 |---|---|
@@ -55,7 +54,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### The same table header is three different sizes depending on the screen
 
-`G04` · **Major** · Typography · Scope: every screen · shown on **Users** ([board 3 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50854-661))
+`SMB-GLOBAL-003` · **Major** · Typography · Scope: every screen
 
 | | |
 |---|---|
@@ -63,19 +62,9 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Build does** | Measured across all 17 list screens: the header cell renders at 12px on fourteen of them, 14px on Users and City Profiling, and 11px on Performance Statistics. All of them are uppercased by text-transform and letterspaced, so the DOM says 'Name' and the screen says 'NAME'. On Notifications the twelve headers wrap onto two lines to fit. |
 | **Fix** | Pick one column-header style and bind every table to it — label-1 (14/20 Medium) is the closest published match. Three sizes for one element is what makes a set of list screens read as three different products; the uppercase is a separate decision to make deliberately, since it costs legibility and is what forces the two-line wrap. |
 
-### No accessibility statement is published
-
-`G10` · **Major** · Responsive & A11y · Scope: every screen · shown on **Users** ([board 4 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50854-715))
-
-| | |
-|---|---|
-| **Design says** | The footer carries Terms & Conditions and Privacy Policy. There is no accessibility statement in the design either. |
-| **Build does** | Same — the footer publishes copyright, Terms & Conditions and Privacy Policy on all 22 screens checked, and no accessibility statement anywhere. |
-| **Fix** | Add an Accessibility Statement link to the footer and write the page behind it. GIGW 3.0 requires it on a Government of India property. This one is owed by the design as much as the build. |
-
 ### The sidebar is a different typeface and size from the design
 
-`G11` · **Major** · Typography · Scope: every screen · shown on **Users** ([board 5 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50854-769))
+`SMB-GLOBAL-004` · **Major** · Typography · Scope: every screen
 
 | | |
 |---|---|
@@ -85,7 +74,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### Every page title is smaller, heavier and a different colour than the design
 
-`G12` · **Major** · Typography · Scope: every screen · shown on **Users** ([board 6 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50855-553))
+`SMB-GLOBAL-005` · **Major** · Typography · Scope: every screen
 
 | | |
 |---|---|
@@ -93,29 +82,9 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Build does** | 24px Bold in #111827 — measured identically on Users, Roles, Permissions, Notifications, Fund Monitoring, Consent Forms, Audit Log, Swashraya and IA List. Bold at a smaller size reads as a different level in the hierarchy from the one the design set. |
 | **Fix** | Set the page heading to 28px Medium #1f2937 in the shared page-header component, which fixes it everywhere at once. |
 
-### The breadcrumb names a different section from the design on nearly every screen
-
-`G17` · **Major** · Content & Iconography · Scope: every screen · shown on **Consent Forms** ([board 7 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50855-607))
-
-| | |
-|---|---|
-| **Design says** | The breadcrumb's first step names the section the design files the screen under: Home (Users, Roles, Permissions), Others (Consent Forms), System (Audit Log), Field Operations (IA List, Survey Locations, Surveyor Mappings), Reports & Analytics (Fund Monitoring). |
-| **Build does** | Nine of the ten disagree. Users says 'Access Control'; Roles and Permissions say 'RBAC'; Consent Forms says 'Access Control'; Audit Log says 'Compliance'; IA List says 'IA Lifecycle'; Survey Locations and Surveyor Mappings say 'Survey Operations'; Fund Monitoring says 'Fund Monitoring'. Several also disagree with the build's OWN sidebar headings — the sidebar files Consent Forms under Others, and the breadcrumb says Access Control. |
-| **Fix** | Agree one section vocabulary and use it in the sidebar, the breadcrumb and the design. 'RBAC' is developer shorthand and should not be on a citizen-facing government screen at all. |
-
-### The filters the design specifies are not in the build
-
-`G19` · **Major** · Components & States · Scope: every screen · shown on **Surveyor Mappings** ([board 8 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50855-661))
-
-| | |
-|---|---|
-| **Design says** | Each list screen carries a named filter row: All States/UT, All Districts, All IAs/NGOs, All Statuses, and where relevant All Genders and All Ages. |
-| **Build does** | Measured on IA List, Beneficiary List, Survey Locations and Surveyor Mappings: the designed filters are absent. The build offers a search box and, on some screens, one or two unlabelled dropdowns instead — so a reader cannot narrow a 1,248-row list by state or by status at all. |
-| **Fix** | Add the designed filter set. This is the largest functional gap between the design and the build on the list screens, and it is the same gap on all four. |
-
 ### KPI card labels are uppercase, and some are truncated
 
-`G05` · **Minor** · Typography · Scope: every screen · shown on **Notifications** ([board 9 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50855-715))
+`SMB-GLOBAL-006` · **Minor** · Typography · Scope: every screen
 
 | | |
 |---|---|
@@ -125,7 +94,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### The KPI icon tile is 36px where the design draws 56px
 
-`G06` · **Minor** · Layout & Spacing · Scope: every screen · shown on **Beneficiary List** ([board 10 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50855-769))
+`SMB-GLOBAL-007` · **Minor** · Layout & Spacing · Scope: every screen
 
 | | |
 |---|---|
@@ -135,7 +104,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### The page-level export moved out of the header and became two buttons
 
-`G07` · **Minor** · Components & States · Scope: every screen · shown on **Beneficiary List** ([board 11 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50857-793))
+`SMB-GLOBAL-008` · **Minor** · Components & States · Scope: every screen
 
 | | |
 |---|---|
@@ -145,7 +114,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### The masthead's contrast control is now a light/dark toggle
 
-`G09` · **Minor** · Components & States · Scope: every screen · shown on **Users** ([board 12 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50857-847))
+`SMB-GLOBAL-009` · **Minor** · Components & States · Scope: every screen
 
 | | |
 |---|---|
@@ -155,7 +124,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### The line under every page title is a size down and a lighter grey
 
-`G13` · **Minor** · Typography · Scope: every screen · shown on **Users** ([board 13 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50856-781))
+`SMB-GLOBAL-010` · **Minor** · Typography · Scope: every screen
 
 | | |
 |---|---|
@@ -165,7 +134,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### Breadcrumbs are 12px where the design says 14px
 
-`G14` · **Minor** · Typography · Scope: every screen · shown on **Users** ([board 14 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50856-835))
+`SMB-GLOBAL-011` · **Minor** · Typography · Scope: every screen
 
 | | |
 |---|---|
@@ -175,7 +144,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### Footer links are smaller and lighter than drawn
 
-`G15` · **Minor** · Typography · Scope: every screen · shown on **Users** ([board 15 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50856-889))
+`SMB-GLOBAL-012` · **Minor** · Typography · Scope: every screen
 
 | | |
 |---|---|
@@ -185,7 +154,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### Status chips are a size up, a weight heavier, and different colours
 
-`G16` · **Minor** · Color & Token · Scope: every screen · shown on **Consent Forms** ([board 16 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50857-901))
+`SMB-GLOBAL-013` · **Minor** · Color & Token · Scope: every screen
 
 | | |
 |---|---|
@@ -195,7 +164,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### The data-version selector lost its label
 
-`G18` · **Minor** · Components & States · Scope: every screen · shown on **Beneficiary List** ([board 17 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50857-955))
+`SMB-GLOBAL-014` · **Minor** · Components & States · Scope: every screen
 
 | | |
 |---|---|
@@ -203,9 +172,19 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Build does** | A bare 'Data:' at 12px SemiBold in grey with an unlabelled dropdown beside it. The reader is told the word 'Data' and left to open the menu to find out what it does. |
 | **Fix** | Restore the full label at 14px Medium in the primary navy. |
 
+### The filter row does not match the design's
+
+`SMB-GLOBAL-015` · **Minor** · Components & States · Scope: every screen
+
+| | |
+|---|---|
+| **Design says** | Each list screen carries a named filter row — All States/UT, All Districts, All IAs/NGOs, All Statuses, and where relevant All Genders and All Ages. Measured on IA List, Beneficiary List, Survey Locations and Surveyor Mappings. |
+| **Build does** | The filter sets differ from screen to screen and from the design: some screens offer a search box and one or two unlabelled dropdowns, Users has two filters the design does not, and Notifications filters by Type and Channel where the design filters by geography. |
+| **Fix** | Use the relevant filter options for each screen and follow the design where it applies. This is one note for the whole portal, not a demand that every screen match the designed list exactly — the filter sets are still being settled. |
+
 ### The text-size controls gained plus and minus signs
 
-`G08` · **Nit** · Content & Iconography · Scope: every screen · shown on **Users** ([board 18 ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50857-1009))
+`SMB-GLOBAL-016` · **Nit** · Content & Iconography · Scope: every screen
 
 | | |
 |---|---|
@@ -219,11 +198,11 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Dashboard
 
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50868-1489)
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-49264) · [Live page ↗](https://smile-admin-dev.mosje.in/dashboard)
 
 ### The Beneficiary Profile section was rebuilt with different charts
 
-`S01` · **Major** · Components & States
+`SMB-SA-DASHBOARD-001` · **Major** · Components & States
 
 | | |
 |---|---|
@@ -233,7 +212,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### Two of the six metrics are merged into one cell, and a third is renamed
 
-`S02` · **Minor** · Components & States
+`SMB-SA-DASHBOARD-002` · **Minor** · Components & States
 
 | | |
 |---|---|
@@ -243,7 +222,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### The System Users panel's rows gained their own fills
 
-`S04` · **Minor** · Components & States
+`SMB-SA-DASHBOARD-003` · **Minor** · Components & States
 
 | | |
 |---|---|
@@ -253,11 +232,11 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Users
 
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50868-1597)
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-51029) · [Live page ↗](https://smile-admin-dev.mosje.in/users)
 
 ### View Catalog sits on a different screen from the one the design puts it on
 
-`S05` · **Minor** · Components & States
+`SMB-SA-USERS-001` · **Minor** · Components & States
 
 | | |
 |---|---|
@@ -267,7 +246,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### The Name column lost its emphasis
 
-`S06` · **Minor** · Typography
+`SMB-SA-USERS-002` · **Minor** · Typography
 
 | | |
 |---|---|
@@ -275,19 +254,9 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Build does** | The name is set at the same weight as every other cell. |
 | **Fix** | Set the Name cell to weight 600, matching the design and the body-2-semibold style the variables publish. |
 
-### The build carries two filters the design does not
-
-`S07` · **Nit** · Layout & Spacing
-
-| | |
-|---|---|
-| **Design says** | Search, All Roles, All Status. |
-| **Build does** | Search, All roles, All statuses, All States / UTs, All Districts. |
-| **Fix** | Confirm the extra filters are intended; if so, add them to the design frame. Showing all the relevant filters is the right instinct — this is a note, not a defect. |
-
 ### The Users table has a blue header band that no other table has
 
-`S44` · **Minor** · Color & Token
+`SMB-SA-USERS-003` · **Minor** · Color & Token
 
 | | |
 |---|---|
@@ -297,31 +266,11 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Consent Forms
 
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50868-1732)
-
-### The breadcrumb puts Consent Forms under Access Control
-
-`S08` · **Major** · Content & Iconography
-
-| | |
-|---|---|
-| **Design says** | 'Others › Consent Form' — the section the item actually belongs to. |
-| **Build does** | 'Access Control / Consent Forms'. Consent Forms is not an access-control screen, and the sidebar files it elsewhere, so the breadcrumb contradicts the navigation. |
-| **Fix** | Point the breadcrumb's parent at the section the sidebar puts the screen in. |
-
-### The date-range filter is not in the build
-
-`S09` · **Minor** · Components & States
-
-| | |
-|---|---|
-| **Design says** | A date-range field sits beside the search box, so submissions can be narrowed by when they arrived. |
-| **Build does** | There is no date filter; the row carries State, District and search instead. |
-| **Fix** | Add the date-range filter back. It is the only way to answer 'what came in this month' on a list that is paginated to 1,248 items. |
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51873-194809) · [Live page ↗](https://smile-admin-dev.mosje.in/consent)
 
 ### Submitted On and Action are off the right-hand edge of the screen
 
-`S10` · **Minor** · Components & States
+`SMB-SA-CONSENT-001` · **Minor** · Components & States
 
 | | |
 |---|---|
@@ -331,7 +280,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### Agency names are drawn as links where the design has plain text
 
-`S11` · **Minor** · Color & Token
+`SMB-SA-CONSENT-002` · **Minor** · Color & Token
 
 | | |
 |---|---|
@@ -341,11 +290,11 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ## Notifications
 
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50869-1489)
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51830-237991) · [Live page ↗](https://smile-admin-dev.mosje.in/notifications)
 
 ### The empty state sits under a full twelve-column table header
 
-`S12` · **Minor** · Components & States
+`SMB-SA-NOTIF-001` · **Minor** · Components & States
 
 | | |
 |---|---|
@@ -353,23 +302,13 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Build does** | The full header row is drawn above the empty card, and its twelve labels wrap onto two lines. |
 | **Fix** | Hide the column header when there are no rows, as the design does, so the empty state reads as an answer rather than a broken table. |
 
-### The filters are not the ones the design specifies
-
-`S13` · **Minor** · Components & States
-
-| | |
-|---|---|
-| **Design says** | All States/UT and All Districts — the geography the rest of the estate filters by. |
-| **Build does** | All Types and All Channels. |
-| **Fix** | Confirm which set is right. Whichever it is, the design frame and the build should carry the same filters. |
-
 ## Beneficiary List
 
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50869-1568)
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-57337) · [Live page ↗](https://smile-admin-dev.mosje.in/persons)
 
 ### The screen has no loading state in the design, and the build needs one
 
-`S14` · **Major** · Components & States
+`SMB-SA-PERSONS-001` · **Major** · Components & States
 
 | | |
 |---|---|
@@ -377,29 +316,19 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Build does** | On the live build the KPI figures and every table row are grey placeholder bars for a noticeable stretch before the data arrives (timed at up to 25 seconds on a fast connection). Shelter Occupants behaves the same way. So the state a reader actually sees on arrival is one nobody designed. |
 | **Fix** | Design the loading state — a skeleton in the shape of the result, so the layout does not jump when the data lands — and add it to the Figma section for this screen and Shelter Occupants. How long the wait itself should be is an engineering question, recorded separately, not raised here. |
 
-### The footer year differs between design and build
-
-`S15` · **Nit** · Content & Iconography
-
-| | |
-|---|---|
-| **Design says** | The footer reads © 2025. |
-| **Build does** | The footer reads © 2026. |
-| **Fix** | Not a defect — the build is current and the design frame is a year behind. Update the Figma footer so the two stop disagreeing at every review. |
-
 ### Every status chip is the same blue, where the design colour-codes them
 
-`S16` · **Major** · Color & Token
+`SMB-SA-PERSONS-002` · **Major** · Color & Token
 
 | | |
 |---|---|
-| **Design says** | Status is colour-coded so the column can be scanned: Identified, Submitted, Rehabilitation, Under Mobilization and Mobilized each carry their own colour. |
-| **Build does** | Every chip renders in the same blue #1d4ed8 — IDENTIFIED, APPROVED_BY_IA, MOBILIZED and REHABILITATED are visually identical. The chips are also uppercase and carry raw status codes (APPROVED_BY_IA) rather than the readable labels the design uses. |
-| **Fix** | Colour-code the statuses as the design does, and show the readable label rather than the database value. |
+| **Design says** | Status is colour-coded so the column can be scanned: IDENTIFIED blue #1558b0 on #d2e3fc, SUBMITTED navy #002b55 on #c8dbf0, REHABILITATION and MOBILIZED green #27682a on #c8e6c9, UNDER MOBILIZATION amber #8c571f on #ffe4bf. |
+| **Build does** | Every chip renders in the same blue — #1d4ed8 on #eff6ff — so IDENTIFIED, APPROVED_BY_IA, MOBILIZED and REHABILITATED are visually identical. |
+| **Fix** | Colour-code the statuses as the design does. A status column where every value looks the same cannot be scanned, which is the only reason it is a column. |
 
 ### The DESIGN gives the same status two different colours
 
-`S45` · **Nit** · Color & Token
+`SMB-SA-PERSONS-003` · **Nit** · Color & Token
 
 | | |
 |---|---|
@@ -407,353 +336,23 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Build does** | The build gives every status the same blue, so it does not reproduce the inconsistency; it loses the colour-coding instead (S16). |
 | **Fix** | Pick one colour for IDENTIFIED in the design frame before the colour-coding is built, or the same ambiguity is built in. |
 
-## Surveyor Mappings
+## Sign In
 
-### Two KPI labels are cut off in the DESIGN, not the build
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8383-55268) · [Live page ↗](https://smile-admin-dev.mosje.in/login)
 
-`S17` · **Nit** · Content & Iconography
+### A second typeface appears on the sign-in screen
 
-| | |
-|---|---|
-| **Design says** | The design frame reads 'Total Mapping' and 'Distinct Survey'. |
-| **Build does** | The build reads 'Total Mappings' and 'Distinct Surveyors' — the complete words. |
-| **Fix** | The build is right and the design frame is truncated. Fix the Figma labels so this does not get reported as a build defect at the next review. |
-
-## Shelter Occupants
-
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50864-1033)
-
-### The screen has one name in the design and a different one in the build
-
-`S18` · **Major** · Content & Iconography
-
-| | |
-|---|---|
-| **Design says** | The heading reads 'Shelter Occupants', and the sub-line 'Beneficiaries currently residing in…'. |
-| **Build does** | The heading and the breadcrumb both read 'Swashraya (Shelter Home) Persons'. Two of the table's own column headers carry the same expansion — 'Swashraya (Shelter Home) Type' and 'Swashraya (Shelter Home) Name' — so the parenthetical is repeated three times on one screen. |
-| **Fix** | Agree one name for this screen and use it in the design, the heading, the breadcrumb and the sidebar. If Swashraya is the departmental term, say it once in the heading and let the columns read 'Type' and 'Name'. |
-
-### The designed Actions column is not built, and the design frame hides seven columns outside itself
-
-`S19` · **Major** · Components & States
-
-| | |
-|---|---|
-| **Design says** | Five columns render inside the 1440 frame — Beneficiary Name, Beneficiary ID, Beneficiary Type, Facility Status, Actions — and seven more sit OUTSIDE it at x=1274 to x=2849 (a second Actions, Gender, Age, Survey Location, State, Shelter Home Name, Shelter Home Type), along with a five-figure KPI strip. Nothing outside the frame renders, so a developer opening this frame sees five columns. |
-| **Build does** | Twelve columns: S.No., Beneficiary ID, Beneficiary Name, Gender, Age, Survey Location, Survey Date, State, Swashraya (Shelter Home) Type, Beneficiary Type, Swashraya (Shelter Home) Name, Facility Status. Most of them match the design's hidden set. Actions is not among them, so there is no per-row action at all. |
-| **Fix** | Two jobs. Bring the seven stray columns and the KPI strip inside the frame so the design says what it means, and build the Actions column or drop it deliberately. (Corrected 2026-09-10: an earlier draft read the frame as specifying five columns. It specifies twelve; seven of them are drawn where they cannot be seen.) |
-
-### Three design frames carry content outside their own canvas, where it cannot be seen
-
-`S43` · **Major** · Layout & Spacing
-
-| | |
-|---|---|
-| **Design says** | Shelter Occupants holds seven table columns and a five-figure KPI strip at x=1274–2849; Rehab Data holds Status and District at x=1519 and x=1794; Skill & Training holds Status and District at x=1540 and x=1805. The frames are 1440 wide, so none of it renders — it is invisible in the exported frame, in Dev Mode, and in any screenshot taken from Figma. |
-| **Build does** | The build shows most of those columns, which is how they were found: the build was reading a specification the design frame does not display. |
-| **Fix** | Move the stray content inside the frame, or delete it if it is superseded. Anything a developer cannot see is not a specification. This is a design-file defect, not a build one. |
-
-## Master Settings
-
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50864-1139)
-
-### The build adds a four-figure strip the design does not draw, and shows nine tabs where the design shows five
-
-`S20` · **Major** · Components & States
-
-| | |
-|---|---|
-| **Design says** | Heading, sub-line, then a rail of five tabs — Geography, Roles & Permission, Survey Questionnaire, Agency, Operational — with an overflow control for the rest, then the table. |
-| **Build does** | The same rail carries all nine tabs at once, and above it sits a four-figure strip: Active Tab / Geography Masters, Records / 36, Mode / Read-only, Your Access / Full access. The strip is in no design frame. |
-| **Fix** | Decide whether the strip stays; if it does, draw it. Either show five tabs and an overflow as designed or widen the rail deliberately. 'Mode: Read-only' beside 'Your Access: Full access' also needs settling — on the same screen they say opposite things. (Corrected 2026-09-10: an earlier draft said the design had no tab rail. It has one; the query that reported otherwise had read a partly-loaded Figma page.) |
-
-### The Geography table gains a row-number column and an Actions column
-
-`S21` · **Minor** · Components & States
-
-| | |
-|---|---|
-| **Design says** | Three columns: State Code, State Name, Local Name. |
-| **Build does** | Five: #, State Code, State Name, Local Name, Actions. |
-| **Fix** | Confirm both additions and add them to the design frame. A row number and an edit action are reasonable on a master list; they simply are not specified anywhere yet. |
-
-## Rehab Data
-
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50863-1025)
-
-### Gender and Age are not in the build, and the build adds a column of its own
-
-`S22` · **Major** · Components & States
-
-| | |
-|---|---|
-| **Design says** | Seven columns: Beneficiary Name, Gender, Age, Type, Category/Specify, State/District, Follow-UP Status. |
-| **Build does** | Gender and Age are absent. 'Beneficiary Name' is shortened to 'Beneficiary', and a 'Captured On' column is added that the design does not have. |
-| **Fix** | Restore Gender and Age — on a rehabilitation register they are the two fields the design put first after the name. Keep the full 'Beneficiary Name' label, and add 'Captured On' to the design if it is staying. |
-
-## Skill & Training
-
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50864-1220)
-
-### Three build columns are in no design, and two more are drawn outside the frame
-
-`S23` · **Minor** · Components & States
-
-| | |
-|---|---|
-| **Design says** | Seven columns render: Beneficiary ID, Beneficiary Name, Gender, Age, Duration of Skill and Training, Skill and Training Type, Survey Location. Two more — Status and District — sit outside the 1440 frame at x=1540 and x=1805, where they do not render. |
-| **Build does** | Twelve: the designed seven, the two strays, plus S.No., Shelter Name and State, which are in no design at all. |
-| **Fix** | Bring Status and District inside the frame, and confirm S.No., Shelter Name and State. Twelve columns at 1440 is what pushes this table into horizontal scrolling. |
-
-### Two column headers sit ten pixels above the rest of the header row — in the DESIGN
-
-`S24` · **Nit** · Layout & Spacing
-
-| | |
-|---|---|
-| **Design says** | 'Duration of Skill and Training' and 'Skill and Training Type' are drawn at y=362 while Beneficiary ID, Beneficiary Name, Gender and Age are at y=372: the two long labels wrap to a second line and are top-aligned where the short ones are not. |
-| **Build does** | The build's header cells all share one baseline. |
-| **Fix** | The build is right. Align the design's header cells to one baseline so the frame stops disagreeing with itself. |
-
-## City Profiling
-
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50865-1057)
-
-### A fifth KPI card appears, and two of the four designed ones are renamed
-
-`S25` · **Minor** · Components & States
-
-| | |
-|---|---|
-| **Design says** | Four cards: States/UTs Onboarded, Total Cities Selected, Beneficiaries Identified, Funds Released. Each label sits on one line beside a 56px icon tile. |
-| **Build does** | Five: States/UTs Onboarded, Total Cities Selected, Beneficiary Identified/Surveyed, Fund Disbursed, Fund Utilised. Three of the five labels wrap onto two or three lines, so the figure sits at a different height on every card and the row no longer reads across. |
-| **Fix** | Add the fifth card to the design and agree the two renamed labels. Whatever the wording, size the cards so the label fits on one line — a row of figures a reader cannot compare across is the point of the row lost. |
-
-### The last column of the table is off the side of the screen
-
-`S26` · **Major** · Layout & Spacing
-
-| | |
-|---|---|
-| **Design says** | Ten columns fit inside the 1440 frame, the last (Utilized (₹)) ending at about x=1400. |
-| **Build does** | The same ten columns run to x=1554, so Fund Utilised sits outside the 1440 viewport and can only be reached by scrolling the table sideways. Measured on the live page at a 1440 viewport. |
-| **Fix** | Fit the ten columns inside the viewport — the design does it by using short headers ('Cities', 'Identified', 'Released (₹)') where the build spells them out. |
-
-### The four figure columns lose their coloured chips
-
-`S27` · **Minor** · Color & Token
-
-| | |
-|---|---|
-| **Design says** | Identified, Rehabilitated, Released (₹) and Utilized (₹) are drawn as tinted pills — blue, green, amber and red — so a reader can pick a state's performance out of the table at a glance. |
-| **Build does** | All four render as plain text in the body colour. |
-| **Fix** | Restore the four tinted pills. They are the only thing distinguishing ten numeric columns from each other. |
-
-### Four column headers are worded differently from the design
-
-`S28` · **Nit** · Content & Iconography
-
-| | |
-|---|---|
-| **Design says** | Cities · Nodal Officer · Identified · Rehabilitated. |
-| **Build does** | Number of Cities/Districts · State Nodal Officer · Total Identified/Surveyed · Total Rehabilitated. |
-| **Fix** | Agree one wording. The build's is more precise and the design's fits the column width; either is defensible, but both places should say the same thing. |
-
-## Performance Statistics
-
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50865-1246)
-
-### The KPI card lost its tinted header band and its blue outline
-
-`S29` · **Minor** · Color & Token
-
-| | |
-|---|---|
-| **Design says** | Each card has a pale blue band across the top carrying 'KPI n' and the KPI's name in navy, with the icon plain in the corner, and the card itself is outlined in blue. |
-| **Build does** | The header band is white and the card is outlined in the neutral grey used by every other card on the estate; the icon has gained a filled rounded tile. The name and description are present, as designed. |
-| **Fix** | Restore the tinted header band and the blue outline. They are what separate a KPI scorecard from an ordinary content card at a glance. |
-
-## Onboard New User
-
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50865-1298)
-
-### Four of the five field labels are worded differently from the design
-
-`S30` · **Major** · Content & Iconography
-
-| | |
-|---|---|
-| **Design says** | Full Name * · Last Name * · Email Address * · Contact Number * · Select Role *. |
-| **Build does** | First Name * · Last Name (no required marker) · Email ID * · Mobile Number * · Select Role *. Four labels are reworded and one loses its required marker. |
-| **Fix** | Agree the five labels and use them in both places. Note the design's own pair is wrong — 'Full Name' beside 'Last Name' asks for the surname twice; the build's 'First Name' is the right reading and the Figma frame should be corrected to match. |
-
-### The form card is two-thirds the designed width and centred
-
-`S31` · **Minor** · Layout & Spacing
-
-| | |
-|---|---|
-| **Design says** | The card spans the content column, about 1090px wide, with the two field columns at x=349 and x=880. |
-| **Build does** | About 730px wide and centred, so the first field starts 190px further right and the card leaves a wide empty margin on both sides. |
-| **Fix** | Let the form card fill the content column as the design does. |
-
-### The BASIC DETAILS section header is not in the build
-
-`S32` · **Minor** · Components & States
-
-| | |
-|---|---|
-| **Design says** | A small-caps 'BASIC DETAILS' label with a hairline rule runs across the top of the card. |
-| **Build does** | The card opens straight onto the first field. |
-| **Fix** | Restore the section header. It is the only thing naming the group, and the same pattern is used on the shelter-home form. |
-
-## Add Shelter Home
-
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50866-1273)
-
-### Six required markers are missing, and the three section headers with them
-
-`S33` · **Major** · Components & States
-
-| | |
-|---|---|
-| **Design says** | Asterisks on Shelter Name, Capacity, Type, Contact Person, Address, Operational Status, Linked Implementing Agency and Skills & Training Programmes. Three small-caps section headers divide the form: SHELTER HOME DETAILS, IMPLEMENTING AGENCY DETAILS, SHELTER HOME LOGIN ACCOUNT. |
-| **Build does** | Only Shelter Name and Capacity carry an asterisk. The three section headers are not there; the fields run continuously under one card title. |
-| **Fix** | Restore the required markers — a form that does not say which fields are mandatory fails at submit instead of before it — and the three section headers. |
-
-### The field grid is two columns where the design draws three
-
-`S34` · **Minor** · Layout & Spacing
-
-| | |
-|---|---|
-| **Design says** | Three across: Shelter Name | Capacity | Type, then Contact Person | Address | Operational Status. |
-| **Build does** | Two across, in a different order: Shelter Name | Capacity, then Contact Person | Address, then Type | Operational Status. The form is a third longer as a result. |
-| **Fix** | Use the designed three-column grid and the designed field order. |
-
-### The build adds a warning banner the design does not have
-
-`S35` · **Minor** · Components & States
-
-| | |
-|---|---|
-| **Design says** | No banner. The form opens on its fields. |
-| **Build does** | An amber banner reads 'Pick a State and District / City in the filter above (or link an Implementing Agency below) so this shelter lands in the right district.' |
-| **Fix** | The banner is doing real work — it explains a dependency the design never resolved. Keep it, and draw it in the design, or design the dependency out. |
-
-### The DESIGN puts a date-range picker where the Address field should be
-
-`S36` · **Major** · Components & States
-
-| | |
-|---|---|
-| **Design says** | The field labelled 'Address' is drawn as a date control with a calendar icon reading 'Select Start and End Date'. 'Contact Person' is drawn as a dropdown. |
-| **Build does** | Address is a text input and Contact Person is a text input, which is what both fields are for. |
-| **Fix** | The build is right. Fix the Figma frame — this is a design-side defect, and it is the second of its kind on this page after 'Sanction DateDate'. |
-
-## Create New Role
-
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50866-1408)
-
-### The dialog's field labels are uppercase 11px grey without their required markers
-
-`S37` · **Minor** · Typography
-
-| | |
-|---|---|
-| **Design says** | 'Role Name *' and 'Description *' in Title Case, dark, with a red asterisk. |
-| **Build does** | 'ROLE NAME' and 'DESCRIPTION' in 11px uppercase grey, no asterisk, though both fields are still required. |
-| **Fix** | Set the two labels to Title Case at the label size in the body colour and restore the asterisks. |
-
-### The dialog has no close control
-
-`S38` · **Minor** · Components & States
-
-| | |
-|---|---|
-| **Design says** | An × sits in the top-right corner of the dialog. |
-| **Build does** | There is no ×. The only ways out are Cancel and the Escape key, and Escape is not signposted. |
-| **Fix** | Add the × to the dialog header. |
-
-### The guidance note loses its panel
-
-`S39` · **Nit** · Color & Token
-
-| | |
-|---|---|
-| **Design says** | 'After creating the role you'll be redirected to the permission picker' sits in a pale amber panel, so it reads as a consequence of pressing the button. |
-| **Build does** | The same sentence is plain grey text with a small information icon, level with the field labels around it. |
-| **Fix** | Restore the amber panel. |
-
-## Roles
-
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50866-1516)
-
-### The page is called Roles in the design and Role Management in the build
-
-`S40` · **Minor** · Content & Iconography
-
-| | |
-|---|---|
-| **Design says** | The heading reads 'Roles', and the role cards carry '65 Permissions' and '#ID 1'. |
-| **Build does** | The heading reads 'Role Management'. The card chips are abbreviated to '46 perms' and '# ID 4', and the Active chip is uppercased. |
-| **Fix** | Agree the page name, and spell 'Permissions' out on the chip — 'perms' is developer shorthand on a government screen. |
-
-### Role cards gained a tinted header band
-
-`S41` · **Nit** · Color & Token
-
-| | |
-|---|---|
-| **Design says** | The card header is white: icon, role name, and an Active chip on the right. |
-| **Build does** | The header sits on a tinted band, and the chip reads ACTIVE in uppercase. |
-| **Fix** | Confirm the band. If it stays, draw it in the design and keep the chip in Title Case. |
-
-## City Profiling — district list
-
-[Board with markers ↗](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50865-1194)
-
-### The district list gains the same two fund cards as the state list, and loses its table card
-
-`S42` · **Minor** · Components & States
-
-| | |
-|---|---|
-| **Design says** | Three KPI cards (Cities Selected, Total Identified, Total Rehabilitated), and the table sits in a bordered card with a tinted, rounded header band. |
-| **Build does** | Five KPI cards — Fund Disbursed and Fund Utilised are added, as on the state list — and the table has no card border and a flat header band. City names are underlined links where the design draws them as plain navy. |
-| **Fix** | Same decision as the state list (S25): add the two cards to the design or drop them. Restore the table's card and its header band. |
-
----
-
-## Coverage — what was checked, and what could not be
-
-| | |
-|---|---|
-| Design frames on *Smile Beggary (Synced)* paired to a build capture | 63 |
-| Roles crawled | Super Admin, Central Authority, US/SO, NISD |
-| Roles skipped at the reviewer's instruction | State Nodal Officer, Nodal Officer, Implementing Agency |
-
-**Built with no design on the page I was pointed at.** The surveyor detail page (`/surveyors/<id>`) — a profile card with a Parent Implementing Agency panel — has no frame on *Smile Beggary (Synced)*. The nearest frame, `Survey Locations section - Surveyor`, is a surveyor LIST. The same is true of `/hotspot-approvals` and the three Fund Monitoring create forms. These may be designed elsewhere; they are not on the page this audit was given.
-
-**States I could not reach.** View Catalog, Edit Permissions, Create Survey Location, View Beneficiary, the dashboard chart tabs and Add District: the control resolves and the click lands, but the resulting view does not finish loading within the capture window. They are not audited, and they are not counted as clean.
-
----
-
-## Sign-in surface
-
-### A third typeface appears on the sign-in screen
-
-`L01` · **Major** · Typography
+`SMB-AUTH-001` · **Major** · Typography
 
 | | |
 |---|---|
 | **Design says** | Every string on the designed sign-in frames is Noto Sans. |
-| **Build does** | Six elements render in Plus Jakarta Sans: the 'Log in to your account' heading, the Log In button, 'Implementing Agency?' and 'Sign in with OTP', the 'Forgot Password' heading on that screen, 'Implementing Agency sign-in', and 'Send OTP'. Everything around them is Noto Sans, so the panel is set in two typefaces at once. |
-| **Fix** | Set all six to Noto Sans. The estate mandates it on every government property, and this is the first screen anyone sees. |
+| **Build does** | Four elements render in Plus Jakarta Sans — the 'Log in to your account' heading, the Log In button, 'Implementing Agency?' and 'Sign in with OTP' — measured on the live page. Everything around them is Noto Sans, so the panel is set in two typefaces at once. |
+| **Fix** | Set all four to Noto Sans. The estate mandates it on every government property, and this is the first screen anyone sees. |
 
 ### The SAMAVESH wordmark is little over half the size the design draws
 
-`L02` · **Major** · Typography
+`SMB-AUTH-002` · **Major** · Typography
 
 | | |
 |---|---|
@@ -763,7 +362,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### Forgot Password is a third smaller and a different colour
 
-`L03` · **Major** · Typography
+`SMB-AUTH-003` · **Major** · Typography
 
 | | |
 |---|---|
@@ -773,7 +372,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### The hero tagline and strapline are both a size down
 
-`L04` · **Minor** · Typography
+`SMB-AUTH-005` · **Minor** · Typography
 
 | | |
 |---|---|
@@ -783,7 +382,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### Every line of the Signing into block is smaller than drawn
 
-`L05` · **Minor** · Typography
+`SMB-AUTH-006` · **Minor** · Typography
 
 | | |
 |---|---|
@@ -793,7 +392,7 @@ These are listed first because each one repeats across the portal, so fixing one
 
 ### Both field labels are smaller, heavier and a different grey
 
-`L06` · **Minor** · Typography
+`SMB-AUTH-007` · **Minor** · Typography
 
 | | |
 |---|---|
@@ -801,19 +400,9 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Build does** | 13px SemiBold in #334155. |
 | **Fix** | Set both to 14px Medium #1f2937. |
 
-### The password placeholder is worded differently
-
-`L07` · **Minor** · Content & Iconography
-
-| | |
-|---|---|
-| **Design says** | 'Enter your password'. |
-| **Build does** | 'Enter password'. The field above it matches the design exactly, so this one reads as an oversight rather than a decision. |
-| **Fix** | Use 'Enter your password', or change both in the frame. |
-
 ### Two controls are in the build that the design does not draw
 
-`L08` · **Minor** · Components & States
+`SMB-AUTH-008` · **Minor** · Components & States
 
 | | |
 |---|---|
@@ -821,38 +410,342 @@ These are listed first because each one repeats across the portal, so fixing one
 | **Build does** | The build adds a 'Remember me' checkbox and an 'OR' divider above the Implementing Agency link, plus a version and build stamp in the bottom corner. |
 | **Fix** | Confirm all three are intended. If they are, add them to the frame — a checkbox that stores a sign-in preference is a design decision, not an implementation detail. |
 
-### Choose Portal is a different pattern from the one designed
+## Choose Portal
 
-`L09` · **Major** · Components & States
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8383-55528) · [Live page ↗](https://smile-admin-dev.mosje.in/login)
 
-| | |
-|---|---|
-| **Design says** | The design keeps the reader on the sign-in panel: a 'Your role' selector set to Super Admin, and four portals listed inline — SCW, SMILE-Transgender, NOS, NMBA. |
-| **Build does** | The build opens a right-hand slide-over drawer listing nine portals as cards (the four above plus SMILE-Beggary, E-Utthaan, E-Anudaan, PM-AJAY, NHAPOA), with a green tick on the current one. There is no role selector at all. |
-| **Fix** | Decide which pattern is right and make both match. The missing role selector is the part to settle first — the design uses it to choose what you sign in AS, and the build has no equivalent. |
+### The role selector on the sign-in panel is not in the build
 
-### Portal names in the drawer are orange
-
-`L10` · **Minor** · Color & Token
+`SMB-AUTH-004` · **Major** · Components & States
 
 | | |
 |---|---|
-| **Design says** | Portal names are ink-coloured text, #1f2428. |
-| **Build does** | Each portal name is orange. Orange is the estate's accent, and here it is doing the job of a heading on nine cards at once. |
-| **Fix** | Set the portal names to the ink colour and let the logo and the tick carry the colour. |
+| **Design says** | The Choose Portal frame's login panel reads 'Log in to your account / Select your role to continue', with a 'Your role' field set to Super Admin above the email and password fields. |
+| **Build does** | There is no role selector. The panel goes straight from the heading to Email or Mobile Number. (The portal drawer itself matches — both design and build present the portals as a right-hand drawer with orange titles.) |
+| **Fix** | Confirm whether the role is chosen at sign-in or derived from the account. If it is derived, remove the selector from the design frame; if it is chosen, build it. |
+
+## Surveyor Mappings
+
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51699-165683) · [Live page ↗](https://smile-admin-dev.mosje.in/surveyor-mapped)
+
+### Two KPI labels are cut off in the DESIGN, not the build
+
+`SMB-SA-SURVEYORS-001` · **Nit** · Content & Iconography
+
+| | |
+|---|---|
+| **Design says** | The design frame reads 'Total Mapping' and 'Distinct Survey'. |
+| **Build does** | The build reads 'Total Mappings' and 'Distinct Surveyors' — the complete words. |
+| **Fix** | The build is right and the design frame is truncated. Fix the Figma labels so this does not get reported as a build defect at the next review. |
+
+## Shelter Occupants
+
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51712-164958) · [Live page ↗](https://smile-admin-dev.mosje.in/shelter-homes/beneficiaries)
+
+### The designed Actions column is not built, and the design frame hides seven columns outside itself
+
+`SMB-SA-SHELTEROCC-001` · **Major** · Components & States
+
+| | |
+|---|---|
+| **Design says** | Five columns render inside the 1440 frame — Beneficiary Name, Beneficiary ID, Beneficiary Type, Facility Status, Actions — and seven more sit OUTSIDE it at x=1274 to x=2849 (a second Actions, Gender, Age, Survey Location, State, Shelter Home Name, Shelter Home Type), along with a five-figure KPI strip. Nothing outside the frame renders, so a developer opening this frame sees five columns. |
+| **Build does** | Twelve columns: S.No., Beneficiary ID, Beneficiary Name, Gender, Age, Survey Location, Survey Date, State, Swashraya (Shelter Home) Type, Beneficiary Type, Swashraya (Shelter Home) Name, Facility Status. Most of them match the design's hidden set. Actions is not among them, so there is no per-row action at all. |
+| **Fix** | Two jobs. Bring the seven stray columns and the KPI strip inside the frame so the design says what it means, and build the Actions column or drop it deliberately. (Corrected 2026-09-10: an earlier draft read the frame as specifying five columns. It specifies twelve; seven of them are drawn where they cannot be seen.) |
+
+### Three design frames carry content outside their own canvas, where it cannot be seen
+
+`SMB-SA-SHELTEROCC-002` · **Major** · Layout & Spacing
+
+| | |
+|---|---|
+| **Design says** | Shelter Occupants holds seven table columns and a five-figure KPI strip at x=1274–2849; Rehab Data holds Status and District at x=1519 and x=1794; Skill & Training holds Status and District at x=1540 and x=1805. The frames are 1440 wide, so none of it renders — it is invisible in the exported frame, in Dev Mode, and in any screenshot taken from Figma. |
+| **Build does** | The build shows most of those columns, which is how they were found: the build was reading a specification the design frame does not display. |
+| **Fix** | Move the stray content inside the frame, or delete it if it is superseded. Anything a developer cannot see is not a specification. This is a design-file defect, not a build one. |
+
+## Master Settings
+
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51836-240081) · [Live page ↗](https://smile-admin-dev.mosje.in/master-setting)
+
+### The build adds a four-figure strip the design does not draw, and shows nine tabs where the design shows five
+
+`SMB-SA-MASTER-001` · **Major** · Components & States
+
+| | |
+|---|---|
+| **Design says** | Heading, sub-line, then a rail of five tabs — Geography, Roles & Permission, Survey Questionnaire, Agency, Operational — with an overflow control for the rest, then the table. |
+| **Build does** | The same rail carries all nine tabs at once, and above it sits a four-figure strip: Active Tab / Geography Masters, Records / 36, Mode / Read-only, Your Access / Full access. The strip is in no design frame. |
+| **Fix** | Decide whether the strip stays; if it does, draw it. Either show five tabs and an overflow as designed or widen the rail deliberately. 'Mode: Read-only' beside 'Your Access: Full access' also needs settling — on the same screen they say opposite things. (Corrected 2026-09-10: an earlier draft said the design had no tab rail. It has one; the query that reported otherwise had read a partly-loaded Figma page.) |
+
+### The Geography table gains a row-number column and an Actions column
+
+`SMB-SA-MASTER-002` · **Minor** · Components & States
+
+| | |
+|---|---|
+| **Design says** | Three columns: State Code, State Name, Local Name. |
+| **Build does** | Five: #, State Code, State Name, Local Name, Actions. |
+| **Fix** | Confirm both additions and add them to the design frame. A row number and an edit action are reasonable on a master list; they simply are not specified anywhere yet. |
+
+## Rehab Data
+
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51742-166982) · [Live page ↗](https://smile-admin-dev.mosje.in/comprehensive-rehab/data)
+
+### Gender and Age are not in the build, and the build adds a column of its own
+
+`SMB-SA-REHAB-001` · **Major** · Components & States
+
+| | |
+|---|---|
+| **Design says** | Seven columns: Beneficiary Name, Gender, Age, Type, Category/Specify, State/District, Follow-UP Status. |
+| **Build does** | Gender and Age are absent. 'Beneficiary Name' is shortened to 'Beneficiary', and a 'Captured On' column is added that the design does not have. |
+| **Fix** | Restore Gender and Age — on a rehabilitation register they are the two fields the design put first after the name. Keep the full 'Beneficiary Name' label, and add 'Captured On' to the design if it is staying. |
+
+## Skill & Training
+
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51742-164435) · [Live page ↗](https://smile-admin-dev.mosje.in/comprehensive-rehab/skill-training)
+
+### Three build columns are in no design, and two more are drawn outside the frame
+
+`SMB-SA-SKILL-001` · **Minor** · Components & States
+
+| | |
+|---|---|
+| **Design says** | Seven columns render: Beneficiary ID, Beneficiary Name, Gender, Age, Duration of Skill and Training, Skill and Training Type, Survey Location. Two more — Status and District — sit outside the 1440 frame at x=1540 and x=1805, where they do not render. |
+| **Build does** | Twelve: the designed seven, the two strays, plus S.No., Shelter Name and State, which are in no design at all. |
+| **Fix** | Bring Status and District inside the frame, and confirm S.No., Shelter Name and State. Twelve columns at 1440 is what pushes this table into horizontal scrolling. |
+
+### Two column headers sit ten pixels above the rest of the header row — in the DESIGN
+
+`SMB-SA-SKILL-002` · **Nit** · Layout & Spacing
+
+| | |
+|---|---|
+| **Design says** | 'Duration of Skill and Training' and 'Skill and Training Type' are drawn at y=362 while Beneficiary ID, Beneficiary Name, Gender and Age are at y=372: the two long labels wrap to a second line and are top-aligned where the short ones are not. |
+| **Build does** | The build's header cells all share one baseline. |
+| **Fix** | The build is right. Align the design's header cells to one baseline so the frame stops disagreeing with itself. |
+
+## City Profiling
+
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51891-441340) · [Live page ↗](https://smile-admin-dev.mosje.in/city-profiling)
+
+### The last column of the table is off the side of the screen
+
+`SMB-SA-CITY-001` · **Major** · Layout & Spacing
+
+| | |
+|---|---|
+| **Design says** | Ten columns fit inside the 1440 frame, the last (Utilized (₹)) ending at about x=1400. |
+| **Build does** | The same ten columns run to x=1554, so Fund Utilised sits outside the 1440 viewport and can only be reached by scrolling the table sideways. Measured on the live page at a 1440 viewport. |
+| **Fix** | Fit the ten columns inside the viewport — the design does it by using short headers ('Cities', 'Identified', 'Released (₹)') where the build spells them out. |
+
+### A fifth KPI card appears, and two of the four designed ones are renamed
+
+`SMB-SA-CITY-002` · **Minor** · Components & States
+
+| | |
+|---|---|
+| **Design says** | Four cards: States/UTs Onboarded, Total Cities Selected, Beneficiaries Identified, Funds Released. Each label sits on one line beside a 56px icon tile. |
+| **Build does** | Five: States/UTs Onboarded, Total Cities Selected, Beneficiary Identified/Surveyed, Fund Disbursed, Fund Utilised. Three of the five labels wrap onto two or three lines, so the figure sits at a different height on every card and the row no longer reads across. |
+| **Fix** | Add the fifth card to the design and agree the two renamed labels. Whatever the wording, size the cards so the label fits on one line — a row of figures a reader cannot compare across is the point of the row lost. |
+
+### The four figure columns lose their coloured chips
+
+`SMB-SA-CITY-003` · **Minor** · Color & Token
+
+| | |
+|---|---|
+| **Design says** | Identified, Rehabilitated, Released (₹) and Utilized (₹) are drawn as tinted pills — blue, green, amber and red — so a reader can pick a state's performance out of the table at a glance. |
+| **Build does** | All four render as plain text in the body colour. |
+| **Fix** | Restore the four tinted pills. They are the only thing distinguishing ten numeric columns from each other. |
+
+## Performance Statistics
+
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51563-156833) · [Live page ↗](https://smile-admin-dev.mosje.in/performance-stats)
+
+### The KPI card lost its tinted header band and its blue outline
+
+`SMB-SA-PERF-001` · **Minor** · Color & Token
+
+| | |
+|---|---|
+| **Design says** | Each card has a pale blue band across the top carrying 'KPI n' and the KPI's name in navy, with the icon plain in the corner, and the card itself is outlined in blue. |
+| **Build does** | The header band is white and the card is outlined in the neutral grey used by every other card on the estate; the icon has gained a filled rounded tile. The name and description are present, as designed. |
+| **Fix** | Restore the tinted header band and the blue outline. They are what separate a KPI scorecard from an ordinary content card at a glance. |
+
+## Onboard New User
+
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-52311) · [Live page ↗](https://smile-admin-dev.mosje.in/users/onboard)
+
+### Last Name is marked required in the design and not in the build
+
+`SMB-SA-ADDUSER-001` · **Minor** · Components & States
+
+| | |
+|---|---|
+| **Design says** | All five fields carry a red asterisk: Full Name, Last Name, Email Address, Contact Number, Select Role. |
+| **Build does** | Four carry one; Last Name does not, so the form does not say whether it is mandatory until submit. (The four labels are also worded differently — Full Name / Email Address / Contact Number against First Name / Email ID / Mobile Number — but wording is content and is not raised in this report.) |
+| **Fix** | Mark Last Name required, or make the design agree that it is optional. |
+
+### The form card is two-thirds the designed width and centred
+
+`SMB-SA-ADDUSER-002` · **Minor** · Layout & Spacing
+
+| | |
+|---|---|
+| **Design says** | The card spans the content column, about 1090px wide, with the two field columns at x=349 and x=880. |
+| **Build does** | About 730px wide and centred, so the first field starts 190px further right and the card leaves a wide empty margin on both sides. |
+| **Fix** | Let the form card fill the content column as the design does. |
+
+### The BASIC DETAILS section header is not in the build
+
+`SMB-SA-ADDUSER-003` · **Minor** · Components & States
+
+| | |
+|---|---|
+| **Design says** | A small-caps 'BASIC DETAILS' label with a hairline rule runs across the top of the card. |
+| **Build does** | The card opens straight onto the first field. |
+| **Fix** | Restore the section header. It is the only thing naming the group, and the same pattern is used on the shelter-home form. |
+
+## Add Shelter Home
+
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51712-166102) · [Live page ↗](https://smile-admin-dev.mosje.in/shelter-homes)
+
+### Six required markers are missing, and the three section headers with them
+
+`SMB-SA-ADDSHELTER-001` · **Major** · Components & States
+
+| | |
+|---|---|
+| **Design says** | Asterisks on Shelter Name, Capacity, Type, Contact Person, Address, Operational Status, Linked Implementing Agency and Skills & Training Programmes. Three small-caps section headers divide the form: SHELTER HOME DETAILS, IMPLEMENTING AGENCY DETAILS, SHELTER HOME LOGIN ACCOUNT. |
+| **Build does** | Only Shelter Name and Capacity carry an asterisk. The three section headers are not there; the fields run continuously under one card title. |
+| **Fix** | Restore the required markers — a form that does not say which fields are mandatory fails at submit instead of before it — and the three section headers. |
+
+### The DESIGN puts a date-range picker where the Address field should be
+
+`SMB-SA-ADDSHELTER-002` · **Major** · Components & States
+
+| | |
+|---|---|
+| **Design says** | The field labelled 'Address' is drawn as a date control with a calendar icon reading 'Select Start and End Date'. 'Contact Person' is drawn as a dropdown. |
+| **Build does** | Address is a text input and Contact Person is a text input, which is what both fields are for. |
+| **Fix** | The build is right. Fix the Figma frame — this is a design-side defect, and it is the second of its kind on this page after 'Sanction DateDate'. |
+
+### The field grid is two columns where the design draws three
+
+`SMB-SA-ADDSHELTER-003` · **Minor** · Layout & Spacing
+
+| | |
+|---|---|
+| **Design says** | Three across: Shelter Name | Capacity | Type, then Contact Person | Address | Operational Status. |
+| **Build does** | Two across, in a different order: Shelter Name | Capacity, then Contact Person | Address, then Type | Operational Status. The form is a third longer as a result. |
+| **Fix** | Use the designed three-column grid and the designed field order. |
+
+### The build adds a warning banner the design does not have
+
+`SMB-SA-ADDSHELTER-004` · **Minor** · Components & States
+
+| | |
+|---|---|
+| **Design says** | No banner. The form opens on its fields. |
+| **Build does** | An amber banner reads 'Pick a State and District / City in the filter above (or link an Implementing Agency below) so this shelter lands in the right district.' |
+| **Fix** | The banner is doing real work — it explains a dependency the design never resolved. Keep it, and draw it in the design, or design the dependency out. |
+
+## Create New Role
+
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51661-158685) · [Live page ↗](https://smile-admin-dev.mosje.in/roles)
+
+### The dialog's field labels are uppercase 11px grey without their required markers
+
+`SMB-SA-NEWROLE-001` · **Minor** · Typography
+
+| | |
+|---|---|
+| **Design says** | 'Role Name *' and 'Description *' in Title Case, dark, with a red asterisk. |
+| **Build does** | 'ROLE NAME' and 'DESCRIPTION' in 11px uppercase grey, no asterisk, though both fields are still required. |
+| **Fix** | Set the two labels to Title Case at the label size in the body colour and restore the asterisks. |
+
+### The dialog has no close control
+
+`SMB-SA-NEWROLE-002` · **Minor** · Components & States
+
+| | |
+|---|---|
+| **Design says** | An × sits in the top-right corner of the dialog. |
+| **Build does** | There is no ×. The only ways out are Cancel and the Escape key, and Escape is not signposted. |
+| **Fix** | Add the × to the dialog header. |
+
+### The guidance note loses its panel
+
+`SMB-SA-NEWROLE-003` · **Nit** · Color & Token
+
+| | |
+|---|---|
+| **Design says** | 'After creating the role you'll be redirected to the permission picker' sits in a pale amber panel, so it reads as a consequence of pressing the button. |
+| **Build does** | The same sentence is plain grey text with a small information icon, level with the field labels around it. |
+| **Fix** | Restore the amber panel. |
+
+## Roles
+
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8664-52367) · [Live page ↗](https://smile-admin-dev.mosje.in/roles)
+
+### Role cards gained a tinted header band
+
+`SMB-SA-ROLES-001` · **Nit** · Color & Token
+
+| | |
+|---|---|
+| **Design says** | The card header is white: icon, role name, and an Active chip on the right. |
+| **Build does** | The header sits on a tinted band, and the chip reads ACTIVE in uppercase. |
+| **Fix** | Confirm the band. If it stays, draw it in the design and keep the chip in Title Case. |
+
+## City Profiling — district list
+
+[Design frame ↗](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51891-441685) · [Live page ↗](https://smile-admin-dev.mosje.in/city-profiling/1)
+
+### The district list gains the same two fund cards as the state list, and loses its table card
+
+`SMB-SA-CITYL2-001` · **Minor** · Components & States
+
+| | |
+|---|---|
+| **Design says** | Three KPI cards (Cities Selected, Total Identified, Total Rehabilitated), and the table sits in a bordered card with a tinted, rounded header band. |
+| **Build does** | Five KPI cards — Fund Disbursed and Fund Utilised are added, as on the state list — and the table has no card border and a flat header band. City names are underlined links where the design draws them as plain navy. |
+| **Fix** | Same decision as the state list (S25): add the two cards to the design or drop them. Restore the table's card and its header band. |
 
 ---
 
-## Withdrawn on re-checking
+## Not raised here
 
-Findings that did not survive a second look. They are kept rather than deleted, because a reviewer who saw them in an earlier draft needs to know they were withdrawn and why.
+Two rules narrow this report. Copy, wording, naming and policy are out of scope — this is a design-fidelity audit. And the filter sets are covered by one global note rather than a per-screen demand that the build match the design's list exactly. What that removed, and why:
 
-### The KPI row lost its shared container
+| Was | Why it is not raised |
+|---|---|
+| No accessibility statement is published | Policy, not a design difference — no accessibility statement in EITHER the design or the build. Raised with the GIGW compliance work instead. |
+| The build carries two filters the design does not | Filters — folded into the single global note. |
+| The breadcrumb puts Consent Forms under Access Control | Content — same class as G17: the breadcrumb's parent label. |
+| The date-range filter is not in the build | Filters — folded into the single global note. |
+| The filters are not the ones the design specifies | Filters — folded into the single global note. |
+| The footer year differs between design and build | Content — the footer year (2025 in the design, 2026 in the build). |
+| The password placeholder is worded differently | Content — the password placeholder wording. |
+| Portal names in the drawer are orange | WITHDRAWN — the portal names are orange in the design too, so there is no difference. |
+| The breadcrumb names a different section from the design on nearly every screen | Content — which section name the breadcrumb uses is a vocabulary decision, not a design defect. |
+| The screen has one name in the design and a different one in the build | Content — the screen is called 'Shelter Occupants' in the design and 'Swashraya (Shelter Home) Persons' in the build. A naming decision. |
+| Four column headers are worded differently from the design | Content — four column headers worded differently. |
+| The page is called Roles in the design and Role Management in the build | Content — the page is called Roles in the design and Role Management in the build. |
+| The KPI row lost its shared container | WITHDRAWN — the build has the shared KPI container after all. |
 
-`S03` · **Withdrawn** · Layout & Spacing · Dashboard
+---
+
+## Coverage
 
 | | |
 |---|---|
-| **Design says** | The six cards sit inside one white panel under a PROGRAMME OVERVIEW rule, separated by hairline dividers. |
-| **Build does** | The same: one panel, one rule, hairline dividers. |
-| **Fix** | No action. Withdrawn 2026-09-10 after looking at the two images side by side — it had been written from a text extraction, which cannot see a panel. |
+| Design-to-build pairs compared | 63 |
+| Roles crawled | Super Admin, Central Authority, US/SO, NISD, plus the sign-in surface |
+| Roles skipped at the reviewer's instruction | State Nodal Officer, Nodal Officer, Implementing Agency |
+
+**Built with no design on the page this audit was given.** The surveyor detail page (`/surveyors/<id>`) has no frame on *Smile Beggary (Synced)* — the nearest frame is the surveyor LIST. The same is true of `/hotspot-approvals` and the three Fund Monitoring create forms.
+
+**States not reached.** View Catalog, Edit Permissions, Create Survey Location, View Beneficiary, the dashboard chart tabs and Add District: the control resolves and the click lands, but the view does not finish loading inside the capture window. They are not audited, and they are not counted as clean.
+
+**Engineering defects** with no design counterpart — chiefly that a page refresh signs the officer out on 15 of 20 routes — are recorded in `docs/audit/smile-beggary-capture-and-session.md`, not here.
