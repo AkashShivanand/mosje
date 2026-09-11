@@ -224,20 +224,35 @@ FINDINGS = [
  ("S05","Screen","Citizen - Help Centres & Facilities","PUBLIC-FACILITIES","Minor","Typography",
   "Facility names are set in capitals",
   "The facility name is Title Case at 16px SemiBold #1F2937.",
-  "The facility name is uppercased. At this length a name in capitals is measurably slower to read, and "
-  "no other name in the portal is set this way.",
-  "Remove the uppercase transform and set the name Title Case as the design does.",
+  "The name renders in capitals - 'SOCIETY FOR EDUCATION AND ENVIRONMENT DEVELOPMENT' at 16px/600, "
+  "and the address under it the same way. At this length a name in capitals is measurably slower "
+  "to read, and no other name in the portal is set this way. Checked in the DOM on the live build "
+  "2026-09-11: computed text-transform is `none`, so the capitals are in the REGISTER DATA, not in "
+  "the styling - which is why an earlier reading of this as an uppercase transform was wrong, and "
+  "why the fix is not a CSS change.",
+  "Normalise the name for display rather than printing the register verbatim - the build already "
+  "owns this string on the way to the card. If the department would rather the register itself "
+  "were corrected, that is a data task and this finding should be routed there instead; it is "
+  "flagged as a presentation defect because the citizen-facing page is where it shows.",
   ("National Institute of Mental Health and Neuro Sciences",-6,-6,300,44),
   ("@box",886,446,392,50)),
 
  ("S13","Screen","Citizen - Help Centres & Facilities","PUBLIC-FACILITIES","Minor","Color & Token",
   "The facility-type chip is filled with a colour that is not a token",
-  "The type chip is filled #C8E6C9 with an #81C784 border and its label in #27682A at 11px - the "
-  "green the token set publishes - and the type is what the colour encodes, so a hospital chip is "
-  "blue and a de-addiction centre chip is green.",
-  "Every type chip is filled #EDE7F6, a lavender that appears in no NMBA token, and the same fill is "
-  "used for every facility type, so the colour no longer tells a reader what kind of centre it is.",
-  "Fill the chip from the token set and keep one colour per facility type as the design does.",
+  "The chip encodes the facility type by colour, and both colours are published tokens: a "
+  "de-addiction centre is #C8E6C9 with an #81C784 border and its label #27682A, a hospital is "
+  "#D2E3FC. Sampled off the design frame at the two chips it draws.",
+  "The build DOES colour-code by type - an earlier wording of this finding said it used one fill "
+  "for everything, which was wrong and is withdrawn. Read from the DOM on the live build "
+  "2026-09-11, the four chips are: CPLI #C8E6C9 / label #27682A, DDAC #EDE7F6 / #6A1B9A, IRCA "
+  "#DBEAFE / #1E3A8A, ODIC #FFE0B2 / #E65100. Three of those four fills are in no NMBA token, and "
+  "the one that IS - the design's green - has been put on Community-based Peer-Led Intervention, "
+  "while the District De-addiction Centre, which the design draws in that green, gets the "
+  "lavender. IRCA's #DBEAFE is also a near-miss of the design's hospital blue #D2E3FC: close "
+  "enough to look right and different enough to drift.",
+  "Bind every type chip to a published token, and put the design's green back on the de-addiction "
+  "centre where the design has it. Where a type the design never drew needs its own colour, add "
+  "it to the token set rather than picking a hex - three of these four came from nowhere.",
   ("De Addiction Center",-8,-8,140,26), ("@box",886,408,240,30)),
 
  ("S06","Screen","NAPDDR committee screens (all four)","ADMIN-NAPDDR-STATE-COMMITTEE","Major","Layout & Spacing",
@@ -323,13 +338,17 @@ FINDINGS = [
   "at all - every link it draws resolves to a screen it also draws.",
   "The home page carries an 'About Us' link in its body. It goes to /about-us, which answers HTTP "
   "200 and then renders a not-found page: a near-black card, a cartoon robot, and the words "
-  "'Something went wrong... The page you're looking for has vanished.' Two things are wrong at "
-  "once - a public link on a Government of India landing page that leads nowhere, and a 200 "
-  "response that says 404, which is what a search engine indexes.",
+  "'Something went wrong... The page you're looking for has vanished.' Re-checked on the live "
+  "build 2026-09-11, where a third thing turned up: that whole card is a single 299x187 <img> "
+  "with alt='404 Not Found'. The heading, the apology and the explanation are pixels - no text "
+  "node on the page carries any of them - so they cannot be translated by the portal's own "
+  "language control, cannot reflow, and reach a screen reader as four words. So: a public link "
+  "on a Government of India landing page that leads nowhere, a 200 response that says 404 (which "
+  "is what a search engine indexes), and the message itself locked inside a picture.",
   "Either build the About Us page or take the link off the home page. Whichever is chosen, the "
   "not-found page needs to answer with a 404 status and be redrawn in the portal's own language - "
-  "white card on #F9FAFB, navy heading, the design system's button - rather than a dark panel and "
-  "a cartoon. Note that the ADMIN shell answers the same missing route differently again, by "
+  "white card on #F9FAFB, navy heading, the design system's button, and the message as real text "
+  "rather than baked into an image - rather than a dark panel and a cartoon. Note that the ADMIN shell answers the same missing route differently again, by "
   "silently rendering the dashboard (NMB-SCREEN-026): the estate needs one not-found behaviour, "
   "not two wrong ones.",
   ("@box",0,0,10,10), ("@box",560,232,620,430)),

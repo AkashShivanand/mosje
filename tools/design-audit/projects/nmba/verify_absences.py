@@ -26,6 +26,9 @@ import capture as C                                                  # noqa: E40
 import config as CFG                                                # noqa: E402
 
 ADMIN = "https://nmba-admin-dev.mosje.in"
+PUBLIC = "https://nmba-user-dev.mosje.in"
+BASE = {"admin": ADMIN, "state-nodal-officer": ADMIN, "district-nodal-officer": ADMIN,
+        "public": PUBLIC}
 
 # Each probe returns {"absent": bool, "detail": str}. `absent` is what the FINDING claims; the
 # verdict compares it against what the page says. A probe never decides - it measures.
@@ -191,6 +194,153 @@ PROBES = {
                       e.className.toString() || e.tagName).slice(0, 40);
    return {absent:null, detail: ctl.map(name).join('  |  ')};
    """),
+ # ---- the citizen site. No login, and no accessibility panel unless something opens it. ------
+
+ "S02": dict(
+   claim="The 'Number of Programmes' section is not built on the citizen home page",
+   role="public", route="/",
+   js=r"""
+   const t = (document.body.innerText || '').replace(/\s+/g,' ');
+   const named = /number of programmes/i.test(t);
+   const headings = [...document.querySelectorAll('h1,h2,h3')]
+        .map(h => (h.textContent||'').trim()).filter(Boolean);
+   return {absent: !named,
+           detail: `"Number of Programmes" in text=${named}; headings=${JSON.stringify(headings.slice(0,8))}`};
+   """),
+
+ "S03": dict(
+   claim="The activity card renders no title and no description",
+   role="public", route="/activities",
+   js=r"""
+   // A card is the smallest element that holds both a chip and a date-ish string.
+   const cards = [...document.querySelectorAll('div,article,li')].filter(e => {
+      const t = (e.innerText||''); 
+      return e.children.length && t.length > 20 && t.length < 400 &&
+             /\d{2}[-\/]\d{2}[-\/]\d{4}|\d{4}-\d{2}-\d{2}/.test(t);
+   });
+   if (!cards.length) return {absent:null, detail:'no activity card matched'};
+   // the deepest such element is the card itself rather than the grid around it
+   const card = cards.reduce((a,b) => (b.innerText.length < a.innerText.length ? b : a));
+   const lines = card.innerText.split('\n').map(x=>x.trim()).filter(Boolean);
+   const heads = [...card.querySelectorAll('h1,h2,h3,h4,h5')].map(h=>(h.textContent||'').trim());
+   const longest = lines.reduce((a,b)=> b.length>a.length?b:a, '');
+   return {absent: heads.length === 0,
+           detail: `lines=${JSON.stringify(lines.slice(0,6))}; headings=${JSON.stringify(heads)}; ` +
+                   `longestLine=${longest.length}ch`};
+   """),
+
+ "S04": dict(
+   claim="The facility card has one button, not two, and no service tags",
+   role="public", route="/facilities",
+   js=r"""
+   const tel = document.querySelector('a[href^=tel]');
+   if (!tel) return {absent:null, detail:'no facility card found'};
+   let card = tel.parentElement;
+   for (let i=0;i<6 && card;i++) {
+     if (/get directions/i.test(card.innerText||'')) break;
+     card = card.parentElement;
+   }
+   if (!card) return {absent:null, detail:'no card wrapper with a Get Directions button'};
+   const btns = [...card.querySelectorAll('button, a[role=button]')]
+        .filter(b => (b.textContent||'').trim().length > 2);
+   const dirs = btns.filter(b => /get directions/i.test(b.textContent||''));
+   const w = dirs.length ? Math.round(dirs[0].getBoundingClientRect().width) : null;
+   const cw = Math.round(card.getBoundingClientRect().width);
+   // service tags: several short sibling pills with a background fill
+   const pills = [...card.querySelectorAll('span,div')].filter(e => {
+      if (e.children.length) return false;
+      const t=(e.textContent||'').trim();
+      if (!(t.length>3 && t.length<34)) return false;
+      const cs=getComputedStyle(e.parentElement);
+      return cs.backgroundColor !== 'rgba(0, 0, 0, 0)' && parseFloat(cs.borderRadius) > 4;
+   }).map(e => (e.textContent||'').trim());
+   return {absent: btns.length <= 1 && pills.length < 2,
+           detail: `buttons=${btns.length} ${JSON.stringify(btns.map(b=>b.textContent.trim().slice(0,18)))}; ` +
+                   `GetDirections ${w}px of ${cw}px card; pill-like=${JSON.stringify(pills.slice(0,6))}`};
+   """),
+
+ "S14": dict(
+   claim="The citizen masthead has no user block; it carries a helpline badge and a login button",
+   role="public", route="/",
+   js=r"""
+   const hdr = document.querySelector('header') || document.body;
+   const t = (hdr.innerText||'').replace(/\s+/g,' ');
+   const login = /nasha mukti mitr login/i.test(t);
+   const helpline = /14446/.test(t);
+   const avatar = !!hdr.querySelector('[class*=avatar], [class*=initial]');
+   return {absent: login && helpline && !avatar,
+           detail: `login button=${login}; 14446 badge=${helpline}; avatar/user block=${avatar}`};
+   """),
+
+ "S16": dict(
+   claim="/about-us answers HTTP 200 and renders a not-found page",
+   role="public", route="/about-us",
+   js=r"""
+   // The card is a single <img alt="404 Not Found">, so innerText cannot see the message and the
+   // first version of this probe declared the finding wrong. Test the picture, not the prose.
+   const t = (document.body.innerText||'').replace(/\s+/g,' ');
+   const inText = /(something went wrong|vanished|404)/i.test(t);
+   const img = [...document.querySelectorAll('img')].find(i =>
+        /404|not found/i.test(i.getAttribute('alt')||''));
+   const r = img && img.getBoundingClientRect();
+   return {absent: !!img || inText,
+           detail: `404 as an image=${!!img}${r ? ` (${Math.round(r.width)}x${Math.round(r.height)}, ` +
+                   `alt=${JSON.stringify(img.getAttribute('alt'))})` : ''}; ` +
+                   `404 wording in any TEXT node=${inText}; "Go Back" present=${/go back/i.test(t)}`};
+   """),
+
+ # Not an absence, but it was measured the same wrong way the amber glyph was — off a
+ # screenshot rather than out of the DOM. Checked here while the page is open.
+ "S13": dict(
+   claim="The type chips are colour-coded, and three of the four fills are in no NMBA token",
+   role="public", route="/facilities",
+   js=r"""
+   const tel = document.querySelector('a[href^=tel]');
+   let card = tel && tel.parentElement;
+   for (let i=0;i<6 && card;i++) { if (/get directions/i.test(card.innerText||'')) break; card = card.parentElement; }
+   if (!card) return {absent:null, detail:'no card'};
+   const chips = [...card.querySelectorAll('span,div')].filter(e=>{
+      const cs=getComputedStyle(e);
+      return e.children.length===0 && cs.backgroundColor!=='rgba(0, 0, 0, 0)' &&
+             (e.textContent||'').trim().length>3;
+   });
+   const seen = chips.map(e=>{const cs=getComputedStyle(e);
+      return `${(e.textContent||'').trim().slice(0,26)} bg=${cs.backgroundColor} fg=${cs.color}`;});
+   // and across the whole page, to test "the same fill for every type"
+   const all = [...document.querySelectorAll('span,div')].filter(e=>e.children.length===0 &&
+        /centre|center|ircA|IRCA|DDAC|ODIC|CPLI|USDP/i.test(e.textContent||''))
+        .map(e=>getComputedStyle(e).backgroundColor);
+   const uniq = [...new Set(all)].slice(0,6);
+   // TOKENS are passed in so the probe reports a verdict rather than a list somebody has to grade.
+   const TOK = ['rgb(200, 230, 201)', 'rgb(210, 227, 252)'];
+   const offToken = uniq.filter(c => c !== 'rgba(0, 0, 0, 0)' && !TOK.includes(c));
+   return {absent: uniq.filter(c=>c!=='rgba(0, 0, 0, 0)').length > 1 && offToken.length >= 3,
+           detail: `chip(s): ${JSON.stringify(seen.slice(0,3))} | distinct fills: ${JSON.stringify(uniq)} ` +
+                   `| off-token: ${JSON.stringify(offToken)}`};
+   """),
+ "S05": dict(
+   claim="The facility name is rendered in capitals",
+   role="public", route="/facilities",
+   js=r"""
+   const tel = document.querySelector('a[href^=tel]');
+   let card = tel && tel.parentElement;
+   for (let i=0;i<6 && card;i++) { if (/get directions/i.test(card.innerText||'')) break; card = card.parentElement; }
+   if (!card) return {absent:null, detail:'no card'};
+   // lines[0] is the TYPE CHIP, not the name — the first version of this probe graded the wrong
+   // string and reported the finding false. The name is the card's heaviest/largest leaf.
+   const leaves = [...card.querySelectorAll('*')].filter(e => e.children.length === 0 &&
+        (e.textContent||'').trim().length > 8);
+   const el = leaves.reduce((a,b) => {
+      const sa = parseFloat(getComputedStyle(a).fontSize) * parseInt(getComputedStyle(a).fontWeight);
+      const sb = parseFloat(getComputedStyle(b).fontSize) * parseInt(getComputedStyle(b).fontWeight);
+      return sb > sa ? b : a;
+   }, leaves[0]);
+   const name = el ? (el.textContent||'').trim() : '';
+   const tt = el ? getComputedStyle(el).textTransform : 'n/a';
+   const allCaps = !!name && name === name.toUpperCase() && /[A-Z]{4}/.test(name);
+   return {absent: allCaps,
+           detail: `name=${JSON.stringify(name.slice(0,48))}; allCaps=${allCaps}; text-transform=${tt}`};
+   """),
 }
 
 
@@ -214,14 +364,16 @@ def main():
         for role, probes in by_role.items():
             ctx = br.new_context(viewport={"width": cfg["capture"]["width"], "height": 1000})
             pg = ctx.new_page()
-            if not C.do_login(pg, roles[role], auth):
-                print(f"[{role}] SKIP — no credentials in secrets.json", flush=True)
-                ctx.close(); continue
-            if auth.get("loginMarker", "/login") in pg.url:
-                print(f"[{role}] LOGIN FAILED -> still on the login page", flush=True)
-                ctx.close(); continue
+            base = BASE.get(role, ADMIN)
+            if roles[role].get("auth") != "none":
+                if not C.do_login(pg, roles[role], auth):
+                    print(f"[{role}] SKIP — no credentials in secrets.json", flush=True)
+                    ctx.close(); continue
+                if auth.get("loginMarker", "/login") in pg.url:
+                    print(f"[{role}] LOGIN FAILED -> still on the login page", flush=True)
+                    ctx.close(); continue
             for key, p in probes:
-                pg.goto(ADMIN + p["route"], wait_until="domcontentloaded", timeout=60000)
+                pg.goto(base + p["route"], wait_until="domcontentloaded", timeout=60000)
                 pg.wait_for_timeout(cfg["capture"].get("waitMs", 1800))
                 # The contaminant that caused this script to exist: a wider document than the
                 # export means right-hand elements can look "off the page" when they are not.
