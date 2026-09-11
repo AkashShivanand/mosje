@@ -989,141 +989,86 @@
    * and a straight edge where it has got to. At 100% the clip cuts nothing and
    * the element's own radius gives the right cap back.
    */
-  .orgab__dot[aria-selected="true"]::after {
-    content: "";
+  /*
+   * ── THE FILL IS A WINDOW AND A COVER, AND NOT A CLIP ANY MORE ───────────
+   *
+   * IT WAS ANIMATING `clip-path`, AND CHROME DID NOT PAINT IT. Measured by
+   * screenshotting the dot every 500ms against its own computed style:
+   *
+   *     computed   6.2%  15.5%  24.8%  34.1%  43.4%  52.6%  71.2%  89.7%
+   *     RENDERED     0%     0%     0%     0%     0%    98%    98%    98%
+   *
+   * The style engine interpolates it perfectly and the raster jumps once, at
+   * exactly half the duration — the signature of a property falling back to
+   * discrete interpolation. Every check this component has had measured the
+   * computed value, which is why it read as a clean linear fill for days while
+   * the thing on screen was a bar that sat empty for three seconds and then
+   * snapped to full. Two screen recordings showed it before it was believed.
+   *
+   * It is NOT the 3D context: `perspective: none` on the stage and
+   * `transform-style: flat` on the flipper were each tried and the render stayed
+   * binary.
+   *
+   * So the fill no longer animates a paint property at all. The dot holds a real
+   * `.orgab__fill` element — a WINDOW the size of the bar, clipping — and its
+   * `::before` is the white PILL, sitting one full width to the left and sliding
+   * in on `transform`, which is composited and cannot do this.
+   *
+   * THE WINDOW IS TRANSPARENT, which matters: the dot's own `::before` groove
+   * shows through wherever the pill has not reached, so the unfilled part is the
+   * dark groove it has always been. The first attempt put the white ON the
+   * window and slid a cover over it, and the cover — translucent dark over
+   * white rather than over the card — came out grey.
+   *
+   * The pill leads with its RIGHT edge, which is square, so the fill still has
+   * the flat leading edge four earlier passes argued about; its left cap is
+   * round and the window's radius finishes the other end. A real element rather
+   * than another pseudo-element because a pseudo-element cannot contain one.
+   */
+  .orgab__dot[aria-selected="true"] .orgab__fill {
     position: absolute;
     inline-size: var(--sa-padding-40);
     block-size: var(--sa-padding-6);
     border-radius: var(--sa-shape-full);
+    overflow: hidden;
+  }
+
+  .orgab__fill::before {
+    content: "";
+    position: absolute;
+    inset: 0;
     background-color: var(--sa-text-neutral-inverse);
-    clip-path: inset(0 100% 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full));
-    /*
-     * IT WAITS FOR THE CARD TO LAND. `animation-delay` is the flip.
-     *
-     * Three things used to start on the same frame: the card began its
-     * half-turn, the two dots began swapping widths (24 -> 40 and 40 -> 24 over
-     * about 208ms), and this fill began counting. Measured, the new bar was
-     * already at 3% before it had finished GROWING — a 6px-tall element getting
-     * wider and fuller at the same time, which is two motions competing for one
-     * object and reads as a lurch.
-     *
-     * Delayed by the flip, the sequence is legible instead of simultaneous: the
-     * old fill leaves, the card turns, the dots resize, and only then does the
-     * bar start from nothing. The reader is also no longer charged for the half
-     * second in which the panel was edge-on and unreadable.
-     */
+    /* Round where it started, square where it is going — the leading edge. */
+    border-radius: var(--sa-shape-full) 0 0 var(--sa-shape-full);
+    /* One width to the left is EMPTY; arriving at zero is full. */
+    transform: translateX(-100%);
     animation: orgab-dwell var(--orgab-dwell, 6000ms) linear var(--orgab-flip, 520ms) forwards;
     animation-play-state: paused;
   }
 
-  /*
-   * THE FILL LEAVES, RATHER THAN BEING DELETED.
-   *
-   * `::after` belongs to `[aria-selected="true"]`, so at the turn it simply
-   * stopped matching: one frame a full 40px white bar, the next frame nothing,
-   * and an empty bar in the other dot. Captured frame by frame off a screen
-   * recording, that is a teleport — the indicator is in two places and travels
-   * through neither, so the eye has to re-find it on every rotation.
-   *
-   * `data-leaving` holds the outgoing fill for exactly the flip and lets it go
-   * out the way the card does: fading as its own dot narrows back to 24. It is
-   * a fade and not a directional wipe on purpose — with two panels the travel
-   * alternates left and right, and a wipe that runs the wrong way half the time
-   * is worse than one that runs no way at all.
-   */
-  /*
-   * IT RETRACTS INTO ITS OWN DOT — `100%`, never a stated 40.
-   *
-   * Stated at 40 it kept its full width while the dot underneath it shrank back
-   * to 24, so an absolutely-positioned 40px bar centred in a 24px box spilled
-   * out of both ends and straight into the neighbour, which was itself growing
-   * 24 -> 40 from the other side. Captured at 60ms intervals, the middle of the
-   * handoff was three overlapping shapes where there should be two dots: a
-   * fading bar, a stray circle, and the incoming track, all on top of one
-   * another. The turn read as a smear.
-   *
-   * At `100%` the fill is bounded by the dot that owns it, so it narrows as
-   * that dot narrows and the gesture is the fill retracting rather than
-   * escaping.
-   *
-   * AND IT LEAVES BEFORE THE WIDTHS FINISH. The fade ran for the whole flip
-   * (520ms) against a width transition of 250ms, so a ghost of the old fill was
-   * still on screen after the new track had fully formed. The exit duration
-   * (150ms) clears it first, which is the order the eye expects: the old thing
-   * goes, then the new thing arrives.
-   */
-  .orgab__dot[data-leaving]::after {
-    content: "";
-    position: absolute;
-    inline-size: 100%;
-    block-size: var(--sa-padding-6);
-    border-radius: var(--sa-shape-full);
-    background-color: var(--sa-text-neutral-inverse);
-    clip-path: inset(0 0 0 0 round var(--sa-shape-full));
-    animation: orgab-drain var(--sa-motion-exit-duration) var(--sa-motion-exit-easing) forwards;
-  }
-
-  @keyframes orgab-drain {
-    from { opacity: 1; }
-    to   { opacity: 0; }
-  }
-
-  .orgab__pager[data-running] .orgab__dot[aria-selected="true"]::after {
+  .orgab__pager[data-running] .orgab__fill::before {
     animation-play-state: running;
   }
 
-  /*
-   * PINNED WHERE THE READER STOPPED IT.
-   *
-   * Pressing a dot changes the panel, so the fill moves to a different dot and
-   * the animation would start it from nothing — and the same press stops the
-   * rotation for good, so that nothing stayed on screen. The reader had just
-   * been watching a bar four tenths of the way across; what they got back was
-   * an empty groove beside a play triangle, which reads as a control that has
-   * broken rather than one that is holding.
-   *
-   * `--orgab-held` is the percentage that was on screen at the moment of the
-   * press. The animation is taken off the element entirely rather than paused,
-   * because a paused animation holds ITS OWN frame — which on a freshly
-   * selected dot is zero, the very thing being fixed.
-   *
-   * The transport control's pause is untouched and still works the old way: it
-   * changes no panel, so its animation is holding the right frame already.
-   */
-  /*
-   * PICKED UP PARTWAY — a NEGATIVE delay, which is the whole trick.
-   *
-   * A negative `animation-delay` starts an animation as though it had already
-   * been running for that long, so the fill begins at the percentage the reader
-   * stopped it at and finishes early by exactly the same amount. No keyframes to
-   * duplicate, no `currentTime` to reach into a pseudo-element and set, and it
-   * survives being paused: with the pointer still on the card the animation sits
-   * paused at the picked-up offset, showing the held position, and carries on
-   * from there when the pointer leaves.
-   *
-   * The rotation's wait is cut by the same amount in the component. The two
-   * numbers come from one value and must keep doing so — if the bar picks up at
-   * 40% and the card still waits a whole dwell, the bar is full with seconds
-   * left to run, which is the dead hold this file has already fixed once.
-   *
-   * There is no flip to wait out here: the card is already on screen, so this
-   * replaces the delay rather than adding to it.
-   */
-  .orgab__pager[data-resume] .orgab__dot[aria-selected="true"]::after {
+  /* Picked up partway — the same negative delay as before, on the new element. */
+  .orgab__pager[data-resume] .orgab__fill::before {
     animation-delay: calc(-1 * var(--orgab-resume, 0ms));
   }
 
-  .orgab__pager[data-held] .orgab__dot[aria-selected="true"]::after {
+  /*
+   * Pinned where the reader stopped it. The cover's offset IS the fill
+   * percentage — at 0 it covers everything, at 100% it has left entirely — so
+   * the held value goes straight in with no arithmetic.
+   */
+  .orgab__pager[data-held] .orgab__fill::before {
     animation: none;
-    clip-path: inset(
-      0 calc(100% - var(--orgab-held, 0%)) 0 0 round var(--sa-shape-full) 0 0
-        var(--sa-shape-full)
-    );
+    /* Held at p% means the pill is (100 - p)% still to travel. */
+    transform: translateX(calc(var(--orgab-held, 0%) - 100%));
   }
 
   @keyframes orgab-dwell {
-    from { clip-path: inset(0 100% 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full)); }
-    to   { clip-path: inset(0 0 0 0 round var(--sa-shape-full) 0 0 var(--sa-shape-full)); }
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(0); }
   }
 
   /*
@@ -1383,14 +1328,14 @@
 
     /* Nothing is going to turn, so the current dot is simply a solid bar. An
        empty track beside a filled dot would say a change is coming.
-       `transform: scaleX(1)` is what this used to say, and it had been dead
-       since the fill stopped being a scale: with the animation off, the base
-       `clip-path: inset(0 100% 0 0)` held, so the bar a reduced-motion reader
-       actually got was EMPTY — the opposite of what the line above promises.
-       The clip is reset instead, which is the mechanism the fill now uses. */
-    .orgab__dot[aria-selected="true"]::after {
+       This line has now been wrong twice: it said `transform: scaleX(1)` when
+       the fill was a clip, then `clip-path: inset(0 0 0 0)` when the fill became
+       a sliding cover. Both left the bar EMPTY — the opposite of what it
+       promises — because each named the mechanism the fill had just stopped
+       using. It is the cover that has to be sent away now. */
+    .orgab__fill::before {
       animation: none;
-      clip-path: inset(0 0 0 0 round var(--sa-shape-full));
+      transform: translateX(0);
     }
 
     /* There is no turn to cover, so nothing leaves. */
