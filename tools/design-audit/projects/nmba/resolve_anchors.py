@@ -32,6 +32,14 @@ WHY = {
  "G12": {"_anchorWhy": "The icon tile is an SVG on a filled div with no text, so the extraction "
          "records neither. The tile's fill was sampled from the capture at x590-650 y240-290 and "
          "measures #FDE8EF against the design's #E5EFF9."},
+ "G26": {"_anchorWhy": "The field's placeholder text is already NMB-GLOBAL-008's anchor, and two "
+         "findings must not share one box. The anchor here is the field's own measured rect on "
+         "both sides - 938x40 in the design, 768x43 in the build - which is also the geometry "
+         "half of the finding."},
+ "S17": {"_anchorWhy": "The finding is about the SHEET - its size, its inset, its radius and the "
+         "scrim behind it - and a sheet has no text node. The box is the sheet's top 300px on "
+         "both sides, measured off the captures, so the crop shows the edge treatment and the "
+         "title together rather than describing them."},
  "G24": {"_anchorWhy": "GATE 3 flagged this one, correctly and usefully: the finding is about a "
          "header BAND, and the anchor resolves to an element with no background. That is not the "
          "resolver landing beside the band - it is the finding. The build's header has no fill at "

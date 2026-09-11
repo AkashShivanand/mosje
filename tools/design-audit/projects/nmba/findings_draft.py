@@ -158,15 +158,18 @@ FINDINGS = [
 
  ("G12","Global","KPI cards (every dashboard)","STATE-NODAL-OFFICER-DASHBOARD","Minor","Color & Token",
   "KPI icon tiles use a pink tint that is not a token",
-  "Every KPI icon sits on a 32px tile filled #E5EFF9 - Primary/50 - at radius 10, so the row of cards "
-  "reads as one set.",
-  "The tiles are tinted per card. Read from the DOM on the live officer dashboard, 2026-09-11, the "
-  "four tiles in one row are #FDE8EF (pink, on 'Important Documents'), #E6F7FB (cyan), #FFF6E5 "
-  "(cream) and #EEF1F4 (grey). NONE of the four is in the NMBA token set, against the design's "
-  "single #E5EFF9, which is. So a row of metrics that carry no status meaning is colour-coded as "
-  "though they did, in four colours the design never published.",
-  "Fill every KPI icon tile with #E5EFF9. Reserve a coloured tint for a metric that genuinely signals "
-  "a state, and take the tint from the token set when you do.",
+  "Every KPI icon sits on a 32x32 tile filled #E5EFF9 - Primary/50 - at radius 10, so the row of "
+  "cards reads as one set. The card around it is 353x138, #FFFFFF, 1px #E5E7EB, radius 16, padded "
+  "24 - which the build matches almost exactly, at 355x134. It is only the tile that differs.",
+  "The tile is 44x44 at radius 12 - a third larger than the design's 32x32 at radius 10 - and it is "
+  "tinted per card. Read from the DOM on the live officer dashboard, 2026-09-11, the four tiles in "
+  "one row are #FDE8EF (pink, on 'Important Documents'), #E6F7FB (cyan), #FFF6E5 (cream) and "
+  "#EEF1F4 (grey). NONE of the four is in the NMBA token set, against the design's single "
+  "#E5EFF9, which is. So a row of metrics that carry no status meaning is colour-coded as though "
+  "they did, in four colours the design never published - on a tile that is also the wrong size. "
+  "The card itself is right, which is worth saying: this is the tile, not the component.",
+  "Draw the tile at 32x32, radius 10, filled #E5EFF9. Reserve a coloured tint for a metric that "
+  "genuinely signals a state, and take the tint from the token set when you do.",
   ("Important Documents",270,-6,40,40), ("Important Documents",255,-8,44,44)),
 
  ("G13","Global","KPI cards (every dashboard)","STATE-NODAL-OFFICER-DASHBOARD","Minor","Typography",
@@ -363,6 +366,43 @@ FINDINGS = [
   "not two wrong ones.",
   ("@box",0,0,10,10), ("@box",560,232,620,430)),
 
+ ("S17","Screen","Admin - Add User side sheet","ADMIN-USER-MANAGEMENT-ADD-USER-MODAL","Major","Layout & Spacing",
+  "The side sheet fills the window edge to edge instead of floating inside it",
+  "The sheet is a 520x978 panel inset 16px from the top, right and bottom of the window, at radius "
+  "16, with a 1px #E5EFF9 edge and two drop shadows - so it reads as a card lifted above the page. "
+  "Behind it the scrim is #0A0D13 at 50%. The title is 'Add User' at 20px SemiBold #1F2937, and "
+  "each field label is 14px Medium #1F2937 over a 488x44 input at radius 8 with a 1px #D1D5DB "
+  "edge.",
+  "The sheet is 620x1000 flush to the top, right and bottom edges, with no radius, no border and "
+  "no shadow - a full-height slab rather than a floating panel, 100px wider than designed. The "
+  "scrim is #000000 at 60%, darker than the design's. The title is 22px/600 #003366, blue where "
+  "the design is near-black and two points larger. Inputs are 588x36 - 8px shorter than designed - "
+  "with a 1px #CED4DA edge, which is a fourth near-miss grey against the design's #D1D5DB. Labels "
+  "are 16px/400 #000000 where the design says 14px Medium #1F2937, and they are not even "
+  "consistent with each other: 'Mobile Number' renders 14px/600 #374151 while 'First Name', 'Last "
+  "Name', 'Email ID' and 'Select Role' render 16px/400 #000000, in the same form.",
+  "Build the sheet as the design draws it: 520 wide, inset 16 from the window edges, radius 16, "
+  "the #E5EFF9 edge and the two shadows, over a 50% #0A0D13 scrim. Set the title to 20px SemiBold "
+  "#1F2937 and every label to 14px Medium #1F2937 - one label style for the whole form - over "
+  "44px inputs bound to #D1D5DB. The same sheet is used by Add Document, Add Best Practice, Add "
+  "Event and Add Feedback, so this lands on eight designed flows at once.",
+  ("@box",904,16,520,300), ("@box",820,0,620,300)),
+
+ ("S18","Screen","Admin - Add User side sheet","ADMIN-USER-MANAGEMENT-ADD-USER-MODAL","Major","Components & States",
+  "Required fields carry no marker",
+  "Seven of the sheet's fields are marked required with a red asterisk after the label, #EC5042, "
+  "so a user can see what must be filled before they start: First Name, Last Name, Email ID, "
+  "Mobile Number, Select Role, Select State and Select District.",
+  "There is not one asterisk in the built sheet - counted in the DOM on 2026-09-11, the design "
+  "frame carries 7 and the build carries 0. Nothing on the form distinguishes a required field "
+  "from an optional one, so the first time a user learns which fields are mandatory is when "
+  "submitting fails.",
+  "Restore the required marker the design draws - the red asterisk after the label - on all seven "
+  "fields. Pair it with `required` on the input so the marker is not the only signal: a mark that "
+  "exists only in colour and only in a glyph is not announced to a screen reader, and WCAG 2.2 "
+  "asks that an instruction not depend on a sensory characteristic alone.",
+  ("Mobile Number",-8,-10,300,32), ("Mobile Number",-8,-10,300,32)),
+
  ("S12","Screen","Important Documents (all roles)","ADMIN-IMPORTANT-DOCUMENTS","Nit","Layout & Spacing",
   "The row actions are in a different order, and in a different style",
   "The row actions run download, then edit, then delete, each as a bordered icon-button - a light "
@@ -452,6 +492,37 @@ FINDINGS = [
   "estate's own rule is that it ships at 3x the largest surface that renders it rather than being "
   "scaled up from a smaller file.",
   ("@box",70,46,1170,90), ("@box",70,40,1170,95)),
+
+ # Added 2026-09-11 — the third sweep of component-whole diffs, after the sidebar, the table and
+ # the masthead. Form controls and the side sheet, measured on both sides.
+ ("G26","Global","Search field (every list screen)","ADMIN-USER-MANAGEMENT","Major","Typography",
+  "The search field is the only thing in the portal not set in Noto Sans",
+  "The field is 938x40 at radius 8 with a 1px #E5E7EB edge, and its placeholder is 14px Noto Sans "
+  "Regular #374151 - the same face, size and grey as every other field in the design.",
+  "The field renders in POPPINS at 16px #000000, in a box 768x43 at radius 6. Counted in the DOM "
+  "on 2026-09-11: of 147 rendered elements on User Management exactly ONE is not Noto Sans, and it "
+  "is this input; the same is true on Important Documents. So a single control in the portal is "
+  "set in a different typeface, a size larger than the design, and in pure black rather than the "
+  "#374151 the design uses for placeholder text.",
+  "Remove the Poppins declaration - it is one rule and it is the only thing importing that family "
+  "- and let the field inherit Noto Sans at 14px #374151. The estate's standing instruction is "
+  "Noto Sans across all government properties and no other family introduced. While the rule is "
+  "being changed, the box wants the design's 40px height and radius 8 rather than 43 and 6.",
+  ("@box",324,250,938,40), ("@box",328,234,768,43)),
+
+ ("G27","Global","Buttons (every screen)","ADMIN-USER-MANAGEMENT","Major","Components & States",
+  "Primary and secondary buttons are built to different metrics",
+  "Buttons are 40px tall at radius 8, padded 8-10px vertically and 16/24 horizontally, with the "
+  "label at 14px Medium: the primary filled #003366 with a #FFFFFF label, the secondary a 1px "
+  "#003366 outline with a #003366 label.",
+  "The primary 'Add User' is 36px tall at radius 4 - half the design's radius - padded 0/18 with "
+  "its label at weight 600 rather than Medium. The secondary export buttons are 38px at radius 8. "
+  "So no button in the toolbar is the height the design draws, and the primary and secondary "
+  "disagree with each other on radius as well as with the design.",
+  "Use one button component at the design's 40px height and radius 8, with the label at Medium. "
+  "The primary's radius 4 is the outlier - every other rounded thing on the screen is 6, 8, 10 or "
+  "16, so this is a fifth radius nobody chose.",
+  ("Add User",-24,-8,126,40), ("Add User",-18,-8,100,36)),
 
  ("G17","Global","Toolbar (every list screen)","ADMIN-USER-MANAGEMENT","Minor","Components & States",
   "Export is two buttons where the design has one",

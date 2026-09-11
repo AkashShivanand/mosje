@@ -41,6 +41,13 @@ def png_size(p):
         return struct.unpack(">II", fh.read(8))
 
 
+
+def slug_of_frame(fr):
+    """The slug a design frame maps to, same rule dump_design_elements.py uses."""
+    role = fr["name"].split("/")[0]
+    r = (fr.get("route") or "/").strip("/").replace("/", "-") or "home"
+    return (role + "-" + r).upper()
+
 SEV_ORDER = {"Blocker": 0, "Major": 1, "Minor": 2, "Nit": 3}
 
 
@@ -173,6 +180,46 @@ def main():
             "pins": [dict(pn, sev=sev_of.get(pn["id"], "Minor"))
                      for pn in pins_for([k["id"] for k in mine], danch, banch, LIVE, FIG, slug)],
         })
+
+    # ---- screens captured OUTSIDE the nav crawl -----------------------------------------------
+    # A flow state - a side sheet, a modal, a wizard step - is reached by clicking, not by a
+    # route, so it never appears in the capture bundle. It is still an audited screen the moment
+    # it has a design frame and a capture, and the coverage arithmetic has to count it: otherwise
+    # a finding on it produces a board with no row, and `boarded + ledger != captured`. (That
+    # assertion is what caught this, on the Add User sheet, 2026-09-11.)
+    have = {r["slug"] for r in rows}
+    for k in fin["kept"]:
+        slug = k.get("slug")
+        if not slug or slug in have or k["scope"] == "Global":
+            continue
+        lp = os.path.join(LIVE, f"{slug}.png")
+        if not os.path.exists(lp):
+            continue
+        have.add(slug)
+        shutil.copyfile(lp, os.path.join(SHEET, f"{slug}.build.png"))
+        dp = os.path.join(FIG, f"{slug}.png")
+        has_design = os.path.exists(dp)
+        if has_design:
+            shutil.copyfile(dp, os.path.join(SHEET, f"{slug}.design.png"))
+        fr = next((f for f in frames if f.get("node_id") and
+                   slug_of_frame(f) == slug), None)
+        mine = sorted([x for x in issues.get(slug, []) if x["scope"] != "Global"],
+                      key=lambda x: x["id"])
+        role = slug.split("-")[0].lower()
+        role = role if role in ROLE_ORDER else "admin"
+        rows.append({
+            "slug": slug, "role": role, "roleTitle": ROLE_TITLE.get(role, role),
+            "title": k["screen"], "route": "", "url": "",
+            "node": fr["node_id"] if fr else None,
+            "figmaUrl": FURL.format(n=fr["node_id"].replace(":", "-")) if fr else None,
+            "designPng": f"{slug}.design.png" if has_design else None,
+            "buildPng": f"{slug}.build.png",
+            "designNote": None if has_design else UNDESIGNED_NOTE,
+            "issues": [f'{i + 1}. {x["title"]}' for i, x in enumerate(mine)],
+            "findingIds": [x["id"] for x in mine],
+            "pins": [dict(pn, sev=sev_of.get(pn["id"], "Minor"))
+                     for pn in pins_for([x["id"] for x in mine], danch, banch, LIVE, FIG, slug)],
+            "_offCrawl": True})
 
     gl = [r for r in rows if r["role"] == "global"]
     sc = [r for r in rows if r["role"] != "global"]

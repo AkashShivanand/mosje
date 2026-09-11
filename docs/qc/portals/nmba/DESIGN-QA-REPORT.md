@@ -10,13 +10,13 @@
 
 | | |
 |---|---|
-| Boards in the report | 34 |
-| Findings | **39** - 3 Blocker, 16 Major, 15 Minor, 5 Nit |
-| Applies to every screen | 25 |
-| Specific to one screen | 14 |
+| Boards in the report | 37 |
+| Findings | **43** - 3 Blocker, 20 Major, 15 Minor, 5 Nit |
+| Applies to every screen | 27 |
+| Specific to one screen | 16 |
 | Withdrawn, not raised, or noted about the design file | 13 |
 
-The NMBA design page (‘NMBA — Dev Synced — August’) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles — Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication. This report carries only what has something to say. Of the 50 screens captured, 9 carry a finding of their own and appear here as a board; the remaining 41 were checked against their design frames and carry no screen-specific finding, so they are named one by one in the ‘Coverage — NMBA’ tab of the QC tracker rather than repeated here as a page of picture each. The portal-wide findings still apply to all 50: the 25 global boards below each draw one such finding on a screen that shows it clearly.
+The NMBA design page (‘NMBA — Dev Synced — August’) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles — Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication. This report carries only what has something to say. Of the 51 screens captured, 10 carry a finding of their own and appear here as a board; the remaining 41 were checked against their design frames and carry no screen-specific finding, so they are named one by one in the ‘Coverage — NMBA’ tab of the QC tracker rather than repeated here as a page of picture each. The portal-wide findings still apply to all 51: the 27 global boards below each draw one such finding on a screen that shows it clearly.
 
 **Where to start.** The findings with the widest reach or the highest severity:
 
@@ -152,6 +152,30 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
 
+### The search field is the only thing in the portal not set in Noto Sans
+
+`NMB-GLOBAL-044` · **Major** · Typography · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | The field is 938x40 at radius 8 with a 1px #E5E7EB edge, and its placeholder is 14px Noto Sans Regular #374151 - the same face, size and grey as every other field in the design. |
+| **Build does** | The field renders in POPPINS at 16px #000000, in a box 768x43 at radius 6. Counted in the DOM on 2026-09-11: of 147 rendered elements on User Management exactly ONE is not Noto Sans, and it is this input; the same is true on Important Documents. So a single control in the portal is set in a different typeface, a size larger than the design, and in pure black rather than the #374151 the design uses for placeholder text. |
+| **Fix** | Remove the Poppins declaration - it is one rule and it is the only thing importing that family - and let the field inherit Noto Sans at 14px #374151. The estate's standing instruction is Noto Sans across all government properties and no other family introduced. While the rule is being changed, the box wants the design's 40px height and radius 8 rather than 43 and 6.  (Anchor: The field's placeholder text is already NMB-GLOBAL-008's anchor, and two findings must not share one box. The anchor here is the field's own measured rect on both sides - 938x40 in the design, 768x43 in the build - which is also the geometry half of the finding.) |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
+
+### Primary and secondary buttons are built to different metrics
+
+`NMB-GLOBAL-045` · **Major** · Components & States · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | Buttons are 40px tall at radius 8, padded 8-10px vertically and 16/24 horizontally, with the label at 14px Medium: the primary filled #003366 with a #FFFFFF label, the secondary a 1px #003366 outline with a #003366 label. |
+| **Build does** | The primary 'Add User' is 36px tall at radius 4 - half the design's radius - padded 0/18 with its label at weight 600 rather than Medium. The secondary export buttons are 38px at radius 8. So no button in the toolbar is the height the design draws, and the primary and secondary disagree with each other on radius as well as with the design. |
+| **Fix** | Use one button component at the design's 40px height and radius 8, with the label at Medium. The primary's radius 4 is the outlier - every other rounded thing on the screen is 6, 8, 10 or 16, so this is a fifth radius nobody chose. |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
+
 ### Dropdowns are the browser's own select, not the design system's
 
 `NMB-GLOBAL-007` · **Minor** · Components & States · Scope: every screen with this element
@@ -206,9 +230,9 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 | | |
 |---|---|
-| **Design says** | Every KPI icon sits on a 32px tile filled #E5EFF9 - Primary/50 - at radius 10, so the row of cards reads as one set. |
-| **Build does** | The tiles are tinted per card. Read from the DOM on the live officer dashboard, 2026-09-11, the four tiles in one row are #FDE8EF (pink, on 'Important Documents'), #E6F7FB (cyan), #FFF6E5 (cream) and #EEF1F4 (grey). NONE of the four is in the NMBA token set, against the design's single #E5EFF9, which is. So a row of metrics that carry no status meaning is colour-coded as though they did, in four colours the design never published. |
-| **Fix** | Fill every KPI icon tile with #E5EFF9. Reserve a coloured tint for a metric that genuinely signals a state, and take the tint from the token set when you do.  (Anchor: The icon tile is an SVG on a filled div with no text, so the extraction records neither. The tile's fill was sampled from the capture at x590-650 y240-290 and measures #FDE8EF against the design's #E5EFF9.) |
+| **Design says** | Every KPI icon sits on a 32x32 tile filled #E5EFF9 - Primary/50 - at radius 10, so the row of cards reads as one set. The card around it is 353x138, #FFFFFF, 1px #E5E7EB, radius 16, padded 24 - which the build matches almost exactly, at 355x134. It is only the tile that differs. |
+| **Build does** | The tile is 44x44 at radius 12 - a third larger than the design's 32x32 at radius 10 - and it is tinted per card. Read from the DOM on the live officer dashboard, 2026-09-11, the four tiles in one row are #FDE8EF (pink, on 'Important Documents'), #E6F7FB (cyan), #FFF6E5 (cream) and #EEF1F4 (grey). NONE of the four is in the NMBA token set, against the design's single #E5EFF9, which is. So a row of metrics that carry no status meaning is colour-coded as though they did, in four colours the design never published - on a tile that is also the wrong size. The card itself is right, which is worth saying: this is the tile, not the component. |
+| **Fix** | Draw the tile at 32x32, radius 10, filled #E5EFF9. Reserve a coloured tint for a metric that genuinely signals a state, and take the tint from the token set when you do.  (Anchor: The icon tile is an SVG on a filled div with no text, so the extraction records neither. The tile's fill was sampled from the capture at x590-650 y240-290 and measures #FDE8EF against the design's #E5EFF9.) |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2309-14405) · [Live page](https://nmba-admin-dev.mosje.in/dashboard)
 
@@ -347,6 +371,32 @@ Each has its own board in the PDF, showing the design and the build side by side
 | **Fix** | Build the section as designed on both dashboards. |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2309-14405) · [Live page](https://nmba-admin-dev.mosje.in/dashboard)
+
+## Admin - Add User side sheet
+
+### The side sheet fills the window edge to edge instead of floating inside it
+
+`NMB-SCREEN-042` · **Major** · Layout & Spacing · Scope: Admin - Add User side sheet
+
+| | |
+|---|---|
+| **Design says** | The sheet is a 520x978 panel inset 16px from the top, right and bottom of the window, at radius 16, with a 1px #E5EFF9 edge and two drop shadows - so it reads as a card lifted above the page. Behind it the scrim is #0A0D13 at 50%. The title is 'Add User' at 20px SemiBold #1F2937, and each field label is 14px Medium #1F2937 over a 488x44 input at radius 8 with a 1px #D1D5DB edge. |
+| **Build does** | The sheet is 620x1000 flush to the top, right and bottom edges, with no radius, no border and no shadow - a full-height slab rather than a floating panel, 100px wider than designed. The scrim is #000000 at 60%, darker than the design's. The title is 22px/600 #003366, blue where the design is near-black and two points larger. Inputs are 588x36 - 8px shorter than designed - with a 1px #CED4DA edge, which is a fourth near-miss grey against the design's #D1D5DB. Labels are 16px/400 #000000 where the design says 14px Medium #1F2937, and they are not even consistent with each other: 'Mobile Number' renders 14px/600 #374151 while 'First Name', 'Last Name', 'Email ID' and 'Select Role' render 16px/400 #000000, in the same form. |
+| **Fix** | Build the sheet as the design draws it: 520 wide, inset 16 from the window edges, radius 16, the #E5EFF9 edge and the two shadows, over a 50% #0A0D13 scrim. Set the title to 20px SemiBold #1F2937 and every label to 14px Medium #1F2937 - one label style for the whole form - over 44px inputs bound to #D1D5DB. The same sheet is used by Add Document, Add Best Practice, Add Event and Add Feedback, so this lands on eight designed flows at once.  (Anchor: The finding is about the SHEET - its size, its inset, its radius and the scrim behind it - and a sheet has no text node. The box is the sheet's top 300px on both sides, measured off the captures, so the crop shows the edge treatment and the title together rather than describing them.) |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52066-127999)
+
+### Required fields carry no marker
+
+`NMB-SCREEN-043` · **Major** · Components & States · Scope: Admin - Add User side sheet
+
+| | |
+|---|---|
+| **Design says** | Seven of the sheet's fields are marked required with a red asterisk after the label, #EC5042, so a user can see what must be filled before they start: First Name, Last Name, Email ID, Mobile Number, Select Role, Select State and Select District. |
+| **Build does** | There is not one asterisk in the built sheet - counted in the DOM on 2026-09-11, the design frame carries 7 and the build carries 0. Nothing on the form distinguishes a required field from an optional one, so the first time a user learns which fields are mandatory is when submitting fails. |
+| **Fix** | Restore the required marker the design draws - the red asterisk after the label - on all seven fields. Pair it with `required` on the input so the marker is not the only signal: a mark that exists only in colour and only in a glyph is not announced to a screen reader, and WCAG 2.2 asks that an instruction not depend on a sensory characteristic alone. |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52066-127999)
 
 ## Admin, State and District shells
 

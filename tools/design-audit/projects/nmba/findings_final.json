@@ -154,9 +154,9 @@
    "sev": "Minor",
    "cat": "Color & Token",
    "title": "KPI icon tiles use a pink tint that is not a token",
-   "design": "Every KPI icon sits on a 32px tile filled #E5EFF9 - Primary/50 - at radius 10, so the row of cards reads as one set.",
-   "build": "The tiles are tinted per card. Read from the DOM on the live officer dashboard, 2026-09-11, the four tiles in one row are #FDE8EF (pink, on 'Important Documents'), #E6F7FB (cyan), #FFF6E5 (cream) and #EEF1F4 (grey). NONE of the four is in the NMBA token set, against the design's single #E5EFF9, which is. So a row of metrics that carry no status meaning is colour-coded as though they did, in four colours the design never published.",
-   "fix": "Fill every KPI icon tile with #E5EFF9. Reserve a coloured tint for a metric that genuinely signals a state, and take the tint from the token set when you do.",
+   "design": "Every KPI icon sits on a 32x32 tile filled #E5EFF9 - Primary/50 - at radius 10, so the row of cards reads as one set. The card around it is 353x138, #FFFFFF, 1px #E5E7EB, radius 16, padded 24 - which the build matches almost exactly, at 355x134. It is only the tile that differs.",
+   "build": "The tile is 44x44 at radius 12 - a third larger than the design's 32x32 at radius 10 - and it is tinted per card. Read from the DOM on the live officer dashboard, 2026-09-11, the four tiles in one row are #FDE8EF (pink, on 'Important Documents'), #E6F7FB (cyan), #FFF6E5 (cream) and #EEF1F4 (grey). NONE of the four is in the NMBA token set, against the design's single #E5EFF9, which is. So a row of metrics that carry no status meaning is colour-coded as though they did, in four colours the design never published - on a tile that is also the wrong size. The card itself is right, which is worth saying: this is the tile, not the component.",
+   "fix": "Draw the tile at 32x32, radius 10, filled #E5EFF9. Reserve a coloured tint for a metric that genuinely signals a state, and take the tint from the token set when you do.",
    "id": "NMB-GLOBAL-012",
    "_anchorWhy": "The icon tile is an SVG on a filled div with no text, so the extraction records neither. The tile's fill was sampled from the capture at x590-650 y240-290 and measures #FDE8EF against the design's #E5EFF9."
   },
@@ -374,6 +374,33 @@
    "_evidenceWhy": "There is no design counterpart to crop against: the citizen design draws neither an About Us page nor any not-found state, so the evidence is the build alone, plus the measured fact that /about-us answers HTTP 200 while rendering 404."
   },
   {
+   "old": "S17",
+   "scope": "Screen",
+   "screen": "Admin - Add User side sheet",
+   "slug": "ADMIN-USER-MANAGEMENT-ADD-USER-MODAL",
+   "sev": "Major",
+   "cat": "Layout & Spacing",
+   "title": "The side sheet fills the window edge to edge instead of floating inside it",
+   "design": "The sheet is a 520x978 panel inset 16px from the top, right and bottom of the window, at radius 16, with a 1px #E5EFF9 edge and two drop shadows - so it reads as a card lifted above the page. Behind it the scrim is #0A0D13 at 50%. The title is 'Add User' at 20px SemiBold #1F2937, and each field label is 14px Medium #1F2937 over a 488x44 input at radius 8 with a 1px #D1D5DB edge.",
+   "build": "The sheet is 620x1000 flush to the top, right and bottom edges, with no radius, no border and no shadow - a full-height slab rather than a floating panel, 100px wider than designed. The scrim is #000000 at 60%, darker than the design's. The title is 22px/600 #003366, blue where the design is near-black and two points larger. Inputs are 588x36 - 8px shorter than designed - with a 1px #CED4DA edge, which is a fourth near-miss grey against the design's #D1D5DB. Labels are 16px/400 #000000 where the design says 14px Medium #1F2937, and they are not even consistent with each other: 'Mobile Number' renders 14px/600 #374151 while 'First Name', 'Last Name', 'Email ID' and 'Select Role' render 16px/400 #000000, in the same form.",
+   "fix": "Build the sheet as the design draws it: 520 wide, inset 16 from the window edges, radius 16, the #E5EFF9 edge and the two shadows, over a 50% #0A0D13 scrim. Set the title to 20px SemiBold #1F2937 and every label to 14px Medium #1F2937 - one label style for the whole form - over 44px inputs bound to #D1D5DB. The same sheet is used by Add Document, Add Best Practice, Add Event and Add Feedback, so this lands on eight designed flows at once.",
+   "id": "NMB-SCREEN-042",
+   "_anchorWhy": "The finding is about the SHEET - its size, its inset, its radius and the scrim behind it - and a sheet has no text node. The box is the sheet's top 300px on both sides, measured off the captures, so the crop shows the edge treatment and the title together rather than describing them."
+  },
+  {
+   "old": "S18",
+   "scope": "Screen",
+   "screen": "Admin - Add User side sheet",
+   "slug": "ADMIN-USER-MANAGEMENT-ADD-USER-MODAL",
+   "sev": "Major",
+   "cat": "Components & States",
+   "title": "Required fields carry no marker",
+   "design": "Seven of the sheet's fields are marked required with a red asterisk after the label, #EC5042, so a user can see what must be filled before they start: First Name, Last Name, Email ID, Mobile Number, Select Role, Select State and Select District.",
+   "build": "There is not one asterisk in the built sheet - counted in the DOM on 2026-09-11, the design frame carries 7 and the build carries 0. Nothing on the form distinguishes a required field from an optional one, so the first time a user learns which fields are mandatory is when submitting fails.",
+   "fix": "Restore the required marker the design draws - the red asterisk after the label - on all seven fields. Pair it with `required` on the input so the marker is not the only signal: a mark that exists only in colour and only in a glyph is not announced to a screen reader, and WCAG 2.2 asks that an instruction not depend on a sensory characteristic alone.",
+   "id": "NMB-SCREEN-043"
+  },
+  {
    "old": "S12",
    "scope": "Screen",
    "screen": "Important Documents (all roles)",
@@ -426,6 +453,33 @@
    "fix": "Draw the National Emblem at the design's 32x52 in its designed position, and compose the co-branding from the two marks the design uses rather than one flattened picture - a single image cannot be scaled per breakpoint, cannot be themed, and gives a screen reader one long string where the design has two named marks. Set the band's lower edge to #F3F4F6. Note that the emblem is the National Emblem of India: its proportions are not ours to adjust, and the estate's own rule is that it ships at 3x the largest surface that renders it rather than being scaled up from a smaller file.",
    "id": "NMB-GLOBAL-041",
    "_anchorWhy": "The finding is about two MARKS - the National Emblem and the co-branding block - which are images with no text node, sitting 700px apart in the same band. The box is the band itself on both sides, measured off the captures, so the crop shows both marks and the reader can see the size difference rather than being told it."
+  },
+  {
+   "old": "G26",
+   "scope": "Global",
+   "screen": "Search field (every list screen)",
+   "slug": "ADMIN-USER-MANAGEMENT",
+   "sev": "Major",
+   "cat": "Typography",
+   "title": "The search field is the only thing in the portal not set in Noto Sans",
+   "design": "The field is 938x40 at radius 8 with a 1px #E5E7EB edge, and its placeholder is 14px Noto Sans Regular #374151 - the same face, size and grey as every other field in the design.",
+   "build": "The field renders in POPPINS at 16px #000000, in a box 768x43 at radius 6. Counted in the DOM on 2026-09-11: of 147 rendered elements on User Management exactly ONE is not Noto Sans, and it is this input; the same is true on Important Documents. So a single control in the portal is set in a different typeface, a size larger than the design, and in pure black rather than the #374151 the design uses for placeholder text.",
+   "fix": "Remove the Poppins declaration - it is one rule and it is the only thing importing that family - and let the field inherit Noto Sans at 14px #374151. The estate's standing instruction is Noto Sans across all government properties and no other family introduced. While the rule is being changed, the box wants the design's 40px height and radius 8 rather than 43 and 6.",
+   "id": "NMB-GLOBAL-044",
+   "_anchorWhy": "The field's placeholder text is already NMB-GLOBAL-008's anchor, and two findings must not share one box. The anchor here is the field's own measured rect on both sides - 938x40 in the design, 768x43 in the build - which is also the geometry half of the finding."
+  },
+  {
+   "old": "G27",
+   "scope": "Global",
+   "screen": "Buttons (every screen)",
+   "slug": "ADMIN-USER-MANAGEMENT",
+   "sev": "Major",
+   "cat": "Components & States",
+   "title": "Primary and secondary buttons are built to different metrics",
+   "design": "Buttons are 40px tall at radius 8, padded 8-10px vertically and 16/24 horizontally, with the label at 14px Medium: the primary filled #003366 with a #FFFFFF label, the secondary a 1px #003366 outline with a #003366 label.",
+   "build": "The primary 'Add User' is 36px tall at radius 4 - half the design's radius - padded 0/18 with its label at weight 600 rather than Medium. The secondary export buttons are 38px at radius 8. So no button in the toolbar is the height the design draws, and the primary and secondary disagree with each other on radius as well as with the design.",
+   "fix": "Use one button component at the design's 40px height and radius 8, with the label at Medium. The primary's radius 4 is the outlier - every other rounded thing on the screen is 6, 8, 10 or 16, so this is a fifth radius nobody chose.",
+   "id": "NMB-GLOBAL-045"
   },
   {
    "old": "G17",
@@ -576,7 +630,7 @@
  ],
  "counts": {
   "Blocker": 3,
-  "Major": 16,
+  "Major": 20,
   "Minor": 15,
   "Nit": 5
  },
