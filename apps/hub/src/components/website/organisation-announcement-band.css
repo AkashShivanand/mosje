@@ -1763,15 +1763,21 @@
      * phone's height back. 16 inside 24 also leaves four pixels of ground on
      * each side, at which point a tile stops looking like a tile.
      *
-     * `--sa-control-height-md` is what the helpline glyph beside it already
-     * uses, so the phone's two marks are now sized against EACH OTHER rather
-     * than each against its own container. The radius steps up with it: a 6px
-     * corner on a 40px tile reads as a square.
+     * 32 CARRYING 20, which is one step under the helpline's 40 rather than
+     * level with it — and the step is deliberate. The helpline is the urgent
+     * object on this band and goes above the announcement on a phone for that
+     * reason; a mark that matched it exactly made the two read as equals. One
+     * rung down reads as related and subordinate, which is the true
+     * relationship, and it hands 8px of the band's height back.
+     *
+     * Both values are on their own scales — 32 on the space scale, 20 on the
+     * icon scale — so `check:icon-scale` is satisfied by construction rather
+     * than by a number that happens to fit.
      */
     .orgab__mark {
       align-self: start;
-      inline-size: var(--sa-control-height-md);
-      block-size: var(--sa-control-height-md);
+      inline-size: var(--sa-padding-32);
+      block-size: var(--sa-padding-32);
       border-radius: var(--sa-shape-8);
     }
 
@@ -1783,7 +1789,7 @@
      * `size` prop is written, so the override belongs here.
      */
     .orgab__mark .material-symbols-rounded {
-      font-size: var(--sa-padding-24) !important;
+      font-size: var(--sa-padding-20) !important;
     }
 
     /* Nothing sits to the right of the copy on a phone — the action is a row of
