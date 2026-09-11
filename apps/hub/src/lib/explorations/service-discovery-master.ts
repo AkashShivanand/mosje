@@ -167,6 +167,18 @@ export const SD_OFFERINGS: SdOffering[] = [
     "label": "Grants to Voluntary Organisations",
     "short": "Grants to Voluntary Organisations",
     "sub": "Grant-in-aid through the e-Anudaan portal"
+  },
+  {
+    "id": "housing",
+    "label": "Housing and Settlement",
+    "short": "Housing and Settlement",
+    "sub": "A house or a plot, and the roads, drainage and common works of a village or basti"
+  },
+  {
+    "id": "awards",
+    "label": "Awards and Recognition",
+    "short": "Awards and Recognition",
+    "sub": "Merit awards for examination results, national awards for service, and academic chairs"
   }
 ];
 export const SD_ROUTES: Record<string, { label: string; href: string | null }> = {
@@ -442,7 +454,8 @@ export const SD_SCHEMES: SdScheme[] = [
       "sc"
     ],
     "offers": [
-      "skill"
+      "skill",
+      "housing"
     ],
     "provides": "Development of SC-dominated villages as Adarsh Gram; grants-in-aid for district and State livelihood and infrastructure projects; hostels in higher-education institutions.",
     "named": "Scheduled Caste communities, through the State Government and District administration; 100% centrally funded.",
@@ -963,7 +976,8 @@ export const SD_SCHEMES: SdScheme[] = [
     "offers": [
       "schooling",
       "care",
-      "skill"
+      "skill",
+      "housing"
     ],
     "provides": "Free coaching for competitive examinations; health insurance through Ayushman Bharat; livelihood support through self-help groups; and financial assistance for housing through PM Awas Yojana.",
     "named": "Members of De-notified, Nomadic and Semi-Nomadic communities holding a DNT certificate.",
@@ -1016,7 +1030,7 @@ export const SD_SCHEMES: SdScheme[] = [
       "student"
     ],
     "offers": [
-      "scholarship"
+      "awards"
     ],
     "provides": "Cash awards of ₹40,000 to ₹60,000 for the top three SC and ST students of each recognised Board in Class 10, with a separate award for the highest-scoring girl; awards for SC students in Class 12 in four streams.",
     "named": "SC and ST students who scored at least 50% in a recognised Board's secondary examination; SC students in the senior secondary examination.",
