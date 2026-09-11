@@ -29,6 +29,8 @@ export const NAV: NavGroup[] = [
       { label: "Users", href: "/portals/smile-admin/users", icon: "group", roles: ["super_admin", "central_admin", "state_nodal_officer"] },
       { label: "Roles", href: "/portals/smile-admin/roles", icon: "verified_user", roles: ["super_admin", "central_admin"] },
       { label: "Permissions", href: "/portals/smile-admin/permissions", icon: "key", roles: ["super_admin"] },
+      { label: "District Officers", href: "/portals/smile-admin/do-list", icon: "badge", roles: ["super_admin", "central_admin", "state_nodal_officer"] },
+      { label: "IA Approvals", href: "/portals/smile-admin/ia-approvals", icon: "how_to_reg", roles: ["super_admin", "central_admin"] },
     ],
   },
   {
@@ -54,7 +56,12 @@ export const NAV: NavGroup[] = [
           { label: "In a Shelter Home", href: "/portals/smile-admin/persons/shelter-home" },
         ],
       },
-      { label: "Shelter Homes", href: "/portals/smile-admin/shelter-homes", icon: "apartment" },
+      {
+        label: "Shelter Homes",
+        href: "/portals/smile-admin/shelter-homes",
+        icon: "apartment",
+        children: [{ label: "Audit Checklist", href: "/portals/smile-admin/shelter-homes/checklist" }],
+      },
       { label: "Shelter Occupants", href: "/portals/smile-admin/shelter-homes/beneficiaries", icon: "home" },
       { label: "Skill & Training", href: "/portals/smile-admin/comprehensive-rehab/skill-training", icon: "school" },
       { label: "Rehab Data", href: "/portals/smile-admin/comprehensive-rehab/data", icon: "volunteer_activism" },
