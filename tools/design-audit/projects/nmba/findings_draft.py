@@ -314,6 +314,23 @@ FINDINGS = [
   "say so and the design should show it that way.",
   ("Facilities (3)",-620,60,600,400), ("@box",300,300,620,400)),
 
+ ("S16","Screen","Citizen - About Us","PUBLIC-ABOUT-US","Major","Components & States",
+  "The 'About Us' link on the citizen home page leads to a not-found page",
+  "The citizen design draws no About Us link and no About Us page, and it has no not-found state "
+  "at all - every link it draws resolves to a screen it also draws.",
+  "The home page carries an 'About Us' link in its body. It goes to /about-us, which answers HTTP "
+  "200 and then renders a not-found page: a near-black card, a cartoon robot, and the words "
+  "'Something went wrong... The page you're looking for has vanished.' Two things are wrong at "
+  "once - a public link on a Government of India landing page that leads nowhere, and a 200 "
+  "response that says 404, which is what a search engine indexes.",
+  "Either build the About Us page or take the link off the home page. Whichever is chosen, the "
+  "not-found page needs to answer with a 404 status and be redrawn in the portal's own language - "
+  "white card on #F9FAFB, navy heading, the design system's button - rather than a dark panel and "
+  "a cartoon. Note that the ADMIN shell answers the same missing route differently again, by "
+  "silently rendering the dashboard (NMB-SCREEN-026): the estate needs one not-found behaviour, "
+  "not two wrong ones.",
+  ("@box",0,0,10,10), ("@box",560,232,620,430)),
+
  ("S11","Screen","Important Documents (all roles)","ADMIN-IMPORTANT-DOCUMENTS","Nit","Typography",
   "Status chips are not set in capitals",
   "The status chip is uppercase at 11px - DRAFT, PUBLISHED - which is what separates it from ordinary "

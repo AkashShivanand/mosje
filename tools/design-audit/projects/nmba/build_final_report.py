@@ -103,6 +103,9 @@ def main():
                  sectionBox=[0, by0, 1440, by1],
                  figmaPin=pin_pct(d["box"], 0, dy0, 1440, dy1),
                  livePin=pin_pct(a["box"], 0, by0, 1440, by1))
+        for w in ("_anchorWhy", "_evidenceWhy"):
+            if k.get(w):
+                f[w] = k[w]
         if k.get("_anchorWhy"):
             f["fix"] = f["fix"] + "  (Anchor: " + k["_anchorWhy"] + ")"
         screens.append({"slug": k["id"], "name": "Global · " + k["title"], "env": "dev",
@@ -119,9 +122,38 @@ def main():
     boarded = set()
     for slug, items in per.items():
         items.sort(key=lambda k: (SEV.get(k["sev"], 9), k["id"]))
-        anchored = [k for k in items if k["id"] in ba and k["id"] in da]
         dp, bp = imgs(slug)
-        if not anchored or not dp or not bp:
+        anchored = [k for k in items if k["id"] in ba and k["id"] in da]
+        if not bp:
+            missing.append(slug)
+            continue
+        if not dp:
+            # No design frame exists for this route - the finding is about the build alone and
+            # says so in `_evidenceWhy`. A single-sided board is the honest rendering; dropping
+            # the screen would hide a Major finding because the design has no counterpart.
+            ba_only = [k for k in items if k["id"] in ba]
+            by0, by1 = band(png_h(bp), [ba[k["id"]]["box"] for k in ba_only]) if ba_only else (0, 600)
+            fnd = []
+            for i, k in enumerate(items, 1):
+                f = dict(num=i, id=k["id"], element=k["title"], section=slug.lower(),
+                         scope="Screen", axis=k["cat"], severity=k["sev"], figma=k["design"],
+                         live=k["build"], fix=k["fix"], liveBox=[0, by0, 1440, by1],
+                         sectionBox=[0, by0, 1440, by1])
+                if k["id"] in ba:
+                    f["livePin"] = pin_pct(ba[k["id"]]["box"], 0, by0, 1440, by1)
+                for w in ("_anchorWhy", "_evidenceWhy"):
+                    if k.get(w):
+                        f[w] = k[w]
+                fnd.append(f)
+            r = rows.get(slug, {})
+            screens.append({"slug": slug, "name": items[0]["screen"], "env": "dev",
+                            "liveImg": os.path.relpath(bp, DEST), "liveUrl": r.get("url"),
+                            "findings": fnd, "_role": r.get("role", ""),
+                            "_refsub": "The design draws no counterpart for this route, so this "
+                                       "board shows the build alone."})
+            boarded.add(slug)
+            continue
+        if not anchored:
             missing.append(slug)
             continue
         dy0, dy1 = band(png_h(dp), [da[k["id"]]["box"] for k in anchored])
@@ -135,6 +167,12 @@ def main():
             if k["id"] in ba and k["id"] in da:
                 f["figmaPin"] = pin_pct(da[k["id"]]["box"], 0, dy0, 1440, dy1)
                 f["livePin"] = pin_pct(ba[k["id"]]["box"], 0, by0, 1440, by1)
+            # The gates read these off the finding. They must survive into the master, or a
+            # declaration made once in findings_final.json is silently lost at publication and
+            # the gate fires on a finding whose exemption was already argued.
+            for w in ("_anchorWhy", "_evidenceWhy"):
+                if k.get(w):
+                    f[w] = k[w]
             if k.get("_anchorWhy"):
                 f["fix"] = f["fix"] + "  (Anchor: " + k["_anchorWhy"] + ")"
             fnd.append(f)

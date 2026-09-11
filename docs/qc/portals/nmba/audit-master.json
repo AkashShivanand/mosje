@@ -316,7 +316,8 @@
      "livePin": {
       "x": 99.0,
       "y": 38.2
-     }
+     },
+     "_anchorWhy": "The row-action controls are icon-only buttons with no text node, so the extraction does not record them. The box is measured off the capture at the Actions column, x1305-1425 on the first data row, where the two glyphs are drawn."
     }
    ],
    "_role": "global",
@@ -472,7 +473,8 @@
      "livePin": {
       "x": 90.5,
       "y": 39.7
-     }
+     },
+     "_anchorWhy": "The control IS a native <select> and it carries no text node of its own - its value is rendered by the browser. The box is the select's own measured rect (x1271 y567, 63x31) from the capture."
     }
    ],
    "_role": "global",
@@ -680,7 +682,8 @@
      "livePin": {
       "x": 22.7,
       "y": 40.0
-     }
+     },
+     "_anchorWhy": "The icon tile is an SVG on a filled div with no text, so the extraction records neither. The tile's fill was sampled from the capture at x590-650 y240-290 and measures #FDE8EF against the design's #E5EFF9."
     }
    ],
    "_role": "global",
@@ -862,6 +865,47 @@
    ],
    "_role": "global",
    "note": "A standing note about which filters to show, raised once by decision instead of per screen; it describes no single element, so it carries no crop."
+  },
+  {
+   "slug": "PUBLIC-ABOUT-US",
+   "name": "Citizen - About Us",
+   "env": "dev",
+   "liveImg": "captures/live/PUBLIC-ABOUT-US.png",
+   "liveUrl": "https://nmba-user-dev.mosje.in/about-us",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-SCREEN-032",
+     "element": "The 'About Us' link on the citizen home page leads to a not-found page",
+     "section": "public-about-us",
+     "scope": "Screen",
+     "axis": "Components & States",
+     "severity": "Major",
+     "figma": "The citizen design draws no About Us link and no About Us page, and it has no not-found state at all - every link it draws resolves to a screen it also draws.",
+     "live": "The home page carries an 'About Us' link in its body. It goes to /about-us, which answers HTTP 200 and then renders a not-found page: a near-black card, a cartoon robot, and the words 'Something went wrong... The page you're looking for has vanished.' Two things are wrong at once - a public link on a Government of India landing page that leads nowhere, and a 200 response that says 404, which is what a search engine indexes.",
+     "fix": "Either build the About Us page or take the link off the home page. Whichever is chosen, the not-found page needs to answer with a 404 status and be redrawn in the portal's own language - white card on #F9FAFB, navy heading, the design system's button - rather than a dark panel and a cartoon. Note that the ADMIN shell answers the same missing route differently again, by silently rendering the dashboard (NMB-SCREEN-026): the estate needs one not-found behaviour, not two wrong ones.",
+     "liveBox": [
+      0,
+      102,
+      1440,
+      792
+     ],
+     "sectionBox": [
+      0,
+      102,
+      1440,
+      792
+     ],
+     "livePin": {
+      "x": 60.4,
+      "y": 50.0
+     },
+     "_anchorWhy": "The not-found card is an illustration with no text node the extraction records beyond 'Go Back'; the box is the card's measured rect on the capture.",
+     "_evidenceWhy": "There is no design counterpart to crop against: the citizen design draws neither an About Us page nor any not-found state, so the evidence is the build alone, plus the measured fact that /about-us answers HTTP 200 while rendering 404."
+    }
+   ],
+   "_role": "public",
+   "_refsub": "The design draws no counterpart for this route, so this board shows the build alone."
   },
   {
    "slug": "PUBLIC-ACTIVITIES",
@@ -1073,7 +1117,8 @@
      "livePin": {
       "x": 42.4,
       "y": 50.0
-     }
+     },
+     "_anchorWhy": "The map is a canvas with no text node. The box is the map panel's measured rect on both sides."
     }
    ],
    "_role": "public",
@@ -1124,7 +1169,8 @@
      "livePin": {
       "x": 82.8,
       "y": 27.2
-     }
+     },
+     "_anchorWhy": "The banner's own container has no text node. The box is measured off the capture at the right end of the green banner, where the design places the button."
     },
     {
      "num": 2,
@@ -1205,18 +1251,6 @@
    ],
    "_role": "public",
    "_node": "9081:59117"
-  },
-  {
-   "slug": "PUBLIC-ABOUT-US",
-   "name": "Citizen - About Us",
-   "env": "dev",
-   "liveImg": "captures/live/PUBLIC-ABOUT-US.png",
-   "liveUrl": "https://nmba-user-dev.mosje.in/about-us",
-   "findings": [],
-   "_role": "public",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "No Figma frame for this screen \u2014 audited against the visual language the designed screens establish."
   },
   {
    "slug": "PUBLIC-EPLEDGE",
@@ -1441,7 +1475,9 @@
      "livePin": {
       "x": 29.1,
       "y": 38.9
-     }
+     },
+     "_anchorWhy": "This finding is about which page a route serves, so there is no single control to anchor to; the anchor is the page title that proves it - /about-us renders the heading 'Dashboard'.",
+     "_evidenceWhy": "The evidence is a checksum, not a picture: ADMIN-ABOUT-US.png, ADMIN-CONTACT-US.png and ADMIN-STATE-DISTRICT-DASHBOARD.png are byte-identical (md5 a16f44d585bfd979e3cd935f83bf980e), and the same holds for the State Nodal Officer role. Two pictures of identical pages would show a reviewer nothing."
     }
    ],
    "_role": "admin",

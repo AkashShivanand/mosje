@@ -373,6 +373,21 @@
    "_anchorWhy": "The map is a canvas with no text node. The box is the map panel's measured rect on both sides."
   },
   {
+   "old": "S16",
+   "scope": "Screen",
+   "screen": "Citizen - About Us",
+   "slug": "PUBLIC-ABOUT-US",
+   "sev": "Major",
+   "cat": "Components & States",
+   "title": "The 'About Us' link on the citizen home page leads to a not-found page",
+   "design": "The citizen design draws no About Us link and no About Us page, and it has no not-found state at all - every link it draws resolves to a screen it also draws.",
+   "build": "The home page carries an 'About Us' link in its body. It goes to /about-us, which answers HTTP 200 and then renders a not-found page: a near-black card, a cartoon robot, and the words 'Something went wrong... The page you're looking for has vanished.' Two things are wrong at once - a public link on a Government of India landing page that leads nowhere, and a 200 response that says 404, which is what a search engine indexes.",
+   "fix": "Either build the About Us page or take the link off the home page. Whichever is chosen, the not-found page needs to answer with a 404 status and be redrawn in the portal's own language - white card on #F9FAFB, navy heading, the design system's button - rather than a dark panel and a cartoon. Note that the ADMIN shell answers the same missing route differently again, by silently rendering the dashboard (NMB-SCREEN-026): the estate needs one not-found behaviour, not two wrong ones.",
+   "id": "NMB-SCREEN-032",
+   "_anchorWhy": "The not-found card is an illustration with no text node the extraction records beyond 'Go Back'; the box is the card's measured rect on the capture.",
+   "_evidenceWhy": "There is no design counterpart to crop against: the citizen design draws neither an About Us page nor any not-found state, so the evidence is the build alone, plus the measured fact that /about-us answers HTTP 200 while rendering 404."
+  },
+  {
    "old": "S11",
    "scope": "Screen",
    "screen": "Important Documents (all roles)",
@@ -456,7 +471,7 @@
  ],
  "counts": {
   "Blocker": 3,
-  "Major": 13,
+  "Major": 14,
   "Minor": 9,
   "Nit": 6
  },

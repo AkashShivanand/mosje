@@ -43,6 +43,11 @@ WHY = {
          "role. Two pictures of identical pages would show a reviewer nothing."},
  "S15": {"_anchorWhy": "The map is a canvas with no text node. The box is the map panel's "
          "measured rect on both sides."},
+ "S16": {"_anchorWhy": "The not-found card is an illustration with no text node the extraction "
+         "records beyond 'Go Back'; the box is the card's measured rect on the capture.",
+         "_evidenceWhy": "There is no design counterpart to crop against: the citizen design draws "
+         "neither an About Us page nor any not-found state, so the evidence is the build alone, "
+         "plus the measured fact that /about-us answers HTTP 200 while rendering 404."},
 }
 LIVE = os.path.join(HERE, "captures", "live")
 FIG = os.path.join(HERE, "captures", "figma")
@@ -142,13 +147,30 @@ def pick(rows, text, want_fill=False, want_act=False, keyfn=None):
 
 def main():
     os.makedirs(SHEET, exist_ok=True)
+    # An ID a stakeholder has seen must never name a different finding later. Numbering findings
+    # by their POSITION in the list breaks that the moment one is inserted - which is exactly what
+    # adding the About Us finding did on 2026-09-11, silently re-pointing three already-published
+    # IDs. The map is the record; position is not.
+    frozen = {}
+    fp = os.path.join(HERE, "frozen_ids.json")
+    if os.path.exists(fp):
+        frozen = json.load(open(fp))
+    used = {int(v.rsplit("-", 1)[1]) for v in frozen.values()} or {0}
+    nxt = [max(used) + 1]
+
+    def fid_for(key, scope):
+        if key in frozen:
+            return frozen[key]
+        i = nxt[0]; nxt[0] += 1
+        return "%s-%s-%03d" % (PREFIX, "GLOBAL" if scope == "Global" else "SCREEN", i)
+
     des = json.load(open(os.path.join(HERE, "inputs", "design-elements.json")))
     kept, danch, banch = [], {}, {}
     misses = []
     n = 0
     for (key, scope, screen, slug, sev, cat, title, design, build, fix, da, ba) in F.FINDINGS:
         n += 1
-        fid = f"{PREFIX}-{'GLOBAL' if scope == 'Global' else 'SCREEN'}-{n:03d}"
+        fid = fid_for(key, scope)
         low = norm(title + " " + design + " " + build)
         want_fill = any(w in low for w in CHIPWORDS)
         want_act = any(w in low for w in ACTWORDS)
@@ -157,9 +179,16 @@ def main():
         # extraction cannot see: a pager's chevron slot, a native select, a facility name the
         # extractor does not record. The measurement is in the finding, so it stays reviewable.
         d = des.get(slug)
+        why = WHY.get(key, {})
         if not d:
-            misses.append((fid, "no design dump", slug)); continue
-        if da[0] == "@box":
+            # A screen the design never drew has no design dump and cannot have a design anchor.
+            # That is only acceptable when the finding SAYS so - `_evidenceWhy` is the declaration
+            # that there is deliberately no design side to crop against.
+            if not why.get("_evidenceWhy"):
+                misses.append((fid, "no design dump", slug)); continue
+        if not d:
+            dbox = None
+        elif da[0] == "@box":
             dbox = [da[1], da[2], da[3], da[4]]
         else:
             dr = pick(d["elements"], da[0])
@@ -183,19 +212,20 @@ def main():
                 misses.append((fid, "build anchor", ba[0])); continue
             bbox = [br["x"] + ba[1], br["y"] + ba[2], ba[3], ba[4]]
 
-        danch[fid] = {"node": d["_meta"]["node"], "frameH": d["_meta"]["frame"][1],
-                      "box": dbox, "text": da[0], "offset": [da[1], da[2]]}
+        if d and dbox:
+            danch[fid] = {"node": d["_meta"]["node"], "frameH": d["_meta"]["frame"][1],
+                          "box": dbox, "text": da[0], "offset": [da[1], da[2]]}
         banch[fid] = {"slug": slug, "box": bbox, "text": br.get("text") or ba[0],
                       "tag": br.get("tag"), "bg": br.get("bg"), "offset": [ba[1], ba[2]]}
         rec = {"old": key, "scope": scope, "screen": screen, "slug": slug, "sev": sev,
                "cat": cat, "title": title, "design": design, "build": build, "fix": fix,
                "id": fid}
-        rec.update(WHY.get(key, {}))
+        rec.update(why)
         kept.append(rec)
 
     for (key, scope, screen, sev, cat, title, design, build) in F.GLOBAL_NOTES:
         n += 1
-        fid = f"{PREFIX}-GLOBAL-{n:03d}"
+        fid = fid_for(key, scope)
         kept.append({"old": key, "scope": scope, "screen": screen, "sev": sev, "cat": cat,
                      "title": title, "design": design, "build": build, "fix": build,
                      "id": fid, "_evidenceWhy": "A standing note about which filters to show, "

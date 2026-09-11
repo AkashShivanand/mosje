@@ -13,9 +13,9 @@
 |---|---|
 | Screens captured | **50** across the citizen site, the sign-in surface and three admin roles |
 | Design frames paired one to one | 35 |
-| Findings | **31** — 3 Blocker, 13 Major, 9 Minor, 6 Nit |
+| Findings | **32** — 3 Blocker, 14 Major, 9 Minor, 6 Nit |
 | Applies to every screen | 16 |
-| Specific to one screen | 15 |
+| Specific to one screen | 16 |
 | Withdrawn, not raised, or noted about the design file | 11 |
 
 The NMBA design page (‘NMBA — Dev Synced — August’) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles — Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication.
@@ -256,6 +256,20 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
 
+## Citizen - About Us
+
+### The 'About Us' link on the citizen home page leads to a not-found page
+
+`NMB-SCREEN-032` · **Major** · Components & States · Scope: Citizen - About Us
+
+| | |
+|---|---|
+| **Design says** | The citizen design draws no About Us link and no About Us page, and it has no not-found state at all - every link it draws resolves to a screen it also draws. |
+| **Build does** | The home page carries an 'About Us' link in its body. It goes to /about-us, which answers HTTP 200 and then renders a not-found page: a near-black card, a cartoon robot, and the words 'Something went wrong... The page you're looking for has vanished.' Two things are wrong at once - a public link on a Government of India landing page that leads nowhere, and a 200 response that says 404, which is what a search engine indexes. |
+| **Fix** | Either build the About Us page or take the link off the home page. Whichever is chosen, the not-found page needs to answer with a 404 status and be redrawn in the portal's own language - white card on #F9FAFB, navy heading, the design system's button - rather than a dark panel and a cartoon. Note that the ADMIN shell answers the same missing route differently again, by silently rendering the dashboard (NMB-SCREEN-026): the estate needs one not-found behaviour, not two wrong ones. |
+
+[Live page](https://nmba-user-dev.mosje.in/about-us)
+
 ## Citizen - Activity Snapshots
 
 ### The activity card has no title and no description
@@ -453,7 +467,7 @@ These are defects in the handoff file itself, not in the build, and no developer
 
 ## Coverage
 
-All 50 captured screens appear in the PDF: 8 carry a screen-specific finding, and the rest render as a single reference board marked *audited, no screen-specific finding* — a screen dropped from a report reads as a screen never looked at.
+All 50 captured screens appear in the PDF: 9 carry a screen-specific finding, and the rest render as a single reference board marked *audited, no screen-specific finding* — a screen dropped from a report reads as a screen never looked at.
 
 **Declared coverage debt** — designed, not audited, and stated rather than left as a silent gap:
 
