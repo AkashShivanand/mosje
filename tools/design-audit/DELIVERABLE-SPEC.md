@@ -106,6 +106,26 @@ the ledger, which is where a reader can actually search it. (It had earned its k
 all 42 NMBA captures out at one size is what surfaced NMB-SCREEN-032. That argues for LOOKING at
 every capture during the audit, which the coverage ledger still forces — not for shipping them.)
 
+### The pinned report MUST be audited against the master after every sync
+
+The Figma report is the one deliverable assembled by mutating nodes rather than generated from
+`audit-master.json`. On 2026-09-11 four published cards carried the WRONG finding's text — one
+rendered another finding's title, severity, category and all three body paragraphs under its own
+id — and it was the reviewer who noticed, not any gate.
+
+The cause: a helper that renamed each text node to the text it had just written, destroying the
+`title` / `figma` / `live` / `fix` names the next write needs. A card cloned from an
+already-written card then silently kept its source's text.
+
+So, every time the report is touched:
+
+- **Write by POSITION.** A Finding Card's text nodes are stable in order — 0 num, 1 title,
+  2 severity, 3 id, 4 axis, 5 `DESIGN…`, 6 design, 7 `BUILD…`, 8 build, 9 `FIX`, 10 fix. Assert
+  the count is 11 before writing. Never set a node's name to its content.
+- **Then re-read every card and diff it against `findings_final.json`** — id, severity AND title.
+  An id-only check passes a card that has the right id and entirely the wrong body, which is
+  exactly what shipped.
+
 ### The review sheet MUST carry pins — every portal, no exceptions
 
 The 3-column `DESIGN | BUILD | ISSUES` sheet is where the reviewer works, and **every numbered
