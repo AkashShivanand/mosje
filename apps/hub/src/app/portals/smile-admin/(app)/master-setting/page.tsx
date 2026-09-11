@@ -35,7 +35,7 @@ export default function MasterSettingsPage() {
         noExport: true,
         render: () => (
           <span className="inline-flex items-center gap-xs text-label-2 text-ink-hint">
-            <Icon name="lock" size={12} aria-hidden /> Read-only
+            <Icon name="lock" size={16} aria-hidden /> Read-only
           </span>
         ),
       },
@@ -85,7 +85,7 @@ export default function MasterSettingsPage() {
               }
             >
               {t.label}
-              {t.locked ? <Icon name="lock" size={12} aria-hidden /> : null}
+              {t.locked ? <Icon name="lock" size={16} aria-hidden /> : null}
             </button>
           );
         })}

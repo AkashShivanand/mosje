@@ -158,7 +158,7 @@ export default function NewSanctionOrderPage() {
               </select>
             </div>
             <Button type="button" appearance="outlined" onClick={addDistrict} disabled={!state || !district}>
-              <Icon name="add" size={14} /> Add District
+              <Icon name="add" size={16} /> Add District
             </Button>
           </div>
 

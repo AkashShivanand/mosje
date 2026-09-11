@@ -117,7 +117,7 @@ export function BeneficiarySubset({
       noExport: true,
       render: (b) => (
         <Link href={`/portals/smile-admin/persons/${b.id}`} className={buttonClasses("primary", "outlined", "sm")}>
-          <Icon name="visibility" size={14} /> View
+          <Icon name="visibility" size={16} /> View
         </Link>
       ),
     },

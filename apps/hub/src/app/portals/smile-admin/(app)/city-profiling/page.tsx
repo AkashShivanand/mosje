@@ -16,7 +16,7 @@ function crore(n: number) {
 }
 
 /** The four coloured figure chips the design uses instead of plain numerals. */
-function Figure({ value, tone }: { value: number; tone: "info" | "success" | "warning" | "danger" }) {
+function ValueChip({ value, tone }: { value: number; tone: "info" | "success" | "warning" | "danger" }) {
   const TONES = {
     info: "bg-info-50 text-info-600 ring-info-100",
     success: "bg-success-50 text-success-600 ring-success-100",
@@ -89,7 +89,7 @@ export default function CityProfilingPage() {
       key: "identified",
       header: "Identified",
       sortable: true,
-      render: (r) => <Figure value={r.identified} tone="info" />,
+      render: (r) => <ValueChip value={r.identified} tone="info" />,
       sortValue: (r) => r.identified,
       exportValue: (r) => String(r.identified),
     },
@@ -97,7 +97,7 @@ export default function CityProfilingPage() {
       key: "rehabilitated",
       header: "Rehabilitated",
       sortable: true,
-      render: (r) => <Figure value={r.rehabilitated} tone="success" />,
+      render: (r) => <ValueChip value={r.rehabilitated} tone="success" />,
       sortValue: (r) => r.rehabilitated,
       exportValue: (r) => String(r.rehabilitated),
     },
@@ -210,8 +210,8 @@ export default function CityProfilingPage() {
             </div>
             <div className="text-label-2 text-ink-muted">{r.nodalOfficer ?? "No nodal officer recorded"}</div>
             <div className="flex flex-wrap gap-xs">
-              <Figure value={r.identified} tone="info" />
-              <Figure value={r.rehabilitated} tone="success" />
+              <ValueChip value={r.identified} tone="info" />
+              <ValueChip value={r.rehabilitated} tone="success" />
               <span className="inline-flex rounded-sm bg-warning-50 px-sm py-0.5 text-label-2 tabular-nums text-warning-600 ring-1 ring-inset ring-warning-100">
                 {crore(r.released)}
               </span>
