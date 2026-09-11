@@ -19,6 +19,7 @@
 8. [Non-compliance observations, with evidence](#8-non-compliance-observations-with-evidence)
 9. [Remediation plan](#9-remediation-plan)
 10. [Method, instrumentation and limits](#10-method-instrumentation-and-limits)
+11. [Reconciliation with the Ministry's remediation tracker](#11-reconciliation-with-the-ministrys-remediation-tracker)
 
 ---
 
@@ -76,11 +77,11 @@ Averaging them hides both the strongest and the weakest result. They are reporte
 |  | Generic Checklist | Ministry/Dept Checklist | **DBIM overall** |
 |---|---|---|---|
 | Total checkpoints | 46 | 34 | **80** |
-| Passed | 26 | 18 | **44** |
-| Failed | 19 | 9 | **28** |
+| Passed | 25 | 16 | **41** |
+| Failed | 20 | 11 | **31** |
 | Not available | 1 | 7 | **8** |
-| **Pass percentage** | **56.5 %** | **52.9 %** | **55.0 %** |
-| *Like-for-like with May's reading* | *63.0 %* | *58.8 %* | ***61.3 %*** |
+| **Pass percentage** | **54.3 %** | **47.1 %** | **51.3 %** |
+| *Like-for-like with May's reading* | *60.9 %* | *52.9 %* | ***57.5 %*** |
 | May 2026 | 56.52 % | 55.88 % | 56.25 % |
 
 **Two figures are given, and the second is the fairer one.** Ten checkpoints are scored
@@ -150,7 +151,7 @@ z-index) or its *iconography*. The remedial work is narrow and specific, not a r
 ### 2.4 The three side by side
 
 ```
-DBIM 3.0    ████████████░░░░░░░░  55.0 %   (61.3 % like-for-like)   ← brand
+DBIM 3.0    ███████████░░░░░░░░░  51.3 %   (57.5 % like-for-like)   ← brand
 GIGW 3.0    ████████░░░░░░░░░░░░  42.1 %                            ← quality, access, security
 UX4G 3.0    ███████░░░░░░░░░░░░░  37.5 %   (91.6 % type-scale adherence)
 ```
@@ -159,7 +160,7 @@ UX4G 3.0    ███████░░░░░░░░░░░░░  37.5 %
 
 ## 3. Progress since May 2026
 
-**Eleven checkpoints that failed the NIC audit now pass.** This is real, verified work and
+**Eight checkpoints that failed the NIC audit now pass.** This is real, verified work and
 it should be recorded before anything else in this report is read.
 
 | # | Checkpoint | DBIM § | May | Sep | What changed |
@@ -167,11 +168,8 @@ it should be recorded before anything else in this report is read.
 | G12 | Body text left-aligned; table alignment | 4.1.1 | No | **Yes ▲** | No centred body copy remains on any page sampled |
 | G13 | No capital case for long sentences; no Hinglish | 4.1.1 | No | **Yes ▲** | Only short menu and statistic labels are capitalised; no Hinglish detected |
 | G18 | Mouse hover prompts a noticeable change | 4.5 | No | **Yes ▲** | Colour and underline transitions throughout |
-| G25 | Footer displays key information and lineage | 5.6 | No | **Yes ▲** | Full GoI → Ministry → Department lineage, postal address, five policy links, NeGD / Digital India Corporation / MeitY attribution, "Last Updated" stamp |
 | G32 | Thumbnail images under 100 KB | 6.1.1 | No | **Yes ▲** | Measured 12–60 KB |
 | G40 | Central Content Publishing System integrated | 7.4 | No | **Yes ▲** | CCPS is live — `ccps.digifootprint.gov.in` serves the campaign banner into the home carousel |
-| M6 | Social media integration | A4 | No | **Yes ▲** | Facebook, X, Instagram, YouTube and WhatsApp handles, plus Facebook page and X timeline embeds |
-| M18 | Periodic documents versioned with release date | A.5.3 | No | **Yes ▲** | Annual Reports 2025-26 (English and Hindi), 2024-25, 2023-24 |
 | M25 | Titles Dr./Shri/Smt. used uniformly | A.5.6 | No | **Yes ▲** | "Dr. Virendra Kumar", "Shri Ramdas Athawale", "Shri B. L. Verma" |
 | M32 | Forms are keyboard-friendly | B | NA | **Yes ▲** | Search and feedback are fully keyboard operable |
 | M20 | Videos captioned and dated | A.5.4.2 | No | **NA ▲** | No video is published on-site; the Video Gallery embeds the department's YouTube channel |
@@ -216,7 +214,7 @@ G15. G29 is an SVG compression run. G39 is a two-word text correction plus a red
 
 ## 4. DBIM 3.0 — Generic Checklist (46 checkpoints)
 
-**26 Yes · 19 No · 1 NA · 56.5 %**
+**25 Yes · 20 No · 1 NA · 54.3 %**
 
 ### A. Colours
 
@@ -313,7 +311,7 @@ G15. G29 is an SVG compression run. G39 is a two-word text correction plus a red
 
 ## 5. DBIM 3.0 — Ministry/Department Checklist (34 checkpoints)
 
-**18 Yes · 9 No · 7 NA · 52.9 %**
+**16 Yes · 11 No · 7 NA · 47.1 %**
 
 | # | Checklist item | § | May | Sep | Evidence |
 |---|---|---|---|---|---|
@@ -325,7 +323,7 @@ G15. G29 is an SVG compression run. G39 is a two-word text correction plus a red
 | 4 | Relevant content tagging done for the personas | A3 | Yes | **No** ▼ | Scheme pages carry **topic** chips ("adarsh gram", "Educational Infrastructure", "SC Community Development"), not **persona** tags. Search offers no persona facet. |
 | **C** | **Homepage** | | | | |
 | 5 | Homepage components as per DBIM | A4 | No | **No** | Substantially improved — hero carousel, latest-updates ticker, About Us, Our Offerings, Our Organisations, Recent Documents, personas, Activity Corner, social, support, footer. The **PM Quote component is absent**, which is a DBIM homepage component. |
-| 6 | Integration with social media handles | A4 | No | **Yes ▲** | Five handles plus Facebook page and X timeline embeds. |
+| 6 | Integration with social media handles | A4 | No | **No** | *Corrected 11 Sep after reconciliation with tracker T21 — see §11.* Five handles are linked and the Facebook page and X timeline embeds render at 557px. **The Instagram column renders a 274px “Follow on Instagram” fallback card, not a feed.** See Observation J. |
 | **D** | **PM Quote** | | | | |
 | 7 | PM image has a transparent background | A4 | NA | **NA** | No PM Quote component exists. |
 | 8 | PM image and quote from authorized sources | A4 | NA | **NA** | As above. |
@@ -339,7 +337,7 @@ G15. G29 is an SVG compression run. G39 is a two-word text correction plus a red
 | 15 | Name/Title of the offering maximum 150 characters | A.5.2 | Yes | **Yes** | Scheme titles are within limit. *Observation:* three home-page **update/event** titles run to 158, 208 and 245 characters — these fall under checkpoint 19's 250-character limit and pass it, but they overflow their cards. |
 | 16 | All images in the Offerings section below 100 KB | A.5.2.1 | Yes | **Yes** | 29 KB. |
 | 17 | Tenders page: valid tender-portal link; Tender ID ≤ 50 chars, error free | A.5.2.3 | Yes | **No** ▼ | Tender ID `GEM/2025/B/6519656` — 18 characters, error free ✓. **No link to GeM, eProcure or any tender portal was found** on the Tenders listing or on the tender detail page examined. |
-| 18 | Periodic documents versioned with date of release | A.5.3 | No | **Yes ▲** | Annual Reports 2025-26 (English and Hindi), 2024-25, 2023-24. |
+| 18 | Periodic documents versioned with date of release | A.5.3 | No | **No** | *Corrected 11 Sep after reconciliation with tracker T36/T37 — see §11.* The Annual Reports table publishes Title · Organisation · Year · Size · Start Publish Date · End Publish Date — **there is no version column**, and the metadata is partly unpopulated: “Annual Report 2024-25” carries Year 2026, and “Annual Report 2025-26 (English)” carries Year NA and Start Publish Date NA. My original “Yes” was drawn from a three-report sample on the home page. |
 | 19 | Documents and Resources titles suitable, maximum 250 characters | A.5.3 / A.5.4 | Yes | **Yes** | Longest measured 245. |
 | 20 | Videos have appropriate captioning and date | A.5.4.2 | No | **NA ▲** | The Video Gallery publishes **no video** — the page body is 1,378 characters of chrome around an embedded YouTube *channel*. Nothing to caption. *Observation:* an empty gallery page sits in the primary navigation. |
 | 21 | CIO / Web Information Manager / Appellate Authority / PIO contacts accurate | A.5.5 | No | **No** | **"Web Information Manager", "WIM" and "Chief Information Officer" return zero occurrences across the entire site.** PIO, CVO and Appellate Authority are named for the subordinate corporations, and a CPIO Directory exists — so the RTI half is served and the GIGW half is not. |
@@ -719,6 +717,56 @@ real `<h1>`.
 
 ---
 
+### Observation J — the Instagram embed is not rendering a feed
+
+**DBIM A4 · Ministry checkpoint 6 · confirms tracker T21**
+
+![Instagram embed fallback](img/dosje-2026-09-10/J-instagram-embed.png)
+
+**Observation.** In the social row, Facebook renders a live page plugin and X renders a live
+timeline, both 557px tall. The Instagram column renders a **274px "Follow us on Instagram to
+see our latest posts and reels" fallback card** with empty space below it — a placeholder, not
+a feed.
+
+The Ministry's remediation tracker has carried this as **T21, "Broken Instagram embed",
+status To Do** since the May audit. It is still open, and this audit's original score of
+"Yes" on Ministry checkpoint 6 was wrong.
+
+**Next step.** Repair or remove the embed. A fallback card that reads as a broken feed is
+worse than a plain link.
+
+---
+
+### Observation K — the footer carries none of DBIM 5.6's four mandated sections
+
+**DBIM 5.6 · Generic checkpoint 25 · confirms tracker T10 / T32**
+
+![Footer missing the four mandated sections](img/dosje-2026-09-10/K-footer-mandated-sections.png)
+
+**Observation.** The footer's *lineage* is complete and correct — Government of India →
+Ministry → Department, postal address, social handles, visitor count, NeGD / Digital India
+Corporation / MeitY attribution, and a "Last Updated" stamp. That is a genuine improvement
+on May.
+
+But DBIM 5.6 also mandates four sections, and the footer publishes **none** of them:
+
+| Mandated section | Present? |
+|---|---|
+| Archives | **No** — `/archive/` returns 404 and nothing in `page-sitemap.xml` matches |
+| Website Policy | **No** — individual policies are linked; there is no policy hub |
+| Related Links | **No** — an "Important Links" rail exists on the right wall, not in the footer |
+| Feedback | **No** — `/feedback/` returns 404; feedback exists only as a floating widget |
+
+The Ministry's tracker has carried this as **T10 (P0, decision awaiting)** and **T32 (P0,
+content awaiting)** since May. This audit's original score of "Yes ▲" on Generic checkpoint
+25 credited the lineage half and missed the mandated-sections half. **Corrected to "No".**
+
+**Next step.** The tracker already has the right shape for this: T10 asks the Ministry to
+choose between adding the four to the existing footer, replacing lower-priority items, or
+restructuring. That decision is the blocker, not the build.
+
+---
+
 ## 9. Remediation plan
 
 ### P0 — accessibility and legal. Fix first.
@@ -816,3 +864,152 @@ what is still wrong.
 
 *Audited 10 September 2026. All measurements are reproducible against the live site as it
 stood on that date.*
+
+---
+
+## 11. Reconciliation with the Ministry's remediation tracker
+
+Source: **"dosje DBIM Tracker"** (Google Sheets, owner `akashasomshiv@gmail.com`, last modified
+11 September 2026). 41 tasks, T01–T41, each cross-referenced to a May 2026 checkpoint.
+Reconciled against this audit on 11 September 2026.
+
+### 11.1 What the tracker covers, and what it does not
+
+**The tracker is a complete remediation plan for the May report.** Every one of May's 19
+failed Generic checkpoints and all 7 failed Ministry checkpoints has a task, plus rows for
+the NA items (Generic 19, Ministry 7–10, Ministry 31–34) and two cross-cutting programme
+rows. Nothing from May is missing. As a remediation instrument it is well built — typed
+(Needs Decision / Ready to Implement / Follow-up / Awaiting Content / Open Question),
+owned, prioritised, dependency-linked, and it carries a documented compliance formula.
+
+**Its scope is DBIM only.** The May audit was a DBIM audit, so the tracker inherits that
+boundary: it contains **no GIGW checkpoint and no UX4G checkpoint**. UX4G appears once, in
+T05, as an option to be chosen *against* ("Retain UX4G 2.0 type scale, or migrate to DBIM
+scale") — never as a standard to be measured against.
+
+### 11.2 Tracker status at 11 September 2026
+
+| Status | Tasks | IDs |
+|---|---|---|
+| Awaiting confirmation | **14** | T01–T11, T39, T40, T41 |
+| Blocked | **13** | T18, T22–T32, T37 |
+| To Do | **7** | T16, T19, T21, T33, T34, T35, T36 |
+| In Progress | **3** | T12, T14, T17 |
+| **Done** | **4** | **T13, T15, T20, T38** |
+
+**Thirty-four of 41 tasks — 83% — are not yet in motion.** Eleven of the fourteen awaiting
+confirmation are P0 or P1 decisions sitting with the Ministry, and they block eleven
+follow-up tasks behind them. The tracker is not stalled on capacity; it is stalled on
+decisions.
+
+### 11.3 The four tasks marked Done, verified against the live site
+
+The tracker's headline figures — **60.9% generic, 61.8% ministry** — are computed as
+"26 baseline + closures from tasks marked Done ÷ 46" and "19 + closures ÷ 34". Those four
+Done tasks are the entire difference between the May baseline and the published figure, so
+they are worth checking individually.
+
+| Task | Claim | Verified? | Evidence |
+|---|---|---|---|
+| **T20** · Homepage banner resize to a DBIM-permitted dimension (closes M5) | Done | **Holds** | All five hero banners are **1800×600** natural. *But M5 also requires the PM Quote component, which the tracker's own T09/T28 record as absent — so the checkpoint is not closed even though the task is.* |
+| **T13** · Re-optimise logos site-wide to under 100 KB (closes G29) | Done | **Partially** | Organisation logos were genuinely optimised — DAIC **48 KB**, NBCFDC **54 KB**, NSFDC **64 KB**, NCSC **97 KB**. But three assets still breach: `National-Emblem-logo.svg` **196 KB**, `National_Emblem_logo_white.svg` **195 KB**, and `Babuji-Photo.png` **1,701 KB** — a 17× breach, on the home-page organisations strip. |
+| **T15** · Site-wide language QA; correct "Studentsh" and any other errors (closes G39) | Done | **Partially** | "Studentsh" is gone — zero occurrences sitewide, and the search returns no result for it. But two defects of the same class are live: "**l**nviting Expression of **l**nterest" (U+006C, twice, **and in the permalink**) and `/…-by-**vuluntary**-organisations/`, where the correct spelling returns 404. |
+| **T38** · Video duration display (closes M20) | Done | **Not evidenced** | Neither `/gallery/` nor `/video-gallery/` publishes a `<video>` element, a duration, or a caption track. There is no video on the site for a duration to appear beneath. |
+
+**Three of the four closures do not survive verification**, so the published 60.9% / 61.8%
+is ahead of what the live site can demonstrate.
+
+### 11.4 Where the tracker is behind the site
+
+One correction in the other direction: **T16, "Integrate top banner carousel with CCPS",
+is marked To Do — but CCPS is live.** `ccps.digifootprint.gov.in` serves a banner into a
+`.ccps-banner-slider` on the home page. That genuinely closes Generic 40 and the tracker is
+not claiming it.
+
+### 11.5 Where the tracker corrected THIS audit
+
+Reconciliation ran both ways. The tracker holds site knowledge this audit did not have, and
+it caught **three checkpoint verdicts scored too generously here**. All three are corrected
+in §4 and §5 above, and the headline DBIM figure moved from 55.0% to **51.3%** as a result.
+
+| Checkpoint | This audit said | Tracker row | Corrected to | Why the original was wrong |
+|---|---|---|---|---|
+| **Generic 25** — footer key information and lineage | Yes ▲ | T10 / T32 | **No** | Credited the lineage and missed DBIM 5.6's four mandated sections — Archives, Website Policy, Related Links, Feedback — none of which the footer carries. Observation K. |
+| **Ministry 6** — social media integration | Yes ▲ | T21 | **No** | Counted five handles and two working embeds; the Instagram column renders a 274px fallback card, not a feed. Observation J. |
+| **Ministry 18** — periodic document versioning | Yes ▲ | T36 / T37 | **No** | Drawn from a three-report sample on the home page. The Annual Reports table has **no version column**, and metadata is partly unpopulated — "Annual Report 2024-25" carries Year 2026; "Annual Report 2025-26 (English)" carries Year NA. |
+
+Two further verdicts are **retained but flagged as narrow-sample**, because the tracker
+suggests a wider problem than the pages sampled here showed:
+
+- **Generic 13** (no capital case for long titles) — scored Yes; no all-caps document titles were found on the pages sampled, which suggests tracker **T19 may now be closeable**. Worth a wider sweep before either document changes.
+- **Ministry 25** (title prefixes used uniformly) — scored Yes from three ministers on the home page; tracker **T34** reports inconsistency across team listings not sampled here.
+
+### 11.6 What this audit found that is in neither document
+
+**Thirty-two findings appear in neither the May 2026 report nor the tracker.** Grouped by
+why they were missed:
+
+**A · DBIM checkpoints May passed, so the tracker has no row — 9**
+
+| # | Checkpoint | Finding |
+|---|---|---|
+| G6 | Icons from the DBIM toolkit | Font Awesome 5 Free and Brands, plus Elementor `eicons` |
+| G7 | Icons in PNG / SVG / WEBP only | 51 icons are webfont glyphs |
+| G9 | Icon proportion retained | `open_in_new_icon.svg` 12×12 → 12×24; `Indian-Flag.svg` 33×22 → 33×24 |
+| G10 | Icon contrast on a banner | SAMAVESH band marks at 2.80:1 |
+| G24 | Header subcomponents accessible | Search submit focusable at `top:-159941px`; four 0px `<output>` elements in the tab order; six `<a href="#">` disclosure triggers |
+| G45 | Metadata, persona tags, keywords | No `<meta keywords>` on any page; no persona tags; `lang="en-US"` |
+| M4 | Persona content tagging | Topic tags, not persona tags; no persona facet in search |
+| M17 | Tenders portal link | No GeM / eProcure link on the Tenders listing or the detail page examined |
+| M26 | Documents as accessible PDF | Three of four sampled PDFs untagged; one is an Adobe Scan image with no text layer |
+
+**B · New evidence that undercuts a tracker premise or a "Done" — 4**
+
+1. **T01 frames the palette question as "our blue vs DBIM's blue".** Neither document records that `ux4g-min.css` declares `--bs-primary: #613AF5` and `--bs-link-color: #613AF5` — a **violet**, with a full 50→900 ramp — so the site ships *two* primary colour groups, not one that differs from DBIM's. The decision in front of the Ministry is larger than T01 states.
+2. **T13 Done** — Emblem SVGs at 196 / 195 KB and `Babuji-Photo.png` at **1,701 KB**.
+3. **T15 Done** — `lnviting` / `lnterest` in a permalink, and the `vuluntary` slug.
+4. **T38 Done** — no video exists on the site to carry a duration.
+
+**C · Asset weight neither document measures — 2**
+
+1. **Annual report PDFs of 116.85 MB and 89.20 MB**, published for download with no lighter alternative. On a rural connection these are effectively unavailable.
+2. The home page carries **3.0 MB over 160 requests, 1.28 MB of it JavaScript** — including `pdfmake`, its embedded `vfs_fonts`, `jszip` and DataTables, which are export helpers for a data table, on a page that has no data table.
+
+**D · GIGW 3.0 — outside both documents' scope — 11**
+
+No `<h1>` on three page types · eight `<h5>` before the `<h1>` sitewide · focus-ring contrast
+1.98:1 against a 3:1 requirement · seven measured text-contrast failures · six images with no
+`alt` attribute and 60 links with no accessible name · two unlabelled feedback textareas ·
+zero `prefers-reduced-motion` rules against four autoplaying carousels · 56 targets under
+24×24 px · 26 unwarned new-window links · 63 `<th>` with no `scope` and no `<caption>`
+anywhere · no Accessibility Statement and no Screen Reader Access page · a CSP whose
+`script-src` permits `unsafe-inline`, `unsafe-eval` and any HTTPS origin.
+
+*(Tracker T18 covers table **alignment**; table **semantics** — `scope` and `caption` — is a
+different requirement and is not tracked. Tracker T12 covers the button focus **state**; the
+selector-scoping bug that stops it reaching the front page is not.)*
+
+**E · UX4G 3.0 — outside both documents' scope — 6**
+
+Noto Sans Display not used at 36px and above · text at 8px, 10px and 11px, below UX4G's
+stated 12px minimum · 19.1% of spacing declarations off the base-4 scale (5px ×193 and 10px
+×191 dominate) · 36.1% of corner radii off scale · **zero** elevation conformance, six ad-hoc
+shadows against UX4G's four defined levels · ten off-scale z-index values including
+`2147483620`.
+
+### 11.7 Recommended merge
+
+The two documents are complementary and should become one instrument:
+
+1. **Keep the tracker's structure.** Its typing, ownership, priorities and dependency chain
+   are better than anything in this report, and its compliance formula is sound.
+2. **Re-open T13, T15 and T38**, and close **T16**. That moves the published figure to what
+   the live site can demonstrate.
+3. **Add 32 rows** for §11.6, typed the same way. Most are "Ready to Implement" — they need
+   no Ministry decision, which matters when 83% of the existing tracker is waiting on one.
+4. **Split the compliance figure three ways**, as §2 does. A DBIM-only percentage on a
+   government website in 2026 leaves the legally binding half — GIGW and WCAG 2.2 AA —
+   unmeasured and unowned.
+5. **Broaden T01.** The palette decision is not "our blue or DBIM's blue"; it is that the
+   site currently declares two primaries, one of which nobody chose.
+
