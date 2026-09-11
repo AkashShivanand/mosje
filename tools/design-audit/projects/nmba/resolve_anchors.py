@@ -163,7 +163,15 @@ def pick(rows, text, want_fill=False, want_act=False, keyfn=None):
         act = [r for r in cands if (r.get("tag") in ("button", "a", "select", "input"))]
         if act:
             cands = act
-    cands.sort(key=lambda r: -(r.get("fs") or r.get("fontSize") or 0))
+    # An EXACT match beats a prefix match, always. The prefix rule exists because the extraction
+    # truncates long strings - but it also makes a short label swallow a longer one that starts
+    # with it: "Nasha Mukti Mitr Login" in the masthead resolved to the sidebar's "Nasha Mukti
+    # Mitr", and the pin was drawn 1100px away on the wrong element. Nothing failed; the gates saw
+    # a real element with a plausible tag. Exact first, then the largest type.
+    def key(r):
+        t = norm(keyfn(r) if keyfn else r.get("t") or r.get("text"))
+        return (0 if t == q else 1, -(r.get("fs") or r.get("fontSize") or 0))
+    cands.sort(key=key)
     hit = cands[0]
     bad_fill = want_fill and str(hit.get("bg", "")).strip() in (
         "", "rgba(0, 0, 0, 0)", "transparent", "None")

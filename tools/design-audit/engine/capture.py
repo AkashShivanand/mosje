@@ -107,10 +107,40 @@ EXTRACT_JS = r"""
 # NOTE: 'hidden'/'clip' count as clipping too — an `h-screen overflow-hidden` shell pins the
 # document at exactly the viewport height and is invisible to an auto|scroll-only detector
 # (symptom: every page reports pageH == viewport height, e.g. 1000).
+# Third-party chrome that lives OFF-CANVAS must be taken out before the unclip pass, not after.
+# UNCLIP sets overflow:visible on body and documentElement, which is what stops an off-screen
+# fixed panel from being clipped - so it joins the layout, the page grows by its width, and the
+# flex rows inside re-flow. On NMBA the UX4G accessibility drawer sits at x1520-1970; unclipping
+# it pushed the citizen home page's "Take the Pledge" button from x1171 to x1841, outside the
+# 1440 export. A finding was published saying that button did not exist. It did.
+#
+# The rule: an element that is FIXED and lies entirely outside the viewport is not part of the
+# page being audited. Hide it, record what was hidden, and unclip what remains.
+HIDE_OFFCANVAS_JS = r"""(w) => {
+  const hidden = [];
+  document.querySelectorAll('*').forEach(el => {
+    const cs = getComputedStyle(el);
+    if (cs.position !== 'fixed' && cs.position !== 'absolute') return;
+    const b = el.getBoundingClientRect();
+    if (b.width < 4 || b.height < 4) return;
+    if (b.left >= w - 2 || b.right <= 2) {            // entirely off to one side
+      hidden.push((el.id || el.className || el.tagName).toString().slice(0, 40)
+                  + ' @' + Math.round(b.left) + 'x' + Math.round(b.width));
+      el.style.setProperty('display', 'none', 'important');
+    }
+  });
+  return hidden;
+}"""
+
 UNCLIP_JS = r"""() => {
+  // Un-clip the VERTICAL axis only. `overflow: visible` releases both, and releasing X makes a
+  // horizontally-scrolling region lay its children out in a full-width row instead of scrolling:
+  // the NMBA citizen home page grew from 1440 to 2050 that way, carrying its KPI cards, filters
+  // and the pledge CTA outside the export. The pass exists to make the page its full HEIGHT.
   const fix = el => { el.style.setProperty('height','auto','important');
     el.style.setProperty('max-height','none','important');
-    el.style.setProperty('overflow','visible','important'); };
+    el.style.setProperty('overflow-y','visible','important');
+    el.style.setProperty('overflow-x','hidden','important'); };
   const CLIP = new Set(['auto','scroll','hidden','clip']);
   const scr = [];
   document.querySelectorAll('*').forEach(el => {
@@ -913,6 +943,13 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         # verify run would report "changed" on nearly every page for reasons that have
         # nothing to do with the page actually changing, and the reuse saving is lost.
         skel_left, skel_waited = wait_for_data(pg)
+        try:
+            off = pg.evaluate(HIDE_OFFCANVAS_JS, width)
+        except Exception:
+            off = []
+        if off:
+            print(f"  hid {len(off)} off-canvas fixed element(s) before unclip: "
+                  f"{', '.join(off[:2])}", flush=True)
         settled = settle_height(pg, UNCLIP_JS, width=width, base_h=1000)
         try:
             probe = pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})

@@ -11,9 +11,9 @@
 | | |
 |---|---|
 | Boards in the report | 37 |
-| Findings | **43** - 3 Blocker, 20 Major, 15 Minor, 5 Nit |
+| Findings | **45** - 3 Blocker, 21 Major, 16 Minor, 5 Nit |
 | Applies to every screen | 27 |
-| Specific to one screen | 16 |
+| Specific to one screen | 18 |
 | Withdrawn, not raised, or noted about the design file | 13 |
 
 The NMBA design page (‘NMBA — Dev Synced — August’) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles — Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication. This report carries only what has something to say. Of the 51 screens captured, 10 carry a finding of their own and appear here as a board; the remaining 41 were checked against their design frames and carry no screen-specific finding, so they are named one by one in the ‘Coverage — NMBA’ tab of the QC tracker rather than repeated here as a page of picture each. The portal-wide findings still apply to all 51: the 27 global boards below each draw one such finding on a screen that shows it clearly.
@@ -147,8 +147,8 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | The National Emblem is 32x52, sitting 30px below the band's top edge. The co-branding is two separate marks, each 40px tall - Digital India at x917, 102 wide, and the SAMAVESH lockup at x1043, 188 wide - together spanning 314px and ending at x1231. The band's lower edge is 1px #F3F4F6. |
-| **Build does** | The National Emblem is 49x80 - about 53% larger on both axes - and sits 24px higher, at y46. The co-branding is not two marks but ONE raster image, 440x56 at x792: 40% wider, 16px taller and starting 125px further left than the design places it, with Digital India and SAMAVESH baked into a single file whose alt text is one 83-character string. The band's lower edge is 1px #D1D5DB, a heavier grey than the design's #F3F4F6 - the same substitution the sidebar makes. Read from the DOM on the live build, 2026-09-11. |
-| **Fix** | Draw the National Emblem at the design's 32x52 in its designed position, and compose the co-branding from the two marks the design uses rather than one flattened picture - a single image cannot be scaled per breakpoint, cannot be themed, and gives a screen reader one long string where the design has two named marks. Set the band's lower edge to #F3F4F6. Note that the emblem is the National Emblem of India: its proportions are not ours to adjust, and the estate's own rule is that it ships at 3x the largest surface that renders it rather than being scaled up from a smaller file.  (Anchor: The finding is about two MARKS - the National Emblem and the co-branding block - which are images with no text node, sitting 700px apart in the same band. The box is the band itself on both sides, measured off the captures, so the crop shows both marks and the reader can see the size difference rather than being told it.) |
+| **Build does** | In the ADMIN shell the National Emblem is 49x80 - about 53% larger on both axes - and sits 24px higher, at y46. The co-branding is not two marks but ONE raster image, 440x56 at x792: 40% wider, 16px taller and starting 125px further left than the design places it, with Digital India and SAMAVESH baked into a single file whose alt text is one 83-character string. The band's lower edge is 1px #D1D5DB against the design's #F3F4F6 - the same substitution the sidebar makes. The CITIZEN shell is worse on the same band: the emblem is 39x64 against the same designed 32x52, the band is 106px tall against 94, and the MINISTRY NAME ITSELF is a 496x56 raster image where the design sets it as three lines of live text. A portal that carries a language control cannot translate a picture of its own name. Read from the DOM on the live build, 2026-09-11. |
+| **Fix** | Draw the National Emblem at the design's 32x52 in its designed position, and compose the co-branding from the two marks the design uses rather than one flattened picture - a single image cannot be scaled per breakpoint, cannot be themed, and gives a screen reader one long string where the design has two named marks. On the citizen shell the ministry name has to come back as text for the same reason, and more urgently: it is the department's own name, on a bilingual portal. Set the band's lower edge to #F3F4F6. Note that the emblem is the National Emblem of India: its proportions are not ours to adjust, and the estate's own rule is that it ships at 3x the largest surface that renders it rather than being scaled up from a smaller file.  (Anchor: The finding is about two MARKS - the National Emblem and the co-branding block - which are images with no text node, sitting 700px apart in the same band. The box is the band itself on both sides, measured off the captures, so the crop shows both marks and the reader can see the size difference rather than being told it.) |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
 
@@ -440,6 +440,18 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-58966) · [Live page](https://nmba-user-dev.mosje.in/activities)
 
+### The activity card is built to different metrics, and its type chip loses its colour
+
+`NMB-SCREEN-046` · **Major** · Layout & Spacing · Scope: Citizen - Activity Snapshots
+
+| | |
+|---|---|
+| **Design says** | The card is 348x409 at radius 12 with a 1px #E5E7EB edge. Its type chip is 11px Medium #1558B0 - a blue that says 'category' - and the location and date under it are 11px Medium #374151. |
+| **Build does** | The card is 329x351 at radius 8 with a 1px #E5EAF2 edge - a sixth near-miss grey. The type chip is 14px/500 #374151: three points larger than designed and drained of its blue, so the one element that tells a reader what KIND of activity this is now looks like ordinary body text. The location drops to 12px #6B7280 and the date to 11px #6B7280, both lighter than the design's #374151. |
+| **Fix** | Build the card at 348x409, radius 12, edge #E5E7EB, and put the chip back to 11px Medium #1558B0. The chip is the card's only classification; at 14px in the same grey as everything else it stops doing that job. Note this is the same card that has lost its title and its description (NMB-SCREEN-018) - with those two restored and the chip recoloured, the card reads as the design intends. |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-58966) · [Live page](https://nmba-user-dev.mosje.in/activities)
+
 ## Citizen - Help Centres & Facilities
 
 ### The facility card drops its second button and its service tags
@@ -449,7 +461,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | Each facility card ends with two buttons side by side - 'Get Directions' filled #003366 and 'Call Now' white with a #003366 outline - above which sit the service tags as small pills (Inpatient Treatment, Outpatient Counseling, Detoxification, Rehabilitation). |
-| **Build does** | There is one button, not two: 'Get Directions' stretches the full width of the card. The card can still be phoned - the number above the button is a tel: link with a green handset glyph - but it is a bare line of text where the design gives it a button beside the first, so the two things a reader does with a centre no longer look like the same kind of thing. The service tag pills are not rendered at all, so a reader cannot see what a centre offers without opening it. |
+| **Build does** | There is one button, not two: 'Get Directions' stretches 494px across the full width of the card, where the design gives it 218x32 beside an equal 'Call Now'. It is also filled #0A2C53, not the design's #003366 - a seventh near-miss colour, this one on the primary action of the citizen's most-used card. The card can still be phoned - the number above the button is a tel: link with a green handset glyph - but it is a bare line of text where the design gives it a button beside the first, so the two things a reader does with a centre no longer look like the same kind of thing. The service tag pills are not rendered at all, so a reader cannot see what a centre offers without opening it. |
 | **Fix** | Give the phone number back its button beside 'Get Directions', outlined #003366 as the design draws it, and restore the service tag pills above the pair. |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-58585) · [Live page](https://nmba-user-dev.mosje.in/facilities)
@@ -513,6 +525,18 @@ Each has its own board in the PDF, showing the design and the build side by side
 | **Design says** | The right of the citizen masthead holds a signed-in user block: the name at 16px SemiBold #1F2937, the email beneath it at 13px #374151, and a 48px initials avatar filled #C8DBF0. |
 | **Build does** | The build shows a green National Deaddiction Helpline badge carrying the 14446 number, and a 'Nasha Mukti Mitr Login' button. There is no user block, because the citizen site has no signed-in state. So the design assumes a citizen session the build does not have. |
 | **Fix** | Decide which is right and make both sides agree: either the citizen site gains the signed-in block the design draws, or the design is updated to the helpline-and-login masthead the build ships. Raised because the two disagree, not because the build is necessarily wrong. |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-59117) · [Live page](https://nmba-user-dev.mosje.in/)
+
+### The pledge banner is narrower than the page and loses its edge
+
+`NMB-SCREEN-047` · **Minor** · Layout & Spacing · Scope: Citizen - Home
+
+| | |
+|---|---|
+| **Design says** | The banner is 1092x136 at radius 20, a linear gradient inside a 1px #E5E7EB edge, padded 32/56/32/32, and it spans the full content column from x324 to x1416. Its call to action is a 170x40 white button at radius 8, its label 14px Medium #003366. |
+| **Build does** | The banner is 1020x136 at radius 20 with the gradient but NO edge, starting at x360 - so it is 72px narrower than the content column it sits in and does not line up with the cards below it. The button is 176x36 at radius 6 with its label at weight 400: 4px shorter than designed, on a radius the design does not use here, in the regular weight rather than Medium. |
+| **Fix** | Span the banner across the content column as the design does, restore the 1px #E5E7EB edge, and build the button at 170x40 radius 8 with a Medium label. The button metrics are the same ones NMB-GLOBAL-045 raises on the admin toolbar, so one button component fixes both. |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-59117) · [Live page](https://nmba-user-dev.mosje.in/)
 

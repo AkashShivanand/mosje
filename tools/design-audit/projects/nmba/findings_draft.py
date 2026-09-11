@@ -225,11 +225,14 @@ FINDINGS = [
   "Each facility card ends with two buttons side by side - 'Get Directions' filled #003366 and 'Call "
   "Now' white with a #003366 outline - above which sit the service tags as small pills (Inpatient "
   "Treatment, Outpatient Counseling, Detoxification, Rehabilitation).",
-  "There is one button, not two: 'Get Directions' stretches the full width of the card. The card can "
-  "still be phoned - the number above the button is a tel: link with a green handset glyph - but it "
-  "is a bare line of text where the design gives it a button beside the first, so the two things a "
-  "reader does with a centre no longer look like the same kind of thing. The service tag pills are "
-  "not rendered at all, so a reader cannot see what a centre offers without opening it.",
+  "There is one button, not two: 'Get Directions' stretches 494px across the full width of the "
+  "card, where the design gives it 218x32 beside an equal 'Call Now'. It is also filled #0A2C53, "
+  "not the design's #003366 - a seventh near-miss colour, this one on the primary action of the "
+  "citizen's most-used card. The card can still be phoned - the number above the button is a tel: "
+  "link with a green handset glyph - but it is a bare line of text where the design gives it a "
+  "button beside the first, so the two things a reader does with a centre no longer look like the "
+  "same kind of thing. The service tag pills are not rendered at all, so a reader cannot see what "
+  "a centre offers without opening it.",
   "Give the phone number back its button beside 'Get Directions', outlined #003366 as the design "
   "draws it, and restore the service tag pills above the pair.",
   ("Call Now",-90,-16,300,50), ("Get Directions",-60,-16,560,50)),
@@ -403,6 +406,40 @@ FINDINGS = [
   "asks that an instruction not depend on a sensory characteristic alone.",
   ("Mobile Number",-8,-10,300,32), ("Mobile Number",-8,-10,300,32)),
 
+ # Added 2026-09-11 — the citizen-side component diffs, after the sidebar, table, masthead, form
+ # controls and side sheet. Measured against captures RE-TAKEN after the harness fix: the citizen
+ # pages had been captured with their horizontal axis un-clipped, which moved everything.
+ ("S19","Screen","Citizen - Activity Snapshots","PUBLIC-ACTIVITIES","Major","Layout & Spacing",
+  "The activity card is built to different metrics, and its type chip loses its colour",
+  "The card is 348x409 at radius 12 with a 1px #E5E7EB edge. Its type chip is 11px Medium "
+  "#1558B0 - a blue that says 'category' - and the location and date under it are 11px Medium "
+  "#374151.",
+  "The card is 329x351 at radius 8 with a 1px #E5EAF2 edge - a sixth near-miss grey. The type "
+  "chip is 14px/500 #374151: three points larger than designed and drained of its blue, so the "
+  "one element that tells a reader what KIND of activity this is now looks like ordinary body "
+  "text. The location drops to 12px #6B7280 and the date to 11px #6B7280, both lighter than the "
+  "design's #374151.",
+  "Build the card at 348x409, radius 12, edge #E5E7EB, and put the chip back to 11px Medium "
+  "#1558B0. The chip is the card's only classification; at 14px in the same grey as everything "
+  "else it stops doing that job. Note this is the same card that has lost its title and its "
+  "description (NMB-SCREEN-018) - with those two restored and the chip recoloured, the card reads "
+  "as the design intends.",
+  ("Awareness Rally",-24,-18,348,409), ("Community Programmes",-14,-16,329,351)),
+
+ ("S20","Screen","Citizen - Home","PUBLIC-HOME","Minor","Layout & Spacing",
+  "The pledge banner is narrower than the page and loses its edge",
+  "The banner is 1092x136 at radius 20, a linear gradient inside a 1px #E5E7EB edge, padded "
+  "32/56/32/32, and it spans the full content column from x324 to x1416. Its call to action is a "
+  "170x40 white button at radius 8, its label 14px Medium #003366.",
+  "The banner is 1020x136 at radius 20 with the gradient but NO edge, starting at x360 - so it is "
+  "72px narrower than the content column it sits in and does not line up with the cards below it. "
+  "The button is 176x36 at radius 6 with its label at weight 400: 4px shorter than designed, on a "
+  "radius the design does not use here, in the regular weight rather than Medium.",
+  "Span the banner across the content column as the design does, restore the 1px #E5E7EB edge, "
+  "and build the button at 170x40 radius 8 with a Medium label. The button metrics are the same "
+  "ones NMB-GLOBAL-045 raises on the admin toolbar, so one button component fixes both.",
+  ("Take the Pledge",-890,-62,1092,136), ("Take the Pledge",-811,-50,1020,136)),
+
  ("S12","Screen","Important Documents (all roles)","ADMIN-IMPORTANT-DOCUMENTS","Nit","Layout & Spacing",
   "The row actions are in a different order, and in a different style",
   "The row actions run download, then edit, then delete, each as a bordered icon-button - a light "
@@ -478,16 +515,22 @@ FINDINGS = [
   "separate marks, each 40px tall - Digital India at x917, 102 wide, and the SAMAVESH lockup at "
   "x1043, 188 wide - together spanning 314px and ending at x1231. The band's lower edge is "
   "1px #F3F4F6.",
-  "The National Emblem is 49x80 - about 53% larger on both axes - and sits 24px higher, at y46. "
-  "The co-branding is not two marks but ONE raster image, 440x56 at x792: 40% wider, 16px taller "
-  "and starting 125px further left than the design places it, with Digital India and SAMAVESH "
-  "baked into a single file whose alt text is one 83-character string. The band's lower edge is "
-  "1px #D1D5DB, a heavier grey than the design's #F3F4F6 - the same substitution the sidebar "
-  "makes. Read from the DOM on the live build, 2026-09-11.",
+  "In the ADMIN shell the National Emblem is 49x80 - about 53% larger on both axes - and sits 24px "
+  "higher, at y46. The co-branding is not two marks but ONE raster image, 440x56 at x792: 40% "
+  "wider, 16px taller and starting 125px further left than the design places it, with Digital "
+  "India and SAMAVESH baked into a single file whose alt text is one 83-character string. The "
+  "band's lower edge is 1px #D1D5DB against the design's #F3F4F6 - the same substitution the "
+  "sidebar makes. The CITIZEN shell is worse on the same band: the emblem is 39x64 against the "
+  "same designed 32x52, the band is 106px tall against 94, and the MINISTRY NAME ITSELF is a "
+  "496x56 raster image where the design sets it as three lines of live text. A portal that "
+  "carries a language control cannot translate a picture of its own name. Read from the DOM on "
+  "the live build, 2026-09-11.",
   "Draw the National Emblem at the design's 32x52 in its designed position, and compose the "
   "co-branding from the two marks the design uses rather than one flattened picture - a single "
   "image cannot be scaled per breakpoint, cannot be themed, and gives a screen reader one long "
-  "string where the design has two named marks. Set the band's lower edge to #F3F4F6. Note that "
+  "string where the design has two named marks. On the citizen shell the ministry name has to "
+  "come back as text for the same reason, and more urgently: it is the department's own name, on "
+  "a bilingual portal. Set the band's lower edge to #F3F4F6. Note that "
   "the emblem is the National Emblem of India: its proportions are not ours to adjust, and the "
   "estate's own rule is that it ships at 3x the largest surface that renders it rather than being "
   "scaled up from a smaller file.",
