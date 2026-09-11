@@ -130,7 +130,9 @@ FINDINGS = [
 
  ("G09","Global","Data tables (every list screen)","ADMIN-MINISTRIES-DASHBOARD","Major","Layout & Spacing",
   "Table row height is inconsistent across the portal",
-  "Table rows are a steady 45-55px throughout, so a list reads the same on every screen.",
+  "Every data cell in the design is 56px tall - all 50 of them, exactly, on this frame - and every "
+  "header cell is 52px. Counted off the frame's own nodes, not estimated; an earlier wording said "
+  "'a steady 45-55px', which understated how uniform the design actually is.",
   "Measured row heights run 41px on User Management, 53px on most lists, 57px on Important Documents, "
   "65px on the NAPDDR screens, 85px on Best Practices and 153px on the Ministries dashboard - the same "
   "component at more than three times the height from one screen to the next. Header rows vary too, "
@@ -406,6 +408,50 @@ FINDINGS = [
   "NMB-GLOBAL-038 (the 60px item rhythm). Treat them as one piece of work against one component "
   "rather than five separate tickets; the sidebar does not match the design until all five land.",
   ("List of SNO",-49,-18,268,48), ("List of SNO",-20,-8,245,36)),
+
+ # Added 2026-09-11, same challenge as the sidebar: six findings already touched the table and none
+ # of them said the table's own box is wrong. Measured on both sides - the design frame's Col Head
+ # and Cell nodes through the Plugin API, the build through getComputedStyle.
+ ("G24","Global","Data tables (every list screen)","ADMIN-USER-MANAGEMENT","Major","Layout & Spacing",
+  "The table's header band, cell padding and dividers are all different from the design",
+  "The table sits in a #FFFFFF container with a 1px #E5E7EB edge at radius 12. Its header is a "
+  "band: 52px tall, filled #F9FAFB, each cell padded 16px top and bottom and 24px left and right. "
+  "Data cells are 56px tall, padded 12/24, and separated by a 1px #F3F4F6 rule.",
+  "The header has no fill at all - it is transparent, so there is no band, just text above rows - "
+  "and it is 38px instead of 52. Every cell, header and data alike, is padded 8/16 where the "
+  "design says 16/24 and 12/24, which is what makes the rows 41px instead of 56. The row rule is "
+  "#E5E7EB rather than #F3F4F6, a heavier line than the design draws, and the container is radius "
+  "6 against the design's 12. Read from the DOM on the live build, 2026-09-11.",
+  "Build the table to the design's own component: a radius-12 container, a 52px #F9FAFB header "
+  "band padded 16/24, 56px data cells padded 12/24, and a #F3F4F6 row rule. This is the finding "
+  "the other table findings hang off - NMB-GLOBAL-009 (row heights), NMB-GLOBAL-010 (cell "
+  "colour), NMB-GLOBAL-005 (row actions), NMB-GLOBAL-019 (the extra wrapper), NMB-GLOBAL-036 (a "
+  "column too narrow for its date) and NMB-SCREEN-030 (action order). The cell padding alone "
+  "accounts for most of the height difference, so fixing it fixes -009 across the portal.",
+  ("Mobile Number",-24,-16,240,108), ("Mobile Number",-16,-8,200,80)),
+
+ # The masthead. NMB-GLOBAL-002 covers the missing GIGW controls and -004 the dropped lockup line;
+ # neither says the two marks in the band are built at the wrong size.
+ ("G25","Global","Government masthead (every screen)","ADMIN-USER-MANAGEMENT","Major","Layout & Spacing",
+  "The masthead's marks are the wrong size, and the co-branding is one flattened image",
+  "The National Emblem is 32x52, sitting 30px below the band's top edge. The co-branding is two "
+  "separate marks, each 40px tall - Digital India at x917, 102 wide, and the SAMAVESH lockup at "
+  "x1043, 188 wide - together spanning 314px and ending at x1231. The band's lower edge is "
+  "1px #F3F4F6.",
+  "The National Emblem is 49x80 - about 53% larger on both axes - and sits 24px higher, at y46. "
+  "The co-branding is not two marks but ONE raster image, 440x56 at x792: 40% wider, 16px taller "
+  "and starting 125px further left than the design places it, with Digital India and SAMAVESH "
+  "baked into a single file whose alt text is one 83-character string. The band's lower edge is "
+  "1px #D1D5DB, a heavier grey than the design's #F3F4F6 - the same substitution the sidebar "
+  "makes. Read from the DOM on the live build, 2026-09-11.",
+  "Draw the National Emblem at the design's 32x52 in its designed position, and compose the "
+  "co-branding from the two marks the design uses rather than one flattened picture - a single "
+  "image cannot be scaled per breakpoint, cannot be themed, and gives a screen reader one long "
+  "string where the design has two named marks. Set the band's lower edge to #F3F4F6. Note that "
+  "the emblem is the National Emblem of India: its proportions are not ours to adjust, and the "
+  "estate's own rule is that it ships at 3x the largest surface that renders it rather than being "
+  "scaled up from a smaller file.",
+  ("@box",70,46,1170,90), ("@box",70,40,1170,95)),
 
  ("G17","Global","Toolbar (every list screen)","ADMIN-USER-MANAGEMENT","Minor","Components & States",
   "Export is two buttons where the design has one",

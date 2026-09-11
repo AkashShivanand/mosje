@@ -32,6 +32,15 @@ WHY = {
  "G12": {"_anchorWhy": "The icon tile is an SVG on a filled div with no text, so the extraction "
          "records neither. The tile's fill was sampled from the capture at x590-650 y240-290 and "
          "measures #FDE8EF against the design's #E5EFF9."},
+ "G24": {"_anchorWhy": "GATE 3 flagged this one, correctly and usefully: the finding is about a "
+         "header BAND, and the anchor resolves to an element with no background. That is not the "
+         "resolver landing beside the band - it is the finding. The build's header has no fill at "
+         "all, which is why there is no band to anchor to; the anchor is the header cell itself, "
+         "and its transparency is the evidence."},
+ "G25": {"_anchorWhy": "The finding is about two MARKS - the National Emblem and the co-branding "
+         "block - which are images with no text node, sitting 700px apart in the same band. The "
+         "box is the band itself on both sides, measured off the captures, so the crop shows both "
+         "marks and the reader can see the size difference rather than being told it."},
  "S10": {"_anchorWhy": "This finding is about which page a route serves, so there is no single "
          "control to anchor to; the anchor is the page title that proves it - /about-us renders "
          "the heading 'Dashboard'.",

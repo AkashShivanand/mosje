@@ -10,13 +10,13 @@
 
 | | |
 |---|---|
-| Boards in the report | 32 |
-| Findings | **37** - 3 Blocker, 14 Major, 15 Minor, 5 Nit |
-| Applies to every screen | 23 |
+| Boards in the report | 34 |
+| Findings | **39** - 3 Blocker, 16 Major, 15 Minor, 5 Nit |
+| Applies to every screen | 25 |
 | Specific to one screen | 14 |
 | Withdrawn, not raised, or noted about the design file | 13 |
 
-The NMBA design page (‘NMBA — Dev Synced — August’) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles — Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication. This report carries only what has something to say. Of the 50 screens captured, 9 carry a finding of their own and appear here as a board; the remaining 41 were checked against their design frames and carry no screen-specific finding, so they are named one by one in the ‘Coverage — NMBA’ tab of the QC tracker rather than repeated here as a page of picture each. The portal-wide findings still apply to all 50: the 23 global boards below each draw one such finding on a screen that shows it clearly.
+The NMBA design page (‘NMBA — Dev Synced — August’) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles — Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication. This report carries only what has something to say. Of the 50 screens captured, 9 carry a finding of their own and appear here as a board; the remaining 41 were checked against their design frames and carry no screen-specific finding, so they are named one by one in the ‘Coverage — NMBA’ tab of the QC tracker rather than repeated here as a page of picture each. The portal-wide findings still apply to all 50: the 25 global boards below each draw one such finding on a screen that shows it clearly.
 
 **Where to start.** The findings with the widest reach or the highest severity:
 
@@ -110,7 +110,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 | | |
 |---|---|
-| **Design says** | Table rows are a steady 45-55px throughout, so a list reads the same on every screen. |
+| **Design says** | Every data cell in the design is 56px tall - all 50 of them, exactly, on this frame - and every header cell is 52px. Counted off the frame's own nodes, not estimated; an earlier wording said 'a steady 45-55px', which understated how uniform the design actually is. |
 | **Build does** | Measured row heights run 41px on User Management, 53px on most lists, 57px on Important Documents, 65px on the NAPDDR screens, 85px on Best Practices and 153px on the Ministries dashboard - the same component at more than three times the height from one screen to the next. Header rows vary too, from 38px to 85px. |
 | **Fix** | Set one row height for the table component and let it apply everywhere; where a cell wraps to two lines, let the row grow from that one value rather than redefining it per screen. |
 
@@ -125,6 +125,30 @@ Each has its own board in the PDF, showing the design and the build side by side
 | **Design says** | The panel is 300px wide with 16px of padding all round and a 1px #E5E7EB edge, and it holds rows that are 268x48 at radius 16, each padded 12px top and bottom and 16px left and right, with an 8px gap between a row's icon and its label. |
 | **Build does** | The panel is 288px with no padding of its own and a 1px #D1D5DB edge, and its rows are 245x36 at radius 10, padded 8px and 12px. Every row is affected, not only the selected one: a row is a quarter shorter than designed, 23px narrower, on a smaller radius, and indented to x30 instead of the design's x16. Read from the DOM on the live build and from the design frame's own nodes, 2026-09-11. |
 | **Fix** | Build the sidebar to the design's metrics: a 300px panel padded 16, rows 268x48 at radius 16 padded 12/16. This is the fifth finding on this one component and the one that makes the others land - NMB-GLOBAL-001 (label colour), NMB-GLOBAL-003 (missing icons and the connector line the design does not draw), NMB-GLOBAL-015 (the selected row's weight and shape) and NMB-GLOBAL-038 (the 60px item rhythm). Treat them as one piece of work against one component rather than five separate tickets; the sidebar does not match the design until all five land. |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
+
+### The table's header band, cell padding and dividers are all different from the design
+
+`NMB-GLOBAL-040` · **Major** · Layout & Spacing · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | The table sits in a #FFFFFF container with a 1px #E5E7EB edge at radius 12. Its header is a band: 52px tall, filled #F9FAFB, each cell padded 16px top and bottom and 24px left and right. Data cells are 56px tall, padded 12/24, and separated by a 1px #F3F4F6 rule. |
+| **Build does** | The header has no fill at all - it is transparent, so there is no band, just text above rows - and it is 38px instead of 52. Every cell, header and data alike, is padded 8/16 where the design says 16/24 and 12/24, which is what makes the rows 41px instead of 56. The row rule is #E5E7EB rather than #F3F4F6, a heavier line than the design draws, and the container is radius 6 against the design's 12. Read from the DOM on the live build, 2026-09-11. |
+| **Fix** | Build the table to the design's own component: a radius-12 container, a 52px #F9FAFB header band padded 16/24, 56px data cells padded 12/24, and a #F3F4F6 row rule. This is the finding the other table findings hang off - NMB-GLOBAL-009 (row heights), NMB-GLOBAL-010 (cell colour), NMB-GLOBAL-005 (row actions), NMB-GLOBAL-019 (the extra wrapper), NMB-GLOBAL-036 (a column too narrow for its date) and NMB-SCREEN-030 (action order). The cell padding alone accounts for most of the height difference, so fixing it fixes -009 across the portal.  (Anchor: GATE 3 flagged this one, correctly and usefully: the finding is about a header BAND, and the anchor resolves to an element with no background. That is not the resolver landing beside the band - it is the finding. The build's header has no fill at all, which is why there is no band to anchor to; the anchor is the header cell itself, and its transparency is the evidence.) |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
+
+### The masthead's marks are the wrong size, and the co-branding is one flattened image
+
+`NMB-GLOBAL-041` · **Major** · Layout & Spacing · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | The National Emblem is 32x52, sitting 30px below the band's top edge. The co-branding is two separate marks, each 40px tall - Digital India at x917, 102 wide, and the SAMAVESH lockup at x1043, 188 wide - together spanning 314px and ending at x1231. The band's lower edge is 1px #F3F4F6. |
+| **Build does** | The National Emblem is 49x80 - about 53% larger on both axes - and sits 24px higher, at y46. The co-branding is not two marks but ONE raster image, 440x56 at x792: 40% wider, 16px taller and starting 125px further left than the design places it, with Digital India and SAMAVESH baked into a single file whose alt text is one 83-character string. The band's lower edge is 1px #D1D5DB, a heavier grey than the design's #F3F4F6 - the same substitution the sidebar makes. Read from the DOM on the live build, 2026-09-11. |
+| **Fix** | Draw the National Emblem at the design's 32x52 in its designed position, and compose the co-branding from the two marks the design uses rather than one flattened picture - a single image cannot be scaled per breakpoint, cannot be themed, and gives a screen reader one long string where the design has two named marks. Set the band's lower edge to #F3F4F6. Note that the emblem is the National Emblem of India: its proportions are not ours to adjust, and the estate's own rule is that it ships at 3x the largest surface that renders it rather than being scaled up from a smaller file.  (Anchor: The finding is about two MARKS - the National Emblem and the co-branding block - which are images with no text node, sitting 700px apart in the same band. The box is the band itself on both sides, measured off the captures, so the crop shows both marks and the reader can see the size difference rather than being told it.) |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
 
