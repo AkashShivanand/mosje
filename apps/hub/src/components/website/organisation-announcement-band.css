@@ -1460,9 +1460,24 @@
    */
   .orgabz__code {
     display: block;
+    /*
+     * IT TAKES THE CONTENT COLUMN, and the 360 cap that used to sit here was
+     * making it the only thing in the dialog that did not.
+     *
+     * Measured on the rendered dialog: the title began 24px from the panel's
+     * edge, the action spanned the full 400px content column from the same 24 —
+     * and the code sat at 44, inset twenty pixels inside both of them. Three
+     * elements, two left edges, and the odd one out was the largest object on
+     * the panel, which is where a misalignment shows most.
+     *
+     * `100%` is not unbounded: the dialog is `md`, so the column is 400 and the
+     * code is 400. It gains 11% of its size for free and the panel finally reads
+     * as one column instead of a stack with something floating in it.
+     *
+     * The height budget below is unchanged and still governs a short window.
+     */
     inline-size: min(
       100%,
-      var(--sa-padding-360),
       calc(
         100vh - var(--sa-padding-120) - var(--sa-padding-120) -
           var(--sa-padding-16)
