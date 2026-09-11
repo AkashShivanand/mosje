@@ -114,3 +114,5 @@ strix_runs/
 docs/qc/portals/*/node_modules
 docs/qc/portals/*/report-generated.html
 docs/qc/portals/*/report-sections.json
+docs/qc/portals/*/package.json
+docs/qc/portals/*/package-lock.json

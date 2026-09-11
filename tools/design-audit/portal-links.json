@@ -1,0 +1,35 @@
+{
+  "_note": "Per-portal links that cannot be derived from audit-master.json. Read by engine/deliverable.py when it writes README.md and DESIGN-QA-REPORT.md. Add a portal's row when it gains a Figma sheet, a tracker tab or a Drive copy.",
+  "nmba": {
+    "trackerTab": "NMBA",
+    "figmaSheet": "https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50891-4319",
+    "figmaReport": "https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50902-4319",
+    "drivePdf": "https://drive.google.com/file/d/1D8hvZUBb-GEFyt2WoCKdM39cUehYCwF7/view"
+  },
+  "smile-admin": {
+    "trackerTab": "SMILE Beggary",
+    "figmaSheet": "https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50817-25",
+    "figmaReport": "https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50826-25",
+    "drivePdf": "https://drive.google.com/file/d/1rog77OuL0hGd4U3X_2eo2cgFXLAOlZka/view"
+  },
+  "nhapoa": {
+    "trackerTab": "NHAPOA",
+    "figmaSheet": "https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=379-1035",
+    "drivePdf": "https://drive.google.com/file/d/1omNdBvxA8XEefNsZqO6PORKRdpM6QKVa/view",
+    "_note": "The Drive tracker names this tab NHAA while the repo names it NHAPOA - a known divergence, not a typo to fix blind."
+  },
+  "tg": {
+    "trackerTab": "TG",
+    "figmaSheet": "https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=686-25"
+  },
+  "eutthan-admin": {
+    "trackerTab": "eUtthan Admin",
+    "figmaSheet": "https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=164-2",
+    "drivePdf": "https://drive.google.com/file/d/1ed8e9CLCEvqS64cui5ZWtbAYqz3SeDXm/view"
+  },
+  "scw": {
+    "trackerTab": null,
+    "figmaSheet": "https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=343-25",
+    "_note": "SCW has 65 published findings and NO tab in the master tracker. That gap is real and is reported by the gate, not papered over here."
+  }
+}

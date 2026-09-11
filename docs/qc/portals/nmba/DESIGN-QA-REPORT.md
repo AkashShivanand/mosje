@@ -1,19 +1,17 @@
-# NMBA — Nasha Mukt Bharat Abhiyaan (DEV) · Design QC Report
+# NMBA — Nasha Mukt Bharat Abhiyaan (DEV) - Design QC Report
 
-**Build:** nmba-user-dev.mosje.in and nmba-admin-dev.mosje.in, captured 11 September 2026 · **Design:** [MoSJE Portal Handoff → *NMBA (Dev Synced — August)*](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2136-20193)  
-**Status:** ready for review — a human still owes the keyboard and screen-reader pass.
+**Generated:** 2026-09-11  · **Design:** [handoff frames](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2136-20193)  
+**Status:** ready for review - a human still owes the keyboard and screen-reader pass.
 
-**Also published as:** the PDF beside this file, the `NMBA` sheet in `docs/qc/MoSJE-Portal-QC-Tracker.xlsx`, and in Figma as a [review sheet](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50891-4319).
+**Also published as:** the PDF beside this file, the `NMBA` sheet in `docs/qc/MoSJE-Portal-QC-Tracker.xlsx`, a [Figma review sheet](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50891-4319), a [pinned Figma report](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50902-4319).
 
 ---
-
 ## Summary
 
 | | |
 |---|---|
-| Screens captured | **50** across the citizen site, the sign-in surface and three admin roles |
-| Design frames paired one to one | 35 |
-| Findings | **32** — 3 Blocker, 14 Major, 9 Minor, 6 Nit |
+| Boards in the report | 66 |
+| Findings | **32** - 3 Blocker, 14 Major, 9 Minor, 6 Nit |
 | Applies to every screen | 16 |
 | Specific to one screen | 16 |
 | Withdrawn, not raised, or noted about the design file | 11 |
@@ -22,11 +20,11 @@ The NMBA design page (‘NMBA — Dev Synced — August’) compared against the
 
 **Where to start.** The findings with the widest reach or the highest severity:
 
-1. **Sidebar navigation labels fail AA contrast** — `NMB-GLOBAL-001` · Blocker
-2. **The GIGW accessibility toolset is missing from the masthead** — `NMB-GLOBAL-002` · Blocker
-3. **The whole 'My Submissions' section is not built** — `NMB-SCREEN-023` · Blocker
-4. **Admin sidebar navigation icons are absent** — `NMB-GLOBAL-003` · Major
-5. **The ministry lockup drops its third line and changes colour** — `NMB-GLOBAL-004` · Major
+1. **Sidebar navigation labels fail AA contrast** - `NMB-GLOBAL-001` · Blocker
+2. **The GIGW accessibility toolset is missing from the masthead** - `NMB-GLOBAL-002` · Blocker
+3. **The whole 'My Submissions' section is not built** - `NMB-SCREEN-023` · Blocker
+4. **Admin sidebar navigation icons are absent** - `NMB-GLOBAL-003` · Major
+5. **The ministry lockup drops its third line and changes colour** - `NMB-GLOBAL-004` · Major
 
 ---
 
@@ -439,38 +437,18 @@ Each has its own board in the PDF, showing the design and the build side by side
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52070-443098) · [Live page](https://nmba-admin-dev.mosje.in/important-documents)
 
 ---
+## Withdrawn on re-checking, not raised, and notes on the design file
 
-## Withdrawn on re-checking, and not raised
+Nothing here is a finding. Each was either raised in an earlier round and did not survive re-checking, ruled out of scope, or is a defect in the handoff file rather than the build. They stay visible, with the reason, so a reviewer who saw one learns the outcome rather than wondering where it went.
 
-Nothing here is a finding. Each was either carried in from the July 2026 pass or raised by the reviewer in an earlier round, and did not survive re-checking against the current design and build. They stay visible, with the reason, so a reviewer who saw them learns the outcome rather than wondering where they went.
-
-- **KPI grid reflows to unequal card widths** — Measured on the capture: the three cards on the officer dashboard span 308-662, 688-1040 and 1066-1418 - 354, 352 and 352px with even 26px gaps, and the second row starts at the same two x positions. The grid is even. Withdrawn.
-- **Sidebar navigation icons absent PORTAL-WIDE** — The citizen shell does carry its navigation icons; only the admin shell has none. The finding is kept but narrowed to the admin shell - see G03.
-- **Page title is off the type scale** — The build's page title measures 24px at weight 600, which is exactly what the design specifies. Only the colour differs. Narrowed to a colour finding - see G11.
-- **Admin screens are missing the footer strip** — Checked on both sides: NO admin, State Nodal Officer or District Nodal Officer DESIGN frame carries a footer either - 0 footer elements across all 31 of them, against 3 on every citizen frame. The build matches the design exactly. Not a discrepancy.
-- **The sidebar expand/collapse icon does not match the design** — Cropped both sides at 1:1: the control is the same collapse glyph in the same place at the same size. Any difference is in how it behaves, which a static design QC cannot evidence - it belongs in a functional pass.
-- **The facility filter is too wide** — Width and height vary with content and viewport, so they are not audited as defects here.
-- **The side navigation lists different items from the design** — Which items a menu carries is information architecture and content, which this run was scoped to leave out. Recorded for the content pass.
-- **The filter label reads 'All Facilities' where the design says 'All Facility Types'** — Wording. Out of scope for this run by instruction.
-
----
-
-## Observations about the design file
-
-These are defects in the handoff file itself, not in the build, and no developer can act on them. They are reported here because they affect what a reader of the handoff can see.
-
-- **Seven frames draw content outside their own canvas** — Measured during the Phase-0 read: 44 text nodes sit outside the frame bounds on each of the Admin State/UT-District Events, State Nodal Officer Dashboard and District Nodal Officer Dashboard frames, 66 on Admin General Feedback, 9 on District Nodal Officer Important Documents, and 4 on each of the three NAPDDR committee frames. Content outside the frame renders nowhere - not in an export, not in Dev Mode - so it is invisible to anyone reading the handoff.
-- **Twelve loose artboards sit at the section root** — Frames named 'Table', 'Table Container', 'Contianer', 'CardHeader', 'Body' and 'arrow-wrapper' sit beside the screen frames at 1090-3067px wide. They are the wide tables and fragments the screens reference, but at the root they read as screens.
-- **The admin sign-in form has no design** — Both login frames draw the Patient Monitoring tab - one showing the Project Id field, one showing the OTP step. The Admin tab, which is what the build shows by default and what every officer in this audit signs in through, is drawn only as an inactive tab. Its form is undesigned.
-
----
-
-## Coverage
-
-All 50 captured screens appear in the PDF: 9 carry a screen-specific finding, and the rest render as a single reference board marked *audited, no screen-specific finding* — a screen dropped from a report reads as a screen never looked at.
-
-**Declared coverage debt** — designed, not audited, and stated rather than left as a silent gap:
-
-- **67 design frames have no build on dev** — form wizards, edit and detail states, register flows, and the two further sign-in states.
-- **Five further roles were deferred by decision** — CPLI, ODIC, DDAC, USDP and Line Ministry. Each has working dev credentials on the shared access sheet and its own section on the design page (roughly 80 frames between them). They are ready to run as they stand.
-- **MV / Institutions is not reachable** — 11 design frames, but the access sheet lists no login for the role.
+- **KPI grid reflows to unequal card widths** - Measured on the capture: the three cards on the officer dashboard span 308-662, 688-1040 and 1066-1418 - 354, 352 and 352px with even 26px gaps, and the second row starts at the same two x positions. The grid is even. Withdrawn.
+- **Sidebar navigation icons absent PORTAL-WIDE** - The citizen shell does carry its navigation icons; only the admin shell has none. The finding is kept but narrowed to the admin shell - see G03.
+- **Page title is off the type scale** - The build's page title measures 24px at weight 600, which is exactly what the design specifies. Only the colour differs. Narrowed to a colour finding - see G11.
+- **Admin screens are missing the footer strip** - Checked on both sides: NO admin, State Nodal Officer or District Nodal Officer DESIGN frame carries a footer either - 0 footer elements across all 31 of them, against 3 on every citizen frame. The build matches the design exactly. Not a discrepancy.
+- **The sidebar expand/collapse icon does not match the design** - Cropped both sides at 1:1: the control is the same collapse glyph in the same place at the same size. Any difference is in how it behaves, which a static design QC cannot evidence - it belongs in a functional pass.
+- **The facility filter is too wide** - Width and height vary with content and viewport, so they are not audited as defects here.
+- **The side navigation lists different items from the design** - Which items a menu carries is information architecture and content, which this run was scoped to leave out. Recorded for the content pass.
+- **The filter label reads 'All Facilities' where the design says 'All Facility Types'** - Wording. Out of scope for this run by instruction.
+- **Design file — Seven frames draw content outside their own canvas** - Measured during the Phase-0 read: 44 text nodes sit outside the frame bounds on each of the Admin State/UT-District Events, State Nodal Officer Dashboard and District Nodal Officer Dashboard frames, 66 on Admin General Feedback, 9 on District Nodal Officer Important Documents, and 4 on each of the three NAPDDR committee frames. Content outside the frame renders nowhere - not in an export, not in Dev Mode - so it is invisible to anyone reading the handoff.
+- **Design file — Twelve loose artboards sit at the section root** - Frames named 'Table', 'Table Container', 'Contianer', 'CardHeader', 'Body' and 'arrow-wrapper' sit beside the screen frames at 1090-3067px wide. They are the wide tables and fragments the screens reference, but at the root they read as screens.
+- **Design file — The admin sign-in form has no design** - Both login frames draw the Patient Monitoring tab - one showing the Project Id field, one showing the OTP step. The Admin tab, which is what the build shows by default and what every officer in this audit signs in through, is drawn only as an inactive tab. Its form is undesigned.
