@@ -3,7 +3,7 @@
 **Generated:** 2026-09-11  · **Design:** [handoff frames](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2136-20193)  
 **Status:** ready for review - a human still owes the keyboard and screen-reader pass.
 
-**Also published as:** the PDF beside this file, the `NMBA` sheet in `docs/qc/MoSJE-Portal-QC-Tracker.xlsx`, a [Figma review sheet](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50891-4319), a [pinned Figma report](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50902-4319).
+**Also published as:** the PDF beside this file, the `NMBA` sheet in `docs/qc/MoSJE-Portal-QC-Tracker.xlsx`, a [Figma review sheet](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50891-4319), a [pinned Figma report](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50916-5084).
 
 ---
 ## Summary

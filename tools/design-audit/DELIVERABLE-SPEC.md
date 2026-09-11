@@ -72,9 +72,35 @@ overwritten. **Coverage tabs stay local**; the Drive copy gets the findings tab 
 
 - `ARCHIVE — <what and when>` — superseded artefacts and earlier reviewer notes, moved in, never
   deleted, with their positions preserved.
-- `CURRENT — <run>` — the review sheet (`row · <slug>`, DESIGN | BUILD | ISSUES) and the pinned
-  report (cover, boards with draggable markers on **both** sides, Finding Cards from the file's
-  own kit, coverage appendix).
+- `CURRENT — <run>` — the review sheet and the pinned report.
+
+### The pinned report's structure — match it exactly
+
+```
+REPORT — <Portal>                          VERTICAL auto-layout, 1500 wide, fill #F1F5F9
+  report-cover                             1436, fill #003366, r16
+      title                                <Portal>, em dash, 30px Bold
+      subtitle                             "Design vs Build — pinned discrepancy report · <status>"
+      body                                 what was captured, from where, as whom; and that every
+                                           marker's position is DERIVED from the element's real box
+      tiles                                FINDINGS · BLOCKER · MAJOR · MINOR · NIT · SCREENS COMPARED
+  screen-GLOBAL-<ID>  |  screen-<SLUG>-SCREEN     one frame per finding group
+      section-header                       1436x44, fill #003366, r10
+                                           "Global N — <title>"  or  "Screen — <name>"  + severity chips
+      board                                fill #FFFFFF, r12, 1px #E2E8F0
+          bhead                            fill #F8FAFB — "<route>   ·   <context>" + SCOPE: GLOBAL pill
+          Screenshots                      fill #EEF2F7 — two 688 columns, "DESIGN — FIGMA INTENT"
+                                           and "BUILD — LIVE (DEV)", markers on BOTH sides
+          bfoot                            "<SLUG> · <Portal> · Design QC · <date>" + frame/page links
+      Finding — <ID>                       an instance of the file's own Finding Card, one per finding
+  screen-COVERAGE-APPENDIX                 every audited screen with no finding of its own, as
+                                           thumbnails at one size
+```
+
+Two things this is strict about. **Markers go on both sides**, because a marker on the build
+alone leaves a reader hunting for what the design actually said. And the **coverage appendix**
+earns its place: laying all 42 NMBA captures out at one size is what surfaced NMB-SCREEN-032, a
+Major finding that two passes at board scale had walked straight past.
 
 ## 6. Drive
 
@@ -106,3 +132,8 @@ cleanup cannot be silently spent on another's slippage.
 |---|---|---|
 | `eutthan-admin` | 2 | Its master predates the schema and has no `figmaUrl` or `method`. Both describe an audit no current session ran, and they will not be invented. |
 | `scw` | 1 | 65 published findings and **no tab in the master tracker**. A real gap, recorded rather than hidden. |
+
+The Figma side is not yet gated — it cannot be read from the repo. Two known divergences:
+SMILE Beggary's pinned report has **no coverage appendix**, and its cover is stamped
+`MACHINE-DRAFT`, which was accurate for the engine's own draft and is not accurate for a
+report whose findings were afterwards curated by hand.

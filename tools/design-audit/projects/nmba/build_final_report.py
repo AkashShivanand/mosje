@@ -97,8 +97,7 @@ def main():
         by0, by1 = band(png_h(bp), [a["box"]])
         f = dict(num=1, id=k["id"], element=k["title"], section="global", scope="Global",
                  axis=k["cat"], severity=k["sev"], figma=k["design"], live=k["build"], fix=k["fix"],
-                 subO="Scope: Global — this repeats across the portal; fix it once and it "
-                      "lands everywhere. Shown here on " + slug + ".",
+                 subO="Scope: Global — shown on " + slug + "; the same issue repeats across screens",
                  figmaBox=[0, dy0, 1440, dy1], liveBox=[0, by0, 1440, by1],
                  sectionBox=[0, by0, 1440, by1],
                  figmaPin=pin_pct(d["box"], 0, dy0, 1440, dy1),
@@ -112,7 +111,10 @@ def main():
                         "figmaImg": os.path.relpath(dp, DEST), "liveImg": os.path.relpath(bp, DEST),
                         "figmaUrl": FURL.format(n=d["node"].replace(":", "-")),
                         "liveUrl": rows.get(slug, {}).get("url"),
-                        "findings": [f], "_role": "global", "_node": d["node"]})
+                        "findings": [f], "_role": "global", "_node": d["node"],
+                        # the amber strip above the board - the same one SMILE Beggary carries.
+                        "note": "Scope: Global — this repeats across the portal; fix once, "
+                                "it lands everywhere."})
 
     # ---- one board per SCREEN that has findings ---------------------------------------------
     per = collections.defaultdict(list)

@@ -49,6 +49,7 @@ def main():
         # a standing note with no board still gets a card, with no screenshots
         if "figmaBox" not in f0:
             boards.append({"slug": s["slug"], "name": s["name"], "sev": f0["severity"],
+                           "route": "", "sub": f0.get("subO") or "", "note": s.get("note") or "",
                            "d": None, "b": None, "f": [[x["num"], x["id"], x["element"],
                                                         x["severity"], x["axis"], x.get("figma", ""),
                                                         x.get("live", ""), x.get("fix", ""),
@@ -74,8 +75,10 @@ def main():
                        x.get("scope", "Screen"),
                        [round(dp["x"] * COL / 100.0), round(dp["y"] * d["cropH"] / 100.0)] if dp else None,
                        [round(bp["x"] * COL / 100.0), round(bp["y"] * b["cropH"] / 100.0)] if bp else None])
+        route = (s.get("liveUrl") or "").split(".in", 1)[-1] or "/"
         boards.append({"slug": slug, "name": s["name"], "sev": f0["severity"], "d": d, "b": b,
-                       "f": fl, "figmaUrl": s.get("figmaUrl"), "liveUrl": s.get("liveUrl")})
+                       "f": fl, "figmaUrl": s.get("figmaUrl"), "liveUrl": s.get("liveUrl"),
+                       "route": route, "sub": f0.get("subO") or "", "note": s.get("note") or ""})
 
     boards.sort(key=lambda x: (0 if x["f"][0][8] == "Global" else 1,
                                SEV.get(x["sev"], 9), x["slug"]))

@@ -82,7 +82,7 @@
      "figma": "Every navigation label is #1F2937 on white - about 14.7:1 - and the selected item is #003366 on a #E5EFF9 pill. Measured on the admin sidebar's own text nodes.",
      "live": "Every unselected navigation label is #9CA3AF on #FFFFFF. That is 2.54:1, where WCAG 2.2 AA requires 4.5:1 for text this size. It reads as a disabled control, and it is the same in the citizen shell and in all three admin roles.",
      "fix": "Set the unselected label to the design's #1F2937. If a quieter resting state is wanted, #4B5563 is the lightest neutral in the token set that still clears 4.5:1 on white; #9CA3AF cannot be used for text on white at any size.",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on ADMIN-USER-MANAGEMENT.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
      "figmaBox": [
       0,
       212,
@@ -112,7 +112,8 @@
     }
    ],
    "_role": "global",
-   "_node": "52061:126900"
+   "_node": "52061:126900",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-002",
@@ -134,7 +135,7 @@
      "figma": "The blue government bar carries the mandated inline set: A- / A / A+ text-size controls with the current size shown selected, a contrast toggle, an accessibility icon, and a globe with the language named in words ('English').",
      "live": "The bar carries only an accessibility glyph, which opens a third-party panel, and a bare two-script glyph for language. The text-size controls and the contrast toggle are not present anywhere on the page.",
      "fix": "Restore the inline A- / A / A+ and contrast controls in the government bar, and label the language control with the language name as the design does. GIGW 3.0 treats this set as a masthead requirement, so its absence is a compliance gap on every screen, not a styling preference.",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on ADMIN-USER-MANAGEMENT.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
      "figmaBox": [
       0,
       0,
@@ -164,7 +165,8 @@
     }
    ],
    "_role": "global",
-   "_node": "52061:126900"
+   "_node": "52061:126900",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-003",
@@ -186,7 +188,7 @@
      "figma": "Every admin navigation item pairs a 24px Material Symbols icon at #003366 with its label - widgets, event, group_add, article_shortcut, task and so on - and the icon sits 32px from the panel edge.",
      "live": "The admin sidebar draws label-only rows with a thin tree-branch connector line in the icon's place. No item has an icon. The citizen shell DOES carry its icons, so the two shells disagree with each other as well as with the design.",
      "fix": "Add the navigation icon to each admin sidebar item, using the same Material Symbols set and #003366 the citizen shell already uses, and drop the connector line the design does not have.",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on ADMIN-USER-MANAGEMENT.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
      "figmaBox": [
       0,
       273,
@@ -216,7 +218,8 @@
     }
    ],
    "_role": "global",
-   "_node": "52061:126900"
+   "_node": "52061:126900",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-004",
@@ -238,7 +241,7 @@
      "figma": "Three lines, all #1F2937: 'Government of India' at 12px Medium, 'Ministry of Social Justice & Empowerment' at 14px Medium, and 'Department of Social Justice & Empowerment' at 20px Bold as the emphasised line.",
      "live": "Two lines at #374151: 'Government of India' at 12px Medium, and 'Ministry of Social Justice & Empowerment' promoted to 20px Bold. The Department line is not rendered. The sign-in page does draw all three, so the authenticated shell also disagrees with the portal's own login screen.",
      "fix": "Render the third line and set the lockup to #1F2937, matching the sign-in page and the design. The emphasised line is the Department, not the Ministry.",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on ADMIN-USER-MANAGEMENT.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
      "figmaBox": [
       0,
       0,
@@ -268,7 +271,8 @@
     }
    ],
    "_role": "global",
-   "_node": "52061:126900"
+   "_node": "52061:126900",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-005",
@@ -290,7 +294,7 @@
      "figma": "Row actions are bordered icon-buttons - a light 1px outline, radius 6, the edit glyph at #003366 and the delete glyph at #EC5042 - sized as real click targets.",
      "live": "The actions are bare glyphs with no button around them, and the edit glyph is drawn at #E08020, an amber that appears nowhere in the NMBA token set. On the four NAPDDR committee screens the same actions become three outlined TEXT buttons instead (View / Edit / Delete).",
      "fix": "Restore the bordered icon-button and set the edit glyph to #003366. Use one row-action component across the portal rather than icon-buttons on some screens and text buttons on others.  (Anchor: The row-action controls are icon-only buttons with no text node, so the extraction does not record them. The box is measured off the capture at the Actions column, x1305-1425 on the first data row, where the two glyphs are drawn.)",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on ADMIN-USER-MANAGEMENT.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
      "figmaBox": [
       0,
       244,
@@ -321,7 +325,8 @@
     }
    ],
    "_role": "global",
-   "_node": "52061:126900"
+   "_node": "52061:126900",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-006",
@@ -343,7 +348,7 @@
      "figma": "The pager runs a left chevron, the page numbers with the current one in a rounded outlined chip, an ellipsis, the last page, and a right chevron.",
      "live": "The two step controls render as '-' and '+'. A minus and a plus read as decrease and increase, not as previous and next page, and there is no ellipsis or last-page number.",
      "fix": "Use the chevrons the design specifies for the step controls, and show the ellipsis and last page so a reader can tell how long the list is.",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on ADMIN-NAPDDR-STATE-COMMITTEE.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-NAPDDR-STATE-COMMITTEE; the same issue repeats across screens",
      "figmaBox": [
       0,
       688,
@@ -373,7 +378,8 @@
     }
    ],
    "_role": "global",
-   "_node": "52092:136433"
+   "_node": "52092:136433",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-009",
@@ -395,7 +401,7 @@
      "figma": "Table rows are a steady 45-55px throughout, so a list reads the same on every screen.",
      "live": "Measured row heights run 41px on User Management, 53px on most lists, 57px on Important Documents, 65px on the NAPDDR screens, 85px on Best Practices and 153px on the Ministries dashboard - the same component at more than three times the height from one screen to the next. Header rows vary too, from 38px to 85px.",
      "fix": "Set one row height for the table component and let it apply everywhere; where a cell wraps to two lines, let the row grow from that one value rather than redefining it per screen.",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on ADMIN-MINISTRIES-DASHBOARD.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-MINISTRIES-DASHBOARD; the same issue repeats across screens",
      "figmaBox": [
       0,
       409,
@@ -425,7 +431,8 @@
     }
    ],
    "_role": "global",
-   "_node": "52051:161871"
+   "_node": "52051:161871",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-007",
@@ -447,7 +454,7 @@
      "figma": "Every dropdown is the design-system select: a rounded bordered field with its own chevron and the label at 14px #1F2937.",
      "live": "The rows-per-page control, the facility filter and the three activity filters render as an unstyled native <select> with the operating system's chevron and its own border radius, so they look different on every browser and different from every other control on the page.",
      "fix": "Skin these with the design-system select so their border, radius, type and chevron match the rest of the interface.  (Anchor: The control IS a native <select> and it carries no text node of its own - its value is rendered by the browser. The box is the select's own measured rect (x1271 y567, 63x31) from the capture.)",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on ADMIN-NAPDDR-STATE-COMMITTEE.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-NAPDDR-STATE-COMMITTEE; the same issue repeats across screens",
      "figmaBox": [
       0,
       681,
@@ -478,7 +485,8 @@
     }
    ],
    "_role": "global",
-   "_node": "52092:136433"
+   "_node": "52092:136433",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-008",
@@ -500,7 +508,7 @@
      "figma": "Every search field carries a magnifier inside its left edge, ahead of the placeholder.",
      "live": "The magnifier is absent on User Management, the Ministries dashboard, all four NAPDDR screens and Facilities, and on Important Documents it is drawn inside the RIGHT edge instead. So the same control differs from screen to screen as well as from the design.",
      "fix": "Put the magnifier inside the left edge of every search field, as the design does.",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on ADMIN-IMPORTANT-DOCUMENTS.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-IMPORTANT-DOCUMENTS; the same issue repeats across screens",
      "figmaBox": [
       0,
       110,
@@ -530,7 +538,8 @@
     }
    ],
    "_role": "global",
-   "_node": "52070:443098"
+   "_node": "52070:443098",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-010",
@@ -552,7 +561,7 @@
      "figma": "Cell values are #1F2937, the same near-black the rest of the body copy uses.",
      "live": "Cell values are #4B5563. It still clears AA, but it makes the data quieter than its own column headers, which the design does not do.",
      "fix": "Set cell values to #1F2937 and leave #4B5563 for secondary lines inside a cell.",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on ADMIN-USER-MANAGEMENT.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
      "figmaBox": [
       0,
       249,
@@ -582,7 +591,8 @@
     }
    ],
    "_role": "global",
-   "_node": "52061:126900"
+   "_node": "52061:126900",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-011",
@@ -604,7 +614,7 @@
      "figma": "The page title is 24px SemiBold #1F2937.",
      "live": "The page title is 24px 600 #374151 - the right size and weight, a lighter colour.",
      "fix": "Set the page title to #1F2937.",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on ADMIN-USER-MANAGEMENT.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
      "figmaBox": [
       0,
       46,
@@ -634,7 +644,8 @@
     }
    ],
    "_role": "global",
-   "_node": "52061:126900"
+   "_node": "52061:126900",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-012",
@@ -656,7 +667,7 @@
      "figma": "Every KPI icon sits on a 32px tile filled #E5EFF9 - Primary/50 - at radius 10, so the row of cards reads as one set.",
      "live": "The tiles are tinted per card, and the tint used for 'Important Documents' measures #FDE8EF, a pink that is in no NMBA token. On the district dashboard the same row mixes pink, blue and amber tiles for metrics that carry no status meaning.",
      "fix": "Fill every KPI icon tile with #E5EFF9. Reserve a coloured tint for a metric that genuinely signals a state, and take the tint from the token set when you do.  (Anchor: The icon tile is an SVG on a filled div with no text, so the extraction records neither. The tile's fill was sampled from the capture at x590-650 y240-290 and measures #FDE8EF against the design's #E5EFF9.)",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on STATE-NODAL-OFFICER-DASHBOARD.",
+     "subO": "Scope: Global \u2014 shown on STATE-NODAL-OFFICER-DASHBOARD; the same issue repeats across screens",
      "figmaBox": [
       0,
       97,
@@ -687,7 +698,8 @@
     }
    ],
    "_role": "global",
-   "_node": "2309:14405"
+   "_node": "2309:14405",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-013",
@@ -709,7 +721,7 @@
      "figma": "The KPI value is 32px SemiBold #003366 - the top step of the published scale.",
      "live": "The KPI value is 30px. The scale runs 24, 28, 32; 30 is not a step on it, so this number is the only type size in the portal that no token can express.",
      "fix": "Set the KPI value to 32px.",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on STATE-NODAL-OFFICER-DASHBOARD.",
+     "subO": "Scope: Global \u2014 shown on STATE-NODAL-OFFICER-DASHBOARD; the same issue repeats across screens",
      "figmaBox": [
       0,
       184,
@@ -739,7 +751,8 @@
     }
    ],
    "_role": "global",
-   "_node": "2309:14405"
+   "_node": "2309:14405",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-014",
@@ -761,7 +774,7 @@
      "figma": "The KPI label is 14px SemiBold #374151.",
      "live": "The KPI label is 14px 600 #6B7280.",
      "fix": "Set the KPI label to #374151.",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on STATE-NODAL-OFFICER-DASHBOARD.",
+     "subO": "Scope: Global \u2014 shown on STATE-NODAL-OFFICER-DASHBOARD; the same issue repeats across screens",
      "figmaBox": [
       0,
       97,
@@ -791,7 +804,8 @@
     }
    ],
    "_role": "global",
-   "_node": "2309:14405"
+   "_node": "2309:14405",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-015",
@@ -813,7 +827,7 @@
      "figma": "The selected item is a 48px-tall pill at radius 16 filled #E5EFF9, its label at 14px Regular #003366 - the same weight as every other item, distinguished by the fill alone.",
      "live": "The selected item is a 36px-tall pill at radius 10, and its label is set Bold. Weight and shape both change where the design changes only the fill.",
      "fix": "Match the pill to radius 16 and the item height to the design, and keep the selected label at the same weight as the rest.",
-     "subO": "Scope: Global \u2014 this repeats across the portal; fix it once and it lands everywhere. Shown here on ADMIN-USER-MANAGEMENT.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
      "figmaBox": [
       0,
       44,
@@ -843,7 +857,8 @@
     }
    ],
    "_role": "global",
-   "_node": "52061:126900"
+   "_node": "52061:126900",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
    "slug": "NMB-GLOBAL-031",
