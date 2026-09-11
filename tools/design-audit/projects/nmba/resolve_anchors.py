@@ -40,6 +40,9 @@ WHY = {
          "scrim behind it - and a sheet has no text node. The box is the sheet's top 300px on "
          "both sides, measured off the captures, so the crop shows the edge treatment and the "
          "title together rather than describing them."},
+ "S21": {"_anchorWhy": "A map panel has no text node. The box is the panel's measured rect on "
+         "each side - 640x768 in the design frame, 534x500 in the build - which is itself the "
+         "finding, so the crop shows the two side by side at their real sizes."},
  "G24": {"_anchorWhy": "GATE 3 flagged this one, correctly and usefully: the finding is about a "
          "header BAND, and the anchor resolves to an element with no background. That is not the "
          "resolver landing beside the band - it is the finding. The build's header has no fill at "

@@ -11,9 +11,9 @@
 | | |
 |---|---|
 | Boards in the report | 37 |
-| Findings | **45** - 3 Blocker, 21 Major, 16 Minor, 5 Nit |
+| Findings | **48** - 3 Blocker, 22 Major, 18 Minor, 5 Nit |
 | Applies to every screen | 27 |
-| Specific to one screen | 18 |
+| Specific to one screen | 21 |
 | Withdrawn, not raised, or noted about the design file | 13 |
 
 The NMBA design page (‘NMBA — Dev Synced — August’) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles — Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication. This report carries only what has something to say. Of the 51 screens captured, 10 carry a finding of their own and appear here as a board; the remaining 41 were checked against their design frames and carry no screen-specific finding, so they are named one by one in the ‘Coverage — NMBA’ tab of the QC tracker rather than repeated here as a page of picture each. The portal-wide findings still apply to all 51: the 27 global boards below each draw one such finding on a screen that shows it clearly.
@@ -267,7 +267,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | Only the current page is boxed - a single outlined square around '1' - and the rest are bare numerals. Six pages are offered before the ellipsis, then the last page: 1 2 3 4 5 6 ... 125. |
-| **Build does** | Every page number carries its own outlined box, so the box no longer says which page you are on and the strip reads as seven identical buttons. Three pages are offered before the ellipsis instead of six. |
+| **Build does** | Every page number carries its own outlined box, so the box no longer says which page you are on and the strip reads as seven identical buttons. Three pages are offered before the ellipsis instead of six. The strip is also packed tighter and quieter than designed: 4px between cells against the design's 16, and the numerals #374151 against #1F2937. |
 | **Fix** | Box the current page only, leave the other numbers bare, and show the design's six pages before the ellipsis. This is the same pagination the hyphen and plus sign belong to (NMB-GLOBAL-006); fixing the glyphs without fixing the boxing leaves the reader still unable to see which page they are on.  (Anchor: The page-number boxes are buttons whose only text is the numeral, so a text anchor would bind to one numeral rather than to the strip the finding is about. The box is measured off the capture across the whole pager, x323-553 y758-798, which holds the hyphen, the four numbered boxes, the ellipsis and the plus.) |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
@@ -461,8 +461,20 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | Each facility card ends with two buttons side by side - 'Get Directions' filled #003366 and 'Call Now' white with a #003366 outline - above which sit the service tags as small pills (Inpatient Treatment, Outpatient Counseling, Detoxification, Rehabilitation). |
-| **Build does** | There is one button, not two: 'Get Directions' stretches 494px across the full width of the card, where the design gives it 218x32 beside an equal 'Call Now'. It is also filled #0A2C53, not the design's #003366 - a seventh near-miss colour, this one on the primary action of the citizen's most-used card. The card can still be phoned - the number above the button is a tel: link with a green handset glyph - but it is a bare line of text where the design gives it a button beside the first, so the two things a reader does with a centre no longer look like the same kind of thing. The service tag pills are not rendered at all, so a reader cannot see what a centre offers without opening it. |
+| **Build does** | The card itself is a list row, not a card: 534x304 padded 20 with a rule along its TOP edge only, where the design draws a 500x334 card padded 24 inside a 1px #E5E7EB border on all four sides. Inside it, there is one button, not two: 'Get Directions' stretches 494px across the full width, where the design gives it 218x32 beside an equal 'Call Now'. It is also filled #0A2C53, not the design's #003366 - a seventh near-miss colour, this one on the primary action of the citizen's most-used card. The card can still be phoned - the number above the button is a tel: link with a green handset glyph - but it is a bare line of text where the design gives it a button beside the first, so the two things a reader does with a centre no longer look like the same kind of thing. The service tag pills are not rendered at all, so a reader cannot see what a centre offers without opening it. |
 | **Fix** | Give the phone number back its button beside 'Get Directions', outlined #003366 as the design draws it, and restore the service tag pills above the pair. |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-58585) · [Live page](https://nmba-user-dev.mosje.in/facilities)
+
+### The map is smaller than designed, and the page splits evenly instead of favouring it
+
+`NMB-SCREEN-048` · **Major** · Layout & Spacing · Scope: Citizen - Help Centres & Facilities
+
+| | |
+|---|---|
+| **Design says** | The map takes 640x768 on the left and the facility list 500 on the right - a 56/44 split that gives the map the larger share, because finding a centre near you is what the screen is for. |
+| **Build does** | The map is 534x500 and the list is 534: a 50/50 split, with the map 106px narrower and 268px shorter than the design draws it. Measured in the DOM on the live build, 2026-09-11. A third less map area, on the screen whose job is to show a citizen where the nearest help is - and it is the same map that opens zoomed out to the whole subcontinent (NMB-SCREEN-028), so the two compound: less canvas AND a wider view. |
+| **Fix** | Give the map the design's 640px column and its 768px height. With NMB-SCREEN-028's zoom fixed as well, a reader lands on their own district at a usable size instead of on south Asia in a small panel.  (Anchor: A map panel has no text node. The box is the panel's measured rect on each side - 640x768 in the design frame, 534x500 in the build - which is itself the finding, so the crop shows the two side by side at their real sizes.) |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-58585) · [Live page](https://nmba-user-dev.mosje.in/facilities)
 
@@ -540,6 +552,18 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-59117) · [Live page](https://nmba-user-dev.mosje.in/)
 
+### The footer is pinned to the window instead of ending the page
+
+`NMB-SCREEN-049` · **Minor** · Layout & Spacing · Scope: Citizen - Home
+
+| | |
+|---|---|
+| **Design says** | The footer is a 52px #002244 strip at the END of the document, after the content - the reader reaches it by scrolling to the bottom, which is what a footer is for. |
+| **Build does** | The footer is `position: fixed; bottom: 0` and 38px tall, so it sits across the bottom of the WINDOW at all times, above whatever the reader is looking at. It costs 38px of every screen permanently, it never signals the end of the content, and on a 1000px-tall window that is nearly 4% of the viewport given to a copyright line. It is also 14px shorter than the design's strip. Checked in the DOM on the live build, 2026-09-11. |
+| **Fix** | Let the footer end the document as the design does, at 52px. If a persistent bar is genuinely wanted, that is a different component and a different decision - but the design does not draw one, and a fixed footer on a page that already carries a fixed masthead leaves the citizen a narrow band of actual content. |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-59117) · [Live page](https://nmba-user-dev.mosje.in/)
+
 ## NAPDDR committee screens (all four)
 
 ### The breadcrumb is not rendered
@@ -581,6 +605,18 @@ Each has its own board in the PDF, showing the design and the build side by side
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9884-112146) · [Live page](https://nmba-admin-dev.mosje.in/login)
 
 ## Important Documents (all roles)
+
+### A draft document is marked in the portal's error red
+
+`NMB-SCREEN-050` · **Minor** · Color & Token · Scope: Important Documents (all roles)
+
+| | |
+|---|---|
+| **Design says** | The status chip carries its meaning in the label colour: DRAFT is #8C571F, an amber that reads as 'in progress', and PUBLISHED is #27682A, the token green. |
+| **Build does** | 'Draft' is rendered #DC2626 on a #FEF9C3 ground - the red this portal uses for delete and for error - so a document that is merely unfinished is flagged as if something were wrong with it. 'Published' is #16A34A on #DCFCE7, a near-miss of the design's #27682A. Read from the DOM on the live build, 2026-09-11. |
+| **Fix** | Set the draft label to the design's #8C571F and the published label to #27682A. Red is the portal's error and destructive colour; spending it on a normal editorial state teaches readers to ignore it where it matters. This is NOT the withdrawn NMB-SCREEN-029, which was about the chip's CASE and was dropped on instruction - if the chip is out of scope entirely, drop this one too, but the colour is a different defect with a different fix. |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52070-443098) · [Live page](https://nmba-admin-dev.mosje.in/important-documents)
 
 ### The row actions are in a different order, and in a different style
 

@@ -225,8 +225,10 @@ FINDINGS = [
   "Each facility card ends with two buttons side by side - 'Get Directions' filled #003366 and 'Call "
   "Now' white with a #003366 outline - above which sit the service tags as small pills (Inpatient "
   "Treatment, Outpatient Counseling, Detoxification, Rehabilitation).",
-  "There is one button, not two: 'Get Directions' stretches 494px across the full width of the "
-  "card, where the design gives it 218x32 beside an equal 'Call Now'. It is also filled #0A2C53, "
+  "The card itself is a list row, not a card: 534x304 padded 20 with a rule along its TOP edge "
+  "only, where the design draws a 500x334 card padded 24 inside a 1px #E5E7EB border on all four "
+  "sides. Inside it, there is one button, not two: 'Get Directions' stretches 494px across the "
+  "full width, where the design gives it 218x32 beside an equal 'Call Now'. It is also filled #0A2C53, "
   "not the design's #003366 - a seventh near-miss colour, this one on the primary action of the "
   "citizen's most-used card. The card can still be phoned - the number above the button is a tel: "
   "link with a green handset glyph - but it is a bare line of text where the design gives it a "
@@ -440,6 +442,51 @@ FINDINGS = [
   "ones NMB-GLOBAL-045 raises on the admin toolbar, so one button component fixes both.",
   ("Take the Pledge",-890,-62,1092,136), ("Take the Pledge",-811,-50,1020,136)),
 
+ # Added 2026-09-11 — the remaining component diffs: footer, map, pagination, chips.
+ ("S21","Screen","Citizen - Help Centres & Facilities","PUBLIC-FACILITIES","Major","Layout & Spacing",
+  "The map is smaller than designed, and the page splits evenly instead of favouring it",
+  "The map takes 640x768 on the left and the facility list 500 on the right - a 56/44 split that "
+  "gives the map the larger share, because finding a centre near you is what the screen is for.",
+  "The map is 534x500 and the list is 534: a 50/50 split, with the map 106px narrower and 268px "
+  "shorter than the design draws it. Measured in the DOM on the live build, 2026-09-11. A third "
+  "less map area, on the screen whose job is to show a citizen where the nearest help is - and it "
+  "is the same map that opens zoomed out to the whole subcontinent (NMB-SCREEN-028), so the two "
+  "compound: less canvas AND a wider view.",
+  "Give the map the design's 640px column and its 768px height. With NMB-SCREEN-028's zoom fixed "
+  "as well, a reader lands on their own district at a usable size instead of on south Asia in a "
+  "small panel.",
+  ("@box",300,318,640,768), ("@box",336,338,534,500)),
+
+ ("S22","Screen","Citizen - Home","PUBLIC-HOME","Minor","Layout & Spacing",
+  "The footer is pinned to the window instead of ending the page",
+  "The footer is a 52px #002244 strip at the END of the document, after the content - the reader "
+  "reaches it by scrolling to the bottom, which is what a footer is for.",
+  "The footer is `position: fixed; bottom: 0` and 38px tall, so it sits across the bottom of the "
+  "WINDOW at all times, above whatever the reader is looking at. It costs 38px of every screen "
+  "permanently, it never signals the end of the content, and on a 1000px-tall window that is "
+  "nearly 4% of the viewport given to a copyright line. It is also 14px shorter than the design's "
+  "strip. Checked in the DOM on the live build, 2026-09-11.",
+  "Let the footer end the document as the design does, at 52px. If a persistent bar is genuinely "
+  "wanted, that is a different component and a different decision - but the design does not draw "
+  "one, and a fixed footer on a page that already carries a fixed masthead leaves the citizen a "
+  "narrow band of actual content.",
+  ("Terms & Conditions",-870,-14,1092,52), ("Terms & Conditions",-870,-10,1092,38)),
+
+ ("S23","Screen","Important Documents (all roles)","ADMIN-IMPORTANT-DOCUMENTS","Minor","Color & Token",
+  "A draft document is marked in the portal's error red",
+  "The status chip carries its meaning in the label colour: DRAFT is #8C571F, an amber that reads "
+  "as 'in progress', and PUBLISHED is #27682A, the token green.",
+  "'Draft' is rendered #DC2626 on a #FEF9C3 ground - the red this portal uses for delete and for "
+  "error - so a document that is merely unfinished is flagged as if something were wrong with it. "
+  "'Published' is #16A34A on #DCFCE7, a near-miss of the design's #27682A. Read from the DOM on "
+  "the live build, 2026-09-11.",
+  "Set the draft label to the design's #8C571F and the published label to #27682A. Red is the "
+  "portal's error and destructive colour; spending it on a normal editorial state teaches readers "
+  "to ignore it where it matters. This is NOT the withdrawn NMB-SCREEN-029, which was about the "
+  "chip's CASE and was dropped on instruction - if the chip is out of scope entirely, drop this "
+  "one too, but the colour is a different defect with a different fix.",
+  ("DRAFT",-8,-8,90,26), ("Draft",-8,-8,90,26)),
+
  ("S12","Screen","Important Documents (all roles)","ADMIN-IMPORTANT-DOCUMENTS","Nit","Layout & Spacing",
   "The row actions are in a different order, and in a different style",
   "The row actions run download, then edit, then delete, each as a bordered icon-button - a light "
@@ -585,7 +632,8 @@ FINDINGS = [
   "numerals. Six pages are offered before the ellipsis, then the last page: 1 2 3 4 5 6 ... 125.",
   "Every page number carries its own outlined box, so the box no longer says which page you are "
   "on and the strip reads as seven identical buttons. Three pages are offered before the ellipsis "
-  "instead of six.",
+  "instead of six. The strip is also packed tighter and quieter than designed: 4px between cells "
+  "against the design's 16, and the numerals #374151 against #1F2937.",
   "Box the current page only, leave the other numbers bare, and show the design's six pages before "
   "the ellipsis. This is the same pagination the hyphen and plus sign belong to (NMB-GLOBAL-006); "
   "fixing the glyphs without fixing the boxing leaves the reader still unable to see which page "
