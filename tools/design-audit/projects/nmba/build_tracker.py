@@ -68,7 +68,12 @@ def main():
     rows = 0
     for s in am["screens"]:
         for f in s["findings"]:
-            issue = "Figma: " + str(f.get("figma", "")) + "\nBuilt: " + str(f.get("live", ""))
+            # Same wording as engine/tracker.rows_from_master, so the local workbook and the
+            # Drive copy hold BYTE-IDENTICAL rows. They diverged for months - one said
+            # "Figma: … / Built: …", the other "Figma: … → Live: …" - which made every
+            # sync_from_export report all 51 rows as changed and buried the one real edit.
+            issue = ("Figma: " + str(f.get("figma", "")) +
+                     "  \u2192  Live: " + str(f.get("live", "")))
             note = "env: " + s.get("env", "dev")
             if f.get("scope") == "Global":
                 note += "  ·  Scope: Global — fix once, lands everywhere"
@@ -102,7 +107,10 @@ def main():
                 # The withdrawal REASON is the point of the row. Only a human's own note is
                 # carried, appended after it; the generated "env: dev" boilerplate is not a note
                 # and must not displace the reason (it did, on NMB-SCREEN-029).
-                if not val or str(val).startswith("env: "):
+                # ...and never re-append our own output, which begins "WITHDRAWN:" - doing so
+                # compounds on every rebuild. One cell reached 8,850 characters.
+                if (not val or str(val).startswith("env: ")
+                        or str(val).startswith("WITHDRAWN:")):
                     continue
                 val = ws.cell(row=ws.max_row, column=12).value + "\n\nEarlier note: " + str(val)
             ws.cell(row=ws.max_row, column=col, value=val)

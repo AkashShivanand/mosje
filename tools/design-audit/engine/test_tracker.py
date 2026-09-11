@@ -156,3 +156,88 @@ class WithdrawnRowsSurvive(unittest.TestCase):
         m["deferred"] = [{"id": "ABC-SCREEN-001", "title": "x", "reason": "y"}]
         rows = T.rows_from_master(m)
         self.assertEqual(rows["ABC-SCREEN-001"]["Status"], "Open")
+
+
+class WithdrawnBeatsAPreservedStatus(unittest.TestCase):
+    """A row that was Open before it was withdrawn kept saying Open in the destination for ever.
+    The Drive tracker told a developer NMB-SCREEN-016 was open work, when it had been withdrawn
+    precisely because the finding was wrong."""
+
+    def _ws(self, status):
+        import openpyxl
+        wb = openpyxl.Workbook(); wb.active.title = "P"
+        wb["P"].append(["ID", "Severity", "Status", "Assignee", "Date", "Notes"])
+        wb["P"].append(["F-1", "—", status, "Asha", None, "looking at it"])
+        return wb["P"]
+
+    def test_withdrawn_overrides_a_stale_open(self):
+        want = {"F-1": {"ID": "F-1", "Severity": "—", "Status": "Withdrawn",
+                        "Assignee": None, "Date": None, "Notes": "WITHDRAWN: it was wrong"}}
+        merged, _, _ = T.merge_preserving_dev_columns(want, self._ws("Open"))
+        self.assertEqual(merged["F-1"]["Status"], "Withdrawn")
+
+    def test_withdrawn_overrides_even_a_real_triage_status(self):
+        want = {"F-1": {"ID": "F-1", "Severity": "—", "Status": "Withdrawn",
+                        "Assignee": None, "Date": None, "Notes": "WITHDRAWN: it was wrong"}}
+        merged, _, _ = T.merge_preserving_dev_columns(want, self._ws("In progress"))
+        self.assertEqual(merged["F-1"]["Status"], "Withdrawn")
+
+    def test_the_other_dev_columns_are_still_preserved_on_a_withdrawn_row(self):
+        want = {"F-1": {"ID": "F-1", "Severity": "—", "Status": "Withdrawn",
+                        "Assignee": None, "Date": None, "Notes": "WITHDRAWN: it was wrong"}}
+        merged, _, _ = T.merge_preserving_dev_columns(want, self._ws("Open"))
+        self.assertEqual(merged["F-1"]["Assignee"], "Asha")
+
+    def test_a_live_finding_still_keeps_the_destination_status(self):
+        want = {"F-1": {"ID": "F-1", "Severity": "Major", "Status": "Open",
+                        "Assignee": None, "Date": None, "Notes": ""}}
+        merged, _, _ = T.merge_preserving_dev_columns(want, self._ws("Done"))
+        self.assertEqual(merged["F-1"]["Status"], "Done")
+
+
+class WithdrawalReasonSurvivesIntoNotes(unittest.TestCase):
+    """The Drive copy showed 'env: dev' in Notes on two withdrawn rows, hiding WHY they were
+    retracted — including NMB-SCREEN-016, withdrawn because the finding was wrong."""
+
+    def _ws(self, note):
+        import openpyxl
+        wb = openpyxl.Workbook(); wb.active.title = "P"
+        wb["P"].append(["ID", "Severity", "Status", "Assignee", "Date", "Notes"])
+        wb["P"].append(["F-1", "—", "Open", None, None, note])
+        return wb["P"]
+
+    WANT = {"F-1": {"ID": "F-1", "Severity": "—", "Status": "Withdrawn",
+                    "Assignee": None, "Date": None, "Notes": "WITHDRAWN: the button IS built"}}
+
+    def test_generated_boilerplate_does_not_displace_the_reason(self):
+        merged, _, _ = T.merge_preserving_dev_columns(dict(self.WANT), self._ws("env: dev"))
+        self.assertEqual(merged["F-1"]["Notes"], "WITHDRAWN: the button IS built")
+
+    def test_a_humans_note_is_appended_after_the_reason(self):
+        merged, _, _ = T.merge_preserving_dev_columns(dict(self.WANT), self._ws("asked QA to recheck"))
+        self.assertTrue(merged["F-1"]["Notes"].startswith("WITHDRAWN: the button IS built"))
+        self.assertIn("asked QA to recheck", merged["F-1"]["Notes"])
+
+    def test_a_live_row_still_keeps_its_note(self):
+        want = {"F-1": {"ID": "F-1", "Severity": "Major", "Status": "Open",
+                        "Assignee": None, "Date": None, "Notes": "env: dev"}}
+        merged, _, _ = T.merge_preserving_dev_columns(want, self._ws("mine, keep it"))
+        self.assertEqual(merged["F-1"]["Notes"], "mine, keep it")
+
+
+class WithdrawalNoteDoesNotCompound(unittest.TestCase):
+    """Appending the previous note on every rebuild re-appends our OWN output. One cell in the
+    local workbook reached 8,850 characters before anyone looked at it."""
+
+    def test_rebuilding_twice_does_not_grow_the_note(self):
+        import openpyxl
+        want = {"F-1": {"ID": "F-1", "Severity": "—", "Status": "Withdrawn",
+                        "Assignee": None, "Date": None, "Notes": "WITHDRAWN: it was wrong"}}
+        wb = openpyxl.Workbook(); wb.active.title = "P"
+        wb["P"].append(["ID", "Severity", "Status", "Assignee", "Date", "Notes"])
+        wb["P"].append(["F-1", "—", "Withdrawn", None, None, "WITHDRAWN: it was wrong"])
+        first, _, _ = T.merge_preserving_dev_columns(dict(want), wb["P"])
+        wb["P"].cell(row=2, column=6, value=first["F-1"]["Notes"])
+        second, _, _ = T.merge_preserving_dev_columns(dict(want), wb["P"])
+        self.assertEqual(second["F-1"]["Notes"], "WITHDRAWN: it was wrong")
+        self.assertEqual(len(second["F-1"]["Notes"]), len(first["F-1"]["Notes"]))

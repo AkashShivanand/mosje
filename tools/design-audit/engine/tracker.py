@@ -149,7 +149,28 @@ def merge_preserving_dev_columns(want, existing_ws):
     for fid, row in want.items():
         if fid in have:
             cur = have[fid][1]
+            # WITHDRAWN is not a dev-owned status - it is the audit stating that this finding is
+            # retracted, and it must win over whatever the sheet last said. Without this, a row
+            # that was "Open" before it was withdrawn keeps saying "Open" in the destination for
+            # ever: on 2026-09-11 the Drive tracker told a developer that NMB-SCREEN-016 was open
+            # work, when the finding had been withdrawn precisely because it was WRONG.
+            withdrawn = str(row.get("Status") or "") == "Withdrawn"
             for col in DEV_OWNED:
+                if col == "Status" and withdrawn:
+                    continue
+                if col == "Notes" and withdrawn:
+                    # The withdrawal REASON is the point of the row. Only a human's own note is
+                    # carried, appended after it; the generated "env: dev" boilerplate is not a
+                    # note and must not displace it - it did, on the Drive copy, hiding why
+                    # NMB-SCREEN-016 had been retracted.
+                    prev = str(cur.get(col) or "")
+                    # Never re-append our OWN output: the note we write starts with "WITHDRAWN:",
+                    # so appending it again each rebuild compounds. The local workbook reached
+                    # 8,850 characters in one cell that way before anyone looked.
+                    if prev and not prev.startswith("env: ") and not prev.startswith("WITHDRAWN:"):
+                        row = dict(row, Notes=str(row.get("Notes") or "") +
+                                   "\n\nEarlier note: " + prev)
+                    continue
                 if cur.get(col) not in (None, ""):
                     row = dict(row, **{col: cur[col]})
                     if col == "Status" and cur[col] != "Open":
