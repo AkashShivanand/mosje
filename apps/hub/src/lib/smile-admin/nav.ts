@@ -15,7 +15,10 @@ export interface NavGroup {
 
 export const NAV: NavGroup[] = [
   {
-    items: [{ label: "Dashboard", href: "/portals/smile-admin/dashboard", icon: "dashboard" }],
+    items: [
+      { label: "Dashboard", href: "/portals/smile-admin/dashboard", icon: "dashboard" },
+      { label: "City Profiling", href: "/portals/smile-admin/city-profiling", icon: "location_city" },
+    ],
   },
   {
     label: "Access Control",
@@ -31,6 +34,7 @@ export const NAV: NavGroup[] = [
       { label: "Survey Locations", href: "/portals/smile-admin/surveys", icon: "location_on" },
       { label: "Surveyor Mappings", href: "/portals/smile-admin/surveyor-mapped", icon: "map" },
       { label: "Beggary Schemes", href: "/portals/smile-admin/beggary-schemes", icon: "menu_book" },
+      { label: "Hotspot Approvals", href: "/portals/smile-admin/hotspot-approvals", icon: "where_to_vote" },
     ],
   },
   {
@@ -67,6 +71,12 @@ export const NAV: NavGroup[] = [
       { label: "Master Settings", href: "/portals/smile-admin/master-setting", icon: "settings", roles: ["super_admin", "central_admin"] },
       { label: "Audit Log", href: "/portals/smile-admin/audit-log", icon: "article", roles: ["super_admin", "central_admin"] },
       { label: "Immediate Review", href: "/portals/smile-admin/immediate-review", icon: "report", badge: 18 },
+    ],
+  },
+  {
+    label: "Other",
+    items: [
+      { label: "Consent Forms", href: "/portals/smile-admin/consent", icon: "assignment_turned_in" },
     ],
   },
 ];

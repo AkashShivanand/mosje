@@ -5,11 +5,41 @@ import { statusTone } from "@/lib/smile-admin/status-tone";
 import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { SURVEYOR_MAPPINGS, type SurveyorMapping } from "@/lib/smile-admin/mock-data";
-import { Badge, Button, Icon } from "@mosje/design-system";
+import { Badge, Button, DataTable, Icon, type DataTableColumn } from "@mosje/design-system";
 
 type Row = SurveyorMapping & { sno: number };
+
+const COLUMNS: DataTableColumn<Row & Record<string, unknown>>[] = [
+  { key: "sno", header: "S.No.", className: "w-12 tabular-nums text-ink-hint" },
+  { key: "name", header: "Name", sortable: true, className: "font-medium text-ink" },
+  { key: "state", header: "State", sortable: true },
+  { key: "city", header: "City", sortable: true },
+  { key: "surveyLocation", header: "Survey Location", sortable: true, className: "text-ink-muted" },
+  { key: "createdOn", header: "Created On", sortable: true, className: "font-mono text-body-2 text-ink-muted" },
+  {
+    key: "status",
+    header: "Status",
+    sortable: true,
+    render: (m) => (
+      <Badge status={statusTone(m.status)} dot>
+        {m.status}
+      </Badge>
+    ),
+    exportValue: (m) => m.status,
+  },
+  {
+    key: "actions",
+    header: "Action",
+    className: "text-right",
+    noExport: true,
+    render: () => (
+      <Button appearance="outlined" size="sm">
+        <Icon name="edit" size={14} /> Edit
+      </Button>
+    ),
+  },
+];
 
 export default function SurveyorMappedPage() {
   const [search, setSearch] = useState("");
@@ -109,43 +139,14 @@ export default function SurveyorMappedPage() {
       </ul>
 
       {/* Desktop table */}
-      <div className="hidden overflow-hidden rounded-lg border border-stroke-200 bg-white shadow-xs md:block">
-        <Table>
-          <THead>
-            <tr>
-              <TH className="w-12">S.No.</TH>
-              <TH>Name</TH>
-              <TH>State</TH>
-              <TH>City</TH>
-              <TH>Survey Location</TH>
-              <TH>Created On</TH>
-              <TH>Status</TH>
-              <TH className="text-right">Action</TH>
-            </tr>
-          </THead>
-          <tbody>
-            {rows.map((m) => (
-              <TR key={m.id}>
-                <TD className="tabular-nums text-ink-hint">{m.sno}</TD>
-                <TD className="font-medium text-ink">{m.name}</TD>
-                <TD>{m.state}</TD>
-                <TD>{m.city}</TD>
-                <TD className="text-ink-muted">{m.surveyLocation}</TD>
-                <TD className="font-mono text-body-2 text-ink-muted">{m.createdOn}</TD>
-                <TD>
-                  <Badge status={statusTone(m.status)} dot>
-                    {m.status}
-                  </Badge>
-                </TD>
-                <TD className="text-right">
-                  <Button appearance="outlined" size="sm">
-                    <Icon name="edit" size={14} /> Edit
-                  </Button>
-                </TD>
-              </TR>
-            ))}
-          </tbody>
-        </Table>
+      <div className="hidden rounded-lg border border-stroke-200 bg-white p-md shadow-xs md:block">
+        <DataTable
+          columns={COLUMNS}
+          data={rows as Array<Row & Record<string, unknown>>}
+          total={rows.length}
+          caption="Surveyors mapped to survey locations, by state and city"
+          emptyLabel="No surveyor mapping matches these filters."
+        />
       </div>
     </div>
   );

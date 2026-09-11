@@ -6,9 +6,66 @@ import { statusTone } from "@/lib/smile-admin/status-tone";
 import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { BENEFICIARIES, SHELTER_HOMES } from "@/lib/smile-admin/mock-data";
-import { Badge, Icon, buttonClasses } from "@mosje/design-system";
+import { Badge, DataTable, Icon, buttonClasses, type DataTableColumn } from "@mosje/design-system";
+
+interface Occupant {
+  sno: number;
+  id: string;
+  name: string;
+  gender: string;
+  age: number;
+  surveyLocation: string;
+  state: string;
+  shelterType: string;
+  beneficiaryType: string;
+  shelterName: string;
+  facilityStatus: string;
+}
+
+const COLUMNS: DataTableColumn<Occupant & Record<string, unknown>>[] = [
+  { key: "sno", header: "S.No.", className: "w-12 tabular-nums text-ink-hint" },
+  {
+    key: "name",
+    header: "Beneficiary Name",
+    sortable: true,
+    render: (r) => (
+      <Link href={`/portals/smile-admin/persons/${r.id}`} className="font-semibold text-ink hover:text-primary hover:underline">
+        {r.name}
+      </Link>
+    ),
+    exportValue: (r) => r.name,
+  },
+  { key: "gender", header: "Gender", sortable: true },
+  { key: "age", header: "Age", sortable: true, className: "tabular-nums" },
+  { key: "surveyLocation", header: "Survey Location", className: "text-ink-muted" },
+  { key: "state", header: "State", sortable: true },
+  { key: "shelterType", header: "Shelter Home Type" },
+  { key: "beneficiaryType", header: "Beneficiary Type", sortable: true },
+  { key: "shelterName", header: "Shelter Home Name", sortable: true, className: "text-ink-muted" },
+  {
+    key: "facilityStatus",
+    header: "Facility Status",
+    sortable: true,
+    render: (r) => (
+      <Badge status={statusTone(r.facilityStatus)} dot>
+        {r.facilityStatus}
+      </Badge>
+    ),
+    exportValue: (r) => r.facilityStatus,
+  },
+  {
+    key: "actions",
+    header: "Action",
+    className: "text-right",
+    noExport: true,
+    render: (r) => (
+      <Link href={`/portals/smile-admin/persons/${r.id}`} className={buttonClasses("primary", "outlined", "sm")}>
+        <Icon name="visibility" size={14} /> View
+      </Link>
+    ),
+  },
+];
 
 export default function ShelterOccupantsPage() {
   const [search, setSearch] = useState("");
@@ -82,56 +139,14 @@ export default function ShelterOccupantsPage() {
         </div>
       </DataToolbar>
 
-      <div className="overflow-hidden rounded-lg border border-stroke-200 bg-white shadow-xs">
-        <Table>
-          <THead>
-            <tr>
-              <TH className="w-12">S.No.</TH>
-              <TH>Beneficiary Name</TH>
-              <TH>Gender</TH>
-              <TH>Age</TH>
-              <TH>Survey Location</TH>
-              <TH>State</TH>
-              <TH>Shelter Home Type</TH>
-              <TH>Beneficiary Type</TH>
-              <TH>Shelter Home Name</TH>
-              <TH>Facility Status</TH>
-              <TH className="text-right">Action</TH>
-            </tr>
-          </THead>
-          <tbody>
-            {occupants.map((r) => (
-              <TR key={r.id}>
-                <TD className="tabular-nums text-ink-hint">{r.sno}</TD>
-                <TD>
-                  <Link
-                    href={`/portals/smile-admin/persons/${r.id}`}
-                    className="font-semibold text-ink hover:text-primary hover:underline"
-                  >
-                    {r.name}
-                  </Link>
-                </TD>
-                <TD>{r.gender}</TD>
-                <TD className="tabular-nums">{r.age}</TD>
-                <TD className="text-ink-muted">{r.surveyLocation}</TD>
-                <TD>{r.state}</TD>
-                <TD>{r.shelterType}</TD>
-                <TD>{r.beneficiaryType}</TD>
-                <TD className="text-ink-muted">{r.shelterName}</TD>
-                <TD>
-                  <Badge status={statusTone(r.facilityStatus)} dot>
-                    {r.facilityStatus}
-                  </Badge>
-                </TD>
-                <TD className="text-right">
-                  <Link href={`/portals/smile-admin/persons/${r.id}`} className={buttonClasses("primary", "outlined", "sm")}>
-                      <Icon name="visibility" size={14} /> View
-                    </Link>
-                </TD>
-              </TR>
-            ))}
-          </tbody>
-        </Table>
+      <div className="rounded-lg border border-stroke-200 bg-white p-md shadow-xs">
+        <DataTable
+          columns={COLUMNS}
+          data={occupants as Array<Occupant & Record<string, unknown>>}
+          total={occupants.length}
+          caption="Shelter occupants, their shelter home and facility status"
+          emptyLabel="No occupant matches this search."
+        />
       </div>
     </div>
   );
