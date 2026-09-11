@@ -108,3 +108,11 @@ tools/ux4g-conformance/parity.generated.css
 # the run happened to read, so it is not content to publish. Ignored, never
 # deleted: a finished run is the local input to whoever triages it.
 strix_runs/
+
+# QC deliverable build artefacts: the PDF generator's local deps and its intermediate HTML.
+# The PDF itself and audit-master.json are the deliverable; these are how they were made.
+docs/qc/portals/*/node_modules
+docs/qc/portals/*/report-generated.html
+docs/qc/portals/*/report-sections.json
+docs/qc/portals/*/package.json
+docs/qc/portals/*/package-lock.json

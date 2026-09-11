@@ -1,0 +1,784 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""NMBA - Nasha Mukt Bharat Abhiyaan (DEV): the audited findings.
+
+Every entry here was measured on 2026-09-11 against the CURRENT design page
+("NMBA (Dev Synced - August)", 2136:20193) and the CURRENT dev build, and each carries the
+two anchors the claim gates need: the element in the design frame and the element in the live
+capture, so the report can draw a 1:1 crop of both sides.
+
+Nothing was carried forward from the July 2026 pass on trust. Three of its claims did not
+survive re-checking and are recorded in WITHDRAWN below rather than deleted, so a reviewer who
+saw them learns they were wrong.
+
+Fields per finding:
+  key      working id
+  scope    "Global" (applies to every screen with this element) or "Screen"
+  screen   the human name that appears on the board
+  slug     the capture the evidence is cropped from
+  sev/cat  rubric.md severity + one of the canonical six categories
+  d_anchor (text, dx, dy, w, h) in the DESIGN frame  - offsets in design px from the text box
+  b_anchor (text, dx, dy, w, h) in the BUILD capture
+"""
+
+# (key, scope, screen, slug, sev, cat, title, design, build, fix, d_anchor, b_anchor)
+FINDINGS = [
+ ("G01","Global","Sidebar navigation (every screen)","ADMIN-USER-MANAGEMENT","Blocker","Color & Token",
+  "Sidebar navigation labels fail AA contrast",
+  "Every navigation label is #1F2937 on the panel's #F9FAFB ground - 14.05:1 - and the selected item "
+  "is #003366 on an #E5EFF9 pill, 10.84:1. Sampled off the design frame beside five nav rows.",
+  "Every unselected navigation label is #9CA3AF. That is 2.43:1, where WCAG 2.2 AA requires 4.5:1 "
+  "for text this size. It reads as a disabled control, and it is the same in the citizen shell and "
+  "in all three admin roles. (Re-measured in the DOM on the live build, 2026-09-11. An earlier "
+  "wording put this at 2.54:1 by assuming a white ground; the sidebar has no background of its own "
+  "- the <aside> computes to transparent and the body behind it is #F9FAFB, which the rendered "
+  "pixel behind a label confirms. The real ratio is slightly WORSE than published, not better.)",
+  "Set the unselected label to the design's #1F2937. If a quieter resting state is wanted, #4B5563 "
+  "clears comfortably at 7.23:1 on this ground and #6B7280 is the lightest neutral that still "
+  "passes, at 4.63:1; #9CA3AF cannot be used for text on #F9FAFB at any size.",
+  ("All Pledge Reports",-32,-6,220,26), ("All Pledge Reports",-20,-8,230,30)),
+
+ ("G02","Global","Government masthead (every screen)","ADMIN-USER-MANAGEMENT","Blocker","Components & States",
+  "The GIGW accessibility toolset is missing from the masthead",
+  "The blue government bar carries the mandated inline set: A- / A / A+ text-size controls with the "
+  "current size shown selected, a contrast toggle, an accessibility icon, and a globe with the "
+  "language named in words ('English').",
+  "The bar carries only an accessibility glyph, which opens a third-party panel, and a bare two-script "
+  "glyph for language. The text-size controls and the contrast toggle are not present anywhere on the "
+  "page.",
+  "Restore the inline A- / A / A+ and contrast controls in the government bar, and label the language "
+  "control with the language name as the design does. GIGW 3.0 treats this set as a masthead "
+  "requirement, so its absence is a compliance gap on every screen, not a styling preference.",
+  ("Skip to Main Content",150,-10,330,34), ("Skip to Main Content",180,-10,150,34)),
+
+ ("G03","Global","Admin sidebar (all admin roles)","ADMIN-USER-MANAGEMENT","Major","Content & Iconography",
+  "Admin sidebar navigation icons are absent",
+  "Every admin navigation item pairs a 24px Material Symbols icon at #003366 with its label - widgets, "
+  "event, group_add, article_shortcut, task and so on - and the icon sits 32px from the panel edge.",
+  "The admin sidebar draws label-only rows with a thin tree-branch connector line in the icon's place. "
+  "No item has an icon. The citizen shell DOES carry its icons, so the two shells disagree with each "
+  "other as well as with the design.",
+  "Add the navigation icon to each admin sidebar item, using the same Material Symbols set and #003366 "
+  "the citizen shell already uses, and drop the connector line the design does not have.",
+  ("Important Documents",-34,-6,250,26), ("Important Documents",-22,-8,240,30)),
+
+ ("G04","Global","Government masthead (authenticated screens)","ADMIN-USER-MANAGEMENT","Major","Typography",
+  "The ministry lockup drops its third line and changes colour",
+  "Three lines, all #1F2937: 'Government of India' at 12px Medium, 'Ministry of Social Justice & "
+  "Empowerment' at 14px Medium, and 'Department of Social Justice & Empowerment' at 20px Bold as the "
+  "emphasised line.",
+  "Two lines at #374151: 'Government of India' at 12px Medium, and 'Ministry of Social Justice & "
+  "Empowerment' promoted to 20px Bold. The Department line is not rendered. The sign-in page does draw "
+  "all three, so the authenticated shell also disagrees with the portal's own login screen.",
+  "Render the third line and set the lockup to #1F2937, matching the sign-in page and the design. The "
+  "emphasised line is the Department, not the Ministry.",
+  ("Department of Social Justice & Empowerment",-2,-4,460,26),
+  ("Ministry of Social Justice & Empowerment",-2,-4,430,34)),
+
+ ("G05","Global","Data tables (every list screen)","ADMIN-USER-MANAGEMENT","Major","Components & States",
+  "Row action controls lose their button and change colour",
+  "Row actions are the library's own Icon Button (Size=Small, Type=Outlined, Color=Neutral): 32x32, "
+  "a 1px #E5E7EB outline at radius 8, the edit glyph #003366 and the delete glyph #EC5042. Read off "
+  "the component's own nodes in the design file, not sampled - an earlier wording said radius 6.",
+  "The actions are bare glyphs with no button around them - two 24px SVG images on User Management - "
+  "and the edit glyph is filled #ED8525 (read from the served file, not sampled off a screenshot), "
+  "an amber that appears nowhere in the NMBA token set. On three of the NAPDDR screens - State, "
+  "District and Block Committee - the same actions become three outlined TEXT buttons instead "
+  "(View / Edit / Delete, 1px border, radius 6), and on Important Documents they are a third thing "
+  "again: real buttons wrapping tabler icons with no border at all. Verified on the live build, "
+  "2026-09-11. Committee Reports carries no row actions.",
+  "Restore the library's Icon Button - 32x32, 1px #E5E7EB, radius 8 - and set the edit glyph to #003366. One icon treatment has to "
+  "hold across every screen - the same glyph set, the same button, the same two colours - rather "
+  "than icon-buttons on some screens, amber glyphs on others and text buttons on three of the "
+  "NAPDDR screens.",
+  ("Actions",-8,44,120,34), ("Actions",100,40,60,30)),
+
+ ("G06","Global","Pagination (every paged screen)","ADMIN-NAPDDR-STATE-COMMITTEE","Major","Content & Iconography",
+  "Previous and next are a hyphen and a plus sign",
+  "The pager runs a left chevron, the page numbers with the current one in a rounded outlined chip, an "
+  "ellipsis, the last page, and a right chevron.",
+  "The two step controls render as '-' and '+'. A minus and a plus read as decrease and increase, "
+  "not as previous and next page. (The pager DOES carry an ellipsis and a last-page number - "
+  "checked on the live build 2026-09-11, which shows '- 1 2 3 ... 1,393 +'. An earlier wording of "
+  "this finding said it did not; that was read off a capture and was wrong.)",
+  "Use the chevrons the design specifies for the step controls, and show the ellipsis and last page so "
+  "a reader can tell how long the list is.",
+  ("@box",325,818,312,46), ("@box",318,558,96,46)),
+
+ ("G07","Global","Selects and filters (every screen with one)","ADMIN-NAPDDR-STATE-COMMITTEE","Minor","Components & States",
+  "Dropdowns are the browser's own select, not the design system's",
+  "Every dropdown is the design-system select: a rounded bordered field with its own chevron and the "
+  "label at 14px #1F2937.",
+  "The rows-per-page control, the facility filter and the three activity filters render as an unstyled "
+  "native <select> with the operating system's chevron and its own border radius, so they look "
+  "different on every browser and different from every other control on the page.",
+  "Skin these with the design-system select so their border, radius, type and chevron match the rest of "
+  "the interface.",
+  ("Showing",70,-10,90,36), ("@box",1265,562,76,42)),
+
+ ("G08","Global","Search fields (every list screen)","ADMIN-IMPORTANT-DOCUMENTS","Minor","Content & Iconography",
+  "The search magnifier is missing, or sits on the wrong side",
+  "Every search field carries a magnifier inside its left edge, ahead of the placeholder.",
+  "Checked screen by screen on the live build, 2026-09-11: the magnifier is absent on User "
+  "Management, the Ministries dashboard, all four NAPDDR screens and Facilities, and on Important "
+  "Documents, Pledge Reports, List of SNO and the Nasha Mukti Mitr Report it is drawn inside the "
+  "RIGHT edge instead. So the same control takes three different forms across the portal as well "
+  "as differing from the design.",
+  "Put the magnifier inside the left edge of every search field, as the design does.",
+  ("Search by Name, State,DIstrict, Activity...",-26,-8,40,32),
+  ("Search for Document Name",560,-8,44,32)),
+
+ ("G09","Global","Data tables (every list screen)","ADMIN-MINISTRIES-DASHBOARD","Major","Layout & Spacing",
+  "Table row height is inconsistent across the portal",
+  "Every data cell in the design is 56px tall - all 50 of them, exactly, on this frame - and every "
+  "header cell is 52px. Counted off the frame's own nodes, not estimated; an earlier wording said "
+  "'a steady 45-55px', which understated how uniform the design actually is.",
+  "Measured row heights run 41px on User Management, 53px on most lists, 57px on Important Documents, "
+  "65px on the NAPDDR screens, 85px on Best Practices and 153px on the Ministries dashboard - the same "
+  "component at more than three times the height from one screen to the next. Header rows vary too, "
+  "from 38px to 85px.",
+  "Set one row height for the table component and let it apply everywhere; where a cell wraps to two "
+  "lines, let the row grow from that one value rather than redefining it per screen.",
+  ("Organization/Ministry",-24,44,300,50), ("Organisation / Ministry",-40,44,300,150)),
+
+ ("G10","Global","Data tables (every list screen)","ADMIN-USER-MANAGEMENT","Minor","Color & Token",
+  "Table cell text is lighter than the design",
+  "Cell values are #1F2937, the same near-black the rest of the body copy uses.",
+  "Cell values are #4B5563. It still clears AA, but it makes the data quieter than its own column "
+  "headers, which the design does not do.",
+  "Set cell values to #1F2937 and leave #4B5563 for secondary lines inside a cell.",
+  ("James Cameron",-4,-6,200,26), ("Hare Krishna Movement",-4,-8,220,30)),
+
+ ("G11","Global","Page header (every screen)","ADMIN-USER-MANAGEMENT","Minor","Color & Token",
+  "The page title is a lighter grey than the design",
+  "The page title is 24px SemiBold #1F2937.",
+  "The page title is 24px 600 #374151 - the right size and weight, a lighter colour.",
+  "Set the page title to #1F2937.",
+  ("User Management",-4,-6,240,34), ("User Management",-4,-8,230,36)),
+
+ ("G12","Global","KPI cards (every dashboard)","STATE-NODAL-OFFICER-DASHBOARD","Minor","Color & Token",
+  "KPI icon tiles use a pink tint that is not a token",
+  "Every KPI icon sits on a 32x32 tile filled #E5EFF9 - Primary/50 - at radius 10, so the row of "
+  "cards reads as one set. The card around it is 353x138, #FFFFFF, 1px #E5E7EB, radius 16, padded "
+  "24 - which the build matches almost exactly, at 355x134. It is only the tile that differs.",
+  "The tile is 44x44 at radius 12 - a third larger than the design's 32x32 at radius 10 - and it is "
+  "tinted per card. Read from the DOM on the live officer dashboard, 2026-09-11, the four tiles in "
+  "one row are #FDE8EF (pink, on 'Important Documents'), #E6F7FB (cyan), #FFF6E5 (cream) and "
+  "#EEF1F4 (grey). NONE of the four is in the NMBA token set, against the design's single "
+  "#E5EFF9, which is. So a row of metrics that carry no status meaning is colour-coded as though "
+  "they did, in four colours the design never published - on a tile that is also the wrong size. "
+  "The card itself is right, which is worth saying: this is the tile, not the component.",
+  "Draw the tile at 32x32, radius 10, filled #E5EFF9. Reserve a coloured tint for a metric that "
+  "genuinely signals a state, and take the tint from the token set when you do.",
+  ("Important Documents",270,-6,40,40), ("Important Documents",255,-8,44,44)),
+
+ ("G13","Global","KPI cards (every dashboard)","STATE-NODAL-OFFICER-DASHBOARD","Minor","Typography",
+  "The KPI value is 30px, which is not on the type scale",
+  "The KPI value is 32px SemiBold #003366 - the top step of the published scale.",
+  "The KPI value is 30px. The scale runs 24, 28, 32; 30 is not a step on it, so this number is the only "
+  "type size in the portal that no token can express.",
+  "Set the KPI value to 32px.",
+  ("252",-4,-6,150,36), ("6",-4,-8,150,40)),
+
+ ("G14","Global","KPI cards (every dashboard)","STATE-NODAL-OFFICER-DASHBOARD","Nit","Color & Token",
+  "The KPI label is a lighter grey than the design",
+  "The KPI label is 14px SemiBold #374151.",
+  "The KPI label is 14px 600 #6B7280.",
+  "Set the KPI label to #374151.",
+  ("Important Documents",-4,-6,200,24), ("Important Documents",-4,-8,200,26)),
+
+ ("G15","Global","Sidebar navigation (every screen)","ADMIN-USER-MANAGEMENT","Nit","Components & States",
+  "The selected navigation item is a tighter pill in a heavier weight",
+  "The selected item is a 48px-tall pill at radius 16 filled #E5EFF9, its label at 14px Regular #003366 "
+  "- the same weight as every other item, distinguished by the fill alone.",
+  "The selected item's label is set Bold, where the design changes only the fill. Its 36px height and "
+  "radius 10 are not particular to the selected row - EVERY row in the panel is built that way, which "
+  "is NMB-GLOBAL-039. What belongs to this finding is the WEIGHT: the design marks the current page "
+  "with a fill alone and the build marks it twice.",
+  "Keep the selected label at the same weight as the rest and let the fill do the work. The pill's "
+  "height and radius come right with NMB-GLOBAL-039, which fixes them for every row at once.",
+  ("User Management",-34,-8,250,30), ("@box",30,258,248,40)),
+
+ ("S02","Screen","Citizen - Home","PUBLIC-HOME","Major","Layout & Spacing",
+  "The 'Number of Programmes' section is not built",
+  "Below the metric cards the design carries a titled section of four grouped cards - Education & Youth, "
+  "Community Outreach, Governance & Local Bodies, Targeted Interventions - each with an icon and its "
+  "figures colour-coded to the group (#1558B0, #2E7D32, #BB772B, #EC5042) at 28px SemiBold.",
+  "The section is absent. The page goes from the metric cards straight to a state-wise bar chart that "
+  "the design does not carry.",
+  "Build the four programme-group cards as designed. If the bar chart is meant to replace them, that is "
+  "a decision to take back to the design rather than a substitution to leave in place.",
+  ("NUMBER OF PROGRAMMES",-6,-8,260,30), ("State-wise Overview",-14,-16,320,44)),
+
+ ("S03","Screen","Citizen - Activity Snapshots","PUBLIC-ACTIVITIES","Major","Components & States",
+  "The activity card has no title and no description",
+  "Each card carries five things: the type chip at 11px, the activity title at 16px Medium #1F2937, a "
+  "two-to-three line description at 12px, then the location and the date.",
+  "Each card carries three: the type as a chip, the location and the date. The activity's own title and "
+  "its description are not rendered, so the card's only heading is the category it belongs to.",
+  "Render the activity title and its description between the chip and the location line, at the sizes "
+  "the design specifies.",
+  ("Alandi Student Awareness Drive",-8,-8,260,60), ("Community Awareness Session",-10,34,240,50)),
+
+ ("S04","Screen","Citizen - Help Centres & Facilities","PUBLIC-FACILITIES","Major","Components & States",
+  "The facility card drops its second button and its service tags",
+  "Each facility card ends with two buttons side by side - 'Get Directions' filled #003366 and 'Call "
+  "Now' white with a #003366 outline - above which sit the service tags as small pills (Inpatient "
+  "Treatment, Outpatient Counseling, Detoxification, Rehabilitation).",
+  "The card itself is a list row, not a card: 534x304 padded 20 with a rule along its TOP edge "
+  "only, where the design draws a 500x334 card padded 24 inside a 1px #E5E7EB border on all four "
+  "sides. Inside it, there is one button, not two: 'Get Directions' stretches 494px across the "
+  "full width, where the design gives it 218x32 beside an equal 'Call Now'. It is also filled #0A2C53, "
+  "not the design's #003366 - a seventh near-miss colour, this one on the primary action of the "
+  "citizen's most-used card. The card can still be phoned - the number above the button is a tel: "
+  "link with a green handset glyph - but it is a bare line of text where the design gives it a "
+  "button beside the first, so the two things a reader does with a centre no longer look like the "
+  "same kind of thing. The service tag pills are not rendered at all, so a reader cannot see what "
+  "a centre offers without opening it.",
+  "Give the phone number back its button beside 'Get Directions', outlined #003366 as the design "
+  "draws it, and restore the service tag pills above the pair.",
+  ("Call Now",-90,-16,300,50), ("Get Directions",-60,-16,560,50)),
+
+ ("S05","Screen","Citizen - Help Centres & Facilities","PUBLIC-FACILITIES","Minor","Typography",
+  "Facility names are set in capitals",
+  "The facility name is Title Case at 16px SemiBold #1F2937.",
+  "The name renders in capitals - 'SOCIETY FOR EDUCATION AND ENVIRONMENT DEVELOPMENT' at 16px/600, "
+  "and the address under it the same way. At this length a name in capitals is measurably slower "
+  "to read, and no other name in the portal is set this way. Checked in the DOM on the live build "
+  "2026-09-11: computed text-transform is `none`, so the capitals are in the REGISTER DATA, not in "
+  "the styling - which is why an earlier reading of this as an uppercase transform was wrong, and "
+  "why the fix is not a CSS change.",
+  "Normalise the name for display rather than printing the register verbatim - the build already "
+  "owns this string on the way to the card. If the department would rather the register itself "
+  "were corrected, that is a data task and this finding should be routed there instead; it is "
+  "flagged as a presentation defect because the citizen-facing page is where it shows.",
+  ("National Institute of Mental Health and Neuro Sciences",-6,-6,300,44),
+  ("@box",886,446,392,50)),
+
+ ("S13","Screen","Citizen - Help Centres & Facilities","PUBLIC-FACILITIES","Minor","Color & Token",
+  "The facility-type chip is filled with a colour that is not a token",
+  "The chip encodes the facility type by colour, and both colours are published tokens: a "
+  "de-addiction centre is #C8E6C9 with an #81C784 border and its label #27682A, a hospital is "
+  "#D2E3FC. Sampled off the design frame at the two chips it draws.",
+  "The build DOES colour-code by type - an earlier wording of this finding said it used one fill "
+  "for everything, which was wrong and is withdrawn. Read from the DOM on the live build "
+  "2026-09-11, the four chips are: CPLI #C8E6C9 / label #27682A, DDAC #EDE7F6 / #6A1B9A, IRCA "
+  "#DBEAFE / #1E3A8A, ODIC #FFE0B2 / #E65100. Three of those four fills are in no NMBA token, and "
+  "the one that IS - the design's green - has been put on Community-based Peer-Led Intervention, "
+  "while the District De-addiction Centre, which the design draws in that green, gets the "
+  "lavender. IRCA's #DBEAFE is also a near-miss of the design's hospital blue #D2E3FC: close "
+  "enough to look right and different enough to drift.",
+  "Bind every type chip to a published token, and put the design's green back on the de-addiction "
+  "centre where the design has it. Where a type the design never drew needs its own colour, add "
+  "it to the token set rather than picking a hex - three of these four came from nowhere.",
+  ("De Addiction Center",-8,-8,140,26), ("@box",886,408,240,30)),
+
+ ("S06","Screen","NAPDDR committee screens (all four)","ADMIN-NAPDDR-STATE-COMMITTEE","Major","Layout & Spacing",
+  "The breadcrumb is not rendered",
+  "Above the page title sits a breadcrumb - 'NAPDDR Three-Tier Committee > State-Level Committee' - at "
+  "12px, the trail a reader uses to get back up out of a nested section.",
+  "There is no breadcrumb on any of the four committee screens. The page title is the first thing under "
+  "the masthead, so a reader three levels into the section has nothing to climb back with.",
+  "Render the breadcrumb above the title on all four committee screens.",
+  ("State-Level Steering and Monitoring Committee",-4,-30,340,24),
+  ("State-Level Steering and Monitoring Committee",-4,-16,340,24)),
+
+ ("S07","Screen","Officer dashboards (State and District)","STATE-NODAL-OFFICER-DASHBOARD","Blocker","Layout & Spacing",
+  "The whole 'My Submissions' section is not built",
+  "Below the metric cards the dashboard carries its main working area: a 'My Submissions' heading, an "
+  "Export control and an 'Add Event' primary button, a search field, four filters including a date "
+  "range, a table of submissions with view / edit / delete on every row, and pagination.",
+  "The page ends after the metric cards. None of the section is present, on either the State Nodal "
+  "Officer or the District Nodal Officer dashboard, so neither officer can see or add a submission "
+  "from the screen the design makes their home.",
+  "Build the section as designed on both dashboards.",
+  ("My Submissions",-8,-10,300,44), ("Total People Reached",-24,120,400,60)),
+
+ ("S08","Screen","Sign in","SIGNIN-LOGIN","Major","Color & Token",
+  "White text sits on an untinted photograph",
+  "The left panel's photograph carries a navy tint, and the SAMAVESH lockup, the 'Justice. Equality. "
+  "Dignity.' line and the paragraph beneath it read as white on that tint.",
+  "The photograph is drawn at full contrast with no tint, and the same white text sits directly on it. "
+  "Over the lighter areas of the crowd the paragraph is close to unreadable, and the contrast a reader "
+  "gets depends on which part of the picture a line happens to fall over.",
+  "Restore the navy tint over the photograph so the white text has a predictable ground, as the design "
+  "specifies.",
+  ("Single Access Mechanism for All Verticals of",-8,-8,420,70),
+  ("Single Access Mechanism for All Verticals of Empowerment",-8,-8,420,70)),
+
+ ("S09","Screen","Sign in","SIGNIN-LOGIN","Major","Components & States",
+  "The sign-in fields have no visible labels",
+  "Every field in the design's sign-in panel carries a visible label above it - 'Project Id', 'Enter "
+  "OTP' - with the placeholder used only for an example value.",
+  "The username and password fields carry no label at all; the only naming is the placeholder, which "
+  "disappears the moment a reader types. The design has no frame for this tab, so it is audited against "
+  "the pattern the design uses on every other field.",
+  "Add a visible label above each field and keep the placeholder for the example.",
+  ("Project Id",-4,-6,200,24), ("Username",-14,-10,260,44)),
+
+ ("S10","Screen","Admin, State and District shells","ADMIN-USER-MANAGEMENT","Major","Components & States",
+  "Two footer links land on the dashboard instead of their own page",
+  "The design has no 'About Us' or 'Contact Us' page inside the authenticated shell; these are citizen-"
+  "site destinations.",
+  "In the admin shell /about-us and /contact-us both render a page that is byte-for-byte identical to "
+  "the dashboard - verified by checksum on all three admin roles. A reader who follows either link is "
+  "silently returned to the dashboard with no indication that the page they asked for does not exist.",
+  "Point these links at the citizen site's pages, or give the shell a not-found state. A route with no "
+  "page should say so rather than substituting the landing screen.",
+  ("Dashboard",-4,-6,200,34), ("User Management",-4,-8,230,36)),
+
+ ("S14","Screen","Citizen - masthead (every citizen screen)","PUBLIC-HOME","Minor","Components & States",
+  "The citizen masthead is a different component from the one designed",
+  "The right of the citizen masthead holds a signed-in user block: the name at 16px SemiBold "
+  "#1F2937, the email beneath it at 13px #374151, and a 48px initials avatar filled #C8DBF0.",
+  "The build shows a green National Deaddiction Helpline badge carrying the 14446 number, and a "
+  "'Nasha Mukti Mitr Login' button. There is no user block, because the citizen site has no signed-in "
+  "state. So the design assumes a citizen session the build does not have.",
+  "Decide which is right and make both sides agree: either the citizen site gains the signed-in block "
+  "the design draws, or the design is updated to the helpline-and-login masthead the build ships. "
+  "Raised because the two disagree, not because the build is necessarily wrong.",
+  ("Sachin Malhotra",-8,-10,200,50), ("Nasha Mukti Mitr Login",-10,-14,180,48)),
+
+ ("S15","Screen","Citizen - Help Centres & Facilities","PUBLIC-FACILITIES","Nit","Layout & Spacing",
+  "The facility map opens on a whole-subcontinent view",
+  "The map opens framed on the area the facilities are in, close enough to read street names, with the "
+  "three results pinned in view.",
+  "The map opens zoomed out far enough to show Kabul, Colombo and Chengdu, with 722 pins clustered over "
+  "India, so a reader has to zoom before the map tells them anything about their own district.",
+  "Frame the map on the results being listed - the reader's district, or the search area - rather than "
+  "on the whole set. Raised as a confirm-if-intended: if a national overview is the deliberate default, "
+  "say so and the design should show it that way.",
+  ("Facilities (3)",-620,60,600,400), ("@box",300,300,620,400)),
+
+ ("S16","Screen","Citizen - About Us","PUBLIC-ABOUT-US","Major","Components & States",
+  "The 'About Us' link on the citizen home page leads to a not-found page",
+  "The citizen design draws no About Us link and no About Us page, and it has no not-found state "
+  "at all - every link it draws resolves to a screen it also draws.",
+  "The home page carries an 'About Us' link in its body. It goes to /about-us, which answers HTTP "
+  "200 and then renders a not-found page: a near-black card, a cartoon robot, and the words "
+  "'Something went wrong... The page you're looking for has vanished.' Re-checked on the live "
+  "build 2026-09-11, where a third thing turned up: that whole card is a single 299x187 <img> "
+  "with alt='404 Not Found'. The heading, the apology and the explanation are pixels - no text "
+  "node on the page carries any of them - so they cannot be translated by the portal's own "
+  "language control, cannot reflow, and reach a screen reader as four words. So: a public link "
+  "on a Government of India landing page that leads nowhere, a 200 response that says 404 (which "
+  "is what a search engine indexes), and the message itself locked inside a picture.",
+  "Either build the About Us page or take the link off the home page. Whichever is chosen, the "
+  "not-found page needs to answer with a 404 status and be redrawn in the portal's own language - "
+  "white card on #F9FAFB, navy heading, the design system's button, and the message as real text "
+  "rather than baked into an image - rather than a dark panel and a cartoon. Note that the ADMIN shell answers the same missing route differently again, by "
+  "silently rendering the dashboard (NMB-SCREEN-026): the estate needs one not-found behaviour, "
+  "not two wrong ones.",
+  ("@box",0,0,10,10), ("@box",560,232,620,430)),
+
+ ("S17","Screen","Admin - Add User side sheet","ADMIN-USER-MANAGEMENT-ADD-USER-MODAL","Major","Layout & Spacing",
+  "The side sheet fills the window edge to edge instead of floating inside it",
+  "The sheet is a 520x978 panel inset 16px from the top, right and bottom of the window, at radius "
+  "16, with a 1px #E5EFF9 edge and two drop shadows - so it reads as a card lifted above the page. "
+  "Behind it the scrim is #0A0D13 at 50%. The title is 'Add User' at 20px SemiBold #1F2937, and "
+  "each field label is 14px Medium #1F2937 over a 488x44 input at radius 8 with a 1px #D1D5DB "
+  "edge.",
+  "The sheet is 620x1000 flush to the top, right and bottom edges, with no radius, no border and "
+  "no shadow - a full-height slab rather than a floating panel, 100px wider than designed. The "
+  "scrim is #000000 at 60%, darker than the design's. The title is 22px/600 #003366, blue where "
+  "the design is near-black and two points larger. Inputs are 588x36 - 8px shorter than designed - "
+  "with a 1px #CED4DA edge, which is a fourth near-miss grey against the design's #D1D5DB. Labels "
+  "are 16px/400 #000000 where the design says 14px Medium #1F2937, and they are not even "
+  "consistent with each other: 'Mobile Number' renders 14px/600 #374151 while 'First Name', 'Last "
+  "Name', 'Email ID' and 'Select Role' render 16px/400 #000000, in the same form.",
+  "Build the sheet as the design draws it: 520 wide, inset 16 from the window edges, radius 16, "
+  "the #E5EFF9 edge and the two shadows, over a 50% #0A0D13 scrim. Set the title to 20px SemiBold "
+  "#1F2937 and every label to 14px Medium #1F2937 - one label style for the whole form - over "
+  "44px inputs bound to #D1D5DB. The same sheet is used by Add Document, Add Best Practice, Add "
+  "Event and Add Feedback, so this lands on eight designed flows at once.",
+  ("@box",904,16,520,300), ("@box",820,0,620,300)),
+
+ ("S18","Screen","Admin - Add User side sheet","ADMIN-USER-MANAGEMENT-ADD-USER-MODAL","Major","Components & States",
+  "Required fields carry no marker",
+  "Seven of the sheet's fields are marked required with a red asterisk after the label, #EC5042, "
+  "so a user can see what must be filled before they start: First Name, Last Name, Email ID, "
+  "Mobile Number, Select Role, Select State and Select District.",
+  "There is not one asterisk in the built sheet - counted in the DOM on 2026-09-11, the design "
+  "frame carries 7 and the build carries 0. Nothing on the form distinguishes a required field "
+  "from an optional one, so the first time a user learns which fields are mandatory is when "
+  "submitting fails.",
+  "Restore the required marker the design draws - the red asterisk after the label - on all seven "
+  "fields. Pair it with `required` on the input so the marker is not the only signal: a mark that "
+  "exists only in colour and only in a glyph is not announced to a screen reader, and WCAG 2.2 "
+  "asks that an instruction not depend on a sensory characteristic alone.",
+  ("Mobile Number",-8,-10,300,32), ("Mobile Number",-8,-10,300,32)),
+
+ # Added 2026-09-11 — the citizen-side component diffs, after the sidebar, table, masthead, form
+ # controls and side sheet. Measured against captures RE-TAKEN after the harness fix: the citizen
+ # pages had been captured with their horizontal axis un-clipped, which moved everything.
+ ("S19","Screen","Citizen - Activity Snapshots","PUBLIC-ACTIVITIES","Major","Layout & Spacing",
+  "The activity card is built to different metrics, and its type chip loses its colour",
+  "The card is 348x409 at radius 12 with a 1px #E5E7EB edge. Its type chip is 11px Medium "
+  "#1558B0 - a blue that says 'category' - and the location and date under it are 11px Medium "
+  "#374151.",
+  "The card is 329x351 at radius 8 with a 1px #E5EAF2 edge - a sixth near-miss grey. The type "
+  "chip is 14px/500 #374151: three points larger than designed and drained of its blue, so the "
+  "one element that tells a reader what KIND of activity this is now looks like ordinary body "
+  "text. The location drops to 12px #6B7280 and the date to 11px #6B7280, both lighter than the "
+  "design's #374151.",
+  "Build the card at 348x409, radius 12, edge #E5E7EB, and put the chip back to 11px Medium "
+  "#1558B0. The chip is the card's only classification; at 14px in the same grey as everything "
+  "else it stops doing that job. Note this is the same card that has lost its title and its "
+  "description (NMB-SCREEN-018) - with those two restored and the chip recoloured, the card reads "
+  "as the design intends.",
+  ("Awareness Rally",-24,-18,348,409), ("Community Programmes",-14,-16,329,351)),
+
+ ("S20","Screen","Citizen - Home","PUBLIC-HOME","Minor","Layout & Spacing",
+  "The pledge banner is narrower than the page and loses its edge",
+  "The banner is 1092x136 at radius 20, a linear gradient inside a 1px #E5E7EB edge, padded "
+  "32/56/32/32, and it spans the full content column from x324 to x1416. Its call to action is a "
+  "170x40 white button at radius 8, its label 14px Medium #003366.",
+  "The banner is 1020x136 at radius 20 with the gradient but NO edge, starting at x360 - so it is "
+  "72px narrower than the content column it sits in and does not line up with the cards below it. "
+  "The button is 176x36 at radius 6 with its label at weight 400: 4px shorter than designed, on a "
+  "radius the design does not use here, in the regular weight rather than Medium.",
+  "Span the banner across the content column as the design does, restore the 1px #E5E7EB edge, "
+  "and build the button at 170x40 radius 8 with a Medium label. The button metrics are the same "
+  "ones NMB-GLOBAL-045 raises on the admin toolbar, so one button component fixes both.",
+  ("Take the Pledge",-890,-62,1092,136), ("Take the Pledge",-811,-50,1020,136)),
+
+ # Added 2026-09-11 — the remaining component diffs: footer, map, pagination, chips.
+ ("S21","Screen","Citizen - Help Centres & Facilities","PUBLIC-FACILITIES","Major","Layout & Spacing",
+  "The map is smaller than designed, and the page splits evenly instead of favouring it",
+  "The map takes 640x768 on the left and the facility list 500 on the right - a 56/44 split that "
+  "gives the map the larger share, because finding a centre near you is what the screen is for.",
+  "The map is 534x500 and the list is 534: a 50/50 split, with the map 106px narrower and 268px "
+  "shorter than the design draws it. Measured in the DOM on the live build, 2026-09-11. A third "
+  "less map area, on the screen whose job is to show a citizen where the nearest help is - and it "
+  "is the same map that opens zoomed out to the whole subcontinent (NMB-SCREEN-028), so the two "
+  "compound: less canvas AND a wider view.",
+  "Give the map the design's 640px column and its 768px height. With NMB-SCREEN-028's zoom fixed "
+  "as well, a reader lands on their own district at a usable size instead of on south Asia in a "
+  "small panel.",
+  ("@box",300,318,640,768), ("@box",336,338,534,500)),
+
+ ("S22","Screen","Citizen - Home","PUBLIC-HOME","Minor","Layout & Spacing",
+  "The footer is pinned to the window instead of ending the page",
+  "The footer is a 52px #002244 strip at the END of the document, after the content - the reader "
+  "reaches it by scrolling to the bottom, which is what a footer is for.",
+  "The footer is `position: fixed; bottom: 0` and 38px tall, so it sits across the bottom of the "
+  "WINDOW at all times, above whatever the reader is looking at. It costs 38px of every screen "
+  "permanently, it never signals the end of the content, and on a 1000px-tall window that is "
+  "nearly 4% of the viewport given to a copyright line. It is also 14px shorter than the design's "
+  "strip. Checked in the DOM on the live build, 2026-09-11.",
+  "Let the footer end the document as the design does, at 52px. If a persistent bar is genuinely "
+  "wanted, that is a different component and a different decision - but the design does not draw "
+  "one, and a fixed footer on a page that already carries a fixed masthead leaves the citizen a "
+  "narrow band of actual content.",
+  ("Terms & Conditions",-870,-14,1092,52), ("Terms & Conditions",-870,-10,1092,38)),
+
+ ("S23","Screen","Important Documents (all roles)","ADMIN-IMPORTANT-DOCUMENTS","Minor","Color & Token",
+  "A draft document is marked in the portal's error red",
+  "The status chip carries its meaning in the label colour: DRAFT is #8C571F, an amber that reads "
+  "as 'in progress', and PUBLISHED is #27682A, the token green.",
+  "'Draft' is rendered #DC2626 on a #FEF9C3 ground - the red this portal uses for delete and for "
+  "error - so a document that is merely unfinished is flagged as if something were wrong with it. "
+  "'Published' is #16A34A on #DCFCE7, a near-miss of the design's #27682A. Read from the DOM on "
+  "the live build, 2026-09-11.",
+  "Set the draft label to the design's #8C571F and the published label to #27682A. Red is the "
+  "portal's error and destructive colour; spending it on a normal editorial state teaches readers "
+  "to ignore it where it matters. This is NOT the withdrawn NMB-SCREEN-029, which was about the "
+  "chip's CASE and was dropped on instruction - if the chip is out of scope entirely, drop this "
+  "one too, but the colour is a different defect with a different fix.",
+  ("DRAFT",-8,-8,90,26), ("Draft",-8,-8,90,26)),
+
+ ("S12","Screen","Important Documents (all roles)","ADMIN-IMPORTANT-DOCUMENTS","Nit","Layout & Spacing",
+  "The row actions are in a different order, and in a different style",
+  "The row actions run download, then edit, then delete, each as a bordered icon-button - a light "
+  "1px outline at radius 6, the glyphs at #003366 and #EC5042.",
+  "They run edit, then download, then delete. The download control is the one a reader uses most on "
+  "this screen and the design puts it first. The treatment is wrong too, and it is a THIRD "
+  "treatment: these are real <button> elements wrapping 20px tabler icons at #003366 and #374151 "
+  "with no border, no radius and no background, where the design draws a bordered icon-button - "
+  "and where User Management draws two 24px SVG images with no button at all. Same action, three "
+  "different things, none of them the design's.",
+  "Order the row actions download, edit, delete as the design does, AND draw them in the design's "
+  "style: the bordered icon-button, the glyphs at #003366 and #EC5042. The style half is the same "
+  "fix as NMB-GLOBAL-005 and lands with it - one row-action component, used everywhere; the order "
+  "is particular to this screen.",
+  ("Action",-8,44,120,34), ("Action",-6,40,90,30)),
+
+ # ---------------------------------------------------------------------------------------------
+ # Added 2026-09-11 from the reviewer's own notes on the Figma review sheet. Each was re-measured
+ # against the current design dump and the current capture before being written here; the two the
+ # reviewer raised that an existing finding already covers are NOT duplicated - they are recorded
+ # under REVIEWER_MAPPED below, with the finding that already carries them.
+ # ---------------------------------------------------------------------------------------------
+ # Added 2026-09-11 on the reviewer's challenge: "Sidebar was a major discrepancy, has that been
+ # marked that the style of sidebar must match the design". Four findings already touched the
+ # sidebar - the label colour, the missing icons, the selected pill, the item rhythm - and between
+ # them they did NOT say that the panel itself and every row in it are built to different metrics.
+ # Measured on both sides rather than asserted: the design frame's nodes through the Plugin API,
+ # the build through getComputedStyle/getBoundingClientRect.
+ ("G23","Global","Admin sidebar (all admin roles)","ADMIN-USER-MANAGEMENT","Major","Layout & Spacing",
+  "The sidebar panel and every row in it are built to different metrics",
+  "The panel is 300px wide with 16px of padding all round and a 1px #E5E7EB edge, and it holds "
+  "rows that are 268x48 at radius 16, each padded 12px top and bottom and 16px left and right, "
+  "with an 8px gap between a row's icon and its label.",
+  "The panel is 288px with no padding of its own and a 1px #D1D5DB edge, and its rows are 245x36 "
+  "at radius 10, padded 8px and 12px. Every row is affected, not only the selected one: a row is "
+  "a quarter shorter than designed, 23px narrower, on a smaller radius, and indented to x30 "
+  "instead of the design's x16. Read from the DOM on the live build and from the design frame's "
+  "own nodes, 2026-09-11.",
+  "Build the sidebar to the design's metrics: a 300px panel padded 16, rows 268x48 at radius 16 "
+  "padded 12/16. This is the fifth finding on this one component and the one that makes the "
+  "others land - NMB-GLOBAL-001 (label colour), NMB-GLOBAL-003 (missing icons and the connector "
+  "line the design does not draw), NMB-GLOBAL-015 (the selected row's weight and shape) and "
+  "NMB-GLOBAL-038 (the 60px item rhythm). Treat them as one piece of work against one component "
+  "rather than five separate tickets; the sidebar does not match the design until all five land.",
+  ("List of SNO",-49,-18,268,48), ("List of SNO",-20,-8,245,36)),
+
+ # Added 2026-09-11, same challenge as the sidebar: six findings already touched the table and none
+ # of them said the table's own box is wrong. Measured on both sides - the design frame's Col Head
+ # and Cell nodes through the Plugin API, the build through getComputedStyle.
+ ("G24","Global","Data tables (every list screen)","ADMIN-USER-MANAGEMENT","Major","Layout & Spacing",
+  "The table's header band, cell padding and dividers are all different from the design",
+  "The table sits in a #FFFFFF container with a 1px #E5E7EB edge at radius 12. Its header is a "
+  "band: 52px tall, filled #F9FAFB, each cell padded 16px top and bottom and 24px left and right. "
+  "Data cells are 56px tall, padded 12/24, and separated by a 1px #F3F4F6 rule.",
+  "The header has no fill at all - it is transparent, so there is no band, just text above rows - "
+  "and it is 38px instead of 52. Every cell, header and data alike, is padded 8/16 where the "
+  "design says 16/24 and 12/24, which is what makes the rows 41px instead of 56. The row rule is "
+  "#E5E7EB rather than #F3F4F6, a heavier line than the design draws, and the container is radius "
+  "6 against the design's 12. Read from the DOM on the live build, 2026-09-11.",
+  "Build the table to the design's own component: a radius-12 container, a 52px #F9FAFB header "
+  "band padded 16/24, 56px data cells padded 12/24, and a #F3F4F6 row rule. This is the finding "
+  "the other table findings hang off - NMB-GLOBAL-009 (row heights), NMB-GLOBAL-010 (cell "
+  "colour), NMB-GLOBAL-005 (row actions), NMB-GLOBAL-019 (the extra wrapper), NMB-GLOBAL-036 (a "
+  "column too narrow for its date) and NMB-SCREEN-030 (action order). The cell padding alone "
+  "accounts for most of the height difference, so fixing it fixes -009 across the portal.",
+  ("Mobile Number",-24,-16,240,108), ("Mobile Number",-16,-8,200,80)),
+
+ # The masthead. NMB-GLOBAL-002 covers the missing GIGW controls and -004 the dropped lockup line;
+ # neither says the two marks in the band are built at the wrong size.
+ ("G25","Global","Government masthead (every screen)","ADMIN-USER-MANAGEMENT","Major","Layout & Spacing",
+  "The masthead's marks are the wrong size, and the co-branding is one flattened image",
+  "The National Emblem is 32x52, sitting 30px below the band's top edge. The co-branding is two "
+  "separate marks, each 40px tall - Digital India at x917, 102 wide, and the SAMAVESH lockup at "
+  "x1043, 188 wide - together spanning 314px and ending at x1231. The band's lower edge is "
+  "1px #F3F4F6.",
+  "In the ADMIN shell the National Emblem is 49x80 - about 53% larger on both axes - and sits 24px "
+  "higher, at y46. The co-branding is not two marks but ONE raster image, 440x56 at x792: 40% "
+  "wider, 16px taller and starting 125px further left than the design places it, with Digital "
+  "India and SAMAVESH baked into a single file whose alt text is one 83-character string. The "
+  "band's lower edge is 1px #D1D5DB against the design's #F3F4F6 - the same substitution the "
+  "sidebar makes. The CITIZEN shell is worse on the same band: the emblem is 39x64 against the "
+  "same designed 32x52, the band is 106px tall against 94, and the MINISTRY NAME ITSELF is a "
+  "496x56 raster image where the design sets it as three lines of live text. A portal that "
+  "carries a language control cannot translate a picture of its own name. Read from the DOM on "
+  "the live build, 2026-09-11.",
+  "Draw the National Emblem at the design's 32x52 in its designed position, and compose the "
+  "co-branding from the two marks the design uses rather than one flattened picture - a single "
+  "image cannot be scaled per breakpoint, cannot be themed, and gives a screen reader one long "
+  "string where the design has two named marks. On the citizen shell the ministry name has to "
+  "come back as text for the same reason, and more urgently: it is the department's own name, on "
+  "a bilingual portal. Set the band's lower edge to #F3F4F6. Note that "
+  "the emblem is the National Emblem of India: its proportions are not ours to adjust, and the "
+  "estate's own rule is that it ships at 3x the largest surface that renders it rather than being "
+  "scaled up from a smaller file.",
+  ("@box",70,46,1170,90), ("@box",70,40,1170,95)),
+
+ # Added 2026-09-11 — the third sweep of component-whole diffs, after the sidebar, the table and
+ # the masthead. Form controls and the side sheet, measured on both sides.
+ ("G26","Global","Search field (every list screen)","ADMIN-USER-MANAGEMENT","Major","Typography",
+  "The search field is the only thing in the portal not set in Noto Sans",
+  "The field is 938x40 at radius 8 with a 1px #E5E7EB edge, and its placeholder is 14px Noto Sans "
+  "Regular #374151 - the same face, size and grey as every other field in the design.",
+  "The field renders in POPPINS at 16px #000000, in a box 768x43 at radius 6. Counted in the DOM "
+  "on 2026-09-11: of 147 rendered elements on User Management exactly ONE is not Noto Sans, and it "
+  "is this input; the same is true on Important Documents. So a single control in the portal is "
+  "set in a different typeface, a size larger than the design, and in pure black rather than the "
+  "#374151 the design uses for placeholder text.",
+  "Remove the Poppins declaration - it is one rule and it is the only thing importing that family "
+  "- and let the field inherit Noto Sans at 14px #374151. The estate's standing instruction is "
+  "Noto Sans across all government properties and no other family introduced. While the rule is "
+  "being changed, the box wants the design's 40px height and radius 8 rather than 43 and 6.",
+  ("@box",324,250,938,40), ("@box",328,234,768,43)),
+
+ ("G27","Global","Buttons (every screen)","ADMIN-USER-MANAGEMENT","Major","Components & States",
+  "Primary and secondary buttons are built to different metrics",
+  "Buttons are 40px tall at radius 8, padded 8-10px vertically and 16/24 horizontally, with the "
+  "label at 14px Medium: the primary filled #003366 with a #FFFFFF label, the secondary a 1px "
+  "#003366 outline with a #003366 label.",
+  "The primary 'Add User' is 36px tall at radius 4 - half the design's radius - padded 0/18 with "
+  "its label at weight 600 rather than Medium. The secondary export buttons are 38px at radius 8. "
+  "So no button in the toolbar is the height the design draws, and the primary and secondary "
+  "disagree with each other on radius as well as with the design.",
+  "Use one button component at the design's 40px height and radius 8, with the label at Medium. "
+  "The primary's radius 4 is the outlier - every other rounded thing on the screen is 6, 8, 10 or "
+  "16, so this is a fifth radius nobody chose.",
+  ("Add User",-24,-8,126,40), ("Add User",-18,-8,100,36)),
+
+ ("G17","Global","Toolbar (every list screen)","ADMIN-USER-MANAGEMENT","Minor","Components & States",
+  "Export is two buttons where the design has one",
+  "One 'Export' button with a chevron, 110x38 at the right of the page header. Where a choice of "
+  "format is offered the design opens it as a menu beneath - the NAPDDR Committee Reports frame "
+  "draws that menu, with 'Export as XLS' and 'Export as PDF' as its two items.",
+  "Two permanent side-by-side buttons, 'Export Excel' (115x38) and 'Export PDF' (108x38), on 29 of "
+  "the 42 captured screens. Both formats occupy the header on every screen whether or not either "
+  "is wanted, and the pair is 231px wide against the design's 110px.",
+  "Collapse the two into the design's single 'Export' button and put the formats in the menu the "
+  "design already draws for them.",
+  ("Export",-25,-13,110,38), ("Export Excel",0,0,231,38)),
+
+ ("G18","Global","Pagination (every list screen)","ADMIN-USER-MANAGEMENT","Minor","Components & States",
+  "Every page number is boxed, so the current page has no mark",
+  "Only the current page is boxed - a single outlined square around '1' - and the rest are bare "
+  "numerals. Six pages are offered before the ellipsis, then the last page: 1 2 3 4 5 6 ... 125.",
+  "Every page number carries its own outlined box, so the box no longer says which page you are "
+  "on and the strip reads as seven identical buttons. Three pages are offered before the ellipsis "
+  "instead of six. The strip is also packed tighter and quieter than designed: 4px between cells "
+  "against the design's 16, and the numerals #374151 against #1F2937.",
+  "Box the current page only, leave the other numbers bare, and show the design's six pages before "
+  "the ellipsis. This is the same pagination the hyphen and plus sign belong to (NMB-GLOBAL-006); "
+  "fixing the glyphs without fixing the boxing leaves the reader still unable to see which page "
+  "they are on.",
+  ("125",-215,-16,260,44), ("@box",323,758,230,40)),
+
+ ("G19","Global","Page body (every list screen)","ADMIN-USER-MANAGEMENT","Minor","Layout & Spacing",
+  "The table sits inside an extra white container",
+  "The search row and the table are two separate white cards sitting directly on the page's "
+  "#F9FAFB ground - sampled at x312, y250, between the sidebar and the table's left edge.",
+  "A third white panel wraps both of them - measured in the DOM on the live build 2026-09-11 as a "
+  "1112px div at x308, #FFFFFF, radius 6, with its own border - so the same pixel measures "
+  "#FFFFFF and the table's own card is drawn inside a second border. The page ground disappears "
+  "from the whole content column.",
+  "Drop the outer panel and let the search row and the table sit on the page ground as the design "
+  "does. Nothing else needs to move: both inner cards already carry their own border and radius.",
+  ("@box",325,236,1090,120), ("@box",309,215,1106,120)),
+
+ ("G20","Global","Committee tables (NAPDDR, all roles)","ADMIN-NAPDDR-COMMITTEE-REPORTS","Minor","Layout & Spacing",
+  "A date breaks across two lines in a narrow table column",
+  "Every column in the design is wide enough for what it holds: the widest header, "
+  "'Chariperson/Chief Secretary', is given 209px and its values sit on one line.",
+  "The 'Formed on' column is 94px wide, so the ten-character date 2012-12-12 breaks after the "
+  "second hyphen and renders as '2012-12-' above '12'. A date split across two lines cannot be "
+  "read or compared down the column, and the break is what pushes these rows to 65px.",
+  "Give the date column enough width for its longest value - 10 characters at 14px needs about "
+  "105px inside its padding - or stop the value wrapping. The same applies to the header above "
+  "it, which breaks as 'Formed' / 'on'.",
+  ("Chariperson/Chief Secretary",0,-12,209,120), ("2012-12-12",0,0,94,65)),
+
+ ("G21","Global","Account identity (every screen)","ADMIN-USER-MANAGEMENT","Minor","Layout & Spacing",
+  "The account identity reverses its layout",
+  "The name leads at 16px, the role sits under it right-aligned and quieter, and the square "
+  "initials tile closes the group on the right - text first, tile last, the group ending flush "
+  "with the page's right margin.",
+  "The initials tile leads on the left and the text follows it, the role is wrapped in brackets "
+  "under the name as '(Admin)' rather than set as a quieter second line, and the block is "
+  "left-aligned against the tile instead of ranged right.",
+  "Put the tile back on the right of the name and role, range the two text lines right, and set "
+  "the role as the design does - no brackets, the quieter of the two weights.",
+  ("Ashok Kumar",-6,-10,170,56), ("@box",1252,58,180,72)),
+
+ ("G22","Global","Admin sidebar (all admin roles)","ADMIN-USER-MANAGEMENT","Minor","Layout & Spacing",
+  "The admin sidebar sits on a 40px rhythm where the design uses 60px",
+  "Sidebar items repeat every 60px - measured across thirteen items, the gaps run 57 to 61px - "
+  "which is what gives each item its own space beside a 24px icon.",
+  "Items repeat every 40px, a third tighter, and the labels are 20px tall inside that, so the "
+  "list reads as one dense block rather than as separate destinations.",
+  "Restore the design's 60px item rhythm. This is the third thing the admin sidebar changes from "
+  "the design - see also NMB-GLOBAL-001 for the label colour and NMB-GLOBAL-003 for the missing "
+  "icons; all three need to land together for the sidebar to match.",
+  ("View Feedback/Grievances",-30,-8,260,200), ("View Feedback/Grievances",-16,-8,260,160)),
+]
+
+
+# Raised once, deliberately, instead of per screen.
+GLOBAL_NOTES = [
+ ("G16","Global","Filters (every screen with them)","Nit","Components & States",
+  "Use the relevant filter options and follow the design",
+  "Several screens draw more filters than the build offers - the citizen dashboard's State and District "
+  "selects, the admin list screens' 'All States/UTs', the officer dashboard's four-filter row.",
+  "This is raised once, as a note: show the filters each screen actually needs and style them as the "
+  "design does. It is not repeated as a finding on each screen."),
+]
+
+# Raised by the reviewer in an earlier round and NOT carried into this report, each with the
+# reason. A finding a reviewer has seen must be published as removed rather than quietly dropped.
+NOT_RAISED = [
+ ("Admin screens are missing the footer strip",
+  "Checked on both sides: NO admin, State Nodal Officer or District Nodal Officer DESIGN frame "
+  "carries a footer either - 0 footer elements across all 31 of them, against 3 on every citizen "
+  "frame. The build matches the design exactly. Not a discrepancy."),
+ ("The sidebar expand/collapse icon does not match the design",
+  "Cropped both sides at 1:1: the control is the same collapse glyph in the same place at the same "
+  "size. Any difference is in how it behaves, which a static design QC cannot evidence - it belongs "
+  "in a functional pass."),
+ ("The facility filter is too wide",
+  "Width and height vary with content and viewport, so they are not audited as defects here."),
+ ("The side navigation lists different items from the design",
+  "Which items a menu carries is information architecture and content, which this run was scoped to "
+  "leave out. Recorded for the content pass."),
+ ("The filter label reads 'All Facilities' where the design says 'All Facility Types'",
+  "Wording. Out of scope for this run by instruction."),
+]
+
+# Re-checked on 2026-09-11 against the current design and build, and NOT carried forward.
+# Kept visible so a reviewer who saw them in the July report learns the outcome.
+WITHDRAWN = [
+ ("NMB-SCREEN-029","Status chips are not set in capitals",
+  "Dropped on the reviewer's instruction, 2026-09-11. The measurement stands - the design sets the "
+  "status chip uppercase at 11px and the build renders 'Draft' and 'Published' in sentence case - "
+  "but the reviewer has decided it is not worth raising. Recorded rather than deleted so the id "
+  "resolves for anyone who saw it."),
+ ("NMB-SCREEN-016","The pledge banner has lost its call to action",
+  "WRONG, and withdrawn on the reviewer's challenge. The button IS built. Checked on the live page "
+  "at a 1440 viewport on 2026-09-11: a <button> reading 'Take the Pledge', 176x36 at x1171 y230, "
+  "white fill, label #003366, radius 6 - which is what the design draws. It was missed because the "
+  "capture was taken with the UX4G accessibility panel open, which widened the document and pushed "
+  "the button to x1841, outside the 1440-wide export. 'Not in the picture' was read as 'not built'. "
+  "The capture is the evidence for what a screen LOOKS like; it is not evidence that something is "
+  "absent. An absence is now confirmed against the live DOM before it is written up."),
+ ("NMB-SNODASH-004","KPI grid reflows to unequal card widths",
+  "Measured on the capture: the three cards on the officer dashboard span 308-662, 688-1040 and "
+  "1066-1418 - 354, 352 and 352px with even 26px gaps, and the second row starts at the same two x "
+  "positions. The grid is even. Withdrawn."),
+ ("NMB-GLOBAL-003 (July wording)","Sidebar navigation icons absent PORTAL-WIDE",
+  "The citizen shell does carry its navigation icons; only the admin shell has none. The finding is "
+  "kept but narrowed to the admin shell - see G03."),
+ ("NMB-GLOBAL-004 (July wording)","Page title is off the type scale",
+  "The build's page title measures 24px at weight 600, which is exactly what the design specifies. Only "
+  "the colour differs. Narrowed to a colour finding - see G11."),
+]
+
+# Observations about the DESIGN FILE, reported as observations rather than build findings.
+# Two points the reviewer added on the Figma review sheet that an existing finding already
+# carries. They are recorded here rather than raised again, so the reviewer can see they were
+# read and where they landed - a second card saying the same thing would split one fix across
+# two tracker rows.
+REVIEWER_MAPPED = [
+ ("Action icon style must match the design and kept consistent.",
+  "NMB-GLOBAL-005",
+  "Already raised: the row actions lose their button and the edit glyph is filled #ED8525, an "
+  "amber that is in no NMBA token, while three of the NAPDDR screens replace the same actions "
+  "with outlined text buttons and Important Documents uses a third treatment again. The fix text "
+  "now says explicitly that one icon treatment has to hold across every screen."),
+ ("Match the sidebar with design.",
+  "NMB-GLOBAL-001 / -003 / -015 / -022",
+  "Already raised across four findings, which between them cover the label colour, the missing "
+  "icons, the selected pill, and - added from this note - the 40px item rhythm against the "
+  "design's 60px. The label WORDING differs too, but naming is outside this audit's scope."),
+]
+
+DESIGN_FILE_NOTES = [
+ ("Seven frames draw content outside their own canvas",
+  "Measured during the Phase-0 read: 44 text nodes sit outside the frame bounds on each of the Admin "
+  "State/UT-District Events, State Nodal Officer Dashboard and District Nodal Officer Dashboard frames, "
+  "66 on Admin General Feedback, 9 on District Nodal Officer Important Documents, and 4 on each of the "
+  "three NAPDDR committee frames. Content outside the frame renders nowhere - not in an export, not in "
+  "Dev Mode - so it is invisible to anyone reading the handoff."),
+ ("Twelve loose artboards sit at the section root",
+  "Frames named 'Table', 'Table Container', 'Contianer', 'CardHeader', 'Body' and 'arrow-wrapper' sit "
+  "beside the screen frames at 1090-3067px wide. They are the wide tables and fragments the screens "
+  "reference, but at the root they read as screens."),
+ ("The admin sign-in form has no design",
+  "Both login frames draw the Patient Monitoring tab - one showing the Project Id field, one showing "
+  "the OTP step. The Admin tab, which is what the build shows by default and what every officer in "
+  "this audit signs in through, is drawn only as an inactive tab. Its form is undesigned."),
+]

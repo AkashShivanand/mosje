@@ -276,6 +276,45 @@ def gate_anchor_matches(findings, build_anchors):
     return fails
 
 
+def gate_anchor_on_canvas(build_anchors, png_size):
+    """GATE 3b — an anchor box must lie on the image it claims to mark.
+
+    NMB-SCREEN-027 shipped with a build box at x1478-1798 on a capture 1440 wide: the pin was
+    entirely off the picture, and every other gate passed it. `gate_anchor_matches` asks whether
+    the anchor is the RIGHT KIND of element; nothing asked whether it is anywhere a reader can
+    see. The page is often wider than the export - a horizontally scrolling table, an off-canvas
+    widget panel - so a box measured from the extraction's page coordinates can sit outside the
+    PNG without anything looking wrong in the data.
+
+    `png_size(slug) -> (w, h)` or None when the capture is missing.
+    A box that merely overhangs the edge by a few pixels is reported, not failed: the element is
+    still visible and the crop still works. A box with NO overlap at all is a failure.
+    """
+    fails, warns = [], []
+    for fid, a in sorted(build_anchors.items()):
+        slug = a.get("slug")
+        size = png_size(slug) if slug else None
+        if not size:
+            continue
+        w, h = size
+        try:
+            x, y, bw, bh = [float(v) for v in a["box"]]
+        except (KeyError, TypeError, ValueError):
+            continue
+        ix = max(0.0, min(x + bw, w) - max(x, 0.0))
+        iy = max(0.0, min(y + bh, h) - max(y, 0.0))
+        if ix <= 0 or iy <= 0:
+            fails.append(f"{fid}: the build anchor box {[int(v) for v in (x, y, bw, bh)]} does not "
+                         f"touch {slug}.png ({int(w)}x{int(h)}) — the pin would be drawn off the "
+                         f"picture. Re-measure against the EXPORT, not the page: a scrolling table "
+                         f"or an off-canvas panel makes the page wider than the image.")
+        elif ix * iy < bw * bh * 0.6:
+            warns.append(f"{fid}: the build anchor box {[int(v) for v in (x, y, bw, bh)]} is only "
+                         f"{100.0 * ix * iy / (bw * bh):.0f}% inside {slug}.png "
+                         f"({int(w)}x{int(h)}) — the pin lands, the crop is clipped.")
+    return fails, warns
+
+
 def anchor_word_overlap(findings, build_anchors):
     """Soft signal, reported and never fatal: anchors whose text shares no word with the finding.
     Most are fine — a chip's only text is its number. Read it as a shortlist to eyeball."""
@@ -314,9 +353,19 @@ def gate_duplicate_anchors(design_anchors, allow=()):
 
 # ---------------------------------------------------------------------------------------------
 def run_all(findings, build_anchors, design_anchors, image_for, out_dir,
-            design_dump=None, allow_shared=(), strict_evidence=True):
-    """Every claim gate in one call. Returns (failures, evidence_paths)."""
+            design_dump=None, allow_shared=(), strict_evidence=True, png_size=None):
+    """Every claim gate in one call. Returns (failures, evidence_paths).
+
+    `png_size(slug) -> (w, h)` enables GATE 3b, which checks that an anchor box is actually on
+    the picture. Callers that cannot measure their captures may omit it; the gate is then skipped
+    and `run_all` reports that it was, rather than passing silently."""
     fails = []
+    if png_size is not None:
+        onfails, onwarns = gate_anchor_on_canvas(build_anchors, png_size)
+        fails += onfails
+        run_all.canvas_warnings = onwarns
+    else:
+        run_all.canvas_warnings = ["GATE 3b (anchor on canvas) SKIPPED — no png_size supplied"]
     if design_dump is not None:
         fails += gate_design_read(design_dump)
     for f in findings:

@@ -13,6 +13,7 @@ Two standing rules, both learned on a live file:
     from; the per-screen ledger is ours.
 """
 import collections, datetime, json, os, shutil
+import re
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
@@ -65,6 +66,20 @@ def rows_from_master(am):
                          ("  ·  Scope: Global — fix once, lands everywhere"
                           if f.get("scope") == "Global" else ""),
                 "Scope": f.get("scope", "Screen")}
+    # A published id must not vanish from the sheet. NMB-SCREEN-016 was in the tracker, was shown
+    # to be wrong, and simply disappearing would leave anyone who had triaged it with a dangling
+    # reference and no answer. Withdrawn findings stay, marked, with the reason in Notes.
+    for d in am.get("deferred", []):
+        fid = str(d.get("id") or "")
+        if not re.match(r"^[A-Z]{2,5}-[A-Z]+-\d{3}$", fid) or fid in out:
+            continue
+        out[fid] = {
+            "ID": fid, "Screen": "—", "Category": "—", "Severity": "—",
+            "Issue (Design → Built)": d.get("title", ""),
+            "Recommended Fix (Dev)": "No fix required — this finding was withdrawn.",
+            "Figma URL": None, "Live URL": None,
+            "Status": "Withdrawn", "Assignee": None, "Date": None,
+            "Notes": "WITHDRAWN: " + d.get("reason", ""), "Scope": "—"}
     return out
 
 
@@ -134,7 +149,28 @@ def merge_preserving_dev_columns(want, existing_ws):
     for fid, row in want.items():
         if fid in have:
             cur = have[fid][1]
+            # WITHDRAWN is not a dev-owned status - it is the audit stating that this finding is
+            # retracted, and it must win over whatever the sheet last said. Without this, a row
+            # that was "Open" before it was withdrawn keeps saying "Open" in the destination for
+            # ever: on 2026-09-11 the Drive tracker told a developer that NMB-SCREEN-016 was open
+            # work, when the finding had been withdrawn precisely because it was WRONG.
+            withdrawn = str(row.get("Status") or "") == "Withdrawn"
             for col in DEV_OWNED:
+                if col == "Status" and withdrawn:
+                    continue
+                if col == "Notes" and withdrawn:
+                    # The withdrawal REASON is the point of the row. Only a human's own note is
+                    # carried, appended after it; the generated "env: dev" boilerplate is not a
+                    # note and must not displace it - it did, on the Drive copy, hiding why
+                    # NMB-SCREEN-016 had been retracted.
+                    prev = str(cur.get(col) or "")
+                    # Never re-append our OWN output: the note we write starts with "WITHDRAWN:",
+                    # so appending it again each rebuild compounds. The local workbook reached
+                    # 8,850 characters in one cell that way before anyone looked.
+                    if prev and not prev.startswith("env: ") and not prev.startswith("WITHDRAWN:"):
+                        row = dict(row, Notes=str(row.get("Notes") or "") +
+                                   "\n\nEarlier note: " + prev)
+                    continue
                 if cur.get(col) not in (None, ""):
                     row = dict(row, **{col: cur[col]})
                     if col == "Status" and cur[col] != "Open":
@@ -172,9 +208,17 @@ def push(master_path, xlsx_path, portal, coverage=None, apply=False, backup_dir=
     return rep
 
 
-def sync_from_export(export_path, xlsx_path, tab_aliases=None, apply=False):
+def sync_from_export(export_path, xlsx_path, tab_aliases=None, apply=False, columns=DEV_OWNED):
     """Bring cell values back from a Google Sheet export for rows that exist in both. Never removes
-    a row, a column or a tab; skips Read Me and Rollup, whose first column is not a finding id."""
+    a row, a column or a tab; skips Read Me and Rollup, whose first column is not a finding id.
+
+    Only `columns` come back, and the default is the DEV-OWNED four. The Drive copy also holds the
+    GENERATED columns - the issue text, the fix, the URLs - and an older export holds an older
+    wording of them: syncing those back overwrites the current audit with a stale copy of itself.
+    On 2026-09-11 a Drive export offered 33 changes for NMBA, of which exactly one was a human's
+    triage and 32 were last month's phrasing of a column this repo generates. Pass
+    `columns=None` to take everything, deliberately.
+    """
     aliases = tab_aliases or {}
     G, X = openpyxl.load_workbook(export_path), openpyxl.load_workbook(xlsx_path)
     changes = []
@@ -191,7 +235,9 @@ def sync_from_export(export_path, xlsx_path, tab_aliases=None, apply=False):
                 continue
             xi, xv = xrows[fid]
             for col in ghdr:
-                if col is None or (gv.get(col) or "") == (xv.get(col) or ""):
+                if col is None or (columns is not None and col not in columns):
+                    continue
+                if (gv.get(col) or "") == (xv.get(col) or ""):
                     continue
                 changes.append((xname, fid, col, xv.get(col), gv.get(col)))
                 if apply:

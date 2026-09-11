@@ -24,14 +24,23 @@ def load_findings(proj, published=None):
     # the PUBLISHED master (docs/qc/portals/<name>/) is the deliverable and wins; out/ holds the
     # machine draft, which is a different, earlier set
     am = published if (published and os.path.exists(published)) else os.path.join(proj, "out", "audit-master.json")
+    # `_anchorWhy` and `_evidenceWhy` MUST survive this projection. Both gates test for them on
+    # the finding, and this function used to drop them - so the documented escape hatch could
+    # never be exercised from findings_final.json, and a legitimately-unanchorable finding (an
+    # icon-only button, a native <select>, a claim whose evidence is a checksum) had no way to
+    # pass short of re-wording it to dodge the gate. Found on NMBA, 2026-09-11.
+    def _why(src):
+        return {k: src[k] for k in ("_anchorWhy", "_evidenceWhy") if src.get(k)}
+
     if os.path.exists(am):
         d = json.load(open(am))
-        return [{"id": f["id"], "title": f.get("element"), "design": f.get("figma"),
-                 "build": f.get("live")} for s in d["screens"] for f in s["findings"]]
+        return [dict({"id": f["id"], "title": f.get("element"), "design": f.get("figma"),
+                      "build": f.get("live")}, **_why(f))
+                for s in d["screens"] for f in s["findings"]]
     ff = os.path.join(proj, "findings_final.json")
     if os.path.exists(ff):
-        return [{"id": k["id"], "_old": k.get("old"), "title": k.get("title"),
-                 "design": k.get("design"), "build": k.get("build")}
+        return [dict({"id": k["id"], "_old": k.get("old"), "title": k.get("title"),
+                      "design": k.get("design"), "build": k.get("build")}, **_why(k))
                 for k in json.load(open(ff))["kept"]]
     return []
 
@@ -80,9 +89,19 @@ def main():
         return (os.path.join(proj, "sheet", f"{slug}.design.png"),
                 os.path.join(proj, "sheet", f"{slug}.build.png"))
 
+    def png_size(slug):
+        import struct
+        for cand in (os.path.join(proj, "captures", "live", f"{slug}.png"),
+                     os.path.join(proj, "sheet", f"{slug}.build.png")):
+            if os.path.exists(cand):
+                with open(cand, "rb") as fh:
+                    fh.read(16)
+                    return struct.unpack(">II", fh.read(8))
+        return None
+
     fails, evidence = C.run_all(findings, ba, da, image_for,
                                 os.path.join(out, "evidence"), design_dump=dump,
-                                allow_shared=allow)
+                                allow_shared=allow, png_size=png_size)
 
     by_class = {}
     for f in findings:
@@ -101,6 +120,11 @@ def main():
                   "these is a design-file defect waiting to be written up.", "",
                   "| frame | text nodes off-canvas | of |", "|---|---|---|"]
         lines += [f"| {slug} | **{n}** | {total} |" for n, slug, total in off]
+    cw = getattr(C.run_all, "canvas_warnings", [])
+    if cw:
+        lines += ["", "## Anchor boxes that overhang their capture", "",
+                  "The pin still lands; the crop is clipped at the edge of the image.", ""]
+        lines += [f"- {w}" for w in cw]
     lines += ["", "## Failures", ""]
     lines += [f"- {f}" for f in fails] or ["_none_"]
     open(os.path.join(out, "claims.md"), "w").write("\n".join(lines) + "\n")

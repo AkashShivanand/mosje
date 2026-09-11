@@ -25,7 +25,15 @@ import json, os, re, glob, sys
 # chrome/masthead strings that are NOT the page title — never treat these as a heading
 CHROME = {"governmentofindia","skiptomaincontent","beta","samavesh","digitalindia","powertoempower",
           "ministryofsocialjusticeempowerment","departmentofsocialjusticeempowerment","singleaccessmechanismforallverticals",
-          "chat","termsconditions","privacypolicy","feedback","marklallread","markallread","export","reset","en"}
+          "chat","termsconditions","privacypolicy","feedback","marklallread","markallread","export","reset","en",
+          # the UX4G / GIGW accessibility widget's own control labels. It renders a panel OUTSIDE
+          # the viewport at large type, so without this it wins "largest text on the page" on any
+          # screen whose real title sits low — "Bigger Text" was returned as the title of five
+          # NMBA citizen screens.
+          "biggertext","smallertext","normaltext","highcontrast","invertcolours","invertcolors",
+          "screenreader","textspacing","lineheight","dyslexiafriendly","hideimages","readingmask",
+          "bigcursor","highlightlinks","accessibility","accessibilitymenu","resetall"}
+VIEWPORT_W = 1440        # captures are taken at a locked 1440 CSS width
 # only ultra-generic glue words — domain words (dashboard, cases, status, reports…) ARE the signal
 STOP = {"the","a","an","and","or","of","to","for","in","on","with","your","by","at"}
 
@@ -42,23 +50,54 @@ def _overlap(a, b):
 def _alpha_ratio(t):
     return sum(c.isalpha() for c in t) / max(1, len(t))
 
-def build_heading(rows):
-    """The page's rendered title = the largest-font, mostly-alphabetic content text in the title band
-    (below the gov-bar, above the body: y 120–300), excluding chrome and numeric KPIs/currency/dates.
-    Falls back to a wider band, then anywhere, so short pages still resolve."""
+SIDEBAR_X = 300          # a persistent left rail is ~300px wide across this estate
+
+
+def sidebar_cutoff(rows):
+    """0, or SIDEBAR_X when the page has a persistent left navigation rail.
+
+    A title is never in the rail, but a rail's FIRST nav item sits at exactly the height a
+    title would, so a band-only picker returns it. That is how a correctly-paired e-Pledge
+    screen was reported MISMAP: the y120-300 band held nothing but the sidebar's "Dashboard",
+    and the real 24px title sat at y576 under a hero image. The rule ("scope the search below
+    the masthead and right of the sidebar") was already in the ledger and had never been code.
+
+    Detected, not assumed: a rail is several short texts stacked inside the left 300px over a
+    tall span. A page with no rail keeps the full width, so nothing else changes."""
+    left = [r for r in rows
+            if (r.get("x") or 0) + (r.get("w") or 0) <= SIDEBAR_X and (r.get("text") or "").strip()]
+    if len(left) < 4:
+        return 0
+    ys = [r.get("y") or 0 for r in left]
+    return SIDEBAR_X if (max(ys) - min(ys)) > 200 else 0
+
+
+def build_heading(rows, page_w=None):
+    """The page's rendered title = the largest-font, mostly-alphabetic content text in the title
+    band (below the gov-bar: y 120-300), right of any left nav rail and inside the viewport,
+    excluding chrome and numeric KPIs/currency/dates. Falls back to a wider band — wide enough to
+    clear a hero image — then anywhere, so short pages still resolve.
+
+    The OFF-CANVAS guard matters as much as the band: the accessibility widget draws a panel at
+    x~1690, outside the 1440 viewport, at display sizes. It is invisible to a reader and it is
+    not ours, but it is the largest text in the extraction, so it wins any unguarded fallback."""
+    xmin = sidebar_cutoff(rows)
+    xmax = page_w or VIEWPORT_W
     def pick(lo, hi):
         best = None
         for r in rows:
             t = (r.get("text") or "").strip()
             if len(t) < 3 or _norm(t) in CHROME: continue
             if _alpha_ratio(t) < 0.55: continue                # skip "9,628", "100%", "₹6.2Cr", "980.5d"
+            x = r.get("x") or 0
+            if x < xmin or x >= xmax: continue    # not the rail, not off-canvas chrome
             y = r.get("y") or 0
             if not (lo <= y <= hi): continue
             fs = r.get("fontSize") or 0
             if best is None or fs > best[0] or (fs == best[0] and y < best[1]):
                 best = (fs, y, t)
         return best[2] if best else ""
-    return pick(120, 300) or pick(120, 460) or pick(0, 10_000)
+    return pick(120, 300) or pick(120, 700) or pick(0, 10_000)
 
 def _intended(name):
     """Screen name minus the role prefix: 'System Admin — Grievance Monitoring' -> 'Grievance Monitoring'."""
@@ -97,7 +136,9 @@ def run(project_dir, out_dir, master, cfg=None):
             base = os.path.splitext(os.path.basename(s["liveImg"]))[0]
             jp = os.path.join(live_dir, base + ".json")
             if os.path.exists(jp):
-                try: bh = build_heading(json.load(open(jp)).get("rows", []))
+                try:
+                    _j = json.load(open(jp))
+                    bh = build_heading(_j.get("rows", []), _j.get("pageW"))
                 except Exception: bh = ""
         if bh: stats["with_build_heading"] += 1
         elif has_build: stats["no_build_capture"] += 1     # captured but no extraction to verify with

@@ -11,7 +11,7 @@ manifest (rows for that role's slugs are replaced, every other role's rows are p
 and a full run that captured nothing refuses to overwrite a non-empty manifest without
 `--allow-empty`. The manifest is the only record of the captured SET — the PNG/JSON files
 survive a bad write, the set does not."""
-import json, os, struct, subprocess, sys
+import json, os, re, struct, subprocess, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import config as C
 import manifest as MAN
@@ -107,10 +107,65 @@ EXTRACT_JS = r"""
 # NOTE: 'hidden'/'clip' count as clipping too — an `h-screen overflow-hidden` shell pins the
 # document at exactly the viewport height and is invisible to an auto|scroll-only detector
 # (symptom: every page reports pageH == viewport height, e.g. 1000).
+# Third-party chrome that lives OFF-CANVAS must be taken out before the unclip pass, not after.
+# UNCLIP sets overflow:visible on body and documentElement, which is what stops an off-screen
+# fixed panel from being clipped - so it joins the layout, the page grows by its width, and the
+# flex rows inside re-flow. On NMBA the UX4G accessibility drawer sits at x1520-1970; unclipping
+# it pushed the citizen home page's "Take the Pledge" button from x1171 to x1841, outside the
+# 1440 export. A finding was published saying that button did not exist. It did.
+#
+# The rule: an element that is FIXED and lies entirely outside the viewport is not part of the
+# page being audited. Hide it, record what was hidden, and unclip what remains.
+# The unclip pass exists to make a page its full HEIGHT. If it also moves anything SIDEWAYS,
+# the capture has stopped describing the page and started describing an artefact of the harness —
+# and a finding written off it can be flatly false. NMB-SCREEN-016 was published saying the NMBA
+# pledge banner had no call to action; the button was at x1171 in the browser and x1841 in the
+# capture, because unclipping released the horizontal axis and a scrolling row re-flowed.
+#
+# So the harness watches itself: a handful of stable, visible elements are measured BEFORE the
+# pass and again AFTER. If any has moved horizontally, the screen is flagged. Cheap (one
+# evaluate each side), and it catches the whole class at the moment it happens rather than four
+# review passes later.
+CANARY_JS = r"""() => {
+  const out = [];
+  const els = document.querySelectorAll('h1,h2,h3,button,a,th,label');
+  for (const el of els) {
+    const t = (el.textContent || '').trim();
+    if (t.length < 4 || t.length > 60) continue;
+    const b = el.getBoundingClientRect();
+    if (b.width < 8 || b.height < 8) continue;
+    if (b.top < 0 || b.top > 2000) continue;
+    out.push([t.slice(0, 40), Math.round(b.left + scrollX)]);
+    if (out.length >= 24) break;
+  }
+  return out;
+}"""
+
+HIDE_OFFCANVAS_JS = r"""(w) => {
+  const hidden = [];
+  document.querySelectorAll('*').forEach(el => {
+    const cs = getComputedStyle(el);
+    if (cs.position !== 'fixed' && cs.position !== 'absolute') return;
+    const b = el.getBoundingClientRect();
+    if (b.width < 4 || b.height < 4) return;
+    if (b.left >= w - 2 || b.right <= 2) {            // entirely off to one side
+      hidden.push((el.id || el.className || el.tagName).toString().slice(0, 40)
+                  + ' @' + Math.round(b.left) + 'x' + Math.round(b.width));
+      el.style.setProperty('display', 'none', 'important');
+    }
+  });
+  return hidden;
+}"""
+
 UNCLIP_JS = r"""() => {
+  // Un-clip the VERTICAL axis only. `overflow: visible` releases both, and releasing X makes a
+  // horizontally-scrolling region lay its children out in a full-width row instead of scrolling:
+  // the NMBA citizen home page grew from 1440 to 2050 that way, carrying its KPI cards, filters
+  // and the pledge CTA outside the export. The pass exists to make the page its full HEIGHT.
   const fix = el => { el.style.setProperty('height','auto','important');
     el.style.setProperty('max-height','none','important');
-    el.style.setProperty('overflow','visible','important'); };
+    el.style.setProperty('overflow-y','visible','important');
+    el.style.setProperty('overflow-x','hidden','important'); };
   const CLIP = new Set(['auto','scroll','hidden','clip']);
   const scr = [];
   document.querySelectorAll('*').forEach(el => {
@@ -680,6 +735,138 @@ def _route_path(route, base):
     return r if r.startswith("/") else None
 
 
+# A nav group header that is not a <button> and not an <a> is invisible to an href crawl, and
+# so is everything inside it. NMBA nests four real, rendering NAPDDR committee routes behind a
+# plain <div> with `cursor:auto`; the July 2026 run therefore filed eleven built screens as
+# "designed but never built" — the exact opposite of the truth — across three roles. The lesson
+# was written down and never mechanized, so the same portal was about to lose the same twelve
+# screens a second time. Hence this: expansion is part of discovery, not a per-project driver.
+#
+# Clicking unlabelled things in a live build is only safe with a refusal list. These labels are
+# never nav toggles, and one of them (Logout) would end the run.
+_GROUP_LABEL_REFUSE = re.compile(
+    r"\b(log\s?out|sign\s?out|logout|signout|delete|remove|submit|save|approve|reject|"
+    r"withdraw|disburse|send|export|download|verify|otp|confirm|pay|print)\b", re.I)
+
+
+def is_safe_group_label(text):
+    """True when `text` may be clicked in a nav to reveal routes.
+
+    Refuses anything that could commit, export, or end the session, and anything too long or
+    too short to be a group header. The length bounds matter as much as the word list: a whole
+    sidebar's text collapses into one node when a wrapper has no element children, and clicking
+    that is a shot in the dark."""
+    t = (text or "").strip()
+    if not (2 <= len(t) <= 60):
+        return False
+    return not _GROUP_LABEL_REFUSE.search(t)
+
+
+# Returns the VISIBLE, hrefless nav-group CONTROLS as [{i, text}], outermost first.
+#
+# Three properties are load-bearing, and each was learned by getting it wrong on this portal.
+#
+# VISIBLE: a responsive shell renders its nav twice and the hidden off-canvas copy comes FIRST
+# in the DOM, so an index-based click on the first match hits a node with no layout box.
+#
+# OUTERMOST: a group header is a <button> wrapping a <span> of the same text. Collecting both
+# and clicking both toggles the group open and then shut again - which is what happened on
+# NMBA's first run: three clicks on one control, a cheerful "expanded 3 nav group(s)" in the
+# log, and not one new route.
+#
+# A CONTROL, not any ancestor: the button sits inside two plain <div>s that also have no
+# anchors and the same text. Clicking one of THOSE does nothing at all, because a DOM click
+# dispatches on the element it is called on and React's handler is on the descendant - events
+# bubble up, never down. So a candidate must look like a control: a <button>, role=button, or
+# cursor:pointer. The wrapping divs compute cursor:auto and are correctly skipped.
+#
+# `loose` drops the control test and takes leaf text nodes instead. It is the fallback for a
+# build whose group header genuinely is an unstyled <div>, which is what NMBA's own July 2026
+# ledger entry claims this portal had - the build has since changed, and a fallback is cheaper
+# than assuming which of the two is true on the next portal.
+_NAV_CANDIDATES_JS = """(loose)=>{
+  const roots=[...document.querySelectorAll('nav,aside,[class*=sidebar],[class*=Sidebar]')];
+  const out=[]; window.__qcNav=[]; const seen=new Set();
+  const vis=e=>e.offsetParent||getComputedStyle(e).position==='fixed';
+  const ctl=e=>e.tagName==='BUTTON'||e.getAttribute('role')==='button'
+              ||getComputedStyle(e).cursor==='pointer';
+  const qualifies=e=>{
+    if(e.nodeType!==1) return false;
+    if(e.matches('a[href]')||e.closest('a[href]')) return false;
+    if(e.querySelector('a[href]')) return false;      // a container, not a header
+    if(e.children.length>3) return false;
+    if(!vis(e)) return false;
+    if(loose ? e.children.length!==0 : !ctl(e)) return false;
+    const t=(e.textContent||'').replace(/\s+/g,' ').trim();
+    return !!t && t.length>=2 && t.length<=60;
+  };
+  const walk=e=>{
+    if(qualifies(e)){
+      const t=(e.textContent||'').replace(/\s+/g,' ').trim();
+      const key=t.replace(/[^a-z0-9]/gi,'').toLowerCase();
+      if(!seen.has(key)){ seen.add(key); window.__qcNav.push(e); out.push({i:window.__qcNav.length-1,text:t}); }
+      return;                                          // STOP - do not collect its children too
+    }
+    for(const c of e.children) walk(c);
+  };
+  for(const r of roots) walk(r);
+  return out;
+}"""
+
+
+def expand_nav_groups(pg, log=True):
+    """Click every safe collapsible nav group so its routes enter the DOM.
+
+    Each candidate is clicked ONCE and then VERIFIED against the anchor count: a click that
+    revealed nothing is simply not a group, and a click that made anchors DISAPPEAR shut a
+    group that was already open and is undone. Verification is the only honest signal here -
+    a nav header carries no aria-expanded, no role, and sometimes no cursor:pointer.
+
+    Returns the labels that actually revealed routes."""
+    revealed, tried = [], set()
+    for loose in (False, True):
+        for _ in range(2):                  # two rounds, so a group inside a group opens too
+            try:
+                cands = pg.evaluate(_NAV_CANDIDATES_JS, loose)
+            except Exception:
+                break
+            todo = [c for c in cands if is_safe_group_label(c.get("text"))
+                    and _label_key(c.get("text")) not in tried]
+            if not todo:
+                break
+            for c in todo:
+                tried.add(_label_key(c.get("text")))
+                try:
+                    before = len(pg.evaluate(_HREFS_JS))
+                    # el.click(), not a Playwright click: these headers have no accessible role
+                    # and Playwright's actionability checks reject them, while a DOM click works.
+                    pg.evaluate("i=>window.__qcNav[i] && window.__qcNav[i].click()", c["i"])
+                    pg.wait_for_timeout(900)
+                    after = len(pg.evaluate(_HREFS_JS))
+                    if after > before:
+                        revealed.append(c["text"])
+                    elif after < before:
+                        pg.evaluate("i=>window.__qcNav[i] && window.__qcNav[i].click()", c["i"])
+                        pg.wait_for_timeout(900)
+                except Exception:
+                    pass
+        if revealed:
+            break                           # the strict pass worked; no need to guess loosely
+    if revealed and log:
+        print(f"  expanded {len(revealed)} nav group(s): "
+              f"{', '.join(sorted(set(revealed))[:6])}", flush=True)
+    return revealed
+
+
+def _label_key(text):
+    """A group header re-renders with a chevron that flips between collapsed and expanded, so
+    one control reads as three different labels across two rounds. Compare on letters only."""
+    return re.sub(r"[^a-z0-9]", "", str(text or "").lower())
+
+
+_HREFS_JS = """()=>{const s=new Set();document.querySelectorAll('nav a[href],aside a[href],[class*=sidebar] a[href],[class*=menu] a[href],a[href]').forEach(a=>{const h=a.getAttribute('href');if(h&&h.startsWith('/')&&!h.startsWith('//'))s.add(h.split('?')[0].split('#')[0])});return [...s]}"""
+
+
 def discover_routes(pg, cfg):
     # A slow-loading nav/carousel widget can still be rendering when we read hrefs, so the
     # discovered route SET varies run to run (observed on scw-user-uat: two routes intermittently
@@ -690,9 +877,15 @@ def discover_routes(pg, cfg):
                              "[class*=menu] a[href]", timeout=4000)
     except Exception:
         pass
-    hrefs = pg.evaluate("""()=>{const s=new Set();document.querySelectorAll('nav a[href],aside a[href],[class*=sidebar] a[href],[class*=menu] a[href],a[href]').forEach(a=>{const h=a.getAttribute('href');if(h&&h.startsWith('/')&&!h.startsWith('//'))s.add(h.split('?')[0].split('#')[0])});return [...s]}""")
+    before = set(pg.evaluate(_HREFS_JS))
+    expand_nav_groups(pg)
+    hrefs = set(pg.evaluate(_HREFS_JS)) | before
+    gained = hrefs - before
+    if gained:
+        print(f"  +{len(gained)} route(s) revealed by expanding nav groups: "
+              f"{', '.join(sorted(gained)[:6])}", flush=True)
     skip = set(cfg.get("live", {}).get("skipRoutes", []))
-    return [h for h in hrefs if h and h not in skip]
+    return [h for h in sorted(hrefs) if h and h not in skip]
 
 def _engine_sha():
     """Short git sha of the engine, recorded so a bundle can be traced to the code that made it."""
@@ -775,11 +968,37 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         # verify run would report "changed" on nearly every page for reasons that have
         # nothing to do with the page actually changing, and the reuse saving is lost.
         skel_left, skel_waited = wait_for_data(pg)
+        try:
+            canary_before = dict(pg.evaluate(CANARY_JS))
+        except Exception:
+            canary_before = {}
+        try:
+            off = pg.evaluate(HIDE_OFFCANVAS_JS, width)
+        except Exception:
+            off = []
+        if off:
+            print(f"  hid {len(off)} off-canvas fixed element(s) before unclip: "
+                  f"{', '.join(off[:2])}", flush=True)
         settled = settle_height(pg, UNCLIP_JS, width=width, base_h=1000)
+        shifted = []
+        try:
+            for text, x_after in pg.evaluate(CANARY_JS):
+                x_before = canary_before.get(text)
+                if x_before is not None and abs(x_after - x_before) > 2:
+                    shifted.append({"text": text, "before": x_before, "after": x_after})
+        except Exception:
+            pass
+        if shifted:
+            worst = max(shifted, key=lambda d: abs(d["after"] - d["before"]))
+            print(f"  !! LAYOUT SHIFTED during unclip on {slug}: {len(shifted)} element(s) moved "
+                  f"sideways, worst {worst['text']!r} x{worst['before']} -> x{worst['after']}. "
+                  f"The capture no longer describes the page.", flush=True)
         try:
             probe = pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
         except Exception:
             probe = None
+        if probe is not None and isinstance(probe, dict):
+            probe["layoutShift"] = shifted
 
         decision = "recapture"
         if mode == "verify" and prev and probe is not None:
@@ -853,6 +1072,10 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
                 masked=masked, total=len(data["rows"]),
                 fields=data.get("fields") or [], wizard=None, captured_at=B.now_iso())
             entry["designUnchanged"] = (decision == "reshoot")
+            # Carried onto the bundle so integrity.gate_capture_layout can fail the run without
+            # opening 51 per-screen extraction files. Empty list = the canary ran and saw nothing
+            # move; a MISSING key means the capture predates the canary and is not judged.
+            entry["layoutShift"] = data.get("layoutShift") or []
             B.upsert_screen(bdl, entry)
             if len(data["rows"]) and masked / len(data["rows"]) > B.MASK_WARN_RATIO:
                 print(f"  ! {slug}: {masked}/{len(data['rows'])} rows masked as volatile — "

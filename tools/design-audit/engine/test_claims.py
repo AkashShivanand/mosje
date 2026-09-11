@@ -5,7 +5,7 @@ corrected version, so the gates cannot be satisfied by making findings vaguer.
 
     python3 -m unittest engine.test_claims          (from tools/design-audit)
 """
-import os, sys, unittest
+import os, sys, tempfile, unittest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import claims as C
 
@@ -152,3 +152,79 @@ class DuplicateAnchors(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class WhyFieldsSurviveLoading(unittest.TestCase):
+    """`_anchorWhy` and `_evidenceWhy` are the two documented escape hatches, and claims_run's
+    projection used to drop both on the way from findings_final.json to the gates - so a finding
+    that legitimately cannot be anchored (an icon-only button, a native <select>) or evidenced by
+    a picture (a claim whose proof is a checksum) had no way to pass except by being re-worded to
+    dodge the gate. Found on NMBA, 2026-09-11.
+    """
+
+    def _load(self, kept):
+        import json as _json, os as _os, tempfile, importlib.util
+        d = tempfile.mkdtemp()
+        with open(_os.path.join(d, "findings_final.json"), "w") as fh:
+            _json.dump({"prefix": "X", "kept": kept, "dropped": [], "counts": {}}, fh)
+        spec = importlib.util.spec_from_file_location(
+            "claims_run", _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "claims_run.py"))
+        m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        return m.load_findings(d)
+
+    def test_anchor_why_survives(self):
+        got = self._load([{"id": "X-1", "title": "t", "design": "d", "build": "b",
+                           "_anchorWhy": "the control has no text node"}])
+        self.assertEqual(got[0].get("_anchorWhy"), "the control has no text node")
+
+    def test_evidence_why_survives(self):
+        got = self._load([{"id": "X-1", "title": "t", "design": "d", "build": "b",
+                           "_evidenceWhy": "the proof is a checksum"}])
+        self.assertEqual(got[0].get("_evidenceWhy"), "the proof is a checksum")
+
+    def test_absent_why_is_not_invented(self):
+        got = self._load([{"id": "X-1", "title": "t", "design": "d", "build": "b"}])
+        self.assertNotIn("_anchorWhy", got[0])
+        self.assertNotIn("_evidenceWhy", got[0])
+
+
+class AnchorOnCanvas(unittest.TestCase):
+    """GATE 3b. NMB-SCREEN-027 shipped with a build box at x1478-1798 on a 1440-wide capture —
+    the pin was drawn off the picture and every other gate passed it."""
+
+    SIZE = staticmethod(lambda slug: (1440, 1000))
+
+    def test_box_entirely_off_the_image_fails(self):
+        fails, warns = C.gate_anchor_on_canvas(
+            {"X-1": {"slug": "S", "box": [1478, 58, 320, 64]}}, self.SIZE)
+        self.assertEqual(len(fails), 1)
+        self.assertIn("does not touch", fails[0])
+        self.assertEqual(warns, [])
+
+    def test_box_on_the_image_passes(self):
+        fails, warns = C.gate_anchor_on_canvas(
+            {"X-1": {"slug": "S", "box": [100, 100, 50, 50]}}, self.SIZE)
+        self.assertEqual((fails, warns), ([], []))
+
+    def test_small_overhang_is_reported_not_failed(self):
+        # 1294..1444 on a 1440 image: 97% inside, the element is still visible.
+        fails, warns = C.gate_anchor_on_canvas(
+            {"X-1": {"slug": "S", "box": [1294, -1, 150, 34]}}, self.SIZE)
+        self.assertEqual(fails, [])
+
+    def test_mostly_off_the_image_warns(self):
+        fails, warns = C.gate_anchor_on_canvas(
+            {"X-1": {"slug": "S", "box": [1400, 100, 200, 40]}}, self.SIZE)
+        self.assertEqual(fails, [])
+        self.assertEqual(len(warns), 1)
+        self.assertIn("inside", warns[0])
+
+    def test_missing_capture_is_skipped_not_failed(self):
+        fails, warns = C.gate_anchor_on_canvas(
+            {"X-1": {"slug": "S", "box": [9999, 9999, 10, 10]}}, lambda slug: None)
+        self.assertEqual((fails, warns), ([], []))
+
+    def test_run_all_says_so_when_the_gate_is_skipped(self):
+        C.run_all([], {}, {}, lambda s: (None, None), tempfile.mkdtemp())
+        self.assertTrue(any("SKIPPED" in w for w in C.run_all.canvas_warnings))
