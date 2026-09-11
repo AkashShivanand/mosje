@@ -224,21 +224,6 @@
    -8
   ]
  },
- "NMB-SCREEN-016": {
-  "node": "9081:59117",
-  "frameH": 2277,
-  "box": [
-   1190,
-   206,
-   170,
-   46
-  ],
-  "text": "Take the Pledge",
-  "offset": [
-   -24,
-   -14
-  ]
- },
  "NMB-SCREEN-017": {
   "node": "9081:59117",
   "frameH": 2277,
@@ -419,21 +404,6 @@
    60
   ]
  },
- "NMB-SCREEN-029": {
-  "node": "52070:443098",
-  "frameH": 1088,
-  "box": [
-   1094,
-   310,
-   90,
-   26
-  ],
-  "text": "PUBLISHED",
-  "offset": [
-   -6,
-   -6
-  ]
- },
  "NMB-SCREEN-030": {
   "node": "52070:443098",
   "frameH": 1088,
@@ -447,6 +417,96 @@
   "offset": [
    -8,
    44
+  ]
+ },
+ "NMB-GLOBAL-033": {
+  "node": "52061:126900",
+  "frameH": 1010,
+  "box": [
+   1170,
+   176,
+   110,
+   38
+  ],
+  "text": "Export",
+  "offset": [
+   -25,
+   -13
+  ]
+ },
+ "NMB-GLOBAL-034": {
+  "node": "52061:126900",
+  "frameH": 1010,
+  "box": [
+   159,
+   933,
+   260,
+   44
+  ],
+  "text": "125",
+  "offset": [
+   -215,
+   -16
+  ]
+ },
+ "NMB-GLOBAL-035": {
+  "node": "52061:126900",
+  "frameH": 1010,
+  "box": [
+   325,
+   236,
+   1090,
+   120
+  ],
+  "text": "@box",
+  "offset": [
+   325,
+   236
+  ]
+ },
+ "NMB-GLOBAL-036": {
+  "node": "52095:142880",
+  "frameH": 1194,
+  "box": [
+   1207,
+   672,
+   209,
+   120
+  ],
+  "text": "Chariperson/Chief Secretary",
+  "offset": [
+   0,
+   -12
+  ]
+ },
+ "NMB-GLOBAL-037": {
+  "node": "52061:126900",
+  "frameH": 1010,
+  "box": [
+   1249,
+   61,
+   170,
+   56
+  ],
+  "text": "Ashok Kumar",
+  "offset": [
+   -6,
+   -10
+  ]
+ },
+ "NMB-GLOBAL-038": {
+  "node": "52061:126900",
+  "frameH": 1010,
+  "box": [
+   34,
+   580,
+   260,
+   200
+  ],
+  "text": "View Feedback/Grievances",
+  "offset": [
+   -30,
+   -8
   ]
  }
 }

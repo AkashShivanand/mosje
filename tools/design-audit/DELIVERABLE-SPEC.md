@@ -93,14 +93,38 @@ REPORT — <Portal>                          VERTICAL auto-layout, 1500 wide, fi
                                            and "BUILD — LIVE (DEV)", markers on BOTH sides
           bfoot                            "<SLUG> · <Portal> · Design QC · <date>" + frame/page links
       Finding — <ID>                       an instance of the file's own Finding Card, one per finding
-  screen-COVERAGE-APPENDIX                 every audited screen with no finding of its own, as
-                                           thumbnails at one size
 ```
 
-Two things this is strict about. **Markers go on both sides**, because a marker on the build
-alone leaves a reader hunting for what the design actually said. And the **coverage appendix**
-earns its place: laying all 42 NMBA captures out at one size is what surfaced NMB-SCREEN-032, a
-Major finding that two passes at board scale had walked straight past.
+**Markers go on both sides**, because a marker on the build alone leaves a reader hunting for what
+the design actually said.
+
+**Only screens with something to say get a board.** A findings-free screen is accounted for by
+NAME — in `audit-master.json`'s `coverage[]`, in the report's coverage sentence, and row by row in
+the tracker's `Coverage – <Portal>` tab — not by a page of picture each. There is no coverage
+appendix; the reviewer asked for it to go on 2026-09-11 and the accounting it was doing moved to
+the ledger, which is where a reader can actually search it. (It had earned its keep once: laying
+all 42 NMBA captures out at one size is what surfaced NMB-SCREEN-032. That argues for LOOKING at
+every capture during the audit, which the coverage ledger still forces — not for shipping them.)
+
+### The review sheet MUST carry pins — every portal, no exceptions
+
+The 3-column `DESIGN | BUILD | ISSUES` sheet is where the reviewer works, and **every numbered
+issue in the ISSUES column carries a matching numbered marker on the DESIGN image and on the BUILD
+image**. Same component as the report's (`Pin/<Severity>`), same number, `layoutPositioning:
+"ABSOLUTE"` inside the image frame.
+
+This is not a nicety. Without pins the sheet asks the reviewer to find the thing the sentence is
+about by reading the sentence — which is the one job the picture was put there to do — and it was
+shipped without them twice before the reviewer insisted.
+
+- Positions come from the SAME anchor boxes the report and the claim gates use, as a percentage of
+  the image, so nothing is placed by hand. `build_rows.py` computes them into each row's `pins[]`.
+- The numbering matches the ISSUES text exactly. If a finding is withdrawn, the survivors renumber
+  and the pins renumber with them.
+- A percentage outside 0–100 is dropped, not clamped: a pin at the edge of a picture the element
+  is not on is a lie about where to look. GATE 3b fails the build for it.
+- A finding with no anchor on a side gets no pin on that side, and `build_rows.py` reports any
+  finding with no pin on EITHER side.
 
 ## 6. Drive
 
@@ -119,8 +143,22 @@ A PDF or tracker generated before sign-off is rework, not progress.
 ## 8. The gates, all green before publishing
 
 `out/coverage-ledger.json` (no UNMAPPED frame) · `out/crosscheck.md` (not FAIL) ·
-`out/failures.md` (empty) · `out/claims.md` (0 failures) · `engine/frozen_ids.py` (0 re-mapped) ·
-`engine/deliverable.py --check` (no regression against the baseline).
+`out/failures.md` (empty) · `out/claims.md` (0 failures, GATE 3b included) ·
+`engine/frozen_ids.py` (0 re-mapped) · `engine/deliverable.py --check` (no regression against the
+baseline) · `python3 -m unittest discover -s engine -p 'test_*.py'`.
+
+**GATE 3b — an anchor box must be ON the picture.** Added 2026-09-11 after NMB-SCREEN-027 shipped
+with a build box at x1478–1798 on a 1440-wide capture: the marker was off the image entirely and
+every other gate passed it. The page is often wider than the export — a horizontally scrolling
+table, an off-canvas accessibility panel — so a box taken from page coordinates can sit outside
+the PNG with nothing in the data looking wrong.
+
+**An ABSENCE is confirmed against the live DOM, never against a capture.** NMB-SCREEN-016 claimed
+the pledge banner had lost its call to action. The button was there all along; the capture had
+been taken with the UX4G accessibility panel open, which widened the document and pushed the
+button to x1841, outside the 1440 export. A capture is evidence of what a screen LOOKS like. It is
+not evidence that something is missing. Before writing "not built", "absent" or "lost", check the
+running page.
 
 The last is a **ratchet**: `deliverable-baseline.json` records each portal's current gap count, a
 portal may improve but never regress, and an improvement must be re-baselined so one portal's

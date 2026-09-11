@@ -21,7 +21,12 @@ counts = {"Blocker":0,"Major":0,"Minor":0,"Nit":0}; total=0
 for s in am["screens"]:
     for f in s["findings"]:
         counts[f["severity"]] = counts.get(f["severity"],0)+1; total+=1
-screens_n = len(am["screens"])
+# The cover's SCREENS tile must say how many screens were AUDITED, not how many boards the report
+# happens to draw. Once findings-free screens moved from a board each to a coverage ledger, and once
+# global findings each took a board of their own, len(screens) stopped being the screen count in
+# either direction. `coverageSummary.screensCaptured` is the audited total when the builder emits
+# one; len(screens) remains the fallback for portals that do not.
+screens_n = (am.get("coverageSummary") or {}).get("screensCaptured") or len(am["screens"])
 
 def panel(img_rel, box, pins, side):
     """A cropped screenshot panel with pins. side: 'figma'|'live'. pins: list of (num,sev,xPct,yPct).

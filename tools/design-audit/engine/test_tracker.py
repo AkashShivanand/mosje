@@ -96,3 +96,63 @@ class SyncBack(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+
+class SyncFromExportColumns(unittest.TestCase):
+    """A Drive export holds the GENERATED columns too, in whatever wording it was exported with.
+    Syncing those back overwrites the current audit with a stale copy of itself."""
+
+    def _books(self):
+        import openpyxl
+        head = ["ID", "Severity", "Issue (Design → Built)", "Status", "Assignee", "Date", "Notes"]
+        g = openpyxl.Workbook(); g.active.title = "P"
+        g["P"].append(head)
+        g["P"].append(["F-1", "Major", "LAST MONTH'S WORDING", "Done", None, None, None])
+        x = openpyxl.Workbook(); x.active.title = "P"
+        x["P"].append(head)
+        x["P"].append(["F-1", "Major", "this run's wording", "Open", None, None, None])
+        import tempfile, os
+        d = tempfile.mkdtemp()
+        gp, xp = os.path.join(d, "g.xlsx"), os.path.join(d, "x.xlsx")
+        g.save(gp); x.save(xp)
+        return gp, xp
+
+    def test_generated_columns_do_not_come_back(self):
+        gp, xp = self._books()
+        ch = T.sync_from_export(gp, xp, apply=False)
+        self.assertEqual([(c[1], c[2], c[4]) for c in ch], [("F-1", "Status", "Done")])
+
+    def test_columns_none_takes_everything(self):
+        gp, xp = self._books()
+        ch = T.sync_from_export(gp, xp, apply=False, columns=None)
+        self.assertIn("Issue (Design → Built)", [c[2] for c in ch])
+
+
+class WithdrawnRowsSurvive(unittest.TestCase):
+    """NMB-SCREEN-016 was published, was in the tracker, and was then shown to be wrong. Deleting
+    its row leaves anyone who triaged it with a dangling id and no answer."""
+
+    MASTER = {"screens": [{"name": "S", "env": "dev", "findings": [
+                  {"id": "ABC-SCREEN-001", "severity": "Major", "axis": "Layout",
+                   "figma": "f", "live": "l", "fix": "x"}]}],
+              "deferred": [{"id": "ABC-SCREEN-002", "title": "wrong claim",
+                            "reason": "the button IS built"},
+                           {"id": "-", "title": "no id", "reason": "not a finding"},
+                           {"id": "design-file", "title": "note", "reason": "design defect"}]}
+
+    def test_withdrawn_finding_keeps_its_row(self):
+        rows = T.rows_from_master(self.MASTER)
+        self.assertIn("ABC-SCREEN-002", rows)
+        self.assertEqual(rows["ABC-SCREEN-002"]["Status"], "Withdrawn")
+        self.assertIn("the button IS built", rows["ABC-SCREEN-002"]["Notes"])
+
+    def test_non_finding_deferrals_get_no_row(self):
+        rows = T.rows_from_master(self.MASTER)
+        self.assertNotIn("-", rows)
+        self.assertNotIn("design-file", rows)
+
+    def test_a_live_finding_is_never_overwritten_by_a_deferral(self):
+        m = dict(self.MASTER)
+        m["deferred"] = [{"id": "ABC-SCREEN-001", "title": "x", "reason": "y"}]
+        rows = T.rows_from_master(m)
+        self.assertEqual(rows["ABC-SCREEN-001"]["Status"], "Open")

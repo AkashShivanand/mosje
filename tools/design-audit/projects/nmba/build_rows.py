@@ -8,6 +8,12 @@ the reviewer edits. A row whose DESIGN column is a placeholder is the failure mo
 has hit before (TG r1) - so a screen with no frame says so in words rather than being left blank.
 
 Writes sheet/all_rows.json and, for every captured screen, sheet/<SLUG>.build.png (1440-wide).
+
+Every row also carries its PINS. A review sheet without pins asks the reviewer to find the thing
+the sentence is about by reading the sentence - which is the one job the picture was put there to
+do. The reviewer has asked for them twice. They are computed here, from the same anchor boxes the
+pinned report and the claim gates use, and expressed as a percentage of the image so the Figma
+builder can place them at whatever scale the column happens to be.
 """
 import json, os, shutil, struct, sys
 
@@ -35,11 +41,51 @@ def png_size(p):
         return struct.unpack(">II", fh.read(8))
 
 
+SEV_ORDER = {"Blocker": 0, "Major": 1, "Minor": 2, "Nit": 3}
+
+
+def pins_for(fids, danch, banch, live_dir, fig_dir, slug):
+    """One pin per finding on the row, numbered exactly as the ISSUES text numbers them, placed at
+    the centre of the anchor box as a percentage of its own image. A finding with no anchor on a
+    side gets no pin on that side rather than a guessed one."""
+    out = []
+    dw, dh, bw, bh = 1440.0, None, 1440.0, None
+    dp = os.path.join(fig_dir, f"{slug}.png") if slug else None
+    bp = os.path.join(live_dir, f"{slug}.png") if slug else None
+    if dp and os.path.exists(dp):
+        dw, dh = [float(v) for v in png_size(dp)]
+    if bp and os.path.exists(bp):
+        bw, bh = [float(v) for v in png_size(bp)]
+    for i, fid in enumerate(fids, 1):
+        pin = {"n": i, "id": fid}
+        d = danch.get(fid)
+        if d and dh:
+            x, y, w, h = d["box"]
+            pin["dxPct"] = round((x + w / 2.0) / dw * 100, 3)
+            pin["dyPct"] = round((y + h / 2.0) / dh * 100, 3)
+        b = banch.get(fid)
+        if b and bh and (not slug or b.get("slug") == slug):
+            x, y, w, h = b["box"]
+            pin["bxPct"] = round((x + w / 2.0) / bw * 100, 3)
+            pin["byPct"] = round((y + h / 2.0) / bh * 100, 3)
+        # A percentage outside the image is not a pin, it is a lie about where to look. GATE 3b
+        # fails the build for this, but the sheet must not draw one even if a project skips it.
+        for side in ("d", "b"):
+            xk, yk = side + "xPct", side + "yPct"
+            if xk in pin and not (0 <= pin[xk] <= 100 and 0 <= pin[yk] <= 100):
+                pin.pop(xk); pin.pop(yk)
+        out.append(pin)
+    return out
+
+
 def main():
     os.makedirs(SHEET, exist_ok=True)
     frames = json.load(open(os.path.join(HERE, "inputs", "figma-frames.json")))
     bundle = json.load(open(os.path.join(HERE, "out", "capture-bundle.json")))
     fin = json.load(open(os.path.join(HERE, "findings_final.json")))
+    danch = json.load(open(os.path.join(HERE, "design_anchors.json")))
+    banch = json.load(open(os.path.join(SHEET, "anchors.json")))
+    sev_of = {k["id"]: k["sev"] for k in fin["kept"]}
 
     by_route = {}
     for fr in frames:
@@ -90,7 +136,9 @@ def main():
             "buildPng": f"{gslug}.build.png" if os.path.exists(bp) else None,
             "designNote": f"Applies to every screen with this element. Shown here on {gslug}.",
             "issues": ["1. " + k["title"], "   " + k["build"]],
-            "findingIds": [k["id"]]})
+            "findingIds": [k["id"]],
+            "pins": [dict(pn, sev=sev_of.get(pn["id"], "Minor"))
+                     for pn in pins_for([k["id"]], danch, banch, LIVE, FIG, gslug)]})
 
     # ---- one row per CAPTURED screen ---------------------------------------------------------
     for s in bundle["screens"]:
@@ -122,6 +170,8 @@ def main():
             "designNote": None if has_design else UNDESIGNED_NOTE,
             "issues": txt,
             "findingIds": [k["id"] for k in mine],
+            "pins": [dict(pn, sev=sev_of.get(pn["id"], "Minor"))
+                     for pn in pins_for([k["id"] for k in mine], danch, banch, LIVE, FIG, slug)],
         })
 
     gl = [r for r in rows if r["role"] == "global"]
@@ -135,6 +185,15 @@ def main():
           f"({len(gl)} global + {len(sc)} screens; {nod} rows with no design frame)")
     imgs = {r["designPng"] for r in rows if r["designPng"]} | {r["buildPng"] for r in rows if r["buildPng"]}
     print(f"unique images to upload: {len(imgs)}")
+    np_ = sum(len(r.get("pins") or []) for r in rows)
+    nd = sum(1 for r in rows for p in (r.get("pins") or []) if "dxPct" in p)
+    nb = sum(1 for r in rows for p in (r.get("pins") or []) if "bxPct" in p)
+    print(f"pins: {np_} ({nd} on a design image, {nb} on a build image)")
+    # A row that names a finding and draws no pin for it is the defect this was added to fix.
+    bad = [(r["slug"], p["id"]) for r in rows for p in (r.get("pins") or [])
+           if "bxPct" not in p and "dxPct" not in p]
+    if bad:
+        print("   ! findings with NO pin on either side:", bad)
 
 
 if __name__ == "__main__":

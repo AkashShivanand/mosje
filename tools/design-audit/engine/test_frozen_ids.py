@@ -44,3 +44,29 @@ class Freeze(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class WithdrawnIsStillPublished(unittest.TestCase):
+    """A withdrawn finding appears in the deferred section and, marked Withdrawn, in the tracker.
+    Its id has not disappeared — and one that is genuinely deleted must FAIL, not warn."""
+
+    def _m(self, ids, deferred=()):
+        return {"screens": [{"findings": [{"id": i, "element": "t-" + i} for i in ids]}],
+                "deferred": [{"id": i, "title": "x", "reason": "why " + i} for i in deferred]}
+
+    def test_withdrawn_id_is_recognised(self):
+        w = F.withdrawn(self._m(["A-1"], deferred=["A-2"]))
+        self.assertEqual(list(w), ["A-2"])
+
+    def test_placeholder_deferrals_are_not_ids(self):
+        w = F.withdrawn({"deferred": [{"id": "-"}, {"id": "design-file"}, {"id": None}]})
+        self.assertEqual(w, {})
+
+    def test_a_retitled_id_is_still_a_violation(self):
+        bad = F.check(self._m(["A-1"]), {"screens": [{"findings":
+              [{"id": "A-1", "element": "something else"}]}]})
+        self.assertEqual(len(bad), 1)
+        self.assertEqual(bad[0]["id"], "A-1")
+
+    def test_accepted_file_missing_is_empty_not_an_error(self):
+        self.assertEqual(F.load_accepted("/nonexistent/accepted.json"), {})

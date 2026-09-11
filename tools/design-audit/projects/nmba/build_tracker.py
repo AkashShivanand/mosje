@@ -9,7 +9,7 @@ the workbook stays one document rather than a pile of formats.
 Dev-owned columns - Status, Assignee, Date, Notes - are preserved when a row already exists, so
 re-running this never overwrites somebody's triage.
 """
-import collections, json, os, sys
+import collections, json, os, re, sys
 import openpyxl
 from openpyxl.styles import Font, PatternFill, Alignment
 from openpyxl.utils import get_column_letter
@@ -80,6 +80,33 @@ def main():
             for col, val in carried.get(f["id"], {}).items():
                 ws.cell(row=ws.max_row, column=col, value=val)
 
+    # ---- withdrawn findings stay in the sheet ------------------------------------------------
+    # An id a dev has already seen must not vanish. NMB-SCREEN-016 was published, was in this tab,
+    # and was then shown to be wrong; deleting its row would leave anyone who had triaged it with
+    # a dangling reference and no answer. It stays, marked Withdrawn, with the reason in Notes.
+    withdrawn = 0
+    for d in am.get("deferred", []):
+        fid = str(d.get("id") or "")
+        # Same rule as engine/tracker.rows_from_master, so the local copy and the Drive copy hold
+        # the same rows. A July id like NMB-SNODASH-004 was published too and counts.
+        if not re.match(r"^[A-Z]{2,5}-[A-Z]+-\d{3}$", fid):
+            continue
+        ws.append([fid, "—", "—", "—", d.get("title", ""), "No fix required — this finding was "
+                   "withdrawn.", None, None, "Withdrawn", None, None,
+                   "WITHDRAWN: " + d.get("reason", ""), "—"])
+        withdrawn += 1
+        for col, val in carried.get(fid, {}).items():
+            if col == 9:          # never restore a stale Status onto a withdrawn row
+                continue
+            if col == 12:
+                # The withdrawal REASON is the point of the row. Only a human's own note is
+                # carried, appended after it; the generated "env: dev" boilerplate is not a note
+                # and must not displace the reason (it did, on NMB-SCREEN-029).
+                if not val or str(val).startswith("env: "):
+                    continue
+                val = ws.cell(row=ws.max_row, column=12).value + "\n\nEarlier note: " + str(val)
+            ws.cell(row=ws.max_row, column=col, value=val)
+
     for r in ws.iter_rows(min_row=2, max_row=ws.max_row):
         for c in r:
             c.alignment = Alignment(wrap_text=True, vertical="top")
@@ -134,7 +161,9 @@ def main():
     # Build-only additions: per the audit rules these are NOT findings. They are design-side
     # questions, carried here so they stay visible instead of being lost with the standalone file.
     for label in (
-        "Export Excel / Export PDF actions exist on every admin list screen but appear in no design",
+        # Was listed here as a build-only addition. It is not: the design DOES draw an Export
+        # control - one button with a chevron, and a menu where a format choice is offered. The
+        # difference is its SHAPE, which makes it a finding, NMB-GLOBAL-033, not a coverage note.
         "The citizen sidebar ships 'Nasha Mukti Mitr' and 'Feedback / Grievances' where the design shows 'Helpline'",
         "The e-Pledge screen adds 'General Pledge' / 'Recovered Drug User' tabs the design does not draw",
         "Admin list screens add State / District / Pledge Date columns beyond the designed column set",

@@ -19,6 +19,32 @@ def index(master):
     return {f["id"]: f.get("element") for s in master.get("screens", []) for f in s["findings"]}
 
 
+def withdrawn(master):
+    """{finding id: why} for ids published as WITHDRAWN rather than deleted.
+
+    A finding that is withdrawn is still published - it appears in the report's deferred section
+    and, marked Withdrawn, in the tracker. So its id has not disappeared, and the gate must not
+    say it has. This is the difference between retracting a claim in public and quietly erasing
+    it."""
+    out = {}
+    for d in master.get("deferred", []):
+        i = str(d.get("id") or "")
+        if i and i not in ("-", "design-file"):
+            out[i] = d.get("reason", "")
+    return out
+
+
+def load_accepted(path):
+    """Deliberate, reviewed re-wordings of a published id: {id: reason}.
+
+    A title change on an id that is already out is worth stopping for even when it is intended -
+    somebody may be reading it in a tracker. So it is not detected more loosely; it is ACCEPTED,
+    once, in writing, and the acceptance is committed beside the audit."""
+    if path and os.path.exists(path):
+        return json.load(open(path))
+    return {}
+
+
 def check(published, current):
     """Returns the list of violations. A violation is an ID present in BOTH that has changed
     meaning. Adding an ID is fine. Removing one is reported separately by the caller - a withdrawn
@@ -53,14 +79,25 @@ def main():
         print("frozen-ids: no committed master to compare against — first publication, nothing frozen yet")
         return 0
     cur = json.load(open(cur_path))
-    bad = check(pub, cur)
+    accepted = load_accepted(os.path.join(
+        os.path.dirname(cur_path), "accepted-id-rewordings.json"))
+    bad = [v for v in check(pub, cur) if v["id"] not in accepted]
+    noted = [v for v in check(pub, cur) if v["id"] in accepted]
     a_i, b_i = index(pub), index(cur)
-    added, gone = sorted(set(b_i) - set(a_i)), sorted(set(a_i) - set(b_i))
+    with_ = withdrawn(cur)
+    added = sorted(set(b_i) - set(a_i))
+    retracted = sorted(i for i in set(a_i) - set(b_i) if i in with_)
+    gone = sorted(i for i in set(a_i) - set(b_i) if i not in with_)
     print(f"frozen-ids: {len(a_i)} published, {len(b_i)} current, "
-          f"{len(added)} added, {len(gone)} no longer present")
+          f"{len(added)} added, {len(retracted)} withdrawn, {len(gone)} no longer present")
+    for i in retracted:
+        print(f"  · {i} withdrawn (still published, with its reason): {with_[i][:90]}")
+    for v in noted:
+        print(f"  · {v['id']} re-worded, accepted: {accepted[v['id']][:100]}")
     if gone:
         print("  ! these IDs have DISAPPEARED. A finding a reviewer has seen is published as "
               "withdrawn, never deleted:", gone)
+        return 2
     if bad:
         print(f"  !! {len(bad)} PUBLISHED ID(S) NOW NAME A DIFFERENT FINDING:")
         for v in bad:

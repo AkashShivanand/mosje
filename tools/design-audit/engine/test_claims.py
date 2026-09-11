@@ -5,7 +5,7 @@ corrected version, so the gates cannot be satisfied by making findings vaguer.
 
     python3 -m unittest engine.test_claims          (from tools/design-audit)
 """
-import os, sys, unittest
+import os, sys, tempfile, unittest
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import claims as C
 
@@ -187,3 +187,44 @@ class WhyFieldsSurviveLoading(unittest.TestCase):
         got = self._load([{"id": "X-1", "title": "t", "design": "d", "build": "b"}])
         self.assertNotIn("_anchorWhy", got[0])
         self.assertNotIn("_evidenceWhy", got[0])
+
+
+class AnchorOnCanvas(unittest.TestCase):
+    """GATE 3b. NMB-SCREEN-027 shipped with a build box at x1478-1798 on a 1440-wide capture —
+    the pin was drawn off the picture and every other gate passed it."""
+
+    SIZE = staticmethod(lambda slug: (1440, 1000))
+
+    def test_box_entirely_off_the_image_fails(self):
+        fails, warns = C.gate_anchor_on_canvas(
+            {"X-1": {"slug": "S", "box": [1478, 58, 320, 64]}}, self.SIZE)
+        self.assertEqual(len(fails), 1)
+        self.assertIn("does not touch", fails[0])
+        self.assertEqual(warns, [])
+
+    def test_box_on_the_image_passes(self):
+        fails, warns = C.gate_anchor_on_canvas(
+            {"X-1": {"slug": "S", "box": [100, 100, 50, 50]}}, self.SIZE)
+        self.assertEqual((fails, warns), ([], []))
+
+    def test_small_overhang_is_reported_not_failed(self):
+        # 1294..1444 on a 1440 image: 97% inside, the element is still visible.
+        fails, warns = C.gate_anchor_on_canvas(
+            {"X-1": {"slug": "S", "box": [1294, -1, 150, 34]}}, self.SIZE)
+        self.assertEqual(fails, [])
+
+    def test_mostly_off_the_image_warns(self):
+        fails, warns = C.gate_anchor_on_canvas(
+            {"X-1": {"slug": "S", "box": [1400, 100, 200, 40]}}, self.SIZE)
+        self.assertEqual(fails, [])
+        self.assertEqual(len(warns), 1)
+        self.assertIn("inside", warns[0])
+
+    def test_missing_capture_is_skipped_not_failed(self):
+        fails, warns = C.gate_anchor_on_canvas(
+            {"X-1": {"slug": "S", "box": [9999, 9999, 10, 10]}}, lambda slug: None)
+        self.assertEqual((fails, warns), ([], []))
+
+    def test_run_all_says_so_when_the_gate_is_skipped(self):
+        C.run_all([], {}, {}, lambda s: (None, None), tempfile.mkdtemp())
+        self.assertTrue(any("SKIPPED" in w for w in C.run_all.canvas_warnings))

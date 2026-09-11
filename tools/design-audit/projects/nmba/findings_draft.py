@@ -79,8 +79,9 @@ FINDINGS = [
   "The actions are bare glyphs with no button around them, and the edit glyph is drawn at #E08020, an "
   "amber that appears nowhere in the NMBA token set. On the four NAPDDR committee screens the same "
   "actions become three outlined TEXT buttons instead (View / Edit / Delete).",
-  "Restore the bordered icon-button and set the edit glyph to #003366. Use one row-action component "
-  "across the portal rather than icon-buttons on some screens and text buttons on others.",
+  "Restore the bordered icon-button and set the edit glyph to #003366. One icon treatment has to "
+  "hold across every screen - the same glyph set, the same button, the same two colours - rather "
+  "than icon-buttons on some screens, amber glyphs on others and text buttons on the NAPDDR four.",
   ("Actions",-8,44,120,34), ("Actions",100,40,60,30)),
 
  ("G06","Global","Pagination (every paged screen)","ADMIN-NAPDDR-STATE-COMMITTEE","Major","Content & Iconography",
@@ -176,16 +177,6 @@ FINDINGS = [
   "same weight as the rest.",
   ("User Management",-34,-8,250,30), ("@box",30,258,248,40)),
 
- ("S01","Screen","Citizen - Home","PUBLIC-HOME","Major","Components & States",
-  "The pledge banner has lost its call to action",
-  "The green banner carries a white pill button reading 'Take the Pledge' with a right arrow, its label "
-  "14px Medium #003366, sitting at the right end of the banner.",
-  "The banner has the heading and the supporting line but no button at all, so the landing page's "
-  "primary action is not on it.",
-  "Restore the button at the right of the banner, white fill with the label in #003366, as the design "
-  "draws it.",
-  ("Take the Pledge",-24,-14,170,46), ("Take the NMBA e-pledge today and commit to a Nasha Mukt Bharat!",700,-40,200,56)),
-
  ("S02","Screen","Citizen - Home","PUBLIC-HOME","Major","Layout & Spacing",
   "The 'Number of Programmes' section is not built",
   "Below the metric cards the design carries a titled section of four grouped cards - Education & Youth, "
@@ -208,14 +199,17 @@ FINDINGS = [
   ("Alandi Student Awareness Drive",-8,-8,260,60), ("Community Awareness Session",-10,34,240,50)),
 
  ("S04","Screen","Citizen - Help Centres & Facilities","PUBLIC-FACILITIES","Major","Components & States",
-  "The facility card has lost its 'Call Now' action and its service tags",
+  "The facility card drops its second button and its service tags",
   "Each facility card ends with two buttons side by side - 'Get Directions' filled #003366 and 'Call "
   "Now' white with a #003366 outline - above which sit the service tags as small pills (Inpatient "
   "Treatment, Outpatient Counseling, Detoxification, Rehabilitation).",
-  "'Call Now' is not present and 'Get Directions' stretches the full width of the card in its place. "
-  "The service tag pills are not rendered either, so a reader cannot see what a centre offers without "
-  "opening it.",
-  "Restore the second action beside 'Get Directions' and the service tag pills above the buttons.",
+  "There is one button, not two: 'Get Directions' stretches the full width of the card. The card can "
+  "still be phoned - the number above the button is a tel: link with a green handset glyph - but it "
+  "is a bare line of text where the design gives it a button beside the first, so the two things a "
+  "reader does with a centre no longer look like the same kind of thing. The service tag pills are "
+  "not rendered at all, so a reader cannot see what a centre offers without opening it.",
+  "Give the phone number back its button beside 'Get Directions', outlined #003366 as the design "
+  "draws it, and restore the service tag pills above the pair.",
   ("Call Now",-90,-16,300,50), ("Get Directions",-60,-16,560,50)),
 
  ("S05","Screen","Citizen - Help Centres & Facilities","PUBLIC-FACILITIES","Minor","Typography",
@@ -301,7 +295,7 @@ FINDINGS = [
   "Decide which is right and make both sides agree: either the citizen site gains the signed-in block "
   "the design draws, or the design is updated to the helpline-and-login masthead the build ships. "
   "Raised because the two disagree, not because the build is necessarily wrong.",
-  ("Sachin Malhotra",-8,-10,200,50), ("@box",1478,58,320,64)),
+  ("Sachin Malhotra",-8,-10,200,50), ("Nasha Mukti Mitr Login",-10,-14,180,48)),
 
  ("S15","Screen","Citizen - Help Centres & Facilities","PUBLIC-FACILITIES","Nit","Layout & Spacing",
   "The facility map opens on a whole-subcontinent view",
@@ -331,23 +325,97 @@ FINDINGS = [
   "not two wrong ones.",
   ("@box",0,0,10,10), ("@box",560,232,620,430)),
 
- ("S11","Screen","Important Documents (all roles)","ADMIN-IMPORTANT-DOCUMENTS","Nit","Typography",
-  "Status chips are not set in capitals",
-  "The status chip is uppercase at 11px - DRAFT, PUBLISHED - which is what separates it from ordinary "
-  "cell text at a glance.",
-  "The chips read 'Draft' and 'Published' in sentence case, so they carry the same case as the data "
-  "around them.",
-  "Apply the uppercase transform to the status chip.",
-  ("PUBLISHED",-6,-6,90,26), ("Published",-6,-8,90,26)),
-
  ("S12","Screen","Important Documents (all roles)","ADMIN-IMPORTANT-DOCUMENTS","Nit","Layout & Spacing",
-  "The row actions are in a different order",
-  "The row actions run download, then edit, then delete.",
+  "The row actions are in a different order, and in a different style",
+  "The row actions run download, then edit, then delete, each as a bordered icon-button - a light "
+  "1px outline at radius 6, the glyphs at #003366 and #EC5042.",
   "They run edit, then download, then delete. The download control is the one a reader uses most on "
-  "this screen and the design puts it first.",
-  "Order the row actions download, edit, delete as the design does.",
+  "this screen and the design puts it first. They are also drawn in the portal's other action "
+  "style - bare glyphs with no button, the edit glyph amber - so this screen differs from the "
+  "design twice over: in the order, and in the treatment.",
+  "Order the row actions download, edit, delete as the design does, AND draw them in the design's "
+  "style: the bordered icon-button, the glyphs at #003366 and #EC5042. The style half is the same "
+  "fix as NMB-GLOBAL-005 and lands with it; the order is particular to this screen.",
   ("Action",-8,44,120,34), ("Action",-6,40,90,30)),
+
+ # ---------------------------------------------------------------------------------------------
+ # Added 2026-09-11 from the reviewer's own notes on the Figma review sheet. Each was re-measured
+ # against the current design dump and the current capture before being written here; the two the
+ # reviewer raised that an existing finding already covers are NOT duplicated - they are recorded
+ # under REVIEWER_MAPPED below, with the finding that already carries them.
+ # ---------------------------------------------------------------------------------------------
+ ("G17","Global","Toolbar (every list screen)","ADMIN-USER-MANAGEMENT","Minor","Components & States",
+  "Export is two buttons where the design has one",
+  "One 'Export' button with a chevron, 110x38 at the right of the page header. Where a choice of "
+  "format is offered the design opens it as a menu beneath - the NAPDDR Committee Reports frame "
+  "draws that menu, with 'Export as XLS' and 'Export as PDF' as its two items.",
+  "Two permanent side-by-side buttons, 'Export Excel' (115x38) and 'Export PDF' (108x38), on 29 of "
+  "the 42 captured screens. Both formats occupy the header on every screen whether or not either "
+  "is wanted, and the pair is 231px wide against the design's 110px.",
+  "Collapse the two into the design's single 'Export' button and put the formats in the menu the "
+  "design already draws for them.",
+  ("Export",-25,-13,110,38), ("Export Excel",0,0,231,38)),
+
+ ("G18","Global","Pagination (every list screen)","ADMIN-USER-MANAGEMENT","Minor","Components & States",
+  "Every page number is boxed, so the current page has no mark",
+  "Only the current page is boxed - a single outlined square around '1' - and the rest are bare "
+  "numerals. Six pages are offered before the ellipsis, then the last page: 1 2 3 4 5 6 ... 125.",
+  "Every page number carries its own outlined box, so the box no longer says which page you are "
+  "on and the strip reads as seven identical buttons. Three pages are offered before the ellipsis "
+  "instead of six.",
+  "Box the current page only, leave the other numbers bare, and show the design's six pages before "
+  "the ellipsis. This is the same pagination the hyphen and plus sign belong to (NMB-GLOBAL-006); "
+  "fixing the glyphs without fixing the boxing leaves the reader still unable to see which page "
+  "they are on.",
+  ("125",-215,-16,260,44), ("@box",323,758,230,40)),
+
+ ("G19","Global","Page body (every list screen)","ADMIN-USER-MANAGEMENT","Minor","Layout & Spacing",
+  "The table sits inside an extra white container",
+  "The search row and the table are two separate white cards sitting directly on the page's "
+  "#F9FAFB ground - sampled at x312, y250, between the sidebar and the table's left edge.",
+  "A third white panel starts at x309 and wraps both of them, so the same pixel measures #FFFFFF "
+  "and the table's own border is drawn inside a second border. The page ground disappears from "
+  "the whole content column.",
+  "Drop the outer panel and let the search row and the table sit on the page ground as the design "
+  "does. Nothing else needs to move: both inner cards already carry their own border and radius.",
+  ("@box",325,236,1090,120), ("@box",309,215,1106,120)),
+
+ ("G20","Global","Committee tables (NAPDDR, all roles)","ADMIN-NAPDDR-COMMITTEE-REPORTS","Minor","Layout & Spacing",
+  "A date breaks across two lines in a narrow table column",
+  "Every column in the design is wide enough for what it holds: the widest header, "
+  "'Chariperson/Chief Secretary', is given 209px and its values sit on one line.",
+  "The 'Formed on' column is 94px wide, so the ten-character date 2012-12-12 breaks after the "
+  "second hyphen and renders as '2012-12-' above '12'. A date split across two lines cannot be "
+  "read or compared down the column, and the break is what pushes these rows to 65px.",
+  "Give the date column enough width for its longest value - 10 characters at 14px needs about "
+  "105px inside its padding - or stop the value wrapping. The same applies to the header above "
+  "it, which breaks as 'Formed' / 'on'.",
+  ("Chariperson/Chief Secretary",0,-12,209,120), ("2012-12-12",0,0,94,65)),
+
+ ("G21","Global","Account identity (every screen)","ADMIN-USER-MANAGEMENT","Minor","Layout & Spacing",
+  "The account identity reverses its layout",
+  "The name leads at 16px, the role sits under it right-aligned and quieter, and the square "
+  "initials tile closes the group on the right - text first, tile last, the group ending flush "
+  "with the page's right margin.",
+  "The initials tile leads on the left and the text follows it, the role is wrapped in brackets "
+  "under the name as '(Admin)' rather than set as a quieter second line, and the block is "
+  "left-aligned against the tile instead of ranged right.",
+  "Put the tile back on the right of the name and role, range the two text lines right, and set "
+  "the role as the design does - no brackets, the quieter of the two weights.",
+  ("Ashok Kumar",-6,-10,170,56), ("@box",1252,58,180,72)),
+
+ ("G22","Global","Admin sidebar (all admin roles)","ADMIN-USER-MANAGEMENT","Minor","Layout & Spacing",
+  "The admin sidebar sits on a 40px rhythm where the design uses 60px",
+  "Sidebar items repeat every 60px - measured across thirteen items, the gaps run 57 to 61px - "
+  "which is what gives each item its own space beside a 24px icon.",
+  "Items repeat every 40px, a third tighter, and the labels are 20px tall inside that, so the "
+  "list reads as one dense block rather than as separate destinations.",
+  "Restore the design's 60px item rhythm. This is the third thing the admin sidebar changes from "
+  "the design - see also NMB-GLOBAL-001 for the label colour and NMB-GLOBAL-003 for the missing "
+  "icons; all three need to land together for the sidebar to match.",
+  ("View Feedback/Grievances",-30,-8,260,200), ("View Feedback/Grievances",-16,-8,260,160)),
 ]
+
 
 # Raised once, deliberately, instead of per screen.
 GLOBAL_NOTES = [
@@ -382,6 +450,19 @@ NOT_RAISED = [
 # Re-checked on 2026-09-11 against the current design and build, and NOT carried forward.
 # Kept visible so a reviewer who saw them in the July report learns the outcome.
 WITHDRAWN = [
+ ("NMB-SCREEN-029","Status chips are not set in capitals",
+  "Dropped on the reviewer's instruction, 2026-09-11. The measurement stands - the design sets the "
+  "status chip uppercase at 11px and the build renders 'Draft' and 'Published' in sentence case - "
+  "but the reviewer has decided it is not worth raising. Recorded rather than deleted so the id "
+  "resolves for anyone who saw it."),
+ ("NMB-SCREEN-016","The pledge banner has lost its call to action",
+  "WRONG, and withdrawn on the reviewer's challenge. The button IS built. Checked on the live page "
+  "at a 1440 viewport on 2026-09-11: a <button> reading 'Take the Pledge', 176x36 at x1171 y230, "
+  "white fill, label #003366, radius 6 - which is what the design draws. It was missed because the "
+  "capture was taken with the UX4G accessibility panel open, which widened the document and pushed "
+  "the button to x1841, outside the 1440-wide export. 'Not in the picture' was read as 'not built'. "
+  "The capture is the evidence for what a screen LOOKS like; it is not evidence that something is "
+  "absent. An absence is now confirmed against the live DOM before it is written up."),
  ("NMB-SNODASH-004","KPI grid reflows to unequal card widths",
   "Measured on the capture: the three cards on the officer dashboard span 308-662, 688-1040 and "
   "1066-1418 - 354, 352 and 352px with even 26px gaps, and the second row starts at the same two x "
@@ -395,6 +476,24 @@ WITHDRAWN = [
 ]
 
 # Observations about the DESIGN FILE, reported as observations rather than build findings.
+# Two points the reviewer added on the Figma review sheet that an existing finding already
+# carries. They are recorded here rather than raised again, so the reviewer can see they were
+# read and where they landed - a second card saying the same thing would split one fix across
+# two tracker rows.
+REVIEWER_MAPPED = [
+ ("Action icon style must match the design and kept consistent.",
+  "NMB-GLOBAL-005",
+  "Already raised: the row actions lose their button and the edit glyph is drawn #E08020, an "
+  "amber that is in no NMBA token, while the four NAPDDR screens replace the same actions with "
+  "three outlined text buttons. The fix text now says explicitly that one icon treatment has to "
+  "hold across every screen."),
+ ("Match the sidebar with design.",
+  "NMB-GLOBAL-001 / -003 / -015 / -022",
+  "Already raised across four findings, which between them cover the label colour, the missing "
+  "icons, the selected pill, and - added from this note - the 40px item rhythm against the "
+  "design's 60px. The label WORDING differs too, but naming is outside this audit's scope."),
+]
+
 DESIGN_FILE_NOTES = [
  ("Seven frames draw content outside their own canvas",
   "Measured during the Phase-0 read: 44 text nodes sit outside the frame bounds on each of the Admin "

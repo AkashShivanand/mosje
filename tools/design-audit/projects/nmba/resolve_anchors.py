@@ -32,8 +32,6 @@ WHY = {
  "G12": {"_anchorWhy": "The icon tile is an SVG on a filled div with no text, so the extraction "
          "records neither. The tile's fill was sampled from the capture at x590-650 y240-290 and "
          "measures #FDE8EF against the design's #E5EFF9."},
- "S01": {"_anchorWhy": "The banner's own container has no text node. The box is measured off the "
-         "capture at the right end of the green banner, where the design places the button."},
  "S10": {"_anchorWhy": "This finding is about which page a route serves, so there is no single "
          "control to anchor to; the anchor is the page title that proves it - /about-us renders "
          "the heading 'Dashboard'.",
@@ -41,6 +39,19 @@ WHY = {
          "ADMIN-CONTACT-US.png and ADMIN-STATE-DISTRICT-DASHBOARD.png are byte-identical "
          "(md5 a16f44d585bfd979e3cd935f83bf980e), and the same holds for the State Nodal Officer "
          "role. Two pictures of identical pages would show a reviewer nothing."},
+ "G18": {"_anchorWhy": "The page-number boxes are buttons whose only text is the numeral, so a "
+         "text anchor would bind to one numeral rather than to the strip the finding is about. "
+         "The box is measured off the capture across the whole pager, x323-553 y758-798, which "
+         "holds the hyphen, the four numbered boxes, the ellipsis and the plus."},
+ "G19": {"_anchorWhy": "The finding is about a container with no text of its own, and on the "
+         "design side about the ABSENCE of one. Both boxes are measured off the captures over "
+         "the same region - the search row and the top of the table. The claim itself was "
+         "checked by sampling one pixel in the left gutter at x312 y250: #F9FAFB in the design, "
+         "#FFFFFF in the build."},
+ "G21": {"_anchorWhy": "The account name, role and initials are the signed-in user's own data, "
+         "so the extraction masks them and records no text node. The box is measured off the "
+         "capture at the right of the masthead, x1252-1432 y58-130, where the tile and the two "
+         "lines are drawn."},
  "S15": {"_anchorWhy": "The map is a canvas with no text node. The box is the map panel's "
          "measured rect on both sides."},
  "S16": {"_anchorWhy": "The not-found card is an illustration with no text node the extraction "
@@ -158,11 +169,19 @@ def main():
     used = {int(v.rsplit("-", 1)[1]) for v in frozen.values()} or {0}
     nxt = [max(used) + 1]
 
+    # Reading the map is only half of it. An ID allocated on THIS run is unprotected until it is
+    # written back - so the next insertion can still renumber a finding that has already shipped,
+    # which is the exact failure the map was built to stop. Allocation records itself.
+    allocated = []
+
     def fid_for(key, scope):
         if key in frozen:
             return frozen[key]
         i = nxt[0]; nxt[0] += 1
-        return "%s-%s-%03d" % (PREFIX, "GLOBAL" if scope == "Global" else "SCREEN", i)
+        fid = "%s-%s-%03d" % (PREFIX, "GLOBAL" if scope == "Global" else "SCREEN", i)
+        frozen[key] = fid
+        allocated.append((key, fid))
+        return fid
 
     des = json.load(open(os.path.join(HERE, "inputs", "design-elements.json")))
     kept, danch, banch = [], {}, {}
@@ -241,6 +260,7 @@ def main():
     json.dump({"prefix": PREFIX, "kept": kept, "dropped": dropped, "counts": counts,
                "designFileNotes": [{"title": t, "detail": d} for (t, d) in F.DESIGN_FILE_NOTES]},
               open(os.path.join(HERE, "findings_final.json"), "w"), indent=1)
+    json.dump(dict(sorted(frozen.items())), open(fp, "w"), indent=1)
     json.dump(danch, open(os.path.join(HERE, "design_anchors.json"), "w"), indent=1)
     json.dump(banch, open(os.path.join(SHEET, "anchors.json"), "w"), indent=1)
 
@@ -252,6 +272,8 @@ def main():
                 shutil.copyfile(src, os.path.join(SHEET, dst))
 
     print(f"kept {len(kept)}  anchors design={len(danch)} build={len(banch)}  counts={counts}")
+    if allocated:
+        print(f"froze {len(allocated)} new id(s): " + ", ".join(f"{k}={v}" for k, v in allocated))
     if misses:
         print("UNRESOLVED:")
         for m in misses:

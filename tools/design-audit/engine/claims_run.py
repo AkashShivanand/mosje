@@ -89,9 +89,19 @@ def main():
         return (os.path.join(proj, "sheet", f"{slug}.design.png"),
                 os.path.join(proj, "sheet", f"{slug}.build.png"))
 
+    def png_size(slug):
+        import struct
+        for cand in (os.path.join(proj, "captures", "live", f"{slug}.png"),
+                     os.path.join(proj, "sheet", f"{slug}.build.png")):
+            if os.path.exists(cand):
+                with open(cand, "rb") as fh:
+                    fh.read(16)
+                    return struct.unpack(">II", fh.read(8))
+        return None
+
     fails, evidence = C.run_all(findings, ba, da, image_for,
                                 os.path.join(out, "evidence"), design_dump=dump,
-                                allow_shared=allow)
+                                allow_shared=allow, png_size=png_size)
 
     by_class = {}
     for f in findings:
@@ -110,6 +120,11 @@ def main():
                   "these is a design-file defect waiting to be written up.", "",
                   "| frame | text nodes off-canvas | of |", "|---|---|---|"]
         lines += [f"| {slug} | **{n}** | {total} |" for n, slug, total in off]
+    cw = getattr(C.run_all, "canvas_warnings", [])
+    if cw:
+        lines += ["", "## Anchor boxes that overhang their capture", "",
+                  "The pin still lands; the crop is clipped at the edge of the image.", ""]
+        lines += [f"- {w}" for w in cw]
     lines += ["", "## Failures", ""]
     lines += [f"- {f}" for f in fails] or ["_none_"]
     open(os.path.join(out, "claims.md"), "w").write("\n".join(lines) + "\n")

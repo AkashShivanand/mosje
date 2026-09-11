@@ -3,8 +3,394 @@
  "idPrefix": "NMB",
  "generated": "2026-09-11",
  "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2136-20193",
- "method": "The NMBA design page (\u2018NMBA \u2014 Dev Synced \u2014 August\u2019) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles \u2014 Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication.",
+ "method": "The NMBA design page (\u2018NMBA \u2014 Dev Synced \u2014 August\u2019) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles \u2014 Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication. This report carries only what has something to say. Of the 50 screens captured, 9 carry a finding of their own and appear here as a board; the remaining 41 were checked against their design frames and carry no screen-specific finding, so they are named one by one in the \u2018Coverage \u2014 NMBA\u2019 tab of the QC tracker rather than repeated here as a page of picture each. The portal-wide findings still apply to all 50: the 22 global boards below each draw one such finding on a screen that shows it clearly.",
+ "coverage": [
+  {
+   "slug": "ADMIN-ABOUT-US",
+   "name": "Admin - About Us",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/about-us",
+   "figmaUrl": null,
+   "hasDesignFrame": false,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-BEST-PRACTICES",
+   "name": "Admin - Best Practices",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/best-practices",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52092-133388",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-CONTACT-US",
+   "name": "Admin - Contact Us",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/contact-us",
+   "figmaUrl": null,
+   "hasDesignFrame": false,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-DASHBOARD-STATISTICS",
+   "name": "Admin - Dashboard Statistics",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/dashboard-statistics",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52102-139278",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-DISTRICT-NODAL-OFFICERS-LIST",
+   "name": "Admin - District Nodal Officers List",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/district-nodal-officers-list",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52070-446864",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-FEEDBACK",
+   "name": "Admin - Feedback",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/feedback",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52070-447521",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-GENERAL-FEEDBACK",
+   "name": "Admin - General Feedback",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/general-feedback",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52071-129865",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-MINISTRIES-DASHBOARD",
+   "name": "Admin - Ministries Dashboard",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/ministries-dashboard",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52051-161871",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-NAPDDR-BLOCK-COMMITTEE",
+   "name": "Admin - Napddr / Block Committee",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/napddr/block-committee",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52095-138163",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-NAPDDR-COMMITTEE-REPORTS",
+   "name": "Admin - Napddr / Committee Reports",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/napddr/committee-reports",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52095-142880",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-NAPDDR-DISTRICT-COMMITTEE",
+   "name": "Admin - Napddr / District Committee",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/napddr/district-committee",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52095-135422",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-NASHA-MUKTI-MITR",
+   "name": "Admin - Nasha Mukti Mitr",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/nasha-mukti-mitr",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52073-131257",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-PLEDGE-REPORTS",
+   "name": "Admin - Pledge Reports",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/pledge-reports",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52067-128958",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-PRE-EVENT-DETAILS",
+   "name": "Admin - Pre Event Details",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/pre-event-details",
+   "figmaUrl": null,
+   "hasDesignFrame": false,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-RURAL-DEVELOPMENT-EVENTS",
+   "name": "Admin - Rural Development Events",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/rural-development-events",
+   "figmaUrl": null,
+   "hasDesignFrame": false,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-STATE-DISTRICT-DASHBOARD",
+   "name": "Admin - State District Dashboard",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/state-district-dashboard",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-122466",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "ADMIN-STATE-NODAL-OFFICERS-LIST",
+   "name": "Admin - State Nodal Officers List",
+   "role": "admin",
+   "url": "https://nmba-admin-dev.mosje.in/state-nodal-officers-list",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52070-446082",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-ABOUT-US",
+   "name": "District Nodal Officer - About Us",
+   "role": "district-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/about-us",
+   "figmaUrl": null,
+   "hasDesignFrame": false,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-BEST-PRACTICES",
+   "name": "District Nodal Officer - Best Practices",
+   "role": "district-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/best-practices",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51957-332005",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-CONTACT-US",
+   "name": "District Nodal Officer - Contact Us",
+   "role": "district-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/contact-us",
+   "figmaUrl": null,
+   "hasDesignFrame": false,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-DASHBOARD",
+   "name": "District Nodal Officer - Dashboard",
+   "role": "district-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/dashboard",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2306-13219",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-DISTRICT-NODAL-OFFICERS-LIST",
+   "name": "District Nodal Officer - District Nodal Officers List",
+   "role": "district-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/district-nodal-officers-list",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2309-20334",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-FEEDBACK",
+   "name": "District Nodal Officer - Feedback",
+   "role": "district-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/feedback",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51957-330252",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-IMPORTANT-DOCUMENTS",
+   "name": "District Nodal Officer - Important Documents",
+   "role": "district-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/important-documents",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2306-13466",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-NAPDDR-COMMITTEE-REPORTS",
+   "name": "District Nodal Officer - Napddr / Committee Reports",
+   "role": "district-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/napddr/committee-reports",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10955-116683",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-NAPDDR-DISTRICT-COMMITTEE",
+   "name": "District Nodal Officer - Napddr / District Committee",
+   "role": "district-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/napddr/district-committee",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10955-116113",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-NASHA-MUKTI-MITR",
+   "name": "District Nodal Officer - Nasha Mukti Mitr",
+   "role": "district-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/nasha-mukti-mitr",
+   "figmaUrl": null,
+   "hasDesignFrame": false,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "DISTRICT-NODAL-OFFICER-STATE-DISTRICT-DASHBOARD",
+   "name": "District Nodal Officer - State District Dashboard",
+   "role": "district-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/state-district-dashboard",
+   "figmaUrl": null,
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "PUBLIC-EPLEDGE",
+   "name": "Citizen - Epledge",
+   "role": "public",
+   "url": "https://nmba-user-dev.mosje.in/epledge",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-58375",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "PUBLIC-FEEDBACK",
+   "name": "Citizen - Feedback",
+   "role": "public",
+   "url": "https://nmba-user-dev.mosje.in/feedback",
+   "figmaUrl": null,
+   "hasDesignFrame": false,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "PUBLIC-NASHA-MUKTI-MITR",
+   "name": "Citizen - Nasha Mukti Mitr",
+   "role": "public",
+   "url": "https://nmba-user-dev.mosje.in/nasha-mukti-mitr",
+   "figmaUrl": null,
+   "hasDesignFrame": false,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "STATE-NODAL-OFFICER-ABOUT-US",
+   "name": "State Nodal Officer - About Us",
+   "role": "state-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/about-us",
+   "figmaUrl": null,
+   "hasDesignFrame": false,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "STATE-NODAL-OFFICER-BEST-PRACTICES",
+   "name": "State Nodal Officer - Best Practices",
+   "role": "state-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/best-practices",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52042-164934",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "STATE-NODAL-OFFICER-CONTACT-US",
+   "name": "State Nodal Officer - Contact Us",
+   "role": "state-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/contact-us",
+   "figmaUrl": null,
+   "hasDesignFrame": false,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "STATE-NODAL-OFFICER-FEEDBACK",
+   "name": "State Nodal Officer - Feedback",
+   "role": "state-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/feedback",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52040-162783",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "STATE-NODAL-OFFICER-IMPORTANT-DOCUMENTS",
+   "name": "State Nodal Officer - Important Documents",
+   "role": "state-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/important-documents",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2309-14652",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "STATE-NODAL-OFFICER-NAPDDR-COMMITTEE-REPORTS",
+   "name": "State Nodal Officer - Napddr / Committee Reports",
+   "role": "state-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/napddr/committee-reports",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10957-117218",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "STATE-NODAL-OFFICER-NAPDDR-STATE-COMMITTEE",
+   "name": "State Nodal Officer - Napddr / State Committee",
+   "role": "state-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/napddr/state-committee",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10957-116095",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "STATE-NODAL-OFFICER-NASHA-MUKTI-MITR",
+   "name": "State Nodal Officer - Nasha Mukti Mitr",
+   "role": "state-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/nasha-mukti-mitr",
+   "figmaUrl": null,
+   "hasDesignFrame": false,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "STATE-NODAL-OFFICER-STATE-DISTRICT-DASHBOARD",
+   "name": "State Nodal Officer - State District Dashboard",
+   "role": "state-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/state-district-dashboard",
+   "figmaUrl": null,
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  },
+  {
+   "slug": "STATE-NODAL-OFFICER-STATE-NODAL-OFFICERS-LIST",
+   "name": "State Nodal Officer - State Nodal Officers List",
+   "role": "state-nodal-officer",
+   "url": "https://nmba-admin-dev.mosje.in/state-nodal-officers-list",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52030-162137",
+   "hasDesignFrame": true,
+   "verdict": "Audited \u2014 no screen-specific finding"
+  }
+ ],
+ "coverageSummary": {
+  "screensCaptured": 50,
+  "withFindings": 9,
+  "noScreenFinding": 41
+ },
  "deferred": [
+  {
+   "id": "NMB-SCREEN-029",
+   "title": "Status chips are not set in capitals",
+   "reason": "Dropped on the reviewer's instruction, 2026-09-11. The measurement stands - the design sets the status chip uppercase at 11px and the build renders 'Draft' and 'Published' in sentence case - but the reviewer has decided it is not worth raising. Recorded rather than deleted so the id resolves for anyone who saw it."
+  },
+  {
+   "id": "NMB-SCREEN-016",
+   "title": "The pledge banner has lost its call to action",
+   "reason": "WRONG, and withdrawn on the reviewer's challenge. The button IS built. Checked on the live page at a 1440 viewport on 2026-09-11: a <button> reading 'Take the Pledge', 176x36 at x1171 y230, white fill, label #003366, radius 6 - which is what the design draws. It was missed because the capture was taken with the UX4G accessibility panel open, which widened the document and pushed the button to x1841, outside the 1440-wide export. 'Not in the picture' was read as 'not built'. The capture is the evidence for what a screen LOOKS like; it is not evidence that something is absent. An absence is now confirmed against the live DOM before it is written up."
+  },
   {
    "id": "NMB-SNODASH-004",
    "title": "KPI grid reflows to unequal card widths",
@@ -293,7 +679,7 @@
      "severity": "Major",
      "figma": "Row actions are bordered icon-buttons - a light 1px outline, radius 6, the edit glyph at #003366 and the delete glyph at #EC5042 - sized as real click targets.",
      "live": "The actions are bare glyphs with no button around them, and the edit glyph is drawn at #E08020, an amber that appears nowhere in the NMBA token set. On the four NAPDDR committee screens the same actions become three outlined TEXT buttons instead (View / Edit / Delete).",
-     "fix": "Restore the bordered icon-button and set the edit glyph to #003366. Use one row-action component across the portal rather than icon-buttons on some screens and text buttons on others.  (Anchor: The row-action controls are icon-only buttons with no text node, so the extraction does not record them. The box is measured off the capture at the Actions column, x1305-1425 on the first data row, where the two glyphs are drawn.)",
+     "fix": "Restore the bordered icon-button and set the edit glyph to #003366. One icon treatment has to hold across every screen - the same glyph set, the same button, the same two colours - rather than icon-buttons on some screens, amber glyphs on others and text buttons on the NAPDDR four.  (Anchor: The row-action controls are icon-only buttons with no text node, so the extraction does not record them. The box is measured off the capture at the Actions column, x1305-1425 on the first data row, where the two glyphs are drawn.)",
      "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
      "figmaBox": [
       0,
@@ -755,6 +1141,327 @@
    "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
+   "slug": "NMB-GLOBAL-033",
+   "name": "Global \u00b7 Export is two buttons where the design has one",
+   "env": "dev",
+   "figmaImg": "captures/figma/ADMIN-USER-MANAGEMENT.png",
+   "liveImg": "captures/live/ADMIN-USER-MANAGEMENT.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/user-management",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-033",
+     "element": "Export is two buttons where the design has one",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "One 'Export' button with a chevron, 110x38 at the right of the page header. Where a choice of format is offered the design opens it as a menu beneath - the NAPDDR Committee Reports frame draws that menu, with 'Export as XLS' and 'Export as PDF' as its two items.",
+     "live": "Two permanent side-by-side buttons, 'Export Excel' (115x38) and 'Export PDF' (108x38), on 29 of the 42 captured screens. Both formats occupy the header on every screen whether or not either is wanted, and the pair is 231px wide against the design's 110px.",
+     "fix": "Collapse the two into the design's single 'Export' button and put the formats in the menu the design already draws for them.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      46,
+      1440,
+      426
+     ],
+     "liveBox": [
+      0,
+      18,
+      1440,
+      398
+     ],
+     "sectionBox": [
+      0,
+      18,
+      1440,
+      398
+     ],
+     "figmaPin": {
+      "x": 85.1,
+      "y": 39.2
+     },
+     "livePin": {
+      "x": 83.1,
+      "y": 39.2
+     }
+    }
+   ],
+   "_role": "global",
+   "_node": "52061:126900",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "NMB-GLOBAL-034",
+   "name": "Global \u00b7 Every page number is boxed, so the current page has no mark",
+   "env": "dev",
+   "figmaImg": "captures/figma/ADMIN-USER-MANAGEMENT.png",
+   "liveImg": "captures/live/ADMIN-USER-MANAGEMENT.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/user-management",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-034",
+     "element": "Every page number is boxed, so the current page has no mark",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Components & States",
+     "severity": "Minor",
+     "figma": "Only the current page is boxed - a single outlined square around '1' - and the rest are bare numerals. Six pages are offered before the ellipsis, then the last page: 1 2 3 4 5 6 ... 125.",
+     "live": "Every page number carries its own outlined box, so the box no longer says which page you are on and the strip reads as seven identical buttons. Three pages are offered before the ellipsis instead of six.",
+     "fix": "Box the current page only, leave the other numbers bare, and show the design's six pages before the ellipsis. This is the same pagination the hyphen and plus sign belong to (NMB-GLOBAL-006); fixing the glyphs without fixing the boxing leaves the reader still unable to see which page they are on.  (Anchor: The page-number boxes are buttons whose only text is the numeral, so a text anchor would bind to one numeral rather than to the strip the finding is about. The box is measured off the capture across the whole pager, x323-553 y758-798, which holds the hyphen, the four numbered boxes, the ellipsis and the plus.)",
+     "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      630,
+      1440,
+      1010
+     ],
+     "liveBox": [
+      0,
+      620,
+      1440,
+      1000
+     ],
+     "sectionBox": [
+      0,
+      620,
+      1440,
+      1000
+     ],
+     "figmaPin": {
+      "x": 20.1,
+      "y": 85.5
+     },
+     "livePin": {
+      "x": 30.4,
+      "y": 41.6
+     },
+     "_anchorWhy": "The page-number boxes are buttons whose only text is the numeral, so a text anchor would bind to one numeral rather than to the strip the finding is about. The box is measured off the capture across the whole pager, x323-553 y758-798, which holds the hyphen, the four numbered boxes, the ellipsis and the plus."
+    }
+   ],
+   "_role": "global",
+   "_node": "52061:126900",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "NMB-GLOBAL-035",
+   "name": "Global \u00b7 The table sits inside an extra white container",
+   "env": "dev",
+   "figmaImg": "captures/figma/ADMIN-USER-MANAGEMENT.png",
+   "liveImg": "captures/live/ADMIN-USER-MANAGEMENT.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/user-management",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-035",
+     "element": "The table sits inside an extra white container",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Layout & Spacing",
+     "severity": "Minor",
+     "figma": "The search row and the table are two separate white cards sitting directly on the page's #F9FAFB ground - sampled at x312, y250, between the sidebar and the table's left edge.",
+     "live": "A third white panel starts at x309 and wraps both of them, so the same pixel measures #FFFFFF and the table's own border is drawn inside a second border. The page ground disappears from the whole content column.",
+     "fix": "Drop the outer panel and let the search row and the table sit on the page ground as the design does. Nothing else needs to move: both inner cards already carry their own border and radius.  (Anchor: The finding is about a container with no text of its own, and on the design side about the ABSENCE of one. Both boxes are measured off the captures over the same region - the search row and the top of the table. The claim itself was checked by sampling one pixel in the left gutter at x312 y250: #F9FAFB in the design, #FFFFFF in the build.)",
+     "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      106,
+      1440,
+      486
+     ],
+     "liveBox": [
+      0,
+      85,
+      1440,
+      465
+     ],
+     "sectionBox": [
+      0,
+      85,
+      1440,
+      465
+     ],
+     "figmaPin": {
+      "x": 60.4,
+      "y": 50.0
+     },
+     "livePin": {
+      "x": 59.9,
+      "y": 50.0
+     },
+     "_anchorWhy": "The finding is about a container with no text of its own, and on the design side about the ABSENCE of one. Both boxes are measured off the captures over the same region - the search row and the top of the table. The claim itself was checked by sampling one pixel in the left gutter at x312 y250: #F9FAFB in the design, #FFFFFF in the build."
+    }
+   ],
+   "_role": "global",
+   "_node": "52061:126900",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "NMB-GLOBAL-036",
+   "name": "Global \u00b7 A date breaks across two lines in a narrow table column",
+   "env": "dev",
+   "figmaImg": "captures/figma/ADMIN-NAPDDR-COMMITTEE-REPORTS.png",
+   "liveImg": "captures/live/ADMIN-NAPDDR-COMMITTEE-REPORTS.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52095-142880",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/committee-reports",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-036",
+     "element": "A date breaks across two lines in a narrow table column",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Layout & Spacing",
+     "severity": "Minor",
+     "figma": "Every column in the design is wide enough for what it holds: the widest header, 'Chariperson/Chief Secretary', is given 209px and its values sit on one line.",
+     "live": "The 'Formed on' column is 94px wide, so the ten-character date 2012-12-12 breaks after the second hyphen and renders as '2012-12-' above '12'. A date split across two lines cannot be read or compared down the column, and the break is what pushes these rows to 65px.",
+     "fix": "Give the date column enough width for its longest value - 10 characters at 14px needs about 105px inside its padding - or stop the value wrapping. The same applies to the header above it, which breaks as 'Formed' / 'on'.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-NAPDDR-COMMITTEE-REPORTS; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      542,
+      1440,
+      922
+     ],
+     "liveBox": [
+      0,
+      139,
+      1440,
+      519
+     ],
+     "sectionBox": [
+      0,
+      139,
+      1440,
+      519
+     ],
+     "figmaPin": {
+      "x": 91.1,
+      "y": 50.0
+     },
+     "livePin": {
+      "x": 57.7,
+      "y": 42.8
+     }
+    }
+   ],
+   "_role": "global",
+   "_node": "52095:142880",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "NMB-GLOBAL-037",
+   "name": "Global \u00b7 The account identity reverses its layout",
+   "env": "dev",
+   "figmaImg": "captures/figma/ADMIN-USER-MANAGEMENT.png",
+   "liveImg": "captures/live/ADMIN-USER-MANAGEMENT.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/user-management",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-037",
+     "element": "The account identity reverses its layout",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Layout & Spacing",
+     "severity": "Minor",
+     "figma": "The name leads at 16px, the role sits under it right-aligned and quieter, and the square initials tile closes the group on the right - text first, tile last, the group ending flush with the page's right margin.",
+     "live": "The initials tile leads on the left and the text follows it, the role is wrapped in brackets under the name as '(Admin)' rather than set as a quieter second line, and the block is left-aligned against the tile instead of ranged right.",
+     "fix": "Put the tile back on the right of the name and role, range the two text lines right, and set the role as the design does - no brackets, the quieter of the two weights.  (Anchor: The account name, role and initials are the signed-in user's own data, so the extraction masks them and records no text node. The box is measured off the capture at the right of the masthead, x1252-1432 y58-130, where the tile and the two lines are drawn.)",
+     "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      0,
+      1440,
+      380
+     ],
+     "liveBox": [
+      0,
+      0,
+      1440,
+      380
+     ],
+     "sectionBox": [
+      0,
+      0,
+      1440,
+      380
+     ],
+     "figmaPin": {
+      "x": 92.6,
+      "y": 23.4
+     },
+     "livePin": {
+      "x": 93.2,
+      "y": 24.7
+     },
+     "_anchorWhy": "The account name, role and initials are the signed-in user's own data, so the extraction masks them and records no text node. The box is measured off the capture at the right of the masthead, x1252-1432 y58-130, where the tile and the two lines are drawn."
+    }
+   ],
+   "_role": "global",
+   "_node": "52061:126900",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
+   "slug": "NMB-GLOBAL-038",
+   "name": "Global \u00b7 The admin sidebar sits on a 40px rhythm where the design uses 60px",
+   "env": "dev",
+   "figmaImg": "captures/figma/ADMIN-USER-MANAGEMENT.png",
+   "liveImg": "captures/live/ADMIN-USER-MANAGEMENT.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/user-management",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-038",
+     "element": "The admin sidebar sits on a 40px rhythm where the design uses 60px",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Layout & Spacing",
+     "severity": "Minor",
+     "figma": "Sidebar items repeat every 60px - measured across thirteen items, the gaps run 57 to 61px - which is what gives each item its own space beside a 24px icon.",
+     "live": "Items repeat every 40px, a third tighter, and the labels are 20px tall inside that, so the list reads as one dense block rather than as separate destinations.",
+     "fix": "Restore the design's 60px item rhythm. This is the third thing the admin sidebar changes from the design - see also NMB-GLOBAL-001 for the label colour and NMB-GLOBAL-003 for the missing icons; all three need to land together for the sidebar to match.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      450,
+      1440,
+      910
+     ],
+     "liveBox": [
+      0,
+      330,
+      1440,
+      750
+     ],
+     "sectionBox": [
+      0,
+      330,
+      1440,
+      750
+     ],
+     "figmaPin": {
+      "x": 11.4,
+      "y": 50.0
+     },
+     "livePin": {
+      "x": 11.4,
+      "y": 50.0
+     }
+    }
+   ],
+   "_role": "global",
+   "_node": "52061:126900",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
    "slug": "NMB-GLOBAL-014",
    "name": "Global \u00b7 The KPI label is a lighter grey than the design",
    "env": "dev",
@@ -985,14 +1692,14 @@
     {
      "num": 1,
      "id": "NMB-SCREEN-019",
-     "element": "The facility card has lost its 'Call Now' action and its service tags",
+     "element": "The facility card drops its second button and its service tags",
      "section": "public-facilities",
      "scope": "Screen",
      "axis": "Components & States",
      "severity": "Major",
      "figma": "Each facility card ends with two buttons side by side - 'Get Directions' filled #003366 and 'Call Now' white with a #003366 outline - above which sit the service tags as small pills (Inpatient Treatment, Outpatient Counseling, Detoxification, Rehabilitation).",
-     "live": "'Call Now' is not present and 'Get Directions' stretches the full width of the card in its place. The service tag pills are not rendered either, so a reader cannot see what a centre offers without opening it.",
-     "fix": "Restore the second action beside 'Get Directions' and the service tag pills above the buttons.",
+     "live": "There is one button, not two: 'Get Directions' stretches the full width of the card. The card can still be phoned - the number above the button is a tel: link with a green handset glyph - but it is a bare line of text where the design gives it a button beside the first, so the two things a reader does with a centre no longer look like the same kind of thing. The service tag pills are not rendered at all, so a reader cannot see what a centre offers without opening it.",
+     "fix": "Give the phone number back its button beside 'Get Directions', outlined #003366 as the design draws it, and restore the service tag pills above the pair.",
      "figmaBox": [
       0,
       271,
@@ -1150,45 +1857,6 @@
    "findings": [
     {
      "num": 1,
-     "id": "NMB-SCREEN-016",
-     "element": "The pledge banner has lost its call to action",
-     "section": "public-home",
-     "scope": "Screen",
-     "axis": "Components & States",
-     "severity": "Major",
-     "figma": "The green banner carries a white pill button reading 'Take the Pledge' with a right arrow, its label 14px Medium #003366, sitting at the right end of the banner.",
-     "live": "The banner has the heading and the supporting line but no button at all, so the landing page's primary action is not on it.",
-     "fix": "Restore the button at the right of the banner, white fill with the label in #003366, as the design draws it.  (Anchor: The banner's own container has no text node. The box is measured off the capture at the right end of the green banner, where the design places the button.)",
-     "figmaBox": [
-      0,
-      0,
-      1440,
-      892
-     ],
-     "liveBox": [
-      0,
-      0,
-      1440,
-      923
-     ],
-     "sectionBox": [
-      0,
-      0,
-      1440,
-      923
-     ],
-     "figmaPin": {
-      "x": 88.5,
-      "y": 25.7
-     },
-     "livePin": {
-      "x": 82.8,
-      "y": 27.2
-     },
-     "_anchorWhy": "The banner's own container has no text node. The box is measured off the capture at the right end of the green banner, where the design places the button."
-    },
-    {
-     "num": 2,
      "id": "NMB-SCREEN-017",
      "element": "The 'Number of Programmes' section is not built",
      "section": "public-home",
@@ -1206,13 +1874,13 @@
      ],
      "liveBox": [
       0,
-      0,
+      162,
       1440,
       923
      ],
      "sectionBox": [
       0,
-      0,
+      162,
       1440,
       923
      ],
@@ -1222,11 +1890,11 @@
      },
      "livePin": {
       "x": 36.3,
-      "y": 83.5
+      "y": 80.0
      }
     },
     {
-     "num": 3,
+     "num": 2,
      "id": "NMB-SCREEN-027",
      "element": "The citizen masthead is a different component from the one designed",
      "section": "public-home",
@@ -1244,13 +1912,13 @@
      ],
      "liveBox": [
       0,
-      0,
+      162,
       1440,
       923
      ],
      "sectionBox": [
       0,
-      0,
+      162,
       1440,
       923
      ],
@@ -1259,51 +1927,13 @@
       "y": 9.6
      },
      "livePin": {
-      "x": 100,
-      "y": 9.8
+      "x": 12.1,
+      "y": 20.2
      }
     }
    ],
    "_role": "public",
    "_node": "9081:59117"
-  },
-  {
-   "slug": "PUBLIC-EPLEDGE",
-   "name": "Citizen - Epledge",
-   "env": "dev",
-   "liveImg": "captures/live/PUBLIC-EPLEDGE.png",
-   "liveUrl": "https://nmba-user-dev.mosje.in/epledge",
-   "findings": [],
-   "_role": "public",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/PUBLIC-EPLEDGE.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-58375"
-  },
-  {
-   "slug": "PUBLIC-FEEDBACK",
-   "name": "Citizen - Feedback",
-   "env": "dev",
-   "liveImg": "captures/live/PUBLIC-FEEDBACK.png",
-   "liveUrl": "https://nmba-user-dev.mosje.in/feedback",
-   "findings": [],
-   "_role": "public",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "No Figma frame for this screen \u2014 audited against the visual language the designed screens establish."
-  },
-  {
-   "slug": "PUBLIC-NASHA-MUKTI-MITR",
-   "name": "Citizen - Nasha Mukti Mitr",
-   "env": "dev",
-   "liveImg": "captures/live/PUBLIC-NASHA-MUKTI-MITR.png",
-   "liveUrl": "https://nmba-user-dev.mosje.in/nasha-mukti-mitr",
-   "findings": [],
-   "_role": "public",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "No Figma frame for this screen \u2014 audited against the visual language the designed screens establish."
   },
   {
    "slug": "SIGNIN-LOGIN",
@@ -1509,58 +2139,20 @@
    "findings": [
     {
      "num": 1,
-     "id": "NMB-SCREEN-029",
-     "element": "Status chips are not set in capitals",
-     "section": "admin-important-documents",
-     "scope": "Screen",
-     "axis": "Typography",
-     "severity": "Nit",
-     "figma": "The status chip is uppercase at 11px - DRAFT, PUBLISHED - which is what separates it from ordinary cell text at a glance.",
-     "live": "The chips read 'Draft' and 'Published' in sentence case, so they carry the same case as the data around them.",
-     "fix": "Apply the uppercase transform to the status chip.",
-     "figmaBox": [
-      0,
-      180,
-      1440,
-      560
-     ],
-     "liveBox": [
-      0,
-      220,
-      1440,
-      600
-     ],
-     "sectionBox": [
-      0,
-      220,
-      1440,
-      600
-     ],
-     "figmaPin": {
-      "x": 79.1,
-      "y": 37.6
-     },
-     "livePin": {
-      "x": 80.5,
-      "y": 58.2
-     }
-    },
-    {
-     "num": 2,
      "id": "NMB-SCREEN-030",
-     "element": "The row actions are in a different order",
+     "element": "The row actions are in a different order, and in a different style",
      "section": "admin-important-documents",
      "scope": "Screen",
      "axis": "Layout & Spacing",
      "severity": "Nit",
-     "figma": "The row actions run download, then edit, then delete.",
-     "live": "They run edit, then download, then delete. The download control is the one a reader uses most on this screen and the design puts it first.",
-     "fix": "Order the row actions download, edit, delete as the design does.",
+     "figma": "The row actions run download, then edit, then delete, each as a bordered icon-button - a light 1px outline at radius 6, the glyphs at #003366 and #EC5042.",
+     "live": "They run edit, then download, then delete. The download control is the one a reader uses most on this screen and the design puts it first. They are also drawn in the portal's other action style - bare glyphs with no button, the edit glyph amber - so this screen differs from the design twice over: in the order, and in the treatment.",
+     "fix": "Order the row actions download, edit, delete as the design does, AND draw them in the design's style: the bordered icon-button, the glyphs at #003366 and #EC5042. The style half is the same fix as NMB-GLOBAL-005 and lands with it; the order is particular to this screen.",
      "figmaBox": [
       0,
-      180,
+      230,
       1440,
-      560
+      610
      ],
      "liveBox": [
       0,
@@ -1576,7 +2168,7 @@
      ],
      "figmaPin": {
       "x": 89.4,
-      "y": 51.8
+      "y": 38.7
      },
      "livePin": {
       "x": 88.3,
@@ -1586,236 +2178,6 @@
    ],
    "_role": "admin",
    "_node": "52070:443098"
-  },
-  {
-   "slug": "ADMIN-ABOUT-US",
-   "name": "Admin - About Us",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-ABOUT-US.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/about-us",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "No Figma frame for this screen \u2014 audited against the visual language the designed screens establish."
-  },
-  {
-   "slug": "ADMIN-BEST-PRACTICES",
-   "name": "Admin - Best Practices",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-BEST-PRACTICES.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/best-practices",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/ADMIN-BEST-PRACTICES.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52092-133388"
-  },
-  {
-   "slug": "ADMIN-CONTACT-US",
-   "name": "Admin - Contact Us",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-CONTACT-US.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/contact-us",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "No Figma frame for this screen \u2014 audited against the visual language the designed screens establish."
-  },
-  {
-   "slug": "ADMIN-DASHBOARD-STATISTICS",
-   "name": "Admin - Dashboard Statistics",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-DASHBOARD-STATISTICS.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/dashboard-statistics",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/ADMIN-DASHBOARD-STATISTICS.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52102-139278"
-  },
-  {
-   "slug": "ADMIN-DISTRICT-NODAL-OFFICERS-LIST",
-   "name": "Admin - District Nodal Officers List",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-DISTRICT-NODAL-OFFICERS-LIST.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/district-nodal-officers-list",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/ADMIN-DISTRICT-NODAL-OFFICERS-LIST.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52070-446864"
-  },
-  {
-   "slug": "ADMIN-FEEDBACK",
-   "name": "Admin - Feedback",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-FEEDBACK.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/feedback",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/ADMIN-FEEDBACK.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52070-447521"
-  },
-  {
-   "slug": "ADMIN-GENERAL-FEEDBACK",
-   "name": "Admin - General Feedback",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-GENERAL-FEEDBACK.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/general-feedback",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/ADMIN-GENERAL-FEEDBACK.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52071-129865"
-  },
-  {
-   "slug": "ADMIN-MINISTRIES-DASHBOARD",
-   "name": "Admin - Ministries Dashboard",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-MINISTRIES-DASHBOARD.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/ministries-dashboard",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/ADMIN-MINISTRIES-DASHBOARD.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52051-161871"
-  },
-  {
-   "slug": "ADMIN-NAPDDR-BLOCK-COMMITTEE",
-   "name": "Admin - Napddr / Block Committee",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-NAPDDR-BLOCK-COMMITTEE.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/block-committee",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/ADMIN-NAPDDR-BLOCK-COMMITTEE.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52095-138163"
-  },
-  {
-   "slug": "ADMIN-NAPDDR-COMMITTEE-REPORTS",
-   "name": "Admin - Napddr / Committee Reports",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-NAPDDR-COMMITTEE-REPORTS.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/committee-reports",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/ADMIN-NAPDDR-COMMITTEE-REPORTS.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52095-142880"
-  },
-  {
-   "slug": "ADMIN-NAPDDR-DISTRICT-COMMITTEE",
-   "name": "Admin - Napddr / District Committee",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-NAPDDR-DISTRICT-COMMITTEE.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/district-committee",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/ADMIN-NAPDDR-DISTRICT-COMMITTEE.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52095-135422"
-  },
-  {
-   "slug": "ADMIN-NASHA-MUKTI-MITR",
-   "name": "Admin - Nasha Mukti Mitr",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-NASHA-MUKTI-MITR.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/nasha-mukti-mitr",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/ADMIN-NASHA-MUKTI-MITR.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52073-131257"
-  },
-  {
-   "slug": "ADMIN-PLEDGE-REPORTS",
-   "name": "Admin - Pledge Reports",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-PLEDGE-REPORTS.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/pledge-reports",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/ADMIN-PLEDGE-REPORTS.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52067-128958"
-  },
-  {
-   "slug": "ADMIN-PRE-EVENT-DETAILS",
-   "name": "Admin - Pre Event Details",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-PRE-EVENT-DETAILS.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/pre-event-details",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "No Figma frame for this screen \u2014 audited against the visual language the designed screens establish."
-  },
-  {
-   "slug": "ADMIN-RURAL-DEVELOPMENT-EVENTS",
-   "name": "Admin - Rural Development Events",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-RURAL-DEVELOPMENT-EVENTS.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/rural-development-events",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "No Figma frame for this screen \u2014 audited against the visual language the designed screens establish."
-  },
-  {
-   "slug": "ADMIN-STATE-DISTRICT-DASHBOARD",
-   "name": "Admin - State District Dashboard",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-STATE-DISTRICT-DASHBOARD.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/state-district-dashboard",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/ADMIN-STATE-DISTRICT-DASHBOARD.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-122466"
-  },
-  {
-   "slug": "ADMIN-STATE-NODAL-OFFICERS-LIST",
-   "name": "Admin - State Nodal Officers List",
-   "env": "dev",
-   "liveImg": "captures/live/ADMIN-STATE-NODAL-OFFICERS-LIST.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/state-nodal-officers-list",
-   "findings": [],
-   "_role": "admin",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/ADMIN-STATE-NODAL-OFFICERS-LIST.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52070-446082"
   },
   {
    "slug": "STATE-NODAL-OFFICER-DASHBOARD",
@@ -1867,286 +2229,6 @@
    ],
    "_role": "state-nodal-officer",
    "_node": "2309:14405"
-  },
-  {
-   "slug": "STATE-NODAL-OFFICER-ABOUT-US",
-   "name": "State Nodal Officer - About Us",
-   "env": "dev",
-   "liveImg": "captures/live/STATE-NODAL-OFFICER-ABOUT-US.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/about-us",
-   "findings": [],
-   "_role": "state-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "No Figma frame for this screen \u2014 audited against the visual language the designed screens establish."
-  },
-  {
-   "slug": "STATE-NODAL-OFFICER-BEST-PRACTICES",
-   "name": "State Nodal Officer - Best Practices",
-   "env": "dev",
-   "liveImg": "captures/live/STATE-NODAL-OFFICER-BEST-PRACTICES.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/best-practices",
-   "findings": [],
-   "_role": "state-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/STATE-NODAL-OFFICER-BEST-PRACTICES.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52042-164934"
-  },
-  {
-   "slug": "STATE-NODAL-OFFICER-CONTACT-US",
-   "name": "State Nodal Officer - Contact Us",
-   "env": "dev",
-   "liveImg": "captures/live/STATE-NODAL-OFFICER-CONTACT-US.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/contact-us",
-   "findings": [],
-   "_role": "state-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "No Figma frame for this screen \u2014 audited against the visual language the designed screens establish."
-  },
-  {
-   "slug": "STATE-NODAL-OFFICER-FEEDBACK",
-   "name": "State Nodal Officer - Feedback",
-   "env": "dev",
-   "liveImg": "captures/live/STATE-NODAL-OFFICER-FEEDBACK.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/feedback",
-   "findings": [],
-   "_role": "state-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/STATE-NODAL-OFFICER-FEEDBACK.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52040-162783"
-  },
-  {
-   "slug": "STATE-NODAL-OFFICER-IMPORTANT-DOCUMENTS",
-   "name": "State Nodal Officer - Important Documents",
-   "env": "dev",
-   "liveImg": "captures/live/STATE-NODAL-OFFICER-IMPORTANT-DOCUMENTS.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/important-documents",
-   "findings": [],
-   "_role": "state-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/STATE-NODAL-OFFICER-IMPORTANT-DOCUMENTS.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2309-14652"
-  },
-  {
-   "slug": "STATE-NODAL-OFFICER-NAPDDR-COMMITTEE-REPORTS",
-   "name": "State Nodal Officer - Napddr / Committee Reports",
-   "env": "dev",
-   "liveImg": "captures/live/STATE-NODAL-OFFICER-NAPDDR-COMMITTEE-REPORTS.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/committee-reports",
-   "findings": [],
-   "_role": "state-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/STATE-NODAL-OFFICER-NAPDDR-COMMITTEE-REPORTS.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10957-117218"
-  },
-  {
-   "slug": "STATE-NODAL-OFFICER-NAPDDR-STATE-COMMITTEE",
-   "name": "State Nodal Officer - Napddr / State Committee",
-   "env": "dev",
-   "liveImg": "captures/live/STATE-NODAL-OFFICER-NAPDDR-STATE-COMMITTEE.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/state-committee",
-   "findings": [],
-   "_role": "state-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/STATE-NODAL-OFFICER-NAPDDR-STATE-COMMITTEE.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10957-116095"
-  },
-  {
-   "slug": "STATE-NODAL-OFFICER-NASHA-MUKTI-MITR",
-   "name": "State Nodal Officer - Nasha Mukti Mitr",
-   "env": "dev",
-   "liveImg": "captures/live/STATE-NODAL-OFFICER-NASHA-MUKTI-MITR.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/nasha-mukti-mitr",
-   "findings": [],
-   "_role": "state-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "No Figma frame for this screen \u2014 audited against the visual language the designed screens establish."
-  },
-  {
-   "slug": "STATE-NODAL-OFFICER-STATE-DISTRICT-DASHBOARD",
-   "name": "State Nodal Officer - State District Dashboard",
-   "env": "dev",
-   "liveImg": "captures/live/STATE-NODAL-OFFICER-STATE-DISTRICT-DASHBOARD.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/state-district-dashboard",
-   "findings": [],
-   "_role": "state-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/STATE-NODAL-OFFICER-STATE-DISTRICT-DASHBOARD.png"
-  },
-  {
-   "slug": "STATE-NODAL-OFFICER-STATE-NODAL-OFFICERS-LIST",
-   "name": "State Nodal Officer - State Nodal Officers List",
-   "env": "dev",
-   "liveImg": "captures/live/STATE-NODAL-OFFICER-STATE-NODAL-OFFICERS-LIST.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/state-nodal-officers-list",
-   "findings": [],
-   "_role": "state-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/STATE-NODAL-OFFICER-STATE-NODAL-OFFICERS-LIST.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52030-162137"
-  },
-  {
-   "slug": "DISTRICT-NODAL-OFFICER-ABOUT-US",
-   "name": "District Nodal Officer - About Us",
-   "env": "dev",
-   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-ABOUT-US.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/about-us",
-   "findings": [],
-   "_role": "district-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "No Figma frame for this screen \u2014 audited against the visual language the designed screens establish."
-  },
-  {
-   "slug": "DISTRICT-NODAL-OFFICER-BEST-PRACTICES",
-   "name": "District Nodal Officer - Best Practices",
-   "env": "dev",
-   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-BEST-PRACTICES.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/best-practices",
-   "findings": [],
-   "_role": "district-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/DISTRICT-NODAL-OFFICER-BEST-PRACTICES.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51957-332005"
-  },
-  {
-   "slug": "DISTRICT-NODAL-OFFICER-CONTACT-US",
-   "name": "District Nodal Officer - Contact Us",
-   "env": "dev",
-   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-CONTACT-US.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/contact-us",
-   "findings": [],
-   "_role": "district-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "No Figma frame for this screen \u2014 audited against the visual language the designed screens establish."
-  },
-  {
-   "slug": "DISTRICT-NODAL-OFFICER-DASHBOARD",
-   "name": "District Nodal Officer - Dashboard",
-   "env": "dev",
-   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-DASHBOARD.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/dashboard",
-   "findings": [],
-   "_role": "district-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/DISTRICT-NODAL-OFFICER-DASHBOARD.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2306-13219"
-  },
-  {
-   "slug": "DISTRICT-NODAL-OFFICER-DISTRICT-NODAL-OFFICERS-LIST",
-   "name": "District Nodal Officer - District Nodal Officers List",
-   "env": "dev",
-   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-DISTRICT-NODAL-OFFICERS-LIST.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/district-nodal-officers-list",
-   "findings": [],
-   "_role": "district-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/DISTRICT-NODAL-OFFICER-DISTRICT-NODAL-OFFICERS-LIST.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2309-20334"
-  },
-  {
-   "slug": "DISTRICT-NODAL-OFFICER-FEEDBACK",
-   "name": "District Nodal Officer - Feedback",
-   "env": "dev",
-   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-FEEDBACK.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/feedback",
-   "findings": [],
-   "_role": "district-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/DISTRICT-NODAL-OFFICER-FEEDBACK.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=51957-330252"
-  },
-  {
-   "slug": "DISTRICT-NODAL-OFFICER-IMPORTANT-DOCUMENTS",
-   "name": "District Nodal Officer - Important Documents",
-   "env": "dev",
-   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-IMPORTANT-DOCUMENTS.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/important-documents",
-   "findings": [],
-   "_role": "district-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/DISTRICT-NODAL-OFFICER-IMPORTANT-DOCUMENTS.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2306-13466"
-  },
-  {
-   "slug": "DISTRICT-NODAL-OFFICER-NAPDDR-COMMITTEE-REPORTS",
-   "name": "District Nodal Officer - Napddr / Committee Reports",
-   "env": "dev",
-   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-NAPDDR-COMMITTEE-REPORTS.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/committee-reports",
-   "findings": [],
-   "_role": "district-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/DISTRICT-NODAL-OFFICER-NAPDDR-COMMITTEE-REPORTS.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10955-116683"
-  },
-  {
-   "slug": "DISTRICT-NODAL-OFFICER-NAPDDR-DISTRICT-COMMITTEE",
-   "name": "District Nodal Officer - Napddr / District Committee",
-   "env": "dev",
-   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-NAPDDR-DISTRICT-COMMITTEE.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/napddr/district-committee",
-   "findings": [],
-   "_role": "district-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/DISTRICT-NODAL-OFFICER-NAPDDR-DISTRICT-COMMITTEE.png",
-   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=10955-116113"
-  },
-  {
-   "slug": "DISTRICT-NODAL-OFFICER-NASHA-MUKTI-MITR",
-   "name": "District Nodal Officer - Nasha Mukti Mitr",
-   "env": "dev",
-   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-NASHA-MUKTI-MITR.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/nasha-mukti-mitr",
-   "findings": [],
-   "_role": "district-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "No Figma frame for this screen \u2014 audited against the visual language the designed screens establish."
-  },
-  {
-   "slug": "DISTRICT-NODAL-OFFICER-STATE-DISTRICT-DASHBOARD",
-   "name": "District Nodal Officer - State District Dashboard",
-   "env": "dev",
-   "liveImg": "captures/live/DISTRICT-NODAL-OFFICER-STATE-DISTRICT-DASHBOARD.png",
-   "liveUrl": "https://nmba-admin-dev.mosje.in/state-district-dashboard",
-   "findings": [],
-   "_role": "district-nodal-officer",
-   "_refbadge": "AUDITED \u00b7 NO SCREEN-SPECIFIC FINDING",
-   "_refchip": "#047857",
-   "_refsub": "Audited against its design frame; the portal-wide findings apply here too.",
-   "figmaImg": "captures/figma/DISTRICT-NODAL-OFFICER-STATE-DISTRICT-DASHBOARD.png"
   }
  ]
 }

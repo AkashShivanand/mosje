@@ -10,13 +10,13 @@
 
 | | |
 |---|---|
-| Boards in the report | 66 |
-| Findings | **32** - 3 Blocker, 14 Major, 9 Minor, 6 Nit |
-| Applies to every screen | 16 |
-| Specific to one screen | 16 |
-| Withdrawn, not raised, or noted about the design file | 11 |
+| Boards in the report | 31 |
+| Findings | **36** - 3 Blocker, 13 Major, 15 Minor, 5 Nit |
+| Applies to every screen | 22 |
+| Specific to one screen | 14 |
+| Withdrawn, not raised, or noted about the design file | 13 |
 
-The NMBA design page (‘NMBA — Dev Synced — August’) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles — Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication.
+The NMBA design page (‘NMBA — Dev Synced — August’) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles — Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication. This report carries only what has something to say. Of the 50 screens captured, 9 carry a finding of their own and appear here as a board; the remaining 41 were checked against their design frames and carry no screen-specific finding, so they are named one by one in the ‘Coverage — NMBA’ tab of the QC tracker rather than repeated here as a page of picture each. The portal-wide findings still apply to all 50: the 22 global boards below each draw one such finding on a screen that shows it clearly.
 
 **Where to start.** The findings with the widest reach or the highest severity:
 
@@ -88,7 +88,7 @@ Each has its own board in the PDF, showing the design and the build side by side
 |---|---|
 | **Design says** | Row actions are bordered icon-buttons - a light 1px outline, radius 6, the edit glyph at #003366 and the delete glyph at #EC5042 - sized as real click targets. |
 | **Build does** | The actions are bare glyphs with no button around them, and the edit glyph is drawn at #E08020, an amber that appears nowhere in the NMBA token set. On the four NAPDDR committee screens the same actions become three outlined TEXT buttons instead (View / Edit / Delete). |
-| **Fix** | Restore the bordered icon-button and set the edit glyph to #003366. Use one row-action component across the portal rather than icon-buttons on some screens and text buttons on others.  (Anchor: The row-action controls are icon-only buttons with no text node, so the extraction does not record them. The box is measured off the capture at the Actions column, x1305-1425 on the first data row, where the two glyphs are drawn.) |
+| **Fix** | Restore the bordered icon-button and set the edit glyph to #003366. One icon treatment has to hold across every screen - the same glyph set, the same button, the same two colours - rather than icon-buttons on some screens, amber glyphs on others and text buttons on the NAPDDR four.  (Anchor: The row-action controls are icon-only buttons with no text node, so the extraction does not record them. The box is measured off the capture at the Actions column, x1305-1425 on the first data row, where the two glyphs are drawn.) |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
 
@@ -188,6 +188,78 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2309-14405) · [Live page](https://nmba-admin-dev.mosje.in/dashboard)
 
+### Export is two buttons where the design has one
+
+`NMB-GLOBAL-033` · **Minor** · Components & States · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | One 'Export' button with a chevron, 110x38 at the right of the page header. Where a choice of format is offered the design opens it as a menu beneath - the NAPDDR Committee Reports frame draws that menu, with 'Export as XLS' and 'Export as PDF' as its two items. |
+| **Build does** | Two permanent side-by-side buttons, 'Export Excel' (115x38) and 'Export PDF' (108x38), on 29 of the 42 captured screens. Both formats occupy the header on every screen whether or not either is wanted, and the pair is 231px wide against the design's 110px. |
+| **Fix** | Collapse the two into the design's single 'Export' button and put the formats in the menu the design already draws for them. |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
+
+### Every page number is boxed, so the current page has no mark
+
+`NMB-GLOBAL-034` · **Minor** · Components & States · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | Only the current page is boxed - a single outlined square around '1' - and the rest are bare numerals. Six pages are offered before the ellipsis, then the last page: 1 2 3 4 5 6 ... 125. |
+| **Build does** | Every page number carries its own outlined box, so the box no longer says which page you are on and the strip reads as seven identical buttons. Three pages are offered before the ellipsis instead of six. |
+| **Fix** | Box the current page only, leave the other numbers bare, and show the design's six pages before the ellipsis. This is the same pagination the hyphen and plus sign belong to (NMB-GLOBAL-006); fixing the glyphs without fixing the boxing leaves the reader still unable to see which page they are on.  (Anchor: The page-number boxes are buttons whose only text is the numeral, so a text anchor would bind to one numeral rather than to the strip the finding is about. The box is measured off the capture across the whole pager, x323-553 y758-798, which holds the hyphen, the four numbered boxes, the ellipsis and the plus.) |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
+
+### The table sits inside an extra white container
+
+`NMB-GLOBAL-035` · **Minor** · Layout & Spacing · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | The search row and the table are two separate white cards sitting directly on the page's #F9FAFB ground - sampled at x312, y250, between the sidebar and the table's left edge. |
+| **Build does** | A third white panel starts at x309 and wraps both of them, so the same pixel measures #FFFFFF and the table's own border is drawn inside a second border. The page ground disappears from the whole content column. |
+| **Fix** | Drop the outer panel and let the search row and the table sit on the page ground as the design does. Nothing else needs to move: both inner cards already carry their own border and radius.  (Anchor: The finding is about a container with no text of its own, and on the design side about the ABSENCE of one. Both boxes are measured off the captures over the same region - the search row and the top of the table. The claim itself was checked by sampling one pixel in the left gutter at x312 y250: #F9FAFB in the design, #FFFFFF in the build.) |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
+
+### A date breaks across two lines in a narrow table column
+
+`NMB-GLOBAL-036` · **Minor** · Layout & Spacing · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | Every column in the design is wide enough for what it holds: the widest header, 'Chariperson/Chief Secretary', is given 209px and its values sit on one line. |
+| **Build does** | The 'Formed on' column is 94px wide, so the ten-character date 2012-12-12 breaks after the second hyphen and renders as '2012-12-' above '12'. A date split across two lines cannot be read or compared down the column, and the break is what pushes these rows to 65px. |
+| **Fix** | Give the date column enough width for its longest value - 10 characters at 14px needs about 105px inside its padding - or stop the value wrapping. The same applies to the header above it, which breaks as 'Formed' / 'on'. |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52095-142880) · [Live page](https://nmba-admin-dev.mosje.in/napddr/committee-reports)
+
+### The account identity reverses its layout
+
+`NMB-GLOBAL-037` · **Minor** · Layout & Spacing · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | The name leads at 16px, the role sits under it right-aligned and quieter, and the square initials tile closes the group on the right - text first, tile last, the group ending flush with the page's right margin. |
+| **Build does** | The initials tile leads on the left and the text follows it, the role is wrapped in brackets under the name as '(Admin)' rather than set as a quieter second line, and the block is left-aligned against the tile instead of ranged right. |
+| **Fix** | Put the tile back on the right of the name and role, range the two text lines right, and set the role as the design does - no brackets, the quieter of the two weights.  (Anchor: The account name, role and initials are the signed-in user's own data, so the extraction masks them and records no text node. The box is measured off the capture at the right of the masthead, x1252-1432 y58-130, where the tile and the two lines are drawn.) |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
+
+### The admin sidebar sits on a 40px rhythm where the design uses 60px
+
+`NMB-GLOBAL-038` · **Minor** · Layout & Spacing · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | Sidebar items repeat every 60px - measured across thirteen items, the gaps run 57 to 61px - which is what gives each item its own space beside a 24px icon. |
+| **Build does** | Items repeat every 40px, a third tighter, and the labels are 20px tall inside that, so the list reads as one dense block rather than as separate destinations. |
+| **Fix** | Restore the design's 60px item rhythm. This is the third thing the admin sidebar changes from the design - see also NMB-GLOBAL-001 for the label colour and NMB-GLOBAL-003 for the missing icons; all three need to land together for the sidebar to match. |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
+
 ### The KPI label is a lighter grey than the design
 
 `NMB-GLOBAL-014` · **Nit** · Color & Token · Scope: every screen with this element
@@ -284,15 +356,15 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 ## Citizen - Help Centres & Facilities
 
-### The facility card has lost its 'Call Now' action and its service tags
+### The facility card drops its second button and its service tags
 
 `NMB-SCREEN-019` · **Major** · Components & States · Scope: Citizen - Help Centres & Facilities
 
 | | |
 |---|---|
 | **Design says** | Each facility card ends with two buttons side by side - 'Get Directions' filled #003366 and 'Call Now' white with a #003366 outline - above which sit the service tags as small pills (Inpatient Treatment, Outpatient Counseling, Detoxification, Rehabilitation). |
-| **Build does** | 'Call Now' is not present and 'Get Directions' stretches the full width of the card in its place. The service tag pills are not rendered either, so a reader cannot see what a centre offers without opening it. |
-| **Fix** | Restore the second action beside 'Get Directions' and the service tag pills above the buttons. |
+| **Build does** | There is one button, not two: 'Get Directions' stretches the full width of the card. The card can still be phoned - the number above the button is a tel: link with a green handset glyph - but it is a bare line of text where the design gives it a button beside the first, so the two things a reader does with a centre no longer look like the same kind of thing. The service tag pills are not rendered at all, so a reader cannot see what a centre offers without opening it. |
+| **Fix** | Give the phone number back its button beside 'Get Directions', outlined #003366 as the design draws it, and restore the service tag pills above the pair. |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-58585) · [Live page](https://nmba-user-dev.mosje.in/facilities)
 
@@ -333,18 +405,6 @@ Each has its own board in the PDF, showing the design and the build side by side
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-58585) · [Live page](https://nmba-user-dev.mosje.in/facilities)
 
 ## Citizen - Home
-
-### The pledge banner has lost its call to action
-
-`NMB-SCREEN-016` · **Major** · Components & States · Scope: Citizen - Home
-
-| | |
-|---|---|
-| **Design says** | The green banner carries a white pill button reading 'Take the Pledge' with a right arrow, its label 14px Medium #003366, sitting at the right end of the banner. |
-| **Build does** | The banner has the heading and the supporting line but no button at all, so the landing page's primary action is not on it. |
-| **Fix** | Restore the button at the right of the banner, white fill with the label in #003366, as the design draws it.  (Anchor: The banner's own container has no text node. The box is measured off the capture at the right end of the green banner, where the design places the button.) |
-
-[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=9081-59117) · [Live page](https://nmba-user-dev.mosje.in/)
 
 ### The 'Number of Programmes' section is not built
 
@@ -412,27 +472,15 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 ## Important Documents (all roles)
 
-### Status chips are not set in capitals
-
-`NMB-SCREEN-029` · **Nit** · Typography · Scope: Important Documents (all roles)
-
-| | |
-|---|---|
-| **Design says** | The status chip is uppercase at 11px - DRAFT, PUBLISHED - which is what separates it from ordinary cell text at a glance. |
-| **Build does** | The chips read 'Draft' and 'Published' in sentence case, so they carry the same case as the data around them. |
-| **Fix** | Apply the uppercase transform to the status chip. |
-
-[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52070-443098) · [Live page](https://nmba-admin-dev.mosje.in/important-documents)
-
-### The row actions are in a different order
+### The row actions are in a different order, and in a different style
 
 `NMB-SCREEN-030` · **Nit** · Layout & Spacing · Scope: Important Documents (all roles)
 
 | | |
 |---|---|
-| **Design says** | The row actions run download, then edit, then delete. |
-| **Build does** | They run edit, then download, then delete. The download control is the one a reader uses most on this screen and the design puts it first. |
-| **Fix** | Order the row actions download, edit, delete as the design does. |
+| **Design says** | The row actions run download, then edit, then delete, each as a bordered icon-button - a light 1px outline at radius 6, the glyphs at #003366 and #EC5042. |
+| **Build does** | They run edit, then download, then delete. The download control is the one a reader uses most on this screen and the design puts it first. They are also drawn in the portal's other action style - bare glyphs with no button, the edit glyph amber - so this screen differs from the design twice over: in the order, and in the treatment. |
+| **Fix** | Order the row actions download, edit, delete as the design does, AND draw them in the design's style: the bordered icon-button, the glyphs at #003366 and #EC5042. The style half is the same fix as NMB-GLOBAL-005 and lands with it; the order is particular to this screen. |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52070-443098) · [Live page](https://nmba-admin-dev.mosje.in/important-documents)
 
@@ -441,6 +489,8 @@ Each has its own board in the PDF, showing the design and the build side by side
 
 Nothing here is a finding. Each was either raised in an earlier round and did not survive re-checking, ruled out of scope, or is a defect in the handoff file rather than the build. They stay visible, with the reason, so a reviewer who saw one learns the outcome rather than wondering where it went.
 
+- **Status chips are not set in capitals** - Dropped on the reviewer's instruction, 2026-09-11. The measurement stands - the design sets the status chip uppercase at 11px and the build renders 'Draft' and 'Published' in sentence case - but the reviewer has decided it is not worth raising. Recorded rather than deleted so the id resolves for anyone who saw it.
+- **The pledge banner has lost its call to action** - WRONG, and withdrawn on the reviewer's challenge. The button IS built. Checked on the live page at a 1440 viewport on 2026-09-11: a <button> reading 'Take the Pledge', 176x36 at x1171 y230, white fill, label #003366, radius 6 - which is what the design draws. It was missed because the capture was taken with the UX4G accessibility panel open, which widened the document and pushed the button to x1841, outside the 1440-wide export. 'Not in the picture' was read as 'not built'. The capture is the evidence for what a screen LOOKS like; it is not evidence that something is absent. An absence is now confirmed against the live DOM before it is written up.
 - **KPI grid reflows to unequal card widths** - Measured on the capture: the three cards on the officer dashboard span 308-662, 688-1040 and 1066-1418 - 354, 352 and 352px with even 26px gaps, and the second row starts at the same two x positions. The grid is even. Withdrawn.
 - **Sidebar navigation icons absent PORTAL-WIDE** - The citizen shell does carry its navigation icons; only the admin shell has none. The finding is kept but narrowed to the admin shell - see G03.
 - **Page title is off the type scale** - The build's page title measures 24px at weight 600, which is exactly what the design specifies. Only the colour differs. Narrowed to a colour finding - see G11.

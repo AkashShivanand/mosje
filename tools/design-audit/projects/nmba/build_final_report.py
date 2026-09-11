@@ -186,29 +186,24 @@ def main():
                         "findings": fnd, "_role": r.get("role", ""), "_node": node})
         boarded.add(slug)
 
-    # ---- every remaining audited screen, as a coverage board ---------------------------------
-    # Coverage has to be VISIBLE on a government deliverable: a screen that was audited and found
-    # clean is evidence, and a screen dropped from the report reads as a screen never looked at.
+    # ---- every remaining audited screen, as a COVERAGE LEDGER, not as a board -----------------
+    # Coverage still has to be accounted for on a government deliverable - a screen missing from
+    # the record reads as a screen never looked at. But it is accounted for by NAME, not by a
+    # page of picture per clean screen: 2026-09-11, the reviewer asked for the appendix to go and
+    # for the report to carry only the screens that have something to say. The list below is what
+    # the coverage statement and the tracker's Coverage tab are both built from, so nothing is
+    # lost - it stops being 28 pages and becomes one sentence plus a tab.
+    covered = []
     for slug, r in sorted(rows.items()):
         if r["role"] == "global" or slug in boarded:
             continue
         dp, bp = imgs(slug)
         if not bp:
             continue
-        sc = {"slug": slug, "name": r["title"], "env": "dev",
-              "liveImg": os.path.relpath(bp, DEST), "liveUrl": r.get("url"),
-              "findings": [], "_role": r["role"],
-              "_refbadge": "AUDITED · NO SCREEN-SPECIFIC FINDING",
-              "_refchip": "#047857",
-              "_refsub": ("Audited against its design frame; the portal-wide findings apply here too."
-                          if dp else
-                          "No Figma frame for this screen — audited against the visual language "
-                          "the designed screens establish.")}
-        if dp:
-            sc["figmaImg"] = os.path.relpath(dp, DEST)
-            if r.get("figmaUrl"):
-                sc["figmaUrl"] = r["figmaUrl"]
-        screens.append(sc)
+        covered.append({"slug": slug, "name": r["title"], "role": r["role"],
+                        "url": r.get("url"), "figmaUrl": r.get("figmaUrl"),
+                        "hasDesignFrame": bool(dp),
+                        "verdict": "Audited \u2014 no screen-specific finding"})
 
     screens.sort(key=lambda s: (ROLE_ORDER.index(s.get("_role")) if s.get("_role") in ROLE_ORDER else 9,
                                 min([SEV.get(f["severity"], 9) for f in s["findings"]] or [9]),
@@ -229,12 +224,36 @@ def main():
               "between the design and the build are raised. Copy, wording, naming and policy are out "
               "of scope for this report, and the filter sets are covered by a single global note "
               "rather than screen by screen. Every finding carries a design box and a build box, and "
-              "was checked against a 1:1 crop of both sides before publication."),
+              "was checked against a 1:1 crop of both sides before publication. "
+              "This report carries only what has something to say. Of the {ncap} screens "
+              "captured, {nscr} carry a finding of their own and appear here as a board; the "
+              "remaining {ncov} were checked against their design frames and carry no "
+              "screen-specific finding, so they are named one by one in the ‘Coverage — NMBA’ "
+              "tab of the QC tracker rather than repeated here as a page of picture each. The "
+              "portal-wide findings still apply to all {ncap}: the {nglob} global boards below "
+              "each draw one such finding on a screen that shows it clearly."),
+          "coverage": covered,
+          "coverageSummary": {"screensCaptured": len(rows) - sum(1 for r in rows.values()
+                                                                 if r["role"] == "global"),
+                              "withFindings": len([x for x in screens
+                                                   if x.get("_role") != "global"]),
+                              "noScreenFinding": len(covered)},
           "deferred": deferred, "screens": screens}
+    nscreen_boards = len([x for x in screens if x.get("_role") != "global"])
+    nglobal_boards = len([x for x in screens if x.get("_role") == "global"])
+    # The three numbers have to reconcile, or the sentence is a claim nobody can check:
+    # screens with a finding + screens without one = screens captured.
+    assert nscreen_boards + len(covered) == am["coverageSummary"]["screensCaptured"], (
+        "coverage does not reconcile: %d boarded + %d ledger != %d captured"
+        % (nscreen_boards, len(covered), am["coverageSummary"]["screensCaptured"]))
+    am["method"] = am["method"].format(
+        ncap=am["coverageSummary"]["screensCaptured"], nscr=nscreen_boards,
+        ncov=len(covered), nglob=nglobal_boards)
     json.dump(am, open(os.path.join(DEST, "audit-master.json"), "w"), indent=1)
 
     nf = sum(len(s["findings"]) for s in screens)
-    print(f"audit-master.json: {len(screens)} boards, {nf} findings, {len(deferred)} deferred/withdrawn")
+    print(f"audit-master.json: {len(screens)} boards, {nf} findings, "
+          f"{len(covered)} screens covered by ledger, {len(deferred)} deferred/withdrawn")
     if missing:
         print("   ! no usable anchor or image for:", missing)
 
