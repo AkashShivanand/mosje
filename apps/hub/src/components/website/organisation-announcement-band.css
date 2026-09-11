@@ -1438,9 +1438,36 @@
    * four modules the specification asks for. A border rather than a shadow: this
    * is a printed object on a page, not a floating card.
    */
+  /*
+   * IT GIVES WAY TO THE HEIGHT, so the sentence and the action are never the
+   * things that fall off.
+   *
+   * At 360 flat, a short window cropped the dialog rather than the code: at
+   * 1440x460 the reader got a title and a QR cut off at its bottom edge, with
+   * the sentence and Register Now below the fold and NOTHING saying the dialog
+   * scrolled. The dialog was doing the right thing — the design system caps its
+   * height and scrolls it — but a scroll nobody can see is a dead end, and the
+   * cropped code says "broken" rather than "there is more".
+   *
+   * A square cannot be capped by its block size: `aspect-ratio` would just make
+   * it a rectangle. So the HEIGHT budget is spent on the inline size instead.
+   * The subtraction is the dialog's own chrome measured on the rendered page —
+   * title, the two gaps, the sentence, the action and the panel's padding come
+   * to 256 — so the code takes whatever the viewport has left and the rest of
+   * the dialog is never what gets cut.
+   *
+   * Above roughly 620px tall this changes nothing: `min` still picks 360.
+   */
   .orgabz__code {
     display: block;
-    inline-size: min(100%, var(--sa-padding-360));
+    inline-size: min(
+      100%,
+      var(--sa-padding-360),
+      calc(
+        100vh - var(--sa-padding-120) - var(--sa-padding-120) -
+          var(--sa-padding-16)
+      )
+    );
     aspect-ratio: 1;
     border-radius: var(--sa-shape-12);
     border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
