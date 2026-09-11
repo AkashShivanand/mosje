@@ -16,6 +16,22 @@ contaminated page is caught rather than measured.
 
 Credentials come from the gitignored secrets.json via the engine's own login. Nothing is printed
 but the verdicts.
+
+THE DESIGN SIDE IS READ, NOT SAMPLED. This file probes the BUILD. The other half of a finding -
+what the design says - has three sources, in descending order of trust:
+
+  1. `inputs/design-elements.json` for any TEXT node: it carries `fs`, `st` (the real font style)
+     and `c` (the real fill) straight from the API. Authoritative. Use it first.
+  2. The Figma Plugin API for anything that is not text - an icon button's stroke and radius, a
+     tile's fill, a pill's corner radius. `figma.getNodeByIdAsync(<frame>)` then `findAll`, reading
+     `fills` / `strokes` / `cornerRadius` off the node. Also authoritative.
+  3. Sampling a pixel out of the exported PNG. ONLY safe on a large flat fill, and never on a
+     glyph: an icon sampled this way returns the anti-aliased average of the glyph and its ground.
+     That is how #ED8525 was published as #E08020, and how a #003366 edit glyph reads as #7F99B2.
+
+Errors found by doing this properly on 2026-09-11: the sidebar ground is #F9FAFB and not white on
+EITHER side, so both contrast ratios in NMB-GLOBAL-001 were computed against the wrong background;
+and the design's row-action Icon Button is radius 8, not the 6 that had been published.
 """
 import argparse, json, os, sys
 
@@ -30,8 +46,19 @@ PUBLIC = "https://nmba-user-dev.mosje.in"
 BASE = {"admin": ADMIN, "state-nodal-officer": ADMIN, "district-nodal-officer": ADMIN,
         "public": PUBLIC}
 
-# Each probe returns {"absent": bool, "detail": str}. `absent` is what the FINDING claims; the
-# verdict compares it against what the page says. A probe never decides - it measures.
+# Each probe returns {"absent": bool, "detail": str} and every probe PRINTS THE SUBJECT IT
+# MEASURED. `absent` is what the FINDING claims; the verdict compares it against what the page
+# says. A probe never decides - it measures. `absent: null` means the probe could not see its
+# subject and is not evidence of anything: the row-action probe once selected `button, a, svg` on
+# a screen whose actions are <img> files, found nothing, and scored a CONFIRMED absence off a
+# selector that was looking at nothing. The capitals probe did worse - it graded the TYPE CHIP
+# instead of the name and reported a true finding false - which is why the subject is always
+# quoted back.
+#
+# `kind` says what is being asked. "absence": is the thing really not there? "measure": is the
+# NUMBER the finding quotes the number the browser computes? The second family exists because
+# #E08020 turned out to be #ED8525 - a colour sampled off an anti-aliased screenshot rather than
+# read out of the DOM, and a value no developer could have grepped for.
 PROBES = {
 
  "G02": dict(
@@ -318,6 +345,194 @@ PROBES = {
            detail: `chip(s): ${JSON.stringify(seen.slice(0,3))} | distinct fills: ${JSON.stringify(uniq)} ` +
                    `| off-token: ${JSON.stringify(offToken)}`};
    """),
+ # =========================================================================================
+ # MEASURES - the number the finding quotes, against the number the browser computes.
+ # =========================================================================================
+
+ "M-G01": dict(kind="measure",
+   claim="Unselected sidebar label is #9CA3AF on #FFFFFF (2.54:1)",
+   role="admin", route="/user-management",
+   js=r"""
+   const nav=document.querySelector('aside, nav[class*=side], [class*=sidebar]');
+   const items=[...nav.querySelectorAll('a, li > div, [role=button]')]
+        .filter(e=>(e.textContent||'').trim().length>2);
+   const lum=c=>{const [r,g,b]=c.match(/\d+/g).map(Number).map(v=>{v/=255;
+        return v<=0.03928? v/12.92 : Math.pow((v+0.055)/1.055,2.4);});
+        return 0.2126*r+0.7152*g+0.0722*b;};
+   const ratio=(a,b)=>{const [x,y]=[lum(a),lum(b)].sort((p,q)=>q-p); return (x+0.05)/(y+0.05);};
+   const seen={};
+   for(const it of items){const cs=getComputedStyle(it);
+     let bg='rgb(255, 255, 255)', p=it;
+     while(p && p!==document.body){const b=getComputedStyle(p).backgroundColor;
+       if(b!=='rgba(0, 0, 0, 0)'){bg=b;break;} p=p.parentElement;}
+     const k=cs.color+' on '+bg; seen[k]=(seen[k]||0)+1;}
+   const rows=Object.entries(seen).map(([k,n])=>{const [fg,bg]=k.split(' on ');
+     return `${k}  x${n}  ${ratio(fg,bg).toFixed(2)}:1`;});
+   return {absent:null, detail: rows.join('   |   ')};
+   """),
+
+ "M-G04": dict(kind="measure",
+   claim="Lockup: 'Government of India' 12px, 'Ministry of...' 20px Bold, both #374151",
+   role="admin", route="/user-management",
+   js=r"""
+   const hdr=document.querySelector('header')||document.body;
+   const want=['Government of India','Ministry of Social Justice'];
+   const out=[];
+   for(const w of want){
+     const el=[...hdr.querySelectorAll('*')].find(e=>e.children.length===0 &&
+          (e.textContent||'').trim().startsWith(w));
+     if(!el){out.push(`${w}: NOT FOUND`); continue;}
+     const cs=getComputedStyle(el);
+     out.push(`"${(el.textContent||'').trim().slice(0,34)}" ${cs.fontSize}/${cs.fontWeight} ${cs.color}`);
+   }
+   return {absent:null, detail: out.join('  |  ')};
+   """),
+
+ "M-G10": dict(kind="measure",
+   claim="Table cell text is #4B5563",
+   role="admin", route="/user-management",
+   js=r"""
+   const td=document.querySelector('tbody tr td');
+   if(!td) return {absent:null, detail:'no cell'};
+   const cs=getComputedStyle(td);
+   const th=document.querySelector('thead th');
+   return {absent:null, detail:`cell ${cs.fontSize}/${cs.fontWeight} ${cs.color}` +
+     (th?`   |   header ${getComputedStyle(th).fontSize}/${getComputedStyle(th).fontWeight} ${getComputedStyle(th).color}`:'')};
+   """),
+
+ "M-G11": dict(kind="measure",
+   claim="Page title is 24px weight 600 #374151",
+   role="admin", route="/user-management",
+   js=r"""
+   // The title is not a heading element on this build, so an h1/h2 selector was blind to it.
+   // Take the largest text in the content column instead, and quote it back.
+   const main=document.querySelector('main')||document.body;
+   const cands=[...main.querySelectorAll('*')].filter(e=>e.children.length===0 &&
+        (e.textContent||'').trim().length>3 && e.getBoundingClientRect().top < 300);
+   const h=cands.reduce((a,b)=> parseFloat(getComputedStyle(b).fontSize) >
+        parseFloat(getComputedStyle(a).fontSize) ? b : a, cands[0]);
+   if(!h) return {absent:null, detail:'no page title found'};
+   const cs=getComputedStyle(h);
+   return {absent:null, detail:`"${h.textContent.trim()}" ${cs.fontSize}/${cs.fontWeight} ${cs.color}`};
+   """),
+
+ "M-G12": dict(kind="measure",
+   claim="A KPI icon tile is filled #FDE8EF (a pink in no token)",
+   role="state-nodal-officer", route="/dashboard",
+   js=r"""
+   const tiles=[...document.querySelectorAll('div,span')].filter(e=>{
+     const cs=getComputedStyle(e); const r=e.getBoundingClientRect();
+     return r.width>20 && r.width<64 && Math.abs(r.width-r.height)<10 &&
+            cs.backgroundColor!=='rgba(0, 0, 0, 0)' && e.querySelector('svg,img');});
+   const fills=[...new Set(tiles.map(t=>getComputedStyle(t).backgroundColor))];
+   return {absent:null, detail:`${tiles.length} icon tile(s); fills=${JSON.stringify(fills)}`};
+   """),
+
+ "M-G13": dict(kind="measure",
+   claim="The KPI value is 30px (the scale runs 24/28/32)",
+   role="state-nodal-officer", route="/dashboard",
+   js=r"""
+   const nums=[...document.querySelectorAll('*')].filter(e=>e.children.length===0 &&
+        /^[\d,]{1,12}$/.test((e.textContent||'').trim()) &&
+        parseFloat(getComputedStyle(e).fontSize) >= 20);
+   const seen=[...new Set(nums.map(e=>{const cs=getComputedStyle(e);
+        return `${cs.fontSize}/${cs.fontWeight}/${cs.color}`;}))];
+   return {absent:null, detail:`${nums.length} big number(s): ${JSON.stringify(seen)}`};
+   """),
+
+ "M-G14": dict(kind="measure",
+   claim="The KPI label is 14px weight 600 #6B7280",
+   role="state-nodal-officer", route="/dashboard",
+   js=r"""
+   const num=[...document.querySelectorAll('*')].find(e=>e.children.length===0 &&
+        /^[\d,]{1,12}$/.test((e.textContent||'').trim()) &&
+        parseFloat(getComputedStyle(e).fontSize) >= 20);
+   if(!num) return {absent:null, detail:'no KPI value to anchor on'};
+   const card=num.closest('div').parentElement;
+   const label=[...card.querySelectorAll('*')].find(e=>e.children.length===0 &&
+        (e.textContent||'').trim().length>4 && e!==num);
+   if(!label) return {absent:null, detail:'no label beside the value'};
+   const cs=getComputedStyle(label);
+   return {absent:null, detail:`"${label.textContent.trim().slice(0,30)}" ${cs.fontSize}/${cs.fontWeight} ${cs.color}`};
+   """),
+
+ "M-G15": dict(kind="measure",
+   claim="The selected nav pill is 36px tall, radius 10, label Bold",
+   role="admin", route="/user-management",
+   js=r"""
+   const nav=document.querySelector('aside, nav[class*=side], [class*=sidebar]');
+   const items=[...nav.querySelectorAll('a, li > div, [role=button]')]
+        .filter(e=>(e.textContent||'').trim().length>2);
+   const sel=items.find(e=>{const cs=getComputedStyle(e);
+        return cs.backgroundColor!=='rgba(0, 0, 0, 0)';});
+   if(!sel) return {absent:null, detail:'no filled (selected) nav item'};
+   const cs=getComputedStyle(sel); const r=sel.getBoundingClientRect();
+   const leaf=[...sel.querySelectorAll('*')].find(e=>e.children.length===0) || sel;
+   return {absent:null, detail:`"${sel.textContent.trim().slice(0,24)}" ${Math.round(r.height)}px tall, ` +
+     `radius ${cs.borderRadius}, fill ${cs.backgroundColor}, label ${getComputedStyle(leaf).fontWeight}`};
+   """),
+
+ "M-G17": dict(kind="measure",
+   claim="Export Excel 115x38 + Export PDF 108x38, the pair 231px wide",
+   role="admin", route="/user-management",
+   js=r"""
+   const b=[...document.querySelectorAll('button,a')]
+        .filter(e=>/^export/i.test((e.textContent||'').trim()));
+   if(!b.length) return {absent:null, detail:'no Export control'};
+   const rs=b.map(e=>e.getBoundingClientRect());
+   const span=Math.round(Math.max(...rs.map(r=>r.right)) - Math.min(...rs.map(r=>r.left)));
+   return {absent:null, detail: b.map((e,i)=>`"${e.textContent.trim()}" ${Math.round(rs[i].width)}x${Math.round(rs[i].height)}`).join(' + ') +
+     `  =  ${span}px together`};
+   """),
+
+ "M-G19": dict(kind="measure",
+   claim="A white panel wraps the toolbar and table; the page ground is #F9FAFB in the design",
+   role="admin", route="/user-management",
+   js=r"""
+   const tbl=document.querySelector('table'); if(!tbl) return {absent:null, detail:'no table'};
+   const chain=[]; let p=tbl.parentElement;
+   for(let i=0;i<5 && p && p!==document.body;i++){
+     const cs=getComputedStyle(p); const r=p.getBoundingClientRect();
+     chain.push(`${p.tagName.toLowerCase()} ${Math.round(r.width)}px x${Math.round(r.left)} bg=${cs.backgroundColor} r=${cs.borderRadius} b=${cs.borderStyle}`);
+     p=p.parentElement;}
+   return {absent:null, detail: chain.join('  <  ')};
+   """),
+
+ "M-G20": dict(kind="measure",
+   claim="The 'Formed on' column is 94px wide and its rows are 65px tall",
+   role="admin", route="/napddr/committee-reports",
+   js=r"""
+   const ths=[...document.querySelectorAll('thead th')];
+   const cells=[...document.querySelectorAll('tbody tr:first-child td')];
+   const row=document.querySelector('tbody tr');
+   const cols=ths.map((t,i)=>`${(t.textContent||'').trim().slice(0,16)}=${Math.round(t.getBoundingClientRect().width)}px`);
+   return {absent:null, detail:`row ${row?Math.round(row.getBoundingClientRect().height):'?'}px tall  |  ` + cols.join(' ')};
+   """),
+
+ "M-G22": dict(kind="measure",
+   claim="Admin sidebar items repeat every 40px (design: 60px)",
+   role="admin", route="/user-management",
+   js=r"""
+   const nav=document.querySelector('aside, nav[class*=side], [class*=sidebar]');
+   const items=[...nav.querySelectorAll('a, li > div, [role=button]')]
+        .filter(e=>(e.textContent||'').trim().length>2);
+   const tops=items.map(e=>Math.round(e.getBoundingClientRect().top)).sort((a,b)=>a-b);
+   const gaps=tops.slice(1).map((t,i)=>t-tops[i]).filter(g=>g>0);
+   const mode={}; for(const g of gaps) mode[g]=(mode[g]||0)+1;
+   return {absent:null, detail:`${items.length} items; gaps ${JSON.stringify(gaps.slice(0,10))}; ` +
+     `commonest ${JSON.stringify(Object.entries(mode).sort((a,b)=>b[1]-a[1]).slice(0,3))}`};
+   """),
+
+ "M-G09": dict(kind="measure",
+   claim="Table row heights vary: 41 / 53 / 57 / 65 / 85 / 153px across screens",
+   role="admin", route="/user-management",
+   js=r"""
+   const rows=[...document.querySelectorAll('tbody tr')].slice(0,6)
+        .map(r=>Math.round(r.getBoundingClientRect().height));
+   const th=document.querySelector('thead tr');
+   return {absent:null, detail:`data rows ${JSON.stringify(rows)}; header ${th?Math.round(th.getBoundingClientRect().height):'?'}px`};
+   """),
+
  "S05": dict(
    claim="The facility name is rendered in capitals",
    role="public", route="/facilities",
@@ -383,6 +598,7 @@ def main():
                 except Exception as e:                                # noqa: BLE001
                     r = {"absent": None, "detail": "probe error: %s" % e}
                 results.append({"key": key, "claim": p["claim"], "role": role,
+                                "kind": p.get("kind", "absence"),
                                 "route": p["route"], "docWidth": docw, **r})
             ctx.close()
         br.close()
@@ -391,18 +607,21 @@ def main():
     print(f"\nviewport {w}px · a document wider than that is flagged, because that is what hid "
           f"the pledge button\n")
     for r in results:
-        if r["absent"] is True:
+        kind = r.get("kind", "absence")
+        if kind == "measure":
+            v = "MEASURED — compare with the finding"
+        elif r["absent"] is True:
             v = "CONFIRMED absent"
         elif r["absent"] is False:
             v = "!! PRESENT — the claim is wrong"
         else:
-            v = "-- inspect"
+            v = "-- BLIND: the probe could not see its subject"
         flag = "  [doc %dpx WIDER THAN VIEWPORT]" % r["docWidth"] if r["docWidth"] > w else ""
         print(f"{r['key']:5s} {v:34s} {r['claim']}")
         print(f"      {r['role']}{r['route']}{flag}")
         print(f"      {r['detail']}\n")
     json.dump(results, open(os.path.join(HERE, "out", "absence-check.json"), "w"), indent=1)
-    bad = [r for r in results if r["absent"] is False]
+    bad = [r for r in results if r.get("kind","absence") == "absence" and r["absent"] is False]
     print(f"{len(results)} checked · {len(bad)} claim(s) contradicted by the live page")
     return 2 if bad else 0
 

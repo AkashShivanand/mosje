@@ -165,6 +165,18 @@ absence claim, each asking the live DOM, each reporting `absent: true | false | 
 **null means the probe could not see its subject and is not evidence of anything**. Run it before
 publishing, and keep it beside the findings so the next pass re-runs it rather than re-deriving it.
 
+**Every colour and every size is READ, never sampled.** The build side comes out of the DOM
+(`getComputedStyle`, `getBoundingClientRect`). The design side comes from
+`inputs/design-elements.json` for any TEXT node — it carries the real `fs`, `st` and `c` from the
+API — and from the Figma Plugin API (`fills`, `strokes`, `cornerRadius`) for anything that is not
+text. Sampling a pixel out of an exported PNG is a last resort, valid ONLY on a large flat fill:
+on a glyph it returns the anti-aliased average of the glyph and its ground, which is how a
+`#003366` icon reads as `#7F99B2` and how `#ED8525` was published as `#E08020`.
+
+**And state what the colour sits ON.** Of the four number-claims this caught, none had the wrong
+figure — all four had the wrong ground or container. A contrast ratio against an assumed white
+background is wrong wherever the panel is transparent, which is most of them.
+
 The last is a **ratchet**: `deliverable-baseline.json` records each portal's current gap count, a
 portal may improve but never regress, and an improvement must be re-baselined so one portal's
 cleanup cannot be silently spent on another's slippage.

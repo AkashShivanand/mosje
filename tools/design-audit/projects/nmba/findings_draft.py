@@ -25,14 +25,17 @@ Fields per finding:
 FINDINGS = [
  ("G01","Global","Sidebar navigation (every screen)","ADMIN-USER-MANAGEMENT","Blocker","Color & Token",
   "Sidebar navigation labels fail AA contrast",
-  "Every navigation label is #1F2937 on white - about 14.7:1 - and the selected item is #003366 on a "
-  "#E5EFF9 pill. Measured on the admin sidebar's own text nodes.",
-  "Every unselected navigation label is #9CA3AF on #FFFFFF. That is 2.54:1, where WCAG 2.2 AA requires "
-  "4.5:1 for text this size. It reads as a disabled control, and it is the same in the citizen shell "
-  "and in all three admin roles.",
-  "Set the unselected label to the design's #1F2937. If a quieter resting state is wanted, #4B5563 is "
-  "the lightest neutral in the token set that still clears 4.5:1 on white; #9CA3AF cannot be used for "
-  "text on white at any size.",
+  "Every navigation label is #1F2937 on the panel's #F9FAFB ground - 14.05:1 - and the selected item "
+  "is #003366 on an #E5EFF9 pill, 10.84:1. Sampled off the design frame beside five nav rows.",
+  "Every unselected navigation label is #9CA3AF. That is 2.43:1, where WCAG 2.2 AA requires 4.5:1 "
+  "for text this size. It reads as a disabled control, and it is the same in the citizen shell and "
+  "in all three admin roles. (Re-measured in the DOM on the live build, 2026-09-11. An earlier "
+  "wording put this at 2.54:1 by assuming a white ground; the sidebar has no background of its own "
+  "- the <aside> computes to transparent and the body behind it is #F9FAFB, which the rendered "
+  "pixel behind a label confirms. The real ratio is slightly WORSE than published, not better.)",
+  "Set the unselected label to the design's #1F2937. If a quieter resting state is wanted, #4B5563 "
+  "clears comfortably at 7.23:1 on this ground and #6B7280 is the lightest neutral that still "
+  "passes, at 4.63:1; #9CA3AF cannot be used for text on #F9FAFB at any size.",
   ("All Pledge Reports",-32,-6,220,26), ("All Pledge Reports",-20,-8,230,30)),
 
  ("G02","Global","Government masthead (every screen)","ADMIN-USER-MANAGEMENT","Blocker","Components & States",
@@ -74,8 +77,9 @@ FINDINGS = [
 
  ("G05","Global","Data tables (every list screen)","ADMIN-USER-MANAGEMENT","Major","Components & States",
   "Row action controls lose their button and change colour",
-  "Row actions are bordered icon-buttons - a light 1px outline, radius 6, the edit glyph at #003366 and "
-  "the delete glyph at #EC5042 - sized as real click targets.",
+  "Row actions are the library's own Icon Button (Size=Small, Type=Outlined, Color=Neutral): 32x32, "
+  "a 1px #E5E7EB outline at radius 8, the edit glyph #003366 and the delete glyph #EC5042. Read off "
+  "the component's own nodes in the design file, not sampled - an earlier wording said radius 6.",
   "The actions are bare glyphs with no button around them - two 24px SVG images on User Management - "
   "and the edit glyph is filled #ED8525 (read from the served file, not sampled off a screenshot), "
   "an amber that appears nowhere in the NMBA token set. On three of the NAPDDR screens - State, "
@@ -83,7 +87,7 @@ FINDINGS = [
   "(View / Edit / Delete, 1px border, radius 6), and on Important Documents they are a third thing "
   "again: real buttons wrapping tabler icons with no border at all. Verified on the live build, "
   "2026-09-11. Committee Reports carries no row actions.",
-  "Restore the bordered icon-button and set the edit glyph to #003366. One icon treatment has to "
+  "Restore the library's Icon Button - 32x32, 1px #E5E7EB, radius 8 - and set the edit glyph to #003366. One icon treatment has to "
   "hold across every screen - the same glyph set, the same button, the same two colours - rather "
   "than icon-buttons on some screens, amber glyphs on others and text buttons on three of the "
   "NAPDDR screens.",
@@ -154,9 +158,11 @@ FINDINGS = [
   "KPI icon tiles use a pink tint that is not a token",
   "Every KPI icon sits on a 32px tile filled #E5EFF9 - Primary/50 - at radius 10, so the row of cards "
   "reads as one set.",
-  "The tiles are tinted per card, and the tint used for 'Important Documents' measures #FDE8EF, a pink "
-  "that is in no NMBA token. On the district dashboard the same row mixes pink, blue and amber tiles "
-  "for metrics that carry no status meaning.",
+  "The tiles are tinted per card. Read from the DOM on the live officer dashboard, 2026-09-11, the "
+  "four tiles in one row are #FDE8EF (pink, on 'Important Documents'), #E6F7FB (cyan), #FFF6E5 "
+  "(cream) and #EEF1F4 (grey). NONE of the four is in the NMBA token set, against the design's "
+  "single #E5EFF9, which is. So a row of metrics that carry no status meaning is colour-coded as "
+  "though they did, in four colours the design never published.",
   "Fill every KPI icon tile with #E5EFF9. Reserve a coloured tint for a metric that genuinely signals "
   "a state, and take the tint from the token set when you do.",
   ("Important Documents",270,-6,40,40), ("Important Documents",255,-8,44,44)),
@@ -404,9 +410,10 @@ FINDINGS = [
   "The table sits inside an extra white container",
   "The search row and the table are two separate white cards sitting directly on the page's "
   "#F9FAFB ground - sampled at x312, y250, between the sidebar and the table's left edge.",
-  "A third white panel starts at x309 and wraps both of them, so the same pixel measures #FFFFFF "
-  "and the table's own border is drawn inside a second border. The page ground disappears from "
-  "the whole content column.",
+  "A third white panel wraps both of them - measured in the DOM on the live build 2026-09-11 as a "
+  "1112px div at x308, #FFFFFF, radius 6, with its own border - so the same pixel measures "
+  "#FFFFFF and the table's own card is drawn inside a second border. The page ground disappears "
+  "from the whole content column.",
   "Drop the outer panel and let the search row and the table sit on the page ground as the design "
   "does. Nothing else needs to move: both inner cards already carry their own border and radius.",
   ("@box",325,236,1090,120), ("@box",309,215,1106,120)),

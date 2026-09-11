@@ -465,9 +465,9 @@
      "scope": "Global",
      "axis": "Color & Token",
      "severity": "Blocker",
-     "figma": "Every navigation label is #1F2937 on white - about 14.7:1 - and the selected item is #003366 on a #E5EFF9 pill. Measured on the admin sidebar's own text nodes.",
-     "live": "Every unselected navigation label is #9CA3AF on #FFFFFF. That is 2.54:1, where WCAG 2.2 AA requires 4.5:1 for text this size. It reads as a disabled control, and it is the same in the citizen shell and in all three admin roles.",
-     "fix": "Set the unselected label to the design's #1F2937. If a quieter resting state is wanted, #4B5563 is the lightest neutral in the token set that still clears 4.5:1 on white; #9CA3AF cannot be used for text on white at any size.",
+     "figma": "Every navigation label is #1F2937 on the panel's #F9FAFB ground - 14.05:1 - and the selected item is #003366 on an #E5EFF9 pill, 10.84:1. Sampled off the design frame beside five nav rows.",
+     "live": "Every unselected navigation label is #9CA3AF. That is 2.43:1, where WCAG 2.2 AA requires 4.5:1 for text this size. It reads as a disabled control, and it is the same in the citizen shell and in all three admin roles. (Re-measured in the DOM on the live build, 2026-09-11. An earlier wording put this at 2.54:1 by assuming a white ground; the sidebar has no background of its own - the <aside> computes to transparent and the body behind it is #F9FAFB, which the rendered pixel behind a label confirms. The real ratio is slightly WORSE than published, not better.)",
+     "fix": "Set the unselected label to the design's #1F2937. If a quieter resting state is wanted, #4B5563 clears comfortably at 7.23:1 on this ground and #6B7280 is the lightest neutral that still passes, at 4.63:1; #9CA3AF cannot be used for text on #F9FAFB at any size.",
      "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
      "figmaBox": [
       0,
@@ -677,9 +677,9 @@
      "scope": "Global",
      "axis": "Components & States",
      "severity": "Major",
-     "figma": "Row actions are bordered icon-buttons - a light 1px outline, radius 6, the edit glyph at #003366 and the delete glyph at #EC5042 - sized as real click targets.",
+     "figma": "Row actions are the library's own Icon Button (Size=Small, Type=Outlined, Color=Neutral): 32x32, a 1px #E5E7EB outline at radius 8, the edit glyph #003366 and the delete glyph #EC5042. Read off the component's own nodes in the design file, not sampled - an earlier wording said radius 6.",
      "live": "The actions are bare glyphs with no button around them - two 24px SVG images on User Management - and the edit glyph is filled #ED8525 (read from the served file, not sampled off a screenshot), an amber that appears nowhere in the NMBA token set. On three of the NAPDDR screens - State, District and Block Committee - the same actions become three outlined TEXT buttons instead (View / Edit / Delete, 1px border, radius 6), and on Important Documents they are a third thing again: real buttons wrapping tabler icons with no border at all. Verified on the live build, 2026-09-11. Committee Reports carries no row actions.",
-     "fix": "Restore the bordered icon-button and set the edit glyph to #003366. One icon treatment has to hold across every screen - the same glyph set, the same button, the same two colours - rather than icon-buttons on some screens, amber glyphs on others and text buttons on three of the NAPDDR screens.  (Anchor: The row-action controls are icon-only buttons with no text node, so the extraction does not record them. The box is measured off the capture at the Actions column, x1305-1425 on the first data row, where the two glyphs are drawn.)",
+     "fix": "Restore the library's Icon Button - 32x32, 1px #E5E7EB, radius 8 - and set the edit glyph to #003366. One icon treatment has to hold across every screen - the same glyph set, the same button, the same two colours - rather than icon-buttons on some screens, amber glyphs on others and text buttons on three of the NAPDDR screens.  (Anchor: The row-action controls are icon-only buttons with no text node, so the extraction does not record them. The box is measured off the capture at the Actions column, x1305-1425 on the first data row, where the two glyphs are drawn.)",
      "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
      "figmaBox": [
       0,
@@ -1051,7 +1051,7 @@
      "axis": "Color & Token",
      "severity": "Minor",
      "figma": "Every KPI icon sits on a 32px tile filled #E5EFF9 - Primary/50 - at radius 10, so the row of cards reads as one set.",
-     "live": "The tiles are tinted per card, and the tint used for 'Important Documents' measures #FDE8EF, a pink that is in no NMBA token. On the district dashboard the same row mixes pink, blue and amber tiles for metrics that carry no status meaning.",
+     "live": "The tiles are tinted per card. Read from the DOM on the live officer dashboard, 2026-09-11, the four tiles in one row are #FDE8EF (pink, on 'Important Documents'), #E6F7FB (cyan), #FFF6E5 (cream) and #EEF1F4 (grey). NONE of the four is in the NMBA token set, against the design's single #E5EFF9, which is. So a row of metrics that carry no status meaning is colour-coded as though they did, in four colours the design never published.",
      "fix": "Fill every KPI icon tile with #E5EFF9. Reserve a coloured tint for a metric that genuinely signals a state, and take the tint from the token set when you do.  (Anchor: The icon tile is an SVG on a filled div with no text, so the extraction records neither. The tile's fill was sampled from the capture at x590-650 y240-290 and measures #FDE8EF against the design's #E5EFF9.)",
      "subO": "Scope: Global \u2014 shown on STATE-NODAL-OFFICER-DASHBOARD; the same issue repeats across screens",
      "figmaBox": [
@@ -1265,7 +1265,7 @@
      "axis": "Layout & Spacing",
      "severity": "Minor",
      "figma": "The search row and the table are two separate white cards sitting directly on the page's #F9FAFB ground - sampled at x312, y250, between the sidebar and the table's left edge.",
-     "live": "A third white panel starts at x309 and wraps both of them, so the same pixel measures #FFFFFF and the table's own border is drawn inside a second border. The page ground disappears from the whole content column.",
+     "live": "A third white panel wraps both of them - measured in the DOM on the live build 2026-09-11 as a 1112px div at x308, #FFFFFF, radius 6, with its own border - so the same pixel measures #FFFFFF and the table's own card is drawn inside a second border. The page ground disappears from the whole content column.",
      "fix": "Drop the outer panel and let the search row and the table sit on the page ground as the design does. Nothing else needs to move: both inner cards already carry their own border and radius.  (Anchor: The finding is about a container with no text of its own, and on the design side about the ABSENCE of one. Both boxes are measured off the captures over the same region - the search row and the top of the table. The claim itself was checked by sampling one pixel in the left gutter at x312 y250: #F9FAFB in the design, #FFFFFF in the build.)",
      "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
      "figmaBox": [
