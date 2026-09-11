@@ -195,8 +195,8 @@
    "cat": "Components & States",
    "title": "The selected navigation item is a tighter pill in a heavier weight",
    "design": "The selected item is a 48px-tall pill at radius 16 filled #E5EFF9, its label at 14px Regular #003366 - the same weight as every other item, distinguished by the fill alone.",
-   "build": "The selected item is a 36px-tall pill at radius 10, and its label is set Bold. Weight and shape both change where the design changes only the fill.",
-   "fix": "Match the pill to radius 16 and the item height to the design, and keep the selected label at the same weight as the rest.",
+   "build": "The selected item's label is set Bold, where the design changes only the fill. Its 36px height and radius 10 are not particular to the selected row - EVERY row in the panel is built that way, which is NMB-GLOBAL-039. What belongs to this finding is the WEIGHT: the design marks the current page with a fill alone and the build marks it twice.",
+   "fix": "Keep the selected label at the same weight as the rest and let the fill do the work. The pill's height and radius come right with NMB-GLOBAL-039, which fixes them for every row at once.",
    "id": "NMB-GLOBAL-015"
   },
   {
@@ -387,6 +387,19 @@
    "id": "NMB-SCREEN-030"
   },
   {
+   "old": "G23",
+   "scope": "Global",
+   "screen": "Admin sidebar (all admin roles)",
+   "slug": "ADMIN-USER-MANAGEMENT",
+   "sev": "Major",
+   "cat": "Layout & Spacing",
+   "title": "The sidebar panel and every row in it are built to different metrics",
+   "design": "The panel is 300px wide with 16px of padding all round and a 1px #E5E7EB edge, and it holds rows that are 268x48 at radius 16, each padded 12px top and bottom and 16px left and right, with an 8px gap between a row's icon and its label.",
+   "build": "The panel is 288px with no padding of its own and a 1px #D1D5DB edge, and its rows are 245x36 at radius 10, padded 8px and 12px. Every row is affected, not only the selected one: a row is a quarter shorter than designed, 23px narrower, on a smaller radius, and indented to x30 instead of the design's x16. Read from the DOM on the live build and from the design frame's own nodes, 2026-09-11.",
+   "fix": "Build the sidebar to the design's metrics: a 300px panel padded 16, rows 268x48 at radius 16 padded 12/16. This is the fifth finding on this one component and the one that makes the others land - NMB-GLOBAL-001 (label colour), NMB-GLOBAL-003 (missing icons and the connector line the design does not draw), NMB-GLOBAL-015 (the selected row's weight and shape) and NMB-GLOBAL-038 (the 60px item rhythm). Treat them as one piece of work against one component rather than five separate tickets; the sidebar does not match the design until all five land.",
+   "id": "NMB-GLOBAL-039"
+  },
+  {
    "old": "G17",
    "scope": "Global",
    "screen": "Toolbar (every list screen)",
@@ -535,7 +548,7 @@
  ],
  "counts": {
   "Blocker": 3,
-  "Major": 13,
+  "Major": 14,
   "Minor": 15,
   "Nit": 5
  },

@@ -186,10 +186,12 @@ FINDINGS = [
   "The selected navigation item is a tighter pill in a heavier weight",
   "The selected item is a 48px-tall pill at radius 16 filled #E5EFF9, its label at 14px Regular #003366 "
   "- the same weight as every other item, distinguished by the fill alone.",
-  "The selected item is a 36px-tall pill at radius 10, and its label is set Bold. Weight and shape both "
-  "change where the design changes only the fill.",
-  "Match the pill to radius 16 and the item height to the design, and keep the selected label at the "
-  "same weight as the rest.",
+  "The selected item's label is set Bold, where the design changes only the fill. Its 36px height and "
+  "radius 10 are not particular to the selected row - EVERY row in the panel is built that way, which "
+  "is NMB-GLOBAL-039. What belongs to this finding is the WEIGHT: the design marks the current page "
+  "with a fill alone and the build marks it twice.",
+  "Keep the selected label at the same weight as the rest and let the fill do the work. The pill's "
+  "height and radius come right with NMB-GLOBAL-039, which fixes them for every row at once.",
   ("User Management",-34,-8,250,30), ("@box",30,258,248,40)),
 
  ("S02","Screen","Citizen - Home","PUBLIC-HOME","Major","Layout & Spacing",
@@ -381,6 +383,30 @@ FINDINGS = [
  # reviewer raised that an existing finding already covers are NOT duplicated - they are recorded
  # under REVIEWER_MAPPED below, with the finding that already carries them.
  # ---------------------------------------------------------------------------------------------
+ # Added 2026-09-11 on the reviewer's challenge: "Sidebar was a major discrepancy, has that been
+ # marked that the style of sidebar must match the design". Four findings already touched the
+ # sidebar - the label colour, the missing icons, the selected pill, the item rhythm - and between
+ # them they did NOT say that the panel itself and every row in it are built to different metrics.
+ # Measured on both sides rather than asserted: the design frame's nodes through the Plugin API,
+ # the build through getComputedStyle/getBoundingClientRect.
+ ("G23","Global","Admin sidebar (all admin roles)","ADMIN-USER-MANAGEMENT","Major","Layout & Spacing",
+  "The sidebar panel and every row in it are built to different metrics",
+  "The panel is 300px wide with 16px of padding all round and a 1px #E5E7EB edge, and it holds "
+  "rows that are 268x48 at radius 16, each padded 12px top and bottom and 16px left and right, "
+  "with an 8px gap between a row's icon and its label.",
+  "The panel is 288px with no padding of its own and a 1px #D1D5DB edge, and its rows are 245x36 "
+  "at radius 10, padded 8px and 12px. Every row is affected, not only the selected one: a row is "
+  "a quarter shorter than designed, 23px narrower, on a smaller radius, and indented to x30 "
+  "instead of the design's x16. Read from the DOM on the live build and from the design frame's "
+  "own nodes, 2026-09-11.",
+  "Build the sidebar to the design's metrics: a 300px panel padded 16, rows 268x48 at radius 16 "
+  "padded 12/16. This is the fifth finding on this one component and the one that makes the "
+  "others land - NMB-GLOBAL-001 (label colour), NMB-GLOBAL-003 (missing icons and the connector "
+  "line the design does not draw), NMB-GLOBAL-015 (the selected row's weight and shape) and "
+  "NMB-GLOBAL-038 (the 60px item rhythm). Treat them as one piece of work against one component "
+  "rather than five separate tickets; the sidebar does not match the design until all five land.",
+  ("List of SNO",-49,-18,268,48), ("List of SNO",-20,-8,245,36)),
+
  ("G17","Global","Toolbar (every list screen)","ADMIN-USER-MANAGEMENT","Minor","Components & States",
   "Export is two buttons where the design has one",
   "One 'Export' button with a chevron, 110x38 at the right of the page header. Where a choice of "

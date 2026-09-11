@@ -10,13 +10,13 @@
 
 | | |
 |---|---|
-| Boards in the report | 31 |
-| Findings | **36** - 3 Blocker, 13 Major, 15 Minor, 5 Nit |
-| Applies to every screen | 22 |
+| Boards in the report | 32 |
+| Findings | **37** - 3 Blocker, 14 Major, 15 Minor, 5 Nit |
+| Applies to every screen | 23 |
 | Specific to one screen | 14 |
 | Withdrawn, not raised, or noted about the design file | 13 |
 
-The NMBA design page (‘NMBA — Dev Synced — August’) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles — Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication. This report carries only what has something to say. Of the 50 screens captured, 9 carry a finding of their own and appear here as a board; the remaining 41 were checked against their design frames and carry no screen-specific finding, so they are named one by one in the ‘Coverage — NMBA’ tab of the QC tracker rather than repeated here as a page of picture each. The portal-wide findings still apply to all 50: the 22 global boards below each draw one such finding on a screen that shows it clearly.
+The NMBA design page (‘NMBA — Dev Synced — August’) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles — Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication. This report carries only what has something to say. Of the 50 screens captured, 9 carry a finding of their own and appear here as a board; the remaining 41 were checked against their design frames and carry no screen-specific finding, so they are named one by one in the ‘Coverage — NMBA’ tab of the QC tracker rather than repeated here as a page of picture each. The portal-wide findings still apply to all 50: the 23 global boards below each draw one such finding on a screen that shows it clearly.
 
 **Where to start.** The findings with the widest reach or the highest severity:
 
@@ -115,6 +115,18 @@ Each has its own board in the PDF, showing the design and the build side by side
 | **Fix** | Set one row height for the table component and let it apply everywhere; where a cell wraps to two lines, let the row grow from that one value rather than redefining it per screen. |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52051-161871) · [Live page](https://nmba-admin-dev.mosje.in/ministries-dashboard)
+
+### The sidebar panel and every row in it are built to different metrics
+
+`NMB-GLOBAL-039` · **Major** · Layout & Spacing · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | The panel is 300px wide with 16px of padding all round and a 1px #E5E7EB edge, and it holds rows that are 268x48 at radius 16, each padded 12px top and bottom and 16px left and right, with an 8px gap between a row's icon and its label. |
+| **Build does** | The panel is 288px with no padding of its own and a 1px #D1D5DB edge, and its rows are 245x36 at radius 10, padded 8px and 12px. Every row is affected, not only the selected one: a row is a quarter shorter than designed, 23px narrower, on a smaller radius, and indented to x30 instead of the design's x16. Read from the DOM on the live build and from the design frame's own nodes, 2026-09-11. |
+| **Fix** | Build the sidebar to the design's metrics: a 300px panel padded 16, rows 268x48 at radius 16 padded 12/16. This is the fifth finding on this one component and the one that makes the others land - NMB-GLOBAL-001 (label colour), NMB-GLOBAL-003 (missing icons and the connector line the design does not draw), NMB-GLOBAL-015 (the selected row's weight and shape) and NMB-GLOBAL-038 (the 60px item rhythm). Treat them as one piece of work against one component rather than five separate tickets; the sidebar does not match the design until all five land. |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
 
 ### Dropdowns are the browser's own select, not the design system's
 
@@ -279,8 +291,8 @@ Each has its own board in the PDF, showing the design and the build side by side
 | | |
 |---|---|
 | **Design says** | The selected item is a 48px-tall pill at radius 16 filled #E5EFF9, its label at 14px Regular #003366 - the same weight as every other item, distinguished by the fill alone. |
-| **Build does** | The selected item is a 36px-tall pill at radius 10, and its label is set Bold. Weight and shape both change where the design changes only the fill. |
-| **Fix** | Match the pill to radius 16 and the item height to the design, and keep the selected label at the same weight as the rest. |
+| **Build does** | The selected item's label is set Bold, where the design changes only the fill. Its 36px height and radius 10 are not particular to the selected row - EVERY row in the panel is built that way, which is NMB-GLOBAL-039. What belongs to this finding is the WEIGHT: the design marks the current page with a fill alone and the build marks it twice. |
+| **Fix** | Keep the selected label at the same weight as the rest and let the fill do the work. The pill's height and radius come right with NMB-GLOBAL-039, which fixes them for every row at once. |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
 

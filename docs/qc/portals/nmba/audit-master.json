@@ -3,7 +3,7 @@
  "idPrefix": "NMB",
  "generated": "2026-09-11",
  "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=2136-20193",
- "method": "The NMBA design page (\u2018NMBA \u2014 Dev Synced \u2014 August\u2019) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles \u2014 Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication. This report carries only what has something to say. Of the 50 screens captured, 9 carry a finding of their own and appear here as a board; the remaining 41 were checked against their design frames and carry no screen-specific finding, so they are named one by one in the \u2018Coverage \u2014 NMBA\u2019 tab of the QC tracker rather than repeated here as a page of picture each. The portal-wide findings still apply to all 50: the 22 global boards below each draw one such finding on a screen that shows it clearly.",
+ "method": "The NMBA design page (\u2018NMBA \u2014 Dev Synced \u2014 August\u2019) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles \u2014 Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication. This report carries only what has something to say. Of the 50 screens captured, 9 carry a finding of their own and appear here as a board; the remaining 41 were checked against their design frames and carry no screen-specific finding, so they are named one by one in the \u2018Coverage \u2014 NMBA\u2019 tab of the QC tracker rather than repeated here as a page of picture each. The portal-wide findings still apply to all 50: the 23 global boards below each draw one such finding on a screen that shows it clearly.",
  "coverage": [
   {
    "slug": "ADMIN-ABOUT-US",
@@ -821,6 +821,59 @@
    "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
   },
   {
+   "slug": "NMB-GLOBAL-039",
+   "name": "Global \u00b7 The sidebar panel and every row in it are built to different metrics",
+   "env": "dev",
+   "figmaImg": "captures/figma/ADMIN-USER-MANAGEMENT.png",
+   "liveImg": "captures/live/ADMIN-USER-MANAGEMENT.png",
+   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900",
+   "liveUrl": "https://nmba-admin-dev.mosje.in/user-management",
+   "findings": [
+    {
+     "num": 1,
+     "id": "NMB-GLOBAL-039",
+     "element": "The sidebar panel and every row in it are built to different metrics",
+     "section": "global",
+     "scope": "Global",
+     "axis": "Layout & Spacing",
+     "severity": "Major",
+     "figma": "The panel is 300px wide with 16px of padding all round and a 1px #E5E7EB edge, and it holds rows that are 268x48 at radius 16, each padded 12px top and bottom and 16px left and right, with an 8px gap between a row's icon and its label.",
+     "live": "The panel is 288px with no padding of its own and a 1px #D1D5DB edge, and its rows are 245x36 at radius 10, padded 8px and 12px. Every row is affected, not only the selected one: a row is a quarter shorter than designed, 23px narrower, on a smaller radius, and indented to x30 instead of the design's x16. Read from the DOM on the live build and from the design frame's own nodes, 2026-09-11.",
+     "fix": "Build the sidebar to the design's metrics: a 300px panel padded 16, rows 268x48 at radius 16 padded 12/16. This is the fifth finding on this one component and the one that makes the others land - NMB-GLOBAL-001 (label colour), NMB-GLOBAL-003 (missing icons and the connector line the design does not draw), NMB-GLOBAL-015 (the selected row's weight and shape) and NMB-GLOBAL-038 (the 60px item rhythm). Treat them as one piece of work against one component rather than five separate tickets; the sidebar does not match the design until all five land.",
+     "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
+     "figmaBox": [
+      0,
+      320,
+      1440,
+      700
+     ],
+     "liveBox": [
+      0,
+      242,
+      1440,
+      622
+     ],
+     "sectionBox": [
+      0,
+      242,
+      1440,
+      622
+     ],
+     "figmaPin": {
+      "x": 10.4,
+      "y": 40.5
+     },
+     "livePin": {
+      "x": 9.2,
+      "y": 38.9
+     }
+    }
+   ],
+   "_role": "global",
+   "_node": "52061:126900",
+   "note": "Scope: Global \u2014 this repeats across the portal; fix once, it lands everywhere."
+  },
+  {
    "slug": "NMB-GLOBAL-007",
    "name": "Global \u00b7 Dropdowns are the browser's own select, not the design system's",
    "env": "dev",
@@ -1532,8 +1585,8 @@
      "axis": "Components & States",
      "severity": "Nit",
      "figma": "The selected item is a 48px-tall pill at radius 16 filled #E5EFF9, its label at 14px Regular #003366 - the same weight as every other item, distinguished by the fill alone.",
-     "live": "The selected item is a 36px-tall pill at radius 10, and its label is set Bold. Weight and shape both change where the design changes only the fill.",
-     "fix": "Match the pill to radius 16 and the item height to the design, and keep the selected label at the same weight as the rest.",
+     "live": "The selected item's label is set Bold, where the design changes only the fill. Its 36px height and radius 10 are not particular to the selected row - EVERY row in the panel is built that way, which is NMB-GLOBAL-039. What belongs to this finding is the WEIGHT: the design marks the current page with a fill alone and the build marks it twice.",
+     "fix": "Keep the selected label at the same weight as the rest and let the fill do the work. The pill's height and radius come right with NMB-GLOBAL-039, which fixes them for every row at once.",
      "subO": "Scope: Global \u2014 shown on ADMIN-USER-MANAGEMENT; the same issue repeats across screens",
      "figmaBox": [
       0,
