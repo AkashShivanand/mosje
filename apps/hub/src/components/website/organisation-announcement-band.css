@@ -229,8 +229,40 @@
     padding: var(--sa-padding-16) var(--sa-padding-20);
     border-radius: var(--sa-shape-16);
     background-color: color-mix(in srgb, var(--sa-text-neutral-inverse) 8%, transparent);
-    box-shadow: inset 0 var(--sa-stroke-1) 0 0
-      color-mix(in srgb, var(--orgab-accent) 44%, transparent);
+    /*
+     * A RING, AND NOT ONLY A LIT TOP EDGE.
+     *
+     * The card carried the accent highlight above and nothing else — no sides,
+     * no bottom — so it had no closed shape. Sampled on the rendered page its
+     * left edge measured 1.19:1 against the band, which is to say it did not
+     * exist; the card read as a wash rather than an object.
+     *
+     * That matters because of what sits NEXT to it. The helpline is a solid
+     * white card, fully resolved, and the two are peers in the row. Beside a
+     * finished object an unresolved one reads as unfinished rather than as
+     * restraint. The card also TURNS, and a half-rotation is easier to follow
+     * when the thing rotating has an edge to follow.
+     *
+     * 28% white takes the edge to 2.08:1 — enough to close the shape, short of
+     * the gloss that a brighter ring gives a government band. Rendered at five
+     * strengths from 16% to 42% and compared side by side before choosing.
+     *
+     * NOT A CONFORMANCE FIX, and the number is here so nobody mistakes it for
+     * one: 1.4.11 binds boundaries that identify a CONTROL or carry meaning in a
+     * GRAPHIC. This is a decorative panel edge, and every control and every word
+     * inside it already clears AA on its own — the tightest measured 6.45:1.
+     * Even 42% white only reaches 2.87 against this green, so chasing 3:1 here
+     * would buy nothing and cost the band its quiet.
+     *
+     * The accent line stays on top of the ring: it is one of the two things that
+     * tell the two announcements apart, and it is stronger than the ring on
+     * purpose.
+     */
+    box-shadow:
+      inset 0 0 0 var(--sa-stroke-1)
+        color-mix(in srgb, var(--sa-text-neutral-inverse) 28%, transparent),
+      inset 0 var(--sa-stroke-1) 0 0
+        color-mix(in srgb, var(--orgab-accent) 44%, transparent);
     /* The half of the card you are not looking at is not drawn. Without this a
        reader sees the other announcement mirrored, through the card. */
     backface-visibility: hidden;
