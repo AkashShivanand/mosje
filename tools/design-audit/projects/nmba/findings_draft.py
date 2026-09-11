@@ -76,20 +76,27 @@ FINDINGS = [
   "Row action controls lose their button and change colour",
   "Row actions are bordered icon-buttons - a light 1px outline, radius 6, the edit glyph at #003366 and "
   "the delete glyph at #EC5042 - sized as real click targets.",
-  "The actions are bare glyphs with no button around them, and the edit glyph is drawn at #E08020, an "
-  "amber that appears nowhere in the NMBA token set. On the four NAPDDR committee screens the same "
-  "actions become three outlined TEXT buttons instead (View / Edit / Delete).",
+  "The actions are bare glyphs with no button around them - two 24px SVG images on User Management - "
+  "and the edit glyph is filled #ED8525 (read from the served file, not sampled off a screenshot), "
+  "an amber that appears nowhere in the NMBA token set. On three of the NAPDDR screens - State, "
+  "District and Block Committee - the same actions become three outlined TEXT buttons instead "
+  "(View / Edit / Delete, 1px border, radius 6), and on Important Documents they are a third thing "
+  "again: real buttons wrapping tabler icons with no border at all. Verified on the live build, "
+  "2026-09-11. Committee Reports carries no row actions.",
   "Restore the bordered icon-button and set the edit glyph to #003366. One icon treatment has to "
   "hold across every screen - the same glyph set, the same button, the same two colours - rather "
-  "than icon-buttons on some screens, amber glyphs on others and text buttons on the NAPDDR four.",
+  "than icon-buttons on some screens, amber glyphs on others and text buttons on three of the "
+  "NAPDDR screens.",
   ("Actions",-8,44,120,34), ("Actions",100,40,60,30)),
 
  ("G06","Global","Pagination (every paged screen)","ADMIN-NAPDDR-STATE-COMMITTEE","Major","Content & Iconography",
   "Previous and next are a hyphen and a plus sign",
   "The pager runs a left chevron, the page numbers with the current one in a rounded outlined chip, an "
   "ellipsis, the last page, and a right chevron.",
-  "The two step controls render as '-' and '+'. A minus and a plus read as decrease and increase, not "
-  "as previous and next page, and there is no ellipsis or last-page number.",
+  "The two step controls render as '-' and '+'. A minus and a plus read as decrease and increase, "
+  "not as previous and next page. (The pager DOES carry an ellipsis and a last-page number - "
+  "checked on the live build 2026-09-11, which shows '- 1 2 3 ... 1,393 +'. An earlier wording of "
+  "this finding said it did not; that was read off a capture and was wrong.)",
   "Use the chevrons the design specifies for the step controls, and show the ellipsis and last page so "
   "a reader can tell how long the list is.",
   ("@box",325,818,312,46), ("@box",318,558,96,46)),
@@ -108,9 +115,11 @@ FINDINGS = [
  ("G08","Global","Search fields (every list screen)","ADMIN-IMPORTANT-DOCUMENTS","Minor","Content & Iconography",
   "The search magnifier is missing, or sits on the wrong side",
   "Every search field carries a magnifier inside its left edge, ahead of the placeholder.",
-  "The magnifier is absent on User Management, the Ministries dashboard, all four NAPDDR screens and "
-  "Facilities, and on Important Documents it is drawn inside the RIGHT edge instead. So the same "
-  "control differs from screen to screen as well as from the design.",
+  "Checked screen by screen on the live build, 2026-09-11: the magnifier is absent on User "
+  "Management, the Ministries dashboard, all four NAPDDR screens and Facilities, and on Important "
+  "Documents, Pledge Reports, List of SNO and the Nasha Mukti Mitr Report it is drawn inside the "
+  "RIGHT edge instead. So the same control takes three different forms across the portal as well "
+  "as differing from the design.",
   "Put the magnifier inside the left edge of every search field, as the design does.",
   ("Search by Name, State,DIstrict, Activity...",-26,-8,40,32),
   ("Search for Document Name",560,-8,44,32)),
@@ -330,12 +339,15 @@ FINDINGS = [
   "The row actions run download, then edit, then delete, each as a bordered icon-button - a light "
   "1px outline at radius 6, the glyphs at #003366 and #EC5042.",
   "They run edit, then download, then delete. The download control is the one a reader uses most on "
-  "this screen and the design puts it first. They are also drawn in the portal's other action "
-  "style - bare glyphs with no button, the edit glyph amber - so this screen differs from the "
-  "design twice over: in the order, and in the treatment.",
+  "this screen and the design puts it first. The treatment is wrong too, and it is a THIRD "
+  "treatment: these are real <button> elements wrapping 20px tabler icons at #003366 and #374151 "
+  "with no border, no radius and no background, where the design draws a bordered icon-button - "
+  "and where User Management draws two 24px SVG images with no button at all. Same action, three "
+  "different things, none of them the design's.",
   "Order the row actions download, edit, delete as the design does, AND draw them in the design's "
   "style: the bordered icon-button, the glyphs at #003366 and #EC5042. The style half is the same "
-  "fix as NMB-GLOBAL-005 and lands with it; the order is particular to this screen.",
+  "fix as NMB-GLOBAL-005 and lands with it - one row-action component, used everywhere; the order "
+  "is particular to this screen.",
   ("Action",-8,44,120,34), ("Action",-6,40,90,30)),
 
  # ---------------------------------------------------------------------------------------------
@@ -483,10 +495,10 @@ WITHDRAWN = [
 REVIEWER_MAPPED = [
  ("Action icon style must match the design and kept consistent.",
   "NMB-GLOBAL-005",
-  "Already raised: the row actions lose their button and the edit glyph is drawn #E08020, an "
-  "amber that is in no NMBA token, while the four NAPDDR screens replace the same actions with "
-  "three outlined text buttons. The fix text now says explicitly that one icon treatment has to "
-  "hold across every screen."),
+  "Already raised: the row actions lose their button and the edit glyph is filled #ED8525, an "
+  "amber that is in no NMBA token, while three of the NAPDDR screens replace the same actions "
+  "with outlined text buttons and Important Documents uses a third treatment again. The fix text "
+  "now says explicitly that one icon treatment has to hold across every screen."),
  ("Match the sidebar with design.",
   "NMB-GLOBAL-001 / -003 / -015 / -022",
   "Already raised across four findings, which between them cover the label colour, the missing "

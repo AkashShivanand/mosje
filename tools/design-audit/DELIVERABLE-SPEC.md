@@ -158,7 +158,12 @@ the pledge banner had lost its call to action. The button was there all along; t
 been taken with the UX4G accessibility panel open, which widened the document and pushed the
 button to x1841, outside the 1440 export. A capture is evidence of what a screen LOOKS like. It is
 not evidence that something is missing. Before writing "not built", "absent" or "lost", check the
-running page.
+running page — and check ALL of them, not just the one you were challenged on. Running the sweep
+over NMBA's remaining eight admin absence claims found two more that were false and three more that
+were inaccurate in detail. `projects/<portal>/verify_absences.py` is the shape: one probe per
+absence claim, each asking the live DOM, each reporting `absent: true | false | null`, where
+**null means the probe could not see its subject and is not evidence of anything**. Run it before
+publishing, and keep it beside the findings so the next pass re-runs it rather than re-deriving it.
 
 The last is a **ratchet**: `deliverable-baseline.json` records each portal's current gap count, a
 portal may improve but never regress, and an improvement must be re-baselined so one portal's
