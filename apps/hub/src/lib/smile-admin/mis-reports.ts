@@ -467,6 +467,21 @@ export const MIS_REPORTS: MisReport[] = [
   },
 ];
 
+/*
+ * Every row carries `_id`, minted here rather than derived at render time.
+ *
+ * A report's natural columns are not unique: two states both have a district
+ * called Aurangabad, and "Red light areas" is the name of a survey location in
+ * six of them. Keying a row on its name or district gave React two children
+ * with the same key on the Master and Survey Location reports, which is how a
+ * row gets duplicated or dropped when the register is filtered.
+ */
+for (const report of MIS_REPORTS) {
+  report.rows.forEach((row, i) => {
+    row._id = `${report.slug}-${i + 1}`;
+  });
+}
+
 export function misReport(slug: string) {
   return MIS_REPORTS.find((r) => r.slug === slug);
 }

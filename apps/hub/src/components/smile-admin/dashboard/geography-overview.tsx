@@ -1,9 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
-import { KpiCard, KPI_ICONS, type KpiSpec } from "@/components/smile-admin/dashboard/kpi-card";
 import {
   DISTRICT_ROWS,
   DISTRICT_STATES,
@@ -12,6 +10,7 @@ import {
   type GeoRow,
 } from "@/lib/smile-admin/geography";
 import { PROGRAMME_KPI_ALL_INDIA } from "@/lib/smile-admin/mock-data";
+import { formatINR } from "@/lib/smile-admin/utils";
 import { DATA_VERSIONS } from "@/lib/smile-admin/mis-reports";
 import { formatNumber } from "@/lib/smile-admin/utils";
 import {
@@ -22,7 +21,7 @@ import {
   CardTitle,
   DataTable,
   IndiaMap,
-  SectionTitle,
+  OverviewScreen,
   type DataTableColumn,
 } from "@mosje/design-system";
 
@@ -57,15 +56,15 @@ export function GeographyOverview({ scope }: { scope: Scope }) {
   const reporting = rows.filter((r) => r.identified > 0).length;
 
   const kpi = PROGRAMME_KPI_ALL_INDIA;
-  // The tiles sum the register on screen, so the meta line has to say what that
-  // register covers. The card's default reads "all states", which is a lie on a
-  // district screen scoped to one.
-  const meta = scope === "state" ? "All-time · all States and UTs" : `All-time · ${state}`;
-  const KPIS: KpiSpec[] = [
-    { key: "identified", label: "Identified / Surveyed", value: sum.identified, icon: KPI_ICONS.identified, iconBg: "bg-info-50", iconColor: "text-info-600", labelColor: "text-ink-muted", meta },
-    { key: "mobilised", label: "Mobilised", value: sum.mobilised, icon: KPI_ICONS.mobilised, iconBg: "bg-primary-50", iconColor: "text-primary", labelColor: "text-ink-muted", meta },
-    { key: "rehabilitated", label: "Rehabilitated", value: sum.rehabilitated, icon: KPI_ICONS.rehab, iconBg: "bg-success-50", iconColor: "text-success-600", labelColor: "text-ink-muted", meta },
-    { key: "disbursed", label: "Fund Disbursed", value: kpi.fundDisbursed, icon: KPI_ICONS.disbursed, iconBg: "bg-warning-50", iconColor: "text-warning-600", labelColor: "text-ink-muted", format: "currency", meta: "All-time · all States and UTs" },
+  // The tiles sum the register on screen, so the detail line has to say what
+  // that register covers. "All states" would be a lie on a district screen
+  // scoped to one.
+  const covers = scope === "state" ? "All-time · all States and UTs" : `All-time · ${state}`;
+  const KPIS = [
+    { key: "identified", label: "Identified / Surveyed", value: formatNumber(sum.identified), detail: covers },
+    { key: "mobilised", label: "Mobilised", value: formatNumber(sum.mobilised), detail: covers },
+    { key: "rehabilitated", label: "Rehabilitated", value: formatNumber(sum.rehabilitated), detail: covers },
+    { key: "disbursed", label: "Fund Disbursed", value: formatINR(kpi.fundDisbursed, true), detail: "All-time · all States and UTs" },
   ];
 
   const label = scope === "state" ? "State / UT" : "District";
@@ -108,109 +107,112 @@ export function GeographyOverview({ scope }: { scope: Scope }) {
     </Card>
   );
 
-  return (
-    <div className="space-y-lg">
-      <SmilePageHeader
-        breadcrumbs={[
-          { label: "Dashboard", href: "/portals/smile-admin/dashboard" },
-          { label: scope === "state" ? "State-wise" : "District-wise" },
-        ]}
-        eyebrow={scope === "state" ? "State-wise" : "District-wise"}
-        title="Programme Overview"
-        subtitle="Support for Marginalised Individuals for Livelihood and Enterprise."
-        actions={
-          <div className="flex flex-wrap items-center gap-sm">
-            <label className="flex items-center gap-xs text-label-2 text-ink-muted">
-              Data
-              <select aria-label="Data version" value={version} onChange={(e) => setVersion(e.target.value)} className="h-9 rounded-md border border-stroke-300 bg-white px-sm text-body-2 text-ink shadow-xs">
-                {DATA_VERSIONS.map((v) => (
-                  <option key={v}>{v}</option>
-                ))}
-              </select>
-            </label>
-            <ExportMenu
-              filename={`smile-programme-overview-${scope}-wise`}
-              title={`Programme Overview — ${scope === "state" ? "State" : "District"}-wise`}
-              subtitle="Identified, mobilised and rehabilitated beneficiaries"
-              columns={[
-                ...(scope === "district" ? [{ header: "State", accessor: "state" as const }] : []),
-                { header: label, accessor: (r: GeoRow) => (scope === "state" ? r.state : (r.district ?? "—")) },
-                { header: "Identified", accessor: "identified" as const },
-                { header: "Mobilised", accessor: "mobilised" as const },
-                { header: "Rehabilitated", accessor: "rehabilitated" as const },
-              ]}
-              rows={rows}
-            />
-          </div>
-        }
-      />
-
-      <div className="grid grid-cols-2 gap-md lg:grid-cols-4">
-        {KPIS.map((k) => (
-          <KpiCard key={k.key} spec={k} />
-        ))}
-      </div>
-
-      <Card>
-        <div className="flex flex-wrap items-center justify-between gap-md border-b border-stroke-100 p-lg">
-          <div className="space-y-xxs">
-            <CardTitle>
-              {scope === "state" ? "State-wise" : "District-wise"} Beneficiary Distribution
-            </CardTitle>
-            <p className="text-body-2 text-ink-muted">
-              {scope === "state"
-                ? `${reporting} of ${rows.length} States and Union Territories have reported a figure.`
-                : `${rows.length} districts in ${state}.`}
-            </p>
-          </div>
-          {scope === "district" ? (
-            <label className="flex items-center gap-xs text-label-2 text-ink-muted">
-              State
-              <select aria-label="Select a state" value={state} onChange={(e) => setState(e.target.value)} className={SELECT}>
-                {DISTRICT_STATES.map((s) => (
-                  <option key={s}>{s}</option>
-                ))}
-              </select>
-            </label>
-          ) : null}
+  const mapPanel = (
+    <Card key="map">
+      <div className="flex flex-wrap items-center justify-between gap-md border-b border-stroke-100 p-lg">
+        <div className="space-y-xxs">
+          <CardTitle>
+            {scope === "state" ? "State-wise" : "District-wise"} Beneficiary Distribution
+          </CardTitle>
+          <p className="text-body-2 text-ink-muted">
+            {scope === "state"
+              ? `${reporting} of ${rows.length} States and Union Territories have reported a figure.`
+              : `${rows.length} districts in ${state}.`}
+          </p>
         </div>
-        <CardBody className="grid grid-cols-1 gap-lg p-lg lg:grid-cols-[1.2fr_1fr]">
-          <div className="relative overflow-hidden rounded-md border border-stroke-100 bg-gradient-to-br from-primary-50/50 to-primary-50/10 p-md">
-            <IndiaMap
-              title={scope === "state" ? "Beneficiaries identified by state" : `Beneficiaries identified in ${state}`}
-              data={STATE_ROWS.map((r) => ({ state: r.state, value: r.identified }))}
-              highlightState={scope === "district" ? state : undefined}
-            />
+      </div>
+      <CardBody className="grid grid-cols-1 gap-lg p-lg lg:grid-cols-[1.2fr_1fr]">
+        <div className="relative overflow-hidden rounded-md border border-stroke-100 bg-gradient-to-br from-primary-50/50 to-primary-50/10 p-md">
+          <IndiaMap
+            title={scope === "state" ? "Beneficiaries identified by state" : `Beneficiaries identified in ${state}`}
+            data={STATE_ROWS.map((r) => ({ state: r.state, value: r.identified }))}
+            highlightState={scope === "district" ? state : undefined}
+          />
+        </div>
+        <div className="space-y-sm">
+          <DataTable
+            columns={columns}
+            data={rows as Array<GeoRow & Record<string, unknown>>}
+            total={rows.length}
+            pageSizes={[rows.length || 1]}
+            showPageSizes={false}
+            caption={`Identified, mobilised and rehabilitated beneficiaries by ${scope}`}
+            emptyLabel="No figure has been reported."
+          />
+          {/* The total is a row of the register, not a fifth card: a reader
+              comparing a state against the whole needs both in one column. */}
+          <div className="flex items-center justify-between gap-md rounded-md bg-neutral-50 px-md py-sm text-body-2 font-semibold text-ink">
+            <span>Total</span>
+            <span className="flex gap-lg tabular-nums">
+              <span>{formatNumber(sum.identified)}</span>
+              <span>{formatNumber(sum.mobilised)}</span>
+              <span>{formatNumber(sum.rehabilitated)}</span>
+            </span>
           </div>
-          <div className="space-y-sm">
-            <DataTable
-              columns={columns}
-              data={rows as Array<GeoRow & Record<string, unknown>>}
-              total={rows.length}
-              pageSizes={[rows.length || 1]}
-              showPageSizes={false}
-              caption={`Identified, mobilised and rehabilitated beneficiaries by ${scope}`}
-              emptyLabel="No figure has been reported."
-            />
-            {/* The total is a row of the register, not a fifth card: a reader
-                comparing a state against the whole needs both in one column. */}
-            <div className="flex items-center justify-between gap-md rounded-md bg-neutral-50 px-md py-sm text-body-2 font-semibold text-ink">
-              <span>Total</span>
-              <span className="flex gap-lg tabular-nums">
-                <span>{formatNumber(sum.identified)}</span>
-                <span>{formatNumber(sum.mobilised)}</span>
-                <span>{formatNumber(sum.rehabilitated)}</span>
-              </span>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
+        </div>
+      </CardBody>
+    </Card>
+  );
 
-      <SectionTitle
-        title={`${scope === "state" ? "State" : "District"}-wise Details`}
-        description="Each measure ranked, so the register above can be read as an order rather than scanned."
-      />
-      <div className="space-y-lg">{MEASURES.map(chartFor)}</div>
-    </div>
+  return (
+    <OverviewScreen
+      // OverviewScreen carries no trail — a dashboard is a landing, not a
+      // descent — so the scope goes in the eyebrow where the trail would have
+      // said it.
+      eyebrow={`Dashboard · ${scope === "state" ? "State-wise" : "District-wise"}`}
+      title="Programme Overview"
+      meta="Support for Marginalised Individuals for Livelihood and Enterprise."
+      actions={
+        <div className="flex flex-wrap items-center gap-sm">
+          <label className="flex items-center gap-xs text-label-2 text-ink-muted">
+            Data
+            <select aria-label="Data version" value={version} onChange={(e) => setVersion(e.target.value)} className={SELECT}>
+              {DATA_VERSIONS.map((v) => (
+                <option key={v}>{v}</option>
+              ))}
+            </select>
+          </label>
+          <ExportMenu
+            filename={`smile-programme-overview-${scope}-wise`}
+            title={`Programme Overview — ${scope === "state" ? "State" : "District"}-wise`}
+            subtitle="Identified, mobilised and rehabilitated beneficiaries"
+            columns={[
+              ...(scope === "district" ? [{ header: "State", accessor: "state" as const }] : []),
+              { header: label, accessor: (r: GeoRow) => (scope === "state" ? r.state : (r.district ?? "—")) },
+              { header: "Identified", accessor: "identified" as const },
+              { header: "Mobilised", accessor: "mobilised" as const },
+              { header: "Rehabilitated", accessor: "rehabilitated" as const },
+            ]}
+            rows={rows}
+          />
+        </div>
+      }
+      filters={
+        scope === "district" ? (
+          <label className="flex items-center gap-xs text-label-2 text-ink-muted">
+            State
+            <select aria-label="Select a state" value={state} onChange={(e) => setState(e.target.value)} className={SELECT}>
+              {DISTRICT_STATES.map((s) => (
+                <option key={s}>{s}</option>
+              ))}
+            </select>
+          </label>
+        ) : undefined
+      }
+      kpis={KPIS}
+      panels={[mapPanel, ...MEASURES.map(chartFor)]}
+      count={rows.length}
+      copy={{
+        idleTitle: "Choose a State to See Its Districts",
+        loadingLabel: "Loading the programme figures",
+        errorTitle: "The Figures Could Not Be Loaded",
+        errorDescription: "The programme figures did not load. Please try again.",
+        retryLabel: "Try again",
+        emptyTitle: "No Figure Has Been Reported",
+        emptyDescription: "Nothing has been reported for this scope yet.",
+        filteredTitle: "No Figure for This Selection",
+        clearFiltersLabel: "Clear selection",
+      }}
+    />
   );
 }

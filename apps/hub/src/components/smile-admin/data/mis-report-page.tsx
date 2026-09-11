@@ -1,22 +1,38 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
-import { DataToolbar } from "@/components/smile-admin/data/data-toolbar";
-import { StatPill } from "@/components/smile-admin/data/stat-pill";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
 import { DATA_VERSIONS, REPORT_STATES, type MisReport } from "@/lib/smile-admin/mis-reports";
-import { DataTable, type DataTableColumn } from "@mosje/design-system";
+import { ReportScreen, type ReportColumn } from "@mosje/design-system";
+
+/*
+ * The date the FIGURES were drawn, not the date the page was opened.
+ *
+ * `new Date()` during render is also a hydration hazard — the server stamps one
+ * time and the browser another — but the substantive reason is that these
+ * figures are a fixed extract. Stamping a report "drawn today" every time it is
+ * opened would let two copies of the same statement, printed a month apart,
+ * claim to be different draws of the register.
+ */
+const DRAWN_ON = "31 August 2026";
 
 type Row = Record<string, string | number>;
+
+const SELECT = "h-10 rounded-md border border-stroke-300 bg-white px-md text-body-2 text-ink shadow-xs";
 
 /**
  * One MIS report screen, rendered eight times from `MIS_REPORTS`.
  *
- * The live portal draws these eight as one page with a different column set,
- * and copying that here is the point: the counters, the Data-version / State /
- * District filters, the export pair and the paged register are written once, so
- * a fix to any of them reaches all eight reports rather than one.
+ * `ReportScreen` and not `WorklistScreen`, by the decision table in
+ * docs/design-system/screen-templates.md §2: nobody acts on these rows. They are
+ * a tabular statement, exported to CSV or PDF and filed — which is also why the
+ * template prints the criteria in force beside the figures. A report of "2,137
+ * beneficiaries" filed without the filters that produced it is a number nobody
+ * can reproduce.
+ *
+ * The live portal draws all eight as one page with a different column set, and
+ * that is how they are built here: the counters, the filters, the export pair
+ * and the register are written once.
  */
 export function MisReportPage({ report }: { report: MisReport }) {
   const [version, setVersion] = useState(DATA_VERSIONS[0]!);
@@ -45,28 +61,27 @@ export function MisReportPage({ report }: { report: MisReport }) {
     [report, state, district, year],
   );
 
-  const activeFilters =
+  const activeFilterCount =
     (state === REPORT_STATES[0] ? 0 : 1) +
     (district === "All Districts" ? 0 : 1) +
     (report.hasYear && year !== "All years" ? 1 : 0);
 
-  const PAGE = 20;
-  const pages = Math.max(1, Math.ceil(rows.length / PAGE));
+  function clearFilters() {
+    setState(REPORT_STATES[0]!);
+    setDistrict("All Districts");
+    setYear("All years");
+  }
 
-  const columns: DataTableColumn<Row>[] = [
+  const columns: ReportColumn<Row>[] = [
     {
       key: "sno",
       header: "#",
-      className: "w-10 tabular-nums text-ink-hint",
       render: (r) => rows.indexOf(r) + 1,
-      exportValue: (r) => String(rows.indexOf(r) + 1),
     },
-    ...report.columns.map<DataTableColumn<Row>>((c) => ({
+    ...report.columns.map<ReportColumn<Row>>((c) => ({
       key: c.key,
       header: c.header,
-      sortable: true,
-      className: c.numeric ? "text-right tabular-nums" : undefined,
-      sortValue: c.numeric ? (r: Row) => Number(r[c.key] ?? 0) : undefined,
+      numeric: c.numeric,
       render: (r: Row) => {
         const v = r[c.key];
         return v === "" || v === null || v === undefined ? "—" : String(v);
@@ -75,96 +90,93 @@ export function MisReportPage({ report }: { report: MisReport }) {
   ];
 
   return (
-    <div className="space-y-lg">
-      <SmilePageHeader
-        breadcrumbs={[{ label: "Reports" }, { label: "MIS" }, { label: report.title }]}
-        eyebrow="Reports & Analytics"
-        title={report.title}
-        subtitle={report.subtitle}
-        actions={
-          <div className="flex flex-wrap items-center gap-sm">
-            <label className="flex items-center gap-xs text-label-2 text-ink-muted">
-              Data
-              <select
-                aria-label="Data version"
-                value={version}
-                onChange={(e) => setVersion(e.target.value)}
-                className="h-9 rounded-md border border-stroke-300 bg-white px-sm text-body-2 text-ink shadow-xs"
-              >
-                {DATA_VERSIONS.map((v) => (
-                  <option key={v}>{v}</option>
-                ))}
-              </select>
-            </label>
-            <ExportMenu
-              filename={`smile-${report.slug}-report`}
-              title={report.title}
-              subtitle={report.subtitle}
-              columns={report.columns.map((c) => ({ header: c.header, accessor: c.key }))}
-              rows={rows}
-            />
-          </div>
-        }
-      />
-
-      <div className="grid grid-cols-2 gap-md md:grid-cols-4">
-        <StatPill label="Total records" value={rows.length} icon="description" tone="primary" />
-        <StatPill label="On this page" value={Math.min(PAGE, rows.length)} icon="list" tone="info" />
-        <StatPill label="Pages" value={pages} icon="article" tone="success" />
-        <StatPill label="Filters applied" value={activeFilters} icon="filter_alt" tone="warning" />
-      </div>
-
-      <DataToolbar>
-        <select
-          aria-label="State or Union Territory"
-          value={state}
-          onChange={(e) => {
-            setState(e.target.value);
-            setDistrict("All Districts");
-          }}
-          className="h-10 rounded-md border border-stroke-300 bg-white px-md text-body-2 text-ink shadow-xs"
-        >
-          {REPORT_STATES.map((s) => (
-            <option key={s}>{s}</option>
-          ))}
-        </select>
-        <select
-          aria-label="District"
-          value={district}
-          onChange={(e) => setDistrict(e.target.value)}
-          className="h-10 rounded-md border border-stroke-300 bg-white px-md text-body-2 text-ink shadow-xs"
-        >
-          {districts.map((d) => (
-            <option key={d}>{d}</option>
-          ))}
-        </select>
-        {report.hasYear ? (
+    <ReportScreen
+      breadcrumb={[
+        { label: "Dashboard", href: "/portals/smile-admin/dashboard" },
+        { label: "MIS Reports" },
+        { label: report.title },
+      ]}
+      eyebrow="Reports & Analytics"
+      title={report.title}
+      meta={report.subtitle}
+      issuer="Ministry of Social Justice & Empowerment, Government of India"
+      generatedAt={DRAWN_ON}
+      // Printed with the figures, because the on-screen selects do not survive
+      // the printer and a statement has to say what produced it.
+      criteria={[
+        { label: "Data version", value: version },
+        { label: "State / UT", value: state },
+        { label: "District", value: district },
+        ...(report.hasYear ? [{ label: "Year", value: year }] : []),
+        { label: "Records", value: rows.length.toLocaleString("en-IN") },
+      ]}
+      exportActions={
+        <ExportMenu
+          filename={`smile-${report.slug}-report`}
+          title={report.title}
+          subtitle={report.subtitle}
+          columns={report.columns.map((c) => ({ header: c.header, accessor: c.key }))}
+          rows={rows}
+        />
+      }
+      filters={
+        <>
+          <label className="flex items-center gap-xs text-label-2 text-ink-muted">
+            Data
+            <select aria-label="Data version" value={version} onChange={(e) => setVersion(e.target.value)} className={SELECT}>
+              {DATA_VERSIONS.map((v) => (
+                <option key={v}>{v}</option>
+              ))}
+            </select>
+          </label>
           <select
-            aria-label="Year"
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-            className="h-10 rounded-md border border-stroke-300 bg-white px-md text-body-2 text-ink shadow-xs"
+            aria-label="State or Union Territory"
+            value={state}
+            onChange={(e) => {
+              setState(e.target.value);
+              setDistrict("All Districts");
+            }}
+            className={SELECT}
           >
-            {years.map((y) => (
-              <option key={y}>{y}</option>
+            {REPORT_STATES.map((s) => (
+              <option key={s}>{s}</option>
             ))}
           </select>
-        ) : null}
-        <span className="ml-auto text-label-2 text-ink-muted">
-          {version}
-        </span>
-      </DataToolbar>
-
-      <div className="rounded-lg border border-stroke-200 bg-white p-md shadow-xs">
-        <DataTable
-          columns={columns}
-          data={rows}
-          total={rows.length}
-          pageSizes={[PAGE, 50, 100]}
-          caption={`${report.title} — ${report.subtitle}`}
-          emptyLabel="No record matches these filters."
-        />
-      </div>
-    </div>
+          <select aria-label="District" value={district} onChange={(e) => setDistrict(e.target.value)} className={SELECT}>
+            {districts.map((d) => (
+              <option key={d}>{d}</option>
+            ))}
+          </select>
+          {report.hasYear ? (
+            <select aria-label="Year" value={year} onChange={(e) => setYear(e.target.value)} className={SELECT}>
+              {years.map((y) => (
+                <option key={y}>{y}</option>
+              ))}
+            </select>
+          ) : null}
+        </>
+      }
+      activeFilterCount={activeFilterCount}
+      onClearFilters={clearFilters}
+      columns={columns}
+      rows={rows}
+      count={rows.length}
+      filtered={activeFilterCount > 0}
+      getRowId={(r) => String(r._id)}
+      copy={{
+        // The register loads with the page, so `idle` never renders — but the
+        // type asks for it rather than letting a screen ship with a state that
+        // has no words.
+        idleTitle: "Choose a State to Draw This Report",
+        loadingLabel: `Loading the ${report.title.toLowerCase()}`,
+        errorTitle: "This Report Could Not Be Drawn",
+        errorDescription: "The figures did not load. Please try again.",
+        retryLabel: "Try again",
+        emptyTitle: "No Records Reported",
+        emptyDescription: "Nothing has been reported under this heading yet.",
+        filteredTitle: "No Records Match These Filters",
+        clearFiltersLabel: "Clear filters",
+      }}
+    />
   );
 }

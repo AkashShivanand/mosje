@@ -2,13 +2,22 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
-import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
-import { StatPill } from "@/components/smile-admin/data/stat-pill";
+import { SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
 import { CITY_PROFILES, type CityProfile } from "@/lib/smile-admin/mock-data";
 import { formatNumber } from "@/lib/smile-admin/utils";
-import { DataTable, type DataTableColumn } from "@mosje/design-system";
+import { ReportScreen, type ReportColumn } from "@mosje/design-system";
+
+/*
+ * The date the FIGURES were drawn, not the date the page was opened.
+ *
+ * `new Date()` during render is also a hydration hazard — the server stamps one
+ * time and the browser another — but the substantive reason is that these
+ * figures are a fixed extract. Stamping a report "drawn today" every time it is
+ * opened would let two copies of the same statement, printed a month apart,
+ * claim to be different draws of the register.
+ */
+const DRAWN_ON = "31 August 2026";
 
 /** Rupees to the crore figure the design prints in every money column. */
 function crore(n: number) {
@@ -32,6 +41,8 @@ function ValueChip({ value, tone }: { value: number; tone: "info" | "success" | 
 
 const CONSOLIDATION = ["Consolidated (All)", "Identification only", "Rehabilitation only"];
 
+const SELECT = "h-10 rounded-md border border-stroke-300 bg-white px-md text-body-2 text-ink shadow-xs";
+
 export default function CityProfilingPage() {
   const [search, setSearch] = useState("");
   const [state, setState] = useState("All States");
@@ -50,6 +61,16 @@ export default function CityProfilingPage() {
     [search, state],
   );
 
+  const activeFilterCount =
+    (search ? 1 : 0) + (state === "All States" ? 0 : 1) + (view === CONSOLIDATION[0] ? 0 : 1);
+
+  function clearFilters() {
+    setSearch("");
+    setState("All States");
+    setDistrict("All Districts");
+    setView(CONSOLIDATION[0]!);
+  }
+
   const onboarded = rows.filter((r) => r.cities > 0);
   const totals = {
     states: onboarded.length,
@@ -58,20 +79,17 @@ export default function CityProfilingPage() {
     released: rows.reduce((s, r) => s + r.released, 0),
   };
 
-  const columns: DataTableColumn<CityProfile & Record<string, unknown>>[] = [
+  const columns: ReportColumn<CityProfile & Record<string, unknown>>[] = [
     {
       key: "sno",
       header: "#",
-      className: "w-10 tabular-nums text-ink-hint",
       // The row's place in the register as it is currently ordered, which is why
       // it is computed from the filtered list rather than stored on the row.
       render: (r) => rows.findIndex((x) => x.stateId === r.stateId) + 1,
-      exportValue: (r) => String(rows.findIndex((x) => x.stateId === r.stateId) + 1),
     },
     {
       key: "state",
       header: "State / UT",
-      sortable: true,
       render: (r) => (
         <Link
           href={`/portals/smile-admin/city-profiling?state=${encodeURIComponent(r.state)}`}
@@ -81,155 +99,130 @@ export default function CityProfilingPage() {
         </Link>
       ),
     },
-    { key: "cities", header: "Cities", sortable: true, className: "tabular-nums" },
+    { key: "cities", header: "Cities", numeric: true },
     { key: "nodalOfficer", header: "Nodal Officer", render: (r) => r.nodalOfficer ?? "—" },
     { key: "email", header: "Email Id", render: (r) => r.email ?? "—" },
-    { key: "mobile", header: "Mobile", className: "tabular-nums", render: (r) => r.mobile ?? "—" },
+    { key: "mobile", header: "Mobile", render: (r) => r.mobile ?? "—" },
     {
       key: "identified",
       header: "Identified",
-      sortable: true,
+      numeric: true,
       render: (r) => <ValueChip value={r.identified} tone="info" />,
-      sortValue: (r) => r.identified,
-      exportValue: (r) => String(r.identified),
     },
     {
       key: "rehabilitated",
       header: "Rehabilitated",
-      sortable: true,
+      numeric: true,
       render: (r) => <ValueChip value={r.rehabilitated} tone="success" />,
-      sortValue: (r) => r.rehabilitated,
-      exportValue: (r) => String(r.rehabilitated),
     },
     {
       key: "released",
       header: "Released (₹)",
-      sortable: true,
-      // Sorted on the rupee figure, never on the printed "₹5.20 Cr" — a string
-      // sort puts ₹1.20 Cr above ₹9.00 Cr.
-      sortValue: (r) => r.released,
+      numeric: true,
       render: (r) => (
         <span className="inline-flex rounded-sm bg-warning-50 px-sm py-0.5 text-label-2 tabular-nums text-warning-600 ring-1 ring-inset ring-warning-100">
           {crore(r.released)}
         </span>
       ),
-      exportValue: (r) => crore(r.released),
     },
     {
       key: "utilised",
       header: "Utilized (₹)",
-      sortable: true,
-      sortValue: (r) => r.utilised,
+      numeric: true,
       render: (r) => (
         <span className="inline-flex rounded-sm bg-danger-50 px-sm py-0.5 text-label-2 tabular-nums text-danger-600 ring-1 ring-inset ring-danger-100">
           {crore(r.utilised)}
         </span>
       ),
-      exportValue: (r) => crore(r.utilised),
     },
   ];
 
   return (
-    <div className="space-y-lg">
-      <SmilePageHeader
-        breadcrumbs={[{ label: "City Profiling" }]}
-        title="City Profiling"
-        subtitle="State and Union Territory level overview — onboarding status, nodal officers, fund flow, and beneficiary progress across India."
-        actions={
-          <ExportMenu
-            filename="city-profiling"
-            title="City Profiling"
-            subtitle="State and Union Territory level overview"
-            columns={[
-              { header: "State / UT", accessor: "state" },
-              { header: "Cities", accessor: "cities" },
-              { header: "Nodal Officer", accessor: (r: CityProfile) => r.nodalOfficer ?? "—" },
-              { header: "Email Id", accessor: (r: CityProfile) => r.email ?? "—" },
-              { header: "Mobile", accessor: (r: CityProfile) => r.mobile ?? "—" },
-              { header: "Identified", accessor: "identified" },
-              { header: "Rehabilitated", accessor: "rehabilitated" },
-              { header: "Released", accessor: (r: CityProfile) => crore(r.released) },
-              { header: "Utilized", accessor: (r: CityProfile) => crore(r.utilised) },
-            ]}
-            rows={rows}
+    <ReportScreen
+      breadcrumb={[{ label: "City Profiling" }]}
+      title="City Profiling"
+      meta="State and Union Territory level overview — onboarding status, nodal officers, fund flow, and beneficiary progress across India."
+      issuer="Ministry of Social Justice & Empowerment, Government of India"
+      generatedAt={DRAWN_ON}
+      criteria={[
+        { label: "States / UTs onboarded", value: String(totals.states) },
+        { label: "Cities selected", value: String(totals.cities) },
+        { label: "Beneficiaries identified", value: totals.identified.toLocaleString("en-IN") },
+        { label: "Funds released", value: crore(totals.released) },
+        { label: "State / UT", value: state },
+        { label: "Consolidation", value: view ?? CONSOLIDATION[0]! },
+      ]}
+      exportActions={
+        <ExportMenu
+          filename="city-profiling"
+          title="City Profiling"
+          subtitle="State and Union Territory level overview"
+          columns={[
+            { header: "State / UT", accessor: "state" },
+            { header: "Cities", accessor: "cities" },
+            { header: "Nodal Officer", accessor: (r: CityProfile) => r.nodalOfficer ?? "—" },
+            { header: "Email Id", accessor: (r: CityProfile) => r.email ?? "—" },
+            { header: "Mobile", accessor: (r: CityProfile) => r.mobile ?? "—" },
+            { header: "Identified", accessor: "identified" },
+            { header: "Rehabilitated", accessor: "rehabilitated" },
+            { header: "Released", accessor: (r: CityProfile) => crore(r.released) },
+            { header: "Utilized", accessor: (r: CityProfile) => crore(r.utilised) },
+          ]}
+          rows={rows}
+        />
+      }
+      filters={
+        <>
+          <SearchField
+            placeholder="Search beneficiary, location, district…"
+            label="Search states, nodal officers and contact details"
+            value={search}
+            onChange={setSearch}
           />
-        }
-      />
-
-      <div className="grid grid-cols-2 gap-md md:grid-cols-4">
-        <StatPill label="States/UTs onboarded" value={totals.states} icon="location_on" tone="info" />
-        <StatPill label="Total cities selected" value={totals.cities} icon="apartment" tone="success" />
-        <StatPill label="Beneficiaries identified" value={totals.identified} icon="group" tone="warning" />
-        <StatPill label="Funds released (₹ Cr)" value={Math.round(totals.released / 1_00_00_000)} icon="account_balance_wallet" tone="primary" />
-      </div>
-
-      <DataToolbar>
-        <SearchField
-          placeholder="Search beneficiary, location, district…"
-          label="Search states, nodal officers and contact details"
-          value={search}
-          onChange={setSearch}
-        />
-        <select
-          aria-label="State"
-          value={state}
-          onChange={(e) => setState(e.target.value)}
-          className="h-10 rounded-md border border-stroke-300 bg-white px-md text-body-2 text-ink shadow-xs"
-        >
-          {["All States", ...CITY_PROFILES.map((r) => r.state)].map((s) => (
-            <option key={s}>{s}</option>
-          ))}
-        </select>
-        <select
-          aria-label="District"
-          value={district}
-          onChange={(e) => setDistrict(e.target.value)}
-          className="h-10 rounded-md border border-stroke-300 bg-white px-md text-body-2 text-ink shadow-xs"
-        >
-          <option>All Districts</option>
-        </select>
-        <select
-          aria-label="Consolidation"
-          value={view}
-          onChange={(e) => setView(e.target.value)}
-          className="h-10 rounded-md border border-stroke-300 bg-white px-md text-body-2 text-ink shadow-xs"
-        >
-          {CONSOLIDATION.map((c) => (
-            <option key={c}>{c}</option>
-          ))}
-        </select>
-      </DataToolbar>
-
-      {/* Mobile card list — the table scrolls sideways on a phone otherwise. */}
-      <ul className="space-y-sm md:hidden">
-        {rows.map((r) => (
-          <li key={r.stateId} className="space-y-sm rounded-lg border border-stroke-200 bg-white p-md shadow-xs">
-            <div className="flex items-baseline justify-between gap-sm">
-              <span className="text-body-1 font-semibold text-ink">{r.state}</span>
-              <span className="text-label-2 text-ink-muted">{r.cities} cities</span>
-            </div>
-            <div className="text-label-2 text-ink-muted">{r.nodalOfficer ?? "No nodal officer recorded"}</div>
-            <div className="flex flex-wrap gap-xs">
-              <ValueChip value={r.identified} tone="info" />
-              <ValueChip value={r.rehabilitated} tone="success" />
-              <span className="inline-flex rounded-sm bg-warning-50 px-sm py-0.5 text-label-2 tabular-nums text-warning-600 ring-1 ring-inset ring-warning-100">
-                {crore(r.released)}
-              </span>
-            </div>
-          </li>
-        ))}
-      </ul>
-
-      <div className="hidden rounded-lg border border-stroke-200 bg-white p-md shadow-xs md:block">
-        <DataTable
-          columns={columns}
-          data={rows as Array<CityProfile & Record<string, unknown>>}
-          total={rows.length}
-          showPageSizes={false}
-          caption="States and Union Territories, with onboarding, nodal officer and fund figures"
-          emptyLabel="No state or Union Territory matches these filters."
-        />
-      </div>
-    </div>
+          <select aria-label="State" value={state} onChange={(e) => setState(e.target.value)} className={SELECT}>
+            {["All States", ...CITY_PROFILES.map((r) => r.state)].map((s) => (
+              <option key={s}>{s}</option>
+            ))}
+          </select>
+          <select aria-label="District" value={district} onChange={(e) => setDistrict(e.target.value)} className={SELECT}>
+            <option>All Districts</option>
+          </select>
+          <select aria-label="Consolidation" value={view} onChange={(e) => setView(e.target.value)} className={SELECT}>
+            {CONSOLIDATION.map((c) => (
+              <option key={c}>{c}</option>
+            ))}
+          </select>
+        </>
+      }
+      activeFilterCount={activeFilterCount}
+      onClearFilters={clearFilters}
+      columns={columns}
+      rows={rows as Array<CityProfile & Record<string, unknown>>}
+      count={rows.length}
+      filtered={activeFilterCount > 0}
+      getRowId={(r) => String(r.stateId)}
+      totals={(key) =>
+        key === "state"
+          ? "Total"
+          : key === "cities"
+            ? totals.cities
+            : key === "identified"
+              ? totals.identified.toLocaleString("en-IN")
+              : key === "released"
+                ? crore(totals.released)
+                : null
+      }
+      copy={{
+        idleTitle: "Choose a State to See Its Profile",
+        loadingLabel: "Loading the state and Union Territory register",
+        errorTitle: "This Register Could Not Be Loaded",
+        errorDescription: "The figures did not load. Please try again.",
+        retryLabel: "Try again",
+        emptyTitle: "No State Has Been Onboarded",
+        emptyDescription: "No State or Union Territory has reported a city profile yet.",
+        filteredTitle: "No State Matches These Filters",
+        clearFiltersLabel: "Clear filters",
+      }}
+    />
   );
 }
