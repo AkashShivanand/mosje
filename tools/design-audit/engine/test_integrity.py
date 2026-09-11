@@ -56,35 +56,44 @@ class AbsenceClaims(unittest.TestCase):
 class QuotedBuildColours(unittest.TestCase):
     ROWS = [{"text": "Edit", "color": "rgb(237, 133, 37)"},          # #ED8525, the served value
             {"text": "Save", "bg": "rgb(0, 51, 102)"}]               # #003366
+    INVENTORY = {"#ED8525": 3, "#003366": 12}
 
     def rows_for(self, slug):
         return self.ROWS if slug == "list" else None
+
+    def inv_for(self, slug):
+        return self.INVENTORY if slug == "list" else None
+
+    def gate(self, f, warn=None):
+        return I.gate_quoted_build_colours([f], self.rows_for, warn, self.inv_for)
 
     def test_a_sampled_colour_is_caught(self):
         # GLOBAL-005 as published: #E08020 is the anti-aliased average, not a value in the build
         f = {"id": "NMB-GLOBAL-005", "slug": "list",
              "build": "The edit glyph is drawn #E08020."}
-        out = I.gate_quoted_build_colours([f], self.rows_for)
+        out = self.gate(f)
         self.assertEqual(len(out), 1)
         self.assertIn("#E08020", out[0])
 
     def test_the_corrected_colour_passes(self):
         f = {"id": "NMB-GLOBAL-005", "slug": "list",
              "build": "The edit glyph is drawn #ED8525."}
-        self.assertEqual(I.gate_quoted_build_colours([f], self.rows_for), [])
+        self.assertEqual(self.gate(f), [])
 
     def test_case_does_not_matter(self):
         f = {"id": "X", "slug": "list", "build": "drawn #ed8525 on #003366."}
-        self.assertEqual(I.gate_quoted_build_colours([f], self.rows_for), [])
+        self.assertEqual(self.gate(f), [])
 
-    def test_a_screen_with_no_extraction_is_skipped_not_guessed(self):
+    def test_a_screen_with_no_evidence_is_skipped_not_guessed(self):
         f = {"id": "X", "slug": "unknown", "build": "drawn #123456."}
-        self.assertEqual(I.gate_quoted_build_colours([f], self.rows_for), [])
+        warn = []
+        self.assertEqual(self.gate(f, warn), [])
+        self.assertEqual(warn, [])
 
     def test_a_declared_exception_passes(self):
         # a colour legitimately read from the served SVG rather than a rendered element
         f = {"id": "X", "slug": "list", "build": "drawn #E08020.", "_colourWhy": "read from the SVG"}
-        self.assertEqual(I.gate_quoted_build_colours([f], self.rows_for), [])
+        self.assertEqual(self.gate(f), [])
 
 
 # ---------------------------------------------------------------------------------------------
@@ -303,27 +312,54 @@ class ColourParsing(unittest.TestCase):
 
 
 class ColourNearMiss(unittest.TestCase):
-    ROWS = [{"borderColor": "rgb(229, 231, 235)"},          # #E5E7EB, what the build renders
+    ROWS = [{"borderColor": "rgb(229, 231, 235)"},          # #E5E7EB — a row, i.e. text/controls
             {"color": "rgb(237, 133, 37)"}]                 # #ED8525
+    # what the page actually paints, from capture.py's COLOR_INVENTORY_JS
+    INVENTORY = {"#E5E7EB": 16, "#ED8525": 4, "#FFFFFF": 15}
 
     def rows_for(self, slug):
         return self.ROWS
 
-    def test_a_sampled_near_miss_fails(self):
-        # both real cases: the quoted value is a few points off one the build genuinely renders
+    def inv_for(self, slug):
+        return self.INVENTORY
+
+    def test_a_sampled_near_miss_fails_when_the_inventory_is_complete(self):
+        # both real cases: the quoted value is a few points off one the build genuinely paints
         for quoted in ("#E5EAF2", "#E08020"):
             with self.subTest(quoted=quoted):
                 out = I.gate_quoted_build_colours(
-                    [{"id": "X", "slug": "s", "build": f"a 1px {quoted} edge"}], self.rows_for)
+                    [{"id": "X", "slug": "s", "build": f"a 1px {quoted} edge"}],
+                    self.rows_for, None, self.inv_for)
                 self.assertEqual(len(out), 1)
                 self.assertIn("pixel sample", out[0])
 
-    def test_a_colour_nowhere_near_anything_warns_instead_of_failing(self):
-        # the extraction carries text and controls, not every container — absence is not proof,
-        # which is the very error this module exists to stop making
+    def test_the_rows_alone_may_never_convict(self):
+        # NMB-SCREEN-046, the regression this whole redesign exists for. The activity card's
+        # #E5EAF2 edge is real — hard-coded in the class on nine cards — and invisible to the
+        # element rows, which carry no containers. The first version of this gate failed it
+        # because #E5E7EB, used on 16 OTHER elements, is 7 points away.
         warn = []
         out = I.gate_quoted_build_colours(
-            [{"id": "X", "slug": "s", "build": "the panel is #112233"}], self.rows_for, warn)
+            [{"id": "NMB-SCREEN-046", "slug": "PUBLIC-ACTIVITIES",
+              "build": "The card is 329x351 at radius 8 with a 1px #E5EAF2 edge"}],
+            self.rows_for, warn)
+        self.assertEqual(out, [])
+        self.assertEqual(len(warn), 1)
+        self.assertIn("no colour inventory", warn[0])
+
+    def test_and_passes_outright_once_the_inventory_sees_it(self):
+        inv = dict(self.INVENTORY, **{"#E5EAF2": 9})        # the nine activity cards
+        warn = []
+        out = I.gate_quoted_build_colours(
+            [{"id": "NMB-SCREEN-046", "slug": "PUBLIC-ACTIVITIES",
+              "build": "a 1px #E5EAF2 edge"}], self.rows_for, warn, lambda s: inv)
+        self.assertEqual((out, warn), ([], []))
+
+    def test_a_colour_nowhere_near_anything_warns_instead_of_failing(self):
+        warn = []
+        out = I.gate_quoted_build_colours(
+            [{"id": "X", "slug": "s", "build": "the panel is #112233"}],
+            self.rows_for, warn, self.inv_for)
         self.assertEqual(out, [])
         self.assertEqual(len(warn), 1)
 
@@ -333,7 +369,8 @@ class ColourNearMiss(unittest.TestCase):
         warn = []
         f = {"id": "X", "slug": "s",
              "build": "'Published' is #ED8525, a near-miss of the design's #27682A."}
-        self.assertEqual(I.gate_quoted_build_colours([f], self.rows_for, warn), [])
+        self.assertEqual(
+            I.gate_quoted_build_colours([f], self.rows_for, warn, self.inv_for), [])
         self.assertEqual(warn, [])
 
 

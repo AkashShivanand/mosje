@@ -141,7 +141,7 @@ def _near(a, b):
     return max(abs(int(a[i:i + 2], 16) - int(b[i:i + 2], 16)) for i in (1, 3, 5))
 
 
-def gate_quoted_build_colours(findings, rows_for, warnings=None):
+def gate_quoted_build_colours(findings, rows_for, warnings=None, inventory_for=None):
     """A hex attributed to the BUILD must be a value the build actually renders.
 
     A glyph sampled off a screenshot returns the anti-aliased average of the glyph and its
@@ -149,34 +149,48 @@ def gate_quoted_build_colours(findings, rows_for, warnings=None):
     sample, and the design's #003366 icon samples as #7F99B2. A developer cannot grep for a
     colour that exists nowhere in the code.
 
-    The extraction is not a complete inventory of the page — it carries text and interactive
-    elements, not every container — so "absent from the extraction" is not by itself proof, and
-    a gate that failed on it would be making the same unfounded-absence error this module exists
-    to stop. The split:
+    **What counts as evidence decides what this gate may do.**
 
-      * in the extraction                        -> pass
-      * within NEAR_MISS of something that is    -> FAIL. That is the fingerprint of a sampled
-                                                   value: #E08020 beside the served #ED8525.
-      * nowhere near anything                    -> warning. Probably an element the extractor
-                                                   does not emit; declare `_colourWhy` to settle it.
+    The element rows are not an inventory of the page. They carry text and interactive elements,
+    NOT containers — so a card's own border is invisible to them. The first version of this gate
+    read absence from the rows as proof and failed NMB-SCREEN-046, whose "1px #E5EAF2 edge" is
+    not only real but hard-coded in the class (`border-[#E5EAF2]`) on nine cards; the rows only
+    knew the #E5E7EB used on 16 other elements of the same page, 7 points away, so the near-miss
+    rule fired on a correct finding. That is the unfounded-absence mistake this module exists to
+    stop, made by the module itself — and it is worst on findings that are ABOUT near-misses,
+    which is most of them.
 
-    `rows_for(slug) -> [row, ...]` returns the extraction rows, or None when unavailable (the
-    gate then skips that finding rather than guessing). `warnings` is an optional list that
-    collects the third case.
+    So: `capture.py` now records a real page colour inventory, and only the inventory licenses a
+    failure.
+
+      * in the evidence                            -> pass
+      * absent from a COMPLETE inventory, and within NEAR_MISS of something in it
+                                                   -> FAIL. The fingerprint of a sampled value.
+      * absent from a complete inventory, far from everything
+                                                   -> warning; confirm it and declare `_colourWhy`
+      * only the ROWS are available                -> warning at most, never a failure. Incomplete
+                                                      evidence cannot convict.
+
+    `inventory_for(slug)` returns {hex: count} or None. `rows_for(slug)` returns the rows or None.
     """
     fails = []
     for f in findings:
         slug = f.get("slug")
         if not slug or f.get("_colourWhy"):
             continue
-        rows = rows_for(slug)
-        if not rows:
-            continue
-        seen = set()
-        for r in rows:
-            for key in ("color", "bg", "borderColor", "outlineColor", "fill"):
-                if r.get(key):
-                    seen.update(colours_in(r[key]))
+        inv = inventory_for(slug) if inventory_for else None
+        complete = bool(inv)
+        if complete:
+            seen = {h.upper() for h in inv}
+        else:
+            rows = rows_for(slug)
+            if not rows:
+                continue
+            seen = set()
+            for r in rows:
+                for key in ("color", "bg", "borderColor", "outlineColor", "fill"):
+                    if r.get(key):
+                        seen.update(colours_in(r[key]))
         if not seen:
             continue
         build = str(f.get("build") or "")
@@ -186,16 +200,25 @@ def gate_quoted_build_colours(findings, rows_for, warnings=None):
                 continue
             close = sorted((c for c in seen if _near(hexv, c) <= NEAR_MISS),
                            key=lambda c: _near(hexv, c))
-            if close:
+            if not complete:
+                # only the rows — text and controls, no containers. Say so and move on; a gate
+                # that convicts on evidence it knows to be partial is the defect, not the finding.
+                if warnings is not None:
+                    warnings.append(
+                        f"{f.get('id')}: {hexv} could not be checked — {slug} has no colour "
+                        f"inventory, and the element rows do not carry containers. Re-capture to "
+                        f"judge this")
+            elif close:
                 fails.append(
-                    f"{f.get('id')}: quotes {hexv} as a BUILD colour, but {slug} renders "
-                    f"{close[0]} — {_near(hexv, close[0])} apart on one channel. That gap is what a "
-                    f"pixel sample looks like. Read the value out of the DOM, not off a screenshot")
+                    f"{f.get('id')}: quotes {hexv} as a BUILD colour, but nothing on {slug} paints "
+                    f"it; the nearest the page does paint is {close[0]}, "
+                    f"{_near(hexv, close[0])} apart on one channel. That gap is what a pixel "
+                    f"sample looks like. Read the value out of the DOM, not off a screenshot")
             elif warnings is not None:
                 warnings.append(
-                    f"{f.get('id')}: {hexv} is attributed to the build but appears on no element "
-                    f"{slug}'s extraction carries. Likely a container the extractor does not emit "
-                    f"— confirm it in the DOM and declare `_colourWhy`")
+                    f"{f.get('id')}: {hexv} is attributed to the build but nothing on {slug} "
+                    f"paints it, or anything near it — confirm it in the DOM and declare "
+                    f"`_colourWhy`")
     return fails
 
 

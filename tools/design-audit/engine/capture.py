@@ -157,6 +157,45 @@ HIDE_OFFCANVAS_JS = r"""(w) => {
   return hidden;
 }"""
 
+# Every colour the page actually paints, with a count. The element rows carry TEXT and CONTROLS,
+# not containers — so a card's own border is invisible to them, and a gate that read absence from
+# the rows as evidence would be making the unfounded-absence mistake this engine exists to stop.
+# It did: NMB-SCREEN-046 correctly reported the activity card's 1px #E5EAF2 edge (the hex is
+# hard-coded in the class, `border-[#E5EAF2]`, on nine cards) and the gate failed it because the
+# rows only knew the #E5E7EB used on 16 OTHER elements of the same page.
+#
+# Cheap: one pass, one string per element, capped. Channels are CLAMPED — an unclamped
+# toString(16) turned a 256 into '100' and produced seven-character "hex".
+COLOR_INVENTORY_JS = r"""() => {
+  const f = v => Math.max(0, Math.min(255, Math.round(parseFloat(v) || 0)))
+                  .toString(16).padStart(2, '0').toUpperCase();
+  const hex = c => {
+    const m = String(c || '').match(/[\d.]+/g);
+    if (!m || m.length < 3) return null;
+    if (m.length > 3 && parseFloat(m[3]) === 0) return null;      // fully transparent paints nothing
+    return '#' + f(m[0]) + f(m[1]) + f(m[2]);
+  };
+  const tally = {};
+  const bump = c => { const h = hex(c); if (h) tally[h] = (tally[h] || 0) + 1; };
+  const all = document.querySelectorAll('*');
+  for (let i = 0; i < all.length && i < 6000; i++) {
+    const el = all[i], s = getComputedStyle(el);
+    const b = el.getBoundingClientRect();
+    if (b.width < 1 || b.height < 1) continue;                    // nothing invisible counts
+    if (s.visibility === 'hidden' || s.opacity === '0') continue;
+    bump(s.color);
+    bump(s.backgroundColor);
+    if (parseFloat(s.borderTopWidth) > 0) bump(s.borderTopColor);
+    if (parseFloat(s.borderRightWidth) > 0) bump(s.borderRightColor);
+    if (parseFloat(s.borderBottomWidth) > 0) bump(s.borderBottomColor);
+    if (parseFloat(s.borderLeftWidth) > 0) bump(s.borderLeftColor);
+    if (s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0) bump(s.outlineColor);
+    if (s.fill && s.fill !== 'none') bump(s.fill);
+    if (s.stroke && s.stroke !== 'none') bump(s.stroke);
+  }
+  return tally;
+}"""
+
 UNCLIP_JS = r"""() => {
   // Un-clip the VERTICAL axis only. `overflow: visible` releases both, and releasing X makes a
   // horizontally-scrolling region lay its children out in a full-width row instead of scrolling:
@@ -1031,6 +1070,10 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         except Exception: pass
         try:
             data = probe if probe is not None else pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
+            try:
+                data["colorInventory"] = pg.evaluate(COLOR_INVENTORY_JS)
+            except Exception:
+                data["colorInventory"] = None      # null, not {} — "could not look" is not "empty"
             data["role"] = role["name"]; data["route"] = path; data["slug"] = slug
             data["figmaImg"] = None; data["url"] = base + path
             json.dump(data, open(os.path.join(paths["captures_live"], f"{slug}.json"), "w"), indent=2)
@@ -1076,6 +1119,7 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
             # opening 51 per-screen extraction files. Empty list = the canary ran and saw nothing
             # move; a MISSING key means the capture predates the canary and is not judged.
             entry["layoutShift"] = data.get("layoutShift") or []
+            entry["colorInventory"] = data.get("colorInventory")
             B.upsert_screen(bdl, entry)
             if len(data["rows"]) and masked / len(data["rows"]) > B.MASK_WARN_RATIO:
                 print(f"  ! {slug}: {masked}/{len(data['rows'])} rows masked as volatile — "
