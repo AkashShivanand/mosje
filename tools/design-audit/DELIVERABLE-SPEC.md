@@ -15,6 +15,10 @@ python3 engine/deliverable.py --write --portal <name>   # README.md + DESIGN-QA-
 python3 engine/deliverable.py --check                   # the gate, across every portal
 ```
 
+This page's gate is one of nine. **`python3 engine/verify.py --project <name> --tests` runs them
+all and prints one board**, and nothing is sent until it has been read — not glanced at. `SKIP` is
+not `PASS`; a skipped gate names itself and the verdict says `PASSED, NOT PROVEN`.
+
 ## 1. `docs/qc/portals/<portal>/` — the published deliverable
 
 **Committed, always:**

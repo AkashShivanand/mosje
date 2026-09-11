@@ -116,6 +116,31 @@ EXTRACT_JS = r"""
 #
 # The rule: an element that is FIXED and lies entirely outside the viewport is not part of the
 # page being audited. Hide it, record what was hidden, and unclip what remains.
+# The unclip pass exists to make a page its full HEIGHT. If it also moves anything SIDEWAYS,
+# the capture has stopped describing the page and started describing an artefact of the harness —
+# and a finding written off it can be flatly false. NMB-SCREEN-016 was published saying the NMBA
+# pledge banner had no call to action; the button was at x1171 in the browser and x1841 in the
+# capture, because unclipping released the horizontal axis and a scrolling row re-flowed.
+#
+# So the harness watches itself: a handful of stable, visible elements are measured BEFORE the
+# pass and again AFTER. If any has moved horizontally, the screen is flagged. Cheap (one
+# evaluate each side), and it catches the whole class at the moment it happens rather than four
+# review passes later.
+CANARY_JS = r"""() => {
+  const out = [];
+  const els = document.querySelectorAll('h1,h2,h3,button,a,th,label');
+  for (const el of els) {
+    const t = (el.textContent || '').trim();
+    if (t.length < 4 || t.length > 60) continue;
+    const b = el.getBoundingClientRect();
+    if (b.width < 8 || b.height < 8) continue;
+    if (b.top < 0 || b.top > 2000) continue;
+    out.push([t.slice(0, 40), Math.round(b.left + scrollX)]);
+    if (out.length >= 24) break;
+  }
+  return out;
+}"""
+
 HIDE_OFFCANVAS_JS = r"""(w) => {
   const hidden = [];
   document.querySelectorAll('*').forEach(el => {
@@ -944,6 +969,10 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         # nothing to do with the page actually changing, and the reuse saving is lost.
         skel_left, skel_waited = wait_for_data(pg)
         try:
+            canary_before = dict(pg.evaluate(CANARY_JS))
+        except Exception:
+            canary_before = {}
+        try:
             off = pg.evaluate(HIDE_OFFCANVAS_JS, width)
         except Exception:
             off = []
@@ -951,10 +980,25 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
             print(f"  hid {len(off)} off-canvas fixed element(s) before unclip: "
                   f"{', '.join(off[:2])}", flush=True)
         settled = settle_height(pg, UNCLIP_JS, width=width, base_h=1000)
+        shifted = []
+        try:
+            for text, x_after in pg.evaluate(CANARY_JS):
+                x_before = canary_before.get(text)
+                if x_before is not None and abs(x_after - x_before) > 2:
+                    shifted.append({"text": text, "before": x_before, "after": x_after})
+        except Exception:
+            pass
+        if shifted:
+            worst = max(shifted, key=lambda d: abs(d["after"] - d["before"]))
+            print(f"  !! LAYOUT SHIFTED during unclip on {slug}: {len(shifted)} element(s) moved "
+                  f"sideways, worst {worst['text']!r} x{worst['before']} -> x{worst['after']}. "
+                  f"The capture no longer describes the page.", flush=True)
         try:
             probe = pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
         except Exception:
             probe = None
+        if probe is not None and isinstance(probe, dict):
+            probe["layoutShift"] = shifted
 
         decision = "recapture"
         if mode == "verify" and prev and probe is not None:
@@ -1028,6 +1072,10 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
                 masked=masked, total=len(data["rows"]),
                 fields=data.get("fields") or [], wizard=None, captured_at=B.now_iso())
             entry["designUnchanged"] = (decision == "reshoot")
+            # Carried onto the bundle so integrity.gate_capture_layout can fail the run without
+            # opening 51 per-screen extraction files. Empty list = the canary ran and saw nothing
+            # move; a MISSING key means the capture predates the canary and is not judged.
+            entry["layoutShift"] = data.get("layoutShift") or []
             B.upsert_screen(bdl, entry)
             if len(data["rows"]) and masked / len(data["rows"]) > B.MASK_WARN_RATIO:
                 print(f"  ! {slug}: {masked}/{len(data['rows'])} rows masked as volatile — "
