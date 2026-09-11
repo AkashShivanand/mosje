@@ -7,6 +7,6 @@ import { misReport } from "@/lib/smile-admin/mis-reports";
 // if they are pulled into a production server build, and a server component
 // here is what reaches them during `next build`.
 export default function Page() {
-  const report = misReport("rehabilitated")!;
+  const report = misReport("master")!;
   return <MisReportPage report={report} />;
 }

@@ -1,12 +1,8 @@
-import { ComingSoon } from "@/components/smile-admin/shell/coming-soon";
+import { redirect } from "next/navigation";
 
+/**
+ * A second route onto the survey register. The live portal has one survey list, at Survey Locations, so this sends a reader there rather than showing them a second, emptier copy of it.
+ */
 export default function Page() {
-  return (
-    <ComingSoon
-      title="Survey Submissions"
-      subtitle="Submitted survey records awaiting verification."
-      breadcrumbs={[{ label: "Field Operations" }, { label: "Survey Submissions" }]}
-      backHref="/portals/smile-admin/dashboard"
-    />
-  );
+  redirect("/portals/smile-admin/surveys");
 }

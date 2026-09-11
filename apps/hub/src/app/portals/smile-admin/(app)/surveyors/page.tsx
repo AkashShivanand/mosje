@@ -1,12 +1,8 @@
-import { ComingSoon } from "@/components/smile-admin/shell/coming-soon";
+import { redirect } from "next/navigation";
 
+/**
+ * A second route onto the surveyor register. Surveyor Mappings is the one the live portal publishes.
+ */
 export default function Page() {
-  return (
-    <ComingSoon
-      title="Surveyors"
-      subtitle="Surveyor roster and assignment overview."
-      breadcrumbs={[{ label: "Access Control" }, { label: "Surveyors" }]}
-      backHref="/portals/smile-admin/dashboard"
-    />
-  );
+  redirect("/portals/smile-admin/surveyor-mapped");
 }

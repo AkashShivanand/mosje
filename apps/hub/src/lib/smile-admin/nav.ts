@@ -2,8 +2,11 @@ import type { RoleKey } from "./roles";
 
 export interface NavItem {
   label: string;
-  href: string;
+  /** A group row with children may omit its own page; the row then only opens. */
+  href?: string;
   icon: string;
+  /** Sub-items, rendered by `SidebarNav` as an expanding group. */
+  children?: Array<{ label: string; href: string }>;
   badge?: number | "live";
   roles?: RoleKey[]; // if omitted, visible to all signed-in users
 }
@@ -34,13 +37,23 @@ export const NAV: NavGroup[] = [
       { label: "Survey Locations", href: "/portals/smile-admin/surveys", icon: "location_on" },
       { label: "Surveyor Mappings", href: "/portals/smile-admin/surveyor-mapped", icon: "map" },
       { label: "Beggary Schemes", href: "/portals/smile-admin/beggary-schemes", icon: "menu_book" },
+      { label: "IA List", href: "/portals/smile-admin/ia-list", icon: "corporate_fare" },
       { label: "Hotspot Approvals", href: "/portals/smile-admin/hotspot-approvals", icon: "where_to_vote" },
     ],
   },
   {
     label: "Beneficiaries",
     items: [
-      { label: "Beneficiary List", href: "/portals/smile-admin/persons", icon: "account_box" },
+      {
+        label: "Beneficiary List",
+        href: "/portals/smile-admin/persons",
+        icon: "account_box",
+        children: [
+          { label: "Under Mobilisation", href: "/portals/smile-admin/persons/under-mobilized" },
+          { label: "Mobilised", href: "/portals/smile-admin/persons/mobilized" },
+          { label: "In a Shelter Home", href: "/portals/smile-admin/persons/shelter-home" },
+        ],
+      },
       { label: "Shelter Homes", href: "/portals/smile-admin/shelter-homes", icon: "apartment" },
       { label: "Shelter Occupants", href: "/portals/smile-admin/shelter-homes/beneficiaries", icon: "home" },
       { label: "Skill & Training", href: "/portals/smile-admin/comprehensive-rehab/skill-training", icon: "school" },
@@ -55,7 +68,20 @@ export const NAV: NavGroup[] = [
       { label: "Sanction Order", href: "/portals/smile-admin/fund-monitoring/sanction-orders/create", icon: "receipt_long" },
       { label: "Release Order", href: "/portals/smile-admin/fund-monitoring/nisd-releases/create", icon: "send" },
       { label: "Release Onwards", href: "/portals/smile-admin/fund-monitoring/nodal-officer-onward-releases/create", icon: "send" },
-      { label: "MIS Reports", href: "/portals/smile-admin/mis-reports/mobilised", icon: "description" },
+      {
+        label: "MIS Reports",
+        icon: "description",
+        children: [
+          { label: "Mobilised Report", href: "/portals/smile-admin/mis-reports/mobilised" },
+          { label: "Rehabilitated Report", href: "/portals/smile-admin/mis-reports/rehabilitated" },
+          { label: "Beneficiary Report", href: "/portals/smile-admin/mis-reports/beneficiary" },
+          { label: "Swashraya (Shelter Home) Report", href: "/portals/smile-admin/mis-reports/shelter-home" },
+          { label: "Implementing Agency Report", href: "/portals/smile-admin/mis-reports/ia-agency-institute" },
+          { label: "Survey Location Report", href: "/portals/smile-admin/mis-reports/survey-location" },
+          { label: "Comprehensive Rehab Report", href: "/portals/smile-admin/mis-reports/comprehensive-rehab" },
+          { label: "Master Report", href: "/portals/smile-admin/mis-reports/master" },
+        ],
+      },
     ],
   },
   {
