@@ -523,3 +523,128 @@ export const REVIEW_QUEUE: ReviewItem[] = [
   { id: "rv-004", type: "Beneficiary",       description: "Age mismatch flagged on Beneficiary 14021 by Anushka Rao",   raisedBy: "Anushka Rao",       ageHours: 14, severity: "Medium" },
   { id: "rv-005", type: "Shelter Capacity",  description: "Delhi Urban Shelter NDLS reporting 0 occupancy 48h",        raisedBy: "Arjun Khanna",      ageHours: 22, severity: "Low"    },
 ];
+
+/* ---------- City Profiling — state / UT level programme rollup ---------- */
+export interface CityProfile {
+  stateId: number;
+  state: string;
+  cities: number;
+  nodalOfficer: string | null;
+  email: string | null;
+  mobile: string | null;
+  identified: number;
+  rehabilitated: number;
+  /** Rupees. Rendered in crore by the page. */
+  released: number;
+  utilised: number;
+}
+
+export const CITY_PROFILES: CityProfile[] = STATES.map((s, i) => {
+  // Deterministic figures — a fixture has to render the same on every build, and
+  // a random one makes a visual diff meaningless.
+  const seeded = (mul: number, mod: number) => ((s.id * mul) % mod);
+  const onboarded = s.id % 7 !== 0;                       // six states are not onboarded yet
+  const identified = onboarded ? 400 + seeded(937, 3200) : 0;
+  const rehabilitated = Math.round(identified * (0.22 + (seeded(31, 18) / 100)));
+  const released = onboarded ? (2 + seeded(13, 9)) * 1_00_00_000 : 0;
+  const first = ["Dr. K.", "Sh. Rajiv", "Smt. Priya", "Sh. Mehta", "Dr. Lakshmi", "Sh. Thomas", "Smt. Shukla", "Dr. Patil"][i % 8];
+  const last = ["Ramesh", "Bora", "Singh", "Anil", "Rao", "Kurian", "Devi", "Sawant"][i % 8];
+  const slug = s.name.toLowerCase().replace(/[^a-z]+/g, "");
+  return {
+    stateId: s.id,
+    state: s.name,
+    cities: onboarded ? 3 + seeded(7, 23) : 0,
+    nodalOfficer: onboarded ? `${first} ${last}` : null,
+    email: onboarded ? `no.${slug}@gov.test.in` : null,
+    mobile: onboarded ? `98765${String(43000 + s.id).slice(0, 5)}` : null,
+    identified,
+    rehabilitated,
+    released,
+    utilised: Math.round(released * (0.58 + (seeded(17, 30) / 100))),
+  };
+});
+
+/* ---------- Consent Forms — IA submissions from the DoSJE WordPress site ---------- */
+export interface ConsentForm {
+  id: string;
+  state: string;
+  district: string;
+  authority: string | null;
+  agency: string | null;
+  document: "Uploaded" | "Awaited";
+  submittedOn: string;
+}
+
+const CONSENT_SEED: Array<[string, string[]]> = [
+  ["Uttar Pradesh", ["Gautam Budh Nagar", "Kanpur Dehat", "Lucknow", "Varanasi", "Agra"]],
+  ["Maharashtra", ["Pune", "Nagpur", "Nashik", "Raisen"]],
+  ["Andhra Pradesh", ["Chittoor", "Guntur", "Kakinada", "Kurnool", "Nandyal", "Tirupati", "Vijayawada", "Visakhapatnam"]],
+  ["Arunachal Pradesh", ["Itanagar", "Namsai"]],
+  ["Assam", ["Biswanath", "Cachar", "Chirang", "Dhemaji", "Dibrugarh", "Golaghat"]],
+];
+
+export const CONSENT_FORMS: ConsentForm[] = CONSENT_SEED.flatMap(([state, districts]) =>
+  districts.map((district, i) => {
+    // The first few rows of each state carry a submitted document; the rest are awaited.
+    const uploaded = i < 2 && state !== "Andhra Pradesh" && state !== "Assam";
+    return {
+      id: `cf-${state.slice(0, 3).toLowerCase()}-${i + 1}`,
+      state,
+      district,
+      authority: uploaded ? `Samaj Kalyan Vibhag · ${district}` : null,
+      agency: uploaded ? "Jankalyan Parishad" : null,
+      document: uploaded ? ("Uploaded" as const) : ("Awaited" as const),
+      submittedOn: `${String(3 + ((i * 5) % 25)).padStart(2, "0")} Aug 2026`,
+    };
+  }),
+);
+
+/* ---------- Hotspot Approvals — IA hotspot declarations and re-inspections ---------- */
+export type HotspotStatus = "Pending" | "Approved" | "Rejected";
+
+export interface HotspotForm {
+  id: string;
+  kind: "Hotspot" | "Re-inspection";
+  state: string;
+  district: string;
+  locationType: "Religious Place" | "Traffic Signal" | "Market" | "Transport Hub" | "Public Park";
+  hotspot: string;
+  subLocations: number;
+  declaredBy: string;
+  declaredOn: string;
+  status: HotspotStatus;
+}
+
+const HOTSPOT_SEED: Array<[HotspotForm["locationType"], string]> = [
+  ["Religious Place", "Siddhivinayak Temple approach"],
+  ["Traffic Signal", "Sion Circle signal"],
+  ["Market", "Crawford Market north gate"],
+  ["Transport Hub", "Dadar TT bus terminus"],
+  ["Public Park", "Shivaji Park east corner"],
+  ["Religious Place", "Kashi Vishwanath corridor"],
+  ["Traffic Signal", "Cantt crossing"],
+  ["Market", "Chowk sabzi mandi"],
+  ["Transport Hub", "Varanasi Junction forecourt"],
+  ["Public Park", "Shastri Ghat lawns"],
+];
+
+export const HOTSPOT_FORMS: HotspotForm[] = HOTSPOT_SEED.flatMap(([locationType, hotspot], i) => {
+  const inMaharashtra = i < 5;
+  const base = {
+    state: inMaharashtra ? "Maharashtra" : "Uttar Pradesh",
+    district: inMaharashtra ? "Mumbai Suburban" : "Varanasi",
+    locationType,
+    hotspot,
+    subLocations: 2 + ((i * 3) % 6),
+    declaredBy: inMaharashtra ? "Asha Niketan Trust" : "Jankalyan Parishad",
+    declaredOn: `${String(2 + ((i * 4) % 26)).padStart(2, "0")} Aug 2026`,
+  };
+  const status: HotspotStatus = i % 3 === 0 ? "Pending" : i % 3 === 1 ? "Approved" : "Rejected";
+  return [
+    { ...base, id: `hs-${i + 1}`, kind: "Hotspot" as const, status },
+    // Every second hotspot has a re-inspection filed against it.
+    ...(i % 2 === 0
+      ? [{ ...base, id: `ri-${i + 1}`, kind: "Re-inspection" as const, status: i % 4 === 0 ? ("Pending" as const) : ("Approved" as const) }]
+      : []),
+  ];
+});

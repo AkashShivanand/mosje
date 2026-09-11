@@ -1,12 +1,14 @@
-import { ComingSoon } from "@/components/smile-admin/shell/coming-soon";
+"use client";
+
+import { BeneficiarySubset } from "@/components/smile-admin/data/beneficiary-subset";
 
 export default function Page() {
   return (
-    <ComingSoon
-      title="Shelter Occupants"
-      subtitle="Beneficiaries currently housed across shelter homes."
-      breadcrumbs={[{ label: "Beneficiaries" }, { label: "Shelter Occupants" }]}
-      backHref="/portals/smile-admin/persons"
+    <BeneficiarySubset
+      title="Beneficiaries in a Shelter Home"
+      subtitle="Beneficiaries assigned to a Swashraya (Shelter Home), and those who have completed rehabilitation from one."
+      statuses={["SHELTER_ASSIGNED", "REHABILITATED"]}
+      withShelter
     />
   );
 }

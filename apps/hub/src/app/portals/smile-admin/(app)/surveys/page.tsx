@@ -6,9 +6,8 @@ import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { SURVEY_LOCATIONS, type SurveyLocation } from "@/lib/smile-admin/mock-data";
-import { Badge, Icon, buttonClasses } from "@mosje/design-system";
+import { Badge, DataTable, Icon, buttonClasses, type DataTableColumn } from "@mosje/design-system";
 
 type Row = SurveyLocation & { sno: number };
 
@@ -23,6 +22,52 @@ const COLUMNS = [
   { header: "District / City", accessor: "district" as const },
   { header: "Address", accessor: (r: Row) => r.address ?? "—" },
   { header: "Pincode", accessor: (r: Row) => r.pincode ?? "—" },
+];
+
+const TABLE_COLUMNS: DataTableColumn<Row & Record<string, unknown>>[] = [
+  { key: "sno", header: "S.No", className: "w-12 tabular-nums text-ink-hint" },
+  { key: "name", header: "Survey Location", sortable: true, className: "font-medium text-ink" },
+  {
+    key: "ia",
+    header: "Implementing Agency",
+    sortable: true,
+    render: (s) =>
+      s.ia ? (
+        <span className="font-medium text-ink">{s.ia}</span>
+      ) : (
+        <Badge status="warning" dot>
+          Unassigned
+        </Badge>
+      ),
+    exportValue: (s) => s.ia ?? "Unassigned",
+    sortValue: (s) => s.ia ?? "",
+  },
+  { key: "state", header: "State", sortable: true },
+  { key: "district", header: "District / City", sortable: true },
+  {
+    key: "address",
+    header: "Address",
+    className: "max-w-[280px] truncate text-ink-muted",
+    render: (s) => <span title={s.address ?? "—"}>{s.address ?? "—"}</span>,
+    exportValue: (s) => s.address ?? "—",
+  },
+  {
+    key: "pincode",
+    header: "Pincode",
+    className: "font-mono text-ink-muted",
+    render: (s) => s.pincode ?? "—",
+  },
+  {
+    key: "actions",
+    header: "Action",
+    className: "text-right",
+    noExport: true,
+    render: (s) => (
+      <Link href={`/portals/smile-admin/surveys/${s.id}`} className={buttonClasses("primary", "outlined", "sm")}>
+        <Icon name="visibility" size={14} /> View Details
+      </Link>
+    ),
+  },
 ];
 
 export default function SurveysPage() {
@@ -147,57 +192,14 @@ export default function SurveysPage() {
       </ul>
 
       {/* Desktop table */}
-      <div className="hidden overflow-hidden rounded-lg border border-stroke-200 bg-white shadow-xs md:block">
-        <Table>
-          <THead>
-            <tr>
-              <TH className="w-12">S.No</TH>
-              <TH>Survey Location</TH>
-              <TH>Implementing Agency</TH>
-              <TH>State</TH>
-              <TH>District / City</TH>
-              <TH>Address</TH>
-              <TH>Pincode</TH>
-              <TH className="text-right">Action</TH>
-            </tr>
-          </THead>
-          <tbody>
-            {rows.length === 0 ? (
-              <TR>
-                <TD colSpan={8} className="py-3xl text-center text-ink-muted">
-                  No survey locations match the current search.
-                </TD>
-              </TR>
-            ) : (
-              rows.map((s) => (
-                <TR key={s.id}>
-                  <TD className="tabular-nums text-ink-hint">{s.sno}</TD>
-                  <TD className="font-medium text-ink">{s.name}</TD>
-                  <TD>
-                    {s.ia ? (
-                      <span className="font-medium text-ink">{s.ia}</span>
-                    ) : (
-                      <Badge status="warning" dot>
-                        Unassigned
-                      </Badge>
-                    )}
-                  </TD>
-                  <TD>{s.state}</TD>
-                  <TD>{s.district}</TD>
-                  <TD className="max-w-[280px] truncate text-ink-muted" title={s.address ?? "—"}>
-                    {s.address ?? "—"}
-                  </TD>
-                  <TD className="font-mono text-ink-muted">{s.pincode ?? "—"}</TD>
-                  <TD className="text-right">
-                    <Link href={`/portals/smile-admin/surveys/${s.id}`} className={buttonClasses("primary", "outlined", "sm")}>
-                        <Icon name="visibility" size={14} /> View Details
-                      </Link>
-                  </TD>
-                </TR>
-              ))
-            )}
-          </tbody>
-        </Table>
+      <div className="hidden rounded-lg border border-stroke-200 bg-white p-md shadow-xs md:block">
+        <DataTable
+          columns={TABLE_COLUMNS}
+          data={rows as Array<Row & Record<string, unknown>>}
+          total={rows.length}
+          caption="Survey locations, their implementing agency and address"
+          emptyLabel="No survey locations match the current search."
+        />
       </div>
     </div>
   );
