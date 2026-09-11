@@ -6,9 +6,62 @@ import { statusTone } from "@/lib/smile-admin/status-tone";
 import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
-import { ROLES } from "@/lib/smile-admin/mock-data";
-import { Badge, Button, Icon, buttonClasses } from "@mosje/design-system";
+import { ROLES, type Role } from "@/lib/smile-admin/mock-data";
+import { Badge, Button, DataTable, Icon, buttonClasses, type DataTableColumn } from "@mosje/design-system";
+
+const COLUMNS: DataTableColumn<Role & Record<string, unknown>>[] = [
+  {
+    key: "name",
+    header: "Role",
+    sortable: true,
+    render: (r) => (
+      <>
+        <div className="font-semibold text-ink">{r.name}</div>
+        <div className="text-label-2 text-ink-muted">{r.id}</div>
+      </>
+    ),
+    exportValue: (r) => r.name,
+  },
+  {
+    key: "scope",
+    header: "Scope",
+    sortable: true,
+    render: (r) => (
+      <Badge status={r.scope === "Central" ? "primary" : r.scope === "State" ? "info" : r.scope === "District" ? "warning" : "neutral"}>
+        {r.scope}
+      </Badge>
+    ),
+    exportValue: (r) => r.scope,
+  },
+  {
+    key: "members",
+    header: "Members",
+    sortable: true,
+    className: "text-right tabular-nums",
+    render: (r) => r.members.toLocaleString("en-IN"),
+    sortValue: (r) => r.members,
+  },
+  { key: "permissions", header: "Permissions", sortable: true, className: "text-right tabular-nums" },
+  {
+    key: "status",
+    header: "Status",
+    sortable: true,
+    render: (r) => <Badge status={statusTone(r.status)}>{r.status}</Badge>,
+    exportValue: (r) => r.status,
+  },
+  { key: "updatedAt", header: "Last updated", sortable: true, className: "text-ink-muted" },
+  {
+    key: "actions",
+    header: "Actions",
+    className: "text-right",
+    noExport: true,
+    render: (r) => (
+      <Link href={`/portals/smile-admin/roles/${r.id}/edit`} className={buttonClasses("primary", "outlined", "sm")}>
+        <Icon name="edit" size={14} /> Edit
+      </Link>
+    ),
+  },
+];
 
 export default function RolesPage() {
   const [search, setSearch] = useState("");
@@ -56,38 +109,15 @@ export default function RolesPage() {
         </select>
       </DataToolbar>
 
-      <div className="overflow-hidden rounded-lg border border-stroke-200 bg-white shadow-xs">
-        <Table>
-          <THead>
-            <tr>
-              <TH>Role</TH>
-              <TH>Scope</TH>
-              <TH className="text-right">Members</TH>
-              <TH className="text-right">Permissions</TH>
-              <TH>Status</TH>
-              <TH>Last updated</TH>
-              <TH className="text-right">Actions</TH>
-            </tr>
-          </THead>
-          <tbody>
-            {roles.map((r) => (
-              <TR key={r.id}>
-                <TD>
-                  <div className="font-semibold text-ink">{r.name}</div>
-                  <div className="text-label-2 text-ink-muted">{r.id}</div>
-                </TD>
-                <TD><Badge status={r.scope === "Central" ? "primary" : r.scope === "State" ? "info" : r.scope === "District" ? "warning" : "neutral"}>{r.scope}</Badge></TD>
-                <TD className="text-right tabular-nums">{r.members.toLocaleString("en-IN")}</TD>
-                <TD className="text-right tabular-nums">{r.permissions}</TD>
-                <TD><Badge status={statusTone(r.status)}>{r.status}</Badge></TD>
-                <TD className="text-ink-muted">{r.updatedAt}</TD>
-                <TD className="text-right">
-                  <Link href={`/portals/smile-admin/roles/${r.id}/edit`} className={buttonClasses("primary", "outlined", "sm")}><Icon name="edit" size={14} /> Edit</Link>
-                </TD>
-              </TR>
-            ))}
-          </tbody>
-        </Table>
+      <div className="rounded-lg border border-stroke-200 bg-white p-md shadow-xs">
+        <DataTable
+          columns={COLUMNS}
+          data={roles as Array<Role & Record<string, unknown>>}
+          total={roles.length}
+          showPageSizes={false}
+          caption="Roles, their scope, membership and permission count"
+          emptyLabel="No role matches these filters."
+        />
       </div>
     </div>
   );

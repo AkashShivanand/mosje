@@ -1,12 +1,8 @@
-import { ComingSoon } from "@/components/smile-admin/shell/coming-soon";
+import { redirect } from "next/navigation";
 
+/**
+ * A second route onto the create-survey-location form, which lives under Survey Locations.
+ */
 export default function Page() {
-  return (
-    <ComingSoon
-      title="Create survey"
-      subtitle="Configure a new outreach survey schedule and assign surveyors."
-      breadcrumbs={[{ label: "Field Operations" }, { label: "Create survey" }]}
-      backHref="/portals/smile-admin/surveys"
-    />
-  );
+  redirect("/portals/smile-admin/survey-locations/create");
 }

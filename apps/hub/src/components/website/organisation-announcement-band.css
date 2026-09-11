@@ -1633,7 +1633,9 @@
      * in to 12 where the desktop card can afford 20.
      */
     .orgab__offer {
-      padding: var(--sa-padding-12) var(--sa-padding-12) var(--sa-padding-32);
+      /* 12 all round. The bottom was 32 to hold the pager; the pager has left
+         the card (see `.orgab__pager` below), so the strip goes with it. */
+      padding: var(--sa-padding-12);
     }
 
     /*
@@ -1668,9 +1670,39 @@
      * separation is wanted it costs eight pixels of band height, and that is a
      * trade to make deliberately rather than by drifting into it.
      */
+    /*
+     * OUT OF THE CARD, ONTO THE BAND — and it costs the band nothing.
+     *
+     * Inside the card it needed a 32px strip of its own below the action, which
+     * is 32px of card spent on three controls 24 tall. Moved below the card it
+     * sits on the band's own ground, where the row-gap that already separates
+     * the band's parts carries it: the card gives up its 20px of strip and the
+     * pager takes 24 plus an 8px gap, so the band moves by four pixels rather
+     * than by the 32 it would cost to simply add a row.
+     *
+     * It is positioned against the STAGE still — `top: 100%` is the card's own
+     * bottom edge — so it stays tied to the thing it pages and needs no new
+     * grid row to go wrong. Left edge flush with the card's, because on a phone
+     * the action is full width and the two share that edge.
+     */
     .orgab__pager {
-      inset-inline: var(--sa-padding-12) auto;
-      inset-block-end: var(--sa-padding-4);
+      /*
+       * IN THE FLOW, not hung below the card on `top: 100%`.
+       *
+       * Absolute was the first attempt and it put the controls outside the
+       * band: an out-of-flow box contributes no height, so the green stopped at
+       * the card and the pager sat on the hero below it, clipped to a sliver.
+       * A padding on the band could have made room, but that is a second number
+       * to keep in step with the first.
+       *
+       * Static, it becomes the stage's second row and the band measures itself
+       * correctly with nothing to remember. It still reads as "outside the
+       * card", because the stage has no ground of its own — below the card IS
+       * the band's own green.
+       */
+      position: static;
+      margin-block-start: var(--sa-stack-8);
+      justify-self: start;
     }
 
     /*
@@ -1722,11 +1754,31 @@
       display: grid;
     }
 
+    /*
+     * 40, NOT 24 — the mark is a PEER of the helpline's glyph, not a bullet.
+     *
+     * At 24 carrying a 16px glyph it sat directly beneath a 40px helpline
+     * circle and read as a decoration someone had shrunk to fit, which is what
+     * it was: the desktop tile is 64, and 24 was what survived taking the
+     * phone's height back. 16 inside 24 also leaves four pixels of ground on
+     * each side, at which point a tile stops looking like a tile.
+     *
+     * 32 CARRYING 20, which is one step under the helpline's 40 rather than
+     * level with it — and the step is deliberate. The helpline is the urgent
+     * object on this band and goes above the announcement on a phone for that
+     * reason; a mark that matched it exactly made the two read as equals. One
+     * rung down reads as related and subordinate, which is the true
+     * relationship, and it hands 8px of the band's height back.
+     *
+     * Both values are on their own scales — 32 on the space scale, 20 on the
+     * icon scale — so `check:icon-scale` is satisfied by construction rather
+     * than by a number that happens to fit.
+     */
     .orgab__mark {
       align-self: start;
-      inline-size: var(--sa-padding-24);
-      block-size: var(--sa-padding-24);
-      border-radius: var(--sa-shape-6);
+      inline-size: var(--sa-padding-32);
+      block-size: var(--sa-padding-32);
+      border-radius: var(--sa-shape-8);
     }
 
     /*
@@ -1737,7 +1789,7 @@
      * `size` prop is written, so the override belongs here.
      */
     .orgab__mark .material-symbols-rounded {
-      font-size: var(--sa-padding-16) !important;
+      font-size: var(--sa-padding-20) !important;
     }
 
     /* Nothing sits to the right of the copy on a phone — the action is a row of

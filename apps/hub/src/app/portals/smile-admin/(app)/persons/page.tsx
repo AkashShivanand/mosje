@@ -8,11 +8,10 @@ import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-too
 import { StatPill } from "@/components/smile-admin/data/stat-pill";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
 import { BottomSheet } from "@/components/smile-admin/bottom-sheet";
-import { TH, THead, TR, TD, Table } from "@/components/smile-admin/table";
 import { BENEFICIARIES, type Beneficiary } from "@/lib/smile-admin/mock-data";
 import { STATES } from "@/lib/smile-admin/states";
 import { useApp } from "@/store/smile-admin/app-context";
-import { Badge, Button, Icon, Label, Pagination, buttonClasses } from "@mosje/design-system";
+import { Badge, Button, buttonClasses, DataTable, Icon, Label, Pagination, type DataTableColumn } from "@mosje/design-system";
 
 const STATUSES = [
   "All statuses",
@@ -24,6 +23,56 @@ const STATUSES = [
 ];
 const GENDERS = ["All genders", "Male", "Female", "Transgender"];
 const AGES = ["All ages", "0–17", "18–25", "26–40", "41–60", "60+"];
+
+const COLUMNS: DataTableColumn<Beneficiary & Record<string, unknown>>[] = [
+  { key: "id", header: "Beneficiary ID", sortable: true, className: "font-mono text-body-2 text-ink-muted" },
+  {
+    key: "name",
+    header: "Name",
+    sortable: true,
+    render: (b) => (
+      <Link href={`/portals/smile-admin/persons/${b.id}`} className="font-semibold text-ink hover:text-primary hover:underline">
+        {b.name}
+      </Link>
+    ),
+    exportValue: (b) => b.name,
+  },
+  { key: "age", header: "Age", sortable: true, className: "w-16 tabular-nums" },
+  { key: "gender", header: "Gender", sortable: true },
+  {
+    key: "status",
+    header: "Status",
+    sortable: true,
+    render: (b) => (
+      <Badge status={statusTone(b.status)} dot>
+        {b.status.replace(/_/g, " ")}
+      </Badge>
+    ),
+    exportValue: (b) => b.status.replace(/_/g, " "),
+  },
+  { key: "state", header: "State", sortable: true },
+  { key: "district", header: "District / City", sortable: true },
+  {
+    key: "ia",
+    header: "IA",
+    sortable: true,
+    className: "text-ink-muted",
+    render: (b) => b.ia ?? "—",
+    sortValue: (b) => b.ia ?? "",
+  },
+  { key: "type", header: "Type", sortable: true },
+  {
+    key: "actions",
+    header: "Action",
+    className: "text-right",
+    noExport: true,
+    render: (b) => (
+      <Link href={`/portals/smile-admin/persons/${b.id}`} className={buttonClasses("primary", "outlined", "sm")}>
+        <Icon name="visibility" size={14} /> View
+      </Link>
+    ),
+  },
+];
 
 export default function PersonsPage() {
   const { account } = useApp();
@@ -371,120 +420,37 @@ export default function PersonsPage() {
       </div>
 
       {/* Desktop table */}
-      <div className="hidden overflow-hidden rounded-lg border border-stroke-200 bg-white shadow-xs md:block">
-        <Table>
-          <THead>
-            <tr>
-              <TH className="w-12">#</TH>
-              <TH>Beneficiary ID</TH>
-              <TH>Name</TH>
-              <TH className="w-16">Age</TH>
-              <TH>Gender</TH>
-              <TH>Status</TH>
-              <TH>State</TH>
-              <TH>District / City</TH>
-              <TH>IA</TH>
-              <TH>Type</TH>
-              <TH className="text-right">Action</TH>
-            </tr>
-          </THead>
-          <tbody>
-            {rowsToShow.length === 0 ? (
-              <TR>
-                <TD colSpan={11} className="py-3xl">
-                  <div className="mx-auto flex max-w-md flex-col items-center gap-sm text-center">
-                    <div className="grid h-12 w-12 place-items-center rounded-full bg-neutral-100 text-ink-muted ring-8 ring-neutral-50">
-                      <Icon name="visibility" size={20} aria-hidden />
-                    </div>
-                    <div className="space-y-1">
-                      <h3 className="text-title-2 text-ink">
-                        No beneficiaries found
-                      </h3>
-                      <p className="text-body-2 text-ink-muted">
-                        {anyFilterActive
-                          ? "Try widening the search term or clearing one of the active filters."
-                          : "There are no beneficiaries available for this scope yet."}
-                      </p>
-                    </div>
-                    {anyFilterActive ? (
-                      <Button appearance="outlined" size="sm" onClick={clearAllFilters}>
-                        Clear filters
-                      </Button>
-                    ) : null}
-                  </div>
-                </TD>
-              </TR>
-            ) : (
-              rowsToShow.map((b, idx) => (
-                <TR key={b.id}>
-                  <TD className="tabular-nums text-ink-hint">
-                    {(idx + 1).toString().padStart(2, "0")}
-                  </TD>
-                  <TD className="font-mono text-body-2 text-ink-muted">{b.id}</TD>
-                  <TD>
-                    <Link
-                      href={`/portals/smile-admin/persons/${b.id}`}
-                      className="font-semibold text-ink hover:text-primary hover:underline"
-                    >
-                      {b.name}
-                    </Link>
-                  </TD>
-                  <TD className="tabular-nums">{b.age}</TD>
-                  <TD>{b.gender}</TD>
-                  <TD>
-                    <Badge status={statusTone(b.status)} dot>
-                      {b.status.replace(/_/g, " ")}
-                    </Badge>
-                  </TD>
-                  <TD>{b.state}</TD>
-                  <TD>{b.district}</TD>
-                  <TD className="text-ink-muted">{b.ia ?? "—"}</TD>
-                  <TD>{b.type}</TD>
-                  <TD className="text-right">
-                    <Link href={`/portals/smile-admin/persons/${b.id}`} className={buttonClasses("primary", "outlined", "sm")}>
-                        <Icon name="visibility" size={14} /> View
-                      </Link>
-                  </TD>
-                </TR>
-              ))
-            )}
-          </tbody>
-        </Table>
-        {/* A layout row, not a landmark: `Pagination` brings its own named
-            <nav>, and nesting one inside another with the same name is the
-            duplicate-landmark defect for real. */}
-        <div className="flex items-center justify-between border-t border-stroke-100 bg-neutral-50/40 px-lg py-md text-label-2 text-ink-muted">
-          <div>
-            {filtered.length === 0 ? (
-              <span>0 records</span>
-            ) : (
-              <>
-                Showing{" "}
-                <span className="font-semibold text-ink">
-                  {rangeStart.toLocaleString("en-IN")}–{rangeEnd.toLocaleString("en-IN")}
-                </span>{" "}
-                of{" "}
-                <span className="font-semibold text-ink">
-                  {filtered.length.toLocaleString("en-IN")}
-                </span>{" "}
-                beneficiaries
-              </>
-            )}
-          </div>
-          {/* The component's steps-only form. This pair of Buttons with a
-              hand-rolled position between them is what argued for adding it —
-              including the polite live region, which the component now owns, so
-              the position is no longer announced twice. `page` is 0-based here
-              and `Pagination` is 1-based; the conversion lives at this boundary
-              and nowhere else. */}
-          <Pagination
-            page={page + 1}
-            totalPages={totalPages}
-            onPageChange={(n) => setPage(n - 1)}
-            showNumbers={false}
-            label="Beneficiary pages"
-          />
-        </div>
+      {/* Desktop table — the component owns its own paging here; the mobile
+          card list below keeps the hand-rolled `page` it shares with its pager. */}
+      <div className="hidden rounded-lg border border-stroke-200 bg-white p-md shadow-xs md:block">
+        <DataTable
+          columns={COLUMNS}
+          data={filtered as Array<Beneficiary & Record<string, unknown>>}
+          total={filtered.length}
+          pageSizes={[PAGE_SIZE, 50, 100]}
+          showPageSizes={false}
+          caption="Beneficiaries surveyed across India, with status, scope and implementing agency"
+          emptyLabel={
+            <div className="mx-auto flex max-w-md flex-col items-center gap-sm py-3xl text-center">
+              <div className="grid h-12 w-12 place-items-center rounded-full bg-neutral-100 text-ink-muted ring-8 ring-neutral-50">
+                <Icon name="visibility" size={20} aria-hidden />
+              </div>
+              <div className="space-y-1">
+                <h3 className="text-title-2 text-ink">No beneficiaries found</h3>
+                <p className="text-body-2 text-ink-muted">
+                  {anyFilterActive
+                    ? "Try widening the search term or clearing one of the active filters."
+                    : "There are no beneficiaries available for this scope yet."}
+                </p>
+              </div>
+              {anyFilterActive ? (
+                <Button appearance="outlined" size="sm" onClick={clearAllFilters}>
+                  Clear filters
+                </Button>
+              ) : null}
+            </div>
+          }
+        />
       </div>
 
       {/* Mobile pagination */}

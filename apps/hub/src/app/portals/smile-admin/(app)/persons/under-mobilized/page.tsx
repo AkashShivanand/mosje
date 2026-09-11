@@ -1,12 +1,13 @@
-import { ComingSoon } from "@/components/smile-admin/shell/coming-soon";
+"use client";
+
+import { BeneficiarySubset } from "@/components/smile-admin/data/beneficiary-subset";
 
 export default function Page() {
   return (
-    <ComingSoon
-      title="Under Mobilization"
-      subtitle="Beneficiaries currently being engaged for mobilisation."
-      breadcrumbs={[{ label: "Beneficiaries" }, { label: "Under Mobilization" }]}
-      backHref="/portals/smile-admin/persons"
+    <BeneficiarySubset
+      title="Under Mobilisation"
+      subtitle="Beneficiaries identified in a survey and currently being mobilised."
+      statuses={["UNDER_MOBILIZATION"]}
     />
   );
 }

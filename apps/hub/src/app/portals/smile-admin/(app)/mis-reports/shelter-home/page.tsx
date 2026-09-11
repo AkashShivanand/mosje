@@ -1,12 +1,12 @@
-import { ComingSoon } from "@/components/smile-admin/shell/coming-soon";
+"use client";
 
+import { MisReportPage } from "@/components/smile-admin/data/mis-report-page";
+import { misReport } from "@/lib/smile-admin/mis-reports";
+
+// "use client" like every other data screen in this portal: the fixtures throw
+// if they are pulled into a production server build, and a server component
+// here is what reaches them during `next build`.
 export default function Page() {
-  return (
-    <ComingSoon
-      title="MIS Report — Shelter Homes"
-      subtitle="Shelter home occupancy, audits and operating metrics."
-      breadcrumbs={[{ label: "Reports & Analytics" }, { label: "MIS Report — Shelter Homes" }]}
-      backHref="/portals/smile-admin/dashboard"
-    />
-  );
+  const report = misReport("shelter-home")!;
+  return <MisReportPage report={report} />;
 }

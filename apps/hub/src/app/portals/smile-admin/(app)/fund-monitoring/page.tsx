@@ -3,11 +3,34 @@
 import Link from "next/link";
 import { statusTone } from "@/lib/smile-admin/status-tone";
 import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { SANCTION_ORDERS, SCHEMES, type SanctionOrder } from "@/lib/smile-admin/mock-data";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
 import { formatINR } from "@/lib/smile-admin/utils";
-import { Badge, Card, CardBody, CardHeader, CardTitle, Icon, buttonClasses } from "@mosje/design-system";
+import { Badge, Card, CardBody, CardHeader, CardTitle, DataTable, Icon, buttonClasses, type DataTableColumn } from "@mosje/design-system";
+
+const COLUMNS: DataTableColumn<SanctionOrder & Record<string, unknown>>[] = [
+  { key: "id", header: "Order #", sortable: true, className: "font-mono text-body-2" },
+  { key: "scheme", header: "Scheme", sortable: true },
+  { key: "state", header: "State", sortable: true },
+  {
+    key: "amount",
+    header: "Amount",
+    sortable: true,
+    className: "text-right tabular-nums",
+    // Sorted on the rupee figure — a string sort on "₹1.20 Cr" beats "₹9.00 Cr".
+    sortValue: (o) => o.amount,
+    render: (o) => formatINR(o.amount, true),
+    exportValue: (o) => formatINR(o.amount, true),
+  },
+  {
+    key: "status",
+    header: "Status",
+    sortable: true,
+    render: (o) => <Badge status={statusTone(o.status)}>{o.status}</Badge>,
+    exportValue: (o) => o.status,
+  },
+  { key: "date", header: "Date", sortable: true, className: "text-ink-muted" },
+];
 
 export default function FundMonitoringPage() {
   const totals = SCHEMES.reduce(
@@ -69,30 +92,14 @@ export default function FundMonitoringPage() {
       <Card>
         <CardHeader><CardTitle>Recent sanction orders</CardTitle></CardHeader>
         <CardBody>
-          <Table>
-            <THead>
-              <tr>
-                <TH>Order #</TH>
-                <TH>Scheme</TH>
-                <TH>State</TH>
-                <TH className="text-right">Amount</TH>
-                <TH>Status</TH>
-                <TH>Date</TH>
-              </tr>
-            </THead>
-            <tbody>
-              {SANCTION_ORDERS.map((o) => (
-                <TR key={o.id}>
-                  <TD className="font-mono text-body-2">{o.id}</TD>
-                  <TD>{o.scheme}</TD>
-                  <TD>{o.state}</TD>
-                  <TD className="text-right tabular-nums">{formatINR(o.amount, true)}</TD>
-                  <TD><Badge status={statusTone(o.status)}>{o.status}</Badge></TD>
-                  <TD className="text-ink-muted">{o.date}</TD>
-                </TR>
-              ))}
-            </tbody>
-          </Table>
+          <DataTable
+            columns={COLUMNS}
+            data={SANCTION_ORDERS as Array<SanctionOrder & Record<string, unknown>>}
+            total={SANCTION_ORDERS.length}
+            showPageSizes={false}
+            caption="Recent sanction orders by scheme, state and amount"
+            emptyLabel="No sanction order has been issued yet."
+          />
         </CardBody>
       </Card>
     </div>
