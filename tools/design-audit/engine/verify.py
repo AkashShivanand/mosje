@@ -104,10 +104,17 @@ def run_cmd(board, name, argv, ok_codes=(0,), grep=None):
         return
     tail = [l for l in (p.stdout + p.stderr).strip().splitlines() if l.strip()]
     if p.returncode in ok_codes:
-        # a gate that prints a row per portal must be quoted on THIS portal's row — the board
-        # once reported tg's counts under nmba's name, which is worse than printing nothing
-        pick = [l for l in tail if grep and grep in l] or tail
-        board.add(name, PASS, pick[-1].strip()[:90] if pick else "")
+        # A gate that prints a row per portal must be quoted on THIS portal's row. The board once
+        # reported tg's counts under nmba's name, and the fallback that was supposed to prevent it
+        # reintroduced it: when no line mentioned the portal, `or tail` quoted whichever row came
+        # last — so pm-ajay's deliverable row read "ok tg  31 screens  33 findings". A number
+        # under the wrong name is worse than no number, so say nothing was found instead.
+        if grep:
+            pick = [l for l in tail if grep in l]
+            detail = pick[-1].strip()[:90] if pick else f"passed; no {grep} row in its output"
+        else:
+            detail = tail[-1].strip()[:90] if tail else ""
+        board.add(name, PASS, detail)
     else:
         board.add(name, FAIL, f"exit {p.returncode}", tail[-8:])
 
@@ -191,12 +198,21 @@ def main():
     am = js(os.path.join(published_dir, "audit-master.json")) or js("out", "audit-master.json")
     findings = []
     if am:
-        for s in am.get("screens", []):
-            for f in s.get("findings", []):
-                findings.append({"id": f["id"], "slug": s.get("slug"), "sev": f.get("severity"),
-                                 "title": f.get("element"), "build": f.get("live"),
-                                 "_liveCheck": f.get("_liveCheck"),
-                                 "_colourWhy": f.get("_colourWhy")})
+        # A project may CURATE: the machine pass emits one finding per deviating value, and what
+        # the reader receives is a shorter list of root causes at `findings` (see
+        # projects/pm-ajay/findings.py). Judge what the reader receives. Before this, the board
+        # read only the per-screen machine list — so it reported PM-AJAY's curated set as 12
+        # uncited findings and skipped the fix-preview gate saying no finding declared a `_fix`,
+        # while two of them did. A board that judges a different artefact than the one being sent
+        # is worse than no board.
+        for f in am.get("findings", []) or []:
+            findings.append({**f, "slug": f.get("slug"), "sev": f.get("severity"),
+                             "build": f.get("build"), "title": f.get("title")})
+        if not findings:
+            for s in am.get("screens", []):
+                for f in s.get("findings", []):
+                    findings.append({**f, "slug": s.get("slug"), "sev": f.get("severity"),
+                                     "title": f.get("element"), "build": f.get("live")})
 
     bundle = js("out", "capture-bundle.json") or {}
     screens = bundle.get("screens") or []
@@ -217,6 +233,24 @@ def main():
                 val = None
         rows_cache[slug] = val
         return val
+
+    def _union_colours():
+        """Every colour ANY captured screen paints. The evidence set for a GLOBAL claim.
+
+        Built from the colour inventories, so it is complete in the sense the gate requires —
+        containers included, not just the text and controls the element rows carry.
+        """
+        import glob as _glob
+        out = set()
+        for f in _glob.glob(os.path.join(proj, "captures", "live", "*.json")):
+            try:
+                inv = (json.load(open(f)) or {}).get("colorInventory") or {}
+            except Exception:
+                continue
+            for bucket in ("color", "bg", "border", "outline"):
+                for val in (inv.get(bucket) or {}):
+                    out.update(I.colours_in(val))
+        return out
 
     inv_cache = {}
 
@@ -264,7 +298,8 @@ def main():
             warn = []
             board.gate("quoted build colours",
                        I.gate_quoted_build_colours(findings, rows_for, warn,
-                                                  inventory_for=inventory_for),
+                                                  inventory_for=inventory_for,
+                                                  union_colours=_union_colours()),
                        f"{seen} findings checked against their screen's extraction",
                        baseline.get("quoted build colours"), warn)
 

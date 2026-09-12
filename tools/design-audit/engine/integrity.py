@@ -141,7 +141,8 @@ def _near(a, b):
     return max(abs(int(a[i:i + 2], 16) - int(b[i:i + 2], 16)) for i in (1, 3, 5))
 
 
-def gate_quoted_build_colours(findings, rows_for, warnings=None, inventory_for=None):
+def gate_quoted_build_colours(findings, rows_for, warnings=None, inventory_for=None,
+                              union_colours=None):
     """A hex attributed to the BUILD must be a value the build actually renders.
 
     A glyph sampled off a screenshot returns the anti-aliased average of the glyph and its
@@ -169,6 +170,13 @@ def gate_quoted_build_colours(findings, rows_for, warnings=None, inventory_for=N
         slug = f.get("slug")
         if not slug or f.get("_colourWhy"):
             continue
+        scope = str(f.get("scope") or "")
+        # A DESIGN-SYSTEM finding is not a claim about what this build paints. PMA-DS-001's build
+        # text names the Figma library's grey ramp and the token contract's, side by side, because
+        # the finding IS that the two disagree — and every one of those hexes was read as a build
+        # colour and convicted. The finding was right; the gate was asking the wrong question.
+        if scope == "Design System":
+            continue
         rows = rows_for(slug)
         inv = inventory_for(slug) if inventory_for else None
         if not rows and not inv:
@@ -188,6 +196,13 @@ def gate_quoted_build_colours(findings, rows_for, warnings=None, inventory_for=N
                 for val in (inv.get(bucket) or {}):
                     seen.update(colours_in(val))
             complete = bool(inv.get("complete"))
+        # A GLOBAL finding's colours were measured ACROSS the portal, not on its one
+        # representative screen. Judging "#314158 on 43 screens" against the dashboard's own
+        # inventory convicts a correct finding for naming a colour that screen happens not to
+        # paint. A claim about every screen is judged against every screen.
+        if scope == "Global" and union_colours:
+            seen |= set(union_colours)
+            complete = True
         if not seen:
             continue
         build = str(f.get("build") or "")

@@ -54,6 +54,13 @@ FINDINGS = [
         "axis": "Color & Token",
         "scope": "Global",
         "slug": REF_SLUG, "_route": REF_ROUTE, "_role": REF_ROLE,
+        "_evidenceWhy": "There is no design side to crop against, so a DESIGN|BUILD crop pair "
+                        "cannot exist for this audit. The evidence is stronger than a crop and "
+                        "is on disk: capture.py's complete `colorInventory` for every screen — "
+                        "every colour the page actually paints, containers included — plus, for "
+                        "the two findings carrying a `_fix`, a BUILD and a PROPOSED rendering of "
+                        "the real screen. The claims here are aggregate (a value across the "
+                        "portal), not about one element's fill, which is what a crop is for.",
         "design": "Every MoSJE property consumes the published `--sa-*` contract from "
                   "@mosje/tokens, which is what makes one estate look like one estate and lets a "
                   "brand or density change reach every portal at once.",
@@ -78,6 +85,13 @@ FINDINGS = [
         "axis": "Typography",
         "scope": "Global",
         "slug": REF_SLUG, "_route": REF_ROUTE, "_role": REF_ROLE,
+        "_evidenceWhy": "There is no design side to crop against, so a DESIGN|BUILD crop pair "
+                        "cannot exist for this audit. The evidence is stronger than a crop and "
+                        "is on disk: capture.py's complete `colorInventory` for every screen — "
+                        "every colour the page actually paints, containers included — plus, for "
+                        "the two findings carrying a `_fix`, a BUILD and a PROPOSED rendering of "
+                        "the real screen. The claims here are aggregate (a value across the "
+                        "portal), not about one element's fill, which is what a crop is for.",
         "design": "The published ramp is 12 / 14 / 16px for body and label text "
                   "(`--sa-type-body-3-size`, `--sa-type-body-2-size`, `--sa-type-body-1-size`), "
                   "with the heading tiers fluid above 16px. 14px is the estate's workhorse size.",
@@ -114,6 +128,13 @@ FINDINGS = [
         "axis": "Color & Token",
         "scope": "Global",
         "slug": REF_SLUG, "_route": REF_ROUTE, "_role": REF_ROLE,
+        "_evidenceWhy": "There is no design side to crop against, so a DESIGN|BUILD crop pair "
+                        "cannot exist for this audit. The evidence is stronger than a crop and "
+                        "is on disk: capture.py's complete `colorInventory` for every screen — "
+                        "every colour the page actually paints, containers included — plus, for "
+                        "the two findings carrying a `_fix`, a BUILD and a PROPOSED rendering of "
+                        "the real screen. The claims here are aggregate (a value across the "
+                        "portal), not about one element's fill, which is what a crop is for.",
         "design": "The contract publishes three neutral ink steps — "
                   "`--sa-text-neutral-base #1e2124` for primary text, "
                   "`--sa-text-neutral-subtle #3a3d41` for secondary, and "
@@ -157,6 +178,13 @@ FINDINGS = [
         "axis": "Color & Token",
         "scope": "Global",
         "slug": REF_SLUG, "_route": REF_ROUTE, "_role": REF_ROLE,
+        "_evidenceWhy": "There is no design side to crop against, so a DESIGN|BUILD crop pair "
+                        "cannot exist for this audit. The evidence is stronger than a crop and "
+                        "is on disk: capture.py's complete `colorInventory` for every screen — "
+                        "every colour the page actually paints, containers included — plus, for "
+                        "the two findings carrying a `_fix`, a BUILD and a PROPOSED rendering of "
+                        "the real screen. The claims here are aggregate (a value across the "
+                        "portal), not about one element's fill, which is what a crop is for.",
         "design": "Status is a published set — `--sa-text-status-error-base #8b1f18`, "
                   "`--sa-bg-status-success-base #ecf4ee` and their siblings — so that a rejected "
                   "application looks the same in every portal on the estate.",
@@ -181,6 +209,13 @@ FINDINGS = [
         "axis": "Color & Token",
         "scope": "Design System",
         "slug": REF_SLUG, "_route": REF_ROUTE, "_role": REF_ROLE,
+        "_evidenceWhy": "There is no design side to crop against, so a DESIGN|BUILD crop pair "
+                        "cannot exist for this audit. The evidence is stronger than a crop and "
+                        "is on disk: capture.py's complete `colorInventory` for every screen — "
+                        "every colour the page actually paints, containers included — plus, for "
+                        "the two findings carrying a `_fix`, a BUILD and a PROPOSED rendering of "
+                        "the real screen. The claims here are aggregate (a value across the "
+                        "portal), not about one element's fill, which is what a crop is for.",
         "design": "One neutral ramp, published once, consumed everywhere.",
         "build": "There are three. The Figma handoff library draws Tailwind v3's grey ramp — "
                  "#1f2937 on 23,853 sampled nodes across all ten non-draft pages, plus #374151, "
@@ -203,6 +238,13 @@ FINDINGS = [
         "axis": "Typography",
         "scope": "Design System",
         "slug": REF_SLUG, "_route": REF_ROUTE, "_role": REF_ROLE,
+        "_evidenceWhy": "There is no design side to crop against, so a DESIGN|BUILD crop pair "
+                        "cannot exist for this audit. The evidence is stronger than a crop and "
+                        "is on disk: capture.py's complete `colorInventory` for every screen — "
+                        "every colour the page actually paints, containers included — plus, for "
+                        "the two findings carrying a `_fix`, a BUILD and a PROPOSED rendering of "
+                        "the real screen. The claims here are aggregate (a value across the "
+                        "portal), not about one element's fill, which is what a crop is for.",
         "design": "One type ramp, shared by the library and the code.",
         "build": "The Figma library resolves `label-3` to 11px and the estate draws 11px text on "
                  "9 of the 10 non-draft pages (898 sampled nodes). The generated contract "
@@ -231,6 +273,13 @@ FINDINGS = [
         "axis": "Color & Token",
         "scope": "Design System",
         "slug": REF_SLUG, "_route": REF_ROUTE, "_role": REF_ROLE,
+        "_evidenceWhy": "There is no design side to crop against, so a DESIGN|BUILD crop pair "
+                        "cannot exist for this audit. The evidence is stronger than a crop and "
+                        "is on disk: capture.py's complete `colorInventory` for every screen — "
+                        "every colour the page actually paints, containers included — plus, for "
+                        "the two findings carrying a `_fix`, a BUILD and a PROPOSED rendering of "
+                        "the real screen. The claims here are aggregate (a value across the "
+                        "portal), not about one element's fill, which is what a crop is for.",
         "design": "A brand shade used across the estate is a published token.",
         "build": "#001933 appears on 7 of the 10 non-draft Figma pages (165 sampled nodes) as the "
                  "darkest navy, and the contract does not publish it. It is a small gap next to "
