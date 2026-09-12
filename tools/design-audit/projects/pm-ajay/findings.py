@@ -66,13 +66,6 @@ EVIDENCE_WHY = (
 # Recorded here rather than deleted because the near-miss is the lesson: a warning from an
 # instrument is not evidence about the product until the instrument has been checked. The
 # heuristic is now saturation-aware (see WAIT_FOR_DATA_JS) so a coloured bar is not a skeleton.
-# WITHDRAWN before publication — "Dashboard figures never arrive, and the empty result is drawn as
-# an em-dash". Drafted from the capture harness's "STILL LOADING (22 skeleton placeholders)"
-# warning and FALSE: that heuristic counted any empty coloured div 6-60px tall as a placeholder,
-# which on this dashboard is its PROGRESS BARS. The figures had all arrived in the same extraction
-# (47,333 / 22,030 / 19,763 / 14,994, zero em-dash rows) and the page carries 15 `role="status"`
-# elements. Recorded rather than deleted because the near-miss is the lesson: a warning from an
-# instrument is not evidence about the product until the instrument has been checked.
 FINDINGS = [
     # --- ordered by size of the deviation, which on this portal is also order of severity -----
     {
