@@ -241,3 +241,35 @@ class WithdrawalNoteDoesNotCompound(unittest.TestCase):
         second, _, _ = T.merge_preserving_dev_columns(dict(want), wb["P"])
         self.assertEqual(second["F-1"]["Notes"], "WITHDRAWN: it was wrong")
         self.assertEqual(len(second["F-1"]["Notes"]), len(first["F-1"]["Notes"]))
+
+
+class WithdrawnRowsSurviveAnEmptyDeferred(unittest.TestCase):
+    """A report with no deferred section must not erase the tracker's memory."""
+
+    MASTER = {"screens": [{"name": "S", "slug": "s", "findings": [
+        {"id": "NMB-GLOBAL-001", "severity": "Major", "axis": "Color & Token",
+         "figma": "d", "live": "b", "fix": "f"}]}], "deferred": []}
+    WD = [{"id": "NMB-SCREEN-016", "title": "The pledge banner has lost its call to action",
+           "reason": "WRONG — the button is built, at x1171"}]
+
+    def test_an_empty_deferred_alone_loses_the_withdrawn_row(self):
+        # the regression: reading only the master dropped all three Withdrawn rows from the tab
+        self.assertNotIn("NMB-SCREEN-016", T.rows_from_master(self.MASTER))
+
+    def test_supplying_them_keeps_the_row_marked_and_reasoned(self):
+        rows = T.rows_from_master(self.MASTER, self.WD)
+        self.assertIn("NMB-SCREEN-016", rows)
+        r = rows["NMB-SCREEN-016"]
+        self.assertEqual(r["Status"], "Withdrawn")
+        self.assertTrue(r["Notes"].startswith("WITHDRAWN:"))
+        self.assertIn("x1171", r["Notes"])
+
+    def test_an_id_keyed_as_old_is_accepted(self):
+        rows = T.rows_from_master(self.MASTER, [
+            {"old": "NMB-SNODASH-004", "title": "t", "reason": "r"}])
+        self.assertIn("NMB-SNODASH-004", rows)
+
+    def test_a_live_finding_is_never_overwritten_by_a_withdrawal(self):
+        rows = T.rows_from_master(self.MASTER, [
+            {"id": "NMB-GLOBAL-001", "title": "t", "reason": "r"}])
+        self.assertEqual(rows["NMB-GLOBAL-001"]["Status"], "Open")

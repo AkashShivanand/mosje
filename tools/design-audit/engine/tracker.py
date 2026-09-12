@@ -50,8 +50,15 @@ def is_findings_tab(ws):
     return bool(hdr) and hdr[:2] == ["ID", "Screen"]
 
 
-def rows_from_master(am):
-    """audit-master.json -> the rows this portal's sheet should hold."""
+def rows_from_master(am, withdrawn=None):
+    """audit-master.json -> the rows this portal's sheet should hold.
+
+    `withdrawn` is an optional [{id, title, reason}, ...] for withdrawn findings the MASTER no
+    longer carries. Since 2026-09-12 a portal may publish a report with no deferred section, which
+    empties `deferred[]` — and reading only that silently dropped every Withdrawn row from the
+    tracker. **The report's rendering choice must not decide what the dev working document
+    remembers**, so the caller can supply them (NMBA reads `findings_final.json`).
+    """
     out = {}
     for s in am["screens"]:
         for f in s["findings"]:
@@ -69,8 +76,8 @@ def rows_from_master(am):
     # A published id must not vanish from the sheet. NMB-SCREEN-016 was in the tracker, was shown
     # to be wrong, and simply disappearing would leave anyone who had triaged it with a dangling
     # reference and no answer. Withdrawn findings stay, marked, with the reason in Notes.
-    for d in am.get("deferred", []):
-        fid = str(d.get("id") or "")
+    for d in list(am.get("deferred", [])) + list(withdrawn or []):
+        fid = str(d.get("id") or d.get("old") or "")
         if not re.match(r"^[A-Z]{2,5}-[A-Z]+-\d{3}$", fid) or fid in out:
             continue
         out[fid] = {
@@ -181,10 +188,11 @@ def merge_preserving_dev_columns(want, existing_ws):
     return merged, new, kept
 
 
-def push(master_path, xlsx_path, portal, coverage=None, apply=False, backup_dir=None):
+def push(master_path, xlsx_path, portal, coverage=None, apply=False, backup_dir=None,
+         withdrawn=None):
     """Write one portal's tab into an existing workbook, additively. Returns a report dict."""
     am = json.load(open(master_path))
-    want = rows_from_master(am)
+    want = rows_from_master(am, withdrawn)
     wb = openpyxl.load_workbook(xlsx_path)
     merged, new, kept = merge_preserving_dev_columns(
         want, wb[portal] if portal in wb.sheetnames else None)
