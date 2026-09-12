@@ -125,9 +125,20 @@ three all green.
 resolution, and the tag/role/bg fields the claim gates need), `engine/boards.py` (crop bands and
 pin geometry, with the assertions), `engine/tracker.py` (a portal's tracker sheet, the additive
 push to Drive that never overwrites a dev's Status, and the sync back from a Google Sheet export),
-`engine/claims.py` (the four claim gates). What stays per-project is the editorial half: the
-findings themselves, the anchor specs, and the scope rules for what that portal does and does not
-raise.
+`engine/claims.py` (the four claim gates), `engine/routes.py` (declared-route probing — below).
+What stays per-project is the editorial half: the findings themselves, the anchor specs, and the
+scope rules for what that portal does and does not raise.
+
+**Declare the routes the navigation does not link.** The crawl reads anchors, so a screen the
+sidebar omits is invisible to it — and absence from the crawl reads exactly like absence from the
+portal. On SMILE Beggary that hid three real screens (`/do-list`, `/ia-approvals`,
+`/shelter-homes/checklist`) and caused two more (`/surveyors`, `/master-setting/shelter-homes`) to
+be dismissed as duplicate routes and redirected away. List every such route under
+`live.declaredRoutes` — or `<role>.declaredRoutes` where only one role sees it — and each is probed
+whether or not anything points at it. `skipRoutes` still wins. Output: `out/route-coverage.json`,
+naming what was **unlinked** (captured, but nothing links to it — the set a crawl would have
+missed) and what was **unreachable** (declared and captured nothing). Unreachable **fails the
+capture phase**: either the declaration is wrong or a screen the audit was told to cover is down.
 
 Run the gates with `python3 engine/run.py --project <p> --phase claims` (also runs inside `analyze`).
 Set `"claimGates": true` in the project config to make them fatal. Output: `out/claims.md` —

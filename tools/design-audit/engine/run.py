@@ -70,7 +70,13 @@ def main():
                    if r.get("expectsLoginPage")]
         _login = CAP.audit_no_login_pages(_paths, expected_roles=_expect)
         _scale = CAP.audit_design_frame_width(_paths)
-        if _corrupt or _login or _scale:
+        # A declared route that captured nothing. The crawl cannot see a route the
+        # navigation omits, so the config names those routes and they are probed —
+        # and if a probe comes back empty, either the declaration is wrong or a
+        # screen the audit was told to cover is down. Both are worth stopping for;
+        # silently shipping without it is how three screens went missing.
+        _routes = CAP.audit_declared_routes(_paths)
+        if _corrupt or _login or _scale or _routes:
             print("\n!! CAPTURE GATE FAILED — analyze/report refused. Fix the captures and re-run.",
                   flush=True)
             sys.exit(2)

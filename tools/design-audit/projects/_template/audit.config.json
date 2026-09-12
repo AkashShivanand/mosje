@@ -40,7 +40,9 @@
       "/logout",
       "/terms-and-conditions",
       "/privacy-policy"
-    ]
+    ],
+    "declaredRoutes": [],
+    "_declaredRoutes": "Routes to probe WHETHER OR NOT anything links to them. The crawl reads anchors, so a screen the sidebar omits is invisible to it \u2014 on SMILE Beggary that hid three real screens and caused two more to be redirected away as duplicates. List every route you know of that the navigation does not surface: detail pages, create forms, statutory pages, anything reached by a button. A declared route that captures nothing FAILS the run, so a wrong entry here is loud rather than silent."
   },
   "baseline": {
     "mode": "tokens",

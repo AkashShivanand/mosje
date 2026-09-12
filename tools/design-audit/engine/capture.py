@@ -16,6 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import config as C
 import manifest as MAN
 import bundle as B
+import routes as R
 from playwright.sync_api import sync_playwright
 
 EXTRACT_JS = r"""
@@ -896,6 +897,13 @@ def _engine_sha():
     except Exception:
         return None
 
+#: Per-role route coverage, filled by capture_role and drained by run().
+#: A dict rather than a return value because capture_role's return is the captured
+#: screens, and threading a second value through every caller would be worse than
+#: one module-level record that run() owns the lifetime of.
+ROUTE_REPORTS = {}
+
+
 class SessionLost(Exception):
     """Raised when a role's captures collapse mid-run. Distinct from any other failure because
     the response is different: keep the previous bundle's rows for this role and change nothing,
@@ -915,10 +923,17 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
     waitms = cfg.get("capture", {}).get("waitMs", 1800)
     auth = role_auth(role, cfg.get("live", {}).get("auth", {}))
     degraded = []          # consecutive screens far smaller than the bundle says they were
-    routes = discover_routes(pg, cfg)
+    # A crawl finds what the navigation links, and nothing else. Routes DECLARED in
+    # the config are probed as well, whether or not anything points at them — see
+    # engine/routes.py for the miss that put this here.
+    discovered = discover_routes(pg, cfg)
+    declared = R.declared_for(cfg, role)
     land = pg.url.replace(base, "").split("?")[0]
-    if land and land not in routes:
-        routes.insert(0, land)
+    routes, origins = R.merge(discovered, declared, landing=land)
+    probed = [r for r in routes if origins.get(r) == R.DECLARED]
+    if probed:
+        print(f"  +{len(probed)} declared route(s) probed that the crawl did not link: "
+              f"{', '.join(probed[:6])}" + (" …" if len(probed) > 6 else ""), flush=True)
     # Route discovery is a timing race on some live sites (a slow-loading widget's links are
     # sometimes there, sometimes not — see discover_routes). Rather than keep trying to win that
     # race, make discovery MONOTONIC: once a route has been seen for this role, always revisit
@@ -936,9 +951,8 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         if str(s.get("reachedBy") or "").startswith("flow:"):
             continue
         r = _route_path(s.get("route"), base)
-        if r and r not in routes and r not in skip:
-            routes.append(r)
-            carried.append(r)
+        if r and r not in origins and r not in skip:
+            carried.extend(R.add_carried(routes, origins, [r]))
     if carried:
         print(f"  carried forward {len(carried)} route(s) seen in a previous run", flush=True)
     captured = []
@@ -1100,7 +1114,39 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         print(f"[{role['name']}] {len(failed)} screen(s) not captured: {', '.join(failed)}",
               flush=True)
     failures.setdefault(role["name"], []).extend(failed)
+
+    # What the navigation would have hidden, and what a declaration failed to reach.
+    # Written per role and read back by run() into out/route-coverage.json.
+    rep = R.report(origins, [c["route"] for c in captured], declared)
+    line = R.summarise(rep)
+    if line:
+        print(line, flush=True)
+    ROUTE_REPORTS[role["name"]] = rep
     return captured
+
+def audit_declared_routes(paths, verbose=True):
+    """Declared routes that captured nothing. Returns the offending route paths.
+
+    Reads `out/route-coverage.json`, written by run(). A project that declares no
+    routes has nothing to fail on — the file records that plainly rather than
+    leaving "we looked and found everything" indistinguishable from "nobody asked
+    us to look".
+    """
+    f = os.path.join(paths["out"], "route-coverage.json")
+    if not os.path.exists(f):
+        return []
+    try:
+        rep = json.load(open(f))
+    except Exception:
+        return []
+    bad = sorted({r for role in rep.get("roles", {}).values()
+                  for r in role.get("unreachable", [])})
+    if bad and verbose:
+        print(f"!! {len(bad)} declared route(s) captured nothing: {', '.join(bad)}\n"
+              f"   Either the route is wrong in audit.config.json, or the screen is down. "
+              f"A declared route is one the audit was told to cover.", flush=True)
+    return bad
+
 
 def rows_to_prune(rows, failures, visited_roles, captured_counts):
     """Pure decision function for the manifest-pruning step in run().
@@ -1359,6 +1405,19 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
 
     json.dump(out, open(mpath, "w"), indent=2)
     print(f"CAPTURED {len(manifest)} screens (manifest now {len(out)})", flush=True)
+
+    # Route coverage, per role. Written even when every declaration was reached, so a
+    # run that names no declaredRoutes leaves a file saying so rather than nothing —
+    # "the crawl found everything" and "nobody asked it to look further" read the same
+    # in an empty directory, and telling them apart is the point of this whole change.
+    if ROUTE_REPORTS:
+        gate = "FAIL" if any(r["gate"] == "FAIL" for r in ROUTE_REPORTS.values()) else "PASS"
+        json.dump({"roles": ROUTE_REPORTS, "gate": gate},
+                  open(os.path.join(paths["out"], "route-coverage.json"), "w"), indent=2)
+        unreachable = sorted({r for rep in ROUTE_REPORTS.values() for r in rep["unreachable"]})
+        if unreachable:
+            print(f"!! ROUTE COVERAGE FAIL — {len(unreachable)} declared route(s) captured "
+                  f"nothing: {', '.join(unreachable)}", flush=True)
 
     prev = prev_bundle  # loaded once, above, before the route-union needed it
     if prev:
