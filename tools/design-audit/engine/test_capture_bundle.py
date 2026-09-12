@@ -1250,3 +1250,49 @@ class NavGroupExpansion(unittest.TestCase):
         routes = C.discover_routes(nav.page(), {"live": {"skipRoutes": ["/logout"]}})
         self.assertNotIn("/logout", routes)
         self.assertIn("/profile", routes)
+
+
+class CanaryShifts(unittest.TestCase):
+    """Both rules here were learned by getting them wrong, on 2026-09-12, one after the other."""
+
+    def test_the_page_that_did_not_move_reports_nothing(self):
+        before = {"0": ["Dashboard", 94], "1": ["Dashboard", 360]}
+        after = {"0": ["Dashboard", 94, 85, 25], "1": ["Dashboard", 360, 504, 43]}
+        self.assertEqual(C.canary_shifts(before, after), ([], 0))
+
+    def test_two_elements_sharing_a_label_are_not_compared_with_each_other(self):
+        # the first version keyed by text, so PUBLIC-HOME's span at x94 and h2 at x360 collapsed
+        # to one key and it reported a 312px shift on a page that had not moved
+        before = {"0": ["Dashboard", 94], "1": ["Dashboard", 360]}
+        after = {"1": ["Dashboard", 360, 504, 43], "0": ["Dashboard", 94, 85, 25]}
+        shifted, hidden = C.canary_shifts(before, after)
+        self.assertEqual(shifted, [])
+
+    def test_an_element_that_stopped_rendering_has_not_moved(self):
+        # HIDE_OFFCANVAS_JS display:none's the accessibility widget between the passes; a hidden
+        # rect is all zeros, and four of those read as "x1536 -> x0"
+        before = {"0": ["Bigger Text", 1538]}
+        after = {"0": ["Bigger Text", 0, 0, 0]}
+        self.assertEqual(C.canary_shifts(before, after), ([], 1))
+
+    def test_the_real_harness_defect_is_still_caught(self):
+        # NMB-SCREEN-016: the pledge button pushed from x1171 to x1841 on a 1440 export
+        before = {"0": ["Take the Pledge", 1171]}
+        after = {"0": ["Take the Pledge", 1841, 176, 36]}
+        shifted, hidden = C.canary_shifts(before, after)
+        self.assertEqual(len(shifted), 1)
+        self.assertEqual((shifted[0]["before"], shifted[0]["after"]), (1171, 1841))
+
+    def test_sub_pixel_jitter_is_not_a_shift(self):
+        before = {"0": ["Save", 100]}
+        after = {"0": ["Save", 102, 80, 32]}
+        self.assertEqual(C.canary_shifts(before, after)[0], [])
+
+    def test_a_mark_whose_text_changed_is_not_judged(self):
+        before = {"0": ["Loading…", 100]}
+        after = {"0": ["12 facilities", 400, 200, 24]}
+        self.assertEqual(C.canary_shifts(before, after), ([], 0))
+
+    def test_empty_and_missing_inputs_are_safe(self):
+        self.assertEqual(C.canary_shifts(None, None), ([], 0))
+        self.assertEqual(C.canary_shifts({}, {"9": ["x", 1, 10, 10]}), ([], 0))

@@ -126,20 +126,80 @@ EXTRACT_JS = r"""
 # pass and again AFTER. If any has moved horizontally, the screen is flagged. Cheap (one
 # evaluate each side), and it catches the whole class at the moment it happens rather than four
 # review passes later.
-CANARY_JS = r"""() => {
-  const out = [];
-  const els = document.querySelectorAll('h1,h2,h3,button,a,th,label');
-  for (const el of els) {
+# The canary: does the page still sit where it sat, after the harness un-clips it? A capture whose
+# elements moved sideways has stopped describing the page — that defect put NMB-SCREEN-016's button
+# at x1841 on a 1440 export and published a finding saying it was missing.
+#
+# Identity is an ATTRIBUTE, never the label. The first version keyed by text, and PUBLIC-HOME has
+# two elements reading 'Dashboard' (a span at x94 and an h2 at x360) — so it compared one against
+# the other and reported a 312px shift on a page that had not moved. That is the same
+# short-label-swallows-another bug the anchor matcher was fixed for, reproduced here within a day.
+# An attribute cannot be ambiguous, and no stylesheet targets it, so it changes no layout.
+CANARY_MARK_JS = r"""() => {
+  const out = {};
+  let n = 0;
+  for (const el of document.querySelectorAll('h1,h2,h3,button,a,th,label')) {
     const t = (el.textContent || '').trim();
     if (t.length < 4 || t.length > 60) continue;
     const b = el.getBoundingClientRect();
     if (b.width < 8 || b.height < 8) continue;
     if (b.top < 0 || b.top > 2000) continue;
-    out.push([t.slice(0, 40), Math.round(b.left + scrollX)]);
-    if (out.length >= 24) break;
+    el.setAttribute('data-sa-canary', String(n));
+    out[n] = [t.slice(0, 40), Math.round(b.left + scrollX)];
+    if (++n >= 24) break;
   }
   return out;
 }"""
+
+CANARY_READ_JS = r"""() => {
+  const out = {};
+  for (const el of document.querySelectorAll('[data-sa-canary]')) {
+    const k = el.getAttribute('data-sa-canary');
+    const b = el.getBoundingClientRect();
+    // width/height travel with the verdict: HIDE_OFFCANVAS_JS display:none's the off-canvas
+    // accessibility widget between the two passes, and a hidden element's rect is all zeros. Four
+    // of those read as "moved from x1536 to x0" — an element that renders nothing cannot have moved.
+    out[k] = [(el.textContent || '').trim().slice(0, 40), Math.round(b.left + scrollX),
+              Math.round(b.width), Math.round(b.height)];
+    el.removeAttribute('data-sa-canary');        // leave the DOM as the extraction expects it
+  }
+  return out;
+}"""
+
+SHIFT_TOLERANCE_PX = 2
+
+
+def canary_shifts(before, after):
+    """(shifted, hidden) — which marked elements moved sideways, and which stopped rendering.
+
+    Pure, and tested, because both of this function's rules were learned by getting them wrong:
+
+      * Compare by MARK, never by label. PUBLIC-HOME has two elements reading 'Dashboard' and a
+        text-keyed version compared one against the other, reporting a 312px shift on a page that
+        had not moved.
+      * An element that renders nothing has not moved. HIDE_OFFCANVAS_JS display:none's the
+        off-canvas accessibility widget between the two passes and a hidden rect is all zeros, so
+        four of those read as "x1536 -> x0".
+
+    `before` is {mark: [text, left]}; `after` is {mark: [text, left, width, height]}.
+    """
+    shifted, hidden = [], 0
+    for mark, row in (after or {}).items():
+        text, x_after, w_after, h_after = row
+        pair = (before or {}).get(str(mark)) or (before or {}).get(mark)
+        if not pair:
+            continue
+        if w_after < 1 or h_after < 1:
+            hidden += 1                       # counted, never silently dropped
+            continue
+        text_before, x_before = pair
+        # a mark whose text has changed is a different element wearing it; measuring proves nothing
+        if text_before != text:
+            continue
+        if abs(x_after - x_before) > SHIFT_TOLERANCE_PX:
+            shifted.append({"text": text, "before": x_before, "after": x_after})
+    return shifted, hidden
+
 
 HIDE_OFFCANVAS_JS = r"""(w) => {
   const hidden = [];
@@ -1008,7 +1068,7 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         # nothing to do with the page actually changing, and the reuse saving is lost.
         skel_left, skel_waited = wait_for_data(pg)
         try:
-            canary_before = dict(pg.evaluate(CANARY_JS))
+            canary_before = pg.evaluate(CANARY_MARK_JS) or {}
         except Exception:
             canary_before = {}
         try:
@@ -1019,12 +1079,9 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
             print(f"  hid {len(off)} off-canvas fixed element(s) before unclip: "
                   f"{', '.join(off[:2])}", flush=True)
         settled = settle_height(pg, UNCLIP_JS, width=width, base_h=1000)
-        shifted = []
+        shifted, hidden_after = [], 0
         try:
-            for text, x_after in pg.evaluate(CANARY_JS):
-                x_before = canary_before.get(text)
-                if x_before is not None and abs(x_after - x_before) > 2:
-                    shifted.append({"text": text, "before": x_before, "after": x_after})
+            shifted, hidden_after = canary_shifts(canary_before, pg.evaluate(CANARY_READ_JS))
         except Exception:
             pass
         if shifted:
@@ -1038,6 +1095,7 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
             probe = None
         if probe is not None and isinstance(probe, dict):
             probe["layoutShift"] = shifted
+            probe["canaryHidden"] = hidden_after
 
         decision = "recapture"
         if mode == "verify" and prev and probe is not None:
