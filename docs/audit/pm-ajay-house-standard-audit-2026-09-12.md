@@ -26,11 +26,12 @@ the live screen by `engine/fixpreview.py`.
 | | |
 |---|---|
 | Environment | `pmajay-dev.mosje.in` (Vite SPA — the rest of the estate is Next 16) |
-| Screens measured | 72 of 223 declared (Ministry complete at 48/48; GIA district roles part-captured; the rest running) |
-| Elements checked | 17,743 (1,179 off-canvas third-party elements excluded) |
-| Token adoption | **6.0%** |
-| Concentration | **ten values explain 96.6%** of all 18,486 charged deviation instances |
-| Findings | 7 curated — 4 portal, 3 design-system — over 37 machine-charged values |
+| Screens measured | **224 — every declared route, all 12 roles.** Route-coverage gate PASS, nothing unreachable |
+| Elements checked | 35,011 (1,602 off-canvas third-party elements excluded) |
+| Token adoption | **9.3%** |
+| Concentration | **ten values explain 95.3%** of all 35,115 charged deviation instances |
+| Findings | 7 curated — 4 portal, 3 design-system — over 45 machine-charged values |
+| Capture integrity | Layout canary: **all 224 screens held still**. No finding rests on a screenshot that stopped describing its page |
 
 **Read the concentration figure before the adoption figure.** 4.7% invites "most of this portal is
 wrong", and that is not what the measurement says. Almost every charged element fails on one of
@@ -38,14 +39,23 @@ three decisions, each made once in a stylesheet.
 
 ## The portal findings are global, not the Ministry's alone
 
-The report's strongest claim is that these four belong to every role. Tested against the roles
-captured so far — both root causes appear in **all of them**, because both live in the shared shell:
+The report's strongest claim is that these four belong to every role. It is now a **census, not a
+sample**: both root causes appear in **all twelve roles**, because both live in the shared shell.
 
 | Role | Screens | Elements at 15px | Elements on slate ink |
 |---|---|---|---|
-| Ministry | 48 | 1,672 | 14,518 |
+| Ministry | 48 | 1,669 | 14,459 |
 | Grant-in-Aid · district maker | 21 | 352 | 1,742 |
-| Grant-in-Aid · district checker | 3 | 57 | 164 |
+| Grant-in-Aid · district checker | 14 | 95 | 959 |
+| Grant-in-Aid · state maker | 21 | 319 | 1,921 |
+| Grant-in-Aid · state checker | 17 | 118 | 1,390 |
+| Hostel · district maker | 10 | 184 | 1,004 |
+| Hostel · district checker | 7 | 87 | 694 |
+| Hostel · state maker | 13 | 227 | 1,344 |
+| Hostel · state checker | 10 | 107 | 932 |
+| Adarsh Gram · village | 20 | 188 | 1,585 |
+| Adarsh Gram · district | 27 | 215 | 2,161 |
+| Adarsh Gram · state | 16 | 385 | 1,744 |
 
 ## Findings — the portal
 
@@ -83,18 +93,19 @@ until the instrument has been checked.**
   screen-specific findings rather than change these.
 - **The human track**: keyboard and screen-reader walkthrough, focus order, meaningful alt text,
   Hindi and truncation, brand/emblem and GIGW mandatory elements, severity sign-off.
-- **The layout canary's warnings on this portal were FALSE POSITIVES, and the captures are
-  sound.** It fired on 7 of 62 captures — 5 of 14 GIA screens — reporting e.g. `'Add Beneficiary'
+- **The layout canary's warnings on the first pass were FALSE POSITIVES, and the captures were
+  sound.** After the fix the portal was re-captured in full and all 224 screens held still. It fired on 7 of 62 captures — 5 of 14 GIA screens — reporting e.g. `'Add Beneficiary'
   x1220 → x44`. The canary keys on text, and "Add Beneficiary" is both the top-right button
   (x1220) and a sidebar nav item (x44); "Beneficiary List", "Misc. Reports", "Project Status" and
   "Executive Summary" are each a page heading *and* a sidebar label, so the before and after
   readings keyed to different elements. Every screenshot was checked and is correct, sidebar and
   all. The canary now keeps only text that occurs exactly once on the page.
 
-  Two notes. The `layoutShift` records already written into the bundle are false and will be
-  overwritten as the capture continues. And the capture process running during this session
-  loaded the OLD canary, so it will keep emitting the warning for the rest of this pass — the
-  warnings after this point can be ignored.
+  The portal was re-captured from scratch against the fixed engine rather than leaving false
+  records in the bundle: 224 screens, 0 layout-shift warnings, and `gate_capture_layout` turned
+  from SKIP into a real PASS. That re-capture also added `radiusRaw`, so percentage radii, real px
+  radii and the browser's `rounded-full` clamp are now distinguishable instead of relying on the
+  plausibility fallback.
 - **A phantom route** (`/https://seniorcitizen-admin.dosje.gov.in/login`) produced a 404 capture
   that the coverage ledger counted as a screen. Its origin was not reproducible; the engine is
   hardened at `routes._clean` so it cannot recur, and the capture was removed. Not raised as a
