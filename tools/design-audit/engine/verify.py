@@ -197,7 +197,10 @@ def main():
     bundle = js("out", "capture-bundle.json") or {}
     screens = bundle.get("screens") or []
     rows_cache = {}
-    inv = {s["slug"]: s["colorInventory"] for s in screens if s.get("colorInventory")}
+    # raw CSS values on the bundle, hex here — converted by integrity.colours_in, the only colour
+    # parser in the engine
+    inv = {s["slug"]: I.inventory_hexes(s["colorInventory"])
+           for s in screens if s.get("colorInventory")}
 
     def inventory_for(slug):
         """What the page actually paints, or None. None is the honest answer for a capture taken

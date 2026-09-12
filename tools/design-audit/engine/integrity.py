@@ -134,6 +134,19 @@ def gate_absence_claims(findings):
 # real cases rather than by taste: the served #ED8525 sampled as #E08020 (13 apart) and the card
 # edge #E5E7EB quoted as #E5EAF2 (7). A design colour sampled off a glyph lands far further away
 # — #003366 sampling as #7F99B2 is 127 — and that is a different mistake, caught by the warning.
+def inventory_hexes(inv):
+    """{raw CSS value: count} -> {hex: count}, using the one tested parser.
+
+    capture.py records RAW computed values on purpose. An older bundle recorded hex keys instead;
+    those parse to themselves, so both shapes read correctly and no bundle has to be thrown away.
+    """
+    out = {}
+    for raw, n in (inv or {}).items():
+        for h in colours_in(raw):
+            out[h] = out.get(h, 0) + n
+    return out
+
+
 NEAR_MISS = 24
 
 

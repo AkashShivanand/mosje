@@ -227,21 +227,26 @@ HIDE_OFFCANVAS_JS = r"""(w) => {
 # Cheap: one pass, one string per element, capped. Channels are CLAMPED — an unclamped
 # toString(16) turned a 256 into '100' and produced seven-character "hex".
 COLOR_INVENTORY_JS = r"""() => {
-  const f = v => Math.max(0, Math.min(255, Math.round(parseFloat(v) || 0)))
-                  .toString(16).padStart(2, '0').toUpperCase();
-  const hex = c => {
-    const m = String(c || '').match(/[\d.]+/g);
-    if (!m || m.length < 3) return null;
-    if (m.length > 3 && parseFloat(m[3]) === 0) return null;      // fully transparent paints nothing
-    return '#' + f(m[0]) + f(m[1]) + f(m[2]);
-  };
+  // RAW computed values, counted. NOT hex — the conversion belongs to Python's colours_in(),
+  // which is tested. The first version converted here, in JavaScript, and reimplemented the exact
+  // oklch bug that had just been fixed on the Python side: this estate is Tailwind v4, so
+  // getComputedStyle returns `oklch(0.551 0.027 264.364)`, and a naive rgb()-shaped scrape read
+  // the HUE into the blue channel and recorded it as '#010019'. Every Tailwind colour in the first
+  // inventory was junk of that kind.
+  //
+  // ONE colour parser, in one language, with tests. A second one is a second set of the same bugs.
   const tally = {};
-  const bump = c => { const h = hex(c); if (h) tally[h] = (tally[h] || 0) + 1; };
+  const bump = c => {
+    const v = String(c || '').trim();
+    if (!v || v === 'none' || v === 'transparent') return;
+    if (/^rgba?\(.*,\s*0\s*\)$/.test(v)) return;          // fully transparent paints nothing
+    tally[v] = (tally[v] || 0) + 1;
+  };
   const all = document.querySelectorAll('*');
   for (let i = 0; i < all.length && i < 6000; i++) {
     const el = all[i], s = getComputedStyle(el);
     const b = el.getBoundingClientRect();
-    if (b.width < 1 || b.height < 1) continue;                    // nothing invisible counts
+    if (b.width < 1 || b.height < 1) continue;            // nothing invisible counts
     if (s.visibility === 'hidden' || s.opacity === '0') continue;
     bump(s.color);
     bump(s.backgroundColor);

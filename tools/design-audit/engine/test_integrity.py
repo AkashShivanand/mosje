@@ -398,3 +398,24 @@ class Ratchet(unittest.TestCase):
     def test_a_message_with_no_id_is_kept_whole(self):
         new, owed, stale = I.ratchet(["the capture bundle is unreadable"], {})
         self.assertEqual(new, ["the capture bundle is unreadable"])
+
+
+class InventoryReading(unittest.TestCase):
+    def test_raw_values_are_converted_by_the_one_parser(self):
+        # the browser hands over what getComputedStyle said; conversion happens here, once
+        inv = {"rgb(229, 231, 235)": 16, "oklch(0.929 0.013 255.508)": 4}
+        self.assertEqual(I.inventory_hexes(inv), {"#E5E7EB": 16, "#E2E8F0": 4})
+
+    def test_the_oklch_bug_that_shipped_in_javascript_cannot_recur_here(self):
+        # a naive rgb-shaped scrape read the HUE into the blue channel: '#010019'
+        self.assertEqual(list(I.inventory_hexes({"oklch(0.551 0.027 264.364)": 1})), ["#6A7282"])
+
+    def test_an_older_hex_keyed_inventory_still_reads(self):
+        self.assertEqual(I.inventory_hexes({"#e5e7eb": 3}), {"#E5E7EB": 3})
+
+    def test_counts_merge_when_two_notations_mean_one_colour(self):
+        inv = {"#003366": 2, "rgb(0, 51, 102)": 5}
+        self.assertEqual(I.inventory_hexes(inv), {"#003366": 7})
+
+    def test_unparseable_values_are_dropped_not_guessed(self):
+        self.assertEqual(I.inventory_hexes({"currentcolor": 9, "": 1}), {})

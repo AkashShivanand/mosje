@@ -209,10 +209,22 @@ def main():
                                 min([SEV.get(f["severity"], 9) for f in s["findings"]] or [9]),
                                 s["slug"]))
 
-    deferred = [{"id": d.get("old") or "-", "title": d["title"], "reason": d["reason"]}
-                for d in fin["dropped"]]
-    deferred += [{"id": "design-file", "title": "Design file — " + n["title"],
-                  "reason": n["detail"]} for n in fin.get("designFileNotes", [])]
+    # The published report carries NO deferred section — reviewer instruction, 2026-09-12. The
+    # withdrawn claims, the reviewer notes already covered by other findings, and the design-file
+    # observations were shared directly with the reviewer instead.
+    #
+    # The record is NOT lost: `findings_final.json` keeps `dropped[]` (every withdrawn claim with
+    # the reason it was withdrawn) and `designFileNotes[]`, the tracker keeps a Withdrawn row per
+    # withdrawn finding, and `docs/audit/nmba-deferred-and-design-file-notes.md` holds the full
+    # list. Only the READER-facing report omits it. `deferred` stays a key, because
+    # DELIVERABLE-SPEC requires the field to exist on every master.
+    DEFER_IN_REPORT = False
+    deferred = []
+    if DEFER_IN_REPORT:
+        deferred = [{"id": d.get("old") or "-", "title": d["title"], "reason": d["reason"]}
+                    for d in fin["dropped"]]
+        deferred += [{"id": "design-file", "title": "Design file — " + n["title"],
+                      "reason": n["detail"]} for n in fin.get("designFileNotes", [])]
 
     am = {"portal": PORTAL, "idPrefix": fin["prefix"], "generated": GENERATED,
           "figmaUrl": FURL.format(n="2136-20193"),
