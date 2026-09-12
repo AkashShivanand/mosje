@@ -634,7 +634,27 @@ def looks_like_login(pg, auth=None):
 # cards and 10 table rows were all grey bars while the design frame beside it showed real data.
 WAIT_FOR_DATA_JS = r"""() => {
   const busy = document.querySelectorAll('[aria-busy="true"],[data-loading="true"]').length;
-  let skel = 0;
+  let skel = 0, bars = 0;
+  // A skeleton is a NEUTRAL placeholder, or an animated one. An empty coloured div of the same
+  // size is usually data — a bar chart's fill.
+  //
+  // PM-AJAY, 2026-09-12: this counted the Ministry dashboard's progress bars as skeletons and
+  // reported "STILL LOADING (22 skeleton placeholders)" on three screens whose figures had in
+  // fact all arrived (47,333 / 22,030 / 19,763 / 14,994 were in the same extraction). A finding
+  // was drafted from that warning — "dashboard figures never arrive" — and it was false. The
+  // counts landed just above SKELETON_FLOOR on precisely the screens carrying the most bars,
+  // which is the tell.
+  const neutral = (cs) => {
+    const m = (cs.backgroundColor || '').match(/rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/);
+    if (!m) return true;                       // oklch() and friends: fall back to counting it
+    const [r, g, b] = [ +m[1], +m[2], +m[3] ];
+    // Channel spread separates the two populations cleanly, and the threshold is measured
+    // rather than guessed. The estate's greys run 6-44 (gray-200 is 6, slate-500 is 44 — they
+    // are COOL greys, not neutral ones, which is why a tighter bound misfiled real placeholders);
+    // its chart fills run 106-245 (navy 106, green 130, gov-blue 220, saffron 245). 64 sits in
+    // the gap with margin on both sides.
+    return (Math.max(r, g, b) - Math.min(r, g, b)) <= 64;
+  };
   document.querySelectorAll('div,span,td,li').forEach(el => {
     if (el.children.length) return;
     if ((el.textContent || '').trim()) return;
@@ -644,9 +664,11 @@ WAIT_FOR_DATA_JS = r"""() => {
     const bg = cs.backgroundColor || '';
     if (bg === 'transparent' || bg === 'rgba(0, 0, 0, 0)') return;
     if (cs.animationName && cs.animationName !== 'none') { skel += 2; return; }
+    if (!neutral(cs)) { bars += 1; return; }   // coloured and still: data, not a placeholder
     skel += 1;
   });
-  return { busy, skel };
+  // `bars` is returned for diagnosis only; nothing gates on it.
+  return { busy, skel, bars };
 }"""
 
 # Every page in a real app has a handful of small filled boxes with no text — a divider, a

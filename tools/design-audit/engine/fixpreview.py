@@ -111,6 +111,17 @@ def preview_one(pg, cfg, role, finding, out_dir, width, dpr):
 
     CAP.navigate(pg, role["base"], route, cfg, cfg["live"]["auth"], role,
                  waitms=cfg.get("capture", {}).get("waitMs", 2000))
+    # Remove any patch left by a PREVIOUS finding in this session, before anything is measured.
+    #
+    # This portal is a single-page app, so `navigate` performs a client-side route change and the
+    # document is never reloaded — an injected <style> therefore SURVIVES from one preview to the
+    # next. On the first run of this module, PMA-GLOBAL-003's "before" image was captured with
+    # PMA-GLOBAL-002's type-scale patch still applied, and the two files gave it away by having
+    # identical byte sizes. Both gates still passed: the patch did change pixels and moved
+    # nothing, so nothing failed — the BEFORE was simply the wrong page. A preview whose baseline
+    # is another fix's result overstates one finding and hides the other.
+    pg.evaluate("""() => { const s = document.getElementById('__sa_fixpreview__');
+                           if (s) s.remove(); return !!s; }""")
     CAP.wait_for_data(pg)
     page_h = CAP.settle_height(pg, CAP.UNCLIP_JS, width=width, base_h=1000)
 
@@ -136,7 +147,17 @@ def preview_one(pg, cfg, role, finding, out_dir, width, dpr):
     geo_after = pg.evaluate(GEOMETRY_JS, fix.get("selector") or "")
     CAP.shoot(pg, after_png, max(page_h, page_h_after), dpr, width)
 
+    # A fingerprint of the UNPATCHED LAYOUT, not of its pixels. Two loads of a live dashboard are
+    # never byte-identical — figures refresh, bars animate, a "Data refreshed weekly" line moves —
+    # so comparing image bytes across findings reports contamination on every real screen. What
+    # must agree is the geometry: a leaked patch changes font sizes or colours and therefore moves
+    # boxes, while live data does not.
+    geo_fp = hashlib.md5(
+        json.dumps(sorted((k.rsplit("|", 1)[0], v[0], v[1]) for k, v in geo_before.items()),
+                   sort_keys=True).encode()).hexdigest()
+
     rec = {"id": fid, "route": route, "role": role["name"],
+           "beforeGeoHash": geo_fp,
            "selector": fix.get("selector"), "css": fix["css"], "why": fix.get("why"),
            "before": os.path.basename(before_png), "after": os.path.basename(after_png),
            "matchedElements": matched,
@@ -225,15 +246,42 @@ def run(project, only_id=None):
             ctx.close()
         browser.close()
 
+    # Two findings on the SAME screen must start from the same picture. When they do not, either
+    # a previous patch leaked into this one's baseline (an SPA never reloads the document, so an
+    # injected <style> survives a route change) or the screen is non-deterministic — and in both
+    # cases a before/after pair is no longer evidence. This caught the leak that produced
+    # PMA-GLOBAL-003's wrong baseline on the first run of this module.
+    baselines = {}
+    for r in out:
+        if r.get("gate") == "SKIP" or not r.get("beforeGeoHash"):
+            continue
+        baselines.setdefault((r.get("role"), r.get("route")), {}).setdefault(
+            r["beforeGeoHash"], []).append(r["id"])
+    contaminated = []
+    for (role_name, route), by_hash in baselines.items():
+        if len(by_hash) > 1:
+            groups = " vs ".join("+".join(ids) for ids in by_hash.values())
+            contaminated.append(
+                f"{role_name} {route}: findings disagree on what the UNPATCHED screen looks like "
+                f"({groups}) — their unpatched LAYOUTS differ, which live data alone does not "
+                f"cause. A previous patch leaked into a later baseline. Either way the pairs are "
+                f"not comparable")
+    for msg in contaminated:
+        print(f"  ! {msg}", flush=True)
+
     rep = {
         "previews": out,
+        "baselineConsistency": {
+            "gate": "FAIL" if contaminated else "PASS",
+            "failures": contaminated,
+        },
         "counts": {
             "total": len(out),
             "passed": sum(1 for r in out if r.get("gate") == "PASS"),
             "failed": sum(1 for r in out if r.get("gate") == "FAIL"),
             "skipped": sum(1 for r in out if r.get("gate") == "SKIP"),
         },
-        "gate": "FAIL" if any(r.get("gate") == "FAIL" for r in out) else "PASS",
+        "gate": "FAIL" if (contaminated or any(r.get("gate") == "FAIL" for r in out)) else "PASS",
         "note": ("A PROPOSED panel replaces the DESIGN panel on a portal with no design frames. "
                  "PASS means the patch demonstrably changed the target and moved nothing else. "
                  "FAIL means the recommendation is not safe to ship as written — a no-op patch or "

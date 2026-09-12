@@ -391,7 +391,8 @@ def gate_tracker_parity(local_rows, remote_rows, **kw):
 #   * a token          `--sa-border-neutral-subtle`     the generated contract publishes it
 #   * a WCAG criterion `WCAG 2.2 1.4.3`                 legally binding on a GoI property
 #   * a GIGW/DBIM rule `GIGW 3.0 3.4.2`, `DBIM §4.4`    mandatory standards, docs/guidelines/
-#   * a DS component   `SectionTitle`, `DataTable`      the estate publishes it; use it
+#   * a DS component   `DS::SectionTitle`                 the estate publishes it; use it
+#   * an estate rule   `rules/data-state-completeness.md` mandatory, path-scoped, in-repo
 #   * a house gap      `HOUSE-GAP`                      the contract and the Figma file disagree;
 #                                                       raised against the DS, not the portal
 #
@@ -403,7 +404,9 @@ CITATION = re.compile(
     r"|GIGW\s*3\.0[\s§]*[\d.]+"                    # a GIGW clause
     r"|DBIM[\s§]*[\d.]+"                           # a DBIM clause
     r"|UX4G[\s§]*[\d.]+"                           # a UX4G clause (recommended, not mandatory)
-    r"|HOUSE-GAP",                                      # the DS and the handoff file disagree
+    r"|HOUSE-GAP"                                       # the DS and the handoff file disagree
+    r"|[\w.-]*rules/[a-z0-9-]+\.md"                     # a mandatory estate rule, by file
+    r"|\b(DS|design-system)\s*::\s*[A-Z][A-Za-z]+",     # a published component, e.g. DS::SectionTitle
     re.I)
 
 #: A citation that is only a bare criterion number ("1.4.3") is ambiguous between WCAG versions

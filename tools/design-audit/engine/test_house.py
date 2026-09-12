@@ -242,5 +242,48 @@ class FixPreviewCollateral(unittest.TestCase):
         self.assertEqual(FP.collateral({"A|x|1": [0, 0]}, {"B|y|1": [0, 0]}), [])
 
 
+# ---------------------------------------------------------------------------------------------
+class SkeletonHeuristicIsSaturationAware(unittest.TestCase):
+    """A warning from an instrument is not evidence about the product.
+
+    PM-AJAY, 2026-09-12: `wait_for_data`'s placeholder count treated any empty coloured div
+    6-60px tall as a skeleton, which on the Ministry dashboard is its PROGRESS BARS. It reported
+    "STILL LOADING (22 skeleton placeholders)" on three screens whose figures had all arrived —
+    47,333 / 22,030 / 19,763 / 14,994 were in the same extraction, with zero em-dash rows — and a
+    finding was drafted from the warning before the instrument was checked. It was withdrawn.
+
+    These assert the RULE the fix encodes, on the classifier's own terms: a grey fill is a
+    placeholder, a saturated fill is data. The JS is exercised by the capture; this pins the
+    boundary so the next edit cannot quietly move it back.
+    """
+
+    @staticmethod
+    def _neutral(r, g, b):
+        # the same test WAIT_FOR_DATA_JS applies
+        return (max(r, g, b) - min(r, g, b)) <= 64
+
+    def test_a_grey_placeholder_still_counts_as_a_skeleton(self):
+        # the estate's greys are COOL greys; slate-500 spreads 44, which a tighter bound
+        # misfiled as data. Measured, not guessed.
+        for grey in [(229, 231, 235), (241, 245, 249), (156, 163, 175), (148, 163, 184),
+                     (49, 65, 88), (98, 116, 142)]:
+            with self.subTest(rgb=grey):
+                self.assertTrue(self._neutral(*grey))
+
+    def test_a_brand_coloured_bar_is_data_not_a_skeleton(self):
+        # the fills actually on PM-AJAY's dashboard bars: gov-blue, a green, a saffron, a navy
+        for bar in [(3, 115, 223), (0, 130, 54), (245, 73, 0), (10, 58, 116)]:
+            with self.subTest(rgb=bar):
+                self.assertFalse(self._neutral(*bar),
+                                 "a saturated fill is a chart, and counting it as a placeholder "
+                                 "is what produced a false 'never loads' finding")
+
+    def test_the_boundary_sits_in_the_measured_gap(self):
+        # greys observed up to 44, chart fills from 106 — the bound is 64, and both margins
+        # matter: too tight misfiles placeholders, too loose misfiles charts.
+        self.assertTrue(self._neutral(100, 120, 164))    # 64 apart — grey side
+        self.assertFalse(self._neutral(100, 120, 165))   # 65 apart — coloured side
+
+
 if __name__ == "__main__":
     unittest.main()
