@@ -3,31 +3,41 @@
 
 WHY THIS EXISTS
 ---------------
-Every audit so far has had a Figma page to diff against. PM-AJAY does not: its handoff page is a
-draft the user has said may not reflect the built UI. Without a design side, an audit either
-becomes opinion, or it convicts against a *written* standard. This file builds that standard, and
-it builds it from two independent sources so neither can be wrong alone:
+PM-AJAY has no per-screen design to diff against — its handoff page is a draft. But "no frames for
+this screen" is NOT "no standard": the estate's visual language is established across the other
+eleven pages of the handoff file, several of them marked *Dev Synced*, and that file is what the
+development teams actually build from.
 
-  1. THE CONTRACT — `packages/tokens/dist/tokens.css`, the generated Tier-2 `--sa-*` layer. This is
-     the authority. It is versioned, generated from DTCG source, and already gated by
-     `npm test -w @mosje/tokens`. A finding convicts against this and nothing else.
+    THE FIGMA HANDOFF FILE IS THE AUTHORITY. The token contract is the cross-reference.
 
-  2. THE EVIDENCE — `house/evidence/figma-page-histograms.json`, what all 12 pages of the handoff
-     file actually draw, with frequencies. This does NOT create authority; it does three other
-     jobs. It CORROBORATES (a contract value the estate demonstrably uses is a precedent a
-     developer cannot argue with), it RANKS (a value on 11 of 12 pages is a stronger call than one
-     on 2), and it exposes DESIGN-FILE DRIFT (a value the file uses that the contract does not
-     publish — which is a defect in the design file, not in the build).
+**This was inverted in the first version of this file, and the inversion was the error.** It made
+`packages/tokens/dist/tokens.css` convict and demoted the file to corroboration, on the reasoning
+that a literal is not a bound token and that the PM-AJAY page is a draft. Both premises are true
+and neither supports the conclusion: the PM-AJAY *page* being a draft is a reason not to treat *its
+frames* as a per-screen authority, not a reason to demote the whole file's established language.
 
-THE RULE THIS ENCODES, and it is the one that makes a design-less audit honest:
+The consequence was not cosmetic. The build's neutrals are Tailwind v4 **slate**; the file's are
+Tailwind v3 **gray**. Those genuinely differ, so against the real standard that is a live portal
+finding — and the first version filed it as a design-system gap that EXCUSED the portal, then
+reported "token adoption 9.3%" measured against an authority this portal was never built to.
 
-    A build value is convicted only when it is absent from the CONTRACT.
-    A value absent from the contract but WIDESPREAD in the design file is a house-standard GAP —
-    raise it against the design system, never against the portal.
+So, the two sources and what each now does:
 
-Without that split, the audit punishes a developer for following the estate's own drift. That is
-the same error as `gate_quoted_build_colours` convicting a correct finding: judging against
-evidence that is not complete. Here the contract is complete by construction; the file is not.
+  1. THE STANDARD — `house/evidence/figma-page-histograms.json`, what the eleven non-draft pages
+     actually draw, with frequencies. **This convicts.** A value established across three or more
+     independently authored pages is the estate's language, and a build departing from it is a
+     portal finding.
+
+  2. THE CONTRACT — the generated Tier-2 `--sa-*` layer. **This cross-references.** Where the
+     standard has no matching token, that is a real design-system gap worth publishing — but it
+     does not excuse the portal, because the portal is built from the file. Where the two agree,
+     a finding is doubly grounded and a developer cannot argue with it.
+
+FILE DEFECTS ARE NOT THE STANDARD. The file also carries drift, and blessing it would be the
+opposite error: `#d9d9d9` is Figma's default rectangle fill on ~4,000 unstyled shapes, `#000000` is
+pure black text where the file's own dominant ink is `#1f2937`, and Inter/Roboto/Poppins/Open Sans
+appear against a standing Noto Sans instruction. Those are excluded by name, with reasons, and
+reported separately.
 
 Run:  python3 house/derive.py            # writes house/samavesh-house-standard.json
       python3 house/derive.py --check    # exits non-zero if the written file is stale
@@ -253,80 +263,126 @@ def is_int_like(s):
         return False
 
 
-def classify(contract, evidence):
-    """Split observed values into corroborated / contract-only / design-file drift."""
+#: A value must appear on this many independently authored non-draft pages before it counts as
+#: the estate's language. One page using a value is that page's own choice; three pages agreeing
+#: is a convention a developer can be held to.
+STANDARD_MIN_PAGES = 3
+
+#: Values the FILE draws that are not the standard, with the reason each is excluded. Blessing
+#: these would be the mirror of the error this module was built to fix: the file is the authority
+#: for its established language, not for its accidents.
+FILE_DEFECTS = {
+    "#d9d9d9": "Figma's default rectangle fill — an unstyled placeholder shape on roughly 4,000 "
+               "nodes, never a colour decision.",
+    "#000000": "Pure black text. The file's own dominant ink is #1f2937 by an order of magnitude, "
+               "and pure black is in neither the file's ramp nor the token contract.",
+}
+#: The only families the estate permits: Noto Sans for text, Material Symbols Rounded for icons.
+#: CLAUDE.md makes this a standing instruction, so a stray typeface is a file defect at any
+#: frequency — there is no page count at which the wrong font becomes the standard.
+ALLOWED_FAMILIES = {"Noto Sans", "Noto Sans Devanagari", "Noto Sans Display",
+                    "Material Symbols Rounded"}
+#: A radius the file reports that no one drew: the artefact of a scaled instance.
+IMPLAUSIBLE_RADIUS = 100.0
+
+
+def build_standard(contract, evidence):
+    """The estate's established visual language, from the non-draft pages. THIS is what convicts.
+
+    Three buckets come out of every axis:
+
+      * `standard`   — established on >= STANDARD_MIN_PAGES pages and not a named file defect.
+                       A build value outside this is a PORTAL finding.
+      * `fileOnly`   — in the standard but with no matching token. A real design-system gap worth
+                       publishing; it does NOT excuse the portal, because the portal is built
+                       from the file.
+      * `defects`    — drawn by the file and excluded by name, with the reason.
+
+    Whether a standard value also has a token is recorded per value as `hasToken`, so a finding
+    can say "the file draws this and the contract publishes it" — which is the strongest form the
+    claim takes, and the one a developer cannot argue with.
+    """
     ev = evidence["aggregate"]
     npages = len(evidence["nonDraftPages"])
 
-    # --- colour: text fills, container fills and strokes are all one colour contract ---
-    observed_colors = defaultdict(lambda: {"count": 0, "pages": set(), "axes": set()})
+    def bucket(observed, contract_values, kind):
+        std, file_only, defects = {}, {}, {}
+        for val, d in observed.items():
+            rec = {"count": d["count"], "pages": len(d["pages"])}
+            if kind == "colour" and val in FILE_DEFECTS:
+                defects[val] = {**rec, "why": FILE_DEFECTS[val]}
+                continue
+            if kind == "family" and val not in ALLOWED_FAMILIES:
+                defects[val] = {**rec, "why": "Not a MoSJE typeface. Noto Sans is a standing "
+                                              "instruction; Material Symbols Rounded is the icon "
+                                              "font."}
+                continue
+            if kind == "radius" and float(val) >= IMPLAUSIBLE_RADIUS and float(val) < 500:
+                defects[val] = {**rec, "why": "A scaled-instance artefact, not a drawn radius."}
+                continue
+            if rec["pages"] < STANDARD_MIN_PAGES:
+                continue                      # one or two pages is not yet the estate's language
+            in_contract = val in contract_values
+            rec["hasToken"] = in_contract
+            if in_contract and kind != "family":
+                rec["tokens"] = sorted(contract_values[val])[:4]
+            std[val] = rec
+            if not in_contract:
+                file_only[val] = rec
+        return std, file_only, defects
+
+    # --- colour: text fills, container fills and strokes are one colour language ---
+    obs_c = defaultdict(lambda: {"count": 0, "pages": set(), "axes": set()})
     for axis in ("textColors", "frameFills", "strokes"):
         for val, d in ev[axis].items():
             h = norm_hex(val)
             if not h:
                 continue
-            observed_colors[h]["count"] += d["count"]
-            observed_colors[h]["pages"].update(d["pages"])
-            observed_colors[h]["axes"].add(axis)
+            obs_c[h]["count"] += d["count"]
+            obs_c[h]["pages"].update(d["pages"])
+            obs_c[h]["axes"].add(axis)
+    std_c, only_c, def_c = bucket(obs_c, contract["colors"], "colour")
+    for h, rec in std_c.items():
+        rec["axes"] = sorted(obs_c[h]["axes"])
 
-    corrob_c, drift_c = {}, {}
-    for h, d in observed_colors.items():
-        rec = {"count": d["count"], "pages": len(d["pages"]), "axes": sorted(d["axes"])}
-        if h in contract["colors"]:
-            rec["tokens"] = sorted(contract["colors"][h])[:4]
-            corrob_c[h] = rec
-        else:
-            # nearest contract colour, so the report can say "7 points from #e5e7eb" rather than
-            # "unknown colour" — the near-miss is the finding, per the ledger's 2026-09-12 entry.
-            near = nearest(h, contract["colors"])
-            if near:
-                rec["nearest"], rec["distance"] = near
-            drift_c[h] = rec
-
-    def split_num(axis_names, contract_key, ranges=None):
-        corrob, drift = {}, {}
+    def numeric(axes, contract_key, kind="num"):
         merged = defaultdict(lambda: {"count": 0, "pages": set()})
-        for axis in axis_names:
+        for axis in axes:
             for val, d in ev[axis].items():
                 if not is_int_like(val):
-                    continue          # scaled-instance artifact, not a decision
+                    continue              # scaled-instance artefact, never a decision
                 merged[float(val)]["count"] += d["count"]
                 merged[float(val)]["pages"].update(d["pages"])
-        for n, d in merged.items():
-            rec = {"count": d["count"], "pages": len(d["pages"])}
-            if n in contract[contract_key]:
-                rec["tokens"] = sorted(contract[contract_key][n])[:4]
-                corrob[n] = rec
-                continue
-            # A fluid tier is a RANGE. A size inside one is conformant even though no discrete
-            # token equals it — the design file draws the tier at one viewport, the contract
-            # publishes the whole interval.
-            hit = [t for (lo, hi), tt in (ranges or {}).items() if lo <= n <= hi for t in tt]
-            if hit:
-                rec["tokens"] = sorted(set(hit))[:4]
-                rec["viaFluidRange"] = True
-                corrob[n] = rec
-            else:
-                drift[n] = rec
-        return corrob, drift
+        return bucket(merged, contract[contract_key], kind)
 
-    corrob_r, drift_r = split_num(("radii",), "radii")
-    corrob_s, drift_s = split_num(("fontSizes",), "fontSizes",
-                                  ranges=contract.get("fontSizeRanges"))
-    corrob_p, drift_p = split_num(("padding", "gaps"), "spacing")
+    std_r, only_r, def_r = numeric(("radii",), "radii", "radius")
+    std_s, only_s, def_s = numeric(("fontSizes",), "fontSizes")
+    std_p, only_p, def_p = numeric(("padding", "gaps"), "spacing")
 
-    fams = {v: d["count"] for v, d in ev["families"].items() if v != "mixed"}
-    allowed_fams = set(contract["fontFamilies"])
+    # A size inside a published FLUID range has a token even though no discrete value equals it.
+    for n, rec in std_s.items():
+        if rec.get("hasToken"):
+            continue
+        hit = [t for (lo, hi), tt in (contract.get("fontSizeRanges") or {}).items()
+               if lo <= n <= hi for t in tt]
+        if hit:
+            rec["hasToken"] = True
+            rec["tokens"] = sorted(set(hit))[:4]
+            rec["viaFluidRange"] = True
+            only_s.pop(n, None)
+
+    fam_obs = {v: {"count": d["count"], "pages": set(d["pages"])}
+               for v, d in ev["families"].items() if v != "mixed"}
+    std_f, only_f, def_f = bucket(fam_obs, {k: [] for k in contract["fontFamilies"]}, "family")
+
     return {
         "pagesOfEvidence": npages,
-        "colour": {"corroborated": corrob_c, "designFileDrift": drift_c},
-        "radius": {"corroborated": corrob_r, "designFileDrift": drift_r},
-        "fontSize": {"corroborated": corrob_s, "designFileDrift": drift_s},
-        "spacing": {"corroborated": corrob_p, "designFileDrift": drift_p},
-        "fontFamily": {"allowed": sorted(allowed_fams),
-                       "observed": dict(sorted(fams.items(), key=lambda kv: -kv[1])),
-                       "designFileDrift": {f: c for f, c in fams.items()
-                                           if f not in allowed_fams}},
+        "minPagesToCount": STANDARD_MIN_PAGES,
+        "colour": {"standard": std_c, "noToken": only_c, "fileDefects": def_c},
+        "radius": {"standard": std_r, "noToken": only_r, "fileDefects": def_r},
+        "fontSize": {"standard": std_s, "noToken": only_s, "fileDefects": def_s},
+        "spacing": {"standard": std_p, "noToken": only_p, "fileDefects": def_p},
+        "fontFamily": {"standard": std_f, "noToken": only_f, "fileDefects": def_f},
         "weights": dict(sorted(((v, d["count"]) for v, d in ev["weights"].items()),
                                key=lambda kv: -kv[1])),
         "canvasWidths": dict(sorted(((v, d["count"]) for v, d in ev["canvasWidths"].items()
@@ -375,17 +431,24 @@ def git_sha():
 def build():
     contract = read_contract()
     evidence = read_evidence()
-    cls = classify(contract, evidence)
+    std = build_standard(contract, evidence)
     pkg = json.load(open(TOKENS_PKG, encoding="utf-8")) if os.path.exists(TOKENS_PKG) else {}
     bound, unbound = evidence["boundFills"], evidence["unboundFills"]
     return {
         "_what": "The SAMAVESH house standard: the baseline a MoSJE portal is audited against when "
                  "it has no design frames of its own. Generated — never hand-edited. "
                  "Regenerate with `python3 tools/design-audit/house/derive.py`.",
-        "_authority": "CONTRACT convicts; EVIDENCE corroborates and ranks. A build value absent "
-                      "from `contract` is a finding against the portal. A value absent from the "
-                      "contract but widespread in the Figma file is a house-standard GAP and is "
-                      "raised against the design system, not against the portal.",
+        "_authority": "THE FIGMA HANDOFF FILE CONVICTS; the token contract cross-references. A "
+                      "build value outside `standard` — the language established on 3+ non-draft "
+                      "pages — is a finding against the PORTAL, because the portal is built from "
+                      "the file. A standard value with no matching token (`noToken`) is a real "
+                      "design-system gap worth publishing, but it does NOT excuse the portal. "
+                      "Values the file draws that are excluded by name are in `fileDefects`.",
+        "_correction": "This was inverted in the first version: the contract convicted and the "
+                       "file only corroborated. That reported a token-adoption figure against an "
+                       "authority PM-AJAY was never built to, and filed the build's Tailwind-v4 "
+                       "slate neutrals as a design-system gap that excused the portal, when "
+                       "against the file's Tailwind-v3 gray they are a live portal finding.",
         "provenance": {
             "contract": {
                 "source": "packages/tokens/dist/tokens.css (generated Tier-2 --sa-* layer)",
@@ -424,7 +487,7 @@ def build():
             "fontSizes": {str(n): sorted(t)[:4] for n, t in contract["fontSizes"].items()},
             "spacing": {str(n): sorted(t)[:4] for n, t in contract["spacing"].items()},
         },
-        "observed": cls,
+        "standard": std,
         "typeRamp": evidence["variableDefsSample"].get("type", {}),
         "chrome": {
             "_what": "The components every page of the estate composes. A portal missing one of "
@@ -469,20 +532,25 @@ def main():
         json.dump(fresh, f, indent=2, sort_keys=True)
         f.write("\n")
     c = fresh["contract"]
-    o = fresh["observed"]
+    o = fresh["standard"]
     print(f"wrote {os.path.relpath(OUT, REPO)}")
     print(f"  contract: {len(c['colors'])} colours · {len(c['radii'])} radii · "
           f"{len(c['fontSizes'])} fixed sizes + {len(c['fontSizeRanges'])} fluid ranges · "
           f"{len(c['spacing'])} spacing · {len(c['fontFamilies'])} families")
     print(f"  evidence: {o['pagesOfEvidence']} non-draft pages · "
           f"binding rate {fresh['provenance']['evidence']['variableBindingRate']}")
-    print(f"  corroborated: {len(o['colour']['corroborated'])} colours · "
-          f"{len(o['radius']['corroborated'])} radii · {len(o['fontSize']['corroborated'])} sizes")
-    print(f"  design-file drift (raise against the DS, not the portal): "
-          f"{len(o['colour']['designFileDrift'])} colours · "
-          f"{len(o['radius']['designFileDrift'])} radii · "
-          f"{len(o['fontSize']['designFileDrift'])} sizes · "
-          f"{len(o['fontFamily']['designFileDrift'])} font families")
+    print(f"  STANDARD (convicts, from {o['pagesOfEvidence']} non-draft pages, "
+          f">={o['minPagesToCount']} pages each): "
+          f"{len(o['colour']['standard'])} colours · {len(o['radius']['standard'])} radii · "
+          f"{len(o['fontSize']['standard'])} sizes · {len(o['spacing']['standard'])} spacing · "
+          f"{len(o['fontFamily']['standard'])} families")
+    print(f"  of those, NO matching token (a design-system gap, not a portal defect): "
+          f"{len(o['colour']['noToken'])} colours · {len(o['radius']['noToken'])} radii · "
+          f"{len(o['fontSize']['noToken'])} sizes")
+    print(f"  file defects excluded by name: "
+          f"{len(o['colour']['fileDefects'])} colours · "
+          f"{len(o['fontFamily']['fileDefects'])} families · "
+          f"{len(o['radius']['fileDefects'])} radii")
 
 
 if __name__ == "__main__":

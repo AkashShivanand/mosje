@@ -10,20 +10,34 @@
 > produced by `python3 tools/design-audit/house/derive.py`. This page is the prose reading of it.
 > Re-derive after a token release; `derive.py --check` fails when it is stale.
 
-## 1. Two sources, and only one of them is an authority
+## 1. Two sources, and which one is the authority
 
 | | Source | What it is for |
 |---|---|---|
-| **Contract** | `packages/tokens/dist/tokens.css` — the generated Tier-2 `--sa-*` layer | **Convicts.** Versioned, generated from DTCG source, already gated by `npm test -w @mosje/tokens`. A finding cites this or it cites nothing. |
-| **Evidence** | All 12 pages of the Figma handoff file, measured as frequency histograms | **Corroborates and ranks.** Never creates authority. |
+| **Standard** | The 11 non-draft pages of the Figma handoff file, measured as frequency histograms | **Convicts.** This is what the development teams build from, and what every other portal renders. |
+| **Contract** | `packages/tokens/dist/tokens.css` — the generated Tier-2 `--sa-*` layer | **Cross-references.** Where it agrees, a finding is doubly grounded. Where it lacks what the file establishes, that is a separate design-system finding. |
 
 The rule the whole thing turns on:
 
-> A build value is a **portal defect** only when it is absent from the **contract**.
-> A value absent from the contract but **widespread in the Figma file** is a **house-standard gap** —
-> raised against the design system, never against the portal.
+> **Allowed is the union of the two** — the file's established language, plus anything the contract
+> publishes. Using the design system is never a defect, and neither is following the design.
+> A build value in **neither** is a portal finding.
+> A standard value the contract does not publish is a **design-system** finding — reported, and
+> never used to excuse a portal.
 
-**Why that split is not bureaucracy.** §4 is what happens without it.
+> ⚠️ **This was inverted in the first version of this document, and the inversion was the error.**
+> It made the contract convict and demoted the file to corroboration, reasoning that a literal is
+> not a bound token and that PM-AJAY's own page is a draft. Both premises are true and neither
+> supports the conclusion: a draft *page* is a reason not to trust *its frames*, not a reason to
+> set aside the whole file's established language. The consequence was concrete — PM-AJAY's
+> Tailwind-v4 slate neutrals were filed as a design-system gap that *excused* the portal, and two
+> of them (`#4a5565`, `#364153`) were absolved on the strength of a single Figma page while in
+> fact appearing on **all 224 screens**.
+
+**What keeps this honest in the other direction:** the file's own drift is *not* the standard.
+`#d9d9d9` (Figma's default rectangle fill, ~4,130 shapes), pure `#000000` (~4,154 nodes) and six
+stray typefaces are excluded **by name, with reasons**, and reported separately — §5. Blessing the
+file wholesale would be the mirror of the original error.
 
 Evidence base: the histogram script is `house/figma_histogram.js`, one call per page, and the raw
 result is `house/evidence/figma-page-histograms.json`. Ten pages count. **The PM-AJAY page is
@@ -91,7 +105,7 @@ convictions.
 Brand values the contract and the file agree on: `#003366` navy, `#0373df` gov-blue, `#ffd323`
 gov-yellow, `#ff671f` saffron, `#ffffff`, `#000000`.
 
-## 4. The neutral divergence — the most consequential finding in this document
+## 4. The neutral divergence — three ramps, and the build is on the third
 
 **The Figma handoff file's greys are Tailwind's default grey ramp. The token contract's are not.
 Neither knows about the other.**

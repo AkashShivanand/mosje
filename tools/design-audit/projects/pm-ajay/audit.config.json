@@ -384,7 +384,9 @@
   },
   "baseline": {
     "mode": "house",
-    "source": "../../house/samavesh-house-standard.json"
+    "source": "../../house/samavesh-house-standard.json",
+    "fluidRanges": false,
+    "_fluidRangesWhy": "The contract's display and headline tiers are clamp() RANGES, and a range may only excuse a build that actually consumes the token layer. PM-AJAY loads ZERO --sa-* custom properties (counted in the live DOM on both a pre-login and an authenticated screen), so it cannot be rendering a fluid token. With ranges on, its redefined --text-sm (17px) and --text-base (19px) slipped through on a HEADING tier's 16-18 and 18-20 bands \u2014 excusing the exact defect PMA-GLOBAL-002 reports."
   },
   "claimGates": true
 }

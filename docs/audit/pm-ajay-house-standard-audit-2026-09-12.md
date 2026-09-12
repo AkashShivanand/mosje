@@ -8,6 +8,13 @@ Report page: published as an artifact (link in the session).
 Machine evidence: `tools/design-audit/projects/pm-ajay/out/` — `conformance.json`,
 `coverage-ledger.json`, `fixpreview.json`, `audit-master.json`.
 
+> **Re-issued.** The first version of this report convicted against the generated `--sa-*` token
+> contract and treated the Figma handoff file as corroboration only. **That was the wrong way
+> round**, and it changed the findings: the build's Tailwind-v4 slate neutrals were filed as a
+> design-system gap that *excused* the portal, and two of them — `#4a5565` and `#364153`, in fact
+> on **all 224 screens** — were absolved on the strength of a single Figma page. The authority is
+> the handoff file; the contract cross-references it. Findings below are the re-issue.
+
 ## Why this audit has no side-by-side
 
 PM-AJAY has no per-screen Figma design. The handoff file's PM-AJAY page (`8943:41048`) exists and
@@ -15,11 +22,14 @@ holds 5,857 text nodes, but the user confirmed on 2026-09-12 that it is a **draf
 reflect the built UI** — and it is measurably the least token-bound page in the file: **30% of its
 fills are bound to a variable, against 47% across the other ten pages.**
 
-So there is no DESIGN panel. The build was audited against the **SAMAVESH house standard**
-(`tools/design-audit/house/`, prose at `docs/design-system/samavesh-house-standard.md`), which
-convicts only on the generated `--sa-*` token contract and uses all twelve pages of the handoff
-file to corroborate and rank. Two findings carry a **PROPOSED** panel instead: the fix rendered on
-the live screen by `engine/fixpreview.py`.
+So there is no DESIGN panel. But "no frames for this screen" is not "no standard": the estate's
+visual language is established across the file's **eleven other pages**, several marked *Dev
+Synced*, and that is what the development teams build from. The build is audited against that
+language (`tools/design-audit/house/`, prose at `docs/design-system/samavesh-house-standard.md`),
+with the generated `--sa-*` contract as cross-reference. **Allowed is the union of the two** —
+using the design system is never a defect either — so a value in neither is charged to the portal.
+Two findings carry a **PROPOSED** panel in place of the design panel: the fix rendered on the live
+screen by `engine/fixpreview.py`.
 
 ## What was measured
 
@@ -28,9 +38,9 @@ the live screen by `engine/fixpreview.py`.
 | Environment | `pmajay-dev.mosje.in` (Vite SPA — the rest of the estate is Next 16) |
 | Screens measured | **224 — every declared route, all 12 roles.** Route-coverage gate PASS, nothing unreachable |
 | Elements checked | 35,011 (1,602 off-canvas third-party elements excluded) |
-| Token adoption | **9.3%** |
-| Concentration | **ten values explain 95.3%** of all 35,115 charged deviation instances |
-| Findings | 7 curated — 4 portal, 3 design-system — over 45 machine-charged values |
+| Conformance to the estate's language | **7.6%** of elements |
+| Concentration | **ten values explain 95.7%** of all 53,783 charged deviation instances |
+| Findings | 7 curated — 4 portal, 3 design-system — over 50 machine-charged values |
 | Capture integrity | Layout canary: **all 224 screens held still**. No finding rests on a screenshot that stopped describing its page |
 
 **Read the concentration figure before the adoption figure.** 4.7% invites "most of this portal is
@@ -61,18 +71,18 @@ sample**: both root causes appear in **all twelve roles**, because both live in 
 
 | ID | Severity | Finding | Cites |
 |---|---|---|---|
-| PMA-GLOBAL-001 | Major | **No `--sa-*` token is loaded anywhere.** 0 design-system custom properties in any stylesheet the portal serves; it defines its own `--primary-color: #0a3a74`. This is the root cause of the three below. Noto Sans *is* applied (728 of 766 elements), so the typeface is right. | `--sa-text-neutral-base`, `rules/design-system-architecture.md` |
-| PMA-GLOBAL-002 | Major | **Tailwind's type scale is redefined +3px.** `--text-xs` is `.9375rem` (15px) against Tailwind's `.75rem`; `--text-sm` 17px; `--text-base` 19px. Every utility resolves through them, so elements marked `text-xs` — the smallest step — render at 15px, a size the contract does not publish. **Fix rendered.** | `--sa-type-body-1/2/3-size` |
-| PMA-GLOBAL-003 | Major | **Body and label text uses Tailwind v4 slate,** not the published ink: #314158 on 7,033 elements across 43 screens, plus #0f172b, #45556c, #62748e, #1d293d, #90a1b9. None appears in the contract. **Fix rendered.** | `--sa-text-neutral-base/-subtle/-subtler` |
-| PMA-GLOBAL-004 | Minor | **Status colours come from Tailwind's palette,** not the status tokens — and four different greens carry one meaning. | `--sa-text-status-error-base`, `--sa-bg-status-success-base` |
+| PMA-GLOBAL-001 | Major | **The whole type scale is 3px larger than the estate's.** `--text-xs` is 15px (Tailwind ships 12), `--text-sm` 17px (14), `--text-base` 19px (16). Body text is **17px on 18,340 elements across 221 of 224 screens** — the largest single deviation here — plus 15px on 3,589, 21px on 246, 19px on 78. The file's body size is 14px on 11,021 nodes across every page; none of the build's four sizes is drawn anywhere in it. **Fix rendered.** | `--sa-type-body-1/2/3-size` |
+| PMA-GLOBAL-002 | Major | **Body and label text uses Tailwind v4 slate, not the estate's ink.** `#314158` on 12,770 elements / 204 screens, `#4a5565` on 5,291 across **all 224**, `#0f172b` on 4,327, `#364153` on 3,917 across **all 224**, plus `#45556c`, `#62748e`, `#90a1b9`. The estate's ink is `#1f2937` (25,774 nodes, all 11 pages) / `#374151` / `#6b7280`. None of the build's seven values is in the file **or** the contract — this portal matches neither. **Fix rendered.** | `--sa-text-neutral-base/-subtle/-subtler` |
+| PMA-GLOBAL-003 | Major | **The portal loads none of the design system's tokens** — 0 `--sa-*` properties in any stylesheet it serves; it defines its own `--primary-color: #0a3a74`. This is the mechanism behind the two above. Noto Sans *is* applied (728 of 766 elements), so the typeface is right. | `--sa-text-neutral-base`, `rules/design-system-architecture.md` |
+| PMA-GLOBAL-004 | Minor | **Status colours come from Tailwind's palette, and one meaning has four greens** — `#008236`, `#007a55`, `#00a63e`, `#006045` all for approved/on-track. The estate uses `#ec5042` (868 nodes, all 11 pages) and `#2e7d32` (919, 9 pages). | `--sa-text-status-error-base`, `--sa-bg-status-success-base` |
 
 ## Findings — the design system (not the portal's to fix)
 
 | ID | Severity | Finding |
 |---|---|---|
-| PMA-DS-001 | Major | **Three neutral ramps are in use and none knows about the others.** The Figma library draws Tailwind v3 grey (`#1f2937` on 23,853 sampled nodes, all ten non-draft pages); the contract publishes `#1e2124 / #3a3d41 / #dcdee1 / #6f757d`; the build serves Tailwind v4 slate. **Not one of the library's greys appears even once in `tokens.css`.** 4–11 points apart per channel. Until this is settled, a neutral-colour finding against any portal is unanswerable. |
-| PMA-DS-002 | Minor | **The contract has no 11px step; the library's `label-3` is 11px.** The estate draws 11px on 9 of 10 pages (898 nodes). 11px exists only as `--sa-ref-size-11`, a Tier-1 primitive app code may never consume. |
-| PMA-DS-003 | Nit | **`#001933`** is drawn on 7 pages (165 nodes) and published by neither layer. |
+| PMA-DS-001 | Major | **The contract does not publish the estate's own most-used colours.** `#1f2937` (25,774 nodes, all 11 pages), `#374151`, `#e5e7eb`, `#d1d5db`, `#f9fafb`, `#e5eff9`, plus `#ec5042` and `#2e7d32` — **not one appears even once in `tokens.css`**, which publishes `#1e2124`/`#3a3d41`/`#dcdee1`/`#6f757d` instead. Three ramps, no two agreeing, and a developer asking "which grey is correct?" has three defensible answers. That condition is what produced PMA-GLOBAL-002. |
+| PMA-DS-002 | Minor | **Two established type steps are unreachable from a conformant stylesheet.** The estate draws 13px on 1,639 nodes across all 11 pages and 11px on 1,013 across 10; the contract publishes neither. 11px exists only as `--sa-ref-size-11`, a Tier-1 primitive app code may never consume. |
+| PMA-DS-003 | Minor | **The handoff file carries its own drift on every page.** `#d9d9d9` — Figma's default rectangle fill — on 4,130 shapes; pure `#000000` on 4,154 nodes where the file's own ink is `#1f2937` by a factor of six; and six typefaces against a standing Noto Sans instruction (Inter on 3 pages / 282 nodes, plus Roboto, Open Sans, Poppins, Helvetica Neue, and Material Icons Round — the wrong icon font). Just over half of all sampled fills are literals, not bound variables. These are excluded from the standard, so no portal is charged for them — but they are what a developer copies. |
 
 ## One finding was withdrawn as false
 

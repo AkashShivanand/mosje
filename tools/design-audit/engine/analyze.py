@@ -239,69 +239,87 @@ class Allowed:
         return len(self.values) + len(self.ranges)
 
 
-def load_house(src, allow):
-    """Baseline mode `house` — audit a portal that has no design frames of its own.
+def load_house(src, allow, fluid_ranges=True):
+    """Baseline mode `house` — audit a portal whose own screens were never designed.
 
-    The authority is the generated `--sa-*` token contract, never the Figma file. The file's own
-    widespread values come back as `_gaps`, and a build value that matches one of those is NOT a
-    defect in the portal: it is the design system and the handoff library disagreeing, which is
-    raised against the design system instead.
+    THE FIGMA HANDOFF FILE IS THE AUTHORITY. The token contract cross-references it.
 
-    That split is load-bearing, not decorative. The handoff file's neutral ramp is Tailwind's
-    default grey scale (#1f2937 on 23,853 sampled nodes across all ten non-draft pages, #374151,
-    #e5e7eb, #d1d5db, #f9fafb, #6b7280); the token package publishes its own (#1e2124, #3a3d41,
-    #dcdee1, #6f757d). They sit 4-11 points apart — invisible on screen, and none of the Tailwind
-    values appears even once in tokens.css. Without this split, every neutral in every MoSJE build
-    would be reported as off-token, and a report of thousands of false findings is worth less than
-    no report at all.
+    The estate's visual language is established across the eleven non-draft pages of the handoff
+    file, several marked *Dev Synced*, and that file is what the development teams build from. So a
+    build value outside that language is a PORTAL finding.
+
+    **This was inverted in the first version and the inversion was the error.** It made the token
+    contract convict and demoted the file to corroboration, reasoning that a literal is not a bound
+    token and that the PM-AJAY page is a draft. Both premises are true; neither supports the
+    conclusion. The PM-AJAY *page* being a draft is a reason not to treat *its frames* as a
+    per-screen authority — not a reason to demote the whole file's established language.
+
+    It mattered. The build's neutrals are Tailwind v4 **slate**; the file's are Tailwind v3
+    **gray**. Those genuinely differ, so against the real standard the build's neutrals are a live
+    portal finding — and the first version filed them as a design-system gap that EXCUSED the
+    portal, then reported a token-adoption figure measured against an authority the portal was
+    never built to.
+
+    WHAT IS ALLOWED is the union of two things, because either one is legitimate:
+
+      * the file's established language — a value drawn on >= 3 independently authored pages; and
+      * anything the token contract publishes, fluid ranges included — using the design system is
+        never a defect, even where no page happens to draw that exact value.
+
+    A value in NEITHER is charged to the portal. On PM-AJAY the slate ramp is in neither, which is
+    the correct answer and the one the inversion was hiding.
+
+    `_noToken` records standard values the contract does not publish. That is a real design-system
+    gap worth raising — but it no longer excuses anything, because the portal is built from the
+    file, not from the contract.
     """
     h = json.load(open(src))
     c = h.get("contract", {})
-    allow["colors"] = Allowed(tohex(x) for x in c.get("colors", []))
-    allow["radii"] = Allowed(float(x) for x in c.get("radii", []))
+    std = h.get("standard", {})
+
+    def std_values(axis, cast=None):
+        vals = (std.get(axis, {}) or {}).get("standard", {}) or {}
+        return [cast(v) if cast else v for v in vals]
+
+    # colour: the file's language, plus every colour the contract publishes
+    allow["colors"] = Allowed(
+        [tohex(x) for x in std_values("colour")] + [tohex(x) for x in c.get("colors", [])])
+    allow["radii"] = Allowed(
+        [float(x) for x in std_values("radius")] + [float(x) for x in c.get("radii", [])])
+    # FLUID RANGES belong to the token contract, so they may only excuse a build that actually
+    # consumes it. PM-AJAY loads ZERO `--sa-*` custom properties — counted in the live DOM — so it
+    # cannot be rendering a fluid token, and admitting its 17px and 19px on the strength of a
+    # HEADING tier's 16-18 and 18-20 ranges would excuse the very thing the type-scale finding is
+    # about: a wholesale redefinition of Tailwind's scale. A project sets
+    # `baseline.fluidRanges: false` to say so, with the reason in the config.
     allow["fontSizes"] = Allowed(
-        (float(x) for x in c.get("fontSizes", [])),
-        [(r["min"], r["max"]) for r in c.get("fontSizeRanges", [])],
-    )
-    # A font-family value from computed CSS is a whole stack ("Noto Sans, ui-sans-serif, …").
-    # Membership is tested on the PRIMARY family in conformance(), so the contract's own stack
-    # entries are all legitimate members here.
-    allow["fontFamilies"] = Allowed(c.get("fontFamilies", []))
+        [float(x) for x in std_values("fontSize")] + [float(x) for x in c.get("fontSizes", [])],
+        [(r["min"], r["max"]) for r in c.get("fontSizeRanges", [])] if fluid_ranges else [])
+    allow["spacing"] = Allowed(
+        [float(x) for x in std_values("spacing")] + [float(x) for x in c.get("spacing", [])])
+    # A computed font-family is a whole stack; conformance() tests the PRIMARY family, so both the
+    # file's families and the contract's stack entries are legitimate members.
+    allow["fontFamilies"] = Allowed(
+        list(std_values("fontFamily")) + list(c.get("fontFamilies", [])))
 
-    obs = h.get("observed", {})
-
-    def corroborated(rec):
-        """A gap must be a CONVENTION, not a stray literal.
-
-        The first run of this got it exactly backwards. `#4a5565` and `#364153` — the portal's two
-        largest colour deviations, 933 and 781 elements — were excused as house gaps on the
-        strength of ONE Figma page using them 44 and 22 times. A single stray literal in one design
-        page cannot absolve a portal-wide deviation; if it could, any finding could be argued away
-        by finding one instance of it somewhere in the design file.
-
-        The bar is spread across pages, not raw count: a value on three or more independently
-        authored pages is a convention the estate has adopted and the contract has not caught up
-        with. Under that, it is drift in both places, and the portal finding stands.
-
-        On this run the bar keeps `fontSize 11` (9 pages, 898 uses) and `#001933` (7 pages, 165)
-        as real gaps, and rejects the four one-page claims.
-        """
-        return isinstance(rec, dict) and (rec.get("pages") or 0) >= HOUSE_GAP_MIN_PAGES
-
-    allow["_gaps"] = {
-        "color": {tohex(k): v for k, v in obs.get("colour", {}).get("designFileDrift", {}).items()
-                  if corroborated(v)},
-        "radius": {str(float(k)): v for k, v in obs.get("radius", {}).get("designFileDrift", {}).items()
-                   if corroborated(v)},
-        "fontSize": {str(float(k)): v for k, v in obs.get("fontSize", {}).get("designFileDrift", {}).items()
-                     if corroborated(v)},
-        # A font family's drift record is a bare count, with no page spread to test. A stray
-        # typeface is never the estate's convention anyway — Noto Sans is the standing
-        # instruction — so none of them is treated as a gap.
-        "fontFamily": {},
+    # No value is excused any more. `_gaps` stays empty so conformance()'s house-gap branch is
+    # simply never taken — kept rather than deleted so a project on an older standard file does
+    # not crash, and so the reason is visible here rather than inferred from an absence.
+    allow["_gaps"] = {"color": {}, "radius": {}, "fontSize": {}, "fontFamily": {}}
+    allow["_noToken"] = {
+        axis: (std.get(axis, {}) or {}).get("noToken", {}) or {}
+        for axis in ("colour", "radius", "fontSize", "spacing", "fontFamily")
     }
+    allow["_fileDefects"] = {
+        axis: (std.get(axis, {}) or {}).get("fileDefects", {}) or {}
+        for axis in ("colour", "radius", "fontSize", "spacing", "fontFamily")
+    }
+    allow["_standardSize"] = {axis: len((std.get(axis, {}) or {}).get("standard", {}) or {})
+                              for axis in ("colour", "radius", "fontSize", "spacing",
+                                           "fontFamily")}
     allow["_tokenNames"] = h.get("tokenNames", {})
     allow["_provenance"] = h.get("provenance", {})
+    allow["_authority"] = h.get("_authority")
     return allow
 
 
@@ -313,7 +331,8 @@ def load_baseline(cfg, captured, paths):
         if not os.path.exists(src):
             sys.exit(f"! baseline mode 'house' needs {src} — run "
                      "`python3 tools/design-audit/house/derive.py` first.")
-        return mode, load_house(src, allow)
+        fluid = cfg.get("baseline", {}).get("fluidRanges", True)
+        return mode, load_house(src, allow, fluid_ranges=fluid)
     if mode in ("tokens", "derived") and os.path.exists(src):
         t = json.load(open(src))
         allow["colors"] = {tohex(x) for x in t.get("colors", [])}

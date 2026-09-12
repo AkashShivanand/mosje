@@ -71,75 +71,118 @@ class PrimaryFamily(unittest.TestCase):
 
 
 # ---------------------------------------------------------------------------------------------
-class HouseGapIsNotAPortalDefect(unittest.TestCase):
-    """The divergence that makes this whole split load-bearing.
+class TheFigmaFileIsTheAuthority(unittest.TestCase):
+    """The inversion, and the tests that pin it the right way round.
 
-    The handoff file's neutral ramp is Tailwind's default greys — #1f2937 alone on 23,853 sampled
-    nodes across all ten non-draft pages — and NONE of those values appears even once in the
-    generated token contract, which publishes #1e2124 / #3a3d41 / #dcdee1 / #6f757d, 4-11 points
-    away. A build that followed the design file is not defective. Without this split the audit
-    would have reported thousands of false findings, which is worth less than no report.
+    The first version of `load_house` made the generated token contract convict and demoted the
+    handoff file to corroboration. It reasoned that a literal is not a bound token and that the
+    PM-AJAY page is a draft. Both premises are true; neither supports the conclusion — the PM-AJAY
+    *page* being a draft is a reason not to treat *its frames* as a per-screen authority, not a
+    reason to demote the whole file's established language.
+
+    It mattered, twice over. The build's neutrals are Tailwind v4 **slate**; the file's are
+    Tailwind v3 **gray**. Against the real standard the build's slate is a live PORTAL finding, and
+    the inversion filed it as a design-system gap that EXCUSED the portal — while `#4a5565` and
+    `#364153`, which turn out to be on ALL 224 screens, were absolved on the strength of one Figma
+    page using them 44 and 22 times.
+
+    The rule now: ALLOWED is the file's established language UNION everything the contract
+    publishes, because either one is legitimate. A value in neither is charged.
     """
 
-    def _house(self, tmp):
+    def _house(self, tmp, **over):
         h = {
             "contract": {"colors": ["#1e2124", "#dcdee1"], "radii": [8, 12],
                          "fontSizes": [14], "fontSizeRanges": [], "fontFamilies": ["Noto Sans"]},
             "tokenNames": {"colors": {"#1e2124": ["sa-text-neutral-base"]}},
-            "observed": {
-                "colour": {"designFileDrift": {"#1f2937": {"count": 23853, "pages": 10}}},
-                "radius": {"designFileDrift": {"10": {"count": 300, "pages": 8}}},
-                "fontSize": {"designFileDrift": {"13": {"count": 1800, "pages": 9}}},
-                "fontFamily": {"designFileDrift": {"Inter": 318}},
+            "standard": {
+                # the file's established language: on 3+ non-draft pages
+                "colour": {
+                    "standard": {"#1f2937": {"count": 25774, "pages": 11, "hasToken": False},
+                                 "#ffffff": {"count": 8378, "pages": 11, "hasToken": True}},
+                    "noToken": {"#1f2937": {"count": 25774, "pages": 11}},
+                    "fileDefects": {"#d9d9d9": {"count": 4130, "pages": 11, "why": "default fill"}},
+                },
+                "radius": {"standard": {"8": {"count": 500, "pages": 11, "hasToken": True}},
+                           "noToken": {}, "fileDefects": {}},
+                "fontSize": {"standard": {"14": {"count": 11021, "pages": 11, "hasToken": True},
+                                          "13": {"count": 1639, "pages": 11, "hasToken": False}},
+                             "noToken": {"13": {"count": 1639, "pages": 11}}, "fileDefects": {}},
+                "spacing": {"standard": {}, "noToken": {}, "fileDefects": {}},
+                "fontFamily": {"standard": {"Noto Sans": {"count": 40000, "pages": 11}},
+                               "noToken": {}, "fileDefects": {"Inter": {"count": 282, "pages": 3,
+                                                                        "why": "not a MoSJE face"}}},
             },
             "provenance": {"contract": {"version": "9.9.9"}},
         }
-        p = os.path.join(tmp, "house.json")
-        json.dump(h, open(p, "w"))
-        return p
+        h.update(over)
+        p2 = os.path.join(tmp, "house.json")
+        json.dump(h, open(p2, "w"))
+        return p2
 
-    def test_a_widespread_file_value_is_classified_as_a_gap_not_a_deviation(self):
+    def test_the_files_own_language_is_allowed_even_with_no_token(self):
+        """#1f2937 is the estate's ink on 25,774 nodes across every page and has NO token. A build
+        rendering it is following the design, which is what the portal is built from."""
         with tempfile.TemporaryDirectory() as tmp:
             allow = A.load_house(self._house(tmp), {})
-            self.assertIn("#1f2937", allow["_gaps"]["color"])
-            # and the contract value is genuinely allowed
+            self.assertIn("#1f2937", allow["colors"])
+            self.assertIn(13, allow["fontSizes"], "13px is an established file step")
+
+    def test_the_contracts_values_are_allowed_too_because_using_the_ds_is_never_a_defect(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            allow = A.load_house(self._house(tmp), {})
             self.assertIn("#1e2124", allow["colors"])
-            self.assertNotIn("#1f2937", allow["colors"])
+            self.assertIn("#dcdee1", allow["colors"])
 
-    def test_a_stray_typeface_is_never_excused_as_a_house_convention(self):
-        """Inter appears on 318 nodes across five Figma pages, so by spread alone it would
-        qualify. It is still not a gap: `CLAUDE.md` makes Noto Sans a standing instruction, so a
-        stray typeface is a defect in BOTH the file and any build that copies it. There is no
-        page-count at which the wrong font becomes the estate's standard."""
+    def test_a_value_in_neither_is_charged_to_the_portal(self):
+        """The slate ramp. This is the answer the inversion was hiding."""
         with tempfile.TemporaryDirectory() as tmp:
             allow = A.load_house(self._house(tmp), {})
-            self.assertEqual(allow["_gaps"]["fontFamily"], {})
+            for slate in ("#314158", "#4a5565", "#364153", "#0f172b"):
+                self.assertNotIn(slate, allow["colors"], f"{slate} is in neither the file nor "
+                                                         f"the contract and must be charged")
 
-    def test_a_one_page_value_is_not_corroborated_enough_to_excuse_the_portal(self):
-        """What this nearly got wrong. `#4a5565` and `#364153` are the portal's two largest
-        colour deviations (933 and 781 elements) and were excused as house gaps on the strength
-        of ONE Figma page using them 44 and 22 times. If one stray literal could absolve a
-        portal-wide deviation, any finding could be argued away."""
-        with tempfile.TemporaryDirectory() as tmp:
-            h = json.load(open(self._house(tmp)))
-            h["observed"]["colour"]["designFileDrift"]["#4a5565"] = {"count": 44, "pages": 1}
-            p2 = os.path.join(tmp, "h2.json")
-            json.dump(h, open(p2, "w"))
-            allow = A.load_house(p2, {})
-            self.assertNotIn("#4a5565", allow["_gaps"]["color"],
-                             "one page of evidence must not excuse a portal-wide deviation")
-            self.assertIn("#1f2937", allow["_gaps"]["color"],
-                          "ten pages of evidence is a real convention the contract lacks")
-
-    def test_numeric_gaps_are_keyed_so_a_float_reading_still_matches(self):
-        # the extraction reports radius 10, the evidence recorded "10" — both must resolve
+    def test_nothing_is_excused_any_more(self):
+        """`_gaps` is what conformance() consults to excuse a deviation. It must stay empty: the
+        portal is built from the file, so a file/contract disagreement is not its defence."""
         with tempfile.TemporaryDirectory() as tmp:
             allow = A.load_house(self._house(tmp), {})
-            self.assertIn("10.0", allow["_gaps"]["radius"])
-            self.assertIn("13.0", allow["_gaps"]["fontSize"])
+            self.assertEqual(allow["_gaps"], {"color": {}, "radius": {}, "fontSize": {},
+                                              "fontFamily": {}})
+
+    def test_a_standard_value_with_no_token_is_reported_as_a_design_system_gap(self):
+        """Reported, not excusing. #1f2937 having no token is a real DS finding — the contract
+        does not publish the estate's own most-used colour — and it is routed there."""
+        with tempfile.TemporaryDirectory() as tmp:
+            allow = A.load_house(self._house(tmp), {})
+            self.assertIn("#1f2937", allow["_noToken"]["colour"])
+            self.assertIn("13", allow["_noToken"]["fontSize"])
+
+    def test_the_files_own_defects_are_not_the_standard(self):
+        """Blessing the file wholesale is the mirror of the original error. #d9d9d9 is Figma's
+        default rectangle fill on ~4,000 unstyled shapes; Inter is not a MoSJE face."""
+        with tempfile.TemporaryDirectory() as tmp:
+            allow = A.load_house(self._house(tmp), {})
+            self.assertNotIn("#d9d9d9", allow["colors"])
+            self.assertIn("#d9d9d9", allow["_fileDefects"]["colour"])
+            self.assertIn("Inter", allow["_fileDefects"]["fontFamily"])
+
+    def test_fluid_ranges_can_be_switched_off_for_a_build_that_loads_no_tokens(self):
+        """A clamp() range belongs to the contract, so it may only excuse a build that consumes
+        it. PM-AJAY loads ZERO --sa-* properties, and with ranges on its redefined 17px and 19px
+        slipped through on a HEADING tier's bands — excusing the very defect being reported."""
+        with tempfile.TemporaryDirectory() as tmp:
+            src = self._house(tmp, contract={
+                "colors": [], "radii": [], "fontSizes": [14],
+                "fontSizeRanges": [{"min": 16.0, "max": 20.0, "tokens": ["sa-type-headline-5-size"]}],
+                "fontFamilies": []})
+            on = A.load_house(src, {}, fluid_ranges=True)
+            off = A.load_house(src, {}, fluid_ranges=False)
+            self.assertIn(17, on["fontSizes"], "with ranges on, 17px is admitted by the band")
+            self.assertNotIn(17, off["fontSizes"], "with ranges off, 17px is charged")
+            self.assertIn(14, off["fontSizes"], "a discrete step is unaffected")
 
 
-# ---------------------------------------------------------------------------------------------
 class StandardCitation(unittest.TestCase):
     """With no design frame in the left panel, a finding that cites nothing is unfalsifiable."""
 

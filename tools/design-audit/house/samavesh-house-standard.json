@@ -1,5 +1,6 @@
 {
-  "_authority": "CONTRACT convicts; EVIDENCE corroborates and ranks. A build value absent from `contract` is a finding against the portal. A value absent from the contract but widespread in the Figma file is a house-standard GAP and is raised against the design system, not against the portal.",
+  "_authority": "THE FIGMA HANDOFF FILE CONVICTS; the token contract cross-references. A build value outside `standard` \u2014 the language established on 3+ non-draft pages \u2014 is a finding against the PORTAL, because the portal is built from the file. A standard value with no matching token (`noToken`) is a real design-system gap worth publishing, but it does NOT excuse the portal. Values the file draws that are excluded by name are in `fileDefects`.",
+  "_correction": "This was inverted in the first version: the contract convicted and the file only corroborated. That reported a token-adoption figure against an authority PM-AJAY was never built to, and filed the build's Tailwind-v4 slate neutrals as a design-system gap that excused the portal, when against the file's Tailwind-v3 gray they are a live portal finding.",
   "_what": "The SAMAVESH house standard: the baseline a MoSJE portal is audited against when it has no design frames of its own. Generated \u2014 never hand-edited. Regenerate with `python3 tools/design-audit/house/derive.py`.",
   "chrome": {
     "_what": "The components every page of the estate composes. A portal missing one of these is missing estate chrome, which is a finding a token diff cannot see.",
@@ -489,1445 +490,6 @@
       360.0
     ]
   },
-  "observed": {
-    "canvasWidths": {
-      "100": 7,
-      "1440": 260,
-      "1563": 5,
-      "1600": 28,
-      "1640": 10,
-      "3120": 8,
-      "3180": 5,
-      "6610": 5
-    },
-    "colour": {
-      "corroborated": {
-        "#000000": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 3599,
-          "pages": 10,
-          "tokens": [
-            "sa-brand-samavesh-black",
-            "sa-color-a11y-hc-fg",
-            "sa-color-neutralScale-1000"
-          ]
-        },
-        "#003366": {
-          "axes": [
-            "frameFills",
-            "strokes",
-            "textColors"
-          ],
-          "count": 3722,
-          "pages": 10,
-          "tokens": [
-            "sa-bg-brand-primary-bolder",
-            "sa-border-brand-primary-bolder",
-            "sa-brand-samavesh-navy",
-            "sa-cmp-action-brand-primary-default-bg"
-          ]
-        },
-        "#003975": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 9,
-          "pages": 1,
-          "tokens": [
-            "sa-bg-brand-primary-boldest",
-            "sa-cmp-action-brand-primary-active-bg",
-            "sa-cmp-action-brand-primary-active-border",
-            "sa-cmp-action-brand-primary-inverse-hover-text"
-          ]
-        },
-        "#0373df": {
-          "axes": [
-            "frameFills",
-            "strokes"
-          ],
-          "count": 30,
-          "pages": 1,
-          "tokens": [
-            "sa-border-brand-primary-base",
-            "sa-border-neutral-selected",
-            "sa-chart-cat-1",
-            "sa-chart-seq-500"
-          ]
-        },
-        "#046a38": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 11,
-          "pages": 1,
-          "tokens": [
-            "sa-bg-brand-accent-bolder",
-            "sa-bg-status-success-bolder",
-            "sa-border-status-success-base",
-            "sa-brand-samavesh-green"
-          ]
-        },
-        "#06038d": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 11,
-          "pages": 2,
-          "tokens": [
-            "sa-brand-samavesh-blue"
-          ]
-        },
-        "#198754": {
-          "axes": [
-            "frameFills",
-            "strokes"
-          ],
-          "count": 8,
-          "pages": 2,
-          "tokens": [
-            "sa-cmp-action-success-secondary-active-border",
-            "sa-color-successScale-500"
-          ]
-        },
-        "#1e2024": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 45,
-          "pages": 1,
-          "tokens": [
-            "sa-cmp-action-neutral-primary-active-bg",
-            "sa-cmp-action-neutral-primary-active-border",
-            "sa-cmp-action-neutral-primary-inverse-hover-text",
-            "sa-cmp-action-neutral-secondary-active-text"
-          ]
-        },
-        "#1e2124": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 21,
-          "pages": 2,
-          "tokens": [
-            "sa-chart-tooltipBg",
-            "sa-cmp-action-neutral-primary-active-bg",
-            "sa-cmp-action-neutral-primary-active-border",
-            "sa-cmp-action-neutral-primary-inverse-hover-text"
-          ]
-        },
-        "#1f2428": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 1806,
-          "pages": 2,
-          "tokens": [
-            "sa-brand-samavesh-ink"
-          ]
-        },
-        "#3a3d41": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 21,
-          "pages": 1,
-          "tokens": [
-            "sa-cmp-action-neutral-primary-hover-bg",
-            "sa-cmp-action-neutral-primary-hover-border",
-            "sa-cmp-action-neutral-primary-inverse-default-text",
-            "sa-cmp-action-neutral-secondary-default-text"
-          ]
-        },
-        "#3b3d41": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 26,
-          "pages": 1,
-          "tokens": [
-            "sa-cmp-action-neutral-primary-hover-bg",
-            "sa-cmp-action-neutral-primary-hover-border",
-            "sa-cmp-action-neutral-primary-inverse-default-text",
-            "sa-cmp-action-neutral-secondary-default-text"
-          ]
-        },
-        "#5330e6": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 12,
-          "pages": 1,
-          "tokens": [
-            "sa-brand-digilocker-purple"
-          ]
-        },
-        "#704b00": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 5,
-          "pages": 1,
-          "tokens": [
-            "sa-border-status-warning-bolder",
-            "sa-color-warningScale-700",
-            "sa-icon-status-warning-bolder",
-            "sa-text-status-warning-bolder"
-          ]
-        },
-        "#8f949d": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 24,
-          "pages": 1,
-          "tokens": [
-            "sa-cmp-action-brand-primary-disabled-text",
-            "sa-cmp-action-brand-secondary-disabled-text",
-            "sa-cmp-action-brand-tertiary-disabled-text",
-            "sa-cmp-action-brand-tonal-disabled-text"
-          ]
-        },
-        "#dcdee1": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 6,
-          "pages": 1,
-          "tokens": [
-            "sa-bg-neutral-active",
-            "sa-bg-neutral-disabled",
-            "sa-bg-neutral-subtle",
-            "sa-border-neutral-subtle"
-          ]
-        },
-        "#e2e8f0": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 10,
-          "pages": 1,
-          "tokens": [
-            "sa-code-text"
-          ]
-        },
-        "#f3f4f6": {
-          "axes": [
-            "frameFills",
-            "strokes"
-          ],
-          "count": 4562,
-          "pages": 10,
-          "tokens": [
-            "sa-color-a11y-dark-ink"
-          ]
-        },
-        "#ff671f": {
-          "axes": [
-            "frameFills",
-            "strokes"
-          ],
-          "count": 38,
-          "pages": 1,
-          "tokens": [
-            "sa-brand-samavesh-orange",
-            "sa-color-brand-saffron",
-            "sa-color-secondaryScale-400"
-          ]
-        },
-        "#ffd323": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 284,
-          "pages": 10,
-          "tokens": [
-            "sa-cmp-badge-beta-bg",
-            "sa-color-brand-yellow"
-          ]
-        },
-        "#ffffff": {
-          "axes": [
-            "frameFills",
-            "strokes",
-            "textColors"
-          ],
-          "count": 7236,
-          "pages": 10,
-          "tokens": [
-            "sa-bg-neutral-base",
-            "sa-border-neutral-inverse-default",
-            "sa-brand-samavesh-white",
-            "sa-chart-regionStroke"
-          ]
-        }
-      },
-      "designFileDrift": {
-        "#001933": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 165,
-          "distance": 2,
-          "nearest": "#001734",
-          "pages": 7
-        },
-        "#002244": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 245,
-          "distance": 5,
-          "nearest": "#002249",
-          "pages": 9
-        },
-        "#002b55": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 6,
-          "distance": 3,
-          "nearest": "#002855",
-          "pages": 1
-        },
-        "#0a0d13": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 4,
-          "distance": 4,
-          "nearest": "#0e1114",
-          "pages": 1
-        },
-        "#0a1628": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 7,
-          "distance": 10,
-          "nearest": "#000e24",
-          "pages": 1
-        },
-        "#101828": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 66,
-          "distance": 11,
-          "nearest": "#1b1f27",
-          "pages": 1
-        },
-        "#111827": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 31,
-          "distance": 10,
-          "nearest": "#1b1f27",
-          "pages": 1
-        },
-        "#1558b0": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 137,
-          "distance": 14,
-          "nearest": "#214aab",
-          "pages": 4
-        },
-        "#169ba0": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 2,
-          "distance": 21,
-          "nearest": "#0b86a2",
-          "pages": 1
-        },
-        "#16a34a": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 23,
-          "distance": 28,
-          "nearest": "#198754",
-          "pages": 1
-        },
-        "#1b5e20": {
-          "axes": [
-            "strokes",
-            "textColors"
-          ],
-          "count": 18,
-          "distance": 24,
-          "nearest": "#046a38",
-          "pages": 3
-        },
-        "#1e3a6e": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 68,
-          "distance": 11,
-          "nearest": "#162f6a",
-          "pages": 1
-        },
-        "#1f2937": {
-          "axes": [
-            "frameFills",
-            "strokes",
-            "textColors"
-          ],
-          "count": 23853,
-          "distance": 5,
-          "nearest": "#242a35",
-          "pages": 10
-        },
-        "#22c55e": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 2,
-          "distance": 40,
-          "nearest": "#469d6e",
-          "pages": 1
-        },
-        "#27682a": {
-          "axes": [
-            "frameFills",
-            "strokes",
-            "textColors"
-          ],
-          "count": 156,
-          "distance": 24,
-          "nearest": "#1a801c",
-          "pages": 6
-        },
-        "#2e7d32": {
-          "axes": [
-            "frameFills",
-            "strokes",
-            "textColors"
-          ],
-          "count": 732,
-          "distance": 22,
-          "nearest": "#1a801c",
-          "pages": 8
-        },
-        "#343a40": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 22,
-          "distance": 6,
-          "nearest": "#3a3d41",
-          "pages": 2
-        },
-        "#364153": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 22,
-          "distance": 11,
-          "nearest": "#343b48",
-          "pages": 1
-        },
-        "#374151": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 4396,
-          "distance": 9,
-          "nearest": "#343b48",
-          "pages": 10
-        },
-        "#3b82f6": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 24,
-          "distance": 11,
-          "nearest": "#3b8df0",
-          "pages": 1
-        },
-        "#4a5565": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 44,
-          "distance": 10,
-          "nearest": "#54585e",
-          "pages": 1
-        },
-        "#4b5563": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 124,
-          "distance": 9,
-          "nearest": "#54585e",
-          "pages": 8
-        },
-        "#602ef9": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 2,
-          "distance": 19,
-          "nearest": "#5330e6",
-          "pages": 1
-        },
-        "#64748b": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 118,
-          "distance": 14,
-          "nearest": "#6f757d",
-          "pages": 1
-        },
-        "#66bb6a": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 7,
-          "distance": 30,
-          "nearest": "#76b188",
-          "pages": 1
-        },
-        "#6b7280": {
-          "axes": [
-            "strokes",
-            "textColors"
-          ],
-          "count": 269,
-          "distance": 4,
-          "nearest": "#6f757d",
-          "pages": 7
-        },
-        "#6d3fe5": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 2,
-          "distance": 26,
-          "nearest": "#5330e6",
-          "pages": 1
-        },
-        "#6da1d5": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 34,
-          "distance": 16,
-          "nearest": "#7b9ae5",
-          "pages": 3
-        },
-        "#704518": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 5,
-          "distance": 23,
-          "nearest": "#7a3901",
-          "pages": 2
-        },
-        "#7aaff8": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 38,
-          "distance": 7,
-          "nearest": "#74a9ff",
-          "pages": 3
-        },
-        "#81c784": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 152,
-          "distance": 22,
-          "nearest": "#76b188",
-          "pages": 7
-        },
-        "#8c571f": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 11,
-          "distance": 30,
-          "nearest": "#7a3901",
-          "pages": 1
-        },
-        "#9ca3af": {
-          "axes": [
-            "strokes",
-            "textColors"
-          ],
-          "count": 108,
-          "distance": 14,
-          "nearest": "#aaaaaa",
-          "pages": 5
-        },
-        "#9cbfe3": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 40,
-          "distance": 14,
-          "nearest": "#8eccdf",
-          "pages": 3
-        },
-        "#9eb2cc": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 66,
-          "distance": 11,
-          "nearest": "#93b1d6",
-          "pages": 3
-        },
-        "#a5d6a7": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 24,
-          "distance": 12,
-          "nearest": "#99caa7",
-          "pages": 3
-        },
-        "#a855f7": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 12,
-          "distance": 29,
-          "nearest": "#8b70db",
-          "pages": 1
-        },
-        "#b45309": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 7,
-          "distance": 15,
-          "nearest": "#c34700",
-          "pages": 1
-        },
-        "#b7131a": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 83,
-          "distance": 19,
-          "nearest": "#a72626",
-          "pages": 2
-        },
-        "#b8382f": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 13,
-          "distance": 12,
-          "nearest": "#bf3c3b",
-          "pages": 3
-        },
-        "#bb772b": {
-          "axes": [
-            "frameFills",
-            "textColors"
-          ],
-          "count": 71,
-          "distance": 12,
-          "nearest": "#b78320",
-          "pages": 4
-        },
-        "#c8dbf0": {
-          "axes": [
-            "frameFills",
-            "strokes"
-          ],
-          "count": 367,
-          "distance": 7,
-          "nearest": "#c1d7f2",
-          "pages": 9
-        },
-        "#c8e6c9": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 234,
-          "distance": 11,
-          "nearest": "#bde3c7",
-          "pages": 7
-        },
-        "#d1d5db": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 1067,
-          "distance": 11,
-          "nearest": "#dcdee1",
-          "pages": 10
-        },
-        "#d1d5dc": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 42,
-          "distance": 11,
-          "nearest": "#dcdee1",
-          "pages": 1
-        },
-        "#d2e3fc": {
-          "axes": [
-            "frameFills",
-            "strokes"
-          ],
-          "count": 66,
-          "distance": 4,
-          "nearest": "#d2dfff",
-          "pages": 4
-        },
-        "#d64539": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 38,
-          "distance": 11,
-          "nearest": "#cb3d3f",
-          "pages": 4
-        },
-        "#d9d9d9": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 3841,
-          "distance": 8,
-          "nearest": "#dcdee1",
-          "pages": 10
-        },
-        "#dee2e6": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 9,
-          "distance": 4,
-          "nearest": "#dcdee2",
-          "pages": 1
-        },
-        "#e2e6ea": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 15,
-          "distance": 6,
-          "nearest": "#e2e8f0",
-          "pages": 1
-        },
-        "#e5e7eb": {
-          "axes": [
-            "frameFills",
-            "strokes",
-            "textColors"
-          ],
-          "count": 3428,
-          "distance": 5,
-          "nearest": "#e2e8f0",
-          "pages": 10
-        },
-        "#e5e7ec": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 2,
-          "distance": 4,
-          "nearest": "#e2e8f0",
-          "pages": 1
-        },
-        "#e5eff9": {
-          "axes": [
-            "frameFills",
-            "strokes"
-          ],
-          "count": 902,
-          "distance": 6,
-          "nearest": "#e8efff",
-          "pages": 10
-        },
-        "#e8f0fe": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 61,
-          "distance": 1,
-          "nearest": "#e8efff",
-          "pages": 4
-        },
-        "#e8f5e9": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 68,
-          "distance": 5,
-          "nearest": "#e5faea",
-          "pages": 3
-        },
-        "#ec5042": {
-          "axes": [
-            "frameFills",
-            "strokes",
-            "textColors"
-          ],
-          "count": 749,
-          "distance": 13,
-          "nearest": "#ec4e4f",
-          "pages": 10
-        },
-        "#f1f3f5": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 35,
-          "distance": 2,
-          "nearest": "#f3f4f6",
-          "pages": 1
-        },
-        "#f43f5e": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 12,
-          "distance": 15,
-          "nearest": "#ec4e4f",
-          "pages": 1
-        },
-        "#f47c70": {
-          "axes": [
-            "frameFills",
-            "strokes"
-          ],
-          "count": 21,
-          "distance": 11,
-          "nearest": "#fe716d",
-          "pages": 3
-        },
-        "#f6a89f": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 3,
-          "distance": 9,
-          "nearest": "#ffa7a5",
-          "pages": 1
-        },
-        "#f7f8fa": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 6,
-          "distance": 4,
-          "nearest": "#f3f4f6",
-          "pages": 1
-        },
-        "#f8f9fa": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 1,
-          "distance": 4,
-          "nearest": "#f6f5fe",
-          "pages": 1
-        },
-        "#f97316": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 2,
-          "distance": 12,
-          "nearest": "#ff671f",
-          "pages": 1
-        },
-        "#f9fafb": {
-          "axes": [
-            "frameFills",
-            "strokes"
-          ],
-          "count": 1421,
-          "distance": 4,
-          "nearest": "#f7faff",
-          "pages": 10
-        },
-        "#fad2cf": {
-          "axes": [
-            "frameFills",
-            "strokes"
-          ],
-          "count": 214,
-          "distance": 7,
-          "nearest": "#ffcbc9",
-          "pages": 6
-        },
-        "#fb2c36": {
-          "axes": [
-            "textColors"
-          ],
-          "count": 25,
-          "distance": 21,
-          "nearest": "#e7173a",
-          "pages": 1
-        },
-        "#fdecea": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 5,
-          "distance": 2,
-          "nearest": "#ffecec",
-          "pages": 1
-        },
-        "#fef2f2": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 6,
-          "distance": 5,
-          "nearest": "#fff2ed",
-          "pages": 1
-        },
-        "#ffae4f": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 27,
-          "distance": 15,
-          "nearest": "#f1b75e",
-          "pages": 2
-        },
-        "#ffc97f": {
-          "axes": [
-            "frameFills",
-            "strokes"
-          ],
-          "count": 36,
-          "distance": 17,
-          "nearest": "#f4d390",
-          "pages": 4
-        },
-        "#ffd6a7": {
-          "axes": [
-            "strokes"
-          ],
-          "count": 22,
-          "distance": 15,
-          "nearest": "#ffdd98",
-          "pages": 1
-        },
-        "#fff4e5": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 22,
-          "distance": 2,
-          "nearest": "#fff6e3",
-          "pages": 1
-        },
-        "#fffbf0": {
-          "axes": [
-            "frameFills"
-          ],
-          "count": 6,
-          "distance": 9,
-          "nearest": "#fff2ed",
-          "pages": 1
-        }
-      }
-    },
-    "components": {
-      "R:.page": 288,
-      "R:.tab/secondary": 35,
-      "R:Accessibility Bar": 254,
-      "R:Badge": 458,
-      "R:Button": 1218,
-      "R:Checkbox": 73,
-      "R:Default Chips": 69,
-      "R:Icon Button": 503,
-      "R:Input Area": 43,
-      "R:Logo": 42,
-      "R:OTP-input-container": 42,
-      "R:Tab": 85,
-      "R:accessibility_new": 113,
-      "R:apply/default": 35,
-      "R:arrow-down": 44,
-      "R:arrow-drop-down": 272,
-      "R:arrow_drop_down": 42,
-      "R:check": 204,
-      "R:check-circle/filled": 52,
-      "R:delete": 149,
-      "R:drop-down": 200,
-      "R:edit": 199,
-      "R:group/default": 37,
-      "R:home/default": 34,
-      "R:icon-font": 526,
-      "R:info/default": 53,
-      "R:input-field/text": 943,
-      "R:language": 78,
-      "R:link": 51,
-      "R:more_vert": 84,
-      "R:navbar": 221,
-      "R:open_in_new": 143,
-      "R:person/default": 72,
-      "R:radio-buttons": 80,
-      "R:sidebar/type-1/main-item": 1660,
-      "R:step": 391,
-      "R:step-count/type-2": 359,
-      "R:step/type-2": 359,
-      "R:trending": 43,
-      "R:warning/default": 42
-    },
-    "fontFamily": {
-      "allowed": [
-        "Cascadia Code",
-        "Material Symbols Rounded",
-        "Menlo",
-        "Noto Sans",
-        "Noto Sans Devanagari",
-        "Noto Sans Display",
-        "Source Code Pro",
-        "monospace",
-        "sans-serif",
-        "system-ui",
-        "ui-monospace",
-        "ui-sans-serif"
-      ],
-      "designFileDrift": {
-        "Helvetica Neue": 2,
-        "Inter": 282,
-        "Material Icons Round": 17,
-        "Open Sans": 3,
-        "Poppins": 1
-      },
-      "observed": {
-        "Helvetica Neue": 2,
-        "Inter": 282,
-        "Material Icons Round": 17,
-        "Material Symbols Rounded": 481,
-        "Noto Sans": 39084,
-        "Noto Sans Devanagari": 1,
-        "Open Sans": 3,
-        "Poppins": 1
-      }
-    },
-    "fontSize": {
-      "corroborated": {
-        "12.0": {
-          "count": 2028,
-          "pages": 10,
-          "tokens": [
-            "sa-type-body-3-size",
-            "sa-type-label-2-size",
-            "sa-type-label-3-size"
-          ]
-        },
-        "14.0": {
-          "count": 9896,
-          "pages": 10,
-          "tokens": [
-            "sa-type-body-2-size",
-            "sa-type-label-1-size",
-            "sa-type-title-3-size"
-          ]
-        },
-        "16.0": {
-          "count": 1575,
-          "pages": 10,
-          "tokens": [
-            "sa-type-body-1-size",
-            "sa-type-headline-6-size",
-            "sa-type-title-2-size"
-          ]
-        },
-        "18.0": {
-          "count": 385,
-          "pages": 10,
-          "tokens": [
-            "sa-type-headline-3-size",
-            "sa-type-headline-4-size",
-            "sa-type-headline-5-size",
-            "sa-type-title-1-size"
-          ],
-          "viaFluidRange": true
-        },
-        "20.0": {
-          "count": 356,
-          "pages": 10,
-          "tokens": [
-            "sa-type-display-6-size",
-            "sa-type-headline-2-size",
-            "sa-type-headline-3-size",
-            "sa-type-headline-4-size"
-          ],
-          "viaFluidRange": true
-        },
-        "24.0": {
-          "count": 484,
-          "pages": 6,
-          "tokens": [
-            "sa-type-display-4-size",
-            "sa-type-display-5-size",
-            "sa-type-display-6-size",
-            "sa-type-headline-1-size"
-          ],
-          "viaFluidRange": true
-        },
-        "28.0": {
-          "count": 106,
-          "pages": 5,
-          "tokens": [
-            "sa-type-display-3-size",
-            "sa-type-display-4-size",
-            "sa-type-display-5-size",
-            "sa-type-display-6-size"
-          ],
-          "viaFluidRange": true
-        },
-        "32.0": {
-          "count": 117,
-          "pages": 7,
-          "tokens": [
-            "sa-type-display-2-size",
-            "sa-type-display-3-size",
-            "sa-type-display-4-size",
-            "sa-type-display-5-size"
-          ],
-          "viaFluidRange": true
-        },
-        "40.0": {
-          "count": 1,
-          "pages": 1,
-          "tokens": [
-            "sa-type-display-1-size",
-            "sa-type-display-2-size",
-            "sa-type-display-3-size",
-            "sa-type-display-4-size"
-          ],
-          "viaFluidRange": true
-        }
-      },
-      "designFileDrift": {
-        "4.0": {
-          "count": 246,
-          "pages": 1
-        },
-        "9.0": {
-          "count": 56,
-          "pages": 1
-        },
-        "10.0": {
-          "count": 328,
-          "pages": 10
-        },
-        "11.0": {
-          "count": 898,
-          "pages": 9
-        },
-        "13.0": {
-          "count": 1474,
-          "pages": 10
-        }
-      }
-    },
-    "pagesOfEvidence": 10,
-    "radius": {
-      "corroborated": {
-        "0.0": {
-          "count": 44972,
-          "pages": 10,
-          "tokens": [
-            "sa-shape-0"
-          ]
-        },
-        "2.0": {
-          "count": 566,
-          "pages": 10,
-          "tokens": [
-            "sa-shape-2"
-          ]
-        },
-        "4.0": {
-          "count": 1039,
-          "pages": 10,
-          "tokens": [
-            "sa-control-selection-radius",
-            "sa-shape-4"
-          ]
-        },
-        "6.0": {
-          "count": 220,
-          "pages": 8,
-          "tokens": [
-            "sa-cmp-tooltip-radius",
-            "sa-shape-6"
-          ]
-        },
-        "8.0": {
-          "count": 4730,
-          "pages": 10,
-          "tokens": [
-            "sa-cmp-button-radius",
-            "sa-cmp-chip-radius",
-            "sa-control-radius",
-            "sa-shape-8"
-          ]
-        },
-        "12.0": {
-          "count": 501,
-          "pages": 10,
-          "tokens": [
-            "sa-cmp-card-radius",
-            "sa-cmp-dialog-radius",
-            "sa-shape-12"
-          ]
-        },
-        "16.0": {
-          "count": 1866,
-          "pages": 10,
-          "tokens": [
-            "sa-shape-16"
-          ]
-        },
-        "20.0": {
-          "count": 298,
-          "pages": 9,
-          "tokens": [
-            "sa-shape-20"
-          ]
-        },
-        "24.0": {
-          "count": 24,
-          "pages": 2,
-          "tokens": [
-            "sa-shape-24"
-          ]
-        },
-        "999.0": {
-          "count": 577,
-          "pages": 9,
-          "tokens": [
-            "sa-shape-full"
-          ]
-        }
-      },
-      "designFileDrift": {
-        "3.0": {
-          "count": 16,
-          "pages": 1
-        },
-        "5.0": {
-          "count": 21,
-          "pages": 1
-        },
-        "10.0": {
-          "count": 213,
-          "pages": 4
-        },
-        "14.0": {
-          "count": 22,
-          "pages": 2
-        },
-        "23.0": {
-          "count": 36,
-          "pages": 2
-        },
-        "100.0": {
-          "count": 183,
-          "pages": 7
-        }
-      }
-    },
-    "spacing": {
-      "corroborated": {
-        "0.0": {
-          "count": 62417,
-          "pages": 10,
-          "tokens": [
-            "sa-inline-0",
-            "sa-padding-0",
-            "sa-stack-0"
-          ]
-        },
-        "2.0": {
-          "count": 2139,
-          "pages": 10,
-          "tokens": [
-            "sa-inline-2",
-            "sa-padding-2",
-            "sa-stack-2"
-          ]
-        },
-        "4.0": {
-          "count": 6643,
-          "pages": 10,
-          "tokens": [
-            "sa-inline-4",
-            "sa-padding-4",
-            "sa-stack-4"
-          ]
-        },
-        "6.0": {
-          "count": 1412,
-          "pages": 8,
-          "tokens": [
-            "sa-inline-6",
-            "sa-padding-6",
-            "sa-stack-6"
-          ]
-        },
-        "8.0": {
-          "count": 13414,
-          "pages": 10,
-          "tokens": [
-            "sa-inline-8",
-            "sa-padding-8",
-            "sa-stack-8"
-          ]
-        },
-        "12.0": {
-          "count": 9254,
-          "pages": 10,
-          "tokens": [
-            "sa-inline-12",
-            "sa-padding-12",
-            "sa-stack-12"
-          ]
-        },
-        "16.0": {
-          "count": 7852,
-          "pages": 10,
-          "tokens": [
-            "sa-inline-16",
-            "sa-padding-16",
-            "sa-stack-16"
-          ]
-        },
-        "20.0": {
-          "count": 1027,
-          "pages": 10,
-          "tokens": [
-            "sa-inline-20",
-            "sa-padding-20",
-            "sa-stack-20"
-          ]
-        },
-        "24.0": {
-          "count": 9016,
-          "pages": 10,
-          "tokens": [
-            "sa-grid-gutter",
-            "sa-inline-24",
-            "sa-padding-24",
-            "sa-stack-24"
-          ]
-        },
-        "32.0": {
-          "count": 499,
-          "pages": 10,
-          "tokens": [
-            "sa-inline-32",
-            "sa-padding-32",
-            "sa-stack-32"
-          ]
-        },
-        "40.0": {
-          "count": 13,
-          "pages": 1,
-          "tokens": [
-            "sa-inline-40",
-            "sa-padding-40",
-            "sa-stack-40"
-          ]
-        },
-        "48.0": {
-          "count": 21,
-          "pages": 1,
-          "tokens": [
-            "sa-inline-48",
-            "sa-padding-48",
-            "sa-stack-48"
-          ]
-        },
-        "56.0": {
-          "count": 25,
-          "pages": 1,
-          "tokens": [
-            "sa-inline-56",
-            "sa-padding-56",
-            "sa-stack-56"
-          ]
-        },
-        "64.0": {
-          "count": 42,
-          "pages": 1,
-          "tokens": [
-            "sa-inline-64",
-            "sa-padding-64",
-            "sa-stack-64"
-          ]
-        }
-      },
-      "designFileDrift": {
-        "5.0": {
-          "count": 31,
-          "pages": 2
-        },
-        "7.0": {
-          "count": 168,
-          "pages": 2
-        },
-        "9.0": {
-          "count": 195,
-          "pages": 7
-        },
-        "10.0": {
-          "count": 3383,
-          "pages": 10
-        },
-        "13.0": {
-          "count": 54,
-          "pages": 1
-        },
-        "18.0": {
-          "count": 197,
-          "pages": 6
-        },
-        "118.0": {
-          "count": 57,
-          "pages": 1
-        },
-        "134.0": {
-          "count": 325,
-          "pages": 6
-        },
-        "680.0": {
-          "count": 33,
-          "pages": 1
-        }
-      }
-    },
-    "weights": {
-      "Black": 1,
-      "Bold": 2579,
-      "Display SemiBold": 72,
-      "Italic": 1,
-      "Light": 481,
-      "Medium": 7747,
-      "Regular": 26765,
-      "Semi Bold": 28,
-      "SemiBold": 2197,
-      "mixed": 129
-    }
-  },
   "provenance": {
     "contract": {
       "_modeNote": "The baseline is the UNION across every brand/mode/surface block, so a build in one mode is never convicted for a value another mode publishes. Deliberately permissive.",
@@ -1964,6 +526,7 @@
         "E-Anudaan",
         "E-Utthan",
         "Garima Greh",
+        "Grievence Portal (Dev Synced - September)",
         "Login/Signup",
         "NMBA (Dev Synced - August)",
         "NOS",
@@ -1976,9 +539,1208 @@
         "PM-AJAY"
       ],
       "source": "house/figma_histogram.js run once per page against Figma file evmNmlK8g4VYwJVu2FwSGV (MoSJE Portal \u2014 Handoff), via the Figma MCP, 2026-09-12. All 12 pages of the file, no sampling of pages. Within a page, TEXT nodes are capped at 4,000 and container nodes at 6,000 \u2014 every page except Login/Signup hits the container cap, so per-page counts are a census of the first N nodes in document order, not of the whole page. Frequencies are therefore comparable across axes within a page and indicative, not exact, across pages.",
-      "variableBindingRate": 0.4742
+      "variableBindingRate": 0.4732
     },
-    "gitSha": "71141ffc"
+    "gitSha": "8ffa2d45"
+  },
+  "standard": {
+    "canvasWidths": {
+      "100": 7,
+      "1440": 284,
+      "1563": 5,
+      "1600": 28,
+      "1640": 10,
+      "3120": 8,
+      "3180": 5,
+      "6610": 5
+    },
+    "colour": {
+      "fileDefects": {
+        "#000000": {
+          "count": 4154,
+          "pages": 11,
+          "why": "Pure black text. The file's own dominant ink is #1f2937 by an order of magnitude, and pure black is in neither the file's ramp nor the token contract."
+        },
+        "#d9d9d9": {
+          "count": 4130,
+          "pages": 11,
+          "why": "Figma's default rectangle fill \u2014 an unstyled placeholder shape on roughly 4,000 nodes, never a colour decision."
+        }
+      },
+      "noToken": {
+        "#001933": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 183,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#002244": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 265,
+          "hasToken": false,
+          "pages": 10
+        },
+        "#1558b0": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 169,
+          "hasToken": false,
+          "pages": 5
+        },
+        "#1b5e20": {
+          "axes": [
+            "strokes",
+            "textColors"
+          ],
+          "count": 21,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#1f2937": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 25774,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#27682a": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 164,
+          "hasToken": false,
+          "pages": 7
+        },
+        "#2e7d32": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 919,
+          "hasToken": false,
+          "pages": 9
+        },
+        "#343a40": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 63,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#374151": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 4782,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#4b5563": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 124,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#6b7280": {
+          "axes": [
+            "strokes",
+            "textColors"
+          ],
+          "count": 269,
+          "hasToken": false,
+          "pages": 7
+        },
+        "#6da1d5": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 34,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#7aaff8": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 68,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#81c784": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 163,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#9ca3af": {
+          "axes": [
+            "strokes",
+            "textColors"
+          ],
+          "count": 120,
+          "hasToken": false,
+          "pages": 6
+        },
+        "#9cbfe3": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 40,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#9eb2cc": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 66,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#a5d6a7": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 24,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#b8382f": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 14,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#bb772b": {
+          "axes": [
+            "frameFills",
+            "textColors"
+          ],
+          "count": 71,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#c8dbf0": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 429,
+          "hasToken": false,
+          "pages": 10
+        },
+        "#c8e6c9": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 245,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#d1d5db": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 1098,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#d2e3fc": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 96,
+          "hasToken": false,
+          "pages": 5
+        },
+        "#d64539": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 45,
+          "hasToken": false,
+          "pages": 5
+        },
+        "#e5e7eb": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 3865,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#e5eff9": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 970,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#e8f0fe": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 61,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#e8f5e9": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 68,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#ec5042": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 868,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#f47c70": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 21,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#f9fafb": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 1524,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#fad2cf": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 214,
+          "hasToken": false,
+          "pages": 6
+        },
+        "#ffae4f": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 37,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#ffc97f": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 36,
+          "hasToken": false,
+          "pages": 4
+        }
+      },
+      "standard": {
+        "#001933": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 183,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#002244": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 265,
+          "hasToken": false,
+          "pages": 10
+        },
+        "#003366": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 4217,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-bg-brand-primary-bolder",
+            "sa-border-brand-primary-bolder",
+            "sa-brand-samavesh-navy",
+            "sa-cmp-action-brand-primary-default-bg"
+          ]
+        },
+        "#1558b0": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 169,
+          "hasToken": false,
+          "pages": 5
+        },
+        "#1b5e20": {
+          "axes": [
+            "strokes",
+            "textColors"
+          ],
+          "count": 21,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#1f2428": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 1945,
+          "hasToken": true,
+          "pages": 3,
+          "tokens": [
+            "sa-brand-samavesh-ink"
+          ]
+        },
+        "#1f2937": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 25774,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#27682a": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 164,
+          "hasToken": false,
+          "pages": 7
+        },
+        "#2e7d32": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 919,
+          "hasToken": false,
+          "pages": 9
+        },
+        "#343a40": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 63,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#374151": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 4782,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#4b5563": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 124,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#6b7280": {
+          "axes": [
+            "strokes",
+            "textColors"
+          ],
+          "count": 269,
+          "hasToken": false,
+          "pages": 7
+        },
+        "#6da1d5": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 34,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#7aaff8": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 68,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#81c784": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 163,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#9ca3af": {
+          "axes": [
+            "strokes",
+            "textColors"
+          ],
+          "count": 120,
+          "hasToken": false,
+          "pages": 6
+        },
+        "#9cbfe3": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 40,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#9eb2cc": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 66,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#a5d6a7": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 24,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#b8382f": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 14,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#bb772b": {
+          "axes": [
+            "frameFills",
+            "textColors"
+          ],
+          "count": 71,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#c8dbf0": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 429,
+          "hasToken": false,
+          "pages": 10
+        },
+        "#c8e6c9": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 245,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#d1d5db": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 1098,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#d2e3fc": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 96,
+          "hasToken": false,
+          "pages": 5
+        },
+        "#d64539": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 45,
+          "hasToken": false,
+          "pages": 5
+        },
+        "#e5e7eb": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 3865,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#e5eff9": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 970,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#e8f0fe": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 61,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#e8f5e9": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 68,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#ec5042": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 868,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#f3f4f6": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 4792,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-color-a11y-dark-ink"
+          ]
+        },
+        "#f47c70": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 21,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#f9fafb": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 1524,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#fad2cf": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 214,
+          "hasToken": false,
+          "pages": 6
+        },
+        "#ffae4f": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 37,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#ffc97f": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 36,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#ffd323": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 315,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-cmp-badge-beta-bg",
+            "sa-color-brand-yellow"
+          ]
+        },
+        "#ffffff": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 8378,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-bg-neutral-base",
+            "sa-border-neutral-inverse-default",
+            "sa-brand-samavesh-white",
+            "sa-chart-regionStroke"
+          ]
+        }
+      }
+    },
+    "components": {
+      "R:.page": 288,
+      "R:.tab/secondary": 83,
+      "R:Accessibility Bar": 285,
+      "R:Badge": 550,
+      "R:Button": 1443,
+      "R:Checkbox": 73,
+      "R:Default Chips": 69,
+      "R:Group 55026": 70,
+      "R:Icon Button": 503,
+      "R:Input Area": 43,
+      "R:Logo": 42,
+      "R:OTP-input-container": 42,
+      "R:Tab": 85,
+      "R:accessibility_new": 144,
+      "R:arrow-down": 44,
+      "R:arrow-drop-down": 272,
+      "R:arrow_drop_down": 73,
+      "R:check": 204,
+      "R:check-circle/filled": 52,
+      "R:delete": 149,
+      "R:drop-down": 200,
+      "R:edit": 199,
+      "R:icon-font": 526,
+      "R:info/default": 53,
+      "R:input-field/text": 979,
+      "R:keyboard_arrow_down": 60,
+      "R:language": 109,
+      "R:link": 51,
+      "R:more_vert": 84,
+      "R:nav-item": 80,
+      "R:navbar": 221,
+      "R:open_in_new": 174,
+      "R:person/default": 72,
+      "R:radio-buttons": 126,
+      "R:sidebar/type-1/main-item": 1777,
+      "R:step": 456,
+      "R:step-count/type-2": 424,
+      "R:step/type-2": 443,
+      "R:trending": 43,
+      "R:warning/default": 42
+    },
+    "fontFamily": {
+      "fileDefects": {
+        "Helvetica Neue": {
+          "count": 2,
+          "pages": 1,
+          "why": "Not a MoSJE typeface. Noto Sans is a standing instruction; Material Symbols Rounded is the icon font."
+        },
+        "Inter": {
+          "count": 282,
+          "pages": 3,
+          "why": "Not a MoSJE typeface. Noto Sans is a standing instruction; Material Symbols Rounded is the icon font."
+        },
+        "Material Icons Round": {
+          "count": 17,
+          "pages": 1,
+          "why": "Not a MoSJE typeface. Noto Sans is a standing instruction; Material Symbols Rounded is the icon font."
+        },
+        "Open Sans": {
+          "count": 6,
+          "pages": 3,
+          "why": "Not a MoSJE typeface. Noto Sans is a standing instruction; Material Symbols Rounded is the icon font."
+        },
+        "Poppins": {
+          "count": 1,
+          "pages": 1,
+          "why": "Not a MoSJE typeface. Noto Sans is a standing instruction; Material Symbols Rounded is the icon font."
+        },
+        "Roboto": {
+          "count": 10,
+          "pages": 1,
+          "why": "Not a MoSJE typeface. Noto Sans is a standing instruction; Material Symbols Rounded is the icon font."
+        }
+      },
+      "noToken": {},
+      "standard": {
+        "Material Symbols Rounded": {
+          "count": 487,
+          "hasToken": true,
+          "pages": 6
+        },
+        "Noto Sans": {
+          "count": 43051,
+          "hasToken": true,
+          "pages": 11
+        }
+      }
+    },
+    "fontSize": {
+      "fileDefects": {},
+      "noToken": {
+        "10.0": {
+          "count": 357,
+          "hasToken": false,
+          "pages": 11
+        },
+        "11.0": {
+          "count": 1013,
+          "hasToken": false,
+          "pages": 10
+        },
+        "13.0": {
+          "count": 1639,
+          "hasToken": false,
+          "pages": 11
+        }
+      },
+      "standard": {
+        "10.0": {
+          "count": 357,
+          "hasToken": false,
+          "pages": 11
+        },
+        "11.0": {
+          "count": 1013,
+          "hasToken": false,
+          "pages": 10
+        },
+        "12.0": {
+          "count": 2194,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-type-body-3-size",
+            "sa-type-label-2-size",
+            "sa-type-label-3-size"
+          ]
+        },
+        "13.0": {
+          "count": 1639,
+          "hasToken": false,
+          "pages": 11
+        },
+        "14.0": {
+          "count": 11021,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-type-body-2-size",
+            "sa-type-label-1-size",
+            "sa-type-title-3-size"
+          ]
+        },
+        "16.0": {
+          "count": 1911,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-type-body-1-size",
+            "sa-type-headline-6-size",
+            "sa-type-title-2-size"
+          ]
+        },
+        "18.0": {
+          "count": 409,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-type-headline-3-size",
+            "sa-type-headline-4-size",
+            "sa-type-headline-5-size",
+            "sa-type-title-1-size"
+          ],
+          "viaFluidRange": true
+        },
+        "20.0": {
+          "count": 401,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-type-display-6-size",
+            "sa-type-headline-2-size",
+            "sa-type-headline-3-size",
+            "sa-type-headline-4-size"
+          ],
+          "viaFluidRange": true
+        },
+        "24.0": {
+          "count": 506,
+          "hasToken": true,
+          "pages": 7,
+          "tokens": [
+            "sa-type-display-4-size",
+            "sa-type-display-5-size",
+            "sa-type-display-6-size",
+            "sa-type-headline-1-size"
+          ],
+          "viaFluidRange": true
+        },
+        "28.0": {
+          "count": 106,
+          "hasToken": true,
+          "pages": 5,
+          "tokens": [
+            "sa-type-display-3-size",
+            "sa-type-display-4-size",
+            "sa-type-display-5-size",
+            "sa-type-display-6-size"
+          ],
+          "viaFluidRange": true
+        },
+        "32.0": {
+          "count": 132,
+          "hasToken": true,
+          "pages": 8,
+          "tokens": [
+            "sa-type-display-2-size",
+            "sa-type-display-3-size",
+            "sa-type-display-4-size",
+            "sa-type-display-5-size"
+          ],
+          "viaFluidRange": true
+        }
+      }
+    },
+    "minPagesToCount": 3,
+    "pagesOfEvidence": 11,
+    "radius": {
+      "fileDefects": {
+        "100.0": {
+          "count": 185,
+          "pages": 8,
+          "why": "A scaled-instance artefact, not a drawn radius."
+        }
+      },
+      "noToken": {
+        "10.0": {
+          "count": 213,
+          "hasToken": false,
+          "pages": 4
+        },
+        "14.0": {
+          "count": 92,
+          "hasToken": false,
+          "pages": 3
+        }
+      },
+      "standard": {
+        "0.0": {
+          "count": 49718,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-shape-0"
+          ]
+        },
+        "2.0": {
+          "count": 628,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-shape-2"
+          ]
+        },
+        "4.0": {
+          "count": 1253,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-control-selection-radius",
+            "sa-shape-4"
+          ]
+        },
+        "6.0": {
+          "count": 245,
+          "hasToken": true,
+          "pages": 9,
+          "tokens": [
+            "sa-cmp-tooltip-radius",
+            "sa-shape-6"
+          ]
+        },
+        "8.0": {
+          "count": 5236,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-cmp-button-radius",
+            "sa-cmp-chip-radius",
+            "sa-control-radius",
+            "sa-shape-8"
+          ]
+        },
+        "10.0": {
+          "count": 213,
+          "hasToken": false,
+          "pages": 4
+        },
+        "12.0": {
+          "count": 601,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-cmp-card-radius",
+            "sa-cmp-dialog-radius",
+            "sa-shape-12"
+          ]
+        },
+        "14.0": {
+          "count": 92,
+          "hasToken": false,
+          "pages": 3
+        },
+        "16.0": {
+          "count": 1989,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-shape-16"
+          ]
+        },
+        "20.0": {
+          "count": 318,
+          "hasToken": true,
+          "pages": 10,
+          "tokens": [
+            "sa-shape-20"
+          ]
+        },
+        "999.0": {
+          "count": 669,
+          "hasToken": true,
+          "pages": 10,
+          "tokens": [
+            "sa-shape-full"
+          ]
+        }
+      }
+    },
+    "spacing": {
+      "fileDefects": {},
+      "noToken": {
+        "7.0": {
+          "count": 260,
+          "hasToken": false,
+          "pages": 3
+        },
+        "9.0": {
+          "count": 216,
+          "hasToken": false,
+          "pages": 8
+        },
+        "10.0": {
+          "count": 3716,
+          "hasToken": false,
+          "pages": 11
+        },
+        "18.0": {
+          "count": 197,
+          "hasToken": false,
+          "pages": 6
+        },
+        "134.0": {
+          "count": 367,
+          "hasToken": false,
+          "pages": 7
+        }
+      },
+      "standard": {
+        "0.0": {
+          "count": 68907,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-0",
+            "sa-padding-0",
+            "sa-stack-0"
+          ]
+        },
+        "2.0": {
+          "count": 2486,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-2",
+            "sa-padding-2",
+            "sa-stack-2"
+          ]
+        },
+        "4.0": {
+          "count": 7115,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-4",
+            "sa-padding-4",
+            "sa-stack-4"
+          ]
+        },
+        "6.0": {
+          "count": 1462,
+          "hasToken": true,
+          "pages": 9,
+          "tokens": [
+            "sa-inline-6",
+            "sa-padding-6",
+            "sa-stack-6"
+          ]
+        },
+        "7.0": {
+          "count": 260,
+          "hasToken": false,
+          "pages": 3
+        },
+        "8.0": {
+          "count": 14997,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-8",
+            "sa-padding-8",
+            "sa-stack-8"
+          ]
+        },
+        "9.0": {
+          "count": 216,
+          "hasToken": false,
+          "pages": 8
+        },
+        "10.0": {
+          "count": 3716,
+          "hasToken": false,
+          "pages": 11
+        },
+        "12.0": {
+          "count": 10186,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-12",
+            "sa-padding-12",
+            "sa-stack-12"
+          ]
+        },
+        "16.0": {
+          "count": 8823,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-16",
+            "sa-padding-16",
+            "sa-stack-16"
+          ]
+        },
+        "18.0": {
+          "count": 197,
+          "hasToken": false,
+          "pages": 6
+        },
+        "20.0": {
+          "count": 1271,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-20",
+            "sa-padding-20",
+            "sa-stack-20"
+          ]
+        },
+        "24.0": {
+          "count": 9943,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-grid-gutter",
+            "sa-inline-24",
+            "sa-padding-24",
+            "sa-stack-24"
+          ]
+        },
+        "32.0": {
+          "count": 528,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-32",
+            "sa-padding-32",
+            "sa-stack-32"
+          ]
+        },
+        "134.0": {
+          "count": 367,
+          "hasToken": false,
+          "pages": 7
+        }
+      }
+    },
+    "weights": {
+      "Black": 1,
+      "Bold": 2827,
+      "Display SemiBold": 72,
+      "Italic": 1,
+      "Light": 487,
+      "Medium": 8636,
+      "Regular": 29351,
+      "Semi Bold": 28,
+      "SemiBold": 2454,
+      "mixed": 143
+    }
   },
   "tokenNames": {
     "colors": {
