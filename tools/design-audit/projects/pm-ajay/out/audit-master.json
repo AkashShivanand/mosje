@@ -4,28 +4,28 @@
   "generated": "auto",
   "status": "MACHINE-DRAFT",
   "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8943-41048",
-  "method": "Machine pass (project-agnostic engine). Baseline=house. DS-adoption 4.7%. Coverage gate=PASS. \ud83e\udd16 machine checks only; human sign-off (\ud83d\udc64) required before CERTIFIED.",
+  "method": "Machine pass (project-agnostic engine). Baseline=house. DS-adoption 6.0%. Coverage gate=PASS. \ud83e\udd16 machine checks only; human sign-off (\ud83d\udc64) required before CERTIFIED.",
   "coverage": {
     "figma_frames": 0,
-    "captured": 46,
+    "captured": 72,
     "mapped": 0,
     "unmapped": 0,
     "design_only": 0,
-    "extra_build_only": 46,
+    "extra_build_only": 72,
     "mismap": 0
   },
   "coverage_gate": "PASS",
-  "ds_adoption_pct": 4.7,
+  "ds_adoption_pct": 6.0,
   "deferred": [],
   "screens": [
     {
       "slug": "GLOBAL-DSCONF",
       "name": "Global \u2014 Design-System Conformance (machine-verified every element)",
       "figmaImg": null,
-      "liveImg": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+      "liveImg": "captures/live/GIA-DISTRICT-CHECKER-DISTRICT-CHECKER-DASHBOARD.png",
       "figmaUrl": null,
       "liveUrl": null,
-      "note": "DS-adoption: 4.7% of 14890 elements use design-system tokens. Baseline mode: house. The full deviation table is in out/conformance.json. These are \ud83e\udd16 machine checks \u2014 verify severity with a human before certifying.",
+      "note": "DS-adoption: 6.0% of 17743 elements use design-system tokens. Baseline mode: house. The full deviation table is in out/conformance.json. These are \ud83e\udd16 machine checks \u2014 verify severity with a human before certifying.",
       "findings": [
         {
           "num": 1,
@@ -35,10 +35,10 @@
           "axis": "Color & Token",
           "severity": "Major",
           "figma": "Every element should use a colour token from the design system.",
-          "live": "7033 element(s) across 43 screen(s) render color=#314158, which is not a design-system token (first seen near \"Drill-Down\").",
+          "live": "7621 element(s) across 68 screen(s) render color=#314158, which is not a design-system token (first seen near \"Project Created in Financial Y\").",
           "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
           "check": "\ud83e\udd16 machine",
-          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "liveImgO": "captures/live/GIA-DISTRICT-CHECKER-DISTRICT-CHECKER-DASHBOARD.png",
           "figmaBox": [
             0,
             0,
@@ -47,20 +47,20 @@
           ],
           "liveBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "sectionBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "figmaPin": null,
           "livePin": {
-            "x": 25,
-            "y": 15.7
+            "x": 41,
+            "y": 13.3
           }
         },
         {
@@ -71,10 +71,10 @@
           "axis": "Color & Token",
           "severity": "Major",
           "figma": "Every element should use a colour token from the design system.",
-          "live": "2200 element(s) across 46 screen(s) render color=#4a5565, which is not a design-system token (first seen near \"\").",
+          "live": "2798 element(s) across 72 screen(s) render color=#4a5565, which is not a design-system token (first seen near \"\").",
           "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
           "check": "\ud83e\udd16 machine",
-          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "liveImgO": "captures/live/GIA-DISTRICT-CHECKER-DISTRICT-CHECKER-DASHBOARD.png",
           "figmaBox": [
             0,
             0,
@@ -83,20 +83,20 @@
           ],
           "liveBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "sectionBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "figmaPin": null,
           "livePin": {
             "x": 15,
-            "y": 14.4
+            "y": 10.3
           }
         },
         {
@@ -107,10 +107,10 @@
           "axis": "Color & Token",
           "severity": "Major",
           "figma": "Every element should use a colour token from the design system.",
-          "live": "1704 element(s) across 46 screen(s) render color=#0f172b, which is not a design-system token (first seen near \"Adarsh Gram (PMAGY)\").",
+          "live": "2037 element(s) across 72 screen(s) render color=#0f172b, which is not a design-system token (first seen near \"Dashboard\").",
           "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
           "check": "\ud83e\udd16 machine",
-          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "liveImgO": "captures/live/GIA-DISTRICT-CHECKER-DISTRICT-CHECKER-DASHBOARD.png",
           "figmaBox": [
             0,
             0,
@@ -119,20 +119,20 @@
           ],
           "liveBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "sectionBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "figmaPin": null,
           "livePin": {
             "x": 60,
-            "y": 7.5
+            "y": 8.7
           }
         },
         {
@@ -143,10 +143,10 @@
           "axis": "Typography",
           "severity": "Major",
           "figma": "Every element should use a type-scale token from the design system.",
-          "live": "1513 element(s) across 46 screen(s) render fontSize=15, which is not a design-system token (first seen near \"Ministry / Admin\").",
+          "live": "1941 element(s) across 72 screen(s) render fontSize=15, which is not a design-system token (first seen near \"District Checker\").",
           "fix": "Replace the raw fontSize value with the correct design-system token, or add it to the token set if legitimately new.",
           "check": "\ud83e\udd16 machine",
-          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "liveImgO": "captures/live/GIA-DISTRICT-CHECKER-DISTRICT-CHECKER-DASHBOARD.png",
           "figmaBox": [
             0,
             0,
@@ -155,20 +155,20 @@
           ],
           "liveBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "sectionBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "figmaPin": null,
           "livePin": {
             "x": 60,
-            "y": 6.3
+            "y": 7.1
           }
         },
         {
@@ -179,10 +179,10 @@
           "axis": "Color & Token",
           "severity": "Major",
           "figma": "Every element should use a colour token from the design system.",
-          "live": "1380 element(s) across 46 screen(s) render color=#364153, which is not a design-system token (first seen near \"\").",
+          "live": "1764 element(s) across 72 screen(s) render color=#364153, which is not a design-system token (first seen near \"\").",
           "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
           "check": "\ud83e\udd16 machine",
-          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "liveImgO": "captures/live/GIA-DISTRICT-CHECKER-DISTRICT-CHECKER-DASHBOARD.png",
           "figmaBox": [
             0,
             0,
@@ -191,20 +191,20 @@
           ],
           "liveBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "sectionBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "figmaPin": null,
           "livePin": {
             "x": 9,
-            "y": 7.1
+            "y": 8.2
           }
         },
         {
@@ -215,10 +215,10 @@
           "axis": "Color & Token",
           "severity": "Major",
           "figma": "Every element should use a colour token from the design system.",
-          "live": "606 element(s) across 29 screen(s) render color=#45556c, which is not a design-system token (first seen near \"Villages selected\").",
+          "live": "771 element(s) across 41 screen(s) render color=#45556c, which is not a design-system token (first seen near \"Domain / Sub-domain\").",
           "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
           "check": "\ud83e\udd16 machine",
-          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "liveImgO": "captures/live/GIA-DISTRICT-CHECKER-DISTRICT-CHECKER-DASHBOARD.png",
           "figmaBox": [
             0,
             0,
@@ -227,20 +227,20 @@
           ],
           "liveBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "sectionBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "figmaPin": null,
           "livePin": {
-            "x": 26,
-            "y": 34.4
+            "x": 31,
+            "y": 56.4
           }
         },
         {
@@ -251,10 +251,10 @@
           "axis": "Color & Token",
           "severity": "Major",
           "figma": "Every element should use a colour token from the design system.",
-          "live": "331 element(s) across 46 screen(s) render color=#62748e, which is not a design-system token (first seen near \"Ministry / Admin\").",
+          "live": "462 element(s) across 72 screen(s) render color=#62748e, which is not a design-system token (first seen near \"District Checker\").",
           "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
           "check": "\ud83e\udd16 machine",
-          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "liveImgO": "captures/live/GIA-DISTRICT-CHECKER-DISTRICT-CHECKER-DASHBOARD.png",
           "figmaBox": [
             0,
             0,
@@ -263,25 +263,61 @@
           ],
           "liveBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "sectionBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "figmaPin": null,
           "livePin": {
             "x": 60,
-            "y": 6.3
+            "y": 7.1
           }
         },
         {
           "num": 8,
           "id": "PMA-DSCONF-008",
+          "element": "Off-token color: #90a1b9",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "183 element(s) across 60 screen(s) render color=#90a1b9, which is not a design-system token (first seen near \"Achieved: \u2014\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/GIA-DISTRICT-CHECKER-DISTRICT-CHECKER-DASHBOARD.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            49,
+            1440,
+            1916
+          ],
+          "sectionBox": [
+            0,
+            49,
+            1440,
+            1916
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 31,
+            "y": 53.9
+          }
+        },
+        {
+          "num": 9,
+          "id": "PMA-DSCONF-009",
           "element": "Off-token color: #1d293d",
           "section": "ds-conformance",
           "axis": "Color & Token",
@@ -299,106 +335,34 @@
           ],
           "liveBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "sectionBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "figmaPin": null,
           "livePin": {
             "x": 31,
-            "y": 30.2
-          }
-        },
-        {
-          "num": 9,
-          "id": "PMA-DSCONF-009",
-          "element": "Off-token color: #90a1b9",
-          "section": "ds-conformance",
-          "axis": "Color & Token",
-          "severity": "Major",
-          "figma": "Every element should use a colour token from the design system.",
-          "live": "131 element(s) across 39 screen(s) render color=#90a1b9, which is not a design-system token (first seen near \"Data refreshed weekly\").",
-          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
-          "check": "\ud83e\udd16 machine",
-          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
-          "figmaBox": [
-            0,
-            0,
-            1440,
-            420
-          ],
-          "liveBox": [
-            0,
-            13,
-            1440,
-            2673
-          ],
-          "sectionBox": [
-            0,
-            13,
-            1440,
-            2673
-          ],
-          "figmaPin": null,
-          "livePin": {
-            "x": 92,
-            "y": 15.7
+            "y": 28.5
           }
         },
         {
           "num": 10,
           "id": "PMA-DSCONF-010",
-          "element": "Off-token color: #e7000b",
-          "section": "ds-conformance",
-          "axis": "Color & Token",
-          "severity": "Major",
-          "figma": "Every element should use a colour token from the design system.",
-          "live": "104 element(s) across 9 screen(s) render color=#e7000b, which is not a design-system token (first seen near \"Action\").",
-          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
-          "check": "\ud83e\udd16 machine",
-          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
-          "figmaBox": [
-            0,
-            0,
-            1440,
-            420
-          ],
-          "liveBox": [
-            0,
-            13,
-            1440,
-            2673
-          ],
-          "sectionBox": [
-            0,
-            13,
-            1440,
-            2673
-          ],
-          "figmaPin": null,
-          "livePin": {
-            "x": 89,
-            "y": 93.7
-          }
-        },
-        {
-          "num": 11,
-          "id": "PMA-DSCONF-011",
           "element": "Off-token color: #0a3a74",
           "section": "ds-conformance",
           "axis": "Color & Token",
           "severity": "Major",
           "figma": "Every element should use a colour token from the design system.",
-          "live": "60 element(s) across 4 screen(s) render color=#0a3a74, which is not a design-system token (first seen near \"Villages Covered\").",
+          "live": "116 element(s) across 12 screen(s) render color=#0a3a74, which is not a design-system token (first seen near \"AGRICULTURE AND SOIL CONSERVAT\").",
           "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
           "check": "\ud83e\udd16 machine",
-          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSHGRAM-REPORTS.png",
+          "liveImgO": "captures/live/GIA-DISTRICT-CHECKER-DISTRICT-CHECKER-DASHBOARD.png",
           "figmaBox": [
             0,
             0,
@@ -407,31 +371,31 @@
           ],
           "liveBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "sectionBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "figmaPin": null,
           "livePin": {
-            "x": 34,
-            "y": 23.0
+            "x": 31,
+            "y": 60.9
           }
         },
         {
-          "num": 12,
-          "id": "PMA-DSCONF-012",
-          "element": "Off-token color: #f54900",
+          "num": 11,
+          "id": "PMA-DSCONF-011",
+          "element": "Off-token color: #e7000b",
           "section": "ds-conformance",
           "axis": "Color & Token",
           "severity": "Major",
           "figma": "Every element should use a colour token from the design system.",
-          "live": "52 element(s) across 6 screen(s) render color=#f54900, which is not a design-system token (first seen near \"Active\").",
+          "live": "106 element(s) across 10 screen(s) render color=#e7000b, which is not a design-system token (first seen near \"Action\").",
           "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
           "check": "\ud83e\udd16 machine",
           "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
@@ -443,20 +407,56 @@
           ],
           "liveBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "sectionBox": [
             0,
-            13,
+            49,
             1440,
-            2673
+            1916
           ],
           "figmaPin": null,
           "livePin": {
-            "x": 95,
-            "y": 49.6
+            "x": 89,
+            "y": 92.9
+          }
+        },
+        {
+          "num": 12,
+          "id": "PMA-DSCONF-012",
+          "element": "Off-token fontSize: 11",
+          "section": "ds-conformance",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Every element should use a type-scale token from the design system.",
+          "live": "105 element(s) across 72 screen(s) render fontSize=11, which is not a design-system token (first seen near \"Financial Target\").",
+          "fix": "Replace the raw fontSize value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/GIA-DISTRICT-CHECKER-DISTRICT-CHECKER-DASHBOARD.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            49,
+            1440,
+            1916
+          ],
+          "sectionBox": [
+            0,
+            49,
+            1440,
+            1916
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 31,
+            "y": 51.6
           }
         }
       ]
@@ -491,7 +491,7 @@
       "_route": "/admin/dashboard",
       "_role": "ministry",
       "design": "The published ramp is 12 / 14 / 16px for body and label text (`--sa-type-body-3-size`, `--sa-type-body-2-size`, `--sa-type-body-1-size`), with the heading tiers fluid above 16px. 14px is the estate's workhorse size.",
-      "build": "The portal redefines Tailwind's own scale upward: `--text-xs` is `.9375rem` (15px) where Tailwind ships `.75rem` (12px), `--text-sm` is `1.0625rem` (17px) against `.875rem` (14px), and `--text-base` is `1.1875rem` (19px) against `1rem`. Because every utility class resolves through those three variables, 1,513 elements across 46 captured screens render at 15px \u2014 a size the contract does not publish at all \u2014 and the elements doing it are marked up as `text-xs`, which should be the SMALLEST step.",
+      "build": "The portal redefines Tailwind's own scale upward: `--text-xs` is `.9375rem` (15px) where Tailwind ships `.75rem` (12px), `--text-sm` is `1.0625rem` (17px) against `.875rem` (14px), and `--text-base` is `1.1875rem` (19px) against `1rem`. Because every utility class resolves through those three variables, 1,941 elements across 72 captured screens render at 15px \u2014 a size the contract does not publish at all \u2014 and the elements doing it are marked up as `text-xs`, which should be the SMALLEST step.",
       "fix": "Restore the three scale variables to the published steps. This is one declaration block and it corrects the size of every element on every screen at once; leaving the variables overridden and correcting sizes per component would have to be redone on each new screen.",
       "_cites": [
         "--sa-type-body-2-size",
@@ -515,7 +515,7 @@
       "_route": "/admin/dashboard",
       "_role": "ministry",
       "design": "The contract publishes three neutral ink steps \u2014 `--sa-text-neutral-base #1e2124` for primary text, `--sa-text-neutral-subtle #3a3d41` for secondary, and `--sa-text-neutral-subtler #6f757d` for the quietest supporting text.",
-      "build": "Text is painted from Tailwind v4's slate ramp instead: #314158 on 7,033 elements across 43 screens, #0f172b on 1,704, #45556c on 606, #62748e on 331, #1d293d on 163 and #90a1b9 on 131. The markup names them directly (`text-slate-500`, `text-slate-900`). None of those six values appears in the token contract. They are close enough to the published ink to look right and far enough to be a different palette \u2014 which is why this needs measuring rather than eyeballing.",
+      "build": "Text is painted from Tailwind v4's slate ramp instead: #314158 on 7,621 elements across 68 screens, #0f172b on 2,037, #45556c on 771, #62748e on 462, #1d293d on 163 and #90a1b9 on 183. The markup names them directly (`text-slate-500`, `text-slate-900`). None of those six values appears in the token contract. They are close enough to the published ink to look right and far enough to be a different palette \u2014 which is why this needs measuring rather than eyeballing.",
       "fix": "Map the slate steps onto the three published ink tokens \u2014 darkest slate to `--sa-text-neutral-base`, the mid steps to `--sa-text-neutral-subtle`, the lightest supporting text to `--sa-text-neutral-subtler` \u2014 rather than replacing six hexes with six other hexes.",
       "_cites": [
         "--sa-text-neutral-base",
@@ -539,7 +539,7 @@
       "_route": "/admin/dashboard",
       "_role": "ministry",
       "design": "Status is a published set \u2014 `--sa-text-status-error-base #8b1f18`, `--sa-bg-status-success-base #ecf4ee` and their siblings \u2014 so that a rejected application looks the same in every portal on the estate.",
-      "build": "The portal paints status from Tailwind's semantic palette: #e7000b on 104 elements across 9 screens and #c10007 on 31 for errors and required-field markers, #f54900 on 52 for 'Active', and #008236 / #007a55 / #00a63e / #006045 across four separate greens for approved and on-track states. Four greens for one meaning is the part that matters: a reader cannot learn a colour that changes between screens.",
+      "build": "The portal paints status from Tailwind's semantic palette: #e7000b on 106 elements across 10 screens and #c10007 on 44 for errors and required-field markers, #f54900 on 52 for 'Active', and #008236 / #007a55 / #00a63e / #006045 across four separate greens for approved and on-track states. Four greens for one meaning is the part that matters: a reader cannot learn a colour that changes between screens.",
       "fix": "Bind status text and status backgrounds to the published status tokens, and settle on ONE green for 'approved / on track' across the three components.",
       "_cites": [
         "--sa-text-status-error-base",
@@ -600,16 +600,36 @@
   ],
   "curation": {
     "curated": 7,
-    "screensMeasured": 46,
-    "elementsChecked": 14890,
-    "dsAdoptionPct": 4.7,
+    "screensMeasured": 72,
+    "elementsChecked": 17743,
+    "dsAdoptionPct": 6.0,
     "portal": 4,
     "designSystem": 3,
-    "machineValuesCharged": 33,
-    "machineInstancesCharged": 15589,
-    "top10SharePct": 97.3,
-    "_why": "The machine pass emits one finding per deviating VALUE. Ten values explain 97.3% of all charged instances and every one is a symptom of three decisions made once in a stylesheet, so the reader receives the root causes and conformance.json keeps the per-value evidence."
+    "machineValuesCharged": 37,
+    "machineInstancesCharged": 18486,
+    "top10SharePct": 96.6,
+    "_why": "The machine pass emits one finding per deviating VALUE. Ten values explain 96.6% of all charged instances and every one is a symptom of three decisions made once in a stylesheet, so the reader receives the root causes and conformance.json keeps the per-value evidence."
   },
   "baselineMode": "house",
-  "_noDesignPanel": "PM-AJAY has no per-screen Figma design: the handoff file's PM-AJAY page is a draft the user confirmed may not reflect the built UI, and it is the least variable-bound page in the file. There is therefore no DESIGN panel. Findings are judged against the SAMAVESH house standard and two of them carry a PROPOSED panel rendered by engine/fixpreview.py."
+  "_noDesignPanel": "PM-AJAY has no per-screen Figma design: the handoff file's PM-AJAY page is a draft the user confirmed may not reflect the built UI, and it is the least variable-bound page in the file. There is therefore no DESIGN panel. Findings are judged against the SAMAVESH house standard and two of them carry a PROPOSED panel rendered by engine/fixpreview.py.",
+  "crossRole": {
+    "_why": "Whether the portal findings are GLOBAL or only Ministry's. Both root causes appear in every captured role, because both live in the shared shell.",
+    "roles": {
+      "gia-district-checker": {
+        "screens": 4,
+        "type": 58,
+        "ink": 201
+      },
+      "gia-district-maker": {
+        "screens": 21,
+        "type": 352,
+        "ink": 1742
+      },
+      "ministry": {
+        "screens": 48,
+        "type": 1672,
+        "ink": 14518
+      }
+    }
+  }
 }

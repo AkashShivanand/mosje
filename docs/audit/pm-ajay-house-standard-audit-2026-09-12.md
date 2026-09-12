@@ -26,15 +26,26 @@ the live screen by `engine/fixpreview.py`.
 | | |
 |---|---|
 | Environment | `pmajay-dev.mosje.in` (Vite SPA — the rest of the estate is Next 16) |
-| Screens measured | 46 of 223 declared (Ministry complete; the other 11 roles were still capturing) |
-| Elements checked | 14,890 (1,170 off-canvas third-party elements excluded) |
-| Token adoption | **4.7%** |
-| Concentration | **ten values explain 97.3%** of all 15,589 charged deviation instances |
-| Findings | 7 curated — 4 portal, 3 design-system — over 33 machine-charged values |
+| Screens measured | 72 of 223 declared (Ministry complete at 48/48; GIA district roles part-captured; the rest running) |
+| Elements checked | 17,743 (1,179 off-canvas third-party elements excluded) |
+| Token adoption | **6.0%** |
+| Concentration | **ten values explain 96.6%** of all 18,486 charged deviation instances |
+| Findings | 7 curated — 4 portal, 3 design-system — over 37 machine-charged values |
 
 **Read the concentration figure before the adoption figure.** 4.7% invites "most of this portal is
 wrong", and that is not what the measurement says. Almost every charged element fails on one of
 three decisions, each made once in a stylesheet.
+
+## The portal findings are global, not the Ministry's alone
+
+The report's strongest claim is that these four belong to every role. Tested against the roles
+captured so far — both root causes appear in **all of them**, because both live in the shared shell:
+
+| Role | Screens | Elements at 15px | Elements on slate ink |
+|---|---|---|---|
+| Ministry | 48 | 1,672 | 14,518 |
+| Grant-in-Aid · district maker | 21 | 352 | 1,742 |
+| Grant-in-Aid · district checker | 3 | 57 | 164 |
 
 ## Findings — the portal
 
@@ -67,7 +78,7 @@ until the instrument has been checked.**
 
 ## Outstanding
 
-- **177 of 223 declared routes not yet captured** — the 11 non-Ministry roles. The four portal
+- **151 of 223 declared routes not yet captured** — the remaining roles. The four portal
   findings are global (shell, type scale, palette, all shared), so those roles will add
   screen-specific findings rather than change these.
 - **The human track**: keyboard and screen-reader walkthrough, focus order, meaningful alt text,
