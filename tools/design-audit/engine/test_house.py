@@ -285,5 +285,52 @@ class SkeletonHeuristicIsSaturationAware(unittest.TestCase):
         self.assertFalse(self._neutral(100, 120, 165))   # 65 apart — coloured side
 
 
+# ---------------------------------------------------------------------------------------------
+class LayoutCanaryNeedsUnambiguousText(unittest.TestCase):
+    """The instrument built to detect instrument failure committed the ledger's oldest error.
+
+    PM-AJAY, 2026-09-12: the canary reported "LAYOUT SHIFTED" on 7 of 62 captures — 5 of 14 GIA
+    screens — and every one was false. It keys on text, and "Add Beneficiary" is both the
+    top-right button (x1220) and a sidebar nav item (x44); "Beneficiary List", "Misc. Reports",
+    "Project Status" and "Executive Summary" are each a page heading AND a sidebar label. The
+    before and after readings keyed to different elements. Every screenshot was correct.
+
+    That is `audit-rules.md` §0 lesson 2 verbatim. These pin the selection rule the fix encodes:
+    a text that occurs more than once is not usable as a key, and ambiguity is judged on the TEXT
+    alone — tag+text would have hidden the button/link collision that caused this.
+    """
+
+    @staticmethod
+    def _select(candidates):
+        """Mirror of CANARY_JS's filter: [(tag, text, x)] -> {key: x} for unique texts only."""
+        counts = {}
+        for _, t, _ in candidates:
+            counts[t] = counts.get(t, 0) + 1
+        return {f"{tag}|{t}": x for tag, t, x in candidates if counts[t] == 1}
+
+    def test_a_text_on_two_elements_is_dropped(self):
+        # the exact collision: a sidebar link and a page button sharing a label
+        picked = self._select([("A", "Add Beneficiary", 44),
+                               ("BUTTON", "Add Beneficiary", 1220),
+                               ("H2", "Beneficiaries", 319)])
+        self.assertEqual(list(picked), ["H2|Beneficiaries"])
+
+    def test_ambiguity_is_judged_on_text_not_on_tag_plus_text(self):
+        # keying on tag+text would make these two "unique" and reinstate the false positive
+        picked = self._select([("A", "Misc. Reports", 44), ("H2", "Misc. Reports", 319)])
+        self.assertEqual(picked, {})
+
+    def test_a_unique_label_is_still_tracked_so_a_real_shift_is_caught(self):
+        # the NMBA defect the canary exists for: a genuinely unique button that moved 670px
+        before = self._select([("BUTTON", "Take the pledge", 1171)])
+        after = self._select([("BUTTON", "Take the pledge", 1841)])
+        moved = [k for k in before if abs(after[k] - before[k]) > 2]
+        self.assertEqual(moved, ["BUTTON|Take the pledge"])
+
+    def test_three_occurrences_are_dropped_too(self):
+        self.assertEqual(self._select([("A", "Reports", 1), ("A", "Reports", 2),
+                                       ("H2", "Reports", 3)]), {})
+
+
 if __name__ == "__main__":
     unittest.main()

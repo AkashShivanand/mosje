@@ -72,9 +72,18 @@ until the instrument has been checked.**
   screen-specific findings rather than change these.
 - **The human track**: keyboard and screen-reader walkthrough, focus order, meaningful alt text,
   Hindi and truncation, brand/emblem and GIGW mandatory elements, severity sign-off.
-- **The layout canary fired on several screens** (`'Add Beneficiary' x1220 → x44` on
-  GIA-DISTRICT-MAKER-GIA-BENEFICIARY-LIST). Those captures are flagged in the bundle and any
-  finding drawn from them is suspect until re-captured.
+- **The layout canary's warnings on this portal were FALSE POSITIVES, and the captures are
+  sound.** It fired on 7 of 62 captures — 5 of 14 GIA screens — reporting e.g. `'Add Beneficiary'
+  x1220 → x44`. The canary keys on text, and "Add Beneficiary" is both the top-right button
+  (x1220) and a sidebar nav item (x44); "Beneficiary List", "Misc. Reports", "Project Status" and
+  "Executive Summary" are each a page heading *and* a sidebar label, so the before and after
+  readings keyed to different elements. Every screenshot was checked and is correct, sidebar and
+  all. The canary now keeps only text that occurs exactly once on the page.
+
+  Two notes. The `layoutShift` records already written into the bundle are false and will be
+  overwritten as the capture continues. And the capture process running during this session
+  loaded the OLD canary, so it will keep emitting the warning for the rest of this pass — the
+  warnings after this point can be ignored.
 - **A phantom route** (`/https://seniorcitizen-admin.dosje.gov.in/login`) produced a 404 capture
   that the coverage ledger counted as a screen. Its origin was not reproducible; the engine is
   hardened at `routes._clean` so it cannot recur, and the capture was removed. Not raised as a

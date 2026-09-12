@@ -190,16 +190,41 @@ EXTRACT_JS = r"""
 # pass and again AFTER. If any has moved horizontally, the screen is flagged. Cheap (one
 # evaluate each side), and it catches the whole class at the moment it happens rather than four
 # review passes later.
+# The canary keys on text, so it may only use text that is UNAMBIGUOUS on the page.
+#
+# PM-AJAY, 2026-09-12: it reported "LAYOUT SHIFTED" on 7 of 62 captures — 5 of 14 GIA screens —
+# and every one was a FALSE POSITIVE. "Add Beneficiary" is both the top-right button (x1220) and
+# a sidebar nav item (x44); "Beneficiary List", "Misc. Reports", "Project Status" and "Executive
+# Summary" are each a page heading AND a sidebar label. The before/after readings keyed to
+# different elements and the difference was reported as a shift. The screenshots were correct in
+# every case, sidebar and all.
+#
+# This is `audit-rules.md` §0 lesson 2 — "text-matching picks the wrong element; a sidebar link
+# shares text with a page title" — committed by the instrument built to detect instrument
+# failure. `gate_anchor_ambiguity` already enforces it for anchors; the canary did not.
+#
+# So: count every candidate first, and keep only texts that occur EXACTLY ONCE. A canary that
+# cries wolf is worse than a smaller honest one — this one produced a caveat in a report and
+# nearly a finding.
 CANARY_JS = r"""() => {
-  const out = [];
-  const els = document.querySelectorAll('h1,h2,h3,button,a,th,label');
-  for (const el of els) {
+  const cand = [];
+  for (const el of document.querySelectorAll('h1,h2,h3,button,a,th,label')) {
     const t = (el.textContent || '').trim();
     if (t.length < 4 || t.length > 60) continue;
     const b = el.getBoundingClientRect();
     if (b.width < 8 || b.height < 8) continue;
     if (b.top < 0 || b.top > 2000) continue;
-    out.push([t.slice(0, 40), Math.round(b.left + scrollX)]);
+    cand.push([el.tagName + '|' + t.slice(0, 40), Math.round(b.left + scrollX), t.slice(0, 40)]);
+  }
+  // Ambiguity is judged on the TEXT, not on tag+text: a <button>Add Beneficiary</button> beside
+  // an <a>Add Beneficiary</a> is exactly the collision that caused the false positives, and
+  // including the tag in the key would have hidden it.
+  const seen = {};
+  for (const [, , t] of cand) seen[t] = (seen[t] || 0) + 1;
+  const out = [];
+  for (const [key, x, t] of cand) {
+    if (seen[t] !== 1) continue;
+    out.push([key, x]);
     if (out.length >= 24) break;
   }
   return out;
