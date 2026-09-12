@@ -1,0 +1,465 @@
+{
+  "portal": "PM-AJAY \u2014 Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (DEV)",
+  "idPrefix": "PMA",
+  "generated": "auto",
+  "status": "MACHINE-DRAFT",
+  "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8943-41048",
+  "method": "Machine pass (project-agnostic engine). Baseline=house. DS-adoption 8.6%. Coverage gate=PASS. \ud83e\udd16 machine checks only; human sign-off (\ud83d\udc64) required before CERTIFIED.",
+  "coverage": {
+    "figma_frames": 0,
+    "captured": 27,
+    "mapped": 0,
+    "unmapped": 0,
+    "design_only": 0,
+    "extra_build_only": 27,
+    "mismap": 0
+  },
+  "coverage_gate": "PASS",
+  "ds_adoption_pct": 8.6,
+  "deferred": [],
+  "screens": [
+    {
+      "slug": "GLOBAL-DSCONF",
+      "name": "Global \u2014 Design-System Conformance (machine-verified every element)",
+      "figmaImg": null,
+      "liveImg": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+      "figmaUrl": null,
+      "liveUrl": null,
+      "note": "DS-adoption: 8.6% of 4544 elements use design-system tokens. Baseline mode: house. The full deviation table is in out/conformance.json. These are \ud83e\udd16 machine checks \u2014 verify severity with a human before certifying.",
+      "findings": [
+        {
+          "num": 1,
+          "id": "PMA-DSCONF-001",
+          "element": "Off-token color: #4a5565",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "933 element(s) across 27 screen(s) render color=#4a5565, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "sectionBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 15,
+            "y": 14.4
+          }
+        },
+        {
+          "num": 2,
+          "id": "PMA-DSCONF-002",
+          "element": "Off-token fontSize: 15",
+          "section": "ds-conformance",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Every element should use a type-scale token from the design system.",
+          "live": "926 element(s) across 26 screen(s) render fontSize=15, which is not a design-system token (first seen near \"Ministry / Admin\").",
+          "fix": "Replace the raw fontSize value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "sectionBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 60,
+            "y": 6.3
+          }
+        },
+        {
+          "num": 3,
+          "id": "PMA-DSCONF-003",
+          "element": "Off-token color: #314158",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "854 element(s) across 23 screen(s) render color=#314158, which is not a design-system token (first seen near \"Drill-Down\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "sectionBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 25,
+            "y": 15.7
+          }
+        },
+        {
+          "num": 4,
+          "id": "PMA-DSCONF-004",
+          "element": "Off-token color: #364153",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "781 element(s) across 27 screen(s) render color=#364153, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "sectionBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 9,
+            "y": 7.1
+          }
+        },
+        {
+          "num": 5,
+          "id": "PMA-DSCONF-005",
+          "element": "Off-token color: #0f172b",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "469 element(s) across 26 screen(s) render color=#0f172b, which is not a design-system token (first seen near \"Adarsh Gram (PMAGY)\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "sectionBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 60,
+            "y": 7.5
+          }
+        },
+        {
+          "num": 6,
+          "id": "PMA-DSCONF-006",
+          "element": "Off-token color: #45556c",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "364 element(s) across 14 screen(s) render color=#45556c, which is not a design-system token (first seen near \"Villages selected\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "sectionBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 26,
+            "y": 34.4
+          }
+        },
+        {
+          "num": 7,
+          "id": "PMA-DSCONF-007",
+          "element": "Off-token color: #62748e",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "216 element(s) across 26 screen(s) render color=#62748e, which is not a design-system token (first seen near \"Ministry / Admin\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "sectionBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 60,
+            "y": 6.3
+          }
+        },
+        {
+          "num": 8,
+          "id": "PMA-DSCONF-008",
+          "element": "Off-token color: #1d293d",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "116 element(s) across 4 screen(s) render color=#1d293d, which is not a design-system token (first seen near \"Village Development Pipeline\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "sectionBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 31,
+            "y": 30.2
+          }
+        },
+        {
+          "num": 9,
+          "id": "PMA-DSCONF-009",
+          "element": "Off-token color: #e7000b",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "65 element(s) across 6 screen(s) render color=#e7000b, which is not a design-system token (first seen near \"Action\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "sectionBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 89,
+            "y": 93.7
+          }
+        },
+        {
+          "num": 10,
+          "id": "PMA-DSCONF-010",
+          "element": "Off-token color: #90a1b9",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "63 element(s) across 22 screen(s) render color=#90a1b9, which is not a design-system token (first seen near \"Data refreshed weekly\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "sectionBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 92,
+            "y": 15.7
+          }
+        },
+        {
+          "num": 11,
+          "id": "PMA-DSCONF-011",
+          "element": "Off-token color: #0a3a74",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "50 element(s) across 3 screen(s) render color=#0a3a74, which is not a design-system token (first seen near \"Villages Covered\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSHGRAM-REPORTS.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "sectionBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 34,
+            "y": 23.0
+          }
+        },
+        {
+          "num": 12,
+          "id": "PMA-DSCONF-012",
+          "element": "Off-token color: #f54900",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "43 element(s) across 2 screen(s) render color=#f54900, which is not a design-system token (first seen near \"Active\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSH-GRAM-PMAJAY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "sectionBox": [
+            0,
+            13,
+            1440,
+            2673
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 95,
+            "y": 49.6
+          }
+        }
+      ]
+    }
+  ]
+}

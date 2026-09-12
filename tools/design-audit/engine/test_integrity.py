@@ -60,13 +60,39 @@ class QuotedBuildColours(unittest.TestCase):
     def rows_for(self, slug):
         return self.ROWS if slug == "list" else None
 
+    def inv_for(self, slug):
+        """A COMPLETE colour inventory — every colour the page paints, containers included.
+
+        The gate may only convict on evidence it knows to be complete (audit-rules.md,
+        2026-09-12), so every convicting test below must supply one.
+        """
+        if slug != "list":
+            return None
+        return {"color": {"rgb(237, 133, 37)": 3}, "bg": {"rgb(0, 51, 102)": 1},
+                "border": {}, "outline": {}, "complete": True}
+
     def test_a_sampled_colour_is_caught(self):
         # GLOBAL-005 as published: #E08020 is the anti-aliased average, not a value in the build
         f = {"id": "NMB-GLOBAL-005", "slug": "list",
              "build": "The edit glyph is drawn #E08020."}
-        out = I.gate_quoted_build_colours([f], self.rows_for)
+        out = I.gate_quoted_build_colours([f], self.rows_for, inventory_for=self.inv_for)
         self.assertEqual(len(out), 1)
         self.assertIn("#E08020", out[0])
+
+    def test_without_an_inventory_the_same_claim_only_warns(self):
+        """The 2026-09-12 correction, as a test.
+
+        With no inventory the element rows carry text and controls but not containers, so an
+        absent colour is not PROVEN absent. The gate must warn, never convict — it spent a
+        reviewer's trust on a correct finding the one time it did otherwise.
+        """
+        f = {"id": "NMB-GLOBAL-005", "slug": "list",
+             "build": "The edit glyph is drawn #E08020."}
+        warn = []
+        out = I.gate_quoted_build_colours([f], self.rows_for, warn)
+        self.assertEqual(out, [])
+        self.assertEqual(len(warn), 1)
+        self.assertIn("inventory", warn[0])
 
     def test_the_corrected_colour_passes(self):
         f = {"id": "NMB-GLOBAL-005", "slug": "list",
@@ -309,14 +335,44 @@ class ColourNearMiss(unittest.TestCase):
     def rows_for(self, slug):
         return self.ROWS
 
-    def test_a_sampled_near_miss_fails(self):
-        # both real cases: the quoted value is a few points off one the build genuinely renders
+    def complete_inv(self, extra=None):
+        """A complete inventory of the same two colours, plus anything a case adds."""
+        inv = {"color": {"rgb(237, 133, 37)": 1}, "bg": {},
+               "border": {"rgb(229, 231, 235)": 16}, "outline": {}, "complete": True}
+        if extra:
+            inv["border"].update(extra)
+        return lambda slug: inv
+
+    def test_a_sampled_near_miss_fails_when_the_inventory_is_complete(self):
+        # both real cases: the quoted value is a few points off one the build genuinely renders,
+        # and the complete inventory proves the quoted value is painted nowhere.
         for quoted in ("#E5EAF2", "#E08020"):
             with self.subTest(quoted=quoted):
                 out = I.gate_quoted_build_colours(
-                    [{"id": "X", "slug": "s", "build": f"a 1px {quoted} edge"}], self.rows_for)
+                    [{"id": "X", "slug": "s", "build": f"a 1px {quoted} edge"}], self.rows_for,
+                    inventory_for=self.complete_inv())
                 self.assertEqual(len(out), 1)
                 self.assertIn("pixel sample", out[0])
+
+    def test_the_2026_09_12_correction_the_gate_must_not_convict_a_correct_finding(self):
+        """NMB-SCREEN-046 called an activity card's edge #E5EAF2 and was RIGHT — nine cards
+        paint it, beside sixteen correct #E5E7EB borders. The rows could not see a container's
+        own border, the gate read that silence as proof, and it failed a correct finding.
+
+        With #E5EAF2 in the inventory the gate must stay silent.
+        """
+        out = I.gate_quoted_build_colours(
+            [{"id": "NMB-SCREEN-046", "slug": "s", "build": "a 1px #E5EAF2 edge"}],
+            self.rows_for, inventory_for=self.complete_inv({"rgb(229, 234, 242)": 9}))
+        self.assertEqual(out, [])
+
+    def test_a_near_miss_without_an_inventory_warns_rather_than_convicts(self):
+        warn = []
+        out = I.gate_quoted_build_colours(
+            [{"id": "X", "slug": "s", "build": "a 1px #E5EAF2 edge"}], self.rows_for, warn)
+        self.assertEqual(out, [])
+        self.assertEqual(len(warn), 1)
+        self.assertIn("not proven", warn[0])
 
     def test_a_colour_nowhere_near_anything_warns_instead_of_failing(self):
         # the extraction carries text and controls, not every container — absence is not proof,

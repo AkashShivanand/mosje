@@ -5,6 +5,9 @@ Phases:
   capture  — log in per role (keep-alive), discover routes, screenshot + extract every element
   analyze  — coverage ledger (Figma ∪ live) + per-element DS-conformance + audit-master.json
   report   — render the MACHINE-DRAFT PDF/HTML with 🤖/👤 stamps + coverage/DS-adoption tiles
+  fixpreview — re-render each finding's declared `_fix` on the live screen and gate it: the patch
+               must change its target and move nothing else. Produces the PROPOSED panel that
+               stands in for the DESIGN panel on a portal with no design frames.
 
 Usage:
   python engine/run.py --project nhapoa                 # analyze + report from existing captures
@@ -45,7 +48,7 @@ def main():
     ap.add_argument("--project", required=True)
     ap.add_argument("--phase", default="analyze+report",
                     choices=["capture", "analyze", "report", "analyze+report", "all", "bundle",
-                             "figures", "claims"])
+                             "figures", "claims", "fixpreview"])
     ap.add_argument("--role", default=None, help="capture only this role (merged into the "
                     "existing manifest — other roles' entries are preserved)")
     ap.add_argument("--allow-empty", action="store_true",
@@ -59,6 +62,16 @@ def main():
     a = ap.parse_args()
     ph = a.phase
     preflight(need_browser=ph in ("capture", "all", "bundle"))
+    if ph == "fixpreview":
+        print("== PHASE: fixpreview ==")
+        import fixpreview as FXP
+        rep = FXP.run(a.project)
+        if rep.get("gate") == "FAIL":
+            print("  ! one or more proposed fixes did not render as claimed — see "
+                  "out/fixpreview.json. A no-op or collateral-shifting patch must not ship as "
+                  "advice; it reads exactly like a working one.")
+        return
+
     if ph in ("capture", "all"):
         print("== PHASE: capture =="); CAP.run(a.project, a.role, a.allow_empty, a.force, a.verify)
         # Two cheap post-capture gates. Both were written after a run shipped bad captures with

@@ -178,6 +178,9 @@ python3 engine/run.py --project nhapoa                    # analyze + report onl
   "live": {
     "auth": { "type": "form", "loginPath": "/login", "userField": "#email", "passField": "#password",
               "submit": "button[type=submit]", "loginMarker": "/login" },
+    // auth.type: "form" (user+pass) | "email-otp" (user+OTP) | "password-otp" (user+pass+OTP).
+    // "password-otp" is three factors: PM-AJAY asks for email, password, THEN a 6-box OTP. A
+    // config that omitted the password step sat on step one until the capture timed out.
     "roles": [ { "name": "public", "base": "https://app.example.com", "auth": "none" },
                { "name": "admin",  "base": "https://app.example.com", "user": "admin@example.com" } ],
     "skipRoutes": ["/login", "/logout"]
@@ -189,8 +192,48 @@ python3 engine/run.py --project nhapoa                    # analyze + report onl
 ### Baseline modes (pluggable — degrades gracefully)
 - **`tokens`** — diff every element against `inputs/tokens.json`. Strictest; catches dev drift.
 - **`derived`** — same, but the token set is exported from the Figma variables (`get_variable_defs`).
+- **`house`** — **for a portal with no design frames of its own.** Convicts against the GENERATED
+  `--sa-*` token contract (`packages/tokens/dist/tokens.css`) and uses the Figma handoff file's 12
+  pages only to corroborate and rank. Built by `python3 house/derive.py`; prose reading in
+  `docs/design-system/samavesh-house-standard.md`.
 - **`internal`** — no baseline: derive the de-facto system from the build and flag statistical
   outliers. Use when a project has no design system at all.
+
+#### `house` mode — the two things it exists to get right
+
+**A house-standard GAP is not a portal defect.** The handoff file's neutral ramp is Tailwind's
+default greys (`#1f2937` on 23,853 sampled nodes across all ten non-draft pages, `#374151`,
+`#e5e7eb`, `#d1d5db`); the token contract publishes its own (`#1e2124`, `#3a3d41`, `#dcdee1`,
+`#6f757d`) and **none of the Tailwind values appears even once in `tokens.css`**. They sit 4-11
+points apart: invisible on screen, fatal to a token audit. Every build follows the design file, so
+a naive house audit would report every neutral in the estate as off-token — thousands of useless
+findings. Such values come back as `house_gaps`, are never charged against the portal, and are
+cited `HOUSE-GAP` with `scope: "Design System"`.
+
+**Fluid type is a RANGE.** Every `display-*` and `headline-1..5` size is a `clamp()` interval
+(`headline-5` = 18px…20px). `analyze.Allowed` tests membership OR range containment; storing one
+end flags every fluid heading in the estate.
+
+With `mode: "house"`, `verify.py` turns on two extra gates — **standard citation** (every finding
+names a `--sa-*` token, a `WCAG 2.2 x.y.z` criterion, a `GIGW 3.0`/`DBIM` clause, a DS component,
+or `HOUSE-GAP`; a bare `1.4.3` is rejected as unlookuppable) and **house-gap routing**. Both are
+skipped on a side-by-side audit, where the design frame is the authority.
+
+### `--phase fixpreview` — a proposed fix that was RENDERED, not described
+
+With no DESIGN panel, the left panel becomes **PROPOSED**: the same live screen re-rendered with the
+finding's `_fix` applied as a CSS patch, both shots taken in one session at one viewport.
+
+```jsonc
+"_fix": { "selector": ".sa-kpi-card",
+          "css": ".sa-kpi-card { border-color: #dcdee1; }",
+          "why": "border/neutral/subtle is the published token for a card edge" }
+```
+
+`engine/fixpreview.py` gates two ways a preview lies: a **no-op** (before and after byte-identical
+— the selector misses, the cascade overrides, or the value already applies) and **collateral**
+reflow (any element outside the patch target moved, 2px tolerance). Either → FAIL. A patch that
+fails must not ship as advice, because it reads exactly like one that works.
 
 ## The honesty contract
 - Every finding is stamped **🤖 machine** or **👤 human**.
