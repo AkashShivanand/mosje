@@ -1250,3 +1250,38 @@ class NavGroupExpansion(unittest.TestCase):
         routes = C.discover_routes(nav.page(), {"live": {"skipRoutes": ["/logout"]}})
         self.assertNotIn("/logout", routes)
         self.assertIn("/profile", routes)
+
+
+class AuditDeclaredRoutes(unittest.TestCase):
+    """The gate that turns a probed-but-empty declaration into a stopped run."""
+
+    def _out(self, payload):
+        d = tempfile.mkdtemp()
+        if payload is not None:
+            import json
+            json.dump(payload, open(os.path.join(d, "route-coverage.json"), "w"))
+        return {"out": d}
+
+    def test_no_file_is_not_a_failure(self):
+        """A project that predates the check, or declares nothing, must not fail."""
+        self.assertEqual(C.audit_declared_routes(self._out(None), verbose=False), [])
+
+    def test_all_declarations_reached_passes(self):
+        paths = self._out({"roles": {"admin": {"unreachable": []}}, "gate": "PASS"})
+        self.assertEqual(C.audit_declared_routes(paths, verbose=False), [])
+
+    def test_an_unreachable_declaration_is_returned(self):
+        paths = self._out({"roles": {"admin": {"unreachable": ["/ghost"]}}, "gate": "FAIL"})
+        self.assertEqual(C.audit_declared_routes(paths, verbose=False), ["/ghost"])
+
+    def test_unreachable_routes_are_unioned_across_roles_and_deduped(self):
+        paths = self._out({"roles": {
+            "admin": {"unreachable": ["/ghost", "/b"]},
+            "officer": {"unreachable": ["/ghost", "/a"]},
+        }})
+        self.assertEqual(C.audit_declared_routes(paths, verbose=False), ["/a", "/b", "/ghost"])
+
+    def test_a_corrupt_file_does_not_crash_the_run(self):
+        d = tempfile.mkdtemp()
+        open(os.path.join(d, "route-coverage.json"), "w").write("{not json")
+        self.assertEqual(C.audit_declared_routes({"out": d}, verbose=False), [])
