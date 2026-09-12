@@ -338,19 +338,28 @@ def classify(contract, evidence):
 
 def nearest(h, contract_colors):
     """Closest contract colour by max per-channel distance — the same metric integrity.py uses,
-    so 'near-miss' means the same thing in the standard and in the gate."""
+    so 'near-miss' means the same thing in the standard and in the gate.
+
+    DETERMINISTIC. The contract holds colours that tie: `#dcdee1` and `#dcdee2` are both exactly
+    as near to some greys, and with `d < bd` the winner was whichever the dict yielded first. The
+    written file therefore differed between two runs over identical inputs, which made
+    `--check` report "stale" forever and would have made the CI gate permanently red. A generated
+    artefact that differs from itself cannot have a staleness gate.
+
+    Ties break on the colour string, so the answer is the same everywhere, every run.
+    """
     try:
         r, g, b = (int(h[i:i + 2], 16) for i in (1, 3, 5))
     except ValueError:
         return None
-    best, bd = None, 1e9
-    for c in contract_colors:
+    best, bd = None, None
+    for c in sorted(contract_colors):
         try:
             r2, g2, b2 = (int(c[i:i + 2], 16) for i in (1, 3, 5))
         except ValueError:
             continue
         d = max(abs(r - r2), abs(g - g2), abs(b - b2))
-        if d < bd:
+        if bd is None or d < bd:
             best, bd = c, d
     return (best, bd) if best else None
 
@@ -444,6 +453,13 @@ def main():
         # gitSha moves with every commit and says nothing about the standard's content.
         for d in (fresh, have):
             d.get("provenance", {}).pop("gitSha", None)
+        # Compare LIKE WITH LIKE. `build()` returns dicts keyed by float (radii, font sizes), and
+        # `sort_keys` orders those numerically — 8.0, 12.0, 999.0 — while the same dict reloaded
+        # from JSON has string keys and sorts lexically — "12.0", "8.0", "999.0". The two dumps
+        # differed on ordering alone, identical in length and content, so the gate reported the
+        # standard stale on a file it had just written and would have been permanently red in CI.
+        # Round-tripping the fresh object gives it the same key types the file has.
+        fresh = json.loads(json.dumps(fresh))
         if json.dumps(have, sort_keys=True) != json.dumps(fresh, sort_keys=True):
             sys.exit("FAIL house standard is stale — the token contract or the Figma evidence "
                      "moved. Re-run `python3 tools/design-audit/house/derive.py`.")

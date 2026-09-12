@@ -1076,7 +1076,7 @@
           ],
           "count": 40,
           "distance": 14,
-          "nearest": "#93b1d6",
+          "nearest": "#8eccdf",
           "pages": 3
         },
         "#9eb2cc": {
@@ -1328,7 +1328,7 @@
           ],
           "count": 6,
           "distance": 4,
-          "nearest": "#f6f5fe",
+          "nearest": "#f3f4f6",
           "pages": 1
         },
         "#f8f9fa": {
@@ -1439,7 +1439,7 @@
           ],
           "count": 6,
           "distance": 9,
-          "nearest": "#fff4f9",
+          "nearest": "#fff2ed",
           "pages": 1
         }
       }
@@ -1978,7 +1978,7 @@
       "source": "house/figma_histogram.js run once per page against Figma file evmNmlK8g4VYwJVu2FwSGV (MoSJE Portal \u2014 Handoff), via the Figma MCP, 2026-09-12. All 12 pages of the file, no sampling of pages. Within a page, TEXT nodes are capped at 4,000 and container nodes at 6,000 \u2014 every page except Login/Signup hits the container cap, so per-page counts are a census of the first N nodes in document order, not of the whole page. Frequencies are therefore comparable across axes within a page and indicative, not exact, across pages.",
       "variableBindingRate": 0.4742
     },
-    "gitSha": "1e1ed94b"
+    "gitSha": "71141ffc"
   },
   "tokenNames": {
     "colors": {

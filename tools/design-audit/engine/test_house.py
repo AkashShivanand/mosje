@@ -332,5 +332,44 @@ class LayoutCanaryNeedsUnambiguousText(unittest.TestCase):
                                        ("H2", "Reports", 3)]), {})
 
 
+# ---------------------------------------------------------------------------------------------
+class TheGeneratedStandardMustBeReproducible(unittest.TestCase):
+    """A generated artefact that differs from itself cannot have a staleness gate.
+
+    `check:house-standard` was permanently red on a file it had just written, for two reasons —
+    one in the generator and one in the comparison, and both are the same mistake in different
+    clothes: comparing things that are not the same kind.
+
+    1. `nearest()` picked between EQUIDISTANT contract colours by dict order, so #dcdee1 and
+       #dcdee2 swapped between runs over identical inputs.
+    2. `build()` returns dicts keyed by FLOAT (radii, font sizes). `sort_keys` orders those
+       numerically — 8.0, 12.0, 999.0 — while the same dict reloaded from JSON has string keys
+       and sorts lexically — "12.0", "8.0", "999.0". The two dumps differed on ordering alone,
+       identical in length and content.
+    """
+
+    def test_ties_break_on_the_value_so_the_answer_never_depends_on_dict_order(self):
+        import importlib.util, os as _os
+        here = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+        spec = importlib.util.spec_from_file_location(
+            "derive_mod", _os.path.join(here, "house", "derive.py"))
+        D = importlib.util.module_from_spec(spec); spec.loader.exec_module(D)
+        # two contract colours exactly as near to the probe
+        a = D.nearest("#dcdee0", ["#dcdee1", "#dcdee2"])
+        b = D.nearest("#dcdee0", ["#dcdee2", "#dcdee1"])
+        self.assertEqual(a, b, "the same inputs in a different order must give the same answer")
+        self.assertEqual(a[0], "#dcdee1", "the tie breaks on the sorted value")
+
+    def test_float_keyed_dicts_compare_equal_only_after_a_json_round_trip(self):
+        # the exact shape that made two identical standards look different
+        fresh = {"radii": {8.0: "a", 12.0: "b", 999.0: "c"}}
+        reloaded = json.loads(json.dumps(fresh))
+        self.assertNotEqual(json.dumps(fresh, sort_keys=True),
+                            json.dumps(reloaded, sort_keys=True),
+                            "if this ever matches, the round trip in --check is redundant")
+        self.assertEqual(json.dumps(json.loads(json.dumps(fresh)), sort_keys=True),
+                         json.dumps(reloaded, sort_keys=True))
+
+
 if __name__ == "__main__":
     unittest.main()
