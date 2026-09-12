@@ -94,7 +94,8 @@ function list(s, x, y, w, label, items, labelColor) {
 }
 
 const PERSONAS = ["Students","Scheduled Castes","Other Backward Classes","De-notified, Nomadic and Semi-Nomadic Tribes","Safai Karamcharis","Senior Citizens","Transgender Persons","Persons Affected by Substance Use","Persons Engaged in Begging","Victims of Atrocities","Voluntary Organisations"];
-const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels and Coaching","Loans and Credit","Skill Training and Livelihood","Care, Shelter and Health","De-addiction and Counselling","Protection, Relief and Grievance","Grants to Voluntary Organisations"];
+/* Both lists are copies of docs/research/dosje-scheme-master-2026-09.json — keep them in step with it. */
+const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels and Coaching","Loans and Credit","Skill Training and Livelihood","Care, Shelter and Health","De-addiction and Counselling","Protection, Relief and Grievance","Grants to Voluntary Organisations","Housing and Settlement","Awards and Recognition"];
 
 /* ═══ 1 · Title ═══════════════════════════════════════════════════════════ */
 {

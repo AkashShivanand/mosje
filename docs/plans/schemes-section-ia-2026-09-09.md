@@ -123,6 +123,19 @@ The current `category` field holds **14 values, four of which classify a single 
 "TERM LOAN", "MICRO FINANCE", "Social Remedies", "Non Loan" — and 20 records hold none. It
 is replaced by two controlled facets, not repaired.
 
+**The categories are ten, not eight** (decided 11 September 2026). Tagging all 140 records
+against the model found twenty-one with no honest home in the original eight, so two were
+added: **Housing and Settlement** — a house, a plot, or the roads, drainage and common works
+of a village or basti — and **Awards and Recognition** — merit awards, prizes, national
+awards and the academic chairs. PM-AJAY's Adarsh Gram had been filed under *Skill Training
+and Livelihood*, and a cash prize for examination marks under *Scholarships and Fellowships*;
+neither is a reading a citizen would make.
+
+**Where Housing stops and Care begins.** A shelter home, a Garima Greh, an old-age home and a
+de-addiction centre stay under *Care, Shelter and Health* — the citizen is housed there for a
+time, by somebody else. *Housing and Settlement* is a permanent home the citizen holds, or
+the works of the settlement they live in. Without this line the two blur within a month.
+
 ## 5. The route tree
 
 ```

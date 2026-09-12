@@ -50,6 +50,8 @@ The mandate itself, AR §1.2, names: Scheduled Castes (SCs); Other Backward Clas
 | De-addiction and Counselling | Treatment centres, the 14446 helpline and Nasha Mukt Bharat Abhiyaan | AR Chapter 3 — the sections of the schemes tagged with it (see §5) |
 | Protection, Relief and Grievance | Relief to atrocity victims, the 14566 helpline, and the Commissions' grievance portals | AR Chapter 3 — the sections of the schemes tagged with it (see §5) |
 | Grants to Voluntary Organisations | Grant-in-aid through the e-Anudaan portal | AR Chapter 3 — the sections of the schemes tagged with it (see §5) |
+| Housing and Settlement | A house or a plot, and the roads, drainage and common works of a village or basti | AR Chapter 3 — the sections of the schemes tagged with it (see §5) |
+| Awards and Recognition | Merit awards for examination results, national awards for service, and academic chairs | AR Chapter 3 — the sections of the schemes tagged with it (see §5) |
 
 ## 4. Portals, helplines and places to apply
 
