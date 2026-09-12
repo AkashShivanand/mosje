@@ -10,13 +10,12 @@
 
 | | |
 |---|---|
-| Boards in the report | 37 |
-| Findings | **48** - 3 Blocker, 22 Major, 18 Minor, 5 Nit |
-| Applies to every screen | 27 |
+| Boards in the report | 38 |
+| Findings | **49** - 3 Blocker, 23 Major, 18 Minor, 5 Nit |
+| Applies to every screen | 28 |
 | Specific to one screen | 21 |
-| Withdrawn, not raised, or noted about the design file | 13 |
 
-The NMBA design page (‘NMBA — Dev Synced — August’) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles — Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication. This report carries only what has something to say. Of the 51 screens captured, 10 carry a finding of their own and appear here as a board; the remaining 41 were checked against their design frames and carry no screen-specific finding, so they are named one by one in the ‘Coverage — NMBA’ tab of the QC tracker rather than repeated here as a page of picture each. The portal-wide findings still apply to all 51: the 27 global boards below each draw one such finding on a screen that shows it clearly.
+The NMBA design page (‘NMBA — Dev Synced — August’) compared against the live dev build at a locked 1440 viewport, screen by screen, for the citizen site, the sign-in surface and three admin roles — Admin, State Nodal Officer and District Nodal Officer. 50 screens were captured and 35 design frames paired one to one. Only differences between the design and the build are raised. Copy, wording, naming and policy are out of scope for this report, and the filter sets are covered by a single global note rather than screen by screen. Every finding carries a design box and a build box, and was checked against a 1:1 crop of both sides before publication. This report carries only what has something to say. Of the 52 screens captured, 10 carry a finding of their own and appear here as a board; the remaining 42 were checked against their design frames and carry no screen-specific finding, so they are named one by one in the ‘Coverage — NMBA’ tab of the QC tracker rather than repeated here as a page of picture each. The portal-wide findings still apply to all 52: the 28 global boards below each draw one such finding on a screen that shows it clearly.
 
 **Where to start.** The findings with the widest reach or the highest severity:
 
@@ -175,6 +174,18 @@ Each has its own board in the PDF, showing the design and the build side by side
 | **Fix** | Use one button component at the design's 40px height and radius 8, with the label at Medium. The primary's radius 4 is the outlier - every other rounded thing on the screen is 6, 8, 10 or 16, so this is a fifth radius nobody chose. |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52061-126900) · [Live page](https://nmba-admin-dev.mosje.in/user-management)
+
+### Colours are typed as literals rather than bound to tokens, so the build has its own palette
+
+`NMB-GLOBAL-051` · **Major** · Color & Token · Scope: every screen with this element
+
+| | |
+|---|---|
+| **Design says** | The design works from a published token contract of 33 colours - #003366, #1F2937, #E5E7EB, #D1D5DB and the rest - and a form field's edge is the contract's #D1D5DB. |
+| **Build does** | The build paints 106 distinct colours across the 51 captured screens. Twenty-seven of them are design values; THIRTY-FOUR more sit within 24 points of one, which is close enough to look right in review and far enough to be a different literal in the code. The field anchored here is edged #CED4DA against the contract's #D1D5DB - three points apart, on 16 fields across four screens. The largest is #9CA3AF where the design frames use #94A3B8, on 1,471 elements across all 51 screens; then #0A2C53 for #002244 on 201, #D64539 for #EC5042 on 124 across seven screens, #DBEAFE for #D2E3FC on 100, and #217A39 for #2E7D32 on 88. Read from the DOM on the live build, 2026-09-12; the full table is docs/audit/nmba-colour-drift.md. |
+| **Fix** | This is one fix, not thirty-four: bind every colour to its token instead of typing the value. Six findings in this report each name a single instance - the KPI tint (NMB-GLOBAL-012), the activity card edge (NMB-SCREEN-046), the facility card button (NMB-SCREEN-019), the facility chip (NMB-SCREEN-021), the sheet border (NMB-SCREEN-042) and the status labels (NMB-SCREEN-050) - and each of those is this same defect seen once. Correcting them one at a time leaves the next thirty-four to be found by eye. A three-point difference cannot be reviewed reliably by anyone, which is exactly why the values have to come from the tokens. |
+
+[Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52066-127999)
 
 ### Dropdowns are the browser's own select, not the design system's
 
@@ -629,22 +640,3 @@ Each has its own board in the PDF, showing the design and the build side by side
 | **Fix** | Order the row actions download, edit, delete as the design does, AND draw them in the design's style: the bordered icon-button, the glyphs at #003366 and #EC5042. The style half is the same fix as NMB-GLOBAL-005 and lands with it - one row-action component, used everywhere; the order is particular to this screen. |
 
 [Figma frame](https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=52070-443098) · [Live page](https://nmba-admin-dev.mosje.in/important-documents)
-
----
-## Withdrawn on re-checking, not raised, and notes on the design file
-
-Nothing here is a finding. Each was either raised in an earlier round and did not survive re-checking, ruled out of scope, or is a defect in the handoff file rather than the build. They stay visible, with the reason, so a reviewer who saw one learns the outcome rather than wondering where it went.
-
-- **Status chips are not set in capitals** - Dropped on the reviewer's instruction, 2026-09-11. The measurement stands - the design sets the status chip uppercase at 11px and the build renders 'Draft' and 'Published' in sentence case - but the reviewer has decided it is not worth raising. Recorded rather than deleted so the id resolves for anyone who saw it.
-- **The pledge banner has lost its call to action** - WRONG, and withdrawn on the reviewer's challenge. The button IS built. Checked on the live page at a 1440 viewport on 2026-09-11: a <button> reading 'Take the Pledge', 176x36 at x1171 y230, white fill, label #003366, radius 6 - which is what the design draws. It was missed because the capture was taken with the UX4G accessibility panel open, which widened the document and pushed the button to x1841, outside the 1440-wide export. 'Not in the picture' was read as 'not built'. The capture is the evidence for what a screen LOOKS like; it is not evidence that something is absent. An absence is now confirmed against the live DOM before it is written up.
-- **KPI grid reflows to unequal card widths** - Measured on the capture: the three cards on the officer dashboard span 308-662, 688-1040 and 1066-1418 - 354, 352 and 352px with even 26px gaps, and the second row starts at the same two x positions. The grid is even. Withdrawn.
-- **Sidebar navigation icons absent PORTAL-WIDE** - The citizen shell does carry its navigation icons; only the admin shell has none. The finding is kept but narrowed to the admin shell - see G03.
-- **Page title is off the type scale** - The build's page title measures 24px at weight 600, which is exactly what the design specifies. Only the colour differs. Narrowed to a colour finding - see G11.
-- **Admin screens are missing the footer strip** - Checked on both sides: NO admin, State Nodal Officer or District Nodal Officer DESIGN frame carries a footer either - 0 footer elements across all 31 of them, against 3 on every citizen frame. The build matches the design exactly. Not a discrepancy.
-- **The sidebar expand/collapse icon does not match the design** - Cropped both sides at 1:1: the control is the same collapse glyph in the same place at the same size. Any difference is in how it behaves, which a static design QC cannot evidence - it belongs in a functional pass.
-- **The facility filter is too wide** - Width and height vary with content and viewport, so they are not audited as defects here.
-- **The side navigation lists different items from the design** - Which items a menu carries is information architecture and content, which this run was scoped to leave out. Recorded for the content pass.
-- **The filter label reads 'All Facilities' where the design says 'All Facility Types'** - Wording. Out of scope for this run by instruction.
-- **Design file — Seven frames draw content outside their own canvas** - Measured during the Phase-0 read: 44 text nodes sit outside the frame bounds on each of the Admin State/UT-District Events, State Nodal Officer Dashboard and District Nodal Officer Dashboard frames, 66 on Admin General Feedback, 9 on District Nodal Officer Important Documents, and 4 on each of the three NAPDDR committee frames. Content outside the frame renders nowhere - not in an export, not in Dev Mode - so it is invisible to anyone reading the handoff.
-- **Design file — Twelve loose artboards sit at the section root** - Frames named 'Table', 'Table Container', 'Contianer', 'CardHeader', 'Body' and 'arrow-wrapper' sit beside the screen frames at 1090-3067px wide. They are the wide tables and fragments the screens reference, but at the root they read as screens.
-- **Design file — The admin sign-in form has no design** - Both login frames draw the Patient Monitoring tab - one showing the Project Id field, one showing the OTP step. The Admin tab, which is what the build shows by default and what every officer in this audit signs in through, is drawn only as an inactive tab. Its form is undesigned.

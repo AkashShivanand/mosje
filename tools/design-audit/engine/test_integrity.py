@@ -419,3 +419,74 @@ class InventoryReading(unittest.TestCase):
 
     def test_unparseable_values_are_dropped_not_guessed(self):
         self.assertEqual(I.inventory_hexes({"currentcolor": 9, "": 1}), {})
+
+
+class UnionOfEvidence(unittest.TestCase):
+    """Each source sees what the other misses; the gate reads both."""
+
+    # a visible row WITH text — the rows survive the inventory's scan cap
+    ROWS = [{"text": "ODIC", "w": 53, "h": 26, "color": "rgb(230, 81, 0)",
+             "bg": "rgb(255, 224, 178)"}]                                    # #E65100 on #FFE0B2
+
+    def test_a_colour_only_the_rows_know_is_accepted(self):
+        # PUBLIC-FACILITIES: the ODIC chip lies past the inventory's cap, so #E65100 is missing
+        # from it. NMB-SCREEN-021's claim is CORRECT and must not fail — and a near neighbour in
+        # the inventory is exactly what would have failed it.
+        inv = {"#E85500": 9}                       # 9 points from #E65100 — inside NEAR_MISS
+        warn = []
+        out = I.gate_quoted_build_colours(
+            [{"id": "NMB-SCREEN-021", "slug": "s", "build": "the ODIC label is #E65100"}],
+            lambda s: self.ROWS, warn, lambda s: inv)
+        self.assertEqual((out, warn), ([], []))
+
+    def test_a_colour_only_the_inventory_knows_is_accepted(self):
+        # NMB-SCREEN-046: the activity card's border is a CONTAINER, which the rows never carry
+        inv = {"#E5EAF2": 9, "#E5E7EB": 16}
+        warn = []
+        out = I.gate_quoted_build_colours(
+            [{"id": "NMB-SCREEN-046", "slug": "s", "build": "a 1px #E5EAF2 edge"}],
+            lambda s: [{"text": "x", "w": 9, "h": 9, "color": "rgb(229, 231, 235)"}],
+            warn, lambda s: inv)
+        self.assertEqual((out, warn), ([], []))
+
+    def test_a_near_miss_in_neither_source_still_fails(self):
+        # the gate keeps its teeth: #E08020 for the served #ED8525
+        inv = {"#ED8525": 3}
+        out = I.gate_quoted_build_colours(
+            [{"id": "X", "slug": "s", "build": "drawn #E08020"}],
+            lambda s: [], None, lambda s: inv)
+        self.assertEqual(len(out), 1)
+        self.assertIn("pixel sample", out[0])
+
+    def test_no_evidence_at_all_is_skipped_silently(self):
+        warn = []
+        out = I.gate_quoted_build_colours(
+            [{"id": "X", "slug": "s", "build": "drawn #123456"}],
+            lambda s: None, warn, lambda s: None)
+        self.assertEqual((out, warn), ([], []))
+
+
+class Transparency(unittest.TestCase):
+    """A fully transparent colour paints nothing and is not a colour the build uses."""
+
+    def test_transparent_black_is_not_black(self):
+        # the extraction writes an unstyled background as rgba(0, 0, 0, 0); reading it as #000000
+        # made 70 transparent divs on one page look like 70 black ones
+        self.assertEqual(I.colours_in("rgba(0, 0, 0, 0)"), [])
+        self.assertEqual(I.colours_in("transparent"), [])
+        self.assertEqual(I.colours_in("rgba(255, 255, 255, 0.0)"), [])
+
+    def test_a_partly_transparent_colour_still_counts(self):
+        self.assertEqual(I.colours_in("rgba(0, 51, 102, 0.5)"), ["#003366"])
+        self.assertEqual(I.colours_in("rgba(0, 51, 102, 0.05)"), ["#003366"])
+
+    def test_opaque_black_still_counts(self):
+        self.assertEqual(I.colours_in("rgb(0, 0, 0)"), ["#000000"])
+        self.assertEqual(I.colours_in("rgba(0, 0, 0, 1)"), ["#000000"])
+
+    def test_a_three_part_colour_ending_in_zero_is_not_transparent(self):
+        # `rgb(0, 0, 0)` and `rgb(230, 81, 0)` both end in ", 0)". A pattern that treats the third
+        # component as the alpha deletes opaque black and NMB-SCREEN-021's ODIC orange.
+        self.assertEqual(I.colours_in("rgb(230, 81, 0)"), ["#E65100"])
+        self.assertEqual(I.colours_in("rgb(0, 0, 0)"), ["#000000"])
+        self.assertEqual(I.colours_in("rgb(0 0 0)"), ["#000000"])

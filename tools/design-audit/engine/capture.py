@@ -242,8 +242,12 @@ COLOR_INVENTORY_JS = r"""() => {
     if (/^rgba?\(.*,\s*0\s*\)$/.test(v)) return;          // fully transparent paints nothing
     tally[v] = (tally[v] || 0) + 1;
   };
+  // The cap was 6000, and PUBLIC-FACILITIES — a lazy-loading list 223,000px tall — has more
+  // elements than that, so its ODIC chip fell outside and the inventory came back SHORT while
+  // looking complete. integrity.inventory_is_complete() now proves completeness rather than
+  // assuming it, but the cap should not be the thing that breaks it either.
   const all = document.querySelectorAll('*');
-  for (let i = 0; i < all.length && i < 6000; i++) {
+  for (let i = 0; i < all.length && i < 40000; i++) {
     const el = all[i], s = getComputedStyle(el);
     const b = el.getBoundingClientRect();
     if (b.width < 1 || b.height < 1) continue;            // nothing invisible counts

@@ -600,6 +600,32 @@ FINDINGS = [
   "being changed, the box wants the design's 40px height and radius 8 rather than 43 and 6.",
   ("@box",324,250,938,40), ("@box",328,234,768,43)),
 
+ # 2026-09-12. The one finding in this set that could not be written before the engine could
+ # measure it: capture.py now records every colour each page actually paints, so "the build is
+ # full of near-miss colours" stops being an impression and becomes a count. Six findings in this
+ # audit each report ONE instance (G12, S46, S19, S21, S42, S50); this is the cause they share.
+ ("G28","Global","Colour tokens (every screen)","ADMIN-USER-MANAGEMENT-ADD-USER-MODAL","Major",
+  "Color & Token",
+  "Colours are typed as literals rather than bound to tokens, so the build has its own palette",
+  "The design works from a published token contract of 33 colours - #003366, #1F2937, #E5E7EB, "
+  "#D1D5DB and the rest - and a form field's edge is the contract's #D1D5DB.",
+  "The build paints 110 distinct colours across the 51 captured screens. Twenty-seven of them are "
+  "design values; THIRTY-FIVE more sit within 24 points of one, which is close enough to look "
+  "right in review and far enough to be a different literal in the code. The field anchored here "
+  "is edged #CED4DA against the contract's #D1D5DB - three points apart, on 16 fields across four "
+  "screens. The largest is #9CA3AF where the design frames use #94A3B8, on 1,471 elements across "
+  "all 51 screens; then #0A2C53 for #002244 on 201, #D64539 for #EC5042 on 124 across seven "
+  "screens, #DBEAFE for #D2E3FC on 100, and #217A39 for #2E7D32 on 88. Read from the DOM on the "
+  "live build, 2026-09-12; the full table is docs/audit/nmba-colour-drift.md.",
+  "This is one fix, not thirty-five: bind every colour to its token instead of typing the value. "
+  "Six findings in this report each name a single instance - the KPI tint (NMB-GLOBAL-012), the "
+  "activity card edge (NMB-SCREEN-046), the facility card button (NMB-SCREEN-019), the facility "
+  "chip (NMB-SCREEN-021), the sheet border (NMB-SCREEN-042) and the status labels "
+  "(NMB-SCREEN-050) - and each of those is this same defect seen once. Correcting them one at a "
+  "time leaves the next thirty-five to be found by eye. A three-point difference cannot be "
+  "reviewed reliably by anyone, which is exactly why the values have to come from the tokens.",
+  ("Enter Last Name",-12,-12,300,36), ("Enter Last Name",0,0,588,36)),
+
  ("G27","Global","Buttons (every screen)","ADMIN-USER-MANAGEMENT","Major","Components & States",
   "Primary and secondary buttons are built to different metrics",
   "Buttons are 40px tall at radius 8, padded 8-10px vertically and 16/24 horizontally, with the "

@@ -89,8 +89,17 @@ def main():
     # An id a dev has already seen must not vanish. NMB-SCREEN-016 was published, was in this tab,
     # and was then shown to be wrong; deleting its row would leave anyone who had triaged it with
     # a dangling reference and no answer. It stays, marked Withdrawn, with the reason in Notes.
+    #
+    # Sourced from findings_final.json, NOT from the master's `deferred[]`. Since 2026-09-12 the
+    # published report renders no deferred section, so `deferred[]` is empty by design — and
+    # reading it here silently dropped all three Withdrawn rows from this tab, which is the
+    # opposite of what the instruction asked for. The report's rendering choice must not decide
+    # what the DEV working document remembers.
     withdrawn = 0
-    for d in am.get("deferred", []):
+    fin = json.load(open(os.path.join(HERE, "findings_final.json")))
+    dropped = [{"id": d.get("old") or d.get("id") or "", "title": d["title"],
+                "reason": d["reason"]} for d in fin.get("dropped", [])]
+    for d in dropped:
         fid = str(d.get("id") or "")
         # Same rule as engine/tracker.rows_from_master, so the local copy and the Drive copy hold
         # the same rows. A July id like NMB-SNODASH-004 was published too and counts.

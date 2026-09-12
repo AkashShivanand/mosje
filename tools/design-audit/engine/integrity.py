@@ -43,6 +43,14 @@ DESIGN_OWNED = re.compile(r"(design(?:'s|s')?|designed|Figma|drawn in the design
                           r"(?:\w+\s+){0,3}?(#[0-9A-Fa-f]{6})\b", re.I)
 
 RGB = re.compile(r"rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)", re.I)
+# Alpha exactly 0 — the FOURTH component, in either the comma or the slash notation. Spelling this
+# as `[^)]*[,/]\s*0\s*\)` instead read `rgb(0, 0, 0)` and `rgb(230, 81, 0)` as transparent, because
+# a plain three-part colour whose BLUE is zero also ends in ", 0)". It made opaque black vanish and
+# it made NMB-SCREEN-021's ODIC orange vanish — a lazy pattern quietly deleting real colours.
+TRANSPARENT = re.compile(
+    r"(^|\s)transparent(\s|$)"
+    r"|rgba?\(\s*[\d.]+[,\s]+[\d.]+[,\s]+[\d.]+\s*[,/]\s*0(\.0+)?%?\s*\)"
+    r"|oklch\([^)]*/\s*0(\.0+)?%?\s*\)", re.I)
 OKLCH = re.compile(r"oklch\(\s*([\d.]+%?)\s+([\d.]+)\s+([\d.]+)", re.I)
 
 
@@ -84,6 +92,13 @@ def colours_in(value):
     out = []
     for v in (value if isinstance(value, (list, tuple)) else [value]):
         s = str(v or "")
+        # A fully transparent colour paints NOTHING, and must not be reported as one. The
+        # extraction records an unstyled background as `rgba(0, 0, 0, 0)`, which this function
+        # used to read as #000000 — so 70 transparent divs on one page looked like 70 black ones,
+        # and the completeness check (which compares rows against the inventory, where the browser
+        # had correctly skipped them) called 49 of 51 inventories short. Same rule, both sides.
+        if TRANSPARENT.search(s):
+            continue
         out += [h.upper() for h in HEX.findall(s)]
         out += [_hex(float(r), float(g), float(b)) for r, g, b in RGB.findall(s)]
         for L, C, H in OKLCH.findall(s):
@@ -173,37 +188,45 @@ def gate_quoted_build_colours(findings, rows_for, warnings=None, inventory_for=N
     stop, made by the module itself — and it is worst on findings that are ABOUT near-misses,
     which is most of them.
 
-    So: `capture.py` now records a real page colour inventory, and only the inventory licenses a
-    failure.
+    So `capture.py` records a page colour inventory too, and the gate reads the UNION of both
+    sources. The union is the point: each source sees what the other misses. The inventory walks
+    every visible element, so it has the containers the rows lack; the rows survive the inventory's
+    scan cap, which PUBLIC-FACILITIES — a lazy-loading list 223,000px tall — exceeds, leaving its
+    ODIC chip out of the inventory while NMB-SCREEN-021 correctly reports that chip's #E65100.
 
-      * in the evidence                            -> pass
-      * absent from a COMPLETE inventory, and within NEAR_MISS of something in it
-                                                   -> FAIL. The fingerprint of a sampled value.
-      * absent from a complete inventory, far from everything
-                                                   -> warning; confirm it and declare `_colourWhy`
-      * only the ROWS are available                -> warning at most, never a failure. Incomplete
-                                                      evidence cannot convict.
+      * in either source                 -> pass
+      * in neither, an inventory EXISTS for the screen, and within NEAR_MISS of something in the
+        union                            -> FAIL. The fingerprint of a sampled value.
+      * in neither, an inventory exists, far from anything
+                                         -> warning; confirm it and declare `_colourWhy`
+      * in neither and NO inventory was recorded
+                                         -> warning at most, never a failure. The rows carry no
+                                            containers, so their silence proves nothing.
+      * no evidence at all for the screen -> skipped, silently. Nothing to say.
 
-    `inventory_for(slug)` returns {hex: count} or None. `rows_for(slug)` returns the rows or None.
+    Whether an inventory EXISTS is a fact. Whether it is complete is not, and must not be guessed.
+
+    An earlier version tried to INFER whether an inventory was complete, by checking the rows
+    against it, and route incomplete ones to warn-only. Every version of that inference cried wolf
+    — 49 of 51 screens, then 47 — because the extraction legitimately records things the browser is
+    right not to count: a 0x0 hidden <button>, a borderColor on a zero-width border. A completeness
+    test that fires on 47 of 51 does not protect the gate, it disables it. Reading both sources
+    together needs no inference and cannot be fooled the same way.
+
+    `inventory_for(slug)` returns {hex: count} or None; `rows_for(slug)` returns the rows or None.
     """
     fails = []
     for f in findings:
         slug = f.get("slug")
         if not slug or f.get("_colourWhy"):
             continue
-        inv = inventory_for(slug) if inventory_for else None
-        complete = bool(inv)
-        if complete:
-            seen = {h.upper() for h in inv}
-        else:
-            rows = rows_for(slug)
-            if not rows:
-                continue
-            seen = set()
-            for r in rows:
-                for key in ("color", "bg", "borderColor", "outlineColor", "fill"):
-                    if r.get(key):
-                        seen.update(colours_in(r[key]))
+        inv = (inventory_for(slug) if inventory_for else None) or {}
+        licensed = bool(inv)        # only a recorded inventory licenses a failure
+        seen = {h.upper() for h in inv}
+        for r in rows_for(slug) or []:
+            for key in ("color", "bg", "borderColor", "outlineColor", "fill"):
+                if r.get(key):
+                    seen.update(colours_in(r[key]))
         if not seen:
             continue
         build = str(f.get("build") or "")
@@ -213,13 +236,11 @@ def gate_quoted_build_colours(findings, rows_for, warnings=None, inventory_for=N
                 continue
             close = sorted((c for c in seen if _near(hexv, c) <= NEAR_MISS),
                            key=lambda c: _near(hexv, c))
-            if not complete:
-                # only the rows — text and controls, no containers. Say so and move on; a gate
-                # that convicts on evidence it knows to be partial is the defect, not the finding.
+            if not licensed:
                 if warnings is not None:
                     warnings.append(
-                        f"{f.get('id')}: {hexv} could not be checked — {slug} has no colour "
-                        f"inventory, and the element rows do not carry containers. Re-capture to "
+                        f"{f.get('id')}: {hexv} could not be judged — {slug} has no colour "
+                        f"inventory, and the element rows carry no containers. Re-capture to "
                         f"judge this")
             elif close:
                 fails.append(
