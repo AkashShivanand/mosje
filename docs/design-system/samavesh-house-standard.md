@@ -1,9 +1,9 @@
 # The SAMAVESH house standard — what the estate actually does
 
 > **What this is.** The visual standard a MoSJE portal is held to **when it has no design frames
-> of its own**. It exists because PM-AJAY needed auditing and had no usable design: the handoff
-> file's PM-AJAY page is a draft, so there was nothing to put in a side-by-side report's left
-> panel. Without a written standard, that audit would have been opinion.
+> of its own** — the language the handoff file establishes across its other pages. It exists
+> because PM-AJAY needed auditing and its own page is a draft, so there was nothing to put in a
+> side-by-side report's left panel. "No frames for this screen" is not "no standard".
 >
 > **Generated, not written.** The machine-readable form is
 > [`tools/design-audit/house/samavesh-house-standard.json`](../../tools/design-audit/house/samavesh-house-standard.json),
@@ -40,15 +40,20 @@ stray typefaces are excluded **by name, with reasons**, and reported separately 
 file wholesale would be the mirror of the original error.
 
 Evidence base: the histogram script is `house/figma_histogram.js`, one call per page, and the raw
-result is `house/evidence/figma-page-histograms.json`. Ten pages count. **The PM-AJAY page is
-excluded** — it is the page under audit *and* a draft, and letting it vote on the standard it is
+result is `house/evidence/figma-page-histograms.json`. **Eleven pages count.** The PM-AJAY page is
+excluded — it is the page under audit *and* a draft, and letting it vote on the standard it is
 judged by is circular. It is also the least token-bound page in the file, which corroborates the
 draft label:
 
 | | Variable-bound fills |
 |---|---|
-| The other ten pages | **47.4%** |
+| The other eleven pages | **47.3%** |
 | The PM-AJAY draft page | **30.1%** |
+
+A value counts as the standard only on **three or more** independently authored pages: one page
+using a value is that page's choice, not a convention. That threshold is load-bearing — `#4a5565`
+and `#364153` appear on one page each and were, in the first version, enough to excuse the
+portal's two largest colour deviations.
 
 Across the whole file, **a little over half of all sampled fills are literals, not variables.** A
 literal that merely *equals* a token is not bound to it — that is the defect
@@ -112,13 +117,14 @@ Neither knows about the other.**
 
 | The file draws | On | Sampled uses | Contract's nearest | Apart | In `tokens.css`? |
 |---|---|---|---|---|---|
-| `#1f2937` | all 10 pages | **23,853** | `#242a35` | 5 | **never** |
-| `#374151` | all 10 pages | 4,396 | `#343b48` | 9 | **never** |
-| `#e5e7eb` | all 10 pages | 3,428 | `#e2e8f0` | 5 | **never** |
-| `#f9fafb` | all 10 pages | 1,421 | `#f7faff` | 4 | **never** |
-| `#d1d5db` | all 10 pages | 1,067 | `#dcdee1` | 11 | **never** |
-| `#e5eff9` | all 10 pages | 902 | `#e8efff` | 6 | **never** |
-| `#6b7280` | 7 pages | 269 | `#6f757d` | 4 | **never** |
+| `#1f2937` | all 11 pages | **25,774** | `#242a35` | 5 | **never** |
+| `#374151` | all 11 pages | 4,782 | `#343b48` | 9 | **never** |
+| `#e5e7eb` | all 11 pages | 3,865 | `#e2e8f0` | 5 | **never** |
+| `#f9fafb` | all 11 pages | 1,524 | `#f7faff` | 4 | **never** |
+| `#d1d5db` | all 11 pages | 1,098 | `#dcdee1` | 11 | **never** |
+| `#e5eff9` | all 11 pages | 970 | `#e8efff` | 6 | **never** |
+| `#ec5042` (error) | all 11 pages | 868 | — | — | **never** |
+| `#2e7d32` (success) | 9 pages | 919 | — | — | **never** |
 
 The contract publishes its own ramp instead — `#1e2124` (47 declarations), `#3a3d41` (5),
 `#dcdee1` (18), `#6f757d` (11) — and the two sit **4 to 11 points apart per channel**. That gap is
@@ -127,7 +133,7 @@ invisible on a screen and fatal to a token audit.
 **What follows from it:**
 
 1. **No MoSJE build can be token-conformant on neutrals.** Every portal follows the design file;
-   the design file follows Tailwind; the contract publishes something else. A naive house audit
+   the design file follows Tailwind; the contract publishes something else. A contract-first audit
    reports every neutral in the estate as off-token — thousands of findings, all of them useless,
    and a report a developer stops reading.
 2. **It is the design system's to resolve, not any portal's.** Either the contract adopts the ramp
