@@ -4,7 +4,7 @@
 gates — keyboard and screen-reader walkthrough, Hindi and truncation, severity sign-off — are not
 signed, so this is not a compliance certificate.
 
-Figma review sheet (the reviewer's editing surface — HANDOFF STANDARD | BUILD | ISSUES): [Design QC → PM-AJAY](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50990-25). Edit the ISSUES text there, then ask for a sync; the PDF and tracker follow the sync.
+Figma review sheet (the reviewer's editing surface, NMBA/SMILE layout — DESIGN | BUILD | ISSUES, one row per screen): [Design QC → PM-AJAY](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50998-40), five frames side by side. Edit the ISSUES text there, then ask for a sync; the PDF and tracker follow the sync.
 Machine evidence: `tools/design-audit/projects/pm-ajay/out/` — `conformance.json`,
 `coverage-ledger.json`, `fixpreview.json`, `audit-master.json`.
 
@@ -83,6 +83,30 @@ sample**: both root causes appear in **all twelve roles**, because both live in 
 | PMA-DS-001 | Major | **The contract does not publish the estate's own most-used colours.** `#1f2937` (25,774 nodes, all 11 pages), `#374151`, `#e5e7eb`, `#d1d5db`, `#f9fafb`, `#e5eff9`, plus `#ec5042` and `#2e7d32` — **not one appears even once in `tokens.css`**, which publishes `#1e2124`/`#3a3d41`/`#dcdee1`/`#6f757d` instead. Three ramps, no two agreeing, and a developer asking "which grey is correct?" has three defensible answers. That condition is what produced PMA-GLOBAL-002. |
 | PMA-DS-002 | Minor | **Two established type steps are unreachable from a conformant stylesheet.** The estate draws 13px on 1,639 nodes across all 11 pages and 11px on 1,013 across 10; the contract publishes neither. 11px exists only as `--sa-ref-size-11`, a Tier-1 primitive app code may never consume. |
 | PMA-DS-003 | Minor | **The handoff file carries its own drift on every page.** `#d9d9d9` — Figma's default rectangle fill — on 4,130 shapes; pure `#000000` on 4,154 nodes where the file's own ink is `#1f2937` by a factor of six; and six typefaces against a standing Noto Sans instruction (Inter on 3 pages / 282 nodes, plus Roboto, Open Sans, Poppins, Helvetica Neue, and Material Icons Round — the wrong icon font). Just over half of all sampled fills are literals, not bound variables. These are excluded from the standard, so no portal is charged for them — but they are what a developer copies. |
+
+## Screen-by-screen QC — 13 September 2026
+
+The measured findings above are portal-wide mechanisms. The screen-by-screen pass that the other portals received was run on all **225 captures** (the 224 signed-in screens plus the sign-in screen, captured on 13 September because the 12 September run missed it). There is no design frame for PM-AJAY, so each screen was judged against the designed SMILE and NMBA frames from the same handoff file and against the written house standard, and every issue carries a suggested fix.
+
+Eight reviewers worked in parallel, one per screen family, so each saw every role's copy of a screen together. Their 261 findings were consolidated into **30 portal-wide findings** (the four above, plus 26 patterns such as the masthead, side navigation, page header, button hierarchy and table overflow) and **63 screen findings**. Every Blocker, and every portal-wide claim that only some reviewers reported, was re-checked on the capture before it went on the sheet; one Blocker was lowered to Major for that reason (the GIA dashboard's 'Approved' count may include sanctioned projects).
+
+| Severity | Count |
+|---|---|
+| Blocker | 6 |
+| Major | 35 |
+| Minor | 49 |
+| Nit | 3 |
+
+**The six Blockers**
+
+- **PMA-SCREEN-010** — Two reports show only the first 10 rows with no way to see the rest.
+- **PMA-SCREEN-018** — Hostel UC List hides its approve and reject buttons off the right edge.
+- **PMA-SCREEN-030** — Three scheme landing addresses open a bare 404 page with no header, menu or footer.
+- **PMA-SCREEN-041** — Tables run past the card edge, hiding the Delete and Action columns.
+- **PMA-SCREEN-057** — Format VII officers table hides the required Pin Code and delete columns off the right edge.
+- **PMA-SCREEN-060** — Format VIII lists Uttar Pradesh districts for an Andhra Pradesh user.
+
+The full list, with each finding's evidence, pin and fix, is `tools/design-audit/projects/pm-ajay/findings_final.json` and the Figma sheet.
 
 ## One finding was withdrawn as false
 
