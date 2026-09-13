@@ -4,8 +4,6 @@
 
 **This is not the live-portal audit.** The live portal at `pmajay-dev.mosje.in` is audited against the Figma handoff file in `docs/audit/pm-ajay-house-standard-audit-2026-09-12.md` (PR #474). The two are separate subjects with separate authorities and share no findings.
 
-Figma review sheet: [Design QC → PM-AJAY Hub Clone — DS Check](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50984-26) — SAMAVESH STANDARD | BUILD | ISSUES.
-
 ## How it was measured
 
 | | |
