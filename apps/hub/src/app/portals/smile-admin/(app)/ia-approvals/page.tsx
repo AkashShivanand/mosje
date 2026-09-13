@@ -82,10 +82,12 @@ const COLUMNS: WorklistColumn<Row>[] = [
  * `WorklistScreen`, per docs/design-system/screen-templates.md §2 — the reader
  * decides each row, which is what makes this a worklist and not a register.
  *
- * The live dev portal serves no `/ia-approvals`, so this is built from the
- * sentence its placeholder carried — "Pending implementing-agency onboarding
- * requests awaiting central review" — and from the fields the Implementing
- * Agency Report already prints, rather than from a capture.
+ * The title and the sentence under it are the live screen's. Its COLUMNS are
+ * not: the live queue is empty — "0 Pending · All registrations have been
+ * reviewed" — so it draws no table to transcribe. The columns here are the ones
+ * the Implementing Agency Report already prints, which is the nearest verified
+ * vocabulary, and they should be checked against the live screen the first time
+ * a real registration is pending.
  */
 export default function IaApprovalsPage() {
   const [search, setSearch] = useState("");
@@ -115,8 +117,8 @@ export default function IaApprovalsPage() {
   return (
     <WorklistScreen
       eyebrow="Access Control"
-      title="IA Approvals"
-      meta="Implementing-agency onboarding requests awaiting central review. An agency cannot survey or mobilise until its request is approved."
+      title="Pending IA Approvals"
+      meta="Review and approve/reject pending implementing agency registrations."
       actions={
         <ExportMenu
           filename="smile-ia-approvals"
@@ -197,9 +199,10 @@ export default function IaApprovalsPage() {
         errorTitle: "Onboarding Requests Could Not Be Loaded",
         errorDescription: "The queue did not load. Please try again.",
         retryLabel: "Try again",
-        emptyTitle: "No Onboarding Request Received",
-        emptyDescription: "No implementing agency has applied to be onboarded yet.",
-        filteredTitle: "No Onboarding Request Matches These Filters",
+        // The live screen's own words for the state it is in today.
+        emptyTitle: "No Pending IA Registrations",
+        emptyDescription: "All registrations have been reviewed.",
+        filteredTitle: "No Registration Matches These Filters",
         clearFiltersLabel: "Clear filters",
       }}
     />

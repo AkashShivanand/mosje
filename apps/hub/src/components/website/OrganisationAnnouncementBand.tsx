@@ -184,15 +184,26 @@ export function OrganisationAnnouncementBand({
    * already solid and there is no rotation to stop.
    */
   function fillOnScreen(): number | null {
-    const dot = dotsRef.current?.querySelector<HTMLElement>('.orgab__dot[aria-selected="true"]');
-    if (!dot) return null;
-    const clip = window.getComputedStyle(dot, "::after").clipPath;
-    const inset = /inset\(([^)]*)\)/.exec(clip)?.[1];
-    if (!inset) return null;
-    const right = inset.trim().split(/\s+/)[1];
-    if (!right || !right.endsWith("%")) return null;
-    const pct = 100 - parseFloat(right);
-    return Number.isFinite(pct) ? Math.min(100, Math.max(0, pct)) : null;
+    const fill = dotsRef.current?.querySelector<HTMLElement>(".orgab__fill");
+    if (!fill) return null;
+    /*
+     * The pill sits one full width to the left when empty and at zero when
+     * full, so its offset IS the fill: -100% reads as 0 and 0 reads as 100.
+     *
+     * Read from the MATRIX rather than the declaration, because mid-animation
+     * the declaration is the keyframe's `translateX(-100%)` and the matrix is
+     * where it has actually got to. This used to parse a `clip-path`, and when
+     * the fill stopped being a clip it went on returning null in silence — the
+     * bar simply stopped holding where a reader pressed it.
+     */
+    const width = fill.getBoundingClientRect().width;
+    if (!width) return null;
+    const offset = new DOMMatrixReadOnly(
+      window.getComputedStyle(fill, "::before").transform,
+    ).m41;
+    if (!Number.isFinite(offset)) return null;
+    const pct = 100 + (offset / width) * 100;
+    return Math.min(100, Math.max(0, pct));
   }
 
   /*
@@ -857,6 +868,14 @@ export function OrganisationAnnouncementBand({
                         }}
                       >
                         <span className="ds-sr-only">{o.name}</span>
+                        {/*
+                         * A REAL ELEMENT, because the dwell needs a box it can
+                         * clip with and a child it can move. The fill used to be
+                         * the dot's `::after` animating `clip-path`, and a
+                         * pseudo-element cannot hold another one — see the note
+                         * in the stylesheet for why that had to change.
+                         */}
+                        {n === i ? <span className="orgab__fill" aria-hidden /> : null}
                       </button>
                     ))}
                   </div>

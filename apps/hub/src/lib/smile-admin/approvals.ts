@@ -190,3 +190,33 @@ export const AUDIT_FINDINGS: Record<AuditState, string[] | undefined> = {
     "It does not name the shelter it was issued for.",
   ],
 };
+
+/* ---------- Field surveyors ---------- */
+
+export interface Surveyor {
+  id: string;
+  name: string;
+  agency: string;
+  mobile: string;
+  email: string;
+  status: "Active" | "Inactive";
+}
+
+const SURVEYOR_NAMES = [
+  "Sania", "Aswin PM", "Nikhil Rao", "Meera Joshi", "Farhan Ali",
+  "Sunita Devi", "Rakesh Meena", "Priya Nair", "Imran Shaikh", "Kavita Bhosale",
+  "Deepak Verma", "Anjali Kurup", "Rohit Kamble",
+];
+
+export const SURVEYORS: Surveyor[] = SURVEYOR_NAMES.map((name, i) => {
+  const agency = IMPLEMENTING_AGENCIES[i % IMPLEMENTING_AGENCIES.length]!;
+  const handle = name.toLowerCase().replace(/[^a-z]/g, "");
+  return {
+    id: `sur-${String(i + 1).padStart(3, "0")}`,
+    name,
+    agency: agency.name,
+    mobile: `7495${String(60000 + i * 137).slice(0, 6)}`,
+    email: `${handle}@${agency.name.split(" ")[0]!.toLowerCase()}.test.in`,
+    status: i % 7 === 6 ? "Inactive" : "Active",
+  };
+});

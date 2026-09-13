@@ -29,7 +29,7 @@ export const NAV: NavGroup[] = [
       { label: "Users", href: "/portals/smile-admin/users", icon: "group", roles: ["super_admin", "central_admin", "state_nodal_officer"] },
       { label: "Roles", href: "/portals/smile-admin/roles", icon: "verified_user", roles: ["super_admin", "central_admin"] },
       { label: "Permissions", href: "/portals/smile-admin/permissions", icon: "key", roles: ["super_admin"] },
-      { label: "District Officers", href: "/portals/smile-admin/do-list", icon: "badge", roles: ["super_admin", "central_admin", "state_nodal_officer"] },
+      { label: "IA / Nodal Officers", href: "/portals/smile-admin/do-list", icon: "badge", roles: ["super_admin", "central_admin", "state_nodal_officer"] },
       { label: "IA Approvals", href: "/portals/smile-admin/ia-approvals", icon: "how_to_reg", roles: ["super_admin", "central_admin"] },
     ],
   },
@@ -38,6 +38,7 @@ export const NAV: NavGroup[] = [
     items: [
       { label: "Survey Locations", href: "/portals/smile-admin/surveys", icon: "location_on" },
       { label: "Surveyor Mappings", href: "/portals/smile-admin/surveyor-mapped", icon: "map" },
+      { label: "Surveyors", href: "/portals/smile-admin/surveyors", icon: "groups" },
       { label: "Beggary Schemes", href: "/portals/smile-admin/beggary-schemes", icon: "menu_book" },
       { label: "IA List", href: "/portals/smile-admin/ia-list", icon: "corporate_fare" },
       { label: "Hotspot Approvals", href: "/portals/smile-admin/hotspot-approvals", icon: "where_to_vote" },
@@ -101,7 +102,13 @@ export const NAV: NavGroup[] = [
   {
     label: "System",
     items: [
-      { label: "Master Settings", href: "/portals/smile-admin/master-setting", icon: "settings", roles: ["super_admin", "central_admin"] },
+      {
+        label: "Master Settings",
+        href: "/portals/smile-admin/master-setting",
+        icon: "settings",
+        roles: ["super_admin", "central_admin"],
+        children: [{ label: "Swashraya (Shelter Homes)", href: "/portals/smile-admin/master-setting/shelter-homes" }],
+      },
       { label: "Audit Log", href: "/portals/smile-admin/audit-log", icon: "article", roles: ["super_admin", "central_admin"] },
       { label: "Immediate Review", href: "/portals/smile-admin/immediate-review", icon: "report", badge: 18 },
     ],
@@ -110,6 +117,8 @@ export const NAV: NavGroup[] = [
     label: "Other",
     items: [
       { label: "Consent Forms", href: "/portals/smile-admin/consent", icon: "assignment_turned_in" },
+      { label: "Terms & Conditions", href: "/portals/smile-admin/terms-and-conditions", icon: "gavel" },
+      { label: "Privacy Policy", href: "/portals/smile-admin/privacy-policy", icon: "shield" },
     ],
   },
 ];

@@ -1,131 +1,137 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import {
-  AUDITED_SHELTERS,
-  AUDIT_FINDINGS,
-  auditGroups,
-} from "@/lib/smile-admin/approvals";
-import { Badge, Button, ChecklistScreen, Icon } from "@mosje/design-system";
+import { DECLARED, FACILITIES } from "@/lib/smile-admin/facilities";
+import { SHELTER_HOMES } from "@/lib/smile-admin/mock-data";
+import { Badge, Checkbox, FormScreen } from "@mosje/design-system";
 
-const QUARTERS = ["Q2 2026-27 (Jul – Sep)", "Q1 2026-27 (Apr – Jun)", "Q4 2025-26 (Jan – Mar)"];
-const SELECT = "h-10 rounded-md border border-stroke-300 bg-white px-md text-body-2 text-ink shadow-xs";
+const SHELTERS = SHELTER_HOMES.filter((s) => s.status !== "Closed");
+const SELECT = "h-10 w-full max-w-xl rounded-md border border-stroke-300 bg-white px-md text-body-2 text-ink shadow-xs";
 
 /**
- * `ChecklistScreen`, per docs/design-system/screen-templates.md §2 — "a required
- * set of artefacts, each with its own state" is exactly a quarterly audit file.
+ * `FormScreen`, per docs/design-system/screen-templates.md §2 — one record, and
+ * it fits one screen. The >8-field rule that would send this to a wizard counts
+ * distinct fields; twelve tick-boxes in one group are one declaration, and the
+ * live portal draws them on a single page.
  *
- * The live dev portal serves no `/shelter-homes/checklist`, so this is built
- * from the sentence its placeholder carried — "Quarterly audit checklists for
- * compliance and quality assurance" — with the requirements drawn from what a
- * shelter audit actually has to evidence, rather than from a capture.
+ * Rebuilt from the live screen. An earlier version of this page was a quarterly
+ * AUDIT checklist — documents to attach, with findings and rejections — which is
+ * a different screen serving a different purpose. The live one asks what the
+ * shelter HAS, saves the answer per shelter, and pre-fills it next time.
  */
-export default function ShelterAuditChecklistPage() {
-  const [shelterId, setShelterId] = useState(AUDITED_SHELTERS[0]!.id);
-  const [quarter, setQuarter] = useState(QUARTERS[0]!);
+export default function FacilityChecklistPage() {
+  const [shelterId, setShelterId] = useState("");
+  const [ticked, setTicked] = useState<string[]>([]);
+  const [dirty, setDirty] = useState(false);
 
-  const shelter = AUDITED_SHELTERS.find((s) => s.id === shelterId)!;
-  const groups = useMemo(() => auditGroups(shelterId), [shelterId]);
+  const shelter = SHELTERS.find((s) => s.id === shelterId);
 
-  const all = groups.flatMap((g) => g.items);
-  const required = all.filter((i) => i.required !== false);
-  const done = required.filter((i) => i.state === "attached").length;
-  const blocking = all.filter((i) => i.state === "rejected").length;
+  /** What this shelter last declared. Read fresh whenever the selection moves. */
+  const declared = useMemo(() => DECLARED[shelterId] ?? [], [shelterId]);
+
+  function choose(id: string) {
+    setShelterId(id);
+    setTicked(DECLARED[id] ?? []);
+    setDirty(false);
+  }
+
+  function toggle(id: string, on: boolean) {
+    setTicked((t) => (on ? [...t, id] : t.filter((x) => x !== id)));
+    setDirty(true);
+  }
+
+  const previously = declared.length;
 
   return (
-    <ChecklistScreen
+    <FormScreen
       breadcrumb={[
         { label: "Beneficiaries" },
         { label: "Swashraya (Shelter Homes)", href: "/portals/smile-admin/shelter-homes" },
-        { label: "Audit Checklist" },
+        { label: "Checklist" },
       ]}
       eyebrow="Beneficiaries"
-      title="Shelter Audit Checklist"
-      meta={`${shelter.name} · ${shelter.district}, ${shelter.state} · ${quarter}`}
+      title="Swashraya (Shelter Home) Facility Checklist"
+      meta="Mark the facilities currently available at this Swashraya (Shelter Home). Submissions are saved per shelter and pre-fill on your next visit."
       notices={
-        <div className="flex flex-wrap items-center gap-md rounded-lg border border-stroke-200 bg-white px-lg py-md shadow-xs">
-          <label className="flex items-center gap-xs text-label-2 text-ink-muted">
-            Shelter
-            <select aria-label="Shelter home" value={shelterId} onChange={(e) => setShelterId(e.target.value)} className={SELECT}>
-              {AUDITED_SHELTERS.map((s) => (
+        <div className="space-y-sm">
+          <label className="block space-y-xs">
+            <span className="text-label-1 text-ink">Swashraya (Shelter Home)</span>
+            <select
+              aria-label="Swashraya (Shelter Home)"
+              value={shelterId}
+              onChange={(e) => choose(e.target.value)}
+              className={SELECT}
+            >
+              <option value="">— Select Swashraya (Shelter Home) —</option>
+              {SHELTERS.map((s) => (
                 <option key={s.id} value={s.id}>
-                  {s.name}
+                  {s.name} ({s.district}, {s.state})
                 </option>
               ))}
             </select>
           </label>
-          <label className="flex items-center gap-xs text-label-2 text-ink-muted">
-            Quarter
-            <select aria-label="Quarter" value={quarter} onChange={(e) => setQuarter(e.target.value)} className={SELECT}>
-              {QUARTERS.map((q) => (
-                <option key={q}>{q}</option>
-              ))}
-            </select>
-          </label>
-          {/* The COUNT is the template's — it prints "5 of 10 required documents
-              accepted" under this strip, and repeating it here said the same
-              thing twice. What the template cannot know is that a rejection
-              blocks the submission, so that is all this adds. */}
-          {blocking > 0 ? (
-            <Badge status="danger" dot className="ml-auto">
-              {blocking} rejected — the audit cannot be closed
-            </Badge>
+          {shelter ? (
+            <p className="text-body-2 text-ink-muted">
+              {previously > 0 ? (
+                <>
+                  Pre-filled from the last submission for {shelter.name} —{" "}
+                  <strong className="text-ink">
+                    {previously} of {FACILITIES.length}
+                  </strong>{" "}
+                  facilities were declared.
+                </>
+              ) : (
+                <>No facilities have been declared for {shelter.name} yet.</>
+              )}
+            </p>
           ) : null}
         </div>
       }
-      groups={groups.map((g) => ({
-        id: g.id,
-        title: g.title,
-        description: g.description,
-        items: g.items.map((i) => ({
-          id: i.id,
-          label: i.label,
-          description: i.description,
-          required: i.required,
-          state: i.state,
-          fileName: i.state === "attached" || i.state === "review" ? i.fileName : undefined,
-          findings: AUDIT_FINDINGS[i.state],
-          actions:
-            i.state === "missing" ? (
-              <Button size="sm" appearance="outlined">
-                <Icon name="upload" size={16} /> Attach
-              </Button>
-            ) : (
-              <div className="flex gap-xs">
-                <Button size="sm" appearance="text">
-                  View
-                </Button>
-                <Button size="sm" appearance="text">
-                  Replace
-                </Button>
-              </div>
-            ),
-        })),
-      }))}
-      footer={
-        <div className="flex flex-wrap items-center gap-sm">
-          <Button disabled={blocking > 0 || done < required.length}>Submit audit</Button>
-          <span className="text-label-2 text-ink-muted">
-            {blocking > 0
-              ? "Replace the rejected documents before submitting."
-              : done < required.length
-                ? `${required.length - done} required item(s) still to attach.`
-                : "Every required item is attached."}
-          </span>
-        </div>
-      }
-      count={all.length}
-      copy={{
-        idleTitle: "Choose a Shelter to Open Its Checklist",
-        loadingLabel: "Loading the audit checklist",
-        errorTitle: "This Checklist Could Not Be Loaded",
-        errorDescription: "The audit file did not load. Please try again.",
-        retryLabel: "Try again",
-        emptyTitle: "No Audit Required This Quarter",
-        emptyDescription: "This shelter has no audit requirement for the selected quarter.",
-        filteredTitle: "No Requirement Matches",
-        clearFiltersLabel: "Clear filters",
+      onSubmit={() => {
+        // A prototype: nothing is filed. Saying so beats a success message that
+        // is not true.
       }}
-    />
+      submitLabel="Submit Checklist"
+      // Nothing here is starred — every facility is optional to tick, because
+      // the point of the form is to record which ones the shelter HAS. The
+      // template's default note would have promised a marker that never appears.
+      requiredNote={null}
+      onCancel={undefined}
+    >
+      {shelter ? (
+        <fieldset className="space-y-md">
+          <legend className="mb-sm flex items-center gap-sm text-title-2 text-ink">
+            Facilities at Shelter-home
+            <Badge status={ticked.length === FACILITIES.length ? "success" : "info"}>
+              {ticked.length} of {FACILITIES.length} ticked
+            </Badge>
+          </legend>
+          {/* A flex COLUMN, not `space-y`: `Checkbox` renders inline-flex, so on
+              a plain block the twelve ran two and three to a line and the
+              longest labels collided. One requirement per line is also how the
+              live screen draws them. */}
+          <div className="flex flex-col gap-sm">
+            {FACILITIES.map((f) => (
+              <Checkbox
+                key={f.id}
+                checked={ticked.includes(f.id)}
+                onChange={(e) => toggle(f.id, e.target.checked)}
+                label={f.label}
+              />
+            ))}
+          </div>
+          {dirty ? (
+            <p className="text-label-2 text-ink-muted">Changes are not saved until the checklist is submitted.</p>
+          ) : null}
+        </fieldset>
+      ) : (
+        // Not an empty state in the template's sense — nothing has failed and
+        // nothing is missing. The reader simply has not chosen a shelter, and a
+        // form for no shelter would be a form with nowhere to file.
+        <p className="rounded-md border border-dashed border-stroke-300 px-md py-lg text-center text-body-2 text-ink-muted">
+          Choose a Swashraya (Shelter Home) above to open its facility checklist.
+        </p>
+      )}
+    </FormScreen>
   );
 }

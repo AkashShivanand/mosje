@@ -60,7 +60,29 @@
     "navMode": "spa",
     "_navMode_why": "This build logs the session out on a HARD RELOAD of /dashboard and /city-profiling (the smile_admin_token cookie is dropped). The default goto-crawl visits the landing route first, so one bad route poisoned an entire 49-screen run with login pages. 'spa' clicks the sidebar anchor instead \u2014 the way a person navigates \u2014 and never reloads. The refresh-logout is itself an audit finding, not just a capture problem.",
     "environment": "dev",
-    "_skipRoutes_why": "/login is deliberately NOT skipped any more: the authenticated roles redirect away from it harmlessly, and the `signin` role needs it."
+    "_skipRoutes_why": "/login is deliberately NOT skipped any more: the authenticated roles redirect away from it harmlessly, and the `signin` role needs it.",
+    "declaredRoutes": [
+      "/do-list",
+      "/ia-approvals",
+      "/ia-list",
+      "/surveyors",
+      "/surveyor-list",
+      "/survey-list",
+      "/surveys",
+      "/surveys/create",
+      "/shelter-homes/checklist",
+      "/master-setting/shelter-homes",
+      "/immediate-review",
+      "/persons/mobilized",
+      "/persons/under-mobilized",
+      "/persons/shelter-home",
+      "/users/onboard",
+      "/notifications/compose",
+      "/survey-locations/create",
+      "/terms-and-conditions",
+      "/privacy-policy"
+    ],
+    "_declaredRoutes": "Routes the navigation does not link, so a link-following crawl cannot reach them. Probed regardless. Every one of these was verified to serve a screen on the live portal; three of them were previously recorded as routes the portal does not serve."
   },
   "baseline": {
     "mode": "derived",
