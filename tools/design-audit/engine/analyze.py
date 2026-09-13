@@ -12,11 +12,33 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import config as C
 import qc_geometry as G
 import crosscheck as XC
+import integrity as I
 
 def tohex(c):
+    """Normalise any computed colour to #rrggbb — including oklch().
+
+    A `\\d+` scrape of `oklch(0.929 0.013 255.508)` produces `#0036800`: seven digits, not a
+    colour, and every element carrying one counts as a deviation. That is not a hypothetical —
+    PM-AJAY is Tailwind v4 and serves oklch() for nearly every colour it paints, so the first
+    house-baseline run reported **DS-adoption 7.4%** on a set of deviations that were mostly
+    mis-parsed greys with names like `#0017400`.
+
+    `integrity.colours_in()` already decodes oklch through oklab to sRGB, verified against
+    slate-200 = #E2E8F0. This delegates to it rather than growing a second decoder — the same
+    lesson had already been learned and fixed in ONE of the two places that needed it, which is
+    how it survived to be found again here.
+    """
     c = (c or "").strip()
-    if c.startswith("#"): return c.lower()
-    if "0, 0, 0, 0" in c or "rgba(0, 0, 0, 0)" in c: return "transparent"
+    if not c:
+        return c
+    if c.startswith("#"):
+        return c.lower()
+    # A fully transparent paint is not a colour; it must not be judged against the baseline.
+    if "rgba(0, 0, 0, 0)" in c or "0, 0, 0, 0" in c:
+        return "transparent"
+    found = I.colours_in(c)
+    if found:
+        return found[0].lower()
     m = re.findall(r"\d+", c)
     return "#%02x%02x%02x" % (int(m[0]), int(m[1]), int(m[2])) if len(m) >= 3 else c
 
@@ -38,6 +60,21 @@ def load_frames(paths, cfg):
 #             the old role-blind substring fallback, and still reported MAPPED.
 #   · SCW     Public/Home (route "/") went UNMAPPED while its PUBLIC-HOME capture sat in EXTRA.
 HOME_SEG = "home"
+
+#: The published full-round radius (`--sa-shape-full`).
+FULL_RADIUS = 999.0
+#: At or above this, a px radius IS the full round — browsers clamp `rounded-full` on a large
+#: element to values like 33554400px.
+FULL_CLAMP_MIN = 500.0
+#: The largest genuine radius the contract publishes below `full` is 24. Anything between that
+#: and the clamp, with no unit recorded, is most likely a percentage and is not judged.
+MAX_REAL_RADIUS = 32.0
+
+#: How many independently authored Figma pages must use a value before the design file is
+#: treated as having adopted it as a convention the token contract has not caught up with.
+#: Below this, a value absent from the contract is drift in BOTH places and the portal finding
+#: stands. See load_house.corroborated() for what one page of evidence nearly excused.
+HOUSE_GAP_MIN_PAGES = 3
 
 def _screen_seg(route):
     """The route's last path segment, or HOME_SEG for a root/landing route.
@@ -173,10 +210,129 @@ def build_ledger(cfg, frames, captured, paths):
     return ledger
 
 # ---------- 2. baseline (pluggable) ----------
+class Allowed:
+    """A set of permitted values that can also permit RANGES.
+
+    The estate's display and headline type tiers are fluid — `clamp(1.125rem, …vw, 1.25rem)` — so
+    a conformant heading can render at any size between 18px and 20px and equals no discrete
+    token at all. A plain set would flag every fluid heading in the build. `in` therefore tests
+    membership OR containment in any interval.
+    """
+
+    def __init__(self, values=(), ranges=()):
+        self.values = set(values)
+        self.ranges = [(float(lo), float(hi)) for lo, hi in ranges]
+
+    def __contains__(self, v):
+        if v in self.values:
+            return True
+        try:
+            n = float(v)
+        except (TypeError, ValueError):
+            return False
+        return any(lo - 0.51 <= n <= hi + 0.51 for lo, hi in self.ranges)
+
+    def __bool__(self):
+        return bool(self.values or self.ranges)
+
+    def __len__(self):
+        return len(self.values) + len(self.ranges)
+
+
+def load_house(src, allow, fluid_ranges=True):
+    """Baseline mode `house` — audit a portal whose own screens were never designed.
+
+    THE FIGMA HANDOFF FILE IS THE AUTHORITY. The token contract cross-references it.
+
+    The estate's visual language is established across the eleven non-draft pages of the handoff
+    file, several marked *Dev Synced*, and that file is what the development teams build from. So a
+    build value outside that language is a PORTAL finding.
+
+    **This was inverted in the first version and the inversion was the error.** It made the token
+    contract convict and demoted the file to corroboration, reasoning that a literal is not a bound
+    token and that the PM-AJAY page is a draft. Both premises are true; neither supports the
+    conclusion. The PM-AJAY *page* being a draft is a reason not to treat *its frames* as a
+    per-screen authority — not a reason to demote the whole file's established language.
+
+    It mattered. The build's neutrals are Tailwind v4 **slate**; the file's are Tailwind v3
+    **gray**. Those genuinely differ, so against the real standard the build's neutrals are a live
+    portal finding — and the first version filed them as a design-system gap that EXCUSED the
+    portal, then reported a token-adoption figure measured against an authority the portal was
+    never built to.
+
+    WHAT IS ALLOWED is the union of two things, because either one is legitimate:
+
+      * the file's established language — a value drawn on >= 3 independently authored pages; and
+      * anything the token contract publishes, fluid ranges included — using the design system is
+        never a defect, even where no page happens to draw that exact value.
+
+    A value in NEITHER is charged to the portal. On PM-AJAY the slate ramp is in neither, which is
+    the correct answer and the one the inversion was hiding.
+
+    `_noToken` records standard values the contract does not publish. That is a real design-system
+    gap worth raising — but it no longer excuses anything, because the portal is built from the
+    file, not from the contract.
+    """
+    h = json.load(open(src))
+    c = h.get("contract", {})
+    std = h.get("standard", {})
+
+    def std_values(axis, cast=None):
+        vals = (std.get(axis, {}) or {}).get("standard", {}) or {}
+        return [cast(v) if cast else v for v in vals]
+
+    # colour: the file's language, plus every colour the contract publishes
+    allow["colors"] = Allowed(
+        [tohex(x) for x in std_values("colour")] + [tohex(x) for x in c.get("colors", [])])
+    allow["radii"] = Allowed(
+        [float(x) for x in std_values("radius")] + [float(x) for x in c.get("radii", [])])
+    # FLUID RANGES belong to the token contract, so they may only excuse a build that actually
+    # consumes it. PM-AJAY loads ZERO `--sa-*` custom properties — counted in the live DOM — so it
+    # cannot be rendering a fluid token, and admitting its 17px and 19px on the strength of a
+    # HEADING tier's 16-18 and 18-20 ranges would excuse the very thing the type-scale finding is
+    # about: a wholesale redefinition of Tailwind's scale. A project sets
+    # `baseline.fluidRanges: false` to say so, with the reason in the config.
+    allow["fontSizes"] = Allowed(
+        [float(x) for x in std_values("fontSize")] + [float(x) for x in c.get("fontSizes", [])],
+        [(r["min"], r["max"]) for r in c.get("fontSizeRanges", [])] if fluid_ranges else [])
+    allow["spacing"] = Allowed(
+        [float(x) for x in std_values("spacing")] + [float(x) for x in c.get("spacing", [])])
+    # A computed font-family is a whole stack; conformance() tests the PRIMARY family, so both the
+    # file's families and the contract's stack entries are legitimate members.
+    allow["fontFamilies"] = Allowed(
+        list(std_values("fontFamily")) + list(c.get("fontFamilies", [])))
+
+    # No value is excused any more. `_gaps` stays empty so conformance()'s house-gap branch is
+    # simply never taken — kept rather than deleted so a project on an older standard file does
+    # not crash, and so the reason is visible here rather than inferred from an absence.
+    allow["_gaps"] = {"color": {}, "radius": {}, "fontSize": {}, "fontFamily": {}}
+    allow["_noToken"] = {
+        axis: (std.get(axis, {}) or {}).get("noToken", {}) or {}
+        for axis in ("colour", "radius", "fontSize", "spacing", "fontFamily")
+    }
+    allow["_fileDefects"] = {
+        axis: (std.get(axis, {}) or {}).get("fileDefects", {}) or {}
+        for axis in ("colour", "radius", "fontSize", "spacing", "fontFamily")
+    }
+    allow["_standardSize"] = {axis: len((std.get(axis, {}) or {}).get("standard", {}) or {})
+                              for axis in ("colour", "radius", "fontSize", "spacing",
+                                           "fontFamily")}
+    allow["_tokenNames"] = h.get("tokenNames", {})
+    allow["_provenance"] = h.get("provenance", {})
+    allow["_authority"] = h.get("_authority")
+    return allow
+
+
 def load_baseline(cfg, captured, paths):
     mode = cfg.get("baseline", {}).get("mode", "internal")
     allow = {"colors": set(), "radii": set(), "fontSizes": set(), "fontFamilies": set()}
     src = os.path.join(paths["project"], cfg.get("baseline", {}).get("source", ""))
+    if mode == "house":
+        if not os.path.exists(src):
+            sys.exit(f"! baseline mode 'house' needs {src} — run "
+                     "`python3 tools/design-audit/house/derive.py` first.")
+        fluid = cfg.get("baseline", {}).get("fluidRanges", True)
+        return mode, load_house(src, allow, fluid_ranges=fluid)
     if mode in ("tokens", "derived") and os.path.exists(src):
         t = json.load(open(src))
         allow["colors"] = {tohex(x) for x in t.get("colors", [])}
@@ -199,9 +355,62 @@ def load_baseline(cfg, captured, paths):
         allow[k] = {v for v, n in ctr[k].items() if v not in (None, "transparent") and n / total >= 0.02}
     return "internal", allow
 
+def primary_family(v):
+    """First family in a computed font-family stack: 'Noto Sans, ui-sans-serif, …' -> 'Noto Sans'.
+
+    getComputedStyle returns the REQUESTED stack, not the face that rendered, so comparing whole
+    stacks to a token compares two spellings of the same intent. The first family is the intent;
+    whether it actually loaded is a font-LOADING finding and a different check (audit-rules.md B).
+    """
+    if not isinstance(v, str):
+        return v
+    return v.split(",")[0].strip().strip('"\'') or None
+
+
+def judgeable_radius(row):
+    """The row's radius as a px number the contract can judge — or None when it cannot.
+
+    `px()` in the extractor drops the unit, and the unit carries the meaning:
+
+      * `50%` / `70%`  a circular or elliptical corner. Conformant by intent, and comparing the
+                       bare 50 against a px contract convicts an avatar for being round.
+      * `33554400px`   a browser's clamp for an over-large `rounded-full`. It IS the full radius,
+                       so it resolves to the published `--sa-shape-full`.
+      * anything else  a real px radius, judged normally.
+
+    All three appeared on the first PM-AJAY run — 50 and 70 on all 27 screens, 33554400 on 188
+    elements — and every one of them would have shipped as an off-token radius finding.
+
+    A capture taken before `radiusRaw` existed has no unit to read. Rather than guess, an
+    implausible value (over the contract's largest real radius and not the full clamp) returns
+    None and is not judged; `conformance()` counts it as neither conformant nor deviant.
+    """
+    raw = row.get("radiusRaw")
+    val = row.get("radius")
+    if isinstance(raw, str):
+        raw = raw.strip().split()[0] if raw.strip() else ""
+        if raw.endswith("%"):
+            return None                      # a proportional corner is not a px token
+        if raw.endswith("px"):
+            try:
+                n = float(raw[:-2])
+            except ValueError:
+                return val
+            return FULL_RADIUS if n >= FULL_CLAMP_MIN else n
+        return val
+    # No raw string on this capture: fall back to plausibility.
+    if isinstance(val, (int, float)):
+        if val >= FULL_CLAMP_MIN:
+            return FULL_RADIUS
+        if val > MAX_REAL_RADIUS:
+            return None                      # very probably a percentage; refuse to guess
+    return val
+
+
 # ---------- 3. conformance ----------
 def conformance(cfg, captured, allow, mode, paths):
-    dev = collections.defaultdict(lambda: {"count": 0, "screens": set(), "sample": None, "loc": None})
+    dev = collections.defaultdict(lambda: {"count": 0, "screens": set(), "sample": None, "loc": None,
+                                           "houseGap": False, "gapEvidence": None})
     total = conf = excluded = 0
     for c in captured:
         fp = os.path.join(paths["captures_live"], f"{c['slug']}.json")
@@ -218,15 +427,28 @@ def conformance(cfg, captured, allow, mode, paths):
                 continue
             total += 1; ok = True
             checks = [("color", tohex(r.get("color")), allow["colors"]),
-                      ("radius", r.get("radius"), allow["radii"]),
+                      ("radius", judgeable_radius(r), allow["radii"]),
                       ("fontSize", r.get("fontSize"), allow["fontSizes"]),
-                      ("fontFamily", r.get("fontFamily"), allow["fontFamilies"])]
+                      ("fontFamily", primary_family(r.get("fontFamily")), allow["fontFamilies"])]
             for prop, val, allowed in checks:
                 if not allowed: continue
                 if val in (None, "transparent", 0): continue
                 if val not in allowed:
-                    ok = False
+                    # A value the CONTRACT omits but the handoff file uses estate-wide is a
+                    # house-standard GAP, not a portal defect. It is counted separately and
+                    # never charged against the build's DS-adoption — see load_house().
+                    gap = allow.get("_gaps", {}).get(prop, {}).get(str(val))
+                    if gap is None and prop in ("radius", "fontSize"):
+                        try:
+                            gap = allow["_gaps"][prop].get(str(float(val)))
+                        except (TypeError, ValueError, KeyError):
+                            gap = None
                     d = dev[(prop, str(val))]
+                    if gap is not None:
+                        d["houseGap"] = True
+                        d["gapEvidence"] = gap
+                    else:
+                        ok = False
                     d["count"] += 1; d["screens"].add(c["slug"])
                     # The FIRST occurrence is not necessarily a PINNABLE one. A third-party
                     # off-canvas widget (the UX4G accessibility panel sits at x~1690, outside the
@@ -246,14 +468,48 @@ def conformance(cfg, captured, allow, mode, paths):
     ds_adoption = round(100 * conf / max(1, total), 1)
     ranked = sorted(dev.items(), key=lambda kv: -kv[1]["count"])
     devlist = [{"prop": k[0], "value": k[1], "count": v["count"], "screens": len(v["screens"]),
-                "sample": v["sample"], "loc": v["loc"]} for k, v in ranked]
+                "sample": v["sample"], "loc": v["loc"],
+                # houseGap: the token contract omits this value but the handoff file uses it
+                # estate-wide. Raise it against the design system, never against this portal.
+                "houseGap": bool(v.get("houseGap")), "gapEvidence": v.get("gapEvidence")}
+               for k, v in ranked]
+    gaps = [d for d in devlist if d["houseGap"]]
     if excluded:
         print("  excluded %d off-canvas element(s) from conformance (hidden/third-party chrome "
               "outside the 1440 viewport); DS-adoption is over the %d that are ours"
               % (excluded, total), flush=True)
+    # ROOT-CAUSE CONCENTRATION. "DS-adoption 8.6%" reads as "91% of the portal is wrong", and on
+    # a build that swapped ONE palette that is badly misleading: PM-AJAY's non-conformance is
+    # overwhelmingly a single substitution — Tailwind v4's slate ramp where the contract publishes
+    # its own neutrals — repeated on every text element, not thousands of independent defects.
+    # Stating the concentration beside the percentage is what stops the headline being misread,
+    # and it tells a developer the truth that matters: fix one thing, not four thousand.
+    charged = [d for d in devlist if not d["houseGap"]]
+    dev_total = sum(d["count"] for d in charged) or 1
+    concentration = {
+        "deviating_element_instances": dev_total,
+        "distinct_values_charged": len(charged),
+        "top1_share_pct": round(100 * sum(d["count"] for d in charged[:1]) / dev_total, 1),
+        "top3_share_pct": round(100 * sum(d["count"] for d in charged[:3]) / dev_total, 1),
+        "top10_share_pct": round(100 * sum(d["count"] for d in charged[:10]) / dev_total, 1),
+        "_note": "Share of all charged deviation instances explained by the 1/3/10 most common "
+                 "values. A high top-10 share means few root causes, not many defects — report "
+                 "the causes, never the instance count.",
+    }
+    print("  concentration: the 10 most common values explain %.1f%% of all charged deviations "
+          "(%d distinct values over %d element instances) — few root causes, not many defects"
+          % (concentration["top10_share_pct"], len(charged), dev_total), flush=True)
+    if gaps:
+        print("  %d deviation value(s) are HOUSE-STANDARD GAPS (the token contract omits them, "
+              "the handoff file uses them estate-wide). Not charged against this portal; raised "
+              "against the design system." % len(gaps), flush=True)
     return {"mode": mode, "ds_adoption_pct": ds_adoption, "elements_checked": total,
             "elements_excluded_offcanvas": excluded,
-            "elements_conformant": conf, "deviations": devlist}
+            "elements_conformant": conf, "deviations": devlist,
+            "house_gaps": gaps,
+            "concentration": concentration,
+            "baseline_provenance": allow.get("_provenance") if isinstance(allow, dict) else None,
+            "token_names": allow.get("_tokenNames") if isinstance(allow, dict) else None}
 
 # ---------- 4. assemble audit-master.json ----------
 PROP_AXIS = {"color": "Color & Token", "radius": "Components & States",

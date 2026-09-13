@@ -141,7 +141,8 @@ def _near(a, b):
     return max(abs(int(a[i:i + 2], 16) - int(b[i:i + 2], 16)) for i in (1, 3, 5))
 
 
-def gate_quoted_build_colours(findings, rows_for, warnings=None):
+def gate_quoted_build_colours(findings, rows_for, warnings=None, inventory_for=None,
+                              union_colours=None):
     """A hex attributed to the BUILD must be a value the build actually renders.
 
     A glyph sampled off a screenshot returns the anti-aliased average of the glyph and its
@@ -169,14 +170,39 @@ def gate_quoted_build_colours(findings, rows_for, warnings=None):
         slug = f.get("slug")
         if not slug or f.get("_colourWhy"):
             continue
+        scope = str(f.get("scope") or "")
+        # A DESIGN-SYSTEM finding is not a claim about what this build paints. PMA-DS-001's build
+        # text names the Figma library's grey ramp and the token contract's, side by side, because
+        # the finding IS that the two disagree — and every one of those hexes was read as a build
+        # colour and convicted. The finding was right; the gate was asking the wrong question.
+        if scope == "Design System":
+            continue
         rows = rows_for(slug)
-        if not rows:
+        inv = inventory_for(slug) if inventory_for else None
+        if not rows and not inv:
             continue
         seen = set()
-        for r in rows:
+        for r in (rows or []):
             for key in ("color", "bg", "borderColor", "outlineColor", "fill"):
                 if r.get(key):
                     seen.update(colours_in(r[key]))
+        # The inventory is the whole page's paint, containers included. With it, absence is a
+        # fact and this gate may convict. Without it the element rows carry text and controls
+        # only — a card's own border is invisible to them — and reading that silence as proof is
+        # the exact error that failed a correct finding on 2026-09-12 (see audit-rules.md).
+        complete = False
+        if inv:
+            for bucket in ("color", "bg", "border", "outline"):
+                for val in (inv.get(bucket) or {}):
+                    seen.update(colours_in(val))
+            complete = bool(inv.get("complete"))
+        # A GLOBAL finding's colours were measured ACROSS the portal, not on its one
+        # representative screen. Judging "#314158 on 43 screens" against the dashboard's own
+        # inventory convicts a correct finding for naming a colour that screen happens not to
+        # paint. A claim about every screen is judged against every screen.
+        if scope == "Global" and union_colours:
+            seen |= set(union_colours)
+            complete = True
         if not seen:
             continue
         build = str(f.get("build") or "")
@@ -186,16 +212,26 @@ def gate_quoted_build_colours(findings, rows_for, warnings=None):
                 continue
             close = sorted((c for c in seen if _near(hexv, c) <= NEAR_MISS),
                            key=lambda c: _near(hexv, c))
-            if close:
+            if close and complete:
                 fails.append(
                     f"{f.get('id')}: quotes {hexv} as a BUILD colour, but {slug} renders "
                     f"{close[0]} — {_near(hexv, close[0])} apart on one channel. That gap is what a "
                     f"pixel sample looks like. Read the value out of the DOM, not off a screenshot")
+            elif close and warnings is not None:
+                warnings.append(
+                    f"{f.get('id')}: quotes {hexv}; {slug} renders {close[0]} nearby "
+                    f"({_near(hexv, close[0])} apart) — but {slug} carries NO complete colour "
+                    f"inventory, so absence is not proven. Re-capture to judge colours")
             elif warnings is not None:
                 warnings.append(
                     f"{f.get('id')}: {hexv} is attributed to the build but appears on no element "
-                    f"{slug}'s extraction carries. Likely a container the extractor does not emit "
-                    f"— confirm it in the DOM and declare `_colourWhy`")
+                    f"{slug}'s "
+                    + ("inventory" if complete else "extraction")
+                    + " carries. "
+                    + ("The inventory is complete, so this value is painted nowhere on the screen "
+                       "— re-read it from the DOM" if complete else
+                       "Likely a container the extractor does not emit — confirm it in the DOM "
+                       "and declare `_colourWhy`"))
     return fails
 
 
@@ -351,6 +387,119 @@ def gate_tracker_parity(local_rows, remote_rows, **kw):
         fails.append(f"{fid}: in the shared copy, missing from the local tracker")
     for fid, col, a, b in rep["generated_differs"]:
         fails.append(f"{fid}: generated column {col!r} differs — local {a!r} vs shared {b!r}")
+    return fails
+
+
+# ---------------------------------------------------------------------------------------------
+# GATE — a finding with no design to point at must cite the standard it convicts against
+#
+# Every audit before PM-AJAY had a Figma frame in the left panel, and that frame WAS the
+# authority: the reader compared two pictures and judged for themselves. A portal with no design
+# frames has no such panel, and the failure mode that opens up is not a wrong measurement — it is
+# an unfalsifiable one. "The card's border is too light" with nothing behind it is an opinion
+# wearing a finding's clothes, and a report of those is worth less than no report, because a
+# developer cannot tell which items are obligations.
+#
+# So on a design-less audit every finding names its authority, and the authority must be one a
+# reader can go and check:
+#
+#   * a token          `--sa-border-neutral-subtle`     the generated contract publishes it
+#   * a WCAG criterion `WCAG 2.2 1.4.3`                 legally binding on a GoI property
+#   * a GIGW/DBIM rule `GIGW 3.0 3.4.2`, `DBIM §4.4`    mandatory standards, docs/guidelines/
+#   * a DS component   `DS::SectionTitle`                 the estate publishes it; use it
+#   * an estate rule   `rules/data-state-completeness.md` mandatory, path-scoped, in-repo
+#   * a house gap      `HOUSE-GAP`                      the contract and the Figma file disagree;
+#                                                       raised against the DS, not the portal
+#
+# The last one is not an escape hatch — it is the honest classification for the Tailwind-vs-
+# SAMAVESH neutral divergence, and a finding that claims it is routed to a different audience.
+CITATION = re.compile(
+    r"--sa-[a-z0-9-]+"                                  # a token in the generated contract
+    r"|WCAG\s*2\.[0-2]\s*\d+\.\d+\.\d+"                 # a success criterion, with its version
+    r"|GIGW\s*3\.0[\s§]*[\d.]+"                    # a GIGW clause
+    r"|DBIM[\s§]*[\d.]+"                           # a DBIM clause
+    r"|UX4G[\s§]*[\d.]+"                           # a UX4G clause (recommended, not mandatory)
+    r"|HOUSE-GAP"                                       # the DS and the handoff file disagree
+    r"|[\w.-]*rules/[a-z0-9-]+\.md"                     # a mandatory estate rule, by file
+    r"|\b(DS|design-system)\s*::\s*[A-Z][A-Za-z]+",     # a published component, e.g. DS::SectionTitle
+    re.I)
+
+#: A citation that is only a bare criterion number ("1.4.3") is ambiguous between WCAG versions
+#: and between standards. It is rejected on purpose: the reader must be able to look it up.
+BARE_NUMBER = re.compile(r"^\s*[\d.]+\s*$")
+
+
+def gate_standard_citation(findings, require=True):
+    """Every finding cites a checkable authority. Only runs where there is no design to compare.
+
+    `_cites` is a list of strings. One recognised citation is enough — a finding needs an
+    authority, not a bibliography. A finding that is purely a judgment call may say so with
+    `_judgment` plus a reason, and it is then reported as 👤 rather than 🤖; what it may not do
+    is read as a measurement while resting on nothing.
+    """
+    if not require:
+        return []
+    fails = []
+    for f in findings:
+        fid = f.get("id") or "?"
+        if f.get("_judgment"):
+            if not str(f.get("_judgment")).strip():
+                fails.append(f"{fid}: declares `_judgment` with no reason — say what the call "
+                             f"rests on, or cite a standard")
+            continue
+        cites = f.get("_cites")
+        if isinstance(cites, str):
+            cites = [cites]
+        if not cites:
+            fails.append(
+                f"{fid}: no `_cites`. With no design frame to compare against, a finding must "
+                f"name the authority it convicts against — a --sa-* token, a WCAG 2.2 criterion, "
+                f"a GIGW/DBIM clause, a design-system component, or HOUSE-GAP. Without one it is "
+                f"an opinion, and a developer cannot tell it from an obligation")
+            continue
+        bare = [c for c in cites if BARE_NUMBER.match(str(c))]
+        if bare and not any(CITATION.search(str(c)) for c in cites):
+            fails.append(
+                f"{fid}: cites {bare[0]!r}, a bare number. Name the standard and its version "
+                f"— 'WCAG 2.2 1.4.3', not '1.4.3' — so the reader can look it up")
+            continue
+        if not any(CITATION.search(str(c)) for c in cites):
+            fails.append(
+                f"{fid}: `_cites` {cites!r} names no recognised authority. Expected a --sa-* "
+                f"token, 'WCAG 2.2 x.y.z', a GIGW 3.0 / DBIM clause, or HOUSE-GAP")
+    return fails
+
+
+def gate_house_gap_routing(findings):
+    """A HOUSE-GAP finding must not be charged to the portal.
+
+    The divergence this exists for: the handoff file's neutral ramp is Tailwind's default greys
+    (#1f2937 on 23,853 sampled nodes across all ten non-draft pages), and none of those values
+    appears even once in the generated token contract, which publishes its own ramp (#1e2124,
+    #3a3d41, #dcdee1, #6f757d) 4-11 points away. A build that followed the design file is not
+    defective; the design system and the design file disagree.
+
+    So a HOUSE-GAP finding carries `scope: "Design System"` and no severity that implies the
+    portal team owes the fix. Getting this wrong would hand a developer thousands of items they
+    cannot act on, which is how a report loses a reader for good.
+    """
+    fails = []
+    for f in findings:
+        cites = f.get("_cites") or []
+        if isinstance(cites, str):
+            cites = [cites]
+        if not any("HOUSE-GAP" in str(c).upper() for c in cites):
+            continue
+        fid = f.get("id") or "?"
+        if (f.get("scope") or "") != "Design System":
+            fails.append(
+                f"{fid}: cites HOUSE-GAP but its scope is {f.get('scope')!r}. A disagreement "
+                f"between the token contract and the handoff library is owed by the design "
+                f"system — set scope to 'Design System' so it reaches the right audience")
+        if str(f.get("severity") or "").title() == "Blocker":
+            fails.append(
+                f"{fid}: cites HOUSE-GAP at Blocker severity. The portal cannot ship a fix for a "
+                f"standard that does not yet agree with itself — re-rank it")
     return fails
 
 

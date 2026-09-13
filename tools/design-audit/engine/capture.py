@@ -45,6 +45,12 @@ EXTRACT_JS = r"""
       fontSize: px(cs.fontSize), fontWeight: cs.fontWeight,
       lineHeight: cs.lineHeight==='normal'?null:px(cs.lineHeight),
       color: cs.color, bg: cs.backgroundColor, radius: px(cs.borderTopLeftRadius),
+      // The RAW radius string, because px() throws the unit away and the unit is the
+      // whole meaning. `50%` is a circular avatar and conformant; `50px` would be a real
+      // deviation; and a browser reports an over-large `rounded-full` as its own clamp
+      // (33554400px). Judged as bare numbers, all three read as off-token radii — 242
+      // false findings on the first PM-AJAY run.
+      radiusRaw: cs.borderTopLeftRadius,
       padding: [px(cs.paddingTop),px(cs.paddingRight),px(cs.paddingBottom),px(cs.paddingLeft)],
       borderStyle: cs.borderStyle, borderColor: cs.borderColor,
       dsComponent: el.getAttribute('data-ds-component') || null,
@@ -98,8 +104,65 @@ EXTRACT_JS = r"""
       conditionalOn: null,
     });
   }
+  // COLOUR INVENTORY — every colour the page actually paints, with counts.
+  //
+  // `rows` above carries TEXT and CONTROLS, not containers. A card's own border is therefore
+  // invisible to it, and on 2026-09-12 `gate_quoted_build_colours` read that silence as proof
+  // and failed a CORRECT finding: NMB-SCREEN-046 called an activity card's edge #E5EAF2, which
+  // nine cards really do paint, while the gate saw only the sixteen #E5E7EB borders the rows did
+  // carry and convicted the finding as a pixel sample. That is the unfounded-absence error the
+  // module exists to prevent, committed by the module itself.
+  //
+  // With an inventory, absence is a FACT and the colour gate may convict. Without one it may
+  // only warn. A gate that convicts on partial evidence is worse than no gate, because it
+  // spends the reviewer's trust on a correct finding.
+  //
+  // Every element is walked, not just the ones that carry text — that is the whole point.
+  // Invisible and fully transparent paint is skipped: a colour nobody can see is not a colour
+  // the page renders, and counting it would put unreachable values in the reviewer's evidence.
+  const inv = { color: {}, bg: {}, border: {}, outline: {} };
+  const bumpC = (bucket, v) => {
+    if (!v) return;
+    const s = String(v).trim();
+    if (!s || s === 'none' || s === 'transparent') return;
+    if (/rgba\(\s*0,\s*0,\s*0,\s*0\s*\)/.test(s)) return;
+    // A colour whose own alpha is 0 paints nothing.
+    const a = s.match(/rgba?\([^)]*?,\s*([0-9.]+)\s*\)/);
+    if (a && parseFloat(a[1]) === 0) return;
+    bucket[s] = (bucket[s] || 0) + 1;
+  };
+  let invSeen = 0;
+  for (const el of document.querySelectorAll('*')) {
+    if (invSeen++ > 12000) break;          // a runaway DOM must not hang the capture
+    const r = el.getBoundingClientRect();
+    if (r.width < 1 || r.height < 1) continue;
+    const cs = getComputedStyle(el);
+    if (cs.visibility === 'hidden' || cs.display === 'none' || +cs.opacity === 0) continue;
+    bumpC(inv.bg, cs.backgroundColor);
+    bumpC(inv.outline, cs.outlineColor);
+    // Border shorthand carries ONE COLOUR PER SIDE. Reading only the first hides the odd side
+    // out, and the odd side is usually the one a finding is about.
+    for (const side of ['borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor']) {
+      if (px(cs[side.replace('Color', 'Width')]) > 0) bumpC(inv.border, cs[side]);
+    }
+    // Only count text colour where there IS text of this element's own.
+    let own = '';
+    for (const n of el.childNodes) if (n.nodeType === 3) own += n.textContent;
+    if (own.trim()) bumpC(inv.color, cs.color);
+  }
+  const trim = (o, n) => Object.fromEntries(
+    Object.entries(o).sort((a, b) => b[1] - a[1]).slice(0, n));
+
   return { pageW: document.documentElement.scrollWidth,
-           pageH: document.documentElement.scrollHeight, rows, fields };
+           pageH: document.documentElement.scrollHeight, rows, fields,
+           colorInventory: {
+             color: trim(inv.color, 80), bg: trim(inv.bg, 80),
+             border: trim(inv.border, 80), outline: trim(inv.outline, 40),
+             elementsWalked: invSeen,
+             // COMPLETE is the claim the colour gate depends on. If the walk hit its cap the
+             // inventory is a sample, and a sample cannot prove an absence.
+             complete: invSeen <= 12000,
+           } };
 }
 """
 
@@ -127,16 +190,41 @@ EXTRACT_JS = r"""
 # pass and again AFTER. If any has moved horizontally, the screen is flagged. Cheap (one
 # evaluate each side), and it catches the whole class at the moment it happens rather than four
 # review passes later.
+# The canary keys on text, so it may only use text that is UNAMBIGUOUS on the page.
+#
+# PM-AJAY, 2026-09-12: it reported "LAYOUT SHIFTED" on 7 of 62 captures — 5 of 14 GIA screens —
+# and every one was a FALSE POSITIVE. "Add Beneficiary" is both the top-right button (x1220) and
+# a sidebar nav item (x44); "Beneficiary List", "Misc. Reports", "Project Status" and "Executive
+# Summary" are each a page heading AND a sidebar label. The before/after readings keyed to
+# different elements and the difference was reported as a shift. The screenshots were correct in
+# every case, sidebar and all.
+#
+# This is `audit-rules.md` §0 lesson 2 — "text-matching picks the wrong element; a sidebar link
+# shares text with a page title" — committed by the instrument built to detect instrument
+# failure. `gate_anchor_ambiguity` already enforces it for anchors; the canary did not.
+#
+# So: count every candidate first, and keep only texts that occur EXACTLY ONCE. A canary that
+# cries wolf is worse than a smaller honest one — this one produced a caveat in a report and
+# nearly a finding.
 CANARY_JS = r"""() => {
-  const out = [];
-  const els = document.querySelectorAll('h1,h2,h3,button,a,th,label');
-  for (const el of els) {
+  const cand = [];
+  for (const el of document.querySelectorAll('h1,h2,h3,button,a,th,label')) {
     const t = (el.textContent || '').trim();
     if (t.length < 4 || t.length > 60) continue;
     const b = el.getBoundingClientRect();
     if (b.width < 8 || b.height < 8) continue;
     if (b.top < 0 || b.top > 2000) continue;
-    out.push([t.slice(0, 40), Math.round(b.left + scrollX)]);
+    cand.push([el.tagName + '|' + t.slice(0, 40), Math.round(b.left + scrollX), t.slice(0, 40)]);
+  }
+  // Ambiguity is judged on the TEXT, not on tag+text: a <button>Add Beneficiary</button> beside
+  // an <a>Add Beneficiary</a> is exactly the collision that caused the false positives, and
+  // including the tag in the key would have hidden it.
+  const seen = {};
+  for (const [, , t] of cand) seen[t] = (seen[t] || 0) + 1;
+  const out = [];
+  for (const [key, x, t] of cand) {
+    if (seen[t] !== 1) continue;
+    out.push([key, x]);
     if (out.length >= 24) break;
   }
   return out;
@@ -440,6 +528,63 @@ def login_email_otp(pg, base, auth, user, otp):
     _click_button(pg, auth.get("verifyButton", "Verify OTP"), exact=False)
     pg.wait_for_timeout(5000)
 
+def login_password_otp(pg, base, auth, user, pw, otp):
+    """Email + password -> Send OTP -> N-digit OTP -> Verify.
+
+    Three factors, not two. `email-otp` above asks for an identifier and an OTP; PM-AJAY asks for
+    an identifier, a PASSWORD, and then an OTP, and a config that omitted the password step simply
+    sat on step one until the capture timed out with no explanation.
+
+    The OTP boxes are filled one character per box with `fill()`, which dispatches the input events
+    the component listens for. Typing the whole code into the first box does NOT work — verified in
+    the browser on 2026-09-12, where "123456" typed into box 1 left ["1","","","","",""] and the
+    Verify button did nothing. A silent no-op is the failure mode this docstring exists to prevent.
+
+    The OTP is a fixed dev constant read from config. Nothing here requests a second code or
+    attempts a value other than the one configured — never brute-force an OTP, and never fire a
+    real one on an environment that sends SMS.
+    """
+    pg.goto(base + auth.get("loginPath", "/login"), wait_until="domcontentloaded", timeout=60000)
+    pg.wait_for_timeout(3000)
+    tab = auth.get("roleTab")
+    if tab:
+        _click_button(pg, tab, exact=True)
+        pg.wait_for_timeout(800)
+    pg.wait_for_selector(auth["userField"], timeout=20000)
+    pg.fill(auth["userField"], user)
+    pg.fill(auth["passField"], pw)
+    # The submit button and the "Send OTP" button are the same control. Prefer the scoped CSS
+    # selector when the project gives one — a label match would hit the accessibility widget's
+    # stray submit buttons.
+    sub = auth.get("submit")
+    clicked = False
+    if sub:
+        el = pg.query_selector(sub)
+        if el:
+            el.click()
+            clicked = True
+    if not clicked:
+        _click_button(pg, auth.get("sendOtpButton", "Send OTP"), exact=False)
+    pg.wait_for_timeout(4500)
+
+    sel = auth.get("otpInput", "input[maxlength='1'][inputmode='numeric']")
+    try:
+        pg.wait_for_selector(sel, timeout=15000)
+    except Exception:
+        print("  ! OTP step never appeared — credentials rejected, or the send button missed",
+              flush=True)
+        return
+    boxes = pg.query_selector_all(sel)
+    if len(boxes) >= len(otp):
+        for i, ch in enumerate(otp):
+            boxes[i].fill(ch)
+    elif boxes:
+        boxes[0].fill(otp)
+    pg.wait_for_timeout(700)
+    _click_button(pg, auth.get("verifyButton", "Verify OTP"), exact=False)
+    pg.wait_for_timeout(6000)
+
+
 def role_auth(role, auth):
     """Merge a role's own `auth` dict over the project's global auth block.
 
@@ -459,6 +604,12 @@ def do_login(pg, role, auth):
         if not (role.get("user") and otp):
             return False
         login_email_otp(pg, role["base"], auth, role["user"], otp)
+        return True
+    if auth.get("type") == "password-otp":
+        otp = role.get("otp") or auth.get("otp")
+        if not (role.get("user") and role.get("pass") and otp):
+            return False
+        login_password_otp(pg, role["base"], auth, role["user"], role["pass"], otp)
         return True
     if not role.get("pass"):
         return False
@@ -508,7 +659,27 @@ def looks_like_login(pg, auth=None):
 # cards and 10 table rows were all grey bars while the design frame beside it showed real data.
 WAIT_FOR_DATA_JS = r"""() => {
   const busy = document.querySelectorAll('[aria-busy="true"],[data-loading="true"]').length;
-  let skel = 0;
+  let skel = 0, bars = 0;
+  // A skeleton is a NEUTRAL placeholder, or an animated one. An empty coloured div of the same
+  // size is usually data — a bar chart's fill.
+  //
+  // PM-AJAY, 2026-09-12: this counted the Ministry dashboard's progress bars as skeletons and
+  // reported "STILL LOADING (22 skeleton placeholders)" on three screens whose figures had in
+  // fact all arrived (47,333 / 22,030 / 19,763 / 14,994 were in the same extraction). A finding
+  // was drafted from that warning — "dashboard figures never arrive" — and it was false. The
+  // counts landed just above SKELETON_FLOOR on precisely the screens carrying the most bars,
+  // which is the tell.
+  const neutral = (cs) => {
+    const m = (cs.backgroundColor || '').match(/rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)/);
+    if (!m) return true;                       // oklch() and friends: fall back to counting it
+    const [r, g, b] = [ +m[1], +m[2], +m[3] ];
+    // Channel spread separates the two populations cleanly, and the threshold is measured
+    // rather than guessed. The estate's greys run 6-44 (gray-200 is 6, slate-500 is 44 — they
+    // are COOL greys, not neutral ones, which is why a tighter bound misfiled real placeholders);
+    // its chart fills run 106-245 (navy 106, green 130, gov-blue 220, saffron 245). 64 sits in
+    // the gap with margin on both sides.
+    return (Math.max(r, g, b) - Math.min(r, g, b)) <= 64;
+  };
   document.querySelectorAll('div,span,td,li').forEach(el => {
     if (el.children.length) return;
     if ((el.textContent || '').trim()) return;
@@ -518,9 +689,11 @@ WAIT_FOR_DATA_JS = r"""() => {
     const bg = cs.backgroundColor || '';
     if (bg === 'transparent' || bg === 'rgba(0, 0, 0, 0)') return;
     if (cs.animationName && cs.animationName !== 'none') { skel += 2; return; }
+    if (!neutral(cs)) { bars += 1; return; }   // coloured and still: data, not a placeholder
     skel += 1;
   });
-  return { busy, skel };
+  // `bars` is returned for diagnosis only; nothing gates on it.
+  return { busy, skel, bars };
 }"""
 
 # Every page in a real app has a handful of small filled boxes with no text — a divider, a

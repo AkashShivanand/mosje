@@ -104,10 +104,17 @@ def run_cmd(board, name, argv, ok_codes=(0,), grep=None):
         return
     tail = [l for l in (p.stdout + p.stderr).strip().splitlines() if l.strip()]
     if p.returncode in ok_codes:
-        # a gate that prints a row per portal must be quoted on THIS portal's row — the board
-        # once reported tg's counts under nmba's name, which is worse than printing nothing
-        pick = [l for l in tail if grep and grep in l] or tail
-        board.add(name, PASS, pick[-1].strip()[:90] if pick else "")
+        # A gate that prints a row per portal must be quoted on THIS portal's row. The board once
+        # reported tg's counts under nmba's name, and the fallback that was supposed to prevent it
+        # reintroduced it: when no line mentioned the portal, `or tail` quoted whichever row came
+        # last — so pm-ajay's deliverable row read "ok tg  31 screens  33 findings". A number
+        # under the wrong name is worse than no number, so say nothing was found instead.
+        if grep:
+            pick = [l for l in tail if grep in l]
+            detail = pick[-1].strip()[:90] if pick else f"passed; no {grep} row in its output"
+        else:
+            detail = tail[-1].strip()[:90] if tail else ""
+        board.add(name, PASS, detail)
     else:
         board.add(name, FAIL, f"exit {p.returncode}", tail[-8:])
 
@@ -144,6 +151,10 @@ def main():
             return default
 
     baseline = js("integrity-baseline.json", default={}) or {}
+    # The project's own config decides whether the design-less gates apply at all. Read it
+    # directly rather than through config.load(), which merges secrets — this command never
+    # needs a password and should not hold one.
+    cfg = js("audit.config.json", default={}) or {}
     board = Board()
     print(f"\nverifying {a.project}\n")
 
@@ -187,12 +198,21 @@ def main():
     am = js(os.path.join(published_dir, "audit-master.json")) or js("out", "audit-master.json")
     findings = []
     if am:
-        for s in am.get("screens", []):
-            for f in s.get("findings", []):
-                findings.append({"id": f["id"], "slug": s.get("slug"), "sev": f.get("severity"),
-                                 "title": f.get("element"), "build": f.get("live"),
-                                 "_liveCheck": f.get("_liveCheck"),
-                                 "_colourWhy": f.get("_colourWhy")})
+        # A project may CURATE: the machine pass emits one finding per deviating value, and what
+        # the reader receives is a shorter list of root causes at `findings` (see
+        # projects/pm-ajay/findings.py). Judge what the reader receives. Before this, the board
+        # read only the per-screen machine list — so it reported PM-AJAY's curated set as 12
+        # uncited findings and skipped the fix-preview gate saying no finding declared a `_fix`,
+        # while two of them did. A board that judges a different artefact than the one being sent
+        # is worse than no board.
+        for f in am.get("findings", []) or []:
+            findings.append({**f, "slug": f.get("slug"), "sev": f.get("severity"),
+                             "build": f.get("build"), "title": f.get("title")})
+        if not findings:
+            for s in am.get("screens", []):
+                for f in s.get("findings", []):
+                    findings.append({**f, "slug": s.get("slug"), "sev": f.get("severity"),
+                                     "title": f.get("element"), "build": f.get("live")})
 
     bundle = js("out", "capture-bundle.json") or {}
     screens = bundle.get("screens") or []
@@ -212,6 +232,46 @@ def main():
             except Exception:
                 val = None
         rows_cache[slug] = val
+        return val
+
+    def _union_colours():
+        """Every colour ANY captured screen paints. The evidence set for a GLOBAL claim.
+
+        Built from the colour inventories, so it is complete in the sense the gate requires —
+        containers included, not just the text and controls the element rows carry.
+        """
+        import glob as _glob
+        out = set()
+        for f in _glob.glob(os.path.join(proj, "captures", "live", "*.json")):
+            try:
+                inv = (json.load(open(f)) or {}).get("colorInventory") or {}
+            except Exception:
+                continue
+            for bucket in ("color", "bg", "border", "outline"):
+                for val in (inv.get(bucket) or {}):
+                    out.update(I.colours_in(val))
+        return out
+
+    inv_cache = {}
+
+    def inventory_for(slug):
+        """The screen's COLOUR INVENTORY — every colour it paints, containers included.
+
+        This is what lets the colour gate convict. Without it the gate has only the element
+        rows, which carry text and controls and not containers, and an absent colour is not a
+        proven absence. A capture taken before capture.py recorded an inventory returns None,
+        and the gate degrades to a warning by design rather than judging on partial evidence.
+        """
+        if slug in inv_cache:
+            return inv_cache[slug]
+        val = None
+        f = os.path.join(proj, "captures", "live", f"{slug}.json")
+        if os.path.exists(f):
+            try:
+                val = json.load(open(f)).get("colorInventory") or None
+            except Exception:
+                val = None
+        inv_cache[slug] = val
         return val
 
     # capture layout — the canary capture.py records around the unclip pass
@@ -237,9 +297,48 @@ def main():
         else:
             warn = []
             board.gate("quoted build colours",
-                       I.gate_quoted_build_colours(findings, rows_for, warn),
+                       I.gate_quoted_build_colours(findings, rows_for, warn,
+                                                  inventory_for=inventory_for,
+                                                  union_colours=_union_colours()),
                        f"{seen} findings checked against their screen's extraction",
                        baseline.get("quoted build colours"), warn)
+
+    # --- the design-less pair: only meaningful when there is no design frame to compare ---
+    # On a side-by-side audit the Figma frame IS the authority, and asking for a written citation
+    # as well would be busywork. On a house-baseline audit there is no left panel, so a finding
+    # that cites nothing is unfalsifiable — an opinion a developer cannot tell from an obligation.
+    _house_mode = (cfg.get("baseline", {}) or {}).get("mode") == "house"
+    if not findings:
+        board.add("standard citation", SKIP, "no findings")
+        board.add("house-gap routing", SKIP, "no findings")
+    elif not _house_mode:
+        board.add("standard citation", SKIP,
+                  "baseline is not `house` — the design frame is the authority here")
+        board.add("house-gap routing", SKIP, "baseline is not `house`")
+    else:
+        board.gate("standard citation", I.gate_standard_citation(findings),
+                   f"{len(findings)} findings cite a token, a WCAG 2.2 criterion, a GIGW/DBIM "
+                   f"clause or HOUSE-GAP", baseline.get("standard citation"))
+        board.gate("house-gap routing", I.gate_house_gap_routing(findings),
+                   "gaps between the token contract and the handoff library are owed by the "
+                   "design system, not the portal", baseline.get("house-gap routing"))
+
+    # --- fix previews: a proposed fix that was RENDERED, not just described ---
+    _fp = js("out", "fixpreview.json", default=None)
+    _with_fix = [f for f in findings if f.get("_fix")]
+    if not _with_fix:
+        board.add("fix previews", SKIP, "no finding declares a `_fix`")
+    elif _fp is None:
+        board.add("fix previews", SKIP,
+                  f"{len(_with_fix)} finding(s) declare a `_fix` but out/fixpreview.json is "
+                  f"missing — run `--phase fixpreview` to prove them")
+    else:
+        _pf = [f"{r['id']}: {'; '.join(r.get('failures') or [])}"
+               for r in _fp.get("previews", []) if r.get("gate") == "FAIL"]
+        board.gate("fix previews", _pf,
+                   f"{_fp.get('counts', {}).get('passed', 0)} of {len(_with_fix)} proposed fixes "
+                   f"rendered, changed their target, and moved nothing else",
+                   baseline.get("fix previews"))
 
     ba = js("sheet", "anchors.json", default={}) or {}
     if not ba:

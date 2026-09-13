@@ -34,6 +34,17 @@ def load_findings(proj, published=None):
 
     if os.path.exists(am):
         d = json.load(open(am))
+        # A project may CURATE. The machine pass emits one finding per deviating value; what the
+        # reader receives may be a shorter top-level `findings` list of root causes. Judge what is
+        # sent. The board and this command read the same artefact for the same reason — verify.py
+        # once judged the machine list while the curated set was what shipped, which made both
+        # its verdicts meaningless.
+        curated = d.get("findings") or []
+        if curated:
+            return [dict({"id": f["id"], "title": f.get("title"), "design": f.get("design"),
+                          "build": f.get("build"), "scope": f.get("scope"),
+                          "slug": f.get("slug")}, **_why(f))
+                    for f in curated]
         return [dict({"id": f["id"], "title": f.get("element"), "design": f.get("figma"),
                       "build": f.get("live")}, **_why(f))
                 for s in d["screens"] for f in s["findings"]]

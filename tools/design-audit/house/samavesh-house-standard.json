@@ -1,0 +1,3159 @@
+{
+  "_authority": "THE FIGMA HANDOFF FILE CONVICTS; the token contract cross-references. A build value outside `standard` \u2014 the language established on 3+ non-draft pages \u2014 is a finding against the PORTAL, because the portal is built from the file. A standard value with no matching token (`noToken`) is a real design-system gap worth publishing, but it does NOT excuse the portal. Values the file draws that are excluded by name are in `fileDefects`.",
+  "_correction": "This was inverted in the first version: the contract convicted and the file only corroborated. That reported a token-adoption figure against an authority PM-AJAY was never built to, and filed the build's Tailwind-v4 slate neutrals as a design-system gap that excused the portal, when against the file's Tailwind-v3 gray they are a live portal finding.",
+  "_what": "The SAMAVESH house standard: the baseline a MoSJE portal is audited against when it has no design frames of its own. Generated \u2014 never hand-edited. Regenerate with `python3 tools/design-audit/house/derive.py`.",
+  "chrome": {
+    "_what": "The components every page of the estate composes. A portal missing one of these is missing estate chrome, which is a finding a token diff cannot see.",
+    "common": [
+      "Button",
+      "Icon Button",
+      "input-field/text",
+      "Badge",
+      "drop-down",
+      "Default Chips",
+      "Tab",
+      "Checkbox",
+      "radio-buttons",
+      "Toggle",
+      "step/type-2",
+      "step-count/type-2",
+      "progress-indicator",
+      "file-uploader/small",
+      "Input Area",
+      "OTP-input-container",
+      "card/kpi",
+      "Footer - Bottom Strip",
+      "icon-font"
+    ],
+    "everyAdminPage": [
+      "sidebar/type-1",
+      "sidebar/type-1/main-item"
+    ],
+    "everyPage": [
+      "navbar",
+      "Accessibility Bar",
+      "Logo"
+    ]
+  },
+  "contract": {
+    "colors": [
+      "#000000",
+      "#00006b",
+      "#000315",
+      "#000614",
+      "#000c0c",
+      "#000e24",
+      "#000f31",
+      "#00151b",
+      "#001708",
+      "#001734",
+      "#001737",
+      "#001a0b",
+      "#001f56",
+      "#002249",
+      "#00234c",
+      "#002855",
+      "#002933",
+      "#002a12",
+      "#002d18",
+      "#00317e",
+      "#003366",
+      "#00356e",
+      "#003975",
+      "#003d1e",
+      "#003e4d",
+      "#004225",
+      "#0044a8",
+      "#004992",
+      "#004b96",
+      "#00532a",
+      "#005568",
+      "#005833",
+      "#0058d4",
+      "#005eb9",
+      "#006d85",
+      "#012f30",
+      "#020016",
+      "#030303",
+      "#030406",
+      "#0373df",
+      "#046a38",
+      "#06038d",
+      "#06163d",
+      "#06569b",
+      "#066f42",
+      "#0b86a2",
+      "#0d6efd",
+      "#0e1114",
+      "#0f0500",
+      "#0f1012",
+      "#0f1115",
+      "#0f5757",
+      "#12141c",
+      "#13043f",
+      "#140007",
+      "#150202",
+      "#151515",
+      "#162f6a",
+      "#170000",
+      "#198754",
+      "#1a801c",
+      "#1b1f27",
+      "#1d3c8a",
+      "#1e1400",
+      "#1e2024",
+      "#1e2124",
+      "#1e2130",
+      "#1f2428",
+      "#1f6e6e",
+      "#214aab",
+      "#224c7d",
+      "#242a35",
+      "#271700",
+      "#29136c",
+      "#2c2c2c",
+      "#2d8686",
+      "#2e0004",
+      "#300003",
+      "#338051",
+      "#341f00",
+      "#343b48",
+      "#362600",
+      "#371e87",
+      "#3a3d41",
+      "#3a61c2",
+      "#3b3d41",
+      "#3b8df0",
+      "#3e0221",
+      "#3e2700",
+      "#439db7",
+      "#446a99",
+      "#450708",
+      "#454545",
+      "#469d6e",
+      "#4729a3",
+      "#481dc2",
+      "#488dff",
+      "#4d1700",
+      "#4e0209",
+      "#4f000c",
+      "#503a00",
+      "#5279d7",
+      "#5330e6",
+      "#53a1a1",
+      "#54585e",
+      "#55585e",
+      "#55986b",
+      "#563900",
+      "#5d3e00",
+      "#606060",
+      "#62a7ff",
+      "#644588",
+      "#674ebf",
+      "#692200",
+      "#69b4cb",
+      "#6a8cb7",
+      "#6ab589",
+      "#6c0f15",
+      "#6c1340",
+      "#6c4f00",
+      "#6f757d",
+      "#704b00",
+      "#70757d",
+      "#730117",
+      "#74a9ff",
+      "#7568bf",
+      "#75bdbd",
+      "#76b188",
+      "#771d1d",
+      "#774f00",
+      "#777777",
+      "#7a3901",
+      "#7b9ae5",
+      "#7dd3fc",
+      "#862e00",
+      "#86efac",
+      "#871e52",
+      "#886600",
+      "#8892a4",
+      "#8b1e22",
+      "#8b5e00",
+      "#8b70db",
+      "#8e8e8e",
+      "#8e949c",
+      "#8ecbcb",
+      "#8eccdf",
+      "#8f2121",
+      "#8f949d",
+      "#8fcda7",
+      "#916100",
+      "#91c1ff",
+      "#92c2ff",
+      "#93b1d6",
+      "#961326",
+      "#99caa7",
+      "#9dc2ff",
+      "#a1015b",
+      "#a32966",
+      "#a35b7a",
+      "#a38fe4",
+      "#a3bbf3",
+      "#a43a00",
+      "#a67c00",
+      "#a6d9d9",
+      "#a72626",
+      "#a77200",
+      "#aa2d30",
+      "#aaaaaa",
+      "#adb1b7",
+      "#aeb1b7",
+      "#b15b4a",
+      "#b4e3f2",
+      "#b4e4c6",
+      "#b78320",
+      "#b92435",
+      "#bdadeb",
+      "#bddaff",
+      "#bde3c7",
+      "#bf3c3b",
+      "#bf4e86",
+      "#c084fc",
+      "#c0dbff",
+      "#c1d7f2",
+      "#c2c7d0",
+      "#c34700",
+      "#c48608",
+      "#c49300",
+      "#c5dbff",
+      "#c6c6c6",
+      "#c6c9cd",
+      "#c6c9ce",
+      "#c930b4",
+      "#cb3d3f",
+      "#d2dfff",
+      "#d75151",
+      "#d9f2f2",
+      "#db70a6",
+      "#dc3545",
+      "#dcdee1",
+      "#dcdee2",
+      "#dda73a",
+      "#dffae8",
+      "#e09c1d",
+      "#e1560f",
+      "#e2aa00",
+      "#e2e8f0",
+      "#e2f8ff",
+      "#e48fb8",
+      "#e5faea",
+      "#e7173a",
+      "#e8efff",
+      "#e8f2ff",
+      "#e9bd68",
+      "#ea7f7d",
+      "#eaf9f9",
+      "#ebadcc",
+      "#ebeaea",
+      "#ec4e4f",
+      "#ecf4ff",
+      "#ed8a1d",
+      "#edf4ff",
+      "#eeebfa",
+      "#eef0f3",
+      "#ef5c61",
+      "#eff0f2",
+      "#f1b75e",
+      "#f3f4f6",
+      "#f4d390",
+      "#f5f5f5",
+      "#f6f5fe",
+      "#f7faff",
+      "#faaaaa",
+      "#faebf2",
+      "#fcdada",
+      "#fe716d",
+      "#ff671f",
+      "#ff7e7f",
+      "#ff9167",
+      "#ff9c95",
+      "#ffa7a5",
+      "#ffb498",
+      "#ffc107",
+      "#ffc1bc",
+      "#ffcbc9",
+      "#ffd323",
+      "#ffd394",
+      "#ffd4c4",
+      "#ffdd98",
+      "#ffe4e1",
+      "#ffe600",
+      "#ffecec",
+      "#ffedec",
+      "#ffeecc",
+      "#fff1df",
+      "#fff2ed",
+      "#fff4f9",
+      "#fff6e3",
+      "#fff7e3",
+      "#ffffff"
+    ],
+    "fontFamilies": [
+      "Cascadia Code",
+      "Material Symbols Rounded",
+      "Menlo",
+      "Noto Sans",
+      "Noto Sans Devanagari",
+      "Noto Sans Display",
+      "Source Code Pro",
+      "monospace",
+      "sans-serif",
+      "system-ui",
+      "ui-monospace",
+      "ui-sans-serif"
+    ],
+    "fontSizeRanges": [
+      {
+        "max": 18.0,
+        "min": 16.0,
+        "tokens": [
+          "sa-type-headline-5-size"
+        ]
+      },
+      {
+        "max": 20.0,
+        "min": 16.0,
+        "tokens": [
+          "sa-type-headline-4-size"
+        ]
+      },
+      {
+        "max": 20.0,
+        "min": 18.0,
+        "tokens": [
+          "sa-type-headline-5-size"
+        ]
+      },
+      {
+        "max": 22.0,
+        "min": 18.0,
+        "tokens": [
+          "sa-type-title-1-size"
+        ]
+      },
+      {
+        "max": 24.0,
+        "min": 18.0,
+        "tokens": [
+          "sa-type-headline-3-size"
+        ]
+      },
+      {
+        "max": 24.0,
+        "min": 20.0,
+        "tokens": [
+          "sa-type-display-6-size",
+          "sa-type-headline-4-size"
+        ]
+      },
+      {
+        "max": 28.0,
+        "min": 20.0,
+        "tokens": [
+          "sa-type-headline-2-size"
+        ]
+      },
+      {
+        "max": 28.0,
+        "min": 22.0,
+        "tokens": [
+          "sa-type-headline-3-size"
+        ]
+      },
+      {
+        "max": 40.0,
+        "min": 22.0,
+        "tokens": [
+          "sa-type-display-6-size"
+        ]
+      },
+      {
+        "max": 28.0,
+        "min": 24.0,
+        "tokens": [
+          "sa-type-display-5-size"
+        ]
+      },
+      {
+        "max": 32.0,
+        "min": 24.0,
+        "tokens": [
+          "sa-type-display-4-size",
+          "sa-type-headline-1-size",
+          "sa-type-headline-2-size"
+        ]
+      },
+      {
+        "max": 48.0,
+        "min": 24.0,
+        "tokens": [
+          "sa-type-display-5-size"
+        ]
+      },
+      {
+        "max": 40.0,
+        "min": 28.0,
+        "tokens": [
+          "sa-type-display-3-size",
+          "sa-type-headline-1-size"
+        ]
+      },
+      {
+        "max": 56.0,
+        "min": 28.0,
+        "tokens": [
+          "sa-type-display-4-size"
+        ]
+      },
+      {
+        "max": 48.0,
+        "min": 32.0,
+        "tokens": [
+          "sa-type-display-2-size"
+        ]
+      },
+      {
+        "max": 64.0,
+        "min": 32.0,
+        "tokens": [
+          "sa-type-display-3-size"
+        ]
+      },
+      {
+        "max": 72.0,
+        "min": 36.0,
+        "tokens": [
+          "sa-type-display-2-size"
+        ]
+      },
+      {
+        "max": 56.0,
+        "min": 40.0,
+        "tokens": [
+          "sa-type-display-1-size"
+        ]
+      },
+      {
+        "max": 80.0,
+        "min": 40.0,
+        "tokens": [
+          "sa-type-display-1-size"
+        ]
+      }
+    ],
+    "fontSizes": [
+      12.0,
+      14.0,
+      16.0
+    ],
+    "radii": [
+      0.0,
+      2.0,
+      4.0,
+      6.0,
+      8.0,
+      12.0,
+      16.0,
+      20.0,
+      24.0,
+      32.0,
+      40.0,
+      999.0
+    ],
+    "spacing": [
+      0.0,
+      2.0,
+      4.0,
+      6.0,
+      8.0,
+      12.0,
+      16.0,
+      20.0,
+      24.0,
+      32.0,
+      40.0,
+      48.0,
+      56.0,
+      64.0,
+      72.0,
+      80.0,
+      120.0,
+      360.0
+    ]
+  },
+  "provenance": {
+    "contract": {
+      "_modeNote": "The baseline is the UNION across every brand/mode/surface block, so a build in one mode is never convicted for a value another mode publishes. Deliberately permissive.",
+      "brandModes": [
+        "/* ---- Portal surface type scale override ---- */ [data-surface=\"portal\"]",
+        "/* GENERATED by @mosje/tokens \u2014 do not edit. Edit packages/tokens/src/*.json. */ :root",
+        ":root",
+        "[data-brand=\"blue\"]",
+        "[data-brand=\"dbim-blue\"], [data-color-mode=\"dbim\"], [data-brand=\"dbim\"]",
+        "[data-brand=\"dbim-burgundy\"]",
+        "[data-brand=\"dbim-chrome-yellow\"]",
+        "[data-brand=\"dbim-cinnamon-red\"]",
+        "[data-brand=\"dbim-green\"]",
+        "[data-brand=\"dbim-purple\"]",
+        "[data-brand=\"navy\"], [data-color-mode=\"blue-dark\"]",
+        "[data-density=\"compact\"]"
+      ],
+      "counts": {
+        "colors": 259,
+        "fontFamilies": 12,
+        "fontSizeRanges": 19,
+        "fontSizes": 3,
+        "radii": 12,
+        "spacing": 18
+      },
+      "excludes": "--sa-ref-* Tier-1 primitives \u2014 app code may never consume one",
+      "package": "@mosje/tokens",
+      "source": "packages/tokens/dist/tokens.css (generated Tier-2 --sa-* layer)",
+      "version": "0.1.0"
+    },
+    "evidence": {
+      "_bindingNote": "Share of sampled fills bound to a Figma variable rather than set as a literal. A literal that merely EQUALS a token is not bound to it (documentation-ds-linkage.md). This is the design FILE's own adoption figure and is not a measure of any build.",
+      "pagesCounted": [
+        "E-Anudaan",
+        "E-Utthan",
+        "Garima Greh",
+        "Grievence Portal (Dev Synced - September)",
+        "Login/Signup",
+        "NMBA (Dev Synced - August)",
+        "NOS",
+        "SAMBAL",
+        "SCW",
+        "Smile Beggary (Dev Synced)",
+        "Transgender Portal"
+      ],
+      "pagesExcludedAsDraft": [
+        "PM-AJAY"
+      ],
+      "source": "house/figma_histogram.js run once per page against Figma file evmNmlK8g4VYwJVu2FwSGV (MoSJE Portal \u2014 Handoff), via the Figma MCP, 2026-09-12. All 12 pages of the file, no sampling of pages. Within a page, TEXT nodes are capped at 4,000 and container nodes at 6,000 \u2014 every page except Login/Signup hits the container cap, so per-page counts are a census of the first N nodes in document order, not of the whole page. Frequencies are therefore comparable across axes within a page and indicative, not exact, across pages.",
+      "variableBindingRate": 0.4732
+    },
+    "gitSha": "8ffa2d45"
+  },
+  "standard": {
+    "canvasWidths": {
+      "100": 7,
+      "1440": 284,
+      "1563": 5,
+      "1600": 28,
+      "1640": 10,
+      "3120": 8,
+      "3180": 5,
+      "6610": 5
+    },
+    "colour": {
+      "fileDefects": {
+        "#000000": {
+          "count": 4154,
+          "pages": 11,
+          "why": "Pure black text. The file's own dominant ink is #1f2937 by an order of magnitude, and pure black is in neither the file's ramp nor the token contract."
+        },
+        "#d9d9d9": {
+          "count": 4130,
+          "pages": 11,
+          "why": "Figma's default rectangle fill \u2014 an unstyled placeholder shape on roughly 4,000 nodes, never a colour decision."
+        }
+      },
+      "noToken": {
+        "#001933": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 183,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#002244": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 265,
+          "hasToken": false,
+          "pages": 10
+        },
+        "#1558b0": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 169,
+          "hasToken": false,
+          "pages": 5
+        },
+        "#1b5e20": {
+          "axes": [
+            "strokes",
+            "textColors"
+          ],
+          "count": 21,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#1f2937": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 25774,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#27682a": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 164,
+          "hasToken": false,
+          "pages": 7
+        },
+        "#2e7d32": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 919,
+          "hasToken": false,
+          "pages": 9
+        },
+        "#343a40": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 63,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#374151": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 4782,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#4b5563": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 124,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#6b7280": {
+          "axes": [
+            "strokes",
+            "textColors"
+          ],
+          "count": 269,
+          "hasToken": false,
+          "pages": 7
+        },
+        "#6da1d5": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 34,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#7aaff8": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 68,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#81c784": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 163,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#9ca3af": {
+          "axes": [
+            "strokes",
+            "textColors"
+          ],
+          "count": 120,
+          "hasToken": false,
+          "pages": 6
+        },
+        "#9cbfe3": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 40,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#9eb2cc": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 66,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#a5d6a7": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 24,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#b8382f": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 14,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#bb772b": {
+          "axes": [
+            "frameFills",
+            "textColors"
+          ],
+          "count": 71,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#c8dbf0": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 429,
+          "hasToken": false,
+          "pages": 10
+        },
+        "#c8e6c9": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 245,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#d1d5db": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 1098,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#d2e3fc": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 96,
+          "hasToken": false,
+          "pages": 5
+        },
+        "#d64539": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 45,
+          "hasToken": false,
+          "pages": 5
+        },
+        "#e5e7eb": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 3865,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#e5eff9": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 970,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#e8f0fe": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 61,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#e8f5e9": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 68,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#ec5042": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 868,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#f47c70": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 21,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#f9fafb": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 1524,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#fad2cf": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 214,
+          "hasToken": false,
+          "pages": 6
+        },
+        "#ffae4f": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 37,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#ffc97f": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 36,
+          "hasToken": false,
+          "pages": 4
+        }
+      },
+      "standard": {
+        "#001933": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 183,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#002244": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 265,
+          "hasToken": false,
+          "pages": 10
+        },
+        "#003366": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 4217,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-bg-brand-primary-bolder",
+            "sa-border-brand-primary-bolder",
+            "sa-brand-samavesh-navy",
+            "sa-cmp-action-brand-primary-default-bg"
+          ]
+        },
+        "#1558b0": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 169,
+          "hasToken": false,
+          "pages": 5
+        },
+        "#1b5e20": {
+          "axes": [
+            "strokes",
+            "textColors"
+          ],
+          "count": 21,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#1f2428": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 1945,
+          "hasToken": true,
+          "pages": 3,
+          "tokens": [
+            "sa-brand-samavesh-ink"
+          ]
+        },
+        "#1f2937": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 25774,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#27682a": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 164,
+          "hasToken": false,
+          "pages": 7
+        },
+        "#2e7d32": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 919,
+          "hasToken": false,
+          "pages": 9
+        },
+        "#343a40": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 63,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#374151": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 4782,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#4b5563": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 124,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#6b7280": {
+          "axes": [
+            "strokes",
+            "textColors"
+          ],
+          "count": 269,
+          "hasToken": false,
+          "pages": 7
+        },
+        "#6da1d5": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 34,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#7aaff8": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 68,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#81c784": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 163,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#9ca3af": {
+          "axes": [
+            "strokes",
+            "textColors"
+          ],
+          "count": 120,
+          "hasToken": false,
+          "pages": 6
+        },
+        "#9cbfe3": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 40,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#9eb2cc": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 66,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#a5d6a7": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 24,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#b8382f": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 14,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#bb772b": {
+          "axes": [
+            "frameFills",
+            "textColors"
+          ],
+          "count": 71,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#c8dbf0": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 429,
+          "hasToken": false,
+          "pages": 10
+        },
+        "#c8e6c9": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 245,
+          "hasToken": false,
+          "pages": 8
+        },
+        "#d1d5db": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 1098,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#d2e3fc": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 96,
+          "hasToken": false,
+          "pages": 5
+        },
+        "#d64539": {
+          "axes": [
+            "textColors"
+          ],
+          "count": 45,
+          "hasToken": false,
+          "pages": 5
+        },
+        "#e5e7eb": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 3865,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#e5eff9": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 970,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#e8f0fe": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 61,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#e8f5e9": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 68,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#ec5042": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 868,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#f3f4f6": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 4792,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-color-a11y-dark-ink"
+          ]
+        },
+        "#f47c70": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 21,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#f9fafb": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 1524,
+          "hasToken": false,
+          "pages": 11
+        },
+        "#fad2cf": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 214,
+          "hasToken": false,
+          "pages": 6
+        },
+        "#ffae4f": {
+          "axes": [
+            "strokes"
+          ],
+          "count": 37,
+          "hasToken": false,
+          "pages": 3
+        },
+        "#ffc97f": {
+          "axes": [
+            "frameFills",
+            "strokes"
+          ],
+          "count": 36,
+          "hasToken": false,
+          "pages": 4
+        },
+        "#ffd323": {
+          "axes": [
+            "frameFills"
+          ],
+          "count": 315,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-cmp-badge-beta-bg",
+            "sa-color-brand-yellow"
+          ]
+        },
+        "#ffffff": {
+          "axes": [
+            "frameFills",
+            "strokes",
+            "textColors"
+          ],
+          "count": 8378,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-bg-neutral-base",
+            "sa-border-neutral-inverse-default",
+            "sa-brand-samavesh-white",
+            "sa-chart-regionStroke"
+          ]
+        }
+      }
+    },
+    "components": {
+      "R:.page": 288,
+      "R:.tab/secondary": 83,
+      "R:Accessibility Bar": 285,
+      "R:Badge": 550,
+      "R:Button": 1443,
+      "R:Checkbox": 73,
+      "R:Default Chips": 69,
+      "R:Group 55026": 70,
+      "R:Icon Button": 503,
+      "R:Input Area": 43,
+      "R:Logo": 42,
+      "R:OTP-input-container": 42,
+      "R:Tab": 85,
+      "R:accessibility_new": 144,
+      "R:arrow-down": 44,
+      "R:arrow-drop-down": 272,
+      "R:arrow_drop_down": 73,
+      "R:check": 204,
+      "R:check-circle/filled": 52,
+      "R:delete": 149,
+      "R:drop-down": 200,
+      "R:edit": 199,
+      "R:icon-font": 526,
+      "R:info/default": 53,
+      "R:input-field/text": 979,
+      "R:keyboard_arrow_down": 60,
+      "R:language": 109,
+      "R:link": 51,
+      "R:more_vert": 84,
+      "R:nav-item": 80,
+      "R:navbar": 221,
+      "R:open_in_new": 174,
+      "R:person/default": 72,
+      "R:radio-buttons": 126,
+      "R:sidebar/type-1/main-item": 1777,
+      "R:step": 456,
+      "R:step-count/type-2": 424,
+      "R:step/type-2": 443,
+      "R:trending": 43,
+      "R:warning/default": 42
+    },
+    "fontFamily": {
+      "fileDefects": {
+        "Helvetica Neue": {
+          "count": 2,
+          "pages": 1,
+          "why": "Not a MoSJE typeface. Noto Sans is a standing instruction; Material Symbols Rounded is the icon font."
+        },
+        "Inter": {
+          "count": 282,
+          "pages": 3,
+          "why": "Not a MoSJE typeface. Noto Sans is a standing instruction; Material Symbols Rounded is the icon font."
+        },
+        "Material Icons Round": {
+          "count": 17,
+          "pages": 1,
+          "why": "Not a MoSJE typeface. Noto Sans is a standing instruction; Material Symbols Rounded is the icon font."
+        },
+        "Open Sans": {
+          "count": 6,
+          "pages": 3,
+          "why": "Not a MoSJE typeface. Noto Sans is a standing instruction; Material Symbols Rounded is the icon font."
+        },
+        "Poppins": {
+          "count": 1,
+          "pages": 1,
+          "why": "Not a MoSJE typeface. Noto Sans is a standing instruction; Material Symbols Rounded is the icon font."
+        },
+        "Roboto": {
+          "count": 10,
+          "pages": 1,
+          "why": "Not a MoSJE typeface. Noto Sans is a standing instruction; Material Symbols Rounded is the icon font."
+        }
+      },
+      "noToken": {},
+      "standard": {
+        "Material Symbols Rounded": {
+          "count": 487,
+          "hasToken": true,
+          "pages": 6
+        },
+        "Noto Sans": {
+          "count": 43051,
+          "hasToken": true,
+          "pages": 11
+        }
+      }
+    },
+    "fontSize": {
+      "fileDefects": {},
+      "noToken": {
+        "10.0": {
+          "count": 357,
+          "hasToken": false,
+          "pages": 11
+        },
+        "11.0": {
+          "count": 1013,
+          "hasToken": false,
+          "pages": 10
+        },
+        "13.0": {
+          "count": 1639,
+          "hasToken": false,
+          "pages": 11
+        }
+      },
+      "standard": {
+        "10.0": {
+          "count": 357,
+          "hasToken": false,
+          "pages": 11
+        },
+        "11.0": {
+          "count": 1013,
+          "hasToken": false,
+          "pages": 10
+        },
+        "12.0": {
+          "count": 2194,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-type-body-3-size",
+            "sa-type-label-2-size",
+            "sa-type-label-3-size"
+          ]
+        },
+        "13.0": {
+          "count": 1639,
+          "hasToken": false,
+          "pages": 11
+        },
+        "14.0": {
+          "count": 11021,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-type-body-2-size",
+            "sa-type-label-1-size",
+            "sa-type-title-3-size"
+          ]
+        },
+        "16.0": {
+          "count": 1911,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-type-body-1-size",
+            "sa-type-headline-6-size",
+            "sa-type-title-2-size"
+          ]
+        },
+        "18.0": {
+          "count": 409,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-type-headline-3-size",
+            "sa-type-headline-4-size",
+            "sa-type-headline-5-size",
+            "sa-type-title-1-size"
+          ],
+          "viaFluidRange": true
+        },
+        "20.0": {
+          "count": 401,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-type-display-6-size",
+            "sa-type-headline-2-size",
+            "sa-type-headline-3-size",
+            "sa-type-headline-4-size"
+          ],
+          "viaFluidRange": true
+        },
+        "24.0": {
+          "count": 506,
+          "hasToken": true,
+          "pages": 7,
+          "tokens": [
+            "sa-type-display-4-size",
+            "sa-type-display-5-size",
+            "sa-type-display-6-size",
+            "sa-type-headline-1-size"
+          ],
+          "viaFluidRange": true
+        },
+        "28.0": {
+          "count": 106,
+          "hasToken": true,
+          "pages": 5,
+          "tokens": [
+            "sa-type-display-3-size",
+            "sa-type-display-4-size",
+            "sa-type-display-5-size",
+            "sa-type-display-6-size"
+          ],
+          "viaFluidRange": true
+        },
+        "32.0": {
+          "count": 132,
+          "hasToken": true,
+          "pages": 8,
+          "tokens": [
+            "sa-type-display-2-size",
+            "sa-type-display-3-size",
+            "sa-type-display-4-size",
+            "sa-type-display-5-size"
+          ],
+          "viaFluidRange": true
+        }
+      }
+    },
+    "minPagesToCount": 3,
+    "pagesOfEvidence": 11,
+    "radius": {
+      "fileDefects": {
+        "100.0": {
+          "count": 185,
+          "pages": 8,
+          "why": "A scaled-instance artefact, not a drawn radius."
+        }
+      },
+      "noToken": {
+        "10.0": {
+          "count": 213,
+          "hasToken": false,
+          "pages": 4
+        },
+        "14.0": {
+          "count": 92,
+          "hasToken": false,
+          "pages": 3
+        }
+      },
+      "standard": {
+        "0.0": {
+          "count": 49718,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-shape-0"
+          ]
+        },
+        "2.0": {
+          "count": 628,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-shape-2"
+          ]
+        },
+        "4.0": {
+          "count": 1253,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-control-selection-radius",
+            "sa-shape-4"
+          ]
+        },
+        "6.0": {
+          "count": 245,
+          "hasToken": true,
+          "pages": 9,
+          "tokens": [
+            "sa-cmp-tooltip-radius",
+            "sa-shape-6"
+          ]
+        },
+        "8.0": {
+          "count": 5236,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-cmp-button-radius",
+            "sa-cmp-chip-radius",
+            "sa-control-radius",
+            "sa-shape-8"
+          ]
+        },
+        "10.0": {
+          "count": 213,
+          "hasToken": false,
+          "pages": 4
+        },
+        "12.0": {
+          "count": 601,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-cmp-card-radius",
+            "sa-cmp-dialog-radius",
+            "sa-shape-12"
+          ]
+        },
+        "14.0": {
+          "count": 92,
+          "hasToken": false,
+          "pages": 3
+        },
+        "16.0": {
+          "count": 1989,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-shape-16"
+          ]
+        },
+        "20.0": {
+          "count": 318,
+          "hasToken": true,
+          "pages": 10,
+          "tokens": [
+            "sa-shape-20"
+          ]
+        },
+        "999.0": {
+          "count": 669,
+          "hasToken": true,
+          "pages": 10,
+          "tokens": [
+            "sa-shape-full"
+          ]
+        }
+      }
+    },
+    "spacing": {
+      "fileDefects": {},
+      "noToken": {
+        "7.0": {
+          "count": 260,
+          "hasToken": false,
+          "pages": 3
+        },
+        "9.0": {
+          "count": 216,
+          "hasToken": false,
+          "pages": 8
+        },
+        "10.0": {
+          "count": 3716,
+          "hasToken": false,
+          "pages": 11
+        },
+        "18.0": {
+          "count": 197,
+          "hasToken": false,
+          "pages": 6
+        },
+        "134.0": {
+          "count": 367,
+          "hasToken": false,
+          "pages": 7
+        }
+      },
+      "standard": {
+        "0.0": {
+          "count": 68907,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-0",
+            "sa-padding-0",
+            "sa-stack-0"
+          ]
+        },
+        "2.0": {
+          "count": 2486,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-2",
+            "sa-padding-2",
+            "sa-stack-2"
+          ]
+        },
+        "4.0": {
+          "count": 7115,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-4",
+            "sa-padding-4",
+            "sa-stack-4"
+          ]
+        },
+        "6.0": {
+          "count": 1462,
+          "hasToken": true,
+          "pages": 9,
+          "tokens": [
+            "sa-inline-6",
+            "sa-padding-6",
+            "sa-stack-6"
+          ]
+        },
+        "7.0": {
+          "count": 260,
+          "hasToken": false,
+          "pages": 3
+        },
+        "8.0": {
+          "count": 14997,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-8",
+            "sa-padding-8",
+            "sa-stack-8"
+          ]
+        },
+        "9.0": {
+          "count": 216,
+          "hasToken": false,
+          "pages": 8
+        },
+        "10.0": {
+          "count": 3716,
+          "hasToken": false,
+          "pages": 11
+        },
+        "12.0": {
+          "count": 10186,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-12",
+            "sa-padding-12",
+            "sa-stack-12"
+          ]
+        },
+        "16.0": {
+          "count": 8823,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-16",
+            "sa-padding-16",
+            "sa-stack-16"
+          ]
+        },
+        "18.0": {
+          "count": 197,
+          "hasToken": false,
+          "pages": 6
+        },
+        "20.0": {
+          "count": 1271,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-20",
+            "sa-padding-20",
+            "sa-stack-20"
+          ]
+        },
+        "24.0": {
+          "count": 9943,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-grid-gutter",
+            "sa-inline-24",
+            "sa-padding-24",
+            "sa-stack-24"
+          ]
+        },
+        "32.0": {
+          "count": 528,
+          "hasToken": true,
+          "pages": 11,
+          "tokens": [
+            "sa-inline-32",
+            "sa-padding-32",
+            "sa-stack-32"
+          ]
+        },
+        "134.0": {
+          "count": 367,
+          "hasToken": false,
+          "pages": 7
+        }
+      }
+    },
+    "weights": {
+      "Black": 1,
+      "Bold": 2827,
+      "Display SemiBold": 72,
+      "Italic": 1,
+      "Light": 487,
+      "Medium": 8636,
+      "Regular": 29351,
+      "Semi Bold": 28,
+      "SemiBold": 2454,
+      "mixed": 143
+    }
+  },
+  "tokenNames": {
+    "colors": {
+      "#000000": [
+        "sa-brand-samavesh-black",
+        "sa-color-a11y-hc-fg",
+        "sa-color-neutralScale-1000"
+      ],
+      "#00006b": [
+        "sa-color-a11y-hc-link"
+      ],
+      "#000315": [
+        "sa-color-primaryScale-950"
+      ],
+      "#000614": [
+        "sa-color-primaryScale-950"
+      ],
+      "#000c0c": [
+        "sa-color-primaryScale-950"
+      ],
+      "#000e24": [
+        "sa-cmp-action-brand-primary-inverse-active-text",
+        "sa-cmp-action-brand-tonal-active-text",
+        "sa-color-primaryScale-900"
+      ],
+      "#000f31": [
+        "sa-color-infoScale-950"
+      ],
+      "#00151b": [
+        "sa-color-infoScale-950"
+      ],
+      "#001708": [
+        "sa-color-accentScale-950",
+        "sa-color-successScale-950"
+      ],
+      "#001734": [
+        "sa-bg-brand-primary-boldest",
+        "sa-cmp-action-brand-primary-active-bg",
+        "sa-cmp-action-brand-primary-active-border",
+        "sa-cmp-action-brand-primary-inverse-hover-text"
+      ],
+      "#001737": [
+        "sa-color-primaryScale-950"
+      ],
+      "#001a0b": [
+        "sa-color-successScale-950"
+      ],
+      "#001f56": [
+        "sa-color-infoScale-900"
+      ],
+      "#002249": [
+        "sa-cmp-action-brand-primary-hover-bg",
+        "sa-cmp-action-brand-primary-hover-border",
+        "sa-cmp-action-brand-primary-inverse-default-text",
+        "sa-cmp-action-brand-secondary-default-text"
+      ],
+      "#00234c": [
+        "sa-chart-seq-900"
+      ],
+      "#002855": [
+        "sa-cmp-action-brand-primary-inverse-active-text",
+        "sa-cmp-action-brand-tonal-active-text",
+        "sa-color-primaryScale-900"
+      ],
+      "#002933": [
+        "sa-color-infoScale-900"
+      ],
+      "#002a12": [
+        "sa-cmp-action-success-primary-inverse-active-text",
+        "sa-cmp-action-success-tonal-active-text",
+        "sa-color-accentScale-900",
+        "sa-color-successScale-900"
+      ],
+      "#002d18": [
+        "sa-cmp-action-success-primary-inverse-active-text",
+        "sa-cmp-action-success-tonal-active-text",
+        "sa-color-successScale-900"
+      ],
+      "#00317e": [
+        "sa-bg-status-info-boldest",
+        "sa-color-infoScale-800"
+      ],
+      "#003366": [
+        "sa-bg-brand-primary-bolder",
+        "sa-border-brand-primary-bolder",
+        "sa-brand-samavesh-navy",
+        "sa-cmp-action-brand-primary-default-bg"
+      ],
+      "#00356e": [
+        "sa-chart-div-posStrong",
+        "sa-chart-seq-800"
+      ],
+      "#003975": [
+        "sa-bg-brand-primary-boldest",
+        "sa-cmp-action-brand-primary-active-bg",
+        "sa-cmp-action-brand-primary-active-border",
+        "sa-cmp-action-brand-primary-inverse-hover-text"
+      ],
+      "#003d1e": [
+        "sa-bg-brand-accent-boldest",
+        "sa-bg-status-success-boldest",
+        "sa-cmp-action-success-primary-active-bg",
+        "sa-cmp-action-success-primary-active-border"
+      ],
+      "#003e4d": [
+        "sa-bg-status-info-boldest",
+        "sa-color-infoScale-800"
+      ],
+      "#004225": [
+        "sa-bg-status-success-boldest",
+        "sa-cmp-action-success-primary-active-bg",
+        "sa-cmp-action-success-primary-active-border",
+        "sa-cmp-action-success-primary-inverse-hover-text"
+      ],
+      "#0044a8": [
+        "sa-border-status-info-bolder",
+        "sa-color-infoScale-700",
+        "sa-color-status-infoStrong",
+        "sa-icon-status-info-bolder"
+      ],
+      "#004992": [
+        "sa-chart-seq-700"
+      ],
+      "#004b96": [
+        "sa-cmp-action-brand-primary-hover-bg",
+        "sa-cmp-action-brand-primary-hover-border",
+        "sa-cmp-action-brand-primary-inverse-default-text",
+        "sa-cmp-action-brand-secondary-default-text"
+      ],
+      "#00532a": [
+        "sa-border-status-success-bolder",
+        "sa-cmp-action-success-primary-hover-bg",
+        "sa-cmp-action-success-primary-hover-border",
+        "sa-cmp-action-success-primary-inverse-default-text"
+      ],
+      "#005568": [
+        "sa-border-status-info-bolder",
+        "sa-color-infoScale-700",
+        "sa-color-status-infoStrong",
+        "sa-icon-status-info-bolder"
+      ],
+      "#005833": [
+        "sa-border-status-success-bolder",
+        "sa-cmp-action-success-primary-hover-bg",
+        "sa-cmp-action-success-primary-hover-border",
+        "sa-cmp-action-success-primary-inverse-default-text"
+      ],
+      "#0058d4": [
+        "sa-bg-status-info-bolder",
+        "sa-border-status-info-base",
+        "sa-color-infoScale-600",
+        "sa-color-status-info"
+      ],
+      "#005eb9": [
+        "sa-bg-brand-primary-bolder",
+        "sa-border-brand-primary-bolder",
+        "sa-chart-seq-600",
+        "sa-cmp-action-brand-primary-default-bg"
+      ],
+      "#006d85": [
+        "sa-bg-status-info-bolder",
+        "sa-border-status-info-base",
+        "sa-color-infoScale-600",
+        "sa-color-status-info"
+      ],
+      "#012f30": [
+        "sa-cmp-action-brand-primary-inverse-active-text",
+        "sa-cmp-action-brand-tonal-active-text",
+        "sa-color-primaryScale-900"
+      ],
+      "#020016": [
+        "sa-color-primaryScale-950"
+      ],
+      "#030303": [
+        "sa-color-neutralScale-950"
+      ],
+      "#030406": [
+        "sa-color-neutralScale-950"
+      ],
+      "#0373df": [
+        "sa-border-brand-primary-base",
+        "sa-border-neutral-selected",
+        "sa-chart-cat-1",
+        "sa-chart-seq-500"
+      ],
+      "#046a38": [
+        "sa-bg-brand-accent-bolder",
+        "sa-bg-status-success-bolder",
+        "sa-border-status-success-base",
+        "sa-brand-samavesh-green"
+      ],
+      "#06038d": [
+        "sa-brand-samavesh-blue"
+      ],
+      "#06163d": [
+        "sa-cmp-action-brand-primary-inverse-active-text",
+        "sa-cmp-action-brand-tonal-active-text",
+        "sa-color-primaryScale-900"
+      ],
+      "#06569b": [
+        "sa-chart-cat-10"
+      ],
+      "#066f42": [
+        "sa-bg-status-success-bolder",
+        "sa-border-status-success-base",
+        "sa-chart-trend-up",
+        "sa-cmp-action-success-primary-default-bg"
+      ],
+      "#0b86a2": [
+        "sa-color-infoScale-500"
+      ],
+      "#0d6efd": [
+        "sa-color-infoScale-500"
+      ],
+      "#0e1114": [
+        "sa-bg-neutral-inverse",
+        "sa-cmp-action-neutral-primary-inverse-active-text",
+        "sa-cmp-action-neutral-tonal-active-text",
+        "sa-color-neutralScale-900"
+      ],
+      "#0f0500": [
+        "sa-color-primaryScale-950"
+      ],
+      "#0f1012": [
+        "sa-bg-neutral-inverse",
+        "sa-cmp-action-neutral-primary-inverse-active-text",
+        "sa-cmp-action-neutral-tonal-active-text",
+        "sa-color-neutralScale-900"
+      ],
+      "#0f1115": [
+        "sa-color-a11y-dark-bg"
+      ],
+      "#0f5757": [
+        "sa-bg-brand-primary-boldest",
+        "sa-cmp-action-brand-primary-active-bg",
+        "sa-cmp-action-brand-primary-active-border",
+        "sa-cmp-action-brand-primary-inverse-hover-text"
+      ],
+      "#12141c": [
+        "sa-code-shell"
+      ],
+      "#13043f": [
+        "sa-cmp-action-brand-primary-inverse-active-text",
+        "sa-cmp-action-brand-tonal-active-text",
+        "sa-color-primaryScale-900"
+      ],
+      "#140007": [
+        "sa-color-primaryScale-950"
+      ],
+      "#150202": [
+        "sa-color-text-default",
+        "sa-icon-neutral-base",
+        "sa-on-bg-brand-primary-bolder",
+        "sa-text-neutral-base"
+      ],
+      "#151515": [
+        "sa-bg-neutral-inverse",
+        "sa-cmp-action-neutral-primary-inverse-active-text",
+        "sa-cmp-action-neutral-tonal-active-text",
+        "sa-color-neutralScale-900"
+      ],
+      "#162f6a": [
+        "sa-bg-brand-primary-boldest",
+        "sa-cmp-action-brand-primary-active-bg",
+        "sa-cmp-action-brand-primary-active-border",
+        "sa-cmp-action-brand-primary-inverse-hover-text"
+      ],
+      "#170000": [
+        "sa-color-primaryScale-950"
+      ],
+      "#198754": [
+        "sa-cmp-action-success-secondary-active-border",
+        "sa-color-successScale-500"
+      ],
+      "#1a801c": [
+        "sa-chart-cat-4"
+      ],
+      "#1b1f27": [
+        "sa-color-a11y-dark-surface"
+      ],
+      "#1d3c8a": [
+        "sa-cmp-action-brand-primary-hover-bg",
+        "sa-cmp-action-brand-primary-hover-border",
+        "sa-cmp-action-brand-primary-inverse-default-text",
+        "sa-cmp-action-brand-secondary-default-text"
+      ],
+      "#1e1400": [
+        "sa-color-warningScale-950"
+      ],
+      "#1e2024": [
+        "sa-cmp-action-neutral-primary-active-bg",
+        "sa-cmp-action-neutral-primary-active-border",
+        "sa-cmp-action-neutral-primary-inverse-hover-text",
+        "sa-cmp-action-neutral-secondary-active-text"
+      ],
+      "#1e2124": [
+        "sa-chart-tooltipBg",
+        "sa-cmp-action-neutral-primary-active-bg",
+        "sa-cmp-action-neutral-primary-active-border",
+        "sa-cmp-action-neutral-primary-inverse-hover-text"
+      ],
+      "#1e2130": [
+        "sa-code-bg"
+      ],
+      "#1f2428": [
+        "sa-brand-samavesh-ink"
+      ],
+      "#1f6e6e": [
+        "sa-border-brand-primary-base",
+        "sa-cmp-action-brand-primary-hover-bg",
+        "sa-cmp-action-brand-primary-hover-border",
+        "sa-cmp-action-brand-primary-inverse-default-text"
+      ],
+      "#214aab": [
+        "sa-bg-brand-primary-bolder",
+        "sa-border-brand-primary-bolder",
+        "sa-cmp-action-brand-primary-default-bg",
+        "sa-cmp-action-brand-primary-default-border"
+      ],
+      "#224c7d": [
+        "sa-border-brand-primary-base",
+        "sa-cmp-action-brand-secondary-active-border",
+        "sa-cmp-button-primary-bg",
+        "sa-color-action-primary-default"
+      ],
+      "#242a35": [
+        "sa-color-a11y-dark-surfaceMuted"
+      ],
+      "#271700": [
+        "sa-color-warningScale-950"
+      ],
+      "#29136c": [
+        "sa-bg-brand-primary-boldest",
+        "sa-cmp-action-brand-primary-active-bg",
+        "sa-cmp-action-brand-primary-active-border",
+        "sa-cmp-action-brand-primary-inverse-hover-text"
+      ],
+      "#2c2c2c": [
+        "sa-chart-tooltipBg",
+        "sa-cmp-action-neutral-primary-active-bg",
+        "sa-cmp-action-neutral-primary-active-border",
+        "sa-cmp-action-neutral-primary-inverse-hover-text"
+      ],
+      "#2d8686": [
+        "sa-bg-brand-primary-bolder",
+        "sa-border-brand-primary-bolder",
+        "sa-cmp-action-brand-primary-default-bg",
+        "sa-cmp-action-brand-primary-default-border"
+      ],
+      "#2e0004": [
+        "sa-color-dangerScale-950"
+      ],
+      "#300003": [
+        "sa-color-dangerScale-950"
+      ],
+      "#338051": [
+        "sa-cmp-action-success-secondary-active-border",
+        "sa-color-accentScale-500",
+        "sa-color-successScale-500"
+      ],
+      "#341f00": [
+        "sa-cmp-action-brand-primary-inverse-active-text",
+        "sa-cmp-action-brand-tonal-active-text",
+        "sa-color-primaryScale-900"
+      ],
+      "#343b48": [
+        "sa-color-a11y-dark-border"
+      ],
+      "#362600": [
+        "sa-color-warningScale-900"
+      ],
+      "#371e87": [
+        "sa-cmp-action-brand-primary-hover-bg",
+        "sa-cmp-action-brand-primary-hover-border",
+        "sa-cmp-action-brand-primary-inverse-default-text",
+        "sa-cmp-action-brand-secondary-default-text"
+      ],
+      "#3a3d41": [
+        "sa-cmp-action-neutral-primary-hover-bg",
+        "sa-cmp-action-neutral-primary-hover-border",
+        "sa-cmp-action-neutral-primary-inverse-default-text",
+        "sa-cmp-action-neutral-secondary-default-text"
+      ],
+      "#3a61c2": [
+        "sa-border-brand-primary-base",
+        "sa-cmp-action-brand-secondary-active-border",
+        "sa-cmp-button-primary-bg",
+        "sa-color-action-primary-default"
+      ],
+      "#3b3d41": [
+        "sa-cmp-action-neutral-primary-hover-bg",
+        "sa-cmp-action-neutral-primary-hover-border",
+        "sa-cmp-action-neutral-primary-inverse-default-text",
+        "sa-cmp-action-neutral-secondary-default-text"
+      ],
+      "#3b8df0": [
+        "sa-chart-div-pos",
+        "sa-chart-seq-400",
+        "sa-cmp-action-brand-secondary-hover-border",
+        "sa-color-primaryScale-400"
+      ],
+      "#3e0221": [
+        "sa-cmp-action-brand-primary-inverse-active-text",
+        "sa-cmp-action-brand-tonal-active-text",
+        "sa-color-primaryScale-900"
+      ],
+      "#3e2700": [
+        "sa-color-warningScale-900"
+      ],
+      "#439db7": [
+        "sa-color-infoScale-400"
+      ],
+      "#446a99": [
+        "sa-cmp-action-brand-secondary-hover-border",
+        "sa-color-primaryScale-400"
+      ],
+      "#450708": [
+        "sa-cmp-action-brand-primary-inverse-active-text",
+        "sa-cmp-action-brand-tonal-active-text",
+        "sa-color-primaryScale-900"
+      ],
+      "#454545": [
+        "sa-cmp-action-neutral-primary-hover-bg",
+        "sa-cmp-action-neutral-primary-hover-border",
+        "sa-cmp-action-neutral-primary-inverse-default-text",
+        "sa-cmp-action-neutral-secondary-default-text"
+      ],
+      "#469d6e": [
+        "sa-cmp-action-success-secondary-hover-border",
+        "sa-color-successScale-400"
+      ],
+      "#4729a3": [
+        "sa-bg-brand-primary-bolder",
+        "sa-border-brand-primary-bolder",
+        "sa-cmp-action-brand-primary-default-bg",
+        "sa-cmp-action-brand-primary-default-border"
+      ],
+      "#481dc2": [
+        "sa-chart-cat-8"
+      ],
+      "#488dff": [
+        "sa-color-infoScale-400"
+      ],
+      "#4d1700": [
+        "sa-color-secondaryScale-950"
+      ],
+      "#4e0209": [
+        "sa-cmp-action-destructive-primary-inverse-active-text",
+        "sa-cmp-action-destructive-tonal-active-text",
+        "sa-color-dangerScale-900"
+      ],
+      "#4f000c": [
+        "sa-cmp-action-destructive-primary-inverse-active-text",
+        "sa-cmp-action-destructive-tonal-active-text",
+        "sa-color-dangerScale-900"
+      ],
+      "#503a00": [
+        "sa-bg-status-warning-boldest",
+        "sa-color-warningScale-800"
+      ],
+      "#5279d7": [
+        "sa-cmp-action-brand-secondary-hover-border",
+        "sa-color-primaryScale-400"
+      ],
+      "#5330e6": [
+        "sa-brand-digilocker-purple"
+      ],
+      "#53a1a1": [
+        "sa-cmp-action-brand-secondary-active-border",
+        "sa-color-primaryScale-500"
+      ],
+      "#54585e": [
+        "sa-border-neutral-bolder-hover",
+        "sa-cmp-action-neutral-primary-default-bg",
+        "sa-cmp-action-neutral-primary-default-border",
+        "sa-color-border-controlHover"
+      ],
+      "#55585e": [
+        "sa-cmp-action-neutral-primary-default-bg",
+        "sa-cmp-action-neutral-primary-default-border",
+        "sa-color-neutralScale-600"
+      ],
+      "#55986b": [
+        "sa-cmp-action-success-secondary-hover-border",
+        "sa-color-accentScale-400",
+        "sa-color-successScale-400"
+      ],
+      "#563900": [
+        "sa-bg-status-warning-boldest",
+        "sa-color-warningScale-800"
+      ],
+      "#5d3e00": [
+        "sa-bg-brand-primary-boldest",
+        "sa-cmp-action-brand-primary-active-bg",
+        "sa-cmp-action-brand-primary-active-border",
+        "sa-cmp-action-brand-primary-inverse-hover-text"
+      ],
+      "#606060": [
+        "sa-border-neutral-bolder-hover",
+        "sa-cmp-action-neutral-primary-default-bg",
+        "sa-cmp-action-neutral-primary-default-border",
+        "sa-color-border-controlHover"
+      ],
+      "#62a7ff": [
+        "sa-bg-brand-primary-bold",
+        "sa-chart-seq-300",
+        "sa-cmp-action-brand-secondary-default-border",
+        "sa-color-primaryScale-300"
+      ],
+      "#644588": [
+        "sa-chart-cat-3"
+      ],
+      "#674ebf": [
+        "sa-border-brand-primary-base",
+        "sa-cmp-action-brand-secondary-active-border",
+        "sa-cmp-button-primary-bg",
+        "sa-color-action-primary-default"
+      ],
+      "#692200": [
+        "sa-color-secondaryScale-900"
+      ],
+      "#69b4cb": [
+        "sa-bg-status-info-bold",
+        "sa-color-infoScale-300"
+      ],
+      "#6a8cb7": [
+        "sa-bg-brand-primary-bold",
+        "sa-cmp-action-brand-secondary-default-border",
+        "sa-color-primaryScale-300"
+      ],
+      "#6ab589": [
+        "sa-bg-status-success-bold",
+        "sa-cmp-action-success-secondary-default-border",
+        "sa-cmp-action-success-tonal-active-bg",
+        "sa-cmp-action-success-tonal-active-border"
+      ],
+      "#6c0f15": [
+        "sa-bg-status-error-boldest",
+        "sa-chart-div-negStrong",
+        "sa-cmp-action-destructive-primary-active-bg",
+        "sa-cmp-action-destructive-primary-active-border"
+      ],
+      "#6c1340": [
+        "sa-bg-brand-primary-boldest",
+        "sa-cmp-action-brand-primary-active-bg",
+        "sa-cmp-action-brand-primary-active-border",
+        "sa-cmp-action-brand-primary-inverse-hover-text"
+      ],
+      "#6c4f00": [
+        "sa-border-status-warning-bolder",
+        "sa-color-warningScale-700",
+        "sa-icon-status-warning-bolder",
+        "sa-text-status-warning-bolder"
+      ],
+      "#6f757d": [
+        "sa-border-neutral-bolder-default",
+        "sa-chart-axis",
+        "sa-chart-trend-flat",
+        "sa-cmp-action-neutral-secondary-active-border"
+      ],
+      "#704b00": [
+        "sa-border-status-warning-bolder",
+        "sa-color-warningScale-700",
+        "sa-icon-status-warning-bolder",
+        "sa-text-status-warning-bolder"
+      ],
+      "#70757d": [
+        "sa-border-neutral-bolder-default",
+        "sa-border-neutral-bolder-hover",
+        "sa-cmp-action-neutral-secondary-active-border",
+        "sa-color-border-controlHover"
+      ],
+      "#730117": [
+        "sa-bg-status-error-boldest",
+        "sa-chart-div-negStrong",
+        "sa-cmp-action-destructive-primary-active-bg",
+        "sa-cmp-action-destructive-primary-active-border"
+      ],
+      "#74a9ff": [
+        "sa-bg-status-info-bold",
+        "sa-color-infoScale-300"
+      ],
+      "#7568bf": [
+        "sa-chart-cat-11"
+      ],
+      "#75bdbd": [
+        "sa-cmp-action-brand-secondary-hover-border",
+        "sa-color-primaryScale-400"
+      ],
+      "#76b188": [
+        "sa-bg-brand-accent-bold",
+        "sa-bg-status-success-bold",
+        "sa-cmp-action-success-secondary-default-border",
+        "sa-cmp-action-success-tonal-active-bg"
+      ],
+      "#771d1d": [
+        "sa-bg-brand-primary-boldest",
+        "sa-cmp-action-brand-primary-active-bg",
+        "sa-cmp-action-brand-primary-active-border",
+        "sa-cmp-action-brand-primary-inverse-hover-text"
+      ],
+      "#774f00": [
+        "sa-cmp-action-brand-primary-hover-bg",
+        "sa-cmp-action-brand-primary-hover-border",
+        "sa-cmp-action-brand-primary-inverse-default-text",
+        "sa-cmp-action-brand-secondary-default-text"
+      ],
+      "#777777": [
+        "sa-border-neutral-bolder-default",
+        "sa-chart-axis",
+        "sa-chart-trend-flat",
+        "sa-cmp-action-neutral-secondary-active-border"
+      ],
+      "#7a3901": [
+        "sa-chart-cat-6"
+      ],
+      "#7b9ae5": [
+        "sa-bg-brand-primary-bold",
+        "sa-cmp-action-brand-secondary-default-border",
+        "sa-color-primaryScale-300"
+      ],
+      "#7dd3fc": [
+        "sa-code-builtin"
+      ],
+      "#862e00": [
+        "sa-bg-brand-secondary-boldest",
+        "sa-color-secondaryScale-800"
+      ],
+      "#86efac": [
+        "sa-code-string"
+      ],
+      "#871e52": [
+        "sa-cmp-action-brand-primary-hover-bg",
+        "sa-cmp-action-brand-primary-hover-border",
+        "sa-cmp-action-brand-primary-inverse-default-text",
+        "sa-cmp-action-brand-secondary-default-text"
+      ],
+      "#886600": [
+        "sa-bg-status-warning-bolder",
+        "sa-border-status-warning-base",
+        "sa-color-status-warning",
+        "sa-color-warningScale-600"
+      ],
+      "#8892a4": [
+        "sa-code-comment"
+      ],
+      "#8b1e22": [
+        "sa-border-status-error-bolder",
+        "sa-cmp-action-destructive-primary-hover-bg",
+        "sa-cmp-action-destructive-primary-hover-border",
+        "sa-cmp-action-destructive-primary-inverse-default-text"
+      ],
+      "#8b5e00": [
+        "sa-bg-status-warning-bolder",
+        "sa-border-status-warning-base",
+        "sa-color-status-warning",
+        "sa-color-warningScale-600"
+      ],
+      "#8b70db": [
+        "sa-cmp-action-brand-secondary-hover-border",
+        "sa-color-primaryScale-400"
+      ],
+      "#8e8e8e": [
+        "sa-cmp-action-brand-primary-disabled-text",
+        "sa-cmp-action-brand-secondary-disabled-text",
+        "sa-cmp-action-brand-tertiary-disabled-text",
+        "sa-cmp-action-brand-tonal-disabled-text"
+      ],
+      "#8e949c": [
+        "sa-cmp-action-brand-primary-disabled-text",
+        "sa-cmp-action-brand-secondary-disabled-text",
+        "sa-cmp-action-brand-tertiary-disabled-text",
+        "sa-cmp-action-brand-tonal-disabled-text"
+      ],
+      "#8ecbcb": [
+        "sa-bg-brand-primary-bold",
+        "sa-cmp-action-brand-secondary-default-border",
+        "sa-color-primaryScale-300"
+      ],
+      "#8eccdf": [
+        "sa-bg-status-info-subtle",
+        "sa-color-infoScale-200"
+      ],
+      "#8f2121": [
+        "sa-cmp-action-brand-primary-hover-bg",
+        "sa-cmp-action-brand-primary-hover-border",
+        "sa-cmp-action-brand-primary-inverse-default-text",
+        "sa-cmp-action-brand-secondary-default-text"
+      ],
+      "#8f949d": [
+        "sa-cmp-action-brand-primary-disabled-text",
+        "sa-cmp-action-brand-secondary-disabled-text",
+        "sa-cmp-action-brand-tertiary-disabled-text",
+        "sa-cmp-action-brand-tonal-disabled-text"
+      ],
+      "#8fcda7": [
+        "sa-bg-status-success-subtle",
+        "sa-cmp-action-success-tonal-hover-bg",
+        "sa-cmp-action-success-tonal-hover-border",
+        "sa-color-successScale-200"
+      ],
+      "#916100": [
+        "sa-bg-brand-primary-bolder",
+        "sa-border-brand-primary-base",
+        "sa-border-brand-primary-bolder",
+        "sa-cmp-action-brand-primary-default-bg"
+      ],
+      "#91c1ff": [
+        "sa-chart-seq-200"
+      ],
+      "#92c2ff": [
+        "sa-bg-brand-primary-subtle",
+        "sa-cmp-action-brand-tonal-active-bg",
+        "sa-cmp-action-brand-tonal-active-border",
+        "sa-color-primaryScale-200"
+      ],
+      "#93b1d6": [
+        "sa-bg-brand-primary-subtle",
+        "sa-cmp-action-brand-tonal-active-bg",
+        "sa-cmp-action-brand-tonal-active-border",
+        "sa-color-primaryScale-200"
+      ],
+      "#961326": [
+        "sa-border-status-error-bolder",
+        "sa-cmp-action-destructive-primary-hover-bg",
+        "sa-cmp-action-destructive-primary-hover-border",
+        "sa-cmp-action-destructive-primary-inverse-default-text"
+      ],
+      "#99caa7": [
+        "sa-bg-brand-accent-subtle",
+        "sa-bg-status-success-subtle",
+        "sa-cmp-action-success-tonal-hover-bg",
+        "sa-cmp-action-success-tonal-hover-border"
+      ],
+      "#9dc2ff": [
+        "sa-bg-status-info-subtle",
+        "sa-color-infoScale-200"
+      ],
+      "#a1015b": [
+        "sa-chart-cat-9"
+      ],
+      "#a32966": [
+        "sa-bg-brand-primary-bolder",
+        "sa-border-brand-primary-bolder",
+        "sa-cmp-action-brand-primary-default-bg",
+        "sa-cmp-action-brand-primary-default-border"
+      ],
+      "#a35b7a": [
+        "sa-chart-cat-7"
+      ],
+      "#a38fe4": [
+        "sa-bg-brand-primary-bold",
+        "sa-cmp-action-brand-secondary-default-border",
+        "sa-color-primaryScale-300"
+      ],
+      "#a3bbf3": [
+        "sa-bg-brand-primary-subtle",
+        "sa-cmp-action-brand-tonal-active-bg",
+        "sa-cmp-action-brand-tonal-active-border",
+        "sa-color-primaryScale-200"
+      ],
+      "#a43a00": [
+        "sa-color-brand-saffronDark",
+        "sa-color-secondaryScale-700"
+      ],
+      "#a67c00": [
+        "sa-color-warningScale-500"
+      ],
+      "#a6d9d9": [
+        "sa-bg-brand-primary-subtle",
+        "sa-cmp-action-brand-tonal-active-bg",
+        "sa-cmp-action-brand-tonal-active-border",
+        "sa-color-primaryScale-200"
+      ],
+      "#a72626": [
+        "sa-bg-brand-primary-bolder",
+        "sa-border-brand-primary-bolder",
+        "sa-cmp-action-brand-primary-default-bg",
+        "sa-cmp-action-brand-primary-default-border"
+      ],
+      "#a77200": [
+        "sa-color-warningScale-500"
+      ],
+      "#aa2d30": [
+        "sa-bg-status-error-bolder",
+        "sa-border-status-error-base",
+        "sa-chart-trend-down",
+        "sa-cmp-action-destructive-primary-default-bg"
+      ],
+      "#aaaaaa": [
+        "sa-cmp-action-neutral-secondary-default-border",
+        "sa-cmp-action-neutral-tonal-active-bg",
+        "sa-cmp-action-neutral-tonal-active-border",
+        "sa-color-neutralScale-300"
+      ],
+      "#adb1b7": [
+        "sa-cmp-action-neutral-secondary-default-border",
+        "sa-cmp-action-neutral-tonal-active-bg",
+        "sa-cmp-action-neutral-tonal-active-border",
+        "sa-color-neutralScale-300"
+      ],
+      "#aeb1b7": [
+        "sa-cmp-action-neutral-secondary-default-border",
+        "sa-cmp-action-neutral-tonal-active-bg",
+        "sa-cmp-action-neutral-tonal-active-border",
+        "sa-color-neutralScale-300"
+      ],
+      "#b15b4a": [
+        "sa-chart-cat-12"
+      ],
+      "#b4e3f2": [
+        "sa-bg-status-info-subtler",
+        "sa-color-infoScale-100"
+      ],
+      "#b4e4c6": [
+        "sa-bg-status-success-subtler",
+        "sa-cmp-action-success-secondary-active-bg",
+        "sa-cmp-action-success-secondary-inverse-default-border",
+        "sa-cmp-action-success-tertiary-active-bg"
+      ],
+      "#b78320": [
+        "sa-cmp-action-brand-secondary-active-border",
+        "sa-color-primaryScale-500"
+      ],
+      "#b92435": [
+        "sa-bg-status-error-bolder",
+        "sa-border-status-error-base",
+        "sa-chart-trend-down",
+        "sa-cmp-action-destructive-primary-default-bg"
+      ],
+      "#bdadeb": [
+        "sa-bg-brand-primary-subtle",
+        "sa-cmp-action-brand-tonal-active-bg",
+        "sa-cmp-action-brand-tonal-active-border",
+        "sa-color-primaryScale-200"
+      ],
+      "#bddaff": [
+        "sa-chart-div-posSoft",
+        "sa-chart-seq-100"
+      ],
+      "#bde3c7": [
+        "sa-bg-brand-accent-subtler",
+        "sa-bg-status-success-subtler",
+        "sa-cmp-action-success-secondary-active-bg",
+        "sa-cmp-action-success-secondary-inverse-default-border"
+      ],
+      "#bf3c3b": [
+        "sa-border-brand-primary-base",
+        "sa-cmp-action-brand-secondary-active-border",
+        "sa-cmp-button-primary-bg",
+        "sa-color-action-primary-default"
+      ],
+      "#bf4e86": [
+        "sa-border-brand-primary-base",
+        "sa-cmp-action-brand-secondary-active-border",
+        "sa-cmp-button-primary-bg",
+        "sa-color-action-primary-default"
+      ],
+      "#c084fc": [
+        "sa-code-keyword"
+      ],
+      "#c0dbff": [
+        "sa-bg-brand-primary-subtler",
+        "sa-cmp-action-brand-secondary-active-bg",
+        "sa-cmp-action-brand-secondary-inverse-default-border",
+        "sa-cmp-action-brand-tertiary-active-bg"
+      ],
+      "#c1d7f2": [
+        "sa-bg-brand-primary-subtler",
+        "sa-cmp-action-brand-secondary-active-bg",
+        "sa-cmp-action-brand-secondary-inverse-default-border",
+        "sa-cmp-action-brand-tertiary-active-bg"
+      ],
+      "#c2c7d0": [
+        "sa-color-a11y-dark-inkMuted"
+      ],
+      "#c34700": [
+        "sa-bg-brand-secondary-bolder",
+        "sa-color-secondaryScale-600",
+        "sa-icon-brand-secondary-bolder"
+      ],
+      "#c48608": [
+        "sa-color-warningScale-400"
+      ],
+      "#c49300": [
+        "sa-color-warningScale-400"
+      ],
+      "#c5dbff": [
+        "sa-bg-status-info-subtler",
+        "sa-color-infoScale-100"
+      ],
+      "#c6c6c6": [
+        "sa-bg-neutral-bold",
+        "sa-border-neutral-base",
+        "sa-cmp-action-brand-primary-disabled-bg",
+        "sa-cmp-action-brand-primary-disabled-border"
+      ],
+      "#c6c9cd": [
+        "sa-bg-neutral-bold",
+        "sa-border-neutral-base",
+        "sa-cmp-action-brand-primary-disabled-bg",
+        "sa-cmp-action-brand-primary-disabled-border"
+      ],
+      "#c6c9ce": [
+        "sa-bg-neutral-bold",
+        "sa-border-neutral-base",
+        "sa-cmp-action-brand-primary-disabled-bg",
+        "sa-cmp-action-brand-primary-disabled-border"
+      ],
+      "#c930b4": [
+        "sa-chart-cat-5"
+      ],
+      "#cb3d3f": [
+        "sa-cmp-action-destructive-secondary-active-border",
+        "sa-color-dangerScale-500"
+      ],
+      "#d2dfff": [
+        "sa-bg-brand-primary-subtler",
+        "sa-cmp-action-brand-secondary-active-bg",
+        "sa-cmp-action-brand-secondary-inverse-default-border",
+        "sa-cmp-action-brand-tertiary-active-bg"
+      ],
+      "#d75151": [
+        "sa-cmp-action-brand-secondary-hover-border",
+        "sa-color-primaryScale-400"
+      ],
+      "#d9f2f2": [
+        "sa-bg-brand-primary-subtler",
+        "sa-cmp-action-brand-secondary-active-bg",
+        "sa-cmp-action-brand-secondary-inverse-default-border",
+        "sa-cmp-action-brand-tertiary-active-bg"
+      ],
+      "#db70a6": [
+        "sa-cmp-action-brand-secondary-hover-border",
+        "sa-color-primaryScale-400"
+      ],
+      "#dc3545": [
+        "sa-cmp-action-destructive-secondary-active-border",
+        "sa-color-dangerScale-500"
+      ],
+      "#dcdee1": [
+        "sa-bg-neutral-active",
+        "sa-bg-neutral-disabled",
+        "sa-bg-neutral-subtle",
+        "sa-border-neutral-subtle"
+      ],
+      "#dcdee2": [
+        "sa-bg-neutral-disabled",
+        "sa-bg-neutral-subtle",
+        "sa-border-neutral-subtle",
+        "sa-cmp-action-neutral-secondary-active-bg"
+      ],
+      "#dda73a": [
+        "sa-cmp-action-brand-secondary-hover-border",
+        "sa-color-primaryScale-400"
+      ],
+      "#dffae8": [
+        "sa-bg-status-success-base",
+        "sa-cmp-action-success-secondary-hover-bg",
+        "sa-cmp-action-success-secondary-inverse-hover-border",
+        "sa-cmp-action-success-tertiary-hover-bg"
+      ],
+      "#e09c1d": [
+        "sa-bg-status-warning-bold",
+        "sa-color-warningScale-300"
+      ],
+      "#e1560f": [
+        "sa-color-secondaryScale-500"
+      ],
+      "#e2aa00": [
+        "sa-bg-status-warning-bold",
+        "sa-color-warningScale-300"
+      ],
+      "#e2e8f0": [
+        "sa-code-text"
+      ],
+      "#e2f8ff": [
+        "sa-bg-status-info-base",
+        "sa-color-infoScale-50",
+        "sa-color-status-infoTonal"
+      ],
+      "#e48fb8": [
+        "sa-bg-brand-primary-bold",
+        "sa-cmp-action-brand-secondary-default-border",
+        "sa-color-primaryScale-300"
+      ],
+      "#e5faea": [
+        "sa-bg-brand-accent-base",
+        "sa-bg-status-success-base",
+        "sa-cmp-action-success-secondary-hover-bg",
+        "sa-cmp-action-success-secondary-inverse-hover-border"
+      ],
+      "#e7173a": [
+        "sa-chart-cat-2"
+      ],
+      "#e8efff": [
+        "sa-bg-brand-primary-base",
+        "sa-cmp-action-brand-secondary-hover-bg",
+        "sa-cmp-action-brand-secondary-inverse-hover-border",
+        "sa-cmp-action-brand-tertiary-hover-bg"
+      ],
+      "#e8f2ff": [
+        "sa-chart-seq-50"
+      ],
+      "#e9bd68": [
+        "sa-bg-brand-primary-bold",
+        "sa-cmp-action-brand-secondary-default-border",
+        "sa-color-primaryScale-300"
+      ],
+      "#ea7f7d": [
+        "sa-bg-brand-primary-bold",
+        "sa-cmp-action-brand-secondary-default-border",
+        "sa-color-primaryScale-300"
+      ],
+      "#eaf9f9": [
+        "sa-bg-brand-primary-base",
+        "sa-cmp-action-brand-secondary-hover-bg",
+        "sa-cmp-action-brand-secondary-inverse-hover-border",
+        "sa-cmp-action-brand-tertiary-hover-bg"
+      ],
+      "#ebadcc": [
+        "sa-bg-brand-primary-subtle",
+        "sa-cmp-action-brand-tonal-active-bg",
+        "sa-cmp-action-brand-tonal-active-border",
+        "sa-color-primaryScale-200"
+      ],
+      "#ebeaea": [
+        "sa-bg-neutral-disabled",
+        "sa-bg-neutral-subtle",
+        "sa-border-neutral-subtle",
+        "sa-chart-div-mid"
+      ],
+      "#ec4e4f": [
+        "sa-chart-div-neg",
+        "sa-cmp-action-destructive-secondary-hover-border",
+        "sa-color-dangerScale-400"
+      ],
+      "#ecf4ff": [
+        "sa-bg-brand-primary-base",
+        "sa-bg-neutral-selected",
+        "sa-cmp-action-brand-secondary-hover-bg",
+        "sa-cmp-action-brand-secondary-inverse-hover-border"
+      ],
+      "#ed8a1d": [
+        "sa-brand-samavesh-saffron"
+      ],
+      "#edf4ff": [
+        "sa-bg-status-info-base",
+        "sa-color-infoScale-50",
+        "sa-color-status-infoTonal"
+      ],
+      "#eeebfa": [
+        "sa-bg-brand-primary-subtler",
+        "sa-cmp-action-brand-secondary-active-bg",
+        "sa-cmp-action-brand-secondary-inverse-default-border",
+        "sa-cmp-action-brand-tertiary-active-bg"
+      ],
+      "#eef0f3": [
+        "sa-bg-neutral-hover",
+        "sa-bg-neutral-loading",
+        "sa-bg-neutral-readonly",
+        "sa-bg-neutral-subtler"
+      ],
+      "#ef5c61": [
+        "sa-chart-div-neg",
+        "sa-cmp-action-destructive-secondary-hover-border",
+        "sa-color-dangerScale-400"
+      ],
+      "#eff0f2": [
+        "sa-bg-neutral-subtler",
+        "sa-cmp-action-neutral-secondary-hover-bg",
+        "sa-cmp-action-neutral-secondary-inverse-hover-border",
+        "sa-cmp-action-neutral-tertiary-hover-bg"
+      ],
+      "#f1b75e": [
+        "sa-bg-status-warning-subtle",
+        "sa-color-warningScale-200"
+      ],
+      "#f3f4f6": [
+        "sa-color-a11y-dark-ink"
+      ],
+      "#f4d390": [
+        "sa-bg-brand-primary-subtle",
+        "sa-cmp-action-brand-tonal-active-bg",
+        "sa-cmp-action-brand-tonal-active-border",
+        "sa-color-primaryScale-200"
+      ],
+      "#f5f5f5": [
+        "sa-bg-neutral-subtler",
+        "sa-cmp-action-neutral-secondary-hover-bg",
+        "sa-cmp-action-neutral-secondary-inverse-hover-border",
+        "sa-cmp-action-neutral-tertiary-hover-bg"
+      ],
+      "#f6f5fe": [
+        "sa-bg-brand-primary-base",
+        "sa-cmp-action-brand-secondary-hover-bg",
+        "sa-cmp-action-brand-secondary-inverse-hover-border",
+        "sa-cmp-action-brand-tertiary-hover-bg"
+      ],
+      "#f7faff": [
+        "sa-bg-brand-primary-base",
+        "sa-cmp-action-brand-secondary-hover-bg",
+        "sa-cmp-action-brand-secondary-inverse-hover-border",
+        "sa-cmp-action-brand-tertiary-hover-bg"
+      ],
+      "#faaaaa": [
+        "sa-bg-brand-primary-subtle",
+        "sa-cmp-action-brand-tonal-active-bg",
+        "sa-cmp-action-brand-tonal-active-border",
+        "sa-color-primaryScale-200"
+      ],
+      "#faebf2": [
+        "sa-bg-brand-primary-subtler",
+        "sa-cmp-action-brand-secondary-active-bg",
+        "sa-cmp-action-brand-secondary-inverse-default-border",
+        "sa-cmp-action-brand-tertiary-active-bg"
+      ],
+      "#fcdada": [
+        "sa-bg-brand-primary-subtler",
+        "sa-cmp-action-brand-secondary-active-bg",
+        "sa-cmp-action-brand-secondary-inverse-default-border",
+        "sa-cmp-action-brand-tertiary-active-bg"
+      ],
+      "#fe716d": [
+        "sa-bg-status-error-bold",
+        "sa-cmp-action-destructive-secondary-default-border",
+        "sa-cmp-action-destructive-tonal-active-bg",
+        "sa-cmp-action-destructive-tonal-active-border"
+      ],
+      "#ff671f": [
+        "sa-brand-samavesh-orange",
+        "sa-color-brand-saffron",
+        "sa-color-secondaryScale-400"
+      ],
+      "#ff7e7f": [
+        "sa-bg-status-error-bold",
+        "sa-cmp-action-destructive-secondary-default-border",
+        "sa-cmp-action-destructive-tonal-active-bg",
+        "sa-cmp-action-destructive-tonal-active-border"
+      ],
+      "#ff9167": [
+        "sa-bg-brand-secondary-bold",
+        "sa-color-secondaryScale-300"
+      ],
+      "#ff9c95": [
+        "sa-bg-status-error-subtle",
+        "sa-cmp-action-destructive-tonal-hover-bg",
+        "sa-cmp-action-destructive-tonal-hover-border",
+        "sa-color-dangerScale-200"
+      ],
+      "#ffa7a5": [
+        "sa-bg-status-error-subtle",
+        "sa-cmp-action-destructive-tonal-hover-bg",
+        "sa-cmp-action-destructive-tonal-hover-border",
+        "sa-color-dangerScale-200"
+      ],
+      "#ffb498": [
+        "sa-bg-brand-secondary-subtle",
+        "sa-color-secondaryScale-200"
+      ],
+      "#ffc107": [
+        "sa-bg-status-warning-subtle",
+        "sa-color-warningScale-200"
+      ],
+      "#ffc1bc": [
+        "sa-bg-status-error-subtler",
+        "sa-chart-div-negSoft",
+        "sa-cmp-action-destructive-secondary-active-bg",
+        "sa-cmp-action-destructive-secondary-inverse-default-border"
+      ],
+      "#ffcbc9": [
+        "sa-bg-status-error-subtler",
+        "sa-chart-div-negSoft",
+        "sa-cmp-action-destructive-secondary-active-bg",
+        "sa-cmp-action-destructive-secondary-inverse-default-border"
+      ],
+      "#ffd323": [
+        "sa-cmp-badge-beta-bg",
+        "sa-color-brand-yellow"
+      ],
+      "#ffd394": [
+        "sa-bg-status-warning-subtler",
+        "sa-color-warningScale-100"
+      ],
+      "#ffd4c4": [
+        "sa-bg-brand-secondary-subtler",
+        "sa-color-secondaryScale-100"
+      ],
+      "#ffdd98": [
+        "sa-bg-status-warning-subtler",
+        "sa-color-warningScale-100"
+      ],
+      "#ffe4e1": [
+        "sa-bg-status-error-base",
+        "sa-cmp-action-destructive-secondary-hover-bg",
+        "sa-cmp-action-destructive-secondary-inverse-hover-border",
+        "sa-cmp-action-destructive-tertiary-hover-bg"
+      ],
+      "#ffe600": [
+        "sa-color-a11y-hc-focus"
+      ],
+      "#ffecec": [
+        "sa-bg-brand-primary-base",
+        "sa-cmp-action-brand-secondary-hover-bg",
+        "sa-cmp-action-brand-secondary-inverse-hover-border",
+        "sa-cmp-action-brand-tertiary-hover-bg"
+      ],
+      "#ffedec": [
+        "sa-bg-status-error-base",
+        "sa-cmp-action-destructive-secondary-hover-bg",
+        "sa-cmp-action-destructive-secondary-inverse-hover-border",
+        "sa-cmp-action-destructive-tertiary-hover-bg"
+      ],
+      "#ffeecc": [
+        "sa-bg-brand-primary-subtler",
+        "sa-cmp-action-brand-secondary-active-bg",
+        "sa-cmp-action-brand-secondary-inverse-default-border",
+        "sa-cmp-action-brand-tertiary-active-bg"
+      ],
+      "#fff1df": [
+        "sa-bg-status-warning-base",
+        "sa-color-status-warningTonal",
+        "sa-color-warningScale-50"
+      ],
+      "#fff2ed": [
+        "sa-bg-brand-secondary-base",
+        "sa-color-brand-saffronLight",
+        "sa-color-secondaryScale-50"
+      ],
+      "#fff4f9": [
+        "sa-bg-brand-primary-base",
+        "sa-cmp-action-brand-secondary-hover-bg",
+        "sa-cmp-action-brand-secondary-inverse-hover-border",
+        "sa-cmp-action-brand-tertiary-hover-bg"
+      ],
+      "#fff6e3": [
+        "sa-bg-status-warning-base",
+        "sa-color-status-warningTonal",
+        "sa-color-warningScale-50"
+      ],
+      "#fff7e3": [
+        "sa-bg-brand-primary-base",
+        "sa-cmp-action-brand-secondary-hover-bg",
+        "sa-cmp-action-brand-secondary-inverse-hover-border",
+        "sa-cmp-action-brand-tertiary-hover-bg"
+      ],
+      "#ffffff": [
+        "sa-bg-neutral-base",
+        "sa-border-neutral-inverse-default",
+        "sa-brand-samavesh-white",
+        "sa-chart-regionStroke"
+      ]
+    },
+    "fontSizes": {
+      "12.0": [
+        "sa-type-body-3-size",
+        "sa-type-label-2-size",
+        "sa-type-label-3-size"
+      ],
+      "14.0": [
+        "sa-type-body-2-size",
+        "sa-type-label-1-size",
+        "sa-type-title-3-size"
+      ],
+      "16.0": [
+        "sa-type-body-1-size",
+        "sa-type-headline-6-size",
+        "sa-type-title-2-size"
+      ]
+    },
+    "radii": {
+      "0.0": [
+        "sa-shape-0"
+      ],
+      "12.0": [
+        "sa-cmp-card-radius",
+        "sa-cmp-dialog-radius",
+        "sa-shape-12"
+      ],
+      "16.0": [
+        "sa-shape-16"
+      ],
+      "2.0": [
+        "sa-shape-2"
+      ],
+      "20.0": [
+        "sa-shape-20"
+      ],
+      "24.0": [
+        "sa-shape-24"
+      ],
+      "32.0": [
+        "sa-shape-32"
+      ],
+      "4.0": [
+        "sa-control-selection-radius",
+        "sa-shape-4"
+      ],
+      "40.0": [
+        "sa-shape-40"
+      ],
+      "6.0": [
+        "sa-cmp-tooltip-radius",
+        "sa-shape-6"
+      ],
+      "8.0": [
+        "sa-cmp-button-radius",
+        "sa-cmp-chip-radius",
+        "sa-control-radius",
+        "sa-shape-8"
+      ],
+      "999.0": [
+        "sa-shape-full"
+      ]
+    },
+    "spacing": {
+      "0.0": [
+        "sa-inline-0",
+        "sa-padding-0",
+        "sa-stack-0"
+      ],
+      "12.0": [
+        "sa-inline-12",
+        "sa-padding-12",
+        "sa-stack-12"
+      ],
+      "120.0": [
+        "sa-padding-120"
+      ],
+      "16.0": [
+        "sa-inline-16",
+        "sa-padding-16",
+        "sa-stack-16"
+      ],
+      "2.0": [
+        "sa-inline-2",
+        "sa-padding-2",
+        "sa-stack-2"
+      ],
+      "20.0": [
+        "sa-inline-20",
+        "sa-padding-20",
+        "sa-stack-20"
+      ],
+      "24.0": [
+        "sa-grid-gutter",
+        "sa-inline-24",
+        "sa-padding-24",
+        "sa-stack-24"
+      ],
+      "32.0": [
+        "sa-inline-32",
+        "sa-padding-32",
+        "sa-stack-32"
+      ],
+      "360.0": [
+        "sa-padding-360"
+      ],
+      "4.0": [
+        "sa-inline-4",
+        "sa-padding-4",
+        "sa-stack-4"
+      ],
+      "40.0": [
+        "sa-inline-40",
+        "sa-padding-40",
+        "sa-stack-40"
+      ],
+      "48.0": [
+        "sa-inline-48",
+        "sa-padding-48",
+        "sa-stack-48"
+      ],
+      "56.0": [
+        "sa-inline-56",
+        "sa-padding-56",
+        "sa-stack-56"
+      ],
+      "6.0": [
+        "sa-inline-6",
+        "sa-padding-6",
+        "sa-stack-6"
+      ],
+      "64.0": [
+        "sa-inline-64",
+        "sa-padding-64",
+        "sa-stack-64"
+      ],
+      "72.0": [
+        "sa-inline-72",
+        "sa-padding-72",
+        "sa-stack-72"
+      ],
+      "8.0": [
+        "sa-inline-8",
+        "sa-padding-8",
+        "sa-stack-8"
+      ],
+      "80.0": [
+        "sa-inline-80",
+        "sa-padding-80",
+        "sa-stack-80"
+      ]
+    }
+  },
+  "typeRamp": {
+    "Body/body-2": "Noto Sans Regular 14/20, tracking 0",
+    "Body/body-3": "Noto Sans Regular 12/16, tracking 0",
+    "Headline/headline-5": "Noto Sans SemiBold 20/24, tracking 0",
+    "Icon/16|20|32/Outline": "Material Symbols Rounded Light 300, size == lineHeight",
+    "Label/label-1": "Noto Sans Medium 14/20, tracking 0",
+    "Label/label-2": "Noto Sans Medium 12/16, tracking 0",
+    "Label/label-3": "Noto Sans Medium 11/16, tracking 0",
+    "Title/title-2": "Noto Sans Medium 16/24, tracking 0"
+  }
+}

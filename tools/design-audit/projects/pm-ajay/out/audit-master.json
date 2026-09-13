@@ -1,0 +1,624 @@
+{
+  "portal": "PM-AJAY \u2014 Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (DEV)",
+  "idPrefix": "PMA",
+  "generated": "auto",
+  "status": "MACHINE-DRAFT",
+  "figmaUrl": "https://www.figma.com/design/evmNmlK8g4VYwJVu2FwSGV/MoSJE-Portal--Handoff-?node-id=8943-41048",
+  "method": "Machine pass (project-agnostic engine). Baseline=house. DS-adoption 7.6%. Coverage gate=PASS. \ud83e\udd16 machine checks only; human sign-off (\ud83d\udc64) required before CERTIFIED.",
+  "coverage": {
+    "figma_frames": 0,
+    "captured": 224,
+    "mapped": 0,
+    "unmapped": 0,
+    "design_only": 0,
+    "extra_build_only": 224,
+    "mismap": 0
+  },
+  "coverage_gate": "PASS",
+  "ds_adoption_pct": 7.6,
+  "deferred": [],
+  "screens": [
+    {
+      "slug": "GLOBAL-DSCONF",
+      "name": "Global \u2014 Design-System Conformance (machine-verified every element)",
+      "figmaImg": null,
+      "liveImg": "captures/live/MINISTRY-ADMIN-EXECUTIVE-SUMMARY.png",
+      "figmaUrl": null,
+      "liveUrl": null,
+      "note": "DS-adoption: 7.6% of 35011 elements use design-system tokens. Baseline mode: house. The full deviation table is in out/conformance.json. These are \ud83e\udd16 machine checks \u2014 verify severity with a human before certifying.",
+      "findings": [
+        {
+          "num": 1,
+          "id": "PMA-DSCONF-001",
+          "element": "Off-token fontSize: 17",
+          "section": "ds-conformance",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Every element should use a type-scale token from the design system.",
+          "live": "18340 element(s) across 221 screen(s) render fontSize=17, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw fontSize value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-EXECUTIVE-SUMMARY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 35,
+            "y": 28.7
+          }
+        },
+        {
+          "num": 2,
+          "id": "PMA-DSCONF-002",
+          "element": "Off-token color: #314158",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "12770 element(s) across 204 screen(s) render color=#314158, which is not a design-system token (first seen near \"Drill-Down\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-EXECUTIVE-SUMMARY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 25,
+            "y": 29.6
+          }
+        },
+        {
+          "num": 3,
+          "id": "PMA-DSCONF-003",
+          "element": "Off-token color: #4a5565",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "5291 element(s) across 224 screen(s) render color=#4a5565, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-EXECUTIVE-SUMMARY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 15,
+            "y": 27.5
+          }
+        },
+        {
+          "num": 4,
+          "id": "PMA-DSCONF-004",
+          "element": "Off-token color: #0f172b",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "4327 element(s) across 219 screen(s) render color=#0f172b, which is not a design-system token (first seen near \"Executive Summary\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-EXECUTIVE-SUMMARY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 60,
+            "y": 14.7
+          }
+        },
+        {
+          "num": 5,
+          "id": "PMA-DSCONF-005",
+          "element": "Off-token color: #364153",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "3917 element(s) across 224 screen(s) render color=#364153, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-EXECUTIVE-SUMMARY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 9,
+            "y": 13.8
+          }
+        },
+        {
+          "num": 6,
+          "id": "PMA-DSCONF-006",
+          "element": "Off-token fontSize: 15",
+          "section": "ds-conformance",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Every element should use a type-scale token from the design system.",
+          "live": "3589 element(s) across 213 screen(s) render fontSize=15, which is not a design-system token (first seen near \"Ministry / Admin\").",
+          "fix": "Replace the raw fontSize value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-EXECUTIVE-SUMMARY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 60,
+            "y": 12.6
+          }
+        },
+        {
+          "num": 7,
+          "id": "PMA-DSCONF-007",
+          "element": "Off-token color: #45556c",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "1508 element(s) across 120 screen(s) render color=#45556c, which is not a design-system token (first seen near \"Allocation\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-EXECUTIVE-SUMMARY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 25,
+            "y": 60.3
+          }
+        },
+        {
+          "num": 8,
+          "id": "PMA-DSCONF-008",
+          "element": "Off-token color: #62748e",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "866 element(s) across 211 screen(s) render color=#62748e, which is not a design-system token (first seen near \"Ministry / Admin\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-EXECUTIVE-SUMMARY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 60,
+            "y": 12.6
+          }
+        },
+        {
+          "num": 9,
+          "id": "PMA-DSCONF-009",
+          "element": "Off-token color: #90a1b9",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "431 element(s) across 167 screen(s) render color=#90a1b9, which is not a design-system token (first seen near \"Data refreshed weekly\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-EXECUTIVE-SUMMARY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 92,
+            "y": 29.6
+          }
+        },
+        {
+          "num": 10,
+          "id": "PMA-DSCONF-010",
+          "element": "Off-token color: #fb2c36",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "408 element(s) across 61 screen(s) render color=#fb2c36, which is not a design-system token (first seen near \"CHANDIGARH, GUJARAT, KERALA & \").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-EXECUTIVE-SUMMARY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 83,
+            "y": 87.3
+          }
+        },
+        {
+          "num": 11,
+          "id": "PMA-DSCONF-011",
+          "element": "Off-token color: #1d293d",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "361 element(s) across 25 screen(s) render color=#1d293d, which is not a design-system token (first seen near \"Fund Flow & Utilisation\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-EXECUTIVE-SUMMARY.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 29,
+            "y": 54.9
+          }
+        },
+        {
+          "num": 12,
+          "id": "PMA-DSCONF-012",
+          "element": "Off-token color: #0a3a74",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "282 element(s) across 42 screen(s) render color=#0a3a74, which is not a design-system token (first seen near \"Villages Covered\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/MINISTRY-ADMIN-ADARSHGRAM-REPORTS.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1451
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 34,
+            "y": 48.3
+          }
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "id": "PMA-GLOBAL-001",
+      "title": "The Whole Type Scale Is Three Pixels Larger Than the Estate's",
+      "severity": "Major",
+      "axis": "Typography",
+      "scope": "Global",
+      "slug": "MINISTRY-ADMIN-DASHBOARD",
+      "_route": "/admin/dashboard",
+      "_role": "ministry",
+      "design": "Across the eleven non-draft pages of the handoff file the estate's body size is 14px \u2014 11,021 nodes, on every page, the single most-used value in the file. The steps around it are 11, 12, 13, 16, 18, 20 and 24. The token contract agrees where it publishes at all: `--sa-type-body-2-size` is 14px.",
+      "build": "The portal redefines Tailwind's own scale upward, so every utility class resolves through the new values: `--text-xs` is `.9375rem` (15px) against Tailwind's `.75rem`, `--text-sm` is `1.0625rem` (17px) against `.875rem`, and `--text-base` is `1.1875rem` (19px) against `1rem`. The result is a portal whose body text is **17px on 18,340 elements across 221 of the 224 screens** \u2014 the largest single deviation in this audit \u2014 with 15px on 3,589 more, 21px on 246 and 19px on 78. Not one of those four sizes is drawn anywhere in the handoff file.",
+      "fix": "Restore the three scale variables to the published steps. It is one declaration block and it brings every element on every screen back onto the estate's scale at once; correcting sizes per component would have to be redone on each new screen.",
+      "_cites": [
+        "--sa-type-body-2-size",
+        "--sa-type-body-3-size",
+        "--sa-type-body-1-size"
+      ],
+      "_liveCheck": "Read from the live DOM 2026-09-12 in a fresh tab before signing in, so the UX4G accessibility widget's text-size control could not be the cause: getComputedStyle(documentElement) returned --text-xs .9375rem, --text-sm 1.0625rem, --text-base 1.1875rem with html font-size at 16px.",
+      "_evidenceWhy": "There is no design side to crop against \u2014 PM-AJAY has no per-screen frames \u2014 so a DESIGN|BUILD crop pair cannot exist for this audit. The evidence is on disk and is stronger than a crop: capture.py's complete `colorInventory` for every one of the 224 screens (every colour the page actually paints, containers included), the per-page histograms of all eleven non-draft Figma pages for the standard side, and for the two findings carrying a `_fix` a BUILD and a PROPOSED rendering of the real screen. The claims are aggregate \u2014 a value across the portal \u2014 not about one element's fill, which is what a crop is for.",
+      "_fix": {
+        "selector": ":root",
+        "css": ":root{--text-xs:.75rem;--text-sm:.875rem;--text-base:1rem;}",
+        "why": "Returns the three Tailwind scale variables to the steps the estate draws. Every utility resolves through them, so the whole page comes back on scale from one block."
+      }
+    },
+    {
+      "id": "PMA-GLOBAL-002",
+      "title": "Body and Label Text Uses Tailwind's Slate Ramp, Not the Estate's Ink",
+      "severity": "Major",
+      "axis": "Color & Token",
+      "scope": "Global",
+      "slug": "MINISTRY-ADMIN-DASHBOARD",
+      "_route": "/admin/dashboard",
+      "_role": "ministry",
+      "design": "The estate's ink is settled and unambiguous in the handoff file: `#1f2937` for primary text on 25,774 nodes across all eleven non-draft pages, `#374151` for secondary, with `#6b7280` and `#9ca3af` for supporting text and `#e5e7eb` / `#d1d5db` / `#f9fafb` for borders and quiet surfaces. That is Tailwind's v3 grey ramp, and every other portal on the estate renders it.",
+      "build": "PM-AJAY renders Tailwind **v4 slate** instead \u2014 a different ramp, not a different shade of the same one. `#314158` on 12,770 elements across 204 screens, `#4a5565` on 5,291 across ALL 224, `#0f172b` on 4,327, `#364153` on 3,917 across all 224, plus `#45556c`, `#62748e` and `#90a1b9`. The markup names them directly (`text-slate-500`, `text-slate-900`). None of those seven values is drawn anywhere in the handoff file, and none is in the token contract either \u2014 so this portal matches neither the design nor the design system.",
+      "fix": "Map the slate steps onto the ink the rest of the estate renders \u2014 darkest to `#1f2937`, the mid steps to `#374151`, supporting text to `#6b7280` \u2014 or, better, onto the published ink tokens once PMA-DS-001 settles which ramp the contract carries. Either way the portal should stop being the only one on a third ramp.",
+      "_cites": [
+        "--sa-text-neutral-base",
+        "--sa-text-neutral-subtle",
+        "--sa-text-neutral-subtler"
+      ],
+      "_liveCheck": "Both halves were checked rather than assumed. The seven values were read from the live DOM on 2026-09-12 (oklch decoded through oklab to sRGB, the decoder verified against slate-200 = #e2e8f0). Their absence from the estate's language was checked against the per-page histograms of all eleven non-draft pages, and their absence from the contract by grepping the generated packages/tokens/dist/tokens.css: 0 occurrences apiece.",
+      "_evidenceWhy": "There is no design side to crop against \u2014 PM-AJAY has no per-screen frames \u2014 so a DESIGN|BUILD crop pair cannot exist for this audit. The evidence is on disk and is stronger than a crop: capture.py's complete `colorInventory` for every one of the 224 screens (every colour the page actually paints, containers included), the per-page histograms of all eleven non-draft Figma pages for the standard side, and for the two findings carrying a `_fix` a BUILD and a PROPOSED rendering of the real screen. The claims are aggregate \u2014 a value across the portal \u2014 not about one element's fill, which is what a crop is for.",
+      "_fix": {
+        "selector": "body",
+        "css": "body .text-slate-900,body .text-slate-950,body .text-slate-800{color:#1f2937 !important}body .text-slate-700,body .text-slate-600{color:#374151 !important}body .text-slate-500,body .text-slate-400{color:#6b7280 !important}",
+        "why": "Shows the estate's own ink in place of the slate ramp \u2014 the same values every other portal renders. !important is used only because a preview patch is injected last and must beat a utility class; the real fix is the mapping."
+      }
+    },
+    {
+      "id": "PMA-GLOBAL-003",
+      "title": "The Portal Loads None of the Design System's Tokens",
+      "severity": "Major",
+      "axis": "Color & Token",
+      "scope": "Global",
+      "slug": "MINISTRY-ADMIN-DASHBOARD",
+      "_route": "/admin/dashboard",
+      "_role": "ministry",
+      "design": "Every MoSJE property consumes the published `--sa-*` contract from @mosje/tokens. That is what lets a brand, density or accessibility change reach every portal at once instead of being re-typed per repository.",
+      "build": "No `--sa-*` custom property is defined in any stylesheet the portal serves \u2014 0 of them, counted in the live DOM on both a pre-login and an authenticated screen. The portal defines its own `--primary-color: #0a3a74` instead. This is the mechanism behind the two findings above: with no token layer to resolve against, the type scale and the palette were free to drift, and they did. Noto Sans IS applied (728 of 766 elements on the sign-in page), so the typeface is right; it is the token layer that is absent.",
+      "fix": "Load the published token stylesheet and consume `--sa-*` rather than a private variable set. Until that happens every value corrected above has to be corrected by hand and will drift again on the next release.",
+      "_cites": [
+        "--sa-text-neutral-base",
+        "rules/design-system-architecture.md"
+      ],
+      "_liveCheck": "Read from the live DOM 2026-09-12: iterated every document.styleSheets rule and counted custom properties beginning --sa- ; the count was 0 on both a pre-login and an authenticated screen.",
+      "_evidenceWhy": "There is no design side to crop against \u2014 PM-AJAY has no per-screen frames \u2014 so a DESIGN|BUILD crop pair cannot exist for this audit. The evidence is on disk and is stronger than a crop: capture.py's complete `colorInventory` for every one of the 224 screens (every colour the page actually paints, containers included), the per-page histograms of all eleven non-draft Figma pages for the standard side, and for the two findings carrying a `_fix` a BUILD and a PROPOSED rendering of the real screen. The claims are aggregate \u2014 a value across the portal \u2014 not about one element's fill, which is what a crop is for."
+    },
+    {
+      "id": "PMA-GLOBAL-004",
+      "title": "Status Colours Come From Tailwind's Palette, and One Meaning Has Four Greens",
+      "severity": "Minor",
+      "axis": "Color & Token",
+      "scope": "Global",
+      "slug": "MINISTRY-ADMIN-DASHBOARD",
+      "_route": "/admin/dashboard",
+      "_role": "ministry",
+      "design": "The estate's status colours are settled in the file: `#ec5042` for error on 868 nodes across all eleven pages, and `#2e7d32` for success on 919 across nine. A citizen learns one colour per meaning and carries it between portals.",
+      "build": "The portal paints status from Tailwind's semantic palette instead: `#fb2c36` on 408 elements across 61 screens, `#e7000b` and `#c10007` for errors and required-field markers, `#f54900` for 'Active', and four separate greens \u2014 `#008236`, `#007a55`, `#00a63e`, `#006045` \u2014 for approved and on-track states. Four greens for one meaning is the part that matters: a reader cannot learn a colour that changes between screens.",
+      "fix": "Bind status text and status backgrounds to the estate's status values, and settle on ONE green for 'approved / on track' across the three components.",
+      "_cites": [
+        "--sa-text-status-error-base",
+        "--sa-bg-status-success-base"
+      ],
+      "_evidenceWhy": "There is no design side to crop against \u2014 PM-AJAY has no per-screen frames \u2014 so a DESIGN|BUILD crop pair cannot exist for this audit. The evidence is on disk and is stronger than a crop: capture.py's complete `colorInventory` for every one of the 224 screens (every colour the page actually paints, containers included), the per-page histograms of all eleven non-draft Figma pages for the standard side, and for the two findings carrying a `_fix` a BUILD and a PROPOSED rendering of the real screen. The claims are aggregate \u2014 a value across the portal \u2014 not about one element's fill, which is what a crop is for."
+    },
+    {
+      "id": "PMA-DS-001",
+      "title": "The Token Contract Does Not Publish the Estate's Own Most-Used Colours",
+      "severity": "Major",
+      "axis": "Color & Token",
+      "scope": "Design System",
+      "slug": "MINISTRY-ADMIN-DASHBOARD",
+      "_route": "/admin/dashboard",
+      "_role": "ministry",
+      "design": "One neutral ramp, published once, consumed everywhere.",
+      "build": "There are three, and no two agree. The handoff library draws Tailwind v3 grey \u2014 `#1f2937` on 25,774 nodes across all eleven non-draft pages, plus `#374151`, `#e5e7eb`, `#d1d5db`, `#f9fafb` and `#e5eff9`. The generated contract publishes its own instead \u2014 `#1e2124`, `#3a3d41`, `#dcdee1`, `#6f757d` \u2014 and **not one of the library's grey values appears even once in tokens.css**. The PM-AJAY build then serves Tailwind v4 slate, matching neither. The same gap covers the estate's semantic colours: `#ec5042` and `#2e7d32` are drawn on nine to eleven pages apiece and neither has a token.",
+      "fix": "Decide which ramp is the estate's, in one place, and publish it. Either the contract adopts the values the library has been drawing for a year, or the library rebinds to the contract's and every page is restyled. Until then a developer asking 'which grey is correct?' has three defensible answers, which is the condition that produced PMA-GLOBAL-002.",
+      "_cites": [
+        "HOUSE-GAP",
+        "--sa-text-neutral-base"
+      ],
+      "_liveCheck": "Checked in the generated contract, not inferred: grepped packages/tokens/dist/tokens.css for each of the library's six grey values and for #ec5042 and #2e7d32 \u2014 0 occurrences apiece. The library counts come from the per-page histograms of all eleven non-draft pages.",
+      "_evidenceWhy": "There is no design side to crop against \u2014 PM-AJAY has no per-screen frames \u2014 so a DESIGN|BUILD crop pair cannot exist for this audit. The evidence is on disk and is stronger than a crop: capture.py's complete `colorInventory` for every one of the 224 screens (every colour the page actually paints, containers included), the per-page histograms of all eleven non-draft Figma pages for the standard side, and for the two findings carrying a `_fix` a BUILD and a PROPOSED rendering of the real screen. The claims are aggregate \u2014 a value across the portal \u2014 not about one element's fill, which is what a crop is for."
+    },
+    {
+      "id": "PMA-DS-002",
+      "title": "Two Established Type Steps Are Unreachable From a Conformant Stylesheet",
+      "severity": "Minor",
+      "axis": "Typography",
+      "scope": "Design System",
+      "slug": "MINISTRY-ADMIN-DASHBOARD",
+      "_route": "/admin/dashboard",
+      "_role": "ministry",
+      "design": "One type ramp, shared by the library and the code.",
+      "build": "The estate draws 13px on 1,639 nodes across all eleven non-draft pages and 11px on 1,013 across ten, and the contract publishes neither. 11px exists only as `--sa-ref-size-11`, a Tier-1 primitive that app code may never consume and that the token build fails a component for naming. So two steps the estate uses daily cannot be reached from a conformant stylesheet at all.",
+      "fix": "Promote 11px and 13px to Tier-2 semantic steps so a stylesheet can legitimately reach them, or correct the library to the steps the contract publishes and restyle the specimens that depend on them. Leaving them Tier-1-only is the one option that keeps the contradiction.",
+      "_cites": [
+        "HOUSE-GAP",
+        "--sa-type-label-3-size"
+      ],
+      "_liveCheck": "packages/tokens/dist/tokens.css declares --sa-type-label-3-size: 0.75rem (12px), and its ONLY 0.6875rem (11px) declaration is --sa-ref-size-11 at line 586 \u2014 a Tier-1 primitive, excluded from the consumable contract by construction. No 0.8125rem (13px) declaration exists.",
+      "_evidenceWhy": "There is no design side to crop against \u2014 PM-AJAY has no per-screen frames \u2014 so a DESIGN|BUILD crop pair cannot exist for this audit. The evidence is on disk and is stronger than a crop: capture.py's complete `colorInventory` for every one of the 224 screens (every colour the page actually paints, containers included), the per-page histograms of all eleven non-draft Figma pages for the standard side, and for the two findings carrying a `_fix` a BUILD and a PROPOSED rendering of the real screen. The claims are aggregate \u2014 a value across the portal \u2014 not about one element's fill, which is what a crop is for."
+    },
+    {
+      "id": "PMA-DS-003",
+      "title": "The Handoff File Carries Its Own Drift on Every Page",
+      "severity": "Minor",
+      "axis": "Color & Token",
+      "scope": "Design System",
+      "slug": "MINISTRY-ADMIN-DASHBOARD",
+      "_route": "/admin/dashboard",
+      "_role": "ministry",
+      "design": "A handoff library is the thing developers copy. Anything in it that is not a decision will be built.",
+      "build": "Three classes of drift sit on all eleven non-draft pages. `#d9d9d9` \u2014 Figma's default rectangle fill \u2014 is on 4,130 shapes that were never given a colour. Pure `#000000` text is on 4,154 nodes, where the file's own dominant ink is `#1f2937` by a factor of six. And six typefaces appear against a standing Noto Sans instruction: Inter on three pages (282 nodes), plus Roboto, Open Sans, Poppins, Helvetica Neue and Material Icons Round \u2014 the last being the wrong icon font, where the standard is Material Symbols **Rounded**. Just over half of all sampled fills in the file are literals rather than bound variables.",
+      "fix": "Bind the placeholder shapes or delete them, replace pure black with the ink style, and restyle the stray typefaces. These are excluded from the standard this audit convicts against, so no portal is charged for them \u2014 but they are what a developer copies when the file is the reference.",
+      "_cites": [
+        "HOUSE-GAP",
+        "rules/documentation-ds-linkage.md"
+      ],
+      "_evidenceWhy": "There is no design side to crop against \u2014 PM-AJAY has no per-screen frames \u2014 so a DESIGN|BUILD crop pair cannot exist for this audit. The evidence is on disk and is stronger than a crop: capture.py's complete `colorInventory` for every one of the 224 screens (every colour the page actually paints, containers included), the per-page histograms of all eleven non-draft Figma pages for the standard side, and for the two findings carrying a `_fix` a BUILD and a PROPOSED rendering of the real screen. The claims are aggregate \u2014 a value across the portal \u2014 not about one element's fill, which is what a crop is for."
+    }
+  ],
+  "curation": {
+    "curated": 7,
+    "screensMeasured": 224,
+    "elementsChecked": 35011,
+    "dsAdoptionPct": 7.6,
+    "portal": 4,
+    "designSystem": 3,
+    "machineValuesCharged": 50,
+    "machineInstancesCharged": 53783,
+    "top10SharePct": 95.7,
+    "_why": "The machine pass emits one finding per deviating VALUE. Ten values explain 95.7% of all charged instances and every one is a symptom of three decisions made once in a stylesheet, so the reader receives the root causes and conformance.json keeps the per-value evidence."
+  },
+  "baselineMode": "house",
+  "_noDesignPanel": "PM-AJAY has no per-screen Figma design: the handoff file's PM-AJAY page is a draft the user confirmed may not reflect the built UI, and it is the least variable-bound page in the file. There is therefore no DESIGN panel. Findings are judged against the SAMAVESH house standard and two of them carry a PROPOSED panel rendered by engine/fixpreview.py."
+}
