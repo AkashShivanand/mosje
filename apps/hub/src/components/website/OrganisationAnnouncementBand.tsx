@@ -89,6 +89,31 @@ const DWELL_MS = 6000;
 const FLIP_MS = 520;
 
 /**
+ * A LINE NEVER ENDS ON "of" OR "the".
+ *
+ * The heading already asks for `text-wrap: balance`, and balance is exactly what
+ * broke it: "Six Years of the Abhiyaan" splits as "Six Years of / the Abhiyaan"
+ * because those halves are twelve characters each. Balance weighs every space the
+ * same; it has no idea a preposition leans on the word after it. So a short
+ * function word is glued to its successor with a no-break space, and balance then
+ * chooses among the breaks that remain — "Six Years / of the Abhiyaan".
+ *
+ * Render-only. The words are the Department's and unchanged, a no-break space is
+ * read as a space by a screen reader, and the pager's accessible name keeps the
+ * plain string.
+ */
+const SHORT_WORDS = new Set(["a", "an", "and", "at", "by", "for", "in", "of", "on", "or", "the", "to", "with"]);
+
+function bindShortWords(text: string): string {
+  const words = text.split(" ");
+  return words
+    .map((w, i) =>
+      i === words.length - 1 ? w : w + (SHORT_WORDS.has(w.toLowerCase()) ? " " : " "),
+    )
+    .join("");
+}
+
+/**
  * THE PIECES, BY SILHOUETTE.
  *
  * The first burst threw eight of the same object — a thin dash — which is what
@@ -758,7 +783,7 @@ export function OrganisationAnnouncementBand({
                      * listing headings met the announcement before the page had
                      * told them which page they were on.
                      */}
-                    <p className="orgab__heading">{o.heading}</p>
+                    <p className="orgab__heading">{bindShortWords(o.heading)}</p>
                     <p className="orgab__body">
                       {o.body}
                       {/*
