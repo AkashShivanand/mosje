@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { useCornerRailOffset } from "../../foundations/corner-rail";
+import { useCornerRailOffset, useRailClearance } from "../../foundations/corner-rail";
 import { Icon } from "../utilities/icon";
 import { ChatbotMascot } from "./chatbot-mascot";
 import "./chatbot.css";
@@ -291,6 +291,10 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
    * Inline placement is not in the corner at all, so it gets the inert ref.
    */
   useCornerRailOffset(placement === "fixed" ? rootRef : inertRef);
+  /* A closed launcher is the corner's transient occupant, so it is the one that
+     steps aside from a `data-sa-rail-clear` surface. An open conversation never
+     does — the citizen summoned it. */
+  useRailClearance(placement === "fixed" ? rootRef : inertRef, !open);
 
   const messages = controlledTranscript ? messagesProp : ownMessages;
   const typing = controlledTranscript ? Boolean(typingProp) : ownTyping;

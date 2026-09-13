@@ -401,14 +401,29 @@
      while a bar with `accessibility` is mounted — so if the bar unmounts, or renders
      with `accessibility={false}`, the floating button comes straight back and the
      widget is never unreachable. */
-  /* ONLY FROM `breakpoint/tablet` UP, which is where the bar actually shows the
-     control. Below it the bar sheds the whole right-hand cluster — so the flag was
-     hiding the vendor's floating button on behalf of a control that was not on
-     screen, and a phone had no route to the accessibility panel at all. The sheet
-     now carries the controls too, but it is shut most of the time; the floating
-     button is the always-available route and it comes back here. */
+  /* FROM `breakpoint/tablet` UP, whenever a bar offers the entry. */
   @media (min-width: 768px) {
     :root[data-sa-abar-a11y="1"] #uw-widget-custom-trigger {
+      display: none !important;
+    }
+  }
+
+  /* BELOW IT, ONLY WHILE THE BAR'S OWN ICON IS ON SCREEN.
+     This used to be "never below tablet", written when the bar shed its whole
+     right-hand cluster on a phone and the floating button was the only route. The
+     bar keeps its accessibility icon on a phone now — a 44×44 target at the top of
+     every page — so that rule was showing TWO doors to one panel on every phone,
+     which `accessibility-entry-point.md` forbids, and the floating one sat on the
+     first screen's content: on the website's announcement band at 320–375px.
+
+     But the bar scrolls away when the masthead condenses, and the reason the
+     floating button came back on a phone still holds once it has. So the flag that
+     decides is whether the bar's icon is ON SCREEN, which `AccessibilityControls`
+     keeps with an IntersectionObserver: bar visible, its icon is the door; bar
+     scrolled away, the floating button is. Exactly one door is visible at every
+     moment, and never none. */
+  @media (max-width: 767px) {
+    :root[data-sa-abar-a11y="1"][data-sa-abar-a11y-onscreen] #uw-widget-custom-trigger {
       display: none !important;
     }
   }

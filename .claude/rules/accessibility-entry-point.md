@@ -54,6 +54,20 @@ by `docs/specs/samavesh-accessibility-consolidation.md`, and both apply at once.
    unmounts, or renders `accessibility={false}`, the flag goes and the widget is reachable
    again. The widget must never be unreachable — a page with neither door is a WCAG
    regression, not a tidy screen.
+4a. **On a phone, "on the page" means ON SCREEN. DECIDED 2026-09-13.** Below
+   `breakpoint/tablet` the masthead condenses on scroll and takes the bar with it, so a
+   bar that is mounted is not necessarily a door the citizen can see. The floating
+   button is therefore hidden only while the bar's own icon is on screen —
+   `AccessibilityControls` keeps `data-sa-abar-a11y-onscreen` with an
+   IntersectionObserver, refcounted like the entry flag. From tablet up the entry flag
+   alone decides, as before.
+
+   This replaces a phone exemption that had broken the rule quietly. On 2026-08-26 the
+   floating button was brought back on every phone as "a second route", because the bar
+   scrolls away — while the bar kept its 44×44 icon at the top of the page. Result: two
+   doors on every phone's first screen, the floating one sitting on content (the NMBA
+   announcement band at 320–375px). Measured after the change, scrolled 0–1500px in 75px
+   steps at 320, 360, 375, 390, 412 and 430 wide: exactly one door visible at every step.
 5. **Government chrome uses the shared `AccessibilityBar`.** A hand-rolled top bar never
    sets the flag, so it produces two doors while looking correct in review. If a portal
    needs a government utility bar, it imports the DS component — as scw, tg, nhapoa, nmba
@@ -98,6 +112,8 @@ a rule that lives only on an unmerged branch does not exist at all.
 - [ ] The portal's top bar is the shared `AccessibilityBar`, not a hand-rolled copy
 - [ ] With the bar on screen, the vendor's floating button computes `display: none` and a
       0×0 rect — check it, do not assume it
+- [ ] On a phone, scroll until the masthead condenses: the floating button comes back as
+      the bar's icon leaves, and at no scroll position are both or neither visible
 - [ ] The bar's accessibility icon still opens the panel (`right: -530px → 0px`)
 - [ ] On a page with no bar, the floating button is visible and opens the panel
 - [ ] On a page rendering several bars, unmounting one does not un-hide the button
