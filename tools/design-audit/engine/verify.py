@@ -257,6 +257,14 @@ def main():
                         f"{seen} findings, rows only — re-capture for a colour inventory"),
                        baseline.get("quoted build colours"), warn)
 
+    if am:
+        reader = [dict(f, id=f["id"]) for s in am.get("screens", []) for f in s.get("findings", [])]
+        board.gate("reader text", I.gate_reader_text(reader),
+                   f"{len(reader)} findings: no pipeline notes, every cited id resolves",
+                   baseline.get("reader text"))
+    else:
+        board.add("reader text", SKIP, "no audit-master.json")
+
     ba = js("sheet", "anchors.json", default={}) or {}
     if not ba:
         board.add("anchor ambiguity", SKIP, "no sheet/anchors.json")

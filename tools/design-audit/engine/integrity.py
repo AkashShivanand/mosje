@@ -442,3 +442,52 @@ def ratchet(fails, baseline):
     owed = sorted(k for k in failing if k in baseline)
     stale = sorted(k for k in baseline if k not in failing)
     return new, owed, stale
+
+
+# ---------------------------------------------------------------------------------------------
+# GATE — what a reader is handed contains nothing written for the pipeline
+PUBLISHED_ID = re.compile(r"\b[A-Z]{2,5}-(?:GLOBAL|SCREEN|[A-Z]{3,8})-\d{3}\b")
+PIPELINE_NOTE = re.compile(r"\((?:Anchor|Evidence|anchorWhy|evidenceWhy|Pin|Crop)\s*:|\bGATE\s*\d"
+                           r"|_anchorWhy|_evidenceWhy|_liveCheck|_colourWhy", re.I)
+READER_FIELDS = ("element", "figma", "live", "fix")
+
+
+def gate_reader_text(findings, withdrawn_ids=()):
+    """Every sentence a developer reads is about the build, and every id it cites resolves.
+
+    Two defects shipped in the NMBA report, and the reviewer saw them as "a difference between
+    Figma and the PDF":
+
+      * 13 findings carried `(Anchor: ...)` engineering notes appended to their FIX text —
+        "GATE 3 flagged this one, correctly and usefully..." — in the one sentence a developer acts
+        on. The Figma cards, built separately, had the clean text.
+      * Two cross-references pointed nowhere: NMB-GLOBAL-040 cited "NMB-GLOBAL-019", a WORKING id
+        (G19) written into published prose where NMB-GLOBAL-035 was meant; NMB-SCREEN-050 cited a
+        withdrawn id that stopped appearing anywhere once the report dropped its deferred section.
+
+    `findings` are master-shaped (`id` + READER_FIELDS). A cited id must be a finding in THIS set;
+    `withdrawn_ids` is accepted separately and still FAILS when the report no longer lists them,
+    because a reader cannot look up an id the document does not contain.
+    """
+    fails = []
+    ids = {f["id"] for f in findings}
+    for f in findings:
+        if f.get("fix") and _norm(f.get("fix")) == _norm(f.get("live")):
+            # NMB-GLOBAL-031's fix was its build paragraph copied, so a developer's instruction
+            # read "This is raised once, as a note: ..." — a sentence about the audit
+            fails.append(f"{f['id']}: the fix is a verbatim copy of the build text — it describes "
+                         f"the defect again instead of saying what to change")
+        for field in READER_FIELDS:
+            text = str(f.get(field) or "")
+            m = PIPELINE_NOTE.search(text)
+            if m:
+                fails.append(f"{f['id']}: {field} carries a pipeline note a developer should never "
+                             f"read — ...{text[m.start():m.start() + 60]!r}")
+            for ref in sorted(set(PUBLISHED_ID.findall(text))):
+                if ref in ids:
+                    continue
+                why = ("is withdrawn and no longer appears in the report" if ref in withdrawn_ids
+                       else "is not a finding in this report — a working id written into "
+                            "published prose?")
+                fails.append(f"{f['id']}: {field} cites {ref}, which {why}")
+    return fails

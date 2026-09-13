@@ -490,3 +490,47 @@ class Transparency(unittest.TestCase):
         self.assertEqual(I.colours_in("rgb(230, 81, 0)"), ["#E65100"])
         self.assertEqual(I.colours_in("rgb(0, 0, 0)"), ["#000000"])
         self.assertEqual(I.colours_in("rgb(0 0 0)"), ["#000000"])
+
+
+class ReaderText(unittest.TestCase):
+    """Both defects shipped, and the reviewer found them by comparing Figma with the PDF."""
+
+    SET = [{"id": "NMB-GLOBAL-035", "element": "The table sits inside an extra white container",
+            "figma": "d", "live": "b", "fix": "Remove the wrapper."}]
+
+    def test_an_appended_anchor_note_is_caught(self):
+        f = {"id": "NMB-GLOBAL-040", "element": "t", "figma": "d", "live": "b",
+             "fix": "Match the header band.  (Anchor: GATE 3 flagged this one, correctly and usefully)"}
+        out = I.gate_reader_text(self.SET + [f])
+        self.assertTrue(any("pipeline note" in m for m in out))
+
+    def test_a_working_id_in_published_prose_is_caught(self):
+        # G19 publishes as NMB-GLOBAL-035; the prose said NMB-GLOBAL-019
+        f = {"id": "NMB-GLOBAL-040", "element": "t", "figma": "d", "live": "b",
+             "fix": "See NMB-GLOBAL-019 (the extra wrapper)."}
+        out = I.gate_reader_text(self.SET + [f])
+        self.assertEqual(len(out), 1)
+        self.assertIn("NMB-GLOBAL-019", out[0])
+
+    def test_a_citation_of_a_withdrawn_id_is_caught_once_the_report_drops_it(self):
+        f = {"id": "NMB-SCREEN-050", "element": "t", "figma": "d", "live": "b",
+             "fix": "This is NOT the withdrawn NMB-SCREEN-029."}
+        out = I.gate_reader_text(self.SET + [f], withdrawn_ids={"NMB-SCREEN-029"})
+        self.assertEqual(len(out), 1)
+        self.assertIn("withdrawn", out[0])
+
+    def test_the_repaired_text_passes(self):
+        f = {"id": "NMB-GLOBAL-040", "element": "t", "figma": "d", "live": "b",
+             "fix": "See NMB-GLOBAL-035 (the extra wrapper)."}
+        self.assertEqual(I.gate_reader_text(self.SET + [f]), [])
+
+    def test_a_design_hex_is_not_mistaken_for_an_id(self):
+        f = {"id": "NMB-GLOBAL-040", "element": "t", "figma": "#1F2937 at 14px", "live": "b",
+             "fix": "Use the SAMAVESH token."}
+        self.assertEqual(I.gate_reader_text(self.SET + [f]), [])
+
+    def test_a_fix_that_only_repeats_the_build_text_is_caught(self):
+        t = "This is raised once, as a note: show the filters each screen needs."
+        f = {"id": "NMB-GLOBAL-031", "element": "t", "figma": "d", "live": t, "fix": t}
+        out = I.gate_reader_text(self.SET + [f])
+        self.assertTrue(any("verbatim copy" in m for m in out))

@@ -482,9 +482,7 @@ FINDINGS = [
   "the live build, 2026-09-11.",
   "Set the draft label to the design's #8C571F and the published label to #27682A. Red is the "
   "portal's error and destructive colour; spending it on a normal editorial state teaches readers "
-  "to ignore it where it matters. This is NOT the withdrawn NMB-SCREEN-029, which was about the "
-  "chip's CASE and was dropped on instruction - if the chip is out of scope entirely, drop this "
-  "one too, but the colour is a different defect with a different fix.",
+  "to ignore it where it matters.",
   ("DRAFT",-8,-8,90,26), ("Draft",-8,-8,90,26)),
 
  ("S12","Screen","Important Documents (all roles)","ADMIN-IMPORTANT-DOCUMENTS","Nit","Layout & Spacing",
@@ -549,7 +547,7 @@ FINDINGS = [
   "Build the table to the design's own component: a radius-12 container, a 52px #F9FAFB header "
   "band padded 16/24, 56px data cells padded 12/24, and a #F3F4F6 row rule. This is the finding "
   "the other table findings hang off - NMB-GLOBAL-009 (row heights), NMB-GLOBAL-010 (cell "
-  "colour), NMB-GLOBAL-005 (row actions), NMB-GLOBAL-019 (the extra wrapper), NMB-GLOBAL-036 (a "
+  "colour), NMB-GLOBAL-005 (row actions), NMB-GLOBAL-035 (the extra wrapper), NMB-GLOBAL-036 (a "
   "column too narrow for its date) and NMB-SCREEN-030 (action order). The cell padding alone "
   "accounts for most of the height difference, so fixing it fixes -009 across the portal.",
   ("Mobile Number",-24,-16,240,108), ("Mobile Number",-16,-8,200,80)),
@@ -721,8 +719,10 @@ GLOBAL_NOTES = [
   "Use the relevant filter options and follow the design",
   "Several screens draw more filters than the build offers - the citizen dashboard's State and District "
   "selects, the admin list screens' 'All States/UTs', the officer dashboard's four-filter row.",
-  "This is raised once, as a note: show the filters each screen actually needs and style them as the "
-  "design does. It is not repeated as a finding on each screen."),
+  # build, then fix — synced from the Figma card, which had the better wording (2026-09-13)
+  "Raised once, as a note: show the filters each screen actually needs and style them as the design "
+  "does. It is deliberately not repeated as a finding on each screen.",
+  "Show the filters each screen actually needs and style them as the design does."),
 ]
 
 # Raised by the reviewer in an earlier round and NOT carried into this report, each with the
