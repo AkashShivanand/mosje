@@ -582,6 +582,10 @@ export function OrganisationAnnouncementBand({
       {gone ? null : (
         <section
           className="orgab"
+          /* A floating widget must not sit on the band — its ✕, its number and its
+             action are all first-screen controls on a phone. See the clearance
+             contract in `foundations/corner-rail.ts`. */
+          data-sa-rail-clear=""
           {...(rotates
             ? { role: "region", "aria-roledescription": "carousel", "aria-label": "Announcements" }
             : { "aria-label": "Announcement" })}
