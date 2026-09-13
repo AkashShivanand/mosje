@@ -102,11 +102,10 @@ def main():
                  sectionBox=[0, by0, 1440, by1],
                  figmaPin=pin_pct(d["box"], 0, dy0, 1440, dy1),
                  livePin=pin_pct(a["box"], 0, by0, 1440, by1))
+        # Carried as FIELDS, for the gates. Never appended to reader-facing text — see below.
         for w in ("_anchorWhy", "_evidenceWhy"):
             if k.get(w):
                 f[w] = k[w]
-        if k.get("_anchorWhy"):
-            f["fix"] = f["fix"] + "  (Anchor: " + k["_anchorWhy"] + ")"
         screens.append({"slug": k["id"], "name": "Global · " + k["title"], "env": "dev",
                         "figmaImg": os.path.relpath(dp, DEST), "liveImg": os.path.relpath(bp, DEST),
                         "figmaUrl": FURL.format(n=d["node"].replace(":", "-")),
@@ -172,11 +171,17 @@ def main():
             # The gates read these off the finding. They must survive into the master, or a
             # declaration made once in findings_final.json is silently lost at publication and
             # the gate fires on a finding whose exemption was already argued.
+            #
+            # They are carried as FIELDS and nothing else. An earlier version ALSO appended
+            # `_anchorWhy` to the published `fix` text, so 13 findings reached the PDF and the
+            # developers' tracker with engineering notes like "(Anchor: GATE 3 flagged this one,
+            # correctly and usefully...)" in the one sentence a developer acts on. It was
+            # redundant — the field above already satisfies the gate — and it was the difference
+            # the reviewer saw between this PDF and the Figma report, whose cards had the clean
+            # text. A note written for the pipeline is never written into the deliverable.
             for w in ("_anchorWhy", "_evidenceWhy"):
                 if k.get(w):
                     f[w] = k[w]
-            if k.get("_anchorWhy"):
-                f["fix"] = f["fix"] + "  (Anchor: " + k["_anchorWhy"] + ")"
             fnd.append(f)
         r = rows.get(slug, {})
         node = da[anchored[0]["id"]]["node"]
@@ -209,10 +214,22 @@ def main():
                                 min([SEV.get(f["severity"], 9) for f in s["findings"]] or [9]),
                                 s["slug"]))
 
-    deferred = [{"id": d.get("old") or "-", "title": d["title"], "reason": d["reason"]}
-                for d in fin["dropped"]]
-    deferred += [{"id": "design-file", "title": "Design file — " + n["title"],
-                  "reason": n["detail"]} for n in fin.get("designFileNotes", [])]
+    # The published report carries NO deferred section — reviewer instruction, 2026-09-12. The
+    # withdrawn claims, the reviewer notes already covered by other findings, and the design-file
+    # observations were shared directly with the reviewer instead.
+    #
+    # The record is NOT lost: `findings_final.json` keeps `dropped[]` (every withdrawn claim with
+    # the reason it was withdrawn) and `designFileNotes[]`, the tracker keeps a Withdrawn row per
+    # withdrawn finding, and `docs/audit/nmba-deferred-and-design-file-notes.md` holds the full
+    # list. Only the READER-facing report omits it. `deferred` stays a key, because
+    # DELIVERABLE-SPEC requires the field to exist on every master.
+    DEFER_IN_REPORT = False
+    deferred = []
+    if DEFER_IN_REPORT:
+        deferred = [{"id": d.get("old") or "-", "title": d["title"], "reason": d["reason"]}
+                    for d in fin["dropped"]]
+        deferred += [{"id": "design-file", "title": "Design file — " + n["title"],
+                      "reason": n["detail"]} for n in fin.get("designFileNotes", [])]
 
     am = {"portal": PORTAL, "idPrefix": fin["prefix"], "generated": GENERATED,
           "figmaUrl": FURL.format(n="2136-20193"),

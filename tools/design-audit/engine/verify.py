@@ -197,6 +197,21 @@ def main():
     bundle = js("out", "capture-bundle.json") or {}
     screens = bundle.get("screens") or []
     rows_cache = {}
+    # raw CSS values on the bundle, hex here — converted by integrity.colours_in, the only colour
+    # parser in the engine
+    inv = {s["slug"]: I.inventory_hexes(s["colorInventory"])
+           for s in screens if s.get("colorInventory")}
+
+    def inventory_for(slug):
+        """What the page actually paints, or None. None is the honest answer both for a capture
+        taken before the inventory existed AND for one whose inventory is demonstrably short, and
+        it costs the colour gate its power to fail — which is correct: incomplete evidence may
+        warn, never convict.
+
+        Completeness is CHECKED, not assumed: the element rows are a subset of the page, so a
+        colour they carry that the inventory lacks proves the inventory was cut short.
+        """
+        return inv.get(slug)
 
     def rows_for(slug):
         """The extraction rows for one screen — bundle first (cheap, already in memory), then the
@@ -237,9 +252,18 @@ def main():
         else:
             warn = []
             board.gate("quoted build colours",
-                       I.gate_quoted_build_colours(findings, rows_for, warn),
-                       f"{seen} findings checked against their screen's extraction",
+                       I.gate_quoted_build_colours(findings, rows_for, warn, inventory_for),
+                       (f"{len(inv)} screens with a colour inventory" if inv else
+                        f"{seen} findings, rows only — re-capture for a colour inventory"),
                        baseline.get("quoted build colours"), warn)
+
+    if am:
+        reader = [dict(f, id=f["id"]) for s in am.get("screens", []) for f in s.get("findings", [])]
+        board.gate("reader text", I.gate_reader_text(reader),
+                   f"{len(reader)} findings: no pipeline notes, every cited id resolves",
+                   baseline.get("reader text"))
+    else:
+        board.add("reader text", SKIP, "no audit-master.json")
 
     ba = js("sheet", "anchors.json", default={}) or {}
     if not ba:

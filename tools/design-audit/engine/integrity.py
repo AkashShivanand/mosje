@@ -43,6 +43,14 @@ DESIGN_OWNED = re.compile(r"(design(?:'s|s')?|designed|Figma|drawn in the design
                           r"(?:\w+\s+){0,3}?(#[0-9A-Fa-f]{6})\b", re.I)
 
 RGB = re.compile(r"rgba?\(\s*([\d.]+)[,\s]+([\d.]+)[,\s]+([\d.]+)", re.I)
+# Alpha exactly 0 — the FOURTH component, in either the comma or the slash notation. Spelling this
+# as `[^)]*[,/]\s*0\s*\)` instead read `rgb(0, 0, 0)` and `rgb(230, 81, 0)` as transparent, because
+# a plain three-part colour whose BLUE is zero also ends in ", 0)". It made opaque black vanish and
+# it made NMB-SCREEN-021's ODIC orange vanish — a lazy pattern quietly deleting real colours.
+TRANSPARENT = re.compile(
+    r"(^|\s)transparent(\s|$)"
+    r"|rgba?\(\s*[\d.]+[,\s]+[\d.]+[,\s]+[\d.]+\s*[,/]\s*0(\.0+)?%?\s*\)"
+    r"|oklch\([^)]*/\s*0(\.0+)?%?\s*\)", re.I)
 OKLCH = re.compile(r"oklch\(\s*([\d.]+%?)\s+([\d.]+)\s+([\d.]+)", re.I)
 
 
@@ -84,6 +92,13 @@ def colours_in(value):
     out = []
     for v in (value if isinstance(value, (list, tuple)) else [value]):
         s = str(v or "")
+        # A fully transparent colour paints NOTHING, and must not be reported as one. The
+        # extraction records an unstyled background as `rgba(0, 0, 0, 0)`, which this function
+        # used to read as #000000 — so 70 transparent divs on one page looked like 70 black ones,
+        # and the completeness check (which compares rows against the inventory, where the browser
+        # had correctly skipped them) called 49 of 51 inventories short. Same rule, both sides.
+        if TRANSPARENT.search(s):
+            continue
         out += [h.upper() for h in HEX.findall(s)]
         out += [_hex(float(r), float(g), float(b)) for r, g, b in RGB.findall(s)]
         for L, C, H in OKLCH.findall(s):
@@ -134,6 +149,19 @@ def gate_absence_claims(findings):
 # real cases rather than by taste: the served #ED8525 sampled as #E08020 (13 apart) and the card
 # edge #E5E7EB quoted as #E5EAF2 (7). A design colour sampled off a glyph lands far further away
 # — #003366 sampling as #7F99B2 is 127 — and that is a different mistake, caught by the warning.
+def inventory_hexes(inv):
+    """{raw CSS value: count} -> {hex: count}, using the one tested parser.
+
+    capture.py records RAW computed values on purpose. An older bundle recorded hex keys instead;
+    those parse to themselves, so both shapes read correctly and no bundle has to be thrown away.
+    """
+    out = {}
+    for raw, n in (inv or {}).items():
+        for h in colours_in(raw):
+            out[h] = out.get(h, 0) + n
+    return out
+
+
 NEAR_MISS = 24
 
 
@@ -141,7 +169,7 @@ def _near(a, b):
     return max(abs(int(a[i:i + 2], 16) - int(b[i:i + 2], 16)) for i in (1, 3, 5))
 
 
-def gate_quoted_build_colours(findings, rows_for, warnings=None):
+def gate_quoted_build_colours(findings, rows_for, warnings=None, inventory_for=None):
     """A hex attributed to the BUILD must be a value the build actually renders.
 
     A glyph sampled off a screenshot returns the anti-aliased average of the glyph and its
@@ -149,31 +177,53 @@ def gate_quoted_build_colours(findings, rows_for, warnings=None):
     sample, and the design's #003366 icon samples as #7F99B2. A developer cannot grep for a
     colour that exists nowhere in the code.
 
-    The extraction is not a complete inventory of the page — it carries text and interactive
-    elements, not every container — so "absent from the extraction" is not by itself proof, and
-    a gate that failed on it would be making the same unfounded-absence error this module exists
-    to stop. The split:
+    **What counts as evidence decides what this gate may do.**
 
-      * in the extraction                        -> pass
-      * within NEAR_MISS of something that is    -> FAIL. That is the fingerprint of a sampled
-                                                   value: #E08020 beside the served #ED8525.
-      * nowhere near anything                    -> warning. Probably an element the extractor
-                                                   does not emit; declare `_colourWhy` to settle it.
+    The element rows are not an inventory of the page. They carry text and interactive elements,
+    NOT containers — so a card's own border is invisible to them. The first version of this gate
+    read absence from the rows as proof and failed NMB-SCREEN-046, whose "1px #E5EAF2 edge" is
+    not only real but hard-coded in the class (`border-[#E5EAF2]`) on nine cards; the rows only
+    knew the #E5E7EB used on 16 other elements of the same page, 7 points away, so the near-miss
+    rule fired on a correct finding. That is the unfounded-absence mistake this module exists to
+    stop, made by the module itself — and it is worst on findings that are ABOUT near-misses,
+    which is most of them.
 
-    `rows_for(slug) -> [row, ...]` returns the extraction rows, or None when unavailable (the
-    gate then skips that finding rather than guessing). `warnings` is an optional list that
-    collects the third case.
+    So `capture.py` records a page colour inventory too, and the gate reads the UNION of both
+    sources. The union is the point: each source sees what the other misses. The inventory walks
+    every visible element, so it has the containers the rows lack; the rows survive the inventory's
+    scan cap, which PUBLIC-FACILITIES — a lazy-loading list 223,000px tall — exceeds, leaving its
+    ODIC chip out of the inventory while NMB-SCREEN-021 correctly reports that chip's #E65100.
+
+      * in either source                 -> pass
+      * in neither, an inventory EXISTS for the screen, and within NEAR_MISS of something in the
+        union                            -> FAIL. The fingerprint of a sampled value.
+      * in neither, an inventory exists, far from anything
+                                         -> warning; confirm it and declare `_colourWhy`
+      * in neither and NO inventory was recorded
+                                         -> warning at most, never a failure. The rows carry no
+                                            containers, so their silence proves nothing.
+      * no evidence at all for the screen -> skipped, silently. Nothing to say.
+
+    Whether an inventory EXISTS is a fact. Whether it is complete is not, and must not be guessed.
+
+    An earlier version tried to INFER whether an inventory was complete, by checking the rows
+    against it, and route incomplete ones to warn-only. Every version of that inference cried wolf
+    — 49 of 51 screens, then 47 — because the extraction legitimately records things the browser is
+    right not to count: a 0x0 hidden <button>, a borderColor on a zero-width border. A completeness
+    test that fires on 47 of 51 does not protect the gate, it disables it. Reading both sources
+    together needs no inference and cannot be fooled the same way.
+
+    `inventory_for(slug)` returns {hex: count} or None; `rows_for(slug)` returns the rows or None.
     """
     fails = []
     for f in findings:
         slug = f.get("slug")
         if not slug or f.get("_colourWhy"):
             continue
-        rows = rows_for(slug)
-        if not rows:
-            continue
-        seen = set()
-        for r in rows:
+        inv = (inventory_for(slug) if inventory_for else None) or {}
+        licensed = bool(inv)        # only a recorded inventory licenses a failure
+        seen = {h.upper() for h in inv}
+        for r in rows_for(slug) or []:
             for key in ("color", "bg", "borderColor", "outlineColor", "fill"):
                 if r.get(key):
                     seen.update(colours_in(r[key]))
@@ -186,16 +236,23 @@ def gate_quoted_build_colours(findings, rows_for, warnings=None):
                 continue
             close = sorted((c for c in seen if _near(hexv, c) <= NEAR_MISS),
                            key=lambda c: _near(hexv, c))
-            if close:
+            if not licensed:
+                if warnings is not None:
+                    warnings.append(
+                        f"{f.get('id')}: {hexv} could not be judged — {slug} has no colour "
+                        f"inventory, and the element rows carry no containers. Re-capture to "
+                        f"judge this")
+            elif close:
                 fails.append(
-                    f"{f.get('id')}: quotes {hexv} as a BUILD colour, but {slug} renders "
-                    f"{close[0]} — {_near(hexv, close[0])} apart on one channel. That gap is what a "
-                    f"pixel sample looks like. Read the value out of the DOM, not off a screenshot")
+                    f"{f.get('id')}: quotes {hexv} as a BUILD colour, but nothing on {slug} paints "
+                    f"it; the nearest the page does paint is {close[0]}, "
+                    f"{_near(hexv, close[0])} apart on one channel. That gap is what a pixel "
+                    f"sample looks like. Read the value out of the DOM, not off a screenshot")
             elif warnings is not None:
                 warnings.append(
-                    f"{f.get('id')}: {hexv} is attributed to the build but appears on no element "
-                    f"{slug}'s extraction carries. Likely a container the extractor does not emit "
-                    f"— confirm it in the DOM and declare `_colourWhy`")
+                    f"{f.get('id')}: {hexv} is attributed to the build but nothing on {slug} "
+                    f"paints it, or anything near it — confirm it in the DOM and declare "
+                    f"`_colourWhy`")
     return fails
 
 
@@ -385,3 +442,52 @@ def ratchet(fails, baseline):
     owed = sorted(k for k in failing if k in baseline)
     stale = sorted(k for k in baseline if k not in failing)
     return new, owed, stale
+
+
+# ---------------------------------------------------------------------------------------------
+# GATE — what a reader is handed contains nothing written for the pipeline
+PUBLISHED_ID = re.compile(r"\b[A-Z]{2,5}-(?:GLOBAL|SCREEN|[A-Z]{3,8})-\d{3}\b")
+PIPELINE_NOTE = re.compile(r"\((?:Anchor|Evidence|anchorWhy|evidenceWhy|Pin|Crop)\s*:|\bGATE\s*\d"
+                           r"|_anchorWhy|_evidenceWhy|_liveCheck|_colourWhy", re.I)
+READER_FIELDS = ("element", "figma", "live", "fix")
+
+
+def gate_reader_text(findings, withdrawn_ids=()):
+    """Every sentence a developer reads is about the build, and every id it cites resolves.
+
+    Two defects shipped in the NMBA report, and the reviewer saw them as "a difference between
+    Figma and the PDF":
+
+      * 13 findings carried `(Anchor: ...)` engineering notes appended to their FIX text —
+        "GATE 3 flagged this one, correctly and usefully..." — in the one sentence a developer acts
+        on. The Figma cards, built separately, had the clean text.
+      * Two cross-references pointed nowhere: NMB-GLOBAL-040 cited "NMB-GLOBAL-019", a WORKING id
+        (G19) written into published prose where NMB-GLOBAL-035 was meant; NMB-SCREEN-050 cited a
+        withdrawn id that stopped appearing anywhere once the report dropped its deferred section.
+
+    `findings` are master-shaped (`id` + READER_FIELDS). A cited id must be a finding in THIS set;
+    `withdrawn_ids` is accepted separately and still FAILS when the report no longer lists them,
+    because a reader cannot look up an id the document does not contain.
+    """
+    fails = []
+    ids = {f["id"] for f in findings}
+    for f in findings:
+        if f.get("fix") and _norm(f.get("fix")) == _norm(f.get("live")):
+            # NMB-GLOBAL-031's fix was its build paragraph copied, so a developer's instruction
+            # read "This is raised once, as a note: ..." — a sentence about the audit
+            fails.append(f"{f['id']}: the fix is a verbatim copy of the build text — it describes "
+                         f"the defect again instead of saying what to change")
+        for field in READER_FIELDS:
+            text = str(f.get(field) or "")
+            m = PIPELINE_NOTE.search(text)
+            if m:
+                fails.append(f"{f['id']}: {field} carries a pipeline note a developer should never "
+                             f"read — ...{text[m.start():m.start() + 60]!r}")
+            for ref in sorted(set(PUBLISHED_ID.findall(text))):
+                if ref in ids:
+                    continue
+                why = ("is withdrawn and no longer appears in the report" if ref in withdrawn_ids
+                       else "is not a finding in this report — a working id written into "
+                            "published prose?")
+                fails.append(f"{f['id']}: {field} cites {ref}, which {why}")
+    return fails
