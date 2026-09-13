@@ -4,7 +4,7 @@
 gates — keyboard and screen-reader walkthrough, Hindi and truncation, severity sign-off — are not
 signed, so this is not a compliance certificate.
 
-Report page: published as an artifact (link in the session).
+Figma review sheet (the reviewer's editing surface — HANDOFF STANDARD | BUILD | ISSUES): [Design QC → PM-AJAY](https://www.figma.com/design/8LX7sqdDtWIAoCYZueCJq7/Design-QC?node-id=50990-25). Edit the ISSUES text there, then ask for a sync; the PDF and tracker follow the sync.
 Machine evidence: `tools/design-audit/projects/pm-ajay/out/` — `conformance.json`,
 `coverage-ledger.json`, `fixpreview.json`, `audit-master.json`.
 
