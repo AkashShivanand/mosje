@@ -66,10 +66,11 @@ whose Button has `Type = Primary | Success | Danger` and no `Tone` — instead o
 SAMAVESH's own. A component key copied out of a handoff instance is a key into
 *that* library. Check the file before recording a gap in this one.
 
-**Still open, downstream:** `Ticker / Action` remains a local part bound to
-`cmp/action/brand/secondary/inverse/*`. It no longer has to be; a
-`Sub-type=Outlined, Tone=Inverse` Button instance replaces it whenever Ticker is
-next touched.
+**Closed downstream (2026-09-14):** `Ticker / Action` and `Ticker / Control` are
+deleted from the library. Every Ticker variant instances the library `Button`
+(Primary · Inverse · Default — Outlined on the desktop bar, Text in the headers) and
+`IconButton` (Primary · Text · Inverse · Default), and the code renders `IconButton`
+for pause, previous and next.
 
 The original entry follows, for the record.
 
@@ -162,3 +163,27 @@ after; nothing was lost. Ticker and Ticker / Mark were repaired earlier via
 broken; and never read `descriptionMarkdown` as your source without checking it is
 non-empty — it is empty on any component authored through `description`, and a
 sweep that missed that reported 53 damaged components as "already clean".
+
+---
+
+## Button family — the inverse focus ring is drawn two ways (open, 2026-09-14)
+
+**Figma** draws inverse `Button` and `IconButton` focus with the `focus/ring` effect
+style: a 2px white ring inside a 4px `#0373DF` one. **Code** draws
+`.ds-btn--inverse*:focus-visible` as a 2px outline of `bg-neutral-base` at 55%, which
+measures about **3.0:1** on `primaryScale/600` — at the 1.4.11 floor, not above it.
+The Ticker overrides its own controls to a solid inverse outline for that reason.
+
+**Closing it:** pick one ring for inverse buttons (a solid inverse outline is the one
+that clears 3:1 with room), apply it to `button.css` and the Figma focused variants,
+then delete `.sa-ticker .sa-ticker__control:focus-visible` from `ticker.css`.
+
+Fixed in Figma on the same day, while documenting the Ticker: the `focus/ring` style's
+shadows no longer paint behind the node (a translucent focused button rendered as a pale
+box), the inverse Text and Outlined Hover / Pressed / Focused fills were rebound from
+`color/transparent/<type>/8|16` to the `cmp/action/*/secondary/inverse/*` tokens code
+uses, and `IconButton` Text · Inverse gained the Hover / Pressed / Focused fills it had
+never had. **Still open in Figma:** the three `Size=Small, Type=Danger, State=Focused,
+Tone=Inverse` Button variants carry one unbound effect instead of the `focus/ring`
+style; `IconButton` Outlined · Inverse has no Hover / Pressed fill; Neutral inverse Text
+binds `cmp/action/neutral/tertiary/*` rather than an inverse token.

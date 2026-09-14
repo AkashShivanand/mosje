@@ -84,6 +84,13 @@ enough" is not the bar; "would this survive review in Carbon/Polaris" is.
   divider, it instances the `Divider` component.
 - **Reused raster assets** (e.g. the National flag) are cloned from the library's
   existing asset, never re-imported from outside.
+- **Never draw a copy of a library component — in a master, a documentation frame or a
+  component record.** A frame set like a button is `Button`/`IconButton`; a pill with one
+  label is `Badge`; a Material Symbols glyph is `Icon`; a hairline between siblings is
+  `Divider`. The Ticker carried local `Ticker / Control` and `Ticker / Action` parts beside
+  a library that drew both, and the copies drifted from it. **`npm run
+  check:figma-hand-rolled` is the gate**: a baseline of the pages still carrying copies,
+  by kind, which may only shrink (`:live` reads the file, `:sync` records a cleanup).
 
 ## 3. If something is missing, add it to the library — and flag it
 

@@ -167,8 +167,6 @@ const FIGMA_UNMAPPED_REASON = {
   ".RightContent": "Internal sub-part of Alert",
   ".FeedbackEmojis": "Internal sub-part of Feedback Widget",
   ".PaginationPage": "Internal sub-part of Pagination",
-  "Ticker / Control": "Internal sub-part of Ticker — its interaction states",
-  "Ticker / Action": "Internal sub-part of Ticker — its interaction states",
   "Ticker / Row": "Internal sub-part of Ticker — the message, in BOTH shapes",
   Logo: "Brand asset — inline SVG in code, not a component",
   "org-logo": "Brand asset — inline SVG in code, not a component",

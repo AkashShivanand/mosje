@@ -4906,92 +4906,25 @@
         "assetKey": "f52899cc0b07006182f520b288b3a85bfac9a459"
       },
       {
-        "name": "Ticker / Control",
-        "external": false,
-        "nodeId": "56155:1797",
-        "assetKey": "9cad767912da536370a3d227e3754a3f17278df6"
-      },
-      {
         "name": "Divider",
         "external": false,
         "nodeId": "55061:700",
         "assetKey": "c0a9c756ae5f4fbf8fe5c49b56cbd8c14b8b6783"
       },
       {
-        "name": "Ticker / Action",
+        "name": "IconButton",
         "external": false,
-        "nodeId": "56155:37470",
-        "assetKey": "ec268323362a28cdf3cd0a6d4f82dcae4ea549fa"
+        "nodeId": "3:3497",
+        "assetKey": "4d4a87915a6f7feaf975286a565b248038007673"
+      },
+      {
+        "name": "Button",
+        "external": false,
+        "nodeId": "609:283111",
+        "assetKey": "13803f448c95c59a9163cf3ccb9394f8f1944ca1"
       }
     ],
     "assetKey": "b0b974bbbf9a6d9ab18f95907f431ee016b68ab7"
-  },
-  {
-    "name": "Ticker / Control",
-    "nodeId": "56155:1797",
-    "type": "COMPONENT_SET",
-    "pageId": "56148:695",
-    "pageName": "Ticker",
-    "hasVariants": true,
-    "properties": {
-      "State": {
-        "name": "State",
-        "type": "VARIANT",
-        "key": "State",
-        "variantOptions": [
-          "Default",
-          "Hover",
-          "Pressed",
-          "Focused"
-        ],
-        "defaultValue": "Default"
-      }
-    },
-    "childInstanceTags": [
-      "Icon"
-    ],
-    "instanceCount": 4,
-    "dependencies": [
-      {
-        "name": "Icon",
-        "external": false,
-        "nodeId": "55030:701",
-        "assetKey": "7cdc28dc3541b9408c771cc9a7f62fa50b483191"
-      }
-    ],
-    "assetKey": "9cad767912da536370a3d227e3754a3f17278df6"
-  },
-  {
-    "name": "Ticker / Action",
-    "nodeId": "56155:37470",
-    "type": "COMPONENT_SET",
-    "pageId": "56148:695",
-    "pageName": "Ticker",
-    "hasVariants": true,
-    "properties": {
-      "Label": {
-        "name": "Label",
-        "type": "TEXT",
-        "key": "Label#56155:0",
-        "defaultValue": "View All"
-      },
-      "State": {
-        "name": "State",
-        "type": "VARIANT",
-        "key": "State",
-        "variantOptions": [
-          "Default",
-          "Hover",
-          "Pressed",
-          "Focused"
-        ],
-        "defaultValue": "Default"
-      }
-    },
-    "childInstanceTags": [],
-    "instanceCount": 4,
-    "dependencies": [],
-    "assetKey": "ec268323362a28cdf3cd0a6d4f82dcae4ea549fa"
   },
   {
     "name": "Ticker / Row",

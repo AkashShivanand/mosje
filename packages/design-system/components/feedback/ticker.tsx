@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { Icon } from "../utilities/icon";
+import { IconButton } from "../actions/icon-button";
 import { TickerMark } from "./ticker-mark";
 import "./ticker.css";
 
@@ -418,22 +419,28 @@ export function Ticker({
   );
 
   const pauseButton = canMove ? (
-    <button
-      type="button"
+    /* THE LIBRARY'S IconButton, not a button of the strip's own. The Figma
+       master instances `IconButton` (Primary · Text · Inverse · Default) in this
+       slot, so Dev Mode and the code name one component.
+
+       FILLED, not the estate's default stroke. At 24px on a solid brand
+       surface the outlined `pause` is two hairline rectangles — it reads as
+       a pair of thin outlines rather than a control, and it is the one
+       control WCAG 2.2.2 requires to be findable. The filled axis makes it
+       a solid mark at the same size and lifts it well clear of the 3:1
+       non-text contrast floor. Every other icon in the estate stays stroke;
+       this is a deliberate, local exception for a statutory control. */
+    <IconButton
       className="sa-ticker__control"
+      variant="primary"
+      appearance="text"
+      tone="inverse"
+      size="md"
       onClick={() => setIsPlaying((p) => !p)}
       aria-label={isPlaying ? `Pause ${label}` : `Play ${label}`}
       aria-pressed={!isPlaying}
-    >
-      {/* FILLED, not the estate's default stroke. At 24px on a solid brand
-          surface the outlined `pause` is two hairline rectangles — it reads as
-          a pair of thin outlines rather than a control, and it is the one
-          control WCAG 2.2.2 requires to be findable. The filled axis makes it
-          a solid mark at the same size and lifts it well clear of the 3:1
-          non-text contrast floor. Every other icon in the estate stays stroke;
-          this is a deliberate, local exception for a statutory control. */}
-      <Icon name={isPlaying ? "pause" : "play_arrow"} size={24} fill aria-hidden />
-    </button>
+      icon={<Icon name={isPlaying ? "pause" : "play_arrow"} size={24} fill aria-hidden />}
+    />
   ) : null;
 
   const heading = (
@@ -568,22 +575,26 @@ export function Ticker({
         {canMove ? (
           <div className="sa-ticker__nav">
             {pauseButton}
-            <button
-              type="button"
+            <IconButton
               className="sa-ticker__control sa-ticker__step"
+              variant="primary"
+              appearance="text"
+              tone="inverse"
+              size="md"
               onClick={() => go(safeIndex - 1, "back")}
               aria-label={`Previous item in ${label}`}
-            >
-              <Icon name="arrow_back" size={24} fill aria-hidden />
-            </button>
-            <button
-              type="button"
+              icon={<Icon name="arrow_back" size={24} fill aria-hidden />}
+            />
+            <IconButton
               className="sa-ticker__control sa-ticker__step"
+              variant="primary"
+              appearance="text"
+              tone="inverse"
+              size="md"
               onClick={() => go(safeIndex + 1, "forward")}
               aria-label={`Next item in ${label}`}
-            >
-              <Icon name="arrow_forward" size={24} fill aria-hidden />
-            </button>
+              icon={<Icon name="arrow_forward" size={24} fill aria-hidden />}
+            />
           </div>
         ) : null}
 

@@ -60,8 +60,11 @@ First child of the documentation frame.
 - Fill `color/primaryScale/50`, padding `[88, 120, 80, 120]`, gap `24`.
 - **eyebrow row** — `HORIZONTAL`, gap `12`, `counterAxisAlignItems: CENTER`:
   - category in `Label/label-3`, uppercase, `text/brand/primary/base` — e.g. `FOUNDATIONS`
-  - a **pill**: radius `999`, padding `[4, 10, 4, 10]`, fill `color/primaryScale/600`,
-    label `Label/label-3` in `text/neutral/inverse` — e.g. `SAMAVESH`
+  - a **pill** — an instance of the library `Badge` (`Type=Text, State=Primary,
+    Emphasis=Solid`) with its text set, e.g. `SAMAVESH`. Not a drawn frame: pages built
+    before 2026-09-14 draw it by hand (radius `999`, padding `[4, 10, 4, 10]`, fill
+    `color/primaryScale/600`, `Label/label-3`), and `check:figma-hand-rolled` counts each
+    one until it is swapped
 - **title** — `Display/display-3`, `text/neutral/base`. One word or a short phrase.
 - **lede** — `Body/body-1`, `text/neutral/subtle`, width **880**.
 - **"at a glance" card** — width 1440, fill `bg/neutral/base`, radius `16`,
