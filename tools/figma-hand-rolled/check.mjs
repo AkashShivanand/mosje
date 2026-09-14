@@ -28,6 +28,14 @@
  *            and is not counted. The library has `Divider`. Not counted on its own page.
  * Hidden layers and their subtrees are skipped: a hidden layer draws nothing.
  *
+ * TWO THINGS LOOK LIKE COPIES AND ARE NOT, and they are skipped by name:
+ *   • a subtree named `wireframe` or `schematic` — a diagram of a screen draws labelled
+ *     boxes ("PageHeader", "KPI", "Export CSV") to show where components go; putting
+ *     real components in it would turn a map into a mock-up.
+ *   • a frame named `field`, `input` or `textbox` — a text field is set like a button
+ *     (padded, stroked, one text layer) and is not one.
+ * Each was found by reading every match on the first sweep, not assumed.
+ *
  * WHICH PAGES. The selection `check:figma-text-styles` and `check:figma-arrangements`
  * use: a content page whose Index card sits outside `Start Here` and `Foundations`.
  *
@@ -123,6 +131,7 @@ function kindOf(n, page, parent) {
     return across ? "divider" : null;
   }
   if (n.type !== "FRAME") return null;
+  if (/\b(field|input|textbox)\b/i.test(n.name)) return null;
   const kids = (n.children ?? []).filter((c) => c.visible !== false);
   const texts = kids.filter((c) => c.type === "TEXT");
   const painted = visiblePaint(n.fills) || (visiblePaint(n.strokes) && (n.strokeWeight ?? 0) > 0);
@@ -137,6 +146,7 @@ function kindOf(n, page, parent) {
 
 function scan(node, page, trail, out, parent = null) {
   if (node.visible === false || node.type === "INSTANCE") return;
+  if (/\b(wireframe|schematic)\b/i.test(node.name)) return;
   const path = [...trail, node.name];
   const k = kindOf(node, page, parent);
   if (k) out.push({ kind: k, where: path.slice(-3).join(" › ") });
