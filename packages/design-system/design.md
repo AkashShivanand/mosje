@@ -2501,7 +2501,7 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 
 **Two deliberate divergences from the Figma mock**, both recorded rather than hidden:
 - **The reset control is not red at all**, where the mock made it `#ff0004`. That value measures **4.00:1** on white and fails AA for text, so it never shipped; the system's error ink was used instead at 9.10:1. As of 2026-08-25 the colour is gone too — clearing a scripted routing transcript is housekeeping, not a failure, and it now paints `text/neutral/base` at **16.18:1** with no border. Accessibility was never traded against fidelity; the second pass corrected the *signal*, which fidelity had got wrong in a way contrast alone could not fix.
-- **Quick replies use `bg/brand/primary/base`, not the mock's `#EFE8FF`.** Nothing in the ramp resolves near that lavender; the pale brand tint is the same *role*. Per `.claude/rules/documentation-ds-linkage.md`, a value that is not a design-system colour means the design moves — not that the system grows a one-off variable.
+- **Quick replies are the library `Chip`** — outlined at rest, brand-tinted on hover, the same part the Figma master instances. A reply is an action, not a toggle, so the chatbot removes the `aria-pressed` Chip would otherwise announce.
 - **The transcript sits on a 16px bottom gutter, not the mock's 57px.** The mock floats the message stack 56.68px above the panel floor — space that holds nothing in any of its four frames. An unexplained gap at the foot of a chat panel reads as a composer that failed to render; matching the panel's other gutters reads as intentional. Every other measurement is reproduced exactly (panel 400 wide, radius 16, mark 84 / disc 60 / wordmark 73.7×76.7 / figure 55.4, bubble capped at 67%). **719 is the panel's CAP, not its height.** Pinned there, the opening state was a 531px log holding 96px of greeting — 435px of white, about 45% of the panel, collecting under the header because the log is floor-anchored. The panel sizes to its content up to `min(719px, viewport room)`, so it opens at ~420px and grows with the conversation.
 
 #### ActionBanner
@@ -2676,7 +2676,7 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 **Rules**:
 - **An inverted period is REPORTED, never silently swapped.** Swapping means the report runs over a period nobody asked for and the reader cannot tell.
 - **Each end bounds the other**, so the inverted state is reachable only by typing — which is exactly when a message is the right answer.
-- **A preset is a real button carrying `aria-pressed`**, not a dropdown: "Last 30 days" is one press, and behind a select it is three on the control a dashboard's reader uses most.
+- **A preset is the library `Chip`** — `role="button"` carrying `aria-pressed`, the selected fill on the active period — not a dropdown: "Last 30 days" is one press, and behind a select it is three on the control a dashboard's reader uses most.
 - **Both ends carry the group's name** — "From — Period", not "From". Two period filters on one page otherwise offer four fields with two names between them.
 - The group is a `fieldset`/`legend`; the ordering message is `role="alert"`.
 
