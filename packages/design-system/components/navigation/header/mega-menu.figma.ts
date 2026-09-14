@@ -19,7 +19,7 @@
 //   Overview Label -> overview.label. Figma shows the full rendered text, "All of …";
 //                     the code prepends "All of", so the template strips it.
 //
-// CONTENT is the Department's register: Commissions · Corporations · Foundations &
+// CONTENT is the Department's register: Commissions · Corporations · Foundation /
 // Autonomous Bodies. Scheme portals are not organisations and are not drawn here
 // (IA review, 11 September 2026).
 //
