@@ -577,7 +577,7 @@ export function Ticker({
               onClick={() => go(safeIndex - 1, "back")}
               aria-label={`Previous item in ${label}`}
             >
-              <Icon name="arrow_back" size={24} aria-hidden />
+              <Icon name="arrow_back" size={24} fill aria-hidden />
             </button>
             <button
               type="button"
@@ -585,7 +585,7 @@ export function Ticker({
               onClick={() => go(safeIndex + 1, "forward")}
               aria-label={`Next item in ${label}`}
             >
-              <Icon name="arrow_forward" size={24} aria-hidden />
+              <Icon name="arrow_forward" size={24} fill aria-hidden />
             </button>
           </div>
         ) : null}

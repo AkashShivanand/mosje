@@ -61,6 +61,18 @@ enough" is not the bar; "would this survive review in Carbon/Polaris" is.
   convention: filled surfaces sit one rung deeper than the same-family ink.
 - **Set scopes and WEB code syntax** on every new variable (`var(--…)`); never leave
   `ALL_SCOPES`.
+- **Text is a TEXT STYLE, never four loose values — on both sides.** In Figma every text
+  layer in a master is linked to a published SAMAVESH text style (`Title/title-2`,
+  `Body/body-2-semibold`, `Icon/24/Filled`…), not set by hand to numbers that happen to
+  match one. In code every rule that sizes text from a role takes its leading, tracking and
+  **weight** from that same style: title and headline 600, label and display 500, body 400
+  — or body at 600, which is the library's `Body/body-N-semibold`. A size token beside a
+  weight from nowhere is not "tokenised"; it is a type style the library does not have.
+  The Ticker shipped exactly that — title-2 and title-3 at 500 where both styles are 600,
+  every value a token, every gate green — and its Figma layers had been hand-set, so Dev
+  Mode could not have said which style was meant. **Gated:** `check:figma-text-styles`
+  (Figma masters) and the `style-*` kinds of `check:type-linkage` (CSS). Read the style the
+  layer is linked to before writing the rule.
 
 ## 2. Nothing external — nested parts come from the library
 

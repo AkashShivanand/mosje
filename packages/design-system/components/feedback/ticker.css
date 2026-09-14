@@ -19,9 +19,18 @@
      Text/Light   #ffffff → --sa-text-neutral-inverse
      radius-md    8       → --sa-shape-8
      spacing sm/lg/2xl    → --sa-inline-8 / -16 / -24
-     Title/title-3        → --sa-type-title-3-*   (the headline line)
-     Body/body-3          → --sa-type-body-3-*    (the sentence under it)
-     Label/label-1        → the DS Button's own type ramp
+     Title/title-2        → --sa-type-title-2-* + semibold  (the plinth's name)
+     Body/body-2-semibold → --sa-type-body-2-* + semibold   (the notice title)
+     Body/body-3          → --sa-type-body-3-*              (kind · date)
+     Label/label-1        → the action's label
+     Icon/24/Filled       → every control glyph, pause AND prev/next
+
+   EVERY TEXT HERE IS ONE WHOLE TEXT STYLE — size, leading, tracking and weight
+   from the same style, never size from one and weight from another. Until
+   2026-09-14 the name was title-2 at 500 and the notice title-3 at 500: every
+   value a token, so `check:type-linkage` passed, and no text style anywhere
+   draws either combination. The SAMAVESH text styles are 600 for both. The
+   composition check in that gate now fails a rule like that.
 
    THREE DELIBERATE DIVERGENCES FROM THE FIGMA FRAME, each recorded because a
    later reader will otherwise "fix" them back:
@@ -258,10 +267,11 @@
        stated rather than inherited — a browser's h2 default would drag the
        plinth to 32px and break the strip's height. */
     margin: 0;
+    /* Title/title-2 — semibold, the title tier's weight. */
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
     letter-spacing: var(--sa-type-title-tracking);
-    font-weight: var(--sa-font-weight-medium);
+    font-weight: var(--sa-font-weight-semibold);
     white-space: nowrap;
   }
 
@@ -606,7 +616,7 @@
     block-size: 0.3125rem;
     /* Optically centred on the FIRST line, not the row: the row is two or three
        lines tall and a dot halfway down it would point at nothing. */
-    margin-block-start: calc((var(--sa-type-title-3-lh) - 0.3125rem) / 2);
+    margin-block-start: calc((var(--sa-type-body-2-lh) - 0.3125rem) / 2);
     border-radius: var(--sa-shape-full);
     /* The top of the transparency ramp, and deliberately not full ink: at 100%
        six dots read as a column of holes punched down the rail and compete with
@@ -650,12 +660,15 @@
     background-color: var(--sa-color-transparent-white-8);
   }
 
-  /* Title over subtitle — the bar's structure, in the panel. */
+  /* Title over subtitle — the bar's structure, in the panel.
+     Body/body-2-semibold: the body role at 14/20 with the semibold weight — one
+     of the Figma-only compositions `design.md` records (body role + weight). It
+     was title-3 at 500: the same 14/20 box, a different role, a lighter cut. */
   .sa-ticker__rowtitle {
-    font-size: var(--sa-type-title-3-size);
-    line-height: var(--sa-type-title-3-lh);
-    letter-spacing: var(--sa-type-title-tracking);
-    font-weight: var(--sa-font-weight-medium);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    letter-spacing: var(--sa-type-body-tracking);
+    font-weight: var(--sa-font-weight-semibold);
     text-wrap: pretty;
   }
 
@@ -684,13 +697,15 @@
     overflow: hidden;
   }
 
-  /* 80% white on the /600 ground is 4.66:1 — past 1.4.3's 4.5:1 for normal
-     text. It would have been 3.52:1 on /500, which is why the ground moved. */
+  /* FULL INK, NOT 80%. The library binds kind, separator and date to the SAME
+     inverse text variable as the title, at full opacity — the subtitle is told
+     apart by size and weight (12/400 under 14/600), not by being dimmed. It was
+     `opacity: 0.8`, which measured 4.66:1 on the /600 ground; full ink is 6.36:1,
+     so matching the library also buys contrast rather than spending it. */
   .sa-ticker__rowmeta {
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
     letter-spacing: var(--sa-type-body-tracking);
-    opacity: 0.8;
   }
 
   /* The bar's trailing call to action. Underlined because it sits INSIDE a
@@ -758,21 +773,45 @@
     white-space: nowrap;
   }
 
-  /* THE HAIRLINE BETWEEN THE CONTROL AND THE ROUTE.
-     They are two different kinds of thing sharing one end of the row: one
-     governs the strip, the other leaves it. It was scoped to the narrow bar,
-     so the desktop bar and every panel had the pause and the route abutting
-     with nothing between them while the library drew a divider — a divergence
-     in the direction that matters least to notice and most to fix.
+  /*
+   * THE DESKTOP BAR'S ROUTE IS THE LIBRARY'S `Ticker / Action`: 40px, 24px in.
+   *
+   * The consumer passes `buttonClasses(…, "sm")` — 32px, 16px in, label-1 — and
+   * neither Button size is the part the library draws. `md` has the height but
+   * sets body-1, 16/24, where the part's label is `Label/label-1`, 14/20. So
+   * the strip sizes its own slot and leaves the type the `sm` button already
+   * carries, which IS label-1. Only from 1024px, where the route is a button at
+   * all; below it the header rule further down strips it to a link.
+   *
+   * Its border stays the Button's inverse edge. The part draws primaryScale/100,
+   * but the Button's only public hook, `--sa-btn-edge`, is the ink AND the edge,
+   * and would turn "View All" light blue with it.
+   */
+  @container sa-ticker (min-width: 1024px) {
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__action > :is(a, button) {
+      min-block-size: var(--sa-control-height-md);
+      padding-inline: var(--sa-padding-24);
+    }
 
-     ADJACENT SIBLING, deliberately. The nav is only rendered when something can
-     actually move, so this draws itself exactly when there is a control to
-     separate from and vanishes with it. A rule keyed on the shape or the width
-     would have to guess. */
-  .sa-ticker__nav + .sa-ticker__action {
-    padding-inline-start: var(--sa-padding-16);
-    border-inline-start: var(--sa-stroke-1) solid var(--sa-color-transparent-white-24);
+    /* The library groups the controls and the route in one `Actions` frame at an
+       8px gap. Here they are siblings in the bar's container, whose gap is the 24
+       between message and controls — so the route closes that gap to 8. Stated
+       in both tokens so a change to either keeps the sum right. */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__nav + .sa-ticker__action {
+      margin-inline-start: calc(var(--sa-inline-8) - var(--sa-inline-24));
+    }
   }
+
+  /* THE HAIRLINE BETWEEN THE CONTROL AND THE ROUTE — where the library draws one.
+
+     It draws it in the panel header and on the tablet and phone bars, and NOT on
+     the desktop bar, where the outlined button's own edge already separates the
+     route from the controls. The rule used to draw it at every width; it lives in
+     the under-1024px query below now, beside the rule that turns the route into
+     a link — the same measurement, so the two cannot disagree.
+
+     A 24px line at 40% ink with 8px either side, as the library draws it — not a
+     full-height border at 24%, which ran the whole 40px of the header row. */
 
   /* ── Reflow ──────────────────────────────────────────────────────────────
      The row could not compress: at full complement it fixed itself at ~266px,
@@ -865,7 +904,9 @@
        are two different kinds of thing sharing one end of the header. */
     .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__action {
       order: 3;
-      margin-inline-end: var(--sa-padding-16);
+      /* With the link's own 24 on its right, 12 here puts the text 36px from the
+         strip's edge — the library's 12px header padding plus the part's 24. */
+      margin-inline-end: var(--sa-padding-12);
     }
 
     /* THE ROUTE BECOMES A LINK, NOT A BUTTON, ON THE HEADER LINE — IN BOTH
@@ -892,9 +933,41 @@
        This restyles the CONSUMER'S element, which is why it is scoped tightly
        to the direct child of our own wrapper and does nothing above 1024px. */
     .sa-ticker__action > :is(a, button) {
-      padding-inline: 0;
+      /* The library's text-style `Ticker / Action` keeps a box: 12px before the
+         words and 24 after on the bar, 24 either side in the panel. */
+      padding-inline: var(--sa-padding-12) var(--sa-padding-24);
       border: 0;
       background: transparent;
+    }
+
+    .sa-ticker--vertical .sa-ticker__action > :is(a, button) {
+      padding-inline: var(--sa-padding-24);
+    }
+
+
+    /* ADJACENT SIBLING, deliberately. The nav is only rendered when something
+       can actually move, so the line draws itself exactly when there is a
+       control to separate from and vanishes with it. */
+    .sa-ticker__nav + .sa-ticker__action {
+      position: relative;
+      padding-inline-start: calc(var(--sa-stroke-1) + var(--sa-padding-8));
+    }
+
+    /* The panel's header spaces its two groups at 12; the library's `Actions`
+       frame spaces the control, the line and the route at 8. */
+    .sa-ticker--vertical .sa-ticker__nav + .sa-ticker__action {
+      margin-inline-start: calc(var(--sa-inline-8) - var(--sa-inline-12));
+    }
+
+    .sa-ticker__nav + .sa-ticker__action::before {
+      content: "";
+      position: absolute;
+      inset-block-start: 50%;
+      inset-inline-start: 0;
+      inline-size: var(--sa-stroke-1);
+      block-size: var(--sa-padding-24);
+      background-color: var(--sa-color-transparent-white-40);
+      transform: translateY(-50%);
     }
 
     .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__nav {
@@ -911,6 +984,22 @@
       padding-inline: var(--sa-padding-16);
     }
   }
+
+  /* BELOW THE LIBRARY'S SMALLEST PANEL, THE ROUTE DROPS ITS BOX.
+
+     The library draws the phone panel at 326px, and the part's 24 either side
+     fits there. A 360px phone gives the website's panel 296, and swept 296 → 336
+     in 2px steps the name "Latest Updates" wraps to two lines at 296 and holds on
+     one from 298 — two pixels of headroom, on a common phone, before a longer or
+     Hindi label arrives. So under the smallest width the library has an opinion
+     about, the route goes back to the bare link it was, and the name keeps its
+     line. */
+  @container sa-ticker (max-width: 325px) {
+    .sa-ticker--vertical .sa-ticker__action > :is(a, button) {
+      padding-inline: 0;
+    }
+  }
+
 
   /* ── Reduced motion ──────────────────────────────────────────────────────
      The entry animation goes. The auto-advance is stopped in the component
