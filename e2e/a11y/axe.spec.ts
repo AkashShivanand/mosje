@@ -98,6 +98,19 @@ const DECLARED: { selector: string; why: string }[] = [
       "control above and measured the same way — clickable at every probe point, real " +
       "click check passes. Both clear 24x24 on their own geometry.",
   },
+  {
+    selector: ".ds-btn--inverseText",
+    why:
+      "The same ticker pause control as `.sa-ticker__control` above. Since it became the " +
+      "library IconButton (primary · text · inverse), axe names it by the first class unique " +
+      "on the page, which is this one — the old selector stopped matching and the phantom " +
+      "overlap resurfaced. Re-measured 2026-09-14 at 1280x720 on /website: the track's " +
+      "unclipped rect runs 327→5687 across the control at 421→461, `elementFromPoint` returns " +
+      "the control at 8/25/50/75/92% of its height, and Playwright's actionability check " +
+      "passes. Every inverse text button on the audited routes is a ticker control — the " +
+      "panel's pause on /website, the bar's pause, previous and next on the NMBA page; a " +
+      "different one would need its own measurement, not this entry.",
+  },
 ];
 
 /** One route per surface the estate actually ships, plus the docs shell. */

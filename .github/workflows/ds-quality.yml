@@ -20,6 +20,7 @@ on:
       - "tools/type-linkage/**"
       - "tools/figma-index-parity/**"
       - "tools/figma-text-styles/**"
+      - "tools/figma-hand-rolled/**"
       - "tools/focus-ring/**"
       - ".github/workflows/ds-quality.yml"
   pull_request:
@@ -40,6 +41,7 @@ on:
       - "tools/type-linkage/**"
       - "tools/figma-index-parity/**"
       - "tools/figma-text-styles/**"
+      - "tools/figma-hand-rolled/**"
       - "tools/focus-ring/**"
       - ".github/workflows/ds-quality.yml"
 
@@ -378,6 +380,32 @@ jobs:
           set -e
           if [ $code -eq 2 ]; then
             echo "::warning::Live text-style check could not run (Figma API or token problem, exit 2) — not treated as drift."
+            exit 0
+          fi
+          exit $code
+
+      # Nothing on a component page is a hand-drawn copy of a library component: a frame
+      # set like a button, a pill with one label, a Material Symbols glyph outside an Icon,
+      # a hairline standing in for a Divider. The Ticker shipped local Control and Action
+      # parts beside a library IconButton and Button that drew the same thing.
+      # Offline: the baseline of pages that still carry copies is well-formed.
+      - name: Figma hand-drawn components — the baseline is coherent
+        run: npm run check:figma-hand-rolled
+
+      - name: Figma hand-drawn components — no page gains a copy of a library component
+        env:
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$FIGMA_ACCESS_TOKEN" ]; then
+            echo "::warning::FIGMA_ACCESS_TOKEN unavailable (fork PR, or secret not set) — skipping the live hand-drawn component check. check:figma-hand-rolled still ran."
+            exit 0
+          fi
+          set +e
+          npm run check:figma-hand-rolled:live
+          code=$?
+          set -e
+          if [ $code -eq 2 ]; then
+            echo "::warning::Live hand-drawn component check could not run (Figma API or token problem, exit 2) — not treated as drift."
             exit 0
           fi
           exit $code
