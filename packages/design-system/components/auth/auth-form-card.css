@@ -64,4 +64,31 @@
   .ds-authcard__prompt {
     padding-top: var(--sa-padding-8);
   }
+
+  /* Field type on the sign-in card, as the master's `Input Field` instances
+     draw it: the label on Label/label-1 (14/20 medium), the entry on
+     Body/body-2 (14), and "Forgot Password?" as a default-size `Link` (14
+     medium). The estate's `FormField` sets its label at body-1 (16) by a
+     recorded decision (docs/audit/input-fields-audit-2026-09-03.md §4) — this
+     card follows the library master instead, and only this card.
+
+     The entry size steps down from 768 only. Below it forms.css holds text
+     inputs at 16px, because iOS zooms into any focused field smaller than that;
+     that floor is a platform constraint and is not overridden here. */
+  .ds-authcard .ds-field__label {
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+  }
+
+  .ds-authcard .ds-field__label-action {
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+  }
+
+  @media (min-width: 768px) {
+    .ds-authcard .ds-input {
+      font-size: var(--sa-type-body-2-size);
+      line-height: var(--sa-type-body-2-lh);
+    }
+  }
 }

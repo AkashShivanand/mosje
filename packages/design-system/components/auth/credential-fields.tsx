@@ -247,15 +247,6 @@ export interface DarpanFieldsProps {
   /** The organisation's PAN. Upper-cased as typed. */
   pan: string;
   onPanChange: (value: string) => void;
-  /**
-   * The sentence under the button naming the roles this route does NOT serve.
-   *
-   * **Portal copy, not the design system's.** E-Anudaan's other roles are DWO,
-   * State, Ministry, Finance and PMU; another portal's would be different ones,
-   * and a default here would put E-Anudaan's org chart on every portal that
-   * ever adopts DARPAN. Omit it and nothing renders.
-   */
-  note?: React.ReactNode;
   className?: string;
 }
 
@@ -284,7 +275,6 @@ export function DarpanFields({
   onDarpanIdChange,
   pan,
   onPanChange,
-  note,
   className,
 }: DarpanFieldsProps): React.JSX.Element {
   return (
@@ -316,7 +306,6 @@ export function DarpanFields({
         )}
       </FormField>
 
-      {note ? <p className="ds-authfields__note">{note}</p> : null}
     </Stack>
   );
 }

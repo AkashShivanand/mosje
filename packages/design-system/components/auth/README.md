@@ -38,6 +38,8 @@ It enforces **100% static compliance with Government of India Web Standards** (D
 ### Configurable Elements (Set via `PortalLoginConfig`)
 - `portalId`: Unique slug (e.g. `"smile-admin"`, `"pm-ajay"`, `"nos"`, `"e-utthan"`, `"scw"`, `"garima-greh"`, `"nmba"`).
 - `portalName`: Title string displayed in the hero "Signing Into" bar (e.g. *"Nasha Mukt Bharat Abhiyaan"*).
+- `portalTagline` *(optional)*: A line under the portal name in the "Signing Into" bar — usually the scheme's expanded name (e.g. *"Support For Marginalized Individuals For Livelihood & Enterprise"* under *"SMILE Beggary"*). Large screens only.
+- `portalDescription` *(optional)*: A muted line under the tagline saying what the portal is for (e.g. *"Comprehensive Rehabilitation of Persons Engaged in Begging"*). Large screens only.
 - `roles`: Role switcher tabs (`id`, `label`, `authModes`, `authModeOptions`, `authSelectorType`, `defaultMode`, `description`).
 - `authSelectorType`: Sub-selection layout style (`"segmented"` pills, `"radio"` group with descriptions, or `"dropdown"`).
 - `brandAssets`: Optional custom asset path overrides for emblem or portal seals.
@@ -47,7 +49,7 @@ It enforces **100% static compliance with Government of India Web Standards** (D
 
 ## 2. Configurable Sub-Selection (Login Method Selector)
 
-Below the main Role Tabs, portals can configure a **Sub-Selection Switcher** allowing users to choose how they want to log in for that specific role (e.g. *"Login via Password"*, *"Login via Mobile OTP"*, *"Login with DARPAN ID"*).
+Below the main Role Tabs, portals can configure a **Sub-Selection Switcher** allowing users to choose how they want to log in for that specific role (e.g. *"Login with Password"*, *"Login with OTP"*, *"Login with DARPAN ID"*).
 
 ### Sub-Selection UI Presentation Styles (`authSelectorType`)
 1. **Segmented Pills (`"segmented"`):** Horizontal pill switchers, ideal for 2–3 compact choices (e.g., `[ Password Login | Mobile OTP ]`).
@@ -118,9 +120,9 @@ export const portalLoginConfig: PortalLoginConfig = {
       id: "applicant",
       label: "Beneficiary / Applicant",
       authModeOptions: [
-        { mode: "otp", label: "Login via Mobile OTP", description: "Receive 6-digit OTP on your registered phone number." },
+        { mode: "otp", label: "Login with OTP", description: "Receive 6-digit OTP on your registered phone number." },
         { mode: "digilocker", label: "Login with DigiLocker", description: "Fast-track identity and document verification." },
-        { mode: "password", label: "Login via Password", description: "Use your user ID and portal password." },
+        { mode: "password", label: "Login with Password", description: "Use your user ID and portal password." },
       ],
       authSelectorType: "radio",
       defaultMode: "otp",
@@ -131,7 +133,7 @@ export const portalLoginConfig: PortalLoginConfig = {
       label: "NGO / Implementing Agency",
       authModeOptions: [
         { mode: "darpan", label: "Login with NGO DARPAN ID" },
-        { mode: "password", label: "Login via Credentials" },
+        { mode: "password", label: "Login with Credentials" },
       ],
       authSelectorType: "segmented",
       defaultMode: "darpan",

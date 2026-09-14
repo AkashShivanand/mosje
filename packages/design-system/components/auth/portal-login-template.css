@@ -3,6 +3,47 @@
 @layer theme, base, components, utilities;
 
 @layer components {
+  /* The size container. Every "desktop" rule in this file and in
+     portal-login-hero.css asks how wide the TEMPLATE is, not how wide the
+     viewport is — a documentation specimen 770px wide on a 1440px screen used to
+     draw the desktop split and crush the form column to 140px. */
+  .ds-plogin {
+    container: plogin / inline-size;
+  }
+
+  /* The form column's ground — `bg/neutral/base` on the master's Form column, at
+     both devices. It inherited the portal's muted page ground until 13 Sep 2026. */
+  .ds-plogin__panel {
+    flex: 1 1 auto;
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  /* Tabs and form as one group. The master's Form column pads 24 top and bottom
+     on a phone and 32 on desktop, with the card's 32 between the role tabs and
+     the heading; on desktop it CENTRES that group in the column. `margin-block:
+     auto` rather than `justify-content: center`, because a centred flex child
+     taller than its scroll container is clipped at the top where nobody can
+     scroll to it, and auto margins collapse to zero instead. */
+  .ds-plogin__stack {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    padding-block: var(--sa-padding-24);
+  }
+
+  .ds-plogin__panel-pad--form { flex: 1 1 auto; }
+  .ds-plogin__stack > .ds-plogin__panel-pad + .ds-plogin__panel-pad { padding-block-start: var(--sa-padding-32); }
+
+  @container plogin (min-width: 1024px) {
+    .ds-plogin__panel { flex: 0 0 var(--sa-layout-login-panel-width); }
+    .ds-plogin__stack {
+      flex: 0 0 auto;
+      margin-block: auto;
+      padding-block: var(--sa-padding-32);
+    }
+    .ds-plogin__panel-pad--form { flex: 0 0 auto; }
+  }
+
   /* Anything a portal hangs below the form. Same gutter as the column above it,
      so it lines up rather than sitting eight pixels inside. */
   .ds-plogin__extra {
@@ -35,7 +76,7 @@
      retracts as you scroll, and this is the one place a wrong viewport unit
      would clip the submit button rather than merely shift it. The `100vh` line
      above it is the fallback for anything without `dvh`. */
-  @media (min-width: 1024px) {
+  @container plogin (min-width: 1024px) {
     /* The SHELL is exactly one viewport tall and the row takes what the masthead
        leaves — `flex: 1` plus `min-block-size: 0`, which is the pair that lets a
        flex child be shorter than its content and therefore scroll. No header
@@ -93,7 +134,7 @@
     width: 100%;
   }
 
-  @media (min-width: 1024px) {
+  @container plogin (min-width: 1024px) {
     .ds-plogin__column { max-width: var(--sa-layout-login-content-width); }
   }
 
@@ -111,7 +152,7 @@
     padding-inline: var(--sa-padding-16);
   }
 
-  @media (min-width: 1024px) {
+  @container plogin (min-width: 1024px) {
     .ds-plogin__panel-pad { padding-inline: var(--sa-layout-login-panel-gutter); }
   }
 
@@ -148,4 +189,12 @@
      which drifted to the wrong navy and never grew a hover state. It is gone:
      the shell renders the real `Tabs` now (7 Sep 2026), and `--track-enclosed`
      already gives equal-width segments, so there was nothing left to override. */
+
+  /* The change-portal sheet. The handoff's `E-Anudaan | Portal Switch`
+     (52380:187330) drops `Auth / PortalList` into the sheet's Content slot with NO
+     inset of its own — the list's 20 is the only gutter — so the sheet's usual 24
+     would have stacked on it and pushed every card 44px in. */
+  .ds-plogin__picker .ds-sheet__body {
+    padding: 0;
+  }
 }

@@ -3879,12 +3879,6 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": ""
-      },
-      {
-        "name": "note",
-        "type": "React.ReactNode",
-        "required": false,
-        "description": "The sentence under the button naming the roles this route does NOT serve. **Portal copy, not the design system's.** E-Anudaan's other roles are DWO, State, Ministry, Finance and PMU; another portal's would be different ones, and a default here would put E-Anudaan's org chart on every portal that ever adopts DARPAN. Omit it and nothing renders."
       }
     ]
   },
@@ -9857,11 +9851,23 @@ export const GENERATED_PROPS = {
         "description": "Open the change-portal picker instead of navigating. The handoff's `E-Anudaan | Portal Switch` draws this as a SIDE SHEET over the login page — \"Choose a portal to login\" — not as a trip to the hub root. Pass a handler and the control becomes a `<button>` that opens it; leave it off and it stays the `changeHref` link, so every existing consumer is unchanged. A button, not a link, when it opens a panel: a control that does not navigate must not offer middle-click or \"copy link address\", and it owes `aria-expanded` / `aria-haspopup`, which an anchor cannot honestly carry."
       },
       {
+        "name": "portalDescription",
+        "type": "string",
+        "required": false,
+        "description": "Optional second, muted line under the tagline — what the portal is for, e.g. \"Comprehensive Rehabilitation of Persons Engaged in Begging\". One sentence; the strip is identity, not a place for instructions. Large screens only, as `portalTagline`."
+      },
+      {
         "name": "portalPickerOpen",
         "type": "boolean",
         "required": false,
         "default": "false",
         "description": "Whether the picker this control opens is currently open — drives `aria-expanded`."
+      },
+      {
+        "name": "portalTagline",
+        "type": "string",
+        "required": false,
+        "description": "Optional line under the portal name — the scheme's expanded name, e.g. \"Support For Marginalized Individuals For Livelihood & Enterprise\" under \"SMILE Beggary\". Leave it off where the name already says it (E-Anudaan). LARGE SCREENS ONLY. The desktop hero's strip shows it; the phone strip does not, because beside the mark and the Change button there is no room for it and it pushed the form further down the screen."
       }
     ]
   },
@@ -12319,6 +12325,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "description",
+        "type": "string",
+        "required": false,
+        "description": "Optional muted line under the tagline — what the portal is for, in one sentence."
+      },
+      {
         "name": "eyebrow",
         "type": "string",
         "required": false,
@@ -12336,6 +12348,12 @@ export const GENERATED_PROPS = {
         "type": "() => void",
         "required": false,
         "description": "Opens the portal picker. Omit to render the bar without a Change control."
+      },
+      {
+        "name": "tagline",
+        "type": "string",
+        "required": false,
+        "description": "Optional line under the name — the scheme's expanded name, e.g. \"Support For Marginalized Individuals For Livelihood & Enterprise\" under \"SMILE Beggary\"."
       },
       {
         "name": "tone",
