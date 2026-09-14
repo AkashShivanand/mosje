@@ -56,8 +56,8 @@
     "weight": 0,
     "hindi-unmarked": 0,
     "style-mixed": 3,
-    "style-weight": 247,
-    "style-weight-unset": 180
+    "style-weight": 244,
+    "style-weight-unset": 178
   },
   "files": {
     "apps/hub/src/app/design-system/components/brand/org-logo/org-logo-docs.css": {
@@ -673,7 +673,7 @@
       "hindi-unmarked": 0,
       "style-mixed": 0,
       "style-weight": 0,
-      "style-weight-unset": 2
+      "style-weight-unset": 1
     },
     "packages/design-system/components/data-display/carousel.css": {
       "size-off-ramp": 0,
@@ -852,7 +852,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 5,
+      "style-weight": 3,
       "style-weight-unset": 1
     },
     "packages/design-system/components/data-display/notification-centre.css": {
@@ -957,7 +957,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 1,
+      "style-weight": 0,
       "style-weight-unset": 2
     },
     "packages/design-system/components/feedback/badge.css": {
@@ -1033,7 +1033,7 @@
       "hindi-unmarked": 0,
       "style-mixed": 0,
       "style-weight": 2,
-      "style-weight-unset": 3
+      "style-weight-unset": 2
     },
     "packages/design-system/components/feedback/feedback.css": {
       "size-off-ramp": 0,

@@ -4,6 +4,8 @@ import * as React from "react";
 import { useHydrated } from "../../foundations/use-hydrated";
 import { createPortal } from "react-dom";
 import { cn } from "../../utils/cn";
+import { IconButton } from "../actions/icon-button";
+import { Icon } from "../utilities/icon";
 import {
   useAnchoredPosition,
   useDismissOnOutside,
@@ -298,17 +300,19 @@ export function TimePicker({
           onBlur={commit}
           onKeyDown={onFieldKeyDown}
         />
-        <button
-          type="button"
+        {/* The library IconButton, outlined, at the field's own 40px — with the
+            estate's clock glyph where a drawn ◯ character used to stand in for one. */}
+        <IconButton
+          variant="neutral"
+          appearance="outlined"
           className="ds-timepicker__trigger"
           aria-label={`Choose a time for ${label}`}
           aria-expanded={open}
           aria-controls={open ? listId : undefined}
           disabled={disabled}
           onClick={() => (open ? closeAndRestore() : openList())}
-        >
-          <span aria-hidden>&#9711;</span>
-        </button>
+          icon={<Icon name="schedule" size={24} />}
+        />
       </div>
 
       {error ? (

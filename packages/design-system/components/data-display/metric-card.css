@@ -180,19 +180,8 @@
   .ds-metric-card__change--down { color: var(--sa-text-status-error-base); }
   .ds-metric-card__change--flat { color: var(--sa-text-neutral-subtle); }
 
-  /* ── Tinted delta pill + muted suffix (SAMAVESH KPI card) ── */
-  .ds-metric-card__pill {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-stack-4);
-    padding: var(--sa-padding-2) var(--sa-padding-8);
-    border-radius: var(--sa-shape-full);
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
-    font-weight: var(--sa-font-weight-semibold);
-  }
-  .ds-metric-card__pill--up   { background-color: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
-  .ds-metric-card__pill--down { background-color: var(--sa-bg-status-error-base);  color: var(--sa-text-status-error-base); }
+  
+  
   .ds-metric-card__suffix {
     margin-left: var(--sa-padding-8);
     font-size: var(--sa-type-label-2-size);
@@ -223,27 +212,11 @@
     align-items: center;
     max-width: 96px;
   }
-  .ds-metric-card__status {
-    display: inline-flex;
-    align-items: center;
-    padding: var(--sa-padding-2) var(--sa-padding-8);
-    border-radius: var(--sa-shape-full);
-    font-family: var(--sa-font-latin);
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    /* label-3 is the 12px uppercase overline role — the same treatment the Figma
-       master's Label/label-3 style carries, so the chip reads identically. */
-    text-transform: uppercase;
-    letter-spacing: var(--sa-type-caps-tracking);
-    white-space: nowrap;
-    background-color: var(--sa-bg-neutral-subtler);
-    color: var(--sa-text-neutral-base);
-  }
-  .ds-metric-card__status--info    { background-color: var(--sa-bg-status-info-subtler);    color: var(--sa-text-status-info-base); }
-  .ds-metric-card__status--success { background-color: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
-  .ds-metric-card__status--warning { background-color: var(--sa-bg-status-warning-subtler); color: var(--sa-text-status-warning-base); }
-  .ds-metric-card__status--danger  { background-color: var(--sa-bg-status-error-subtler);   color: var(--sa-text-status-error-base); }
+  
+  
+  
+  
+  
 
   /* ── Toned tile: border, label and figure take the status ink; the ground
         stays a tint, never a fill, so the figure keeps its contrast. ── */

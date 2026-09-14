@@ -46,6 +46,11 @@
     margin-block-start: var(--sa-stack-4);
   }
 
+  /* The library IconButton sits beside the field at its own 40px; it only must not shrink. */
+  .ds-timepicker__trigger {
+    flex: 0 0 auto;
+  }
+
   .ds-timepicker__input {
     flex: 1 1 auto;
     min-width: 0;
@@ -63,8 +68,7 @@
     font-variant-numeric: tabular-nums;
   }
 
-  .ds-timepicker__input:focus-visible,
-  .ds-timepicker__trigger:focus-visible {
+  .ds-timepicker__input:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
   }
@@ -73,32 +77,10 @@
     border-color: var(--sa-border-status-error-base);
   }
 
-  .ds-timepicker__input:disabled,
-  .ds-timepicker__trigger:disabled {
+  .ds-timepicker__input:disabled {
     background-color: var(--sa-bg-neutral-disabled);
     color: var(--sa-text-neutral-disabled);
     cursor: not-allowed;
-  }
-
-  .ds-timepicker__trigger {
-    flex: 0 0 auto;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    /* Square on the field's own height, so it clears WCAG 2.2 2.5.8 without a
-       size of its own to keep in step. */
-    width: var(--sa-control-height-md);
-    height: var(--sa-control-height-md);
-    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
-    border-radius: var(--sa-control-radius);
-    background-color: var(--sa-bg-neutral-base);
-    color: var(--sa-text-neutral-base);
-    font-size: var(--sa-type-body-1-size);
-    cursor: pointer;
-  }
-
-  .ds-timepicker__trigger:hover:not(:disabled) {
-    background-color: var(--sa-bg-neutral-hover);
   }
 
   .ds-timepicker__error {
