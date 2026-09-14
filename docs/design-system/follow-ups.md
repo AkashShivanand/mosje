@@ -187,3 +187,36 @@ never had. **Still open in Figma:** the three `Size=Small, Type=Danger, State=Fo
 Tone=Inverse` Button variants carry one unbound effect instead of the `focus/ring`
 style; `IconButton` Outlined · Inverse has no Hover / Pressed fill; Neutral inverse Text
 binds `cmp/action/neutral/tertiary/*` rather than an inverse token.
+
+---
+
+## Code still hand-rolls parts the Figma masters now instance (open, 2026-09-14)
+
+Every hand-drawn copy of a library component was replaced in the SAMAVESH Figma library
+(`check:figma-hand-rolled` reads zero). Where the React component already rendered the
+design-system part — Cookie Consent, Transfer List, Inline Edit's Save and Split Button use
+`Button` — Figma now matches it. These components still draw their own element in code, so
+Figma shows the library part and the page does not:
+
+| Component | Part | Figma now | Code today |
+|---|---|---|---|
+| `FeedbackWidget` | Yes / No verdicts, Send | `Button` Neutral Outlined · Neutral Filled (selected) · Primary Filled | `<button>` in `feedback-widget.tsx` |
+| `BulkActionsBar` | Select all, Clear selection | `Button` Small, Neutral Text | `.ds-bulk__link`, `.ds-bulk__clear` |
+| `ChartCard` state | Try again / Clear filters | `Button` Small Neutral Outlined | `.ds-card-state__retry` |
+| `TimePicker` | open-list trigger | `IconButton` Neutral Outlined, `schedule` | `.ds-timepicker__trigger` with a ◯ character |
+| `DateRangePicker` | quick periods | `Chip` (32px) | `<button>` pills (28px) |
+| `Chatbot` | quick replies | `Chip` | `<button>` in `chatbot.tsx` |
+| `MetricCard` | delta and status pills | `Badge` Text, Subtle | `.ds-metric-card__pill` |
+| `VideoTile` | state badge | `Badge` Text, Subtle | `.ds-video__badge` (bordered) |
+| `AccessibilityControls` | accessibility action | `IconButton` Text Inverse (docs specimen) | `.sa-a11yc__action` |
+
+**Closing it:** render the design-system component in each, as the Ticker's controls were
+moved to `IconButton`, and re-measure the page against the master. Bulk Actions Bar's
+"Return for correction" had a warning tone Figma's `Button` has no type for; it is Neutral
+Outlined in the master.
+
+**Not refreshed:** the Index card previews for Split Button, Bulk Actions Bar, Cookie
+Consent, Transfer List, Inline Edit, Date Range Picker, Feedback Widget, Video Tile,
+Date-Time Picker, Chatbot, Charts & Graphs and Badges are composed crops whose source
+framing could not be matched; they may show the pre-swap detail (4px shorter buttons,
+uppercase badges) until re-cut by hand.

@@ -32,9 +32,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.133.0",
+    version: "v0.134.0",
     date: "2026-09-14",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "THE FIGMA LIBRARY CARRIES NO HAND-DRAWN COPY OF A LIBRARY COMPONENT. 133 were replaced on 36 component pages: documentation hero pills and anatomy pins with `Badge`; the actions of Cookie Consent, Transfer List, Bulk Actions Bar, Inline Edit, Split Button, Feedback Widget and the Chart Card states with `Button` at the size the code renders; the Time Picker trigger and the Accessibility Bar control specimens with `IconButton`; the deprecated Carousel Pause/Play with `Button`; date-range presets and chatbot quick replies with `Chip`; metric-card deltas and statuses, ranked-bar ranks and video-tile states with `Badge`; chart-card and menu rules with `Divider`. `check:figma-hand-rolled` now reads zero on all 74 component pages" },
+      { kind: "Fixed", text: "FIGMA `Badge` TEXT SETS ITS LABEL AS TYPED, LIKE THE CODE. The twelve Text variants took `Label/label-3`, which is uppercase, while `.ds-badge--sm` sets label-2 in the case it is given \u2014 so \u201cIn Review\u201d and \u201cBelow target\u201d read as capitals in Figma and not on the page. They take `Label/label-2` now; height is unchanged at 20" },
+      { kind: "Changed", text: "`check:figma-hand-rolled` SKIPS WIREFRAMES AND TEXT FIELDS BY NAME. A subtree named `wireframe` or `schematic` draws labelled boxes to show where components go, and a frame named `field`, `input` or `textbox` is set like a button without being one; both were found by reading every match of the first sweep" },
+    ],
+  },
+  {
+    version: "v0.133.0",
+    date: "2026-09-14",
     changes: [
       { kind: "Fixed", text: "`Ticker`\u2019S DESKTOP BAR TAKES THE LIBRARY FRAME\u2019S SPACING, AND FIGMA DRAWS THE CONTENT WIDTH. From 1024px the mark sits 32 from the content edge, the plinth ends 24 past the name, the notice starts 24 past the plinth and stops 32 short of the controls, and the bar ends 32 in \u2014 where code had 40, 16, 24 and 24. The Figma desktop variants now keep their content to `container/page` between two gutters and run the plinth out through the leading one, so the frame and the page show the same bar at 1440" },
       { kind: "Fixed", text: "`Ticker`\u2019S PANEL STARTS ITS FIRST NOTICE DIRECTLY UNDER THE HEADER. The container\u2019s 24px gap is the bar\u2019s gap between side-by-side parts, and stacked it put 24px of bare ground above the first row on top of the row\u2019s own 16. The panel is 24px shorter at every width, matching the library\u2019s 424px frame" },
