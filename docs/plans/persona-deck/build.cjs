@@ -167,7 +167,7 @@ const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels 
 const OPTIONS = [
   { part:"The Home Page · Option A of 3", title:"Explore User Personas",
     img:"home-a", live:true, rec:false,
-    caption:"The panel as it is on the site today.",
+    caption:"",
     what:"The panel already on the home page. It shows one group at a time, and you move between them with the arrows.",
     how:["Tap the arrows to move between the groups","Tap a group to open the Schemes page for that group"],
     why:["The smallest change: only the link behind each picture is new","The pictures work in any language"],
@@ -204,7 +204,7 @@ const SCHEMES_PAGE = [
     notes:"The reference layout with the filter panel: tick one or more groups, and the table on the right says what each scheme gives and who it is for, ten rows a page, no counts. This is for comparing and deciding." },
   { part:"The Schemes Page · Option C of 3", title:"Filter Panel with Headings",
     img:"scheme-c", live:false, rec:false,
-    caption:"Drawn in Figma, 14 September. No filter chosen; results grouped by category.",
+    caption:"",
     what:"The filters sit in a panel on the left. Schemes are grouped under headings for the kind of support they give.",
     how:["Choose Schemes or Services first, then a group, then a category","Each heading opens to show its schemes, with a link to the rest","Each card names the organisation or portal that runs the scheme"],
     why:["A visitor sees every kind of support before reading a single scheme","The organisation filter uses the same name as the menu"],
@@ -228,7 +228,7 @@ function optionPage(o) {
   px += pill(s, px, 1.42, o.pill || (o.live?"ON THE SITE TODAY":"TO BE BUILT"), o.live?SURF:BLUE_50, o.live?MUTE:BLUE_TXT) + 0.14;
   const y0 = 1.95, boxW = 7.1, boxH = 4.45;
   const m = media(s, o, M, y0, boxW, boxH);
-  s.addText((o.vid ? "▶  " : "") + o.caption, { x:M, y:m.iy+m.ih+0.14, w:boxW, h:0.42, isTextBox:true, margin:0, fontFace:F, fontSize:T.micro, color:MUTE, lineSpacingMultiple:1.15 });
+  if (o.caption) s.addText((o.vid ? "▶  " : "") + o.caption, { x:M, y:m.iy+m.ih+0.14, w:boxW, h:0.42, isTextBox:true, margin:0, fontFace:F, fontSize:T.micro, color:MUTE, lineSpacingMultiple:1.15 });
   const rx = M+boxW+0.5, rw = W-M-rx;
   let y = y0;
   s.addText("WHAT IT IS", { x:rx, y, w:rw, h:0.22, isTextBox:true, margin:0, fontFace:F, fontSize:T.label, bold:true, charSpacing:TRACK.eyebrow, color:DARK });
@@ -269,21 +269,21 @@ OPTIONS.forEach(optionPage);
 const MENU = [
   { part:"The Menu · Option A of 3", title:"Rename Only",
     img:"nav-a", live:false, rec:false,
-    caption:"Drawn in Figma, 14 September. The menu open.",
+    caption:"",
     what:"The menu keeps everything it lists today. Only its name changes, so it says that scheme portals are inside.",
     how:["Associated Organisations becomes Organisations & Scheme Portals","Commissions, Corporations and Foundations stay; the portals get a column of their own","The Schemes page filter uses the same name"],
     why:["The smallest change to the menu","A returning visitor finds everything where it was"],
     notes:"The lightest of the three, added on 14 September. Nothing moves; the name of the menu now covers what is in it. Wherever the site says All Organisations today, including the Schemes page filter, it would say Organisations & Scheme Portals. The longer name fits on a desktop screen and still has to be checked on a smaller laptop." },
   { part:"The Menu · Option B of 3", title:"Portals under Offerings",
     img:"nav-b", live:false, rec:false,
-    caption:"Drawn in Figma, 14 September. Offerings open.",
+    caption:"",
     what:"The seven portals move out of Associated Organisations and into Offerings, beside Vacancies and Tenders.",
     how:["Each portal is listed with the scheme it serves","A full-width button under the portals opens the list of all schemes","Associated Organisations keeps only the organisations"],
     why:["The top row of the menu does not change","Organisations and portals are no longer mixed"],
     notes:"The portals leave Associated Organisations and join Offerings. View All Schemes is a full-width button under the portals, as asked on 14 September, so the list of all schemes is not reduced to a small link. The top row stays as it is." },
   { part:"The Menu · Option C of 3", title:"Schemes as Its Own Menu",
     img:"nav-c", live:false, rec:false,
-    caption:"Drawn in Figma, 14 September. Schemes open.",
+    caption:"",
     what:"A new Schemes entry in the top row holds the seven portals and the Department's helplines.",
     how:["Schemes sits between Organisations and Offerings","Associated Organisations is shortened to Organisations to make room","A button under the portals opens the list of all schemes"],
     why:["The word Schemes can be seen without opening anything","Helplines are listed beside the portals they support"],
