@@ -10,7 +10,8 @@
  *
  * Revised 14 September 2026 after the internal review of that day: three
  * options for where the scheme portals sit in the menu, and a third Schemes
- * page option that groups results under headings. Both drawn in the Handoff
+ * page option that groups results under headings, with a count on each
+ * heading — kept on that option by decision of 14 September. Both drawn in the Handoff
  * file, section "Sheme Navigation and Listing" (Ds5qx61QsI0ZkYSrLKxo0A,
  * node 52383:59596).
  *
@@ -114,7 +115,7 @@ const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels 
   s.addText("Ten options for four parts of the website.", {
     x:M, y:3.9, w:10.4, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:18, color:BLUE_100 });
   footLine(s, "MoSJE Design Research · September 2026", true);
-  s.addNotes("Presented live. The order is the one asked for on 8 September: the idea behind every option first, then the home page, then the menu, then the Schemes page, then the assistant, then what has to come first. The menu was added on 14 September. No scheme count appears anywhere in the deck — a number nobody can defend invites a challenge.");
+  s.addNotes("Presented live. The order is the one asked for on 8 September: the idea behind every option first, then the home page, then the menu, then the Schemes page, then the assistant, then what has to come first. The menu was added on 14 September. Only Schemes page Option C shows scheme counts, one on each heading; that was decided on 14 September. Every other option shows none.");
 }
 
 /* ═══ 2 · The idea — who you are, what you need ══════════════════════════ */
@@ -208,7 +209,7 @@ const SCHEMES_PAGE = [
     what:"The filters sit in a panel on the left. Schemes are grouped under headings for the kind of support they give.",
     how:["Choose Schemes or Services first, then a group, then a category","Each heading opens to show its schemes, with a link to the rest","Each card names the organisation or portal that runs the scheme"],
     why:["A visitor sees every kind of support before reading a single scheme","The organisation filter uses the same name as the menu"],
-    notes:"Drawn after the review of 14 September. Services are a choice of their own because some portals, Senior Citizens Welfare among them, offer services as well as schemes. The first visit still opens on the Department's own schemes; choosing any filter widens it to all organisations and portals. The headings show how many schemes sit under each, as socialjustice.gov.in does. That reverses the 8 September decision to show no counts, and is for the Department to decide. The headings are the categories dosje.gov.in uses today; they would become the list on the second slide once every scheme is tagged. A second version, grouped by organisation, is drawn beside this one." },
+    notes:"Drawn after the review of 14 September. Services are a choice of their own because some portals, Senior Citizens Welfare among them, offer services as well as schemes. The first visit still opens on the Department's own schemes; choosing any filter widens it to all organisations and portals. Each heading shows how many schemes sit under it, as socialjustice.gov.in does, so a visitor knows how much is there before opening it. The counts are read from the list when the page loads, never typed in, so they change as schemes are added or cleaned up. This is the only option in the deck that shows a count. The headings are the categories dosje.gov.in uses today; they would become the list on the second slide once every scheme is tagged. A second version, grouped by organisation, is drawn beside this one." },
 ];
 const ASSISTANT = [
   { part:"The Assistant · Samajik Sahayak", title:"The Same Two Questions, in Chat",
