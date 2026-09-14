@@ -627,8 +627,16 @@
   },
   "MegaMenu": {
     "nodeId": "4268:914",
-    "captured": "2026-08-22",
+    "captured": "2026-09-14",
     "properties": {
+      "Show Overview#58044:0": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Overview Label#58044:4": {
+        "type": "TEXT",
+        "defaultValue": "All of Associated Organisations"
+      },
       "Device": {
         "type": "VARIANT",
         "variantOptions": [
