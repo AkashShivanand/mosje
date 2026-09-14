@@ -78,11 +78,13 @@
   .ds-authcard .ds-field__label {
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
   }
 
   .ds-authcard .ds-field__label-action {
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
   }
 
   @media (min-width: 768px) {

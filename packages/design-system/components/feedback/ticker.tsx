@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { Icon } from "../utilities/icon";
+import { IconButton } from "../actions/icon-button";
 import { TickerMark } from "./ticker-mark";
 import "./ticker.css";
 
@@ -88,16 +89,13 @@ export interface TickerProps extends Omit<React.HTMLAttributes<HTMLElement>, "ti
    */
   orientation?: TickerOrientation;
   /**
-   * The label plinth runs off the START edge of the viewport. `horizontal` only.
+   * The bar runs to the edges of the viewport, so it draws square ends.
+   * `horizontal` only.
    *
-   * Pass it ONLY when the bar itself spans the viewport, which is how the Figma
-   * frame draws it — the page margin beside the plinth is bar-coloured there,
-   * and a plinth that stops short of the edge reads as a floating chip rather
-   * than a masthead band.
-   *
-   * Leave it off inside a content column. A bar inset to the column with a
-   * plinth bled to the viewport is aligned on one edge and not the other, and
-   * that is what it looks like.
+   * Pass it ONLY when the bar itself spans the viewport. A bar inside a content
+   * column keeps its 12px corners. Either way the label plinth reaches the bar's
+   * own leading edge — through the page gutter when the bar is wider than the
+   * content width — so this prop no longer changes the plinth.
    *
    * @default false
    */
@@ -421,22 +419,28 @@ export function Ticker({
   );
 
   const pauseButton = canMove ? (
-    <button
-      type="button"
+    /* THE LIBRARY'S IconButton, not a button of the strip's own. The Figma
+       master instances `IconButton` (Primary · Text · Inverse · Default) in this
+       slot, so Dev Mode and the code name one component.
+
+       FILLED, not the estate's default stroke. At 24px on a solid brand
+       surface the outlined `pause` is two hairline rectangles — it reads as
+       a pair of thin outlines rather than a control, and it is the one
+       control WCAG 2.2.2 requires to be findable. The filled axis makes it
+       a solid mark at the same size and lifts it well clear of the 3:1
+       non-text contrast floor. Every other icon in the estate stays stroke;
+       this is a deliberate, local exception for a statutory control. */
+    <IconButton
       className="sa-ticker__control"
+      variant="primary"
+      appearance="text"
+      tone="inverse"
+      size="md"
       onClick={() => setIsPlaying((p) => !p)}
       aria-label={isPlaying ? `Pause ${label}` : `Play ${label}`}
       aria-pressed={!isPlaying}
-    >
-      {/* FILLED, not the estate's default stroke. At 24px on a solid brand
-          surface the outlined `pause` is two hairline rectangles — it reads as
-          a pair of thin outlines rather than a control, and it is the one
-          control WCAG 2.2.2 requires to be findable. The filled axis makes it
-          a solid mark at the same size and lifts it well clear of the 3:1
-          non-text contrast floor. Every other icon in the estate stays stroke;
-          this is a deliberate, local exception for a statutory control. */}
-      <Icon name={isPlaying ? "pause" : "play_arrow"} size={24} fill aria-hidden />
-    </button>
+      icon={<Icon name={isPlaying ? "pause" : "play_arrow"} size={24} fill aria-hidden />}
+    />
   ) : null;
 
   const heading = (
@@ -571,22 +575,26 @@ export function Ticker({
         {canMove ? (
           <div className="sa-ticker__nav">
             {pauseButton}
-            <button
-              type="button"
+            <IconButton
               className="sa-ticker__control sa-ticker__step"
+              variant="primary"
+              appearance="text"
+              tone="inverse"
+              size="md"
               onClick={() => go(safeIndex - 1, "back")}
               aria-label={`Previous item in ${label}`}
-            >
-              <Icon name="arrow_back" size={24} aria-hidden />
-            </button>
-            <button
-              type="button"
+              icon={<Icon name="arrow_back" size={24} fill aria-hidden />}
+            />
+            <IconButton
               className="sa-ticker__control sa-ticker__step"
+              variant="primary"
+              appearance="text"
+              tone="inverse"
+              size="md"
               onClick={() => go(safeIndex + 1, "forward")}
               aria-label={`Next item in ${label}`}
-            >
-              <Icon name="arrow_forward" size={24} aria-hidden />
-            </button>
+              icon={<Icon name="arrow_forward" size={24} fill aria-hidden />}
+            />
           </div>
         ) : null}
 

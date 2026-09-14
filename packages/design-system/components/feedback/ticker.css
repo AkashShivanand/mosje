@@ -19,9 +19,18 @@
      Text/Light   #ffffff → --sa-text-neutral-inverse
      radius-md    8       → --sa-shape-8
      spacing sm/lg/2xl    → --sa-inline-8 / -16 / -24
-     Title/title-3        → --sa-type-title-3-*   (the headline line)
-     Body/body-3          → --sa-type-body-3-*    (the sentence under it)
-     Label/label-1        → the DS Button's own type ramp
+     Title/title-2        → --sa-type-title-2-* + semibold  (the plinth's name)
+     Body/body-2-semibold → --sa-type-body-2-* + semibold   (the notice title)
+     Body/body-3          → --sa-type-body-3-*              (kind · date)
+     Label/label-1        → the action's label
+     Icon/24/Filled       → every control glyph, pause AND prev/next
+
+   EVERY TEXT HERE IS ONE WHOLE TEXT STYLE — size, leading, tracking and weight
+   from the same style, never size from one and weight from another. Until
+   2026-09-14 the name was title-2 at 500 and the notice title-3 at 500: every
+   value a token, so `check:type-linkage` passed, and no text style anywhere
+   draws either combination. The SAMAVESH text styles are 600 for both. The
+   composition check in that gate now fails a rule like that.
 
    THREE DELIBERATE DIVERGENCES FROM THE FIGMA FRAME, each recorded because a
    later reader will otherwise "fix" them back:
@@ -75,9 +84,6 @@
        it does not scale with the font — but it is expressed in rem so that a
        root-size change (the AccessibilityBar's A+ / A-) still moves it. */
     --sa-ticker-mark: 2rem;
-    /* 40px: 24px glyph + 8px of padding either side. Comfortably past the
-       24×24 floor of WCAG 2.5.8, and the same square the nav arrows use. */
-    --sa-ticker-control: 2.5rem;
 
     position: relative;
     isolation: isolate;
@@ -107,8 +113,17 @@
        body's, so the container owns the spacing between them. */
     gap: var(--sa-inline-24);
     min-width: 0;
+    /* Stated, not inherited from the app's preflight: the plinth's inset below
+       computes the gutter from this max-width, so the padding must sit INSIDE
+       it. Storybook loads no preflight, and there the box was 48px wider than
+       the arithmetic and the plinth overshot the bar's edge by 24. */
+    box-sizing: border-box;
     max-width: var(--sa-container-page);
-    padding-inline: var(--sa-padding-24);
+    /* The bar's inner edge. A custom property, not a bare padding, because the
+       plinth's inset below reaches back across exactly this distance — one name
+       for both, so the two cannot disagree when the desktop bar widens it. */
+    --sa-ticker-edge: var(--sa-padding-24);
+    padding-inline: var(--sa-ticker-edge);
   }
 
   /*
@@ -150,49 +165,46 @@
 
   /* The darker block. It is a pseudo-element rather than a sibling rect so it
      cannot drift out of step with the label it sits behind. The negative start
-     inset cancels `.sa-ticker__container`'s own 24px of padding, so the plinth
-     is flush with the BAR's leading edge rather than floating 24px inside it —
+     inset reaches back to the BAR's leading edge rather than stopping inside it —
      which is what the frame draws and what makes the bar read as a navy block
-     against a blue field instead of a chip laid on one. */
+     against a blue field instead of a chip laid on one.
+
+     THE DISTANCE TO THAT EDGE IS TWO THINGS, NOT ONE. `.sa-ticker__container`'s
+     own 24px of padding, and — once the bar is wider than the content width —
+     the gutter the centred container leaves either side of itself. The inset
+     used to cancel only the 24, so a bar running the viewport (Storybook's
+     fullscreen canvas; any page that sets the bar outside `.sa-container`)
+     showed a stripe of the lighter bar between its own edge and the plinth: 48px
+     at 1512, 192px at 1920. `100cqi` is the bar's width — `.sa-ticker` is the
+     query container — so the gutter is measured, not guessed, and it resolves
+     to zero wherever the bar is no wider than the content width, which is every
+     bar inside a column. */
   .sa-ticker__heading::before {
     content: "";
     position: absolute;
     inset-block: 0;
-    inset-inline: calc(-1 * var(--sa-padding-24)) 0;
+    inset-inline: calc(-1 * (var(--sa-ticker-edge) + (100cqi - min(100cqi, var(--sa-container-page))) / 2)) 0;
     z-index: -1;
     background-color: var(--sa-ticker-plinth);
     box-shadow: var(--sa-elevation-card);
   }
 
   /*
-   * ── PAST THE BAR'S OWN EDGE ONLY WHERE THE BAR REACHES THE VIEWPORT ───────
+   * ── THE PLINTH STOPS AT THE BAR'S OWN EDGE, WHATEVER THE BAR SPANS ─────────
    *
-   * On a viewport wider than the content column the page margin is not 24px,
-   * it is however much is left over — so this pushed the plinth out with a very
-   * large negative inset and let the bar's overflow clip it, painting the whole
-   * left margin navy. The note read: "the container's own margin is
-   * bar-coloured in the frame, and a plinth that stops at the content column
-   * reads as a floating chip rather than a masthead band."
+   * There used to be a `bleed`-only rule here pushing the plinth out by −100vw
+   * above 1440px. It is gone because the inset above now measures the bar's
+   * gutter, and a bar that spans the viewport has its edge AT the viewport — so
+   * the frame's edge-to-edge band is what every full-width bar draws, at every
+   * width, with nothing to opt into.
    *
-   * True OF THE FRAME, which draws the bar edge to edge. Not true of a bar
-   * inside a content column — and the estate's one horizontal ticker, the
-   * organisation page's notice board, sits in `.sa-container`. At 1440 the bar
-   * ran 84 → 1356 while its plinth ran 0 → 266: bleeding off the left edge of
-   * the page and stopping short of the right, directly beneath a fact card that
-   * is symmetrically inset. Reviewed on 10 Sep as "not aligned properly and
-   * feels forcefully placed", which is what a bar aligned on one edge and not
-   * the other looks like. It only ever appeared at 1440 and above, which is why
-   * it survived — every narrower width drew it correctly.
-   *
-   * `bleed` keeps the frame's treatment available for a bar that genuinely
-   * spans the viewport. Opt-in, because getting it wrong is invisible until
-   * somebody holds a straight edge against the page.
+   * What the old rule got wrong, and the reason the plinth must never go past
+   * the BAR: the organisation page's notice board sits in `.sa-container`, and
+   * at 1440 a viewport bleed ran its plinth 0 → 266 while the bar ran 84 → 1356,
+   * bleeding off the page on one side and stopping short on the other (reviewed
+   * 10 Sep as "not aligned properly"). Measuring from the bar keeps that bar
+   * flush at both ends.
    */
-  @media (min-width: 1440px) {
-    .sa-ticker--bleed .sa-ticker__heading::before {
-      inset-inline-start: -100vw;
-    }
-  }
 
   /* ── The mark ────────────────────────────────────────────────────────────
      NO TILE. It used to be a 32px white rounded square holding a small blue
@@ -258,10 +270,11 @@
        stated rather than inherited — a browser's h2 default would drag the
        plinth to 32px and break the strip's height. */
     margin: 0;
+    /* Title/title-2 — semibold, the title tier's weight. */
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
     letter-spacing: var(--sa-type-title-tracking);
-    font-weight: var(--sa-font-weight-medium);
+    font-weight: var(--sa-font-weight-semibold);
     white-space: nowrap;
   }
 
@@ -425,6 +438,10 @@
   .sa-ticker--vertical .sa-ticker__container {
     flex-direction: column;
     align-items: stretch;
+    /* NO GAP. The container's 24 is the bar's gap between SIDE-BY-SIDE parts;
+       stacked, it put 24px of bare ground between the header and the first
+       notice on top of the row's own 16, where the library's panel has 16. */
+    gap: 0;
     padding-inline: 0;
   }
 
@@ -606,7 +623,7 @@
     block-size: 0.3125rem;
     /* Optically centred on the FIRST line, not the row: the row is two or three
        lines tall and a dot halfway down it would point at nothing. */
-    margin-block-start: calc((var(--sa-type-title-3-lh) - 0.3125rem) / 2);
+    margin-block-start: calc((var(--sa-type-body-2-lh) - 0.3125rem) / 2);
     border-radius: var(--sa-shape-full);
     /* The top of the transparency ramp, and deliberately not full ink: at 100%
        six dots read as a column of holes punched down the rail and compete with
@@ -650,12 +667,15 @@
     background-color: var(--sa-color-transparent-white-8);
   }
 
-  /* Title over subtitle — the bar's structure, in the panel. */
+  /* Title over subtitle — the bar's structure, in the panel.
+     Body/body-2-semibold: the body role at 14/20 with the semibold weight — one
+     of the Figma-only compositions `design.md` records (body role + weight). It
+     was title-3 at 500: the same 14/20 box, a different role, a lighter cut. */
   .sa-ticker__rowtitle {
-    font-size: var(--sa-type-title-3-size);
-    line-height: var(--sa-type-title-3-lh);
-    letter-spacing: var(--sa-type-title-tracking);
-    font-weight: var(--sa-font-weight-medium);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    letter-spacing: var(--sa-type-body-tracking);
+    font-weight: var(--sa-font-weight-semibold);
     text-wrap: pretty;
   }
 
@@ -684,13 +704,15 @@
     overflow: hidden;
   }
 
-  /* 80% white on the /600 ground is 4.66:1 — past 1.4.3's 4.5:1 for normal
-     text. It would have been 3.52:1 on /500, which is why the ground moved. */
+  /* FULL INK, NOT 80%. The library binds kind, separator and date to the SAME
+     inverse text variable as the title, at full opacity — the subtitle is told
+     apart by size and weight (12/400 under 14/600), not by being dimmed. It was
+     `opacity: 0.8`, which measured 4.66:1 on the /600 ground; full ink is 6.36:1,
+     so matching the library also buys contrast rather than spending it. */
   .sa-ticker__rowmeta {
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
     letter-spacing: var(--sa-type-body-tracking);
-    opacity: 0.8;
   }
 
   /* The bar's trailing call to action. Underlined because it sits INSIDE a
@@ -711,42 +733,20 @@
     gap: var(--sa-inline-8);
   }
 
-  .sa-ticker__control {
-    display: grid;
-    place-items: center;
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
-    inline-size: var(--sa-ticker-control);
-    block-size: var(--sa-ticker-control);
-    padding: 0;
-    border: 0;
-    border-radius: var(--sa-shape-8);
-    background: transparent;
-    color: inherit;
-    cursor: pointer;
-  }
-
-  /* A white wash rather than a second colour: the strip has exactly one ink,
-     and every state layer on a solid brand surface in this estate is a
-     transparency of it — the same two steps Button's `inverseOutlined` uses. */
-  @media (hover: hover) and (pointer: fine) {
-    .sa-ticker__control:hover {
-      background-color: var(--sa-color-transparent-white-16);
-    }
-  }
-
-  /* It has to feel pressed. A control that changes nothing under the finger
-     reads as not having registered — and this one's whole job is to answer
-     immediately, because the citizen pressed it to stop something moving. */
-  .sa-ticker__control:active {
-    background-color: var(--sa-color-transparent-white-24);
-    transform: scale(0.94);
-  }
+  /* THE CONTROLS ARE THE LIBRARY'S IconButton — primary, text, inverse, md —
+     in code and in Figma alike. Size, radius, the hover and pressed layers
+     and the press scale all come from button.css, so the strip has no second
+     definition of a button to drift. What stays here is the focus ring below,
+     and that is deliberate. */
 
   /* THE FOCUS RING IS INVERSE INK, NOT --sa-focus-ring. The ring token is
      #0373DF, which is this bar's own fill — it measures 1:1 against it and
      fails the 3:1 floor of WCAG 1.4.11 / 2.4.11 completely. The same defect
      was found and fixed on AccessibilityBar; do not "restore the token" here. */
-  .sa-ticker__control:focus-visible,
+  /* Scoped under `.sa-ticker` so it outranks `.ds-btn--inverseText:focus-visible`
+     whatever order the two stylesheets load in. That rule's ring is 55% white,
+     which measures about 3.0:1 on this bar — at the 3:1 floor, not above it. */
+  .sa-ticker .sa-ticker__control:focus-visible,
   .sa-ticker__item:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
     outline-offset: var(--sa-focus-offset);
@@ -758,21 +758,67 @@
     white-space: nowrap;
   }
 
-  /* THE HAIRLINE BETWEEN THE CONTROL AND THE ROUTE.
-     They are two different kinds of thing sharing one end of the row: one
-     governs the strip, the other leaves it. It was scoped to the narrow bar,
-     so the desktop bar and every panel had the pause and the route abutting
-     with nothing between them while the library drew a divider — a divergence
-     in the direction that matters least to notice and most to fix.
+  /*
+   * THE DESKTOP BAR'S ROUTE IS THE LIBRARY'S `Button` — Primary · Outlined ·
+   * Inverse at its Default size: 40px, 24px in.
+   *
+   * The consumer passes `buttonClasses(…, "sm")` — 32px, 16px in, label-1 — and
+   * neither code size is Figma's Default. `md` has the height but sets body-1,
+   * 16/24, where Figma's Default label is `Label/label-1`, 14/20. So
+   * the strip sizes its own slot and leaves the type the `sm` button already
+   * carries, which IS label-1. Only from 1024px, where the route is a button at
+   * all; below it the header rule further down strips it to a link.
+   *
+   * Its border stays the Button's inverse edge. Figma's inverse edge is a
+   * lighter blue, but the Button's only public hook, `--sa-btn-edge`, is the ink AND the edge,
+   * and would turn "View All" light blue with it.
+   */
+  @container sa-ticker (min-width: 1024px) {
+    /* THE DESKTOP BAR'S SPACING IS THE LIBRARY FRAME'S. 32 from the content
+       edge to the mark and 32 at the far end, 24 from the name to the end of the
+       plinth. The frame's Body sits 16 past the plinth and its Row pads the
+       message 8 either side, so the words start 24 past the plinth and stop 32
+       short of the controls — the body takes both halves here. The plinth starts
+       at the content edge, so the heading takes no leading padding of its own
+       and `--sa-ticker-edge` carries the 32, which is also what the plinth's
+       inset reaches back across. */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__container {
+      --sa-ticker-edge: var(--sa-padding-32);
+    }
 
-     ADJACENT SIBLING, deliberately. The nav is only rendered when something can
-     actually move, so this draws itself exactly when there is a control to
-     separate from and vanishes with it. A rule keyed on the shape or the width
-     would have to guess. */
-  .sa-ticker__nav + .sa-ticker__action {
-    padding-inline-start: var(--sa-padding-16);
-    border-inline-start: var(--sa-stroke-1) solid var(--sa-color-transparent-white-24);
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__heading {
+      padding-inline: 0 var(--sa-padding-24);
+    }
+
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__heading + .sa-ticker__body {
+      margin-inline-start: calc(var(--sa-inline-16) - var(--sa-inline-24));
+      padding-inline: var(--sa-padding-8);
+    }
+
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__action > :is(a, button) {
+      min-block-size: var(--sa-control-height-md);
+      padding-inline: var(--sa-padding-24);
+    }
+
+    /* The library groups the controls and the route in one `Actions` frame at an
+       8px gap. Here they are siblings in the bar's container, whose gap is the 24
+       between message and controls — so the route closes that gap to 8. Stated
+       in both tokens so a change to either keeps the sum right. */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__nav + .sa-ticker__action {
+      margin-inline-start: calc(var(--sa-inline-8) - var(--sa-inline-24));
+    }
   }
+
+  /* THE HAIRLINE BETWEEN THE CONTROL AND THE ROUTE — where the library draws one.
+
+     It draws it in the panel header and on the tablet and phone bars, and NOT on
+     the desktop bar, where the outlined button's own edge already separates the
+     route from the controls. The rule used to draw it at every width; it lives in
+     the under-1024px query below now, beside the rule that turns the route into
+     a link — the same measurement, so the two cannot disagree.
+
+     A 24px line at 40% ink with 8px either side, as the library draws it — not a
+     full-height border at 24%, which ran the whole 40px of the header row. */
 
   /* ── Reflow ──────────────────────────────────────────────────────────────
      The row could not compress: at full complement it fixed itself at ~266px,
@@ -865,7 +911,9 @@
        are two different kinds of thing sharing one end of the header. */
     .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__action {
       order: 3;
-      margin-inline-end: var(--sa-padding-16);
+      /* With the link's own 24 on its right, 12 here puts the text 36px from the
+         strip's edge — the library's 12px header padding plus the part's 24. */
+      margin-inline-end: var(--sa-padding-12);
     }
 
     /* THE ROUTE BECOMES A LINK, NOT A BUTTON, ON THE HEADER LINE — IN BOTH
@@ -892,9 +940,41 @@
        This restyles the CONSUMER'S element, which is why it is scoped tightly
        to the direct child of our own wrapper and does nothing above 1024px. */
     .sa-ticker__action > :is(a, button) {
-      padding-inline: 0;
+      /* The library's `Button` Text · Inverse keeps a box: 12px before the words
+         and 24 after on the bar, 24 either side in the panel. */
+      padding-inline: var(--sa-padding-12) var(--sa-padding-24);
       border: 0;
       background: transparent;
+    }
+
+    .sa-ticker--vertical .sa-ticker__action > :is(a, button) {
+      padding-inline: var(--sa-padding-24);
+    }
+
+
+    /* ADJACENT SIBLING, deliberately. The nav is only rendered when something
+       can actually move, so the line draws itself exactly when there is a
+       control to separate from and vanishes with it. */
+    .sa-ticker__nav + .sa-ticker__action {
+      position: relative;
+      padding-inline-start: calc(var(--sa-stroke-1) + var(--sa-padding-8));
+    }
+
+    /* The panel's header spaces its two groups at 12; the library's `Actions`
+       frame spaces the control, the line and the route at 8. */
+    .sa-ticker--vertical .sa-ticker__nav + .sa-ticker__action {
+      margin-inline-start: calc(var(--sa-inline-8) - var(--sa-inline-12));
+    }
+
+    .sa-ticker__nav + .sa-ticker__action::before {
+      content: "";
+      position: absolute;
+      inset-block-start: 50%;
+      inset-inline-start: 0;
+      inline-size: var(--sa-stroke-1);
+      block-size: var(--sa-padding-24);
+      background-color: var(--sa-color-transparent-white-40);
+      transform: translateY(-50%);
     }
 
     .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__nav {
@@ -911,6 +991,22 @@
       padding-inline: var(--sa-padding-16);
     }
   }
+
+  /* BELOW THE LIBRARY'S SMALLEST PANEL, THE ROUTE DROPS ITS BOX.
+
+     The library draws the phone panel at 326px, and the part's 24 either side
+     fits there. A 360px phone gives the website's panel 296, and swept 296 → 336
+     in 2px steps the name "Latest Updates" wraps to two lines at 296 and holds on
+     one from 298 — two pixels of headroom, on a common phone, before a longer or
+     Hindi label arrives. So under the smallest width the library has an opinion
+     about, the route goes back to the bare link it was, and the name keeps its
+     line. */
+  @container sa-ticker (max-width: 325px) {
+    .sa-ticker--vertical .sa-ticker__action > :is(a, button) {
+      padding-inline: 0;
+    }
+  }
+
 
   /* ── Reduced motion ──────────────────────────────────────────────────────
      The entry animation goes. The auto-advance is stopped in the component
@@ -930,10 +1026,6 @@
     .sa-ticker__item {
       animation-name: sa-ticker-fade;
       animation-duration: 200ms;
-    }
-
-    .sa-ticker__control:active {
-      transform: none;
     }
   }
 

@@ -49,7 +49,7 @@ const label = instance.getString("Label");
  *
  * This template used to read `Title`, `Description`, `Show Description`,
  * `Action Label` and `Show Action` as well. **None of the five existed.** They
- * are properties of the NESTED parts — `Ticker / Row` and `Ticker / Action`
+ * are properties of the NESTED parts — `Ticker / Row` and the nested library `Button`
  * — and were never exposed on the parent, so every one of
  * those reads resolved to nothing.
  *
