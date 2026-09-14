@@ -46,9 +46,10 @@ category** and would sit in no group.
 
 ## 3. Open for the 18:30 review
 
-- **Counts on a design.** Shailendra ruled on 8 September that a count on a design reads as a
-  published figure; decision 8 asks for counts on group headings. Both can't stand. If counts
-  stay, they are computed from the feed at render and never typed.
+- ~~**Counts on a design.**~~ **Decided later on 14 September: counts stay** on the grouped
+  Schemes page, one on each heading. This supersedes the 8 September ruling for that option
+  only; every other option still shows none. Counts are computed from the feed at render and
+  never typed.
 - **What the counts count.** The live list still holds documents, flyers and lists of offences
   (§6 of the IA plan: 140 entries today, 20 top-level schemes after). Group counts shown now
   would fall sharply once the list is cleaned.
