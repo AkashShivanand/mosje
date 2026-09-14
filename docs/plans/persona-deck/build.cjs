@@ -209,7 +209,7 @@ const SCHEMES_PAGE = [
     what:"The filters sit in a panel on the left. Schemes are grouped under headings for the kind of support they give.",
     how:["Choose Schemes or Services first, then a group, then a category","Each heading opens to show its schemes, with a link to the rest","Each card names the organisation or portal that runs the scheme"],
     why:["A visitor sees every kind of support before reading a single scheme","The organisation filter uses the same name as the menu"],
-    notes:"Drawn after the review of 14 September. Services are a choice of their own because some portals, Senior Citizens Welfare among them, offer services as well as schemes. The first visit still opens on the Department's own schemes; choosing any filter widens it to all organisations and portals. Each heading shows how many schemes sit under it, as socialjustice.gov.in does, so a visitor knows how much is there before opening it. The counts are read from the list when the page loads, never typed in, so they change as schemes are added or cleaned up. This is the only option in the deck that shows a count. The headings are the categories dosje.gov.in uses today; they would become the list on the second slide once every scheme is tagged. A second version, grouped by organisation, is drawn beside this one." },
+    notes:"Drawn after the review of 14 September. Services are a choice of their own because some portals, Senior Citizens Welfare among them, offer services as well as schemes. The first visit still opens on the Department's own schemes; choosing any filter widens it to all organisations and portals. Each heading shows how many schemes sit under it, as socialjustice.gov.in does, so a visitor knows how much is there before opening it. The counts are read from the list when the page loads, never typed in, so they change as schemes are added or cleaned up. This is the only option in the deck that shows a count. The headings are the ten kinds of support on the second slide. The counts come from the classification of every listing on the Schemes page, completed on 12 September: duplicate listings, documents and organisation pages are left out, and a scheme that gives more than one kind of support is counted under each. A second version, grouped by organisation, is drawn beside this one." },
 ];
 const ASSISTANT = [
   { part:"The Assistant · Samajik Sahayak", title:"The Same Two Questions, in Chat",
@@ -307,9 +307,9 @@ MENU.forEach(optionPage);
     const x = M + i*(cw+0.3);
     s.addText(it[0], { x, y:y0, w:0.55, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:28, bold:true, color:BLUE_TXT });
     s.addText(it[1], { x:x+0.55, y:y0+0.08, w:cw-0.55, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:T.lead, bold:true, color:DARK });
-    const m = media(s, { img:it[2] }, x, y0+0.62, cw, cw*0.625);
-    pill(s, x, m.iy+m.ih+0.16, it[4], SURF, MUTE);
-    s.addText(it[3], { x, y:m.iy+m.ih+0.54, w:cw, h:0.7, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.2 });
+    media(s, { img:it[2] }, x, y0+0.62, cw, cw*0.625);
+    pill(s, x, y0+0.62+cw*0.625+0.16, it[4], SURF, MUTE);
+    s.addText(it[3], { x, y:y0+0.62+cw*0.625+0.54, w:cw, h:0.7, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.2 });
   });
   s.addNotes("The internal page. Three arrangements of the same filters. A and B were shown on 9 September; C was drawn after the review of 14 September. The next three pages show each one.");
 }
