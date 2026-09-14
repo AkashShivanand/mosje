@@ -88,16 +88,13 @@ export interface TickerProps extends Omit<React.HTMLAttributes<HTMLElement>, "ti
    */
   orientation?: TickerOrientation;
   /**
-   * The label plinth runs off the START edge of the viewport. `horizontal` only.
+   * The bar runs to the edges of the viewport, so it draws square ends.
+   * `horizontal` only.
    *
-   * Pass it ONLY when the bar itself spans the viewport, which is how the Figma
-   * frame draws it — the page margin beside the plinth is bar-coloured there,
-   * and a plinth that stops short of the edge reads as a floating chip rather
-   * than a masthead band.
-   *
-   * Leave it off inside a content column. A bar inset to the column with a
-   * plinth bled to the viewport is aligned on one edge and not the other, and
-   * that is what it looks like.
+   * Pass it ONLY when the bar itself spans the viewport. A bar inside a content
+   * column keeps its 12px corners. Either way the label plinth reaches the bar's
+   * own leading edge — through the page gutter when the bar is wider than the
+   * content width — so this prop no longer changes the plinth.
    *
    * @default false
    */
@@ -577,7 +574,7 @@ export function Ticker({
               onClick={() => go(safeIndex - 1, "back")}
               aria-label={`Previous item in ${label}`}
             >
-              <Icon name="arrow_back" size={24} aria-hidden />
+              <Icon name="arrow_back" size={24} fill aria-hidden />
             </button>
             <button
               type="button"
@@ -585,7 +582,7 @@ export function Ticker({
               onClick={() => go(safeIndex + 1, "forward")}
               aria-label={`Next item in ${label}`}
             >
-              <Icon name="arrow_forward" size={24} aria-hidden />
+              <Icon name="arrow_forward" size={24} fill aria-hidden />
             </button>
           </div>
         ) : null}
