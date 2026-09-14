@@ -1,12 +1,13 @@
-import { ComingSoon } from "@/components/smile-admin/shell/coming-soon";
+"use client";
 
+import SurveyorsPage from "../surveyors/page";
+
+/**
+ * The live portal serves the same Surveyors register at `/surveyor-list` and at
+ * `/surveyors`. It renders the screen rather than redirecting, because a
+ * redirect would change the address in the reader's bar and break a bookmark
+ * the live portal honours.
+ */
 export default function Page() {
-  return (
-    <ComingSoon
-      title="Surveyor List"
-      subtitle="Field surveyors logging beneficiary identifications."
-      breadcrumbs={[{ label: "Access Control" }, { label: "Surveyor List" }]}
-      backHref="/portals/smile-admin/dashboard"
-    />
-  );
+  return <SurveyorsPage />;
 }

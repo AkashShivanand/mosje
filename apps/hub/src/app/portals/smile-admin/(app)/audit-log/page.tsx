@@ -5,9 +5,27 @@ import { statusTone } from "@/lib/smile-admin/status-tone";
 import { SmilePageHeader } from "@/components/smile-admin/shell/page-header";
 import { DataToolbar, SearchField } from "@/components/smile-admin/data/data-toolbar";
 import { ExportMenu } from "@/components/smile-admin/data/export-menu";
-import { Table, TD, TH, THead, TR } from "@/components/smile-admin/table";
 import { AUDIT_LOG, type AuditEntry } from "@/lib/smile-admin/mock-data";
-import { Badge } from "@mosje/design-system";
+import { Badge, DataTable, type DataTableColumn } from "@mosje/design-system";
+
+const COLUMNS: DataTableColumn<AuditEntry & Record<string, unknown>>[] = [
+  { key: "timestamp", header: "Timestamp", sortable: true, className: "font-mono text-body-2 text-ink-muted" },
+  { key: "actor", header: "Actor", sortable: true, className: "font-semibold" },
+  { key: "action", header: "Action", sortable: true },
+  { key: "target", header: "Target", className: "font-mono text-body-2 text-ink-muted" },
+  { key: "ip", header: "IP", className: "font-mono text-body-2 text-ink-hint" },
+  {
+    key: "result",
+    header: "Result",
+    sortable: true,
+    render: (e) => (
+      <Badge status={statusTone(e.result)} dot>
+        {e.result}
+      </Badge>
+    ),
+    exportValue: (e) => e.result,
+  },
+];
 
 export default function AuditPage() {
   const [search, setSearch] = useState("");
@@ -78,35 +96,15 @@ export default function AuditPage() {
       </ul>
 
       {/* Desktop table */}
-      <div className="hidden overflow-hidden rounded-lg border border-stroke-200 bg-white shadow-xs md:block">
-        <Table>
-          <THead>
-            <tr>
-              <TH>Timestamp</TH>
-              <TH>Actor</TH>
-              <TH>Action</TH>
-              <TH>Target</TH>
-              <TH>IP</TH>
-              <TH>Result</TH>
-            </tr>
-          </THead>
-          <tbody>
-            {entries.map((e) => (
-              <TR key={e.id}>
-                <TD className="font-mono text-body-2 text-ink-muted">{e.timestamp}</TD>
-                <TD className="font-semibold">{e.actor}</TD>
-                <TD>{e.action}</TD>
-                <TD className="font-mono text-body-2 text-ink-muted">{e.target}</TD>
-                <TD className="font-mono text-body-2 text-ink-hint">{e.ip}</TD>
-                <TD>
-                  <Badge status={statusTone(e.result)} dot>
-                    {e.result}
-                  </Badge>
-                </TD>
-              </TR>
-            ))}
-          </tbody>
-        </Table>
+      <div className="hidden rounded-lg border border-stroke-200 bg-white p-md shadow-xs md:block">
+        <DataTable
+          columns={COLUMNS}
+          data={entries as Array<AuditEntry & Record<string, unknown>>}
+          total={entries.length}
+          caption="Audit entries by time, actor and action"
+          emptyLabel="No audit entry matches this search."
+          defaultSort={{ key: "timestamp", direction: "desc" }}
+        />
       </div>
     </div>
   );

@@ -83,7 +83,10 @@ def build_ledger(cfg, frames, captured, paths):
     def _bhead(slug):
         fp = os.path.join(paths["captures_live"], f"{slug}.json")
         if not os.path.exists(fp): return ""
-        try: return XC.build_heading(json.load(open(fp)).get("rows", []))
+        try:
+            _j = json.load(open(fp))
+            # pass pageW so the off-canvas guard knows where the viewport ends
+            return XC.build_heading(_j.get("rows", []), _j.get("pageW"))
         except Exception: return ""
     for fr in frames:
         node = fr.get("node_id") or fr.get("node")

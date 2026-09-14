@@ -57,6 +57,38 @@
     background-color: var(--sa-overlay-neutral-boldest);
   }
 
+  /*
+   * WHILE A DIALOG IS OPEN, THE FLOATING RAILS STAND DOWN.
+   *
+   * The wall rail and the corner stack sit at 1000 and 1010, above every product
+   * layer — correct for a launcher, which only has to beat page chrome, and
+   * exactly wrong once a dialog owns the screen. Important Links and the chat
+   * launcher went on floating at full strength over a dimmed page, so the scrim
+   * covered everything except the two things most obviously sitting on it.
+   *
+   * KEYED ON THE OCCUPANCY ATTRIBUTES, not on a list of component classes.
+   * `floating-element-placement.md` already requires every fixed widget on
+   * either rail to declare itself with one of these two — and both are gated on
+   * the widget actually being `position: fixed`, so an inline specimen on a
+   * documentation page is untouched. A rail widget added tomorrow is covered the
+   * same day with nothing to remember here, which is the same reason the rails
+   * measure live occupancy rather than carrying a table of known widgets.
+   *
+   * THE STATUTORY PANEL IS DELIBERATELY NOT INCLUDED. The UX4G accessibility
+   * widget is third-party markup at 999999 and carries neither attribute — the
+   * rails know it by id. It stays above the scrim, which is what a statutory
+   * control should do; pushing an accessibility panel behind a dialog would be a
+   * worse defect than the one this fixes.
+   *
+   * `base`, not a negative: these are fixed elements in their own right, and the
+   * point is to put them back in the ordinary stack under the scrim, not to
+   * bury them beneath the page.
+   */
+  :root[data-sa-dialog-open] [data-sa-wall-occupant],
+  :root[data-sa-dialog-open] [data-sa-corner-occupant] {
+    z-index: var(--sa-z-base);
+  }
+
   .ds-modal {
     width: 100%;
     max-height: calc(100vh - 32px);

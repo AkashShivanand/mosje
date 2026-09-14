@@ -1,0 +1,4 @@
+{
+  "NMB-SCREEN-019": "Re-worded 2026-09-11 after checking the live card. The original title said the card had 'lost its Call Now action'. It has not: the phone number is a tel: link with a handset glyph. What it has lost is the BUTTON beside 'Get Directions', and the service tags. Same defect, same screen, same fix — the title now describes it accurately instead of overstating it.",
+  "NMB-SCREEN-030": "Re-worded 2026-09-11 on the reviewer's instruction to name the action STYLE as well as the order. Same defect, same screen; the title gained its second half rather than changing subject."
+}

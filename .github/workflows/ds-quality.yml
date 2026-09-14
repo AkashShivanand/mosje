@@ -19,6 +19,7 @@ on:
       - "tools/ds-linkage/**"
       - "tools/type-linkage/**"
       - "tools/figma-index-parity/**"
+      - "tools/figma-text-styles/**"
       - "tools/focus-ring/**"
       - ".github/workflows/ds-quality.yml"
   pull_request:
@@ -38,6 +39,7 @@ on:
       - "tools/ds-linkage/**"
       - "tools/type-linkage/**"
       - "tools/figma-index-parity/**"
+      - "tools/figma-text-styles/**"
       - "tools/focus-ring/**"
       - ".github/workflows/ds-quality.yml"
 
@@ -352,6 +354,33 @@ jobs:
           fi
           exit $code
 
+      # The component masters' text must be LINKED to a SAMAVESH text style, not set by
+      # hand. A hand-set layer can match a style and still tell Dev Mode nothing, which is
+      # how the Ticker shipped title-2 and title-3 at weight 500 where both styles are 600.
+      # Offline: the baseline of pages that still carry unlinked text is well-formed.
+      - name: Figma text styles — the baseline of masters with unlinked text is coherent
+        run: npm run check:figma-text-styles
+
+      # Live: every text layer inside a COMPONENT or COMPONENT_SET on a component page is
+      # read. A count above the baseline fails, and a count below it fails until the
+      # baseline is re-synced. Same guard and exit-code split as the checks above.
+      - name: Figma text styles — no master gains text outside a text style
+        env:
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$FIGMA_ACCESS_TOKEN" ]; then
+            echo "::warning::FIGMA_ACCESS_TOKEN unavailable (fork PR, or secret not set) — skipping the live text-style check. check:figma-text-styles still ran."
+            exit 0
+          fi
+          set +e
+          npm run check:figma-text-styles:live
+          code=$?
+          set -e
+          if [ $code -eq 2 ]; then
+            echo "::warning::Live text-style check could not run (Figma API or token problem, exit 2) — not treated as drift."
+            exit 0
+          fi
+          exit $code
 
       # Publishing is the other half. A mapping that PARSES is not a mapping that
       # PUBLISHES, so PRs dry-run it: a template that would fail to publish fails the PR
@@ -362,6 +391,7 @@ jobs:
       # every fork PR and every run before the secret is set — a gate that fails for the
       # wrong reason is worse than no gate, because people learn to ignore it. The real
       # drift detector above needs no token and always runs.
+
       - name: Code Connect — publish dry run
         env:
           FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}

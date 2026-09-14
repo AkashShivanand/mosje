@@ -4,6 +4,16 @@ import * as React from "react";
 import { cn } from "../../utils/cn";
 import "./modal.css";
 
+/**
+ * Set on `<html>` for as long as ANY dialog is open. The floating rails read it
+ * and stand down — see the `[data-sa-dialog-open]` rule in `modal.css`.
+ *
+ * The UX4G accessibility panel is deliberately NOT covered by that rule: it is
+ * third-party markup at 999999, statutory, and not ours to push behind a scrim.
+ */
+const DIALOG_OPEN_ATTR = "data-sa-dialog-open";
+let OPEN_DIALOGS = 0;
+
 export type ModalSize = "sm" | "md" | "lg";
 
 export interface ModalProps {
@@ -111,6 +121,28 @@ export function Modal({
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
+    /*
+     * TELL THE PAGE A DIALOG OWNS IT, so the floating rails can step back.
+     *
+     * The wall rail and the corner stack sit at 1000 and 1010 — above every
+     * product layer on purpose, because a launcher only has to beat page
+     * chrome. That is right until a dialog opens, and then it is exactly wrong:
+     * Important Links and the chat launcher went on floating at full strength
+     * over a dimmed page, so the scrim covered everything except the two things
+     * most obviously on top of it.
+     *
+     * Raising the dialog past them instead was the other option and it is worse.
+     * The ladder deliberately puts `toast` (700) ABOVE `modal` — "a save
+     * confirmation must be readable even while a dialog is open" — so a dialog
+     * that climbed over the rails would climb over toasts on the way, and buy
+     * one fix with a second defect.
+     *
+     * A COUNTER, not a boolean: a dialog opened from inside another must not
+     * hand the page back when the inner one closes.
+     */
+    OPEN_DIALOGS += 1;
+    document.documentElement.setAttribute(DIALOG_OPEN_ATTR, "");
+
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onCloseRef.current();
@@ -216,6 +248,8 @@ export function Modal({
       document.removeEventListener("mousedown", onDown);
       document.removeEventListener("mouseup", onUp);
       document.body.style.overflow = prevOverflow;
+      OPEN_DIALOGS = Math.max(0, OPEN_DIALOGS - 1);
+      if (OPEN_DIALOGS === 0) document.documentElement.removeAttribute(DIALOG_OPEN_ATTR);
       opener?.focus?.();
     };
   }, [open]);
