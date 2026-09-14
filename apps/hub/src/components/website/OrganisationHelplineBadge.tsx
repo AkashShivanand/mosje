@@ -25,10 +25,15 @@ import "./organisation-helpline-badge.css";
  * about drug de-addiction. The reader has just said "less of this"; answering
  * that with a flourish is the wrong register.
  *
- * So the badge simply arrives — 6px up and a fade, over the estate's own enter
- * duration, after the band has finished folding away. The whole transition is
- * two properties and one delay, and it survives `prefers-reduced-motion` by
- * having nothing to remove but the 6px.
+ * So the badge simply arrives — a fade and 8px DOWN into place, from the
+ * direction the band was in, timed to land as the band finishes folding away
+ * (`.orgab[data-leaving]`). The whole transition is two properties and one delay
+ * built from the fold's own tokens, and it survives `prefers-reduced-motion` by
+ * having nothing to remove but the 8px.
+ *
+ * Until 2026-09-14 this said the same about a fold that did not exist: the band
+ * unmounted in one frame and the hero jumped 134px (289px on a phone) before the
+ * badge faded in. The fold is real now.
  */
 export function OrganisationHelplineBadge({
   label,

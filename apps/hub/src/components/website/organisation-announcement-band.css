@@ -39,6 +39,79 @@
     box-shadow:
       inset 0 var(--sa-stroke-1) 0 0 color-mix(in srgb, var(--sa-text-neutral-inverse) 18%, transparent),
       0 8px 20px -8px color-mix(in srgb, var(--sa-color-successScale-900) 60%, transparent);
+
+    /* One row, so the fold below has a track to close. `1fr` in an auto-height
+       grid resolves to the content's height; nothing about the band at rest
+       changes. */
+    display: grid;
+    grid-template-rows: 1fr;
+  }
+
+  /*
+   * ── DISMISSED: THE BAND FOLDS AWAY INSTEAD OF VANISHING ─────────────────
+   *
+   * It used to leave in one frame — measured 134px → 0 at 1440 and 289px → 0 at
+   * 390 — so the hero and everything below it jumped by that much in a single
+   * paint. That jump is the abruptness; no easing on the badge could hide it.
+   *
+   * Three parts, in the order the eye needs them:
+   *
+   * 1. THE CONTENT GOES FIRST. Opacity over the exit duration on a strong
+   *    ease-out, so the words are gone before the band starts to close and are
+   *    never seen squashed. The helpline alone also drops 8px — the one hint of
+   *    where the number is going, since the hero is BELOW the band.
+   * 2. THE BAND CLOSES. `grid-template-rows` 1fr → 0fr over `motion/page`,
+   *    starting halfway through the fade, so the page glides up rather than
+   *    jumping. It is layout, not a compositor property, and it is still the
+   *    right tool: it runs once, for 300ms, on an action a reader takes once, and
+   *    the alternative — transforming every section below a server-rendered
+   *    band — is not something this component can reach.
+   * 3. THE BADGE ARRIVES as the fold finishes (see
+   *    `organisation-helpline-badge.css`), coming down into place from above,
+   *    where the band was.
+   *
+   * NOT A FLIGHT. The badge's own stylesheet records why an 860px arc across the
+   * fold was rejected for a page about drug de-addiction; an 8px drop and an 8px
+   * arrival say "it moved down there" without the theatre.
+   *
+   * Reduced motion needs nothing here: every `--sa-motion-*` duration drops to
+   * 0.01ms, so the band closes at once, and the transition still ends — which
+   * is what removes it.
+   */
+  .orgab {
+    transition:
+      grid-template-rows var(--sa-motion-page-duration) var(--sa-motion-page-easing)
+        calc(var(--sa-motion-exit-duration) / 2),
+      box-shadow var(--sa-motion-page-duration) var(--sa-motion-page-easing)
+        calc(var(--sa-motion-exit-duration) / 2);
+  }
+
+  .orgab[data-leaving] {
+    grid-template-rows: 0fr;
+    box-shadow: none;
+  }
+
+  .orgab__fold {
+    min-block-size: 0;
+  }
+
+  /* Only while folding: at rest the band's confetti and focus rings may reach
+     past its edge, and clipping them permanently would cost that for nothing. */
+  .orgab[data-leaving] .orgab__fold {
+    overflow: hidden;
+  }
+
+  .orgab__inner {
+    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-reveal-easing);
+  }
+
+  .orgab[data-leaving] .orgab__inner {
+    opacity: 0;
+  }
+
+  .orgab[data-leaving] .orgab__helpline {
+    transform: translateY(var(--sa-padding-8));
+    transition: transform var(--sa-motion-exit-duration) var(--sa-motion-reveal-easing);
   }
 
   /*
