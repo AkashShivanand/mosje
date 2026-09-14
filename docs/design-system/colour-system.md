@@ -71,11 +71,11 @@ ground, and the reading is carried by the `on/*` ink measured for each fill.
 | `bg/neutral/subtler` | Quiet panels | `#eef0f3` | 94.7 | 1.14:1 | 1.06:1 |
 | `bg/neutral/hover` | A row under the pointer | `#eef0f3` | 94.7 | 1.14:1 | 1.06:1 |
 | `bg/neutral/readonly` | A read-only field | `#eef0f3` | 94.7 | 1.14:1 | 1.06:1 |
-| `bg/neutral/selected` | The current page, a chosen row | `#e1eeff` | 93.6 | 1.17:1 | 1.14:1 |
+| `bg/neutral/selected` | The current page, a chosen row | `#d7e8ff` | 91.4 | 1.24:1 | 1.20:1 |
 | `bg/brand/primary/base` | The route to the current page (sidebar ancestor) | `#ecf4ff` | 95.9 | 1.11:1 | 1.03:1 |
 | `bg/neutral/active` | A pressed row | `#dcdee1` | 88.4 | 1.35:1 | 1.26:1 |
 
-Hover sits 2.5 L\* below the canvas and 5.3 below white; the selected fill sits 1.1 L\* below hover and 2.4 ΔE from it — it is told apart by HUE, and the current page also sets its label semibold, so the state never rests on colour alone (WCAG 1.4.1).
+Hover sits 2.5 L\* below the canvas and 5.3 below white; the selected fill sits 3.3 L\* below hover and 4.3 ΔE from it — it is told apart by HUE, and the current page also sets its label semibold, so the state never rests on colour alone (WCAG 1.4.1).
 
 **navy**
 
@@ -86,11 +86,11 @@ Hover sits 2.5 L\* below the canvas and 5.3 below white; the selected fill sits 
 | `bg/neutral/subtler` | Quiet panels | `#eff0f2` | 94.8 | 1.14:1 | 1.06:1 |
 | `bg/neutral/hover` | A row under the pointer | `#eff0f2` | 94.8 | 1.14:1 | 1.06:1 |
 | `bg/neutral/readonly` | A read-only field | `#eff0f2` | 94.8 | 1.14:1 | 1.06:1 |
-| `bg/neutral/selected` | The current page, a chosen row | `#e1ecf9` | 92.9 | 1.20:1 | 1.16:1 |
-| `bg/brand/primary/base` | The route to the current page (sidebar ancestor) | `#f7faff` | 98.2 | 1.05:1 | 1.02:1 |
+| `bg/neutral/selected` | The current page, a chosen row | `#d3e2f5` | 89.3 | 1.32:1 | 1.26:1 |
+| `bg/brand/primary/base` | The route to the current page (sidebar ancestor) | `#eef5ff` | 96.3 | 1.10:1 | 1.02:1 |
 | `bg/neutral/active` | A pressed row | `#dcdee2` | 88.4 | 1.35:1 | 1.26:1 |
 
-Hover sits 2.4 L\* below the canvas and 5.2 below white; the selected fill sits 1.8 L\* below hover and 2.5 ΔE from it — it is told apart by HUE, and the current page also sets its label semibold, so the state never rests on colour alone (WCAG 1.4.1).
+Hover sits 2.4 L\* below the canvas and 5.2 below white; the selected fill sits 5.5 L\* below hover and 5.5 ΔE from it — it is told apart by HUE, and the current page also sets its label semibold, so the state never rests on colour alone (WCAG 1.4.1).
 
 The canvas is `subtlest`, never `subtler`: when the page and the hover, read-only and loading fills
 were one grey they measured 1.00:1 and a read-only field on the page could not be seen. The

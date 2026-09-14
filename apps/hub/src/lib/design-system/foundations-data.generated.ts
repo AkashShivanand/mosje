@@ -3436,11 +3436,11 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "tier": "sys",
         "type": "color",
         "css": "--sa-bg-neutral-selected",
-        "value": "color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-48) * 100%), transparent)",
+        "value": "color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-64) * 100%), transparent)",
         "raw": "{color.primaryScale.100}",
         "figma": "Color · bg/neutral/selected",
         "excluded": null,
-        "description": "The selected row, item or navigation entry — the brand's rung-100 tint at 48%, so selection reads as 'chosen' rather than 'hovered': darker than bg/neutral/subtler (hover) and brand-hued, on white or on the canvas alike. The sidebar's current page and a data table's chosen row bind it. Selected is a STATE the reader set; hover is one the pointer set. Was primaryScale/50 until 2026-09-14 — under Navy that is #f7faff, LIGHTER than the hover fill and 1.05:1 on white, so the current page read as a raised white chip. Translucent so it follows every brand without a per-brand rung."
+        "description": "The selected row, item or navigation entry — the brand's rung-100 tint at 64%, so selection reads as 'chosen' rather than 'hovered': at least 3 L* darker than bg/neutral/subtler (hover) in both estate brands, and brand-hued, on white or on the canvas alike. The sidebar's current page and a data table's chosen row bind it. Selected is a STATE the reader set; hover is one the pointer set. Was primaryScale/50 until 2026-09-14 — under Navy #f7faff, lighter than hover — then 48% for a day, which sat only 1.1-1.8 L* below hover and 2.0-2.7 dE from it under protanopia and deuteranopia. Translucent so it follows every brand without a per-brand rung."
       },
       {
         "path": "bg/neutral/readonly",

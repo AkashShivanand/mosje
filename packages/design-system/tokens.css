@@ -38,15 +38,15 @@
   --sa-ref-color-primaryRamp-blue-800: #003975;
   --sa-ref-color-primaryRamp-blue-900: #002855;
   --sa-ref-color-primaryRamp-blue-950: #001737;
-  --sa-ref-color-primaryRamp-navy-50: #f7faff;
-  --sa-ref-color-primaryRamp-navy-100: #c1d7f2;
-  --sa-ref-color-primaryRamp-navy-200: #93b1d6;
-  --sa-ref-color-primaryRamp-navy-300: #6a8cb7;
-  --sa-ref-color-primaryRamp-navy-400: #446a99;
-  --sa-ref-color-primaryRamp-navy-500: #224c7d;
+  --sa-ref-color-primaryRamp-navy-50: #eef5ff;
+  --sa-ref-color-primaryRamp-navy-100: #bbd2ef;
+  --sa-ref-color-primaryRamp-navy-200: #90aed3;
+  --sa-ref-color-primaryRamp-navy-300: #678ab5;
+  --sa-ref-color-primaryRamp-navy-400: #426998;
+  --sa-ref-color-primaryRamp-navy-500: #214c7d;
   --sa-ref-color-primaryRamp-navy-600: #003366;
-  --sa-ref-color-primaryRamp-navy-700: #002249;
-  --sa-ref-color-primaryRamp-navy-800: #001734;
+  --sa-ref-color-primaryRamp-navy-700: #002349;
+  --sa-ref-color-primaryRamp-navy-800: #001735;
   --sa-ref-color-primaryRamp-navy-900: #000e24;
   --sa-ref-color-primaryRamp-navy-950: #000614;
   --sa-ref-color-primaryRamp-dbim-50: #e8efff;
@@ -644,7 +644,7 @@
   --sa-bg-neutral-subtler: #eef0f3;
   --sa-bg-neutral-hover: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-active: var(--sa-color-neutralScale-100);
-  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-64) * 100%), transparent);
   --sa-bg-neutral-readonly: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-loading: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-subtle: var(--sa-color-neutralScale-100);
@@ -1661,7 +1661,7 @@
   --sa-bg-neutral-subtlest: var(--sa-color-neutralScale-25);
   --sa-bg-neutral-hover: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-active: var(--sa-color-neutralScale-100);
-  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-64) * 100%), transparent);
   --sa-bg-neutral-readonly: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-loading: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-subtle: var(--sa-color-neutralScale-100);
@@ -2320,7 +2320,7 @@
   --sa-bg-neutral-subtlest: var(--sa-color-neutralScale-25);
   --sa-bg-neutral-hover: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-active: var(--sa-color-neutralScale-100);
-  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-64) * 100%), transparent);
   --sa-bg-neutral-readonly: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-loading: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-subtle: var(--sa-color-neutralScale-100);
@@ -2980,7 +2980,7 @@
   --sa-bg-neutral-subtlest: var(--sa-color-neutralScale-25);
   --sa-bg-neutral-hover: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-active: var(--sa-color-neutralScale-100);
-  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-64) * 100%), transparent);
   --sa-bg-neutral-readonly: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-loading: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-subtle: var(--sa-color-neutralScale-100);
@@ -3638,7 +3638,7 @@
   --sa-bg-neutral-subtlest: var(--sa-color-neutralScale-25);
   --sa-bg-neutral-hover: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-active: var(--sa-color-neutralScale-100);
-  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-64) * 100%), transparent);
   --sa-bg-neutral-readonly: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-loading: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-subtle: var(--sa-color-neutralScale-100);
@@ -4296,7 +4296,7 @@
   --sa-bg-neutral-subtlest: var(--sa-color-neutralScale-25);
   --sa-bg-neutral-hover: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-active: var(--sa-color-neutralScale-100);
-  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-64) * 100%), transparent);
   --sa-bg-neutral-readonly: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-loading: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-subtle: var(--sa-color-neutralScale-100);
@@ -4954,7 +4954,7 @@
   --sa-bg-neutral-subtlest: var(--sa-color-neutralScale-25);
   --sa-bg-neutral-hover: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-active: var(--sa-color-neutralScale-100);
-  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-64) * 100%), transparent);
   --sa-bg-neutral-readonly: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-loading: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-subtle: var(--sa-color-neutralScale-100);
@@ -5612,7 +5612,7 @@
   --sa-bg-neutral-subtlest: var(--sa-color-neutralScale-25);
   --sa-bg-neutral-hover: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-active: var(--sa-color-neutralScale-100);
-  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-64) * 100%), transparent);
   --sa-bg-neutral-readonly: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-loading: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-subtle: var(--sa-color-neutralScale-100);
@@ -6270,7 +6270,7 @@
   --sa-bg-neutral-subtlest: var(--sa-color-neutralScale-25);
   --sa-bg-neutral-hover: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-active: var(--sa-color-neutralScale-100);
-  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-48) * 100%), transparent);
+  --sa-bg-neutral-selected: color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-64) * 100%), transparent);
   --sa-bg-neutral-readonly: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-loading: var(--sa-color-neutralScale-50);
   --sa-bg-neutral-subtle: var(--sa-color-neutralScale-100);

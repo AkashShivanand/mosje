@@ -150,7 +150,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 50,
         "token": "--sa-color-primaryScale-50",
         "blue": "#ecf4ff",
-        "navy": "#f7faff",
+        "navy": "#eef5ff",
         "onWhite": 1.11,
         "onMuted": 1.03,
         "oklch": {
@@ -164,7 +164,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 100,
         "token": "--sa-color-primaryScale-100",
         "blue": "#c0dbff",
-        "navy": "#c1d7f2",
+        "navy": "#bbd2ef",
         "onWhite": 1.42,
         "onMuted": 1.24,
         "oklch": {
@@ -178,7 +178,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 200,
         "token": "--sa-color-primaryScale-200",
         "blue": "#92c2ff",
-        "navy": "#93b1d6",
+        "navy": "#90aed3",
         "onWhite": 1.84,
         "onMuted": 1.62,
         "oklch": {
@@ -192,7 +192,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 300,
         "token": "--sa-color-primaryScale-300",
         "blue": "#62a7ff",
-        "navy": "#6a8cb7",
+        "navy": "#678ab5",
         "onWhite": 2.47,
         "onMuted": 2.17,
         "oklch": {
@@ -206,7 +206,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 400,
         "token": "--sa-color-primaryScale-400",
         "blue": "#3b8df0",
-        "navy": "#446a99",
+        "navy": "#426998",
         "onWhite": 3.36,
         "onMuted": 2.94,
         "oklch": {
@@ -220,7 +220,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 500,
         "token": "--sa-color-primaryScale-500",
         "blue": "#0373df",
-        "navy": "#224c7d",
+        "navy": "#214c7d",
         "onWhite": 4.64,
         "onMuted": 4.07,
         "oklch": {
@@ -248,7 +248,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 700,
         "token": "--sa-color-primaryScale-700",
         "blue": "#004b96",
-        "navy": "#002249",
+        "navy": "#002349",
         "onWhite": 8.58,
         "onMuted": 7.52,
         "oklch": {
@@ -262,7 +262,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 800,
         "token": "--sa-color-primaryScale-800",
         "blue": "#003975",
-        "navy": "#001734",
+        "navy": "#001735",
         "onWhite": 11.4,
         "onMuted": 9.99,
         "oklch": {
@@ -2580,7 +2580,7 @@ export const TRANSLUCENT = [
       {
         "token": "bg/neutral/selected",
         "base": "color/primaryScale/100",
-        "alpha": "alpha/48",
+        "alpha": "alpha/64",
         "css": "--sa-bg-neutral-selected"
       },
       {
@@ -3567,9 +3567,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "text/link/brand/default",
-        "value": "#224c7d",
+        "value": "#214c7d",
         "against": "bg/neutral/subtler",
-        "ratio": 7.68,
+        "ratio": 7.69,
         "floor": 4.5,
         "pass": true
       },
@@ -3583,9 +3583,9 @@ export const MODES: readonly Mode[] = [
       },
       {
         "token": "focus/ring",
-        "value": "#224c7d",
+        "value": "#214c7d",
         "against": "bg/neutral/base",
-        "ratio": 8.76,
+        "ratio": 8.77,
         "floor": 3,
         "pass": true
       },

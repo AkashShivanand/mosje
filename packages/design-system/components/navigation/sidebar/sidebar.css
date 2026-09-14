@@ -31,9 +31,10 @@
                            border/neutral/subtle at rest; the path to the current page drawn in
                            border/brand/primary/base (motion/reveal)
        flyout                layout/sidebar/flyoutWidth (240) · shape/12 · elevation/dropdown
-     Colour: rest text|icon/neutral/base; hover bg/neutral/subtler; current bg/brand/primary/base
-     with text|icon/brand/primary/BOLDER — 7.75:1 in Blue mode, 15.15:1 in Navy (measured from
-     the library 2026-09-05; base is 5.74:1 / 12.05:1, also AA). Disabled text|icon/neutral/disabled.
+     Colour: rest text|icon/neutral/base; hover bg/neutral/subtler; current bg/neutral/selected,
+     semibold, with text/brand/primary/BOLDER — 6.90:1 in Blue mode, 11.95:1 in Navy, glyph 5.11:1 /
+     9.59:1 (measured 2026-09-14, fill composited over the white rail); the route (is-ancestor)
+     bg/brand/primary/base. Disabled text|icon/neutral/disabled.
      ============================================================================= */
 
   .ds-sr-only {

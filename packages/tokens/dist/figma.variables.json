@@ -4157,7 +4157,7 @@
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#f7faff"
+              "value": "#eef5ff"
             }
           },
           "description": "Step 50 of the primary ramp: a tint for subtle surfaces (`bg/*/subtler`, `bg/*/subtle`) and washes. Bind a semantic role where one exists — it carries the measured contrast; reach for the rung only inside this library's own components.",
@@ -4189,7 +4189,7 @@
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#c1d7f2"
+              "value": "#bbd2ef"
             }
           },
           "description": "Step 100 of the primary ramp: a tint for subtle surfaces (`bg/*/subtler`, `bg/*/subtle`) and washes. Bind a semantic role where one exists — it carries the measured contrast; reach for the rung only inside this library's own components.",
@@ -4221,7 +4221,7 @@
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#93b1d6"
+              "value": "#90aed3"
             }
           },
           "description": "Step 200 of the primary ramp: a light border, divider or disabled fill rung (`border/*/subtle`, `bg/*/disabled`). Bind a semantic role where one exists — it carries the measured contrast; reach for the rung only inside this library's own components.",
@@ -4253,7 +4253,7 @@
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#6a8cb7"
+              "value": "#678ab5"
             }
           },
           "description": "Step 300 of the primary ramp: a light border, divider or disabled fill rung (`border/*/subtle`, `bg/*/disabled`). Bind a semantic role where one exists — it carries the measured contrast; reach for the rung only inside this library's own components.",
@@ -4285,7 +4285,7 @@
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#446a99"
+              "value": "#426998"
             }
           },
           "description": "Step 400 of the primary ramp: the icon and secondary-border rung on light surfaces. Bind a semantic role where one exists — it carries the measured contrast; reach for the rung only inside this library's own components.",
@@ -4317,7 +4317,7 @@
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#224c7d"
+              "value": "#214c7d"
             }
           },
           "description": "Step 500 of the primary ramp: the key fill — `bg/*/bold` buttons and their hover; white text passes AA on 600. Bind a semantic role where one exists — it carries the measured contrast; reach for the rung only inside this library's own components.",
@@ -4381,7 +4381,7 @@
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#002249"
+              "value": "#002349"
             }
           },
           "description": "Step 700 of the primary ramp: text and icon ink on light surfaces (`text/*/base`, `text/*/bolder`), and the pressed fill. Bind a semantic role where one exists — it carries the measured contrast; reach for the rung only inside this library's own components.",
@@ -4413,7 +4413,7 @@
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#001734"
+              "value": "#001735"
             }
           },
           "description": "Step 800 of the primary ramp: text and icon ink on light surfaces (`text/*/base`, `text/*/bolder`), and the pressed fill. Bind a semantic role where one exists — it carries the measured contrast; reach for the rung only inside this library's own components.",
@@ -20936,15 +20936,15 @@
               "opacity": {
                 "type": "ALIAS",
                 "collection": "Static",
-                "name": "alpha/48"
+                "name": "alpha/64"
               },
               "fallback": {
                 "type": "COLOR",
-                "value": "rgba(192, 219, 255, 0.48)"
+                "value": "rgba(192, 219, 255, 0.64)"
               }
             }
           },
-          "description": "The selected row, item or navigation entry — the brand's rung-100 tint at 48%, so selection reads as 'chosen' rather than 'hovered': darker than bg/neutral/subtler (hover) and brand-hued, on white or on the canvas alike. The sidebar's current page and a data table's chosen row bind it. Selected is a STATE the reader set; hover is one the pointer set. Was primaryScale/50 until 2026-09-14 — under Navy that is #f7faff, LIGHTER than the hover fill and 1.05:1 on white, so the current page read as a raised white chip. Translucent so it follows every brand without a per-brand rung.",
+          "description": "The selected row, item or navigation entry — the brand's rung-100 tint at 64%, so selection reads as 'chosen' rather than 'hovered': at least 3 L* darker than bg/neutral/subtler (hover) in both estate brands, and brand-hued, on white or on the canvas alike. The sidebar's current page and a data table's chosen row bind it. Selected is a STATE the reader set; hover is one the pointer set. Was primaryScale/50 until 2026-09-14 — under Navy #f7faff, lighter than hover — then 48% for a day, which sat only 1.1-1.8 L* below hover and 2.0-2.7 dE from it under protanopia and deuteranopia. Translucent so it follows every brand without a per-brand rung.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-neutral-selected)"
           },
