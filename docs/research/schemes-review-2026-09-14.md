@@ -39,10 +39,17 @@ Three records carry two organisations, so the groups sum to 137 against 134 reco
 | DWBDNC | 55 | Central 11 · State Governments 44 |
 | SCW · NOS · NHAA (portals) | 7 · 2 · 3 | group carries *Go to Portal* |
 
-By category (the thirteen live terms): Education 60 · Loan 11 · Livelihood 9 · Economic
-Development 8 · Housing 7 · Social Empowerment 7 · Healthcare 5 · Aid 4 · NGOs Scheme 4 ·
-Micro Finance 2 · Non Loan 2 · Social Remedies 2 · Term Loan 1. **Ten records carry no
-category** and would sit in no group.
+By category, the live tags would give Education 60, Loan 11 and so on across thirteen
+overlapping terms, but those figures are wrong: 33 of the 60 "Education" records are State
+Government schemes, 3 are duplicate listings and 1 is an organisation page. **The designs use the
+ten kinds of support instead**, counted over the 115 active listings that are schemes in
+`docs/audit/website-schemes-placement-2026-09-09.csv` (duplicates, documents and organisation
+pages left out; a scheme giving more than one kind of support is counted under each):
+Scholarships and Fellowships 34 · Loans and Credit 23 · Skill Training and Livelihood 17 ·
+Residential Schools, Hostels and Coaching 12 · Housing and Settlement 11 · Care, Shelter and
+Health 10 · Awards and Recognition 10 · Grants to Voluntary Organisations 9 · Protection, Relief
+and Grievance 5 · De-addiction and Counselling 2. One listing (Collected Works of Dr. Ambedkar)
+carries no kind of support.
 
 ## 3. Open for the 18:30 review
 
@@ -53,9 +60,9 @@ category** and would sit in no group.
 - **What the counts count.** The live list still holds documents, flyers and lists of offences
   (§6 of the IA plan: 140 entries today, 20 top-level schemes after). Group counts shown now
   would fall sharply once the list is cleaned.
-- **Which categories.** The live thirteen overlap (Loan, Non Loan, Term Loan, Micro Finance).
-  The eight on the new-journey slide are cleaner, but every record needs re-tagging before a
-  count can be shown under them.
+- ~~**Which categories.**~~ **Settled:** the ten kinds of support, already tagged on every listing
+  on 12 September. The live thirteen (Loan, Non Loan, Term Loan, Micro Finance overlap) are not
+  used.
 - **Which menu option** — rename only (M1b), under Offerings (M2), or its own menu (M2b).
 - **Nav width** under rename only: the label measures 216 px against 170 px today. It fits at
   1440; at 1280 it spends the 43 px the row had spare.
