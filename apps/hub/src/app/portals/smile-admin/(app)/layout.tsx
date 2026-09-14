@@ -38,7 +38,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <div
         role="status"
         aria-live="polite"
-        className="grid min-h-dvh place-items-center bg-surface-muted"
+        className="grid min-h-dvh place-items-center bg-surface-canvas"
       >
         <div className="text-body-2 text-ink-muted">Verifying session…</div>
       </div>
@@ -46,7 +46,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-dvh bg-surface-muted">
+    <div className="min-h-dvh bg-surface-canvas">
       <Header />
       <div className="mx-auto flex max-w-[1600px] gap-lg px-md md:px-lg">
         <Sidebar />

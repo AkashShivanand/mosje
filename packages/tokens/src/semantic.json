@@ -433,6 +433,17 @@
           }
         }
       },
+      "25": {
+        "$value": "{color.neutral.25}",
+        "$extensions": {
+          "mosje": {
+            "colorModes": {
+              "navy": "{color.neutralDark.25}",
+              "dbim": "{color.neutralDark.25}"
+            }
+          }
+        }
+      },
       "50": {
         "$value": "{color.neutral.50}",
         "$extensions": {
@@ -1580,6 +1591,10 @@
           }
         }
       },
+      "subtlest": {
+        "$value": "{color.neutralScale.25}",
+        "$description": "The page canvas — the ground a portal shell and its muted page regions sit on, behind white cards. One step lighter than subtler, so hover, read-only and loading fills (all subtler) stay distinguishable from the page they sit on. Added 2026-09-14: the canvas was subtler, and at OKLCH L 95.5 across three-fifths of a portal screen it read as dull grey and made a read-only field on the page 1.00:1 with its ground."
+      },
       "subtler": {
         "$value": "{color.neutral.50}",
         "$extensions": {
@@ -1604,8 +1619,13 @@
         "$description": "The neutral pressed wash — one step past hover, held while the pointer is down or the row is being acted on. Pairs with bg/neutral/hover the way overlay/brand/active pairs with overlay/brand/hover."
       },
       "selected": {
-        "$value": "{color.primaryScale.50}",
-        "$description": "The selected row, item or navigation entry — the brand's lightest tint, so selection reads as ‘chosen’ rather than ‘hovered’ even on a neutral list. The sidebar's current page and a data table's chosen row bind it. Selected is a STATE the reader set; hover is one the pointer set."
+        "$value": "{color.primaryScale.100}",
+        "$description": "The selected row, item or navigation entry — the brand's rung-100 tint at 48%, so selection reads as 'chosen' rather than 'hovered': darker than bg/neutral/subtler (hover) and brand-hued, on white or on the canvas alike. The sidebar's current page and a data table's chosen row bind it. Selected is a STATE the reader set; hover is one the pointer set. Was primaryScale/50 until 2026-09-14 — under Navy that is #f7faff, LIGHTER than the hover fill and 1.05:1 on white, so the current page read as a raised white chip. Translucent so it follows every brand without a per-brand rung.",
+        "$extensions": {
+          "mosje": {
+            "alpha": "{alpha.48}"
+          }
+        }
       },
       "readonly": {
         "$value": "{color.neutralScale.50}",
@@ -2573,6 +2593,9 @@
     "bg": {
       "neutral": {
         "base": {
+          "$value": "{text.neutral.base}"
+        },
+        "subtlest": {
           "$value": "{text.neutral.base}"
         },
         "subtler": {

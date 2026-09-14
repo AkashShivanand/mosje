@@ -162,6 +162,7 @@
     },
     "neutral": {
       "0": "#ffffff",
+      "25": "#f6f7f8",
       "50": "#eef0f3",
       "100": "#dcdee1",
       "200": "#c6c9cd",
@@ -177,6 +178,7 @@
     },
     "neutralDark": {
       "0": "#ffffff",
+      "25": "#f6f7f9",
       "50": "#eff0f2",
       "100": "#dcdee2",
       "200": "#c6c9ce",
@@ -244,6 +246,7 @@
     },
     "neutralDbim": {
       "0": "#ffffff",
+      "25": "#fafafa",
       "50": "#f5f5f5",
       "100": "#ebeaea",
       "200": "#c6c6c6",
@@ -386,6 +389,7 @@
     },
     "neutralScale": {
       "0": "#ffffff",
+      "25": "#f6f7f8",
       "50": "#eef0f3",
       "100": "#dcdee1",
       "200": "#c6c9cd",
@@ -1004,10 +1008,11 @@
   "bg": {
     "neutral": {
       "base": "#ffffff",
+      "subtlest": "#f6f7f8",
       "subtler": "#eef0f3",
       "hover": "#eef0f3",
       "active": "#dcdee1",
-      "selected": "#ecf4ff",
+      "selected": "#c0dbff",
       "readonly": "#eef0f3",
       "loading": "#eef0f3",
       "subtle": "#dcdee1",
@@ -1290,6 +1295,7 @@
     "bg": {
       "neutral": {
         "base": "#1e2124",
+        "subtlest": "#1e2124",
         "subtler": "#1e2124",
         "subtle": "#1e2124",
         "bold": "#1e2124",

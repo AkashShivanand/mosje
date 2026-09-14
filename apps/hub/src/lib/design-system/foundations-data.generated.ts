@@ -3436,11 +3436,11 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "tier": "sys",
         "type": "color",
         "css": "--sa-bg-neutral-selected",
-        "value": "#ecf4ff",
-        "raw": "{color.primaryScale.50}",
+        "value": "color-mix(in srgb, var(--sa-color-primaryScale-100) calc(var(--sa-alpha-48) * 100%), transparent)",
+        "raw": "{color.primaryScale.100}",
         "figma": "Color · bg/neutral/selected",
         "excluded": null,
-        "description": "The selected row, item or navigation entry — the brand's lightest tint, so selection reads as ‘chosen’ rather than ‘hovered’ even on a neutral list. The sidebar's current page and a data table's chosen row bind it. Selected is a STATE the reader set; hover is one the pointer set."
+        "description": "The selected row, item or navigation entry — the brand's rung-100 tint at 48%, so selection reads as 'chosen' rather than 'hovered': darker than bg/neutral/subtler (hover) and brand-hued, on white or on the canvas alike. The sidebar's current page and a data table's chosen row bind it. Selected is a STATE the reader set; hover is one the pointer set. Was primaryScale/50 until 2026-09-14 — under Navy that is #f7faff, LIGHTER than the hover fill and 1.05:1 on white, so the current page read as a raised white chip. Translucent so it follows every brand without a per-brand rung."
       },
       {
         "path": "bg/neutral/readonly",

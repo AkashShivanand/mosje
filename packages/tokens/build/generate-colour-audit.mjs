@@ -55,7 +55,7 @@ const DBIM_MODES = Object.fromEntries(
 );
 const HEX = /^#[0-9a-f]{6}$/i;
 const STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
-const NEUTRAL_STEPS = [0, ...STEPS, 1000];
+const NEUTRAL_STEPS = [0, 25, ...STEPS, 1000];
 
 /** Every ramp, and what kind of thing it is. */
 const RAMPS = [

@@ -8,14 +8,14 @@
       "existing": 152
     },
     "Palette": {
-      "total": 139,
+      "total": 140,
       "new": 0,
-      "existing": 139
+      "existing": 140
     },
     "Color": {
-      "total": 510,
+      "total": 512,
       "new": 0,
-      "existing": 510
+      "existing": 512
     },
     "Type": {
       "total": 113,
@@ -176,6 +176,7 @@
     "color/info/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/info/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutral/0 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/neutral/25 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutral/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutral/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutral/200 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
@@ -189,6 +190,7 @@
     "color/neutral/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutral/1000 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutralDark/0 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/neutralDark/25 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutralDark/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutralDark/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutralDark/200 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
@@ -246,6 +248,7 @@
     "color/infoDbim/900 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/infoDbim/950 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutralDbim/0 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
+    "color/neutralDbim/25 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutralDbim/50 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutralDbim/100 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
     "color/neutralDbim/200 (private Tier-1 colour ramp — designers bind to the mode-aware Color/Theme layer)",
@@ -5216,6 +5219,38 @@
           "description": "Step 0 of the neutral (ink and surface) ramp: white — the page surface and the ink on bold fills. Bind a semantic role where one exists — it carries the measured contrast; reach for the rung only inside this library's own components.",
           "codeSyntax": {
             "WEB": "var(--sa-color-neutralScale-0)"
+          },
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL",
+            "TEXT_FILL",
+            "STROKE_COLOR",
+            "EFFECT_COLOR"
+          ],
+          "hiddenFromPublishing": true,
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "color/neutralScale/25",
+          "path": "color/neutralScale/25",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#f6f7f8"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#f6f7f9"
+            }
+          },
+          "description": "Step 25 of the neutral (ink and surface) ramp: a tint for subtle surfaces (`bg/*/subtler`, `bg/*/subtle`) and washes. Bind a semantic role where one exists — it carries the measured contrast; reach for the rung only inside this library's own components.",
+          "codeSyntax": {
+            "WEB": "var(--sa-color-neutralScale-25)"
           },
           "scopes": [
             "FRAME_FILL",
@@ -20774,6 +20809,38 @@
           }
         },
         {
+          "name": "bg/neutral/subtlest",
+          "path": "bg/neutral/subtlest",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/25"
+            }
+          },
+          "description": "The page canvas — the ground a portal shell and its muted page regions sit on, behind white cards. One step lighter than subtler, so hover, read-only and loading fills (all subtler) stay distinguishable from the page they sit on. Added 2026-09-14: the canvas was subtler, and at OKLCH L 95.5 across three-fifths of a portal screen it read as dull grey and made a read-only field on the page 1.00:1 with its ground. Contrast 1.07:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "codeSyntax": {
+            "WEB": "var(--sa-bg-neutral-subtlest)"
+          },
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "hiddenFromPublishing": false,
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json",
+            "in.gov.mosje.contrast": {
+              "rung": "subtlest",
+              "min": 0,
+              "measured": 1.07,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "bg/neutral/subtler",
           "path": "bg/neutral/subtler",
           "type": "COLOR",
@@ -20865,10 +20932,19 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/50"
+              "name": "color/primaryScale/100",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(192, 219, 255, 0.48)"
+              }
             }
           },
-          "description": "The selected row, item or navigation entry — the brand's lightest tint, so selection reads as ‘chosen’ rather than ‘hovered’ even on a neutral list. The sidebar's current page and a data table's chosen row bind it. Selected is a STATE the reader set; hover is one the pointer set.",
+          "description": "The selected row, item or navigation entry — the brand's rung-100 tint at 48%, so selection reads as 'chosen' rather than 'hovered': darker than bg/neutral/subtler (hover) and brand-hued, on white or on the canvas alike. The sidebar's current page and a data table's chosen row bind it. Selected is a STATE the reader set; hover is one the pointer set. Was primaryScale/50 until 2026-09-14 — under Navy that is #f7faff, LIGHTER than the hover fill and 1.05:1 on white, so the current page read as a raised white chip. Translucent so it follows every brand without a per-brand rung.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-neutral-selected)"
           },
@@ -22520,6 +22596,32 @@
           "description": "Use for text and icons placed on `bg/neutral/base`. The pairing was chosen by measurement, so it is the safe foreground for that fill in every brand — do not substitute another ink.",
           "codeSyntax": {
             "WEB": "var(--sa-on-bg-neutral-base)"
+          },
+          "scopes": [
+            "SHAPE_FILL",
+            "TEXT_FILL"
+          ],
+          "hiddenFromPublishing": false,
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "on/bg/neutral/subtlest",
+          "path": "on/bg/neutral/subtlest",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800"
+            }
+          },
+          "description": "Use for text and icons placed on `bg/neutral/subtlest`. The pairing was chosen by measurement, so it is the safe foreground for that fill in every brand — do not substitute another ink.",
+          "codeSyntax": {
+            "WEB": "var(--sa-on-bg-neutral-subtlest)"
           },
           "scopes": [
             "SHAPE_FILL",
@@ -34088,8 +34190,8 @@
   ],
   "contrast": {
     "$description": "Contrast classes are MEASURED against each token's own surface, across every brand, and the worst case is what the description states. A token absent from this summary carries no contrast sentence because the prominence ladder does not describe it — see build/contrast-contract.mjs.",
-    "measured": 95,
-    "meets": 95,
+    "measured": 96,
+    "meets": 96,
     "shortfall": []
   }
 }

@@ -184,6 +184,36 @@ export const legacyDsCss = {
     // declaration whenever any dependency is redeclared, which is what keeps a wash on-brand
     // inside a nested [data-brand] island.
     const systemAliasPairs = [];
+
+    /**
+     * Does this token's value depend on the brand axis? True when it carries its own
+     * `colorModes`, or when it is a reference (or a translucent wash) whose target does.
+     *
+     * A Tier-2 alias in semantic.json with no `colorModes` of its own used to be emitted as
+     * the literal :root resolved — so it froze at the DEFAULT brand. Measured 2026-09-14 under
+     * `data-brand="navy"`: `bg/neutral/selected` stayed `#ecf4ff`, `border/neutral/selected`
+     * and `focus/ring` stayed gov-blue `#0373df`, and the navy E-Anudaan portal painted its
+     * read-only fields from the blue brand's neutral ramp. Such an alias is now a var() chain,
+     * re-asserted in every brand block like any other alias.
+     */
+    const byPath = new Map(dictionary.allTokens.map((t) => [t.path.join("."), t]));
+    const brandMemo = new Map();
+    const dependsOnBrand = (path, seen = new Set()) => {
+      if (brandMemo.has(path)) return brandMemo.get(path);
+      const t = byPath.get(path);
+      if (!t || seen.has(path)) return false;
+      seen.add(path);
+      const ext = t.original?.$extensions?.mosje;
+      const orig = t.original?.$value ?? t.original?.value;
+      const refPath = (r) => (typeof r === "string" && /^\{[^}]+\}$/.test(r) ? r.slice(1, -1) : null);
+      const result =
+        !!ext?.colorModes ||
+        (refPath(orig) != null && dependsOnBrand(refPath(orig), seen)) ||
+        (refPath(ext?.alpha) != null && refPath(orig) != null && dependsOnBrand(refPath(orig), seen));
+      brandMemo.set(path, result);
+      return result;
+    };
+
     const lines = regularTokens.map((t) => {
       const name = cssNameFor(t);
       const orig = t.original?.$value ?? t.original?.value;
@@ -194,6 +224,15 @@ export const legacyDsCss = {
         return `  ${name}: ${value};`;
       }
       if (ALIAS_EMIT_FILE.test(t.filePath ?? "") && typeof orig === "string" && orig.startsWith("{")) {
+        const target = refToVar(orig);
+        systemAliasPairs.push([name, [target], `var(${target})`]);
+        return `  ${name}: var(${target});`;
+      }
+      if (
+        typeof orig === "string" && /^\{[^}]+\}$/.test(orig) &&
+        !t.original?.$extensions?.mosje?.colorModes &&
+        dependsOnBrand(orig.slice(1, -1))
+      ) {
         const target = refToVar(orig);
         systemAliasPairs.push([name, [target], `var(${target})`]);
         return `  ${name}: var(${target});`;

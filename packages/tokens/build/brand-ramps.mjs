@@ -54,6 +54,7 @@ import {
   describeRamp,
   STEPS,
   NEUTRAL_STEPS,
+  NEUTRAL_CORE_STEPS,
 } from "./ramp.mjs";
 import { hexToRgb, hexToOklch, oklchToHex } from "./oklch.mjs";
 
@@ -403,7 +404,9 @@ export const NEUTRAL_SHAPE = {
   // which the prominence ladder holds to ≥4.5:1 against the page. L* 58 measures 4.28:1 and
   // put a NEW entry on the shortfall ledger — a ledger that may only shrink. 56 measures
   // 4.65:1, against the old ramp's 4.69:1.
-  lightness: [100, 95.5, 90, 83.5, 76, 66.5, 56, 46, 36, 24.5, 17.5, 11, 0],
+  // 97.6 is the `25` SURFACE rung (see NEUTRAL_STEPS in ramp.mjs) — the page canvas. It is
+  // exempt from the gap rule above: it exists to sit close to white, not to be a grey.
+  lightness: [100, 97.6, 95.5, 90, 83.5, 76, 66.5, 56, 46, 36, 24.5, 17.5, 11, 0],
   // Chroma peaks in the mid-tones and tapers to nothing at both ends. 0.016 is deliberately
   // near the top of what still reads as GREY — much above 0.02 and a neutral starts reading as
   // a colour, which is a different token's job.
@@ -471,20 +474,26 @@ export function generateDbim() {
   const pinL = Object.fromEntries(
     pinnedRungs.map((r) => [r, hexToOklch(DBIM_NEUTRAL_PINS[r]).L]),
   );
+  // Interpolated over the CORE ladder so inserting the `25` surface rung moves no existing
+  // grey; `25` then takes the lightness midway between white and `50`.
   const neutral = {};
-  NEUTRAL_STEPS.forEach((step, i) => {
+  NEUTRAL_CORE_STEPS.forEach((step, i) => {
     if (DBIM_NEUTRAL_PINS[step]) {
       neutral[step] = DBIM_NEUTRAL_PINS[step];
       return;
     }
-    const lo = [...pinnedRungs].reverse().find((r) => NEUTRAL_STEPS.indexOf(r) < i);
-    const hi = pinnedRungs.find((r) => NEUTRAL_STEPS.indexOf(r) > i);
-    const li = NEUTRAL_STEPS.indexOf(lo);
-    const hi_i = NEUTRAL_STEPS.indexOf(hi);
+    const lo = [...pinnedRungs].reverse().find((r) => NEUTRAL_CORE_STEPS.indexOf(r) < i);
+    const hi = pinnedRungs.find((r) => NEUTRAL_CORE_STEPS.indexOf(r) > i);
+    const li = NEUTRAL_CORE_STEPS.indexOf(lo);
+    const hi_i = NEUTRAL_CORE_STEPS.indexOf(hi);
     const t = (i - li) / (hi_i - li);
     const L = pinL[lo] + (pinL[hi] - pinL[lo]) * t;
     neutral[step] = oklchToHex({ L, C: 0, H: 0 });
   });
+  neutral[25] = oklchToHex({ L: (pinL[0] + hexToOklch(neutral[50]).L) / 2, C: 0, H: 0 });
+  const ordered = Object.fromEntries(NEUTRAL_STEPS.map((s) => [s, neutral[s]]));
+  for (const k of Object.keys(neutral)) delete neutral[k];
+  Object.assign(neutral, ordered);
 
   return { primary, functional, neutral };
 }

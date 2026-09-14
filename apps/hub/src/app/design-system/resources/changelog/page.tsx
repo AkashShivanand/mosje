@@ -32,9 +32,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.134.0",
+    version: "v0.135.0",
     date: "2026-09-14",
     current: true,
+    changes: [
+      { kind: "Added", text: "`bg/neutral/subtlest` \u2014 THE PAGE CANVAS, ONE STEP LIGHTER THAN `subtler`. A new `25` rung on every neutral ramp (Blue `#f6f7f8`, Navy `#f6f7f9`, DBIM `#fafafa`; no existing rung moves) and the fill ladder gains `subtlest` between `base` and `subtler`. `AppShell`, the root `<body>` and 19 full-page grounds take it through a new `surface-canvas` utility, which falls back to a portal's own `surface-muted` so no portal palette moves. The canvas was `subtler`: across three-fifths of a portal screen it read as dull grey, and hover, read-only and loading fills were the same colour as the page (1.00:1). Pushed to the SAMAVESH library and read back" },
+      { kind: "Changed", text: "`bg/neutral/selected` IS THE BRAND'S RUNG-100 TINT AT 48%, AND THE SIDEBAR'S CURRENT PAGE BINDS IT. It was `primaryScale/50`, which under Navy is `#f7faff` \u2014 lighter than the hover fill and 1.05:1 on white, so the current page read as a raised white chip. The current page now also sets its label semibold, so the state survives without colour (WCAG 1.4.1); the ancestor route keeps the lighter tint" },
+      { kind: "Fixed", text: "BRAND MODES NO LONGER INHERIT THE BLUE BRAND'S STATE COLOURS. A Tier-2 alias with no `colorModes` of its own was emitted as the literal `:root` resolved, so under `data-brand=\"navy\"` (and every DBIM brand) `bg/neutral/selected` stayed `#ecf4ff`, `border/neutral/selected` and `focus/ring` stayed gov-blue `#0373df`, and hover, active, read-only, loading and the `layer/*` fills came from the blue ramp. Such an alias is now a `var()` chain re-asserted in every brand block; the default Blue brand renders unchanged" },
+    ],
+  },
+  {
+    version: "v0.134.0",
+    date: "2026-09-14",
+    current: false,
     changes: [
       { kind: "Fixed", text: "THE FIGMA LIBRARY CARRIES NO HAND-DRAWN COPY OF A LIBRARY COMPONENT. 133 were replaced on 36 component pages: documentation hero pills and anatomy pins with `Badge`; the actions of Cookie Consent, Transfer List, Bulk Actions Bar, Inline Edit, Split Button, Feedback Widget and the Chart Card states with `Button` at the size the code renders; the Time Picker trigger and the Accessibility Bar control specimens with `IconButton`; the deprecated Carousel Pause/Play with `Button`; date-range presets and chatbot quick replies with `Chip`; metric-card deltas and statuses, ranked-bar ranks and video-tile states with `Badge`; chart-card and menu rules with `Divider`. `check:figma-hand-rolled` now reads zero on all 74 component pages" },
       { kind: "Fixed", text: "FIGMA `Badge` TEXT SETS ITS LABEL AS TYPED, LIKE THE CODE. The twelve Text variants took `Label/label-3`, which is uppercase, while `.ds-badge--sm` sets label-2 in the case it is given \u2014 so \u201cIn Review\u201d and \u201cBelow target\u201d read as capitals in Figma and not on the page. They take `Label/label-2` now; height is unchanged at 20" },

@@ -50,9 +50,9 @@ Eleven steps on every chromatic ramp (50–950, matching UX4G 3.0); thirteen on 
 | `dangerScale` | functional | 11 | 7.3–7.6 | yes | 1° | Anchor #ec5042 at rung 400 — the rung its L\* 64 says, which is what took `bolder` from 4.40:1 to AA. |
 | `warningScale` | functional | 11 | 7.4–7.5 | yes | 3° | Anchor at rung 300, rotated to hue 76: the ramp used to carry two hues, and 66 collided with saffron. |
 | `infoScale` | functional | 11 | 7.7–8.0 | yes | 3° | Anchor #1a73e8 at rung 500. Sits ~3 degrees from primary; see the separation table. |
-| `neutralScale` | neutral | 13 | 4.6–11.3 | yes | 3° | 13 steps: 0 is pure white and 1000 pure black, which are achromatic and belong here only. Hue locked to the brand's primary. |
+| `neutralScale` | neutral | 14 | 2.1–11.3 ⚠️ | yes | 3° | 13 steps: 0 is pure white and 1000 pure black, which are achromatic and belong here only. Hue locked to the brand's primary. |
 
-**Every ramp satisfies the shape rule** — each step 4–16 L\* from the last, monotonic, hue held within ~6°, chroma on a single arc. There is nothing to flag. All eight are generated from the anchors in `build/brand-ramps.mjs`; the last four (danger, warning, info, neutral) were rebuilt on 2026-08-11.
+⚠️ marks a ramp outside the shape rule the generator enforces: neutralScale. Fix it in `build/brand-ramps.mjs` and re-run — the shape is a property of the anchors, not something to be edited step by step.
 
 ## Accessibility
 

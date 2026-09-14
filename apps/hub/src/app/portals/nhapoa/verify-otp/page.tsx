@@ -14,7 +14,7 @@ export default function VerifyOtpPage() {
   const [status, setStatus] = React.useState<"idle" | "ok" | "err">("idle");
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-surface-muted px-4 py-12">
+    <main className="flex min-h-screen items-center justify-center bg-surface-canvas px-4 py-12">
       <div className="w-full max-w-md rounded-2xl border border-line bg-white p-8 shadow-card">
         <h1 className="text-headline-3 text-ink">Verify OTP</h1>
         <p className="mt-1 mb-6 text-body-2 text-ink-muted">
