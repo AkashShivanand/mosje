@@ -50,9 +50,52 @@ Eleven steps on every chromatic ramp (50–950, matching UX4G 3.0); thirteen on 
 | `dangerScale` | functional | 11 | 7.3–7.6 | yes | 1° | Anchor #ec5042 at rung 400 — the rung its L\* 64 says, which is what took `bolder` from 4.40:1 to AA. |
 | `warningScale` | functional | 11 | 7.4–7.5 | yes | 3° | Anchor at rung 300, rotated to hue 76: the ramp used to carry two hues, and 66 collided with saffron. |
 | `infoScale` | functional | 11 | 7.7–8.0 | yes | 3° | Anchor #1a73e8 at rung 500. Sits ~3 degrees from primary; see the separation table. |
-| `neutralScale` | neutral | 14 | 2.1–11.3 ⚠️ | yes | 3° | 13 steps: 0 is pure white and 1000 pure black, which are achromatic and belong here only. Hue locked to the brand's primary. |
+| `neutralScale` | neutral | 14 | 2.1–11.3 ⚠️ | yes | 3° | 14 steps: 0 is pure white and 1000 pure black, which are achromatic and belong here only; 25 is the page canvas, a surface rung outside the lightness spacing. Hue locked to the brand's primary. |
 
 ⚠️ marks a ramp outside the shape rule the generator enforces: neutralScale. Fix it in `build/brand-ramps.mjs` and re-run — the shape is a property of the anchors, not something to be edited step by step.
+
+## Surfaces and states
+
+The neutral grounds a screen is built from, and the state fills that sit on them. A state is only
+useful if it differs from the ground under it, so each fill is measured against white (a card, the
+sidebar) and against the page canvas. Translucent fills are composited first. L\* is CIE lightness;
+contrast here is a DISTINGUISHABILITY figure — no WCAG criterion asks a fill to contrast with its
+ground, and the reading is carried by the `on/*` ink measured for each fill.
+
+**blue**
+
+| token | role | value on white | L\* | vs white | vs canvas |
+|---|---|---|---|---|---|
+| `bg/neutral/base` | Cards, masthead, sidebar | `#ffffff` | 100.0 | 1.00:1 | 1.07:1 |
+| `bg/neutral/subtlest` | The page canvas | `#f6f7f8` | 97.2 | 1.07:1 | 1.00:1 |
+| `bg/neutral/subtler` | Quiet panels | `#eef0f3` | 94.7 | 1.14:1 | 1.06:1 |
+| `bg/neutral/hover` | A row under the pointer | `#eef0f3` | 94.7 | 1.14:1 | 1.06:1 |
+| `bg/neutral/readonly` | A read-only field | `#eef0f3` | 94.7 | 1.14:1 | 1.06:1 |
+| `bg/neutral/selected` | The current page, a chosen row | `#e1eeff` | 93.6 | 1.17:1 | 1.14:1 |
+| `bg/brand/primary/base` | The route to the current page (sidebar ancestor) | `#ecf4ff` | 95.9 | 1.11:1 | 1.03:1 |
+| `bg/neutral/active` | A pressed row | `#dcdee1` | 88.4 | 1.35:1 | 1.26:1 |
+
+Hover sits 2.5 L\* below the canvas and 5.3 below white; the selected fill sits 1.1 L\* below hover and 2.4 ΔE from it — it is told apart by HUE, and the current page also sets its label semibold, so the state never rests on colour alone (WCAG 1.4.1).
+
+**navy**
+
+| token | role | value on white | L\* | vs white | vs canvas |
+|---|---|---|---|---|---|
+| `bg/neutral/base` | Cards, masthead, sidebar | `#ffffff` | 100.0 | 1.00:1 | 1.07:1 |
+| `bg/neutral/subtlest` | The page canvas | `#f6f7f9` | 97.2 | 1.07:1 | 1.00:1 |
+| `bg/neutral/subtler` | Quiet panels | `#eff0f2` | 94.8 | 1.14:1 | 1.06:1 |
+| `bg/neutral/hover` | A row under the pointer | `#eff0f2` | 94.8 | 1.14:1 | 1.06:1 |
+| `bg/neutral/readonly` | A read-only field | `#eff0f2` | 94.8 | 1.14:1 | 1.06:1 |
+| `bg/neutral/selected` | The current page, a chosen row | `#e1ecf9` | 92.9 | 1.20:1 | 1.16:1 |
+| `bg/brand/primary/base` | The route to the current page (sidebar ancestor) | `#f7faff` | 98.2 | 1.05:1 | 1.02:1 |
+| `bg/neutral/active` | A pressed row | `#dcdee2` | 88.4 | 1.35:1 | 1.26:1 |
+
+Hover sits 2.4 L\* below the canvas and 5.2 below white; the selected fill sits 1.8 L\* below hover and 2.5 ΔE from it — it is told apart by HUE, and the current page also sets its label semibold, so the state never rests on colour alone (WCAG 1.4.1).
+
+The canvas is `subtlest`, never `subtler`: when the page and the hover, read-only and loading fills
+were one grey they measured 1.00:1 and a read-only field on the page could not be seen. The
+rule is enforced where the ground is painted — `AppShell`, `<body>` and the `surface-canvas`
+utility — and documented on the colour foundation page.
 
 ## Accessibility
 

@@ -12,7 +12,7 @@
 
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 
-import { hexToOklch, deltaE, hueDelta } from "./oklch.mjs";
+import { hexToOklch, deltaE, hueDelta, hexToRgb, rgbToHex } from "./oklch.mjs";
 import { contrastRatio } from "./ramp.mjs";
 import { ANCHORS } from "./brand-ramps.mjs";
 
@@ -66,7 +66,7 @@ const RAMPS = [
   ["dangerScale", "functional", "Anchor #ec5042 at rung 400 — the rung its L\\* 64 says, which is what took `bolder` from 4.40:1 to AA."],
   ["warningScale", "functional", "Anchor at rung 300, rotated to hue 76: the ramp used to carry two hues, and 66 collided with saffron."],
   ["infoScale", "functional", "Anchor #1a73e8 at rung 500. Sits ~3 degrees from primary; see the separation table."],
-  ["neutralScale", "neutral", "13 steps: 0 is pure white and 1000 pure black, which are achromatic and belong here only. Hue locked to the brand's primary."],
+  ["neutralScale", "neutral", "14 steps: 0 is pure white and 1000 pure black, which are achromatic and belong here only; 25 is the page canvas, a surface rung outside the lightness spacing. Hue locked to the brand's primary."],
 ];
 
 function rampRows(mode, family) {
@@ -180,6 +180,65 @@ p(
 );
 p();
 
+p("## Surfaces and states");
+p();
+p("The neutral grounds a screen is built from, and the state fills that sit on them. A state is only");
+p("useful if it differs from the ground under it, so each fill is measured against white (a card, the");
+p("sidebar) and against the page canvas. Translucent fills are composited first. L\\* is CIE lightness;");
+p("contrast here is a DISTINGUISHABILITY figure — no WCAG criterion asks a fill to contrast with its");
+p("ground, and the reading is carried by the `on/*` ink measured for each fill.");
+p();
+{
+  // A translucent token is `color-mix(in srgb, var(base) calc(var(alpha) * 100%), transparent)`;
+  // resolve both references and composite over the ground it will actually sit on.
+  const composite = (res, name, groundHex) => {
+    const raw = res(name);
+    const m = raw && raw.match(/^color-mix\(in srgb, var\((--[A-Za-z0-9-]+)\) calc\(var\((--[A-Za-z0-9-]+)\) \* 100%\), transparent\)$/);
+    if (!m) return res(name);
+    const base = res(m[1]); const a = parseFloat(res(m[2]));
+    const fg = hexToRgb(base), bg = hexToRgb(groundHex);
+    return rgbToHex(fg.map((c, i) => a * c + (1 - a) * bg[i]));
+  };
+  const cieL = (hex) => {
+    const Y = hexToRgb(hex).map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)).reduce((acc, c, i) => acc + c * [0.2126, 0.7152, 0.0722][i], 0);
+    return 116 * (Y > 0.008856 ? Math.cbrt(Y) : 7.787 * Y + 16 / 116) - 16;
+  };
+  const ROWS = [
+    ["bg/neutral/base", "--sa-bg-neutral-base", "Cards, masthead, sidebar"],
+    ["bg/neutral/subtlest", "--sa-bg-neutral-subtlest", "The page canvas"],
+    ["bg/neutral/subtler", "--sa-bg-neutral-subtler", "Quiet panels"],
+    ["bg/neutral/hover", "--sa-bg-neutral-hover", "A row under the pointer"],
+    ["bg/neutral/readonly", "--sa-bg-neutral-readonly", "A read-only field"],
+    ["bg/neutral/selected", "--sa-bg-neutral-selected", "The current page, a chosen row"],
+    ["bg/brand/primary/base", "--sa-bg-brand-primary-base", "The route to the current page (sidebar ancestor)"],
+    ["bg/neutral/active", "--sa-bg-neutral-active", "A pressed row"],
+  ];
+  for (const mode of MODES_KEYS) {
+    const res = MODES[mode];
+    const white = res("--sa-bg-neutral-base"), canvas = res("--sa-bg-neutral-subtlest");
+    p(`**${mode}**`);
+    p();
+    p("| token | role | value on white | L\\* | vs white | vs canvas |");
+    p("|---|---|---|---|---|---|");
+    for (const [token, v, role] of ROWS) {
+      const onWhite = composite(res, v, white);
+      if (!HEX.test(onWhite ?? "")) continue;
+      const onCanvas = composite(res, v, canvas);
+      p(`| \`${token}\` | ${role} | \`${onWhite}\` | ${cieL(onWhite).toFixed(1)} | ${contrastRatio(onWhite, white).toFixed(2)}:1 | ${contrastRatio(onCanvas, canvas).toFixed(2)}:1 |`);
+    }
+    const hover = res("--sa-bg-neutral-hover"), selected = composite(res, "--sa-bg-neutral-selected", white);
+    p();
+    p(`Hover sits ${(cieL(canvas) - cieL(hover)).toFixed(1)} L\\* below the canvas and ${(100 - cieL(hover)).toFixed(1)} below white; the selected fill sits ` +
+      `${(cieL(hover) - cieL(selected)).toFixed(1)} L\\* below hover and ${deltaE(selected, hover).toFixed(1)} ΔE from it — it is told apart by HUE, and the ` +
+      "current page also sets its label semibold, so the state never rests on colour alone (WCAG 1.4.1).");
+    p();
+  }
+}
+p("The canvas is `subtlest`, never `subtler`: when the page and the hover, read-only and loading fills");
+p("were one grey they measured 1.00:1 and a read-only field on the page could not be seen. The");
+p("rule is enforced where the ground is painted — `AppShell`, `<body>` and the `surface-canvas`");
+p("utility — and documented on the colour foundation page.");
+p();
 p("## Accessibility");
 p();
 p("Measured against each token's own declared partner, in every mode. `on/*` pairs a fill with");
