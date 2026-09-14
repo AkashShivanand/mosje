@@ -191,7 +191,6 @@ export const Darpan: Story = {
               onDarpanIdChange={(v) => set("id", v)}
               pan={s.pan ?? ""}
               onPanChange={(v) => set("pan", v)}
-              note="Other login roles (DWO, State, Ministry, Finance, PMU) use Ministry-issued credentials — separate login flow"
             />
           }
         />
