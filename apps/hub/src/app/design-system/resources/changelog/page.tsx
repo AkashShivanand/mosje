@@ -32,7 +32,7 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.135.0",
+    version: "v0.136.0",
     date: "2026-09-14",
     current: true,
     changes: [
@@ -44,9 +44,18 @@ const RELEASES: Release[] = [
     ],
   },
   {
+    version: "v0.135.0",
+    date: "2026-09-14",
+    changes: [
+      { kind: "Changed", text: "EIGHT COMPONENTS RENDER THE LIBRARY PART THEIR FIGMA MASTER INSTANCES, instead of drawing their own. `FeedbackWidget`\u2019s Yes / No and Send, `BulkActionsBar`\u2019s actions and Clear selection, and `ChartCard`\u2019s retry are `Button`; `TimePicker`\u2019s trigger is an outlined `IconButton` with the clock glyph where a \u25ef character stood; `DateRangePicker`\u2019s quick periods and `Chatbot`\u2019s quick replies are `Chip`; `MetricCard`\u2019s change pill and status, and `VideoTile`\u2019s state, are `Badge`. About 300 lines of CSS that restated those parts are gone, and hover, press, focus and disabled now come from the part itself" },
+      { kind: "Changed", text: "WHAT A READER WILL NOTICE. Controls take the library sizes \u2014 small buttons 32px where the bar drew 28, presets 32px where they drew 28, Send and the verdicts at the Button\u2019s own type. A chosen verdict is the outlined Button\u2019s pressed treatment, a filled neutral. A warning bulk action is neutral: Button has no warning variant, and the label carries the consequence. The metric status reads as typed rather than in capitals, and the video state badge is a tinted pill without its border. The chatbot\u2019s replies are outlined chips rather than pale brand tiles" },
+      { kind: "Added", text: "`library-parts.spec.tsx` pins the class each part stamps in all eight, so a component that goes back to drawing its own control fails the render specs. It was checked by restoring the old `FeedbackWidget`, which failed it" },
+      { kind: "Fixed", text: "`MetricCard`\u2019s decrease pill now clears contrast: it painted error text on the error BASE fill, which axe flagged on its docs page; the danger `Badge` pairs it with the subtler fill" },
+    ],
+  },
+  {
     version: "v0.134.0",
     date: "2026-09-14",
-    current: false,
     changes: [
       { kind: "Fixed", text: "THE FIGMA LIBRARY CARRIES NO HAND-DRAWN COPY OF A LIBRARY COMPONENT. 133 were replaced on 36 component pages: documentation hero pills and anatomy pins with `Badge`; the actions of Cookie Consent, Transfer List, Bulk Actions Bar, Inline Edit, Split Button, Feedback Widget and the Chart Card states with `Button` at the size the code renders; the Time Picker trigger and the Accessibility Bar control specimens with `IconButton`; the deprecated Carousel Pause/Play with `Button`; date-range presets and chatbot quick replies with `Chip`; metric-card deltas and statuses, ranked-bar ranks and video-tile states with `Badge`; chart-card and menu rules with `Divider`. `check:figma-hand-rolled` now reads zero on all 74 component pages" },
       { kind: "Fixed", text: "FIGMA `Badge` TEXT SETS ITS LABEL AS TYPED, LIKE THE CODE. The twelve Text variants took `Label/label-3`, which is uppercase, while `.ds-badge--sm` sets label-2 in the case it is given \u2014 so \u201cIn Review\u201d and \u201cBelow target\u201d read as capitals in Figma and not on the page. They take `Label/label-2` now; height is unchanged at 20" },

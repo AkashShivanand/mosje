@@ -190,30 +190,19 @@ binds `cmp/action/neutral/tertiary/*` rather than an inverse token.
 
 ---
 
-## Code still hand-rolls parts the Figma masters now instance (open, 2026-09-14)
+## Code still hand-rolls parts the Figma masters now instance (mostly closed, 2026-09-14)
 
-Every hand-drawn copy of a library component was replaced in the SAMAVESH Figma library
-(`check:figma-hand-rolled` reads zero). Where the React component already rendered the
-design-system part — Cookie Consent, Transfer List, Inline Edit's Save and Split Button use
-`Button` — Figma now matches it. These components still draw their own element in code, so
-Figma shows the library part and the page does not:
+Closed the same day: `FeedbackWidget`, `BulkActionsBar`, `ChartCard`, `TimePicker`,
+`DateRangePicker`, `Chatbot`, `MetricCard` and `VideoTile` render `Button`, `IconButton`,
+`Chip` and `Badge`, and `components/library-parts.spec.tsx` pins it.
 
-| Component | Part | Figma now | Code today |
-|---|---|---|---|
-| `FeedbackWidget` | Yes / No verdicts, Send | `Button` Neutral Outlined · Neutral Filled (selected) · Primary Filled | `<button>` in `feedback-widget.tsx` |
-| `BulkActionsBar` | Select all, Clear selection | `Button` Small, Neutral Text | `.ds-bulk__link`, `.ds-bulk__clear` |
-| `ChartCard` state | Try again / Clear filters | `Button` Small Neutral Outlined | `.ds-card-state__retry` |
-| `TimePicker` | open-list trigger | `IconButton` Neutral Outlined, `schedule` | `.ds-timepicker__trigger` with a ◯ character |
-| `DateRangePicker` | quick periods | `Chip` (32px) | `<button>` pills (28px) |
-| `Chatbot` | quick replies | `Chip` | `<button>` in `chatbot.tsx` |
-| `MetricCard` | delta and status pills | `Badge` Text, Subtle | `.ds-metric-card__pill` |
-| `VideoTile` | state badge | `Badge` Text, Subtle | `.ds-video__badge` (bordered) |
-| `AccessibilityControls` | accessibility action | `IconButton` Text Inverse (docs specimen) | `.sa-a11yc__action` |
-
-**Closing it:** render the design-system component in each, as the Ticker's controls were
-moved to `IconButton`, and re-measure the page against the master. Bulk Actions Bar's
-"Return for correction" had a warning tone Figma's `Button` has no type for; it is Neutral
-Outlined in the master.
+**Still open — `AccessibilityControls`.** The bar's accessibility control (`.sa-abar__icbtn`)
+is 28px, from the designer-authored `cmp/accessibilityBar/iconButtonSize`, and shares one set
+of states with the text-size steppers beside it by design. `IconButton` is 32/40/48, so
+moving the one control would either resize a statutory bar or override the part back into a
+copy, and moving it alone would split the row's states. It needs a decision first: add a
+28px size to `Button`/`IconButton` in code and Figma and move the whole row, or keep the bar's
+controls as a recorded exception.
 
 **Not refreshed:** the Index card previews for Split Button, Bulk Actions Bar, Cookie
 Consent, Transfer List, Inline Edit, Date Range Picker, Feedback Widget, Video Tile,

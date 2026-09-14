@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { Button } from "../actions/button";
 import "./bulk-actions-bar.css";
 
 export interface BulkAction {
@@ -95,21 +96,25 @@ export function BulkActionsBar({
 
       <span className="ds-bulk__actions">
         {actions.map((action) => (
-          <button
+          /* The library Button, outlined at `sm`. Button has no warning variant, so a
+             warning action is neutral — the label carries the consequence ("Return for
+             correction"), which the colour never could for a reader who cannot see it. */
+          <Button
             key={action.id}
-            type="button"
-            className={cn("ds-bulk__action", `ds-bulk__action--${action.tone ?? "neutral"}`)}
+            size="sm"
+            variant={action.tone === "danger" ? "danger" : "neutral"}
+            appearance="outlined"
             disabled={action.disabled}
             onClick={() => onAction(action.id)}
           >
             {action.label}
-          </button>
+          </Button>
         ))}
       </span>
 
-      <button type="button" className="ds-bulk__clear" onClick={onClear}>
+      <Button size="sm" variant="neutral" appearance="text" className="ds-bulk__clear" onClick={onClear}>
         Clear selection
-      </button>
+      </Button>
     </div>
   );
 }
