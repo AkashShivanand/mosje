@@ -1915,7 +1915,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/ticker",
     "keywords": "ticker — design system feedback & status two shapes, one data model behaviour by width states motion divergences from the figma frame example motion, pause and the live region put the name in the outline focus and tab order  tokens wcag accessibility",
-    "description": "Recent announcements in two shapes: the full-bleed bar under the masthead, and the stacked panel that scrolls them.",
+    "description": "Recent announcements in two shapes: the bar under the masthead, and the stacked panel that scrolls them.",
     "type": "component",
     "iconName": "notifications"
   },
