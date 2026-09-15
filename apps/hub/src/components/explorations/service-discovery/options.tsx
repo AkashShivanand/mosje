@@ -56,7 +56,7 @@ function Stage({ src, title, height = CANVAS_H }: { src: string; title: string; 
 const P = "/prototypes/service-discovery";
 
 export const HomePersonas = () => (
-  <Stage src={`${P}/home-a.html`} height={740} title="Explore User Personas — the panel already on the home page" />
+  <Stage src={`${P}/home-a.html`} height={740} title="Explore Specific Benefits — the panel already on the home page" />
 );
 export const HomeFiveQuestions = () => (
   <Stage src={`${P}/home-b.html`} height={900} title="Find Schemes for You — two questions, the persona and the kind of support" />
