@@ -119,7 +119,11 @@ export default {
     // The SCHEME name, never the acronym — "Senior Citizens Welfare", not "SCW".
     portalName: "Senior Citizens Welfare",
     // The DigiLocker card renders only when a role asks for it AND this is set.
-    links: { digilockerHref: "https://digilocker.gov.in/" },
+    links: { digilockerHref: "https://digilocker.gov.in/", termsHref: "/terms", privacyHref: "/privacy" },
+    // OPTIONAL per portal, off by default — \`Show consent\` on the nested
+    // Auth / AuthFormCard. On for a public sign-in; E-Anudaan (NGOs and
+    // officers only) leaves it off.
+    consent: true,
     roles: [
       {
         id: "citizen",

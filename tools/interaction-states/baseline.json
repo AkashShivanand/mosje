@@ -1,7 +1,7 @@
 {
   "note": "Selectors that style :hover and never :active. May only shrink.",
-  "generated": "2026-09-07",
-  "total": 101,
+  "generated": "2026-09-14",
+  "total": 96,
   "files": {
     "actions/button-group.css": [
       ".ds-btn"
@@ -22,9 +22,6 @@
     "data-display/accordion.css": [
       ".sa-accordion-item",
       ".sa-accordion-item__trigger"
-    ],
-    "data-display/bulk-actions-bar.css": [
-      ".ds-bulk__action"
     ],
     "data-display/charts/charts.css": [
       ".ds-chart__cell",
@@ -58,10 +55,6 @@
     ],
     "feedback/error-view.css": [
       ".ds-error-view"
-    ],
-    "feedback/feedback-widget.css": [
-      ".ds-feedback__send",
-      ".ds-feedback__verdict"
     ],
     "feedback/feedback.css": [
       ".ds-alert__close"
@@ -98,9 +91,6 @@
       ".ds-datepicker__day",
       ".ds-datepicker__navbtn",
       ".ds-datepicker__trigger"
-    ],
-    "forms/date-range-picker.css": [
-      ".ds-daterange__preset"
     ],
     "forms/error-summary.css": [
       ".ds-error-summary__link"
@@ -147,9 +137,6 @@
     ],
     "forms/selection-control.css": [
       ".ds-selection--card"
-    ],
-    "forms/time-picker.css": [
-      ".ds-timepicker__trigger"
     ],
     "forms/time-slot.css": [
       ".ds-slot__input"

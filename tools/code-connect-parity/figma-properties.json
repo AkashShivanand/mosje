@@ -831,6 +831,31 @@
       "State"
     ]
   },
+  "NotificationBell": {
+    "nodeId": "58143:59613",
+    "captured": "2026-09-15",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused"
+        ]
+      },
+      "Badge": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "None",
+          "Count",
+          "Error"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "State"
+    ]
+  },
   "Radio": {
     "nodeId": "18:791",
     "captured": "2026-09-04",
@@ -1057,10 +1082,22 @@
   },
   "SigningIntoBar": {
     "nodeId": "57464:12739",
-    "captured": "2026-09-05",
+    "captured": "2026-09-14",
     "properties": {
       "Portal name": {
         "type": "TEXT"
+      },
+      "Tagline": {
+        "type": "TEXT"
+      },
+      "Description": {
+        "type": "TEXT"
+      },
+      "Show tagline": {
+        "type": "BOOLEAN"
+      },
+      "Show description": {
+        "type": "BOOLEAN"
       },
       "Instance": {
         "type": "INSTANCE_SWAP"
@@ -1080,7 +1117,7 @@
   },
   "SiteHeader": {
     "nodeId": "4235:3169",
-    "captured": "2026-09-05",
+    "captured": "2026-09-15",
     "properties": {
       "Login Signup#2198:4": {
         "type": "BOOLEAN",
@@ -1112,6 +1149,10 @@
       "Profile#56716:0": {
         "type": "BOOLEAN",
         "defaultValue": true
+      },
+      "Notifications#58143:0": {
+        "type": "BOOLEAN",
+        "defaultValue": false
       }
     },
     "deliberatelyOmitted": [
@@ -1555,7 +1596,7 @@
   },
   "EventList": {
     "nodeId": "57600:48770",
-    "captured": "2026-09-06",
+    "captured": "2026-09-15",
     "note": "Figma publishes the row; code publishes the list.",
     "properties": {
       "Tone": {
@@ -1574,9 +1615,23 @@
           "true",
           "false"
         ]
+      },
+      "Action needed#58160:0": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Show tag#58160:7": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Due#58160:14": {
+        "type": "TEXT",
+        "defaultValue": "Respond by 30 Sept 2026"
       }
     },
-    "deliberatelyOmitted": []
+    "deliberatelyOmitted": [
+      "Due#58160:14"
+    ]
   },
   "NumberInput": {
     "nodeId": "57605:770",
@@ -1783,5 +1838,56 @@
       }
     },
     "deliberatelyOmitted": []
+  },
+  "PortalLoginTemplate": {
+    "nodeId": "55397:1364",
+    "captured": "2026-09-13",
+    "note": "The set's only property since 2026-09-06. The React component is responsive by the template's own width (a CSS container query), so there is no `device` prop to map it to.",
+    "properties": {
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Mobile"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Device"
+    ]
+  },
+  "AuthFormCard": {
+    "nodeId": "55445:778",
+    "captured": "2026-09-13",
+    "note": "`Show consent` defaults to false since 2026-09-13 — the consent line is optional per portal. `Show role tabs` is omitted because the role tabs belong to PortalLoginShell in code, not to this card. `Credential fields` is the slot the snippet names in a comment: Code Connect cannot resolve the swapped master to a JSX stack from here.",
+    "properties": {
+      "Show role tabs": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show DigiLocker": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show method tabs": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Credential fields": {
+        "type": "INSTANCE_SWAP"
+      },
+      "Show consent": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Show account prompt": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      }
+    },
+    "deliberatelyOmitted": [
+      "Show role tabs",
+      "Credential fields"
+    ]
   }
 }

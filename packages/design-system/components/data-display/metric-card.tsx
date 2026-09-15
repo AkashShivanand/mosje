@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { Badge } from "../feedback/badge";
 import { cardStateCopy, type CardStateKind } from "../dashboard/card-state";
 import { ProvenanceLine } from "../dashboard/provenance";
 import { Progress } from "./charts/progress";
@@ -204,14 +205,9 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
           {(settled && status) || icon != null || (settled && aside != null) ? (
             <div className="ds-metric-card__side">
               {settled && status && (
-                <span
-                  className={cn(
-                    "ds-metric-card__status",
-                    `ds-metric-card__status--${status.tone ?? "neutral"}`,
-                  )}
-                >
+                <Badge className="ds-metric-card__status" status={status.tone ?? "neutral"}>
                   {status.label}
-                </span>
+                </Badge>
               )}
               {settled && aside != null && <div className="ds-metric-card__aside">{aside}</div>}
               {icon != null && (
@@ -227,11 +223,11 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
             same reason `ChartCard` drops its footer and its export control. */}
         {!settled ? null : changeValue != null && changeDirection !== "flat" ? (
           <div className="ds-metric-card__change">
-            <span className={cn("ds-metric-card__pill", `ds-metric-card__pill--${changeDirection}`)}>
+            <Badge className="ds-metric-card__pill" status={changeDirection === "up" ? "success" : "danger"}>
               <span className="ds-sr-only">{CHANGE_LABELS[changeDirection]}: </span>
               {CHANGE_ARROWS[changeDirection]}
               {changeValue}
-            </span>
+            </Badge>
             {changeLabel != null && <span className="ds-metric-card__suffix">{changeLabel}</span>}
           </div>
         ) : (

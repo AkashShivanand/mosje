@@ -520,7 +520,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "section": "Auth & Dashboard",
     "href": "/design-system/components/auth/consent-line",
     "keywords": "consent line — design system auth & dashboard   tokens wcag accessibility",
-    "description": "The standing consent sentence under every authentication form.",
+    "description": "The consent sentence under an authentication form, for a portal whose sign-in needs it.",
     "type": "component",
     "iconName": "lock"
   },
@@ -1273,11 +1273,20 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "navigation"
   },
   {
+    "title": "Notification Bell — Design System",
+    "section": "Navigation",
+    "href": "/design-system/components/navigation/notification-bell",
+    "keywords": "notification bell — design system navigation immediately before the account the badge one door, one count headernotifications example items href status onRetry onMarkAllRead onOpen onNavigate limit label Sankalp Seva Sansthan tokens wcag accessibility",
+    "description": "The signed-in reader",
+    "type": "component",
+    "iconName": "navigation"
+  },
+  {
     "title": "Notification Centre — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/notification-centre",
-    "keywords": "notification centre — design system data display the same sentence in both places mark all as read appears only when it can do something it does not place itself  tokens wcag accessibility",
-    "description": "The panel behind the bell — what has happened that this officer has not seen, rendered as Event List grouped by day so a notification and the same entry in the audit log read identically.",
+    "keywords": "notification centre — design system data display the same sentence in both places action before news mark updates as read appears only when it can do something one count, everywhere it does not place itself  tokens wcag accessibility",
+    "description": "The panel behind the bell — what needs the reader",
     "type": "component",
     "iconName": "bar_chart"
   },
@@ -1432,7 +1441,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Portal Login Template — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/auth/portal-login-template",
-    "keywords": "portal login template — design system auth & dashboard three audiences, whatever they are called what the role decides, and what the portal decides three form modes, and one handoff how the mode selector presents itself example linking straight to a role tab portalloginconfig keyboard portalLoginUrl(path, roleId?) roleFromUrl(href) ROLE_PARAM portalId portalName portalTagline portalDescription changeHref roles defaultRoleId captcha brandAssets extraFields extraContent links tokens wcag accessibility",
+    "keywords": "portal login template — design system auth & dashboard three audiences, whatever they are called what the role decides, and what the portal decides three form modes, and one handoff how the mode selector presents itself example linking straight to a role tab portalloginconfig keyboard portalLoginUrl(path, roleId?) roleFromUrl(href) ROLE_PARAM portalId portalName portalTagline portalDescription changeHref roles defaultRoleId captcha consent brandAssets extraFields extraContent tokens wcag accessibility",
     "description": "A whole portal login page built from one config object — the role tabs, the authentication mode selector, the credential form and the deep-linked URL.",
     "type": "component",
     "iconName": "lock"
@@ -1888,7 +1897,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/ticker",
     "keywords": "ticker — design system feedback & status two shapes, one data model behaviour by width states motion divergences from the figma frame example motion, pause and the live region put the name in the outline focus and tab order  tokens wcag accessibility",
-    "description": "Recent announcements in two shapes: the full-bleed bar under the masthead, and the stacked panel that scrolls them.",
+    "description": "Recent announcements in two shapes: the bar under the masthead, and the stacked panel that scrolls them.",
     "type": "component",
     "iconName": "notifications"
   },

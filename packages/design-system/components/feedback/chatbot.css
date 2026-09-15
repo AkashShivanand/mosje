@@ -373,8 +373,6 @@
     filter: blur(3px);
   }
 
-
-
   .ds-chatbot__launcher[data-state="open"] .ds-chatbot__mark {
     opacity: 0;
     /* 0.9, never 0 — nothing in the world shrinks to nothing before it goes. */
@@ -815,7 +813,6 @@
       transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
   }
 
-
   @media (hover: hover) and (pointer: fine) {
     .ds-chatbot__icon-btn:hover {
       background: var(--sa-bg-neutral-subtler);
@@ -1111,46 +1108,6 @@
     }
   }
 
-  .ds-chatbot__reply {
-    display: block;
-    /* 8/12 puts the control at 36px against the mock's 38 — on the 4px grid the
-       Spacing page insists on, and comfortably over the 24px WCAG 2.2 minimum. */
-    padding: var(--sa-padding-8) var(--sa-padding-12);
-    border: var(--sa-stroke-1) solid transparent;
-    border-radius: var(--sa-shape-8);
-    /* The mock's #EFE8FF lavender is not a SAMAVESH colour and nothing in the
-       ramp resolves near it. The pale brand tint is the same ROLE — a quiet
-       suggestion surface — so the design moves to the system rather than the
-       system growing a one-off variable for it. */
-    background: var(--sa-bg-brand-primary-base);
-    font-family: var(--sa-font-latin);
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
-    color: var(--sa-color-text-muted);
-    text-align: start;
-    cursor: pointer;
-    transition:
-      background-color var(--ds-chatbot-press) var(--ds-chatbot-ease),
-      border-color var(--ds-chatbot-press) var(--ds-chatbot-ease),
-      transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .ds-chatbot__reply:hover {
-      border-color: var(--sa-border-brand-primary-base);
-      background: var(--sa-bg-brand-primary-subtler);
-    }
-  }
-
-  .ds-chatbot__reply:active {
-    transform: scale(0.97);
-  }
-
-  .ds-chatbot__reply:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
-  }
-
   /* -- screen-reader-only ---------------------------------------------------- */
 
   .ds-chatbot__sr {
@@ -1190,8 +1147,7 @@
        here would be a second copy of a decision that lives in button.css. */
     .ds-chatbot__launcher,
     .ds-chatbot__launcher:hover,
-    .ds-chatbot__launcher:active,
-    .ds-chatbot__reply:active {
+    .ds-chatbot__launcher:active {
       transform: none;
     }
 
@@ -1400,7 +1356,6 @@
       opacity var(--ds-chatbot-press) var(--ds-chatbot-ease),
       transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
   }
-
 
   /* Dimmed, never hidden. A send button that vanishes when the field is empty
      removes the affordance that tells you the field is a message box at all. */

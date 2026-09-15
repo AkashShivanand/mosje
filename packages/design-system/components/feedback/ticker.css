@@ -84,9 +84,6 @@
        it does not scale with the font — but it is expressed in rem so that a
        root-size change (the AccessibilityBar's A+ / A-) still moves it. */
     --sa-ticker-mark: 2rem;
-    /* 40px: 24px glyph + 8px of padding either side. Comfortably past the
-       24×24 floor of WCAG 2.5.8, and the same square the nav arrows use. */
-    --sa-ticker-control: 2.5rem;
 
     position: relative;
     isolation: isolate;
@@ -122,7 +119,11 @@
        the arithmetic and the plinth overshot the bar's edge by 24. */
     box-sizing: border-box;
     max-width: var(--sa-container-page);
-    padding-inline: var(--sa-padding-24);
+    /* The bar's inner edge. A custom property, not a bare padding, because the
+       plinth's inset below reaches back across exactly this distance — one name
+       for both, so the two cannot disagree when the desktop bar widens it. */
+    --sa-ticker-edge: var(--sa-padding-24);
+    padding-inline: var(--sa-ticker-edge);
   }
 
   /*
@@ -182,7 +183,7 @@
     content: "";
     position: absolute;
     inset-block: 0;
-    inset-inline: calc(-1 * (var(--sa-padding-24) + (100cqi - min(100cqi, var(--sa-container-page))) / 2)) 0;
+    inset-inline: calc(-1 * (var(--sa-ticker-edge) + (100cqi - min(100cqi, var(--sa-container-page))) / 2)) 0;
     z-index: -1;
     background-color: var(--sa-ticker-plinth);
     box-shadow: var(--sa-elevation-card);
@@ -437,6 +438,10 @@
   .sa-ticker--vertical .sa-ticker__container {
     flex-direction: column;
     align-items: stretch;
+    /* NO GAP. The container's 24 is the bar's gap between SIDE-BY-SIDE parts;
+       stacked, it put 24px of bare ground between the header and the first
+       notice on top of the row's own 16, where the library's panel has 16. */
+    gap: 0;
     padding-inline: 0;
   }
 
@@ -728,42 +733,20 @@
     gap: var(--sa-inline-8);
   }
 
-  .sa-ticker__control {
-    display: grid;
-    place-items: center;
-    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
-    inline-size: var(--sa-ticker-control);
-    block-size: var(--sa-ticker-control);
-    padding: 0;
-    border: 0;
-    border-radius: var(--sa-shape-8);
-    background: transparent;
-    color: inherit;
-    cursor: pointer;
-  }
-
-  /* A white wash rather than a second colour: the strip has exactly one ink,
-     and every state layer on a solid brand surface in this estate is a
-     transparency of it — the same two steps Button's `inverseOutlined` uses. */
-  @media (hover: hover) and (pointer: fine) {
-    .sa-ticker__control:hover {
-      background-color: var(--sa-color-transparent-white-16);
-    }
-  }
-
-  /* It has to feel pressed. A control that changes nothing under the finger
-     reads as not having registered — and this one's whole job is to answer
-     immediately, because the citizen pressed it to stop something moving. */
-  .sa-ticker__control:active {
-    background-color: var(--sa-color-transparent-white-24);
-    transform: scale(0.94);
-  }
+  /* THE CONTROLS ARE THE LIBRARY'S IconButton — primary, text, inverse, md —
+     in code and in Figma alike. Size, radius, the hover and pressed layers
+     and the press scale all come from button.css, so the strip has no second
+     definition of a button to drift. What stays here is the focus ring below,
+     and that is deliberate. */
 
   /* THE FOCUS RING IS INVERSE INK, NOT --sa-focus-ring. The ring token is
      #0373DF, which is this bar's own fill — it measures 1:1 against it and
      fails the 3:1 floor of WCAG 1.4.11 / 2.4.11 completely. The same defect
      was found and fixed on AccessibilityBar; do not "restore the token" here. */
-  .sa-ticker__control:focus-visible,
+  /* Scoped under `.sa-ticker` so it outranks `.ds-btn--inverseText:focus-visible`
+     whatever order the two stylesheets load in. That rule's ring is 55% white,
+     which measures about 3.0:1 on this bar — at the 3:1 floor, not above it. */
+  .sa-ticker .sa-ticker__control:focus-visible,
   .sa-ticker__item:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
     outline-offset: var(--sa-focus-offset);
@@ -776,20 +759,42 @@
   }
 
   /*
-   * THE DESKTOP BAR'S ROUTE IS THE LIBRARY'S `Ticker / Action`: 40px, 24px in.
+   * THE DESKTOP BAR'S ROUTE IS THE LIBRARY'S `Button` — Primary · Outlined ·
+   * Inverse at its Default size: 40px, 24px in.
    *
    * The consumer passes `buttonClasses(…, "sm")` — 32px, 16px in, label-1 — and
-   * neither Button size is the part the library draws. `md` has the height but
-   * sets body-1, 16/24, where the part's label is `Label/label-1`, 14/20. So
+   * neither code size is Figma's Default. `md` has the height but sets body-1,
+   * 16/24, where Figma's Default label is `Label/label-1`, 14/20. So
    * the strip sizes its own slot and leaves the type the `sm` button already
    * carries, which IS label-1. Only from 1024px, where the route is a button at
    * all; below it the header rule further down strips it to a link.
    *
-   * Its border stays the Button's inverse edge. The part draws primaryScale/100,
-   * but the Button's only public hook, `--sa-btn-edge`, is the ink AND the edge,
+   * Its border stays the Button's inverse edge. Figma's inverse edge is a
+   * lighter blue, but the Button's only public hook, `--sa-btn-edge`, is the ink AND the edge,
    * and would turn "View All" light blue with it.
    */
   @container sa-ticker (min-width: 1024px) {
+    /* THE DESKTOP BAR'S SPACING IS THE LIBRARY FRAME'S. 32 from the content
+       edge to the mark and 32 at the far end, 24 from the name to the end of the
+       plinth. The frame's Body sits 16 past the plinth and its Row pads the
+       message 8 either side, so the words start 24 past the plinth and stop 32
+       short of the controls — the body takes both halves here. The plinth starts
+       at the content edge, so the heading takes no leading padding of its own
+       and `--sa-ticker-edge` carries the 32, which is also what the plinth's
+       inset reaches back across. */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__container {
+      --sa-ticker-edge: var(--sa-padding-32);
+    }
+
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__heading {
+      padding-inline: 0 var(--sa-padding-24);
+    }
+
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__heading + .sa-ticker__body {
+      margin-inline-start: calc(var(--sa-inline-16) - var(--sa-inline-24));
+      padding-inline: var(--sa-padding-8);
+    }
+
     .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__action > :is(a, button) {
       min-block-size: var(--sa-control-height-md);
       padding-inline: var(--sa-padding-24);
@@ -935,8 +940,8 @@
        This restyles the CONSUMER'S element, which is why it is scoped tightly
        to the direct child of our own wrapper and does nothing above 1024px. */
     .sa-ticker__action > :is(a, button) {
-      /* The library's text-style `Ticker / Action` keeps a box: 12px before the
-         words and 24 after on the bar, 24 either side in the panel. */
+      /* The library's `Button` Text · Inverse keeps a box: 12px before the words
+         and 24 after on the bar, 24 either side in the panel. */
       padding-inline: var(--sa-padding-12) var(--sa-padding-24);
       border: 0;
       background: transparent;
@@ -1021,10 +1026,6 @@
     .sa-ticker__item {
       animation-name: sa-ticker-fade;
       animation-duration: 200ms;
-    }
-
-    .sa-ticker__control:active {
-      transform: none;
     }
   }
 

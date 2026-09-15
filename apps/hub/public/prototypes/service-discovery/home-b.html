@@ -64,10 +64,10 @@ const ans = {};
 let step = 0;
 
 const Q = [
-  { k:'who',   t:'Who Is Looking for Support?',
+  { k:'who',   t:'Type of Applicant',
     h:'Choose the one that describes you.',
     o:() => PERSONAS.map(g=>({id:g.id,l:g.label,s:g.sub,mark:true})) },
-  { k:'offer', t:'What Kind of Support?',
+  { k:'offer', t:'Type of Benefit',
     h:'Only what the Department provides for that group is listed. Skip this to see all of it.',
     o:() => offersFor(ans.who).map(o=>({id:o.id,l:o.label,s:o.sub,mark:false})) },
 ];

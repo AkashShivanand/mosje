@@ -38,6 +38,7 @@
 //                        parity fixture carried the stale name, so the gate agreed
 //                        with the template and both disagreed with Figma.
 //   Profile           -> `account` present (the name / role block and avatar).
+//   Notifications     -> `notifications` present (with `account`) — the bell before the account.
 import figma from "figma";
 
 const instance = figma.selectedInstance;
@@ -46,6 +47,7 @@ const showMenu = instance.getBoolean("Menu#55783:0");
 const search = instance.getBoolean("Search#2210:0");
 const login = instance.getBoolean("Login Signup#2198:4");
 const profile = instance.getBoolean("Profile#56716:0");
+const notifications = instance.getBoolean("Notifications#58143:0");
 
 export default {
   example: figma.code`<SiteHeader
@@ -61,6 +63,7 @@ export default {
   ${login ? figma.code`actions={<a href="/login">Login</a>}` : ""}
   cobranding={[{ src: digitalIndia, alt: "Digital India", height: 40 }]}
   ${profile ? figma.code`account={{ name: "…", email: "…" }}` : "/* Profile off — no account block */"}
+  ${notifications && profile ? figma.code`notifications={{ items, href: "/portals/<slug>/notifications", onMarkAllRead }}` : ""}
   nav={NAV}
 />`,
   imports: ['import { SiteHeader } from "@mosje/design-system"'],

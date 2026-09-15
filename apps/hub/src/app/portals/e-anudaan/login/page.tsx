@@ -70,9 +70,9 @@ const CONFIG: PortalLoginConfig = {
       label: "NGO",
       identifierLabel: "Username",
       identifierPlaceholder: "Enter your username",
-      // The handoff puts the DigiLocker card above the credentials divider on the
-      // NGO tab and on neither Officer screen — a per-role fact, not an audience one.
-      digilocker: true,
+      // NO DigiLocker. The handoff's NGO frames (52380:187221, :187235, :187249 and
+      // the phone frames) draw `Auth / AuthFormCard` with Show DigiLocker OFF — the
+      // card went out of the design after this config first followed it.
       // "I am not a robot" with a Security check, drawn on all three NGO frames.
       // Switched on here because the alternative WCAG 2.2 3.3.8 requires is
       // real: `botCheck.helpHref` below routes a blocked applicant to a person.
@@ -95,20 +95,11 @@ const CONFIG: PortalLoginConfig = {
       authModes: ["password"],
     },
   ],
-  // The sentence the department's own DARPAN screen carries under the fields.
-  // It lives here rather than in the design system because those five roles are
-  // E-Anudaan's org chart; a default would print them on every portal that ever
-  // adopts the DARPAN route.
-  darpanNote:
-    "Other login roles (DWO, State, Ministry, Finance, PMU) use Ministry-issued credentials — separate login flow",
   links: {
     // Drawn on the label row of every password field in the handoff.
     forgotPasswordHref: `${BASE}/forgot-password`,
-    // The DigiLocker card renders only when a role asks for it AND this is set;
-    // a CTA with nowhere to go is worse than no CTA.
-    digilockerHref: "https://digilocker.gov.in/",
-    termsHref: "/website/terms-conditions",
-    privacyHref: "/website/privacy-policy",
+    // No DigiLocker and no consent line on this portal (the handoff draws
+    // neither), so neither the handoff link nor the Terms and Privacy links are set.
     /*
      * NO `helpFaqHref`. It renders a visible "Need Help?" line under the account
      * prompt, and the handoff draws none. The bot check's own escape route is

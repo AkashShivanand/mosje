@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { AccountPrompt, AuthDivider, SSOButton } from "./auth-parts";
+import { AccountPrompt, AuthDivider, ConsentLine, SSOButton } from "./auth-parts";
 import type { DemoFillDetail } from "../../demo/demo-fab";
 // DS Audit: every control below already existed in the barrel and every one was
 // hand-rolled in this file instead — 77 arbitrary-value Tailwind classes wrapping
@@ -18,7 +18,6 @@ import { useBotCheck } from "../forms/use-bot-check";
 import { RadioGroup } from "../forms/control-group";
 import { FormField } from "../forms/form-field";
 import { Select } from "../forms/select";
-import { Icon } from "../utilities/icon";
 import { TabPanel, Tabs } from "../navigation/tabs";
 // The card's seven fixed regions and the stacks that fill its one slot. Before
 // 2026-09-06 all of it was inline here: a four-armed conditional over
@@ -57,9 +56,9 @@ export { portalLoginUrl, roleFromUrl, ROLE_PARAM } from "./portal-login-url";
  * method at all.
  */
 const MODE_LABELS: Record<PortalAuthMode, string> = {
-  password: "Login via Password",
-  otp: "Login via Mobile OTP",
-  pin: "Login via PIN",
+  password: "Login with Password",
+  otp: "Login with OTP",
+  pin: "Login with PIN",
   darpan: "Login with NGO-DARPAN ID",
 };
 
@@ -247,6 +246,10 @@ export function PortalLoginTemplate({
 
   // Form field state
   const [username, setUsername] = React.useState("");
+  /* The DARPAN ID has its own state. It shared `username` until 13 Sep 2026, so a
+     username typed on the credentials tab reappeared as the DARPAN ID the moment
+     the reader switched — a different identifier, pre-filled with the wrong one. */
+  const [darpanId, setDarpanId] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [mobile, setMobile] = React.useState("");
   const [otp, setOtp] = React.useState("");
@@ -323,6 +326,26 @@ export function PortalLoginTemplate({
   // OTP resend timer state
   const [otpTimer, setOtpTimer] = React.useState(30);
   const [otpSent, setOtpSent] = React.useState(false);
+
+  /*
+   * The primary action stays DISABLED until the active form is complete, as the
+   * Figma masters and every E-Anudaan handoff frame draw it: `Log In` greyed on
+   * the empty screen, filled once the fields are — and, where a role asks for
+   * the checkbox check, once "I am not a robot" is verified. Required fields are
+   * still marked with an asterisk, so the reader can see what the button is
+   * waiting for. OTP already worked this way (Send OTP waits for ten digits); the
+   * other three modes now match it.
+   */
+  const credentialsComplete =
+    activeAuthMode === "otp"
+      ? otpSent
+        ? otp.length >= 6
+        : mobile.length >= 10
+      : activeAuthMode === "darpan"
+        ? darpanId.trim() !== "" && pan.trim() !== ""
+        : username.trim() !== "" && password !== "";
+  const botCheckPassed = !botCheck || botCheckMode !== "checkbox" || check.status === "verified";
+  const canSubmit = credentialsComplete && botCheckPassed;
 
   /*
    * DemoDock prefill. Every hand-built login on the estate listened for this
@@ -402,7 +425,8 @@ export function PortalLoginTemplate({
       roleId: activeRoleId,
       authMode: activeAuthMode,
       credentials: {
-        username,
+        // The DARPAN ID still arrives as `username`: it is the identifier of that route.
+        username: activeAuthMode === "darpan" ? darpanId : username,
         // The PIN form reuses the `password` field's state, but a consumer must
         // never receive a PIN under the name `password`. Nor a PAN: the DARPAN
         // route sends no password at all, because the department's screen asks
@@ -534,11 +558,10 @@ export function PortalLoginTemplate({
            not a typed secret, so there is nothing here for a check to protect. */
         return (
           <DarpanFields
-            darpanId={username}
-            onDarpanIdChange={setUsername}
+            darpanId={darpanId}
+            onDarpanIdChange={setDarpanId}
             pan={pan}
             onPanChange={setPan}
-            note={config.darpanNote}
           />
         );
       case "otp":
@@ -647,6 +670,8 @@ export function PortalLoginTemplate({
          asset to substitute for. */
       heroImageSrc={config.brandAssets?.heroImageSrc}
       signingInto={config.portalName}
+      portalTagline={config.portalTagline}
+      portalDescription={config.portalDescription}
       changeHref={config.changeHref || "/"}
       onChangePortal={portalPicker ? () => setPickerOpen(true) : undefined}
       portalPickerOpen={pickerOpen}
@@ -702,30 +727,24 @@ export function PortalLoginTemplate({
           <Button
             type="submit"
             loading={loading}
-            disabled={activeAuthMode === "otp" && !otpSent && mobile.length < 10}
+            disabled={!canSubmit}
             fullWidth
-            iconRight={
-              activeAuthMode === "darpan" ? (
-                <Icon name="arrow_forward" size={20} aria-hidden="true" />
-              ) : undefined
-            }
           >
             {actionLabel}
           </Button>
         }
-        /* GIGW requires the consent disclosure, and the reference carries it
-           directly under the button. */
-        /* NO consent line. Removed 7 Sep 2026 by instruction: it is not to
-           appear until it is asked for. The slot stays on `AuthFormCard`, so a
-           portal that must show the disclosure passes its own `ConsentLine` —
-           which is still exported and still documented. Nothing here decides
-           that on a portal's behalf.
-
-           Worth knowing when it comes back: the Figma `AuthFormCard` master has
-           no consent region either, so code and design now agree; it was only
-           `RecoveryFormCard` that drew one. */
-        /* Registration, as the reference draws it: a rule with the question
-           centred on it, then the route. */
+        /* The consent line is OPTIONAL, per portal (`config.consent`, off by
+           default). It was removed outright on 7 Sep 2026 because E-Anudaan signs
+           in only NGOs and Ministry officers; a public-facing portal still needs
+           the disclosure, so it is a switch rather than a deletion — the same
+           switch as `Show consent` on the Figma `Auth / AuthFormCard`. */
+        consent={
+          config.consent && (config.links?.termsHref || config.links?.privacyHref) ? (
+            <ConsentLine termsHref={config.links?.termsHref} privacyHref={config.links?.privacyHref} />
+          ) : null
+        }
+        /* Registration: the question, then an outlined Create Account button —
+           `Auth / AccountPrompt` Type=Single in the library. */
         accountPrompt={
           config.links?.registerHref ? (
             <AccountPrompt
@@ -753,6 +772,7 @@ export function PortalLoginTemplate({
           onClose={() => setPickerOpen(false)}
           title="Choose a portal to login"
           side={isPhone ? "bottom" : "right"}
+          className="ds-plogin__picker"
         >
           {/* NO `onSelect`. Each card stays a real `<a href>` to its portal, so
               middle-click, "copy link address" and a keyboard Enter all work, and

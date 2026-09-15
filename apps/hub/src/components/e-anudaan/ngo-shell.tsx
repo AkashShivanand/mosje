@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { OrgLogo, PortalPage, SiteHeader } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ROLES } from "@/lib/e-anudaan/roles";
+import { notificationItems, notificationsHref } from "@/lib/e-anudaan/notifications";
 
 /**
  * Authenticated shell for the NGO applicant. Bounces to /sign-in without an NGO session.
@@ -25,10 +26,11 @@ import { ROLES } from "@/lib/e-anudaan/roles";
 export function NgoShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { state, hydrated, logout } = useEAnudaan();
+  const { state, hydrated, logout, markAllNotificationsRead } = useEAnudaan();
 
   const isNgo = state.session === "ngo";
   const role = ROLES.ngo;
+  const notifications = React.useMemo(() => notificationItems(state, "ngo"), [state]);
 
   React.useEffect(() => {
     if (hydrated && !isNgo) router.replace("/portals/e-anudaan/login?role=ngo");
@@ -68,6 +70,13 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
           onToggleNav={nav.toggle}
           navExpanded={nav.open}
           account={{ name: role.personName, role: "NGO Applicant" }}
+          /* The bell replaces the sidebar's Notifications item — one door, one count
+             (docs/specs/notification-object.md). */
+          notifications={{
+            items: notifications,
+            href: notificationsHref("ngo"),
+            onMarkAllRead: markAllNotificationsRead,
+          }}
           accountMenu={[
             {
               label: "Sign out",

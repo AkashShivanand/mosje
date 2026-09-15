@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { DatePicker } from "./date-picker";
+import { Chip } from "./chip";
 import "./date-range-picker.css";
 
 /** A named span a reader can take in one press — "Last 30 days", "This financial year". */
@@ -114,15 +115,17 @@ export function DateRangePicker({
           {presets.map((preset) => {
             const isActive = activePreset?.id === preset.id;
             return (
-              <button
+              /* The library Chip: a toggle is what a quick period is, and Chip carries
+                 the pressed state, the keyboard model and the selected fill. Choosing
+                 the active period again keeps it — a preset is set, never cleared. */
+              <Chip
                 key={preset.id}
-                type="button"
-                className={cn("ds-daterange__preset", isActive && "is-active")}
-                aria-pressed={isActive}
-                onClick={() => onChange({ from: preset.from, to: preset.to })}
+                selected={isActive}
+                disabled={disabled}
+                onSelectedChange={() => onChange({ from: preset.from, to: preset.to })}
               >
                 {preset.label}
-              </button>
+              </Chip>
             );
           })}
         </div>

@@ -3879,12 +3879,6 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": ""
-      },
-      {
-        "name": "note",
-        "type": "React.ReactNode",
-        "required": false,
-        "description": "The sentence under the button naming the roles this route does NOT serve. **Portal copy, not the design system's.** E-Anudaan's other roles are DWO, State, Ministry, Finance and PMU; another portal's would be different ones, and a default here would put E-Anudaan's org chart on every portal that ever adopts DARPAN. Omit it and nothing renders."
       }
     ]
   },
@@ -4949,10 +4943,31 @@ export const GENERATED_PROPS = {
         "description": "Accessible name for the list. Required: \"Audit log\", \"Recent activity\"."
       },
       {
+        "name": "actionLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Action Needed\"",
+        "description": "The tag on an entry that needs the reader to act."
+      },
+      {
         "name": "className",
         "type": "string",
         "required": false,
         "description": ""
+      },
+      {
+        "name": "dayHeadingAs",
+        "type": "\"h2\" | \"h3\" | \"h4\" | \"p\"",
+        "required": false,
+        "default": "\"h3\"",
+        "description": "The heading element for each day. `h3` suits a page section; a panel that cannot know its nesting level (a popover) passes `\"p\"`."
+      },
+      {
+        "name": "dueLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Respond by\"",
+        "description": "Printed before an action's deadline."
       },
       {
         "name": "emptyText",
@@ -4967,6 +4982,19 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"none\"",
         "description": "`\"day\"` puts a dated heading above each day's entries — the right shape for a long log. `\"none\"` prints the full stamp on every row."
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "The app's router link (`next/link`) for entries with an `href`. Defaults to a plain anchor."
+      },
+      {
+        "name": "showActionTag",
+        "type": "boolean",
+        "required": false,
+        "default": "true",
+        "description": "Print the `actionLabel` tag on action-required entries. A caller that already heads the group with the same words turns it off, so it is not said twice."
       },
       {
         "name": "unreadLabel",
@@ -8602,6 +8630,30 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "NotificationBellProps": {
+    "source": "packages/design-system/components/navigation/header/notification-bell.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "notifications",
+        "type": "HeaderNotifications",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "The app's router link (`next/link`). Defaults to a plain anchor."
+      }
+    ]
+  },
   "NotificationCentreProps": {
     "source": "packages/design-system/components/data-display/notification-centre.tsx",
     "inheritsNative": false,
@@ -8610,7 +8662,14 @@ export const GENERATED_PROPS = {
         "name": "notifications",
         "type": "EventItem[]",
         "required": true,
-        "description": "Notifications, newest first. The same shape every other event surface uses."
+        "description": "Notifications, newest first — the EventItem shape. Entries with `actionRequired` are lifted into their own section at the top, whatever their position here."
+      },
+      {
+        "name": "actionHeading",
+        "type": "string",
+        "required": false,
+        "default": "\"Action Needed\"",
+        "description": ""
       },
       {
         "name": "className",
@@ -8626,6 +8685,13 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "errorText",
+        "type": "string",
+        "required": false,
+        "default": "\"Notifications could not be loaded.\"",
+        "description": ""
+      },
+      {
         "name": "label",
         "type": "string",
         "required": false,
@@ -8633,17 +8699,76 @@ export const GENERATED_PROPS = {
         "description": "The panel's heading, and its accessible name."
       },
       {
+        "name": "limit",
+        "type": "number",
+        "required": false,
+        "description": "Show at most this many UPDATES; the rest are one link away at `viewAllHref`. Action-required entries are never cut — hiding one is the failure this component exists to prevent. Omit on the notifications page itself."
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "The app's router link (`next/link`). Defaults to a plain anchor."
+      },
+      {
         "name": "markAllLabel",
         "type": "string",
         "required": false,
-        "default": "\"Mark all as read\"",
+        "default": "\"Mark updates as read\"",
         "description": ""
       },
       {
         "name": "onMarkAllRead",
         "type": "() => void",
         "required": false,
-        "description": "Offered only when something is unread."
+        "description": "Marks the UPDATES as read. Offered only when an update is unread. It never touches an action-required entry — that clears when its record changes."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Offered in the error state. Without it the error still renders, without a button."
+      },
+      {
+        "name": "retryLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Try again\"",
+        "description": ""
+      },
+      {
+        "name": "status",
+        "type": "NotificationStatus = \"loading\" | \"error\" | \"ready\"",
+        "required": false,
+        "default": "\"ready\"",
+        "description": ""
+      },
+      {
+        "name": "titleAs",
+        "type": "\"h1\" | \"h2\" | \"h3\" | \"p\"",
+        "required": false,
+        "default": "\"h2\"",
+        "description": "The heading element. `h1` when the panel IS the page (a portal's notifications page), `h2` as a section of one; a popover cannot know what level it nests under, so the masthead bell passes `\"p\"`."
+      },
+      {
+        "name": "updatesHeading",
+        "type": "string",
+        "required": false,
+        "default": "\"Updates\"",
+        "description": "Shown above the updates only when an Action Needed section precedes them."
+      },
+      {
+        "name": "viewAllHref",
+        "type": "string",
+        "required": false,
+        "description": "The full notifications page. Rendered as a link under the list."
+      },
+      {
+        "name": "viewAllLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"View All Notifications\"",
+        "description": ""
       }
     ]
   },
@@ -9857,11 +9982,23 @@ export const GENERATED_PROPS = {
         "description": "Open the change-portal picker instead of navigating. The handoff's `E-Anudaan | Portal Switch` draws this as a SIDE SHEET over the login page — \"Choose a portal to login\" — not as a trip to the hub root. Pass a handler and the control becomes a `<button>` that opens it; leave it off and it stays the `changeHref` link, so every existing consumer is unchanged. A button, not a link, when it opens a panel: a control that does not navigate must not offer middle-click or \"copy link address\", and it owes `aria-expanded` / `aria-haspopup`, which an anchor cannot honestly carry."
       },
       {
+        "name": "portalDescription",
+        "type": "string",
+        "required": false,
+        "description": "Optional second, muted line under the tagline — what the portal is for, e.g. \"Comprehensive Rehabilitation of Persons Engaged in Begging\". One sentence; the strip is identity, not a place for instructions. Large screens only, as `portalTagline`."
+      },
+      {
         "name": "portalPickerOpen",
         "type": "boolean",
         "required": false,
         "default": "false",
         "description": "Whether the picker this control opens is currently open — drives `aria-expanded`."
+      },
+      {
+        "name": "portalTagline",
+        "type": "string",
+        "required": false,
+        "description": "Optional line under the portal name — the scheme's expanded name, e.g. \"Support For Marginalized Individuals For Livelihood & Enterprise\" under \"SMILE Beggary\". Leave it off where the name already says it (E-Anudaan). LARGE SCREENS ONLY. The desktop hero's strip shows it; the phone strip does not, because beside the mark and the Change button there is no room for it and it pushed the form further down the screen."
       }
     ]
   },
@@ -12319,6 +12456,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "description",
+        "type": "string",
+        "required": false,
+        "description": "Optional muted line under the tagline — what the portal is for, in one sentence."
+      },
+      {
         "name": "eyebrow",
         "type": "string",
         "required": false,
@@ -12336,6 +12479,12 @@ export const GENERATED_PROPS = {
         "type": "() => void",
         "required": false,
         "description": "Opens the portal picker. Omit to render the bar without a Change control."
+      },
+      {
+        "name": "tagline",
+        "type": "string",
+        "required": false,
+        "description": "Optional line under the name — the scheme's expanded name, e.g. \"Support For Marginalized Individuals For Livelihood & Enterprise\" under \"SMILE Beggary\"."
       },
       {
         "name": "tone",
@@ -12594,6 +12743,12 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "description": "Portal: whether the app-shell nav/sidebar controlled by the toggle is open (drives `aria-expanded`)."
+      },
+      {
+        "name": "notifications",
+        "type": "HeaderNotifications",
+        "required": false,
+        "description": "The signed-in reader's notifications. Renders the bell immediately before the account block — in the resting row and the condensed bar — and ONLY together with `account`: a bell with nobody signed in has nothing to count. Off unless passed; a portal with no real feed and no notifications page passes nothing. What belongs in it: `docs/specs/notification-object.md`."
       },
       {
         "name": "onAccessibility",

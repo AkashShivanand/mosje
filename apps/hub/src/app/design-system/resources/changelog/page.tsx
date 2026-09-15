@@ -32,9 +32,38 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.132.0",
+    version: "v0.135.0",
     date: "2026-09-14",
     current: true,
+    changes: [
+      { kind: "Changed", text: "EIGHT COMPONENTS RENDER THE LIBRARY PART THEIR FIGMA MASTER INSTANCES, instead of drawing their own. `FeedbackWidget`\u2019s Yes / No and Send, `BulkActionsBar`\u2019s actions and Clear selection, and `ChartCard`\u2019s retry are `Button`; `TimePicker`\u2019s trigger is an outlined `IconButton` with the clock glyph where a \u25ef character stood; `DateRangePicker`\u2019s quick periods and `Chatbot`\u2019s quick replies are `Chip`; `MetricCard`\u2019s change pill and status, and `VideoTile`\u2019s state, are `Badge`. About 300 lines of CSS that restated those parts are gone, and hover, press, focus and disabled now come from the part itself" },
+      { kind: "Changed", text: "WHAT A READER WILL NOTICE. Controls take the library sizes \u2014 small buttons 32px where the bar drew 28, presets 32px where they drew 28, Send and the verdicts at the Button\u2019s own type. A chosen verdict is the outlined Button\u2019s pressed treatment, a filled neutral. A warning bulk action is neutral: Button has no warning variant, and the label carries the consequence. The metric status reads as typed rather than in capitals, and the video state badge is a tinted pill without its border. The chatbot\u2019s replies are outlined chips rather than pale brand tiles" },
+      { kind: "Added", text: "`library-parts.spec.tsx` pins the class each part stamps in all eight, so a component that goes back to drawing its own control fails the render specs. It was checked by restoring the old `FeedbackWidget`, which failed it" },
+      { kind: "Fixed", text: "`MetricCard`\u2019s decrease pill now clears contrast: it painted error text on the error BASE fill, which axe flagged on its docs page; the danger `Badge` pairs it with the subtler fill" },
+    ],
+  },
+  {
+    version: "v0.134.0",
+    date: "2026-09-14",
+    changes: [
+      { kind: "Fixed", text: "THE FIGMA LIBRARY CARRIES NO HAND-DRAWN COPY OF A LIBRARY COMPONENT. 133 were replaced on 36 component pages: documentation hero pills and anatomy pins with `Badge`; the actions of Cookie Consent, Transfer List, Bulk Actions Bar, Inline Edit, Split Button, Feedback Widget and the Chart Card states with `Button` at the size the code renders; the Time Picker trigger and the Accessibility Bar control specimens with `IconButton`; the deprecated Carousel Pause/Play with `Button`; date-range presets and chatbot quick replies with `Chip`; metric-card deltas and statuses, ranked-bar ranks and video-tile states with `Badge`; chart-card and menu rules with `Divider`. `check:figma-hand-rolled` now reads zero on all 74 component pages" },
+      { kind: "Fixed", text: "FIGMA `Badge` TEXT SETS ITS LABEL AS TYPED, LIKE THE CODE. The twelve Text variants took `Label/label-3`, which is uppercase, while `.ds-badge--sm` sets label-2 in the case it is given \u2014 so \u201cIn Review\u201d and \u201cBelow target\u201d read as capitals in Figma and not on the page. They take `Label/label-2` now; height is unchanged at 20" },
+      { kind: "Changed", text: "`check:figma-hand-rolled` SKIPS WIREFRAMES AND TEXT FIELDS BY NAME. A subtree named `wireframe` or `schematic` draws labelled boxes to show where components go, and a frame named `field`, `input` or `textbox` is set like a button without being one; both were found by reading every match of the first sweep" },
+    ],
+  },
+  {
+    version: "v0.133.0",
+    date: "2026-09-14",
+    changes: [
+      { kind: "Fixed", text: "`Ticker`\u2019S DESKTOP BAR TAKES THE LIBRARY FRAME\u2019S SPACING, AND FIGMA DRAWS THE CONTENT WIDTH. From 1024px the mark sits 32 from the content edge, the plinth ends 24 past the name, the notice starts 24 past the plinth and stops 32 short of the controls, and the bar ends 32 in \u2014 where code had 40, 16, 24 and 24. The Figma desktop variants now keep their content to `container/page` between two gutters and run the plinth out through the leading one, so the frame and the page show the same bar at 1440" },
+      { kind: "Fixed", text: "`Ticker`\u2019S PANEL STARTS ITS FIRST NOTICE DIRECTLY UNDER THE HEADER. The container\u2019s 24px gap is the bar\u2019s gap between side-by-side parts, and stacked it put 24px of bare ground above the first row on top of the row\u2019s own 16. The panel is 24px shorter at every width, matching the library\u2019s 424px frame" },
+      { kind: "Changed", text: "`Ticker`\u2019S PAUSE, PREVIOUS AND NEXT ARE THE LIBRARY `IconButton`, in code and in Figma. They were a button of the strip\u2019s own in code and a local `Ticker / Control` part in Figma; both are gone, as is `Ticker / Action`, which every variant now draws with the library `Button`. Hover, pressed and the press scale come from `button.css`; the strip keeps only its inverse-ink focus ring, because the Button family\u2019s inverse ring measures about 3.0:1 on this ground (recorded in `follow-ups.md`)" },
+      { kind: "Fixed", text: "FIGMA `Button` AND `IconButton` INVERSE STATES NOW MATCH THE CODE. Inverse Text and Outlined Hover, Pressed and Focused were tinted with `color/transparent/<type>/8|16` \u2014 a blue wash on a blue ground \u2014 where code paints white at 8% and 16%; they bind the `cmp/action/*/secondary/inverse/*` tokens now, `IconButton` Text \u00b7 Inverse gained the state fills it lacked, and the `focus/ring` effect style no longer paints behind the node, which had turned every translucent focused button into a pale box" },
+    ],
+  },
+  {
+    version: "v0.132.0",
+    date: "2026-09-14",
     changes: [
       { kind: "Fixed", text: "`Ticker` SET ITS TEXT IN TWO TYPE STYLES THE LIBRARY DOES NOT HAVE. The plinth\u2019s name was title-2 at 500 and every notice title-3 at 500; the SAMAVESH text styles those layers are linked to in Figma are `Title/title-2` and `Body/body-2-semibold`, both at 600. Every value was a token, which is why nothing failed. The name is now title-2 at semibold, the notice body-2 at semibold with body tracking, the kind and date `Body/body-3` at FULL ink rather than 80% \u2014 the library binds all three to the same inverse text variable as the title, and full ink is 6.36:1 against the dimmed line\u2019s 4.66 \u2014 and prev/next take `Icon/24/Filled` like the pause control beside them" },
       { kind: "Fixed", text: "`Ticker`\u2019S ROUTE AND ITS HAIRLINE NOW MATCH THE LIBRARY\u2019S `Ticker / Action` AT EVERY BREAKPOINT. On the desktop bar the route is 40px with 24 either side and label-1 type \u2014 neither Button size is that part, so the strip sizes its own slot \u2014 8px from the controls, and there is NO hairline: the library draws none there, and the outlined edge already separates the two. On the tablet and phone bars and in every panel the hairline is 24px at 40% ink with 8 either side, where it ran the full row at 24%, and the text-style route keeps the part\u2019s box: 12 before the words and 24 after on the bar, 24 either side in the panel. Measured at 1440, 834, 390, 408, 762 and 326 against the library\u2019s own frames; the website\u2019s two tickers keep their heights and line layout at every width from 320 to 1440" },
