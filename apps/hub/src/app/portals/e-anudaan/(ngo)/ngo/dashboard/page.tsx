@@ -23,7 +23,6 @@ import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { formatDate, formatGrant, ngoApplications, ngoStatusLabel, statusTone } from "@/lib/e-anudaan/selectors";
 import type { AppStatus } from "@/lib/e-anudaan/types";
 import { openDeficiencies } from "@/lib/e-anudaan/applicant";
-import { formatTime } from "@/lib/e-anudaan/format";
 import { ngoActionApplications, notificationItems } from "@/lib/e-anudaan/notifications";
 import { usePreviousVisit } from "@/lib/e-anudaan/last-visit";
 import { PendingActions } from "@/components/e-anudaan/pending-actions";
@@ -154,8 +153,6 @@ export default function NgoDashboardPage() {
     }).length;
   }, [apps]);
 
-  const topBucket = [...donutChartData].sort((a, b) => b.value - a.value)[0];
-
   /** Every correction the Ministry is waiting on — drives the Pending Actions panel. */
   const pending = React.useMemo(() => (ngo ? openDeficiencies(state, ngo.id) : []), [state, ngo]);
   const pendingItems = pending.reduce((n, d) => n + d.items.length - d.corrected, 0);
@@ -211,12 +208,6 @@ export default function NgoDashboardPage() {
             <span className="flex items-center gap-1 font-mono font-semibold text-ink">
               <Icon name="verified_user" size={16} className="text-primary shrink-0" aria-hidden />
               DARPAN ID: {ngo?.darpanId ?? "MH/2016/100000"}
-            </span>
-            <span className="text-line" aria-hidden>•</span>
-            <span className="flex items-center gap-1">
-              <Icon name="schedule" size={16} className="text-ink-muted shrink-0" aria-hidden />
-              Last updated{" "}
-              {formatDate(new Date())} at {formatTime(new Date())}
             </span>
           </span>
         }
@@ -291,49 +282,22 @@ export default function NgoDashboardPage() {
 
       <div className="grid items-stretch gap-6 lg:grid-cols-2">
         <Card variant="outlined" aria-labelledby="app-status-title">
-          <CardBody className="justify-between gap-4 p-6">
+          <CardBody className="gap-4 p-6">
             <SectionTitle headingId="app-status-title" title="Application Status Breakdown" />
 
-            <div className="grid grid-cols-1 items-center gap-4 py-2 sm:grid-cols-12">
-              <div className="flex justify-center sm:col-span-6">
-                <div className="w-[180px] max-w-full">
-                  <DonutChart
-                    title="Application Status Distribution"
-                    data={donutChartData}
-                    center={String(totalAppsCount)}
-                    centerSub="Applications"
-                  />
-                </div>
-              </div>
-
-              <div className="sm:col-span-6">
-                <DescriptionList
-                  aria-label="Status Breakdown"
-                  columns={1}
-                  layout="inline"
-                  size="sm"
-                  divided
-                  items={[...donutChartData]
-                    .sort((a, b) => b.value - a.value)
-                    .map((item) => ({
-                      term: item.label,
-                      value: `${item.value} (${((item.value / Math.max(totalAppsCount, 1)) * 100).toFixed(1)}%)`,
-                    }))}
+            {/* The chart and its own legend only. A list beside it repeated the legend, and a
+                "Highest Allocation" line repeated the list's first row (removed on confirmation,
+                15 Sep 2026); the per-status counts remain in the chart's "View as Table". */}
+            <div className="flex justify-center py-2">
+              <div className="w-[220px] max-w-full">
+                <DonutChart
+                  title="Application Status Distribution"
+                  data={donutChartData}
+                  center={String(totalAppsCount)}
+                  centerSub="Applications"
                 />
               </div>
             </div>
-
-            <DescriptionList
-              columns={1}
-              layout="inline"
-              size="sm"
-              items={[
-                {
-                  term: "Highest Allocation",
-                  value: topBucket ? `${topBucket.label} (${Math.round((topBucket.value / Math.max(totalAppsCount, 1)) * 1000) / 10}%)` : "—",
-                },
-              ]}
-            />
           </CardBody>
         </Card>
 
@@ -363,10 +327,6 @@ export default function NgoDashboardPage() {
               </div>
               <Progress label="Sanctioned against requested" value={sanctionedPercent} tone="success" compact />
             </div>
-
-            <p className="mt-auto text-body-3 text-ink-muted">
-              Sanctioned amount reflects approved grants across all active applications under Ministry of Social Justice &amp; Empowerment schemes.
-            </p>
           </CardBody>
         </Card>
       </div>
@@ -470,9 +430,8 @@ export default function NgoDashboardPage() {
 
         <Card variant="outlined" aria-labelledby="org-profile-title">
           <CardBody className="gap-4 p-6">
-            <SectionTitle headingId="org-profile-title" title="Organisation Profile">
-              <Badge status="neutral">DARPAN Synced</Badge>
-            </SectionTitle>
+            {/* No "DARPAN Synced" badge: the header already says "DARPAN Verified". */}
+            <SectionTitle headingId="org-profile-title" title="Organisation Profile" />
 
             {/* Thirteen separate rows, exactly as the live DARPAN read-back lists them — State and
                 District, Registration No. and Date, and Secretary and Treasurer are each their own

@@ -58,7 +58,6 @@ function SanctionDesk() {
   return (
     <div className="space-y-5">
       <PageHeader
-        eyebrow="E-ANUDAAN"
         title="Sanction Desk"
         meta="Applications that have cleared the Programme Division and the Integrated Finance Division and await your decision."
       />

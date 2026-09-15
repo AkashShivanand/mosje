@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Alert, ChartCard, FilterSelect, Icon, ListGroup, ListRow, OverviewScreen, Progress } from "@mosje/design-system";
+import { ChartCard, FilterSelect, Icon, ListGroup, ListRow, OverviewScreen, Progress } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ROLES, reviewKeyOf } from "@/lib/e-anudaan/roles";
 import { officerDashboard } from "@/lib/e-anudaan/officer";
@@ -114,13 +114,8 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
                 empty={dash.queue.length === 0}
                 emptyTitle="Nothing Pending"
                 emptyLabel="No application is waiting with you."
-                footer={
-                  dash.overdue > 0 ? (
-                    <Alert status="error">
-                      {dash.overdue} application{dash.overdue === 1 ? "" : "s"} pending beyond 7 days
-                    </Alert>
-                  ) : undefined
-                }
+                /* No "pending beyond 7 days" alert under the bars: it restated the "Over 7 days"
+                   bar directly above it (removed on confirmation, 15 Sep 2026). */
               >
                 <div className="space-y-4">
                   {/* The count rides in the label: Progress prints the share of the queue, and an

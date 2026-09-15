@@ -17,7 +17,7 @@ export default function PmuFieldPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader eyebrow="E-ANUDAAN" title="Inspection Dashboard" />
+      <PageHeader title="Inspection Dashboard" />
 
       {/* Four tiles that add up to the total. With three, six of the twelve assignments — the
           inspections already reported — were counted in "Total" and in no tile at all. */}
