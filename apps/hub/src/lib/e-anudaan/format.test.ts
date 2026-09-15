@@ -6,7 +6,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { rupees, rupeesShort, formatDate } from "./format.ts";
+import { rupees, rupeesShort, formatDate, formatDateTime, formatMonthShort, formatMonthYear, formatTime } from "./format.ts";
 
 test("rupees groups in the Indian system and always carries the symbol", () => {
   assert.equal(rupees(2438356), "₹24,38,356");
@@ -50,4 +50,33 @@ test("every month abbreviates to exactly three letters", () => {
 
 test("an unparseable date is empty, not the string 'Invalid Date'", () => {
   assert.equal(formatDate("not a date"), "");
+});
+
+test("a bare calendar date is that date in every time zone", () => {
+  assert.equal(formatDate("2015-04-01"), "01 Apr 2015");
+});
+
+test("one time shape: 12-hour, zero-padded, upper-case AM/PM", () => {
+  assert.equal(formatTime("10:30"), "10:30 AM");
+  assert.equal(formatTime("18:25"), "06:25 PM");
+  assert.equal(formatTime("00:05"), "12:05 AM");
+  assert.equal(formatTime("12:00"), "12:00 PM");
+  assert.equal(formatTime(new Date(2026, 8, 13, 19, 47)), "07:47 PM");
+  assert.equal(formatTime("25:00"), "");
+});
+
+test("date and time together never use the locale's Sept or a lower-case pm", () => {
+  const out = formatDateTime(new Date(2026, 8, 13, 19, 47));
+  assert.equal(out, "13 Sep 2026, 07:47 PM");
+  assert.equal(formatDateTime("nope"), "");
+});
+
+test("rupees in both published shapes", () => {
+  assert.equal(rupees(2_500_000), "₹25,00,000");
+  assert.equal(rupeesShort(2_500_000), "₹25.00 L");
+});
+
+test("months name themselves without the locale's Sept", () => {
+  assert.equal(formatMonthYear("2026-09-01T00:00:00.000Z"), "September 2026");
+  assert.equal(formatMonthShort("2026-09-01T00:00:00.000Z"), "Sep 26");
 });

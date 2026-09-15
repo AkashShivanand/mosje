@@ -3,9 +3,9 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { SiteHeader, OrgLogo, PortalPage, type PortalNavGroup } from "@mosje/design-system";
+import { SiteHeader, OrgLogo, PortalPage, StatusScreen, type PortalNavGroup } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
-import { ROLES } from "@/lib/e-anudaan/roles";
+import { ROLES, consoleRouteAccess } from "@/lib/e-anudaan/roles";
 
 /**
  * Authenticated shell for the 12 officer roles — a wrapper around `PortalPage`.
@@ -29,6 +29,12 @@ import { ROLES } from "@/lib/e-anudaan/roles";
  * not see, and no way to reach another screen.
  *
  * **`data-portal`**, which the palette re-bind reads and this shell never set.
+ *
+ * **The route agrees with the sidebar.** The rail showed each officer only their own screens,
+ * but any officer could type another's address and use it — the ASO opened the Sanction Desk and
+ * scheduled a PMU inspection (security audit S06, 14 Sep 2026). `consoleRouteAccess` decides from
+ * the same `caps` and `nav` the rail is built from; a screen belonging to another role renders
+ * the 403 status screen, and an address naming no screen the 404, both inside the chrome.
  */
 export function ConsoleShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -48,6 +54,9 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
     if (hydrated && !isOfficer) router.replace("/portals/e-anudaan/login?role=officer");
   }, [hydrated, isOfficer, router]);
 
+  const access = role ? consoleRouteAccess(pathname, role) : "allowed";
+  const toDashboard = { label: "Go to My Dashboard", onClick: () => role && router.push(role.home) };
+
   return (
     <PortalPage
       portal="e-anudaan"
@@ -59,7 +68,8 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
       mainId="main"
       identity={{
         name: "E-Anudaan",
-        expansion: "Grant-in-Aid Management",
+        // Non-breaking hyphens (U+2011): a narrow rail broke the name as "Grant-" / "in-Aid".
+        expansion: "Grant\u2011in\u2011Aid Management",
         mark: <OrgLogo path="/portals/e-anudaan" />,
         href: "/portals/e-anudaan",
       }}
@@ -100,7 +110,27 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
         />
       )}
     >
-      {children}
+      {access === "allowed" ? (
+        children
+      ) : access === "forbidden" ? (
+        <StatusScreen
+          kind="403"
+          title="You Do Not Have Access to This Page"
+          description="This page belongs to another officer's role. Your own applications and registers are on your dashboard."
+          primaryAction={toDashboard}
+          searchUrl={null}
+          wayfindingLinks={[]}
+        />
+      ) : (
+        <StatusScreen
+          kind="404"
+          title="Page Not Found"
+          description="No page exists at this address. The link may be incomplete."
+          primaryAction={toDashboard}
+          searchUrl={null}
+          wayfindingLinks={[]}
+        />
+      )}
     </PortalPage>
   );
 }

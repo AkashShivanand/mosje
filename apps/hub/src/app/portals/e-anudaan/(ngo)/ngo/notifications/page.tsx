@@ -3,77 +3,60 @@
 /**
  * Notifications — the applicant's feed.
  *
- * DS Audit: Badge ✅ existing · Button ✅ · EmptyState ✅ · Icon ✅ — nothing new.
+ * DS Audit: PageHeader ✅ existing · EventList ✅ · Button ✅ · EmptyState ✅ · Icon ✅ — nothing new.
+ * The hand-built card per notification is EventList's row now: the title is the link to the
+ * application, the unread dot replaces the "New" badge, and the stamp is EventList's own.
  *
- * The live screen shows "<n> unread", a "Mark all read" action, and an "Open →" link on any item
- * that names an application. Timestamps read "17 Aug 2026, 04:59 pm".
+ * The live screen shows "<n> unread", a mark-all-read action, and an "Open →" link on any item
+ * that names an application. Timestamps use the portal's one shape: "17 Aug 2026, 04:59 PM".
  */
 
-import Link from "next/link";
-import { Badge, Button, EmptyState, Icon } from "@mosje/design-system";
+import { useRouter } from "next/navigation";
+import { Button, EmptyState, EventList, Icon, PageHeader } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
-import { formatDate } from "@/lib/e-anudaan/format";
-
-function formatStamp(iso: string): string {
-  const d = new Date(iso);
-  const date = formatDate(d);
-  const time = d
-    .toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: true })
-    .toLowerCase();
-  return `${date}, ${time}`;
-}
+import { isReadBy } from "@/lib/e-anudaan/store/persistence";
+import { routeLinksWithin } from "@/components/e-anudaan/ngo-shell";
 
 export default function NgoNotificationsPage() {
+  const router = useRouter();
   const { state, markAllNotificationsRead } = useEAnudaan();
   const mine = state.notifications.filter((n) => n.audience.includes("ngo"));
-  const unread = mine.filter((n) => !n.read).length;
+  const unread = mine.filter((n) => !isReadBy(n, "ngo")).length;
 
   return (
     <div className="space-y-5">
-      <header className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-headline-1 text-ink">Notifications</h1>
-          <p className="mt-1 text-body-2 text-ink-muted">{unread} unread</p>
-        </div>
-        {unread > 0 && (
-          <Button appearance="outlined" onClick={markAllNotificationsRead}>
-            <Icon name="mark_email_read" size={16} aria-hidden /> Mark all read
-          </Button>
-        )}
-      </header>
+      <PageHeader
+        title="Notifications"
+        meta={`${unread} unread`}
+        actions={
+          unread > 0 ? (
+            <Button appearance="outlined" onClick={markAllNotificationsRead}>
+              <Icon name="mark_email_read" size={16} aria-hidden /> Mark All as Read
+            </Button>
+          ) : undefined
+        }
+      />
 
       {mine.length === 0 ? (
-        <EmptyState title="Nothing to read" description="You have no notifications." />
+        <EmptyState title="No notifications." description="Updates on your applications will appear here." />
       ) : (
-        <ul className="space-y-3">
-          {mine.map((n) => (
-            <li
-              key={n.id}
-              className={`rounded-xl border bg-surface p-4 ${
-                n.read ? "border-line" : "border-primary/40"
-              }`}
-            >
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="font-semibold text-ink">{n.title}</p>
-                  <p className="mt-1 text-body-2 text-ink-muted">{n.body}</p>
-                  <p className="mt-2 text-body-3 text-ink-hint">{formatStamp(n.at)}</p>
-                </div>
-                <div className="flex shrink-0 items-center gap-2">
-                  {!n.read && <Badge status="info">New</Badge>}
-                  {n.applicationId && (
-                    <Link
-                      href={`/portals/e-anudaan/ngo/my-applications/${encodeURIComponent(n.applicationId)}`}
-                      className="flex items-center gap-1 text-label-2 font-semibold text-primary hover:underline"
-                    >
-                      Open <span aria-hidden="true">→</span>
-                    </Link>
-                  )}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+        /* EventList draws a plain anchor for an item that names an application; the click is
+           handed to the router so opening one does not reload the portal. */
+        <div onClick={routeLinksWithin(router)}>
+          <EventList
+            label="Notifications"
+            events={mine.map((n) => ({
+              id: n.id,
+              at: n.at,
+              action: n.title,
+              note: n.body,
+              icon: "notifications",
+              tone: isReadBy(n, "ngo") ? "neutral" : "info",
+              unread: !isReadBy(n, "ngo"),
+              href: n.applicationId ? `/portals/e-anudaan/ngo/my-applications/${encodeURIComponent(n.applicationId)}` : undefined,
+            }))}
+          />
+        </div>
       )}
     </div>
   );

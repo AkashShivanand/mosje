@@ -1,47 +1,84 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
-import { Alert, Badge, Button, DonutChart, Icon, MetricCard } from "@mosje/design-system";
+import { useRouter } from "next/navigation";
+import {
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  DescriptionList,
+  DonutChart,
+  Icon,
+  Link,
+  ListGroup,
+  ListRow,
+  MetricCard,
+  PageHeader,
+  Progress,
+  SectionTitle,
+} from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { formatDate, formatGrant, ngoApplications, ngoStatusLabel, statusTone } from "@/lib/e-anudaan/selectors";
 import type { AppStatus } from "@/lib/e-anudaan/types";
+import { openDeficiencies } from "@/lib/e-anudaan/applicant";
+import { formatTime } from "@/lib/e-anudaan/format";
+import { PendingActions } from "@/components/e-anudaan/pending-actions";
+import { routeOnClick } from "@/components/e-anudaan/ngo-shell";
+
+/**
+ * One colour per status, used by BOTH the donut and its legend. The donut picked categorical
+ * colours (In Review red, Action Required green) while the legend asked for classes that do not
+ * exist, so the chart said one thing and its key said nothing (screen audit, 14 Sep 2026).
+ */
+const STATUS_TONE: Record<string, string> = {
+  Sanctioned: "var(--sa-bg-status-success-bolder)",
+  "Action Required": "var(--sa-bg-status-warning-bolder)",
+  "In Review": "var(--sa-bg-status-info-bolder)",
+  Submitted: "var(--sa-bg-status-info-bold)",
+  Draft: "var(--sa-icon-neutral-subtler)",
+  "Query / Returned": "var(--sa-bg-status-warning-bold)",
+  "Closed / Rejected": "var(--sa-bg-status-error-bolder)",
+};
 
 /** Display names for the four schemes the NGO portal offers. */
 const SCHEME_TITLES: Record<string, { title: string; subtitle: string }> = {
-  SHRESHTA_M2: { title: "SHRESHTA Mode 2", subtitle: "Grant-in-aid for SC Residential Schools" },
+  SHRESHTA_M2: { title: "SHRESHTA Mode 2", subtitle: "Grant-in-Aid for SC Residential Schools" },
   AVYAY: { title: "AVYAY (Atal Vayo Abhyuday Yojana)", subtitle: "Integrated Programme for Senior Citizens" },
   NAPDDR: { title: "NAPDDR", subtitle: "Drug Demand Reduction & Social Re-integration" },
   SMILE: { title: "SMILE (Garima Greh)", subtitle: "Shelter Homes for Transgender Persons" },
 };
 
-function getTimeGreeting(): string {
-  const hour = new Date().getHours();
-  if (hour < 12) return "Good morning";
-  if (hour < 17) return "Good afternoon";
-  return "Good evening";
-}
 
 export default function NgoDashboardPage() {
   const { state } = useEAnudaan();
+  const router = useRouter();
   const ngo = state.ngos[0];
   // Memoised so the aggregations below keep a stable dependency across renders.
   const apps = React.useMemo(() => (ngo ? ngoApplications(state, ngo.id) : []), [state, ngo]);
 
+  // No greeting. The account is an organisation, and "Good evening, Sankalp Seva Sansthan"
+  // greets a registered society as if it were a person — the page is titled by what it is,
+  // and the organisation is named beside its DARPAN record (decided 14 Sep 2026).
   const ngoName = ngo?.name ?? "Sankalp Seva Sansthan";
-  const ngoFirstName = ngoName.split(" ")[0] ?? "Sankalp";
 
   // Everything below is DERIVED, never hardcoded. Submitting an application on the live portal
   // moves the KPI row, the donut and the money at once (verified 2026-08-22: 71 → 72 total,
   // Submitted 4 → 5), so the clone recomputes from the store rather than printing fixed figures.
   const totalAppsCount = apps.length;
-  const inReviewCount = apps.filter((a) => a.holder.kind === "chain" || a.holder.kind === "pd").length;
+  // Counted with the same label the breakdown below uses, so the card and the breakdown agree
+  // (the panel of 13 Sep 2026 found "In Review 23" beside a breakdown reading 19).
+  const inReviewCount = apps.filter((a) => {
+    const l = ngoStatusLabel(a);
+    return l === "In Review" || l === "Submitted";
+  }).length;
   const needsActionCount = apps.filter((a) => a.status === "DeficiencyRaised").length;
   const sanctionedCount = apps.filter((a) => a.sanction).length;
 
   const donutChartData = React.useMemo(() => {
     const buckets = new Map<string, number>([
       ["Sanctioned", 0],
+      ["Action Required", 0],
       ["In Review", 0],
       ["Draft", 0],
       ["Submitted", 0],
@@ -52,7 +89,7 @@ export default function NgoDashboardPage() {
       const label = ngoStatusLabel(a) === "Approved" ? "Sanctioned" : ngoStatusLabel(a);
       buckets.set(label, (buckets.get(label) ?? 0) + 1);
     }
-    return [...buckets.entries()].filter(([, v]) => v > 0).map(([label, value]) => ({ label, value }));
+    return [...buckets.entries()].filter(([, v]) => v > 0).map(([label, value]) => ({ label, value, color: STATUS_TONE[label] }));
   }, [apps]);
 
   /** Applications submitted in the current calendar month — the KPI row's delta. */
@@ -65,15 +102,11 @@ export default function NgoDashboardPage() {
     }).length;
   }, [apps]);
 
-  const decidedCount = apps.filter((a) => a.sanction || a.status === "Rejected").length;
-  const approvalRate = decidedCount ? Math.round((sanctionedCount / decidedCount) * 1000) / 10 : 0;
   const topBucket = [...donutChartData].sort((a, b) => b.value - a.value)[0];
 
-  /** The oldest deficiency still awaiting the applicant — drives the action banner. */
-  const openDeficiency = React.useMemo(
-    () => apps.find((a) => a.status === "DeficiencyRaised"),
-    [apps],
-  );
+  /** Every correction the Ministry is waiting on — drives the Pending Actions panel. */
+  const pending = React.useMemo(() => (ngo ? openDeficiencies(state, ngo.id) : []), [state, ngo]);
+  const pendingItems = pending.reduce((n, d) => n + d.items.length, 0);
 
   const CRORE = 1_00_00_000;
   const LAKH = 1_00_000;
@@ -119,91 +152,65 @@ export default function NgoDashboardPage() {
   return (
     <div className="space-y-6 pb-8">
       {/* ── 1. DASHBOARD HEADER & CONTEXT COMMAND BAR ────────────────────── */}
-      <header className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-line bg-surface p-6 shadow-xs">
-        <div className="space-y-1.5">
-          <div className="flex flex-wrap items-center gap-2.5">
-            <h1 className="text-headline-1 text-ink">
-              {getTimeGreeting()}, {ngoFirstName}
-            </h1>
+      <PageHeader
+        title="Dashboard"
+        meta={
+          <span className="flex flex-wrap items-center gap-3 text-body-3 text-ink-muted">
+            <span className="text-body-2 font-semibold text-ink">{ngoName}</span>
             <Badge status="success">DARPAN Verified</Badge>
-          </div>
-          <p className="flex flex-wrap items-center gap-3 text-body-3 text-ink-muted">
+            <span className="text-line" aria-hidden>•</span>
             <span className="flex items-center gap-1 font-mono font-semibold text-ink">
               <Icon name="verified_user" size={16} className="text-primary shrink-0" aria-hidden />
               DARPAN ID: {ngo?.darpanId ?? "MH/2016/100000"}
             </span>
-            <span className="text-line">•</span>
+            <span className="text-line" aria-hidden>•</span>
             <span className="flex items-center gap-1">
               <Icon name="schedule" size={16} className="text-ink-muted shrink-0" aria-hidden />
               Last updated{" "}
-              {formatDate(new Date())} at{" "}
-              {new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: true }).toLowerCase()}
+              {formatDate(new Date())} at {formatTime(new Date())}
             </span>
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Link href="/portals/e-anudaan/ngo/my-applications">
-            <Button appearance="outlined" size="md">
+          </span>
+        }
+        actions={
+          <>
+            <Button appearance="outlined" size="md" onClick={() => router.push("/portals/e-anudaan/ngo/my-applications")}>
               <Icon name="folder_open" size={16} aria-hidden /> My Applications
             </Button>
-          </Link>
-          <Link href="/portals/e-anudaan/apply-grant">
-            <Button appearance="filled" size="md">
-              <Icon name="add" size={16} aria-hidden /> New Application
+            <Button appearance="filled" size="md" onClick={() => router.push("/portals/e-anudaan/apply-grant")}>
+              <Icon name="add" size={16} aria-hidden /> Apply for Grant
             </Button>
-          </Link>
-        </div>
-      </header>
+          </>
+        }
+      />
 
-      {/* ── 2. EXECUTIVE ACTION NOTICE BANNER ────────────────────────────── */}
-      {/* Shown only when something is actually waiting on the applicant, and it names the real
-          application — the banner is a live signal, not decoration. */}
-      {openDeficiency && (
-        <Alert
-          status="warning"
-          title={`${needsActionCount} Action Item${needsActionCount === 1 ? "" : "s"} Pending Review`}
-        >
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-0.5">
-            <p className="text-body-2 text-ink">
-              Deficiency response requested for application{" "}
-              <strong className="font-mono text-ink">{openDeficiency.id}</strong>.{" "}
-              {openDeficiency.deficiencies[0]?.detail ??
-                "Please respond from the Deficiencies screen."}
-            </p>
-            <Link href="/portals/e-anudaan/ngo/my-applications/deficiencies">
-              <Button appearance="filled" size="sm">
-                Respond Now <Icon name="arrow_forward" size={16} aria-hidden />
-              </Button>
-            </Link>
-          </div>
-        </Alert>
-      )}
+      {/* ── 2. PENDING ACTIONS ───────────────────────────────────────────── */}
+      {/* Directly under the greeting, because it is the only part of this page that asks the
+          applicant to do something. Several applications, several items each (T43–54). */}
+      <PendingActions items={pending} />
 
       {/* ── 3. KPI METRIC CARDS ROW (100% UNIFIED SAMAVESH COMPONENTS) ────── */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <MetricCard
           label="Total Applications"
           value={String(totalAppsCount)}
-          changeValue={`+${submittedThisMonth}`}
-          changeLabel="this month"
-          changeDirection="up"
+          // No change badge when nothing changed: a green "+0" reads as growth.
+          changeValue={submittedThisMonth > 0 ? `+${submittedThisMonth}` : undefined}
+          changeLabel={submittedThisMonth > 0 ? "this month" : "none submitted this month"}
+          changeDirection={submittedThisMonth > 0 ? "up" : undefined}
           icon={<Icon name="description" size={20} aria-hidden />}
         />
         <MetricCard
-          label="In Review"
+          label="With the Ministry"
           value={String(inReviewCount)}
-          changeValue={`${inReviewCount} active`}
-          changeLabel="in chain"
-          changeDirection="flat"
+          changeLabel="submitted or in review"
           icon={<Icon name="schedule" size={20} aria-hidden />}
         />
         <MetricCard
-          label="Needs Action"
+          label="Action Required"
           value={String(needsActionCount)}
-          changeValue={`${needsActionCount} pending`}
-          changeLabel="deficiency"
-          changeDirection="down"
+          changeValue={`${pendingItems} item${pendingItems === 1 ? "" : "s"}`}
+          changeLabel="to correct"
+          changeDirection="flat"
           icon={<Icon name="error" size={20} aria-hidden />}
         />
         <MetricCard
@@ -219,154 +226,102 @@ export default function NgoDashboardPage() {
       {/* ── 4. MIDDLE ROW: APPLICATION STATUS & FINANCIAL SUMMARY ──────────── */}
       <div className="grid gap-6 lg:grid-cols-2 items-stretch">
         {/* Application Status Card — Compact Donut Chart */}
-        <section
-          aria-labelledby="app-status-title"
-          className="rounded-xl border border-line bg-surface p-6 shadow-xs flex flex-col justify-between space-y-4"
-        >
-          <div className="flex items-center justify-between border-b border-line pb-3">
-            <h2 id="app-status-title" className="text-title-2 text-ink">
-              Application Status Breakdown
-            </h2>
-            <Badge status="info">Interactive Analytics</Badge>
-          </div>
+        <Card variant="outlined" aria-labelledby="app-status-title">
+          <CardBody className="justify-between gap-4 p-6">
+            <SectionTitle headingId="app-status-title" title="Application Status Breakdown" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center py-2">
-            {/* Compact Donut Canvas */}
-            <div className="sm:col-span-6 flex justify-center">
-              <div className="w-[180px] max-w-full">
-                <DonutChart
-                  title="Application Status Distribution"
-                  data={donutChartData}
-                  center={String(totalAppsCount)}
-                  centerSub="Applications"
+            <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center py-2">
+              {/* Compact Donut Canvas */}
+              <div className="sm:col-span-6 flex justify-center">
+                <div className="w-[180px] max-w-full">
+                  <DonutChart
+                    title="Application Status Distribution"
+                    data={donutChartData}
+                    center={String(totalAppsCount)}
+                    centerSub="Applications"
+                  />
+                </div>
+              </div>
+
+              {/* Detailed Status Breakdown Matrix — the colour key is the chart's own legend. */}
+              <div className="sm:col-span-6">
+                <DescriptionList
+                  aria-label="Status Breakdown"
+                  columns={1}
+                  layout="inline"
+                  size="sm"
+                  divided
+                  items={[...donutChartData]
+                    .sort((a, b) => b.value - a.value)
+                    .map((item) => ({
+                      term: item.label,
+                      value: `${item.value} (${((item.value / Math.max(totalAppsCount, 1)) * 100).toFixed(1)}%)`,
+                    }))}
                 />
               </div>
             </div>
 
-            {/* Detailed Status Breakdown Matrix */}
-            <div className="sm:col-span-6 space-y-2 text-body-2 border-l border-line/60 pl-0 sm:pl-4">
-              <span className="text-label-3 uppercase text-ink-muted block pb-1 border-b border-line/40">
-                Status Breakdown
-              </span>
-              {donutChartData.sort((a, b) => b.value - a.value).map((item) => {
-                const pct = ((item.value / Math.max(totalAppsCount, 1)) * 100).toFixed(1) + "%";
-                let colorClass = "bg-status-neutral";
-                if (item.label === "Sanctioned") colorClass = "bg-status-success";
-                else if (item.label === "In Review") colorClass = "bg-status-warning";
-                else if (item.label === "Draft") colorClass = "bg-status-info";
-                else if (item.label === "Closed / Rejected") colorClass = "bg-status-error";
-                else colorClass = "bg-status-info";
+            <DescriptionList
+              columns={1}
+              layout="inline"
+              size="sm"
+              items={[
+                {
+                  term: "Highest Allocation",
+                  value: topBucket ? `${topBucket.label} (${Math.round((topBucket.value / Math.max(totalAppsCount, 1)) * 1000) / 10}%)` : "—",
+                },
+              ]}
+            />
+          </CardBody>
+        </Card>
 
-                return (
-                  <div key={item.label} className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <span className={`h-2.5 w-2.5 rounded-full ${colorClass} shrink-0`} aria-hidden />
-                      <span className="font-medium text-ink">{item.label}</span>
-                    </div>
-                    <div className="font-mono text-ink-muted">
-                      <strong className="text-ink font-semibold">{item.value}</strong> ({pct})
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
+        {/* Financial Summary Card */}
+        <Card variant="outlined" aria-labelledby="financial-summary-title">
+          <CardBody className="justify-between gap-4 p-6">
+            <SectionTitle headingId="financial-summary-title" title="Financial Summary">
+              <Badge status="info">FY 2026-27</Badge>
+            </SectionTitle>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-body-2 border-t border-line/60">
-            <span className="text-ink-muted">
-              Highest Allocation:{" "}
-              <strong className="text-ink">
-                {topBucket ? `${topBucket.label} (${Math.round((topBucket.value / Math.max(totalAppsCount, 1)) * 1000) / 10}%)` : "—"}
-              </strong>
-            </span>
-            <span className="text-ink-muted">
-              Approval Rate: <strong className="font-bold text-status-success">{approvalRate}%</strong>
-            </span>
-          </div>
-        </section>
-
-        {/* Financial Summary Card — UNIFIED TONAL CARDS */}
-        <section
-          aria-labelledby="financial-summary-title"
-          className="rounded-xl border border-line bg-surface p-6 shadow-xs flex flex-col justify-between space-y-4"
-        >
-          <div className="flex items-center justify-between border-b border-line pb-3">
-            <h2 id="financial-summary-title" className="text-title-2 text-ink">
-              Financial Summary
-            </h2>
-            <Badge status="info">FY 2026-27</Badge>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            {/* Total Requested */}
-            <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
-              <span className="block text-label-3 uppercase text-ink-muted">Total Requested</span>
-              <span className="mt-1 block text-headline-2 tabular-nums text-ink">₹{totalRequestedCr} Cr</span>
-              <span className="mt-0.5 block text-body-3 text-ink-muted">{totalAppsCount} applications total</span>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <MetricCard label="Total Requested" value={`₹${totalRequestedCr} Cr`} detail={`${totalAppsCount} applications total`} />
+              <MetricCard label="Total Sanctioned" value={`₹${totalSanctionedCr} Cr`} detail={`${sanctionedCount} approved grants`} />
+              <MetricCard label="Pending Review" value={`₹${inReviewAmountCr} Cr`} detail={`${inReviewCount} active files in chain`} />
+              <MetricCard label="Avg. Grant Size" value={`₹${avgSanctionLakhs} L`} detail="per approved project" />
             </div>
 
-            {/* Total Sanctioned */}
-            <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
-              <span className="block text-label-3 uppercase text-ink-muted">Total Sanctioned</span>
-              <span className="mt-1 block text-headline-2 tabular-nums text-status-success">₹{totalSanctionedCr} Cr</span>
-              <span className="mt-0.5 block text-body-3 text-status-success-strong">{sanctionedCount} approved grants</span>
+            {/* Progress Bar: Sanctioned vs Requested */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-body-2">
+                <span className="font-semibold text-ink-muted">Sanctioned vs Requested Budget</span>
+                <span className="font-bold text-[var(--sa-text-status-success-base)]">{sanctionedPercent}% Sanction Ratio</span>
+              </div>
+              <Progress label="Sanctioned vs Requested Budget" value={sanctionedPercent} tone="success" compact />
             </div>
 
-            {/* In Review Amount */}
-            <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
-              <span className="block text-label-3 uppercase text-ink-muted">Pending Review</span>
-              <span className="mt-1 block text-headline-2 tabular-nums text-status-info">₹{inReviewAmountCr} Cr</span>
-              <span className="mt-0.5 block text-body-3 text-status-info-strong">{inReviewCount} active files in chain</span>
-            </div>
-
-            {/* Avg Sanction */}
-            <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
-              <span className="block text-label-3 uppercase text-ink-muted">Avg. Grant Size</span>
-              <span className="mt-1 block text-headline-2 tabular-nums text-ink">₹{avgSanctionLakhs} L</span>
-              <span className="mt-0.5 block text-body-3 text-ink-muted">per approved project</span>
-            </div>
-          </div>
-
-          {/* Progress Bar: Sanctioned vs Requested */}
-          <div className="space-y-2 pt-2 border-t border-line">
-            <div className="flex items-center justify-between text-body-2">
-              <span className="font-semibold text-ink-muted">Sanctioned vs Requested Budget</span>
-              <span className="font-bold text-status-success">{sanctionedPercent}% Sanction Ratio</span>
-            </div>
-            <div className="h-2.5 w-full rounded-full bg-slate-100 overflow-hidden border border-slate-200/60">
-              <div className="h-full rounded-full bg-status-success" style={{ width: `${sanctionedPercent}%` }} />
-            </div>
-          </div>
-
-          <p className="text-body-3 text-ink-muted">
-            Sanctioned amount reflects approved grants across all active applications under Ministry of Social Justice &amp; Empowerment schemes.
-          </p>
-        </section>
+            <p className="text-body-3 text-ink-muted">
+              Sanctioned amount reflects approved grants across all active applications under Ministry of Social Justice &amp; Empowerment schemes.
+            </p>
+          </CardBody>
+        </Card>
       </div>
 
       {/* ── 5. THIRD ROW: ORGANISATION PROFILE & APPLICATIONS BY SCHEME ─────── */}
       <div className="grid gap-6 lg:grid-cols-2 items-stretch">
         {/* Organisation Profile Box */}
-        <section
-          aria-labelledby="org-profile-title"
-          className="rounded-xl border border-line bg-surface p-6 shadow-xs space-y-4 flex flex-col justify-between"
-        >
-          <div className="flex items-center justify-between border-b border-line pb-3">
-            <div className="flex items-center gap-2">
-              <Icon name="domain" size={20} className="text-primary shrink-0" aria-hidden />
-              <h2 id="org-profile-title" className="text-title-2 text-ink">
-                Organisation Profile
-              </h2>
-            </div>
-            <Badge status="neutral">DARPAN Synced</Badge>
-          </div>
+        <Card variant="outlined" aria-labelledby="org-profile-title">
+          <CardBody className="gap-4 p-6">
+            <SectionTitle headingId="org-profile-title" title="Organisation Profile">
+              <Badge status="neutral">DARPAN Synced</Badge>
+            </SectionTitle>
 
-          {/* Thirteen separate rows, exactly as the live DARPAN read-back lists them — State and
-              District, Registration No. and Date, and Secretary and Treasurer are each their own
-              row on the live portal rather than being paired up. */}
-          <dl className="grid grid-cols-1 gap-x-6 gap-y-3 text-body-2 sm:grid-cols-2">
-            {(
-              [
+            {/* Thirteen separate rows, exactly as the live DARPAN read-back lists them — State and
+                District, Registration No. and Date, and Secretary and Treasurer are each their own
+                row on the live portal rather than being paired up. */}
+            <DescriptionList
+              columns={2}
+              size="sm"
+              divided
+              items={([
                 ["Organisation", ngoName],
                 ["DARPAN ID", ngo?.darpanId ?? "MH/2016/100000"],
                 ["State", ngo?.state ?? "Maharashtra"],
@@ -380,143 +335,117 @@ export default function NgoDashboardPage() {
                 ["Authorised User", ngo?.authorisedUser ?? ngoName],
                 ["Email", ngo?.email ?? "—"],
                 ["Mobile", ngo?.mobile ?? "—"],
-              ] as const
-            ).map(([label, value]) => (
-              <div key={label} className="border-b border-line/40 pb-1.5">
-                <dt className="block text-body-3 text-ink-muted">{label}</dt>
-                <dd className="mt-0.5 block font-bold text-ink break-words">{value}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
+              ] as const).map(([term, value]) => ({ term, value }))}
+            />
+          </CardBody>
+        </Card>
 
         {/* Applications by Scheme Box */}
-        <section
-          aria-labelledby="apps-by-scheme-title"
-          className="rounded-xl border border-line bg-surface p-6 shadow-xs space-y-4 flex flex-col justify-between"
-        >
-          <div className="flex items-center justify-between border-b border-line pb-3">
-            <div className="flex items-center gap-2">
-              <Icon name="assignment" size={20} className="text-primary shrink-0" aria-hidden />
-              <h2 id="apps-by-scheme-title" className="text-title-2 text-ink">
-                Applications by Scheme
-              </h2>
-            </div>
-            <Badge status="neutral">{activeSchemes.length} Schemes</Badge>
-          </div>
+        <Card variant="outlined" aria-labelledby="apps-by-scheme-title">
+          <CardBody className="gap-4 p-6">
+            <SectionTitle headingId="apps-by-scheme-title" title="Applications by Scheme">
+              <Badge status="neutral">{activeSchemes.length} Schemes</Badge>
+            </SectionTitle>
 
-          <div className="space-y-3">
-            <span className="text-label-3 uppercase text-ink-muted block">
-              Active Grant Schemes
-            </span>
-            {activeSchemes.map((s) => (
-              <div key={s.code} className="rounded-lg border border-line p-3 bg-surface-muted/40 space-y-2 transition hover:bg-surface-muted/70">
-                <div className="flex items-center justify-between gap-2">
-                  <div>
-                    <span className="text-title-3 text-ink block">{s.title}</span>
-                    <span className="text-body-3 text-ink-muted block">{s.subtitle}</span>
-                  </div>
-                  <span className="text-label-2 font-bold text-ink shrink-0 bg-surface px-2 py-1 rounded border border-line">
-                    {s.count} {s.count === 1 ? "app" : "apps"}
-                  </span>
-                </div>
+            <SectionTitle as={3} eyebrow="Active Grant Schemes" />
+            <ListGroup bordered aria-label="Active Grant Schemes">
+              {activeSchemes.map((s) => (
+                <ListRow
+                  key={s.code}
+                  title={s.title}
+                  trailing={
+                    <Badge status="neutral">
+                      {s.count} {s.count === 1 ? "app" : "apps"}
+                    </Badge>
+                  }
+                  /* No scheme badge: it printed the stored code ("SHRESHTA_M2") under the scheme's
+                     own name, saying the same thing twice and the second time in code. */
+                  description={
+                    <span className="block space-y-2">
+                      <span className="block">{s.subtitle}</span>
+                      <span className="block">
+                        Requested: <strong className="text-ink">₹{s.requestedCr} Cr</strong> · Sanctioned: <strong className="text-[var(--sa-text-status-success-base)]">₹{s.sanctionedCr} Cr</strong>
+                      </span>
+                      <Progress label={`${s.title}: sanctioned against requested`} value={s.percent} tone="success" compact />
+                    </span>
+                  }
+                />
+              ))}
+            </ListGroup>
 
-                <div className="flex items-center justify-between gap-2 pt-1 text-body-3">
-                  <Badge status="info">{s.code}</Badge>
-                  <span className="text-ink-muted font-medium">
-                    Requested: <strong className="text-ink">₹{s.requestedCr} Cr</strong> · Sanctioned: <strong className="text-status-success">₹{s.sanctionedCr} Cr</strong>
-                  </span>
-                </div>
-
-                <div className="h-1.5 w-full rounded-full bg-slate-200 overflow-hidden">
-                  <div className="h-full rounded-full bg-status-success" style={{ width: `${s.percent}%` }} />
-                </div>
-              </div>
-            ))}
-
-            <div className="pt-2 border-t border-line/60 space-y-2">
-              <span className="text-label-3 uppercase text-ink-muted block">
-                Other Available Schemes (0 Applications)
-              </span>
-              <div className="grid grid-cols-2 gap-2">
-                {idleSchemes.map((s) => (
-                  <div key={s.code} className="rounded border border-line/60 bg-surface-muted/20 p-2 text-body-3">
-                    <span className="text-title-3 text-ink block">{s.title}</span>
-                    <span className="text-body-3 text-ink-muted block truncate">{s.subtitle}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
+            {idleSchemes.length > 0 && (
+              <>
+                <SectionTitle as={3} eyebrow="Other Available Schemes (0 Applications)" />
+                <ListGroup bordered size="sm" aria-label="Other Available Schemes (0 Applications)">
+                  {idleSchemes.map((s) => (
+                    <ListRow key={s.code} title={s.title} description={s.subtitle} />
+                  ))}
+                </ListGroup>
+              </>
+            )}
+          </CardBody>
+        </Card>
       </div>
 
       {/* ── 6. BOTTOM SECTION: RECENT APPLICATIONS LEDGER ──────────────────── */}
-      <section aria-labelledby="recent-apps-title" className="rounded-xl border border-line bg-surface p-6 shadow-xs space-y-5">
-        <div className="flex items-center justify-between border-b border-line pb-3">
-          <div className="flex items-center gap-2">
-            <Icon name="history" size={20} className="text-primary shrink-0" aria-hidden />
-            <h2 id="recent-apps-title" className="text-title-2 text-ink">
-              Recent Applications Ledger
-            </h2>
-          </div>
-          <Link
-            href="/portals/e-anudaan/ngo/my-applications"
-            className="text-label-2 font-bold text-primary hover:underline inline-flex items-center gap-1"
-          >
-            View All Applications <Icon name="arrow_forward" size={16} aria-hidden />
-          </Link>
-        </div>
-
-        <div className="space-y-3">
-          {apps.slice(0, 5).map((appRow) => {
-            const title = `${appRow.projectLabel || "Project"} — ${SCHEME_TITLES[appRow.schemeCode]?.title ?? appRow.schemeCode}`;
-            const ref = appRow.institutionId || appRow.id;
-            const statusLabel = ngoStatusLabel(appRow);
-            const statusKey = appRow.status;
-            const requested = formatGrant(appRow.total);
-            const updated = formatDate(appRow.submittedAt || new Date().toISOString());
-            
-            return (
-            <div
-              key={appRow.id}
-              className="flex flex-col gap-3 rounded-lg border border-line p-4 transition hover:border-primary/40 hover:bg-surface-muted/50 sm:flex-row sm:items-center sm:justify-between"
+      <Card variant="outlined" aria-labelledby="recent-apps-title">
+        <CardBody className="gap-5 p-6">
+          <SectionTitle headingId="recent-apps-title" title="Recent Applications Ledger">
+            <Link
+              variant="standalone"
+              size="sm"
+              href="/portals/e-anudaan/ngo/my-applications"
+              onClick={routeOnClick(router, "/portals/e-anudaan/ngo/my-applications")}
+              iconRight={<Icon name="arrow_forward" size={16} aria-hidden />}
             >
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-title-3 text-ink">{title}</h3>
-                </div>
-                <span className="inline-block font-mono text-label-2 text-ink-muted bg-surface-muted px-2 py-0.5 rounded border border-line/60">
-                  {ref}
-                </span>
-              </div>
+              View All Applications
+            </Link>
+          </SectionTitle>
 
-              <div className="flex flex-wrap items-center gap-5 text-body-2">
-                <Badge status={statusTone(statusKey as AppStatus)}>
-                  {statusLabel}
-                </Badge>
+          <ListGroup bordered aria-label="Recent applications">
+            {apps.slice(0, 5).map((appRow) => {
+              const title = `${appRow.projectLabel || "Project"} — ${SCHEME_TITLES[appRow.schemeCode]?.title ?? appRow.schemeCode}`;
+              const ref = appRow.institutionId || appRow.id;
+              const statusLabel = ngoStatusLabel(appRow);
+              const statusKey = appRow.status;
+              const requested = formatGrant(appRow.total);
+              const updated = formatDate(appRow.submittedAt || new Date().toISOString());
 
-                <div className="text-right">
-                  <span className="block text-label-2 text-ink-muted">Requested</span>
-                  <span className="font-bold text-ink">{requested}</span>
-                </div>
-
-                <div className="text-right">
-                  <span className="block text-label-2 text-ink-muted">Updated</span>
-                  <span className="font-medium text-ink-muted">{updated}</span>
-                </div>
-
-                <Link href={`/portals/e-anudaan/ngo/my-applications/${appRow.id}`}>
-                  <Button appearance="outlined" size="sm">
-                    Details <Icon name="chevron_right" size={16} aria-hidden />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-            );
-          })}
-        </div>
-      </section>
+              return (
+                <ListRow
+                  key={appRow.id}
+                  title={title}
+                  description={<span className="font-mono">{ref}</span>}
+                  trailing={
+                    <span className="flex flex-wrap items-center gap-5 text-body-2">
+                      <Badge status={statusTone(statusKey as AppStatus)}>{statusLabel}</Badge>
+                      <DescriptionList
+                        columns={2}
+                        size="sm"
+                        className="text-right"
+                        items={[
+                          { term: "Requested", value: requested },
+                          { term: "Updated", value: updated },
+                        ]}
+                      />
+                      {/* The reference carries slashes, so it is encoded — the unencoded link opened
+                          a route that does not exist. A button, not a button inside a link. */}
+                      <Button
+                        appearance="outlined"
+                        size="sm"
+                        aria-label={`Details of ${appRow.id}`}
+                        onClick={() => router.push(`/portals/e-anudaan/ngo/my-applications/${encodeURIComponent(appRow.id)}`)}
+                      >
+                        Details <Icon name="chevron_right" size={16} aria-hidden />
+                      </Button>
+                    </span>
+                  }
+                />
+              );
+            })}
+          </ListGroup>
+        </CardBody>
+      </Card>
     </div>
   );
 }

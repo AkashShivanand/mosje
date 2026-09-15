@@ -19,9 +19,9 @@ import {
   visibleSteps,
   type FieldDef,
   type WizardDef,
-} from "./form-schema";
-import { districtsOf } from "./geography";
-import { demoVerdictFor, type UploadedDoc, type VerdictState } from "./doc-verification";
+} from "./form-schema.ts";
+import { districtsOf } from "./geography.ts";
+import { demoVerdictFor, type UploadedDoc, type VerdictState } from "./doc-verification.ts";
 
 /** The event the wizard listens for. Dispatched on `window` by the demo dock panel. */
 export const DEMO_FILL_EVENT = "e-anudaan:demo-fill";
@@ -138,7 +138,7 @@ function docsWith(def: WizardDef, values: Record<string, string>, state: Verdict
       fileName: `${d.title.replace(/[^A-Za-z0-9]+/g, "_").slice(0, 40)}.pdf`,
       sizeKb: 68 + (d.n % 7) * 3,
       uploadedOn: "07 Sep 2026",
-      verdict: demoVerdictFor(state, d.title),
+      verdict: demoVerdictFor(state, d.title, values.fld_financial_year),
     };
   }
   return out;

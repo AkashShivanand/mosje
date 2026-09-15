@@ -1,9 +1,11 @@
 /**
- * The checklist counter. Both halves must count the same set.
+ * The checklist counter. Both halves of every fraction count the same set.
  *
- * Live shows SHRESHTA_M2 applicants "10 / 7 uploaded" — a fraction that exceeds its own total and
- * so cannot mean "done" (design audit M1a). Our clone had the same arithmetic: every upload over
- * a denominator of only the mandatory documents.
+ * Live shows SHRESHTA Mode 2 applicants "10 / 7 uploaded" — a fraction that exceeds its own
+ * total and so cannot mean "done" (design audit M1a). The next version counted mandatory
+ * documents only and printed "19 / 19 uploaded · All mandatory" over a list of twenty with one
+ * marked optional, while the application page said "20 of 20" (form-path QA, 13 Sep 2026).
+ * One count now: every document, with the mandatory figures reported beside it.
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -17,22 +19,23 @@ const DOCS = [
   { n: 5, optional: true },
 ];
 
-test("the counter never exceeds its own total, whatever is optional", () => {
+test("the headline counts every document on the list, optional ones included", () => {
   const all = { 1: {}, 2: {}, 3: {}, 4: {}, 5: {} };
-  const { done, total } = uploadProgress(DOCS, all);
-  assert.equal(total, 3);
-  assert.equal(done, 3);
-  assert.ok(done <= total, `${done} / ${total} exceeds its own total`);
+  assert.deepEqual(uploadProgress(DOCS, all), { done: 5, total: 5, mandatoryDone: 3, mandatoryTotal: 3, optionalTotal: 2 });
+});
+
+test("no fraction exceeds its own total, whatever is optional", () => {
+  const p = uploadProgress(DOCS, { 1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 9: {} });
+  assert.ok(p.done <= p.total, `${p.done} / ${p.total}`);
+  assert.ok(p.mandatoryDone <= p.mandatoryTotal, `${p.mandatoryDone} / ${p.mandatoryTotal}`);
 });
 
 test("uploading only optional documents leaves the mandatory count at zero", () => {
-  assert.deepEqual(uploadProgress(DOCS, { 4: {}, 5: {} }), { done: 0, total: 3 });
+  const p = uploadProgress(DOCS, { 4: {}, 5: {} });
+  assert.equal(p.done, 2);
+  assert.equal(p.mandatoryDone, 0);
 });
 
-test("partial progress counts mandatory documents only", () => {
-  assert.deepEqual(uploadProgress(DOCS, { 1: {}, 4: {} }), { done: 1, total: 3 });
-});
-
-test("a checklist with nothing optional counts everything", () => {
-  assert.deepEqual(uploadProgress([{ n: 1 }, { n: 2 }], { 1: {} }), { done: 1, total: 2 });
+test("a checklist with nothing optional reports no optional documents", () => {
+  assert.deepEqual(uploadProgress([{ n: 1 }, { n: 2 }], { 1: {} }), { done: 1, total: 2, mandatoryDone: 1, mandatoryTotal: 2, optionalTotal: 0 });
 });

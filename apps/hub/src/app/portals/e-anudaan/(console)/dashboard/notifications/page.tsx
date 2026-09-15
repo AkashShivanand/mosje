@@ -1,47 +1,52 @@
 "use client";
 
-import { Badge, Button, EmptyState } from "@mosje/design-system";
+import { Button, EmptyState, EventList, PageHeader } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
-import { formatDate } from "@/lib/e-anudaan/selectors";
+import { isReadBy } from "@/lib/e-anudaan/store/persistence";
+import { ROLES, reviewKeyOf } from "@/lib/e-anudaan/roles";
 
 export default function OfficerNotificationsPage() {
   const { state, markAllNotificationsRead } = useEAnudaan();
+  const role = state.session && state.session !== "ngo" ? ROLES[state.session] : null;
   const mine = state.session
     ? state.notifications.filter((n) => n.audience.includes(state.session!))
     : [];
-  const unread = mine.filter((n) => !n.read).length;
+  const unread = mine.filter((n) => !isReadBy(n, state.session)).length;
+  // A notification about an application opens that application's review screen for this officer.
+  // A role that reviews nothing (the PMU) has no review screen to link to.
+  const key = role?.caps.includes("review") ? reviewKeyOf(role) : null;
+  const reviewBase = key ? `/portals/e-anudaan/dashboard/sm2/${key}/review` : null;
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-headline-1 text-ink">Notifications</h1>
-          <p className="mt-1 text-body-2 text-ink-muted">{unread} unread</p>
-        </div>
-        {unread > 0 && (
-          <Button appearance="outlined" onClick={markAllNotificationsRead}>
-            Mark all read
-          </Button>
-        )}
-      </div>
+      <PageHeader
+        title="Notifications"
+        meta={`${unread} Unread`}
+        actions={
+          unread > 0 ? (
+            <Button appearance="outlined" onClick={markAllNotificationsRead}>
+              Mark All as Read
+            </Button>
+          ) : undefined
+        }
+      />
 
       {mine.length === 0 ? (
-        <EmptyState title="Nothing to read" description="You have no notifications." />
+        <EmptyState title="No Notifications" description="You have no notifications." />
       ) : (
-        <ul className="space-y-3">
-          {mine.map((n) => (
-            <li key={n.id} className="rounded-xl border border-line bg-surface p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <p className="font-semibold text-ink">{n.title}</p>
-                  <p className="mt-1 text-body-2 text-ink-muted">{n.body}</p>
-                </div>
-                {!n.read && <Badge status="info">New</Badge>}
-              </div>
-              <p className="mt-2 text-body-3 text-ink-hint">{formatDate(n.at)}</p>
-            </li>
-          ))}
-        </ul>
+        <EventList
+          label="Notifications"
+          unreadLabel="New"
+          events={mine.map((n) => ({
+            id: n.id,
+            at: n.at,
+            action: n.title,
+            note: n.body,
+            unread: !isReadBy(n, state.session),
+            icon: "notifications",
+            href: n.applicationId && reviewBase ? `${reviewBase}/${encodeURIComponent(n.applicationId)}` : undefined,
+          }))}
+        />
       )}
     </div>
   );

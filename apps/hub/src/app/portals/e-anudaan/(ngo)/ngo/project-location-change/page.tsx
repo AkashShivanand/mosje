@@ -1,151 +1,291 @@
 "use client";
 
 /**
- * Project Location Change — the applicant asks the Ministry to move a sanctioned project.
+ * Project Location Change — move a project to a new address within its district.
  *
- * DS Audit: Button ✅ existing · FormField ✅ · Select ✅ · Textarea ✅ · Icon ✅ · Alert ✅ ·
- * useToast ✅ — nothing new.
+ * DS Audit: Card ✅ existing · SectionTitle ✅ · FormField ✅ · Select ✅ · Textarea ✅ · Button ✅ ·
+ * Icon ✅ · Alert ✅ · DescriptionList ✅ · FileList ✅ · ListGroup / ListRow ✅ · Badge ✅ ·
+ * ErrorSummary ✅ · useToast ✅ — nothing new.
  *
- * The live screen carries two 500-character counters and a browser-geolocation capture button
- * between them; all three are reproduced here, with copy verbatim from the walkthrough.
+ * Settled in the review call of 11 Sep 2026 (T100–122, T457–468):
+ *   • a project moves WITHIN its district — State and District come from the project and are
+ *     shown, not asked;
+ *   • "Use Current Location" comes first, because it fills most of the address; the address
+ *     stays editable, since a looked-up address is often worded oddly;
+ *   • latitude and longitude are recorded for the department and never shown — they mean
+ *     nothing to the applicant;
+ *   • the reason is mandatory; a supporting document is optional.
  */
 
 import * as React from "react";
-import { Alert, Button, FormField, Icon, Select, Textarea, useToast } from "@mosje/design-system";
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  DescriptionList,
+  ErrorSummary,
+  FileList,
+  FormField,
+  Icon,
+  ListGroup,
+  ListRow,
+  PageHeader,
+  SectionTitle,
+  Select,
+  Textarea,
+  useToast,
+} from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
-import { ngoApplications } from "@/lib/e-anudaan/selectors";
+import { projectName, projectsOf } from "@/lib/e-anudaan/applicant";
+import { formatDate } from "@/lib/e-anudaan/format";
+import type { LocationChangeRequest } from "@/lib/e-anudaan/types";
 
 const MAX = 500;
+type Capture = { state: "idle" } | { state: "locating" } | { state: "captured"; lat: number; lng: number } | { state: "failed"; message: string };
 
 export default function ProjectLocationChangePage() {
-  const { state } = useEAnudaan();
+  const { state, submitChangeRequest } = useEAnudaan();
   const { toast } = useToast();
   const ngo = state.ngos[0];
+  const projects = ngo ? projectsOf(state, ngo.id) : [];
 
-  /** One option per institution, labelled as the live select does. */
-  const projectOptions = React.useMemo(() => {
-    if (!ngo) return [];
-    const seen = new Map<string, string>();
-    for (const a of ngoApplications(state, ngo.id)) {
-      if (!seen.has(a.institutionId)) {
-        const label = a.projectLabel.split(" · ")[0] ?? a.projectLabel;
-        seen.set(a.institutionId, `${a.institutionId} — ${label} · last applied FY ${a.financialYear}`);
-      }
-    }
-    return [...seen.entries()].map(([id, label]) => ({ id, label }));
-  }, [state, ngo]);
-
-  const [project, setProject] = React.useState("");
-  const [location, setLocation] = React.useState("");
+  const [projectId, setProjectId] = React.useState("");
+  const [address, setAddress] = React.useState("");
   const [reason, setReason] = React.useState("");
-  const [coords, setCoords] = React.useState<string | null>(null);
-  const [capturing, setCapturing] = React.useState(false);
+  const [doc, setDoc] = React.useState<{ name: string; size: number } | null>(null);
+  const [capture, setCapture] = React.useState<Capture>({ state: "idle" });
+  const [tried, setTried] = React.useState(false);
+  const fileInput = React.useRef<HTMLInputElement>(null);
 
-  const capture = () => {
-    if (!navigator.geolocation) {
-      toast("This browser cannot capture coordinates.", "error");
+  const project = projects.find((p) => p.id === projectId);
+  const requests = state.changeRequests.filter((r): r is LocationChangeRequest => r.kind === "location");
+  const pendingForProject = requests.find((r) => r.projectId === projectId && r.status === "Pending");
+  const lastApproved = requests
+    .filter((r) => r.projectId === projectId && r.status === "Approved")
+    .sort((a, b) => Date.parse(b.decidedAt ?? b.submittedAt) - Date.parse(a.decidedAt ?? a.submittedAt))[0];
+  const currentAddress = lastApproved?.address ?? (project ? `${project.name}, ${project.district}, ${project.state} ${project.pin}` : "");
+
+  const errors = [
+    !projectId && { id: "project", text: "Select the project that is moving." },
+    !address.trim() && { id: "new-location", text: "Enter the new address of the project." },
+    !reason.trim() && { id: "reason", text: "Give the reason for the change." },
+  ].filter(Boolean) as { id: string; text: string }[];
+  const errorFor = (id: string) => (tried ? errors.find((e) => e.id === id)?.text : undefined);
+
+  const useCurrentLocation = () => {
+    if (!project) return;
+    if (!("geolocation" in navigator)) {
+      setCapture({ state: "failed", message: "This browser cannot share your location. Enter the address below." });
       return;
     }
-    setCapturing(true);
+    setCapture({ state: "locating" });
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        setCoords(`${pos.coords.latitude.toFixed(6)}, ${pos.coords.longitude.toFixed(6)}`);
-        setCapturing(false);
-        toast("Coordinates captured.", "success");
+        setCapture({ state: "captured", lat: pos.coords.latitude, lng: pos.coords.longitude });
+        // The prototype has no address lookup, so it fills what it can be sure of — the district,
+        // State and PIN area of the project — and leaves the building and street to the applicant.
+        setAddress((a) => a || `${project.district}, ${project.state}`);
       },
-      () => {
-        setCapturing(false);
-        toast("Could not read your location. Enter the address instead.", "error");
-      },
-      { enableHighAccuracy: true, timeout: 10000 },
+      (err) =>
+        setCapture({
+          state: "failed",
+          message:
+            err.code === err.PERMISSION_DENIED
+              ? "Location access was not allowed. Enter the address below."
+              : "Your location could not be found. Enter the address below.",
+        }),
+      { enableHighAccuracy: true, timeout: 15000 },
     );
+  };
+
+  const reset = () => {
+    setAddress("");
+    setReason("");
+    setDoc(null);
+    setCapture({ state: "idle" });
+    setTried(false);
   };
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!project || !location.trim() || !reason.trim()) return;
-    toast(`Location change request for ${project} submitted.`, "success");
-    setLocation("");
-    setReason("");
-    setCoords(null);
+    setTried(true);
+    if (errors.length || pendingForProject) return;
+    submitChangeRequest({
+      kind: "location",
+      projectId,
+      address: address.trim(),
+      reason: reason.trim(),
+      documentName: doc?.name,
+      ...(capture.state === "captured" ? { latitude: capture.lat, longitude: capture.lng } : {}),
+    } as Omit<LocationChangeRequest, "id" | "submittedAt" | "status">);
+    toast("Location change request submitted. You will be notified when the Ministry decides.", "success");
+    reset();
   };
 
   return (
-    <div className="mx-auto max-w-2xl space-y-5">
-      <header>
-        <h1 className="text-headline-1 text-ink">Project Location Change</h1>
-        <p className="mt-1 text-body-2 text-ink-muted">
-          Request a change to the location of one of your projects. The concerned officer is
-          notified and will examine your request.
-        </p>
-      </header>
+    <div className="mx-auto max-w-3xl space-y-6">
+      <PageHeader
+        title="Project Location Change"
+        meta="Ask the Ministry to record a new address for a project. A project can move within its district only."
+      />
 
-      <form onSubmit={submit} className="space-y-5 rounded-xl border border-line bg-surface p-6 shadow-xs">
-        <FormField label="Project" id="project" required>
-          {(control) => (
-            <Select {...control} value={project} onChange={(e) => setProject(e.target.value)}>
-              <option value="">Select a project…</option>
-              {projectOptions.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.label}
-                </option>
-              ))}
-            </Select>
-          )}
-        </FormField>
+      <Card variant="outlined">
+        <CardBody>
+          <form onSubmit={submit} noValidate className="space-y-6">
+            {tried && errors.length > 0 && <ErrorSummary errors={errors.map((er) => ({ fieldId: er.id, message: er.text }))} />}
 
-        <div>
-          <FormField label="New project location (full address)" id="new-location" required>
-            {(control) => (
-              <Textarea
-                {...control}
-                rows={4}
-                maxLength={MAX}
-                value={location}
-                placeholder="House / building, street, locality, city, district, State, PIN"
-                onChange={(e) => setLocation(e.target.value)}
-              />
+            <FormField label="Project" id="project" required error={errorFor("project")}>
+              {(c) => (
+                <Select
+                  {...c}
+                  value={projectId}
+                  onChange={(e) => {
+                    setProjectId(e.target.value);
+                    reset();
+                  }}
+                >
+                  <option value="">Select a project</option>
+                  {projects.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.id} — {projectName(p)}
+                    </option>
+                  ))}
+                </Select>
+              )}
+            </FormField>
+
+            {project && (
+              <>
+                <DescriptionList
+                  columns={3}
+                  items={[
+                    { term: "State", value: project.state },
+                    { term: "District", value: project.district },
+                    { term: "Current Address", value: currentAddress },
+                  ]}
+                />
+
+                {pendingForProject ? (
+                  <Alert status="info" title="A request for this project is already under examination">
+                    Submitted on {formatDate(pendingForProject.submittedAt)} for {pendingForProject.address}. A new request can be
+                    made once the Ministry has decided on it.
+                  </Alert>
+                ) : (
+                  <>
+                    <section aria-labelledby="new-location-heading" className="space-y-4">
+                      <SectionTitle as={2} headingId="new-location-heading" title="New Location" description="Stand at the new premises and use your current location, then check the address." />
+                      <div className="flex flex-wrap items-center gap-3">
+                        <Button type="button" appearance="outlined" onClick={useCurrentLocation} loading={capture.state === "locating"}>
+                          <Icon name="my_location" size={16} aria-hidden />
+                          {capture.state === "captured" ? "Capture Again" : "Use Current Location"}
+                        </Button>
+                        <span role="status" className="text-body-2 text-ink-muted">
+                          {capture.state === "locating" && "Finding your location…"}
+                          {capture.state === "captured" && (
+                            <span className="inline-flex items-center gap-1 text-ink">
+                              <Icon name="check_circle" size={16} aria-hidden className="text-[var(--sa-text-status-success-base)]" /> Location recorded. Complete the address below.
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                      {capture.state === "failed" && <Alert status="warning">{capture.message}</Alert>}
+
+                      <FormField
+                        label="New Address"
+                        id="new-location"
+                        required
+                        hint={`Building, street and locality, within ${project.district}, ${project.state}.`}
+                        error={errorFor("new-location")}
+                        characterCount={{ value: address, maxLength: MAX }}
+                      >
+                        {(c) => <Textarea {...c} rows={3} maxLength={MAX} value={address} onChange={(e) => setAddress(e.target.value)} />}
+                      </FormField>
+                    </section>
+
+                    <FormField
+                      label="Reason for the Change"
+                      id="reason"
+                      required
+                      error={errorFor("reason")}
+                      characterCount={{ value: reason, maxLength: MAX }}
+                    >
+                      {(c) => <Textarea {...c} rows={3} maxLength={MAX} value={reason} onChange={(e) => setReason(e.target.value)} />}
+                    </FormField>
+
+                    <FormField label="Supporting Document" id="support-doc" optional hint="For example a lease or ownership deed. PDF, JPG or PNG, up to 2 MB.">
+                      {(c) => (
+                        <div className="space-y-2">
+                          <input
+                            ref={fileInput}
+                            id={c.id}
+                            aria-describedby={c["aria-describedby"]}
+                            type="file"
+                            accept="application/pdf,image/jpeg,image/png"
+                            className="sr-only"
+                            onChange={(e) => {
+                              const f = e.target.files?.[0];
+                              if (f) setDoc({ name: f.name, size: f.size });
+                              e.target.value = "";
+                            }}
+                          />
+                          {doc ? (
+                            <FileList label="Supporting document" files={[{ id: "doc", name: doc.name, size: doc.size, state: "ready" }]} onRemove={() => setDoc(null)} />
+                          ) : (
+                            <Button type="button" appearance="outlined" size="sm" onClick={() => fileInput.current?.click()}>
+                              <Icon name="upload" size={16} aria-hidden /> Choose File
+                            </Button>
+                          )}
+                        </div>
+                      )}
+                    </FormField>
+
+                    <Button type="submit">Submit Request</Button>
+                  </>
+                )}
+              </>
             )}
-          </FormField>
-          <p className="mt-1 text-body-3 text-ink-hint">
-            {location.length} / {MAX} characters
-          </p>
-        </div>
+          </form>
+        </CardBody>
+      </Card>
 
-        <div className="space-y-2">
-          <Button type="button" appearance="outlined" onClick={capture} disabled={capturing}>
-            <Icon name="my_location" size={16} aria-hidden />
-            {capturing ? "Capturing…" : "Capture new-location coordinates (optional)"}
-          </Button>
-          {coords && (
-            <Alert status="success">
-              Coordinates captured: <span className="font-mono">{coords}</span>
-            </Alert>
+      <Card variant="outlined">
+        <CardBody className="space-y-3">
+          <SectionTitle title="Your Requests" count={requests.length} />
+          {requests.length === 0 ? (
+            <p className="text-body-2 text-ink-muted">You have not asked for a location change.</p>
+          ) : (
+            <ListGroup aria-label="Location change requests">
+              {requests.map((r) => {
+                const p = projects.find((x) => x.id === r.projectId);
+                return (
+                  <ListRow
+                    key={r.id}
+                    eyebrow={<span className="font-mono">{r.projectId}</span>}
+                    title={p ? projectName(p) : r.projectId}
+                    description={
+                      <>
+                        <span className="block">New address: {r.address}</span>
+                        <span className="block text-ink-muted">
+                          Submitted {formatDate(r.submittedAt)}
+                          {r.decidedAt ? ` · decided ${formatDate(r.decidedAt)}` : ""}
+                          {r.documentName ? ` · document: ${r.documentName}` : ""}
+                        </span>
+                      </>
+                    }
+                    trailing={
+                      <Badge status={r.status === "Approved" ? "success" : r.status === "Rejected" ? "danger" : "warning"} size="sm">
+                        {r.status === "Pending" ? "Under Examination" : r.status}
+                      </Badge>
+                    }
+                  />
+                );
+              })}
+            </ListGroup>
           )}
-        </div>
-
-        <div>
-          <FormField label="Reason for the change" id="reason" required>
-            {(control) => (
-              <Textarea
-                {...control}
-                rows={3}
-                maxLength={MAX}
-                value={reason}
-                placeholder="e.g. the rented building's lease has ended and the home has moved"
-                onChange={(e) => setReason(e.target.value)}
-              />
-            )}
-          </FormField>
-          <p className="mt-1 text-body-3 text-ink-hint">
-            {reason.length} / {MAX} characters
-          </p>
-        </div>
-
-        <Button type="submit" disabled={!project || !location.trim() || !reason.trim()}>
-          Submit request
-        </Button>
-      </form>
+        </CardBody>
+      </Card>
     </div>
   );
 }

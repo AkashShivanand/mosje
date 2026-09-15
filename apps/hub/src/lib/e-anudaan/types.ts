@@ -62,6 +62,12 @@ export type AppStatus =
   | "Submitted"
   | "UnderReview"
   | "QueryRaised"
+  /**
+   * The ASO has noted a deficiency and the file is with the SO, who alone may send it to the
+   * applicant. It had no state of its own: the file read "Under Examination", the SO's screen
+   * never showed it and still offered Forward (screen audit, 14 Sep 2026).
+   */
+  | "DeficiencyProposed"
   | "DeficiencyRaised"
   | "DeficiencyResponded"
   | "WithFinance"
@@ -112,13 +118,48 @@ export interface AuditEntry {
   remarks?: string;
 }
 
+/**
+ * One thing a deficiency asks the applicant to put right — a document to replace, or an answer
+ * to correct. The review call of 11 Sep 2026 (T43–75) settled that a deficiency is rarely one
+ * sentence: a single application can carry several, and the applicant resolves them item by
+ * item, so each carries the officer's own remark and its own correction state.
+ */
+export interface DeficiencyItem {
+  id: string;
+  /** "note" — a point the applicant answers in words, with no document or field to change. */
+  kind: "document" | "field" | "note";
+  /** `MockDoc.id` when `kind` is "document". */
+  docId?: string;
+  /** Form field name when `kind` is "field". */
+  fieldName?: string;
+  /** What the officer called it — a document title or a field label. */
+  label: string;
+  /** The officer's remark on this item. */
+  remark: string;
+  /** Set when the applicant has replaced the file or corrected the answer. */
+  correctedAt?: string;
+  /** The applicant's note on the correction. */
+  response?: string;
+  /** For a field item: the answer as first submitted, kept so the correction can be audited. */
+  originalValue?: string;
+}
+
 export interface Deficiency {
   id: string;
   raisedBy: RoleId;
   raisedAt: string;
+  /** The ASO's note. It stays inside the Ministry — the applicant is shown `message`. */
   detail: string;
+  /** What the SO sent to the applicant, and when. Unset while the deficiency is only noted. */
+  message?: string;
+  communicatedAt?: string;
+  communicatedBy?: RoleId;
+  /** Set when the SO sent the file back to the ASO instead of communicating it. */
+  withdrawnAt?: string;
   /** Fields the NGO may edit while responding. Empty = whole form reopened. */
   reopenedFields: string[];
+  /** The individual corrections asked for. Absent on deficiencies raised before items existed. */
+  items?: DeficiencyItem[];
   respondedAt?: string;
   response?: string;
 }
@@ -135,6 +176,18 @@ export interface Query {
 
 /** Per-document verdict an officer records on the review screen's Documents table. */
 export type DocReviewStatus = "Pending" | "Verified" | "Deficient" | "Not applicable";
+
+/**
+ * An earlier upload of a document slot. The department asked (T83–92) that a replaced file is
+ * never overwritten: every version stays on record, newest last.
+ */
+export interface DocVersion {
+  fileName: string;
+  sizeKb?: number;
+  uploadedAt?: string;
+  /** When this version stopped being the current one. */
+  replacedAt: string;
+}
 
 export interface MockDoc {
   id: string;
@@ -158,6 +211,12 @@ export interface MockDoc {
   reviewStatus: DocReviewStatus;
   /** The "Add remarks…" field beside each document. */
   officerRemarks?: string;
+  /**
+   * Who gave the verdict, and when. A later grade reading the verdicts read-only is told who
+   * examined each document, not only who certified the file.
+   */
+  reviewedBy?: RoleId;
+  reviewedAt?: string;
   /** A permanent document re-uploaded this year needs re-verification. */
   reUploadedThisYear?: boolean;
   /**
@@ -166,6 +225,8 @@ export interface MockDoc {
    * "AI: not valid" while the officer's own review is still Pending.
    */
   aiVerdict?: import("./doc-verification").DocVerdict;
+  /** Earlier uploads of this slot, oldest first. The current file is `fileName`. */
+  versions?: DocVersion[];
 }
 
 /**
@@ -196,7 +257,18 @@ export interface Institution {
   name: string;
   district: string;
   state: string;
-  nature: "Primary Residential School" | "Secondary Residential School" | "Primary Non-Residential School" | "Secondary Non-Residential School";
+  /**
+   * What the project is. The four school natures are SHRESHTA's; an AVYAY project is a home for
+   * senior citizens and a NAPDDR project a rehabilitation centre, and neither is a school.
+   */
+  nature:
+    | "Primary Residential School"
+    | "Secondary Residential School"
+    | "Primary Non-Residential School"
+    | "Secondary Non-Residential School"
+    | "Senior Citizens' Home"
+    | "Integrated Rehabilitation Centre for Addicts"
+    | "Garima Greh (Shelter Home for Transgender Persons)";
   type: "Boys" | "Girls" | "Co-Ed";
   level: "Primary" | "Secondary";
   building: "Owned" | "Rented";
@@ -239,8 +311,15 @@ export interface GrantApplication {
   schemeCode: string;
   ngoId: string;
   institutionId: string;
-  projectLabel: string; // e.g. "Hostel — North West Delhi · FY 2025-26"
+  projectLabel: string; // e.g. "Residential School — North West Delhi · FY 2025-26"
   financialYear: string;
+  /**
+   * New — the project's first grant (non-recurring set-up plus the first recurring release).
+   * Ongoing — a sanctioned project claiming its next recurring instalment.
+   */
+  caseType: CaseType;
+  /** Ongoing only: which recurring instalment this application claims. */
+  instalment?: 1 | 2 | 3;
   status: AppStatus;
   holder: Holder;
   scBeneficiaries: number;
@@ -296,8 +375,63 @@ export interface NotificationEntry {
   /** Which sessions should see it. */
   audience: RoleId[];
   applicationId?: string;
-  read: boolean;
+  /**
+   * The roles that have read it. One `read` flag was shared by the whole audience, so a notice
+   * addressed to the applicant and an officer was marked read for both when either opened it.
+   */
+  readBy: RoleId[];
 }
+
+export type CaseType = "New" | "Ongoing";
+
+/** A project's bank account, as the department holds it. History is kept, never overwritten. */
+export interface ProjectAccount {
+  id: string;
+  /** `Institution.id` — the Project ID. */
+  projectId: string;
+  bank: string;
+  branch: string;
+  /** Last four digits only. The full number never reaches the browser's storage. */
+  last4: string;
+  ifsc: string;
+  /** Whether the NGO has declared the account registered with the PFMS DBT module. */
+  pfmsRegistered: boolean;
+  activeFrom: string;
+  /** Set when a later account replaced this one. */
+  activeTo?: string;
+}
+
+export type ChangeRequestStatus = "Pending" | "Approved" | "Rejected";
+
+interface ChangeRequestBase {
+  id: string;
+  projectId: string;
+  submittedAt: string;
+  status: ChangeRequestStatus;
+  reason: string;
+  /** Name of the optional supporting document. */
+  documentName?: string;
+  decidedAt?: string;
+}
+
+export interface LocationChangeRequest extends ChangeRequestBase {
+  kind: "location";
+  address: string;
+  /** Recorded for the department; not shown to the applicant. */
+  latitude?: number;
+  longitude?: number;
+}
+
+export interface BankChangeRequest extends ChangeRequestBase {
+  kind: "bank";
+  bank: string;
+  branch: string;
+  last4: string;
+  ifsc: string;
+  pfmsRegistered: boolean;
+}
+
+export type ChangeRequest = LocationChangeRequest | BankChangeRequest;
 
 export interface EAnudaanState {
   /** Bumped when the persisted shape changes; a mismatch drops and reseeds. */
@@ -308,6 +442,11 @@ export interface EAnudaanState {
   applications: GrantApplication[];
   inspections: Inspection[];
   notifications: NotificationEntry[];
+  projectAccounts: ProjectAccount[];
+  changeRequests: ChangeRequest[];
+  /** The applicant's roster, keyed by Project ID. */
+  beneficiaries: import("./roster").Beneficiary[];
+  employees: import("./roster").Employee[];
 }
 
 /* ── helpers over the chain order ─────────────────────────────────────────── */

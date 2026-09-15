@@ -16,6 +16,8 @@ import {
   visibleDocuments,
   visibleSteps,
   visibleOptions,
+  fieldHelp,
+  RENEWAL_PROJECTS,
   isReadOnly,
   requiredMessage,
   validateStep,
@@ -84,16 +86,16 @@ test("a renewal IS asked, and for the project it is renewing", () => {
   ]);
 });
 
-test("a new project gets live's eleven documents, in live's order", () => {
+test("a new project in a rented building gets live's eleven documents, in live's order", () => {
   assert.deepEqual(
-    visibleDocuments(AVYAY_WIZARD, NEW).map((d, i) => `${i + 1}. ${d.title}`),
+    visibleDocuments(AVYAY_WIZARD, { ...NEW, fld_building_ownership: "Rented" }).map((d, i) => `${i + 1}. ${d.title}`),
     [
       "1. Registration Certificate",
       "2. PAN Card of the Organisation",
-      "3. Annual Report of NGO — previous FY",
-      "4. Annual Report of NGO — previous-to-previous FY",
-      "5. Audited Accounts of NGO — previous FY",
-      "6. Audited Accounts of NGO — previous-to-previous FY",
+      "3. Annual Report of NGO — previous financial year",
+      "4. Annual Report of NGO — previous-to-previous financial year",
+      "5. Audited Accounts of NGO — previous financial year",
+      "6. Audited Accounts of NGO — previous-to-previous financial year",
       "7. Bank Details of the Project",
       "8. Beneficiary List",
       "9. Staff List",
@@ -103,12 +105,12 @@ test("a new project gets live's eleven documents, in live's order", () => {
   );
 });
 
-test("a renewal gets nine, displayed from one", () => {
+test("a renewal in a rented building gets nine, displayed from one", () => {
   assert.deepEqual(
-    visibleDocuments(AVYAY_WIZARD, RENEWAL).map((d, i) => `${i + 1}. ${d.title}`),
+    visibleDocuments(AVYAY_WIZARD, { ...RENEWAL, fld_building_ownership: "Rented" }).map((d, i) => `${i + 1}. ${d.title}`),
     [
       "1. Registration Certificate",
-      "2. Annual Report of NGO — previous FY",
+      "2. Annual Report of NGO — previous financial year",
       "3. Bank Details of the Project",
       "4. Beneficiary List",
       "5. Staff List",
@@ -118,6 +120,36 @@ test("a renewal gets nine, displayed from one", () => {
       "9. Utilisation Certificate (GFR-12A)",
     ],
   );
+});
+
+test("an owned building is not asked for a rent agreement, on either branch", () => {
+  // Form-path QA, 13 Sep 2026: a new AVYAY project answered "Owned" on step 5 and was then made
+  // to upload a Rent Agreement as a mandatory document before it could continue.
+  for (const branch of [NEW, RENEWAL]) {
+    const owned = visibleDocuments(AVYAY_WIZARD, { ...branch, fld_building_ownership: "Owned" }).map((d) => d.title);
+    const rented = visibleDocuments(AVYAY_WIZARD, { ...branch, fld_building_ownership: "Rented" }).map((d) => d.title);
+    assert.ok(!owned.includes("Rent Agreement"));
+    assert.ok(rented.includes("Rent Agreement"));
+  }
+});
+
+test("the renewal picker lists only projects that can be renewed", () => {
+  // It listed one project, "awaiting sanction", under a notice that only PMU-verified projects
+  // can be selected.
+  const picker = AVYAY_WIZARD.steps[0]!.sections[0]!.fields.find((f) => f.name === "fld_ongoing_source_application")!;
+  assert.ok((picker.options ?? []).length > 0, "a renewal must have something to renew");
+  for (const o of picker.options ?? []) assert.doesNotMatch(o, /awaiting sanction/);
+  const ids = (picker.options ?? []).map((o) => o.split(" — ")[0]);
+  const eligible = RENEWAL_PROJECTS.AVYAY.filter((p) => p.stage === "pmu-verified").map((p) => p.id);
+  assert.deepEqual(ids, eligible);
+});
+
+test("each branch is shown only its own help", () => {
+  const all = AVYAY_WIZARD.steps.flatMap((st) => st.sections.flatMap((sec) => sec.fields));
+  const newHelp = all.filter((f) => fieldVisible(f, NEW)).map((f) => fieldHelp(f, NEW) ?? "").join(" ");
+  assert.doesNotMatch(newHelp, /on a renewal|being renewed|instalment you are claiming/i);
+  const renewalHelp = all.filter((f) => fieldVisible(f, RENEWAL)).map((f) => fieldHelp(f, RENEWAL) ?? "").join(" ");
+  assert.doesNotMatch(renewalHelp, /generated automatically|new application is for the financial year now running/i);
 });
 
 test("the 25-beneficiary norms are live's, head for head and in live's row order", () => {
@@ -249,7 +281,8 @@ test("a missing required field is told to the applicant as an instruction", () =
   const errors = validateStep(step1, RENEWAL);
 
   assert.equal(errors.fld_ongoing_source_application, "Select the existing project to renew.");
-  assert.equal(errors.fld_installment_no, "Select Installment.");
+  // The instalment is no longer chosen from a list (review call 11 Sep 2026), so it has no
+  // "Select …" instruction; it is filled in for the applicant.
   assert.ok(!Object.values(errors).some((m) => / is required\.$/.test(m)));
 });
 
