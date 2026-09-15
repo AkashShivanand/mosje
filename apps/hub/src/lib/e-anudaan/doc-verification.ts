@@ -35,6 +35,23 @@ export interface DocVerdict {
   confidence?: number;
 }
 
+/**
+ * One earlier upload of a document, kept when it is replaced (review call, T83–92: "a log of the
+ * file", as many versions as there are replacements). Newest last, like `MockDoc.versions`.
+ */
+export interface DocHistoryEntry {
+  fileName: string;
+  sizeKb: number;
+  /** "14 Sep 2026", as the row prints it. */
+  uploadedOn: string;
+  /** ISO time of the upload, when it is known. */
+  uploadedAt?: string;
+  /** ISO time it stopped being the current file. */
+  replacedAt: string;
+  /** What the automatic check said about it. */
+  verdict: VerdictState;
+}
+
 export interface UploadedDoc {
   fileName: string;
   /** Size in KB, as the live portal prints it. */
@@ -44,6 +61,12 @@ export interface UploadedDoc {
   /** The officer's own status, shown on the application detail screen. */
   officerStatus?: "Pending" | "Verified" | "Needs Correction";
   remarks?: string;
+  /** ISO time of the upload. `uploadedOn` is the printed date. */
+  uploadedAt?: string;
+  /** Earlier files for this document, oldest first. Replacing a file never loses it. */
+  history?: DocHistoryEntry[];
+  /** How many times the automatic check has been asked to run on this file. */
+  checks?: number;
 }
 
 export const VERDICT_LABEL: Record<VerdictState, string> = {
@@ -256,10 +279,12 @@ export function withYearCheck<T extends { verdict: DocVerdict }>(
  *   "12 documents are not valid. Replace them — or use Re-verify if you believe the check
  *    is wrong."
  *
- * The clone offers no Re-verify, deliberately: it let an applicant turn the automated check's
- * "not valid" into "Verified" on the same file, which is a verdict only an officer may overrule
- * (serious audit UX-07 / S08, 14 Sep 2026). The way past an invalid document is to replace it,
- * and the message says only that — it named a control the page does not have.
+ * The clone's Re-verify used to turn the automated check's "not valid" into "Verified" on the same
+ * file, which is a verdict only an officer may overrule (serious audit UX-07 / S08, 14 Sep 2026).
+ * The Document Centre brings the control back as "Check Again" (live parity) with that defect
+ * designed out: the check is a function of the file, so running it again on the same file gives
+ * the same verdict — only an outage ("unavailable") can clear on a second run. The way past an
+ * invalid document is still to replace it, and the message says only that.
  *
  * `unavailable` does NOT block. That is the whole point of the state: when the checking
  * service is down the portal accepts the upload and routes it to a human, so an applicant is

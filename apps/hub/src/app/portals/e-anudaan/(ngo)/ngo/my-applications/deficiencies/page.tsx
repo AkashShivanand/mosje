@@ -32,8 +32,7 @@ export default function DeficienciesPage() {
       state.applications
         .filter((a) => a.ngoId === ngo?.id)
         .flatMap((app) => app.deficiencies.filter((d) => d.respondedAt).map((d) => ({ app, d })))
-        .sort((a, b) => Date.parse(b.d.respondedAt!) - Date.parse(a.d.respondedAt!))
-        .slice(0, 5),
+        .sort((a, b) => Date.parse(b.d.respondedAt!) - Date.parse(a.d.respondedAt!)),
     [state, ngo],
   );
 
@@ -44,19 +43,38 @@ export default function DeficienciesPage() {
         meta="Corrections the Ministry has asked for on your applications. Open one to correct it."
       />
 
-      <PendingActions items={open} limit={null} title="Open Deficiencies" />
+      <PendingActions items={open} limit={null} title="Open Deficiencies" allItems />
 
       {submitted.length > 0 && (
         <Card variant="outlined">
           <CardBody className="space-y-3">
-            <SectionTitle title="Corrections Submitted" description="Your most recent responses, now with the Ministry." />
+            <SectionTitle title="Corrections Submitted" count={submitted.length} />
             <ListGroup aria-label="Corrections submitted">
               {submitted.map(({ app, d }) => (
                 <ListRow
                   key={d.id}
                   eyebrow={<span className="break-all font-mono">{app.institutionId} · {app.id}</span>}
                   title={app.projectLabel.split(" · ")[0]}
-                  description={`${d.items?.length ?? 1} item${(d.items?.length ?? 1) === 1 ? "" : "s"} corrected · submitted ${formatDate(d.respondedAt!)}`}
+                  description={
+                    <>
+                      {/* What was asked and what the applicant answered, item by item — live's
+                          "Your response · <date>" (parity inventory §4). */}
+                      {d.items?.length ? (
+                        <ol className="m-0 list-decimal space-y-0.5 pl-5">
+                          {d.items.map((it) => (
+                            <li key={it.id}>
+                              <span className="font-semibold text-ink">{it.label}:</span> {it.remark}
+                              {it.response ? <span className="block text-ink">Your response: {it.response}</span> : null}
+                            </li>
+                          ))}
+                        </ol>
+                      ) : (
+                        <span className="block">{d.message ?? d.detail}</span>
+                      )}
+                      {d.response && <span className="mt-1 block text-ink">Your note: {d.response}</span>}
+                      <span className="mt-1 block text-ink-muted">Submitted {formatDate(d.respondedAt!)}</span>
+                    </>
+                  }
                   trailing={
                     <span className="flex items-center gap-3">
                       <Badge status="info" size="sm">Under Examination</Badge>

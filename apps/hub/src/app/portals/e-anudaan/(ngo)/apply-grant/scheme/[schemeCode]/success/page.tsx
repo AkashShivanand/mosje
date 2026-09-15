@@ -17,6 +17,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { Button, ConfirmationScreen, EmptyState, Icon, useToast } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ngoApplications } from "@/lib/e-anudaan/selectors";
+import { applicationRefOf, instalmentLabel } from "@/lib/e-anudaan/instalments";
 
 const NEXT_STEPS = [
   {
@@ -61,10 +62,18 @@ export default function ApplySuccessPage() {
     return mine[0]?.id ?? null;
   }, [state, ngo, params.schemeCode, refParam]);
 
+  /**
+   * The application ID — the same across a year's 1st, 2nd and 3rd instalments (C7, T372–375) — and
+   * which instalment this submission claims.
+   */
+  const filed = reference ? state.applications.find((a) => a.id === reference) : undefined;
+  const applicationId = filed ? applicationRefOf(filed) : reference;
+  const claim = filed?.caseType === "Ongoing" && filed.instalment ? `${instalmentLabel(filed.instalment)} · FY ${filed.financialYear}` : null;
+
   const copy = () => {
-    if (!reference) return;
-    void navigator.clipboard?.writeText(reference);
-    toast("Reference number copied.", "success");
+    if (!applicationId) return;
+    void navigator.clipboard?.writeText(applicationId);
+    toast("Application ID copied.", "success");
   };
 
   const actions = (
@@ -100,21 +109,26 @@ export default function ApplySuccessPage() {
     <div className="mx-auto max-w-2xl">
       <ConfirmationScreen
         title="Application Submitted"
-        referenceLabel="Your reference number"
-        reference={reference}
+        referenceLabel="Application ID"
+        reference={applicationId ?? reference}
         intro={
           <>
             Your application has been submitted to the Ministry for review. You will be notified on
             this portal when it needs action from you, when an inspection is scheduled, and when a
             decision is made.
             <br />
-            Please save this Reference Number for future reference.{" "}
-            <Button appearance="text" size="sm" onClick={copy} aria-label="Copy reference number">
+            {filed?.caseType === "Ongoing" && (filed.instalment ?? 1) > 1
+              ? "This instalment is recorded on the Application ID of the year's 1st instalment."
+              : filed?.caseType === "Ongoing"
+                ? "Your 2nd and 3rd instalments of this year will be claimed on this Application ID."
+                : "Please save this Application ID for future reference."}{" "}
+            <Button appearance="text" size="sm" onClick={copy} aria-label="Copy Application ID">
               <Icon name="content_copy" size={16} aria-hidden />
             </Button>
           </>
         }
         facts={[
+          ...(claim ? [{ label: "Instalment claimed", value: claim }] : []),
           { label: "Routed to", value: "Ministry — Programme Division" },
           { label: "Estimated timeline", value: "30 days (standard process)" },
         ]}

@@ -101,4 +101,41 @@
       font-size: var(--sa-type-body-1-size);
     }
   }
+
+  /* ── Flush — the form language, for an accordion inside a card ──────────── */
+
+  .sa-accordion--flush {
+    gap: 0;
+    border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  .sa-accordion--flush .sa-accordion-item,
+  .sa-accordion--flush .sa-accordion-item:hover {
+    background-color: transparent;
+    border: 0;
+    border-block-end: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .sa-accordion--flush .sa-accordion-item__trigger {
+    min-block-size: var(--sa-target-min);
+    padding: var(--sa-padding-12) var(--sa-padding-4);
+    background-color: transparent;
+  }
+
+  .sa-accordion--flush .sa-accordion-item__trigger:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .sa-accordion--flush .sa-accordion-item__title {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .sa-accordion--flush .sa-accordion-item__content {
+    padding: var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-16);
+    background-color: transparent;
+    border-top: 0;
+  }
 }

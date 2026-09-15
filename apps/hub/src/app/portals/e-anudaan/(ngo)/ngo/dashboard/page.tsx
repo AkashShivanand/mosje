@@ -22,7 +22,8 @@ import {
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { formatDate, formatGrant, ngoApplications, ngoStatusLabel, statusTone } from "@/lib/e-anudaan/selectors";
 import type { AppStatus } from "@/lib/e-anudaan/types";
-import { openDeficiencies } from "@/lib/e-anudaan/applicant";
+import { openDeficiencies, projectTitleFor } from "@/lib/e-anudaan/applicant";
+import { instalmentLabel, upcomingInstalments } from "@/lib/e-anudaan/instalments";
 import { ngoActionApplications, notificationItems } from "@/lib/e-anudaan/notifications";
 import { usePreviousVisit } from "@/lib/e-anudaan/last-visit";
 import { PendingActions } from "@/components/e-anudaan/pending-actions";
@@ -155,6 +156,8 @@ export default function NgoDashboardPage() {
 
   /** Every correction the Ministry is waiting on — drives the Pending Actions panel. */
   const pending = React.useMemo(() => (ngo ? openDeficiencies(state, ngo.id) : []), [state, ngo]);
+  // Each project's next instalment, once the one before it is sanctioned (review call, T669–671).
+  const instalments = React.useMemo(() => (ngo ? upcomingInstalments(state, ngo.id) : []), [state, ngo]);
   const pendingItems = pending.reduce((n, d) => n + d.items.length - d.corrected, 0);
 
   const totalRequested = submitted.reduce((a, x) => a + x.total, 0);
@@ -226,6 +229,34 @@ export default function NgoDashboardPage() {
       {/* Directly under the header, because it is the only part of this page that asks the
           applicant to do something. Several applications, several items each (T43–54). */}
       <PendingActions items={pending} />
+
+      {instalments.length > 0 && (
+        <Card variant="outlined" aria-labelledby="instalments-title">
+          <CardBody className="gap-4 p-6">
+            <SectionTitle headingId="instalments-title" title="Next Instalments" />
+            <ListGroup bordered size="sm" aria-labelledby="instalments-title">
+              {instalments.map((n) => (
+                <ListRow
+                  key={n.plan.projectId}
+                  title={n.plan.lastSanctioned ? projectTitleFor(state, n.plan.lastSanctioned) : n.plan.projectId}
+                  description={
+                    n.href
+                      ? `Project ${n.plan.projectId} · FY ${n.plan.financialYear} · ${formatGrant(n.plan.amount ?? 0)}`
+                      : `Project ${n.plan.projectId} · ${n.title}.`
+                  }
+                  trailing={
+                    n.href ? (
+                      <Button size="sm" nowrap onClick={() => router.push(n.href!)}>
+                        Claim {instalmentLabel(n.plan.instalment ?? 1)}
+                      </Button>
+                    ) : undefined
+                  }
+                />
+              ))}
+            </ListGroup>
+          </CardBody>
+        </Card>
+      )}
 
       {/* An applicant signs in a few times a year and was not here when these arrived; the bell
           only reaches a reader already on the page. Shown only when something did change. */}

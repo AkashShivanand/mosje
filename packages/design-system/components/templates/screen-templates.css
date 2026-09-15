@@ -108,6 +108,14 @@
      showing a scheme name — a measurement of the controls, not a spacing rung,
      and the ladder has no 200. Widths are advisory under
      documentation-ds-linkage.md for exactly this reason. */
+  /* The register's summary tiles, between the header and the filters. Four across where there is
+     room, two on a tablet, one column on a phone. */
+  .sa-worklist__summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: var(--sa-padding-16);
+  }
+
   .sa-worklist__toolbar {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

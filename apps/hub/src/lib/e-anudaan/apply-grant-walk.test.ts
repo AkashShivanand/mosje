@@ -31,6 +31,7 @@ import {
 import { districtsOf } from "./geography.ts";
 import { darpanSeed, declarationStamp } from "./prefill.ts";
 import { buildSeed, SEED_SCHEMES } from "./store/seed.ts";
+import { renewableProjects, renewalOption } from "./instalments.ts";
 import { checkApplication, documentsOf } from "./submission.ts";
 import { answerField, fileApplication } from "./submit-application.ts";
 import type { EAnudaanState } from "./types.ts";
@@ -43,7 +44,8 @@ const clock = { now: "2026-09-14T10:00:00.000Z", id: (p: string) => `${p}-test-$
 /** A valid answer to one question, in the shape its rule and kind expect. */
 function answerFor(f: FieldDef, values: Record<string, string>): string {
   if (f.districtsOf) return districtsOf(values[f.districtsOf])[0] ?? "";
-  const options = visibleOptions(f, values);
+  // A renewal's project comes from the NGO's own sanctioned record.
+  const options = visibleOptions(f, values, { [f.name]: f.optionsFrom ? renewableProjects(STATE, STATE.ngos[0]!.id, walking).map(renewalOption) : [] });
   if (options.length) return options[0] ?? "";
   switch (f.rule) {
     case "ifsc": return "SBIN0001234";
@@ -51,6 +53,8 @@ function answerFor(f: FieldDef, values: Record<string, string>): string {
     case "pin": return "110001";
     case "nameAndPhone": return "Anita Kulkarni, 9876543210";
     case "lettersOnly": return "Anita Kulkarni";
+    case "accountNumber": return "30112233445566";
+    case "notFuture": return "2012-06-01";
     case "afterRegistration": return "2035-12-31";
     case "afterPeriodFrom": return "2026-03-31";
     default: break;
@@ -78,7 +82,9 @@ function branchesOf(wizard: WizardDef): Record<string, string>[] {
 }
 
 /** Walk the form: every visible step, every visible question, answered through the wizard's own setter. */
+let walking = "";
 function walk(wizard: WizardDef, branch: Record<string, string>) {
+  walking = wizard.code;
   let values = applyAllAutoFields(wizard, { ...darpanSeed(STATE.ngos[0]), ...declarationStamp() });
   for (let i = 0; i < visibleSteps(wizard, values).length; i++) {
     const step = visibleSteps(wizard, values)[i]!;

@@ -5,7 +5,7 @@
  *
  * DS Audit (form-wizard visual language, docs/design-system/form-wizard-visual-language.md):
  * Wizard ✅ (now draws the step panel) · Stepper ✅ · FormSection ✅ (flush sub-section) · FormCard ✅ ·
- * DocumentTiles / DocumentTile ➕ added to the DS · FormPanel ➕ added (inside Wizard) · FormField ✅ ·
+ * DocumentChecklist / DocumentRow ➕ added to the DS (the Document Centre) · FormPanel ➕ added (inside Wizard) · FormField ✅ ·
  * Input ✅ · Select ✅ · Textarea ✅ · DatePicker ✅ · RadioGroup ✅ · Checkbox ✅ · Alert ✅ · Badge ✅ ·
  * Button ✅ · ReviewSection ✅ · ReviewItem ✅ · DeclarationCheckbox ✅ · Icon ✅ · PageHeader ✅ (compact).
  *
@@ -25,8 +25,7 @@ import {
   Checkbox,
   DatePicker,
   DeclarationCheckbox,
-  DocumentTile,
-  DocumentTiles,
+  DescriptionList,
   FieldHint,
   FieldMessage,
   FormCard,
@@ -34,6 +33,7 @@ import {
   FormSection,
   Icon,
   Input,
+  Link,
   Modal,
   PageHeader,
   RadioGroup,
@@ -50,30 +50,38 @@ import { formatDate, formatTime, rupees } from "@/lib/e-anudaan/format";
 import { schemeLabel } from "@/lib/e-anudaan/selectors";
 import { darpanSeed as seedFromDarpan, declarationStamp } from "@/lib/e-anudaan/prefill";
 import { checkApplication, documentsOf, type ApplicationCheck } from "@/lib/e-anudaan/submission";
-import { answerField } from "@/lib/e-anudaan/submit-application";
+import { answerField, darpanIdentity } from "@/lib/e-anudaan/submit-application";
+import { DERIVED_CLAIM_SCHEMES, renewableProjects, renewalOption } from "@/lib/e-anudaan/instalments";
+import type { EAnudaanState } from "@/lib/e-anudaan/types";
 import { activeKey, draftKey, draftStep, hasAnswers, needsDraftWrite, parseDraft, stepRoute, type SavedDraft } from "@/lib/e-anudaan/drafts";
 import {
   DECLARATION_TEXT,
+  RENEWAL_PICKER,
+  SMILE_CASE_EXISTING,
   applyAllAutoFields,
   errorSummary,
   fieldLabel,
   shownHelp,
   fieldVisible,
+  isSummarySection,
   validateStep,
+  visibleSections,
   visibleDocuments,
   visibleSteps,
   visibleOptions,
   isReadOnly,
   wizardFor,
   type FieldDef,
+  type SectionDef,
   type StepDef,
   type WizardDef,
 } from "@/lib/e-anudaan/form-schema";
-import { uploadGate, uploadProgress, withYearCheck, type UploadedDoc } from "@/lib/e-anudaan/doc-verification";
+import { withYearCheck, type UploadedDoc } from "@/lib/e-anudaan/doc-verification";
 import { DEMO_FILL_EVENT, type DemoFillDetail } from "@/lib/e-anudaan/demo-scenarios";
 import { CostNormsPanel } from "./cost-norms-panel";
 import { ChooseSchemeFirst } from "./choose-scheme-first";
-import { DocumentsChecklist } from "./documents-checklist";
+import { DocumentsChecklist, type DocumentsChecklistHandle } from "./documents-checklist";
+import { ReviewDocuments } from "./document-centre-parts";
 
 
 /**
@@ -145,6 +153,16 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
     // forward, because the declaration is signed when it is submitted, not when it was begun.
     const carried = openedDraft ? {} : (readDraft().values ?? {});
     const seed: Record<string, string> = { ...darpanSeed(), ...carried, ...declarationStamp() };
+    // "Claim the 2nd instalment" from the dashboard arrives as `?project=<ID>`: the form opens as
+    // that project's renewal. Decided here, as the form is created — only on a form nobody has
+    // started, and never over a draft the applicant has not yet chosen to resume or discard.
+    const option = !openedDraft && !seed.case_type ? projectOption(def, state, ngo?.id, searchParams.get("project")) : undefined;
+    if (def && option) {
+      const stepOne = visibleSteps(def, seed)[0]!;
+      const renewalAnswer = RENEWAL_CASE_ANSWER[def.code];
+      const renewal = renewalAnswer ? answerField(state, def, stepOne, seed, "case_type", renewalAnswer) : seed;
+      return answerField(state, def, stepOne, renewal, RENEWAL_PICKER[def.code], option);
+    }
     // Derive the totals now, not on first keystroke — a restored draft has the inputs but not
     // the read-only fields computed from them.
     return def ? applyAllAutoFields(def, seed) : seed;
@@ -199,6 +217,8 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
   /** The draft exactly as this tab last wrote it, so its own writes are not mistaken for another tab's. */
   const lastWritten = React.useRef<string | null>(null);
   const errorRef = React.useRef<HTMLDivElement>(null);
+  /** The Upload Documents step, asked whether it may be left (the Document Centre's gate). */
+  const docStep = React.useRef<DocumentsChecklistHandle>(null);
   const submitErrorRef = React.useRef<HTMLDivElement>(null);
 
   /**
@@ -214,10 +234,26 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
     const onFill = (e: Event) => {
       const detail = (e as CustomEvent<DemoFillDetail>).detail;
       if (!def || detail?.scheme !== def.code) return;
-      setValues(detail.values);
+      // DARPAN's identity and the declaration stamp are the portal's, never the demo's (C11).
+      const filled = applyAllAutoFields(def, { ...darpanSeed(), ...detail.values, ...darpanIdentity(darpanSeed()), ...declarationStamp() });
+      setValues(filled);
       setDocs(detail.docs);
       setErrors({});
       setDeclared(false);
+      // Saved NOW, not after the autosave pause. The dock moves to the step where the scenario
+      // shows, which is usually another route and a new mount that reads the draft — before this,
+      // "Complete & valid" pressed on a form step landed on Upload Documents with every answer gone.
+      try {
+        const raw = JSON.stringify({ values: filled, docs: detail.docs, savedAt: new Date().toISOString(), step: 0, registerId: registerId.current });
+        window.localStorage.setItem(key, raw);
+        lastWritten.current = raw;
+        window.sessionStorage.setItem(activeKey(def.code), "1");
+        opened.current = JSON.stringify({ values: filled, docs: detail.docs });
+        setDraftChoice("made");
+        setSave({ kind: "saved", at: new Date() });
+      } catch {
+        setSave({ kind: "error" });
+      }
     };
     window.addEventListener(DEMO_FILL_EVENT, onFill);
     return () => window.removeEventListener(DEMO_FILL_EVENT, onFill);
@@ -279,7 +315,7 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
   // canonical code so every later step, and the success page, reads one scheme code. A `?step=N`
   // that names the upload or review step is sent to that step's own route.
   const canonical = def && def.code !== schemeCode.toUpperCase() ? def.code : null;
-  const misplaced = phase === "form" && def && steps[activeIndex] && steps[activeIndex]!.kind !== undefined && steps[activeIndex]!.kind !== "form";
+  const misplaced = phase === "form" && def && (steps[activeIndex]?.kind === "documents" || steps[activeIndex]?.kind === "review");
   React.useEffect(() => {
     if (canonical) {
       const suffix = phase === "documents" ? "step-2" : phase === "review" ? "review" : "step-1";
@@ -290,6 +326,13 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
   }, [canonical, misplaced, phase, router, def, values, activeIndex]);
 
   const roomForLabels = useRoomForStageNames(stepperBox, steps.map((st) => st.title));
+
+  /**
+   * The applicant's own projects with an instalment open to claim — the renewal picker's options,
+   * read from the sanctioned record rather than listed in the schema (W1, C2).
+   */
+  const dynamic = def ? { [RENEWAL_PICKER[def.code]]: renewalOptionsFor(def, state, ngo?.id) } : {};
+
   if (!def) return <ChooseSchemeFirst />;
 
   const current = steps[activeIndex]!;
@@ -462,18 +505,38 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
   //
   // The review step is gated on the declaration: "Submit Application" looked ready to press
   // before it was ticked, and answered only with a toast (form-path QA, 13 Sep 2026).
+  /**
+   * What this claim is, once a renewal's project is chosen — kept in view on every step, because a
+   * 2nd instalment is claimed on the application ID its 1st instalment created (C7).
+   */
+  const claimLine = values.claim_stage && values.fld_installment_no
+    ? [
+        values.fld_application_ref ? `Application ID ${values.fld_application_ref}` : null,
+        `${values.fld_installment_no} of FY ${values.fld_financial_year}`,
+        values.fld_project_id ? `Project ${values.fld_project_id}` : null,
+      ]
+        .filter(Boolean)
+        .join(" · ")
+    : null;
+
   const checklist = visibleDocuments(def, values);
-  const docProgress = uploadProgress(checklist, docs);
-  const documentsLine = `${def.documentsNote} · ${
-    docProgress.optionalTotal > 0
-      ? `${docProgress.mandatoryTotal} mandatory, ${docProgress.optionalTotal} optional`
-      : `${docProgress.mandatoryTotal} mandatory`
-  }.`;
-  const gate = isDocs
-    ? uploadGate(checklist, withYearCheck(checklist, docs, values.fld_financial_year))
-    : isReview && !declared
-      ? { blocked: true, reason: "Accept the declaration above to submit." }
-      : { blocked: false, reason: null };
+  // The upload step keeps Continue enabled: pressed with a document that needs attention, the
+  // step raises its own ErrorSummary and filters to what needs doing (Document Centre §3.5).
+  // Submit stays the hard gate, through `checkApplication`.
+  const gate = isReview && !declared
+    ? { blocked: true, reason: "Accept the declaration above to submit." }
+    : { blocked: false, reason: null };
+  /** Continue on the upload step: the documents first, then every earlier step, then Review. */
+  const docsNext = () => {
+    if (docStep.current && !docStep.current.tryContinue()) return;
+    const check = checkApplication(def, values, docs, activeIndex);
+    if (!check.ok) {
+      showIncomplete(check);
+      return;
+    }
+    setErrors({});
+    navigate(Math.min(activeIndex + 1, total - 1));
+  };
 
   return (
     // Full width, as portal surfaces are (CLAUDE.md: portals are fluid). Capped at 896px, an
@@ -484,7 +547,14 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
       <PageHeader
         size="compact"
         title={def.title}
-        meta={`Please provide all necessary information below and complete each section to register for ${schemeLabel(def.code)}.${!isDocs && !isReview ? " Fields marked * are mandatory." : ""}`}
+        meta={
+          <>
+            {`Please provide all necessary information below and complete each section to register for ${schemeLabel(def.code)}.${!isDocs && !isReview ? " Fields marked * are mandatory." : ""}`}
+            {claimLine && (
+              <span className="mt-1 block font-semibold text-ink">{claimLine}</span>
+            )}
+          </>
+        }
         actions={<SaveIndicator status={save} onRetry={() => writeDraft()} />}
       />
 
@@ -497,19 +567,15 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
           isReview
             ? "Please verify all details before final submission."
             : isDocs
-              ? documentsLine
-              : stepLead(current)
+              ? undefined
+              : current.kind === "confirm"
+                ? "Confirm the sections marked for this instalment. The rest is carried forward from the sanctioned application."
+                : stepLead(current)
         }
-        headerActions={
-          isDocs ? (
-            <Badge status={docProgress.mandatoryDone >= docProgress.mandatoryTotal ? "success" : "neutral"}>
-              {docProgress.done} of {docProgress.total} uploaded
-            </Badge>
-          ) : undefined
-        }
+        headerActions={undefined}
         onCancel={() => router.push("/portals/e-anudaan/apply-grant")}
         onBack={() => goto(Math.max(activeIndex - 1, 0))}
-        onNext={next}
+        onNext={isDocs ? docsNext : next}
         onSubmit={submit}
         // No arrow in the words: the button draws its own chevron, and "Next → >" had two.
         // Saving is automatic; the button names both things moving on does.
@@ -573,14 +639,17 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
         )}
         {isDocs ? (
           <DocumentsChecklist
+            ref={docStep}
+            schemeCode={def.code}
+            documentsNote={def.documentsNote}
             documents={checklist}
             uploaded={docs}
-            applicationFy={values.fld_financial_year}
+            values={values}
             onChange={setDocs}
           />
         ) : isReview ? (
           <>
-            <ReviewStep def={def} values={values} docs={docs} declared={declared} onDeclare={setDeclared} onEdit={goto} />
+            <ReviewStep def={def} values={values} docs={docs} onDocsChange={setDocs} declared={declared} onDeclare={setDeclared} onEdit={goto} />
             {/* Beside the button that was pressed, and focused, so it is seen where the applicant is
                 looking — at the foot of a review several screens long. */}
             {submitError && (
@@ -596,8 +665,10 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
               </div>
             )}
           </>
+        ) : current.kind === "confirm" ? (
+          <ConfirmStep def={def} step={current} values={values} errors={errors} onChange={set} dynamic={dynamic} />
         ) : (
-          <FormStep def={def} step={current} values={values} errors={errors} onChange={set} />
+          <FormStep def={def} step={current} values={values} errors={errors} onChange={set} dynamic={dynamic} />
         )}
       </Wizard>
       </div>
@@ -627,6 +698,24 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
 }
 
 const base = (code: string) => `/portals/e-anudaan/apply-grant/scheme/${code}`;
+
+/** The Case Type answer that opens a scheme's renewal branch. SHRESHTA has no Case Type: choosing the institution is the renewal. */
+const RENEWAL_CASE_ANSWER: Partial<Record<string, string>> = {
+  AVYAY: "Ongoing / Renewal of an existing project",
+  NAPDDR: "Ongoing / Renewal of an existing project",
+  SMILE: SMILE_CASE_EXISTING,
+};
+
+/** The renewal picker's options for a scheme whose claims are derived from the sanction record. */
+function renewalOptionsFor(def: WizardDef | undefined, state: EAnudaanState, ngoId: string | undefined): string[] {
+  return def && ngoId && DERIVED_CLAIM_SCHEMES.has(def.code) ? renewableProjects(state, ngoId, def.code).map(renewalOption) : [];
+}
+
+/** The picker option for `?project=<ID>`, when that project has an instalment open. */
+function projectOption(def: WizardDef | undefined, state: EAnudaanState, ngoId: string | undefined, projectId: string | null): string | undefined {
+  if (!projectId) return undefined;
+  return renewalOptionsFor(def, state, ngoId).find((o) => o.split(" — ")[0] === projectId);
+}
 
 /**
  * Whether every stage of the stepper can show its name without breaking a word.
@@ -659,6 +748,10 @@ function useRoomForStageNames(box: React.RefObject<HTMLDivElement | null>, title
     const stages = Math.max(key.split("|").length, 1);
     // The stepper sits on the page ground with no card round it; only the gutter between columns
     // comes off each column's width.
+    // Every word of every stage name must fit its column whole. From 768px the NGO rail leaves an
+    // eight-stage form 52px a stage (72px at 1024), and a name broken mid-word ("Applica / tion") reads
+    // worse than the compact bar — so the bar stays until the column can hold the words. Showing names
+    // at tablet widths needs the rail collapsed there (a shell decision), not a narrower label.
     const measure = () => setRoom(el.getBoundingClientRect().width / stages - 12 >= widest);
     measure();
     const ro = new ResizeObserver(measure);
@@ -699,61 +792,225 @@ function SaveIndicator({ status, onRetry }: { status: SaveStatus; onRetry: () =>
 
 /* ── The ordinary field steps ─────────────────────────────────────────────── */
 
+type DynamicOptions = Readonly<Record<string, readonly string[]>>;
+
 function FormStep({
   def,
   step,
   values,
   errors,
   onChange,
+  dynamic,
 }: {
   def: WizardDef;
   step: StepDef;
   values: Record<string, string>;
   errors: Record<string, string>;
   onChange: (name: string, value: string) => void;
+  dynamic: DynamicOptions;
 }) {
+  // A section with nothing to ask on this branch is not drawn — a renewal's Grant Sought, whose
+  // figures are the sanctioned ones under Grant for This Instalment.
+  const sections = visibleSections(step, values);
   // A step with one section already carries that section's name in the panel's head band, so
   // the sub-section drops its own label and lead rather than repeating them.
-  const solo = step.sections.length === 1;
+  const solo = sections.length === 1;
   return (
     <>
-      {step.sections.map((section) => (
-        <FormSection
-          key={section.title}
-          title={solo && section.title === step.title ? undefined : section.title}
-          description={solo ? undefined : section.lead}
-          columns={3}
-        >
-          {def.costNorms && section.title === "Grant Sought" && (
-            <div className="ds-form-span-full">
-              <CostNormsPanel
-                natureOfProject={values.fld_nature_of_project}
-                agencyType={values.fld_agency_type}
-                projectState={values.fld_project_state}
-                cityCategory={values.fld_city_category}
-                buildingOwnership={values.fld_building_ownership}
-                recurringSought={values.fld_grant_recurring}
-                nonRecurringSought={values.fld_grant_non_recurring}
-              />
-            </div>
-          )}
-          {section.fields
-            .filter((f) => fieldVisible(f, values))
-            .map((f) => (
-              <Field
-                key={f.name}
-                field={f}
-                values={values}
-                value={values[f.name] ?? ""}
-                error={errors[f.name]}
-                parentValue={f.districtsOf ? values[f.districtsOf] : undefined}
-                onChange={(v) => onChange(f.name, v)}
-              />
-            ))}
-        </FormSection>
-      ))}
+      {sections.map((section) =>
+        isSummarySection(section, values) ? (
+          <SummarySection key={section.title} section={section} values={values} errors={errors} onChange={onChange} dynamic={dynamic} />
+        ) : (
+          <FormSection
+            key={section.title}
+            title={solo && section.title === step.title ? undefined : section.title}
+            description={solo ? undefined : section.lead}
+            columns={section.columns ?? 3}
+          >
+            {def.costNorms && section.title === "Grant Sought" && (
+              <div className="ds-form-span-full">
+                <CostNormsPanel
+                  natureOfProject={values.fld_nature_of_project}
+                  agencyType={values.fld_agency_type}
+                  projectState={values.fld_project_state}
+                  cityCategory={values.fld_city_category}
+                  buildingOwnership={values.fld_building_ownership}
+                  recurringSought={values.fld_grant_recurring}
+                  nonRecurringSought={values.fld_grant_non_recurring}
+                />
+              </div>
+            )}
+            <SectionFields section={section} values={values} errors={errors} onChange={onChange} dynamic={dynamic} />
+          </FormSection>
+        ),
+      )}
     </>
   );
+}
+
+function SectionFields({
+  section,
+  values,
+  errors,
+  onChange,
+  dynamic,
+}: {
+  section: SectionDef;
+  values: Record<string, string>;
+  errors: Record<string, string>;
+  onChange: (name: string, value: string) => void;
+  dynamic: DynamicOptions;
+}) {
+  return (
+    <>
+      {section.fields
+        .filter((f) => fieldVisible(f, values))
+        .map((f) => (
+          <Field
+            key={f.name}
+            field={f}
+            values={values}
+            value={values[f.name] ?? ""}
+            error={errors[f.name]}
+            parentValue={f.districtsOf ? values[f.districtsOf] : undefined}
+            onChange={(v) => onChange(f.name, v)}
+            dynamic={dynamic}
+          />
+        ))}
+    </>
+  );
+}
+
+/**
+ * A record the portal already holds, drawn once and compactly rather than as a row of locked
+ * boxes: a renewal's bank account — bank, branch, the number masked and shown once, IFSC, and PFMS
+ * registration beside it (review call 11 Sep 2026, T549–559, T635–636). It cannot be changed
+ * here; the change is a request under Project Bank Accounts (T545–576).
+ */
+function SummarySection({
+  section,
+  values,
+  errors,
+  onChange,
+  dynamic,
+}: {
+  section: SectionDef;
+  values: Record<string, string>;
+  errors: Record<string, string>;
+  onChange: (name: string, value: string) => void;
+  dynamic: DynamicOptions;
+}) {
+  const shown = section.fields.filter((f) => fieldVisible(f, values));
+  const fixed = shown.filter((f) => isReadOnly(f, values) || f.auto);
+  const open = shown.filter((f) => !(isReadOnly(f, values) || f.auto));
+  return (
+    <FormSection title={section.title} columns={3}>
+      <div className="ds-form-span-full space-y-2">
+        <DescriptionList
+          columns={3}
+          size="sm"
+          items={fixed.map((f) => ({ term: fieldLabel(f, values), value: reviewValue(f, values[f.name] ?? "") }))}
+        />
+        <p className="text-body-3 text-ink-muted">
+          To change this account, raise a request under{" "}
+          <Link href="/portals/e-anudaan/ngo/bank-accounts">Project Bank Accounts</Link>. The change takes effect once the Ministry approves it.
+        </p>
+      </div>
+      {open.length > 0 && <SectionFields section={{ ...section, fields: open }} values={values} errors={errors} onChange={onChange} dynamic={dynamic} />}
+    </FormSection>
+  );
+}
+
+/**
+ * A 2nd or 3rd instalment's one step for everything already on record (C39, T667–675).
+ *
+ * The same fields the full form asks, so nothing is lost and validation is unchanged — but only
+ * the sections that must be re-confirmed for this instalment are open: the beneficiaries, the
+ * instalment's amount and the declaration. The rest arrive filled in from the sanctioned
+ * application and stay closed to a one-line summary; Edit opens one where something has changed.
+ * A section holding an error opens itself, so a problem is never hidden in a closed row.
+ */
+function ConfirmStep({
+  def,
+  step,
+  values,
+  errors,
+  onChange,
+  dynamic,
+}: {
+  def: WizardDef;
+  step: StepDef;
+  values: Record<string, string>;
+  errors: Record<string, string>;
+  onChange: (name: string, value: string) => void;
+  dynamic: DynamicOptions;
+}) {
+  const [editing, setEditing] = React.useState<ReadonlySet<string>>(new Set());
+  const sections = visibleSections(step, values);
+  const toggle = (title: string) =>
+    setEditing((cur) => {
+      const next = new Set(cur);
+      if (next.has(title)) next.delete(title);
+      else next.add(title);
+      return next;
+    });
+  const hasError = (section: SectionDef) => section.fields.some((f) => errors[f.name]);
+
+  const reconfirm = sections.filter((x) => x.reconfirm);
+  const carried = sections.filter((x) => !x.reconfirm);
+
+  return (
+    <>
+      <FormStep def={def} step={{ ...step, sections: reconfirm }} values={values} errors={errors} onChange={onChange} dynamic={dynamic} />
+      {carried.map((section) => {
+        if (isSummarySection(section, values)) {
+          return <SummarySection key={section.title} section={section} values={values} errors={errors} onChange={onChange} dynamic={dynamic} />;
+        }
+        const open = editing.has(section.title) || hasError(section);
+        return (
+          <FormSection
+            key={section.title}
+            title={section.title}
+            columns={section.columns ?? 3}
+            actions={
+              hasError(section) ? undefined : (
+                <Button appearance="text" size="sm" onClick={() => toggle(section.title)} aria-expanded={open} aria-label={`${open ? "Close" : "Edit"} ${section.title}`}>
+                  <Icon name={open ? "expand_less" : "edit"} size={16} aria-hidden /> {open ? "Done" : "Edit"}
+                </Button>
+              )
+            }
+          >
+            {open ? (
+              <SectionFields section={section} values={values} errors={errors} onChange={onChange} dynamic={dynamic} />
+            ) : (
+              <p className="ds-form-span-full text-body-2 text-ink-muted">{sectionSummary(section, values)}</p>
+            )}
+          </FormSection>
+        );
+      })}
+    </>
+  );
+}
+
+/**
+ * A closed section's one line: its first three answers, each readable on its own — a name or a
+ * choice as it stands, a number or a Yes/No with its label ("Rooms 12", "Kitchen facilities
+ * available: Yes"), a long answer cut short. "Owned · 420 · 12" said nothing a clerk could check.
+ */
+function sectionSummary(section: SectionDef, values: Record<string, string>): string {
+  const short = (label: string) => label.replace(/\s*\(.*?\)\s*/g, " ").replace(/^Number of /i, "").trim();
+  const parts = section.fields
+    .filter((f) => fieldVisible(f, values) && (values[f.name] ?? "").trim())
+    .slice(0, 3)
+    .map((f) => {
+      const raw = values[f.name] ?? "";
+      const label = short(fieldLabel(f, values));
+      if (f.kind === "number") return `${label} ${reviewValue(f, raw)}`;
+      if (f.kind === "radio" || f.kind === "checkbox") return `${label}: ${reviewValue(f, raw)}`;
+      if (f.kind === "textarea") return raw.length > 70 ? `${raw.slice(0, 67).trimEnd()}…` : raw;
+      return reviewValue(f, raw);
+    });
+  return parts.length ? parts.join(" · ") : "Nothing recorded.";
 }
 
 /** The one line under a step's title: its only section's lead, when it has one. */
@@ -768,6 +1025,7 @@ function Field({
   error,
   parentValue,
   onChange,
+  dynamic,
 }: {
   field: FieldDef;
   /** The whole answer set — some options and some read-only states depend on another field. */
@@ -776,12 +1034,13 @@ function Field({
   error?: string;
   parentValue?: string;
   onChange: (v: string) => void;
+  dynamic?: DynamicOptions;
 }) {
   const wide = field.wide || field.kind === "textarea" || field.kind === "radio";
   // Not `field.options` — an option can be branch-specific (AVYAY offers Physiotherapy Clinic
   // and Mobile Medicare Unit to renewals only), and a field can be editable on one branch and
   // fixed on another.
-  const options = field.districtsOf ? districtsOf(parentValue) : visibleOptions(field, values);
+  const options = field.districtsOf ? districtsOf(parentValue) : visibleOptions(field, values, dynamic);
   const isAuto = Boolean(field.auto);
   // Branch-aware: each path is shown only its own wording.
   const readOnly = isReadOnly(field, values) || isAuto;
@@ -791,11 +1050,31 @@ function Field({
   // Branch-aware too: a renewal's grant figures are labelled as sanctioned, not estimated.
   const label = fieldLabel(field, values);
 
+  // The applicant's own renewable projects, when there are none: the answer, and the one reason
+  // that tells them what to do — not an empty list to open.
+  if (field.optionsFrom && options.length === 0) {
+    return (
+      <div className="ds-form-span-full">
+        <Alert status="info" title="None of your projects has an instalment open to claim.">
+          <p className="text-body-2">
+            An instalment opens once the one before it has been sanctioned. Choose New project to apply for a new project.
+          </p>
+        </Alert>
+        {error && (
+          <FieldMessage status="error" role="alert" className="mt-1">
+            {error}
+          </FieldMessage>
+        )}
+      </div>
+    );
+  }
+
   // SMILE's undertakings (a)–(j) are individual tick-boxes, not Yes/No pairs.
   if (field.kind === "checkbox") {
     return (
       <div className={wide ? "ds-form-span-full" : undefined}>
         <Checkbox
+          name={field.name}
           checked={value === "true"}
           onChange={(e) => onChange(e.target.checked ? "true" : "")}
           label={label}
@@ -864,7 +1143,10 @@ function Field({
         characterCount={field.maxLength != null ? { value, maxLength: field.maxLength } : undefined}
       >
         {(control) =>
-          field.kind === "select" && readOnly ? (
+          field.kind === "number" && readOnly && field.label.includes("₹") && /^\d+(\.\d+)?$/.test(value) ? (
+            // A worked-out or sanctioned amount reads as money — "₹20,34,140", not "2034140".
+            <Input {...control} value={rupees(Number(value))} readOnly onChange={() => undefined} />
+          ) : field.kind === "select" && readOnly ? (
             // A native <select> ignores `readonly`, so a "read-only" select stayed fully editable
             // — the renewal's bank account among them (review call, T545–576). Read-only answers
             // render as a read-only text box showing the value, like every other locked field.
@@ -914,6 +1196,7 @@ function ReviewStep({
   def,
   values,
   docs,
+  onDocsChange,
   declared,
   onDeclare,
   onEdit,
@@ -921,6 +1204,7 @@ function ReviewStep({
   def: WizardDef;
   values: Record<string, string>;
   docs: Record<number, UploadedDoc>;
+  onDocsChange: React.Dispatch<React.SetStateAction<Record<number, UploadedDoc>>>;
   declared: boolean;
   onDeclare: (v: boolean) => void;
   onEdit: (step: number) => void;
@@ -943,12 +1227,13 @@ function ReviewStep({
   return (
     <>
       {formSteps.flatMap(({ step, index }) =>
-        step.sections.map((section) => (
+        visibleSections(step, values).map((section) => (
           <ReviewSection
             key={`${step.title}-${section.title}`}
             title={section.title}
             columns={4}
-            actions={editButton(section.title, index)}
+            // A record the portal holds (a renewal's bank account) is not edited from here.
+            actions={isSummarySection(section, values) ? undefined : editButton(section.title, index)}
           >
             {section.fields
               .filter((f) => fieldVisible(f, values))
@@ -967,30 +1252,14 @@ function ReviewStep({
       )}
 
       <FormCard title="Uploaded Documents" actions={documentsIndex >= 0 ? editButton("Uploaded Documents", documentsIndex) : undefined}>
-        <DocumentTiles aria-label="Uploaded documents">
-          {visibleDocuments(def, values).map((d) => {
-            const up = docs[d.n];
-            return (
-              <DocumentTile
-                key={d.n}
-                title={d.title}
-                required={!d.optional}
-                state={up ? "uploaded" : "upcoming"}
-                icon={<Icon name={up ? "description" : "draft"} size={24} />}
-                meta={up ? `${up.fileName} · ${up.sizeKb} KB` : "Not uploaded"}
-                actions={
-                  up ? (
-                    <Button appearance="text" size="sm" aria-label={`View ${d.title}`}>
-                      View
-                    </Button>
-                  ) : (
-                    <Badge status="warning">Not Uploaded</Badge>
-                  )
-                }
-              />
-            );
-          })}
-        </DocumentTiles>
+        <ReviewDocuments
+          schemeCode={def.code}
+          documents={visibleDocuments(def, values)}
+          uploaded={docs}
+          setUploaded={onDocsChange}
+          values={values}
+          onEditDocuments={documentsIndex >= 0 ? () => onEdit(documentsIndex) : undefined}
+        />
       </FormCard>
 
       <DeclarationCheckbox checked={declared} onChange={onDeclare} title="Declaration" lead="">

@@ -180,6 +180,10 @@ test("the seeded store fits in the browser with room for the applicant's work", 
   // Chromium). The seed was 2.78 million before it was slimmed, and about 1.58 million before the
   // certified files' 1,840 document verdicts gained who gave them and when (114,000 characters,
   // 14 Sep 2026), paid for in part by leaving the `reUploadedThisYear: false` flags off (61,000).
+  // +64,000 on 16 Sep 2026 for three AVYAY projects with a sanctioned history, and +128,000 the same
+  // day for three each under NAPDDR, SHRESHTA and SMILE (18 files, no document registers, a small
+  // roster), and the release records that open each next instalment — without which a renewal had
+  // nothing real to renew (review call C2, W1).
   const size = JSON.stringify(seed()).length;
-  assert.ok(size < 1_650_000, `seeded store is ${size.toLocaleString("en-IN")} characters`);
+  assert.ok(size < 1_900_000, `seeded store is ${size.toLocaleString("en-IN")} characters`);
 });

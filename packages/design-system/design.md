@@ -2455,6 +2455,10 @@ below it.
 **Purpose**: One entry of a repeatable group (an employment, a key functionary) — a tinted inset (`bg/neutral/subtler`, `shape/12`, `padding/16`, no border) with an optional `title` and `actions` over a 2-column grid.  
 **Rule**: Follow the last entry with a small outlined "Add More" `Button` with a leading plus, right-aligned; the parent owns the list. Not for short uniform rows (family members, awards) — those are a bordered `DataTable`. Not for a group that appears once.
 
+#### DocumentChecklist / DocumentChecklistGroup / DocumentRow / DocumentFindings / DocumentPlacementTray / DocumentHistorySheet
+**Purpose**: The Document Centre — a long list of named documents that are uploaded, checked automatically and kept with their history. `DocumentChecklist` is the header (progress counted as `ready` of `required`, `formats` stated once, `filters` chips, a drop zone via `onFiles` with a Choose Files button, `errors` rendered as an ErrorSummary, `politeMessage` / `assertiveMessage` live regions, a `tray` slot, `visibleCount` for filtered-to-nothing, `loading`) over `DocumentChecklistGroup`s of `DocumentRow`s. `DocumentRow` takes `state` (`missing` · `optional` · `uploading` · `failed` · `rejected` · `checking` · `verified` · `review` · `invalid` · `unavailable`), `file`, one `reason`, one `action`, a `menu`, `findings` behind a disclosure, `remark` above and `aside` beside (under the title below a 760px row), and `linkAs` for `file.href`. `collapsible` folds a row that needs nothing more to one line — icon, title, `summary` ("Verified by ASO, 21 Jul 2026"), the status words, the action and the menu — with the file, reason, findings and `aside` behind "Details" (`expanded`, `onExpandedChange`). Never make a row collapsible that the reader must still act on. `DocumentFindings` compares each extracted field with the application (`expected`, `matches`). `DocumentPlacementTray` lists a batch drop's placements. `DocumentHistorySheet` lists every version (`linkAs`).  
+**Rules**: (1) Progress counts documents READY, never uploaded. (2) Status is words beside an icon, never colour alone. (3) Confidence goes to officers only — an applicant gets the consequence (“Please confirm”, “Doesn't match”). (4) Continue stays enabled: pressed with blockers, raise `errors` (bump `errorsRevision`) and filter to what needs attention; Submit is the hard gate. (5) Each error's `fieldId` is the row's primary control id. (6) A batch drop never replaces silently — show the tray. (7) A replaced file goes to history; never delete it. (8) Use `DocumentTile` instead for two or three documents on an ordinary form step.
+
 #### DocumentTile / DocumentTiles
 **Purpose**: One document on an upload or review step — `title` (+`required`), one line of `meta`, `actions` at the right, optional `icon` — in four `state`s: `upcoming`, `uploaded`, `verified`, `invalid`. `DocumentTiles` is the `<ul>` grid, two to a row from 768px.  
 **Rule**: **An upload is `uploaded`, never `verified`** — only an officer or DigiLocker verifies. Verified carries a `Badge`; invalid carries the officer's reason as `meta`. Not for an officer's checklist with findings (`ChecklistScreen`) or a public download list (`DocumentLibrary`).
@@ -3071,13 +3075,14 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 
 #### Accordion / AccordionItem
 **Purpose**: A stack of disclosures, for reference content that is long, list-shaped, and mostly **not** what the reader came for. The estate's case is the About Us bureau breakdown — nine officials with four to six responsibilities each, which printed flat is sixty bullets nobody reads and behind disclosures is a scannable list of nine names.
-**Props**: `AccordionItem` — `title`, `defaultOpen`. `Accordion` is the wrapper and takes only HTML attributes.
+**Props**: `AccordionItem` — `title`, `defaultOpen`. `Accordion` — `variant` (`card` default · `flush`) plus HTML attributes.
+**`variant="flush"`** is the form language: no fill, no shadow, a hairline between items. Use it for an accordion that sits inside a panel which is already a card — the sections of an application on the officer review screen. A stack of shaded, shadowed cards inside a card reads as furniture, not content.
 **The test**: **the headings must be useful closed**, because closed is the state the reader spends most of their time in. If someone has to open every panel to find what they want, the accordion is hiding content rather than organising it and a plain list is better.
 **When NOT to reach for it**: not for content the reader definitely needs — a disclosure adds a click to everything it contains. **Never for form fields**: hidden fields get skipped, and browser validation cannot focus an unmounted control. Not as a substitute for a page — five accordions on one screen is a table of contents made harder to use. Not for a single item, which is a native `<details>`.
 **Rules**:
 - **`defaultOpen` should usually stay false.** Opening the first item by habit makes the row heights uneven and quietly says the first one matters most. Set it when that panel genuinely is the common case.
 - **Items open independently.** This is an accordion, not a radio group; closing one to open another loses a comparison the reader may be mid-way through.
-- **Known accessibility gaps, recorded rather than hidden.** The trigger carries `aria-expanded` and an accessible name, so it is operable and its state is announced — but it diverges from the WAI-ARIA Authoring Practices accordion pattern in three ways: the trigger is **not wrapped in a heading**, so screen reader users cannot move between panels by heading; there is no `aria-controls` / `role="region"` association between trigger and panel; and the panel is **unmounted** when closed rather than hidden, so browser find-in-page cannot reach it. None is a WCAG failure on its own and all three are fixable without changing the API. Fix them before this component carries statutory content.
+- **Known accessibility gaps, recorded rather than hidden.** The trigger carries `aria-expanded` and an accessible name, so it is operable and its state is announced — but it diverges from the WAI-ARIA Authoring Practices accordion pattern in three ways: the trigger is **not wrapped in a heading**, so screen reader users cannot move between panels by heading; there is no `role="region"` on the panel (the trigger does carry `aria-controls` while open); and the panel is **unmounted** when closed rather than hidden, so browser find-in-page cannot reach it. None is a WCAG failure on its own and all three are fixable without changing the API. Fix them before this component carries statutory content.
 
 #### VerticalTimeline / VerticalTimelineItem
 **Purpose**: A **narrative chronology** — dated events on a public information page, written as prose, where the reader is learning history. The estate's case is the About Us page: eight events from the 1985–86 bifurcation of the Ministry of Welfare to the 2012 split into DoSJE and DEPwD.
@@ -3956,6 +3961,8 @@ wired differently: `data-portal` for the palette re-bind, the rail's **two** wid
 navigation (`PortalRole` is `public · citizen · organisation · officer · admin`), and the
 mobile drawer, closed on route change. Hiding a nav item is **not** authorisation.
 
+From the tablet anchor to the laptop anchor (768–1279px) the rail starts collapsed to its 88px icons; the masthead button expands it and that choice holds for the visit. A 300px rail there left the content too narrow for a step bar to name its stages.
+
 **`ScreenBody`** is why the states are structural. Every template routes content through
 it, so no code path renders rows without having decided what happens when there are none.
 Six branches — `idle · loading · error · empty · filtered · ready` — resolved **once** by
@@ -3972,7 +3979,7 @@ draws no list screen at all, and `Pagination` appears in 1 of 265 pages. `Workli
 adds `priority` — 1 becomes the mobile card's title, 2 a label/value pair, 3 is dropped —
 which is how a twelve-column table survives a phone the handoff never drew. **`rows` is
 every matching row, not one page**, and `registerTotal` is for the count line only: handing
-`DataTable` a bigger number than its array drew seven pages over five records.
+`DataTable` a bigger number than its array drew seven pages over five records. `summary` takes count tiles above the filters; they must count the same rows the filters narrow, or the page answers one question twice.
 
 **`WizardScreen`** covers 22 of the handoff's 44 screens at 3, 6 and 7 steps, and ships
 **one** stepper treatment where the handoff draws two. It wraps `Wizard` and adds the page:

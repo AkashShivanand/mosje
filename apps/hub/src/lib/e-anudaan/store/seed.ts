@@ -14,7 +14,7 @@
  *    — and seeding doubles as a smoke test: a broken rule throws at boot.
  */
 
-import { applyAction, deficiencyItemsFrom, type Clock, type WorkflowAction } from "../workflow.ts";
+import { applyAction, deficiencyItemsFrom, releaseFunds, type Clock, type WorkflowAction } from "../workflow.ts";
 import {
   GRADES,
   type Division,
@@ -30,6 +30,7 @@ import {
   type Scheme,
 } from "../types.ts";
 import { buildBeneficiaries, buildEmployees, type Beneficiary, type Employee } from "../roster.ts";
+import { AVYAY_WIZARD, NAPDDR_WIZARD, SHRESHTA_WIZARD, SMILE_WIZARD } from "../form-schema.ts";
 import { PROJECT_ID_PREFIX, instalmentAfter, notificationBody, notificationTitle, notifiesApplicant } from "../applicant.ts";
 import type { Institution } from "../types.ts";
 
@@ -38,8 +39,23 @@ export const SEED_NOW = "2026-08-12T09:00:00.000Z";
 
 const DAY = 86_400_000;
 
+/**
+ * A moment `daysAgo` days before the demo's today, at a time of day that varies with the day.
+ * Every seeded event used to fall at 02:30 PM (SEED_NOW's own time). The offset spreads them
+ * across office hours, 09:45 AM to 05:50 PM IST, drawn from the day itself rather than from the
+ * random generator, so no reference, figure or project elsewhere in the seed moves. It is under
+ * a day either way, so events on different days keep their order.
+ */
+/** "12 Mar 1978" → "1978-03-12". */
+function isoDateOf(printed: string | undefined): string | undefined {
+  if (!printed) return undefined;
+  const t = Date.parse(`${printed} UTC`);
+  return Number.isNaN(t) ? undefined : new Date(t).toISOString().slice(0, 10);
+}
+
 function iso(daysAgo: number): string {
-  return new Date(Date.parse(SEED_NOW) - daysAgo * DAY).toISOString();
+  const offsetMinutes = daysAgo >= 1 ? ((daysAgo * 157) % 485) - 285 : 0;
+  return new Date(Date.parse(SEED_NOW) - daysAgo * DAY + offsetMinutes * 60_000).toISOString();
 }
 
 /** Mulberry32 — small, deterministic, good enough for picking demo values. */
@@ -398,7 +414,8 @@ function draft(
       fld_darpan_id: ngo.darpanId,
       fld_statute_act: ngo.registeredUnder ?? "Registrar of Societies",
       fld_registration_number: ngo.registrationNo,
-      fld_registration_date: "1934-08-06",
+      // The NGO record's own date ("12 Mar 1978"), not a constant that contradicted it.
+      fld_registration_date: isoDateOf(ngo.registrationDate) ?? "1978-03-12",
       fld_registration_expiry: "2028-09-04",
       fld_reg_office_address: `Registered office, ${ngo.district}, ${ngo.state}`,
       fld_reg_office_city: ngo.district,
@@ -471,12 +488,83 @@ function draft(
 const SEED_REMARKS: Partial<Record<WorkflowAction, string>> = {
   submit: "Application submitted.",
   certify: "Documents verified and the file certified.",
-  forward: "Forwarded to the next authority.",
   concur: "Financial concurrence recorded.",
   sanction: "Sanctioned as recommended.",
   reject: "Application rejected.",
   return: "Returned to the applicant for correction.",
 };
+
+/**
+ * What each officer writes when moving a file on. Every forward used to read "Forwarded to the next
+ * authority."; a file note says what the officer checked. Chosen by the officer and the day, so it
+ * varies across files without drawing on the random generator.
+ */
+const FORWARD_REMARKS: Partial<Record<string, readonly string[]>> = {
+  "pd-aso": ["Documents checked against the checklist; recommended for examination.", "Beneficiary figures match the attendance returns. Submitted for orders."],
+  "pd-so": ["Examined. Eligibility and cost norms verified; recommended to the Under Secretary.", "Previous utilisation certificate on record. Recommended for approval."],
+  "pd-us": ["Proposal in order. Recommended to the Deputy Secretary.", "Inspection report satisfactory; recommended for approval."],
+  "pd-ds": ["Agreed with the Under Secretary's note. Put up to the Joint Secretary.", "Recommended; the grant is within the scheme's allocation."],
+  "pd-js": ["Approved in principle. Sent to the Integrated Finance Division for concurrence.", "Approved; for financial concurrence."],
+  "finance-aso": ["Budget head and funds availability verified.", "Sanction amount checked against the cost norms."],
+  "finance-so": ["Financial scrutiny complete. Recommended for concurrence.", "No objection from the finance side; submitted."],
+  "finance-us": ["Recommended for concurrence.", "Examined; the proposal is financially in order."],
+  "finance-ds": ["Put up for the Joint Secretary's concurrence.", "Recommended for concurrence."],
+};
+
+function seedRemark(role: string, action: WorkflowAction, daysAgo: number): string {
+  if (action === "forward") {
+    const options = FORWARD_REMARKS[role];
+    if (options?.length) return options[Math.abs(daysAgo) % options.length]!;
+  }
+  return SEED_REMARKS[action] ?? "Recorded on the file.";
+}
+
+/**
+ * The rules one file keeps with itself: a New project reports no grant history, the registration
+ * date is the NGO record's, the declaration is signed at submission, a document is uploaded before
+ * the file is submitted and before it is verified, and "re-uploaded this year" means this FY.
+ */
+function tellOneStory(a: GrantApplication): GrantApplication {
+
+  const now = Date.parse(SEED_NOW);
+  const fyStart = (fy: string) => Date.parse(`${fy.slice(0, 4)}-04-01T04:30:00.000Z`);
+  const when = (x: GrantApplication) => Date.parse(x.submittedAt ?? x.updatedAt);
+  const ngo = ngoPool.find((n) => n.id === a.ngoId);
+  const fv = { ...(a.formValues ?? {}) };
+  // A New project has no grant history to report.
+  if (a.caseType === "New") {
+    fv.fld_gia_since_year = "";
+    fv.fld_gia_released_last_3yrs = "";
+    fv.fld_beneficiaries_previous_year = "";
+    fv.assistance_3yrs = "No";
+    fv.fld_institution_status = "New";
+    fv.decl_uc_uploaded = "No";
+  }
+  // The registration date is the NGO record's.
+  const registered = isoDateOf(ngo?.registrationDate);
+  if (registered && fv.fld_registration_date) fv.fld_registration_date = registered;
+  // The declaration is signed when the application is submitted (or last saved, for a draft).
+  const signed = new Date(when(a) + 5.5 * 3_600_000).toISOString();
+  if (fv.fld_auth_date) {
+    fv.fld_auth_date = signed.slice(0, 10);
+    fv.fld_auth_time = signed.slice(11, 16);
+  }
+  const submittedAt = a.submittedAt ? Date.parse(a.submittedAt) : undefined;
+  const fyBegins = fyStart(a.financialYear);
+  const documents = a.documents.map((d) => {
+    let doc = d;
+    // A document is uploaded before the application carrying it is submitted, and before anyone verifies it.
+    const ceiling = Math.min(submittedAt ?? Infinity, d.reviewedAt ? Date.parse(d.reviewedAt) : Infinity);
+    if (doc.uploadedAt && Date.parse(doc.uploadedAt) > ceiling) doc = { ...doc, uploadedAt: new Date(ceiling - (doc.slot % 5 + 1) * DAY).toISOString() };
+    // "Re-uploaded this year" means within the application's financial year.
+    if (doc.reUploadedThisYear && doc.uploadedAt && Date.parse(doc.uploadedAt) < fyBegins) {
+      const inYear = fyBegins + (doc.slot % 7 + 1) * DAY;
+      doc = inYear < Math.min(ceiling, now) ? { ...doc, uploadedAt: new Date(inYear).toISOString() } : { ...doc, reUploadedThisYear: undefined };
+    }
+    return doc;
+  });
+  return { ...a, formValues: fv, documents };
+}
 
 /** Drive a draft through a scripted sequence of actions, failing loudly if a rule rejects one. */
 function replay(
@@ -495,7 +583,7 @@ function replay(
       s.role,
       s.action,
       {
-        remarks: s.remarks ?? SEED_REMARKS[s.action] ?? "Recorded on the file.",
+        remarks: s.remarks ?? seedRemark(s.role, s.action, s.daysAgo),
         certified: true,
         // A deficiency is raised from the review as it stands, the same way the review screen
         // raises one; the scripted ones overwrite these items with their own afterwards.
@@ -1090,17 +1178,10 @@ export function buildSeed(): {
     }
   }
 
-  // Flag a couple of documents on files an officer has already certified, so the applicant's
-  // "N Documents Require Attention" callout — and the "You will be able to upload a corrected
-  // file once the application is returned to you." note under each flagged row — are reachable.
-  apps.forEach((app, i) => {
-    if (i % 5 !== 0) return;
-    if (!app.audit.some((e) => e.action === "certify")) return;
-    for (const slot of [3, 4]) {
-      const doc = app.documents.find((d) => d.slot === slot);
-      if (doc) doc.reviewStatus = "Deficient";
-    }
-  });
+  // (A block here once marked documents 3 and 4 "Needs correction" on every fifth certified file, with
+  // no remark, under a certification that said the documents were examined and complete — a verdict
+  // that should have blocked the certification. The applicant's correction flow is reached through
+  // the scripted deficiencies above, which carry their remarks.)
 
   /*
    * A certified file carries the verdicts the certification rests on. The ASO certifies that the
@@ -1126,6 +1207,105 @@ export function buildSeed(): {
       doc.reviewedBy = by;
       doc.reviewedAt = app.certifiedAt;
     }
+  }
+
+  /*
+   * One story per file (seed-data review, 16 Sep 2026). The blocks above build files by rotation and
+   * then relabel them, which left files that contradicted themselves: an instalment claim with no
+   * earlier sanction, a New project with thirty years of grants, set-up money on an instalment, a
+   * sanction two years after its financial year, a declaration signed after submission, a document
+   * verified before it was uploaded. This pass makes each file agree with itself and with its
+   * project's other files. It draws no random numbers, so no reference, project or figure moves.
+   * `records-seed.test.ts` holds every rule.
+   */
+  {
+    const ISO_TS = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+    /** Move every timestamp on a file by `ms`, keeping the file's own order. */
+    const shift = (value: unknown, ms: number): unknown => {
+      if (typeof value === "string") return ISO_TS.test(value) ? new Date(Date.parse(value) + ms).toISOString() : value;
+      if (Array.isArray(value)) return value.map((v) => shift(v, ms));
+      if (value && typeof value === "object") {
+        return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, k === "formValues" ? v : shift(v, ms)]));
+      }
+      return value;
+    };
+    const fyStart = (fy: string) => Date.parse(`${fy.slice(0, 4)}-04-01T04:30:00.000Z`);
+    const now = Date.parse(SEED_NOW);
+    let relSeq = 0;
+    const releaseClock = (at: number): Clock => ({ now: new Date(at).toISOString(), id: (p) => `${p}-rel-${String(++relSeq).padStart(4, "0")}` });
+    const when = (a: GrantApplication) => Date.parse(a.submittedAt ?? a.updatedAt);
+
+    for (let i = 0; i < apps.length; i++) {
+      let a = apps[i]!;
+      // A sanction falls within its financial year or the year after it (a year-long approval).
+      if (a.sanction) {
+        const start = fyStart(a.financialYear);
+        const latest = Math.min(start + 2 * 365 * DAY - 2 * DAY, now - DAY);
+        const at = Date.parse(a.sanction.sanctionedAt);
+        const target = at < start ? start + 45 * DAY : at > latest ? latest - 20 * DAY : at;
+        if (target !== at) a = shift(a, target - at) as GrantApplication;
+      }
+      // An instalment claim releases recurring grant only; the non-recurring grant is the New grant's.
+      if (a.caseType === "Ongoing" && a.nonRecurring > 0) {
+        a = {
+          ...a,
+          nonRecurring: 0,
+          total: a.recurring,
+          ...(a.sanction ? { sanction: { ...a.sanction, nonRecurring: 0, total: a.sanction.recurring } } : {}),
+          formValues: { ...a.formValues, fld_grant_non_recurring: "0", fld_grant_total: String(a.recurring) },
+        };
+      }
+      apps[i] = a;
+    }
+
+    // An instalment is claimed only after an earlier grant on the project was sanctioned AND released.
+    const ordered = [...apps].sort((x, y) => when(x) - when(y));
+    for (const a of ordered) {
+      if (a.caseType !== "Ongoing" || !a.instalment) continue;
+      const idx = apps.indexOf(a);
+      const files = apps.filter((x) => x !== a && x.institutionId === a.institutionId && x.schemeCode === a.schemeCode);
+      const prior = files.filter((x) => x.sanction && Date.parse(x.sanction.sanctionedAt) <= when(a)).sort((x, y) => x.sanction!.sanctionedAt.localeCompare(y.sanction!.sanctionedAt));
+      const last = prior.at(-1);
+      if (last) {
+        if (!last.release) {
+          const at = Math.min(Date.parse(last.sanction!.sanctionedAt) + 10 * DAY, when(a) - DAY, now - DAY);
+          const released = releaseFunds(last, "pd-us", releaseClock(Math.max(at, Date.parse(last.sanction!.sanctionedAt) + 3_600_000)));
+          if (released.ok) apps[apps.indexOf(last)] = released.app;
+        }
+        continue;
+      }
+      // Nothing sanctioned before it: this is the project's first grant, so it is a New application.
+      apps[idx] = {
+        ...a,
+        caseType: "New",
+        instalment: undefined,
+        formValues: { ...a.formValues, fld_institution_status: "New", assistance_3yrs: "No" },
+      };
+    }
+
+    // Instalment numbers follow the project's claims in order, as `nextInstalment` reads them.
+    const byProject = new Map<string, GrantApplication[]>();
+    for (const a of [...apps].sort((x, y) => x.financialYear.localeCompare(y.financialYear) || when(x) - when(y))) {
+      const k = `${a.schemeCode}|${a.institutionId}`;
+      byProject.set(k, [...(byProject.get(k) ?? []), a]);
+    }
+    for (const files of byProject.values()) {
+      let lastInstalment: number | undefined;
+      let seenNew = false;
+      for (const a of files) {
+        if (a.caseType === "New") {
+          if (a.status !== "Draft" && a.status !== "Rejected") seenNew = true;
+          continue;
+        }
+        if (!a.instalment) continue;
+        const next = instalmentAfter(lastInstalment);
+        if (a.instalment !== next) apps[apps.indexOf(a)] = { ...a, instalment: next };
+        if (a.status !== "Draft" && a.status !== "Rejected") lastInstalment = next;
+        void seenNew;
+      }
+    }
+
+    for (let i = 0; i < apps.length; i++) apps[i] = tellOneStory(apps[i]!);
   }
 
   // Ageing must be recomputed AFTER the replay. `applyAction` resets ageingDays to 0 on every
@@ -1306,6 +1486,281 @@ export function buildSeed(): {
   ];
 
   /*
+   * 11. Projects with a sanctioned history under every scheme, so a renewal has something real to
+   * renew and each point in the instalment cycle can be shown (`instalments.ts`).
+   *
+   *   AVYAY 40-40-20    SR/MH/PUN/03601  New 2025-26 · 2026-27 1st           → 2nd open
+   *                     SR/DL/NWD/03602  New 2025-26 · 2026-27 1st, 2nd      → 3rd open
+   *                     SR/MH/THN/03603  New 2025-26                         → 2026-27 1st open
+   *   NAPDDR 40-40-20   DR/MH/PUN/03621 → 2nd · DR/DL/NWD/03622 → 3rd · DR/GJ/AHM/03623 → 1st
+   *   SHRESHTA 40-40-20 SC/MH/PUN/03631 → 2nd · SC/DL/NWD/03632 → 3rd · SC/TN/MDR/03633 → 1st
+   *   SMILE 50-50       TG/MH/PUN/03641  New 2025-26                         → 2026-27 1st open
+   *                     TG/DL/NWD/03642  New 2025-26 · 2026-27 1st           → 2nd open
+   *                     TG/TN/MDR/03643  New 2024-25 · 2025-26 1st, 2nd      → 2026-27 1st open (a new year)
+   *
+   * Built after every random draw above, so nothing earlier moves. Kept lean — only a project's
+   * latest file keeps a document register, answers are limited to the scheme form's own questions,
+   * the roster is small — because the store is shared by every portal on the origin.
+   */
+  const historyRoster: Beneficiary[] = [];
+  const historyStaff: Employee[] = [];
+  const historyProjects = new Set<string>();
+  {
+    type Claim = { fy: string; instalment?: 1 | 2 | 3; submitted: number; sanctioned: number };
+    type History = {
+      scheme: "AVYAY" | "NAPDDR" | "SHRESHTA_M2" | "SMILE";
+      inst: Institution;
+      annual: number;
+      nonRecurring: number;
+      pfms: boolean;
+      bank: readonly [string, string, string];
+      people: number;
+      claims: readonly Claim[];
+      answers: Record<string, string>;
+      /** Leave the latest sanction unreleased, so the "opens once released" state has a project. */
+      unreleased?: boolean;
+    };
+    const PATTERNS: Record<History["scheme"], readonly number[]> = { AVYAY: [40, 40, 20], NAPDDR: [40, 40, 20], SHRESHTA_M2: [40, 40, 20], SMILE: [50, 50] };
+    const place = (id: string, name: string, district: string, state: string, nature: Institution["nature"], building: Institution["building"], pin: string): Institution => ({
+      id, name, district, state, nature, type: "Co-Ed", level: "Secondary", building, pin,
+    });
+    const newThenFirst: readonly Claim[] = [
+      { fy: "2025-26", submitted: 420, sanctioned: 370 },
+      { fy: "2026-27", instalment: 1, submitted: 120, sanctioned: 80 },
+    ];
+    const newThenTwo: readonly Claim[] = [
+      { fy: "2025-26", submitted: 460, sanctioned: 400 },
+      { fy: "2026-27", instalment: 1, submitted: 125, sanctioned: 90 },
+      { fy: "2026-27", instalment: 2, submitted: 70, sanctioned: 32 },
+    ];
+    const newOnly: readonly Claim[] = [{ fy: "2025-26", submitted: 380, sanctioned: 330 }];
+    const person = (prefix: string, name: string, qualification: string, designation: string, mobile: string) => ({
+      [`${prefix}_name`]: name, [`${prefix}_qualification`]: qualification, [`${prefix}_designation`]: designation, [`${prefix}_mobile`]: mobile,
+    });
+    const common = (h: { inst: Institution; people: number }) => ({
+      fld_statute_act: "Societies Registration Act, 1860",
+      fld_registration_date: "1978-03-12",
+      fld_reg_office_address: `Registered office, ${applicant.district}, ${applicant.state}`,
+      fld_total_beneficiaries: String(h.people),
+      beneficiaries_identified: "Yes",
+      decl_no_money_from_beneficiaries: "Yes",
+      decl_not_blacklisted: "Yes",
+      // A person signs the declaration, not the organisation.
+      fld_auth_person_name: "Meena Deshpande",
+      fld_auth_person_contact: "9822014455",
+      fld_auth_place: h.inst.district,
+    });
+    const avyay = (inst: Institution, nature: string, people: number) => ({
+      fld_nature_of_project: nature, fld_agency_type: "NGO", fld_city_category: "Z",
+      fld_project_location: `${inst.name}, ${inst.district}, ${inst.state} ${inst.pin}`, fld_functional_status: "Functional",
+      fld_commencement_date: "2024-06-01", fld_infra_area_sqft: "6400", fld_infra_rooms: "14", fld_infra_toilets: "8",
+      infra_kitchen: "Yes", infra_open_area: "Yes", moa_includes_senior_citizens: "Yes", fld_beneficiaries_women: String(Math.floor(people / 2)),
+      ...person("fld_incharge", "Meena Deshpande", "Post-graduate", "Superintendent", "9822014455"),
+      ...person("fld_key_staff_1", "Ravi Kulkarni", "Professional (Medicine, Nursing, Social Work)", "Nurse", "9822014466"),
+    });
+    const napddr = (inst: Institution) => ({
+      fld_project_type: "IRCA — Integrated Rehabilitation Centre", moa_includes_addiction: "Yes", fld_org_website: "https://www.sankalpseva.org.in",
+      fld_name_of_project: inst.name, fld_date_of_commencement: "2023-07-01", fld_year_of_commencement_gia: "2023-24", project_recognized_by_state: "Yes",
+      fld_location_address: `${inst.name}, ${inst.district}, ${inst.state} ${inst.pin}`, building_utilized_exclusively: "Yes",
+      fld_area_of_building_sqm: "420", fld_no_of_rooms: "12", fld_no_of_toilets: "6", kitchen_facilities: "Yes", hygiene_maintained: "Yes",
+      open_area_available: "Yes", counselling_room: "Yes", fld_functional_status: "Functional",
+      ...person("fld_incharge", "Arvind Joshi", "Post-graduate", "Project Director", "9822015511"),
+      ...person("fld_functionary_1", "Farida Shaikh", "Professional (Medicine, Nursing, Social Work)", "Counsellor", "9822015522"),
+      ...person("fld_key_staff_1", "Sunil Pawar", "Graduate", "Social Worker", "9822015533"),
+      self_generated_funds: "No", fld_beneficiaries_prev_year: "38", fld_pfms_code: "NGO3817MH04512", eat_module_registered: "Yes",
+      prev_instalment_utilised: "Yes", fld_auth_person_designation: "Secretary",
+    });
+    const shreshta = (inst: Institution) => ({
+      fld_registration_expiry: "2031-03-31", fld_reg_office_city: applicant.district,
+      fld_nature_of_institution: inst.nature, fld_institution_gender_type: inst.type, fld_institution_level: inst.level,
+      fld_uc_pending_status: "No Utilisation Certificate Pending", fld_commencement_date: "2012-06-15", fld_gia_since_year: "2014",
+      fld_institution_location: `${inst.name}, ${inst.district}`, fld_institution_pin: inst.pin, govt_institution_within_2km: "No",
+      fld_beneficiaries_sc: "96", fld_beneficiaries_other: "24", fld_total_beneficiaries: "120", fld_beneficiaries_previous_year: "112",
+      decl_uc_uploaded: "Yes", decl_audited_accounts_submitted: "Yes", decl_name_changed_after_grant: "No", decl_not_for_profit: "Yes",
+      decl_other_grant: "No", decl_fee_charged: "No", decl_annual_report_uploaded: "Yes", decl_all_docs_signed: "Yes",
+    });
+    const smile = (inst: Institution) => ({
+      fld_nature_of_project: "Garima Greh — Transgender Care Home", website_available: "No", fld_reg_office_city: applicant.district,
+      fld_org_geographical_coverage: `${inst.district} and neighbouring districts`, fld_org_area_specialisation: "Shelter and rehabilitation of transgender persons",
+      fld_org_tg_experience: "Nine years of shelter, counselling and livelihood work with transgender persons.",
+      fld_org_profile_writeup: "The organisation runs a 25-resident Garima Greh with counselling, skill training and placement support.",
+      fld_strength_outreach_workers: "6", fld_strength_tg_rehabilitated: "41", fld_proj_tg_id_handheld: "88",
+      fld_proj_rehab_strategies: "Skill training, placement with local employers and support for self-employment.",
+      fld_registration_act: "Societies Registration Act, 1860", fld_registration_valid_upto: "2031-03-31", fld_establishment_date: "2015-01-10",
+      fld_pan_number: "AAATS1234K", fld_pan_date: "2015-02-02", fcra_80g: "No",
+      fld_head_name: "Kavita Rao", fld_head_qualification: "Post-graduate", fld_head_mobile: "9822016611", fld_head_address: `${applicant.district}, ${applicant.state}`,
+      ...person("fld_key_person_1", "Rekha Singh", "Graduate", "Programme Coordinator", "9822016622"),
+      fld_key_person_1_address: `${inst.district}, ${inst.state}`,
+      fld_premises_office_area_sqm: "310", fld_premises_ownership: "Owned",
+      fld_track_nature_of_work: "Shelter, counselling and livelihood support", fld_track_period_from: "2018-04-01", fld_track_period_to: "2025-03-31",
+      fld_track_coverage: "Around 180 residents over seven years", fld_track_outcome: "State award for community service, 2023", fld_track_funding: "State grant and CSR funds",
+      fld_site_address: `${inst.name}, ${inst.district}`, fld_site_city: inst.district, fld_site_location_type: "Urban", fld_site_pin: inst.pin,
+      fld_site_org_email: "garimagreh@sankalpseva.org.in",
+      ...person("fld_site_incharge", "Priya Nair", "Post-graduate", "Project Manager", "9822016633"), fld_site_incharge_email: "priya.nair@sankalpseva.org.in",
+      fld_staff_project_director_name: "Anjali Pawar", fld_staff_project_director_qualification: "Graduate",
+      fld_pmc_composition: "District Magistrate (Chairperson); organisation nominee; a doctor; a transgender welfare expert; the Project Director (Member Secretary).",
+      fld_residents_list: "Held in the Beneficiaries & Staff register.", fld_sanctioned_capacity: "25",
+      decl_records_accurate: "true", decl_no_encumbrance: "true", decl_audit_access: "true", decl_economy: "true", decl_progress_reports: "true",
+      decl_own_contribution: "true", decl_reservation: "true", decl_no_duplicate_grant: "true", decl_separate_account: "true", decl_pfms_eat: "true",
+    });
+    const pun = (id: string, name: string, nature: Institution["nature"]) => place(id, name, "Pune", "Maharashtra", nature, "Owned", "411038");
+    const nwd = (id: string, name: string, nature: Institution["nature"]) => place(id, name, "North West Delhi", "Delhi", nature, "Rented", "110085");
+    const SR: Institution["nature"] = "Senior Citizens' Home";
+    const DR: Institution["nature"] = "Integrated Rehabilitation Centre for Addicts";
+    const SC: Institution["nature"] = "Secondary Residential School";
+    const TG: Institution["nature"] = "Garima Greh (Shelter Home for Transgender Persons)";
+    const sr1 = pun("SR/MH/PUN/03601", "Senior Citizens' Home (Unit 3)", SR);
+    const sr2 = nwd("SR/DL/NWD/03602", "Continuous Care Home", SR);
+    const sr3 = place("SR/MH/THN/03603", "Senior Citizens' Home", "Thane", "Maharashtra", SR, "Owned", "400601");
+    const dr1 = pun("DR/MH/PUN/03621", "De-Addiction Centre", DR);
+    const dr2 = nwd("DR/DL/NWD/03622", "Integrated Rehabilitation Centre", DR);
+    const dr3 = place("DR/GJ/AHM/03623", "De-Addiction Centre", "Ahmedabad", "Gujarat", DR, "Owned", "380015");
+    const sc1 = pun("SC/MH/PUN/03631", "Residential School (Kothrud)", SC);
+    const sc2 = nwd("SC/DL/NWD/03632", "Residential School (Rohini)", SC);
+    const sc3 = place("SC/TN/MDR/03633", "Residential School (Melur)", "Madurai", "Tamil Nadu", SC, "Owned", "625106");
+    const tg1 = pun("TG/MH/PUN/03641", "Garima Greh", TG);
+    const tg2 = nwd("TG/DL/NWD/03642", "Garima Greh", TG);
+    const tg3 = place("TG/TN/MDR/03643", "Garima Greh", "Madurai", "Tamil Nadu", TG, "Owned", "625001");
+    const histories: History[] = [
+      { scheme: "AVYAY", inst: sr1, annual: 2034140, nonRecurring: 278195, pfms: true, bank: ["State Bank of India", "SBIN0004512", "Kothrud"], people: 25, claims: newThenFirst, answers: avyay(sr1, "Senior Citizens' Home — 25 beneficiaries", 25) },
+      { scheme: "AVYAY", inst: sr2, annual: 3968263, nonRecurring: 370926, pfms: true, bank: ["Punjab National Bank", "PUNB0221300", "Rohini Sector 7"], people: 20, claims: newThenTwo, answers: avyay(sr2, "Continuous Care Home (CCH) / Dementia / Alzheimer's", 20) },
+      { scheme: "AVYAY", inst: sr3, annual: 2034140, nonRecurring: 278195, pfms: false, bank: ["Bank of Baroda", "BARB0THANEX", "Thane West"], people: 25, claims: newOnly, answers: avyay(sr3, "Senior Citizens' Home — 25 beneficiaries", 25) },
+      { scheme: "NAPDDR", inst: dr1, annual: 1850000, nonRecurring: 400000, pfms: true, bank: ["Bank of Maharashtra", "MAHB0000456", "Deccan Gymkhana"], people: 45, claims: newThenFirst, answers: napddr(dr1) },
+      { scheme: "NAPDDR", inst: dr2, annual: 3200000, nonRecurring: 650000, pfms: true, bank: ["Canara Bank", "CNRB0003102", "Pitampura"], people: 60, claims: newThenTwo, answers: napddr(dr2) },
+      { scheme: "NAPDDR", inst: dr3, annual: 1850000, nonRecurring: 400000, pfms: false, bank: ["State Bank of India", "SBIN0060321", "Navrangpura"], people: 40, claims: newOnly, answers: napddr(dr3) },
+      { scheme: "SHRESHTA_M2", inst: sc1, annual: 5400000, nonRecurring: 900000, pfms: true, bank: ["Bank of Baroda", "BARB0KOTHRU", "Kothrud"], people: 120, claims: newThenFirst, answers: shreshta(sc1) },
+      { scheme: "SHRESHTA_M2", inst: sc2, annual: 6100000, nonRecurring: 1100000, pfms: true, bank: ["Punjab National Bank", "PUNB0112200", "Rohini Sector 3"], people: 120, claims: newThenTwo, answers: shreshta(sc2) },
+      { scheme: "SHRESHTA_M2", inst: sc3, annual: 4800000, nonRecurring: 800000, pfms: false, bank: ["Indian Bank", "IDIB000M015", "Melur"], people: 120, claims: newOnly, answers: shreshta(sc3) },
+      { scheme: "SMILE", inst: tg1, annual: 2890000, nonRecurring: 850000, pfms: true, bank: ["State Bank of India", "SBIN0011602", "Shivajinagar"], people: 22, claims: newOnly, answers: smile(tg1), unreleased: true },
+      { scheme: "SMILE", inst: tg2, annual: 2890000, nonRecurring: 850000, pfms: true, bank: ["Union Bank of India", "UBIN0531201", "Rohini Sector 11"], people: 24, claims: newThenFirst, answers: smile(tg2) },
+      {
+        scheme: "SMILE", inst: tg3, annual: 2890000, nonRecurring: 850000, pfms: true, bank: ["Indian Overseas Bank", "IOBA0001432", "Madurai Main"], people: 25,
+        claims: [
+          { fy: "2024-25", submitted: 760, sanctioned: 700 },
+          { fy: "2025-26", instalment: 1, submitted: 480, sanctioned: 440 },
+          { fy: "2025-26", instalment: 2, submitted: 300, sanctioned: 260 },
+        ],
+        answers: smile(tg3),
+      },
+    ];
+    const WIZARD_BY_SCHEME = { AVYAY: AVYAY_WIZARD, NAPDDR: NAPDDR_WIZARD, SHRESHTA_M2: SHRESHTA_WIZARD, SMILE: SMILE_WIZARD } as const;
+    const CASE_TYPE: Record<History["scheme"], [string, string] | undefined> = {
+      AVYAY: ["New project", "Ongoing / Renewal of an existing project"],
+      NAPDDR: ["New project", "Ongoing / Renewal of an existing project"],
+      SMILE: ["No — new project (Project ID auto-generated)", "Yes — existing project (select the Project ID)"],
+      SHRESHTA_M2: undefined,
+    };
+    let serial = 3610;
+    const applicantPool = ngoPool[MINE]!;
+    for (const h of histories) {
+      historyProjects.add(h.inst.id);
+      applicant.institutions.push(h.inst);
+      if (!applicantPool.institutions.includes(h.inst)) applicantPool.institutions.push(h.inst);
+      historyRoster.push(...buildBeneficiaries(h.inst.id, h.scheme === "AVYAY" ? 6 : 3, 0, 60 + serial));
+      historyStaff.push(...buildEmployees(h.inst.id, h.scheme === "AVYAY" ? 3 : 2));
+      const last4 = String(5000 + serial).slice(-4);
+      projectAccounts.push({
+        id: nextId("acct"),
+        projectId: h.inst.id,
+        bank: h.bank[0],
+        branch: h.bank[2],
+        last4,
+        ifsc: h.bank[1],
+        pfmsRegistered: h.pfms,
+        activeFrom: iso(h.claims[0]!.submitted + 30),
+      });
+      const fields = new Set(WIZARD_BY_SCHEME[h.scheme].steps.flatMap((st) => st.sections.flatMap((x) => x.fields.map((f) => f.name))));
+      const pattern = PATTERNS[h.scheme];
+      let ref = "";
+      for (const c of h.claims) {
+        const base = draft(MINE, h.scheme, c.fy, c.submitted);
+        const share = c.instalment ? pattern[c.instalment - 1]! : 0;
+        const recurring = c.instalment ? Math.round((h.annual * share) / 100) : h.annual;
+        const nonRecurring = c.instalment ? 0 : h.nonRecurring;
+        if (!c.instalment || c.instalment === 1) ref = `GIA/${c.fy}/${h.scheme}/${h.inst.district.toUpperCase().replace(/\s+/g, "_")}/${String(serial++).padStart(5, "0")}`;
+        const id = c.instalment && c.instalment > 1 ? `${ref}/I${c.instalment}` : ref;
+        const latest = c === h.claims[h.claims.length - 1];
+        // An instalment claim carries no grant-sought answers of its own: its figures are the sanction's
+        // (the Summary read ₹15.87 L beside answers of ₹80 L).
+        const scheme = Object.fromEntries(Object.entries(base.formValues ?? {}).filter(([k]) => fields.has(k) && !(c.instalment && /^fld_grant_/.test(k))));
+        const caseType = CASE_TYPE[h.scheme];
+        let a: GrantApplication = {
+          ...base,
+          // Only a project's latest file keeps its document register (store-persistence.test.ts).
+          documents: latest && h.scheme === "AVYAY" ? base.documents : [],
+          id,
+          institutionId: h.inst.id,
+          projectLabel: `${h.inst.name} — ${h.inst.district} · FY ${c.fy}`,
+          caseType: c.instalment ? "Ongoing" : "New",
+          instalment: c.instalment,
+          scBeneficiaries: h.scheme === "SHRESHTA_M2" ? 96 : h.people,
+          otherBeneficiaries: h.scheme === "SHRESHTA_M2" ? 24 : 0,
+          totalBeneficiaries: h.scheme === "SHRESHTA_M2" ? 120 : h.people,
+          recurring,
+          nonRecurring,
+          total: recurring + nonRecurring,
+          formValues: {
+            ...scheme,
+            ...common(h),
+            ...h.answers,
+            fld_project_id: h.inst.id,
+            // Every file's answers name what its project is (records-seed.test.ts).
+            fld_nature_of_institution: h.inst.nature,
+            fld_institution_gender_type: h.inst.type,
+            fld_building_ownership: h.inst.building,
+            ...(h.scheme === "SHRESHTA_M2"
+              ? { fld_institution_id: h.inst.id, fld_institution_status: c.instalment ? "Ongoing" : "New", assistance_3yrs: c.instalment ? "Yes" : "No" }
+              : {}),
+            ...(h.scheme === "SMILE" ? { fld_site_state: h.inst.state, fld_site_district: h.inst.district } : { fld_project_state: h.inst.state, fld_project_district: h.inst.district }),
+            ...(caseType ? { case_type: c.instalment ? caseType[1] : caseType[0] } : {}),
+            // The instalment is on the record itself (`instalment`), not repeated in the answers.
+            ...(c.instalment
+              ? { fld_sanctioned_recurring: String(h.annual), fld_instalment_amount: String(recurring) }
+              : { fld_grant_recurring: String(recurring), fld_grant_non_recurring: String(nonRecurring), fld_grant_total: String(recurring + nonRecurring) }),
+            fld_bank_name: h.bank[0],
+            fld_bank_branch: h.bank[2],
+            fld_bank_account_number: `XXXX XXXX ${last4}`,
+            fld_bank_ifsc: h.bank[1],
+            fld_pfms_registered: h.pfms ? "Yes" : "No",
+            fld_financial_year: c.fy,
+          },
+        };
+        a = driveToChain(a, "finance", "js", c.sanctioned + 36);
+        a = replay(a, [
+          { role: "finance-js", action: "concur", daysAgo: c.sanctioned + 6, remarks: "Concurrence recorded." },
+          { role: "programme-director", action: "sanction", daysAgo: c.sanctioned, remarks: "Sanctioned as recommended." },
+        ]);
+        a.submittedAt = a.audit[0]?.at ?? a.submittedAt;
+        // Released by the Under Secretary about ten days after sanction — which is what opens the
+        // next instalment for claim (instalments.ts). One project keeps its latest sanction unreleased.
+        if (!(h.unreleased && latest)) {
+          const released = releaseFunds(a, "pd-us", clockAt(Math.max(c.sanctioned - 10, 2)));
+          if (!released.ok) throw new Error(`[e-anudaan seed] ${a.id}: cannot release — ${released.error}`);
+          a = released.app;
+        }
+        // The certification rests on the documents, as on every other certified file (above).
+        for (const doc of a.documents) {
+          if (!a.certifiedAt || doc.reviewedBy) continue;
+          if (doc.fileName) doc.reviewStatus = "Verified";
+          else if (doc.optional) doc.reviewStatus = "Not applicable";
+          else continue;
+          doc.reviewedBy = a.certifiedBy ?? "pd-aso";
+          doc.reviewedAt = a.certifiedAt;
+        }
+        a = tellOneStory(a);
+        const arrivedAt = a.audit[a.audit.length - 1]?.at ?? a.updatedAt;
+        a.updatedAt = arrivedAt;
+        a.ageingDays = Math.max(Math.round((Date.parse(SEED_NOW) - Date.parse(arrivedAt)) / DAY), 0);
+        apps.push(a);
+      }
+    }
+    const mine = apps.filter((a) => a.ngoId === applicant.id);
+    applicant.applicationCount = mine.length;
+    applicant.sanctionedCount = mine.filter((a) => a.status === "Sanctioned").length;
+    applicant.totalGrant = mine.reduce((sum, a) => sum + (a.sanction?.total ?? 0), 0);
+  }
+
+  /*
    * Sized to fit the browser (serious audit S03, 14 Sep 2026). The whole store is one
    * localStorage entry shared with every other portal on the origin, and at 2.78 million
    * characters a submitted application could not be written. Two cuts, both made AFTER every
@@ -1319,10 +1774,10 @@ export function buildSeed(): {
    *   characters. A file uploaded through the form keeps its verdict. (`demoVerdictFor` draws no
    *   random numbers, so leaving it out moves nothing else.)
    */
-  const beneficiaries: Beneficiary[] = applicant.institutions.flatMap((inst, k) =>
+  const beneficiaries: Beneficiary[] = applicant.institutions.filter((inst) => !historyProjects.has(inst.id)).flatMap((inst, k) =>
     buildBeneficiaries(inst.id, k === 0 ? 110 : 16 + (k % 4) * 3, k === 0 ? 14 : 2, k * 11),
-  );
-  const employees: Employee[] = applicant.institutions.flatMap((inst, k) => buildEmployees(inst.id, k === 0 ? 7 : 3 + (k % 4)));
+  ).concat(historyRoster);
+  const employees: Employee[] = applicant.institutions.filter((inst) => !historyProjects.has(inst.id)).flatMap((inst, k) => buildEmployees(inst.id, k === 0 ? 7 : 3 + (k % 4))).concat(historyStaff);
 
   return { applications: apps, ngos, inspections, notifications, projectAccounts, changeRequests, beneficiaries, employees };
 }

@@ -171,7 +171,9 @@ export function roleForSchemeKey(key: string): RoleDef | undefined {
  */
 export function ngoStatusLabel(app: GrantApplication): string {
   if (app.status === "Draft") return "Draft";
-  if (app.sanction || app.status === "Sanctioned" || app.status === "Released") return "Approved";
+  // "Sanctioned", as the dashboard's "Sanctioned Grants" tile says: two words for one state read as two
+  // states (parity inventory §2).
+  if (app.sanction || app.status === "Sanctioned" || app.status === "Released") return "Sanctioned";
   if (app.status === "Rejected") return "Closed / Rejected";
   // A deficiency is the one state that asks the applicant to act, so it is named for what it
   // asks rather than folded into "Query / Returned" (review call 11 Sep 2026, T43–54).
@@ -186,10 +188,11 @@ export function ngoStatusLabel(app: GrantApplication): string {
 /** The live filter chips over My Applications, in order. */
 export const NGO_STATUS_FILTERS = [
   "All",
+  "Draft",
   "Action Required",
   "Submitted",
   "In Review",
-  "Approved",
+  "Sanctioned",
   "Query / Returned",
   "Closed / Rejected",
 ] as const;

@@ -15,10 +15,11 @@
  *   answer to the same question.
  */
 import type { EventItem, EventTone } from "@mosje/design-system";
-import { ngoApplications } from "./selectors";
-import { isReadBy } from "./store/persistence";
-import { ROLES, reviewKeyOf } from "./roles";
-import type { EAnudaanState, GrantApplication, NotificationEntry, RoleId } from "./types";
+import { ngoApplications } from "./selectors.ts";
+import { ucDue } from "./registers.ts";
+import { isReadBy } from "./store/persistence.ts";
+import { ROLES, reviewKeyOf } from "./roles.ts";
+import type { EAnudaanState, GrantApplication, NotificationEntry, RoleId } from "./types.ts";
 
 const BASE = "/portals/e-anudaan";
 
@@ -35,7 +36,7 @@ export function notificationsHref(role: RoleId): string {
 
 function toneFor(title: string): EventTone {
   const t = title.toLowerCase();
-  if (t.includes("sanctioned")) return "success";
+  if (t.includes("sanctioned") || t.includes("approved") || t.includes("verified")) return "success";
   if (t.includes("rejected")) return "danger";
   if (t.includes("deficiency") || t.includes("returned")) return "warning";
   return "info";
@@ -53,17 +54,30 @@ function applicationHref(role: RoleId, applicationId: string): string | undefine
   return key ? `${BASE}/dashboard/sm2/${key}/review/${id}` : undefined;
 }
 
+/**
+ * The body without what the title and subject already say. Bodies are written "Application <id> —
+ * <remarks>." and read, under "Application Submitted", as "Application … — Application submitted."
+ * (parity inventory §5, §31). The reference moves to the subject; remarks that only repeat the
+ * title are dropped.
+ */
+function noteOf(entry: NotificationEntry): { subject?: string; note?: string } {
+  const body = entry.body.replace(/\.{2,}$/, ".");
+  const m = /^(Application|Project) (\S+) — (.*)$/.exec(body);
+  if (!m) return { note: body };
+  const plain = (t: string) => t.toLowerCase().replace(/[^a-z]/g, "");
+  const remark = m[3]!.trim();
+  return { subject: `${m[1]} ${m[2]}`, note: plain(remark) === plain(entry.title) ? undefined : remark };
+}
+
 function updateItem(entry: NotificationEntry, role: RoleId): EventItem {
   return {
     id: entry.id,
     at: entry.at,
     action: entry.title,
-    /* Seeded bodies end "remarks." + "." — print one full stop. */
-    note: entry.body.replace(/\.{2,}$/, "."),
-    actor: "E-Anudaan",
+    ...noteOf(entry),
     tone: toneFor(entry.title),
     unread: !isReadBy(entry, role),
-    href: entry.applicationId ? applicationHref(role, entry.applicationId) : undefined,
+    href: entry.href ?? (entry.applicationId ? applicationHref(role, entry.applicationId) : undefined),
   };
 }
 
@@ -81,7 +95,6 @@ export function notificationItems(state: EAnudaanState, role: RoleId | null): Ev
             action: "Deficiency response requested",
             subject: `Application ${app.id}`,
             note: open?.detail,
-            actor: "E-Anudaan",
             tone: "warning",
             actionRequired: true,
             href: `${BASE}/ngo/my-applications/deficiencies`,
@@ -89,9 +102,27 @@ export function notificationItems(state: EAnudaanState, role: RoleId | null): Ev
         })
       : [];
 
+  /* A utilisation certificate due is the other thing that waits on the NGO. Live notifies
+     "1st instalment released — UC due" with Open →; ours had a UC form nothing linked to. Derived
+     from the file, like the deficiency above, so it clears when the certificate is filed. */
+  if (role === "ngo" && state.ngos[0]) {
+    for (const app of ucDue(state, state.ngos[0].id)) {
+      actions.push({
+        id: `uc-${app.id}`,
+        at: app.sanction!.sanctionedAt,
+        action: "Utilisation certificate due",
+        subject: `Project ${app.institutionId} · FY ${app.financialYear}`,
+        note: `File the certificate for the grant sanctioned under order ${app.sanction!.orderNo}.`,
+        tone: "warning",
+        actionRequired: true,
+        href: `${BASE}/ngo/my-applications/${encodeURIComponent(app.id)}/uc`,
+      } satisfies EventItem);
+    }
+  }
+
   /* A "Deficiency raised" update about an application that is still waiting on
      the NGO is the action above, told twice. Keep the action; drop the echo. */
-  const waiting = new Set(actions.map((a) => a.id.replace(/^action-/, "")));
+  const waiting = new Set(actions.filter((a) => a.id.startsWith("action-")).map((a) => a.id.replace(/^action-/, "")));
   const updates = state.notifications
     .filter((n) => n.audience.includes(role))
     .filter((n) => !(n.applicationId && waiting.has(n.applicationId) && /deficiency/i.test(n.title)))

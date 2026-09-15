@@ -691,6 +691,16 @@
     }
   }
 
+  /* A portal masthead between 768 and 1023 carries the rail toggle, the lockup, the bell and the
+     account on one row, and a long account name pushed that row past the viewport: the E-Anudaan
+     NGO portal scrolled 91px sideways at 768 ("Sankalp Seva Sansthan"), an officer 36px. Below
+     `laptop` a portal's account is the avatar and caret; the name is the menu's first line. */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .ds-hdr[data-variant="portal"] .ds-hdr-account__details {
+      display: none;
+    }
+  }
+
   /* The email is the first thing to go — the name identifies the session, the
      address only confirms it. Below `laptop` the block is name + avatar + caret. */
   @media (max-width: 1023px) {

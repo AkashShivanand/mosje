@@ -149,7 +149,7 @@ test("only PD:ASO raises a deficiency and only PD:SO communicates it", () => {
   assert.ok(app.deficiencies[0]?.respondedAt, "the deficiency should be closed out");
 });
 
-test("US and DS raise queries that push the file down a grade; ASO and SO cannot", () => {
+test("Return to Previous (a query) pushes the file down a grade and climbs back when answered", () => {
   let app = must(draft(), "ngo", "submit");
   app = must(app, "pd-aso", "certify");
   app = must(app, "pd-aso", "forward");

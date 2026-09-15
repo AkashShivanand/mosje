@@ -23,11 +23,26 @@ for (const [code, def] of Object.entries(WIZARDS)) {
   const branches = caseType?.options ?? [""];
 
   for (const branch of branches) {
-    test(`${code}${branch ? ` · ${branch}` : ""}: no required locked field is left empty`, () => {
+    test(`${code}${branch ? ` · ${branch}` : ""}: no required locked field is left empty`, async () => {
       // The declaration's date and time are the portal's to fill, like DARPAN's.
       let values: Record<string, string> = { ...darpanSeed(undefined), ...declarationStamp(), ...(branch ? { case_type: branch } : {}) };
       // Choosing the project is the applicant's act; what it brings with it is the portal's.
       const projectField = def.steps.flatMap(stepFields).find((f) => RENEWAL_PROJECT_FIELDS.includes(f.name) && fieldVisible(f, values));
+      if (projectField?.optionsFrom) {
+        // AVYAY: the NGO's own sanctioned project, through the wizard's own setter.
+        const { buildSeed, SEED_SCHEMES } = await import("./store/seed.ts");
+        const { answerField } = await import("./submit-application.ts");
+        const { renewableProjects, renewalOption } = await import("./instalments.ts");
+        const state = { version: 0, session: "ngo" as const, schemes: SEED_SCHEMES, ...buildSeed() };
+        const plans = renewableProjects(state, state.ngos[0]!.id, code);
+        assert.ok(plans.length > 0, `${code}: the applicant has a project to renew`);
+        for (const plan of plans) {
+          const chosen = answerField(state, def, visibleSteps(def, values)[0]!, values, projectField.name, renewalOption(plan));
+          const empty = visibleSteps(def, chosen).flatMap(stepFields).filter((f) => fieldVisible(f, chosen) && f.required && !f.auto && isReadOnly(f, chosen) && !(chosen[f.name] ?? "").trim()).map((f) => f.name);
+          assert.deepEqual(empty, [], `${code} ${plan.projectId}: ${empty.join(", ")}`);
+        }
+        return;
+      }
       if (projectField) {
         values = { ...values, [projectField.name]: projectField.options?.[0] ?? "P-1", fld_installment_no: "1st Instalment", ...(CARRIED_FORWARD[code] ?? {}) };
       }
@@ -55,7 +70,7 @@ test("a submission is filed under its own project, counts its people, and keeps 
   const { buildSeed } = await import("./store/seed.ts");
   const ngo = buildSeed().ngos[0]!;
   // A renewal names its project on step 1.
-  const renewal = projectForSubmission(ngo, "NAPDDR", { fld_renewal_project: "DR/AN/NIC/40536 — Project, Nicobar · FY 2026-27" }, 1);
+  const renewal = projectForSubmission(ngo, "NAPDDR", { fld_ongoing_source_application: "DR/AN/NIC/40536 — Project, Nicobar · FY 2026-27" }, 1);
   assert.equal(renewal.institutionId, "DR/AN/NIC/40536");
   assert.equal(renewal.created, undefined);
   // A new project gets a new ID, not the NGO's first project.
@@ -91,16 +106,13 @@ test("a SHRESHTA institution that is ongoing is filed as an ongoing case", async
   assert.equal(caseTypeOf({ case_type: "No — new project (Project ID auto-generated)" }), "New");
 });
 
-test("a renewal can only pick a project that is renewable, on every scheme that renews", async () => {
-  const { WIZARDS: all, RENEWAL_PROJECTS, stepFields: fieldsOf } = await import("./form-schema.ts");
+test("every scheme's renewal picker reads the NGO's own sanctioned record, never a fixed list", async () => {
+  const { WIZARDS: all, RENEWAL_PICKER, stepFields: fieldsOf } = await import("./form-schema.ts");
   for (const def of Object.values(all)) {
-    const picker = def.steps.flatMap(fieldsOf).find((f) => RENEWAL_PROJECT_FIELDS.includes(f.name));
-    if (!picker) continue;
-    const blocked = Object.values(RENEWAL_PROJECTS).flat().filter((p) => p.stage !== "pmu-verified").map((p) => p.id);
-    const offered = (picker.options ?? []).map((o) => o.split(" — ")[0]!);
-    assert.ok(offered.length > 0, `${def.code} offers nothing to renew`);
-    assert.deepEqual(offered.filter((id) => blocked.includes(id)), [], `${def.code} offers a project that cannot be renewed`);
-    for (const o of picker.options ?? []) assert.doesNotMatch(o, /awaiting sanction/i);
+    const picker = def.steps.flatMap(fieldsOf).find((f) => f.name === RENEWAL_PICKER[def.code]);
+    assert.ok(picker, `${def.code} has a renewal picker`);
+    assert.equal(picker.optionsFrom, "renewableProjects", def.code);
+    assert.equal(picker.options, undefined, `${def.code} lists no fixed projects`);
   }
 });
 

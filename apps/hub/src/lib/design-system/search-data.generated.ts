@@ -707,6 +707,33 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "view_quilt"
   },
   {
+    "title": "Document Checklist — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/document-checklist",
+    "keywords": "document checklist — design system forms & inputs anatomy the gate is not a disabled button example notes reg.pdf tokens wcag accessibility",
+    "description": "The documents a form asks for, grouped, under one header that says how many required documents are ready — with filter chips, a drop zone and the summary a blocked Continue raises.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
+    "title": "Document Findings — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/document-findings",
+    "keywords": "document findings — design system forms & inputs compared, not just printed example notes  tokens wcag accessibility",
+    "description": "What the automatic check found in a document: its verdict, the fields it read — each compared with the application",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
+    "title": "Document History Sheet — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/document-history-sheet",
+    "keywords": "document history sheet — design system forms & inputs current first example notes  tokens wcag accessibility",
+    "description": "Every version of one document in a side sheet — the current file first, then each earlier file, with what was said about it and why it was replaced.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Document Library — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/document-library",
@@ -714,6 +741,24 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "One shelf for everything a body publishes.",
     "type": "component",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "Document Placement Tray — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/document-placement-tray",
+    "keywords": "document placement tray — design system forms & inputs listed, never dropped example notes  tokens wcag accessibility",
+    "description": "What a batch drop did: where each file went, what it replaced, what could not be placed and what was refused — each changeable in one step.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
+    "title": "Document Row — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/document-row",
+    "keywords": "document row — design system forms & inputs ten states example notes budget-2026-27.pdf tokens wcag accessibility",
+    "description": "One document as a compact row — status icon, title, file, status in words, one action and a menu — in ten states, growing only when the document needs the reader.",
+    "type": "component",
+    "iconName": "edit_note"
   },
   {
     "title": "Document Tile — Design System",

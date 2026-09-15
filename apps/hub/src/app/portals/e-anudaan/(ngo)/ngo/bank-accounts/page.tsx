@@ -124,6 +124,9 @@ export default function ProjectBankAccountsPage() {
                 project={p}
                 accounts={accountsFor(state, p.id)}
                 pending={bankRequests.find((r) => r.projectId === p.id && r.status === "Pending")}
+                decided={bankRequests
+                  .filter((r) => r.projectId === p.id && r.status !== "Pending" && r.decidedAt)
+                  .sort((a, b) => Date.parse(b.decidedAt!) - Date.parse(a.decidedAt!))[0]}
                 onChange={() => setChanging(p)}
               />
             ))}
@@ -155,11 +158,14 @@ function ProjectRow({
   project,
   accounts,
   pending,
+  decided,
   onChange,
 }: {
   project: Institution;
   accounts: { current?: ProjectAccount; previous: ProjectAccount[] };
   pending?: BankChangeRequest;
+  /** The latest request the Ministry has decided on this project, with its remarks. */
+  decided?: BankChangeRequest;
   onChange: () => void;
 }) {
   const [showPrevious, setShowPrevious] = React.useState(false);
@@ -187,6 +193,15 @@ function ProjectRow({
             <span className="mt-1 block">
               <Badge status="warning" size="sm">Change Under Examination</Badge>{" "}
               To {accountLine(pending)} · requested {formatDate(pending.submittedAt)}
+            </span>
+          )}
+          {!pending && decided && (
+            <span className="mt-1 block">
+              <Badge status={decided.status === "Approved" ? "success" : "danger"} size="sm">
+                {decided.status === "Approved" ? "Change Approved" : "Change Rejected"}
+              </Badge>{" "}
+              {formatDate(decided.decidedAt!)}
+              {decided.decisionRemarks ? ` · ${decided.decisionRemarks}` : ""}
             </span>
           )}
           {previous.length > 0 && (
@@ -237,7 +252,7 @@ function ProjectRow({
 }
 
 function ChangeAccountDialog({ project, current, onClose }: { project: Institution; current?: ProjectAccount; onClose: () => void }) {
-  const { submitChangeRequest } = useEAnudaan();
+  const { raiseChangeRequest } = useEAnudaan();
   const { toast } = useToast();
   const fileInput = React.useRef<HTMLInputElement>(null);
   const [f, setF] = React.useState({ bank: "", branch: "", account: "", confirm: "", ifsc: "", pfms: "", reason: "" });
@@ -259,7 +274,7 @@ function ChangeAccountDialog({ project, current, onClose }: { project: Instituti
   const submit = () => {
     setTried(true);
     if (errors.length) return;
-    submitChangeRequest({
+    raiseChangeRequest({
       kind: "bank",
       projectId: project.id,
       bank: f.bank.trim(),

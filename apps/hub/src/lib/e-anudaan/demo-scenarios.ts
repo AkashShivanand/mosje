@@ -15,12 +15,15 @@
 
 import {
   applyAllAutoFields,
+  isReadOnly,
   visibleDocuments,
   visibleSteps,
   type FieldDef,
   type WizardDef,
 } from "./form-schema.ts";
 import { districtsOf } from "./geography.ts";
+import { currentFinancialYear } from "./instalments.ts";
+import { darpanSeed } from "./prefill.ts";
 import { demoVerdictFor, type UploadedDoc, type VerdictState } from "./doc-verification.ts";
 
 /** The event the wizard listens for. Dispatched on `window` by the demo dock panel. */
@@ -71,14 +74,21 @@ export const DEMO_SCENARIOS: readonly DemoScenario[] = [
  * first and the dependent fields after.
  */
 function fullValues(def: WizardDef, seed: Record<string, string> = {}): Record<string, string> {
-  const out: Record<string, string> = { ...seed };
+  // What the portal supplies comes first — NGO-Darpan's identity and the year now running — so the
+  // payload is complete on its own and the wizard only has to lay the signed-in NGO's record over it.
+  const out: Record<string, string> = { ...darpanSeed(undefined), fld_financial_year: currentFinancialYear(), ...seed };
   const all: FieldDef[] = [];
   for (const step of def.steps) for (const section of step.sections) all.push(...section.fields);
 
-  const independent = all.filter((f) => !f.auto && !f.districtsOf);
-  const dependent = all.filter((f) => !f.auto && f.districtsOf);
-  for (const f of independent) out[f.name] ??= answerFor(f);
-  for (const f of dependent) out[f.name] ??= answerFor(f, out);
+  // A locked answer the portal has supplied is the portal's, never the demo's: DARPAN's name, ID,
+  // State and District, a new application's financial year. The demo used to write "Illustrative
+  // name of NGO / VO" over what NGO-Darpan had supplied. Options drawn from the applicant's own
+  // records (a renewal's project) are not invented either.
+  const answerable = (f: FieldDef) => !f.auto && !f.optionsFrom && !(isReadOnly(f, out) && (out[f.name] ?? "").trim() !== "");
+  const independent = all.filter((f) => !f.districtsOf);
+  const dependent = all.filter((f) => f.districtsOf);
+  for (const f of independent) if (answerable(f)) out[f.name] ??= answerFor(f);
+  for (const f of dependent) if (answerable(f)) out[f.name] ??= answerFor(f, out);
 
   return applyAllAutoFields(def, out);
 }
@@ -105,6 +115,8 @@ function answerFor(f: FieldDef, values?: Record<string, string>): string {
     case "pin": return "411001";
     case "nameAndPhone": return "Illustrative Name, 9800000000";
     case "lettersOnly": return "Illustrative Name";
+    case "accountNumber": return "123456789012";
+    case "notFuture": return "2016-04-01";
     // A date that must follow another one: every demo date was 1 Apr 2026, so "Complete & valid"
     // stopped on Organisation Details with "Must be later than the date of registration."
     case "afterRegistration":

@@ -21,15 +21,25 @@ import type {
   Inspection,
   NgoProfile,
   RoleId,
+  UtilisationCertificate,
 } from "../types.ts";
 import type { Beneficiary, Employee } from "../roster.ts";
+import { decideChangeRequest as decideChange, requestRaisedNotice, type ChangeDecision } from "../change-requests.ts";
+import { newInspection } from "../registers.ts";
+import type { DocVerdict } from "../doc-verification.ts";
 import { notificationBody, notificationTitle, notifiesApplicant } from "../applicant.ts";
 import { fileApplication, type SubmitApplicationInput } from "../submit-application.ts";
 import {
   applyAction,
+  issueShowCauseNotice as issueNotice,
+  openForClaim as openClaim,
+  releaseFunds as release,
+  scheduleOnlineInspection as scheduleOnline,
   type ActionPayload,
   type ActResult,
   type Clock,
+  type OnlineInspectionInput,
+  type ShowCauseInput,
   type WorkflowAction,
 } from "../workflow.ts";
 import { buildSeed, SEED_NOW, SEED_SCHEMES } from "./seed.ts";
@@ -49,8 +59,12 @@ import {
  *
  * 9 — notifications carry `readBy` per role instead of one `read` flag; documents carry who gave
  * the verdict (`reviewedBy`, `reviewedAt`).
+ * 10 — document upload history and automatic-check records; bank and location change requests with
+ * officer decisions; instalment releases; seeded 1st/2nd/3rd-instalment projects for every scheme. An
+ * older copy is dropped and reseeded: it predates the projects and releases every renewal now reads,
+ * so carrying it forward would show renewals with nothing to claim.
  */
-const SCHEMA_VERSION = 9;
+const SCHEMA_VERSION = 10;
 
 function seedState(): EAnudaanState {
   const seed = buildSeed();
@@ -70,7 +84,9 @@ function seedState(): EAnudaanState {
 }
 
 /** An earlier build's copy, brought forward so the applicant's own work on this device survives. */
-const migrate = (old: Parameters<typeof migrateFrom8>[0]) => migrateFrom8(old, seedState());
+// Schema 8 → 9 stays available for a copy that is exactly 8; it is not applied to 10 (see above).
+const migrate = undefined;
+void migrateFrom8;
 
 /**
  * Runtime clock. The seeder uses its own fixed clock; this one is only reached from user
@@ -108,7 +124,12 @@ interface EAnudaanContextValue {
    * Replace an uploaded document. The earlier file is kept as a version — the department asked
    * that a replaced file is never lost (review call, T83–92).
    */
-  replaceDocument: (appId: string, docId: string, file: { name: string; sizeKb: number }) => void;
+  replaceDocument: (appId: string, docId: string, file: { name: string; sizeKb: number }, note?: string) => void;
+  /** The automatic check's verdict on a document's current file, when the check answers. */
+  recordDocumentCheck: (appId: string, docId: string, fileName: string, verdict: DocVerdict) => void;
+  /** Attach a file to the officer's review (Officer Supporting Documents). */
+  addOfficerDocument: (appId: string, file: { name: string; sizeKb: number; title?: string }) => void;
+  removeOfficerDocument: (appId: string, id: string) => void;
   /**
    * The officer's verdict on one document, and its reason. Saved as it is chosen: it lived only
    * in the review screen, so a refresh erased it and a deficiency could not be built from it
@@ -125,6 +146,26 @@ interface EAnudaanContextValue {
   setEmployeeActive: (id: string, active: boolean) => void;
   /** Schedule or record a PMU inspection — replaces the inspection with the same id. */
   saveInspection: (next: Inspection) => void;
+  /** Raise a new inspection on a sanctioned file (PMU "Inspect"). Returns the inspection raised. */
+  raiseInspection: (applicationId: string) => Inspection | undefined;
+  /**
+   * Raise a location or bank-account change request AND tell the desk that decides it — the
+   * Joint Secretary for a bank account, the PMU for a location. Returns the request.
+   */
+  raiseChangeRequest: (request: Omit<ChangeRequest, "id" | "submittedAt" | "status">) => ChangeRequest;
+  /** The deciding officer's approval (or verification) or rejection (or return), with remarks. */
+  decideChangeRequest: (requestId: string, decision: ChangeDecision, remarks: string) => { ok: true } | { ok: false; error: string };
+  /** File the utilisation certificate on a sanctioned application. */
+  fileUtilisationCertificate: (appId: string, uc: Omit<UtilisationCertificate, "filedAt">) => { ok: true } | { ok: false; error: string };
+
+  /** PD:US — release a sanctioned claim's funds. */
+  releaseFunds: (appId: string) => ActResult;
+  /** PD:US — open the instalment after a released one for the NGO to claim. `nextLabel`: "2nd Instalment". */
+  openForClaim: (appId: string, nextLabel: string) => ActResult;
+  /** PD:SO / PD:JS — issue a Show Cause Notice. */
+  issueShowCauseNotice: (appId: string, input: ShowCauseInput) => ActResult;
+  /** Schedule an online (BharatVC) inspection from the review screen. */
+  scheduleOnlineInspection: (appId: string, input: OnlineInspectionInput) => ActResult;
 
   markNotificationRead: (id: string) => void;
   markAllNotificationsRead: () => void;
@@ -151,6 +192,23 @@ function browserStorage(): StorageLike | null {
   } catch {
     return null;
   }
+}
+
+/**
+ * The notice for an act that leaves the file where it is: to the officer who did it, to the NGO
+ * where the act concerns the NGO and the file is the signed-in applicant's own, and to `also`.
+ */
+function stayNotice(s: EAnudaanState, app: GrantApplication, role: RoleId, also: RoleId[] = []) {
+  const entry = app.audit[app.audit.length - 1]!;
+  return {
+    id: `ntf-live-${entry.id}`,
+    at: entry.at,
+    title: notificationTitle(entry.action),
+    body: notificationBody(app.id, entry.remarks),
+    audience: [...new Set<RoleId>([role, ...also, ...(app.ngoId === s.ngos[0]?.id && notifiesApplicant(entry.action) ? (["ngo"] as RoleId[]) : [])])],
+    applicationId: app.id,
+    readBy: [],
+  };
 }
 
 export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
@@ -240,6 +298,35 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
   const value = React.useMemo<EAnudaanContextValue>(() => {
     const findApp = (id: string) => state.applications.find((a) => a.id === id);
 
+    /** One write for an act outside the chain: the file, an inspection it raised, and the notice. */
+    const outsideChain = (
+      appId: string,
+      apply: (app: GrantApplication, role: RoleId, clock: Clock, s: EAnudaanState) => ActResult | { ok: true; app: GrantApplication; inspection: Inspection },
+      also: RoleId[] = [],
+    ): ActResult => {
+      const role = stateRef.current.session;
+      if (!role) return { ok: false, error: "You are not signed in." };
+      const out: { result: ActResult } = { result: { ok: false, error: `Application ${appId} not found.` } };
+      const saved = commit((s) => {
+        const app = s.applications.find((a) => a.id === appId);
+        if (!app) return s;
+        const res = apply(app, role, liveClock(), s);
+        if (!res.ok) {
+          out.result = res;
+          return s;
+        }
+        out.result = { ok: true, app: res.app };
+        return {
+          ...s,
+          applications: s.applications.map((a) => (a.id === appId ? res.app : a)),
+          inspections: "inspection" in res ? [res.inspection, ...s.inspections] : s.inspections,
+          notifications: [stayNotice(s, res.app, role, also), ...s.notifications],
+        };
+      });
+      if (!saved.ok) return { ok: false, error: saved.error };
+      return out.result;
+    };
+
     return {
       state,
       hydrated,
@@ -293,6 +380,15 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
         return out.result;
       },
 
+      releaseFunds: (appId) => outsideChain(appId, (app, role, clock) => release(app, role, clock)),
+      openForClaim: (appId, nextLabel) => outsideChain(appId, (app, role, clock) => openClaim(app, role, nextLabel, clock)),
+      issueShowCauseNotice: (appId, input) => outsideChain(appId, (app, role, clock) => issueNotice(app, role, input, clock)),
+      scheduleOnlineInspection: (appId, input) =>
+        outsideChain(appId, (app, role, clock, s) => {
+          const res = scheduleOnline(app, role, input, s.inspections, clock);
+          return res.ok ? { ok: true, app: res.app, inspection: res.inspection } : res;
+        }),
+
       submitApplication: (input) => {
         const out: { app?: GrantApplication } = {};
         const saved = commit((s) => {
@@ -304,7 +400,7 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
         return out.app ? { ok: true, app: out.app } : { ok: false, error: "The application could not be created." };
       },
 
-      replaceDocument: (appId, docId, file) => {
+      replaceDocument: (appId, docId, file, note) => {
         const now = new Date().toISOString();
         run((s) => ({
           ...s,
@@ -320,19 +416,77 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
                       : {
                           ...d,
                           versions: d.fileName
-                            ? [...(d.versions ?? []), { fileName: d.fileName, sizeKb: d.sizeKb, uploadedAt: d.uploadedAt, replacedAt: now }]
+                            ? [
+                                ...(d.versions ?? []),
+                                {
+                                  fileName: d.fileName,
+                                  sizeKb: d.sizeKb,
+                                  uploadedAt: d.uploadedAt,
+                                  replacedAt: now,
+                                  ...(d.aiVerdict && d.aiVerdict.state !== "pending" ? { verdict: d.aiVerdict.state } : {}),
+                                  ...(note ? { note } : {}),
+                                },
+                              ]
                             : d.versions,
                           fileName: file.name,
                           sizeKb: file.sizeKb,
                           uploadedAt: now,
                           reviewStatus: "Pending",
-                          aiVerdict: undefined,
+                          // The new file is checked as any upload is; the verdict arrives by recordDocumentCheck.
+                          aiVerdict: { state: "pending" },
                         },
                   ),
                 },
           ),
         }));
       },
+
+      recordDocumentCheck: (appId, docId, fileName, verdict) =>
+        run((s) => ({
+          ...s,
+          applications: s.applications.map((a) =>
+            a.id !== appId
+              ? a
+              : {
+                  ...a,
+                  // Only onto the file that was checked: a replacement made meanwhile waits for its own.
+                  documents: a.documents.map((d) => (d.id === docId && d.fileName === fileName ? { ...d, aiVerdict: verdict } : d)),
+                },
+          ),
+        })),
+
+      addOfficerDocument: (appId, file) => {
+        const clock = liveClock();
+        run((s) => ({
+          ...s,
+          applications: s.applications.map((a) =>
+            a.id !== appId
+              ? a
+              : {
+                  ...a,
+                  officerDocuments: [
+                    ...(a.officerDocuments ?? []),
+                    {
+                      id: clock.id("odoc"),
+                      title: file.title?.trim() || undefined,
+                      fileName: file.name,
+                      sizeKb: file.sizeKb,
+                      uploadedAt: clock.now,
+                      uploadedBy: s.session ?? "pd-aso",
+                    },
+                  ],
+                },
+          ),
+        }));
+      },
+
+      removeOfficerDocument: (appId, id) =>
+        run((s) => ({
+          ...s,
+          applications: s.applications.map((a) =>
+            a.id !== appId ? a : { ...a, officerDocuments: (a.officerDocuments ?? []).filter((o) => o.id !== id) },
+          ),
+        })),
 
       reviewDocument: (appId, docId, status, remarks) => {
         const now = new Date().toISOString();
@@ -415,6 +569,55 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
         run((s) => ({ ...s, employees: [{ ...e, id: liveClock().id("emp") }, ...s.employees] })),
       setEmployeeActive: (id, active) =>
         run((s) => ({ ...s, employees: s.employees.map((e) => (e.id === id ? { ...e, active } : e)) })),
+      raiseInspection: (applicationId) => {
+        const out: { insp?: Inspection } = {};
+        run((s) => {
+          const app = s.applications.find((a) => a.id === applicationId);
+          if (!app?.sanction || s.inspections.some((i) => i.applicationId === applicationId)) return s;
+          out.insp = newInspection(app, liveClock().id("insp"));
+          return { ...s, inspections: [out.insp, ...s.inspections] };
+        });
+        return out.insp;
+      },
+
+      raiseChangeRequest: (request) => {
+        const clock = liveClock();
+        const created = { ...request, id: clock.id("req"), submittedAt: clock.now, status: "Pending" } as ChangeRequest;
+        run((s) => ({ ...s, changeRequests: [created, ...s.changeRequests], notifications: [requestRaisedNotice(created), ...s.notifications] }));
+        return created;
+      },
+
+      decideChangeRequest: (requestId, decision, remarks) => {
+        const role = stateRef.current.session;
+        if (!role) return { ok: false, error: "You are not signed in." };
+        const out: { error?: string } = {};
+        const saved = commit((s) => {
+          const res = decideChange(s, requestId, decision, remarks, role, liveClock());
+          if (!res.ok) {
+            out.error = res.error;
+            return s;
+          }
+          return res.state;
+        });
+        if (!saved.ok) return saved;
+        return out.error ? { ok: false, error: out.error } : { ok: true };
+      },
+
+      fileUtilisationCertificate: (appId, uc) => {
+        const out: { error?: string } = {};
+        const saved = commit((s) => {
+          const app = s.applications.find((a) => a.id === appId);
+          if (!app?.sanction) {
+            out.error = "A utilisation certificate can be filed only on a sanctioned grant.";
+            return s;
+          }
+          const filed = { ...uc, filedAt: new Date().toISOString() };
+          return { ...s, applications: s.applications.map((a) => (a.id === appId ? { ...a, utilisation: filed } : a)) };
+        });
+        if (!saved.ok) return saved;
+        return out.error ? { ok: false, error: out.error } : { ok: true };
+      },
+
       saveInspection: (next) =>
         run((s) => ({ ...s, inspections: s.inspections.map((i) => (i.id === next.id ? next : i)) })),
 

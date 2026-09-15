@@ -237,6 +237,20 @@ function WeekRegister({ projectId, projectLabel }: { projectId: string; projectL
   const end = new Date(start);
   end.setDate(end.getDate() + 6);
   const isCurrentOrFuture = start.getTime() >= weekStart(new Date()).getTime();
+  /*
+   * A day that has not happened cannot be marked. On 16 Sep the register let Saturday 19 and
+   * Sunday 20 be ticked and certified (verify bug 7). Days after today are shown, not markable, and
+   * the totals being certified count only the days so far.
+   */
+  const endOfToday = new Date();
+  endOfToday.setHours(23, 59, 59, 999);
+  const dateOf = (i: number) => {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    return d;
+  };
+  const openDays = WEEK_DAYS.filter((_, i) => dateOf(i).getTime() <= endOfToday.getTime());
+  const isOpenDay = (d: string) => (openDays as readonly string[]).includes(d);
 
   const key = (id: string, d: string) => `${id}:${d}`;
   const presentOn = (d: string) => people.filter((p) => present.has(key(p.id, d))).length;
@@ -249,7 +263,7 @@ function WeekRegister({ projectId, projectLabel }: { projectId: string; projectL
       }
       return next;
     });
-  const setWeek = (on: boolean) => setPresent(on ? new Set(people.flatMap((p) => WEEK_DAYS.map((d) => key(p.id, d)))) : new Set());
+  const setWeek = (on: boolean) => setPresent(on ? new Set(people.flatMap((p) => openDays.map((d) => key(p.id, d)))) : new Set());
   const toggle = (id: string, d: string, on: boolean) =>
     setPresent((prev) => {
       const next = new Set(prev);
@@ -265,7 +279,7 @@ function WeekRegister({ projectId, projectLabel }: { projectId: string; projectL
     setPresent(new Set());
   };
 
-  const cells = people.length * WEEK_DAYS.length;
+  const cells = people.length * openDays.length;
   const presentCount = people.reduce((n, p) => n + WEEK_DAYS.filter((d) => present.has(key(p.id, d))).length, 0);
   const noun = who === "staff" ? "staff" : "beneficiaries";
   const beneficiariesHref = `/portals/e-anudaan/ngo/beneficiaries?project=${encodeURIComponent(projectId)}${who === "staff" ? "&tab=staff" : ""}`;
@@ -320,7 +334,7 @@ function WeekRegister({ projectId, projectLabel }: { projectId: string; projectL
           <>
             <div className="flex flex-wrap items-center gap-2">
               <Button appearance="outlined" size="sm" onClick={() => setWeek(true)}>
-                Mark All {people.length} Present for the Week
+                {openDays.length === WEEK_DAYS.length ? `Mark All ${people.length} Present for the Week` : `Mark All ${people.length} Present to Date`}
               </Button>
               <Button appearance="text" size="sm" onClick={() => setWeek(false)}>
                 Clear Marks
@@ -359,9 +373,10 @@ function WeekRegister({ projectId, projectLabel }: { projectId: string; projectL
                           <Checkbox
                             size="sm"
                             hideLabel
-                            label={`Mark all ${people.length} present on ${d} ${date.getDate()}`}
+                            label={isOpenDay(d) ? `Mark all ${people.length} present on ${d} ${date.getDate()}` : `${d} ${date.getDate()} has not come yet`}
                             checked={n === people.length}
                             indeterminate={n > 0 && n < people.length}
+                            disabled={!isOpenDay(d)}
                             onCheckedChange={(on) => setDay(d, on)}
                           />
                           <span className="text-body-3 normal-case" aria-hidden>
@@ -377,6 +392,7 @@ function WeekRegister({ projectId, projectLabel }: { projectId: string; projectL
                           hideLabel
                           label={`${p.name} present on ${d}`}
                           checked={present.has(key(p.id, d))}
+                          disabled={!isOpenDay(d)}
                           onCheckedChange={(on) => toggle(p.id, d, on)}
                         />
                       </span>

@@ -49,7 +49,18 @@ export type Capability =
   | "inspect"
   | "auditTrail"
   | "sanctionRegister"
-  | "forwardedRegister";
+  | "forwardedRegister"
+  /** PD:JS — approves or rejects an NGO's request to change a project's bank account (live SM2 JS-PD). */
+  | "approveBankChange"
+  /** PMU — verifies or returns an NGO's request to move a project (live AVYAY PMU). */
+  | "verifyLocationChange"
+  /**
+   * PD:US — releases a sanctioned instalment and opens the next for claim. Live SM2-PD-US carries
+   * "Instalments & Fund Release" with "Release funds" and "Open for claim" (inventory §21 item 8).
+   */
+  | "releaseFunds"
+  /** PD:SO and PD:JS — issues a Show Cause Notice to the NGO (live SM2-PD-SO / JS "Issue SCN"). */
+  | "issueShowCause";
 
 /**
  * Application status. `Draft`, `Submitted`, `Sanctioned` and `Rejected` are observed verbatim
@@ -101,7 +112,12 @@ export type AuditAction =
   | "routeDown"
   | "inspectionScheduled"
   | "inspectionSubmitted"
-  | "inspectionReviewed";
+  | "inspectionReviewed"
+  /** A sanctioned instalment released to the NGO. */
+  | "releaseFunds"
+  /** The next instalment opened for the NGO to claim. */
+  | "openClaim"
+  | "showCauseIssued";
 
 /**
  * Audit entry. Field set mirrors the live Audit Trail screen's columns exactly:
@@ -187,6 +203,24 @@ export interface DocVersion {
   uploadedAt?: string;
   /** When this version stopped being the current one. */
   replacedAt: string;
+  /** What the automatic check said about this version, when it had run. */
+  verdict?: import("./doc-verification").VerdictState;
+  /** Why it was replaced — "Replaced after the Ministry's query". */
+  note?: string;
+}
+
+/**
+ * A file an officer attaches to the review — a site photograph, a letter — listed on the review
+ * screen as "Officer Supporting Documents" (live DECISION captures).
+ */
+export interface OfficerDocument {
+  id: string;
+  /** "Document title (optional)" on the live form. */
+  title?: string;
+  fileName: string;
+  sizeKb: number;
+  uploadedAt: string;
+  uploadedBy: RoleId;
 }
 
 export interface MockDoc {
@@ -239,8 +273,17 @@ export interface ShowCauseNotice {
   issuedAt: string;
   grounds: string;
   respondByDays: number;
+  /** The response deadline the officer set, when one was set ("Response deadline (optional)"). */
+  respondBy?: string;
   response?: string;
   respondedAt?: string;
+}
+
+/** Money released to the NGO against one sanction order. One release per sanctioned claim. */
+export interface FundRelease {
+  amount: number;
+  releasedAt: string;
+  releasedBy: RoleId;
 }
 
 export interface SanctionOrder {
@@ -350,6 +393,23 @@ export interface GrantApplication {
   updatedAt: string;
   /** Days the file has sat with its current holder — drives the "Pending > 7 days" KPI. */
   ageingDays: number;
+  /** The utilisation certificate the NGO filed against this sanction, if it has. */
+  utilisation?: UtilisationCertificate;
+  /** Files officers attached to the review. Absent on files where none has been. */
+  officerDocuments?: OfficerDocument[];
+  /** What was released against the sanction, once the Under Secretary has released it. */
+  release?: FundRelease;
+  /** When the instalment after this released one was opened for the NGO to claim. */
+  claimOpenedAt?: string;
+}
+
+/** A GFR 12-A utilisation certificate, as the NGO files it. */
+export interface UtilisationCertificate {
+  filedAt: string;
+  amountUtilised: number;
+  remarks: string;
+  /** The Chartered Accountant-signed certificate. */
+  documentName: string;
 }
 
 export type InspectionStatus = "Pending" | "Scheduled" | "Submitted" | "Reviewed";
@@ -365,6 +425,11 @@ export interface Inspection {
   submittedAt?: string;
   findings?: string;
   recommendation?: "Satisfactory" | "Needs improvement" | "Unsatisfactory";
+  /** An online (BharatVC) inspection an officer scheduled from the review screen. */
+  title?: string;
+  description?: string;
+  endsAt?: string;
+  scheduledBy?: RoleId;
 }
 
 export interface NotificationEntry {
@@ -375,6 +440,8 @@ export interface NotificationEntry {
   /** Which sessions should see it. */
   audience: RoleId[];
   applicationId?: string;
+  /** Where the notice opens, when it is about something other than an application (a change request). */
+  href?: string;
   /**
    * The roles that have read it. One `read` flag was shared by the whole audience, so a notice
    * addressed to the applicant and an officer was marked read for both when either opened it.
@@ -401,7 +468,8 @@ export interface ProjectAccount {
   activeTo?: string;
 }
 
-export type ChangeRequestStatus = "Pending" | "Approved" | "Rejected";
+/** "Returned" is a location change the PMU sent back to the NGO to raise again. */
+export type ChangeRequestStatus = "Pending" | "Approved" | "Rejected" | "Returned";
 
 interface ChangeRequestBase {
   id: string;
@@ -412,6 +480,10 @@ interface ChangeRequestBase {
   /** Name of the optional supporting document. */
   documentName?: string;
   decidedAt?: string;
+  /** The officer who decided it. */
+  decidedBy?: RoleId;
+  /** The officer's remarks, shown to the NGO with the outcome. */
+  decisionRemarks?: string;
 }
 
 export interface LocationChangeRequest extends ChangeRequestBase {

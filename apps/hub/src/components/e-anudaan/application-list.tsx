@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Search, WorklistScreen, screenCopy } from "@mosje/design-system";
 import type { GrantApplication, RoleId } from "@/lib/e-anudaan/types";
-import { useWorklistOptions, worklistColumns, type WorklistVariant } from "./worklist-table";
+import { useWorklistOptions, worklistColumns, type WorklistVariant, splitRowActions } from "./worklist-table";
 
 /**
  * Build a CSV from the selected rows.
@@ -56,6 +56,8 @@ export interface ApplicationListProps {
   exportable?: boolean;
   /** On the Forwarded register: the officer whose forwards are listed, for the "Forwarded On" date. */
   forwardedBy?: RoleId;
+  /** On the Sanction Register: where each file's payment status opens. */
+  paymentBase?: string;
 }
 
 const LIST_COPY = screenCopy({
@@ -87,11 +89,13 @@ export function ApplicationList({
   reviewBase,
   exportable = false,
   forwardedBy,
+  paymentBase,
 }: ApplicationListProps): React.JSX.Element {
   const [q, setQ] = React.useState("");
   const [selected, setSelected] = React.useState<string[]>([]);
 
-  const opts = useWorklistOptions(reviewBase, forwardedBy);
+  // Every register names the State and links the organisation to its NGO 360 (inventory §17–19, §33).
+  const opts = useWorklistOptions(reviewBase, forwardedBy, { paymentBase, withPlace: true, withNgoLink: true });
   const columns = React.useMemo(() => worklistColumns(variant, opts), [variant, opts]);
 
   const filtered = React.useMemo(() => {
@@ -125,10 +129,9 @@ export function ApplicationList({
 
   return (
     <WorklistScreen<GrantApplication>
-      eyebrow="E-ANUDAAN"
       title={title}
       meta={description}
-      columns={columns}
+      {...splitRowActions(columns)}
       rows={filtered}
       registerTotal={rows.length}
       getRowId={(row) => row.id}

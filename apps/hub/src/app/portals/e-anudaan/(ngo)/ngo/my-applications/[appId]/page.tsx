@@ -5,8 +5,9 @@
  *
  * DS Audit: Alert ✅ existing · Badge ✅ · Button ✅ · Icon ✅ · Card ✅ · SectionTitle ✅ ·
  * DescriptionList ✅ · ListGroup / ListRow ✅ · Accordion ✅ · EventList ✅ · Input ✅ ·
- * Textarea ✅ · FormField ✅ · PageHeader ✅ · Heading ✅ · Link ✅ · useToast ✅ — nothing new.
- * The document "Replace File" control is still a hidden file input behind a Button: see the
+ * Textarea ✅ · FormField ✅ · PageHeader ✅ · Heading ✅ · Link ✅ · useToast ✅ ·
+ * DocumentRow ➕ · DocumentFindings ➕ · DocumentHistorySheet ➕ (the Document Centre).
+ * The document "Replace" control is still a hidden file input behind a Button: see the
  * conformance report — `MediaUpload` rejects PDFs whenever `accept` names an image type.
  *
  * Two modes, both from the review call of 11 Sep 2026:
@@ -49,8 +50,19 @@ import {
   SectionTitle,
   Textarea,
   EventList,
+  DocumentHistorySheet,
+  DocumentRow,
   useToast,
 } from "@mosje/design-system";
+import { DocumentViewSheet, Findings, rowStateOf } from "@/components/e-anudaan/document-centre-parts";
+import {
+  DOC_STATE_META,
+  applicantFacts,
+  docState,
+  fileSizeLabel,
+  historyEntriesOfRecord,
+  simulateCheck,
+} from "@/lib/e-anudaan/document-centre";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ownApplication, signedInNgoId } from "@/lib/e-anudaan/roles";
 import { applicationNotFoundProps } from "@/components/e-anudaan/ngo-application-not-found";
@@ -61,6 +73,7 @@ import { fieldLabel, type FieldDef } from "@/lib/e-anudaan/form-schema";
 import { answeredSections, applicantStages, applicantStanding, caseLabel, openDeficiencyOf, requestedAt } from "@/lib/e-anudaan/applicant";
 import type { DeficiencyItem, GrantApplication, MockDoc } from "@/lib/e-anudaan/types";
 import { routeOnClick } from "@/components/e-anudaan/ngo-shell";
+import { SanctionedFilePanel } from "@/components/e-anudaan/sanctioned-file-panel";
 
 const BASE = "/portals/e-anudaan/ngo/my-applications";
 
@@ -124,8 +137,10 @@ function ApplicationDetail() {
         </>
       ) : (
         <>
-          {open && <CorrectionSummary app={app} items={open.items ?? []} />}
+          {/* Summary first, then what is asked of the applicant (verify N5). */}
           <SummaryCard app={app} schemeName={scheme?.name ?? app.schemeCode} />
+          {open && <CorrectionSummary app={app} items={open.items ?? []} />}
+          <SanctionedFilePanel app={app} />
           <ApplicationData app={app} />
           <Documents app={app} />
           <History app={app} />
@@ -138,7 +153,7 @@ function ApplicationDetail() {
 /* ── Focused mode — the corrections ─────────────────────────────────────── */
 
 function CorrectionPanel({ app }: { app: GrantApplication }) {
-  const { act, replaceDocument, correctDeficiencyItem } = useEAnudaan();
+  const { act, replaceDocument, correctDeficiencyItem, recordDocumentCheck } = useEAnudaan();
   const { toast } = useToast();
   const router = useRouter();
   const deficiency = openDeficiencyOf(app)!;
@@ -147,6 +162,25 @@ function CorrectionPanel({ app }: { app: GrantApplication }) {
   const [note, setNote] = React.useState("");
   const [attempted, setAttempted] = React.useState(false);
   const remaining = items.length - done;
+
+  // A replacement is checked as any upload is. The verdict is recorded on the file that was checked.
+  const pendingKey = app.documents.filter((d) => d.aiVerdict?.state === "pending" && d.fileName).map((d) => `${d.id}|${d.fileName}`).join(",");
+  React.useEffect(() => {
+    if (!pendingKey) return;
+    const t = window.setTimeout(() => {
+      const facts = applicantFacts(app.formValues ?? {});
+      const checklist = app.documents.map((d) => ({ n: d.slot, title: d.title }));
+      for (const key of pendingKey.split(",")) {
+        const [docId, fileName] = key.split("|") as [string, string];
+        const doc = app.documents.find((d) => d.id === docId);
+        if (!doc) continue;
+        recordDocumentCheck(app.id, docId, fileName, simulateCheck({ slot: { n: doc.slot, title: doc.title }, checklist, fileName, sizeKb: doc.sizeKb ?? 0, applicationFy: app.financialYear, facts }));
+      }
+    }, 1600);
+    return () => window.clearTimeout(t);
+    // The key names every file awaiting a check; the rest of `app` is read as it stands when the check answers.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pendingKey]);
 
   const submit = () => {
     setAttempted(true);
@@ -195,7 +229,7 @@ function CorrectionPanel({ app }: { app: GrantApplication }) {
                 // No toast per item: three stacked toasts covered the next item's controls
                 // (review panel, cycle 2). The item's own "Corrected" badge and line confirm it.
                 onReplace={(doc, file) => {
-                  replaceDocument(app.id, doc.id, file);
+                  replaceDocument(app.id, doc.id, file, "Replaced after the Ministry's query");
                   correctDeficiencyItem(app.id, item.id, `Replaced with ${file.name}`);
                 }}
                 onCorrectField={(value) => correctDeficiencyItem(app.id, item.id, "Answer corrected.", value)}
@@ -254,9 +288,14 @@ function CorrectionItem({
   const [value, setValue] = React.useState("");
   const corrected = !!item.correctedAt;
   const headingId = `item-${item.id}`;
+  const [historyOpen, setHistoryOpen] = React.useState(false);
+  const [viewing, setViewing] = React.useState(false);
+  const docStateNow = doc ? docState(doc, doc.fileName ? { verdict: doc.aiVerdict ?? { state: "unavailable" } } : undefined) : "missing";
 
   return (
-    <section aria-labelledby={headingId} className="space-y-3 py-5">
+    <section aria-labelledby={item.kind === "document" && doc ? `${headingId}-row-title` : headingId} className="space-y-3 py-5">
+      {/* A document correction is one DocumentRow, which carries its own heading and status. */}
+      {!(item.kind === "document" && doc) && (
       <div className="flex flex-wrap items-start justify-between gap-2">
         <Heading level={3} variant="title-2" id={headingId}>
           {index}. {item.label}
@@ -266,25 +305,54 @@ function CorrectionItem({
           {corrected ? "Corrected" : "To Correct"}
         </Badge>
       </div>
+      )}
 
-      <p className="text-body-2 text-ink">
-        <span className="font-semibold">Officer&apos;s remark: </span>
-        {item.remark}
-      </p>
+      {item.kind !== "document" && (
+        <p className="text-body-2 text-ink">
+          <span className="font-semibold">Officer&apos;s remark: </span>
+          {item.remark}
+        </p>
+      )}
 
       {item.kind === "document" && doc && (
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <p className="text-body-2 text-ink">
-            <Icon name="description" size={16} aria-hidden className="mr-1 align-text-bottom text-ink-muted" />
-            {doc.fileName ?? "No file"}
-            {doc.uploadedAt && <span className="text-ink-muted"> · uploaded {formatDate(doc.uploadedAt)}</span>}
-            {doc.versions?.length ? (
-              <span className="text-ink-muted">
-                {" "}
-                · {doc.versions.length} earlier version{doc.versions.length === 1 ? "" : "s"} kept
-              </span>
-            ) : null}
-          </p>
+        <>
+          <DocumentRow
+            linkAs={NextLink}
+            as="div"
+            id={`${headingId}-row`}
+            titleAs="h3"
+            number={index}
+            title={item.label}
+            remark={item.remark}
+            remarkLabel="Ministry's remark"
+            state={corrected ? rowStateOf(docStateNow) : "review"}
+            statusLabel={corrected ? `Replaced · ${DOC_STATE_META[docStateNow].words}` : "To correct"}
+            file={doc.fileName ? { name: doc.fileName, size: doc.sizeKb != null ? fileSizeLabel(doc.sizeKb) : undefined, date: doc.uploadedAt ? formatDate(doc.uploadedAt) : undefined } : undefined}
+            reason={corrected && (docStateNow === "invalid" || docStateNow === "review") ? (doc.aiVerdict?.reasons?.[0] ?? doc.aiVerdict?.summary) : undefined}
+            findings={corrected && doc.aiVerdict && doc.aiVerdict.state !== "pending" && doc.aiVerdict.state !== "unavailable" ? (
+              <Findings verdict={doc.aiVerdict} title={doc.title} facts={applicantFacts(app.formValues ?? {})} applicationFy={app.financialYear} />
+            ) : undefined}
+            showFindingsToggle={docStateNow !== "verified"}
+            action={
+              <Button
+                // Outlined: Submit Correction is the page's one filled button.
+                appearance="outlined"
+                size="sm"
+                nowrap
+                onClick={() => fileInput.current?.click()}
+                aria-label={`${corrected ? "Replace again" : "Replace"}: ${doc.title}`}
+              >
+                {corrected ? "Replace Again" : "Replace"}
+              </Button>
+            }
+            menu={{
+              items: [
+                ...(doc.fileName ? [{ id: "view", label: "View", icon: "visibility" }] : []),
+                { id: "history", label: "Upload History", icon: "history" },
+              ],
+              onSelect: (id) => (id === "view" ? setViewing(true) : setHistoryOpen(true)),
+            }}
+          />
           <input
             ref={fileInput}
             type="file"
@@ -298,15 +366,28 @@ function CorrectionItem({
               e.target.value = "";
             }}
           />
-          <Button
-            appearance={corrected ? "outlined" : "filled"}
-            size="sm"
-            onClick={() => fileInput.current?.click()}
-            aria-label={`${corrected ? "Replace again" : "Replace file"}: ${doc.title}`}
-          >
-            <Icon name="upload" size={16} aria-hidden /> {corrected ? "Replace Again" : "Replace File"}
-          </Button>
-        </div>
+          <DocumentHistorySheet
+            linkAs={NextLink}
+            open={historyOpen}
+            onClose={() => setHistoryOpen(false)}
+            title={`Upload History — ${doc.title}`}
+            entries={historyEntriesOfRecord(doc).map((h) => ({
+              id: h.id,
+              fileName: h.fileName,
+              size: h.sizeKb != null ? fileSizeLabel(h.sizeKb) : undefined,
+              date: h.uploadedOn,
+              current: h.current,
+              status: h.status,
+              note: h.note,
+            }))}
+          />
+          <DocumentViewSheet
+            open={viewing}
+            onClose={() => setViewing(false)}
+            title={doc.title}
+            file={doc.fileName ? { name: doc.fileName, sizeKb: doc.sizeKb ?? 0, uploadedOn: doc.uploadedAt ? formatDate(doc.uploadedAt) : undefined } : undefined}
+          />
+        </>
       )}
 
       {item.kind === "note" && (
@@ -376,7 +457,7 @@ function CorrectionSummary({ app, items }: { app: GrantApplication; items: Defic
   return (
     <Alert status="warning" title={`Correction Requested — ${remaining} of ${items.length} item${items.length === 1 ? "" : "s"} to correct`}>
       <ul className="mt-1 list-disc space-y-0.5 pl-5 text-body-2">
-        {items.slice(0, 3).map((i) => (
+        {items.map((i) => (
           <li key={i.id}>
             <span className="font-semibold">{i.label}</span> — {i.remark}
           </li>
@@ -423,9 +504,9 @@ function ApplicationData({ app }: { app: GrantApplication }) {
   const summary =
     app.status === "Draft"
       ? missing === 0
-        ? "Every required question is answered. Open a section to read it."
-        : `${missing} required question${missing === 1 ? "" : "s"} still to answer. Open a section to read it.`
-      : "The answers as submitted. Open a section to read it.";
+        ? "Every required question is answered."
+        : `${missing} required question${missing === 1 ? "" : "s"} still to answer.`
+      : undefined;
 
   return (
     <Card variant="outlined">
@@ -483,7 +564,7 @@ function Documents({ app }: { app: GrantApplication }) {
         <SectionTitle title="Documents" description={`${progress.done} of ${progress.total} uploaded`} />
         <ListGroup aria-label="Documents uploaded with this application" size="sm">
           {app.documents.map((d) => (
-            <DocumentRow key={d.id} doc={d} />
+            <SubmittedDocument key={d.id} doc={d} />
           ))}
         </ListGroup>
       </CardBody>
@@ -499,7 +580,7 @@ function Documents({ app }: { app: GrantApplication }) {
  * still shows at upload time, where it can be acted on), and a "Pending" badge on eighteen
  * untouched files, which read as eighteen problems.
  */
-function DocumentRow({ doc }: { doc: MockDoc }) {
+function SubmittedDocument({ doc }: { doc: MockDoc }) {
   const [showVersions, setShowVersions] = React.useState(false);
   const flagged = doc.reviewStatus === "Deficient";
 

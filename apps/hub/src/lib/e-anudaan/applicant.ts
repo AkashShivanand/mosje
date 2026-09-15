@@ -7,6 +7,7 @@ import { fieldVisible, visibleSteps, wizardFor, type FieldDef } from "./form-sch
 import { placeOfProjectId } from "./geography.ts";
 import { PROJECT_ID_PREFIX, projectForSubmission, type SubmittedProject } from "./submission.ts";
 import { STATUS_LABEL } from "./workflow.ts";
+import { formatDate } from "./format.ts";
 import type {
   AuditEntry,
   Deficiency,
@@ -162,6 +163,15 @@ export function applicantStages(app: GrantApplication): ApplicantStage[] {
       case "inspectionReviewed":
         out.push({ id: e.id, title: "Inspection Completed", at: e.at, tone: "done" });
         break;
+      case "releaseFunds":
+        out.push({ id: e.id, title: "Grant Released", at: e.at, detail: e.remarks, tone: "done" });
+        break;
+      case "openClaim":
+        out.push({ id: e.id, title: "Next Instalment Open to Claim", at: e.at, detail: e.remarks, tone: "attention" });
+        break;
+      case "showCauseIssued":
+        out.push({ id: e.id, title: "Show Cause Notice Issued", at: e.at, detail: e.remarks, tone: "attention" });
+        break;
       default:
         out.push({ id: e.id, title: "Updated", at: e.at, tone: "neutral" });
     }
@@ -174,7 +184,9 @@ export function applicantStages(app: GrantApplication): ApplicantStage[] {
 export function applicantStanding(app: GrantApplication): string {
   if (app.status === "Draft") return "Not submitted yet.";
   if (app.status === "DeficiencyRaised") return "Waiting for your correction.";
-  if (app.sanction || app.status === "Sanctioned" || app.status === "Released") return "Sanctioned.";
+  // The chip already says "Sanctioned"; the line names the order, which is what the applicant quotes.
+  if (app.sanction) return `Sanction order ${app.sanction.orderNo}, issued ${formatDate(app.sanction.sanctionedAt)}.`;
+  if (app.status === "Sanctioned" || app.status === "Released") return "The sanction order is being issued.";
   if (app.status === "Rejected") return "Not approved.";
   return "Under examination at the Ministry. No action is needed from you.";
 }
@@ -193,8 +205,8 @@ const NOTIFICATION_TITLES: Record<AuditEntry["action"], string> = {
   raiseDeficiency: "Deficiency Noted",
   communicateDeficiency: "Deficiency Raised",
   respondDeficiency: "Correction Submitted",
-  raiseQuery: "Query Raised",
-  resolveQuery: "Query Resolved",
+  raiseQuery: "Returned to Previous Level",
+  resolveQuery: "Responded and Sent Back",
   concur: "Financial Concurrence Recorded",
   sanction: "Application Sanctioned",
   reject: "Application Rejected",
@@ -203,6 +215,9 @@ const NOTIFICATION_TITLES: Record<AuditEntry["action"], string> = {
   inspectionScheduled: "Inspection Scheduled",
   inspectionSubmitted: "Inspection Report Submitted",
   inspectionReviewed: "Inspection Report Reviewed",
+  releaseFunds: "Grant Released",
+  openClaim: "Next Instalment Open to Claim",
+  showCauseIssued: "Show Cause Notice Issued",
 };
 
 export function notificationTitle(action: AuditEntry["action"]): string {
@@ -222,6 +237,9 @@ const APPLICANT_NOTIFIED: ReadonlySet<AuditEntry["action"]> = new Set<AuditEntry
   "sanction",
   "reject",
   "inspectionScheduled",
+  "releaseFunds",
+  "openClaim",
+  "showCauseIssued",
 ]);
 
 export function notifiesApplicant(action: AuditEntry["action"]): boolean {

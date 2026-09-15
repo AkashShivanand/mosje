@@ -172,6 +172,8 @@ export const DOCUMENTED_BY = {
   CardHeader: "Card", CardBody: "Card", CardFooter: "Card",
   CardTitle: "Card", CardSubtitle: "Card",
   TabPanel: "Tabs",
+  // A group is a heading and a list inside a DocumentChecklist; it is never used outside one.
+  DocumentChecklistGroup: "DocumentChecklist",
   // THE CREDENTIAL STACKS. `AuthFormCard` is the component a consumer composes;
   // these five are what go in its one slot, and none is used on its own. Its page
   // is where the comparison lives — which stack carries a security check, which

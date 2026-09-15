@@ -32,6 +32,7 @@ export function PendingActions({
   limit = 3,
   title = "Pending Actions",
   now,
+  allItems = false,
 }: {
   items: OpenDeficiency[];
   /** How many rows to show before "View All". `null` shows every row. */
@@ -39,6 +40,12 @@ export function PendingActions({
   title?: string;
   /** Reference time for "n days", injectable for tests. */
   now?: number;
+  /**
+   * List every correction asked for on each application, not the first and "and 2 more". The
+   * Deficiencies page is where the applicant reads them all (verify N3, 16 Sep 2026); the
+   * dashboard keeps the compact form.
+   */
+  allItems?: boolean;
 }) {
   const router = useRouter();
   const shown = limit ? items.slice(0, limit) : items;
@@ -95,7 +102,16 @@ export function PendingActions({
                   }
                   description={
                     <>
-                      {first ? (
+                      {allItems && defItems.length > 0 ? (
+                        <ol className="m-0 list-decimal space-y-0.5 pl-5">
+                          {defItems.map((it) => (
+                            <li key={it.id}>
+                              <span className="font-semibold text-ink">{it.label}:</span> {it.remark}
+                              {it.correctedAt ? <span className="text-ink-muted"> · corrected</span> : null}
+                            </li>
+                          ))}
+                        </ol>
+                      ) : first ? (
                         <span className="block">
                           <span className="font-semibold text-ink">{first.label}:</span> {first.remark}
                           {defItems.length > 1 ? ` · and ${defItems.length - 1} more` : ""}

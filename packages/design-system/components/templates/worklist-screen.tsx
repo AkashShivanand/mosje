@@ -74,6 +74,15 @@ export interface WorklistScreenProps<T extends object> extends ScreenStateInput 
   meta?: React.ReactNode;
   /** Primary and secondary actions for the page, not for a row. */
   actions?: React.ReactNode;
+  /**
+   * A summary of the register — a row of `MetricCard`s — between the header and the filters.
+   *
+   * There was no slot for it, so the E-Anudaan applicant's My Applications put its Saved Drafts
+   * below the register (UX-04) and the officer's All Applications had nowhere to show its Total /
+   * In Review / Sanctioned / Returned tiles (parity inventory §16). Figures here must be computed
+   * from the same rows the table lists.
+   */
+  summary?: React.ReactNode;
 
   /**
    * Heading level for the page title. Leave at 1: a portal screen has exactly
@@ -171,6 +180,7 @@ export function WorklistScreen<T extends object>({
   title,
   meta,
   actions,
+  summary,
   filters,
   activeFilterCount = 0,
   onClearFilters,
@@ -312,6 +322,8 @@ export function WorklistScreen<T extends object>({
   return (
     <div className={cn("sa-screen", className)}>
       <PageHeader as={headingLevel} eyebrow={eyebrow} title={title} meta={meta} actions={actions} />
+
+      {summary ? <div className="sa-worklist__summary">{summary}</div> : null}
 
       {filters ? (
         <FilterBar>

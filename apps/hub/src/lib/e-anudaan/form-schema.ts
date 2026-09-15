@@ -23,7 +23,7 @@
 // e-anudaan test files that had nothing to do with this change.
 import { isValidPan } from "@mosje/design-system/india-id";
 
-import { CITY_CATEGORIES, INDIAN_STATES, cityCategoryFor } from "./geography.ts";
+import { CITY_CATEGORIES, INDIAN_STATES, NE_HIMALAYAN_STATES, cityCategoryFor } from "./geography.ts";
 
 export type SchemeCode = "SHRESHTA_M2" | "AVYAY" | "SMILE" | "NAPDDR";
 
@@ -45,11 +45,12 @@ export type AutoRule =
   /** City category is filled in from the chosen district (live helper text says exactly this). */
   | { kind: "cityCategory"; from: string }
   /**
-   * AVYAY's account number, IFSC and bank/branch, which live fills in from the Bank Account
-   * chosen above rather than asking for them. The option reads
-   * "<bank> · <masked account> · <IFSC>", so each part is one segment of it.
+   * AVYAY's recurring grant for a new project: the central share of the published cost norms for
+   * the project type, agency, State and building entered earlier (live: "the recurring grant is
+   * the published norm for this project"). One figure is typed on that step — the non-recurring
+   * grant — and the rest follows (review call 11 Sep 2026, T577–585).
    */
-  | { kind: "bankAccountPart"; from: string; part: "account" | "ifsc" | "bankAndBranch" }
+  | { kind: "avyayRecurringNorm" }
   /**
    * The Project ID of the project chosen in another field — the part of the option before " — ".
    * SMILE asked an existing project to TYPE its Project ID straight after picking the project,
@@ -69,7 +70,7 @@ export interface FieldDef {
    * value it names. A renewal's wording ("cannot be changed on a renewal") was shown to new
    * applicants, and a new applicant's ("generated automatically on submit") to renewals.
    */
-  helpWhen?: { field: string; byValue: Readonly<Record<string, string>> };
+  helpWhen?: ByValue | readonly ByValue[];
   /**
    * Keep the help visible when the field is locked. Help under a locked field is normally hidden
    * (a locked box already says it cannot be typed in), but a few locked fields carry the one
@@ -80,7 +81,7 @@ export interface FieldDef {
    * A label that differs by branch, keyed by the controlling field's value. A renewal's grant
    * figures are what was SANCTIONED, and labelling them "Estimated" or "Requested" said otherwise.
    */
-  labelWhen?: { field: string; byValue: Readonly<Record<string, string>> };
+  labelWhen?: ByValue | readonly ByValue[];
   options?: readonly string[];
   /**
    * The live form labels several fields "Read-only — sourced from NGO-Darpan / your login" but
@@ -108,7 +109,20 @@ export interface FieldDef {
    * changed on a renewal" in its help and was fully editable — a stated rule the form did not
    * apply.
    */
-  readOnlyWhen?: { field: string; equals: readonly string[] };
+  readOnlyWhen?: Condition;
+  /** Further conditions under which the field is read-only; any one is enough. */
+  readOnlyWhenAny?: readonly Condition[];
+  /**
+   * Options that come from the signed-in applicant's own records rather than a literal list —
+   * AVYAY's renewal picker lists the NGO's projects with an instalment open to claim. The wizard
+   * supplies them (`visibleOptions`' third argument).
+   */
+  optionsFrom?: "renewableProjects";
+  /**
+   * Required once any of these fields has an answer. An optional second staff member is optional
+   * as a whole, but a name given without a designation is not a record of anyone.
+   */
+  requiredWith?: readonly string[];
   /** Overrides the generated "this field is missing" message where the generic one reads badly. */
   requiredMessage?: string;
   /** Options come from a state field rather than a literal list (cascading District). */
@@ -116,18 +130,49 @@ export interface FieldDef {
   /** Value derived from other fields; the control renders read-only. */
   auto?: AutoRule;
   /** Extra validation beyond "required". */
-  rule?: "afterRegistration" | "afterPeriodFrom" | "nameAndPhone" | "lettersOnly" | "pin" | "ifsc" | "pan" | "notBackdated";
+  rule?: "afterRegistration" | "afterPeriodFrom" | "nameAndPhone" | "lettersOnly" | "pin" | "ifsc" | "pan" | "notBackdated" | "notFuture" | "mustBeYes" | "accountNumber";
+  /** A number that may not exceed another field's — "Of which women" against the total. */
+  notMoreThan?: string;
   /** Span the full width of the two-column grid. */
   wide?: boolean;
+}
+
+/** "While `field` holds one of these values." */
+export interface Condition {
+  field: string;
+  equals: readonly string[];
+}
+
+/** A wording keyed by the value of another field; the first rule naming the current value wins. */
+export interface ByValue {
+  field: string;
+  byValue: Readonly<Record<string, string>>;
 }
 
 export interface SectionDef {
   title: string;
   lead?: string;
   fields: readonly FieldDef[];
+  /** Four columns rather than three — one row per person for a name · qualification · designation · contact record. */
+  columns?: 3 | 4;
+  /**
+   * Asked again on a 2nd or 3rd instalment, so it opens expanded on the Confirm Details step.
+   * Every other section is carried forward collapsed and read-only, with Edit on demand
+   * (review call 11 Sep 2026, T667–675).
+   */
+  reconfirm?: boolean;
+  /**
+   * Drawn as a compact read-only record rather than locked input boxes while this holds — a
+   * renewal's bank account, which is shown, not asked (T549–559).
+   */
+  summaryWhen?: Condition;
 }
 
-export type StepKind = "form" | "documents" | "review";
+/**
+ * `confirm` is a 2nd or 3rd instalment's one step for everything carried forward: the sections of
+ * the form steps it replaces, collapsed and read-only, with the ones that must be re-confirmed open.
+ */
+export type StepKind = "form" | "confirm" | "documents" | "review";
 
 export interface StepDef {
   /** Stepper label, e.g. "Organisation Details". */
@@ -143,6 +188,8 @@ export interface StepDef {
    * branch wrong: our clone showed the renewal an eighth step it never asks for.
    */
   showWhen?: { field: string; equals: readonly string[] };
+  /** Not shown while this holds — the form steps a later instalment folds into Confirm Details. */
+  hideWhen?: Condition;
   sections: readonly SectionDef[];
 }
 
@@ -161,6 +208,8 @@ export interface DocDef {
    * project's audited accounts and a GFR-12A utilisation certificate.
    */
   showWhen?: { field: string; equals: readonly string[] };
+  /** Not asked while this holds — a CCTV status document on a renewal (review call, T640–644). */
+  hideWhen?: Condition;
 }
 
 export interface WizardDef {
@@ -181,48 +230,10 @@ export interface WizardDef {
 
 const YES_NO = ["Yes", "No"] as const;
 /** SMILE's two case_type answers, referenced by the fields that fork on them. */
-const SMILE_CASE_NEW = "No — new project (Project ID auto-generated)";
-const SMILE_CASE_EXISTING = "Yes — existing project (select the Project ID)";
+export const SMILE_CASE_NEW = "No — new project (Project ID auto-generated)";
+export const SMILE_CASE_EXISTING = "Yes — existing project (select the Project ID)";
 const FINANCIAL_YEARS = ["2027-28", "2026-27", "2025-26"] as const;
 
-/**
- * The projects an applicant may renew, by scheme, with where each stands.
- *
- * A project becomes renewable once it is sanctioned AND has passed its PMU inspection. The
- * pickers listed projects "awaiting sanction" directly under help text saying only PMU-verified
- * projects can be chosen (form-path QA, 13 Sep 2026) — AVYAY's only option was one of them. The
- * list keeps every project and the picker shows the eligible ones, so the rule is applied rather
- * than stated. Illustrative: the prototype holds no sanction register for these projects.
- */
-export type RenewalStage = "awaiting-sanction" | "sanctioned" | "pmu-verified";
-export interface RenewalProject {
-  id: string;
-  name: string;
-  stage: RenewalStage;
-}
-export const RENEWAL_PROJECTS: Readonly<Record<"AVYAY" | "NAPDDR" | "SMILE", readonly RenewalProject[]>> = {
-  AVYAY: [
-    { id: "SR/MH/PUN/40012", name: "Senior Citizens' Home, Pune", stage: "pmu-verified" },
-    { id: "SR/AR/DIB/40040", name: "Senior Citizens' Home, Dibang Valley", stage: "awaiting-sanction" },
-  ],
-  NAPDDR: [
-    { id: "DR/AN/NIC/40536", name: "De-Addiction Centre, Nicobar", stage: "pmu-verified" },
-    { id: "DR/AN/NIC/40601", name: "De-Addiction Centre, Nicobar", stage: "awaiting-sanction" },
-    { id: "DR/LD/LAK/40535", name: "De-Addiction Centre, Lakshadweep", stage: "awaiting-sanction" },
-  ],
-  SMILE: [{ id: "TG/MH/PUN/09003", name: "Garima Greh, Pune", stage: "pmu-verified" }],
-};
-
-/** The picker's options: renewable projects only, as "<Project ID> — <name>". */
-export function renewableProjectOptions(scheme: keyof typeof RENEWAL_PROJECTS): string[] {
-  return RENEWAL_PROJECTS[scheme].filter((p) => p.stage === "pmu-verified").map((p) => `${p.id} — ${p.name}`);
-}
-
-const RENEWABLE_HELP = "Only projects that have been sanctioned and have passed their PMU inspection are listed.";
-
-/** The declaration's date and time are the moment of signing, filled in by the portal. */
-const DECLARATION_DATE_HELP = "Today's date. It is recorded when the application is submitted.";
-const DECLARATION_TIME_HELP = "The current time. It is recorded when the application is submitted.";
 
 /** The declaration that closes every scheme's review step, verbatim from the live portal. */
 export const DECLARATION_TEXT =
@@ -231,30 +242,206 @@ export const DECLARATION_TEXT =
   "that the grant-in-aid may be withheld or recovered, and action taken under the rules, if any " +
   "particular is found to be false or if any material fact has been concealed.";
 
+
 /* ══════════════════════════════════════════════════════════════════════════════
-   SHRESHTA Mode 2 — 6 steps
+   Shared by every scheme's renewal: the claim, the account on record, the instalment's grant
+   ══════════════════════════════════════════════════════════════════════════════ */
+
+/**
+ * Share of the year's sanctioned recurring grant each instalment releases, per scheme. From the
+ * review call of 11 Sep 2026 (T339): NAPDDR, AVYAY and SHRESHTA 40-40-20, SMILE 50-50. The live
+ * NAPDDR renewal says the same in its own help ("40% / 40% / 20%").
+ */
+export const RELEASE_PATTERN: Readonly<Record<string, readonly number[]>> = {
+  AVYAY: [40, 40, 20],
+  NAPDDR: [40, 40, 20],
+  SHRESHTA_M2: [40, 40, 20],
+  SMILE: [50, 50],
+};
+
+/** The field each scheme's renewal names its project in. Choosing it states the whole claim. */
+export const RENEWAL_PICKER: Readonly<Record<SchemeCode, string>> = {
+  AVYAY: "fld_ongoing_source_application",
+  NAPDDR: "fld_ongoing_source_application",
+  SMILE: "fld_smile_project_select",
+  SHRESHTA_M2: "fld_institution_select",
+};
+
+/** A 2nd or 3rd instalment: set when the project is chosen (`instalments.ts` `renewalAnswers`). */
+const LATER_INSTALMENT = { field: "claim_stage", equals: ["later-instalment"] } as const;
+/** A project with a sanctioned history has been chosen — the claim is on record. */
+const CLAIMED = { field: "claim_stage", equals: ["first-instalment", "later-instalment"] } as const;
+/** No project chosen: nothing is on record yet. */
+const UNCLAIMED = { field: "claim_stage", equals: [""] } as const;
+
+const QUALIFICATIONS = [
+  "Below Class 10",
+  "Class 10",
+  "Class 12",
+  "Diploma / Certificate",
+  "Graduate",
+  "Post-graduate",
+  "Professional (Medicine, Nursing, Social Work)",
+] as const;
+
+/**
+ * One person as four answers — name · qualification · designation · mobile — instead of a box that
+ * collected sentences (review call 11 Sep 2026, T478–489). The designation is chosen from `posts`
+ * where the scheme publishes its posts, and typed (letters only) where it does not.
+ */
+function person(prefix: string, who: string, required: boolean, posts?: readonly string[], showWhen?: FieldDef["showWhen"]): FieldDef[] {
+  const names = [`${prefix}_name`, `${prefix}_qualification`, `${prefix}_designation`, `${prefix}_mobile`];
+  const group = (self: string) => (required ? {} : { requiredWith: names.filter((n) => n !== self) });
+  const when = showWhen ? { showWhen } : {};
+  return [
+    { name: names[0]!, label: `${who} — Name`, kind: "text", required, rule: "lettersOnly", ...group(names[0]!), ...when },
+    { name: names[1]!, label: `${who} — Qualification`, kind: "select", required, options: QUALIFICATIONS, ...group(names[1]!), ...when },
+    posts
+      ? { name: names[2]!, label: `${who} — Designation`, kind: "select", required, options: posts, ...group(names[2]!), ...when }
+      : { name: names[2]!, label: `${who} — Designation`, kind: "text", required, rule: "lettersOnly", ...group(names[2]!), ...when },
+    { name: names[3]!, label: `${who} — Mobile Number`, kind: "tel", required, ...group(names[3]!), ...when },
+  ];
+}
+
+/**
+ * The account a project is paid into: typed once for a new project — that is how a project gets its
+ * first account (T146–155) — and, on a renewal, the account on record shown as a compact read-only
+ * record with its PFMS registration beside it (T540–559, T617–639). A registered account is not
+ * asked about PFMS again (T635–636); the portal cannot check PFMS, so the NGO declares it and the
+ * Ministry validates it (T614–633).
+ */
+function bankRecordFields(onRecord: Condition): FieldDef[] {
+  return [
+    { name: "fld_bank_name", label: "Bank", kind: "text", required: true, readOnlyWhen: onRecord },
+    { name: "fld_bank_account_number", label: "Account Number", kind: "text", required: true, rule: "accountNumber", readOnlyWhen: onRecord },
+    { name: "fld_bank_ifsc", label: "IFSC Code", kind: "text", required: true, rule: "ifsc", readOnlyWhen: onRecord },
+    { name: "fld_bank_branch", label: "Branch", kind: "text", required: true, readOnlyWhen: onRecord },
+    { name: "fld_pfms_status", label: "PFMS DBT Registration", kind: "text", required: true, readOnly: true, showWhen: { field: "fld_pfms_on_record", equals: ["Yes"] } },
+    {
+      name: "fld_pfms_registered",
+      label: "This account is registered on the PFMS DBT module",
+      kind: "radio",
+      required: true,
+      options: YES_NO,
+      wide: true,
+      showWhen: { field: "fld_pfms_on_record", equals: ["", "No"] },
+      help: "If it is not, the Ministry registers it before the grant is released.",
+    },
+  ];
+}
+
+/** "Amount of the 2nd Instalment — 40% (₹)", for each instalment the scheme releases. */
+function instalmentLabels(scheme: SchemeCode, template: (ord: string, share: number) => string): Record<string, string> {
+  const ords = ["1st", "2nd", "3rd"];
+  return Object.fromEntries((RELEASE_PATTERN[scheme] ?? []).map((share, i) => [`${ords[i]} Instalment`, template(ords[i]!, share)]));
+}
+
+/**
+ * A renewal claims an instalment of what was SANCTIONED, so nothing here is typed (T577–596): the
+ * year's sanctioned recurring grant, this instalment's amount, what the year's earlier instalments
+ * released and what remains. Labels default to AVYAY's; NAPDDR passes live's own.
+ */
+function instalmentGrantSection(
+  scheme: SchemeCode,
+  renewal: Condition,
+  labels: { annual: string; amount: (ord: string, share: number) => string; prior: string; remaining: string } = {
+    annual: "Recurring Grant Sanctioned for the Year (₹)",
+    amount: (ord, share) => `Amount of the ${ord} Instalment — ${share}% (₹)`,
+    prior: "Released Earlier This Year (₹)",
+    remaining: "Remaining After This Instalment (₹)",
+  },
+): SectionDef {
+  return {
+    title: "Grant for This Instalment",
+    reconfirm: true,
+    fields: [
+      { name: "fld_sanctioned_recurring", label: labels.annual, kind: "number", required: true, readOnly: true, showWhen: renewal },
+      {
+        name: "fld_instalment_amount",
+        label: "Amount of This Instalment (₹)",
+        kind: "number",
+        required: true,
+        readOnly: true,
+        showWhen: renewal,
+        labelWhen: { field: "fld_installment_no", byValue: instalmentLabels(scheme, labels.amount) },
+      },
+      { name: "fld_grant_applied_prior", label: labels.prior, kind: "number", readOnly: true, showWhen: renewal },
+      { name: "fld_grant_remaining", label: labels.remaining, kind: "number", readOnly: true, showWhen: renewal },
+    ],
+  };
+}
+
+/** A 2nd or 3rd instalment's one step for everything carried forward. See `StepKind`. */
+const CONFIRM_DETAILS: StepDef = { title: "Confirm Details", kind: "confirm", showWhen: LATER_INSTALMENT, sections: [] };
+
+/* ══════════════════════════════════════════════════════════════════════════════
+   SHRESHTA Mode 2 — 7 steps (6 on live, plus Application Type); a 2nd or 3rd instalment is 4.
+   Live UAT captures NGO-SHRESHTA-M2-S01…S05 (07–08 Sep 2026).
    ══════════════════════════════════════════════════════════════════════════════ */
 
 const SHRESHTA_STEPS: readonly StepDef[] = [
   {
+    // Not a live step. Live asks for the institution on step 2, after the organisation details it
+    // then refills; the choice decides what the rest of the form is, so it comes first — the same
+    // Application Type step the other schemes open with. Institution chosen = a renewal on record.
+    title: "Application Type",
+    sections: [
+      {
+        title: "Institution",
+        lead: "Choose the institution this application is for.",
+        fields: [
+          {
+            name: "fld_institution_select",
+            label: "Institution",
+            kind: "select",
+            wide: true,
+            optionsFrom: "renewableProjects",
+            help: "Your institutions with a sanctioned grant and an instalment open to claim; the form is filled in from the last sanctioned application. If yours is not listed, leave this blank and enter its details.",
+          },
+          { name: "fld_institution_id", label: "Institution ID", kind: "text", required: true, readOnlyWhen: CLAIMED },
+          {
+            name: "fld_financial_year",
+            label: "Financial Year for which Grant-in-Aid is sought",
+            kind: "select",
+            required: true,
+            options: FINANCIAL_YEARS,
+            readOnlyWhenAny: [UNCLAIMED, LATER_INSTALMENT],
+            helpWhenLocked: true,
+            helpWhen: {
+              field: "claim_stage",
+              byValue: {
+                "": "An application not claimed on an institution's record is for the financial year now running.",
+                "first-instalment": "The year whose instalment you are claiming.",
+                "later-instalment": "The year of the application this instalment is claimed under.",
+              },
+            },
+          },
+          { name: "fld_installment_no", label: "Instalment", kind: "text", required: true, readOnly: true, showWhen: CLAIMED },
+        ],
+      },
+    ],
+  },
+  CONFIRM_DETAILS,
+  {
     title: "Organisation Details",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
         title: "Organisation Details",
         lead: "Identity of the applicant NGO/VO. Pre-filled from NGO-Darpan where available.",
         fields: [
-          { name: "fld_ngo_name", label: "Name of NGO / VO (as in NGO-Darpan)", kind: "text", required: true, readOnly: true, help: "Read-only — sourced from NGO-Darpan / your login." },
-          { name: "fld_darpan_id", label: "NGO-Darpan Unique ID", kind: "text", required: true, readOnly: true, help: "Read-only — sourced from NGO-Darpan / your login." },
-          { name: "fld_statute_act", label: "Statute / Act of Registration", kind: "text", required: true, help: "From NGO-Darpan where recorded; enter it yourself if the box is empty." },
-          { name: "fld_registration_number", label: "Registration Number", kind: "text", required: true, help: "From NGO-Darpan / your login." },
-          { name: "fld_registration_date", label: "Date of Registration", kind: "date", required: true, help: "From NGO-Darpan where recorded; enter it yourself if the box is empty." },
-          { name: "fld_registration_expiry", label: "Date of Expiry", kind: "date", required: true, rule: "afterRegistration", help: "Not held by NGO-Darpan — please enter it. Must be later than the date of registration." },
+          { name: "fld_ngo_name", label: "Name of NGO / VO (as in NGO-Darpan)", kind: "text", required: true, readOnly: true },
+          { name: "fld_darpan_id", label: "NGO-Darpan Unique ID", kind: "text", required: true, readOnly: true },
+          { name: "fld_statute_act", label: "Statute / Act of Registration", kind: "text", required: true, help: "For example, Societies Registration Act, 1860." },
+          { name: "fld_registration_number", label: "Registration Number", kind: "text", required: true },
+          { name: "fld_registration_date", label: "Date of Registration", kind: "date", required: true, rule: "notFuture" },
+          { name: "fld_registration_expiry", label: "Date of Expiry", kind: "date", required: true, rule: "afterRegistration" },
           { name: "fld_reg_office_address", label: "Registered-Office Address", kind: "textarea", required: true, wide: true },
           { name: "fld_reg_office_city", label: "City", kind: "text", required: true },
-          { name: "fld_reg_office_district", label: "District", kind: "text", required: true },
-          { name: "fld_reg_office_state", label: "State", kind: "text", required: true },
-          { name: "fld_contact_mobile", label: "Mobile", kind: "tel", required: true, help: "Pre-filled from your login. Used for notifications." },
-          { name: "fld_contact_email", label: "Email", kind: "email", required: true, help: "Pre-filled from your login. Used for notifications." },
+          { name: "fld_reg_office_district", label: "District", kind: "text", required: true, readOnly: true },
+          { name: "fld_reg_office_state", label: "State", kind: "text", required: true, readOnly: true },
+          { name: "fld_contact_mobile", label: "Mobile", kind: "tel", required: true, help: "Notifications about this application are sent here." },
+          { name: "fld_contact_email", label: "Email", kind: "email", required: true, help: "Notifications about this application are sent here." },
           { name: "fld_contact_telephone", label: "Telephone", kind: "tel" },
           { name: "fld_contact_fax", label: "Fax", kind: "text" },
         ],
@@ -263,43 +450,18 @@ const SHRESHTA_STEPS: readonly StepDef[] = [
   },
   {
     title: "Institution Details",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
         title: "Institution Details",
         lead: "Details of the institution for which Grant-in-Aid is sought.",
         fields: [
           {
-            name: "fld_project_id",
-            label: "Institution",
-            kind: "select",
-            wide: true,
-            options: [
-              "SC/DL/NWD/09001 — Hostel, North West Delhi · last applied FY 2025-26",
-              "SC/DL/STS/09002 — Hostel, South East Delhi · last applied FY 2025-26",
-              "SC/GJ/AHM/02031 — Residential School · last applied FY 2025-26",
-              "SC/GJ/AHM/02059 — Hostel · last applied FY 2025-26",
-              "SC/TN/KLI/02302 — Residential School, Kallakurichi · last applied FY 2025-26",
-              "SC/TN/MDR/02397 — Residential School, Madurai · last applied FY 2025-26",
-              "SC/UP/BRB/01338 — Residential School, Barabanki · last applied FY 2025-26",
-              "SC/UP/HAR/01609 — Residential School, Hardoi · last applied FY 2025-26",
-            ],
-            help: "If this application is for an institution you have applied for before, choose it and the details below are filled in from its own last application — you can still edit any of them. Leave blank for a new institution, or if yours is not listed.",
-          },
-          { name: "fld_institution_id", label: "Institution ID", kind: "text", required: true, help: "Scheme institution identifier." },
-          { name: "fld_financial_year", label: "Financial Year for which Grant-in-Aid is sought", kind: "select", required: true, options: FINANCIAL_YEARS },
-          {
             name: "fld_nature_of_institution",
             label: "Nature of Institution",
             kind: "select",
             required: true,
-            options: [
-              "Primary Residential School",
-              "Secondary Residential School",
-              "Primary Non-Residential School",
-              "Secondary Non-Residential School",
-              "Primary Hostel",
-              "Secondary Hostel",
-            ],
+            options: ["Primary Residential School", "Secondary Residential School", "Primary Non-Residential School", "Secondary Non-Residential School", "Primary Hostel", "Secondary Hostel"],
           },
           { name: "fld_institution_gender_type", label: "Type", kind: "select", required: true, options: ["Boys", "Girls", "Co-Ed"] },
           { name: "fld_institution_level", label: "Level", kind: "select", required: true, options: ["Primary", "Secondary"] },
@@ -308,7 +470,7 @@ const SHRESHTA_STEPS: readonly StepDef[] = [
           // Live labels this "UC Pending Status (SFR 212(1))" — a rule citation we could not trace.
           { name: "fld_uc_pending_status", label: "Utilisation Certificate Pending Status", kind: "select", required: true, options: ["No Utilisation Certificate Pending", "Utilisation Certificate Pending"] },
           { name: "fld_commencement_date", label: "Date & Year of Commencement", kind: "date", required: true },
-          { name: "fld_gia_since_year", label: "Year from which Grant-in-Aid has been received under SHRESHTA", kind: "text", required: true, help: "Applies to ongoing institutions." },
+          { name: "fld_gia_since_year", label: "Year from which Grant-in-Aid has been received under SHRESHTA", kind: "text", required: true },
           { name: "fld_institution_location", label: "Institution Location (address, district, landmark, contact)", kind: "textarea", required: true, wide: true },
           { name: "fld_institution_pin", label: "Institution PIN Code", kind: "text", required: true, rule: "pin" },
           { name: "govt_institution_within_2km", label: "Government-run similar institution within 2 km", kind: "radio", required: true, options: YES_NO, wide: true },
@@ -319,34 +481,44 @@ const SHRESHTA_STEPS: readonly StepDef[] = [
   },
   {
     title: "Bank, Beneficiaries & Grant",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
         title: "Bank Account Details",
+        columns: 4,
+        summaryWhen: CLAIMED,
         fields: [
-          { name: "bank_ngo_name_declared", label: "Account is in the name of the NGO/VO", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "bank_joint_operation", label: "Account jointly operated by President & Secretary", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "bank_hq_at_institution", label: "Head office at the institution location", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "bank_joint_secretary_head", label: "Joint account of Secretary & Head at the location", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "bank_separate_institution_accounts", label: "Separate institution-wise accounts maintained", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "fld_bank_account_number", label: "Account Number", kind: "text", required: true },
-          { name: "fld_bank_ifsc", label: "IFSC Code", kind: "text", required: true, rule: "ifsc" },
-          { name: "fld_bank_name_branch", label: "Bank & Branch", kind: "text", required: true },
-          { name: "fld_bank_resource_mobilisation", label: "Resource-mobilisation capability (sources / amount)", kind: "textarea", wide: true },
+          // The account's operating conditions are declared once, when the account is first
+          // recorded; the account on record is not declared again.
+          { name: "bank_ngo_name_declared", label: "Account is in the name of the NGO/VO", kind: "radio", required: true, options: YES_NO, wide: true, rule: "mustBeYes", showWhen: UNCLAIMED },
+          { name: "bank_joint_operation", label: "Account jointly operated by President & Secretary", kind: "radio", required: true, options: YES_NO, wide: true, showWhen: UNCLAIMED },
+          { name: "bank_hq_at_institution", label: "Head office at the institution location", kind: "radio", required: true, options: YES_NO, wide: true, showWhen: UNCLAIMED },
+          { name: "bank_joint_secretary_head", label: "Joint account of Secretary & Head at the location", kind: "radio", required: true, options: YES_NO, wide: true, showWhen: UNCLAIMED },
+          { name: "bank_separate_institution_accounts", label: "Separate institution-wise accounts maintained", kind: "radio", required: true, options: YES_NO, wide: true, showWhen: UNCLAIMED },
+          ...bankRecordFields(CLAIMED),
+        ],
+      },
+      {
+        // Moved out of the bank section: it is not a bank detail, and the account on record is
+        // drawn as a compact record on a renewal.
+        title: "Resource Mobilisation",
+        fields: [
+          { name: "fld_bank_resource_mobilisation", label: "Resource-mobilisation capability (sources / amount)", kind: "textarea", wide: true, help: "The organisation's own sources of funds, with indicative amounts." },
         ],
       },
       {
         title: "Grant-in-Aid Released — Last 3 Years",
-        lead: "For ongoing cases. Optional.",
         fields: [
           { name: "fld_gia_released_last_3yrs", label: "Grant-in-Aid released in the last 3 years (sanction number, date, amount sanctioned, amount utilised)", kind: "textarea", wide: true },
         ],
       },
       {
         title: "Beneficiaries",
+        reconfirm: true,
         fields: [
-          { name: "fld_beneficiaries_sc", label: "SC Beneficiaries", kind: "number", required: true, help: "Number of Scheduled-Caste beneficiaries." },
-          { name: "fld_beneficiaries_other", label: "Other-Category Beneficiaries", kind: "number", help: "Beneficiaries from other categories, if any." },
-          { name: "fld_total_beneficiaries", label: "Total Number of Beneficiaries", kind: "number", required: true, auto: { kind: "sum", from: ["fld_beneficiaries_sc", "fld_beneficiaries_other"] }, help: "Worked out from the SC and other-category beneficiaries." },
+          { name: "fld_beneficiaries_sc", label: "SC Beneficiaries", kind: "number", required: true },
+          { name: "fld_beneficiaries_other", label: "Other-Category Beneficiaries", kind: "number" },
+          { name: "fld_total_beneficiaries", label: "Total Number of Beneficiaries", kind: "number", required: true, auto: { kind: "sum", from: ["fld_beneficiaries_sc", "fld_beneficiaries_other"] } },
           { name: "fld_beneficiaries_previous_year", label: "Number of Beneficiaries (Previous Year)", kind: "number" },
         ],
       },
@@ -354,39 +526,42 @@ const SHRESHTA_STEPS: readonly StepDef[] = [
         title: "Grant Sought",
         lead: "The total is the recurring and non-recurring grant added together.",
         fields: [
-          { name: "fld_grant_recurring", label: "Recurring Grant Sought (₹)", kind: "number", required: true },
-          { name: "fld_grant_non_recurring", label: "Non-Recurring Grant Sought (₹)", kind: "number", required: true },
-          { name: "fld_grant_total", label: "Total Grant Sought (₹)", kind: "number", required: true, auto: { kind: "sum", from: ["fld_grant_recurring", "fld_grant_non_recurring"] }, help: "Worked out from the recurring and non-recurring grant." },
+          { name: "fld_grant_recurring", label: "Recurring Grant Sought (₹)", kind: "number", required: true, showWhen: UNCLAIMED },
+          { name: "fld_grant_non_recurring", label: "Non-Recurring Grant Sought (₹)", kind: "number", required: true, showWhen: UNCLAIMED },
+          { name: "fld_grant_total", label: "Total Grant Sought (₹)", kind: "number", required: true, showWhen: UNCLAIMED, auto: { kind: "sum", from: ["fld_grant_recurring", "fld_grant_non_recurring"] } },
         ],
       },
+      instalmentGrantSection("SHRESHTA_M2", CLAIMED),
     ],
   },
   {
     title: "Declarations",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
         title: "Compliance Declarations",
-        lead: "Confirm each declaration; provide value / source where applicable.",
+        reconfirm: true,
         fields: [
           { name: "decl_uc_uploaded", label: "Requisite Utilisation Certificate uploaded", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_audited_accounts_submitted", label: "Audited accounts (previous year) submitted", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_name_changed_after_grant", label: "Organisation changed its name after the first grant", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "decl_not_for_profit", label: "Organisation is not run for profit", kind: "radio", required: true, options: YES_NO, wide: true, help: "Confirm the NGO/VO does not earn profit by running the institution." },
+          { name: "decl_not_for_profit", label: "Organisation does not earn profit by running the institution", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_other_grant", label: "Receiving grant from another Government source for the same purpose", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_fee_charged", label: "Capitation / other fee charged from beneficiaries", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "decl_not_blacklisted", label: "Organisation is not blacklisted", kind: "radio", required: true, options: YES_NO, wide: true, help: "Confirm the organisation is not blacklisted by any authority." },
+          { name: "decl_not_blacklisted", label: "Organisation is not blacklisted by any authority", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_annual_report_uploaded", label: "Annual report (previous year) uploaded", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_all_docs_signed", label: "All documents signed by the authorised signatory", kind: "radio", required: true, options: YES_NO, wide: true },
         ],
       },
       {
         title: "Authorised Person & Declaration",
+        reconfirm: true,
         fields: [
-          { name: "fld_auth_person_name", label: "Name of Authorised Person", kind: "text", required: true },
-          { name: "fld_auth_person_contact", label: "Contact of Authorised Person", kind: "tel", required: true },
+          { name: "fld_auth_person_name", label: "Name of Authorised Person", kind: "text", required: true, rule: "lettersOnly" },
+          { name: "fld_auth_person_contact", label: "Mobile Number of Authorised Person", kind: "tel", required: true },
           { name: "fld_auth_place", label: "Place", kind: "text", required: true },
-          { name: "fld_auth_date", label: "Date", kind: "date", required: true, readOnly: true, rule: "notBackdated", help: DECLARATION_DATE_HELP },
-          { name: "fld_auth_time", label: "Time", kind: "time", required: true, readOnly: true, help: DECLARATION_TIME_HELP },
+          { name: "fld_auth_date", label: "Date", kind: "date", required: true, readOnly: true, rule: "notBackdated" },
+          { name: "fld_auth_time", label: "Time", kind: "time", required: true, readOnly: true },
         ],
       },
     ],
@@ -395,34 +570,34 @@ const SHRESHTA_STEPS: readonly StepDef[] = [
   { title: "Review & Submit", kind: "review", sections: [] },
 ];
 
+/**
+ * An institution claimed on its record is asked for the ten documents live asks (UAT, 07–08 Sep
+ * 2026) — what changes each year. One not on record is asked for all twenty, less the CCTV status
+ * on a renewal. Numbers are identities and never move.
+ */
+const SH_ON_RECORD = CLAIMED;
 const SHRESHTA_DOCS: readonly DocDef[] = [
-  { n: 1, title: "Registration Certificate (Societies Registration Act 1860 / Charitable Trust) — certified copy" },
-  { n: 2, title: "PAN of the Organisation" },
-  { n: 3, title: "Annual Report — Previous Financial Year" },
-  { n: 4, title: "List of Beneficiaries — Previous Year" },
+  { n: 1, title: "Registration Certificate (Societies Registration Act 1860 / Charitable Trust) — certified copy", hideWhen: SH_ON_RECORD },
+  { n: 2, title: "PAN of the Organisation", hideWhen: SH_ON_RECORD },
+  { n: 3, title: "Annual Report — Previous Financial Year", hideWhen: SH_ON_RECORD },
+  { n: 4, title: "List of Beneficiaries — Previous Year", hideWhen: SH_ON_RECORD },
   { n: 5, title: "List of Managing Committee Members" },
   { n: 6, title: "Budget Estimates — Current Year" },
-  { n: 7, title: "Audited Accounts (Balance Sheet, Income & Expenditure, Receipt & Payment)" },
-  // 8, 9 and 14 are for an institution already receiving grant-in-aid. SHRESHTA Mode 2 offers
-  // "Ongoing" as the only Status of Institution, so they are asked of every applicant today; the
-  // condition is declared so a new-institution status would drop them rather than leave a
-  // "Required when…" note on a mandatory slot.
+  { n: 7, title: "Audited Accounts (Balance Sheet, Income & Expenditure, Receipt & Payment)", hideWhen: SH_ON_RECORD },
   { n: 8, title: "Utilisation Certificate (GFR 12-A) — Previous Year, Signed by a Chartered Accountant", showWhen: { field: "fld_institution_status", equals: ["Ongoing"] } },
   { n: 9, title: "Provisional Utilisation Certificates — Grants Released Previous Year (GFR 12-A)", showWhen: { field: "fld_institution_status", equals: ["Ongoing"] } },
   { n: 10, title: "Bank Authorisation Letter (name, account number, address, IFSC / MICR)" },
   { n: 11, title: "Agreement Bond / PSR on Non-Judicial Stamp Paper" },
-  { n: 12, title: "Compliance Status — Proactive Disclosures & CCTV Installation" },
+  // No CCTV document on a renewal (review call, T640–644; W3). Live's renewal list omits it too.
+  { n: 12, title: "Compliance Status — Proactive Disclosures & CCTV Installation", hideWhen: CLAIMED },
   { n: 13, title: "Expenditure, Advance and Transfer (EAT) Module Implementation Status" },
-  { n: 14, title: "Justification for Continuation of Ongoing Institution", showWhen: { field: "fld_institution_status", equals: ["Ongoing"] } },
+  { n: 14, title: "Justification for Continuation of Ongoing Institution", showWhen: { field: "fld_institution_status", equals: ["Ongoing"] }, hideWhen: SH_ON_RECORD },
   { n: 15, title: "Accounts in Parts (I&E, R&P, Balance Sheet, Auditor's Report)" },
   { n: 16, title: "List of Employees (name, designation, category, photo ID, Aadhaar)" },
-  // Asked for only when the building is rented. It was listed on every application as OPTIONAL
-  // with a "Required when rented" note, so an owned building was shown a rent agreement and a
-  // rented one was never made to upload it (form-path QA, 13 Sep 2026).
   { n: 17, title: "Rent Agreement, Institution Location & Route Map", showWhen: { field: "fld_building_ownership", equals: ["Rented"] } },
-  { n: 18, title: "Details of Income and Expenditure" },
-  { n: 19, title: "School Recognition Certificate" },
-  { n: 20, title: "Audit Report — Previous Year" },
+  { n: 18, title: "Details of Income and Expenditure", hideWhen: SH_ON_RECORD },
+  { n: 19, title: "School Recognition Certificate", hideWhen: SH_ON_RECORD },
+  { n: 20, title: "Audit Report — Previous Year", hideWhen: SH_ON_RECORD },
 ];
 
 export const SHRESHTA_WIZARD: WizardDef = {
@@ -437,10 +612,26 @@ export const SHRESHTA_WIZARD: WizardDef = {
    AVYAY (Atal Vayo Abhyuday Yojana) — 8 steps new / 7 renewal, with the cost-norms panel
    ══════════════════════════════════════════════════════════════════════════════ */
 
-/** The live standing notice that sits under the AVYAY stepper on every step. */
-export const AVYAY_RENEWAL_NOTICE =
-  "A project becomes renewable once it has been sanctioned and has then passed its PMU " +
-  "inspection. Only PMU-verified projects can be selected.";
+/** AVYAY's two branches and its two kinds of renewal, named once. */
+const AV_NEW = "New project";
+const AV_RENEWAL = "Ongoing / Renewal of an existing project";
+const NEW_ONLY = { field: "case_type", equals: [AV_NEW] } as const;
+const RENEWAL_ONLY = { field: "case_type", equals: [AV_RENEWAL] } as const;
+/**
+ * The posts the AVYAY cost norms fund, as the norms name them (the 18 heads below). A project's
+ * key staff hold one of these posts, so the designation is chosen from them rather than typed.
+ */
+const AVYAY_POSTS = [
+  "Superintendent",
+  "Social Worker / Counsellor",
+  "Doctor",
+  "Nurse",
+  "Yoga Therapist",
+  "Accountant / Clerk",
+  "Cook",
+  "Multi-Tasking Staff",
+  "Other",
+] as const;
 
 const AVYAY_STEPS: readonly StepDef[] = [
   {
@@ -456,7 +647,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
             kind: "radio",
             required: true,
             wide: true,
-            options: ["New project", "Ongoing / Renewal of an existing project"],
+            options: [AV_NEW, AV_RENEWAL],
             help: "Choose 'Ongoing / Renewal' to carry forward the details of one of your existing AVYAY projects.",
           },
           {
@@ -465,11 +656,12 @@ const AVYAY_STEPS: readonly StepDef[] = [
             kind: "select",
             required: true,
             wide: true,
-            showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] },
-            options: renewableProjectOptions("AVYAY"),
-            // The standing notice live shows above the stepper, said here once and only to the
-            // applicant it concerns — it sat over every step of a NEW application too.
-            help: `${AVYAY_RENEWAL_NOTICE} The form is filled in from the project you choose; you can edit any field, and a new application is created for the chosen financial year.`,
+            showWhen: RENEWAL_ONLY,
+            // The NGO's OWN projects with an instalment open now, from its sanctioned record. It
+            // listed two illustrative projects that were not the NGO's, so every renewal derived
+            // "1st Instalment" from a history that did not exist.
+            optionsFrom: "renewableProjects",
+            help: "Your projects with a sanctioned grant and an instalment open to claim. The form is filled in from the project's last sanctioned application.",
           },
           {
             name: "fld_financial_year",
@@ -477,13 +669,20 @@ const AVYAY_STEPS: readonly StepDef[] = [
             kind: "select",
             required: true,
             options: FINANCIAL_YEARS,
-            helpWhen: {
-              field: "case_type",
-              byValue: {
-                "New project": "A new application is for the financial year now running.",
-                "Ongoing / Renewal of an existing project": "The year whose instalment you are claiming. Changing it re-checks which instalments are still open for this project.",
+            // A new application is always for the year now running (T328–329), and a 2nd or 3rd
+            // instalment belongs to the year its application was made for.
+            readOnlyWhenAny: [NEW_ONLY, LATER_INSTALMENT],
+            helpWhenLocked: true,
+            helpWhen: [
+              { field: "claim_stage", byValue: { "later-instalment": "The year of the application this instalment is claimed under." } },
+              {
+                field: "case_type",
+                byValue: {
+                  [AV_NEW]: "A new application is for the financial year now running.",
+                  [AV_RENEWAL]: "The year whose instalment you are claiming.",
+                },
               },
-            },
+            ],
           },
           {
             name: "fld_installment_no",
@@ -491,48 +690,37 @@ const AVYAY_STEPS: readonly StepDef[] = [
             kind: "text",
             required: true,
             readOnly: true,
-            // Renewal only. A first-time applicant has no recurring grant and no prior
-            // instalments, and live does not ask them — it shows the financial year alone.
-            // Stated, not chosen: the review call of 11 Sep 2026 (T370–383) removed the list,
-            // because the system already knows which instalments this project has claimed.
-            showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] },
-            help: "The next instalment due for this project, worked out from those already claimed.",
+            // Stated, never chosen (T370–384): worked out from the project's sanctioned claims.
+            showWhen: RENEWAL_ONLY,
           },
         ],
       },
     ],
   },
+  // A 2nd or 3rd instalment only: the four form steps below, folded into one (C39).
+  CONFIRM_DETAILS,
   {
     title: "Organisation Details",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
         title: "Organisation Details",
         lead: "Identity of the applicant NGO/VO. Pre-filled from NITI Aayog NGO-Darpan where available.",
         fields: [
-          { name: "fld_ngo_name", label: "Name of NGO / VO (as in NGO-Darpan)", kind: "text", required: true, readOnly: true, help: "Pre-filled from your login / NGO-Darpan." },
-          { name: "fld_darpan_id", label: "NGO-Darpan Unique ID", kind: "text", required: true, readOnly: true, help: "Pre-filled from your login." },
-          {
-            name: "fld_project_id",
-            label: "Project ID",
-            kind: "text",
-            readOnly: true,
-            wide: true,
-            helpWhen: {
-              field: "case_type",
-              byValue: {
-                "New project": "Generated automatically when the application is submitted, from the scheme, State, district and a serial number.",
-                "Ongoing / Renewal of an existing project": "The Project ID of the project being renewed.",
-              },
-            },
-          },
-          { name: "fld_statute_act", label: "Statute / Act of Registration", kind: "text", required: true },
+          // Name, DARPAN ID, State and District come from NGO-Darpan and cannot be edited (T424–432).
+          { name: "fld_ngo_name", label: "Name of NGO / VO (as in NGO-Darpan)", kind: "text", required: true, readOnly: true },
+          { name: "fld_darpan_id", label: "NGO-Darpan Unique ID", kind: "text", required: true, readOnly: true },
+          // The project's ID on a renewal. A new project has none until it is submitted, and an
+          // empty locked box told a new applicant nothing; the ID is given on the confirmation.
+          { name: "fld_project_id", label: "Project ID", kind: "text", readOnly: true, showWhen: RENEWAL_ONLY },
+          { name: "fld_statute_act", label: "Statute / Act of Registration", kind: "text", required: true, help: "For example, Societies Registration Act, 1860." },
           { name: "fld_registration_number", label: "Registration Number", kind: "text", required: true, help: "As printed on your registration certificate under the Act named above." },
-          { name: "fld_registration_date", label: "Date of Registration", kind: "date", required: true },
+          { name: "fld_registration_date", label: "Date of Registration", kind: "date", required: true, rule: "notFuture" },
           { name: "fld_reg_office_address", label: "Registered-Office Address", kind: "textarea", required: true, wide: true, maxLength: 500 },
-          { name: "fld_reg_office_state", label: "State", kind: "select", required: true, options: INDIAN_STATES, help: "Select the State of your registered office." },
-          { name: "fld_reg_office_district", label: "District", kind: "select", required: true, districtsOf: "fld_reg_office_state", help: "Choose a State first, then its District." },
-          { name: "fld_contact_mobile", label: "Mobile", kind: "tel", required: true, help: "Pre-filled from your login. Used for notifications." },
-          { name: "fld_contact_email", label: "Email", kind: "email", required: true, help: "Pre-filled from your login. Used for notifications." },
+          { name: "fld_reg_office_state", label: "State", kind: "select", required: true, readOnly: true, options: INDIAN_STATES },
+          { name: "fld_reg_office_district", label: "District", kind: "select", required: true, readOnly: true, districtsOf: "fld_reg_office_state" },
+          { name: "fld_contact_mobile", label: "Mobile", kind: "tel", required: true, help: "Notifications about this application are sent here." },
+          { name: "fld_contact_email", label: "Email", kind: "email", required: true, help: "Notifications about this application are sent here." },
           { name: "fld_contact_telephone", label: "Telephone", kind: "tel" },
           { name: "moa_includes_senior_citizens", label: "MOA includes welfare of senior citizens as an aim/objective", kind: "radio", required: true, options: YES_NO, wide: true },
         ],
@@ -541,6 +729,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
   },
   {
     title: "Project Details",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
         title: "Project Details",
@@ -552,26 +741,16 @@ const AVYAY_STEPS: readonly StepDef[] = [
             kind: "select",
             required: true,
             wide: true,
-            optionsOnlyWhen: {
-              field: "case_type",
-              equals: ["Ongoing / Renewal of an existing project"],
-              options: ["Physiotherapy Clinic", "Mobile Medicare Unit"],
-            },
+            optionsOnlyWhen: { ...RENEWAL_ONLY, options: ["Physiotherapy Clinic", "Mobile Medicare Unit"] },
             options: [
               "Senior Citizens' Home — 25 beneficiaries",
               "Senior Citizens' Home — 50 beneficiaries",
               "Senior Citizens' Home — 50 elderly women only",
               "Continuous Care Home (CCH) / Dementia / Alzheimer's",
-              // Renewal-only, per the help below. These two were named in the help
-              // text and were not in this list at all, so the sentence promised project types the
-              // field never offered to anyone. Labels still to be confirmed against live.
               "Physiotherapy Clinic",
               "Mobile Medicare Unit",
             ],
-            helpWhen: {
-              field: "case_type",
-              byValue: { "New project": "Physiotherapy Clinic and Mobile Medicare Unit can be chosen only when renewing an existing project." },
-            },
+            helpWhen: { field: "case_type", byValue: { [AV_NEW]: "Physiotherapy Clinic and Mobile Medicare Unit can be chosen only when renewing an existing project." } },
           },
           {
             name: "fld_agency_type",
@@ -591,69 +770,39 @@ const AVYAY_STEPS: readonly StepDef[] = [
             ],
             help: "The central share depends on this and the project State: 100% for a State Government, Urban Local Body, Panchayati Raj Institution or Regional Resource & Training Centre; 95% in the North-Eastern and Himalayan States; 90% elsewhere.",
           },
-          { name: "fld_project_state", label: "Project State", kind: "select", required: true, options: INDIAN_STATES, help: "State where the project is located." },
-          { name: "fld_project_district", label: "Project District", kind: "select", required: true, districtsOf: "fld_project_state", help: "Choose the Project State first, then its District." },
-          {
-            name: "fld_city_category",
-            label: "City Category (HRA)",
-            kind: "select",
-            required: true,
-            options: CITY_CATEGORIES,
-            auto: { kind: "cityCategory", from: "fld_project_district" },
-            help: "Filled in from the project district once you choose it. Pick it yourself only if your district has not been classified yet.",
-          },
+          // Fixed on a renewal: a project moves only through Project Location Change, within its
+          // district (T100–103, T449).
+          { name: "fld_project_state", label: "Project State", kind: "select", required: true, options: INDIAN_STATES, readOnlyWhen: RENEWAL_ONLY },
+          { name: "fld_project_district", label: "Project District", kind: "select", required: true, districtsOf: "fld_project_state", readOnlyWhen: RENEWAL_ONLY, help: "Choose the Project State first." },
+          { name: "fld_city_category", label: "City Category (HRA)", kind: "select", required: true, options: CITY_CATEGORIES, auto: { kind: "cityCategory", from: "fld_project_district" } },
         ],
       },
     ],
   },
   {
     title: "Justification",
-    // New projects only — live gives a renewal seven steps, not eight. A renewal carries its
-    // justification forward from the project already sanctioned.
-    showWhen: { field: "case_type", equals: ["New project"] },
+    // New projects only — a renewal carries its justification forward from the sanctioned project.
+    showWhen: NEW_ONLY,
     sections: [
       {
         title: "Justification",
-        // A step of its own between Project Details and the infrastructure step (live, 2026-08-23).
         lead: "Why the district needs this project.",
         fields: [
-          {
-            name: "fld_services_available_in_district",
-            label: "Services already available in the district",
-            kind: "textarea",
-            required: true,
-            wide: true,
-            maxLength: 1400,
-            help: "Approximately 200 words.",
-          },
-          {
-            name: "fld_distance_to_nearest_similar",
-            label: "Distance to the nearest similar service (km)",
-            // Live ships a text input and then rejects it with "must be a number"; a number input
-            // enforces the same constraint without the round trip.
-            kind: "number",
-            required: true,
-          },
-          {
-            name: "fld_other_justification",
-            label: "Other justification",
-            kind: "textarea",
-            wide: true,
-            maxLength: 1400,
-            help: "Approximately 200 words.",
-          },
+          { name: "fld_services_available_in_district", label: "Similar services already available in the district", kind: "textarea", required: true, wide: true, maxLength: 1400, help: "Approximately 200 words." },
+          { name: "fld_distance_to_nearest_similar", label: "Distance to the nearest similar service (km)", kind: "number", required: true },
+          { name: "fld_other_justification", label: "Other justification", kind: "textarea", wide: true, maxLength: 1400, help: "Approximately 200 words." },
         ],
       },
     ],
   },
   {
     title: "Infrastructure, Beneficiaries & Bank",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
         title: "Project Location & Infrastructure",
         fields: [
           { name: "fld_project_location", label: "Project Location (full address, PIN, landmark)", kind: "textarea", required: true, wide: true, maxLength: 500 },
-          { name: "fld_project_incharge", label: "Project In-charge (name & contact)", kind: "text", required: true, rule: "nameAndPhone" },
           { name: "fld_functional_status", label: "Functional Status", kind: "select", required: true, options: ["Functional", "Ready to commence"] },
           { name: "fld_commencement_date", label: "Date of Commencement", kind: "date", required: true },
           { name: "fld_building_ownership", label: "Building Owned / Rented", kind: "select", required: true, options: ["Owned", "Rented"] },
@@ -662,71 +811,79 @@ const AVYAY_STEPS: readonly StepDef[] = [
           { name: "fld_infra_toilets", label: "Number of Toilets", kind: "number", required: true },
           { name: "infra_kitchen", label: "Kitchen available", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "infra_open_area", label: "Open / recreational area available", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "fld_key_staff_1", label: "Key Staff 1 (name & designation)", kind: "text", required: true, rule: "lettersOnly" },
-          { name: "fld_key_staff_2", label: "Key Staff 2 (name & designation)", kind: "text" },
-          { name: "beneficiaries_identified", label: "Beneficiaries identified", kind: "radio", required: true, options: YES_NO, wide: true },
         ],
       },
       {
+        title: "Key Functionaries & Staff",
+        columns: 4,
+        fields: [...person("fld_incharge", "Project In-charge", true, AVYAY_POSTS), ...person("fld_key_staff_1", "Key Staff 1", true, AVYAY_POSTS), ...person("fld_key_staff_2", "Key Staff 2", false, AVYAY_POSTS)],
+      },
+      {
         title: "Beneficiaries",
+        reconfirm: true,
         fields: [
-          { name: "fld_total_beneficiaries", label: "Number of indigent senior-citizen beneficiaries", kind: "number", required: true, help: "The minimum depends on the nature of the project: 25 or 50 for a Senior Citizens' Home, and 20 for a Continuous Care Home." },
-          { name: "fld_beneficiaries_women", label: "Of which women", kind: "number" },
+          { name: "beneficiaries_identified", label: "Beneficiaries identified", kind: "radio", required: true, options: YES_NO, wide: true },
+          {
+            name: "fld_total_beneficiaries",
+            label: "Number of indigent senior-citizen beneficiaries",
+            kind: "number",
+            required: true,
+            help: "The minimum depends on the nature of the project: 25 or 50 for a Senior Citizens' Home, and 20 for a Continuous Care Home.",
+            helpWhen: {
+              field: "fld_nature_of_project",
+              byValue: {
+                "Senior Citizens' Home — 25 beneficiaries": "At least 25 for this project.",
+                "Senior Citizens' Home — 50 beneficiaries": "At least 50 for this project.",
+                "Senior Citizens' Home — 50 elderly women only": "At least 50 for this project.",
+                "Continuous Care Home (CCH) / Dementia / Alzheimer's": "At least 20 for this project.",
+                "Physiotherapy Clinic": "",
+                "Mobile Medicare Unit": "",
+              },
+            },
+          },
+          { name: "fld_beneficiaries_women", label: "Of which women", kind: "number", notMoreThan: "fld_total_beneficiaries" },
         ],
       },
       {
         title: "Bank Account Details",
+        columns: 4,
+        // A renewal's account is on record: shown, not asked (T540–559).
+        summaryWhen: RENEWAL_ONLY,
+        lead: "The account must be in the name of the NGO/VO and used for this project only.",
         fields: [
-          { name: "bank_ngo_name_declared", label: "Account is in the name of the NGO/VO", kind: "radio", required: true, options: YES_NO, wide: true },
-          {
-            name: "fld_bank_account_id",
-            label: "Bank Account",
-            kind: "select",
-            required: true,
-            wide: true,
-            readOnlyWhen: {
-              field: "case_type",
-              equals: ["Ongoing / Renewal of an existing project"],
-            },
-            options: ["State Bank of India · ••••••••••4417 · SBIN0001234"],
-            // Locked on a renewal, but its help is the instruction for changing it, so it stays.
-            helpWhenLocked: true,
-            helpWhen: {
-              field: "case_type",
-              byValue: {
-                "New project": "The account the grant will be paid into.",
-                "Ongoing / Renewal of an existing project": "The account recorded for this project. To change it, raise a request under Project Bank Accounts; the change takes effect once the Ministry approves it.",
-              },
-            },
-          },
-          { name: "fld_bank_account_number", label: "Account Number", kind: "text", required: true, readOnly: true, auto: { kind: "bankAccountPart", from: "fld_bank_account_id", part: "account" }, help: "Filled in automatically from the Bank Account you select above." },
-          { name: "fld_bank_ifsc", label: "IFSC Code", kind: "text", required: true, readOnly: true, auto: { kind: "bankAccountPart", from: "fld_bank_account_id", part: "ifsc" }, help: "Filled in automatically from the Bank Account you select above." },
-          { name: "fld_bank_name_branch", label: "Bank & Branch", kind: "text", required: true, readOnly: true, auto: { kind: "bankAccountPart", from: "fld_bank_account_id", part: "bankAndBranch" }, help: "Filled in automatically from the Bank Account you select above." },
+          { name: "bank_ngo_name_declared", label: "Account is in the name of the NGO/VO", kind: "radio", required: true, options: YES_NO, wide: true, rule: "mustBeYes", showWhen: NEW_ONLY },
+          // Every account the NGO already holds belongs to another project, so there is nothing to
+          // choose from and no separate "Add New Bank Detail" (T156–158).
+          ...bankRecordFields(RENEWAL_ONLY),
         ],
       },
     ],
   },
   {
     title: "Grant Sought & Declaration",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
         title: "Grant Sought",
-        lead: "The total is the recurring and non-recurring grant added together. Non-recurring grant is released once every five years; recurring grant in two half-yearly instalments after a satisfactory inspection.",
+        lead: "Non-recurring grant is released once every five years. Recurring grant is the published norm for this project.",
         fields: [
-          { name: "fld_grant_recurring", label: "Recurring Grant Sought (₹)", kind: "number", required: true, help: "Attendance-based running cost. The panel above shows what the norms allow." },
-          { name: "fld_grant_non_recurring", label: "Non-Recurring Grant Sought (₹)", kind: "number", required: true, help: "One-time items such as CCTV cameras, beds and utensils." },
-          { name: "fld_grant_total", label: "Total Grant Sought (₹)", kind: "number", required: true, auto: { kind: "sum", from: ["fld_grant_recurring", "fld_grant_non_recurring"] }, help: "Worked out from the recurring and non-recurring grant." },
+          { name: "fld_grant_non_recurring", label: "Non-Recurring Grant Sought (₹)", kind: "number", required: true, showWhen: NEW_ONLY, help: "One-time items such as beds, utensils and CCTV cameras. The panel above shows what the norms allow." },
+          { name: "fld_grant_recurring", label: "Recurring Grant as per Norms (₹)", kind: "number", required: true, showWhen: NEW_ONLY, auto: { kind: "avyayRecurringNorm" } },
+          { name: "fld_grant_total", label: "Total Grant Sought (₹)", kind: "number", required: true, showWhen: NEW_ONLY, auto: { kind: "sum", from: ["fld_grant_recurring", "fld_grant_non_recurring"] } },
         ],
       },
+      // The non-recurring set-up grant has no instalments (T343–344) and is not asked on a renewal.
+      instalmentGrantSection("AVYAY", RENEWAL_ONLY),
       {
         title: "Verification & Authorised Person",
+        reconfirm: true,
         fields: [
           { name: "decl_no_money_from_beneficiaries", label: "No money is charged from the beneficiaries", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_not_blacklisted", label: "Organisation is not blacklisted", kind: "radio", required: true, options: YES_NO, wide: true },
-          { name: "fld_auth_person_name", label: "Name of Authorised Person", kind: "text", required: true },
-          { name: "fld_auth_person_contact", label: "Contact of Authorised Person", kind: "tel", required: true },
+          { name: "fld_auth_person_name", label: "Name of Authorised Person", kind: "text", required: true, rule: "lettersOnly" },
+          { name: "fld_auth_person_contact", label: "Mobile Number of Authorised Person", kind: "tel", required: true },
           { name: "fld_auth_place", label: "Place", kind: "text", required: true },
-          { name: "fld_auth_date", label: "Date", kind: "date", required: true, readOnly: true, rule: "notBackdated", help: DECLARATION_DATE_HELP },
+          { name: "fld_auth_date", label: "Date", kind: "date", required: true, readOnly: true, rule: "notBackdated" },
         ],
       },
     ],
@@ -856,86 +1013,167 @@ export function avyayCostHeads(natureOfProject?: string): readonly AvyayCostHead
   }));
 }
 
+const FULL_SHARE_AGENCIES = [
+  "State Government",
+  "Urban Local Body (ULB)",
+  "Panchayati Raj Institution (PRI)",
+  "Regional Resource & Training Centre (RRTC)",
+];
+
+/** Central share: 100% for a State Government, ULB, PRI or RRTC; 95% in NE & Himalayan States; 90% elsewhere. */
+export function centralSharePercent(agencyType?: string, projectState?: string): number {
+  if (agencyType && FULL_SHARE_AGENCIES.includes(agencyType)) return 100;
+  if (projectState && NE_HIMALAYAN_STATES.includes(projectState)) return 95;
+  return 90;
+}
+
+export interface AvyayEntitlement {
+  share: number;
+  recurringAllowed: number;
+  /** The norm as live presents it: full rent, before an owned building's deduction. */
+  recurringNorm: number;
+  ownedDeduction: number;
+  nonRecurringNorm: number;
+  attendanceLinked: number;
+  recurringCentral: number;
+  nonRecurringCentral: number;
+  totalCentral: number;
+}
+
+/**
+ * What the AVYAY norms allow a project, as the live cost-norms panel computes it. One function,
+ * read by the panel AND by the grant field it explains — a panel and a field reading the same
+ * norms must never show two figures (data-state-completeness §2).
+ */
+export function avyayEntitlement(input: {
+  natureOfProject?: string;
+  agencyType?: string;
+  projectState?: string;
+  buildingOwnership?: string;
+}): AvyayEntitlement {
+  const heads = avyayCostHeads(input.natureOfProject);
+  const share = centralSharePercent(input.agencyType, input.projectState);
+  // The heads already carry the OWNED figure (10% of rent), so their sum IS the allowed recurring.
+  const ownedLine = heads.find((h) => h.head.startsWith("Owned Building"))?.norm ?? 0;
+  const ownedDeduction = input.buildingOwnership === "Owned" ? ownedLine * 10 - ownedLine : 0;
+  const recurringAllowed = heads.filter((h) => !h.nonRecurring).reduce((a, h) => a + h.norm, 0);
+  const nonRecurringNorm = heads.filter((h) => h.nonRecurring).reduce((a, h) => a + h.norm, 0);
+  const recurringCentral = Math.round((recurringAllowed * share) / 100);
+  const nonRecurringCentral = Math.round((nonRecurringNorm * share) / 100);
+  return {
+    share,
+    recurringAllowed,
+    recurringNorm: recurringAllowed + ownedDeduction,
+    ownedDeduction,
+    nonRecurringNorm,
+    attendanceLinked: heads.filter((h) => h.attendanceLinked).reduce((a, h) => a + h.norm, 0),
+    recurringCentral,
+    nonRecurringCentral,
+    totalCentral: recurringCentral + nonRecurringCentral,
+  };
+}
+
 /* ══════════════════════════════════════════════════════════════════════════════
-   SMILE — Garima Greh — 6 steps
+   SMILE — Garima Greh — 7 steps (6 on the portal, plus Application Type); a 2nd instalment is 4.
+   No live UAT capture exists for SMILE. The reference is the dev-portal walk recorded in
+   docs/research/eanudaan-user-dev.mosje.in/CAPTURE-2026-08-22.md and PARITY-2026-08-22.md.
    ══════════════════════════════════════════════════════════════════════════════ */
+
+const SM_NEW = { field: "case_type", equals: [SMILE_CASE_NEW] } as const;
+const SM_EXISTING = { field: "case_type", equals: [SMILE_CASE_EXISTING] } as const;
+
+/** The twelve sanctioned positions of a Garima Greh unit, as the portal's own staff help names them. */
+const GARIMA_GREH_POSTS = [
+  ["project_director", "Project Director"],
+  ["project_manager", "Project Manager"],
+  ["accountant", "Accountant Assistant"],
+  ["bridge_coordinator", "Bridge Course Coordinator"],
+  ["counsellor", "Counsellor"],
+  ["doctor", "Doctor"],
+  ["cook", "Cook"],
+  ["multi_task", "Multi-Task Worker"],
+  ["sweeper", "Sweeper"],
+  ["watchman_1", "Watchman 1"],
+  ["watchman_2", "Watchman 2"],
+  ["watchman_3", "Watchman 3"],
+] as const;
+
+/** One sanctioned position as a name and a qualification. The Project Director is required (PMC member secretary). */
+function garimaGrehStaff(): FieldDef[] {
+  return GARIMA_GREH_POSTS.flatMap(([key, post], i) => {
+    const name = `fld_staff_${key}_name`;
+    const qual = `fld_staff_${key}_qualification`;
+    const required = i === 0;
+    return [
+      { name, label: `${post} — Name`, kind: "text", required, rule: "lettersOnly", ...(required ? {} : { requiredWith: [qual] }) },
+      { name: qual, label: `${post} — Qualification`, kind: "select", required, options: QUALIFICATIONS, ...(required ? {} : { requiredWith: [name] }) },
+    ] satisfies FieldDef[];
+  });
+}
 
 const SMILE_STEPS: readonly StepDef[] = [
   {
-    title: "Organisation Details",
+    // Not a portal step: these five answers sat among forty organisation questions on step 1. The
+    // existing-project choice decides what the rest of the form is, so it comes first.
+    title: "Application Type",
     sections: [
       {
-        title: "Organisation Details",
-        // Steps 1A–1F and 2A of the Garima Greh paper form.
-        lead: "The project applied for, and the applicant organisation's identity and profile. Pre-filled from NGO-Darpan where available.",
+        title: "Application Type",
+        lead: "The SMILE component applied for, and whether it is a new or an existing project.",
         fields: [
           { name: "fld_nature_of_project", label: "Nature of the Project", kind: "select", required: true, wide: true, options: ["Garima Greh — Transgender Care Home", "Rehabilitation & Livelihood (SMILE)"] },
-          { name: "fld_financial_year", label: "Applying for Financial Year", kind: "select", required: true, options: FINANCIAL_YEARS },
-          // "Application submitted on" and "Acknowledgment No." were asked here, of the applicant,
-          // before anything had been submitted. Both are the system's to issue on submit — the
-          // submission date and the reference number — so neither is a question on the form.
-          {
-            name: "case_type",
-            label: "Do you have an existing project under SMILE?",
-            kind: "radio",
-            required: true,
-            wide: true,
-            options: [SMILE_CASE_NEW, SMILE_CASE_EXISTING],
-          },
-          /*
-           * SMILE's step 1 forks on case_type, walked on live 2026-08-23. A new project gets only
-           * the generated id; an existing one is asked to pick the project, confirm its id and
-           * name the installment — and does NOT get the generated id at all.
-           */
-          {
-            name: "fld_project_id_auto",
-            label: "Project ID",
-            kind: "text",
-            readOnly: true,
-            help: "Generated automatically when the application is submitted.",
-            showWhen: { field: "case_type", equals: [SMILE_CASE_NEW] },
-          },
+          { name: "case_type", label: "Do you have an existing project under SMILE?", kind: "radio", required: true, wide: true, options: [SMILE_CASE_NEW, SMILE_CASE_EXISTING] },
           {
             name: "fld_smile_project_select",
             label: "Existing Project",
             kind: "select",
             required: true,
             wide: true,
-            options: renewableProjectOptions("SMILE"),
-            help: RENEWABLE_HELP,
-            showWhen: { field: "case_type", equals: [SMILE_CASE_EXISTING] },
+            optionsFrom: "renewableProjects",
+            showWhen: SM_EXISTING,
+            help: "Your projects with a sanctioned grant and an instalment open to claim. The form is filled in from the project's last sanctioned application.",
           },
+          { name: "fld_project_id", label: "Project ID", kind: "text", required: true, readOnly: true, auto: { kind: "projectIdOf", from: "fld_smile_project_select" }, showWhen: SM_EXISTING },
           {
-            name: "fld_project_id",
-            label: "Project ID",
-            kind: "text",
+            name: "fld_financial_year",
+            label: "Applying for Financial Year",
+            kind: "select",
             required: true,
-            readOnly: true,
-            auto: { kind: "projectIdOf", from: "fld_smile_project_select" },
-            help: "Taken from the project chosen above.",
-            showWhen: { field: "case_type", equals: [SMILE_CASE_EXISTING] },
+            options: FINANCIAL_YEARS,
+            readOnlyWhenAny: [SM_NEW, LATER_INSTALMENT],
+            helpWhenLocked: true,
+            helpWhen: [
+              { field: "claim_stage", byValue: { "later-instalment": "The year of the application this instalment is claimed under." } },
+              { field: "case_type", byValue: { [SMILE_CASE_NEW]: "A new application is for the financial year now running.", [SMILE_CASE_EXISTING]: "The year whose instalment you are claiming." } },
+            ],
           },
-          {
-            name: "fld_installment_no",
-            label: "Instalment",
-            kind: "text",
-            required: true,
-            readOnly: true,
-            showWhen: { field: "case_type", equals: [SMILE_CASE_EXISTING] },
-            help: "The next instalment due for this project, worked out from those already claimed.",
-          },
+          { name: "fld_installment_no", label: "Instalment", kind: "text", required: true, readOnly: true, showWhen: SM_EXISTING },
+        ],
+      },
+    ],
+  },
+  CONFIRM_DETAILS,
+  {
+    title: "Organisation Details",
+    hideWhen: LATER_INSTALMENT,
+    sections: [
+      {
+        title: "Organisation Details",
+        lead: "The applicant organisation's identity and profile. Pre-filled from NGO-Darpan where available.",
+        fields: [
           { name: "website_available", label: "Do you have a website?", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "fld_website_url", label: "Website URL", kind: "text", required: true, showWhen: { field: "website_available", equals: ["Yes"] } },
-          { name: "camera_live_feed", label: "Do you have a camera and live feed?", kind: "radio", required: true, options: YES_NO, wide: true, help: "If Yes, the CCTV and live-feed registration proof is added to the documents to upload." },
-          { name: "fld_ngo_name", label: "NGO/CBO/Startup Name (as per NITI Aayog Darpan)", kind: "text", required: true, readOnly: true, help: "Read-only — sourced from NGO-Darpan / your login." },
-          { name: "fld_darpan_id", label: "NGO Unique ID (NITI Aayog Darpan)", kind: "text", required: true, readOnly: true, help: "Pre-filled from your login." },
+          // A new project only: no CCTV question on a renewal (review call, T640–644; W3).
+          { name: "camera_live_feed", label: "Do you have a camera and live feed?", kind: "radio", required: true, options: YES_NO, wide: true, showWhen: SM_NEW, help: "If Yes, the CCTV and live-feed registration proof is added to the documents to upload." },
+          { name: "fld_ngo_name", label: "NGO/CBO/Startup Name (as per NITI Aayog Darpan)", kind: "text", required: true, readOnly: true },
+          { name: "fld_darpan_id", label: "NGO Unique ID (NITI Aayog Darpan)", kind: "text", required: true, readOnly: true },
           { name: "fld_reg_office_address", label: "Registered Office Address", kind: "textarea", required: true, wide: true },
           { name: "fld_reg_office_city", label: "City / Town / Village", kind: "text", required: true },
-          { name: "fld_reg_office_district", label: "District", kind: "text", required: true },
-          { name: "fld_reg_office_state", label: "State", kind: "text", required: true },
-          { name: "fld_contact_mobile", label: "Mobile No.", kind: "tel", required: true, help: "Pre-filled from your login. Used for notifications." },
+          { name: "fld_reg_office_district", label: "District", kind: "text", required: true, readOnly: true },
+          { name: "fld_reg_office_state", label: "State", kind: "text", required: true, readOnly: true },
+          { name: "fld_contact_mobile", label: "Mobile No.", kind: "tel", required: true, help: "Notifications about this application are sent here." },
           { name: "fld_contact_telephone", label: "Telephone", kind: "tel" },
-          { name: "fld_contact_email", label: "Email", kind: "email", required: true, help: "Pre-filled from your login. Used for notifications." },
+          { name: "fld_contact_email", label: "Email", kind: "email", required: true, help: "Notifications about this application are sent here." },
           { name: "fld_statute_act", label: "Statute under which registered", kind: "text", required: true },
           { name: "fld_org_geographical_coverage", label: "Geographical coverage (districts)", kind: "textarea", required: true, wide: true },
           { name: "fld_org_area_specialisation", label: "Main area of specialisation", kind: "textarea", required: true, wide: true },
@@ -947,69 +1185,91 @@ const SMILE_STEPS: readonly StepDef[] = [
           { name: "fld_strength_tg_rehabilitated", label: "Number of transgender persons rehabilitated (self-employment or job)", kind: "number", required: true },
           { name: "fld_proj_tg_id_handheld", label: "Number of transgender persons helped to obtain an identity certificate", kind: "number", required: true },
           { name: "fld_proj_rehab_strategies", label: "Strategies for rehabilitation of transgender persons", kind: "textarea", required: true, wide: true },
-          { name: "fld_head_name", label: "Head of Organisation — Name", kind: "text", required: true },
-          { name: "fld_head_qualification", label: "Head of Organisation — Qualification", kind: "text", required: true },
-          { name: "fld_head_address", label: "Head of Organisation — Address", kind: "text", required: true, wide: true },
-          { name: "fld_key_person_1_name", label: "Key Functionary 1 — Name", kind: "text", required: true },
-          { name: "fld_key_person_1_qualification", label: "Key Functionary 1 — Qualification", kind: "text", required: true },
-          { name: "fld_key_person_1_address", label: "Key Functionary 1 — Address", kind: "text", required: true, wide: true },
           { name: "fld_registration_act", label: "Name of Act", kind: "text", required: true },
           { name: "fld_registration_number", label: "Registration Number", kind: "text", required: true },
-          { name: "fld_registration_date", label: "Date of Registration", kind: "date", required: true },
-          { name: "fld_registration_valid_upto", label: "Registration Valid up to", kind: "date", required: true, rule: "afterRegistration", help: "Must be later than the date of registration." },
-          { name: "fld_establishment_date", label: "Date of Establishment", kind: "date", required: true },
-          { name: "fld_pan_number", label: "PAN Registration Number", kind: "text", required: true },
-          { name: "fld_pan_date", label: "PAN Registration Date", kind: "date", required: true },
+          { name: "fld_registration_date", label: "Date of Registration", kind: "date", required: true, rule: "notFuture" },
+          { name: "fld_registration_valid_upto", label: "Registration Valid up to", kind: "date", required: true, rule: "afterRegistration" },
+          { name: "fld_establishment_date", label: "Date of Establishment", kind: "date", required: true, rule: "notFuture" },
+          { name: "fld_pan_number", label: "PAN Registration Number", kind: "text", required: true, rule: "pan" },
+          { name: "fld_pan_date", label: "PAN Registration Date", kind: "date", required: true, rule: "notFuture" },
           { name: "fcra_80g", label: "80G / FCRA registration", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "fld_fcra_80g_details", label: "80G / FCRA registration details", kind: "textarea", required: true, wide: true, showWhen: { field: "fcra_80g", equals: ["Yes"] } },
-          { name: "prior_grant_received", label: "Has the organisation received a previous SMILE grant?", kind: "radio", required: true, options: YES_NO, wide: true },
+          // A renewal's answer is on record: the project it renews was granted under SMILE.
+          { name: "prior_grant_received", label: "Has the organisation received a previous SMILE grant?", kind: "radio", required: true, options: YES_NO, wide: true, showWhen: SM_NEW },
+        ],
+      },
+      {
+        title: "Head of Organisation & Key Functionary",
+        columns: 4,
+        fields: [
+          { name: "fld_head_name", label: "Head of Organisation — Name", kind: "text", required: true, rule: "lettersOnly" },
+          { name: "fld_head_qualification", label: "Head of Organisation — Qualification", kind: "select", required: true, options: QUALIFICATIONS },
+          { name: "fld_head_mobile", label: "Head of Organisation — Mobile Number", kind: "tel", required: true },
+          { name: "fld_head_address", label: "Head of Organisation — Address", kind: "text", required: true },
+          ...person("fld_key_person_1", "Key Functionary 1", true),
+          { name: "fld_key_person_1_address", label: "Key Functionary 1 — Address", kind: "text", required: true, wide: true },
         ],
       },
     ],
   },
   {
     title: "Institution Details",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
-        title: "Institution Details",
-        // Steps 2B–2C and 3A–3C of the Garima Greh paper form.
-        lead: "The Garima Greh unit — its premises, track record, location and staff.",
+        title: "Premises & Track Record",
+        lead: "The Garima Greh unit — its premises and track record.",
         fields: [
           { name: "fld_premises_office_area_sqm", label: "Office space (sq. m)", kind: "number", required: true },
           { name: "fld_premises_ownership", label: "Ownership status", kind: "select", required: true, options: ["Owned", "Rented", "On Lease", "Donated"] },
+          // On the portal (CAPTURE-2026-08-22: "Ownership status = Rented reveals Rent particulars"); missing here.
+          { name: "fld_rent_particulars", label: "Rent particulars (owner, monthly rent, valid until)", kind: "textarea", required: true, wide: true, showWhen: { field: "fld_premises_ownership", equals: ["Rented", "On Lease"] } },
           { name: "fld_track_nature_of_work", label: "Nature of work done", kind: "textarea", required: true, wide: true },
           { name: "fld_track_period_from", label: "Period — From", kind: "date", required: true },
-          { name: "fld_track_period_to", label: "Period — To", kind: "date", required: true, rule: "afterPeriodFrom", help: "Must be later than the start date." },
+          { name: "fld_track_period_to", label: "Period — To", kind: "date", required: true, rule: "afterPeriodFrom" },
           { name: "fld_track_coverage", label: "Coverage of beneficiaries", kind: "textarea", required: true, wide: true },
           { name: "fld_track_outcome", label: "Outcome, achievement or award", kind: "textarea", required: true, wide: true },
           { name: "fld_track_funding", label: "Source of funding and amount", kind: "textarea", required: true, wide: true },
+        ],
+      },
+      {
+        title: "Project Location",
+        fields: [
           { name: "fld_site_address", label: "Project Location Address", kind: "textarea", required: true, wide: true },
           { name: "fld_site_landmark", label: "Landmark", kind: "text" },
           { name: "fld_site_city", label: "City / Town / Village", kind: "text", required: true },
-          { name: "fld_site_state", label: "State", kind: "select", required: true, options: INDIAN_STATES, help: "Select the State of the Garima Greh site." },
-          { name: "fld_site_district", label: "District", kind: "select", required: true, districtsOf: "fld_site_state", help: "Choose the State first, then its District." },
-          { name: "fld_site_location_type", label: "Location Type", kind: "text", required: true },
+          // Fixed on a renewal: a project moves only through Project Location Change (T100–103, T449).
+          { name: "fld_site_state", label: "State", kind: "select", required: true, options: INDIAN_STATES, readOnlyWhen: SM_EXISTING },
+          { name: "fld_site_district", label: "District", kind: "select", required: true, districtsOf: "fld_site_state", readOnlyWhen: SM_EXISTING, help: "Choose the State first." },
+          { name: "fld_site_location_type", label: "Location Type", kind: "select", required: true, options: ["Urban", "Rural"] },
           { name: "fld_site_pin", label: "PIN Code", kind: "text", required: true, rule: "pin" },
           { name: "fld_site_org_email", label: "Organisation Email Address", kind: "email", required: true },
-          { name: "fld_site_incharge_name", label: "Project In-charge — Name", kind: "text", required: true },
+        ],
+      },
+      {
+        title: "Project In-charge",
+        columns: 4,
+        fields: [
+          ...person("fld_site_incharge", "Project In-charge", true),
           { name: "fld_site_incharge_email", label: "Project In-charge — Email", kind: "email", required: true },
-          { name: "fld_site_incharge_mobile", label: "Project In-charge — Mobile", kind: "tel", required: true },
-          {
-            name: "fld_staff_roster",
-            label: "Staff Associated with the Project — 12 Sanctioned Positions",
-            kind: "textarea",
-            required: true,
-            wide: true,
-            help: "Name, designation and educational qualification for each of the 12 sanctioned positions: Project Director, Project Manager, Accountant Assistant, Bridge Course Coordinator, Counsellor, Doctor, Cook, Multi-Task Worker, Sweeper and three Watchmen.",
-          },
+        ],
+      },
+      {
+        title: "Staff — 12 Sanctioned Positions",
+        lead: "Name and qualification for each position filled.",
+        columns: 4,
+        fields: garimaGrehStaff(),
+      },
+      {
+        title: "Project Management Committee",
+        fields: [
           {
             name: "fld_pmc_composition",
             label: "PMC Composition (Project Management Committee)",
             kind: "textarea",
             required: true,
             wide: true,
-            // Composition per the scheme's PMC rule (BR-PMC-001).
-            help: "List the five members of the Project Management Committee, with the name and role of each: the District Magistrate or equivalent (Chairperson), a nominee of the organisation, a doctor, a transgender welfare expert, and the Project Director (Member Secretary), who must be a transgender person.",
+            help: "The five members, with the name and role of each: the District Magistrate or equivalent (Chairperson), a nominee of the organisation, a doctor, a transgender welfare expert, and the Project Director (Member Secretary), who must be a transgender person.",
           },
         ],
       },
@@ -1017,103 +1277,72 @@ const SMILE_STEPS: readonly StepDef[] = [
   },
   {
     title: "Bank, Beneficiaries & Grant",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
         title: "Bank Details",
-        // These replace document 16 of the earlier paper checklist.
+        columns: 4,
+        summaryWhen: SM_EXISTING,
         lead: "The account the grant will be paid into.",
         fields: [
-          { name: "fld_bank_name", label: "Bank Name", kind: "text", required: true },
-          { name: "fld_bank_branch_address", label: "Branch Address", kind: "textarea", required: true, wide: true },
-          { name: "fld_bank_account_number", label: "Account Number", kind: "text", required: true },
-          { name: "fld_bank_ifsc", label: "IFSC Code", kind: "text", required: true, rule: "ifsc" },
-          { name: "fld_bank_rtgs_micr", label: "RTGS / MICR Code", kind: "text" },
-          { name: "fld_bank_joint_operators", label: "Name & Address of joint-account operators", kind: "textarea", required: true, wide: true },
+          ...bankRecordFields(SM_EXISTING),
+          { name: "fld_bank_rtgs_micr", label: "RTGS / MICR Code", kind: "text", showWhen: SM_NEW },
+          { name: "fld_bank_joint_operators", label: "Name & Address of joint-account operators", kind: "textarea", required: true, wide: true, showWhen: SM_NEW },
         ],
       },
       {
         title: "Beneficiaries / Residents",
+        reconfirm: true,
         fields: [
           { name: "fld_residents_list", label: "List of residents and beneficiaries (name, transgender identity certificate number, age)", kind: "textarea", required: true, wide: true },
           { name: "fld_sanctioned_capacity", label: "Sanctioned resident capacity", kind: "number", required: true, help: "A Garima Greh unit is sanctioned for up to 25 residents." },
-          {
-            name: "fld_tg_beneficiaries_details",
-            label: "Transgender beneficiaries — Name, Aadhaar, Mobile, Date of Admission",
-            kind: "textarea",
-            wide: true,
-            help: "One resident per line, in the format: Name | Aadhaar (12 digits) | Mobile (10 digits) | Date of Admission.",
-          },
-          { name: "fld_total_beneficiaries", label: "Total Number of Residents/Beneficiaries", kind: "number", required: true, help: "Visible to all reviewers." },
+          { name: "fld_tg_beneficiaries_details", label: "Transgender beneficiaries — Name, Aadhaar, Mobile, Date of Admission", kind: "textarea", wide: true, help: "One resident per line: Name | Aadhaar (12 digits) | Mobile (10 digits) | Date of Admission." },
+          { name: "fld_total_beneficiaries", label: "Total Number of Residents/Beneficiaries", kind: "number", required: true, notMoreThan: "fld_sanctioned_capacity" },
         ],
       },
       {
         title: "Grant Sought / Budget Estimate",
-        // Item-wise heads per BRD Annexure C.
         lead: "Item-wise break-up. The total is the recurring and non-recurring grant added together.",
         fields: [
-          { name: "fld_grant_non_recurring_furniture", label: "Non-Recurring — Furniture (₹)", kind: "number" },
-          { name: "fld_grant_non_recurring_it", label: "Non-Recurring — IT Peripherals (₹)", kind: "number" },
-          { name: "fld_grant_non_recurring_equipment", label: "Non-Recurring — Equipment incl. CCTV (₹)", kind: "number" },
-          { name: "fld_grant_non_recurring_kitchen", label: "Non-Recurring — Kitchen items (₹)", kind: "number" },
-          { name: "fld_grant_non_recurring_safety", label: "Non-Recurring — Safety equipment (₹)", kind: "number" },
-          { name: "fld_grant_non_recurring_skill_dev", label: "Non-Recurring — Skill development equipment (₹)", kind: "number" },
+          { name: "fld_grant_non_recurring_furniture", label: "Non-Recurring — Furniture (₹)", kind: "number", showWhen: SM_NEW },
+          { name: "fld_grant_non_recurring_it", label: "Non-Recurring — IT Peripherals (₹)", kind: "number", showWhen: SM_NEW },
+          { name: "fld_grant_non_recurring_equipment", label: "Non-Recurring — Equipment (₹)", kind: "number", showWhen: SM_NEW },
+          { name: "fld_grant_non_recurring_kitchen", label: "Non-Recurring — Kitchen items (₹)", kind: "number", showWhen: SM_NEW },
+          { name: "fld_grant_non_recurring_safety", label: "Non-Recurring — Safety equipment (₹)", kind: "number", showWhen: SM_NEW },
+          { name: "fld_grant_non_recurring_skill_dev", label: "Non-Recurring — Skill development equipment (₹)", kind: "number", showWhen: SM_NEW },
           {
             name: "fld_grant_non_recurring",
             label: "Non-Recurring Total (₹)",
             kind: "number",
             required: true,
-            help: "Worked out from the non-recurring break-up.",
-            auto: {
-              kind: "sum",
-              from: [
-                "fld_grant_non_recurring_furniture",
-                "fld_grant_non_recurring_it",
-                "fld_grant_non_recurring_equipment",
-                "fld_grant_non_recurring_kitchen",
-                "fld_grant_non_recurring_safety",
-                "fld_grant_non_recurring_skill_dev",
-              ],
-            },
+            showWhen: SM_NEW,
+            auto: { kind: "sum", from: ["fld_grant_non_recurring_furniture", "fld_grant_non_recurring_it", "fld_grant_non_recurring_equipment", "fld_grant_non_recurring_kitchen", "fld_grant_non_recurring_safety", "fld_grant_non_recurring_skill_dev"] },
           },
-          { name: "fld_grant_recurring_rent", label: "Recurring — Rent (₹)", kind: "number" },
-          { name: "fld_grant_recurring_food", label: "Recurring — Food (₹)", kind: "number" },
-          { name: "fld_grant_recurring_salaries", label: "Recurring — Salaries by post (₹)", kind: "number" },
-          { name: "fld_grant_recurring_admin", label: "Recurring — Admin expenses (₹)", kind: "number" },
+          { name: "fld_grant_recurring_rent", label: "Recurring — Rent (₹)", kind: "number", showWhen: SM_NEW },
+          { name: "fld_grant_recurring_food", label: "Recurring — Food (₹)", kind: "number", showWhen: SM_NEW },
+          { name: "fld_grant_recurring_salaries", label: "Recurring — Salaries by post (₹)", kind: "number", showWhen: SM_NEW },
+          { name: "fld_grant_recurring_admin", label: "Recurring — Admin expenses (₹)", kind: "number", showWhen: SM_NEW },
           {
             name: "fld_grant_recurring",
             label: "Recurring Total (₹)",
             kind: "number",
             required: true,
-            help: "Worked out from the recurring break-up.",
-            auto: {
-              kind: "sum",
-              from: [
-                "fld_grant_recurring_rent",
-                "fld_grant_recurring_food",
-                "fld_grant_recurring_salaries",
-                "fld_grant_recurring_admin",
-              ],
-            },
+            showWhen: SM_NEW,
+            auto: { kind: "sum", from: ["fld_grant_recurring_rent", "fld_grant_recurring_food", "fld_grant_recurring_salaries", "fld_grant_recurring_admin"] },
           },
-          {
-            name: "fld_grant_total",
-            label: "Total Grant Requested (₹)",
-            kind: "number",
-            required: true,
-            // Feeds the application's amount requested.
-            help: "Worked out from the recurring and non-recurring totals.",
-            auto: { kind: "sum", from: ["fld_grant_recurring", "fld_grant_non_recurring"] },
-          },
+          { name: "fld_grant_total", label: "Total Grant Requested (₹)", kind: "number", required: true, showWhen: SM_NEW, auto: { kind: "sum", from: ["fld_grant_recurring", "fld_grant_non_recurring"] } },
         ],
       },
+      instalmentGrantSection("SMILE", SM_EXISTING),
     ],
   },
   {
     title: "Declarations",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
         title: "Compliance Declarations",
-        // Undertakings (a)–(j) of the scheme rules.
+        reconfirm: true,
         lead: "Certify the accuracy of the records, and give each undertaking the scheme rules require.",
         fields: [
           { name: "decl_records_accurate", label: "I certify that the records and accounts furnished are accurate.", kind: "checkbox", required: true, wide: true },
@@ -1130,12 +1359,13 @@ const SMILE_STEPS: readonly StepDef[] = [
       },
       {
         title: "Authorised Person & Declaration",
+        reconfirm: true,
         fields: [
-          { name: "fld_auth_person_name", label: "Name of Authorised Person", kind: "text", required: true },
-          { name: "fld_auth_person_contact", label: "Contact Number", kind: "tel", required: true },
+          { name: "fld_auth_person_name", label: "Name of Authorised Person", kind: "text", required: true, rule: "lettersOnly" },
+          { name: "fld_auth_person_contact", label: "Mobile Number of Authorised Person", kind: "tel", required: true },
           { name: "fld_auth_place", label: "Place", kind: "text", required: true },
-          { name: "fld_auth_date", label: "Date", kind: "date", required: true, readOnly: true, rule: "notBackdated", help: DECLARATION_DATE_HELP },
-          { name: "fld_auth_time", label: "Time", kind: "time", required: true, readOnly: true, help: DECLARATION_TIME_HELP },
+          { name: "fld_auth_date", label: "Date", kind: "date", required: true, readOnly: true, rule: "notBackdated" },
+          { name: "fld_auth_time", label: "Time", kind: "time", required: true, readOnly: true },
         ],
       },
     ],
@@ -1146,42 +1376,19 @@ const SMILE_STEPS: readonly StepDef[] = [
 
 const SMILE_DOCS: readonly DocDef[] = [
   { n: 1, title: "Registration Certificate (Societies Act / Trust Act etc.)" },
-  {
-    n: 2,
-    title: "Annual Report — previous financial year",
-    note: "New applicants: previous two (2) financial years. 2nd instalment claims: previous financial year.",
-  },
-  {
-    n: 3,
-    title: "Audit Report (Balance Sheet, Income & Expenditure, Receipts & Payments)",
-    note: "New applicants: previous two (2) financial years. 2nd instalment claims: previous financial year.",
-  },
-  { n: 4, title: "Any other document as requested", note: "Conditional — sought only where applicable.", optional: true },
+  { n: 2, title: "Annual Report — previous financial year", note: "New applicants: previous two (2) financial years. Instalment claims: previous financial year." },
+  { n: 3, title: "Audit Report (Balance Sheet, Income & Expenditure, Receipts & Payments)", note: "New applicants: previous two (2) financial years. Instalment claims: previous financial year." },
+  { n: 4, title: "Any other document as requested", note: "Sought only where applicable.", optional: true },
   { n: 5, title: "Memorandum of Association, with its rules, aims and objectives" },
   { n: 6, title: "List of Management/Managing Committee Members" },
-  {
-    n: 7,
-    title: "Rent Agreement for Garima Greh premises (notarised; rural certificate if applicable)",
-    // Rented or leased premises only; it was asked of owned and donated premises too.
-    showWhen: { field: "fld_premises_ownership", equals: ["Rented", "On Lease"] },
-  },
+  { n: 7, title: "Rent Agreement for Garima Greh premises (notarised; rural certificate if applicable)", showWhen: { field: "fld_premises_ownership", equals: ["Rented", "On Lease"] } },
   { n: 8, title: "Infrastructure details (rooms, kitchen, toilet, etc.)" },
-  {
-    n: 9,
-    title: "Budget Estimate (item-wise recurring & non-recurring)",
-    note: "New applicants: non-recurring items only. 1st instalment claims: recurring and non-recurring items.",
-  },
+  { n: 9, title: "Budget Estimate (item-wise recurring & non-recurring)", note: "New applicants: non-recurring items only. Instalment claims: recurring and non-recurring items." },
   { n: 10, title: "Bank account details document" },
   { n: 11, title: "Agreement Bond/PSR on non-judicial stamp paper (₹20)" },
-  {
-    n: 12,
-    title: "CCTV and live-feed registration proof",
-    // Only when step 1 declares a camera and live feed (FR-INS-001). Step 1's help used to call
-    // this "document 20"; it is twelfth, and a position is not a stable name for it anyway.
-    showWhen: { field: "camera_live_feed", equals: ["Yes"] },
-  },
+  // A new project's camera answer only; never on a renewal (T640–644; W3).
+  { n: 12, title: "CCTV and live-feed registration proof", showWhen: { field: "camera_live_feed", equals: ["Yes"] }, hideWhen: SM_EXISTING },
 ];
-
 
 export const SMILE_WIZARD: WizardDef = {
   code: "SMILE",
@@ -1193,8 +1400,13 @@ export const SMILE_WIZARD: WizardDef = {
 };
 
 /* ══════════════════════════════════════════════════════════════════════════════
-   NAPDDR — Full 10 steps matching live UAT portal
+   NAPDDR — 10 steps new / 11 renewal, as the live UAT portal draws it (captured 07–08 Sep 2026,
+   NGO-NAPDDR-{NEW,RENEWAL}-S*). A 2nd or 3rd instalment is 4 steps.
    ══════════════════════════════════════════════════════════════════════════════ */
+
+const ND_NEW = { field: "case_type", equals: ["New project"] } as const;
+const ND_RENEWAL = { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } as const;
+const ND_DDAC = "DDAC — District De-Addiction Centre";
 
 const NAPDDR_STEPS: readonly StepDef[] = [
   {
@@ -1202,223 +1414,257 @@ const NAPDDR_STEPS: readonly StepDef[] = [
     sections: [
       {
         title: "Application Type",
-        lead: "Whether this is a new project or the renewal of an existing one.",
+        lead: "Is this a fresh (new) project, or a renewal of one of your existing (ongoing) NAPDDR projects?",
         fields: [
-          // The controller. Live is a RADIO with exactly these two labels — the same two AVYAY
-          // and SMILE fork on — captured 2026-09-07. Our schema previously asked this as a
-          // SELECT with three options ("New Project / Renewal / Expansion"), which invented a
-          // third branch the scheme does not have and gave the form nothing to fork on.
-          { name: "case_type", label: "Case Type", kind: "radio", required: true, options: ["New project", "Ongoing / Renewal of an existing project"] },
-          // NEW only. Live calls it Project Type and offers four; our old
-          // fld_scheme_category offered five of a different vocabulary (CPLI, ODIC, SLCA),
-          // none of which the live form lists.
-          { name: "fld_project_type", label: "Project Type", kind: "select", required: true, options: ["DDAC — District De-Addiction Centre", "IRCA — Integrated Rehabilitation Centre", "IRCA — Female", "IRCA — Male Children"], showWhen: { field: "case_type", equals: ["New project"] } },
-          // RENEWAL only. A renewal continues a sanctioned project, so it names which one and
-          // which installment it is drawing — neither question means anything to a first-time
-          // applicant, and our schema asked a new applicant neither.
-          // Wide, so the option is read in full; at half width it was cut to "…FY 2026-2".
-          { name: "fld_renewal_project", label: "Select the existing project to renew", kind: "select", required: true, wide: true, options: renewableProjectOptions("NAPDDR"), help: RENEWABLE_HELP, showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
-          { name: "fld_financial_year", label: "Financial Year for which grant is sought", kind: "select", required: true, options: ["2027-28", "2026-27", "2025-26"] },
-          // Not a choice (review call 11 Sep 2026, T370–383): the system knows which instalments
-          // this project has claimed, so the next one is stated, never picked from a list.
-          { name: "fld_installment_no", label: "Instalment", kind: "text", required: true, readOnly: true, showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] }, help: "The next instalment due for this project, worked out from those already claimed." },
+          { name: "case_type", label: "Case Type", kind: "radio", required: true, wide: true, options: ["New project", "Ongoing / Renewal of an existing project"], help: "Choose 'Ongoing / Renewal' to carry forward the details of one of your existing NAPDDR projects." },
+          {
+            name: "fld_project_type",
+            label: "Project Type",
+            kind: "select",
+            required: true,
+            options: [ND_DDAC, "IRCA — Integrated Rehabilitation Centre", "IRCA — Female", "IRCA — Male Children"],
+            help: "For a general IRCA, the reviewing officer sets the bed capacity.",
+            showWhen: ND_NEW,
+          },
+          {
+            name: "fld_ongoing_source_application",
+            label: "Select the existing project to renew",
+            kind: "select",
+            required: true,
+            wide: true,
+            optionsFrom: "renewableProjects",
+            showWhen: ND_RENEWAL,
+            help: "Your projects with a sanctioned grant and an instalment open to claim. The form is filled in from the project's last sanctioned application.",
+          },
+          {
+            name: "fld_financial_year",
+            label: "Financial Year for which grant is sought",
+            kind: "select",
+            required: true,
+            options: FINANCIAL_YEARS,
+            readOnlyWhenAny: [ND_NEW, LATER_INSTALMENT],
+            helpWhenLocked: true,
+            helpWhen: [
+              { field: "claim_stage", byValue: { "later-instalment": "The year of the application this instalment is claimed under." } },
+              { field: "case_type", byValue: { "New project": "A new application is for the financial year now running.", "Ongoing / Renewal of an existing project": "The year whose instalment you are claiming." } },
+            ],
+          },
+          { name: "fld_installment_no", label: "Instalment", kind: "text", required: true, readOnly: true, showWhen: ND_RENEWAL },
         ],
       },
     ],
   },
+  CONFIRM_DETAILS,
   {
     title: "Organisation Details",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
         title: "Organisation Details",
-        lead: "Identity of the applicant organisation. Pre-filled from NGO-Darpan.",
+        lead: "Identity of the applicant NGO/VO. Pre-filled from NGO-Darpan where available.",
         fields: [
-          { name: "fld_ngo_name", label: "Name of NGO / VO", kind: "text", required: true, readOnly: true, help: "Sourced from NGO-Darpan / your login." },
+          { name: "fld_ngo_name", label: "Name of NGO / VO (as in NGO-Darpan)", kind: "text", required: true, readOnly: true },
           { name: "fld_darpan_id", label: "NGO-Darpan Unique ID", kind: "text", required: true, readOnly: true },
-          { name: "fld_statute_act", label: "Statute / Act of Registration", kind: "text", required: true },
-          { name: "fld_registration_number", label: "Registration Number", kind: "text", required: true },
-          { name: "fld_registration_date", label: "Date of Registration", kind: "date", required: true },
-          { name: "fld_registration_expiry", label: "Date of Expiry", kind: "date", required: true, rule: "afterRegistration" },
-          { name: "fld_reg_office_address", label: "Registered Office Address", kind: "textarea", required: true, wide: true },
-          { name: "fld_reg_office_city", label: "City", kind: "text", required: true },
-          { name: "fld_reg_office_district", label: "District", kind: "text", required: true },
-          { name: "fld_reg_office_state", label: "State", kind: "text", required: true },
-          { name: "fld_contact_mobile", label: "Mobile Number", kind: "tel", required: true },
-          { name: "fld_contact_email", label: "Email Address", kind: "email", required: true },
+          { name: "fld_project_id", label: "Project ID", kind: "text", readOnly: true, showWhen: ND_RENEWAL },
+          { name: "fld_statute_act", label: "Name of Act / Statute of Registration", kind: "text", required: true, help: "For example, Societies Registration Act, 1860." },
+          { name: "fld_registration_number", label: "Registration Number under the Act", kind: "text", required: true },
+          { name: "fld_registration_date", label: "Date of Registration", kind: "date", required: true, rule: "notFuture" },
+          { name: "fld_registration_valid_upto", label: "Registration valid up to", kind: "date", rule: "afterRegistration" },
+          { name: "fld_reg_office_address", label: "Registered-Office Address", kind: "textarea", required: true, wide: true, maxLength: 300 },
+          { name: "fld_reg_office_state", label: "State", kind: "select", required: true, readOnly: true, options: INDIAN_STATES },
+          { name: "fld_reg_office_district", label: "District", kind: "select", required: true, readOnly: true, districtsOf: "fld_reg_office_state" },
+          { name: "fld_contact_mobile", label: "Mobile", kind: "tel", required: true, help: "Notifications about this application are sent here." },
+          { name: "fld_contact_email", label: "Email", kind: "email", required: true, help: "Notifications about this application are sent here." },
+          { name: "fld_contact_telephone", label: "Telephone", kind: "tel" },
+          { name: "moa_includes_addiction", label: "MOA/aims include prevention of alcoholism & drug abuse", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "fld_org_website", label: "Organisation's website (for proactive disclosure)", kind: "text", required: true, help: "For example, https://www.example.org." },
         ],
       },
     ],
   },
   {
     title: "Project Details",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
         title: "Project Details",
-        lead: "Specifics of the proposed drug demand reduction project.",
+        lead: "The de-addiction project for which grant-in-aid is sought.",
         fields: [
-          { name: "fld_project_title", label: "Project Name / Title", kind: "text", required: true, wide: true },
-          { name: "fld_target_group", label: "Primary Target Group", kind: "select", required: true, options: ["Vulnerable Youth & Students", "High-Risk Substance Users", "Injecting Drug Users (IDUs)", "Prison Inmates / Under-trials", "General Community / Families"] },
-          { name: "fld_sanctioned_strength", label: "Sanctioned Bed Capacity / Annual Target Inmates", kind: "number", required: true },
-          { name: "fld_project_objectives", label: "Project Objectives & Scope of Work", kind: "textarea", required: true, wide: true },
+          { name: "fld_name_of_project", label: "Name of the Project (if any)", kind: "text", wide: true },
+          { name: "fld_date_of_commencement", label: "Date of commencement of the project", kind: "date", required: true },
+          { name: "fld_year_of_commencement_gia", label: "Year of commencement of GIA", kind: "text", help: "For example, 2019-20." },
+          // Fixed on a renewal: a project moves only through Project Location Change (T100–103, T449).
+          { name: "fld_project_state", label: "Project State", kind: "select", required: true, options: INDIAN_STATES, readOnlyWhen: ND_RENEWAL },
+          { name: "fld_project_district", label: "Project District", kind: "select", required: true, districtsOf: "fld_project_state", readOnlyWhen: ND_RENEWAL, help: "Choose the Project State first." },
+          { name: "project_recognized_by_state", label: "Project recognised by the State Government?", kind: "radio", required: true, options: YES_NO, wide: true },
+          // A new project only (review call, T640–644: no CCTV question on a renewal). The live
+          // form also asked for the feed's user ID and password; a grant form does not collect a
+          // credential, so only the address is kept.
+          { name: "has_live_feed_url", label: "CCTV live-feed available on your website?", kind: "radio", required: true, options: YES_NO, wide: true, showWhen: ND_NEW },
+          { name: "fld_live_feed_url", label: "Live-feed web address", kind: "text", required: true, showWhen: { field: "has_live_feed_url", equals: ["Yes"] } },
         ],
       },
     ],
   },
   {
-    title: "Location & Infrastructure",
+    title: "Location, Infrastructure & Preparedness",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
-        title: "Location & Infrastructure",
-        lead: "Physical setup, building ownership and safety compliance.",
+        title: "Project Location",
         fields: [
-          { name: "fld_project_location_address", label: "Centre / Facility Full Address", kind: "textarea", required: true, wide: true },
-          { name: "fld_building_ownership", label: "Building Ownership Status", kind: "select", required: true, options: ["Rented Premises", "Owned by Organisation", "Government / Municipal Leased"] },
-          { name: "fld_covered_area_sqft", label: "Total Covered Area (sq. ft.)", kind: "number", required: true },
-          // The CCTV question is gone from the form (review call 11 Sep 2026, T640–644): CCTV is
-          // its own module, not a self-declaration on every application.
-          { name: "fld_fire_safety_cert", label: "Fire Safety Certificate Valid", kind: "select", required: true, options: ["Yes", "No", "Exempted / Applied"] },
-          { name: "fld_nearest_police_station", label: "Jurisdictional Police Station", kind: "text", required: true },
+          { name: "fld_location_address", label: "Project Location (full address, PIN, landmark)", kind: "textarea", required: true, wide: true, maxLength: 500 },
+          { name: "fld_railway_station_bus_stand", label: "Nearest railway station / bus stand", kind: "text" },
+        ],
+      },
+      {
+        title: "Infrastructure & Preparedness",
+        fields: [
+          { name: "fld_building_ownership", label: "Building Owned / Rented / Leased / Donated", kind: "select", required: true, options: ["Owned", "Rented", "Leased", "Donated"] },
+          { name: "building_utilized_exclusively", label: "Building utilised exclusively for this project?", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "fld_area_of_building_sqm", label: "Area of building (sq. m.)", kind: "number", required: true },
+          { name: "fld_no_of_rooms", label: "Number of Rooms", kind: "number", required: true },
+          { name: "fld_no_of_class_rooms", label: "Number of Class Rooms", kind: "number" },
+          { name: "fld_no_of_veranda", label: "Number of Veranda", kind: "number" },
+          { name: "fld_no_of_toilets", label: "Number of Toilets / Bathrooms", kind: "number", required: true },
+          { name: "fld_details_of_usages", label: "Details of usage of the building", kind: "textarea", wide: true },
+          { name: "kitchen_facilities", label: "Kitchen facilities available", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "fld_kitchen_details", label: "Kitchen — details", kind: "textarea", wide: true, help: "Size, equipment, where meals are prepared and served.", showWhen: { field: "kitchen_facilities", equals: ["Yes"] } },
+          { name: "fld_toilet_details", label: "Toilets / bathrooms — details", kind: "textarea", wide: true, help: "Separate facilities, water supply, condition." },
+          { name: "hygiene_maintained", label: "Is hygiene being maintained at the project?", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "fld_hygiene_details", label: "Hygiene — how it is maintained", kind: "textarea", wide: true, help: "Cleaning schedule, waste disposal, drinking water, pest control.", showWhen: { field: "hygiene_maintained", equals: ["Yes"] } },
+          { name: "open_area_available", label: "Open / recreational area available", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "counselling_room", label: "Counselling room available", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "fld_counselling_room_details", label: "Counselling room — details", kind: "textarea", wide: true, help: "Number of rooms, privacy arrangements, counsellor availability.", showWhen: { field: "counselling_room", equals: ["Yes"] } },
+          { name: "fld_functional_status", label: "Functional Status", kind: "select", required: true, options: ["Functional", "Ready to commence"] },
         ],
       },
     ],
   },
   {
-    title: "Key Functionaries & Staff",
+    title: "Functionaries, Staff & Committee",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
-        title: "Key Functionaries & Staff",
-        lead: "Core clinical, counselling and administrative staff.",
+        title: "Key Functionaries",
+        lead: "For a District De-Addiction Centre, the chief functionary as well.",
+        columns: 4,
         fields: [
-          // One answer per box (review call 11 Sep 2026, T478–487): "Name & Qualification" in one
-          // text field collected paragraphs, and nothing downstream could use them.
-          { name: "fld_project_director", label: "Project Director / In-charge — Name", kind: "text", required: true, rule: "lettersOnly" },
-          { name: "fld_project_director_qualification", label: "Project Director — Qualification", kind: "select", required: true, options: ["Graduate", "Post-graduate", "Professional (Social Work, Psychology, Medicine)", "Other"] },
-          { name: "fld_project_director_mobile", label: "Project Director — Mobile Number", kind: "tel", required: true },
-          { name: "fld_medical_officer", label: "Visiting Medical Officer — Name", kind: "text", required: true, rule: "lettersOnly" },
-          { name: "fld_medical_officer_reg_no", label: "Medical Council Registration Number", kind: "text", required: true },
-          { name: "fld_counselors_count", label: "Number of Full-Time Qualified Counsellors", kind: "number", required: true },
-          { name: "fld_social_workers_count", label: "Number of Field / Social Workers", kind: "number", required: true },
-          { name: "fld_staff_reservation_compliance", label: "Reservation Policy Compliance in Staff Recruitment", kind: "select", required: true, options: ["Complied with SC/ST/OBC norms", "Under compliance", "Not applicable (< 5 staff)"] },
+          ...person("fld_incharge", "Project In-charge", true),
+          ...person("fld_functionary_1", "Key Functionary 1", true),
+          ...person("fld_ddac_chief", "DDAC Chief Functionary", true, undefined, { field: "fld_project_type", equals: [ND_DDAC] }),
+        ],
+      },
+      {
+        title: "Staff & Managing Committee",
+        columns: 4,
+        fields: [
+          ...person("fld_key_staff_1", "Key Project Staff 1", true),
+          ...person("fld_key_staff_2", "Key Project Staff 2", false),
+          { name: "fld_managing_committee_note", label: "Managing Committee — brief (full list uploaded as a document)", kind: "textarea", wide: true },
         ],
       },
     ],
   },
   {
     title: "Capability & Prior Work",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
-        title: "Capability & Prior Work",
-        lead: "Experience in substance abuse treatment, counselling and community rehabilitation.",
+        title: "Organisational Capability",
         fields: [
-          { name: "fld_years_in_deaddiction", label: "Years of Experience in Drug Demand Reduction / Health", kind: "number", required: true },
-          { name: "fld_past_beneficiaries_served", label: "Total Individuals Rehabilitated / Served in Last 3 Years", kind: "number", required: true },
-          { name: "fld_awards_recognitions", label: "State / National Recognitions or Empanelments", kind: "text", wide: true },
-          // In rupees, like every other amount on the forms. It read "(₹ Lakhs)" and accepted
-          // 250000 — twenty-five thousand crore — without comment.
-          { name: "fld_annual_turnover_last_fy", label: "Annual Expenditure / Turnover in the Last Financial Year (₹)", kind: "number", required: true },
+          { name: "is_running_institution", label: "Currently running a relevant institution", kind: "radio", required: true, options: YES_NO, wide: true, showWhen: ND_NEW },
+          { name: "fld_startup_company_name", label: "Start-up company name (if applicable)", kind: "text", showWhen: ND_NEW },
+          { name: "startup_registered_niti", label: "Registered on NITI Aayog Darpan", kind: "radio", required: true, options: YES_NO, wide: true, showWhen: ND_NEW },
+        ],
+      },
+      {
+        title: "Prior Work",
+        fields: [
+          { name: "fld_prior_projects_other", label: "Ongoing projects not related to alcohol or drugs (nature, period, coverage, funding)", kind: "textarea", wide: true },
+          { name: "self_generated_funds", label: "Funds generated from other sources (CSR / community / donations)?", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "fld_self_generated_funds_amount", label: "Amount from other sources (₹)", kind: "number", showWhen: { field: "self_generated_funds", equals: ["Yes"] } },
         ],
       },
     ],
   },
   {
-    title: "Beneficiaries & Grant",
+    title: "Beneficiaries, Bank & Grant",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
-        title: "Beneficiaries & Grant",
-        lead: "Annual beneficiary targets and item-wise budget estimates.",
+        title: "Beneficiaries",
+        reconfirm: true,
         fields: [
-          { name: "fld_target_beneficiaries", label: "Projected Annual Inpatient / Outpatient Beneficiaries", kind: "number", required: true },
-          // A renewal claims an instalment of what was SANCTIONED, not a fresh estimate, so the
-          // estimates are carried forward read-only and the total follows from them
-          // (review call 11 Sep 2026, T577–596). A new project enters them once.
-          { name: "fld_honorarium_cost", label: "Estimated Staff Honorarium Cost (₹)", kind: "number", required: true, labelWhen: { field: "case_type", byValue: { "Ongoing / Renewal of an existing project": "Sanctioned Staff Honorarium (₹)" } }, readOnlyWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
-          { name: "fld_rent_admin_cost", label: "Estimated Rent & Administrative Expenses (₹)", kind: "number", required: true, labelWhen: { field: "case_type", byValue: { "Ongoing / Renewal of an existing project": "Sanctioned Rent & Administrative Expenses (₹)" } }, readOnlyWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
-          { name: "fld_medical_diet_cost", label: "Estimated Medical, Food & Counselling Expenses (₹)", kind: "number", required: true, labelWhen: { field: "case_type", byValue: { "Ongoing / Renewal of an existing project": "Sanctioned Medical, Food & Counselling Expenses (₹)" } }, readOnlyWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
-          // On a renewal these are the SANCTIONED heads and their total, not a request: the claim is an
-          // instalment of that sanction (review call 11 Sep 2026, T586–592). Which share of it an
-          // instalment releases is the Ministry's to set, so the form states the sanction and names
-          // the instalment rather than inventing an amount.
-          {
-            name: "fld_grant_total",
-            label: "Total Grant-in-Aid Requested (₹)",
-            kind: "number",
-            required: true,
-            auto: { kind: "sum", from: ["fld_honorarium_cost", "fld_rent_admin_cost", "fld_medical_diet_cost"] },
-            labelWhen: { field: "case_type", byValue: { "Ongoing / Renewal of an existing project": "Total Sanctioned Grant-in-Aid (₹)" } },
-            helpWhenLocked: true,
-            helpWhen: {
-              field: "case_type",
-              byValue: {
-                "New project": "Worked out from the three estimates above.",
-                "Ongoing / Renewal of an existing project": "The grant sanctioned for this project. The instalment you are claiming is shown under Application Type; the amount released for it is set by the Ministry.",
-              },
-            },
-          },
+          { name: "beneficiaries_identified", label: "Beneficiaries identified", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "fld_total_beneficiaries", label: "Number of beneficiaries (addicts) served / to be served", kind: "number", required: true },
+          { name: "fld_beneficiaries_prev_year", label: "Beneficiaries treated in the previous year", kind: "number" },
         ],
       },
       {
-        title: "Bank Account",
-        lead: "The account this project is paid into.",
+        title: "Bank Account Details",
+        columns: 4,
+        summaryWhen: ND_RENEWAL,
+        lead: "The account must be in the name of the NGO/VO and used for this project only.",
         fields: [
-          // A new project records its account here; that is how a project gets its first one.
-          // A renewal shows the account already on record and cannot change it — a change is a
-          // separate request under Project Bank Accounts (review call, T545–576).
-          {
-            name: "fld_bank_account_choice",
-            label: "Bank Account",
-            kind: "select",
-            required: true,
-            wide: true,
-            options: ["State Bank of India · XXXX XXXX 4417 · SBIN0001234 · Pune Main", "Punjab National Bank · XXXX XXXX 2345 · PUNB0123456 · Shivaji Nagar"],
-            readOnlyWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] },
-            // Locked on a renewal, but its help is the instruction for changing it, so it stays.
-            helpWhenLocked: true,
-            helpWhen: {
-              field: "case_type",
-              byValue: {
-                "New project": "The account the grant will be paid into.",
-                "Ongoing / Renewal of an existing project": "The account recorded for this project. To change it, raise a request under Project Bank Accounts.",
-              },
-            },
-          },
-          // PFMS registration sits with the account it describes (T617–639). A renewal's account
-          // has already received an instalment, so it is registered by definition and not asked.
-          { name: "fld_pfms_registered", label: "This account is registered on the PFMS DBT module", kind: "radio", required: true, options: YES_NO, wide: true, showWhen: { field: "case_type", equals: ["New project"] }, help: "If it is not, the Ministry registers it before the grant is released." },
-          { name: "fld_pfms_code", label: "NGO PFMS code (under head 3817)", kind: "text", required: true, showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+          { name: "bank_ngo_name_declared", label: "Account is in the name of the NGO/VO", kind: "radio", required: true, options: YES_NO, wide: true, rule: "mustBeYes", showWhen: ND_NEW },
+          ...bankRecordFields(ND_RENEWAL),
+          // Moved from live's renewal-only "CCTV / EAT / PFMS Compliance" step to the account it
+          // describes (T617–639); fixed where the account is already registered.
+          { name: "fld_pfms_code", label: "NGO PFMS code (under head 3817)", kind: "text", required: true, showWhen: ND_RENEWAL, readOnlyWhen: { field: "fld_pfms_on_record", equals: ["Yes"] } },
+          { name: "eat_module_registered", label: "Registered on the PFMS EAT module", kind: "radio", required: true, options: YES_NO, wide: true },
         ],
       },
+      {
+        title: "Grant Sought",
+        lead: "The recurring grant is released in instalments of 40%, 40% and 20%. Non-recurring grant is a one-time set-up cost.",
+        fields: [
+          { name: "grant_requirement_type", label: "Nature of the grant requirement", kind: "radio", required: true, options: ["General / normal grant", "Specific / special requirement"], wide: true, showWhen: ND_NEW },
+          { name: "fld_annual_recurring_grant", label: "Annual Recurring Grant Sought (₹)", kind: "number", required: true, showWhen: ND_NEW },
+          { name: "fld_grant_non_recurring", label: "Non-Recurring Grant Sought (₹)", kind: "number", required: true, showWhen: ND_NEW },
+          { name: "fld_grant_total", label: "Total Grant Sought (₹)", kind: "number", required: true, showWhen: ND_NEW, auto: { kind: "sum", from: ["fld_annual_recurring_grant", "fld_grant_non_recurring"] } },
+        ],
+      },
+      instalmentGrantSection("NAPDDR", ND_RENEWAL, {
+        annual: "Annual Recurring Grant (₹)",
+        amount: (ord, share) => `Recurring Grant — ${ord} Instalment, ${share}% (₹)`,
+        prior: "Already Applied This Year (₹)",
+        remaining: "Remaining After This Instalment (₹)",
+      }),
     ],
   },
   {
-    // RENEWAL ONLY. Live draws eleven steps for a renewal and ten for a new project, and this
-    // is the difference: a first-time applicant has no previous installment to account for, no
-    // sanctioned project to have installed cameras at, and no PFMS code drawn against the
-    // scheme. Captured as step 8 of 11 on 2026-09-07.
-    // Renamed from "CCTV / EAT / PFMS Compliance": the CCTV question left the form and the PFMS
-    // code moved to the bank account it belongs to (review call 11 Sep 2026, T617–644).
+    // Renewal only. Live calls it "CCTV / EAT / PFMS Compliance"; the CCTV question left the form
+    // (T640–644) and the PFMS code moved to the bank account, so the step is named for what is left.
     title: "Previous Instalment",
-    showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] },
+    showWhen: ND_RENEWAL,
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
         title: "Use of the Previous Instalment",
-        lead: "Evidence that the sanctioned project is running.",
+        reconfirm: true,
         fields: [
-          { name: "fld_previous_uc_submitted", label: "Previous instalment fully utilised and Utilisation Certificate submitted", kind: "radio", required: true, options: ["Yes", "No"] },
+          { name: "prev_instalment_utilised", label: "Previous instalment fully utilised and Utilisation Certificate submitted", kind: "radio", required: true, options: YES_NO, wide: true },
         ],
       },
     ],
   },
   {
-    title: "Verification & Signatory",
+    title: "Verification & Declaration",
+    hideWhen: LATER_INSTALMENT,
     sections: [
       {
-        title: "Verification & Signatory",
-        lead: "Details of the person authorised to execute bonds and agreements with the Ministry.",
+        title: "Verification & Authorised Person",
+        reconfirm: true,
         fields: [
-          { name: "fld_signatory_name", label: "Name of Authorised Signatory", kind: "text", required: true },
-          { name: "fld_signatory_designation", label: "Designation (President / Secretary / General Secretary)", kind: "text", required: true },
-          { name: "fld_signatory_mobile", label: "Mobile Number", kind: "tel", required: true },
-          { name: "fld_signatory_pan", label: "Individual PAN of Authorised Signatory", kind: "text", required: true, rule: "pan" },
+          { name: "decl_no_money_from_beneficiaries", label: "No money is charged from the beneficiaries", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "decl_not_blacklisted", label: "Organisation is not blacklisted and has no pending actionable complaint", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "fld_auth_person_name", label: "Name of Authorised Person", kind: "text", required: true, rule: "lettersOnly" },
+          { name: "fld_auth_person_designation", label: "Designation", kind: "text", required: true, rule: "lettersOnly" },
+          { name: "fld_auth_person_contact", label: "Mobile Number of Authorised Person", kind: "tel", required: true },
+          { name: "fld_auth_person_email", label: "Email of Authorised Person", kind: "email" },
+          { name: "fld_auth_place", label: "Place", kind: "text", required: true },
+          { name: "fld_auth_date", label: "Date", kind: "date", required: true, readOnly: true, rule: "notBackdated" },
         ],
       },
     ],
@@ -1428,49 +1674,30 @@ const NAPDDR_STEPS: readonly StepDef[] = [
 ];
 
 /**
- * NAPDDR's checklist forks, and the two branches barely overlap.
- *
- * Live asks a first-time applicant for TWELVE documents and a renewal for EIGHT, sharing
- * exactly one (the beneficiary list). Captured from both branches on 2026-09-07. Our schema
- * previously declared seventeen with no condition at all, so every applicant was asked for
- * every document of both branches — a new applicant for a Utilisation Certificate against a
- * grant they have never held, and a renewal for a Registration Certificate the department
- * already holds.
- *
- * Ordered NEW first, then the shared one, then RENEWAL, so `visibleDocuments` — which
- * renumbers to 1..n after filtering — reproduces each branch's live numbering in order.
- *
- * Three documents live asks for were missing here entirely: the Registration Certificate,
- * the Annual Report and the Audit Report, all NEW-branch. One we declared, "Agreement Bond /
- * PSR on non-judicial stamp paper", appears on NEITHER live branch and is dropped; if it is
- * collected at all it is after sanction, not with the application.
+ * NAPDDR's checklist forks, and the two branches barely overlap: twelve for a new project, and for
+ * a renewal the seven live asks less its CCTV status (T640–644). Ordered new first, then the shared
+ * one, then renewal, so each branch displays from 1 in live's order.
  */
 const NAPDDR_DOCS: readonly DocDef[] = [
-  // ── New project · 12 ────────────────────────────────────────────────────────
-  { n: 1, title: "Memorandum of Association", description: "Aims & objectives of the organisation", showWhen: { field: "case_type", equals: ["New project"] } },
-  { n: 2, title: "PAN card of the organisation", showWhen: { field: "case_type", equals: ["New project"] } },
-  { n: 3, title: "List of Managing Committee Members", description: "Current financial year", showWhen: { field: "case_type", equals: ["New project"] } },
-  { n: 4, title: "List of Staff / Employees", description: "Current financial year, with qualifications", showWhen: { field: "case_type", equals: ["New project"] } },
-  // The one document both branches ask for.
+  { n: 1, title: "Memorandum of Association", description: "Aims & objectives of the organisation", showWhen: ND_NEW },
+  { n: 2, title: "PAN card of the organisation", showWhen: ND_NEW },
+  { n: 3, title: "List of Managing Committee Members", description: "Current financial year", showWhen: ND_NEW },
+  { n: 4, title: "List of Staff / Employees", description: "Current financial year, with qualifications", showWhen: ND_NEW },
   { n: 5, title: "List of Beneficiaries — previous year" },
-  { n: 6, title: "Infrastructure details", description: "Rooms, kitchen, toilets, etc.", showWhen: { field: "case_type", equals: ["New project"] } },
-  { n: 7, title: "Bank Authorisation Letter / account details", description: "Name, A/C no., IFSC / MICR", showWhen: { field: "case_type", equals: ["New project"] } },
-  { n: 8, title: "Budget Estimate for the proposed year", description: "Recurring & non-recurring", showWhen: { field: "case_type", equals: ["New project"] } },
-  { n: 9, title: "Registration Certificate", description: "Societies Act / Trust Act or equivalent", showWhen: { field: "case_type", equals: ["New project"] } },
-  { n: 10, title: "Annual Report — last two financial years", showWhen: { field: "case_type", equals: ["New project"] } },
-  { n: 11, title: "Audit Report — last two financial years", showWhen: { field: "case_type", equals: ["New project"] } },
-  { n: 12, title: "Audited Accounts — previous year", description: "Balance Sheet, I&E, R&P, Auditor's Report", showWhen: { field: "case_type", equals: ["New project"] } },
-
-  // ── Ongoing / renewal · 8 listed, 6 mandatory ───────────────────────────────
-  // Live's own footer: "Upload all 6 documents to proceed (1/8)." The provisional audit
-  // report and the staff monitoring sheet carry an OPTIONAL marker; the other six do not.
-  { n: 13, title: "Utilisation Certificate (GFR-12A)", description: "Previous grant, certified by a Chartered Accountant", showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
-  { n: 14, title: "Provisional Utilisation Certificates", description: "Grants released during the previous year", showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
-  { n: 15, title: "Half-Yearly Progress Report", showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
-  { n: 16, title: "Provisional / unaudited audit report", optional: true, showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
-  { n: 17, title: "CCTV & Proactive-Disclosures status", showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
-  { n: 18, title: "Expenditure, Advance and Transfer (EAT) Module implementation status", showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
-  { n: 19, title: "Staff Monitoring Sheet", optional: true, showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+  { n: 6, title: "Infrastructure details", description: "Rooms, kitchen, toilets, etc.", showWhen: ND_NEW },
+  { n: 7, title: "Bank Authorisation Letter / account details", description: "Name, A/C no., IFSC / MICR", showWhen: ND_NEW },
+  { n: 8, title: "Budget Estimate for the proposed year", description: "Recurring & non-recurring", showWhen: ND_NEW },
+  { n: 9, title: "Registration Certificate", description: "Societies Act / Trust Act or equivalent", showWhen: ND_NEW },
+  { n: 10, title: "Annual Report — last two financial years", showWhen: ND_NEW },
+  { n: 11, title: "Audit Report — last two financial years", showWhen: ND_NEW },
+  { n: 12, title: "Audited Accounts — previous year", description: "Balance Sheet, I&E, R&P, Auditor's Report", showWhen: ND_NEW },
+  { n: 13, title: "Utilisation Certificate (GFR-12A)", description: "Previous grant, certified by a Chartered Accountant", showWhen: ND_RENEWAL },
+  { n: 14, title: "Provisional Utilisation Certificates", description: "Grants released during the previous year", showWhen: ND_RENEWAL },
+  { n: 15, title: "Half-Yearly Progress Report", showWhen: ND_RENEWAL },
+  { n: 16, title: "Provisional / unaudited audit report", optional: true, showWhen: ND_RENEWAL },
+  // n 17, "CCTV & Proactive-Disclosures status", is retired: no CCTV document on a renewal (W3).
+  { n: 18, title: "Expenditure, Advance and Transfer (EAT) Module implementation status", showWhen: ND_RENEWAL },
+  { n: 19, title: "Staff Monitoring Sheet", optional: true, showWhen: ND_RENEWAL },
 ];
 
 export const NAPDDR_WIZARD: WizardDef = {
@@ -1478,7 +1705,9 @@ export const NAPDDR_WIZARD: WizardDef = {
   title: "NAPDDR — National Action Plan for Drug Demand Reduction",
   steps: NAPDDR_STEPS,
   documents: NAPDDR_DOCS,
-  documentsNote: "PDF only · Max 5 MB per file",
+  // Live UAT, both branches (07–08 Sep 2026). It read "PDF only" here while every upload row
+  // said "PDF, JPG or PNG"; the rows follow this line (document-centre.ts `acceptFromNote`).
+  documentsNote: "PDF / JPG / PNG · Max 5 MB per file",
 };
 
 /* ══════════════════════════════════════════════════════════════════════════════
@@ -1508,22 +1737,28 @@ export function wizardFor(schemeCode: string | undefined): WizardDef | undefined
 
 /** The help shown under a field for the answers given so far. See `FieldDef.helpWhen`. */
 export function fieldHelp(field: FieldDef, values: Record<string, string>): string | undefined {
-  const rule = field.helpWhen;
-  if (rule) {
-    const byBranch = rule.byValue[values[rule.field] ?? ""];
-    if (byBranch !== undefined) return byBranch;
-  }
+  const byBranch = firstByValue(field.helpWhen, values);
+  // An empty string is a deliberate "no help on this branch".
+  if (byBranch !== undefined) return byBranch || undefined;
   return field.help;
 }
 
+/** The wording the first matching rule gives for the current answers, if any. */
+function firstByValue(rules: ByValue | readonly ByValue[] | undefined, values: Record<string, string>): string | undefined {
+  if (!rules) return undefined;
+  const list: readonly ByValue[] = Array.isArray(rules) ? rules : [rules as ByValue];
+  for (const rule of list) {
+    const hit = rule.byValue[values[rule.field] ?? ""];
+    if (hit !== undefined) return hit;
+  }
+  return undefined;
+}
+
+const holds = (c: Condition | undefined, values: Record<string, string>) => !!c && c.equals.includes(values[c.field] ?? "");
+
 /** The label a field shows on this branch. */
 export function fieldLabel(field: FieldDef, values: Record<string, string>): string {
-  const rule = field.labelWhen;
-  if (rule) {
-    const byBranch = rule.byValue[values[rule.field] ?? ""];
-    if (byBranch !== undefined) return byBranch;
-  }
-  return field.label;
+  return firstByValue(field.labelWhen, values) || field.label;
 }
 
 /** Whether the help under a field is shown: never under a locked one, unless it is flagged to be. */
@@ -1559,7 +1794,10 @@ export function fieldVisible(field: FieldDef, values: Record<string, string>): b
 export function visibleOptions(
   field: FieldDef,
   values: Record<string, string>,
+  /** Options drawn from the applicant's own records, keyed by field name. See `FieldDef.optionsFrom`. */
+  dynamic?: Readonly<Record<string, readonly string[]>>,
 ): readonly string[] {
+  if (field.optionsFrom) return dynamic?.[field.name] ?? [];
   const all = field.options ?? [];
   const rule = field.optionsOnlyWhen;
   if (!rule) return all;
@@ -1570,17 +1808,33 @@ export function visibleOptions(
 /** Whether this field is read-only on this branch. See `FieldDef.readOnlyWhen`. */
 export function isReadOnly(field: FieldDef, values: Record<string, string>): boolean {
   if (field.readOnly) return true;
-  const rule = field.readOnlyWhen;
-  return !!rule && rule.equals.includes(values[rule.field] ?? "");
+  if (holds(field.readOnlyWhen, values)) return true;
+  return (field.readOnlyWhenAny ?? []).some((c) => holds(c, values));
 }
 
 export function visibleSteps(
   wizard: WizardDef,
   values: Record<string, string>,
 ): readonly StepDef[] {
-  return wizard.steps.filter(
-    (step) => !step.showWhen || step.showWhen.equals.includes(values[step.showWhen.field] ?? ""),
-  );
+  const shown = (step: StepDef) =>
+    (!step.showWhen || step.showWhen.equals.includes(values[step.showWhen.field] ?? "")) && !holds(step.hideWhen, values);
+  return wizard.steps.filter(shown).map((step) => {
+    if (step.kind !== "confirm") return step;
+    // Everything the hidden form steps ask, in their order — so validation, the review read-back
+    // and the saved answers treat a later instalment exactly as the full form.
+    const folded = wizard.steps.filter((s) => (s.kind ?? "form") === "form" && s.hideWhen && holds(s.hideWhen, values));
+    return { ...step, sections: folded.flatMap((s) => s.sections) };
+  });
+}
+
+/** The sections of a step with at least one question showing on this branch. */
+export function visibleSections(step: StepDef, values: Record<string, string>): readonly SectionDef[] {
+  return step.sections.filter((section) => section.fields.some((f) => fieldVisible(f, values)));
+}
+
+/** Whether a section is drawn as a compact read-only record on this branch. */
+export function isSummarySection(section: SectionDef, values: Record<string, string>): boolean {
+  return holds(section.summaryWhen, values);
 }
 
 export function visibleDocuments(
@@ -1598,7 +1852,7 @@ export function visibleDocuments(
   // index. Nothing outside a list needs it, and identity must not depend on what else is
   // visible at the time.
   return wizard.documents.filter(
-    (d) => !d.showWhen || d.showWhen.equals.includes(values[d.showWhen.field] ?? ""),
+    (d) => (!d.showWhen || d.showWhen.equals.includes(values[d.showWhen.field] ?? "")) && !holds(d.hideWhen, values),
   );
 }
 
@@ -1662,11 +1916,26 @@ export function validateStep(
     if (!fieldVisible(f, values)) continue;
     const v = (values[f.name] ?? "").trim();
 
-    if (f.required && !v) {
+    const requiredNow = f.required || (f.requiredWith ?? []).some((k) => (values[k] ?? "").trim() !== "");
+    if (requiredNow && !v) {
       errors[f.name] = requiredMessage({ ...f, label: fieldLabel(f, values) });
       continue;
     }
     if (!v) continue;
+
+    // A number box takes a number. It is a text input (for the numeric keypad without the
+    // spinner), so "twelve" and "1,20,000" reached a required figure unchallenged.
+    if (f.kind === "number" && !/^\d+(\.\d+)?$/.test(v)) {
+      errors[f.name] = "Enter a number using digits only — e.g. 120000.";
+      continue;
+    }
+    if (f.notMoreThan) {
+      const cap = Number(values[f.notMoreThan] || NaN);
+      if (Number.isFinite(cap) && Number(v) > cap) {
+        errors[f.name] = "Cannot be more than the number of beneficiaries.";
+        continue;
+      }
+    }
 
     // Phone boxes collected paragraphs (review call 11 Sep 2026, T486): a telephone field takes
     // digits, and a field named as a mobile takes a 10-digit Indian mobile number.
@@ -1712,6 +1981,19 @@ export function validateStep(
         break;
       case "ifsc":
         if (!IFSC_RE.test(v.toUpperCase())) errors[f.name] = "Enter a valid 11-character IFSC code — e.g. SBIN0001234.";
+        break;
+      case "notFuture":
+        if (v > today) errors[f.name] = "The date cannot be later than today.";
+        break;
+      case "mustBeYes":
+        // The grant is paid only into an account held in the organisation's own name.
+        if (v !== "Yes") errors[f.name] = "The grant can be paid only into an account in the name of the NGO/VO.";
+        break;
+      case "accountNumber":
+        // Digits as typed on a new account; the masked form an account on record is shown in.
+        if (!/^\d{9,18}$/.test(v.replace(/\s/g, "")) && !/^X{4} X{4} \d{4}$/.test(v)) {
+          errors[f.name] = "Enter the account number using digits only, 9 to 18 of them.";
+        }
         break;
       case "notBackdated":
         // The declaration is signed now. It accepted 2015 (form-path QA, 13 Sep 2026).
@@ -1775,17 +2057,18 @@ export function applyAutoFields(step: StepDef, values: Record<string, string>): 
       const value = (next[f.auto.from] ?? "").split(" — ")[0]?.trim() ?? "";
       if (next[f.name] !== value) next = { ...next, [f.name]: value };
     }
-    if (f.auto.kind === "bankAccountPart") {
-      const parts = (next[f.auto.from] ?? "").split("·").map((x) => x.trim());
-      // "<bank> · <masked account> · <IFSC>" — anything else and we leave the field alone.
-      const value =
-        parts.length === 3
-          ? f.auto.part === "account"
-            ? (parts[1] ?? "")
-            : f.auto.part === "ifsc"
-              ? (parts[2] ?? "")
-              : (parts[0] ?? "")
-          : "";
+    if (f.auto.kind === "avyayRecurringNorm") {
+      const ready = ["fld_nature_of_project", "fld_agency_type", "fld_project_state"].every((k) => (next[k] ?? "").trim() !== "");
+      const value = ready
+        ? String(
+            avyayEntitlement({
+              natureOfProject: next.fld_nature_of_project,
+              agencyType: next.fld_agency_type,
+              projectState: next.fld_project_state,
+              buildingOwnership: next.fld_building_ownership,
+            }).recurringCentral,
+          )
+        : "";
       if (next[f.name] !== value) next = { ...next, [f.name]: value };
     }
   }

@@ -45,6 +45,8 @@ import {
 import type { GrantApplication } from "@/lib/e-anudaan/types";
 import { activeKey, draftFromRegister, hasAnswers, listDrafts, parseDraft, type DraftListing } from "@/lib/e-anudaan/drafts";
 import { formatDateTime } from "@/lib/e-anudaan/format";
+import { caseLabel } from "@/lib/e-anudaan/applicant";
+import { instalmentLabel, nextInstalmentNotice } from "@/lib/e-anudaan/instalments";
 
 /** Every entry in this browser's localStorage, for the draft listing. */
 function storageEntries(): [string, string | null][] {
@@ -198,7 +200,43 @@ export default function MyApplicationsPage() {
     { key: "schemeCode", header: "Scheme", priority: 2, render: (a) => SCHEME_SHORT[a.schemeCode] ?? a.schemeCode, exportValue: (a) => SCHEME_SHORT[a.schemeCode] ?? a.schemeCode },
     /* The project is what an applicant recognises their own application by. The year has its
        own column, so it is not repeated here. */
-    { key: "projectLabel", header: "Project", priority: 1, render: (a) => a.projectLabel.split(" · ")[0] },
+    // The Project ID under the name: it is how the Ministry refers to the project (inventory §2, A26).
+    {
+      key: "projectLabel",
+      header: "Project",
+      priority: 1,
+      exportValue: (a) => `${a.projectLabel.split(" · ")[0]} (${a.institutionId})`,
+      render: (a) => (
+        <span className="block">
+          <span className="block">{a.projectLabel.split(" · ")[0]}</span>
+          <span className="block whitespace-nowrap font-mono text-body-3 text-ink-muted">{a.institutionId}</span>
+        </span>
+      ),
+    },
+    // New file or which instalment — a renewal could not be told from a new file in the list.
+    {
+      key: "caseType",
+      header: "Instalment",
+      priority: 2,
+      exportValue: (a) => caseLabel(a),
+      render: (a) => {
+        // On the project's latest sanctioned file: whether the next instalment is open to claim —
+        // it opens once this one is released — or what it is waiting for (review call, T669–671).
+        const next = nextInstalmentNotice(state, a);
+        return (
+          <span className="flex flex-col items-start gap-0.5">
+            <span className="whitespace-nowrap">{caseLabel(a)}</span>
+            {next?.href ? (
+              <Link size="sm" href={next.href} onClick={routeOnClick(router, next.href)}>
+                Claim {instalmentLabel(next.plan.instalment ?? 1)}
+              </Link>
+            ) : next ? (
+              <span className="text-body-3 text-ink-muted">{next.title}.</span>
+            ) : null}
+          </span>
+        );
+      },
+    },
     { key: "financialYear", header: "Financial Year", priority: 3, render: (a) => <span className="whitespace-nowrap">{a.financialYear}</span> },
     { key: "total", header: "Requested", priority: 2, render: (a) => <span className="whitespace-nowrap">{formatGrant(a.total)}</span> },
     { key: "sanctioned", header: "Sanctioned", priority: 3, render: (a) => <span className="whitespace-nowrap">{a.sanction ? formatGrant(a.sanction.total) : "—"}</span> },
@@ -249,13 +287,13 @@ export default function MyApplicationsPage() {
       meta={
         drafts.length > 0 ? (
           <>
-            All grant applications submitted by your organisation.{" "}
+            Every grant application from your organisation, including drafts.{" "}
             <Link href="#saved-drafts">
               {drafts.length} saved {drafts.length === 1 ? "draft" : "drafts"} not yet submitted
             </Link>
           </>
         ) : (
-          "All grant applications submitted by your organisation."
+          "Every grant application from your organisation, including drafts."
         )
       }
       columns={COLUMNS}

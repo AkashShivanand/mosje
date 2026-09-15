@@ -1,0 +1,515 @@
+/* Declare the order before using it — see forms.css for why each stylesheet repeats this. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — DocumentRow
+     One document, one line: icon · title · file · status in words · action · menu.
+     A row grows only when the document needs the reader.
+     ============================================================================ */
+
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .ds-docrow {
+    position: relative;
+    display: block;
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    background-color: var(--sa-bg-neutral-base);
+    font-family: var(--sa-font-latin);
+    list-style: none;
+    outline: none;
+    scroll-margin-block: var(--sa-stack-48);
+    /* The row lays itself out by ITS width, not the viewport's: the same row sits full-width on an
+       upload step and in a narrow column beside an officer's decision panel. */
+    container: ds-docrow / inline-size;
+  }
+
+  .ds-docrow:focus-visible {
+    box-shadow: inset 0 0 0 var(--sa-focus-width) var(--sa-focus-ring);
+  }
+
+  /* Forced colours discard the shadow; the system's own focus colour keeps the row's focus visible. */
+  @media (forced-colors: active) {
+    .ds-docrow:focus-visible {
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: calc(var(--sa-focus-width) * -1);
+    }
+  }
+
+  /* A row in error keeps the list's white ground and takes a 3px accent at its start. A full pink
+     fill on three consecutive rows turned the list into a red block; the icon, the status words and
+     the reason already carry the error, so the accent only has to mark the row's edge. Drawn as a
+     pseudo-element so it neither shifts the content nor collides with the focus ring's shadow. */
+  .ds-docrow[data-state="invalid"]::before,
+  .ds-docrow[data-state="failed"]::before,
+  .ds-docrow[data-state="rejected"]::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    inline-size: var(--sa-stroke-3);
+    background-color: var(--sa-border-status-error-base);
+    pointer-events: none;
+  }
+
+  .ds-docrow__remark {
+    margin: 0 0 var(--sa-stack-12);
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    background-color: var(--sa-bg-status-warning-base);
+    border-inline-start: var(--sa-stroke-3) solid var(--sa-border-status-warning-base);
+    border-radius: var(--sa-shape-4);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-docrow__remark-label {
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
+  /* ── The line ───────────────────────────────────────────────────────────── */
+
+  .ds-docrow__line {
+    display: grid;
+    grid-template-columns: var(--sa-icon-size-20) minmax(0, 1fr);
+    grid-template-areas:
+      "icon main"
+      ". file"
+      ". status"
+      ". more"
+      ". actions"
+      ". aside";
+    gap: var(--sa-stack-4) var(--sa-inline-12);
+    align-items: center;
+  }
+
+  @container ds-docrow (min-width: 640px) {
+    .ds-docrow__line {
+      /* Fractions, not auto: every row of a list must put its file, status and action in the
+         same place, whatever the width of the button a row happens to carry. */
+      grid-template-columns:
+        var(--sa-icon-size-20)
+        minmax(0, 5fr)
+        minmax(0, 3fr)
+        minmax(0, 2.5fr)
+        minmax(0, 3.5fr);
+      grid-template-areas:
+        "icon main file status actions"
+        ". more more more more";
+      min-block-size: var(--sa-control-height-sm);
+    }
+  }
+
+  /* A row with an aside — an officer's list. Below 760px the status and the verdict go UNDER the
+     title and only the actions share its line: in the ~650px review column beside the decision
+     panel, "Automatic check unavailable" sat beside the title and squeezed it to a word a line. */
+  @container ds-docrow (min-width: 520px) {
+    .ds-docrow--aside .ds-docrow__line {
+      grid-template-columns: var(--sa-icon-size-20) minmax(0, 1fr) auto;
+      grid-template-areas:
+        "icon main actions"
+        ". status status"
+        ". file file"
+        ". more more"
+        ". aside aside";
+      align-items: start;
+      row-gap: var(--sa-stack-4);
+    }
+    .ds-docrow--aside .ds-docrow__status {
+      flex-flow: row wrap;
+      align-items: center;
+      column-gap: var(--sa-inline-12);
+    }
+    .ds-docrow--aside .ds-docrow__file-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  /* Room enough for the status beside a title of readable measure. */
+  @container ds-docrow (min-width: 760px) {
+    .ds-docrow--aside:not(.ds-docrow--folded) .ds-docrow__line {
+      grid-template-columns: var(--sa-icon-size-20) minmax(0, 1fr) auto auto;
+      grid-template-areas:
+        "icon main status actions"
+        ". file file file"
+        ". more more more"
+        ". aside aside aside";
+    }
+    .ds-docrow--aside:not(.ds-docrow--folded) .ds-docrow__status {
+      flex-direction: column;
+      align-items: flex-end;
+    }
+  }
+
+  @container ds-docrow (min-width: 960px) {
+    .ds-docrow--aside:not(.ds-docrow--folded) .ds-docrow__line {
+      grid-template-columns:
+        var(--sa-icon-size-20)
+        minmax(0, 4fr)
+        auto
+        auto
+        minmax(0, 4fr);
+      grid-template-areas:
+        "icon main status actions aside"
+        ". file . . aside"
+        ". more more more aside";
+    }
+  }
+
+  .ds-docrow__icon {
+    grid-area: icon;
+    display: inline-flex;
+    align-self: start;
+    /* Centre the 20px glyph on the title's first line. */
+    margin-block-start: calc((var(--sa-type-body-1-lh) - var(--sa-icon-size-20)) / 2);
+    color: var(--sa-icon-neutral-subtle);
+  }
+
+  @container ds-docrow (min-width: 640px) {
+    .ds-docrow__icon {
+      align-self: center;
+      margin-block-start: 0;
+    }
+    .ds-docrow--aside .ds-docrow__icon {
+      align-self: start;
+      margin-block-start: calc((var(--sa-type-body-1-lh) - var(--sa-icon-size-20)) / 2);
+    }
+  }
+
+  .ds-docrow[data-state="uploading"] .ds-docrow__icon,
+  .ds-docrow[data-state="checking"] .ds-docrow__icon {
+    color: var(--sa-icon-status-info-base);
+  }
+  .ds-docrow[data-state="uploading"] .ds-docrow__icon > *,
+  .ds-docrow[data-state="checking"] .ds-docrow__icon > * {
+    animation: ds-docrow-spin var(--sa-motion-loading-spin) var(--sa-motion-loading-easing) infinite;
+  }
+  .ds-docrow[data-state="verified"] .ds-docrow__icon {
+    color: var(--sa-icon-status-success-base);
+  }
+  .ds-docrow[data-state="review"] .ds-docrow__icon {
+    color: var(--sa-icon-status-warning-base);
+  }
+  .ds-docrow[data-state="invalid"] .ds-docrow__icon,
+  .ds-docrow[data-state="failed"] .ds-docrow__icon,
+  .ds-docrow[data-state="rejected"] .ds-docrow__icon {
+    color: var(--sa-icon-status-error-base);
+  }
+
+  @keyframes ds-docrow-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-docrow[data-state="uploading"] .ds-docrow__icon > *,
+    .ds-docrow[data-state="checking"] .ds-docrow__icon > * {
+      animation: none;
+    }
+  }
+
+  .ds-docrow__main {
+    grid-area: main;
+    min-inline-size: 0;
+  }
+
+  .ds-docrow__title {
+    margin: 0;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-bolder);
+    overflow-wrap: anywhere;
+  }
+
+  .ds-docrow__number {
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-text-neutral-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-docrow__hint {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-docrow__file {
+    grid-area: file;
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+  }
+
+  .ds-docrow__file-name {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-text-neutral-base);
+    overflow-wrap: anywhere;
+  }
+
+  /* A scanner's file name is long and says little; broken mid-word across two lines it says
+     less. One line, cut with an ellipsis, the whole name in the tooltip and read in full by a
+     screen reader. On a phone it has its own line and wraps. */
+  @container ds-docrow (min-width: 640px) {
+    .ds-docrow__file-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  .ds-docrow__file-link {
+    color: var(--sa-text-link-brand-default);
+    text-decoration: underline;
+    text-underline-offset: var(--sa-stroke-2);
+  }
+
+  .ds-docrow__file-link:hover {
+    color: var(--sa-text-link-brand-hover);
+  }
+
+  .ds-docrow__file-link:active {
+    color: var(--sa-text-link-brand-active);
+  }
+
+  .ds-docrow__file-link:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+    border-radius: var(--sa-shape-2);
+  }
+
+  .ds-docrow__file-meta {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-docrow__file-none {
+    display: none;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  @container ds-docrow (min-width: 640px) {
+    .ds-docrow__file-none {
+      display: inline;
+    }
+  }
+
+  .ds-docrow__status {
+    grid-area: status;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    min-inline-size: 0;
+  }
+
+  .ds-docrow__status-words {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-docrow[data-state="uploading"] .ds-docrow__status-words,
+  .ds-docrow[data-state="checking"] .ds-docrow__status-words {
+    color: var(--sa-text-neutral-base);
+  }
+  .ds-docrow[data-state="verified"] .ds-docrow__status-words {
+    color: var(--sa-text-status-success-bolder);
+  }
+  .ds-docrow[data-state="review"] .ds-docrow__status-words {
+    color: var(--sa-text-status-warning-bolder);
+  }
+  .ds-docrow[data-state="invalid"] .ds-docrow__status-words,
+  .ds-docrow[data-state="failed"] .ds-docrow__status-words,
+  .ds-docrow[data-state="rejected"] .ds-docrow__status-words {
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  .ds-docrow__progress {
+    display: block;
+    block-size: var(--sa-stack-4);
+    background-color: var(--sa-bg-neutral-subtler);
+    border-radius: var(--sa-shape-full);
+    overflow: hidden;
+  }
+
+  .ds-docrow__progress-bar {
+    display: block;
+    block-size: 100%;
+    background-color: var(--sa-bg-brand-primary-bolder);
+    border-radius: inherit;
+    transition: inline-size var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .ds-docrow__actions {
+    grid-area: actions;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--sa-inline-4);
+  }
+
+  @container ds-docrow (min-width: 640px) {
+    .ds-docrow__actions {
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+    }
+  }
+
+  .ds-docrow__aside {
+    grid-area: aside;
+    min-inline-size: 0;
+  }
+
+  @container ds-docrow (min-width: 520px) {
+    .ds-docrow__aside {
+      padding-block-start: var(--sa-stack-8);
+    }
+  }
+
+  @container ds-docrow (min-width: 960px) {
+    .ds-docrow--aside:not(.ds-docrow--folded) .ds-docrow__aside {
+      padding-block-start: 0;
+      padding-inline-start: var(--sa-inline-16);
+      border-inline-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    }
+  }
+
+  /* ── What grows under the line ─────────────────────────────────────────── */
+
+  .ds-docrow__more {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sa-stack-4) var(--sa-inline-16);
+    grid-area: more;
+  }
+
+  .ds-docrow__reason {
+    flex: 1 1 var(--sa-container-sm);
+    margin: 0;
+    max-inline-size: var(--sa-container-measure);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-docrow__disclosure {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    min-block-size: var(--sa-target-min);
+    padding: 0 var(--sa-padding-4);
+    background: none;
+    border: 0;
+    border-radius: var(--sa-shape-4);
+    font-family: inherit;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-link-brand-default);
+    cursor: pointer;
+  }
+
+  .ds-docrow__disclosure:hover {
+    color: var(--sa-text-link-brand-hover);
+    text-decoration: underline;
+  }
+
+  .ds-docrow__disclosure:active {
+    color: var(--sa-text-link-brand-active);
+  }
+
+  .ds-docrow__disclosure:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-docrow__findings {
+    margin-block-start: var(--sa-stack-8);
+    padding-inline-start: calc(var(--sa-icon-size-20) + var(--sa-inline-12));
+  }
+
+  .ds-docrow__findings[hidden] {
+    display: none;
+  }
+
+  /* ── A folded row — one line for a document that needs nothing more ─────── */
+
+  .ds-docrow--folded .ds-docrow__status {
+    flex-flow: row wrap;
+    align-items: center;
+    column-gap: var(--sa-inline-12);
+  }
+
+  /* The verdict leads; the automatic check follows it as advice, in a quieter weight. */
+  .ds-docrow__summary {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: var(--sa-font-weight-regular);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-docrow--folded .ds-docrow__status-words {
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .ds-docrow__expand {
+    margin-inline-start: calc(var(--sa-padding-4) * -1);
+  }
+
+  .ds-docrow__expand--status {
+    display: none;
+  }
+
+  .ds-docrow__expand--actions {
+    margin-inline-start: auto;
+  }
+
+  @container ds-docrow (min-width: 520px) {
+    .ds-docrow__expand--status {
+      display: inline-flex;
+    }
+    .ds-docrow__expand--actions {
+      display: none;
+    }
+  }
+
+  @container ds-docrow (min-width: 520px) {
+    .ds-docrow--folded .ds-docrow__line {
+      grid-template-columns: var(--sa-icon-size-20) minmax(0, 1fr) auto;
+      grid-template-areas:
+        "icon main actions"
+        ". status status";
+      align-items: start;
+      row-gap: 0;
+    }
+    .ds-docrow--folded .ds-docrow__icon {
+      align-self: start;
+      margin-block-start: calc((var(--sa-type-body-1-lh) - var(--sa-icon-size-20)) / 2);
+    }
+  }
+}

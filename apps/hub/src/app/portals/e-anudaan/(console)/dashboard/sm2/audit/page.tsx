@@ -51,7 +51,6 @@ export default function AuditTrailPage() {
 
   return (
     <WorklistScreen
-      eyebrow="E-ANUDAAN"
       title="Audit Trail"
       columns={COLUMNS}
       rows={rows}

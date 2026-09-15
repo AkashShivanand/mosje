@@ -60,13 +60,31 @@ test("an address that names no screen is not found, not a queue", () => {
     "/dashboard/sm2/zzz",
     "/dashboard/sm2/js",
     "/dashboard/sm2/zzz/review/x",
-    "/dashboard/pd/aso/all-applications",
+    "/dashboard/pd/aso/sanctioned",
     "/dashboard/pd/aso/nonsense",
     "/dashboard/nowhere",
     "/finance/elsewhere",
   ]) {
     assert.equal(consoleRouteAccess(`${B}${path}`, aso), "not-found", path);
   }
+});
+
+test("each grade opens All Applications on its own path, and the new desks belong to their deciders", () => {
+  // Verify bug 9: the ASO and SO sidebars pointed at the Under Secretary's path and their own answered 404.
+  for (const g of ["aso", "so", "us", "ds", "js"] as const) {
+    assert.equal(consoleRouteAccess(`${B}/dashboard/pd/${g}/all-applications`, ROLES[`pd-${g}`]), "allowed", g);
+  }
+  assert.equal(consoleRouteAccess(`${B}/dashboard/pd/so/all-applications`, ROLES["pd-aso"]), "forbidden");
+  assert.equal(consoleRouteAccess(`${B}/dashboard/sm2/bank-changes`, ROLES["pd-js"]), "allowed");
+  assert.equal(consoleRouteAccess(`${B}/dashboard/sm2/bank-changes`, ROLES["pd-ds"]), "forbidden");
+  assert.equal(consoleRouteAccess(`${B}/dashboard/pmu/location-changes`, ROLES["pmu-field"]), "allowed");
+  assert.equal(consoleRouteAccess(`${B}/dashboard/pmu/location-changes`, ROLES["pd-js"]), "forbidden");
+  assert.equal(consoleRouteAccess(`${B}/dashboard/ir-repository`, ROLES["programme-director"]), "allowed");
+  assert.equal(consoleRouteAccess(`${B}/dashboard/ir-repository`, ROLES["pmu-field"]), "allowed");
+  assert.equal(consoleRouteAccess(`${B}/dashboard/ir-repository`, ROLES["pd-us"]), "forbidden");
+  assert.equal(consoleRouteAccess(`${B}/dashboard/sent`, ROLES["programme-director"]), "allowed");
+  assert.equal(consoleRouteAccess(`${B}/dashboard/pd/us/returned`, ROLES["pd-us"]), "allowed");
+  assert.equal(consoleRouteAccess(`${B}/dashboard/finance/ds/returned`, ROLES["finance-ds"]), "allowed");
 });
 
 test("review keys match the shape the worklists link with", () => {

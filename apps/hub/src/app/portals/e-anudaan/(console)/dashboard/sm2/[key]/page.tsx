@@ -11,7 +11,9 @@ import { WorklistTable } from "@/components/e-anudaan/worklist-table";
  * Scheme worklist — `/dashboard/sm2/ifd<grade>` on the live portal, where each IFD grade gets
  * its OWN list (unlike the PD grades, which share one Application Explorer).
  *
- * Titled "SHRESHTA Mode 2", as its menu item is; the grade the list belongs to is the meta line.
+ * It lists every file with the seat, of every scheme — AVYAY and NAPDDR as well as SHRESHTA — so
+ * the title "SHRESHTA Mode 2" mislabelled it (inventory §15, §23). It is titled for what it holds,
+ * as its menu item now is.
  */
 export default function SchemeWorklistPage() {
   const params = useParams<{ key: string }>();
@@ -24,12 +26,12 @@ export default function SchemeWorklistPage() {
 
   return (
     <div className="space-y-5">
-      <PageHeader eyebrow="E-ANUDAAN" title="SHRESHTA Mode 2" meta={`Applications awaiting action by ${seat}`} />
+      <PageHeader title="My Worklist" meta={`Applications of every scheme awaiting action by ${seat}.`} />
       <WorklistTable
         rows={rows}
         variant="queue"
         reviewBase={`/portals/e-anudaan/dashboard/sm2/${params.key}/review`}
-        caption={`SHRESHTA Mode 2 applications awaiting action by ${seat}`}
+        caption={`Applications awaiting action by ${seat}`}
       />
     </div>
   );

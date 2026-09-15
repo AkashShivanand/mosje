@@ -21,6 +21,11 @@
  * it to the NGO — or returns it to the ASO unsent — the NGO responds and it re-enters at SO.
  * While a noted deficiency is unsent the file cannot be forwarded. US and DS raise a *query* instead, which pushes the file one grade
  * down and climbs back when resolved. [BRD §5.2–5.3]
+ *
+ * "Return to Previous" is that query, as the live DECISION screens name it (16 Sep 2026): every
+ * grade above the ASO, in both divisions, may send the file one level down with a remark, and the
+ * officer below answers it and sends it back up. Fund release, the next instalment's opening, Show
+ * Cause Notices and online inspections sit outside the chain and have their own functions below.
  */
 
 import { GRADE_FULL, ROLES, type RoleDef } from "./roles.ts";
@@ -36,6 +41,7 @@ import {
   type GrantApplication,
   type Grade,
   type Holder,
+  type Inspection,
   type MockDoc,
   type RoleId,
 } from "./types.ts";
@@ -388,12 +394,8 @@ export const RULES: readonly Rule[] = [
   },
   {
     action: "raiseQuery",
-    label: (role, app) =>
-      app.status === "DeficiencyProposed"
-        ? "Return to the Assistant Section Officer Without Sending"
-        : role.division === "finance"
-          ? "Return to Previous"
-          : "Raise Query",
+    label: (_role, app) =>
+      app.status === "DeficiencyProposed" ? "Return to the Assistant Section Officer Without Sending" : "Return to Previous",
     intent: "secondary",
     requiresRemarks: true,
     audit: "raiseQuery",
@@ -411,11 +413,12 @@ export const RULES: readonly Rule[] = [
     outcome: ({ app, after }) =>
       app.status === "DeficiencyProposed"
         ? `Deficiency returned to ${seatName(after.holder)} without sending.`
-        : `File returned to ${seatName(after.holder)} with your query.`,
+        : `File returned to ${seatName(after.holder)} with your remark.`,
   },
   {
     action: "resolveQuery",
-    label: () => "Resolve Query and Send Back",
+    // Live: "Respond & Send Back". The answer to a Return to Previous, not a separate query desk.
+    label: () => "Respond and Send Back",
     intent: "primary",
     requiresRemarks: true,
     audit: "resolveQuery",
@@ -427,7 +430,7 @@ export const RULES: readonly Rule[] = [
         ? { holder: { kind: "chain", division: h.division, grade: nxt }, status: "UnderReview" }
         : { holder: { kind: "pd" }, status: "WithPD" };
     },
-    outcome: ({ after }) => `Query resolved. File sent to ${seatName(after.holder)}.`,
+    outcome: ({ after }) => `Response recorded. File sent back to ${seatName(after.holder)}.`,
   },
   {
     action: "reject",
@@ -633,6 +636,144 @@ export function applyAction(
   return { ok: true, app: next };
 }
 
+/* ── Outside the chain: release, next claim, Show Cause, online inspection ── */
+
+/** One audit entry for an act that leaves the file where it is. */
+function stayEntry(app: GrantApplication, roleId: RoleId, action: AuditAction, remarks: string, clock: Clock): AuditEntry {
+  return { id: clock.id("aud"), at: clock.now, byRole: roleId, byName: ROLES[roleId].personName, action, from: app.holder, to: app.holder, remarks };
+}
+
+/**
+ * Release a sanctioned claim's amount to the NGO (live "Release funds", PD Under Secretary). The
+ * whole sanction order is released: an instalment's order already carries only its share.
+ */
+export function releaseFunds(app: GrantApplication, roleId: RoleId, clock: Clock): ActResult {
+  const role = ROLES[roleId];
+  if (!role?.caps.includes("releaseFunds")) return { ok: false, error: "Only the Under Secretary, Programme Division, releases funds." };
+  if (!app.sanction) return { ok: false, error: "Funds can be released only against a sanction order." };
+  if (app.release) return { ok: false, error: `Funds were already released on ${formatDate(app.release.releasedAt)}.` };
+  if (app.status === "Rejected") return { ok: false, error: "A rejected application has nothing to release." };
+  const amount = app.sanction.total;
+  return {
+    ok: true,
+    app: {
+      ...app,
+      status: "Released",
+      updatedAt: clock.now,
+      release: { amount, releasedAt: clock.now, releasedBy: roleId },
+      audit: [...app.audit, stayEntry(app, roleId, "releaseFunds", `${rupees(amount)} released against sanction order ${app.sanction.orderNo}`, clock)],
+    },
+  };
+}
+
+/**
+ * Open the next instalment for the NGO to claim (live "Open for claim"). It opens only once this
+ * file's funds are released — live: "Opens once the previous instalment is released."
+ */
+export function openForClaim(app: GrantApplication, roleId: RoleId, nextLabel: string, clock: Clock): ActResult {
+  const role = ROLES[roleId];
+  if (!role?.caps.includes("releaseFunds")) return { ok: false, error: "Only the Under Secretary, Programme Division, opens an instalment for claim." };
+  if (!app.release) return { ok: false, error: "The next instalment opens once this one is released." };
+  if (app.claimOpenedAt) return { ok: false, error: `The ${nextLabel} was already opened on ${formatDate(app.claimOpenedAt)}.` };
+  return {
+    ok: true,
+    app: {
+      ...app,
+      updatedAt: clock.now,
+      claimOpenedAt: clock.now,
+      audit: [...app.audit, stayEntry(app, roleId, "openClaim", `${nextLabel} opened for claim`, clock)],
+    },
+  };
+}
+
+export interface ShowCauseInput {
+  grounds: string;
+  /** ISO date; optional on the live form. */
+  respondBy?: string;
+}
+
+/** Issue a Show Cause Notice to the NGO (live "Issue SCN"). The file stays where it is. */
+export function issueShowCauseNotice(app: GrantApplication, roleId: RoleId, input: ShowCauseInput, clock: Clock): ActResult {
+  const role = ROLES[roleId];
+  if (!role?.caps.includes("issueShowCause")) return { ok: false, error: "A Show Cause Notice is issued by the Section Officer or the Joint Secretary, Programme Division." };
+  const grounds = input.grounds.trim();
+  if (!grounds) return { ok: false, error: "State the grounds for the notice." };
+  if (app.status === "Draft" || app.status === "Rejected") return { ok: false, error: "A notice can be issued only on a submitted, open application." };
+  const days = input.respondBy ? Math.ceil((Date.parse(input.respondBy) - Date.parse(clock.now)) / 86_400_000) : 0;
+  if (input.respondBy && !(days > 0)) return { ok: false, error: "The response deadline must be a date after today." };
+  return {
+    ok: true,
+    app: {
+      ...app,
+      updatedAt: clock.now,
+      showCauseNotices: [
+        ...app.showCauseNotices,
+        { id: clock.id("scn"), issuedBy: roleId, issuedAt: clock.now, grounds, respondByDays: days, ...(input.respondBy ? { respondBy: input.respondBy } : {}) },
+      ],
+      audit: [...app.audit, stayEntry(app, roleId, "showCauseIssued", grounds, clock)],
+    },
+  };
+}
+
+export interface OnlineInspectionInput {
+  title: string;
+  description?: string;
+  /** ISO date-times. */
+  startsAt: string;
+  endsAt: string;
+}
+
+/**
+ * Schedule an online (BharatVC) inspection from the review screen. Live carries "Online Inspection
+ * — BharatVC" with Title, Description, Start time, End time and "Schedule BharatVC" on the Under
+ * Secretary's and every IFD grade's decision screen; physical inspections stay with the PMU.
+ */
+export function scheduleOnlineInspection(
+  app: GrantApplication,
+  roleId: RoleId,
+  input: OnlineInspectionInput,
+  existing: readonly Inspection[],
+  clock: Clock,
+): { ok: true; app: GrantApplication; inspection: Inspection } | { ok: false; error: string } {
+  const role = ROLES[roleId];
+  if (!role?.caps.includes("scheduleInspection")) return { ok: false, error: "You cannot schedule an online inspection." };
+  if (app.status === "Draft" || app.status === "Rejected") return { ok: false, error: "An inspection can be scheduled only on a submitted, open application." };
+  const title = input.title.trim();
+  if (!title) return { ok: false, error: "Give the inspection a title." };
+  const start = Date.parse(input.startsAt);
+  const end = Date.parse(input.endsAt);
+  if (!Number.isFinite(start)) return { ok: false, error: "Enter the start date and time." };
+  if (start <= Date.parse(clock.now)) return { ok: false, error: "The start must be later than now." };
+  if (!Number.isFinite(end) || end <= start) return { ok: false, error: "The end must be later than the start." };
+  if (existing.some((i) => i.applicationId === app.id && i.visitType === "Online" && i.status === "Scheduled")) {
+    return { ok: false, error: "An online inspection is already scheduled for this application." };
+  }
+  const inspection: Inspection = {
+    id: clock.id("insp"),
+    applicationId: app.id,
+    ngoId: app.ngoId,
+    institutionId: app.institutionId,
+    status: "Scheduled",
+    visitType: "Online",
+    scheduledFor: new Date(start).toISOString(),
+    endsAt: new Date(end).toISOString(),
+    title,
+    ...(input.description?.trim() ? { description: input.description.trim() } : {}),
+    scheduledBy: roleId,
+  };
+  return {
+    ok: true,
+    inspection,
+    app: {
+      ...app,
+      updatedAt: clock.now,
+      // A PMU inspection already linked keeps its link; the review lists every inspection on the file.
+      inspectionId: app.inspectionId ?? inspection.id,
+      audit: [...app.audit, stayEntry(app, roleId, "inspectionScheduled", `Online inspection on ${formatDate(inspection.scheduledFor!)}: ${title}`, clock)],
+    },
+  };
+}
+
 /**
  * The sanction order number, as it is printed on the register: `SAN/<FY>/<serial>`.
  *
@@ -698,8 +839,9 @@ export const ACTION_LABEL: Record<AuditAction, string> = {
   submit: "Application Submitted",
   certify: "Certification Recorded",
   forward: "Forwarded",
-  raiseQuery: "Query Raised",
-  resolveQuery: "Query Resolved",
+  // The query that sends a file one level down: live's "Return to Previous".
+  raiseQuery: "Returned to Previous Level",
+  resolveQuery: "Responded and Sent Back",
   raiseDeficiency: "Deficiency Noted",
   communicateDeficiency: "Deficiency Sent to NGO",
   respondDeficiency: "Deficiency Response Submitted",
@@ -711,6 +853,9 @@ export const ACTION_LABEL: Record<AuditAction, string> = {
   inspectionScheduled: "Inspection Scheduled",
   inspectionSubmitted: "Inspection Report Submitted",
   inspectionReviewed: "Inspection Report Reviewed",
+  releaseFunds: "Funds Released",
+  openClaim: "Next Instalment Opened for Claim",
+  showCauseIssued: "Show Cause Notice Issued",
 };
 
 export function auditActionLabel(action: AuditAction): string {

@@ -39,6 +39,7 @@ test("what a project is agrees with its scheme and its name", () => {
     SHRESHTA_M2: ["Primary Residential School", "Secondary Residential School"],
     AVYAY: ["Senior Citizens' Home"],
     NAPDDR: ["Integrated Rehabilitation Centre for Addicts"],
+    SMILE: ["Garima Greh (Shelter Home for Transgender Persons)"],
   };
   for (const { inst } of projects) {
     const scheme = schemeOfProjectId(inst.id)!;
@@ -114,7 +115,8 @@ test("notifications are titled by what happened, with one full stop", () => {
     assert.ok(!/\.\.$/.test(n.body), n.body);
   }
   const query = seed.notifications.find((n) => /Clarify the non-recurring component/.test(n.body));
-  assert.equal(query?.title, "Query Raised");
+  // A query sends the file one level down: live names it "Return to Previous".
+  assert.equal(query?.title, "Returned to Previous Level");
 });
 
 test("seed text uses the department's spellings", () => {
@@ -171,4 +173,88 @@ test("a certified file carries the document verdicts its certification rests on,
       assert.equal(d.reviewedAt, a.certifiedAt, `${a.id} slot ${d.slot}`);
     }
   }
+});
+
+/* ── One story per file (seed-data review, 16 Sep 2026) ────────────────────────
+ * Each rule below was found broken on a seeded file: a "3rd instalment" with no earlier sanction, a
+ * New project reporting GIA since 1983, set-up money on an instalment claim, a sanction two years
+ * after its financial year, a declaration signed after submission, a document verified before it
+ * was uploaded, "Needs correction" with no remark under a certification.
+ */
+
+const when = (a: (typeof seed.applications)[number]) => a.submittedAt ?? a.updatedAt;
+const fyStartIso = (fy: string) => `${fy.slice(0, 4)}-04-01`;
+
+test("an instalment claim follows an earlier grant on its project that was sanctioned and released", () => {
+  for (const a of seed.applications.filter((x) => x.caseType === "Ongoing" && x.instalment)) {
+    const earlier = seed.applications.filter((x) => x !== a && x.institutionId === a.institutionId && x.schemeCode === a.schemeCode && x.sanction && x.release && x.sanction.sanctionedAt <= when(a));
+    assert.ok(earlier.length > 0, `${a.id} claims the ${a.instalment} instalment with no released grant before it`);
+  }
+});
+
+test("a New application reports no grant history", () => {
+  for (const a of seed.applications.filter((x) => x.caseType === "New")) {
+    const v = a.formValues ?? {};
+    for (const k of ["fld_gia_since_year", "fld_gia_released_last_3yrs", "fld_beneficiaries_previous_year"]) assert.equal((v[k] ?? "").trim(), "", `${a.id}: ${k}`);
+    if (v.assistance_3yrs !== undefined) assert.equal(v.assistance_3yrs, "No", a.id);
+  }
+});
+
+test("no document carries a verdict dated before it was uploaded, or is uploaded after its application was submitted", () => {
+  for (const a of seed.applications) {
+    for (const d of a.documents) {
+      if (d.reviewedAt && d.uploadedAt) assert.ok(d.uploadedAt <= d.reviewedAt, `${a.id} slot ${d.slot}: verified ${d.reviewedAt} before upload ${d.uploadedAt}`);
+      if (a.submittedAt && d.uploadedAt && !d.versions?.length) assert.ok(d.uploadedAt <= a.submittedAt, `${a.id} slot ${d.slot}: uploaded after submission`);
+      if (d.reUploadedThisYear && d.uploadedAt) assert.ok(d.uploadedAt >= fyStartIso(a.financialYear), `${a.id} slot ${d.slot}: "re-uploaded this year" before FY ${a.financialYear}`);
+    }
+  }
+});
+
+test("a Needs Correction verdict carries its remark, and never sits under a certification of complete documents", () => {
+  const inCorrection = new Set(["DeficiencyProposed", "DeficiencyRaised", "DeficiencyResponded"]);
+  for (const a of seed.applications) {
+    for (const d of a.documents.filter((x) => x.reviewStatus === "Deficient")) {
+      assert.ok((d.officerRemarks ?? "").trim(), `${a.id} slot ${d.slot}: no remark`);
+      if (a.certifiedAt && !inCorrection.has(a.status) && !a.deficiencies.length) {
+        assert.fail(`${a.id} slot ${d.slot}: marked for correction on a file certified complete`);
+      }
+    }
+  }
+});
+
+test("the declaration is dated on or before submission", () => {
+  for (const a of seed.applications.filter((x) => x.submittedAt && x.formValues?.fld_auth_date)) {
+    assert.ok(a.formValues!.fld_auth_date! <= a.submittedAt!.slice(0, 10), `${a.id}: declared ${a.formValues!.fld_auth_date} after submitting ${a.submittedAt!.slice(0, 10)}`);
+  }
+});
+
+test("a sanction is dated within its financial year or the year after", () => {
+  for (const a of seed.applications.filter((x) => x.sanction)) {
+    const at = a.sanction!.sanctionedAt.slice(0, 10);
+    const lastDay = `${Number(a.financialYear.slice(0, 4)) + 2}-03-31`;
+    assert.ok(at >= fyStartIso(a.financialYear) && at <= lastDay, `${a.id}: FY ${a.financialYear} sanctioned ${at}`);
+  }
+});
+
+test("an instalment claim releases recurring grant only", () => {
+  for (const a of seed.applications.filter((x) => x.caseType === "Ongoing")) {
+    assert.equal(a.nonRecurring, 0, a.id);
+    if (a.sanction) assert.equal(a.sanction.nonRecurring, 0, a.id);
+  }
+});
+
+test("the registration date on every file is the NGO record's", () => {
+  for (const a of seed.applications.filter((x) => x.formValues?.fld_registration_date)) {
+    const ngo = seed.ngos.find((n) => n.id === a.ngoId)!;
+    const recorded = new Date(`${ngo.registrationDate} UTC`).toISOString().slice(0, 10);
+    assert.equal(a.formValues!.fld_registration_date, recorded, a.id);
+  }
+});
+
+test("seeded events fall at varied times of day, and forward notes are not one repeated sentence", () => {
+  const times = new Set(seed.applications.flatMap((a) => a.audit.map((e) => e.at.slice(11, 16))));
+  assert.ok(times.size > 50, `only ${times.size} distinct times`);
+  const notes = seed.applications.flatMap((a) => a.audit.filter((e) => e.action === "forward").map((e) => e.remarks));
+  assert.ok(!notes.includes("Forwarded to the next authority."));
+  assert.ok(new Set(notes).size >= 10);
 });

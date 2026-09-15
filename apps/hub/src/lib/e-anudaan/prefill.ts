@@ -8,10 +8,11 @@
  * form has a step nobody can pass.
  */
 
+import { currentFinancialYear } from "./instalments.ts";
 import type { NgoProfile } from "./types.ts";
 
 /** Answers the portal fills from DARPAN and the account on record. */
-export function darpanSeed(ngo: NgoProfile | undefined): Record<string, string> {
+export function darpanSeed(ngo: NgoProfile | undefined, now: Date = new Date()): Record<string, string> {
   return {
     fld_ngo_name: ngo?.name ?? "Sankalp Seva Sansthan",
     fld_darpan_id: ngo?.darpanId ?? "MH/2016/100000",
@@ -20,7 +21,8 @@ export function darpanSeed(ngo: NgoProfile | undefined): Record<string, string> 
     fld_contact_email: ngo?.email ?? "sankalpsevasansthan@gmail.com",
     fld_reg_office_state: ngo?.state ?? "Maharashtra",
     fld_reg_office_district: ngo?.district ?? "Pune",
-    fld_financial_year: "2026-27",
+    // The year now running, not a constant: a new application is always for it (T328–329).
+    fld_financial_year: currentFinancialYear(now),
   };
 }
 
@@ -40,21 +42,8 @@ export function declarationStamp(now: Date = new Date()): { fld_auth_date: strin
 }
 
 /**
- * Figures and accounts a renewal carries forward once its project is chosen. The prototype holds
- * no sanction order for the renewal projects these forms list, so the values are illustrative;
- * in the real system they are read from the project's sanction order and bank record.
+ * Figures and accounts a renewal carries forward. Empty since 16 Sep 2026: every scheme's renewal
+ * now carries the chosen project's own sanctioned figures and account (`instalments.ts`
+ * `renewalAnswers`), not a constant. Kept as a named export for the tests that read it.
  */
-export const CARRIED_FORWARD: Record<string, Record<string, string>> = {
-  // The renewal's account is the one on record, carried forward with its sanction. It was
-  // prefilled on every branch, so a NEW project arrived with an account the applicant never chose.
-  NAPDDR: {
-    fld_honorarium_cost: "1800000",
-    fld_rent_admin_cost: "600000",
-    fld_medical_diet_cost: "900000",
-    fld_bank_account_choice: "State Bank of India · XXXX XXXX 4417 · SBIN0001234 · Pune Main",
-  },
-  // AVYAY's account is locked on a renewal; before it was carried forward the locked field was
-  // empty and required, and no AVYAY renewal could pass step 4.
-  AVYAY: { fld_bank_account_id: "State Bank of India · ••••••••••4417 · SBIN0001234" },
-  // SMILE's Project ID is derived from the project chosen (an auto field), so nothing to carry.
-};
+export const CARRIED_FORWARD: Record<string, Record<string, string>> = {};
