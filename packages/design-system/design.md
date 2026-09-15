@@ -2790,12 +2790,15 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - Without `onSubmit` the composer is not rendered at all.
 
 #### NotificationCentre
-**Purpose**: the panel behind the bell — what has happened that this officer has not seen.
-**Props**: `notifications` (`EventItem[]`, newest first) · `label` · `onMarkAllRead` · `markAllLabel` · `emptyText`
+**Purpose**: the panel behind the bell, and the notifications page itself — what needs the reader's action, then what has happened since they last looked.
+**Props**: `notifications` (`EventItem[]`, newest first) · `label` · `titleAs` · `onMarkAllRead` · `markAllLabel` · `emptyText` · `status` · `onRetry` · `limit` · `viewAllHref` · `linkAs` — and the exported `notificationCount(items)`
 **Rules**:
+- **Action before news.** `actionRequired` entries sit under "Action Needed", are never cut by `limit`, and survive "Mark updates as read" — derive the flag from the live record so it clears when the action is done, not when it is read.
+- **One count.** Every surface that prints a notification count calls `notificationCount`, so the bell and the page cannot disagree.
+- **Every state is designed**: `status="loading"` is a skeleton, `"error"` says so once and offers `onRetry`.
 - **The same sentence in both places.** It renders `EventList` grouped by day, so a notification and the entry on the case read identically and an officer is not matching two differently-worded summaries of one event.
 - **The unread count is announced politely** in a live region, so a screen-reader user learns three things arrived without opening the panel and counting.
-- **"Mark all as read" appears only when something is unread.** A control that does nothing most of the time is ignored on the day it matters.
+- **"Mark updates as read" appears only when an update is unread.** A control that does nothing most of the time is ignored on the day it matters.
 - **It does not place itself.** There is no floating variant: both bottom corners and the right wall are spoken for (`floating-element-placement.md`), so whatever opens the panel decides where it sits.
 - Empty is a GOOD state and reads like one — "Nothing new. You are up to date."
 
@@ -3540,6 +3543,23 @@ matching the Figma "Navbar Portal" account.
 - Outside-click and Escape are hand-rolled rather than taken from Radix, because the
   design system ships **zero runtime dependencies**. Match that pattern if you add a
   popover; do not introduce a menu library for one component.
+
+#### NotificationBell
+**Purpose**: The signed-in reader's notifications control in the portal masthead, immediately
+before `AccountMenu`. `SiteHeader` renders it from `notifications` (Figma: `Navbar/NotificationBell`;
+`Navbar/Portal` › Notifications).  
+**Key props**: `notifications` (`items`, **`href` required**, `status`, `onMarkAllRead`, `onRetry`, `onNavigate`, `limit`), `linkAs`  
+**Rules**:
+- **Off unless a portal has a real feed and a notifications page.** A badge that never moves
+  teaches people not to look. `SiteHeader` renders it only with `account`.
+- **One door.** Where it is on, remove the sidebar and account-menu "Notifications" items it replaces.
+- **What goes in it is defined** in `docs/specs/notification-object.md`: updates about the reader's own
+  business. Never an officer's work queue (the dashboard counts it), never an administrator's
+  broadcasts (that page is "Broadcasts").
+- **The badge is `notificationCount(items)`** — action-required plus unread — in the library's primary
+  Badge, never red (red is a rejected application). Error shows a warning mark, never a zero.
+- From 768 up it opens `NotificationCentre` in a `Popover`; below 768 it is a link to `href`. The design
+  system does not own the router, so a portal guarding unsaved edits cancels in `onNavigate`.
 
 #### SidebarNav
 **Purpose**: Portal app-shell left navigation.  

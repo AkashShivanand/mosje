@@ -30,6 +30,17 @@ export interface EventItem {
   unread?: boolean;
   /** Where the entry leads, if anywhere. */
   href?: string;
+  /**
+   * The reader must DO something — answer a deficiency, upload a document.
+   * Derive it from the live record, never store it: it clears when the record
+   * no longer needs the action, not when the entry is read.
+   * (`docs/specs/notification-object.md`)
+   */
+  actionRequired?: boolean;
+  /** Deadline for that action, ISO. Printed as "Respond by 30 Sep 2026". */
+  dueAt?: string;
+  /** The portal or organisation that raised it — "E-Anudaan". Printed in the meta line. */
+  source?: string;
 }
 
 export interface EventListProps {
@@ -54,6 +65,30 @@ export interface EventListProps {
    * @default "Unread"
    */
   unreadLabel?: string;
+  /**
+   * The tag on an entry that needs the reader to act.
+   * @default "Action Needed"
+   */
+  actionLabel?: string;
+  /**
+   * Print the `actionLabel` tag on action-required entries. A caller that already
+   * heads the group with the same words turns it off, so it is not said twice.
+   * @default true
+   */
+  showActionTag?: boolean;
+  /**
+   * Printed before an action's deadline.
+   * @default "Respond by"
+   */
+  dueLabel?: string;
+  /**
+   * The heading element for each day. `h3` suits a page section; a panel that
+   * cannot know its nesting level (a popover) passes `"p"`.
+   * @default "h3"
+   */
+  dayHeadingAs?: "h2" | "h3" | "h4" | "p";
+  /** The app's router link (`next/link`) for entries with an `href`. Defaults to a plain anchor. */
+  linkAs?: React.ElementType;
   className?: string;
 }
 
@@ -79,6 +114,12 @@ function stamp(iso: string, withDate: boolean): string {
   const time = `${String(h % 12 || 12).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`;
   if (!withDate) return time;
   return `${String(date.getDate()).padStart(2, "0")} ${MONTHS[date.getMonth()]} ${date.getFullYear()}, ${time}`;
+}
+
+function dueDate(iso: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return iso;
+  return date.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
 }
 
 function dayKey(iso: string): string {
@@ -123,8 +164,14 @@ export function EventList({
   emptyText = "No activity recorded yet.",
   grouping = "none",
   unreadLabel = "Unread",
+  actionLabel = "Action Needed",
+  dueLabel = "Respond by",
+  showActionTag = true,
+  dayHeadingAs: DayHeading = "h3",
+  linkAs,
   className,
 }: EventListProps): React.JSX.Element {
+  const LinkTag = linkAs ?? "a";
   if (events.length === 0) {
     return (
       <div className={cn("ds-events", "ds-events--empty", className)}>
@@ -149,7 +196,7 @@ export function EventList({
     <div className={cn("ds-events", className)}>
       {groups.map((group) => (
         <section key={group.key || "all"} className="ds-events__group">
-          {group.key ? <h3 className="ds-events__day">{group.key}</h3> : null}
+          {group.key ? <DayHeading className="ds-events__day">{group.key}</DayHeading> : null}
           <ol className="ds-events__list" aria-label={group.key ? `${label} — ${group.key}` : label}>
             {group.items.map((event) => {
               const tone = event.tone ?? "neutral";
@@ -160,7 +207,14 @@ export function EventList({
                 </>
               );
               return (
-                <li key={event.id} className={cn("ds-events__item", `ds-events__item--${tone}`)}>
+                <li
+                  key={event.id}
+                  className={cn(
+                    "ds-events__item",
+                    `ds-events__item--${tone}`,
+                    event.actionRequired && "ds-events__item--action",
+                  )}
+                >
                   <span className="ds-events__mark" aria-hidden="true">
                     <Icon name={event.icon ?? TONE_ICON[tone]} size={20} />
                   </span>
@@ -168,14 +222,25 @@ export function EventList({
                     <p className="ds-events__line">
                       {event.unread ? <span className="ds-events__sr">{unreadLabel}: </span> : null}
                       {event.href ? (
-                        <a className="ds-events__link" href={event.href}>
+                        <LinkTag className="ds-events__link" href={event.href}>
                           {body}
-                        </a>
+                        </LinkTag>
                       ) : (
                         body
                       )}
                     </p>
+                    {event.actionRequired && (showActionTag || event.dueAt) ? (
+                      <p className="ds-events__flag">
+                        {showActionTag ? <span className="ds-events__tag">{actionLabel}</span> : null}
+                        {event.dueAt ? (
+                          <span className="ds-events__due">
+                            {dueLabel} <time dateTime={event.dueAt}>{dueDate(event.dueAt)}</time>
+                          </span>
+                        ) : null}
+                      </p>
+                    ) : null}
                     <p className="ds-events__meta">
+                      {event.source ? <span className="ds-events__source">{event.source} · </span> : null}
                       <span className="ds-events__actor">{event.actor ?? "System"}</span>
                       {event.actorRole ? <span className="ds-events__role"> · {event.actorRole}</span> : null}
                       {" · "}

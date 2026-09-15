@@ -240,6 +240,33 @@ export const Portal: Story = {
   },
 };
 
+/**
+ * A portal with a real notifications feed passes `notifications`. The bell renders
+ * immediately before the account block — and only together with `account` — in the
+ * resting row and the condensed bar. Off unless passed.
+ */
+export const PortalWithNotifications: Story = {
+  render: (args) => (
+    <SiteHeader
+      {...args}
+      variant="portal"
+      nav={undefined}
+      onToggleNav={() => {}}
+      navExpanded
+      account={{ name: "Sunita Deshmukh", role: "State Nodal Officer, Maharashtra" }}
+      notifications={{
+        href: "#notifications",
+        items: [
+          { id: "a1", at: "2026-09-12T10:30:00+05:30", action: "Deficiency response requested",
+            subject: "Application 2026/PMS/01284", actionRequired: true, tone: "warning" },
+          { id: "u1", at: "2026-09-12T09:10:00+05:30", action: "Application sanctioned",
+            subject: "Application 2026/PMS/01192", tone: "success", unread: true },
+        ],
+      }}
+    />
+  ),
+};
+
 /** The BETA badge, for a portal not yet in general service. */
 export const Beta: Story = {
   render: (args) => <SiteHeader {...args} beta actions={<Button size="sm">Login</Button>} />,

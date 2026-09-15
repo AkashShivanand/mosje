@@ -335,8 +335,8 @@ export { EventList } from "./components/data-display/event-list";
 export type { EventListProps, EventItem, EventTone } from "./components/data-display/event-list";
 export { CommentThread } from "./components/data-display/comment-thread";
 export type { CommentThreadProps, ThreadComment } from "./components/data-display/comment-thread";
-export { NotificationCentre } from "./components/data-display/notification-centre";
-export type { NotificationCentreProps } from "./components/data-display/notification-centre";
+export { NotificationCentre, notificationCount } from "./components/data-display/notification-centre";
+export type { NotificationCentreProps, NotificationStatus } from "./components/data-display/notification-centre";
 export { ListGroup, ListRow } from "./components/data-display/list-group";
 export type {
   ListGroupProps,
@@ -533,6 +533,7 @@ export {
   SiteHeader,
   BrandLockup,
   AccountMenu,
+  NotificationBell,
 } from "./components/navigation/header";
 export {
   MenuToggle,
@@ -590,6 +591,8 @@ export type {
   SiteHeaderProps,
   BrandLockupProps,
   AccountMenuProps,
+  NotificationBellProps,
+  HeaderNotifications,
   NavLink,
   NavItem,
   NavColumn,

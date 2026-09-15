@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { SiteHeader, OrgLogo, PortalPage, StatusScreen, type PortalNavGroup } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ROLES, consoleRouteAccess } from "@/lib/e-anudaan/roles";
+import { notificationItems, notificationsHref } from "@/lib/e-anudaan/notifications";
 
 /**
  * Authenticated shell for the 12 officer roles — a wrapper around `PortalPage`.
@@ -39,10 +40,12 @@ import { ROLES, consoleRouteAccess } from "@/lib/e-anudaan/roles";
 export function ConsoleShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { state, hydrated, logout } = useEAnudaan();
+  const { state, hydrated, logout, markAllNotificationsRead } = useEAnudaan();
 
   const isOfficer = state.session !== null && state.session !== "ngo";
   const role = isOfficer ? ROLES[state.session!] : null;
+
+  const notifications = React.useMemo(() => notificationItems(state, role?.id ?? null), [state, role]);
 
   /* Unconditional, so the hook order never changes with the session. */
   const nav = React.useMemo<PortalNavGroup[]>(
@@ -91,13 +94,18 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
           onToggleNav={navState.toggle}
           navExpanded={navState.open}
           account={role ? { name: role.personName, role: role.label } : undefined}
+          /* The bell is this portal's one door to notifications: the sidebar item and
+             the account-menu item it replaces are gone (docs/specs/notification-object.md). */
+          notifications={
+            role
+              ? {
+                  items: notifications,
+                  href: notificationsHref(role.id),
+                  onMarkAllRead: markAllNotificationsRead,
+                }
+              : undefined
+          }
           accountMenu={[
-            {
-              label: "Notifications",
-              onSelect: () => {
-                router.push("/portals/e-anudaan/dashboard/notifications");
-              },
-            },
             {
               label: "Sign out",
               danger: true,

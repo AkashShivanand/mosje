@@ -1300,11 +1300,20 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "navigation"
   },
   {
+    "title": "Notification Bell — Design System",
+    "section": "Navigation",
+    "href": "/design-system/components/navigation/notification-bell",
+    "keywords": "notification bell — design system navigation immediately before the account the badge one door, one count headernotifications example items href status onRetry onMarkAllRead onOpen onNavigate limit label Sankalp Seva Sansthan tokens wcag accessibility",
+    "description": "The signed-in reader",
+    "type": "component",
+    "iconName": "navigation"
+  },
+  {
     "title": "Notification Centre — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/notification-centre",
-    "keywords": "notification centre — design system data display the same sentence in both places mark all as read appears only when it can do something it does not place itself  tokens wcag accessibility",
-    "description": "The panel behind the bell — what has happened that this officer has not seen, rendered as Event List grouped by day so a notification and the same entry in the audit log read identically.",
+    "keywords": "notification centre — design system data display the same sentence in both places action before news mark updates as read appears only when it can do something one count, everywhere it does not place itself  tokens wcag accessibility",
+    "description": "The panel behind the bell — what needs the reader",
     "type": "component",
     "iconName": "bar_chart"
   },

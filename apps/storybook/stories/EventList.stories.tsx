@@ -104,3 +104,23 @@ export const Unread: Story = {
     events: LOG.map((event, index) => ({ ...event, unread: index < 2, href: "#case" })),
   },
 };
+
+/**
+ * An entry the reader must act on. `actionRequired` prints the `actionLabel` tag and,
+ * with `dueAt`, the deadline after `dueLabel`. A caller that already heads the group
+ * with the same words — `NotificationCentre` does — passes `showActionTag={false}` so
+ * it is not said twice. `dayHeadingAs` sets the day heading's element for a panel that
+ * cannot know its nesting level, and `linkAs` hands entries with an `href` the app's
+ * router link (`next/link`).
+ */
+export const ActionRequired: Story = {
+  args: {
+    label: "Recent activity",
+    actionLabel: "Action Needed",
+    dueLabel: "Respond by",
+    events: [
+      { ...LOG[0]!, id: "action", actionRequired: true, dueAt: "2026-09-30", tone: "warning" },
+      ...LOG.slice(1),
+    ],
+  },
+};

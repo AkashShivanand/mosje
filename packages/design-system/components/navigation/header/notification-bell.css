@@ -1,0 +1,134 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Navbar/NotificationBell
+     The masthead's 40px outlined control — the same box as the portal search
+     button and the condensed bar's icon buttons, so the row reads as one set.
+     ============================================================================ */
+
+  .ds-hdr-bell {
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+
+  .ds-hdr-bell__btn {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    height: 40px;
+    width: 40px;
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: transparent;
+    color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .ds-hdr-bell__btn:hover {
+      background-color: var(--sa-bg-neutral-subtler);
+    }
+  }
+
+  .ds-hdr-bell__btn[aria-expanded="true"] {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-hdr-bell__btn:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
+  }
+
+  .ds-hdr-bell__btn:active {
+    transform: scale(0.96);
+  }
+
+  /* ONE OF THE TWO SHOWS. The panel button from 768 up; the link to the
+     notifications page below — a popover over a phone form is not wanted. */
+  .ds-hdr-bell__btn--link {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .ds-hdr-bell__btn--panel {
+      display: none;
+    }
+
+    .ds-hdr-bell__btn--link {
+      display: inline-grid;
+    }
+  }
+
+  /* The count — the library's own Badge (Type=Large, State=Primary, Emphasis=Solid):
+     16px, `cmp/button/primary/bg`, Label/label-3. Brand primary, not red: red is a
+     rejected application here. The ring in the masthead's ground separates it from
+     the glyph behind it. */
+  .ds-hdr-bell__badge {
+    position: absolute;
+    inset-block-start: calc(var(--sa-padding-4) * -1);
+    inset-inline-end: calc(var(--sa-padding-4) * -1);
+    display: inline-grid;
+    place-items: center;
+    box-sizing: border-box;
+    min-inline-size: var(--sa-icon-size-16);
+    block-size: var(--sa-icon-size-16);
+    padding-inline: var(--sa-padding-4);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-cmp-button-primary-bg);
+    color: var(--sa-text-neutral-inverse);
+    box-shadow: 0 0 0 var(--sa-stroke-2) var(--sa-bg-neutral-base);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-medium);
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+  }
+
+  /* Badge State=Neutral, Solid: the feed failed, so the count is not known. Not
+     the amber Warning badge — #e09c1d measures 2.35:1 against the white masthead,
+     under the 3:1 a graphic needs (WCAG 1.4.11). Neutral solid is 16:1, and a
+     failed feed is not a warning about the reader's business anyway. */
+  .ds-hdr-bell__badge--error {
+    background: var(--sa-color-text-default);
+    color: var(--sa-bg-neutral-base);
+  }
+
+  /* The panel is NotificationCentre in a Popover — a little wider than the
+     popover's default measure, which wraps a notification's subject line early. */
+  .ds-popover.ds-hdr-bell__panel {
+    inline-size: min(24rem, calc(100vw - var(--sa-padding-32)));
+    max-inline-size: min(24rem, calc(100vw - var(--sa-padding-32)));
+    /* Short enough to open BELOW the bell on a laptop screen. At the popover's
+       default ceiling (the viewport less 64px) a full panel had no room under the
+       masthead, the anchor flipped it, and it opened on top of the bell it
+       belongs to. */
+    max-block-size: min(40rem, 70vh);
+  }
+
+  @media (max-width: 767px) {
+    /* THE BELL MUST NOT PUSH THE ACCOUNT ONTO A SECOND ROW. A phone row spends
+       toggle 40 · 12 · identity (min 168) · 12 · trailing. Bell 40 + the desktop
+       24 + avatar 48 is 112, one pixel over a 375 screen's budget and 16 over a
+       360's — measured, and the pair wrapped under the lockup. At 8 the pair is
+       96, which fits a 360 exactly. */
+    .ds-hdr-brand__trailing:has(> .ds-hdr-bell) {
+      gap: var(--sa-stack-8);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ds-hdr-bell__badge {
+      border: var(--sa-stroke-1) solid CanvasText;
+      forced-color-adjust: none;
+      background: Highlight;
+      color: HighlightText;
+    }
+  }
+}

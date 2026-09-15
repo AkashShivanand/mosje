@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useRouter } from "next/navigation";
 import {
+  Alert,
   Badge,
   Button,
   Card,
@@ -23,6 +24,8 @@ import { formatDate, formatGrant, ngoApplications, ngoStatusLabel, statusTone } 
 import type { AppStatus } from "@/lib/e-anudaan/types";
 import { openDeficiencies } from "@/lib/e-anudaan/applicant";
 import { formatTime } from "@/lib/e-anudaan/format";
+import { ngoActionApplications, notificationItems } from "@/lib/e-anudaan/notifications";
+import { usePreviousVisit } from "@/lib/e-anudaan/last-visit";
 import { PendingActions } from "@/components/e-anudaan/pending-actions";
 import { routeOnClick } from "@/components/e-anudaan/ngo-shell";
 
@@ -49,6 +52,12 @@ const SCHEME_TITLES: Record<string, { title: string; subtitle: string }> = {
   SMILE: { title: "SMILE (Garima Greh)", subtitle: "Shelter Homes for Transgender Persons" },
 };
 
+/** "Application moved forward (3), Application sanctioned (1)" — one phrase per kind, never a list of repeats. */
+function summariseUpdates(actions: string[]): string {
+  const counts = new Map<string, number>();
+  for (const a of actions) counts.set(a, (counts.get(a) ?? 0) + 1);
+  return [...counts.entries()].map(([a, n]) => `${a} (${n})`).join(", ");
+}
 
 export default function NgoDashboardPage() {
   const { state } = useEAnudaan();
@@ -72,7 +81,18 @@ export default function NgoDashboardPage() {
     const l = ngoStatusLabel(a);
     return l === "In Review" || l === "Submitted";
   }).length;
-  const needsActionCount = apps.filter((a) => a.status === "DeficiencyRaised").length;
+  // The bell's "Action Needed" reads the same selector, so this card and the bell cannot disagree.
+  const needsActionCount = React.useMemo(() => ngoActionApplications(state), [state]).length;
+  // Since Your Last Visit — updates newer than the previous sign-in. Action items are not
+  // repeated here: Pending Actions already carries them.
+  const previousVisit = usePreviousVisit("ngo");
+  const updatesSinceVisit = React.useMemo(
+    () =>
+      previousVisit
+        ? notificationItems(state, "ngo").filter((n) => !n.actionRequired && Date.parse(n.at) > Date.parse(previousVisit))
+        : [],
+    [state, previousVisit],
+  );
   const sanctionedCount = apps.filter((a) => a.sanction).length;
 
   const donutChartData = React.useMemo(() => {
@@ -187,6 +207,25 @@ export default function NgoDashboardPage() {
       {/* Directly under the greeting, because it is the only part of this page that asks the
           applicant to do something. Several applications, several items each (T43–54). */}
       <PendingActions items={pending} />
+
+      {/* An applicant signs in a few times a year and was not here when these arrived; the bell
+          only reaches a reader already on the page. Shown only when something did change. */}
+      {previousVisit && updatesSinceVisit.length > 0 && (
+        <Alert
+          status="info"
+          title={`Since Your Last Visit on ${formatDate(previousVisit)}`}
+          action={
+            <Link href="/portals/e-anudaan/ngo/notifications" onClick={routeOnClick(router, "/portals/e-anudaan/ngo/notifications")}>
+              View Notifications
+            </Link>
+          }
+        >
+          <p className="text-body-2 text-ink">
+            {updatesSinceVisit.length} update{updatesSinceVisit.length === 1 ? "" : "s"} to your applications:{" "}
+            {summariseUpdates(updatesSinceVisit.map((n) => n.action))}.
+          </p>
+        </Alert>
+      )}
 
       {/* ── 3. KPI METRIC CARDS ROW (100% UNIFIED SAMAVESH COMPONENTS) ────── */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">

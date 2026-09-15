@@ -102,7 +102,6 @@ function pdNav(grade: Grade): NavItem[] {
   if (grade === "js") {
     nav.push({ label: "Audit Trail", href: `${BASE}/dashboard/sm2/audit`, icon: "history" });
   }
-  nav.push({ label: "Notifications", href: `${BASE}/dashboard/notifications`, icon: "notifications" });
   return nav;
 }
 
@@ -127,7 +126,6 @@ function ifdNav(grade: Grade): NavItem[] {
   if (grade === "js") {
     nav.push({ label: "Audit Trail", href: `${BASE}/dashboard/sm2/audit`, icon: "history" });
   }
-  nav.push({ label: "Notifications", href: `${BASE}/dashboard/notifications`, icon: "notifications" });
   return nav;
 }
 
@@ -203,7 +201,6 @@ export const ROLES: Record<RoleId, RoleDef> = {
       { label: "Forwarded Applications", href: `${BASE}/dashboard/pd/forwarded`, icon: "forward" },
       { label: "Reports & Analytics", href: `${BASE}/dashboard/sm2/reports`, icon: "bar_chart" },
       { label: "Audit Trail", href: `${BASE}/dashboard/sm2/audit`, icon: "history" },
-      { label: "Notifications", href: `${BASE}/dashboard/notifications`, icon: "notifications" },
     ],
   },
 
@@ -225,7 +222,6 @@ export const ROLES: Record<RoleId, RoleDef> = {
       { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
       // Live: "SHRESHTA M2 — PMU Inspection", truncated by the rail to "PMU Inspe…".
       { label: "PMU Inspections", href: `${BASE}/dashboard/sm2/pmu`, icon: "travel_explore" },
-      { label: "Notifications", href: `${BASE}/dashboard/notifications`, icon: "notifications" },
     ],
   },
 
@@ -252,7 +248,6 @@ export const ROLES: Record<RoleId, RoleDef> = {
       { label: "Beneficiaries & Staff", href: `${BASE}/ngo/beneficiaries`, icon: "groups" },
       // One page: the Overview (formerly "Attendance Master", which is a dashboard) and the week.
       { label: "Attendance", href: `${BASE}/ngo/attendance`, icon: "checklist" },
-      { label: "Notifications", href: `${BASE}/ngo/notifications`, icon: "notifications" },
       { label: "CCTV Setup", href: `${BASE}/ngo/cctv`, icon: "videocam" },
     ],
   },
