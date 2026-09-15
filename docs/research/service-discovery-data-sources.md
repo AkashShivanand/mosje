@@ -46,7 +46,7 @@ The mandate itself, AR §1.2, names: Scheduled Castes (SCs); Other Backward Clas
 | Residential Schools, Hostels and Coaching | Top-class schools, hostels and free coaching for competitive examinations | AR Chapter 3 — the sections of the schemes tagged with it (see §5) |
 | Loans and Credit | Concessional loans, interest subvention and venture capital through the Department's corporations | AR Chapter 3 — the sections of the schemes tagged with it (see §5) |
 | Skill Training and Livelihood | Free training with stipend, self-employment support, village development | AR Chapter 3 — the sections of the schemes tagged with it (see §5) |
-| Care, Shelter and Health | Old-age homes, shelter homes, assistive devices and health cover | AR Chapter 3 — the sections of the schemes tagged with it (see §5) |
+| Care, Health and Shelter | Old-age homes, shelter homes, assistive devices and health cover | AR Chapter 3 — the sections of the schemes tagged with it (see §5) |
 | De-addiction and Counselling | Treatment centres, the 14446 helpline and Nasha Mukt Bharat Abhiyaan | AR Chapter 3 — the sections of the schemes tagged with it (see §5) |
 | Protection, Relief and Grievance | Relief to atrocity victims, the 14566 helpline, and the Commissions' grievance portals | AR Chapter 3 — the sections of the schemes tagged with it (see §5) |
 | Grants to Voluntary Organisations | Grant-in-aid through the e-Anudaan portal | AR Chapter 3 — the sections of the schemes tagged with it (see §5) |

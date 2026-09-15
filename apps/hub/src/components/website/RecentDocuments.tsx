@@ -168,12 +168,12 @@ export function RecentDocuments() {
             </div>
           </div>
 
-          {/* PART B — Explore User Personas (Blue Card) */}
+          {/* PART B — Explore Specific Benefits (Blue Card) */}
           <div className="lg:col-span-4">
             <div className="flex h-full flex-col justify-between rounded-2xl bg-primary-dark p-6 text-white shadow-md">
               <div>
                 <h2 className="text-title-1 text-white">
-                  Explore User Personas
+                  Explore Specific Benefits
                 </h2>
                 <p className="mt-1.5 text-body-3 text-white/80">
                   Choose your role to discover services made for you.
