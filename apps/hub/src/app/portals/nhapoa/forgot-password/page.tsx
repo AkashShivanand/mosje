@@ -10,7 +10,7 @@ export default function ForgotPasswordPage() {
   const [username, setUsername] = React.useState("");
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-surface-muted px-4 py-12">
+    <main className="flex min-h-screen items-center justify-center bg-surface-canvas px-4 py-12">
       <div className="w-full max-w-md rounded-2xl border border-line bg-white p-8 shadow-card">
         {submitted ? (
           <div className="text-center">

@@ -127,6 +127,7 @@
   --color-info-900: var(--sa-ref-color-info-900);
   --color-info-950: var(--sa-ref-color-info-950);
   --color-neutral-0: var(--sa-ref-color-neutral-0);
+  --color-neutral-25: var(--sa-ref-color-neutral-25);
   --color-neutral-50: var(--sa-ref-color-neutral-50);
   --color-neutral-100: var(--sa-ref-color-neutral-100);
   --color-neutral-200: var(--sa-ref-color-neutral-200);
@@ -140,6 +141,7 @@
   --color-neutral-950: var(--sa-ref-color-neutral-950);
   --color-neutral-1000: var(--sa-ref-color-neutral-1000);
   --color-neutralDark-0: var(--sa-ref-color-neutralDark-0);
+  --color-neutralDark-25: var(--sa-ref-color-neutralDark-25);
   --color-neutralDark-50: var(--sa-ref-color-neutralDark-50);
   --color-neutralDark-100: var(--sa-ref-color-neutralDark-100);
   --color-neutralDark-200: var(--sa-ref-color-neutralDark-200);
@@ -197,6 +199,7 @@
   --color-infoDbim-900: var(--sa-ref-color-infoDbim-900);
   --color-infoDbim-950: var(--sa-ref-color-infoDbim-950);
   --color-neutralDbim-0: var(--sa-ref-color-neutralDbim-0);
+  --color-neutralDbim-25: var(--sa-ref-color-neutralDbim-25);
   --color-neutralDbim-50: var(--sa-ref-color-neutralDbim-50);
   --color-neutralDbim-100: var(--sa-ref-color-neutralDbim-100);
   --color-neutralDbim-200: var(--sa-ref-color-neutralDbim-200);
@@ -313,6 +316,7 @@
   --color-accentScale-900: var(--sa-color-accentScale-900);
   --color-accentScale-950: var(--sa-color-accentScale-950);
   --color-neutralScale-0: var(--sa-color-neutralScale-0);
+  --color-neutralScale-25: var(--sa-color-neutralScale-25);
   --color-neutralScale-50: var(--sa-color-neutralScale-50);
   --color-neutralScale-100: var(--sa-color-neutralScale-100);
   --color-neutralScale-200: var(--sa-color-neutralScale-200);

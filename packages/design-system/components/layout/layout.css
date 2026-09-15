@@ -134,7 +134,10 @@
     display: grid;
     grid-template-rows: auto 1fr auto;
     min-height: 100dvh;
-    background: var(--sa-bg-neutral-subtler);
+    /* The page canvas, not `subtler`: hover, read-only and loading fills are `subtler`, and a
+       canvas of the same grey made them vanish against the page. */
+    background: var(--sa-bg-neutral-subtlest);
+    color: var(--sa-on-bg-neutral-subtlest);
   }
 
   .sa-app-shell__body {
