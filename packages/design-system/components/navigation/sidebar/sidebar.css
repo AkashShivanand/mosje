@@ -485,15 +485,13 @@
    * masthead carries the Ministry and the estate; this is the one place the
    * portal is named, so it heads every rail.
    *
-   * It spans the FULL width of the rail, bleeding through the rail's padding
-   * with negative margins and padding itself by padding/16, and sits on the
-   * rail's own white ground with a border/neutral/subtle edge beneath it. It
-   * carried a saffron wash from the handoff (2026-09-05 to 2026-09-15): an 8%
-   * saffron fade, removed because saffron's hue sits between the error red and
-   * the warning amber, so on white it measured 3.6 dE from the error tint — on a
-   * form full of red required-field marks the rail's head read as an alert.
-   * Saffron stays in the SAMAVESH mark itself. The mark is the registry OrgLogo
-   * at 56, bare. Collapsed, the mark alone at 40. (This said
+   * It carries the SAMAVESH wash the handoff gave it (2026-09-05): a saffron
+   * fade — color/transparent/secondary/8, the handoff's saffron at 8%, to
+   * color/transparent/secondary/0, the same hue at zero (a fade's far end is a
+   * token too; nothing on this estate is a literal) — across the FULL width of
+   * the rail, so it bleeds through the rail's padding with negative margins and
+   * pads itself by padding/16. The mark is the registry OrgLogo at 56, bare:
+   * the wash is its ground. Collapsed, the mark alone at 40. (This said
    * `tile={false}` until 2026-09-06; OrgLogo has no `tile` prop any more — the
    * ground moved to the `.ds-org-tile` class, applied where a container wants
    * one, and the mark is bare by default.)
@@ -509,6 +507,7 @@
     gap: var(--sa-inline-12);
     margin: calc(-1 * var(--sa-padding-16)) calc(-1 * var(--sa-padding-16)) 0;
     padding: var(--sa-padding-16);
+    background: linear-gradient(to bottom, var(--sa-color-transparent-secondary-8), var(--sa-color-transparent-secondary-0));
     border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 

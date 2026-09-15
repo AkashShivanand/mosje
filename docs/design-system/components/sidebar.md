@@ -221,13 +221,8 @@ items, 20 child items). They are to be migrated screen by screen, one at a time,
     `Sidebar` master carries the same right stroke. Shells pass no border of their own; their layout
     classes (hidden below `md`) land on the column.
 
-23. **Superseded 2026-09-15 — the identity has no wash.** The saffron fade was removed: saffron's
-    hue (49°) sits between the error red (25°) and the warning amber (76°), and over white the 8% wash
-    measured 3.6 ΔE from the error tint, so on a form full of red required-field marks the rail's head
-    read as an alert. The identity sits on the rail's white ground with its `border/neutral/subtle`
-    edge; saffron stays in the SAMAVESH mark. `color/transparent/secondary/0` was retired with it,
-    having no other consumer. The original decision, kept for the record: **the wash was
-    `color/transparent/secondary/8` fading to `color/transparent/secondary/0`, both stops bound.** A bound gradient stop takes its variable's alpha, so a fade bound at both ends to
+23. **The wash is `color/transparent/secondary/8` fading to `color/transparent/secondary/0`, both
+    stops bound.** A bound gradient stop takes its variable's alpha, so a fade bound at both ends to
     the 8% tier rendered as a solid block in Figma, and a raw transparent far stop was briefly used.
     A raw value is not acceptable anywhere on this estate, so the transparent family gained a 0 tier for the
     secondary wash (`color/transparent/secondary/0`: the far end of a fade, never a fill), created in

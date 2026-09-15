@@ -466,6 +466,7 @@ export const tokens = {
         "48": "#005eb9"
       },
       "secondary": {
+        "0": "#ff671f",
         "8": "#ff671f",
         "16": "#ff671f",
         "24": "#ff671f",

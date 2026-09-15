@@ -176,7 +176,7 @@ therefore visibly heavier than an info banner of the same importance, and Navy's
 `bg/brand/primary/boldest` (rung 800, `#001734`) is 1.42:1 from `bolder` and reads as black, not navy.
 *Proposal:* lower Navy's `darkest` so the four dark rungs spread, or bind `boldest` to rung 700 in Navy.
 
-**5 · The saffron identity wash reads as an error tint.** *(Applied — §6.)* The sidebar's portal-identity header fades
+**5 · The saffron identity wash reads as an error tint.** *(Applied, then reverted as brand identity — §6.)* The sidebar's portal-identity header fades
 `color/transparent/secondary/8` over white: `#FFF3ED`, hue 49°, 3.6 ΔE from the error tint `#FFE4E1`
 (hue 25°) — on a form full of red required-field asterisks. Saffron against error is already on
 `SEPARATION_LEDGER` at the solid rungs (8.6 ΔE, 17°). *Proposal:* remove the wash from portal chrome
@@ -283,7 +283,26 @@ before the Navy change was made, so the diff that followed is only the change.
 
 ---
 
-## 6. Follow-up applied — the saffron identity wash (2026-09-15)
+## 6. The saffron identity wash — removed, then restored (2026-09-15)
+
+**Status: restored. The wash is SAMAVESH branding and stays.** It was removed on the request to "fix"
+it, read as "remove it" on the strength of finding 5 — without asking, although it is a brand-identity
+decision of exactly the kind §7 later put to the owner as options. On review the owner confirmed the
+wash exists to carry the SAMAVESH brand, so every part of the removal below was reversed the same day:
+the gradient in `sidebar.css`, `color/transparent/secondary/0` in tokens and in the library (recreated
+and read back byte-identical, Palette 142 → 143), the gradient on both `Sidebar/PortalIdentity`
+masters, the two documentation texts, sidebar decision 23, the token-consumers baseline (back to 51 —
+`secondary/8` has its consumer again) and the changelog entry. The running portal and the Sidebar
+specimen render the header band **pixel-identical** to the capture taken before the removal.
+
+**Finding 5 stays open as an observation, not a defect.** The wash measures 3.6 ΔE from the error tint
+over white. If that ever matters in practice, the options that keep the branding — rather than remove
+it — are to reduce its reach (a shorter fade) or to separate the error tint from saffron at the error
+ramp. Neither is proposed here.
+
+The removal, as it was recorded before it was reversed:
+
+### 6.0 Removal record (reverted)
 
 **Removed, not neutralised.** The portal identity block at the head of every sidebar rail faded
 `color/transparent/secondary/8` to `color/transparent/secondary/0`. Over white that is `#fff3ed`, hue
