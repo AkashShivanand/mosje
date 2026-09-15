@@ -21,8 +21,6 @@ export function darpanSeed(ngo: NgoProfile | undefined): Record<string, string> 
     fld_reg_office_state: ngo?.state ?? "Maharashtra",
     fld_reg_office_district: ngo?.district ?? "Pune",
     fld_financial_year: "2026-27",
-    // A renewal's account is the one on record; the form shows it and cannot change it.
-    fld_bank_account_choice: "State Bank of India · XXXX XXXX 4417 · SBIN0001234 · Pune Main",
   };
 }
 
@@ -47,7 +45,14 @@ export function declarationStamp(now: Date = new Date()): { fld_auth_date: strin
  * in the real system they are read from the project's sanction order and bank record.
  */
 export const CARRIED_FORWARD: Record<string, Record<string, string>> = {
-  NAPDDR: { fld_honorarium_cost: "1800000", fld_rent_admin_cost: "600000", fld_medical_diet_cost: "900000" },
+  // The renewal's account is the one on record, carried forward with its sanction. It was
+  // prefilled on every branch, so a NEW project arrived with an account the applicant never chose.
+  NAPDDR: {
+    fld_honorarium_cost: "1800000",
+    fld_rent_admin_cost: "600000",
+    fld_medical_diet_cost: "900000",
+    fld_bank_account_choice: "State Bank of India · XXXX XXXX 4417 · SBIN0001234 · Pune Main",
+  },
   // AVYAY's account is locked on a renewal; before it was carried forward the locked field was
   // empty and required, and no AVYAY renewal could pass step 4.
   AVYAY: { fld_bank_account_id: "State Bank of India · ••••••••••4417 · SBIN0001234" },

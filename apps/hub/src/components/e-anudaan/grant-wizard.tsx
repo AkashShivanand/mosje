@@ -56,7 +56,8 @@ import {
   DECLARATION_TEXT,
   applyAllAutoFields,
   errorSummary,
-  fieldHelp,
+  fieldLabel,
+  shownHelp,
   fieldVisible,
   validateStep,
   visibleDocuments,
@@ -786,7 +787,9 @@ function Field({
   const readOnly = isReadOnly(field, values) || isAuto;
   // A locked box already says it cannot be typed in; a sentence naming where its value came from
   // is not help (form-wizard visual language §5).
-  const help = readOnly ? undefined : fieldHelp(field, values);
+  const help = shownHelp(field, values, readOnly);
+  // Branch-aware too: a renewal's grant figures are labelled as sanctioned, not estimated.
+  const label = fieldLabel(field, values);
 
   // SMILE's undertakings (a)–(j) are individual tick-boxes, not Yes/No pairs.
   if (field.kind === "checkbox") {
@@ -795,7 +798,7 @@ function Field({
         <Checkbox
           checked={value === "true"}
           onChange={(e) => onChange(e.target.checked ? "true" : "")}
-          label={field.label}
+          label={label}
           // A required tick-box that says so only in its styling is announced as optional.
           required={field.required || undefined}
           aria-invalid={error != null || undefined}
@@ -817,7 +820,7 @@ function Field({
       // of the text fields around it, on every step of every form.
       <div className={wide ? "ds-form-span-full" : undefined}>
         <RadioGroup
-          legend={field.label}
+          legend={label}
           name={field.name}
           value={value || undefined}
           onChange={onChange}
@@ -838,7 +841,7 @@ function Field({
     return (
       <div className={wide ? "ds-form-span-full" : undefined}>
         <DatePicker
-          label={field.label}
+          label={label}
           id={field.name}
           hint={help}
           error={error}
@@ -853,7 +856,7 @@ function Field({
   return (
     <div className={wide ? "ds-form-span-full" : undefined}>
       <FormField
-        label={field.label}
+        label={label}
         id={field.name}
         hint={help}
         error={error}
@@ -952,7 +955,7 @@ function ReviewStep({
               .map((f) => (
                 <ReviewItem
                   key={f.name}
-                  label={f.label}
+                  label={fieldLabel(f, values)}
                   // A ticked undertaking reads "Yes", not the raw "true" the live
                   // read-back prints (recorded as a live rough edge, not cloned).
                   value={reviewValue(f, values[f.name] ?? "")}

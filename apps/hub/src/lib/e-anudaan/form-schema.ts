@@ -70,6 +70,17 @@ export interface FieldDef {
    * applicants, and a new applicant's ("generated automatically on submit") to renewals.
    */
   helpWhen?: { field: string; byValue: Readonly<Record<string, string>> };
+  /**
+   * Keep the help visible when the field is locked. Help under a locked field is normally hidden
+   * (a locked box already says it cannot be typed in), but a few locked fields carry the one
+   * instruction the applicant needs: how to change the value somewhere else.
+   */
+  helpWhenLocked?: boolean;
+  /**
+   * A label that differs by branch, keyed by the controlling field's value. A renewal's grant
+   * figures are what was SANCTIONED, and labelling them "Estimated" or "Requested" said otherwise.
+   */
+  labelWhen?: { field: string; byValue: Readonly<Record<string, string>> };
   options?: readonly string[];
   /**
    * The live form labels several fields "Read-only — sourced from NGO-Darpan / your login" but
@@ -678,6 +689,8 @@ const AVYAY_STEPS: readonly StepDef[] = [
               equals: ["Ongoing / Renewal of an existing project"],
             },
             options: ["State Bank of India · ••••••••••4417 · SBIN0001234"],
+            // Locked on a renewal, but its help is the instruction for changing it, so it stays.
+            helpWhenLocked: true,
             helpWhen: {
               field: "case_type",
               byValue: {
@@ -1318,10 +1331,29 @@ const NAPDDR_STEPS: readonly StepDef[] = [
           // A renewal claims an instalment of what was SANCTIONED, not a fresh estimate, so the
           // estimates are carried forward read-only and the total follows from them
           // (review call 11 Sep 2026, T577–596). A new project enters them once.
-          { name: "fld_honorarium_cost", label: "Estimated Staff Honorarium Cost (₹)", kind: "number", required: true, readOnlyWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
-          { name: "fld_rent_admin_cost", label: "Estimated Rent & Administrative Expenses (₹)", kind: "number", required: true, readOnlyWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
-          { name: "fld_medical_diet_cost", label: "Estimated Medical, Food & Counselling Expenses (₹)", kind: "number", required: true, readOnlyWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
-          { name: "fld_grant_total", label: "Total Grant-in-Aid Requested (₹)", kind: "number", required: true, auto: { kind: "sum", from: ["fld_honorarium_cost", "fld_rent_admin_cost", "fld_medical_diet_cost"] }, help: "Worked out from the three estimates above." },
+          { name: "fld_honorarium_cost", label: "Estimated Staff Honorarium Cost (₹)", kind: "number", required: true, labelWhen: { field: "case_type", byValue: { "Ongoing / Renewal of an existing project": "Sanctioned Staff Honorarium (₹)" } }, readOnlyWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+          { name: "fld_rent_admin_cost", label: "Estimated Rent & Administrative Expenses (₹)", kind: "number", required: true, labelWhen: { field: "case_type", byValue: { "Ongoing / Renewal of an existing project": "Sanctioned Rent & Administrative Expenses (₹)" } }, readOnlyWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+          { name: "fld_medical_diet_cost", label: "Estimated Medical, Food & Counselling Expenses (₹)", kind: "number", required: true, labelWhen: { field: "case_type", byValue: { "Ongoing / Renewal of an existing project": "Sanctioned Medical, Food & Counselling Expenses (₹)" } }, readOnlyWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+          // On a renewal these are the SANCTIONED heads and their total, not a request: the claim is an
+          // instalment of that sanction (review call 11 Sep 2026, T586–592). Which share of it an
+          // instalment releases is the Ministry's to set, so the form states the sanction and names
+          // the instalment rather than inventing an amount.
+          {
+            name: "fld_grant_total",
+            label: "Total Grant-in-Aid Requested (₹)",
+            kind: "number",
+            required: true,
+            auto: { kind: "sum", from: ["fld_honorarium_cost", "fld_rent_admin_cost", "fld_medical_diet_cost"] },
+            labelWhen: { field: "case_type", byValue: { "Ongoing / Renewal of an existing project": "Total Sanctioned Grant-in-Aid (₹)" } },
+            helpWhenLocked: true,
+            helpWhen: {
+              field: "case_type",
+              byValue: {
+                "New project": "Worked out from the three estimates above.",
+                "Ongoing / Renewal of an existing project": "The grant sanctioned for this project. The instalment you are claiming is shown under Application Type; the amount released for it is set by the Ministry.",
+              },
+            },
+          },
         ],
       },
       {
@@ -1339,6 +1371,8 @@ const NAPDDR_STEPS: readonly StepDef[] = [
             wide: true,
             options: ["State Bank of India · XXXX XXXX 4417 · SBIN0001234 · Pune Main", "Punjab National Bank · XXXX XXXX 2345 · PUNB0123456 · Shivaji Nagar"],
             readOnlyWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] },
+            // Locked on a renewal, but its help is the instruction for changing it, so it stays.
+            helpWhenLocked: true,
             helpWhen: {
               field: "case_type",
               byValue: {
@@ -1482,6 +1516,22 @@ export function fieldHelp(field: FieldDef, values: Record<string, string>): stri
   return field.help;
 }
 
+/** The label a field shows on this branch. */
+export function fieldLabel(field: FieldDef, values: Record<string, string>): string {
+  const rule = field.labelWhen;
+  if (rule) {
+    const byBranch = rule.byValue[values[rule.field] ?? ""];
+    if (byBranch !== undefined) return byBranch;
+  }
+  return field.label;
+}
+
+/** Whether the help under a field is shown: never under a locked one, unless it is flagged to be. */
+export function shownHelp(field: FieldDef, values: Record<string, string>, locked: boolean): string | undefined {
+  if (locked && !field.helpWhenLocked) return undefined;
+  return fieldHelp(field, values);
+}
+
 /** Every field of a step, flattened — the order the live form renders them in. */
 export function stepFields(step: StepDef): readonly FieldDef[] {
   return step.sections.flatMap((s) => s.fields);
@@ -1555,7 +1605,17 @@ export function visibleDocuments(
 const IFSC_RE = /^[A-Z]{4}0[A-Z0-9]{6}$/;
 const PIN_RE = /^[1-9][0-9]{5}$/;
 const NAME_AND_PHONE_RE = /^[A-Za-z][A-Za-z .'-]*,\s*\d{10,}$/;
-const LETTERS_ONLY_RE = /^[A-Za-z][A-Za-z .,'-]*$/;
+// Any script's letters and combining marks: a name typed in Devanagari is a name. It was
+// Latin-only, and refused "सुनीता शर्मा".
+const LETTERS_ONLY_RE = /^\p{L}[\p{L}\p{M} .,'-]*$/u;
+/** A 10-digit Indian mobile number, after spaces, hyphens and a +91 or 0 prefix are removed. */
+const MOBILE_RE = /^[6-9]\d{9}$/;
+/** A landline or other contact number: 6 to 12 digits once the same separators are removed. */
+const PHONE_RE = /^\d{6,12}$/;
+/** Phone digits as typed, with spaces, hyphens, dots, brackets and a +91 / 0 prefix removed. */
+export function phoneDigits(v: string): string {
+  return v.replace(/[\s().-]/g, "").replace(/^(\+?91|0)(?=\d{10}$)/, "");
+}
 
 /**
  * Per-field validation, mirroring the live guidance copy exactly. Returns a message per invalid
@@ -1603,10 +1663,25 @@ export function validateStep(
     const v = (values[f.name] ?? "").trim();
 
     if (f.required && !v) {
-      errors[f.name] = requiredMessage(f);
+      errors[f.name] = requiredMessage({ ...f, label: fieldLabel(f, values) });
       continue;
     }
     if (!v) continue;
+
+    // Phone boxes collected paragraphs (review call 11 Sep 2026, T486): a telephone field takes
+    // digits, and a field named as a mobile takes a 10-digit Indian mobile number.
+    if (f.kind === "tel") {
+      const digits = phoneDigits(v);
+      if (/mobile/i.test(`${f.name} ${f.label}`)) {
+        if (!MOBILE_RE.test(digits)) {
+          errors[f.name] = "Enter a 10-digit mobile number — e.g. 9876543210.";
+          continue;
+        }
+      } else if (!PHONE_RE.test(digits)) {
+        errors[f.name] = "Enter a contact number using digits only — e.g. 020 2345 6789.";
+        continue;
+      }
+    }
 
     switch (f.rule) {
       case "afterRegistration": {
@@ -1626,7 +1701,10 @@ export function validateStep(
         break;
       case "lettersOnly":
         if (!LETTERS_ONLY_RE.test(v)) {
-          errors[f.name] = "Enter the name and designation using letters only — e.g. Sunita Sharma, Warden.";
+          // The designation wording belongs to AVYAY's "name & designation" boxes only.
+          errors[f.name] = /designation/i.test(f.label)
+            ? "Enter the name and designation using letters only — e.g. Sunita Sharma, Warden."
+            : "Enter the name using letters only — e.g. Sunita Sharma.";
         }
         break;
       case "pin":

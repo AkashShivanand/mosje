@@ -105,6 +105,10 @@ function answerFor(f: FieldDef, values?: Record<string, string>): string {
     case "pin": return "411001";
     case "nameAndPhone": return "Illustrative Name, 9800000000";
     case "lettersOnly": return "Illustrative Name";
+    // A date that must follow another one: every demo date was 1 Apr 2026, so "Complete & valid"
+    // stopped on Organisation Details with "Must be later than the date of registration."
+    case "afterRegistration":
+    case "afterPeriodFrom": return "2031-03-31";
     default: break;
   }
   switch (f.kind) {

@@ -45,7 +45,7 @@ import {
 import { formatGrant, schemeLabel, statusTone } from "@/lib/e-anudaan/selectors";
 import { formatDate, formatTime, rupees } from "@/lib/e-anudaan/format";
 import { answeredSections, ordinal, projectTitleFor } from "@/lib/e-anudaan/applicant";
-import type { FieldDef } from "@/lib/e-anudaan/form-schema";
+import { fieldLabel, type FieldDef } from "@/lib/e-anudaan/form-schema";
 import type { AuditAction, Deficiency, DocReviewStatus, GrantApplication, MockDoc } from "@/lib/e-anudaan/types";
 import { RefText } from "./worklist-table";
 import { DocumentPreviewSheet } from "./document-preview-sheet";
@@ -572,7 +572,7 @@ function ApplicationAnswers({ app }: { app: GrantApplication }) {
               <DescriptionList
                 columns={2}
                 size="sm"
-                items={s.fields.map((f: FieldDef) => ({ term: f.label, value: answer(f, values[f.name]) }))}
+                items={s.fields.map((f: FieldDef) => ({ term: fieldLabel(f, values), value: answer(f, values[f.name]) }))}
               />
             </AccordionItem>
           ))}

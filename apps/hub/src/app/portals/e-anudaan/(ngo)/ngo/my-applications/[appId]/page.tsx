@@ -56,7 +56,7 @@ import { applicationNotFoundProps } from "@/components/e-anudaan/ngo-application
 import { formatGrant, ngoStatusLabel, statusTone } from "@/lib/e-anudaan/selectors";
 import { formatDate, formatTime } from "@/lib/e-anudaan/format";
 import { uploadProgress } from "@/lib/e-anudaan/doc-verification";
-import type { FieldDef } from "@/lib/e-anudaan/form-schema";
+import { fieldLabel, type FieldDef } from "@/lib/e-anudaan/form-schema";
 import { answeredSections, applicantStages, applicantStanding, caseLabel, openDeficiencyOf, requestedAt } from "@/lib/e-anudaan/applicant";
 import type { DeficiencyItem, GrantApplication, MockDoc } from "@/lib/e-anudaan/types";
 import { routeOnClick } from "@/components/e-anudaan/ngo-shell";
@@ -450,7 +450,7 @@ function ApplicationData({ app }: { app: GrantApplication }) {
               <DescriptionList
                 columns={2}
                 size="sm"
-                items={s.fields.map((f: FieldDef) => ({ term: f.label, value: displayValue(f, (app.formValues ?? {})[f.name]) }))}
+                items={s.fields.map((f: FieldDef) => ({ term: fieldLabel(f, app.formValues ?? {}), value: displayValue(f, (app.formValues ?? {})[f.name]) }))}
               />
             </AccordionItem>
           ))}
