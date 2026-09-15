@@ -40,9 +40,8 @@ import { getContentSyncedDate } from "@/lib/website/content";
  * went looking and found no such record. Do not claim a register entry without
  * making one.
  *
- * DBIM COVERAGE IS VARIANT-DEPENDENT. The list above holds for variant="website".
- * variant="portal" renders no columns, so Sitemap and Help are absent there — see
- * design.md → SiteFooter.
+ * DBIM COVERAGE HOLDS ON BOTH VARIANTS. variant="portal" renders no columns, so
+ * Sitemap and Help render in its statutory bar instead — see design.md → SiteFooter.
  */
 
 /**

@@ -348,8 +348,11 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
 
           {credits && credits.length > 0 && (
             <div className="ds-sitefooter__credits">
+              {/* A prefix and its mark wrap TOGETHER. As siblings in one flex row they
+                  wrapped apart at 375, leaving "Powered by" at the end of one line
+                  and its logo alone on the next. */}
               {credits.map((c) => (
-                <React.Fragment key={c.href}>
+                <span key={c.href} className="ds-sitefooter__credit">
                   {c.prefix && <span>{c.prefix}</span>}
                   <a
                     href={c.href}
@@ -360,7 +363,7 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
                     <img src={c.src} alt={c.alt} width={c.width} height={c.height} />
                     <NewWindow />
                   </a>
-                </React.Fragment>
+                </span>
               ))}
             </div>
           )}

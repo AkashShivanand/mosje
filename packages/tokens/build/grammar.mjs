@@ -276,7 +276,12 @@ export const COMPONENT = new Set(["action", "control", "spinner", "button", "car
   // 2026-09-06: `stepper` owns a node diameter, a connector-track thickness and a compact-bar dot.
   // Tier 3 rather than Tier 2 because none of the three is a shared scale step: the 32/24 node is
   // the component's own API, and a 1px track only means anything between two step nodes.
-  "stepper"]);
+  "stepper",
+  // 2026-09-16: `sitefooter` owns the colour roles ON the footer ground — a muted and a dim ink,
+  // a rule and a chip. Tier 3 because the semantic layer has an on/* ink for a brand fill but no
+  // muted ink, rule or chip for one, and those only mean anything on this surface. Lowercase
+  // rather than `siteFooter`, per house style for new namespaces.
+  "sitefooter"]);
 export const INTENT = new Set(["brand", "success", "destructive", "neutral", "light"]);
 export const ACTION_VARIANT = new Set(["primary", "secondary", "tertiary", "tonal"]);
 /**
