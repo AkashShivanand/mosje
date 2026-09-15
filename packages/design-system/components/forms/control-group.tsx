@@ -156,7 +156,7 @@ const GroupShell = React.forwardRef<HTMLFieldSetElement, GroupShellProps>(functi
         {required ? (
           <>
             <span className="ds-control-group__required" aria-hidden="true">
-              {" *"}
+              *
             </span>
             {!isRadioGroup ? <span className="ds-sr-only"> (required)</span> : null}
           </>

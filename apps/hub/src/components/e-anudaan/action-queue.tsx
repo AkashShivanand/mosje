@@ -1,82 +1,66 @@
 "use client";
 
 import * as React from "react";
-import { Alert, ChartCard, Icon, OverviewScreen } from "@mosje/design-system";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { ChartCard, FilterSelect, Icon, ListGroup, ListRow, OverviewScreen, Progress } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
-import { ROLES } from "@/lib/e-anudaan/roles";
-import { formatGrant, kpisFor, worklistFor } from "@/lib/e-anudaan/selectors";
+import { ROLES, reviewKeyOf } from "@/lib/e-anudaan/roles";
+import { officerDashboard } from "@/lib/e-anudaan/officer";
 import { WorklistTable } from "./worklist-table";
 
-/** One ranked row: a label, a count, and a bar showing its share of the queue. */
-function QueueBar({
-  label,
-  count,
-  of,
-  tone = "neutral",
-}: {
-  label: string;
-  count: number;
-  of: number;
-  tone?: "neutral" | "danger";
-}) {
+/**
+ * "My Action Queue" — the officer landing screen, composed from `OverviewScreen`.
+ *
+ * Re-cut after the review call of 11 Sep 2026 (T698–737, T839–933):
+ *
+ *  • The NIC portal the department is used to showed four cards — New, 1st, 2nd and 3rd
+ *    Instalment — each with its pending count. That is what an officer plans a day by, so the
+ *    KPI row is those four, not "Awaiting / Grant Value / Schemes / Overdue".
+ *  • A Financial Year filter sits above everything. With it, a "Pending by Financial Year"
+ *    chart says nothing, so there is none.
+ *  • What moved — resubmitted after deficiency, returned for rework, inspection reports in,
+ *    deficiencies still with NGOs, files forwarded — is one panel, because the department
+ *    said deficiencies and their resolution were invisible to them.
+ *  • Pending work stays the first thing on the page; nothing decorative sits above it.
+ *
+ * The year lives in the URL, so a link to "my 2026-27 queue" works.
+ */
+export function ActionQueue({ variant = "pd" }: { variant?: "pd" | "finance" }) {
   return (
-    <li>
-      <div className="flex items-baseline justify-between text-body-2">
-        <span className="text-ink">{label}</span>
-        <span className="font-semibold text-ink">{count}</span>
-      </div>
-      <div className="mt-1 h-1.5 rounded-full bg-surface-muted">
-        <div
-          className={`h-1.5 rounded-full ${tone === "danger" ? "bg-danger" : "bg-navy"}`}
-          /* The bar IS the number, so it is drawn from the number rather than
-             from a class — the width is data, not styling. */
-          style={{ width: `${Math.round((count / Math.max(of, 1)) * 100)}%` }}
-        />
-      </div>
-    </li>
+    <React.Suspense fallback={null}>
+      <Queue variant={variant} />
+    </React.Suspense>
   );
 }
 
-/**
- * "My Action Queue" — the officer landing screen, and the most-seen page in the
- * portal. Composed from `OverviewScreen`.
- *
- * Headings, KPI labels, captions, the >7-day threshold and the footer tip are
- * transcribed from the live capture (INVENTORY §1). The IFD variant reuses the
- * same anatomy under its own title, matching the live "Finance / IFD Dashboard".
- *
- * It was already an overview screen in every respect except that it said so: a
- * heading block, four `MetricCard`s in a hand-written grid, two hand-rolled
- * panels and a table. What moving it onto the template changed is that the
- * panels are now `ChartCard`s — so each owns its own empty state rather than the
- * page carrying one inline for the first and nothing for the second — and the
- * screen gained the states it had none of.
- */
-export function ActionQueue({ variant = "pd" }: { variant?: "pd" | "finance" }) {
+function Queue({ variant }: { variant: "pd" | "finance" }) {
   const { state, hydrated } = useEAnudaan();
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
   const role = state.session ? ROLES[state.session] : null;
+  const fy = params.get("fy") ?? "";
 
-  /* Derived unconditionally against a null-safe role, so the hooks below never
-     change order with the session. The RENDER branches, through the template. */
-  const kpis = role ? kpisFor(state, role.id) : null;
-  const rows = role ? worklistFor(state, role.id) : [];
+  const dash = role ? officerDashboard(state, role.id, fy) : null;
   const isPd = variant === "pd";
-  const reviewKey = role
-    ? role.division === "finance"
-      ? `ifd${role.grade}`
-      : role.grade === "js"
-        ? "jspd"
-        : role.grade
-    : "";
+  const reviewKey = (role && reviewKeyOf(role)) ?? "";
+
+  const setFy = (value: string) => {
+    const next = new URLSearchParams(params.toString());
+    if (value) next.set("fy", value);
+    else next.delete("fy");
+    router.replace(`${pathname}${next.size ? `?${next}` : ""}`, { scroll: false });
+  };
 
   return (
     <OverviewScreen
-      title={isPd ? "My Action Queue" : "Finance / IFD Dashboard"}
+      // The Finance title matches its menu item, "Finance Dashboard".
+      title={isPd ? "My Action Queue" : "Finance Dashboard"}
       meta={
-        role ? (
+        role && dash ? (
           <>
-            Every application awaiting your action — across all your schemes and both workflows ·
-            Role: <span className="font-semibold text-navy">{role.label}</span>
+            {dash.queue.length.toLocaleString("en-IN")} application{dash.queue.length === 1 ? "" : "s"} awaiting your action
+            {fy ? ` in FY ${fy}` : ""} · <span className="font-semibold text-navy">{role.label}</span>
           </>
         ) : undefined
       }
@@ -85,96 +69,79 @@ export function ActionQueue({ variant = "pd" }: { variant?: "pd" | "finance" }) 
          hydrated with no role has not been refused a queue, they have not
          signed in — and those are different screens. */
       asked={role != null}
+      filters={
+        dash ? (
+          <div className="w-full max-w-xs">
+            <FilterSelect
+              label="Financial Year"
+              value={fy}
+              onChange={setFy}
+              options={[{ value: "", label: "All years" }, ...dash.years.map((y) => ({ value: y, label: `FY ${y}` }))]}
+            />
+          </div>
+        ) : undefined
+      }
       kpis={
-        kpis
-          ? [
-              {
-                label: "Awaiting My Action",
-                value: kpis.awaiting.toLocaleString("en-IN"),
-                changeLabel: "Files in your queue now",
-                icon: <Icon name="inbox" size={20} aria-hidden />,
-              },
-              {
-                label: "Grant Value Sought",
-                value: formatGrant(kpis.grantSought),
-                changeLabel: "Total requested in queue",
-                icon: <Icon name="currency_rupee" size={20} aria-hidden />,
-              },
-              {
-                label: "Schemes",
-                value: String(kpis.schemes),
-                changeLabel: `${state.ngos.length} NGOs · ${new Set(state.ngos.map((n) => n.state)).size} states`,
-                icon: <Icon name="grid_view" size={20} aria-hidden />,
-              },
-              {
-                label: "Pending > 7 days",
-                value: kpis.overdue.toLocaleString("en-IN"),
-                changeLabel: "Oldest — clear these first",
-                icon: <Icon name="warning" size={20} aria-hidden />,
-              },
-            ]
+        dash
+          ? dash.byCase.map((c) => ({
+              key: c.key,
+              label: c.label,
+              value: c.count.toLocaleString("en-IN"),
+              detail: "Pending with you",
+              icon: <Icon name={c.key === "New" ? "note_add" : "event_repeat"} size={20} aria-hidden />,
+            }))
           : undefined
       }
       kpisLoading={hydrated ? undefined : 4}
       panels={
-        kpis
+        dash
           ? [
-              <ChartCard
-                key="by-scheme"
-                title="Queue by Scheme"
-                empty={kpis.byScheme.length === 0}
-                emptyTitle="Nothing in Your Queue"
-                emptyLabel="No application is awaiting your action."
-              >
-                <ul className="space-y-3">
-                  {kpis.byScheme.map((s) => (
-                    <QueueBar key={s.scheme} label={s.scheme} count={s.count} of={kpis.awaiting} />
+              <ChartCard key="movement" title="Deficiencies and Returns" subtitle={fy ? `FY ${fy}` : "All years"}>
+                <ListGroup size="sm" aria-label="Deficiencies and returns">
+                  {dash.movement.map((m) => (
+                    <ListRow
+                      key={m.key}
+                      title={m.label}
+                      description={m.hint}
+                      trailing={<span className="text-title-2 font-semibold tabular-nums text-ink">{m.count}</span>}
+                    />
                   ))}
-                </ul>
+                </ListGroup>
               </ChartCard>,
               <ChartCard
                 key="ageing"
                 title="Pending — Ageing"
-                empty={kpis.ageing.length === 0}
+                empty={dash.queue.length === 0}
                 emptyTitle="Nothing Pending"
-                emptyLabel="No application has been waiting long enough to age."
-                footer={
-                  kpis.overdue > 0 ? (
-                    <Alert status="error">
-                      {kpis.overdue} application{kpis.overdue === 1 ? "" : "s"} pending beyond 7 days
-                    </Alert>
-                  ) : undefined
-                }
+                emptyLabel="No application is waiting with you."
+                /* No "pending beyond 7 days" alert under the bars: it restated the "Over 7 days"
+                   bar directly above it (removed on confirmation, 15 Sep 2026). */
               >
-                <ul className="space-y-3">
-                  {kpis.ageing.map((b) => (
-                    <QueueBar
+                <div className="space-y-4">
+                  {/* The count rides in the label: Progress prints the share of the queue, and an
+                      officer plans by how many files, not by what fraction of them. */}
+                  {dash.ageing.map((b) => (
+                    <Progress
                       key={b.band}
-                      label={b.band}
-                      count={b.count}
-                      of={kpis.awaiting}
-                      tone={b.band === "Over 7 days" ? "danger" : "neutral"}
+                      label={`${b.band} (${b.count})`}
+                      value={b.count}
+                      max={Math.max(dash.queue.length, 1)}
+                      tone={b.band === "Over 7 days" ? "danger" : undefined}
                     />
                   ))}
-                </ul>
+                </div>
               </ChartCard>,
             ]
           : undefined
       }
       recent={
-        role ? (
-          <>
-            <WorklistTable
-              rows={rows}
-              variant="queue"
-              reviewBase={`/portals/e-anudaan/dashboard/sm2/${reviewKey}/review`}
-              caption="Applications awaiting action"
-            />
-            <p className="mt-4 text-body-3 text-ink-muted">
-              Tip: use the scheme sections in the sidebar to browse a single scheme, or Sanctioned /
-              Rejected / Forwarded for those outcomes.
-            </p>
-          </>
+        role && dash ? (
+          <WorklistTable
+            rows={dash.queue}
+            variant="queue"
+            reviewBase={`/portals/e-anudaan/dashboard/sm2/${reviewKey}/review`}
+            caption="Applications awaiting your action"
+          />
         ) : undefined
       }
     />

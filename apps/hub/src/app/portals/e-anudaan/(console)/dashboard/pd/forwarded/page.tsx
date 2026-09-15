@@ -13,8 +13,9 @@ export default function PdForwardedPage() {
     <ApplicationList
       variant="forwarded"
       title="Forwarded Applications"
-      description="Forwarded Queue — applications you have moved up the chain."
+      description="Applications you have forwarded to the next level."
       rows={role ? forwardedFor(state, role.id) : []}
+      forwardedBy={role?.id}
     />
   );
 }

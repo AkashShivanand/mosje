@@ -86,6 +86,25 @@ export const WithError: Story = {
   },
 };
 
+/**
+ * What a reader types. `20092026`, `20-09-2026` and `20.09.2026` are all read as 20 September
+ * 2026 and rewritten as `20/09/2026` on blur. Something that is not a date — `2092026`, which is
+ * 2 or 20 September — stays in the field with "Enter the date as DD/MM/YYYY." It is never
+ * cleared: that was usability audit UX-09, where an officer's typed date vanished without a word.
+ */
+export const TypedEntry: Story = {
+  args: { label: "Visit Date", value: "", onChange: () => {} },
+  render: function Typed(args) {
+    const [v, setV] = React.useState("");
+    return (
+      <div style={{ display: "grid", gap: "var(--sa-stack-8)", maxWidth: "22rem" }}>
+        <DatePicker {...args} value={v} onChange={setV} required />
+        <output style={{ fontVariantNumeric: "tabular-nums" }}>value: {JSON.stringify(v)}</output>
+      </div>
+    );
+  },
+};
+
 export const Disabled: Story = {
   args: { label: "Date of Birth", value: "1962-08-14", onChange: () => {}, disabled: true },
 };

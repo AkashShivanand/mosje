@@ -4,9 +4,9 @@
  */
 
 import { ROLES, type RoleDef } from "./roles.ts";
-import type { AppStatus, EAnudaanState, GrantApplication, RoleId } from "./types.ts";
+import type { AppStatus, AuditEntry, Division, EAnudaanState, GrantApplication, RoleId } from "./types.ts";
 import { holderIsRole } from "./types.ts";
-import { rupeesShort } from "./format";
+import { rupeesShort } from "./format.ts";
 
 /** Everything currently sitting in this role's in-tray. */
 export function worklistFor(state: EAnudaanState, roleId: RoleId): GrantApplication[] {
@@ -15,15 +15,56 @@ export function worklistFor(state: EAnudaanState, roleId: RoleId): GrantApplicat
     .sort((a, b) => b.ageingDays - a.ageingDays);
 }
 
-/** Files this role has queried back down (or that were queried to it). */
+/**
+ * The rework list behind BOTH the dashboard's "Returned for Rework" figure and the PD / Finance
+ * Queries screen — one expression, so the tile and the list cannot disagree.
+ *
+ * A file belongs here while it is unresolved and this officer is on either end of it:
+ *   • it sits with them, returned for rework (a query pushed down to them, or a Programme
+ *     Director return to PD:ASO); or
+ *   • they raised the query that sent it down, and it has not come back yet.
+ *
+ * It used to be two expressions: the dashboard counted only the first case and the list only a
+ * `QueryRaised` status, so PD:ASO saw "2" over an empty list and PD:US "0" over a list of two.
+ */
 export function queriesFor(state: EAnudaanState, roleId: RoleId): GrantApplication[] {
-  return state.applications.filter(
-    (a) => a.status === "QueryRaised" && (holderIsRole(a.holder, roleId) || a.queries.some((q) => q.raisedBy === roleId)),
-  );
+  return state.applications
+    .filter((a) => {
+      const rework = a.status === "QueryRaised" || a.status === "Returned";
+      if (!rework) return false;
+      if (holderIsRole(a.holder, roleId)) return true;
+      return a.status === "QueryRaised" && a.queries.some((q) => q.raisedBy === roleId && !q.resolvedAt);
+    })
+    .sort((a, b) => b.ageingDays - a.ageingDays);
 }
 
-export function rejectedFor(state: EAnudaanState): GrantApplication[] {
-  return state.applications.filter((a) => a.status === "Rejected" || a.status === "Returned");
+/** The division an officer's decision is recorded against. The Programme Director sits with the PD. */
+export function divisionOfRole(roleId: RoleId): Division | null {
+  if (roleId.startsWith("pd-") || roleId === "programme-director") return "pd";
+  if (roleId.startsWith("finance-")) return "finance";
+  return null;
+}
+
+/** The audit entry that closed a rejected file, if it was rejected. */
+export function rejectionOf(app: GrantApplication): AuditEntry | undefined {
+  if (app.status !== "Rejected") return undefined;
+  return [...app.audit].reverse().find((e) => e.action === "reject");
+}
+
+/**
+ * Files a division rejected. Scoped to the division that took the decision, so the Programme
+ * Division's register and the Finance Division's register never credit each other's decisions.
+ *
+ * A Programme Director RETURN is not a rejection: the file goes back to PD:ASO and climbs again,
+ * so it is on that officer's rework list (`queriesFor`), not here.
+ */
+export function rejectedFor(state: EAnudaanState, division: Division): GrantApplication[] {
+  return state.applications
+    .filter((a) => {
+      const entry = rejectionOf(a);
+      return !!entry && divisionOfRole(entry.byRole) === division;
+    })
+    .sort((a, b) => (rejectionOf(b)?.at ?? "").localeCompare(rejectionOf(a)?.at ?? ""));
 }
 
 export function forwardedFor(state: EAnudaanState, roleId: RoleId): GrantApplication[] {
@@ -83,13 +124,13 @@ export function formatGrant(amount: number): string {
 
 // Re-exported so the many callers that import it from here keep working, while there remains
 // exactly one implementation (design audit M8).
-export { formatDate } from "./format";
+export { formatDate } from "./format.ts";
 
 /** Badge tone per status — amber for in-flight, green for sanctioned, red for closed. */
 export function statusTone(status: AppStatus): "warning" | "success" | "danger" | "info" | "neutral" {
   if (status === "Sanctioned" || status === "Released") return "success";
   if (status === "Rejected") return "danger";
-  if (status === "Returned" || status === "DeficiencyRaised" || status === "QueryRaised") return "warning";
+  if (status === "Returned" || status === "DeficiencyRaised" || status === "DeficiencyProposed" || status === "QueryRaised") return "warning";
   if (status === "Draft") return "neutral";
   return "info";
 }
@@ -100,6 +141,19 @@ export function statusTone(status: AppStatus): "warning" | "success" | "danger" 
  * Three special cases, all from the live path shapes: `jspd` is PD:JS, `pd` is the Programme
  * Director (NOT a grade), and `ifd<grade>` is the Integrated Finance Division.
  */
+/**
+ * A scheme's short name as it is written on screen. The stored code (`SHRESHTA_M2`) is a key;
+ * it was reaching officers verbatim in every Scheme column.
+ */
+const SCHEME_LABEL: Record<string, string> = {
+  SHRESHTA_M2: "SHRESHTA Mode 2",
+  SMILE_GG: "SMILE",
+};
+
+export function schemeLabel(code: string): string {
+  return SCHEME_LABEL[code] ?? code.replace(/_/g, " ");
+}
+
 export function roleForSchemeKey(key: string): RoleDef | undefined {
   if (key === "jspd") return ROLES["pd-js"];
   if (key === "pd") return ROLES["programme-director"];
@@ -119,7 +173,10 @@ export function ngoStatusLabel(app: GrantApplication): string {
   if (app.status === "Draft") return "Draft";
   if (app.sanction || app.status === "Sanctioned" || app.status === "Released") return "Approved";
   if (app.status === "Rejected") return "Closed / Rejected";
-  if (app.status === "QueryRaised" || app.status === "Returned" || app.status === "DeficiencyRaised") {
+  // A deficiency is the one state that asks the applicant to act, so it is named for what it
+  // asks rather than folded into "Query / Returned" (review call 11 Sep 2026, T43–54).
+  if (app.status === "DeficiencyRaised") return "Action Required";
+  if (app.status === "QueryRaised" || app.status === "Returned") {
     return "Query / Returned";
   }
   if (app.status === "Submitted") return "Submitted";
@@ -129,6 +186,7 @@ export function ngoStatusLabel(app: GrantApplication): string {
 /** The live filter chips over My Applications, in order. */
 export const NGO_STATUS_FILTERS = [
   "All",
+  "Action Required",
   "Submitted",
   "In Review",
   "Approved",

@@ -9,6 +9,34 @@ import { ROLES } from "@/lib/e-anudaan/roles";
 import { notificationItems, notificationsHref } from "@/lib/e-anudaan/notifications";
 
 /**
+ * The design system's `Link` renders a plain anchor and takes no router link, so a click is
+ * handed to the Next router here — an ordinary click routes on the client, while a modified
+ * click (new tab, new window) keeps the anchor's own behaviour.
+ */
+export function routeOnClick(router: { push: (href: string) => void }, href: string) {
+  return (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault();
+    router.push(href);
+  };
+}
+
+/**
+ * The same hand-off for anchors a design-system component draws itself (EventList, ListRow):
+ * delegated from a wrapper, for same-site paths only.
+ */
+export function routeLinksWithin(router: { push: (href: string) => void }) {
+  return (e: React.MouseEvent<HTMLElement>) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const anchor = (e.target as HTMLElement).closest("a[href]");
+    const href = anchor?.getAttribute("href");
+    if (!href || !href.startsWith("/") || href.startsWith("//") || anchor?.getAttribute("target")) return;
+    e.preventDefault();
+    router.push(href);
+  };
+}
+
+/**
  * Authenticated shell for the NGO applicant. Bounces to /sign-in without an NGO session.
  *
  * The chrome is `PortalPage` — the guard is the only thing left here, which is
@@ -48,7 +76,8 @@ export function NgoShell({ children }: { children: React.ReactNode }) {
       pathname={pathname}
       identity={{
         name: "E-Anudaan",
-        expansion: "Grant-in-Aid Management",
+        // Non-breaking hyphens: the name must not wrap as "Grant-" / "in-Aid".
+        expansion: "Grant\u2011in\u2011Aid Management",
         mark: <OrgLogo path="/portals/e-anudaan" />,
         href: "/portals/e-anudaan/ngo",
       }}

@@ -1,19 +1,14 @@
 import type { Metadata } from "next";
 import * as React from "react";
 
-import {
-  Callout,
-  CodeBlock,
-  ComponentDocPage,
-  type A11yItem,
-} from "@/components/design-system/docs-kit";
+import { Callout, CodeBlock, ComponentDocPage, type A11yItem } from "@/components/design-system/docs-kit";
 
 import { WizardPlayground } from "./wizard-playground";
 
 export const metadata: Metadata = {
   title: "Wizard — Design System",
   description:
-    "The shared multi-step form shell: a stepper, the current step's body, a focusable error summary, and the Back, Continue and Submit controls.",
+    "The shared multi-step form shell: the stepper on the page ground, then one panel for the current step — a head band, the step's sub-sections, and the Back or Cancel and Continue or Submit controls.",
 };
 
 const A11Y: A11yItem[] = [
@@ -27,19 +22,19 @@ const A11Y: A11yItem[] = [
     criterion: "3.2.2 On Input",
     level: "A",
     description:
-      "The step never advances on its own. Back, Continue and Submit are explicit controls, and the parent decides whether the move is allowed.",
+      "The step never advances on its own. Back, Cancel, Continue and Submit are explicit controls, and the parent decides whether the move is allowed.",
   },
   {
     criterion: "3.3.1 Error Identification",
     level: "A",
     description:
-      "The error summary is an Alert above the actions, and `errorRef` lets the parent send focus to it, so the failure is both announced and reachable.",
+      "The error summary is an Alert at the foot of the step panel's body, above the action band, and `errorRef` lets the parent send focus to it, so the failure is both announced and reachable.",
   },
   {
     criterion: "4.1.3 Status Messages",
     level: "AA",
     description:
-      "A polite live region announces \"Step N of M\" with the step's label whenever `current` changes, so a screen-reader user hears the move.",
+      'A polite live region announces "Step N of M" with the step\'s label whenever `current` changes, so a screen-reader user hears the move.',
   },
   {
     criterion: "2.4.8 Location",
@@ -60,7 +55,7 @@ export default function WizardPage(): React.JSX.Element {
     <ComponentDocPage
       name="Wizard"
       status="Stable"
-      summary="The shared multi-step form shell. It renders the Stepper, the current step's body, an optional focusable error summary, and the Back, Continue and Submit controls. The parent owns every field value, the step index and all validation."
+      summary="The shared multi-step form shell. It renders the Stepper on the page ground and one Form Panel for the current step: a head band with the step's title, the step's sub-sections, an optional focusable error summary, and an action band with Back or Cancel and Continue or Submit. The parent owns every field value, the step index and all validation."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<WizardPlayground />}
       propsFrom="WizardProps"
@@ -75,6 +70,7 @@ export default function WizardPage(): React.JSX.Element {
           "The form is short enough to show at once — a wizard around three fields adds two clicks and removes the overview.",
           "The steps are independent and the reader may complete them in any order — use Tabs, which does not imply a sequence.",
           "Only the progress needs showing, not the navigation — use Stepper on its own.",
+          "A step's sub-sections seem to need cards of their own — they do not. Wizard draws the one panel; pass Form Sections and Form Cards, which are not cards.",
         ],
       }}
       related={[
@@ -84,9 +80,19 @@ export default function WizardPage(): React.JSX.Element {
           reason: "the progress indicator this shell renders",
         },
         {
+          label: "Form Panel",
+          href: "/design-system/components/forms/form-panel",
+          reason: "the step card this shell draws",
+        },
+        {
           label: "Form Section",
           href: "/design-system/components/forms/form-section",
           reason: "what a step's body is usually made of",
+        },
+        {
+          label: "Document Tile",
+          href: "/design-system/components/forms/document-tile",
+          reason: "the documents on an upload or review step",
         },
         {
           label: "Declaration Checkbox",
@@ -100,23 +106,73 @@ export default function WizardPage(): React.JSX.Element {
         },
       ]}
       design={
-        <section className="cdp__section" aria-labelledby="cdp-ownership">
-          <h2 id="cdp-ownership" className="cdp__h2">
-            The Parent Owns the State
-          </h2>
-          <Callout type="info" title="What This Component Does and Does Not Do">
-            Keep <code>current</code> and every field value in your page&apos;s state. Validate inside{" "}
-            <code>onNext</code> and <code>onSubmit</code>, and advance only when the step is valid. The
-            Wizard is presentational: it tells you when the reader wants to move, moves focus to the
-            step body, and announces the step. It never decides whether the move is allowed.
-          </Callout>
-          <p>
-            The last step should always be a read-only summary. <code>ReviewSection</code> is a titled
-            card laying out <code>ReviewItem</code> label-and-value pairs in a responsive grid, and an
-            empty value renders as an em dash — so a missing answer is visible before submission
-            rather than after it.
-          </p>
-        </section>
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-grammar">
+            <h2 id="cdp-grammar" className="cdp__h2">
+              One Panel per Step
+            </h2>
+            <p>
+              Every multi-step form in the portal handoff — Transgender Portal, NOS, NMBA, Garima Greh, SCW
+              and SAMBAL — draws the same page, and Wizard renders it. The stepper sits on the page ground
+              with no box, border or fill around it. Below it, 32 apart, is one Form Panel for the current
+              step.
+            </p>
+            <ul>
+              <li>
+                <strong>Head band.</strong> The step&rsquo;s title and one line of description. They default
+                to the current stage&rsquo;s <code>label</code> and <code>description</code>; pass{" "}
+                <code>title</code> and <code>description</code> where the step&rsquo;s own name is longer than
+                its stage label — &ldquo;Basic Identity Details&rdquo; under the &ldquo;Basic Details&rdquo;
+                stage. <code>headerActions</code> sits at the right of the band.
+              </li>
+              <li>
+                <strong>Body.</strong> The step&rsquo;s sub-sections, 32 apart: Form Section for a field grid,
+                Form Card for entries, tables or document tiles. None of them is a card.
+              </li>
+              <li>
+                <strong>Action band.</strong> Back at the start and Continue at the end. With{" "}
+                <code>onCancel</code>, the first step shows an outlined Cancel where later steps show Back, so
+                the leading control is never a disabled button; <code>cancelLabel</code> renames it. The last
+                step shows Submit, with a send glyph.
+              </li>
+            </ul>
+            <Callout type="warning" title="Do Not Wrap the Step Body in a Card">
+              Wizard already draws the card. A Card or a padded box around the children puts a box inside the
+              panel, and a card per sub-section turns one step into a stack of forms.
+            </Callout>
+            <p>
+              The handoff&rsquo;s labels are &ldquo;Save and Continue&rdquo; and &ldquo;Submit
+              Application&rdquo;; pass them as <code>nextLabel</code> and <code>submitLabel</code>.
+            </p>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-review">
+            <h2 id="cdp-review" className="cdp__h2">
+              The Review Step
+            </h2>
+            <p>
+              The last step is a read-only summary, headed &ldquo;Review Application Details&rdquo;. It holds
+              one <code>ReviewSection</code> per earlier step: the same uppercase head and rule as Form
+              Section, with an Edit text button in <code>actions</code>, over a grid of{" "}
+              <code>ReviewItem</code> label-and-value pairs — <code>columns={"{4}"}</code> for short values,
+              the default two for long ones. An empty value renders as an em dash, so a missing answer is
+              visible before submission rather than after it. Documents follow as Document Tiles, then the
+              Declaration Checkbox.
+            </p>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-ownership">
+            <h2 id="cdp-ownership" className="cdp__h2">
+              The Parent Owns the State
+            </h2>
+            <Callout type="info" title="What This Component Does and Does Not Do">
+              Keep <code>current</code> and every field value in your page&apos;s state. Validate inside{" "}
+              <code>onNext</code> and <code>onSubmit</code>, and advance only when the step is valid. The
+              Wizard is presentational: it tells you when the reader wants to move, moves focus to the step
+              body, and announces the step. It never decides whether the move is allowed.
+            </Callout>
+          </section>
+        </>
       }
       code={
         <section className="cdp__section" aria-labelledby="cdp-example">
@@ -131,11 +187,15 @@ const errorRef = React.useRef<HTMLDivElement>(null);
 
 <Wizard
   steps={[
-    { label: "Personal", description: "Your details" },
-    { label: "Documents", description: "Supporting papers" },
-    { label: "Review", description: "Confirm and submit" },
+    { label: "Basic Details", description: "Enter the details as they appear on the Aadhaar card." },
+    { label: "Documents", description: "Attach each document as a PDF, JPG or PNG." },
+    { label: "Review", description: "Please verify all details before final submission." },
   ]}
   current={step}
+  title={step === 0 ? "Basic Identity Details" : undefined}
+  nextLabel="Save and Continue"
+  submitLabel="Submit Application"
+  onCancel={() => router.back()}
   error={error}
   errorRef={errorRef}
   onBack={() => setStep((s) => s - 1)}
@@ -147,12 +207,21 @@ const errorRef = React.useRef<HTMLDivElement>(null);
   }}
   onSubmit={submitApplication}
 >
-  {step === 0 && <FormSection title="Personal Details">…</FormSection>}
+  {step === 0 && (
+    <>
+      <FormSection title="Personal Details">…</FormSection>
+      <FormSection title="Contact Details">…</FormSection>
+    </>
+  )}
 </Wizard>`}</CodeBlock>
           <p>The review step, built from the two helpers exported alongside the shell.</p>
-          <CodeBlock>{`import { ReviewItem, ReviewSection } from "@mosje/design-system";
+          <CodeBlock>{`import { Button, ReviewItem, ReviewSection } from "@mosje/design-system";
 
-<ReviewSection title="Personal Details">
+<ReviewSection
+  title="Basic Details"
+  columns={4}
+  actions={<Button appearance="text" size="sm" onClick={() => setStep(0)}>Edit</Button>}
+>
   <ReviewItem label="Full Name" value={form.name} />
   <ReviewItem label="Date of Birth" value={form.dob} />
   <ReviewItem label="Address" value={form.address} wide />
@@ -165,19 +234,23 @@ const errorRef = React.useRef<HTMLDivElement>(null);
             Notes
           </h2>
           <p>
-            Always pass <code>errorRef</code> alongside <code>error</code> and move focus to it when a
-            step fails. Rendering the summary without sending anybody to it leaves a keyboard user
-            pressing Continue with no idea why nothing happened.
+            Always pass <code>errorRef</code> alongside <code>error</code> and move focus to it when a step
+            fails. Rendering the summary without sending anybody to it leaves a keyboard user pressing
+            Continue with no idea why nothing happened.
           </p>
           <p>
-            Focus moves to the step body on every change of <code>current</code>, and the body is
-            given a <code>tabIndex</code> of −1 so it can receive that focus without becoming a tab stop
-            of its own.
+            The step panel&rsquo;s title is an <code>&lt;h2&gt;</code> and the sub-sections inside it default
+            to <code>&lt;h3&gt;</code>, so a Wizard expects the page&rsquo;s own <code>&lt;h1&gt;</code> above
+            it and no other heading between.
           </p>
           <p>
-            All three controls are <code>type=&quot;button&quot;</code>. A Wizard placed inside a{" "}
-            <code>&lt;form&gt;</code> therefore does not submit on Continue, which is what stops an
-            incomplete application reaching the department because somebody pressed Enter in a field.
+            Focus moves to the step body on every change of <code>current</code>, and the body is given a{" "}
+            <code>tabIndex</code> of −1 so it can receive that focus without becoming a tab stop of its own.
+          </p>
+          <p>
+            Every control in the action band is <code>type=&quot;button&quot;</code>. A Wizard placed inside a{" "}
+            <code>&lt;form&gt;</code> therefore does not submit on Continue, which is what stops an incomplete
+            application reaching the department because somebody pressed Enter in a field.
           </p>
         </section>
       }

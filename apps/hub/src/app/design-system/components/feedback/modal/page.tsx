@@ -41,6 +41,24 @@ const A11Y: A11yItem[] = [
       "Background scrolling is locked while the dialog is open and the previous overflow is restored on close, so the page behind cannot be moved out from under the dialog.",
   },
   {
+    criterion: "3.3.4 Error Prevention",
+    level: "AA",
+    status: "verified",
+    evidence:
+      "Playwright, 14 Sep 2026 (scratchpad p1fix/audit-fix/dialogs/repro.mjs) on E-Anudaan's bank-account change dialog with five fields typed: Escape, a press on the scrim and the × each opened the question and kept all five values; Keep Editing returned focus to the IFSC field that held it; Discard closed the dialog.",
+    description:
+      "Scope: dialogs whose consumer passes `dirty`; a footer Cancel button is an explicit choice and is not intercepted. Such a dialog asks before Escape, a press outside or the close button discards what was typed. The question is an alertdialog; focus goes to Keep Editing, Escape inside it means keep editing, and the form behind it is inert.",
+  },
+  {
+    criterion: "2.4.3 Focus Order — with the UX4G widget",
+    level: "A",
+    status: "verified",
+    evidence:
+      "Playwright, 14 Sep 2026 (scratchpad p1fix/audit-fix/dialogs/tabseq.mjs) in E-Anudaan's Schedule Inspection dialog at 768 (touch) and 1440: Tab 1 went to the widget's offer, Tab 2 to the date field's calendar button, Tab 3 to Visit Type; Shift+Tab returned to the calendar button; Escape inside the calendar closed only the calendar. Keyboard order only — not yet heard with a screen reader.",
+    description:
+      "The UX4G accessibility widget takes the first Tab on every page to show its own offer. Inside a dialog that Tab is left to the widget, and the next Tab resumes from the control the reader left — not from the close button. Seen in Playwright on Schedule Inspection; not yet checked with a screen reader.",
+  },
+  {
     criterion: "2.5.8 Target Size (Minimum)",
     level: "AA",
     description:
@@ -111,6 +129,34 @@ export default function ModalPage(): React.JSX.Element {
               </li>
             </ol>
           </section>
+          <section className="cdp__section" aria-labelledby="cdp-dirty">
+            <h2 id="cdp-dirty" className="cdp__h2">
+              A Form Asks Before It Is Discarded
+            </h2>
+            <p>
+              Pass <code>dirty</code> while a dialog holds anything the reader has entered. Escape,
+              a press outside the panel and the close button then ask{" "}
+              <strong>Discard Your Changes?</strong> with <strong>Keep Editing</strong> and{" "}
+              <strong>Discard</strong>, instead of closing. Without it, one stray key threw away a
+              five-field bank-account change and an inspector&apos;s findings.
+            </p>
+            <p>
+              A Cancel button in the footer is the consumer&apos;s own and is not intercepted — it is
+              an explicit choice. Reword the question with <code>discardPrompt</code> where the
+              default does not fit.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-print">
+            <h2 id="cdp-print" className="cdp__h2">
+              Printing a Dialog
+            </h2>
+            <p>
+              A dialog passed <code>printable</code> prints alone: its title and body, without the
+              page behind it, the close button or the footer. Use it for a report or a receipt the
+              reader may need on paper, and put a Print action in the footer that calls{" "}
+              <code>window.print()</code>.
+            </p>
+          </section>
           <section className="cdp__section" aria-labelledby="cdp-sizes">
             <h2 id="cdp-sizes" className="cdp__h2">
               Sizes
@@ -167,6 +213,16 @@ const [open, setOpen] = React.useState(false);
   }
 >
   <p>You will not be able to edit this application after it is submitted.</p>
+</Modal>
+
+// A dialog holding a form passes \`dirty\`, so Escape, a press outside
+// and × ask "Discard Your Changes?" before anything typed is lost.
+const [remarks, setRemarks] = React.useState("");
+
+<Modal open={open} onClose={close} title="Return for Correction" dirty={remarks !== ""}>
+  <FormField label="Remarks" id="remarks" required>
+    {(c) => <Textarea {...c} value={remarks} onChange={(e) => setRemarks(e.target.value)} />}
+  </FormField>
 </Modal>`}</CodeBlock>
           <p>
             <code>onClose</code> is almost always an inline arrow, which is a new function on every
@@ -187,7 +243,9 @@ const [open, setOpen] = React.useState(false);
               <li>
                 <strong>Escape</strong> — closes the dialog from anywhere inside it, whatever has
                 focus. It calls <code>onClose</code>, so the consumer still decides what closing
-                means.
+                means. A <code>dirty</code> dialog asks first, and Escape inside that question
+                means Keep Editing. A control that uses Escape itself — the Date Picker&apos;s
+                calendar — closes only itself.
               </li>
               <li>
                 <strong>Tab</strong> — moves through the panel&apos;s controls. From the last one it

@@ -716,6 +716,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Document Tile — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/document-tile",
+    "keywords": "document tile — design system forms & inputs four states an upload is not a verification layout example notes  tokens wcag accessibility",
+    "description": "One document on an upload or review step — its title, one line of meta and its controls — in four states, laid out two to a row by Document Tiles.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Donut Chart — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/donut-chart",
@@ -856,7 +865,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/form-card",
     "keywords": "form card — design system forms & inputs why it exists example notes  tokens wcag accessibility",
-    "description": "The sibling of Form Section: the same card chrome and section title, with an arbitrary body instead of a field grid.",
+    "description": "The sibling of Form Section: the same uppercase label and rule, over an arbitrary body — repeatable entries, a table, document tiles — instead of a field grid.",
     "type": "component",
     "iconName": "edit_note"
   },
@@ -870,10 +879,28 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Form Inset — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/form-inset",
+    "keywords": "form inset — design system forms & inputs an inset, not a card adding and removing entries example notes  tokens wcag accessibility",
+    "description": "One entry of a repeatable group inside a form sub-section, drawn as a tinted inset panel holding a two-column field grid.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
+    "title": "Form Panel — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/form-panel",
+    "keywords": "form panel — design system forms & inputs anatomy one panel per step a panel without a head band the one value not reproduced example notes  tokens wcag accessibility",
+    "description": "The one card a form or a wizard step lives in: a head band with the step title, the sub-sections, and an action band.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Form Screen — Design System",
     "section": "Getting Started",
     "href": "/design-system/components/templates/form-screen",
-    "keywords": "form screen — design system getting started count the fields — the boundary is not a feeling the save is confirmed, never optimistic example  tokens wcag accessibility",
+    "keywords": "form screen — design system getting started one panel, no head band count the fields — the boundary is not a feeling the save is confirmed, never optimistic example  tokens wcag accessibility",
     "description": "One record, editable in a single pass: sectioned fields, an error summary and one submit.",
     "type": "component",
     "iconName": "widgets"
@@ -882,8 +909,8 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Form Section — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/form-section",
-    "keywords": "form section — design system forms & inputs choosing the column count example notes  tokens wcag accessibility",
-    "description": "A titled surface card wrapping a responsive one-, two- or three-column field grid. The shared form-layout primitive across the estate.",
+    "keywords": "form section — design system forms & inputs a label and a rule, not a card choosing the column count example notes  tokens wcag accessibility",
+    "description": "One sub-section of a form: an uppercase label and a hairline rule over a responsive field grid. It sits inside a Form Panel and is not a card of its own.",
     "type": "component",
     "iconName": "edit_note"
   },
@@ -1239,7 +1266,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Modal — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/modal",
-    "keywords": "modal — design system feedback & status anatomy sizes use it sparingly example keyboard focus trap, escape and focus restore background scroll  tokens wcag accessibility",
+    "keywords": "modal — design system feedback & status anatomy a form asks before it is discarded printing a dialog sizes use it sparingly example keyboard focus trap, escape and focus restore background scroll  tokens wcag accessibility",
     "description": "The shared accessible dialog: a backdrop, a focus trap, Escape to close and focus returned to the control that opened it.",
     "type": "component",
     "iconName": "notifications"
@@ -2023,8 +2050,8 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Wizard — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/wizard",
-    "keywords": "wizard — design system forms & inputs the parent owns the state example notes  tokens wcag accessibility",
-    "description": "The shared multi-step form shell: a stepper, the current step",
+    "keywords": "wizard — design system forms & inputs one panel per step the review step the parent owns the state example notes  tokens wcag accessibility",
+    "description": "The shared multi-step form shell: the stepper on the page ground, then one panel for the current step — a head band, the step",
     "type": "component",
     "iconName": "edit_note"
   },
@@ -2032,7 +2059,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Wizard Screen — Design System",
     "section": "Getting Started",
     "href": "/design-system/components/templates/wizard-screen",
-    "keywords": "wizard screen — design system getting started three to seven steps, one treatment the draft banner has two flavours and one shape a step taller than the viewport example two guards the template cannot install  tokens wcag accessibility",
+    "keywords": "wizard screen — design system getting started the page, then one panel per step three to seven steps, one treatment the draft banner has two flavours and one shape a step taller than the viewport example two guards the template cannot install  tokens wcag accessibility",
     "description": "One record entered in stages: the page title, the step meta line, the draft banner and the stepper — around the shared Wizard.",
     "type": "component",
     "iconName": "widgets"

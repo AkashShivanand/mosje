@@ -53,7 +53,8 @@ import {
  * column is what lets a twelve-column table survive a phone: priority 1 becomes
  * the card's title, 2 becomes a label/value pair, 3 is dropped. The handoff
  * draws no mobile version of any application screen, so this is the estate's
- * answer rather than a transcription.
+ * answer rather than a transcription. `countLine` replaces the "N in the register."
+ * sentence, or hides it with `null` when a heading above already states the count.
  *
  * **`WizardScreen`** covers 22 of the handoff's 44 screens across three schemes
  * with 3, 6 and 7 steps. It ships one stepper treatment where the handoff draws

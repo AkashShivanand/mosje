@@ -4027,7 +4027,7 @@ export const GENERATED_PROPS = {
         "name": "error",
         "type": "string",
         "required": false,
-        "description": "Shown under the field, and announced."
+        "description": "Shown under the field, and announced. A message about what was TYPED — \"Enter the date as DD/MM/YYYY.\" — is the component's own and takes precedence while it stands, because it is the more specific of the two."
       },
       {
         "name": "hint",
@@ -4653,6 +4653,68 @@ export const GENERATED_PROPS = {
         "type": "React.ReactNode",
         "required": false,
         "description": "The footer's \"view all\" control, supplied as an ELEMENT — typically a `next/link` already styled with `buttonClasses`. Omit it and no footer renders. A slot rather than a `linkAs` component prop, because this is a client component: React Server Components refuse to pass a FUNCTION across the boundary (\"Functions cannot be passed directly to Client Components\"), so a server page handing over `next/link` itself crashes the route. An element crosses that boundary fine, and the server page keeps its router-aware navigation."
+      }
+    ]
+  },
+  "DocumentTileProps": {
+    "source": "packages/design-system/components/forms/document-tile.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The document's name."
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Controls at the right: Browse File, Change and Remove, a Verified badge, View."
+      },
+      {
+        "name": "as",
+        "type": "\"li\" | \"div\"",
+        "required": false,
+        "default": "\"li\"",
+        "description": "Render as a list item inside {@link DocumentTiles}."
+      },
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Content under the row that belongs to this document — an officer's remark, a version list."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "icon",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A leading icon — a file glyph on a review step."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The line under the title: the format and size limit, the file name and size, or the reason."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "description": "Mark the document mandatory."
+      },
+      {
+        "name": "state",
+        "type": "DocumentTileState = \"upcoming\" | \"uploaded\" | \"verified\" | \"invalid\"",
+        "required": false,
+        "default": "\"upcoming\"",
+        "description": "`upcoming` — nothing chosen yet. `uploaded` — a file is attached. `verified` — an officer or DigiLocker has verified it; an upload alone never is. `invalid` — it needs replacing."
       }
     ]
   },
@@ -5410,13 +5472,26 @@ export const GENERATED_PROPS = {
         "name": "title",
         "type": "React.ReactNode",
         "required": true,
-        "description": "Section heading — styled identically to {@link FormSection }'s title."
+        "description": "Sub-section label — the same head as {@link FormSection }."
       },
       {
         "name": "actions",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Optional right-aligned controls in the header row (e.g. a small action)."
+        "description": "Controls at the end of the head row."
+      },
+      {
+        "name": "as",
+        "type": "FormHeadingLevel = 2 | 3 | 4",
+        "required": false,
+        "default": "3",
+        "description": "Heading level."
+      },
+      {
+        "name": "badge",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A badge between the label and the rule."
       },
       {
         "name": "className",
@@ -5428,7 +5503,7 @@ export const GENERATED_PROPS = {
         "name": "description",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Optional sub-heading below the title."
+        "description": "One sentence under the head."
       },
       {
         "name": "headingId",
@@ -5648,6 +5723,92 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "FormInsetProps": {
+    "source": "packages/design-system/components/forms/form-inset.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Controls at the right of the entry's head — Remove."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "columns",
+        "type": "1 | 2 | 3",
+        "required": false,
+        "default": "2",
+        "description": "Field-grid columns inside the entry."
+      },
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Names the entry — \"Employment 2\", \"Key Functionary 1\"."
+      }
+    ]
+  },
+  "FormPanelProps": {
+    "source": "packages/design-system/components/forms/form-panel.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "actions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Controls at the right of the head band."
+      },
+      {
+        "name": "as",
+        "type": "2 | 3",
+        "required": false,
+        "default": "2",
+        "description": "Heading level of the title. A portal screen's h1 is its page header."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One line under the title."
+      },
+      {
+        "name": "footer",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The action band at the foot — Back / Cancel and the primary action."
+      },
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The panel's heading — the step or form name. Omit it only where the page header directly above already names the form (FormScreen); the head band is then not drawn."
+      }
+    ]
+  },
   "FormScreenProps": {
     "source": "packages/design-system/components/templates/form-screen.tsx",
     "inheritsNative": false,
@@ -5824,10 +5985,23 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
-        "name": "title",
+        "name": "actions",
         "type": "React.ReactNode",
-        "required": true,
-        "description": "Section heading (left-aligned, matching the Figma form sections)."
+        "required": false,
+        "description": "Controls at the end of the head row — \"Edit\" on a review step."
+      },
+      {
+        "name": "as",
+        "type": "FormHeadingLevel = 2 | 3 | 4",
+        "required": false,
+        "default": "3",
+        "description": "Heading level. A sub-section sits under its panel's h2."
+      },
+      {
+        "name": "badge",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A badge between the label and the rule — \"DigiLocker\", \"Verified\"."
       },
       {
         "name": "className",
@@ -5837,16 +6011,22 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "columns",
-        "type": "1 | 2 | 3",
+        "type": "1 | 2 | 3 | 4",
         "required": false,
         "default": "3",
-        "description": "Responsive field-grid columns."
+        "description": "Responsive field-grid columns. Wide fields take `className=\"ds-form-span-full\"`."
       },
       {
         "name": "description",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Optional sub-heading below the title."
+        "description": "One sentence under the head — only where it changes what the applicant enters."
+      },
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Sub-section label, rendered uppercase with a hairline rule filling the rest of the row. Omit it only when the panel holds this one section and the panel's own title already names it."
       }
     ]
   },
@@ -8344,7 +8524,7 @@ export const GENERATED_PROPS = {
         "name": "onClose",
         "type": "() => void",
         "required": true,
-        "description": "Called on Escape, backdrop click, or the close button."
+        "description": "Called on Escape, backdrop click, or the close button — after the reader confirms, when the dialog is `dirty`."
       },
       {
         "name": "open",
@@ -8365,6 +8545,19 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "dirty",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The dialog holds input the reader would lose by closing it. While true, Escape, a press outside the panel and the close button ask \"Discard Your Changes?\" (Keep Editing / Discard) instead of closing. Footer buttons are the consumer's own and are not intercepted — a Cancel button is an explicit choice."
+      },
+      {
+        "name": "discardPrompt",
+        "type": "ModalDiscardPrompt",
+        "required": false,
+        "description": "Wording of the discard question asked when `dirty`."
+      },
+      {
         "name": "footer",
         "type": "React.ReactNode",
         "required": false,
@@ -8376,6 +8569,13 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "Hide the default close (×) button."
+      },
+      {
+        "name": "printable",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Printing the page while this dialog is open prints the dialog alone — its title and body, without the page behind it, the close button or the footer. For a report or a receipt a reader may need on paper. The consumer supplies the Print action."
       },
       {
         "name": "size",
@@ -9293,6 +9493,13 @@ export const GENERATED_PROPS = {
         "type": "React.ReactNode",
         "required": false,
         "description": "Supporting line under the title — \"Last updated: 27 Jan 2026, 03:05 pm\"."
+      },
+      {
+        "name": "size",
+        "type": "\"default\" | \"compact\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": "`compact` sets the title a step down the headline ramp, for a screen whose own content carries the weight — a form wizard, where the stepper and the step panel lead."
       }
     ]
   },
@@ -14469,7 +14676,7 @@ export const GENERATED_PROPS = {
         "name": "children",
         "type": "React.ReactNode",
         "required": true,
-        "description": "The current step's body."
+        "description": "The current step's sub-sections."
       },
       {
         "name": "current",
@@ -14502,6 +14709,19 @@ export const GENERATED_PROPS = {
         "description": "Step definitions (label + optional description) for the Stepper."
       },
       {
+        "name": "cancelLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Cancel\"",
+        "description": ""
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One line under the step panel's title. Defaults to the current step's description."
+      },
+      {
         "name": "error",
         "type": "string",
         "required": false,
@@ -14512,6 +14732,12 @@ export const GENERATED_PROPS = {
         "type": "React.Ref<HTMLDivElement>",
         "required": false,
         "description": "Ref to the error-summary container so the parent can focus it on failure."
+      },
+      {
+        "name": "headerActions",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Controls at the right of the step panel's head band."
       },
       {
         "name": "nextBlockedReason",
@@ -14534,11 +14760,36 @@ export const GENERATED_PROPS = {
         "description": "Label for the advance button."
       },
       {
+        "name": "onCancel",
+        "type": "() => void",
+        "required": false,
+        "description": "Leave the form from its first step. When set, the first step shows a Cancel button where later steps show Back — the handoff's first step has somewhere to go, not a dead control."
+      },
+      {
+        "name": "stepperCollapse",
+        "type": "\"auto\" | \"never\"",
+        "required": false,
+        "default": "\"auto\"",
+        "description": "Passed to the Stepper. `auto` collapses the row to a counter and dots when the column is too narrow for a label per stage (under about 104px each); `never` keeps every labelled stage, letting labels wrap — for a long form such as an 11-step application, where the dots tell the applicant nothing."
+      },
+      {
+        "name": "submitIcon",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Icon on the final submit button. Defaults to a send glyph: submitting hands the application over, and the save glyph it used to carry read as \"save a draft\"."
+      },
+      {
         "name": "submitLabel",
         "type": "string",
         "required": false,
         "default": "\"Submit\"",
         "description": "Label for the final submit button."
+      },
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Heading of the step panel's head band. Defaults to the current step's label, which is what the handoff draws (\"Basic Identity Details\" under the \"Basic Details\" stage)."
       }
     ]
   },
@@ -14768,6 +15019,12 @@ export const GENERATED_PROPS = {
         "type": "number",
         "required": false,
         "description": "How many records the screen received. `0` with filters applied resolves to `filtered`; `0` without them resolves to `empty`."
+      },
+      {
+        "name": "countLine",
+        "type": "React.ReactNode | null",
+        "required": false,
+        "description": "Replace the count line under the filters (\"124 in the register.\"). Omit for the default sentence. Pass `null` to suppress it where the page header already states the count — the NGO beneficiaries register reads \"110 Active of 124 Registered Beneficiaries\" above the table, and the default line repeated the same fact beneath it. Pass a node to say it differently. Shown only when the list is `ready`, like the default."
       },
       {
         "name": "emptyAction",

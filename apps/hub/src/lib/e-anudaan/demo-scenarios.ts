@@ -19,9 +19,9 @@ import {
   visibleSteps,
   type FieldDef,
   type WizardDef,
-} from "./form-schema";
-import { districtsOf } from "./geography";
-import { demoVerdictFor, type UploadedDoc, type VerdictState } from "./doc-verification";
+} from "./form-schema.ts";
+import { districtsOf } from "./geography.ts";
+import { demoVerdictFor, type UploadedDoc, type VerdictState } from "./doc-verification.ts";
 
 /** The event the wizard listens for. Dispatched on `window` by the demo dock panel. */
 export const DEMO_FILL_EVENT = "e-anudaan:demo-fill";
@@ -105,6 +105,10 @@ function answerFor(f: FieldDef, values?: Record<string, string>): string {
     case "pin": return "411001";
     case "nameAndPhone": return "Illustrative Name, 9800000000";
     case "lettersOnly": return "Illustrative Name";
+    // A date that must follow another one: every demo date was 1 Apr 2026, so "Complete & valid"
+    // stopped on Organisation Details with "Must be later than the date of registration."
+    case "afterRegistration":
+    case "afterPeriodFrom": return "2031-03-31";
     default: break;
   }
   switch (f.kind) {
@@ -138,7 +142,7 @@ function docsWith(def: WizardDef, values: Record<string, string>, state: Verdict
       fileName: `${d.title.replace(/[^A-Za-z0-9]+/g, "_").slice(0, 40)}.pdf`,
       sizeKb: 68 + (d.n % 7) * 3,
       uploadedOn: "07 Sep 2026",
-      verdict: demoVerdictFor(state, d.title),
+      verdict: demoVerdictFor(state, d.title, values.fld_financial_year),
     };
   }
   return out;

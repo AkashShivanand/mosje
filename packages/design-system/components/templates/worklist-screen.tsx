@@ -114,6 +114,15 @@ export interface WorklistScreenProps<T extends object> extends ScreenStateInput 
    * while the table showed five records. Found by rendering it.
    */
   registerTotal?: number;
+  /**
+   * Replace the count line under the filters ("124 in the register.").
+   *
+   * Omit for the default sentence. Pass `null` to suppress it where the page header already
+   * states the count — the NGO beneficiaries register reads "110 Active of 124 Registered
+   * Beneficiaries" above the table, and the default line repeated the same fact beneath it.
+   * Pass a node to say it differently. Shown only when the list is `ready`, like the default.
+   */
+  countLine?: React.ReactNode | null;
   /** Stable id per row, for selection. */
   getRowId: (row: T) => string;
 
@@ -168,6 +177,7 @@ export function WorklistScreen<T extends object>({
   columns,
   rows,
   registerTotal,
+  countLine,
   getRowId,
   rowActions,
   selectedIds,
@@ -312,14 +322,17 @@ export function WorklistScreen<T extends object>({
       {/* The count answers the question a filter creates. It is shown only when
           there is something to count — at empty or error it would restate a
           message the body is already giving in full. */}
-      {status === "ready" ? (
+      {status === "ready" && countLine !== null ? (
         <p className="sa-screen__count">
+          {countLine !== undefined ? countLine : null}
           {/* Three sentences, and which one is true is decided by the numbers
               rather than by the filter flag alone. A set that is smaller than
               the register is worth saying so even when the reader did not
               narrow it — that is the case a server-paged or sampled list is in,
               and saying only "20 in the register" there would be false. */}
-          {shown === matched
+          {countLine !== undefined
+            ? null
+            : shown === matched
             ? `${shown.toLocaleString("en-IN")} in the register.`
             : activeFilterCount > 0
               ? `Showing ${shown.toLocaleString("en-IN")} of ${matched.toLocaleString("en-IN")}, filtered.`
@@ -365,6 +378,10 @@ export function WorklistScreen<T extends object>({
                         key: "sa-row-actions",
                         header: "Actions",
                         noExport: true,
+                        /* Pinned. A register wide enough to scroll sideways must not
+                           scroll its only control out of reach — the rule the e-Anudaan
+                           review of 11 Sep 2026 set for every table with row actions. */
+                        className: "is-sticky-right",
                         render: (row: T) => rowActions(row),
                       } as WorklistColumn<T>,
                     ]

@@ -1,31 +1,26 @@
 "use client";
 
-import { ROLES } from "@/lib/e-anudaan/roles";
+import { ROLES, reviewKeyOf } from "@/lib/e-anudaan/roles";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { queriesFor } from "@/lib/e-anudaan/selectors";
-import { WorklistTable } from "@/components/e-anudaan/worklist-table";
+import { ApplicationList } from "@/components/e-anudaan/application-list";
 
+/**
+ * Finance Queries. The same screen as PD Queries, on the same selector as the Finance
+ * dashboard's "Returned for Rework" figure — it used to be a hand-built heading over the
+ * embedded table, and so carried a different empty state from its Programme Division twin.
+ */
 export default function FinanceQueriesPage() {
   const { state } = useEAnudaan();
   const role = state.session ? ROLES[state.session] : null;
-  if (!role) return null;
-  const rows = queriesFor(state, role.id);
-  const reviewKey =
-    role?.division === "finance" ? `ifd${role.grade}` : role?.grade === "js" ? "jspd" : role?.grade;
-  const reviewBase = `/portals/e-anudaan/dashboard/sm2/${reviewKey}/review`;
 
   return (
-    <div className="space-y-5">
-      <div>
-        <h1 className="text-headline-1 text-ink">Finance Queries</h1>
-        <p className="mt-1 text-body-2 text-ink-muted">Files returned to a previous grade for clarification.</p>
-      </div>
-      <WorklistTable
-        rows={rows}
-        variant="queue"
-        reviewBase={reviewBase}
-        caption="Finance Queries"
-      />
-    </div>
+    <ApplicationList
+      variant="queue"
+      title="Finance Queries"
+      description="Applications returned for rework, to you or by you, and not yet resolved."
+      rows={role ? queriesFor(state, role.id) : []}
+      reviewBase={role && reviewKeyOf(role) ? `/portals/e-anudaan/dashboard/sm2/${reviewKeyOf(role)}/review` : undefined}
+    />
   );
 }

@@ -35,6 +35,11 @@
 
   .ds-list__row {
     display: flex;
+    /* Wraps, so a trailing slot too wide to sit beside the text drops under it instead of
+       crushing it. `.ds-list__trailing` cannot shrink, and on a 375px phone a status, an amount,
+       a date and a button left the title ~10px wide — one letter per line, and a dashboard
+       10,691px tall (e-Anudaan NGO dashboard, 15 Sep 2026). */
+    flex-wrap: wrap;
     align-items: flex-start;
     gap: var(--sa-inline-12);
     width: 100%;
@@ -92,7 +97,9 @@
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-2);
-    flex: 1 1 auto;
+    /* The width the text keeps before the trailing slot wraps under it. `min(…, 100%)` so the
+       basis never exceeds a very narrow row on its own. */
+    flex: 1 1 min(14rem, 100%);
     min-width: 0;
   }
 
@@ -119,6 +126,9 @@
   .ds-list__trailing {
     display: flex;
     flex: 0 0 auto;
+    /* Once wrapped, it holds the row's width and keeps to the end edge, where it sat unwrapped. */
+    max-width: 100%;
+    margin-inline-start: auto;
     align-items: center;
     gap: var(--sa-inline-8);
     margin-block-start: var(--sa-padding-2);

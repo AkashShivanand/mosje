@@ -5,6 +5,9 @@ import { cn } from "../../utils/cn";
 import { Stepper, type StepperStep } from "../feedback/stepper";
 import { Button } from "../actions/button";
 import { Alert } from "../feedback/alert";
+import { FormPanel } from "./form-panel";
+import { FormSectionHead } from "./form-section-head";
+import "./form-section.css";
 import "./wizard.css";
 
 export interface WizardProps {
@@ -19,6 +22,18 @@ export interface WizardProps {
   submitLabel?: string;
   /** Label for the advance button. @default "Continue" */
   nextLabel?: string;
+  /**
+   * Icon on the final submit button. Defaults to a send glyph: submitting hands the
+   * application over, and the save glyph it used to carry read as "save a draft".
+   */
+  submitIcon?: React.ReactNode;
+  /**
+   * Passed to the Stepper. `auto` collapses the row to a counter and dots when the
+   * column is too narrow for a label per stage (under about 104px each); `never`
+   * keeps every labelled stage, letting labels wrap — for a long form such as an
+   * 11-step application, where the dots tell the applicant nothing. @default "auto"
+   */
+  stepperCollapse?: "auto" | "never";
   /**
    * Disable the advance (or submit) control while the step is not yet clearable.
    *
@@ -41,18 +56,34 @@ export interface WizardProps {
   error?: string;
   /** Ref to the error-summary container so the parent can focus it on failure. */
   errorRef?: React.Ref<HTMLDivElement>;
-  /** The current step's body. */
+  /**
+   * Heading of the step panel's head band. Defaults to the current step's label, which is
+   * what the handoff draws ("Basic Identity Details" under the "Basic Details" stage).
+   */
+  title?: React.ReactNode;
+  /** One line under the step panel's title. Defaults to the current step's description. */
+  description?: React.ReactNode;
+  /** Controls at the right of the step panel's head band. */
+  headerActions?: React.ReactNode;
+  /**
+   * Leave the form from its first step. When set, the first step shows a Cancel button where
+   * later steps show Back — the handoff's first step has somewhere to go, not a dead control.
+   */
+  onCancel?: () => void;
+  /** @default "Cancel" */
+  cancelLabel?: string;
+  /** The current step's sub-sections. */
   children: React.ReactNode;
 }
 
 const IcLeft = () => (
-  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M15 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
 );
 const IcRight = () => (
-  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
 );
-const IcSave = () => (
-  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M5 4h11l3 3v13H5z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" /><path d="M8 4v5h7M8 20v-6h8v6" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" /></svg>
+const IcSend = () => (
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true"><path d="M4 12 20 4l-4 16-4-6-8-2z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" /><path d="m12 14 8-10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" /></svg>
 );
 
 /**
@@ -71,10 +102,17 @@ export function Wizard({
   onSubmit,
   submitLabel = "Submit",
   nextLabel = "Continue",
+  submitIcon,
+  stepperCollapse = "auto",
   nextDisabled = false,
   nextBlockedReason,
   error,
   errorRef,
+  title,
+  description,
+  headerActions,
+  onCancel,
+  cancelLabel = "Cancel",
   children,
 }: WizardProps) {
   const isLast = current === steps.length - 1;
@@ -89,46 +127,64 @@ export function Wizard({
     }
   }, [current]);
 
+  const step = steps[current];
+  const leading =
+    isFirst && onCancel ? (
+      <Button type="button" appearance="outlined" onClick={onCancel}>
+        {cancelLabel}
+      </Button>
+    ) : (
+      <Button type="button" appearance="outlined" iconLeft={<IcLeft />} onClick={onBack} disabled={isFirst}>
+        Back
+      </Button>
+    );
+
   return (
     <div className="ds-wizard">
+      {/* On the page ground: the progress row is not a section of the form, so it gets no card. */}
       <div className="ds-wizard__stepper">
-        <Stepper steps={steps} current={current} ariaLabel="Progress" />
+        <Stepper steps={steps} current={current} ariaLabel="Progress" collapse={stepperCollapse} />
       </div>
 
       {/* Announce the active step to screen readers on change (WCAG 4.1.3). */}
       <div role="status" aria-live="polite" aria-atomic="true" className="ds-sr-only">
-        {`Step ${current + 1} of ${steps.length}: ${steps[current]?.label ?? ""}`}
+        {`Step ${current + 1} of ${steps.length}: ${step?.label ?? ""}`}
       </div>
 
-      <div ref={bodyRef} tabIndex={-1} className="ds-wizard__body">
-        {children}
-      </div>
-
-      {error && (
-        <div ref={errorRef} tabIndex={-1}>
-          <Alert status="error">{error}</Alert>
+      <FormPanel
+        title={title ?? step?.label ?? ""}
+        description={description ?? step?.description}
+        actions={headerActions}
+        footer={
+          <>
+            {leading}
+            {nextDisabled && nextBlockedReason && (
+              <p className="ds-wizard__blocked" role="status" aria-live="polite">
+                {nextBlockedReason}
+              </p>
+            )}
+            {isLast ? (
+              <Button type="button" iconLeft={submitIcon ?? <IcSend />} onClick={onSubmit} disabled={nextDisabled}>
+                {submitLabel}
+              </Button>
+            ) : (
+              <Button type="button" iconRight={<IcRight />} onClick={onNext} disabled={nextDisabled}>
+                {nextLabel}
+              </Button>
+            )}
+          </>
+        }
+      >
+        <div ref={bodyRef} tabIndex={-1} className="ds-wizard__body">
+          {children}
         </div>
-      )}
 
-      <div className="ds-wizard__actions">
-        <Button type="button" appearance="outlined" iconLeft={<IcLeft />} onClick={onBack} disabled={isFirst}>
-          Back
-        </Button>
-        {nextDisabled && nextBlockedReason && (
-          <p className="ds-wizard__blocked" role="status" aria-live="polite">
-            {nextBlockedReason}
-          </p>
+        {error && (
+          <div ref={errorRef} tabIndex={-1}>
+            <Alert status="error">{error}</Alert>
+          </div>
         )}
-        {isLast ? (
-          <Button type="button" iconLeft={<IcSave />} onClick={onSubmit} disabled={nextDisabled}>
-            {submitLabel}
-          </Button>
-        ) : (
-          <Button type="button" iconRight={<IcRight />} onClick={onNext} disabled={nextDisabled}>
-            {nextLabel}
-          </Button>
-        )}
-      </div>
+      </FormPanel>
     </div>
   );
 }
@@ -152,15 +208,34 @@ export function ReviewItem({
   );
 }
 
-/** A titled card grouping ReviewItems in a responsive grid. */
-export function ReviewSection({ title, children }: { title: React.ReactNode; children: React.ReactNode }) {
+/**
+ * A review sub-section: the same uppercase head and rule as FormSection, over a label-value
+ * grid. Four columns for short values (a name, a date), two for long ones (an address).
+ */
+export function ReviewSection({
+  title,
+  columns = 2,
+  badge,
+  actions,
+  as = 3,
+  children,
+}: {
+  title: React.ReactNode;
+  /** @default 2 */
+  columns?: 2 | 3 | 4;
+  /** A badge between the label and the rule — "DigiLocker". */
+  badge?: React.ReactNode;
+  /** Controls at the end of the head row — "Edit". */
+  actions?: React.ReactNode;
+  /** @default 3 */
+  as?: 2 | 3 | 4;
+  children: React.ReactNode;
+}) {
   const headingId = React.useId();
   return (
-    <section aria-labelledby={headingId} className="ds-review-section">
-      <h3 id={headingId} className="ds-review-section__title">
-        {title}
-      </h3>
-      <dl className="ds-review-section__grid">{children}</dl>
+    <section aria-labelledby={headingId} className="ds-form-section">
+      <FormSectionHead id={headingId} title={title} as={as} badge={badge} actions={actions} />
+      <dl className={cn("ds-form-section__grid", `ds-form-section__grid--${columns}`, "ds-review-section__grid")}>{children}</dl>
     </section>
   );
 }

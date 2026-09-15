@@ -616,7 +616,7 @@ export default function IrcaRegisterPage() {
       >
         {/* ---- Step 1: Patient Identity ---- */}
         {step === 0 && (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-8">
             <FormCard title="Patient Photo" description="Optional — a recent passport-style photo of the patient.">
               <MediaUpload
                 value={photo?.url}
@@ -733,7 +733,7 @@ export default function IrcaRegisterPage() {
 
         {/* ---- Step 3: Substance Use ---- */}
         {step === 2 && (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-8">
             <FormCard
               title="Drug Use Details"
               required
@@ -882,7 +882,7 @@ export default function IrcaRegisterPage() {
 
         {/* ---- Step 4: Assessment & Diagnosis ---- */}
         {step === 3 && (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-8">
             <FormSection title="Alcohol, Smoking and Substance Involvement Screening Test (ASSIST) Score" columns={2}>
               <FormField label="ASSIST Score For Alcohol Use" required error={err("assistAlcohol")}>
                 {(c) => <Select {...c} value={f.assistAlcohol} onChange={(e) => set("assistAlcohol")(e.target.value)} placeholder="Select ASSIST Score" options={ASSIST_SCORE_ALCOHOL} invalid={errors.has("assistAlcohol")} />}
@@ -1016,7 +1016,7 @@ export default function IrcaRegisterPage() {
 
         {/* ---- Step 5: Review ---- */}
         {step === 4 && (
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-3">
               <p className="text-body-2 text-ink-muted">
                 Review the details below, then submit. Use the quick links or{" "}

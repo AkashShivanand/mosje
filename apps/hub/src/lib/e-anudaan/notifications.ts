@@ -16,6 +16,8 @@
  */
 import type { EventItem, EventTone } from "@mosje/design-system";
 import { ngoApplications } from "./selectors";
+import { isReadBy } from "./store/persistence";
+import { ROLES, reviewKeyOf } from "./roles";
 import type { EAnudaanState, GrantApplication, NotificationEntry, RoleId } from "./types";
 
 const BASE = "/portals/e-anudaan";
@@ -39,6 +41,18 @@ function toneFor(title: string): EventTone {
   return "info";
 }
 
+/**
+ * Where a notice about an application opens: the applicant's own record, or the officer's review
+ * screen. A role that reviews nothing (the PMU) has no review screen, so its notices do not link.
+ */
+function applicationHref(role: RoleId, applicationId: string): string | undefined {
+  const id = encodeURIComponent(applicationId);
+  if (role === "ngo") return `${BASE}/ngo/my-applications/${id}`;
+  const def = ROLES[role];
+  const key = def.caps.includes("review") ? reviewKeyOf(def) : null;
+  return key ? `${BASE}/dashboard/sm2/${key}/review/${id}` : undefined;
+}
+
 function updateItem(entry: NotificationEntry, role: RoleId): EventItem {
   return {
     id: entry.id,
@@ -48,11 +62,8 @@ function updateItem(entry: NotificationEntry, role: RoleId): EventItem {
     note: entry.body.replace(/\.{2,}$/, "."),
     actor: "E-Anudaan",
     tone: toneFor(entry.title),
-    unread: !entry.read,
-    href:
-      role === "ngo" && entry.applicationId
-        ? `${BASE}/ngo/my-applications/${encodeURIComponent(entry.applicationId)}`
-        : undefined,
+    unread: !isReadBy(entry, role),
+    href: entry.applicationId ? applicationHref(role, entry.applicationId) : undefined,
   };
 }
 

@@ -1,6 +1,7 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import {
+  Button,
   FormField,
   FormSection,
   Input,
@@ -11,8 +12,18 @@ import {
 } from "@mosje/design-system";
 
 /**
- * **Wizard** — the shared multi-step form shell: stepper, step body, optional
- * error summary, and Back / Continue / Submit.
+ * **Wizard** — the shared multi-step form shell: the stepper on the page ground,
+ * then ONE `FormPanel` for the current step — a head band, the step's sub-sections,
+ * an optional error summary, and an action band with Back / Continue / Submit.
+ *
+ * The head band's `title` and `description` default to the current stage's label
+ * and description; pass them where the step's name is longer than its stage label.
+ * `headerActions` sits at the right of the band. With `onCancel`, the first step
+ * shows an outlined Cancel (`cancelLabel`) where later steps show Back, so the
+ * leading control is never a dead, disabled button.
+ *
+ * Children are `FormSection`s and `FormCard`s, which are **not** cards — never wrap
+ * the step body in a `Card`. Spec: `docs/design-system/form-wizard-visual-language.md`.
  *
  * It owns **none** of your state. The parent holds the field values, the step
  * index and the validation; the Wizard renders the chrome and tells you when
@@ -26,6 +37,10 @@ import {
  *
  * Use it for a long submission split into stages. Do **not** use it for a
  * three-field form — a wizard turns one screen into four.
+ *
+ * The final button carries a send glyph by default — pass `submitIcon` to change it.
+ * `stepperCollapse="never"` keeps every labelled stage on a long form (an 11-step
+ * application) instead of collapsing the row to dots when the column is narrow.
  *
  * `ReviewSection` and `ReviewItem`, the read-only summary pieces for the final
  * step, are documented here rather than in stories of their own.
@@ -48,13 +63,18 @@ const meta = {
     onBack: () => {},
     onNext: () => {},
     onSubmit: () => {},
-    submitLabel: "Submit application",
-    nextLabel: "Continue",
+    submitLabel: "Submit Application",
+    nextLabel: "Save and Continue",
     children: null,
   },
   argTypes: {
     current: { control: { type: "range", min: 0, max: 3, step: 1 } },
     submitLabel: { control: "text" },
+    title: { control: "text" },
+    description: { control: "text" },
+    cancelLabel: { control: "text" },
+    headerActions: { control: false },
+    onCancel: { control: false },
     nextLabel: { control: "text" },
     error: { control: "text" },
     steps: { control: false },
@@ -63,7 +83,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <div style={{ maxWidth: 900 }}>
+      <div style={{ maxWidth: 1040 }}>
         <Story />
       </div>
     ),
@@ -117,7 +137,15 @@ function StepBody({ index }: { index: number }) {
     );
   }
   return (
-    <ReviewSection title="Check your answers">
+    <ReviewSection
+      title="Applicant"
+      columns={4}
+      actions={
+        <Button appearance="text" size="sm">
+          Edit
+        </Button>
+      }
+    >
       <ReviewItem label="Full name" value="Sunita Deshmukh" />
       <ReviewItem label="Mobile number" value="9890001234" />
       <ReviewItem label="Scheme" value="Pre-Matric Scholarship (SC)" />
@@ -151,9 +179,32 @@ export const Playground: Story = {
   },
 };
 
-/** The first step — Back is disabled because there is nowhere to go back to. */
+/** The first step without `onCancel` — Back is disabled because there is nowhere to go back to. */
 export const FirstStep: Story = {
   args: { current: 0 },
+  render: (args) => (
+    <Wizard {...args}>
+      <StepBody index={0} />
+    </Wizard>
+  ),
+};
+
+/**
+ * The first step with `onCancel`: an outlined Cancel leads, a `title` longer than the stage
+ * label names the step, and `headerActions` puts a control in the head band.
+ */
+export const FirstStepWithCancel: Story = {
+  args: {
+    current: 0,
+    title: "Basic Identity Details",
+    cancelLabel: "Cancel",
+    onCancel: () => {},
+    headerActions: (
+      <Button appearance="text" size="sm">
+        Fetch from DigiLocker
+      </Button>
+    ),
+  },
   render: (args) => (
     <Wizard {...args}>
       <StepBody index={0} />

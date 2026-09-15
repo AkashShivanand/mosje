@@ -42,8 +42,62 @@ const MONTHS = [
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ] as const;
 
+/** A bare `2015-04-01` is a calendar date, not UTC midnight — read it in local time. */
+function toDate(value: string | Date): Date {
+  if (typeof value !== "string") return value;
+  const plain = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  return plain ? new Date(Number(plain[1]), Number(plain[2]) - 1, Number(plain[3])) : new Date(value);
+}
+
 export function formatDate(value: string | Date): string {
-  const d = typeof value === "string" ? new Date(value) : value;
+  const d = toDate(value);
   if (Number.isNaN(d.getTime())) return "";
   return `${String(d.getDate()).padStart(2, "0")} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+/**
+ * The one time shape: `10:30 AM`. Twelve-hour, zero-padded, upper-case meridiem. Accepts an ISO
+ * timestamp, a Date, or a bare `HH:mm` as the forms store it.
+ */
+export function formatTime(value: string | Date): string {
+  let h: number;
+  let m: number;
+  const bare = typeof value === "string" ? /^(\d{1,2}):(\d{2})$/.exec(value) : null;
+  if (bare) {
+    h = Number(bare[1]);
+    m = Number(bare[2]);
+    if (h > 23 || m > 59) return "";
+  } else {
+    const d = toDate(value);
+    if (Number.isNaN(d.getTime())) return "";
+    h = d.getHours();
+    m = d.getMinutes();
+  }
+  const twelve = h % 12 === 0 ? 12 : h % 12;
+  return `${String(twelve).padStart(2, "0")}:${String(m).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`;
+}
+
+/** Date and time together, for a history entry or a notification: `13 Sep 2026, 07:47 PM`. */
+export function formatDateTime(value: string | Date): string {
+  const date = formatDate(value);
+  return date ? `${date}, ${formatTime(value)}` : "";
+}
+
+const MONTHS_LONG = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+] as const;
+
+/** A month as a table row names it: `September 2026`. Read in UTC — a month start is a calendar month. */
+export function formatMonthYear(value: string | Date): string {
+  const d = typeof value === "string" ? new Date(value) : value;
+  if (Number.isNaN(d.getTime())) return "";
+  return `${MONTHS_LONG[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+}
+
+/** A month as a chart axis names it: `Sep 26`. */
+export function formatMonthShort(value: string | Date): string {
+  const d = typeof value === "string" ? new Date(value) : value;
+  if (Number.isNaN(d.getTime())) return "";
+  return `${MONTHS[d.getUTCMonth()]} ${String(d.getUTCFullYear() % 100).padStart(2, "0")}`;
 }

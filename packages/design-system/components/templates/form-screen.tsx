@@ -6,6 +6,7 @@ import { Button } from "../actions/button";
 import { PageHeader } from "../layout/page-header";
 import { Breadcrumb } from "../navigation/breadcrumb";
 import { ErrorSummary, type ErrorSummaryItem } from "../forms/error-summary";
+import { FormPanel } from "../forms/form-panel";
 import { ScreenBody } from "./screen-body";
 import {
   DEFAULT_SCREEN_COPY,
@@ -156,34 +157,36 @@ export function FormScreen({
             <p className="sa-form__required-note">{requiredNote}</p>
           ) : null}
 
-          <div className="sa-form__sections">{children}</div>
-
-          {/* Sticky at the foot on a phone, static on a desktop. A long
-              government form is taller than any viewport, and an action bar
-              that has scrolled away is an action bar the citizen believes is
-              missing. */}
-          <div className="sa-form__actions">
-            <div className="sa-form__actions-state" aria-live="polite">
-              {submitting
-                ? "Saving…"
-                : dirty
-                  ? "You have unsaved changes."
-                  : savedAt
-                    ? `Saved ${savedAt}.`
-                    : null}
-            </div>
-            <div className="sa-form__actions-buttons">
-              {onCancel ? (
-                <Button type="button" appearance="text" onClick={onCancel}>
-                  {cancelLabel}
-                </Button>
-              ) : null}
-              {secondaryActions}
-              <Button type="submit" disabled={submitting}>
-                {submitLabel}
-              </Button>
-            </div>
-          </div>
+          {/* One panel holds the sections and the action band — the form grammar every
+              form on the estate shares (docs/design-system/form-wizard-visual-language.md). */}
+          <FormPanel
+            footer={
+              <div className="sa-form__actions">
+                <div className="sa-form__actions-state" aria-live="polite">
+                  {submitting
+                    ? "Saving…"
+                    : dirty
+                      ? "You have unsaved changes."
+                      : savedAt
+                        ? `Saved ${savedAt}.`
+                        : null}
+                </div>
+                <div className="sa-form__actions-buttons">
+                  {onCancel ? (
+                    <Button type="button" appearance="outlined" onClick={onCancel}>
+                      {cancelLabel}
+                    </Button>
+                  ) : null}
+                  {secondaryActions}
+                  <Button type="submit" disabled={submitting}>
+                    {submitLabel}
+                  </Button>
+                </div>
+              </div>
+            }
+          >
+            {children}
+          </FormPanel>
         </form>
       </ScreenBody>
     </div>

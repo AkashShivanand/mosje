@@ -1,83 +1,109 @@
 "use client";
 
-import * as React from "react";
-import { useParams } from "next/navigation";
-import { Alert, Button, FormField, Input, Textarea, useToast } from "@mosje/design-system";
-import { useEAnudaan } from "@/lib/e-anudaan/store/store";
-import { formatGrant } from "@/lib/e-anudaan/selectors";
-
 /**
  * Utilisation Certificate (GFR 12-A).
  *
- * ⚠️ INFERRED. The live route returns "Application not found." for every id tried, including a
- * freshly-opened SANCTIONED application — the exact state a UC applies to (user INVENTORY §14,
- * defect D6). Built from the BRD so the post-sanction half of the lifecycle is demonstrable.
+ * DS Audit: Alert ✅ existing · Button ✅ · Card ✅ · DescriptionList ✅ · FormField ✅ · Input ✅ ·
+ * Textarea ✅ · useToast ✅ — nothing new.
+ *
+ * Maintainer note, kept off the screen: this screen is inferred. The live UC route returned
+ * "Application not found." for every id tried, including a freshly opened SANCTIONED application —
+ * the exact state a UC applies to (user INVENTORY §14, defect D6). The form follows the BRD so the
+ * post-sanction half of the lifecycle can be demonstrated.
  */
+
+import * as React from "react";
+import { useParams } from "next/navigation";
+import {
+  Alert,
+  Button,
+  Card,
+  CardBody,
+  DescriptionList,
+  FormField,
+  Input,
+  PageHeader,
+  Textarea,
+  useToast,
+} from "@mosje/design-system";
+import { useEAnudaan } from "@/lib/e-anudaan/store/store";
+import { projectTitleFor } from "@/lib/e-anudaan/applicant";
+import { rupees } from "@/lib/e-anudaan/format";
+import { ownApplication, signedInNgoId } from "@/lib/e-anudaan/roles";
+import { NgoApplicationNotFound } from "@/components/e-anudaan/ngo-application-not-found";
+
 export default function UtilisationCertificatePage() {
   const params = useParams<{ appId: string }>();
-  const { findApp } = useEAnudaan();
+  const { state, findApp } = useEAnudaan();
   const { toast } = useToast();
-  const app = findApp(decodeURIComponent(params.appId));
+  // Another organisation's file reads exactly as a missing one (security audit S05).
+  const app = ownApplication(findApp(decodeURIComponent(params.appId)), signedInNgoId(state));
   const [spent, setSpent] = React.useState("");
   const [remarks, setRemarks] = React.useState("");
 
-  if (!app) {
-    return <Alert status="warning" title="Application not found">No such application in the demo dataset.</Alert>;
-  }
+  if (!app) return <NgoApplicationNotFound />;
 
   const sanctioned = app.sanction?.total ?? 0;
+  const scheme = state.schemes.find((s) => s.code === app.schemeCode);
 
   return (
     <div className="mx-auto max-w-2xl space-y-5">
-      <div>
-        <h1 className="text-headline-1 text-ink">Utilisation Certificate — {app.id}</h1>
-        <p className="mt-1 text-body-2 text-ink-muted">
-          Certify how the sanctioned grant was spent, under GFR 12-A. Must be signed by a
-          Chartered Accountant before the next instalment is released.
-        </p>
-      </div>
-
-      <Alert status="info" title="Inferred screen">
-        The live portal&apos;s UC route could not be reached for any application, including
-        sanctioned ones. This form follows the BRD. Reported to the dev team as defect D6.
-      </Alert>
+      <PageHeader
+        eyebrow={
+          <span className="font-mono">
+            Project ID <span className="whitespace-nowrap">{app.institutionId}</span> · Application{" "}
+            <span className="whitespace-nowrap">{app.id}</span>
+          </span>
+        }
+        title="Utilisation Certificate"
+        meta={
+          <>
+            <span className="block">
+              {projectTitleFor(state, app)} · {scheme?.name ?? app.schemeCode} · FY {app.financialYear}
+            </span>
+            <span className="mt-2 block">
+              Certify how the sanctioned grant was spent, under GFR 12-A. The certificate must be signed by a Chartered
+              Accountant before the next instalment is released.
+            </span>
+          </>
+        }
+      />
 
       {!app.sanction && (
-        <Alert status="warning" title="Not yet sanctioned">
-          A utilisation certificate can only be filed once the grant has been sanctioned.
+        <Alert status="warning" title="Not Yet Sanctioned">
+          A utilisation certificate can be filed only after the grant has been sanctioned.
         </Alert>
       )}
 
-      <section className="space-y-4 rounded-xl border border-line bg-surface p-5">
-        <dl className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
-          <div className="flex items-baseline justify-between gap-4 border-b border-line pb-2">
-            <dt className="text-body-2 text-ink-muted">Sanctioned</dt>
-            <dd className="text-body-2 font-semibold text-ink">{formatGrant(sanctioned)}</dd>
-          </div>
-          <div className="flex items-baseline justify-between gap-4 border-b border-line pb-2">
-            <dt className="text-body-2 text-ink-muted">Financial Year</dt>
-            <dd className="text-body-2 font-semibold text-ink">{app.financialYear}</dd>
-          </div>
-        </dl>
+      <Card variant="outlined">
+        <CardBody className="space-y-4">
+          <DescriptionList
+            columns={2}
+            items={[
+              { term: "Sanctioned", value: app.sanction ? rupees(sanctioned) : "Not sanctioned" },
+              { term: "Financial Year", value: app.financialYear },
+            ]}
+          />
 
-        <FormField label="Amount utilised (₹)" id="spent">
-          {(control) => (
-            <Input {...control} type="number" value={spent} onChange={(e) => setSpent(e.target.value)} />
-          )}
-        </FormField>
-        <FormField label="Purpose and remarks" id="uc-remarks">
-          {(control) => (
-            <Textarea {...control} rows={4} value={remarks} onChange={(e) => setRemarks(e.target.value)} />
-          )}
-        </FormField>
+          <FormField label="Amount utilised (₹)" id="spent">
+            {(control) => (
+              <Input {...control} type="number" value={spent} onChange={(e) => setSpent(e.target.value)} />
+            )}
+          </FormField>
+          <FormField label="Purpose and remarks" id="uc-remarks">
+            {(control) => (
+              <Textarea {...control} rows={4} value={remarks} onChange={(e) => setRemarks(e.target.value)} />
+            )}
+          </FormField>
 
-        <Button
-          disabled={!app.sanction || !spent || !remarks.trim()}
-          onClick={() => toast("Utilisation certificate filed (demo).", "success")}
-        >
-          File utilisation certificate
-        </Button>
-      </section>
+          <Button
+            disabled={!app.sanction || !spent || !remarks.trim()}
+            onClick={() => toast("Utilisation certificate filed.", "success")}
+          >
+            File Utilisation Certificate
+          </Button>
+        </CardBody>
+      </Card>
     </div>
   );
 }

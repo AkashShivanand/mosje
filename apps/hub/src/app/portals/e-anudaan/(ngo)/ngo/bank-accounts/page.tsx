@@ -1,338 +1,382 @@
 "use client";
 
 /**
- * My Bank Accounts — the applicant's saved accounts, and the account each project is paid into.
+ * Project Bank Accounts — the account each project is paid into, and how to change it.
  *
- * DS Audit: Button ✅ existing · FormField ✅ · Input ✅ · Select ✅ · Textarea ✅ · Icon ✅ ·
- * Badge ✅ · useToast ✅ — nothing new.
+ * DS Audit: Card ✅ existing · SectionTitle ✅ · ListGroup / ListRow ✅ · Badge ✅ · Button ✅ ·
+ * Icon ✅ · Modal ✅ · FormField ✅ · Input ✅ · Textarea ✅ · RadioGroup ✅ · DescriptionList ✅ ·
+ * FileList ✅ · ErrorSummary ✅ · useToast ✅ · Search ✅ · EmptyState ✅ — nothing new.
  *
- * Both editors are INLINE panels, not modals — that is how the live screen behaves: "+ Add
- * account" opens a bordered "Add a bank account" panel above the table, and "Request change"
- * expands inside the project row. Copy is verbatim from the walkthrough (2026-08-22).
+ * What the review call of 11 Sep 2026 changed (T124–159, T537–576):
+ *
+ *  • An account belongs to a PROJECT. The page used to open with the NGO's "saved accounts" and
+ *    an "Add account" button, then made the applicant go down to the project table and raise a
+ *    second form to attach one — two forms for one intention. The first account is recorded when
+ *    a project is created, in the application itself; after that the only thing to do here is
+ *    change it, in ONE form.
+ *  • Until the Ministry approves, the existing account stays in use, and the page says so.
+ *  • The account being replaced is never deleted; every project keeps its earlier accounts on
+ *    record.
+ *  • The full account number is never shown back — last four digits, IFSC and branch are what an
+ *    applicant needs to recognise it.
  */
 
 import * as React from "react";
-import { Button, FormField, Icon, Input, Select, Textarea, useToast } from "@mosje/design-system";
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  DescriptionList,
+  EmptyState,
+  ErrorSummary,
+  FileList,
+  FormField,
+  Icon,
+  Input,
+  ListGroup,
+  ListRow,
+  Modal,
+  PageHeader,
+  Pagination,
+  RadioGroup,
+  Search,
+  SectionTitle,
+  Textarea,
+  useToast,
+} from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
-import { ngoApplications } from "@/lib/e-anudaan/selectors";
+import { accountsFor, maskedAccount, projectName, projectsOf } from "@/lib/e-anudaan/applicant";
+import { formatDate } from "@/lib/e-anudaan/format";
+import type { BankChangeRequest, Institution, ProjectAccount } from "@/lib/e-anudaan/types";
 
-interface SavedAccount {
-  id: string;
-  bank: string;
-  accountMasked: string;
-  ifsc: string;
-  branch: string;
+const IFSC = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+const PAGE = 10;
+
+export default function ProjectBankAccountsPage() {
+  const { state } = useEAnudaan();
+  const ngo = state.ngos[0];
+  const projects = ngo ? projectsOf(state, ngo.id) : [];
+  const [changing, setChanging] = React.useState<Institution | null>(null);
+  const [page, setPage] = React.useState(1);
+  /*
+   * Usability audit UX-14 (14 Sep 2026): 37 projects, ten to a page, and no way to find one but
+   * paging. The applicant knows either the project ID from a letter or the project's name.
+   */
+  const [q, setQ] = React.useState("");
+  const needle = q.trim().toLowerCase();
+  const shown = needle
+    ? projects.filter((p) => p.id.toLowerCase().includes(needle) || projectName(p).toLowerCase().includes(needle))
+    : projects;
+
+  const bankRequests = state.changeRequests.filter((r): r is BankChangeRequest => r.kind === "bank");
+  const pendingCount = bankRequests.filter((r) => r.status === "Pending").length;
+
+  return (
+    <div className="mx-auto max-w-4xl space-y-6">
+      <PageHeader
+        title="Project Bank Accounts"
+        meta="Each project is paid into its own bank account. To change one, raise a request — the current account stays in use until the Ministry approves the change."
+      />
+
+      <Card variant="outlined">
+        <CardBody className="space-y-3">
+          <SectionTitle
+            title="Accounts by Project"
+            description={`${projects.length} projects${pendingCount ? ` · ${pendingCount} change request${pendingCount === 1 ? "" : "s"} under examination` : ""}`}
+          />
+          {projects.length > PAGE && (
+            <div className="grid gap-2 sm:grid-cols-[minmax(0,22rem)_1fr] sm:items-center">
+              <Search
+                value={q}
+                onChange={(e) => {
+                  setQ(e.target.value);
+                  setPage(1);
+                }}
+                onClear={() => {
+                  setQ("");
+                  setPage(1);
+                }}
+                placeholder="Project ID or name"
+                aria-label="Search projects by project ID or name"
+              />
+              <p className="text-body-2 text-ink-muted sm:text-right" role="status">
+                {needle ? `${shown.length} of ${projects.length} projects match` : ""}
+              </p>
+            </div>
+          )}
+          {shown.length === 0 ? (
+            <EmptyState
+              title="No project matches this search."
+              description={`Check the project ID, or clear the search to see all ${projects.length} projects.`}
+              action={
+                <Button appearance="outlined" size="sm" onClick={() => setQ("")}>
+                  Clear Search
+                </Button>
+              }
+            />
+          ) : (
+          <ListGroup aria-label="Bank account of each project">
+            {shown.slice((page - 1) * PAGE, page * PAGE).map((p) => (
+              <ProjectRow
+                key={p.id}
+                project={p}
+                accounts={accountsFor(state, p.id)}
+                pending={bankRequests.find((r) => r.projectId === p.id && r.status === "Pending")}
+                onChange={() => setChanging(p)}
+              />
+            ))}
+          </ListGroup>
+          )}
+          {shown.length > PAGE && (
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="text-body-3 text-ink-muted">
+                Showing {(page - 1) * PAGE + 1}–{Math.min(page * PAGE, shown.length)} of {shown.length}
+              </p>
+              <Pagination page={page} totalPages={Math.ceil(shown.length / PAGE)} onPageChange={setPage} label="Projects pages" />
+            </div>
+          )}
+        </CardBody>
+      </Card>
+
+      {changing && (
+        <ChangeAccountDialog project={changing} current={accountsFor(state, changing.id).current} onClose={() => setChanging(null)} />
+      )}
+    </div>
+  );
 }
 
-const mask = (accountNo: string) => `••••••••••${accountNo.slice(-4) || "0000"}`;
+function accountLine(a: { bank: string; last4: string; ifsc: string; branch: string }): string {
+  return `${a.bank} · ${maskedAccount(a.last4)} · ${a.ifsc} · ${a.branch}`;
+}
 
-export default function BankAccountsPage() {
-  const { state } = useEAnudaan();
-  const { toast } = useToast();
-  const ngo = state.ngos[0];
+function ProjectRow({
+  project,
+  accounts,
+  pending,
+  onChange,
+}: {
+  project: Institution;
+  accounts: { current?: ProjectAccount; previous: ProjectAccount[] };
+  pending?: BankChangeRequest;
+  onChange: () => void;
+}) {
+  const [showPrevious, setShowPrevious] = React.useState(false);
+  const { current, previous } = accounts;
 
-  /** One row per distinct institution — the live "Project bank accounts" table. */
-  const projects = React.useMemo(() => {
-    if (!ngo) return [];
-    const seen = new Map<string, { id: string; label: string }>();
-    for (const a of ngoApplications(state, ngo.id)) {
-      if (!seen.has(a.institutionId)) {
-        seen.set(a.institutionId, {
-          id: a.institutionId,
-          label: a.projectLabel.split(" — ")[0] ?? a.projectLabel,
-        });
+  return (
+    <ListRow
+      eyebrow={<span className="font-mono">{project.id}</span>}
+      title={projectName(project)}
+      description={
+        <>
+          {current ? (
+            <span className="block text-ink">
+              {accountLine(current)}
+              <span className="ml-2 inline-flex align-middle">
+                <Badge status={current.pfmsRegistered ? "success" : "neutral"} size="sm">
+                  {current.pfmsRegistered ? "PFMS Registered" : "PFMS Not Declared"}
+                </Badge>
+              </span>
+            </span>
+          ) : (
+            <span className="block">No account recorded for this project.</span>
+          )}
+          {pending && (
+            <span className="mt-1 block">
+              <Badge status="warning" size="sm">Change Under Examination</Badge>{" "}
+              To {accountLine(pending)} · requested {formatDate(pending.submittedAt)}
+            </span>
+          )}
+          {previous.length > 0 && (
+            <>
+              <span className="mt-1 block">
+                <Button appearance="text" size="sm" aria-expanded={showPrevious} onClick={() => setShowPrevious((v) => !v)}>
+                  {previous.length} earlier account{previous.length === 1 ? "" : "s"}
+                  <Icon name={showPrevious ? "expand_less" : "expand_more"} size={16} aria-hidden />
+                </Button>
+              </span>
+              {showPrevious &&
+                previous.map((a) => (
+                  <span key={a.id} className="block text-body-3 text-ink-muted">
+                    {accountLine(a)} · used {formatDate(a.activeFrom)} – {formatDate(a.activeTo!)}
+                  </span>
+                ))}
+            </>
+          )}
+          {!pending && (
+            <span className="mt-2 block sm:hidden">
+              <Button appearance="outlined" size="sm" onClick={onChange} aria-label={`Request a change of account for ${projectName(project)}`}>
+                Request Change
+              </Button>
+            </span>
+          )}
+        </>
       }
-    }
-    return [...seen.values()];
-  }, [state, ngo]);
+      trailing={
+        // An action the applicant cannot take is omitted, not disabled: a second request is not
+        // possible while one is under examination, and the row already says so.
+        // On a phone the button moves under the account (below) — beside it, it left the account
+        // details a 120px column and pushed the page 77px wide (screen crawl, 13 Sep 2026).
+        pending ? undefined : (
+          <Button
+            appearance="outlined"
+            size="sm"
+            nowrap
+            className="hidden sm:inline-flex"
+            onClick={onChange}
+            aria-label={`Request a change of account for ${projectName(project)}`}
+          >
+            Request Change
+          </Button>
+        )
+      }
+    />
+  );
+}
 
-  const [accounts, setAccounts] = React.useState<SavedAccount[]>([
-    { id: "acc-1", bank: "State Bank of India", accountMasked: "••••••••••4417", ifsc: "SBIN0001234", branch: "Pune Camp" },
-  ]);
-  const [paidInto, setPaidInto] = React.useState<Record<string, string>>({});
+function ChangeAccountDialog({ project, current, onClose }: { project: Institution; current?: ProjectAccount; onClose: () => void }) {
+  const { submitChangeRequest } = useEAnudaan();
+  const { toast } = useToast();
+  const fileInput = React.useRef<HTMLInputElement>(null);
+  const [f, setF] = React.useState({ bank: "", branch: "", account: "", confirm: "", ifsc: "", pfms: "", reason: "" });
+  const [doc, setDoc] = React.useState<{ name: string; size: number } | null>(null);
+  const [tried, setTried] = React.useState(false);
 
-  const [adding, setAdding] = React.useState(false);
-  const [editingId, setEditingId] = React.useState<string | null>(null);
-  const [form, setForm] = React.useState({ bank: "", branch: "", accountNo: "", ifsc: "" });
+  const errors = [
+    !f.bank.trim() && { id: "chg-bank", text: "Enter the name of the bank." },
+    !f.branch.trim() && { id: "chg-branch", text: "Enter the branch." },
+    !/^\d{9,18}$/.test(f.account) && { id: "chg-account", text: "Enter an account number of 9 to 18 digits." },
+    f.account && f.confirm !== f.account && { id: "chg-confirm", text: "The account numbers do not match." },
+    !IFSC.test(f.ifsc) && { id: "chg-ifsc", text: "Enter an 11-character IFSC, for example SBIN0001234." },
+    current && f.account.endsWith(current.last4) && f.ifsc === current.ifsc && { id: "chg-account", text: "This is the account already recorded for the project." },
+    !f.pfms && { id: "chg-pfms", text: "Say whether the account is registered on the PFMS DBT module." },
+    !f.reason.trim() && { id: "chg-reason", text: "Give the reason for the change." },
+  ].filter(Boolean) as { id: string; text: string }[];
+  const errorFor = (id: string) => (tried ? errors.find((e) => e.id === id)?.text : undefined);
 
-  const [changingProject, setChangingProject] = React.useState<string | null>(null);
-  const [changeAccount, setChangeAccount] = React.useState("");
-  const [changeReason, setChangeReason] = React.useState("");
-
-  const openAdd = () => {
-    setForm({ bank: "", branch: "", accountNo: "", ifsc: "" });
-    setEditingId(null);
-    setAdding(true);
-  };
-
-  const openEdit = (acc: SavedAccount) => {
-    setForm({ bank: acc.bank, branch: acc.branch, accountNo: "", ifsc: acc.ifsc });
-    setEditingId(acc.id);
-    setAdding(true);
-  };
-
-  const save = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.bank.trim() || !form.accountNo.trim() || !form.ifsc.trim()) return;
-    if (editingId) {
-      setAccounts((prev) =>
-        prev.map((a) =>
-          a.id === editingId
-            ? { ...a, bank: form.bank, branch: form.branch || a.branch, ifsc: form.ifsc.toUpperCase(), accountMasked: mask(form.accountNo) }
-            : a,
-        ),
-      );
-      toast("Bank account updated.", "success");
-    } else {
-      setAccounts((prev) => [
-        ...prev,
-        {
-          id: `acc-${prev.length + 1}`,
-          bank: form.bank,
-          branch: form.branch || "—",
-          ifsc: form.ifsc.toUpperCase(),
-          accountMasked: mask(form.accountNo),
-        },
-      ]);
-      toast("Bank account saved.", "success");
-    }
-    setAdding(false);
-    setEditingId(null);
-  };
-
-  const remove = (acc: SavedAccount) => {
-    setAccounts((prev) => prev.filter((a) => a.id !== acc.id));
-    toast(`Account ${acc.accountMasked} removed.`, "info");
-  };
-
-  const submitChange = (projectId: string) => {
-    if (!changeAccount || !changeReason.trim()) return;
-    setPaidInto((p) => ({ ...p, [projectId]: changeAccount }));
-    setChangingProject(null);
-    setChangeAccount("");
-    setChangeReason("");
-    toast("Change request submitted for the Ministry's approval.", "success");
+  const submit = () => {
+    setTried(true);
+    if (errors.length) return;
+    submitChangeRequest({
+      kind: "bank",
+      projectId: project.id,
+      bank: f.bank.trim(),
+      branch: f.branch.trim(),
+      last4: f.account.slice(-4),
+      ifsc: f.ifsc,
+      pfmsRegistered: f.pfms === "yes",
+      reason: f.reason.trim(),
+      documentName: doc?.name,
+    } as Omit<BankChangeRequest, "id" | "submittedAt" | "status">);
+    toast("Change request submitted. Payments continue to the current account until it is approved.", "success");
+    onClose();
   };
 
   return (
-    <div className="space-y-6">
-      <header className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h1 className="text-headline-1 text-ink">My Bank Accounts</h1>
-          <p className="mt-1 text-body-2 text-ink-muted">
-            Accounts you save here can be selected when applying.{" "}
-            <strong>Each project must use a separate account.</strong>
-          </p>
+    <Modal
+      open
+      onClose={onClose}
+      /* Escape or a click outside once discarded five typed fields without a word (UX-06). */
+      dirty={Object.values(f).some((v) => v !== "") || doc !== null}
+      title="Request a Change of Bank Account"
+      size="lg"
+      footer={
+        <div className="flex justify-end gap-2">
+          <Button appearance="outlined" onClick={onClose}>Cancel</Button>
+          <Button onClick={submit}>Submit Request</Button>
         </div>
-        <Button appearance="outlined" onClick={openAdd}>
-          <Icon name="add" size={16} aria-hidden /> Add account
-        </Button>
-      </header>
+      }
+    >
+      <div className="space-y-5">
+        {tried && errors.length > 0 && <ErrorSummary autoFocus errors={errors.map((e) => ({ fieldId: e.id, message: e.text }))} />}
 
-      {adding && (
-        <section className="space-y-4 rounded-xl border border-line bg-surface p-5 shadow-xs">
-          <div className="flex items-center justify-between">
-            <h2 className="text-title-2 text-ink">
-              {editingId ? "Edit bank account" : "Add a bank account"}
-            </h2>
-            <Button appearance="text" size="sm" onClick={() => setAdding(false)}>
-              Cancel
-            </Button>
-          </div>
-          <form onSubmit={save} className="grid gap-4 sm:grid-cols-2">
-            <FormField label="Bank name" id="bank-name" required>
-              {(control) => (
-                <Input
-                  {...control}
-                  value={form.bank}
-                  placeholder="e.g. State Bank of India"
-                  onChange={(e) => setForm({ ...form, bank: e.target.value })}
-                />
+        <DescriptionList
+          columns={2}
+          items={[
+            { term: "Project", value: `${project.id} — ${projectName(project)}` },
+            { term: "Current Account", value: current ? accountLine(current) : "None recorded" },
+          ]}
+        />
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <FormField label="Bank Name" id="chg-bank" required error={errorFor("chg-bank")}>
+            {(c) => <Input {...c} value={f.bank} onChange={(e) => setF({ ...f, bank: e.target.value })} />}
+          </FormField>
+          <FormField label="Branch" id="chg-branch" required error={errorFor("chg-branch")}>
+            {(c) => <Input {...c} value={f.branch} onChange={(e) => setF({ ...f, branch: e.target.value })} />}
+          </FormField>
+          <FormField label="Account Number" id="chg-account" required error={errorFor("chg-account")}>
+            {(c) => (
+              <Input {...c} inputMode="numeric" autoComplete="off" value={f.account} onChange={(e) => setF({ ...f, account: e.target.value.replace(/\D/g, "").slice(0, 18) })} />
+            )}
+          </FormField>
+          <FormField label="Confirm Account Number" id="chg-confirm" required error={errorFor("chg-confirm")}>
+            {(c) => (
+              <Input
+                {...c}
+                inputMode="numeric"
+                autoComplete="off"
+                value={f.confirm}
+                onChange={(e) => setF({ ...f, confirm: e.target.value.replace(/\D/g, "").slice(0, 18) })}
+              />
+            )}
+          </FormField>
+          <FormField label="IFSC" id="chg-ifsc" required hint="11 characters, printed on the cheque book." error={errorFor("chg-ifsc")}>
+            {(c) => <Input {...c} autoComplete="off" value={f.ifsc} onChange={(e) => setF({ ...f, ifsc: e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 11) })} />}
+          </FormField>
+        </div>
+
+        <RadioGroup
+          id="chg-pfms"
+          name="chg-pfms"
+          legend="Is this account registered on the PFMS DBT module?"
+          required
+          orientation="horizontal"
+          value={f.pfms}
+          onChange={(v) => setF({ ...f, pfms: v })}
+          hint="If it is not, the Ministry registers it before the next release."
+          error={errorFor("chg-pfms")}
+          options={[
+            { value: "yes", label: "Yes" },
+            { value: "no", label: "No" },
+          ]}
+        />
+
+        <FormField label="Reason for the Change" id="chg-reason" required error={errorFor("chg-reason")} characterCount={{ value: f.reason, maxLength: 500 }}>
+          {(c) => <Textarea {...c} rows={3} maxLength={500} value={f.reason} onChange={(e) => setF({ ...f, reason: e.target.value })} />}
+        </FormField>
+
+        <FormField label="Supporting Document" id="chg-doc" optional hint="For example the bank's letter or a cancelled cheque. PDF, JPG or PNG, up to 2 MB.">
+          {(c) => (
+            <div className="space-y-2">
+              <input
+                ref={fileInput}
+                id={c.id}
+                aria-describedby={c["aria-describedby"]}
+                type="file"
+                accept="application/pdf,image/jpeg,image/png"
+                className="sr-only"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) setDoc({ name: file.name, size: file.size });
+                  e.target.value = "";
+                }}
+              />
+              {doc ? (
+                <FileList label="Supporting document" files={[{ id: "doc", name: doc.name, size: doc.size, state: "ready" }]} onRemove={() => setDoc(null)} />
+              ) : (
+                <Button appearance="outlined" size="sm" onClick={() => fileInput.current?.click()}>
+                  <Icon name="upload" size={16} aria-hidden /> Choose File
+                </Button>
               )}
-            </FormField>
-            <FormField label="Branch (optional)" id="bank-branch">
-              {(control) => (
-                <Input
-                  {...control}
-                  value={form.branch}
-                  placeholder="Branch name (max 200 characters)"
-                  maxLength={200}
-                  onChange={(e) => setForm({ ...form, branch: e.target.value })}
-                />
-              )}
-            </FormField>
-            <FormField label="Account number" id="bank-account" required>
-              {(control) => (
-                <Input
-                  {...control}
-                  value={form.accountNo}
-                  placeholder="6–20 digits"
-                  inputMode="numeric"
-                  onChange={(e) => setForm({ ...form, accountNo: e.target.value.replace(/\D/g, "").slice(0, 20) })}
-                />
-              )}
-            </FormField>
-            <FormField label="IFSC code" id="bank-ifsc" required>
-              {(control) => (
-                <Input
-                  {...control}
-                  value={form.ifsc}
-                  placeholder="e.g. SBIN0001234"
-                  onChange={(e) => setForm({ ...form, ifsc: e.target.value.toUpperCase().slice(0, 11) })}
-                />
-              )}
-            </FormField>
-            <div className="sm:col-span-2">
-              <Button type="submit">Save account</Button>
             </div>
-          </form>
-          <p className="text-body-2 text-ink-muted">
-            Each project must have its own account — an account already used by another project or
-            agency is rejected.
-          </p>
-        </section>
-      )}
+          )}
+        </FormField>
 
-      <section className="rounded-xl border border-line bg-surface p-5">
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[36rem] text-body-2">
-            <caption className="sr-only">Saved bank accounts</caption>
-            <thead>
-              <tr className="border-b border-line text-left text-label-3 uppercase text-ink-muted">
-                <th scope="col" className="pb-2 pr-3 font-medium">Bank</th>
-                <th scope="col" className="pb-2 pr-3 font-medium">Account</th>
-                <th scope="col" className="pb-2 pr-3 font-medium">IFSC</th>
-                <th scope="col" className="pb-2 pr-3 font-medium">Branch</th>
-                <th scope="col" className="pb-2 font-medium"><span className="sr-only">Actions</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              {accounts.map((a) => (
-                <tr key={a.id} className="border-b border-line">
-                  <td className="py-2 pr-3 text-ink">{a.bank}</td>
-                  <td className="py-2 pr-3 font-mono text-ink">{a.accountMasked}</td>
-                  <td className="py-2 pr-3 font-mono text-ink">{a.ifsc}</td>
-                  <td className="py-2 pr-3 text-ink">{a.branch}</td>
-                  <td className="py-2">
-                    <div className="flex gap-1">
-                      <Button appearance="text" size="sm" onClick={() => openEdit(a)}>
-                        Edit
-                      </Button>
-                      <Button appearance="text" size="sm" onClick={() => remove(a)}>
-                        Delete
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-              {accounts.length === 0 && (
-                <tr>
-                  <td colSpan={5} className="py-4 text-center text-ink-muted">
-                    No accounts saved yet.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section className="space-y-3 rounded-xl border border-line bg-surface p-5">
-        <div>
-          <h2 className="text-title-2 text-ink">Project bank accounts</h2>
-          <p className="mt-1 text-body-2 text-ink-muted">
-            Each project is paid into its own account, and every instalment goes there. Changing one
-            needs the Ministry&apos;s approval — it is not something a renewal application can do on
-            its own.
-          </p>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[32rem] text-body-2">
-            <caption className="sr-only">Account each project is paid into</caption>
-            <thead>
-              <tr className="border-b border-line text-left text-label-3 uppercase text-ink-muted">
-                <th scope="col" className="pb-2 pr-3 font-medium">Project</th>
-                <th scope="col" className="pb-2 pr-3 font-medium">Paid into</th>
-                <th scope="col" className="pb-2 font-medium"><span className="sr-only">Actions</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              {projects.map((p) => (
-                <React.Fragment key={p.id}>
-                  <tr className="border-b border-line align-top">
-                    <td className="py-2 pr-3">
-                      <span className="block font-mono text-ink">{p.id}</span>
-                      <span className="block text-body-3 text-ink-muted">{p.label}</span>
-                    </td>
-                    <td className="py-2 pr-3 text-ink">
-                      {paidInto[p.id]
-                        ? accounts.find((a) => a.id === paidInto[p.id])?.accountMasked ?? "Not recorded"
-                        : "Not recorded"}
-                    </td>
-                    <td className="py-2">
-                      <Button
-                        appearance="text"
-                        size="sm"
-                        onClick={() => {
-                          setChangingProject(changingProject === p.id ? null : p.id);
-                          setChangeAccount("");
-                          setChangeReason("");
-                        }}
-                      >
-                        Request change
-                      </Button>
-                    </td>
-                  </tr>
-                  {changingProject === p.id && (
-                    <tr className="border-b border-line bg-surface-muted">
-                      <td colSpan={3} className="p-4">
-                        <div className="grid gap-4 sm:grid-cols-2">
-                          <FormField label="Account to pay into" id={`acct-${p.id}`} required>
-                            {(control) => (
-                              <Select
-                                {...control}
-                                value={changeAccount}
-                                onChange={(e) => setChangeAccount(e.target.value)}
-                              >
-                                <option value="">Select one of your saved accounts…</option>
-                                {accounts.map((a) => (
-                                  <option key={a.id} value={a.id}>
-                                    {a.bank} · {a.accountMasked} · {a.ifsc}
-                                  </option>
-                                ))}
-                              </Select>
-                            )}
-                          </FormField>
-                          <FormField label="Reason for the change" id={`reason-${p.id}`} required>
-                            {(control) => (
-                              <Textarea
-                                {...control}
-                                rows={2}
-                                value={changeReason}
-                                placeholder="e.g. the branch has been merged and the old account is closed"
-                                onChange={(e) => setChangeReason(e.target.value)}
-                              />
-                            )}
-                          </FormField>
-                          <div className="sm:col-span-2">
-                            <Button
-                              onClick={() => submitChange(p.id)}
-                              disabled={!changeAccount || !changeReason.trim()}
-                            >
-                              Submit for approval
-                            </Button>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-    </div>
+        <Alert status="info">Payments continue to the current account until the Ministry approves this request.</Alert>
+      </div>
+    </Modal>
   );
 }

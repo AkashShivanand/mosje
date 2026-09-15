@@ -124,6 +124,15 @@
      app's reset: the design system must render correctly in Storybook and in a
      consumer that has no Preflight, and the browser default indented every card
      40px past the page heading. */
+  /* The table's ground. DataTable's rows are transparent, so on a screen whose page ground is
+     grey every row read grey while the pinned Action cell — which must be opaque to cover what
+     scrolls beneath it — stayed white: a white stripe down a grey table (screen QA, 13 Sep
+     2026). Giving the scroll box the surface the pinned cell already paints makes the two agree
+     at rest, and DataTable's own hover rule keeps them agreeing under the pointer. */
+  .sa-worklist__table .ds-table__scroll {
+    background-color: var(--sa-bg-neutral-base);
+  }
+
   .sa-worklist__cards {
     display: none;
     list-style: none;
@@ -160,17 +169,24 @@
   .sa-worklist__card-title {
     font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
+    /* Government references are long and unbroken ("GIA/2026-27/SHRESHTA_M2/NORTH_WEST_DELHI/
+       00001"). Without a break opportunity a card on a 375px phone pushed the whole page 34–53px
+       sideways (e-Anudaan screen crawl, 13 Sep 2026). */
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   .sa-worklist__card-pairs {
     display: grid;
-    grid-template-columns: auto 1fr;
+    /* minmax(0, 1fr), not 1fr: a grid track's minimum is its content's, so one long value
+       widened the column past the card. */
+    grid-template-columns: auto minmax(0, 1fr);
     gap: var(--sa-padding-4) var(--sa-padding-12);
     font-size: var(--sa-type-body-2-size);
   }
 
   .sa-worklist__card-label { color: var(--sa-text-neutral-subtle); }
-  .sa-worklist__card-value { color: var(--sa-text-neutral-base); }
+  .sa-worklist__card-value { color: var(--sa-text-neutral-base); min-width: 0; overflow-wrap: anywhere; }
 
   /* Only with the cards — above the tablet anchor the table has its own. */
   .sa-worklist__cards-pager { display: none; }
@@ -225,15 +241,6 @@
      ONE stepper treatment. The handoff draws two — AVYAY/NAPDDR one way,
      SHRESHTA and Grant-in-Aid another — and a citizen applying to two schemes
      should not meet two different progress bars for the same act. */
-  .sa-wizard { display: contents; }
-
-  .sa-wizard__stepper {
-    padding: var(--sa-padding-16) var(--sa-padding-20);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-8);
-    background: var(--sa-bg-neutral-base);
-  }
-
   .sa-wizard__step-meta {
     color: var(--sa-text-neutral-subtle);
     font-size: var(--sa-type-body-2-size);
@@ -272,20 +279,15 @@
     line-height: var(--sa-type-body-2-lh);
   }
 
-  .sa-form__sections {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sa-padding-20);
-  }
 
+  /* The actions sit in the form panel's action band (form-wizard visual language §3). */
   .sa-form__actions {
     display: flex;
+    flex: 1 1 auto;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: var(--sa-padding-12);
-    padding-top: var(--sa-padding-16);
-    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   .sa-form__actions-state {

@@ -108,3 +108,19 @@ test("every officer role can reach the review screen for its own grade", () => {
     assert.ok(resolves(href), `${role.id} cannot reach ${href}`);
   }
 });
+
+test("every nav label fits the rail without an ellipsis, and is spelt the estate's way", () => {
+  // The 300px rail leaves about 200px for a label at 14px — measured at 1440, "SHRESHTA M2 — PMU
+  // Inspection" rendered as "SHRESHTA M2 — PMU Inspe…". 23 characters is the longest label that
+  // was seen whole ("Sanctioned Applications").
+  const MAX = 23;
+  const bad: string[] = [];
+  for (const role of ALL_ROLES) {
+    for (const item of role.nav) {
+      if (item.label.length > MAX) bad.push(`${role.id} · "${item.label}" (${item.label.length})`);
+      if (/\bProgram\b|_M2|\bM2\b/.test(item.label)) bad.push(`${role.id} · "${item.label}" spelling`);
+    }
+    if (/\bProgram\b/.test(role.label)) bad.push(`${role.id} · chip "${role.label}"`);
+  }
+  assert.deepEqual(bad, []);
+});

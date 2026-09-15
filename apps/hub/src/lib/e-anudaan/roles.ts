@@ -17,7 +17,7 @@ export interface NavItem {
 
 export interface RoleDef {
   id: RoleId;
-  /** Full label for the identity chip, e.g. "ASO - Program Division" (live portal's wording). */
+  /** Full label for the identity chip, e.g. "ASO - Programme Division". */
   label: string;
   /** Compact label for tables and badges, e.g. "ASO". */
   shortLabel: string;
@@ -80,15 +80,19 @@ const CAPS: Record<Division, Record<Grade, readonly Capability[]>> = {
  * Programme Division nav — transcribed from the live sidebar.
  *
  * Note two things that look like bugs but are not:
- *   • "SHRESHTA M2 — <GRADE>" points at the SAME shared Application Explorer for every grade.
+ *   • The Application Explorer is the SAME shared page for every grade. The live sidebar labels
+ *     it "SHRESHTA M2 — <GRADE>"; here it carries its page's own title, "All Applications", so
+ *     the menu item and the heading it opens agree (screen QA, 13 Sep 2026).
  *   • "Sanctioned" also lives under the /pd/us/ path for every grade.
- * Both are verbatim from the live portal; see the INVENTORY's "Asymmetry" note.
+ * Both paths are verbatim from the live portal; see the INVENTORY's "Asymmetry" note.
+ *
+ * Labels are kept to what the 300px rail shows without an ellipsis — `roles.test.ts` guards it.
  */
 function pdNav(grade: Grade): NavItem[] {
   const nav: NavItem[] = [
     { label: "Dashboard", href: `${BASE}/dashboard/pd/${grade}`, icon: "grid_view" },
     { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
-    { label: `SHRESHTA M2 — ${GRADE_LABEL[grade]}`, href: `${BASE}/dashboard/pd/us/all-applications`, icon: "folder_open" },
+    { label: "All Applications", href: `${BASE}/dashboard/pd/us/all-applications`, icon: "folder_open" },
     { label: "Sanctioned Applications", href: `${BASE}/dashboard/pd/us/sanctioned`, icon: "verified" },
     { label: "Rejected Applications", href: `${BASE}/dashboard/pd/${grade}/rejected`, icon: "cancel" },
     { label: "Forwarded Applications", href: `${BASE}/dashboard/pd/forwarded`, icon: "forward" },
@@ -109,13 +113,14 @@ function pdNav(grade: Grade): NavItem[] {
  * dashboard (/dashboard/finance/<grade>, a payment-processing queue).
  */
 function ifdNav(grade: Grade): NavItem[] {
-  const scheme = grade === "js" ? "JS-IFD" : `IFD-${GRADE_LABEL[grade]}`;
   const nav: NavItem[] = [
     { label: "Finance Dashboard", href: `${BASE}/dashboard/finance/${grade}`, icon: "account_balance" },
     { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
     { label: "Finance Rejected", href: `${BASE}/dashboard/finance/${grade}/rejected`, icon: "cancel" },
     { label: "Finance Queries", href: `${BASE}/dashboard/finance/${grade}/queries`, icon: "help" },
-    { label: `SHRESHTA M2 — ${scheme}`, href: `${BASE}/dashboard/sm2/ifd${grade}`, icon: "folder_open" },
+    // The live label is "SHRESHTA M2 — IFD-<GRADE>", which the rail truncated. The grade is
+    // already in the masthead; the scheme's short name is what tells this list apart.
+    { label: "SHRESHTA Mode 2", href: `${BASE}/dashboard/sm2/ifd${grade}`, icon: "folder_open" },
     { label: "Reports & Analytics", href: `${BASE}/dashboard/sm2/reports`, icon: "bar_chart" },
   ];
   if (grade === "js") {
@@ -154,10 +159,10 @@ const LOGIN_ID: Record<ChainRoleId, string> = {
 
 function chainRole(division: Division, grade: Grade): RoleDef {
   const id = `${division}-${grade}` as ChainRoleId;
-  const divisionLabel = division === "pd" ? "Program Division" : "Integrated Finance Division";
+  const divisionLabel = division === "pd" ? "Programme Division" : "Integrated Finance Division";
   return {
     id,
-    // "ASO - Program Division" is the live portal's own wording in the masthead chip.
+    // The live chip reads "ASO - Program Division"; the estate spells it "Programme".
     label: `${GRADE_LABEL[grade]} - ${divisionLabel}`,
     shortLabel: division === "pd" ? GRADE_LABEL[grade] : `${GRADE_LABEL[grade]} (IFD)`,
     loginId: LOGIN_ID[id],
@@ -215,7 +220,8 @@ export const ROLES: Record<RoleId, RoleDef> = {
       // to is a defect, not a feature.
       { label: "Inspection Dashboard", href: `${BASE}/dashboard/pmu/field`, icon: "grid_view" },
       { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
-      { label: "SHRESHTA M2 — PMU Inspection", href: `${BASE}/dashboard/sm2/pmu`, icon: "travel_explore" },
+      // Live: "SHRESHTA M2 — PMU Inspection", truncated by the rail to "PMU Inspe…".
+      { label: "PMU Inspections", href: `${BASE}/dashboard/sm2/pmu`, icon: "travel_explore" },
     ],
   },
 
@@ -233,11 +239,15 @@ export const ROLES: Record<RoleId, RoleDef> = {
       { label: "Dashboard", href: `${BASE}/ngo/dashboard`, icon: "grid_view" },
       { label: "My Applications", href: `${BASE}/ngo/my-applications`, icon: "description" },
       { label: "Deficiencies", href: `${BASE}/ngo/my-applications/deficiencies`, icon: "report" },
-      { label: "Select Scheme", href: `${BASE}/apply-grant`, icon: "add_circle" },
+      // "Select Scheme" named the mechanism, not the task (review call 11 Sep 2026, T40–41).
+      { label: "Apply for Grant", href: `${BASE}/apply-grant`, icon: "add_circle" },
       { label: "Project Location Change", href: `${BASE}/ngo/project-location-change`, icon: "edit_location" },
-      { label: "My Bank Accounts", href: `${BASE}/ngo/bank-accounts`, icon: "account_balance" },
-      { label: "Weekly Attendance", href: `${BASE}/ngo/attendance`, icon: "checklist" },
-      { label: "Attendance Master", href: `${BASE}/ngo/attendance-master`, icon: "calendar_month" },
+      // Accounts belong to projects, not to the NGO (T124–159).
+      { label: "Project Bank Accounts", href: `${BASE}/ngo/bank-accounts`, icon: "account_balance" },
+      // The roster was a tab inside Weekly Attendance, where nobody would look for it (T233–239).
+      { label: "Beneficiaries & Staff", href: `${BASE}/ngo/beneficiaries`, icon: "groups" },
+      // One page: the Overview (formerly "Attendance Master", which is a dashboard) and the week.
+      { label: "Attendance", href: `${BASE}/ngo/attendance`, icon: "checklist" },
       { label: "CCTV Setup", href: `${BASE}/ngo/cctv`, icon: "videocam" },
     ],
   },
@@ -255,6 +265,114 @@ export function roleByLoginId(loginId: string): RoleDef | undefined {
 
 export function hasCap(role: RoleId, cap: Capability): boolean {
   return ROLES[role].caps.includes(cap);
+}
+
+/* ── Who may open which screen ─────────────────────────────────────────────── */
+
+export type RouteAccess = "allowed" | "forbidden" | "not-found";
+
+/**
+ * The key a role's own review screens live under — `/dashboard/sm2/<key>/review/:id`. The grade
+ * for the Programme Division, `jspd` for its Joint Secretary, `ifd<grade>` for Finance and `pd`
+ * for the Programme Director. `null` for a role that reviews nothing.
+ *
+ * The one function for this key: the access table checks it and every link to a review screen
+ * builds it (a second copy in `worklist-table.tsx` was merged into this one, 14 Sep 2026).
+ * `route-access.test.ts` pins the shapes.
+ */
+export function reviewKeyOf(role: RoleDef): string | null {
+  if (role.id === "programme-director") return "pd";
+  if (!role.division || !role.grade) return null;
+  if (role.division === "finance") return `ifd${role.grade}`;
+  return role.grade === "js" ? "jspd" : role.grade;
+}
+
+const REVIEW_KEYS = new Set(ALL_ROLES.map(reviewKeyOf).filter((k): k is string => k !== null));
+
+function isGrade(v: string | undefined): v is Grade {
+  return !!v && (GRADES as readonly string[]).includes(v);
+}
+
+/**
+ * May this officer open this console screen? The sidebar already showed each role only its own
+ * links, but no route checked the role: the ASO could open the IFD Joint Secretary's worklist,
+ * the Sanction Desk, the Audit Trail and PMU Inspections, the PMU saw All Applications, and
+ * `/dashboard/pd/zzz` rendered a queue (security audit S06, 14 Sep 2026).
+ *
+ * Every console route is listed here with the capability or seat that may see it, derived from
+ * the same `caps` and `nav` the sidebar is built from. `roles.test.ts` proves the two agree:
+ * a sidebar link is allowed exactly for the roles whose sidebar carries it.
+ *
+ * `forbidden` is a screen that exists and belongs to another role; `not-found` is an address
+ * that names no screen (an unknown grade or key). Both render a status screen in `ConsoleShell`.
+ */
+export function consoleRouteAccess(pathname: string, role: RoleDef): RouteAccess {
+  if (role.id === "ngo") return "forbidden";
+  const rel = pathname.startsWith(BASE) ? pathname.slice(BASE.length) : pathname;
+  const seg = rel.split("/").filter(Boolean);
+  const can = (cap: Capability): RouteAccess => (role.caps.includes(cap) ? "allowed" : "forbidden");
+  const [area, section, a, b, ...rest] = seg;
+
+  if (area === "finance") {
+    // /finance/payment-status/:appId — a file-level screen for officers who examine files.
+    return section === "payment-status" && a && !b ? can("review") : "not-found";
+  }
+  if (area !== "dashboard") return "not-found";
+
+  if (section === undefined) return "allowed"; // the bare dashboard sends each role home
+  if (section === "notifications" || section === "ngo-directory") return a ? "not-found" : "allowed";
+  if (section === "ngo") return a && b === "360" && rest.length === 0 ? "allowed" : "not-found";
+
+  if (section === "pmu") return a === "field" && !b ? can("inspect") : "not-found";
+
+  if (section === "pd") {
+    if (a === "forwarded") return b ? "not-found" : can("forwardedRegister");
+    if (!isGrade(a) || rest.length > 0) return "not-found";
+    // Two registers are shared by every grade and live under the Under Secretary's path, as on
+    // the live portal; any other grade in that position names no screen.
+    if (b === "all-applications") return a !== "us" ? "not-found" : role.division === "pd" ? "allowed" : "forbidden";
+    if (b === "sanctioned") return a !== "us" ? "not-found" : can("sanctionRegister");
+    if (b !== undefined && b !== "rejected" && b !== "queries") return "not-found";
+    return role.division === "pd" && role.grade === a ? "allowed" : "forbidden";
+  }
+
+  if (section === "finance") {
+    if (!isGrade(a) || rest.length > 0) return "not-found";
+    if (b !== undefined && b !== "rejected" && b !== "queries") return "not-found";
+    return role.division === "finance" && role.grade === a ? "allowed" : "forbidden";
+  }
+
+  if (section === "sm2") {
+    if (a === "reports") return b ? "not-found" : can("review");
+    if (a === "audit") return b ? "not-found" : can("auditTrail");
+    if (a === "pmu") return b ? "not-found" : can("inspect");
+    if (!a || !REVIEW_KEYS.has(a)) return "not-found";
+    // `sm2/<key>` is one seat's list and `sm2/<key>/review/:id` that seat's review screen; the
+    // Programme Director's desk is `sm2/pd`. An officer opens a file only under their own key.
+    const own = reviewKeyOf(role) === a;
+    if (b === undefined) return own ? "allowed" : "forbidden";
+    if (b === "review" && rest.length === 1) return own ? "allowed" : "forbidden";
+    return "not-found";
+  }
+
+  return "not-found";
+}
+
+/**
+ * The organisation signed in on the applicant side. The mock register holds the signed-in NGO
+ * first, as the store's notification routing already assumes.
+ */
+export function signedInNgoId(state: { session: RoleId | null; ngos: readonly { id: string }[] }): string | undefined {
+  return state.session === "ngo" ? state.ngos[0]?.id : undefined;
+}
+
+/**
+ * The application, only if it belongs to this NGO. Any other organisation's file is treated as
+ * not found — the same screen as a reference that does not exist, so a guessed reference reveals
+ * nothing (security audit S05: NGO-001 could open NGO-002's file and another NGO's certificate).
+ */
+export function ownApplication<T extends { ngoId: string }>(app: T | undefined, ngoId: string | undefined): T | undefined {
+  return app && ngoId && app.ngoId === ngoId ? app : undefined;
 }
 
 export { BASE as EANUDAAN_BASE };

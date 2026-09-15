@@ -47,6 +47,10 @@ import {
  * reader still meets exactly one `h1` on the page. Reach for it where the title
  * alone is ambiguous ("Applications" in which scheme?), and leave it out where
  * the title already says everything.
+ *
+ * `size="compact"` sets the title a step down the headline ramp. It is for a screen
+ * whose own content carries the weight — a form wizard, where the stepper and the step
+ * panel lead and a full-size page title would compete with them.
  */
 const meta = {
   title: "Layout/Page templates",
@@ -59,6 +63,7 @@ const meta = {
   },
   argTypes: {
     as: { control: "inline-radio", options: [1, 2] },
+    size: { control: "inline-radio", options: ["default", "compact"] },
     actions: { control: false },
     headingId: { control: "text" },
   },
@@ -112,6 +117,24 @@ export const PageHeaderWithEyebrow: Story = {
         title="Applications"
         meta="1,284 applications · 96 awaiting scrutiny"
         actions={<Button>Export</Button>}
+      />
+    </div>
+  ),
+};
+
+/**
+ * Compact, above a form wizard. The stepper and the step panel lead the screen, so the
+ * title steps down the headline ramp rather than competing with them.
+ */
+export const PageHeaderCompact: Story = {
+  render: (args) => (
+    <div style={{ padding: "var(--sa-padding-24)" }}>
+      <PageHeader
+        {...args}
+        size="compact"
+        eyebrow="E-Anudaan"
+        title="Atal Vayo Abhyuday Yojana"
+        meta="Complete each step. Your application is saved as you go."
       />
     </div>
   ),
