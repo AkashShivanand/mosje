@@ -6,7 +6,7 @@ import { NoticePlayground } from "./notice-playground";
 export const metadata: Metadata = {
   title: "Notification Centre — Design System",
   description:
-    "The panel behind the bell — what has happened that this officer has not seen, rendered as Event List grouped by day so a notification and the same entry in the audit log read identically.",
+    "The panel behind the bell — what needs the reader's action and what has happened since they last looked, rendered as Event List so a notification and the same entry in the audit log read identically.",
 };
 
 const A11Y: A11yItem[] = [
@@ -41,7 +41,7 @@ export default function NotificationCentrePage(): React.JSX.Element {
     <ComponentDocPage
       name="Notification Centre"
       status="Stable"
-      summary="The panel behind the bell — what has happened that this officer has not seen. It renders Event List grouped by day, so a notification and the same entry on the case itself read identically."
+      summary="The panel behind the bell — what needs the reader's action, then what has happened since they last looked. It renders Event List, so a notification and the same entry on the case itself read identically."
       figma={{ absent: "No master, deliberately — this is Event List's row grouped by day, and a second row style for it is how one object acquires two vocabularies. The decision is recorded on Event List's component record in the SAMAVESH library." }}
       specimen={<NoticePlayground />}
       propsFrom="NotificationCentreProps"
@@ -58,6 +58,7 @@ export default function NotificationCentrePage(): React.JSX.Element {
         ],
       }}
       related={[
+        { label: "Notification Bell", href: "/design-system/components/navigation/notification-bell", reason: "the masthead control that opens it" },
         { label: "Event List", href: "/design-system/components/data-display/event-list", reason: "the rows this is built from" },
         { label: "Popover", href: "/design-system/components/feedback/popover", reason: "what usually opens it from a masthead bell" },
       ]}
@@ -79,12 +80,34 @@ export default function NotificationCentrePage(): React.JSX.Element {
   onMarkAllRead={markAllRead}
 />`}</CodeBlock>
           </section>
+          <section className="cdp__section" aria-labelledby="cdp-action">
+            <h2 id="cdp-action" className="cdp__h2">Action Before News</h2>
+            <p>
+              An entry with <code>actionRequired</code> — a deficiency to answer, a document to upload —
+              is lifted into an Action Needed section at the top. It is never cut by{" "}
+              <code>limit</code>, and marking updates as read does not clear it: it leaves when the
+              record no longer needs the action. Derive the flag from the live record, never store it.
+              An officer&rsquo;s work queue is not an action here; it already has a count on the
+              dashboard. What counts as a notification is set out in{" "}
+              <code>docs/specs/notification-object.md</code>.
+            </p>
+          </section>
           <section className="cdp__section" aria-labelledby="cdp-mark">
-            <h2 id="cdp-mark" className="cdp__h2">Mark All As Read Appears Only When It Can Do Something</h2>
+            <h2 id="cdp-mark" className="cdp__h2">Mark Updates as Read Appears Only When It Can Do Something</h2>
             <p>
               A control that is present all the time and does nothing most of the time teaches
               people to ignore it — and then it is ignored on the day it matters. It is rendered
-              only while something is unread.
+              only while an update is unread, and its label says it marks updates, because it does
+              not touch what needs action.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-count">
+            <h2 id="cdp-count" className="cdp__h2">One Count, Everywhere</h2>
+            <p>
+              <code>notificationCount(items)</code> — action-required entries plus unread updates — is
+              exported beside the component. The masthead bell&rsquo;s badge, a page&rsquo;s status
+              line and any dashboard tile call it, so no two surfaces can print different numbers
+              for one feed.
             </p>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-place">

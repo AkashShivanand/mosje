@@ -22,11 +22,79 @@
     color: var(--sa-text-neutral-bolder);
   }
 
+  /* When the panel IS the page (titleAs="h1") its heading is the page's headline,
+     not a panel title — a notifications page with a 20px h1 read as a fragment. */
+  h1.ds-notices__title {
+    font-size: var(--sa-type-headline-1-size);
+    line-height: var(--sa-type-headline-1-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
+
   .ds-notices__count {
     margin: 0;
     margin-inline-end: auto;
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
     color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-notices__section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+  }
+
+  .ds-notices__section-title {
+    margin: 0;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  /* In the shape of the list it stands in for, so nothing jumps when it lands. */
+  .ds-notices__loading {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+  }
+
+  .ds-notices__skeleton {
+    block-size: var(--sa-padding-64);
+    border-radius: var(--sa-cmp-card-radius);
+  }
+
+  .ds-notices__error {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-16);
+    border: var(--sa-control-border-width) solid var(--sa-border-status-error-base);
+    border-radius: var(--sa-cmp-card-radius);
+    background: var(--sa-bg-status-error-subtler);
+  }
+
+  .ds-notices__error-text {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  .ds-notices__all {
+    align-self: center;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: var(--sa-font-weight-medium);
+    color: var(--sa-text-brand-primary-base);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .ds-notices__all:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 }

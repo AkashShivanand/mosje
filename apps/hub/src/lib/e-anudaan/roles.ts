@@ -98,7 +98,6 @@ function pdNav(grade: Grade): NavItem[] {
   if (grade === "js") {
     nav.push({ label: "Audit Trail", href: `${BASE}/dashboard/sm2/audit`, icon: "history" });
   }
-  nav.push({ label: "Notifications", href: `${BASE}/dashboard/notifications`, icon: "notifications" });
   return nav;
 }
 
@@ -122,7 +121,6 @@ function ifdNav(grade: Grade): NavItem[] {
   if (grade === "js") {
     nav.push({ label: "Audit Trail", href: `${BASE}/dashboard/sm2/audit`, icon: "history" });
   }
-  nav.push({ label: "Notifications", href: `${BASE}/dashboard/notifications`, icon: "notifications" });
   return nav;
 }
 
@@ -198,7 +196,6 @@ export const ROLES: Record<RoleId, RoleDef> = {
       { label: "Forwarded Applications", href: `${BASE}/dashboard/pd/forwarded`, icon: "forward" },
       { label: "Reports & Analytics", href: `${BASE}/dashboard/sm2/reports`, icon: "bar_chart" },
       { label: "Audit Trail", href: `${BASE}/dashboard/sm2/audit`, icon: "history" },
-      { label: "Notifications", href: `${BASE}/dashboard/notifications`, icon: "notifications" },
     ],
   },
 
@@ -219,7 +216,6 @@ export const ROLES: Record<RoleId, RoleDef> = {
       { label: "Inspection Dashboard", href: `${BASE}/dashboard/pmu/field`, icon: "grid_view" },
       { label: "NGO Directory", href: `${BASE}/dashboard/ngo-directory`, icon: "corporate_fare" },
       { label: "SHRESHTA M2 — PMU Inspection", href: `${BASE}/dashboard/sm2/pmu`, icon: "travel_explore" },
-      { label: "Notifications", href: `${BASE}/dashboard/notifications`, icon: "notifications" },
     ],
   },
 
@@ -240,7 +236,6 @@ export const ROLES: Record<RoleId, RoleDef> = {
       { label: "Select Scheme", href: `${BASE}/apply-grant`, icon: "add_circle" },
       { label: "Project Location Change", href: `${BASE}/ngo/project-location-change`, icon: "edit_location" },
       { label: "My Bank Accounts", href: `${BASE}/ngo/bank-accounts`, icon: "account_balance" },
-      { label: "Notifications", href: `${BASE}/ngo/notifications`, icon: "notifications" },
       { label: "Weekly Attendance", href: `${BASE}/ngo/attendance`, icon: "checklist" },
       { label: "Attendance Master", href: `${BASE}/ngo/attendance-master`, icon: "calendar_month" },
       { label: "CCTV Setup", href: `${BASE}/ngo/cctv`, icon: "videocam" },
