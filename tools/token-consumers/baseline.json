@@ -1,7 +1,7 @@
 {
   "$comment": "Tier-2 tokens with zero static consumers, per family; each family may only fall. Re-record with --baseline after a real reduction.",
   "recordedAt": "2026-09-14",
-  "total": 421,
+  "total": 422,
   "perFamily": {
     "bg": 13,
     "blur": 3,
@@ -10,7 +10,7 @@
     "chart": 6,
     "cmp": 258,
     "code": 4,
-    "color": 51,
+    "color": 52,
     "container": 3,
     "elevation": 1,
     "grid": 2,
@@ -25,5 +25,6 @@
     "stroke": 1,
     "text": 1,
     "z": 1
-  }
+  },
+  "$note_2026_09_15": "color +1: --sa-color-transparent-secondary-8 lost its only code consumer when the sidebar's saffron identity wash was removed (PR #489). It is kept, not retired: it is one of the generated 8-48 overlay tiers, the library's Auth / PortalList master binds it, and PR #481 adds its code consumer (.ds-portal-list). When #481 lands the count falls to 51 and this note goes with a --baseline re-record."
 }

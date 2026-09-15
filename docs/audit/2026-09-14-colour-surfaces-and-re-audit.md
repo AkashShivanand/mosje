@@ -176,7 +176,7 @@ therefore visibly heavier than an info banner of the same importance, and Navy's
 `bg/brand/primary/boldest` (rung 800, `#001734`) is 1.42:1 from `bolder` and reads as black, not navy.
 *Proposal:* lower Navy's `darkest` so the four dark rungs spread, or bind `boldest` to rung 700 in Navy.
 
-**5 · The saffron identity wash reads as an error tint.** The sidebar's portal-identity header fades
+**5 · The saffron identity wash reads as an error tint.** *(Applied — §6.)* The sidebar's portal-identity header fades
 `color/transparent/secondary/8` over white: `#FFF3ED`, hue 49°, 3.6 ΔE from the error tint `#FFE4E1`
 (hue 25°) — on a form full of red required-field asterisks. Saffron against error is already on
 `SEPARATION_LEDGER` at the solid rungs (8.6 ΔE, 17°). *Proposal:* remove the wash from portal chrome
@@ -280,4 +280,42 @@ before the Navy change was made, so the diff that followed is only the change.
   so the route and hover tints are shown against the colour they are drawn on.
 - `npm test -w @mosje/tokens` 184/184; visual contract re-baselined after the UI check — the diff is
   the Navy brand block and `bg/neutral/selected`.
+
+---
+
+## 6. Follow-up applied — the saffron identity wash (2026-09-15)
+
+**Removed, not neutralised.** The portal identity block at the head of every sidebar rail faded
+`color/transparent/secondary/8` to `color/transparent/secondary/0`. Over white that is `#fff3ed`, hue
+49°, **3.6 ΔE** from the error tint `#ffe4e1` (hue 25°), and it was the only warm surface on a screen
+whose other warm marks are the red required-field asterisks. A neutral replacement was considered and
+rejected: the rail is already white and the block already carries a `border/neutral/subtle` edge, so a
+grey wash would reintroduce exactly the grey this audit took off the rail. Saffron remains where it is
+identity rather than surface — in the SAMAVESH mark.
+
+| Where | Change |
+|---|---|
+| `sidebar.css` — `.ds-sidebar__identity` | `background` gradient removed; header comment records why and when. |
+| `types.ts` | The mark's doc comment no longer calls the wash its ground. |
+| `color/transparent/secondary/0` | Retired: it existed only as this fade's far end, and `check:token-consumers` refuses a token nothing binds. `build/brand-ramps.mjs` keeps the per-family 0-tier mechanism with no family declared. `secondary/8` is unchanged — it is one of the generated 8–48 tiers, and the login template's portal list binds it. |
+| Library — `Sidebar/PortalIdentity` (both modes) | Gradient fill removed; the instances inside `Sidebar` inherited the change with no overrides to clear. |
+| Library — variables | `color/transparent/secondary/0` deleted after confirming nothing on any page bound it. Read back: Palette 139, every value and field checksum byte-identical to the payload; `reference/figma-live.json` re-recorded. |
+| Library — documentation | The Sidebar page's identity panel and the Colour page's Tier 1 count (140 → 139) restated; `tools/figma-doc-parity/claims.json` follows. |
+| `docs/design-system/components/sidebar.md` | Decision 23 marked superseded, with the reason. |
+
+**One gate allowance, recorded.** `check:token-consumers` counts Tier-2 tokens with no static consumer.
+Removing the wash left `color/transparent/secondary/8` unconsumed on this branch, so the colour family's
+baseline is raised from 51 to 52 with the reason written into `tools/token-consumers/baseline.json`. The
+token is kept rather than retired because the login template's portal list binds it in the library and
+PR #481 adds its code consumer; when #481 lands the count returns to 51 and the gate asks for a re-record.
+
+**Verified in the running UI** (navy): `.ds-sidebar__identity` computes `background-image: none` in the
+E-Anudaan portal and in the Sidebar documentation specimen; before/after captured from the same
+page and viewport.
+
+**A slip, corrected in the same session.** The Figma pass cleared every node bound to either
+`secondary/0` or `secondary/8`, which also caught `Auth / PortalList` on the Portal Login Template page —
+a `secondary/8` fill that is not part of this change (it arrives with the login-template work, PR #481).
+It was restored at once to its single solid fill bound to `color/transparent/secondary/8`, matching the
+`.ds-portal-list` rule on that branch, and confirmed by screenshot.
 
