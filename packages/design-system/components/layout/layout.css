@@ -116,6 +116,7 @@
   .sa-page-header--compact .sa-page-header__title {
     font-size: var(--sa-type-headline-5-size);
     line-height: var(--sa-type-headline-5-lh);
+    font-weight: var(--sa-font-weight-semibold);
   }
   .sa-page-header__meta {
     margin: 0;
