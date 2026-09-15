@@ -32,9 +32,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.137.0",
+    version: "v0.138.0",
     date: "2026-09-15",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "SIX COMPONENTS SET THEIR TEXT IN THE STYLE THEIR FIGMA MASTER LINKS, WITH NO NEW STYLE ADDED. The Chatbot title is Title 2 at 600 (it was 500). The Portal Card name is Body 1 Regular, as its own comment said (500). The Slider readout is Body 2 SemiBold (500). The visitor counter takes its line\u2019s weight (500). The Pagination steps-only \u201cPage 2 of 12\u201d is Body 1 Regular, beside the 16px SemiBold Previous and Next (it inherited the page size at 500). Every one of those 500s was a weight no text style has" },
+      { kind: "Changed", text: "STANDALONE `Link` TAKES THE LIBRARY\u2019S RAMP: Small label-2 12, Default label-1 14, Large title-2 16 SemiBold. It was 14 / 16 / 22, all at 500. Default standalone links are 2px smaller and Large is 6px smaller; inline links still inherit their sentence" },
+      { kind: "Fixed", text: "FIGMA: the deprecated RangeSlider\u2019s 20 number layers leave a stray `Text md/Medium` style from another library for `Body/body-2-semibold`, the readout style of the current Slider" },
+    ],
+  },
+  {
+    version: "v0.137.0",
+    date: "2026-09-15",
     changes: [
       { kind: "Changed", text: "EVERY FORM NOW TAKES ONE GRAMMAR: ONE PANEL PER STEP, AND THE SUB-SECTIONS INSIDE IT ARE NOT CARDS. Read from the portal handoff, where the same language repeats across the Transgender Portal, NOS, NMBA, Garima Greh, SCW and SAMBAL, and written down in `docs/design-system/form-wizard-visual-language.md`. E-Anudaan\u2019s application form had grown its own \u2014 a boxed stepper, a card per section, the actions below the last card, help text under nearly every field \u2014 because it was checked against its own legacy frames and no pass took the other portals\u2019 wizards as the reference. `Wizard` now draws the stepper on the page ground with no box, then one `FormPanel` for the current step: a head band with the step\u2019s title and one line of description, the step\u2019s sub-sections 32 apart, and an action band. Its new `title`, `description` and `headerActions` fill the head band, which otherwise takes the stage\u2019s label and description", migration: "Drop any `Card` or padded box wrapped around a Wizard\u2019s children, and any card around a `FormSection` or `FormCard` \u2014 the panel is the card. See the Wizard, Form Section and Form Card pages." },
       { kind: "Changed", text: "`FormSection`, `FormCard` AND `ReviewSection` SHARE ONE HEAD AND DRAW NO CARD. The head is an uppercase label in Label 1, medium, in `text/neutral/subtle`, followed by a hairline rule that fills the rest of the row; an optional `badge` sits between the two and `actions` at the end. The heading is an `h3` by default, under the panel\u2019s `h2`, and `as` moves it. `FormSection` takes up to four columns and defaults to three, which is what the handoff draws for most steps. `FormCard` keeps its name for compatibility. `ReviewSection` takes `columns`, `actions` (the Edit button), `badge` and `as`" },
