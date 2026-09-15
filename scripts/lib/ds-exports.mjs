@@ -183,6 +183,9 @@ export const DOCUMENTED_BY = {
   AuthHelpLine: "AuthFormCard",
   OtpRequestFields: "AuthFormCard", OtpVerifyFields: "AuthFormCard",
   ReviewSection: "Wizard", ReviewItem: "Wizard",
+  // The grid DocumentTile sits in. It is a styled <ul> and nothing else; the page
+  // for the tile is where the two-column layout and the four states are shown together.
+  DocumentTiles: "DocumentTile",
   SkeletonText: "Skeleton", SkeletonRow: "Skeleton",
   ChartTooltip: "Legend",
   // The ranked list's bar alone, for a table cell. Its page shows it inside a

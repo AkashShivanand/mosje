@@ -73,7 +73,9 @@ export function FunnelChart({
           );
         })}
       </div>
-      <table className="ds-sr-only">
+      {/* Hidden by a wrapping div: a table ignores `width: 1px` and would widen the page. */}
+      <div className="ds-sr-only">
+      <table>
         <caption>{title}</caption>
         <thead>
           <tr>
@@ -92,6 +94,7 @@ export function FunnelChart({
           ))}
         </tbody>
       </table>
+      </div>
     </figure>
   );
 }

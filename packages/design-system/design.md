@@ -12,6 +12,19 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-14 · System version: v0.65.0 (EVERY FORM TAKES ONE GRAMMAR: ONE PANEL
+  PER STEP, AND THE SUB-SECTIONS INSIDE IT ARE NOT CARDS. Read from the portal handoff, where it
+  repeats across Transgender Portal, NOS, NMBA, Garima Greh, SCW and SAMBAL, and written down in
+  `docs/design-system/form-wizard-visual-language.md`. E-Anudaan's application form had grown its
+  own — a boxed stepper, a card per section, the actions below the last card — because no pass took
+  the other portals as the reference. `Wizard` now draws the stepper on the page ground and one
+  `FormPanel` for the step (head band, sub-sections, action band, Cancel on the first step);
+  `FormSection`, `FormCard` and `ReviewSection` share one head — an uppercase label and a hairline
+  rule — and draw no card; `FormScreen` renders its sections and actions in one untitled
+  `FormPanel`. New: `FormPanel`, `FormInset` for repeatable entries, `DocumentTile` /
+  `DocumentTiles` for documents in four states. Field labels step up to Label 1, input text to
+  Body 2, and `PageHeader` takes `size="compact"` for a wizard page.)
+
   Last reviewed: 2026-09-09 · System version: v0.64.0 (`SitePageHeader` CUTS THE PORTRAIT TO THE
   CIRCLE ITSELF, SO A CALLER CANNOT GET THE FRAME WRONG. The halo cannot do the clipping — the
   pulse discs are its children and the whole point of them is that they travel out past the
@@ -1400,6 +1413,7 @@ graph TD
 | Wrap every input in `<FormField>` containing explicit label, hint, and error nodes. | Do not use placeholder text as a substitute for labels. Placeholders disappear on type and fail accessibility. |
 | Show red error states (`var(--sa-border-status-error-base)` + `var(--sa-text-status-error-base)`) only after validation runs or input blur. | Do not render inline inputs without surrounding margin-bottom/padding constraints. |
 | Use `<FormSection>` to group related fields under a sub-heading within a form. | Do not render a single `<form>` with 20+ fields — break it into `<FormSection>` groups or use `<Wizard>`. |
+| Put a form's or a step's sub-sections inside ONE `<FormPanel>` (a `<Wizard>` draws it for you). | Do not wrap a sub-section in a `<Card>`. The panel is the card; boxes inside it read as separate forms and push the actions below the last box. |
 | Use `<Search>` (not `<Input>`) for search affordances — it includes the correct icon and clear button. | Do not use `type="search"` on a plain `<Input>` and style it manually. |
 | Use `<Select>` for a FORM field — it is a native `<select>`, which every assistive technology and every mobile keyboard already knows. | Do not reach for `<FilterSelect>` in a form because it looks better. A native control is worth more than a hint column on a field a citizen submits. |
 | Wrap any set of radios or checkboxes answering ONE question in `<RadioGroup>` / `<CheckboxGroup>`. They supply the `<fieldset>`/`<legend>` that gives the QUESTION an accessible name — without it a screen reader announces the options and never the question. `legend` is required; hide it with `sa-sr-only` if a heading already asks it. | Do not hand-roll a fieldset around bare `<Radio>`s, and do not omit the legend because the layout looks fine. Do not add `tabIndex` to the options — the browser's roving tabindex already makes the group one tab stop, and re-implementing it produces four. |
@@ -2417,17 +2431,36 @@ Docs: `/design-system/components/sla-progress`.
 **Props**: `checked`, `onChange(checked)`, `children` (the statement), `title` (default `"Declaration"`), `lead` (default `"I certify that:"`), `error`, `disabled`.
 **Rule**: Use for any form where the user attests to the truth of what they submitted. Do not substitute a bare `<Checkbox>` — the declaration must read as a distinct, deliberate act, not one more field in a grid.
 
+#### The form grammar (read first)
+Every form on the estate takes one shape — spec: `docs/design-system/form-wizard-visual-language.md`.
+**One `FormPanel` per form or wizard step**; the sub-sections inside it (`FormSection`, `FormCard`,
+`ReviewSection`) are **not cards** — they open with an uppercase label and a hairline rule, 32 apart.
+The stepper sits on the page ground with no box. Actions live in the panel's action band, never
+below it.
+
+#### FormPanel
+**Purpose**: The one card a form or wizard step lives in — a tinted head band (`title`, `description`, `actions`), a body holding the sub-sections, and a tinted action band (`footer`: Back or Cancel, then the primary action).  
+**Rule**: Use it for a single-screen form or a custom step layout. **Inside a multi-step form use `<Wizard>`, which draws it** — never render a FormPanel inside a Wizard. Omit `title` only where the page header directly above already names the form (`FormScreen` does); the head band is then not drawn. Never put a `<Card>` inside it.
+
 #### FormSection
-**Purpose**: Groups related fields under a sub-heading with optional description.  
-**Rule**: Use one `<FormSection>` per logical group of fields within a larger form (e.g. "Personal Details", "Address").
+**Purpose**: One sub-section of a form: an uppercase label (Label 1, medium, `text/neutral/subtle`) and a hairline rule over a 1–4 column field grid (3 by default; 2 below 1280px, 1 below 768px). Optional `badge` between label and rule, `actions` at the row's end, `as` for the heading level (`h3` by default).  
+**Rule**: Use one per logical group of fields inside the step's panel. It is not a card and must not be wrapped in one. Wide fields take `className="ds-form-span-full"`. A `description` only where it changes what the applicant enters.
 
 #### FormCard
-**Purpose**: A titled surface card with the **same header styling as `<FormSection>`** but a custom (non-grid) body — for sections whose content isn't a simple field grid (repeatable cards, tables, mixed content).  
-**Rule**: Never hand-roll a `<section>` with its own heading classes for a custom-layout group — use `<FormCard title=… description=… required? headingId?>` so every section header across the estate stays visually identical. Pass `headingId` when a child needs `aria-labelledby` (e.g. a data table).
+**Purpose**: The same sub-section head as `<FormSection>` over an **arbitrary body** — `FormInset` entries, a table, `DocumentTiles`. Despite its historical name it draws **no card**.  
+**Rule**: Never hand-roll a `<section>` with its own heading classes for a custom-layout group — use `<FormCard title=… required? badge? actions? headingId?>` so every sub-section head stays identical. Pass `headingId` when a child needs `aria-labelledby` (e.g. a data table).
+
+#### FormInset
+**Purpose**: One entry of a repeatable group (an employment, a key functionary) — a tinted inset (`bg/neutral/subtler`, `shape/12`, `padding/16`, no border) with an optional `title` and `actions` over a 2-column grid.  
+**Rule**: Follow the last entry with a small outlined "Add More" `Button` with a leading plus, right-aligned; the parent owns the list. Not for short uniform rows (family members, awards) — those are a bordered `DataTable`. Not for a group that appears once.
+
+#### DocumentTile / DocumentTiles
+**Purpose**: One document on an upload or review step — `title` (+`required`), one line of `meta`, `actions` at the right, optional `icon` — in four `state`s: `upcoming`, `uploaded`, `verified`, `invalid`. `DocumentTiles` is the `<ul>` grid, two to a row from 768px.  
+**Rule**: **An upload is `uploaded`, never `verified`** — only an officer or DigiLocker verifies. Verified carries a `Badge`; invalid carries the officer's reason as `meta`. Not for an officer's checklist with findings (`ChecklistScreen`) or a public download list (`DocumentLibrary`).
 
 #### Wizard
-**Purpose**: Multi-step form experience with a progress `<Stepper>`.  
-**Rule**: Each wizard step should have 3–6 fields. The final step must always be a `<ReviewSection>` showing all entered values before submit.
+**Purpose**: Multi-step form shell: `<Stepper>` on the page ground, then one `FormPanel` for the current step — head band (`title`/`description` default to the stage's label/description; `headerActions`), the step's sub-sections, error summary, action band.  
+**Rule**: Pass `onCancel` so the first step shows an outlined Cancel instead of a disabled Back. Children are sub-sections, never a `<Card>`. Each step should have 3–6 fields. The final step is a review: one `<ReviewSection columns={4|2} actions={Edit}>` per earlier step, documents as `DocumentTile`s, then `DeclarationCheckbox`, with "Submit Application".
 
 ---
 
@@ -3906,7 +3939,8 @@ every matching row, not one page**, and `registerTotal` is for the count line on
 **`WizardScreen`** covers 22 of the handoff's 44 screens at 3, 6 and 7 steps, and ships
 **one** stepper treatment where the handoff draws two. It wraps `Wizard` and adds the page:
 title, the composed step meta line, the draft banner (both flavours, one shape, switched by
-`resumed`) and notices.
+`resumed`) and notices. `onCancel` goes through to `Wizard`, so Cancel is the first step's
+outlined leading control — there is no separate Cancel button.
 
 **`OverviewScreen`** cannot enforce its own two most important rules, so they are stated on
 its page: a ratio takes both halves **from one source** (mixing them published a `138%`),
@@ -3926,7 +3960,8 @@ fourteen below completed it. Each owns the seven states through `ScreenBody`, ta
 exclusive options as `RadioGroup variant="card"`, with one Continue that is never
 disabled; the handoff draws this three ways under one name and two of them are drift.
 **`FormScreen`** — one record that fits one screen, with `ErrorSummary` above the fields
-and an action bar that goes sticky below 768px; **more than eight fields, or a statutory
+and the sections and action bar in one untitled `FormPanel` (outlined Cancel, then submit —
+the page header names the form, so the panel draws no head band); **more than eight fields, or a statutory
 stage, and it is a wizard instead**, which is a count rather than a feeling.
 **`ChecklistScreen`** — a required set of artefacts with **four** per-item states
 (`missing · attached · review · rejected`), because a file that has left the citizen's
@@ -4023,20 +4058,27 @@ Do not deviate from these layouts without a documented reason.
 ### Form Wizard (Multi-step Application)
 
 ```tsx
-<Wizard steps={["Personal", "Address", "Documents", "Review"]} currentStep={step}>
+<PageHeader size="compact" eyebrow="E-Anudaan" title="Atal Vayo Abhyuday Yojana" meta="…" />
+<Wizard
+  steps={STEPS} current={step}
+  nextLabel="Save and Continue" submitLabel="Submit Application"
+  onCancel={leave} onBack={back} onNext={validateThenNext} onSubmit={submit}
+>
+  {/* sub-sections straight into the step panel — never a Card around them */}
   <FormSection title="Personal Details">
-    <FormField label="Full Name" required><Input /></FormField>
-    <FormField label="Date of Birth"><Input type="date" /></FormField>
+    <FormField label="Full Name" required>{(c) => <Input {...c} />}</FormField>
   </FormSection>
-  {/* ... */}
-  <ReviewSection data={formData} />
+  <FormCard title="Identity Documents">
+    <DocumentTiles><DocumentTile title="Aadhaar Card" required state="upcoming" /></DocumentTiles>
+  </FormCard>
 </Wizard>
 ```
 
 **Rules**:
+- One panel per step (Wizard draws it); sub-sections are not cards.
 - Each step: 3–6 FormFields. Never exceed 8 visible fields per step.
-- Final step is always `<ReviewSection>` — show all entered values before submit.
-- Show `<Stepper>` at the top of the wizard to communicate progress.
+- Final step is always a review: `<ReviewSection>` per earlier step with Edit — show all entered values before submit.
+- The `<Stepper>` sits on the page ground, never in a box.
 
 ### Media Gallery Manager (Portal — photos/videos, documents, any record-with-attachments list)
 

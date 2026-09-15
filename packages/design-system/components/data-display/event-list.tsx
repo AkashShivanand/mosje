@@ -65,14 +65,20 @@ const TONE_ICON: Record<EventTone, string> = {
   danger: "error",
 };
 
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/**
+ * "14 Sep 2026, 12:07 PM". Built from parts rather than `toLocaleString("en-IN")`, which
+ * prints "14 Sept 2026, 12:07 pm" — a four-letter month and a lower-case meridiem that no
+ * other date on the estate uses (screen QA, 13 Sep 2026).
+ */
 function stamp(iso: string, withDate: boolean): string {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return iso;
-  return date.toLocaleString("en-IN", {
-    ...(withDate ? { day: "2-digit" as const, month: "short" as const, year: "numeric" as const } : {}),
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const h = date.getHours();
+  const time = `${String(h % 12 || 12).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")} ${h < 12 ? "AM" : "PM"}`;
+  if (!withDate) return time;
+  return `${String(date.getDate()).padStart(2, "0")} ${MONTHS[date.getMonth()]} ${date.getFullYear()}, ${time}`;
 }
 
 function dayKey(iso: string): string {

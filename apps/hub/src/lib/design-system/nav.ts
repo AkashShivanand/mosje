@@ -116,6 +116,11 @@ export const NAV: NavGroup[] = [
         "badge": "New"
       },
       {
+        "label": "Document Tile",
+        "href": "/design-system/components/forms/document-tile",
+        "badge": "New"
+      },
+      {
         "label": "Filter Select",
         "href": "/design-system/components/forms/filter-select",
         "badge": "New"
@@ -129,6 +134,16 @@ export const NAV: NavGroup[] = [
         "label": "Form Field",
         "href": "/design-system/components/forms/form-field",
         "badge": "Stable"
+      },
+      {
+        "label": "Form Inset",
+        "href": "/design-system/components/forms/form-inset",
+        "badge": "New"
+      },
+      {
+        "label": "Form Panel",
+        "href": "/design-system/components/forms/form-panel",
+        "badge": "New"
       },
       {
         "label": "Form Section",

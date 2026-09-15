@@ -24,6 +24,7 @@
 @import "./components/forms/date-picker.css";
 @import "./components/forms/date-range-picker.css";
 @import "./components/forms/declaration-checkbox.css";
+@import "./components/forms/document-tile.css";
 @import "./components/forms/error-summary.css";
 @import "./components/forms/filter-select.css";
 @import "./components/forms/form-section.css";

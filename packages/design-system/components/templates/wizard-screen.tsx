@@ -215,18 +215,11 @@ export function WizardScreen({
           submitLabel={submitLabel}
           error={error}
           errorRef={errorRef}
+          onCancel={onCancel}
         >
           {children}
         </Wizard>
       </ScreenBody>
-
-      {onCancel ? (
-        <div>
-          <Button appearance="text" onClick={onCancel}>
-            Cancel
-          </Button>
-        </div>
-      ) : null}
     </div>
   );
 }
