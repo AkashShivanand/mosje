@@ -1,14 +1,24 @@
 "use client";
 
 import * as React from "react";
-import { Checkbox, SiteHeader, buttonClasses, type NavItem } from "@mosje/design-system";
+import { Checkbox, SiteHeader, buttonClasses, type EventItem, type NavItem } from "@mosje/design-system";
 
 const EMBLEM = "/design-system/national-emblem.svg";
+
+/** Three new: one waiting on the reader, two unread updates. The badge reads 3. */
+const NOTICES: EventItem[] = [
+  { id: "a1", at: "2026-09-12T10:30:00+05:30", action: "Deficiency response requested",
+    subject: "Application 2026/PMS/01284", actionRequired: true, dueAt: "2026-09-30", tone: "warning" },
+  { id: "u2", at: "2026-09-12T09:10:00+05:30", action: "Application sanctioned",
+    subject: "Application 2026/PMS/01192", tone: "success", unread: true },
+  { id: "u1", at: "2026-09-11T16:45:00+05:30", action: "Application moved forward",
+    subject: "Application 2026/PMS/01170", tone: "info", unread: true },
+];
 
 /**
  * The masthead's props, switched one at a time on a live instance. The Figma
  * page's arrangements section draws the same list — every boolean on both
- * mastheads, the lockup and the account menu, plus the two props only code
+ * mastheads, the lockup, the account menu and the notification bell, plus the two props only code
  * has, `actions` and `brandDivider` — so a designer reading the library and a
  * developer reading this page see one set.
  */
@@ -17,6 +27,7 @@ interface Switches {
   search: boolean;
   actions: boolean;
   account: boolean;
+  notifications: boolean;
   beta: boolean;
   ministry: boolean;
   org: boolean;
@@ -31,6 +42,7 @@ const CONTROLS: { key: keyof Switches; label: string }[] = [
   { key: "search", label: "search" },
   { key: "actions", label: "actions" },
   { key: "account", label: "account (portal)" },
+  { key: "notifications", label: "notifications (portal)" },
   { key: "beta", label: "beta" },
   { key: "ministry", label: "brandLines.ministry" },
   { key: "org", label: "brandLines.org" },
@@ -55,6 +67,7 @@ export function SiteHeaderArrangementsPreview(): React.JSX.Element {
     search: true,
     actions: true,
     account: true,
+    notifications: false,
     beta: true,
     ministry: true,
     org: true,
@@ -135,6 +148,11 @@ export function SiteHeaderArrangementsPreview(): React.JSX.Element {
                   { label: "Profile", onSelect: () => {} },
                   { label: "Sign out", danger: true, onSelect: () => {} },
                 ]
+              : undefined
+          }
+          notifications={
+            s.portal && s.notifications
+              ? { items: NOTICES, href: "#notifications", onMarkAllRead: () => {} }
               : undefined
           }
           onToggleNav={s.portal ? () => {} : undefined}

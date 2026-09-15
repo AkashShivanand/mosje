@@ -408,6 +408,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     iconName: "menu_open",
   },
   {
+    title: "Notification Bell",
+    section: "Navigation",
+    href: "/design-system/components/navigation/notification-bell",
+    keywords: "notification bell alerts unread count badge inbox masthead portal updates action needed",
+    description: "The signed-in reader's notifications control in the portal masthead, before the account block.",
+    type: "component",
+    iconName: "notifications",
+  },
+  {
     title: "Sidebar",
     section: "Navigation",
     href: "/design-system/components/section-templates/sidebar",

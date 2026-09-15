@@ -2,9 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Alert, Badge, Button, DonutChart, Icon, MetricCard } from "@mosje/design-system";
+import { Alert, Badge, Button, DonutChart, Icon, MetricCard, buttonClasses } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { formatDate, formatGrant, ngoApplications, ngoStatusLabel, statusTone } from "@/lib/e-anudaan/selectors";
+import { ngoActionApplications, notificationItems } from "@/lib/e-anudaan/notifications";
+import { usePreviousVisit } from "@/lib/e-anudaan/last-visit";
 import type { AppStatus } from "@/lib/e-anudaan/types";
 
 /** Display names for the four schemes the NGO portal offers. */
@@ -14,6 +16,13 @@ const SCHEME_TITLES: Record<string, { title: string; subtitle: string }> = {
   NAPDDR: { title: "NAPDDR", subtitle: "Drug Demand Reduction & Social Re-integration" },
   SMILE: { title: "SMILE (Garima Greh)", subtitle: "Shelter Homes for Transgender Persons" },
 };
+
+/** "Application moved forward (3), Application sanctioned (1)" — one phrase per kind, never a list of repeats. */
+function summariseUpdates(actions: string[]): string {
+  const counts = new Map<string, number>();
+  for (const a of actions) counts.set(a, (counts.get(a) ?? 0) + 1);
+  return [...counts.entries()].map(([a, n]) => `${a} (${n})`).join(", ");
+}
 
 function getTimeGreeting(): string {
   const hour = new Date().getHours();
@@ -36,7 +45,19 @@ export default function NgoDashboardPage() {
   // Submitted 4 → 5), so the clone recomputes from the store rather than printing fixed figures.
   const totalAppsCount = apps.length;
   const inReviewCount = apps.filter((a) => a.holder.kind === "chain" || a.holder.kind === "pd").length;
-  const needsActionCount = apps.filter((a) => a.status === "DeficiencyRaised").length;
+  // The bell's "Action Needed" reads the same selector, so this card and the bell cannot disagree.
+  const actionApps = React.useMemo(() => ngoActionApplications(state), [state]);
+  const needsActionCount = actionApps.length;
+  // Since Your Last Visit — updates newer than the previous sign-in. Action items are not
+  // repeated here: the banner below already carries them.
+  const previousVisit = usePreviousVisit("ngo");
+  const updatesSinceVisit = React.useMemo(
+    () =>
+      previousVisit
+        ? notificationItems(state, "ngo").filter((n) => !n.actionRequired && Date.parse(n.at) > Date.parse(previousVisit))
+        : [],
+    [state, previousVisit],
+  );
   const sanctionedCount = apps.filter((a) => a.sanction).length;
 
   const donutChartData = React.useMemo(() => {
@@ -70,10 +91,7 @@ export default function NgoDashboardPage() {
   const topBucket = [...donutChartData].sort((a, b) => b.value - a.value)[0];
 
   /** The oldest deficiency still awaiting the applicant — drives the action banner. */
-  const openDeficiency = React.useMemo(
-    () => apps.find((a) => a.status === "DeficiencyRaised"),
-    [apps],
-  );
+  const openDeficiency = actionApps[0];
 
   const CRORE = 1_00_00_000;
   const LAKH = 1_00_000;
@@ -155,6 +173,26 @@ export default function NgoDashboardPage() {
           </Link>
         </div>
       </header>
+
+      {/* ── 1a. SINCE YOUR LAST VISIT ──────────────────────────────────────── */}
+      {/* An applicant signs in a few times a year and was not here when these arrived; the bell
+          only reaches a reader already on the page. Shown only when something did change. */}
+      {previousVisit && updatesSinceVisit.length > 0 && (
+        <Alert
+          status="info"
+          title={`Since Your Last Visit on ${formatDate(previousVisit)}`}
+          action={
+            <Link href="/portals/e-anudaan/ngo/notifications" className={buttonClasses("primary", "outlined", "sm")}>
+              View Notifications
+            </Link>
+          }
+        >
+          <p className="text-body-2 text-ink">
+            {updatesSinceVisit.length} update{updatesSinceVisit.length === 1 ? "" : "s"} to your applications:{" "}
+            {summariseUpdates(updatesSinceVisit.map((n) => n.action))}.
+          </p>
+        </Alert>
+      )}
 
       {/* ── 2. EXECUTIVE ACTION NOTICE BANNER ────────────────────────────── */}
       {/* Shown only when something is actually waiting on the applicant, and it names the real
