@@ -180,6 +180,10 @@ export const DOCUMENTED_BY = {
   PasswordFields: "AuthFormCard", PinFields: "AuthFormCard",
   DarpanFields: "AuthFormCard", IdentifierFields: "AuthFormCard",
   NewPasswordFields: "AuthFormCard", AuthResult: "AuthFormCard",
+  // RECOVERY IS THE LOGIN TEMPLATE'S OTHER HALF. It takes the same brand fields
+  // and exists so a portal's sign-in and recovery cannot drift; the page that
+  // explains the login config is where a reader needs to find it, beside it.
+  PortalRecoveryTemplate: "PortalLoginTemplate",
   AuthHelpLine: "AuthFormCard",
   OtpRequestFields: "AuthFormCard", OtpVerifyFields: "AuthFormCard",
   ReviewSection: "Wizard", ReviewItem: "Wizard",

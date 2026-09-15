@@ -3,12 +3,49 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { FormField } from "../forms/form-field";
+import type { AutocompleteToken } from "../forms/field-types";
 import { Input } from "../forms/input";
 import { OtpInput } from "../forms/otp-input";
 import { PasswordInput } from "../forms/password-input";
 import { PasswordStrengthMeter } from "../forms/password-strength-meter";
 import { MaskedContactRow, ResendTimer } from "./auth-parts";
+import type { PortalIdentifierKind } from "./types";
 import "./credential-fields.css";
+
+/**
+ * The four attributes an identifier's KIND decides, in one place, so the
+ * password, PIN and OTP stacks cannot disagree about what a mobile number is.
+ *
+ * `clean` runs on every keystroke: a mobile field strips everything but digits
+ * and caps at ten, so a pasted "+91 98100 07001" arrives as the ten digits the
+ * register is keyed on; a username or email is left exactly as typed.
+ */
+export function identifierControl(kind: PortalIdentifierKind = "text"): {
+  type: "text" | "tel" | "email";
+  inputMode?: "text" | "numeric" | "email";
+  clean: (value: string) => string;
+} {
+  switch (kind) {
+    case "mobile":
+      return {
+        type: "tel",
+        inputMode: "numeric",
+        // No `maxLength`: the browser truncates a PASTE to it before this runs,
+        // so "+91 98100 07001" would arrive as "+91 981000". The cap is applied
+        // after the digits are extracted instead — a leading 91 or 0 is a
+        // country or trunk prefix and is dropped; anything else keeps the first ten.
+        clean: (v) => {
+          const d = v.replace(/\D/g, "");
+          if (d.length <= 10) return d;
+          return /^(91|0)/.test(d) ? d.slice(-10) : d.slice(0, 10);
+        },
+      };
+    case "email":
+      return { type: "email", inputMode: "email", clean: (v) => v.trim() };
+    default:
+      return { type: "text", clean: (v) => v };
+  }
+}
 
 /* ---------------------------------------------------------------------------
  * The swappable region of AuthFormCard
@@ -75,6 +112,12 @@ export interface PasswordFieldsProps {
   passwordPlaceholder?: string;
   /** Where "Forgot Password?" goes. Omit it and no link is drawn. */
   forgotHref?: string;
+  /** What the identifier takes — see `PortalIdentifierKind`. @default "text" */
+  identifierKind?: PortalIdentifierKind;
+  /** An error against the identifier, e.g. "That mobile number is not registered." */
+  identifierError?: React.ReactNode;
+  /** An error against the password, e.g. "Incorrect password." */
+  passwordError?: React.ReactNode;
   /**
    * The bot check, rendered UNDER the password field.
    *
@@ -110,19 +153,24 @@ export function PasswordFields({
   passwordLabel = "Password",
   passwordPlaceholder = "Enter your password",
   forgotHref,
+  identifierKind = "text",
+  identifierError,
+  passwordError,
   botCheck = null,
   className,
 }: PasswordFieldsProps): React.JSX.Element {
+  const id = identifierControl(identifierKind);
   return (
     <Stack className={className}>
-      <FormField label={identifierLabel} required>
+      <FormField label={identifierLabel} error={identifierError} required>
         {(control) => (
           <Input
             {...control}
-            type="text"
+            type={id.type}
+            inputMode={id.inputMode}
             autoComplete="username"
             value={identifier}
-            onChange={(e) => onIdentifierChange(e.target.value)}
+            onChange={(e) => onIdentifierChange(id.clean(e.target.value))}
             placeholder={identifierPlaceholder}
           />
         )}
@@ -131,6 +179,7 @@ export function PasswordFields({
       <FormField
         label={passwordLabel}
         labelAction={forgotHref ? <a href={forgotHref}>Forgot Password?</a> : undefined}
+        error={passwordError}
         required
       >
         {(control) => (
@@ -167,6 +216,10 @@ export interface PinFieldsProps {
   length?: number;
   /** Where "Forgot PIN?" goes. */
   forgotHref?: string;
+  /** What the identifier takes. @default "text" */
+  identifierKind?: PortalIdentifierKind;
+  identifierError?: React.ReactNode;
+  pinError?: React.ReactNode;
   /** The bot check, under the PIN field. See `PasswordFieldsProps.botCheck`. */
   botCheck?: React.ReactNode;
   className?: string;
@@ -195,19 +248,24 @@ export function PinFields({
   identifierPlaceholder = "Enter User ID or Registered Mobile",
   length = 6,
   forgotHref,
+  identifierKind = "text",
+  identifierError,
+  pinError,
   botCheck = null,
   className,
 }: PinFieldsProps): React.JSX.Element {
+  const id = identifierControl(identifierKind);
   return (
     <Stack className={className}>
-      <FormField label={identifierLabel} required>
+      <FormField label={identifierLabel} error={identifierError} required>
         {(control) => (
           <Input
             {...control}
-            type="text"
+            type={id.type}
+            inputMode={id.inputMode}
             autoComplete="username"
             value={identifier}
-            onChange={(e) => onIdentifierChange(e.target.value)}
+            onChange={(e) => onIdentifierChange(id.clean(e.target.value))}
             placeholder={identifierPlaceholder}
           />
         )}
@@ -216,6 +274,7 @@ export function PinFields({
       <FormField
         label="PIN"
         labelAction={forgotHref ? <a href={forgotHref}>Forgot PIN?</a> : undefined}
+        error={pinError}
         required
       >
         {(control) => (
@@ -247,6 +306,8 @@ export interface DarpanFieldsProps {
   /** The organisation's PAN. Upper-cased as typed. */
   pan: string;
   onPanChange: (value: string) => void;
+  darpanIdError?: React.ReactNode;
+  panError?: React.ReactNode;
   className?: string;
 }
 
@@ -275,11 +336,13 @@ export function DarpanFields({
   onDarpanIdChange,
   pan,
   onPanChange,
+  darpanIdError,
+  panError,
   className,
 }: DarpanFieldsProps): React.JSX.Element {
   return (
     <Stack className={className}>
-      <FormField label="DARPAN ID" required>
+      <FormField label="DARPAN ID" error={darpanIdError} required>
         {(control) => (
           <Input
             {...control}
@@ -292,7 +355,7 @@ export function DarpanFields({
         )}
       </FormField>
 
-      <FormField label="PAN Number" required>
+      <FormField label="PAN Number" error={panError} required>
         {(control) => (
           <Input
             {...control}
@@ -315,13 +378,40 @@ export function DarpanFields({
  * ------------------------------------------------------------------------- */
 
 export interface OtpRequestFieldsProps {
-  /** The 10-digit mobile number. Non-digits are stripped before this is called. */
+  /**
+   * The destination the code goes to. Named for the default kind; with `kind`
+   * set to `email` or `text` it holds that value instead. For `mobile`,
+   * non-digits are stripped before `onMobileChange` is called.
+   */
   mobile: string;
   onMobileChange: (value: string) => void;
-  /** @default "Registered Mobile Number" */
+  /**
+   * What the destination is. @default "mobile"
+   *
+   * `email` for the Transgender Portal, which sends its code to an email
+   * address; `text` for NMBA's treatment centres, which type a Project Id and
+   * receive the code on the mobile registered against it.
+   */
+  kind?: PortalIdentifierKind;
+  /** @default "Registered Mobile Number", "Email Address" or "Registered ID" by kind */
   label?: React.ReactNode;
+  /** @default "10-digit mobile number", "name@example.com" or none, by kind */
+  placeholder?: string;
+  /** A sentence under the field — "An OTP will be sent to this number." */
+  note?: React.ReactNode;
+  /** Why the code could not be sent — an unknown Project Id, say. Against the field. */
+  error?: React.ReactNode;
   className?: string;
 }
+
+const OTP_DEFAULTS: Record<
+  PortalIdentifierKind,
+  { label: string; placeholder?: string; autoComplete: AutocompleteToken }
+> = {
+  mobile: { label: "Registered Mobile Number", placeholder: "10-digit mobile number", autoComplete: "tel-national" },
+  email: { label: "Email Address", placeholder: "name@example.com", autoComplete: "email" },
+  text: { label: "Registered ID", autoComplete: "username" },
+};
 
 /**
  * Step one of the OTP route: the destination, alone.
@@ -337,25 +427,31 @@ export interface OtpRequestFieldsProps {
 export function OtpRequestFields({
   mobile,
   onMobileChange,
-  label = "Registered Mobile Number",
+  kind = "mobile",
+  label,
+  placeholder,
+  note,
+  error,
   className,
 }: OtpRequestFieldsProps): React.JSX.Element {
+  const id = identifierControl(kind);
+  const defaults = OTP_DEFAULTS[kind];
   return (
     <Stack className={className}>
-      <FormField label={label} required>
+      <FormField label={label ?? defaults.label} error={error} required>
         {(control) => (
           <Input
             {...control}
-            type="tel"
-            inputMode="numeric"
-            autoComplete="tel-national"
-            maxLength={10}
+            type={id.type}
+            inputMode={id.inputMode}
+            autoComplete={defaults.autoComplete}
             value={mobile}
-            onChange={(e) => onMobileChange(e.target.value.replace(/\D/g, ""))}
-            placeholder="10-digit mobile number"
+            onChange={(e) => onMobileChange(id.clean(e.target.value))}
+            placeholder={placeholder ?? defaults.placeholder}
           />
         )}
       </FormField>
+      {note ? <p className="ds-authfields__note">{note}</p> : null}
     </Stack>
   );
 }
@@ -380,6 +476,8 @@ export interface OtpVerifyFieldsProps {
   /** Seconds left on the resend cooldown. `0` renders the active state. */
   secondsRemaining: number;
   onResend: () => void;
+  /** "That code is not correct." — against the boxes. Pair it with `secondsRemaining={0}`. */
+  error?: React.ReactNode;
   className?: string;
 }
 
@@ -398,12 +496,13 @@ export function OtpVerifyFields({
   onOtpChange,
   secondsRemaining,
   onResend,
+  error,
   className,
 }: OtpVerifyFieldsProps): React.JSX.Element {
   return (
     <Stack className={className}>
       <MaskedContactRow channel={channel} maskedValue={maskedValue} onEdit={onEdit} />
-      <FormField label="Enter OTP" required>
+      <FormField label="Enter OTP" error={error} required>
         {(control) => (
           <OtpInput
             aria-describedby={control["aria-describedby"]}
@@ -436,6 +535,13 @@ export interface IdentifierFieldsProps {
    * field accepts a username too, because a numeric keypad cannot type letters.
    */
   inputMode?: "text" | "numeric";
+  /**
+   * What the identifier takes. When set it decides the control's `type` and
+   * `inputMode` and cleans each keystroke (a mobile keeps ten digits), and wins
+   * over `inputMode`. Leave it unset for a field that accepts a username OR a
+   * mobile number, which no single kind describes.
+   */
+  kind?: PortalIdentifierKind;
   /** A sentence under the field — what will be sent, or who may not use this route. */
   note?: React.ReactNode;
   /**
@@ -471,21 +577,23 @@ export function IdentifierFields({
   label = "Registered Mobile Number",
   placeholder,
   inputMode,
+  kind,
   note,
   error,
   className,
 }: IdentifierFieldsProps): React.JSX.Element {
+  const id = kind ? identifierControl(kind) : null;
   return (
     <Stack className={className}>
       <FormField label={label} error={error} required>
         {(control) => (
           <Input
             {...control}
-            type="text"
-            inputMode={inputMode}
+            type={id?.type ?? "text"}
+            inputMode={id?.inputMode ?? inputMode}
             autoComplete="username"
             value={identifier}
-            onChange={(e) => onIdentifierChange(e.target.value)}
+            onChange={(e) => onIdentifierChange(id ? id.clean(e.target.value) : e.target.value)}
             placeholder={placeholder}
           />
         )}

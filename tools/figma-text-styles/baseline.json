@@ -5,16 +5,14 @@
     "A ratchet: a count may only go down, and going down fails until this file is re-synced."
   ],
   "file": "3FF5l0SMNIwdpZrKkeyPTm",
-  "capturedOn": "2026-09-14",
+  "capturedOn": "2026-09-15",
   "pages": {
     "Accordion": 1,
     "Breadcrumbs": 8,
-    "Checkbox": 4,
     "Date-Time Picker": 4,
     "Map of India": 4,
     "Page Header": 1,
     "Progress Indicators": 20,
-    "Radio": 4,
     "Select": 4
   }
 }

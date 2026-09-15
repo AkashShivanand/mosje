@@ -60,42 +60,65 @@ Below the main Role Tabs, portals can configure a **Sub-Selection Switcher** all
 
 ## 3. API Specification (`PortalLoginConfig`)
 
-```typescript
-import { PortalLoginConfig, PortalLoginTemplate } from "@mosje/design-system";
+`types.ts` is the source of truth and its docstrings carry the reasons; the
+generated props table on `/design-system/components/auth/portal-login-template`
+is the reference. The shape, in brief:
 
-export interface PortalLoginConfig {
+```typescript
+interface PortalLoginConfig {
   portalId: string;
   portalName: string;
   portalTagline?: string;
   portalDescription?: string;
   changeHref?: string;
-  roles: Array<{
-    id: string;
-    label: string;
-    authModes?: Array<"password" | "otp" | "digilocker" | "darpan" | "aadhaar">;
-    authModeOptions?: Array<{
-      mode: "password" | "otp" | "digilocker" | "darpan" | "aadhaar";
-      label: string;
-      description?: string;
-    }>;
-    authSelectorType?: "segmented" | "radio" | "dropdown";
-    defaultMode?: "password" | "otp" | "digilocker" | "darpan" | "aadhaar";
-    description?: string;
-  }>;
+  roles: PortalRoleTab[];
   defaultRoleId?: string;
-  brandAssets?: {
-    emblemSrc?: string;
-    digitalIndiaSrc?: string;
-    samaveshLogoSrc?: string;
-    portalLogoSrc?: string;
-  };
+  captcha?: boolean;              // per role wins; off by default (WCAG 2.2 3.3.8)
+  consent?: boolean;
+  brandAssets?: PortalBrandAssets; // emblem, Digital India, SAMAVESH, hero, DigiLocker mark
+  extraFields?: React.ReactNode;
+  extraContent?: React.ReactNode;
   links?: {
-    forgotPasswordHref?: string;
-    registerHref?: string;
-    helpFaqHref?: string;
+    forgotPasswordHref?; registerHref?;
+    registerOptions?: { label: string; href: string }[]; // two routes, e.g. SCW
+    helpFaqHref?; digilockerHref?; termsHref?; privacyHref?;
   };
+  botCheck?: { mode?: "invisible" | "checkbox"; helpHref: string };
+}
+
+interface PortalRoleTab {
+  id: string; label: string; audience?: "citizen" | "officer" | "organisation";
+  authModes?: ("password" | "otp" | "pin" | "darpan")[];
+  authModeOptions?: { mode; label; description? }[];
+  authSelectorType?: "segmented" | "radio" | "dropdown";
+  defaultMode?; description?; digilocker?: boolean; captcha?: boolean;
+  identifierLabel?; identifierPlaceholder?;
+  identifierKind?: "text" | "mobile" | "email";     // password + PIN routes
+  otpIdentifierKind?: "text" | "mobile" | "email";  // where a code goes
+  otpIdentifierLabel?; otpIdentifierPlaceholder?;
+  subRoles?: { id: string; label: string }[];      // "Your role" select
+  subRoleLabel?; defaultSubRoleId?;
 }
 ```
+
+Template props beyond `config`: `onSubmit(payload)` (`roleId`, `subRoleId`,
+`authMode`, `credentials`, `botCheck`), `loading`, `error`, `fieldErrors`
+(`identifier` · `secret` · `otp` · `subRole`, each hidden once its field is
+edited), `onRequestOtp(request)` returning `{ ok: false, error }` or
+`{ ok: true, maskedDestination? }`, `roleId`, `onRoleChange`, `deepLinkRole`,
+`portalPicker`, `headingLevel`.
+
+**Demo fill.** The template listens for `demo:fill` itself. `extra.tab`,
+`extra.mode` and `extra.subRole` select a role, mode and sub-role; on the OTP
+route it sends the code through `onRequestOtp` and fills it in.
+
+### Password recovery — `PortalRecoveryTemplate`
+
+Same chrome, three flows: `otp` (identifier → code → new password → done),
+`link` (identifier → "Reset Link Sent"; the reset page is `startAt="reset"`) and
+`contact` (a notice naming who resets passwords). `onRequest`, `onVerify` and
+`onReset` each return `{ ok: false, error }` to hold the step. The `link` flow
+never discloses whether an account exists.
 
 ---
 
@@ -121,7 +144,6 @@ export const portalLoginConfig: PortalLoginConfig = {
       label: "Beneficiary / Applicant",
       authModeOptions: [
         { mode: "otp", label: "Login with OTP", description: "Receive 6-digit OTP on your registered phone number." },
-        { mode: "digilocker", label: "Login with DigiLocker", description: "Fast-track identity and document verification." },
         { mode: "password", label: "Login with Password", description: "Use your user ID and portal password." },
       ],
       authSelectorType: "radio",

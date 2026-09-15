@@ -1,51 +1,111 @@
 "use client";
 
+// DS Audit: PortalLoginShell ✅ · AuthFormCard ✅ · OtpVerifyFields ✅ · AuthResult ✅
+// · AuthHelpLine ✅ · Button ✅ — all existing. Not the login template: this page
+// signs nobody in, it confirms a code before an action.
+
 import * as React from "react";
-import Link from "next/link";
-import { Field, TextInput } from "@/components/nhapoa/ui";
-import { Icon, Button } from "@mosje/design-system";
+import { useRouter } from "next/navigation";
+import {
+  AuthFormCard,
+  AuthHelpLine,
+  AuthResult,
+  Button,
+  OtpVerifyFields,
+  PortalLoginShell,
+} from "@mosje/design-system";
+
+const BASE = "/portals/nhapoa";
+const LOGIN_HREF = `${BASE}/login`;
+
+/** The same chrome the SAMBAL login and recovery pages pass the template. */
+const CHROME = {
+  emblemSrc: `${BASE}/brand/national-emblem.svg`,
+  digitalIndiaSrc: `${BASE}/brand/digital-india.svg`,
+  // org-logo-exempt(portal-local): SAMBAL serves its own copy of the chrome
+  // marks from its brand folder, byte-identical to the estate's.
+  samaveshLogoSrc: `${BASE}/brand/samavesh-logo.svg`,
+  signingInto: "SAMBAL",
+  portalTagline: "Smart Access for Mainstreaming of Beneficiaries through Augmented Linkages",
+  changeHref: "/portals",
+};
 
 /**
- * Mock OTP verify screen. Any 6-digit code is accepted (demo). Shown where the
- * live portal gates an action behind OTP; wired into the citizen flows in NHA-2.
+ * Mock OTP verification. Any 6-digit code verifies (demo). Stands where the live
+ * portal gates a citizen action behind a code; nothing links here yet.
+ *
+ * Drawn in the login page's own chrome so the step does not look like a
+ * different department.
  */
 export default function VerifyOtpPage() {
+  const router = useRouter();
   const [otp, setOtp] = React.useState("");
-  const [status, setStatus] = React.useState<"idle" | "ok" | "err">("idle");
+  const [error, setError] = React.useState<string | null>(null);
+  const [verified, setVerified] = React.useState(false);
+  const [timer, setTimer] = React.useState(30);
+
+  React.useEffect(() => {
+    if (verified || timer <= 0) return;
+    const t = setInterval(() => setTimer((s) => Math.max(0, s - 1)), 1000);
+    return () => clearInterval(t);
+  }, [verified, timer]);
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-surface-canvas px-4 py-12">
-      <div className="w-full max-w-md rounded-2xl border border-line bg-white p-8 shadow-card">
-        <h1 className="text-headline-3 text-ink">Verify OTP</h1>
-        <p className="mt-1 mb-6 text-body-2 text-ink-muted">
-          Enter the 6-digit code sent to your registered mobile number.
-        </p>
-        <form
-          className="space-y-5"
+    <PortalLoginShell {...CHROME} tabs={[]}>
+      {verified ? (
+        <AuthResult
+          headingLevel={1}
+          announce
+          heading="OTP Verified"
+          description="The code has been verified."
+          action={
+            <Button href={LOGIN_HREF} fullWidth>
+              Back to Login
+            </Button>
+          }
+        />
+      ) : (
+        <AuthFormCard
+          headingLevel={1}
+          heading="Verify OTP"
           onSubmit={(e) => {
             e.preventDefault();
-            setStatus(/^\d{6}$/.test(otp) ? "ok" : "err");
+            if (/^\d{6}$/.test(otp)) {
+              setVerified(true);
+            } else {
+              setError("Enter the 6-digit OTP.");
+              setTimer(0);
+            }
           }}
-        >
-          <Field label="One-Time Password" required>
-            <TextInput
-              inputMode="numeric"
-              maxLength={6}
-              value={otp}
-              onChange={(e) => setOtp(e.target.value.replace(/\D/g, ""))}
-              placeholder="••••••"
+          credentialFields={
+            <OtpVerifyFields
+              maskedValue="your registered mobile number"
+              channel="phone"
+              /* There is no identifier step on this page; "Edit" returns the
+                 reader to wherever they came from. */
+              onEdit={() => router.back()}
+              otp={otp}
+              onOtpChange={(value) => {
+                setOtp(value);
+                if (error) setError(null);
+              }}
+              secondsRemaining={timer}
+              onResend={() => {
+                setOtp("");
+                setError(null);
+                setTimer(30);
+              }}
+              error={error}
             />
-          </Field>
-          {status === "ok" && <p className="text-body-2 font-medium text-approve-fg">Verified successfully.</p>}
-          {status === "err" && <p className="text-body-2 font-medium text-reject-fg">Enter a valid 6-digit code.</p>}
-          <Button type="submit" className="w-full">
-            Verify
-          </Button>
-        </form>
-        <Link href="/portals/nhapoa/login" className="mt-6 inline-flex items-center gap-2 text-label-1 font-semibold text-navy hover:underline">
-          <Icon name="arrow_back" size={16} /> Back to login
-        </Link>
-      </div>
-    </main>
+          }
+          primaryAction={
+            <Button type="submit" fullWidth>
+              Verify OTP
+            </Button>
+          }
+          footer={<AuthHelpLine href={LOGIN_HREF}>Back to Login</AuthHelpLine>}
+        />
+      )}
+    </PortalLoginShell>
   );
 }

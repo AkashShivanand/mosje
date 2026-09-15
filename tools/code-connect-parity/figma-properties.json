@@ -1850,8 +1850,8 @@
   },
   "AuthFormCard": {
     "nodeId": "55445:778",
-    "captured": "2026-09-13",
-    "note": "`Show consent` defaults to false since 2026-09-13 — the consent line is optional per portal. `Show role tabs` is omitted because the role tabs belong to PortalLoginShell in code, not to this card. `Credential fields` is the slot the snippet names in a comment: Code Connect cannot resolve the swapped master to a JSX stack from here.",
+    "captured": "2026-09-15",
+    "note": "`Show consent` defaults to false since 2026-09-13 — the consent line is optional per portal. `Show role tabs` is omitted because the role tabs belong to PortalLoginShell in code, not to this card. `Credential fields` is the slot the snippet names in a comment: Code Connect cannot resolve the swapped master to a JSX stack from here; its preferred values are now the three Identifier-kind sets (Identifier + Password 58128:7186, Identifier + PIN 58128:56377, OTP request 58128:7065) plus the DARPAN and OTP verify masters. `Show role select` (2026-09-15) draws a library Select above the slot; its label is the exposed `Role select` instance's Label Text, read with findText, because Figma cannot bind a card text property to a nested instance's layer.",
     "properties": {
       "Show role tabs": {
         "type": "BOOLEAN",
@@ -1864,6 +1864,10 @@
       "Show method tabs": {
         "type": "BOOLEAN",
         "defaultValue": true
+      },
+      "Show role select": {
+        "type": "BOOLEAN",
+        "defaultValue": false
       },
       "Credential fields": {
         "type": "INSTANCE_SWAP"
@@ -1880,6 +1884,35 @@
     "deliberatelyOmitted": [
       "Show role tabs",
       "Credential fields"
+    ]
+  },
+  "PortalRecoveryTemplate": {
+    "nodeId": "56640:4103",
+    "captured": "2026-09-15",
+    "note": "Auth / CredentialRecovery. Step spans the three flows: Request, Verify, Reset, Success = config.flow \"otp\"; Link Request, Link Sent = \"link\"; Contact = \"contact\". The step is the component's own state, so the template maps Step to flow and, for Reset, to startAt=\"reset\". Device has no prop — the template is responsive in CSS.",
+    "properties": {
+      "Device": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Mobile",
+          "Desktop"
+        ]
+      },
+      "Step": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Request",
+          "Verify",
+          "Reset",
+          "Success",
+          "Link Request",
+          "Link Sent",
+          "Contact"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Device"
     ]
   }
 }

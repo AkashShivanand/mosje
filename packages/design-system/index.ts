@@ -718,12 +718,24 @@ export type {
 } from "./components/auth/portal-login-shell";
 export { PortalLoginTemplate } from "./components/auth/portal-login-template";
 export type { PortalLoginTemplateProps } from "./components/auth/portal-login-template";
+// Password recovery on the login page's own chrome — the code counterpart of the
+// Figma `Auth / CredentialRecovery`, which had none until 2026-09-14.
+export { PortalRecoveryTemplate } from "./components/auth/portal-recovery-template";
+export type { PortalRecoveryTemplateProps } from "./components/auth/portal-recovery-template";
 export type {
   PortalLoginConfig,
   PortalRoleTab as PortalConfigRoleTab,
   PortalAuthMode,
   PortalAudience,
   PortalBrandAssets,
+  PortalIdentifierKind,
+  PortalSubRole,
+  PortalLoginFieldErrors,
+  OtpRequest,
+  AuthStepResult,
+  PortalRecoveryConfig,
+  PortalRecoveryFlow,
+  PortalRecoveryStep,
   LoginSubmitPayload,
 } from "./components/auth/types";
 // Auth parts — the pieces every portal login is assembled from. Mirrors the

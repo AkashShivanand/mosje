@@ -25,10 +25,27 @@ export function AnnouncementBanner() {
     setShow(true);
   }, []);
 
+  // The login shell fills one viewport; tell it how tall this banner is so the two together
+  // fit instead of scrolling by the banner's height (see --ds-plogin-offset in the DS).
+  const ref = React.useRef<HTMLDivElement>(null);
+  React.useEffect(() => {
+    const el = ref.current;
+    const root = document.documentElement;
+    if (!show || !el) return;
+    const measure = () => root.style.setProperty("--ds-plogin-offset", `${el.getBoundingClientRect().height}px`);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      root.style.removeProperty("--ds-plogin-offset");
+    };
+  }, [show]);
   if (!show) return null;
 
   return (
     <div
+      ref={ref}
       role="region"
       aria-label="Portal name change notice"
       className="sticky top-0 z-40 border-b border-white/10 bg-navy-950 text-white"
