@@ -84,6 +84,8 @@ const meta = {
   },
   argTypes: {
     signingInto: { control: "text" },
+    portalTagline: { control: "text" },
+    portalDescription: { control: "text" },
     changeHref: { control: "text" },
     emblemSrc: { control: false },
     digitalIndiaSrc: { control: false },
@@ -172,7 +174,26 @@ export const ADifferentPortal: Story = {
   ),
 };
 
-/** A single login method — the tab strip still renders, with one pill. */
+/**
+ * Optional `portalTagline` and `portalDescription` under the portal name in the
+ * Signing Into strip — for a portal whose short name needs its expansion, as
+ * SMILE Beggary does. Large screens only: the phone strip shows the name alone.
+ */
+export const WithTaglineAndDescription: Story = {
+  args: {
+    signingInto: "SMILE Beggary",
+    portalTagline: "Support For Marginalized Individuals For Livelihood & Enterprise",
+    portalDescription: "Comprehensive Rehabilitation of Persons Engaged in Begging",
+    tabs: [{ label: "Password", href: "#", active: true }],
+  },
+  render: (args) => (
+    <PortalLoginShell {...args}>
+      <PasswordForm />
+    </PortalLoginShell>
+  ),
+};
+
+/** A single login method — no tab strip: tabs render only when there is a choice. */
 export const SingleTab: Story = {
   args: {
     tabs: [{ label: "Password", href: "/portals/scw/login", active: true }],

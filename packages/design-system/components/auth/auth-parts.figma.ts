@@ -9,7 +9,11 @@
 // See .claude/rules/component-authoring.md §12.
 //
 // PROPERTY COVERAGE — the set's properties are accounted for:
-//   Portal name  -> `portalName`
+//   Portal name       -> `portalName`
+//   Tagline           -> `tagline`, emitted only when Show tagline is on
+//   Show tagline      -> gates `tagline` (added 2026-09-14, default off)
+//   Description       -> `description`, emitted only when Show description is on
+//   Show description  -> gates `description` (added 2026-09-14, default off)
 //   Device       -> not a prop. On 2026-09-05 the master became a Device set
 //                   (Desktop | Mobile) so the LoginHero's Mobile variant could
 //                   nest the 44px-mark, small-button strip the handoff draws.
@@ -71,10 +75,16 @@ import figma from "figma";
 const instance = figma.selectedInstance;
 
 const portalName = instance.getString("Portal name");
+// OPTIONAL LINES — a scheme whose short name needs its expansion (SMILE Beggary).
+// PortalLoginTemplate takes the same two as `config.portalTagline` / `portalDescription`.
+const tagline = instance.getBoolean("Show tagline") ? instance.getString("Tagline") : undefined;
+const description = instance.getBoolean("Show description") ? instance.getString("Description") : undefined;
 
 export default {
   example: figma.code`<SigningIntoBar
-  portalName="${portalName}"
+  portalName="${portalName}"${tagline ? figma.code`
+  tagline="${tagline}"` : ""}${description ? figma.code`
+  description="${description}"` : ""}
   tone="hero"
   onChange={openPortalPicker}
 />`,

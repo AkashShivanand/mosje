@@ -64,7 +64,7 @@ export type PortalAuthMode =
 export interface PortalAuthModeOption {
   /** Authentication workflow mode key */
   mode: PortalAuthMode;
-  /** Custom display label, e.g. "Login via Password", "Login with DARPAN ID", "Login via Mobile OTP" */
+  /** Custom display label, e.g. "Login with Password", "Login with DARPAN ID", "Login with OTP" */
   label: string;
   /** Optional subtext or description for radio / dropdown list items */
   description?: string;
@@ -236,9 +236,17 @@ export interface PortalLoginConfig {
   portalId: string;
   /** Portal human-readable name, e.g. "Nasha Mukt Bharat Abhiyaan" */
   portalName: string;
-  /** Optional mission tagline displayed in the hero left panel */
+  /**
+   * Optional, large screens only. A line under the portal name in the Signing Into strip — usually the
+   * scheme's expanded name ("Support For Marginalized Individuals For Livelihood &
+   * Enterprise" under "SMILE Beggary"). Omit it where the name says enough.
+   */
   portalTagline?: string;
-  /** Optional subtitle or description text */
+  /**
+   * Optional. A muted line under the tagline saying what the portal is for, e.g.
+   * "Comprehensive Rehabilitation of Persons Engaged in Begging". Shown without a
+   * tagline too. One sentence. Large screens only; the phone strip shows the name alone.
+   */
   portalDescription?: string;
   /** Href for changing selected portal — defaults to "/" */
   changeHref?: string;
@@ -259,18 +267,17 @@ export interface PortalLoginConfig {
    */
   captcha?: boolean;
   /**
-   * The sentence under the DARPAN fields naming the roles that route does NOT
-   * serve — E-Anudaan's reads "Other login roles (DWO, State, Ministry, Finance,
-   * PMU) use Ministry-issued credentials — separate login flow".
+   * Show the consent line — "By continuing, you agree to the Terms of Use and
+   * Privacy Policy" — under the submit button. @default false
    *
-   * **Portal copy, so it has no default.** Those five roles are E-Anudaan's org
-   * chart; a default here would print them on every portal that ever adopts the
-   * DARPAN route. Omit it and nothing renders — which is correct for a portal
-   * whose DARPAN route serves everyone it shows.
-   *
-   * Ignored unless a role offers `darpan`.
+   * **Optional, per portal.** A portal whose sign-in is for the public turns it
+   * on; one that signs in only organisations and officers — E-Anudaan's NGO and
+   * Ministry tabs — leaves it off. It renders only when at least one of
+   * `links.termsHref` or `links.privacyHref` is also set, because a disclosure
+   * pointing nowhere is worse than none. Mirrors `Show consent` on the Figma
+   * `Auth / AuthFormCard`, whose default is off to match.
    */
-  darpanNote?: React.ReactNode;
+  consent?: boolean;
   /** Brand asset path overrides */
   brandAssets?: PortalBrandAssets;
   /** Optional custom form fields or controls to inject */

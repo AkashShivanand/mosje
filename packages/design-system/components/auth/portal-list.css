@@ -10,6 +10,9 @@
     flex-direction: column;
     gap: var(--sa-stack-16);
     padding: var(--sa-padding-20);
+    /* The master's ground: `color/transparent/secondary/8`, the saffron tint the
+       handoff's portal switch draws behind the cards. */
+    background-color: var(--sa-color-transparent-secondary-8);
   }
 
   /* The chips WRAP. Six category names — one of them "Foundation & Autonomous

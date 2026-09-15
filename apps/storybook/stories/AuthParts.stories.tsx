@@ -62,8 +62,10 @@ import {
  * **`SigningIntoBar`** — `portalName` is the *scheme* name, never the acronym.
  * `tone` follows the **surface**: `hero` over the photograph scrim, `surface`
  * anywhere else — getting that backwards is the fastest way to fail contrast
- * here. `logoSrc`, `onChange`, `eyebrow`, `changeLabel` and `className` are the
- * rest; omit `onChange` and no Change control renders.
+ * here. `tagline` and `description` are optional lines under the name, for a
+ * scheme whose short name needs its expansion (SMILE Beggary). `logoSrc`,
+ * `onChange`, `eyebrow`, `changeLabel` and `className` are the rest; omit
+ * `onChange` and no Change control renders.
  *
  * Lifecycle: **Stable**.
  */
