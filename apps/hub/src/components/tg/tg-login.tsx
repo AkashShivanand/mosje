@@ -16,12 +16,14 @@ import {
 } from "@mosje/design-system";
 import { roleByEmail } from "@/lib/tg/roles";
 import { useTg } from "@/lib/tg/store/store";
+import { TG_DIGILOCKER } from "@/lib/tg/identity";
 
 const BASE = "/portals/tg";
 
 export const TG_CITIZEN_HOME = `${BASE}/citizen/dashboard`;
 
-const TG_LOGIN_CHROME = {
+/** Shared with the DigiLocker hand-off page, so both draw the same chrome. */
+export const TG_LOGIN_CHROME = {
   portalName: "SMILE - Transgender",
   portalTagline: "National Portal for Transgender Persons",
   changeHref: "/portals",
@@ -31,6 +33,7 @@ const TG_LOGIN_CHROME = {
     // org-logo-exempt(portal-local): TG serves its own copy under its brand folder.
     samaveshLogoSrc: `${BASE}/brand/samavesh-logo.svg`,
     heroImageSrc: "/portals/login-hero/smile-transgender.jpg",
+    digilockerLogoSrc: "/design-system/digilocker-mark.png",
   } satisfies PortalBrandAssets,
 };
 
@@ -45,8 +48,8 @@ const TG_LOGIN_CHROME = {
  *   resolved by `roleByEmail`, and no account is keyed on a mobile number.
  * - No Garima Greh tab: no Garima Greh portal exists in code.
  * - No Create Account: there is no citizen registration route.
- * - No DigiLocker card on the Citizen tab, although the handoff draws one:
- *   no portal login on the estate offers DigiLocker (decided 15 September 2026).
+ * - The handoff draws a DigiLocker card on the Citizen tab. It is an option,
+ *   off while `TG_DIGILOCKER.citizen.login` is off (see `lib/tg/identity.ts`).
  */
 function config(defaultRoleId: string): PortalLoginConfig {
   return {
@@ -61,6 +64,7 @@ function config(defaultRoleId: string): PortalLoginConfig {
         audience: "citizen",
         label: "Citizen",
         authModes: ["otp"],
+        digilocker: TG_DIGILOCKER.citizen.login,
         otpIdentifierKind: "email",
         otpIdentifierLabel: "Email Address",
         otpIdentifierPlaceholder: "name@example.com",
@@ -76,6 +80,7 @@ function config(defaultRoleId: string): PortalLoginConfig {
       },
     ],
     links: {
+      ...(TG_DIGILOCKER.citizen.login ? { digilockerHref: `${BASE}/citizen/sign-in/digilocker` } : {}),
       termsHref: "/website/terms-conditions",
       privacyHref: "/website/privacy-policy",
     },
