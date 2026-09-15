@@ -3879,6 +3879,18 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": ""
+      },
+      {
+        "name": "darpanIdError",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "panError",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
       }
     ]
   },
@@ -6583,6 +6595,12 @@ export const GENERATED_PROPS = {
         "description": "`inputMode` for the control. Pass `\"numeric\"` where the identifier can only be a mobile number, so a phone offers the number pad; leave it off where the field accepts a username too, because a numeric keypad cannot type letters."
       },
       {
+        "name": "kind",
+        "type": "PortalIdentifierKind = \"text\" | \"mobile\" | \"email\"",
+        "required": false,
+        "description": "What the identifier takes. When set it decides the control's `type` and `inputMode` and cleans each keystroke (a mobile keeps ten digits), and wins over `inputMode`. Leave it unset for a field that accepts a username OR a mobile number, which no single kind describes."
+      },
+      {
         "name": "label",
         "type": "React.ReactNode",
         "required": false,
@@ -8876,7 +8894,7 @@ export const GENERATED_PROPS = {
         "name": "mobile",
         "type": "string",
         "required": true,
-        "description": "The 10-digit mobile number. Non-digits are stripped before this is called."
+        "description": "The destination the code goes to. Named for the default kind; with `kind` set to `email` or `text` it holds that value instead. For `mobile`, non-digits are stripped before `onMobileChange` is called."
       },
       {
         "name": "onMobileChange",
@@ -8891,10 +8909,36 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "error",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Why the code could not be sent — an unknown Project Id, say. Against the field."
+      },
+      {
+        "name": "kind",
+        "type": "PortalIdentifierKind = \"text\" | \"mobile\" | \"email\"",
+        "required": false,
+        "default": "\"mobile\"\n\n`email` for the Transgender Portal, which sends its code to an email\naddress; `text` for NMBA's treatment centres, which type a Project Id and\nreceive the code on the mobile registered against it.",
+        "description": "What the destination is."
+      },
+      {
         "name": "label",
         "type": "React.ReactNode",
         "required": false,
-        "default": "\"Registered Mobile Number\"",
+        "default": "\"Registered Mobile Number\", \"Email Address\" or \"Registered ID\" by kind",
+        "description": ""
+      },
+      {
+        "name": "note",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A sentence under the field — \"An OTP will be sent to this number.\""
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "default": "\"10-digit mobile number\", \"name@example.com\" or none, by kind",
         "description": ""
       }
     ]
@@ -8951,6 +8995,12 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": ""
+      },
+      {
+        "name": "error",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "\"That code is not correct.\" — against the boxes. Pair it with `secondsRemaining={0}`."
       }
     ]
   },
@@ -9280,6 +9330,19 @@ export const GENERATED_PROPS = {
         "description": "Where \"Forgot Password?\" goes. Omit it and no link is drawn."
       },
       {
+        "name": "identifierError",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "An error against the identifier, e.g. \"That mobile number is not registered.\""
+      },
+      {
+        "name": "identifierKind",
+        "type": "PortalIdentifierKind = \"text\" | \"mobile\" | \"email\"",
+        "required": false,
+        "default": "\"text\"",
+        "description": "What the identifier takes — see `PortalIdentifierKind`."
+      },
+      {
         "name": "identifierLabel",
         "type": "React.ReactNode",
         "required": false,
@@ -9292,6 +9355,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"Enter User ID or Registered Email\"",
         "description": ""
+      },
+      {
+        "name": "passwordError",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "An error against the password, e.g. \"Incorrect password.\""
       },
       {
         "name": "passwordLabel",
@@ -9536,6 +9605,19 @@ export const GENERATED_PROPS = {
         "description": "Where \"Forgot PIN?\" goes."
       },
       {
+        "name": "identifierError",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "identifierKind",
+        "type": "PortalIdentifierKind = \"text\" | \"mobile\" | \"email\"",
+        "required": false,
+        "default": "\"text\"",
+        "description": "What the identifier takes."
+      },
+      {
         "name": "identifierLabel",
         "type": "React.ReactNode",
         "required": false,
@@ -9555,6 +9637,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "6",
         "description": "How many digits."
+      },
+      {
+        "name": "pinError",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
       }
     ]
   },
@@ -9795,22 +9883,21 @@ export const GENERATED_PROPS = {
         "name": "digitalIndiaSrc",
         "type": "string",
         "required": true,
-        "default": "\"/brand/digital-india.svg\"",
+        "default": "DEFAULT_LOGIN_MARKS.digitalIndiaSrc",
         "description": "Digital India logo URL"
       },
       {
         "name": "emblemSrc",
         "type": "string",
         "required": true,
-        "default": "\"/brand/national-emblem.svg\"",
+        "default": "DEFAULT_LOGIN_MARKS.emblemSrc",
         "description": "National Emblem SVG URL, e.g. `/portals/nmba/brand/national-emblem.svg`"
       },
       {
         "name": "samaveshLogoSrc",
         "type": "string",
         "required": true,
-  // org-logo-exempt(generated): copied from the component's TSDoc; prose, not a usage.
-        "default": "\"/brand/samavesh-logo.svg\"",
+        "default": "DEFAULT_LOGIN_MARKS.samaveshLogoSrc",
         "description": "SAMAVESH circular logo URL"
       },
       {
@@ -9896,6 +9983,13 @@ export const GENERATED_PROPS = {
         "description": "Error message to display inside the alert banner"
       },
       {
+        "name": "fieldErrors",
+        "type": "PortalLoginFieldErrors | null",
+        "required": false,
+        "default": "null",
+        "description": "Errors against individual fields, set after a submit — \"That mobile number is not registered\" against the identifier rather than in the banner. Each hides itself once the reader edits its field, and returns only when a NEW object is passed. So keep it in state and set it on submit; an object literal written inline would count as new on every render and never hide."
+      },
+      {
         "name": "headingLevel",
         "type": "1 | 2 | 3",
         "required": false,
@@ -9908,6 +10002,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "Loading state during form submission"
+      },
+      {
+        "name": "onRequestOtp",
+        "type": "(request: OtpRequest) => AuthStepResult | void | Promise<AuthStepResult | void>",
+        "required": false,
+        "description": "Called when the reader presses Send OTP or Resend, BEFORE the code step opens. Return `{ ok: false, error }` to keep them on the identifier with the error against it — an unknown email, an unregistered Project Id — or `{ ok: true, maskedDestination }` to say where the code went. May be async; the button shows its loading state while it runs. Omit it and the code step opens on any complete identifier, which is the prototype behaviour every OTP login on the estate had before this existed."
       },
       {
         "name": "onRoleChange",
@@ -10027,6 +10127,56 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "description": "Whether the mobile navigation drawer is open. **Controlled when you pass it, and you almost always should**: the masthead carries the menu button, the masthead is a slot, and a drawer the header cannot open is a drawer a citizen on a phone cannot reach. Pass the same state to `SiteHeader`'s `navExpanded` / `onToggleNav` and to this. Left uncontrolled it still works — the rail's own controls drive it — which is what a story or a specimen wants."
+      }
+    ]
+  },
+  "PortalRecoveryTemplateProps": {
+    "source": "packages/design-system/components/auth/portal-recovery-template.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "config",
+        "type": "PortalRecoveryConfig",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "headingLevel",
+        "type": "1 | 2 | 3",
+        "required": false,
+        "default": "1 — the recovery step is the whole page.",
+        "description": ""
+      },
+      {
+        "name": "onRequest",
+        "type": "(identifier: string) => AuthStepResult | void | Promise<AuthStepResult | void>",
+        "required": false,
+        "description": "Step one. Return `{ ok: false, error }` to keep the reader on the field. **On the `link` flow, never return an error that says the account does not exist.** A recovery form that answers \"no such user\" tells anyone who asks which accounts are real; the confirmation is worded so it does not. Refuse a malformed value, nothing more."
+      },
+      {
+        "name": "onReset",
+        "type": "(password: string) => AuthStepResult | void | Promise<AuthStepResult | void>",
+        "required": false,
+        "description": "The new password, already checked for length and match."
+      },
+      {
+        "name": "onStepChange",
+        "type": "(step: PortalRecoveryStep) => void",
+        "required": false,
+        "description": "Called with each step as the reader reaches it — for analytics, or a URL."
+      },
+      {
+        "name": "onVerify",
+        "type": "(otp: string) => AuthStepResult | void | Promise<AuthStepResult | void>",
+        "required": false,
+        "description": "The `otp` flow's code. Return `{ ok: false, error }` for a wrong code."
+      },
+      {
+        "name": "startAt",
+        "type": "\"request\" | \"reset\"",
+        "required": false,
+        "default": "\"request\"\n\n`\"reset\"` is the page an emailed reset link lands on — the second half of the\n`link` flow, which is a separate route because the link is.",
+        "description": "Where the flow opens."
       }
     ]
   },
