@@ -4,6 +4,7 @@ import * as React from "react";
 import { cn } from "../../utils/cn";
 import { useCornerRailOffset, useRailClearance } from "../../foundations/corner-rail";
 import { Icon } from "../utilities/icon";
+import { Chip } from "../forms/chip";
 import { ChatbotMascot } from "./chatbot-mascot";
 import "./chatbot.css";
 
@@ -758,13 +759,16 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
                     // element rather than through a per-item class.
                     style={{ ["--ds-chatbot-i" as string]: i }}
                   >
-                    <button
-                      type="button"
+                    {/* The library Chip. A reply is an ACTION, not a toggle, so the
+                        pressed state Chip announces is removed — "not pressed" on
+                        every suggestion would describe a switch that is not there. */}
+                    <Chip
                       className="ds-chatbot__reply"
-                      onClick={() => void handleQuickReply(r)}
+                      onSelectedChange={() => void handleQuickReply(r)}
+                      aria-pressed={undefined}
                     >
                       {r.label}
-                    </button>
+                    </Chip>
                   </li>
                 ))}
               </ul>

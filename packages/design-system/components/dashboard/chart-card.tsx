@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { Button } from "../actions/button";
 import { ChartExport, type ChartExportFormat } from "./chart-export";
 import { CardState, actionForState, type CardStateKind } from "./card-state";
 import { CardSkeleton, type CardSkeletonShape } from "./card-skeleton";
@@ -163,10 +164,10 @@ export function ChartCard({
             description={kind === "error" ? errorLabel : emptyLabel}
             action={
               onRetry ? (
-                <button type="button" className="ds-card-state__retry" onClick={onRetry}>
+                <Button size="sm" variant="neutral" appearance="outlined" onClick={onRetry}>
                   {retryLabel ??
                     (actionForState(kind) === "clear" ? "Clear filters" : "Try again")}
-                </button>
+                </Button>
               ) : null
             }
           />

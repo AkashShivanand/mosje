@@ -246,6 +246,11 @@ export const NAV: NavGroup[] = [
         "badge": "Stable"
       },
       {
+        "label": "Notification Bell",
+        "href": "/design-system/components/navigation/notification-bell",
+        "badge": "Beta"
+      },
+      {
         "label": "Portal Card",
         "href": "/design-system/components/navigation/portal-card",
         "badge": "New"

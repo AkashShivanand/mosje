@@ -3,6 +3,10 @@ import * as React from "react";
 import { NotificationCentre, type EventItem } from "@mosje/design-system";
 
 const SEED: EventItem[] = [
+  { id: "a1", at: "2026-09-06T10:15:00+05:30", actor: "R. Krishnan", actorRole: "District Nodal Officer",
+    action: "Deficiency response requested", subject: "Application 2026/PMS/01301",
+    note: "Upload the attested income certificate for the current year.", tone: "warning",
+    actionRequired: true, dueAt: "2026-09-30", href: "#case-1301" },
   { id: "n4", at: "2026-09-06T09:20:00+05:30", actor: "R. Krishnan", actorRole: "District Nodal Officer",
     action: "Returned for correction", subject: "Application 2026/PMS/01284", tone: "warning", unread: true, href: "#case-1284" },
   { id: "n3", at: "2026-09-06T08:05:00+05:30", action: "Nightly scrutiny queue rebuilt", unread: true },
@@ -18,7 +22,7 @@ const CAPTION: React.CSSProperties = {
   color: "var(--sa-text-neutral-subtle)", margin: 0,
 };
 
-/** Every arrangement: unread, all read, and up to date. */
+/** Every arrangement: action needed with updates, all read, up to date, loading, and failed. */
 export function NoticePlayground(): React.JSX.Element {
   const [notices, setNotices] = React.useState(SEED);
   return (
@@ -28,15 +32,25 @@ export function NoticePlayground(): React.JSX.Element {
         <NotificationCentre
           notifications={notices}
           onMarkAllRead={() => setNotices((all) => all.map((n) => ({ ...n, unread: false })))}
+          viewAllHref="#notifications"
+          limit={3}
         />
         <p style={CAPTION}>
-          Grouped by day, with the unread count in a polite live region. Mark all as read disappears
-          once there is nothing to mark.
+          The entry that needs action sits first and survives Mark updates as read; the updates are
+          grouped by day and cut at three, with the rest one link away.
         </p>
       </div>
       <div style={CELL}>
-        <NotificationCentre notifications={[]} label="Notifications" markAllLabel="Mark all as read" />
+        <NotificationCentre notifications={[]} />
         <p style={CAPTION}>Up to date, which is a good state and reads like one.</p>
+      </div>
+      <div style={CELL}>
+        <NotificationCentre notifications={[]} status="loading" />
+        <p style={CAPTION}>Loading: a skeleton in the shape of the list, and the panel is marked busy.</p>
+      </div>
+      <div style={CELL}>
+        <NotificationCentre notifications={[]} status="error" onRetry={() => {}} />
+        <p style={CAPTION}>Failed: it says so once, and offers the retry. No code, no endpoint.</p>
       </div>
     </div>
   );

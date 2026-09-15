@@ -823,6 +823,31 @@
       "State"
     ]
   },
+  "NotificationBell": {
+    "nodeId": "58143:59613",
+    "captured": "2026-09-15",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused"
+        ]
+      },
+      "Badge": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "None",
+          "Count",
+          "Error"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "State"
+    ]
+  },
   "Radio": {
     "nodeId": "18:791",
     "captured": "2026-09-04",
@@ -1084,7 +1109,7 @@
   },
   "SiteHeader": {
     "nodeId": "4235:3169",
-    "captured": "2026-09-05",
+    "captured": "2026-09-15",
     "properties": {
       "Login Signup#2198:4": {
         "type": "BOOLEAN",
@@ -1116,6 +1141,10 @@
       "Profile#56716:0": {
         "type": "BOOLEAN",
         "defaultValue": true
+      },
+      "Notifications#58143:0": {
+        "type": "BOOLEAN",
+        "defaultValue": false
       }
     },
     "deliberatelyOmitted": [
@@ -1559,7 +1588,7 @@
   },
   "EventList": {
     "nodeId": "57600:48770",
-    "captured": "2026-09-06",
+    "captured": "2026-09-15",
     "note": "Figma publishes the row; code publishes the list.",
     "properties": {
       "Tone": {
@@ -1578,9 +1607,23 @@
           "true",
           "false"
         ]
+      },
+      "Action needed#58160:0": {
+        "type": "BOOLEAN",
+        "defaultValue": false
+      },
+      "Show tag#58160:7": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Due#58160:14": {
+        "type": "TEXT",
+        "defaultValue": "Respond by 30 Sept 2026"
       }
     },
-    "deliberatelyOmitted": []
+    "deliberatelyOmitted": [
+      "Due#58160:14"
+    ]
   },
   "NumberInput": {
     "nodeId": "57605:770",

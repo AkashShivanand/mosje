@@ -19,7 +19,7 @@ const CAPTION: React.CSSProperties = {
   color: "var(--sa-text-neutral-subtle)", margin: 0,
 };
 
-/** Every arrangement: full stamps, grouped by day, unread, and empty. */
+/** Every arrangement: full stamps, grouped by day, unread, action needed, and empty. */
 export function EventPlayground(): React.JSX.Element {
   return (
     <div style={{ padding: "var(--sa-padding-40)", background: "var(--sa-bg-neutral-subtle)",
@@ -35,6 +35,16 @@ export function EventPlayground(): React.JSX.Element {
       <div style={CELL}>
         <EventList label="Recent activity" events={LOG.slice(0, 2).map((e, i) => ({ ...e, unread: i === 0, href: "#case" }))} />
         <p style={CAPTION}>An unread entry carries a hidden &ldquo;Unread&rdquo; as well as the dot; the dot alone is invisible to a screen reader.</p>
+      </div>
+      <div style={CELL}>
+        <EventList
+          label="Recent activity"
+          events={[{ ...LOG[1]!, id: "action", actionRequired: true, dueAt: "2026-09-30" }]}
+        />
+        <p style={CAPTION}>
+          An entry the reader must act on: the tag, the deadline and a warning rule at the start. Figma: Action
+          needed. Derived from the live record, so it clears when the action is done, not when it is read.
+        </p>
       </div>
       <div style={CELL}>
         <EventList events={[]} label="Audit log" emptyText="No activity has been recorded against this application yet." />

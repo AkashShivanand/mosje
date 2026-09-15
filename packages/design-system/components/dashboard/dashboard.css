@@ -151,64 +151,6 @@
      components now — `CardSkeleton` and `CardState` — because six dashboards
      and every portal need them, not just this card. */
 
-  /* The retry button belongs to CardState's action slot but is styled here so
-     the state component stays presentational and the card owns its controls. */
-  .ds-card-state__retry {
-    padding: var(--sa-padding-8) var(--sa-padding-16);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
-    border-radius: var(--sa-shape-full);
-    background-color: var(--sa-bg-neutral-base);
-    font-family: var(--sa-font-latin);
-    font-size: var(--sa-type-body-3-size);
-    line-height: var(--sa-type-body-3-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    color: var(--sa-text-neutral-bolder);
-    cursor: pointer;
-    /* Feedback on the press, not the release: the press is when the reader acted. */
-    transition:
-      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
-      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
-      transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
-  }
-
-  .ds-card-state__retry:hover {
-    border-color: var(--sa-border-brand-primary-base);
-    background-color: var(--sa-bg-neutral-subtler);
-  }
-
-  .ds-card-state__retry:active {
-    transform: scale(0.97);
-  }
-
-  /* THE ESTATE'S ONLY ERROR-RECOVERY CONTROL, and it had `:hover` and `:active`
-     and no `:focus-visible` — so the one button a keyboard reader most needs to
-     find gave them nothing to find it by. WCAG 2.2 AA 2.4.7 / 2.4.11. */
-  .ds-card-state__retry:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
-  }
-
-  /* An `outline` survives forced-colors, but its COLOUR does not — the token
-     resolves to a translucent brand blue the mode discards. `Highlight` is the
-     system's own focus colour, which is the whole point of the mode. (A ring
-     built from `box-shadow` would not be painted here at all.) */
-  @media (forced-colors: active) {
-    .ds-card-state__retry:focus-visible {
-      outline: var(--sa-focus-width) solid Highlight;
-      outline-offset: var(--sa-focus-offset);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .ds-card-state__retry {
-      transition: none;
-    }
-
-    .ds-card-state__retry:active {
-      transform: none;
-    }
-  }
-
   /* The body is a flex column so a state can fill it; a chart is unaffected. */
   .ds-chart-card__body:has(.ds-card-state) {
     display: flex;

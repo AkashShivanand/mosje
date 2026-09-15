@@ -3,13 +3,13 @@
 <link rel="stylesheet" href="core.css">
 <style>
 .toolbar{display:flex;gap:24px;align-items:center;justify-content:space-between;padding:16px 24px;margin:0 0 14px;border-bottom:1px solid var(--sa-neutral-50)}
-.search{flex:0 0 516px;width:516px;height:56px;box-sizing:border-box;display:flex;align-items:center;gap:10px;border:1px solid var(--sa-neutral-100,#F3F4F6);border-radius:8px;background:var(--sa-white);padding:0 16px;font-size:14px;color:var(--sa-muted)}
+.search{flex:0 1 516px;min-width:0;height:56px;box-sizing:border-box;display:flex;align-items:center;gap:10px;border:1px solid var(--sa-neutral-100,#F3F4F6);border-radius:8px;background:var(--sa-white);padding:0 16px;font-size:14px;color:var(--sa-muted)}
 .search input{border:none;outline:none;font:inherit;flex:1;color:var(--sa-ink)}
 .toolbar .grow{flex:1}
 .filters{display:flex;gap:12px;align-items:center}
 .sel{font:inherit;font-size:14px;color:var(--sa-ink);height:40px;min-width:0;width:auto;flex:none;border:1px solid var(--sa-hair);border-radius:8px;background:var(--sa-white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%231f2428' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 12px center;padding:8px 34px 8px 16px;appearance:none;-webkit-appearance:none;cursor:pointer}
-#kind{width:112px}
-#org{width:139px}
+#kind{width:152px}
+#org{width:284px}
 .btn.soft{background:var(--sa-primary-500);color:var(--sa-white);font-size:14px;font-weight:500;height:40px;padding:10px 24px;border-radius:8px;white-space:nowrap;flex:none}
 .seg{display:inline-flex;background:var(--sa-primary-50);border-radius:var(--sa-radius);padding:3px}
 .seg button{font:inherit;font-size:13.5px;border:none;background:none;padding:8px 26px;border-radius:calc(var(--sa-radius) - 2px);cursor:pointer;color:var(--sa-ink)}
@@ -47,8 +47,8 @@
   <div class="toolbar">
     <label class="search"><span class="mi" aria-hidden="true" style="font-size:20px">search</span><input id="q" type="search" placeholder="Search by scheme name or keyword" aria-label="Search by scheme name or keyword"></label>
     <div class="filters">
-      <select class="sel" id="kind" aria-label="Category"></select>
-      <select class="sel" id="org" aria-label="Organisation"></select>
+      <select class="sel" id="kind" aria-label="Type of Benefit"></select>
+      <select class="sel" id="org" aria-label="Organisations and Scheme Portals"></select>
       <button class="btn soft" id="reset">Reset Filters</button>
     </div>
   </div>
@@ -75,9 +75,9 @@ const FACES = [{id:'all',label:'All', short:'All'}].concat(PERSONAS);
 function drawFilters(){
   const kinds = who==='all' ? OFFERINGS : offersFor(who);
   if (offer!=='all' && !kinds.some(o=>o.id===offer)) offer = 'all';
-  el('kind').innerHTML = `<option value="all">Category</option>` + kinds.map(o=>`<option value="${o.id}" ${o.id===offer?'selected':''}>${o.short||o.label}</option>`).join('');
+  el('kind').innerHTML = `<option value="all">Type of Benefit</option>` + kinds.map(o=>`<option value="${o.id}" ${o.id===offer?'selected':''}>${o.short||o.label}</option>`).join('');
   const orgs = [...new Set(SCHEMES.map(s=>s.apply).filter(a=>a && ROUTES[a]))];
-  el('org').innerHTML = `<option value="all">Organisation</option>` + orgs.map(a=>`<option value="${a}" ${a===org?'selected':''}>${ROUTES[a].label}</option>`).join('');
+  el('org').innerHTML = `<option value="all">All Organisations &amp; Scheme Portals</option>` + orgs.map(a=>`<option value="${a}" ${a===org?'selected':''}>${ROUTES[a].label}</option>`).join('');
 }
 function draw(){
   drawFilters();
