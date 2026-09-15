@@ -97,15 +97,15 @@ const A11Y: A11yItem[] = [
       "Colour comes entirely from the component's stylesheet, bound to the mode-aware brand ramp, so a caller cannot introduce a failing pair through `className`.",
     status: "verified",
     evidence:
-      "Measured 2026-09-07 on the default blue ground #003975: lead ink #ffffff 11.40:1, navigation ink #c0dbff 8.04:1, boilerplate ink #92c2ff 6.18:1 — all against the 4.5:1 AA threshold. The social glyph reads 6.06:1 on its chip. design.md records 5.37:1 as the worst case across all eight brand modes.",
+      "Measured 2026-09-07 on the default blue ground #003975: lead ink #ffffff 11.40:1, navigation ink #c0dbff 8.04:1, boilerplate ink #92c2ff 6.18:1 — all against the 4.5:1 AA threshold. Re-measured 2026-09-16 in the browser across all ten brand modes: unchanged, worst case 5.37:1 (dbim-green, boilerplate ink).",
   },
   {
     criterion: "1.4.11 Non-text Contrast",
     level: "AA",
     description:
-      "The zone hairline (1.79:1) and the social chip ground (1.33:1) both sit below 3:1 and both are exempt: neither carries information required to identify a control or understand content. Each social link is identified by its glyph, which reads 6.06:1 on the chip.",
+      "The zone hairline (1.81:1) and the social chip ground (1.45:1) both sit below 3:1 and both are exempt: neither carries information required to identify a control or understand content. Each social link is identified by its glyph, which reads 5.55:1 on the chip.",
     status: "verified",
-    evidence: "Ratios computed from the built token values on 2026-09-07; the exemption is WCAG 1.4.11's own carve-out for decoration.",
+    evidence: "Measured 2026-09-16 in the browser on the default blue ground; across all ten brand modes the glyph's worst case on its chip is 4.88:1 (dbim-green), the chip 1.43–1.52:1 and the hairline 1.27–2.04:1. The exemption is WCAG 1.4.11's own carve-out for decoration.",
   },
   {
     criterion: "2.5.8 Target Size (Minimum)",
@@ -168,26 +168,41 @@ export default function SiteFooterPage(): React.JSX.Element {
         <>
           <section className="cdp__section" aria-labelledby="cdp-zones">
             <h2 id="cdp-zones" className="cdp__h2">
-              Three Zones, in Priority Order
+              Two Bands on One Ground
             </h2>
             <p>
-              A government footer has three jobs, and the version this replaced mixed all three at
-              one weight.
+              A government footer has two jobs — wayfinding and the statutory apparatus — set on a
+              single ground with a hairline between them.
             </p>
             <MatrixTable
-              caption="The footer's zones"
-              columns={["Zone", "Carries", "website", "portal"]}
+              caption="The footer's bands"
+              columns={["Band", "Carries", "website", "portal"]}
               rows={[
-                ["0 — Support strip", "Opt-in helpline or contact strip", "Optional", "Absent"],
-                ["1 — Working footer", "Identity, address, social, four link columns", "Yes", "Absent"],
-                ["2 — Statutory bar", "Lineage, credits, policies, colophon", "Yes", "Yes"],
+                ["1 — Working footer", "Identity, address, social, four link columns, Related Links", "Yes", "Absent"],
+                ["2 — Statutory bar", "Lineage, credits, policies, Sitemap and Help (portal), colophon", "Yes", "Yes"],
               ]}
             />
             <p>
-              <code>variant=&quot;portal&quot;</code> renders zone 2 alone. That is the whole
+              <code>variant=&quot;portal&quot;</code> renders band 2 alone. That is the whole
               difference, and it is why this is a variant rather than a second component: the
-              statutory half is the half that must stay compliant, and it is now impossible for a
-              portal&apos;s to drift from the website&apos;s.
+              statutory half is the half that must stay compliant, and a portal&apos;s cannot drift
+              from the website&apos;s. A call to action is not part of the footer; the website sets
+              it with Action Banner on a light band above.
+            </p>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-width">
+            <h2 id="cdp-width" className="cdp__h2">
+              Width Comes from the Page Container
+            </h2>
+            <p>
+              On the website each band&apos;s content carries <code>.sa-container</code>, so the
+              footer takes the same cap, margin and right-wall gutter as the masthead and the page
+              between them. A portal is fluid: the portal variant takes no cap and pads with the page
+              margin, as a portal masthead does. Either way the footer&apos;s edges meet the
+              masthead&apos;s at every width, and the Figma master binds{" "}
+              <code>container/page</code> and <code>grid/margin/page</code> to match. Leave{" "}
+              <code>maxWidth</code> unset.
             </p>
           </section>
 

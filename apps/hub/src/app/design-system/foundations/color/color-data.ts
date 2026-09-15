@@ -25,7 +25,7 @@ export type LedgerEntry = { token: string; measured?: number; implied?: number; 
 export type Section = { id: string; title: string };
 
 export const META = {
-  "translucentTokens": 142,
+  "translucentTokens": 146,
   "alphaSteps": 15,
   "ramps": 8,
   "brands": 2,
@@ -2569,7 +2569,7 @@ export const TRANSLUCENT = [
   },
   {
     "group": "Scrim, washes and rules",
-    "count": 9,
+    "count": 13,
     "examples": [
       {
         "token": "border/neutral/inverse/subtle",
@@ -2621,7 +2621,7 @@ export const SLOT_COUNTS = {
   "bg": 54,
   "text": 22,
   "icon": 16,
-  "cmp": 296,
+  "cmp": 302,
   "focus": 2,
   "overlay": 7,
   "chart": 38,

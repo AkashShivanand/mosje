@@ -1651,6 +1651,24 @@
     "track": "1px",
     "dot": "0.5rem"
   },
+  "sitefooter": {
+    "ink": {
+      "subtle": "#c0dbff",
+      "subtler": "#92c2ff"
+    },
+    "rule": {
+      "base": "#0373df",
+      "subtle": "#0373df"
+    },
+    "chip": {
+      "default": "#c0dbff",
+      "hover": "#c0dbff",
+      "size": "2.5rem"
+    },
+    "mark": {
+      "height": "1.75rem"
+    }
+  },
   "action": {
     "brand": {
       "primary": {

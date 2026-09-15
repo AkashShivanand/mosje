@@ -12939,8 +12939,7 @@ export const GENERATED_PROPS = {
         "name": "maxWidth",
         "type": "number",
         "required": false,
-        "default": "1280",
-        "description": "Content max-width, kept in sync with the header."
+        "description": "Overrides the content cap. Leave it unset. On `website` the bands carry `.sa-container`, so they take the estate's container ladder (1200 / 1320 / 1440) and the right-wall gutter; on `portal` they are fluid and pad with `--sa-grid-margin-page`, as a portal masthead does. Either way they line up with the masthead above them. A number here restates what the token decides."
       },
       {
         "name": "relatedLinks",

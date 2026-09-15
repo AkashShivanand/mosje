@@ -817,6 +817,11 @@ export function scopesFor(path, tier, type, figmaName) {
       return ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR", "EFFECT_COLOR"];
     }
     if (head === "cmp") {
+      // A role word may sit above the prominence rather than at the tail: `cmp/sitefooter/ink/subtle`
+      // is ink (a glyph's fill as well as a text fill), `cmp/sitefooter/rule/base` is a stroke.
+      // Checked before the tail rules so the prominence word does not decide the scope.
+      if (rest.includes("ink")) return ["SHAPE_FILL", "TEXT_FILL"];
+      if (rest.includes("rule")) return ["STROKE_COLOR"];
       if (/text|label|ink/i.test(tail)) return ["TEXT_FILL"];
       if (/border|stroke|outline/i.test(tail)) return ["STROKE_COLOR"];
       return ["FRAME_FILL", "SHAPE_FILL"];

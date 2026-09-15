@@ -1115,6 +1115,30 @@
       "Device"
     ]
   },
+  "SiteFooter": {
+    "nodeId": "57800:1922",
+    "captured": "2026-09-15",
+    "properties": {
+      "Variant": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Website",
+          "Portal"
+        ]
+      },
+      "Breakpoint": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Tablet",
+          "Mobile"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Breakpoint"
+    ]
+  },
   "SiteHeader": {
     "nodeId": "4235:3169",
     "captured": "2026-09-15",
