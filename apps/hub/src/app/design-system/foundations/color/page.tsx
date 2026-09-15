@@ -248,8 +248,19 @@ export default function ColorPage(): React.JSX.Element {
             <tbody>
               <tr><th scope="row"><code>subtler</code></th><td>500</td><td>≥ 3:1 on white. Placeholders and quiet glyphs, never body copy.</td></tr>
               <tr><th scope="row"><code>subtle</code></th><td>700</td><td>≥ 4.5:1. Captions and hints — still text, still AA.</td></tr>
-              <tr><th scope="row"><code>base</code></th><td>600 (status, brand) · 800 (neutral)</td><td>≥ 4.5:1 on white <em>and</em> on the muted page ground. The reading colour.</td></tr>
+              <tr><th scope="row"><code>base</code></th><td>600 (status, brand) · 800 (neutral)</td><td>≥ 4.5:1 on white <em>and</em> on <code>bg/neutral/subtler</code>. The reading colour.</td></tr>
               <tr><th scope="row"><code>bolder</code></th><td>700 (status, brand) · 900 (neutral)</td><td>≥ 4.5:1, and AAA wherever the ramp allows. For a label on a tinted surface.</td></tr>
+            </tbody>
+          </table>
+          <table className="token-table color-ladders__wide">
+            <caption className="color-ladders__cap">Neutral grounds — <code>bg/neutral/*</code></caption>
+            <thead><tr><th scope="col">Rung</th><th scope="col">Palette step</th><th scope="col">What it is for</th></tr></thead>
+            <tbody>
+              <tr><th scope="row"><code>base</code></th><td>0</td><td>Cards, the masthead and the sidebar — the surfaces a reader works on.</td></tr>
+              <tr><th scope="row"><code>subtlest</code></th><td>25</td><td>The page canvas behind the cards, and nothing else. One step lighter than <code>subtler</code>, so hover, read-only and loading fills show against it.</td></tr>
+              <tr><th scope="row"><code>subtler</code></th><td>50</td><td>Hover, read-only and loading fills, and quiet panels. Never the page itself.</td></tr>
+              <tr><th scope="row"><code>subtle</code></th><td>100</td><td>Pressed rows and the disabled control fill.</td></tr>
+              <tr><th scope="row"><code>bold</code></th><td>200</td><td>A neutral plate that must read as a filled shape.</td></tr>
             </tbody>
           </table>
         </div>
@@ -384,8 +395,9 @@ export default function ColorPage(): React.JSX.Element {
           </div>
         </div>
         <Callout type="tip" title="The focus ring is not optional">
-          <code>focus/ring</code> is the brand key colour, solid — 4.64:1 on white and 4.07:1 on the
-          muted page in Blue, darker in Navy and the DBIM modes — painted as an outline so it
+          <code>focus/ring</code> is the brand key colour, solid — 4.64:1 on white, 4.33:1 on the
+          page canvas and 4.07:1 on a <code>subtler</code> panel in Blue, darker in Navy and the DBIM
+          modes — painted as an outline so it
           survives Windows High Contrast Mode, where a box-shadow is not drawn at all. It is never
           removed for mouse users: GIGW requires a visible focus indicator, and WCAG 2.2 1.4.11
           asks 3:1 of it against the page.
@@ -547,14 +559,15 @@ export default function ColorPage(): React.JSX.Element {
           GIGW 3.0 binds this estate to WCAG 2.1 AA and IS 17802. For colour that means four
           criteria, and every one of them is checked by arithmetic at build time rather than by
           review. The criteria are listed on the Accessibility tab; below, every text, icon and
-          border role with the figure it measures on white and on the muted page ground the
-          estate&rsquo;s <code>&lt;body&gt;</code> carries.
+          border role with the figure it measures on white and on <code>bg/neutral/subtler</code>,
+          the darkest neutral ground text meets — quiet panels, read-only fields, hovered rows. The
+          page canvas behind the cards is lighter, so every figure holds on the page as well.
         </p>
         <div className="color-roles">
           <table className="token-table">
             <caption className="ds-sr-only">Every text, icon and border role, measured on both grounds</caption>
             <thead>
-              <tr><th scope="col">Token</th><th scope="col">Role</th><th scope="col">On white</th><th scope="col">On the page ground</th><th scope="col">Class</th></tr>
+              <tr><th scope="col">Token</th><th scope="col">Role</th><th scope="col">On White</th><th scope="col">On Subtler</th><th scope="col">Class</th></tr>
             </thead>
             <tbody>
               {ROLE_CONTRAST.map((r) => (
@@ -640,7 +653,7 @@ export default function ColorPage(): React.JSX.Element {
             <p className="color-example__note">
               A form speaks quietly. The field border is the only status colour on the page until
               something fails; the message beneath it takes the base ink, which clears 4.5:1 on
-              the page ground, and the icon and the sentence carry the meaning.
+              white and on a subtler panel, and the icon and the sentence carry the meaning.
             </p>
             <div className="color-example__stage">
               <label className="color-example__label" htmlFor="ex-aadhaar">Aadhaar number</label>
@@ -937,7 +950,7 @@ export default function ColorPage(): React.JSX.Element {
           value: META.rolesMeasured,
           label: "roles measured",
           note: META.rolesBelowFloor === 0
-            ? "Text, icon and border tokens, on white and on the page ground. Every one clears its floor."
+            ? "Text, icon and border tokens, on white and on bg/neutral/subtler. Every one clears its floor."
             : `Text, icon and border tokens against both grounds. ${META.rolesBelowFloor} below a floor.`,
         },
         { value: META.cvdSafeSeries, label: "safe series", note: `Chart slots distinguishable through every colour-vision deficiency — all 36 pairs ≥ ΔE ${META.worstCvdSeriesPair}.` },

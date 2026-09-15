@@ -3,7 +3,7 @@ import { Divider } from "@mosje/design-system";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-dvh bg-surface-muted">
+    <div className="min-h-dvh bg-surface-canvas">
       <AccessBar />
       <main
         id="main-content"

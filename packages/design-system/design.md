@@ -959,7 +959,8 @@ that changes a colour is `data-brand`, so the two value columns below are Blue a
 | `--sa-text-neutral-base` | `#1E2124` | `#1E2024` | All body/heading text | Interactive elements, backgrounds |
 | `--sa-text-neutral-subtle` | `#3A3D41` | `#3B3D41` | Captions, hints, helper text | — comfortably AA at 10.92:1; the old "check below 16px" caveat no longer applies |
 | `--sa-bg-neutral-base` | `#FFFFFF` | same | Page and card backgrounds | Text or icon fills |
-| `--sa-bg-neutral-subtler` | `#EEF0F3` | `#EFF0F2` | Inputs, code blocks, quiet panels | Anything needing a measured contrast — it is a surface, not a fill with a guarantee |
+| `--sa-bg-neutral-subtlest` | `#F6F7F8` | `#F6F7F9` | The page canvas behind white cards — `AppShell`, `<body>`, the `bg-surface-canvas` utility | Panels, inputs, hover or read-only fills — those are `subtler`, and must stay one step darker than the page they sit on |
+| `--sa-bg-neutral-subtler` | `#EEF0F3` | `#EFF0F2` | Inputs, code blocks, quiet panels, hover and read-only fills | The page canvas (use `subtlest`); anything needing a measured contrast — it is a surface, not a fill with a guarantee |
 | `--sa-text-status-error-base` | `#AA2D30` | same | Error text and icons on white, destructive labels — rung 600, 6.72:1 | Decorative fills (use `bg/status/error/subtler`) |
 | `--sa-text-status-success-base` | `#046A38` | same | Success states, validation confirmation — rung 600, which is India Green itself, 6.72:1 | Primary brand actions |
 | `--sa-on-bg-brand-primary-bolder` | `#FFFFFF` | same | Text/icons on a solid primary fill | Any other background |

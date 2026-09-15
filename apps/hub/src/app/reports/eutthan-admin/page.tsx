@@ -470,7 +470,7 @@ export default function EutthanAdminReport() {
   );
 
   return (
-    <div className="min-h-screen bg-surface-muted">
+    <div className="min-h-screen bg-surface-canvas">
       {/* ── Sticky header ── */}
       <header className="sticky top-0 z-20 border-b border-border bg-surface/95 backdrop-blur">
         <div className="sa-container flex items-center gap-4 py-3">
