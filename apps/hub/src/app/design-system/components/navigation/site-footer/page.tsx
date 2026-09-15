@@ -168,26 +168,41 @@ export default function SiteFooterPage(): React.JSX.Element {
         <>
           <section className="cdp__section" aria-labelledby="cdp-zones">
             <h2 id="cdp-zones" className="cdp__h2">
-              Three Zones, in Priority Order
+              Two Bands on One Ground
             </h2>
             <p>
-              A government footer has three jobs, and the version this replaced mixed all three at
-              one weight.
+              A government footer has two jobs — wayfinding and the statutory apparatus — set on a
+              single ground with a hairline between them.
             </p>
             <MatrixTable
-              caption="The footer's zones"
-              columns={["Zone", "Carries", "website", "portal"]}
+              caption="The footer's bands"
+              columns={["Band", "Carries", "website", "portal"]}
               rows={[
-                ["0 — Support strip", "Opt-in helpline or contact strip", "Optional", "Absent"],
-                ["1 — Working footer", "Identity, address, social, four link columns", "Yes", "Absent"],
-                ["2 — Statutory bar", "Lineage, credits, policies, colophon", "Yes", "Yes"],
+                ["1 — Working footer", "Identity, address, social, four link columns, Related Links", "Yes", "Absent"],
+                ["2 — Statutory bar", "Lineage, credits, policies, Sitemap and Help (portal), colophon", "Yes", "Yes"],
               ]}
             />
             <p>
-              <code>variant=&quot;portal&quot;</code> renders zone 2 alone. That is the whole
+              <code>variant=&quot;portal&quot;</code> renders band 2 alone. That is the whole
               difference, and it is why this is a variant rather than a second component: the
-              statutory half is the half that must stay compliant, and it is now impossible for a
-              portal&apos;s to drift from the website&apos;s.
+              statutory half is the half that must stay compliant, and a portal&apos;s cannot drift
+              from the website&apos;s. A call to action is not part of the footer; the website sets
+              it with Action Banner on a light band above.
+            </p>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-width">
+            <h2 id="cdp-width" className="cdp__h2">
+              Width Comes from the Page Container
+            </h2>
+            <p>
+              On the website each band&apos;s content carries <code>.sa-container</code>, so the
+              footer takes the same cap, margin and right-wall gutter as the masthead and the page
+              between them. A portal is fluid: the portal variant takes no cap and pads with the page
+              margin, as a portal masthead does. Either way the footer&apos;s edges meet the
+              masthead&apos;s at every width, and the Figma master binds{" "}
+              <code>container/page</code> and <code>grid/margin/page</code> to match. Leave{" "}
+              <code>maxWidth</code> unset.
             </p>
           </section>
 

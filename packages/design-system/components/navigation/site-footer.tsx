@@ -115,7 +115,13 @@ export interface SiteFooterProps extends React.HTMLAttributes<HTMLElement> {
    * always use a plain anchor. Defaults to `<a>`.
    */
   linkAs?: React.ElementType;
-  /** Content max-width, kept in sync with the header. @default 1280 */
+  /**
+   * Overrides the content cap. Leave it unset. On `website` the bands carry
+   * `.sa-container`, so they take the estate's container ladder (1200 / 1320 /
+   * 1440) and the right-wall gutter; on `portal` they are fluid and pad with
+   * `--sa-grid-margin-page`, as a portal masthead does. Either way they line up
+   * with the masthead above them. A number here restates what the token decides.
+   */
   maxWidth?: number;
 }
 
@@ -133,14 +139,16 @@ function NewWindow() {
  * site or portal in the estate.
  *
  * ── THE SHAPE, AND WHY ────────────────────────────────────────────────────
- * Three zones, in priority order, because a government footer has three jobs
- * and the previous version mixed all three at one weight:
+ * Two bands, because a government footer has two jobs — wayfinding, and the
+ * statutory apparatus — and they sit at different weights:
  *
- *   0. Support strip  — OPTIONAL, opt-in, absent from the DOM when unused
  *   1. The working footer — identity, address, social, four link columns
  *   2. The statutory bar  — lineage, credits, policies, colophon
  *
- * `variant="portal"` renders zone 2 alone. That is the whole difference, and
+ * A call to action is not one of them: it is page content, and the website
+ * renders it with `ActionBanner` on a light band ABOVE the footer.
+ *
+ * `variant="portal"` renders band 2 alone. That is the whole difference, and
  * it is why this is a variant: the statutory half is the half that must stay
  * DBIM-compliant, and it is now impossible for a portal to have a footer that
  * drifts from the website's on that half.
@@ -189,14 +197,19 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
     lastUpdated,
     colophonSlot,
     linkAs: Link = "a",
-    maxWidth = 1280,
+    maxWidth,
     className,
     ...rest
   },
   ref,
 ) {
   const isWebsite = variant === "website";
-  const inStyle = { maxWidth } as React.CSSProperties;
+  const inStyle: React.CSSProperties | undefined =
+    maxWidth === undefined ? undefined : { maxWidth };
+  /* The website is CONTAINED and a portal is FLUID — the same split SiteHeader
+     makes. A portal footer pads with the page margin and takes no cap, so its
+     edges meet a portal masthead that runs full width. */
+  const inClass = cn("ds-sitefooter__in", isWebsite && "sa-container");
 
   /**
    * AN ICON MARKS A DISTINCTION. Where every link in a group is external, the
@@ -236,9 +249,9 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
     >
       <h2 className="sr-only">Site footer</h2>
 
-      {/* ── Zone 1 · the working footer ───────────────────────────────── */}
+      {/* ── Band 1 · the working footer ───────────────────────────────── */}
       {isWebsite && (
-        <div className="ds-sitefooter__in" style={inStyle}>
+        <div className={inClass} style={inStyle}>
           <div className="ds-sitefooter__body">
             <div className="ds-sitefooter__ident">
               <div className="ds-sitefooter__lockup">
@@ -328,9 +341,9 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
         </div>
       )}
 
-      {/* ── Zone 2 · the statutory bar — BOTH variants ─────────────────── */}
+      {/* ── Band 2 · the statutory bar — BOTH variants ─────────────────── */}
       <div className="ds-sitefooter__statutory">
-        <div className="ds-sitefooter__in" style={inStyle}>
+        <div className={inClass} style={inStyle}>
           <p className="ds-sitefooter__lineage">{lineage}</p>
 
           {credits && credits.length > 0 && (

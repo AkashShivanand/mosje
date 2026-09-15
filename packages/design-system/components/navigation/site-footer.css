@@ -24,17 +24,16 @@
 
    The bands first ran 800 and 900. At a 1.28:1 step that is not a distinction,
    it is a smudge, and it read as a printing error rather than as structure.
+   Tone means depth, not category; a boundary is a hairline.
 
-   The support strip was then kept at 900 as "the one element that is a
-   different kind of thing". That was tone encoding CATEGORY, and tone does not
-   mean category — it means depth. Two consequences followed. Visual weight
-   should increase downward, so the darkest value sitting at the TOP made the
-   footer read as floating on a foreign shelf. And the strip is the most
-   inviting element in the footer; recessing it says "further away", which is
-   the opposite of its job.
-
-   What the strip needs is a boundary and room, not a different colour. It has
-   both, plus the only heading and the only button in the component.
+   ── WIDTH IS `.sa-container` ON THE WEBSITE, FLUID IN A PORTAL ────────────
+   On `website` each band's `__in` carries the class, so the cap (1200 / 1320 /
+   1440), the side margin (16 / 24 / 32) and the right-wall gutter all come from
+   foundations/layout.css. On `portal` it takes no cap and pads with the page
+   margin — portals are fluid, the website is contained, as SiteHeader does. This file used to restate them as a 1280px cap with a
+   24px floor, which put the footer's left edge 20px right of the masthead's at
+   1440 and 8px right of it at 375 — and disagreed with the Figma master, which
+   draws `container/page` and `grid/margin/page`.
 
    ── INK IS SAME-HUE ───────────────────────────────────────────────────────
    `rgba(255,255,255,.8)` on a coloured ground desaturates to a dirty grey. The
@@ -49,7 +48,6 @@
 
   .ds-sitefooter {
     --ds-footer-bg: var(--sa-bg-brand-primary-boldest);
-    --ds-footer-bg-deep: var(--sa-color-primaryScale-900);
     --ds-footer-rule: var(--sa-color-primaryScale-600);
     /* THE CHIP IS A PROPORTION OF THE GROUND, NOT A RAMP RUNG. Rung 700 on the
        800 ground looked right in blue, but the lift it produces depends on how
@@ -70,31 +68,9 @@
     --ds-footer-ink: var(--sa-on-bg-brand-primary-boldest);
     --ds-footer-ink-muted: var(--sa-color-primaryScale-100);
     --ds-footer-ink-dim: var(--sa-color-primaryScale-200);
-    --ds-footer-max: 1280px;
-
-    /* Clearing the right-wall rail. `ImportantLinks` is `position: fixed;
-       right: 0`, so it overlays the last ~37px of the viewport at every scroll
-       position while the centred container reserves only 24px. `100cqw` is the
-       footer's own content width, which EXCLUDES the classic scrollbar; a
-       `100vw` version under-reserves by half a scrollbar on Windows and looks
-       correct on macOS, where overlay scrollbars hide the bug. Reserve the
-       intrusion and nothing else, so wide layouts stay symmetric. */
-    --ds-wall-gutter: max(0px, calc((100cqw - var(--ds-footer-max)) / 2));
-    --ds-wall-clearance: max(
-      var(--sa-padding-24),
-      calc(var(--sa-wall-rail, 40px) + var(--sa-padding-8) - var(--ds-wall-gutter))
-    );
-
-    container-type: inline-size;
     background-color: var(--ds-footer-bg);
     color: var(--ds-footer-ink);
     font-family: var(--sa-font-latin);
-  }
-
-  .ds-sitefooter__in {
-    max-width: var(--ds-footer-max);
-    margin-inline: auto;
-    padding-inline: var(--sa-padding-24) var(--ds-wall-clearance);
   }
 
   /* ── Band 1 · the working footer ─────────────────────────────────────────── */
@@ -106,9 +82,7 @@
     padding-block: var(--sa-padding-48);
   }
 
-  /* THREE items, not four. The call to action left for the support strip, which
-     is where it can be explained. What remains is one coherent block: who this
-     is, where they are, where else they publish. */
+  /* THREE items: who this is, where they are, where else they publish. */
   .ds-sitefooter__ident {
     grid-column: span 12;
     display: flex;
@@ -230,6 +204,15 @@
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  /* A list item is a FLEX box, not a block. As a block it wraps its inline-flex
+     link in a line box sized by the inherited body line-height, so each row grew
+     to 24px around a 20px link and the columns ran on a 32px rhythm instead of
+     the 28 (20 + 8) the tokens — and the Figma master — describe. */
+  .ds-sitefooter__list > li,
+  .ds-sitefooter__inline > li {
+    display: flex;
   }
 
   /* The Related Links row reuses the column heading and list, laid on one line.
@@ -446,8 +429,8 @@
   /* ── Variant · portal ────────────────────────────────────────────────────
      A portal footer is chrome under an authenticated workflow, not the front
      door of a public information site. It carries the statutory minimum and
-     gets out of the way: no navigation columns, no social rail, no address, no
-     support strip. What it must still carry is exactly what DBIM 5.6 and GIGW
+     gets out of the way: no navigation columns, no social rail, no address.
+     What it must still carry is exactly what DBIM 5.6 and GIGW
      require of any government footer — lineage, policies, last-updated, credits
      — which is the whole reason it is a VARIANT of this component rather than a
      separate one that would drift out of compliance on its own. */
@@ -457,6 +440,7 @@
   }
 
   .ds-sitefooter--portal .ds-sitefooter__statutory .ds-sitefooter__in {
+    padding-inline: var(--sa-grid-margin-page);
     padding-block: var(--sa-padding-20);
     gap: var(--sa-stack-16) var(--sa-padding-32);
   }

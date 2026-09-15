@@ -32,9 +32,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.136.0",
+    date: "2026-09-15",
+    current: true,
+    changes: [
+      { kind: "Fixed", text: "`SiteFooter` TAKES THE PAGE CONTAINER, SO ITS EDGES MEET THE MASTHEAD\u2019S. On the website each band carries `.sa-container`; on a portal the footer is fluid and pads with the page margin, as a portal `SiteHeader` does. It restated a 1280px cap with a 24px margin, which put its content 20px right of the masthead\u2019s at 1440 and 8px right at 375. `maxWidth` no longer has a default", migration: "Remove any `maxWidth` passed to `SiteFooter`; the container ladder already decides it." },
+      { kind: "Fixed", text: "`SiteFooter`\u2019S LINK COLUMNS RUN ON A 28px RHYTHM. Each list item wrapped its link in a line box sized by the body line-height, which made every row 24px tall around a 20px link. The footer is about 24px shorter at 1440" },
+      { kind: "Fixed", text: "THE FIGMA `Site Footer` MASTER MATCHES THE CODE AT 1440, 768 AND 375, measured landmark by landmark. The 1440 variants resolve to the Desktop XL mode (content 1272 at x 84, as `Navbar/Website` draws), portal variants are fluid, policy links are Body 2, the social chips sit 4px apart, credit marks are 64x28, the link grid splits on the code\u2019s 12-column gutters, the Mobile policy rows wrap instead of running off the frame, and the five social glyphs are rebuilt from `brand-glyph.tsx`\u2019s own paths at its 20-unit optical size" },
+      { kind: "Added", text: "A Code Connect template for `SiteFooter` (`site-footer.figma.ts`), with its Figma property fixture, so Dev Mode serves the real API for the Site Footer master" },
+      { kind: "Changed", text: "FOOTER DOCUMENTATION DESCRIBES THE COMPONENT THAT SHIPS. The Site Footer page, `design.md` and Storybook no longer document a support strip, an outlined CTA or dead CSS that no longer exist; the Figma documentation lists all five required properties and places Feedback in the policy row; the Component record carries only what is still open" },
+    ],
+  },
+  {
     version: "v0.135.0",
     date: "2026-09-14",
-    current: true,
     changes: [
       { kind: "Changed", text: "EIGHT COMPONENTS RENDER THE LIBRARY PART THEIR FIGMA MASTER INSTANCES, instead of drawing their own. `FeedbackWidget`\u2019s Yes / No and Send, `BulkActionsBar`\u2019s actions and Clear selection, and `ChartCard`\u2019s retry are `Button`; `TimePicker`\u2019s trigger is an outlined `IconButton` with the clock glyph where a \u25ef character stood; `DateRangePicker`\u2019s quick periods and `Chatbot`\u2019s quick replies are `Chip`; `MetricCard`\u2019s change pill and status, and `VideoTile`\u2019s state, are `Badge`. About 300 lines of CSS that restated those parts are gone, and hover, press, focus and disabled now come from the part itself" },
       { kind: "Changed", text: "WHAT A READER WILL NOTICE. Controls take the library sizes \u2014 small buttons 32px where the bar drew 28, presets 32px where they drew 28, Send and the verdicts at the Button\u2019s own type. A chosen verdict is the outlined Button\u2019s pressed treatment, a filled neutral. A warning bulk action is neutral: Button has no warning variant, and the label carries the consequence. The metric status reads as typed rather than in capitals, and the video state badge is a tinted pill without its border. The chatbot\u2019s replies are outlined chips rather than pale brand tiles" },
