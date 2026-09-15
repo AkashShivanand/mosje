@@ -32,9 +32,17 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.136.0",
+    date: "2026-09-15",
+    current: true,
+    changes: [
+      { kind: "Added", text: "A SOLID SELECTED CHIP. `Chip` takes `emphasis=\"solid\"`, which fills a selected brand chip with `bg/brand/primary/bolder` and white ink (6.36:1) and darkens to `boldest` on hover. It is for a single-choice row whose selection decides what is shown beneath it \u2014 the home page\u2019s Type of Applicant row, where a tonal pill among ten outlined ones did not read as the answer. `subtle` stays the default, so every existing chip is unchanged; `success` and `neutral` ignore it" },
+      { kind: "Added", text: "The Figma Chip set gains an `Emphasis` axis (Subtle, Solid) with six Solid selected variants across Default, Dropdown and Leading + Dropdown, Default and Hover. Solid drops the tick: the state is carried by fill luminance, not hue alone" },
+    ],
+  },
+  {
     version: "v0.135.0",
     date: "2026-09-14",
-    current: true,
     changes: [
       { kind: "Changed", text: "EIGHT COMPONENTS RENDER THE LIBRARY PART THEIR FIGMA MASTER INSTANCES, instead of drawing their own. `FeedbackWidget`\u2019s Yes / No and Send, `BulkActionsBar`\u2019s actions and Clear selection, and `ChartCard`\u2019s retry are `Button`; `TimePicker`\u2019s trigger is an outlined `IconButton` with the clock glyph where a \u25ef character stood; `DateRangePicker`\u2019s quick periods and `Chatbot`\u2019s quick replies are `Chip`; `MetricCard`\u2019s change pill and status, and `VideoTile`\u2019s state, are `Badge`. About 300 lines of CSS that restated those parts are gone, and hover, press, focus and disabled now come from the part itself" },
       { kind: "Changed", text: "WHAT A READER WILL NOTICE. Controls take the library sizes \u2014 small buttons 32px where the bar drew 28, presets 32px where they drew 28, Send and the verdicts at the Button\u2019s own type. A chosen verdict is the outlined Button\u2019s pressed treatment, a filled neutral. A warning bulk action is neutral: Button has no warning variant, and the label carries the consequence. The metric status reads as typed rather than in capitals, and the video state badge is a tinted pill without its border. The chatbot\u2019s replies are outlined chips rather than pale brand tiles" },

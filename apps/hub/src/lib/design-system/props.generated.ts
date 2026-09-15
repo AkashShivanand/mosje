@@ -3103,6 +3103,13 @@ export const GENERATED_PROPS = {
         "description": "Accessible label for the dismiss button."
       },
       {
+        "name": "emphasis",
+        "type": "ChipEmphasis = \"subtle\" | \"solid\"",
+        "required": false,
+        "default": "\"subtle\"",
+        "description": "How loud the SELECTED state is, for `tone=\"brand\"`. `subtle` (the default) is the tonal selection used across filter rows. `solid` fills the chip with `bg/brand/primary/bolder` and white ink (6.36:1) — for a single-choice row whose selection decides the content below it. It changes the selected state only, and is ignored by the `success` and `neutral` tones (`neutral` is already solid). Matches the Figma Chip's `Emphasis=Solid` variant."
+      },
+      {
         "name": "leadingIcon",
         "type": "React.ReactNode",
         "required": false,

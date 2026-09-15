@@ -111,6 +111,12 @@ export default function ChipPage(): React.JSX.Element {
             belong to, and the eye reads the filter before the thing being filtered.
           </p>
           <p>
+            <code>emphasis=&quot;solid&quot;</code> fills a selected brand chip in solid blue with
+            white text. Use it for a single-choice row whose selection decides what is shown beneath
+            it — the home page&apos;s Type of Applicant row — where a tonal pill among outlined ones does
+            not read as the answer. Filter rows keep the default <code>subtle</code>.
+          </p>
+          <p>
             <code>size=&quot;sm&quot;</code> is for a dense row that would otherwise wrap. It is a
             layout remedy with a known cost in legibility, so reach for it when a row genuinely
             overflows, not to fit one more chip in.
