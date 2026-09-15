@@ -1,65 +1,37 @@
 "use client";
 
-import * as React from "react";
-import Link from "next/link";
-import { Field, TextInput } from "@/components/nhapoa/ui";
-import { Icon, Button } from "@mosje/design-system";
+// DS Audit: PortalRecoveryTemplate ✅ existing. The standalone card this replaces
+// drew its own heading, field and confirmation outside the login page's chrome.
+
+import { PortalRecoveryTemplate, type PortalRecoveryConfig } from "@mosje/design-system";
+
+const BASE = "/portals/nhapoa";
+
+/**
+ * SAMBAL password recovery — the `link` flow: username, then a confirmation that
+ * does not say whether the account exists.
+ *
+ * No `continueHref`: SAMBAL has no reset page for the emailed link to land on,
+ * so the confirmation offers only Back to Login.
+ */
+const CONFIG: PortalRecoveryConfig = {
+  portalId: "nhapoa",
+  portalName: "SAMBAL",
+  portalTagline: "Smart Access for Mainstreaming of Beneficiaries through Augmented Linkages",
+  changeHref: "/portals",
+  brandAssets: {
+    emblemSrc: `${BASE}/brand/national-emblem.svg`,
+    digitalIndiaSrc: `${BASE}/brand/digital-india.svg`,
+    // org-logo-exempt(portal-local): SAMBAL serves its own copy of the chrome
+    // marks from its brand folder, byte-identical to the estate's.
+    samaveshLogoSrc: `${BASE}/brand/samavesh-logo.svg`,
+  },
+  flow: "link",
+  identifierKind: "text",
+  identifierLabel: "Username",
+  loginHref: `${BASE}/login`,
+};
 
 export default function ForgotPasswordPage() {
-  const [submitted, setSubmitted] = React.useState(false);
-  const [username, setUsername] = React.useState("");
-
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-surface-canvas px-4 py-12">
-      <div className="w-full max-w-md rounded-2xl border border-line bg-white p-8 shadow-card">
-        {submitted ? (
-          <div className="text-center">
-            <Icon name="check_circle" size={48} className="mx-auto text-approve" />
-            <h1 className="mt-4 text-headline-3 text-ink">Reset link sent</h1>
-            <p className="mt-2 text-body-2 text-ink-muted">
-              If <span className="font-semibold text-ink">{username || "that account"}</span> exists, a
-              password-reset link has been sent to the registered contact.
-            </p>
-            <Link
-              href="/portals/nhapoa/login"
-              className="mt-6 inline-flex items-center gap-2 text-label-1 font-semibold text-navy hover:underline"
-            >
-              <Icon name="arrow_back" size={16} /> Back to login
-            </Link>
-          </div>
-        ) : (
-          <>
-            <h1 className="text-headline-3 text-ink">Forgot Password</h1>
-            <p className="mt-1 mb-6 text-body-2 text-ink-muted">
-              Enter your username and we&apos;ll send a reset link.
-            </p>
-            <form
-              className="space-y-5"
-              onSubmit={(e) => {
-                e.preventDefault();
-                setSubmitted(true);
-              }}
-            >
-              <Field label="Username" required>
-                <TextInput
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Enter your username"
-                />
-              </Field>
-              <Button type="submit" className="w-full">
-                Send reset link
-              </Button>
-            </form>
-            <Link
-              href="/portals/nhapoa/login"
-              className="mt-6 inline-flex items-center gap-2 text-label-1 font-semibold text-navy hover:underline"
-            >
-              <Icon name="arrow_back" size={16} /> Back to login
-            </Link>
-          </>
-        )}
-      </div>
-    </main>
-  );
+  return <PortalRecoveryTemplate config={CONFIG} />;
 }

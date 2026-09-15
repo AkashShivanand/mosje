@@ -13,6 +13,7 @@ import {
 
 import { PortalLoginTemplateSpecimen } from "./portal-login-template-specimen";
 import { PortalLoginTemplateArrangements } from "./portal-login-template-arrangements";
+import { PortalRecoveryTemplateSpecimen } from "./portal-recovery-template-specimen";
 
 export const metadata: Metadata = {
   title: "Portal Login Template — Design System",
@@ -226,6 +227,70 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
               <code>Device &times; Auth Method</code> &mdash; Password, OTP, PIN &mdash; to match.
             </Callout>
           </section>
+          <section className="cdp__section" aria-labelledby="cdp-identifiers">
+            <h2 id="cdp-identifiers" className="cdp__h2">
+              What the Identifier Is, and Who Inside the Tab
+            </h2>
+            <p>
+              The logins moving onto this template sign in with more than a username. NMBA&rsquo;s
+              Admin tab and SCW take a mobile number; the Transgender Portal sends its code to an
+              email address; NMBA&rsquo;s treatment centres type a Project Id and receive the code on
+              the mobile registered against it. A role says which, and the field takes the right
+              keyboard, autofill hint and cleaning from that one word.
+            </p>
+            <MatrixTable
+              caption="Set on the role tab"
+              columns={["Property", "Applies to", "What it decides"]}
+              rows={[
+                ["identifierKind", "password, PIN", "text (default), mobile or email — type, keyboard, and whether non-digits are stripped"],
+                ["otpIdentifierKind", "OTP", "where the code goes — mobile (default), email, or text for an ID whose destination only the portal knows"],
+                ["otpIdentifierLabel / otpIdentifierPlaceholder", "OTP", "the OTP route's own wording, separate from the password route's"],
+                ["subRoles / subRoleLabel / defaultSubRoleId", "every mode", "a “Your role” select above the fields — SCW's Volunteer or SAGE Organisation — sent as subRoleId"],
+              ]}
+            />
+            <p>
+              <code>otpIdentifierKind</code> is separate from <code>identifierKind</code> because one
+              role can offer both routes with different identifiers: SAMBAL signs in with a username
+              by password, and a code cannot be sent to a username.
+            </p>
+            <Callout type="info" title="The portal answers before the code step opens">
+              <code>onRequestOtp</code> runs when the reader presses Send OTP or Resend. It returns{" "}
+              <code>{`{ ok: false, error }`}</code> to keep them on the identifier with the reason
+              against the field &mdash; an unregistered Project Id &mdash; or{" "}
+              <code>{`{ ok: true, maskedDestination }`}</code> to say where the code went, which a
+              Project Id cannot say for itself. After a submit, <code>fieldErrors</code> places a
+              failure against the field it concerns, and each message hides once that field is
+              edited.
+            </Callout>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-recovery">
+            <h2 id="cdp-recovery" className="cdp__h2">
+              Password Recovery
+            </h2>
+            <p>
+              <code>PortalRecoveryTemplate</code> is the other half of sign-in, on the same chrome:
+              it takes the same brand fields as the login config, so a portal&rsquo;s sign-in and its
+              recovery cannot name the portal differently or load their emblem from different
+              places. It has three flows because the portals recover in three ways, and every step
+              keeps Back to Login.
+            </p>
+            <MatrixTable
+              caption="PortalRecoveryFlow"
+              columns={["Flow", "Steps", "Portals"]}
+              rows={[
+                ["otp", "identifier → code → new password → confirmation", "SCW, SMILE Admin"],
+                ["link", "identifier → “Reset Link Sent”; the reset page is startAt=\"reset\"", "E-Anudaan, SAMBAL"],
+                ["contact", "one notice naming who resets passwords", "PM-AJAY"],
+              ]}
+            />
+            <Callout type="warning" title="The link flow never says whether an account exists">
+              Its confirmation reads &ldquo;If that is a registered account&hellip;&rdquo; whatever
+              was typed. A recovery form that answers &ldquo;no such user&rdquo; tells anyone who
+              asks which accounts are real, so <code>onRequest</code> on that flow refuses a
+              malformed value and nothing more.
+            </Callout>
+            <PortalRecoveryTemplateSpecimen />
+          </section>
           <section className="cdp__section" aria-labelledby="cdp-selector">
             <h2 id="cdp-selector" className="cdp__h2">
               How the Mode Selector Presents Itself
@@ -265,6 +330,27 @@ const config: PortalLoginConfig = {
   error={error}
   onSubmit={async (payload) => signIn(payload)}
 />`}</CodeBlock>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-recovery-code">
+            <h2 id="cdp-recovery-code" className="cdp__h2">
+              Recovery Example
+            </h2>
+            <CodeBlock>{`import { PortalRecoveryTemplate } from "@mosje/design-system";
+
+<PortalRecoveryTemplate
+  config={{
+    portalId: "scw",
+    portalName: "Senior Citizens Welfare",
+    brandAssets,               // the same object the login page passes
+    flow: "otp",
+    loginHref: "/portals/scw/login",
+  }}
+  onRequest={(mobile) => sendCode(mobile)}      // { ok: true, maskedDestination }
+  onVerify={(otp) => checkCode(otp)}           // { ok: false, error } on a wrong code
+  onReset={(password) => savePassword(password)}
+/>`}</CodeBlock>
+            <PropsTable from="PortalRecoveryTemplateProps" />
           </section>
 
           <section className="cdp__section" aria-labelledby="cdp-deeplink">
@@ -317,7 +403,7 @@ portalLoginUrl("/portals/scw/login?role=citizen", "officer");
                 { name: "brandAssets", type: "PortalBrandAssets", description: "Overrides for the emblem, Digital India, SAMAVESH and portal marks, plus `digilockerLogoSrc` for the handoff card's logo slot. That one has no default: every portal mounts under its own basePath, so the path has to come from the caller." },
                 { name: "extraFields", type: "React.ReactNode", description: "Extra controls injected into the credential form." },
                 { name: "extraContent", type: "React.ReactNode", description: "A block below the form — a portal switcher grid, for instance." },
-                { name: "links", type: "{ forgotPasswordHref?; registerHref?; helpFaqHref?; digilockerHref?; termsHref?; privacyHref? }", description: "The help links beneath the form, where the DigiLocker card hands off to, and the two pages the consent line names. Without `digilockerHref` the card does not render, whatever the role asks for." },
+                { name: "links", type: "{ forgotPasswordHref?; registerHref?; registerOptions?; helpFaqHref?; digilockerHref?; termsHref?; privacyHref? }", description: "The help links beneath the form, where the DigiLocker card hands off to, and the two pages the consent line names. Without `digilockerHref` the card does not render, whatever the role asks for. `registerOptions` offers two registration routes side by side — SCW's Volunteer and SAGE Organisation — and wins over `registerHref`." },
               ]}
             />
           </section>

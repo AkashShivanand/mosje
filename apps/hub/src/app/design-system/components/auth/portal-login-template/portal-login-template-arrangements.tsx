@@ -12,6 +12,11 @@ type PortalRoleTab = PortalLoginConfig["roles"][number];
  * dual prompt — and the three props only code has: `error`, `loading` and
  * `roleId`. A designer reading the library and a developer reading this page
  * see one set.
+ *
+ * The last five switches arrived on 2026-09-14 with the portals moving onto the
+ * template: an OTP sent to an email (the Transgender Portal), a "Your role"
+ * select inside a tab and two registration routes (SCW), a field-level error
+ * after submit, and a code request the portal refuses (NMBA's Project Id).
  */
 interface Switches {
   roleTabs: boolean;
@@ -22,6 +27,11 @@ interface Switches {
   error: boolean;
   loading: boolean;
   officer: boolean;
+  otpEmail: boolean;
+  subRoles: boolean;
+  registerOptions: boolean;
+  fieldErrors: boolean;
+  refuseOtp: boolean;
 }
 
 const CONTROLS: { key: keyof Switches; label: string }[] = [
@@ -33,7 +43,17 @@ const CONTROLS: { key: keyof Switches; label: string }[] = [
   { key: "error", label: "error" },
   { key: "loading", label: "loading" },
   { key: "officer", label: 'roleId="officer"' },
+  { key: "otpEmail", label: 'otpIdentifierKind="email"' },
+  { key: "subRoles", label: "Sub-roles (Your role)" },
+  { key: "registerOptions", label: "Two register options" },
+  { key: "fieldErrors", label: "fieldErrors" },
+  { key: "refuseOtp", label: "onRequestOtp refuses" },
 ];
+
+const FIELD_ERRORS = {
+  identifier: "That username is not registered on this portal.",
+  secret: "The password is incorrect.",
+};
 
 const BRAND = {
   emblemSrc: "/design-system/national-emblem.svg",
@@ -53,6 +73,11 @@ export function PortalLoginTemplateArrangements(): React.JSX.Element {
     error: false,
     loading: false,
     officer: false,
+    otpEmail: false,
+    subRoles: false,
+    registerOptions: false,
+    fieldErrors: false,
+    refuseOtp: false,
   });
   const toggle = (k: keyof Switches) => setS((v) => ({ ...v, [k]: !v[k] }));
 
@@ -66,6 +91,13 @@ export function PortalLoginTemplateArrangements(): React.JSX.Element {
       defaultMode: "password",
       digilocker: s.digilocker,
       captcha: s.captcha,
+      otpIdentifierKind: s.otpEmail ? "email" : "mobile",
+      subRoles: s.subRoles
+        ? [
+            { id: "volunteer", label: "Volunteer" },
+            { id: "sage", label: "SAGE Organisation" },
+          ]
+        : undefined,
     };
     const officer: PortalRoleTab = {
       id: "officer",
@@ -83,6 +115,13 @@ export function PortalLoginTemplateArrangements(): React.JSX.Element {
         digilockerHref: s.digilocker ? "https://digilocker.gov.in/" : undefined,
         forgotPasswordHref: "#",
         registerHref: s.accountPrompt ? "#" : undefined,
+        registerOptions:
+          s.accountPrompt && s.registerOptions
+            ? [
+                { label: "Volunteer", href: "#" },
+                { label: "SAGE Organisation", href: "#" },
+              ]
+            : undefined,
         helpFaqHref: "#",
         termsHref: "#",
         privacyHref: "#",
@@ -127,6 +166,10 @@ export function PortalLoginTemplateArrangements(): React.JSX.Element {
         error={s.error ? "The username or password is incorrect. Check both and try again, or use Forgot Password." : null}
         loading={s.loading}
         roleId={s.officer ? "officer" : undefined}
+        fieldErrors={s.fieldErrors ? FIELD_ERRORS : null}
+        onRequestOtp={() =>
+          s.refuseOtp ? { ok: false, error: "No account is registered to that address." } : { ok: true }
+        }
         onSubmit={() => undefined}
       />
     </div>

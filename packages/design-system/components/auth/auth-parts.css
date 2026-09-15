@@ -242,8 +242,11 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  .ds-auth-prompt__options { display: flex; gap: var(--sa-inline-8); }
-  .ds-auth-prompt__options > * { flex: 1 1 0; }
+  /* Equal columns while each label fits on one line; when one cannot ("SAGE Organisation"
+     beside "Volunteer" in a 360px column), both drop to full-width rows rather than one
+     button wrapping to two left-aligned lines beside a one-line neighbour. */
+  .ds-auth-prompt__options { display: flex; flex-wrap: wrap; gap: var(--sa-inline-8); }
+  .ds-auth-prompt__options > * { flex: 1 1 max-content; white-space: nowrap; }
 
   /* ---- signing-into bar ----------------------------------------------------- */
 

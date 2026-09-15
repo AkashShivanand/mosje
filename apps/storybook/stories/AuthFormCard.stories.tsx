@@ -367,3 +367,113 @@ export const OtpVerifyEmail: Story = {
     </Controlled>
   ),
 };
+
+/**
+ * Errors against the fields they concern, after a submit — `identifierError`
+ * and `passwordError` on `PasswordFields`, `pinError` on `PinFields`,
+ * `darpanIdError` and `panError` on `DarpanFields`, `error` on the two OTP
+ * stacks. WCAG 3.3.1 asks for the error where the reader is; the card's banner
+ * is for a failure that belongs to no one field.
+ *
+ * `identifierKind="mobile"` gives the identifier the number pad and strips a
+ * pasted "+91 98100 07001" to its ten digits; `"email"` gives the email
+ * keyboard. The PIN stack takes the same prop.
+ */
+export const FieldErrors: Story = {
+  name: "Field errors and identifier kinds",
+  render: () => (
+    <Controlled>
+      {(s, set) => (
+        <Frame
+          methodTabs={false}
+          credentialFields={
+            <PasswordFields
+              identifierKind="mobile"
+              identifierLabel="Mobile Number"
+              identifier={s.id ?? "98100"}
+              onIdentifierChange={(v) => set("id", v)}
+              password={s.secret ?? ""}
+              onPasswordChange={(v) => set("secret", v)}
+              identifierError="Enter the 10-digit mobile number registered with the portal."
+              passwordError="The password is incorrect."
+              forgotHref="#forgot"
+            />
+          }
+        />
+      )}
+    </Controlled>
+  ),
+};
+
+/** The same pattern on the PIN and DARPAN stacks. */
+export const FieldErrorsPinAndDarpan: Story = {
+  name: "Field errors — PIN and DARPAN",
+  render: () => (
+    <Controlled>
+      {(s, set) => (
+        <div style={{ display: "flex", gap: "var(--sa-inline-32)" }}>
+          <Frame
+            methodTabs={false}
+            credentialFields={
+              <PinFields
+                identifierKind="email"
+                identifierLabel="Email Address"
+                identifier={s.id ?? ""}
+                onIdentifierChange={(v) => set("id", v)}
+                pin={s.pin ?? ""}
+                onPinChange={(v) => set("pin", v)}
+                identifierError="Enter an email address."
+                pinError="The PIN is incorrect."
+              />
+            }
+          />
+          <Frame
+            methodTabs={false}
+            action="Continue with DARPAN"
+            credentialFields={
+              <DarpanFields
+                darpanId={s.darpan ?? ""}
+                onDarpanIdChange={(v) => set("darpan", v)}
+                pan={s.pan ?? ""}
+                onPanChange={(v) => set("pan", v)}
+                darpanIdError="No organisation is registered with that DARPAN ID."
+                panError="The PAN does not match the DARPAN record."
+              />
+            }
+          />
+        </div>
+      )}
+    </Controlled>
+  ),
+};
+
+/**
+ * The OTP request for an ID rather than a phone — NMBA's treatment centres type
+ * a Project Id and the code goes to the mobile registered against it.
+ * `kind="text"` stops the digit stripping, `note` says what will happen, and
+ * `error` is where a refused request lands.
+ */
+export const OtpRequestForAnId: Story = {
+  name: "OTP — request, to a Project Id",
+  render: () => (
+    <Controlled>
+      {(s, set) => (
+        <Frame
+          action="Send OTP"
+          methodTabs={false}
+          credentialFields={
+            <OtpRequestFields
+              kind="text"
+              label="Project Id"
+              placeholder="e.g. IRCA001"
+              note="The code is sent to the mobile number registered for this project."
+              mobile={s.id ?? "IRCA999"}
+              onMobileChange={(v) => set("id", v.toUpperCase())}
+              error="No treatment centre is registered with that Project Id."
+            />
+          }
+        />
+      )}
+    </Controlled>
+  ),
+};

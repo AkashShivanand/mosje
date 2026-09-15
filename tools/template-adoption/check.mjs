@@ -59,8 +59,9 @@ const SKIP = new Set(["node_modules", ".next", "website", "design-system", "i18n
 
 /** Tier-B templates. A page rendering any one of these is composed, not assembled. */
 const SCREENS = /<(?:Worklist|Record|Wizard|Overview|Form|Checklist|Review|Chooser|Decision|Catalogue|Gallery|Search|Inbox|Settings|Report|Confirmation|Status|Auth)Screen\b/;
-/** The login screen is a template too — it just predates the others. */
-const LOGIN = /<PortalLogin(?:Template|Shell)\b/;
+/** The login screen is a template too — it just predates the others. Recovery
+ *  (`PortalRecoveryTemplate`, 2026-09-14) is its other half and counts the same. */
+const LOGIN = /<Portal(?:Login(?:Template|Shell)|RecoveryTemplate)\b/;
 const CHROME = /<PortalPage\b/;
 
 function* walk(dir) {

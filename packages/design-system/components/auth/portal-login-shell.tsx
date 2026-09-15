@@ -42,6 +42,7 @@ import { Icon } from "../utilities/icon";
 // The chrome rows use the estate content container, so the emblem lines up with
 // the same column every other page uses. Previously max-w-screen-2xl (1536).
 import "../../foundations/layout.css";
+import { DEFAULT_LOGIN_MARKS } from "./login-shell-chrome";
 import "./portal-login-template.css";
 import "./portal-login-hero.css";
 
@@ -144,9 +145,10 @@ export interface PortalLoginShellProps {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function PortalLoginShell({
-  emblemSrc = "/brand/national-emblem.svg",
-  digitalIndiaSrc = "/brand/digital-india.svg",
-  samaveshLogoSrc = "/brand/samavesh-logo.svg",
+  // Served defaults — `/brand/*.svg` never existed. See `login-shell-chrome.ts`.
+  emblemSrc = DEFAULT_LOGIN_MARKS.emblemSrc,
+  digitalIndiaSrc = DEFAULT_LOGIN_MARKS.digitalIndiaSrc,
+  samaveshLogoSrc = DEFAULT_LOGIN_MARKS.samaveshLogoSrc,
   heroImageSrc,
   signingInto,
   portalTagline,
@@ -170,7 +172,7 @@ export function PortalLoginShell({
        form column to 140px. A full-page portal login is unaffected: there the
        container IS the viewport. */
     <div className="ds-plogin">
-    <div className="ds-plogin__shell flex min-h-screen flex-col">
+    <div className="ds-plogin__shell flex flex-col">
       {/* ── Navbar — the Portal variant of the SAMAVESH Navbar ─────────────────
          Figma: `Navbar/Portal` with Menu, Search, Login Signup and Profile all off;
          accessibility bar + masthead, 146px at desktop. Cobranding is the Digital
@@ -394,7 +396,9 @@ export function PortalLoginShell({
               <div className="ds-plogin__column">
                 <Tabs
                   tabs={tabs.map((tab) => ({
-                    id: tab.href,
+                    /* The href is "?role=citizen"; an element id may not carry "?" or "=",
+                       so the id is the href with everything else folded to hyphens. */
+                    id: tab.href.replace(/[^A-Za-z0-9_-]+/g, "-").replace(/^-+|-+$/g, ""),
                     label: tab.label,
                     href: tab.href,
                   }))}

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Field, TextInput, SectionEyebrow, cnField } from "@/components/tg/ui";
 import { useTg } from "@/lib/tg/store/store";
 import { DEMO_CITIZEN } from "@/lib/tg/store/seed";
+import { TG_DIGILOCKER } from "@/lib/tg/identity";
 import {
   STATES,
   STATE_DISTRICTS,
@@ -17,6 +18,9 @@ import type { ApplicantDetails, ApplicationType, AppDocument } from "@/lib/tg/st
 import { Icon, RadioGroup, Stepper, Select, Card, Button } from "@mosje/design-system";
 
 type Phase = "type" | "method" | "manual" | "form" | "done";
+
+/** The "method" and "manual" phases exist only while DigiLocker prefill is switched on. */
+const OFFERS_DIGILOCKER = TG_DIGILOCKER.citizen.applicationPrefill;
 
 const FORM_STEPS = [
   { label: "Basic Details" },
@@ -91,14 +95,14 @@ export default function ApplyPage() {
           />
         </div>
         <div className="mt-6 flex justify-end">
-          <Button onClick={() => setPhase("method")}>Continue with Selection <Icon name="arrow_forward" size={16} /></Button>
+          <Button onClick={() => setPhase(OFFERS_DIGILOCKER ? "method" : "form")}>Continue with Selection <Icon name="arrow_forward" size={16} /></Button>
         </div>
       </Wrap>
     );
   }
 
   /* -------------------------------------------------------------- Phase: method */
-  if (phase === "method") {
+  if (phase === "method" && OFFERS_DIGILOCKER) {
     return (
       <Wrap
         title="How would you like to enter your details?"
@@ -131,7 +135,7 @@ export default function ApplyPage() {
   }
 
   /* -------------------------------------------------------------- Phase: manual */
-  if (phase === "manual") {
+  if (phase === "manual" && OFFERS_DIGILOCKER) {
     return (
       <Wrap
         title="Proceed with manual application"
@@ -242,7 +246,7 @@ export default function ApplyPage() {
           </section>
 
           <div className="flex items-center justify-between border-t border-line pt-5">
-            <Button variant="neutral" appearance="text" onClick={() => setPhase("method")}><Icon name="arrow_back" size={16} /> Back</Button>
+            <Button variant="neutral" appearance="text" onClick={() => setPhase(OFFERS_DIGILOCKER ? "method" : "type")}><Icon name="arrow_back" size={16} /> Back</Button>
             <Button onClick={() => setStep(1)} disabled={!canNextBasic}>Save and Continue <Icon name="arrow_forward" size={16} /></Button>
           </div>
         </Card>
@@ -282,7 +286,7 @@ export default function ApplyPage() {
 
           <ReviewGrid rows={[
             ["Application Type", `${type} Certificate`],
-            ["Entry Method", viaDigiLocker ? "DigiLocker" : "Manual"],
+            ...(OFFERS_DIGILOCKER ? [["Entry Method", viaDigiLocker ? "DigiLocker" : "Manual"] as [string, string]] : []),
             ["Full Legal Name", form.fullLegalName],
             ["Chosen Name", form.chosenName],
             ["Name on Certificate", form.nameToPrint || form.chosenName],
