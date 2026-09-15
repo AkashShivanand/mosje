@@ -8,9 +8,9 @@
       "existing": 152
     },
     "Palette": {
-      "total": 139,
+      "total": 142,
       "new": 0,
-      "existing": 139
+      "existing": 142
     },
     "Color": {
       "total": 512,
@@ -9553,6 +9553,82 @@
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
           }
+        },
+        {
+          "name": "bg/brand/primary/boldest",
+          "path": "bg/brand/primary/boldest",
+          "role": "brand-source",
+          "type": "COLOR",
+          "status": "existing",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#003975"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#003366"
+            }
+          },
+          "description": "Brand-aware source for Color::bg/brand/primary/boldest. Generated because that token's Navy value is not the Navy value of any Palette rung; aliasing a rung would lose the Navy brand.",
+          "codeSyntax": {
+            "WEB": "var(--sa-bg-brand-primary-boldest)"
+          },
+          "scopes": [
+            "FRAME_FILL",
+            "SHAPE_FILL"
+          ],
+          "hiddenFromPublishing": true
+        },
+        {
+          "name": "text/link/visited/default",
+          "path": "text/link/visited/default",
+          "role": "brand-source",
+          "type": "COLOR",
+          "status": "existing",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#003975"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#003366"
+            }
+          },
+          "description": "Brand-aware source for Color::text/link/visited/default. Generated because that token's Navy value is not the Navy value of any Palette rung; aliasing a rung would lose the Navy brand.",
+          "codeSyntax": {
+            "WEB": "var(--sa-text-link-visited-default)"
+          },
+          "scopes": [
+            "TEXT_FILL"
+          ],
+          "hiddenFromPublishing": true
+        },
+        {
+          "name": "text/link/brand/default",
+          "path": "text/link/brand/default",
+          "role": "brand-source",
+          "type": "COLOR",
+          "status": "existing",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "#005eb9"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "#214c7d"
+            }
+          },
+          "description": "Brand-aware source for Color::text/link/brand/default. Generated because that token's Navy value is not the Navy value of any Palette rung; aliasing a rung would lose the Navy brand.",
+          "codeSyntax": {
+            "WEB": "var(--sa-text-link-brand-default)"
+          },
+          "scopes": [
+            "TEXT_FILL"
+          ],
+          "hiddenFromPublishing": true
         }
       ]
     },
@@ -10199,7 +10275,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/800"
+              "name": "bg/brand/primary/boldest"
             }
           },
           "description": "Use for the heaviest fill, for maximum emphasis on a light page, tinted with the primary brand colour. Contrast 11.4:1 vs bg/neutral/base — meets ≥7:1: text-safe (WCAG 1.4.6 AAA).",
@@ -11619,7 +11695,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/800"
+              "name": "text/link/visited/default"
             }
           },
           "description": "Use for an already-visited link. Contrast 9.99:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
@@ -20998,7 +21074,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/600"
+              "name": "text/link/brand/default"
             }
           },
           "description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast. BLUE IS RAMP 600, NOT 500, and the reason is the ground it actually sits on: 500 (#0373df) measures 4.64:1 on white but 4.07:1 on bg/surface/muted, which is the class the estate's own <body> carries — so the link failed 1.4.3 on most pages while passing every check. 600 (#005eb9) is 6.36:1 and 5.57:1. It passed because the contrast contract judges text against bg/neutral/base, i.e. white; that surface assumption is recorded as an open item rather than widened here, since widening it re-judges every text token at once. Navy holds ramp 500 through its own colorModes override and already clears 4.5:1 on that ground. dbim has no such override, so it follows the base step and moved to 600 with it across all six of its hues — which only darkens those links, never lightens them. Contrast 5.57:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: text (WCAG 1.4.3 AA).",

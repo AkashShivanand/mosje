@@ -1575,9 +1575,11 @@
   --sa-border-neutral-bolder-default: #6f757d;
   --sa-bg-neutral-base: #ffffff;
   --sa-bg-neutral-subtler: #eef0f3;
+  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-text-neutral-bolder: #0e1114;
   --sa-text-link-brand-default: #005eb9;
-  --sa-overlay-neutral-boldest: #1e2124;
+  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
+  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-chart-div-negStrong: #6c0f15;
   --sa-chart-div-neg: #ec4e4f;
   --sa-chart-div-negSoft: #ffc1bc;
@@ -1671,7 +1673,6 @@
   --sa-bg-brand-primary-subtle: var(--sa-color-primaryScale-200);
   --sa-bg-brand-primary-bold: var(--sa-color-primaryScale-300);
   --sa-bg-brand-primary-bolder: var(--sa-color-primaryScale-600);
-  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-bg-brand-secondary-base: var(--sa-color-secondaryScale-50);
   --sa-bg-brand-secondary-subtler: var(--sa-color-secondaryScale-100);
   --sa-bg-brand-secondary-subtle: var(--sa-color-secondaryScale-200);
@@ -1716,7 +1717,6 @@
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
-  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-primaryScale-600);
   --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-700);
@@ -1730,7 +1730,6 @@
   --sa-text-status-info-bolder: var(--sa-color-infoScale-700);
   --sa-focus-ring: var(--sa-color-action-primary-default);
   --sa-focus-ringInner: var(--sa-color-neutralScale-0);
-  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-overlay-neutral-hover: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-4) * 100%), transparent);
   --sa-overlay-neutral-active: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-overlay-neutral-focus: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-16) * 100%), transparent);
@@ -2233,9 +2232,11 @@
   --sa-border-neutral-bolder-default: var(--sa-ref-color-neutralDark-500);
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDark-0);
   --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDark-50);
+  --sa-bg-brand-primary-boldest: var(--sa-ref-color-primaryRamp-navy-600);
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDark-900);
   --sa-text-link-brand-default: var(--sa-ref-color-primaryRamp-navy-500);
-  --sa-overlay-neutral-boldest: #1e2124;
+  --sa-text-link-visited-default: var(--sa-ref-color-primaryRamp-navy-600);
+  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-chart-div-negStrong: #6c0f15;
   --sa-chart-div-neg: #ec4e4f;
   --sa-chart-div-negSoft: #ffc1bc;
@@ -2329,7 +2330,6 @@
   --sa-bg-brand-primary-subtle: var(--sa-color-primaryScale-200);
   --sa-bg-brand-primary-bold: var(--sa-color-primaryScale-300);
   --sa-bg-brand-primary-bolder: var(--sa-color-primaryScale-600);
-  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-bg-brand-secondary-base: var(--sa-color-secondaryScale-50);
   --sa-bg-brand-secondary-subtler: var(--sa-color-secondaryScale-100);
   --sa-bg-brand-secondary-subtle: var(--sa-color-secondaryScale-200);
@@ -2374,7 +2374,6 @@
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
-  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-primaryScale-600);
   --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-700);
@@ -2388,7 +2387,6 @@
   --sa-text-status-info-bolder: var(--sa-color-infoScale-700);
   --sa-focus-ring: var(--sa-color-action-primary-default);
   --sa-focus-ringInner: var(--sa-color-neutralScale-0);
-  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-overlay-neutral-hover: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-4) * 100%), transparent);
   --sa-overlay-neutral-active: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-overlay-neutral-focus: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-16) * 100%), transparent);
@@ -2892,9 +2890,11 @@
   --sa-border-neutral-bolder-default: var(--sa-ref-color-neutralDbim-500);
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
   --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
+  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
   --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-blue-600);
-  --sa-overlay-neutral-boldest: var(--sa-color-neutralScale-800);
+  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
+  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
   --sa-chart-div-negSoft: var(--sa-ref-color-redDbim-100);
@@ -2988,7 +2988,6 @@
   --sa-bg-brand-primary-subtle: var(--sa-color-primaryScale-200);
   --sa-bg-brand-primary-bold: var(--sa-color-primaryScale-300);
   --sa-bg-brand-primary-bolder: var(--sa-color-primaryScale-600);
-  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-bg-brand-secondary-base: var(--sa-color-secondaryScale-50);
   --sa-bg-brand-secondary-subtler: var(--sa-color-secondaryScale-100);
   --sa-bg-brand-secondary-subtle: var(--sa-color-secondaryScale-200);
@@ -3033,7 +3032,6 @@
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
-  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-primaryScale-600);
   --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-700);
@@ -3047,7 +3045,6 @@
   --sa-text-status-info-bolder: var(--sa-color-infoScale-700);
   --sa-focus-ring: var(--sa-color-action-primary-default);
   --sa-focus-ringInner: var(--sa-color-neutralScale-0);
-  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-overlay-neutral-hover: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-4) * 100%), transparent);
   --sa-overlay-neutral-active: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-overlay-neutral-focus: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-16) * 100%), transparent);
@@ -3549,9 +3546,11 @@
   --sa-border-neutral-bolder-default: var(--sa-ref-color-neutralDbim-500);
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
   --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
+  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
   --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-burgundy-600);
-  --sa-overlay-neutral-boldest: var(--sa-color-neutralScale-800);
+  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
+  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
   --sa-chart-div-negSoft: var(--sa-ref-color-redDbim-100);
@@ -3645,7 +3644,6 @@
   --sa-bg-brand-primary-subtle: var(--sa-color-primaryScale-200);
   --sa-bg-brand-primary-bold: var(--sa-color-primaryScale-300);
   --sa-bg-brand-primary-bolder: var(--sa-color-primaryScale-600);
-  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-bg-brand-secondary-base: var(--sa-color-secondaryScale-50);
   --sa-bg-brand-secondary-subtler: var(--sa-color-secondaryScale-100);
   --sa-bg-brand-secondary-subtle: var(--sa-color-secondaryScale-200);
@@ -3690,7 +3688,6 @@
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
-  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-primaryScale-600);
   --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-700);
@@ -3704,7 +3701,6 @@
   --sa-text-status-info-bolder: var(--sa-color-infoScale-700);
   --sa-focus-ring: var(--sa-color-action-primary-default);
   --sa-focus-ringInner: var(--sa-color-neutralScale-0);
-  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-overlay-neutral-hover: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-4) * 100%), transparent);
   --sa-overlay-neutral-active: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-overlay-neutral-focus: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-16) * 100%), transparent);
@@ -4206,9 +4202,11 @@
   --sa-border-neutral-bolder-default: var(--sa-ref-color-neutralDbim-500);
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
   --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
+  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
   --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-purple-600);
-  --sa-overlay-neutral-boldest: var(--sa-color-neutralScale-800);
+  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
+  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
   --sa-chart-div-negSoft: var(--sa-ref-color-redDbim-100);
@@ -4302,7 +4300,6 @@
   --sa-bg-brand-primary-subtle: var(--sa-color-primaryScale-200);
   --sa-bg-brand-primary-bold: var(--sa-color-primaryScale-300);
   --sa-bg-brand-primary-bolder: var(--sa-color-primaryScale-600);
-  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-bg-brand-secondary-base: var(--sa-color-secondaryScale-50);
   --sa-bg-brand-secondary-subtler: var(--sa-color-secondaryScale-100);
   --sa-bg-brand-secondary-subtle: var(--sa-color-secondaryScale-200);
@@ -4347,7 +4344,6 @@
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
-  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-primaryScale-600);
   --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-700);
@@ -4361,7 +4357,6 @@
   --sa-text-status-info-bolder: var(--sa-color-infoScale-700);
   --sa-focus-ring: var(--sa-color-action-primary-default);
   --sa-focus-ringInner: var(--sa-color-neutralScale-0);
-  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-overlay-neutral-hover: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-4) * 100%), transparent);
   --sa-overlay-neutral-active: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-overlay-neutral-focus: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-16) * 100%), transparent);
@@ -4863,9 +4858,11 @@
   --sa-border-neutral-bolder-default: var(--sa-ref-color-neutralDbim-500);
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
   --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
+  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
   --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-green-600);
-  --sa-overlay-neutral-boldest: var(--sa-color-neutralScale-800);
+  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
+  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
   --sa-chart-div-negSoft: var(--sa-ref-color-redDbim-100);
@@ -4959,7 +4956,6 @@
   --sa-bg-brand-primary-subtle: var(--sa-color-primaryScale-200);
   --sa-bg-brand-primary-bold: var(--sa-color-primaryScale-300);
   --sa-bg-brand-primary-bolder: var(--sa-color-primaryScale-600);
-  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-bg-brand-secondary-base: var(--sa-color-secondaryScale-50);
   --sa-bg-brand-secondary-subtler: var(--sa-color-secondaryScale-100);
   --sa-bg-brand-secondary-subtle: var(--sa-color-secondaryScale-200);
@@ -5004,7 +5000,6 @@
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
-  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-primaryScale-600);
   --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-700);
@@ -5018,7 +5013,6 @@
   --sa-text-status-info-bolder: var(--sa-color-infoScale-700);
   --sa-focus-ring: var(--sa-color-action-primary-default);
   --sa-focus-ringInner: var(--sa-color-neutralScale-0);
-  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-overlay-neutral-hover: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-4) * 100%), transparent);
   --sa-overlay-neutral-active: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-overlay-neutral-focus: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-16) * 100%), transparent);
@@ -5520,9 +5514,11 @@
   --sa-border-neutral-bolder-default: var(--sa-ref-color-neutralDbim-500);
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
   --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
+  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
   --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-chromeYellow-600);
-  --sa-overlay-neutral-boldest: var(--sa-color-neutralScale-800);
+  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
+  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
   --sa-chart-div-negSoft: var(--sa-ref-color-redDbim-100);
@@ -5616,7 +5612,6 @@
   --sa-bg-brand-primary-subtle: var(--sa-color-primaryScale-200);
   --sa-bg-brand-primary-bold: var(--sa-color-primaryScale-300);
   --sa-bg-brand-primary-bolder: var(--sa-color-primaryScale-600);
-  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-bg-brand-secondary-base: var(--sa-color-secondaryScale-50);
   --sa-bg-brand-secondary-subtler: var(--sa-color-secondaryScale-100);
   --sa-bg-brand-secondary-subtle: var(--sa-color-secondaryScale-200);
@@ -5661,7 +5656,6 @@
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
-  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-primaryScale-600);
   --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-700);
@@ -5675,7 +5669,6 @@
   --sa-text-status-info-bolder: var(--sa-color-infoScale-700);
   --sa-focus-ring: var(--sa-color-action-primary-default);
   --sa-focus-ringInner: var(--sa-color-neutralScale-0);
-  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-overlay-neutral-hover: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-4) * 100%), transparent);
   --sa-overlay-neutral-active: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-overlay-neutral-focus: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-16) * 100%), transparent);
@@ -6177,9 +6170,11 @@
   --sa-border-neutral-bolder-default: var(--sa-ref-color-neutralDbim-500);
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
   --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
+  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
   --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-cinnamonRed-600);
-  --sa-overlay-neutral-boldest: var(--sa-color-neutralScale-800);
+  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
+  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
   --sa-chart-div-negSoft: var(--sa-ref-color-redDbim-100);
@@ -6273,7 +6268,6 @@
   --sa-bg-brand-primary-subtle: var(--sa-color-primaryScale-200);
   --sa-bg-brand-primary-bold: var(--sa-color-primaryScale-300);
   --sa-bg-brand-primary-bolder: var(--sa-color-primaryScale-600);
-  --sa-bg-brand-primary-boldest: var(--sa-color-primaryScale-800);
   --sa-bg-brand-secondary-base: var(--sa-color-secondaryScale-50);
   --sa-bg-brand-secondary-subtler: var(--sa-color-secondaryScale-100);
   --sa-bg-brand-secondary-subtle: var(--sa-color-secondaryScale-200);
@@ -6318,7 +6312,6 @@
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
-  --sa-text-link-visited-default: var(--sa-color-primaryScale-800);
   --sa-text-link-neutral-default: var(--sa-color-text-muted);
   --sa-text-brand-primary-base: var(--sa-color-primaryScale-600);
   --sa-text-brand-primary-bolder: var(--sa-color-primaryScale-700);
@@ -6332,7 +6325,6 @@
   --sa-text-status-info-bolder: var(--sa-color-infoScale-700);
   --sa-focus-ring: var(--sa-color-action-primary-default);
   --sa-focus-ringInner: var(--sa-color-neutralScale-0);
-  --sa-overlay-neutral-boldest: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent);
   --sa-overlay-neutral-hover: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-4) * 100%), transparent);
   --sa-overlay-neutral-active: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-8) * 100%), transparent);
   --sa-overlay-neutral-focus: color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-16) * 100%), transparent);

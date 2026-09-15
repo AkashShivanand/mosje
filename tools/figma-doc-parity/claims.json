@@ -1330,18 +1330,18 @@
     {
       "node": "54989:776",
       "where": "Color — Documentation › 02 Tiers › Tier 1",
-      "figma": "Palette collection · 139 variables · modes Blue and Navy · hidden from publishing",
+      "figma": "Palette collection · 142 variables · modes Blue and Navy · hidden from publishing",
       "expect": [
         {
           "kind": "text",
-          "value": "139 variables"
+          "value": "142 variables"
         },
         {
           "kind": "source",
           "file": "packages/tokens/dist/figma.variables.json",
-          "pattern": "\"Palette\":\\s*\\{\\s*\"total\":\\s*139",
+          "pattern": "\"Palette\":\\s*\\{\\s*\"total\":\\s*142",
           "flags": "s",
-          "hint": "The payload's Palette count; the frame said 164 until 2026-09-05 138 until 2026-09-06, when color/transparent/secondary/0 joined, 139 until 2026-09-14, when color/neutralScale/25 joined, and 140 until 2026-09-15, when color/transparent/secondary/0 was retired with the sidebar's saffron wash."
+          "hint": "The payload's Palette count; the frame said 164 until 2026-09-05 138 until 2026-09-06, when color/transparent/secondary/0 joined, 139 until 2026-09-14, when color/neutralScale/25 joined, 140 until 2026-09-15, when color/transparent/secondary/0 was retired with the sidebar's saffron wash, and 139 until later that day, when three brand-source companions joined (bg/brand/primary/boldest, text/link/visited/default, text/link/brand/default)."
         },
         {
           "kind": "source",

@@ -171,7 +171,7 @@ therefore visibly heavier than an info banner of the same importance, and Navy's
 1). *Proposal:* pin each generated ramp's `lightest` so rung 50 lands at L\* 96 ± 0.5 — Navy `98.5 →
 ~96.5`, danger upward. This regenerates brand ramps and moves Figma values.
 
-**4 · Navy's dark end is compressed into black.** Rungs 700–950 sit at L\* 13.4, 7.8, 4.0 and 1.6
+**4 · Navy's dark end is compressed into black.** *(Re-measured and addressed at the role level — §7.)* Rungs 700–950 sit at L\* 13.4, 7.8, 4.0 and 1.6
 (steps of 7.9, 5.6, 3.8 and 2.4), against 13–14 per step above the anchor; Blue steps evenly at 8–9.6.
 `bg/brand/primary/boldest` (rung 800, `#001734`) is 1.42:1 from `bolder` and reads as black, not navy.
 *Proposal:* lower Navy's `darkest` so the four dark rungs spread, or bind `boldest` to rung 700 in Navy.
@@ -318,4 +318,56 @@ page and viewport.
 a `secondary/8` fill that is not part of this change (it arrives with the login-template work, PR #481).
 It was restored at once to its single solid fill bound to `color/transparent/secondary/8`, matching the
 `.ds-portal-list` rule on that branch, and confirmed by screenshot.
+
+---
+
+## 7. Follow-up applied — Navy's dark shades (2026-09-15)
+
+### 7.1 The finding was right about the symptom and wrong about the cause
+
+§3.2 item 4 measured the dark end in CIE L\*, which stretches the near-black toe, and proposed
+re-spacing the ramp. Measured again in OKLab — the space `ramp.mjs` actually generates in — Navy's
+steps below the key colour are 6.9, 5.3, 4.4 and 4.5 ΔE against Blue's even ~7.4. Neither remedy works:
+
+| Navy `darkest` | rung 800 | ΔE 700→800 | 600 vs 800 | 950 vs black |
+|---|---|---|---|---|
+| **12 (shipped)** | `#001735` | 5.3 | 1.42:1 | 12.8 ΔE |
+| 14 | `#001938` | 4.8 | 1.39:1 | 14.8 ΔE |
+| 16 | `#001b3c` | 4.0 | 1.36:1 | 16.8 ΔE |
+| 18 | `#001d3f` | 3.5 | 1.33:1 | 18.9 ΔE |
+
+Lifting the floor shrinks every state step; lowering it takes the bottom rungs to pure black. Holding
+chroma up changes nothing either — at those lightnesses the ramp already sits on the sRGB gamut edge.
+**The cause is the anchor:** `#003366` has OKLab L 32, Blue's rung 800 has 35, so a rung NUMBER is about
+two shades deeper under Navy than under Blue.
+
+Re-anchoring Navy at rung 700 or 800 would make its rungs behave exactly like Blue's, but it moves the
+resting primary button off `#003366` (to `#1E497B` or `#375F8F`). Offered as options on 2026-09-15; the
+decision was to **keep `#003366` on buttons and fix the roles that read as black**.
+
+### 7.2 What changed
+
+| Where | Change |
+|---|---|
+| `generate-system-tokens.mjs` | A `NAVY` override map: `bg/brand/primary/boldest` and `text/link/visited/default` take `primaryRamp.navy.600` under Navy. Blue and the DBIM previews keep rung 800. |
+| `site-footer.css` | Deep band, rule and chips are `color-mix()` proportions of the footer ground instead of fixed rungs. Blue: deep `#002852` for `#002855`, rule `#025eb9` for `#005eb9`. Navy: deep `#002447` for `#000e24`. Rung fallbacks kept for engines without `color-mix`. |
+| `legacy-ds-css.mjs` (defect) | The alias re-assertion at the end of a brand block redeclared a token that block had already overridden, cancelling the override; a brand with no override of a Tier-2 alias wrote the Blue literal. Both fixed, and a translucent token keeps its alpha per brand. Verified by resolving all 12 selector contexts against the previous build: **exactly two values change, both in Navy.** |
+| `figma-variables.mjs` (defect) | A Color token whose Navy value is a different rung was aliased to the Blue rung's Palette variable. Such tokens now get a brand-source companion. Three: the two above, and `text/link/brand/default`, which the library had been showing at Navy rung 600 while the code paints 500. |
+| Library | Three Palette variables created (hidden, `role: brand-source`), three Color variables re-aliased. Read back byte-identical on every value and field checksum; Palette 139 → 142; Colour page count and `claims.json` restated. |
+
+**Not changed, deliberately:** the ramp; the resting (`#003366`) and hover (`#002349`) button; the
+pressed button (`#001735`, rung 800, bound directly — a momentary state, and lifting it would erase its
+step from rest); the ticker's plinth (rung 800 under a rung-600 bar — a designed tonal step); rungs 900
+and 950, which no Navy role binds.
+
+### 7.3 Verified in the running UI (Navy)
+
+| Surface | Before | After |
+|---|---|---|
+| Website footer ground | `rgb(0, 23, 53)` | `rgb(0, 51, 102)` |
+| Profile card status pill | `rgb(0, 23, 53)` | `rgb(0, 51, 102)` |
+| Visited link | `#001735`, 6.9 ΔE from body text | `#003366`, 12.4 ΔE from body text, 8.9 ΔE from an unvisited link |
+| Primary button rest / hover / pressed | `#036` / `#002349` / `#001735` | unchanged |
+
+Footer ink on the new ground: dim ink (rung 200) 5.51:1, muted ink 8.15:1, white 12.61:1.
 

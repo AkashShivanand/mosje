@@ -311,12 +311,23 @@ export const legacyDsCss = {
          * override it declares the value it was inheriting anyway: no rendered value changes
          * except inside a nested island, which is the defect being fixed.
          */
+        // A brand with no override of its own declares what :root declares. For a Tier-2 ALIAS
+        // that is the reference, never the literal it resolved to at the default brand: a
+        // literal froze `bg/brand/primary/boldest` at Blue's #003975 inside every DBIM block the
+        // moment the token gained a Navy override (2026-09-15).
+        // A translucent token keeps its alpha in every brand: the brand swaps the COLOUR, the
+        // wash stays a wash (`overlay/neutral/boldest`, the modal scrim, is one).
+        const orig = t.original?.$value ?? t.original?.value;
+        const isRef = typeof orig === "string" && /^\{[^}]+\}$/.test(orig);
+        const inherited = ext.alpha && isRef
+          ? alphaMix(orig, ext.alpha, refToVar)
+          : ALIAS_EMIT_FILE.test(t.filePath ?? "") && isRef ? resolveRef(orig) : val(t);
         for (const brand of allBrands) {
           const v = ext.colorModes[brand];
           push(
             (colorModeMap[brand] ??= mkBlock()),
             name,
-            v === undefined ? val(t) : resolveRef(v),
+            v === undefined ? inherited : ext.alpha ? alphaMix(v, ext.alpha, refToVar) : resolveRef(v),
           );
         }
       }
@@ -347,7 +358,10 @@ export const legacyDsCss = {
       for (let pass = 0; pass < 16; pass++) {
         let grew = false;
         for (const [name, deps, value] of pairs) {
-          if (emitted.has(name) || !deps.some((d) => changed.has(d))) continue;
+          // A token the block already declares for itself (its own colorModes entry) is never
+          // re-asserted as an alias: the re-assertion comes later in the block and would win,
+          // silently cancelling the brand's override.
+          if (emitted.has(name) || block.vars.has(name) || !deps.some((d) => changed.has(d))) continue;
           emitted.set(name, value);
           changed.add(name);
           grew = true;
