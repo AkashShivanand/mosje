@@ -182,10 +182,10 @@ function Overview({ projectId }: { projectId: string }) {
   return (
     <div className="space-y-5">
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <MetricCard label="Returns Submitted" value={String(submitted.length)} changeLabel="in the last two years" />
-        <MetricCard label="Returns Due" value={String(due)} changeLabel="for the month running" />
-        <MetricCard label="Returns Not Submitted" value={String(missed)} changeLabel="for months already past" />
-        <MetricCard label="Average Attendance" value={`${average}%`} changeLabel={`FY ${currentFy}`} />
+        <MetricCard label="Returns Submitted" value={String(submitted.length)} detail="in the last two years" />
+        <MetricCard label="Returns Due" value={String(due)} detail="for the month running" />
+        <MetricCard label="Returns Not Submitted" value={String(missed)} detail="for months already past" />
+        <MetricCard label="Average Attendance" value={`${average}%`} detail={`FY ${currentFy}`} />
       </div>
 
       <ChartCard title="Monthly Average Attendance (%)" subtitle="Submitted returns only">

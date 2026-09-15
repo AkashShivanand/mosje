@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Accordion,
@@ -248,6 +249,7 @@ export function ReviewShell({ appId }: { appId: string }) {
 
           <Panel title="File Movement and Remarks">
             <EventList
+              linkAs={Link}
               label="File movement and remarks"
               events={[...app.audit].reverse().map((e) => ({
                 id: e.id,

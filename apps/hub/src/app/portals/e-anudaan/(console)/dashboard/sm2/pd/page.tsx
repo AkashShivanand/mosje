@@ -1,6 +1,8 @@
 "use client";
 
-import { Icon, MetricCard, PageHeader } from "@mosje/design-system";
+import * as React from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { FilterSelect, Icon, MetricCard, PageHeader } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { formatGrant, sanctionedApps } from "@/lib/e-anudaan/selectors";
 import { WorklistTable } from "@/components/e-anudaan/worklist-table";
@@ -20,10 +22,38 @@ import { WorklistTable } from "@/components/e-anudaan/worklist-table";
  * that is a note for the build team, not for the Programme Director.
  */
 export default function ProgrammeDirectorDeskPage() {
+  return (
+    <React.Suspense fallback={null}>
+      <SanctionDesk />
+    </React.Suspense>
+  );
+}
+
+/**
+ * The Financial Year filter every officer dashboard carries (review call of 11 Sep 2026, T698–737),
+ * in the URL as the Action Queue keeps it. The tiles said "All financial years" with no way to ask
+ * for one.
+ */
+function SanctionDesk() {
   const { state } = useEAnudaan();
-  const awaiting = state.applications.filter((a) => a.holder.kind === "pd");
-  const sanctioned = sanctionedApps(state);
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useSearchParams();
+  const fy = params.get("fy") ?? "";
+  const inYear = (a: { financialYear: string }) => !fy || a.financialYear === fy;
+  const years = [...new Set(state.applications.map((a) => a.financialYear))].sort().reverse();
+  const yearLabel = fy ? `FY ${fy}` : "All financial years";
+
+  const awaiting = state.applications.filter((a) => a.holder.kind === "pd" && inYear(a));
+  const sanctioned = sanctionedApps(state).filter(inYear);
   const sanctionedValue = sanctioned.reduce((s, a) => s + (a.sanction?.total ?? 0), 0);
+
+  const setFy = (value: string) => {
+    const next = new URLSearchParams(params.toString());
+    if (value) next.set("fy", value);
+    else next.delete("fy");
+    router.replace(`${pathname}${next.size ? `?${next}` : ""}`, { scroll: false });
+  };
 
   return (
     <div className="space-y-5">
@@ -33,23 +63,34 @@ export default function ProgrammeDirectorDeskPage() {
         meta="Applications that have cleared the Programme Division and the Integrated Finance Division and await your decision."
       />
 
+      <div className="w-full max-w-xs">
+        <FilterSelect
+          label="Financial Year"
+          value={fy}
+          onChange={setFy}
+          options={[{ value: "", label: "All years" }, ...years.map((y) => ({ value: y, label: `FY ${y}` }))]}
+        />
+      </div>
+
+      {/* Captions are `detail`, not `changeLabel`: none of these is a change over time, and a change
+          label drew a dash announced as "No change". */}
       <div className="grid gap-4 sm:grid-cols-3">
         <MetricCard
           label="Awaiting My Decision"
           value={String(awaiting.length)}
-          changeLabel="Concurred by Finance"
+          detail="Concurred by Finance"
           icon={<Icon name="gavel" size={20} aria-hidden />}
         />
         <MetricCard
           label="Sanctioned"
           value={String(sanctioned.length)}
-          changeLabel="All financial years"
+          detail={yearLabel}
           icon={<Icon name="verified" size={20} aria-hidden />}
         />
         <MetricCard
           label="Value Sanctioned"
           value={formatGrant(sanctionedValue)}
-          changeLabel="All financial years"
+          detail={yearLabel}
           icon={<Icon name="currency_rupee" size={20} aria-hidden />}
         />
       </div>

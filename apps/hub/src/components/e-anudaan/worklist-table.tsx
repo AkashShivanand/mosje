@@ -15,6 +15,7 @@ import {
   FormField,
   Icon,
   Modal,
+  Pagination,
   Search,
   Select,
   Textarea,
@@ -301,6 +302,81 @@ function forwardedAt(app: GrantApplication, by?: RoleId): string | undefined {
   return [...app.audit].reverse().find((e) => e.byRole === by && e.action === "forward")?.at;
 }
 
+/**
+ * The same rows as cards, below the tablet anchor — for the tables embedded in a dashboard, which
+ * do not sit in `WorklistScreen` and so never got its card view. On a 375px phone the table kept
+ * two columns, Project ID and Action: the NGO, status and days pending were off-screen and the
+ * "New" badge clipped to "Ne" (review call of 11 Sep 2026: "on mobile, a card view, not a table").
+ *
+ * Read through the columns' own `priority`, exactly as `WorklistScreen` reads them: 1 is the title,
+ * 2 a label/value pair, and the Action column the card's footer. Paged at the table's first page
+ * size, so a phone and a desktop count the same pages.
+ */
+const CARD_PAGE_SIZE = 10;
+
+function ColumnCards<T extends object>({
+  columns,
+  rows,
+  rowId,
+  label,
+  emptyLabel,
+  className,
+}: {
+  columns: WorklistColumn<T>[];
+  rows: T[];
+  rowId: (row: T) => string;
+  label: string;
+  emptyLabel: string;
+  className?: string;
+}) {
+  const [page, setPage] = React.useState(1);
+  const pages = Math.max(1, Math.ceil(rows.length / CARD_PAGE_SIZE));
+  const current = Math.min(page, pages);
+  const shown = rows.slice((current - 1) * CARD_PAGE_SIZE, current * CARD_PAGE_SIZE);
+  const cell = (c: WorklistColumn<T>, row: T): React.ReactNode =>
+    c.render ? c.render(row) : String((row as Record<string, unknown>)[c.key] ?? "");
+  const title = columns.find((c) => c.priority === 1);
+  const action = columns.find((c) => c.key === "action");
+  const pairs = columns.filter((c) => c !== title && c !== action && (c.priority ?? 2) === 2);
+
+  if (rows.length === 0) {
+    return <p className={`py-6 text-center text-body-2 text-ink-muted ${className ?? ""}`}>{emptyLabel}</p>;
+  }
+
+  return (
+    <div className={className}>
+      <ul className="m-0 flex list-none flex-col gap-3 p-0" aria-label={label}>
+        {shown.map((row) => (
+          <li key={rowId(row)}>
+            <Card variant="outlined">
+              <CardBody className="gap-3 p-4">
+                {title ? <div className="min-w-0 [overflow-wrap:anywhere]">{cell(title, row)}</div> : null}
+                {/* The label column takes only the width of its longest label, as WorklistScreen's
+                    card does. DescriptionList's inline layout gave the label half the card and
+                    pushed a status badge past its right edge. */}
+                <dl className="m-0 grid grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-2 text-body-2">
+                  {pairs.map((c) => (
+                    <React.Fragment key={c.key}>
+                      <dt className="text-ink-muted">{c.header}</dt>
+                      <dd className="m-0 min-w-0 [overflow-wrap:anywhere]">{cell(c, row)}</dd>
+                    </React.Fragment>
+                  ))}
+                </dl>
+                {action ? <div className="flex justify-end">{cell(action, row)}</div> : null}
+              </CardBody>
+            </Card>
+          </li>
+        ))}
+      </ul>
+      {pages > 1 ? (
+        <div className="flex justify-center pt-4">
+          <Pagination page={current} totalPages={pages} onPageChange={setPage} size="sm" label={`${label} pages`} />
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
 /** The one empty-list sentence across the officer console, embedded table and full screen alike. */
 export const EMPTY_LIST = "No applications in this list.";
 
@@ -421,11 +497,21 @@ export function WorklistTable({
       {/* DataTable is generic over Record<string, unknown>. GrantApplication is a precise
           interface with no index signature, so it is widened here rather than loosening the
           domain model for every other consumer. */}
-      <DataTable
-        columns={columns as unknown as DataTableColumn<Record<string, unknown>>[]}
-        data={filtered as unknown as Record<string, unknown>[]}
-        total={filtered.length}
-        caption={caption}
+      <div className="hidden md:block">
+        <DataTable
+          columns={columns as unknown as DataTableColumn<Record<string, unknown>>[]}
+          data={filtered as unknown as Record<string, unknown>[]}
+          total={filtered.length}
+          caption={caption}
+          emptyLabel={active > 0 ? "No application matches these filters." : EMPTY_LIST}
+        />
+      </div>
+      <ColumnCards
+        className="md:hidden"
+        columns={columns}
+        rows={filtered}
+        rowId={(r) => r.id}
+        label={caption}
         emptyLabel={active > 0 ? "No application matches these filters." : EMPTY_LIST}
       />
       </CardBody>
@@ -557,11 +643,21 @@ export function InspectionTable({ caption }: { caption: string }) {
           )}
         </p>
       </div>
-      <DataTable
-        columns={columns as unknown as DataTableColumn<Record<string, unknown>>[]}
-        data={rows as unknown as Record<string, unknown>[]}
-        total={rows.length}
-        caption={caption}
+      <div className="hidden md:block">
+        <DataTable
+          columns={columns as unknown as DataTableColumn<Record<string, unknown>>[]}
+          data={rows as unknown as Record<string, unknown>[]}
+          total={rows.length}
+          caption={caption}
+          emptyLabel={status ? `No inspection is ${INSPECTION_STATUS_LABEL[status].toLowerCase()}.` : "No inspections in this list."}
+        />
+      </div>
+      <ColumnCards
+        className="md:hidden"
+        columns={columns}
+        rows={rows}
+        rowId={(r) => r.id}
+        label={caption}
         emptyLabel={status ? `No inspection is ${INSPECTION_STATUS_LABEL[status].toLowerCase()}.` : "No inspections in this list."}
       />
       {open && (

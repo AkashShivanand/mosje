@@ -26,6 +26,7 @@
  */
 
 import * as React from "react";
+import NextLink from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import {
   StatusScreen,
@@ -563,6 +564,7 @@ function History({ app }: { app: GrantApplication }) {
       <CardBody className="space-y-3">
         <SectionTitle title="Processing History" description="Most recent first." />
         <EventList
+          linkAs={NextLink}
           label="Processing history"
           emptyText="Not submitted yet."
           events={[...stages].reverse().map((s) => ({

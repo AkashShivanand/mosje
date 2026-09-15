@@ -87,7 +87,7 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
               key: c.key,
               label: c.label,
               value: c.count.toLocaleString("en-IN"),
-              changeLabel: "pending with you",
+              detail: "Pending with you",
               icon: <Icon name={c.key === "New" ? "note_add" : "event_repeat"} size={20} aria-hidden />,
             }))
           : undefined

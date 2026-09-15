@@ -80,11 +80,9 @@ export function PendingActions({
                 <ListRow
                   key={deficiency.id}
                   leading={<Icon name="report" size={24} className="text-[var(--sa-text-status-warning-bolder)]" />}
-                  eyebrow={
-                    <span className="break-all font-mono">
-                      {app.id} · Project {app.institutionId}
-                    </span>
-                  }
+                  /* The project leads and the references follow as small print: an applicant knows
+                     "Hostel (Unit 2) — North West Delhi", not "GIA/2026-27/SHRESHTA_M2/…", and the
+                     reference set above the title pushed the project onto the fourth line of a phone. */
                   title={
                     <span className="flex flex-wrap items-center gap-2">
                       <span>
@@ -106,7 +104,10 @@ export function PendingActions({
                         <span className="block">{deficiency.detail}</span>
                       )}
                       <span className="mt-0.5 block text-ink-muted">
-                        Requested {formatDate(requestedAt(app, deficiency))} · {days === 0 ? "today" : `${days} day${days === 1 ? "" : "s"} ago`}
+                        <span className="font-mono [overflow-wrap:anywhere]">
+                          Project {app.institutionId} · {app.id}
+                        </span>
+                        {" · "}Requested {formatDate(requestedAt(app, deficiency))} · {days === 0 ? "today" : `${days} day${days === 1 ? "" : "s"} ago`}
                       </span>
                     </>
                   }
