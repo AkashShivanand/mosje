@@ -936,6 +936,10 @@ export function buildPayload(dictionary) {
   const seen = new Set();
   /** Theme tokens needing a brand-aware companion in Color (see the emit pass below). */
   const companions = new Map();
+  /** Palette variable name -> the token path it was exported from, for brand-correctness checks. */
+  const paletteNameToPath = new Map(
+    [...nameByPath].filter(([, t]) => t.collection === "Palette").map(([path, t]) => [t.name, path]),
+  );
 
   // Canonical (generated) tokens are processed FIRST so they win a name collision over the
   // legacy path that mirrors them — `focus/ring` should own `Focus/Ring`, not
@@ -1002,7 +1006,19 @@ export function buildPayload(dictionary) {
           // Light (and any theme with no override): alias the brand-aware Color variable so
           // Blue/Navy still flows through. Falling back to a literal would drop the brand.
           const brandAware = brandAwareAlias(token, tokenByPath, colorByUnderlying, nameByPath);
-          if (brandAware) {
+          // An alias into Palette is only brand-correct if that Palette variable's NAVY value
+          // is the token's own Navy value. A token whose override points at a DIFFERENT rung
+          // (`bg/brand/primary/boldest` is rung 800 in Blue and the key colour, rung 600, in
+          // Navy) would silently show Blue's rung in Navy — so it falls through to a brand
+          // companion instead. Found 2026-09-15: `text/link/brand/default` had been aliasing
+          // `color/primaryScale/600` (#003366 in Navy) while the code paints Navy rung 500.
+          const ownNavy = token.original?.$extensions?.mosje?.colorModes?.navy;
+          const aliasPath = brandAware?.collection === "Palette" ? paletteNameToPath.get(brandAware.name) : undefined;
+          const aliasLosesNavy =
+            ownNavy !== undefined && aliasPath !== undefined &&
+            brandLiteral(token.path.join("."), "Navy", tokenByPath, resolvedByPath) !==
+              brandLiteral(aliasPath, "Navy", tokenByPath, resolvedByPath);
+          if (brandAware && !aliasLosesNavy) {
             valuesByMode[mode] = { type: "ALIAS", collection: brandAware.collection, name: brandAware.name };
             continue;
           }
@@ -1098,16 +1114,6 @@ export function buildPayload(dictionary) {
     });
   }
 
-  const counts = Object.fromEntries(
-    Object.values(collections).map((c) => [
-      c.name,
-      {
-        total: c.variables.length,
-        new: c.variables.filter((v) => v.status === "new").length,
-        existing: c.variables.filter((v) => v.status === "existing").length,
-      },
-    ]),
-  );
 
   for (const { owner: token, name } of companions.values()) {
     if (seen.has(`Palette::${name}`)) continue;
@@ -1131,8 +1137,8 @@ export function buildPayload(dictionary) {
         }),
       ),
       description:
-        `Brand-aware source for Theme::${name}. Generated because that token’s light value is ` +
-        `a literal that differs between Blue and Navy; without it the Navy brand is lost.`,
+        `Brand-aware source for Color::${name}. Generated because that token's Navy value is ` +
+        `not the Navy value of any Palette rung; aliasing a rung would lose the Navy brand.`,
       codeSyntax: { WEB: `var(${toCssName(token.path, tierOfFile(token.filePath))})` },
       scopes: scopesFor(token.path, tierOfFile(token.filePath), "COLOR", name),
       hiddenFromPublishing: isHiddenName(name, "Palette"),
@@ -1144,6 +1150,19 @@ export function buildPayload(dictionary) {
     const i = unmapped.findIndex((u) => u.startsWith(prefix));
     if (i !== -1) unmapped.splice(i, 1);
   }
+
+  // Counted AFTER the brand-source companions join Palette, or the count undercounts the
+  // collection by exactly the number of companions (found 2026-09-15, when the first three landed).
+  const counts = Object.fromEntries(
+    Object.values(collections).map((c) => [
+      c.name,
+      {
+        total: c.variables.length,
+        new: c.variables.filter((v) => v.status === "new").length,
+        existing: c.variables.filter((v) => v.status === "existing").length,
+      },
+    ]),
+  );
 
   const payload = {
     $schema: "samavesh-figma-variables/2",

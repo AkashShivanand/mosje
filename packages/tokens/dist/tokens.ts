@@ -55,15 +55,15 @@ export const tokens = {
         "950": "#001737"
       },
       "navy": {
-        "50": "#f7faff",
-        "100": "#c1d7f2",
-        "200": "#93b1d6",
-        "300": "#6a8cb7",
-        "400": "#446a99",
-        "500": "#224c7d",
+        "50": "#eef5ff",
+        "100": "#bbd2ef",
+        "200": "#90aed3",
+        "300": "#678ab5",
+        "400": "#426998",
+        "500": "#214c7d",
         "600": "#003366",
-        "700": "#002249",
-        "800": "#001734",
+        "700": "#002349",
+        "800": "#001735",
         "900": "#000e24",
         "950": "#000614"
       },
@@ -163,6 +163,7 @@ export const tokens = {
     },
     "neutral": {
       "0": "#ffffff",
+      "25": "#f6f7f8",
       "50": "#eef0f3",
       "100": "#dcdee1",
       "200": "#c6c9cd",
@@ -178,6 +179,7 @@ export const tokens = {
     },
     "neutralDark": {
       "0": "#ffffff",
+      "25": "#f6f7f9",
       "50": "#eff0f2",
       "100": "#dcdee2",
       "200": "#c6c9ce",
@@ -245,6 +247,7 @@ export const tokens = {
     },
     "neutralDbim": {
       "0": "#ffffff",
+      "25": "#fafafa",
       "50": "#f5f5f5",
       "100": "#ebeaea",
       "200": "#c6c6c6",
@@ -387,6 +390,7 @@ export const tokens = {
     },
     "neutralScale": {
       "0": "#ffffff",
+      "25": "#f6f7f8",
       "50": "#eef0f3",
       "100": "#dcdee1",
       "200": "#c6c9cd",
@@ -1005,10 +1009,11 @@ export const tokens = {
   "bg": {
     "neutral": {
       "base": "#ffffff",
+      "subtlest": "#f6f7f8",
       "subtler": "#eef0f3",
       "hover": "#eef0f3",
       "active": "#dcdee1",
-      "selected": "#ecf4ff",
+      "selected": "#c0dbff",
       "readonly": "#eef0f3",
       "loading": "#eef0f3",
       "subtle": "#dcdee1",
@@ -1291,6 +1296,7 @@ export const tokens = {
     "bg": {
       "neutral": {
         "base": "#1e2124",
+        "subtlest": "#1e2124",
         "subtler": "#1e2124",
         "subtle": "#1e2124",
         "bold": "#1e2124",

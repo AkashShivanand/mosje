@@ -155,7 +155,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       {/* suppressHydrationWarning: browser extensions (e.g. Grammarly) inject
           attributes onto <body> before React hydrates — benign, React-recommended. */}
-      <body className="min-h-full font-sans bg-surface-muted text-ink" suppressHydrationWarning>
+      <body className="min-h-full font-sans bg-surface-canvas text-ink" suppressHydrationWarning>
         <RouteColorModeProvider>
           {/* Which figures the dashboards show — live, illustrative, or both.
               Client-side and cookie-backed, exactly like the colour mode above

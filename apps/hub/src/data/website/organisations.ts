@@ -25,7 +25,6 @@ export type OrganisationCategory =
   | "commissions"
   | "corporations"
   | "foundations"
-  | "training"
   | "schemes";
 
 export interface Organisation {
@@ -138,7 +137,12 @@ export const ORGANISATIONS: Organisation[] = [
     id: "national-institute-of-social-defence",
     abbr: "NISD",
     name: "National Institute of Social Defence",
-    category: "training",
+    /* An autonomous body — a society under the Societies Registration Act 1860 —
+       and filed with the other autonomous bodies on the department's own site.
+       It carried a `training` category of its own until 2026-09-11, which gave
+       the mega menu and the homepage explorer a one-item column nothing else
+       could ever join. */
+    category: "foundations",
     profileHref: "/website/organisation/national-institute-of-social-defence",
     directoryHref: "/website/nisd-directory",
     logoSrc: "/website/images/org-logos/nisd.png",
@@ -229,7 +233,6 @@ export const ORGANISATION_CATEGORY_LABELS: Record<OrganisationCategory, string> 
   commissions: "Commissions",
   corporations: "Corporations",
   foundations: "Foundations & Autonomous Bodies",
-  training: "Training & Capacity Building",
   schemes: "Schemes & Portals",
 };
 

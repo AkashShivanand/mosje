@@ -112,7 +112,7 @@ export default async function AdminPortalsPage({
   const overrideCount = Object.keys(config?.entries ?? {}).length;
 
   return (
-    <div className="min-h-screen bg-surface-muted">
+    <div className="min-h-screen bg-surface-canvas">
       <SiteHeader
         linkAs={Link}
         homeHref="/admin"

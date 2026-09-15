@@ -105,7 +105,11 @@ export const CANONICAL = "base";
  * the ordinary FILL is the quietest thing on the page, while the ordinary INK is mid-way,
  * quieter than a max-contrast heading and louder than a caption.
  */
-export const PROMINENCE = ["base", "subtler", "subtle", "bold", "bolder", "boldest"];
+// `subtlest` joined 2026-09-14 for `bg/neutral/subtlest`, the page canvas: a fill one step
+// quieter than `subtler`, so the hover / read-only / loading fills (all `subtler`) are no longer
+// the same colour as the page they sit on. It sorts between `base` (white) and `subtler`, which
+// is where Atlassian's shipped ladder puts the same word.
+export const PROMINENCE = ["base", "subtlest", "subtler", "subtle", "bold", "bolder", "boldest"];
 
 /**
  * Ink prominence — the SAME words, because "how loud is this" is one question whatever it is
@@ -136,6 +140,7 @@ export const PROMINENCE_SLOT = new Set([CANONICAL, ...PROMINENCE, ...INK_PROMINE
 export const PROMINENCE_CONTRACT = {
   fill: {
     base: { minContrast: 0, use: "decorative fills only" },
+    subtlest: { minContrast: 0, use: "page canvas — decorative fill only" },
     subtler: { minContrast: 0, use: "decorative fills only" },
     // `subtle` and `bold` are TONAL FILLS — a chip, a tinted row, a plate. Their readability is
     // carried by the measured `on/*` ink (every pairing is AA in every brand), not by the

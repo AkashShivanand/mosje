@@ -421,3 +421,62 @@ export const EmbeddedHeadingLevel: Story = {
 export const WithoutPortalPicker: Story = {
   args: { config: eAnudaan, deepLinkRole: false, portalPicker: false },
 };
+
+/**
+ * **The code goes to an email, and the portal answers first.**
+ *
+ * `otpIdentifierKind: "email"` gives the OTP route an email field and masks the
+ * destination as `a•••••s@gmail.com`. `onRequestOtp` runs before the code step
+ * opens: here it refuses any address outside `mosje.in`, which lands against
+ * the field, and accepts the rest. This is the Transgender Portal's officer
+ * login, which resolves the officer's role from the email they type.
+ *
+ * `subRoles` adds a "Your role" select inside the tab, and `links.registerOptions`
+ * offers two registration routes — SCW's Volunteer and SAGE Organisation.
+ */
+export const OtpToEmailWithSubRoles: Story = {
+  args: {
+    config: {
+      portalId: "tg",
+      portalName: "National Portal for Transgender Persons",
+      brandAssets,
+      links: {
+        registerOptions: [
+          { label: "Volunteer", href: "#volunteer" },
+          { label: "SAGE Organisation", href: "#sage" },
+        ],
+      },
+      roles: [
+        {
+          id: "officer",
+          audience: "officer",
+          label: "Admin",
+          authModes: ["otp"],
+          otpIdentifierKind: "email",
+          otpIdentifierLabel: "Email Address",
+          subRoles: [
+            { id: "maker", label: "Examining Officer" },
+            { id: "checker", label: "Checker" },
+          ],
+        },
+      ],
+    },
+    onRequestOtp: ({ identifier }) =>
+      identifier.endsWith("@mosje.in")
+        ? { ok: true }
+        : { ok: false, error: "Use your official mosje.in email address." },
+  },
+};
+
+/**
+ * **`fieldErrors` — a failed submit, against the field it concerns.**
+ *
+ * Each message hides as soon as its field is edited and returns only when a new
+ * object is passed, so keep it in state and set it on submit. Here the story
+ * passes a constant, which is the same object on every render.
+ */
+export const WithFieldErrors: Story = {
+  args: {
+    fieldErrors: { identifier: "That username is not registered on this portal." },
+  },
+};

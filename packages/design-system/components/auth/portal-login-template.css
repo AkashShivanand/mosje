@@ -11,6 +11,14 @@
     container: plogin / inline-size;
   }
 
+  /* At least one viewport, less any chrome a portal draws above the shell (see
+     --ds-plogin-offset below). This replaced a `min-h-screen` utility, which could not
+     subtract a campaign banner and made SAMBAL's login scroll by the banner's height. */
+  .ds-plogin__shell {
+    min-block-size: calc(100vh - var(--ds-plogin-offset, 0px));
+    min-block-size: calc(100dvh - var(--ds-plogin-offset, 0px));
+  }
+
   /* The form column's ground — `bg/neutral/base` on the master's Form column, at
      both devices. It inherited the portal's muted page ground until 13 Sep 2026. */
   .ds-plogin__panel {
@@ -85,9 +93,12 @@
        which is a magic number wearing a token's clothes. The masthead's height
        changes with the accessibility bar and the brand lines; the layout must
        not need to know it. */
+    /* `--ds-plogin-offset`: the MEASURED height of chrome a portal draws above the shell (a
+       campaign banner). The banner's owner sets it from a ResizeObserver and clears it when
+       the banner goes; nothing else may set it, so it is never a guessed number. */
     .ds-plogin__shell {
-      block-size: 100vh;
-      block-size: 100dvh;
+      block-size: calc(100vh - var(--ds-plogin-offset, 0px));
+      block-size: calc(100dvh - var(--ds-plogin-offset, 0px));
     }
 
     .ds-plogin__body {

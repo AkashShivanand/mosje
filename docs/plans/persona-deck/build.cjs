@@ -8,6 +8,13 @@
  * questions instead of five, and the order the review asked for — the idea,
  * the home page, the Schemes page, the assistant, then what comes first.
  *
+ * Revised 14 September 2026 after the internal review of that day: three
+ * options for where the scheme portals sit in the menu, and a third Schemes
+ * page option that groups results under headings, with a count on each
+ * heading — kept on that option by decision of 14 September. Both drawn in the Handoff
+ * file, section "Sheme Navigation and Listing" (Ds5qx61QsI0ZkYSrLKxo0A,
+ * node 52383:59596).
+ *
  * Noto Sans throughout. Every colour is a resolved SAMAVESH token. Nothing on a
  * slide is a figure the Department's own Annual Report 2025-26 or its Demand
  * for Grants 2026-27 does not state.
@@ -105,10 +112,10 @@ const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels 
     x:M+0.8, y:0.86, w:6.6, h:0.78, isTextBox:true, margin:0, fontFace:F, fontSize:11.5, color:BLUE_100, lineSpacingMultiple:1.2 });
   s.addText("How Citizens Find Schemes", { x:M, y:2.7, w:10, h:1.1, isTextBox:true, margin:0,
     fontFace:F, fontSize:T.display, bold:true, color:WHITE });
-  s.addText("Six options for the website. One idea behind all of them.", {
+  s.addText("Ten options for four parts of the website.", {
     x:M, y:3.9, w:10.4, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:18, color:BLUE_100 });
   footLine(s, "MoSJE Design Research · September 2026", true);
-  s.addNotes("Presented live. The order is the one asked for on 8 September: the idea behind every option first, then the home page, then the Schemes page, then the assistant, then what has to come first. No scheme count appears anywhere in the deck — a number nobody can defend invites a challenge.");
+  s.addNotes("Presented live. The order is the one asked for on 8 September: the idea behind every option first, then the home page, then the menu, then the Schemes page, then the assistant, then what has to come first. The menu was added on 14 September. Only Schemes page Option C shows scheme counts, one on each heading; that was decided on 14 September. Every other option shows none.");
 }
 
 /* ═══ 2 · The idea — who you are, what you need ══════════════════════════ */
@@ -118,7 +125,7 @@ const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels 
     fontFace:F, fontSize:T.label, bold:true, charSpacing:TRACK.eyebrow, color:MUTE });
   s.addText("Who You Are. What You Need.", { x:M, y:0.76, w:CW, h:0.7, isTextBox:true, margin:0,
     fontFace:F, fontSize:36, bold:true, color:DARK });
-  s.addText("Every option is built on these two lists.", { x:M, y:1.5, w:CW, h:0.34, isTextBox:true, margin:0,
+  s.addText("Every option for finding a scheme is built on these two lists.", { x:M, y:1.5, w:CW, h:0.34, isTextBox:true, margin:0,
     fontFace:F, fontSize:T.lead, color:INK_MUTE });
 
   const colW = 5.5, y0 = 2.2, rowH = 0.345;
@@ -161,7 +168,7 @@ const OFFERINGS = ["Scholarships and Fellowships","Residential Schools, Hostels 
 const OPTIONS = [
   { part:"The Home Page · Option A of 3", title:"Explore User Personas",
     img:"home-a", live:true, rec:false,
-    caption:"The panel as it is on the site today.",
+    caption:"",
     what:"The panel already on the home page. It shows one group at a time, and you move between them with the arrows.",
     how:["Tap the arrows to move between the groups","Tap a group to open the Schemes page for that group"],
     why:["The smallest change: only the link behind each picture is new","The pictures work in any language"],
@@ -182,20 +189,27 @@ const OPTIONS = [
     notes:"A row of the groups. Tapping one shows the portal or helpline for that group first, where the Department has one, then the schemes that name the group, sorted by what they give. Each links to its own page. The larger groups get long lists, which is why the list is cut at three per kind of support with a link to the rest." },
 ];
 const SCHEMES_PAGE = [
-  { part:"The Schemes Page · Option A of 2", title:"Pictures of the Groups, with Cards",
+  { part:"The Schemes Page · Option A of 3", title:"Pictures of the Groups, with Cards",
     vid:"scheme-a", live:false, rec:false,
     caption:"Recorded: Safai Karamcharis, Transgender Persons, then Senior Citizens.",
     what:"Every group as a picture in one row. Pick one and its schemes appear as cards.",
     how:["Pick a group from the row; it scrolls sideways","Category and Organisation narrow the list further","Cards show what a scheme gives; nine to a page"],
     why:["A picture for every group, so you spot yours at a glance","The same groups as the home page, so the same idea is met twice"],
     notes:"The layout from before the review, with the review's changes: one filter, the group, no counts, and paged cards so the page keeps its height. This is for browsing." },
-  { part:"The Schemes Page · Option B of 2", title:"Filter Panel with a Table",
+  { part:"The Schemes Page · Option B of 3", title:"Filter Panel with a Table",
     vid:"scheme-b", live:false, rec:true,
     caption:"Recorded: Other Backward Classes ticked, then Students added, then one removed, then Reset.",
     what:"A panel of the groups on the left, where more than one can be ticked, and a table on the right.",
     how:["Tick one or more groups; the chosen ones show above the table","Category and Organisation narrow the list further","The table says what each scheme gives and who it is for"],
     why:["Two groups can be compared in one list","A group that would leave nothing is greyed, never counted"],
     notes:"The reference layout with the filter panel: tick one or more groups, and the table on the right says what each scheme gives and who it is for, ten rows a page, no counts. This is for comparing and deciding." },
+  { part:"The Schemes Page · Option C of 3", title:"Filter Panel with Headings",
+    img:"scheme-c", live:false, rec:false,
+    caption:"",
+    what:"The filters sit in a panel on the left. Schemes are grouped under headings for the kind of support they give.",
+    how:["Choose Schemes or Services first, then a group, then a category","Each heading opens to show its schemes, with a link to the rest","Each card names the organisation or portal that runs the scheme"],
+    why:["A visitor sees every kind of support before reading a single scheme","The organisation filter uses the same name as the menu"],
+    notes:"Drawn after the review of 14 September. Services are a choice of their own because some portals, Senior Citizens Welfare among them, offer services as well as schemes. The first visit still opens on the Department's own schemes; choosing any filter widens it to all organisations and portals. Each heading shows how many schemes sit under it, as socialjustice.gov.in does, so a visitor knows how much is there before opening it. The counts are read from the list when the page loads, never typed in, so they change as schemes are added or cleaned up. This is the only option in the deck that shows a count. The headings are the ten kinds of support on the second slide. The counts come from the classification of every listing on the Schemes page, completed on 12 September: duplicate listings, documents and organisation pages are left out, and a scheme that gives more than one kind of support is counted under each. A second version, grouped by organisation, is drawn beside this one." },
 ];
 const ASSISTANT = [
   { part:"The Assistant · Samajik Sahayak", title:"The Same Two Questions, in Chat",
@@ -215,7 +229,7 @@ function optionPage(o) {
   px += pill(s, px, 1.42, o.pill || (o.live?"ON THE SITE TODAY":"TO BE BUILT"), o.live?SURF:BLUE_50, o.live?MUTE:BLUE_TXT) + 0.14;
   const y0 = 1.95, boxW = 7.1, boxH = 4.45;
   const m = media(s, o, M, y0, boxW, boxH);
-  s.addText((o.vid ? "▶  " : "") + o.caption, { x:M, y:m.iy+m.ih+0.14, w:boxW, h:0.42, isTextBox:true, margin:0, fontFace:F, fontSize:T.micro, color:MUTE, lineSpacingMultiple:1.15 });
+  if (o.caption) s.addText((o.vid ? "▶  " : "") + o.caption, { x:M, y:m.iy+m.ih+0.14, w:boxW, h:0.42, isTextBox:true, margin:0, fontFace:F, fontSize:T.micro, color:MUTE, lineSpacingMultiple:1.15 });
   const rx = M+boxW+0.5, rw = W-M-rx;
   let y = y0;
   s.addText("WHAT IT IS", { x:rx, y, w:rw, h:0.22, isTextBox:true, margin:0, fontFace:F, fontSize:T.label, bold:true, charSpacing:TRACK.eyebrow, color:DARK });
@@ -231,58 +245,110 @@ function optionPage(o) {
 }
 OPTIONS.forEach(optionPage);
 
-/* ═══ 7 · The Schemes page — two options ════════════════════════════════ */
+/* ═══ 7–10 · The menu — three options (added 14 September) ═══════════════ */
 {
   const s = slide(false);
-  const y0 = header(s, "The Schemes Page", "Two Options",
+  const y0 = header(s, "The Menu", "Three Options",
+    "Where the Department's scheme portals sit. Today they are listed under Associated Organisations.");
+  const items = [
+    ["A","Rename Only","nav-a","Associated Organisations becomes Organisations & Scheme Portals. Everything listed today stays.","OPTION A"],
+    ["B","Portals under Offerings","nav-b","The portals move to Offerings, with a button to all schemes.","OPTION B"],
+    ["C","Schemes as Its Own Menu","nav-c","A new Schemes entry holds the portals and the helplines.","OPTION C"],
+  ];
+  const cw = (CW-0.6)/3;
+  items.forEach((it,i)=>{
+    const x = M + i*(cw+0.3);
+    s.addText(it[0], { x, y:y0, w:0.55, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:28, bold:true, color:BLUE_TXT });
+    s.addText(it[1], { x:x+0.55, y:y0+0.08, w:cw-0.55, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:T.lead, bold:true, color:DARK });
+    media(s, { img:it[2] }, x, y0+0.62, cw, cw*0.625);
+    pill(s, x, y0+0.62+cw*0.625+0.16, it[4], SURF, MUTE);
+    s.addText(it[3], { x, y:y0+0.62+cw*0.625+0.54, w:cw, h:0.7, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.2 });
+  });
+  footLine(s, "All three list the same seven portals and open the same pages.");
+  s.addNotes("Added after the internal review of 14 September. The feedback was that a scheme portal is not an organisation, so it should not sit under Associated Organisations. A answers that with the name alone. B moves the portals into Offerings. C gives schemes a place of their own in the top row. The next three pages show each one open.");
+}
+const MENU = [
+  { part:"The Menu · Option A of 3", title:"Rename Only",
+    img:"nav-a", live:false, rec:false,
+    caption:"",
+    what:"The menu keeps everything it lists today. Only its name changes, so it says that scheme portals are inside.",
+    how:["Associated Organisations becomes Organisations & Scheme Portals","Commissions, Corporations and Foundations stay; the portals get a column of their own","The Schemes page filter uses the same name"],
+    why:["The smallest change to the menu","A returning visitor finds everything where it was"],
+    notes:"The lightest of the three, added on 14 September. Nothing moves; the name of the menu now covers what is in it. Wherever the site says All Organisations today, including the Schemes page filter, it would say Organisations & Scheme Portals. The longer name fits on a desktop screen and still has to be checked on a smaller laptop." },
+  { part:"The Menu · Option B of 3", title:"Portals under Offerings",
+    img:"nav-b", live:false, rec:false,
+    caption:"",
+    what:"The seven portals move out of Associated Organisations and into Offerings, beside Vacancies and Tenders.",
+    how:["Each portal is listed with the scheme it serves","A full-width button under the portals opens the list of all schemes","Associated Organisations keeps only the organisations"],
+    why:["The top row of the menu does not change","Organisations and portals are no longer mixed"],
+    notes:"The portals leave Associated Organisations and join Offerings. View All Schemes is a full-width button under the portals, as asked on 14 September, so the list of all schemes is not reduced to a small link. The top row stays as it is." },
+  { part:"The Menu · Option C of 3", title:"Schemes as Its Own Menu",
+    img:"nav-c", live:false, rec:false,
+    caption:"",
+    what:"A new Schemes entry in the top row holds the seven portals and the Department's helplines.",
+    how:["Schemes sits between Organisations and Offerings","Associated Organisations is shortened to Organisations to make room","A button under the portals opens the list of all schemes"],
+    why:["The word Schemes can be seen without opening anything","Helplines are listed beside the portals they support"],
+    notes:"The top row gains an eighth entry. It only fits because Associated Organisations becomes Organisations, and that name changes on every page. A new entry was felt to crowd the row on smaller screens, so this is the option to take only if schemes should not sit near the organisations at all." },
+];
+MENU.forEach(optionPage);
+
+/* ═══ 11–14 · The Schemes page — three options ══════════════════════════ */
+{
+  const s = slide(false);
+  const y0 = header(s, "The Schemes Page", "Three Options",
     "Where a person lands from the home page, and where officers and voluntary organisations work.");
   const items = [
     ["A","Pictures of the Groups, with Cards","scheme-a","A picture for every group in one row, then cards. For browsing.","OPTION A"],
     ["B","Filter Panel with a Table","scheme-b","Tick one or more groups on the left; the table says who each scheme is for. For comparing.","OPTION B"],
+    ["C","Filter Panel with Headings","scheme-c","Filters on the left; schemes grouped under the kind of support they give.","OPTION C"],
   ];
-  const cw = (CW-0.6)/2;
+  const cw = (CW-0.6)/3;
   items.forEach((it,i)=>{
-    const x = M + i*(cw+0.6);
+    const x = M + i*(cw+0.3);
     s.addText(it[0], { x, y:y0, w:0.55, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:28, bold:true, color:BLUE_TXT });
     s.addText(it[1], { x:x+0.55, y:y0+0.08, w:cw-0.55, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:T.lead, bold:true, color:DARK });
-    const m = media(s, { img:it[2] }, x, y0+0.62, cw, cw*0.625);
-    pill(s, x, m.iy+m.ih+0.16, it[4], SURF, MUTE);
-    s.addText(it[3], { x, y:m.iy+m.ih+0.54, w:cw, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.2 });
+    media(s, { img:it[2] }, x, y0+0.62, cw, cw*0.625);
+    pill(s, x, y0+0.62+cw*0.625+0.16, it[4], SURF, MUTE);
+    s.addText(it[3], { x, y:y0+0.62+cw*0.625+0.54, w:cw, h:0.7, isTextBox:true, margin:0, fontFace:F, fontSize:T.body, color:INK, lineSpacingMultiple:1.2 });
   });
-  s.addNotes("The internal page. Two arrangements of the same two filters. The next two pages show each being used.");
+  s.addNotes("The internal page. Three arrangements of the same filters. A and B were shown on 9 September; C was drawn after the review of 14 September. The next three pages show each one.");
 }
 SCHEMES_PAGE.forEach(optionPage);
 
-/* ═══ 10 · The assistant ════════════════════════════════════════════════ */
+/* ═══ 15 · The assistant ════════════════════════════════════════════════ */
 ASSISTANT.forEach(optionPage);
 
-/* ═══ 11 · In summary ══════════════════════════════════════════════════ */
+/* ═══ 16 · In summary ══════════════════════════════════════════════════ */
 {
   const s = slide(true);
   s.addText("IN SUMMARY", { x:M, y:0.7, w:CW, h:0.24, isTextBox:true, margin:0, fontFace:F, fontSize:T.label, bold:true, charSpacing:TRACK.eyebrow, color:BLUE_100 });
-  s.addText("Six Options, Three Parts of the Site", { x:M, y:1.0, w:CW, h:0.7, isTextBox:true, margin:0, fontFace:F, fontSize:34, bold:true, color:WHITE });
-  s.addText("Every option starts from who you are. Each part is decided on its own.", {
+  s.addText("Ten Options, Four Parts of the Site", { x:M, y:1.0, w:CW, h:0.7, isTextBox:true, margin:0, fontFace:F, fontSize:34, bold:true, color:WHITE });
+  s.addText("Each part is decided on its own. Every way of finding a scheme starts from who you are.", {
     x:M, y:1.75, w:CW, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:T.lead, color:BLUE_100, lineSpacingMultiple:1.2 });
   const rows = [
     ["The home page","A · Explore User Personas","On the site today. One group at a time."],
-    ["","B · Two Questions","Who you are, then what you need. Three schemes and a link to all of them."],
+    ["","B · Two Questions","Two questions, then three schemes and a link to all."],
     ["","C · One Tap","Pick your group. Its portal first, then its schemes."],
+    ["The menu","A · Rename Only","Organisations & Scheme Portals. Nothing moves."],
+    ["","B · Portals under Offerings","Portals join Offerings; a button opens all schemes."],
+    ["","C · Schemes as Its Own Menu","A new top-row entry for the portals and helplines."],
     ["The Schemes page","A · Pictures of the Groups, with Cards","Every group in one row, then cards. For browsing."],
-    ["","B · Filter Panel with a Table","Tick groups on the left, table on the right. For comparing."],
-    ["The assistant","Samajik Sahayak","The same two questions, in the chat window on every page."],
+    ["","B · Filter Panel with a Table","Tick groups on the left; a table on the right."],
+    ["","C · Filter Panel with Headings","Filters on the left, schemes under headings."],
+    ["The assistant","Samajik Sahayak","The same two questions, in the chat on every page."],
   ];
-  const rowY = 2.5, rowH = 0.62;
+  const rowY = 2.4, rowH = 0.42;
   rows.forEach((r,i)=>{
     const y = rowY + i*rowH;
     if (r[0]) s.addShape(pres.ShapeType.line, { x:M, y:y-0.08, w:CW, h:0, line:{color:BLUE_DEEP, width:1} });
-    s.addText(r[0], { x:M, y:y+0.04, w:3.0, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:14, color:BLUE_100 });
-    s.addText(r[1], { x:M+3.1, y:y+0.04, w:3.6, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:15, bold:true, color:WHITE });
-    s.addText(r[2], { x:M+6.8, y:y+0.06, w:CW-6.8, h:0.4, isTextBox:true, margin:0, fontFace:F, fontSize:13, color:WHITE, transparency:15 });
+    s.addText(r[0], { x:M, y:y, w:2.6, h:0.34, isTextBox:true, margin:0, valign:"middle", fontFace:F, fontSize:13, color:BLUE_100 });
+    s.addText(r[1], { x:M+2.7, y:y, w:3.9, h:0.34, isTextBox:true, margin:0, valign:"middle", fontFace:F, fontSize:13, bold:true, color:WHITE });
+    s.addText(r[2], { x:M+6.7, y:y, w:CW-6.7, h:0.34, isTextBox:true, margin:0, valign:"middle", fontFace:F, fontSize:12, color:WHITE, transparency:15 });
   });
   s.addShape(pres.ShapeType.line, { x:M, y:rowY+rows.length*rowH-0.08, w:CW, h:0, line:{color:BLUE_DEEP, width:1} });
   s.addText("Before any of them is built: the two lists are confirmed by the divisions, every scheme is tagged on both, and the development team estimates the re-tagging.", {
     x:M, y:rowY+rows.length*rowH+0.14, w:CW, h:0.5, isTextBox:true, margin:0, fontFace:F, fontSize:12.5, color:BLUE_100, lineSpacingMultiple:1.2 });
-  s.addNotes("The six options, in one place. Each part of the site is decided on its own; any combination can be taken. Whatever is chosen, the two lists have to be confirmed, every scheme tagged on both, and the re-tagging estimated before the build starts.");
+  s.addNotes("The ten options, in one place. Each part of the site is decided on its own; any combination can be taken. Whatever is chosen, the two lists have to be confirmed, every scheme tagged on both, and the re-tagging estimated before the build starts.");
 }
 
 pres.writeFile({ fileName: "MoSJE-Service-Discovery-Options.pptx" }).then(f => console.log("wrote", f));

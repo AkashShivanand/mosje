@@ -33,7 +33,7 @@ export default async function UnavailablePage({
   const name = entry?.trim();
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-surface-muted px-6 py-16">
+    <main className="flex min-h-screen items-center justify-center bg-surface-canvas px-6 py-16">
       <div className="w-full max-w-lg rounded-2xl border border-border bg-surface p-8 shadow-xs">
         <span
           className="flex h-12 w-12 items-center justify-center rounded-xl bg-surface-muted text-ink-muted"

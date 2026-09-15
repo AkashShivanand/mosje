@@ -150,6 +150,9 @@
       "0": {
         "$value": "#ffffff"
       },
+      "25": {
+        "$value": "#f6f7f8"
+      },
       "50": {
         "$value": "#eef0f3"
       },
@@ -191,6 +194,9 @@
     "neutralDark": {
       "0": {
         "$value": "#ffffff"
+      },
+      "25": {
+        "$value": "#f6f7f9"
       },
       "50": {
         "$value": "#eff0f2"
@@ -377,6 +383,9 @@
     "neutralDbim": {
       "0": {
         "$value": "#ffffff"
+      },
+      "25": {
+        "$value": "#fafafa"
       },
       "50": {
         "$value": "#f5f5f5"
