@@ -21,8 +21,7 @@ const BASE = "/portals/tg";
 
 export const TG_CITIZEN_HOME = `${BASE}/citizen/dashboard`;
 
-/** Shared with the DigiLocker handoff page, so both draw the same chrome. */
-export const TG_LOGIN_CHROME = {
+const TG_LOGIN_CHROME = {
   portalName: "SMILE - Transgender",
   portalTagline: "National Portal for Transgender Persons",
   changeHref: "/portals",
@@ -32,7 +31,6 @@ export const TG_LOGIN_CHROME = {
     // org-logo-exempt(portal-local): TG serves its own copy under its brand folder.
     samaveshLogoSrc: `${BASE}/brand/samavesh-logo.svg`,
     heroImageSrc: "/portals/login-hero/smile-transgender.jpg",
-    digilockerLogoSrc: "/design-system/digilocker-mark.png",
   } satisfies PortalBrandAssets,
 };
 
@@ -47,6 +45,8 @@ export const TG_LOGIN_CHROME = {
  *   resolved by `roleByEmail`, and no account is keyed on a mobile number.
  * - No Garima Greh tab: no Garima Greh portal exists in code.
  * - No Create Account: there is no citizen registration route.
+ * - No DigiLocker card on the Citizen tab, although the handoff draws one:
+ *   no portal login on the estate offers DigiLocker (decided 15 September 2026).
  */
 function config(defaultRoleId: string): PortalLoginConfig {
   return {
@@ -61,7 +61,6 @@ function config(defaultRoleId: string): PortalLoginConfig {
         audience: "citizen",
         label: "Citizen",
         authModes: ["otp"],
-        digilocker: true,
         otpIdentifierKind: "email",
         otpIdentifierLabel: "Email Address",
         otpIdentifierPlaceholder: "name@example.com",
@@ -77,7 +76,6 @@ function config(defaultRoleId: string): PortalLoginConfig {
       },
     ],
     links: {
-      digilockerHref: `${BASE}/citizen/sign-in/digilocker`,
       termsHref: "/website/terms-conditions",
       privacyHref: "/website/privacy-policy",
     },
