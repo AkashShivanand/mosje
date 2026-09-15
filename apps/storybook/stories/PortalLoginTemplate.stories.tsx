@@ -99,10 +99,11 @@ const brandAssets = {
 /** E-Anudaan: two audiences on one portal — the officer console and the NGO applicant. */
 const eAnudaan: PortalLoginConfig = {
   portalId: "e-anudaan",
-  portalName: "E-Anudaan — Grant-in-Aid Management",
-  portalTagline: "Justice. Equality. Dignity.",
-  portalDescription:
-    "Grant-in-Aid to voluntary organisations working for the welfare of Scheduled Castes and Other Backward Classes.",
+  portalName: "E-Anudaan",
+  // Shown under the portal name in the Signing Into strip. The hero's own
+  // strapline is fixed SAMAVESH copy, so a portal never repeats it here.
+  portalTagline: "Grant-in-Aid Management",
+  portalDescription: "NGOs apply for grant-in-aid under SHRESHTA, AVYAY, NAPDDR and SMILE.",
   brandAssets,
   roles: [
     {

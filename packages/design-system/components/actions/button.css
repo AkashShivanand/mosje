@@ -289,6 +289,9 @@
      The full Tier-3 matrix (`--sa-cmp-action-brand-primary-*`) models every state and is the
      eventual home for this; restructuring the Button onto it is a separate change. */
   .ds-btn--primary {
+    --_dis-bg: var(--sa-cmp-action-brand-primary-disabled-bg);
+    --_dis-text: var(--sa-cmp-action-brand-primary-disabled-text);
+    --_dis-border: var(--sa-cmp-action-brand-primary-disabled-border);
     --_fill: var(--sa-bg-brand-primary-bolder);
     --_on: var(--sa-on-bg-brand-primary-bolder);
     /*
@@ -316,6 +319,9 @@
   }
 
   .ds-btn--success {
+    --_dis-bg: var(--sa-cmp-action-success-primary-disabled-bg);
+    --_dis-text: var(--sa-cmp-action-success-primary-disabled-text);
+    --_dis-border: var(--sa-cmp-action-success-primary-disabled-border);
     --_fill: var(--sa-bg-status-success-bolder);
     --_on: var(--sa-on-bg-status-success-bolder);
     --_color: var(--sa-text-status-success-base);
@@ -333,6 +339,9 @@
   }
 
   .ds-btn--danger {
+    --_dis-bg: var(--sa-cmp-action-destructive-primary-disabled-bg);
+    --_dis-text: var(--sa-cmp-action-destructive-primary-disabled-text);
+    --_dis-border: var(--sa-cmp-action-destructive-primary-disabled-border);
     --_fill: var(--sa-bg-status-error-bolder);
     --_on: var(--sa-on-bg-status-error-bolder);
     --_color: var(--sa-text-status-error-base);
@@ -392,6 +401,9 @@
      No `--_dark`: it was declared by the three variants above and consumed by
      nothing, and has now been deleted from all three. */
   .ds-btn--neutral {
+    --_dis-bg: var(--sa-cmp-action-neutral-primary-disabled-bg);
+    --_dis-text: var(--sa-cmp-action-neutral-primary-disabled-text);
+    --_dis-border: var(--sa-cmp-action-neutral-primary-disabled-border);
     --_fill: var(--sa-cmp-action-neutral-primary-default-bg);
     --_on: var(--sa-cmp-action-neutral-primary-default-text);
     --_color: var(--sa-cmp-action-neutral-tertiary-default-text);
@@ -691,6 +703,22 @@
     cursor: not-allowed;
     filter: none;
     box-shadow: none;
+  }
+
+  /* A FILLED button on the default tone draws the Figma Button master's Disabled
+     state — its intent's `cmp/action/<intent>/primary/disabled/*` grey, bound per
+     variant above — rather than the brand fill at reduced opacity. The washed-out
+     blue read as "a lighter button", which is not what disabled means, and it was
+     the one state where code and the master visibly disagreed (13 Sep 2026, E-Anudaan
+     login audit). Outlined, text and inverse keep the opacity treatment until their
+     masters are compared the same way. A busy button is disabled too, but it keeps
+     its colour: it is working, not unavailable. */
+  .ds-btn--filled:disabled:not([aria-busy="true"]),
+  .ds-btn--filled[aria-disabled="true"]:not([aria-busy="true"]) {
+    opacity: 1;
+    background-color: var(--_dis-bg);
+    color: var(--_dis-text);
+    border-color: var(--_dis-border);
   }
 
   /*

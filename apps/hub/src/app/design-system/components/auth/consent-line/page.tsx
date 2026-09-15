@@ -7,7 +7,7 @@ import { Specimen } from "./specimen";
 
 export const metadata: Metadata = {
   title: "Consent Line — Design System",
-  description: "The standing consent sentence under every authentication form.",
+  description: "The consent sentence under an authentication form, for a portal whose sign-in needs it.",
 };
 
 const A11Y: A11yItem[] = [
@@ -25,7 +25,7 @@ export default function Page(): React.JSX.Element {
     <ComponentDocPage
       name="Consent Line"
       status="Stable"
-      summary="The standing consent sentence under every authentication form. The wording is fixed estate-wide and is deliberately NOT a prop — it is legal copy, so changing it is a legal decision rather than a design one. Only the two hrefs vary."
+      summary="The consent sentence under an authentication form. It is optional per portal — on for a public sign-in, off for one that serves only organisations and officers — and `PortalLoginTemplate` draws it when `config.consent` is set. The wording is fixed estate-wide and is deliberately NOT a prop — it is legal copy, so changing it is a legal decision rather than a design one. Only the two hrefs vary."
       figma={{ absent: "Part of the auth-parts set; no separate Figma node." }}
       specimen={<Specimen />}
       propsFrom="ConsentLineProps"

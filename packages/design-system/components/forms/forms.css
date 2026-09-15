@@ -550,6 +550,8 @@
     outline-offset: var(--sa-focus-offset);
   }
 
+  /* 4 from the label — the gap `Input Field`'s label-text frame puts between
+     the label and its necessity marker in the Figma master. Was 2. */
   .ds-field__required {
     margin-left: var(--sa-padding-4);
     color: var(--sa-text-status-error-base);

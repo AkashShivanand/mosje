@@ -307,16 +307,17 @@ portalLoginUrl("/portals/scw/login?role=citizen", "officer");
               props={[
                 { name: "portalId", type: "string", required: true, description: "The portal's slug — \"nmba\", \"pm-ajay\", \"scw\"." },
                 { name: "portalName", type: "string", required: true, description: "The portal's full name. It titles the form and names the “Signing Into” strip." },
-                { name: "portalTagline", type: "string", description: "An optional mission line for the hero." },
-                { name: "portalDescription", type: "string", description: "An optional supporting sentence." },
+                { name: "portalTagline", type: "string", description: "Optional. A line under the portal name in the “Signing Into” strip — usually the scheme’s expanded name, as SMILE Beggary shows “Support For Marginalized Individuals For Livelihood & Enterprise”. Leave it off where the name says enough. Large screens only: the phone strip shows the name alone." },
+                { name: "portalDescription", type: "string", description: "Optional. A muted line under the tagline saying what the portal is for, in one sentence. Large screens only." },
                 { name: "changeHref", type: "string", default: '"/"', description: "Where the “Change” control leads." },
                 { name: "roles", type: "PortalRoleTab[]", required: true, description: "The role tabs, each with an id, a label, an optional audience, and its authentication modes." },
                 { name: "defaultRoleId", type: "string", default: "the first role", description: "Which tab opens when the URL says nothing." },
                 { name: "captcha", type: "boolean", default: "false", description: "The portal's default for the security captcha. A role's own `captcha` wins over it, and off is the default because WCAG 2.2 3.3.8 forbids a cognitive test without an alternative." },
+                { name: "consent", type: "boolean", default: "false", description: "Show the “By continuing, you agree to the Terms of Use and Privacy Policy” line under the submit button. Optional per portal: on for a public sign-in, off for one that serves only organisations and officers, as E-Anudaan does. It needs `links.termsHref` or `links.privacyHref` to render." },
                 { name: "brandAssets", type: "PortalBrandAssets", description: "Overrides for the emblem, Digital India, SAMAVESH and portal marks, plus `digilockerLogoSrc` for the handoff card's logo slot. That one has no default: every portal mounts under its own basePath, so the path has to come from the caller." },
                 { name: "extraFields", type: "React.ReactNode", description: "Extra controls injected into the credential form." },
                 { name: "extraContent", type: "React.ReactNode", description: "A block below the form — a portal switcher grid, for instance." },
-                { name: "links", type: "{ forgotPasswordHref?; registerHref?; helpFaqHref?; digilockerHref? }", description: "The help links beneath the form, plus where the DigiLocker card hands off to. Without `digilockerHref` the card does not render, whatever the role asks for." },
+                { name: "links", type: "{ forgotPasswordHref?; registerHref?; helpFaqHref?; digilockerHref?; termsHref?; privacyHref? }", description: "The help links beneath the form, where the DigiLocker card hands off to, and the two pages the consent line names. Without `digilockerHref` the card does not render, whatever the role asks for." },
               ]}
             />
           </section>
