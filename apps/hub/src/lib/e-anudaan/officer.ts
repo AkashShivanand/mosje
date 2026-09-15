@@ -12,8 +12,13 @@ import { queriesFor } from "./selectors.ts";
 export interface OfficerDashboard {
   /** Files with this officer now, in the selected year. */
   queue: GrantApplication[];
-  byCase: { key: "New" | "1" | "2" | "3"; label: string; count: number }[];
-  movement: { key: string; label: string; count: number; hint: string }[];
+  /** `overdue` is how many of `count` have waited more than 7 days — the tile's second reading. */
+  byCase: { key: "New" | "1" | "2" | "3"; label: string; count: number; overdue: number }[];
+  /**
+   * `scope` says what a count is counted over: `queue` is files with this officer now, `all` is
+   * every application in the year. The panel groups by it instead of repeating it in each hint.
+   */
+  movement: { key: string; label: string; count: number; hint: string; scope: "queue" | "all" }[];
   ageing: { band: string; count: number }[];
   overdue: number;
   years: string[];
@@ -24,11 +29,16 @@ export function officerDashboard(state: EAnudaanState, roleId: RoleId, fy: strin
   const all = state.applications.filter(inYear);
   const queue = all.filter((a) => holderIsRole(a.holder, roleId)).sort((a, b) => b.ageingDays - a.ageingDays);
 
+  const OVERDUE_DAYS = 7;
+  const ofCase = (match: (a: GrantApplication) => boolean) => {
+    const files = queue.filter(match);
+    return { count: files.length, overdue: files.filter((a) => a.ageingDays > OVERDUE_DAYS).length };
+  };
   const byCase = [
-    { key: "New" as const, label: "New Applications", count: queue.filter((a) => a.caseType === "New").length },
-    { key: "1" as const, label: "1st Instalment", count: queue.filter((a) => a.caseType === "Ongoing" && a.instalment === 1).length },
-    { key: "2" as const, label: "2nd Instalment", count: queue.filter((a) => a.caseType === "Ongoing" && a.instalment === 2).length },
-    { key: "3" as const, label: "3rd Instalment", count: queue.filter((a) => a.caseType === "Ongoing" && a.instalment === 3).length },
+    { key: "New" as const, label: "New Applications", ...ofCase((a) => a.caseType === "New") },
+    { key: "1" as const, label: "1st Instalment", ...ofCase((a) => a.caseType === "Ongoing" && a.instalment === 1) },
+    { key: "2" as const, label: "2nd Instalment", ...ofCase((a) => a.caseType === "Ongoing" && a.instalment === 2) },
+    { key: "3" as const, label: "3rd Instalment", ...ofCase((a) => a.caseType === "Ongoing" && a.instalment === 3) },
   ];
 
   const inspected = new Set(
@@ -40,44 +50,51 @@ export function officerDashboard(state: EAnudaanState, roleId: RoleId, fy: strin
       key: "to-send",
       label: "Deficiencies to Send",
       count: queue.filter((a) => a.status === "DeficiencyProposed").length,
-      hint: "In your queue · noted by the ASO, not yet sent to the NGO",
+      hint: "Noted by the ASO, not yet sent to the NGO",
+      scope: "queue" as const,
     },
     {
       key: "resubmitted",
       label: "Resubmitted after Deficiency",
       count: queue.filter((a) => a.status === "DeficiencyResponded").length,
-      hint: "In your queue · corrected by the NGO",
+      hint: "Corrected by the NGO",
+      scope: "queue" as const,
     },
     {
       key: "rework",
       label: "Returned for Rework",
       // The Queries screen reads the same selector, so this figure is that list's length.
       count: queriesFor(state, roleId).filter(inYear).length,
-      hint: "Returned to you, or by you · not yet resolved",
+      hint: "Returned to you, or by you, and not yet resolved",
+      scope: "queue" as const,
     },
     {
       key: "inspection",
       label: "Inspection Report Available",
       count: queue.filter((a) => inspected.has(a.id)).length,
-      hint: "In your queue · read before deciding",
+      hint: "Read the report before deciding",
+      scope: "queue" as const,
     },
     {
       key: "deficiency",
       label: "Deficiencies Raised",
       count: all.filter((a) => a.status === "DeficiencyRaised").length,
-      hint: "All applications · with NGOs for correction",
+      hint: "With NGOs for correction",
+      scope: "all" as const,
     },
     {
       key: "resolved",
       label: "Deficiencies Resolved",
       count: all.filter((a) => a.deficiencies.some((d) => d.respondedAt)).length,
-      hint: "All applications · corrected by NGOs",
+      hint: "Corrected by NGOs",
+      scope: "all" as const,
     },
     {
       key: "forwarded",
       label: "Forwarded by You",
       count: all.filter((a) => a.audit.some((e) => e.byRole === roleId && e.action === "forward")).length,
-      hint: "Your own actions · moved to the next level",
+      hint: "Moved to the next level by you",
+      scope: "all" as const,
     },
   ];
 

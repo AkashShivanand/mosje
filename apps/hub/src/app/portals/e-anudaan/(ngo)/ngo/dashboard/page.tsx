@@ -205,7 +205,7 @@ export default function NgoDashboardPage() {
             <span className="text-body-2 font-semibold text-ink">{ngoName}</span>
             <Badge status="success">DARPAN Verified</Badge>
             <span className="text-line" aria-hidden>•</span>
-            <span className="flex items-center gap-1 font-mono font-semibold text-ink">
+            <span className="flex items-center gap-1 text-ink">
               <Icon name="verified_user" size={16} className="text-primary shrink-0" aria-hidden />
               DARPAN ID: {ngo?.darpanId ?? "MH/2016/100000"}
             </span>
@@ -269,7 +269,9 @@ export default function NgoDashboardPage() {
           label="Action Required"
           value={String(needsActionCount)}
           detail={`${pendingItems} correction${pendingItems === 1 ? "" : "s"} to make`}
-          tone={needsActionCount > 0 ? "warning" : undefined}
+          /* No warning fill. Pending Actions, directly above, is where the applicant acts; an amber
+             tile beside three white ones became the loudest thing on the page and pulled the eye
+             away from the list that holds the Resolve buttons (design review, 16 Sep 2026). */
           icon={<Icon name="error" size={20} aria-hidden />}
         />
         <MetricCard
@@ -280,16 +282,19 @@ export default function NgoDashboardPage() {
         />
       </div>
 
-      <div className="grid items-stretch gap-6 lg:grid-cols-2">
-        <Card variant="outlined" aria-labelledby="app-status-title">
+      {/* THE SUMMARY ROW, 5 : 7. The donut and its legend are a fixed height; the money column
+          holds the totals AND the per-scheme split, which is money too — so the two cards end
+          level instead of each leaving a band of empty card (design review, 16 Sep 2026). */}
+      <div className="grid items-stretch gap-6 lg:grid-cols-12">
+        <Card variant="outlined" aria-labelledby="app-status-title" className="lg:col-span-5">
           <CardBody className="gap-4 p-6">
             <SectionTitle headingId="app-status-title" title="Application Status Breakdown" />
 
             {/* The chart and its own legend only. A list beside it repeated the legend, and a
                 "Highest Allocation" line repeated the list's first row (removed on confirmation,
                 15 Sep 2026); the per-status counts remain in the chart's "View as Table". */}
-            <div className="flex justify-center py-2">
-              <div className="w-[220px] max-w-full">
+            <div className="flex flex-1 items-center justify-center py-2">
+              <div className="w-[260px] max-w-full">
                 <DonutChart
                   title="Application Status Distribution"
                   data={donutChartData}
@@ -301,7 +306,7 @@ export default function NgoDashboardPage() {
           </CardBody>
         </Card>
 
-        <Card variant="outlined" aria-labelledby="financial-summary-title">
+        <Card variant="outlined" aria-labelledby="financial-summary-title" className="lg:col-span-7">
           <CardBody className="gap-5 p-6">
             {/* Every financial year: the store holds files from 2024-25 to 2026-27, and all of
                 them are summed. A single-year badge here was a false label. */}
@@ -326,6 +331,49 @@ export default function NgoDashboardPage() {
                 <span className="font-bold text-[var(--sa-text-status-success-base)]">{sanctionedPercent}%</span>
               </div>
               <Progress label="Sanctioned against requested" value={sanctionedPercent} tone="success" compact />
+            </div>
+
+            <div className="space-y-1">
+              <SectionTitle as={3} eyebrow="By Scheme" />
+              <ListGroup divided size="sm" aria-label="Money by scheme">
+                {activeSchemes.map((s) => (
+                  <ListRow
+                    key={s.code}
+                    title={s.title}
+                    trailing={
+                      s.requested > 0 ? (
+                        <span className="tabular-nums font-semibold text-[var(--sa-text-status-success-base)]">{s.percent}%</span>
+                      ) : undefined
+                    }
+                    /* No scheme badge: it printed the stored code ("SHRESHTA_M2") under the scheme's
+                       own name, saying the same thing twice and the second time in code. */
+                    description={
+                      <span className="block space-y-1.5">
+                        <span className="block">{s.subtitle}</span>
+                        {s.requested > 0 ? (
+                          <>
+                            <span className="block tabular-nums">
+                              {s.count} {s.count === 1 ? "application" : "applications"} · Requested{" "}
+                              <strong className="text-ink">{crore(s.requested)}</strong> · Sanctioned{" "}
+                              <strong className="text-[var(--sa-text-status-success-base)]">{crore(s.sanctioned)}</strong>
+                            </span>
+                            <Progress label={`${s.title}: sanctioned against requested`} value={s.percent} tone="success" compact />
+                          </>
+                        ) : (
+                          /* Every file under the scheme is a draft: an empty bar beside "₹0.00 Cr"
+                             said "nothing sanctioned" when nothing has been asked for. */
+                          <span className="block">
+                            {s.count} {s.count === 1 ? "draft" : "drafts"}, none submitted yet
+                          </span>
+                        )}
+                      </span>
+                    }
+                  />
+                ))}
+                {idleSchemes.map((s) => (
+                  <ListRow key={s.code} title={s.title} description={`${s.subtitle} · No applications yet`} />
+                ))}
+              </ListGroup>
             </div>
           </CardBody>
         </Card>
@@ -381,84 +429,38 @@ export default function NgoDashboardPage() {
         </CardBody>
       </Card>
 
-      <div className="grid items-stretch gap-6 lg:grid-cols-2">
-        <Card variant="outlined" aria-labelledby="apps-by-scheme-title">
-          <CardBody className="gap-4 p-6">
-            <SectionTitle headingId="apps-by-scheme-title" title="Applications by Scheme">
-              <Badge status="neutral">{activeSchemes.length} Schemes</Badge>
-            </SectionTitle>
+      {/* Reference, not work: last on the page, full width in three columns so its thirteen
+          fields take five rows instead of seven. */}
+      <Card variant="outlined" aria-labelledby="org-profile-title">
+        <CardBody className="gap-4 p-6">
+          {/* No "DARPAN Synced" badge: the header already says "DARPAN Verified". */}
+          <SectionTitle headingId="org-profile-title" title="Organisation Profile" />
 
-            {/* A divided list inside the card, not a bordered box inside it (T93). */}
-            <ListGroup divided aria-label="Schemes applied under">
-              {activeSchemes.map((s) => (
-                <ListRow
-                  key={s.code}
-                  title={s.title}
-                  trailing={
-                    <Badge status="neutral">
-                      {s.count} {s.count === 1 ? "application" : "applications"}
-                    </Badge>
-                  }
-                  /* No scheme badge: it printed the stored code ("SHRESHTA_M2") under the scheme's
-                     own name, saying the same thing twice and the second time in code. */
-                  description={
-                    <span className="block space-y-2">
-                      <span className="block">{s.subtitle}</span>
-                      <span className="block">
-                        Requested: <strong className="text-ink">{crore(s.requested)}</strong> · Sanctioned:{" "}
-                        <strong className="text-[var(--sa-text-status-success-base)]">{crore(s.sanctioned)}</strong>
-                      </span>
-                      <Progress label={`${s.title}: sanctioned against requested`} value={s.percent} tone="success" compact />
-                    </span>
-                  }
-                />
-              ))}
-            </ListGroup>
-
-            {idleSchemes.length > 0 && (
-              <>
-                <SectionTitle as={3} eyebrow="Not Yet Applied Under" />
-                <ListGroup divided size="sm" aria-label="Schemes not yet applied under">
-                  {idleSchemes.map((s) => (
-                    <ListRow key={s.code} title={s.title} description={s.subtitle} />
-                  ))}
-                </ListGroup>
-              </>
-            )}
-          </CardBody>
-        </Card>
-
-        <Card variant="outlined" aria-labelledby="org-profile-title">
-          <CardBody className="gap-4 p-6">
-            {/* No "DARPAN Synced" badge: the header already says "DARPAN Verified". */}
-            <SectionTitle headingId="org-profile-title" title="Organisation Profile" />
-
-            {/* Thirteen separate rows, exactly as the live DARPAN read-back lists them — State and
-                District, Registration No. and Date, and Secretary and Treasurer are each their own
-                row on the live portal rather than being paired up. */}
-            <DescriptionList
-              columns={2}
-              size="sm"
-              divided
-              items={([
-                ["Organisation", ngoName],
-                ["DARPAN ID", ngo?.darpanId ?? "MH/2016/100000"],
-                ["State", ngo?.state ?? "Maharashtra"],
-                ["District", ngo?.district ?? "Pune"],
-                ["Registration No.", ngo?.registrationNo ?? "51-54"],
-                ["Registration Date", ngo?.registrationDate ?? "12 Mar 1978"],
-                ["Registered Under", ngo?.registeredUnder ?? "Registrar of Societies"],
-                ["Chairman", ngo?.chairman ?? "—"],
-                ["Secretary", ngo?.secretary ?? "—"],
-                ["Treasurer", ngo?.treasurer ?? "—"],
-                ["Authorised User", ngo?.authorisedUser ?? ngoName],
-                ["Email", ngo?.email ?? "—"],
-                ["Mobile", ngo?.mobile ?? "—"],
-              ] as const).map(([term, value]) => ({ term, value }))}
-            />
-          </CardBody>
-        </Card>
-      </div>
+          {/* Thirteen separate rows, exactly as the live DARPAN read-back lists them — State and
+              District, Registration No. and Date, and Secretary and Treasurer are each their own
+              row on the live portal rather than being paired up. */}
+          <DescriptionList
+            columns={3}
+            size="sm"
+            divided
+            items={([
+              ["Organisation", ngoName],
+              ["DARPAN ID", ngo?.darpanId ?? "MH/2016/100000"],
+              ["State", ngo?.state ?? "Maharashtra"],
+              ["District", ngo?.district ?? "Pune"],
+              ["Registration No.", ngo?.registrationNo ?? "51-54"],
+              ["Registration Date", ngo?.registrationDate ?? "12 Mar 1978"],
+              ["Registered Under", ngo?.registeredUnder ?? "Registrar of Societies"],
+              ["Chairman", ngo?.chairman ?? "—"],
+              ["Secretary", ngo?.secretary ?? "—"],
+              ["Treasurer", ngo?.treasurer ?? "—"],
+              ["Authorised User", ngo?.authorisedUser ?? ngoName],
+              ["Email", ngo?.email ?? "—"],
+              ["Mobile", ngo?.mobile ?? "—"],
+            ] as const).map(([term, value]) => ({ term, value }))}
+          />
+        </CardBody>
+      </Card>
     </div>
   );
 }

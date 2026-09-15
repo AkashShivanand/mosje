@@ -2,11 +2,12 @@
 
 import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { ChartCard, FilterSelect, Icon, ListGroup, ListRow, OverviewScreen, Progress } from "@mosje/design-system";
+import { ChartCard, FilterSelect, Icon, ListGroup, ListRow, OverviewScreen, Progress, SectionTitle } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ROLES, reviewKeyOf } from "@/lib/e-anudaan/roles";
 import { officerDashboard } from "@/lib/e-anudaan/officer";
 import { WorklistTable } from "./worklist-table";
+import { routeLinksWithin } from "./ngo-shell";
 
 /**
  * "My Action Queue" — the officer landing screen, composed from `OverviewScreen`.
@@ -24,7 +25,19 @@ import { WorklistTable } from "./worklist-table";
  *  • Pending work stays the first thing on the page; nothing decorative sits above it.
  *
  * The year lives in the URL, so a link to "my 2026-27 queue" works.
+ *
+ * Design review of 16 Sep 2026:
+ *  • The year filter is a page control, so it sits in the header's action slot rather than on a
+ *    row of its own above the tiles.
+ *  • Each tile's second line is information — how many of its files are over 7 days — instead of
+ *    "Pending with you" printed four times under a header that already says so.
+ *  • Deficiencies and Returns groups its rows by what they count (this officer's queue, or every
+ *    application in the year) instead of repeating the scope at the start of each hint.
+ *  • Only the overdue band is red — the one stated rule, 7 days. The panel then names the files
+ *    waiting longest, each a link to its review; the space under three bars was empty.
  */
+const OVERDUE_DAYS = 7;
+const LONGEST = 3;
 export function ActionQueue({ variant = "pd" }: { variant?: "pd" | "finance" }) {
   return (
     <React.Suspense fallback={null}>
@@ -44,6 +57,8 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
   const dash = role ? officerDashboard(state, role.id, fy) : null;
   const isPd = variant === "pd";
   const reviewKey = (role && reviewKeyOf(role)) ?? "";
+  const reviewBase = `/portals/e-anudaan/dashboard/sm2/${reviewKey}/review`;
+  const ngoName = (id: string) => state.ngos.find((n) => n.id === id)?.name ?? "—";
 
   const setFy = (value: string) => {
     const next = new URLSearchParams(params.toString());
@@ -69,9 +84,9 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
          hydrated with no role has not been refused a queue, they have not
          signed in — and those are different screens. */
       asked={role != null}
-      filters={
+      actions={
         dash ? (
-          <div className="w-full max-w-xs">
+          <div className="w-full sm:w-56">
             <FilterSelect
               label="Financial Year"
               value={fy}
@@ -87,7 +102,12 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
               key: c.key,
               label: c.label,
               value: c.count.toLocaleString("en-IN"),
-              detail: "Pending with you",
+              detail:
+                c.count === 0
+                  ? "None with you"
+                  : c.overdue === 0
+                    ? "None over 7 days"
+                    : `${c.overdue} over 7 days`,
               icon: <Icon name={c.key === "New" ? "note_add" : "event_repeat"} size={20} aria-hidden />,
             }))
           : undefined
@@ -97,16 +117,35 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
         dash
           ? [
               <ChartCard key="movement" title="Deficiencies and Returns" subtitle={fy ? `FY ${fy}` : "All years"}>
-                <ListGroup size="sm" aria-label="Deficiencies and returns">
-                  {dash.movement.map((m) => (
-                    <ListRow
-                      key={m.key}
-                      title={m.label}
-                      description={m.hint}
-                      trailing={<span className="text-title-2 font-semibold tabular-nums text-ink">{m.count}</span>}
-                    />
+                <div className="space-y-5">
+                  {(
+                    [
+                      ["queue", "In Your Queue"],
+                      ["all", "Across All Applications"],
+                    ] as const
+                  ).map(([scope, heading]) => (
+                    <div key={scope} className="space-y-1">
+                      <SectionTitle as={3} eyebrow={heading} />
+                      <ListGroup size="sm" aria-label={heading}>
+                        {dash.movement
+                          .filter((m) => m.scope === scope)
+                          .map((m) => (
+                            <ListRow
+                              key={m.key}
+                              title={m.label}
+                              description={m.hint}
+                              /* A zero is muted so the counts that ask for attention are the ones read first. */
+                              trailing={
+                                <span className={`text-title-2 font-semibold tabular-nums ${m.count === 0 ? "text-ink-muted" : "text-ink"}`}>
+                                  {m.count.toLocaleString("en-IN")}
+                                </span>
+                              }
+                            />
+                          ))}
+                      </ListGroup>
+                    </div>
                   ))}
-                </ListGroup>
+                </div>
               </ChartCard>,
               <ChartCard
                 key="ageing"
@@ -117,18 +156,48 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
                 /* No "pending beyond 7 days" alert under the bars: it restated the "Over 7 days"
                    bar directly above it (removed on confirmation, 15 Sep 2026). */
               >
-                <div className="space-y-4">
-                  {/* The count rides in the label: Progress prints the share of the queue, and an
-                      officer plans by how many files, not by what fraction of them. */}
-                  {dash.ageing.map((b) => (
-                    <Progress
-                      key={b.band}
-                      label={`${b.band} (${b.count})`}
-                      value={b.count}
-                      max={Math.max(dash.queue.length, 1)}
-                      tone={b.band === "Over 7 days" ? "danger" : undefined}
-                    />
-                  ))}
+                <div className="space-y-6">
+                  <div className="space-y-4">
+                    {/* The count rides in the label: Progress prints the share of the queue, and an
+                        officer plans by how many files, not by what fraction of them. */}
+                    {dash.ageing.map((b, i) => (
+                      <Progress
+                        key={b.band}
+                        label={`${b.band} (${b.count})`}
+                        value={b.count}
+                        max={Math.max(dash.queue.length, 1)}
+                        tone={i === 2 ? "danger" : undefined}
+                      />
+                    ))}
+                  </div>
+                  {dash.queue.length > 0 && (
+                    <div className="space-y-1">
+                      <SectionTitle as={3} eyebrow="Waiting Longest" />
+                      {/* The queue is sorted oldest first, so its head is the answer. */}
+                      <div onClick={routeLinksWithin(router)}>
+                        <ListGroup size="sm" aria-label="Applications waiting longest">
+                          {dash.queue.slice(0, LONGEST).map((a) => (
+                            <ListRow
+                              key={a.id}
+                              href={`${reviewBase}/${encodeURIComponent(a.id)}`}
+                              title={<span className="font-mono">{a.institutionId}</span>}
+                              description={ngoName(a.ngoId)}
+                              trailing={
+                                <span
+                                  className={`tabular-nums font-semibold ${
+                                    a.ageingDays > OVERDUE_DAYS ? "text-[var(--sa-text-status-error-base)]" : "text-ink"
+                                  }`}
+                                >
+                                  {a.ageingDays} days
+                                  <Icon name="chevron_right" size={20} className="ml-2 align-middle text-ink-muted" aria-hidden />
+                                </span>
+                              }
+                            />
+                          ))}
+                        </ListGroup>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </ChartCard>,
             ]
@@ -139,7 +208,7 @@ function Queue({ variant }: { variant: "pd" | "finance" }) {
           <WorklistTable
             rows={dash.queue}
             variant="queue"
-            reviewBase={`/portals/e-anudaan/dashboard/sm2/${reviewKey}/review`}
+            reviewBase={reviewBase}
             caption="Applications awaiting your action"
           />
         ) : undefined

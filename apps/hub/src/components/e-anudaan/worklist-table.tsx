@@ -632,7 +632,9 @@ export function InspectionTable({ caption }: { caption: string }) {
           value={status}
           onChange={(v) => setStatus(v as "" | InspectionStatus)}
         />
-        <p className="text-body-2 text-ink-muted md:text-right" role="status">
+        {/* Bottom-aligned with the select's own text: the grid ends at the control, and the label
+            above the control would otherwise leave the count floating 10px below its baseline. */}
+        <p className="text-body-2 text-ink-muted md:pb-2.5 md:text-right" role="status">
           {status
             ? `${rows.length} of ${all} match the filter`
             : `${all} ${all === 1 ? "inspection" : "inspections"}`}
