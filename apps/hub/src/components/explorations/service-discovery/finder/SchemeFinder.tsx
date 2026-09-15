@@ -44,7 +44,7 @@ import "./scheme-finder.css";
  * senior citizens are a persona of their own. None of the Department's schemes
  * is State-specific: they are Central schemes the States implement. And a
  * question that changes nothing downstream is a question a citizen answers for
- * no reason. So: who is looking for support, and what kind of support.
+ * no reason. So: the type of applicant, and the type of benefit.
  *
  * ── ONE LIST ───────────────────────────────────────────────────────────────
  *
@@ -62,7 +62,7 @@ import "./scheme-finder.css";
  */
 
 const ANSWER = 2;
-const STEP_LABELS = ["Who It Is For", "What It Provides", "Schemes"] as const;
+const STEP_LABELS = ["Type of Applicant", "Type of Benefit", "Schemes"] as const;
 const NOT_ANSWERED = "Not answered";
 const PAGE_SIZE = 6;
 
@@ -96,7 +96,7 @@ interface Answers {
   offer?: string;
 }
 
-const QUESTION_TEXT = ["Who Is Looking for Support?", "What Kind of Support?"] as const;
+const QUESTION_TEXT = ["Type of Applicant", "Type of Benefit"] as const;
 const HINT_TEXT = [
   "Choose the one that describes you.",
   "Only what the Department provides for that group is listed. Leave unanswered to see all of it.",
@@ -159,7 +159,7 @@ export function SchemeFinder(): React.JSX.Element {
           eyebrow="Schemes & Services"
           title="Find Schemes for You"
           headingId="xsf-title"
-          description="Two short questions: who the scheme is for, and what kind of support. The second may be left unanswered. Nothing entered here is stored."
+          description="Two short questions: the type of applicant, and the type of benefit. The second may be left unanswered. Nothing entered here is stored."
         />
 
         <div className="xsf__body">
