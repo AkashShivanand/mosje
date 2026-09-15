@@ -303,17 +303,34 @@
     color: var(--ds-footer-ink);
   }
 
+  /* Every shade inside the footer is a PROPORTION OF ITS GROUND, not a ramp rung —
+     the chip first, then (2026-09-15) the deep band and the rule. The ground is
+     `bg/brand/primary/boldest`, which is rung 800 in Blue and the key colour
+     (rung 600) in Navy, so a fixed rung below it is a different distance away in
+     each brand: Navy's rung 900 was `#000e24`, black. Measured against the rungs
+     they replace in Blue: deep `#002852` for `#002855`, rule `#025eb9` for
+     `#005eb9` — the same to the eye. In Navy: deep `#002447`, rule `#154375`. */
   @supports (background-color: color-mix(in srgb, red 50%, blue)) {
     .ds-sitefooter {
       --ds-footer-chip: color-mix(
         in srgb,
         var(--sa-color-primaryScale-100) 12%,
-        var(--sa-color-primaryScale-800)
+        var(--ds-footer-bg)
       );
       --ds-footer-chip-hover: color-mix(
         in srgb,
         var(--sa-color-primaryScale-100) 24%,
-        var(--sa-color-primaryScale-800)
+        var(--ds-footer-bg)
+      );
+      --ds-footer-bg-deep: color-mix(
+        in srgb,
+        var(--sa-color-neutralScale-1000) 30%,
+        var(--ds-footer-bg)
+      );
+      --ds-footer-rule: color-mix(
+        in srgb,
+        var(--sa-color-primaryScale-500) 64%,
+        var(--ds-footer-bg)
       );
     }
   }

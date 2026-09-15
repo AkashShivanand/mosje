@@ -32,7 +32,7 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.136.0",
+    version: "v0.137.0",
     date: "2026-09-15",
     current: true,
     changes: [
@@ -41,6 +41,19 @@ const RELEASES: Release[] = [
       { kind: "Fixed", text: "THE FIGMA `Site Footer` MASTER MATCHES THE CODE AT 1440, 768 AND 375, measured landmark by landmark. The 1440 variants resolve to the Desktop XL mode (content 1272 at x 84, as `Navbar/Website` draws), portal variants are fluid, policy links are Body 2, the social chips sit 4px apart, credit marks are 64x28, the link grid splits on the code\u2019s 12-column gutters, the Mobile policy rows wrap instead of running off the frame, and the five social glyphs are rebuilt from `brand-glyph.tsx`\u2019s own paths at its 20-unit optical size" },
       { kind: "Added", text: "A Code Connect template for `SiteFooter` (`site-footer.figma.ts`), with its Figma property fixture, so Dev Mode serves the real API for the Site Footer master" },
       { kind: "Changed", text: "FOOTER DOCUMENTATION DESCRIBES THE COMPONENT THAT SHIPS. The Site Footer page, `design.md` and Storybook no longer document a support strip, an outlined CTA or dead CSS that no longer exist; the Figma documentation lists all five required properties and places Feedback in the policy row; the Component record carries only what is still open" },
+    ],
+  },
+  {
+    version: "v0.136.0",
+    date: "2026-09-14",
+    changes: [
+      { kind: "Added", text: "`bg/neutral/subtlest` \u2014 THE PAGE CANVAS, ONE STEP LIGHTER THAN `subtler`. A new `25` rung on every neutral ramp (Blue `#f6f7f8`, Navy `#f6f7f9`, DBIM `#fafafa`; no existing rung moves) and the fill ladder gains `subtlest` between `base` and `subtler`. `AppShell`, the root `<body>` and 19 full-page grounds take it through a new `surface-canvas` utility, which falls back to a portal's own `surface-muted` so no portal palette moves. The canvas was `subtler`: across three-fifths of a portal screen it read as dull grey, and hover, read-only and loading fills were the same colour as the page (1.00:1). Pushed to the SAMAVESH library and read back" },
+      { kind: "Changed", text: "`bg/neutral/selected` IS THE BRAND'S RUNG-100 TINT AT 64%, AND THE SIDEBAR'S CURRENT PAGE BINDS IT. At 64% it sits 3.3 L* (Blue) and 4.4 L* (Navy) below the hover fill, so the state is carried by lightness as well as hue; every ink on it stays AA. It was `primaryScale/50`, which under Navy is `#f7faff` \u2014 lighter than the hover fill and 1.05:1 on white, so the current page read as a raised white chip. The current page now also sets its label semibold, so the state survives without colour (WCAG 1.4.1); the ancestor route keeps the lighter tint" },
+      { kind: "Changed", text: "NAVY'S LIGHTEST TINT IS VISIBLE. The Navy primary ramp is re-laddered from `lightest` 98.5 to 96.8: rung 50 moves from `#f7faff` (CIE L* 98.2, lighter than the page canvas and 1.05:1 on white) to `#eef5ff` (L* 96.3, 1.10:1), beside Blue's 95.9 and the functional ramps' 95.8\u201396.4. Every `bg/brand/primary/base` fill under Navy \u2014 the sidebar's route to the current page among them \u2014 now reads. Rungs 100\u2013500 move by at most 1.8 L*; 600 is unchanged. The error ramp's heavier rung 50 is kept on purpose: lifting it drained its chroma to 0.4 \u0394E from India Saffron's tint" },
+      { kind: "Changed", text: "NAVY'S DEEPEST BRAND GROUND AND ITS VISITED LINKS READ AS NAVY, NOT BLACK. Navy's key colour #003366 sits at rung 600 but is as dark as Blue's rung 800, so a role bound to rung 800 lands two shades deeper under Navy \u2014 `#001735`, at the floor of what a screen can show as a hue. Under Navy, `bg/brand/primary/boldest` (the website footer ground, the profile card's status pill) and `text/link/visited/default` now take the key colour; Blue and the DBIM previews are unchanged, and the ramp itself does not move. The footer's deep band, rule and chips are proportions of its ground instead of fixed rungs, so its statutory band is `#002447` in Navy rather than `#000e24`. The pressed button keeps rung 800 on purpose" },
+      { kind: "Fixed", text: "A BRAND OVERRIDE ON A TIER-2 ALIAS NOW REACHES THE PAGE AND THE LIBRARY. In CSS, the alias re-assertion at the end of each brand block redeclared the token and cancelled its own override, and a brand with no override wrote the Blue literal instead of the reference. In Figma, a token whose Navy value is a different rung was aliased to the Blue rung's Palette variable \u2014 which is how the library had shown Navy links at rung 600 while the code painted rung 500. Such tokens now get a brand-source Palette companion; three exist (Palette 139 \u2192 142)" },
+      { kind: "Fixed", text: "`build/brand-ramps.mjs` IS IDEMPOTENT. The `color/transparent/secondary/0` fade stop was hand-added to `semantic.json`, so every run of the generator deleted it; the generator now emits it" },
+      { kind: "Fixed", text: "BRAND MODES NO LONGER INHERIT THE BLUE BRAND'S STATE COLOURS. A Tier-2 alias with no `colorModes` of its own was emitted as the literal `:root` resolved, so under `data-brand=\"navy\"` (and every DBIM brand) `bg/neutral/selected` stayed `#ecf4ff`, `border/neutral/selected` and `focus/ring` stayed gov-blue `#0373df`, and hover, active, read-only, loading and the `layer/*` fills came from the blue ramp. Such an alias is now a `var()` chain re-asserted in every brand block; the default Blue brand renders unchanged" },
     ],
   },
   {

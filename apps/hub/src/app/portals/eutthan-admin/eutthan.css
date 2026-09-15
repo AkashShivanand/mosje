@@ -781,116 +781,6 @@ tr.selected-row td {
   gap: var(--sa-inline-12);
 }
 
-/* ── Login — two-panel split ──────────────────────────────── */
-.login-split {
-  display: grid;
-  grid-template-columns: 420px minmax(0, 1fr);
-  min-height: 100dvh;
-}
-
-.login-left {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--primary);
-  padding: var(--sa-padding-48) var(--sa-padding-40);
-}
-
-.login-left-content {
-  text-align: center;
-  color: var(--sa-text-neutral-inverse);
-}
-
-.login-portal-name {
-  font-family: var(--sa-font-display);
-  font-size: var(--sa-type-display-3-size);
-  line-height: var(--sa-type-display-3-lh);
-  letter-spacing: var(--sa-type-display-3-tracking);
-  font-weight: var(--sa-font-weight-semibold);
-  color: var(--sa-text-neutral-inverse);
-  margin-bottom: var(--sa-stack-12);
-}
-
-.login-ministry-name {
-  font-size: var(--sa-type-title-2-size);
-  line-height: var(--sa-type-title-2-lh);
-  font-weight: var(--sa-font-weight-semibold);
-  color: var(--on-navy-90);
-  margin-bottom: var(--sa-stack-12);
-}
-
-.login-tagline {
-  font-size: var(--sa-type-body-2-size);
-  line-height: var(--sa-type-body-2-lh);
-  color: var(--on-navy-65);
-  margin-bottom: var(--sa-stack-32);
-}
-
-.login-gov-tag {
-  display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--on-navy-35);
-  border-radius: var(--sa-shape-full);
-  padding: var(--sa-padding-4) var(--sa-padding-16);
-  font-size: var(--sa-type-label-2-size);
-  line-height: var(--sa-type-label-2-lh);
-  font-weight: var(--sa-font-weight-semibold);
-  color: var(--on-navy-80);
-}
-
-.login-right {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--surface);
-  padding: var(--sa-padding-48) var(--sa-padding-40);
-}
-
-.login-form-inner {
-  width: min(400px, 100%);
-}
-
-.login-form-title {
-  margin: 0 0 var(--sa-stack-8);
-  color: var(--text-strong);
-  font-size: var(--sa-type-headline-3-size);
-  line-height: var(--sa-type-headline-3-lh);
-  font-weight: var(--sa-font-weight-semibold);
-}
-
-.login-form-subtitle {
-  margin: 0;
-  color: var(--text-muted);
-  font-size: var(--sa-type-body-2-size);
-  line-height: var(--sa-type-body-2-lh);
-}
-
-.login-error-box {
-  margin-top: var(--sa-stack-16);
-  padding: var(--sa-padding-12) var(--sa-padding-16);
-  border-radius: var(--radius-md);
-  background: var(--danger-wash);
-  border: 1px solid var(--danger-wash-bd);
-  color: var(--danger);
-  font-size: var(--sa-type-body-2-size);
-  line-height: var(--sa-type-body-2-lh);
-}
-
-@media (max-width: 768px) {
-  .login-split {
-    grid-template-columns: 1fr;
-  }
-
-  .login-left {
-    padding: var(--sa-padding-40) var(--sa-padding-24);
-    min-height: 260px;
-  }
-
-  .login-right {
-    padding: var(--sa-padding-40) var(--sa-padding-24);
-  }
-}
-
 @media (max-width: 960px) {
   .top-bar {
     position: static;
@@ -937,8 +827,7 @@ tr.selected-row td {
     overflow-x: auto;
   }
 
-  .chart-row,
-  .login-feature-grid {
+  .chart-row {
     grid-template-columns: 1fr;
   }
 
@@ -978,10 +867,6 @@ tr.selected-row td {
 
   .form-grid {
     grid-template-columns: 1fr;
-  }
-
-  .login-card {
-    margin-top: var(--sa-stack-24);
   }
 }
 
@@ -1107,47 +992,6 @@ tr.selected-row td {
 }
 
 /* Demo credentials panel (prototype phase only) */
-.demo-creds-panel {
-  margin-top: var(--sa-stack-24);
-  padding: var(--sa-padding-16);
-  border: 1.5px dashed var(--stroke-300);
-  border-radius: var(--radius-md);
-  background: var(--stroke-50);
-}
-.demo-creds-header {
-  font-size: var(--sa-type-label-3-size);
-  line-height: var(--sa-type-label-3-lh);
-  font-weight: var(--sa-font-weight-semibold);
-  letter-spacing: var(--sa-type-caps-tracking);
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: var(--sa-stack-8);
-}
-.demo-creds-rows { display: flex; flex-direction: column; gap: var(--sa-stack-6); }
-.demo-creds-row {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-inline-8);
-  padding: var(--sa-padding-8) var(--sa-padding-12);
-  border: 1px solid var(--stroke-200);
-  border-radius: var(--radius-md);
-  background: var(--surface);
-  cursor: pointer;
-  text-align: left;
-  width: 100%;
-  font-size: var(--sa-type-body-2-size);
-  line-height: var(--sa-type-body-2-lh);
-  color: var(--text);
-  transition: border-color 0.15s, background 0.15s;
-}
-.demo-creds-row:hover { border-color: var(--primary); background: var(--primary-50); }
-.demo-role-tag {
-  font-size: var(--sa-type-label-2-size); line-height: var(--sa-type-label-2-lh); font-weight: var(--sa-font-weight-semibold);
-  color: var(--sa-text-neutral-inverse); background: var(--primary);
-  padding: var(--sa-padding-2) var(--sa-padding-6); border-radius: var(--sa-shape-4); flex-shrink: 0;
-}
-.demo-username { font-family: var(--sa-font-mono); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--text-strong); flex-shrink: 0; }
-.demo-pin { font-family: var(--sa-font-mono); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--text-muted); margin-left: auto; }
 /* Accessible skip link for eUtthan authenticated shell */
 .eu-skip-link {
   position: absolute; top: -100%; left: 0;

@@ -32,6 +32,7 @@ import { SideSheet } from "../feedback/side-sheet";
 import { PortalList } from "./portal-list";
 import {
   DarpanFields,
+  identifierControl,
   OtpRequestFields,
   OtpVerifyFields,
   PasswordFields,
@@ -40,12 +41,18 @@ import {
 import "./portal-login-template.css";
 import { PortalLoginShell, PortalLoginTab } from "./portal-login-shell";
 import { portalLoginUrl, roleFromUrl } from "./portal-login-url";
-import {
+import type {
+  AuthStepResult,
+  OtpRequest,
   PortalLoginConfig,
   PortalAuthMode,
   PortalAuthModeOption,
+  PortalIdentifierKind,
+  PortalLoginFieldErrors,
+  PortalRoleTab,
   LoginSubmitPayload,
 } from "./types";
+import { loginShellChrome } from "./login-shell-chrome";
 
 export { portalLoginUrl, roleFromUrl, ROLE_PARAM } from "./portal-login-url";
 
@@ -81,6 +88,45 @@ const PRIMARY_ACTION_LABELS: Record<PortalAuthMode, { initial: string; sent?: st
   otp: { initial: "Send OTP", sent: "Verify and Log In" },
 };
 
+/** The modes a role offers, in the order it offers them. */
+function modesOf(role: PortalRoleTab | undefined): PortalAuthMode[] {
+  if (role?.authModeOptions?.length) return role.authModeOptions.map((o) => o.mode);
+  return role?.authModes?.length ? role.authModes : ["password"];
+}
+
+function defaultSubRoleOf(role: PortalRoleTab | undefined): string {
+  if (!role?.subRoles?.length) return "";
+  return role.subRoles.some((s) => s.id === role.defaultSubRoleId)
+    ? (role.defaultSubRoleId as string)
+    : role.subRoles[0]!.id;
+}
+
+const EMAIL_SHAPE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/** Whether the OTP identifier is complete enough to send a code to. */
+function otpIdentifierComplete(value: string, kind: PortalIdentifierKind): boolean {
+  if (kind === "mobile") return value.length === 10;
+  if (kind === "email") return EMAIL_SHAPE.test(value.trim());
+  return value.trim() !== "";
+}
+
+/**
+ * Where the code went, masked — when the portal did not say.
+ *
+ * Mobile and email can be masked from what was typed. A Project Id cannot: it
+ * does not contain the handset it is registered to, so the row names the kind
+ * of destination rather than inventing digits.
+ */
+export function maskOtpDestination(value: string, kind: PortalIdentifierKind): string {
+  if (kind === "mobile") return `+91 ${value.slice(0, 2)}••••${value.slice(-4)}`;
+  if (kind === "email") {
+    const [local = "", domain = ""] = value.trim().split("@");
+    if (local.length <= 2) return `${local.slice(0, 1)}•@${domain}`;
+    return `${local[0]}${"•".repeat(local.length - 2)}${local[local.length - 1]}@${domain}`;
+  }
+  return "your registered mobile number";
+}
+
 export interface PortalLoginTemplateProps {
   /** Declarative configuration object for the portal */
   config: PortalLoginConfig;
@@ -90,6 +136,26 @@ export interface PortalLoginTemplateProps {
   loading?: boolean;
   /** Error message to display inside the alert banner */
   error?: string | null;
+  /**
+   * Errors against individual fields, set after a submit — "That mobile number
+   * is not registered" against the identifier rather than in the banner.
+   *
+   * Each hides itself once the reader edits its field, and returns only when a
+   * NEW object is passed. So keep it in state and set it on submit; an object
+   * literal written inline would count as new on every render and never hide.
+   */
+  fieldErrors?: PortalLoginFieldErrors | null;
+  /**
+   * Called when the reader presses Send OTP or Resend, BEFORE the code step
+   * opens. Return `{ ok: false, error }` to keep them on the identifier with the
+   * error against it — an unknown email, an unregistered Project Id — or
+   * `{ ok: true, maskedDestination }` to say where the code went.
+   *
+   * May be async; the button shows its loading state while it runs. Omit it and
+   * the code step opens on any complete identifier, which is the prototype
+   * behaviour every OTP login on the estate had before this existed.
+   */
+  onRequestOtp?: (request: OtpRequest) => AuthStepResult | void | Promise<AuthStepResult | void>;
   /** Called when a footer link is clicked */
   /**
    * Force the active role, overriding both the URL and `config.defaultRoleId`.
@@ -163,6 +229,8 @@ export function PortalLoginTemplate({
   onSubmit,
   loading = false,
   error = null,
+  fieldErrors = null,
+  onRequestOtp,
   roleId,
   onRoleChange,
   deepLinkRole = true,
@@ -244,8 +312,29 @@ export function PortalLoginTemplate({
   const [activeAuthMode, setActiveAuthMode] =
     React.useState<PortalAuthMode>(initialAuthMode);
 
+  /*
+   * A role or mode the demo console asked for, applied by the role-change
+   * adjustment below. It has to travel as state: that adjustment resets the mode
+   * to the new role's default during the next render, which would otherwise
+   * overwrite a mode chosen in the same event.
+   */
+  const [pending, setPending] = React.useState<{ mode?: PortalAuthMode; subRole?: string } | null>(null);
+  const [subRoleId, setSubRoleId] = React.useState<string>(() =>
+    defaultSubRoleOf(config.roles.find((r) => r.id === activeRoleId) || config.roles[0])
+  );
+
   // Form field state
   const [username, setUsername] = React.useState("");
+  /* The OTP route's identifier when it is NOT a mobile number — an email or a
+     Project Id. Its own state for the reason `darpanId` has one: a username
+     typed on the password tab is not the address a code should go to. */
+  const [otpTarget, setOtpTarget] = React.useState("");
+  const [requestingOtp, setRequestingOtp] = React.useState(false);
+  const [otpRequestError, setOtpRequestError] = React.useState<string | null>(null);
+  const [otpDestination, setOtpDestination] = React.useState<{ masked: string; channel: "phone" | "email" }>({
+    masked: "",
+    channel: "phone",
+  });
   /* The DARPAN ID has its own state. It shared `username` until 13 Sep 2026, so a
      username typed on the credentials tab reappeared as the DARPAN ID the moment
      the reader switched — a different identifier, pre-filled with the wrong one. */
@@ -336,11 +425,13 @@ export function PortalLoginTemplate({
    * waiting for. OTP already worked this way (Send OTP waits for ten digits); the
    * other three modes now match it.
    */
+  const otpKind: PortalIdentifierKind = activeRole?.otpIdentifierKind ?? "mobile";
+  const otpValue = otpKind === "mobile" ? mobile : otpTarget;
   const credentialsComplete =
     activeAuthMode === "otp"
       ? otpSent
         ? otp.length >= 6
-        : mobile.length >= 10
+        : otpIdentifierComplete(otpValue, otpKind)
       : activeAuthMode === "darpan"
         ? darpanId.trim() !== "" && pan.trim() !== ""
         : username.trim() !== "" && password !== "";
@@ -353,16 +444,141 @@ export function PortalLoginTemplate({
    * "Use" button until this existed. The id lands in whichever identifier the
    * active mode reads — the username field, or the mobile field for OTP.
    */
+  /*
+   * The handler is registered once, so it reads the live values through a ref
+   * refreshed after every commit rather than closing over the first render's.
+   */
+  const latest = React.useRef({ config, activeRoleId, activeAuthMode });
+  const onRequestOtpRef = React.useRef(onRequestOtp);
+  const onRoleChangeRef = React.useRef(onRoleChange);
+  React.useEffect(() => {
+    latest.current = { config, activeRoleId, activeAuthMode };
+    onRequestOtpRef.current = onRequestOtp;
+    onRoleChangeRef.current = onRoleChange;
+  });
+
+  /*
+   * ONE path for sending a code, used by Send OTP, Resend and the demo console.
+   * It takes its inputs as arguments rather than reading state, because the demo
+   * console calls it in the same event that sets those values.
+   *
+   * A sequence number discards a slow answer that a newer request has already
+   * overtaken — a reader who presses Resend twice sees the second result, not
+   * whichever network reply arrived last.
+   */
+  const requestSeq = React.useRef(0);
+  const requestOtp = async (request: OtpRequest): Promise<boolean> => {
+    const seq = ++requestSeq.current;
+    setOtpRequestError(null);
+    let result: AuthStepResult | void = undefined;
+    const handler = onRequestOtpRef.current;
+    if (handler) {
+      setRequestingOtp(true);
+      try {
+        result = await handler(request);
+      } catch {
+        result = { ok: false, error: "The code could not be sent. Try again." };
+      }
+      if (seq === requestSeq.current) setRequestingOtp(false);
+    }
+    if (seq !== requestSeq.current) return false;
+    if (result && !result.ok) {
+      setOtpRequestError(result.error);
+      return false;
+    }
+    setOtpDestination({
+      masked: result?.maskedDestination ?? maskOtpDestination(request.identifier, request.identifierKind),
+      channel: result?.channel ?? (request.identifierKind === "email" ? "email" : "phone"),
+    });
+    setOtpSent(true);
+    setOtpTimer(30);
+    return true;
+  };
+
+  /** Back to step one, with nothing sent. Every switch of tab or method does this. */
+  const resetOtp = () => {
+    requestSeq.current++;
+    setRequestingOtp(false);
+    setOtpSent(false);
+    setOtp("");
+    setOtpRequestError(null);
+  };
+
+  /*
+   * DemoDock prefill. Every hand-built login on the estate listened for this
+   * event itself; a portal that adopts the template lost the demo console's
+   * "Use" button until this existed.
+   *
+   * It honours three optional keys on `extra`, so one registry row can drive any
+   * login built on the template: `tab` (a role id), `mode` (a `PortalAuthMode`
+   * that role offers) and `subRole` (an id from that role's `subRoles`). Unknown
+   * values are ignored, as a stale `?role=` is.
+   *
+   * On the OTP route it goes as far as the hand-built OTP logins did: it sends
+   * the code — through `onRequestOtp`, so an unknown demo id fails the same way a
+   * typed one would — and fills the code in, leaving Verify for the reviewer.
+   */
   React.useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<DemoFillDetail>).detail;
       if (!detail) return;
+      const { config: cfg, activeRoleId: currentRoleId, activeAuthMode: currentMode } = latest.current;
+      const extra = detail.extra ?? {};
+
+      const targetRoleId =
+        typeof extra.tab === "string" && cfg.roles.some((r) => r.id === extra.tab) ? extra.tab : currentRoleId;
+      const role = cfg.roles.find((r) => r.id === targetRoleId) || cfg.roles[0];
+      const offered = modesOf(role);
+      const mode: PortalAuthMode =
+        typeof extra.mode === "string" && offered.includes(extra.mode as PortalAuthMode)
+          ? (extra.mode as PortalAuthMode)
+          : targetRoleId === currentRoleId && offered.includes(currentMode)
+            ? currentMode
+            : role?.defaultMode || offered[0] || "password";
+      const subRole =
+        typeof extra.subRole === "string" && role?.subRoles?.some((s) => s.id === extra.subRole)
+          ? extra.subRole
+          : undefined;
+
+      resetOtp();
+      if (targetRoleId !== currentRoleId) {
+        setActiveRoleId(targetRoleId);
+        setPending({ mode, subRole });
+        onRoleChangeRef.current?.(targetRoleId);
+        if (deepLinkRole) {
+          const url = new URL(window.location.href);
+          url.searchParams.set("role", targetRoleId);
+          url.hash = "";
+          window.history.replaceState(null, "", url.toString());
+        }
+      } else {
+        setActiveAuthMode(mode);
+        if (subRole) setSubRoleId(subRole);
+      }
+
       setUsername(detail.id);
       setPassword(detail.password);
-      setMobile(detail.id.replace(/\D/g, "").slice(-10));
+      setOtpTarget(detail.id);
+      const cleanMobile = identifierControl("mobile").clean(detail.id);
+      setMobile(cleanMobile);
+
+      if (mode === "otp") {
+        const kind = role?.otpIdentifierKind ?? "mobile";
+        void requestOtp({
+          roleId: targetRoleId,
+          subRoleId: subRole ?? (targetRoleId === currentRoleId ? undefined : defaultSubRoleOf(role)),
+          identifier: kind === "mobile" ? cleanMobile : detail.id,
+          identifierKind: kind,
+          resend: false,
+        }).then((sent) => {
+          if (sent) setOtp(detail.password.replace(/\D/g, "").slice(0, 6));
+        });
+      }
     };
     window.addEventListener("demo:fill", handler);
     return () => window.removeEventListener("demo:fill", handler);
+    // Registered once; it reads live values through `latest`.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
@@ -381,12 +597,20 @@ export function PortalLoginTemplate({
   if (prevRoleForMode !== activeRoleId) {
     setPrevRoleForMode(activeRoleId);
     if (activeRole) {
-      setActiveAuthMode(activeRole.defaultMode || authOptions[0]?.mode || "password");
+      const wanted = pending?.mode;
+      setActiveAuthMode(
+        wanted && authOptions.some((o) => o.mode === wanted)
+          ? wanted
+          : activeRole.defaultMode || authOptions[0]?.mode || "password"
+      );
+      setSubRoleId(pending?.subRole ?? defaultSubRoleOf(activeRole));
+      setPending(null);
     }
   }
 
   const handleRoleChange = (nextRoleId: string, e: React.MouseEvent) => {
     e.preventDefault();
+    if (nextRoleId !== activeRoleId) resetOtp();
     setActiveRoleId(nextRoleId);
     onRoleChange?.(nextRoleId);
 
@@ -405,10 +629,41 @@ export function PortalLoginTemplate({
   };
 
   const handleSendOtp = () => {
-    if (!mobile || mobile.length < 10) return;
-    setOtpSent(true);
-    setOtpTimer(30);
+    if (!otpIdentifierComplete(otpValue, otpKind) || requestingOtp) return;
+    void requestOtp({
+      roleId: activeRoleId,
+      subRoleId: activeRole?.subRoles?.length ? subRoleId : undefined,
+      identifier: otpValue,
+      identifierKind: otpKind,
+      resend: otpSent,
+    });
   };
+
+  /** Switch credential method from the tabs, radios or select. */
+  const changeMode = (mode: PortalAuthMode) => {
+    if (mode !== activeAuthMode) resetOtp();
+    setActiveAuthMode(mode);
+  };
+
+  /*
+   * FIELD ERRORS HIDE ONCE THEIR FIELD IS EDITED. The values are snapshotted
+   * whenever a new `fieldErrors` object arrives, and an error shows only while
+   * its field still holds the value it was raised against.
+   */
+  const fieldValues = {
+    identifier: activeAuthMode === "otp" ? otpValue : activeAuthMode === "darpan" ? darpanId : username,
+    secret: activeAuthMode === "darpan" ? pan : password,
+    otp,
+    subRole: subRoleId,
+  };
+  const [errorSnapshot, setErrorSnapshot] = React.useState({ source: fieldErrors, values: fieldValues });
+  if (errorSnapshot.source !== fieldErrors) {
+    setErrorSnapshot({ source: fieldErrors, values: fieldValues });
+  }
+  const fieldError = (key: keyof typeof fieldValues): React.ReactNode =>
+    fieldErrors?.[key] != null && errorSnapshot.source === fieldErrors && errorSnapshot.values[key] === fieldValues[key]
+      ? fieldErrors[key]
+      : undefined;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -423,10 +678,17 @@ export function PortalLoginTemplate({
 
     onSubmit({
       roleId: activeRoleId,
+      subRoleId: activeRole?.subRoles?.length ? subRoleId : undefined,
       authMode: activeAuthMode,
       credentials: {
-        // The DARPAN ID still arrives as `username`: it is the identifier of that route.
-        username: activeAuthMode === "darpan" ? darpanId : username,
+        // The DARPAN ID still arrives as `username`: it is the identifier of that
+        // route. So does an OTP route's email or Project Id.
+        username:
+          activeAuthMode === "darpan"
+            ? darpanId
+            : activeAuthMode === "otp" && otpKind !== "mobile"
+              ? otpTarget
+              : username,
         // The PIN form reuses the `password` field's state, but a consumer must
         // never receive a PIN under the name `password`. Nor a PAN: the DARPAN
         // route sends no password at all, because the department's screen asks
@@ -535,6 +797,9 @@ export function PortalLoginTemplate({
             onPasswordChange={setPassword}
             identifierLabel={activeRole?.identifierLabel}
             identifierPlaceholder={activeRole?.identifierPlaceholder}
+            identifierKind={activeRole?.identifierKind}
+            identifierError={fieldError("identifier")}
+            passwordError={fieldError("secret")}
             forgotHref={config.links?.forgotPasswordHref}
             botCheck={botCheck}
           />
@@ -548,6 +813,9 @@ export function PortalLoginTemplate({
             onPinChange={setPassword}
             identifierLabel={activeRole?.identifierLabel}
             identifierPlaceholder={activeRole?.identifierPlaceholder}
+            identifierKind={activeRole?.identifierKind}
+            identifierError={fieldError("identifier")}
+            pinError={fieldError("secret")}
             forgotHref={config.links?.forgotPasswordHref}
             botCheck={botCheck}
           />
@@ -562,23 +830,33 @@ export function PortalLoginTemplate({
             onDarpanIdChange={setDarpanId}
             pan={pan}
             onPanChange={setPan}
+            darpanIdError={fieldError("identifier")}
+            panError={fieldError("secret")}
           />
         );
       case "otp":
         return otpSent ? (
           <OtpVerifyFields
-            maskedValue={`+91 ${mobile.slice(0, 2)}••••${mobile.slice(-4)}`}
-            onEdit={() => {
-              setOtpSent(false);
-              setOtp("");
-            }}
+            maskedValue={otpDestination.masked}
+            channel={otpDestination.channel}
+            onEdit={resetOtp}
             otp={otp}
             onOtpChange={setOtp}
             secondsRemaining={otpTimer}
             onResend={handleSendOtp}
+            error={fieldError("otp")}
           />
         ) : (
-          <OtpRequestFields mobile={mobile} onMobileChange={setMobile} />
+          <OtpRequestFields
+            kind={otpKind}
+            mobile={otpValue}
+            onMobileChange={otpKind === "mobile" ? setMobile : setOtpTarget}
+            label={activeRole?.otpIdentifierLabel}
+            placeholder={activeRole?.otpIdentifierPlaceholder}
+            /* The request's own refusal wins over a submit-time error: it is
+               the more recent answer about this exact value. */
+            error={otpRequestError ?? fieldError("identifier")}
+          />
         );
     }
   })();
@@ -598,7 +876,7 @@ export function PortalLoginTemplate({
           <Tabs
             tabs={authOptions.map((o) => ({ id: o.mode, label: o.label }))}
             active={Math.max(0, authOptions.findIndex((o) => o.mode === activeAuthMode))}
-            onChange={(i) => setActiveAuthMode(authOptions[i]!.mode)}
+            onChange={(i) => changeMode(authOptions[i]!.mode)}
             idBase={`${templateId}-method`}
             ariaLabel="How you want to sign in"
             /* The OPEN list with an underline, which is what the handoff draws
@@ -631,7 +909,7 @@ export function PortalLoginTemplate({
             name={`${templateId}-method`}
             legend="How you want to sign in"
             value={activeAuthMode}
-            onChange={(v: string) => setActiveAuthMode(v as PortalAuthMode)}
+            onChange={(v: string) => changeMode(v as PortalAuthMode)}
             options={authOptions.map((o) => ({
               value: o.mode,
               label: o.label,
@@ -646,7 +924,7 @@ export function PortalLoginTemplate({
               <Select
                 {...control}
                 value={activeAuthMode}
-                onChange={(e) => setActiveAuthMode(e.target.value as PortalAuthMode)}
+                onChange={(e) => changeMode(e.target.value as PortalAuthMode)}
               >
                 {authOptions.map((o) => (
                   <option key={o.mode} value={o.mode}>
@@ -660,19 +938,34 @@ export function PortalLoginTemplate({
       </div>
     ) : null;
 
+  /*
+   * "Your role" — a choice within the tab (`PortalRoleTab.subRoles`). Above the
+   * credential fields and outside the method tab panel, because the handoff
+   * draws it there (`9453:255070`) and because it does not change with the
+   * method: a SAGE Organisation is one whether it signs in by password or code.
+   */
+  const subRoleSelect = activeRole?.subRoles?.length ? (
+    <FormField label={activeRole.subRoleLabel ?? "Your role"} error={fieldError("subRole")} required>
+      {(control) => (
+        <Select
+          {...control}
+          value={subRoleId}
+          onChange={(e) => setSubRoleId(e.target.value)}
+          options={activeRole.subRoles!.map((s) => ({ value: s.id, label: s.label }))}
+        />
+      )}
+    </FormField>
+  ) : null;
+
+  const registerOptions = config.links?.registerOptions?.length
+    ? config.links.registerOptions
+    : config.links?.registerHref
+      ? [{ label: "Create Account", href: config.links.registerHref }]
+      : [];
+
   return (
     <PortalLoginShell
-      emblemSrc={config.brandAssets?.emblemSrc || "/brand/national-emblem.svg"}
-      digitalIndiaSrc={config.brandAssets?.digitalIndiaSrc || "/brand/digital-india.svg"}
-      samaveshLogoSrc={config.brandAssets?.samaveshLogoSrc || "/brand/samavesh-logo.svg"}
-      /* No `||` fallback, unlike the three marks above: an absent photograph is
-         a real state the hero draws (the solid brand column), not a missing
-         asset to substitute for. */
-      heroImageSrc={config.brandAssets?.heroImageSrc}
-      signingInto={config.portalName}
-      portalTagline={config.portalTagline}
-      portalDescription={config.portalDescription}
-      changeHref={config.changeHref || "/"}
+      {...loginShellChrome(config)}
       onChangePortal={portalPicker ? () => setPickerOpen(true) : undefined}
       portalPickerOpen={pickerOpen}
       tabs={tabs}
@@ -711,6 +1004,7 @@ export function PortalLoginTemplate({
            and get no panel. */
         credentialFields={
           <>
+            {subRoleSelect}
             <ModeFields
               asPanel={authOptions.length > 1 && selectorType === "segmented"}
               idBase={`${templateId}-method`}
@@ -726,7 +1020,7 @@ export function PortalLoginTemplate({
         primaryAction={
           <Button
             type="submit"
-            loading={loading}
+            loading={loading || requestingOtp}
             disabled={!canSubmit}
             fullWidth
           >
@@ -745,13 +1039,7 @@ export function PortalLoginTemplate({
         }
         /* Registration: the question, then an outlined Create Account button —
            `Auth / AccountPrompt` Type=Single in the library. */
-        accountPrompt={
-          config.links?.registerHref ? (
-            <AccountPrompt
-              options={[{ label: "Create Account", href: config.links.registerHref }]}
-            />
-          ) : null
-        }
+        accountPrompt={registerOptions.length ? <AccountPrompt options={registerOptions} /> : null}
         footer={
           config.links?.helpFaqHref ? (
             <p className="ds-plogin__help">
