@@ -32,9 +32,17 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.136.0",
+    date: "2026-09-15",
+    current: true,
+    changes: [
+      { kind: "Changed", text: "EVERY BUTTON LABEL IS `label-1`, 14/20 MEDIUM, AT EVERY SIZE. Default and Large set body-1\u2019s 16px at medium, a pairing no text style in the library holds; matching it in Figma had added a `Body/body-1-medium` style that only Button used. The ramp already names label-1 as button text, and Small buttons already used it. Heights stay 32 / 40 / 48 \u2014 the size step is the height and the padding \u2014 and Default and Large labels are 2px smaller" },
+      { kind: "Removed", text: "FIGMA `Body/body-1-medium`. All 240 Button master labels take `Label/label-1`; a full-file scan found no other layer or override on the style before it was deleted, so no instance was left unlinked" },
+    ],
+  },
+  {
     version: "v0.135.0",
     date: "2026-09-14",
-    current: true,
     changes: [
       { kind: "Changed", text: "EIGHT COMPONENTS RENDER THE LIBRARY PART THEIR FIGMA MASTER INSTANCES, instead of drawing their own. `FeedbackWidget`\u2019s Yes / No and Send, `BulkActionsBar`\u2019s actions and Clear selection, and `ChartCard`\u2019s retry are `Button`; `TimePicker`\u2019s trigger is an outlined `IconButton` with the clock glyph where a \u25ef character stood; `DateRangePicker`\u2019s quick periods and `Chatbot`\u2019s quick replies are `Chip`; `MetricCard`\u2019s change pill and status, and `VideoTile`\u2019s state, are `Badge`. About 300 lines of CSS that restated those parts are gone, and hover, press, focus and disabled now come from the part itself" },
       { kind: "Changed", text: "WHAT A READER WILL NOTICE. Controls take the library sizes \u2014 small buttons 32px where the bar drew 28, presets 32px where they drew 28, Send and the verdicts at the Button\u2019s own type. A chosen verdict is the outlined Button\u2019s pressed treatment, a filled neutral. A warning bulk action is neutral: Button has no warning variant, and the label carries the consequence. The metric status reads as typed rather than in capitals, and the video state badge is a tinted pill without its border. The chatbot\u2019s replies are outlined chips rather than pale brand tiles" },

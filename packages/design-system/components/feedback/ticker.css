@@ -762,12 +762,14 @@
    * THE DESKTOP BAR'S ROUTE IS THE LIBRARY'S `Button` — Primary · Outlined ·
    * Inverse at its Default size: 40px, 24px in.
    *
-   * The consumer passes `buttonClasses(…, "sm")` — 32px, 16px in, label-1 — and
-   * neither code size is Figma's Default. `md` has the height but sets body-1,
-   * 16/24, where Figma's Default label is `Label/label-1`, 14/20. So
-   * the strip sizes its own slot and leaves the type the `sm` button already
-   * carries, which IS label-1. Only from 1024px, where the route is a button at
-   * all; below it the header rule further down strips it to a link.
+   * The consumer passes `buttonClasses(…, "sm")` — 32px, 16px in, label-1 — so
+   * the strip sizes its own slot to Figma's Default and keeps the label-1 the `sm`
+   * button already carries. Only from 1024px, where the route is a button at all;
+   * below it the header rule further down strips it to a link.
+   *
+   * Since 15 Sep 2026 `md` also sets label-1 (it set body-1, 16/24, which is why
+   * this slot sized itself), so consumers passing "md" here would make this block
+   * redundant. Left in place until they do.
    *
    * Its border stays the Button's inverse edge. Figma's inverse edge is a
    * lighter blue, but the Button's only public hook, `--sa-btn-edge`, is the ink AND the edge,
