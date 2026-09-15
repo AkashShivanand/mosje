@@ -32,9 +32,17 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.137.0",
+    date: "2026-09-15",
+    current: true,
+    changes: [
+      { kind: "Changed", text: "EVERY BUTTON LABEL IS `label-1`, 14/20 MEDIUM, AT EVERY SIZE. Default and Large set body-1\u2019s 16px at medium, a pairing no text style in the library holds; matching it in Figma had added a `Body/body-1-medium` style that only Button used. The ramp already names label-1 as button text, and Small buttons already used it. Heights stay 32 / 40 / 48 \u2014 the size step is the height and the padding \u2014 and Default and Large labels are 2px smaller" },
+      { kind: "Removed", text: "FIGMA `Body/body-1-medium`. All 240 Button master labels take `Label/label-1`; a full-file scan found no other layer or override on the style before it was deleted, so no instance was left unlinked" },
+    ],
+  },
+  {
     version: "v0.136.0",
     date: "2026-09-14",
-    current: true,
     changes: [
       { kind: "Added", text: "`bg/neutral/subtlest` \u2014 THE PAGE CANVAS, ONE STEP LIGHTER THAN `subtler`. A new `25` rung on every neutral ramp (Blue `#f6f7f8`, Navy `#f6f7f9`, DBIM `#fafafa`; no existing rung moves) and the fill ladder gains `subtlest` between `base` and `subtler`. `AppShell`, the root `<body>` and 19 full-page grounds take it through a new `surface-canvas` utility, which falls back to a portal's own `surface-muted` so no portal palette moves. The canvas was `subtler`: across three-fifths of a portal screen it read as dull grey, and hover, read-only and loading fills were the same colour as the page (1.00:1). Pushed to the SAMAVESH library and read back" },
       { kind: "Changed", text: "`bg/neutral/selected` IS THE BRAND'S RUNG-100 TINT AT 64%, AND THE SIDEBAR'S CURRENT PAGE BINDS IT. At 64% it sits 3.3 L* (Blue) and 4.4 L* (Navy) below the hover fill, so the state is carried by lightness as well as hue; every ink on it stays AA. It was `primaryScale/50`, which under Navy is `#f7faff` \u2014 lighter than the hover fill and 1.05:1 on white, so the current page read as a raised white chip. The current page now also sets its label semibold, so the state survives without colour (WCAG 1.4.1); the ancestor route keeps the lighter tint" },
