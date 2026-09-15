@@ -10,7 +10,7 @@ export default function PdSanctionedPage() {
     <ApplicationList
       variant="sanctioned"
       title="Sanctioned Applications"
-      description="Sanction Register — every application with a sanction order."
+      description="Every application with a sanction order."
       rows={sanctionedApps(state)}
       exportable
     />

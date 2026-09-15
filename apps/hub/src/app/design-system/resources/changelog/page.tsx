@@ -32,7 +32,7 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.137.0",
+    version: "v0.138.0",
     date: "2026-09-15",
     current: true,
     changes: [
@@ -41,6 +41,19 @@ const RELEASES: Release[] = [
       { kind: "Fixed", text: "THE FIGMA `Site Footer` MASTER MATCHES THE CODE AT 1440, 768 AND 375, measured landmark by landmark. The 1440 variants resolve to the Desktop XL mode (content 1272 at x 84, as `Navbar/Website` draws), portal variants are fluid, policy links are Body 2, the social chips sit 4px apart, credit marks are 64x28, the link grid splits on the code\u2019s 12-column gutters, the Mobile policy rows wrap instead of running off the frame, and the five social glyphs are rebuilt from `brand-glyph.tsx`\u2019s own paths at its 20-unit optical size" },
       { kind: "Added", text: "A Code Connect template for `SiteFooter` (`site-footer.figma.ts`), with its Figma property fixture, so Dev Mode serves the real API for the Site Footer master" },
       { kind: "Changed", text: "FOOTER DOCUMENTATION DESCRIBES THE COMPONENT THAT SHIPS. The Site Footer page, `design.md` and Storybook no longer document a support strip, an outlined CTA or dead CSS that no longer exist; the Figma documentation lists all five required properties and places Feedback in the policy row; the Component record carries only what is still open" },
+    ],
+  },
+  {
+    version: "v0.137.0",
+    date: "2026-09-15",
+    changes: [
+      { kind: "Changed", text: "EVERY FORM NOW TAKES ONE GRAMMAR: ONE PANEL PER STEP, AND THE SUB-SECTIONS INSIDE IT ARE NOT CARDS. Read from the portal handoff, where the same language repeats across the Transgender Portal, NOS, NMBA, Garima Greh, SCW and SAMBAL, and written down in `docs/design-system/form-wizard-visual-language.md`. E-Anudaan\u2019s application form had grown its own \u2014 a boxed stepper, a card per section, the actions below the last card, help text under nearly every field \u2014 because it was checked against its own legacy frames and no pass took the other portals\u2019 wizards as the reference. `Wizard` now draws the stepper on the page ground with no box, then one `FormPanel` for the current step: a head band with the step\u2019s title and one line of description, the step\u2019s sub-sections 32 apart, and an action band. Its new `title`, `description` and `headerActions` fill the head band, which otherwise takes the stage\u2019s label and description", migration: "Drop any `Card` or padded box wrapped around a Wizard\u2019s children, and any card around a `FormSection` or `FormCard` \u2014 the panel is the card. See the Wizard, Form Section and Form Card pages." },
+      { kind: "Changed", text: "`FormSection`, `FormCard` AND `ReviewSection` SHARE ONE HEAD AND DRAW NO CARD. The head is an uppercase label in Label 1, medium, in `text/neutral/subtle`, followed by a hairline rule that fills the rest of the row; an optional `badge` sits between the two and `actions` at the end. The heading is an `h3` by default, under the panel\u2019s `h2`, and `as` moves it. `FormSection` takes up to four columns and defaults to three, which is what the handoff draws for most steps. `FormCard` keeps its name for compatibility. `ReviewSection` takes `columns`, `actions` (the Edit button), `badge` and `as`" },
+      { kind: "Added", text: "`FormPanel` \u2014 the one card a form or a wizard step lives in: a tinted head band, the body and a tinted action band. `title` is optional, and without it the head band is not drawn, for a single-screen form whose page header already names it. Both bands take `bg/neutral/subtler`: the handoff tints them two shades apart and SAMAVESH\u2019s neutral ramp has no rung between white and that token, so the difference is recorded in the spec rather than approximated with a literal" },
+      { kind: "Added", text: "`FormInset` \u2014 one entry of a repeatable group, drawn as a tinted inset (`bg/neutral/subtler`, `shape/12`, `padding/16`) holding a two-column grid, as NOS\u2019s employment step draws it. The parent owns the list and renders Add More under the last entry. Short uniform rows stay a bordered `DataTable`" },
+      { kind: "Added", text: "`DocumentTile` AND `DocumentTiles` \u2014 one document on an upload or review step, in four states: upcoming, uploaded, verified and needs correction, two to a row from 768px. An upload is Uploaded and never Verified: only an officer or DigiLocker verifies a document, and a green tile set on arrival tells an applicant something nobody has checked" },
+      { kind: "Changed", text: "`Wizard` TAKES `onCancel` AND `cancelLabel`. The first step shows an outlined Cancel where later steps show Back, so the leading control goes somewhere instead of sitting disabled. `WizardScreen` passes its `onCancel` through, and the separate text Cancel button it drew is gone. `FormScreen` renders its sections and action bar inside one untitled `FormPanel`, with Cancel outlined; `screen-templates.css` loses `.sa-wizard`, `.sa-wizard__stepper` and `.sa-form__sections`, which the panel replaces" },
+      { kind: "Changed", text: "FIELD LABELS STEP UP TO LABEL 1 (14px) AND INPUT TEXT TO BODY 2 AT THE DEFAULT SIZE, in `forms.css`, `date-picker.css` and the `ControlGroup` legend, matching the handoff\u2019s fields. The `RadioGroup` legend\u2019s required asterisk no longer carries a leading space. `PageHeader` takes `size=\"compact\"`, a step down the headline ramp, for a wizard page where the stepper and the step panel lead" },
     ],
   },
   {

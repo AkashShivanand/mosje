@@ -6,7 +6,7 @@
  * 2026-09-07 and they differ by a whole step and by all but one document:
  *
  *   new project   10 steps · 12 documents
- *   renewal       11 steps ·  8 documents · + CCTV / EAT / PFMS Compliance at step 8
+ *   renewal       11 steps ·  8 documents · + Previous Instalment at step 8 (live: "CCTV / EAT / PFMS Compliance")
  *
  * These figures are the live portal's, not a preference. If one changes, the capture is the
  * thing to re-read.
@@ -30,11 +30,25 @@ test("a renewal gets eleven steps and eight documents", () => {
   assert.equal(visibleDocuments(NAPDDR_WIZARD, REN).length, 8);
 });
 
-test("the extra renewal step is CCTV / EAT / PFMS Compliance, at position 8", () => {
-  // A first-time applicant has no previous installment to account for and no sanctioned
-  // project to have installed cameras at, so the step is meaningless to them.
-  assert.equal(titles(REN)[7], "CCTV / EAT / PFMS Compliance");
-  assert.ok(!titles(NEW).includes("CCTV / EAT / PFMS Compliance"));
+test("the extra renewal step is Previous Instalment, at position 8", () => {
+  // Live calls it "CCTV / EAT / PFMS Compliance". The review call of 11 Sep 2026 took the CCTV
+  // question off the form and moved the PFMS code to the bank account, leaving the step about
+  // one thing — the previous instalment — so it is named for that. A first-time applicant has
+  // no previous instalment, so the step is meaningless to them.
+  assert.equal(titles(REN)[7], "Previous Instalment");
+  assert.ok(!titles(NEW).includes("Previous Instalment"));
+});
+
+test("no step asks about CCTV, and the renewal's bank account cannot be changed in the form", () => {
+  const fields = (v: Record<string, string>) =>
+    visibleSteps(NAPDDR_WIZARD, v).flatMap((s) => s.sections.flatMap((sec) => sec.fields));
+  for (const v of [NEW, REN]) {
+    assert.ok(!fields(v).some((f) => /cctv/i.test(f.name)), "CCTV is its own module, not a self-declaration");
+  }
+  const bank = fields(REN).find((f) => f.name === "fld_bank_account_choice")!;
+  assert.deepEqual(bank.readOnlyWhen?.equals, [REN.case_type]);
+  const instalment = fields(REN).find((f) => f.name === "fld_installment_no")!;
+  assert.equal(instalment.readOnly, true, "the instalment is stated, not chosen");
 });
 
 test("both branches keep Upload Documents and Review & Submit last, in that order", () => {
@@ -115,7 +129,8 @@ test("the renewal lists eight documents but only six are mandatory", () => {
   // mandatory would hold the forward control shut on two documents live never demands.
   const docs = visibleDocuments(NAPDDR_WIZARD, REN);
   assert.equal(docs.length, 8);
-  assert.equal(uploadProgress(docs, {}).total, 6);
+  assert.equal(uploadProgress(docs, {}).total, 8);
+  assert.equal(uploadProgress(docs, {}).mandatoryTotal, 6);
   const optional = docs.filter((d) => d.optional).map((d) => d.title);
   assert.deepEqual(optional.sort(), ["Provisional / unaudited audit report", "Staff Monitoring Sheet"]);
 });
@@ -123,5 +138,6 @@ test("the renewal lists eight documents but only six are mandatory", () => {
 test("every one of the new branch's twelve documents is mandatory", () => {
   // Live reads "12 / 12 uploaded" with no OPTIONAL marker anywhere on the step.
   const docs = visibleDocuments(NAPDDR_WIZARD, NEW);
-  assert.equal(uploadProgress(docs, {}).total, 12);
+  assert.equal(uploadProgress(docs, {}).mandatoryTotal, 12);
+  assert.equal(uploadProgress(docs, {}).optionalTotal, 0);
 });

@@ -92,15 +92,12 @@ export default function MassPledgePage() {
 
       {/* ── Reporting form: on the day of the event only ─────────────────── */}
       {showForm && (
-        <section className="mb-10">
-          <div className="mb-4 border-l-2 border-navy pl-4">
-            <h2 className="text-headline-3 text-ink">Report your participation</h2>
-            <p className="mt-0.5 text-body-2 text-ink-muted">
-              The form is open today only. One report per organisation.
-            </p>
-          </div>
-          <SubmissionForm />
-        </section>
+        <div className="mb-10">
+          <SubmissionForm
+            title="Report your participation"
+            description="The form is open today only. One report per organisation."
+          />
+        </div>
       )}
 
       {isOpen && existing && (

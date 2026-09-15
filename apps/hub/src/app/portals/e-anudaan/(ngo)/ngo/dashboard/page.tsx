@@ -1,21 +1,68 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
-import { Alert, Badge, Button, DonutChart, Icon, MetricCard, buttonClasses } from "@mosje/design-system";
+import { useRouter } from "next/navigation";
+import {
+  Alert,
+  Badge,
+  Button,
+  Card,
+  CardBody,
+  DescriptionList,
+  DonutChart,
+  Icon,
+  Link,
+  ListGroup,
+  ListRow,
+  MetricCard,
+  PageHeader,
+  Progress,
+  SectionTitle,
+} from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { formatDate, formatGrant, ngoApplications, ngoStatusLabel, statusTone } from "@/lib/e-anudaan/selectors";
+import type { AppStatus } from "@/lib/e-anudaan/types";
+import { openDeficiencies } from "@/lib/e-anudaan/applicant";
 import { ngoActionApplications, notificationItems } from "@/lib/e-anudaan/notifications";
 import { usePreviousVisit } from "@/lib/e-anudaan/last-visit";
-import type { AppStatus } from "@/lib/e-anudaan/types";
+import { PendingActions } from "@/components/e-anudaan/pending-actions";
+import { routeLinksWithin, routeOnClick } from "@/components/e-anudaan/ngo-shell";
+
+/**
+ * One colour per status, used by BOTH the donut and its legend. The donut picked categorical
+ * colours (In Review red, Action Required green) while the legend asked for classes that do not
+ * exist, so the chart said one thing and its key said nothing (screen audit, 14 Sep 2026).
+ */
+const STATUS_TONE: Record<string, string> = {
+  Sanctioned: "var(--sa-bg-status-success-bolder)",
+  "Action Required": "var(--sa-bg-status-warning-bolder)",
+  "In Review": "var(--sa-bg-status-info-bolder)",
+  Submitted: "var(--sa-bg-status-info-bold)",
+  Draft: "var(--sa-icon-neutral-subtler)",
+  "Query / Returned": "var(--sa-bg-status-warning-bold)",
+  "Closed / Rejected": "var(--sa-bg-status-error-bolder)",
+};
 
 /** Display names for the four schemes the NGO portal offers. */
 const SCHEME_TITLES: Record<string, { title: string; subtitle: string }> = {
-  SHRESHTA_M2: { title: "SHRESHTA Mode 2", subtitle: "Grant-in-aid for SC Residential Schools" },
+  SHRESHTA_M2: { title: "SHRESHTA Mode 2", subtitle: "Grant-in-Aid for SC Residential Schools" },
   AVYAY: { title: "AVYAY (Atal Vayo Abhyuday Yojana)", subtitle: "Integrated Programme for Senior Citizens" },
   NAPDDR: { title: "NAPDDR", subtitle: "Drug Demand Reduction & Social Re-integration" },
   SMILE: { title: "SMILE (Garima Greh)", subtitle: "Shelter Homes for Transgender Persons" },
 };
+
+const CRORE = 1_00_00_000;
+const LAKH = 1_00_000;
+const crore = (n: number) => `₹${(n / CRORE).toFixed(2)} Cr`;
+
+/** A figure inside a summary list — large enough to read as the answer, without a box around it. */
+function Amount({ children, tone }: { children: React.ReactNode; tone?: "success" }) {
+  return (
+    <span className={`text-headline-4 font-semibold tabular-nums ${tone === "success" ? "text-[var(--sa-text-status-success-base)]" : "text-ink"}`}>
+      {children}
+    </span>
+  );
+}
 
 /** "Application moved forward (3), Application sanctioned (1)" — one phrase per kind, never a list of repeats. */
 function summariseUpdates(actions: string[]): string {
@@ -24,32 +71,52 @@ function summariseUpdates(actions: string[]): string {
   return [...counts.entries()].map(([a, n]) => `${a} (${n})`).join(", ");
 }
 
-function getTimeGreeting(): string {
-  const hour = new Date().getHours();
-  if (hour < 12) return "Good morning";
-  if (hour < 17) return "Good afternoon";
-  return "Good evening";
-}
-
+/**
+ * NGO Dashboard — one consolidated page for an organisation that runs several projects.
+ *
+ * Design review of 15 Sep 2026, against the call of 11 Sep (T38–93):
+ *  • Pending Actions stays first: it is the only part of the page that asks the applicant to act.
+ *  • "Very boxy" (T93) — tiles inside cards inside cards. The Financial Summary and the scheme
+ *    list are now lists inside ONE card each; only the KPI row is tiles.
+ *  • Every money figure counts SUBMITTED applications. A draft has asked the Ministry for
+ *    nothing, and counting 13 of them put ₹ they never requested into "Total Requested" and
+ *    halved the sanction ratio.
+ *  • The summary was badged "FY 2026-27" while summing every year. It says what it sums now.
+ *  • Recent Applications are the most recently UPDATED, newest first — the list was the first
+ *    five in store order, under a heading that said "recent".
+ */
 export default function NgoDashboardPage() {
   const { state } = useEAnudaan();
+  const router = useRouter();
   const ngo = state.ngos[0];
   // Memoised so the aggregations below keep a stable dependency across renders.
   const apps = React.useMemo(() => (ngo ? ngoApplications(state, ngo.id) : []), [state, ngo]);
 
+  // No greeting. The account is an organisation, and "Good evening, Sankalp Seva Sansthan"
+  // greets a registered society as if it were a person — the page is titled by what it is,
+  // and the organisation is named beside its DARPAN record (decided 14 Sep 2026).
   const ngoName = ngo?.name ?? "Sankalp Seva Sansthan";
-  const ngoFirstName = ngoName.split(" ")[0] ?? "Sankalp";
 
   // Everything below is DERIVED, never hardcoded. Submitting an application on the live portal
   // moves the KPI row, the donut and the money at once (verified 2026-08-22: 71 → 72 total,
   // Submitted 4 → 5), so the clone recomputes from the store rather than printing fixed figures.
   const totalAppsCount = apps.length;
-  const inReviewCount = apps.filter((a) => a.holder.kind === "chain" || a.holder.kind === "pd").length;
+
+  /* ONE set per question, and every figure that answers it reads that set — the count on the
+     tile and the amount in the summary cannot describe two different groups of files. */
+  const submitted = apps.filter((a) => a.status !== "Draft");
+  const draftCount = totalAppsCount - submitted.length;
+  // Counted with the same label the breakdown below uses, so the card and the breakdown agree
+  // (the panel of 13 Sep 2026 found "In Review 23" beside a breakdown reading 19).
+  const withMinistry = apps.filter((a) => {
+    const l = ngoStatusLabel(a);
+    return l === "In Review" || l === "Submitted";
+  });
+  const sanctioned = apps.filter((a) => a.sanction);
   // The bell's "Action Needed" reads the same selector, so this card and the bell cannot disagree.
-  const actionApps = React.useMemo(() => ngoActionApplications(state), [state]);
-  const needsActionCount = actionApps.length;
+  const needsActionCount = React.useMemo(() => ngoActionApplications(state), [state]).length;
   // Since Your Last Visit — updates newer than the previous sign-in. Action items are not
-  // repeated here: the banner below already carries them.
+  // repeated here: Pending Actions already carries them.
   const previousVisit = usePreviousVisit("ngo");
   const updatesSinceVisit = React.useMemo(
     () =>
@@ -58,11 +125,11 @@ export default function NgoDashboardPage() {
         : [],
     [state, previousVisit],
   );
-  const sanctionedCount = apps.filter((a) => a.sanction).length;
 
   const donutChartData = React.useMemo(() => {
     const buckets = new Map<string, number>([
       ["Sanctioned", 0],
+      ["Action Required", 0],
       ["In Review", 0],
       ["Draft", 0],
       ["Submitted", 0],
@@ -73,7 +140,7 @@ export default function NgoDashboardPage() {
       const label = ngoStatusLabel(a) === "Approved" ? "Sanctioned" : ngoStatusLabel(a);
       buckets.set(label, (buckets.get(label) ?? 0) + 1);
     }
-    return [...buckets.entries()].filter(([, v]) => v > 0).map(([label, value]) => ({ label, value }));
+    return [...buckets.entries()].filter(([, v]) => v > 0).map(([label, value]) => ({ label, value, color: STATUS_TONE[label] }));
   }, [apps]);
 
   /** Applications submitted in the current calendar month — the KPI row's delta. */
@@ -86,34 +153,24 @@ export default function NgoDashboardPage() {
     }).length;
   }, [apps]);
 
-  const decidedCount = apps.filter((a) => a.sanction || a.status === "Rejected").length;
-  const approvalRate = decidedCount ? Math.round((sanctionedCount / decidedCount) * 1000) / 10 : 0;
-  const topBucket = [...donutChartData].sort((a, b) => b.value - a.value)[0];
+  /** Every correction the Ministry is waiting on — drives the Pending Actions panel. */
+  const pending = React.useMemo(() => (ngo ? openDeficiencies(state, ngo.id) : []), [state, ngo]);
+  const pendingItems = pending.reduce((n, d) => n + d.items.length - d.corrected, 0);
 
-  /** The oldest deficiency still awaiting the applicant — drives the action banner. */
-  const openDeficiency = actionApps[0];
-
-  const CRORE = 1_00_00_000;
-  const LAKH = 1_00_000;
-  const totalRequested = apps.reduce((a, x) => a + x.total, 0);
-  const totalSanctioned = apps.reduce((a, x) => a + (x.sanction?.total ?? 0), 0);
-  const inReviewAmount = apps
-    .filter((a) => a.holder.kind === "chain" || a.holder.kind === "pd")
-    .reduce((a, x) => a + x.total, 0);
-
-  const totalRequestedCr = (totalRequested / CRORE).toFixed(2);
-  const totalSanctionedCr = (totalSanctioned / CRORE).toFixed(2);
-  const inReviewAmountCr = (inReviewAmount / CRORE).toFixed(2);
-  const avgSanctionLakhs = sanctionedCount ? (totalSanctioned / sanctionedCount / LAKH).toFixed(2) : "0.00";
+  const totalRequested = submitted.reduce((a, x) => a + x.total, 0);
+  const totalSanctioned = sanctioned.reduce((a, x) => a + (x.sanction?.total ?? 0), 0);
+  const withMinistryAmount = withMinistry.reduce((a, x) => a + x.total, 0);
+  const avgSanctionLakhs = sanctioned.length ? (totalSanctioned / sanctioned.length / LAKH).toFixed(2) : "0.00";
   const sanctionedPercent = totalRequested ? Math.round((totalSanctioned / totalRequested) * 100) : 0;
 
-  // One card per scheme the applicant has actually applied under, in descending volume.
+  // One row per scheme the applicant has actually applied under, in descending volume.
   const activeSchemes = React.useMemo(() => {
     const byScheme = new Map<string, { count: number; requested: number; sanctioned: number }>();
     for (const a of apps) {
       const cur = byScheme.get(a.schemeCode) ?? { count: 0, requested: 0, sanctioned: 0 };
       cur.count += 1;
-      cur.requested += a.total;
+      // Drafts count as applications under the scheme, but not as money requested from it.
+      if (a.status !== "Draft") cur.requested += a.total;
       cur.sanctioned += a.sanction?.total ?? 0;
       byScheme.set(a.schemeCode, cur);
     }
@@ -124,8 +181,8 @@ export default function NgoDashboardPage() {
         title: SCHEME_TITLES[code]?.title ?? code,
         subtitle: SCHEME_TITLES[code]?.subtitle ?? "",
         count: v.count,
-        requestedCr: (v.requested / CRORE).toFixed(2),
-        sanctionedCr: (v.sanctioned / CRORE).toFixed(2),
+        requested: v.requested,
+        sanctioned: v.sanctioned,
         percent: v.requested ? Math.round((v.sanctioned / v.requested) * 100) : 0,
       }));
   }, [apps]);
@@ -134,47 +191,42 @@ export default function NgoDashboardPage() {
     .filter(([code]) => !activeSchemes.some((s) => s.code === code))
     .map(([code, v]) => ({ code, title: v.title, subtitle: v.subtitle }));
 
+  const recent = React.useMemo(
+    () => [...apps].sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt)).slice(0, 5),
+    [apps],
+  );
+
   return (
     <div className="space-y-6 pb-8">
-      {/* ── 1. DASHBOARD HEADER & CONTEXT COMMAND BAR ────────────────────── */}
-      <header className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-line bg-surface p-6 shadow-xs">
-        <div className="space-y-1.5">
-          <div className="flex flex-wrap items-center gap-2.5">
-            <h1 className="text-headline-1 text-ink">
-              {getTimeGreeting()}, {ngoFirstName}
-            </h1>
+      <PageHeader
+        title="Dashboard"
+        meta={
+          <span className="flex flex-wrap items-center gap-x-3 gap-y-1 text-body-3 text-ink-muted">
+            <span className="text-body-2 font-semibold text-ink">{ngoName}</span>
             <Badge status="success">DARPAN Verified</Badge>
-          </div>
-          <p className="flex flex-wrap items-center gap-3 text-body-3 text-ink-muted">
+            <span className="text-line" aria-hidden>•</span>
             <span className="flex items-center gap-1 font-mono font-semibold text-ink">
               <Icon name="verified_user" size={16} className="text-primary shrink-0" aria-hidden />
               DARPAN ID: {ngo?.darpanId ?? "MH/2016/100000"}
             </span>
-            <span className="text-line">•</span>
-            <span className="flex items-center gap-1">
-              <Icon name="schedule" size={16} className="text-ink-muted shrink-0" aria-hidden />
-              Last updated{" "}
-              {formatDate(new Date())} at{" "}
-              {new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: true }).toLowerCase()}
-            </span>
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Link href="/portals/e-anudaan/ngo/my-applications">
-            <Button appearance="outlined" size="md">
+          </span>
+        }
+        actions={
+          <>
+            <Button appearance="outlined" size="md" onClick={() => router.push("/portals/e-anudaan/ngo/my-applications")}>
               <Icon name="folder_open" size={16} aria-hidden /> My Applications
             </Button>
-          </Link>
-          <Link href="/portals/e-anudaan/apply-grant">
-            <Button appearance="filled" size="md">
-              <Icon name="add" size={16} aria-hidden /> New Application
+            <Button appearance="filled" size="md" onClick={() => router.push("/portals/e-anudaan/apply-grant")}>
+              <Icon name="add" size={16} aria-hidden /> Apply for Grant
             </Button>
-          </Link>
-        </div>
-      </header>
+          </>
+        }
+      />
 
-      {/* ── 1a. SINCE YOUR LAST VISIT ──────────────────────────────────────── */}
+      {/* Directly under the header, because it is the only part of this page that asks the
+          applicant to do something. Several applications, several items each (T43–54). */}
+      <PendingActions items={pending} />
+
       {/* An applicant signs in a few times a year and was not here when these arrived; the bell
           only reaches a reader already on the page. Shown only when something did change. */}
       {previousVisit && updatesSinceVisit.length > 0 && (
@@ -182,7 +234,7 @@ export default function NgoDashboardPage() {
           status="info"
           title={`Since Your Last Visit on ${formatDate(previousVisit)}`}
           action={
-            <Link href="/portals/e-anudaan/ngo/notifications" className={buttonClasses("primary", "outlined", "sm")}>
+            <Link href="/portals/e-anudaan/ngo/notifications" onClick={routeOnClick(router, "/portals/e-anudaan/ngo/notifications")}>
               View Notifications
             </Link>
           }
@@ -194,84 +246,50 @@ export default function NgoDashboardPage() {
         </Alert>
       )}
 
-      {/* ── 2. EXECUTIVE ACTION NOTICE BANNER ────────────────────────────── */}
-      {/* Shown only when something is actually waiting on the applicant, and it names the real
-          application — the banner is a live signal, not decoration. */}
-      {openDeficiency && (
-        <Alert
-          status="warning"
-          title={`${needsActionCount} Action Item${needsActionCount === 1 ? "" : "s"} Pending Review`}
-        >
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-0.5">
-            <p className="text-body-2 text-ink">
-              Deficiency response requested for application{" "}
-              <strong className="font-mono text-ink">{openDeficiency.id}</strong>.{" "}
-              {openDeficiency.deficiencies[0]?.detail ??
-                "Please respond from the Deficiencies screen."}
-            </p>
-            <Link href="/portals/e-anudaan/ngo/my-applications/deficiencies">
-              <Button appearance="filled" size="sm">
-                Respond Now <Icon name="arrow_forward" size={16} aria-hidden />
-              </Button>
-            </Link>
-          </div>
-        </Alert>
-      )}
-
-      {/* ── 3. KPI METRIC CARDS ROW (100% UNIFIED SAMAVESH COMPONENTS) ────── */}
+      {/* Captions ride in `detail`, not `changeLabel`. A change label draws a trend mark — a dash
+          announced as "No change" — and dropped the "7 items" figure it was given; an arrow on a
+          running total read as growth. None of these four is a change over time. */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <MetricCard
           label="Total Applications"
           value={String(totalAppsCount)}
-          changeValue={`+${submittedThisMonth}`}
-          changeLabel="this month"
-          changeDirection="up"
+          detail={`${submitted.length} submitted · ${draftCount} draft${draftCount === 1 ? "" : "s"}`}
           icon={<Icon name="description" size={20} aria-hidden />}
+          {...(submittedThisMonth > 0
+            ? { changeValue: `+${submittedThisMonth}`, changeLabel: "this month", changeDirection: "up" as const }
+            : {})}
         />
         <MetricCard
-          label="In Review"
-          value={String(inReviewCount)}
-          changeValue={`${inReviewCount} active`}
-          changeLabel="in chain"
-          changeDirection="flat"
+          label="With the Ministry"
+          value={String(withMinistry.length)}
+          detail="Submitted or in review"
           icon={<Icon name="schedule" size={20} aria-hidden />}
         />
         <MetricCard
-          label="Needs Action"
+          label="Action Required"
           value={String(needsActionCount)}
-          changeValue={`${needsActionCount} pending`}
-          changeLabel="deficiency"
-          changeDirection="down"
+          detail={`${pendingItems} correction${pendingItems === 1 ? "" : "s"} to make`}
+          tone={needsActionCount > 0 ? "warning" : undefined}
           icon={<Icon name="error" size={20} aria-hidden />}
         />
         <MetricCard
           label="Sanctioned Grants"
-          value={String(sanctionedCount)}
-          changeValue={`₹${totalSanctionedCr} Cr`}
-          changeLabel="approved"
-          changeDirection="up"
+          value={String(sanctioned.length)}
+          detail={`${crore(totalSanctioned)} sanctioned`}
           icon={<Icon name="verified" size={20} aria-hidden />}
         />
       </div>
 
-      {/* ── 4. MIDDLE ROW: APPLICATION STATUS & FINANCIAL SUMMARY ──────────── */}
-      <div className="grid gap-6 lg:grid-cols-2 items-stretch">
-        {/* Application Status Card — Compact Donut Chart */}
-        <section
-          aria-labelledby="app-status-title"
-          className="rounded-xl border border-line bg-surface p-6 shadow-xs flex flex-col justify-between space-y-4"
-        >
-          <div className="flex items-center justify-between border-b border-line pb-3">
-            <h2 id="app-status-title" className="text-title-2 text-ink">
-              Application Status Breakdown
-            </h2>
-            <Badge status="info">Interactive Analytics</Badge>
-          </div>
+      <div className="grid items-stretch gap-6 lg:grid-cols-2">
+        <Card variant="outlined" aria-labelledby="app-status-title">
+          <CardBody className="gap-4 p-6">
+            <SectionTitle headingId="app-status-title" title="Application Status Breakdown" />
 
-          <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center py-2">
-            {/* Compact Donut Canvas */}
-            <div className="sm:col-span-6 flex justify-center">
-              <div className="w-[180px] max-w-full">
+            {/* The chart and its own legend only. A list beside it repeated the legend, and a
+                "Highest Allocation" line repeated the list's first row (removed on confirmation,
+                15 Sep 2026); the per-status counts remain in the chart's "View as Table". */}
+            <div className="flex justify-center py-2">
+              <div className="w-[220px] max-w-full">
                 <DonutChart
                   title="Application Status Distribution"
                   data={donutChartData}
@@ -280,131 +298,149 @@ export default function NgoDashboardPage() {
                 />
               </div>
             </div>
+          </CardBody>
+        </Card>
 
-            {/* Detailed Status Breakdown Matrix */}
-            <div className="sm:col-span-6 space-y-2 text-body-2 border-l border-line/60 pl-0 sm:pl-4">
-              <span className="text-label-3 uppercase text-ink-muted block pb-1 border-b border-line/40">
-                Status Breakdown
-              </span>
-              {donutChartData.sort((a, b) => b.value - a.value).map((item) => {
-                const pct = ((item.value / Math.max(totalAppsCount, 1)) * 100).toFixed(1) + "%";
-                let colorClass = "bg-status-neutral";
-                if (item.label === "Sanctioned") colorClass = "bg-status-success";
-                else if (item.label === "In Review") colorClass = "bg-status-warning";
-                else if (item.label === "Draft") colorClass = "bg-status-info";
-                else if (item.label === "Closed / Rejected") colorClass = "bg-status-error";
-                else colorClass = "bg-status-info";
+        <Card variant="outlined" aria-labelledby="financial-summary-title">
+          <CardBody className="gap-5 p-6">
+            {/* Every financial year: the store holds files from 2024-25 to 2026-27, and all of
+                them are summed. A single-year badge here was a false label. */}
+            <SectionTitle headingId="financial-summary-title" title="Financial Summary">
+              <Badge status="neutral">All Financial Years</Badge>
+            </SectionTitle>
 
-                return (
-                  <div key={item.label} className="flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-2">
-                      <span className={`h-2.5 w-2.5 rounded-full ${colorClass} shrink-0`} aria-hidden />
-                      <span className="font-medium text-ink">{item.label}</span>
-                    </div>
-                    <div className="font-mono text-ink-muted">
-                      <strong className="text-ink font-semibold">{item.value}</strong> ({pct})
-                    </div>
-                  </div>
-                );
-              })}
+            <DescriptionList
+              columns={2}
+              divided
+              items={[
+                { term: "Total Requested", value: <Amount>{crore(totalRequested)}</Amount>, hint: `${submitted.length} submitted applications` },
+                { term: "Total Sanctioned", value: <Amount tone="success">{crore(totalSanctioned)}</Amount>, hint: `${sanctioned.length} sanctioned grants` },
+                { term: "With the Ministry", value: <Amount>{crore(withMinistryAmount)}</Amount>, hint: `${withMinistry.length} applications submitted or in review` },
+                { term: "Average Grant Size", value: <Amount>{`₹${avgSanctionLakhs} L`}</Amount>, hint: "Per sanctioned grant" },
+              ]}
+            />
+
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center justify-between gap-2 text-body-2">
+                <span className="font-semibold text-ink-muted">Sanctioned Against Requested</span>
+                <span className="font-bold text-[var(--sa-text-status-success-base)]">{sanctionedPercent}%</span>
+              </div>
+              <Progress label="Sanctioned against requested" value={sanctionedPercent} tone="success" compact />
             </div>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-body-2 border-t border-line/60">
-            <span className="text-ink-muted">
-              Highest Allocation:{" "}
-              <strong className="text-ink">
-                {topBucket ? `${topBucket.label} (${Math.round((topBucket.value / Math.max(totalAppsCount, 1)) * 1000) / 10}%)` : "—"}
-              </strong>
-            </span>
-            <span className="text-ink-muted">
-              Approval Rate: <strong className="font-bold text-status-success">{approvalRate}%</strong>
-            </span>
-          </div>
-        </section>
-
-        {/* Financial Summary Card — UNIFIED TONAL CARDS */}
-        <section
-          aria-labelledby="financial-summary-title"
-          className="rounded-xl border border-line bg-surface p-6 shadow-xs flex flex-col justify-between space-y-4"
-        >
-          <div className="flex items-center justify-between border-b border-line pb-3">
-            <h2 id="financial-summary-title" className="text-title-2 text-ink">
-              Financial Summary
-            </h2>
-            <Badge status="info">FY 2026-27</Badge>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            {/* Total Requested */}
-            <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
-              <span className="block text-label-3 uppercase text-ink-muted">Total Requested</span>
-              <span className="mt-1 block text-headline-2 tabular-nums text-ink">₹{totalRequestedCr} Cr</span>
-              <span className="mt-0.5 block text-body-3 text-ink-muted">{totalAppsCount} applications total</span>
-            </div>
-
-            {/* Total Sanctioned */}
-            <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
-              <span className="block text-label-3 uppercase text-ink-muted">Total Sanctioned</span>
-              <span className="mt-1 block text-headline-2 tabular-nums text-status-success">₹{totalSanctionedCr} Cr</span>
-              <span className="mt-0.5 block text-body-3 text-status-success-strong">{sanctionedCount} approved grants</span>
-            </div>
-
-            {/* In Review Amount */}
-            <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
-              <span className="block text-label-3 uppercase text-ink-muted">Pending Review</span>
-              <span className="mt-1 block text-headline-2 tabular-nums text-status-info">₹{inReviewAmountCr} Cr</span>
-              <span className="mt-0.5 block text-body-3 text-status-info-strong">{inReviewCount} active files in chain</span>
-            </div>
-
-            {/* Avg Sanction */}
-            <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
-              <span className="block text-label-3 uppercase text-ink-muted">Avg. Grant Size</span>
-              <span className="mt-1 block text-headline-2 tabular-nums text-ink">₹{avgSanctionLakhs} L</span>
-              <span className="mt-0.5 block text-body-3 text-ink-muted">per approved project</span>
-            </div>
-          </div>
-
-          {/* Progress Bar: Sanctioned vs Requested */}
-          <div className="space-y-2 pt-2 border-t border-line">
-            <div className="flex items-center justify-between text-body-2">
-              <span className="font-semibold text-ink-muted">Sanctioned vs Requested Budget</span>
-              <span className="font-bold text-status-success">{sanctionedPercent}% Sanction Ratio</span>
-            </div>
-            <div className="h-2.5 w-full rounded-full bg-slate-100 overflow-hidden border border-slate-200/60">
-              <div className="h-full rounded-full bg-status-success" style={{ width: `${sanctionedPercent}%` }} />
-            </div>
-          </div>
-
-          <p className="text-body-3 text-ink-muted">
-            Sanctioned amount reflects approved grants across all active applications under Ministry of Social Justice &amp; Empowerment schemes.
-          </p>
-        </section>
+          </CardBody>
+        </Card>
       </div>
 
-      {/* ── 5. THIRD ROW: ORGANISATION PROFILE & APPLICATIONS BY SCHEME ─────── */}
-      <div className="grid gap-6 lg:grid-cols-2 items-stretch">
-        {/* Organisation Profile Box */}
-        <section
-          aria-labelledby="org-profile-title"
-          className="rounded-xl border border-line bg-surface p-6 shadow-xs space-y-4 flex flex-col justify-between"
-        >
-          <div className="flex items-center justify-between border-b border-line pb-3">
-            <div className="flex items-center gap-2">
-              <Icon name="domain" size={20} className="text-primary shrink-0" aria-hidden />
-              <h2 id="org-profile-title" className="text-title-2 text-ink">
-                Organisation Profile
-              </h2>
-            </div>
-            <Badge status="neutral">DARPAN Synced</Badge>
-          </div>
+      {/* Above the reference panels: these rows open the applicant's own files, which is the
+          next thing an applicant does after Pending Actions. */}
+      <Card variant="outlined" aria-labelledby="recent-apps-title">
+        <CardBody className="gap-4 p-6">
+          <SectionTitle headingId="recent-apps-title" title="Recent Applications">
+            <Link
+              variant="standalone"
+              size="sm"
+              href="/portals/e-anudaan/ngo/my-applications"
+              onClick={routeOnClick(router, "/portals/e-anudaan/ngo/my-applications")}
+              iconRight={<Icon name="arrow_forward" size={16} aria-hidden />}
+            >
+              View All Applications
+            </Link>
+          </SectionTitle>
 
-          {/* Thirteen separate rows, exactly as the live DARPAN read-back lists them — State and
-              District, Registration No. and Date, and Secretary and Treasurer are each their own
-              row on the live portal rather than being paired up. */}
-          <dl className="grid grid-cols-1 gap-x-6 gap-y-3 text-body-2 sm:grid-cols-2">
-            {(
-              [
+          {/* The whole row is the link (ListRow `href`), so five outlined "Details" buttons no longer
+              stack down the right edge. The wrapper hands the click to the router. */}
+          <div onClick={routeLinksWithin(router)}>
+            <ListGroup divided aria-label="Recent applications">
+              {recent.map((appRow) => {
+                const scheme = SCHEME_TITLES[appRow.schemeCode]?.title ?? appRow.schemeCode;
+                return (
+                  <ListRow
+                    key={appRow.id}
+                    // The reference carries slashes, so it is encoded — the unencoded link opened
+                    // a route that does not exist.
+                    href={`/portals/e-anudaan/ngo/my-applications/${encodeURIComponent(appRow.id)}`}
+                    title={appRow.projectLabel || "Project"}
+                    description={
+                      <>
+                        {scheme} · <span className="font-mono">{appRow.institutionId || appRow.id}</span>
+                      </>
+                    }
+                    trailing={
+                      <span className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1 text-body-2">
+                        <Badge status={statusTone(appRow.status as AppStatus)}>{ngoStatusLabel(appRow)}</Badge>
+                        <span className="tabular-nums text-ink">{formatGrant(appRow.total)}</span>
+                        <span className="text-ink-muted">Updated {formatDate(appRow.updatedAt)}</span>
+                        <Icon name="chevron_right" size={20} aria-hidden />
+                      </span>
+                    }
+                  />
+                );
+              })}
+            </ListGroup>
+          </div>
+        </CardBody>
+      </Card>
+
+      <div className="grid items-stretch gap-6 lg:grid-cols-2">
+        <Card variant="outlined" aria-labelledby="apps-by-scheme-title">
+          <CardBody className="gap-4 p-6">
+            <SectionTitle headingId="apps-by-scheme-title" title="Applications by Scheme">
+              <Badge status="neutral">{activeSchemes.length} Schemes</Badge>
+            </SectionTitle>
+
+            {/* A divided list inside the card, not a bordered box inside it (T93). */}
+            <ListGroup divided aria-label="Schemes applied under">
+              {activeSchemes.map((s) => (
+                <ListRow
+                  key={s.code}
+                  title={s.title}
+                  trailing={
+                    <Badge status="neutral">
+                      {s.count} {s.count === 1 ? "application" : "applications"}
+                    </Badge>
+                  }
+                  /* No scheme badge: it printed the stored code ("SHRESHTA_M2") under the scheme's
+                     own name, saying the same thing twice and the second time in code. */
+                  description={
+                    <span className="block space-y-2">
+                      <span className="block">{s.subtitle}</span>
+                      <span className="block">
+                        Requested: <strong className="text-ink">{crore(s.requested)}</strong> · Sanctioned:{" "}
+                        <strong className="text-[var(--sa-text-status-success-base)]">{crore(s.sanctioned)}</strong>
+                      </span>
+                      <Progress label={`${s.title}: sanctioned against requested`} value={s.percent} tone="success" compact />
+                    </span>
+                  }
+                />
+              ))}
+            </ListGroup>
+
+            {idleSchemes.length > 0 && (
+              <>
+                <SectionTitle as={3} eyebrow="Not Yet Applied Under" />
+                <ListGroup divided size="sm" aria-label="Schemes not yet applied under">
+                  {idleSchemes.map((s) => (
+                    <ListRow key={s.code} title={s.title} description={s.subtitle} />
+                  ))}
+                </ListGroup>
+              </>
+            )}
+          </CardBody>
+        </Card>
+
+        <Card variant="outlined" aria-labelledby="org-profile-title">
+          <CardBody className="gap-4 p-6">
+            {/* No "DARPAN Synced" badge: the header already says "DARPAN Verified". */}
+            <SectionTitle headingId="org-profile-title" title="Organisation Profile" />
+
+            {/* Thirteen separate rows, exactly as the live DARPAN read-back lists them — State and
+                District, Registration No. and Date, and Secretary and Treasurer are each their own
+                row on the live portal rather than being paired up. */}
+            <DescriptionList
+              columns={2}
+              size="sm"
+              divided
+              items={([
                 ["Organisation", ngoName],
                 ["DARPAN ID", ngo?.darpanId ?? "MH/2016/100000"],
                 ["State", ngo?.state ?? "Maharashtra"],
@@ -418,145 +454,11 @@ export default function NgoDashboardPage() {
                 ["Authorised User", ngo?.authorisedUser ?? ngoName],
                 ["Email", ngo?.email ?? "—"],
                 ["Mobile", ngo?.mobile ?? "—"],
-              ] as const
-            ).map(([label, value]) => (
-              <div key={label} className="border-b border-line/40 pb-1.5">
-                <dt className="block text-body-3 text-ink-muted">{label}</dt>
-                <dd className="mt-0.5 block font-bold text-ink break-words">{value}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-
-        {/* Applications by Scheme Box */}
-        <section
-          aria-labelledby="apps-by-scheme-title"
-          className="rounded-xl border border-line bg-surface p-6 shadow-xs space-y-4 flex flex-col justify-between"
-        >
-          <div className="flex items-center justify-between border-b border-line pb-3">
-            <div className="flex items-center gap-2">
-              <Icon name="assignment" size={20} className="text-primary shrink-0" aria-hidden />
-              <h2 id="apps-by-scheme-title" className="text-title-2 text-ink">
-                Applications by Scheme
-              </h2>
-            </div>
-            <Badge status="neutral">{activeSchemes.length} Schemes</Badge>
-          </div>
-
-          <div className="space-y-3">
-            <span className="text-label-3 uppercase text-ink-muted block">
-              Active Grant Schemes
-            </span>
-            {activeSchemes.map((s) => (
-              <div key={s.code} className="rounded-lg border border-line p-3 bg-surface-muted/40 space-y-2 transition hover:bg-surface-muted/70">
-                <div className="flex items-center justify-between gap-2">
-                  <div>
-                    <span className="text-title-3 text-ink block">{s.title}</span>
-                    <span className="text-body-3 text-ink-muted block">{s.subtitle}</span>
-                  </div>
-                  <span className="text-label-2 font-bold text-ink shrink-0 bg-surface px-2 py-1 rounded border border-line">
-                    {s.count} {s.count === 1 ? "app" : "apps"}
-                  </span>
-                </div>
-
-                <div className="flex items-center justify-between gap-2 pt-1 text-body-3">
-                  <Badge status="info">{s.code}</Badge>
-                  <span className="text-ink-muted font-medium">
-                    Requested: <strong className="text-ink">₹{s.requestedCr} Cr</strong> · Sanctioned: <strong className="text-status-success">₹{s.sanctionedCr} Cr</strong>
-                  </span>
-                </div>
-
-                <div className="h-1.5 w-full rounded-full bg-slate-200 overflow-hidden">
-                  <div className="h-full rounded-full bg-status-success" style={{ width: `${s.percent}%` }} />
-                </div>
-              </div>
-            ))}
-
-            <div className="pt-2 border-t border-line/60 space-y-2">
-              <span className="text-label-3 uppercase text-ink-muted block">
-                Other Available Schemes (0 Applications)
-              </span>
-              <div className="grid grid-cols-2 gap-2">
-                {idleSchemes.map((s) => (
-                  <div key={s.code} className="rounded border border-line/60 bg-surface-muted/20 p-2 text-body-3">
-                    <span className="text-title-3 text-ink block">{s.title}</span>
-                    <span className="text-body-3 text-ink-muted block truncate">{s.subtitle}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
+              ] as const).map(([term, value]) => ({ term, value }))}
+            />
+          </CardBody>
+        </Card>
       </div>
-
-      {/* ── 6. BOTTOM SECTION: RECENT APPLICATIONS LEDGER ──────────────────── */}
-      <section aria-labelledby="recent-apps-title" className="rounded-xl border border-line bg-surface p-6 shadow-xs space-y-5">
-        <div className="flex items-center justify-between border-b border-line pb-3">
-          <div className="flex items-center gap-2">
-            <Icon name="history" size={20} className="text-primary shrink-0" aria-hidden />
-            <h2 id="recent-apps-title" className="text-title-2 text-ink">
-              Recent Applications Ledger
-            </h2>
-          </div>
-          <Link
-            href="/portals/e-anudaan/ngo/my-applications"
-            className="text-label-2 font-bold text-primary hover:underline inline-flex items-center gap-1"
-          >
-            View All Applications <Icon name="arrow_forward" size={16} aria-hidden />
-          </Link>
-        </div>
-
-        <div className="space-y-3">
-          {apps.slice(0, 5).map((appRow) => {
-            const title = `${appRow.projectLabel || "Project"} — ${SCHEME_TITLES[appRow.schemeCode]?.title ?? appRow.schemeCode}`;
-            const ref = appRow.institutionId || appRow.id;
-            const statusLabel = ngoStatusLabel(appRow);
-            const statusKey = appRow.status;
-            const requested = formatGrant(appRow.total);
-            const updated = formatDate(appRow.submittedAt || new Date().toISOString());
-            
-            return (
-            <div
-              key={appRow.id}
-              className="flex flex-col gap-3 rounded-lg border border-line p-4 transition hover:border-primary/40 hover:bg-surface-muted/50 sm:flex-row sm:items-center sm:justify-between"
-            >
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="text-title-3 text-ink">{title}</h3>
-                </div>
-                <span className="inline-block font-mono text-label-2 text-ink-muted bg-surface-muted px-2 py-0.5 rounded border border-line/60">
-                  {ref}
-                </span>
-              </div>
-
-              <div className="flex flex-wrap items-center gap-5 text-body-2">
-                <Badge status={statusTone(statusKey as AppStatus)}>
-                  {statusLabel}
-                </Badge>
-
-                <div className="text-right">
-                  <span className="block text-label-2 text-ink-muted">Requested</span>
-                  <span className="font-bold text-ink">{requested}</span>
-                </div>
-
-                <div className="text-right">
-                  <span className="block text-label-2 text-ink-muted">Updated</span>
-                  <span className="font-medium text-ink-muted">{updated}</span>
-                </div>
-
-                <Link href={`/portals/e-anudaan/ngo/my-applications/${appRow.id}`}>
-                  <Button appearance="outlined" size="sm">
-                    Details <Icon name="chevron_right" size={16} aria-hidden />
-                  </Button>
-                </Link>
-              </div>
-            </div>
-            );
-          })}
-        </div>
-      </section>
     </div>
   );
 }
-
-

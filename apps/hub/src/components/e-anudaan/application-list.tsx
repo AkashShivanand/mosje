@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Search, WorklistScreen } from "@mosje/design-system";
-import type { GrantApplication } from "@/lib/e-anudaan/types";
-import { worklistColumns, type WorklistVariant } from "./worklist-table";
+import { Search, WorklistScreen, screenCopy } from "@mosje/design-system";
+import type { GrantApplication, RoleId } from "@/lib/e-anudaan/types";
+import { useWorklistOptions, worklistColumns, type WorklistVariant } from "./worklist-table";
 
 /**
  * Build a CSV from the selected rows.
@@ -54,7 +54,19 @@ export interface ApplicationListProps {
    * the one an officer working a register actually asks for.
    */
   exportable?: boolean;
+  /** On the Forwarded register: the officer whose forwards are listed, for the "Forwarded On" date. */
+  forwardedBy?: RoleId;
 }
+
+const LIST_COPY = screenCopy({
+  loadingLabel: "Loading applications",
+  // The heading form of the embedded table's sentence (EMPTY_LIST), so both say the same thing.
+  emptyTitle: "No Applications in This List",
+  emptyDescription: undefined,
+  filteredTitle: "No Application Matches This Search",
+  filteredDescription: "Clear the search to see the full list.",
+  clearFiltersLabel: "Clear Search",
+});
 
 /**
  * The standalone officer list screens — Sanctioned, Rejected, Forwarded,
@@ -74,22 +86,24 @@ export function ApplicationList({
   rows,
   reviewBase,
   exportable = false,
+  forwardedBy,
 }: ApplicationListProps): React.JSX.Element {
   const [q, setQ] = React.useState("");
   const [selected, setSelected] = React.useState<string[]>([]);
 
-  const columns = React.useMemo(
-    () => worklistColumns(variant, { reviewBase }),
-    [variant, reviewBase],
-  );
+  const opts = useWorklistOptions(reviewBase, forwardedBy);
+  const columns = React.useMemo(() => worklistColumns(variant, opts), [variant, opts]);
 
   const filtered = React.useMemo(() => {
     const needle = q.trim().toLowerCase();
     if (!needle) return rows;
     return rows.filter(
-      (r) => r.id.toLowerCase().includes(needle) || r.projectLabel.toLowerCase().includes(needle),
+      (r) =>
+        r.id.toLowerCase().includes(needle) ||
+        r.institutionId.toLowerCase().includes(needle) ||
+        (opts.ngoName?.(r.ngoId) ?? "").toLowerCase().includes(needle),
     );
-  }, [rows, q]);
+  }, [rows, q, opts]);
 
   /* The reader's search IS the filter, so it decides whether an empty result
      reads as "nothing matches what you typed" or as "the register holds
@@ -126,7 +140,7 @@ export function ApplicationList({
         <Search
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="Search by GIA ID or NGO…"
+          placeholder="Search by Project ID, application or NGO"
           aria-label="Search applications"
         />
       }
@@ -134,6 +148,9 @@ export function ApplicationList({
       onSelectionChange={exportable ? setSelected : undefined}
       bulkActions={exportable ? [{ id: "export", label: "Export selected", icon: "download" }] : undefined}
       onBulkAction={handleBulk}
+      /* One empty-state sentence across the console. The template's default ("No Records
+         Published") read as a publishing notice, and the embedded table said something else. */
+      copy={LIST_COPY}
     />
   );
 }

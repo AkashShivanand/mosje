@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { cn } from "../../utils/cn";
 import { Icon } from "../utilities/icon";
+import { isoToDisplay, parseTypedDate, typedDateError } from "./date-typing";
 import "./date-picker.css";
 
 export interface DatePickerProps {
@@ -16,7 +17,11 @@ export interface DatePickerProps {
   min?: string;
   max?: string;
   hint?: string;
-  /** Shown under the field, and announced. */
+  /**
+   * Shown under the field, and announced. A message about what was TYPED — "Enter the date as
+   * DD/MM/YYYY." — is the component's own and takes precedence while it stands, because it is
+   * the more specific of the two.
+   */
   error?: string;
   /**
    * Sets the error state without supplying a message. It exists so that
@@ -42,26 +47,8 @@ const DAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
 const pad = (n: number) => String(n).padStart(2, "0");
 const toIso = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 
-/** ISO → the form a citizen reads and types. */
-function toDisplay(iso: string): string {
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
-  return m ? `${m[3]}/${m[2]}/${m[1]}` : "";
-}
-
-/**
- * `dd/mm/yyyy` → ISO, or "" when it is not a real date.
- *
- * Checked by round-trip rather than by range: `31/02/2026` passes every
- * field-by-field bounds test and is not a date. Constructing it and asking
- * whether the month survived is the only check that catches it.
- */
-function fromDisplay(text: string): string {
-  const m = /^(\d{1,2})\s*\/\s*(\d{1,2})\s*\/\s*(\d{4})$/.exec(text.trim());
-  if (!m) return "";
-  const [dd, mm, yyyy] = [Number(m[1]), Number(m[2]), Number(m[3])];
-  const d = new Date(yyyy, mm - 1, dd);
-  return d.getFullYear() === yyyy && d.getMonth() === mm - 1 && d.getDate() === dd ? toIso(d) : "";
-}
+/** ISO → the form a citizen reads and types. Parsing and its messages: `./date-typing`. */
+const toDisplay = isoToDisplay;
 
 const parseIso = (iso: string): Date | null => {
   const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
@@ -87,8 +74,10 @@ const parseIso = (iso: string): Date | null => {
  *
  * ── THE KEYBOARD MODEL ──────────────────────────────────────────────────────
  *
- * In the field   type `dd/mm/yyyy`; the value commits on blur, so a half-typed
- *                date is never read as a wrong one
+ * In the field   type `dd/mm/yyyy` — or `ddmmyyyy`, or with `-` or `.` — and the
+ *                value commits on blur, so a half-typed date is never read as a
+ *                wrong one. Something that is not a date STAYS on screen with a
+ *                message; it is never cleared (usability audit UX-09)
  *   Down / Alt+Down  open the calendar
  *
  * In the calendar (WAI-ARIA's date picker dialog, with a roving grid)
@@ -125,6 +114,8 @@ export function DatePicker({
 
   const [open, setOpen] = React.useState(false);
   const [text, setText] = React.useState(() => toDisplay(value));
+  /** The component's own message about what was typed; `null` when the text is acceptable. */
+  const [typingError, setTypingError] = React.useState<string | null>(null);
   const selected = parseIso(value);
   const [focusDate, setFocusDate] = React.useState<Date>(() => selected ?? new Date());
 
@@ -143,7 +134,16 @@ export function DatePicker({
   const [prevValue, setPrevValue] = React.useState(value);
   if (prevValue !== value) {
     setPrevValue(value);
-    setText(toDisplay(value));
+    /*
+     * Except for the one change this component causes itself: a rejected entry empties `value`
+     * so the form cannot submit the last good date behind it, and that must not also wipe the
+     * text the reader is being asked to correct. A form reset to "" while a rejected entry is on
+     * screen keeps the entry and its message — a key change remounts the field if that matters.
+     */
+    if (!(value === "" && typingError)) {
+      setText(toDisplay(value));
+      setTypingError(null);
+    }
   }
 
   const minDate = min ? parseIso(min) : null;
@@ -174,15 +174,25 @@ export function DatePicker({
     gridRef.current?.querySelector<HTMLButtonElement>('[data-active="true"]')?.focus();
   }, [open, focusDate]);
 
+  /*
+   * This used to "put back the last good value" for anything it could not read. On an empty
+   * field the last good value is nothing, so `20092026` vanished on blur with no message
+   * (usability audit UX-09, 14 Sep 2026). A reader cannot correct what has been taken away.
+   */
   const commitText = () => {
-    const iso = fromDisplay(text);
-    if (iso && !outOfRange(parseIso(iso)!)) {
-      onChange(iso);
-    } else if (text.trim() === "") {
+    const parsed = parseTypedDate(text);
+    const message = typedDateError(parsed, min, max);
+    if (message) {
+      setTypingError(message);
+      if (value !== "") onChange("");
+      return;
+    }
+    setTypingError(null);
+    if (parsed.kind === "date") {
+      setText(toDisplay(parsed.iso));
+      if (parsed.iso !== value) onChange(parsed.iso);
+    } else if (value !== "") {
       onChange("");
-    } else {
-      // Put back the last good value rather than leaving nonsense on screen.
-      setText(toDisplay(value));
     }
   };
 
@@ -228,7 +238,8 @@ export function DatePicker({
     return d;
   });
 
-  const describedBy = [hint ? hintId : null, error ? errorId : null].filter(Boolean).join(" ");
+  const shownError = typingError ?? error;
+  const describedBy = [hint ? hintId : null, shownError ? errorId : null].filter(Boolean).join(" ");
 
   return (
     <div ref={rootRef} className={cn("ds-datepicker", className)}>
@@ -242,7 +253,7 @@ export function DatePicker({
         {required ? <span className="ds-sr-only"> (required)</span> : null}
       </label>
 
-      <div className={cn("ds-datepicker__field", error && "is-invalid", disabled && "is-disabled")}>
+      <div className={cn("ds-datepicker__field", shownError && "is-invalid", disabled && "is-disabled")}>
         <input
           ref={inputRef}
           id={inputId}
@@ -257,8 +268,12 @@ export function DatePicker({
           disabled={disabled}
           required={required}
           aria-describedby={describedBy || undefined}
-          aria-invalid={error || invalid ? true : undefined}
-          onChange={(e) => setText(e.target.value)}
+          aria-invalid={shownError || invalid ? true : undefined}
+          onChange={(e) => {
+            setText(e.target.value);
+            // The message was about the old text; the reader is correcting it now.
+            if (typingError) setTypingError(null);
+          }}
           onBlur={commitText}
           onKeyDown={(e) => {
             if (e.key === "ArrowDown" || (e.altKey && e.key === "ArrowDown")) {
@@ -290,9 +305,9 @@ export function DatePicker({
           {hint}
         </p>
       ) : null}
-      {error ? (
+      {shownError ? (
         <p id={errorId} className="ds-datepicker__error" role="alert">
-          {error}
+          {shownError}
         </p>
       ) : null}
 

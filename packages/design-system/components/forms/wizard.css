@@ -40,71 +40,40 @@
   .ds-wizard {
     display: flex;
     flex-direction: column;
-    gap: var(--sa-stack-24);
+    gap: var(--sa-stack-32);
     font-family: var(--sa-font-latin);
   }
 
+  /* The Stepper sits on the page ground, not in a card. A bordered box round it framed
+     the progress row as one more panel of the form, and it read as a section to fill in. */
   .ds-wizard__stepper {
-    background-color: var(--sa-bg-neutral-base);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-12);
-    padding: var(--sa-padding-20);
+    min-width: 0;
   }
 
   .ds-wizard__body {
     display: flex;
     flex-direction: column;
-    gap: var(--sa-stack-24);
+    gap: var(--sa-stack-32);
     outline: none;
+    min-width: 0;
   }
 
-  .ds-wizard__actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--sa-stack-12);
-    padding-top: var(--sa-padding-20);
-    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  /* The panel's action band owns the actions' layout (space-between); the Back and advance
+     buttons sit at its two ends. */
+  .ds-wizard .ds-form-panel__foot {
+    flex-wrap: nowrap;
   }
 
-  /* Review summary. */
-  .ds-review-section {
-    background-color: var(--sa-bg-neutral-base);
-    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-12);
-    padding: var(--sa-padding-20);
-  }
-
-  /* Review section label = Figma uppercase divider (matches form sub-dividers). */
-  .ds-review-section__title {
-    margin: 0 0 var(--sa-padding-16);
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
-    font-weight: var(--sa-font-weight-semibold);
-    letter-spacing: var(--sa-type-caps-tracking);
-    text-transform: uppercase;
-    color: var(--sa-text-neutral-subtle);
-  }
-
+  /* Review grid spacing: a label and its value read as one, so rows sit closer than fields. */
   .ds-review-section__grid {
-    display: grid;
-    gap: var(--sa-stack-12) var(--sa-padding-20);
-    grid-template-columns: 1fr;
-    margin: 0;
-  }
-
-  @media (min-width: 640px) {
-    .ds-review-section__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-
-  @media (min-width: 1280px) {
-    .ds-review-section__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    row-gap: var(--sa-stack-16);
   }
 
   .ds-review-item {
     display: flex;
     flex-direction: column;
-    gap: var(--sa-padding-2);
+    gap: var(--sa-stack-2);
+    min-width: 0;
   }
 
   /* Span the full grid row — for multi-attribute records (e.g. a drug entry). */
@@ -113,7 +82,8 @@
   }
 
   .ds-review-item__label {
-    font-size: var(--sa-type-body-3-size);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
     font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-subtle);
   }
@@ -121,7 +91,9 @@
   .ds-review-item__value {
     margin: 0;
     font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
     color: var(--sa-text-neutral-base);
+    overflow-wrap: anywhere;
   }
 
   /* The reason the advance control is disabled, beside it, so a reader meets the
@@ -129,6 +101,8 @@
      elsewhere on the page is a dead end. `margin-inline-end: auto` pushes it left of the
      buttons without needing a wrapper. */
   .ds-wizard__blocked {
+    flex: 1 1 auto;
+    min-width: 0;
     margin-inline-end: auto;
     max-width: 52ch;
     color: var(--sa-text-status-warning-base);
@@ -143,8 +117,17 @@
      worth meeting before the control. Scoped to this element rather than switching the row
      to `wrap` for everyone, because the row's two-button case has no reason to change. */
   @media (max-width: 767px) {
-    .ds-wizard__actions {
+    .ds-wizard .ds-form-panel__foot {
       flex-wrap: wrap;
+    }
+
+    /* Back and the advance control share one row, the advance control taking the larger share. */
+    .ds-wizard__blocked {
+      flex: 1 1 100%;
+    }
+
+    .ds-wizard .ds-form-panel__foot > .ds-btn:last-child {
+      flex: 1 1 auto;
     }
 
     .ds-wizard__blocked {

@@ -56,7 +56,7 @@
     "weight": 0,
     "hindi-unmarked": 0,
     "style-mixed": 3,
-    "style-weight": 231,
+    "style-weight": 227,
     "style-weight-unset": 176
   },
   "files": {
@@ -1197,7 +1197,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 1,
+      "style-weight": 0,
       "style-weight-unset": 1
     },
     "packages/design-system/components/forms/date-range-picker.css": {
@@ -1257,7 +1257,7 @@
       "weight": 0,
       "hindi-unmarked": 0,
       "style-mixed": 0,
-      "style-weight": 4,
+      "style-weight": 3,
       "style-weight-unset": 0
     },
     "packages/design-system/components/forms/geo-photo-input.css": {
@@ -1439,21 +1439,6 @@
       "style-mixed": 0,
       "style-weight": 3,
       "style-weight-unset": 1
-    },
-    "packages/design-system/components/forms/wizard.css": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0,
-      "utility-size": 0,
-      "utility-leading": 0,
-      "utility-tracking": 0,
-      "weight": 0,
-      "hindi-unmarked": 0,
-      "style-mixed": 0,
-      "style-weight": 2,
-      "style-weight-unset": 0
     },
     "packages/design-system/components/layout/layout.css": {
       "size-off-ramp": 0,

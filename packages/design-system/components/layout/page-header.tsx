@@ -21,6 +21,12 @@ export interface PageHeaderProps extends React.HTMLAttributes<HTMLElement> {
    * @default 1
    */
   as?: 1 | 2;
+  /**
+   * `compact` sets the title a step down the headline ramp, for a screen whose own content
+   * carries the weight — a form wizard, where the stepper and the step panel lead.
+   * @default "default"
+   */
+  size?: "default" | "compact";
   /** Set on the heading so a region can point `aria-labelledby` at it. */
   headingId?: string;
 }
@@ -41,13 +47,14 @@ export function PageHeader({
   meta,
   actions,
   as = 1,
+  size = "default",
   headingId,
   className,
   ...rest
 }: PageHeaderProps): React.JSX.Element {
   const Heading = (as === 1 ? "h1" : "h2") as "h1" | "h2";
   return (
-    <header className={cn("sa-page-header", className)} {...rest}>
+    <header className={cn("sa-page-header", size === "compact" && "sa-page-header--compact", className)} {...rest}>
       <div className="sa-page-header__text">
         {eyebrow ? <p className="sa-page-header__eyebrow">{eyebrow}</p> : null}
         <Heading id={headingId} className="sa-page-header__title">

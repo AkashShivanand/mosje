@@ -1,11 +1,12 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { Alert, Badge, Icon, MetricCard } from "@mosje/design-system";
+import { Alert, Badge, Card, CardBody, Icon, ListGroup, ListRow, MetricCard, PageHeader, SectionTitle } from "@mosje/design-system";
+import { INSPECTION_STATUS_LABEL, INSPECTION_STATUS_TONE } from "@/lib/e-anudaan/officer";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { formatDate, formatGrant } from "@/lib/e-anudaan/selectors";
 import { statusLabel } from "@/lib/e-anudaan/workflow";
-import { WorklistTable } from "@/components/e-anudaan/worklist-table";
+import { RefText, WorklistTable } from "@/components/e-anudaan/worklist-table";
 
 /**
  * NGO 360 — every application, institution and inspection for one organisation.
@@ -19,7 +20,7 @@ export default function Ngo360Page() {
   const ngo = findNgo(decodeURIComponent(params.ngoId));
 
   if (!ngo) {
-    return <Alert status="warning" title="Organisation not found">No such NGO in the demo dataset.</Alert>;
+    return <Alert status="warning" title="Organisation Not Found">This organisation is not in the NGO register.</Alert>;
   }
 
   const apps = state.applications.filter((a) => a.ngoId === ngo.id);
@@ -27,55 +28,60 @@ export default function Ngo360Page() {
 
   return (
     <div className="space-y-5">
-      <div>
-        <h1 className="text-headline-1 text-ink">{ngo.name}</h1>
-        <p className="mt-1 text-body-2 text-ink-muted">
-          {ngo.district}, {ngo.state} · NGO-Darpan {ngo.darpanId} · Registration {ngo.registrationNo}
-        </p>
-      </div>
+      <PageHeader
+        eyebrow="E-ANUDAAN"
+        title={ngo.name}
+        meta={`${ngo.district}, ${ngo.state} · NGO-Darpan ${ngo.darpanId} · Registration ${ngo.registrationNo}`}
+      />
 
       <div className="grid gap-4 sm:grid-cols-3">
         <MetricCard label="Applications" value={String(apps.length)} icon={<Icon name="description" size={20} aria-hidden />} />
         <MetricCard label="Sanctioned" value={String(ngo.sanctionedCount)} icon={<Icon name="verified" size={20} aria-hidden />} />
-        <MetricCard label="Total grant" value={formatGrant(ngo.totalGrant)} icon={<Icon name="currency_rupee" size={20} aria-hidden />} />
+        <MetricCard label="Total Grant" value={formatGrant(ngo.totalGrant)} icon={<Icon name="currency_rupee" size={20} aria-hidden />} />
       </div>
 
-      <section className="rounded-xl border border-line bg-surface p-5">
-        <h2 className="text-title-2 text-ink">Institutions</h2>
-        <ul className="mt-4 divide-y divide-line">
-          {ngo.institutions.map((i) => (
-            <li key={i.id} className="flex flex-wrap items-center justify-between gap-3 py-3">
-              <span className="text-body-2 text-ink">
-                <span className="font-medium">{i.id}</span> · {i.name} · {i.district}
-              </span>
-              <span className="text-body-2 text-ink-muted">
-                {i.nature} · {i.type} · {i.building}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="rounded-xl border border-line bg-surface p-5">
-        <h2 className="text-title-2 text-ink">Inspections</h2>
-        {inspections.length === 0 ? (
-          <p className="mt-3 text-body-2 text-ink-muted">No inspection has been raised for this organisation.</p>
-        ) : (
-          <ul className="mt-4 divide-y divide-line">
-            {inspections.map((i) => (
-              <li key={i.id} className="flex flex-wrap items-center justify-between gap-3 py-3">
-                <span className="text-body-2 text-ink">{i.applicationId} · {i.visitType}</span>
-                <span className="flex items-center gap-3">
-                  <span className="text-body-2 text-ink-muted">
-                    {i.scheduledFor ? formatDate(i.scheduledFor) : "Not scheduled"}
-                  </span>
-                  <Badge status={i.status === "Reviewed" ? "success" : "info"}>{i.status}</Badge>
-                </span>
-              </li>
+      <Card variant="outlined">
+        <CardBody className="space-y-4">
+          <SectionTitle title="Institutions" />
+          <ListGroup>
+            {ngo.institutions.map((i) => (
+              <ListRow
+                key={i.id}
+                title={`${i.id} · ${i.name} · ${i.district}`}
+                description={`${i.nature} · ${i.type} · ${i.building}`}
+              />
             ))}
-          </ul>
-        )}
-      </section>
+          </ListGroup>
+        </CardBody>
+      </Card>
+
+      <Card variant="outlined">
+        <CardBody className="space-y-4">
+          <SectionTitle title="Inspections" />
+          {inspections.length === 0 ? (
+            <p className="text-body-2 text-ink-muted">No inspection has been raised for this organisation.</p>
+          ) : (
+            <ListGroup>
+              {inspections.map((i) => (
+                <ListRow
+                  key={i.id}
+                  title={
+                    <>
+                      <RefText value={i.applicationId} className="font-mono" /> · {i.visitType}
+                    </>
+                  }
+                  trailing={
+                    <>
+                      {i.scheduledFor ? formatDate(i.scheduledFor) : "Not Scheduled"}
+                      <Badge status={INSPECTION_STATUS_TONE[i.status]}>{INSPECTION_STATUS_LABEL[i.status]}</Badge>
+                    </>
+                  }
+                />
+              ))}
+            </ListGroup>
+          )}
+        </CardBody>
+      </Card>
 
       <WorklistTable rows={apps} variant="explorer" caption={`Applications from ${ngo.name}`} />
 

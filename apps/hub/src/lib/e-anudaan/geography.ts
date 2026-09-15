@@ -279,3 +279,36 @@ export function cityCategoryFor(district: string | undefined): string {
   if (Y_DISTRICTS.has(district)) return CITY_CATEGORIES[1];
   return CITY_CATEGORIES[2];
 }
+
+/**
+ * The two-letter State / UT codes a Project ID carries in its second segment (SC/MH/PUN/…,
+ * DR/AN/NIC/…). `submission.ts` holds the same table to MINT an ID; this one READS an ID back.
+ */
+export const STATE_CODES: Record<string, string> = {
+  "Andaman and Nicobar Islands": "AN", "Andhra Pradesh": "AP", "Arunachal Pradesh": "AR", Assam: "AS", Bihar: "BR",
+  Chandigarh: "CH", Chhattisgarh: "CG", "Dadra and Nagar Haveli and Daman and Diu": "DN", Delhi: "DL", Goa: "GA",
+  Gujarat: "GJ", Haryana: "HR", "Himachal Pradesh": "HP", "Jammu and Kashmir": "JK", Jharkhand: "JH", Karnataka: "KA",
+  Kerala: "KL", Ladakh: "LA", Lakshadweep: "LD", "Madhya Pradesh": "MP", Maharashtra: "MH", Manipur: "MN",
+  Meghalaya: "ML", Mizoram: "MZ", Nagaland: "NL", Odisha: "OD", Puducherry: "PY", Punjab: "PB", Rajasthan: "RJ",
+  Sikkim: "SK", "Tamil Nadu": "TN", Telangana: "TS", Tripura: "TR", "Uttar Pradesh": "UP", Uttarakhand: "UK",
+  "West Bengal": "WB",
+};
+
+/**
+ * The State and district a Project ID names, from its code segments — `DR/AN/NIC/40536` is
+ * Nicobar, Andaman and Nicobar Islands. A district code is the first three letters of the
+ * district's name (the rule new Project IDs are minted by) or, for a name of several words, their
+ * initials (NWD, North West Delhi). Undefined when the ID is not in that shape or the code
+ * matches no district.
+ */
+export function placeOfProjectId(projectId: string): { state: string; district: string } | undefined {
+  const m = /^[A-Z]{2}\/([A-Z]{2})\/([A-Z]{3})\/\d+$/.exec(projectId.trim());
+  if (!m) return undefined;
+  const state = Object.keys(STATE_CODES).find((s) => STATE_CODES[s] === m[1]);
+  if (!state) return undefined;
+  const letters = (d: string) => d.replace(/[^A-Za-z]/g, "").slice(0, 3).toUpperCase();
+  const initials = (d: string) => d.split(/[\s-]+/).filter(Boolean).map((w) => w[0]).join("").toUpperCase();
+  const all = districtsOf(state);
+  const district = all.find((d) => letters(d) === m[2]) ?? all.find((d) => d.includes(" ") && initials(d) === m[2]);
+  return district ? { state, district } : undefined;
+}

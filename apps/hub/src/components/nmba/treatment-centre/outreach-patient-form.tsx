@@ -361,7 +361,7 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
       >
         {/* ── Step 0: Outreach Details + Client Profile ───────────────────── */}
         {step === 0 && (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-8">
             <FormSection title="Details of Outreach" columns={2}>
               <FormField label="Name of Outreach Worker" required error={err("outreachWorkerName")}>
                 {(c) => <Input {...c} value={f.outreachWorkerName} onChange={(e) => set("outreachWorkerName")(e.target.value)} placeholder="Outreach worker's full name" invalid={errors.has("outreachWorkerName")} />}
@@ -402,7 +402,7 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
 
         {/* ── Step 1: Substance Use (drugs + injecting + sexual) ──────────── */}
         {step === 1 && (
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-8">
             <FormCard
               title="Pattern of Substance Use"
               required
@@ -549,7 +549,7 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
 
         {/* ── Step 3: Review ──────────────────────────────────────────────── */}
         {step === 3 && (
-          <div className="flex flex-col gap-5">
+          <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-3">
               <p className="text-body-2 text-ink-muted">
                 Review the details below, then submit. Use the quick links or{" "}
