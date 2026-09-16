@@ -15,6 +15,7 @@ on:
       - "scripts/check-design-context.mjs"
       - "scripts/lib/ds-exports.mjs"
       - "scripts/smoke-storybook.mjs"
+      - "scripts/figma-connect-dry-run.mjs"
       - ".stylelintrc.tokens.json"
       - "tools/ds-linkage/**"
       - "tools/type-linkage/**"
@@ -22,6 +23,18 @@ on:
       - "tools/figma-text-styles/**"
       - "tools/figma-hand-rolled/**"
       - "tools/focus-ring/**"
+      # Nine gates the job runs were missing from this list until 2026-09-16, so a PR
+      # touching only a gate's script or its baseline skipped the gate entirely — PR #537
+      # changed claims.json alone and `quality` never ran. Derived by resolving every
+      # step's entry script and the files it reads, not by reading the step names.
+      - "tools/code-connect-parity/**"
+      - "tools/dangling-vars/**"
+      - "tools/docs-links/**"
+      - "tools/figma-arrangements/**"
+      - "tools/figma-doc-parity/**"
+      - "tools/icon-audit/**"
+      - "tools/interaction-states/**"
+      - "tools/link-as/**"
       - ".github/workflows/ds-quality.yml"
   pull_request:
     paths:
@@ -36,6 +49,7 @@ on:
       - "scripts/check-design-context.mjs"
       - "scripts/lib/ds-exports.mjs"
       - "scripts/smoke-storybook.mjs"
+      - "scripts/figma-connect-dry-run.mjs"
       - ".stylelintrc.tokens.json"
       - "tools/ds-linkage/**"
       - "tools/type-linkage/**"
@@ -43,6 +57,18 @@ on:
       - "tools/figma-text-styles/**"
       - "tools/figma-hand-rolled/**"
       - "tools/focus-ring/**"
+      # Nine gates the job runs were missing from this list until 2026-09-16, so a PR
+      # touching only a gate's script or its baseline skipped the gate entirely — PR #537
+      # changed claims.json alone and `quality` never ran. Derived by resolving every
+      # step's entry script and the files it reads, not by reading the step names.
+      - "tools/code-connect-parity/**"
+      - "tools/dangling-vars/**"
+      - "tools/docs-links/**"
+      - "tools/figma-arrangements/**"
+      - "tools/figma-doc-parity/**"
+      - "tools/icon-audit/**"
+      - "tools/interaction-states/**"
+      - "tools/link-as/**"
       - ".github/workflows/ds-quality.yml"
 
 # A pull request that is pushed again supersedes its own in-flight run. Without this
