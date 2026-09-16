@@ -31,8 +31,8 @@ import { Accordion, AccordionItem } from "@mosje/design-system";
  * `aria-expanded` and an accessible name, so it is operable and its state is
  * announced. It diverges from the WAI-ARIA Authoring Practices accordion
  * pattern in two ways: the trigger is **not wrapped in a heading**, so screen
- * reader users cannot jump between panels by heading, and there is no
- * `aria-controls` / `role="region"` association between trigger and panel.
+ * reader users cannot jump between panels by heading, and the panel carries no
+ * `role="region"` (the trigger does carry `aria-controls` while open).
  * Panel content is also **unmounted** when closed, not hidden, so browser
  * find-in-page will not reach it. All three are fixable without changing the
  * API; none is a WCAG failure on its own.
@@ -152,5 +152,28 @@ export const MultipleOpen: Story = {
         </AccordionItem>
       ))}
     </Accordion>
+  ),
+};
+
+/**
+ * `variant="flush"` — the form language, for an accordion that sits inside a panel which is
+ * already a card: no fill, no shadow, a hairline between items. The officer review screen's
+ * application sections use it; a stack of shaded cards inside a card reads as furniture.
+ */
+export const Flush: Story = {
+  render: () => (
+    <div style={{ maxWidth: "40rem", padding: "1.5rem", border: "var(--sa-stroke-1) solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-12)" }}>
+      <Accordion variant="flush">
+        {BUREAUS.map((b) => (
+          <AccordionItem key={b.title} title={b.title}>
+            <ul style={{ margin: 0, paddingInlineStart: "1.25rem", display: "grid", gap: "0.5rem" }}>
+              {b.items.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </div>
   ),
 };

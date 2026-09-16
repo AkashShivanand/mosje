@@ -47,6 +47,21 @@ export function EventPlayground(): React.JSX.Element {
         </p>
       </div>
       <div style={CELL}>
+        <EventList
+          label="Recent activity"
+          now="2026-10-15T09:00:00+05:30"
+          events={[
+            { ...LOG[1]!, id: "overdue", actionRequired: true, dueAt: "2026-09-30", action: "Utilisation Certificate due", note: undefined },
+            { ...LOG[1]!, id: "due", actionRequired: true, dueAt: "2026-11-30", action: "Deficiency response requested", note: undefined },
+          ]}
+        />
+        <p style={CAPTION}>
+          The first deadline has passed against the page&rsquo;s <code>now</code>: the tag reads &ldquo;Overdue&rdquo; beside an
+          icon, and the date changes from &ldquo;Respond by&rdquo; to &ldquo;Was due&rdquo;. The second is still open. Both dates
+          are set in the same spelling as the timestamps beneath them.
+        </p>
+      </div>
+      <div style={CELL}>
         <EventList events={[]} label="Audit log" emptyText="No activity has been recorded against this application yet." />
         <p style={CAPTION}>Empty is the citizen&rsquo;s answer, written out — not a blank panel that reads as broken.</p>
       </div>

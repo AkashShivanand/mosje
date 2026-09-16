@@ -102,6 +102,22 @@ const SMILE_ADMIN_RECOVERY_ALIASES = [
 const SMILE_ADMIN_SESSION_COOKIE = "smile_session"; // set by the client auth-context — keep exact name
 
 /*
+ * E-Anudaan — retired URLs, answered with a real 307 (design-director audit X-13, 16 Sep 2026).
+ *
+ * `/sign-in` was the NGO's own login page before the audiences became role tabs on `/login`, and
+ * `/portals/e-anudaan` was a "choose how to sign in" page. Both were kept as pages that called
+ * `redirect()`. Under `app/portals/loading.tsx` that redirect streams AFTER the shell has been
+ * sent, so the browser got `200 OK`, a `<meta http-equiv="refresh">`, a client-side re-render of
+ * the login and a "negative time stamp" console error — one destination served at two URLs.
+ * Answered here, before rendering, the old URL is a redirect and nothing else.
+ */
+const E_ANUDAAN_ALIASES: Readonly<Record<string, string>> = {
+  "/portals/e-anudaan": "/portals/e-anudaan/login",
+  "/portals/e-anudaan/sign-in": "/portals/e-anudaan/login?role=ngo",
+  "/portals/e-anudaan/ngo/attendance-master": "/portals/e-anudaan/ngo/attendance",
+};
+
+/*
  * PM-AJAY — route guard (folded in from the portal's own src/middleware.ts
  * when it mounted natively; see apps/hub/src/app/portals/MIGRATION-RECIPE.md §6).
  * All paths under /portals/pm-ajay/ are protected EXCEPT:
@@ -343,6 +359,17 @@ export async function proxy(req: NextRequest): Promise<NextResponse> {
    */
   const finish =
     hidden?.kind === "admin-pass" ? noStore : (response: NextResponse) => response;
+
+  {
+    const alias = E_ANUDAAN_ALIASES[pathname.replace(/\/$/, "")];
+    if (alias) {
+      const url = req.nextUrl.clone();
+      const [target, query] = alias.split("?");
+      url.pathname = target!;
+      if (query) for (const [k, v] of new URLSearchParams(query)) url.searchParams.set(k, v);
+      return finish(NextResponse.redirect(url));
+    }
+  }
 
   // SMILE Admin route guard — must run in every environment (it's a real auth
   // check, not a dev convenience), so it sits before the dev-only production

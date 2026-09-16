@@ -35,7 +35,7 @@ export const PROJECT_NATURE_BY_SCHEME: Readonly<Record<string, Institution["natu
   SMILE: "Garima Greh (Shelter Home for Transgender Persons)",
 };
 
-const RENEWAL_PROJECT_FIELDS =["fld_renewal_project", "fld_ongoing_source_application", "fld_smile_project_select"];
+const RENEWAL_PROJECT_FIELDS = ["fld_ongoing_source_application", "fld_smile_project_select", "fld_institution_select"];
 
 const abbreviate = (s: string, n: number) =>
   s
@@ -111,6 +111,8 @@ export function projectForSubmission(
  * of grants, as a New case (form-path QA, 13 Sep 2026).
  */
 export function caseTypeOf(values: Record<string, string>): "New" | "Ongoing" {
+  // A claim on a sanctioned project's record is ongoing whatever else the form holds.
+  if (values.claim_stage) return "Ongoing";
   const caseType = values.case_type ?? "";
   if (caseType) return /ongoing|renewal|existing/i.test(caseType) ? "Ongoing" : "New";
   if (values.fld_institution_status === "Ongoing" || values.assistance_3yrs === "Yes") return "Ongoing";
@@ -143,7 +145,28 @@ export function documentsOf(
       optional: d.optional,
       conditional: d.note,
       reviewStatus: "Pending",
-      ...(up ? { fileName: up.fileName, sizeKb: up.sizeKb, uploadedAt: now, aiVerdict: up.verdict } : {}),
+      ...(up
+        ? {
+            fileName: up.fileName,
+            sizeKb: up.sizeKb,
+            // When the file was uploaded, not when the application was submitted.
+            uploadedAt: up.uploadedAt ?? now,
+            aiVerdict: up.verdict,
+            // Every earlier file for this document goes with the application, oldest first: a
+            // replaced upload is never lost (T83–92), and the officer sees the same log the form did.
+            ...(up.history?.length
+              ? {
+                  versions: up.history.map((h) => ({
+                    fileName: h.fileName,
+                    sizeKb: h.sizeKb,
+                    uploadedAt: h.uploadedAt,
+                    replacedAt: h.replacedAt,
+                    verdict: h.verdict,
+                  })),
+                }
+              : {}),
+          }
+        : {}),
     };
   });
 }

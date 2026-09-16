@@ -49,6 +49,7 @@ import {
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { accountsFor, maskedAccount, projectName, projectsOf } from "@/lib/e-anudaan/applicant";
 import { formatDate } from "@/lib/e-anudaan/format";
+import { requestStatusLabel, requestStatusTone } from "@/lib/e-anudaan/change-requests";
 import type { BankChangeRequest, Institution, ProjectAccount } from "@/lib/e-anudaan/types";
 
 const IFSC = /^[A-Z]{4}0[A-Z0-9]{6}$/;
@@ -124,6 +125,9 @@ export default function ProjectBankAccountsPage() {
                 project={p}
                 accounts={accountsFor(state, p.id)}
                 pending={bankRequests.find((r) => r.projectId === p.id && r.status === "Pending")}
+                decided={bankRequests
+                  .filter((r) => r.projectId === p.id && r.status !== "Pending" && r.decidedAt)
+                  .sort((a, b) => Date.parse(b.decidedAt!) - Date.parse(a.decidedAt!))[0]}
                 onChange={() => setChanging(p)}
               />
             ))}
@@ -155,11 +159,14 @@ function ProjectRow({
   project,
   accounts,
   pending,
+  decided,
   onChange,
 }: {
   project: Institution;
   accounts: { current?: ProjectAccount; previous: ProjectAccount[] };
   pending?: BankChangeRequest;
+  /** The latest request the Ministry has decided on this project, with its remarks. */
+  decided?: BankChangeRequest;
   onChange: () => void;
 }) {
   const [showPrevious, setShowPrevious] = React.useState(false);
@@ -187,6 +194,17 @@ function ProjectRow({
             <span className="mt-1 block">
               <Badge status="warning" size="sm">Change Under Examination</Badge>{" "}
               To {accountLine(pending)} · requested {formatDate(pending.submittedAt)}
+            </span>
+          )}
+          {!pending && decided && (
+            <span className="mt-1 block">
+              {/* The shared label, so this page and the officer's desk give the request one
+                  decision word (audit N-19, glossary: Approved / Not Approved). */}
+              <Badge status={requestStatusTone(decided)} size="sm">
+                {requestStatusLabel(decided)}
+              </Badge>{" "}
+              {formatDate(decided.decidedAt!)}
+              {decided.decisionRemarks ? ` · ${decided.decisionRemarks}` : ""}
             </span>
           )}
           {previous.length > 0 && (
@@ -237,7 +255,7 @@ function ProjectRow({
 }
 
 function ChangeAccountDialog({ project, current, onClose }: { project: Institution; current?: ProjectAccount; onClose: () => void }) {
-  const { submitChangeRequest } = useEAnudaan();
+  const { raiseChangeRequest } = useEAnudaan();
   const { toast } = useToast();
   const fileInput = React.useRef<HTMLInputElement>(null);
   const [f, setF] = React.useState({ bank: "", branch: "", account: "", confirm: "", ifsc: "", pfms: "", reason: "" });
@@ -259,7 +277,7 @@ function ChangeAccountDialog({ project, current, onClose }: { project: Instituti
   const submit = () => {
     setTried(true);
     if (errors.length) return;
-    submitChangeRequest({
+    raiseChangeRequest({
       kind: "bank",
       projectId: project.id,
       bank: f.bank.trim(),

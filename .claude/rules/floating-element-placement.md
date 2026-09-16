@@ -48,6 +48,32 @@ The accessibility widget anchoring the corner follows from the same rule and
 happens to be right for a second reason: it is the one control on the page that
 is a legal obligation, so it gets the most predictable position on the page.
 
+## A STICKY action bar is not a third rail
+
+**A bar that belongs to a form and rides the bottom of the viewport while that form
+scrolls is not a floating widget, and it does not join the corner stack.** The
+Wizard's phone action bar (0–767px) is the case: `position: sticky`, inside the
+step panel, landing in its own place at the end of the step. It needs no rung on
+the z-index ladder, it cannot outlive the form, and it leaves no hole in the
+document.
+
+What it owes the corner stack is two things, and both are the rails' own contracts:
+
+- **`data-sa-rail-clear`** on the bar, so a TRANSIENT launcher steps aside while it
+  would sit on it. The statutory accessibility control never yields, and must not.
+- **A trailing gutter, where the corner is actually occupied**, so the primary
+  action stops short of the control that will not move. Measure it — on every
+  portal the UX4G trigger is `display: none` because the surface carries an
+  `AccessibilityBar`, and reserving 56px of a 375px row for a control that is not
+  there costs the primary its words. The Wizard measures both the marked occupants
+  and whatever is PAINTED at the rail's resting point: the UX4G widget draws its
+  control in markup that is not the id the rail knows it by, and measured at 375 on
+  the AVYAY upload step `#uw-widget-custom-trigger` was 0×0 while a 56px control sat
+  on the primary action.
+
+Anything that is `position: fixed` is not this: it is a corner or wall occupant and
+the rest of this rule applies to it.
+
 ## The contract is ONE attribute
 
 ```tsx

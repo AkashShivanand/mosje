@@ -3,7 +3,7 @@
 /**
  * Notifications — the applicant's feed, and the page the masthead bell leads to.
  *
- * DS Audit: NotificationCentre ✅ existing (gained Action Needed + states for the bell) — nothing new.
+ * DS Audit: NotificationCentre ✅ existing (gained Action Needed, due dates and an Overdue mark) — nothing new.
  *
  * The live screen shows "<n> unread", a "Mark all read" action, and an "Open →" link on any item
  * that names an application. Both survive: the count is the panel's status line and the link is
@@ -16,15 +16,16 @@
 import Link from "next/link";
 import { NotificationCentre } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
-import { notificationItems } from "@/lib/e-anudaan/notifications";
+import { ngoNotifications, useNow } from "@/components/e-anudaan/ngo-shell";
 
 export default function NgoNotificationsPage() {
   const { state, markAllNotificationsRead } = useEAnudaan();
 
   return (
     <NotificationCentre
-      notifications={notificationItems(state, "ngo")}
+      notifications={ngoNotifications(state)}
       titleAs="h1"
+      now={useNow()}
       onMarkAllRead={markAllNotificationsRead}
       linkAs={Link}
     />

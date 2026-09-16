@@ -25,6 +25,14 @@ import {
  * Children are `FormSection`s and `FormCard`s, which are **not** cards — never wrap
  * the step body in a `Card`. Spec: `docs/design-system/form-wizard-visual-language.md`.
  *
+ * **Below 768px the action band is sticky** — it rides the bottom of the viewport
+ * while the step scrolls under it, Back drops to an icon so the primary keeps its
+ * words, the body reserves the bar's height so the last field is never covered, and
+ * the bar keeps clear of the corner stack (`data-sa-rail-clear`, plus a trailing
+ * gutter where the accessibility control is on the page). Narrow the Storybook
+ * viewport to see it. Long steps are the case: a grant step runs 2,000–3,900px on a
+ * phone, so the only way forward used to be off-screen the whole time.
+ *
  * It owns **none** of your state. The parent holds the field values, the step
  * index and the validation; the Wizard renders the chrome and tells you when
  * the user asked to move. That is deliberate — a wizard that owned validation

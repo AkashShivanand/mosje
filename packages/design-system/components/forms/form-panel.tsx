@@ -14,6 +14,12 @@ export interface FormPanelProps {
   actions?: React.ReactNode;
   /** The action band at the foot — Back / Cancel and the primary action. */
   footer?: React.ReactNode;
+  /**
+   * Attributes for the action band itself — a class, or the data attributes a floating-element
+   * rail reads. The Wizard uses it to mark its sticky phone bar as a surface a transient widget
+   * must keep clear of (`floating-element-placement.md`). Never a substitute for `footer`.
+   */
+  footerProps?: React.HTMLAttributes<HTMLDivElement>;
   /** Heading level of the title. A portal screen's h1 is its page header. @default 2 */
   as?: 2 | 3;
   children: React.ReactNode;
@@ -27,7 +33,7 @@ export interface FormPanelProps {
  * {@link FormSection}s 32 apart, and a tinted action band. This is the handoff's form
  * grammar: the step is the card, the sub-sections are not.
  */
-export function FormPanel({ title, description, actions, footer, as = 2, children, className }: FormPanelProps) {
+export function FormPanel({ title, description, actions, footer, footerProps, as = 2, children, className }: FormPanelProps) {
   const headingId = React.useId();
   const Heading = `h${as}` as const;
   return (
@@ -44,7 +50,11 @@ export function FormPanel({ title, description, actions, footer, as = 2, childre
         </div>
       )}
       <div className="ds-form-panel__body">{children}</div>
-      {footer && <div className="ds-form-panel__foot">{footer}</div>}
+      {footer && (
+        <div {...footerProps} className={cn("ds-form-panel__foot", footerProps?.className)}>
+          {footer}
+        </div>
+      )}
     </section>
   );
 }

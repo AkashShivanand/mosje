@@ -160,9 +160,18 @@
     cursor: not-allowed;
   }
 
-  .ds-selection[data-disabled] .ds-selection__label,
-  .ds-selection[data-disabled] .ds-selection__description {
+  .ds-selection[data-disabled] .ds-selection__label {
     color: var(--sa-text-neutral-disabled);
+  }
+
+  /* THE DESCRIPTION KEEPS ITS INK WHEN THE CONTROL IS DISABLED. On a disabled control the
+     description is usually the REASON it is disabled — "Open or give a verdict on every
+     required document first" — and in the disabled grey it measured 3.04:1 on white, failing
+     SC 1.4.3 on the one sentence that tells the reader what to do (e-Anudaan audit R-01). The
+     SC 1.4.3 exemption covers an inactive control's own text, not the instruction beside it.
+     The label and the box still dim, so the control reads unavailable. */
+  .ds-selection[data-disabled] .ds-selection__description {
+    color: var(--sa-text-neutral-subtle);
   }
 
   /* ── Card variant ─────────────────────────────────────────────────────────

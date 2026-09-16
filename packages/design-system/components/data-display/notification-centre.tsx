@@ -72,6 +72,12 @@ export interface NotificationCentreProps {
   actionHeading?: string;
   /** Shown above the updates only when an Action Needed section precedes them. @default "Updates" */
   updatesHeading?: string;
+  /**
+   * What "now" is, for marking an entry whose `dueAt` has passed as Overdue. Passed straight to
+   * `EventList`; resolve it once per page and hand the same value to every list on the screen.
+   * Omitted, only an item's own `overdue` marks one.
+   */
+  now?: string | number | Date;
   /** The app's router link (`next/link`). Defaults to a plain anchor. */
   linkAs?: React.ElementType;
   className?: string;
@@ -116,6 +122,7 @@ export function NotificationCentre({
   viewAllLabel = "View All Notifications",
   actionHeading = "Action Needed",
   updatesHeading = "Updates",
+  now,
   linkAs,
   className,
 }: NotificationCentreProps): React.JSX.Element {
@@ -189,6 +196,7 @@ export function NotificationCentre({
                 events={actions}
                 label={`${label} — ${actionHeading}`}
                 showActionTag={false}
+                now={now}
                 linkAs={linkAs}
                 grouping="none"
               />
@@ -202,6 +210,7 @@ export function NotificationCentre({
               <EventList
                 events={shownUpdates}
                 label={actions.length > 0 ? `${label} — ${updatesHeading}` : label}
+                now={now}
                 grouping="day"
                 dayHeadingAs={actions.length > 0 ? DayTitle : SectionTitle}
                 emptyText={emptyText}
