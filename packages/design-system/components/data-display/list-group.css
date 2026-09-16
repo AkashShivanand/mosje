@@ -146,4 +146,16 @@
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
   }
+
+  /* FLUSH: the list is pulled out by exactly a row's own side padding, so the rows' text lines
+     up with whatever sits above them while the hover band still reaches the container's inner
+     edge. Inside a card beside a heading and a set of readings, an inset row reads as indented
+     from everything else — measured at 16px on the applicant's claims card, 16 Sep 2026. */
+  .ds-list--flush {
+    margin-inline: calc(var(--sa-padding-16) * -1);
+  }
+
+  .ds-list--flush.ds-list--sm {
+    margin-inline: calc(var(--sa-padding-12) * -1);
+  }
 }
