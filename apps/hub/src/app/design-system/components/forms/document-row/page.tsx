@@ -50,8 +50,8 @@ export default function DocumentRowPage(): React.JSX.Element {
     <ComponentDocPage
       name="Document Row"
       status="New"
-      summary="One document as a compact row: a status icon, the title, the file, the status in words, one primary action and a menu. Ten states — Not uploaded, Optional, Uploading, Upload failed, Can't be uploaded, Checking, Looks right, Please confirm, Doesn't match, Saved for a hand check. A row that needs nothing is one line; a row that needs the reader grows by one sentence, and everything else sits behind What we found and the menu."
-      figma={{ absent: "Built from the e-Anudaan Document Centre spec (docs/plans/2026-09-16-e-anudaan-document-centre.md); not yet drawn in the SAMAVESH library." }}
+      summary="One document as a compact row: a status icon, the title, the file, the status in words, one primary action and a menu. Ten states — Not uploaded, Optional, Uploading, Upload failed, Can't be uploaded, Checking, Looks right, Check the details, Doesn't match, Saved for a hand check. A row that needs nothing is one line; a row that needs the reader grows by one sentence, and everything else sits behind What we found and the menu."
+      figma={{ node: "documentRow" }}
       specimen={<DocumentRowStates />}
       propsFrom="DocumentRowProps"
       a11y={A11Y}
@@ -89,7 +89,7 @@ export default function DocumentRowPage(): React.JSX.Element {
               ["rejected", "Can't be uploaded", "error, 3px error accent", "Choose Another File"],
               ["checking", "Checking…", "progress_activity", "—"],
               ["verified", "Looks right", "check_circle", "(menu)"],
-              ["review", "Please confirm", "warning", "What we found"],
+              ["review", "Check the details", "warning", "What we found"],
               ["invalid", "Doesn't match", "report, 3px error accent", "Replace"],
               ["unavailable", "Saved — an officer will check it", "info", "(menu)"],
             ]}

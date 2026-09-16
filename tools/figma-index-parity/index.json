@@ -2,8 +2,8 @@
   "file": "3FF5l0SMNIwdpZrKkeyPTm",
   "indexPage": "56757:725",
   "indexFrame": "56757:726",
-  "capturedOn": "2026-09-15",
-  "statLine": "91 pages · 210 components · counted 14 September 2026",
+  "capturedOn": "2026-09-16",
+  "statLine": "96 pages · 218 components · counted 16 September 2026",
   "statuses": [
     "Ready",
     "Published",
@@ -77,6 +77,11 @@
     "Time Slot",
     "Biometric Capture",
     "Form Layout",
+    "Document Row",
+    "Document Checklist",
+    "Document Findings",
+    "Document Placement Tray",
+    "Document History Sheet",
     "Accordion",
     "Breadcrumbs",
     "Language Switcher",
@@ -241,7 +246,7 @@
     },
     {
       "name": "Forms & Inputs",
-      "stated": 21,
+      "stated": 26,
       "cards": [
         {
           "name": "Input Field",
@@ -345,6 +350,31 @@
         },
         {
           "name": "Form Layout",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Document Row",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Document Checklist",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Document Findings",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Document Placement Tray",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Document History Sheet",
           "status": "Ready",
           "linked": true
         }

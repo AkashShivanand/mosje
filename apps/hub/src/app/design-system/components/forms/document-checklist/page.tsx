@@ -52,7 +52,7 @@ export default function DocumentChecklistPage(): React.JSX.Element {
       name="Document Checklist"
       status="New"
       summary="The documents a form asks for, in the groups the scheme uses, under one header that answers “what do I have to do?”: how many required documents are READY, three filter chips for the three questions a clerk has, one drop zone with a keyboard route, and the ErrorSummary a blocked Continue raises. Rows are Document Rows."
-      figma={{ absent: "Built from the e-Anudaan Document Centre spec (docs/plans/2026-09-16-e-anudaan-document-centre.md); not yet drawn in the SAMAVESH library." }}
+      figma={{ node: "documentChecklist" }}
       specimen={<DocumentChecklistSpecimen />}
       propsFrom="DocumentChecklistProps"
       a11y={A11Y}
