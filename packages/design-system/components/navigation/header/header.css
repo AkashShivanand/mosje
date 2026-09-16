@@ -239,7 +239,16 @@
      its navigation row draws its own top border directly under the brand row — and a
      portal that DOES pass `nav` drops that row's top border so the two lines never
      stack into 2px. The condensed bar draws the same line for itself (`.ds-hdr-cond`),
-     so the edge is there in both states. */
+     so the edge is there in both states.
+
+     A LINE, NEVER A SHADOW (decided 2026-09-16). Figma also carried a drop shadow on
+     five of the six Navbar/Portal variants — 0 4 12 rgba(0,0,0,.08) on the two Default
+     frames, 0 2 8 rgba(30,33,36,.12) on the three On Scroll ones — and one had leaked
+     onto the inner `Logo and CTAs` frame as well. Desktop/Default had none, so the
+     library disagreed with itself. The line won: it is the flatter register a
+     departmental page is written in, and the masthead is sticky, so a shadow would have
+     to appear and disappear on scroll — a second behaviour with nothing asking for it.
+     The shadows are gone from the library; do not reintroduce one here. */
   .ds-hdr[data-variant="portal"] .ds-hdr-brand {
     border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
