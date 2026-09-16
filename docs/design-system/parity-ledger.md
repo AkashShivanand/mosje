@@ -7,14 +7,14 @@
 
 | Verdict | Count | Meaning |
 |---|---:|---|
-| `mapped` | 112 | A Figma component set with a confirmed code counterpart |
-| `figma-only` | 49 | Designed, never built. Backlog item or retire from the library |
-| `code-only` | 132 | Built, never designed. Figma backlog item |
+| `mapped` | 120 | A Figma component set with a confirmed code counterpart |
+| `figma-only` | 41 | Designed, never built. Backlog item or retire from the library |
+| `code-only` | 124 | Built, never designed. Figma backlog item |
 | `deliberately-unmapped` (Figma) | 11 | Internal sub-parts and brand assets |
 | `deliberately-unmapped` (code) | 7 | Demo tooling, providers, utilities |
 | `broken-pairing` | 0 | Pairing names a code export that no longer exists — **fix immediately** |
 
-**172** published component sets · **240** code components · **112** paired.
+**172** published component sets · **240** code components · **120** paired.
 
 ## Figma → code
 
@@ -68,12 +68,12 @@
 | Time Picker | Date-Time Picker | `TimePicker` | `mapped` | [57547:2631](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57547-2631) |
 | Description List / Row | Description List | `DescriptionList` | `mapped` | [57520:769](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57520-769) |
 | Divider | Divider | `Divider` | `mapped` | [55061:700](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55061-700) |
-| Document Checklist | Document Checklist | — | `figma-only` | [58283:1076](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58283-1076) |
-| Document Findings | Document Findings | — | `figma-only` | [58267:821](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58267-821) |
+| Document Checklist | Document Checklist | `DocumentChecklist` | `mapped` | [58283:1076](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58283-1076) |
+| Document Findings | Document Findings | `DocumentFindings` | `mapped` | [58267:821](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58267-821) |
 | Document Findings / Field | Document Findings | — | `figma-only` | [58266:760](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58266-760) |
 | Document History Sheet / Entry | Document History Sheet | — | `figma-only` | [58282:756](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58282-756) |
 | Document Placement Tray / Item | Document Placement Tray | — | `figma-only` | [58281:814](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58281-814) |
-| Document Row | Document Row | — | `figma-only` | [58278:1079](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58278-1079) |
+| Document Row | Document Row | `DocumentRow` | `mapped` | [58278:1079](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58278-1079) |
 | EmptyState | Empty State | `EmptyState` | `mapped` | [452:97007](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=452-97007) |
 | Event List / Row | Event List | `EventList` | `mapped` | [57600:48770](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57600-48770) |
 | Fact Strip | Fact Strip | `FactStrip` | `mapped` | [57981:811](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57981-811) |
@@ -85,11 +85,11 @@
 | File List / Row | File List | `FileList` | `mapped` | [57611:775](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57611-775) |
 | Footer - Bottom Strip | Footer | _Footer sub-part_ | `deliberately-unmapped` | [2500:297936](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=2500-297936) |
 | Site Footer | Footer | `SiteFooter` | `mapped` | [57800:1922](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57800-1922) |
-| Declaration Checkbox | Form Layout | — | `figma-only` | [58191:3685](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58191-3685) |
-| Document Tile | Form Layout | — | `figma-only` | [58096:1947](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58096-1947) |
-| Form / Panel | Form Layout | — | `figma-only` | [58091:2489](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58091-2489) |
-| Form / Section | Form Layout | — | `figma-only` | [58089:1454](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58089-1454) |
-| Review / Section | Form Layout | — | `figma-only` | [58096:2025](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58096-2025) |
+| Declaration Checkbox | Form Layout | `DeclarationCheckbox` | `mapped` | [58191:3685](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58191-3685) |
+| Document Tile | Form Layout | `DocumentTile` | `mapped` | [58096:1947](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58096-1947) |
+| Form / Panel | Form Layout | `FormPanel` | `mapped` | [58091:2489](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58091-2489) |
+| Form / Section | Form Layout | `FormSection` | `mapped` | [58089:1454](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58089-1454) |
+| Review / Section | Form Layout | `ReviewSection` | `mapped` | [58096:2025](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=58096-2025) |
 | IconButton | Icon Button | `IconButton` | `mapped` | [3:3497](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=3-3497) |
 | Icon | Iconography | `Icon` | `mapped` | [55030:701](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55030-701) |
 | Inline Edit | Inline Edit | `InlineEdit` | `mapped` | [57599:770](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=57599-770) |
@@ -235,19 +235,14 @@
 | `DarpanFields` | `./components/auth/credential-fields` | `code-only` |
 | `DashboardGrid` | `./components/dashboard/dashboard-grid` | `code-only` |
 | `DecisionScreen` | `./components/templates/decision-screen` | `code-only` |
-| `DeclarationCheckbox` | `./components/forms/declaration-checkbox` | `code-only` |
 | `DemoAccountsPanel` | `./demo` | `deliberately-unmapped` — _Demo tooling — never product UI_ |
 | `DemoDock` | `./demo` | `deliberately-unmapped` — _Demo tooling — never product UI_ |
 | `DemoFab` | `./demo` | `deliberately-unmapped` — _Demo tooling — never product UI_ |
 | `DocumentBulkAction` | `./components/forms/document-checklist` | `code-only` |
-| `DocumentChecklist` | `./components/forms/document-checklist` | `code-only` |
 | `DocumentChecklistGroup` | `./components/forms/document-checklist` | `code-only` |
-| `DocumentFindings` | `./components/forms/document-findings` | `code-only` |
 | `DocumentHistorySheet` | `./components/forms/document-history-sheet` | `code-only` |
 | `DocumentLibrary` | `./components/data-display/document-library` | `code-only` |
 | `DocumentPlacementTray` | `./components/forms/document-placement-tray` | `code-only` |
-| `DocumentRow` | `./components/forms/document-row` | `code-only` |
-| `DocumentTile` | `./components/forms/document-tile` | `code-only` |
 | `DocumentTiles` | `./components/forms/document-tile` | `code-only` |
 | `DonutChart` | `./components/data-display/charts` | `code-only` |
 | `ErrorSummary` | `./components/forms/error-summary` | `code-only` |
@@ -264,9 +259,7 @@
 | `FormCard` | `./components/forms/form-card` | `code-only` |
 | `FormField` | `./components/forms/form-field` | `code-only` |
 | `FormInset` | `./components/forms/form-inset` | `code-only` |
-| `FormPanel` | `./components/forms/form-panel` | `code-only` |
 | `FormScreen` | `./components/templates/form-screen` | `code-only` |
-| `FormSection` | `./components/forms/form-section` | `code-only` |
 | `FunnelChart` | `./components/data-display/charts` | `code-only` |
 | `GalleryScreen` | `./components/templates/gallery-screen` | `code-only` |
 | `Gauge` | `./components/data-display/charts` | `code-only` |
@@ -310,7 +303,6 @@
 | `ReportScreen` | `./components/templates/report-screen` | `code-only` |
 | `ReviewItem` | `./components/forms/wizard` | `code-only` |
 | `ReviewScreen` | `./components/templates/review-screen` | `code-only` |
-| `ReviewSection` | `./components/forms/wizard` | `code-only` |
 | `ScatterChart` | `./components/data-display/charts` | `code-only` |
 | `ScreenBody` | `./components/templates/screen-body` | `code-only` |
 | `SearchScreen` | `./components/templates/search-screen` | `code-only` |
