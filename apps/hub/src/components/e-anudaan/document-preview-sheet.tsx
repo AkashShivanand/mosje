@@ -23,12 +23,19 @@ import type { MockDoc } from "@/lib/e-anudaan/types";
 export function DocumentPreviewSheet({
   doc,
   verdict,
+  verdictControl,
   previewUrl,
   onClose,
 }: {
   doc: MockDoc | null;
   /** The verdict as the review screen words it. */
   verdict?: string;
+  /**
+   * The officer's verdict control, for an officer who may still change it. The verdict is given
+   * WHERE the document is read, so opening a file and recording what it showed is one movement
+   * (design-director audit R-01).
+   */
+  verdictControl?: React.ReactNode;
   previewUrl?: string;
   onClose: () => void;
 }) {
@@ -81,6 +88,12 @@ export function DocumentPreviewSheet({
     >
       {doc && (
         <div className="space-y-5">
+          {verdictControl && (
+            <div className="space-y-2">
+              <SectionTitle as={3} title="Your Verdict" />
+              {verdictControl}
+            </div>
+          )}
           <DescriptionList
             columns={2}
             size="sm"
@@ -90,7 +103,7 @@ export function DocumentPreviewSheet({
               { term: "Size", value: fileSize(doc.sizeKb) },
               { term: "Uploaded On", value: doc.uploadedAt ? formatDate(doc.uploadedAt) : "Not recorded" },
               { term: "Document Group", value: doc.group === "annual" ? "Annual — verified each year" : "Permanent" },
-              ...(verdict ? [{ term: "Verdict", value: verdict }] : []),
+              ...(verdict && !verdictControl ? [{ term: "Verdict", value: verdict }] : []),
             ]}
           />
 

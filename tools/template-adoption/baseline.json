@@ -24,7 +24,6 @@
     "apps/hub/src/app/portals/e-anudaan/(ngo)/ngo/my-applications/deficiencies/page.tsx",
     "apps/hub/src/app/portals/e-anudaan/(ngo)/ngo/project-location-change/page.tsx",
     "apps/hub/src/app/portals/e-anudaan/page.tsx",
-    "apps/hub/src/app/portals/e-anudaan/sign-in/page.tsx",
     "apps/hub/src/app/portals/nhapoa/admin/analytics/page.tsx",
     "apps/hub/src/app/portals/nhapoa/admin/categories/page.tsx",
     "apps/hub/src/app/portals/nhapoa/admin/dashboard/page.tsx",
@@ -216,7 +215,6 @@
     "apps/hub/src/app/portals/tg/citizen/(app)/welfare/page.tsx",
     "apps/hub/src/app/portals/tg/citizen/page.tsx",
     "apps/hub/src/app/portals/tg/page.tsx",
-    "apps/hub/src/components/e-anudaan/review-shell.tsx",
     "apps/hub/src/components/eutthan/eutthan-shell.tsx",
     "apps/hub/src/components/pm-ajay/dashboard/ui.tsx"
   ]

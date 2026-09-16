@@ -15,6 +15,11 @@ import { Button, FormField, FormPanel, FormSection, Icon, Input, Textarea } from
  *
  * Inside a multi-step form, use `Wizard`, which draws this panel for the current step.
  *
+ * `footerProps` carries attributes for the action band itself — a class, or the data
+ * attributes a floating-element rail reads. `Wizard` uses it to mark its sticky phone
+ * bar as a surface a transient widget must keep clear of. It is never a substitute for
+ * `footer`: the band's CONTENT always goes there.
+ *
  * Spec: `docs/design-system/form-wizard-visual-language.md`.
  *
  * Lifecycle: **New**.

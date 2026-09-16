@@ -14,7 +14,7 @@
  *    — and seeding doubles as a smoke test: a broken rule throws at boot.
  */
 
-import { applyAction, deficiencyItemsFrom, type Clock, type WorkflowAction } from "../workflow.ts";
+import { applyAction, deficiencyItemsFrom, releaseFunds, type Clock, type WorkflowAction } from "../workflow.ts";
 import {
   GRADES,
   type Division,
@@ -23,6 +23,7 @@ import {
   type Inspection,
   type MockDoc,
   type ChangeRequest,
+  type CctvSetup,
   type DeficiencyItem,
   type NgoProfile,
   type NotificationEntry,
@@ -30,16 +31,36 @@ import {
   type Scheme,
 } from "../types.ts";
 import { buildBeneficiaries, buildEmployees, type Beneficiary, type Employee } from "../roster.ts";
+import { AVYAY_WIZARD, NAPDDR_WIZARD, SHRESHTA_WIZARD, SMILE_CASE_EXISTING, SMILE_CASE_NEW, SMILE_WIZARD, fieldVisible, visibleSteps, wizardFor } from "../form-schema.ts";
+import { applicationRefOf, claimIdFor, instalmentLabel, instalmentPlan, renewalAnswers } from "../instalments.ts";
 import { PROJECT_ID_PREFIX, instalmentAfter, notificationBody, notificationTitle, notifiesApplicant } from "../applicant.ts";
-import type { Institution } from "../types.ts";
+import { schemeName } from "../glossary.ts";
+import { demoVerdictFor } from "../doc-verification.ts";
+import { automaticCheckOf, isFlagged } from "../review-readiness.ts";
+import type { EAnudaanState, Institution } from "../types.ts";
 
 /** The demo's "today". Matches the recon capture date so seeded ageing reads sensibly. */
 export const SEED_NOW = "2026-08-12T09:00:00.000Z";
 
 const DAY = 86_400_000;
 
+/**
+ * A moment `daysAgo` days before the demo's today, at a time of day that varies with the day.
+ * Every seeded event used to fall at 02:30 PM (SEED_NOW's own time). The offset spreads them
+ * across office hours, 09:45 AM to 05:50 PM IST, drawn from the day itself rather than from the
+ * random generator, so no reference, figure or project elsewhere in the seed moves. It is under
+ * a day either way, so events on different days keep their order.
+ */
+/** "12 Mar 1978" → "1978-03-12". */
+function isoDateOf(printed: string | undefined): string | undefined {
+  if (!printed) return undefined;
+  const t = Date.parse(`${printed} UTC`);
+  return Number.isNaN(t) ? undefined : new Date(t).toISOString().slice(0, 10);
+}
+
 function iso(daysAgo: number): string {
-  return new Date(Date.parse(SEED_NOW) - daysAgo * DAY).toISOString();
+  const offsetMinutes = daysAgo >= 1 ? ((daysAgo * 157) % 485) - 285 : 0;
+  return new Date(Date.parse(SEED_NOW) - daysAgo * DAY + offsetMinutes * 60_000).toISOString();
 }
 
 /** Mulberry32 — small, deterministic, good enough for picking demo values. */
@@ -86,24 +107,30 @@ function clockAt(daysAgo: number): Clock {
 
 /* ── schemes — all four offered on the live NGO portal ─────────────────────── */
 
+/**
+ * Named ONE way on every screen, from the glossary rather than from a second list here: **Acronym —
+ * Full name**, in British spelling (design-director follow-up, 16 Sep 2026 — the seed said "SMILE
+ * (Garima Greh)" on one screen and "Support for Marginalized Individuals…" on another, so a
+ * returning applicant could not match the card they chose to the row it produced).
+ */
 export const SEED_SCHEMES: Scheme[] = [
   {
     code: "NAPDDR",
-    name: "NAPDDR",
+    name: schemeName("NAPDDR").title,
     description:
       "National Action Plan for Drug Demand Reduction. Prevention, treatment, rehabilitation, social-reintegration and aftercare for persons affected by substance abuse.",
     target: "Persons affected by substance abuse",
   },
   {
     code: "AVYAY",
-    name: "AVYAY (Atal Vayo Abhyuday Yojana)",
+    name: schemeName("AVYAY").title,
     description:
       "Atal Vayo Abhyuday Yojana — umbrella scheme covering Integrated Programme for Senior Citizens (IPSrC), maintenance of Old Age Homes / Continuous Care Homes, Rashtriya Vayoshri Yojana, Silver Economy etc.",
     target: "Senior citizens",
   },
   {
     code: "SHRESHTA_M2",
-    name: "SHRESHTA Mode 2",
+    name: schemeName("SHRESHTA_M2").title,
     description:
       "SHRESHTA Mode 2 — grant-in-aid to NGO-run / state-government residential schools for SC students (Class 9–12).",
     target: "SC students in NGO-run schools",
@@ -113,7 +140,7 @@ export const SEED_SCHEMES: Scheme[] = [
     // picker opened "Please choose a scheme first." and SMILE could not be applied for at all
     // (full-wizard walk, 13 Sep 2026).
     code: "SMILE",
-    name: "Support for Marginalized Individuals for Livelihood & Enterprise",
+    name: schemeName("SMILE").title,
     description:
       "Garima Greh sub-scheme under SMILE — shelter homes for transgender persons providing food, medical care, recreational facilities, skill development and capacity-building support.",
     target: "Transgender persons",
@@ -216,17 +243,45 @@ function projectFor(ngo: NgoProfile, scheme: string): Institution {
   return inst;
 }
 
+/**
+ * The statute an organisation is registered under, with a registration number and date that fit it.
+ *
+ * The record used to say "Registrar of Societies" — the authority that keeps the register, not the
+ * Act — so the wizard's "Statute / Act of Registration" (which prefills only from a value naming an
+ * Act) was left for the clerk to type (batch B4, 16 Sep 2026). Read from what the organisation calls
+ * itself and where it sits: a Trust registers under its state's public-trusts Act, a Foundation as a
+ * Section 8 company, and everything else as a society. Section 8 came in with the Companies Act
+ * 2013, so a Foundation cannot carry the 1978 date the societies and trusts do.
+ *
+ * Takes the two digits already drawn for the registration number rather than drawing more, so no
+ * figure anywhere else in the seed moves.
+ */
+function registrationOf(name: string, state: string, a: number, b: number): Pick<NgoProfile, "registeredUnder" | "registrationNo" | "registrationDate"> {
+  if (/\bFoundation\b/.test(name)) {
+    const code = { Maharashtra: "MH", "Uttar Pradesh": "UP", Delhi: "DL", Gujarat: "GJ", Rajasthan: "RJ", Karnataka: "KA", "Madhya Pradesh": "MP", Odisha: "OR" }[state] ?? "DL";
+    return {
+      registeredUnder: "Section 8 of the Companies Act, 2013",
+      registrationNo: `U85300${code}2014NPL0${a}${b}`,
+      registrationDate: "18 Jul 2014",
+    };
+  }
+  if (/\bTrust\b/.test(name)) {
+    const act = state === "Maharashtra" ? "Bombay Public Trusts Act, 1950" : state === "Gujarat" ? "Gujarat Public Trusts Act, 1950" : "Indian Trusts Act, 1882";
+    return { registeredUnder: act, registrationNo: `E-${a}${b}`, registrationDate: "12 Mar 1978" };
+  }
+  return { registeredUnder: "Societies Registration Act, 1860", registrationNo: `${a}-${b}`, registrationDate: "12 Mar 1978" };
+}
+
 function buildNgos(): NgoProfile[] {
   return NGO_NAMES.map((name, i) => {
     const place = PLACES[i % PLACES.length]!;
     const instCount = i === 0 ? APPLICANT_SITES.length : between(1, 3);
+    const registration = registrationOf(name, place.state, between(10, 99), between(10, 99));
     return {
       id: `ngo-${(i + 1).toString().padStart(3, "0")}`,
       name,
       darpanId: `${place.code.split("/")[0]}/2016/${(100000 + i * 137).toString()}`,
-      registrationNo: `${between(10, 99)}-${between(10, 99)}`,
-      registrationDate: "12 Mar 1978",
-      registeredUnder: "Registrar of Societies",
+      ...registration,
       state: place.state,
       district: place.district,
       // Invented office bearers. The live demo account belongs to a real registered NGO, and its
@@ -348,6 +403,47 @@ function docsFor(complete: boolean): MockDoc[] {
   });
 }
 
+/* ── scheme answers — what an AVYAY or NAPDDR file answers beyond the common questions ─────── */
+
+const person = (prefix: string, name: string, qualification: string, designation: string, mobile: string) => ({
+  [`${prefix}_name`]: name, [`${prefix}_qualification`]: qualification, [`${prefix}_designation`]: designation, [`${prefix}_mobile`]: mobile,
+});
+function avyayAnswers(inst: Institution, nature: string, people: number): Record<string, string> {
+  return {
+    fld_nature_of_project: nature, fld_agency_type: "NGO", fld_city_category: "Z",
+    fld_project_location: `${inst.name}, ${inst.district}, ${inst.state} ${inst.pin}`, fld_functional_status: "Functional",
+    fld_commencement_date: "2024-06-01", fld_infra_area_sqft: "6400", fld_infra_rooms: "14", fld_infra_toilets: "8",
+    infra_kitchen: "Yes", infra_open_area: "Yes", moa_includes_senior_citizens: "Yes", fld_beneficiaries_women: String(Math.floor(people / 2)),
+    ...person("fld_incharge", "Meena Deshpande", "Post-graduate", "Superintendent", "9822014455"),
+    ...person("fld_key_staff_1", "Ravi Kulkarni", "Professional (Medicine, Nursing, Social Work)", "Nurse", "9822014466"),
+  };
+}
+
+function napddrAnswers(inst: Institution, website = "https://www.sankalpseva.org.in"): Record<string, string> {
+  return {
+    fld_project_type: "IRCA — Integrated Rehabilitation Centre", moa_includes_addiction: "Yes", fld_org_website: website,
+    fld_name_of_project: inst.name, fld_date_of_commencement: "2023-07-01", fld_year_of_commencement_gia: "2023-24", project_recognized_by_state: "Yes",
+    fld_location_address: `${inst.name}, ${inst.district}, ${inst.state} ${inst.pin}`, building_utilized_exclusively: "Yes",
+    fld_area_of_building_sqm: "420", fld_no_of_rooms: "12", fld_no_of_toilets: "6", kitchen_facilities: "Yes", hygiene_maintained: "Yes",
+    open_area_available: "Yes", counselling_room: "Yes", fld_functional_status: "Functional",
+    ...person("fld_incharge", "Arvind Joshi", "Post-graduate", "Project Director", "9822015511"),
+    ...person("fld_functionary_1", "Farida Shaikh", "Professional (Medicine, Nursing, Social Work)", "Counsellor", "9822015522"),
+    ...person("fld_key_staff_1", "Sunil Pawar", "Graduate", "Social Worker", "9822015533"),
+    self_generated_funds: "No", fld_beneficiaries_prev_year: "38", fld_pfms_code: "NGO3817MH04512", eat_module_registered: "Yes",
+    prev_instalment_utilised: "Yes", fld_auth_person_designation: "Secretary",
+  };
+}
+
+/**
+ * The activation code the NGO types into the recorder software at the centre. Derived from the
+ * Project ID and the number of cameras, so a project reads the same code on every run and no two
+ * projects share one. Same rule as the CCTV page's own, which is where a new setup gets its code.
+ */
+export function cctvActivationCode(projectId: string, cameras: number): string {
+  const p = Number(projectId.replace(/\D/g, "").slice(-4)) || 0;
+  return `EANU-${((4200 + p + cameras * 37) % 10000).toString().padStart(4, "0")}-${((9100 + p * 3 + cameras * 13) % 10000).toString().padStart(4, "0")}`;
+}
+
 /* ── application factory ──────────────────────────────────────────────────── */
 
 const FYS = ["2024-25", "2025-26", "2026-27"] as const;
@@ -398,7 +494,8 @@ function draft(
       fld_darpan_id: ngo.darpanId,
       fld_statute_act: ngo.registeredUnder ?? "Registrar of Societies",
       fld_registration_number: ngo.registrationNo,
-      fld_registration_date: "1934-08-06",
+      // The NGO record's own date ("12 Mar 1978"), not a constant that contradicted it.
+      fld_registration_date: isoDateOf(ngo.registrationDate) ?? "1978-03-12",
       fld_registration_expiry: "2028-09-04",
       fld_reg_office_address: `Registered office, ${ngo.district}, ${ngo.state}`,
       fld_reg_office_city: ngo.district,
@@ -429,7 +526,9 @@ function draft(
       bank_separate_institution_accounts: "Yes",
       fld_bank_account_number: "123456789012",
       fld_bank_ifsc: "SBIN0001234",
-      fld_bank_name_branch: `State Bank of India, ${inst.district}`,
+      // Bank and branch are two questions on the form; one "bank, branch" answer left both unanswered.
+      fld_bank_name: "State Bank of India",
+      fld_bank_branch: inst.district,
       fld_bank_resource_mobilisation: "Community donations and CSR grants",
       fld_gia_released_last_3yrs: "Sanction 12/2024 dated 14 Aug 2024",
       fld_beneficiaries_sc: String(sc),
@@ -465,18 +564,127 @@ function draft(
 }
 
 /**
+ * Move a file to another financial year, and every place the year is written with it: the label, the
+ * answer, a structured reference (`GIA/<year>/…`) and a sanction order (`SAN/<year>/…`), including
+ * where the audit trail quotes either. A legacy reference (`LGCY/…`) carries no year. Mutates.
+ */
+function retitleYear(a: GrantApplication, fy: string): void {
+  const was = a.financialYear;
+  if (was === fy) return;
+  const swap = (s: string) => s.replace(`/${was}/`, `/${fy}/`);
+  const oldId = a.id;
+  const oldOrder = a.sanction?.orderNo;
+  a.financialYear = fy;
+  a.projectLabel = a.projectLabel.replace(/FY \d{4}-\d{2}$/, `FY ${fy}`);
+  if (a.formValues) a.formValues = { ...a.formValues, fld_financial_year: fy };
+  if (a.id.startsWith("GIA/")) a.id = swap(a.id);
+  if (a.sanction) a.sanction = { ...a.sanction, orderNo: swap(a.sanction.orderNo) };
+  a.audit = a.audit.map((e) => {
+    let remarks = e.remarks;
+    if (remarks && oldOrder) remarks = remarks.split(oldOrder).join(a.sanction!.orderNo);
+    if (remarks && oldId !== a.id) remarks = remarks.split(oldId).join(a.id);
+    return remarks === e.remarks ? e : { ...e, remarks };
+  });
+}
+
+/**
  * Default remark per action, so the applicant's Processing History reads like a real file note
  * rather than exposing the seeding machinery.
  */
 const SEED_REMARKS: Partial<Record<WorkflowAction, string>> = {
   submit: "Application submitted.",
   certify: "Documents verified and the file certified.",
-  forward: "Forwarded to the next authority.",
   concur: "Financial concurrence recorded.",
   sanction: "Sanctioned as recommended.",
   reject: "Application rejected.",
   return: "Returned to the applicant for correction.",
 };
+
+/**
+ * What each officer writes when moving a file on. Every forward used to read "Forwarded to the next
+ * authority."; a file note says what the officer checked. Chosen by the officer and the day, so it
+ * varies across files without drawing on the random generator.
+ */
+const FORWARD_REMARKS: Partial<Record<string, readonly string[]>> = {
+  "pd-aso": ["Documents checked against the checklist; recommended for examination.", "Beneficiary figures match the attendance returns. Submitted for orders."],
+  "pd-so": ["Examined. Eligibility and cost norms verified; recommended to the Under Secretary.", "Previous utilisation certificate on record. Recommended for approval."],
+  "pd-us": ["Proposal in order. Recommended to the Deputy Secretary.", "Inspection report satisfactory; recommended for approval."],
+  "pd-ds": ["Agreed with the Under Secretary's note. Put up to the Joint Secretary.", "Recommended; the grant is within the scheme's allocation."],
+  "pd-js": ["Approved in principle. Sent to the Integrated Finance Division for concurrence.", "Approved; for financial concurrence."],
+  "finance-aso": ["Budget head and funds availability verified.", "Sanction amount checked against the cost norms."],
+  "finance-so": ["Financial scrutiny complete. Recommended for concurrence.", "No objection from the finance side; submitted."],
+  "finance-us": ["Recommended for concurrence.", "Examined; the proposal is financially in order."],
+  "finance-ds": ["Put up for the Joint Secretary's concurrence.", "Recommended for concurrence."],
+};
+
+function seedRemark(role: string, action: WorkflowAction, daysAgo: number): string {
+  if (action === "forward") {
+    const options = FORWARD_REMARKS[role];
+    if (options?.length) return options[Math.abs(daysAgo) % options.length]!;
+  }
+  return SEED_REMARKS[action] ?? "Recorded on the file.";
+}
+
+/**
+ * The rules one file keeps with itself: a New project reports no grant history, the registration
+ * date is the NGO record's, the declaration is signed at submission, a document is uploaded before
+ * the file is submitted and before it is verified, and "re-uploaded this year" means this FY.
+ */
+function tellOneStory(a: GrantApplication): GrantApplication {
+
+  const now = Date.parse(SEED_NOW);
+  const fyStart = (fy: string) => Date.parse(`${fy.slice(0, 4)}-04-01T04:30:00.000Z`);
+  const when = (x: GrantApplication) => Date.parse(x.submittedAt ?? x.updatedAt);
+  const ngo = ngoPool.find((n) => n.id === a.ngoId);
+  const fv = { ...(a.formValues ?? {}) };
+  // A New project has no grant history to report.
+  if (a.caseType === "New") {
+    fv.fld_gia_since_year = "";
+    fv.fld_gia_released_last_3yrs = "";
+    fv.fld_beneficiaries_previous_year = "";
+    fv.assistance_3yrs = "No";
+    fv.fld_institution_status = "New";
+    fv.decl_uc_uploaded = "No";
+  }
+  // The registration date is the NGO record's.
+  const registered = isoDateOf(ngo?.registrationDate);
+  if (registered && fv.fld_registration_date) fv.fld_registration_date = registered;
+  // The declaration is signed when the application is submitted (or last saved, for a draft).
+  const signed = new Date(when(a) + 5.5 * 3_600_000).toISOString();
+  if (fv.fld_auth_date) {
+    fv.fld_auth_date = signed.slice(0, 10);
+    fv.fld_auth_time = signed.slice(11, 16);
+  }
+  const submittedAt = a.submittedAt ? Date.parse(a.submittedAt) : undefined;
+  const fyBegins = fyStart(a.financialYear);
+  const documents = a.documents.map((d) => {
+    let doc = d;
+    // A document is uploaded before the application carrying it is submitted, and before anyone verifies it.
+    const ceiling = Math.min(submittedAt ?? Infinity, d.reviewedAt ? Date.parse(d.reviewedAt) : Infinity);
+    const before = (at: number) => new Date(at - (doc.slot % 5 + 1) * DAY).toISOString();
+    if (doc.versions?.length) {
+      // A corrected file is dated its correction — the moment it replaced the file before it. This
+      // rule used to pull it back before the submission it corrects, so the review read
+      // "Corrected by the NGO on 07 Aug 2026" over a corrected file "uploaded 06 Jul 2026"
+      // (design-director audit R-02, 16 Sep 2026). The files it replaced were uploaded with the
+      // application, like any other.
+      const versions = doc.versions.map((v) => {
+        const limit = Math.min(submittedAt ?? Infinity, Date.parse(v.replacedAt));
+        return v.uploadedAt && Date.parse(v.uploadedAt) > limit ? { ...v, uploadedAt: before(limit) } : v;
+      });
+      doc = { ...doc, versions, uploadedAt: versions[versions.length - 1]!.replacedAt };
+    } else if (doc.uploadedAt && Date.parse(doc.uploadedAt) > ceiling) {
+      doc = { ...doc, uploadedAt: before(ceiling) };
+    }
+    // "Re-uploaded this year" means within the application's financial year.
+    if (doc.reUploadedThisYear && doc.uploadedAt && Date.parse(doc.uploadedAt) < fyBegins) {
+      const inYear = fyBegins + (doc.slot % 7 + 1) * DAY;
+      doc = inYear < Math.min(ceiling, now) ? { ...doc, uploadedAt: new Date(inYear).toISOString() } : { ...doc, reUploadedThisYear: undefined };
+    }
+    return doc;
+  });
+  return { ...a, formValues: fv, documents };
+}
 
 /** Drive a draft through a scripted sequence of actions, failing loudly if a rule rejects one. */
 function replay(
@@ -495,7 +703,7 @@ function replay(
       s.role,
       s.action,
       {
-        remarks: s.remarks ?? SEED_REMARKS[s.action] ?? "Recorded on the file.",
+        remarks: s.remarks ?? seedRemark(s.role, s.action, s.daysAgo),
         certified: true,
         // A deficiency is raised from the review as it stands, the same way the review screen
         // raises one; the scripted ones overwrite these items with their own afterwards.
@@ -614,6 +822,7 @@ export function buildSeed(): {
   notifications: NotificationEntry[];
   projectAccounts: ProjectAccount[];
   changeRequests: ChangeRequest[];
+  cctv: CctvSetup[];
   beneficiaries: Beneficiary[];
   employees: Employee[];
 } {
@@ -1047,6 +1256,27 @@ export function buildSeed(): {
     }
   }
 
+  // 10b. A project's financial years run in the order its files were filed. The passes above give
+  //      each file a year independently, which put Hardoi's "2nd Instalment · 2024-25" under review
+  //      (filed Jul 2026) beside its "3rd Instalment · 2025-26" released a year earlier (filed Apr
+  //      2025) — a later instalment paid before the one it follows (design-director audit, 16 Sep
+  //      2026). The project keeps the same set of years, so "one application per project per year"
+  //      still holds; they are handed out oldest first to the files in the order they were filed.
+  //      Draws no random numbers.
+  {
+    const live = (a: GrantApplication) => a.status !== "Draft" && a.status !== "Rejected";
+    const filed = (a: GrantApplication) => Date.parse(a.submittedAt ?? a.updatedAt);
+    const byProject = new Map<string, GrantApplication[]>();
+    for (const a of apps.filter(live)) {
+      const k = `${a.schemeCode}|${a.institutionId}`;
+      byProject.set(k, [...(byProject.get(k) ?? []), a]);
+    }
+    for (const files of byProject.values()) {
+      const years = files.map((a) => a.financialYear).sort();
+      [...files].sort((x, y) => filed(x) - filed(y)).forEach((a, i) => retitleYear(a, years[i]!));
+    }
+  }
+
   // Case type and instalment. A first grant is New; everything after it is an Ongoing claim on
   // the next recurring instalment — derived per project in the order its files were raised.
   {
@@ -1090,17 +1320,10 @@ export function buildSeed(): {
     }
   }
 
-  // Flag a couple of documents on files an officer has already certified, so the applicant's
-  // "N Documents Require Attention" callout — and the "You will be able to upload a corrected
-  // file once the application is returned to you." note under each flagged row — are reachable.
-  apps.forEach((app, i) => {
-    if (i % 5 !== 0) return;
-    if (!app.audit.some((e) => e.action === "certify")) return;
-    for (const slot of [3, 4]) {
-      const doc = app.documents.find((d) => d.slot === slot);
-      if (doc) doc.reviewStatus = "Deficient";
-    }
-  });
+  // (A block here once marked documents 3 and 4 "Needs correction" on every fifth certified file, with
+  // no remark, under a certification that said the documents were examined and complete — a verdict
+  // that should have blocked the certification. The applicant's correction flow is reached through
+  // the scripted deficiencies above, which carry their remarks.)
 
   /*
    * A certified file carries the verdicts the certification rests on. The ASO certifies that the
@@ -1126,6 +1349,105 @@ export function buildSeed(): {
       doc.reviewedBy = by;
       doc.reviewedAt = app.certifiedAt;
     }
+  }
+
+  /*
+   * One story per file (seed-data review, 16 Sep 2026). The blocks above build files by rotation and
+   * then relabel them, which left files that contradicted themselves: an instalment claim with no
+   * earlier sanction, a New project with thirty years of grants, set-up money on an instalment, a
+   * sanction two years after its financial year, a declaration signed after submission, a document
+   * verified before it was uploaded. This pass makes each file agree with itself and with its
+   * project's other files. It draws no random numbers, so no reference, project or figure moves.
+   * `records-seed.test.ts` holds every rule.
+   */
+  {
+    const ISO_TS = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
+    /** Move every timestamp on a file by `ms`, keeping the file's own order. */
+    const shift = (value: unknown, ms: number): unknown => {
+      if (typeof value === "string") return ISO_TS.test(value) ? new Date(Date.parse(value) + ms).toISOString() : value;
+      if (Array.isArray(value)) return value.map((v) => shift(v, ms));
+      if (value && typeof value === "object") {
+        return Object.fromEntries(Object.entries(value).map(([k, v]) => [k, k === "formValues" ? v : shift(v, ms)]));
+      }
+      return value;
+    };
+    const fyStart = (fy: string) => Date.parse(`${fy.slice(0, 4)}-04-01T04:30:00.000Z`);
+    const now = Date.parse(SEED_NOW);
+    let relSeq = 0;
+    const releaseClock = (at: number): Clock => ({ now: new Date(at).toISOString(), id: (p) => `${p}-rel-${String(++relSeq).padStart(4, "0")}` });
+    const when = (a: GrantApplication) => Date.parse(a.submittedAt ?? a.updatedAt);
+
+    for (let i = 0; i < apps.length; i++) {
+      let a = apps[i]!;
+      // A sanction falls within its financial year or the year after it (a year-long approval).
+      if (a.sanction) {
+        const start = fyStart(a.financialYear);
+        const latest = Math.min(start + 2 * 365 * DAY - 2 * DAY, now - DAY);
+        const at = Date.parse(a.sanction.sanctionedAt);
+        const target = at < start ? start + 45 * DAY : at > latest ? latest - 20 * DAY : at;
+        if (target !== at) a = shift(a, target - at) as GrantApplication;
+      }
+      // An instalment claim releases recurring grant only; the non-recurring grant is the New grant's.
+      if (a.caseType === "Ongoing" && a.nonRecurring > 0) {
+        a = {
+          ...a,
+          nonRecurring: 0,
+          total: a.recurring,
+          ...(a.sanction ? { sanction: { ...a.sanction, nonRecurring: 0, total: a.sanction.recurring } } : {}),
+          formValues: { ...a.formValues, fld_grant_non_recurring: "0", fld_grant_total: String(a.recurring) },
+        };
+      }
+      apps[i] = a;
+    }
+
+    // An instalment is claimed only after an earlier grant on the project was sanctioned AND released.
+    const ordered = [...apps].sort((x, y) => when(x) - when(y));
+    for (const a of ordered) {
+      if (a.caseType !== "Ongoing" || !a.instalment) continue;
+      const idx = apps.indexOf(a);
+      const files = apps.filter((x) => x !== a && x.institutionId === a.institutionId && x.schemeCode === a.schemeCode);
+      const prior = files.filter((x) => x.sanction && Date.parse(x.sanction.sanctionedAt) <= when(a)).sort((x, y) => x.sanction!.sanctionedAt.localeCompare(y.sanction!.sanctionedAt));
+      const last = prior.at(-1);
+      if (last) {
+        if (!last.release) {
+          const at = Math.min(Date.parse(last.sanction!.sanctionedAt) + 10 * DAY, when(a) - DAY, now - DAY);
+          const released = releaseFunds(last, "pd-us", releaseClock(Math.max(at, Date.parse(last.sanction!.sanctionedAt) + 3_600_000)));
+          if (released.ok) apps[apps.indexOf(last)] = released.app;
+        }
+        continue;
+      }
+      // Nothing sanctioned before it: this is the project's first grant, so it is a New application.
+      apps[idx] = {
+        ...a,
+        caseType: "New",
+        instalment: undefined,
+        formValues: { ...a.formValues, fld_institution_status: "New", assistance_3yrs: "No" },
+      };
+    }
+
+    // Instalment numbers follow the project's claims in order, as `nextInstalment` reads them.
+    const byProject = new Map<string, GrantApplication[]>();
+    for (const a of [...apps].sort((x, y) => x.financialYear.localeCompare(y.financialYear) || when(x) - when(y))) {
+      const k = `${a.schemeCode}|${a.institutionId}`;
+      byProject.set(k, [...(byProject.get(k) ?? []), a]);
+    }
+    for (const files of byProject.values()) {
+      let lastInstalment: number | undefined;
+      let seenNew = false;
+      for (const a of files) {
+        if (a.caseType === "New") {
+          if (a.status !== "Draft" && a.status !== "Rejected") seenNew = true;
+          continue;
+        }
+        if (!a.instalment) continue;
+        const next = instalmentAfter(lastInstalment);
+        if (a.instalment !== next) apps[apps.indexOf(a)] = { ...a, instalment: next };
+        if (a.status !== "Draft" && a.status !== "Rejected") lastInstalment = next;
+        void seenNew;
+      }
+    }
+
+    for (let i = 0; i < apps.length; i++) apps[i] = tellOneStory(apps[i]!);
   }
 
   // Ageing must be recomputed AFTER the replay. `applyAction` resets ageingDays to 0 on every
@@ -1306,6 +1628,479 @@ export function buildSeed(): {
   ];
 
   /*
+   * 11. Projects with a sanctioned history under every scheme, so a renewal has something real to
+   * renew and each point in the instalment cycle can be shown (`instalments.ts`).
+   *
+   *   AVYAY 40-40-20    SR/MH/PUN/03601  New 2025-26 · 2026-27 1st           → 2nd open
+   *                     SR/DL/NWD/03602  New 2025-26 · 2026-27 1st, 2nd      → 3rd open
+   *                     SR/MH/THN/03603  New 2025-26                         → 2026-27 1st open
+   *   NAPDDR 40-40-20   DR/MH/PUN/03621 → 2nd · DR/DL/NWD/03622 → 3rd · DR/GJ/AHM/03623 → 1st
+   *   SHRESHTA 40-40-20 SC/MH/PUN/03631 → 2nd · SC/DL/NWD/03632 → 3rd · SC/TN/MDR/03633 → 1st
+   *   SMILE 50-50       TG/MH/PUN/03641  New 2025-26                         → 2026-27 1st open
+   *                     TG/DL/NWD/03642  New 2025-26 · 2026-27 1st           → 2nd open
+   *                     TG/TN/MDR/03643  New 2024-25 · 2025-26 1st, 2nd      → 2026-27 1st open (a new year)
+   *
+   * Built after every random draw above, so nothing earlier moves. Kept lean — only a project's
+   * latest file keeps a document register, answers are limited to the scheme form's own questions,
+   * the roster is small — because the store is shared by every portal on the origin.
+   */
+  const historyRoster: Beneficiary[] = [];
+  const historyStaff: Employee[] = [];
+  const historyProjects = new Set<string>();
+  /** Projects made in block 12 for a draft that could not be a claim. A draft names no residents yet. */
+  const rehomed = new Set<string>();
+  {
+    type Claim = { fy: string; instalment?: 1 | 2 | 3; submitted: number; sanctioned: number };
+    type History = {
+      scheme: "AVYAY" | "NAPDDR" | "SHRESHTA_M2" | "SMILE";
+      inst: Institution;
+      annual: number;
+      nonRecurring: number;
+      pfms: boolean;
+      bank: readonly [string, string, string];
+      people: number;
+      claims: readonly Claim[];
+      answers: Record<string, string>;
+      /** Leave the latest sanction unreleased, so the "opens once released" state has a project. */
+      unreleased?: boolean;
+    };
+    const PATTERNS: Record<History["scheme"], readonly number[]> = { AVYAY: [40, 40, 20], NAPDDR: [40, 40, 20], SHRESHTA_M2: [40, 40, 20], SMILE: [50, 50] };
+    const place = (id: string, name: string, district: string, state: string, nature: Institution["nature"], building: Institution["building"], pin: string): Institution => ({
+      id, name, district, state, nature, type: "Co-Ed", level: "Secondary", building, pin,
+    });
+    const newThenFirst: readonly Claim[] = [
+      { fy: "2025-26", submitted: 420, sanctioned: 370 },
+      { fy: "2026-27", instalment: 1, submitted: 120, sanctioned: 80 },
+    ];
+    const newThenTwo: readonly Claim[] = [
+      { fy: "2025-26", submitted: 460, sanctioned: 400 },
+      { fy: "2026-27", instalment: 1, submitted: 125, sanctioned: 90 },
+      { fy: "2026-27", instalment: 2, submitted: 70, sanctioned: 32 },
+    ];
+    const newOnly: readonly Claim[] = [{ fy: "2025-26", submitted: 380, sanctioned: 330 }];
+    const common = (h: { inst: Institution; people: number }) => ({
+      fld_statute_act: "Societies Registration Act, 1860",
+      fld_registration_date: "1978-03-12",
+      fld_reg_office_address: `Registered office, ${applicant.district}, ${applicant.state}`,
+      fld_total_beneficiaries: String(h.people),
+      beneficiaries_identified: "Yes",
+      decl_no_money_from_beneficiaries: "Yes",
+      decl_not_blacklisted: "Yes",
+      // A person signs the declaration, not the organisation.
+      fld_auth_person_name: "Meena Deshpande",
+      fld_auth_person_contact: "9822014455",
+      fld_auth_place: h.inst.district,
+    });
+    const shreshta = (inst: Institution) => ({
+      fld_registration_expiry: "2031-03-31", fld_reg_office_city: applicant.district,
+      fld_nature_of_institution: inst.nature, fld_institution_gender_type: inst.type, fld_institution_level: inst.level,
+      fld_uc_pending_status: "No Utilisation Certificate Pending", fld_commencement_date: "2012-06-15", fld_gia_since_year: "2014",
+      fld_institution_location: `${inst.name}, ${inst.district}`, fld_institution_pin: inst.pin, govt_institution_within_2km: "No",
+      fld_beneficiaries_sc: "96", fld_beneficiaries_other: "24", fld_total_beneficiaries: "120", fld_beneficiaries_previous_year: "112",
+      decl_uc_uploaded: "Yes", decl_audited_accounts_submitted: "Yes", decl_name_changed_after_grant: "No", decl_not_for_profit: "Yes",
+      decl_other_grant: "No", decl_fee_charged: "No", decl_annual_report_uploaded: "Yes", decl_all_docs_signed: "Yes",
+    });
+    const smile = (inst: Institution) => ({
+      fld_nature_of_project: "Garima Greh — Transgender Care Home", website_available: "No", fld_reg_office_city: applicant.district,
+      fld_org_geographical_coverage: `${inst.district} and neighbouring districts`, fld_org_area_specialisation: "Shelter and rehabilitation of transgender persons",
+      fld_org_tg_experience: "Nine years of shelter, counselling and livelihood work with transgender persons.",
+      fld_org_profile_writeup: "The organisation runs a 25-resident Garima Greh with counselling, skill training and placement support.",
+      fld_strength_outreach_workers: "6", fld_strength_tg_rehabilitated: "41", fld_proj_tg_id_handheld: "88",
+      fld_proj_rehab_strategies: "Skill training, placement with local employers and support for self-employment.",
+      fld_registration_act: "Societies Registration Act, 1860", fld_registration_valid_upto: "2031-03-31", fld_establishment_date: "2015-01-10",
+      fld_pan_number: "AAATS1234K", fld_pan_date: "2015-02-02", fcra_80g: "No",
+      fld_head_name: "Kavita Rao", fld_head_qualification: "Post-graduate", fld_head_mobile: "9822016611", fld_head_address: `${applicant.district}, ${applicant.state}`,
+      ...person("fld_key_person_1", "Rekha Singh", "Graduate", "Programme Coordinator", "9822016622"),
+      fld_key_person_1_address: `${inst.district}, ${inst.state}`,
+      fld_premises_office_area_sqm: "310", fld_premises_ownership: "Owned",
+      fld_track_nature_of_work: "Shelter, counselling and livelihood support", fld_track_period_from: "2018-04-01", fld_track_period_to: "2025-03-31",
+      fld_track_coverage: "Around 180 residents over seven years", fld_track_outcome: "State award for community service, 2023", fld_track_funding: "State grant and CSR funds",
+      fld_site_address: `${inst.name}, ${inst.district}`, fld_site_city: inst.district, fld_site_location_type: "Urban", fld_site_pin: inst.pin,
+      fld_site_org_email: "garimagreh@sankalpseva.org.in",
+      ...person("fld_site_incharge", "Priya Nair", "Post-graduate", "Project Manager", "9822016633"), fld_site_incharge_email: "priya.nair@sankalpseva.org.in",
+      fld_staff_project_director_name: "Anjali Pawar", fld_staff_project_director_qualification: "Graduate",
+      fld_pmc_composition: "District Magistrate (Chairperson); organisation nominee; a doctor; a transgender welfare expert; the Project Director (Member Secretary).",
+      fld_residents_list: "Held in the Beneficiaries & Staff register.", fld_sanctioned_capacity: "25",
+      decl_records_accurate: "true", decl_no_encumbrance: "true", decl_audit_access: "true", decl_economy: "true", decl_progress_reports: "true",
+      decl_own_contribution: "true", decl_reservation: "true", decl_no_duplicate_grant: "true", decl_separate_account: "true", decl_pfms_eat: "true",
+    });
+    const pun = (id: string, name: string, nature: Institution["nature"]) => place(id, name, "Pune", "Maharashtra", nature, "Owned", "411038");
+    const nwd = (id: string, name: string, nature: Institution["nature"]) => place(id, name, "North West Delhi", "Delhi", nature, "Rented", "110085");
+    const SR: Institution["nature"] = "Senior Citizens' Home";
+    const DR: Institution["nature"] = "Integrated Rehabilitation Centre for Addicts";
+    const SC: Institution["nature"] = "Secondary Residential School";
+    const TG: Institution["nature"] = "Garima Greh (Shelter Home for Transgender Persons)";
+    const sr1 = pun("SR/MH/PUN/03601", "Senior Citizens' Home (Unit 3)", SR);
+    const sr2 = nwd("SR/DL/NWD/03602", "Continuous Care Home", SR);
+    const sr3 = place("SR/MH/THN/03603", "Senior Citizens' Home", "Thane", "Maharashtra", SR, "Owned", "400601");
+    const dr1 = pun("DR/MH/PUN/03621", "De-Addiction Centre", DR);
+    const dr2 = nwd("DR/DL/NWD/03622", "Integrated Rehabilitation Centre", DR);
+    const dr3 = place("DR/GJ/AHM/03623", "De-Addiction Centre", "Ahmedabad", "Gujarat", DR, "Owned", "380015");
+    const sc1 = pun("SC/MH/PUN/03631", "Residential School (Kothrud)", SC);
+    const sc2 = nwd("SC/DL/NWD/03632", "Residential School (Rohini)", SC);
+    const sc3 = place("SC/TN/MDR/03633", "Residential School (Melur)", "Madurai", "Tamil Nadu", SC, "Owned", "625106");
+    const tg1 = pun("TG/MH/PUN/03641", "Garima Greh", TG);
+    const tg2 = nwd("TG/DL/NWD/03642", "Garima Greh", TG);
+    const tg3 = place("TG/TN/MDR/03643", "Garima Greh", "Madurai", "Tamil Nadu", TG, "Owned", "625001");
+    const histories: History[] = [
+      { scheme: "AVYAY", inst: sr1, annual: 2034140, nonRecurring: 278195, pfms: true, bank: ["State Bank of India", "SBIN0004512", "Kothrud"], people: 25, claims: newThenFirst, answers: avyayAnswers(sr1, "Senior Citizens' Home — 25 beneficiaries", 25) },
+      { scheme: "AVYAY", inst: sr2, annual: 3968263, nonRecurring: 370926, pfms: true, bank: ["Punjab National Bank", "PUNB0221300", "Rohini Sector 7"], people: 20, claims: newThenTwo, answers: avyayAnswers(sr2, "Continuous Care Home (CCH) / Dementia / Alzheimer's", 20) },
+      { scheme: "AVYAY", inst: sr3, annual: 2034140, nonRecurring: 278195, pfms: false, bank: ["Bank of Baroda", "BARB0THANEX", "Thane West"], people: 25, claims: newOnly, answers: avyayAnswers(sr3, "Senior Citizens' Home — 25 beneficiaries", 25) },
+      { scheme: "NAPDDR", inst: dr1, annual: 1850000, nonRecurring: 400000, pfms: true, bank: ["Bank of Maharashtra", "MAHB0000456", "Deccan Gymkhana"], people: 45, claims: newThenFirst, answers: napddrAnswers(dr1) },
+      { scheme: "NAPDDR", inst: dr2, annual: 3200000, nonRecurring: 650000, pfms: true, bank: ["Canara Bank", "CNRB0003102", "Pitampura"], people: 60, claims: newThenTwo, answers: napddrAnswers(dr2) },
+      { scheme: "NAPDDR", inst: dr3, annual: 1850000, nonRecurring: 400000, pfms: false, bank: ["State Bank of India", "SBIN0060321", "Navrangpura"], people: 40, claims: newOnly, answers: napddrAnswers(dr3) },
+      { scheme: "SHRESHTA_M2", inst: sc1, annual: 5400000, nonRecurring: 900000, pfms: true, bank: ["Bank of Baroda", "BARB0KOTHRU", "Kothrud"], people: 120, claims: newThenFirst, answers: shreshta(sc1) },
+      { scheme: "SHRESHTA_M2", inst: sc2, annual: 6100000, nonRecurring: 1100000, pfms: true, bank: ["Punjab National Bank", "PUNB0112200", "Rohini Sector 3"], people: 120, claims: newThenTwo, answers: shreshta(sc2) },
+      { scheme: "SHRESHTA_M2", inst: sc3, annual: 4800000, nonRecurring: 800000, pfms: false, bank: ["Indian Bank", "IDIB000M015", "Melur"], people: 120, claims: newOnly, answers: shreshta(sc3) },
+      { scheme: "SMILE", inst: tg1, annual: 2890000, nonRecurring: 850000, pfms: true, bank: ["State Bank of India", "SBIN0011602", "Shivajinagar"], people: 22, claims: newOnly, answers: smile(tg1), unreleased: true },
+      { scheme: "SMILE", inst: tg2, annual: 2890000, nonRecurring: 850000, pfms: true, bank: ["Union Bank of India", "UBIN0531201", "Rohini Sector 11"], people: 24, claims: newThenFirst, answers: smile(tg2) },
+      {
+        scheme: "SMILE", inst: tg3, annual: 2890000, nonRecurring: 850000, pfms: true, bank: ["Indian Overseas Bank", "IOBA0001432", "Madurai Main"], people: 25,
+        claims: [
+          { fy: "2024-25", submitted: 760, sanctioned: 700 },
+          { fy: "2025-26", instalment: 1, submitted: 480, sanctioned: 440 },
+          { fy: "2025-26", instalment: 2, submitted: 300, sanctioned: 260 },
+        ],
+        answers: smile(tg3),
+      },
+    ];
+    const WIZARD_BY_SCHEME = { AVYAY: AVYAY_WIZARD, NAPDDR: NAPDDR_WIZARD, SHRESHTA_M2: SHRESHTA_WIZARD, SMILE: SMILE_WIZARD } as const;
+    const CASE_TYPE: Record<History["scheme"], [string, string] | undefined> = {
+      AVYAY: ["New project", "Ongoing / Renewal of an existing project"],
+      NAPDDR: ["New project", "Ongoing / Renewal of an existing project"],
+      SMILE: ["No — new project (Project ID auto-generated)", "Yes — existing project (select the Project ID)"],
+      SHRESHTA_M2: undefined,
+    };
+    let serial = 3610;
+    const applicantPool = ngoPool[MINE]!;
+    for (const h of histories) {
+      historyProjects.add(h.inst.id);
+      applicant.institutions.push(h.inst);
+      if (!applicantPool.institutions.includes(h.inst)) applicantPool.institutions.push(h.inst);
+      historyRoster.push(...buildBeneficiaries(h.inst.id, h.scheme === "AVYAY" ? 6 : 3, 0, 60 + serial));
+      historyStaff.push(...buildEmployees(h.inst.id, h.scheme === "AVYAY" ? 3 : 2));
+      const last4 = String(5000 + serial).slice(-4);
+      projectAccounts.push({
+        id: nextId("acct"),
+        projectId: h.inst.id,
+        bank: h.bank[0],
+        branch: h.bank[2],
+        last4,
+        ifsc: h.bank[1],
+        pfmsRegistered: h.pfms,
+        activeFrom: iso(h.claims[0]!.submitted + 30),
+      });
+      const fields = new Set(WIZARD_BY_SCHEME[h.scheme].steps.flatMap((st) => st.sections.flatMap((x) => x.fields.map((f) => f.name))));
+      const pattern = PATTERNS[h.scheme];
+      let ref = "";
+      for (const c of h.claims) {
+        const base = draft(MINE, h.scheme, c.fy, c.submitted);
+        const share = c.instalment ? pattern[c.instalment - 1]! : 0;
+        const recurring = c.instalment ? Math.round((h.annual * share) / 100) : h.annual;
+        const nonRecurring = c.instalment ? 0 : h.nonRecurring;
+        if (!c.instalment || c.instalment === 1) ref = `GIA/${c.fy}/${h.scheme}/${h.inst.district.toUpperCase().replace(/\s+/g, "_")}/${String(serial++).padStart(5, "0")}`;
+        const id = c.instalment && c.instalment > 1 ? `${ref}/I${c.instalment}` : ref;
+        const latest = c === h.claims[h.claims.length - 1];
+        // An instalment claim carries no grant-sought answers of its own: its figures are the sanction's
+        // (the Summary read ₹15.87 L beside answers of ₹80 L).
+        const scheme = Object.fromEntries(Object.entries(base.formValues ?? {}).filter(([k]) => fields.has(k) && !(c.instalment && /^fld_grant_/.test(k))));
+        const caseType = CASE_TYPE[h.scheme];
+        let a: GrantApplication = {
+          ...base,
+          // Only a project's latest file keeps its document register (store-persistence.test.ts).
+          documents: latest && h.scheme === "AVYAY" ? base.documents : [],
+          id,
+          institutionId: h.inst.id,
+          projectLabel: `${h.inst.name} — ${h.inst.district} · FY ${c.fy}`,
+          caseType: c.instalment ? "Ongoing" : "New",
+          instalment: c.instalment,
+          scBeneficiaries: h.scheme === "SHRESHTA_M2" ? 96 : h.people,
+          otherBeneficiaries: h.scheme === "SHRESHTA_M2" ? 24 : 0,
+          totalBeneficiaries: h.scheme === "SHRESHTA_M2" ? 120 : h.people,
+          recurring,
+          nonRecurring,
+          total: recurring + nonRecurring,
+          formValues: {
+            ...scheme,
+            ...common(h),
+            ...h.answers,
+            fld_project_id: h.inst.id,
+            // Every file's answers name what its project is (records-seed.test.ts).
+            fld_nature_of_institution: h.inst.nature,
+            fld_institution_gender_type: h.inst.type,
+            fld_building_ownership: h.inst.building,
+            ...(h.scheme === "SHRESHTA_M2"
+              ? { fld_institution_id: h.inst.id, fld_institution_status: c.instalment ? "Ongoing" : "New", assistance_3yrs: c.instalment ? "Yes" : "No" }
+              : {}),
+            ...(h.scheme === "SMILE" ? { fld_site_state: h.inst.state, fld_site_district: h.inst.district } : { fld_project_state: h.inst.state, fld_project_district: h.inst.district }),
+            ...(caseType ? { case_type: c.instalment ? caseType[1] : caseType[0] } : {}),
+            // The instalment is on the record itself (`instalment`), not repeated in the answers.
+            ...(c.instalment
+              ? { fld_sanctioned_recurring: String(h.annual), fld_instalment_amount: String(recurring) }
+              : { fld_grant_recurring: String(recurring), fld_grant_non_recurring: String(nonRecurring), fld_grant_total: String(recurring + nonRecurring) }),
+            fld_bank_name: h.bank[0],
+            fld_bank_branch: h.bank[2],
+            fld_bank_account_number: `XXXX XXXX ${last4}`,
+            fld_bank_ifsc: h.bank[1],
+            fld_pfms_registered: h.pfms ? "Yes" : "No",
+            fld_financial_year: c.fy,
+          },
+        };
+        a = driveToChain(a, "finance", "js", c.sanctioned + 36);
+        a = replay(a, [
+          { role: "finance-js", action: "concur", daysAgo: c.sanctioned + 6, remarks: "Concurrence recorded." },
+          { role: "programme-director", action: "sanction", daysAgo: c.sanctioned, remarks: "Sanctioned as recommended." },
+        ]);
+        a.submittedAt = a.audit[0]?.at ?? a.submittedAt;
+        // Released by the Under Secretary about ten days after sanction — which is what opens the
+        // next instalment for claim (instalments.ts). One project keeps its latest sanction unreleased.
+        if (!(h.unreleased && latest)) {
+          const released = releaseFunds(a, "pd-us", clockAt(Math.max(c.sanctioned - 10, 2)));
+          if (!released.ok) throw new Error(`[e-anudaan seed] ${a.id}: cannot release — ${released.error}`);
+          a = released.app;
+        }
+        // The certification rests on the documents, as on every other certified file (above).
+        for (const doc of a.documents) {
+          if (!a.certifiedAt || doc.reviewedBy) continue;
+          if (doc.fileName) doc.reviewStatus = "Verified";
+          else if (doc.optional) doc.reviewStatus = "Not applicable";
+          else continue;
+          doc.reviewedBy = a.certifiedBy ?? "pd-aso";
+          doc.reviewedAt = a.certifiedAt;
+        }
+        a = tellOneStory(a);
+        const arrivedAt = a.audit[a.audit.length - 1]?.at ?? a.updatedAt;
+        a.updatedAt = arrivedAt;
+        a.ageingDays = Math.max(Math.round((Date.parse(SEED_NOW) - Date.parse(arrivedAt)) / DAY), 0);
+        apps.push(a);
+      }
+    }
+    const mine = apps.filter((a) => a.ngoId === applicant.id);
+    applicant.applicationCount = mine.length;
+    applicant.sanctionedCount = mine.filter((a) => a.status === "Sanctioned").length;
+    applicant.totalGrant = mine.reduce((sum, a) => sum + (a.sanction?.total ?? 0), 0);
+  }
+
+  /*
+   * 12. What the applicant's screens read back must agree with the rest of the record
+   *     (design-director audit, 16 Sep 2026). Built after every random draw, so nothing above moves.
+   */
+  {
+    const planState: EAnudaanState = {
+      version: 0, session: null, schemes: SEED_SCHEMES, ngos, applications: apps, inspections, notifications, projectAccounts, changeRequests, cctv: [], beneficiaries: [], employees: [],
+    };
+    const seedNow = new Date(SEED_NOW);
+
+    /*
+     * N-02 — a draft instalment claim is the claim the dashboard offers. Hostel — Thane offered
+     * "Claim 3rd Instalment · FY 2025-26" beside a Draft of its 3rd Instalment labelled FY 2026-27:
+     * one instalment with two years and two ways in. A draft now carries the instalment, year and
+     * reference `instalmentPlan` gives its project, and the answers a renewal starts with. Where
+     * nothing can be claimed on the project (a file is still with the Ministry, or the last grant is
+     * unreleased), no claim could have been started, so the draft is a New application for a
+     * project of its own — the rule 9b already applies to a second open file.
+     */
+    let unitSerial = 3900;
+    const takenIds = new Set(ngos.flatMap((n) => n.institutions.map((i) => i.id)));
+    for (const d of apps.filter((a) => a.status === "Draft" && a.caseType === "Ongoing")) {
+      const plan = instalmentPlan(planState, d.schemeCode, d.institutionId, seedNow);
+      if (plan.state === "open" && plan.instalment && plan.financialYear) {
+        retitleYear(d, plan.financialYear);
+        if (plan.applicationRef) d.id = claimIdFor(plan.applicationRef, plan.instalment);
+        d.instalment = plan.instalment as 1 | 2 | 3;
+        d.recurring = plan.amount ?? d.recurring;
+        d.nonRecurring = 0;
+        d.total = d.recurring;
+        d.formValues = { ...d.formValues, ...renewalAnswers(plan) };
+        continue;
+      }
+      const ngo = ngos.find((n) => n.id === d.ngoId)!;
+      const src = ngo.institutions.find((i) => i.id === d.institutionId)!;
+      const stem = src.id.split("/").slice(0, -1).join("/");
+      let id = "";
+      do id = `${stem}/${String(unitSerial++).padStart(5, "0")}`; while (takenIds.has(id));
+      takenIds.add(id);
+      const baseName = src.name.replace(/ \(Unit \d+\)$/, "");
+      const unit = ngo.institutions.filter((i) => i.district === src.district && i.name.replace(/ \(Unit \d+\)$/, "") === baseName).length + 1;
+      const inst: Institution = { ...src, id, name: `${baseName} (Unit ${unit})` };
+      ngo.institutions.push(inst);
+      rehomed.add(id);
+      d.institutionId = id;
+      d.projectLabel = `${inst.name} — ${inst.district} · FY ${d.financialYear}`;
+      d.caseType = "New";
+      d.instalment = undefined;
+      d.formValues = {
+        ...d.formValues,
+        fld_project_id: id,
+        fld_institution_id: id,
+        fld_institution_location: `${inst.name}, ${inst.district}`,
+        fld_institution_status: "New",
+        assistance_3yrs: "No",
+        fld_gia_since_year: "",
+        fld_gia_released_last_3yrs: "",
+        fld_beneficiaries_previous_year: "",
+        decl_uc_uploaded: "No",
+      };
+    }
+
+    /*
+     * N-05 — a field correction shows the answer as submitted. "Beneficiaries in the previous year"
+     * was raised on a New project, which reports no previous year, so "Correct Your Application"
+     * read "Submitted: —" under a remark that the figure did not match. A field item names a
+     * question its file answered, and carries that answer; a corrected one also carries the
+     * corrected figure, so "Submitted 104 → Corrected 98" reads on both sides.
+     */
+    for (const a of apps) {
+      const wizard = wizardFor(a.schemeCode);
+      const labelOf = (name: string) => wizard?.steps.flatMap((st) => st.sections.flatMap((x) => x.fields)).find((f) => f.name === name)?.label;
+      for (const def of a.deficiencies) {
+        for (const item of def.items ?? []) {
+          if (item.kind !== "field" || !item.fieldName) continue;
+          const fv = { ...(a.formValues ?? {}) };
+          if (!(fv[item.fieldName] ?? "").trim()) {
+            const answered = ["fld_beneficiaries_sc", "fld_total_beneficiaries"].find((k) => (fv[k] ?? "").trim());
+            if (!answered) continue;
+            item.fieldName = answered;
+            item.label = labelOf(answered) ?? item.label;
+            item.remark = "The figure does not match the List of Beneficiaries uploaded with the application. Check it against that list.";
+          }
+          const field = item.fieldName;
+          item.originalValue ??= fv[field]!;
+          if (item.correctedAt && fv[field] === item.originalValue) {
+            const corrected = String(Math.max(Number(item.originalValue) - 6, 1));
+            fv[field] = corrected;
+            if (field === "fld_beneficiaries_sc") {
+              a.scBeneficiaries = Number(corrected);
+              a.totalBeneficiaries = a.scBeneficiaries + a.otherBeneficiaries;
+              fv.fld_total_beneficiaries = String(a.totalBeneficiaries);
+            }
+            if (field === "fld_total_beneficiaries") a.totalBeneficiaries = Number(corrected);
+          }
+          a.formValues = fv;
+        }
+      }
+    }
+
+    /*
+     * N-04 — a submitted file answers every question its own path asks. Submitted files read
+     * "Bank Account Details — 3 required questions unanswered" to the NGO while the officer's review
+     * treated them as complete: the generic files carried the bank as one "name, branch" string the
+     * form no longer asks, the AVYAY and NAPDDR files built by `draft()` carried SHRESHTA's answers,
+     * and the claims left out what the portal records beside a claim. Answers come from the file's
+     * own record; nothing is invented that the record does not already say.
+     */
+    const CASE_OPTIONS: Record<string, [string, string]> = {
+      AVYAY: ["New project", "Ongoing / Renewal of an existing project"],
+      NAPDDR: ["New project", "Ongoing / Renewal of an existing project"],
+      SMILE: [SMILE_CASE_NEW, SMILE_CASE_EXISTING],
+    };
+    for (const a of apps) {
+      if (a.status === "Draft") continue;
+      const wizard = wizardFor(a.schemeCode);
+      if (!wizard) continue;
+      const ngo = ngos.find((n) => n.id === a.ngoId)!;
+      const inst = ngo.institutions.find((i) => i.id === a.institutionId)!;
+      const claim = a.caseType === "Ongoing" && a.instalment ? a.instalment : undefined;
+      let v: Record<string, string> = { ...(a.formValues ?? {}) };
+      // A file built as SHRESHTA's but filed under AVYAY or NAPDDR takes its own scheme's answers.
+      if (a.schemeCode === "AVYAY" && !v.fld_nature_of_project) v = { ...avyayAnswers(inst, NAME_BY_SCHEME.AVYAY!, a.totalBeneficiaries), ...v };
+      if (a.schemeCode === "NAPDDR" && !v.fld_project_type) {
+        v = { ...napddrAnswers(inst, `https://www.${ngo.name.toLowerCase().replace(/[^a-z]+/g, "")}.org.in`), ...v };
+      }
+      // What the portal records beside a claim's answers (`renewalAnswers`): which claim this is.
+      if (claim && (v.fld_instalment_amount || a.schemeCode !== "SHRESHTA_M2")) {
+        v.claim_stage ||= claim > 1 ? "later-instalment" : "first-instalment";
+        if (claim > 1) v.fld_application_ref ||= applicationRefOf(a);
+      }
+      const KNOWN: Record<string, string | undefined> = {
+        case_type: CASE_OPTIONS[a.schemeCode]?.[claim ? 1 : 0],
+        fld_project_state: inst.state,
+        fld_project_district: inst.district,
+        fld_bank_branch: inst.district,
+        fld_pfms_registered: "Yes",
+        fld_installment_no: claim ? instalmentLabel(claim) : undefined,
+        fld_ongoing_source_application: claim ? `${inst.id} — ${inst.name}, ${inst.district}` : undefined,
+        fld_smile_project_select: claim ? `${inst.id} — ${inst.name}, ${inst.district}` : undefined,
+        beneficiaries_identified: "Yes",
+        decl_no_money_from_beneficiaries: "Yes",
+        fld_services_available_in_district: `No other ${NAME_BY_SCHEME[a.schemeCode]?.toLowerCase() ?? "such project"} is run in ${inst.district}; the nearest is in a neighbouring district.`,
+        fld_distance_to_nearest_similar: "38",
+        has_live_feed_url: "No",
+        is_running_institution: "Yes",
+        startup_registered_niti: "Yes",
+        grant_requirement_type: "General / normal grant",
+        fld_annual_recurring_grant: String(a.recurring),
+        camera_live_feed: "No",
+        prior_grant_received: "No",
+        fld_bank_joint_operators: `${ngo.secretary}, Secretary, and ${ngo.treasurer}, Treasurer — Registered office, ${ngo.district}, ${ngo.state}`,
+      };
+      for (let pass = 0; pass < 4; pass++) {
+        let changed = false;
+        for (const step of visibleSteps(wizard, v)) {
+          if (step.kind === "documents" || step.kind === "review") continue;
+          for (const f of step.sections.flatMap((x) => x.fields)) {
+            if (!f.required || !fieldVisible(f, v) || (v[f.name] ?? "").trim()) continue;
+            const answer = KNOWN[f.name];
+            if (!answer) continue;
+            v[f.name] = answer;
+            changed = true;
+          }
+        }
+        if (!changed) break;
+      }
+      a.formValues = v;
+    }
+  }
+
+  /*
+   * One document the automatic check cannot vouch for, on the first file the Programme Division's
+   * ASO opens (batch B6, 16 Sep 2026). The check read every document on that file as consistent, so
+   * "Mark All Remaining as Verified" cleared all nineteen and the path the screen exists for — an
+   * officer reading a document and giving it a verdict themselves — was never reached.
+   *
+   * The queue as the dashboard sorts it (oldest first); the first file in it that the check flags
+   * nothing on gets one required annual document it is unsure about. Stamped rather than left to
+   * `simulateCheck`, whose reading follows the file name and size and would move with them. The
+   * words are the check's own (`demoVerdictFor`), and the officer's verdict stays Pending: this is
+   * what the portal thinks, not what the Ministry has decided.
+   */
+  {
+    const queue = apps
+      .filter((a) => a.holder.kind === "chain" && a.holder.division === "pd" && a.holder.grade === "aso" && !a.certifiedAt)
+      .sort((a, b) => b.ageingDays - a.ageingDays || a.id.localeCompare(b.id));
+    const unflagged = queue.find((a) => a.documents.every((d) => !isFlagged(automaticCheckOf(a, d))));
+    // Annual Report — Previous Financial Year: a scan an officer can settle by opening it.
+    const doc = unflagged?.documents.find((d) => d.slot === 3 && d.fileName && !d.optional && d.reviewStatus === "Pending");
+    if (doc) doc.aiVerdict = demoVerdictFor("review", doc.title, unflagged!.financialYear);
+  }
+
+  /*
+   * CCTV registered at the applicant's projects (design-director follow-up, 16 Sep 2026). The NGO
+   * sets this up once per project so an inspecting officer can open the centre's live feed; kept in
+   * the store, because a setup saved in the NGO's own browser is invisible to that officer.
+   *
+   * Not every project is done — the page exists to show which are still outstanding — and one
+   * registered recorder has never reached the portal, so "configured" and "live" are two different
+   * answers on the officer's side. Deterministic: drawn from the Project ID, no random numbers.
+   */
+  const cctv: CctvSetup[] = applicant.institutions
+    .filter((_, k) => k % 4 !== 3)
+    .map((inst, k) => {
+      const digits = Number(inst.id.replace(/\D/g, "").slice(-4)) || 0;
+      const cameras = 2 + (digits % 5);
+      return {
+        projectId: inst.id,
+        cameras,
+        // One in seven recorders is registered but has never reached the portal.
+        liveFeed: digits % 7 !== 3,
+        activationCode: cctvActivationCode(inst.id, cameras),
+        contactName: k % 3 === 0 ? applicant.secretary : undefined,
+        contactMobile: k % 3 === 0 ? applicant.mobile : undefined,
+        savedAt: iso(40 + ((digits % 23) * 9)),
+      };
+    });
+
+  /*
    * Sized to fit the browser (serious audit S03, 14 Sep 2026). The whole store is one
    * localStorage entry shared with every other portal on the origin, and at 2.78 million
    * characters a submitted application could not be written. Two cuts, both made AFTER every
@@ -1319,10 +2114,10 @@ export function buildSeed(): {
    *   characters. A file uploaded through the form keeps its verdict. (`demoVerdictFor` draws no
    *   random numbers, so leaving it out moves nothing else.)
    */
-  const beneficiaries: Beneficiary[] = applicant.institutions.flatMap((inst, k) =>
+  const beneficiaries: Beneficiary[] = applicant.institutions.filter((inst) => !historyProjects.has(inst.id) && !rehomed.has(inst.id)).flatMap((inst, k) =>
     buildBeneficiaries(inst.id, k === 0 ? 110 : 16 + (k % 4) * 3, k === 0 ? 14 : 2, k * 11),
-  );
-  const employees: Employee[] = applicant.institutions.flatMap((inst, k) => buildEmployees(inst.id, k === 0 ? 7 : 3 + (k % 4)));
+  ).concat(historyRoster);
+  const employees: Employee[] = applicant.institutions.filter((inst) => !historyProjects.has(inst.id) && !rehomed.has(inst.id)).flatMap((inst, k) => buildEmployees(inst.id, k === 0 ? 7 : 3 + (k % 4))).concat(historyStaff);
 
-  return { applications: apps, ngos, inspections, notifications, projectAccounts, changeRequests, beneficiaries, employees };
+  return { applications: apps, ngos, inspections, notifications, projectAccounts, changeRequests, cctv, beneficiaries, employees };
 }

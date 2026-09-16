@@ -187,6 +187,31 @@ export default function ListGroupPage(): React.JSX.Element {
               target whose behaviour depends on which pixel was hit.
             </p>
           </section>
+          <section className="cdp__section" aria-labelledby="cdp-routing">
+            <h2 id="cdp-routing" className="cdp__h2">
+              A Row That Goes Somewhere Takes <code>linkAs</code>
+            </h2>
+            <p>
+              Pass the app&rsquo;s router link — <code>linkAs=&#123;Link&#125;</code> — on any row with an{" "}
+              <code>href</code>. Without it the row falls back to a plain anchor and every click is a
+              full document load: the bundle re-fetched, the tree re-hydrated, the scroll position
+              lost, nothing prefetched, and nothing on screen looks wrong. A row with no{" "}
+              <code>href</code> needs nothing — it renders no anchor — and the{" "}
+              <code>check:link-as</code> gate knows the difference.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-onerow">
+            <h2 id="cdp-onerow" className="cdp__h2">
+              A Label and Its Figure Stay on One Line
+            </h2>
+            <p>
+              The text column asks for 14rem before the trailing slot drops beneath it, but never
+              for more than 60% of the row. At 100% — which is what a 375px card resolved to — a
+              two-part row like &ldquo;Returned for Rework 2&rdquo; wrapped its own figure onto a
+              second line and grew to about 70px, on a dashboard made of such rows. A genuinely long
+              pair still wraps; a short one does not.
+            </p>
+          </section>
           <section className="cdp__section" aria-labelledby="cdp-length">
             <h2 id="cdp-length" className="cdp__h2">
               Length

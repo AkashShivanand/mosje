@@ -21,17 +21,25 @@
  * with everyone ticked present. That made one click on Submit a certificate of full attendance —
  * an audit risk the Ministry official on the panel named first. Nothing is ticked until the NGO
  * marks it, and Submit shows the totals being certified before it records them.
+ *
+ * Design-director audit, 16 Sep 2026 (N-12):
+ *  • The Overview / Weekly Attendance switch was a full-width filled dark-blue block and read as
+ *    the page's primary button. It is an underlined tab row: navigation, not an action.
+ *  • A bar chart drew sixteen bars all near 99% across ~800px with 26px axis labels. It said
+ *    nothing the Monthly Returns table below does not say exactly, so the trend is a sparkline
+ *    on an 80–100% scale beside the average it describes, and the table carries the months.
+ *  • "Returns Not Submitted 1" named no month and offered nothing to do. It names the month, and
+ *    a warning offers the register.
  */
 
 import * as React from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
+  Alert,
   Badge,
-  BarChart,
   Button,
   Card,
   CardBody,
-  ChartCard,
   Checkbox,
   DataTable,
   DescriptionList,
@@ -45,16 +53,16 @@ import {
   SectionTitle,
   SegmentedControl,
   Select,
+  Sparkline,
   TabPanel,
   Tabs,
-  categoricalColor,
   useToast,
   type DataTableColumn,
 } from "@mosje/design-system";
 import { routeOnClick } from "@/components/e-anudaan/ngo-shell";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { projectName, projectRunningSince, projectsOf } from "@/lib/e-anudaan/applicant";
-import { formatDate, formatMonthShort, formatMonthYear } from "@/lib/e-anudaan/format";
+import { formatDate, formatMonthYear } from "@/lib/e-anudaan/format";
 import { WEEK_DAYS, buildReturnRows, weekStart } from "@/lib/e-anudaan/roster";
 
 const TABS = [
@@ -117,12 +125,14 @@ function Attendance() {
         onChange={(i) => setParam("tab", i === 1 ? "week" : "")}
         idBase={idBase}
         ariaLabel="Attendance sections"
+        indicator="underline"
+        track="none"
         panel
       />
 
       <TabPanel idBase={idBase} tabId={TABS[tab]!.id}>
         {tab === 0 ? (
-          <Overview projectId={projectId} />
+          <Overview projectId={projectId} onRecord={() => setParam("tab", "week")} />
         ) : (
           <WeekRegister key={projectId} projectId={projectId} projectLabel={project ? projectName(project) : ""} />
         )}
@@ -152,7 +162,7 @@ const RETURN_COLUMNS: DataTableColumn<ReturnRow>[] = [
   { key: "submittedOn", header: "Submitted On", render: (r) => (r.submittedOn ? formatDate(r.submittedOn) : "—") },
 ];
 
-function Overview({ projectId }: { projectId: string }) {
+function Overview({ projectId, onRecord }: { projectId: string; onRecord: () => void }) {
   const { state } = useEAnudaan();
   const onRoll = state.beneficiaries.filter((b) => b.projectId === projectId && b.active).length;
   // Returns are owed only by a running project: none before its first sanction.
@@ -163,7 +173,7 @@ function Overview({ projectId }: { projectId: string }) {
     return (
       <EmptyState
         icon={<Icon name="event_busy" size={32} aria-hidden />}
-        title="No monthly returns are due for this project."
+        title="No Monthly Returns Are Due for This Project"
         description="Monthly attendance returns are due from the month after the grant is sanctioned. This project has not been sanctioned yet."
       />
     );
@@ -171,26 +181,45 @@ function Overview({ projectId }: { projectId: string }) {
 
   const submitted = rows.filter((r) => r.status === "Submitted");
   const due = rows.filter((r) => r.status === "Due").length;
-  const missed = rows.filter((r) => r.status === "Not Submitted").length;
+  const missedRows = rows.filter((r) => r.status === "Not Submitted");
+  const missed = missedRows.length;
+  const missedMonths = missedRows.map((r) => formatMonthYear(r.monthStart));
   const currentFy = rows[0]?.fy ?? "";
   const inFy = submitted.filter((r) => r.fy === currentFy);
   const average = inFy.length ? Math.round(inFy.reduce((a, r) => a + (r.percent ?? 0), 0) / inFy.length) : 0;
-  const color = categoricalColor(0);
-  const monthLabel = formatMonthShort;
-  const trend = [...rows].reverse().filter((r) => r.status === "Submitted").map((r) => ({ label: monthLabel(r.monthStart), value: r.percent ?? 0, color }));
+  // The last twelve submitted months, oldest first, on the band attendance actually moves in.
+  const trend = [...rows].reverse().filter((r) => r.status === "Submitted").slice(-12).map((r) => r.percent ?? 0);
 
   return (
     <div className="space-y-5">
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <MetricCard label="Returns Submitted" value={String(submitted.length)} detail="in the last two years" />
         <MetricCard label="Returns Due" value={String(due)} detail="for the month running" />
-        <MetricCard label="Returns Not Submitted" value={String(missed)} detail="for months already past" />
-        <MetricCard label="Average Attendance" value={`${average}%`} detail={`FY ${currentFy}`} />
+        <MetricCard
+          label="Returns Not Submitted"
+          value={String(missed)}
+          detail="for months already past"
+          tone={missed ? "warning" : undefined}
+        />
+        <MetricCard
+          label="Average Attendance"
+          value={`${average}%`}
+          detail={`FY ${currentFy} · last 12 returns shown`}
+          aside={trend.length > 1 ? <Sparkline data={trend} min={80} max={100} width={96} height={32} /> : undefined}
+        />
       </div>
 
-      <ChartCard title="Monthly Average Attendance (%)" subtitle="Submitted returns only">
-        <BarChart title="Monthly average attendance, per cent" data={trend} valueFormat={(v) => `${Math.round(v)}%`} showValues={false} />
-      </ChartCard>
+      {missed > 0 && (
+        <Alert
+          status="warning"
+          title={`Return Not Submitted for ${missedMonths.join(", ")}`}
+          action={
+            <Button appearance="outlined" size="sm" onClick={onRecord}>
+              Record Attendance
+            </Button>
+          }
+        />
+      )}
 
       <Card variant="outlined">
         <CardBody className="space-y-3">
@@ -237,6 +266,20 @@ function WeekRegister({ projectId, projectLabel }: { projectId: string; projectL
   const end = new Date(start);
   end.setDate(end.getDate() + 6);
   const isCurrentOrFuture = start.getTime() >= weekStart(new Date()).getTime();
+  /*
+   * A day that has not happened cannot be marked. On 16 Sep the register let Saturday 19 and
+   * Sunday 20 be ticked and certified (verify bug 7). Days after today are shown, not markable, and
+   * the totals being certified count only the days so far.
+   */
+  const endOfToday = new Date();
+  endOfToday.setHours(23, 59, 59, 999);
+  const dateOf = (i: number) => {
+    const d = new Date(start);
+    d.setDate(d.getDate() + i);
+    return d;
+  };
+  const openDays = WEEK_DAYS.filter((_, i) => dateOf(i).getTime() <= endOfToday.getTime());
+  const isOpenDay = (d: string) => (openDays as readonly string[]).includes(d);
 
   const key = (id: string, d: string) => `${id}:${d}`;
   const presentOn = (d: string) => people.filter((p) => present.has(key(p.id, d))).length;
@@ -249,7 +292,7 @@ function WeekRegister({ projectId, projectLabel }: { projectId: string; projectL
       }
       return next;
     });
-  const setWeek = (on: boolean) => setPresent(on ? new Set(people.flatMap((p) => WEEK_DAYS.map((d) => key(p.id, d)))) : new Set());
+  const setWeek = (on: boolean) => setPresent(on ? new Set(people.flatMap((p) => openDays.map((d) => key(p.id, d)))) : new Set());
   const toggle = (id: string, d: string, on: boolean) =>
     setPresent((prev) => {
       const next = new Set(prev);
@@ -265,7 +308,7 @@ function WeekRegister({ projectId, projectLabel }: { projectId: string; projectL
     setPresent(new Set());
   };
 
-  const cells = people.length * WEEK_DAYS.length;
+  const cells = people.length * openDays.length;
   const presentCount = people.reduce((n, p) => n + WEEK_DAYS.filter((d) => present.has(key(p.id, d))).length, 0);
   const noun = who === "staff" ? "staff" : "beneficiaries";
   const beneficiariesHref = `/portals/e-anudaan/ngo/beneficiaries?project=${encodeURIComponent(projectId)}${who === "staff" ? "&tab=staff" : ""}`;
@@ -308,7 +351,7 @@ function WeekRegister({ projectId, projectLabel }: { projectId: string; projectL
 
         {people.length === 0 ? (
           <EmptyState
-            title={who === "staff" ? "No staff on this project." : "No beneficiaries on this project."}
+            title={who === "staff" ? "No Staff on This Project" : "No Beneficiaries on This Project"}
             description={`Add them on Beneficiaries & Staff for ${projectLabel} before recording attendance.`}
             action={
               <Link variant="standalone" href={beneficiariesHref} onClick={routeOnClick(router, beneficiariesHref)}>
@@ -320,7 +363,7 @@ function WeekRegister({ projectId, projectLabel }: { projectId: string; projectL
           <>
             <div className="flex flex-wrap items-center gap-2">
               <Button appearance="outlined" size="sm" onClick={() => setWeek(true)}>
-                Mark All {people.length} Present for the Week
+                {openDays.length === WEEK_DAYS.length ? `Mark All ${people.length} Present for the Week` : `Mark All ${people.length} Present to Date`}
               </Button>
               <Button appearance="text" size="sm" onClick={() => setWeek(false)}>
                 Clear Marks
@@ -359,9 +402,10 @@ function WeekRegister({ projectId, projectLabel }: { projectId: string; projectL
                           <Checkbox
                             size="sm"
                             hideLabel
-                            label={`Mark all ${people.length} present on ${d} ${date.getDate()}`}
+                            label={isOpenDay(d) ? `Mark all ${people.length} present on ${d} ${date.getDate()}` : `${d} ${date.getDate()} has not come yet`}
                             checked={n === people.length}
                             indeterminate={n > 0 && n < people.length}
+                            disabled={!isOpenDay(d)}
                             onCheckedChange={(on) => setDay(d, on)}
                           />
                           <span className="text-body-3 normal-case" aria-hidden>
@@ -377,6 +421,7 @@ function WeekRegister({ projectId, projectLabel }: { projectId: string; projectL
                           hideLabel
                           label={`${p.name} present on ${d}`}
                           checked={present.has(key(p.id, d))}
+                          disabled={!isOpenDay(d)}
                           onCheckedChange={(on) => toggle(p.id, d, on)}
                         />
                       </span>

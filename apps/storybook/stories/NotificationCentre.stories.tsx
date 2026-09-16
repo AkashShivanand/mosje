@@ -95,7 +95,8 @@ export const Empty: Story = {
  * never cut by `limit`, and survives Mark updates as read; the updates follow under
  * `updatesHeading`, cut at `limit`, with the rest at `viewAllHref` (`viewAllLabel`).
  * `titleAs` is `h1` on a notifications page, `h2` in a section and `p` in a popover.
- * `linkAs` passes the app's router link to every entry and to View All.
+ * `linkAs` passes the app's router link to every entry and to View All. `now` is handed to the
+ * lists so an entry whose `dueAt` has passed reads "Overdue" — resolve it once for the page.
  */
 export const ActionAndUpdates: Story = {
   args: {
@@ -122,4 +123,17 @@ export const Loading: Story = {
 /** The feed failed: `errorText`, once, and `onRetry` behind `retryLabel`. */
 export const Failed: Story = {
   args: { notifications: [], status: "error", errorText: "Notifications could not be loaded.", retryLabel: "Try again", onRetry: () => {} },
+};
+
+/** An action whose deadline has passed, marked Overdue against the page's `now`. */
+export const OverdueAction: Story = {
+  args: {
+    now: "2026-10-15T09:00:00+05:30",
+    notifications: [
+      { id: "od", at: "2026-09-01T10:15:00+05:30", action: "Utilisation Certificate due",
+        subject: "Project SC/DL/NWD/02400", actionRequired: true, dueAt: "2026-09-30", tone: "warning" },
+      ...NOTICES,
+    ],
+    titleAs: "h2",
+  },
 };

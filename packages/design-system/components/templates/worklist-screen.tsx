@@ -74,6 +74,15 @@ export interface WorklistScreenProps<T extends object> extends ScreenStateInput 
   meta?: React.ReactNode;
   /** Primary and secondary actions for the page, not for a row. */
   actions?: React.ReactNode;
+  /**
+   * A summary of the register — a row of `MetricCard`s — between the header and the filters.
+   *
+   * There was no slot for it, so the E-Anudaan applicant's My Applications put its Saved Drafts
+   * below the register (UX-04) and the officer's All Applications had nowhere to show its Total /
+   * In Review / Sanctioned / Returned tiles (parity inventory §16). Figures here must be computed
+   * from the same rows the table lists.
+   */
+  summary?: React.ReactNode;
 
   /**
    * Heading level for the page title. Leave at 1: a portal screen has exactly
@@ -88,7 +97,17 @@ export interface WorklistScreenProps<T extends object> extends ScreenStateInput 
    */
   headingLevel?: 1 | 2;
 
-  /** Filter controls. Drop DS form controls straight in. */
+  /**
+   * A view switch — `Tabs` or a `SegmentedControl` choosing WHICH register is shown ("Pending /
+   * All", "Beneficiaries / Staff") — drawn directly under the header, with no frame of its own.
+   *
+   * A view is not a filter. Passed through `filters`, a two-option switch sat in the grey framed
+   * filter bar and read as a filter nobody had set (e-Anudaan audit X-05: Queries, Bank Account
+   * Changes, Location Changes, Sent). Put views here and narrowing controls in `filters`; a page
+   * with both renders views first, then the bar.
+   */
+  views?: React.ReactNode;
+  /** Filter controls. Drop DS form controls straight in. A view switch belongs in `views`. */
   filters?: React.ReactNode;
   /** How many filters the reader has set. Drives the `filtered` empty state. */
   activeFilterCount?: number;
@@ -115,12 +134,14 @@ export interface WorklistScreenProps<T extends object> extends ScreenStateInput 
    */
   registerTotal?: number;
   /**
-   * Replace the count line under the filters ("124 in the register.").
+   * Replace the count line under the filters ("124 applications.").
    *
-   * Omit for the default sentence. Pass `null` to suppress it where the page header already
-   * states the count — the NGO beneficiaries register reads "110 Active of 124 Registered
+   * Omit for the default sentence, which counts in the screen's own words — `noun` /
+   * `pluralNoun`, so "95 applications." rather than a filing term no applicant uses. Pass a node
+   * to say it differently ("95 applications in the register", a count with a link). Pass `null`
+   * to suppress it where the page header already states the count — the NGO beneficiaries register reads "110 Active of 124 Registered
    * Beneficiaries" above the table, and the default line repeated the same fact beneath it.
-   * Pass a node to say it differently. Shown only when the list is `ready`, like the default.
+   * Shown only when the list is `ready`, like the default.
    */
   countLine?: React.ReactNode | null;
   /** Stable id per row, for selection. */
@@ -135,8 +156,13 @@ export interface WorklistScreenProps<T extends object> extends ScreenStateInput 
   /** What can be done to a selection. Empty or omitted hides the bar. */
   bulkActions?: BulkAction[];
   onBulkAction?: (id: string) => void;
-  /** What one row is called, for the selection bar. @default "record" */
+  /**
+   * What ONE ROW is called — in the reader's own words, not the filing system's. It names the
+   * rows in the selection bar ("3 applications selected") and in the default count line ("95
+   * applications."), so both sentences on a screen use one noun. @default "record"
+   */
   noun?: string;
+  /** The plural, where it is not `noun` + "s" — "bodies", "beneficiaries". */
   pluralNoun?: string;
 
   /** Retry, offered from the error state. */
@@ -171,6 +197,8 @@ export function WorklistScreen<T extends object>({
   title,
   meta,
   actions,
+  summary,
+  views,
   filters,
   activeFilterCount = 0,
   onClearFilters,
@@ -313,6 +341,10 @@ export function WorklistScreen<T extends object>({
     <div className={cn("sa-screen", className)}>
       <PageHeader as={headingLevel} eyebrow={eyebrow} title={title} meta={meta} actions={actions} />
 
+      {summary ? <div className="sa-worklist__summary">{summary}</div> : null}
+
+      {views ? <div className="sa-worklist__views">{views}</div> : null}
+
       {filters ? (
         <FilterBar>
           <div className="sa-worklist__toolbar">{filters}</div>
@@ -329,11 +361,19 @@ export function WorklistScreen<T extends object>({
               rather than by the filter flag alone. A set that is smaller than
               the register is worth saying so even when the reader did not
               narrow it — that is the case a server-paged or sampled list is in,
-              and saying only "20 in the register" there would be false. */}
+              and saying only "20 applications" there would be false.
+
+              THE NOUN, NOT "THE REGISTER". The default read "95 in the
+              register." on an applicant's My Applications page — a filing word
+              an NGO clerk does not use about their own applications (e-Anudaan
+              audit N-08). It is the screen's own `noun`/`pluralNoun` now, so
+              the same template says "95 applications." to an applicant and "95
+              applications." to an officer, and a screen that wants the
+              register's language passes its own `countLine`. */}
           {countLine !== undefined
             ? null
             : shown === matched
-            ? `${shown.toLocaleString("en-IN")} in the register.`
+            ? `${shown.toLocaleString("en-IN")} ${shown === 1 ? noun : plural}.`
             : activeFilterCount > 0
               ? `Showing ${shown.toLocaleString("en-IN")} of ${matched.toLocaleString("en-IN")}, filtered.`
               : `Showing ${shown.toLocaleString("en-IN")} of ${matched.toLocaleString("en-IN")}.`}

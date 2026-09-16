@@ -8,20 +8,51 @@
  * form has a step nobody can pass.
  */
 
+import { currentFinancialYear } from "./instalments.ts";
 import type { NgoProfile } from "./types.ts";
 
 /** Answers the portal fills from DARPAN and the account on record. */
-export function darpanSeed(ngo: NgoProfile | undefined): Record<string, string> {
+export function darpanSeed(ngo: NgoProfile | undefined, now: Date = new Date()): Record<string, string> {
   return {
     fld_ngo_name: ngo?.name ?? "Sankalp Seva Sansthan",
     fld_darpan_id: ngo?.darpanId ?? "MH/2016/100000",
     fld_registration_number: ngo?.registrationNo ?? "51-54",
+    ...registrationOf(ngo),
     fld_contact_mobile: ngo?.mobile ?? "9441747200",
     fld_contact_email: ngo?.email ?? "sankalpsevasansthan@gmail.com",
     fld_reg_office_state: ngo?.state ?? "Maharashtra",
     fld_reg_office_district: ngo?.district ?? "Pune",
-    fld_financial_year: "2026-27",
+    // The year now running, not a constant: a new application is always for it (T328–329).
+    fld_financial_year: currentFinancialYear(now),
   };
+}
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/**
+ * The organisation's registration as its record holds it (audit N-16): the number, the date and,
+ * where the record names an Act, the statute. The form asked for them afresh on every application,
+ * and the demo's 51-54 / 01 Apr 2016 sat on a file whose organisation is registered as 81-51 on
+ * 12 Mar 1978. A record that names only the registering authority ("Registrar of Societies") does
+ * not answer "Statute / Act of Registration", so that one is left to the applicant.
+ */
+export function registrationOf(ngo: NgoProfile | undefined): Record<string, string> {
+  if (!ngo) return {};
+  const out: Record<string, string> = {};
+  if (ngo.registrationNo) out.fld_registration_number = ngo.registrationNo;
+  const date = isoDate(ngo.registrationDate);
+  if (date) out.fld_registration_date = date;
+  if (ngo.registeredUnder && /\bAct\b/.test(ngo.registeredUnder)) out.fld_statute_act = ngo.registeredUnder;
+  return out;
+}
+
+/** "12 Mar 1978" or "1978-03-12" as the `YYYY-MM-DD` a date field holds. */
+function isoDate(value: string | undefined): string | undefined {
+  if (!value) return undefined;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+  const m = /^(\d{1,2}) ([A-Z][a-z]{2})[a-z]* (\d{4})$/.exec(value.trim());
+  const month = m ? MONTHS.indexOf(m[2]!) : -1;
+  return m && month >= 0 ? `${m[3]}-${String(month + 1).padStart(2, "0")}-${m[1]!.padStart(2, "0")}` : undefined;
 }
 
 /**
@@ -40,21 +71,8 @@ export function declarationStamp(now: Date = new Date()): { fld_auth_date: strin
 }
 
 /**
- * Figures and accounts a renewal carries forward once its project is chosen. The prototype holds
- * no sanction order for the renewal projects these forms list, so the values are illustrative;
- * in the real system they are read from the project's sanction order and bank record.
+ * Figures and accounts a renewal carries forward. Empty since 16 Sep 2026: every scheme's renewal
+ * now carries the chosen project's own sanctioned figures and account (`instalments.ts`
+ * `renewalAnswers`), not a constant. Kept as a named export for the tests that read it.
  */
-export const CARRIED_FORWARD: Record<string, Record<string, string>> = {
-  // The renewal's account is the one on record, carried forward with its sanction. It was
-  // prefilled on every branch, so a NEW project arrived with an account the applicant never chose.
-  NAPDDR: {
-    fld_honorarium_cost: "1800000",
-    fld_rent_admin_cost: "600000",
-    fld_medical_diet_cost: "900000",
-    fld_bank_account_choice: "State Bank of India · XXXX XXXX 4417 · SBIN0001234 · Pune Main",
-  },
-  // AVYAY's account is locked on a renewal; before it was carried forward the locked field was
-  // empty and required, and no AVYAY renewal could pass step 4.
-  AVYAY: { fld_bank_account_id: "State Bank of India · ••••••••••4417 · SBIN0001234" },
-  // SMILE's Project ID is derived from the project chosen (an auto field), so nothing to carry.
-};
+export const CARRIED_FORWARD: Record<string, Record<string, string>> = {};

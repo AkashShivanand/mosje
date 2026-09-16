@@ -15,6 +15,11 @@
  *   • latitude and longitude are recorded for the department and never shown — they mean
  *     nothing to the applicant;
  *   • the reason is mandatory; a supporting document is optional.
+ *
+ * Design-director audit, 16 Sep 2026 (N-19, X-07): a decided request read "Verified … decided
+ * 13 Feb 2026". A request is Approved or Not Approved (glossary, `requestStatusLabel`), and the
+ * date reads "Decided 13 Feb 2026". The page is fluid like every portal surface; the form keeps
+ * a readable width inside its card.
  */
 
 import * as React from "react";
@@ -40,13 +45,15 @@ import {
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { projectName, projectsOf } from "@/lib/e-anudaan/applicant";
 import { formatDate } from "@/lib/e-anudaan/format";
+import { currentAddressOf, requestStatusLabel, requestStatusTone } from "@/lib/e-anudaan/change-requests";
+import { addressFromPosition, checkLocation, farLine } from "@/lib/e-anudaan/district-centres";
 import type { LocationChangeRequest } from "@/lib/e-anudaan/types";
 
 const MAX = 500;
 type Capture = { state: "idle" } | { state: "locating" } | { state: "captured"; lat: number; lng: number } | { state: "failed"; message: string };
 
 export default function ProjectLocationChangePage() {
-  const { state, submitChangeRequest } = useEAnudaan();
+  const { state, raiseChangeRequest } = useEAnudaan();
   const { toast } = useToast();
   const ngo = state.ngos[0];
   const projects = ngo ? projectsOf(state, ngo.id) : [];
@@ -62,10 +69,9 @@ export default function ProjectLocationChangePage() {
   const project = projects.find((p) => p.id === projectId);
   const requests = state.changeRequests.filter((r): r is LocationChangeRequest => r.kind === "location");
   const pendingForProject = requests.find((r) => r.projectId === projectId && r.status === "Pending");
-  const lastApproved = requests
-    .filter((r) => r.projectId === projectId && r.status === "Approved")
-    .sort((a, b) => Date.parse(b.decidedAt ?? b.submittedAt) - Date.parse(a.decidedAt ?? a.submittedAt))[0];
-  const currentAddress = lastApproved?.address ?? (project ? `${project.name}, ${project.district}, ${project.state} ${project.pin}` : "");
+  // The same expression the PMU's desk reads, so both show one address after a verified move.
+  const currentAddress = project ? currentAddressOf(state, project.id) : "";
+  const positionCheck = project && capture.state === "captured" ? checkLocation(project, { latitude: capture.lat, longitude: capture.lng }) : null;
 
   const errors = [
     !projectId && { id: "project", text: "Select the project that is moving." },
@@ -84,9 +90,12 @@ export default function ProjectLocationChangePage() {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         setCapture({ state: "captured", lat: pos.coords.latitude, lng: pos.coords.longitude });
-        // The prototype has no address lookup, so it fills what it can be sure of — the district,
-        // State and PIN area of the project — and leaves the building and street to the applicant.
-        setAddress((a) => a || `${project.district}, ${project.state}`);
+        // No map service is called. A bundled lookup of each district's headquarters names the
+        // locality, district, State and PIN when the position is inside the project's district
+        // (`addressFromPosition`); the building and street stay the applicant's to add. Outside
+        // the district nothing is filled, and the page says where the position is (verify bug 8).
+        const line = addressFromPosition(project, pos.coords.latitude, pos.coords.longitude);
+        if (line) setAddress((a) => (a.trim() ? a : line));
       },
       (err) =>
         setCapture({
@@ -112,7 +121,7 @@ export default function ProjectLocationChangePage() {
     e.preventDefault();
     setTried(true);
     if (errors.length || pendingForProject) return;
-    submitChangeRequest({
+    raiseChangeRequest({
       kind: "location",
       projectId,
       address: address.trim(),
@@ -125,15 +134,16 @@ export default function ProjectLocationChangePage() {
   };
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6">
+    <div className="space-y-6">
       <PageHeader
+        size="compact"
         title="Project Location Change"
         meta="Ask the Ministry to record a new address for a project. A project can move within its district only."
       />
 
       <Card variant="outlined">
         <CardBody>
-          <form onSubmit={submit} noValidate className="space-y-6">
+          <form onSubmit={submit} noValidate className="max-w-[var(--sa-container-md)] space-y-6">
             {tried && errors.length > 0 && <ErrorSummary errors={errors.map((er) => ({ fieldId: er.id, message: er.text }))} />}
 
             <FormField label="Project" id="project" required error={errorFor("project")}>
@@ -168,7 +178,7 @@ export default function ProjectLocationChangePage() {
                 />
 
                 {pendingForProject ? (
-                  <Alert status="info" title="A request for this project is already under examination">
+                  <Alert status="info" title="A Request for This Project Is Already Under Examination">
                     Submitted on {formatDate(pendingForProject.submittedAt)} for {pendingForProject.address}. A new request can be
                     made once the Ministry has decided on it.
                   </Alert>
@@ -183,14 +193,19 @@ export default function ProjectLocationChangePage() {
                         </Button>
                         <span role="status" className="text-body-2 text-ink-muted">
                           {capture.state === "locating" && "Finding your location…"}
-                          {capture.state === "captured" && (
+                          {capture.state === "captured" && positionCheck?.kind !== "far" && (
                             <span className="inline-flex items-center gap-1 text-ink">
-                              <Icon name="check_circle" size={16} aria-hidden className="text-[var(--sa-text-status-success-base)]" /> Location recorded. Complete the address below.
+                              <Icon name="check_circle" size={16} aria-hidden className="text-[var(--sa-text-status-success-base)]" /> Location recorded. Add the building and street to the address below.
                             </span>
                           )}
                         </span>
                       </div>
                       {capture.state === "failed" && <Alert status="warning">{capture.message}</Alert>}
+                      {positionCheck?.kind === "far" && (
+                        <Alert status="warning" title="You Are Not in This Project's District">
+                          {farLine(positionCheck)} Stand at the new premises and capture again. The Ministry is shown this position with your request.
+                        </Alert>
+                      )}
 
                       <FormField
                         label="New Address"
@@ -262,21 +277,22 @@ export default function ProjectLocationChangePage() {
                 return (
                   <ListRow
                     key={r.id}
-                    eyebrow={<span className="font-mono">{r.projectId}</span>}
+                    eyebrow={<span className="tabular-nums">{r.projectId}</span>}
                     title={p ? projectName(p) : r.projectId}
                     description={
                       <>
                         <span className="block">New address: {r.address}</span>
                         <span className="block text-ink-muted">
                           Submitted {formatDate(r.submittedAt)}
-                          {r.decidedAt ? ` · decided ${formatDate(r.decidedAt)}` : ""}
-                          {r.documentName ? ` · document: ${r.documentName}` : ""}
+                          {r.decidedAt ? ` · Decided ${formatDate(r.decidedAt)}` : ""}
+                          {r.documentName ? ` · Document: ${r.documentName}` : ""}
                         </span>
+                        {r.decisionRemarks && <span className="block">Ministry&apos;s remarks: {r.decisionRemarks}</span>}
                       </>
                     }
                     trailing={
-                      <Badge status={r.status === "Approved" ? "success" : r.status === "Rejected" ? "danger" : "warning"} size="sm">
-                        {r.status === "Pending" ? "Under Examination" : r.status}
+                      <Badge status={requestStatusTone(r)} size="sm">
+                        {requestStatusLabel(r)}
                       </Badge>
                     }
                   />

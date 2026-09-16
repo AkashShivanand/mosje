@@ -48,7 +48,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Accordion — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/accordion",
-    "keywords": "accordion — design system data display anatomy and state writing the headers example keyboard Accordion children Accordion className tokens wcag accessibility",
+    "keywords": "accordion — design system data display anatomy and state one surface writing the headers example keyboard Accordion children Accordion className tokens wcag accessibility",
     "description": "Collapsible disclosure sections for frequently asked questions, eligibility criteria and application guidelines.",
     "type": "component",
     "iconName": "bar_chart"
@@ -592,7 +592,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Data Table — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/data-table",
-    "keywords": "data table — design system data display one table across the estate pagination, headers and alignment empty and filtered to nothing are different sentences example structure the pager the open gap DataTableColumn.key DataTableColumn.header DataTableColumn.render DataTableColumn.className DataTableColumn.exportValue DataTableColumn.noExport tokens wcag accessibility",
+    "keywords": "data table — design system data display one table across the estate pagination, headers and alignment empty and filtered to nothing are different sentences example structure the pager a pinned column pins only when it can be uncovered the open gap DataTableColumn.key DataTableColumn.header DataTableColumn.render DataTableColumn.className DataTableColumn.exportValue DataTableColumn.noExport tokens wcag accessibility",
     "description": "Structured rows and columns with built-in pagination and a screen-reader caption, for scheme listings, applicant directories and transaction histories.",
     "type": "component",
     "iconName": "bar_chart"
@@ -707,6 +707,33 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "view_quilt"
   },
   {
+    "title": "Document Checklist — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/document-checklist",
+    "keywords": "document checklist — design system forms & inputs anatomy bulk verdict the gate is not a disabled button example notes reg.pdf tokens wcag accessibility",
+    "description": "The documents a form asks for, grouped, under one header that says how many required documents are ready — with filter chips, a drop zone and the summary a blocked Continue raises.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
+    "title": "Document Findings — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/document-findings",
+    "keywords": "document findings — design system forms & inputs compared, not just printed example notes  tokens wcag accessibility",
+    "description": "What the automatic check found in a document: its verdict, the fields it read — each compared with the application",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
+    "title": "Document History Sheet — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/document-history-sheet",
+    "keywords": "document history sheet — design system forms & inputs current first example notes  tokens wcag accessibility",
+    "description": "Every version of one document in a side sheet — the current file first, then each earlier file, with what was said about it and why it was replaced.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Document Library — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/document-library",
@@ -714,6 +741,24 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "One shelf for everything a body publishes.",
     "type": "component",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "Document Placement Tray — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/document-placement-tray",
+    "keywords": "document placement tray — design system forms & inputs listed, never dropped example notes  tokens wcag accessibility",
+    "description": "What a batch drop did: where each file went, what it replaced, what could not be placed and what was refused — each changeable in one step.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
+    "title": "Document Row — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/document-row",
+    "keywords": "document row — design system forms & inputs ten states compact — the reviewed-document row example notes budget-2026-27.pdf tokens wcag accessibility",
+    "description": "One document as a compact row — status icon, title, file, status in words, one action and a menu — in ten states, growing only when the document needs the reader.",
+    "type": "component",
+    "iconName": "edit_note"
   },
   {
     "title": "Document Tile — Design System",
@@ -747,7 +792,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Empty State — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/empty-state",
-    "keywords": "empty state — design system feedback & status empty is not the same as filtered to nothing writing the copy example replacing a region, not announcing an event  tokens wcag accessibility",
+    "keywords": "empty state — design system feedback & status empty is not the same as filtered to nothing a rung below the page title writing the copy example replacing a region, not announcing an event  tokens wcag accessibility",
     "description": "The answer a reader gets when a list, table or dashboard has nothing to show: what is absent, why, and what they can do next.",
     "type": "component",
     "iconName": "notifications"
@@ -774,7 +819,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Event List — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/event-list",
-    "keywords": "event list — design system data display one object, three views it does not sort a note is never truncated a system action says &ldquo;system&rdquo;  tokens wcag accessibility",
+    "keywords": "event list — design system data display one object, three views it does not sort a note is never truncated overdue is a word and an icon a system action says &ldquo;system&rdquo;  tokens wcag accessibility",
     "description": "A dated, attributed record of things that happened — the activity log and the audit trail, and the base the comment thread and the notification centre are composed from.",
     "type": "component",
     "iconName": "bar_chart"
@@ -1194,7 +1239,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "List Group — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/list-group",
-    "keywords": "list group — design system data display list or table the whole row is the target length example link, button, or neither selection is not only a colour a disabled row stays in the list ListRow tokens wcag accessibility",
+    "keywords": "list group — design system data display list or table the whole row is the target a label and its figure stay on one line length example link, button, or neither selection is not only a colour a disabled row stays in the list ListRow tokens wcag accessibility",
     "description": "A real <ul> of rows with a leading slot, a text block and a trailing slot — the surface behind recent items, notifications, documents and search results.",
     "type": "component",
     "iconName": "bar_chart"
@@ -1257,7 +1302,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Metric Card — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/metric-card",
-    "keywords": "metric card — design system data display a figure that has not arrived the change needs a baseline five readings of one number format the figure before you pass it example what a screen reader gets  tokens wcag accessibility",
+    "keywords": "metric card — design system data display a figure that has not arrived the change needs a baseline five readings of one number the icon badge gives way before the figure does format the figure before you pass it example what a screen reader gets  tokens wcag accessibility",
     "description": "One headline figure with its label and, where there is one, the change against a stated baseline — with real states for a figure that has not arrived.",
     "type": "component",
     "iconName": "bar_chart"
@@ -1367,7 +1412,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Page Header — Design System",
     "section": "Layout",
     "href": "/design-system/components/layout/page-header",
-    "keywords": "page header — design system layout it hugs, and that is the point what belongs in the actions slot example one h1 per page  tokens wcag accessibility",
+    "keywords": "page header — design system layout it hugs, and that is the point two sizes, chosen by the kind of page what belongs in the actions slot example one h1 per page  tokens wcag accessibility",
     "description": "The row every portal page opens with: title, meta line, actions. It hugs its content and carries no fixed height.",
     "type": "component",
     "iconName": "view_quilt"
@@ -1658,7 +1703,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Segmented Control — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/dashboard/segmented-control",
-    "keywords": "segmented control — design system auth & dashboard   tokens wcag accessibility",
+    "keywords": "segmented control — design system auth & dashboard keys  tokens wcag accessibility",
     "description": "A single-select toggle for a dashboard period or view.",
     "type": "component",
     "iconName": "lock"
@@ -2050,7 +2095,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Wizard — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/wizard",
-    "keywords": "wizard — design system forms & inputs one panel per step the review step the parent owns the state example notes  tokens wcag accessibility",
+    "keywords": "wizard — design system forms & inputs one panel per step the review step the action bar sticks on a phone the parent owns the state example notes  tokens wcag accessibility",
     "description": "The shared multi-step form shell: the stepper on the page ground, then one panel for the current step — a head band, the step",
     "type": "component",
     "iconName": "edit_note"
@@ -2068,7 +2113,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Worklist Screen — Design System",
     "section": "Getting Started",
     "href": "/design-system/components/templates/worklist-screen",
-    "keywords": "worklist screen — design system getting started why this template exists priority is how a twelve-column table survives a phone selection spans the whole matching set both forms page, and they page together two counts, kept apart example two things the template cannot do for you  tokens wcag accessibility",
+    "keywords": "worklist screen — design system getting started why this template exists priority is how a twelve-column table survives a phone selection spans the whole matching set both forms page, and they page together a view is not a filter the count line uses the screen&rsquo;s own noun two counts, kept apart example two things the template cannot do for you  tokens wcag accessibility",
     "description": "Many records the reader acts on: filters, table, bulk actions and a pager, with all seven states owned by the template.",
     "type": "component",
     "iconName": "widgets"

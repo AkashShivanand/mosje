@@ -110,6 +110,16 @@ export default function EmptyStatePage(): React.JSX.Element {
               about the department&apos;s records.
             </p>
           </section>
+          <section className="cdp__section" aria-labelledby="cdp-scale">
+            <h2 id="cdp-scale" className="cdp__h2">
+              A Rung Below the Page Title
+            </h2>
+            <p>
+              The title is set in headline-4 — 20px on a portal, 24px on the website — so an empty
+              panel never outshouts the page it sits on. It was the page title&rsquo;s own size, and a
+              filtered register showed two 32px headings, one above the other. Title Case, no full stop.
+            </p>
+          </section>
           <section className="cdp__section" aria-labelledby="cdp-copy">
             <h2 id="cdp-copy" className="cdp__h2">
               Writing the Copy

@@ -34,10 +34,10 @@ test("a renewal takes the district of the project it renews, whatever else the f
     // SMILE renewal of a Pune project, with Nicobar answered elsewhere on the form.
     ["SMILE", { fld_smile_project_select: "TG/MH/PUN/09003 — Garima Greh, Pune", fld_site_state: "Andaman and Nicobar Islands", fld_site_district: "Nicobar" }, "PUNE"],
     // NAPDDR renewal of a Nicobar project, filed by an NGO registered in Pune.
-    ["NAPDDR", { fld_renewal_project: "DR/AN/NIC/40536 — Project, Nicobar · FY 2026-27", fld_reg_office_district: "Pune" }, "NICOBAR"],
+    ["NAPDDR", { fld_ongoing_source_application: "DR/AN/NIC/40536 — Project, Nicobar · FY 2026-27", fld_reg_office_district: "Pune" }, "NICOBAR"],
     // SHRESHTA names an institution the NGO's own register does not list, by its codes alone.
     ["SHRESHTA_M2", { fld_institution_id: "SC/DL/NWD/09001 — Hostel, North West Delhi · last applied FY 2025-26", fld_institution_location: ADDRESS }, "NORTH_WEST_DELHI"],
-    ["AVYAY", { fld_renewal_project: "SR/AR/DIB/40040 — Senior Citizens' Home, Dibang Valley · awaiting sanction", fld_project_location: ADDRESS }, "DIBANG_VALLEY"],
+    ["AVYAY", { fld_ongoing_source_application: "SR/AR/DIB/40040 — Senior Citizens' Home, Dibang Valley · awaiting sanction", fld_project_location: ADDRESS }, "DIBANG_VALLEY"],
   ];
   for (const [scheme, values, want] of cases) {
     const { id } = mintReference(ngo, [], scheme, "2026-27", values);
@@ -61,9 +61,9 @@ test("seven submissions in a row get seven different references", () => {
   const ids = seed.applications.map((a) => a.id);
   const paths: [string, Record<string, string>][] = [
     ["NAPDDR", { fld_project_state: "Delhi", fld_project_district: "North West Delhi" }],
-    ["NAPDDR", { fld_renewal_project: "DR/AN/NIC/40536 — Project, Nicobar · FY 2026-27" }],
+    ["NAPDDR", { fld_ongoing_source_application: "DR/AN/NIC/40536 — Project, Nicobar · FY 2026-27" }],
     ["AVYAY", { fld_project_state: "Maharashtra", fld_project_district: "Pune" }],
-    ["AVYAY", { fld_renewal_project: "SR/AR/DIB/40040 — Senior Citizens' Home, Dibang Valley · awaiting sanction" }],
+    ["AVYAY", { fld_ongoing_source_application: "SR/AR/DIB/40040 — Senior Citizens' Home, Dibang Valley · awaiting sanction" }],
     ["SHRESHTA_M2", { fld_institution_id: ngo.institutions[0]!.id }],
     ["SMILE", { fld_site_state: "Maharashtra", fld_site_district: "Pune" }],
     ["SMILE", { fld_smile_project_select: "TG/MH/PUN/09003 — Garima Greh, Pune" }],

@@ -12,6 +12,15 @@ export interface ChartCardProps
   extends Omit<React.ComponentPropsWithoutRef<"section">, "title" | "children"> {
   title: string;
   subtitle?: string;
+  /**
+   * The title's heading level. @default 3
+   *
+   * Set it to the level the card actually sits at. A card placed straight under a page's `<h1>`
+   * with no section heading between is an `h2`; the fixed `h3` skipped a level on 30 e-Anudaan
+   * pages (axe `heading-order`, audit X-12). The visual size does not change with the level —
+   * only the document outline does.
+   */
+  headingLevel?: 2 | 3 | 4;
   /** Header actions slot (filters, menu, export button). */
   actions?: React.ReactNode;
   /**
@@ -82,6 +91,7 @@ export interface ChartCardProps
 export function ChartCard({
   title,
   subtitle,
+  headingLevel = 3,
   actions,
   exportable = false,
   exportName,
@@ -105,6 +115,7 @@ export function ChartCard({
   style: styleProp,
   ...rest
 }: ChartCardProps) {
+  const Heading = `h${headingLevel}` as "h2" | "h3" | "h4";
   const style = span
     ? ({ ...styleProp, ["--cmp-card-span" as string]: String(span) } as React.CSSProperties)
     : styleProp;
@@ -132,7 +143,7 @@ export function ChartCard({
     <section {...rest} className={cn("ds-chart-card", className)} style={style}>
       <header className="ds-chart-card__head">
         <div className="ds-chart-card__titles">
-          <h3 className="ds-chart-card__title">{title}</h3>
+          <Heading className="ds-chart-card__title">{title}</Heading>
           {subtitle && <p className="ds-chart-card__subtitle">{subtitle}</p>}
         </div>
         {hasActions && (

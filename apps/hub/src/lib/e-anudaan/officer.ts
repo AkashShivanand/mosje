@@ -8,17 +8,23 @@
 import type { EAnudaanState, GrantApplication, Inspection, InspectionStatus, RoleId } from "./types.ts";
 import { holderIsRole } from "./types.ts";
 import { queriesFor } from "./selectors.ts";
+import { CASE_TYPE, DEFICIENCY, RETURN, instalmentLabel } from "./glossary.ts";
+import {
+  explorerTiles,
+  instalmentKey,
+  matchesExplorerStatus,
+  officerApplications,
+  placeOf,
+  type ExplorerStatus,
+  type ExplorerTiles,
+} from "./registers.ts";
 
 export interface OfficerDashboard {
   /** Files with this officer now, in the selected year. */
   queue: GrantApplication[];
   /** `overdue` is how many of `count` have waited more than 7 days — the tile's second reading. */
   byCase: { key: "New" | "1" | "2" | "3"; label: string; count: number; overdue: number }[];
-  /**
-   * `scope` says what a count is counted over: `queue` is files with this officer now, `all` is
-   * every application in the year. The panel groups by it instead of repeating it in each hint.
-   */
-  movement: { key: string; label: string; count: number; hint: string; scope: "queue" | "all" }[];
+  movement: { key: string; label: string; count: number; hint: string }[];
   ageing: { band: string; count: number }[];
   overdue: number;
   years: string[];
@@ -35,11 +41,14 @@ export function officerDashboard(state: EAnudaanState, roleId: RoleId, fy: strin
     return { count: files.length, overdue: files.filter((a) => a.ageingDays > OVERDUE_DAYS).length };
   };
   const byCase = [
-    { key: "New" as const, label: "New Applications", ...ofCase((a) => a.caseType === "New") },
-    { key: "1" as const, label: "1st Instalment", ...ofCase((a) => a.caseType === "Ongoing" && a.instalment === 1) },
-    { key: "2" as const, label: "2nd Instalment", ...ofCase((a) => a.caseType === "Ongoing" && a.instalment === 2) },
-    { key: "3" as const, label: "3rd Instalment", ...ofCase((a) => a.caseType === "Ongoing" && a.instalment === 3) },
+    // "New Projects": the figure counts the case type, returned files included, so it is named for
+    // the case type and not for "New Submission" (audit O-05).
+    { key: "New" as const, label: CASE_TYPE.newPlural, ...ofCase((a) => a.caseType === "New") },
+    { key: "1" as const, label: instalmentLabel(1), ...ofCase((a) => a.caseType === "Ongoing" && a.instalment === 1) },
+    { key: "2" as const, label: instalmentLabel(2), ...ofCase((a) => a.caseType === "Ongoing" && a.instalment === 2) },
+    { key: "3" as const, label: instalmentLabel(3), ...ofCase((a) => a.caseType === "Ongoing" && a.instalment === 3) },
   ];
+
 
   const inspected = new Set(
     state.inspections.filter((i) => i.status === "Submitted" || i.status === "Reviewed").map((i) => i.applicationId),
@@ -48,53 +57,46 @@ export function officerDashboard(state: EAnudaanState, roleId: RoleId, fy: strin
   const movement = [
     {
       key: "to-send",
-      label: "Deficiencies to Send",
+      label: `${DEFICIENCY.plural} to Send`,
       count: queue.filter((a) => a.status === "DeficiencyProposed").length,
-      hint: "Noted by the ASO, not yet sent to the NGO",
-      scope: "queue" as const,
+      hint: "In your queue · noted by the Assistant Section Officer, not yet sent to the NGO",
     },
     {
       key: "resubmitted",
-      label: "Resubmitted after Deficiency",
+      label: DEFICIENCY.resubmitted,
       count: queue.filter((a) => a.status === "DeficiencyResponded").length,
-      hint: "Corrected by the NGO",
-      scope: "queue" as const,
+      hint: "In your queue · corrected by the NGO",
     },
     {
       key: "rework",
-      label: "Returned for Rework",
+      label: RETURN.status,
       // The Queries screen reads the same selector, so this figure is that list's length.
       count: queriesFor(state, roleId).filter(inYear).length,
-      hint: "Returned to you, or by you, and not yet resolved",
-      scope: "queue" as const,
+      hint: "Returned to you, or by you · not yet resolved",
     },
     {
       key: "inspection",
       label: "Inspection Report Available",
       count: queue.filter((a) => inspected.has(a.id)).length,
-      hint: "Read the report before deciding",
-      scope: "queue" as const,
+      hint: "In your queue · read before deciding",
     },
     {
       key: "deficiency",
-      label: "Deficiencies Raised",
+      label: `${DEFICIENCY.plural} Raised`,
       count: all.filter((a) => a.status === "DeficiencyRaised").length,
-      hint: "With NGOs for correction",
-      scope: "all" as const,
+      hint: "All applications · with NGOs for correction",
     },
     {
       key: "resolved",
       label: "Deficiencies Resolved",
       count: all.filter((a) => a.deficiencies.some((d) => d.respondedAt)).length,
-      hint: "Corrected by NGOs",
-      scope: "all" as const,
+      hint: "All applications · corrected by NGOs",
     },
     {
       key: "forwarded",
       label: "Forwarded by You",
       count: all.filter((a) => a.audit.some((e) => e.byRole === roleId && e.action === "forward")).length,
-      hint: "Moved to the next level by you",
-      scope: "all" as const,
+      hint: "Your own actions · moved to the next level",
     },
   ];
 
@@ -175,4 +177,93 @@ export function recordInspection(
 ): Inspection {
   if (i.status !== "Scheduled") throw new Error("Only a scheduled inspection can be recorded.");
   return { ...i, status: "Submitted", submittedAt: now, findings: report.findings.trim(), recommendation: report.recommendation };
+}
+
+/* ── All Applications: one resolution for every figure ─────────────────────── */
+
+/** Every filter the All Applications screen offers. `""` is "any". */
+export interface ExplorerFilters {
+  status: ExplorerStatus;
+  financialYear: string;
+  state: string;
+  district: string;
+  instalment: string;
+  search: string;
+}
+
+export const DEFAULT_EXPLORER_FILTERS: ExplorerFilters = {
+  status: "mine",
+  financialYear: "",
+  state: "",
+  district: "",
+  instalment: "",
+  search: "",
+};
+
+export interface ExplorerView {
+  /** The officer register before any filter — drafts are never in it. */
+  register: GrantApplication[];
+  /** What EVERY filter, Status included, lets through. The table, its pager and its count read this. */
+  rows: GrantApplication[];
+  /** The four figures, counted over `rows` — so `tiles.total === rows.length`, always. */
+  tiles: ExplorerTiles;
+  /** Filters the reader set. "Needs My Action" is the screen's resting state, so it does not count. */
+  activeFilterCount: number;
+  /** The count line: "10 of 133 applications", or "133 applications" when nothing is filtered away. */
+  countLine: string;
+}
+
+/**
+ * All Applications, resolved ONCE (design-director audit O-01).
+ *
+ * The screen printed Total 133 / In Review 60 / Sanctioned 61 above a table filtered to "Needs My
+ * Action" and "Showing 10 of 133": the figures followed the search and the Year, State and
+ * Instalment filters but not Status, so one request had three answers and typing a search
+ * dropped the figures to 0 while the Status filter did not move them.
+ *
+ * Now there is one filtered set. The figures describe the rows on screen, the count line says how
+ * many of the register those are, and the pager counts the same array. Pass `rows` to
+ * `WorklistScreen` with `countLine`; do not recompute any of them on the page.
+ */
+export function explorerView(
+  state: EAnudaanState,
+  roleId: RoleId | null,
+  filters: ExplorerFilters,
+  ngoName: (ngoId: string) => string = (id) => state.ngos.find((n) => n.id === id)?.name ?? "",
+): ExplorerView {
+  const register = officerApplications(state);
+  const needle = filters.search.trim().toLowerCase();
+  const rows = register
+    .filter((a) => {
+      const p = placeOf(state, a);
+      return (
+        matchesExplorerStatus(a, filters.status, roleId) &&
+        (!filters.financialYear || a.financialYear === filters.financialYear) &&
+        (!filters.state || p?.state === filters.state) &&
+        (!filters.district || p?.district === filters.district) &&
+        (!filters.instalment || instalmentKey(a) === filters.instalment) &&
+        (!needle ||
+          a.id.toLowerCase().includes(needle) ||
+          a.institutionId.toLowerCase().includes(needle) ||
+          ngoName(a.ngoId).toLowerCase().includes(needle))
+      );
+    })
+    .sort((a, b) => b.ageingDays - a.ageingDays);
+
+  const activeFilterCount =
+    (filters.status !== "mine" ? 1 : 0) +
+    (filters.financialYear ? 1 : 0) +
+    (filters.state ? 1 : 0) +
+    (filters.district ? 1 : 0) +
+    (filters.instalment ? 1 : 0) +
+    (needle ? 1 : 0);
+
+  const noun = (n: number) => `application${n === 1 ? "" : "s"}`;
+  const n = rows.length.toLocaleString("en-IN");
+  const countLine =
+    rows.length === register.length
+      ? `${n} ${noun(rows.length)}`
+      : `${n} of ${register.length.toLocaleString("en-IN")} ${noun(register.length)}`;
+
+  return { register, rows, tiles: explorerTiles(rows), activeFilterCount, countLine };
 }

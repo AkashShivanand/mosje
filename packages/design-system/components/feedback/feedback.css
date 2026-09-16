@@ -246,10 +246,16 @@
     margin-bottom: var(--sa-padding-8);
   }
 
+  /* headline-4 — 20px on a portal surface, 24px on the website. It was headline-1, the
+     PAGE title's size, so "No Application Matches These Filters" rendered at 32px directly
+     under a 32px "All Applications" and an empty panel outshouted the page it sat on
+     (e-Anudaan audit X-02). An empty state answers a question INSIDE the page; it takes a
+     rung below the page title and above the body, on both surfaces. */
   .ds-empty__title {
     margin: 0;
-    font-size: var(--sa-type-headline-1-size);
-    line-height: var(--sa-type-headline-1-lh);
+    max-width: 42ch;
+    font-size: var(--sa-type-headline-4-size);
+    line-height: var(--sa-type-headline-4-lh);
     font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-bolder);
   }
