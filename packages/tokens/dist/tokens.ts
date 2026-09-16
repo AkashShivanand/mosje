@@ -1720,17 +1720,17 @@ export const tokens = {
         "default": {
           "bg": "#ffffff",
           "text": "#004b96",
-          "border": "#3b8df0"
+          "border": "#0373df"
         },
         "hover": {
           "bg": "#ecf4ff",
           "text": "#004b96",
-          "border": "#0373df"
+          "border": "#005eb9"
         },
         "active": {
           "bg": "#c0dbff",
           "text": "#003975",
-          "border": "#005eb9"
+          "border": "#004b96"
         },
         "disabled": {
           "bg": "#ffffff",
@@ -1854,17 +1854,17 @@ export const tokens = {
         "default": {
           "bg": "#ffffff",
           "text": "#00532a",
-          "border": "#55986b"
+          "border": "#338051"
         },
         "hover": {
           "bg": "#e5faea",
           "text": "#00532a",
-          "border": "#338051"
+          "border": "#046a38"
         },
         "active": {
           "bg": "#bde3c7",
           "text": "#003d1e",
-          "border": "#046a38"
+          "border": "#00532a"
         },
         "disabled": {
           "bg": "#ffffff",
@@ -1988,17 +1988,17 @@ export const tokens = {
         "default": {
           "bg": "#ffffff",
           "text": "#8b1e22",
-          "border": "#ec4e4f"
+          "border": "#cb3d3f"
         },
         "hover": {
           "bg": "#ffe4e1",
           "text": "#8b1e22",
-          "border": "#cb3d3f"
+          "border": "#aa2d30"
         },
         "active": {
           "bg": "#ffc1bc",
           "text": "#6c0f15",
-          "border": "#aa2d30"
+          "border": "#8b1e22"
         },
         "disabled": {
           "bg": "#ffffff",
@@ -2122,17 +2122,17 @@ export const tokens = {
         "default": {
           "bg": "#ffffff",
           "text": "#3a3d41",
-          "border": "#8e949c"
+          "border": "#6f757d"
         },
         "hover": {
           "bg": "#eef0f3",
           "text": "#3a3d41",
-          "border": "#6f757d"
+          "border": "#54585e"
         },
         "active": {
           "bg": "#dcdee1",
           "text": "#1e2124",
-          "border": "#54585e"
+          "border": "#3a3d41"
         },
         "disabled": {
           "bg": "#ffffff",
