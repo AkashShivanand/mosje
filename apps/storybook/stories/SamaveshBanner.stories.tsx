@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SamaveshBanner, DEFAULT_SAMAVESH_PORTALS } from "@mosje/design-system";
 
 /**

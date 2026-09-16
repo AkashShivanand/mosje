@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { PortalRecoveryTemplate } from "@mosje/design-system";
 import type { PortalRecoveryConfig } from "@mosje/design-system";
 

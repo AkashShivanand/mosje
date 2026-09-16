@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { ScheduleGrid, type ScheduleAxis, type ScheduleEntry } from "@mosje/design-system";
 
 /**

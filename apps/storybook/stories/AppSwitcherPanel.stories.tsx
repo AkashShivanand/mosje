@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { AppSwitcherPanel, DEFAULT_APPS, type AppEntry } from "@mosje/design-system";
 
 /**

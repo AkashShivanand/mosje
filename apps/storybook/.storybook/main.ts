@@ -17,11 +17,18 @@ const pkgDir = (id: string) => path.dirname(require_.resolve(`${id}/package.json
 
 const config: StorybookConfig = {
   stories: ["../stories/**/*.mdx", "../stories/**/*.stories.@(ts|tsx)"],
+  /*
+   * Storybook 10: addon-essentials is gone — controls, actions, viewport and
+   * backgrounds are part of core — and Docs is its own addon. Every addon is
+   * resolved through pkgDir(), for the nesting reason above; a bare specifier
+   * would not resolve from the root CLI.
+   */
   addons: [
-    pkgDir("@storybook/addon-essentials"),
+    pkgDir("@storybook/addon-docs"),
     pkgDir("@storybook/addon-a11y"),
-    pkgDir("@storybook/addon-designs")
+    pkgDir("@storybook/addon-designs"),
   ],
+
   /*
    * NAMED SUBDIRECTORIES, never the whole `hub/public`.
    *
@@ -55,9 +62,9 @@ const config: StorybookConfig = {
     // its first failing step, and storybook parity had been failing before it.
     { from: "../../hub/public/design-system", to: "/design-system" },
   ],
+
   framework: { name: pkgDir("@storybook/react-vite"), options: {} },
   core: { disableTelemetry: true },
-  docs: { autodocs: true },
 
   /**
    * Rollup strips `"use client"` when it bundles for the browser and warns once
@@ -93,7 +100,7 @@ const config: StorybookConfig = {
       else defaultHandler(warning);
     };
     return viteConfig;
-  },
+  }
 };
 
 export default config;

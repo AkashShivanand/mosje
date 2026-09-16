@@ -161,5 +161,10 @@
   "dependencies": {
     "pdf-lib": "^1.17.1",
     "puppeteer-core": "^25.3.0"
+  },
+  "overrides": {
+    "eslint-plugin-react-hooks": {
+      "zod-validation-error": "^4.0.2"
+    }
   }
 }

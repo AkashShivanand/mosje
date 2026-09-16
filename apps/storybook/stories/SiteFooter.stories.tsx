@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { SiteFooter, VisitorCounter } from "@mosje/design-system";
 // The two marks the website ships, bundled by URL — see ./assets.d.ts for why
 // this is an import and not a staticDirs entry.

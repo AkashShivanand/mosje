@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button, ButtonGroup, IconButton, Icon } from "@mosje/design-system";
 
 /**

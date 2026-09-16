@@ -1,5 +1,5 @@
 import * as React from "react";
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { PortalLoginTemplate } from "@mosje/design-system";
 import type { PortalLoginConfig } from "@mosje/design-system";
 

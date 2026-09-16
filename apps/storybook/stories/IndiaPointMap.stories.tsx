@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import { IndiaPointMap, type HexBin, type MapPin, type MapBubble } from "@mosje/design-system";
 
 /**

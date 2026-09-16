@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react-vite";
 import * as React from "react";
 
 import { CheckboxGroup, Icon, Input, RadioGroup, type RadioGroupProps } from "@mosje/design-system";
