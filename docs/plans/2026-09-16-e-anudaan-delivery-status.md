@@ -466,3 +466,55 @@ from 165 published component sets to **167**, both stamped 16 Sep 14:12, and `Ch
 now imports into the handoff file with its four variants and fourteen properties after four
 attempts that answered "not found". Nothing about the component had changed except the removal
 of the property no layer bound.
+
+---
+
+## 9. The 375 phone column — started 16 Sep 2026
+
+Undeferred on the user's word. The portal was captured at **375×812, 191 screens**, and every
+phone frame is measured against its own screenshot rather than judged by eye: **a frame whose
+height differs from the running build by more than about 15% is not a specification, and is not
+kept.**
+
+### The recipe, established and verified
+
+1. Clone the desktop frame, rename `… · Mobile`, resize to 375.
+2. **Remove the side rail.** A phone draws no sidebar — the shell collapses it into the menu.
+   Left in, it stretched to match the body and pushed one frame to **20,436px**.
+3. Set every instance that knows a narrow arrangement to it — `Width=Narrow`, `Device=Mobile`.
+4. Anything still wider than the frame fills its parent.
+5. The frame hugs its content vertically.
+
+### What that produced
+
+| Phone frame | Figma | The build at 375 | |
+|---|---|---|---|
+| `NGO / Upload Documents / Not uploaded` | 2,800 | 2,891 | ✅ 0.97× |
+| `NGO / Upload Documents / Invalid` | 5,040 | 4,531 | ✅ 1.11× |
+| `NGO / Application / Action required` | 5,293 | 5,137 | ✅ 1.03× |
+| `NGO / Correct Your Application / Items outstanding` | 2,000 | 2,111 | ✅ 0.95× |
+| ~~`NGO / Upload Documents / Placement tray`~~ | 6,398 | 3,789 | ❌ 1.69× — **not kept** |
+| ~~`NGO / Upload Documents / Document history sheet`~~ | 4,502 | 3,211 | ❌ 1.40× — **not kept** |
+| ~~`NGO / My Applications / Populated`~~ | 1,688 | 3,395 | ❌ 0.50× — **not kept** |
+| ~~`NGO / Deficiencies / Populated`~~ | 4,211 | 1,976 | ❌ 2.13× — **not kept** |
+
+The page now holds **24 phone frames**, up from 20.
+
+### Why the other four could not be drawn truthfully, and what it will take
+
+**A component that reflows in code but not in Figma cannot be drawn narrow.** Of the library's
+172 component sets, **24 carry a width, device, density or breakpoint axis** and the rest do not
+— so at 375 they simply squash. The four frames above failed for exactly that reason: the cards
+on My Applications kept one line where the build wraps them to three (hence half the height),
+and the tray's items kept their single row where the build stacks them (hence nearly double).
+
+| Master | Needs | State |
+|---|---|---|
+| `Document Placement Tray / Item` | the stacked arrangement its own stylesheet defines below 720px | ✅ **built 16 Sep** — `Width: Wide, Narrow`, 3 new variants. **Waits on a publish** before the handoff file can use it |
+| `Document History Sheet / Entry` | a narrow arrangement | ⬜ |
+| `Table` · `Table / Row` · `Table / Cell` | a narrow arrangement — a phone stacks a table, it does not scroll one | ⬜ |
+| `Card` · `Metric Card` · `Event List / Row` · `List Row` · `File List / Row` | a narrow arrangement | ⬜ |
+
+Until those exist, a phone frame drawn from them would tell a developer the wrong thing, which
+is worse than an absent frame. The five sections that still have **no** phone frame at all are
+6 (partly), 7 (partly), 8, 12 and 13.
