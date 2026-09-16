@@ -183,10 +183,10 @@ today, so it is worth doing before anyone else builds on it.
 | `Document Checklist` | "Choose Files" renders as a bordered button; the build renders a text link |
 | `EmptyState` | No description slot — `Type=customize` is title plus button only, so a filtered-to-nothing explanation has nowhere to live |
 | `SideSheet` | Fixed at 432 wide; the build's history sheet is about 495 and flush to the edge |
-| `Table / Cell [Cell Type=Action]` | Its nested Button carries a baked fill override bound to a brand colour, so the button ignores its own `Sub-type` and renders solid navy whatever is set. Every action cell needs `resetOverrides()` on the nested Button first |
-| `Search` | The component box is 25px tall while its inner trailing-icon frames are 48×56, so every instance reports children outside its bounds |
+| `Table / Cell [Cell Type=Action]` | **Not a defect — disproved by test, 16 Sep.** Setting `Sub-type` in turn gives Filled → white label on the brand fill, Outlined → navy label no fill, Text → navy label no fill. The master honours it. What was hit was an override on the *instances* in the handoff file, which is why `resetOverrides()` appeared to cure it. The master's description now says so, so nobody re-reports it |
+| `Search` | **Fixed 16 Sep.** Worse than reported: the eight variants stood **25, 20, 14, 6, 1, 1, 1, 1** px tall — collapsing progressively — while their contents are 56, so every instance in the estate reported children outside its bounds and the master could never sit correctly in a row. All eight now hug to 334×56, with 0 children outside. Awaiting publish |
 | `Modal` | Publishes no content slot, so a confirmation dialog with a read-back facts list cannot be built from it |
-| `Pagination` | Its page-size control is a Select showing one value; the build renders three chips (10 / 50 / 100) |
+| `Pagination` | **Fixed 16 Sep, and the report was right** — the build renders `Showing [10] 50 100 of N items`. The six `item control=true` variants now carry three chips built from the pager's own page chip, so both rows of numbers match, exactly one selected. A reader can see the choices without opening anything, which on a short register is the whole decision. Awaiting publish |
 | `Ranked Bar Row` | **Fixed here, awaiting publish.** Published only `Tone` and `Rank`, with the fill constrained `SCALE`, so no instance could say how long its own bar was — every ranked bar in the estate drew the same length regardless of its number |
 | `Menu / Item` | No way to set its icon glyph — no INSTANCE_SWAP property, and the nested glyph is not writable |
 | `Navbar/Portal` | Draws Digital India and SAMAVESH co-branding that `SiteHeader variant="portal"` does not; hidden by override on every frame that uses it |
