@@ -290,7 +290,7 @@ container the two Document Checklist masters tell the next person to detach.
 |---|---|---|
 | Six Document Centre masters built and published | ✅ | Verified by importing each key into the handoff file, not by looking at the library |
 | Changed masters published — Metric Card 50, Event List / Row 20, ProgressBar 36, Checkbox, Input Field, Select, EmptyState, Portal Page Header, DataTable, WorklistScreen, Form / Panel | ✅ | |
-| **Checkbox Group** | ⏸ **not blocking** | Built, still **not published** on 16 Sep after three attempts — absent from the 165 component sets the REST API lists, and `importComponentSetByKeyAsync` still answers "not found". **Consumed by nothing:** 0 instances of it on the handoff page against 113 plain `Checkbox`. So the delivery does not wait on it; the library's Checkbox page is one master short until someone ticks it |
+| **Checkbox Group** | ⚠️ **had a property conflict — fixed 16 Sep** (see §8), publish again | Built, still **not published** on 16 Sep after three attempts — absent from the 165 component sets the REST API lists, and `importComponentSetByKeyAsync` still answers "not found". **Consumed by nothing:** 0 instances of it on the handoff page against 113 plain `Checkbox`. So the delivery does not wait on it; the library's Checkbox page is one master short until someone ticks it |
 | Gaps round 1 | ✅ | |
 | Gaps round 2 — built: `Alert / Inline` (4 tones), `Stepper / Collapsed` (Steps 3–11); changed: Input Field, Select, Radio Group label wrapping, Form / Section Head note slot, Badge leading icon | ⏸ | Built locally, **not published** |
 | Gaps round 2 — recorded, deliberately not built: Select read-only, Document Tile description, Selection Card chevron | ✅ | Each rejected with the code that settles it; reasons on the component records |
@@ -428,3 +428,35 @@ committed.
 frames moved to §15 Superseded when the portal landing page was retired, and the container
 stayed behind. Removed after confirming it held nothing, the same way the three pre-rebuild
 containers were.
+
+
+---
+
+## 8. The Checkbox Group conflict, and one more like it — 16 Sep 2026
+
+Three publishes failed to carry `Checkbox Group`, and the reason was visible in Figma's own
+properties panel all along: a warning against the **Select All** row. The set declared a
+`Select All` TEXT property that **no layer bound**, so Figma held a property that controlled
+nothing.
+
+**Why it could not simply be bound.** The label belongs to a nested `Checkbox` instance, and the
+plugin API refuses to bind a nested instance's text property to a parent property —
+`componentPropertyReferences` accepts only `visible`, `characters` and `mainComponent`. Binding
+a nested property is a UI action, like publishing.
+
+**Why deleting it loses nothing.** All four `Select all` instances are already **exposed**, so a
+consumer sets the label through *Nested instances → Select all → Label* — which the properties
+panel already lists. The set-level property was a second door to the same room, and the one that
+was never wired. Removed, with the reason on the master's description so nobody re-adds it.
+
+**The same defect, found by sweeping the whole library.** Every component set was checked for a
+non-variant property that no layer references. One other carried it:
+
+| Set | Properties that controlled nothing |
+|---|---|
+| `Auth / RecoveryFormCard` | `Show role tabs` · `Show DigiLocker` · `Show method tabs` · `Show role select` · `Show account prompt` |
+
+All five were carried over from the sign-in card when this one was built, and none of the layers
+they name exists on it — so each told a reader the card could do something it cannot. Removed;
+`Show consent` stayed, because it drives the Consent instance. **No set in the library now
+declares a property that nothing uses.**
