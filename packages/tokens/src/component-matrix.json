@@ -30,7 +30,7 @@
   "$stepNotes": {
     "fill": "600 not 500 — 500 fails 4.5:1 against white for the label on several ramps. See test/prominence-contract.test.mjs.",
     "disabled": "A flat neutral fill, NOT the intent colour at reduced opacity: a washed-out red still reads as an error affordance.",
-    "secondaryBorder": "400, not 300 — WCAG 1.4.11 wants 3:1 against the page for the boundary of a control, and 300 measures 2.15:1 (neutral), 2.47 (brand), 2.50 (success), 2.69 (destructive) on white. 400 is the LIGHTEST rung that clears it on every ramp (3.06-3.64) and stays lighter than the 700 ink, so an outlined button still reads as an outline rather than a filled edge. Hover and active step with it, 500 and 600. Measured 2026-09-16; asserted in test/action-nontext-contrast.test.mjs."
+    "secondaryBorder": "400, not 300 — WCAG 1.4.11 wants 3:1 against the page for the boundary of a control, and 300 measures 2.15:1 (neutral), 2.47 (brand), 2.50 (success), 2.69 (destructive) on white. 400 is the LIGHTEST rung that clears it on every ramp (3.06-3.64) and stays lighter than the 700 ink, so an outlined button still reads as an outline rather than a filled edge. Hover and active step with it, 500 and 600. Measured 2026-09-16; asserted in test/action-nontext-contrast.test.mjs. Step 500 (4.65:1 neutral) was drawn beside it on 2026-09-16 and declined: it clears 1.4.11 twice over, but at that weight the outline stops reading as chrome and starts reading as ink."
   },
   "variants": {
     "primary": {
