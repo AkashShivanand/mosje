@@ -32,9 +32,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.142.0",
+    version: "v0.143.0",
     date: "2026-09-16",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "SIX COMPONENTS SET THEIR TEXT IN THE STYLE THEIR FIGMA MASTER LINKS, WITH NO NEW STYLE ADDED. The Chatbot title is Title 2 at 600 (it was 500). The Portal Card name is Body 1 Regular, as its own comment said (500). The Slider readout is Body 2 SemiBold (500). The visitor counter takes its line\u2019s weight (500). The Pagination steps-only \u201cPage 2 of 12\u201d is Body 1 Regular, beside the 16px SemiBold Previous and Next (it inherited the page size at 500). Every one of those 500s was a weight no text style has" },
+      { kind: "Changed", text: "STANDALONE `Link` TAKES THE LIBRARY\u2019S RAMP: Small label-2 12, Default label-1 14, Large title-2 16 SemiBold. It was 14 / 16 / 22, all at 500. Default standalone links are 2px smaller and Large is 6px smaller; inline links still inherit their sentence" },
+      { kind: "Fixed", text: "FIGMA: the deprecated RangeSlider\u2019s 20 number layers leave a stray `Text md/Medium` style from another library for `Body/body-2-semibold`, the readout style of the current Slider" },
+    ],
+  },
+  {
+    version: "v0.142.0",
+    date: "2026-09-16",
     changes: [
       { kind: "Changed", text: "EVERY BUTTON LABEL IS `label-1`, 14/20 MEDIUM, AT EVERY SIZE. Default and Large set body-1\u2019s 16px at medium, a pairing no text style in the library holds; matching it in Figma had added a `Body/body-1-medium` style that only Button used. The ramp already names label-1 as button text, and Small buttons already used it. Heights stay 32 / 40 / 48 \u2014 the size step is the height and the padding \u2014 and Default and Large labels are 2px smaller" },
       { kind: "Removed", text: "FIGMA `Body/body-1-medium`. All 240 Button master labels take `Label/label-1`; a full-file scan found no other layer or override on the style before it was deleted, so no instance was left unlinked" },
