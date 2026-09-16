@@ -178,6 +178,18 @@ export default function MetricCardPage(): React.JSX.Element {
               &ldquo;due soon&rdquo; and &ldquo;overdue&rdquo; tiles, not the first card in a row.
             </p>
           </section>
+          <section className="cdp__section" aria-labelledby="cdp-narrow">
+            <h2 id="cdp-narrow" className="cdp__h2">
+              The Icon Badge Gives Way Before the Figure Does
+            </h2>
+            <p>
+              The badge is decoration: it is <code>aria-hidden</code>, and the label already says what
+              the figure is. The tile measures <strong>its own width</strong>, not the viewport&rsquo;s —
+              the same card is full width on one dashboard and half a 375px screen on another — and the
+              badge steps down to 32px below 240px and is not drawn at all below 200px, so the label
+              keeps its line. Pages do not need a utility of their own for this; one had written one.
+            </p>
+          </section>
           <section className="cdp__section" aria-labelledby="cdp-format">
             <h2 id="cdp-format" className="cdp__h2">
               Format the Figure Before You Pass It

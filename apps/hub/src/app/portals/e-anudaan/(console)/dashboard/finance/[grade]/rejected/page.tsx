@@ -1,27 +1,22 @@
 "use client";
 
-import { ROLES } from "@/lib/e-anudaan/roles";
+import { ROLES, reviewKeyOf } from "@/lib/e-anudaan/roles";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { rejectedFor } from "@/lib/e-anudaan/selectors";
-import { WorklistTable } from "@/components/e-anudaan/worklist-table";
+import { ApplicationList } from "@/components/e-anudaan/application-list";
 
+/** Finance Rejected — the Integrated Finance Division's final rejections, never the Programme Division's. */
 export default function FinanceRejectedPage() {
   const { state } = useEAnudaan();
   const role = state.session ? ROLES[state.session] : null;
-  if (!role) return null;
-  const rows = rejectedFor(state);
-
+  const key = role ? reviewKeyOf(role) : null;
   return (
-    <div className="space-y-5">
-      <div>
-        <h1 className="text-headline-1 text-ink">Finance Rejected</h1>
-        <p className="mt-1 text-body-2 text-ink-muted">Applications rejected or returned by the Integrated Finance Division.</p>
-      </div>
-      <WorklistTable
-        rows={rows}
-        variant="rejected"
-        caption="Finance Rejected"
-      />
-    </div>
+    <ApplicationList
+      variant="rejected"
+      title="Finance Rejected"
+      description="Applications closed as rejected by the Integrated Finance Division. Files sent back to the previous level are under Finance Returned."
+      rows={rejectedFor(state, "finance")}
+      reviewBase={key ? `/portals/e-anudaan/dashboard/sm2/${key}/review` : undefined}
+    />
   );
 }

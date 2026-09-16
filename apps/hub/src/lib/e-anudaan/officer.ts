@@ -1,0 +1,262 @@
+/**
+ * The officer dashboard's figures, as the review call of 11 Sep 2026 asked for them (T698–737).
+ *
+ * Every figure is derived from the same filtered set, so a card and the table beneath it can
+ * never disagree about how many files are pending.
+ */
+
+import type { EAnudaanState, GrantApplication, Inspection, InspectionStatus, RoleId } from "./types.ts";
+import { holderIsRole } from "./types.ts";
+import { queriesFor } from "./selectors.ts";
+import { CASE_TYPE, DEFICIENCY, RETURN, instalmentLabel } from "./glossary.ts";
+import {
+  explorerTiles,
+  instalmentKey,
+  matchesExplorerStatus,
+  officerApplications,
+  placeOf,
+  type ExplorerStatus,
+  type ExplorerTiles,
+} from "./registers.ts";
+
+export interface OfficerDashboard {
+  /** Files with this officer now, in the selected year. */
+  queue: GrantApplication[];
+  byCase: { key: "New" | "1" | "2" | "3"; label: string; count: number }[];
+  movement: { key: string; label: string; count: number; hint: string }[];
+  ageing: { band: string; count: number }[];
+  overdue: number;
+  years: string[];
+}
+
+export function officerDashboard(state: EAnudaanState, roleId: RoleId, fy: string): OfficerDashboard {
+  const inYear = (a: GrantApplication) => !fy || a.financialYear === fy;
+  const all = state.applications.filter(inYear);
+  const queue = all.filter((a) => holderIsRole(a.holder, roleId)).sort((a, b) => b.ageingDays - a.ageingDays);
+
+  const byCase = [
+    // "New Projects": the figure counts the case type, returned files included, so it is named for
+    // the case type and not for "New Submission" (audit O-05).
+    { key: "New" as const, label: CASE_TYPE.newPlural, count: queue.filter((a) => a.caseType === "New").length },
+    { key: "1" as const, label: instalmentLabel(1), count: queue.filter((a) => a.caseType === "Ongoing" && a.instalment === 1).length },
+    { key: "2" as const, label: instalmentLabel(2), count: queue.filter((a) => a.caseType === "Ongoing" && a.instalment === 2).length },
+    { key: "3" as const, label: instalmentLabel(3), count: queue.filter((a) => a.caseType === "Ongoing" && a.instalment === 3).length },
+  ];
+
+  const inspected = new Set(
+    state.inspections.filter((i) => i.status === "Submitted" || i.status === "Reviewed").map((i) => i.applicationId),
+  );
+
+  const movement = [
+    {
+      key: "to-send",
+      label: `${DEFICIENCY.plural} to Send`,
+      count: queue.filter((a) => a.status === "DeficiencyProposed").length,
+      hint: "In your queue · noted by the Assistant Section Officer, not yet sent to the NGO",
+    },
+    {
+      key: "resubmitted",
+      label: DEFICIENCY.resubmitted,
+      count: queue.filter((a) => a.status === "DeficiencyResponded").length,
+      hint: "In your queue · corrected by the NGO",
+    },
+    {
+      key: "rework",
+      label: RETURN.status,
+      // The Queries screen reads the same selector, so this figure is that list's length.
+      count: queriesFor(state, roleId).filter(inYear).length,
+      hint: "Returned to you, or by you · not yet resolved",
+    },
+    {
+      key: "inspection",
+      label: "Inspection Report Available",
+      count: queue.filter((a) => inspected.has(a.id)).length,
+      hint: "In your queue · read before deciding",
+    },
+    {
+      key: "deficiency",
+      label: `${DEFICIENCY.plural} Raised`,
+      count: all.filter((a) => a.status === "DeficiencyRaised").length,
+      hint: "All applications · with NGOs for correction",
+    },
+    {
+      key: "resolved",
+      label: "Deficiencies Resolved",
+      count: all.filter((a) => a.deficiencies.some((d) => d.respondedAt)).length,
+      hint: "All applications · corrected by NGOs",
+    },
+    {
+      key: "forwarded",
+      label: "Forwarded by You",
+      count: all.filter((a) => a.audit.some((e) => e.byRole === roleId && e.action === "forward")).length,
+      hint: "Your own actions · moved to the next level",
+    },
+  ];
+
+  const ageing = [
+    { band: "0–3 days", count: queue.filter((a) => a.ageingDays <= 3).length },
+    { band: "4–7 days", count: queue.filter((a) => a.ageingDays > 3 && a.ageingDays <= 7).length },
+    { band: "Over 7 days", count: queue.filter((a) => a.ageingDays > 7).length },
+  ];
+
+  const years = [...new Set(state.applications.map((a) => a.financialYear))].sort().reverse();
+
+  return { queue, byCase, movement, ageing, overdue: ageing[2]!.count, years };
+}
+
+/* ── PMU inspections ──────────────────────────────────────────────────────── */
+
+/** Plain wording for an inspection's state, shared by the PMU dashboard and its worklist. */
+export const INSPECTION_STATUS_LABEL: Record<InspectionStatus, string> = {
+  Pending: "Awaiting Schedule",
+  Scheduled: "Scheduled",
+  Submitted: "Report Submitted",
+  Reviewed: "Report Reviewed",
+};
+
+export const INSPECTION_STATUS_TONE: Record<InspectionStatus, "warning" | "info" | "success" | "neutral"> = {
+  Pending: "warning",
+  Scheduled: "info",
+  Submitted: "success",
+  Reviewed: "neutral",
+};
+
+/**
+ * The one thing a PMU field officer does next with an inspection. Pending is scheduled, a
+ * scheduled visit is inspected (its report recorded), and anything with a report is read.
+ */
+export type InspectionAction = "schedule" | "inspect" | "view";
+
+export function inspectionActionFor(i: Pick<Inspection, "status">): InspectionAction {
+  if (i.status === "Pending") return "schedule";
+  if (i.status === "Scheduled") return "inspect";
+  return "view";
+}
+
+export const INSPECTION_ACTION_LABEL: Record<InspectionAction, string> = {
+  schedule: "Schedule",
+  inspect: "Record Inspection",
+  view: "View Report",
+};
+
+/** Filter values for the PMU lists. "" is every inspection. */
+export const INSPECTION_FILTERS: { value: "" | InspectionStatus; label: string }[] = [
+  { value: "", label: "All Statuses" },
+  { value: "Pending", label: INSPECTION_STATUS_LABEL.Pending },
+  { value: "Scheduled", label: INSPECTION_STATUS_LABEL.Scheduled },
+  { value: "Submitted", label: INSPECTION_STATUS_LABEL.Submitted },
+  { value: "Reviewed", label: INSPECTION_STATUS_LABEL.Reviewed },
+];
+
+/** Inspections in a status (or all), soonest action first: to schedule, to inspect, to read. */
+export function inspectionsFor(state: EAnudaanState, status: "" | InspectionStatus = ""): Inspection[] {
+  const order: Record<InspectionStatus, number> = { Pending: 0, Scheduled: 1, Submitted: 2, Reviewed: 3 };
+  return state.inspections
+    .filter((i) => !status || i.status === status)
+    .sort((a, b) => order[a.status] - order[b.status] || (a.scheduledFor ?? "").localeCompare(b.scheduledFor ?? ""));
+}
+
+/** Schedule a pending inspection. Returns a new object; never mutates. */
+export function scheduleInspection(i: Inspection, date: string, visitType: Inspection["visitType"]): Inspection {
+  if (i.status !== "Pending" && i.status !== "Scheduled") throw new Error("Only a pending or scheduled inspection can be scheduled.");
+  return { ...i, status: "Scheduled", scheduledFor: date, visitType };
+}
+
+/** Record the inspection report for a scheduled visit. */
+export function recordInspection(
+  i: Inspection,
+  report: { findings: string; recommendation: NonNullable<Inspection["recommendation"]> },
+  now: string,
+): Inspection {
+  if (i.status !== "Scheduled") throw new Error("Only a scheduled inspection can be recorded.");
+  return { ...i, status: "Submitted", submittedAt: now, findings: report.findings.trim(), recommendation: report.recommendation };
+}
+
+/* ── All Applications: one resolution for every figure ─────────────────────── */
+
+/** Every filter the All Applications screen offers. `""` is "any". */
+export interface ExplorerFilters {
+  status: ExplorerStatus;
+  financialYear: string;
+  state: string;
+  district: string;
+  instalment: string;
+  search: string;
+}
+
+export const DEFAULT_EXPLORER_FILTERS: ExplorerFilters = {
+  status: "mine",
+  financialYear: "",
+  state: "",
+  district: "",
+  instalment: "",
+  search: "",
+};
+
+export interface ExplorerView {
+  /** The officer register before any filter — drafts are never in it. */
+  register: GrantApplication[];
+  /** What EVERY filter, Status included, lets through. The table, its pager and its count read this. */
+  rows: GrantApplication[];
+  /** The four figures, counted over `rows` — so `tiles.total === rows.length`, always. */
+  tiles: ExplorerTiles;
+  /** Filters the reader set. "Needs My Action" is the screen's resting state, so it does not count. */
+  activeFilterCount: number;
+  /** The count line: "10 of 133 applications", or "133 applications" when nothing is filtered away. */
+  countLine: string;
+}
+
+/**
+ * All Applications, resolved ONCE (design-director audit O-01).
+ *
+ * The screen printed Total 133 / In Review 60 / Sanctioned 61 above a table filtered to "Needs My
+ * Action" and "Showing 10 of 133": the figures followed the search and the Year, State and
+ * Instalment filters but not Status, so one request had three answers and typing a search
+ * dropped the figures to 0 while the Status filter did not move them.
+ *
+ * Now there is one filtered set. The figures describe the rows on screen, the count line says how
+ * many of the register those are, and the pager counts the same array. Pass `rows` to
+ * `WorklistScreen` with `countLine`; do not recompute any of them on the page.
+ */
+export function explorerView(
+  state: EAnudaanState,
+  roleId: RoleId | null,
+  filters: ExplorerFilters,
+  ngoName: (ngoId: string) => string = (id) => state.ngos.find((n) => n.id === id)?.name ?? "",
+): ExplorerView {
+  const register = officerApplications(state);
+  const needle = filters.search.trim().toLowerCase();
+  const rows = register
+    .filter((a) => {
+      const p = placeOf(state, a);
+      return (
+        matchesExplorerStatus(a, filters.status, roleId) &&
+        (!filters.financialYear || a.financialYear === filters.financialYear) &&
+        (!filters.state || p?.state === filters.state) &&
+        (!filters.district || p?.district === filters.district) &&
+        (!filters.instalment || instalmentKey(a) === filters.instalment) &&
+        (!needle ||
+          a.id.toLowerCase().includes(needle) ||
+          a.institutionId.toLowerCase().includes(needle) ||
+          ngoName(a.ngoId).toLowerCase().includes(needle))
+      );
+    })
+    .sort((a, b) => b.ageingDays - a.ageingDays);
+
+  const activeFilterCount =
+    (filters.status !== "mine" ? 1 : 0) +
+    (filters.financialYear ? 1 : 0) +
+    (filters.state ? 1 : 0) +
+    (filters.district ? 1 : 0) +
+    (filters.instalment ? 1 : 0) +
+    (needle ? 1 : 0);
+
+  const noun = (n: number) => `application${n === 1 ? "" : "s"}`;
+  const n = rows.length.toLocaleString("en-IN");
+  const countLine =
+    rows.length === register.length
+      ? `${n} ${noun(rows.length)}`
+      : `${n} of ${register.length.toLocaleString("en-IN")} ${noun(register.length)}`;
+
+  return { register, rows, tiles: explorerTiles(rows), activeFilterCount, countLine };
+}

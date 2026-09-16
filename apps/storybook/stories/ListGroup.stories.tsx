@@ -47,7 +47,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Rows that go somewhere: each is a link, and the whole row is the target. */
+/**
+ * Rows that go somewhere: each is a link, and the whole row is the target.
+ *
+ * Pass `linkAs={Link}` on a row with an `href` — without it the row is a bare anchor and every
+ * click costs a full document load. A row with no `href` needs nothing. Storybook has no router,
+ * so these are plain anchors on purpose.
+ */
 export const Playground: Story = {
   args: {},
   render: (args) => (

@@ -70,6 +70,29 @@ type Story = StoryObj<typeof meta>;
 export const Playground: Story = {};
 
 /**
+ * THE TILE MEASURES ITSELF. The icon badge is decoration — `aria-hidden`, with the label already
+ * naming the figure — so it steps down to 32px in a tile narrower than 240px and is not drawn at
+ * all below 200px, which is what a half-width tile on a 375px screen is. No page needs a utility
+ * of its own to hide it.
+ */
+export const NarrowTile: Story = {
+  decorators: [
+    (Story) => (
+      <div style={{ display: "grid", gridTemplateColumns: "180px 220px 320px", gap: 12, alignItems: "start" }}>
+        <Story />
+      </div>
+    ),
+  ],
+  render: (args) => (
+    <>
+      <MetricCard {...args} label="No badge under 200px" />
+      <MetricCard {...args} label="Smaller badge under 240px" />
+      <MetricCard {...args} label="Full badge" />
+    </>
+  ),
+};
+
+/**
  * All three directions. Note the middle one: a fall in pending grievances is
  * good news, which is why the arrow is not the judgement — the label is.
  */

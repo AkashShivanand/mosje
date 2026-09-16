@@ -172,6 +172,11 @@ export const DOCUMENTED_BY = {
   CardHeader: "Card", CardBody: "Card", CardFooter: "Card",
   CardTitle: "Card", CardSubtitle: "Card",
   TabPanel: "Tabs",
+  // A group is a heading and a list inside a DocumentChecklist; it is never used outside one.
+  DocumentChecklistGroup: "DocumentChecklist",
+  // The bulk verdict is `DocumentChecklist`'s `bulkAction`, exported alone for a decision panel.
+  // Its page section is "Bulk Verdict" on the Document Checklist page.
+  DocumentBulkAction: "DocumentChecklist",
   // THE CREDENTIAL STACKS. `AuthFormCard` is the component a consumer composes;
   // these five are what go in its one slot, and none is used on its own. Its page
   // is where the comparison lives — which stack carries a security check, which
@@ -187,6 +192,9 @@ export const DOCUMENTED_BY = {
   AuthHelpLine: "AuthFormCard",
   OtpRequestFields: "AuthFormCard", OtpVerifyFields: "AuthFormCard",
   ReviewSection: "Wizard", ReviewItem: "Wizard",
+  // The grid DocumentTile sits in. It is a styled <ul> and nothing else; the page
+  // for the tile is where the two-column layout and the four states are shown together.
+  DocumentTiles: "DocumentTile",
   SkeletonText: "Skeleton", SkeletonRow: "Skeleton",
   ChartTooltip: "Legend",
   // The ranked list's bar alone, for a table cell. Its page shows it inside a

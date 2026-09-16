@@ -48,7 +48,7 @@ export default function FormScreenPage(): React.JSX.Element {
     <ComponentDocPage
       name="Form Screen"
       status="Beta"
-      summary={"One record, editable, and it fits on one screen. Sections, an error summary that takes focus, and one action bar that stays reachable at 375px."}
+      summary={"One record, editable, and it fits on one screen. The page header, an error summary that takes focus, then one Form Panel holding the sections and an action band with an outlined Cancel and the submit."}
       figma={{ node: "screenTemplates" }}
       specimen={<FormSpecimen />}
       propsFrom="FormScreenProps"
@@ -65,12 +65,33 @@ export default function FormScreenPage(): React.JSX.Element {
         ],
       }}
       related={[
+        { label: "Form Panel", href: "/design-system/components/forms/form-panel", reason: "the card the sections and actions sit in" },
         { label: "Form Section", href: "/design-system/components/forms/form-section", reason: "the field grid" },
         { label: "Error Summary", href: "/design-system/components/forms/error-summary", reason: "the failed-submit summary" },
         { label: "Wizard Screen", href: "/design-system/components/templates/wizard-screen", reason: "when it will not fit" },
       ]}
       design={
         <>
+          <section className="cdp__section" aria-labelledby="cdp-grammar">
+            <h2 id="cdp-grammar" className="cdp__h2">One Panel, No Head Band</h2>
+            <p>
+              The template renders the page header, the error summary and the mandatory-fields sentence,
+              then one Form Panel. The panel&rsquo;s body holds the children — Form Sections and Form
+              Cards, 32 apart, none of them a card — and its action band holds the save state at the
+              start and the buttons at the end: an outlined Cancel, any secondary actions, then the
+              submit.
+            </p>
+            <p>
+              The panel is drawn without a title, so it has no head band. The page header directly above
+              already names the form, and a band repeating it would say the same thing twice. This is
+              the same grammar a wizard step uses, less the band.
+            </p>
+            <Callout type="warning" title="Pass Sub-Sections, Not Cards">
+              The children go straight into the panel. Wrapping each section in a Card puts boxes
+              inside the box the template has already drawn.
+            </Callout>
+          </section>
+
           <section className="cdp__section" aria-labelledby="cdp-count">
             <h2 id="cdp-count" className="cdp__h2">Count the Fields — the Boundary Is Not a Feeling</h2>
             <p>
@@ -114,6 +135,7 @@ export default function FormScreenPage(): React.JSX.Element {
   <FormSection title="Correspondence Address" columns={2}>
     …FormFields…
   </FormSection>
+  <FormSection title="Contact Person">…FormFields…</FormSection>
 </FormScreen>`}</CodeBlock>
           <p>
             Pass <code>errors</code> only after a submit attempt. Rendering a summary while the

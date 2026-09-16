@@ -4,9 +4,11 @@
  */
 
 import { ROLES, type RoleDef } from "./roles.ts";
-import type { AppStatus, EAnudaanState, GrantApplication, RoleId } from "./types.ts";
+import type { AppStatus, AuditEntry, Division, EAnudaanState, GrantApplication, RoleId } from "./types.ts";
 import { holderIsRole } from "./types.ts";
-import { rupeesShort } from "./format";
+import { formatMoney } from "./format.ts";
+import { APPLICANT_STATUS, schemeName } from "./glossary.ts";
+import type { AnsweredSection } from "./applicant.ts";
 
 /** Everything currently sitting in this role's in-tray. */
 export function worklistFor(state: EAnudaanState, roleId: RoleId): GrantApplication[] {
@@ -15,15 +17,56 @@ export function worklistFor(state: EAnudaanState, roleId: RoleId): GrantApplicat
     .sort((a, b) => b.ageingDays - a.ageingDays);
 }
 
-/** Files this role has queried back down (or that were queried to it). */
+/**
+ * The rework list behind BOTH the dashboard's "Returned for Rework" figure and the PD / Finance
+ * Queries screen — one expression, so the tile and the list cannot disagree.
+ *
+ * A file belongs here while it is unresolved and this officer is on either end of it:
+ *   • it sits with them, returned for rework (a query pushed down to them, or a Programme
+ *     Director return to PD:ASO); or
+ *   • they raised the query that sent it down, and it has not come back yet.
+ *
+ * It used to be two expressions: the dashboard counted only the first case and the list only a
+ * `QueryRaised` status, so PD:ASO saw "2" over an empty list and PD:US "0" over a list of two.
+ */
 export function queriesFor(state: EAnudaanState, roleId: RoleId): GrantApplication[] {
-  return state.applications.filter(
-    (a) => a.status === "QueryRaised" && (holderIsRole(a.holder, roleId) || a.queries.some((q) => q.raisedBy === roleId)),
-  );
+  return state.applications
+    .filter((a) => {
+      const rework = a.status === "QueryRaised" || a.status === "Returned";
+      if (!rework) return false;
+      if (holderIsRole(a.holder, roleId)) return true;
+      return a.status === "QueryRaised" && a.queries.some((q) => q.raisedBy === roleId && !q.resolvedAt);
+    })
+    .sort((a, b) => b.ageingDays - a.ageingDays);
 }
 
-export function rejectedFor(state: EAnudaanState): GrantApplication[] {
-  return state.applications.filter((a) => a.status === "Rejected" || a.status === "Returned");
+/** The division an officer's decision is recorded against. The Programme Director sits with the PD. */
+export function divisionOfRole(roleId: RoleId): Division | null {
+  if (roleId.startsWith("pd-") || roleId === "programme-director") return "pd";
+  if (roleId.startsWith("finance-")) return "finance";
+  return null;
+}
+
+/** The audit entry that closed a rejected file, if it was rejected. */
+export function rejectionOf(app: GrantApplication): AuditEntry | undefined {
+  if (app.status !== "Rejected") return undefined;
+  return [...app.audit].reverse().find((e) => e.action === "reject");
+}
+
+/**
+ * Files a division rejected. Scoped to the division that took the decision, so the Programme
+ * Division's register and the Finance Division's register never credit each other's decisions.
+ *
+ * A Programme Director RETURN is not a rejection: the file goes back to PD:ASO and climbs again,
+ * so it is on that officer's rework list (`queriesFor`), not here.
+ */
+export function rejectedFor(state: EAnudaanState, division: Division): GrantApplication[] {
+  return state.applications
+    .filter((a) => {
+      const entry = rejectionOf(a);
+      return !!entry && divisionOfRole(entry.byRole) === division;
+    })
+    .sort((a, b) => (rejectionOf(b)?.at ?? "").localeCompare(rejectionOf(a)?.at ?? ""));
 }
 
 export function forwardedFor(state: EAnudaanState, roleId: RoleId): GrantApplication[] {
@@ -76,20 +119,23 @@ export function kpisFor(state: EAnudaanState, roleId: RoleId): Kpis {
   };
 }
 
-/** Indian-format currency, abbreviated the way the live portal does it (₹888.31 Cr, ₹10.00 L). */
+/**
+ * A grant amount in a table, tile, card or report: the summary form of the one money rule
+ * (`₹888.31 Cr`, `₹10.00 L`). A form, sanction order or dialog uses `formatMoney(n, "exact")`.
+ */
 export function formatGrant(amount: number): string {
-  return rupeesShort(amount);
+  return formatMoney(amount, "summary");
 }
 
 // Re-exported so the many callers that import it from here keep working, while there remains
 // exactly one implementation (design audit M8).
-export { formatDate } from "./format";
+export { formatDate } from "./format.ts";
 
 /** Badge tone per status — amber for in-flight, green for sanctioned, red for closed. */
 export function statusTone(status: AppStatus): "warning" | "success" | "danger" | "info" | "neutral" {
   if (status === "Sanctioned" || status === "Released") return "success";
   if (status === "Rejected") return "danger";
-  if (status === "Returned" || status === "DeficiencyRaised" || status === "QueryRaised") return "warning";
+  if (status === "Returned" || status === "DeficiencyRaised" || status === "DeficiencyProposed" || status === "QueryRaised") return "warning";
   if (status === "Draft") return "neutral";
   return "info";
 }
@@ -100,6 +146,15 @@ export function statusTone(status: AppStatus): "warning" | "success" | "danger" 
  * Three special cases, all from the live path shapes: `jspd` is PD:JS, `pd` is the Programme
  * Director (NOT a grade), and `ifd<grade>` is the Integrated Finance Division.
  */
+/**
+ * A scheme's short name as it is written on screen — the officer's Scheme column. The stored code
+ * (`SHRESHTA_M2`) is a key; it was reaching officers verbatim. One source with the applicant's
+ * screens, so the two sides cannot name a scheme differently (glossary, audit N-07).
+ */
+export function schemeLabel(code: string): string {
+  return schemeName(code).short;
+}
+
 export function roleForSchemeKey(key: string): RoleDef | undefined {
   if (key === "jspd") return ROLES["pd-js"];
   if (key === "pd") return ROLES["programme-director"];
@@ -111,33 +166,67 @@ export function roleForSchemeKey(key: string): RoleDef | undefined {
 }
 
 /**
- * The status wording the NGO sees. The officer-facing `statusLabel` in workflow.ts appends the
- * holder ("Submitted / ASO"); the live applicant screens never show the chain — they show one of
- * six plain states, matching the filter chips above the table.
+ * The status wording the NGO sees — one of seven states from the glossary. The officer-facing
+ * `statusLabel` in workflow.ts appends the seat holding the file; the applicant is never shown the
+ * chain.
+ *
+ * - A deficiency is the one state that asks the applicant to act, so it is named for what it asks
+ *   (review call 11 Sep 2026, T43–54).
+ * - A query between officers, or the Programme Director's return, asks nothing of the applicant:
+ *   the file is In Review, as the applicant's own history already says ("Under Examination at the
+ *   Ministry"). "Query / Returned" contradicted that history.
+ * - A released grant is "Grant Released", not "Sanctioned": the NGO waiting for funds must be able
+ *   to tell a committed grant from a paid one (audit N-09).
  */
 export function ngoStatusLabel(app: GrantApplication): string {
-  if (app.status === "Draft") return "Draft";
-  if (app.sanction || app.status === "Sanctioned" || app.status === "Released") return "Approved";
-  if (app.status === "Rejected") return "Closed / Rejected";
-  if (app.status === "QueryRaised" || app.status === "Returned" || app.status === "DeficiencyRaised") {
-    return "Query / Returned";
-  }
-  if (app.status === "Submitted") return "Submitted";
-  return "In Review";
+  if (app.status === "Draft") return APPLICANT_STATUS.draft;
+  if (app.status === "Released") return APPLICANT_STATUS.released;
+  if (app.sanction || app.status === "Sanctioned") return APPLICANT_STATUS.sanctioned;
+  if (app.status === "Rejected") return APPLICANT_STATUS.rejected;
+  if (app.status === "DeficiencyRaised") return APPLICANT_STATUS.actionRequired;
+  if (app.status === "Submitted") return APPLICANT_STATUS.submitted;
+  return APPLICANT_STATUS.inReview;
 }
 
-/** The live filter chips over My Applications, in order. */
+/** The filter chips over My Applications, in order: "All", then every state `ngoStatusLabel` can return. */
 export const NGO_STATUS_FILTERS = [
   "All",
-  "Submitted",
-  "In Review",
-  "Approved",
-  "Query / Returned",
-  "Closed / Rejected",
+  APPLICANT_STATUS.draft,
+  APPLICANT_STATUS.actionRequired,
+  APPLICANT_STATUS.submitted,
+  APPLICANT_STATUS.inReview,
+  APPLICANT_STATUS.sanctioned,
+  APPLICANT_STATUS.released,
+  APPLICANT_STATUS.rejected,
 ] as const;
 
 export type NgoStatusFilter = (typeof NGO_STATUS_FILTERS)[number];
 
 export function matchesNgoFilter(app: GrantApplication, filter: NgoStatusFilter): boolean {
   return filter === "All" || ngoStatusLabel(app) === filter;
+}
+
+/**
+ * The line beside one section of an application's answers (audit N-04).
+ *
+ * "N required questions unanswered" is a DRAFT's question: it tells the applicant what is left
+ * before they can submit. A submitted file passed the wizard's validation, so a gap in its stored
+ * answers is the register's gap, not the applicant's — and printing "3 required questions
+ * unanswered" on a file already under examination told the NGO its application was incomplete
+ * and uneditable, while the officer's review showed the same file as complete. Once submitted, a
+ * section is described, never counted against.
+ */
+export function answeredSectionSummary(section: Pick<AnsweredSection, "fields" | "missingRequired">, app: Pick<GrantApplication, "status">): string {
+  if (app.status === "Draft" && section.missingRequired > 0) {
+    return `${section.missingRequired} required question${section.missingRequired === 1 ? "" : "s"} unanswered`;
+  }
+  const n = section.fields.length;
+  return `${n} question${n === 1 ? "" : "s"}`;
+}
+
+/** The sentence over the whole answers panel: a draft's progress, and nothing for a submitted file. */
+export function answeredSectionsHeadline(sections: readonly Pick<AnsweredSection, "missingRequired">[], app: Pick<GrantApplication, "status">): string | undefined {
+  if (app.status !== "Draft") return undefined;
+  const missing = sections.reduce((a, s) => a + s.missingRequired, 0);
+  return missing === 0 ? "Every required question is answered." : `${missing} required question${missing === 1 ? "" : "s"} still to answer.`;
 }

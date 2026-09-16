@@ -113,6 +113,16 @@
     font-weight: var(--sa-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
+  /* COMPACT IS ONE RUNG, NOT FOUR. It was headline-5 — 18px on a portal, the size of a card
+     title — so a wizard's page title read as a section heading and the H1 jumped 32 → 18 →
+     32 across one journey (e-Anudaan audit X-01). headline-3 is 24px on a portal surface:
+     still clearly below a list or dashboard title, still clearly the page's subject.
+     Which pages take which: see `PageHeader`'s `size` docstring and design.md § PageHeader. */
+  .sa-page-header--compact .sa-page-header__title {
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+  }
   .sa-page-header__meta {
     margin: 0;
     font-size: var(--sa-type-body-2-size);

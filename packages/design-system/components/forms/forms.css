@@ -61,8 +61,10 @@
     min-height: var(--sa-target-comfortable); /* 44px — see the size-scale note above */
     padding: var(--sa-padding-12) var(--sa-padding-12);
     font-family: var(--sa-font-latin);
-    font-size: var(--sa-type-body-1-size);
-    line-height: var(--sa-type-body-1-lh);
+    /* Body 2 at Small and Default, Body 1 at Large and Extra Large — the Input Field master's
+       type binding. The phone floor below still lifts text entry to 16px. */
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
     color: var(--sa-text-neutral-base);
     background-color: var(--sa-bg-neutral-base);
     /* BOLDER, not base, and this is a conformance fix rather than a taste one.
@@ -115,6 +117,16 @@
     min-height: 44px; /* see the size-scale note at the top of this file */
     padding-top: var(--sa-padding-8);
     padding-bottom: var(--sa-padding-8);
+  }
+
+  .ds-input--lg,
+  .ds-select__el--lg,
+  .ds-input-shell--lg,
+  .ds-input--xl,
+  .ds-select__el--xl,
+  .ds-input-shell--xl {
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
   }
 
   .ds-input--lg,
@@ -494,15 +506,17 @@
     gap: var(--sa-inline-4);
   }
 
-  /* 16px, medium — UX4G's Label/XL, which its written guidance names as the
-     default for a form field label. Its own Figma master binds Label/M (12px)
-     at size M; the two sources are 4px apart, and where a standard contradicts
-     itself the estate takes the larger, because nobody has ever been failed by
-     a label that was easier to read. Recorded in
-     docs/audit/input-fields-audit-2026-09-03.md §4. */
+  /* Label 1 (14/20), medium — what SAMAVESH's own Input Field master binds, and what every form
+     in the handoff draws (docs/design-system/form-wizard-visual-language.md §5).
+
+     Changed 2026-09-14 from Body 1 (16px). That size came from reading UX4G's written guidance
+     over its Figma master and taking the larger of the two (docs/audit/input-fields-audit-2026-09-03.md
+     §4). SAMAVESH is the source we build from, and it had settled on Label 1; the code was the
+     half that had drifted, and a 16px label over a 14px value inverted the pair's hierarchy.
+     14px medium at text/neutral/base is well inside WCAG 2.2 AA. */
   .ds-field__label {
-    font-size: var(--sa-type-body-1-size);
-    line-height: var(--sa-type-body-1-lh);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
     font-weight: var(--sa-font-weight-medium);
     color: var(--sa-text-neutral-base);
   }

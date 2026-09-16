@@ -10,11 +10,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { openingTag, scanSource, tagWithoutComments } from "./scan.mjs";
+import { openingTag, scanSource, tagWithoutComments, topLevelProps } from "./scan.mjs";
 
-/** The one site `scanSource` finds for `<Ticker>` in `src`. */
-const site = (src) => {
-  const found = scanSource(src, new Set(["Ticker"]));
+/** The one site `scanSource` finds for `<Ticker>` (or the named component) in `src`. */
+const site = (src, names = ["Ticker"]) => {
+  const found = scanSource(src, new Set(names));
   assert.equal(found.length, 1, "expected exactly one call site");
   return found[0];
 };
@@ -159,4 +159,20 @@ test("an unterminated tag returns the rest of the source rather than passing qui
   const src = `<Ticker label={label}`;
   assert.equal(tagAt(src), src);
   assert.equal(site(src).passes, false);
+});
+
+test("an href inside a prop's own subtree does not make the row a link", () => {
+  const src = `<ListRow title="A" trailing={<Link href={target} />} />`;
+  assert.equal(site(src, ["ListRow"]).hasHref, false);
+});
+
+test("an href on the tag itself does", () => {
+  const src = `<ListRow title="A" href={target} />`;
+  assert.equal(site(src, ["ListRow"]).hasHref, true);
+});
+
+test("topLevelProps blanks brace expressions and keeps the tag's own props", () => {
+  const out = topLevelProps(`<ListRow href="/x" trailing={<a href="/y">go</a>} />`);
+  assert.ok(out.includes('href="/x"'));
+  assert.ok(!out.includes('"/y"'));
 });

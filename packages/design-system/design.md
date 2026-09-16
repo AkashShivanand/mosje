@@ -12,6 +12,55 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-16 · System version: v0.68.0 (THE WIZARD'S ACTION BAR IS STICKY ON A
+  PHONE. Below 768px it rides the bottom of the viewport while the step scrolls under it — a grant
+  step runs 2,000–3,900px at 375, so "Save and Continue" was off-screen the whole time an applicant
+  filled it. Sticky rather than fixed: it belongs to the panel, needs no z-index rung and cannot
+  outlive the form. Back keeps its icon and gives up its word; the body reserves the bar's height so
+  the last field is never covered; `env(safe-area-inset-bottom)` is respected; the bar carries
+  `data-sa-rail-clear` and, where the corner is actually occupied, a trailing gutter so the primary
+  stops short of the statutory accessibility control. `floating-element-placement.md` gained the
+  section that says a sticky bar is not a third rail. `FormPanel` takes `footerProps`.)
+
+  Last reviewed: 2026-09-16 · System version: v0.67.0 (THE FOLLOW-UPS THE AUDIT BATCHES SENT BACK.
+  `EventList`/`NotificationCentre` mark a passed deadline OVERDUE — a word and an icon, derived from
+  a `now` the page resolves once — and an item may name its own due label ("File by"); both dates on
+  a row are now spelled the same way. `WorklistScreen`'s count line counts in the screen's own noun.
+  `DataTable` pins an Actions column only where the overflow is at least the column's own width, so
+  a pinned column can never hide a cell that cannot be scrolled out from under it. `ListRow` takes
+  `linkAs` — and `check:link-as` learned `linkAs-gate(href-only)`, for a component that renders an
+  anchor only when given an href — and its text column asks for 60% of a narrow row rather than
+  100%, so a label and its figure stay on one line. `MetricCard`'s icon badge shrinks and then goes
+  as its own tile narrows. `SegmentedControl` carries the radio-group keyboard.)
+
+  Last reviewed: 2026-09-16 · System version: v0.66.0 (THE E-ANUDAAN AUDIT'S SHARED-LAYER FIXES,
+  MADE ONCE FOR THE ESTATE. `DataTable` hides its footer while every row fits on the smallest page
+  size (`hidePagerWhenFits`), says "item" for one, gives its page-size buttons 24px targets and an
+  outlined selected state, and turns an overflowing table into a named focusable region.
+  `EmptyState`'s title is headline-4, a rung below any page title. `PageHeader size="compact"` is
+  headline-3 (24px on a portal), and the docstring names which pages take which. `WorklistScreen`
+  takes a `views` slot and a lone segmented control no longer draws the filter bar's frame.
+  `Accordion`'s card variant is one surface, no shadow and no grey band. A disabled selection
+  control keeps its description at AA. No required asterisk on a read-only or disabled field.
+  `ChartCard` takes `headingLevel`. `DocumentRow` takes `density="compact"` and `clampReason` and
+  never breaks a file extension; `DocumentChecklist` takes `bulkAction` (and exports
+  `DocumentBulkAction`), draws `formats` in the drop zone, and `DocumentChecklistGroup` takes
+  `hideRequiredMarks`. A portal masthead below 768px withholds the ministry line — a recorded DBIM
+  5.2 divergence for the Department to confirm.)
+
+  Last reviewed: 2026-09-14 · System version: v0.65.0 (EVERY FORM TAKES ONE GRAMMAR: ONE PANEL
+  PER STEP, AND THE SUB-SECTIONS INSIDE IT ARE NOT CARDS. Read from the portal handoff, where it
+  repeats across Transgender Portal, NOS, NMBA, Garima Greh, SCW and SAMBAL, and written down in
+  `docs/design-system/form-wizard-visual-language.md`. E-Anudaan's application form had grown its
+  own — a boxed stepper, a card per section, the actions below the last card — because no pass took
+  the other portals as the reference. `Wizard` now draws the stepper on the page ground and one
+  `FormPanel` for the step (head band, sub-sections, action band, Cancel on the first step);
+  `FormSection`, `FormCard` and `ReviewSection` share one head — an uppercase label and a hairline
+  rule — and draw no card; `FormScreen` renders its sections and actions in one untitled
+  `FormPanel`. New: `FormPanel`, `FormInset` for repeatable entries, `DocumentTile` /
+  `DocumentTiles` for documents in four states. Field labels step up to Label 1, input text to
+  Body 2, and `PageHeader` takes `size="compact"` for a wizard page.)
+
   Last reviewed: 2026-09-09 · System version: v0.64.0 (`SitePageHeader` CUTS THE PORTRAIT TO THE
   CIRCLE ITSELF, SO A CALLER CANNOT GET THE FRAME WRONG. The halo cannot do the clipping — the
   pulse discs are its children and the whole point of them is that they travel out past the
@@ -1399,8 +1448,13 @@ graph TD
 | Do | Don't |
 | :--- | :--- |
 | Wrap every input in `<FormField>` containing explicit label, hint, and error nodes. | Do not use placeholder text as a substitute for labels. Placeholders disappear on type and fail accessibility. |
+| Pass `readOnly` (or `disabled`) to the `<FormField>` — not only to the `<Input>` inside — for a worked-out or carried-forward value. The label then shows no required asterisk. | Do not mark a field the reader cannot change as required. An asterisk is an instruction; on a computed amount it cannot be followed. |
+| Choose `PageHeader`'s size by the KIND of page: `default` for dashboards, lists, records, review and error pages; `compact` for wizards and single-task form pages. | Do not pick a size per page, and do not add a third. The H1 must not change size inside one journey. |
+| Put a view switch (Pending / All) in `WorklistScreen`'s `views`, under the header, unframed. | Do not put tabs or a segmented control inside a `Card` or a `FilterBar`. A view is not a filter, and a switch in a grey frame reads as one. |
 | Show red error states (`var(--sa-border-status-error-base)` + `var(--sa-text-status-error-base)`) only after validation runs or input blur. | Do not render inline inputs without surrounding margin-bottom/padding constraints. |
 | Use `<FormSection>` to group related fields under a sub-heading within a form. | Do not render a single `<form>` with 20+ fields — break it into `<FormSection>` groups or use `<Wizard>`. |
+| Put a form's or a step's sub-sections inside ONE `<FormPanel>` (a `<Wizard>` draws it for you). | Do not wrap a sub-section in a `<Card>`. The panel is the card; boxes inside it read as separate forms and push the actions below the last box. |
+| Let the Wizard's action band stick on a phone (it does, 0–767px) and leave the reserved body padding alone. | Do not re-clip the panel (`overflow: hidden`) at phone width, or pin the bar with `position: fixed`. The first stops the bar sticking; the second makes it a corner occupant, with everything `floating-element-placement.md` asks of one. |
 | Use `<Search>` (not `<Input>`) for search affordances — it includes the correct icon and clear button. | Do not use `type="search"` on a plain `<Input>` and style it manually. |
 | Use `<Select>` for a FORM field — it is a native `<select>`, which every assistive technology and every mobile keyboard already knows. | Do not reach for `<FilterSelect>` in a form because it looks better. A native control is worth more than a hint column on a field a citizen submits. |
 | Wrap any set of radios or checkboxes answering ONE question in `<RadioGroup>` / `<CheckboxGroup>`. They supply the `<fieldset>`/`<legend>` that gives the QUESTION an accessible name — without it a screen reader announces the options and never the question. `legend` is required; hide it with `sa-sr-only` if a heading already asks it. | Do not hand-roll a fieldset around bare `<Radio>`s, and do not omit the legend because the layout looks fine. Do not add `tabIndex` to the options — the browser's roving tabindex already makes the group one tab stop, and re-implementing it produces four. |
@@ -1417,6 +1471,8 @@ graph TD
 | Use sticky headers (`position: sticky`) for scrollable tall tables. | Do not render tables without a visible `<caption>` or an `aria-label` on the `<table>` element. |
 | Right-align numeric columns and align the header text to match. | Do not mix left- and right-aligned text in the same column. |
 | Always add a sort indicator icon when a column is sortable. | Do not rely on row order alone to communicate data ranking. |
+| Leave `hidePagerWhenFits` on: a register that fits on its smallest page size shows no footer at all. | Do not show "Showing 10 50 100 of 1 items" and a one-page pager — the footer answers "how do I see the rest?", and there is no rest. |
+| Pin an Actions column with `className: "is-sticky-right"` and let the table decide: it pins only while the overflow is at least the column's own width. | Do not pin a column in a table that overflows by less than the column is wide. It then paints over the cell beside it with no way to scroll it back — which is how a status badge ends up reading "Action Requir…". |
 
 | Mark a column `sortable` and give it a `sortValue` when its cell comes from `render`. | Do not sort a rendered column by its display string — "₹1,20,000" sorts before "₹9,000", which is the classic register defect. |
 | Let `DataTable` sort the whole set and then page it. | Do not sort the visible page. Reordering ten rows inside a register of four thousand reads as correct and is not. |
@@ -1425,6 +1481,7 @@ graph TD
 
 | Do | Don't |
 | :--- | :--- |
+| Keep the EmptyState title a rung below the page title (the component sets headline-4), in Title Case with no full stop. | Do not restyle it up to the page title's size — an empty panel must not outshout the page it answers inside. |
 | Always show: icon + heading + 1-sentence explanation + a primary CTA to unblock the user. | Do not show only "No data found" with no action path. |
 | Use `<EmptyState>` with `variant="no-results"` for filtered tables, `variant="no-data"` for fresh portals. | Do not use red or warning colours — an empty state is not an error. |
 | Keep the message constructive: "Add your first application to get started." | Do not use passive voice: "No results were found." |
@@ -2418,17 +2475,40 @@ Docs: `/design-system/components/sla-progress`.
 **Props**: `checked`, `onChange(checked)`, `children` (the statement), `title` (default `"Declaration"`), `lead` (default `"I certify that:"`), `error`, `disabled`.
 **Rule**: Use for any form where the user attests to the truth of what they submitted. Do not substitute a bare `<Checkbox>` — the declaration must read as a distinct, deliberate act, not one more field in a grid.
 
+#### The form grammar (read first)
+Every form on the estate takes one shape — spec: `docs/design-system/form-wizard-visual-language.md`.
+**One `FormPanel` per form or wizard step**; the sub-sections inside it (`FormSection`, `FormCard`,
+`ReviewSection`) are **not cards** — they open with an uppercase label and a hairline rule, 32 apart.
+The stepper sits on the page ground with no box. Actions live in the panel's action band, never
+below it.
+
+#### FormPanel
+**Purpose**: The one card a form or wizard step lives in — a tinted head band (`title`, `description`, `actions`), a body holding the sub-sections, and a tinted action band (`footer`: Back or Cancel, then the primary action).  
+**Rule**: Use it for a single-screen form or a custom step layout. **Inside a multi-step form use `<Wizard>`, which draws it** — never render a FormPanel inside a Wizard. Omit `title` only where the page header directly above already names the form (`FormScreen` does); the head band is then not drawn. Never put a `<Card>` inside it.
+
 #### FormSection
-**Purpose**: Groups related fields under a sub-heading with optional description.  
-**Rule**: Use one `<FormSection>` per logical group of fields within a larger form (e.g. "Personal Details", "Address").
+**Purpose**: One sub-section of a form: an uppercase label (Label 1, medium, `text/neutral/subtle`) and a hairline rule over a 1–4 column field grid (3 by default; 2 below 1280px, 1 below 768px). Optional `badge` between label and rule, `actions` at the row's end, `as` for the heading level (`h3` by default).  
+**Rule**: Use one per logical group of fields inside the step's panel. It is not a card and must not be wrapped in one. Wide fields take `className="ds-form-span-full"`. A `description` only where it changes what the applicant enters.
 
 #### FormCard
-**Purpose**: A titled surface card with the **same header styling as `<FormSection>`** but a custom (non-grid) body — for sections whose content isn't a simple field grid (repeatable cards, tables, mixed content).  
-**Rule**: Never hand-roll a `<section>` with its own heading classes for a custom-layout group — use `<FormCard title=… description=… required? headingId?>` so every section header across the estate stays visually identical. Pass `headingId` when a child needs `aria-labelledby` (e.g. a data table).
+**Purpose**: The same sub-section head as `<FormSection>` over an **arbitrary body** — `FormInset` entries, a table, `DocumentTiles`. Despite its historical name it draws **no card**.  
+**Rule**: Never hand-roll a `<section>` with its own heading classes for a custom-layout group — use `<FormCard title=… required? badge? actions? headingId?>` so every sub-section head stays identical. Pass `headingId` when a child needs `aria-labelledby` (e.g. a data table).
+
+#### FormInset
+**Purpose**: One entry of a repeatable group (an employment, a key functionary) — a tinted inset (`bg/neutral/subtler`, `shape/12`, `padding/16`, no border) with an optional `title` and `actions` over a 2-column grid.  
+**Rule**: Follow the last entry with a small outlined "Add More" `Button` with a leading plus, right-aligned; the parent owns the list. Not for short uniform rows (family members, awards) — those are a bordered `DataTable`. Not for a group that appears once.
+
+#### DocumentChecklist / DocumentChecklistGroup / DocumentRow / DocumentFindings / DocumentPlacementTray / DocumentHistorySheet
+**Purpose**: The Document Centre — a long list of named documents that are uploaded, checked automatically and kept with their history. `DocumentChecklist` is the header (progress counted as `ready` of `required`, `formats` stated once, `filters` chips, a drop zone via `onFiles` with a Choose Files button, `errors` rendered as an ErrorSummary, `politeMessage` / `assertiveMessage` live regions, a `tray` slot, `visibleCount` for filtered-to-nothing, `loading`) over `DocumentChecklistGroup`s of `DocumentRow`s. `DocumentRow` takes `state` (`missing` · `optional` · `uploading` · `failed` · `rejected` · `checking` · `verified` · `review` · `invalid` · `unavailable`), `file`, one `reason`, one `action`, a `menu`, `findings` behind a disclosure, `remark` above and `aside` beside (under the title below a 760px row), and `linkAs` for `file.href`. `collapsible` folds a row that needs nothing more to one line — icon, title, `summary` ("Verified by ASO, 21 Jul 2026"), the status words, the action and the menu — with the file, reason, findings and `aside` behind "Details" (`expanded`, `onExpandedChange`). Never make a row collapsible that the reader must still act on. `density="compact"` is the officer's reviewed-document row — two lines from a 520px row width (title · `aside` verdict · actions, then file · status as small print) and one line from 960px, title and file cut to one line — and `clampReason` cuts a reason repeated down a list to one line on a wide row (the full reason belongs in `findings`). File names are cut in the stem, never in the extension. `DocumentChecklist`'s `bulkAction` (also exported as `DocumentBulkAction`) draws "Mark All Remaining as Verified (N)" behind a confirmation: the screen chooses the set, never includes a document the automatic check flagged, and records one verdict per document. `formats` is drawn inside the drop zone when there is one. `DocumentChecklistGroup`'s `hideRequiredMarks` withholds the asterisk under a heading that already says Required. `DocumentFindings` compares each extracted field with the application (`expected`, `matches`). `DocumentPlacementTray` lists a batch drop's placements. `DocumentHistorySheet` lists every version (`linkAs`).  
+**Rules**: (1) Progress counts documents READY, never uploaded. (2) Status is words beside an icon, never colour alone. (3) Confidence goes to officers only — an applicant gets the consequence (“Check the details”, “Doesn't match”). The words for `review` point at the reason line and “What we found”, which are on the row; “Please confirm” pointed at a confirm action that is not (docs/plans/2026-09-16-e-anudaan-document-centre.md §3.2, audit D-01). (4) Continue stays enabled: pressed with blockers, raise `errors` (bump `errorsRevision`) and filter to what needs attention; Submit is the hard gate. (5) Each error's `fieldId` is the row's primary control id. (6) A batch drop never replaces silently — show the tray. (7) A replaced file goes to history; never delete it. (8) Use `DocumentTile` instead for two or three documents on an ordinary form step.
+
+#### DocumentTile / DocumentTiles
+**Purpose**: One document on an upload or review step — `title` (+`required`), one line of `meta`, `actions` at the right, optional `icon` — in four `state`s: `upcoming`, `uploaded`, `verified`, `invalid`. `DocumentTiles` is the `<ul>` grid, two to a row from 768px.  
+**Rule**: **An upload is `uploaded`, never `verified`** — only an officer or DigiLocker verifies. Verified carries a `Badge`; invalid carries the officer's reason as `meta`. Not for an officer's checklist with findings (`ChecklistScreen`) or a public download list (`DocumentLibrary`).
 
 #### Wizard
-**Purpose**: Multi-step form experience with a progress `<Stepper>`.  
-**Rule**: Each wizard step should have 3–6 fields. The final step must always be a `<ReviewSection>` showing all entered values before submit.
+**Purpose**: Multi-step form shell: `<Stepper>` on the page ground, then one `FormPanel` for the current step — head band (`title`/`description` default to the stage's label/description; `headerActions`), the step's sub-sections, error summary, action band.  
+**Rule**: Pass `onCancel` so the first step shows an outlined Cancel instead of a disabled Back. Children are sub-sections, never a `<Card>`. Each step should have 3–6 fields. The final step is a review: one `<ReviewSection columns={4|2} actions={Edit}>` per earlier step, documents as `DocumentTile`s, then `DeclarationCheckbox`, with "Submit Application".
 
 ---
 
@@ -2738,13 +2818,15 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 
 #### EventList
 **Purpose**: a dated, attributed record of things that happened. Used directly it IS the activity log and the audit trail; `CommentThread` and `NotificationCentre` are composed from it.
-**Props**: `events` (`{ id, at, actor?, actorRole?, action, subject?, note?, icon?, tone?, unread?, href? }[]`) · `label` (**required**) · `emptyText` · `grouping` (`none` | `day`) · `unreadLabel`
+**Props**: `events` (`{ id, at, actor?, actorRole?, action, subject?, note?, icon?, tone?, unread?, href?, actionRequired?, dueAt?, dueLabel?, overdue?, source? }[]`) · `label` (**required**) · `emptyText` · `grouping` (`none` | `day`) · `unreadLabel` · `actionLabel` · `dueLabel` · `overdueLabel` · `overdueDueLabel` · `now` · `linkAs`
 **Rules**:
 - **One object, three views.** A comment, an audit entry and a notification are the same thing — *someone did something to something, at a time, and may have said why*. Three components would produce three vocabularies for one object, and then a portal's audit log and its notification panel disagree about what an actor is.
 - **It does NOT sort.** The order it is handed is the order it renders. A log is newest-first; a thread is oldest-first. The caller knows which; the component does not.
 - **A note is never truncated.** On a departmental record the reason an application was returned is the most important text on the screen.
 - **`unread` is a WORD before it is a dot.** The row carries a visually hidden `unreadLabel`; the coloured dot is `aria-hidden`.
 - **A system action says "System".** An empty actor column reads as missing data, which on an audit trail is the worst thing it could read as.
+- **Overdue is a WORD and an ICON**, in the error family, with the date reading "Was due" rather than "Respond by". It is derived from `now` — resolved ONCE per page and handed to every list, never `Date.now()` in the render, which makes the server and the browser disagree on the boundary day — or stated by the item's own `overdue`.
+- **A deadline may name its own verb.** An item's `dueLabel` wins over the list's: "File by 31 Mar 2027" for a utilisation certificate, "Respond by" for a deficiency. Both dates on a row are spelled the same way — "30 Sep 2026", never the browser's "30 Sept 2026".
 - Not for an approval chain with a fixed vocabulary of steps — that is `ApprovalTimeline`.
 
 #### CommentThread
@@ -2873,7 +2955,7 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 
 #### ListGroup / ListRow
 **Purpose**: a real `<ul>` of rows — leading slot, text block, trailing slot. The surface behind "recent applications", notifications, documents and search results.
-**Props**: `ListGroup`: `divided` (default true) · `bordered` · `size` · `aria-label`. `ListRow`: `title` · `description` · `eyebrow` · `leading` · `trailing` · `href` · `onClick` · `selected` · `disabled`.
+**Props**: `ListGroup`: `divided` (default true) · `bordered` · `size` · `aria-label`. `ListRow`: `title` · `description` · `eyebrow` · `leading` · `trailing` · `href` · `linkAs` · `onClick` · `selected` · `disabled`.
 **Rules**:
 - **List or table is decided by what the reader does next.** If they will pick one row and open it, it is a list. If they will read down a column, it is a `DataTable`. Reaching for a table because the data has fields produces twelve columns on a phone; reaching for a list because it looks lighter produces a comparison the reader cannot make.
 - **The WHOLE row is the target**, never the title inside it. A 40px link in a 600px row is a target most people miss and everyone with a tremor misses; WCAG 2.2 §2.5.8's 24×24 is the floor, not the goal.
@@ -2881,6 +2963,8 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **Selection carries an inset leading rule as well as a fill**, plus `aria-current="page"` on a link or `aria-pressed` on a button. Colour alone fails WCAG 1.4.1, and the fill vanishes in forced-colors mode where the rule survives.
 - A disabled row **stays in the list** with `aria-disabled`. "Bank passbook — not yet uploaded" is information; removing the row leaves the reader to notice an absence.
 - **Long lists are PAGED, never scrolled inside their card** — on a phone a reader flicking the page down lands in the list and moves the list instead.
+- **A row with an `href` takes `linkAs`.** Without it every row-click is a full document load. A row with no `href` renders no anchor and needs nothing; `check:link-as` knows the difference.
+- **A label and its figure stay on one line where they fit.** The text column asks for 14rem, and never more than 60% of the row: at 100% any trailing slot wrapped beneath the label and a two-part row on a 375px card grew to about 70px.
 
 #### Tooltip
 **Purpose**: A short hint revealed on hover **and** focus.  
@@ -2954,7 +3038,8 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 #### EmptyState
 **Purpose**: Fills empty data containers with context + a call-to-action.  
 **Variants**: `no-data` (fresh/empty portal), `no-results` (filtered table returned nothing)  
-**Rule**: Always include: icon + heading + description + primary CTA.
+**Rule**: Always include: icon + heading + description + primary CTA.  
+**Scale**: the title is headline-4 (20px portal, 24px website) — a rung below any page title. Title Case, no full stop.
 
 ---
 
@@ -3030,21 +3115,25 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - `changeValue` (e.g. `"12%"`) renders the delta as a tinted success/danger pill with `changeLabel` (e.g. `"vs last month"`) as a muted suffix — the SAMAVESH KPI treatment. Omit `changeValue` for the legacy inline-text change.
 - Use `Intl.NumberFormat` for all numeric values — never hardcode `₹ 1,00,000`.
 - Maximum 2 decimal places.
+- **The icon badge gives way before the figure does.** The tile measures its OWN width: the badge is 32px in a tile under about 240px and is not drawn under about 200px — a half-width tile on a 375px screen. It is decoration (`aria-hidden`); the label already names the figure, and no page should be hiding it with a utility of its own.
 
 #### DataTable
 **Purpose**: Sortable, paginated data table with column definitions.  
 **Props**: `columns: DataTableColumn[]`, `data`, `pagination`  
-**Rules**: Always supply a `caption` prop or `aria-label`. Right-align numeric columns. Support keyboard sort via column header buttons.
+**Rules**: Always supply a `caption` prop or `aria-label`. Right-align numeric columns. Support keyboard sort via column header buttons.  
+**Footer**: hidden while every row fits on the smallest page size (`hidePagerWhenFits`, default true). An overflowing table is a focusable `region` named by `caption` or `scrollLabel`, so it can be scrolled from the keyboard.
 
 #### Accordion / AccordionItem
 **Purpose**: A stack of disclosures, for reference content that is long, list-shaped, and mostly **not** what the reader came for. The estate's case is the About Us bureau breakdown — nine officials with four to six responsibilities each, which printed flat is sixty bullets nobody reads and behind disclosures is a scannable list of nine names.
-**Props**: `AccordionItem` — `title`, `defaultOpen`. `Accordion` is the wrapper and takes only HTML attributes.
+**Props**: `AccordionItem` — `title`, `defaultOpen`. `Accordion` — `variant` (`card` default · `flush`) plus HTML attributes.
+**`card`** is one surface: a white item on a hairline, no shadow, no grey header band; hover tints the header.
+**`variant="flush"`** is the form language: no fill, no shadow, a hairline between items. Use it for an accordion that sits inside a panel which is already a card — the sections of an application on the officer review screen. A stack of shaded, shadowed cards inside a card reads as furniture, not content.
 **The test**: **the headings must be useful closed**, because closed is the state the reader spends most of their time in. If someone has to open every panel to find what they want, the accordion is hiding content rather than organising it and a plain list is better.
 **When NOT to reach for it**: not for content the reader definitely needs — a disclosure adds a click to everything it contains. **Never for form fields**: hidden fields get skipped, and browser validation cannot focus an unmounted control. Not as a substitute for a page — five accordions on one screen is a table of contents made harder to use. Not for a single item, which is a native `<details>`.
 **Rules**:
 - **`defaultOpen` should usually stay false.** Opening the first item by habit makes the row heights uneven and quietly says the first one matters most. Set it when that panel genuinely is the common case.
 - **Items open independently.** This is an accordion, not a radio group; closing one to open another loses a comparison the reader may be mid-way through.
-- **Known accessibility gaps, recorded rather than hidden.** The trigger carries `aria-expanded` and an accessible name, so it is operable and its state is announced — but it diverges from the WAI-ARIA Authoring Practices accordion pattern in three ways: the trigger is **not wrapped in a heading**, so screen reader users cannot move between panels by heading; there is no `aria-controls` / `role="region"` association between trigger and panel; and the panel is **unmounted** when closed rather than hidden, so browser find-in-page cannot reach it. None is a WCAG failure on its own and all three are fixable without changing the API. Fix them before this component carries statutory content.
+- **Known accessibility gaps, recorded rather than hidden.** The trigger carries `aria-expanded` and an accessible name, so it is operable and its state is announced — but it diverges from the WAI-ARIA Authoring Practices accordion pattern in three ways: the trigger is **not wrapped in a heading**, so screen reader users cannot move between panels by heading; there is no `role="region"` on the panel (the trigger does carry `aria-controls` while open); and the panel is **unmounted** when closed rather than hidden, so browser find-in-page cannot reach it. None is a WCAG failure on its own and all three are fixable without changing the API. Fix them before this component carries statutory content.
 
 #### VerticalTimeline / VerticalTimelineItem
 **Purpose**: A **narrative chronology** — dated events on a public information page, written as prose, where the reader is learning history. The estate's case is the About Us page: eight events from the 1985–86 bifurcation of the Ministry of Welfare to the 2012 split into DoSJE and DEPwD.
@@ -3923,6 +4012,8 @@ wired differently: `data-portal` for the palette re-bind, the rail's **two** wid
 navigation (`PortalRole` is `public · citizen · organisation · officer · admin`), and the
 mobile drawer, closed on route change. Hiding a nav item is **not** authorisation.
 
+From the tablet anchor to the laptop anchor (768–1279px) the rail starts collapsed to its 88px icons; the masthead button expands it and that choice holds for the visit. A 300px rail there left the content too narrow for a step bar to name its stages.
+
 **`ScreenBody`** is why the states are structural. Every template routes content through
 it, so no code path renders rows without having decided what happens when there are none.
 Six branches — `idle · loading · error · empty · filtered · ready` — resolved **once** by
@@ -3939,12 +4030,13 @@ draws no list screen at all, and `Pagination` appears in 1 of 265 pages. `Workli
 adds `priority` — 1 becomes the mobile card's title, 2 a label/value pair, 3 is dropped —
 which is how a twelve-column table survives a phone the handoff never drew. **`rows` is
 every matching row, not one page**, and `registerTotal` is for the count line only: handing
-`DataTable` a bigger number than its array drew seven pages over five records.
+`DataTable` a bigger number than its array drew seven pages over five records. `summary` takes count tiles above the filters; they must count the same rows the filters narrow, or the page answers one question twice.
 
 **`WizardScreen`** covers 22 of the handoff's 44 screens at 3, 6 and 7 steps, and ships
 **one** stepper treatment where the handoff draws two. It wraps `Wizard` and adds the page:
 title, the composed step meta line, the draft banner (both flavours, one shape, switched by
-`resumed`) and notices.
+`resumed`) and notices. `onCancel` goes through to `Wizard`, so Cancel is the first step's
+outlined leading control — there is no separate Cancel button.
 
 **`OverviewScreen`** cannot enforce its own two most important rules, so they are stated on
 its page: a ratio takes both halves **from one source** (mixing them published a `138%`),
@@ -3964,7 +4056,8 @@ fourteen below completed it. Each owns the seven states through `ScreenBody`, ta
 exclusive options as `RadioGroup variant="card"`, with one Continue that is never
 disabled; the handoff draws this three ways under one name and two of them are drift.
 **`FormScreen`** — one record that fits one screen, with `ErrorSummary` above the fields
-and an action bar that goes sticky below 768px; **more than eight fields, or a statutory
+and the sections and action bar in one untitled `FormPanel` (outlined Cancel, then submit —
+the page header names the form, so the panel draws no head band); **more than eight fields, or a statutory
 stage, and it is a wizard instead**, which is a count rather than a feeling.
 **`ChecklistScreen`** — a required set of artefacts with **four** per-item states
 (`missing · attached · review · rejected`), because a file that has left the citizen's
@@ -4061,20 +4154,27 @@ Do not deviate from these layouts without a documented reason.
 ### Form Wizard (Multi-step Application)
 
 ```tsx
-<Wizard steps={["Personal", "Address", "Documents", "Review"]} currentStep={step}>
+<PageHeader size="compact" eyebrow="E-Anudaan" title="Atal Vayo Abhyuday Yojana" meta="…" />
+<Wizard
+  steps={STEPS} current={step}
+  nextLabel="Save and Continue" submitLabel="Submit Application"
+  onCancel={leave} onBack={back} onNext={validateThenNext} onSubmit={submit}
+>
+  {/* sub-sections straight into the step panel — never a Card around them */}
   <FormSection title="Personal Details">
-    <FormField label="Full Name" required><Input /></FormField>
-    <FormField label="Date of Birth"><Input type="date" /></FormField>
+    <FormField label="Full Name" required>{(c) => <Input {...c} />}</FormField>
   </FormSection>
-  {/* ... */}
-  <ReviewSection data={formData} />
+  <FormCard title="Identity Documents">
+    <DocumentTiles><DocumentTile title="Aadhaar Card" required state="upcoming" /></DocumentTiles>
+  </FormCard>
 </Wizard>
 ```
 
 **Rules**:
+- One panel per step (Wizard draws it); sub-sections are not cards.
 - Each step: 3–6 FormFields. Never exceed 8 visible fields per step.
-- Final step is always `<ReviewSection>` — show all entered values before submit.
-- Show `<Stepper>` at the top of the wizard to communicate progress.
+- Final step is always a review: `<ReviewSection>` per earlier step with Edit — show all entered values before submit.
+- The `<Stepper>` sits on the page ground, never in a box.
 
 ### Media Gallery Manager (Portal — photos/videos, documents, any record-with-attachments list)
 

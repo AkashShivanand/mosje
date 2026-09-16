@@ -112,7 +112,11 @@ export interface FormFieldProps {
   required?: boolean;
   /** Mark the field as optional. Rendered only when the form's policy is `optional`. */
   optional?: boolean;
-  /** Pass through to the control as a real `readonly`. */
+  /**
+   * Pass through to the control as a real `readonly`. A read-only field shows NO required
+   * marker even when `required` is set — the reader cannot act on it. Pass `readOnly` HERE, not
+   * only on the `Input` inside, or the label cannot know.
+   */
   readOnly?: boolean;
   /** Pass through to the control. */
   disabled?: boolean;
@@ -264,7 +268,13 @@ export function FormField({
       <div className={cn("ds-field__label-row", classNames?.labelRow)} data-part="label-row">
         <FieldLabel
           htmlFor={ids.control}
-          required={required}
+          /* NO MARK ON A FIELD THE READER CANNOT CHANGE. A worked-out amount or a carried-forward
+             date is "required" in the data model and still not something the reader must supply;
+             a red asterisk on it is an instruction that cannot be followed (e-Anudaan audit W-03:
+             Annual Recurring Grant, the instalment amount, the date). The control keeps its
+             `required` attribute, so validation and the data contract are unchanged — only the
+             visible marker is withheld, while `readOnly` or `disabled` holds. */
+          required={required && !readOnly && !disabled}
           optional={optional}
           visuallyHidden={labelHidden}
           className={classNames?.label}

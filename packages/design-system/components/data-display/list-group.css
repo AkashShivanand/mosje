@@ -35,6 +35,11 @@
 
   .ds-list__row {
     display: flex;
+    /* Wraps, so a trailing slot too wide to sit beside the text drops under it instead of
+       crushing it. `.ds-list__trailing` cannot shrink, and on a 375px phone a status, an amount,
+       a date and a button left the title ~10px wide — one letter per line, and a dashboard
+       10,691px tall (e-Anudaan NGO dashboard, 15 Sep 2026). */
+    flex-wrap: wrap;
     align-items: flex-start;
     gap: var(--sa-inline-12);
     width: 100%;
@@ -92,7 +97,15 @@
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-2);
-    flex: 1 1 auto;
+    /* THE BASIS IS A FLOOR, NOT A CLAIM ON THE WHOLE ROW.
+       It was `min(14rem, 100%)`, which on a 375px card resolves to 100% — the text asks for the
+       full row, so ANY trailing slot wraps under it and a two-part row ("Returned for Rework  2")
+       becomes two lines and about 70px tall, even when the label and its figure would have sat
+       side by side with room to spare (e-Anudaan audit, officer dashboard cards at 375).
+       `min(14rem, 60%)` keeps the same behaviour on a wide row — 14rem of text before the
+       trailing slot drops — and on a narrow one leaves the trailing slot its share, so a short
+       label and a figure stay on one line and only a genuinely long pair wraps. */
+    flex: 1 1 min(14rem, 60%);
     min-width: 0;
   }
 
@@ -119,6 +132,9 @@
   .ds-list__trailing {
     display: flex;
     flex: 0 0 auto;
+    /* Once wrapped, it holds the row's width and keeps to the end edge, where it sat unwrapped. */
+    max-width: 100%;
+    margin-inline-start: auto;
     align-items: center;
     gap: var(--sa-inline-8);
     margin-block-start: var(--sa-padding-2);
