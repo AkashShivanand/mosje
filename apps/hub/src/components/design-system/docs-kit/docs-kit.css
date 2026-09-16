@@ -638,6 +638,22 @@
 }
 
 /* ── Props table: generated rows ─────────────────────────────────────────── */
+/* A TYPE NAME IS ONE WORD, AND IT IS NOT BROKEN ACROSS FOUR LINES.
+   The docs app sets `code { overflow-wrap: anywhere }` so long inline code can
+   never widen a phone, and that rule reaches the type chips too — against a
+   description column taking most of the row, `SiteFooterLink` rendered as
+   "SiteFo / oterLin / k" and `React.ReactNode` as three fragments. The chip
+   keeps normal word-breaking and the column keeps a floor; a union like
+   `"website" | "portal"` still wraps, at its spaces, where it should. */
+.props-table__type {
+  overflow-wrap: normal;
+}
+.props-table th:nth-child(2),
+.props-table td:nth-child(2) {
+  width: 15%;
+  min-width: 12ch;
+}
+
 .props-table__scroll {
   overflow-x: auto;
 }
