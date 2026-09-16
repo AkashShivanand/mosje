@@ -108,11 +108,34 @@
      showing a scheme name — a measurement of the controls, not a spacing rung,
      and the ladder has no 200. Widths are advisory under
      documentation-ds-linkage.md for exactly this reason. */
+  /* The register's summary tiles, between the header and the filters. Four across where there is
+     room, two on a tablet, one column on a phone. */
+  .sa-worklist__summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: var(--sa-padding-16);
+  }
+
   .sa-worklist__toolbar {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: var(--sa-padding-12);
     width: 100%;
+  }
+
+  /* The view switch: under the header, no frame, hugging its options. */
+  .sa-worklist__views {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-padding-12);
+  }
+
+  /* A switch that still arrives through `filters` hugs its options instead of stretching into a
+     full-width grey track — a grid item is blockified, so `inline-flex` alone did not stop it. */
+  .sa-worklist__toolbar > .ds-segmented,
+  .sa-worklist__toolbar > .ds-tabs {
+    justify-self: start;
   }
 
   /* Below the tablet anchor the table becomes a card list. Priority-1 columns

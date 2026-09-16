@@ -10,7 +10,13 @@ import assert from "node:assert/strict";
 
 import { answeredSections } from "./applicant.ts";
 import { buildScenario } from "./demo-scenarios.ts";
-import { fieldVisible, stepFields, visibleSteps, wizardFor, WIZARDS } from "./form-schema.ts";
+import { RENEWAL_PICKER, fieldVisible, stepFields, visibleSteps, wizardFor, WIZARDS } from "./form-schema.ts";
+import { renewableProjects, renewalOption } from "./instalments.ts";
+import { buildSeed, SEED_SCHEMES } from "./store/seed.ts";
+import { answerField } from "./submit-application.ts";
+import type { EAnudaanState } from "./types.ts";
+
+const STATE: EAnudaanState = { version: 0, session: "ngo", schemes: SEED_SCHEMES, ...buildSeed() };
 
 const NEW = "New project";
 const RENEWAL = "Ongoing / Renewal of an existing project";
@@ -19,7 +25,17 @@ const RENEWAL = "Ongoing / Renewal of an existing project";
 function submitted(scheme: string, caseType?: string, leaveOptionalBlank = true): Record<string, string> {
   const def = wizardFor(scheme)!;
   const all = buildScenario("complete", def).values;
-  const values: Record<string, string> = caseType ? { ...all, case_type: caseType } : { ...all };
+  let values: Record<string, string> = caseType ? { ...all, case_type: caseType } : { ...all };
+  // An AVYAY renewal names one of the NGO's own sanctioned projects, which brings its figures.
+  // A renewal names one of the NGO's own sanctioned projects, which brings its figures.
+  if (caseType && /ongoing|existing/i.test(caseType) && RENEWAL_PICKER[def.code]) {
+    const step = visibleSteps(def, values)[0]!;
+    const plans = renewableProjects(STATE, STATE.ngos[0]!.id, def.code);
+    const option = renewalOption(plans.find((p) => p.instalment === 2) ?? plans[0]!);
+    values = answerField(STATE, def, step, { ...all, case_type: caseType }, RENEWAL_PICKER[def.code], option);
+    // The clerk gives the declarations afresh; they are not carried forward.
+    values = { ...values, ...Object.fromEntries(Object.entries(all).filter(([k]) => k.startsWith("decl_") || k === "prev_instalment_utilised")) };
+  }
   const shown: Record<string, string> = {};
   for (const step of visibleSteps(def, values)) {
     for (const f of stepFields(step)) {
@@ -28,6 +44,9 @@ function submitted(scheme: string, caseType?: string, leaveOptionalBlank = true)
       if (values[f.name] !== undefined) shown[f.name] = values[f.name]!;
     }
   }
+  // What the portal records beside the answers — which claim this is, and whether its account is
+  // already registered — goes with them, as `fileApplication` keeps every value.
+  for (const k of ["claim_stage", "fld_pfms_on_record", "fld_application_ref"]) if (values[k]) shown[k] = values[k]!;
   return shown;
 }
 

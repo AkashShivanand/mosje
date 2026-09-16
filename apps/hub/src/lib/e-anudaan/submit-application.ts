@@ -8,20 +8,20 @@
  * them. `apply-grant-walk.test.ts` now walks every scheme and branch through these same functions.
  */
 
-import { mintReference, nextInstalment, notificationTitle, ordinal } from "./applicant.ts";
+import { mintReference, nextInstalment, notificationTitle } from "./applicant.ts";
 import { cityCategoryFor } from "./geography.ts";
-import { applyAllAutoFields, applyAutoFields, stepFields, type StepDef, type WizardDef } from "./form-schema.ts";
-import { CARRIED_FORWARD } from "./prefill.ts";
+import { RENEWAL_PICKER, applyAllAutoFields, applyAutoFields, stepFields, type StepDef, type WizardDef } from "./form-schema.ts";
+import { DERIVED_CLAIM_SCHEMES, claimIdFor, currentFinancialYear, planForOption, renewalAnswers } from "./instalments.ts";
+import { darpanSeed } from "./prefill.ts";
 import { beneficiariesOf, caseTypeOf } from "./submission.ts";
 import type { Clock } from "./workflow.ts";
 import type { EAnudaanState, GrantApplication } from "./types.ts";
 
-/** The renewal field that names the project, per scheme — choosing it states the instalment. */
-export const RENEWAL_PROJECT_FIELDS: ReadonlySet<string> = new Set([
-  "fld_renewal_project",
-  "fld_ongoing_source_application",
-  "fld_smile_project_select",
-]);
+/** The renewal field that names the project, per scheme — choosing it states the whole claim. */
+export const RENEWAL_PROJECT_FIELDS: ReadonlySet<string> = new Set(Object.values(RENEWAL_PICKER));
+
+/** An answer that says "a new project": AVYAY's and NAPDDR's "New project", SMILE's "No — new project…". */
+const isNewAnswer = (value: string) => /^(new|no —)/i.test(value);
 
 /**
  * The answers after one field changes, with everything that change implies: a branch change
@@ -35,28 +35,44 @@ export function answerField(
   values: Record<string, string>,
   name: string,
   value: string,
+  /** Which financial year is running; injected by tests. */
+  now: Date = new Date(),
 ): Record<string, string> {
   let next = { ...values, [name]: value };
-  // Changing the branch clears the project the other branch had chosen. A hidden answer is
-  // still an answer: a renewal's project left behind under "New project" filed the new
-  // application against that existing project, and kept its Project ID on screen.
+  const picker = RENEWAL_PICKER[wizard.code];
+  // Changing the branch clears the project the other branch had chosen, and everything that
+  // project brought with it. A hidden answer is still an answer: a renewal's project left behind
+  // under "New project" filed the new application against that existing project.
   if (name === "case_type" && value !== values.case_type) {
     for (const f of RENEWAL_PROJECT_FIELDS) next[f] = "";
-    next.fld_installment_no = "";
-    next = applyAllAutoFields(wizard, next);
+    for (const k of CLAIM_FIELDS) next[k] = "";
+    // A new application is for the year now running (T328–329).
+    if (isNewAnswer(value)) next.fld_financial_year = currentFinancialYear(now);
+    return applyAllAutoFields(wizard, next);
   }
-  // The instalment is stated, never chosen (review call 11 Sep 2026, T370–383), and only once
-  // there is a project to state it for. A renewal claims an instalment of what was sanctioned,
-  // so the sanctioned figures come with the project — locking those fields without filling them
-  // left required answers nobody could type (full-wizard walk, 13 Sep 2026).
-  if (RENEWAL_PROJECT_FIELDS.has(name)) {
-    const projectId = value.split(" — ")[0]?.trim() ?? "";
-    next = {
-      ...next,
-      fld_installment_no: value ? `${ordinal(nextInstalment(state, wizard.code, projectId))} Instalment` : "",
-      ...(value ? (CARRIED_FORWARD[wizard.code] ?? {}) : {}),
-    };
-    next = applyAllAutoFields(wizard, next);
+  // The instalment is stated, never chosen (T370–384). The project's own sanctioned record decides
+  // the instalment, its amount, the year and the application ID, and last year's answers fill the
+  // form (T418–423). The form is filled FROM the project: answers typed for another project or for
+  // a new one do not survive into it. What stays is the portal's — DARPAN and the declaration stamp.
+  if (name === picker && DERIVED_CLAIM_SCHEMES.has(wizard.code)) {
+    const ngo = state.ngos[0];
+    const plan = ngo && value ? planForOption(state, ngo.id, wizard.code, value, now) : undefined;
+    for (const k of CLAIM_FIELDS) next[k] = "";
+    if (plan) {
+      next = {
+        ...darpanSeed(ngo, now),
+        ...renewalAnswers(plan),
+        ...darpanIdentity(darpanSeed(ngo, now)),
+        ...(next.case_type !== undefined ? { case_type: next.case_type } : {}),
+        [name]: value,
+        fld_auth_date: values.fld_auth_date ?? "",
+        fld_auth_time: values.fld_auth_time ?? "",
+      };
+    } else if (!value) {
+      // SHRESHTA's institution left blank again: an application not on record, for the year now running.
+      next.fld_financial_year = currentFinancialYear(now);
+    }
+    return applyAllAutoFields(wizard, next);
   }
   // A State change clears its dependent District, as the live cascade does.
   for (const f of stepFields(step)) {
@@ -64,6 +80,33 @@ export function answerField(
     if (f.auto?.kind === "cityCategory" && f.auto.from === name) next = { ...next, [f.name]: cityCategoryFor(value) };
   }
   return applyAutoFields(step, next);
+}
+
+/** The answers a chosen project supplies, cleared whenever the project or the branch changes. */
+const CLAIM_FIELDS = [
+  "claim_stage",
+  "fld_installment_no",
+  "fld_application_ref",
+  "fld_sanctioned_recurring",
+  "fld_instalment_amount",
+  "fld_grant_applied_prior",
+  "fld_grant_remaining",
+  "fld_project_id",
+  "fld_institution_id",
+  "fld_bank_name",
+  "fld_bank_branch",
+  "fld_bank_account_number",
+  "fld_bank_ifsc",
+  "fld_pfms_on_record",
+  "fld_pfms_status",
+  "fld_pfms_registered",
+] as const;
+
+/** The identity NGO-Darpan supplies. Never overwritten by a carried-forward or demo answer. */
+export function darpanIdentity(seed: Record<string, string>): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const k of ["fld_ngo_name", "fld_darpan_id", "fld_reg_office_state", "fld_reg_office_district"]) if (seed[k]) out[k] = seed[k]!;
+  return out;
 }
 
 export interface SubmitApplicationInput {
@@ -94,14 +137,20 @@ export function fileApplication(
   const ngo = state.ngos[0]!;
   // The district of the project the file is raised under — never an address typed into the
   // form — and a serial one past the highest issued.
-  const { id, project } = mintReference(ngo, state.applications.map((a) => a.id), schemeCode, financialYear, values);
+  const minted = mintReference(ngo, state.applications.map((a) => a.id), schemeCode, financialYear, values);
+  const { project } = minted;
+  const instalment = Number((values.fld_installment_no ?? "").match(/^(\d)/)?.[1] ?? 0);
+  // A 2nd or 3rd instalment is claimed on the ID its year's 1st instalment created (T372–375).
+  const applicationRef = values.fld_application_ref?.trim();
+  const id = applicationRef && instalment > 1 ? claimIdFor(applicationRef, instalment) : minted.id;
 
   const people = beneficiariesOf(values);
-  const recurring = Number(values.fld_grant_recurring || 0) || 0;
-  const nonRecurring = Number(values.fld_grant_non_recurring || 0) || 0;
-  const total = Number(values.fld_grant_total || 0) || recurring + nonRecurring;
   const ongoing = caseTypeOf(values) === "Ongoing";
-  const instalment = Number((values.fld_installment_no ?? "").match(/^(\d)/)?.[1] ?? 0);
+  // A renewal releases one instalment of the sanctioned recurring grant, and no non-recurring grant.
+  const instalmentAmount = Number(values.fld_instalment_amount || 0) || 0;
+  const recurring = ongoing && instalmentAmount ? instalmentAmount : Number(values.fld_grant_recurring || values.fld_annual_recurring_grant || 0) || 0;
+  const nonRecurring = ongoing && instalmentAmount ? 0 : Number(values.fld_grant_non_recurring || 0) || 0;
+  const total = ongoing && instalmentAmount ? instalmentAmount : Number(values.fld_grant_total || 0) || recurring + nonRecurring;
   const code = schemeCode.toUpperCase();
 
   const app: GrantApplication = {

@@ -9,7 +9,7 @@
  */
 
 import { DEMO_VERDICTS, type UploadedDoc } from "./doc-verification.ts";
-import { visibleDocuments, visibleSteps, wizardFor } from "./form-schema.ts";
+import { validateStep, visibleDocuments, visibleSteps, wizardFor, type WizardDef } from "./form-schema.ts";
 import { formatDate } from "./format.ts";
 import type { GrantApplication } from "./types.ts";
 
@@ -82,6 +82,30 @@ export function stepRoute(code: string, values: Record<string, string>, index: n
   if (kind === "documents") return `${base}/step-2`;
   if (kind === "review") return `${base}/review`;
   return index > 0 ? `${base}/step-1?step=${index}` : `${base}/step-1`;
+}
+
+/**
+ * Where a Draft in the register is continued from a link: the form, told which draft to open. A
+ * link cannot write the draft into the form's storage itself, so the wizard reads `?draft=` and
+ * opens it (`draftFromRegister`), as My Applications' Continue does (audit N-02).
+ */
+export function draftResumeRoute(app: Pick<GrantApplication, "id" | "schemeCode">): string {
+  const code = wizardFor(app.schemeCode)?.code ?? app.schemeCode;
+  return `/portals/e-anudaan/apply-grant/scheme/${code}/step-1?draft=${encodeURIComponent(app.id)}`;
+}
+
+/**
+ * The step a claim opened from its link starts on (audit W-04). "Claim 2nd Instalment" already
+ * names the project, so Application Type is answered: the form opens on the step after it, with
+ * Application Type shown as done. Anything short of a complete first step opens on step 1, where
+ * the gap is shown — never a later step with an unanswered question behind it.
+ */
+export function claimStartStep(wizard: WizardDef, values: Record<string, string>): number {
+  if (!values.claim_stage) return 0;
+  const steps = visibleSteps(wizard, values);
+  const first = steps[0];
+  if (!first || steps.length < 2 || Object.keys(validateStep(first, values)).length > 0) return 0;
+  return 1;
 }
 
 export interface DraftListing {

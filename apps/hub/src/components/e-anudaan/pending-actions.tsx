@@ -13,6 +13,12 @@
  *
  * Rows are ordered by corrections still outstanding, then by how long the applicant has been
  * waiting, so the three the dashboard shows are the three that matter (`openDeficiencies`).
+ *
+ * Design-director audit, 16 Sep 2026: the row action said "Resolve", a verb no other screen uses
+ * for this (glossary: the applicant CORRECTS an application), and it was a filled button on every
+ * row — three filled buttons above the dashboard's own "Apply for Grant". It is an outlined
+ * "Correct Application" now, named for the page it opens, and the references are set in Noto Sans
+ * with tabular figures rather than monospace (N-20).
  */
 
 import * as React from "react";
@@ -32,6 +38,7 @@ export function PendingActions({
   limit = 3,
   title = "Pending Actions",
   now,
+  allItems = false,
 }: {
   items: OpenDeficiency[];
   /** How many rows to show before "View All". `null` shows every row. */
@@ -39,6 +46,12 @@ export function PendingActions({
   title?: string;
   /** Reference time for "n days", injectable for tests. */
   now?: number;
+  /**
+   * List every correction asked for on each application, not the first and "and 2 more". The
+   * Deficiencies page is where the applicant reads them all (verify N3, 16 Sep 2026); the
+   * dashboard keeps the compact form.
+   */
+  allItems?: boolean;
 }) {
   const router = useRouter();
   const shown = limit ? items.slice(0, limit) : items;
@@ -66,7 +79,7 @@ export function PendingActions({
 
         {items.length === 0 ? (
           <EmptyState
-            title="No corrections are waiting on you."
+            title="No Corrections Are Waiting on You"
             description="The Ministry has not asked for any correction on your applications."
           />
         ) : (
@@ -95,7 +108,16 @@ export function PendingActions({
                   }
                   description={
                     <>
-                      {first ? (
+                      {allItems && defItems.length > 0 ? (
+                        <ol className="m-0 list-decimal space-y-0.5 pl-5">
+                          {defItems.map((it) => (
+                            <li key={it.id}>
+                              <span className="font-semibold text-ink">{it.label}:</span> {it.remark}
+                              {it.correctedAt ? <span className="text-ink-muted"> · corrected</span> : null}
+                            </li>
+                          ))}
+                        </ol>
+                      ) : first ? (
                         <span className="block">
                           <span className="font-semibold text-ink">{first.label}:</span> {first.remark}
                           {defItems.length > 1 ? ` · and ${defItems.length - 1} more` : ""}
@@ -104,7 +126,7 @@ export function PendingActions({
                         <span className="block">{deficiency.detail}</span>
                       )}
                       <span className="mt-0.5 block text-ink-muted">
-                        <span className="font-mono [overflow-wrap:anywhere]">
+                        <span className="tabular-nums [overflow-wrap:anywhere]">
                           Project {app.institutionId} · {app.id}
                         </span>
                         {" · "}Requested {formatDate(requestedAt(app, deficiency))} · {days === 0 ? "today" : `${days} day${days === 1 ? "" : "s"} ago`}
@@ -113,12 +135,13 @@ export function PendingActions({
                   }
                   trailing={
                     <Button
+                      appearance="outlined"
                       size="sm"
                       nowrap
                       onClick={() => router.push(resolveHref(app.id))}
-                      aria-label={`Resolve ${left} correction${left === 1 ? "" : "s"} on ${project}, application ${app.id}`}
+                      aria-label={`Correct application ${app.id}, ${project}: ${left} item${left === 1 ? "" : "s"} to correct`}
                     >
-                      Resolve
+                      Correct Application
                     </Button>
                   }
                 />

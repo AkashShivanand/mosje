@@ -20,6 +20,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { Badge, Button, ListGroup, ListRow } from "@mosje/design-system";
 import { wizardFor } from "@/lib/e-anudaan/form-schema";
+import { DemoDocumentStates } from "./demo-document-states";
 import {
   buildScenario,
   DEMO_FILL_EVENT,
@@ -80,6 +81,15 @@ export function DemoFillPanel({ pathname }: { pathname: string | null }) {
           />
         ))}
       </ListGroup>
+
+      {pathname?.includes("/step-2") && (
+        <section className="space-y-2" aria-labelledby="demo-doc-states">
+          <h3 id="demo-doc-states" className="text-body-2 font-semibold text-ink">
+            Document States
+          </h3>
+          <DemoDocumentStates />
+        </section>
+      )}
 
       <p className="text-body-3 text-ink-muted">
         Sample documents used by these states are in{" "}

@@ -5,6 +5,7 @@ import { cn } from "../../utils/cn";
 import { Stepper, type StepperStep } from "../feedback/stepper";
 import { Button } from "../actions/button";
 import { Alert } from "../feedback/alert";
+import { CORNER_OCCUPANT_ATTR, RAIL_CLEAR_ATTR, UX4G_TRIGGER_ID } from "../../foundations/corner-rail";
 import { FormPanel } from "./form-panel";
 import { FormSectionHead } from "./form-section-head";
 import "./form-section.css";
@@ -127,6 +128,69 @@ export function Wizard({
     }
   }, [current]);
 
+  /*
+   * THE PHONE BAR AND THE CORNER RAIL.
+   *
+   * From 0–767px the action band is STICKY (see wizard.css), which puts it across the bottom of
+   * the viewport — the same edge `floating-element-placement.md` gives to the corner stack. Two
+   * things keep them apart, and only one of them can be CSS:
+   *
+   *   · the band carries `data-sa-rail-clear`, so a TRANSIENT launcher steps aside while it would
+   *     sit on the band. The statutory accessibility control never yields, and must not;
+   *   · so where that control (or any other corner occupant) is actually on the page, the band
+   *     keeps a gutter at its trailing edge and the primary action stops short of it.
+   *
+   * The gutter is measured rather than always reserved: on every portal the UX4G trigger is
+   * `display: none` (the surface carries an `AccessibilityBar` instead), and reserving 56px of a
+   * 375px row for a control that is not there would cost the primary its words. The late timeout
+   * is the widget's own stylesheet arriving after hydration — the same lateness `useRailClearance`
+   * documents.
+   */
+  const [cornerOccupied, setCornerOccupied] = React.useState(false);
+  React.useEffect(() => {
+    const inCorner = (el: Element): boolean => {
+      const r = el.getBoundingClientRect();
+      return (
+        r.width > 0 &&
+        r.height > 0 &&
+        r.height <= 200 &&
+        window.innerWidth - r.right < 200 &&
+        window.innerHeight - r.bottom < 220
+      );
+    };
+    const measure = () => {
+      const marked = [...document.querySelectorAll(`#${UX4G_TRIGGER_ID}, [${CORNER_OCCUPANT_ATTR}]`)].some(inCorner);
+      /*
+       * AND WHATEVER IS ACTUALLY THERE. The UX4G widget draws its control in markup that is not
+       * the id the rail knows it by — measured at 375 on the AVYAY upload step, `#uw-widget-custom-trigger`
+       * was 0x0 while a 56px control sat in the corner on top of the primary action. So the corner
+       * is also PROBED: whatever is painted at the rail's own resting point, if it is fixed, is an
+       * occupant whatever it calls itself. Our own bar is sticky, so it is never mistaken for one.
+       */
+      const probe = document.elementsFromPoint(window.innerWidth - 40, window.innerHeight - 56);
+      const painted = probe.some((el) => getComputedStyle(el).position === "fixed" && inCorner(el));
+      setCornerOccupied(marked || painted);
+    };
+    measure();
+    /* THE WIDGET ARRIVES LATE, AND TWICE. It is injected into `<body>` after hydration, and it
+       still measures 0x0 until its own stylesheet lands — which is in `<head>`, so no mutation
+       of the body announces it. The observer catches the injection and the three ticks catch the
+       styling; `useRailClearance` documents the same lateness from the other side. Measured at
+       375 on the AVYAY upload step, where one pass at mount found nothing and the widget then
+       sat on the primary action. */
+    const ticks = [300, 1200, 3000].map((ms) => window.setTimeout(measure, ms));
+    const observer = new MutationObserver(measure);
+    observer.observe(document.body, { childList: true });
+    window.addEventListener("resize", measure);
+    window.addEventListener("load", measure);
+    return () => {
+      ticks.forEach((t) => window.clearTimeout(t));
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("load", measure);
+    };
+  }, []);
+
   const step = steps[current];
   const leading =
     isFirst && onCancel ? (
@@ -134,8 +198,11 @@ export function Wizard({
         {cancelLabel}
       </Button>
     ) : (
+      /* The word is HIDDEN on a phone, not dropped: the sticky bar has room for one set of words
+         and they belong to the action that moves the applicant forward. Clipped rather than
+         `display: none`, so the button keeps "Back" as its accessible name at every width. */
       <Button type="button" appearance="outlined" iconLeft={<IcLeft />} onClick={onBack} disabled={isFirst}>
-        Back
+        <span className="ds-wizard__back-label">Back</span>
       </Button>
     );
 
@@ -155,6 +222,16 @@ export function Wizard({
         title={title ?? step?.label ?? ""}
         description={description ?? step?.description}
         actions={headerActions}
+        footerProps={
+          {
+            className: "ds-wizard__actions",
+            [RAIL_CLEAR_ATTR]: "",
+            "data-corner": cornerOccupied ? "occupied" : undefined,
+            /* A data attribute named by a constant cannot be typed as a JSX prop — the name is
+               not a literal at the type level — so the cast is at this one boundary rather than
+               the attribute being spelled out and left to drift from the rail's own export. */
+          } as React.HTMLAttributes<HTMLDivElement>
+        }
         footer={
           <>
             {leading}

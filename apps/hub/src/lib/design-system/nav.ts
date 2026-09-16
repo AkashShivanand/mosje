@@ -116,6 +116,31 @@ export const NAV: NavGroup[] = [
         "badge": "New"
       },
       {
+        "label": "Document Checklist",
+        "href": "/design-system/components/forms/document-checklist",
+        "badge": "New"
+      },
+      {
+        "label": "Document Findings",
+        "href": "/design-system/components/forms/document-findings",
+        "badge": "New"
+      },
+      {
+        "label": "Document History Sheet",
+        "href": "/design-system/components/forms/document-history-sheet",
+        "badge": "New"
+      },
+      {
+        "label": "Document Placement Tray",
+        "href": "/design-system/components/forms/document-placement-tray",
+        "badge": "New"
+      },
+      {
+        "label": "Document Row",
+        "href": "/design-system/components/forms/document-row",
+        "badge": "New"
+      },
+      {
         "label": "Document Tile",
         "href": "/design-system/components/forms/document-tile",
         "badge": "New"

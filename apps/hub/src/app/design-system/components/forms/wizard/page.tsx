@@ -161,6 +161,45 @@ export default function WizardPage(): React.JSX.Element {
             </p>
           </section>
 
+          <section className="cdp__section" aria-labelledby="cdp-sticky">
+            <h2 id="cdp-sticky" className="cdp__h2">
+              The Action Bar Sticks on a Phone
+            </h2>
+            <p>
+              Below 768px the action band is <strong>sticky</strong>: it rides the bottom of the
+              viewport while the step scrolls under it, and lands in its own place at the end of the
+              step. A step of a grant application runs 2,000–3,900px on a 375px screen, so
+              &ldquo;Save and Continue&rdquo; was always off-screen — the applicant filled the step,
+              then scrolled the whole of it again to find the only way forward.
+            </p>
+            <ul>
+              <li>
+                <strong>Sticky, not fixed.</strong> It belongs to the panel, so it cannot outlive the
+                form, needs no rung on the z-index ladder, and leaves no hole in the document. The
+                panel stops clipping its corners at this width, because an overflow ancestor is what
+                stops a sticky child from sticking.
+              </li>
+              <li>
+                <strong>Back gives up its word, not its icon.</strong> The bar has room for one set of
+                words and they belong to the action that moves the applicant on. &ldquo;Back&rdquo; is
+                clipped rather than removed, so the button keeps its accessible name.
+              </li>
+              <li>
+                <strong>It never covers the last field.</strong> The step body reserves the bar&rsquo;s
+                height, so the end of the step can always be scrolled clear of it. It also respects{" "}
+                <code>env(safe-area-inset-bottom)</code>, for a phone with a home indicator.
+              </li>
+              <li>
+                <strong>It keeps out of the corner stack.</strong> The bar carries{" "}
+                <code>data-sa-rail-clear</code>, so a transient launcher steps aside while it would sit
+                on it; and where the statutory accessibility control — which never yields — is actually
+                on the page, the bar keeps a gutter at its trailing edge so the primary action stops
+                short of it. That is measured on the page, not always reserved: on a portal whose
+                accessibility control lives in its top bar, the row keeps its full width.
+              </li>
+            </ul>
+          </section>
+
           <section className="cdp__section" aria-labelledby="cdp-ownership">
             <h2 id="cdp-ownership" className="cdp__h2">
               The Parent Owns the State

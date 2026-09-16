@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { navLinkRoutes } from "../navigation/header/nav-link-tag";
 import "./list-group.css";
 
 export interface ListGroupProps
@@ -76,6 +77,18 @@ export interface ListRowProps {
   href?: string;
   /** Makes the whole row a button. Ignored when `href` is set. */
   onClick?: () => void;
+  /**
+   * The app's router link (`next/link`), for a row with an `href`. Defaults to a plain `<a>`.
+   *
+   * linkAs-gate(href-only): a row with no `href` navigates nowhere and needs no router link.
+   *
+   * PASS IT. Without it every row-click is a full document load — the bundle re-fetched, the
+   * tree re-hydrated, the scroll position lost, no prefetch — and nothing looks broken, which is
+   * why it goes unnoticed. The officer dashboard's figures became links and paid exactly that.
+   * An external destination, a fragment and a disabled row stay a plain anchor by the estate's
+   * usual four rules (`navLinkRoutes`).
+   */
+  linkAs?: React.ElementType;
   /** Marks the row as the current one. Sets `aria-current` on a link. */
   selected?: boolean;
   /** Present but not choosable. Keeps `aria-disabled` rather than removing the row. */
@@ -85,6 +98,9 @@ export interface ListRowProps {
 
 /**
  * One row of a `ListGroup`.
+ *
+ * A row with an `href` routes through `linkAs` when the app hands it one, so a row-click is a
+ * navigation rather than a document load.
  *
  * The whole row is the target when `href` or `onClick` is given — not the title
  * inside it. A 40px-wide link inside a 600px row is a target most people miss
@@ -100,6 +116,7 @@ export function ListRow({
   trailing,
   href,
   onClick,
+  linkAs,
   selected = false,
   disabled = false,
   className,
@@ -130,15 +147,16 @@ export function ListRow({
   );
 
   if (href && !disabled) {
+    const LinkTag: React.ElementType = navLinkRoutes({ href, disabled }, linkAs) ? linkAs! : "a";
     return (
       <li className="ds-list__item">
-        <a
+        <LinkTag
           href={href}
           className={cn(inner, "ds-list__row--interactive")}
           aria-current={selected ? "page" : undefined}
         >
           {body}
-        </a>
+        </LinkTag>
       </li>
     );
   }

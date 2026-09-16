@@ -246,6 +246,19 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "AccordionProps": {
+    "source": "packages/design-system/components/data-display/accordion.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "variant",
+        "type": "\"card\" | \"flush\"",
+        "required": false,
+        "default": "\"card\"",
+        "description": "`card` — each item a raised, shaded card: an accordion that IS the page's content. `flush` — the form language: no fill, no shadow, a hairline between items. For an accordion inside a panel that is already a card, such as the sections of an application under review, where a stack of shaded cards inside a card reads as heavy furniture."
+      }
+    ]
+  },
   "AccountMenuProps": {
     "source": "packages/design-system/components/navigation/header/account-menu.tsx",
     "inheritsNative": false,
@@ -2227,6 +2240,13 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "headingLevel",
+        "type": "2 | 3 | 4",
+        "required": false,
+        "default": "3\n\nSet it to the level the card actually sits at. A card placed straight under a page's `<h1>`\nwith no section heading between is an `h2`; the fixed `h3` skipped a level on 30 e-Anudaan\npages (axe `heading-order`, audit X-12). The visual size does not change with the level —\nonly the document outline does.",
+        "description": "The title's heading level."
+      },
+      {
         "name": "loading",
         "type": "boolean",
         "required": false,
@@ -3961,6 +3981,13 @@ export const GENERATED_PROPS = {
         "description": "Empty-state message."
       },
       {
+        "name": "hidePagerWhenFits",
+        "type": "boolean",
+        "required": false,
+        "default": "true\n\nA register of one row drew \"Showing 10 50 100 of 1 items\" and a pager with nowhere to go\n(e-Anudaan audit X-04: Funding History, Bank Account Changes, Location Changes, Queries).\nThe footer answers \"how do I see the rest?\", and when there is no rest it is noise. It\nreturns the moment the set outgrows the smallest page, so a reader who narrows a filter\ndown to three rows and widens it again gets the pager back.\n\nPass `false` where the footer carries a count the page states nowhere else and must always\nshow — but prefer stating the count above the table, where `WorklistScreen` already does.",
+        "description": "Hide the whole footer — page sizes, range and pager — while every row already fits on the smallest page size."
+      },
+      {
         "name": "onSortChange",
         "type": "(sort: DataTableSort | null) => void",
         "required": false,
@@ -3972,6 +3999,13 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "[10, 50, 100]",
         "description": ""
+      },
+      {
+        "name": "scrollLabel",
+        "type": "string",
+        "required": false,
+        "default": "`caption`, else \"Table\"",
+        "description": "Accessible name for the scroll region, used only when the table is wider than its box."
       },
       {
         "name": "showPageSizes",
@@ -4600,6 +4634,399 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "DocumentBulkActionProps": {
+    "source": "packages/design-system/components/forms/document-checklist.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "count",
+        "type": "number",
+        "required": true,
+        "description": "How many documents the action will record a verdict for. 0 draws nothing."
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "The button: \"Mark All Remaining as Verified\". The count is appended in brackets."
+      },
+      {
+        "name": "onConfirm",
+        "type": "() => void",
+        "required": true,
+        "description": "Called once, after the reader confirms."
+      },
+      {
+        "name": "cancelLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Cancel\"",
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "confirmDescription",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The dialog body: what will be recorded, and that each verdict can still be changed."
+      },
+      {
+        "name": "confirmLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Mark as Verified\"",
+        "description": ""
+      },
+      {
+        "name": "confirmTitle",
+        "type": "string",
+        "required": false,
+        "default": "\"Mark {count} Documents as Verified?\"",
+        "description": ""
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One line beside the button saying what \"remaining\" means: \"12 not yet reviewed; the automatic check found nothing wrong with them.\""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Draws the button disabled with `disabledReason` beside it, e.g. while the file is read-only."
+      },
+      {
+        "name": "disabledReason",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      }
+    ]
+  },
+  "DocumentChecklistGroupProps": {
+    "source": "packages/design-system/components/forms/document-checklist.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The group's name, as the scheme groups its documents: \"Registration & Identity\"."
+      },
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "DocumentRow elements."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A line under the title: \"Verified and remarked each year\"."
+      },
+      {
+        "name": "headingLevel",
+        "type": "2 | 3 | 4",
+        "required": false,
+        "default": "3",
+        "description": ""
+      },
+      {
+        "name": "hideRequiredMarks",
+        "type": "boolean",
+        "required": false,
+        "default": "false\n\nFor a group whose heading already says so — \"Required Documents\" — where an asterisk on\nevery title is the same fact ten times (e-Anudaan audit D-04). Each row keeps its visually\nhidden \"(required)\". Leave it off for a mixed group.",
+        "description": "Withhold the visible required asterisk on every row in this group."
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A count or status at the right of the heading: \"2 of 3 ready\"."
+      }
+    ]
+  },
+  "DocumentChecklistProps": {
+    "source": "packages/design-system/components/forms/document-checklist.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "accept",
+        "type": "string",
+        "required": false,
+        "description": "The file input's `accept`."
+      },
+      {
+        "name": "activeFilter",
+        "type": "string | null",
+        "required": false,
+        "default": "null",
+        "description": "The selected chip. `null` shows every document."
+      },
+      {
+        "name": "assertiveMessage",
+        "type": "string",
+        "required": false,
+        "description": "Announced at once — an upload failing."
+      },
+      {
+        "name": "bulkAction",
+        "type": "DocumentBulkActionProps",
+        "required": false,
+        "description": "A verdict for many documents at once, drawn above the groups — see `DocumentBulkActionProps`. Officer screens only. Omit, or pass `count: 0`, and nothing is drawn."
+      },
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The groups: DocumentChecklistGroup elements."
+      },
+      {
+        "name": "chooseLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Choose Files\"",
+        "description": "The keyboard route into the drop zone."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "dropHint",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"We read each file and put it in the right place. You can move any we get wrong.\"",
+        "description": "The drop zone's second line."
+      },
+      {
+        "name": "dropLabel",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"Drop all your documents here, or\"",
+        "description": "The drop zone's first line."
+      },
+      {
+        "name": "emptyText",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"No documents are asked for on this application.\"",
+        "description": "Shown when the checklist itself has no documents."
+      },
+      {
+        "name": "errors",
+        "type": "readonly ErrorSummaryItem[]",
+        "required": false,
+        "default": "[]",
+        "description": "What stops the reader moving on, as links to the rows. Rendered as an ErrorSummary that takes focus."
+      },
+      {
+        "name": "errorsRevision",
+        "type": "number",
+        "required": false,
+        "default": "0",
+        "description": "Increment to move focus to the summary again when the same errors are raised twice."
+      },
+      {
+        "name": "errorTitle",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filters",
+        "type": "readonly DocumentChecklistFilter[]",
+        "required": false,
+        "description": "The questions a reader has, each a filter chip with its count. Omit on a read-only list."
+      },
+      {
+        "name": "formats",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The accepted types and size, stated ONCE, where files are chosen: \"PDF, JPG or PNG · up to 5 MB each\". Drawn INSIDE the drop zone when there is one, and in the header line otherwise."
+      },
+      {
+        "name": "loading",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Draw skeleton rows in the result's shape while the documents are being read."
+      },
+      {
+        "name": "onFiles",
+        "type": "(files: File[]) => void",
+        "required": false,
+        "description": "Called with the files dropped or chosen. Omit for a read-only list, and the drop zone is not drawn."
+      },
+      {
+        "name": "onFilterChange",
+        "type": "(id: string | null) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "politeMessage",
+        "type": "string",
+        "required": false,
+        "description": "Announced politely — a verdict arriving: \"Budget Estimates: looks right\"."
+      },
+      {
+        "name": "progressLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"{ready} of {required} required documents ready\"",
+        "description": "The words beside the bar."
+      },
+      {
+        "name": "ready",
+        "type": "number",
+        "required": false,
+        "description": "Required documents that are ready. Progress counts READY, never \"uploaded\" — a rejected upload is not progress."
+      },
+      {
+        "name": "required",
+        "type": "number",
+        "required": false,
+        "description": "Required documents on the checklist. Omit both to hide the progress line."
+      },
+      {
+        "name": "touchLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Choose your documents\"",
+        "description": "What the zone says on a touch screen or below 768px, where there is nothing to drag — the whole line is the button."
+      },
+      {
+        "name": "tray",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The placement tray, drawn between the drop zone and the list."
+      },
+      {
+        "name": "visibleCount",
+        "type": "number",
+        "required": false,
+        "description": "How many rows the current filter leaves. `0` with a filter selected draws the filtered-to-nothing state."
+      }
+    ]
+  },
+  "DocumentFindingsProps": {
+    "source": "packages/design-system/components/forms/document-findings.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "confidence",
+        "type": "{ value: number; threshold: number }",
+        "required": false,
+        "description": "The check's confidence against its threshold. **For officers only**: an applicant is given the consequence (\"Check the details\") and never the number, which changes nothing they can do."
+      },
+      {
+        "name": "emptyText",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"No details could be read from this file.\"",
+        "description": "What is shown when the check read nothing."
+      },
+      {
+        "name": "expectedLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Your application says\"",
+        "description": "The phrase before an expected value."
+      },
+      {
+        "name": "fields",
+        "type": "readonly DocumentFinding[]",
+        "required": false,
+        "default": "[]",
+        "description": "The fields read from the file, each compared with the application where it can be."
+      },
+      {
+        "name": "reasons",
+        "type": "readonly React.ReactNode[]",
+        "required": false,
+        "default": "[]",
+        "description": "Every reason, in the check's order. The row already shows the first."
+      },
+      {
+        "name": "summary",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The check's one-sentence verdict."
+      }
+    ]
+  },
+  "DocumentHistorySheetProps": {
+    "source": "packages/design-system/components/forms/document-history-sheet.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "entries",
+        "type": "readonly DocumentHistoryEntry[]",
+        "required": true,
+        "description": "Current first, then earlier versions newest first."
+      },
+      {
+        "name": "onClose",
+        "type": "() => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The document's name."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "emptyText",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"No file has been uploaded for this document yet.\"",
+        "description": ""
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "The app's router link (`next/link`) for entries with a same-site `href`."
+      }
+    ]
+  },
   "DocumentLibraryProps": {
     "source": "packages/design-system/components/data-display/document-library.tsx",
     "inheritsNative": false,
@@ -4653,6 +5080,256 @@ export const GENERATED_PROPS = {
         "type": "React.ReactNode",
         "required": false,
         "description": "The footer's \"view all\" control, supplied as an ELEMENT — typically a `next/link` already styled with `buttonClasses`. Omit it and no footer renders. A slot rather than a `linkAs` component prop, because this is a client component: React Server Components refuse to pass a FUNCTION across the boundary (\"Functions cannot be passed directly to Client Components\"), so a server page handing over `next/link` itself crashes the route. An element crosses that boundary fine, and the server page keeps its router-aware navigation."
+      }
+    ]
+  },
+  "DocumentPlacementTrayProps": {
+    "source": "packages/design-system/components/forms/document-placement-tray.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "items",
+        "type": "readonly DocumentPlacement[]",
+        "required": true,
+        "description": "One line per file dropped, in the order dropped."
+      },
+      {
+        "name": "onChange",
+        "type": "(itemId: string, targetId: string | null) => void",
+        "required": true,
+        "description": "A file was moved to another document, or (`null`) taken out of one."
+      },
+      {
+        "name": "onDone",
+        "type": "() => void",
+        "required": true,
+        "description": "Close the tray. The placements stand."
+      },
+      {
+        "name": "options",
+        "type": "readonly DocumentPlacementOption[]",
+        "required": true,
+        "description": "Every document a file can go to."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "collapseAfter",
+        "type": "number",
+        "required": false,
+        "default": "4",
+        "description": "Beyond this many plainly placed files, they fold behind \"Show N More Placed Files\" and the lines that need a look — unplaced, refused, replacing — lead. A 17-file drop otherwise pushes the checklist a screen and a half down to report sixteen things that went right."
+      },
+      {
+        "name": "onRemove",
+        "type": "(itemId: string) => void",
+        "required": false,
+        "description": "Take an unplaced or refused file off the list."
+      },
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"We placed N of M files.\"",
+        "description": "The heading."
+      }
+    ]
+  },
+  "DocumentRowProps": {
+    "source": "packages/design-system/components/forms/document-row.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "state",
+        "type": "DocumentRowState = \"missing\" | \"optional\" | \"uploading\" | \"failed\" | \"rejected\" | \"checking\" | \"verified\" | \"review\" | \"invalid\" | \"unavailable\"",
+        "required": true,
+        "description": "One of the ten states. Decides the icon, the colour and the default words."
+      },
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The document's name, as the scheme's checklist words it."
+      },
+      {
+        "name": "action",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The one primary control: Upload, Try Again, Replace, Choose Another File."
+      },
+      {
+        "name": "as",
+        "type": "\"li\" | \"div\"",
+        "required": false,
+        "default": "\"li\"",
+        "description": "`li` inside a DocumentChecklistGroup; `div` alone."
+      },
+      {
+        "name": "aside",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The officer's own verdict. Beside the row on a wide row; under the title — with the status — once the row is narrower than about 760px, so the title is never squeezed to a word a line."
+      },
+      {
+        "name": "clampReason",
+        "type": "boolean",
+        "required": false,
+        "default": "false\n\nFor a list where many rows carry the same reason: the sentence is still read in full by a\nscreen reader and on hover, and the whole of it belongs inside `findings` (\"What we found\").\nTen rows repeating one two-line sentence ran 1,600px (e-Anudaan audit D-03). On a phone the\nreason wraps as before.",
+        "description": "Cut `reason` to one line wherever the row is 640px or wider."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "collapsible",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The row can fold to one line: icon, title, `summary`, the status words, the action and the menu. The file, hint, reason, findings and `aside` sit behind a \"Details\" disclosure. For a document that needs nothing more from the reader — an officer's list where most documents were verified by an earlier grade. A document still to review, or one that needs correction, is not collapsible: what the reader must act on is never folded away."
+      },
+      {
+        "name": "density",
+        "type": "\"default\" | \"compact\"",
+        "required": false,
+        "default": "\"default\"\n\n`compact` is the REVIEWED-DOCUMENT row for an officer's list. From a 520px row it is two\nlines — title, verdict (`aside`) and actions, with the file and the status as small print\nbeneath — and from 960px one line: icon · title · file · status · verdict · actions. Tighter\npadding; the title and file cut to one line each (full text on hover and to a screen\nreader); on a `collapsible` row the hint waits behind Details. It exists because a\n20-document review ran about 3,700px at 185px a row (e-Anudaan audit R-03). Below 520px it\nstacks exactly like the default row. The `aside` should itself be compact — a segmented\nverdict or a small select — for the first line to hold.",
+        "description": "Row density."
+      },
+      {
+        "name": "expanded",
+        "type": "boolean",
+        "required": false,
+        "description": "Controlled fold state for a `collapsible` row. Uncontrolled rows start folded."
+      },
+      {
+        "name": "file",
+        "type": "DocumentRowFile",
+        "required": false,
+        "description": "The current file. Omit when nothing is uploaded."
+      },
+      {
+        "name": "findings",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "What the check found, revealed in place by a disclosure under the row."
+      },
+      {
+        "name": "findingsLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"What we found\"",
+        "description": "The disclosure's label."
+      },
+      {
+        "name": "findingsOpen",
+        "type": "boolean",
+        "required": false,
+        "description": "Controlled disclosure state."
+      },
+      {
+        "name": "hint",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A line under the title: a condition such as \"Required when the building is rented\"."
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": "Rendered on the row, so an ErrorSummary or a status message can point at it."
+      },
+      {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "The app's router link (`next/link`), for `file.href`. Defaults to a plain anchor."
+      },
+      {
+        "name": "menu",
+        "type": "{ items: MenuEntry[]; onSelect: (id: string) => void }",
+        "required": false,
+        "description": "The row menu — View, Replace, Check Again, Upload History, Remove. Omit for a read-only row with no commands."
+      },
+      {
+        "name": "number",
+        "type": "number",
+        "required": false,
+        "description": "The position on the checklist, printed before the title."
+      },
+      {
+        "name": "onExpandedChange",
+        "type": "(expanded: boolean) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onFindingsOpenChange",
+        "type": "(open: boolean) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "progress",
+        "type": "number",
+        "required": false,
+        "description": "0–100, drawn as a bar while `state` is `uploading`."
+      },
+      {
+        "name": "reason",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "ONE sentence under the row saying what is wrong — shown only when the document needs something. A row that needs nothing stays one line high."
+      },
+      {
+        "name": "remark",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A remark ABOVE the row — the Ministry's query on a correction screen."
+      },
+      {
+        "name": "remarkLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Ministry's remark\"",
+        "description": "The label before `remark`."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "description": "A red asterisk and a visually hidden \"(required)\". Optional documents are marked by state instead."
+      },
+      {
+        "name": "showFindingsToggle",
+        "type": "boolean",
+        "required": false,
+        "default": "true\n\nTurn it off for a row that needs nothing — a verified document stays one line high — and open\nthe findings from the row menu with `findingsOpen` instead.",
+        "description": "Draw the disclosure button under the row."
+      },
+      {
+        "name": "statusLabel",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The words beside the icon. Defaults to the applicant's words for the state — \"Looks right\", \"Check the details\", \"Doesn't match\". An officer's screen passes its own (\"Automatic check · Does not match · 95%\"), because confidence is advice for an officer and noise for an applicant."
+      },
+      {
+        "name": "summary",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "The line a folded row shows before the status — \"Verified by ASO, 21 Jul 2026\"."
+      },
+      {
+        "name": "titleAs",
+        "type": "\"p\" | \"h2\" | \"h3\" | \"h4\"",
+        "required": false,
+        "default": "\"p\"",
+        "description": "The title's element. A row that stands alone as a section — one correction — takes a heading."
       }
     ]
   },
@@ -5041,7 +5718,7 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "default": "\"Respond by\"",
-        "description": "Printed before an action's deadline."
+        "description": "Printed before an action's deadline, where the entry does not name its own. An item's `dueLabel` wins, for a list that mixes kinds of deadline."
       },
       {
         "name": "emptyText",
@@ -5062,6 +5739,26 @@ export const GENERATED_PROPS = {
         "type": "React.ElementType",
         "required": false,
         "description": "The app's router link (`next/link`) for entries with an `href`. Defaults to a plain anchor."
+      },
+      {
+        "name": "now",
+        "type": "string | number | Date",
+        "required": false,
+        "description": "What \"now\" is, for deciding whether a `dueAt` has passed: an ISO string, a timestamp, or a Date. Resolve it ONCE per page — in a server component, or after hydration — and hand the same value to every list on the screen, so a dashboard tile and the notification panel cannot disagree about which items are overdue. Omitted, nothing is derived and only an item's own `overdue` marks one."
+      },
+      {
+        "name": "overdueDueLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Was due\"",
+        "description": "Printed before the deadline of an OVERDUE entry, in place of `dueLabel`."
+      },
+      {
+        "name": "overdueLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Overdue\"",
+        "description": "The tag on an entry whose deadline has passed. A word beside an icon, in the error family — never the colour alone (WCAG 1.4.1)."
       },
       {
         "name": "showActionTag",
@@ -5694,7 +6391,7 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "Pass through to the control as a real `readonly`."
+        "description": "Pass through to the control as a real `readonly`. A read-only field shows NO required marker even when `required` is set — the reader cannot act on it. Pass `readOnly` HERE, not only on the `Input` inside, or the label cannot know."
       },
       {
         "name": "required",
@@ -5800,6 +6497,12 @@ export const GENERATED_PROPS = {
         "type": "React.ReactNode",
         "required": false,
         "description": "The action band at the foot — Back / Cancel and the primary action."
+      },
+      {
+        "name": "footerProps",
+        "type": "React.HTMLAttributes<HTMLDivElement>",
+        "required": false,
+        "description": "Attributes for the action band itself — a class, or the data attributes a floating-element rail reads. The Wizard uses it to mark its sticky phone bar as a surface a transient widget must keep clear of (`floating-element-placement.md`). Never a substitute for `footer`."
       },
       {
         "name": "title",
@@ -7951,6 +8654,12 @@ export const GENERATED_PROPS = {
         "description": "Icon, avatar or organisation mark before the text. Decorative."
       },
       {
+        "name": "linkAs",
+        "type": "React.ElementType",
+        "required": false,
+        "description": "The app's router link (`next/link`), for a row with an `href`. Defaults to a plain `<a>`. linkAs-gate(href-only): a row with no `href` navigates nowhere and needs no router link. PASS IT. Without it every row-click is a full document load — the bundle re-fetched, the tree re-hydrated, the scroll position lost, no prefetch — and nothing looks broken, which is why it goes unnoticed. The officer dashboard's figures became links and paid exactly that. An external destination, a fragment and a disabled row stay a plain anchor by the estate's usual four rules (`navLinkRoutes`)."
+      },
+      {
         "name": "onClick",
         "type": "() => void",
         "required": false,
@@ -8936,6 +9645,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "now",
+        "type": "string | number | Date",
+        "required": false,
+        "description": "What \"now\" is, for marking an entry whose `dueAt` has passed as Overdue. Passed straight to `EventList`; resolve it once per page and hand the same value to every list on the screen. Omitted, only an item's own `overdue` marks one."
+      },
+      {
         "name": "onMarkAllRead",
         "type": "() => void",
         "required": false,
@@ -9498,8 +10213,8 @@ export const GENERATED_PROPS = {
         "name": "size",
         "type": "\"default\" | \"compact\"",
         "required": false,
-        "default": "\"default\"",
-        "description": "`compact` sets the title a step down the headline ramp, for a screen whose own content carries the weight — a form wizard, where the stepper and the step panel lead."
+        "default": "\"default\"\n\nONE SCALE PER KIND OF PAGE, so the H1 does not change size inside a single journey.\n\n- `default` — headline-1 (32px on a portal). Every page whose subject IS the title:\ndashboards, lists and registers, record and detail pages (an application, a payment\nstatus, NGO 360), review and decision screens, and error pages (403, 404).\n- `compact` — headline-3 (24px on a portal). A screen whose own furniture leads and the\ntitle only names it: a multi-step form or wizard, where the stepper and the step panel\ncarry the weight, and a single-task form page (a correction, a certificate, a request).\n\nNot a third size, and not a per-page judgement: if a page is neither, it is `default`.\nSign-in titles belong to the auth templates, which carry their own scale.",
+        "description": "The title's rung on the headline ramp."
       }
     ]
   },
@@ -10413,7 +11128,7 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "Start with the rail collapsed to its 88px icon rail. **Two widths exist and only two.** The handoff draws 300, 88, 268, 260 and 280 for one page type; only the first two are decisions and the other three are drift, all inside SHRESHTA. See `docs/audit/figma-handoff-defects-2026-09-06.md` §2.1."
+        "description": "Start with the rail collapsed to its 88px icon rail. Whatever this says, the rail starts collapsed between 768 and 1279px (tablets and small laptops): a 300px column there leaves the content 420–930px, too narrow for a step bar to name its stages or a worklist to show its columns. The masthead button still expands it, and the choice holds until the page is reloaded. **Two widths exist and only two.** The handoff draws 300, 88, 268, 260 and 280 for one page type; only the first two are decisions and the other three are drift, all inside SHRESHTA. See `docs/audit/figma-handoff-defects-2026-09-06.md` §2.1."
       },
       {
         "name": "footer",
@@ -15024,7 +15739,7 @@ export const GENERATED_PROPS = {
         "name": "countLine",
         "type": "React.ReactNode | null",
         "required": false,
-        "description": "Replace the count line under the filters (\"124 in the register.\"). Omit for the default sentence. Pass `null` to suppress it where the page header already states the count — the NGO beneficiaries register reads \"110 Active of 124 Registered Beneficiaries\" above the table, and the default line repeated the same fact beneath it. Pass a node to say it differently. Shown only when the list is `ready`, like the default."
+        "description": "Replace the count line under the filters (\"124 applications.\"). Omit for the default sentence, which counts in the screen's own words — `noun` / `pluralNoun`, so \"95 applications.\" rather than a filing term no applicant uses. Pass a node to say it differently (\"95 applications in the register\", a count with a link). Pass `null` to suppress it where the page header already states the count — the NGO beneficiaries register reads \"110 Active of 124 Registered Beneficiaries\" above the table, and the default line repeated the same fact beneath it. Shown only when the list is `ready`, like the default."
       },
       {
         "name": "emptyAction",
@@ -15055,7 +15770,7 @@ export const GENERATED_PROPS = {
         "name": "filters",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Filter controls. Drop DS form controls straight in."
+        "description": "Filter controls. Drop DS form controls straight in. A view switch belongs in `views`."
       },
       {
         "name": "headingLevel",
@@ -15081,7 +15796,7 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "default": "\"record\"",
-        "description": "What one row is called, for the selection bar."
+        "description": "What ONE ROW is called — in the reader's own words, not the filing system's. It names the rows in the selection bar (\"3 applications selected\") and in the default count line (\"95 applications.\"), so both sentences on a screen use one noun."
       },
       {
         "name": "onBulkAction",
@@ -15111,7 +15826,7 @@ export const GENERATED_PROPS = {
         "name": "pluralNoun",
         "type": "string",
         "required": false,
-        "description": ""
+        "description": "The plural, where it is not `noun` + \"s\" — \"bodies\", \"beneficiaries\"."
       },
       {
         "name": "registerTotal",
@@ -15130,6 +15845,18 @@ export const GENERATED_PROPS = {
         "type": "string[]",
         "required": false,
         "description": "Currently selected row ids. Omit to switch selection off entirely."
+      },
+      {
+        "name": "summary",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A summary of the register — a row of `MetricCard`s — between the header and the filters. There was no slot for it, so the E-Anudaan applicant's My Applications put its Saved Drafts below the register (UX-04) and the officer's All Applications had nowhere to show its Total / In Review / Sanctioned / Returned tiles (parity inventory §16). Figures here must be computed from the same rows the table lists."
+      },
+      {
+        "name": "views",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "A view switch — `Tabs` or a `SegmentedControl` choosing WHICH register is shown (\"Pending / All\", \"Beneficiaries / Staff\") — drawn directly under the header, with no frame of its own. A view is not a filter. Passed through `filters`, a two-option switch sat in the grey framed filter bar and read as a filter nobody had set (e-Anudaan audit X-05: Queries, Bank Account Changes, Location Changes, Sent). Put views here and narrowing controls in `filters`; a page with both renders views first, then the bar."
       }
     ]
   },

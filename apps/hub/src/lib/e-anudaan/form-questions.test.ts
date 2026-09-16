@@ -8,6 +8,8 @@ import {
   AVYAY_WIZARD,
   NAPDDR_WIZARD,
   fieldLabel,
+  isReadOnly,
+  isSummarySection,
   shownHelp,
   stepFields,
   validateStep,
@@ -29,27 +31,26 @@ function find(w: WizardDef, v: Record<string, string>, name: string): { field: F
   throw new Error(`${name} not visible`);
 }
 
-test("1–2: a renewal's locked bank account still tells the applicant how to change it", () => {
-  for (const [w, name] of [[AVYAY_WIZARD, "fld_bank_account_id"], [NAPDDR_WIZARD, "fld_bank_account_choice"]] as const) {
-    const { field } = find(w, REN, name);
-    const help = shownHelp(field, REN, true);
-    assert.match(help ?? "", /Project Bank Accounts/, `${w.code}: the instruction must show on the locked field`);
+test("1–2: a renewal's bank account is a read-only record on every scheme, with the change instruction beside it", () => {
+  for (const [w, v] of [[AVYAY_WIZARD, REN], [NAPDDR_WIZARD, REN]] as const) {
+    const bank = w.steps.flatMap((st) => st.sections).find((x) => /^Bank/.test(x.title))!;
+    assert.ok(isSummarySection(bank, v) && !isSummarySection(bank, NEW), w.code);
   }
   // Locked fields without the flag still show no help.
   const { field: total } = find(AVYAY_WIZARD, NEW, "fld_grant_total");
   assert.equal(shownHelp(total, NEW, true), undefined);
 });
 
-test("3: a new NAPDDR project does not arrive with a bank account already chosen", () => {
-  assert.equal(darpanSeed(undefined).fld_bank_account_choice, undefined);
-  assert.ok(CARRIED_FORWARD.NAPDDR?.fld_bank_account_choice, "a renewal carries its account forward");
-  const { step } = find(NAPDDR_WIZARD, NEW, "fld_bank_account_choice");
+test("3: a new NAPDDR project types its account, and an empty account blocks the step", () => {
+  assert.equal(darpanSeed(undefined).fld_bank_account_number, undefined);
+  assert.deepEqual(CARRIED_FORWARD, {}, "a renewal carries the chosen project's own account, not a constant");
+  const { step } = find(NAPDDR_WIZARD, NEW, "fld_bank_account_number");
   const errors = validateStep(step, { ...darpanSeed(undefined), ...NEW });
-  assert.ok(errors.fld_bank_account_choice, "an unchosen account blocks the step");
+  assert.ok(errors.fld_bank_account_number, "an empty account blocks the step");
 });
 
 test("4: a name-only field says 'name', and accepts a name typed in Devanagari", () => {
-  const { field, step } = find(NAPDDR_WIZARD, NEW, "fld_project_director");
+  const { field, step } = find(NAPDDR_WIZARD, NEW, "fld_incharge_name");
   const bad = validateStep(step, { ...NEW, [field.name]: "Sunita 123" });
   assert.equal(bad[field.name], "Enter the name using letters only — e.g. Sunita Sharma.");
   const hindi = validateStep(step, { ...NEW, [field.name]: "सुनीता शर्मा" });
@@ -57,7 +58,7 @@ test("4: a name-only field says 'name', and accepts a name typed in Devanagari",
 });
 
 test("5: a mobile field takes a 10-digit mobile number, not a paragraph", () => {
-  const { field, step } = find(NAPDDR_WIZARD, NEW, "fld_project_director_mobile");
+  const { field, step } = find(NAPDDR_WIZARD, NEW, "fld_incharge_mobile");
   const check = (v: string) => validateStep(step, { ...NEW, [field.name]: v })[field.name];
   assert.equal(check("Call the office after 5 pm"), "Enter a 10-digit mobile number — e.g. 9876543210.");
   assert.equal(check("12345"), "Enter a 10-digit mobile number — e.g. 9876543210.");
@@ -65,11 +66,11 @@ test("5: a mobile field takes a 10-digit mobile number, not a paragraph", () => 
   assert.equal(check("+91-9876543210"), undefined);
 });
 
-test("6: a renewal's grant figures read as sanctioned, and the total names the instalment", () => {
-  const { field: total } = find(NAPDDR_WIZARD, REN, "fld_grant_total");
-  assert.equal(fieldLabel(total, REN), "Total Sanctioned Grant-in-Aid (₹)");
-  assert.match(shownHelp(total, REN, true) ?? "", /instalment you are claiming/);
-  assert.equal(fieldLabel(total, NEW), "Total Grant-in-Aid Requested (₹)");
-  const { field: honorarium } = find(NAPDDR_WIZARD, REN, "fld_honorarium_cost");
-  assert.equal(fieldLabel(honorarium, REN), "Sanctioned Staff Honorarium (₹)");
+test("6: a renewal's grant figures read as sanctioned, and the amount names the instalment", () => {
+  const values = { ...REN, fld_installment_no: "2nd Instalment" };
+  const { field: amount } = find(NAPDDR_WIZARD, values, "fld_instalment_amount");
+  assert.equal(fieldLabel(amount, values), "Recurring Grant — 2nd Instalment, 40% (₹)");
+  const { field: annual } = find(NAPDDR_WIZARD, values, "fld_sanctioned_recurring");
+  assert.equal(fieldLabel(annual, values), "Annual Recurring Grant (₹)");
+  assert.equal(isReadOnly(annual, values) && isReadOnly(amount, values), true);
 });
