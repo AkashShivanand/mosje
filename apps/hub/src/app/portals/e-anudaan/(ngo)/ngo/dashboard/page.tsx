@@ -575,7 +575,9 @@ function ClaimableInstalments({
           ]}
         />
 
-        <ListGroup divided aria-label={collapsed ? `Instalments ready to claim, ${CLAIM_ROWS} of ${n}` : "Instalments ready to claim"}>
+        {/* `flush`: the rows line up with the readings above them, and the hover band still
+            reaches the card's inner edge. Inset, their text sat 16px in from everything else. */}
+        <ListGroup divided flush aria-label={collapsed ? `Instalments ready to claim, ${CLAIM_ROWS} of ${n}` : "Instalments ready to claim"}>
               {named.map((c) => {
                 const label = instalmentLabel(c.plan.instalment ?? 1);
                 const draft = draftOf(c);

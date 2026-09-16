@@ -243,7 +243,7 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
             )}
             {settled && detail != null && <div className="ds-metric-card__detail">{detail}</div>}
           </div>
-          {(settled && status) || icon != null || (settled && aside != null) ? (
+          {(settled && status) || icon != null || (settled && aside != null) || interactive ? (
             <div className="ds-metric-card__side">
               {settled && status && (
                 <Badge className="ds-metric-card__status" status={status.tone ?? "neutral"}>
@@ -254,6 +254,22 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
               {icon != null && (
                 <div className="ds-metric-card__icon" aria-hidden="true">
                   {icon}
+                </div>
+              )}
+              {/* THE AFFORDANCE AT REST. Hover, press and focus all say "this is a control" — and
+                  all three need the reader to have already reached for it. A tile that filters the
+                  list below it looked identical to a tile that is only a number, so nobody found it
+                  without hovering (officer-queue walkthrough, 16 Sep 2026). `PortalCard` — the
+                  library's other whole-card control — answers this with a footer and a trailing
+                  glyph, and `ListRow` marks a row that opens what it counts with `chevron_right`;
+                  the tiles sit beside those very rows on this screen, so they take the same mark.
+
+                  It lives in the SIDE column, pushed down by `margin-top: auto`, so it rides the
+                  height the figure already needs. As a row of its own it added 24px to every
+                  interactive tile and left a band under the caption. */}
+              {interactive && (
+                <div className="ds-metric-card__go" aria-hidden="true">
+                  <Icon name="chevron_right" size={16} />
                 </div>
               )}
             </div>
@@ -294,18 +310,6 @@ export const MetricCard = React.forwardRef<HTMLDivElement, MetricCardProps>(
         )}
         {settled && provenance && (
           <ProvenanceLine className="ds-metric-card__provenance" provenance={provenance} />
-        )}
-        {/* THE AFFORDANCE AT REST. Hover, press and focus all say "this is a control" — and all
-            three need the reader to have already reached for it. A tile that filters the list
-            below it looked identical to a tile that is only a number, so nobody found it without
-            hovering (officer-queue walkthrough, 16 Sep 2026). `PortalCard` — the library's other
-            whole-card control — answers this with a footer and a trailing glyph, and `ListRow`
-            marks a row that opens what it counts with `chevron_right`; the tiles sit beside those
-            very rows on this screen, so they take the same mark rather than a new one. */}
-        {interactive && (
-          <div className="ds-metric-card__go" aria-hidden="true">
-            <Icon name="chevron_right" size={16} />
-          </div>
         )}
       </Tag>
     );

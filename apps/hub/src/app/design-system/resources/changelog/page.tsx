@@ -32,9 +32,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.148.0",
+    version: "v0.149.0",
     date: "2026-09-16",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "THE TILE’S RESTING MARK COSTS NO HEIGHT. It shipped as a row of its own, which added 24px to every interactive tile and left a band under the caption — a fix for one complaint that made a second. The mark now lives in the tile’s side column, which stretches, with `margin-top: auto` dropping it to the foot: it rides the height the figure already needs and lands on the caption’s own line. Measured on the officer queue, 142px back to 118px" },
+      { kind: "Added", text: "`ListGroup` TAKES `flush`. A row is inset by its own side padding so its hover and focus band is not tight against the text — right for a standalone panel, wrong for a list inside a card under a heading, where the rows read as indented from everything else by exactly that 16px. `flush` pulls the group out by one row’s padding, so the rows’ TEXT lines up with whatever sits above them while the band still reaches the card’s inner edge. A `bordered` list owns its own edge and ignores it. The applicant’s claims card was the case that found it" },
+      { kind: "Added", text: "THE FIGMA `Metric Card` SET TAKES `Opens something`, ON ALL 50 VARIANTS. Switched on, it draws chevron_right on the tile’s foot — an instance of the library `Icon` at Size=16, bound to text/neutral/subtle, 20px from the right and the foot, which is where the code puts it. A designer can now place a tile that filters and have it look like one. The brand tint the mark takes while a tile is CHOSEN stays code’s: a boolean cannot repaint a node another boolean owns, and that is recorded on the component record rather than approximated" },
+    ],
+  },
+  {
+    version: "v0.148.0",
+    date: "2026-09-16",
     changes: [
       { kind: "Added", text: "A METRIC TILE THAT IS A CONTROL SAYS SO AT REST. Hover, press and focus all announce the control only once the reader has already reached for it, so a tile that filters the list below looked identical to a tile that is only a number — nobody found it without hovering (officer-queue walkthrough, 16 Sep 2026). An interactive tile now carries `chevron_right` on its foot, muted, taking the brand ink when chosen. The mark is not new: `ListRow` uses it for a row that opens what it counts, and those rows sit directly beneath the tiles on that screen, so the two halves of one dashboard speak one language. `PortalCard` — the library’s other whole-card control — already answered this with a footer and a trailing glyph. A tile with nothing to show stays a plain box and carries no mark" },
       { kind: "Changed", text: "THE APPLICANT’S “INSTALMENTS READY TO CLAIM” NAMES THREE CLAIMS AT EVERY SIZE. Above three it used to drop the list entirely, on the reasoning that naming them rebuilt the wall it replaced — but that wall was fourteen rows carrying twelve filled buttons, and three links are not that. What it left was two short readings alone in a full-width card: a 130px band that reads as content which failed to load. The card now has ONE design whatever the count, and the three it names are the three worth starting with — a saved draft first, since that is the one that finishes fastest, then by amount. “View All N” still opens the rest in My Applications" },
