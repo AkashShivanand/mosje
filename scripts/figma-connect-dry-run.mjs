@@ -24,8 +24,16 @@
 import { spawnSync } from "node:child_process";
 import { pathToFileURL } from "node:url";
 
-/** Attempts, and how long to wait before each retry. Figma's per-minute window is 60s. */
-const BACKOFF_MS = (process.env.FIGMA_CONNECT_DRY_RUN_BACKOFF_MS ?? "45000,90000")
+/**
+ * Attempts, and how long to wait before each retry.
+ *
+ * SHORT ON PURPOSE. The `quality` job has a 20-minute ceiling and already runs close to
+ * it — five live Figma checks, one of which walks 75 pages. The first version waited 45s
+ * then 90s, and on 2026-09-16 that pushed the job to 20m14s: GitHub cancelled it mid-retry,
+ * which is a worse failure than the one being handled. 15s then 30s still clears Figma's
+ * 60-second burst window across the three attempts, and costs at most 45s.
+ */
+const BACKOFF_MS = (process.env.FIGMA_CONNECT_DRY_RUN_BACKOFF_MS ?? "15000,30000")
   .split(",")
   .map((n) => Number(n.trim()))
   .filter((n) => Number.isFinite(n) && n >= 0);

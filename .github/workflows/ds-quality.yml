@@ -59,7 +59,12 @@ jobs:
     runs-on: ubuntu-latest
     # A full green run takes ~5 minutes. Without this the default is SIX HOURS, which
     # is how one stuck download held two pull requests all morning.
-    timeout-minutes: 20
+    # 25, not 20: five live Figma checks run here and the slowest walks every component
+    # page, so the job sits at 15-20 minutes on a good day. On 2026-09-16 it reached 20m14s
+    # and was cancelled mid-retry inside the Code Connect step — the ceiling turning a
+    # handled rate limit back into a red PR. The headroom is for the retry, not for drift:
+    # if this job starts approaching 25, something has got slower and should be measured.
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v7
         with:
