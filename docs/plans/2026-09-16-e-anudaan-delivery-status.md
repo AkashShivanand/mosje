@@ -118,9 +118,21 @@ searched; one was dirty.
 
 | Surface | Result |
 |---|---|
-| The portal's own copy (page descriptions, subtitles, hints, empty states) | **Clean.** 57 distinct strings across the e-Anudaan screens, **none** repeated between files |
+| The portal's own copy — **every user-facing literal**, 109 non-test files | **800 distinct strings, 47 repeated.** Categorised below; nothing to remove |
 | The web documentation pages | **Clean enough.** 1,434 distinct strings across 403 pages, 22 repeated — and each repeat is specimen content legitimately shared between a component's page and its playground |
 | The Figma documentation frames | **One real fault**, below |
+
+**The 47 repeats in the portal, categorised — and why none is junk to remove.**
+
+| Kind | Count | Verdict |
+|---|---|---|
+| A document's title in `form-schema.ts` restated in `store/seed.ts` | ~30 | **Data duplication, not junk copy.** The schema defines the document; the seed names the same document when it creates a seeded upload. Worth a shared constant one day; invisible to a reader, and not what "junk copies" meant |
+| A visible Title Case heading beside its sentence-case spoken label — `"File Movement and Remarks"` with `caption="File movement and remarks"` | 4 | **Deliberate and correct.** Title Case for display per the estate's rule, sentence case for what a screen reader says |
+| The same words in two shells — "Ministry of Social Justice & Empowerment" in the applicant shell and the officer shell | 6 | **Correct.** Two different shells, each naming the department |
+| A message and the rule that produces it — `"State the grounds for the notice."` in the panel and in `workflow.ts` | 7 | **Correct.** One is the field's hint, one is the validation rule's own message |
+
+So: **no junk copy remains in the portal to remove.** The six removals in §5 of the Document
+Centre record are the whole of it, and they were removed with a reason each.
 
 **A sentence written for Button, pasted onto eight form components, where it was false.**
 77 library pages carry 146 documentation and record frames; 73 sentences repeat across pages.
