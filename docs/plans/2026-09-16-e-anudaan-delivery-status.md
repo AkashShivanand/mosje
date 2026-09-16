@@ -611,3 +611,25 @@ project ID title in a 16px semibold monospace, and SAMAVESH has no such Code sty
 
 **Needs a publish**, after which the five register frames are re-pointed at the new card and filled
 from the structured card data already read off the portal.
+
+### 9.3 The republished card, and why pair count became a variant (16 Sep 2026)
+
+The rebuilt `Worklist / Card` was published at 17:32 and imports into the handoff file with its
+grid and new properties. Three registers were refilled from the portal's own card data — title and
+reference kept apart, second lines as details, statuses as badges in the portal's tones:
+
+| Frame | Before refill | After | |
+|---|---|---|---|
+| Programme Director — Sent (4 pairs) | 1.03× | **0.98×** | 0 overflow |
+| Programme Director — Inspection Report Repository (4 pairs) | 1.07× | **0.99×** | 0 overflow |
+| PMU — Institutions (3 pairs) | 1.09× | 1.20× | ✗ — the finding below |
+
+**Figma's grid does not collapse a hidden row.** Probed directly: a two-row grid is 34px tall with
+both rows shown and still 34px with the second hidden. So a 3-pair card drawn from a 4-row grid
+with `Show Pair 4` off kept an empty row, and every 3-pair card came out taller than the portal's.
+How many pairs a card has is structure, and the authoring rule puts structure in variants:
+`Worklist / Card` is now a **component set, `Pairs = 4 · 3 · 2`**, each grid holding exactly that
+many rows, with `Show Pair 3` and `Show Pair 4` removed. 30 properties, none unbound.
+
+**Needs a publish.** Then PMU Institutions and Beneficiaries (3 pairs) and My Applications (4) are
+refilled on the right variant.
