@@ -176,5 +176,74 @@
       "$value": "{size.8}",
       "$description": "One marker in the compact bar’s dot row, the form the track takes when the viewport is too narrow to draw a labelled node per stage."
     }
+  },
+  "sitefooter": {
+    "$description": "SiteFooter — the statutory footer's own colour roles and two sizes. The ground and the lead ink are NOT here: `bg/brand/primary/boldest` and `on/bg/brand/primary/boldest` already name them, so the CSS and the master bind those. Tier 3 because every other colour here is a role ON THE FOOTER GROUND: the semantic layer has an `on/*` ink for a brand fill but no muted ink, rule or chip for one, and those only make sense on this surface. Before 2026-09-16 the CSS read `--sa-color-primaryScale-*` directly and the Figma master bound the unpublished Palette rungs, so neither side consumed the library layer. The translucent roles are a rung at a published alpha step, composited over the ground, which is how Figma can bind them per brand mode — a two-colour color-mix() has no Figma equivalent.",
+    "ink": {
+      "$type": "color",
+      "subtle": {
+        "$value": "{color.primaryScale.100}",
+        "$description": "Navigation ink: links, organisation lines, the address, social glyphs. Same-hue, never white-alpha. 8.04:1 on the Blue ground."
+      },
+      "subtler": {
+        "$value": "{color.primaryScale.200}",
+        "$description": "Boilerplate ink: the lineage, credit prefixes, the colophon. 6.18:1 on the Blue ground; 5.37:1 worst case across the eight brand modes."
+      }
+    },
+    "rule": {
+      "$type": "color",
+      "base": {
+        "$value": "{color.primaryScale.500}",
+        "$extensions": {
+          "mosje": {
+            "alpha": "{alpha.64}"
+          }
+        },
+        "$description": "The zone hairline — rung 500 at 64% over the ground, a proportion of the ground rather than a fixed rung, so it sits the same distance from the ground in every brand (Navy's rung 600 IS its ground). Decorative; exempt from WCAG 1.4.11."
+      },
+      "subtle": {
+        "$value": "{color.primaryScale.500}",
+        "$extensions": {
+          "mosje": {
+            "alpha": "{alpha.32}"
+          }
+        },
+        "$description": "The rule above the policy row, half the weight of `rule`. Was the rule at 55% (an effective 35%); alpha/32 is the nearest published step."
+      }
+    },
+    "chip": {
+      "default": {
+        "$type": "color",
+        "$value": "{color.primaryScale.100}",
+        "$extensions": {
+          "mosje": {
+            "alpha": "{alpha.16}"
+          }
+        },
+        "$description": "The social chip at rest — rung 100 at 16% over the ground. Was a 12% color-mix; 12 is not a published alpha step, so the chip takes the nearest one (16) rather than a variable made for one component."
+      },
+      "hover": {
+        "$type": "color",
+        "$value": "{color.primaryScale.100}",
+        "$extensions": {
+          "mosje": {
+            "alpha": "{alpha.24}"
+          }
+        },
+        "$description": "The social chip on hover — rung 100 at 24%."
+      },
+      "size": {
+        "$type": "dimension",
+        "$value": "{size.40}",
+        "$description": "The social chip, 40x40 — clears WCAG 2.5.8's 24px target."
+      }
+    },
+    "mark": {
+      "$type": "dimension",
+      "height": {
+        "$value": "{size.28}",
+        "$description": "The credit marks' shared optical height. Left to their intrinsic ratios the NeGD and Digital India marks drew 31px and 44px on one row."
+      }
+    }
   }
 }

@@ -40,9 +40,8 @@ import { getContentSyncedDate } from "@/lib/website/content";
  * went looking and found no such record. Do not claim a register entry without
  * making one.
  *
- * DBIM COVERAGE IS VARIANT-DEPENDENT. The list above holds for variant="website".
- * variant="portal" renders no columns, so Sitemap and Help are absent there — see
- * design.md → SiteFooter.
+ * DBIM COVERAGE HOLDS ON BOTH VARIANTS. variant="portal" renders no columns, so
+ * Sitemap and Help render in its statutory bar instead — see design.md → SiteFooter.
  */
 
 /**
@@ -162,19 +161,30 @@ const credits: SiteFooterCredit[] = [
     // one without read as "Powered by [A] [B]" — the label appeared to govern
     // both, and the attribution the prose used to carry was left unsaid.
     prefix: "Developed & maintained by",
-    src: "/website/images/NeGD-Logo.svg",
+    /* THE REVERSED MARK, AND IT IS A REAL VECTOR. `NeGD-Logo.svg` is 258 KB of
+       embedded raster — a colour layer with an all-white layer painted over it —
+       so the footer was drawing a photograph of a logo. This is the library's
+       `NeGD/on-dark` exported: 30 KB, crisp at any density, and the colour file
+       stays where it belongs, on the light LogoStrip. */
+    src: "/website/images/NeGD-Logo-White.svg",
     alt: "National e-Governance Division (NeGD)",
     href: "https://negd.gov.in/",
-    width: 78,
-    height: 34,
+    width: 143,
+    height: 52,
   },
   {
     prefix: "Powered by",
-    src: "/website/images/Digital-India-White.svg",
+    /* THE ESTATE'S OWN Digital India ARTWORK, REVERSED FOR THIS GROUND.
+       `Digital-India-White.svg` was a bad crop of the mark — the swirl squashed
+       to a 86x48 box and the blue stem of the 'i' clipped by the viewBox. This is
+       `digital-india-logo.svg`, the file the masthead, the PM-AJAY navbar and the
+       login templates already draw, with the wordmark in white: the swirl keeps
+       its tricolour, which is the mark's identity and not ours to recolour. */
+    src: "/website/images/Digital-India-Reverse.svg",
     alt: "Digital India",
     href: "https://www.digitalindia.gov.in/",
-    width: 78,
-    height: 34,
+    width: 105,
+    height: 41,
   },
 ];
 

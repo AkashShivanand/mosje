@@ -82,7 +82,15 @@ h4 { font-size: var(--sa-type-headline-6-size); line-height: var(--sa-type-headl
 pre { overflow-x: auto; max-width: 100%; }
 code { overflow-wrap: anywhere; }
 
-p { line-height: var(--sa-type-body-1-lh); }
+/* A <p> inside a RENDERED design-system component takes that component's
+   leading, not the documentation's. A direct declaration beats an inherited
+   one, so this element rule was quietly overriding every component that sets
+   line-height on a parent: the Site Footer's colophon drew 24px lines in its
+   specimen where the site draws 16px, which made the documented footer 24px
+   taller at 375 than the thing it documents. `.ds-prose` is this app's own
+   prose helper, not a component, so it is exempted. `:where()` carries no
+   specificity, so ordinary prose keeps the weight it had. */
+p:not(:where([class*="ds-"]:not(.ds-prose) *)) { line-height: var(--sa-type-body-1-lh); }
 
 a:not([class]) { color: var(--sa-text-link-brand-default); text-decoration: none; }
 a:not([class]):hover { text-decoration: underline; }

@@ -5,9 +5,8 @@ import { SiteFooter, VisitorCounter } from "@mosje/design-system";
 /**
  * **SiteFooter** — the statutory footer for the estate, in two variants.
  *
- * `variant="website"` (default) renders three zones: an OPTIONAL support strip,
- * the working footer (identity, address, social, four link columns), and the
- * statutory bar. `variant="portal"` renders the statutory bar alone — a portal
+ * `variant="website"` (default) renders two bands: the working footer
+ * (identity, address, social, four link columns) and the statutory bar. `variant="portal"` renders the statutory bar alone — a portal
  * has its own navigation, and a citizen mid-application does not need a sitemap.
  *
  * **Why a variant and not a second component.** The statutory bar is the half
@@ -116,7 +115,6 @@ const meta = {
     ],
     copyright: "© 2026 Department of Social Justice & Empowerment. All Rights Reserved.",
     lastUpdated: "06 Jun 2026",
-    maxWidth: 1280,
   },
   argTypes: {
     variant: { control: "inline-radio", options: ["website", "portal"] },

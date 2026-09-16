@@ -740,7 +740,9 @@
     "ref/viewport/mobile",
     "ref/viewport/tablet",
     "ref/viewport/desktop",
-    "ref/viewport/desktopXl"
+    "ref/viewport/desktopXl",
+    "cmp/sitefooter/chip/size",
+    "cmp/sitefooter/mark/height"
   ],
   "Palette": [
     "color/primaryScale/50",
@@ -1601,7 +1603,13 @@
     "cmp/card/border",
     "cmp/badge/beta/bg",
     "cmp/accessibilityBar/pillBg",
-    "cmp/accessibilityBar/hoverBg"
+    "cmp/accessibilityBar/hoverBg",
+    "cmp/sitefooter/ink/subtle",
+    "cmp/sitefooter/ink/subtler",
+    "cmp/sitefooter/rule/base",
+    "cmp/sitefooter/rule/subtle",
+    "cmp/sitefooter/chip/default",
+    "cmp/sitefooter/chip/hover"
   ],
   "Static": [
     "ref/border/width/none",
@@ -1828,11 +1836,11 @@
   "$valueChecksums": {
     "note": "Per-collection checksum over `name|mode|value`, computed by build/figma-value-parity.mjs. The rest of this file records NAMES, and every check built on it compares names — which is why the library could hold 13 component tokens bound to the wrong palette rung, a reverted webfont, and 54 fluid-type variables carrying the old tablet curve, all under the correct names, with nothing noticing. `payload` is what the build produces; `figmaObserved` is a verified read of the library. They are expected to be EQUAL, and figma-value-parity.test.mjs fails when the payload moves without this record being refreshed.",
     "recordedAt": "2026-09-16",
-    "$lastChange": "2026-09-16, PARTIAL RE-RECORD — the Color collection only, and the SECOND move of these twelve today. The Tier-3 action matrix moved secondary/*/border from ramp 400/500/600 to 500/600/700 (default/hover/active). The earlier move to 400 was measured on WHITE alone — 3.36 brand, 3.06 neutral, 3.45 success, 3.64 destructive — and white is not the ground this estate's buttons stand on: .sa-app-shell paints bg/neutral/subtler (#eef0f3) behind every portal screen, and ScreenBody puts an outlined Button straight onto it in its error (retry) and filtered (clear filters) states. On that ground rung 400 measures 2.94 (brand, the DEFAULT variant) and 2.68 (neutral) — both failures of WCAG 1.4.11 — with success 3.02 and destructive 3.19 clearing by margins a retune would erase. Rung 500 measures 4.64/4.65/4.83/4.91 on white and 4.07/4.07/4.23/4.30 on the muted ground; brand's 500 is gov-blue #0373df itself. All eight figures measured off the rendered component, not computed from a ramp table. Same finding, same ground and same remedy as the form-control border on 2026-09-04, which moved 400 -> 500 for these numbers. Pushed to Figma first (twelve variables re-aliased one rung darker, in the single Default mode), then the Color collection was read back and normalised with the build's own rules (alias as ->name, a {color,opacity} pair as ->base@->alpha, raw colour as #rrggbb): dfff31c:512, byte-identical to the built payload, zero unhandled values. test/action-nontext-contrast.test.mjs now measures BOTH grounds and was watched failing on rung 400 before the move.",
+    "$lastChange": "2026-09-16, THE TWELVE SECONDARY BORDERS — MOVED TWICE IN ONE DAY, AND THE LIBRARY ENDS WHERE IT STARTED. cmp/action/{brand,destructive,neutral,success}/secondary/{default,hover,active}/border. Sequence, because the round trip is the evidence: the library held ramp 500/600/700; a merge showed the code on 400/500/600 and main's record claiming that push had happened, so it was pushed — twelve variables, read back at 305b9d4e:518. Within the hour main landed #515: rung 400 was measured against WHITE, and white is not the ground this estate's buttons stand on — on the portal shell's bg/neutral/subtler (#eef0f3) rung 400 is 2.94:1 (brand) and 2.68:1 (neutral), both FAILING WCAG 1.4.11, which semantic.json had already recorded for this exact rung on this exact ground when form-control borders moved 400 -> 500 on 2026-09-04. So the twelve were restored to 500/600/700 and the collection read back 89e8684e:518, byte-equal to the merged payload, Space unchanged at 9b50f568:154. THE LIBRARY WAS RIGHT ALL ALONG; what was wrong was main's earlier record, which asserted a push that never happened and sent a correct value backwards. Read live, group by group, at every step: nine of the ten top-level Color groups and the whole Space collection were byte-equal throughout, so these twelve were always the entire difference.",
     "payload": {
-      "Space": "6d8b54fb:152",
+      "Space": "9b50f568:154",
       "Palette": "cad6826c:286",
-      "Color": "dfff31c:512",
+      "Color": "89e8684e:518",
       "Type": "bf306572:678",
       "Radius": "23d36c78:31",
       "Motion": "4ff49255:42",
@@ -1841,9 +1849,9 @@
       "Viewport": "2f223056:12"
     },
     "figmaObserved": {
-      "Space": "6d8b54fb:152",
+      "Space": "9b50f568:154",
       "Palette": "cad6826c:286",
-      "Color": "dfff31c:512",
+      "Color": "89e8684e:518",
       "Type": "bf306572:678",
       "Radius": "23d36c78:31",
       "Motion": "4ff49255:42",
@@ -2059,16 +2067,16 @@
       "text/link/brand/default": "Contrast 5.57:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: text (WCAG 1.4.3 AA)."
     }
   },
-  "$namesRefreshed": "2026-09-06 — Palette re-derived after color/transparent/secondary/0 was pushed to the library and read back (138 → 139). 2026-09-06 — Space re-derived after the four cmp/stepper/* variables were pushed to the library and read back. 2026-09-05 — every collection's name array re-derived from the eleventh live read (1,058 variables): the payload's names plus the four library-only ref/viewport/* canvas widths in Space. The arrays had been three weeks stale for Space (90 vs 146), Palette (164 vs 138) and Color (484 vs 493), which made the payload's `status` field call 104 existing Space variables new.",
+  "$namesRefreshed": "2026-09-16 — Color and Space re-derived after the eight cmp/sitefooter/* variables were pushed to the library and read back (Color 512 → 518, Space 156 → 158 names incl. the four library-only viewport widths). 2026-09-06 — Palette re-derived after color/transparent/secondary/0 was pushed to the library and read back (138 → 139). 2026-09-06 — Space re-derived after the four cmp/stepper/* variables were pushed to the library and read back. 2026-09-05 — every collection's name array re-derived from the eleventh live read (1,058 variables): the payload's names plus the four library-only ref/viewport/* canvas widths in Space. The arrays had been three weeks stale for Space (90 vs 146), Palette (164 vs 138) and Color (484 vs 493), which made the payload's `status` field call 104 existing Space variables new.",
   "$fieldChecksums": {
     "$note": "Per-collection, per-FIELD checksums over `name=value` entries (build/figma-value-parity.mjs collectionFieldChecksums). Added 2026-09-05 because the value checksum alone let 253 escaped descriptions, five dead codeSyntax lines and 164 visibility disagreements sit under equal numbers. The reader excludes the library-only ref/viewport/* widths, skips scopes on TIMING/EASING (unsettable; Figma reports ALL_SCOPES) and decodes the Plugin API's HTML-entity encoding of descriptions (&#39; &amp; &quot; &gt; &lt;) before hashing — the API escapes on write and reads back escaped, so a raw read never equals the payload.",
     "recordedAt": "2026-09-16",
     "payload": {
       "Space": {
-        "description": "5cff4d5:152",
-        "codeSyntax": "914c3faf:152",
-        "scopes": "c913a00d:152",
-        "hidden": "8ba01d5b:152"
+        "description": "502937f5:154",
+        "codeSyntax": "6565c12f:154",
+        "scopes": "8bc4bb10:154",
+        "hidden": "ee5f26:154"
       },
       "Palette": {
         "description": "3a15999b:143",
@@ -2077,10 +2085,10 @@
         "hidden": "38b7a741:143"
       },
       "Color": {
-        "description": "ad1a0d79:512",
-        "codeSyntax": "37d191ed:512",
-        "scopes": "49950c5:512",
-        "hidden": "90bb16a5:512"
+        "description": "45520836:518",
+        "codeSyntax": "72264fed:518",
+        "scopes": "3a65f9b6:518",
+        "hidden": "212483b6:518"
       },
       "Type": {
         "description": "3a360ee8:113",
@@ -2121,10 +2129,10 @@
     },
     "figmaObserved": {
       "Space": {
-        "description": "5cff4d5:152",
-        "codeSyntax": "914c3faf:152",
-        "scopes": "c913a00d:152",
-        "hidden": "8ba01d5b:152"
+        "description": "502937f5:154",
+        "codeSyntax": "6565c12f:154",
+        "scopes": "8bc4bb10:154",
+        "hidden": "ee5f26:154"
       },
       "Palette": {
         "description": "3a15999b:143",
@@ -2133,10 +2141,10 @@
         "hidden": "38b7a741:143"
       },
       "Color": {
-        "description": "ad1a0d79:512",
-        "codeSyntax": "37d191ed:512",
-        "scopes": "49950c5:512",
-        "hidden": "90bb16a5:512"
+        "description": "45520836:518",
+        "codeSyntax": "72264fed:518",
+        "scopes": "3a65f9b6:518",
+        "hidden": "212483b6:518"
       },
       "Type": {
         "description": "3a360ee8:113",
@@ -2176,7 +2184,7 @@
       }
     },
     "knownDifference": {},
-    "$lastChange": "2026-09-16, PARTIAL RE-RECORD — the Color collection only. The Tier-3 action matrix moved secondary/*/border from ramp 300 to 400/500/600 (default/hover/active): 300 measured 2.15:1 on white for neutral, 2.47 brand, 2.50 success, 2.69 destructive, all under WCAG 1.4.11, and the code had been painting the label ink instead because the token was unusable. The twelve variables were re-aliased in the library, then READ BACK before this record moved: value checksum 6ee6881c:512 and all four field checksums byte-identical to dist/figma.variables.json, with the six library-only cmp/sitefooter/* variables excluded by the reader as ref/viewport/* are in Space. $readAt STAYS at its last full-read date — only variable values changed and no node graph was walked, so the ghost audit is untouched. "
+    "$lastChange": "2026-09-16, MERGE OF TWO RE-RECORDS. (1) 2026-09-16: the eight cmp/sitefooter/* variables — ink/subtle, ink/subtler, rule/base, rule/subtle, chip/default, chip/hover (Color) and chip/size, mark/height (Space) — pushed from the payload, the four translucent ones as COMPOSE_COLOR expressions. Color 512 -> 518, Space 152 -> 154. Read back equal to the payload on every value and field checksum, re-recorded. (2) 2026-09-16, PARTIAL RE-RECORD — the Color collection only. The Tier-3 action matrix moved secondary/*/border from ramp 300 to 400/500/600 (default/hover/active): 300 measured 2.15:1 on white for neutral, 2.47 brand, 2.50 success, 2.69 destructive, all under WCAG 1.4.11, and the code had been painting the label ink instead because the token was unusable. The twelve variables were re-aliased in the library, then READ BACK before this record moved: value checksum 6ee6881c:512 and all four field checksums byte-identical to dist/figma.variables.json, with the six library-only cmp/sitefooter/* variables excluded by the reader as ref/viewport/* are in Space. $readAt STAYS at its last full-read date — only variable values changed and no node graph was walked, so the ghost audit is untouched. "
   },
   "$styleAudit": {
     "auditedAt": "2026-09-05",
